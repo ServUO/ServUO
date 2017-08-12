@@ -1,10 +1,15 @@
-using System;
+﻿using System;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
 
 namespace Server.Spells.Third
 {
+    public interface IMageUnlockable
+    {
+        void OnMageUnlock(Mobile from);
+    }
+
     public class UnlockSpell : MagerySpell
     {
         private static readonly SpellInfo m_Info = new SpellInfo(
@@ -56,13 +61,15 @@ namespace Server.Spells.Third
 
                     if (o is Mobile)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 503101); // That did not need to be unlocked.
+                    else if (o is IMageUnlockable)
+                        ((IMageUnlockable)o).OnMageUnlock(from);
                     else if (!(o is LockableContainer))
                         from.SendLocalizedMessage(501666); // You can't unlock that!
                     else
                     {
                         LockableContainer cont = (LockableContainer)o;
 
-                        if (Multis.BaseHouse.CheckSecured(cont)) 
+                        if (Multis.BaseHouse.CheckSecured(cont))
                             from.SendLocalizedMessage(503098); // You cannot cast this on a secure item.
                         else if (!cont.Locked)
                             from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 503101); // That did not need to be unlocked.

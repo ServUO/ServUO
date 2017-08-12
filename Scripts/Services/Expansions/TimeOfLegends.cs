@@ -28,7 +28,7 @@ namespace Server
 			typeof(BalakaisShamanStaffGargoyle),typeof(EnchantressCameo),			typeof(GrugorsShield),			typeof(GrugorsShieldGargoyle),
 			typeof(HalawasHuntingBow),			typeof(HalawasHuntingBowGargoyle),	typeof(HawkwindsRobe),			typeof(JumusSacredHide),
 			typeof(JumusSacredHideGargoyle), 	typeof(JuonarsGrimoire), 			typeof(LereisHuntingSpear), 	typeof(LereisHuntingSpearGargoyle), 
-			typeof(MinaxsSandles), 				typeof(MinaxsSandlesGargoyle), 		typeof(MocapotilsObsidianSword),typeof(OzymandiasObi),
+			typeof(MinaxsSandles), 				typeof(MinaxsSandlesGargoyle), 		typeof(MocapotlsObsidianSword),typeof(OzymandiasObi),
 			typeof(OzymandiasObiGargoyle), 		typeof(ShantysWaders), 				typeof(ShantysWadersGargoyle), 	typeof(TotemOfTheTribe),
 			typeof(WamapsBoneEarrings), 		typeof(WamapsBoneEarringsGargoyle), typeof(UnstableTimeRift)
 		};

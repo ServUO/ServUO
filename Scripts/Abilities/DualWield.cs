@@ -27,20 +27,15 @@ namespace Server.Items
                 return 20;
             }
         }
-        public override bool CheckSkills(Mobile from)
-        {
-            if (this.GetSkill(from, SkillName.Ninjitsu) < 50.0)
-            {
-                from.SendLocalizedMessage(1063352, "50"); // You need ~1_SKILL_REQUIREMENT~ Ninjitsu skill to perform that attack!
-                return false;
-            }
 
-            return base.CheckSkills(from);
+        public override SkillName GetSecondarySkill(Mobile from)
+        {
+            return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
+            if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
             if (Registry.Contains(attacker))
@@ -71,21 +66,21 @@ namespace Server.Items
             public DualWieldTimer(Mobile owner, int bonusSwingSpeed)
                 : base(TimeSpan.FromSeconds(6.0))
             {
-                this.m_Owner = owner;
-                this.m_BonusSwingSpeed = bonusSwingSpeed;
-                this.Priority = TimerPriority.FiftyMS;
+                m_Owner = owner;
+                m_BonusSwingSpeed = bonusSwingSpeed;
+                Priority = TimerPriority.FiftyMS;
             }
 
             public int BonusSwingSpeed
             {
                 get
                 {
-                    return this.m_BonusSwingSpeed;
+                    return m_BonusSwingSpeed;
                 }
             }
             protected override void OnTick()
             {
-                Registry.Remove(this.m_Owner);
+                Registry.Remove(m_Owner);
             }
         }
     }

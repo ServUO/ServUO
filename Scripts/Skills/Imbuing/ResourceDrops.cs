@@ -120,7 +120,7 @@ namespace Server.Items
 
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Cavern of the Discarded", .05, typeof(DelicateScales),
                 typeof(ArcanicRuneStone), typeof(PowderedIron), typeof(EssenceBalance), typeof(CrushedGlass), typeof(CrystallineBlackrock),
-                typeof(ElvenFletching), typeof(CrystalShards), typeof(Lodestone), typeof(AbyssalCloth), typeof(SeedRenewal)));
+                typeof(ElvenFletching), typeof(CrystalShards), typeof(Lodestone), typeof(AbyssalCloth), typeof(SeedOfRenewal)));
 
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Passage of Tears", .05, typeof(EssenceSingularity)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Fairy Dragon Lair", .05, typeof(EssenceDiligence)));

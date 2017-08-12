@@ -15,6 +15,7 @@ using Server.Spells.Spellweaving;
 using Server.SkillHandlers;
 using Server.Engines.CityLoyalty;
 using Server.Spells.SkillMasteries;
+using System.Linq;
 
 namespace Server
 {
@@ -257,23 +258,12 @@ namespace Server
 
             if (fire > 0 && totalDamage > 0)
                 SwarmContext.CheckRemove(m);
-
-            if(totalDamage > 0)
-                Spells.Mystic.SpellPlagueSpell.OnMobileDamaged(m);
-            #endregion
-
-            #region Skill Mastery Spells
-            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
-
-            if (spell != null)
-                spell.AbsorbDamage(ref totalDamage);
-
-            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
-            SkillMasterySpell.OnCasterDamaged(m, from, ref totalDamage);
             #endregion
 
             if (keepAlive && totalDamage > m.Hits)
                 totalDamage = m.Hits;
+
+            SpiritualityVirtue.GetDamageReduction(m, ref totalDamage);
 
             if (from != null && !from.Deleted && from.Alive)
             {
@@ -300,6 +290,11 @@ namespace Server
 
             m.Damage(totalDamage, from, true, false);
 
+            #region Skill Mastery Spells
+            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
+            SkillMasterySpell.OnDamaged(m, from, ref totalDamage);
+            #endregion
+
             #region Stygian Abyss
             if (m.Spell != null)
                 ((Spell)m.Spell).CheckCasterDisruption(true, phys, fire, cold, pois, nrgy);
@@ -308,6 +303,9 @@ namespace Server
 
             if (ManaPhasingOrb.IsInManaPhase(m))
                 ManaPhasingOrb.RemoveFromTable(m);
+
+            Spells.Mysticism.SleepSpell.OnDamage(m);
+            Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
             #endregion
 
             return totalDamage;
@@ -507,7 +505,7 @@ namespace Server
 
                 // attacker gets 10% bonus when they're under divine fury
                 if (DivineFurySpell.UnderEffect(m))
-                    value += m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 20 : 10;
+                    value += DivineFurySpell.GetDamageBonus(m);
 
                 // Horrific Beast transformation gives a +25% bonus to damage.
                 if (TransformationSpellHelper.UnderTransformation(m, typeof(HorrificBeastSpell)))
@@ -528,7 +526,7 @@ namespace Server
                     value -= 30;
 
                 #region SA
-                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
                     value -= 10;
 
                 if (m is PlayerMobile && m.Race == Race.Gargoyle)
@@ -586,10 +584,10 @@ namespace Server
                 #endregion
 
                 #region SA
-                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 2;
 
-                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
                     value -= 2;
                 #endregion
             }
@@ -601,7 +599,7 @@ namespace Server
                 value -= ThunderstormSpell.GetCastRecoveryMalus(m);
 
                 #region SA
-                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 3;
                 #endregion
             }
@@ -611,7 +609,7 @@ namespace Server
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
-                    value += m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 15 : 10;
+                    value += DivineFurySpell.GetWeaponSpeedBonus(m);
 
                 value += HonorableExecution.GetSwingBonus(m);
 
@@ -638,10 +636,10 @@ namespace Server
                 #endregion
 
                 #region SA
-                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 45;
 
-                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
                     value -= 10;
 
                 if (MudPie.IsUnderEffects(m))
@@ -654,7 +652,7 @@ namespace Server
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
-                    value += m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 15 : 10;                    
+                    value += DivineFurySpell.GetAttackBonus(m);                   
 
                 if (BaseWeapon.CheckAnimal(m, typeof(GreyWolf)) || BaseWeapon.CheckAnimal(m, typeof(BakeKitsune)))
                     value += 20; // attacker gets 20% bonus when under Wolf or Bake Kitsune form
@@ -678,7 +676,7 @@ namespace Server
                 #endregion
 
                 #region SA
-                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 45;
 
                 if (m.Race == Race.Gargoyle)
@@ -696,7 +694,7 @@ namespace Server
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
-                    value -= m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 10 : 20;
+                    value -= DivineFurySpell.GetDefendMalus(m);
 
                 if (HitLower.IsUnderDefenseEffect(m))
                     value -= 25; // Under Hit Lower Defense effect -> 25% malus
@@ -731,10 +729,13 @@ namespace Server
 
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Hits))
                     value += 10;
-                #endregion
 
                 if (SearingWeaponContext.HasContext(m))
                     value -= m is PlayerMobile ? 20 : 60;
+                #endregion
+
+                //Virtue Artifacts
+                value += AnkhPendant.GetHitsRegenModifier(m);
             }
             else if (attribute == AosAttribute.RegenStam)
             {
@@ -745,6 +746,9 @@ namespace Server
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Stam))
                     value += 10;
                 #endregion
+
+                //Virtue Artifacts
+                value += AnkhPendant.GetStamRegenModifier(m);
             }
             else if (attribute == AosAttribute.RegenMana)
             {
@@ -760,6 +764,9 @@ namespace Server
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Mana))
                     value += 10;
                 #endregion
+
+                //Virtue Artifacts
+                value += AnkhPendant.GetManaRegenModifier(m);
             }
             else if (attribute == AosAttribute.BonusDex)
             {
@@ -1232,7 +1239,6 @@ namespace Server
         HitManaDrain = 0x20000000,
         SplinteringWeapon = 0x40000000,
         ReactiveParalyze =  0x80000000,
-        MysticWeapon =      0x100000000,
     }
 
     public sealed class AosWeaponAttributes : BaseAttributes
@@ -1771,19 +1777,6 @@ namespace Server
             }
         }
         #endregion
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int MysticWeapon
-        {
-            get
-            {
-                return this[AosWeaponAttribute.MysticWeapon];
-            }
-            set
-            {
-                this[AosWeaponAttribute.MysticWeapon] = value;
-            }
-        }
     }
 
     [Flags]
@@ -1793,6 +1786,7 @@ namespace Server
         HitSwarm = 0x00000002,
         HitSparks = 0x00000004,
         Bane = 0x00000008,
+        MysticWeapon = 0x00000010
     }
 
     public sealed class ExtendedWeaponAttributes : BaseAttributes
@@ -1906,6 +1900,19 @@ namespace Server
             set
             {
                 this[ExtendedWeaponAttribute.Bane] = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MysticWeapon
+        {
+            get
+            {
+                return this[ExtendedWeaponAttribute.MysticWeapon];
+            }
+            set
+            {
+                this[ExtendedWeaponAttribute.MysticWeapon] = value;
             }
         }
     }
@@ -2264,12 +2271,25 @@ namespace Server
             }
             if (acontext != null)
             {
-                int i;
-                for (i = 0; i < AnimalForm.Entries.Length; ++i)
-                    if (AnimalForm.Entries[i].Type == acontext.Type)
-                        break;
-                if (m.Skills[SkillName.Ninjitsu].Value < AnimalForm.Entries[i].ReqSkill)
+                if (acontext.Type == typeof(WildWhiteTiger) && m.Skills[SkillName.Ninjitsu].Value < 90)
+                {
                     AnimalForm.RemoveContext(m, true);
+                }
+                else
+                {
+                    int i;
+
+                    for (i = 0; i < AnimalForm.Entries.Length; ++i)
+                    {
+                        if (AnimalForm.Entries[i].Type == acontext.Type)
+                            break;
+                    }
+
+                    if (i < AnimalForm.Entries.Length && m.Skills[SkillName.Ninjitsu].Value < AnimalForm.Entries[i].ReqSkill)
+                    {
+                        AnimalForm.RemoveContext(m, true);
+                    }
+                }
             }
             if (!m.CanBeginAction(typeof(PolymorphSpell)) && m.Skills[SkillName.Magery].Value < 66.1)
             {
@@ -2940,17 +2960,73 @@ namespace Server
             if (Prized > 0)
                 list.Add(1154910);
 
-            if (Massive > 0)
-                list.Add(1038003);
+            //if (Massive > 0)
+            //    list.Add(1038003);
 
-            if (Unwieldly > 0)
-                list.Add(1154909);
+            //if (Unwieldly > 0)
+            //    list.Add(1154909);
 
             if (Antique > 0)
                 list.Add(1076187);
 
             if (NoRepair > 0)
                 list.Add(1151782);
+        }
+
+        public const double CombatDecayChance = 0.02;
+
+        public static void OnCombatAction(Mobile m)
+        {
+            if (m == null || !m.Alive)
+                return;
+
+            var list = new List<Item>();
+
+            foreach (var item in m.Items.Where(i => i is IDurability))
+            {
+                NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(item);
+
+                if (attrs != null && attrs.Antique > 0 && CombatDecayChance > Utility.RandomDouble())
+                {
+                    list.Add(item);
+                }
+            }
+
+            foreach (var item in list)
+            {
+                IDurability dur = item as IDurability;
+
+                if (dur == null)
+                    continue;
+
+                if (dur.HitPoints >= 1)
+                {
+                    if (dur.HitPoints >= 4)
+                    {
+                        dur.HitPoints -= 4;
+                    }
+                    else
+                    {
+                        dur.HitPoints = 0;
+                    }
+                }
+                else
+                {
+                    if (dur.MaxHitPoints > 1)
+                    {
+                        dur.MaxHitPoints--;
+
+                        if (item.Parent is Mobile)
+                            ((Mobile)item.Parent).LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                    }
+                    else
+                    {
+                        item.Delete();
+                    }
+                }
+            }
+
+            ColUtility.Free(list);
         }
 
         public int this[NegativeAttribute attribute]

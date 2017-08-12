@@ -5,14 +5,20 @@ namespace Server.Items
     public class AegisOfGrace : DragonHelm
     {
 		public override bool IsArtifact { get { return true; } }
+
         [Constructable]
         public AegisOfGrace()
         {
-            this.SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
 
-            this.Attributes.DefendChance = 20;
+            Attributes.DefendChance = 20;
 
-            this.ArmorAttributes.SelfRepair = 2;
+            ArmorAttributes.SelfRepair = 2;
+
+            if (Utility.RandomBool())
+            {
+                ItemID = 0x2B6E;
+            }
         }
 
         public AegisOfGrace(Serial serial)

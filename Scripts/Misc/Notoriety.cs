@@ -8,6 +8,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Engines.VvV;
+using Server.Spells.Chivalry;
 
 namespace Server.Misc
 {
@@ -141,7 +142,7 @@ namespace Server.Misc
                 }
             }
             #endregion
-			
+
             #region Mondain's Legacy
             if (target is Gregorio)
                 return false;
@@ -187,12 +188,12 @@ namespace Server.Misc
             {
                 if (Gregorio.IsMurderer(from))
                     return true;
-				
+
                 from.SendLocalizedMessage(1075456); // You are not allowed to damage this NPC unless your on the Guilty Quest
                 return false;
             }
             #endregion
-			
+
             #region Dueling
             PlayerMobile pmFrom = from as PlayerMobile;
             PlayerMobile pmTarg = target as PlayerMobile;
@@ -428,6 +429,11 @@ namespace Server.Misc
             if (Core.AOS && (target.Blessed || (target is BaseVendor && ((BaseVendor)target).IsInvulnerable) || target is PlayerVendor || target is TownCrier))
                 return Notoriety.Invulnerable;
 
+            var context = EnemyOfOneSpell.GetContext(source);
+
+            if (context != null && context.IsEnemy(target))
+                return Notoriety.Enemy;
+
             #region Dueling
             if (source is PlayerMobile && target is PlayerMobile)
             {
@@ -460,14 +466,11 @@ namespace Server.Misc
                     else
                         return MobileNotoriety(source, master);
                 }
-
-                if (!bc.Summoned && !bc.Controlled && ((PlayerMobile)source).EnemyOfOneType == target.GetType())
-                    return Notoriety.Enemy;
             }
 
-            if (target.Kills >= 5 || (target.Body.IsMonster && IsSummoned(target as BaseCreature) && !(target is BaseFamiliar) && !(target is ArcaneFey) && !(target is Golem)) || (target is BaseCreature && (((BaseCreature)target).AlwaysMurderer || ((BaseCreature)target).IsAnimatedDead)))
+            if (target.Murderer || (target.Body.IsMonster && IsSummoned(target as BaseCreature) && !(target is BaseFamiliar) && !(target is ArcaneFey) && !(target is Golem)) || (target is BaseCreature && (((BaseCreature)target).AlwaysMurderer || ((BaseCreature)target).IsAnimatedDead)))
                 return Notoriety.Murderer;
-				
+
             #region Mondain's Legacy
             if (target is Gregorio)
             {
@@ -475,7 +478,7 @@ namespace Server.Misc
 
                 if (Gregorio.IsMurderer(source))
                     return Notoriety.Murderer;
-				
+
                 return Notoriety.Innocent;
             }
             else if (source.Player && target is Engines.Quests.BaseEscort)

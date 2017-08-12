@@ -191,7 +191,7 @@ namespace Server.Items
 
         [Constructable]
         public GargishClothKilt(int hue)
-            : base(0x0408, Layer.OuterLegs, hue)
+            : base(0x0408, Layer.Gloves, hue)
         {
             this.Weight = 2.0;
         }
@@ -238,6 +238,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Layer != Layer.Gloves)
+                Layer = Layer.Gloves;
         }
     }
 
@@ -251,7 +254,7 @@ namespace Server.Items
 
         [Constructable]
         public FemaleGargishClothKilt(int hue)
-            : base(0x0407, Layer.OuterLegs, hue)
+            : base(0x0407, Layer.Gloves, hue)
         {
             this.Weight = 2.0;
         }
@@ -285,6 +288,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Layer != Layer.Gloves)
+                Layer = Layer.Gloves;
         }
     }
 
@@ -298,7 +304,7 @@ namespace Server.Items
 
         [Constructable]
         public MaleGargishClothKilt(int hue)
-            : base(0x0408, Layer.OuterLegs, hue)
+            : base(0x0408, Layer.Gloves, hue)
         {
             this.Weight = 2.0;
         }
@@ -332,6 +338,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Layer != Layer.Gloves)
+                Layer = Layer.Gloves;
         }
     }
 

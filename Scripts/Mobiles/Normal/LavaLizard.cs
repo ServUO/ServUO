@@ -45,8 +45,6 @@ namespace Server.Mobiles
             ControlSlots = 1;
             MinTameSkill = 80.7;
 
-            QLPoints = 2;
-
             PackItem(new SulfurousAsh(Utility.Random(4, 10)));
         }
 

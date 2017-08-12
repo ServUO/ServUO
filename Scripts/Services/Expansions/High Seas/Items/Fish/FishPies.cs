@@ -1,6 +1,7 @@
 ﻿using Server;
 using System;
 using Server.Mobiles;
+using Server.Engines.Craft;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -26,8 +27,15 @@ namespace Server.Items
         CastFocus,
     }
 
-    public class BaseFishPie : Item
+    public class BaseFishPie : Item, IQuality
     {
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
+        public bool PlayerConstructed { get { return true; } }
+
         public virtual TimeSpan Duration { get { return TimeSpan.FromMinutes(5); } }
         public virtual int BuffName { get { return 0; } }
         public virtual int BuffAmount { get { return 0; } }
@@ -38,6 +46,13 @@ namespace Server.Items
         public BaseFishPie() : base(4161)
         {
             Stackable = true;
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
         }
 
         public static bool IsUnderEffects(Mobile from, FishPieEffect type)
@@ -150,7 +165,7 @@ namespace Server.Items
             {
                 m_From = from;
                 m_EffectType = type;
-                this.Start();
+                Start();
             }
 
             protected override void OnTick()
@@ -162,6 +177,11 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
 
             list.Add(BuffName, BuffAmount.ToString());
         }
@@ -186,13 +206,20 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+
+            writer.Write((int)1); // version
+
+            writer.Write((int)_Quality);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (version > 0)
+                _Quality = (ItemQuality)reader.ReadInt();
         }
     }
 

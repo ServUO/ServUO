@@ -23,7 +23,7 @@ namespace Server.Mobiles
         }
 
 		public override bool CanBeParagon { get { return false; } }
-        public virtual bool DropPrimer { get { return true; } }
+        public virtual bool DropPrimer { get { return Core.TOL; } }
 
         public override bool Unprovokable
         {
@@ -78,6 +78,11 @@ namespace Server.Mobiles
                 {
                     c.DropItem(primer);
                 }
+            }
+
+            if (GivesMLMinorArtifact && 0.5 > Utility.RandomDouble())
+            {
+                MondainsLegacy.DropPeerlessMinor(c);
             }
 
             if (this.m_Altar != null)

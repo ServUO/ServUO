@@ -13,6 +13,11 @@ namespace Server.Items
         {
         }
 
+        public override SkillName GetSecondarySkill(Mobile from)
+        {
+            return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
+        }
+
         public static Hashtable Registry
         {
             get
@@ -33,16 +38,6 @@ namespace Server.Items
             {
                 return 1.2;
             }
-        }
-        public override bool CheckSkills(Mobile from)
-        {
-            if (this.GetSkill(from, SkillName.Ninjitsu) < 50.0)
-            {
-                from.SendLocalizedMessage(1063352, "50"); // You need ~1_SKILL_REQUIREMENT~ Ninjitsu skill to perform that attack!
-                return false;
-            }
-
-            return base.CheckSkills(from);
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)

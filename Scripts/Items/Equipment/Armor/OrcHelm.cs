@@ -1,9 +1,12 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class OrcHelm : BaseArmor
+    public class OrcHelm : BaseArmor, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
         [Constructable]
         public OrcHelm()
             : base(0x1F0B)

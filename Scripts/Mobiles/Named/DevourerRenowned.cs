@@ -44,9 +44,6 @@ namespace Server.Mobiles
             this.Karma = -9500;
 
             this.VirtualArmor = 44;
-            this.QLPoints = 50;
-
-            this.PackItem(new EssenceAchievement());
 
             this.PackNecroReg(24, 45);
         }

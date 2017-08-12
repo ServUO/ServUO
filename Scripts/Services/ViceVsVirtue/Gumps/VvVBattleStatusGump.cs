@@ -40,7 +40,9 @@ namespace Server.Engines.VvV
             {
                 BattleTeam team = teams[i];
 
-                AddHtml(87, 115 + (31 * i), 50, 20, String.Format("<basefont color=#FFFFFF>{0}", team.Guild.Abbreviation), false, false);
+                if(team.Guild != null)
+                    AddHtml(87, 115 + (31 * i), 50, 20, String.Format("<basefont color=#FFFFFF>{0}", team.Guild.Abbreviation), false, false);
+
                 AddBackground(145, 120 + (31 * i), (int)Math.Min(216, (team.Score * offset)), 12, 30584);
 
                 if (i == 2)  // stupid gump only allows 3 to be shown

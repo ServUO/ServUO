@@ -303,7 +303,10 @@ namespace Server.Menus.Questions
                     else if (m_Mobile.Map == Map.Internal)
                         destMap = m_Mobile.LogoutMap == Map.Felucca ? Map.Felucca : Map.Trammel;
                     else
-                        destMap = this.m_Mobile.Kills >= 5 ? Map.Felucca : Map.Trammel;
+                        destMap = this.m_Mobile.Murderer ? Map.Felucca : Map.Trammel;
+
+                    if (destMap == Map.Trammel && Siege.SiegeShard)
+                        destMap = Map.Felucca;
 
                     if (m_Mobile.Map != Map.Internal)
                     {

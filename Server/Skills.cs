@@ -159,6 +159,11 @@ namespace Server
                             {
                                 VolumeLearned = reader.ReadInt();
                             }
+
+                            if ((version & 0x10) != 0)
+                            {
+                                NextGGSGain = reader.ReadDateTime();
+                            }
 						}
 
 						break;
@@ -221,6 +226,11 @@ namespace Server
                     flags |= 0x8;
                 }
 
+                if (NextGGSGain != DateTime.MinValue)
+                {
+                    flags |= 0x10;
+                }
+
 				writer.Write((byte)flags); // version
 
 				if (m_Base != 0)
@@ -242,6 +252,11 @@ namespace Server
                 {
                     writer.Write((int)VolumeLearned);
                 }
+
+                if (NextGGSGain != DateTime.MinValue)
+                {
+                    writer.Write(NextGGSGain);
+                }
 			}
 		}
 
@@ -261,6 +276,13 @@ namespace Server
 
         [CommandProperty(AccessLevel.Counselor)]
         public int VolumeLearned
+        {
+            get;
+            set;
+        }
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public DateTime NextGGSGain
         {
             get;
             set;

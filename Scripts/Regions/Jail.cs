@@ -10,6 +10,11 @@ namespace Server.Regions
         {
         }
 
+        public override bool AllowAutoClaim( Mobile from )
+        {
+            return false;
+        }
+
         public override bool AllowBeneficial(Mobile from, Mobile target)
         {
             if (from.IsPlayer())

@@ -1,19 +1,18 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Spells.Chivalry
 {
-    /// <summary>
-    /// * 020416 Crome696 - Proc Damage based on http://www.uoguide.com/Consecrate_Weapon
-    /// </summary>
     public class ConsecrateWeaponSpell : PaladinSpell
     {
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Consecrate Weapon", "Consecrus Arma",
             -1,
             9002);
-        private static readonly Hashtable m_Table = new Hashtable();
+
+        private static Dictionary<Mobile, ConsecratedWeaponContext> m_Table = new Dictionary<Mobile, ConsecratedWeaponContext>();
+
         public ConsecrateWeaponSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -108,8 +107,6 @@ namespace Server.Spells.Chivalry
 
                 int pkarma = this.Caster.Karma;
 
-
-
                 if (pkarma > 5000)
                     seconds = 11.0;
                 else if (pkarma >= 4999)
@@ -124,62 +121,110 @@ namespace Server.Spells.Chivalry
                     seconds = 6.0;
                 else
                     seconds = 5.0;
-                       
-           
 
                 TimeSpan duration = TimeSpan.FromSeconds(seconds);
+                ConsecratedWeaponContext context;
 
-                Timer t = (Timer)m_Table[weapon];
-
-                if (t != null)
+                if (IsUnderEffects(Caster))
                 {
-                    BuffInfo.RemoveBuff(Caster, BuffIcon.ConsecrateWeapon);
-                    t.Stop();
+                    context = m_Table[Caster];
+
+                    if (context.Timer != null)
+                    {
+                        context.Timer.Stop();
+                        context.Timer = null;
+                    }
+
+                    context.Weapon = weapon;
                 }
-
-
-                weapon.ConsecrateDamageBonus = 0;
-                weapon.ConsecrateProcChance = 0;
-
-                if (Caster.Skills.Chivalry.Value >= 90)
-                {
-                    double calc = Caster.Skills.Chivalry.Value - 90;
-                    weapon.ConsecrateDamageBonus = ((int)Math.Truncate(calc / 2));
-                }
-
-                if (Caster.Skills.Chivalry.Value >= 80)
-                    weapon.ConsecrateProcChance = 100;
                 else
-                    weapon.ConsecrateProcChance = Caster.Skills.Chivalry.Value;
+                {
+                    context = new ConsecratedWeaponContext(Caster, weapon);
+                }
 
-                weapon.Consecrated = true;
+                weapon.ConsecratedContext = context;
+                context.Timer = Timer.DelayCall<Mobile>(duration, RemoveEffects, Caster);
 
-                m_Table[weapon] = t = new ExpireTimer(weapon, duration);
-                
-                
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ConsecrateWeapon, 1151385, 1151386, duration, Caster, String.Format("{0}\t{1}", weapon.ConsecrateProcChance, weapon.ConsecrateDamageBonus)));
+                m_Table[Caster] = context;
 
-                t.Start();
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ConsecrateWeapon, 1151385, 1151386, duration, Caster, String.Format("{0}\t{1}", context.ConsecrateProcChance, context.ConsecrateDamageBonus)));
             }
 
             this.FinishSequence();
         }
 
-        private class ExpireTimer : Timer
+        public static bool IsUnderEffects(Mobile m)
         {
-            private readonly BaseWeapon m_Weapon;
-            public ExpireTimer(BaseWeapon weapon, TimeSpan delay)
-                : base(delay)
-            {
-                this.m_Weapon = weapon;
-                this.Priority = TimerPriority.FiftyMS;
-            }
+            return m_Table.ContainsKey(m);
+        }
 
-            protected override void OnTick()
+        public static void RemoveEffects(Mobile m)
+        {
+            if (m_Table.ContainsKey(m))
             {
-                this.m_Weapon.Consecrated = false;
-                Effects.PlaySound(this.m_Weapon.GetWorldLocation(), this.m_Weapon.Map, 0x1F8);
-                m_Table.Remove(this);
+                var context = m_Table[m];
+
+                context.Expire();
+
+                m_Table.Remove(m);
+            }
+        }
+    }
+
+    public class ConsecratedWeaponContext
+    {
+        public Mobile Owner { get; private set; }
+        public BaseWeapon Weapon { get; set; }
+
+        public Timer Timer { get; set; }
+
+        public int ConsecrateProcChance
+        {
+            get
+            {
+                if (!Core.SA || Owner.Skills.Chivalry.Value >= 80)
+                {
+                    return 100;
+                }
+
+                return (int)Owner.Skills.Chivalry.Value;
+            }
+        }
+
+        public int ConsecrateDamageBonus
+        {
+            get
+            {
+                if (Core.SA)
+                {
+                    double value = Owner.Skills.Chivalry.Value;
+
+                    if (value >= 90)
+                    {
+                        return (int)Math.Truncate((value - 90) / 2);
+                    }
+                }
+
+                return 0;
+            }
+        }
+
+        public ConsecratedWeaponContext(Mobile owner, BaseWeapon weapon)
+        {
+            Owner = owner;
+            Weapon = weapon;
+        }
+
+        public void Expire()
+        {
+            Weapon.ConsecratedContext = null;
+
+            Effects.PlaySound(Weapon.GetWorldLocation(), Weapon.Map, 0x1F8);
+
+            if (Timer != null)
+            {
+                Timer.Stop();
+                Timer = null;
             }
         }
     }

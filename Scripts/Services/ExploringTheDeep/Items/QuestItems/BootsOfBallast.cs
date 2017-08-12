@@ -1,4 +1,5 @@
 ﻿using System;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -11,10 +12,23 @@ namespace Server.Items
         public BootsOfBallast()
             : base()
         {
-            this.Hue = 2072;
+            this.Hue = 2969;
             this.LootType = LootType.Blessed;
             this.StrRequirement = 10;
-            this.QuestItem = true;
+        }
+		
+		public override void OnDoubleClick(Mobile from)
+        {
+			base.OnDoubleClick(from);			
+			
+			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154243); // *You struggle to lift the heavy boots for examination! You determine anyone venturing into the sea wearing such a thing would quickly sink to the bottom*
+        }
+		
+		public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public BootsOfBallast(Serial serial)

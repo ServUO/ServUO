@@ -2126,12 +2126,19 @@ namespace Server.Engines.ConPVP
 
                 if (cash > 0)
                 {
-                    item = new BankCheck(cash);
-
-                    if (!mob.PlaceInBackpack(item))
-                        mob.BankBox.DropItem(item);
-
                     mob.SendMessage("You have been awarded a {0} trophy and {1:N0}gp for your participation in this tournament.", rank.ToString().ToLower(), cash);
+
+                    if (!Core.TOL)
+                    {
+                        item = new BankCheck(cash);
+
+                        if (!mob.PlaceInBackpack(item))
+                            mob.BankBox.DropItem(item);
+                    }
+                    else
+                    {
+                        Banker.Deposit(mob, cash, true);
+                    }
                 }
                 else
                 {
@@ -2157,7 +2164,7 @@ namespace Server.Engines.ConPVP
                         {
                             Mobile check = (Mobile)part.Players[j];
 
-                            if (check.Deleted || check.Map == null || check.Map == Map.Internal || !check.Alive || Factions.Sigil.ExistsOn(check) || check.Region.IsPartOf(typeof(Regions.Jail)))
+                            if (check.Deleted || check.Map == null || check.Map == Map.Internal || !check.Alive || Factions.Sigil.ExistsOn(check) || check.Region.IsPartOf<Regions.Jail>())
                             {
                                 bad = true;
                                 break;
@@ -2277,7 +2284,7 @@ namespace Server.Engines.ConPVP
                             {
                                 Mobile check = (Mobile)part.Players[j];
 
-                                if (check.Deleted || check.Map == null || check.Map == Map.Internal || !check.Alive || Factions.Sigil.ExistsOn(check) || check.Region.IsPartOf(typeof(Regions.Jail)))
+                                if (check.Deleted || check.Map == null || check.Map == Map.Internal || !check.Alive || Factions.Sigil.ExistsOn(check) || check.Region.IsPartOf<Regions.Jail>())
                                 {
                                     bad = true;
                                     break;
@@ -2397,7 +2404,7 @@ namespace Server.Engines.ConPVP
                             {
                                 Mobile mob = (Mobile)players[j];
 
-                                if (mob.Kills >= 5)
+                                if (mob.Murderer)
                                     parts[0].Players.Add(mob);
                                 else
                                     parts[1].Players.Add(mob);

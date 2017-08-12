@@ -381,9 +381,11 @@ namespace Server.Items
                 this.WeaponAttributes.HitLeechMana = 50;
 		}
 	}
-	
-	public class HawkwindsRobe : BaseOuterTorso
+
+    public class HawkwindsRobe : BaseOuterTorso, Server.Engines.Craft.IRepairable
 	{
+        public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTailoring.CraftSystem; } }
+
 		public override int LabelNumber { get { return 1156299; } } 
 	
 		public override int InitMinHits{ get{ return 255; } }
@@ -429,6 +431,7 @@ namespace Server.Items
 			Attributes.CastRecovery = 1;
 			Attributes.WeaponDamage = 20;
 
+            SAAbsorptionAttributes.EaterPoison = 15;
             Resistances.Fire = 5;
 		}
 		
@@ -455,6 +458,8 @@ namespace Server.Items
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
+        
+        public override int FireResistance { get { return 5; } }
 	
 		[Constructable]
 		public JumusSacredHideGargoyle () 
@@ -462,8 +467,8 @@ namespace Server.Items
 			Attributes.SpellDamage = 5;
 			Attributes.CastRecovery = 1;
 			Attributes.WeaponDamage = 20;
-			
-			FireBonus = 5;
+
+            AbsorptionAttributes.EaterPoison = 15;
 		}
 		
 		public JumusSacredHideGargoyle (Serial serial) : base(serial)
@@ -670,43 +675,6 @@ namespace Server.Items
 		}
 		
 		public MinaxsSandlesGargoyle(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
-	
-	public class MocapotilsObsidianSword : StoneWarSword
-	{
-        public override int LabelNumber { get { return 1156131; } }
-	
-		public override int InitMinHits{ get{ return 255; } }
-        public override int InitMaxHits{ get{ return 255; } }
-		
-		[Constructable]
-		public MocapotilsObsidianSword() 
-		{
-            Hue = 1910;
-
-            WeaponAttributes.HitHarm = 50;
-            WeaponAttributes.HitPhysicalArea = 50;
-            WeaponAttributes.HitLeechStam = 100;
-            WeaponAttributes.SplinteringWeapon = 20;
-            Attributes.WeaponSpeed = 40;
-            Attributes.WeaponDamage = 75;
-		}
-		
-		public MocapotilsObsidianSword(Serial serial) : base(serial)
 		{
 		}
 		
@@ -997,6 +965,45 @@ namespace Server.Items
         }
 
         public UnstableTimeRift(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    [TypeAlias("Server.Items.MocapotilsObsidianSword")]
+    public class MocapotlsObsidianSword : PaladinSword
+    {
+        public override int LabelNumber { get { return 1156131; } } // Moctapotl's Obsidian Sword
+
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+
+        [Constructable]
+        public MocapotlsObsidianSword()
+        {
+            WeaponAttributes.HitHarm = 50;
+            WeaponAttributes.HitPhysicalArea = 50;
+            WeaponAttributes.HitLeechStam = 100;
+            WeaponAttributes.SplinteringWeapon = 20;
+            Attributes.WeaponSpeed = 40;
+            Attributes.WeaponDamage = 75;
+
+            Hue = 1932;
+        }
+
+        public MocapotlsObsidianSword(Serial serial)
             : base(serial)
         {
         }

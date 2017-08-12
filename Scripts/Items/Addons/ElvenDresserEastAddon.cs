@@ -117,7 +117,7 @@ namespace Server.Items
 
                 var addon = new ElvenDresserAddonEast();
                 addon.MoveToWorld(p, map);
-                house.Addons.Add(addon);
+                house.Addons[addon] = house.Owner;
             }
         }
     }
@@ -189,10 +189,10 @@ namespace Server.Items
                     house.LockDowns.Remove(this);
                     house.LockDowns.Add(deed, house.Owner);
                 }
-                else if (house != null && house.Secures.Contains(this))
+                else if (house != null && house.IsSecure(this))
                 {
-                    house.Secures.Remove(this);
-                    house.Secures.Add(deed);
+                    house.ReleaseSecure(house.Owner, this);
+                    house.AddSecure(house.Owner, deed);
                 }
             }
 

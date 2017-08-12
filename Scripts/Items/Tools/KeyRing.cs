@@ -1,20 +1,37 @@
 using System;
 using System.Collections.Generic;
 using Server.Targeting;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class KeyRing : Item
+    public class KeyRing : Item, IResource
     {
+        private CraftResource _Resource;
+        private Mobile _Crafter;
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
+        public bool PlayerConstructed { get { return true; } }
+
         public static readonly int MaxKeys = 20;
         private List<Key> m_Keys;
+
         [Constructable]
         public KeyRing()
             : base(0x1011)
         {
-            this.Weight = 1.0; // They seem to have no weight on OSI ?!
+            Weight = 1.0; // They seem to have no weight on OSI ?!
 
-            this.m_Keys = new List<Key>();
+            m_Keys = new List<Key>();
         }
 
         public KeyRing(Serial serial)
@@ -26,12 +43,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Keys;
+                return m_Keys;
             }
         }
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1060640); // The item must be in your backpack to use it.
                 return false;
@@ -44,14 +61,14 @@ namespace Server.Items
                 from.SendLocalizedMessage(501689); // Only non-blank keys can be put on a keyring.
                 return false;
             }
-            else if (this.Keys.Count >= MaxKeys)
+            else if (Keys.Count >= MaxKeys)
             {
                 from.SendLocalizedMessage(1008138); // This keyring is full.
                 return false;
             }
             else
             {
-                this.Add(key);
+                Add(key);
                 from.SendLocalizedMessage(501691); // You put the key on the keyring.
                 return true;
             }
@@ -59,7 +76,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1060640); // The item must be in your backpack to use it.
                 return;
@@ -73,61 +90,61 @@ namespace Server.Items
         {
             base.OnDelete();
 
-            foreach (Key key in this.m_Keys)
+            foreach (Key key in m_Keys)
             {
                 key.Delete();
             }
 
-            this.m_Keys.Clear();
+            m_Keys.Clear();
         }
 
         public void Add(Key key)
         {
             key.Internalize();
-            this.m_Keys.Add(key);
+            m_Keys.Add(key);
 
-            this.UpdateItemID();
+            UpdateItemID();
         }
 
         public void Open(Mobile from)
         {
-            Container cont = this.Parent as Container;
+            Container cont = Parent as Container;
 
             if (cont == null)
                 return;
 
-            for (int i = this.m_Keys.Count - 1; i >= 0; i--)
+            for (int i = m_Keys.Count - 1; i >= 0; i--)
             {
-                Key key = this.m_Keys[i];
+                Key key = m_Keys[i];
 
                 if (!key.Deleted && !cont.TryDropItem(from, key, true))
                     break;
 
-                this.m_Keys.RemoveAt(i);
+                m_Keys.RemoveAt(i);
             }
 
-            this.UpdateItemID();
+            UpdateItemID();
         }
 
         public void RemoveKeys(uint keyValue)
         {
-            for (int i = this.m_Keys.Count - 1; i >= 0; i--)
+            for (int i = m_Keys.Count - 1; i >= 0; i--)
             {
-                Key key = this.m_Keys[i];
+                Key key = m_Keys[i];
 
                 if (key.KeyValue == keyValue)
                 {
                     key.Delete();
-                    this.m_Keys.RemoveAt(i);
+                    m_Keys.RemoveAt(i);
                 }
             }
 
-            this.UpdateItemID();
+            UpdateItemID();
         }
 
         public bool ContainsKey(uint keyValue)
         {
-            foreach (Key key in this.m_Keys)
+            foreach (Key key in m_Keys)
             {
                 if (key.KeyValue == keyValue)
                     return true;
@@ -136,13 +153,62 @@ namespace Server.Items
             return false;
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Crafter != null)
+            {
+                list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
+            }
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (_Resource > CraftResource.Iron)
+            {
+                list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), String.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            if (makersMark)
+                Crafter = from;
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
+            return quality;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
 
-            writer.WriteItemList<Key>(this.m_Keys);
+            writer.Write((int)_Resource);
+            writer.Write(_Crafter);
+            writer.Write((int)_Quality);
+
+            writer.WriteItemList<Key>(m_Keys);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -151,19 +217,29 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Keys = reader.ReadStrongItemList<Key>();
+            switch (version)
+            {
+                case 1:
+                    _Resource = (CraftResource)reader.ReadInt();
+                    _Crafter = reader.ReadMobile();
+                    _Quality = (ItemQuality)reader.ReadInt();
+                    goto case 0;
+                case 0:
+                    m_Keys = reader.ReadStrongItemList<Key>();
+                    break;
+            }
         }
 
         private void UpdateItemID()
         {
-            if (this.Keys.Count < 1)
-                this.ItemID = 0x1011;
-            else if (this.Keys.Count < 3)
-                this.ItemID = 0x1769;
-            else if (this.Keys.Count < 5)
-                this.ItemID = 0x176A;
+            if (Keys.Count < 1)
+                ItemID = 0x1011;
+            else if (Keys.Count < 3)
+                ItemID = 0x1769;
+            else if (Keys.Count < 5)
+                ItemID = 0x176A;
             else
-                this.ItemID = 0x176B;
+                ItemID = 0x176B;
         }
 
         private class InternalTarget : Target
@@ -172,27 +248,27 @@ namespace Server.Items
             public InternalTarget(KeyRing keyRing)
                 : base(-1, false, TargetFlags.None)
             {
-                this.m_KeyRing = keyRing;
+                m_KeyRing = keyRing;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_KeyRing.Deleted || !this.m_KeyRing.IsChildOf(from.Backpack))
+                if (m_KeyRing.Deleted || !m_KeyRing.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(1060640); // The item must be in your backpack to use it.
                     return;
                 }
 
-                if (this.m_KeyRing == targeted)
+                if (m_KeyRing == targeted)
                 {
-                    this.m_KeyRing.Open(from);
+                    m_KeyRing.Open(from);
                     from.SendLocalizedMessage(501685); // You open the keyring.
                 }
                 else if (targeted is ILockable)
                 {
                     ILockable o = (ILockable)targeted;
 
-                    foreach (Key key in this.m_KeyRing.Keys)
+                    foreach (Key key in m_KeyRing.Keys)
                     {
                         if (key.UseOn(from, o))
                             return;

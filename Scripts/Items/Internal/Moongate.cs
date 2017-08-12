@@ -61,6 +61,8 @@ namespace Server.Items
             }
         }
 
+        public virtual bool TeleportPets { get { return true; } }
+
         [Constructable]
         public Moongate()
             : this(Point3D.Zero, null)
@@ -136,7 +138,7 @@ namespace Server.Items
             {
                 m.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
-            else if ((m.Kills >= 5 && this.m_TargetMap != Map.Felucca) || (this.m_TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) || (this.m_TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0) || (this.m_TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0))
+            else if ((m.Murderer && this.m_TargetMap != Map.Felucca) || (this.m_TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) || (this.m_TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0) || (this.m_TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0))
             {
                 m.SendLocalizedMessage(1019004); // You are not allowed to travel there.
             }
@@ -150,7 +152,8 @@ namespace Server.Items
             }
             else if (this.m_TargetMap != null && this.m_TargetMap != Map.Internal)
             {
-                BaseCreature.TeleportPets(m, this.m_Target, this.m_TargetMap);
+                if (TeleportPets)
+                    BaseCreature.TeleportPets(m, this.m_Target, this.m_TargetMap);
 
                 m.MoveToWorld(this.m_Target, this.m_TargetMap);
 
@@ -173,7 +176,7 @@ namespace Server.Items
 
             writer.Write(this.m_Target);
             writer.Write(this.m_TargetMap);
-			
+
             // Version 1
             writer.Write(this.m_bDispellable);
         }

@@ -12,22 +12,23 @@ namespace Server.Engines.BulkOrders
         private readonly int m_AmountMax;
         private readonly int m_Number;
         private readonly int m_Graphic;
+        private readonly int m_Hue;
+
         private int m_Price;
+
         public BOBSmallEntry(SmallBOD bod)
         {
             this.m_ItemType = bod.Type;
             this.m_RequireExceptional = bod.RequireExceptional;
 
-            if (bod is SmallTailorBOD)
-                this.m_DeedType = BODType.Tailor;
-            else if (bod is SmallSmithBOD)
-                this.m_DeedType = BODType.Smith;
+            m_DeedType = bod.BODType;
 
             this.m_Material = bod.Material;
             this.m_AmountCur = bod.AmountCur;
             this.m_AmountMax = bod.AmountMax;
             this.m_Number = bod.Number;
             this.m_Graphic = bod.Graphic;
+            this.m_Hue = bod.GraphicHue;
         }
 
         public BOBSmallEntry(GenericReader reader)
@@ -36,6 +37,11 @@ namespace Server.Engines.BulkOrders
 
             switch ( version )
             {
+                case 1:
+                    {
+                        m_Hue = reader.ReadInt();
+                        goto case 0;
+                    }
                 case 0:
                     {
                         string type = reader.ReadString();
@@ -115,6 +121,13 @@ namespace Server.Engines.BulkOrders
                 return this.m_Graphic;
             }
         }
+        public int Hue
+        {
+            get
+            {
+                return this.m_Hue;
+            }
+        }
         public int Price
         {
             get
@@ -130,17 +143,26 @@ namespace Server.Engines.BulkOrders
         {
             SmallBOD bod = null;
 
-            if (this.m_DeedType == BODType.Smith)
-                bod = new SmallSmithBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material);
-            else if (this.m_DeedType == BODType.Tailor)
-                bod = new SmallTailorBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material);
+            switch (m_DeedType)
+            {
+                case BODType.Smith: bod = new SmallSmithBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
+                case BODType.Tailor: bod = new SmallTailorBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
+                case BODType.Inscription: bod = new SmallInscriptionBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
+                case BODType.Alchemy: bod = new SmallAlchemyBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
+                case BODType.Carpentry: bod = new SmallCarpentryBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
+                case BODType.Fletching: bod = new SmallFletchingBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
+                case BODType.Tinkering: bod = new SmallTinkerBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
+                case BODType.Cooking: bod = new SmallCookingBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
+            }
 
             return bod;
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
+
+            writer.Write(m_Hue);
 
             writer.Write(this.m_ItemType == null ? null : this.m_ItemType.FullName);
 

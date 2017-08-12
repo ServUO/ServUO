@@ -26,7 +26,7 @@ namespace Server.Ethics.Hero
 
         public override bool IsEligible(Mobile mob)
         {
-            if (mob.Kills >= 5)
+            if (mob.Murderer)
                 return false;
 
             Faction fac = Faction.Find(mob);

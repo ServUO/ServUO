@@ -214,9 +214,9 @@ namespace Server.Engines.VoidPool
         {
         }
 
-        public override int GetPoints(Mobile m)
+        public override double GetPoints(Mobile m)
         {
-            return (int)PointsSystem.VoidPool.GetPoints(m);
+            return PointsSystem.VoidPool.GetPoints(m);
         }
 
         public override int GetItemHue(Item i, CollectionItem item)

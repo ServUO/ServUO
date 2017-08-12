@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -18,10 +19,21 @@ namespace Server.Items
         string OwnerName { get; set; }
     }
 
-    public interface IFlippable
+    public interface IFlipable
     {
         int WestID { get; }
         int NorthID { get; }
         void OnFlip();
+    }
+
+    public interface IQuality : ICraftable
+    {
+        ItemQuality Quality { get; set; }
+        bool PlayerConstructed { get; }
+    }
+
+    public interface IResource : IQuality
+    {
+        CraftResource Resource { get; set; }
     }
 }

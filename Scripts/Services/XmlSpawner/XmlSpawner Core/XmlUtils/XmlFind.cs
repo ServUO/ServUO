@@ -387,6 +387,8 @@ namespace Server.Mobiles
 
 				if (m.Map != Map.Internal || m.Account != null ||
 					(m is IMount && ((IMount)m).Rider != null) ||
+                    (m is GalleonPilot) ||
+                    (GenericBuyInfo.IsDisplayCache(m)) ||
 					(m is BaseCreature && ((BaseCreature)m).IsStabled))
 					return true;
 
@@ -404,6 +406,12 @@ namespace Server.Mobiles
 						i is MovingCrate || i is SpawnPersistence || (i.GetType().DeclaringType == typeof(GenericBuyInfo)))
 						return true;
 
+                    // boat stuffs
+                    if (i is Static && i.Name != null && (i.Name.ToLower() == "weapon pad" || i.Name.ToLower() == "deck"))
+                        return true;
+                    if (i is GalleonHold || i is MooringLine || i is HoldItem || i is BaseDockedBoat || i is Rudder || i is RudderHandle || i is ShipWheel || i is BaseBoat || i is Plank || i is TillerMan || i is Hold || i is BaseCannon)
+                        return true;
+
                     // Ignores shadowguard addons that are internalized while not in use
                     if (i is AddonComponent)
                     {
@@ -418,6 +426,9 @@ namespace Server.Mobiles
                         return true;
 
                     if (i is BoatMountItem || i is Server.Factions.FactionPersistence || i is Server.Misc.TreasuresOfTokunoPersistence || i is StealableArtifactsSpawner)
+                        return true;
+
+                    if (i is ArisenController)
                         return true;
 				}
 

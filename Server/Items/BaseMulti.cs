@@ -90,15 +90,16 @@ namespace Server.Items
 
 		public virtual bool AllowsRelativeDrop { get { return false; } }
 
-		public override int GetMaxUpdateRange()
+        // Removed as it will use update range
+		/*public override int GetMaxUpdateRange()
 		{
-			return 22;
+            return base.GetMaxUpdateRange() + 4;
 		}
 
 		public override int GetUpdateRange(Mobile m)
 		{
-			return 22;
-		}
+            return base.GetUpdateRange(m) + 4;
+		}*/
 
 		public virtual MultiComponentList Components { get { return MultiData.GetComponents(ItemID); } }
 

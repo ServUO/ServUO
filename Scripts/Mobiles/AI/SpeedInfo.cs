@@ -124,7 +124,8 @@ namespace Server
                 typeof(RuddyBoura), typeof(LowlandBoura), typeof(HighPlainsBoura),
                 typeof(Relanord), typeof(Ortanord), typeof(Korpre),
                 typeof(Anzuanord), typeof(Anlorzen), typeof(UndeadGuardian),
-                typeof(PutridUndeadGuardian), typeof(CorgulTheSoulBinder)
+                typeof(PutridUndeadGuardian), typeof(CorgulTheSoulBinder), typeof(GooeyMaggots),
+                typeof(Fezzik)
             }),
             /* Fast */
             new SpeedInfo(0.2, 0.4, new Type[]
@@ -145,7 +146,8 @@ namespace Server
                 typeof(CoralSnake), typeof(DarkWisp), typeof(DreamWraith),
                 typeof(FireAnt), typeof(KepetchAmbusher), typeof(LavaElemental),
                 typeof(MaddeningHorror), typeof(Wight), typeof(WolfSpider),
-                typeof(UndeadGargoyle), typeof(SlasherOfVeils),
+                typeof(UndeadGargoyle), typeof(SlasherOfVeils), typeof(SavagePackWolf),
+                typeof(DemonicJailor),
                 #region ML named mobs - before Paragon speedboost
                 typeof(LadyJennifyr), typeof(LadyMarai), typeof(MasterJonath),
                 typeof(MasterMikael), typeof(MasterTheophilus), typeof(RedDeath),

@@ -73,6 +73,17 @@ namespace Server.Mobiles
                 PackItem(new Yeast());
         }
 
+        public override void OnDeath(Container c)
+        {
+            if (Core.ML)
+            {
+                if (Utility.RandomDouble() < 0.05)
+                    c.DropItem(new StoutWhip());
+            }
+
+            base.OnDeath(c);
+        }
+
         public OrcCaptain(Serial serial)
             : base(serial)
         {
@@ -99,6 +110,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Orc; } }
+
         public override OppositionGroup OppositionGroup
         {
             get

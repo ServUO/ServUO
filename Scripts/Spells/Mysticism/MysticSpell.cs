@@ -1,11 +1,8 @@
 using System;
 using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Spells;
 using Server.Targeting;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
     public abstract class MysticSpell : Spell
     {
@@ -53,6 +50,11 @@ namespace Server.Spells.Mystic
                     return SkillName.Imbuing;
                 return SkillName.Focus;
             }
+        }
+
+        public override void SendCastEffect()
+        {
+            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 0x66C, 3);
         }
 
         public override int GetMana()

@@ -31,7 +31,7 @@ namespace Server.Spells.SkillMasteries
 		public override int RequiredMana{ get { return 50; } }
         public override int DamageThreshold { get { return 1; } }
         public override bool DamageCanDisrupt { get { return true; } }
-        public override int TickTime { get { return 3; } }
+        public override double TickTime { get { return 3; } }
 
         public override int UpkeepCancelMessage { get { return 1155874; } } // You do not have enough mana to keep your death ray active.
         public override int DisruptMessage { get { return 1155793; } } // This action disturbs the focus necessary to keep your death ray active and it dissipates.

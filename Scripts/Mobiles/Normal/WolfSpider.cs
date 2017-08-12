@@ -44,8 +44,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 59.1;
-
-            QLPoints = 5;
         }
 
         public WolfSpider(Serial serial)

@@ -32,17 +32,17 @@ namespace Server.Engines.Despise
             AddItem(item);
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount)
+        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
 		{
             if (from is DespiseCreature)
-                base.Damage(amount, from, informMount);
+                base.Damage(amount, from, informMount, checkDisrupt);
 		}
 		
 		public override void OnKilledBy( Mobile mob )
 		{
 			if(mob is PlayerMobile)
 			{
-                int chance = ArtifactChance + (int)Math.Min(10, mob.Luck / 180);
+                int chance = ArtifactChance + (int)Math.Min(10, ((PlayerMobile)mob).Luck / 180);
 
                 if (chance >= Utility.Random(100))
                 {
@@ -123,10 +123,6 @@ namespace Server.Engines.Despise
         {
             if (m_Wisp != null && m_Wisp.Alive)
                 m_Wisp.Kill();
-
-            /*int count = Utility.RandomMinMax(5, 8);
-            for (int i = 0; i < count; i++)
-                c.DropItem(AffixedItemSeller.GetRandomItemAnyType());*/
 
             base.OnDeath(c);
         }

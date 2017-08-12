@@ -12,7 +12,7 @@ namespace Server.Engines.Points
         public override PointsType Loyalty { get { return PointsType.Blackthorn; } }
         public override TextDefinition Name { get { return m_Name; } }
         public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return int.MaxValue; } }
+        public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
         private TextDefinition m_Name = null;
@@ -37,7 +37,7 @@ namespace Server.Engines.Points
                     DungeonPoints[damager] = 0;
 
                 int fame = victim.Fame / 2;
-                DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(damager.Luck) / 100));
+                DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(((PlayerMobile)damager).RealLuck) / 100));
 
                 int x = DungeonPoints[damager];
                 const double A = 0.000863316841;

@@ -61,7 +61,7 @@ namespace Server.Engines.Doom
 						{
 							Activate(m);
                             Active = true;
-							break;
+                            return;
 						}
 					}
 				}
@@ -92,6 +92,11 @@ namespace Server.Engines.Doom
 
                     if (m.Corpse != null)
                         m.Corpse.MoveToWorld(KickLoc, Map.Malas);
+
+                    if (this.GetEnumeratedMobiles().FirstOrDefault(mob => mob is PlayerMobile && mob.Alive) == null)
+                    {
+                        Reset();
+                    }
                 });
 			}
 		}
@@ -126,22 +131,29 @@ namespace Server.Engines.Doom
 				
 				guardian.Combatant = m;
 			}
-			
-			if(m_Timer == null)
-				m_Timer = new InternalTimer(this);
-				
+
+            if (m_Timer != null)
+            {
+                m_Timer.Stop();
+                m_Timer = null;
+            }
+
+		    m_Timer = new InternalTimer(this);
 			m_Timer.Start();
 		}
 
         private int MobileCount()
         {
-            return GetMobiles().Where(m => m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() != null)).Count();
+            return this.GetEnumeratedMobiles().Where(m => m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() != null)).Count();
         }
 
 		public void Reset()
 		{
-			if(m_Timer != null)
-				m_Timer.Stop();
+            if (m_Timer != null)
+            {
+                m_Timer.Stop();
+                m_Timer = null;
+            }
 			
 			DoorOne.Locked = false;
 			DoorTwo.Locked = false;
@@ -239,15 +251,22 @@ namespace Server.Engines.Doom
 					Point3D p = Region.RandomSpawnLocation(0, true, false, Point3D.Zero, 0);
 					Effects.SendLocationEffect( p, Map.Malas, Utility.RandomList(0x113C, 0x1147, 0x11A8) - 2, 16, 3, 0, 0 );
 				}
-				
-				List<Mobile> list = Region.GetMobiles();
 
-                foreach(Mobile m in list.Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player && m.Poison == null))
-				{
-				    m.ApplyPoison(m, Poison.Deadly); 
-					m.SendSound(0x231); 
-				}
-				
+                List<Mobile> list = Region.GetEnumeratedMobiles().Where(mob => mob is PlayerMobile && mob.Alive).ToList();
+
+                if (list.Count == 0)
+                {
+                    Region.Reset();
+                }
+                else
+                {
+                    foreach (var m in list.Where(m => m.AccessLevel == AccessLevel.Player && m.Poison == null))
+                    {
+                        m.ApplyPoison(m, Poison.Deadly);
+                        m.SendSound(0x231);
+                    }
+                }
+
 				list.Clear();
                 list.TrimExcess();
 			}

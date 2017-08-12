@@ -8,6 +8,7 @@ namespace Server.Engines.BulkOrders
         private int m_Quality;
         private int m_Material;
         private int m_Quantity;
+
         public BOBFilter()
         {
         }

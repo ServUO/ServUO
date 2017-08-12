@@ -12,6 +12,7 @@ namespace Server.Items
 		[Constructable]
 		public HarvestersBlade()
 		{
+            Hue = 1191;
 			Attributes.SpellChanneling = 1;
 		}
 	
@@ -22,13 +23,16 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
+			writer.Write((int)1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int v = reader.ReadInt();
+
+            if(v == 0)
+                Hue = 1191;
 		}
 	}
 	
@@ -58,6 +62,34 @@ namespace Server.Items
 			int v = reader.ReadInt();
 		}
 	}
+
+    public class GargishRangersGuildSash : GargishSash
+    {
+        public override int LabelNumber { get { return 1155744; } } // Member of the Skara Brae Ranger's Guild
+
+        [Constructable]
+        public GargishRangersGuildSash()
+        {
+            LootType = LootType.Blessed;
+        }
+
+        public GargishRangersGuildSash(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = reader.ReadInt();
+        }
+    }
 
     public class HuntmastersRewardTitleDeed : BaseRewardTitleDeed
     {

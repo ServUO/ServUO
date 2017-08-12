@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public FemaleGargishPlateChest()
-            : base(0x0309)
+            : base(0x4051)
         {
             this.Weight = 8.0;
         }

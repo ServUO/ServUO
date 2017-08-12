@@ -24,16 +24,14 @@ namespace Server.Engines.CleanUpBritannia
         {
         }
 
-        public override int GetPoints(Mobile m)
+        public override double GetPoints(Mobile m)
         {
-            return (int)PointsSystem.CleanUpBritannia.GetPoints(m);
+            return PointsSystem.CleanUpBritannia.GetPoints(m);
         }
 
-        public override void OnConfirmed(CollectionItem citem, int index)
+        public override void RemovePoints(double points)
         {
-            base.OnConfirmed(citem, index);
-
-            PointsSystem.CleanUpBritannia.DeductPoints(User, citem.Points);
+            PointsSystem.CleanUpBritannia.DeductPoints(User, points);
         }
     }
 }

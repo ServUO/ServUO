@@ -44,9 +44,6 @@ namespace Server.Mobiles
             this.Karma = 7000;
 
             this.VirtualArmor = 100;
-            this.QLPoints = 50;
-
-            this.PackItem(new EssenceFeeling());
 
             if (0.02 > Utility.RandomDouble())
                 this.PackStatue();				

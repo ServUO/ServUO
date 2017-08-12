@@ -4,6 +4,9 @@
 // **********
 #endregion
 
+using System;
+using Server.Engines.Craft;
+
 namespace Server.Items
 {
 	public class CocoaLiquor : Item
@@ -75,36 +78,124 @@ namespace Server.Items
 		}
 	}
 
-	public class CocoaButter : Item
-	{
-		public override int LabelNumber { get { return 1080005; } } // Cocoa butter
-		public override double DefaultWeight { get { return 1.0; } }
+    public class CocoaButter : Item, IQuality
+    {
+        private ItemQuality _Quality;
 
-		[Constructable]
-		public CocoaButter()
-			: base(0x1044)
-		{
-			Hue = 1111;
-		}
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-		public CocoaButter(Serial serial)
-			: base(serial)
-		{ }
+        public override int LabelNumber { get { return 1080005; } } // Cocoa butter
+        public override double DefaultWeight { get { return 1.0; } }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public bool PlayerConstructed { get { return true; } }
 
-			writer.Write(0); // version
-		}
+        [Constructable]
+        public CocoaButter()
+            : base(0x1044)
+        {
+            Hue = 1111;
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
 
-			reader.ReadInt();
-		}
-	}
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
+        }
+
+        public CocoaButter(Serial serial)
+            : base(serial)
+        { }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)1); // version
+
+            writer.Write((int)_Quality);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            if (version > 0)
+                _Quality = (ItemQuality)reader.ReadInt();
+        }
+    }
+
+    public class SweetCocoaButter : Item, IQuality
+    {
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
+        public override int LabelNumber { get { return 1156401; } } // Sweet Cocoa butter
+        public override double DefaultWeight { get { return 1.0; } }
+
+        public bool PlayerConstructed { get { return true; } }
+
+        [Constructable]
+        public SweetCocoaButter()
+            : base(0x103D)
+        {
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
+        }
+
+        public SweetCocoaButter(Serial serial)
+            : base(serial)
+        { }
+
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+
+            writer.Write((int)_Quality);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            _Quality = (ItemQuality)reader.ReadInt();
+        }
+    }
 
 	public class Vanilla : Item
 	{
@@ -182,69 +273,69 @@ namespace Server.Items
 		}
 	}
 
-	public class DarkChocolate : BaseSweet
-	{
-		public override int LabelNumber { get { return 1079994; } } // Dark chocolate
-		public override double DefaultWeight { get { return 1.0; } }
+    public class DarkChocolate : BaseSweet
+    {
+        public override int LabelNumber { get { return 1079994; } } // Dark chocolate
+        public override double DefaultWeight { get { return 1.0; } }
 
-		[Constructable]
-		public DarkChocolate()
-			: base(0xF10)
-		{
-			Hue = 1125;
-			LootType = LootType.Regular;
-		}
+        [Constructable]
+        public DarkChocolate()
+            : base(0xF10)
+        {
+            Hue = 1125;
+            LootType = LootType.Regular;
+        }
 
-		public DarkChocolate(Serial serial)
-			: base(serial)
-		{ }
+        public DarkChocolate(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write(0);
-		}
+            writer.Write((int)1); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			reader.ReadInt();
-		}
-	}
+            int version = reader.ReadInt();
+        }
+    }
 
-	public class MilkChocolate : BaseSweet
-	{
-		public override int LabelNumber { get { return 1079995; } } // Milk chocolate
-		public override double DefaultWeight { get { return 1.0; } }
+    public class MilkChocolate : BaseSweet
+    {
+        public override int LabelNumber { get { return 1079995; } } // Milk chocolate
+        public override double DefaultWeight { get { return 1.0; } }
 
-		[Constructable]
-		public MilkChocolate()
-			: base(0xF18)
-		{
-			Hue = 1121;
-			LootType = LootType.Regular;
-		}
+        [Constructable]
+        public MilkChocolate()
+            : base(0xF18)
+        {
+            Hue = 1121;
+            LootType = LootType.Regular;
+        }
 
-		public MilkChocolate(Serial serial)
-			: base(serial)
-		{ }
+        public MilkChocolate(Serial serial)
+            : base(serial)
+        { }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write(0);
-		}
+            writer.Write((int)1); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			reader.ReadInt();
-		}
-	}
+            int version = reader.ReadInt();
+        }
+    }
 
 	public class WhiteChocolate : BaseSweet
 	{
@@ -263,18 +354,18 @@ namespace Server.Items
 			: base(serial)
 		{ }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write(0);
-		}
+            writer.Write((int)1); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			reader.ReadInt();
-		}
+            int version = reader.ReadInt();
+        }
 	}
 }

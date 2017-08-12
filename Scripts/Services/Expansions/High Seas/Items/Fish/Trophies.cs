@@ -90,7 +90,7 @@ namespace Server.Items
 
                     if (addon != null)
                     {
-                        house.Addons.Add(addon);
+                        house.Addons[addon] = from;
                         addon.MoveToWorld(from.Location, from.Map);
                         Delete();
                     }

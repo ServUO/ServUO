@@ -32,7 +32,10 @@ namespace Server.Engines.Craft
         // arties
         PhantomStaff = 150,
         IronwoodCrown = 151,
-        BrambleCoat = 152
+        BrambleCoat = 152,
+
+        KotlBlackRod = 170,
+        KotlAutomaton = 171
     }
     #endregion
 
@@ -52,6 +55,14 @@ namespace Server.Engines.Craft
             {
                 return 1044004;
             }// <CENTER>CARPENTRY MENU</CENTER>
+        }
+
+        public override CraftECA ECA
+        {
+            get
+            {
+                return CraftECA.ChanceMinusSixtyToFourtyFive;
+            }
         }
 
         private static CraftSystem m_CraftSystem;
@@ -120,6 +131,14 @@ namespace Server.Engines.Craft
                 else
                     return 1044154; // You create the item.
             }
+        }
+
+        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
+        {
+            if (resourceType == typeof(StaffOfTheMagi))
+                return false;
+
+            return base.ConsumeOnFailure(from, resourceType, craftItem);
         }
 
         public override void InitCraftList()
@@ -248,13 +267,13 @@ namespace Server.Engines.Craft
             #endregion
 
             #region TOL
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044294, 1155850, 42.1, 77.7, typeof(Log), 1044041, 5, 1044351);
-            SetData(index, CraftableAddonType.LightWoodenSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155850, 42.1, 77.7, typeof(Log), 1044041, 5, 1044351);
+            SetData(index, CraftableItemType.LightWoodenSignHanger);
             SetDisplayID(index, 2969);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044294, 1155849, 42.1, 77.7, typeof(Log), 1044041, 5, 1044351);
-            SetData(index, CraftableAddonType.DarkWoodenSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155849, 42.1, 77.7, typeof(Log), 1044041, 5, 1044351);
+            SetData(index, CraftableItemType.DarkWoodenSignHanger);
             SetDisplayID(index, 2967);
             SetNeededExpansion(index, Expansion.TOL);
             #endregion
@@ -448,13 +467,6 @@ namespace Server.Engines.Craft
             this.AddCraft(typeof(QuarterStaff), 1044566, 1023721, 73.6, 98.6, typeof(Board), 1044041, 6, 1044351);
             this.AddCraft(typeof(GnarledStaff), 1044566, 1025112, 78.9, 103.9, typeof(Board), 1044041, 7, 1044351);
 
-            /*if (!Core.AOS)	//Duplicate Entries to preserve ordering depending on era
-            {
-                index = this.AddCraft(typeof(FishingPole), 1044566, 1023519, 68.4, 93.4, typeof(Board), 1044041, 5, 1044351); //This is in the categor of Other during AoS
-                this.AddSkill(index, SkillName.Tailoring, 40.0, 45.0);
-                this.AddRes(index, typeof(Cloth), 1044286, 5, 1044287);
-            }*/
-
             if (Core.SE)
             {
                 index = this.AddCraft(typeof(Bokuto), 1044566, 1030227, 70.0, 95.0, typeof(Board), 1044041, 6, 1044351);
@@ -463,7 +475,7 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(Fukiya), 1044566, 1030229, 60.0, 85.0, typeof(Board), 1044041, 6, 1044351);
                 this.SetNeededExpansion(index, Expansion.SE);
 
-                index = this.AddCraft(typeof(Tetsubo), 1044566, 1030225, 80.0, 140.3, typeof(Board), 1044041, 10, 1044351);
+                index = this.AddCraft(typeof(Tetsubo), 1044566, 1030225, 80.0, 105.0, typeof(Board), 1044041, 10, 1044351);
                 this.SetNeededExpansion(index, Expansion.SE);
             }
 
@@ -516,8 +528,14 @@ namespace Server.Engines.Craft
             }
             #endregion
 
-            this.AddCraft(typeof(Club), 1044566, 1025043, 65.0, 115.0, typeof(Board), 1044041, 9, 1044351);
-            this.AddCraft(typeof(BlackStaff), 1044566, 1023568, 81.5, 141.8, typeof(Board), 1044041, 9, 1044351);
+            this.AddCraft(typeof(Club), 1044566, 1025043, 65.0, 90.0, typeof(Board), 1044041, 9, 1044351);
+            this.AddCraft(typeof(BlackStaff), 1044566, 1023568, 81.5, 106.5, typeof(Board), 1044041, 9, 1044351);
+
+            index = AddCraft(typeof(KotlBlackRod), 1044566, 1156990, 100.0, 160.0, typeof(Board), 1044041, 20, 1044351);
+            this.AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);
+            this.AddRes(index, typeof(StaffOfTheMagi), 1061600, 1, 1044253);
+            this.AddRecipe(index, (int)CarpRecipes.KotlBlackRod);
+            this.SetNeededExpansion(index, Expansion.TOL);
 
             // Armor
             this.AddCraft(typeof(WoodenShield), 1062760, 1027034, 52.6, 77.6, typeof(Board), 1044041, 9, 1044351);

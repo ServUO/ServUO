@@ -49,11 +49,11 @@ namespace Server.Mobiles
             this.Fame = 3000;
             this.Karma = -3000;
 
-            this.AddImmovableItem(new MercutiosCutlass());
-            this.AddItem(new ChainChest());
-            this.AddItem(Loot.RandomShield());
-            this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
-            this.AddItem(new Boots(Utility.RandomNeutralHue()));
+            this.AddImmovableItem(new Cutlass());
+            this.AddImmovableItem(new ChainChest());
+            this.AddImmovableItem(Loot.RandomShield());
+            this.AddImmovableItem(new ShortPants(Utility.RandomNeutralHue()));
+            this.AddImmovableItem(new Boots(Utility.RandomNeutralHue()));
 
             Utility.AssignRandomHair(this);
 
@@ -72,7 +72,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            List<DamageStore> rights = GetLootingRights();           
+            List<DamageStore> rights = GetLootingRights();            
 
             foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct())
             {
@@ -82,8 +82,8 @@ namespace Server.Mobiles
 
                     if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                     {
-                        Item item = new MercutiosCutlass();
-
+						Item item = new MercutiosCutlass();
+						
                         if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
                         {
                             m.BankBox.DropItem(item);

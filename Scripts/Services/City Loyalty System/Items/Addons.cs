@@ -67,7 +67,7 @@ namespace Server.Items
                         else
                         {
                             BaseAddon addon = Deed.DeployAddon(east, p, map);
-                            house.Addons.Add(addon);
+                            house.Addons[addon] = from;
 
                             Deed.Delete();
                         }

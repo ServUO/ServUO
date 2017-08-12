@@ -7,7 +7,7 @@ using Server.Targeting;
 using System.Collections.Generic;
 using Server.Network;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class SleepSpell : MysticSpell
 	{
@@ -52,7 +52,7 @@ namespace Server.Spells.Mystic
                 double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 2;
                 duration -= target.Skills[SkillName.MagicResist].Value / 10;
 
-                if (duration <= 0 || Server.Spells.Mystic.StoneFormSpell.CheckImmunity(target))
+                if (duration <= 0 || StoneFormSpell.CheckImmunity(target))
                 {
                     Caster.SendLocalizedMessage(1080136); //Your target resists sleep.
                     target.SendLocalizedMessage(1080137); //You resist sleep.
@@ -105,17 +105,27 @@ namespace Server.Spells.Mystic
         public class SleepTimer : Timer
         {
             private Mobile m_Target;
+            private DateTime m_EndTime;
 
-            public  SleepTimer(Mobile target, TimeSpan duration) : base(duration)
+            public SleepTimer(Mobile target, TimeSpan duration)
+                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {
+                m_EndTime = DateTime.UtcNow + duration;
                 m_Target = target;
-                this.Start();
+                Start();
             }
 
             protected override void OnTick()
             {
-                EndSleep(m_Target);
-                this.Stop();
+                if (m_EndTime < DateTime.UtcNow)
+                {
+                    EndSleep(m_Target);
+                    Stop();
+                }
+                else
+                {
+                    m_Target.FixedParticles(0x376A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+                }
             }
         }
 

@@ -123,16 +123,9 @@ namespace Server.Spells.Chivalry
 			return false;
 		}
 
-		public override void OnBeginCast()
+		public override void SendCastEffect()
 		{
-			base.OnBeginCast();
-
-			SendCastEffect();
-		}
-
-		public virtual void SendCastEffect()
-		{
-			Caster.FixedEffect(0x37C4, 10, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
+			Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
 		}
 
 		public override void GetCastSkills(out double min, out double max)

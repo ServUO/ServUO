@@ -9,7 +9,7 @@ namespace Server.Engines.Quests.Haven
         private bool m_Active;
         [Constructable]
         public MilitiaCanoneer()
-            : base("the Militia Canoneer")
+            : base("the Militia Cannoneer")
         {
             this.m_Active = true;
         }

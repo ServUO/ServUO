@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,13 +31,13 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(Bag), 6, 20, 0xE76, 0));
-                this.Add(new GenericBuyInfo(typeof(Candle), 6, 10, 0xA28, 0));
-                this.Add(new GenericBuyInfo(typeof(Torch), 8, 10, 0xF6B, 0));
-                this.Add(new GenericBuyInfo(typeof(Lantern), 2, 10, 0xA25, 0));
+                Add(new GenericBuyInfo(typeof(Bag), 6, 20, 0xE76, 0));
+                Add(new GenericBuyInfo(typeof(Candle), 6, 10, 0xA28, 0));
+                Add(new GenericBuyInfo(typeof(Torch), 8, 10, 0xF6B, 0));
+                Add(new GenericBuyInfo(typeof(Lantern), 2, 10, 0xA25, 0));
                 //Add( new GenericBuyInfo( typeof( OilFlask ), 8, 10, 0x####, 0 ) );
-                this.Add(new GenericBuyInfo(typeof(Pickaxe), 25, 10, 0xE86, 0));
-                this.Add(new GenericBuyInfo(typeof(Shovel), 12, 10, 0xF39, 0));
+                Add(new GenericBuyInfo(typeof(Pickaxe), 25, 10, 0xE86, 0));
+                Add(new GenericBuyInfo(typeof(Shovel), 12, 10, 0xF39, 0));
             }
         }
 
@@ -45,13 +45,13 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(Pickaxe), 12);
-                this.Add(typeof(Shovel), 6);
-                this.Add(typeof(Lantern), 1);
+                Add(typeof(Pickaxe), 12);
+                Add(typeof(Shovel), 6);
+                Add(typeof(Lantern), 1);
                 //Add( typeof( OilFlask ), 4 );
-                this.Add(typeof(Torch), 3);
-                this.Add(typeof(Bag), 3);
-                this.Add(typeof(Candle), 3);
+                Add(typeof(Torch), 3);
+                Add(typeof(Bag), 3);
+                Add(typeof(Candle), 3);
             }
         }
     }

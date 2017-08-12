@@ -2,10 +2,12 @@ using Server;
 using System;
 using System.Collections.Generic;
 using Server.Mobiles;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class PrismaticLenses : Glasses
+    [Alterable(typeof(DefTinkering), typeof(GargishPrismaticLenses))]
+    public class PrismaticLenses : Glasses, ITokunoDyable
     {
         public override int LabelNumber { get { return 1152716; } } // Prismatic Lenses
         public override int InitMinHits { get { return 255; } }

@@ -4,42 +4,50 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("an dimetrosaur corpse")]
+    [CorpseName("a dimetrosaur corpse")]
     public class Dimetrosaur : BaseCreature
     {
-        public override bool AttacksFocus { get { return true; } }
+        public override bool AttacksFocus { get { return !Controlled; } }
 
         [Constructable]
         public Dimetrosaur()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, .2, .4)
-		{
-			Name = "a dimetrosaur";
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
+        {
+            Name = "a dimetrosaur";
             Body = 1285;
-			
+
             SetStr(526, 601);
-			
-			SetDex(166, 184);
-			SetInt(373, 435);
-			
-			SetDamage( 18, 21 );
-            SetHits(7304, 7622);
-			
-			SetResistance( ResistanceType.Physical, 80, 90 );
-			SetResistance( ResistanceType.Fire, 60, 70 );
-			SetResistance( ResistanceType.Cold, 60, 70 );
-			SetResistance( ResistanceType.Poison, 65, 75 );
-			SetResistance( ResistanceType.Energy, 65, 75 );
-			
-			SetDamageType( ResistanceType.Physical, 90 );
-			SetDamageType( ResistanceType.Poison, 10 );
-			
-			SetSkill( SkillName.MagicResist, 30.1, 43.5 );
-			SetSkill( SkillName.Tactics, 30.1, 49.0 );
-			SetSkill( SkillName.Wrestling, 40, 50 );
-			
-			Fame = 17000;
-			Karma = -17000;
-		}
+
+            SetDex(166, 184);
+            SetInt(373, 435);
+
+            SetDamage(18, 21);
+            SetHits(5300, 5400);
+
+            SetResistance(ResistanceType.Physical, 80, 90);
+            SetResistance(ResistanceType.Fire, 60, 70);
+            SetResistance(ResistanceType.Cold, 60, 70);
+            SetResistance(ResistanceType.Poison, 65, 75);
+            SetResistance(ResistanceType.Energy, 65, 75);
+
+            SetDamageType(ResistanceType.Physical, 90);
+            SetDamageType(ResistanceType.Poison, 10);
+
+            SetSkill(SkillName.MagicResist, 120.0, 140.0);
+            SetSkill(SkillName.Tactics, 100.0, 120.0);
+            SetSkill(SkillName.Wrestling, 115.0, 125.0);
+            SetSkill(SkillName.Anatomy, 70.0, 80.0);
+            SetSkill(SkillName.Poisoning, 85.0, 95.0);
+            SetSkill(SkillName.DetectHidden, 70.0, 80.0);
+            SetSkill(SkillName.Parry, 95.0, 105.0);
+
+            Fame = 17000;
+            Karma = -17000;
+
+            Tamable = true;
+            ControlSlots = 3;
+            MinTameSkill = 102.0;
+        }
 
         public override int GetIdleSound()
         {
@@ -74,28 +82,36 @@ namespace Server.Mobiles
 
         public override WeaponAbility GetWeaponAbility()
         {
-            if (Utility.RandomBool())
-                return WeaponAbility.MortalStrike;
-            return WeaponAbility.Dismount;
+            switch (Utility.Random(2))
+            {
+                default:
+                case 0: return WeaponAbility.MortalStrike;
+                case 1: return WeaponAbility.Dismount;
+            }
         }
 
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
         public override int Meat { get { return 1; } }
         public override int Hides { get { return 11; } }
         public override HideType HideType { get { return HideType.Spined; } }
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
 
-        public override bool CanAreaPoison { get { return true; } }
+        public override bool CanAreaPoison { get { return !Controlled; } }
         public override Poison HitAreaPoison { get { return Poison.Lethal; } }
         public override int AreaPoisonDamage { get { return 0; } }
         public override double AreaPosionChance { get { return 1.0; } }
         public override TimeSpan AreaPoisonDelay { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(20, 40)); } }
 
+        public override bool HasBreath { get { return true; } }
+        public override int BreathPoisonDamage { get { return 100; } }
+
         public override void GenerateLoot()
         {
-			if(IsChampionSpawn)
-                this.AddLoot(LootPack.FilthyRich, 2);
-			else
-                this.AddLoot(LootPack.UltraRich, 2);
+            if (IsChampionSpawn)
+                AddLoot(LootPack.FilthyRich, 2);
+            else
+                AddLoot(LootPack.UltraRich, 2);
         }
 
         public Dimetrosaur(Serial serial)

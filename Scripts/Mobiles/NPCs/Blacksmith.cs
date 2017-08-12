@@ -98,6 +98,8 @@ namespace Server.Mobiles
         }
 
         #region Bulk Orders
+        public override BODType BODType { get { return BODType.Smith; } }
+
         public override Item CreateBulkOrder(Mobile from, bool fromContextMenu)
         {
             PlayerMobile pm = from as PlayerMobile;

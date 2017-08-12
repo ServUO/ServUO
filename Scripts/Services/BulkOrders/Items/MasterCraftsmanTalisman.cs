@@ -6,21 +6,27 @@ namespace Server.Items
 	public class MasterCraftsmanTalisman : BaseTalisman
     {
         [Constructable]
-        public MasterCraftsmanTalisman(int charges)
-            : base(0x2F58)
-        { 
-            this.SuccessBonus = GetRandomSuccessful();
-            this.Blessed = GetRandomBlessed();	
+        public MasterCraftsmanTalisman(int charges, int itemID, SkillName skill)
+            : base(itemID)
+        {
+            Skill = skill;
+
+            SuccessBonus = GetRandomSuccessful();
+            ExceptionalBonus = BaseTalisman.GetRandomExceptional();
+            Blessed = GetRandomBlessed();	
+
 			Charges = charges;
 		}
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
-			 list.Add(1157213); // Crafting Failure Protection
-			 list.Add(1049116, Charges.ToString()); // [ Charges: ~1_CHARGES~ ]
-		}
+
+            list.Add(1157213); // Crafting Failure Protection
+
+            if (Charges > 0)
+                list.Add(1049116, Charges.ToString()); // [ Charges: ~1_CHARGES~ ]
+        }
 
         public MasterCraftsmanTalisman(Serial serial)
             : base(serial)

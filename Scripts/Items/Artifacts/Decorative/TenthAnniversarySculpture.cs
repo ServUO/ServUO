@@ -1,6 +1,7 @@
 using System;
 using Server.Mobiles;
 using System.Collections.Generic;
+using Server.Accounting;
 
 namespace Server.Items
 {
@@ -8,6 +9,7 @@ namespace Server.Items
 	public class TenthAnniversarySculpture : Item
 	{
         public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1079532; } } // 10th Anniversary Sculpture
 
         private static Dictionary<Mobile, DateTime> m_LuckTable = new Dictionary<Mobile, DateTime>();
         private Dictionary<Mobile, DateTime> m_RewardCooldown;
@@ -16,12 +18,12 @@ namespace Server.Items
 
         private static Timer m_Timer;
 
-        private static readonly int LuckBonus = 200;
+        private static readonly int MinLuckBonus = 200;
+        private static readonly int MaxLuckBonus = 1000;
 
         [Constructable]
 		public TenthAnniversarySculpture() : base( 15283 )
 		{
-			Name = "10th Anniversary Sculpture";
 			Weight = 1.0;
             m_RewardCooldown = new Dictionary<Mobile, DateTime>();
             AddSculpture(this);
@@ -29,9 +31,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!IsChildOf(from.Backpack))
+            if (!from.InRange(GetWorldLocation(), 2))
             {
-                from.SendLocalizedMessage(1042001);
+                from.SendLocalizedMessage(500446); // That is too far away.
                 return;
             }
 
@@ -42,6 +44,8 @@ namespace Server.Items
                 m_LuckTable[from] = DateTime.UtcNow + TimeSpan.FromMinutes(60);
                 from.SendLocalizedMessage(1079551); // Your luck just improved!
                 m_RewardCooldown[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
+
+                from.Delta(MobileDelta.Armor);
             }
         }
 
@@ -114,7 +118,14 @@ namespace Server.Items
         public static int GetLuckBonus(Mobile from)
         {
             if (m_LuckTable.ContainsKey(from))
-                return LuckBonus;
+            {
+                Account account = from.Account as Account;
+
+                if(account != null)
+                {
+                    return (int)Math.Max(MinLuckBonus, Math.Min(MaxLuckBonus, ((DateTime.UtcNow - account.Created).TotalDays / 365) * 50));
+                }
+            }
 
             return 0;
         }

@@ -1,8 +1,10 @@
 using System;
 using Server.Items;
+using Server.Spells.First;
 using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
 using Server.Targeting;
+using Server.Spells.Mysticism;
 
 namespace Server.Spells.Chivalry
 {
@@ -106,10 +108,6 @@ namespace Server.Spells.Chivalry
                     IEntity to = new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 50), this.Caster.Map);
                     Effects.SendMovingParticles(from, to, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                    m.RemoveStatMod("[Magic] Str Curse");
-					m.RemoveStatMod("[Magic] Dex Curse");
-					m.RemoveStatMod("[Magic] Int Curse");
-
                     m.Paralyzed = false;
 
                     EvilOmenSpell.TryEndEffect(m);
@@ -117,20 +115,19 @@ namespace Server.Spells.Chivalry
                     CorpseSkinSpell.RemoveCurse(m);
                     CurseSpell.RemoveEffect(m);
                     MortalStrike.EndWound(m);
+                    WeakenSpell.RemoveEffects(m);
+                    FeeblemindSpell.RemoveEffects(m);
+                    ClumsySpell.RemoveEffects(m);
+
                     if (Core.ML)
                     {
                         BloodOathSpell.RemoveCurse(m);
                     }
-                    MindRotSpell.ClearMindRotScalar(m);
 
-                    BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
-                    BuffInfo.RemoveBuff(m, BuffIcon.FeebleMind);
-                    BuffInfo.RemoveBuff(m, BuffIcon.Weaken);
-                    BuffInfo.RemoveBuff(m, BuffIcon.Curse);
+                    MindRotSpell.ClearMindRotScalar(m);
+                    SpellPlagueSpell.RemoveFromList(m);
+
                     BuffInfo.RemoveBuff(m, BuffIcon.MassCurse);
-                    BuffInfo.RemoveBuff(m, BuffIcon.MortalStrike);
-                    BuffInfo.RemoveBuff(m, BuffIcon.Mindrot);
-                    // TODO: Should this remove blood oath? Pain spike?
                 }
                 else
                 {

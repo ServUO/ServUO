@@ -13,7 +13,9 @@ namespace Server.Items
             Dupre,
             Nystul,
             Shamino,
-            Juonar
+            Juonar,
+            ProfessorRafkin,
+            Minax
         }
 
         public override int LabelNumber
@@ -31,7 +33,7 @@ namespace Server.Items
 
         [Constructable]
         public CardOfSemidar()
-            : this((CardType)Utility.Random(4))
+            : this((CardType)Utility.RandomMinMax(0, 3))
         {
         }
 
@@ -52,11 +54,17 @@ namespace Server.Items
                 from.SendGump(g);
             }
         }
-
+        
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-            list.Add(1156396 + (int)_Type);
+
+            if (_Type == CardType.ProfessorRafkin)
+                list.Add(1156562); // Professor Ellie Rafkin
+            else if (_Type == CardType.Minax)
+                list.Add(1156981); // Minax the Enchantress
+            else
+                list.Add(1156396 + (int)_Type);
         }
 
         public CardOfSemidar(Serial serial)

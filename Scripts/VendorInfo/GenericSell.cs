@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Items;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -16,33 +17,51 @@ namespace Server.Mobiles
         {
             get
             {
-                if (this.m_Types == null)
+                if (m_Types == null)
                 {
-                    this.m_Types = new Type[this.m_Table.Keys.Count];
-                    this.m_Table.Keys.CopyTo(this.m_Types, 0);
+                    m_Types = new Type[m_Table.Keys.Count];
+                    m_Table.Keys.CopyTo(m_Types, 0);
                 }
 
-                return this.m_Types;
+                return m_Types;
             }
         }
         public void Add(Type type, int price)
         {
-            this.m_Table[type] = price;
-            this.m_Types = null;
+            m_Table[type] = price;
+            m_Types = null;
         }
 
         public int GetSellPriceFor(Item item)
         {
+            return GetSellPriceFor(item, null);
+        }
+
+        public int GetSellPriceFor(Item item, BaseVendor vendor)
+        {
             int price = 0;
-            this.m_Table.TryGetValue(item.GetType(), out price);
+            m_Table.TryGetValue(item.GetType(), out price);
+
+            if (vendor != null && BaseVendor.UseVendorEconomy)
+            {
+                IBuyItemInfo buyInfo = vendor.GetBuyInfo().OfType<GenericBuyInfo>().FirstOrDefault(info => info.EconomyItem && info.Type == item.GetType());
+
+                if (buyInfo != null)
+                {
+                    int sold = buyInfo.TotalSold;
+                    price = (int)((double)buyInfo.Price * .75);
+
+                    return Math.Max(1, price);
+                }
+            }
 
             if (item is BaseArmor)
             {
                 BaseArmor armor = (BaseArmor)item;
 
-                if (armor.Quality == ArmorQuality.Low)
+                if (armor.Quality == ItemQuality.Low)
                     price = (int)(price * 0.60);
-                else if (armor.Quality == ArmorQuality.Exceptional)
+                else if (armor.Quality == ItemQuality.Exceptional)
                     price = (int)(price * 1.25);
 
                 price += 100 * (int)armor.Durability;
@@ -56,9 +75,9 @@ namespace Server.Mobiles
             {
                 BaseWeapon weapon = (BaseWeapon)item;
 
-                if (weapon.Quality == WeaponQuality.Low)
+                if (weapon.Quality == ItemQuality.Low)
                     price = (int)(price * 0.60);
-                else if (weapon.Quality == WeaponQuality.Exceptional)
+                else if (weapon.Quality == ItemQuality.Exceptional)
                     price = (int)(price * 1.25);
 
                 price += 100 * (int)weapon.DurabilityLevel;
@@ -101,7 +120,12 @@ namespace Server.Mobiles
 
         public int GetBuyPriceFor(Item item)
         {
-            return (int)(1.90 * this.GetSellPriceFor(item));
+            return GetBuyPriceFor(item, null);
+        }
+
+        public int GetBuyPriceFor(Item item, BaseVendor vendor)
+        {
+            return (int)(1.90 * GetSellPriceFor(item, vendor));
         }
 
         public string GetNameFor(Item item)
@@ -120,7 +144,7 @@ namespace Server.Mobiles
             //if ( item.Hue != 0 )
             //return false;
 
-            return this.IsInList(item.GetType());
+            return IsInList(item.GetType());
         }
 
         public bool IsResellable(Item item)
@@ -131,12 +155,12 @@ namespace Server.Mobiles
             //if ( item.Hue != 0 )
             //return false;
 
-            return this.IsInList(item.GetType());
+            return IsInList(item.GetType());
         }
 
         public bool IsInList(Type type)
         {
-            return this.m_Table.ContainsKey(type);
+            return m_Table.ContainsKey(type);
         }
     }
 }

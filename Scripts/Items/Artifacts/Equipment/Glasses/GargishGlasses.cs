@@ -1,10 +1,13 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
     [Flipable(0x4644, 0x4645)]     
-    public class GargishGlasses : BaseArmor
+    public class GargishGlasses : BaseArmor, IRepairable
 	{
+        public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
+
 		public override bool IsArtifact { get { return true; } }
 
         public override Race RequiredRace { get { return Race.Gargoyle; } }

@@ -11,11 +11,19 @@ namespace Server.Items
 {
     public class VendorSearchMap : MapItem
     {
+        [CommandProperty(AccessLevel.GameMaster)]
         public PlayerVendor Vendor { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public Item SearchItem { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public Point3D SetLocation { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public Map SetMap { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public DateTime DeleteTime { get; set; }
 
         public int TimeRemaining { get { return DeleteTime <= DateTime.UtcNow ? 0 : (int)(DeleteTime - DateTime.UtcNow).TotalMinutes; } }
@@ -93,6 +101,19 @@ namespace Server.Items
             }
 
             return "Unknown";
+        }
+
+        public void OnBeforeTravel(Mobile from)
+        {
+            if (SetLocation != Point3D.Zero)
+            {
+                Delete();
+            }
+            else
+            {
+                SetLocation = from.Location;
+                SetMap = from.Map;
+            }
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)

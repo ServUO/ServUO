@@ -11,6 +11,11 @@ using Server.Network;
 
 namespace Server
 {
+    public interface ICanBeElfOrHuman
+    {
+        bool ElfOnly { get; set; }
+    }
+
     public static class MondainsLegacy
     {
         private static readonly Type[] m_PigmentList = new Type[]
@@ -219,18 +224,23 @@ namespace Server
             LoadSettings();
         }
 
-        public static bool FindItem(int x, int y, int z, Map map, Item test)
+        public static bool FindItem(int x, int y, int z, Map map, int itemID)
         {
-            return FindItem(new Point3D(x, y, z), map, test);
+            return FindItem(new Point3D(x, y, z), map, itemID);
         }
 
-        public static bool FindItem(Point3D p, Map map, Item test)
+        public static bool FindItem(int x, int y, int z, Map map, Item test)
+        {
+            return FindItem(new Point3D(x, y, z), map, test.ItemID);
+        }
+
+        public static bool FindItem(Point3D p, Map map, int itemID)
         {
             IPooledEnumerable eable = map.GetItemsInRange(p);
 
             foreach (Item item in eable)
             {
-                if (item.Z == p.Z && item.ItemID == test.ItemID)
+                if (item.Z == p.Z && item.ItemID == itemID)
                 {
                     eable.Free();
                     return true;
@@ -275,6 +285,18 @@ namespace Server
             }
             catch
             {
+            }
+
+            if (!FindItem(new Point3D(1431, 1696, 0), Map.Trammel, 0x307F))
+            {
+                var addon = new ArcaneCircleAddon();
+                addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Trammel);
+            }
+
+            if (!FindItem(new Point3D(1431, 1696, 0), Map.Felucca, 0x307F))
+            {
+                var addon = new ArcaneCircleAddon();
+                addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Felucca);
             }
         }
 
@@ -344,7 +366,7 @@ namespace Server
 
         public static bool CheckArtifactChance(Mobile m, BaseCreature bc)
         {
-            if (!Core.ML)
+            if (!Core.ML || bc is BasePeerless) // Peerless drops to the corpse, this will handled elsewhere
                 return false;
 
             return Paragon.CheckArtifactChance(m, bc);
@@ -356,6 +378,7 @@ namespace Server
 
             if (item == null)
                 return;
+
 			m.PlaySound(0x5B4);
 
             if (m.AddToBackpack(item))
@@ -373,6 +396,16 @@ namespace Server
                 // Item was placed at feet by m.AddToBackpack
                 m.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
             }
+        }
+
+        public static void DropPeerlessMinor(Container peerlessCorpse)
+        {
+            Item item = Activator.CreateInstance(m_Artifacts[Utility.Random(m_Artifacts.Length)]) as Item;
+
+            if (item is ICanBeElfOrHuman)
+                ((ICanBeElfOrHuman)item).ElfOnly = false;
+
+            peerlessCorpse.DropItem(item);
         }
 
         public static bool CheckML(Mobile from)

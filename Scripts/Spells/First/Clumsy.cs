@@ -1,5 +1,6 @@
 using System;
 using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Spells.First
 {
@@ -14,6 +15,33 @@ namespace Server.Spells.First
         public ClumsySpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
+        }
+
+        public static Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
+
+        public static bool IsUnderEffects(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+
+        public static void RemoveEffects(Mobile m, bool removeMod = true)
+        {
+            if (m_Table.ContainsKey(m))
+            {
+                Timer t = m_Table[m];
+
+                if (t != null && t.Running)
+                {
+                    t.Stop();
+                }
+
+                BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
+
+                if (removeMod)
+                    m.RemoveStatMod("[Magic] Dex Curse");
+
+                m_Table.Remove(m);
+            }
         }
 
         public override SpellCircle Circle
@@ -40,10 +68,9 @@ namespace Server.Spells.First
 
                 SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
 
-				SpellHelper.AddStatCurse(this.Caster, m, StatType.Dex);
-				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
-				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Clumsy, 1075831, length, m, percentage.ToString()));
+                int oldOffset = SpellHelper.GetCurseOffset(m, StatType.Dex);
+				SpellHelper.AddStatCurse(this.Caster, m, StatType.Dex, false);
+                int newOffset = SpellHelper.GetCurseOffset(m, StatType.Dex);
 
 				if (m.Spell != null)
                     m.Spell.OnCasterHurt();
@@ -54,6 +81,21 @@ namespace Server.Spells.First
                 m.PlaySound(0x1DF);
 
                 this.HarmfulSpell(m);
+
+                if (newOffset < oldOffset)
+                {
+                    int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
+                    TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Clumsy, 1075831, length, m, percentage.ToString()));
+
+                    if (m_Table.ContainsKey(m))
+                        m_Table[m].Stop();
+
+                    m_Table[m] = Timer.DelayCall(length, () =>
+                        {
+                            RemoveEffects(m);
+                        });
+                }
             }
 
             this.FinishSequence();

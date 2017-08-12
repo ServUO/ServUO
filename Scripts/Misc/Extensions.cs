@@ -80,12 +80,63 @@ namespace Server.Items
             }
         }
 
+        public static void SendLocalizedMessage(this Item item, int number, string args)
+        {
+            if (item == null)
+                return;
+
+            IPooledEnumerable eable = item.Map.GetClientsInRange(item.Location, 12);
+
+            foreach (NetState ns in eable)
+            {
+                ns.Send(new MessageLocalized(item.Serial, item.ItemID, MessageType.Regular, 0x3B2, 3, number, "", args));
+            }
+            
+            eable.Free();
+        }
+
+        public static void SendLocalizedMessage(this Item item, MessageType type, int number, AffixType affixType, string affix, string args)
+        {
+            if (item == null)
+                return;
+
+            IPooledEnumerable eable = item.Map.GetClientsInRange(item.Location, 12);
+
+            foreach (NetState ns in eable)
+            {
+                ns.Send(new MessageLocalizedAffix(item.Serial, item.ItemID, type, 0x3B2, 3, number, "", affixType, affix, args));
+            }
+            
+            eable.Free();
+        }
+
         public static bool InLOS(this Item item, Point3D target)
         {
             if (item.Deleted || item.Map == null || item.Parent != null)
                 return false;
 
             return item.Map.LineOfSight(item, target);
+        }
+    }
+}
+
+namespace Server.Mobiles
+{
+    public static class MobileExtensions
+    {
+        public static void SayTo(this Mobile mobile, Mobile to, int number, int hue)
+        {
+            mobile.PrivateOverheadMessage(MessageType.Regular, hue, number, to.NetState);
+        }
+
+        public static void SayTo(this Mobile mobile, Mobile to, int number, string args, int hue)
+        {
+            mobile.PrivateOverheadMessage(MessageType.Regular, hue, number, args, to.NetState);
+        }
+
+        public static void SayTo(this Mobile mobile, Mobile to, string text, int hue, bool ascii = false)
+        {
+            mobile.PrivateOverheadMessage(MessageType.Regular, hue, ascii, text, to.NetState);
         }
     }
 }
@@ -115,6 +166,9 @@ namespace Server
 
         public static List<Item> GetItems(this Region region)
         {
+            if (region == null || region.Sectors == null)
+                return null;
+
             List<Item> list = new List<Item>();
 
             foreach(Sector s in region.Sectors)
@@ -130,6 +184,11 @@ namespace Server
 
         public static IEnumerable<Item> GetEnumeratedItems(this Region region)
         {
+            if (region == null)
+            {
+                yield break;
+            }
+
             List<Item> list = region.GetItems();
             IEnumerable<Item> e;
 
@@ -149,6 +208,11 @@ namespace Server
 
         public static int GetItemCount(this Region region)
         {
+            if (region == null || region.Sectors == null)
+            {
+                return 0;
+            }
+
             int count = 0;
 
             foreach(Sector s in region.Sectors)
@@ -161,6 +225,11 @@ namespace Server
 
         public static int GetItemCount(this Region region, Func<Item, bool> predicate)
         {
+            if (region == null || region.Sectors == null)
+            {
+                return 0;
+            }
+
             int count = 0;
 
             foreach(Sector s in region.Sectors)
@@ -173,6 +242,11 @@ namespace Server
 
         public static List<BaseMulti> GetMultis(this Region region)
         {
+            if (region == null || region.Sectors == null)
+            {
+                return null;
+            }
+
             List<BaseMulti> list = new List<BaseMulti>();
 
             foreach (Sector s in region.Sectors)
@@ -188,6 +262,11 @@ namespace Server
 
         public static IEnumerable<BaseMulti> GetEnumeratedMultis(this Region region)
         {
+            if (region == null)
+            {
+                yield break;
+            }
+
             List<BaseMulti> list = region.GetMultis();
             IEnumerable<BaseMulti> e;
 
@@ -207,6 +286,11 @@ namespace Server
 
         public static int GetMultiCount(this Region region)
         {
+            if (region == null)
+            {
+                return 0;
+            }
+
             int count = 0;
 
             foreach (Sector s in region.Sectors)
@@ -219,6 +303,11 @@ namespace Server
 
         public static IEnumerable<Mobile> GetEnumeratedMobiles(this Region region)
         {
+            if (region == null)
+            {
+                yield break;
+            }
+
             List<Mobile> list = region.GetMobiles();
             IEnumerable<Mobile> e;
 

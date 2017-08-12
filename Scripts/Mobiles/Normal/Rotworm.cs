@@ -43,8 +43,6 @@ namespace Server.Mobiles
 			Fame = 500;
 			Karma = -500;
 
-            QLPoints = 10;
-
 			switch ( Utility.Random( 10 ) )
 			{
 				case 0: PackItem( new LeftArm() ); break;

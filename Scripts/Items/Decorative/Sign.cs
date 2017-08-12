@@ -76,6 +76,12 @@ namespace Server.Items
     public class Sign : BaseSign
     {
         [Constructable]
+        public Sign()
+            : base(0xB95)
+        {
+        }
+
+        [Constructable]
         public Sign(SignType type, SignFacing facing)
             : base((0xB95 + (2 * (int)type)) + (int)facing)
         {

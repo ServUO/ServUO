@@ -57,7 +57,27 @@ namespace Server.Mobiles
 
         public override bool InitialInnocent { get { return true; } }
 
-		public BaseEodonTribesman(AIType ai, EodonTribe type) : base(ai, FightMode.Enemy, 10, 1, .2, .4)
+        /*public override bool PlayerRangeSensitive
+        {
+            get
+            {
+                if (this.Region != null && this.Region.IsPartOf<BattleRegion>())
+                {
+                    if (((BattleRegion)this.Region).Spawner != null)
+                       return !((BattleRegion)this.Region).Spawner.HasPlayers();
+                }
+
+                return base.PlayerRangeSensitive;
+            }
+        }*/
+
+        private void AddImmovableItem(Item item)
+        {
+            item.LootType = LootType.Blessed;
+            SetWearable(item);
+        }
+
+		public BaseEodonTribesman(AIType ai, EodonTribe type) : base(ai, FightMode.Closest, 10, 1, .2, .4)
 		{
 			TribeType = type;
 			
@@ -400,6 +420,9 @@ namespace Server.Mobiles
             }
 		}
 
+        public override bool AlwaysAttackable { get { return this.Region.IsPartOf<BattleRegion>(); } }
+        public override bool ShowFameTitle { get { return false; } }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich, 2);
@@ -615,8 +638,11 @@ namespace Server.Mobiles
                 SetWearable(weapon);
             }
 		}
-		
-		public TribeShaman(Serial serial) : base(serial)
+
+        public override bool AlwaysAttackable { get { return this.Region.IsPartOf<BattleRegion>(); } }
+        public override bool ShowFameTitle { get { return false; } }
+
+        public TribeShaman(Serial serial) : base(serial)
 		{
 		}
 		

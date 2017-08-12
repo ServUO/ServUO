@@ -1257,6 +1257,19 @@ namespace Server.Engines.Shadowguard
                 Drakes = null;
             }
 
+            if (Bells != null)
+            {
+                List<Item> list = new List<Item>(Bells.Where(b => b != null && !b.Deleted));
+
+                foreach (var bell in list)
+                    bell.Delete();
+
+                ColUtility.Free(list);
+                ColUtility.Free(Bells);
+
+                Bells = null;
+            }
+
 			if(Dragon != null && Dragon.Alive)
 				Dragon.Delete();
 				
@@ -1306,7 +1319,7 @@ namespace Server.Engines.Shadowguard
 		
 		private Type[] _Bosses = new Type[] { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
 
-        public override TimeSpan EncounterDuration { get { return TimeSpan.FromMinutes(120); } }
+        public override TimeSpan EncounterDuration { get { return TimeSpan.MaxValue; } }
         public override TimeSpan ResetDuration { get { return TimeSpan.FromMinutes(5); } }
 
         public override Type AddonType { get { return null; } }
@@ -1390,12 +1403,12 @@ namespace Server.Engines.Shadowguard
             {
                 foreach (PartyMemberInfo info in p.Members)
                 {
-                    if (info.Mobile is PlayerMobile && info.Mobile.Region.IsPartOf(typeof(ShadowguardRegion)))
-                        ((PlayerMobile)info.Mobile).AddCollectionTitle(1156318); // Destroyer of the Time Rift
+                    if (info.Mobile is PlayerMobile && info.Mobile.Region.IsPartOf<ShadowguardRegion>())
+                        ((PlayerMobile)info.Mobile).AddRewardTitle(1156318); // Destroyer of the Time Rift
                 }
             }
             else if (m is PlayerMobile)
-                ((PlayerMobile)m).AddCollectionTitle(1156318); // Destroyer of the Time Rift
+                ((PlayerMobile)m).AddRewardTitle(1156318); // Destroyer of the Time Rift
         }
 		
 		public override void ClearItems()

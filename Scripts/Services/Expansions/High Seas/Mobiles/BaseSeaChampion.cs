@@ -204,7 +204,7 @@ namespace Server.Mobiles
                         else if (this.Y > y)
                             toPush = Direction.North;
 
-                        boat.StartMove(toPush, 1, 0x2, BaseBoat.SlowDriftInterval, true, false);
+                        boat.StartMove(toPush, 1, 0x2, boat.SlowDriftInterval, true, false);
                         //TODO: Message and Sound?
                     }
                 }

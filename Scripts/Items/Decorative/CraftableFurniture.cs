@@ -11,7 +11,7 @@ namespace Server.Items
         Exceptional,
     }
 
-    public class CraftableFurniture : Item, ICraftable
+    public class CraftableFurniture : Item, IResource
     {
         public virtual bool ShowCrafterName
         {
@@ -71,7 +71,9 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
-	
+
+        public virtual bool PlayerConstructed { get { return true; } }
+
         public CraftableFurniture(int itemID)
             : base(itemID)
         {

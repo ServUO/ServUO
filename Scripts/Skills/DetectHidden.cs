@@ -4,6 +4,19 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
 using Server.Engines.VvV;
+using Server.Items;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Server.Items
+{
+    public interface IRevealableItem
+    {
+        bool CheckReveal(Mobile m);
+        bool CheckPassiveDetect(Mobile m);
+        void OnRevealed(Mobile m);
+    }
+}
 
 namespace Server.SkillHandlers
 {
@@ -81,40 +94,24 @@ namespace Server.SkillHandlers
 
                     inRange.Free();
 
-                    bool faction = Faction.Find(src) != null;
-                    bool vvv = ViceVsVirtueSystem.IsVvV(src);
+                    IPooledEnumerable itemsInRange = src.Map.GetItemsInRange(p, range);
 
-                    if (faction || vvv)
+                    foreach (Item item in itemsInRange)
                     {
-                        IPooledEnumerable itemsInRange = src.Map.GetItemsInRange(p, range);
+                        if (item.Visible)
+                            continue;
 
-                        foreach (Item item in itemsInRange)
+                        IRevealableItem dItem = item as IRevealableItem;
+
+                        if (dItem != null && dItem.CheckReveal(src))
                         {
-                            if (faction && item is BaseFactionTrap)
-                            {
-                                BaseFactionTrap trap = (BaseFactionTrap)item;
+                            dItem.OnRevealed(src);
 
-                                if (src.CheckTargetSkill(SkillName.DetectHidden, trap, 80.0, 100.0))
-                                {
-                                    src.SendLocalizedMessage(1042712, true, " " + (trap.Faction == null ? "" : trap.Faction.Definition.FriendlyName)); // You reveal a trap placed by a faction:
-
-                                    trap.Visible = true;
-                                    trap.BeginConceal();
-
-                                    foundAnyone = true;
-                                }
-                            }
-                            else if (vvv && (item is VvVSigil || item is VvVTrap) && Utility.Random(100) <= srcSkill)
-                            {
-                                if (item is VvVTrap && item.ItemID == VvVTrap.HiddenID)
-                                    ((VvVTrap)item).OnRevealed(src);
-                                else if (!item.Visible)
-                                    item.Visible = true;
-                            }
+                            foundAnyone = true;
                         }
-
-                        itemsInRange.Free();
                     }
+
+                    itemsInRange.Free();
                 }
 
                 if (!foundAnyone)
@@ -158,6 +155,18 @@ namespace Server.SkillHandlers
                         m.RevealingAction();
                         m.SendLocalizedMessage(500814); // You have been revealed!
                     }
+                }
+            }
+
+            eable.Free();
+
+            eable = src.Map.GetItemsInRange(src.Location, 8);
+
+            foreach (var item in eable)
+            {
+                if (item is IRevealableItem && ((IRevealableItem)item).CheckPassiveDetect(src))
+                {
+                    src.SendLocalizedMessage(1153493); // Your keen senses detect something hidden in the area...
                 }
             }
 

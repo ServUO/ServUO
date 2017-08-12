@@ -45,7 +45,7 @@ namespace Services.Toolbar.Core
 
 		public static void OnPlayerDeath(PlayerDeathEventArgs e)
 		{
-			if (e.Mobile.AccessLevel < AccessLevel.VIP)
+			if (e.Mobile.AccessLevel < AccessLevel.VIP || e.Mobile.NetState == null)
 			{
 				return;
 			}

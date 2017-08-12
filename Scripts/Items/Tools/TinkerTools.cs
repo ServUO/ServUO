@@ -1,5 +1,6 @@
 using System;
 using Server.Engines.Craft;
+using Server.ContextMenus;
 
 namespace Server.Items
 {
@@ -45,6 +46,41 @@ namespace Server.Items
 
             int version = reader.ReadInt();
         }
+
+        public override void GetContextMenuEntries(Mobile from, System.Collections.Generic.List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            if (Core.TOL)
+                list.Add(new ToggleRepairContextMenuEntry(from, this));
+        }
+
+        public class ToggleRepairContextMenuEntry : ContextMenuEntry
+        {
+            private Mobile _From;
+            private BaseTool _Tool;
+
+            public ToggleRepairContextMenuEntry(Mobile from, BaseTool tool)
+                : base(1157040) // Toggle Repair Mode
+            {
+                _From = from;
+                _Tool = tool;
+            }
+
+            public override void OnClick()
+            {
+                if (_Tool.RepairMode)
+                {
+                    _From.SendLocalizedMessage(1157042); // This tool is fully functional. 
+                    _Tool.RepairMode = false;
+                }
+                else
+                {
+                    _From.SendLocalizedMessage(1157041); // This tool will only repair items in this mode.
+                    _Tool.RepairMode = true;
+                }
+            }
+        }
     }
 
     public class TinkersTools : BaseTool
@@ -87,6 +123,41 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+        }
+
+        public override void GetContextMenuEntries(Mobile from, System.Collections.Generic.List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            if (Core.TOL)
+                list.Add(new ToggleRepairContextMenuEntry(from, this));
+        }
+
+        public class ToggleRepairContextMenuEntry : ContextMenuEntry
+        {
+            private Mobile _From;
+            private BaseTool _Tool;
+
+            public ToggleRepairContextMenuEntry(Mobile from, BaseTool tool)
+                : base(1157040) // Toggle Repair Mode
+            {
+                _From = from;
+                _Tool = tool;
+            }
+
+            public override void OnClick()
+            {
+                if (_Tool.RepairMode)
+                {
+                    _From.SendLocalizedMessage(1157042); // This tool is fully functional. 
+                    _Tool.RepairMode = false;
+                }
+                else
+                {
+                    _From.SendLocalizedMessage(1157041); // This tool will only repair items in this mode.
+                    _Tool.RepairMode = true;
+                }
+            }
         }
     }
 }

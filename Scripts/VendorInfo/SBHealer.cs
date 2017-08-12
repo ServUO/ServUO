@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,11 +31,11 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(Bandage), 5, 20, 0xE21, 0));
-                this.Add(new GenericBuyInfo(typeof(LesserHealPotion), 15, 20, 0xF0C, 0));
-                this.Add(new GenericBuyInfo(typeof(Ginseng), 3, 20, 0xF85, 0));
-                this.Add(new GenericBuyInfo(typeof(Garlic), 3, 20, 0xF84, 0));
-                this.Add(new GenericBuyInfo(typeof(RefreshPotion), 15, 20, 0xF0B, 0));
+                Add(new GenericBuyInfo(typeof(Bandage), 5, 20, 0xE21, 0, true));
+                Add(new GenericBuyInfo(typeof(LesserHealPotion), 15, 20, 0xF0C, 0, true));
+                Add(new GenericBuyInfo(typeof(Ginseng), 3, 20, 0xF85, 0));
+                Add(new GenericBuyInfo(typeof(Garlic), 3, 20, 0xF84, 0));
+                Add(new GenericBuyInfo(typeof(RefreshPotion), 15, 20, 0xF0B, 0, true));
             }
         }
 
@@ -43,11 +43,11 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(Bandage), 1);
-                this.Add(typeof(LesserHealPotion), 7);
-                this.Add(typeof(RefreshPotion), 7);
-                this.Add(typeof(Garlic), 2);
-                this.Add(typeof(Ginseng), 2);
+                Add(typeof(Bandage), 1);
+                Add(typeof(LesserHealPotion), 7);
+                Add(typeof(RefreshPotion), 7);
+                Add(typeof(Garlic), 2);
+                Add(typeof(Ginseng), 2);
             }
         }
     }

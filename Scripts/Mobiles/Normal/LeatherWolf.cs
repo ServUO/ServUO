@@ -6,8 +6,10 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a wolf corpse")]
-    public class LeatherWolf : BaseCreature
+    public class LeatherWolf : BaseCreature, IRepairableMobile
     {
+        public Type RepairResource { get { return typeof(IronIngot); } }
+
         private const int MaxFellows = 3;
 
         private List<Mobile> m_Fellows = new List<Mobile>();
@@ -45,8 +47,6 @@ namespace Server.Mobiles
             this.Karma = -4500;
 
             this.Tamable = false;
-
-            this.QLPoints = 30;
         }
 
         public LeatherWolf(Serial serial)

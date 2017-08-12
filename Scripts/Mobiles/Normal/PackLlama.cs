@@ -12,42 +12,42 @@ namespace Server.Mobiles
         public PackLlama()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a pack llama";
-            this.Body = 292;
-            this.BaseSoundID = 0x3F3;
+            Name = "a pack llama";
+            Body = 292;
+            BaseSoundID = 0x3F3;
 
-            this.SetStr(52, 80);
-            this.SetDex(36, 55);
-            this.SetInt(16, 30);
+            SetStr(52, 80);
+            SetDex(36, 55);
+            SetInt(16, 30);
 
-            this.SetHits(50);
-            this.SetStam(86, 105);
-            this.SetMana(0);
+            SetHits(50);
+            SetStam(86, 105);
+            SetMana(0);
 
-            this.SetDamage(2, 6);
+            SetDamage(2, 6);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 35);
-            this.SetResistance(ResistanceType.Fire, 10, 15);
-            this.SetResistance(ResistanceType.Cold, 10, 15);
-            this.SetResistance(ResistanceType.Poison, 10, 15);
-            this.SetResistance(ResistanceType.Energy, 10, 15);
+            SetResistance(ResistanceType.Physical, 25, 35);
+            SetResistance(ResistanceType.Fire, 10, 15);
+            SetResistance(ResistanceType.Cold, 10, 15);
+            SetResistance(ResistanceType.Poison, 10, 15);
+            SetResistance(ResistanceType.Energy, 10, 15);
 
-            this.SetSkill(SkillName.MagicResist, 15.1, 20.0);
-            this.SetSkill(SkillName.Tactics, 19.2, 29.0);
-            this.SetSkill(SkillName.Wrestling, 19.2, 29.0);
+            SetSkill(SkillName.MagicResist, 15.1, 20.0);
+            SetSkill(SkillName.Tactics, 19.2, 29.0);
+            SetSkill(SkillName.Wrestling, 19.2, 29.0);
 
-            this.Fame = 0;
-            this.Karma = 200;
+            Fame = 0;
+            Karma = 200;
 
-            this.VirtualArmor = 16;
+            VirtualArmor = 16;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 11.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 29.1;
 
-            Container pack = this.Backpack;
+            Container pack = Backpack;
 
             if (pack != null)
                 pack.Delete();
@@ -55,7 +55,7 @@ namespace Server.Mobiles
             pack = new StrongBackpack();
             pack.Movable = false;
 
-            this.AddItem(pack);
+            AddItem(pack);
         }
 
         public override int Meat
@@ -104,12 +104,12 @@ namespace Server.Mobiles
 
         public override bool OnDragDrop(Mobile from, Item item)
         {
-            if (this.CheckFeed(from, item))
+            if (CheckFeed(from, item))
                 return true;
 
             if (PackAnimal.CheckAccess(this, from))
             {
-                this.AddToBackpack(item);
+                AddToBackpack(item);
                 return true;
             }
 

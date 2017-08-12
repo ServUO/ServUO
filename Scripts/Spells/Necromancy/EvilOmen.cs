@@ -48,6 +48,11 @@ namespace Server.Spells.Necromancy
         *
         * -refactored.
         */
+        public static bool UnderEffects(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+
         public static bool TryEndEffect(Mobile m)
         {
             SkillMod mod = (SkillMod)m_Table[m];
@@ -63,24 +68,24 @@ namespace Server.Spells.Necromancy
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
             if (!(m is BaseCreature || m is PlayerMobile))
             {
-                this.Caster.SendLocalizedMessage(1060508); // You can't curse that.
+                Caster.SendLocalizedMessage(1060508); // You can't curse that.
             }
-            else if (this.CheckHSequence(m))
+            else if (CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
                 ApplyEffects(m);
                 ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public void ApplyEffects(Mobile m, double strength = 1.0)
@@ -114,7 +119,7 @@ namespace Server.Spells.Necromancy
 
             Timer.DelayCall(duration, new TimerStateCallback(EffectExpire_Callback), m);
 
-            this.HarmfulSpell(m);
+            HarmfulSpell(m);
 
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.EvilOmen, 1075647, 1075648, duration, m));
         }
@@ -130,20 +135,20 @@ namespace Server.Spells.Necromancy
             public InternalTarget(EvilOmenSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
                 else
                     from.SendLocalizedMessage(1060508); // You can't curse that.
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

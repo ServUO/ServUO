@@ -2281,7 +2281,7 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((short)item.Y);
             m_Stream.Write((byte)item.GridLocation);
             m_Stream.Write(parentSerial);
-			m_Stream.Write((ushort)(item.QuestItem ? Item.QuestItemHue : item.Hue));
+			m_Stream.Write((ushort)(item.QuestItem ? item.QuestItemHue : item.Hue));
 		}
 	}
 
@@ -2310,7 +2310,7 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((short)item.Y);
             m_Stream.Write((byte)item.GridLocation);
             m_Stream.Write(parentSerial);
-			m_Stream.Write((ushort)(item.QuestItem ? Item.QuestItemHue : item.Hue));
+			m_Stream.Write((ushort)(item.QuestItem ? item.QuestItemHue : item.Hue));
 		}
 	}
 
@@ -2351,7 +2351,7 @@ m_Stream.Write( (int) renderMode );
 					m_Stream.Write((short)loc.m_Y);
                     m_Stream.Write((byte)child.GridLocation);
                     m_Stream.Write(beheld.Serial);
-					m_Stream.Write((ushort)(child.QuestItem ? Item.QuestItemHue : child.Hue));
+					m_Stream.Write((ushort)(child.QuestItem ? child.QuestItemHue : child.Hue));
 
 					++written;
 				}
@@ -2399,7 +2399,7 @@ m_Stream.Write( (int) renderMode );
 					m_Stream.Write((short)loc.m_Y);
                     m_Stream.Write((byte)child.GridLocation);
                     m_Stream.Write(beheld.Serial);
-					m_Stream.Write((ushort)(child.QuestItem ? Item.QuestItemHue : child.Hue));
+					m_Stream.Write((ushort)(child.QuestItem ? child.QuestItemHue : child.Hue));
 
 					++written;
 				}
@@ -3661,7 +3661,7 @@ m_Stream.Write( (int) renderMode );
             else if (isEnhancedClient)
             {
                 type = 7;
-                EnsureCapacity(149);
+                EnsureCapacity(126);
             }
             else if (Core.HS && ns != null && ns.ExtendedStatus)
             {
@@ -3747,36 +3747,10 @@ m_Stream.Write( (int) renderMode );
 
                 if (type >= 6)
                 {
-                    for (int i = 0; i < 15; ++i)
+                    int count = isEnhancedClient ? 20 : 15;
+                    for (int i = 0; i < count; ++i)
                     {
                         m_Stream.Write((short)beheld.GetAOSStatus(i));
-                    }
-
-                    if (isEnhancedClient)
-                    {
-                        m_Stream.Write((short)beheld.AttackChance); // Hit Chance Increase
-                        m_Stream.Write((short)beheld.WeaponSpeed); // Swing Speed Increase
-                        m_Stream.Write((short)beheld.WeaponDamage); // Damage Increase
-                        m_Stream.Write((short)beheld.LowerRegCost); // Lower Reagent Cost
-                        m_Stream.Write((short)beheld.RegenHits); // Hit Points Regeneration
-                        m_Stream.Write((short)beheld.RegenStam); // Stamina Regeneration
-                        m_Stream.Write((short)beheld.RegenMana); // Mana Regeneration
-                        m_Stream.Write((short)beheld.ReflectPhysical); // Reflect Physical Damage
-                        m_Stream.Write((short)beheld.EnhancePotions); // Enhance Potions
-                        m_Stream.Write((short)beheld.DefendChance); // Defense Chance Increase
-                        m_Stream.Write((short)beheld.SpellDamage); // Spell Damage Increase
-                        m_Stream.Write((short)beheld.CastRecovery); // Faster Cast Recovery
-                        m_Stream.Write((short)beheld.CastSpeed); // Faster Casting
-                        m_Stream.Write((short)beheld.LowerManaCost); // Lower Mana Cost
-                        m_Stream.Write((short)beheld.BonusStr); // Strength Increase
-                        m_Stream.Write((short)beheld.BonusDex); // Dexterity Increase
-                        m_Stream.Write((short)beheld.BonusInt); // Intelligence Increase
-                        m_Stream.Write((short)beheld.BonusHits); // Hit Points Increase
-                        m_Stream.Write((short)beheld.BonusStam); // Stamina Increase
-                        m_Stream.Write((short)beheld.BonusMana); // Mana Increase
-                        m_Stream.Write((short)beheld.MaxHitIncrease); // Maximum Hit Points Increase
-                        m_Stream.Write((short)beheld.MaxStamIncrease); // Maximum Stamina Increase
-                        m_Stream.Write((short)beheld.MaxManaIncrease); // Maximum Mana Increase
                     }
                 }
             }

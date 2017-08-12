@@ -3,8 +3,10 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a clockwork scorpion corpse")]
-    public class ClockworkScorpion : BaseCreature
+    public class ClockworkScorpion : BaseCreature, IRepairableMobile
     {
+        public Type RepairResource { get { return typeof(Server.Items.IronIngot); } }
+
         [Constructable]
         public ClockworkScorpion()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.8)
@@ -146,32 +148,7 @@ namespace Server.Mobiles
 
             return base.GetHurtSound();
         }
-
-        /*
-        public override void OnGaveMeleeAttack( Mobile defender )
-        {
-        base.OnGaveMeleeAttack( defender );
-
-        if ( !m_Stunning && 0.3 > Utility.RandomDouble() )
-        {
-        m_Stunning = true;
-
-        defender.Animate( 21, 6, 1, true, false, 0 );
-        this.PlaySound( 0xEE );
-        defender.LocalOverheadMessage( MessageType.Regular, 0x3B2, false, "You have been stunned by a colossal blow!" );
-
-        BaseWeapon weapon = this.Weapon as BaseWeapon;
-        if ( weapon != null )
-        weapon.OnHit( this, defender );
-
-        if ( defender.Alive )
-        {
-        defender.Frozen = true;
-        Timer.DelayCall( TimeSpan.FromSeconds( 5.0 ), new TimerStateCallback( Recover_Callback ), defender );
-        }
-        }
-        }
-        */
+  
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             Mobile master = this.GetMaster();

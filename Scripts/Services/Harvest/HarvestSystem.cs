@@ -166,17 +166,16 @@ namespace Server.Engines.Harvest
                     }
                     else
                     {
+                        int amount = def.ConsumedPerHarvest;
+                        int feluccaAmount = def.ConsumedPerFeluccaHarvest;
                         //The whole harvest system is kludgy and I'm sure this is just adding to it.
                         if (item.Stackable)
                         {
-                            int amount = def.ConsumedPerHarvest;
-                            int feluccaAmount = def.ConsumedPerFeluccaHarvest;
-
                             int racialAmount = (int)Math.Ceiling(amount * 1.1);
                             int feluccaRacialAmount = (int)Math.Ceiling(feluccaAmount * 1.1);
 
                             bool eligableForRacialBonus = (def.RaceBonus && from.Race == Race.Human);
-                            bool inFelucca = (map == Map.Felucca);
+                            bool inFelucca = map == Map.Felucca && !Siege.SiegeShard;
 
                             if (eligableForRacialBonus && inFelucca && bank.Current >= feluccaRacialAmount && 0.1 > Utility.RandomDouble())
                                 item.Amount = feluccaRacialAmount;
@@ -191,13 +190,11 @@ namespace Server.Engines.Harvest
                             item.Amount += WoodsmansTalisman.CheckHarvest(from, type, this);
                         }
 
-                        bank.Consume(item.Amount, from);
+                        bank.Consume(amount, from);
 						EventSink.InvokeResourceHarvestSuccess(new ResourceHarvestSuccessEventArgs(from, tool,item, this));
-
 
                         if (this.Give(from, item, def.PlaceAtFeetIfFull))
                         {
-							
                             this.SendSuccessTo(from, item, resource);
                         }
                         else
@@ -224,27 +221,28 @@ namespace Server.Engines.Harvest
 								}
 							}
                         }
-
-                        if (tool is IUsesRemaining)
-                        {
-                            IUsesRemaining toolWithUses = (IUsesRemaining)tool;
-
-                            toolWithUses.ShowUsesRemaining = true;
-
-                            if (toolWithUses.UsesRemaining > 0)
-                                --toolWithUses.UsesRemaining;
-
-                            if (toolWithUses.UsesRemaining < 1)
-                            {
-                                tool.Delete();
-                                def.SendMessageTo(from, def.ToolBrokeMessage);
-                            }
-                        }
                     }
 
                     #region High Seas
                     OnToolUsed(from, tool, item != null);
                     #endregion
+                }
+
+                // Siege rules will take into account axes and polearms used for lumberjacking
+                if (tool is IUsesRemaining && (tool is BaseHarvestTool || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))
+                {
+                    IUsesRemaining toolWithUses = (IUsesRemaining)tool;
+
+                    toolWithUses.ShowUsesRemaining = true;
+
+                    if (toolWithUses.UsesRemaining > 0)
+                        --toolWithUses.UsesRemaining;
+
+                    if (toolWithUses.UsesRemaining < 1)
+                    {
+                        tool.Delete();
+                        def.SendMessageTo(from, def.ToolBrokeMessage);
+                    }
                 }
             }
 

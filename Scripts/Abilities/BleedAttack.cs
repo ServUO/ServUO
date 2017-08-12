@@ -146,29 +146,37 @@ namespace Server.Items
             private readonly Mobile m_Mobile;
             private int m_Count;
             private int m_MaxCount;
-			private readonly bool m_blooddrinker;
+			private readonly bool m_BloodDrinker;
+
             public InternalTimer(Mobile from, Mobile m, bool blooddrinker)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
             {
                 m_From = from;
                 m_Mobile = m;
                 Priority = TimerPriority.TwoFiftyMS;
-				m_blooddrinker = blooddrinker;
+				m_BloodDrinker = blooddrinker;
 
                 m_MaxCount = Spells.SkillMasteries.BardSpell.GetSpellForParty(m, typeof(Spells.SkillMasteries.ResilienceSpell)) != null ? 3 : 5;
 			}
 
             protected override void OnTick()
             {
-                int damage;
-
-                if (!Server.Spells.SkillMasteries.WhiteTigerFormSpell.HasBleedMod(m_From, out damage))
-                    damage = 5 - m_Count;
-
-                DoBleed(m_Mobile, m_From, damage, m_blooddrinker);
-
-                if (++m_Count == m_MaxCount)
+                if (!m_Mobile.Alive || m_Mobile.Deleted)
+                {
                     EndBleed(m_Mobile, true);
+                }
+                else
+                {
+                    int damage;
+
+                    if (!Server.Spells.SkillMasteries.WhiteTigerFormSpell.HasBleedMod(m_From, out damage))
+                        damage = 5 - m_Count;
+
+                    DoBleed(m_Mobile, m_From, damage, m_BloodDrinker);
+
+                    if (++m_Count == m_MaxCount)
+                        EndBleed(m_Mobile, true);
+                }
             }
         }
     }

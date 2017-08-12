@@ -231,7 +231,7 @@ namespace Server.Items
 
                         trophy.MoveToWorld(from.Location, from.Map);
 
-                        house.Addons.Add(trophy);
+                        house.Addons[trophy] = from;
                         Delete();
                     }
                 }

@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,8 +31,8 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(BlankScroll), 5, 20, 0x0E34, 0));
-                this.Add(new GenericBuyInfo(typeof(ScribesPen), 8, 20, 0xFBF, 0));
+                Add(new GenericBuyInfo(typeof(BlankScroll), 5, 20, 0x0E34, 0));
+                Add(new GenericBuyInfo(typeof(ScribesPen), 8, 20, 0xFBF, 0));
             }
         }
 
@@ -40,8 +40,8 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(ScribesPen), 4);
-                this.Add(typeof(BlankScroll), 2);
+                Add(typeof(ScribesPen), 4);
+                Add(typeof(BlankScroll), 2);
             }
         }
     }

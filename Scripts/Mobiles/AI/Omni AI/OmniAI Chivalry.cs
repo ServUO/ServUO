@@ -79,7 +79,7 @@ namespace Server.Mobiles
 
             BaseWeapon weapon = this.m_Mobile.Weapon as BaseWeapon;
 
-            if (weapon != null && !weapon.Consecrated)
+            if (weapon != null && weapon.ConsecratedContext != null)
                 return true;
             else
                 return false;

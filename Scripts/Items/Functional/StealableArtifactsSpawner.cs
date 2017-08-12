@@ -5,9 +5,9 @@ using Server.Commands;
 namespace Server.Items
 {
     public class StealableArtifactsSpawner : Item
-    {
+    { 
         private static readonly StealableEntry[] m_Entries = new StealableEntry[]
-        {
+        {            
             // Doom - Artifact rarity 1
             new StealableEntry(Map.Malas, new Point3D(317, 56, -1), 72, 108, typeof(RockArtifact)),
             new StealableEntry(Map.Malas, new Point3D(360, 31, 8), 72, 108, typeof(SkullCandleArtifact)),
@@ -34,9 +34,18 @@ namespace Server.Items
             new StealableEntry(Map.Malas, new Point3D(423, 28, 0), 4608, 6912, typeof(CocoonArtifact)),
             // Doom - Artifact rarity 8
             new StealableEntry(Map.Malas, new Point3D(354, 36, -1), 9216, 13824, typeof(SkinnedDeerArtifact)),
+            #region New Doom Artifacts
+			new StealableEntry(Map.Malas, new Point3D(274, 231, 0), 9216, 13824, typeof(HangingPlatemailTunic)),
+            new StealableEntry(Map.Malas, new Point3D(445, 119, -1), 9216, 13824, typeof(HangingPlatemailLeggings)),
+            new StealableEntry(Map.Malas, new Point3D(421, 197, -1), 9216, 13824, typeof(HangingPlatemailArms)),
+			#endregion
             // Doom - Artifact rarity 9
             new StealableEntry(Map.Malas, new Point3D(433, 11, -1), 18432, 27648, typeof(SaddleArtifact)),
             new StealableEntry(Map.Malas, new Point3D(403, 31, 4), 18432, 27648, typeof(LeatherTunicArtifact)),
+            #region New Doom Artifacts
+			new StealableEntry(Map.Malas, new Point3D(378, 371, -1), 18432, 27648, typeof(ArtifactBookshelf)),
+            new StealableEntry(Map.Malas, new Point3D(487, 364, -1), 18432, 27648, typeof(ArcaneTable)),
+			#endregion
             // Doom - Artifact rarity 10
             new StealableEntry(Map.Malas, new Point3D(257, 70, -2), 36864, 55296, typeof(ZyronicClaw)),
             new StealableEntry(Map.Malas, new Point3D(354, 176, 7), 36864, 55296, typeof(TitansHammer)),
@@ -44,6 +53,9 @@ namespace Server.Items
             new StealableEntry(Map.Malas, new Point3D(467, 92, 4), 36864, 55296, typeof(InquisitorsResolution)),
             // Doom - Artifact rarity 12
             new StealableEntry(Map.Malas, new Point3D(487, 364, -1), 147456, 221184, typeof(RuinedPaintingArtifact)),
+            #region New Doom Artifacts
+			new StealableEntry(Map.Malas, new Point3D(365, 7, -1), 147456, 221184, typeof(IncenseBurner)),
+			#endregion
 
             // Yomotsu Mines - Artifact rarity 1
             new StealableEntry(Map.Malas, new Point3D(18, 110, -1), 72, 108, typeof(Basket1Artifact)),
@@ -180,7 +192,23 @@ namespace Server.Items
             new StealableEntry(Map.TerMur, new Point3D(688, 2125, 45), 36864, 55296, typeof(SacredLavaRock)),
             new StealableEntry(Map.TerMur, new Point3D(393, 1838, 0), 36864, 55296, typeof(WhiteTigerFigurine)),
             new StealableEntry(Map.TerMur, new Point3D(421, 1571, 40), 36864, 55296, typeof(DragonTurtleHatchlingNet)),
+
+            // Wrong - Artifact rarity 8
+            new StealableEntry(Map.Trammel, new Point3D(5790, 579, 10), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Felucca, new Point3D(5790, 579, 10), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Trammel, new Point3D(5865, 559, 15), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Felucca, new Point3D(5865, 559, 15), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Trammel, new Point3D(5832, 576, 10), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Felucca, new Point3D(5832, 576, 10), 18432, 27648, typeof(BlanketOfDarkness)),
+
+			// Wrong - Arfifact rarity 10
+            new StealableEntry(Map.Trammel, new Point3D(5703, 521, 0), 36864, 55296, typeof(TortureRackSouth)),
+            new StealableEntry(Map.Felucca, new Point3D(5703, 521, 0), 36864, 55296, typeof(TortureRackSouth)),
+            new StealableEntry(Map.Trammel, new Point3D(5680, 537, 0), 46864, 55296, typeof(TortureRackEast)),
+            new StealableEntry(Map.Felucca, new Point3D(5680, 537, 0), 46864, 55296, typeof(TortureRackEast)),
+
         };
+
         private static Type[] m_TypesOfEntries = null;
         private static StealableArtifactsSpawner m_Instance;
         private Timer m_RespawnTimer;

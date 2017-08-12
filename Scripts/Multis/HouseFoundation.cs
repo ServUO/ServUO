@@ -507,6 +507,18 @@ namespace Server.Multis
                     {
                         door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x5142), itemID, 0xF0, 0xEF, false);
                     }
+                    else if (itemID >= 0x9AD7 && itemID <= 0x9AE6)
+                    {
+                        int type = (itemID - 0x9AD7) / 16;
+                        DoorFacing facing = (DoorFacing)(((itemID - 0x9AD7) / 2) % 8);
+                        door = new GenericHouseDoor(facing, 0x9AD7 + (type * 16), 0xED, 0xF4);
+                    }
+                    else if (itemID >= 0x9B3C && itemID <= 0x9B4B)
+                    {
+                        int type = (itemID - 0x9B3C) / 16;
+                        DoorFacing facing = (DoorFacing)(((itemID - 0x9B3C) / 2) % 8);
+                        door = new GenericHouseDoor(facing, 0x9B3C + (type * 16), 0xED, 0xF4);
+                    }
 
                     if (door != null)
                     {
@@ -1300,7 +1312,7 @@ namespace Server.Multis
             this.Delta(ItemDelta.Update);
             this.ProcessDelta();
             this.CurrentState.SendDetailedInfoTo(from.NetState);
-
+            
             // If a signpost is needed, add it
             this.CheckSignpost();
 

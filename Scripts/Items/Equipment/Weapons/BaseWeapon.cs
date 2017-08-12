@@ -24,6 +24,7 @@ using Server.Spells.Ninjitsu;
 using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
 using Server.Spells.SkillMasteries;
+using System.Linq;
 #endregion
 
 namespace Server.Items
@@ -34,7 +35,7 @@ namespace Server.Items
 		SlayerName Slayer2 { get; set; }
 	}
 
-    public abstract class BaseWeapon : Item, IWeapon, IFactionItem, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted
+    public abstract class BaseWeapon : Item, IWeapon, IFactionItem, IUsesRemaining, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted, IResource
 	{
 		private string m_EngravedText;
 
@@ -69,6 +70,35 @@ namespace Server.Items
 		}
 		#endregion
 
+        #region IUsesRemaining members
+        private int m_UsesRemaining;
+        private bool m_ShowUsesRemaining;
+        
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int UsesRemaining { get { return m_UsesRemaining; } set { m_UsesRemaining = value; InvalidateProperties(); } }
+
+        public bool ShowUsesRemaining { get { return m_ShowUsesRemaining; } set { m_ShowUsesRemaining = value; InvalidateProperties(); } }
+        
+        public void ScaleUses()
+        {
+            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
+            InvalidateProperties();
+        }
+
+        public void UnscaleUses()
+        {
+            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
+        }
+
+        public int GetUsesScalar()
+        {
+            if (m_Quality == ItemQuality.Exceptional)
+                return 200;
+
+            return 100;
+        }
+        #endregion
+        
         private bool _VvVItem;
         private Mobile _Owner;
         private string _OwnerName;
@@ -94,7 +124,7 @@ namespace Server.Items
         }
 
 		/* Weapon internals work differently now (Mar 13 2003)
-        * 
+        *
         * The attributes defined below default to -1.
         * If the value is -1, the corresponding virtual 'Aos/Old' property is used.
         * If not, the attribute value itself is used. Here's the list:
@@ -114,7 +144,7 @@ namespace Server.Items
 		private WeaponDamageLevel m_DamageLevel;
 		private WeaponAccuracyLevel m_AccuracyLevel;
 		private WeaponDurabilityLevel m_DurabilityLevel;
-		private WeaponQuality m_Quality;
+		private ItemQuality m_Quality;
 		private Mobile m_Crafter;
 		private Poison m_Poison;
 		private int m_PoisonCharges;
@@ -133,9 +163,6 @@ namespace Server.Items
 		private bool m_PlayerConstructed;
 
 		private bool m_Cursed; // Is this weapon cursed via Curse Weapon necromancer spell? Temporary; not serialized.
-
-		private bool m_Consecrated;
-					 // Is this weapon blessed via Consecrate Weapon paladin ability? Temporary; not serialized.
 
 		#region Mondain's Legacy
 		private bool m_Immolating; // Is this weapon blessed via Immolating Weapon arcanists spell? Temporary; not serialized.
@@ -239,7 +266,7 @@ namespace Server.Items
                 if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
                     return base.DefaultWeight;
 
-                return base.DefaultWeight * 3;
+                return 50;
             }
         }
 
@@ -312,8 +339,8 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Cursed { get { return m_Cursed; } set { m_Cursed = value; } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Consecrated { get { return m_Consecrated; } set { m_Consecrated = value; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ConsecratedWeaponContext ConsecratedContext { get; set; }
 
 		#region Mondain's Legacy
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -388,14 +415,16 @@ namespace Server.Items
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public WeaponQuality Quality
+		public ItemQuality Quality
 		{
 			get { return m_Quality; }
 			set
 			{
 				UnscaleDurability();
+                UnscaleUses();
 				m_Quality = value;
 				ScaleDurability();
+                ScaleUses();
 				InvalidateProperties();
 			}
 		}
@@ -572,7 +601,15 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int StrRequirement
 		{
-            get { return Math.Min(110, (int)((double)(m_StrReq == -1 ? Core.AOS ? AosStrengthReq : OldStrengthReq : m_StrReq) * (m_NegativeAttributes.Massive > 0 ? 1.5 : 1))); }
+            get 
+            {
+                if (m_NegativeAttributes.Massive > 0)
+                {
+                    return 125;
+                }
+
+                return m_StrReq == -1 ? Core.AOS ? AosStrengthReq : OldStrengthReq : m_StrReq;
+            }
 			set
 			{
 				m_StrReq = value;
@@ -637,16 +674,16 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsImbued
         {
-            get 
+            get
             {
-                if (this.TimesImbued >= 1 && !m_IsImbued)
+                if (TimesImbued >= 1 && !m_IsImbued)
                     m_IsImbued = true;
 
-                return m_IsImbued; 
+                return m_IsImbued;
             }
-            set 
+            set
             {
-                if (this.TimesImbued >= 1)
+                if (TimesImbued >= 1)
                     m_IsImbued = true;
                 else
                     m_IsImbued = value; InvalidateProperties();
@@ -699,10 +736,6 @@ namespace Server.Items
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
         }
         #endregion
-
-
-        public double ConsecrateProcChance { get; set; }
-        public double ConsecrateDamageBonus { get; set; }
         #endregion
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -778,7 +811,7 @@ namespace Server.Items
 		{
 			int bonus = 0;
 
-			if (m_Quality == WeaponQuality.Exceptional)
+			if (m_Quality == ItemQuality.Exceptional)
 			{
 				bonus += 20;
 			}
@@ -966,7 +999,7 @@ namespace Server.Items
 			#region Stygian Abyss
 			if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles && from.IsPlayer())
 			{
-				from.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
+				from.SendLocalizedMessage(1111708); // Gargoyles can't wear 
 				return false;
 			}
 			#endregion
@@ -975,18 +1008,18 @@ namespace Server.Items
 			{
 				if (RequiredRace == Race.Elf)
 				{
-					from.SendLocalizedMessage(1072203); // Only Elves may use this.
+					from.SendLocalizedMessage(1072203); // Only Elves may use 
 				}
 					#region SA
 				else if (RequiredRace == Race.Gargoyle)
 				{
-					from.SendLocalizedMessage(1111707); // Only gargoyles can wear this.
+					from.SendLocalizedMessage(1111707); // Only gargoyles can wear 
 				}
 					#endregion
 
 				else
 				{
-					from.SendMessage("Only {0} may use this.", RequiredRace.PluralName);
+					from.SendMessage("Only {0} may use ", RequiredRace.PluralName);
 				}
 
 				return false;
@@ -1083,9 +1116,10 @@ namespace Server.Items
 				from.AddSkillMod(m_MageMod);
 			}
 
-            if (Core.TOL && m_AosWeaponAttributes.MysticWeapon != 0 && m_AosWeaponAttributes.MysticWeapon != 30)
+            if (Core.TOL)
             {
-                AddMysticMod(from);
+                if ((m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30) || Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon) > 0)
+                    AddMysticMod(from);
             }
 
 			XmlAttach.CheckOnEquip(this, from);
@@ -1160,7 +1194,7 @@ namespace Server.Items
 				}
 
 				ImmolatingWeaponSpell.StopImmolating(this);
-                Spells.Mystic.EnchantSpell.OnWeaponRemoved(this, m);
+                Spells.Mysticism.EnchantSpell.OnWeaponRemoved(this, m);
 
 				m.CheckStatTimers();
 
@@ -1173,7 +1207,7 @@ namespace Server.Items
 
                 //Skill Masteries
                 SkillMasterySpell.OnWeaponRemoved(m, this);
-                RemoveMysticMod();
+                //RemoveMysticMod();
 
 				#region Mondain's Legacy Sets
 				if (IsSetItem && m_SetEquipped)
@@ -1189,7 +1223,12 @@ namespace Server.Items
             if (m_MysticMod != null)
                 m_MysticMod.Remove();
 
-            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_AosWeaponAttributes.MysticWeapon);
+            int value = m_ExtendedWeaponAttributes.MysticWeapon;
+
+            if (Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon) > value)
+                value = Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon);
+
+            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + value);
             from.AddSkillMod(m_MysticMod);
         }
 
@@ -1477,7 +1516,7 @@ namespace Server.Items
 
 				delayInSeconds = Math.Floor(40000.0 / v) * 0.5;
 
-				// Maximum swing rate capped at one swing per second 
+				// Maximum swing rate capped at one swing per second
 				// OSI dev said that it has and is supposed to be 1.25
 				if (delayInSeconds < 1.25)
 				{
@@ -1803,57 +1842,50 @@ namespace Server.Items
 
 			if (!blocked)
 			{
-                Layer randomLayer = Layer.FirstValid;
-                Item armorItem = null;
+                IWearableDurability toHit = GetRandomValidItem(defender) as IWearableDurability;
 
-                for (int i = 0; i < 10; i++)
-                {
-                    randomLayer = _DamageLayers[Utility.Random(_DamageLayers.Length)];
-                    armorItem = defender.FindItemOnLayer(randomLayer);
-
-                    if (armorItem is IWearableDurability)
-                        break;
-                }
-
-                IWearableDurability armor = armorItem as IWearableDurability;
-
-				if (armor != null)
+				if (toHit != null)
 				{
-					armor.OnHit(this, damage); // call OnHit to lose durability
-					damage -= XmlAttach.OnArmorHit(attacker, defender, armorItem, this, originalDamage);
+                    toHit.OnHit(this, damage); // call OnHit to lose durability
+                    damage -= XmlAttach.OnArmorHit(attacker, defender, (Item)toHit, this, originalDamage);
 				}
 			}
 
 			return damage;
 		}
 
-        private Layer[] _DamageLayers =
+        private Item GetRandomValidItem(Mobile m)
         {
+            Item[] items = m.Items.Where(item => _DamageLayers.Contains(item.Layer) && item is IWearableDurability).ToArray();
+
+            if (items.Length == 0)
+                return null;
+
+            return items[Utility.Random(items.Length)];
+        }
+
+        private List<Layer> _DamageLayers = new List<Layer>()
+        {
+            Layer.FirstValid,
             Layer.OneHanded,
+            Layer.TwoHanded,
+            Layer.Shoes,
+            Layer.Pants,
+            Layer.Shirt,
+            Layer.Helm,
+            Layer.Gloves,
+            Layer.Ring,
             Layer.Talisman,
-            Layer.InnerLegs,
-            Layer.InnerTorso,
-            Layer.MiddleTorso,
+            Layer.Neck,
             Layer.Waist,
+            Layer.InnerTorso,
+            Layer.Bracelet,
+            Layer.MiddleTorso,
+            Layer.Earrings,
             Layer.Cloak,
             Layer.OuterTorso,
-            Layer.Ring,
-            Layer.Bracelet,
-            Layer.Earrings,
-            Layer.Neck,
-            Layer.Neck,
-            Layer.Gloves,
-            Layer.Gloves,
-            Layer.Arms,
-            Layer.Arms,
-            Layer.Helm,
-            Layer.Helm,
-            Layer.Pants,
-            Layer.Pants,
-            Layer.Pants,
-            Layer.Shirt,
-            Layer.Shirt,
-            Layer.Shirt
+            Layer.OuterLegs,
+            Layer.InnerLegs,
         };
 
 		public virtual int AbsorbDamage(Mobile attacker, Mobile defender, int damage)
@@ -2018,8 +2050,9 @@ namespace Server.Items
 		}
 
 		private static bool m_InDoubleStrike;
-
 		public static bool InDoubleStrike { get { return m_InDoubleStrike; } set { m_InDoubleStrike = value; } }
+
+        public DateTime NextSelfRepair { get; set; }
 
 		public void OnHit(Mobile attacker, IDamageable damageable)
 		{
@@ -2081,7 +2114,7 @@ namespace Server.Items
             {
                 GetDamageTypes(attacker, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
 
-                if (m_Consecrated)
+                if (!OnslaughtSpell.HasOnslaught(attacker, defender) && ConsecratedContext != null && ConsecratedContext.ConsecrateProcChance >= Utility.Random(100))
                 {
                     phys = damageable.PhysicalResistance;
                     fire = damageable.FireResistance;
@@ -2145,35 +2178,45 @@ namespace Server.Items
             }
 
             double chance = NegativeAttributes.Antique > 0 ? 5 : 0;
-            bool acidicTarget = MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
+            bool acidicTarget = MaxRange <= 1 && !(this is Fists) && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
 
-            if ((m_AosAttributes.SpellChanneling == 0 || MaxRange > 1) && 
-                (acidicTarget || (defender != null && splintering) || Utility.Random(250) <= chance))    // Stratics says 50% chance, seems more like 4%..
+            if ((m_AosAttributes.SpellChanneling == 0 || MaxRange > 1) &&
+                (acidicTarget || (defender != null && splintering) || Utility.Random(40) <= chance))    // Stratics says 50% chance, seems more like 4%..
             {
                 if (MaxRange <= 1 && acidicTarget)
                 {
                     attacker.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500263); // *Acid blood scars your weapon!*
                 }
 
-                if (Core.AOS &&
-                    m_AosWeaponAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0) > Utility.Random(10))
+                int selfRepair = !Core.AOS ? 0 : m_AosWeaponAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0);
+
+                if (selfRepair > 0 && NextSelfRepair < DateTime.UtcNow)
                 {
-                    HitPoints += 2;
+                    HitPoints += selfRepair;
+
+                    NextSelfRepair = DateTime.UtcNow + TimeSpan.FromSeconds(60);
                 }
                 else
                 {
                     if (m_MaxHits > 0)
                     {
-                        if (this.m_Hits >= 1)
+                        if (m_Hits >= 1)
                         {
-                            HitPoints--;
+                            if (splintering)
+                            {
+                                HitPoints = Math.Max(0, HitPoints - 10);
+                            }
+                            else
+                            {
+                                HitPoints--;
+                            }
                         }
-                        else if (this.m_MaxHits > 0)
+                        else if (m_MaxHits > 0)
                         {
-                            this.MaxHitPoints--;
+                            MaxHitPoints--;
 
-                            if (this.Parent is Mobile)
-                                ((Mobile)this.Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                            if (Parent is Mobile)
+                                ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
 
                             if (m_MaxHits == 0)
                                 Delete();
@@ -2222,13 +2265,9 @@ namespace Server.Items
 				percentageBonus += (int)(move.GetDamageScalar(attacker, defender) * 100) - 100;
 			}
 
-            if (m_Consecrated)
+            if (ConsecratedContext != null)
             {
-                if (Utility.RandomDouble() <= ConsecrateProcChance / 100)
-                {
-                    if (ConsecrateDamageBonus > 0)
-                        damageBonus *= 1 + ConsecrateDamageBonus / 100;
-                }
+                percentageBonus += ConsecratedContext.ConsecrateDamageBonus;
             }
 
             percentageBonus += (int)(damageBonus * 100) - 100;
@@ -2274,38 +2313,29 @@ namespace Server.Items
                 defender.FixedEffect(0x37B9, 10, 5);
             }
 
-			if (!attacker.Player)
-			{
-				if (defender is PlayerMobile)
-				{
-					PlayerMobile pm = (PlayerMobile)defender;
+			#region Enemy of One
+			var enemyOfOneContext = EnemyOfOneSpell.GetContext(defender);
 
-					if (pm.EnemyOfOneType != null && pm.EnemyOfOneType != attacker.GetType())
-					{
-						percentageBonus += 100;
-					}
-				}
-			}
-			else if (!defender.Player)
-			{
-				if (attacker is PlayerMobile)
-				{
-					PlayerMobile pm = (PlayerMobile)attacker;
+            if (enemyOfOneContext != null && !enemyOfOneContext.IsWaitingForEnemy && !enemyOfOneContext.IsEnemy(attacker))
+            {
+                percentageBonus += 100;
+            }
+            else
+            {
+                enemyOfOneContext = EnemyOfOneSpell.GetContext(attacker);
 
-					if (pm.WaitingForEnemy)
-					{
-						pm.EnemyOfOneType = defender.GetType();
-						pm.WaitingForEnemy = false;
-					}
+                if (enemyOfOneContext != null)
+                {
+                    enemyOfOneContext.OnHit(defender);
 
-					if (pm.EnemyOfOneType == defender.GetType())
-					{
-						defender.FixedEffect(0x37B9, 10, 5, 1160, 0);
-
-						percentageBonus += 50;
-					}
-				}
-			}
+                    if (enemyOfOneContext.IsEnemy(defender))
+                    {
+                        defender.FixedEffect(0x37B9, 10, 5, 1160, 0);
+                        percentageBonus += enemyOfOneContext.DamageScalar;
+                    }
+                }
+            }
+			#endregion
 
 			int packInstinctBonus = GetPackInstinctBonus(attacker, defender);
 
@@ -2321,7 +2351,7 @@ namespace Server.Items
 
 			TransformContext context = TransformationSpellHelper.GetContext(defender);
 
-			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver || SetHelper.GetSetSlayer(attacker) == SlayerName.Silver) 
+			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver || SetHelper.GetSetSlayer(attacker) == SlayerName.Silver)
                 && ((context != null && context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell))
                 || (defender is BaseCreature && (defender.Body == 747 || defender.Body == 748 || defender.Body == 749 || defender.Hue == 0x847E))))
 			{
@@ -2406,7 +2436,7 @@ namespace Server.Items
 			else if (Core.AOS && damage == 0) // parried
 			{
 				if (a != null && a.Validate(attacker) /*&& a.CheckMana( attacker, true )*/)
-					// Parried special moves have no mana cost 
+					// Parried special moves have no mana cost
 				{
 					a = null;
 					WeaponAbility.ClearCurrentAbility(attacker);
@@ -2414,6 +2444,13 @@ namespace Server.Items
 					attacker.SendLocalizedMessage(1061140); // Your attack was parried!
 				}
 			}
+
+            // Skill Masteries
+            if (WhiteTigerFormSpell.CheckEvasion(defender))
+            {
+                defender.Emote("*evades*"); // Is this right?
+                return;
+            }
 
 			#region Mondain's Legacy
 			if (m_Immolating)
@@ -2466,7 +2503,7 @@ namespace Server.Items
             }
             #endregion
 
-            AddBlood(attacker, defender, damage);
+            Timer.DelayCall(() => AddBlood(attacker, defender, damage));
 
 			if (Core.ML && this is BaseRanged)
 			{
@@ -2615,22 +2652,26 @@ namespace Server.Items
 					{
 						int toHeal = Utility.RandomMinMax(0, (int)(AOS.Scale(damageGiven, lifeLeech) * 0.3));
 
-						#region High Seas
-						if (defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura)
-						{
-							AOS.Damage(attacker, defender, toHeal, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
-							attacker.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
-						}
-						else
-							attacker.Hits += toHeal;
-						#endregion
+                        if (defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura)
+                        {
+                            AOS.Damage(attacker, defender, toHeal, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+                            attacker.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
+                        }
+                        else
+                        {
+                            attacker.Hits += toHeal;
+                        }
 					}
 
                     if (toHealCursedWeaponSpell != 0 && !(defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura))
+                    {
                         attacker.Hits += toHealCursedWeaponSpell;
+                    }
 
                     if (toHealVampiricEmbraceSpell != 0 && !(defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura))
+                    {
                         attacker.Hits += toHealVampiricEmbraceSpell;
+                    }
 
                     if (manaLeech != 0)
 					{
@@ -2639,6 +2680,16 @@ namespace Server.Items
 				}
 				else // Old formulas
 				{
+                    if (toHealCursedWeaponSpell != 0)
+                    {
+                        attacker.Hits += toHealCursedWeaponSpell;
+                    }
+
+                    if (toHealVampiricEmbraceSpell != 0)
+                    {
+                        attacker.Hits += toHealVampiricEmbraceSpell;
+                    }
+
 					if (lifeLeech != 0)
 					{
 						attacker.Hits += AOS.Scale(damageGiven, lifeLeech);
@@ -2651,7 +2702,7 @@ namespace Server.Items
 					}
 				}
 
-				if (lifeLeech != 0 || stamLeech != 0 || manaLeech != 0)
+                if (lifeLeech != 0 || stamLeech != 0 || manaLeech != 0 || toHealCursedWeaponSpell != 0 || toHealVampiricEmbraceSpell != 0)
 				{
 					attacker.PlaySound(0x44D);
 				}
@@ -2687,27 +2738,27 @@ namespace Server.Items
 
 				if (physChance != 0 && physChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x10E, 50, 100, 0, 0, 0, 0);
+					DoAreaAttack(attacker, defender, damageGiven, 0x10E, 50, 100, 0, 0, 0, 0);
 				}
 
 				if (fireChance != 0 && fireChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x11D, 1160, 0, 100, 0, 0, 0);
+					DoAreaAttack(attacker, defender, damageGiven, 0x11D, 1160, 0, 100, 0, 0, 0);
 				}
 
 				if (coldChance != 0 && coldChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x0FC, 2100, 0, 0, 100, 0, 0);
+					DoAreaAttack(attacker, defender, damageGiven, 0x0FC, 2100, 0, 0, 100, 0, 0);
 				}
 
 				if (poisChance != 0 && poisChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x205, 1166, 0, 0, 0, 100, 0);
+					DoAreaAttack(attacker, defender, damageGiven, 0x205, 1166, 0, 0, 0, 100, 0);
 				}
 
 				if (nrgyChance != 0 && nrgyChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x1F1, 120, 0, 0, 0, 0, 100);
+					DoAreaAttack(attacker, defender, damageGiven, 0x1F1, 120, 0, 0, 0, 0, 100);
 				}
 
 				int maChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitMagicArrow) * propertyBonus);
@@ -2816,6 +2867,8 @@ namespace Server.Items
 				}
 			}
 
+            BaseFamiliar.OnHit(attacker, damageable);
+            WhiteTigerFormSpell.OnHit(attacker, defender);
 			XmlAttach.OnWeaponHit(this, attacker, defender, damageGiven);
 		}
 
@@ -2855,8 +2908,8 @@ namespace Server.Items
 						damageBonus += 6;
 					else if (perc >= 1)
 						damageBonus += 3;
-				} 
-				
+				}
+
 				TransformContext context = TransformationSpellHelper.GetContext(attacker);
 
 				if (context != null && context.Spell is ReaperFormSpell)
@@ -3004,7 +3057,7 @@ namespace Server.Items
 			int percentage = -10; //(int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
 			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
 
-            Server.Spells.Fourth.CurseSpell.AddEffect(defender, duration);
+            Server.Spells.Fourth.CurseSpell.AddEffect(defender, duration, 10, 10, 10);
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, duration, defender, args));
 		}
 
@@ -3043,7 +3096,7 @@ namespace Server.Items
 		}
 
 		public virtual void DoAreaAttack(
-			Mobile from, Mobile defender, int sound, int hue, int phys, int fire, int cold, int pois, int nrgy)
+			Mobile from, Mobile defender, int damageGiven, int sound, int hue, int phys, int fire, int cold, int pois, int nrgy)
 		{
 			Map map = from.Map;
 
@@ -3054,7 +3107,7 @@ namespace Server.Items
 
 			var list = new List<Mobile>();
 
-			foreach (Mobile m in from.GetMobilesInRange(10))
+			foreach (Mobile m in from.GetMobilesInRange(5))
 			{
 				if (from != m && defender != m && SpellHelper.ValidIndirectTarget(from, m) && from.CanBeHarmful(m, false) &&
 					(!Core.ML || from.InLOS(m)))
@@ -3070,26 +3123,13 @@ namespace Server.Items
 
 			Effects.PlaySound(from.Location, map, sound);
 
-			// TODO: What is the damage calculation?
-
 			for (int i = 0; i < list.Count; ++i)
 			{
 				Mobile m = list[i];
 
-				double scalar = (11 - from.GetDistanceToSqrt(m)) / 10;
-
-				if (scalar > 1.0)
-				{
-					scalar = 1.0;
-				}
-				else if (scalar < 0.0)
-				{
-					continue;
-				}
-
-				from.DoHarmful(m, true);
+    			from.DoHarmful(m, true);
 				m.FixedEffect(0x3779, 1, 15, hue, 0);
-				AOS.Damage(m, from, (int)(GetBaseDamage(from) * scalar), phys, fire, cold, pois, nrgy);
+				AOS.Damage(m, from, (int)(damageGiven / 2), phys, fire, cold, pois, nrgy);
 			}
 		}
 		#endregion
@@ -3159,9 +3199,9 @@ namespace Server.Items
 
         private List<SlayerName> _SuperSlayers = new List<SlayerName>()
         {
-            SlayerName.Repond, SlayerName.Silver, SlayerName.Fey, 
-            SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom, 
-            SlayerName.ReptilianDeath, SlayerName.Dinosaur, SlayerName.Myrmidex, 
+            SlayerName.Repond, SlayerName.Silver, SlayerName.Fey,
+            SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom,
+            SlayerName.ReptilianDeath, SlayerName.Dinosaur, SlayerName.Myrmidex,
             SlayerName.Eodon
         };
 
@@ -3410,10 +3450,10 @@ namespace Server.Items
 			{
 				switch (m_Quality)
 				{
-					case WeaponQuality.Low:
+					case ItemQuality.Low:
 						bonus -= 20;
 						break;
-					case WeaponQuality.Exceptional:
+					case ItemQuality.Exceptional:
 						bonus += 20;
 						break;
 				}
@@ -3566,7 +3606,7 @@ namespace Server.Items
 			    lumberValue = (lumberValue/5.0)/100.0;
 			    if (lumberValue > 0.2)
 			        lumberValue = 0.2;
-			    
+
 				modifiers += lumberValue;
 
 				if (lumberValue >= 100.0)
@@ -3576,7 +3616,7 @@ namespace Server.Items
 			}
 
 			// New quality bonus:
-			if (m_Quality != WeaponQuality.Regular)
+			if (m_Quality != ItemQuality.Normal)
 			{
 				modifiers += (((int)m_Quality - 1) * 0.2);
 			}
@@ -3753,7 +3793,10 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(16); // version
+			writer.Write(17); // version
+
+            writer.Write(m_UsesRemaining);
+            writer.Write(m_ShowUsesRemaining);
 
             writer.Write(_VvVItem);
             writer.Write(_Owner);
@@ -3780,7 +3823,7 @@ namespace Server.Items
 
 			// Version 11
 			writer.Write(m_TimesImbued);
-         
+
             #endregion
 
             // Version 10
@@ -3803,8 +3846,38 @@ namespace Server.Items
 			SetSaveFlag(ref sflags, SetFlag.LastEquipped, m_LastEquipped);
 			SetSaveFlag(ref sflags, SetFlag.SetEquipped, m_SetEquipped);
 			SetSaveFlag(ref sflags, SetFlag.SetSelfRepair, m_SetSelfRepair != 0);
+            SetSaveFlag(ref sflags, SetFlag.PhysicalBonus, m_SetPhysicalBonus != 0);
+            SetSaveFlag(ref sflags, SetFlag.FireBonus, m_SetFireBonus != 0);
+            SetSaveFlag(ref sflags, SetFlag.ColdBonus, m_SetColdBonus != 0);
+            SetSaveFlag(ref sflags, SetFlag.PoisonBonus, m_SetPoisonBonus != 0);
+            SetSaveFlag(ref sflags, SetFlag.EnergyBonus, m_SetEnergyBonus != 0);
 
 			writer.WriteEncodedInt((int)sflags);
+
+            if (GetSaveFlag(sflags, SetFlag.PhysicalBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+            }
+
+            if (GetSaveFlag(sflags, SetFlag.FireBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetFireBonus);
+            }
+
+            if (GetSaveFlag(sflags, SetFlag.ColdBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetColdBonus);
+            }
+
+            if (GetSaveFlag(sflags, SetFlag.PoisonBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+            }
+
+            if (GetSaveFlag(sflags, SetFlag.EnergyBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+            }
 
 			if (GetSaveFlag(sflags, SetFlag.Attributes))
 			{
@@ -3843,7 +3916,7 @@ namespace Server.Items
 			SetSaveFlag(ref flags, SaveFlag.DamageLevel, m_DamageLevel != WeaponDamageLevel.Regular);
 			SetSaveFlag(ref flags, SaveFlag.AccuracyLevel, m_AccuracyLevel != WeaponAccuracyLevel.Regular);
 			SetSaveFlag(ref flags, SaveFlag.DurabilityLevel, m_DurabilityLevel != WeaponDurabilityLevel.Regular);
-			SetSaveFlag(ref flags, SaveFlag.Quality, m_Quality != WeaponQuality.Regular);
+			SetSaveFlag(ref flags, SaveFlag.Quality, m_Quality != ItemQuality.Normal);
 			SetSaveFlag(ref flags, SaveFlag.Hits, m_Hits != 0);
 			SetSaveFlag(ref flags, SaveFlag.MaxHits, m_MaxHits != 0);
 			SetSaveFlag(ref flags, SaveFlag.Slayer, m_Slayer != SlayerName.None);
@@ -4107,6 +4180,11 @@ namespace Server.Items
 			LastEquipped = 0x00000010,
 			SetEquipped = 0x00000020,
 			SetSelfRepair = 0x00000040,
+            PhysicalBonus = 0x00000080,
+            FireBonus = 0x00000100,
+            ColdBonus = 0x00000200,
+            PoisonBonus = 0x00000400,
+            EnergyBonus = 0x00000800,
 		}
 		#endregion
 
@@ -4118,6 +4196,12 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 17:
+                    {
+                        m_UsesRemaining = reader.ReadInt();
+                        m_ShowUsesRemaining = reader.ReadBool();
+                        goto case 16;
+                    }
                 case 16:
                     {
                         _VvVItem = reader.ReadBool();
@@ -4149,7 +4233,7 @@ namespace Server.Items
 				case 11:
 					{
 						m_TimesImbued = reader.ReadInt();
-                     
+
                         #endregion
 
                         goto case 10;
@@ -4161,6 +4245,30 @@ namespace Server.Items
 						m_Slayer3 = (TalismanSlayerName)reader.ReadInt();
 
 						SetFlag flags = (SetFlag)reader.ReadEncodedInt();
+                        if (GetSaveFlag(flags, SetFlag.PhysicalBonus))
+                        {
+                            m_SetPhysicalBonus = reader.ReadEncodedInt();
+                        }
+
+                        if (GetSaveFlag(flags, SetFlag.FireBonus))
+                        {
+                            m_SetFireBonus = reader.ReadEncodedInt();
+                        }
+
+                        if (GetSaveFlag(flags, SetFlag.ColdBonus))
+                        {
+                            m_SetColdBonus = reader.ReadEncodedInt();
+                        }
+
+                        if (GetSaveFlag(flags, SetFlag.PoisonBonus))
+                        {
+                            m_SetPoisonBonus = reader.ReadEncodedInt();
+                        }
+
+                        if (GetSaveFlag(flags, SetFlag.EnergyBonus))
+                        {
+                            m_SetEnergyBonus = reader.ReadEncodedInt();
+                        }
 
 						if (GetSaveFlag(flags, SetFlag.Attributes))
 						{
@@ -4214,7 +4322,7 @@ namespace Server.Items
 				case 5:
 					{
 						SaveFlag flags;
-                        
+
                         if(version < 13)
                             flags = (SaveFlag)reader.ReadInt();
                         else
@@ -4252,11 +4360,11 @@ namespace Server.Items
 
 						if (GetSaveFlag(flags, SaveFlag.Quality))
 						{
-							m_Quality = (WeaponQuality)reader.ReadInt();
+							m_Quality = (ItemQuality)reader.ReadInt();
 						}
 						else
 						{
-							m_Quality = WeaponQuality.Regular;
+							m_Quality = ItemQuality.Normal;
 						}
 
 						if (GetSaveFlag(flags, SaveFlag.Hits))
@@ -4454,12 +4562,6 @@ namespace Server.Items
 							((Mobile)Parent).AddSkillMod(m_MageMod);
 						}
 
-                        if (Core.TOL && m_AosWeaponAttributes.MysticWeapon != 0 && m_AosWeaponAttributes.MysticWeapon != 30 && Parent is Mobile)
-                        {
-                            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_AosWeaponAttributes.MysticWeapon);
-                            ((Mobile)Parent).AddSkillMod(m_MysticMod);
-                        }
-
 						if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
 						{
 							m_PlayerConstructed = true;
@@ -4527,6 +4629,12 @@ namespace Server.Items
                             m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this);
                         }
 
+                        if (Core.TOL && m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30 && Parent is Mobile)
+                        {
+                            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_ExtendedWeaponAttributes.MysticWeapon);
+                            ((Mobile)Parent).AddSkillMod(m_MysticMod);
+                        }
+
                         break;
 					}
 				case 4:
@@ -4585,7 +4693,7 @@ namespace Server.Items
 						m_DamageLevel = (WeaponDamageLevel)reader.ReadInt();
 						m_AccuracyLevel = (WeaponAccuracyLevel)reader.ReadInt();
 						m_DurabilityLevel = (WeaponDurabilityLevel)reader.ReadInt();
-						m_Quality = (WeaponQuality)reader.ReadInt();
+						m_Quality = (ItemQuality)reader.ReadInt();
 
 						m_Crafter = reader.ReadMobile();
 
@@ -4741,7 +4849,7 @@ namespace Server.Items
 		{
 			Layer = (Layer)ItemData.Quality;
 
-			m_Quality = WeaponQuality.Regular;
+			m_Quality = ItemQuality.Normal;
 			m_StrReq = -1;
 			m_DexReq = -1;
 			m_IntReq = -1;
@@ -4776,6 +4884,8 @@ namespace Server.Items
 			#endregion
 
 			m_AosSkillBonuses = new AosSkillBonuses(this);
+            
+            m_UsesRemaining = 150;
 			// Xml Spawner XmlSockets - SOF
 			// mod to randomly add sockets and socketability features to armor. These settings will yield
 			// 2% drop rate of socketed/socketable items
@@ -4949,10 +5059,7 @@ namespace Server.Items
                 }
                 else if (m_ReforgedSuffix != ReforgedSuffix.None)
                 {
-                    if (m_ReforgedSuffix == ReforgedSuffix.Minax)
-                        list.Add(1154507, String.Format("{0}", GetNameString())); // ~1_ITEM~ bearing the crest of Minax
-                    else
-                        list.Add(1151758, String.Format("{0}\t#{1}", GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_ITEM~ of ~2_SUFFIX~
+                    RunicReforging.AddSuffixName(list, m_ReforgedSuffix, GetNameString());
                 }
             }
 			else if (oreType != 0)
@@ -4975,21 +5082,21 @@ namespace Server.Items
             }
 
 			/*
-            * Want to move this to the engraving tool, let the non-harmful 
+            * Want to move this to the engraving tool, let the non-harmful
             * formatting show, and remove CLILOCs embedded: more like OSI
             * did with the books that had markup, etc.
-            * 
-            * This will have a negative effect on a few event things imgame 
+            *
+            * This will have a negative effect on a few event things imgame
             * as is.
-            * 
-            * If we cant find a more OSI-ish way to clean it up, we can 
+            *
+            * If we cant find a more OSI-ish way to clean it up, we can
             * easily put this back, and use it in the deserialize
             * method and engraving tool, to make it perm cleaned up.
             */
 
 			if (!String.IsNullOrEmpty(m_EngravedText))
 			{
-				list.Add(1062613, m_EngravedText);
+                list.Add(1062613, Utility.FixHtml(m_EngravedText));
 			}
 			/* list.Add( 1062613, Utility.FixHtml( m_EngravedText ) ); */
 		}
@@ -5071,7 +5178,7 @@ namespace Server.Items
 					list.Add(1060659, "Experience\t{0}", levitem.Experience);
 				}
 			}
-           
+
 
 			if (IsImbued)
 			{
@@ -5084,7 +5191,7 @@ namespace Server.Items
 			}
 
             if (m_Altered)
-                list.Add(1111880); // Altered  
+                list.Add(1111880); // Altered
 
             #region Factions
             if (m_FactionState != null)
@@ -5101,12 +5208,12 @@ namespace Server.Items
                 if (SetID == SetItem.Bestial)
                     list.Add(1151541, BestialSetHelper.GetTotalBerserk(this).ToString()); // Berserk ~1_VAL~
 
-                if (this.BardMasteryBonus)
+                if (BardMasteryBonus)
                     list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
 
                 if (m_SetEquipped)
 				{
-					list.Add(1073492); // Full Weapon/Armor Set Present			
+					list.Add(1073492); // Full Weapon/Armor Set Present
 					GetSetProperties(list);
 				}
 			}
@@ -5125,7 +5232,7 @@ namespace Server.Items
 				m_AosSkillBonuses.GetProperties(list);
 			}
 
-			if (m_Quality == WeaponQuality.Exceptional)
+			if (m_Quality == ItemQuality.Exceptional)
 			{
 				list.Add(1060636); // exceptional
 			}
@@ -5224,11 +5331,11 @@ namespace Server.Items
             #region Stygian Abyss
             if (EnchantedWeilder != null)
             {
-                if (Server.Spells.Mystic.EnchantSpell.IsUnderSpellEffects(EnchantedWeilder, this))
+                if (Server.Spells.Mysticism.EnchantSpell.IsUnderSpellEffects(EnchantedWeilder, this))
                 {
-                    bonus = Server.Spells.Mystic.EnchantSpell.BonusAttribute(EnchantedWeilder);
-                    enchantBonus = Server.Spells.Mystic.EnchantSpell.BonusValue(EnchantedWeilder);
-                    fcMalus = Server.Spells.Mystic.EnchantSpell.CastingMalus(EnchantedWeilder, this);
+                    bonus = Server.Spells.Mysticism.EnchantSpell.BonusAttribute(EnchantedWeilder);
+                    enchantBonus = Server.Spells.Mysticism.EnchantSpell.BonusValue(EnchantedWeilder);
+                    fcMalus = Server.Spells.Mysticism.EnchantSpell.CastingMalus(EnchantedWeilder, this);
                 }
             }
             #endregion
@@ -5493,11 +5600,11 @@ namespace Server.Items
 				list.Add(1060438, (30 - prop).ToString()); // mage weapon -~1_val~ skill
 			}
 
-            if ((prop = m_AosWeaponAttributes.MysticWeapon) != 0)
+            if ((prop = m_ExtendedWeaponAttributes.MysticWeapon) != 0)
             {
                 list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
             }
-            else if ((prop = Parent is Mobile ? Enhancement.GetValue((Mobile)Parent, AosWeaponAttribute.MysticWeapon) : 0) != 0)
+            else if ((prop = Parent is Mobile ? Enhancement.GetValue((Mobile)Parent, ExtendedWeaponAttribute.MysticWeapon) : 0) != 0)
             {
                 list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
             }
@@ -5740,7 +5847,7 @@ namespace Server.Items
 
 			if (IsSetItem && !m_SetEquipped)
 			{
-				list.Add(1072378); // <br>Only when full set is present:				
+				list.Add(1072378); // <br>Only when full set is present:
 				GetSetProperties(list);
 			}
 
@@ -5784,7 +5891,7 @@ namespace Server.Items
 			}
 			#endregion
 
-			if (m_Quality == WeaponQuality.Exceptional)
+			if (m_Quality == ItemQuality.Exceptional)
 			{
 				attrs.Add(new EquipInfoAttribute(1018305 - (int)m_Quality));
 			}
@@ -5873,7 +5980,7 @@ namespace Server.Items
 			CraftItem craftItem,
 			int resHue)
 		{
-			Quality = (WeaponQuality)quality;
+			Quality = (ItemQuality)quality;
 
 			if (makersMark)
 			{
@@ -5901,7 +6008,7 @@ namespace Server.Items
 					Hue = 0;
 				}
 
-				if (Quality == WeaponQuality.Exceptional)
+				if (Quality == ItemQuality.Exceptional)
 				{
 					Attributes.WeaponDamage += 35;
 				}
@@ -5914,9 +6021,11 @@ namespace Server.Items
 					}
 				}
 
-				if (Core.ML && Quality == WeaponQuality.Exceptional)
+				if (Core.ML && Quality == ItemQuality.Exceptional)
 				{
-					Attributes.WeaponDamage += (int)(from.Skills.ArmsLore.Value / 20);
+                    double div = Siege.SiegeShard ? 12.5 : 20;
+
+					Attributes.WeaponDamage += (int)(from.Skills.ArmsLore.Value / div);
 					from.CheckSkill(SkillName.ArmsLore, 0, 100);
 				}
 			}
@@ -6081,7 +6190,7 @@ namespace Server.Items
         {
             get
             {
-                return (this.SetID == SetItem.Virtuoso);
+                return (SetID == SetItem.Virtuoso);
             }
         }
 
@@ -6109,6 +6218,7 @@ namespace Server.Items
 		private AosAttributes m_SetAttributes;
 		private AosSkillBonuses m_SetSkillBonuses;
 		private int m_SetSelfRepair;
+        private int m_SetPhysicalBonus, m_SetFireBonus, m_SetColdBonus, m_SetPoisonBonus, m_SetEnergyBonus;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public AosAttributes SetAttributes { get { return m_SetAttributes; } set { } }
@@ -6127,13 +6237,83 @@ namespace Server.Items
 			}
 		}
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPhysicalBonus
+        {
+            get
+            {
+                return m_SetPhysicalBonus;
+            }
+            set
+            {
+                m_SetPhysicalBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetFireBonus
+        {
+            get
+            {
+                return m_SetFireBonus;
+            }
+            set
+            {
+                m_SetFireBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetColdBonus
+        {
+            get
+            {
+                return m_SetColdBonus;
+            }
+            set
+            {
+                m_SetColdBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPoisonBonus
+        {
+            get
+            {
+                return m_SetPoisonBonus;
+            }
+            set
+            {
+                m_SetPoisonBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetEnergyBonus
+        {
+            get
+            {
+                return m_SetEnergyBonus;
+            }
+            set
+            {
+                m_SetEnergyBonus = value;
+                InvalidateProperties();
+            }
+        }
+
 		public virtual void GetSetProperties(ObjectPropertyList list)
 		{
 			int prop;
 
 			if ((prop = m_SetSelfRepair) != 0 && WeaponAttributes.SelfRepair == 0)
 			{
-				list.Add(1060450, prop.ToString()); // self repair ~1_val~	
+				list.Add(1060450, prop.ToString()); // self repair ~1_val~
 			}
 
 			SetHelper.GetSetProperties(list, this);
@@ -6166,11 +6346,11 @@ namespace Server.Items
         }
     }
 
-	public enum CheckSlayerResult
-	{
-		None,
-		Slayer,
-        	SuperSlayer,
-		Opposition
-	}
+    public enum CheckSlayerResult
+    {
+        None,
+        Slayer,
+        SuperSlayer,
+        Opposition
+    }
 }

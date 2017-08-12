@@ -18,11 +18,12 @@ namespace Server.Engines.Craft
         ScrappersCompendium = 453,
         HoveringWisp = 454,
 
-        KotlPowerCoil = 455,
+        KotlPowerCore = 455,
 
         // doom
-        BraceletOfPrimalConsumption = 456
-
+        BraceletOfPrimalConsumption = 456,
+        DrSpectorLenses = 457,
+        KotlAutomatonHead = 458
     }
 
     public class DefTinkering : CraftSystem
@@ -109,7 +110,9 @@ namespace Server.Engines.Craft
             typeof(HeatingStand),
             typeof(GorgonLense), typeof(MedusaLightScales), typeof(MedusaDarkScales), typeof(RedScales), 
             typeof(BlueScales), typeof(BlackScales), typeof(GreenScales), typeof(YellowScales), typeof(WhiteScales),
-            typeof(PlantPigment), typeof(SoftenedReeds), typeof(DryReeds), typeof(PlantClippings)
+            typeof(PlantPigment), typeof(SoftenedReeds), typeof(DryReeds), typeof(PlantClippings),
+
+            typeof(KotlAutomatonHead)
         };
 
         public override bool RetainsColorFrom(CraftItem item, Type type)
@@ -131,8 +134,7 @@ namespace Server.Engines.Craft
 
         public override void PlayCraftEffect(Mobile from)
         {
-            // no sound
-            //from.PlaySound( 0x241 );
+            from.PlaySound( 0x23B );
         }
 
         public override int PlayEndingEffect(Mobile from, bool failed, bool lostMaterial, bool toolBroken, int quality, bool makersMark, CraftItem item)
@@ -162,7 +164,7 @@ namespace Server.Engines.Craft
 
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements))
+            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements) || resourceType == typeof(HatOfTheMagi) || resourceType == typeof(AutomatonActuator))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);
@@ -346,6 +348,7 @@ namespace Server.Engines.Craft
             this.AddCraft(typeof(SledgeHammer), 1044046, 1024021, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             this.AddCraft(typeof(Inshave), 1044046, 1024326, 30.0, 80.0, typeof(IronIngot), 1044036, 2, 1044037);
             this.AddCraft(typeof(Pickaxe), 1044046, 1023718, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
+            this.AddCraft(typeof(Pitchfork), 1044046, 1023719, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             this.AddCraft(typeof(Lockpick), 1044046, 1025371, 45.0, 95.0, typeof(IronIngot), 1044036, 1, 1044037);
             this.AddCraft(typeof(Skillet), 1044046, 1044567, 30.0, 80.0, typeof(IronIngot), 1044036, 4, 1044037);
             this.AddCraft(typeof(FlourSifter), 1044046, 1024158, 50.0, 100.0, typeof(IronIngot), 1044036, 3, 1044037);
@@ -466,75 +469,83 @@ namespace Server.Engines.Craft
             #endregion
 
             #region TOL
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155851, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-            SetData(index, CraftableAddonType.CurledMetalSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155851, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.CurledMetalSignHanger);
             SetDisplayID(index, 2971);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155852, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-            SetData(index, CraftableAddonType.FlourishedMetalSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155852, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.FlourishedMetalSignHanger);
             SetDisplayID(index, 2973);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155853, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-            SetData(index, CraftableAddonType.InwardCurledMetalSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155853, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.InwardCurledMetalSignHanger);
             SetDisplayID(index, 2975);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155854, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-            SetData(index, CraftableAddonType.EndCurledMetalSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155854, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.EndCurledMetalSignHanger);
             SetDisplayID(index, 2977);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156080, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156080, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.LeftMetalDoor_S_In);
             SetDisplayID(index, 1653);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156081, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156081, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.RightMetalDoor_S_In);
             SetDisplayID(index, 1659);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156082, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156082, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.LeftMetalDoor_E_Out);
             SetDisplayID(index, 1660);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156083, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156083, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.RightMetalDoor_E_Out);
             SetDisplayID(index, 1663);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
             index = AddCraft(typeof(WallSafeDeed), 1044050, 1155860, 0.0, 0.0, typeof(IronIngot), 1044036, 20, 1044253);
             ForceNonExceptional(index);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156352, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156352, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.LeftMetalDoor_E_In);
             SetDisplayID(index, 1660);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156353, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156353, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.RightMetalDoor_E_In);
             SetDisplayID(index, 1663);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156350, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156350, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.LeftMetalDoor_S_Out);
             SetDisplayID(index, 1653);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156351, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156351, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.RightMetalDoor_S_Out);
             SetDisplayID(index, 1659);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(KotlPowerCoil), 1044050, 1124171, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
+            index = AddCraft(typeof(KotlPowerCore), 1044050, 1124179, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
             AddRes(index, typeof(CopperWire), 1026265, 5, 1150700);
             AddRes(index, typeof(IronIngot), 1044036, 100, 1044253);
             AddRes(index, typeof(MoonstoneCrystalShard), 1124142, 5, 1156701);
-            AddRecipe(index, (int)TinkerRecipes.KotlPowerCoil);
+            AddRecipe(index, (int)TinkerRecipes.KotlPowerCore);
             SetNeededExpansion(index, Expansion.TOL);
             #endregion
 
@@ -637,6 +648,14 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(HeatingStand), 1011224, 4, 1044253);
             AddRes(index, typeof(CopperWire), 1026265, 1, 1044253);
             ForceNonExceptional(index);
+
+            index = AddCraft(typeof(KotlAutomatonHead), 1044051, 1156998, 100.0, 580.0, typeof(IronIngot), 1044036, 300, 1044037);
+            SetMinSkillOffset(index, 25.0);
+            AddRes(index, typeof(AutomatonActuator), 1156997, 1, 1156999);
+            AddRes(index, typeof(StasisChamberPowerCore), 1156623, 1, 1157000);
+            AddRes(index, typeof(InoperativeAutomatonHead), 1157002, 1, 1157001);
+            SetNeededExpansion(index, Expansion.TOL);
+            AddRecipe(index, (int)TinkerRecipes.KotlAutomatonHead);
 
             #endregion
 
@@ -766,6 +785,14 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044253);
                 this.SetNeededExpansion(index, Expansion.SA);
 
+                index = this.AddCraft(typeof(DrSpectorsLenses), 1073107, 1156991, 100.0, 580.0, typeof(IronIngot), 1044036, 20, 1044037);
+                this.SetMinSkillOffset(index, 25.0);
+                this.AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);
+                this.AddRes(index, typeof(HatOfTheMagi), 1061597, 1, 1044253);
+                this.AddRecipe(index, (int)TinkerRecipes.DrSpectorLenses);
+                this.ForceNonExceptional(index);
+                this.SetNeededExpansion(index, Expansion.TOL);
+
                 index = this.AddCraft(typeof(BraceletOfPrimalConsumption), 1073107, 1157350, 100.0, 580.0, typeof(IronIngot), 1044036, 3, 1044037);
                 this.SetMinSkillOffset(index, 25.0);
                 this.AddRes(index, typeof(RingOfTheElements), 1061104, 1, 1044253);
@@ -773,7 +800,7 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(WhitePearl), 1032694, 10, 1044240);
                 this.AddRecipe(index, (int)TinkerRecipes.BraceletOfPrimalConsumption);
                 this.ForceNonExceptional(index);
-                this.SetNeededExpansion(index, Expansion.SA);
+                this.SetNeededExpansion(index, Expansion.TOL);
             }
             #endregion
 
@@ -889,6 +916,12 @@ namespace Server.Engines.Craft
             {
                 Mobile from = this.m_TrapCraft.From;
                 BaseTool tool = this.m_TrapCraft.Tool;
+
+                if (Siege.SiegeShard)
+                {
+                    AOS.Damage(from, Utility.RandomMinMax(80, 120), 50, 50, 0, 0, 0);
+                    message = 502902; // You fail to set the trap, and inadvertantly hurt yourself in the process.
+                }
 
                 if (tool != null && !tool.Deleted && tool.UsesRemaining > 0)
                     from.SendGump(new CraftGump(from, this.m_TrapCraft.CraftSystem, tool, message));

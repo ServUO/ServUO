@@ -34,7 +34,8 @@ namespace Server
 			DataDirectories = new List<string>();
 
 			GlobalMaxUpdateRange = 24;
-			GlobalUpdateRange = 18;
+			GlobalUpdateRange = 24;
+            GlobalRadarRange = 37;
 		}
 
 		private static bool _Crashed;
@@ -87,6 +88,8 @@ namespace Server
 		}
 
 		public static bool Service { get; private set; }
+
+        public static bool NoConsole { get; private set; }
 		public static bool Debug { get; private set; }
 
 		public static bool HaltOnWarning { get; private set; }
@@ -385,7 +388,16 @@ namespace Server
 				{
 					_UseHRT = true;
 				}
+                else if (Insensitive.Equals(a, "-noconsole"))
+                {
+                    NoConsole = true;
+                }
 			}
+
+            if (!Environment.UserInteractive || Service)
+            {
+                NoConsole = true;
+            }
 
 			try
 			{
@@ -431,7 +443,14 @@ namespace Server
 
 			// Added to help future code support on forums, as a 'check' people can ask for to it see if they recompiled core or not
 			Utility.PushColor(ConsoleColor.DarkGreen);
-			Console.WriteLine(new String('-', Console.BufferWidth));
+            if(!NoConsole)
+            {
+                Console.WriteLine(new String('-', Console.BufferWidth));
+            }
+            else
+            {
+                Console.WriteLine(new String('-', 10));
+            }
 			Utility.PopColor();
 			Utility.PushColor(ConsoleColor.Cyan);
 			Console.WriteLine(
@@ -523,7 +542,7 @@ namespace Server
 
 				Console.WriteLine(" - Press return to exit, or R to try again.");
 
-				if (Console.ReadKey(true).Key != ConsoleKey.R)
+                if (Console.ReadKey(true).Key != ConsoleKey.R)
 				{
 					return;
 				}
@@ -633,12 +652,18 @@ namespace Server
 					Utility.Separate(sb, "-usehrt", " ");
 				}
 
+                if (NoConsole)
+                {
+                    Utility.Separate(sb, "-noconsole", " ");
+                }
+
 				return sb.ToString();
 			}
 		}
 
 		public static int GlobalUpdateRange { get; set; }
 		public static int GlobalMaxUpdateRange { get; set; }
+        public static int GlobalRadarRange { get; set; }
 		
 		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
 

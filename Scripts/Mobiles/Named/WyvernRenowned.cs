@@ -46,9 +46,6 @@ namespace Server.Mobiles
             this.Karma = -24000;
 
             this.VirtualArmor = 70;
-            this.QLPoints = 50;
-
-            this.PackItem(new EssenceDiligence());
         }
 
         public WyvernRenowned(Serial serial)

@@ -114,7 +114,6 @@ namespace Server.Items
 
             if (!attacker.InRange(damageable, 1))
             {
-                this.Visible = false;
                 attacker.MovingEffect(damageable, this.EffectID, 18, 1, false, false, this.Hue, 0);
             }
 
@@ -147,14 +146,6 @@ namespace Server.Items
                 this.m_Target.MovingEffect(this.m_Thrower, this.EffectID, 18, 1, false, false, this.Hue, 0);
             else if (this.m_Thrower != null)
                 Effects.SendMovingParticles(new Entity(Serial.Zero, this.m_KillSave, this.m_Thrower.Map), this.m_Thrower, this.ItemID, 18, 0, false, false, this.Hue, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-
-            Timer.DelayCall(TimeSpan.FromMilliseconds(333.0), new TimerCallback(UnHide));
-        }
-
-        public virtual void UnHide()
-        {
-            if (this != null)
-                this.Visible = true;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -167,7 +158,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            this.Visible = true;
         }
     }
 }

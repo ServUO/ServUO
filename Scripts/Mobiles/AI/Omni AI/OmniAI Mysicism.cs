@@ -1,6 +1,6 @@
 using System;
 using Server.Spells;
-using Server.Spells.Mystic;
+using Server.Spells.Mysticism;
 
 namespace Server.Mobiles
 {
@@ -27,7 +27,7 @@ namespace Server.Mobiles
                 case 0:
                 case 1:
                     {
-                        if (m_Mobile.Combatant is Mobile && this.CheckForSleep((Mobile)this.m_Mobile.Combatant))
+                        if (m_Mobile.Combatant is Mobile && SleepSpell.IsUnderSleepEffects((Mobile)m_Mobile.Combatant))
                         {
                             this.m_Mobile.DebugSay("Casting Sleep");
                             spell = new SleepSpell(this.m_Mobile, null);
@@ -109,26 +109,6 @@ namespace Server.Mobiles
             }
 
             return spell;
-        }
-
-        public bool CheckForSleep(Mobile m)
-        {
-            PlayerMobile pm = m as PlayerMobile;
-
-            if (pm == null && m is BaseCreature)
-            {
-                BaseCreature bc = (BaseCreature)m;
-
-                pm = bc.ControlMaster as PlayerMobile;
-
-                if (pm == null)
-                    pm = bc.SummonMaster as PlayerMobile;
-            }
-
-            if (pm != null && !pm.Asleep)
-                return true;
-            else
-                return false;
         }
     }
 }

@@ -234,9 +234,33 @@ namespace Server.Items
 				m.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
 				return false;
 			}
+            else if (!CheckDestination(m) || (Siege.SiegeShard && m_MapDest == Map.Trammel))
+            {
+                return false;
+            }
 
 			return true;
 		}
+
+        private bool CheckDestination(Mobile m)
+        {
+            Map map = m_MapDest;
+
+            if (map == null || map == Map.Internal)
+            {
+                map = this.Map;
+            }
+
+            Region myRegion = Region.Find(m.Location, m.Map);
+            Region toRegion = Region.Find(m_PointDest, map);
+
+            if (myRegion != toRegion)
+            {
+                return toRegion.OnMoveInto(m, m.Direction, m_PointDest, m.Location);
+            }
+
+            return true;
+        }
 
 		public virtual void StartTeleport(Mobile m)
 		{
@@ -1053,13 +1077,20 @@ namespace Server.Items
 		}
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public int ClilocNumber
+        {
+            get;
+            set;
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool DisableMessage
         {
             get;
             set;
         }
 
-		[CommandProperty(AccessLevel.GameMaster)]
+        [CommandProperty(AccessLevel.GameMaster)]
 		public bool DenyMounted
 		{
 			get { return GetFlag(ConditionFlag.DenyMounted); }
@@ -1248,6 +1279,11 @@ namespace Server.Items
 				return false;
 			}
 
+            if (!DisableMessage && ClilocNumber != 0)
+            {
+                m.SendLocalizedMessage(ClilocNumber);
+            }
+
 			return true;
 		}
 
@@ -1313,11 +1349,12 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(1); // version
+			writer.Write(2); // version
 
-			writer.Write((int)m_Flags);
+            writer.Write(ClilocNumber);
             writer.Write(DisableMessage);
-		}
+            writer.Write((int)m_Flags);
+        }
 
 		public override void Deserialize(GenericReader reader)
 		{
@@ -1327,6 +1364,9 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
+                    ClilocNumber = reader.ReadInt();
+                    goto case 1;
                 case 1:
                     DisableMessage = reader.ReadBool();
                     goto case 0;

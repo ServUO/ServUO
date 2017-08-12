@@ -53,14 +53,16 @@ namespace Server.Commands
 			new CommandEntry("ML Decorations",  "DecorateML",		"DecorateMLDelete",		114),
 			new CommandEntry("SA Decorations",  "DecorateSA",		"DecorateSADelete",		115),
 			new CommandEntry("Spawners",		"XmlLoad Spawns",	"XmlSpawnerWipeAll",	116),
-            new CommandEntry("Despise",         "SetupDespise",     "DeleteDespise",        117),
-            new CommandEntry("Covetous",        "SetupNewCovetous", "DeleteCovetous",       118),
-            new CommandEntry("Shame",           "GenerateNewShame", "DeleteShame",          119),
+            new CommandEntry("New Despise",         "SetupDespise",     "DeleteDespise",        117),
+            new CommandEntry("New Covetous",        "SetupNewCovetous", "DeleteCovetous",       118),
+            new CommandEntry("New Shame",           "GenerateNewShame", "DeleteShame",          119),
             new CommandEntry("New Magincia",    "GenNewMagincia",   "DeleteNewMagincia",    120),
             new CommandEntry("High Seas",       "DecorateHS",       "DeleteHS",             121),
             new CommandEntry("City Loyalty",    "SetupCityLoyaltySystem",   "DeleteCityLoyaltySystem",             122),
             new CommandEntry("Castle Blackthorn",    "GenBlackthorn",       null,                                  123),
             new CommandEntry("Time of Legends",      "DecorateTOL",         null,                                  124),
+            new CommandEntry("New Wrong",      "GenWrongRewamp",            null,                                  125),
+            new CommandEntry("Kotl City",      "GenerateTreasuresOfKotlCity", null,  126),
 		});
 
         public CreateWorld()
@@ -320,6 +322,10 @@ namespace Server.Gumps
                            HasItem(typeof(DungeonHitchingPost), new Point3D(6428, 2677, 0), Map.Felucca);
                 case 124:
                     return WeakEntityCollection.HasCollection("tol");
+                case 125:
+                    return BedrollSpawner.Instances != null && BedrollSpawner.Instances.Count > 0;
+                case 126:
+                    return Server.Engines.TreasuresOfKotlCity.KotlBattleSimulator.Instance != null;
             }
 
             return false;

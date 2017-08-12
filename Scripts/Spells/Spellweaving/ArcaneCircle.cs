@@ -85,7 +85,8 @@ namespace Server.Spells.Spellweaving
         {
             return (m == Map.Trammel || m == Map.Felucca) && 
                 (p.X == 6267 && p.Y == 131) ||
-                (p.X == 6589 && p.Y == 178);
+                (p.X == 6589 && p.Y == 178) ||
+                (p.X == 1431 && p.Y == 1696); // new brit bank
         }
 
         private static bool IsValidLocation(Point3D location, Map map)

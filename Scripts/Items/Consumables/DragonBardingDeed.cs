@@ -63,6 +63,7 @@ namespace Server.Items
             }
         }
 
+        [Constructable]
         public DragonBardingDeed()
             : base(0x14F0)
         {
@@ -122,10 +123,10 @@ namespace Server.Items
             {
                 pet.BardingExceptional = this.Exceptional;
                 pet.BardingCrafter = this.Crafter;
-                pet.BardingHP = pet.BardingMaxHP;
                 pet.BardingResource = this.Resource;
                 pet.HasBarding = true;
                 pet.Hue = this.Hue;
+                pet.BardingHP = pet.BardingMaxHP;
 
                 this.Delete();
 

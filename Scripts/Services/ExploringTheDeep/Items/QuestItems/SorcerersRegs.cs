@@ -19,21 +19,30 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(this, 2))
-                from.SendLocalizedMessage(500446); // That is too far away.
-
-            if (!(from is PlayerMobile))
-                return;
-
-            PlayerMobile pm = (PlayerMobile)from;
-
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
-                Container pack = from.Backpack;
-                pack.TryDropItem(from, new PerfectBlackPearl(), false);
+                from.SendLocalizedMessage(500446); // That is too far away.
+            }
+
+            Item reg = from.Backpack.FindItemByType(typeof(PerfectBlackPearl));
+
+            if (reg == null)
+            {
+                PlayerMobile pm = (PlayerMobile)from;
+
+                if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
+                {
+                    Container pack = from.Backpack;
+                    pack.TryDropItem(from, new PerfectBlackPearl(), false);
+                    from.SendLocalizedMessage(1154489); // You received a Quest Item!
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                }
             }
             else
             {
-                from.PublicOverheadMessage(MessageType.Regular, 0x559, 1154274); // *You aren't quite sure what to do with this. If you spoke to the Salvage Master at the Sons of the Sea in Trinsic you might have a better understanding of its use...*
+                from.SendLocalizedMessage(1154331); // You already have one of these. You don't need another.
             }
         }
 
@@ -67,7 +76,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
@@ -106,21 +121,30 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(this, 2))
-                from.SendLocalizedMessage(500446); // That is too far away.
-
-            if (!(from is PlayerMobile))
-                return;
-
-            PlayerMobile pm = (PlayerMobile)from;
-
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
-                Container pack = from.Backpack;
-                pack.TryDropItem(from, new BurstingBrimstone(), false);
+                from.SendLocalizedMessage(500446); // That is too far away.
+            }
+
+            Item reg = from.Backpack.FindItemByType(typeof(BurstingBrimstone));
+
+            if (reg == null)
+            {
+                PlayerMobile pm = (PlayerMobile)from;
+
+                if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
+                {
+                    Container pack = from.Backpack;
+                    pack.TryDropItem(from, new BurstingBrimstone(), false);
+                    from.SendLocalizedMessage(1154489); // You received a Quest Item!
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                }
             }
             else
             {
-                from.PublicOverheadMessage(MessageType.Regular, 0x559, 1154274); // *You aren't quite sure what to do with this. If you spoke to the Salvage Master at the Sons of the Sea in Trinsic you might have a better understanding of its use...*
+                from.SendLocalizedMessage(1154331); // You already have one of these. You don't need another.
             }
         }
 
@@ -154,7 +178,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
@@ -193,21 +223,30 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(this, 2))
-                from.SendLocalizedMessage(500446); // That is too far away.
-
-            if (!(from is PlayerMobile))
-                return;
-
-            PlayerMobile pm = (PlayerMobile)from;
-
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
-                Container pack = from.Backpack;
-                pack.TryDropItem(from, new BrightDaemonBlood(), false);
+                from.SendLocalizedMessage(500446); // That is too far away.
+            }
+
+            Item reg = from.Backpack.FindItemByType(typeof(BrightDaemonBlood));
+
+            if (reg == null)
+            {
+                PlayerMobile pm = (PlayerMobile)from;
+
+                if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
+                {
+                    Container pack = from.Backpack;
+                    pack.TryDropItem(from, new BrightDaemonBlood(), false);
+                    from.SendLocalizedMessage(1154489); // You received a Quest Item!
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                }
             }
             else
             {
-                from.PublicOverheadMessage(MessageType.Regular, 0x559, 1154274); // *You aren't quite sure what to do with this. If you spoke to the Salvage Master at the Sons of the Sea in Trinsic you might have a better understanding of its use...*
+                from.SendLocalizedMessage(1154331); // You already have one of these. You don't need another.
             }
         }
 
@@ -241,7 +280,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
@@ -280,21 +325,30 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(this, 2))
-                from.SendLocalizedMessage(500446); // That is too far away.
-
-            if (!(from is PlayerMobile))
-                return;
-
-            PlayerMobile pm = (PlayerMobile)from;
-
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
-                Container pack = from.Backpack;
-                pack.TryDropItem(from, new MightyMandrake(), false);
+                from.SendLocalizedMessage(500446); // That is too far away.
+            }
+
+            Item reg = from.Backpack.FindItemByType(typeof(MightyMandrake));
+
+            if (reg == null)
+            {
+                PlayerMobile pm = (PlayerMobile)from;
+
+                if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
+                {
+                    Container pack = from.Backpack;
+                    pack.TryDropItem(from, new MightyMandrake(), false);
+                    from.SendLocalizedMessage(1154489); // You received a Quest Item!
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                }
             }
             else
             {
-                from.PublicOverheadMessage(MessageType.Regular, 0x559, 1154274); // *You aren't quite sure what to do with this. If you spoke to the Salvage Master at the Sons of the Sea in Trinsic you might have a better understanding of its use...*
+                from.SendLocalizedMessage(1154331); // You already have one of these. You don't need another.
             }
         }
 
@@ -328,7 +382,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
@@ -366,21 +426,30 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(this, 2))
-                from.SendLocalizedMessage(500446); // That is too far away.
-
-            if (!(from is PlayerMobile))
-                return;
-
-            PlayerMobile pm = (PlayerMobile)from;
-
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
-                Container pack = from.Backpack;
-                pack.TryDropItem(from, new BurlyBone(), false);
+                from.SendLocalizedMessage(500446); // That is too far away.
+            }
+
+            Item reg = from.Backpack.FindItemByType(typeof(BurlyBone));
+
+            if (reg == null)
+            {
+                PlayerMobile pm = (PlayerMobile)from;
+
+                if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
+                {
+                    Container pack = from.Backpack;
+                    pack.TryDropItem(from, new BurlyBone(), false);
+                    from.SendLocalizedMessage(1154489); // You received a Quest Item!
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                }
             }
             else
             {
-                from.PublicOverheadMessage(MessageType.Regular, 0x559, 1154274); // *You aren't quite sure what to do with this. If you spoke to the Salvage Master at the Sons of the Sea in Trinsic you might have a better understanding of its use...*
+                from.SendLocalizedMessage(1154331); // You already have one of these. You don't need another.
             }
         }
 
@@ -414,7 +483,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
@@ -437,5 +512,5 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
         }
-    }    
+    }
 }

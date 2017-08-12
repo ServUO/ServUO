@@ -263,12 +263,9 @@ namespace Server.Items
             return AOS.Scale(v, 100 + EnhancePotions(m));
         }
 
-        public override bool StackWith(Mobile from, Item dropped, bool playSound)
+        public override bool WillStack(Mobile from, Item dropped)
         {
-            if (dropped is BasePotion && ((BasePotion)dropped).m_PotionEffect == this.m_PotionEffect)
-                return base.StackWith(from, dropped, playSound);
-
-            return false;
+            return dropped is BasePotion && ((BasePotion)dropped).m_PotionEffect == this.m_PotionEffect && base.WillStack(from, dropped);
         }
 
         #region ICraftable Members

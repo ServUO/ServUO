@@ -15,13 +15,17 @@ using Server.Mobiles;
 using Server.Network;
 using Server.Spells.Bushido;
 using Server.Spells.Necromancy;
+using Server.Spells.Chivalry;
 using Server.Spells.Ninjitsu;
+using Server.Spells.First;
 using Server.Spells.Second;
+using Server.Spells.Third;
+using Server.Spells.Fourth;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 using Server.Spells.SkillMasteries;
 using System.Reflection;
-using Server.Spells.Mystic;
+using Server.Spells.Mysticism;
 #endregion
 
 namespace Server.Spells
@@ -129,6 +133,11 @@ namespace Server.Spells
             {
                 ((IDamageableItem)d).OnHarmfulSpell(m_Caster);
             }
+
+            NegativeAttributes.OnCombatAction(Caster);
+
+            if (d is Mobile && (Mobile)d != m_Caster)
+                NegativeAttributes.OnCombatAction((Mobile)d);
 		}
 
 		public Spell(Mobile caster, Item scroll, SpellInfo info)
@@ -182,13 +191,6 @@ namespace Server.Spells
 			damage = AOS.Scale(damage, evalScale);
 
 			damage = AOS.Scale(damage, (int)(scalar * 100));
-
-            #region Skill Mastery
-            SkillMasterySpell spell = SkillMasterySpell.GetHarmfulSpell(Caster, typeof(TribulationSpell));
-
-            if (spell != null)
-                spell.AbsorbDamage(ref damage);
-            #endregion
 
 			return damage / 100;
 		}
@@ -843,7 +845,12 @@ namespace Server.Spells
         #endregion
 
         public virtual void OnBeginCast()
-		{ }
+		{
+            SendCastEffect();
+        }
+
+        public virtual void SendCastEffect()
+        { }
 
 		public virtual void GetCastSkills(out double min, out double max)
 		{
@@ -885,6 +892,11 @@ namespace Server.Spells
 			{
 				scalar = 1.0;
 			}
+
+            if (Mysticism.PurgeMagicSpell.IsUnderCurseEffects(Caster))
+            {
+                scalar += .5;
+            }
 
 			// Lower Mana Cost = 40%
 			int lmc = AosAttributes.GetValue(m_Caster, AosAttribute.LowerManaCost);
@@ -973,7 +985,7 @@ namespace Server.Spells
 			// Paladins with magery of 70.0 or above are subject to a faster casting cap of 2 
 			int fcMax = 4;
 
-			if (CastSkill == SkillName.Magery || CastSkill == SkillName.Necromancy ||
+			if (CastSkill == SkillName.Magery || CastSkill == SkillName.Necromancy || CastSkill == SkillName.Mysticism ||
                 (CastSkill == SkillName.Chivalry && (m_Caster.Skills[SkillName.Magery].Value >= 70.0 || m_Caster.Skills[SkillName.Mysticism].Value >= 70.0)))
 			{
 				fcMax = 2;
@@ -986,7 +998,7 @@ namespace Server.Spells
 				fc = fcMax;
 			}
 
-            if (ProtectionSpell.Registry.ContainsKey(m_Caster) /*|| EodonianPotion.IsUnderEffects(m, PotionEffect.Urali)*/)
+            if (ProtectionSpell.Registry.ContainsKey(m_Caster) || EodonianPotion.IsUnderEffects(m_Caster, PotionEffect.Urali))
             {
                 fc = Math.Min(fcMax - 2, fc - 2);
             }
@@ -1147,9 +1159,13 @@ namespace Server.Spells
 				m_Caster.SendLocalizedMessage(501857); // This spell won't work on that!
 				return false;
 			}
-			else if (Caster.CanBeBeneficial(target, true, allowDead) && CheckSequence())
+            else if (Caster.CanBeBeneficial(target, true, allowDead) && CheckSequence())
 			{
-				Caster.DoBeneficial(target);
+                if (ValidateBeneficial(target))
+                {
+                    Caster.DoBeneficial(target);
+                }
+
 				return true;
 			}
 			else
@@ -1175,6 +1191,24 @@ namespace Server.Spells
 				return false;
 			}
 		}
+
+        public bool ValidateBeneficial(Mobile target)
+        {
+            if (target == null)
+                return true;
+
+            if (this is HealSpell || this is GreaterHealSpell || this is CloseWoundsSpell)
+            {
+                return target.Hits < target.HitsMax;
+            }
+
+            if (this is CureSpell || this is CleanseByFireSpell)
+            {
+                return target.Poisoned;
+            }
+
+            return true;
+        }
 
 		private class AnimTimer : Timer
 		{
@@ -1246,10 +1280,13 @@ namespace Server.Spells
 						// Spell.NextSpellDelay;
 
 					Target originalTarget = m_Spell.m_Caster.Target;
-               
-                    if (m_Spell.InstantTarget != null) {
+
+                    if (m_Spell.InstantTarget != null)
+                    {
                         m_Spell.OnCastInstantTarget();
-                    } else {
+                    }
+                    else
+                    {
                         m_Spell.OnCast();
                     }
 

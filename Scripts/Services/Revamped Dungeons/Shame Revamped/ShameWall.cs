@@ -86,10 +86,11 @@ namespace Server.Engines.ShameRevamped
                     if (component.Location == pnts[0])
                     {
                         var teleporter = new ConditionTeleporter();
-                        teleporter.DeadOnly = true;
+                        //teleporter.DeadOnly = true;
+                        teleporter.ClilocNumber = 1072790; // The wall becomes transparent, and you push your way through it.
                         teleporter.MapDest = map;
                         teleporter.PointDest = pnts[2];
-                        teleporter.DisableMessage = true;
+                        teleporter.DisableMessage = false;
                         teleporter.MoveToWorld(pnts[1], map);
                         WeakEntityCollection.Add("newshame", teleporter);
                     }

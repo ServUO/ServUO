@@ -1,4 +1,5 @@
 ﻿using System;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -12,15 +13,21 @@ namespace Server.Items
         public WillemHartesHat()
             : base(0x171A)
         {
-            this.Hue = 67;
+            this.Hue = 72;
             this.StrRequirement = 10;
-            this.QuestItem = true;
 
             if (this.Lifespan > 0)
             {
                 this.m_Lifespan = this.Lifespan;
                 this.StartTimer();
             }
+        }
+		
+		public override void OnDoubleClick(Mobile from)
+        {
+			base.OnDoubleClick(from);			
+			
+			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154237); // *The hat emits a sour smelling odor indicative of spending a significant period of time in the belly of a dragon.*
         }
 
         public virtual int Lifespan { get { return 3600; } }
@@ -63,6 +70,8 @@ namespace Server.Items
                 else
                     list.Add(1072517, this.m_Lifespan.ToString()); // Lifespan: ~1_val~ seconds
             }
+			
+			list.Add(1072351); // Quest Item
         }
 
         public virtual void StartTimer()

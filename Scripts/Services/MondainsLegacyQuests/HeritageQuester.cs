@@ -40,9 +40,13 @@ namespace Server.Engines.Quests
         public bool Check(PlayerMobile player, bool delete)
         {
             int j = 0;
-			
+
             while (j < player.DoneQuests.Count && player.DoneQuests[j].QuestType != this.m_Quest)
+            {
+                //if(player.Murderer && this.m_Quest == typeof(ResponsibilityQuest)  && player.DoneQuests[j].QuestType.IsSubclassOf(typeof(
+
                 j += 1;
+            }
 			
             if (j == player.DoneQuests.Count)
                 return false;

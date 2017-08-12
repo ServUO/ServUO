@@ -148,7 +148,7 @@ namespace Server.Engines.Harvest
 
             // Every bank holds from 6 to 12 sand
             sand.MinTotal = 6;
-            sand.MaxTotal = 12;
+            sand.MaxTotal = 13;
 
             // A resource bank will respawn its content every 10 to 20 minutes
             sand.MinRespawn = TimeSpan.FromMinutes(10.0);
@@ -165,7 +165,7 @@ namespace Server.Engines.Harvest
 
             // One sand per harvest action
             sand.ConsumedPerHarvest = 1;
-            sand.ConsumedPerFeluccaHarvest = 1;
+            sand.ConsumedPerFeluccaHarvest = 2;
 
             // The digging effect
             sand.EffectActions = new int[] { 11 };
@@ -184,7 +184,7 @@ namespace Server.Engines.Harvest
 
             res = new HarvestResource[]
             {
-                new HarvestResource(100.0, 70.0, 400.0, 1044631, typeof(Sand))
+                new HarvestResource(100.0, 70.0, 100.0, 1044631, typeof(Sand))
             };
 
             veins = new HarvestVein[]
@@ -221,9 +221,11 @@ namespace Server.Engines.Harvest
                 PlayerMobile pm = from as PlayerMobile;
 
                 if (pm != null && pm.GemMining && pm.ToggleMiningGem && from.Skills[SkillName.Mining].Base >= 100.0 && 0.1 > Utility.RandomDouble())
-                    return Loot.RandomGem().GetType();
+                    return Loot.GemTypes[Utility.Random(Loot.GemTypes.Length)];
 
-                if (pm != null && pm.StoneMining && pm.ToggleMiningStone && from.Skills[SkillName.Mining].Base >= 100.0 && 0.15 > Utility.RandomDouble())
+                double chance = tool is RockHammer ? 0.50 : 0.15;
+
+                if (pm != null && pm.StoneMining && pm.ToggleMiningStone && from.Skills[SkillName.Mining].Base >= 100.0 && chance > Utility.RandomDouble())
                     return resource.Types[1];
 
                 return resource.Types[0];
@@ -396,7 +398,8 @@ namespace Server.Engines.Harvest
 
             if (boat || !NiterDeposit.HasBeenChecked(bank))
             {
-                double bonus = (from.Skills[SkillName.Mining].Value / 9999) + ((double)from.Luck / 150000);
+                int luck = from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck;
+                double bonus = (from.Skills[SkillName.Mining].Value / 9999) + ((double)luck / 150000);
 
                 if (boat)
                     bonus -= (bonus * .33);
@@ -408,7 +411,7 @@ namespace Server.Engines.Harvest
                 {
                     int size = Utility.RandomMinMax(1, 5);
 
-                    if (from.Luck / 2500 > Utility.RandomDouble())
+                    if (luck / 2500 > Utility.RandomDouble())
                         size++;
 
                     NiterDeposit niter = new NiterDeposit(size);
@@ -456,7 +459,7 @@ namespace Server.Engines.Harvest
             if ((map == Map.Felucca || map == Map.Trammel) && bounds.Contains(new Point2D(from.X, from.Y)))
                 return false;
 
-            return reg != null && (reg.IsPartOf(typeof(Server.Regions.DungeonRegion)) || map == Map.Ilshenar);
+            return reg != null && (reg.IsPartOf<Server.Regions.DungeonRegion>() || map == Map.Ilshenar);
         }
         #endregion
 

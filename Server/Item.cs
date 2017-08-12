@@ -190,9 +190,15 @@ namespace Server
         Bank = 0x1D,
 
         /// <summary>
-        ///     Last valid layer. Equivalent to <c>Layer.Bank</c>.
+        /// Unused, using this layer makes you invisible to other players. Strange.
         /// </summary>
-        LastValid = 0x1D
+        /// 
+        Reserved_1 = 0x1E,
+
+        /// <summary>
+        ///     Secure Trade Layer
+        /// </summary>
+        SecureTrade = 0x1F,
     }
 
     /// <summary>
@@ -1324,6 +1330,9 @@ namespace Server
         /// </summary>
         public virtual void AddWeightProperty(ObjectPropertyList list)
         {
+            if (Weight == 0)
+                return;
+
             int weight = PileWeight + TotalWeight;
 
             if (weight == 1)
@@ -1774,13 +1783,13 @@ namespace Server
 
                     if (oldLocation.m_X != 0)
                     {
-                        var eable = m_Map.GetClientsInRange(oldLocation, GetMaxUpdateRange());
+                        var eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalMaxUpdateRange);
 
                         foreach (NetState state in eable)
                         {
                             Mobile m = state.Mobile;
 
-                            if (m.InRange(oldLocation, GetUpdateRange(m)))
+                            if (m.InUpdateRange(oldLocation))
                             {
                                 state.Send(RemovePacket);
                             }
@@ -1816,13 +1825,13 @@ namespace Server
 
                 if (m_Map != null)
                 {
-                    var eable = m_Map.GetClientsInRange(m_Location, GetMaxUpdateRange());
+                    var eable = m_Map.GetClientsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
                         Mobile m = state.Mobile;
 
-                        if (m.CanSee(this) && m.InRange(m_Location, GetUpdateRange(m)))
+                        if (m.CanSee(this) && m.InUpdateRange(m_Location))
                         {
                             SendInfoTo(state);
                         }
@@ -1844,13 +1853,13 @@ namespace Server
 
                 if (oldLocation.m_X != 0)
                 {
-                    eable = m_Map.GetClientsInRange(oldLocation, GetMaxUpdateRange());
+                    eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
                         Mobile m = state.Mobile;
 
-                        if (!m.InRange(location, GetUpdateRange(m)))
+                        if (!m.InUpdateRange(location))
                         {
                             state.Send(RemovePacket);
                         }
@@ -1866,13 +1875,13 @@ namespace Server
 
                 ReleaseWorldPackets();
 
-                eable = m_Map.GetClientsInRange(m_Location, GetMaxUpdateRange());
+                eable = m_Map.GetClientsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
                     Mobile m = state.Mobile;
 
-                    if (m.CanSee(this) && m.InRange(m_Location, GetUpdateRange(m)))
+                    if (m.CanSee(this) && m.InUpdateRange(m_Location))
                     {
                         SendInfoTo(state);
                     }
@@ -2014,9 +2023,7 @@ namespace Server
 
         public virtual bool StackWith(Mobile from, Item dropped, bool playSound)
         {
-            if (dropped.Stackable && Stackable && dropped.GetType() == GetType() && dropped.ItemID == ItemID &&
-                dropped.Hue == Hue && dropped.Name == Name && (dropped.Amount + Amount) <= 60000 && dropped != this &&
-                !dropped.Nontransferable && !Nontransferable)
+            if (WillStack(from, dropped))
             {
                 if (m_LootType != dropped.m_LootType)
                 {
@@ -2042,6 +2049,13 @@ namespace Server
             }
 
             return false;
+        }
+
+        public virtual bool WillStack(Mobile from, Item dropped)
+        {
+            return dropped.Stackable && Stackable && dropped.GetType() == GetType() && dropped.ItemID == ItemID &&
+                dropped.Hue == Hue && dropped.Name == Name && dropped.Amount + Amount <= 60000 && dropped != this &&
+                !dropped.Nontransferable && !Nontransferable;
         }
 
         public virtual bool OnDragDrop(Mobile from, Item dropped)
@@ -2325,7 +2339,7 @@ namespace Server
                     {
                         Point3D worldLoc = GetWorldLocation();
 
-                        var eable = m_Map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                        var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                         foreach (NetState state in eable)
                         {
@@ -2360,7 +2374,7 @@ namespace Server
             }
         }
 
-        public virtual bool ForceShowProperties { get { return false; } }
+        public virtual bool ForceShowProperties { get { return IsLockedDown || IsSecure; } }
 
         public virtual int GetPacketFlags()
         {
@@ -3527,12 +3541,12 @@ namespace Server
 
         public virtual int GetMaxUpdateRange()
         {
-            return 18;
+            return 24;
         }
 
         public virtual int GetUpdateRange(Mobile m)
         {
-            return 18;
+            return m.NetState == null ? Core.GlobalUpdateRange : m.NetState.UpdateRange;
         }
 
         public void SendInfoTo(NetState state)
@@ -3698,7 +3712,9 @@ namespace Server
             }
         }
 
-        public const int QuestItemHue = 0x4EA; // Hmmmm... "for EA"?
+        public virtual bool HiddenQuestItemHue { get; set; }
+
+        public int QuestItemHue { get { return (HiddenQuestItemHue ? Hue : 0x04EA); } }
 
         public virtual bool Nontransferable { get { return QuestItem; } }
 
@@ -4084,13 +4100,13 @@ namespace Server
                     Packet p = null;
                     Point3D worldLoc = GetWorldLocation();
 
-                    var eable = map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                    var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
                         Mobile m = state.Mobile;
 
-                        if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                        if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                         {
                             if (m_Parent == null)
                             {
@@ -4147,13 +4163,13 @@ namespace Server
                         Packet p = null;
                         Point3D worldLoc = GetWorldLocation();
 
-                        var eable = map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                        var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                         foreach (NetState state in eable)
                         {
                             Mobile m = state.Mobile;
 
-                            if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                            if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                             {
                                 //if ( sendOPLUpdate )
                                 //	state.Send( RemovePacket );
@@ -4182,13 +4198,13 @@ namespace Server
                 if (sendOPLUpdate)
                 {
                     Point3D worldLoc = GetWorldLocation();
-                    var eable = map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                    var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
                         Mobile m = state.Mobile;
 
-                        if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                        if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                         {
                             state.Send(OPLPacket);
                         }
@@ -4311,13 +4327,13 @@ namespace Server
                 Packet p = null;
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
                     Mobile m = state.Mobile;
 
-                    if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                    if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                     {
                         if (p == null)
                         {
@@ -4355,13 +4371,13 @@ namespace Server
                 Packet p = null;
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
                     Mobile m = state.Mobile;
 
-                    if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                    if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                     {
                         if (p == null)
                         {
@@ -4510,13 +4526,13 @@ namespace Server
 
                             if (m_Location.m_X != 0)
                             {
-                                eable = m_Map.GetClientsInRange(oldLocation, GetMaxUpdateRange());
+                                eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalMaxUpdateRange);
 
                                 foreach (NetState state in eable)
                                 {
                                     Mobile m = state.Mobile;
 
-                                    if (!m.InRange(value, GetUpdateRange(m)))
+                                    if (!m.InUpdateRange(value))
                                     {
                                         state.Send(RemovePacket);
                                     }
@@ -4531,13 +4547,13 @@ namespace Server
 
                             SetLastMoved();
 
-                            eable = m_Map.GetClientsInRange(m_Location, GetMaxUpdateRange());
+                            eable = m_Map.GetClientsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
                             foreach (NetState state in eable)
                             {
                                 Mobile m = state.Mobile;
 
-                                if (m.CanSee(this) && m.InRange(m_Location, GetUpdateRange(m)) &&
+                                if (m.CanSee(this) && m.InUpdateRange(m_Location) &&
                                     (!state.HighSeas || !m_NoMoveHS || (m_DeltaFlags & ItemDelta.Update) != 0 ||
                                      !m.InRange(oldLoc, GetUpdateRange(m))))
                                 {
@@ -4909,6 +4925,12 @@ namespace Server
                 return false;
             }
 
+            if (QuestItem)
+            {
+                from.SendLocalizedMessage(1074769); // An item must be in your backpack (and not in a container within) to be toggled as a quest item.
+                return false;
+            }
+
             Map map = from.Map;
 
             if (map == null)
@@ -5215,13 +5237,13 @@ namespace Server
             {
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
                     Mobile m = state.Mobile;
 
-                    if (m.InRange(worldLoc, GetUpdateRange(m)))
+                    if (m.InUpdateRange(worldLoc))
                     {
                         state.Send(RemovePacket);
                     }

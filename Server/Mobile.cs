@@ -728,6 +728,12 @@ namespace Server
 		private NetState m_NetState;
 		private bool m_Female, m_Warmode, m_Hidden, m_Blessed, m_Flying;
 		private int m_StatCap;
+		private int m_StrCap;
+		private int m_DexCap;
+		private int m_IntCap;
+		private int m_StrMaxCap;
+		private int m_DexMaxCap;
+		private int m_IntMaxCap;
 		private int m_Str, m_Dex, m_Int;
 		private int m_Hits, m_Stam, m_Mana;
 		private int m_Fame, m_Karma;
@@ -765,8 +771,6 @@ namespace Server
 		private long m_NextActionMessage;
 		private bool m_Paralyzed;
 		private ParalyzedTimer m_ParaTimer;
-		private bool _Sleep;
-		private SleepTimer _SleepTimer;
 		private bool m_Frozen;
 		private FrozenTimer m_FrozenTimer;
 		private int m_AllowedStealthSteps;
@@ -834,7 +838,10 @@ namespace Server
 			}
 		}
 
-		protected virtual void OnRaceChange(Race oldRace)
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool CharacterOut { get; set; }
+
+        protected virtual void OnRaceChange(Race oldRace)
 		{ }
 
 		public virtual double RacialSkillBonus { get { return 0; } }
@@ -855,7 +862,7 @@ namespace Server
 
         [CommandProperty(AccessLevel.Decorator)]
         public bool SpecialSlayerMechanics { get { return m_SpecialSlayerMechanics; } }
-  
+
 		public int[] Resistances { get { return m_Resistances; } }
 
 		public virtual int BasePhysicalResistance { get { return 0; } }
@@ -1601,15 +1608,15 @@ namespace Server
 		public int AllowedStealthSteps { get { return m_AllowedStealthSteps; } set { m_AllowedStealthSteps = value; } }
 
 		/* Logout:
-		* 
+		*
 		* When a client logs into mobile x
 		*  - if ( x is Internalized ) move x to logout location and map
-		* 
+		*
 		* When a client attached to a mobile disconnects
 		*  - LogoutTimer is started
 		*	   - Delay is taken from Region.GetLogoutDelay to allow insta-logout regions.
 		*     - OnTick : Location and map are stored, and mobile is internalized
-		* 
+		*
 		* Some things to consider:
 		*  - An internalized person getting killed (say, by poison). Where does the body go?
 		*  - Regions now have a GetLogoutDelay( Mobile m ); virtual function (see above)
@@ -1688,26 +1695,6 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual bool Asleep
-		{
-			get { return _Sleep; }
-			set
-			{
-				if (_Sleep != value)
-				{
-					_Sleep = value;
-
-					if (_SleepTimer != null)
-					{
-						Send(SpeedControl.Disable);
-						_SleepTimer.Stop();
-						_SleepTimer = null;
-					}
-				}
-			}
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
 		public bool DisarmReady
 		{
 			get { return m_DisarmReady; }
@@ -1757,18 +1744,6 @@ namespace Server
 
 				m_ParaTimer = new ParalyzedTimer(this, duration);
 				m_ParaTimer.Start();
-			}
-		}
-
-		public void Sleep(TimeSpan duration)
-		{
-			if (!_Sleep)
-			{
-				Asleep = true;
-				Send(SpeedControl.WalkSpeed);
-
-				_SleepTimer = new SleepTimer(this, duration);
-				_SleepTimer.Start();
 			}
 		}
 
@@ -2022,23 +1997,6 @@ namespace Server
 			protected override void OnTick()
 			{
 				m_Mobile.Paralyzed = false;
-			}
-		}
-
-		private class SleepTimer : Timer
-		{
-			private readonly Mobile _Mobile;
-
-			public SleepTimer(Mobile m, TimeSpan duration)
-				: base(duration)
-			{
-				Priority = TimerPriority.TwentyFiveMS;
-				_Mobile = m;
-			}
-
-			protected override void OnTick()
-			{
-				_Mobile.Asleep = false;
 			}
 		}
 
@@ -3155,7 +3113,7 @@ namespace Server
 					return false;
 				}
 
-				if (m_Paralyzed || m_Frozen || _Sleep)
+				if (m_Paralyzed || m_Frozen)
 				{
 					SendLocalizedMessage(500111); // You are frozen and can not move.
 
@@ -3420,7 +3378,7 @@ namespace Server
 				{
 					NetState ns = m.NetState;
 
-					if (ns != null && Utility.InUpdateRange(m_Location, m.m_Location) && m.CanSee(this))
+					if (ns != null && m.InUpdateRange(m_Location) && m.CanSee(this))
 					{
 						if (ns.StygianAbyss)
 						{
@@ -3959,11 +3917,6 @@ namespace Server
 				m_ParaTimer.Stop();
 			}
 
-			if (_SleepTimer != null)
-			{
-				_SleepTimer.Stop();
-			}
-
 			if (m_FrozenTimer != null)
 			{
 				m_FrozenTimer.Stop();
@@ -4095,17 +4048,6 @@ namespace Server
 				}
 			}
 
-			if (Asleep)
-			{
-				Asleep = false;
-				Send(SpeedControl.Disable);
-
-				if (_SleepTimer != null)
-				{
-					_SleepTimer.Stop();
-				}
-			}
-
 			var content = new List<Item>();
 			var equip = new List<Item>();
 			var moveToPack = new List<Item>();
@@ -4215,7 +4157,6 @@ namespace Server
 						{
 							animPacket = Packet.Acquire(new DeathAnimation(this, c));
 						}
-						;
 
 						state.Send(animPacket);
 
@@ -5608,16 +5549,6 @@ namespace Server
 
 				Paralyzed = false;
 
-				if (Asleep)
-				{
-					Asleep = false;
-
-					if (from != null)
-					{
-						from.Send(SpeedControl.Disable);
-					}
-				}
-
 				switch (m_VisibleDamageType)
 				{
 					case VisibleDamageType.Related:
@@ -5845,6 +5776,17 @@ namespace Server
 
 			switch (version)
 			{
+                case 34:
+                    {
+						m_StrCap = reader.ReadInt();
+						m_DexCap = reader.ReadInt();
+						m_IntCap = reader.ReadInt();
+						m_StrMaxCap = reader.ReadInt();
+						m_DexMaxCap = reader.ReadInt();
+						m_IntMaxCap = reader.ReadInt();
+
+                        goto case 33;
+                    }
                 case 33:
                     {
                         m_SpecialSlayerMechanics = reader.ReadBool();
@@ -6075,6 +6017,16 @@ namespace Server
 					}
 				case 0:
 					{
+						if (version < 34)
+						{
+                            m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
+                            m_DexCap = Config.Get("PlayerCaps.DexCap", 125);
+                            m_IntCap = Config.Get("PlayerCaps.IntCap", 125);
+                            m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150);
+                            m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150);
+                            m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150);
+						}
+
 						if (version < 21)
 						{
 							m_Stabled = new List<Mobile>();
@@ -6092,7 +6044,7 @@ namespace Server
 
 						if (version < 3)
 						{
-							m_StatCap = 225;
+                            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
 						}
 
 						if (version < 15)
@@ -6333,7 +6285,14 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(33); // version
+			writer.Write(34); // version
+
+			writer.Write(m_StrCap);
+			writer.Write(m_DexCap);
+			writer.Write(m_IntCap);
+			writer.Write(m_StrMaxCap);
+			writer.Write(m_DexMaxCap);
+			writer.Write(m_IntMaxCap);
 
             writer.Write(m_SpecialSlayerMechanics);
 
@@ -6352,7 +6311,7 @@ namespace Server
             {
                 writer.Write(false);
             }
-            
+
             writer.Write(m_IgnoreMobiles);
 
 			writer.WriteDeltaTime(m_LastStrGain);
@@ -6658,7 +6617,7 @@ namespace Server
 
 		public virtual int MaxWeight { get { return int.MaxValue; } }
 
-		public void AddItem(Item item)
+		public virtual void AddItem(Item item)
 		{
 			if (item == null || item.Deleted)
 			{
@@ -7273,6 +7232,11 @@ namespace Server
 			return null;
 		}
 
+        public TGump FindGump<TGump>() where TGump : Gump
+        {
+            return FindGump(typeof(TGump)) as TGump;
+        }
+
 		public bool CloseGump(Type type)
 		{
 			if (m_NetState != null)
@@ -7496,6 +7460,15 @@ namespace Server
 			}
 		}
 
+        public virtual void OnUpdateRangeChanged(int oldRange, int newRange)
+        {
+            if (oldRange != newRange)
+            {
+                ClearScreen();
+                SendEverything();
+            }
+        }
+
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public Map Map
 		{
@@ -7623,11 +7596,11 @@ namespace Server
 
 			Region newRegion = Region.Find(m_Location, m_Map);
 			Region oldRegion = m_Region;
-			
+
 			if (newRegion != oldRegion)
 			{
 				m_Region = newRegion;
-				
+
 				Region.OnRegionChange(this, oldRegion, newRegion);
 				OnRegionChange(oldRegion, newRegion);
 			}
@@ -8490,29 +8463,6 @@ namespace Server
 		#endregion
 
 		public virtual int Luck { get { return 0; } }
-        public virtual int AttackChance { get { return 0; } }
-        public virtual int WeaponSpeed { get { return 0; } }
-        public virtual int WeaponDamage { get { return 0; } }
-        public virtual int LowerRegCost { get { return 0; } }
-        public virtual int RegenHits { get { return 0; } }
-        public virtual int RegenStam { get { return 0; } }
-        public virtual int RegenMana { get { return 0; } }
-        public virtual int ReflectPhysical { get { return 0; } }
-        public virtual int EnhancePotions { get { return 0; } }
-        public virtual int DefendChance { get { return 0; } }
-        public virtual int SpellDamage { get { return 0; } }
-        public virtual int CastRecovery { get { return 0; } }
-        public virtual int CastSpeed { get { return 0; } }
-        public virtual int LowerManaCost { get { return 0; } }
-        public virtual int BonusStr { get { return 0; } }
-        public virtual int BonusDex { get { return 0; } }
-        public virtual int BonusInt { get { return 0; } }
-        public virtual int BonusHits { get { return 0; } }
-        public virtual int BonusStam { get { return 0; } }
-        public virtual int BonusMana { get { return 0; } }
-        public virtual int MaxHitIncrease { get { return 0; } }
-        public virtual int MaxStamIncrease { get { return 0; } }
-        public virtual int MaxManaIncrease { get { return 0; } }
 
         public virtual int HuedItemID { get { return (m_Female ? 0x2107 : 0x2106); } }
 
@@ -8636,7 +8586,7 @@ namespace Server
 		{
 			int flags = 0x0;
 
-			if (m_Paralyzed || m_Frozen || _Sleep)
+			if (m_Paralyzed || m_Frozen)
 			{
 				flags |= 0x01;
 			}
@@ -8919,10 +8869,15 @@ namespace Server
 
 						if (m_Map == Map.Internal && m_LogoutMap != null)
 						{
-							Map = m_LogoutMap;
+                            CharacterOut = true;
+                            Map = m_LogoutMap;
 							Location = m_LogoutLocation;
 						}
-					}
+                        else
+                        {
+                            CharacterOut = false;
+                        }
+                    }
 
 					for (int i = m_Items.Count - 1; i >= 0; --i)
 					{
@@ -9927,9 +9882,8 @@ namespace Server
 					// Check to see if we are attached to a client
 					if (ourState != null)
 					{
-						var eeable = map.GetObjectsInRange(newLocation, Core.GlobalMaxUpdateRange);
-
 						// We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
+                        var eeable = map.GetObjectsInRange(newLocation, Core.GlobalMaxUpdateRange);
 
 						foreach (IEntity o in eeable)
 						{
@@ -9944,51 +9898,57 @@ namespace Server
 								{
 									item.SendInfoTo(ourState);
 								}
+                                else if (Utility.InRange(oldLocation, loc, range) && !Utility.InRange(newLocation, loc, range) && CanSee(item))
+                                {
+                                    ourState.Send(item.RemovePacket);
+                                }
 							}
 							else if (o != this && o is Mobile)
 							{
 								Mobile m = (Mobile)o;
 
-								if (!Utility.InUpdateRange(newLocation, m.m_Location))
-								{
-									continue;
-								}
+                                if (!Utility.InUpdateRange(this, newLocation, m.m_Location) &&
+                                    !Utility.InUpdateRange(m, newLocation, m.m_Location))
+                                {
+                                    continue;
+                                }
 
-								bool inOldRange = Utility.InUpdateRange(oldLocation, m.m_Location);
+                                bool inMyOldRange = Utility.InUpdateRange(this, oldLocation, m.m_Location);
+                                bool inThierOldRange = Utility.InUpdateRange(m, oldLocation, m.m_Location);
 
-								if (m.m_NetState != null && ((isTeleport && (!m.m_NetState.HighSeas || !m_NoMoveHS)) || !inOldRange) &&
-									m.CanSee(this))
-								{
-									m.m_NetState.Send(MobileIncoming.Create(m.m_NetState, m, this));
+                                if (m.m_NetState != null && ((isTeleport && (!m.m_NetState.HighSeas || !m_NoMoveHS)) || !inThierOldRange) &&
+                                    m.CanSee(this))
+                                {
+                                    m.m_NetState.Send(MobileIncoming.Create(m.m_NetState, m, this));
 
-									if (m.m_NetState.StygianAbyss)
-									{
-										if (m_Poison != null)
-										{
-											m.m_NetState.Send(new HealthbarPoison(this));
-										}
+                                    if (m.m_NetState.StygianAbyss)
+                                    {
+                                        if (m_Poison != null)
+                                        {
+                                            m.m_NetState.Send(new HealthbarPoison(this));
+                                        }
 
-										if (m_Blessed || m_YellowHealthbar)
-										{
-											m.m_NetState.Send(new HealthbarYellow(this));
-										}
-									}
+                                        if (m_Blessed || m_YellowHealthbar)
+                                        {
+                                            m.m_NetState.Send(new HealthbarYellow(this));
+                                        }
+                                    }
 
-									if (IsDeadBondedPet)
-									{
-										m.m_NetState.Send(new BondedStatus(0, m_Serial, 1));
-									}
+                                    if (IsDeadBondedPet)
+                                    {
+                                        m.m_NetState.Send(new BondedStatus(0, m_Serial, 1));
+                                    }
 
-									if (ObjectPropertyList.Enabled)
-									{
-										m.m_NetState.Send(OPLPacket);
+                                    if (ObjectPropertyList.Enabled)
+                                    {
+                                        m.m_NetState.Send(OPLPacket);
 
-										//foreach ( Item item in m_Items )
-										//	m.m_NetState.Send( item.OPLPacket );
-									}
-								}
+                                        //foreach ( Item item in m_Items )
+                                        //	m.m_NetState.Send( item.OPLPacket );
+                                    }
+                                }
 
-								if (!inOldRange && CanSee(m))
+                                if (!inMyOldRange && CanSee(m))
 								{
 									ourState.Send(MobileIncoming.Create(ourState, this, m));
 
@@ -10030,7 +9990,7 @@ namespace Server
 						// We're not attached to a client, so simply send an Incoming
 						foreach (NetState ns in eable)
 						{
-							if (((isTeleport && (!ns.HighSeas || !m_NoMoveHS)) || !Utility.InUpdateRange(oldLocation, ns.Mobile.Location)) &&
+                            if (((isTeleport && (!ns.HighSeas || !m_NoMoveHS)) || (!ns.Mobile.InUpdateRange(oldLocation) && ns.Mobile.InUpdateRange(newLocation))) &&
 								ns.Mobile.CanSee(this))
 							{
 								ns.Send(MobileIncoming.Create(ns, ns.Mobile, this));
@@ -10692,7 +10652,7 @@ namespace Server
 
 				return false;
 			}
-			
+
 			if (from.InRange(Location, 2))
 			{
 				return OpenTrade(from, dropped);
@@ -10746,7 +10706,7 @@ namespace Server
 		/// 			SendMessage( "That is too heavy for you to lift." );
 		/// 			return false;
 		/// 		}
-		/// 		
+		///
 		/// 		return base.OnDragLift( item );
 		///  }</code>
 		/// </example>
@@ -10928,7 +10888,13 @@ namespace Server
 
 		public void DefaultMobileInit()
 		{
-            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225); ;
+            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
+            m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
+            m_DexCap = Config.Get("PlayerCaps.DexCap", 125);
+            m_IntCap = Config.Get("PlayerCaps.IntCap", 125);
+            m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150);
+            m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150);
+            m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150);
 			m_FollowersMax = 5;
 			m_Skills = new Skills(this);
 			m_Items = new List<Item>();
@@ -11628,7 +11594,7 @@ namespace Server
 			}
 		}
 
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
+	    [CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public virtual bool Criminal
 		{
 			get { return m_Criminal; }
@@ -11661,6 +11627,9 @@ namespace Server
 				}
 			}
 		}
+
+		[CommandProperty(AccessLevel.Counselor)]
+		public virtual bool Murderer { get { return m_Kills >= 5; } }
 
 		public bool CheckAlive()
 		{
@@ -12058,6 +12027,14 @@ namespace Server
 			return (p.X >= (m_Location.m_X - range)) && (p.X <= (m_Location.m_X + range)) && (p.Y >= (m_Location.m_Y - range)) &&
 				   (p.Y <= (m_Location.m_Y + range));
 		}
+
+        public bool InUpdateRange(IPoint2D p)
+        {
+            if (m_NetState == null)
+                return false;
+
+            return InRange(p, m_NetState.UpdateRange);
+        }
 		#endregion
 
 		public void InitStats(int str, int dex, int intel)
@@ -12255,7 +12232,7 @@ namespace Server
 		public static bool GuildClickMessage { get { return m_GuildClickMessage; } set { m_GuildClickMessage = value; } }
 		public static bool OldPropertyTitles { get { return m_OldPropertyTitles; } set { m_OldPropertyTitles = value; } }
 
-		public virtual bool ShowFameTitle { get { return true; } } //(m_Player || m_Body.IsHuman) && m_Fame >= 10000; } 
+		public virtual bool ShowFameTitle { get { return true; } } //(m_Player || m_Body.IsHuman) && m_Fame >= 10000; }
 
 		/// <summary>
 		///     Overridable. Event invoked when the Mobile is single clicked.
@@ -12506,6 +12483,48 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
+		public int StrCap
+		{
+			get { return m_StrCap; }
+			set { m_StrCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int DexCap
+		{
+			get { return m_DexCap; }
+			set { m_DexCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int IntCap
+		{
+			get { return m_IntCap; }
+			set { m_IntCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int StrMaxCap
+		{
+			get { return m_StrMaxCap; }
+			set { m_StrMaxCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int DexMaxCap
+		{
+			get { return m_DexMaxCap; }
+			set { m_DexMaxCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int IntMaxCap
+		{
+			get { return m_IntMaxCap; }
+			set { m_IntMaxCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public virtual bool Meditating { get; set; }
 
 		[CommandProperty(AccessLevel.Decorator)]
@@ -12535,3 +12554,4 @@ namespace Server
 		{ }
 	}
 }
+    

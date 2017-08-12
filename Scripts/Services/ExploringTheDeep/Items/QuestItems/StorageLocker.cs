@@ -24,6 +24,12 @@ namespace Server.Items
         private List<Item> m_Barrels;
         private Timer m_RestartTimer;
         private DateTime m_RestartTime;
+		
+		public List<Item> Barrels
+        {
+            get { return m_Barrels; }
+            set { m_Barrels = value; }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
@@ -119,7 +125,7 @@ namespace Server.Items
             int index = Utility.Random(0, 8);
             int randomkey = Utility.Random(-4, 4);            
             bool loot = false;
-            Item barrel;
+            Item barrel = null;
 
             for (int k = 0; k < 8; k++)
             {
@@ -134,7 +140,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    barrel = new WoodenToMetalBarrel();
+                    barrel = new WoodenToMetalBarrel(this);
                     this.m_Barrels.Add(barrel);
                 }
 
@@ -158,15 +164,23 @@ namespace Server.Items
                         {
                             key = m_Type;
                             loot = true;
+
+                            barrel = new WoodenKeyBarrel(key);
+                            ((WoodenKeyBarrel)barrel).StorageLocker = this;
+                        }
+                        else
+                        {
+                            key = Parts.None;
+                            barrel = new WoodenKeyBarrel(key);
                         }
                     }
                     else
                     {
                         key = Parts.None;
+                        barrel = new WoodenKeyBarrel(key);
                     }
 
-                    barrel = new WoodenKeyBarrel(key);
-                    this.m_Barrels.Add(barrel);                    
+                    this.m_Barrels.Add(barrel);                 
 
                     barrel.MoveToWorld(new Point3D(itemx, itemy, z), this.Map);
                 }
@@ -213,12 +227,12 @@ namespace Server.Items
             this.m_RestartTimer = new RestartTimer(this, ts);
             this.m_RestartTimer.Start();
         }
-        
-        public override void OnAfterDelete()
-        {
-            base.OnAfterDelete();
 
-            Stop();                
+        public override void OnDelete()
+        {
+            Stop();
+
+            base.OnDelete();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -249,6 +263,8 @@ namespace Server.Items
             {
                 this.m_RestartTime = reader.ReadDeltaTime();
             }
+			
+			this.BeginRestart(TimeSpan.FromSeconds(10.0));
         }
     }
 

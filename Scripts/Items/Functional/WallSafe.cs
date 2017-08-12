@@ -59,7 +59,7 @@ namespace Server.Items
             {
                 BaseHouse house = BaseHouse.FindHouseAt(this);
 
-                if (house != null && house.IsOwner(from) && house.Addons.Contains(this))
+                if (house != null && (house.IsOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
                 {
                     Effects.PlaySound(GetWorldLocation(), Map, 0x3B3);
                     from.SendLocalizedMessage(500461); // You destroy the item.
@@ -216,7 +216,7 @@ namespace Server.Items
 
                                     safe.ItemID = itemID;
 
-                                    house.Addons.Add(safe);
+                                    house.Addons[safe] = m;
 
                                     Delete();
                                 }

@@ -116,7 +116,6 @@ namespace Server.Network
 			Register(0xA7, 4, true, RequestScrollWindow);
 			Register(0xAD, 0, true, UnicodeSpeech);
 			Register(0xB1, 0, true, DisplayGumpResponse);
-			Register(0xB5, 64, true, ChatRequest);
 			Register(0xB6, 9, true, ObjectHelpRequest);
 			Register(0xB8, 0, true, ProfileReq);
 			Register(0xBB, 9, false, AccountID);
@@ -355,11 +354,6 @@ namespace Server.Network
 			{
 				EventSink.InvokeRenameRequest(new RenameRequestEventArgs(from, targ, pvSrc.ReadStringSafe()));
 			}
-		}
-
-		public static void ChatRequest(NetState state, PacketReader pvSrc)
-		{
-			EventSink.InvokeChatRequest(new ChatRequestEventArgs(state.Mobile));
 		}
 
 		public static void SecureTrade(NetState state, PacketReader pvSrc)
@@ -1739,6 +1733,22 @@ namespace Server.Network
 		{
             int range = pvSrc.ReadByte();
 
+            //            min   max  default
+            /* 640x480    5     18   15
+             * 800x600    5     18   18
+             * 1024x768   5     24   24
+             * 1152x864   5     24   24 
+             * 1280x720   5     24   24
+             */
+
+            int old = state.UpdateRange;
+            state.UpdateRange = range;
+
+            if (state.Mobile != null)
+            {
+                state.Mobile.OnUpdateRangeChanged(old, range);
+            }
+
             state.Send(ChangeUpdateRange.Instantiate(range));
 		}
 
@@ -1928,7 +1938,7 @@ namespace Server.Network
 				{
 					Mobile m = World.FindMobile(s);
 
-					if (m != null && from.CanSee(m) && Utility.InUpdateRange(from, m))
+					if (m != null && from.CanSee(m) && from.InUpdateRange(m))
 					{
 						m.SendPropertiesTo(from);
 					}
@@ -1938,7 +1948,7 @@ namespace Server.Network
 					Item item = World.FindItem(s);
 
 					if (item != null && !item.Deleted && from.CanSee(item) &&
-						Utility.InUpdateRange(from.Location, item.GetWorldLocation()))
+                        from.InUpdateRange(item.GetWorldLocation()))
 					{
 						item.SendPropertiesTo(from);
 					}
@@ -1961,7 +1971,7 @@ namespace Server.Network
 			{
 				Mobile m = World.FindMobile(s);
 
-				if (m != null && from.CanSee(m) && Utility.InUpdateRange(from, m))
+                if (m != null && from.CanSee(m) && from.InUpdateRange(m))
 				{
 					m.SendPropertiesTo(from);
 				}
@@ -1971,7 +1981,7 @@ namespace Server.Network
 				Item item = World.FindItem(s);
 
 				if (item != null && !item.Deleted && from.CanSee(item) &&
-					Utility.InUpdateRange(from.Location, item.GetWorldLocation()))
+                    from.InUpdateRange(item.GetWorldLocation()))
 				{
 					item.SendPropertiesTo(from);
 				}
@@ -3117,7 +3127,7 @@ namespace Server.Network
 
         public static void KRSeed(NetState state, PacketReader pvSrc)
         {
-            // KR Client detected 
+            // KR Client detected
             state.Send(new KRVerifier());
         }
 
@@ -3160,7 +3170,7 @@ namespace Server.Network
 
             int hue = pvSrc.ReadInt16();
             int unk5 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00
-            int unk6 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00	
+            int unk6 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00
 
             // isX = skill amount | vsX = skill
             int is1 = pvSrc.ReadByte();

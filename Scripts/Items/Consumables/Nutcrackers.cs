@@ -98,7 +98,7 @@ namespace Server.Items
                 base.GetContextMenuEntries(from, list);
         }
 
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
             if (craftItem != null && craftItem.Data is ChocolateType)
             {

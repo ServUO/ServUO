@@ -23,34 +23,34 @@ namespace Server.Mobiles
 
         [Constructable]
         public TheMasterInstructor(SorcerersPlateController controller)
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             m_Instances.Add(this);
             m_Controller = controller;
 
-            this.Name = NameList.RandomName("ancient lich");
+            this.Name = "Anshu";
             this.Title = "The Master Instructor";
-            this.Body = 78;
+            this.Body = 0x4e;
             this.BaseSoundID = 412;
-            this.Hue = 92;
+            this.Hue = 1284;
 
             this.SetStr(216, 305);
             this.SetDex(96, 115);
             this.SetInt(966, 1045);
 
-            this.SetHits(560, 595);
+            this.SetHits(700, 800);
 
-            this.SetDamage(35, 69);
+            this.SetDamage(15, 27);
 
             this.SetDamageType(ResistanceType.Physical, 20);
             this.SetDamageType(ResistanceType.Cold, 40);
             this.SetDamageType(ResistanceType.Energy, 40);
 
             this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 25, 30);
+            this.SetResistance(ResistanceType.Fire, 30, 40);
             this.SetResistance(ResistanceType.Cold, 50, 60);
             this.SetResistance(ResistanceType.Poison, 50, 60);
-            this.SetResistance(ResistanceType.Energy, 25, 30);
+            this.SetResistance(ResistanceType.Energy, 50, 60);
 
             this.SetSkill(SkillName.EvalInt, 120.1, 130.0);
             this.SetSkill(SkillName.Magery, 120.1, 130.0);
@@ -59,8 +59,9 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 175.2, 200.0);
             this.SetSkill(SkillName.Tactics, 90.1, 100.0);
             this.SetSkill(SkillName.Wrestling, 75.1, 100.0);
-            this.SetSkill(SkillName.Necromancy, 120.1, 130.0);
-            this.SetSkill(SkillName.SpiritSpeak, 120.1, 130.0);
+            this.SetSkill(SkillName.Necromancy, 120.0);
+            this.SetSkill(SkillName.SpiritSpeak, 120.0);
+			this.SetSkill(SkillName.DetectHidden, 100.0);
 
             this.Fame = 23000;
             this.Karma = -23000;
@@ -104,6 +105,7 @@ namespace Server.Mobiles
         public override bool BleedImmune { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override int TreasureMapLevel { get { return 5; } }
+		public override bool AutoDispel { get { return true; } }
 
         public override int GetIdleSound() { return 0x19D; }
         public override int GetAngerSound() { return 0x175; }

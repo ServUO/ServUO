@@ -202,7 +202,7 @@ namespace Server.Items
                     typeof(Tempest), typeof(UnboundEnergyVortex),
                     typeof(ChaosVortex), typeof(WindElemental),
                     typeof(FlameElemental), typeof(QuartzElemental),
-                    typeof(VoidManifestation)
+                    typeof(VoidManifestation), typeof(DemonKnight)
                 );
 
             elemental.Entries = new SlayerEntry[]
@@ -211,7 +211,7 @@ namespace Server.Items
                         (
                             SlayerName.BloodDrinking,
 
-                            typeof(BloodElemental)
+                            typeof(BloodElemental),     typeof(DemonKnight)
                         ),
 
                     new SlayerEntry
@@ -223,29 +223,31 @@ namespace Server.Items
                             typeof(EarthElemental),     typeof(SummonedEarthElemental),
                             typeof(GoldenElemental),    typeof(ShadowIronElemental),
                             typeof(ValoriteElemental),  typeof(VeriteElemental),
-                            typeof(QuartzElemental)
+                            typeof(QuartzElemental),    typeof(DemonKnight)
                         ),
 
                     new SlayerEntry
                         (
                             SlayerName.ElementalHealth,
 
-                            typeof(PoisonElemental)
+                            typeof(PoisonElemental),    typeof(DemonKnight)
                         ),
 
                     new SlayerEntry
                         (
                             SlayerName.FlameDousing,
 
-                            typeof(FireElemental),  typeof(FireElementalRenowned),
-                            typeof(SummonedFireElemental), typeof(FlameElemental)
+                            typeof(FireElemental),          typeof(FireElementalRenowned),
+                            typeof(SummonedFireElemental),  typeof(FlameElemental),
+                            typeof(DemonKnight)
                         ),
 
                     new SlayerEntry
                         (
                             SlayerName.SummerWind,
 
-                            typeof(SnowElemental),  typeof(IceElemental)
+                            typeof(SnowElemental),  typeof(IceElemental),
+                            typeof(DemonKnight)
                         ),
 
                     new SlayerEntry
@@ -255,14 +257,16 @@ namespace Server.Items
                             typeof(AirElemental),   typeof(SummonedAirElemental),
                             typeof(Flurry),         typeof(Mistral),
                             typeof(Tempest),        typeof(UnboundEnergyVortex),
-                            typeof(ChaosVortex),    typeof(WindElemental)
+                            typeof(ChaosVortex),    typeof(WindElemental),
+                            typeof(DemonKnight)
                         ),
 
                     new SlayerEntry
                         (
                             SlayerName.WaterDissipation,
 
-                            typeof(WaterElemental),     typeof(SummonedWaterElemental)
+                            typeof(WaterElemental),     typeof(SummonedWaterElemental),
+                            typeof(DemonKnight)
                         )
                 };
 

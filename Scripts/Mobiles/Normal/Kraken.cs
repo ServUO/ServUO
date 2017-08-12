@@ -48,9 +48,6 @@ namespace Server.Mobiles
             this.CanSwim = true;
             this.CantWalk = true;
 
-            if(.1 >= Utility.RandomDouble())
-                this.PackItem(new MessageInABottle());
-
             //Rope is supposed to be a rare drop.  ref UO Guide Kraken
             if (Utility.RandomDouble() < .05)
             {
@@ -58,6 +55,24 @@ namespace Server.Mobiles
                 rope.ItemID = 0x14F8;
                 this.PackItem(rope);
             }                       
+        }
+
+        public override void OnDeath(Container c)
+        {
+            if (CheckLocation() && .1 >= Utility.RandomDouble())
+                c.DropItem(new MessageInABottle());
+
+            base.OnDeath(c);
+        }
+
+        private bool CheckLocation()
+        {
+            Region r = this.Region;
+
+            if (r is Server.Regions.DungeonRegion || Server.Spells.SpellHelper.IsFeluccaWind(Map, Location) || Server.Spells.SpellHelper.IsTrammelWind(Map, Location))
+                return false;
+
+            return true;
         }
 
         public Kraken(Serial serial)

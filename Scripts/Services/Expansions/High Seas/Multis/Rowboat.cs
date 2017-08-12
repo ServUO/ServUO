@@ -131,7 +131,7 @@ namespace Server.Multis
             }
         }
 
-        public override bool IsComponentItem(ISpawnable item)
+        public override bool IsComponentItem(IEntity item)
         {
             return item == this || item == m_Line || item == m_Rudder || item is RudderHandle;
         }

@@ -89,7 +89,7 @@ namespace Server.Gumps
                     m_From.SendGump(new QAndAGump(m_From, m_Quest));
                 }
             }
-            else
+            else if (info.ButtonID != 0 && (info.IsSwitched(1) || info.IsSwitched(2) || info.IsSwitched(3) || info.IsSwitched(4)))
             {
                 m_From.SendGump(new MondainQuestGump(m_Quest, MondainQuestGump.Section.Failed, false, true));
                 m_Quest.OnResign(false);

@@ -475,12 +475,12 @@ namespace Server.Items
             base.RemoveEffects();
         }
 
-        public static void EndBleeding(Mobile m)
+        public static void EndBleeding(Mobile m, bool message = true)
         {
             foreach (PropertyEffect effect in PropertyEffect.Effects)
             {
                 if (effect is SplinteringWeaponContext && ((SplinteringWeaponContext)effect).Victim == m && ((SplinteringWeaponContext)effect).Bleeding)
-                    ((SplinteringWeaponContext)effect).EndBleed(m, true);
+                    ((SplinteringWeaponContext)effect).EndBleed(m, message);
             }
         }
 

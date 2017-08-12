@@ -76,13 +76,7 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
+
         public override bool ReacquireOnMovement
         {
             get

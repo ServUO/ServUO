@@ -26,8 +26,8 @@ namespace Server.Items
             phys = nrgy = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 190; } }
-        public override int InitMaxHits { get { return 190; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public CaptainJohnesBlade(Serial serial)
             : base(serial)
@@ -71,8 +71,8 @@ namespace Server.Items
             phys = nrgy = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 150; } }
-        public override int InitMaxHits { get { return 150; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public GargishCaptainJohnesBlade(Serial serial)
             : base(serial)

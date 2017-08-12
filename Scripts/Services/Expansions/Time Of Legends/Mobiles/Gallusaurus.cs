@@ -8,38 +8,44 @@ namespace Server.Mobiles
     [CorpseName("a gallusaurus corpse")]
     public class Gallusaurus : BaseCreature
     {
-        public override bool AttacksFocus { get { return true; } }
+        public override bool AttacksFocus { get { return !Controlled; } }
 
         [Constructable]
         public Gallusaurus()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
         {
-            Name = "an gallusaurus";
-            Body = 1286;
-            BaseSoundID = 0x275;
+            this.Name = "a gallusaurus";
+            this.Body = 1286;
+            this.BaseSoundID = 0x275;
 
-            SetStr(477, 511);
-            SetDex(155, 168);
-            SetInt(221, 274);
+            this.SetStr(477, 511);
+            this.SetDex(155, 168);
+            this.SetInt(221, 274);
 
-            SetDamage(11, 17);
+            this.SetDamage(11, 17);
 
-            SetHits(2200);
+            this.SetHits(700, 900);
 
-            SetResistance(ResistanceType.Physical, 5, 6);
-            SetResistance(ResistanceType.Fire, 2, 3);
-            SetResistance(ResistanceType.Cold, 2);
-            SetResistance(ResistanceType.Poison, 6, 7);
-            SetResistance(ResistanceType.Energy, 2);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetResistance(ResistanceType.Physical, 50, 60);
+            this.SetResistance(ResistanceType.Fire, 20, 30);
+            this.SetResistance(ResistanceType.Cold, 20, 30);
+            this.SetResistance(ResistanceType.Poison, 60, 70);
+            this.SetResistance(ResistanceType.Energy, 20, 30);
 
-            SetSkill(SkillName.MagicResist, 70, 80);
-            SetSkill(SkillName.Tactics, 80, 90);
-            SetSkill(SkillName.Wrestling, 80, 91);
+            this.SetSkill(SkillName.MagicResist, 70.0, 80.0);
+            this.SetSkill(SkillName.Tactics, 80.0, 90.0);
+            this.SetSkill(SkillName.Wrestling, 80.0, 91.0);
+            this.SetSkill(SkillName.Bushido, 110.0, 120.0);
+            this.SetSkill(SkillName.DetectHidden, 25.0, 35.0);
 
-            Fame = 8100;
-            Karma = -8100;
+            this.Fame = 8100;
+            this.Karma = -8100;
+
+            this.Tamable = true;
+            this.ControlSlots = 3;
+            this.MinTameSkill = 102.0;
         }
 
         public override void GenerateLoot()
@@ -48,6 +54,13 @@ namespace Server.Mobiles
         }
 
         public override int Meat { get { return 3; } }
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.Block;
+        }
 
         private static Dictionary<Mobile, ExpireTimer> _Table;
 
@@ -136,5 +149,4 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
     }
-	
 }

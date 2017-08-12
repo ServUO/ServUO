@@ -1,6 +1,4 @@
-/* 	Based on Rikktor, still to get detailed information on the Abyssal Infernal */
 using System;
-using System.Collections;
 using Server.Engines.CannedEvil;
 using Server.Items;
 
@@ -10,41 +8,43 @@ namespace Server.Mobiles
     public class AbyssalInfernal : BaseChampion
     {
         private DateTime m_Delay;
+
         [Constructable]
         public AbyssalInfernal()
             : base(AIType.AI_Mage)
         {
-            this.Body = 713;// 730;
-            this.Name = "The Abyssal Infernal";
+            Body = 713;
+            Name = "Abyssal Infernal";
 
-            this.SetStr(701, 900);
-            this.SetDex(201, 350);
-            this.SetInt(51, 100);
+            SetStr(1165, 1262);
+            SetDex(104, 143);
+            SetInt(572, 675);
 
-            this.SetHits(50000);
-            this.SetStam(203, 650);
+            SetHits(30000);
+            SetDamage(11, 18);
 
-            this.SetDamage(28, 35);
+            SetDamageType(ResistanceType.Physical, 60);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 25);
-            this.SetDamageType(ResistanceType.Fire, 50);
-            this.SetDamageType(ResistanceType.Energy, 25);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 70, 90);
+            SetResistance(ResistanceType.Cold, 55, 65);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 65, 76);
 
-            this.SetResistance(ResistanceType.Physical, 80, 90);
-            this.SetResistance(ResistanceType.Fire, 80, 90);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 80, 90);
-            this.SetResistance(ResistanceType.Energy, 80, 90);
+            SetSkill(SkillName.Anatomy, 110.1, 119.3);
+            SetSkill(SkillName.MagicResist, 120.0);
+            SetSkill(SkillName.Tactics, 111.0, 117.6);
+            SetSkill(SkillName.Wrestling, 111.0, 120.0);
+            SetSkill(SkillName.Magery, 109.0, 129.6);
+            SetSkill(SkillName.EvalInt, 113.6, 135.2);
+            SetSkill(SkillName.Meditation, 100.0);
 
-            this.SetSkill(SkillName.Anatomy, 100.0);
-            this.SetSkill(SkillName.MagicResist, 140.2, 160.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
+            Fame = 28000;
+            Karma = -28000;
 
-            this.Fame = 22500;
-            this.Karma = -22500;
-
-            this.VirtualArmor = 40;
-            this.QLPoints = 150;
+            VirtualArmor = 40;
         }
 
         public AbyssalInfernal(Serial serial)
@@ -52,13 +52,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override ChampionSkullType SkullType
-        {
-            get
-            {
-                return ChampionSkullType.Terror;
-            }
-        }
+        public override int GetAttackSound() { return 0x5D4; }
+        public override int GetDeathSound() { return 0x5D5; }
+        public override int GetHurtSound() { return 0x5D6; }
+        public override int GetIdleSound() { return 0x5D7; }
+
+        public override ChampionSkullType SkullType { get { return ChampionSkullType.None; } }
+
         public override Type[] UniqueList
         {
             get
@@ -87,55 +87,7 @@ namespace Server.Mobiles
                 return new MonsterStatuetteType[] { MonsterStatuetteType.ArchDemon };
             }
         }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return Core.SE;
-            }
-        }
-        public override bool Uncalmable
-        {
-            get
-            {
-                return Core.SE;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override ScaleType ScaleType
-        {
-            get
-            {
-                return ScaleType.All;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 20;
-            }
-        }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 4);
@@ -159,24 +111,44 @@ namespace Server.Mobiles
             }
         }
 
-        public override int GetIdleSound()
+        public override void OnGaveMeleeAttack(Mobile defender)
         {
-            return 1495;
+            base.OnGaveMeleeAttack(defender);
+
+            if (0.25 >= Utility.RandomDouble())
+                this.DrainLife();
+
+            this.DoSpecialAbility(defender);
         }
 
-        public override int GetAngerSound()
+        public override void OnGotMeleeAttack(Mobile attacker)
         {
-            return 1492;
+            base.OnGotMeleeAttack(attacker);
+
+            if (0.25 >= Utility.RandomDouble())
+                this.DrainLife();
+
+            this.DoSpecialAbility(attacker);
         }
 
-        public override int GetHurtSound()
+        public void DoSpecialAbility(Mobile target)
         {
-            return 1494;
+            if (target == null || target.Deleted) //sanity
+                return;
+
+            if (0.05 >= Utility.RandomDouble()) // 20% chance to more ratmen
+                this.SpawnFollowers(target);
         }
 
-        public override int GetDeathSound()
+        public override void OnActionCombat()
         {
-            return 1493;
+            if (DateTime.UtcNow > this.m_Delay)
+            {
+                Ability.CrimsonMeteor(this, 100);
+                this.m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 35));
+            }
+
+            base.OnActionCombat();
         }
 
         public override void OnDamagedBySpell(Mobile caster)
@@ -206,7 +178,6 @@ namespace Server.Mobiles
                         break;
                 }
 
-                caster.SendMessage("You are being burned by the heat from the Lava!");
                 AOS.Damage(caster, Utility.RandomMinMax(75, 85), 0, 100, 0, 0, 0);
                 caster.MoveToWorld(caster.Location, caster.Map);
                 caster.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
@@ -219,114 +190,45 @@ namespace Server.Mobiles
         public override bool DrainsLife { get { return true; } }
         public override double DrainsLifeChance { get { return .25; } }
 
-        public void SpawnFollowers(Mobile target)
+        private static Type[] m_SummonTypes = new Type[]
+            {
+                typeof(Efreet),         typeof(FireGargoyle),
+                typeof(FireSteed),     typeof(Gargoyle),
+                typeof(HellHound),      typeof(HellCat),
+                typeof(Imp),            typeof(LavaElemental),
+                typeof(Nightmare),      typeof(Phoenix)
+            };
+
+        private static Point2D[] m_ColumnOffset = new Point2D[]
+            {
+                new Point2D(0, -1),
+                new Point2D(-1,  0),
+                new Point2D(1,  0),
+                new Point2D(0,  1)
+            };
+
+        public void SpawnFollowers(Mobile from)
         {
-            Map map = this.Map;
+            Point3D loc = Map.GetSpawnPosition(Location, 8);
+            Type type = m_SummonTypes[Utility.Random(m_SummonTypes.Length)];
 
-            if (map == null)
-                return;
+            this.PlaySound(0x218);
 
-            int followers = 0;
-
-            foreach (Mobile m in this.GetMobilesInRange(10))
+            for (int i = 0; i < 4; i++)
             {
-                if (m is EarthElemental || m is FireElemental || m is AirElemental || m is FireSteed || m is WaterElemental)
-                    ++followers;
-            }
+                BaseCreature summon = (BaseCreature)Activator.CreateInstance(type);
 
-            if (this.Followers < 9)
-            {
-                this.PlaySound(0x218);//////////
-
-                int newFollowers = Utility.RandomMinMax(1, 3);
-
-                for (int i = 0; i < newFollowers; ++i)
+                if (summon != null)
                 {
-                    BaseCreature follower;
-
-                    switch (Utility.Random(5))
-                    {
-                        default:
-                        case 0:
-                            follower = new WaterElemental();
-                            break;
-                        case 1:
-                            follower = new EarthElemental();
-                            break;
-                        case 2:
-                            follower = new FireSteed();
-                            break;
-                        case 3:
-                            follower = new FireElemental();
-                            break;
-                        case 4:
-                            follower = new AirElemental();
-                            break;
-                    }
-
-                    follower.Team = this.Team;
-
-                    bool validLocation = false;
-                    Point3D loc = this.Location;
-
-                    for (int j = 0; !validLocation && j < 9; ++j)
-                    {
-                        int x = this.X + Utility.Random(3) - 1;
-                        int y = this.Y + Utility.Random(3) - 1;
-                        int z = map.GetAverageZ(x, y);
-
-                        if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
-                            loc = new Point3D(x, y, this.Z);
-                        else if (validLocation = map.CanFit(x, y, z, 16, false, false))
-                            loc = new Point3D(x, y, z);
-                    }
-
-                    follower.MoveToWorld(loc, map);
-                    follower.Combatant = target;
+                    summon.SetHits(summon.HitsMax / 2);
+                    summon.Team = Team;
+                    summon.OnBeforeSpawn(loc, Map);
+                    summon.MoveToWorld(loc, Map);
+                    summon.Combatant = from;
                 }
             }
         }
-
-        public void DoSpecialAbility(Mobile target)
-        {
-            if (target == null || target.Deleted) //sanity
-                return;        
-
-            if (0.05 >= Utility.RandomDouble()) // 20% chance to more ratmen
-                this.SpawnFollowers(target);           
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.25 >= Utility.RandomDouble())
-                this.DrainLife();
-
-            this.DoSpecialAbility(defender);
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            if (0.25 >= Utility.RandomDouble())
-                this.DrainLife();
-
-            this.DoSpecialAbility(attacker);
-        }
-
-        public override void OnActionCombat()
-        {
-            if (DateTime.UtcNow > this.m_Delay)
-            {
-                Ability.CrimsonMeteor(this, 100);
-                this.m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 35));
-            }
-
-            base.OnActionCombat();
-        }
-
+             
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

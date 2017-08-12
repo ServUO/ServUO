@@ -23,15 +23,23 @@ namespace Server.Engines.MyrmidexInvasion
 
             bool nomaster = m is BaseCreature && ((BaseCreature)m).GetMaster() == null;
 
-            if (BattleSpawner.Active && nomaster && Spawner != null)
+            if (BattleSpawner.Instance != null && BattleSpawner.Instance.Active && nomaster && Spawner != null)
             {
                 Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(.25), Spawner.RegisterDeath, (BaseCreature)m);
             }
 
+            // the delay ensures the corpse is created after death
             Timer.DelayCall(() =>
                 {
-                    if (nomaster && m.Corpse != null)
-                        m.Corpse.Delete();
+                    if (m.Corpse != null && (m is BritannianInfantry || m is TribeWarrior || m is TribeShaman || m is TribeChieftan || m is MyrmidexDrone || m is MyrmidexWarrior))
+                    {
+                        Mobile killer = m.LastKiller;
+
+                        if (killer == null || (killer is BaseCreature && !(((BaseCreature)killer).GetMaster() is PlayerMobile)))
+                        {
+                            m.Corpse.Delete();
+                        }
+                    }
                 });
         }
 

@@ -33,14 +33,14 @@ namespace Server
             public InternalTimer(Mobile m)
                 : base(TimeSpan.FromMinutes(1.0))
             {
-                this.m_Mobile = m;
+                m_Mobile = m;
 
-                this.Priority = TimerPriority.OneSecond;
+                Priority = TimerPriority.OneSecond;
             }
 
             protected override void OnTick()
             {
-                this.m_Mobile.EndAction(typeof(DefensiveSpell));
+                m_Mobile.EndAction(typeof(DefensiveSpell));
             }
         }
     }
@@ -213,19 +213,21 @@ namespace Server.Spells
             }
         }
 
-        private static readonly TimeSpan CombatHeatDelay = TimeSpan.FromSeconds(30.0);
         private static readonly bool RestrictTravelCombat = true;
 
+        //TODO: Check if aggressor leaves facet, if heat is removed
         public static bool CheckCombat(Mobile m)
         {
             if (!RestrictTravelCombat)
                 return false;
 
+            TimeSpan delay = Server.Misc.AttackMessage.CombatHeatDelay;
+
             for (int i = 0; i < m.Aggressed.Count; ++i)
             {
                 AggressorInfo info = m.Aggressed[i];
 
-                if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < CombatHeatDelay)
+                if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < delay)
                     return true;
             }
 
@@ -235,7 +237,7 @@ namespace Server.Spells
                 {
                     AggressorInfo info = m.Aggressors[i];
 
-                    if (info.Attacker.Player && (DateTime.UtcNow - info.LastCombatTime) < CombatHeatDelay)
+                    if (info.Attacker.Player && (DateTime.UtcNow - info.LastCombatTime) < delay)
                         return true;
                 }
             }
@@ -311,9 +313,9 @@ namespace Server.Spells
             return true;
         }
 
-        public static bool AddStatBonus(Mobile caster, Mobile target, StatType type)
+        public static bool AddStatBonus(Mobile caster, Mobile target, bool blockSkill, StatType type)
         {
-            return AddStatBonus(caster, target, type, GetOffset(caster, target, type, false), GetDuration(caster, target));
+            return AddStatBonus(caster, target, type, GetOffset(caster, target, type, false, blockSkill), GetDuration(caster, target));
         }
 
         public static bool AddStatBonus(Mobile caster, Mobile target, StatType type, int bonus, TimeSpan duration)
@@ -331,9 +333,9 @@ namespace Server.Spells
             return true;
         }
 
-        public static bool AddStatCurse(Mobile caster, Mobile target, StatType type)
+        public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, bool blockSkill)
         {
-            return AddStatCurse(caster, target, type, GetOffset(caster, target, type, true), GetDuration(caster, target));
+            return AddStatCurse(caster, target, type, GetOffset(caster, target, type, true, blockSkill), TimeSpan.Zero);
         }
 
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, int curse, TimeSpan duration)
@@ -342,12 +344,13 @@ namespace Server.Spells
             string name = String.Format("[Magic] {0} Curse", type);
 
             StatMod mod = target.GetStatMod(name);
+
 			if (mod != null)
 				offset = Math.Max(mod.Offset, offset);
+
 			offset *= -1;
 
-            target.AddStatMod(new StatMod(type, name, offset, duration));
-			Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
+            target.AddStatMod(new StatMod(type, name, offset, TimeSpan.Zero));
 			return true;
         }
 
@@ -366,18 +369,13 @@ namespace Server.Spells
             return TimeSpan.FromSeconds(caster.Skills[SkillName.Magery].Value * 1.2);
         }
 
-        private static bool m_DisableSkillCheck;
-
-        public static bool DisableSkillCheck
+        public static int GetCurseOffset(Mobile m, StatType type)
         {
-            get
-            {
-                return m_DisableSkillCheck;
-            }
-            set
-            {
-                m_DisableSkillCheck = value;
-            }
+            string name = String.Format("[Magic] {0} Curse", type);
+
+            StatMod mod = m.GetStatMod(name);
+
+            return mod != null ? mod.Offset : 0;
         }
 
         public static double GetOffsetScalar(Mobile caster, Mobile target, bool curse)
@@ -397,11 +395,11 @@ namespace Server.Spells
             return percent;
         }
 
-        public static int GetOffset(Mobile caster, Mobile target, StatType type, bool curse)
+        public static int GetOffset(Mobile caster, Mobile target, StatType type, bool curse, bool blockSkill)
         {
             if (Core.AOS)
             {
-                if (!m_DisableSkillCheck)
+                if (!blockSkill)
                 {
                     caster.CheckSkill(SkillName.EvalInt, 0.0, 120.0);
 
@@ -550,7 +548,7 @@ namespace Server.Spells
 
             int noto = Notoriety.Compute(from, to);
 
-            return (noto != Notoriety.Innocent || from.Kills >= 5);
+            return (noto != Notoriety.Innocent || from.Murderer);
         }
 
         private static readonly int[] m_Offsets = new int[]
@@ -750,7 +748,7 @@ namespace Server.Spells
             if (caster != null && caster.IsPlayer())
             {
 				// Jail region
-				if (caster.Region.IsPartOf(typeof(Regions.Jail)))
+				if (caster.Region.IsPartOf<Regions.Jail>())
 				{
 					caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
 					return false;
@@ -769,6 +767,11 @@ namespace Server.Spells
 
                 if (!bc.Controlled && !bc.Summoned)
                     return true;
+            }
+
+            if (Siege.SiegeShard && !Siege.CheckTravel(caster, loc, map, type))
+            {
+                return false;
             }
 
             m_TravelCaster = caster;
@@ -864,7 +867,7 @@ namespace Server.Spells
         public static bool IsFeluccaDungeon(Map map, Point3D loc)
         {
             Region region = Region.Find(loc, map);
-            return (region.IsPartOf(typeof(DungeonRegion)) && region.Map == Map.Felucca);
+            return (region.IsPartOf<DungeonRegion>() && region.Map == Map.Felucca);
         }
 
         public static bool IsKhaldun(Map map, Point3D loc)
@@ -888,7 +891,7 @@ namespace Server.Spells
         public static bool IsSafeZone(Map map, Point3D loc)
         {
             #region Duels
-            if (Region.Find(loc, map).IsPartOf(typeof(Engines.ConPVP.SafeZone)))
+            if (Region.Find(loc, map).IsPartOf<Engines.ConPVP.SafeZone>())
             {
                 if (m_TravelType == TravelCheckType.TeleportTo || m_TravelType == TravelCheckType.TeleportFrom)
                 {
@@ -913,12 +916,12 @@ namespace Server.Spells
             if ( Factions.Faction.Find( m_TravelCaster, true, true ) != null )
             return false;
             }*/
-            return (Region.Find(loc, map).IsPartOf(typeof(Factions.StrongholdRegion)));
+            return (Region.Find(loc, map).IsPartOf<Factions.StrongholdRegion>());
         }
 
         public static bool IsChampionSpawn(Map map, Point3D loc)
         {
-            return (Region.Find(loc, map).IsPartOf(typeof(Engines.CannedEvil.ChampionSpawnRegion)));
+            return (Region.Find(loc, map).IsPartOf<Engines.CannedEvil.ChampionSpawnRegion>());
         }
 
         public static bool IsDoomFerry(Map map, Point3D loc)
@@ -1228,7 +1231,15 @@ namespace Server.Spells
                     DoLeech(damageGiven, from, target);
                 }
 
+                if(target != null)
+                    Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(target);
+
                 WeightOverloading.DFA = DFAlgorithm.Standard;
+
+                NegativeAttributes.OnCombatAction(from);
+
+                if(from != target)
+                    NegativeAttributes.OnCombatAction(target);
             }
             else
             {
@@ -1282,13 +1293,23 @@ namespace Server.Spells
 
         public static void Heal(int amount, Mobile target, Mobile from)
         {
-            Spellweaving.ArcaneEmpowermentSpell.AddHealBonus(from, ref amount);
             Heal(amount, target, from, true);
         }
 
         public static void Heal(int amount, Mobile target, Mobile from, bool message)
         {
-            //TODO: All Healing *spells* go through ArcaneEmpowerment
+            Spellweaving.ArcaneEmpowermentSpell.AddHealBonus(from, ref amount);
+
+            if (amount > 0 && target != from && from is PlayerMobile && target is PlayerMobile)
+            {
+                int realAmount = Math.Min(amount, target.HitsMax - target.Hits);
+
+                if (realAmount > 0 && target != from && from is PlayerMobile && target is PlayerMobile)
+                    SpiritualityVirtue.OnHeal(from, realAmount);
+
+                SpiritualityVirtue.OnHeal(from, realAmount);
+            }
+
             target.Heal(amount, from, message);
         }
 
@@ -1304,28 +1325,28 @@ namespace Server.Spells
             public SpellDamageTimer(Spell s, Mobile target, Mobile from, int damage, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Target = target;
-                this.m_From = from;
-                this.m_Damage = damage;
-                this.m_Spell = s;
+                m_Target = target;
+                m_From = from;
+                m_Damage = damage;
+                m_Spell = s;
 
-                if (this.m_Spell != null && this.m_Spell.DelayedDamage && !this.m_Spell.DelayedDamageStacking)
-                    this.m_Spell.StartDelayedDamageContext(target, this);
+                if (m_Spell != null && m_Spell.DelayedDamage && !m_Spell.DelayedDamageStacking)
+                    m_Spell.StartDelayedDamageContext(target, this);
 
-                this.Priority = TimerPriority.TwentyFiveMS;
+                Priority = TimerPriority.TwentyFiveMS;
             }
 
             protected override void OnTick()
             {
-                if (this.m_From is BaseCreature)
-                    ((BaseCreature)this.m_From).AlterSpellDamageTo(this.m_Target, ref this.m_Damage);
+                if (m_From is BaseCreature)
+                    ((BaseCreature)m_From).AlterSpellDamageTo(m_Target, ref m_Damage);
 
-                if (this.m_Target is BaseCreature)
-                    ((BaseCreature)this.m_Target).AlterSpellDamageFrom(this.m_From, ref this.m_Damage);
+                if (m_Target is BaseCreature)
+                    ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
 
-                this.m_Target.Damage(this.m_Damage);
-                if (this.m_Spell != null)
-                    this.m_Spell.RemoveDelayedDamageContext(this.m_Target);
+                m_Target.Damage(m_Damage);
+                if (m_Spell != null)
+                    m_Spell.RemoveDelayedDamageContext(m_Target);
             }
         }
 
@@ -1356,55 +1377,63 @@ namespace Server.Spells
             public SpellDamageTimerAOS(Spell s, IDamageable target, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, TimeSpan delay, DFAlgorithm dfa)
                 : base(delay)
             {
-                this.m_Target = target;
-                this.m_From = from;
-                this.m_Damage = damage;
-                this.m_Phys = phys;
-                this.m_Fire = fire;
-                this.m_Cold = cold;
-                this.m_Pois = pois;
-                this.m_Nrgy = nrgy;
-                this.m_Chaos = chaos;
-                this.m_Direct = direct;
-                this.m_DFA = dfa;
-                this.m_Spell = s;
-                if (this.m_Spell != null && this.m_Spell.DelayedDamage && !this.m_Spell.DelayedDamageStacking)
-                    this.m_Spell.StartDelayedDamageContext(target, this);
+                m_Target = target;
+                m_From = from;
+                m_Damage = damage;
+                m_Phys = phys;
+                m_Fire = fire;
+                m_Cold = cold;
+                m_Pois = pois;
+                m_Nrgy = nrgy;
+                m_Chaos = chaos;
+                m_Direct = direct;
+                m_DFA = dfa;
+                m_Spell = s;
+                if (m_Spell != null && m_Spell.DelayedDamage && !m_Spell.DelayedDamageStacking)
+                    m_Spell.StartDelayedDamageContext(target, this);
 
-                this.Priority = TimerPriority.TwentyFiveMS;
+                Priority = TimerPriority.TwentyFiveMS;
             }
 
             protected override void OnTick()
             {
                 Mobile target = m_Target as Mobile;
 
-                if (this.m_From is BaseCreature && target != null)
-                    ((BaseCreature)this.m_From).AlterSpellDamageTo(target, ref this.m_Damage);
+                if (m_From is BaseCreature && target != null)
+                    ((BaseCreature)m_From).AlterSpellDamageTo(target, ref m_Damage);
 
-                if (this.m_Target is BaseCreature && this.m_From != null)
-                    ((BaseCreature)this.m_Target).AlterSpellDamageFrom(this.m_From, ref this.m_Damage);
+                if (m_Target is BaseCreature && m_From != null)
+                    ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
 
-                WeightOverloading.DFA = this.m_DFA;
+                WeightOverloading.DFA = m_DFA;
 
-                int damageGiven = AOS.Damage(this.m_Target, this.m_From, this.m_Damage, this.m_Phys, this.m_Fire, this.m_Cold, this.m_Pois, this.m_Nrgy, this.m_Chaos, this.m_Direct);
+                int damageGiven = AOS.Damage(m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy, m_Chaos, m_Direct);
 
-                if (this.m_From != null && target != null) // sanity check
+                if (m_From != null && target != null) // sanity check
                 {
-                    DoLeech(damageGiven, this.m_From, target);
+                    DoLeech(damageGiven, m_From, target);
                 }
 
                 WeightOverloading.DFA = DFAlgorithm.Standard;
 
-                if (this.m_Target is BaseCreature && this.m_From != null)
+                if (m_Target is BaseCreature && m_From != null)
                 {
-                    BaseCreature c = (BaseCreature)this.m_Target;
+                    BaseCreature c = (BaseCreature)m_Target;
 
-                    c.OnHarmfulSpell(this.m_From);
-                    c.OnDamagedBySpell(this.m_From);
+                    c.OnHarmfulSpell(m_From);
+                    c.OnDamagedBySpell(m_From);
                 }
 
-                if (this.m_Spell != null)
-                    this.m_Spell.RemoveDelayedDamageContext(this.m_Target);
+                if (target != null)
+                    Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(target);
+
+                if (m_Spell != null)
+                    m_Spell.RemoveDelayedDamageContext(m_Target);
+
+                NegativeAttributes.OnCombatAction(m_From);
+
+                if (m_From != target)
+                    NegativeAttributes.OnCombatAction(target);
             }
         }
     }
@@ -1622,37 +1651,37 @@ namespace Server.Spells
         {
             get
             {
-                return this.m_Timer;
+                return m_Timer;
             }
         }
         public List<ResistanceMod> Mods
         {
             get
             {
-                return this.m_Mods;
+                return m_Mods;
             }
         }
         public Type Type
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
         }
         public ITransformationSpell Spell
         {
             get
             {
-                return this.m_Spell;
+                return m_Spell;
             }
         }
 
         public TransformContext(Timer timer, List<ResistanceMod> mods, Type type, ITransformationSpell spell)
         {
-            this.m_Timer = timer;
-            this.m_Mods = mods;
-            this.m_Type = type;
-            this.m_Spell = spell;
+            m_Timer = timer;
+            m_Mods = mods;
+            m_Type = type;
+            m_Spell = spell;
         }
     }
 
@@ -1664,22 +1693,22 @@ namespace Server.Spells
         public TransformTimer(Mobile from, ITransformationSpell spell)
             : base(TimeSpan.FromSeconds(spell.TickRate), TimeSpan.FromSeconds(spell.TickRate))
         {
-            this.m_Mobile = from;
-            this.m_Spell = spell;
+            m_Mobile = from;
+            m_Spell = spell;
 
-            this.Priority = TimerPriority.TwoFiftyMS;
+            Priority = TimerPriority.TwoFiftyMS;
         }
 
         protected override void OnTick()
         {
-            if (this.m_Mobile.Deleted || !this.m_Mobile.Alive || this.m_Mobile.Body != this.m_Spell.Body || (this.m_Mobile.Hue != this.m_Spell.Hue && BestialSetHelper.IsBerserk(m_Mobile)))
+            if (m_Mobile.Deleted || !m_Mobile.Alive || m_Mobile.Body != m_Spell.Body || (m_Mobile.Hue != m_Spell.Hue && BestialSetHelper.IsBerserk(m_Mobile)))
             {
-                TransformationSpellHelper.RemoveContext(this.m_Mobile, true);
-                this.Stop();
+                TransformationSpellHelper.RemoveContext(m_Mobile, true);
+                Stop();
             }
             else
             {
-                this.m_Spell.OnTick(this.m_Mobile);
+                m_Spell.OnTick(m_Mobile);
             }
         }
     }

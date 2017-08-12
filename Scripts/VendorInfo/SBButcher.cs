@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,16 +31,16 @@ namespace Server.Mobiles
         { 
             public InternalBuyInfo() 
             {
-                this.Add(new GenericBuyInfo(typeof(Bacon), 7, 20, 0x979, 0));
-                this.Add(new GenericBuyInfo(typeof(Ham), 26, 20, 0x9C9, 0)); 
-                this.Add(new GenericBuyInfo(typeof(Sausage), 18, 20, 0x9C0, 0));
-                this.Add(new GenericBuyInfo(typeof(RawChickenLeg), 6, 20, 0x1607, 0));
-                this.Add(new GenericBuyInfo(typeof(RawBird), 9, 20, 0x9B9, 0)); 
-                this.Add(new GenericBuyInfo(typeof(RawLambLeg), 9, 20, 0x1609, 0));
-                this.Add(new GenericBuyInfo(typeof(RawRibs), 16, 20, 0x9F1, 0));
-                this.Add(new GenericBuyInfo(typeof(ButcherKnife), 13, 20, 0x13F6, 0));
-                this.Add(new GenericBuyInfo(typeof(Cleaver), 13, 20, 0xEC3, 0));
-                this.Add(new GenericBuyInfo(typeof(SkinningKnife), 13, 20, 0xEC4, 0)); 
+                Add(new GenericBuyInfo(typeof(Bacon), 7, 20, 0x979, 0, true));
+                Add(new GenericBuyInfo(typeof(Ham), 26, 20, 0x9C9, 0, true));
+                Add(new GenericBuyInfo(typeof(Sausage), 18, 20, 0x9C0, 0, true));
+                Add(new GenericBuyInfo(typeof(RawChickenLeg), 6, 20, 0x1607, 0, true));
+                Add(new GenericBuyInfo(typeof(RawBird), 9, 20, 0x9B9, 0, true));
+                Add(new GenericBuyInfo(typeof(RawLambLeg), 9, 20, 0x1609, 0, true));
+                Add(new GenericBuyInfo(typeof(RawRibs), 16, 20, 0x9F1, 0, true));
+                Add(new GenericBuyInfo(typeof(ButcherKnife), 13, 20, 0x13F6, 0));
+                Add(new GenericBuyInfo(typeof(Cleaver), 13, 20, 0xEC3, 0));
+                Add(new GenericBuyInfo(typeof(SkinningKnife), 13, 20, 0xEC4, 0)); 
             }
         }
 
@@ -48,16 +48,16 @@ namespace Server.Mobiles
         { 
             public InternalSellInfo() 
             { 
-                this.Add(typeof(RawRibs), 8); 
-                this.Add(typeof(RawLambLeg), 4); 
-                this.Add(typeof(RawChickenLeg), 3); 
-                this.Add(typeof(RawBird), 4); 
-                this.Add(typeof(Bacon), 3); 
-                this.Add(typeof(Sausage), 9); 
-                this.Add(typeof(Ham), 13); 
-                this.Add(typeof(ButcherKnife), 7); 
-                this.Add(typeof(Cleaver), 7); 
-                this.Add(typeof(SkinningKnife), 7); 
+                Add(typeof(RawRibs), 8); 
+                Add(typeof(RawLambLeg), 4); 
+                Add(typeof(RawChickenLeg), 3); 
+                Add(typeof(RawBird), 4); 
+                Add(typeof(Bacon), 3); 
+                Add(typeof(Sausage), 9); 
+                Add(typeof(Ham), 13); 
+                Add(typeof(ButcherKnife), 7); 
+                Add(typeof(Cleaver), 7); 
+                Add(typeof(SkinningKnife), 7); 
             }
         }
     }
