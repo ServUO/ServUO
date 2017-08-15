@@ -37,7 +37,11 @@ namespace Server.Targets
 
             if (targeted is ICarvable)
             {
-                if (((ICarvable)targeted).Carve(from, this.m_Item) && Siege.SiegeShard)
+                if (targeted is Item && ((Item)targeted).IsLockedDown)
+                {
+                    from.SendLocalizedMessage(500494); // You can't use a bladed item on that!
+                }
+                else if (((ICarvable)targeted).Carve(from, this.m_Item) && Siege.SiegeShard)
                 {
                     Siege.CheckUsesRemaining(from, m_Item);
                 }
