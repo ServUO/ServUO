@@ -88,6 +88,8 @@ namespace Server.SkillHandlers
 
                     if (m.Player || m.Body.IsHuman)
                         m.PlaySound(0xF9);
+
+                    m.ResetStatTimers();
                 }
                 else 
                 {

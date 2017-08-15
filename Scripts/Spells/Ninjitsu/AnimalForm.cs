@@ -263,7 +263,6 @@ namespace Server.Spells.Ninjitsu
 			timer.Start();
 
 			AddContext(m, new AnimalFormContext(timer, mod, entry.SpeedBoost, entry.Type, stealingMod));
-			m.CheckStatTimers();
 			return MorphResult.Success;
 		}
 
@@ -273,9 +272,10 @@ namespace Server.Spells.Ninjitsu
 		{
 			m_Table[m] = context;
 
-			if (context.Type == typeof(BakeKitsune) || context.Type == typeof(GreyWolf))
+			if (context.Type == typeof(BakeKitsune) || context.Type == typeof(GreyWolf)
+                || context.Type == typeof(Dog) || context.Type == typeof(Cat) || context.Type == typeof(WildWhiteTiger))
 			{
-				m.CheckStatTimers();
+                m.ResetStatTimers();
 			}
 
             m.Delta(MobileDelta.WeaponDamage);

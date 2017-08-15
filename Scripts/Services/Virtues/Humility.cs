@@ -1,138 +1,327 @@
 ﻿using System;
-using Server.Gumps;
 using Server.Mobiles;
-using Server.Network;
-using Server.Targeting;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server
 {
-    class HumilityVirtue
+    public class HumilityVirtue
     {
+        public static Dictionary<Mobile, HumilityHuntContext> HuntTable { get; set; }
+        public static Dictionary<Mobile, Mobile> ActiveTable { get; set; }
+
         public static void Initialize()
         {
-            VirtueGump.Register(108, OnVirtueUsed);
+            HuntTable = new Dictionary<Mobile, HumilityHuntContext>();
+            ActiveTable = new Dictionary<Mobile, Mobile>();
+
+            VirtueGump.Register(108, new OnVirtueUsed(OnVirtueUsed));
+
+            EventSink.Speech += new SpeechEventHandler(EventSink_Speech);
+        }
+
+        public static void EventSink_Speech(SpeechEventArgs e)
+        {
+            string speech = e.Speech;
+
+            if (speech.ToLower().IndexOf("lum lum lum") >= 0)
+            {
+                HumilityHunt(e.Mobile);
+            }
         }
 
         public static void OnVirtueUsed(Mobile from)
         {
-            if (!@from.Alive) return;
-            @from.SendMessage("Target the pet you wish to embrace with your Humility..."); // Get cliloc
-            @from.Target = new InternalTarget();
+            if (VirtueHelper.GetLevel(from, VirtueName.Humility) < VirtueLevel.Seeker)
+                from.SendLocalizedMessage(1155812); // You must be at least a Seeker of Humility to Invoke this ability.
+            else if (from.Alive)
+            {
+                from.SendLocalizedMessage(1155817); // Target the pet you wish to embrace with your Humility.
+                from.BeginTarget(10, false, Server.Targeting.TargetFlags.None, (m, targeted) =>
+                {
+                    if (targeted is BaseCreature)
+                    {
+                        BaseCreature bc = targeted as BaseCreature;
+
+                        if (!bc.Alive)
+                        {
+                            from.SendLocalizedMessage(1155815); // You cannot embrace Humility on the dead!
+                        }
+                        else if (VirtueHelper.GetLevel(m, VirtueName.Humility) < VirtueLevel.Seeker)
+                        {
+                            from.SendLocalizedMessage(1155812); // You must be at least a Seeker of Humility to Invoke this ability.
+                        }
+                        else if (!bc.Controlled && !bc.Summoned)
+                        {
+                            from.SendLocalizedMessage(1155813); // You can only embrace your Humility on a pet.
+                        }
+                        else if (ActiveTable.ContainsKey(bc))
+                        {
+                            from.SendLocalizedMessage(1156047); // That pet has already embraced Humility.
+                        }
+                        else
+                        {
+                            VirtueHelper.Atrophy(from, VirtueName.Humility, 3200);
+                            from.SendLocalizedMessage(1155818); // You have lost some Humility.
+
+                            ActiveTable[bc] = from;
+
+                            m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1150, 1155819, from.NetState); // *Your pet surges with the power of your Humility!*
+                            bc.FixedEffect(0x373A, 10, 16);
+
+                            BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.Humility, 1156049, 1156050, TimeSpan.FromMinutes(20), from, String.Format("{0}\t{1}", bc.Name, GetRegenBonus(bc)))); // Pet: ~1_NAME~<br>+~2_VAL~ HPR<br>
+
+                            CheckTimer();
+                            bc.ResetStatTimers();
+
+                            Timer.DelayCall(TimeSpan.FromMinutes(20), (o) =>
+                            {
+                                Mobile mob = o as Mobile;
+
+                                if (mob != null && ActiveTable.ContainsKey(mob))
+                                {
+                                    Mobile user = ActiveTable[mob];
+                                    ActiveTable.Remove(mob);
+
+                                    BuffInfo.RemoveBuff(user, BuffIcon.Humility);
+                                    user.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1150, 1155823, from.NetState); // *Your pet's power returns to normal*
+
+                                    CheckTimer();
+                                }
+                            }, bc);
+                        }
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1155813); // You can only embrace your Humility on a pet.
+                    }
+                });
+            }
         }
 
-        public static void Humility(Mobile from, object targ)
+        private static Timer _Timer;
+
+        public static void CheckTimer()
         {
-            if (!(targ is Mobile)) return;
-
-            BaseCreature bc = targ as BaseCreature;
-
-            VirtueLevel vl = VirtueHelper.GetLevel(from, VirtueName.Humility);
-            if (bc != null && bc.ControlMaster == @from && vl >= VirtueLevel.Seeker)
+            if (ActiveTable == null || ActiveTable.Count == 0)
             {
-                int usedPoints;
-                if (from.Virtues.Humility < 4399)
-                    usedPoints = 400;
-                else if (from.Virtues.Humility < 10599)
-                    usedPoints = 600;
-                else
-                    usedPoints = 1000;
-
-                VirtueHelper.Atrophy(from, VirtueName.Humility, usedPoints);
-
-                switch (vl)
+                if (_Timer != null)
                 {
-                    case VirtueLevel.Seeker:
-                        bc.HumilityBuff = 1;
-                        break;
-                    case VirtueLevel.Follower:
-                        bc.HumilityBuff = 2;
-                        break;
-                    case VirtueLevel.Knight:
-                        bc.HumilityBuff = 3;
-                        break;
+                    _Timer.Stop();
+                    _Timer = null;
                 }
-
-                Timer mTimer = new HumilityTimer(bc);
-                mTimer.Start();
-                from.SendLocalizedMessage(1155819);
             }
             else
-                from.SendMessage("You can only embrace your Humility on a pet.");//get cliloc
-        }
-
-        private class InternalTarget : Target
-        {
-            public InternalTarget()
-                : base(14, false, TargetFlags.Beneficial)
             {
-            }
-
-            protected override void OnTarget(Mobile from, object targeted)
-            {
-                Humility(from, targeted);
-            }
-        }
-
-        public class HumilityTimer : Timer
-        {
-            private BaseCreature pet;
-
-            public HumilityTimer(BaseCreature m)
-                : base(TimeSpan.FromMinutes(20))
-            {
-                pet = m;
-                Priority = TimerPriority.OneSecond;
-            }
-
-            protected override void OnTick()
-            {
-                if (pet != null)
+                if (_Timer == null)
                 {
-                    pet.HumilityBuff = 0;
+                    _Timer = Timer.DelayCall(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3), () =>
+                    {
+                        foreach (var mob in ActiveTable.Keys)
+                        {
+                            mob.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
+                        }
+                    });
+
+                    _Timer.Start();
                 }
-                Stop();
             }
         }
-    }
 
-    public class HumilityGump : Gump
-    {
-        Mobile caller;
-
-        public HumilityGump(Mobile from) : this()
+        public static int GetRegenBonus(Mobile mobile)
         {
-            caller = from;
-        }
+            if (ActiveTable == null || !ActiveTable.ContainsKey(mobile))
+                return 0;
 
-        public HumilityGump() : base(0, 0)
-        {
-            this.Closable = true;
-            this.Disposable = true;
-            this.Dragable = true;
-            this.Resizable = false;
+            Mobile user = ActiveTable[mobile];
 
-            AddPage(0);
-            AddBackground(147, 63, 548, 276, 9380);
-            AddHtmlLocalized(187, 102, 477, 109, 1155858, false, false);
-            AddImage(379, 215, 108);
-        }
-
-
-
-        public override void OnResponse(NetState sender, RelayInfo info)
-        {
-            Mobile from = sender.Mobile;
-
-            switch (info.ButtonID)
+            if (user != null)
             {
-                case 0:
-                    {
+                if (VirtueHelper.IsKnight(user, VirtueName.Humility))
+                    return 30;
 
-                        break;
+                if (VirtueHelper.IsFollower(user, VirtueName.Humility))
+                    return 20;
+
+                if (VirtueHelper.IsSeeker(user, VirtueName.Humility))
+                    return 10;
+            }
+
+            return 0;
+        }
+
+        public static void HumilityHunt(Mobile from)
+        {
+            if (!from.Alive)
+                return;
+
+            if (HuntTable.ContainsKey(from))
+            {
+                if (!HuntTable[from].Expiring)
+                {
+                    HuntTable[from].Expiring = true;
+                    from.SendLocalizedMessage(1155800); // You have ended your journey on the Path of Humility.
+                }
+                else
+                    from.SendLocalizedMessage(1155796); // You have already ended your journey on the Path of Humility.  You must wait before you restart your path.
+            }
+            else
+            {
+                PlayerMobile pm = from as PlayerMobile;
+
+                if (pm != null)
+                {
+                    HuntTable[pm] = new HumilityHuntContext(pm, new List<Mobile>(pm.AllFollowers));
+
+                    pm.SendLocalizedMessage(1155802, "70"); // You have begun your journey on the Path of Humility.  Your resists have been debuffed by ~1_DEBUFF~.
+                    pm.SendLocalizedMessage(1155858); // You are now on a Humility Hunt. For each kill while you forgo the protection of resists," you shall continue on your path to Humility.  You may end your Hunt by speaking ""Lum Lum Lum"" at any time.
+
+                    BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.HumilityDebuff, 1025327, 1155806, "70"));
+                }
+            }
+        }
+
+        public static void RegisterKill(Mobile attacker, BaseCreature killed, int count)
+        {
+            int points = Math.Min(60, Math.Max(1, (killed.Fame / 5000) * 10)) / count;
+
+            if (attacker != null && HuntTable.ContainsKey(attacker))
+            {
+                bool gainedPath = false;
+
+                if (VirtueHelper.Award(attacker, VirtueName.Humility, points, ref gainedPath))
+                {
+                    if (gainedPath)
+                        attacker.SendLocalizedMessage(1155811); // You have gained a path in Humility!
+                    else
+                        attacker.SendLocalizedMessage(1155809); // You have gained in Humility!
+                }
+                else
+                    attacker.SendLocalizedMessage(1155808); // You cannot gain more Humility.
+            }
+        }
+
+        public static bool IsInHunt(Mobile m)
+        {
+            return HuntTable != null && HuntTable.ContainsKey(m);
+        }
+
+        public static bool IsInHunt(PlayerMobile pm)
+        {
+            return HuntTable.ContainsKey(pm);
+        }
+
+        public static void TryAddPetToHunt(Mobile owner, Mobile pet)
+        {
+            if (HuntTable.ContainsKey(owner))
+            {
+                if (pet is BaseCreature && ((BaseCreature)pet).GetMaster() == owner)
+                {
+                    HuntTable[owner].AddPet(pet);
+                }
+            }
+        }
+
+        public static void OnHuntExpired(Mobile m)
+        {
+            Timer.DelayCall(TimeSpan.FromSeconds(60), () =>
+            {
+                if (HuntTable.ContainsKey(m))
+                    HuntTable.Remove(m);
+            });
+        }
+
+        public class HumilityHuntContext
+        {
+            public Mobile Owner { get; set; }
+
+            public Dictionary<Mobile, ResistanceMod[]> Table;
+
+            private bool _Expiring;
+
+            public ResistanceMod[] GetMod
+            {
+                get
+                {
+                    return new ResistanceMod[5]
+		            {
+			            new ResistanceMod( ResistanceType.Physical, -70 ),
+			            new ResistanceMod( ResistanceType.Fire, -70 ),
+			            new ResistanceMod( ResistanceType.Poison, -70 ),
+			            new ResistanceMod( ResistanceType.Cold, -70 ),
+			            new ResistanceMod( ResistanceType.Energy, -70 )
+		            };
+                }
+            }
+
+            public bool Expiring
+            {
+                get { return _Expiring; }
+                set
+                {
+                    if (!_Expiring && value)
+                    {
+                        Timer.DelayCall(TimeSpan.FromSeconds(30), DoExpire);
                     }
 
+                    _Expiring = value;
+                }
+            }
+
+            public HumilityHuntContext(Mobile owner, List<Mobile> pets)
+            {
+                Owner = owner;
+
+                Table = new Dictionary<Mobile, ResistanceMod[]>();
+
+                ResistanceMod[] mod = GetMod;
+
+                owner.FixedEffect(0x373A, 10, 16);
+
+                foreach(var mods in mod)
+                    owner.AddResistanceMod(mods);
+
+                Table[owner] = mod;
+                pets.ForEach(m =>
+                {
+                    mod = GetMod;
+
+                    foreach(var mods in mod)
+                        m.AddResistanceMod(mods);
+
+                    m.FixedEffect(0x373A, 10, 16);
+                    Table[m] = mod;
+                });
+            }
+
+            public void AddPet(Mobile pet)
+            {
+                if (!_Expiring && !Table.ContainsKey(pet))
+                {
+                    ResistanceMod[] mod = GetMod;
+
+                    pet.FixedEffect(0x373A, 10, 16);
+
+                    foreach(var mods in mod)
+                        pet.AddResistanceMod(mods);
+
+                    Table[pet] = mod;
+                }
+            }
+
+            private void DoExpire()
+            {
+                foreach(var kvp in Table)
+                {
+                    foreach (var mod in kvp.Value)
+                        kvp.Key.RemoveResistanceMod(mod);
+
+                    BuffInfo.RemoveBuff(kvp.Key, BuffIcon.HumilityDebuff);
+                }
+
+                Table.Clear();
+                HumilityVirtue.OnHuntExpired(Owner);
             }
         }
     }
-
 }

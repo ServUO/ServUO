@@ -332,7 +332,51 @@ namespace Server.Mobiles
 
         public virtual int BaseLootBudget { get { return RandomItemGenerator.GetBaseBudget(this); } }
 
-        public int HumilityBuff = 0;
+        public virtual int DefaultHitsRegen 
+        {
+            get
+            {
+                int regen = 0;
+
+                if (IsAnimatedDead)
+                    regen = 4;
+
+                if (IsParagon)
+                    regen += 40;
+
+                regen += HumilityVirtue.GetRegenBonus(this);
+
+                return regen;
+            }
+        }
+
+        public virtual int DefaultStamRegen
+        {
+            get
+            {
+                int regen = 0;
+
+                regen += MasteryInfo.EnchantedSummoningBonus(this);
+
+                if (IsParagon)
+                    regen += 40;
+
+                return regen;
+            }
+        }
+
+        public virtual int DefaultManaRegen
+        {
+            get
+            {
+                int regen = 0;
+
+                if (IsParagon)
+                    regen += 40;
+
+                return regen;
+            }
+        }
 
         #region Bonding
         public const bool BondingEnabled = true;
@@ -5313,20 +5357,6 @@ namespace Server.Mobiles
                     }
                 }
 
-                if (Karma < 0 && LastKiller is PlayerMobile)
-                {
-                    if (((PlayerMobile)LastKiller).HumilityHunt)
-                    {
-                        bool gainedPath = false;
-                        VirtueHelper.Award(LastKiller, VirtueName.Humility, 30, ref gainedPath);
-
-                        if (gainedPath)
-                            LastKiller.SendLocalizedMessage(1155811); // You have gained a path in Humility!
-                        else
-                            LastKiller.SendLocalizedMessage(1052070); // You have gained in Humility!
-                    }
-                }
-
                 if (m_Paragon && Paragon.ChocolateIngredientChance > Utility.RandomDouble())
                 {
                     switch (Utility.Random(4))
@@ -5926,6 +5956,9 @@ namespace Server.Mobiles
                             }
 
                         }
+
+                        if (HumilityVirtue.IsInHunt(ds.m_Mobile) && Karma < 0)
+                            HumilityVirtue.RegisterKill(ds.m_Mobile, this, list.Count);
 
                         OnKilledBy(ds.m_Mobile);
 
