@@ -28,7 +28,7 @@ namespace Server.Gumps
             this.AddImageTiled(10, 40, 200, 20, 5124);
             this.AddImageTiled(10, 70, 200, 80 + offset, 5124);
 
-            this.AddAlphaRegion(10, 10, 200, 140);
+            this.AddAlphaRegion(10, 10, 200, 140 + offset);
 
             this.AddHtmlLocalized(10, 10, 200, 20, 1061276, 32767, false, false); // <CENTER>SET ACCESS</CENTER>
             this.AddHtmlLocalized(10, 40, 100, 20, 1041474, 32767, false, false); // Owner:

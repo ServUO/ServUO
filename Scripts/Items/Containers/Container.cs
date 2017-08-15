@@ -136,6 +136,9 @@ namespace Server.Items
                 from.SendLocalizedMessage(1075292, dropped.Name != null ? dropped.Name : "#" + dropped.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
             }
 
+            if (!EnchantedHotItem.CheckDrop(from, this, dropped))
+                return false;
+
             return true;
         }
 
@@ -190,6 +193,9 @@ namespace Server.Items
 
                 from.SendLocalizedMessage(1075292, item.Name != null ? item.Name : "#" + item.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
             }
+
+            if (!EnchantedHotItem.CheckDrop(from, this, item))
+                return false;
 
             return true;
         }

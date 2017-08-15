@@ -2302,6 +2302,11 @@ namespace Server.Mobiles
 				return false;
 			}
 
+            if (item is BaseBalmOrLotion || item is GemOfSalvation || item is SeedOfLife || item is ManaDraught)
+            {
+                return false;
+            }
+
 			if (item.Stackable)
 			{
 				return false;
@@ -3274,6 +3279,8 @@ namespace Server.Mobiles
 			}
 			#endregion
 
+            UndertakersStaff.TryRemoveTimer(m);
+
 			base.OnDamage(amount, from, willKill);
 		}
 
@@ -3572,16 +3579,13 @@ namespace Server.Mobiles
 
 		public override void OnDeath(Container c)
 		{
-			PlayerMobile killer = null;
 			Mobile m = FindMostRecentDamager(false);
-			killer = m as PlayerMobile;
-			if(killer == null)
-			{
-				if(m is BaseCreature)
-				{
-					killer = ((BaseCreature)m).ControlMaster as PlayerMobile;
-				}
-			}
+            PlayerMobile killer = m as PlayerMobile;
+
+            if (killer == null && m is BaseCreature)
+            {
+                killer = ((BaseCreature)m).GetMaster() as PlayerMobile;
+            }
 
 			if (m_NonAutoreinsuredItems > 0)
 			{
@@ -3637,33 +3641,31 @@ namespace Server.Mobiles
 				}
 			}
 
-			if(killer != null &&
-				Murderer &&
-				DateTime.UtcNow >= killer.m_NextJustAward)
-			{
-				// This scales 700.0 skill points to 1000 valor points
-				int pointsToGain = (int)(SkillsTotal / 7);
-				// This scales 700.0 skill points to 7 minutes wait
-				int minutesToWait = Math.Max(1, (int)(SkillsTotal / 1000));
+            if (killer != null && Murderer && DateTime.UtcNow >= killer.m_NextJustAward)
+            {
+                // This scales 700.0 skill points to 1000 valor points
+                int pointsToGain = (int)(SkillsTotal / 7);
+                // This scales 700.0 skill points to 7 minutes wait
+                int minutesToWait = Math.Max(1, (int)(SkillsTotal / 1000));
+                bool gainedPath = false;
 
-				bool gainedPath = false;
-				if (VirtueHelper.Award(m, VirtueName.Justice, pointsToGain, ref gainedPath))
-				{
-					if (gainedPath)
-					{
-						m.SendLocalizedMessage(1049367); // You have gained a path in Justice!
-					}
-					else
-					{
-						m.SendLocalizedMessage(1049363); // You have gained in Justice.
-					}
+                if (VirtueHelper.Award(m, VirtueName.Justice, pointsToGain, ref gainedPath))
+                {
+                    if (gainedPath)
+                    {
+                        m.SendLocalizedMessage(1049367); // You have gained a path in Justice!
+                    }
+                    else
+                    {
+                        m.SendLocalizedMessage(1049363); // You have gained in Justice.
+                    }
 
-					m.FixedParticles(0x375A, 9, 20, 5027, EffectLayer.Waist);
-					m.PlaySound(0x1F7);
+                    m.FixedParticles(0x375A, 9, 20, 5027, EffectLayer.Waist);
+                    m.PlaySound(0x1F7);
 
-					killer.m_NextJustAward = DateTime.UtcNow + TimeSpan.FromMinutes(minutesToWait);
-				}
-			}
+                    killer.m_NextJustAward = DateTime.UtcNow + TimeSpan.FromMinutes(minutesToWait);
+                }
+            }
 
 			if (m_InsuranceAward is PlayerMobile)
 			{

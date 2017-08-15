@@ -238,7 +238,7 @@ namespace Server.Mobiles
                     if (m is PlayerMobile)
                     {
                         PlayerMobile pm = m as PlayerMobile;
-                        drain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, drain);
+                        drain = (int)LifeShieldLotion.HandleLifeDrain(pm, drain);
                     }
                     //end 
 

@@ -7,7 +7,7 @@ using Server.Items;
 using Server.Regions;
 using Server.Engines.CannedEvil;
 
-namespace drNO.ThieveItems
+namespace Server.Engines.CreatureStealing
 {
     class StealingHandler
     {
@@ -21,23 +21,27 @@ namespace drNO.ThieveItems
             typeof(BalmOfProtection), 
             typeof(StoneSkinLotion), 
             typeof(GemOfSalvation), 
-            typeof(LifeShieldLotion), 
-
+            typeof(LifeShieldLotion),
+            typeof(SmugglersLantern),
+            typeof(SmugglersToolBox)
         };
-        public static void HandleSteal(BaseCreature from, PlayerMobile thieve)
+
+        public static void HandleSteal(BaseCreature from, PlayerMobile thief, bool smugglersEdge)
         {
-            if (from.HasBeenStolen == true)
+            if (from.HasBeenStolen)
             {
-                thieve.SendLocalizedMessage(1094948); //That creature has already been stolen from.  There is nothing left to steal.
+                thief.SendLocalizedMessage(1094948); //That creature has already been stolen from.  There is nothing left to steal.
                 return; 
             }
-            double stealing = thieve.Skills.Stealing.Value;
+
+            double stealing = thief.Skills.Stealing.Value;
+
             if (stealing < 100)
             {
                 return;
             }
 
-            if (!((thieve.Map == Map.Felucca && thieve.Region is DungeonRegion) || thieve.Region is ChampionSpawnRegion || from is ExodusZealot))  
+            if (!((thief.Map == Map.Felucca && thief.Region is DungeonRegion) || thief.Region is ChampionSpawnRegion || from is ExodusZealot))  
             {
                 return; 
             }
@@ -49,44 +53,53 @@ namespace drNO.ThieveItems
 
             int chance = 0;
 
-            if (stealing == 120)
-                chance += 10;
-            else if (stealing >= 110.1)
-                chance += 8;
-            else if (stealing >= 100.1)
-                chance += 5;
-            else if (stealing == 100)
-                chance += 2;
+            if (smugglersEdge)
+            {
+                chance = 0.05;
+            }
+            else
+            {
+                if (stealing == 120)
+                    chance += 10;
+                else if (stealing >= 110.1)
+                    chance += 8;
+                else if (stealing >= 100.1)
+                    chance += 5;
+                else if (stealing == 100)
+                    chance += 2;
 
-            int level = (int) (40.0/29999.0 * fame - 40.0 / 29999.0); 
+                int level = (int)(40.0 / 29999.0 * fame - 40.0 / 29999.0);
 
-            if (level >= 40) 
-                chance += 5; 
-            else if (level >= 40) 
-                chance += 3; 
-            else if (level >= 35) 
-                chance += 2; 
-            else if (level >= 25) 
-                chance += 1; 
+                if (level >= 40)
+                    chance += 5;
+                else if (level >= 40)
+                    chance += 3;
+                else if (level >= 35)
+                    chance += 2;
+                else if (level >= 25)
+                    chance += 1;
+            }
 
             if ((Utility.Random(100)+1) <= chance) 
             {
-                thieve.SendLocalizedMessage(1094947);//You successfully steal a special item from the creature!
+                thief.SendLocalizedMessage(1094947);//You successfully steal a special item from the creature!
 
-                Item itm;
+                Item item;
 
                 if (from is ExodusZealot)
                 {
-                    itm = Activator.CreateInstance(ExodusChest.RituelItem[Utility.Random(ExodusChest.RituelItem.Length)]) as Item;
+                    item = Activator.CreateInstance(ExodusChest.RituelItem[Utility.Random(ExodusChest.RituelItem.Length)]) as Item;
                 }
                 else
                 {
-                    itm = Activator.CreateInstance(SpecialItemList[Utility.Random(SpecialItemList.Length)]) as Item;
-                }                
+                    if(smugglersEdge)
+                        item = Activator.CreateInstance(SpecialItemList[Utility.Random(SpecialItemList.Length)]) as Item;
+                    else
+                        item = Activator.CreateInstance(SpecialItemList[Utility.Random(SpecialItemList.Length - 2)]) as Item;
+                }
 
-                thieve.AddToBackpack(itm);
+                thief.AddToBackpack(item);
             } 
-
 
             from.HasBeenStolen = true;
         }

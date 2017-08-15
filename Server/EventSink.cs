@@ -958,16 +958,19 @@ namespace Server
 	public class OnEnterRegionEventArgs : EventArgs
 	{
 		private readonly Mobile m_From;
-		private readonly Region m_Region;
+        private readonly Region m_OldRegion;
+		private readonly Region m_NewRegion;
 
-		public OnEnterRegionEventArgs(Mobile from, Region region)
+		public OnEnterRegionEventArgs(Mobile from, Region oldRegion, Region newRegion)
 		{
 			m_From = from;
-			m_Region = region;
+            m_OldRegion = oldRegion;
+			m_NewRegion = newRegion;
 		}
 
 		public Mobile From { get { return m_From; } }
-		public Region Region { get { return m_Region; } }
+		public Region OldRegion { get { return m_OldRegion; } }
+        public Region NewRegion { get { return m_NewRegion; } }
 	}
 
 	public class OnConsumeEventArgs : EventArgs

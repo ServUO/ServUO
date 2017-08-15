@@ -410,7 +410,7 @@ namespace Server.SkillHandlers
                     #region Monster Stealables
                     if (target is BaseCreature && from is PlayerMobile)
                     {
-                        drNO.ThieveItems.StealingHandler.HandleSteal(target as BaseCreature, from as PlayerMobile);
+                        Server.Engines.CreatureStealing.StealingHandler.HandleSteal(target as BaseCreature, from as PlayerMobile);
                     }
                     #endregion
 				}

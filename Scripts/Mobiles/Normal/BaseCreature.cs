@@ -1004,7 +1004,7 @@ namespace Server.Mobiles
                 if (m is PlayerMobile)
                 {
                     PlayerMobile pm = m as PlayerMobile;
-                    toDrain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, toDrain);
+                    toDrain = (int)LifeShieldLotion.HandleLifeDrain(pm, toDrain);
                 }
                 //end
 
@@ -6656,7 +6656,7 @@ namespace Server.Mobiles
         public virtual int GetAuraDamage(Mobile from)
         {
             if(from is PlayerMobile)
-                return (int)drNO.ThieveItems.BalmOfProtection.HandleDamage((PlayerMobile)from, AuraBaseDamage);
+                return (int)BalmOfProtection.HandleDamage((PlayerMobile)from, AuraBaseDamage);
 
             return AuraBaseDamage;
         }

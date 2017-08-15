@@ -1,27 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using System.Text;
 using Server;
 using Server.Mobiles;
-using Server.Items; 
 
-namespace drNO.ThieveItems
+namespace Server.Items
 {
-    class SeedOflife : Item
+    [TypeAlias("drNO.ThieveItems.SeedOfLife")]
+    public class SeedOflife : Item
     {
+        private static Dictionary<PlayerMobile, DateTime> SeedUsageList = new Dictionary<PlayerMobile, DateTime>();
+        private static TimeSpan Cooldown = TimeSpan.FromMinutes(10);
 
-        public override int LabelNumber
+        public static void Initialize()
         {
-            get
-            {
-                return 1094937; 
-            }
+            EventSink.AfterWorldSave += CheckCleanup;
+        }
+
+        public override int LabelNumber { get { return 1094937; } } // seed of life
+
+        [Constructable]
+        public SeedOflife()
+            : base(0x1727)
+        {
+            Hue = 0x491;
+            Weight = 1.0;
+            Stackable = true;
+            LootType = LootType.Cursed; 
+        }
+
+        public static void CheckCleanup(AfterWorldSaveEventArgs e)
+        {
+            DoCleanup();
+            ManaDraught.DoCleanup();
+            GemOfSalvation.DoCleanup();
         }
 
         public static void DoCleanup()
         {
-            List<PlayerMobile> toRemove = new List<PlayerMobile>(); 
+            List<PlayerMobile> toRemove = new List<PlayerMobile>();
 
             foreach (PlayerMobile pm in SeedUsageList.Keys)
             {
@@ -29,51 +45,33 @@ namespace drNO.ThieveItems
                 {
                     if (SeedUsageList[pm] < DateTime.Now + Cooldown)
                     {
-                        toRemove.Add(pm); 
+                        toRemove.Add(pm);
                     }
                 }
             }
 
             foreach (PlayerMobile pm in toRemove)
             {
-                SeedUsageList.Remove(pm); 
+                SeedUsageList.Remove(pm);
             }
 
-            toRemove.Clear(); 
-           
+            toRemove.Clear();
+
         }
 
-
-        private static Dictionary<PlayerMobile, DateTime> SeedUsageList = new Dictionary<PlayerMobile, DateTime>();
-        private static TimeSpan Cooldown = TimeSpan.FromMinutes(10); 
         private bool CheckUse(PlayerMobile pm)
         {
             if (SeedUsageList.ContainsKey(pm))
             {
-                if (SeedUsageList[pm]  + Cooldown >= DateTime.Now)
+                if (SeedUsageList[pm] + Cooldown >= DateTime.Now)
                     return false;
                 else
-                    return true; 
+                    return true;
             }
             else
             {
-                return true; 
+                return true;
             }
-        }
-        [Constructable]
-        public SeedOflife()
-            : base(0x1727)
-        {
-            Hue = 0x491;
-            Name = "Seed of Life";
-            Weight = 1.0;
-            Stackable = true;
-            LootType = LootType.Cursed; 
-        }
-
-        public override void OnDoubleClick(Mobile from)
-        {
-            OnUsed((PlayerMobile)from); 
         }
 
         private void OnUsed(PlayerMobile by)
@@ -81,7 +79,6 @@ namespace drNO.ThieveItems
             if (CheckUse(by))
             {
                 DoHeal(by);
-            
             }
             else
             {

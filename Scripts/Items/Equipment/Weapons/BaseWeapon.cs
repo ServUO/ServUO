@@ -2124,49 +2124,18 @@ namespace Server.Items
 
                     int low = phys, type = 0;
 
-                    if (fire < low)
-                    {
-                        low = fire;
-                        type = 1;
-                    }
-                    if (cold < low)
-                    {
-                        low = cold;
-                        type = 2;
-                    }
-                    if (pois < low)
-                    {
-                        low = pois;
-                        type = 3;
-                    }
-                    if (nrgy < low)
-                    {
-                        low = nrgy;
-                        type = 4;
-                    }
+                    if (fire < low) { low = fire; type = 1; }
+                    if (cold < low) { low = cold; type = 2; }
+                    if (pois < low) { low = pois; type = 3; }
+                    if (nrgy < low) { low = nrgy; type = 4; }
 
                     phys = fire = cold = pois = nrgy = chaos = direct = 0;
 
-                    if (type == 0)
-                    {
-                        phys = 100;
-                    }
-                    else if (type == 1)
-                    {
-                        fire = 100;
-                    }
-                    else if (type == 2)
-                    {
-                        cold = 100;
-                    }
-                    else if (type == 3)
-                    {
-                        pois = 100;
-                    }
-                    else if (type == 4)
-                    {
-                        nrgy = 100;
-                    }
+                    if (type == 0) phys = 100;
+                    else if (type == 1) fire = 100;
+                    else if (type == 2) cold = 100;
+                    else if (type == 3) pois = 100;
+                    else if (type == 4) nrgy = 100;
                 }
             }
 
@@ -2229,10 +2198,12 @@ namespace Server.Items
             bool bladeweaving = Bladeweave.BladeWeaving(attacker, out weavabil);
             bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)) || (bladeweaving && weavabil is ArmorIgnore));
 
+            bool ranged = this is BaseRanged;
+
             // object is not a mobile, so we end here
             if (defender == null)
             {
-                AOS.Damage(damageable, attacker, damage, ignoreArmor, phys, fire, cold, pois, nrgy, chaos, direct, false, this is BaseRanged, false);
+                AOS.Damage(damageable, attacker, damage, ignoreArmor, phys, fire, cold, pois, nrgy, chaos, direct, false, ranged, false);
 
                 // TODO: WeaponAbility/SpecialMove OnHit(...) convert target to IDamageable
                 // Figure out which specials work on items. For now AI only.
@@ -2412,6 +2383,14 @@ namespace Server.Items
 			}
 			#endregion
 
+            if (m_ExtendedWeaponAttributes.AssassinHoned > 0 && attacker.Direction == defender.Direction)
+            {
+                if (!ranged || 0.5 > Utility.RandomDouble())
+                {
+                    percentageBonus += (int)(146.0 / MlSpeed);
+                }
+            }
+
 			percentageBonus = Math.Min(percentageBonus, 300);
 
 			damage = AOS.Scale(damage, 100 + percentageBonus);
@@ -2472,7 +2451,7 @@ namespace Server.Items
             {
                 int d = SearingWeaponContext.Damage;
 
-                if ((this is BaseRanged && 10 > Utility.Random(100)) || 20 > Utility.Random(100))
+                if ((ranged && 10 > Utility.Random(100)) || 20 > Utility.Random(100))
                 {
                     AOS.Damage(defender, attacker, d, 0, 100, 0, 0, 0);
                     AOS.Damage(attacker, null, 4, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
@@ -2505,7 +2484,7 @@ namespace Server.Items
 
             Timer.DelayCall(() => AddBlood(attacker, defender, damage));
 
-			if (Core.ML && this is BaseRanged)
+			if (Core.ML && ranged)
 			{
 				BaseQuiver quiver = attacker.FindItemOnLayer(Layer.Cloak) as BaseQuiver;
 
@@ -2569,7 +2548,7 @@ namespace Server.Items
 				chaos,
 				direct,
 				false,
-				this is BaseRanged,
+				ranged,
 				false);
 
             #region Stygian Abyss
@@ -2854,7 +2833,7 @@ namespace Server.Items
 				((IHonorTarget)defender).ReceivedHonorContext.OnTargetHit(attacker);
 			}
 
-			if (!(this is BaseRanged))
+			if (!ranged)
 			{
 				if (AnimalForm.UnderTransformation(attacker, typeof(GiantSerpent)))
 				{
@@ -4964,6 +4943,12 @@ namespace Server.Items
 
 		public override void AddNameProperty(ObjectPropertyList list)
 		{
+            if (m_ExtendedWeaponAttributes.AssassinHoned > 0)
+            {
+                list.Add(1152207); // Assassin's Edge
+                return;
+            }
+
 			int oreType;
 
 			switch (m_Resource)
@@ -5368,6 +5353,11 @@ namespace Server.Items
                 if ((prop = m_ExtendedWeaponAttributes.HitSparks) != 0)
                 {
                     list.Add(1157326, prop.ToString()); // Sparks ~1_val~%
+                }
+
+                if ((prop = m_ExtendedWeaponAttributes.AssassinHoned) != 0)
+                {
+                    list.Add(1152206); // Assassin Honed
                 }
             }
 
@@ -5845,6 +5835,8 @@ namespace Server.Items
 				list.Add(1060639, "{0}\t{1}", m_Hits, m_MaxHits); // durability ~1_val~ / ~2_val~
 			}
 
+            EnchantedHotItem.AddProperties(this, list);
+
 			if (IsSetItem && !m_SetEquipped)
 			{
 				list.Add(1072378); // <br>Only when full set is present:
@@ -5965,7 +5957,14 @@ namespace Server.Items
 			from.Send(new DisplayEquipmentInfo(this, eqInfo));
 		}
 
+        public override bool DropToWorld(Mobile from, Point3D p)
+        {
+            bool drop = base.DropToWorld(from, p);
 
+            EnchantedHotItem.CheckDrop(from, this);
+
+            return drop;
+        }
 
 		public static BaseWeapon Fists { get; set; }
 

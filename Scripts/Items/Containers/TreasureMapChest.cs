@@ -482,19 +482,19 @@ namespace Server.Items
 
             if (rnd <= 1)
             {
-                min = 500; max = 800;
+                min = 500; max = 1000;
             }
             else if (rnd < 5)
             {
-                min = 400; max = 700;
+                min = 400; max = 900;
             }
             else if (rnd < 25)
             {
-                min = 350; max = 600;
+                min = 350; max = 800;
             }
             else if (rnd < 50)
             {
-                min = 250; max = 500;
+                min = 250; max = 600;
             }
             else
             {
