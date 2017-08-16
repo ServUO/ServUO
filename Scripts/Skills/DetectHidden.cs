@@ -162,9 +162,9 @@ namespace Server.SkillHandlers
 
             eable = src.Map.GetItemsInRange(src.Location, 8);
 
-            foreach (var item in eable)
+            foreach (Item item in eable)
             {
-                if (item is IRevealableItem && ((IRevealableItem)item).CheckPassiveDetect(src))
+                if (!item.Visible && item is IRevealableItem && ((IRevealableItem)item).CheckPassiveDetect(src))
                 {
                     src.SendLocalizedMessage(1153493); // Your keen senses detect something hidden in the area...
                 }

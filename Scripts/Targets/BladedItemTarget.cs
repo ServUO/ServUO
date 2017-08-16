@@ -37,7 +37,7 @@ namespace Server.Targets
 
             if (targeted is ICarvable)
             {
-                if (targeted is Item && ((Item)targeted).IsLockedDown)
+                if (targeted is Item && (((Item)targeted).IsLockedDown || (((Item)targeted).RootParent is Container && !((Item)targeted).Movable)))
                 {
                     from.SendLocalizedMessage(500494); // You can't use a bladed item on that!
                 }

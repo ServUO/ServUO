@@ -328,7 +328,7 @@ namespace Server.Engines.VvV
             {
                 bool vvv = ViceVsVirtueSystem.IsVvV(pm);
 
-                if (!vvv && !Warned.Contains(pm))
+                if (!vvv && !Warned.Contains(pm) && pm.AccessLevel == AccessLevel.Player)
                 {
                     pm.SendGump(new BattleWarningGump(pm));
                     Warned.Add(pm);

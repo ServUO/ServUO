@@ -65,8 +65,13 @@ namespace Server.Engines.VvV
         public override void InitOutfit()
         {
             Robe robe = new Robe();
-            robe.ItemID = 9860;
+            robe.ItemID = 19357;
             robe.Name = this.VvVType == VvVType.Virtue ? "Robe of Virtue" : "Robe of Vice";
+
+            Timer.DelayCall<Item>(TimeSpan.FromSeconds(1), item =>
+                {
+                    item.Hue = this.VvVType == VvVType.Virtue ? ViceVsVirtueSystem.VirtueHue : ViceVsVirtueSystem.ViceHue;
+                }, robe);
 
             SetWearable(robe, this.VvVType == VvVType.Virtue ? ViceVsVirtueSystem.VirtueHue : ViceVsVirtueSystem.ViceHue); // TODO: Get Hues
         }
