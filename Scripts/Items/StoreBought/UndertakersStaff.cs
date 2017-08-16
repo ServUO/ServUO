@@ -1,5 +1,6 @@
 ﻿using System;
 using Server;
+using Server.Mobiles;
 using Server.ContextMenus;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ namespace Server.Items
 {
     public class UndertakersStaff : GnarledStaff
     {
-        private static Dictionary<Mobile, Timer> _Timers = new Dictionary<Mobile, Timer>();
+        private static Dictionary<Mobile, CorpseRetrieveTimer> _Timers = new Dictionary<Mobile, CorpseRetrieveTimer>();
 
         private int _Charges;
         private bool _SummonAll;
@@ -19,6 +20,7 @@ namespace Server.Items
         public bool SummonAll { get { return _SummonAll; } set { _SummonAll = value; InvalidateProperties(); } }
 
         public override int LabelNumber { get { return 1071498; } } // Undertaker's Staff
+        public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public UndertakersStaff()
@@ -44,7 +46,7 @@ namespace Server.Items
             if (IsChildOf(from.Backpack))
             {
                 var entry1 = new SimpleContextMenuEntry(from, 1071507, m => SummonAll = false); // Summon Most Recent Corpse Only
-                var entry2 = new ContextMenuEntry(from, 1071508, m => SummonAll = true); // Summon All Corpses
+                var entry2 = new SimpleContextMenuEntry(from, 1071508, m => _SummonAll = true); // Summon All Corpses
 
                 if(_SummonAll)
                     entry2.Color = 0x421F;
@@ -101,11 +103,6 @@ namespace Server.Items
                         m.SendLocalizedMessage(1071511); // The staff glows slightly, then fades. Its magic is unable to locate a corpse of yours to recover.
                     }
                 }
-
-                if (success && Charges <= 0)
-                {
-                    m.SendLocalizedMessage(1071509); // The staff has been reduced to pieces!
-                }
             }
         }
 
@@ -127,7 +124,7 @@ namespace Server.Items
 
         public void TryEndSummon(Mobile m, List<Corpse> corpses)
         {
-            if(corpses == null || corpses.Count == 0)
+            if (corpses == null || corpses.Count == 0)
             {
                 m.SendLocalizedMessage(1071511); // The staff glows slightly, then fades. Its magic is unable to locate a corpse of yours to recover.
                 return;
@@ -204,7 +201,7 @@ namespace Server.Items
                     c.MoveToWorld(m.Location, m.Map);
                 }
 
-                if(_SummonAll)
+                if (_SummonAll)
                 {
                     m.SendLocalizedMessage(1071530, corpses.Count.ToString()); // ...and succeeds in summoning ~1_COUNT~ of them!
 
@@ -217,6 +214,16 @@ namespace Server.Items
                 }
                 else
                     m.SendLocalizedMessage(1071530); // ...and succeeds in summoning ~1_COUNT~ of them!
+
+                if (Charges <= 0)
+                {
+                    m.SendLocalizedMessage(1071509); // The staff has been reduced to pieces!
+                    Delete();
+                }
+                else
+                {
+                    Charges--;
+                }
             }
         }
 
@@ -257,7 +264,7 @@ namespace Server.Items
 
         private Corpse GetCorpse(Mobile m)
         {
-            return m.Corpse;
+            return m.Corpse as Corpse;
         }
 
         public static bool TryRemoveTimer(Mobile m)
@@ -265,7 +272,7 @@ namespace Server.Items
             if (_Timers.ContainsKey(m))
             {
                 _Timers[m].Stop();
-                _Timer.Remove(m);
+                _Timers.Remove(m);
 
                 m.FixedEffect(0x3735, 6, 30);
                 m.PlaySound(0x5C);
@@ -277,7 +284,7 @@ namespace Server.Items
             return false;
         }
 
-        public void IsSummoning()
+        public bool IsSummoning()
         {
             foreach (var timer in _Timers.Values)
             {
@@ -306,7 +313,7 @@ namespace Server.Items
 
             protected override void OnTick()
             {
-                staff.TryEndSummon(From, Corpses);
+                Staff.TryEndSummon(From, Corpses);
             }
         }
 

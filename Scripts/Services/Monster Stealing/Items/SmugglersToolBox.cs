@@ -62,10 +62,10 @@ namespace Server.Items
             writer.Write(_UsesRemaining);
             writer.Write(NextRecharge);
 
-            if (NextRechargeTime < DateTime.UtcNow)
+            if (NextRecharge < DateTime.UtcNow)
             {
                 UsesRemaining = Math.Min(20, UsesRemaining + 1);
-                NextRechargeTime = DateTime.UtcNow + TimeSpan.FromHours(24);
+                NextRecharge = DateTime.UtcNow + TimeSpan.FromHours(24);
             }
         }
 

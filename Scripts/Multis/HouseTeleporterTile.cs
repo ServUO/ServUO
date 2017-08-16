@@ -13,9 +13,6 @@ namespace Server.Multis
 		private int _Charges;
 		private SecureLevel _Level;
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int Height { get { return ItemData.Height; } }
-
 		[CommandProperty(AccessLevel.GameMaster)]
         public HouseTeleporterTile Link
 		{
@@ -280,7 +277,8 @@ namespace Server.Multis
 			base.Serialize(writer);
 			writer.Write(0);
 			
-			writer.Write(_Charges);	
+			writer.Write(_Charges);
+            writer.Write(UsesCharges);
 		}
 		
 		public override void Deserialize(GenericReader reader)
@@ -289,6 +287,7 @@ namespace Server.Multis
 			int version = reader.ReadInt();
 			
 			_Charges = reader.ReadInt();
+            UsesCharges = reader.ReadBool();
 		}
 	}
 

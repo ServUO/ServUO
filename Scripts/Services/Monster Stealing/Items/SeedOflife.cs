@@ -5,8 +5,8 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    [TypeAlias("drNO.ThieveItems.SeedOfLife")]
-    public class SeedOflife : Item
+    [TypeAlias("drNO.ThieveItems.SeedOflife")]
+    public class SeedOfLife : Item
     {
         private static Dictionary<PlayerMobile, DateTime> SeedUsageList = new Dictionary<PlayerMobile, DateTime>();
         private static TimeSpan Cooldown = TimeSpan.FromMinutes(10);
@@ -19,7 +19,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1094937; } } // seed of life
 
         [Constructable]
-        public SeedOflife()
+        public SeedOfLife()
             : base(0x1727)
         {
             Hue = 0x491;
@@ -115,7 +115,7 @@ namespace Server.Items
             pm.SendLocalizedMessage(1095126);//The bitter seed instantly restores some of your health!
         }
 
-        public SeedOflife(Serial serial)
+        public SeedOfLife(Serial serial)
             : base(serial)
         {
         }

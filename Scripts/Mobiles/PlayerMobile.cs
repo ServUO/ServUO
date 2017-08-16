@@ -3279,7 +3279,7 @@ namespace Server.Mobiles
 			}
 			#endregion
 
-            UndertakersStaff.TryRemoveTimer(m);
+            UndertakersStaff.TryRemoveTimer(this);
 
 			base.OnDamage(amount, from, willKill);
 		}

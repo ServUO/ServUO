@@ -11,7 +11,6 @@ namespace Server.Items
         public SmugglersLantern()
         {
             Hue = Utility.RandomMinMax(192, 291);
-            Attributes.SpellChanneling = 1;
         }
 
         public override bool AllowEquipedCast(Mobile from)
