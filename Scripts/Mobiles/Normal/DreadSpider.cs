@@ -3,6 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
+    [TypeAlias("Server.Mobiles.DreadSpiderWeak")]
     [CorpseName("a dread spider corpse")]
     public class DreadSpider : BaseCreature
     {
@@ -89,59 +90,6 @@ namespace Server.Mobiles
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override Poison HitPoison { get { return Poison.Lethal; } }
         public override int TreasureMapLevel { get { return 3; } }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.FilthyRich);
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write((int)0);
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
-        }
-    }
-
-    [CorpseName("a dread spider corpse")]
-    public class DreadSpiderWeak : DreadSpider
-    {
-        [Constructable]
-        public DreadSpiderWeak()
-        {
-            SetStr(196, 220);
-            SetDex(126, 145);
-            SetInt(286, 310);
-
-            SetHits(118, 132);
-            SetDamage(5, 17);
-
-            SetResistance(ResistanceType.Physical, 40, 50);
-            SetResistance(ResistanceType.Fire, 20, 30);
-            SetResistance(ResistanceType.Cold, 20, 30);
-            SetResistance(ResistanceType.Poison, 100);
-            SetResistance(ResistanceType.Energy, 20, 30);
-
-            SetSkill(SkillName.EvalInt, 65.1, 80.0);
-            SetSkill(SkillName.Magery, 65.1, 80.0);
-            SetSkill(SkillName.MagicResist, 45.1, 60.0);
-            SetSkill(SkillName.Tactics, 55.1, 70.0);
-            SetSkill(SkillName.Wrestling, 60.1, 75.0);
-            SetSkill(SkillName.Poisoning, 80.0);
-            SetSkill(SkillName.DetectHidden, 50.0, 60.0);
-            SetSkill(SkillName.Necromancy, 20.0);
-            SetSkill(SkillName.SpiritSpeak, 20.0);
-        }
-
-        public DreadSpiderWeak(Serial serial)
-            : base(serial)
-        {
-        }
 
         public override void GenerateLoot()
         {

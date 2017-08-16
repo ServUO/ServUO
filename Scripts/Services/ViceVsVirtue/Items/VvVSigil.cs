@@ -33,6 +33,8 @@ namespace Server.Engines.VvV
             Battle = battle;
             Visible = false;
 
+            Hue = 2721;
+
             LootType = LootType.Cursed;
         }
 
