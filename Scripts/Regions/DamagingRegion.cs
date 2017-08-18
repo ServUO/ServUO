@@ -163,7 +163,7 @@ namespace Server.Regions
 
                     PlayerMobile pm = m as PlayerMobile;
 
-                    dmg = (int)drNO.ThieveItems.BalmOfProtection.HandleDamage(pm, dmg);
+                    dmg = (int)Server.Items.BalmOfProtection.HandleDamage(pm, dmg);
 
                 }
 

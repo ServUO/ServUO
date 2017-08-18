@@ -155,13 +155,13 @@ namespace Server.Items
         public BedrollSpawner()
             : base(3796)
         {
-            this.Movable = false;
-            this.Visible = false;
-            this.Bedrolls = new List<WrongBedrollBase>();
-            this.MysteriousTunnels = new List<MysteriousTunnel>();            
+            Movable = false;
+            Visible = false;
+            Bedrolls = new List<WrongBedrollBase>();
+            MysteriousTunnels = new List<MysteriousTunnel>();            
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckRespawn);
-            this.m_Timer = Timer.DelayCall(RestartDelay, RestartDelay, new TimerCallback(CheckRespawn));
-            this.m_Timer.Start();
+            m_Timer = Timer.DelayCall(RestartDelay, RestartDelay, new TimerCallback(CheckRespawn));
+            m_Timer.Start();
 
             if (Instances == null)
                 Instances = new List<BedrollSpawner>();
@@ -180,7 +180,7 @@ namespace Server.Items
                 WrongBedrollBase item = (WrongBedrollBase)Activator.CreateInstance(entry.Type);
 
                 item.Movable = false;
-                item.MoveToWorld(entry.Location, this.Map);
+                item.MoveToWorld(entry.Location, Map);
                 Bedrolls.Add(item);
             }
 
@@ -213,7 +213,7 @@ namespace Server.Items
                     }
                 }
 
-                mt.MoveToWorld(m_OutsideTunnels[i], this.Map);
+                mt.MoveToWorld(m_OutsideTunnels[i], Map);
                 MysteriousTunnels.Add(mt);
             }            
         }
@@ -240,10 +240,10 @@ namespace Server.Items
 
         public override void OnDelete()
         {
-            if (this.m_Timer != null)
+            if (m_Timer != null)
             {
-                this.m_Timer.Stop();
-                this.m_Timer = null;
+                m_Timer.Stop();
+                m_Timer = null;
             }
 
             Cleanup();
@@ -251,15 +251,15 @@ namespace Server.Items
             base.OnDelete();
         }
 
-        public override string DefaultName { get { return "Wrong Bedrolls Spawner " + this.Map; } }
+        public override string DefaultName { get { return "Wrong Bedrolls Spawner " + Map; } }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
 
-            if (this.m_Timer != null)
-                writer.Write(this.m_Timer.Next);
+            if (m_Timer != null)
+                writer.Write(m_Timer.Next);
             else
                 writer.Write(DateTime.UtcNow + RestartDelay);
 
@@ -293,8 +293,8 @@ namespace Server.Items
             if (next < DateTime.UtcNow)
                 next = DateTime.UtcNow;
 
-            this.m_Timer = Timer.DelayCall(next - DateTime.UtcNow, RestartDelay, new TimerCallback(CheckRespawn));
-            this.m_Timer.Start();
+            m_Timer = Timer.DelayCall(next - DateTime.UtcNow, RestartDelay, new TimerCallback(CheckRespawn));
+            m_Timer.Start();
 
             Bedrolls = new List<WrongBedrollBase>();
             MysteriousTunnels = new List<MysteriousTunnel>();
@@ -316,6 +316,15 @@ namespace Server.Items
                 if (mt != null)
                     MysteriousTunnels.Add(mt);
             }
+
+            if (version == 0)
+            {
+                Timer.DelayCall<Map>(TimeSpan.FromSeconds(5), map => 
+                    {
+                        EnchantedHotItem.SpawnChests(map);
+                        Console.WriteLine("Hot Item chests spawned for {0}.", this.Map);
+                    }, Map);
+            }
         }
 
         public class BedrollEntry
@@ -325,12 +334,12 @@ namespace Server.Items
 
             public BedrollEntry(Point3D location, Type type)
             {
-                this.m_Location = location;
-                this.m_Type = type;
+                m_Location = location;
+                m_Type = type;
             }
 
-            public Point3D Location { get { return this.m_Location; } }
-            public Type Type { get { return this.m_Type; } }
+            public Point3D Location { get { return m_Location; } }
+            public Type Type { get { return m_Type; } }
         }
     }
 }

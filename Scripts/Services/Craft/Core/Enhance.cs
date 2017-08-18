@@ -140,6 +140,9 @@ namespace Server.Engines.Craft
                 if (!CraftResources.IsStandard(weapon.Resource))
                     return EnhanceResult.AlreadyEnhanced;
 
+                if(weapon.ExtendedWeaponAttributes.AssassinHoned > 0)
+                    return EnhanceResult.BadItem;
+
                 baseChance = 20;
 
                 dura = weapon.MaxHitPoints;

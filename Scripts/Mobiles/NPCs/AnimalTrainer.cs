@@ -76,23 +76,23 @@ namespace Server.Mobiles
 			var vetern = from.Skills[SkillName.Veterinary].Value;
 			var sklsum = taming + anlore + vetern;
 
-			int max;
+            int max = from is PlayerMobile ? ((PlayerMobile)from).RewardStableSlots : 0;
 
 			if (sklsum >= 240.0)
 			{
-				max = 5;
+				max += 5;
 			}
 			else if (sklsum >= 200.0)
 			{
-				max = 4;
+				max += 4;
 			}
 			else if (sklsum >= 160.0)
 			{
-				max = 3;
+				max += 3;
 			}
 			else
 			{
-				max = 2;
+				max += 2;
 			}
 			
 			// bonus SA stable slots

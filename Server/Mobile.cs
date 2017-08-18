@@ -3210,8 +3210,8 @@ namespace Server
 							{
 								Item item = newSector.Items[i];
 
-								if (item.AtWorldPoint(x, y) &&
-									(item.Z == newZ || ((item.Z + item.ItemData.Height) > newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
+                                if (item.AtWorldPoint(x, y) && !item.OnMoveOver(this) && 
+									(item.Z == newZ || ((item.Z + item.ItemData.Height) > newZ && (newZ + 15) > item.Z)))
 								{
 									return false;
 								}
@@ -3242,8 +3242,8 @@ namespace Server
 								{
 									return false;
 								}
-								else if (item.AtWorldPoint(x, y) &&
-										 (item.Z == newZ || ((item.Z + item.ItemData.Height) > newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
+                                else if (item.AtWorldPoint(x, y) && !item.OnMoveOver(this) &&
+										 (item.Z == newZ || ((item.Z + item.ItemData.Height) > newZ && (newZ + 15) > item.Z)))
 								{
 									return false;
 								}

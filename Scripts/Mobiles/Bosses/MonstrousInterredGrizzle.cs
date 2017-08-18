@@ -435,7 +435,7 @@ namespace Server.Mobiles
                 if (m is PlayerMobile)
                 {
                     PlayerMobile pm = m as PlayerMobile;
-                    dmg = (int)drNO.ThieveItems.BalmOfProtection.HandleDamage(pm, dmg);
+                    dmg = (int)BalmOfProtection.HandleDamage(pm, dmg);
                     AOS.Damage(m, dmg, 0, 0, 0, 100, 0);
                 }
                 else

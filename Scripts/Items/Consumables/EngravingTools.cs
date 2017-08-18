@@ -2,6 +2,7 @@ using System;
 using Server.Gumps;
 using Server.Multis;
 using Server.Targeting;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -13,6 +14,7 @@ namespace Server.Items
     public class BaseEngravingTool : Item, IUsesRemaining
     { 
         private int m_UsesRemaining;
+
         [Constructable]
         public BaseEngravingTool(int itemID)
             : this(itemID, 1)
@@ -23,10 +25,10 @@ namespace Server.Items
         public BaseEngravingTool(int itemID, int uses)
             : base(itemID)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x48D;
+            Weight = 1.0;
+            Hue = 0x48D;
 			
-            this.m_UsesRemaining = uses;
+            m_UsesRemaining = uses;
         }
 
         public BaseEngravingTool(Serial serial)
@@ -34,26 +36,30 @@ namespace Server.Items
         {
         }
 
-        public virtual Type[] Engraves
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public virtual Type[] Engraves { get { return null; } }
+        public virtual int GumpTitle { get { return 1072359; } }
+
+        public virtual int SuccessMessage { get { return 1072361; } } // // You engraved the object.
+        public virtual int TargetMessage { get { return 1072357; } } // Select an object to engrave.
+        public virtual int RemoveMessage { get { return 1072362; } } // You remove the engraving from the object.
+        public virtual int OutOfChargesMessage { get { return 1042544; } } // This item is out of charges.
+        public virtual int NotAccessibleMessage { get { return 1072310; } } // The selected item is not accessible to engrave.
+        public virtual int CannotEngraveMessage { get { return 1072309; } } // The selected item cannot be engraved by this engraving tool.
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
+
         public virtual bool ShowUsesRemaining
         { 
             get
@@ -64,16 +70,17 @@ namespace Server.Items
             {
             }
         }
-        public bool CheckItem(Item item)
+
+        public virtual bool CheckType(IEntity entity)
         {
-            if (this.Engraves == null || item == null)
+            if (Engraves == null || entity == null)
                 return false;
+
+            Type type = entity.GetType();
 				
-            Type type = item.GetType();
-				
-            for (int i = 0; i < this.Engraves.Length; i ++)
+            for (int i = 0; i < Engraves.Length; i ++)
             { 
-                if (type == this.Engraves[i] || type.IsSubclassOf(this.Engraves[i]))
+                if (type == Engraves[i] || type.IsSubclassOf(Engraves[i]))
                     return true;
             }
 			
@@ -90,21 +97,21 @@ namespace Server.Items
                 return;
             }
 			
-            if (this.m_UsesRemaining > 0)
+            if (m_UsesRemaining > 0)
             {
-                from.SendLocalizedMessage(1072357); // Select an object to engrave.
+                from.SendLocalizedMessage(TargetMessage);
                 from.Target = new InternalTarget(this);
             }
             else
-                from.SendLocalizedMessage(1042544); // This item is out of charges.
+                from.SendLocalizedMessage(OutOfChargesMessage);
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 			
-            if (this.ShowUsesRemaining)
-                list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~			
+            if (ShowUsesRemaining)
+                list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~			
         }
 
         public override void Serialize(GenericWriter writer)
@@ -113,7 +120,7 @@ namespace Server.Items
 			
             writer.Write((int)0); // version
 			
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((int)m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -122,55 +129,68 @@ namespace Server.Items
 			
             int version = reader.ReadInt();
 			
-            this.m_UsesRemaining = reader.ReadInt();
+            m_UsesRemaining = reader.ReadInt();
         }
 
         private class InternalTarget : Target
         {
             private readonly BaseEngravingTool m_Tool;
+
             public InternalTarget(BaseEngravingTool tool)
                 : base(2, true, TargetFlags.None)
             {
-                this.m_Tool = tool;
+                m_Tool = tool;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Tool == null || this.m_Tool.Deleted)
+                if (m_Tool == null || m_Tool.Deleted)
                     return;
-					
-                if (targeted is Item)
+
+                if (targeted is IEntity)
                 {
-                    Item item = (Item)targeted;
-					
-                    if (this.IsValid(item, from))
+                    IEntity entity = (IEntity)targeted;
+
+                    if (IsValid(entity, from))
                     {
-                        if (item is IEngravable && this.m_Tool.CheckItem(item))
+                        if (entity is IEngravable && m_Tool.CheckType(entity))
                         {
                             from.CloseGump(typeof(InternalGump));
-                            from.SendGump(new InternalGump(this.m_Tool, item));
+                            from.SendGump(new InternalGump(m_Tool, entity));
                         }
                         else
-                            from.SendLocalizedMessage(1072309); // The selected item cannot be engraved by this engraving tool.
+                            from.SendLocalizedMessage(m_Tool.CannotEngraveMessage);
                     }
                     else
-                        from.SendLocalizedMessage(1072310); // The selected item is not accessible to engrave.
+                        from.SendLocalizedMessage(m_Tool.CannotEngraveMessage);
                 }
                 else
-                    from.SendLocalizedMessage(1072309); // The selected item cannot be engraved by this engraving tool.
+                    from.SendLocalizedMessage(m_Tool.CannotEngraveMessage);
             }
 
             protected override void OnTargetOutOfRange(Mobile from, object targeted)
             {
-                from.SendLocalizedMessage(1072310); // The selected item is not accessible to engrave.
+                from.SendLocalizedMessage(m_Tool.NotAccessibleMessage);
             }
 
-            private bool IsValid(Item item, Mobile m)
+            private bool IsValid(IEntity entity, Mobile m)
             {
-                if (BaseHouse.CheckAccessible(m, item))
-                    return true;
-                else if (item.Movable && !item.IsLockedDown && !item.IsSecure)
-                    return true;
+                if (entity is Item)
+                {
+                    Item item = entity as Item;
+
+                    if (BaseHouse.CheckAccessible(m, (Item)item))
+                        return true;
+                    else if (item.Movable && !item.IsLockedDown && !item.IsSecure)
+                        return true;
+                }
+                else if (entity is BaseCreature)
+                {
+                    BaseCreature bc = entity as BaseCreature;
+
+                    if (bc.Controlled && bc.ControlMaster == m)
+                        return true;
+                }
 					
                 return false;				
             }
@@ -179,34 +199,35 @@ namespace Server.Items
         private class InternalGump : Gump
         {
             private readonly BaseEngravingTool m_Tool;
-            private readonly Item m_Target;
-            public InternalGump(BaseEngravingTool tool, Item target)
+            private readonly IEntity m_Target;
+
+            public InternalGump(BaseEngravingTool tool, IEntity target)
                 : base(0, 0)
             {
-                this.m_Tool = tool;
-                this.m_Target = target;
+                m_Tool = tool;
+                m_Target = target;
 			
-                this.Closable = true;
-                this.Disposable = true;
-                this.Dragable = true;
-                this.Resizable = false;
+                Closable = true;
+                Disposable = true;
+                Dragable = true;
+                Resizable = false;
 			
-                this.AddPage(0);
+                AddPage(0);
 				
-                this.AddBackground(50, 50, 400, 300, 0xA28);
-                this.AddHtmlLocalized(50, 70, 400, 20, 1072359, 0x0, false, false);
-                this.AddHtmlLocalized(75, 95, 350, 145, 1072360, 0x0, true, true);				
+                AddBackground(50, 50, 400, 300, 0xA28);
+                AddHtmlLocalized(50, 70, 400, 20, m_Tool.GumpTitle, 0x0, false, false);
+                AddHtmlLocalized(75, 95, 350, 145, 1072360, 0x0, true, true);				
 				
-                this.AddButton(125, 300, 0x81A, 0x81B, (int)Buttons.Okay, GumpButtonType.Reply, 0);
-                this.AddButton(320, 300, 0x819, 0x818, (int)Buttons.Cancel, GumpButtonType.Reply, 0);
+                AddButton(125, 300, 0x81A, 0x81B, (int)Buttons.Okay, GumpButtonType.Reply, 0);
+                AddButton(320, 300, 0x819, 0x818, (int)Buttons.Cancel, GumpButtonType.Reply, 0);
 				
-                this.AddImageTiled(75, 245, 350, 40, 0xDB0);
-                this.AddImageTiled(76, 245, 350, 2, 0x23C5);
-                this.AddImageTiled(75, 245, 2, 40, 0x23C3);
-                this.AddImageTiled(75, 285, 350, 2, 0x23C5);
-                this.AddImageTiled(425, 245, 2, 42, 0x23C3);
+                AddImageTiled(75, 245, 350, 40, 0xDB0);
+                AddImageTiled(76, 245, 350, 2, 0x23C5);
+                AddImageTiled(75, 245, 2, 40, 0x23C3);
+                AddImageTiled(75, 285, 350, 2, 0x23C5);
+                AddImageTiled(425, 245, 2, 42, 0x23C3);
 				
-                this.AddTextEntry(78, 245, 345, 40, 0x0, (int)Buttons.Text, "");
+                AddTextEntry(78, 245, 345, 40, 0x0, (int)Buttons.Text, "");
             }
 
             private enum Buttons
@@ -215,9 +236,10 @@ namespace Server.Items
                 Okay,
                 Text
             }
+
             public override void OnResponse(Server.Network.NetState state, RelayInfo info)
             { 
-                if (this.m_Tool == null || this.m_Tool.Deleted || this.m_Target == null || this.m_Target.Deleted)
+                if (m_Tool == null || m_Tool.Deleted || m_Target == null || m_Target.Deleted)
                     return;
 			
                 if (info.ButtonID == (int)Buttons.Okay)
@@ -228,24 +250,23 @@ namespace Server.Items
                     {
                         if (relay.Text == null || relay.Text.Equals(""))
                         {
-                            ((IEngravable)this.m_Target).EngravedText = null;
-                            state.Mobile.SendLocalizedMessage(1072362); // You remove the engraving from the object.
+                            ((IEngravable)m_Target).EngravedText = null;
+                            state.Mobile.SendLocalizedMessage(m_Tool.RemoveMessage);
                         }
                         else
                         {
                             if (relay.Text.Length > 40)
-                                ((IEngravable)this.m_Target).EngravedText = relay.Text.Substring(0, 40);
+                                ((IEngravable)m_Target).EngravedText = relay.Text.Substring(0, 40);
                             else
-                                ((IEngravable)this.m_Target).EngravedText = relay.Text;
-						
-                            state.Mobile.SendLocalizedMessage(1072361); // You engraved the object.	
-                            this.m_Target.InvalidateProperties();						
-                            this.m_Tool.UsesRemaining -= 1;
-                            this.m_Tool.InvalidateProperties();
-						
-                            if (this.m_Tool.UsesRemaining < 1)
+                                ((IEngravable)m_Target).EngravedText = relay.Text;
+
+                            state.Mobile.SendLocalizedMessage(m_Tool.SuccessMessage);
+
+                            m_Tool.UsesRemaining -= 1;
+
+                            if (m_Tool.UsesRemaining < 1)
                             {
-                                this.m_Tool.Delete();
+                                m_Tool.Delete();
                                 state.Mobile.SendLocalizedMessage(1044038); // You have worn out your tool!
                             }
                         }

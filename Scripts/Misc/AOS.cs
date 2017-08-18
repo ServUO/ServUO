@@ -1782,11 +1782,12 @@ namespace Server
     [Flags]
     public enum ExtendedWeaponAttribute
     {
-        BoneBreaker = 0x00000001,
-        HitSwarm = 0x00000002,
-        HitSparks = 0x00000004,
-        Bane = 0x00000008,
-        MysticWeapon = 0x00000010
+        BoneBreaker     = 0x00000001,
+        HitSwarm        = 0x00000002,
+        HitSparks       = 0x00000004,
+        Bane            = 0x00000008,
+        MysticWeapon    = 0x00000010,
+        AssassinHoned   = 0x00000020
     }
 
     public sealed class ExtendedWeaponAttributes : BaseAttributes
@@ -1913,6 +1914,19 @@ namespace Server
             set
             {
                 this[ExtendedWeaponAttribute.MysticWeapon] = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int AssassinHoned
+        {
+            get
+            {
+                return this[ExtendedWeaponAttribute.AssassinHoned];
+            }
+            set
+            {
+                this[ExtendedWeaponAttribute.AssassinHoned] = value;
             }
         }
     }

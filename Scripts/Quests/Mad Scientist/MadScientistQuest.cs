@@ -4,6 +4,7 @@ using Server.Items;
 using Server.Network;
 using Server.Commands;
 using Server.Mobiles;
+using System.Linq;
 
 namespace Server.Engines.Quests
 {
@@ -30,7 +31,15 @@ namespace Server.Engines.Quests
             sp.MoveToWorld(new Point3D(917, 594, -14), Map.TerMur);
             sp.Respawn();
 
-            e.Mobile.SendMessage("Generation completed!");
+            List<Item> toDelete = new List<Item>(World.Items.Values.Where(i => i is XmlSpawner && (i.Name == "PerfectTimingSpawner" || i.Name == "PerfectTimingSpawner2")));
+
+            foreach (var item in toDelete)
+            {
+                item.Delete();
+            }
+
+            e.Mobile.SendMessage("Generation completed, deleted {0} spawners!", toDelete.Count);
+            ColUtility.Free(toDelete);
         }
         #endregion
 
