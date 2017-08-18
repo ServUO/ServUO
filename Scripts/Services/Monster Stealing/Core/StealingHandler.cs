@@ -67,7 +67,7 @@ namespace Server.Engines.CreatureStealing
 
         public static void HandleSmugglersEdgeSteal(BaseCreature from, PlayerMobile thief)
         {
-            if (from.HasBeenStolen)
+            if (from.HasBeenStolen || !CheckLocation(thief, from))
                 return;
 
             if (0.05 > Utility.RandomDouble())
