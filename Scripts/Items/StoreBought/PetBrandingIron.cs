@@ -4,7 +4,8 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class PetBraningIron : BaseEngravingTool
+    [TypeAlias("Server.Items.PetBraningIron")]
+    public class PetBrandingIron : BaseEngravingTool
     {
         public override int GumpTitle { get { return 1157374; } }
         public override int LabelNumber { get { return 1157314; } }
@@ -19,18 +20,18 @@ namespace Server.Items
         public override Type[] Engraves { get { return new Type[] { typeof(BaseCreature) }; } }
 
         [Constructable]
-        public PetBraningIron()
-            : this(1)
+        public PetBrandingIron()
+            : this(30)
         {
         }
 
         [Constructable]
-        public PetBraningIron(int charges)
+        public PetBrandingIron(int charges)
             : base(0x9E87, charges) 
         {
         }
 
-        public PetBraningIron(Serial serial)
+        public PetBrandingIron(Serial serial)
             : base(serial)
         {
         }
