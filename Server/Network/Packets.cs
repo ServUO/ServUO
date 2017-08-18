@@ -4800,7 +4800,7 @@ m_Stream.Write( (int) renderMode );
 			}
 			else if (a.Limit == 1)
 			{
-				flags |= (CharacterListFlags.SlotLimit & CharacterListFlags.OneCharacterSlot); // Limit Characters & One Character
+				flags |= (CharacterListFlags.SlotLimit | CharacterListFlags.OneCharacterSlot); // Limit Characters & One Character
 			}
 
 			m_Stream.Write((int)(flags | CharacterList.AdditionalFlags)); // Additional Flags
