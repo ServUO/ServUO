@@ -894,6 +894,14 @@ namespace Server.Items
 						break;
 					}
 			}
+
+            if (m_Owner is PlayerMobile)
+            {
+                if (PlayerCorpses == null)
+                    PlayerCorpses = new Dictionary<Corpse, int>();
+
+                PlayerCorpses[this] = 0;
+            }
 		}
 
 		public bool DevourCorpse()

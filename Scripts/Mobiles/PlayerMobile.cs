@@ -581,7 +581,12 @@ namespace Server.Mobiles
 		}
 		#endregion
 
-		private DateTime m_AnkhNextUse;
+        #region Reward Stable Slots
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int RewardStableSlots { get; set; }
+        #endregion
+
+        private DateTime m_AnkhNextUse;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime AnkhNextUse { get { return m_AnkhNextUse; } set { m_AnkhNextUse = value; } }
@@ -4215,6 +4220,9 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 36: // Reward Stable Slots
+                    RewardStableSlots = reader.ReadInt();
+                    goto case 35;
                 case 35: // Siege Blessed Item
                     _BlessedItem = reader.ReadItem();
                     goto case 34;
@@ -4640,7 +4648,9 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(35); // version
+			writer.Write(36); // version
+
+            writer.Write(RewardStableSlots);
 
             writer.Write(_BlessedItem);
 

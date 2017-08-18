@@ -3,6 +3,7 @@ using Server;
 using Server.Mobiles;
 using Server.ContextMenus;
 using System.Collections.Generic;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -45,13 +46,22 @@ namespace Server.Items
 
             if (IsChildOf(from.Backpack))
             {
-                var entry1 = new SimpleContextMenuEntry(from, 1071507, m => SummonAll = false); // Summon Most Recent Corpse Only
-                var entry2 = new SimpleContextMenuEntry(from, 1071508, m => _SummonAll = true); // Summon All Corpses
+                var entry1 = new SimpleContextMenuEntry(from, 1071507, m =>
+                    {
+                        SummonAll = false;
+                        InvalidateProperties();
+                    }); // Summon Most Recent Corpse Only
+
+                var entry2 = new SimpleContextMenuEntry(from, 1071508, m => 
+                    {
+                        _SummonAll = true;
+                        InvalidateProperties();
+                    }); // Summon All Corpses
 
                 if(_SummonAll)
-                    entry2.Color = 0x421F;
+                    entry2.Flags |= CMEFlags.Highlighted;
                 else
-                    entry1.Color = 0x421F;
+                    entry1.Flags |= CMEFlags.Highlighted;
 
                 entry1.Enabled = !IsSummoning();
                 entry2.Enabled = !IsSummoning();
@@ -63,7 +73,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (IsChildOf(m.Backpack) || m.FindItemOnLayer(Layer) == this)
+            if (!_Timers.ContainsKey(m) && (IsChildOf(m.Backpack) || m.FindItemOnLayer(Layer) == this))
             {
                 TryGetCorpse(m);
             }
@@ -73,6 +83,8 @@ namespace Server.Items
         {
             if (CanGetCorpse(m))
             {
+                m.PlaySound(0xF5);
+
                 if (_SummonAll)
                 {
                     var corpses = GetCorpses(m);
@@ -124,6 +136,9 @@ namespace Server.Items
 
         public void TryEndSummon(Mobile m, List<Corpse> corpses)
         {
+            if (_Timers.ContainsKey(m))
+                _Timers.Remove(m);
+
             if (corpses == null || corpses.Count == 0)
             {
                 m.SendLocalizedMessage(1071511); // The staff glows slightly, then fades. Its magic is unable to locate a corpse of yours to recover.
@@ -133,7 +148,7 @@ namespace Server.Items
             bool tooFar = false;
             bool notEnoughTime = false;
             bool tooManySummons = false;
-            bool success = false;
+            bool success = true;
 
             if (_SummonAll)
             {
@@ -178,7 +193,7 @@ namespace Server.Items
                 if (c.Killer is PlayerMobile && c.Killer != m && c.TimeOfDeath + TimeSpan.FromSeconds(180) > DateTime.UtcNow)
                     notEnoughTime = true;
 
-                if (Corpse.PlayerCorpses.ContainsKey(c) && Corpse.PlayerCorpses[c] >= 3)
+                if (Corpse.PlayerCorpses != null && Corpse.PlayerCorpses.ContainsKey(c) && Corpse.PlayerCorpses[c] >= 3)
                     tooManySummons = true;
 
                 if (tooFar || notEnoughTime || tooManySummons)
@@ -196,9 +211,14 @@ namespace Server.Items
 
             if (success)
             {
+                m.PlaySound(0xFA);
+
                 foreach (var c in corpses)
                 {
                     c.MoveToWorld(m.Location, m.Map);
+
+                    if (Corpse.PlayerCorpses != null && Corpse.PlayerCorpses.ContainsKey(c))
+                        Corpse.PlayerCorpses[c]++;
                 }
 
                 if (_SummonAll)
@@ -213,7 +233,7 @@ namespace Server.Items
                         m.SendLocalizedMessage(1071519); // ...but one of them has already been summoned too many times!
                 }
                 else
-                    m.SendLocalizedMessage(1071530); // ...and succeeds in summoning ~1_COUNT~ of them!
+                    m.SendLocalizedMessage(1071529); // ...and succeeds in the summoning of it!
 
                 if (Charges <= 0)
                 {
@@ -229,6 +249,9 @@ namespace Server.Items
 
         private int GetCorpseCount(Mobile m)
         {
+            if (Corpse.PlayerCorpses == null)
+                return 0;
+
             int count = 0;
 
             foreach (var kvp in Corpse.PlayerCorpses)
@@ -242,6 +265,9 @@ namespace Server.Items
 
         private List<Corpse> GetCorpses(Mobile m)
         {
+            if (Corpse.PlayerCorpses == null)
+                return null;
+
             List<Corpse> list = null;
 
             foreach (var kvp in Corpse.PlayerCorpses)
@@ -264,7 +290,12 @@ namespace Server.Items
 
         private Corpse GetCorpse(Mobile m)
         {
-            return m.Corpse as Corpse;
+            var corpse = m.Corpse as Corpse;
+
+            if (corpse == null || Corpse.PlayerCorpses == null || !Corpse.PlayerCorpses.ContainsKey(corpse))
+                return null;
+
+            return corpse;
         }
 
         public static bool TryRemoveTimer(Mobile m)

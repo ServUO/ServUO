@@ -193,7 +193,7 @@ namespace Server.Mobiles
         }
     }
 
-    public class BaseCreature : Mobile, IHonorTarget
+    public class BaseCreature : Mobile, IHonorTarget, IEngravable
     {
         public const int MaxLoyalty = 100;
 
@@ -281,6 +281,7 @@ namespace Server.Mobiles
 
         #region Monster Stealables
         private bool m_HasBeenStolen;
+
         [CommandProperty(AccessLevel.Administrator)]
         public bool HasBeenStolen
         {
@@ -495,6 +496,21 @@ namespace Server.Mobiles
             {
                 m_DeleteTimer.Stop();
                 m_DeleteTimer = null;
+            }
+        }
+        #endregion
+
+        #region IEngravable Members
+        private string m_EngravedText;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string EngravedText
+        {
+            get { return m_EngravedText != null ? Utility.FixHtml(m_EngravedText) : null; }
+            set
+            {
+                m_EngravedText = value;
+                InvalidateProperties();
             }
         }
         #endregion
@@ -2322,7 +2338,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(21); // version
+            writer.Write(22); // version
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
@@ -2452,6 +2468,9 @@ namespace Server.Mobiles
 
             // Mondain's Legacy version 19
             writer.Write(m_Allured);
+
+            // Pet Branding version 22
+            writer.Write(m_EngravedText);
         }
 
         private static readonly double[] m_StandardActiveSpeeds = new[] { 0.175, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8 };
@@ -2726,6 +2745,11 @@ namespace Server.Mobiles
             if (version <= 20)
             {
                 reader.ReadInt();
+            }
+
+            if (version >= 22)
+            {
+                m_EngravedText = reader.ReadString();
             }
 
             if (version <= 14 && m_Paragon && Hue == 0x31)
@@ -5259,6 +5283,11 @@ namespace Server.Mobiles
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
+
+            if (!String.IsNullOrEmpty(EngravedText))
+            {
+                list.Add(1157315, EngravedText); // <BASEFONT COLOR=#668cff>Branded: ~1_VAL~<BASEFONT COLOR=#FFFFFF>
+            }
 
             if (Core.ML)
             {

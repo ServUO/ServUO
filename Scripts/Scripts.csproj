@@ -884,6 +884,11 @@
     <Compile Include="Items\Resource\BloodOfTheDarkFather.cs" />
     <Compile Include="Items\Resource\SmallFish.cs" />
     <Compile Include="Items\Resource\WorkableGlass.cs" />
+    <Compile Include="Items\StoreBought\MerchantsTrinket.cs" />
+    <Compile Include="Items\StoreBought\PetBrandingIron.cs" />
+    <Compile Include="Items\StoreBought\SmugglersEdge.cs" />
+    <Compile Include="Items\StoreBought\StableSlotIncreaseToken.cs" />
+    <Compile Include="Items\StoreBought\UndertakersStaff.cs" />
     <Compile Include="Items\Tools\BaseHarvestTool.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9670,7 +9675,7 @@
     <Compile Include="Services\MondainsLegacyQuests\Gumps\QAndAGump.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Q&amp;AEntry.cs" />
     <Compile Include="Services\MondainsLegacyQuests\SimpleObjective.cs" />
-    <Compile Include="Services\Monster Stealing\Core\BaseBalm.cs" />
+    <Compile Include="Services\Monster Stealing\Core\BaseBalmOrLotion.cs" />
     <Compile Include="Services\Monster Stealing\Core\BaseThieveConsumable.cs" />
     <Compile Include="Services\Monster Stealing\Core\StealingHandler.cs" />
     <Compile Include="Services\Monster Stealing\Items\BalmOfProtection.cs" />
@@ -9679,8 +9684,10 @@
     <Compile Include="Services\Monster Stealing\Items\BalmOfWisdom.cs" />
     <Compile Include="Services\Monster Stealing\Items\GemOfSalvation.cs" />
     <Compile Include="Services\Monster Stealing\Items\LifeShieldLotion.cs" />
-    <Compile Include="Services\Monster Stealing\Items\ManaDaught.cs" />
+    <Compile Include="Services\Monster Stealing\Items\ManaDraught.cs" />
     <Compile Include="Services\Monster Stealing\Items\SeedOflife.cs" />
+    <Compile Include="Services\Monster Stealing\Items\SmugglersLantern.cs" />
+    <Compile Include="Services\Monster Stealing\Items\SmugglersToolBox.cs" />
     <Compile Include="Services\Monster Stealing\Items\StoneSkinLotion.cs" />
     <Compile Include="Services\New Magincia\Command.cs" />
     <Compile Include="Services\New Magincia\Distillation\CraftDefinition.cs" />

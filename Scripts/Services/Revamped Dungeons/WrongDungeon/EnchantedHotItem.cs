@@ -104,6 +104,9 @@ namespace Server.Items
             Mobile m = e.From;
             bool debug = m is PlayerMobile;
 
+            if (e.OldRegion == null || e.NewRegion == null)
+                return;
+
             if (e.OldRegion.IsPartOf("Wrong") && !e.NewRegion.IsPartOf("Wrong"))
             {
                 bool found = false;

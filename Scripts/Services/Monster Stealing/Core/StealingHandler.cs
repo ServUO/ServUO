@@ -80,7 +80,7 @@ namespace Server.Engines.CreatureStealing
 
                 if (tempSkill > 100)
                 {
-                    int special = GetStealingChance(thief, from, tempSkill);
+                    int chance = GetStealingChance(thief, from, tempSkill);
 
                     if (realSkill <= 109.9)
                         chance += 1;
@@ -96,6 +96,8 @@ namespace Server.Engines.CreatureStealing
                         if (item != null)
                         {
                             thief.AddToBackpack(item);
+
+                            thief.SendLocalizedMessage(1094947);//You successfully steal a special item from the creature!
                         }
                     }
                     else
@@ -126,7 +128,7 @@ namespace Server.Engines.CreatureStealing
             }
         }
 
-        private bool CheckLocation(Mobile thief, Mobile from)
+        private static bool CheckLocation(Mobile thief, Mobile from)
         {
             if (!((thief.Map == Map.Felucca && thief.Region is DungeonRegion) || thief.Region is ChampionSpawnRegion || from is ExodusZealot))
             {
@@ -136,7 +138,7 @@ namespace Server.Engines.CreatureStealing
             return true;
         }
 
-        private int GetStealingChance(Mobile thief, BaseCreature from, double stealing)
+        private static int GetStealingChance(Mobile thief, BaseCreature from, double stealing)
         {
             int fame = from.Fame;
 
@@ -168,7 +170,7 @@ namespace Server.Engines.CreatureStealing
             return chance;
         }
 
-        private Item TryStealItem(Item toSteal, double skill)
+        private static Item TryStealItem(Item toSteal, double skill)
         {
             Item stolen = null;
             double w = toSteal.Weight + toSteal.TotalWeight;

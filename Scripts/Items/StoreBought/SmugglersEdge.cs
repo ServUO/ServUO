@@ -18,7 +18,7 @@ namespace Server.Items
         {
             Hue = 1461;
 
-            Attributes.UseBestSkill = 1;
+            WeaponAttributes.UseBestSkill = 1;
             Attributes.SpellChanneling = 1;
 
             if (!Siege.SiegeShard)
@@ -42,7 +42,7 @@ namespace Server.Items
                 }
                 else if (attacker is PlayerMobile)
                 {
-                    StealingHandler.HandleSmugglersEdgeSteal((BaseCreature)damageable, (PlayerMobile)attacker, true);
+                    StealingHandler.HandleSmugglersEdgeSteal((BaseCreature)damageable, (PlayerMobile)attacker);
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace Server.Items
                 }
                 else if (attacker is PlayerMobile)
                 {
-                    StealingHandler.HandleSteal((BaseCreature)damageable, (PlayerMobile)attacker, true);
+                    StealingHandler.HandleSmugglersEdgeSteal((BaseCreature)damageable, (PlayerMobile)attacker);
                 }
             }
         }
