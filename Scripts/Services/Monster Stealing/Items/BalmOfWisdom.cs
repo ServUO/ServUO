@@ -1,32 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Server;
 using Server.Mobiles;
-namespace drNO.ThieveItems
+
+namespace Server.Items
 {
-    class BalmOfWisdom : BaseBalmOrLotion
+    [TypeAlias("drNO.ThieveItems.BalmOfWisdom")]
+    public class BalmOfWisdom : BaseBalmOrLotion
     {
+        public override int LabelNumber { get { return 1094941; } }  // Balm of Wisdom
+
         [Constructable]
         public BalmOfWisdom()
             : base(0x1847)
         {
-            Name = "Balm of Wisdom";
             m_EffectType = ThieveConsumableEffect.BalmOfWisdomEffect;
-
         }
-
-        protected override void OnUse(PlayerMobile by)
-        {
-
-            base.OnUse(by);
-        }
-        public override void OnDoubleClick(Mobile from)
-        {
-            OnUse((PlayerMobile)from);
-        }
-
-
 
         protected override void ApplyEffect(PlayerMobile pm)
         {

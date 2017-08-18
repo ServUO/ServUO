@@ -4,17 +4,15 @@ using System.Text;
 using Server;
 using Server.Mobiles; 
 
-namespace drNO.ThieveItems
+namespace Server.Items
 {
-    class BaseBalmOrLotion : BaseThieveConsumable
+    public class BaseBalmOrLotion : BaseThieveConsumable
     {
-
         public BaseBalmOrLotion(int itemId) : base(itemId) 
         {
             m_EffectDuration = TimeSpan.FromMinutes(30);
             Weight = 1.0; 
         }
-
 
         protected override void OnUse(PlayerMobile by)
         {
@@ -24,7 +22,6 @@ namespace drNO.ThieveItems
                 return; 
             }
 
-
             if (CanUse(by, this))
             {
                 ApplyEffect(by);
@@ -33,7 +30,6 @@ namespace drNO.ThieveItems
             {
                 by.SendLocalizedMessage(1095133);//You are already under the effect of a balm or lotion.
             }
-            //base.OnUse(by);
         }
 
         

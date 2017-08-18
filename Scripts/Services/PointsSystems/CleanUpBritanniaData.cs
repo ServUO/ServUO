@@ -5,7 +5,6 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Engines.Quests.Doom;
-using drNO.ThieveItems;
 
 namespace Server.Engines.Points
 {

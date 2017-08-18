@@ -27,6 +27,9 @@ namespace Server.Engines
             spawner = new BedrollSpawner();
             spawner.MoveToWorld(new Point3D(5823, 601, 0), Map.Trammel);
 
+            EnchantedHotItem.SpawnChests(Map.Trammel);
+            EnchantedHotItem.SpawnChests(Map.Felucca);
+
             Teleporter teleporter = new Teleporter(new Point3D(5690, 569, 25), Map.Felucca);
             teleporter.MoveToWorld(new Point3D(5827, 590, 1), Map.Felucca);
 

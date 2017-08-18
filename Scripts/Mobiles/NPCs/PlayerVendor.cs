@@ -29,31 +29,31 @@ namespace Server.Mobiles
         private bool m_Valid;
         public VendorItem(Item item, int price, string description, DateTime created)
         {
-            this.m_Item = item;
-            this.m_Price = price;
+            m_Item = item;
+            m_Price = price;
 
             if (description != null)
-                this.m_Description = description;
+                m_Description = description;
             else
-                this.m_Description = "";
+                m_Description = "";
 
-            this.m_Created = created;
+            m_Created = created;
 
-            this.m_Valid = true;
+            m_Valid = true;
         }
 
         public Item Item
         {
             get
             {
-                return this.m_Item;
+                return m_Item;
             }
         }
         public int Price
         {
             get
             {
-                return this.m_Price;
+                return m_Price;
             }
         }
         public string FormattedPrice
@@ -61,59 +61,59 @@ namespace Server.Mobiles
             get
             {
                 if (Core.ML)
-                    return this.m_Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
+                    return m_Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
 
-                return this.m_Price.ToString();
+                return m_Price.ToString();
             }
         }
         public string Description
         {
             get
             {
-                return this.m_Description;
+                return m_Description;
             }
             set
             {
                 if (value != null)
-                    this.m_Description = value;
+                    m_Description = value;
                 else
-                    this.m_Description = "";
+                    m_Description = "";
 
-                if (this.Valid)
-                    this.Item.InvalidateProperties();
+                if (Valid)
+                    Item.InvalidateProperties();
             }
         }
         public DateTime Created
         {
             get
             {
-                return this.m_Created;
+                return m_Created;
             }
         }
         public bool IsForSale
         {
             get
             {
-                return this.Price >= 0;
+                return Price >= 0;
             }
         }
         public bool IsForFree
         {
             get
             {
-                return this.Price == 0;
+                return Price == 0;
             }
         }
         public bool Valid
         {
             get
             {
-                return this.m_Valid;
+                return m_Valid;
             }
         }
         public void Invalidate()
         {
-            this.m_Valid = false;
+            m_Valid = false;
         }
     }
 
@@ -121,8 +121,8 @@ namespace Server.Mobiles
     {
         public VendorBackpack()
         {
-            this.Layer = Layer.Backpack;
-            this.Weight = 1.0;
+            Layer = Layer.Backpack;
+            Weight = 1.0;
         }
 
         public VendorBackpack(Serial serial)
@@ -150,9 +150,9 @@ namespace Server.Mobiles
                 return false;
             }
 
-            if (!BaseHouse.NewVendorSystem && this.Parent is PlayerVendor)
+            if (!BaseHouse.NewVendorSystem && Parent is PlayerVendor)
             {
-                BaseHouse house = ((PlayerVendor)this.Parent).House;
+                BaseHouse house = ((PlayerVendor)Parent).House;
 
                 if (house != null && house.IsAosRules && !house.CheckAosStorage(1 + item.TotalItems + plusItems))
                 {
@@ -198,7 +198,7 @@ namespace Server.Mobiles
         {
             base.GetChildContextMenuEntries(from, list, item);
 
-            PlayerVendor pv = this.RootParent as PlayerVendor;
+            PlayerVendor pv = RootParent as PlayerVendor;
 
             if (pv == null || pv.IsOwner(from))
                 return;
@@ -213,7 +213,7 @@ namespace Server.Mobiles
         {
             base.GetChildNameProperties(list, item);
 
-            PlayerVendor pv = this.RootParent as PlayerVendor;
+            PlayerVendor pv = RootParent as PlayerVendor;
 
             if (pv == null)
                 return;
@@ -235,7 +235,7 @@ namespace Server.Mobiles
         {
             base.GetChildProperties(list, item);
 
-            PlayerVendor pv = this.RootParent as PlayerVendor;
+            PlayerVendor pv = RootParent as PlayerVendor;
 
             if (pv == null)
                 return;
@@ -248,9 +248,9 @@ namespace Server.Mobiles
 
         public override void OnSingleClickContained(Mobile from, Item item)
         {
-            if (this.RootParent is PlayerVendor)
+            if (RootParent is PlayerVendor)
             {
-                PlayerVendor vendor = (PlayerVendor)this.RootParent;
+                PlayerVendor vendor = (PlayerVendor)RootParent;
 
                 VendorItem vi = vendor.GetVendorItem(item);
 
@@ -294,7 +294,7 @@ namespace Server.Mobiles
             public BuyEntry(Item item)
                 : base(6103)
             {
-                this.m_Item = item;
+                m_Item = item;
             }
 
             public override bool NonLocalUse
@@ -306,10 +306,10 @@ namespace Server.Mobiles
             }
             public override void OnClick()
             {
-                if (this.m_Item.Deleted)
+                if (m_Item.Deleted)
                     return;
 
-                PlayerVendor.TryToBuy(this.m_Item, this.Owner.From);
+                PlayerVendor.TryToBuy(m_Item, Owner.From);
             }
         }
     }
@@ -327,39 +327,39 @@ namespace Server.Mobiles
         private PlayerVendorPlaceholder m_Placeholder;
         public PlayerVendor(Mobile owner, BaseHouse house)
         {
-            this.Owner = owner;
-            this.House = house;
+            Owner = owner;
+            House = house;
 
             if (BaseHouse.NewVendorSystem)
             {
-                this.m_BankAccount = 0;
-                this.m_HoldGold = 4;
+                m_BankAccount = 0;
+                m_HoldGold = 4;
             }
             else
             {
-                this.m_BankAccount = 1000;
-                this.m_HoldGold = 0;
+                m_BankAccount = 1000;
+                m_HoldGold = 0;
             }
 
-            this.ShopName = "Shop Not Yet Named";
+            ShopName = "Shop Not Yet Named";
 
-            this.m_SellItems = new Hashtable();
+            m_SellItems = new Hashtable();
 
-            this.CantWalk = true;
+            CantWalk = true;
 
             if (!Core.AOS)
-                this.NameHue = 0x35;
+                NameHue = 0x35;
 
-            this.InitStats(100, 100, 100);
-            this.InitBody();
-            this.InitOutfit();
+            InitStats(100, 100, 100);
+            InitBody();
+            InitOutfit();
 
             TimeSpan delay = PayTimer.GetInterval();
 
-            this.m_PayTimer = new PayTimer(this, delay);
-            this.m_PayTimer.Start();
+            m_PayTimer = new PayTimer(this, delay);
+            m_PayTimer.Start();
 
-            this.m_NextPayTime = DateTime.UtcNow + delay;
+            m_NextPayTime = DateTime.UtcNow + delay;
 
             if (PlayerVendors == null)
                 PlayerVendors = new List<PlayerVendor>();
@@ -377,11 +377,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Owner;
+                return m_Owner;
             }
             set
             {
-                this.m_Owner = value;
+                m_Owner = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -389,11 +389,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_BankAccount;
+                return m_BankAccount;
             }
             set
             {
-                this.m_BankAccount = value;
+                m_BankAccount = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -401,11 +401,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_HoldGold;
+                return m_HoldGold;
             }
             set
             {
-                this.m_HoldGold = value;
+                m_HoldGold = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -413,16 +413,16 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_ShopName;
+                return m_ShopName;
             }
             set
             {
                 if (value == null)
-                    this.m_ShopName = "";
+                    m_ShopName = "";
                 else
-                    this.m_ShopName = value;
+                    m_ShopName = value;
 
-                this.InvalidateProperties();
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -430,35 +430,35 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_NextPayTime;
+                return m_NextPayTime;
             }
         }
         public PlayerVendorPlaceholder Placeholder
         {
             get
             {
-                return this.m_Placeholder;
+                return m_Placeholder;
             }
             set
             {
-                this.m_Placeholder = value;
+                m_Placeholder = value;
             }
         }
         public BaseHouse House
         {
             get
             {
-                return this.m_House;
+                return m_House;
             }
             set
             {
-                if (this.m_House != null)
-                    this.m_House.PlayerVendors.Remove(this);
+                if (m_House != null)
+                    m_House.PlayerVendors.Remove(this);
 
                 if (value != null)
                     value.PlayerVendors.Add(this);
 
-                this.m_House = value;
+                m_House = value;
             }
         }
         public int ChargePerDay
@@ -467,12 +467,12 @@ namespace Server.Mobiles
             { 
                 if (BaseHouse.NewVendorSystem)
                 {
-                    return this.ChargePerRealWorldDay / 12;
+                    return ChargePerRealWorldDay / 12;
                 }
                 else
                 {
                     long total = 0;
-                    foreach (VendorItem vi in this.m_SellItems.Values)
+                    foreach (VendorItem vi in m_SellItems.Values)
                     {
                         total += vi.Price;
                     }
@@ -493,16 +493,25 @@ namespace Server.Mobiles
                 if (BaseHouse.NewVendorSystem)
                 {
                     long total = 0;
-                    foreach (VendorItem vi in this.m_SellItems.Values)
+                    foreach (VendorItem vi in m_SellItems.Values)
                     {
                         total += vi.Price;
                     }
 
-                    return (int)(60 + (total / 500) * 3);
+                    int perDay = (int)(60 + (total / 500) * 3);
+
+                    MerchantsTrinket trinket = FindItemOnLayer(Layer.Earrings) as MerchantsTrinket;
+
+                    if (trinket != null)
+                    {
+                        return perDay - (int)((double)perDay * ((double)trinket.Bonus / 100));
+                    }
+
+                    return perDay;
                 }
                 else
                 {
-                    return this.ChargePerDay * 12;
+                    return ChargePerDay * 12;
                 }
             }
         }
@@ -547,16 +556,16 @@ namespace Server.Mobiles
             writer.Write((int)1); // version
 
             writer.Write((bool)BaseHouse.NewVendorSystem);
-            writer.Write((string)this.m_ShopName);
-            writer.WriteDeltaTime((DateTime)this.m_NextPayTime);
-            writer.Write((Item)this.House);
+            writer.Write((string)m_ShopName);
+            writer.WriteDeltaTime((DateTime)m_NextPayTime);
+            writer.Write((Item)House);
 
-            writer.Write((Mobile)this.m_Owner);
-            writer.Write((int)this.m_BankAccount);
-            writer.Write((int)this.m_HoldGold);
+            writer.Write((Mobile)m_Owner);
+            writer.Write((int)m_BankAccount);
+            writer.Write((int)m_HoldGold);
 
-            writer.Write((int)this.m_SellItems.Count);
-            foreach (VendorItem vi in this.m_SellItems.Values)
+            writer.Write((int)m_SellItems.Count);
+            foreach (VendorItem vi in m_SellItems.Values)
             {
                 writer.Write((Item)vi.Item);
                 writer.Write((int)vi.Price);
@@ -579,19 +588,19 @@ namespace Server.Mobiles
                 case 1:
                     {
                         newVendorSystem = reader.ReadBool();
-                        this.m_ShopName = reader.ReadString();
-                        this.m_NextPayTime = reader.ReadDeltaTime();
-                        this.House = (BaseHouse)reader.ReadItem();
+                        m_ShopName = reader.ReadString();
+                        m_NextPayTime = reader.ReadDeltaTime();
+                        House = (BaseHouse)reader.ReadItem();
 
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_Owner = reader.ReadMobile();
-                        this.m_BankAccount = reader.ReadInt();
-                        this.m_HoldGold = reader.ReadInt();
+                        m_Owner = reader.ReadMobile();
+                        m_BankAccount = reader.ReadInt();
+                        m_HoldGold = reader.ReadInt();
 
-                        this.m_SellItems = new Hashtable();
+                        m_SellItems = new Hashtable();
 
                         int count = reader.ReadInt();
                         for (int i = 0; i < count; i++)
@@ -608,7 +617,7 @@ namespace Server.Mobiles
 
                             if (item != null)
                             {
-                                this.SetVendorItem(item, version < 1 && price <= 0 ? -1 : price, description, created);
+                                SetVendorItem(item, version < 1 && price <= 0 ? -1 : price, description, created);
                             }
                         }
 
@@ -622,7 +631,7 @@ namespace Server.Mobiles
             {
                 if (version < 1)
                 {
-                    this.m_ShopName = "Shop Not Yet Named";
+                    m_ShopName = "Shop Not Yet Named";
                     Timer.DelayCall(TimeSpan.Zero, new TimerStateCallback(UpgradeFromVersion0), newVendorSystemActivated);
                 }
                 else
@@ -630,24 +639,24 @@ namespace Server.Mobiles
                     Timer.DelayCall(TimeSpan.Zero, new TimerCallback(FixDresswear));
                 }
 
-                this.m_NextPayTime = DateTime.UtcNow + PayTimer.GetInterval();
+                m_NextPayTime = DateTime.UtcNow + PayTimer.GetInterval();
 
                 if (newVendorSystemActivated)
                 {
-                    this.m_HoldGold += this.m_BankAccount;
-                    this.m_BankAccount = 0;
+                    m_HoldGold += m_BankAccount;
+                    m_BankAccount = 0;
                 }
             }
 
-            TimeSpan delay = this.m_NextPayTime - DateTime.UtcNow;
+            TimeSpan delay = m_NextPayTime - DateTime.UtcNow;
 
-            this.m_PayTimer = new PayTimer(this, delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
-            this.m_PayTimer.Start();
+            m_PayTimer = new PayTimer(this, delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
+            m_PayTimer.Start();
 
-            this.Blessed = false;
+            Blessed = false;
 
-            if (Core.AOS && this.NameHue == 0x35)
-                this.NameHue = -1;
+            if (Core.AOS && NameHue == 0x35)
+                NameHue = -1;
 
             if (PlayerVendors == null)
                 PlayerVendors = new List<PlayerVendor>();
@@ -657,21 +666,21 @@ namespace Server.Mobiles
 
         public void InitBody()
         {
-            this.Hue = Utility.RandomSkinHue();
-            this.SpeechHue = 0x3B2;
+            Hue = Utility.RandomSkinHue();
+            SpeechHue = 0x3B2;
 
             if (!Core.AOS)
-                this.NameHue = 0x35;
+                NameHue = 0x35;
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
+                Body = 0x191;
+                Name = NameList.RandomName("female");
             }
             else
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
+                Body = 0x190;
+                Name = NameList.RandomName("male");
             }
         }
 
@@ -679,17 +688,17 @@ namespace Server.Mobiles
         {
             Item item = new FancyShirt(Utility.RandomNeutralHue());
             item.Layer = Layer.InnerTorso;
-            this.AddItem(item);
-            this.AddItem(new LongPants(Utility.RandomNeutralHue()));
-            this.AddItem(new BodySash(Utility.RandomNeutralHue()));
-            this.AddItem(new Boots(Utility.RandomNeutralHue()));
-            this.AddItem(new Cloak(Utility.RandomNeutralHue()));
+            AddItem(item);
+            AddItem(new LongPants(Utility.RandomNeutralHue()));
+            AddItem(new BodySash(Utility.RandomNeutralHue()));
+            AddItem(new Boots(Utility.RandomNeutralHue()));
+            AddItem(new Cloak(Utility.RandomNeutralHue()));
 
             Utility.AssignRandomHair(this);
 
             Container pack = new VendorBackpack();
             pack.Movable = false;
-            this.AddItem(pack);
+            AddItem(pack);
         }
 
         public virtual bool IsOwner(Mobile m)
@@ -697,22 +706,22 @@ namespace Server.Mobiles
             if (m.AccessLevel >= AccessLevel.GameMaster)
                 return true;
 
-            if (BaseHouse.NewVendorSystem && this.House != null)
+            if (BaseHouse.NewVendorSystem && House != null)
             {
-                return this.House.IsOwner(m);
+                return House.IsOwner(m);
             }
             else
             {
-                return m == this.Owner;
+                return m == Owner;
             }
         }
 
         public virtual void Destroy(bool toBackpack)
         {
-            this.Return();
+            Return();
 
             if (!BaseHouse.NewVendorSystem)
-                this.FixDresswear();
+                FixDresswear();
 
             /* Possible cases regarding item return:
             * 
@@ -727,67 +736,67 @@ namespace Server.Mobiles
             *       -> do nothing (we can't do anything).
             */
 
-            List<Item> list = this.GetItems();
+            List<Item> list = GetItems();
 
-            if (list.Count > 0 || this.HoldGold > 0) // No case 1
+            if (list.Count > 0 || HoldGold > 0) // No case 1
             {
-                if ((!toBackpack || this.Map == Map.Internal) && this.House != null && this.House.IsAosRules) // Case 2
+                if ((!toBackpack || Map == Map.Internal) && House != null && House.IsAosRules) // Case 2
                 {
-                    if (this.House.IsOwner(this.Owner)) // Move to moving crate
+                    if (House.IsOwner(Owner)) // Move to moving crate
                     {
-                        if (this.House.MovingCrate == null)
-                            this.House.MovingCrate = new MovingCrate(this.House);
+                        if (House.MovingCrate == null)
+                            House.MovingCrate = new MovingCrate(House);
 
-                        if (this.HoldGold > 0)
-                            Banker.Deposit(this.House.MovingCrate, this.HoldGold);
+                        if (HoldGold > 0)
+                            Banker.Deposit(House.MovingCrate, HoldGold);
 
                         foreach (Item item in list)
                         {
-                            this.House.MovingCrate.DropItem(item);
+                            House.MovingCrate.DropItem(item);
                         }
                     }
                     else // Move to vendor inventory
                     {
-                        VendorInventory inventory = new VendorInventory(this.House, this.Owner, this.Name, this.ShopName);
-                        inventory.Gold = this.HoldGold;
+                        VendorInventory inventory = new VendorInventory(House, Owner, Name, ShopName);
+                        inventory.Gold = HoldGold;
 
                         foreach (Item item in list)
                         {
                             inventory.AddItem(item);
                         }
 
-                        this.House.VendorInventories.Add(inventory);
+                        House.VendorInventories.Add(inventory);
                     }
                 }
-                else if ((toBackpack || this.House == null || !this.House.IsAosRules) && this.Map != Map.Internal) // Case 3 - Move to backpack
+                else if ((toBackpack || House == null || !House.IsAosRules) && Map != Map.Internal) // Case 3 - Move to backpack
                 {
                     Container backpack = new Backpack();
 
-                    if (this.HoldGold > 0)
-                        Banker.Deposit(backpack, this.HoldGold);
+                    if (HoldGold > 0)
+                        Banker.Deposit(backpack, HoldGold);
 
                     foreach (Item item in list)
                     {
                         backpack.DropItem(item);
                     }
 
-                    backpack.MoveToWorld(this.Location, this.Map);
+                    backpack.MoveToWorld(Location, Map);
                 }
             }
 
-            this.Delete();
+            Delete();
         }
 
         public override void OnAfterDelete()
         {
             base.OnAfterDelete();
 
-            this.m_PayTimer.Stop();
+            m_PayTimer.Stop();
 
-            this.House = null;
+            House = null;
 
-            if (this.Placeholder != null)
-                this.Placeholder.Delete();
+            if (Placeholder != null)
+                Placeholder.Delete();
         }
 
         public override bool IsSnoop(Mobile from)
@@ -801,23 +810,23 @@ namespace Server.Mobiles
 
             if (BaseHouse.NewVendorSystem)
             {
-                list.Add(1062449, this.ShopName); // Shop Name: ~1_NAME~
+                list.Add(1062449, ShopName); // Shop Name: ~1_NAME~
             }
         }
 
         public VendorItem GetVendorItem(Item item)
         {
-            return (VendorItem)this.m_SellItems[item];
+            return (VendorItem)m_SellItems[item];
         }
 
         public override void OnSubItemAdded(Item item)
         {
             base.OnSubItemAdded(item);
 
-            if (this.GetVendorItem(item) == null && this.CanBeVendorItem(item))
+            if (GetVendorItem(item) == null && CanBeVendorItem(item))
             {
                 // TODO: default price should be dependent to the type of object
-                this.SetVendorItem(item, 999, "");
+                SetVendorItem(item, 999, "");
             }
         }
 
@@ -826,35 +835,35 @@ namespace Server.Mobiles
             base.OnSubItemRemoved(item);
 
             if (item.GetBounce() == null)
-                this.RemoveVendorItem(item);
+                RemoveVendorItem(item);
         }
 
         public override void OnSubItemBounceCleared(Item item)
         {
             base.OnSubItemBounceCleared(item);
 
-            if (!this.CanBeVendorItem(item))
-                this.RemoveVendorItem(item);
+            if (!CanBeVendorItem(item))
+                RemoveVendorItem(item);
         }
 
         public override void OnItemRemoved(Item item)
         {
             base.OnItemRemoved(item);
 
-            if (item == this.Backpack)
+            if (item == Backpack)
             {
                 foreach (Item subItem in item.Items)
                 {
-                    this.RemoveVendorItem(subItem);
+                    RemoveVendorItem(subItem);
                 }
             }
         }
 
         public override bool OnDragDrop(Mobile from, Item item)
         {
-            if (!this.IsOwner(from))
+            if (!IsOwner(from))
             {
-                this.SayTo(from, 503209); // I can only take item from the shop owner.
+                SayTo(from, 503209); // I can only take item from the shop owner.
                 return false;
             }
 
@@ -862,11 +871,11 @@ namespace Server.Mobiles
             {
                 if (BaseHouse.NewVendorSystem)
                 {
-                    if (this.HoldGold < 1000000)
+                    if (HoldGold < 1000000)
                     {
-                        this.SayTo(from, 503210); // I'll take that to fund my services.
+                        SayTo(from, 503210); // I'll take that to fund my services.
 
-                        this.HoldGold += item.Amount;
+                        HoldGold += item.Amount;
                         item.Delete();
 
                         return true;
@@ -880,11 +889,11 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    if (this.BankAccount < 1000000)
+                    if (BankAccount < 1000000)
                     {
-                        this.SayTo(from, 503210); // I'll take that to fund my services.
+                        SayTo(from, 503210); // I'll take that to fund my services.
 
-                        this.BankAccount += item.Amount;
+                        BankAccount += item.Amount;
                         item.Delete();
 
                         return true;
@@ -899,18 +908,18 @@ namespace Server.Mobiles
             }
             else
             {
-                bool newItem = (this.GetVendorItem(item) == null);
+                bool newItem = (GetVendorItem(item) == null);
 
-                if (this.Backpack != null && this.Backpack.TryDropItem(from, item, false))
+                if (Backpack != null && Backpack.TryDropItem(from, item, false))
                 {
                     if (newItem)
-                        this.OnItemGiven(from, item);
+                        OnItemGiven(from, item);
 
                     return true;
                 }
                 else
                 {
-                    this.SayTo(from, 503211); // I can't carry any more.
+                    SayTo(from, 503211); // I can't carry any more.
                     return false;
                 }
             }
@@ -918,9 +927,9 @@ namespace Server.Mobiles
 
         public override bool CheckNonlocalDrop(Mobile from, Item item, Item target)
         {
-            if (this.IsOwner(from))
+            if (IsOwner(from))
             {
-                if (this.GetVendorItem(item) == null)
+                if (GetVendorItem(item) == null)
                 {
                     // We must wait until the item is added
                     Timer.DelayCall(TimeSpan.Zero, new TimerStateCallback(NonLocalDropCallback), new object[] { from, item });
@@ -930,14 +939,14 @@ namespace Server.Mobiles
             }
             else
             {
-                this.SayTo(from, 503209); // I can only take item from the shop owner.
+                SayTo(from, 503209); // I can only take item from the shop owner.
                 return false;
             }
         }
 
         public override bool AllowEquipFrom(Mobile from)
         {
-            if (BaseHouse.NewVendorSystem && this.IsOwner(from))
+            if (BaseHouse.NewVendorSystem && IsOwner(from))
                 return true;
 
             return base.AllowEquipFrom(from);
@@ -945,19 +954,19 @@ namespace Server.Mobiles
 
         public override bool CheckNonlocalLift(Mobile from, Item item)
         {
-            if (item.IsChildOf(this.Backpack))
+            if (item.IsChildOf(Backpack))
             {
-                if (this.IsOwner(from))
+                if (IsOwner(from))
                 {
                     return true;
                 }
                 else
                 {
-                    this.SayTo(from, 503223); // If you'd like to purchase an item, just ask.
+                    SayTo(from, 503223); // If you'd like to purchase an item, just ask.
                     return false;
                 }
             }
-            else if (BaseHouse.NewVendorSystem && this.IsOwner(from))
+            else if (BaseHouse.NewVendorSystem && IsOwner(from))
             {
                 return true;
             }
@@ -971,9 +980,9 @@ namespace Server.Mobiles
                 return false;
 
             if (ownerOnly)
-                return this.IsOwner(from);
+                return IsOwner(from);
 
-            if (this.House != null && this.House.IsBanned(from) && !this.IsOwner(from))
+            if (House != null && House.IsBanned(from) && !IsOwner(from))
             {
                 from.SendLocalizedMessage(1062674); // You can't shop from this home as you have been banned from this establishment.
                 return false;
@@ -984,13 +993,13 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsOwner(from))
+            if (IsOwner(from))
             {
-                this.SendOwnerGump(from);
+                SendOwnerGump(from);
             }
-            else if (this.CanInteractWith(from, false))
+            else if (CanInteractWith(from, false))
             {
-                this.OpenBackpack(from);
+                OpenBackpack(from);
             }
         }
 
@@ -1000,9 +1009,9 @@ namespace Server.Mobiles
             {
                 base.DisplayPaperdollTo(m);
             }
-            else if (this.CanInteractWith(m, false))
+            else if (CanInteractWith(m, false))
             {
-                this.OpenBackpack(m);
+                OpenBackpack(m);
             }
         }
 
@@ -1026,26 +1035,26 @@ namespace Server.Mobiles
 
         public void OpenBackpack(Mobile from)
         {
-            if (this.Backpack != null)
+            if (Backpack != null)
             {
-                this.SayTo(from, this.IsOwner(from) ? 1010642 : 503208); // Take a look at my/your goods.
+                SayTo(from, IsOwner(from) ? 1010642 : 503208); // Take a look at my/your goods.
 
-                this.Backpack.DisplayTo(from);
+                Backpack.DisplayTo(from);
             }
         }
 
         public void CollectGold(Mobile to)
         {
-            if (this.HoldGold > 0)
+            if (HoldGold > 0)
             {
-                this.SayTo(to, "How much of the {0} that I'm holding would you like?", this.HoldGold.ToString());
+                SayTo(to, "How much of the {0} that I'm holding would you like?", HoldGold.ToString());
                 to.SendMessage("Enter the amount of gold you wish to withdraw (ESC = CANCEL):");
 
                 to.Prompt = new CollectGoldPrompt(this);
             }
             else
             {
-                this.SayTo(to, 503215); // I am holding no gold for you.
+                SayTo(to, 503215); // I am holding no gold for you.
             }
         }
 
@@ -1054,14 +1063,14 @@ namespace Server.Mobiles
             if (amount <= 0)
                 return 0;
 
-            if (amount > this.HoldGold)
+            if (amount > HoldGold)
             {
-                this.SayTo(to, "I'm sorry, but I'm only holding {0} gold for you.", this.HoldGold.ToString());
+                SayTo(to, "I'm sorry, but I'm only holding {0} gold for you.", HoldGold.ToString());
                 return 0;
             }
 
             int amountGiven = Banker.DepositUpTo(to, amount);
-            this.HoldGold -= amountGiven;
+            HoldGold -= amountGiven;
 
             if (amountGiven > 0)
             {
@@ -1070,19 +1079,19 @@ namespace Server.Mobiles
 
             if (amountGiven == 0)
             {
-                this.SayTo(to, 1070755); // Your bank box cannot hold the gold you are requesting.  I will keep the gold until you can take it.
+                SayTo(to, 1070755); // Your bank box cannot hold the gold you are requesting.  I will keep the gold until you can take it.
             }
             else if (amount > amountGiven)
             {
-                this.SayTo(to, 1070756); // I can only give you part of the gold now, as your bank box is too full to hold the full amount.
+                SayTo(to, 1070756); // I can only give you part of the gold now, as your bank box is too full to hold the full amount.
             }
-            else if (this.HoldGold > 0)
+            else if (HoldGold > 0)
             {
-                this.SayTo(to, 1042639); // Your gold has been transferred.
+                SayTo(to, 1042639); // Your gold has been transferred.
             }
             else
             {
-                this.SayTo(to, 503234); // All the gold I have been carrying for you has been deposited into your bank account.
+                SayTo(to, 503234); // All the gold I have been carrying for you has been deposited into your bank account.
             }
 
             return amountGiven;
@@ -1090,23 +1099,23 @@ namespace Server.Mobiles
 
         public void Dismiss(Mobile from)
         {
-            Container pack = this.Backpack;
+            Container pack = Backpack;
 
             if (pack != null && pack.Items.Count > 0)
             {
-                this.SayTo(from, 1038325); // You cannot dismiss me while I am holding your goods.
+                SayTo(from, 1038325); // You cannot dismiss me while I am holding your goods.
                 return;
             }
 
-            if (this.HoldGold > 0)
+            if (HoldGold > 0)
             {
-                this.GiveGold(from, this.HoldGold);
+                GiveGold(from, HoldGold);
 
-                if (this.HoldGold > 0)
+                if (HoldGold > 0)
                     return;
             }
 
-            this.Destroy(true);
+            Destroy(true);
         }
 
         public void Rename(Mobile from)
@@ -1125,24 +1134,24 @@ namespace Server.Mobiles
 
         public bool CheckTeleport(Mobile to)
         {
-            if (this.Deleted || !this.IsOwner(to) || this.House == null || this.Map == Map.Internal)
+            if (Deleted || !IsOwner(to) || House == null || Map == Map.Internal)
                 return false;
 
-            if (this.House.IsInside(to) || to.Map != this.House.Map || !this.House.InRange(to, 5))
+            if (House.IsInside(to) || to.Map != House.Map || !House.InRange(to, 5))
                 return false;
 
-            if (this.Placeholder == null)
+            if (Placeholder == null)
             {
-                this.Placeholder = new PlayerVendorPlaceholder(this);
-                this.Placeholder.MoveToWorld(this.Location, this.Map);
+                Placeholder = new PlayerVendorPlaceholder(this);
+                Placeholder.MoveToWorld(Location, Map);
 
-                this.MoveToWorld(to.Location, to.Map);
+                MoveToWorld(to.Location, to.Map);
 
                 to.SendLocalizedMessage(1062431); // This vendor has been moved out of the house to your current location temporarily.  The vendor will return home automatically after two minutes have passed once you are done managing its inventory or customizing it.
             }
             else
             {
-                this.Placeholder.RestartTimer();
+                Placeholder.RestartTimer();
 
                 to.SendLocalizedMessage(1062430); // This vendor is currently temporarily in a location outside its house.  The vendor will return home automatically after two minutes have passed once you are done managing its inventory or customizing it.
             }
@@ -1152,13 +1161,13 @@ namespace Server.Mobiles
 
         public void Return()
         {
-            if (this.Placeholder != null)
-                this.Placeholder.Delete();
+            if (Placeholder != null)
+                Placeholder.Delete();
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            if (from.Alive && this.Placeholder != null && this.IsOwner(from))
+            if (from.Alive && Placeholder != null && IsOwner(from))
             {
                 list.Add(new ReturnVendorEntry(this));
             }
@@ -1173,7 +1182,7 @@ namespace Server.Mobiles
 
         public bool WasNamed(string speech)
         {
-            return this.Name != null && Insensitive.StartsWith(speech, this.Name);
+            return Name != null && Insensitive.StartsWith(speech, Name);
         }
 
         public override void OnSpeech(SpeechEventArgs e)
@@ -1183,13 +1192,13 @@ namespace Server.Mobiles
             if (e.Handled || !from.Alive || from.GetDistanceToSqrt(this) > 3)
                 return;
 
-            if (e.HasKeyword(0x3C) || (e.HasKeyword(0x171) && this.WasNamed(e.Speech))) // vendor buy, *buy*
+            if (e.HasKeyword(0x3C) || (e.HasKeyword(0x171) && WasNamed(e.Speech))) // vendor buy, *buy*
             {
-                if (this.IsOwner(from))
+                if (IsOwner(from))
                 {
-                    this.SayTo(from, 503212); // You own this shop, just take what you want.
+                    SayTo(from, 503212); // You own this shop, just take what you want.
                 }
-                else if (this.House == null || !this.House.IsBanned(from))
+                else if (House == null || !House.IsBanned(from))
                 {
                     from.SendLocalizedMessage(503213); // Select the item you wish to buy.
                     from.Target = new PVBuyTarget();
@@ -1197,16 +1206,16 @@ namespace Server.Mobiles
                     e.Handled = true;
                 }
             }
-            else if (e.HasKeyword(0x3D) || (e.HasKeyword(0x172) && this.WasNamed(e.Speech))) // vendor browse, *browse
+            else if (e.HasKeyword(0x3D) || (e.HasKeyword(0x172) && WasNamed(e.Speech))) // vendor browse, *browse
             {
-                if (this.House != null && this.House.IsBanned(from) && !this.IsOwner(from))
+                if (House != null && House.IsBanned(from) && !IsOwner(from))
                 {
-                    this.SayTo(from, 1062674); // You can't shop from this home as you have been banned from this establishment.
+                    SayTo(from, 1062674); // You can't shop from this home as you have been banned from this establishment.
                 }
                 else
                 {
-                    if (this.WasNamed(e.Speech))
-                        this.OpenBackpack(from);
+                    if (WasNamed(e.Speech))
+                        OpenBackpack(from);
                     else
                     {
                         IPooledEnumerable mobiles = e.Mobile.GetMobilesInRange(2);
@@ -1221,42 +1230,42 @@ namespace Server.Mobiles
                     e.Handled = true;
                 }
             }
-            else if (e.HasKeyword(0x3E) || (e.HasKeyword(0x173) && this.WasNamed(e.Speech))) // vendor collect, *collect
+            else if (e.HasKeyword(0x3E) || (e.HasKeyword(0x173) && WasNamed(e.Speech))) // vendor collect, *collect
             {
-                if (this.IsOwner(from))
+                if (IsOwner(from))
                 {
-                    this.CollectGold(from);
+                    CollectGold(from);
 
                     e.Handled = true;
                 }
             }
-            else if (e.HasKeyword(0x3F) || (e.HasKeyword(0x174) && this.WasNamed(e.Speech))) // vendor status, *status
+            else if (e.HasKeyword(0x3F) || (e.HasKeyword(0x174) && WasNamed(e.Speech))) // vendor status, *status
             {
-                if (this.IsOwner(from))
+                if (IsOwner(from))
                 {
-                    this.SendOwnerGump(from);
+                    SendOwnerGump(from);
 
                     e.Handled = true;
                 }
                 else
                 {
-                    this.SayTo(from, 503226); // What do you care? You don't run this shop.	
+                    SayTo(from, 503226); // What do you care? You don't run this shop.	
                 }
             }
-            else if (e.HasKeyword(0x40) || (e.HasKeyword(0x175) && this.WasNamed(e.Speech))) // vendor dismiss, *dismiss
+            else if (e.HasKeyword(0x40) || (e.HasKeyword(0x175) && WasNamed(e.Speech))) // vendor dismiss, *dismiss
             {
-                if (this.IsOwner(from))
+                if (IsOwner(from))
                 {
-                    this.Dismiss(from);
+                    Dismiss(from);
 
                     e.Handled = true;
                 }
             }
-            else if (e.HasKeyword(0x41) || (e.HasKeyword(0x176) && this.WasNamed(e.Speech))) // vendor cycle, *cycle
+            else if (e.HasKeyword(0x41) || (e.HasKeyword(0x176) && WasNamed(e.Speech))) // vendor cycle, *cycle
             {
-                if (this.IsOwner(from))
+                if (IsOwner(from))
                 {
-                    this.Direction = this.GetDirectionTo(from);
+                    Direction = GetDirectionTo(from);
 
                     e.Handled = true;
                 }
@@ -1272,12 +1281,12 @@ namespace Server.Mobiles
         {
             List<Item> list = new List<Item>();
 
-            foreach (Item item in this.Items)
-                if (item.Movable && item != this.Backpack && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair)
+            foreach (Item item in Items)
+                if (item.Movable && item != Backpack && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair)
                     list.Add(item);
 
-            if (this.Backpack != null)
-                list.AddRange(this.Backpack.Items);
+            if (Backpack != null)
+                list.AddRange(Backpack.Items);
 
             return list;
         }
@@ -1286,34 +1295,34 @@ namespace Server.Mobiles
         {
             List<Item> toRemove = new List<Item>();
 
-            foreach (VendorItem vi in this.m_SellItems.Values)
-                if (!this.CanBeVendorItem(vi.Item))
+            foreach (VendorItem vi in m_SellItems.Values)
+                if (!CanBeVendorItem(vi.Item))
                     toRemove.Add(vi.Item);
                 else
                     vi.Description = Utility.FixHtml(vi.Description);
 
             foreach (Item item in toRemove)
-                this.RemoveVendorItem(item);
+                RemoveVendorItem(item);
 
-            this.House = BaseHouse.FindHouseAt(this);
+            House = BaseHouse.FindHouseAt(this);
 
             if ((bool)newVendorSystem)
-                this.ActivateNewVendorSystem();
+                ActivateNewVendorSystem();
         }
 
         private void ActivateNewVendorSystem()
         {
-            this.FixDresswear();
+            FixDresswear();
 
-            if (this.House != null && !this.House.IsOwner(this.Owner))
-                this.Destroy(false);
+            if (House != null && !House.IsOwner(Owner))
+                Destroy(false);
         }
 
         private void FixDresswear()
         {
-            for (int i = 0; i < this.Items.Count; ++i)
+            for (int i = 0; i < Items.Count; ++i)
             {
-                Item item = this.Items[i] as Item;
+                Item item = Items[i] as Item;
 
                 if (item is BaseHat)
                     item.Layer = Layer.Helm;
@@ -1341,15 +1350,15 @@ namespace Server.Mobiles
 
         private VendorItem SetVendorItem(Item item, int price, string description)
         {
-            return this.SetVendorItem(item, price, description, DateTime.UtcNow);
+            return SetVendorItem(item, price, description, DateTime.UtcNow);
         }
 
         private VendorItem SetVendorItem(Item item, int price, string description, DateTime created)
         {
-            this.RemoveVendorItem(item);
+            RemoveVendorItem(item);
 
             VendorItem vi = new VendorItem(item, price, description, created);
-            this.m_SellItems[item] = vi;
+            m_SellItems[item] = vi;
 
             item.InvalidateProperties();
 
@@ -1358,16 +1367,16 @@ namespace Server.Mobiles
 
         private void RemoveVendorItem(Item item)
         {
-            VendorItem vi = this.GetVendorItem(item);
+            VendorItem vi = GetVendorItem(item);
 
             if (vi != null)
             {
                 vi.Invalidate();
-                this.m_SellItems.Remove(item);
+                m_SellItems.Remove(item);
 
                 foreach (Item subItem in item.Items)
                 {
-                    this.RemoveVendorItem(subItem);
+                    RemoveVendorItem(subItem);
                 }
 
                 item.InvalidateProperties();
@@ -1378,12 +1387,12 @@ namespace Server.Mobiles
         {
             Item parent = item.Parent as Item;
 
-            if (parent == this.Backpack)
+            if (parent == Backpack)
                 return true;
 
             if (parent is Container)
             {
-                VendorItem parentVI = this.GetVendorItem(parent);
+                VendorItem parentVI = GetVendorItem(parent);
 
                 if (parentVI != null)
                     return !parentVI.IsForSale;
@@ -1399,12 +1408,12 @@ namespace Server.Mobiles
             Mobile from = (Mobile)aState[0];
             Item item = (Item)aState[1];
 
-            this.OnItemGiven(from, item);
+            OnItemGiven(from, item);
         }
 
         private void OnItemGiven(Mobile from, Item item)
         {
-            VendorItem vi = this.GetVendorItem(item);
+            VendorItem vi = GetVendorItem(item);
 
             if (vi != null)
             {
@@ -1425,15 +1434,15 @@ namespace Server.Mobiles
             public ReturnVendorEntry(PlayerVendor vendor)
                 : base(6214)
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
             }
 
             public override void OnClick()
             {
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
-                if (!this.m_Vendor.Deleted && this.m_Vendor.IsOwner(from) && from.CheckAlive())
-                    this.m_Vendor.Return();
+                if (!m_Vendor.Deleted && m_Vendor.IsOwner(from) && from.CheckAlive())
+                    m_Vendor.Return();
             }
         }
 
@@ -1443,9 +1452,9 @@ namespace Server.Mobiles
             public PayTimer(PlayerVendor vendor, TimeSpan delay)
                 : base(delay, GetInterval())
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
 
-                this.Priority = TimerPriority.OneMinute;
+                Priority = TimerPriority.OneMinute;
             }
 
             public static TimeSpan GetInterval()
@@ -1458,42 +1467,42 @@ namespace Server.Mobiles
 
             protected override void OnTick()
             {
-                this.m_Vendor.m_NextPayTime = DateTime.UtcNow + this.Interval;
+                m_Vendor.m_NextPayTime = DateTime.UtcNow + Interval;
 
                 int pay;
                 int totalGold;
                 if (BaseHouse.NewVendorSystem)
                 {
-                    pay = this.m_Vendor.ChargePerRealWorldDay;
-                    totalGold = this.m_Vendor.HoldGold;
+                    pay = m_Vendor.ChargePerRealWorldDay;
+                    totalGold = m_Vendor.HoldGold;
                 }
                 else
                 {
-                    pay = this.m_Vendor.ChargePerDay;
-                    totalGold = this.m_Vendor.BankAccount + this.m_Vendor.HoldGold;
+                    pay = m_Vendor.ChargePerDay;
+                    totalGold = m_Vendor.BankAccount + m_Vendor.HoldGold;
                 }
 
                 if (pay > totalGold)
                 {
-                    this.m_Vendor.Destroy(!BaseHouse.NewVendorSystem);
+                    m_Vendor.Destroy(!BaseHouse.NewVendorSystem);
                 }
                 else
                 {
                     if (!BaseHouse.NewVendorSystem)
                     {
-                        if (this.m_Vendor.BankAccount >= pay)
+                        if (m_Vendor.BankAccount >= pay)
                         {
-                            this.m_Vendor.BankAccount -= pay;
+                            m_Vendor.BankAccount -= pay;
                             pay = 0;
                         }
                         else
                         {
-                            pay -= this.m_Vendor.BankAccount;
-                            this.m_Vendor.BankAccount = 0;
+                            pay -= m_Vendor.BankAccount;
+                            m_Vendor.BankAccount = 0;
                         }
                     }
 
-                    this.m_Vendor.HoldGold -= pay;
+                    m_Vendor.HoldGold -= pay;
                 }
             }
         }
@@ -1504,7 +1513,7 @@ namespace Server.Mobiles
             public PVBuyTarget()
                 : base(3, false, TargetFlags.None)
             {
-                this.AllowNonlocal = true;
+                AllowNonlocal = true;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -1522,13 +1531,13 @@ namespace Server.Mobiles
             private readonly VendorItem m_VI;
             public VendorPricePrompt(PlayerVendor vendor, VendorItem vi)
             {
-                this.m_Vendor = vendor;
-                this.m_VI = vi;
+                m_Vendor = vendor;
+                m_VI = vi;
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (!this.m_VI.Valid || !this.m_Vendor.CanInteractWith(from, true))
+                if (!m_VI.Valid || !m_Vendor.CanInteractWith(from, true))
                     return;
 
                 string firstWord;
@@ -1555,20 +1564,20 @@ namespace Server.Mobiles
                     description = text.Trim();
                 }
 
-                this.SetInfo(from, price, Utility.FixHtml(description));
+                SetInfo(from, price, Utility.FixHtml(description));
             }
 
             public override void OnCancel(Mobile from)
             {
-                if (!this.m_VI.Valid || !this.m_Vendor.CanInteractWith(from, true))
+                if (!m_VI.Valid || !m_Vendor.CanInteractWith(from, true))
                     return;
 
-                this.SetInfo(from, -1, "");
+                SetInfo(from, -1, "");
             }
 
             private void SetInfo(Mobile from, int price, string description)
             {
-                Item item = this.m_VI.Item;
+                Item item = m_VI.Item;
 
                 bool setPrice = false;
 
@@ -1579,9 +1588,9 @@ namespace Server.Mobiles
                     if (item is Container)
                     {
                         if (item is LockableContainer && ((LockableContainer)item).Locked)
-                            this.m_Vendor.SayTo(from, 1043298); // Locked items may not be made not-for-sale.
+                            m_Vendor.SayTo(from, 1043298); // Locked items may not be made not-for-sale.
                         else if (item.Items.Count > 0)
-                            this.m_Vendor.SayTo(from, 1043299); // To be not for sale, all items in a container must be for sale.
+                            m_Vendor.SayTo(from, 1043299); // To be not for sale, all items in a container must be for sale.
                         else
                             setPrice = true;
                     }
@@ -1591,7 +1600,7 @@ namespace Server.Mobiles
                     }
                     else
                     {
-                        this.m_Vendor.SayTo(from, 1043301); // Only the following may be made not-for-sale: books, containers, keyrings, and items in for-sale containers.
+                        m_Vendor.SayTo(from, 1043301); // Only the following may be made not-for-sale: books, containers, keyrings, and items in for-sale containers.
                     }
                 }
                 else
@@ -1607,11 +1616,11 @@ namespace Server.Mobiles
 
                 if (setPrice)
                 {
-                    this.m_Vendor.SetVendorItem(item, price, description);
+                    m_Vendor.SetVendorItem(item, price, description);
                 }
                 else
                 {
-                    this.m_VI.Description = description;
+                    m_VI.Description = description;
                 }
             }
         }
@@ -1621,12 +1630,12 @@ namespace Server.Mobiles
             private readonly PlayerVendor m_Vendor;
             public CollectGoldPrompt(PlayerVendor vendor)
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (!this.m_Vendor.CanInteractWith(from, true))
+                if (!m_Vendor.CanInteractWith(from, true))
                     return;
 
                 text = text.Trim();
@@ -1636,26 +1645,26 @@ namespace Server.Mobiles
                 if (!int.TryParse(text, out amount))
                     amount = 0;
 
-                this.GiveGold(from, amount);
+                GiveGold(from, amount);
             }
 
             public override void OnCancel(Mobile from)
             {
-                if (!this.m_Vendor.CanInteractWith(from, true))
+                if (!m_Vendor.CanInteractWith(from, true))
                     return;
 
-                this.GiveGold(from, 0);
+                GiveGold(from, 0);
             }
 
             private void GiveGold(Mobile to, int amount)
             {
                 if (amount <= 0)
                 {
-                    this.m_Vendor.SayTo(to, "Very well. I will hold on to the money for now then.");
+                    m_Vendor.SayTo(to, "Very well. I will hold on to the money for now then.");
                 }
                 else
                 {
-                    this.m_Vendor.GiveGold(to, amount);
+                    m_Vendor.GiveGold(to, amount);
                 }
             }
         }
@@ -1665,27 +1674,27 @@ namespace Server.Mobiles
             private readonly PlayerVendor m_Vendor;
             public VendorNamePrompt(PlayerVendor vendor)
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (!this.m_Vendor.CanInteractWith(from, true))
+                if (!m_Vendor.CanInteractWith(from, true))
                     return;
 
                 string name = text.Trim();
 
                 if (!NameVerification.Validate(name, 1, 20, true, true, true, 0, NameVerification.Empty))
                 {
-                    this.m_Vendor.SayTo(from, "That name is unacceptable.");
+                    m_Vendor.SayTo(from, "That name is unacceptable.");
                     return;
                 }
 
-                this.m_Vendor.Name = Utility.FixHtml(name);
+                m_Vendor.Name = Utility.FixHtml(name);
 
                 from.SendLocalizedMessage(1062496); // Your vendor has been renamed.
 
-                from.SendGump(new NewPlayerVendorOwnerGump(this.m_Vendor));
+                from.SendGump(new NewPlayerVendorOwnerGump(m_Vendor));
             }
         }
 
@@ -1694,25 +1703,25 @@ namespace Server.Mobiles
             private readonly PlayerVendor m_Vendor;
             public ShopNamePrompt(PlayerVendor vendor)
             {
-                this.m_Vendor = vendor;
+                m_Vendor = vendor;
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (!this.m_Vendor.CanInteractWith(from, true))
+                if (!m_Vendor.CanInteractWith(from, true))
                     return;
 
                 string name = text.Trim();
 
                 if (!NameVerification.Validate(name, 1, 20, true, true, true, 0, NameVerification.Empty))
                 {
-                    this.m_Vendor.SayTo(from, "That name is unacceptable.");
+                    m_Vendor.SayTo(from, "That name is unacceptable.");
                     return;
                 }
 
-                this.m_Vendor.ShopName = Utility.FixHtml(name);
+                m_Vendor.ShopName = Utility.FixHtml(name);
 
-                from.SendGump(new NewPlayerVendorOwnerGump(this.m_Vendor));
+                from.SendGump(new NewPlayerVendorOwnerGump(m_Vendor));
             }
         }
 
@@ -1726,13 +1735,13 @@ namespace Server.Mobiles
         public PlayerVendorPlaceholder(PlayerVendor vendor)
             : base(0x1F28)
         {
-            this.Hue = 0x672;
-            this.Movable = false;
+            Hue = 0x672;
+            Movable = false;
 
-            this.m_Vendor = vendor;
+            m_Vendor = vendor;
 
-            this.m_Timer = new ExpireTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new ExpireTimer(this);
+            m_Timer.Start();
         }
 
         public PlayerVendorPlaceholder(Serial serial)
@@ -1745,29 +1754,29 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Vendor;
+                return m_Vendor;
             }
         }
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.m_Vendor != null)
-                list.Add(1062498, this.m_Vendor.Name); // reserved for vendor ~1_NAME~
+            if (m_Vendor != null)
+                list.Add(1062498, m_Vendor.Name); // reserved for vendor ~1_NAME~
         }
 
         public void RestartTimer()
         {
-            this.m_Timer.Stop();
-            this.m_Timer.Start();
+            m_Timer.Stop();
+            m_Timer.Start();
         }
 
         public override void OnDelete()
         {
-            if (this.m_Vendor != null && !this.m_Vendor.Deleted)
+            if (m_Vendor != null && !m_Vendor.Deleted)
             {
-                this.m_Vendor.MoveToWorld(this.Location, this.Map);
-                this.m_Vendor.Placeholder = null;
+                m_Vendor.MoveToWorld(Location, Map);
+                m_Vendor.Placeholder = null;
             }
         }
 
@@ -1777,7 +1786,7 @@ namespace Server.Mobiles
 
             writer.WriteEncodedInt((int)0);
 
-            writer.Write((Mobile)this.m_Vendor);
+            writer.Write((Mobile)m_Vendor);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1786,7 +1795,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Vendor = (PlayerVendor)reader.ReadMobile();
+            m_Vendor = (PlayerVendor)reader.ReadMobile();
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Delete));
         }
@@ -1797,14 +1806,14 @@ namespace Server.Mobiles
             public ExpireTimer(PlayerVendorPlaceholder placeholder)
                 : base(TimeSpan.FromMinutes(2.0))
             {
-                this.m_Placeholder = placeholder;
+                m_Placeholder = placeholder;
 
-                this.Priority = TimerPriority.FiveSeconds;
+                Priority = TimerPriority.FiveSeconds;
             }
 
             protected override void OnTick()
             {
-                this.m_Placeholder.Delete();
+                m_Placeholder.Delete();
             }
         }
     }

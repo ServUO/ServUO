@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using System.Text;
 using Server;
 using Server.Mobiles;
-using Server.Items;
 
-namespace drNO.ThieveItems
+namespace Server.Items
 {
-    class ManaDraught : Item
+    [TypeAlias("drNO.ThieveItems.ManaDraught")]
+    public class ManaDraught : Item
     {
+        private static Dictionary<PlayerMobile, DateTime> DaughtUsageList = new Dictionary<PlayerMobile, DateTime>();
+        private static TimeSpan Cooldown = TimeSpan.FromMinutes(10);
 
-        public override int LabelNumber
+        public override int LabelNumber { get { return 1094938; } } // Mana Draught
+
+        [Constructable] 
+        public ManaDraught()
+            : base(0xFFB)
         {
-            get
-            {
-                return 1094938;
-            }
+            Hue = 0x48A;
+            Weight = 1.0;
         }
-
 
         public static void DoCleanup()
         {
@@ -41,12 +42,8 @@ namespace drNO.ThieveItems
             }
 
             toRemove.Clear();
-
         }
 
-
-        private static Dictionary<PlayerMobile, DateTime> DaughtUsageList = new Dictionary<PlayerMobile, DateTime>();
-        private static TimeSpan Cooldown = TimeSpan.FromMinutes(10);
         private bool CheckUse(PlayerMobile pm)
         {
             if (DaughtUsageList.ContainsKey(pm))
@@ -60,20 +57,6 @@ namespace drNO.ThieveItems
             {
                 return true;
             }
-        }
-        [Constructable] 
-        public ManaDraught()
-            : base(0xFFB)
-        {
-            Hue = 0x48A;
-            Name = "Mana Draught";
-            Weight = 1.0;
-          
-        }
-
-        public override void OnDoubleClick(Mobile from)
-        {
-            OnUsed((PlayerMobile)from);
         }
 
         private void OnUsed(PlayerMobile by)

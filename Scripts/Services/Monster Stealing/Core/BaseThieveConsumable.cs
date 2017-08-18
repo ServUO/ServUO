@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using Server.Mobiles;
 using System.Text;
 using Server;
-using Server.Items;
 
-namespace drNO.ThieveItems
+namespace Server.Items
 {
-
-    enum ThieveConsumableEffect
+    public enum ThieveConsumableEffect
     {
         None,
         BalmOfStrengthEffect,
@@ -19,43 +17,29 @@ namespace drNO.ThieveItems
         LifeShieldLotionEffect,
     }
 
-    class ThieveConsumableInfo
+    public class ThieveConsumableInfo
     {
         public ThieveConsumableEffect Effect;
-      /*  {
-            get;
-            set;
-        }*/
-
         public Timer EffectTimer;
-     /*   {
-           get;
-           set;
-        }*/
 
         public ThieveConsumableInfo(BaseThieveConsumable.InternalTimer t, ThieveConsumableEffect e)
         {
-            this.Effect = e;
-            this.EffectTimer = t;
+            Effect = e;
+            EffectTimer = t;
         }
     }
 
-
-
-    abstract class BaseThieveConsumable : Item
+    public abstract class BaseThieveConsumable : Item
     {
-
         public BaseThieveConsumable(int itemId)
             : base(itemId)
         {
         }
 
-
         public class InternalTimer : Timer
         {
             public PlayerMobile pm;
             public ThieveConsumableEffect effect;
-
 
             protected override void OnTick()
             {
@@ -72,7 +56,6 @@ namespace drNO.ThieveItems
 
         public   TimeSpan m_EffectDuration;
         protected  ThieveConsumableEffect m_EffectType;
-       
 
         protected virtual void OnUse(PlayerMobile by)
         {
@@ -85,28 +68,30 @@ namespace drNO.ThieveItems
             {
                 m_EffectDuration = TimeSpan.FromMinutes(30); 
             }
+
             InternalTimer t = new InternalTimer(pm,m_EffectType,m_EffectDuration);
             t.Start(); 
+
             ThieveConsumableInfo info = new ThieveConsumableInfo(t, this.m_EffectType);
+            
             if (EffectTable.ContainsKey(pm))
             {
                 RemoveEffect(pm, EffectTable[pm].Effect); 
-                
             }
-                EffectTable.Add(pm, info);
+                
+            EffectTable.Add(pm, info);
             this.Consume(); 
         }
 
         protected static void RemoveEffect(PlayerMobile pm, ThieveConsumableEffect effectType)
         {
-
             if (EffectTable.ContainsKey(pm))
             {
 
                 EffectTable[pm].EffectTimer.Stop();
                 EffectTable.Remove(pm);
-                pm.SendLocalizedMessage(1095134);//The effects of the balm or lotion have worn off.
 
+                pm.SendLocalizedMessage(1095134);//The effects of the balm or lotion have worn off.
 
                 if (effectType == ThieveConsumableEffect.BalmOfStrengthEffect || effectType == ThieveConsumableEffect.BalmOfSwiftnessEffect || effectType == ThieveConsumableEffect.BalmOfWisdomEffect)
                 {
@@ -126,7 +111,6 @@ namespace drNO.ThieveItems
                             i--;
                         }
                     }
-
                 }
             }
         }
@@ -145,8 +129,6 @@ namespace drNO.ThieveItems
             }
         }
 
-
-
         public static bool IsUnderThieveConsumableEffect(PlayerMobile pm, ThieveConsumableEffect eff)
         {
             if (EffectTable.ContainsKey(pm))
@@ -159,7 +141,6 @@ namespace drNO.ThieveItems
                 {
                     return false;
                 }
-
             }
             else
             {
@@ -176,9 +157,9 @@ namespace drNO.ThieveItems
             else
             {
                 return ThieveConsumableEffect.None;
-
             }
         }
+
         public BaseThieveConsumable(Serial serial)
             : base(serial)
         {
@@ -190,8 +171,9 @@ namespace drNO.ThieveItems
             base.Serialize(writer);
 
             writer.Write((int)0); // version
+
             writer.Write((int)m_EffectType);
-            writer.Write((TimeSpan)m_EffectDuration); 
+            writer.Write(m_EffectDuration); 
         }
 
         public override void Deserialize(GenericReader reader)

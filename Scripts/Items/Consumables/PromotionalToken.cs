@@ -9,9 +9,9 @@ namespace Server.Items
 		public PromotionalToken()
 			: base(0x2AAA)
 		{
-			this.LootType = LootType.Blessed;
-			this.Light = LightType.Circle300;
-			this.Weight = 5.0;
+			LootType = LootType.Blessed;
+			Light = LightType.Circle300;
+			Weight = 5.0;
 		}
 
 		public PromotionalToken(Serial serial)
@@ -35,12 +35,12 @@ namespace Server.Items
 		{
 			base.GetProperties(list);
 
-			list.Add(1070998, this.ItemName.ToString()); // Use this to redeem<br>your ~1_PROMO~
+			list.Add(1070998, ItemName.ToString()); // Use this to redeem<br>your ~1_PROMO~
 		}
 
 		public override void OnDoubleClick(Mobile from)
 		{
-			if (!this.IsChildOf(from.Backpack))
+			if (!IsChildOf(from.Backpack))
 			{
 				from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
 			}
@@ -84,16 +84,16 @@ namespace Server.Items
 			public PromotionalTokenGump(PromotionalToken token)
 				: base(10, 10)
 			{
-				this.m_Token = token;
+				m_Token = token;
 
-				this.AddPage(0);
+				AddPage(0);
 
-				this.AddBackground(0, 0, 240, 135, 0x2422);
-				this.AddHtmlLocalized(15, 15, 210, 75, 1070972, 0x0, true, false); // Click "OKAY" to redeem the following promotional item:
-				TextDefinition.AddHtmlText(this, 15, 60, 210, 75, this.m_Token.ItemGumpName, false, false);
+				AddBackground(0, 0, 240, 135, 0x2422);
+				AddHtmlLocalized(15, 15, 210, 75, 1070972, 0x0, true, false); // Click "OKAY" to redeem the following promotional item:
+				TextDefinition.AddHtmlText(this, 15, 60, 210, 75, m_Token.ItemGumpName, false, false);
 
-				this.AddButton(160, 95, 0xF7, 0xF8, 1, GumpButtonType.Reply, 0);	//Okay
-				this.AddButton(90, 95, 0xF2, 0xF1, 0, GumpButtonType.Reply, 0);	//Cancel
+				AddButton(160, 95, 0xF7, 0xF8, 1, GumpButtonType.Reply, 0);	//Okay
+				AddButton(90, 95, 0xF2, 0xF1, 0, GumpButtonType.Reply, 0);	//Cancel
 			}
 
 			public override void OnResponse(NetState sender, RelayInfo info)
@@ -103,19 +103,19 @@ namespace Server.Items
 
 				Mobile from = sender.Mobile;
 
-				if (!this.m_Token.IsChildOf(from.Backpack))
+				if (!m_Token.IsChildOf(from.Backpack))
 				{
 					from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
 				}
 				else
 				{
-					Item i = this.m_Token.CreateItemFor(from);
+					Item i = m_Token.CreateItemFor(from);
 
 					if (i != null)
 					{
 						from.BankBox.AddItem(i);
-						TextDefinition.SendMessageTo(from, this.m_Token.ItemReceiveMessage);
-						this.m_Token.Delete();
+						TextDefinition.SendMessageTo(from, m_Token.ItemReceiveMessage);
+						m_Token.Delete();
 					}
 				}
 			}
