@@ -83,6 +83,16 @@ namespace Server.Multis
             }
         }
 
+        public override bool HandlesOnMovement { get { return true; } }
+
+        public override void OnMovement(Mobile m, Point3D oldLocation)
+        {
+            if (m.X == X && m.Y == Y && m.Z == Z + 1 && (oldLocation.X != X || oldLocation.Y != Y))
+            {
+                OnMoveOver(m);
+            }
+        }
+
         public bool CheckBaseAccess(Mobile m)
         {
             return base.CheckAccess(m);

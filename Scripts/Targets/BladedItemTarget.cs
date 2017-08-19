@@ -14,14 +14,14 @@ namespace Server.Targets
         public BladedItemTarget(Item item)
             : base(2, false, TargetFlags.None)
         {
-            this.m_Item = item;
+            m_Item = item;
         }
 
         protected override void OnTargetOutOfRange(Mobile from, object targeted)
         {
             if (targeted is UnholyBone && from.InRange(((UnholyBone)targeted), 12))
             {
-                if (((UnholyBone)targeted).Carve(from, this.m_Item) && Siege.SiegeShard)
+                if (((UnholyBone)targeted).Carve(from, m_Item) && Siege.SiegeShard)
                 {
                     Siege.CheckUsesRemaining(from, m_Item);
                 }
@@ -32,33 +32,38 @@ namespace Server.Targets
 
         protected override void OnTarget(Mobile from, object targeted)
         {
-            if (this.m_Item.Deleted)
+            if (m_Item.Deleted)
                 return;
 
-            if (targeted is ICarvable)
+            if (targeted is Item)
             {
-                if (targeted is Item && (((Item)targeted).IsLockedDown || (((Item)targeted).RootParent is Container && !((Item)targeted).Movable)))
-                {
-                    from.SendLocalizedMessage(500494); // You can't use a bladed item on that!
-                }
-                else if (((ICarvable)targeted).Carve(from, this.m_Item) && Siege.SiegeShard)
-                {
-                    Siege.CheckUsesRemaining(from, m_Item);
-                }
-            }
-            else if (targeted is SwampDragon && ((SwampDragon)targeted).HasBarding)
-            {
-                SwampDragon pet = (SwampDragon)targeted;
+                Item item = targeted as Item;
 
-                if (!pet.Controlled || pet.ControlMaster != from)
-                    from.SendLocalizedMessage(1053022); // You cannot remove barding from a swamp dragon you do not own.
-                else
+                if (targeted is ICarvable)
                 {
-                    pet.HasBarding = false;
-
-                    if (Siege.SiegeShard && m_Item is IUsesRemaining)
+                    if (item.IsLockedDown || (item.RootParent is Container && (!item.Movable || !((Container)item.RootParent).LiftOverride)))
+                    {
+                        from.SendLocalizedMessage(500494); // You can't use a bladed item on that!
+                    }
+                    else if (((ICarvable)targeted).Carve(from, m_Item) && Siege.SiegeShard)
                     {
                         Siege.CheckUsesRemaining(from, m_Item);
+                    }
+                }
+                else if (targeted is SwampDragon && ((SwampDragon)targeted).HasBarding)
+                {
+                    SwampDragon pet = (SwampDragon)targeted;
+
+                    if (!pet.Controlled || pet.ControlMaster != from)
+                        from.SendLocalizedMessage(1053022); // You cannot remove barding from a swamp dragon you do not own.
+                    else
+                    {
+                        pet.HasBarding = false;
+
+                        if (Siege.SiegeShard && m_Item is IUsesRemaining)
+                        {
+                            Siege.CheckUsesRemaining(from, m_Item);
+                        }
                     }
                 }
             }
@@ -104,7 +109,7 @@ namespace Server.Targets
                 Map map;
                 Point3D loc;
 
-                if (!system.GetHarvestDetails(from, this.m_Item, targeted, out tileID, out map, out loc))
+                if (!system.GetHarvestDetails(from, m_Item, targeted, out tileID, out map, out loc))
                 {
                     from.SendLocalizedMessage(500494); // You can't use a bladed item on that!
                 }
@@ -151,3 +156,4 @@ namespace Server.Targets
         }
     }
 }
+
