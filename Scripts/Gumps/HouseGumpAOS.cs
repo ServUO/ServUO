@@ -314,7 +314,7 @@ namespace Server.Gumps
                         this.AddLabel(250, 330, LabelHue, house.Price.ToString());
 
                         this.AddHtmlLocalized(20, 360, 300, 20, 1011241, SelectedColor, false, false); // Number of visits this building has had: 
-                        this.AddLabel(350, 360, LabelHue, house.Visits.ToString());
+                        this.AddLabel(350, 360, LabelHue, house.TotalVisits.ToString());
 
                         break;
                     }

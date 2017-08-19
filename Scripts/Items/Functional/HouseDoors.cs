@@ -103,8 +103,8 @@ namespace Server.Items
         public BaseHouseDoor(DoorFacing facing, int closedID, int openedID, int openedSound, int closedSound, Point3D offset)
             : base(closedID, openedID, openedSound, closedSound, offset)
         {
-            this.m_Facing = facing;
-            this.m_Level = SecureLevel.Anyone;
+            m_Facing = facing;
+            m_Level = SecureLevel.Anyone;
         }
 
         public BaseHouseDoor(Serial serial)
@@ -117,11 +117,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Facing;
+                return m_Facing;
             }
             set
             {
-                this.m_Facing = value;
+                m_Facing = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -129,11 +129,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = value;
+                m_Level = value;
             }
         }
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -146,17 +146,17 @@ namespace Server.Items
         {
             Point3D loc;
 
-            if (this.Open)
-                loc = new Point3D(this.X - this.Offset.X, this.Y - this.Offset.Y, this.Z - this.Offset.Z);
+            if (Open)
+                loc = new Point3D(X - Offset.X, Y - Offset.Y, Z - Offset.Z);
             else
-                loc = this.Location;
+                loc = Location;
 
-            return BaseHouse.FindHouseAt(loc, this.Map, 20);
+            return BaseHouse.FindHouseAt(loc, Map, 20);
         }
 
         public bool CheckAccess(Mobile m)
         {
-            BaseHouse house = this.FindHouse();
+            BaseHouse house = FindHouse();
 
             if (house == null)
                 return false;
@@ -167,31 +167,31 @@ namespace Server.Items
             if (house.Public ? house.IsBanned(m) : !house.HasAccess(m))
                 return false;
 
-            return house.HasSecureAccess(m, this.m_Level);
+            return house.HasSecureAccess(m, m_Level);
         }
 
         public override void OnOpened(Mobile from)
         {
-            BaseHouse house = this.FindHouse();
+            BaseHouse house = FindHouse();
 
             if (house != null && house.IsFriend(from) && from.IsPlayer() && house.RefreshDecay())
                 from.SendLocalizedMessage(1043293); // Your house's age and contents have been refreshed.
 
-            if (house != null && house.Public && !house.IsFriend(from))
-                house.Visits++;
+            if (!Core.AOS && house != null && house.Public && !house.IsFriend(from))
+                house.AddVisit(from);
         }
 
         public override bool UseLocks()
         {
-            BaseHouse house = this.FindHouse();
+            BaseHouse house = FindHouse();
 
             return (house == null || !house.IsAosRules);
         }
 
         public override void Use(Mobile from)
         {
-            if (!this.CheckAccess(from))
-                from.SendLocalizedMessage(1061637); // You are not allowed to access this.
+            if (!CheckAccess(from))
+                from.SendLocalizedMessage(1061637); // You are not allowed to access 
             else
                 base.Use(from);
         }
@@ -202,9 +202,9 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write((int)this.m_Level);
+            writer.Write((int)m_Level);
 
-            writer.Write((int)this.m_Facing);
+            writer.Write((int)m_Facing);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -217,15 +217,15 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_Level = (SecureLevel)reader.ReadInt();
+                        m_Level = (SecureLevel)reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
                     {
                         if (version < 1)
-                            this.m_Level = SecureLevel.Anyone;
+                            m_Level = SecureLevel.Anyone;
 
-                        this.m_Facing = (DoorFacing)reader.ReadInt();
+                        m_Facing = (DoorFacing)reader.ReadInt();
                         break;
                     }
             }
@@ -239,7 +239,7 @@ namespace Server.Items
             const int bs = r * 2 + 1;
             const int ss = r + 1;
 
-            switch ( this.m_Facing )
+            switch ( m_Facing )
             {
                 case DoorFacing.WestCW:
                 case DoorFacing.EastCCW:
@@ -275,9 +275,9 @@ namespace Server.Items
                     return false;
             }
 
-            int rx = from.X - this.X;
-            int ry = from.Y - this.Y;
-            int az = Math.Abs(from.Z - this.Z);
+            int rx = from.X - X;
+            int ry = from.Y - Y;
+            int az = Math.Abs(from.Z - Z);
 
             return (rx >= x && rx < (x + w) && ry >= y && ry < (y + h) && az <= 4);
         }
