@@ -37,13 +37,16 @@ namespace Server.Multis
             {
                 _Charges = value;
 
-                if (_Charges == 0)
+                if (UsesCharges)
                 {
-                    Hue = 1208;
-                }
-                else if (_Charges >= 1 && Hue != 1201)
-                {
-                    Hue = 1201;
+                    if (_Charges == 0)
+                    {
+                        Hue = 1208;
+                    }
+                    else if (_Charges >= 1 && Hue != 1201)
+                    {
+                        Hue = 1201;
+                    }
                 }
 
                 InvalidateProperties();
@@ -80,16 +83,6 @@ namespace Server.Multis
             if (UsesCharges)
             {
                 list.Add(1060741, _Charges.ToString()); // charges: ~1_val~
-            }
-        }
-
-        public override bool HandlesOnMovement { get { return true; } }
-
-        public override void OnMovement(Mobile m, Point3D oldLocation)
-        {
-            if (m.X == X && m.Y == Y && m.Z == Z + 1 && (oldLocation.X != X || oldLocation.Y != Y))
-            {
-                OnMoveOver(m);
             }
         }
 
@@ -226,39 +219,6 @@ namespace Server.Multis
 				m.SendLocalizedMessage(1114917); // This must be in your backpack to link it.
 			}
 		}
-
-        public override bool OnDragDrop(Mobile m, Item dropped)
-        {
-            if (dropped is GateTravelScroll && UsesCharges && m.InRange(GetWorldLocation(), 1))
-            {
-                var scroll = dropped as GateTravelScroll;
-
-                if (_Charges >= MaxCharges)
-                {
-                    m.SendLocalizedMessage(1115126); // The House Teleporter cannot be charged any further.
-                }
-                else
-                {
-                    int left = MaxCharges - _Charges;
-                    int scrollsNeeded = left / 5;
-
-                    if (scroll.Amount <= scrollsNeeded)
-                    {
-                        Charges = Math.Min(MaxCharges, _Charges + (scroll.Amount * 5));
-                        scroll.Delete();
-                    }
-                    else
-                    {
-                        scroll.Amount -= scrollsNeeded;
-                        Charges = MaxCharges;
-                    }
-
-                    m.SendLocalizedMessage(1115127); // The Gate Travel scroll crumbles to dust as it strengthens the House Teleporter.
-                }
-            }
-
-            return base.OnDragDrop(m, dropped);
-        }
 
         public override void OnAfterTeleport(Mobile m)
         {

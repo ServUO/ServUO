@@ -143,7 +143,6 @@ namespace Server.Engines.VvV
         public PlayerMobile Player { get; set; }
         public double Points { get; set; }
 
-        public int Silver { get; set; }
         public int Kills { get; set; }
         public int Assists { get; set; }
         public int Deaths { get; set; }
@@ -163,11 +162,10 @@ namespace Server.Engines.VvV
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
 
             writer.Write(Points);
 
-            writer.Write(Silver);
             writer.Write(Kills);
             writer.Write(Assists);
             writer.Write(Deaths);
@@ -184,7 +182,9 @@ namespace Server.Engines.VvV
             Player = pm;
             Points = reader.ReadDouble();
 
-            Silver = reader.ReadInt();
+            if(version == 0)
+                reader.ReadInt();
+
             Kills = reader.ReadInt();
             Assists = reader.ReadInt();
             Deaths = reader.ReadInt();
