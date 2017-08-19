@@ -215,7 +215,7 @@ namespace Server.Misc
 
         public static bool CanCreate(IPAddress ip)
         {
-            if (!IPTable.ContainsKey(ip))
+            if (!IPTable.ContainsKey(ip) || IPLimiter.IsExempt(ip))
                 return true;
 
             return (IPTable[ip] < MaxAccountsPerIP);
