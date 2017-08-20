@@ -280,7 +280,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, false, true);
+                    item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, false, true);
 
                     if (item is BaseWeapon && 0.01 > Utility.RandomDouble())
                     {
