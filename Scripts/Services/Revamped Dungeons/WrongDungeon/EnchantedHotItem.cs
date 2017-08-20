@@ -25,14 +25,6 @@ namespace Server.Items
         public static Timer Timer { get; set; }
         public static Dictionary<Item, Container> HotItems { get; set; }
 
-        public static Item Create()
-        {
-            Item loot = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, false, true);
-            loot.Hue = 1258;
-
-            return loot;
-        }
-
         public static void CheckTimer()
         {
             if (HotItems.Count > 0)
@@ -288,19 +280,19 @@ namespace Server.Items
                 }
                 else
                 {
-                    item = EnchantedHotItem.Create();
+                    Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, false, true);
 
                     if (item is BaseWeapon && 0.01 > Utility.RandomDouble())
                     {
                         ((BaseWeapon)item).ExtendedWeaponAttributes.AssassinHoned = 1;
                     }
 
-
-                    int min, max;
-                    TreasureMapChest.GetRandomItemStat(out min, out max, 1.0);
+                    int min = 400;
+                    int max = 1400;
 
                     RunicReforging.GenerateRandomItem(item, 0, min, max, this.Map);
 
+                    item.Hue = 1258;
                     EnchantedHotItem.AddItem(item, this);
                 }
 
