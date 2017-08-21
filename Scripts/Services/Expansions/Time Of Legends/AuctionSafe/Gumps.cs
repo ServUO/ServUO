@@ -436,7 +436,7 @@ namespace Server.Engines.Auction
 
         private bool IsBadItem(Item item)
         {
-            return item == null || item.Weight > 300 || item is Container || item is Gold || item is BankCheck || !item.Movable;
+            return item == null || item.Weight > 300 || (item is Container && !(item is BaseQuiver)) || item is Gold || item is BankCheck || !item.Movable || item.Items.Count > 0;
         }
     }
 

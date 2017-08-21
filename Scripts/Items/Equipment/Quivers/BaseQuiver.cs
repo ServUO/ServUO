@@ -315,6 +315,9 @@ namespace Server.Items
 
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
         {
+            if (!Movable)
+                return false;
+
             if (!CheckType(item))
             {
                 if (message)
