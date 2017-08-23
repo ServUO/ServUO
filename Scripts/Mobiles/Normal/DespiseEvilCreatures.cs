@@ -18,8 +18,9 @@ namespace Server.Engines.Despise
 		public Phantom(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
 		{
 			Name = "Phantom";
-			Body =  310;
+			Body =  0xFC;
 			BaseSoundID = 0x482;
+            Hue = 2671;
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -114,8 +115,9 @@ namespace Server.Engines.Despise
 		public Naba(int powerLevel) : base(AIType.AI_Mage, FightMode.Good)
 		{
 			Name = "Naba";
-			Body = 85;
+			Body = 0x88;
 			BaseSoundID = 639;
+            Hue = 2707;
 
 			SetDamageType( ResistanceType.Physical, 50 );
 			SetDamageType( ResistanceType.Fire, 15 );
@@ -176,6 +178,7 @@ namespace Server.Engines.Despise
 		public Darkmane(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
 		{
 			Name = "Darkmane";
+            Hue = 1910;
 			BaseSoundID = 0xA8;
 			
 			switch(Utility.Random(3))
@@ -250,6 +253,7 @@ namespace Server.Engines.Despise
 			Name = "Skeletrex";
 			Body = 147;
 			BaseSoundID = 451;
+            Hue = 2075;
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -380,6 +384,7 @@ namespace Server.Engines.Despise
 			Name = "Echidnite";
 			Body = 250;
 			BaseSoundID = 0x52A;
+            Hue = 2671;
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -434,17 +439,18 @@ namespace Server.Engines.Despise
 		}
 	}
 	
-	public class BerlingBlades : DespiseCreature
+    [TypeAlias("Server.Engines.Despise.BerlingBlades")]
+	public class BirlingBlades : DespiseCreature
 	{	
 		[Constructable]
-		public BerlingBlades() : this(1)
+		public BirlingBlades() : this(1)
 		{
 		}
 		
 		[Constructable]
-		public BerlingBlades(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
+		public BirlingBlades(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
 		{
-			Name = "Berling Blades";
+			Name = "Birling Blades";
 			Body = 574;
 			BaseSoundID = 224;
 
@@ -498,8 +504,9 @@ namespace Server.Engines.Despise
 		{
 			return 0x23A;
 		}
-		
-		public BerlingBlades(Serial serial) : base(serial)
+
+        public BirlingBlades(Serial serial)
+            : base(serial)
 		{
 		}
 		
@@ -535,6 +542,7 @@ namespace Server.Engines.Despise
 			Name = "Prometheoid";
 			Body = 305;
 			BaseSoundID = 224;
+            Hue = 2671;
 
 			SetDamageType( ResistanceType.Physical, 100 );
 

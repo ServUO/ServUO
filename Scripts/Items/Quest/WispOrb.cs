@@ -282,12 +282,6 @@ namespace Server.Engines.Despise
 			
 			public override void OnClick()
 			{
-                /*if (m_Orb.Pet != null && m_Orb.IsChildOf(m_From.Backpack) && m_Orb.Conscripted)
-                {
-                    m_From.SendMessage("The creature you are controlling is no longer conscripted.");
-                    m_Orb.Conscripted = false;
-                }*/
-
                 if (m_Orb.Pet != null)
                 {
                     m_Orb.Pet.Unlink();
@@ -479,8 +473,8 @@ namespace Server.Engines.Despise
                 switch (m_Aggression)
                 {
                     case Aggression.Following: Hue = 1923; break; // Yellow
-                    case Aggression.Defensive: Hue = 1927; break; // blue
-                    case Aggression.Aggressive: Hue = 1925; break;  // green
+                    case Aggression.Defensive: Hue = 1917; break; // blue
+                    case Aggression.Aggressive: Hue = 1914; break;  // green
                 }
             }
         }

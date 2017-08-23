@@ -9,13 +9,14 @@ namespace Server.Items
     public abstract class BaseAddonDeed : Item, ICraftable
     {
         private CraftResource m_Resource;
+
         public BaseAddonDeed()
             : base(0x14F0)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
 
             if (!Core.AOS)
-                this.LootType = LootType.Newbied;
+                LootType = LootType.Newbied;
         }
 
         public BaseAddonDeed(Serial serial)
@@ -24,21 +25,23 @@ namespace Server.Items
         }
 
         public abstract BaseAddon Addon { get; }
+        public virtual bool UseCraftResource { get { return true; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {
             get
             {
-                return this.m_Resource;
+                return m_Resource;
             }
             set
             {
-                if (this.m_Resource != value)
+                if (UseCraftResource && m_Resource != value)
                 {
-                    this.m_Resource = value;
-                    this.Hue = CraftResources.GetHue(this.m_Resource);
+                    m_Resource = value;
+                    Hue = CraftResources.GetHue(m_Resource);
 
-                    this.InvalidateProperties();
+                    InvalidateProperties();
                 }
             }
         }
@@ -49,7 +52,7 @@ namespace Server.Items
             writer.Write(1); // version
 
             // Version 1
-            writer.Write((int)this.m_Resource);
+            writer.Write((int)m_Resource);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -62,18 +65,18 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_Resource = (CraftResource)reader.ReadInt();
+                        m_Resource = (CraftResource)reader.ReadInt();
                         break;
                     }
             }
 
-            if (this.Weight == 0.0)
-                this.Weight = 1.0;
+            if (Weight == 0.0)
+                Weight = 1.0;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
                 from.Target = new InternalTarget(this);
             else
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
@@ -81,15 +84,15 @@ namespace Server.Items
 
         public virtual void DeleteDeed()
         {
-            this.Delete();
+            Delete();
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (!CraftResources.IsStandard(this.m_Resource))
-                list.Add(CraftResources.GetLocalizationNumber(this.m_Resource));
+            if (!CraftResources.IsStandard(m_Resource))
+                list.Add(CraftResources.GetLocalizationNumber(m_Resource));
         }
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
@@ -99,14 +102,12 @@ namespace Server.Items
             if (resourceType == null)
                 resourceType = craftItem.Resources.GetAt(0).ItemType;
 
-            this.Resource = CraftResources.GetFromType(resourceType);
+            Resource = CraftResources.GetFromType(resourceType);
 
             CraftContext context = craftSystem.GetContext(from);
 
-			if (context != null && context.DoNotColor)
-				this.Hue = 0;
-			else
-				this.Hue = resHue;
+            if (Hue != 0 && (!UseCraftResource || (context != null && context.DoNotColor)))
+				Hue = 0;
 
             return quality;
         }
@@ -117,9 +118,9 @@ namespace Server.Items
             public InternalTarget(BaseAddonDeed deed)
                 : base(-1, true, TargetFlags.None)
             {
-                this.m_Deed = deed;
+                m_Deed = deed;
 
-                this.CheckLOS = false;
+                CheckLOS = false;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -127,12 +128,12 @@ namespace Server.Items
                 IPoint3D p = targeted as IPoint3D;
                 Map map = from.Map;
 
-                if (p == null || map == null || this.m_Deed.Deleted)
+                if (p == null || map == null || m_Deed.Deleted)
                     return;
 
-                if (this.m_Deed.IsChildOf(from.Backpack))
+                if (m_Deed.IsChildOf(from.Backpack))
                 {
-                    BaseAddon addon = this.m_Deed.Addon;
+                    BaseAddon addon = m_Deed.Addon;
 
                     Server.Spells.SpellHelper.GetSurfaceTop(ref p);
 
@@ -143,10 +144,10 @@ namespace Server.Items
 
                     if (res == AddonFitResult.Valid)
                     {
-                        addon.Resource = this.m_Deed.Resource;
+                        addon.Resource = m_Deed.Resource;
 
                         if (addon.RetainDeedHue)
-                            addon.Hue = this.m_Deed.Hue;
+                            addon.Hue = m_Deed.Hue;
 
                         addon.MoveToWorld(new Point3D(p), map);
 
@@ -155,7 +156,7 @@ namespace Server.Items
                         else if (boat != null)
                             boat.AddAddon(addon);
 
-                        this.m_Deed.DeleteDeed();
+                        m_Deed.DeleteDeed();
                     }
                     else if (res == AddonFitResult.Blocked)
                         from.SendLocalizedMessage(500269); // You cannot build that there.

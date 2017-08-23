@@ -39,7 +39,7 @@ namespace Server.Engines.Despise
                 WeakEntityCollection.Add("despise", ankh);
                 ankh.MoveToWorld(new Point3D(5472, 754, 10), Map.Trammel);
 
-                Moongate gate1 = new Moongate(false);
+                /*Moongate gate1 = new Moongate(false);
                 Moongate gate2 = new Moongate(false);
                 WeakEntityCollection.Add("despise", gate1);
                 WeakEntityCollection.Add("despise", gate2);
@@ -70,7 +70,8 @@ namespace Server.Engines.Despise
                 gate1.MoveToWorld(new Point3D(5388, 753, 5), Map.Trammel);
                 gate2.MoveToWorld(new Point3D(5387, 628, 30), Map.Trammel);
                 HueGates(gate1, gate2);
-                LinkGates(gate1, gate2);
+                LinkGates(gate1, gate2);*/
+                SetupTeleporters();
 
                 //Teleporters
                 IPooledEnumerable eable = Map.Trammel.GetItemsInRange(new Point3D(5588, 631, 30), 2);
@@ -104,18 +105,34 @@ namespace Server.Engines.Despise
                 e.Mobile.SendMessage("Despise appears to already be setup");
         }
 
-        private static void HueGates(Moongate one, Moongate two)
+        public static void SetupTeleporters()
         {
-            one.Hue = 2715;
-            two.Hue = 2677;
-        }
+            //Gate1
+            GateTeleporter gate1 = new GateTeleporter(3948, 1965, new Point3D(5458, 610, 50), Map.Trammel);
+            GateTeleporter gate2 = new GateTeleporter(3948, 1960, new Point3D(5476, 737, 5), Map.Trammel);
+            WeakEntityCollection.Add("despise", gate1);
+            WeakEntityCollection.Add("despise", gate2);
 
-        private static void LinkGates(Moongate one, Moongate two)
-        {
-            one.Target = two.Location;
-            two.Target = one.Location;
-            one.TargetMap = two.Map;
-            two.TargetMap = one.Map;
+            gate1.MoveToWorld(new Point3D(5476, 737, 5), Map.Trammel);
+            gate2.MoveToWorld(new Point3D(5458, 610, 50), Map.Trammel);
+
+            //Gate2
+            gate1 = new GateTeleporter(3948, 1960, new Point3D(5460, 675, 20), Map.Trammel);
+            gate2 = new GateTeleporter(3948, 1965, new Point3D(5460, 523, 60), Map.Trammel);
+            WeakEntityCollection.Add("despise", gate1);
+            WeakEntityCollection.Add("despise", gate2);
+
+            gate1.MoveToWorld(new Point3D(5460, 523, 60), Map.Trammel);
+            gate2.MoveToWorld(new Point3D(5460, 675, 20), Map.Trammel);
+
+            //Gate3
+            gate1 = new GateTeleporter(3948, 1965, new Point3D(5387, 628, 30), Map.Trammel);
+            gate2 = new GateTeleporter(3948, 1960, new Point3D(5388, 753, 5), Map.Trammel);
+            WeakEntityCollection.Add("despise", gate1);
+            WeakEntityCollection.Add("despise", gate2);
+
+            gate1.MoveToWorld(new Point3D(5388, 753, 5), Map.Trammel);
+            gate2.MoveToWorld(new Point3D(5387, 628, 30), Map.Trammel);
         }
     }
 }
