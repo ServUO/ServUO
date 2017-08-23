@@ -335,7 +335,7 @@ namespace Server.Multis
         {
             get
             {
-                return (Core.ML ? 1.2 : 1.0);
+                return (Core.ML ? Core.SA ? 1.4 : 1.2 : 1.0);
             }
         }
 

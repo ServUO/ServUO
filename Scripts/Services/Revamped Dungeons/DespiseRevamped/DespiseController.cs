@@ -3,6 +3,7 @@ using System;
 using Server.Mobiles;
 using Server.Items;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Engines.Despise
 {
@@ -37,7 +38,7 @@ namespace Server.Engines.Despise
         public Region EvilRegion { get { return m_EvilRegion; } }
         public Region LowerRegion { get { return m_LowerRegion; } }
         public Region StartRegion { get { return m_StartRegion; } }
-
+        
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Enabled
         {
@@ -92,7 +93,7 @@ namespace Server.Engines.Despise
 
         private List<Mobile> m_ToTransport = new List<Mobile>();
 
-        private readonly TimeSpan EncounterCheckDuration = TimeSpan.FromMinutes(10);
+        private readonly TimeSpan EncounterCheckDuration = TimeSpan.FromMinutes(5);
         private readonly TimeSpan DeadLineDuration = TimeSpan.FromMinutes(90);
 
         public bool IsInSequence { get { return m_SequenceTimer != null || m_CleanupTimer != null; } }
@@ -171,17 +172,18 @@ namespace Server.Engines.Despise
 
             int good = GetArmyPower(Alignment.Good);
             int evil = GetArmyPower(Alignment.Evil);
-            Alignment strongest;
+            Alignment strongest = Alignment.Neutral;
 
             if (good == 0 && evil == 0)
             {
                 m_NextBossEncounter = DateTime.UtcNow + EncounterCheckDuration;
-                return;
             }
-
-            if (good > evil) strongest = Alignment.Good;
-            else if (good < evil) strongest = Alignment.Evil;
-            else strongest = 0.5 > Utility.RandomDouble() ? Alignment.Good : Alignment.Evil;
+            else
+            {
+                if (good > evil) strongest = Alignment.Good;
+                else if (good < evil) strongest = Alignment.Evil;
+                else strongest = 0.5 > Utility.RandomDouble() ? Alignment.Good : Alignment.Evil;
+            }
 
             List<Mobile> players = new List<Mobile>();
             players.AddRange(m_GoodRegion.GetPlayers());
@@ -216,12 +218,15 @@ namespace Server.Engines.Despise
                 }
             }
 
-            ColUtility.Free(players);
-            m_SequenceAlignment = strongest;
+            if (strongest != Alignment.Neutral)
+            {
+                ColUtility.Free(players);
+                m_SequenceAlignment = strongest;
 
-            Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(BeginSequence));
-            m_NextBossEncounter = DateTime.MinValue;
-            m_Sequencing = true;
+                Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(BeginSequence));
+                m_NextBossEncounter = DateTime.MinValue;
+                m_Sequencing = true;
+            }
         }
 
         public int GetArmyPower(Alignment alignment)
@@ -625,7 +630,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write((int)3);
 
             writer.Write(m_Enabled);
             writer.Write(m_NextBossEncounter);
@@ -713,6 +718,56 @@ namespace Server.Engines.Despise
 
             if (version < 2)
                 Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveAnkh);
+
+            if(version < 3)
+                Timer.DelayCall(TimeSpan.FromSeconds(30), CheckSpawnersVersion3);
 		}
+
+        private static bool _Version3Check;
+
+        public void CheckSpawnersVersion3()
+        {
+            if (!_Version3Check)
+            {
+                foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
+                {
+                    foreach (var obj in spawner.SpawnObjects)
+                    {
+                        if (obj.TypeName != null)
+                        {
+                            if (obj.TypeName.ToLower().IndexOf("berlingblades") >= 0)
+                            {
+                                string name = obj.TypeName;
+
+                                obj.TypeName = name.Replace("BerlingBlades", "BirlingBlades");
+                            }
+                            else if (obj.TypeName.ToLower().IndexOf("sagittari") >= 0)
+                            {
+                                string name = obj.TypeName;
+
+                                obj.TypeName = name.Replace("Sagittari", "Sagittarri");
+                            }
+                        }
+                    }
+                }
+
+                int count = 0;
+
+                foreach (var r in new Region[] { m_GoodRegion, m_EvilRegion, m_LowerRegion, m_StartRegion })
+                {
+                    foreach (var item in r.GetEnumeratedItems().Where(i => i is Moongate))
+                    {
+                        item.Delete();
+                        WeakEntityCollection.Remove("despise", item);
+                        count++;
+                    }
+                }
+
+                Console.WriteLine("Deleted {0} moongates", count);
+                DespiseRevampedSetup.SetupTeleporters();
+
+                _Version3Check = true;
+            }
+        }
     }
 }

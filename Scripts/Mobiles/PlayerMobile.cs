@@ -615,8 +615,14 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				string title = Titles.ComputeFameTitle(this);
-				return title.Length > 0 ? title : RawName;
+                string name;
+
+                if (Fame >= 10000)
+                    name = String.Format("{0} {1}", Female ? "Lady" : "Lord", RawName);
+                else
+                    name = RawName;
+
+                return name;
 			}
 		}
 

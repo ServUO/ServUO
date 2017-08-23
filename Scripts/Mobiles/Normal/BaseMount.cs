@@ -454,7 +454,7 @@ namespace Server.Mobiles
             if (attacker == null)
                 attacker = this.m_Rider.FindMostRecentDamager(true);
 
-            if (!(attacker == this || attacker == this.m_Rider || willKill || DateTime.UtcNow < this.m_NextMountAbility))
+            if (!(attacker == this || attacker == this.m_Rider || willKill || DateTime.UtcNow > this.m_NextMountAbility))
             {
                 if (this.DoMountAbility(amount, from))
                     this.m_NextMountAbility = DateTime.UtcNow + this.MountAbilityDelay;

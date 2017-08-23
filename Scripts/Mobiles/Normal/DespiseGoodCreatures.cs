@@ -234,17 +234,18 @@ namespace Server.Engines.Despise
 		}
 	}
 	
-	public class Sagittari : DespiseCreature
+    [TypeAlias("Server.Engines.Despise.Sagittari")]
+	public class Sagittarri : DespiseCreature
 	{
 		[Constructable]
-		public Sagittari() : this(1)
+		public Sagittarri() : this(1)
 		{
 		}
 		
 		[Constructable]
-		public Sagittari(int powerLevel) : base(AIType.AI_Melee, FightMode.Evil)
+		public Sagittarri(int powerLevel) : base(AIType.AI_Melee, FightMode.Evil)
 		{
-			Name = "Sagittari";
+            Name = "Sagittarri";
 			Body = 101;
 			BaseSoundID = 679;
 
@@ -279,8 +280,9 @@ namespace Server.Engines.Despise
 		public override int MinDamMax { get { return 15; } }
 		public override int MaxDamMax { get { return 26; } }
 		public override bool RaiseDamage { get { return true; } }
-		
-		public Sagittari(Serial serial) : base(serial)
+
+        public Sagittarri(Serial serial)
+            : base(serial)
 		{
 		}
 		
@@ -529,7 +531,7 @@ namespace Server.Engines.Despise
 		public Fairy(int powerLevel) : base(AIType.AI_Melee, FightMode.Evil)
 		{
 			Name = "Fairy";
-			Body = 128;
+			Body = 0x108;
 			BaseSoundID = 0x467;
 
 			SetDamageType( ResistanceType.Physical, 100 );

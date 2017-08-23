@@ -148,6 +148,24 @@ namespace Server.Engines.Despise
             SetDamage(MinDamStart, MaxDamStart);
         }
 
+        public override bool IsEnemy(Mobile m)
+        {
+            if (m is PlayerMobile)
+            {
+                if (m.Karma <= 1000 && Alignment == Alignment.Good)
+                    return true;
+
+                if (m.Karma >= 1000 && Alignment == Alignment.Evil)
+                    return true;
+            }
+            else if (m is DespiseCreature)
+            {
+                return ((DespiseCreature)m).Alignment != this.Alignment;
+            }
+
+            return false;
+        }
+
         public override void GenerateLoot(bool spawning)
         {
             if (spawning)
