@@ -54,24 +54,12 @@ namespace Server.Engines.Despise
 				{
                     WispOrb orb = new WispOrb(from, alignment);
 					from.Backpack.DropItem(orb);
-
-                    Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(SendMessage_Callback), new object[] { orb, from } );
+                    from.SendLocalizedMessage(1153355); // I will follow thy guidance.
 				}
 				else
 					LabelTo(from, 1153350); // Thy spirit be not compatible with our goals!
 			}
 		}
-
-        private void SendMessage_Callback(object o)
-        {
-            object[] obj = o as object[];
-
-            WispOrb orb = obj[0] as WispOrb;
-            Mobile from = obj[1] as Mobile;
-
-            if(orb != null && orb.IsChildOf(from.Backpack))
-                orb.LabelTo(from, 1153355); // I will follow thy guidance.
-        }
 		
 		public DespiseAnkh(Serial serial) : base(serial)
 		{
