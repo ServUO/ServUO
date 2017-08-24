@@ -692,9 +692,12 @@ namespace Server.Engines.Despise
                 }
             }
 
-			if(!m_Enabled)
-				return;
-				
+            if (!m_Enabled)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(10), () => ResetSpawners(true));
+                return;
+            }
+
 			BeginTimer();
 			
 			if(m_DeadLine > DateTime.UtcNow)
@@ -729,7 +732,9 @@ namespace Server.Engines.Despise
         {
             if (!_Version3Check)
             {
-                foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
+                int count = 0;
+
+                foreach (var spawner in World.Items.Values.OfType<XmlSpawner>().Where(s => s.Name != null && s.Name.ToLower().IndexOf("despiserevamped") >= 0))
                 {
                     foreach (var obj in spawner.SpawnObjects)
                     {
@@ -748,10 +753,15 @@ namespace Server.Engines.Despise
                                 obj.TypeName = name.Replace("Sagittari", "Sagittarri");
                             }
                         }
-                    }
-                }
 
-                int count = 0;
+                        if (Region.Find(spawner.Location, spawner.Map) == m_GoodRegion ||
+                            Region.Find(spawner.Location, spawner.Map) == m_EvilRegion)
+                        {
+                            obj.TypeName = obj.TypeName + @",{RND,1,5}";
+                            count++;
+                        }
+                   } 
+                }
 
                 foreach (var r in new Region[] { m_GoodRegion, m_EvilRegion, m_LowerRegion, m_StartRegion })
                 {
@@ -759,11 +769,9 @@ namespace Server.Engines.Despise
                     {
                         item.Delete();
                         WeakEntityCollection.Remove("despise", item);
-                        count++;
                     }
                 }
 
-                Console.WriteLine("Deleted {0} moongates", count);
                 DespiseRevampedSetup.SetupTeleporters();
 
                 _Version3Check = true;

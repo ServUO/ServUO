@@ -80,6 +80,28 @@ namespace Server.Items
             }
         }
 
+        public static void PrivateOverheadMessage(this Item item, MessageType type, int hue, bool ascii, string text, NetState state)
+        {
+            if (item.Map != null && state != null)
+            {
+                Point3D worldLoc = item.GetWorldLocation();
+
+                Mobile m = state.Mobile;
+
+                if (m != null && m.CanSee(item) && m.InRange(worldLoc, item.GetUpdateRange(m)))
+                {
+                    if (ascii)
+                    {
+                        state.Send(new AsciiMessage(item.Serial, item.ItemID, type, hue, 3, item.Name, text));
+                    }
+                    else
+                    {
+                        state.Send(new UnicodeMessage(item.Serial, item.ItemID, type, hue, 3, m.Language, item.Name, text));
+                    }
+                }
+            }
+        }
+
         public static void SendLocalizedMessage(this Item item, int number, string args)
         {
             if (item == null)
@@ -137,6 +159,11 @@ namespace Server.Mobiles
         public static void SayTo(this Mobile mobile, Mobile to, string text, int hue, bool ascii = false)
         {
             mobile.PrivateOverheadMessage(MessageType.Regular, hue, ascii, text, to.NetState);
+        }
+
+        public static void PrivateOverheadMessage(this Mobile mobile, MessageType type, int hue, int number, AffixType affixType, string affix, string args, NetState state)
+        {
+            state.Send(new MessageLocalizedAffix(mobile.Serial, mobile.Body, type, hue, 3, number, mobile.Name, affixType, affix, args));
         }
     }
 }
