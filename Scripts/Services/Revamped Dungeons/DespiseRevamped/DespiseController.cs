@@ -630,7 +630,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)3);
+            writer.Write((int)4);
 
             writer.Write(m_Enabled);
             writer.Write(m_NextBossEncounter);
@@ -662,6 +662,9 @@ namespace Server.Engines.Despise
 			m_DeadLine = reader.ReadDateTime();
 			m_SequenceAlignment = (Alignment)reader.ReadInt();
 
+            if(version < 4)
+                Timer.DelayCall(TimeSpan.FromSeconds(30), CheckSpawnersVersion3);
+                
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)
             {
@@ -693,10 +696,7 @@ namespace Server.Engines.Despise
             }
 
             if (!m_Enabled)
-            {
-                Timer.DelayCall(TimeSpan.FromSeconds(10), () => ResetSpawners(true));
                 return;
-            }
 
 			BeginTimer();
 			
@@ -710,6 +710,8 @@ namespace Server.Engines.Despise
 			}
 			else if (m_DeadLine != DateTime.MinValue)
 			{
+                Timer.DelayCall(TimeSpan.FromSeconds(10), () => ResetSpawners(true));
+                
 				BeginCleanupTimer();
 				return;
 			}
@@ -721,9 +723,6 @@ namespace Server.Engines.Despise
 
             if (version < 2)
                 Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveAnkh);
-
-            if(version < 3)
-                Timer.DelayCall(TimeSpan.FromSeconds(30), CheckSpawnersVersion3);
 		}
 
         private static bool _Version3Check;
