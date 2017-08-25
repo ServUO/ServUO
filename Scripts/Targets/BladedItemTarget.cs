@@ -35,35 +35,37 @@ namespace Server.Targets
             if (m_Item.Deleted)
                 return;
 
-            if (targeted is Item)
+            if (targeted is ICarvable)
             {
-                Item item = targeted as Item;
-
-                if (targeted is ICarvable)
+                if (targeted is Item)
                 {
+                    Item item = targeted as Item;
+
                     if (item.IsLockedDown || (item.RootParent is Container && (!item.Movable || !((Container)item.RootParent).LiftOverride)))
                     {
                         from.SendLocalizedMessage(500494); // You can't use a bladed item on that!
-                    }
-                    else if (((ICarvable)targeted).Carve(from, m_Item) && Siege.SiegeShard)
-                    {
-                        Siege.CheckUsesRemaining(from, m_Item);
+                        return;
                     }
                 }
-                else if (targeted is SwampDragon && ((SwampDragon)targeted).HasBarding)
+
+                if (((ICarvable)targeted).Carve(from, m_Item) && Siege.SiegeShard)
                 {
-                    SwampDragon pet = (SwampDragon)targeted;
+                    Siege.CheckUsesRemaining(from, m_Item);
+                }
+            }
+            else if (targeted is SwampDragon && ((SwampDragon)targeted).HasBarding)
+            {
+                SwampDragon pet = (SwampDragon)targeted;
 
-                    if (!pet.Controlled || pet.ControlMaster != from)
-                        from.SendLocalizedMessage(1053022); // You cannot remove barding from a swamp dragon you do not own.
-                    else
+                if (!pet.Controlled || pet.ControlMaster != from)
+                    from.SendLocalizedMessage(1053022); // You cannot remove barding from a swamp dragon you do not own.
+                else
+                {
+                    pet.HasBarding = false;
+
+                    if (Siege.SiegeShard && m_Item is IUsesRemaining)
                     {
-                        pet.HasBarding = false;
-
-                        if (Siege.SiegeShard && m_Item is IUsesRemaining)
-                        {
-                            Siege.CheckUsesRemaining(from, m_Item);
-                        }
+                        Siege.CheckUsesRemaining(from, m_Item);
                     }
                 }
             }
