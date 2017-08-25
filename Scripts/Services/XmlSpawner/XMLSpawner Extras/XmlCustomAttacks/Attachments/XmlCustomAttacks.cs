@@ -207,11 +207,11 @@ namespace Server.Engines.XmlSpawner2
                 case SpecialAttacks.VortexStrike:
                 {
                     attacker.PlaySound( 0x217 );
-                    BaseCreature m = new EnergyVortex();
-                    m.Summoned = true;
-                    m.SummonMaster = attacker;
-                    m.Combatant = defender;
-                    m.MoveToWorld(defender.Location, defender.Map);
+
+                    BaseCreature vortex = new EnergyVortex(true);
+                    BaseCreature.Summon(new EnergyVortex(true), false, attacker, defender.Location, 0x212, TimeSpan.FromSeconds(90));
+                    vortex.Combatant = defender;
+
                     break;
                 }
                 case SpecialAttacks.StamDrain:
