@@ -353,7 +353,7 @@ namespace Server.Engines.Despise
             m_DeadLine = DateTime.MinValue;
             m_ToTransport.Clear();
 
-            ResetSpawners(true);
+            Timer.DelayCall(TimeSpan.FromSeconds(10), () => ResetSpawners(true));
 
             m_NextBossEncounter = DateTime.UtcNow + EncounterCheckDuration;
         }
@@ -710,8 +710,6 @@ namespace Server.Engines.Despise
 			}
 			else if (m_DeadLine != DateTime.MinValue)
 			{
-                Timer.DelayCall(TimeSpan.FromSeconds(10), () => ResetSpawners(true));
-                
 				BeginCleanupTimer();
 				return;
 			}
