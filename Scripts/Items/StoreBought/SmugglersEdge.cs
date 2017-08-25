@@ -20,6 +20,7 @@ namespace Server.Items
 
             WeaponAttributes.UseBestSkill = 1;
             Attributes.SpellChanneling = 1;
+            Attributes.WeaponSpeed = 30;
 
             if (!Siege.SiegeShard)
                 LootType = LootType.Blessed;
@@ -56,13 +57,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            reader.ReadInt();
+            int version = reader.ReadInt();
+
+            if (version == 0)
+                Attributes.WeaponSpeed = 30;
         }
     }
 
@@ -76,6 +80,10 @@ namespace Server.Items
         public GargishSmugglersEdge()
         {
             Hue = 1461;
+
+            WeaponAttributes.UseBestSkill = 1;
+            Attributes.SpellChanneling = 1;
+            Attributes.WeaponSpeed = 30;
 
             if (!Siege.SiegeShard)
                 LootType = LootType.Blessed;
@@ -112,13 +120,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            reader.ReadInt();
+            int version = reader.ReadInt();
+
+            if (version == 0)
+                Attributes.WeaponSpeed = 30;
         }
     }
 }

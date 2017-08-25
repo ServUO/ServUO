@@ -383,10 +383,12 @@ namespace Server.Items
 
         [Constructable]
         public LeatherWolfSkin(int amount)
-            : base(0x3189)
+            : base(0xDF8)
         {
             Stackable = true;
             Amount = amount;
+
+            Hue = 248;
         }
 
         public LeatherWolfSkin(Serial serial)
@@ -405,7 +407,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -413,6 +415,12 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                ItemID = 0xDF8;
+                Hue = 248;
+            }
         }
     }
 

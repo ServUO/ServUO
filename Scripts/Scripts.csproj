@@ -1784,6 +1784,7 @@
     <Compile Include="Mobiles\Named\Chiikkaha.cs" />
     <Compile Include="Mobiles\Named\Coil.cs" />
     <Compile Include="Mobiles\Named\DevourerRenowned.cs" />
+    <Compile Include="Mobiles\Named\Drelgor.cs" />
     <Compile Include="Mobiles\Named\FireDaemonRenowned.cs" />
     <Compile Include="Mobiles\Named\FireElementalRenowned.cs" />
     <Compile Include="Mobiles\Named\Flurry.cs" />
@@ -1860,6 +1861,7 @@
     <Compile Include="Mobiles\Normal\BlackSolenWarrior.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenWorker.cs" />
     <Compile Include="Mobiles\Normal\BloodElemental.cs" />
+    <Compile Include="Mobiles\Normal\DragonWolf.cs" />
     <Compile Include="Mobiles\Normal\Lasher.cs" />
     <Compile Include="Mobiles\Normal\Windrunner.cs" />
     <Compile Include="Mobiles\Normal\StygianDrake.cs" />
@@ -2583,6 +2585,7 @@
     <Compile Include="Mobiles\Void Creatures\Relanord.cs" />
     <Compile Include="Mobiles\Void Creatures\UsagralemBallem.cs" />
     <Compile Include="Mobiles\Void Creatures\Vasanord.cs" />
+    <Compile Include="Multis\HouseTeleporterTile.cs" />
     <Compile Include="Quests\ALittleSomething.cs" />
     <Compile Include="Quests\AmbitiousSolenQueen\AmbitiousQueenQuest.cs" />
     <Compile Include="Quests\AmbitiousSolenQueen\Conversations.cs" />
@@ -9980,6 +9983,7 @@
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\GoldDust.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\NexusCore.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\SmallPieceofBlackrock.cs" />
+    <Compile Include="Services\Revamped Dungeons\WrongDungeon\EnchantedHotItem.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\Soap.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\Artifacts\TortureRackArtifact.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\BedrollSpawner.cs" />

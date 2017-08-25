@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Targeting;
 using Server.Network;
+using System.Linq;
 
 namespace Server.Engines.Despise
 {
@@ -52,7 +53,6 @@ namespace Server.Engines.Despise
 				if(m_Pet != null && value == null)
 				{
 					m_Pet.Unlink(); 
-					//m_Pet = null;
 				}
                 else
                 {
@@ -198,17 +198,14 @@ namespace Server.Engines.Despise
 				from.Target = new InternalTarget(this);
 			}
 		}
-		
-		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
-		{
-			base.GetContextMenuEntries(from, list);
 
-            if (CheckOwnerAlignment() && m_Pet != null && IsChildOf(from.Backpack) && from == m_Owner)
-			{
-				list.Add(new ConscriptEntry(from, this));
-				list.Add(new ReleaseEntry(from, this));
-			}
-		}
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            list.Add(new ReleaseEntry(from, this));
+            list.Add(new ConscriptEntry(from, this));
+        }
 		
 		public override void GetProperties(ObjectPropertyList list)
 		{
@@ -216,10 +213,8 @@ namespace Server.Engines.Despise
 			
 			list.Add(1153329, String.Format("#{0}", GetAlignment())); // Alignment: ~1_VAL~
 			list.Add(1153306, String.Format("{0}", GetArmyPower())); // Army Power: ~1_VAL~
-			
-			if(m_Pet != null)
-				list.Add(1153272, m_Pet.Name); // Controlling: ~1_VAL~
-			
+            list.Add(1153272, m_Pet != null ? m_Pet.Name : "None"); // Controlling: ~1_VAL~
+		
 			object name = GetAnchorName();
 			
 			if(name != null)					//Anchor: ~1_NAME~
@@ -236,6 +231,48 @@ namespace Server.Engines.Despise
 			list.Add(1153260, String.Format("#{0}", leash.ToString())); // Leash: ~1_VAL~
 			list.Add(1153267, String.Format("#{0}", aggr.ToString())); // Aggression: ~1_VAL~
 		}
+
+        public override bool DropToWorld(Mobile m, Point3D p)
+        {
+            m.SendLocalizedMessage(1153233); // The Wisp Orb vanishes to whence it came...
+            Delete();
+            return false;
+        }
+
+        public static void CheckDrop(Container c, Mobile m)
+        {
+            List<WispOrb> list = new List<WispOrb>(c.Items.OfType<WispOrb>());
+
+            foreach (var orb in list)
+            {
+                m.SendLocalizedMessage(1153233); // The Wisp Orb vanishes to whence it came...
+                orb.Delete();
+            }
+        }
+
+        public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
+        {
+            if (target.RootParentEntity == from)
+            {
+                return base.OnDroppedInto(from, target, p);
+            }
+
+            from.SendLocalizedMessage(1153233); // The Wisp Orb vanishes to whence it came...
+            Delete();
+            return false;
+        }
+
+        public override bool OnDroppedOnto(Mobile from, Item target)
+        {
+            if (target is Container && target.RootParentEntity != from)
+            {
+                from.SendLocalizedMessage(1153233); // The Wisp Orb vanishes to whence it came...
+                Delete();
+                return false;
+            }
+
+            return base.OnDroppedOnto(from, target);
+        }
 		
 		private class ConscriptEntry : ContextMenuEntry
 		{
@@ -282,12 +319,6 @@ namespace Server.Engines.Despise
 			
 			public override void OnClick()
 			{
-                /*if (m_Orb.Pet != null && m_Orb.IsChildOf(m_From.Backpack) && m_Orb.Conscripted)
-                {
-                    m_From.SendMessage("The creature you are controlling is no longer conscripted.");
-                    m_Orb.Conscripted = false;
-                }*/
-
                 if (m_Orb.Pet != null)
                 {
                     m_Orb.Pet.Unlink();
@@ -331,7 +362,7 @@ namespace Server.Engines.Despise
                             m_Orb.Pet.ControlOrder = OrderType.Follow;
 
                             from.SendLocalizedMessage(1153276); // Your Wisp Orb takes control of the creature!
-                            m_Orb.Pet.PublicOverheadMessage(MessageType.Regular, 0x59, 1153295, from.Name); // * This creature is now under the control of ~1_NAME~ *
+                            m_Orb.Pet.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1153295, from.Name); // * This creature is now under the control of ~1_NAME~ *
                         }
                     }
                     else if (targeted == m_Orb.Pet)
@@ -471,16 +502,16 @@ namespace Server.Engines.Despise
         public void InvalidateHue()
         {
             if (m_Pet == null)
-                Hue = 1943; // shadow wisp color
+                Hue = 1910; // shadow wisp color
             else if (m_Pet.Combatant != null)
                 Hue = 1931; // Orange
             else
             {
                 switch (m_Aggression)
                 {
-                    case Aggression.Following: Hue = 1923; break; // Yellow
-                    case Aggression.Defensive: Hue = 1927; break; // blue
-                    case Aggression.Aggressive: Hue = 1925; break;  // green
+                    case Aggression.Following: Hue = 1912; break; // Yellow
+                    case Aggression.Defensive: Hue = 1917; break; // blue
+                    case Aggression.Aggressive: Hue = 1914; break;  // green
                 }
             }
         }
@@ -491,7 +522,7 @@ namespace Server.Engines.Despise
 				m_Orbs.Remove(this);
 
             if (m_Pet != null && m_Pet.Alive)
-				m_Pet.Unlink();
+				m_Pet.Unlink(false);
 				
 			base.Delete();
 		}

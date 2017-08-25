@@ -28,7 +28,7 @@ namespace Server.Engines.VvV
     [PropertyObject]
     public class VvVBattle
     {
-        public static readonly int Duration = 20;
+        public static readonly int Duration = 05;
         public static readonly int Cooldown = 5;
         public static readonly int Announcement = 2;
         public static readonly int KillCooldownDuration = 5;
@@ -152,21 +152,20 @@ namespace Server.Engines.VvV
         public VvVBattle(ViceVsVirtueSystem sys)
         {
             System = sys;
-
-            Teams = new List<BattleTeam>();
-
-            KillCooldown = new Dictionary<Mobile, DateTime>();
-            Messages = new List<string>();
-            Altars = new List<VvVAltar>();
-            Traps = new List<VvVTrap>();
-            Warned = new List<Mobile>();
-            Turrets = new List<CannonTurret>();
         }
 
         public void Begin()
         {
             VvVCity newCity = City;
             List<VvVCity> cities = new List<VvVCity>();
+
+            Teams = new List<BattleTeam>();
+            KillCooldown = new Dictionary<Mobile, DateTime>();
+            Messages = new List<string>();
+            Altars = new List<VvVAltar>();
+            Traps = new List<VvVTrap>();
+            Warned = new List<Mobile>();
+            Turrets = new List<CannonTurret>();
 
             for (int i = 0; i < 8; i++)
             {
@@ -351,6 +350,11 @@ namespace Server.Engines.VvV
             if (Region is GuardedRegion)
             {
                 ((GuardedRegion)Region).Disabled = false;
+
+                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                {
+                    pm.RecheckTownProtection();
+                }
             }
 
             CooldownEnds = DateTime.UtcNow + TimeSpan.FromMinutes(Cooldown);
@@ -404,6 +408,14 @@ namespace Server.Engines.VvV
             ColUtility.Free(Warned);
             ColUtility.Free(Turrets);
 
+            Altars = null;
+            Teams = null;
+            KillCooldown = null;
+            Messages = null;
+            Traps = null;
+            Warned = null;
+            Turrets = null;
+
             if (Region is GuardedRegion)
             {
                 ((GuardedRegion)Region).Disabled = false;
@@ -428,17 +440,14 @@ namespace Server.Engines.VvV
             if (leader == null || leader.Guild == null)
                 return;
 
+            leader.Silver += WinSilver + (OppositionCount(leader.Guild) * 50);
+
             foreach (Mobile m in this.Region.GetEnumeratedMobiles())
             {
                 Guild g = m.Guild as Guild;
 
                 if (g == null)
                     continue;
-
-                if (leader != null && (leader.Guild == g || leader.Guild.IsAlly(g)))
-                {
-                    System.AwardPoints(m, WinSilver + (OppositionCount(g) * 50), message: false);
-                }
 
                 PlayerMobile pm = m as PlayerMobile;
 
@@ -451,7 +460,7 @@ namespace Server.Engines.VvV
                     if (entry != null)
                     {
                         entry.Score += team.Score;
-                        entry.Points += stats.Silver;
+                        entry.Points += team.Silver;
                         entry.Kills += stats.Kills;
                         entry.Deaths += stats.Deaths;
                         entry.Assists += stats.Assists;
@@ -635,7 +644,7 @@ namespace Server.Engines.VvV
                     }
 
                     if (killerTeam != null)
-                        killerTeam.Assists++;
+                        killerTeam.Stolen++;
 
                     break;
                 case UpdateType.TurnInVice:
@@ -699,6 +708,9 @@ namespace Server.Engines.VvV
 
         public void OccupyAltar(Guild g)
         {
+            if (!OnGoing)
+                return;
+
             BattleTeam team = GetTeam(g);
 
             team.Score += (int)AltarPoints;

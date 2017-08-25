@@ -335,7 +335,7 @@ namespace Server.Multis
         {
             get
             {
-                return (Core.ML ? 1.2 : 1.0);
+                return (Core.ML ? Core.SA ? 1.4 : 1.2 : 1.0);
             }
         }
 
@@ -373,7 +373,7 @@ namespace Server.Multis
         private int m_MaxSecures;
         private int m_Price;
 
-        private int m_Visits;
+        private Dictionary<Mobile, DateTime> m_Visits;
 
         private DateTime m_BuiltOn, m_LastTraded;
 
@@ -1362,6 +1362,8 @@ namespace Server.Multis
 
             m_VendorRentalContracts = new List<Item>();
             m_InternalizedVendors = new List<Mobile>();
+
+            m_Visits = new Dictionary<Mobile, DateTime>();
 
             m_Owner = owner;
 
@@ -2652,7 +2654,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)18); // version
+            writer.Write((int)19); // version
 
             writer.WriteItemList(m_Carpets, true);
 
@@ -2693,7 +2695,12 @@ namespace Server.Multis
             writer.Write((DateTime)m_LastRefreshed);
             writer.Write((bool)m_RestrictDecay);
 
-            writer.Write((int)m_Visits);
+            writer.Write(m_Visits.Count);
+            foreach (var kvp in m_Visits)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value);
+            }
 
             writer.Write((int)m_Price);
 
@@ -2717,16 +2724,7 @@ namespace Server.Multis
 
             writer.Write(m_Public);
 
-            //writer.Write( BanLocation );
-
             writer.Write(m_Owner);
-
-            // Version 5 no longer serializes region coords
-            /*writer.Write( (int)m_Region.Coords.Count );
-            foreach( Rectangle2D rect in m_Region.Coords )
-            {
-            writer.Write( rect );
-            }*/
 
             writer.WriteMobileList(m_CoOwners, true);
             writer.WriteMobileList(m_Friends, true);
@@ -2776,8 +2774,11 @@ namespace Server.Multis
             int count;
             bool loadedDynamicDecay = false;
 
+            m_Visits = new Dictionary<Mobile, DateTime>();
+
             switch (version)
             {
+                case 19: // version 19, Visit change to dictionary
                 case 18: // version 18, converted addons list to dictionary
                 case 17:
                     {
@@ -2844,7 +2845,22 @@ namespace Server.Multis
                 case 10: // just a signal for updates
                 case 9:
                     {
-                        m_Visits = reader.ReadInt();
+                        if (version == 18)
+                        {
+                            reader.ReadInt();
+                        }
+                        else
+                        {
+                            int c = reader.ReadInt();
+                            for (int i = 0; i < c; i++)
+                            {
+                                Mobile visitor = reader.ReadMobile();
+                                DateTime lastVisit = reader.ReadDateTime();
+
+                                if (visitor != null)
+                                    m_Visits[visitor] = lastVisit;
+                            }
+                        }
                         goto case 8;
                     }
                 case 8:
@@ -3167,7 +3183,7 @@ namespace Server.Multis
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Visits
+        public Dictionary<Mobile, DateTime> Visits
         {
             get
             {
@@ -3177,6 +3193,12 @@ namespace Server.Multis
             {
                 m_Visits = value;
             }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TotalVisits
+        { 
+            get { return m_Visits.Count; } 
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -3555,6 +3577,24 @@ namespace Server.Multis
                 for (int x = m_StartX; x <= m_EndX; ++x)
                     for (int y = m_StartY; y <= m_EndY; ++y)
                         m_Map.FixColumn(x, y);
+            }
+        }
+
+        public DateTime LastVisit(Mobile m)
+        {
+            if (m_Visits.ContainsKey(m))
+            {
+                return m_Visits[m];
+            }
+
+            return DateTime.MinValue;
+        }
+
+        public void AddVisit(Mobile m)
+        {
+            if (m is PlayerMobile && !IsOwner(m))
+            {
+                m_Visits[m] = DateTime.Now;
             }
         }
 

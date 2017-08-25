@@ -400,6 +400,10 @@ namespace Server.Engines.Craft
 
             CraftGroupCol craftGroupCol = this.m_CraftSystem.CraftGroups;
             CraftGroup craftGroup = craftGroupCol.GetAt(selectedGroup);
+
+            if (craftGroup == null)
+                return;
+
             CraftItemCol craftItemCol = craftGroup.CraftItems;
 
             for (int i = 0; i < craftItemCol.Count; ++i)

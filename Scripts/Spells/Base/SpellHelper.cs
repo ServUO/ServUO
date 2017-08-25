@@ -697,13 +697,13 @@ namespace Server.Spells
             new TravelValidator(IsGuardianRoom),
             new TravelValidator(IsHeartwood),
             new TravelValidator(IsMLDungeon),
-            new TravelValidator(IsEodon)
+            new TravelValidator(IsEodon),
         };
 
         private static readonly bool[,] m_Rules = new bool[,]
         {
-					/*T2A(Fel),	Khaldun,	Ilshenar,	Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel),	CrystalCave(Malas),	Gauntlet(Malas),	Gauntlet(Ferry),	SafeZone,	Stronghold,	ChampionSpawn,	Dungeons(Tokuno[Malas]),	LampRoom(Doom),	GuardianRoom(Doom),	Heartwood,	MLDungeons */
-/* Recall From */	{ false,	false,		true,		true,		false,		false,			true,			false,		false,				false,				false,				true,		true,		false,			true,						false,			false,				false,		false,      true },
+					/*T2A(Fel),	Khaldun,	Ilshenar,	Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel),	CrystalCave(Malas),	Gauntlet(Malas),	Gauntlet(Ferry),	SafeZone,	Stronghold,	ChampionSpawn,	Dungeons(Tokuno[Malas]),	LampRoom(Doom),	GuardianRoom(Doom),	Heartwood,	MLDungeons, Eodon*/
+/* Recall From */	{ false,	false,		true,		true,		false,		false,			true,			false,		false,				false,				false,				true,		true,		false,			true,						false,			false,				false,		false,      true} ,
 /* Recall To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
 /* Gate From */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
 /* Gate To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
@@ -795,6 +795,9 @@ namespace Server.Spells
                 if (m_TravelCaster.Region.IsPartOf("Blighted Grove") && loc.Z < -10)
                     isValid = false;
             }
+
+            if ((int)type <= 4 && (IsNewDungeon(caster.Map, caster.Location) || IsNewDungeon(map, loc)))
+                isValid = false;
             #endregion
 
             #region High Seas
@@ -1002,6 +1005,20 @@ namespace Server.Spells
                 return true;
 
             return map == Map.TerMur && loc.X > 64 && loc.X < 1015 && loc.Y > 1344 && loc.Y < 2239;
+        }
+
+        public static bool IsNewDungeon(Map map, Point3D loc)
+        {
+            if (map == Map.Trammel && Core.SA)
+            {
+                Region r = Region.Find(loc, map);
+
+                // Revamped Dungeons with specific rules
+                if (r.Name == "Void Pool" || r.Name == "Wrong")
+                    return true;
+            }
+
+            return false;
         }
 
         public static bool IsInvalid(Map map, Point3D loc)

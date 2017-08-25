@@ -18,18 +18,18 @@ namespace Server.Regions
         public HouseRegion(BaseHouse house)
             : base(null, house.Map, HousePriority, GetArea(house))
         {
-            this.m_House = house;
+            m_House = house;
 
             Point3D ban = house.RelativeBanLocation;
 
-            this.GoLocation = new Point3D(house.X + ban.X, house.Y + ban.Y, house.Z + ban.Z);
+            GoLocation = new Point3D(house.X + ban.X, house.Y + ban.Y, house.Z + ban.Z);
         }
 
         public BaseHouse House
         {
             get
             {
-                return this.m_House;
+                return m_House;
             }
         }
         public static void Initialize()
@@ -55,60 +55,60 @@ namespace Server.Regions
             if (item is Container)
                 item.SendLocalizedMessageTo(from, 501647); // That is secure.
             else
-                item.SendLocalizedMessageTo(from, 1061637); // You are not allowed to access this.
+                item.SendLocalizedMessageTo(from, 1061637); // You are not allowed to access 
 
             return true;
         }
 
         public override bool CheckAccessibility(Item item, Mobile from)
         {
-            return this.m_House.CheckAccessibility(item, from);
+            return m_House.CheckAccessibility(item, from);
         }
 
         // Use OnLocationChanged instead of OnEnter because it can be that we enter a house region even though we're not actually inside the house
         public override void OnLocationChanged(Mobile m, Point3D oldLocation)
         {
-            if (this.m_Recursion)
+            if (m_Recursion)
                 return;
 
             base.OnLocationChanged(m, oldLocation);
 
-            this.m_Recursion = true;
+            m_Recursion = true;
 
             if (m is BaseCreature && ((BaseCreature)m).NoHouseRestrictions)
             {
             }
-            else if (m is BaseCreature && ((BaseCreature)m).IsHouseSummonable && !(BaseCreature.Summoning || this.m_House.IsInside(oldLocation, 16)))
+            else if (m is BaseCreature && ((BaseCreature)m).IsHouseSummonable && !(BaseCreature.Summoning || m_House.IsInside(oldLocation, 16)))
             {
             }
-            else if ((this.m_House.Public || !this.m_House.IsAosRules) && this.m_House.IsBanned(m) && this.m_House.IsInside(m))
+            else if ((m_House.Public || !m_House.IsAosRules) && m_House.IsBanned(m) && m_House.IsInside(m))
             {
-                m.Location = this.m_House.BanLocation;
+                m.Location = m_House.BanLocation;
 
                 if (!Core.SE)
                     m.SendLocalizedMessage(501284); // You may not enter.
             }
-            else if (this.m_House.IsAosRules && !this.m_House.Public && !this.m_House.HasAccess(m) && this.m_House.IsInside(m))
+            else if (m_House.IsAosRules && !m_House.Public && !m_House.HasAccess(m) && m_House.IsInside(m))
             {
-                m.Location = this.m_House.BanLocation;
+                m.Location = m_House.BanLocation;
 
                 if (!Core.SE)
                     m.SendLocalizedMessage(501284); // You may not enter.
             }
-            else if (this.m_House.IsCombatRestricted(m) && this.m_House.IsInside(m) && !this.m_House.IsInside(oldLocation, 16))
+            else if (m_House.IsCombatRestricted(m) && m_House.IsInside(m) && !m_House.IsInside(oldLocation, 16))
             {
-                m.Location = this.m_House.BanLocation;
-                m.SendLocalizedMessage(1061637); // You are not allowed to access this.
+                m.Location = m_House.BanLocation;
+                m.SendLocalizedMessage(1061637); // You are not allowed to access 
             }
-            else if (this.m_House is HouseFoundation)
+            else if (m_House is HouseFoundation)
             {
-                HouseFoundation foundation = (HouseFoundation)this.m_House;
+                HouseFoundation foundation = (HouseFoundation)m_House;
 
-                if (foundation.Customizer != null && foundation.Customizer != m && this.m_House.IsInside(m))
-                    m.Location = this.m_House.BanLocation;
+                if (foundation.Customizer != null && foundation.Customizer != m && m_House.IsInside(m))
+                    m.Location = m_House.BanLocation;
             }
 
-            if (this.m_House.InternalizedVendors.Count > 0 && this.m_House.IsInside(m) && !this.m_House.IsInside(oldLocation, 16) && this.m_House.IsOwner(m) && m.Alive && !m.HasGump(typeof(NoticeGump)))
+            if (m_House.InternalizedVendors.Count > 0 && m_House.IsInside(m) && !m_House.IsInside(oldLocation, 16) && m_House.IsOwner(m) && m.Alive && !m.HasGump(typeof(NoticeGump)))
             {
                 /* This house has been customized recently, and vendors that work out of this
                 * house have been temporarily relocated.  You must now put your vendors back to work.
@@ -119,7 +119,7 @@ namespace Server.Regions
                 m.SendGump(new NoticeGump(1060635, 30720, 1061826, 32512, 320, 180, null, null));
             }
 
-            this.m_Recursion = false;
+            m_Recursion = false;
         }
 
         public override bool OnMoveInto(Mobile from, Direction d, Point3D newLocation, Point3D oldLocation)
@@ -134,44 +134,44 @@ namespace Server.Regions
             {
                 return false;
             }
-            else if (from is BaseCreature && ((BaseCreature)from).IsHouseSummonable && !(BaseCreature.Summoning || this.m_House.IsInside(oldLocation, 16)))
+            else if (from is BaseCreature && ((BaseCreature)from).IsHouseSummonable && !(BaseCreature.Summoning || m_House.IsInside(oldLocation, 16)))
             {
                 return false;
             }
-            else if (from is BaseCreature && !((BaseCreature)from).Controlled && this.m_House.IsAosRules && !this.m_House.Public)
+            else if (from is BaseCreature && !((BaseCreature)from).Controlled && m_House.IsAosRules && !m_House.Public)
             {
                 return false;
             }
-            else if ((this.m_House.Public || !this.m_House.IsAosRules) && this.m_House.IsBanned(from) && this.m_House.IsInside(newLocation, 16))
+            else if ((m_House.Public || !m_House.IsAosRules) && m_House.IsBanned(from) && m_House.IsInside(newLocation, 16))
             {
-                from.Location = this.m_House.BanLocation;
+                from.Location = m_House.BanLocation;
 
                 if (!Core.SE)
                     from.SendLocalizedMessage(501284); // You may not enter.
 
                 return false;
             }
-            else if (this.m_House.IsAosRules && !this.m_House.Public && !this.m_House.HasAccess(from) && this.m_House.IsInside(newLocation, 16))
+            else if (m_House.IsAosRules && !m_House.Public && !m_House.HasAccess(from) && m_House.IsInside(newLocation, 16))
             {
                 if (!Core.SE)
                     from.SendLocalizedMessage(501284); // You may not enter.
 
                 return false;
             }
-            else if (this.m_House.IsCombatRestricted(from) && !this.m_House.IsInside(oldLocation, 16) && this.m_House.IsInside(newLocation, 16))
+            else if (m_House.IsCombatRestricted(from) && !m_House.IsInside(oldLocation, 16) && m_House.IsInside(newLocation, 16))
             {
-                from.SendLocalizedMessage(1061637); // You are not allowed to access this.
+                from.SendLocalizedMessage(1061637); // You are not allowed to access 
                 return false;
             }
-            else if (this.m_House is HouseFoundation)
+            else if (m_House is HouseFoundation)
             {
-                HouseFoundation foundation = (HouseFoundation)this.m_House;
+                HouseFoundation foundation = (HouseFoundation)m_House;
 
-                if (foundation.Customizer != null && foundation.Customizer != from && this.m_House.IsInside(newLocation, 16))
+                if (foundation.Customizer != null && foundation.Customizer != from && m_House.IsInside(newLocation, 16))
                     return false;
             }
 
-            if (this.m_House.InternalizedVendors.Count > 0 && this.m_House.IsInside(from) && !this.m_House.IsInside(oldLocation, 16) && this.m_House.IsOwner(from) && from.Alive && !from.HasGump(typeof(NoticeGump)))
+            if (m_House.InternalizedVendors.Count > 0 && m_House.IsInside(from) && !m_House.IsInside(oldLocation, 16) && m_House.IsOwner(from) && from.Alive && !from.HasGump(typeof(NoticeGump)))
             {
                 /* This house has been customized recently, and vendors that work out of this
                 * house have been temporarily relocated.  You must now put your vendors back to work.
@@ -181,6 +181,9 @@ namespace Server.Regions
                 */
                 from.SendGump(new NoticeGump(1060635, 30720, 1061826, 32512, 320, 180, null, null));
             }
+
+            if(Core.AOS)
+                m_House.AddVisit(from);
 
             return true;
         }
@@ -213,7 +216,7 @@ namespace Server.Regions
 
         public override bool OnDecay(Item item)
         {
-            if ((this.m_House.IsLockedDown(item) || this.m_House.IsSecure(item)) && this.m_House.IsInside(item))
+            if ((m_House.IsLockedDown(item) || m_House.IsSecure(item)) && m_House.IsInside(item))
                 return false;
             else
                 return base.OnDecay(item);
@@ -221,7 +224,7 @@ namespace Server.Regions
 
         public override TimeSpan GetLogoutDelay(Mobile m)
         {
-            if (this.m_House.IsFriend(m) && this.m_House.IsInside(m))
+            if (m_House.IsFriend(m) && m_House.IsInside(m))
             {
                 for (int i = 0; i < m.Aggressed.Count; ++i)
                 {
@@ -242,11 +245,11 @@ namespace Server.Regions
             base.OnSpeech(e);
 
             Mobile from = e.Mobile;
-            Item sign = this.m_House.Sign;
+            Item sign = m_House.Sign;
 
-            bool isOwner = this.m_House.IsOwner(from);
-            bool isCoOwner = isOwner || this.m_House.IsCoOwner(from);
-            bool isFriend = isCoOwner || this.m_House.IsFriend(from);
+            bool isOwner = m_House.IsOwner(from);
+            bool isCoOwner = isOwner || m_House.IsCoOwner(from);
+            bool isFriend = isCoOwner || m_House.IsFriend(from);
 
             if (!isFriend)
                 return;
@@ -260,7 +263,7 @@ namespace Server.Regions
                 {
                     from.SendLocalizedMessage(500295); // you are too far away to do that.
                 }
-                else if (DateTime.UtcNow <= this.m_House.BuiltOn.AddHours(1))
+                else if (DateTime.UtcNow <= m_House.BuiltOn.AddHours(1))
                 {
                     from.SendLocalizedMessage(1080178); // You must wait one hour between each house demolition.
                 }
@@ -268,15 +271,15 @@ namespace Server.Regions
                 {
                     from.CloseGump(typeof(ConfirmHouseResize));
                     from.CloseGump(typeof(HouseGumpAOS));
-                    from.SendGump(new ConfirmHouseResize(from, this.m_House));	
+                    from.SendGump(new ConfirmHouseResize(from, m_House));	
                 }
                 else
                 {
-                    from.SendLocalizedMessage(501320); // Only the house owner may do this.
+                    from.SendLocalizedMessage(501320); // Only the house owner may do 
                 }
             }
 			
-            if (!this.m_House.IsInside(from) || !this.m_House.IsActive)
+            if (!m_House.IsInside(from) || !m_House.IsActive)
                 return;
 
             else if (e.HasKeyword(0x33)) // remove thyself
@@ -284,7 +287,7 @@ namespace Server.Regions
                 if (isFriend)
                 {
                     from.SendLocalizedMessage(501326); // Target the individual to eject from this house.
-                    from.Target = new HouseKickTarget(this.m_House);
+                    from.Target = new HouseKickTarget(m_House);
                 }
                 else
                 {
@@ -297,14 +300,14 @@ namespace Server.Regions
                 {
                     from.SendLocalizedMessage(502094); // You must be in your house to do this.
                 }
-                else if (!this.m_House.Public && this.m_House.IsAosRules)
+                else if (!m_House.Public && m_House.IsAosRules)
                 {
                     from.SendLocalizedMessage(1062521); // You cannot ban someone from a private house.  Revoke their access instead.
                 }
                 else
                 {
                     from.SendLocalizedMessage(501325); // Target the individual to ban from this house.
-                    from.Target = new HouseBanTarget(true, this.m_House);
+                    from.Target = new HouseBanTarget(true, m_House);
                 }
             }
             else if (e.HasKeyword(0x23)) // I wish to lock this down
@@ -312,7 +315,7 @@ namespace Server.Regions
                 if (isCoOwner)
                 {
                     from.SendLocalizedMessage(502097); // Lock what down?
-                    from.Target = new LockdownTarget(false, this.m_House);
+                    from.Target = new LockdownTarget(false, m_House);
                 }
                 else if (isFriend)
                 {
@@ -328,7 +331,7 @@ namespace Server.Regions
                 if (isCoOwner)
                 {
                     from.SendLocalizedMessage(502100); // Choose the item you wish to release
-                    from.Target = new LockdownTarget(true, this.m_House);
+                    from.Target = new LockdownTarget(true, m_House);
                 }
                 else if (isFriend)
                 {
@@ -336,7 +339,7 @@ namespace Server.Regions
                 }
                 else
                 {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this.
+                    from.SendLocalizedMessage(502094); // You must be in your house to do this. 
                 }
             }
             else if (e.HasKeyword(0x25)) // I wish to secure this
@@ -344,11 +347,11 @@ namespace Server.Regions
                 if (isOwner)
                 {
                     from.SendLocalizedMessage(502103); // Choose the item you wish to secure
-                    from.Target = new SecureTarget(false, this.m_House);
+                    from.Target = new SecureTarget(false, m_House);
                 }
                 else
                 {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this.
+                    from.SendLocalizedMessage(502094); // You must be in your house to do this. 
                 }
             }
             else if (e.HasKeyword(0x26)) // I wish to unsecure this
@@ -356,11 +359,11 @@ namespace Server.Regions
                 if (isOwner)
                 {
                     from.SendLocalizedMessage(502106); // Choose the item you wish to unsecure
-                    from.Target = new SecureTarget(true, this.m_House);
+                    from.Target = new SecureTarget(true, m_House);
                 }
                 else
                 {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this.
+                    from.SendLocalizedMessage(502094); // You must be in your house to do this. 
                 }
             }
             else if (e.HasKeyword(0x27)) // I wish to place a strongbox
@@ -371,7 +374,7 @@ namespace Server.Regions
                 }
                 else if (isCoOwner)
                 {
-                    this.m_House.AddStrongBox(from);
+                    m_House.AddStrongBox(from);
                 }
                 else if (isFriend)
                 {
@@ -379,14 +382,14 @@ namespace Server.Regions
                 }
                 else
                 {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this.
+                    from.SendLocalizedMessage(502094); // You must be in your house to do this. 
                 }
             }
             else if (e.HasKeyword(0x28)) // trash barrel
             {
                 if (isCoOwner)
                 {
-                    this.m_House.AddTrashBarrel(from);
+                    m_House.AddTrashBarrel(from);
                 }
                 else if (isFriend)
                 {
@@ -394,7 +397,7 @@ namespace Server.Regions
                 }
                 else
                 {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this.
+                    from.SendLocalizedMessage(502094); // You must be in your house to do this. 
                 }
             }
         }
@@ -405,7 +408,7 @@ namespace Server.Regions
             {
                 Container c = (Container)o;
 
-                SecureAccessResult res = this.m_House.CheckSecureAccess(from, c);
+                SecureAccessResult res = m_House.CheckSecureAccess(from, c);
 
                 switch ( res )
                 {
@@ -428,9 +431,9 @@ namespace Server.Regions
             {
                 Item item = (Item)o;
 
-                if (this.m_House.IsLockedDown(item))
+                if (m_House.IsLockedDown(item))
                     item.LabelTo(from, 501643); // [locked down]
-                else if (this.m_House.IsSecure(item))
+                else if (m_House.IsSecure(item))
                     item.LabelTo(from, 501644); // [locked down & secure]
             }
 

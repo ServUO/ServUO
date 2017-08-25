@@ -17,36 +17,36 @@ namespace Server.Mobiles
 
         [Constructable]
         public LeatherWolf()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a leather wolf";
-            this.Body = 739;
-            this.BaseSoundID = 0xE5;
+            Name = "a leather wolf";
+            Body = 739;
+            BaseSoundID = 0xE5;
 
-            this.SetStr(104, 125);
-            this.SetDex(102, 125);
-            this.SetInt(20, 34);
+            SetStr(104, 125);
+            SetDex(102, 125);
+            SetInt(20, 34);
 
-            this.SetHits(291, 329);
+            SetHits(291, 329);
 
-            this.SetDamage(12, 23);
+            SetDamage(12, 23);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 49);
-            this.SetResistance(ResistanceType.Fire, 20, 29);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 21, 29);
-            this.SetResistance(ResistanceType.Energy, 20, 25);
+            SetResistance(ResistanceType.Physical, 40, 49);
+            SetResistance(ResistanceType.Fire, 20, 29);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 21, 29);
+            SetResistance(ResistanceType.Energy, 20, 25);
 
-            this.SetSkill(SkillName.MagicResist, 79.5, 94.9);
-            this.SetSkill(SkillName.Tactics, 80.6, 89.4);
-            this.SetSkill(SkillName.Wrestling, 70.9, 88.4);
+            SetSkill(SkillName.MagicResist, 79.5, 94.9);
+            SetSkill(SkillName.Tactics, 80.6, 89.4);
+            SetSkill(SkillName.Wrestling, 70.9, 88.4);
 
-            this.Fame = 4500;
-            this.Karma = -4500;
+            Fame = 4500;
+            Karma = -4500;
 
-            this.Tamable = false;
+            Tamable = false;
         }
 
         public LeatherWolf(Serial serial)
@@ -164,7 +164,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager, 2);
+            AddLoot(LootPack.Meager, 2);
         }
 
         public override int GetIdleSound()
