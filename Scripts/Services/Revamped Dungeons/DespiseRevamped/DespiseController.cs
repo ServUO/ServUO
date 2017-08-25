@@ -4,6 +4,7 @@ using Server.Mobiles;
 using Server.Items;
 using System.Collections.Generic;
 using System.Linq;
+using Server.Commands;
 
 namespace Server.Engines.Despise
 {
@@ -13,6 +14,8 @@ namespace Server.Engines.Despise
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
             EventSink.OnEnterRegion += new OnEnterRegionEventHandler(OnEnterRegion);
+
+            CommandSystem.Register("CheckSpawnersVersion3", AccessLevel.Administrator, m_Instance.CheckSpawnersVersion3);
         }
 
         private static DespiseController m_Instance;
@@ -723,56 +726,52 @@ namespace Server.Engines.Despise
                 Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveAnkh);
 		}
 
-        private static bool _Version3Check;
+        public void CheckSpawnersVersion3(CommandEventArgs e)
+        {
+            CheckSpawnersVersion3();
+        }
 
         public void CheckSpawnersVersion3()
         {
-            if (!_Version3Check)
+            foreach (var spawner in World.Items.Values.OfType<XmlSpawner>().Where(s => s.Name != null && s.Name.ToLower().IndexOf("despiserevamped") >= 0))
             {
-                int count = 0;
-
-                foreach (var spawner in World.Items.Values.OfType<XmlSpawner>().Where(s => s.Name != null && s.Name.ToLower().IndexOf("despiserevamped") >= 0))
+                foreach (var obj in spawner.SpawnObjects)
                 {
-                    foreach (var obj in spawner.SpawnObjects)
+                    if (obj.TypeName != null)
                     {
-                        if (obj.TypeName != null)
+                        if (obj.TypeName.ToLower().IndexOf("berlingblades") >= 0)
                         {
-                            if (obj.TypeName.ToLower().IndexOf("berlingblades") >= 0)
-                            {
-                                string name = obj.TypeName;
+                            string name = obj.TypeName;
 
-                                obj.TypeName = name.Replace("BerlingBlades", "BirlingBlades");
-                            }
-                            else if (obj.TypeName.ToLower().IndexOf("sagittari") >= 0)
-                            {
-                                string name = obj.TypeName;
-
-                                obj.TypeName = name.Replace("Sagittari", "Sagittarri");
-                            }
+                            obj.TypeName = name.Replace("BerlingBlades", "BirlingBlades");
                         }
-
-                        if (Region.Find(spawner.Location, spawner.Map) == m_GoodRegion ||
-                            Region.Find(spawner.Location, spawner.Map) == m_EvilRegion)
+                        else if (obj.TypeName.ToLower().IndexOf("sagittari") >= 0)
                         {
+                            string name = obj.TypeName;
+
+                            obj.TypeName = name.Replace("Sagittari", "Sagittarri");
+                        }
+                    }
+
+                    if (Region.Find(spawner.Location, spawner.Map) == m_GoodRegion ||
+                        Region.Find(spawner.Location, spawner.Map) == m_EvilRegion)
+                    {
+                        if(obj.TypeName.IndexOf(@",{RND,1,5}") < 0)
                             obj.TypeName = obj.TypeName + @",{RND,1,5}";
-                            count++;
-                        }
-                   } 
-                }
-
-                foreach (var r in new Region[] { m_GoodRegion, m_EvilRegion, m_LowerRegion, m_StartRegion })
-                {
-                    foreach (var item in r.GetEnumeratedItems().Where(i => i is Moongate))
-                    {
-                        item.Delete();
-                        WeakEntityCollection.Remove("despise", item);
                     }
                 }
-
-                DespiseRevampedSetup.SetupTeleporters();
-
-                _Version3Check = true;
             }
+
+            foreach (var r in new Region[] { m_GoodRegion, m_EvilRegion, m_LowerRegion, m_StartRegion })
+            {
+                foreach (var item in r.GetEnumeratedItems().Where(i => i is Moongate || i is GateTeleporter))
+                {
+                    item.Delete();
+                    WeakEntityCollection.Remove("despise", item);
+                }
+            }
+
+            DespiseRevampedSetup.SetupTeleporters();
         }
     }
 }
