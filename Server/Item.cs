@@ -870,7 +870,28 @@ namespace Server
         public byte GridLocation
         {
             get { return m_GridLocation; }
-            set { m_GridLocation = value; }
+            set
+            {
+                #region Enhanced Client Support
+                if (Parent is Container)
+                {
+                    if ( value > 0 && value <= 0x7C)
+                    {
+                        m_GridLocation = value;
+                        ((Container)Parent).SetPosition(m_GridLocation, this);
+                        return;
+                    }
+                    else if (value == 0)
+                    {
+                        ((Container)Parent).FreePosition(m_GridLocation);
+                    }
+                }
+                #endregion
+
+                m_GridLocation = value;
+
+
+            }
         }
 
         [Flags]
@@ -4299,6 +4320,13 @@ namespace Server
             }
             else if (Parent is Item)
             {
+                #region Enhanced Client Support
+                if (Parent is Container)
+                {
+                    ((Container)Parent).FreePosition(GridLocation);
+                }
+                #endregion
+
                 ((Item)Parent).RemoveItem(this);
             }
 
@@ -4410,6 +4438,13 @@ namespace Server
 
             if (items != null && items.Contains(item))
             {
+                #region Enhanced Client Support
+                if (item.Parent is Container && (!item.Stackable || item.Amount <= 0))
+				{
+					((Container)item.Parent).FreePosition(item.GridLocation);
+				}
+                #endregion
+
                 item.SendRemovePacket();
 
                 items.Remove(item);
