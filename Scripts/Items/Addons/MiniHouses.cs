@@ -22,15 +22,64 @@ namespace Server.Items
         TwoStoryLogCabin,
         TwoStoryVilla,
         SandstoneHouseWithPatio,
-        SmallStoneWorkshop, 
+        SmallStoneWorkshop,
         SmallMarbleWorkshop,
-        MalasMountainPass,	//Veteran reward house
-        ChurchAtNight		//Veteran reward house
+        #region Veteran Rewards
+        MalasMountainPass,
+        ChurchAtNight
+        #endregion
+    }
+
+    public class MiniHouseAddonComponent : AddonComponent
+    {
+        private MiniHouseType Type { get; set; }
+
+        public override int LabelNumber { get { return ((MiniHouseAddon)Addon).LabelNumber; } }
+
+        public MiniHouseAddonComponent(int itemID)
+            : base(itemID)
+        {
+        }
+
+        public MiniHouseAddonComponent(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+
+            writer.Write((int)Type);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            Type = (MiniHouseType)reader.ReadInt();
+        }
     }
 
     public class MiniHouseAddon : BaseAddon
     {
+        public override int LabelNumber { get { return MiniHouseInfo.GetInfo(m_Type).LabelNumber; } }
+
         private MiniHouseType m_Type;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public MiniHouseType Type
+        {
+            get { return m_Type; }
+            set
+            {
+                m_Type = value;
+                Construct();
+            }
+        }
+
         [Constructable]
         public MiniHouseAddon()
             : this(MiniHouseType.StoneAndPlaster)
@@ -40,47 +89,31 @@ namespace Server.Items
         [Constructable]
         public MiniHouseAddon(MiniHouseType type)
         {
-            this.m_Type = type;
-
-            this.Construct();
+            m_Type = type;
+            Construct();
         }
 
         public MiniHouseAddon(Serial serial)
             : base(serial)
         {
         }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public MiniHouseType Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-            set
-            {
-                this.m_Type = value;
-                this.Construct();
-            }
-        }
+                
         public override BaseAddonDeed Deed
         {
-            get
-            {
-                return new MiniHouseDeed(this.m_Type);
-            }
-        }
+            get { return new MiniHouseDeed(m_Type); }
+        }       
+
         public void Construct()
         {
-            foreach (AddonComponent c in this.Components)
+            foreach (AddonComponent c in Components)
             {
                 c.Addon = null;
                 c.Delete();
             }
 
-            this.Components.Clear();
+            Components.Clear();
 
-            MiniHouseInfo info = MiniHouseInfo.GetInfo(this.m_Type);
+            MiniHouseInfo info = MiniHouseInfo.GetInfo(m_Type);
 
             int size = (int)Math.Sqrt(info.Graphics.Length);
             int num = 0;
@@ -88,38 +121,70 @@ namespace Server.Items
             for (int y = 0; y < size; ++y)
                 for (int x = 0; x < size; ++x)
                     if (info.Graphics[num] != 0x1) // Veteran Rewards Mod
-                        this.AddComponent(new AddonComponent(info.Graphics[num++]), size - x - 1, size - y - 1, 0);
+                        AddComponent(new MiniHouseAddonComponent(info.Graphics[num++]), size - x - 1, size - y - 1, 0);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+            writer.Write((int)1); // version
 
-            writer.Write((int)0); // version
-
-            writer.Write((int)this.m_Type);
+            writer.Write((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
+                case 1:
                 case 0:
                     {
-                        this.m_Type = (MiniHouseType)reader.ReadInt();
+                        m_Type = (MiniHouseType)reader.ReadInt();
                         break;
                     }
             }
+
+            if (version == 0)
+                Timer.DelayCall(TimeSpan.FromSeconds(30.0), new TimerCallback(Construct));
         }
     }
 
     public class MiniHouseDeed : BaseAddonDeed
     {
+        public override int LabelNumber
+        {
+            get
+            {
+                switch (m_Type)
+                {
+                    case MiniHouseType.MalasMountainPass:
+                        return 1062692; // Mini House: Contest Winning House Design
+                    case MiniHouseType.ChurchAtNight:
+                        return 1072216; // Mini House: Contest 2004 Winning House Design
+                    default:
+                        return 1062096; // a mini house deed
+                }
+            }
+        }
+
         private MiniHouseType m_Type;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public MiniHouseType Type
+        {
+            get { return m_Type; }
+            set
+            {
+                m_Type = value;
+                InvalidateProperties();
+            }
+        }
+
+        public override BaseAddon Addon { get { return new MiniHouseAddon(m_Type); } }
+
         [Constructable]
         public MiniHouseDeed()
             : this(MiniHouseType.StoneAndPlaster)
@@ -129,77 +194,47 @@ namespace Server.Items
         [Constructable]
         public MiniHouseDeed(MiniHouseType type)
         {
-            this.m_Type = type;
-
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            m_Type = type;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public MiniHouseDeed(Serial serial)
             : base(serial)
         {
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public MiniHouseType Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-            set
-            {
-                this.m_Type = value;
-                this.InvalidateProperties();
-            }
-        }
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new MiniHouseAddon(this.m_Type);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062096;
-            }
-        }// a mini house deed
+        }       
+        
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            list.Add(MiniHouseInfo.GetInfo(this.m_Type).LabelNumber);
+            list.Add(MiniHouseInfo.GetInfo(m_Type).LabelNumber);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
-            writer.Write((int)this.m_Type);
+            writer.Write((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
-                        this.m_Type = (MiniHouseType)reader.ReadInt();
+                        m_Type = (MiniHouseType)reader.ReadInt();
                         break;
                     }
             }
 
-            if (this.Weight == 0.0)
-                this.Weight = 1.0;
+            if (Weight == 0.0)
+                Weight = 1.0;
         }
     }
 
@@ -230,38 +265,30 @@ namespace Server.Items
             /* Malas Mountain Pass               */ new MiniHouseInfo(1062692, 0x2316, 0x2315, 0x2314, 0x2313),
             /* Church At Night                   */ new MiniHouseInfo(1072215, 0x2318, 0x2317, 0x2319, 0x1)
         };
+
         private readonly int[] m_Graphics;
         private readonly int m_LabelNumber;
+
         public MiniHouseInfo(int start, int count, int labelNumber)
         {
-            this.m_Graphics = new int[count];
+            m_Graphics = new int[count];
 
             for (int i = 0; i < count; ++i)
-                this.m_Graphics[i] = start + i;
+                m_Graphics[i] = start + i;
 
-            this.m_LabelNumber = labelNumber;
+            m_LabelNumber = labelNumber;
         }
 
         public MiniHouseInfo(int labelNumber, params int[] graphics)
         {
-            this.m_LabelNumber = labelNumber;
-            this.m_Graphics = graphics;
+            m_LabelNumber = labelNumber;
+            m_Graphics = graphics;
         }
 
-        public int[] Graphics
-        {
-            get
-            {
-                return this.m_Graphics;
-            }
-        }
-        public int LabelNumber
-        {
-            get
-            {
-                return this.m_LabelNumber;
-            }
-        }
+        public int[] Graphics { get { return m_Graphics; } }
+
+        public int LabelNumber { get { return m_LabelNumber; } }
+
         public static MiniHouseInfo GetInfo(MiniHouseType type)
         {
             int v = (int)type;
