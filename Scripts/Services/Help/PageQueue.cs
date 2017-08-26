@@ -266,7 +266,7 @@ namespace Server.Engines.Help
 			}
 			else if (m_List.Count > 0)
 			{
-				e.Mobile.SendGump(new PageQueueGump(e.Mobile));
+                e.Mobile.SendGump(new PageQueueGump(e.Mobile));
 			}
 			else
 			{
@@ -469,7 +469,7 @@ namespace Server.Engines.Help
 				case 0:
 					break;
 				case 1:
-					from.SendGump(new PageQueueGump(from));
+                    from.SendGump(new PageQueueGump(from));
 					break;
 			}
 		}

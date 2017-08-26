@@ -11,6 +11,7 @@ namespace Server.Engines.Help
         private readonly string m_Name;
         private readonly string m_Text;
         private readonly Mobile m_Mobile;
+
         public MessageSentGump(Mobile mobile, string name, string text)
             : base(30, 30)
         {
@@ -24,8 +25,13 @@ namespace Server.Engines.Help
 
             AddBackground(0, 0, 92, 75, 0xA3C);
 
-            AddImageTiled(5, 7, 82, 61, 0xA40);
-            AddAlphaRegion(5, 7, 82, 61);
+            if (mobile.NetState.IsEnhancedClient)
+                AddBackground(5, 7, 82, 61, 9300);
+            else
+            {
+                AddImageTiled(5, 7, 82, 61, 0xA40);
+                AddAlphaRegion(5, 7, 82, 61);
+            }
 
             AddImageTiled(9, 11, 21, 53, 0xBBC);
 
@@ -48,12 +54,14 @@ namespace Server.Engines.Help
             : base(30, 30)
         {
             Add(new GumpPage(0));
-            //Add( new GumpBackground( 0, 0, 410, 448, 9200 ) );
 
-            //if(m.NetState != null && !m.NetState.IsEnhancedClient)
+            if (m.NetState.IsEnhancedClient)
+                AddBackground(1, 1, 408, 446, 9300);
+            else
+            {
                 Add(new GumpImageTiled(0, 0, 410, 448, 0xA40));
-
-            Add(new GumpAlphaRegion(1, 1, 408, 446));
+                Add(new GumpAlphaRegion(1, 1, 408, 446));
+            }
 
             Add(new GumpLabel(180, 12, 2100, "Page Queue"));
 
@@ -256,6 +264,7 @@ namespace Server.Engines.Help
         private const int LabelColor32 = 0xFFFFFF;
         private readonly Mobile m_From;
         private readonly PredefinedResponse m_Response;
+
         public PredefGump(Mobile from, PredefinedResponse response)
             : base(30, 30)
         {
@@ -270,8 +279,13 @@ namespace Server.Engines.Help
 
             if (response == null)
             {
-                AddImageTiled(0, 0, 410, 448, 0xA40);
-                AddAlphaRegion(1, 1, 408, 446);
+                if (from.NetState.IsEnhancedClient)
+                    AddBackground(1, 1, 408, 446, 9300);
+                else
+                {
+                    AddImageTiled(0, 0, 410, 448, 0xA40);
+                    AddAlphaRegion(1, 1, 408, 446);
+                }
 
                 AddHtml(10, 10, 390, 20, Color(Center("Predefined Responses"), LabelColor32), false, false);
 
@@ -332,7 +346,11 @@ namespace Server.Engines.Help
             else if (canEdit)
             {
                 AddImageTiled(0, 0, 410, 250, 0xA40);
-                AddAlphaRegion(1, 1, 408, 248);
+
+                if (from.NetState.IsEnhancedClient)
+                    AddBackground(1, 1, 408, 248, 9300);
+                else
+                    AddAlphaRegion(1, 1, 408, 248);
 
                 AddHtml(10, 10, 390, 20, Color(Center("Predefined Response Editor"), LabelColor32), false, false);
 
@@ -496,6 +514,7 @@ namespace Server.Engines.Help
         
         private readonly PageEntry m_Entry;
         private readonly Mobile m_Mobile;
+
         public PageEntryGump(Mobile m, PageEntry entry)
             : base(30, 30)
         {
@@ -510,8 +529,13 @@ namespace Server.Engines.Help
 
                 AddPage(0);
 
-                AddImageTiled(0, 0, 410, 456, 0xA40);
-                AddAlphaRegion(1, 1, 408, 454);
+                if (m.NetState.IsEnhancedClient)
+                    AddBackground(1, 1, 408, 454, 9300);
+                else
+                {
+                    AddImageTiled(0, 0, 410, 456, 0xA40);
+                    AddAlphaRegion(1, 1, 408, 454);
+                }
 
                 AddPage(1);
 

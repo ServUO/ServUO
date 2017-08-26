@@ -82,7 +82,7 @@ namespace Services.Toolbar.Gumps
 
                 if (ns.IsEnhancedClient)
                 {
-                    AddButton(x + 1, y, 2435, 2436, temp + 10, GumpButtonType.Reply, 0);//4005, 4007
+                    AddButton(x + 4, y + 5, 2103, 2104, temp + 10, GumpButtonType.Reply, 0);//4005, 4007
                 }
                 else
                 {
