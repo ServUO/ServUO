@@ -571,11 +571,9 @@ namespace Server.Engines.Despise
             {
                 Timer.DelayCall(() =>
                     {
-                        if (orb.Pet != null && !orb.Pet.Deleted)
-                            orb.Pet.Delete();
-
+                        e.From.SendLocalizedMessage(1153233); // The Wisp Orb vanishes to whence it came...
                         orb.Delete();
-                    });;
+                    });
             }
         }
 

@@ -347,7 +347,7 @@ namespace Server.Engines.Despise
                     {
                         if (((BaseCreature)targeted).Controlled)
                             from.SendLocalizedMessage(1153287); // That creature is already under the control of a Wisp Orb.
-                        else if (creature.Power > 3)
+                        else if (creature.Power > 5)
                             from.SendLocalizedMessage(1153336); // That creature is too powerful for you to coerce.
                         else
                         {
@@ -375,7 +375,9 @@ namespace Server.Engines.Despise
                         from.SendLocalizedMessage(1153279, m_Orb.Aggression.ToString()); // Your possessed creature's aggression level is now: ~1_VAL~
                     }
                     else
-                        from.SendLocalizedMessage(1153357); // Thou can guide but one of us. 
+                    {
+                        m_Orb.TrySetAnchor(from, (BaseCreature)targeted);
+                    }
 				}
 				else if (targeted == m_Orb)
 				{
@@ -385,11 +387,11 @@ namespace Server.Engines.Despise
                     m_Orb.LeashLength = (LeashLength)length;
 					
 					from.SendLocalizedMessage(1153278, m_Orb.LeashLength.ToString()); // Your possessed creature's leash is now: ~1_VAL~
-				}			
-				else if(targeted is IPoint3D && m_Orb.Pet != null)
-				{
-					m_Orb.TrySetAnchor(from, (IPoint3D)targeted);
 				}
+                else if (targeted is IPoint3D && m_Orb.Pet != null)
+                {
+                    m_Orb.TrySetAnchor(from, (IPoint3D)targeted);
+                }
 			}
 		}
 		
