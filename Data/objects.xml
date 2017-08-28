@@ -844,28 +844,32 @@
 				</category>
 			</category>
 			<category title="Doors">
-				<object type="Server.Items.EastNorthDoor" gfx="1663" />
-				<object type="Server.Items.EastSouthDoor" gfx="1661" />
-				<object type="Server.Items.ENClothSEDoor" gfx="10771" />
-				<object type="Server.Items.ENPaperSEDoor" gfx="10763" />
-				<object type="Server.Items.ENWoodenSEDoor" gfx="10779" />
-				<object type="Server.Items.ESClothSEDoor" gfx="10769" />
-				<object type="Server.Items.ESPaperSEDoor" gfx="10761" />
-				<object type="Server.Items.ESWoodenSEDoor" gfx="10777" />
-				<object type="Server.Items.NorthEastDoor" gfx="1659" />
-				<object type="Server.Items.NorthWestDoor" gfx="1657" />
+				<!-- Commented out, use DoorGen instead
+				<object type="Server.Items.MetalDoor" gfx="1663" />
+				<object type="Server.Items.MetalDoor" gfx="1661" />
+				<object type="Server.Items.ClothSlidingDoor" gfx="10771" />
+				<object type="Server.Items.ClothSlidingDoor" gfx="10763" />
+				<object type="Server.Items.WoodenSlidingDoor" gfx="10779" />
+				<object type="Server.Items.WoodenSlidingDoor" gfx="10769" />
+				<object type="Server.Items.PaperSlidingDoor" gfx="10761" />
+				<object type="Server.Items.PaperSlidingDoor" gfx="10777" />
+				<object type="Server.Items.MetalDoor" gfx="1659" />
+				<object type="Server.Items.MetalDoor" gfx="1657" />
+				-->
 				<object type="Server.Items.PortcullisEW" gfx="1782" />
 				<object type="Server.Items.PortcullisNS" gfx="1781" />
-				<object type="Server.Items.SEClothSEDoor" gfx="10767" />
-				<object type="Server.Items.SEPaperSEDoor" gfx="10759" />
-				<object type="Server.Items.SEWoodenSEDoor" gfx="10775" />
-				<object type="Server.Items.SouthEastDoor" gfx="1655" />
-				<object type="Server.Items.SouthWestDoor" gfx="1653" />
-				<object type="Server.Items.SWClothSEDoor" gfx="10765" />
-				<object type="Server.Items.SWPaperSEDoor" gfx="10757" />
-				<object type="Server.Items.SWWoodenSEDoor" gfx="10774" />
-				<object type="Server.Items.WestNorthDoor" gfx="1667" />
-				<object type="Server.Items.WestSouthDoor" gfx="1665" />
+				<!--
+				<object type="Server.Items.ClothSlidingDoor" gfx="10767" />
+				<object type="Server.Items.ClothSlidingDoor" gfx="10759" />
+				<object type="Server.Items.WoodenSlidingDoor" gfx="10775" />
+				<object type="Server.Items.MetalDoor" gfx="1655" />
+				<object type="Server.Items.MetalDoor" gfx="1653" />
+				<object type="Server.Items.ClothSlidingDoor" gfx="10765" />
+				<object type="Server.Items.PaperSlidingDoor" gfx="10757" />
+				<object type="Server.Items.WoodenSlidingDoor" gfx="10774" />
+				<object type="Server.Items.MetalDoor" gfx="1667" />
+				<object type="Server.Items.MetalDoor" gfx="1665" />
+				-->
 			</category>
 			<category title="Floors">
 				<object type="Server.Items.BlueSlateFloorCenter" gfx="1179" />
