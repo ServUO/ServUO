@@ -108,7 +108,6 @@ namespace Server.Engines.Despise
             m_Enabled = true;
             m_Instance = this;          
             
-            //If put this into the Initialize, instance wouldn't exist and give error because m_Instance would be null
             CommandSystem.Register("CheckSpawnersVersion3", AccessLevel.Administrator, m_Instance.CheckSpawnersVersion3);
 
             m_NextBossEncounter = DateTime.UtcNow;
