@@ -14,12 +14,14 @@ namespace Server.Engines.Despise
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
             EventSink.OnEnterRegion += new OnEnterRegionEventHandler(OnEnterRegion);
-
-            CommandSystem.Register("CheckSpawnersVersion3", AccessLevel.Administrator, m_Instance.CheckSpawnersVersion3);
+            
+            CommandSystem.Register("CheckSpawnersVersion3", AccessLevel.Administrator, CheckSpawnersVersion3);
         }
 
         private static DespiseController m_Instance;
         public static DespiseController Instance { get { return m_Instance; } set { m_Instance = value; } }
+        
+        public static void CheckSpawnersVersion
 
         private bool m_Enabled;
         private bool m_Sequencing;
@@ -108,7 +110,7 @@ namespace Server.Engines.Despise
             Visible = false;
 
             m_Enabled = true;
-            m_Instance = this;
+            m_Instance = this;          
 
             m_NextBossEncounter = DateTime.UtcNow;
             m_Boss = null;
@@ -726,9 +728,10 @@ namespace Server.Engines.Despise
                 Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveAnkh);
 		}
 
-        public void CheckSpawnersVersion3(CommandEventArgs e)
+        public static void CheckSpawnersVersion3(CommandEventArgs e)
         {
-            CheckSpawnersVersion3();
+            if(m_Instance != null)
+                m_Instance.CheckSpawnersVersion3();
         }
 
         public void CheckSpawnersVersion3()
