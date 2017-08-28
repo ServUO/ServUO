@@ -14,8 +14,6 @@ namespace Server.Engines.Despise
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
             EventSink.OnEnterRegion += new OnEnterRegionEventHandler(OnEnterRegion);
-
-            CommandSystem.Register("CheckSpawnersVersion3", AccessLevel.Administrator, m_Instance.CheckSpawnersVersion3);
         }
 
         private static DespiseController m_Instance;
@@ -108,7 +106,10 @@ namespace Server.Engines.Despise
             Visible = false;
 
             m_Enabled = true;
-            m_Instance = this;
+            m_Instance = this;          
+            
+            //If put this into the Initialize, instance wouldn't exist and give error because m_Instance would be null
+            CommandSystem.Register("CheckSpawnersVersion3", AccessLevel.Administrator, m_Instance.CheckSpawnersVersion3);
 
             m_NextBossEncounter = DateTime.UtcNow;
             m_Boss = null;
