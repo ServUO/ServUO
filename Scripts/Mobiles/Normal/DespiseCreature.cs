@@ -104,7 +104,7 @@ namespace Server.Engines.Despise
 
         public virtual int HitsStart { get { return StrStart + (int)((double)StrStart * ((double)StatRatio / 100.0)); } }
         public virtual int StamStart { get { return DexStart + (int)((double)DexStart * ((double)StatRatio / 100.0)); } }
-        public virtual int ManaStart { get { return DexStart + (int)((double)DexStart * ((double)StatRatio / 100.0)); } }
+        public virtual int ManaStart { get { return IntStart + (int)((double)IntStart * ((double)StatRatio / 100.0)); } }
 
         public virtual int MaxHits { get { return 1000; } }
         public virtual int MaxStam { get { return 1000; } }
@@ -145,6 +145,8 @@ namespace Server.Engines.Despise
             SetStam(StamStart);
             SetMana(ManaStart);
 
+            NoLootOnDeath = true;
+
             SetDamage(MinDamStart, MaxDamStart);
         }
 
@@ -166,24 +168,6 @@ namespace Server.Engines.Despise
             return false;
         }
 
-        public override void GenerateLoot(bool spawning)
-        {
-            if (spawning)
-                Timer.DelayCall(TimeSpan.FromSeconds(.5), new TimerCallback(GenerateLoot_Callback));
-            else
-                base.GenerateLoot(spawning);
-        }
-
-        public void GenerateLoot_Callback()
-        {
-            base.GenerateLoot(true);
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.AosRich, Math.Max(1, m_Power / 2));
-        }
-
         public override bool CanBeRenamedBy(Mobile from)
         {
             if (from.AccessLevel > AccessLevel.Player)
@@ -203,7 +187,7 @@ namespace Server.Engines.Despise
             if (ControlMaster != null)
                 list.Add(1153303, ControlMaster.Name); // Controller: ~1_NAME~
 
-            list.Add(1153297, String.Format("#{0}\t{1}", m_Power.ToString(), GetPowerLabel(m_Power))); // Power Level: ~1_LEVEL~: ~2_VAL~
+            list.Add(1153297, String.Format("{0}\t#{1}", m_Power.ToString(), GetPowerLabel(m_Power))); // Power Level: ~1_LEVEL~: ~2_VAL~
         }
 
         public override void OnCombatantChange()
@@ -385,6 +369,9 @@ namespace Server.Engines.Despise
             m_Power = reader.ReadInt();
             m_MaxPower = reader.ReadInt();
             m_Progress = reader.ReadInt();
+
+            if (!NoLootOnDeath)
+                NoLootOnDeath = true;
         }
     }
 }

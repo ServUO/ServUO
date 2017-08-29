@@ -35,7 +35,7 @@ namespace Server.Items
                 pos = GetNewPosition();
             }
 
-            item.GridLocation = pos;
+            if (item.GridLocation != pos) item.GridLocation = pos;
             _Positions[pos] = item;
         }
 
