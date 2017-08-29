@@ -17,40 +17,40 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Lines;
+                return m_Lines;
             }
             set
             {
-                this.m_Lines = value;
+                m_Lines = value;
             }
         }
 
         public BookPageInfo()
         {
-            this.m_Lines = new string[0];
+            m_Lines = new string[0];
         }
 
         public BookPageInfo(params string[] lines)
         {
-            this.m_Lines = lines;
+            m_Lines = lines;
         }
 
         public BookPageInfo(GenericReader reader)
         {
             int length = reader.ReadInt();
 
-            this.m_Lines = new string[length];
+            m_Lines = new string[length];
 
-            for (int i = 0; i < this.m_Lines.Length; ++i)
-                this.m_Lines[i] = Utility.Intern(reader.ReadString());
+            for (int i = 0; i < m_Lines.Length; ++i)
+                m_Lines[i] = Utility.Intern(reader.ReadString());
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(this.m_Lines.Length);
+            writer.Write(m_Lines.Length);
 
-            for (int i = 0; i < this.m_Lines.Length; ++i)
-                writer.Write(this.m_Lines[i]);
+            for (int i = 0; i < m_Lines.Length; ++i)
+                writer.Write(m_Lines[i]);
         }
     }
 
@@ -67,12 +67,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Title;
+                return m_Title;
             }
             set
             {
-                this.m_Title = value;
-                this.InvalidateProperties();
+                m_Title = value;
+                InvalidateProperties();
             }
         }
 		
@@ -81,12 +81,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Author;
+                return m_Author;
             }
             set
             {
-                this.m_Author = value;
-                this.InvalidateProperties();
+                m_Author = value;
+                InvalidateProperties();
             }
         }
 		
@@ -95,11 +95,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Writable;
+                return m_Writable;
             }
             set
             {
-                this.m_Writable = value;
+                m_Writable = value;
             }
         }
 
@@ -108,7 +108,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Pages.Length;
+                return m_Pages.Length;
             }
         }
 
@@ -116,7 +116,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Pages;
+                return m_Pages;
             }
         }
 
@@ -136,22 +136,22 @@ namespace Server.Items
         public BaseBook(int itemID, string title, string author, int pageCount, bool writable)
             : base(itemID)
         {
-            this.m_Title = title;
-            this.m_Author = author;
-            this.m_Writable = writable;
+            m_Title = title;
+            m_Author = author;
+            m_Writable = writable;
 
-            BookContent content = this.DefaultContent;
+            BookContent content = DefaultContent;
 
             if (content == null)
             {
-                this.m_Pages = new BookPageInfo[pageCount];
+                m_Pages = new BookPageInfo[pageCount];
 
-                for (int i = 0; i < this.m_Pages.Length; ++i)
-                    this.m_Pages[i] = new BookPageInfo();
+                for (int i = 0; i < m_Pages.Length; ++i)
+                    m_Pages[i] = new BookPageInfo();
             }
             else
             {
-                this.m_Pages = content.Copy();
+                m_Pages = content.Copy();
             }
         }
 
@@ -159,19 +159,19 @@ namespace Server.Items
         public BaseBook(int itemID, bool writable)
             : base(itemID)
         {
-            this.m_Writable = writable;
+            m_Writable = writable;
 
-            BookContent content = this.DefaultContent;
+            BookContent content = DefaultContent;
 
             if (content == null)
             {
-                this.m_Pages = new BookPageInfo[0];
+                m_Pages = new BookPageInfo[0];
             }
             else
             {
-                this.m_Title = content.Title;
-                this.m_Author = content.Author;
-                this.m_Pages = content.Copy();
+                m_Title = content.Title;
+                m_Author = content.Author;
+                m_Pages = content.Copy();
             }
         }
 
@@ -208,40 +208,40 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            BookContent content = this.DefaultContent;
+            BookContent content = DefaultContent;
 
             SaveFlags flags = SaveFlags.None;
 
-            if (this.m_Title != (content == null ? null : content.Title))
+            if (m_Title != (content == null ? null : content.Title))
                 flags |= SaveFlags.Title;
 
-            if (this.m_Author != (content == null ? null : content.Author))
+            if (m_Author != (content == null ? null : content.Author))
                 flags |= SaveFlags.Author;
 
-            if (this.m_Writable)
+            if (m_Writable)
                 flags |= SaveFlags.Writable;
 
-            if (content == null || !content.IsMatch(this.m_Pages))
+            if (content == null || !content.IsMatch(m_Pages))
                 flags |= SaveFlags.Content;
 
             writer.Write((int)4); // version
 
-            writer.Write((int)this.m_SecureLevel);
+            writer.Write((int)m_SecureLevel);
 
             writer.Write((byte)flags);
 
             if ((flags & SaveFlags.Title) != 0)
-                writer.Write(this.m_Title);
+                writer.Write(m_Title);
 
             if ((flags & SaveFlags.Author) != 0)
-                writer.Write(this.m_Author);
+                writer.Write(m_Author);
 
             if ((flags & SaveFlags.Content) != 0)
             {
-                writer.WriteEncodedInt(this.m_Pages.Length);
+                writer.WriteEncodedInt(m_Pages.Length);
 
-                for (int i = 0; i < this.m_Pages.Length; ++i)
-                    this.m_Pages[i].Serialize(writer);
+                for (int i = 0; i < m_Pages.Length; ++i)
+                    m_Pages[i].Serialize(writer);
             }
         }
 
@@ -255,41 +255,41 @@ namespace Server.Items
             {
                 case 4:
                     {
-                        this.m_SecureLevel = (SecureLevel)reader.ReadInt();
+                        m_SecureLevel = (SecureLevel)reader.ReadInt();
                         goto case 3;
                     }
                 case 3:
                 case 2:
                     {
-                        BookContent content = this.DefaultContent;
+                        BookContent content = DefaultContent;
 
                         SaveFlags flags = (SaveFlags)reader.ReadByte();
 
                         if ((flags & SaveFlags.Title) != 0)
-                            this.m_Title = Utility.Intern(reader.ReadString());
+                            m_Title = Utility.Intern(reader.ReadString());
                         else if (content != null)
-                            this.m_Title = content.Title;
+                            m_Title = content.Title;
 
                         if ((flags & SaveFlags.Author) != 0)
-                            this.m_Author = reader.ReadString();
+                            m_Author = reader.ReadString();
                         else if (content != null)
-                            this.m_Author = content.Author;
+                            m_Author = content.Author;
 
-                        this.m_Writable = (flags & SaveFlags.Writable) != 0;
+                        m_Writable = (flags & SaveFlags.Writable) != 0;
 
                         if ((flags & SaveFlags.Content) != 0)
                         {
-                            this.m_Pages = new BookPageInfo[reader.ReadEncodedInt()];
+                            m_Pages = new BookPageInfo[reader.ReadEncodedInt()];
 
-                            for (int i = 0; i < this.m_Pages.Length; ++i)
-                                this.m_Pages[i] = new BookPageInfo(reader);
+                            for (int i = 0; i < m_Pages.Length; ++i)
+                                m_Pages[i] = new BookPageInfo(reader);
                         }
                         else
                         {
                             if (content != null)
-                                this.m_Pages = content.Copy();
+                                m_Pages = content.Copy();
                             else
-                                this.m_Pages = new BookPageInfo[0];
+                                m_Pages = new BookPageInfo[0];
                         }
 
                         break;
@@ -297,39 +297,39 @@ namespace Server.Items
                 case 1:
                 case 0:
                     {
-                        this.m_Title = reader.ReadString();
-                        this.m_Author = reader.ReadString();
-                        this.m_Writable = reader.ReadBool();
+                        m_Title = reader.ReadString();
+                        m_Author = reader.ReadString();
+                        m_Writable = reader.ReadBool();
 
                         if (version == 0 || reader.ReadBool())
                         {
-                            this.m_Pages = new BookPageInfo[reader.ReadInt()];
+                            m_Pages = new BookPageInfo[reader.ReadInt()];
 
-                            for (int i = 0; i < this.m_Pages.Length; ++i)
-                                this.m_Pages[i] = new BookPageInfo(reader);
+                            for (int i = 0; i < m_Pages.Length; ++i)
+                                m_Pages[i] = new BookPageInfo(reader);
                         }
                         else
                         {
-                            BookContent content = this.DefaultContent;
+                            BookContent content = DefaultContent;
 
                             if (content != null)
-                                this.m_Pages = content.Copy();
+                                m_Pages = content.Copy();
                             else
-                                this.m_Pages = new BookPageInfo[0];
+                                m_Pages = new BookPageInfo[0];
                         }
 
                         break;
                     }
             }
 
-            if (version < 3 && (this.Weight == 1 || this.Weight == 2))
-                this.Weight = -1;
+            if (version < 3 && (Weight == 1 || Weight == 2))
+                Weight = -1;
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (this.m_Title != null && this.m_Title.Length > 0)
-                list.Add(this.m_Title);
+            if (m_Title != null && m_Title.Length > 0)
+                list.Add(m_Title);
             else
                 base.AddNameProperty(list);
         }
@@ -350,16 +350,16 @@ namespace Server.Items
 		
         public override void OnSingleClick(Mobile from)
         {
-            this.LabelTo(from, "{0} by {1}", this.m_Title, this.m_Author);
-            this.LabelTo(from, "[{0} pages]", this.m_Pages.Length);
+            LabelTo(from, "{0} by {1}", m_Title, m_Author);
+            LabelTo(from, "[{0} pages]", m_Pages.Length);
         }
 		
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_Title == null && this.m_Author == null && this.m_Writable == true)
+            if (m_Title == null && m_Author == null && m_Writable == true)
             {
-                this.Title = "a book";
-                this.Author = from.Name;
+                Title = "a book";
+                Author = from.Name;
             }
 
             from.Send(new BookHeader(from, this));
@@ -372,7 +372,7 @@ namespace Server.Items
             {
                 StringBuilder sb = new StringBuilder();
 
-                foreach (BookPageInfo bpi in this.m_Pages)
+                foreach (BookPageInfo bpi in m_Pages)
                 {
                     foreach (string line in bpi.Lines)
                     {
@@ -390,12 +390,46 @@ namespace Server.Items
             {
                 List<string> lines = new List<string>();
 
-                foreach (BookPageInfo bpi in this.m_Pages)
+                foreach (BookPageInfo bpi in m_Pages)
                 {
                     lines.AddRange(bpi.Lines);
                 }
 
                 return lines.ToArray();
+            }
+        }
+
+        public virtual void ContentChangeEC(NetState state, PacketReader pvSrc)
+        {
+            int page = pvSrc.ReadUInt16();
+            int lineCount = pvSrc.ReadUInt16();
+            int index = page - 1;
+
+            if (index < 0 || index >= m_Pages.Length)
+                return;
+
+            if (lineCount == 0xFFFF)
+            {
+                // send for new page
+                state.Send(new BookPageDetails(this, page, m_Pages[index]));
+            }
+            else
+            {
+                // updates after page is moved away from
+                if (lineCount <= 19)
+                {
+                    string[] lines = new string[lineCount];
+
+                    for (int j = 0; j < lineCount; ++j)
+                        if ((lines[j] = pvSrc.ReadUTF8StringSafe()).Length >= 80)
+                            return;
+
+                    m_Pages[index].Lines = lines;
+                }
+                else
+                {
+                    return;
+                }
             }
         }
 
@@ -503,11 +537,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SecureLevel;
+                return m_SecureLevel;
             }
             set
             {
-                this.m_SecureLevel = value;
+                m_SecureLevel = value;
             }
         }
         #endregion
@@ -518,25 +552,45 @@ namespace Server.Items
         public BookPageDetails(BaseBook book)
             : base(0x66)
         {
-            this.EnsureCapacity(256);
+            EnsureCapacity(256);
 
-            this.m_Stream.Write((int)book.Serial);
-            this.m_Stream.Write((ushort)book.PagesCount);
+            m_Stream.Write((int)book.Serial);
+            m_Stream.Write((ushort)book.PagesCount);
 
             for (int i = 0; i < book.PagesCount; ++i)
             {
                 BookPageInfo page = book.Pages[i];
 
-                this.m_Stream.Write((ushort)(i + 1));
-                this.m_Stream.Write((ushort)page.Lines.Length);
+                m_Stream.Write((ushort)(i + 1));
+                m_Stream.Write((ushort)page.Lines.Length);
 
                 for (int j = 0; j < page.Lines.Length; ++j)
                 {
                     byte[] buffer = Utility.UTF8.GetBytes(page.Lines[j]);
 
-                    this.m_Stream.Write(buffer, 0, buffer.Length);
-                    this.m_Stream.Write((byte)0);
+                    m_Stream.Write(buffer, 0, buffer.Length);
+                    m_Stream.Write((byte)0);
                 }
+            }
+        }
+
+        public BookPageDetails(BaseBook book, int page, BookPageInfo info)
+            : base(0x66)
+        {
+            EnsureCapacity(256);
+
+            m_Stream.Write((int)book.Serial);
+            m_Stream.Write((ushort)0x1);
+
+            m_Stream.Write((ushort)page);
+            m_Stream.Write((ushort)info.Lines.Length);
+
+            for (int i = 0; i < info.Lines.Length; ++i)
+            {
+                byte[] buffer = Utility.UTF8.GetBytes(info.Lines[i]);
+
+                m_Stream.Write(buffer, 0, buffer.Length);
+                m_Stream.Write((byte)0);
             }
         }
     }
@@ -552,20 +606,20 @@ namespace Server.Items
             byte[] titleBuffer = Utility.UTF8.GetBytes(title);
             byte[] authorBuffer = Utility.UTF8.GetBytes(author);
 
-            this.EnsureCapacity(15 + titleBuffer.Length + authorBuffer.Length);
+            EnsureCapacity(15 + titleBuffer.Length + authorBuffer.Length);
 
-            this.m_Stream.Write((int)book.Serial);
-            this.m_Stream.Write((bool)true);
-            this.m_Stream.Write((bool)book.Writable && from.InRange(book.GetWorldLocation(), 1));
-            this.m_Stream.Write((ushort)book.PagesCount);
+            m_Stream.Write((int)book.Serial);
+            m_Stream.Write((bool)true);
+            m_Stream.Write((bool)book.Writable && from.InRange(book.GetWorldLocation(), 1));
+            m_Stream.Write((ushort)book.PagesCount);
 
-            this.m_Stream.Write((ushort)(titleBuffer.Length + 1));
-            this.m_Stream.Write(titleBuffer, 0, titleBuffer.Length);
-            this.m_Stream.Write((byte)0); // terminate
+            m_Stream.Write((ushort)(titleBuffer.Length + 1));
+            m_Stream.Write(titleBuffer, 0, titleBuffer.Length);
+            m_Stream.Write((byte)0); // terminate
 
-            this.m_Stream.Write((ushort)(authorBuffer.Length + 1));
-            this.m_Stream.Write(authorBuffer, 0, authorBuffer.Length);
-            this.m_Stream.Write((byte)0); // terminate
+            m_Stream.Write((ushort)(authorBuffer.Length + 1));
+            m_Stream.Write(authorBuffer, 0, authorBuffer.Length);
+            m_Stream.Write((byte)0); // terminate
         }
     }
 }
