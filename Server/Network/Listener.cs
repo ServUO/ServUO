@@ -19,8 +19,9 @@ namespace Server.Network
 	public class Listener : IDisposable
 	{
 		private Socket m_Listener;
+        private PingListener _PingListener;
 
-		private readonly Queue<Socket> m_Accepted;
+        private readonly Queue<Socket> m_Accepted;
 		private readonly object m_AcceptedSyncRoot;
 
 #if NewAsyncSockets
@@ -46,13 +47,14 @@ namespace Server.Network
 			}
 
 			DisplayListener();
+            _PingListener = new PingListener(ipep);
 
 #if NewAsyncSockets
 			m_EventArgs = new SocketAsyncEventArgs();
 			m_EventArgs.Completed += new EventHandler<SocketAsyncEventArgs>( Accept_Completion );
 			Accept_Start();
-            #else
-			m_OnAccept = OnAccept;
+#else
+            m_OnAccept = OnAccept;
 			try
 			{
 				IAsyncResult res = m_Listener.BeginAccept(m_OnAccept, m_Listener);
@@ -321,6 +323,14 @@ namespace Server.Network
 			{
 				socket.Close();
 			}
-		}
+
+            if (_PingListener == null)
+            {
+                return;
+            }
+
+            _PingListener.Dispose();
+            _PingListener = null;
+        }
 	}
 }
