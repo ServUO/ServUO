@@ -872,7 +872,6 @@ namespace Server
             get { return m_GridLocation; }
             set
             {
-                #region Enhanced Client Support
                 if (Parent is Container)
                 {
                     if ( value > 0 && value <= 0x7C)
@@ -886,11 +885,8 @@ namespace Server
                         ((Container)Parent).FreePosition(m_GridLocation);
                     }
                 }
-                #endregion
 
                 m_GridLocation = value;
-
-
             }
         }
 

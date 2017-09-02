@@ -56,8 +56,6 @@ namespace Server.Network
 
 		public static PacketHandler[] Handlers { get { return m_Handlers; } }
 
-        public static bool AllowEC = Config.Get("Client.AllowEC", true);
-
 		static PacketHandlers()
 		{
 			m_Handlers = new PacketHandler[0x100];
@@ -132,6 +130,8 @@ namespace Server.Network
 			Register(0xD6, 0, true, BatchQueryProperties);
 			Register(0xD7, 0, true, EncodedCommand);
 			Register(0xE1, 0, false, ClientType);
+            Register(0xEC, 0, false, EquipMacro);
+            Register(0xED, 0, false, UnequipMacro);
 			Register(0xEF, 21, false, LoginServerSeed);
 			Register(0xF4, 0, false, CrashReport);
 			Register(0xF8, 106, false, CreateCharacter70160);
@@ -141,8 +141,6 @@ namespace Server.Network
             Register(0xE1, 0, false, KRCharacterListUpdate);
             Register(0xE4, 0, false, KRVerifierResponse);
             Register(0xFF, 4, false, KRSeed);
-            Register(0xEC, 0, false, EquipMacro);
-            Register(0xED, 0, false, UnequipMacro);
 
             RegisterExtended(0x05, false, ScreenSize);
 			RegisterExtended(0x06, true, PartyMessage);
@@ -2159,6 +2157,11 @@ namespace Server.Network
 
 						int index = pvSrc.ReadUInt16();
 
+                        if (state.IsEnhancedClient && index > 0x64)
+                        {
+                            index = menu.GetIndexEC(index);
+                        }
+
 						if (index >= 0 && index < menu.Entries.Length)
 						{
 							ContextMenuEntry e = menu.Entries[index];
@@ -2170,10 +2173,13 @@ namespace Server.Network
 								range = 18;
 							}
 
-							if (e.Enabled && from.InRange(p, range))
-							{
-								e.OnClick();
-							}
+                            if (e.Enabled && from.InRange(p, range))
+                            {
+                                if (state.IsEnhancedClient)
+                                    Timer.DelayCall(TimeSpan.FromMilliseconds(100), e.OnClick);
+                                else
+                                    e.OnClick();
+                            }
 						}
 					}
 				}
@@ -2257,17 +2263,9 @@ namespace Server.Network
 		public static void ClientType(NetState state, PacketReader pvSrc)
 		{
 			pvSrc.ReadUInt16(); // 0x1
-			pvSrc.ReadUInt32(); // 0x3
+            pvSrc.ReadUInt32(); // 0x2 for KR, 0x3 for EC
 
-            // TODO: Eventually create a EC event sink to handle in ClientVerification.cs if EC clients matter
-            if (!AllowEC && state.IsEnhancedClient)
-            {
-                Utility.PushColor(ConsoleColor.DarkRed);
-                Console.WriteLine("Enhanced Client: {0}: Disconnecting...", state);
-                Utility.PopColor();
-
-                state.Dispose();
-            }
+            EventSink.InvokeClientTypeReceived(new ClientTypeReceivedArgs(state));
 		}
 
 		public static void MobileQuery(NetState state, PacketReader pvSrc)
@@ -3296,8 +3294,7 @@ namespace Server.Network
                 serialList.Add(s);
             }
 
-            EquipMacroEventArgs e = new EquipMacroEventArgs(ns, serialList);
-            EventSink.InvokeEquipMacro(e);
+            EventSink.InvokeEquipMacro(new EquipMacroEventArgs(ns.Mobile, serialList));
         }
 
         public static void UnequipMacro(NetState ns, PacketReader pvSrc)
@@ -3312,16 +3309,15 @@ namespace Server.Network
                 layers.Add(s);
             }
 
-            UnequipMacroEventArgs e = new UnequipMacroEventArgs(ns, layers);
-            EventSink.InvokeUnequipMacro(e);
+            EventSink.InvokeUnequipMacro(new UnequipMacroEventArgs(ns.Mobile, layers));
         }
 
         public static void TargetedSpell(NetState ns, PacketReader pvSrc)
         {
             short spellId = (short)(pvSrc.ReadInt16() - 1);    // zero based;
             Serial target = pvSrc.ReadInt32();
-            TargetedSpellEventArgs e = new TargetedSpellEventArgs(ns, World.FindEntity(target), spellId);
-            EventSink.InvokeTargetedSpell(e);
+
+            EventSink.InvokeTargetedSpell(new TargetedSpellEventArgs(ns.Mobile, World.FindEntity(target), spellId));
         }
 
         public static void TargetedItemUse(NetState ns, PacketReader pvSrc)
@@ -3331,8 +3327,7 @@ namespace Server.Network
 
             if (srcItem.IsItem)
             {
-                TargetedItemUseEventArgs e = new TargetedItemUseEventArgs(ns, World.FindItem(srcItem), World.FindEntity(target));
-                EventSink.InvokeTargetedItemUse(e);
+                EventSink.InvokeTargetedItemUse(new TargetedItemUseEventArgs(ns.Mobile, World.FindItem(srcItem), World.FindEntity(target)));
             }
         }
 
@@ -3340,21 +3335,18 @@ namespace Server.Network
         {
             short skillId = pvSrc.ReadInt16();
             Serial target = pvSrc.ReadInt32();
-            TargetedSkillEventArgs e = new TargetedSkillEventArgs(ns, World.FindEntity(target), skillId);
-            EventSink.InvokeTargetedSkill(e);
+
+            EventSink.InvokeTargetedSkill(new TargetedSkillEventArgs(ns.Mobile, World.FindEntity(target), skillId));
         }
 
         public static void TargetByResourceMacro(NetState ns, PacketReader pvSrc)
         {
-            int length = pvSrc.Size;
-            int Command = pvSrc.ReadInt16();
             Serial serial = pvSrc.ReadInt32();
             int resourcetype = pvSrc.ReadInt16();
 
             if (serial.IsItem)
             {
-                TargetByResourceMacroEventArgs e = new TargetByResourceMacroEventArgs(ns, World.FindItem(serial), resourcetype);
-                EventSink.InvokeTargetByResourceMacro(e);
+                EventSink.InvokeTargetByResourceMacro(new TargetByResourceMacroEventArgs(ns.Mobile, World.FindItem(serial), resourcetype));
             }
         }
     }

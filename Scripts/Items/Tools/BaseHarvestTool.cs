@@ -14,7 +14,7 @@ namespace Server.Items
         bool ShowUsesRemaining { get; set; }
     }
 
-    public abstract class BaseHarvestTool : Item, IUsesRemaining, ICraftable
+    public abstract class BaseHarvestTool : Item, IUsesRemaining, ICraftable, IHarvestTool
     {
         private Mobile m_Crafter;
         private ItemQuality m_Quality;
@@ -25,12 +25,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Crafter;
+                return m_Crafter;
             }
             set
             {
-                this.m_Crafter = value;
-                this.InvalidateProperties();
+                m_Crafter = value;
+                InvalidateProperties();
             }
         }
 
@@ -39,14 +39,14 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Quality;
+                return m_Quality;
             }
             set
             {
-                this.UnscaleUses();
-                this.m_Quality = value;
-                this.InvalidateProperties();
-                this.ScaleUses();
+                UnscaleUses();
+                m_Quality = value;
+                InvalidateProperties();
+                ScaleUses();
             }
         }
 
@@ -55,29 +55,29 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
 
         public void ScaleUses()
         {
-            this.m_UsesRemaining = (this.m_UsesRemaining * this.GetUsesScalar()) / 100;
-            this.InvalidateProperties();
+            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
+            InvalidateProperties();
         }
 
         public void UnscaleUses()
         {
-            this.m_UsesRemaining = (this.m_UsesRemaining * 100) / this.GetUsesScalar();
+            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
         }
 
         public int GetUsesScalar()
         {
-            if (this.m_Quality == ItemQuality.Exceptional)
+            if (m_Quality == ItemQuality.Exceptional)
                 return 200;
 
             return 100;
@@ -104,28 +104,28 @@ namespace Server.Items
         public BaseHarvestTool(int usesRemaining, int itemID)
             : base(itemID)
         {
-            this.m_UsesRemaining = usesRemaining;
-            this.m_Quality = ItemQuality.Normal;
+            m_UsesRemaining = usesRemaining;
+            m_Quality = ItemQuality.Normal;
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.m_Quality == ItemQuality.Exceptional)
+            if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         public virtual void DisplayDurabilityTo(Mobile m)
         {
-            this.LabelToAffix(m, 1017323, AffixType.Append, ": " + this.m_UsesRemaining.ToString()); // Durability
+            LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining.ToString()); // Durability
         }
 
         public override void OnSingleClick(Mobile from)
         {
-            this.DisplayDurabilityTo(from);
+            DisplayDurabilityTo(from);
 
             base.OnSingleClick(from);
 
@@ -137,8 +137,8 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack) || this.Parent == from)
-                this.HarvestSystem.BeginHarvesting(from, this);
+            if (IsChildOf(from.Backpack) || Parent == from)
+                HarvestSystem.BeginHarvesting(from, this);
             else
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
         }
@@ -147,7 +147,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            AddContextMenuEntries(from, this, list, this.HarvestSystem);
+            AddContextMenuEntries(from, this, list, HarvestSystem);
         }
 
         public static void AddContextMenuEntries(Mobile from, Item item, List<ContextMenuEntry> list, HarvestSystem system)
@@ -190,71 +190,71 @@ namespace Server.Items
             public ToggleMiningStoneEntry(PlayerMobile mobile, bool valuestone, bool valuegem, int number)
                 : base(number)
             {
-                this.m_Mobile = mobile;
-                this.m_Valuestone = valuestone;
-                this.m_Valuegem = valuegem;
+                m_Mobile = mobile;
+                m_Valuestone = valuestone;
+                m_Valuegem = valuegem;
 
                 bool stoneMining = (mobile.StoneMining && mobile.Skills[SkillName.Mining].Base >= 100.0);
                 bool gemMining = (mobile.GemMining && mobile.Skills[SkillName.Mining].Base >= 100.0);
 
                 if (valuestone && mobile.ToggleMiningStone == valuestone || (valuestone && !stoneMining))
-                    this.Flags |= CMEFlags.Disabled;
+                    Flags |= CMEFlags.Disabled;
                 else if (valuegem && mobile.ToggleMiningGem == valuegem || (valuegem && !gemMining))
-                    this.Flags |= CMEFlags.Disabled;
+                    Flags |= CMEFlags.Disabled;
                 else if (!valuestone && !valuegem && !mobile.ToggleMiningStone && !mobile.ToggleMiningGem)
-                    this.Flags |= CMEFlags.Disabled;
+                    Flags |= CMEFlags.Disabled;
             }
 
             public override void OnClick()
             {
-                bool oldValuestone = this.m_Mobile.ToggleMiningStone;
-                bool oldValuegem = this.m_Mobile.ToggleMiningGem;
+                bool oldValuestone = m_Mobile.ToggleMiningStone;
+                bool oldValuegem = m_Mobile.ToggleMiningGem;
 
-                if (this.m_Valuestone)
+                if (m_Valuestone)
                 {
                     if (oldValuestone)
                     {
-                        this.m_Mobile.SendLocalizedMessage(1054023); // You are already set to mine both ore and stone!
+                        m_Mobile.SendLocalizedMessage(1054023); // You are already set to mine both ore and stone!
                     }
-                    else if (!this.m_Mobile.StoneMining || this.m_Mobile.Skills[SkillName.Mining].Base < 100.0)
+                    else if (!m_Mobile.StoneMining || m_Mobile.Skills[SkillName.Mining].Base < 100.0)
                     {
-                        this.m_Mobile.SendLocalizedMessage(1054024); // You have not learned how to mine stone or you do not have enough skill!
+                        m_Mobile.SendLocalizedMessage(1054024); // You have not learned how to mine stone or you do not have enough skill!
                     }
                     else
                     {
-                        this.m_Mobile.ToggleMiningStone = true;
-                        this.m_Mobile.ToggleMiningGem = false;
-                        this.m_Mobile.SendLocalizedMessage(1054022); // You are now set to mine both ore and stone.
+                        m_Mobile.ToggleMiningStone = true;
+                        m_Mobile.ToggleMiningGem = false;
+                        m_Mobile.SendLocalizedMessage(1054022); // You are now set to mine both ore and stone.
                     }
                 }
-                else if (this.m_Valuegem)
+                else if (m_Valuegem)
                 {
                     if (oldValuegem)
                     {
-                        this.m_Mobile.SendLocalizedMessage(1112235); // You are already set to mine both ore and gems!
+                        m_Mobile.SendLocalizedMessage(1112235); // You are already set to mine both ore and gems!
                     }
-                    else if (!this.m_Mobile.GemMining || this.m_Mobile.Skills[SkillName.Mining].Base < 100.0)
+                    else if (!m_Mobile.GemMining || m_Mobile.Skills[SkillName.Mining].Base < 100.0)
                     {
-                        this.m_Mobile.SendLocalizedMessage(1112234); // You have not learned how to mine gems or you do not have enough skill!
+                        m_Mobile.SendLocalizedMessage(1112234); // You have not learned how to mine gems or you do not have enough skill!
                     }
                     else
                     {
-                        this.m_Mobile.ToggleMiningGem = true;
-                        this.m_Mobile.ToggleMiningStone = false;
-                        this.m_Mobile.SendLocalizedMessage(1112236); // You are now set to mine both ore and gems.
+                        m_Mobile.ToggleMiningGem = true;
+                        m_Mobile.ToggleMiningStone = false;
+                        m_Mobile.SendLocalizedMessage(1112236); // You are now set to mine both ore and gems.
                     }
                 }
                 else
                 {
                     if (oldValuestone || oldValuegem)
                     {
-                        this.m_Mobile.ToggleMiningStone = false;
-                        this.m_Mobile.ToggleMiningGem = false;
-                        this.m_Mobile.SendLocalizedMessage(1054020); // You are now set to mine only ore.
+                        m_Mobile.ToggleMiningStone = false;
+                        m_Mobile.ToggleMiningGem = false;
+                        m_Mobile.SendLocalizedMessage(1054020); // You are now set to mine only ore.
                     }
                     else
                     {
-                        this.m_Mobile.SendLocalizedMessage(1054021); // You are already set to mine only ore!
+                        m_Mobile.SendLocalizedMessage(1054021); // You are already set to mine only ore!
                     }
                 }
             }
@@ -271,10 +271,10 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write((Mobile)this.m_Crafter);
-            writer.Write((int)this.m_Quality);
+            writer.Write((Mobile)m_Crafter);
+            writer.Write((int)m_Quality);
 
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((int)m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -287,13 +287,13 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_Crafter = reader.ReadMobile();
-                        this.m_Quality = (ItemQuality)reader.ReadInt();
+                        m_Crafter = reader.ReadMobile();
+                        m_Quality = (ItemQuality)reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_UsesRemaining = reader.ReadInt();
+                        m_UsesRemaining = reader.ReadInt();
                         break;
                     }
             }
@@ -303,10 +303,10 @@ namespace Server.Items
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             return quality;
         }

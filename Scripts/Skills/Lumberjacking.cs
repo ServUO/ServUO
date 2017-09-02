@@ -139,11 +139,11 @@ namespace Server.Engines.Harvest
             if (!base.CheckHarvest(from, tool))
                 return false;
 
-			if (tool.Parent != from && from.Backpack != null && ! tool.IsChildOf(from.Backpack))
-			{
-				from.SendLocalizedMessage(1080058); // This must be in your backpack to use it.
-				return false;
-			}
+            if (tool.Parent != from)
+            {
+                from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
+                return false;
+            }
 
             return true;
         }
@@ -205,7 +205,7 @@ namespace Server.Engines.Harvest
         public override void OnHarvestStarted(Mobile from, Item tool, HarvestDefinition def, object toHarvest)
         {
             base.OnHarvestStarted(from, tool, def, toHarvest);
-			
+
             if (Core.ML)
                 from.RevealingAction();
         }
