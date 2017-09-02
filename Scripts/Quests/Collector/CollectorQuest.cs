@@ -72,8 +72,7 @@ namespace Server.Engines.Quests.Collector
         {
             get
             {
-                //return 1020549; // This localized message seems broken...
-                return "Collector's Quest";
+                return 1020549; // Fishing for Rainbow Pearls
             }
         }
         public override object OfferMessage
