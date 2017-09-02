@@ -292,6 +292,7 @@ namespace Server.Misc
             {
                 Utility.PushColor(ConsoleColor.Green);
                 Console.WriteLine("Login: {0}: Valid credentials for '{1}'", e.State, un);
+                Console.WriteLine("Client Type: {0}: {1}", e.State, e.State.IsEnhancedClient ? "Enhanced Client" : "Classic Client");
                 Utility.PopColor();
                 e.State.Account = acct;
                 e.Accepted = true;

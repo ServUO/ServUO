@@ -105,6 +105,8 @@ namespace Server
 
 	public delegate void ClientVersionReceivedHandler(ClientVersionReceivedArgs e);
 
+    public delegate void ClientTypeReceivedHandler(ClientTypeReceivedArgs e);
+
 	public delegate void OnKilledByEventHandler(OnKilledByEventArgs e);
 
 	public delegate void OnItemUseEventHandler(OnItemUseEventArgs e);
@@ -159,6 +161,18 @@ namespace Server
 			m_Version = cv;
 		}
 	}
+
+    public class ClientTypeReceivedArgs : EventArgs
+    {
+        private readonly NetState m_State;
+
+        public NetState State { get { return m_State; } }
+
+        public ClientTypeReceivedArgs(NetState state)
+        {
+            m_State = state;
+        }
+    }
 
 	public class CreateGuildEventArgs : EventArgs
 	{
@@ -1125,103 +1139,103 @@ namespace Server
 
     public class TargetedSpellEventArgs : EventArgs
     {
-        private NetState state;
-        private IEntity target;
-        private short spellID;
+        private Mobile m_Mobile;
+        private IEntity m_Target;
+        private short m_SpellID;
 
-        public NetState NetState { get { return state; } }
-        public IEntity Target { get { return target; } }
-        public short SpellID { get { return spellID; } }
+        public Mobile Mobile { get { return m_Mobile; } }
+        public IEntity Target { get { return m_Target; } }
+        public short SpellID { get { return m_SpellID; } }
 
-        public TargetedSpellEventArgs(NetState state, IEntity target, short spellID)
+        public TargetedSpellEventArgs(Mobile m, IEntity target, short spellID)
         {
-            this.state = state;
-            this.target = target;
-            this.spellID = spellID;
+            m_Mobile = m;
+            m_Target = target;
+            m_SpellID = spellID;
         }
     }
 
     public class TargetedSkillEventArgs : EventArgs
     {
-        private NetState state;
-        private IEntity target;
-        private short skillID;
+        private Mobile m_Mobile;
+        private IEntity m_Target;
+        private short m_SkillID;
 
-        public NetState NetState { get { return state; } }
-        public IEntity Target { get { return target; } }
-        public short SkillID { get { return skillID; } }
+        public Mobile Mobile { get { return m_Mobile; } }
+        public IEntity Target { get { return m_Target; } }
+        public short SkillID { get { return m_SkillID; } }
 
-        public TargetedSkillEventArgs(NetState state, IEntity target, short skillID)
+        public TargetedSkillEventArgs(Mobile m, IEntity target, short skillID)
         {
-            this.state = state;
-            this.target = target;
-            this.skillID = skillID;
+            m_Mobile = m;
+            m_Target = target;
+            m_SkillID = skillID;
         }
     }
 
     public class TargetedItemUseEventArgs : EventArgs
     {
-        private NetState state;
-        private IEntity src;
-        private IEntity target;
+        private Mobile m_Mobile;
+        private IEntity m_Source;
+        private IEntity m_Target;
 
-        public NetState NetState { get { return state; } }
-        public IEntity Source { get { return src; } }
-        public IEntity Target { get { return target; } }
+        public Mobile Mobile { get { return m_Mobile; } }
+        public IEntity Source { get { return m_Source; } }
+        public IEntity Target { get { return m_Target; } }
 
-        public TargetedItemUseEventArgs(NetState state, IEntity src, IEntity target)
+        public TargetedItemUseEventArgs(Mobile mobile, IEntity src, IEntity target)
         {
-            this.state = state;
-            this.src = src;
-            this.target = target;
+            m_Mobile = mobile;
+            m_Source = src;
+            m_Target = target;
         }
     }
 
     public class TargetByResourceMacroEventArgs : EventArgs
     {
-        private NetState state;
-        private Item m_tool;
-        private int m_resource_type;
+        private Mobile m_Mobile;
+        private Item m_Tool;
+        private int m_ResourceType;
 
-        public NetState NetState { get { return state; } }
-        public Item Tool { get { return m_tool; } }
-        public int ResourceType { get { return m_resource_type; } }
+        public Mobile Mobile { get { return m_Mobile; } }
+        public Item Tool { get { return m_Tool; } }
+        public int ResourceType { get { return m_ResourceType; } }
 
-        public TargetByResourceMacroEventArgs(NetState state, Item tool, int type)
+        public TargetByResourceMacroEventArgs(Mobile mobile, Item tool, int type)
         {
-            this.state = state;
-            this.m_tool = tool;
-            this.m_resource_type = type;
+            m_Mobile = mobile;
+            m_Tool = tool;
+            m_ResourceType = type;
         }
     }
 
     public class EquipMacroEventArgs : EventArgs
     {
-        private NetState state;
-        private List<int> m_list;
+        private Mobile m_Mobile;
+        private List<int> m_List;
 
-        public NetState NetState { get { return state; } }
-        public List<int> List { get { return m_list; } }
+        public Mobile Mobile { get { return m_Mobile; } }
+        public List<int> List { get { return m_List; } }
 
-        public EquipMacroEventArgs(NetState state, List<int> list)
+        public EquipMacroEventArgs(Mobile mobile, List<int> list)
         {
-            this.state = state;
-            this.m_list = list;
+            m_Mobile = mobile;
+            m_List = list;
         }
     }
 
     public class UnequipMacroEventArgs : EventArgs
     {
-        private NetState state;
-        private List<int> m_list;
+        private Mobile m_Mobile;
+        private List<int> m_List;
 
-        public NetState NetState { get { return state; } }
-        public List<int> List { get { return m_list; } }
+        public Mobile Mobile { get { return m_Mobile; } }
+        public List<int> List { get { return m_List; } }
 
-        public UnequipMacroEventArgs(NetState state, List<int> list)
+        public UnequipMacroEventArgs(Mobile mobile, List<int> list)
         {
-            this.state = state;
-            this.m_list = list;
+            m_Mobile = mobile;
+            m_List = list;
         }
     }
 
@@ -1271,6 +1285,7 @@ namespace Server
 		public static event GuildGumpRequestHandler GuildGumpRequest;
 		public static event QuestGumpRequestHandler QuestGumpRequest;
 		public static event ClientVersionReceivedHandler ClientVersionReceived;
+        public static event ClientTypeReceivedHandler ClientTypeReceived;
 		public static event OnKilledByEventHandler OnKilledBy;
 		public static event OnItemUseEventHandler OnItemUse;
 		public static event OnEnterRegionEventHandler OnEnterRegion;
@@ -1301,6 +1316,14 @@ namespace Server
 				ClientVersionReceived(e);
 			}
 		}
+
+        public static void InvokeClientTypeReceived(ClientTypeReceivedArgs e)
+        {
+            if (ClientTypeReceived != null)
+            {
+                ClientTypeReceived(e);
+            }
+        }
 
 		public static void InvokeServerStarted()
 		{

@@ -10,7 +10,7 @@ namespace Server.Items
         bool Axe(Mobile from, BaseAxe axe);
     }
 
-    public abstract class BaseAxe : BaseMeleeWeapon
+    public abstract class BaseAxe : BaseMeleeWeapon, IHarvestTool
     {
         public BaseAxe(int itemID)
             : base(itemID)
@@ -67,34 +67,36 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.HarvestSystem == null || this.Deleted)
+            if (HarvestSystem == null || Deleted)
                 return;
 
-            Point3D loc = this.GetWorldLocation();
+            Point3D loc = GetWorldLocation();
 
             if (!from.InLOS(loc) || !from.InRange(loc, 2))
             {
                 from.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3E9, 1019045); // I can't reach that
                 return;
             }
-            else if (!this.IsAccessibleTo(from))
+            else if (!IsAccessibleTo(from))
             {
-                this.PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3E9, 1061637); // You are not allowed to access this.
+                PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3E9, 1061637); // You are not allowed to access 
                 return;
             }
-			
-            if (!(this.HarvestSystem is Mining))
+
+            if (HarvestSystem is Mining)
+                from.SendLocalizedMessage(503033); // Where do you wish to dig?
+            else
                 from.SendLocalizedMessage(1010018); // What do you want to use this item on?
 
-            this.HarvestSystem.BeginHarvesting(from, this);
+            HarvestSystem.BeginHarvesting(from, this);
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
 
-            if (this.HarvestSystem != null)
-                BaseHarvestTool.AddContextMenuEntries(from, this, list, this.HarvestSystem);
+            if (HarvestSystem != null)
+                BaseHarvestTool.AddContextMenuEntries(from, this, list, HarvestSystem);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -137,7 +139,7 @@ namespace Server.Items
         {
             base.OnHit(attacker, defender, damageBonus);
 
-            if (!Core.AOS && defender is Mobile && (attacker.Player || attacker.Body.IsHuman) && this.Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble() && Engines.ConPVP.DuelContext.AllowSpecialAbility(attacker, "Concussion Blow", false))
+            if (!Core.AOS && defender is Mobile && (attacker.Player || attacker.Body.IsHuman) && Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble() && Engines.ConPVP.DuelContext.AllowSpecialAbility(attacker, "Concussion Blow", false))
             {
                 StatMod mod = ((Mobile)defender).GetStatMod("Concussion");
 

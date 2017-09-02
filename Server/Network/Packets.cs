@@ -4692,11 +4692,9 @@ m_Stream.Write( (int) renderMode );
                 flags |= (CharacterListFlags.SlotLimit | CharacterListFlags.OneCharacterSlot); // Limit Characters & One Character
 			}
 
-            if (IsEnhancedClient) {
+            if (IsEnhancedClient)
+            {
                 flags |= CharacterListFlags.KR; // Suppport Enhanced Client / KR flag 1 and 2 (0x200 + 0x400)
-                Console.WriteLine("Enhanced Client Detected");
-            } else {
-                Console.WriteLine("Enhanced Client Not Detected");
             }
 
             m_Stream.Write((int)(flags | m_AdditionalFlags)); // Additional Flags
