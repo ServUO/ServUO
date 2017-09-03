@@ -68,39 +68,37 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
         public static void Configure()
         {
-            m_EntryTable[0] = new QuestionAndAnswerEntry(1112601, new string[] { "control", "passion", "diligence" }, new string[] { "chaos", "order", "singularity" }); //Which of these is a Principle?
-            m_EntryTable[1] = new QuestionAndAnswerEntry(1112602, new string[] { "control" }, new string[] { "passion", "diligence", "feeling" }); //Which of these is a Principle?
-            m_EntryTable[2] = new QuestionAndAnswerEntry(1112603, new string[] { "feeling" }, new string[] { "direction", "persistence", "control" }); //From Passion springs which Virtue?
-            m_EntryTable[3] = new QuestionAndAnswerEntry(1112604, new string[] { "persistence" }, new string[] { "feeling", "direction", "chaos" }); //From Diligence springs which Virtue?
-            m_EntryTable[4] = new QuestionAndAnswerEntry(1112605, new string[] { "no" }, new string[] { "yes" }); //Is any Virtue more important than another?
-            m_EntryTable[5] = new QuestionAndAnswerEntry(1112606, new string[] { "yes" }, new string[] { "no" }); //Are each of the Virtues considered to be equal?
-            m_EntryTable[6] = new QuestionAndAnswerEntry(1112607, new string[] { "eight" }, new string[] { "seven", "nine", "six" }); //Amongst all else, of how many Virtues does the Circle consist?
-            m_EntryTable[7] = new QuestionAndAnswerEntry(1112608, new string[] { "balance" }, new string[] { "achievement", "precision", "chaos" }); //Passion combined with Control yields which Virtue?
-            m_EntryTable[8] = new QuestionAndAnswerEntry(1112609, new string[] { "passion", "diligence" }, new string[] { "control" }); //Achievement is created in part by which Principle?
-            m_EntryTable[9] = new QuestionAndAnswerEntry(1112610, new string[] { "precision" }, new string[] { "chaos", "achievement", "balance" }); //If you join Diligence with Control, which Virtue is provided?
-            m_EntryTable[10] = new QuestionAndAnswerEntry(1112611, new string[] { "chaos" }, new string[] { "order", "achievement", "precision" }); //The absence of the Principles is called what?
-            m_EntryTable[11] = new QuestionAndAnswerEntry(1112612, new string[] { "order" }, new string[] { "achievement", "precision", "balance" }); //The existence of Chaos points to which Virtue?
-            m_EntryTable[12] = new QuestionAndAnswerEntry(1112613, new string[] { "singularity" }, new string[] { "direction", "persistence", "control" }); //Unifying the three Principles forms what?
-            m_EntryTable[13] = new QuestionAndAnswerEntry(1112614, new string[] { "singularity" }, new string[] { "compassion", "justice", "honor" }); //Which is the eighth Virtue?
-            m_EntryTable[14] = new QuestionAndAnswerEntry(1112615, new string[] { "singularity" }, new string[] { "compassion", "justice", "honor" }); //Which is the first Virtue?
-            m_EntryTable[15] = new QuestionAndAnswerEntry(1112616, new string[] { "singularity" }, new string[] { "circle of life", "feeling", "diligence" }); //In what can you find all of the Principles, and thus all of the Virtues?
-            m_EntryTable[16] = new QuestionAndAnswerEntry(1112617, new string[] { "no" }, new string[] { "yes" }); //Does the Circle have an end?
-            m_EntryTable[17] = new QuestionAndAnswerEntry(1112618, new string[] { "yes" }, new string[] { "no" }); //Are each of the Principles considered equal?
-            m_EntryTable[18] = new QuestionAndAnswerEntry(1112619, new string[] { "forever" }, new string[] { "when it ends", "tomorrow", "next week" }); //As with the Circle, how long does our society continue?
-            m_EntryTable[19] = new QuestionAndAnswerEntry(1112620, new string[] { "direction", "feeling", "persistence", "balance", "achivement", "precision", "order", "singularity" }, new string[] { "chaos", "despise", "servuo" }); //Which of these is one of the Virtues?
+            m_EntryTable[0] = new QuestionAndAnswerEntry(1112601, new object[] { 1112656 /*Control*/ }, new object[] { 1112661 /*Persistence*/, 1112664 /*Precision*/, 1112660 /*Feeling*/ }); //Which of these is a Principle?
+            m_EntryTable[1] = new QuestionAndAnswerEntry(1112602, new object[] { 1112656 /*Control*/ }, new object[] { 1112662 /*Balance*/, 1112658 /*Diligence*/, 1112657 /*Passion*/ }); //From what Principle does Direction spring?
+            m_EntryTable[2] = new QuestionAndAnswerEntry(1112603, new object[] { 1112660 /*Feeling*/ }, new object[] { 1112663 /*Achievement*/, 1112661 /*Persistence*/, 1112656 /*Control*/ }); //From Passion springs which Virtue?
+            m_EntryTable[3] = new QuestionAndAnswerEntry(1112604, new object[] { 1112661 /*Persistence*/ }, new object[] { 1112667 /*Singularity*/, 1112656 /*Control*/, 1112666 /*Order*/ }); //From Diligence springs which Virtue?
+            m_EntryTable[4] = new QuestionAndAnswerEntry(1112605, new object[] { 1112669 /*No*/ }, new object[] { 1112652 /*Spirituality is the most important*/, 1112645 /*All but chaos are important*/, 1112644 /*Order is more important*/ }); //Is any Virtue more important than another?
+            m_EntryTable[5] = new QuestionAndAnswerEntry(1112606, new object[] { 1112649 /*All are equal*/ }, new object[] { 1112646 /*Singularity is more imporant than all others*/, 1112669 /*No*/, 1112644 /*Order is more important*/  }); //Are each of the Virtues considered to be equal?
+            m_EntryTable[6] = new QuestionAndAnswerEntry(1112607, new object[] { 1112668 /*Eight*/ }, new object[] { 1112653 /*Seven*/, 1112654 /*Ten*/, 1112655 /*Twelve*/ }); //Amongst all else, of how many Virtues does the Circle consist?
+            m_EntryTable[7] = new QuestionAndAnswerEntry(1112608, new object[] { 1112662 /*Balance*/ }, new object[] { 1112663 /*Achievement*/, 1112664 /*Precision*/, 1112665 /*Chaos*/ }); //Passion combined with Control yields which Virtue?
+            m_EntryTable[8] = new QuestionAndAnswerEntry(1112609, new object[] { 1112669 /*No*/ }, new object[] { 1112656 /*Control*/, 1112670 /*Yes*/ }); //Achievement is created in part by which Principle?
+            m_EntryTable[9] = new QuestionAndAnswerEntry(1112610, new object[] { 1112664 /*Precision*/ }, new object[] { 1112665 /*Chaos*/, 1112663 /*Achievement*/, 1112662 /*Balance*/ }); //If you join Diligence with Control, which Virtue is provided?
+            m_EntryTable[10] = new QuestionAndAnswerEntry(1112611, new object[] { 1112665 /*Chaos*/ }, new object[] { 1112666 /*Order*/, 1112663 /*Achievement*/, 1112664 /*Precision*/ }); //The absence of the Principles is called what?
+            m_EntryTable[11] = new QuestionAndAnswerEntry(1112612, new object[] { 1112666 /*Order*/ }, new object[] { 1112663 /*Achievement*/, 1112664 /*Precision*/, 1112662 /*Balance*/ }); //The existence of Chaos points to which Virtue?
+            m_EntryTable[12] = new QuestionAndAnswerEntry(1112613, new object[] { 1112667 /*Singularity*/ }, new object[] { 1112659 /*Direction*/, 1112661 /*Persistence*/, 1112656 /*Control*/ }); //Unifying the three Principles forms what?
+            m_EntryTable[13] = new QuestionAndAnswerEntry(1112614, new object[] { 1112667 /*Singularity*/ }, new object[] { 1112647 /*Nothing*/, 1112663 /*Achievement*/, 1112659 /*Direction*/ }); //Which is the eighth Virtue?
+            m_EntryTable[14] = new QuestionAndAnswerEntry(1112615, new object[] { 1112667 /*Singularity*/ }, new object[] { 1112663 /*Achievement*/, 1112659 /*Direction*/, 1112647 /*Nothing*/ }); //Which is the first Virtue?
+            m_EntryTable[15] = new QuestionAndAnswerEntry(1112616, new object[] { 1112667 /*Singularity*/ }, new object[] { 1112661 /*Persistence*/, 1112660 /*Feeling*/, 1112658 /*Diligence*/ }); //In what can you find all of the Principles, and thus all of the Virtues?
+            m_EntryTable[16] = new QuestionAndAnswerEntry(1112617, new object[] { 1112669 /*No*/ }, new object[] { 1112670 /*Yes*/ }); //Does the Circle have an end?
+            m_EntryTable[17] = new QuestionAndAnswerEntry(1112618, new object[] { 1112670 /*Yes*/ }, new object[] { 1112669 /*No*/ }); //Are each of the Principles considered equal?
+            m_EntryTable[18] = new QuestionAndAnswerEntry(1112619, new object[] { 1112671 /*Forever*/ }, new object[] { 1112672 /*As all things have a beginning, all things must have an end*/, 1112673 /*After the Great Breaking has come*/, 1112647 /*Nothing*/ }); //As with the Circle, how long does our society continue?
+            m_EntryTable[19] = new QuestionAndAnswerEntry(1112620, new object[] { 1112656 /*Control*/ }, new object[] { 1112665 /*Chaos*/, 1112666 /*Order*/, 1112664 /*Precision*/ }); //Which of these is one of the Virtues?
         }
 
         private static QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[20];

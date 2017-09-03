@@ -9,18 +9,19 @@ namespace Server.Gumps
 {
     public class QAndAGump : Gump
     {
-        private const int FontColor = 0xFFFFFF;
+        private const int FontColor = 0x000008;
 
         private Mobile m_From;
         private QuestionAndAnswerObjective m_Objective;
         private BaseQuest m_Quest;
         private int m_Index;
 
-        public QAndAGump(Mobile owner, BaseQuest quest) : base(50, 50)
+        public QAndAGump(Mobile owner, BaseQuest quest) : base(0, 0)
         {
             m_From = owner;
             m_Quest = quest;
-            this.Closable = false;
+            Closable = false;
+            Disposable = false;
 
             foreach (BaseObjective objective in quest.Objectives)
             {
@@ -40,41 +41,35 @@ namespace Server.Gumps
                 return;
 
             AddPage(0);
+            AddImage(0, 0, 1228);
+            AddImage(40, 78, 95);
+            AddImageTiled(49, 87, 301, 3, 96);
+            AddImage(350, 78, 97);
 
-            int question = entry.Question;
             object answer = entry.Answers[Utility.Random(entry.Answers.Length)];
 
             List<object> selections = new List<object>(entry.WrongAnswers);
             m_Index = Utility.Random(selections.Count); //Gets correct answer
             selections.Insert(m_Index, answer);
-
-            AddBackground(0, 0, 305, 145 + (selections.Count * 35), 9270);
-            AddHtmlLocalized(104, 25, 200, 26, (int)m_Quest.Title, FontColor, false, false); //La Insep Om
-            AddHtmlLocalized(20, 55, 250, 36, question, FontColor, false, false); //question
-
-            int y = 105;
+            
+            AddHtmlLocalized(40, 40, 320, 40, entry.Question, FontColor, false, false); //question
 
             for (int i = 0; i < selections.Count; i++)
             {
-                //AddButton(82, y, 2152, 2153, i + 1, GumpButtonType.Reply, 0);
-                AddRadio(20, y, 2152, 2153, false, i + 1);
-
                 object selection = selections[i];
 
+                AddButton(49, 104 + (i * 40), 2224, 2224, selection == answer ? 1 : 0, GumpButtonType.Reply, 0);                
+
                 if (selection is int)
-                    AddHtmlLocalized(70, y - 2, 200, 18, (int)selection, FontColor, false, false);
+                    AddHtmlLocalized(80, 102 + (i * 40), 200, 18, (int)selection, 0x0, false, false);
                 else
-                    AddHtml(70, y - 2, 200, 18, String.Format( "<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", FontColor, selections[i]), false, false);
-
-                y += 35;
+                    AddHtml(80, 102 + (i * 40), 200, 18, String.Format( "<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", FontColor, selection), false, false);
             }
-
-            AddButton(129, y, 2074, 2076, 1, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            if (info.ButtonID > 0 && info.IsSwitched(m_Index + 1)) //correct answer
+            if (info.ButtonID == 1) //correct answer
             {
                 m_Objective.Update(null);
 
@@ -85,11 +80,10 @@ namespace Server.Gumps
                 }
                 else
                 {
-                    m_From.SendMessage("Correct!");
                     m_From.SendGump(new QAndAGump(m_From, m_Quest));
                 }
             }
-            else if (info.ButtonID != 0 && (info.IsSwitched(1) || info.IsSwitched(2) || info.IsSwitched(3) || info.IsSwitched(4)))
+            else
             {
                 m_From.SendGump(new MondainQuestGump(m_Quest, MondainQuestGump.Section.Failed, false, true));
                 m_Quest.OnResign(false);
