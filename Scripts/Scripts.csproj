@@ -347,7 +347,6 @@
     <Compile Include="Gumps\FacetGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\GenericQuestGump.cs" />
     <Compile Include="Gumps\Go\ChildNode.cs">
       <SubType>Code</SubType>
     </Compile>
