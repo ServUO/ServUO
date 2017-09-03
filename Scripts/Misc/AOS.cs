@@ -16,6 +16,7 @@ using Server.SkillHandlers;
 using Server.Engines.CityLoyalty;
 using Server.Spells.SkillMasteries;
 using System.Linq;
+using Server.Misc;
 
 namespace Server
 {
@@ -267,7 +268,7 @@ namespace Server
 
             if (from != null && !from.Deleted && from.Alive)
             {
-                int reflectPhys = AosAttributes.GetValue(m, AosAttribute.ReflectPhysical);
+                int reflectPhys = Math.Min(105, AosAttributes.GetValue(m, AosAttribute.ReflectPhysical));
 
                 if (reflectPhys != 0)
                 {
@@ -322,11 +323,11 @@ namespace Server
             return (input * percent) / 100;
         }
 
-		public static int GetStatus( Mobile from, int index )
+        #region AOS Status Bar
+        public static int GetStatus( Mobile from, int index )
 		{
 			switch ( index )
 			{
-				// TODO: Account for buffs/debuffs
 				case 0: return from.GetMaxResistance( ResistanceType.Physical );
 				case 1: return from.GetMaxResistance( ResistanceType.Fire );
 				case 2: return from.GetMaxResistance( ResistanceType.Cold );
@@ -340,17 +341,81 @@ namespace Server
                 case 10: return Math.Min(100, AosAttributes.GetValue(from, AosAttribute.LowerRegCost));
                 case 11: return AosAttributes.GetValue(from, AosAttribute.SpellDamage);
                 case 12: return Math.Min(6, AosAttributes.GetValue(from, AosAttribute.CastRecovery));
-                case 13:
-                    /*int max = from.Skills[SkillName.Chivalry].Value < 70.0 ? 4 : 2;
-                    if (ProtectionSpell.Registry.ContainsKey(from) || EodonianPotion.IsUnderEffects(from, PotionEffect.Urali))
-                    {
-                        return Math.Min(max - 2, AosAttributes.GetValue(from, AosAttribute.CastSpeed) - 2);
-                    }*/
-                    return AosAttributes.GetValue(from, AosAttribute.CastSpeed);
+                case 13: return Math.Min(4, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
                 case 14: return Math.Min(40, AosAttributes.GetValue(from, AosAttribute.LowerManaCost)) + BaseArmor.GetInherentLowerManaCost(from);
+                
+                case 15: return GetManaRegen(from); // HP   REGEN
+                case 16: return GetStamRegen(from); // Stam REGEN
+                case 17: return GetManaRegen(from); // MANA REGEN
+                case 18: return Math.Min(105, AosAttributes.GetValue(from, AosAttribute.ReflectPhysical)); // reflect phys
+                case 19: return Math.Min(50, AosAttributes.GetValue(from, AosAttribute.EnhancePotions)); // enhance pots
+
+                case 20: return AosAttributes.GetValue(from, AosAttribute.BonusStr) + from.GetStatOffset(StatType.Str); // str inc
+                case 21: return AosAttributes.GetValue(from, AosAttribute.BonusDex) + from.GetStatOffset(StatType.Dex); ; // dex inc
+                case 22: return AosAttributes.GetValue(from, AosAttribute.BonusInt) + from.GetStatOffset(StatType.Int); ; // int inc
+
+                case 23: return 0; // hits neg
+                case 24: return 0; // stam neg
+                case 25: return 0; // mana neg
+
+                case 26: return AosAttributes.GetValue(from, AosAttribute.BonusHits); // hits inc
+                case 27: return AosAttributes.GetValue(from, AosAttribute.BonusStam); // stam inc
+                case 28: return AosAttributes.GetValue(from, AosAttribute.BonusMana); // mana inc
 				default: return 0;
 			}
-		}
+        }
+
+        private static int GetHitsRegen(Mobile m)
+        {
+            int regen = AosAttributes.GetValue(m, AosAttribute.RegenHits);
+
+            if (RegenRates.CheckAnimal(m, typeof(Dog)) || RegenRates.CheckAnimal(m, typeof(Cat)))
+                regen += m.Skills[SkillName.Ninjitsu].Fixed / 30;
+
+            if (RegenRates.CheckTransform(m, typeof(HorrificBeastSpell)))
+                regen += 20;
+
+            regen += RampageSpell.GetBonus(m, RampageSpell.BonusType.HitPointRegen);
+            regen += CombatTrainingSpell.RegenBonus(m);
+            regen += BarrabHemolymphConcentrate.HPRegenBonus(m);
+
+            if (m.Race == Race.Human)
+                regen += 2;
+
+            return Math.Min(18, regen);
+        }
+
+        private static int GetStamRegen(Mobile m)
+        {
+            int regen = AosAttributes.GetValue(m, AosAttribute.RegenStam);
+
+            if (RegenRates.CheckTransform(m, typeof(VampiricEmbraceSpell)))
+                regen += 15;
+
+            if (RegenRates.CheckAnimal(m, typeof(Kirin)))
+                regen += 20;
+
+            regen += RampageSpell.GetBonus(m, RampageSpell.BonusType.StamRegen);
+
+            return regen;
+        }
+
+        private static int GetManaRegen(Mobile m)
+        {
+            int regen = AosAttributes.GetValue(m, AosAttribute.RegenMana);
+
+            if (RegenRates.CheckTransform(m, typeof(VampiricEmbraceSpell)))
+                regen += 3;
+
+            if (RegenRates.CheckTransform(m, typeof(LichFormSpell)))
+                regen += 13;
+
+            if (m.Race == Race.Gargoyle)
+                regen += 2;
+
+            return Math.Min(30, regen);
+        }
+        #endregion
     }
 
     [Flags]

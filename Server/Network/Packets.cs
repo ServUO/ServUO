@@ -3548,10 +3548,10 @@ m_Stream.Write( (int) renderMode );
 
 			int type;
 
-			if (Core.HS && ns != null && ns.ExtendedStatus)
+            if (Core.HS && ns != null && ns.ExtendedStatus)
 			{
 				type = 6;
-				EnsureCapacity(121);
+				EnsureCapacity(ns.IsEnhancedClient ? 151 : 121);
 			}
 			else if (Core.ML && ns != null && ns.SupportsExpansion(Expansion.ML))
 			{
@@ -3626,7 +3626,9 @@ m_Stream.Write( (int) renderMode );
 
 			if (type >= 6)
 			{
-				for (int i = 0; i < 15; ++i)
+                int count = ns.IsEnhancedClient ? 28 : 14;
+
+                for (int i = 0; i <= count; ++i)
 				{
 					m_Stream.Write((short)m.GetAOSStatus(i));
 				}
@@ -3652,21 +3654,15 @@ m_Stream.Write( (int) renderMode );
             int type;
             bool isEnhancedClient = beholder.NetState != null && beholder.NetState.IsEnhancedClient;
 
-
             if (beholder != beheld)
             {
                 type = 0;
                 EnsureCapacity(43);
             }
-            else if (isEnhancedClient)
-            {
-                type = 7;
-                EnsureCapacity(126);
-            }
             else if (Core.HS && ns != null && ns.ExtendedStatus)
             {
                 type = 6;
-                EnsureCapacity(121);
+                EnsureCapacity(isEnhancedClient ? 151 : 121);
             }
             else if (Core.ML && ns != null && ns.SupportsExpansion(Expansion.ML))
             {
@@ -3680,7 +3676,6 @@ m_Stream.Write( (int) renderMode );
             }
 
             m_Stream.Write(beheld.Serial);
-
             m_Stream.WriteAsciiFixed(name, 30);
 
             if (beholder == beheld)
@@ -3747,8 +3742,8 @@ m_Stream.Write( (int) renderMode );
 
                 if (type >= 6)
                 {
-                    int count = isEnhancedClient ? 20 : 15;
-                    for (int i = 0; i < count; ++i)
+                    int count = isEnhancedClient ? 28 : 14;
+                    for (int i = 0; i <= count; ++i)
                     {
                         m_Stream.Write((short)beheld.GetAOSStatus(i));
                     }
