@@ -65,7 +65,10 @@ namespace Server.Network
 
         private void BeginReceive()
         {
-            _Listener.BeginReceive(EndReceive, _Listener);
+            if (_Listener != null)
+            {
+                _Listener.BeginReceive(EndReceive, _Listener);
+            }
         }
 
         private void EndReceive(IAsyncResult r)
