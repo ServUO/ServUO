@@ -1311,13 +1311,14 @@ namespace Server.Mobiles
 
             this.SayTo(m, 1152295, 0x3B2); // So you want to do a little business under the table?
             m.SendLocalizedMessage(1152296); // Target a bulk order deed to show to the shopkeeper.
+
             m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
                 {
                     IBOD bod = targeted as IBOD;
 
                     if (bod is Item && ((Item)bod).IsChildOf(from.Backpack))
                     {
-                        if(BulkOrderSystem.CanExchangeBOD(from, this, bod, -1))
+                        if (BulkOrderSystem.CanExchangeBOD(from, this, bod, -1))
                         {
                             int amount = BulkOrderSystem.GetBribe(bod);
                             amount *= BribeMultiplier;
@@ -1340,7 +1341,7 @@ namespace Server.Mobiles
                             // If you help me out, I'll help you out. I can replace that bulk order with a better one, but it's gonna cost you ~1_amt~ gold coin. Payment is due immediately. Just hand me the order and I'll pull the old switcheroo.
                         }
                     }
-                    else if(bod == null)
+                    else if (bod == null)
                     {
                         this.SayTo(from, 1152297, 0x3B2); // That is not a bulk order deed.
                     }
@@ -1359,6 +1360,11 @@ namespace Server.Mobiles
             }
 
             this.SayTo(m, 1152303, 0x3B2); // You'll find this one much more to your liking. It's been a pleasure, and I look forward to you greasing my palm again very soon.
+
+            if (Bribes.ContainsKey(m))
+            {
+                Bribes.Remove(m);
+            }
 
             BribeMultiplier++;
             NextMultiplierDecay = DateTime.UtcNow + TimeSpan.FromDays(Utility.RandomMinMax(25, 30));

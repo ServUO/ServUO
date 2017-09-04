@@ -407,8 +407,6 @@ namespace Server.Items
                 }
             }
 
-
-
             //Checks for roads
             for (int i = 0; i < Server.Multis.HousePlacement.RoadIDs.Length; i += 2)
             {

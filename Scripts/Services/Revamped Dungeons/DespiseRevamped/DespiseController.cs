@@ -14,8 +14,8 @@ namespace Server.Engines.Despise
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
             EventSink.OnEnterRegion += new OnEnterRegionEventHandler(OnEnterRegion);
-            
-            if(m_Instance != null)
+
+            if (m_Instance != null)
                 CommandSystem.Register("CheckSpawnersVersion3", AccessLevel.Administrator, m_Instance.CheckSpawnersVersion3);
         }
 

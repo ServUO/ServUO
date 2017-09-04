@@ -268,39 +268,47 @@ namespace Server.Items
 
 			int pageCount = pvSrc.ReadUInt16();
 
-			if ( pageCount > book.PagesCount )
-				return;
+            if (state.IsEnhancedClient && pageCount == 1)
+            {
+                book.ContentChangeEC(state, pvSrc);
+                return;
+            }
+            else
+            {
+                if (pageCount > book.PagesCount)
+                    return;
 
-			for ( int i = 0; i < pageCount; ++i )
-			{
-				int index = pvSrc.ReadUInt16();
+                for (int i = 0; i < pageCount; ++i)
+                {
+                    int index = pvSrc.ReadUInt16();
 
-				if ( index >= 1 && index <= book.PagesCount )
-				{
-					--index;
+                    if (index >= 1 && index <= book.PagesCount)
+                    {
+                        --index;
 
-					int lineCount = pvSrc.ReadUInt16();
+                        int lineCount = pvSrc.ReadUInt16();
 
-					if ( lineCount <= 8 )
-					{
-						string[] lines = new string[lineCount];
+                        if (lineCount <= 8)
+                        {
+                            string[] lines = new string[lineCount];
 
-						for ( int j = 0; j < lineCount; ++j )
-							if ( (lines[j] = pvSrc.ReadUTF8StringSafe()).Length >= 80 )
-								return;
+                            for (int j = 0; j < lineCount; ++j)
+                                if ((lines[j] = pvSrc.ReadUTF8StringSafe()).Length >= 80)
+                                    return;
 
-						book.Pages[index].Lines = lines;
-					}
-					else
-					{
-						return;
-					}
-				}
-				else
-				{
-					return;
-				}
-			}
+                            book.Pages[index].Lines = lines;
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
 		}
 #endif
 	}

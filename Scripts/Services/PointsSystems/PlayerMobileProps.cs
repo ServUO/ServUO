@@ -230,29 +230,53 @@ namespace Server.Mobiles
                     switch (kvp.Key)
                     {
                         case BODType.Smith:
-                            if(Smithy == null)
-                                Smithy = new BODData(kvp.Key, kvp.Value);  break;
-                        case BODType.Tailor: 
-                            if(Tailor == null)
-                                Tailor = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Alchemy: 
-                            if(Alchemy == null)
-                                Alchemy = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Inscription: 
-                            if(Inscription == null)
-                                Inscription = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Tinkering: 
-                            if(Tinkering == null)
-                                Tinkering = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Cooking: 
-                            if(Cooking == null)
-                                Cooking = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Fletching: 
-                            if(Fletching == null)
-                                Fletching = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Carpentry: 
-                            if(Carpentry == null)
-                                Carpentry = new BODData(kvp.Key, kvp.Value); break;
+                            if (Smithy == null)
+                                Smithy = new BODData(kvp.Key, kvp.Value);
+                            else
+                                Smithy.CheckChanges(kvp.Value);
+                            break;
+                        case BODType.Tailor:
+                            if (Tailor == null)
+                                Tailor = new BODData(kvp.Key, kvp.Value);
+                            else
+                                Tailor.CheckChanges(kvp.Value);
+                            break;
+                        case BODType.Alchemy:
+                            if (Alchemy == null)
+                                Alchemy = new BODData(kvp.Key, kvp.Value);
+                            else
+                                Alchemy.CheckChanges(kvp.Value);
+                            break;
+                        case BODType.Inscription:
+                            if (Inscription == null)
+                                Inscription = new BODData(kvp.Key, kvp.Value);
+                            else
+                                Inscription.CheckChanges(kvp.Value);
+                            break;
+                        case BODType.Tinkering:
+                            if (Tinkering == null)
+                                Tinkering = new BODData(kvp.Key, kvp.Value);
+                            else
+                                Tinkering.CheckChanges(kvp.Value);
+                            break;
+                        case BODType.Cooking:
+                            if (Cooking == null)
+                                Cooking = new BODData(kvp.Key, kvp.Value);
+                            else
+                                Cooking.CheckChanges(kvp.Value);
+                            break;
+                        case BODType.Fletching:
+                            if (Fletching == null)
+                                Fletching = new BODData(kvp.Key, kvp.Value);
+                            else
+                                Fletching.CheckChanges(kvp.Value);
+                            break;
+                        case BODType.Carpentry:
+                            if (Carpentry == null)
+                                Carpentry = new BODData(kvp.Key, kvp.Value);
+                            else
+                                Carpentry.CheckChanges(kvp.Value);
+                            break;
                     }
                 }
             }
@@ -314,6 +338,17 @@ namespace Server.Mobiles
             LastBulkOrder = entry == null ? DateTime.MinValue : entry.LastBulkOrder;
             BankedPoints = entry == null ? 0 : entry.BankedPoints;
             PendingRewardPoints = entry == null ? 0 : entry.PendingRewardPoints;
+        }
+
+        public void CheckChanges(BODEntry entry)
+        {
+            if (entry == null)
+                return;
+
+            CachedDeeds = entry.CachedDeeds;
+            LastBulkOrder = entry.LastBulkOrder;
+            BankedPoints = entry.BankedPoints;
+            PendingRewardPoints = entry.PendingRewardPoints;
         }
     }
 }

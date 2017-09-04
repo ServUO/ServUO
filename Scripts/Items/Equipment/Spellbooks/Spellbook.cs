@@ -339,7 +339,7 @@ namespace Server.Items
         {
             try
             {
-                Mobile from = e.NetState.Mobile;
+                Mobile from = e.Mobile;
 
                 if (!DesignContext.Check(from))
                 {

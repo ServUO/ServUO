@@ -2,24 +2,34 @@ using System;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Targeting;
+using Server.Engines.Quests;
+using Server.Engines.Quests.Hag;
+using Server.Mobiles;
 
 namespace Server.Engines.Harvest
 {
     public abstract class HarvestSystem
     {
+        public static void Configure()
+        {
+            EventSink.TargetByResourceMacro += TargetByResource;
+        }
+
         private readonly List<HarvestDefinition> m_Definitions;
+
         public HarvestSystem()
         {
-            this.m_Definitions = new List<HarvestDefinition>();
+            m_Definitions = new List<HarvestDefinition>();
         }
 
         public List<HarvestDefinition> Definitions
         {
             get
             {
-                return this.m_Definitions;
+                return m_Definitions;
             }
         }
+
         public virtual bool CheckTool(Mobile from, Item tool)
         {
             bool wornOut = (tool == null || tool.Deleted || (tool is IUsesRemaining && ((IUsesRemaining)tool).UsesRemaining <= 0));
@@ -32,12 +42,12 @@ namespace Server.Engines.Harvest
 
         public virtual bool CheckHarvest(Mobile from, Item tool)
         {
-            return this.CheckTool(from, tool);
+            return CheckTool(from, tool);
         }
 
         public virtual bool CheckHarvest(Mobile from, Item tool, HarvestDefinition def, object toHarvest)
         {
-            return this.CheckTool(from, tool);
+            return CheckTool(from, tool);
         }
 
         public virtual bool CheckRange(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
@@ -87,7 +97,7 @@ namespace Server.Engines.Harvest
 
         public virtual bool BeginHarvesting(Mobile from, Item tool)
         {
-            if (!this.CheckHarvest(from, tool))
+            if (!CheckHarvest(from, tool))
                 return false;
 
 			EventSink.InvokeResourceHarvestAttempt(new ResourceHarvestAttemptEventArgs(from, tool, this));
@@ -99,32 +109,32 @@ namespace Server.Engines.Harvest
         {
             from.EndAction(locked);
 
-            if (!this.CheckHarvest(from, tool))
+            if (!CheckHarvest(from, tool))
                 return;
 
             int tileID;
             Map map;
             Point3D loc;
 
-            if (!this.GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
+            if (!GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
             {
-                this.OnBadHarvestTarget(from, tool, toHarvest);
+                OnBadHarvestTarget(from, tool, toHarvest);
                 return;
             }
             else if (!def.Validate(tileID) && !def.ValidateSpecial(tileID))
             {
-                this.OnBadHarvestTarget(from, tool, toHarvest);
+                OnBadHarvestTarget(from, tool, toHarvest);
                 return;
             }
 			
-            if (!this.CheckRange(from, tool, def, map, loc, true))
+            if (!CheckRange(from, tool, def, map, loc, true))
                 return;
-            else if (!this.CheckResources(from, tool, def, map, loc, true))
+            else if (!CheckResources(from, tool, def, map, loc, true))
                 return;
-            else if (!this.CheckHarvest(from, tool, def, toHarvest))
+            else if (!CheckHarvest(from, tool, def, toHarvest))
                 return;
 
-            if (this.SpecialHarvest(from, tool, def, map, loc))
+            if (SpecialHarvest(from, tool, def, map, loc))
                 return;
 
             HarvestBank bank = def.GetBank(map, loc.X, loc.Y);
@@ -135,14 +145,14 @@ namespace Server.Engines.Harvest
             HarvestVein vein = bank.Vein;
 
             if (vein != null)
-                vein = this.MutateVein(from, tool, def, bank, toHarvest, vein);
+                vein = MutateVein(from, tool, def, bank, toHarvest, vein);
 
             if (vein == null)
                 return;
 
             HarvestResource primary = vein.PrimaryResource;
             HarvestResource fallback = vein.FallbackResource;
-            HarvestResource resource = this.MutateResource(from, tool, def, map, loc, vein, primary, fallback);
+            HarvestResource resource = MutateResource(from, tool, def, map, loc, vein, primary, fallback);
 
             double skillBase = from.Skills[def.Skill].Base;
             double skillValue = from.Skills[def.Skill].Value;
@@ -151,14 +161,14 @@ namespace Server.Engines.Harvest
 
             if (skillBase >= resource.ReqSkill && from.CheckSkill(def.Skill, resource.MinSkill, resource.MaxSkill))
             {
-                type = this.GetResourceType(from, tool, def, map, loc, resource);
+                type = GetResourceType(from, tool, def, map, loc, resource);
 
                 if (type != null)
-                    type = this.MutateType(type, from, tool, def, map, loc, resource);
+                    type = MutateType(type, from, tool, def, map, loc, resource);
 
                 if (type != null)
                 {
-                    Item item = this.Construct(type, from, tool);
+                    Item item = Construct(type, from, tool);
 
                     if (item == null)
                     {
@@ -193,13 +203,13 @@ namespace Server.Engines.Harvest
                         bank.Consume(amount, from);
 						EventSink.InvokeResourceHarvestSuccess(new ResourceHarvestSuccessEventArgs(from, tool,item, this));
 
-                        if (this.Give(from, item, def.PlaceAtFeetIfFull))
+                        if (Give(from, item, def.PlaceAtFeetIfFull))
                         {
-                            this.SendSuccessTo(from, item, resource);
+                            SendSuccessTo(from, item, resource);
                         }
                         else
                         {
-                            this.SendPackFullTo(from, item, def, resource);
+                            SendPackFullTo(from, item, def, resource);
                             item.Delete();
                         }
 
@@ -209,9 +219,9 @@ namespace Server.Engines.Harvest
                         {
 							if (bonus.RequiredMap == null || bonus.RequiredMap == from.Map)
 							{
-								Item bonusItem = this.Construct(bonus.Type, from, tool);
+								Item bonusItem = Construct(bonus.Type, from, tool);
 
-								if (this.Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
+								if (Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
 								{
 									bonus.SendSuccessTo(from);
 								}
@@ -249,7 +259,7 @@ namespace Server.Engines.Harvest
             if (type == null)
                 def.SendMessageTo(from, def.FailMessage);
 
-            this.OnHarvestFinished(from, tool, def, vein, bank, resource, toHarvest);
+            OnHarvestFinished(from, tool, def, vein, bank, resource, toHarvest);
         }
 
         public virtual void OnToolUsed(Mobile from, Item tool, bool caughtSomething)
@@ -352,7 +362,7 @@ namespace Server.Engines.Harvest
 
         public virtual bool OnHarvesting(Mobile from, Item tool, HarvestDefinition def, object toHarvest, object locked, bool last)
         {
-            if (!this.CheckHarvest(from, tool))
+            if (!CheckHarvest(from, tool))
             {
                 from.EndAction(locked);
                 return false;
@@ -362,35 +372,35 @@ namespace Server.Engines.Harvest
             Map map;
             Point3D loc;
 
-            if (!this.GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
+            if (!GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
             {
                 from.EndAction(locked);
-                this.OnBadHarvestTarget(from, tool, toHarvest);
+                OnBadHarvestTarget(from, tool, toHarvest);
                 return false;
             }
             else if (!def.Validate(tileID) && !def.ValidateSpecial(tileID))
             {
                 from.EndAction(locked);
-                this.OnBadHarvestTarget(from, tool, toHarvest);
+                OnBadHarvestTarget(from, tool, toHarvest);
                 return false;
             }
-            else if (!this.CheckRange(from, tool, def, map, loc, true))
+            else if (!CheckRange(from, tool, def, map, loc, true))
             {
                 from.EndAction(locked);
                 return false;
             }
-            else if (!this.CheckResources(from, tool, def, map, loc, true))
+            else if (!CheckResources(from, tool, def, map, loc, true))
             {
                 from.EndAction(locked);
                 return false;
             }
-            else if (!this.CheckHarvest(from, tool, def, toHarvest))
+            else if (!CheckHarvest(from, tool, def, toHarvest))
             {
                 from.EndAction(locked);
                 return false;
             }
 
-            this.DoHarvestingEffect(from, tool, def, map, loc);
+            DoHarvestingEffect(from, tool, def, map, loc);
 
             new HarvestSoundTimer(from, tool, this, def, toHarvest, locked, last).Start();
 
@@ -420,9 +430,9 @@ namespace Server.Engines.Harvest
         {
             HarvestDefinition def = null;
 
-            for (int i = 0; def == null && i < this.m_Definitions.Count; ++i)
+            for (int i = 0; def == null && i < m_Definitions.Count; ++i)
             {
-                HarvestDefinition check = this.m_Definitions[i];
+                HarvestDefinition check = m_Definitions[i];
 
                 if (check.Validate(tileID))
                     def = check;
@@ -450,44 +460,44 @@ namespace Server.Engines.Harvest
 
         public virtual void StartHarvesting(Mobile from, Item tool, object toHarvest)
         {
-            if (!this.CheckHarvest(from, tool))
+            if (!CheckHarvest(from, tool))
                 return;
 
             int tileID;
             Map map;
             Point3D loc;
 
-            if (!this.GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
+            if (!GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
             {
-                this.OnBadHarvestTarget(from, tool, toHarvest);
+                OnBadHarvestTarget(from, tool, toHarvest);
                 return;
             }
 
-            HarvestDefinition def = this.GetDefinition(tileID, tool);
+            HarvestDefinition def = GetDefinition(tileID, tool);
 
             if (def == null)
             {
-                this.OnBadHarvestTarget(from, tool, toHarvest);
+                OnBadHarvestTarget(from, tool, toHarvest);
                 return;
             }
 
-            if (!this.CheckRange(from, tool, def, map, loc, false))
+            if (!CheckRange(from, tool, def, map, loc, false))
                 return;
-            else if (!this.CheckResources(from, tool, def, map, loc, false))
+            else if (!CheckResources(from, tool, def, map, loc, false))
                 return;
-            else if (!this.CheckHarvest(from, tool, def, toHarvest))
+            else if (!CheckHarvest(from, tool, def, toHarvest))
                 return;
 
-            object toLock = this.GetLock(from, tool, def, toHarvest);
+            object toLock = GetLock(from, tool, def, toHarvest);
 
             if (!from.BeginAction(toLock))
             {
-                this.OnConcurrentHarvest(from, tool, def, toHarvest);
+                OnConcurrentHarvest(from, tool, def, toHarvest);
                 return;
             }
 
             new HarvestTimer(from, tool, this, def, toHarvest, toLock).Start();
-            this.OnHarvestStarted(from, tool, def, toHarvest);
+            OnHarvestStarted(from, tool, def, toHarvest);
         }
 
         public virtual bool GetHarvestDetails(Mobile from, Item tool, object toHarvest, out int tileID, out Map map, out Point3D loc)
@@ -526,6 +536,192 @@ namespace Server.Engines.Harvest
 
             return (map != null && map != Map.Internal);
         }
+
+        #region Enhanced Client
+        public static void TargetByResource(TargetByResourceMacroEventArgs e)
+        {
+            Mobile m = e.Mobile;
+            Item tool = e.Tool;
+
+            HarvestSystem system = null;
+            HarvestDefinition def = null;
+            object toHarvest;
+
+            if (tool is IHarvestTool)
+            {
+                system = ((IHarvestTool)tool).HarvestSystem;
+            }
+
+            if (system != null)
+            {
+                switch (e.ResourceType)
+                {
+                    case 0: // ore
+                        if (system is Mining)
+                            def = ((Mining)system).OreAndStone;
+                        break;
+                    case 1: // sand
+                        if (system is Mining)
+                            def = ((Mining)system).Sand;
+                        break;
+                    case 2: // wood
+                        if (system is Lumberjacking)
+                            def = ((Lumberjacking)system).Definition;
+                        break;
+                    case 3: // grave
+                        if (TryHarvestGrave(m))
+                            return;
+                        break;
+                    case 4: // red shrooms
+                        if (TryHarvestShrooms(m))
+                            return;
+                        break;
+                }
+
+                if (def != null && FindValidTile(m, def, out toHarvest))
+                {
+                    system.StartHarvesting(m, tool, toHarvest);
+                    return;
+                }
+
+                system.OnBadHarvestTarget(m, tool, new LandTarget(new Point3D(0, 0, 0), Map.Felucca));
+            }
+        }
+
+        private static bool FindValidTile(Mobile m, HarvestDefinition definition, out object toHarvest)
+        {
+            Map map = m.Map;
+            toHarvest = null;
+
+            if (m == null || map == null || map == Map.Internal)
+                return false;
+
+            for (int x = m.X - 1; x <= m.X + 1; x++)
+            {
+                for (int y = m.Y - 1; y <= m.Y + 1; y++)
+                {
+                    StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, false);
+
+                    if (tiles.Length > 0)
+                    {
+                        foreach (var tile in tiles)
+                        {
+                            int id = (tile.ID & 0x3FFF) | 0x4000;
+
+                            if (definition.Validate(id))
+                            {
+                                toHarvest = new StaticTarget(new Point3D(x, y, tile.Z), tile.ID);
+                                return true;
+                            }
+                        }
+                    }
+
+                    LandTile lt = map.Tiles.GetLandTile(x, y);
+
+                    if (definition.Validate(lt.ID))
+                    {
+                        toHarvest = new LandTarget(new Point3D(x, y, lt.Z), map);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool TryHarvestGrave(Mobile m)
+        {
+            Map map = m.Map;
+
+            if (map == null)
+                return false;
+
+            for (int x = m.X - 1; x <= m.X + 1; x++)
+            {
+                for (int y = m.Y - 1; y <= m.Y + 1; y++)
+                {
+                    StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, false);
+
+                    foreach (var tile in tiles)
+                    {
+                        int itemID = tile.ID;
+
+                        if (itemID == 0xED3 || itemID == 0xEDF || itemID == 0xEE0 || itemID == 0xEE1 || itemID == 0xEE2 || itemID == 0xEE8)
+                        {
+                            PlayerMobile player = m as PlayerMobile;
+
+                            if (player != null)
+                            {
+                                QuestSystem qs = player.Quest;
+
+                                if (qs is WitchApprenticeQuest)
+                                {
+                                    FindIngredientObjective obj = qs.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
+
+                                    if (obj != null && !obj.Completed && obj.Ingredient == Ingredient.Bones)
+                                    {
+                                        player.SendLocalizedMessage(1055037); // You finish your grim work, finding some of the specific bones listed in the Hag's recipe.
+                                        obj.Complete();
+
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool TryHarvestShrooms(Mobile m)
+        {
+            Map map = m.Map;
+
+            if (map == null)
+                return false;
+
+            for (int x = m.X - 1; x <= m.X + 1; x++)
+            {
+                for (int y = m.Y - 1; y <= m.Y + 1; y++)
+                {
+                    StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, false);
+
+                    foreach (var tile in tiles)
+                    {
+                        int itemID = tile.ID;
+
+                        if (itemID == 0xD15 || itemID == 0xD16)
+                        {
+                            PlayerMobile player = m as PlayerMobile;
+
+                            if (player != null)
+                            {
+                                QuestSystem qs = player.Quest;
+
+                                if (qs is WitchApprenticeQuest)
+                                {
+                                    FindIngredientObjective obj = qs.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
+
+                                    if (obj != null && !obj.Completed && obj.Ingredient == Ingredient.RedMushrooms)
+                                    {
+                                        player.SendLocalizedMessage(1055036); // You slice a red cap mushroom from its stem.
+                                        obj.Complete();
+
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        #endregion
     }
 }
 
@@ -534,6 +730,11 @@ namespace Server
     public interface IChopable
     {
         void OnChop(Mobile from);
+    }
+
+    public interface IHarvestTool
+    {
+        Engines.Harvest.HarvestSystem HarvestSystem { get; }
     }
 
     [AttributeUsage(AttributeTargets.Class)]

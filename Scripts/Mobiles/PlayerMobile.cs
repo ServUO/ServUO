@@ -801,6 +801,8 @@ namespace Server.Mobiles
             #region Enchanced Client
             EventSink.TargetedSkill += Targeted_Skill;
             EventSink.TargetedItemUse += Targeted_Item;
+            EventSink.EquipMacro += EquipMacro;
+            EventSink.UnequipMacro += UnequipMacro;
             #endregion
 
             if (Core.SE)
@@ -812,62 +814,115 @@ namespace Server.Mobiles
         #region Enhanced Client
         private static void Targeted_Item(TargetedItemUseEventArgs e)
         {
-            try
-            {
-                Item from = World.FindItem(e.Source.Serial);
-                Mobile to = World.FindMobile(e.Target.Serial);
-                Item toI = World.FindItem(e.Target.Serial);
+            Item from = World.FindItem(e.Source.Serial);
+            Mobile to = World.FindMobile(e.Target.Serial);
+            Item toItem = World.FindItem(e.Target.Serial);
 
-                if (from != null)
+            if (from != null)
+            {
+                if (to != null)
                 {
-                    if (to != null)
-                    {
-                        e.NetState.Mobile.TargetLocked = true;
-                        e.NetState.Mobile.Use(from);
-                        e.NetState.Mobile.Target.Invoke(e.NetState.Mobile, to);
-                        e.NetState.Mobile.TargetLocked = false;
-                    }
-                    else if (toI != null)
-                    {
-                        e.NetState.Mobile.TargetLocked = true;
-                        e.NetState.Mobile.Use(from);
-                        e.NetState.Mobile.Target.Invoke(e.NetState.Mobile, toI);
-                        e.NetState.Mobile.TargetLocked = false;
-                    }
+                    e.Mobile.TargetLocked = true;
+                    e.Mobile.Use(from);
+                    e.Mobile.Target.Invoke(e.Mobile, to);
+                    e.Mobile.TargetLocked = false;
+                }
+                else if (toItem != null)
+                {
+                    e.Mobile.TargetLocked = true;
+                    e.Mobile.Use(from);
+                    e.Mobile.Target.Invoke(e.Mobile, toItem);
+                    e.Mobile.TargetLocked = false;
                 }
             }
-            catch { }
         }
 
         private static void Targeted_Skill(TargetedSkillEventArgs e)
         {
-            try
+            Mobile from = e.Mobile;
+            int SkillId = e.SkillID;
+            Mobile to = World.FindMobile(e.Target.Serial);
+            Item toItem = World.FindItem(e.Target.Serial);
+
+            if (to != null)
             {
-                Mobile from = e.NetState.Mobile;
-                int SkillId = e.SkillID;
-                Mobile to = World.FindMobile(e.Target.Serial);
-                Item toI = World.FindItem(e.Target.Serial);
+                from.TargetLocked = true;
 
+                if (from.UseSkill(e.SkillID))
+                    from.Target.Invoke(from, to);
 
-                if (to != null)
-                {
-                    from.TargetLocked = true;
-
-                    if (from.UseSkill(e.SkillID))
-                        from.Target.Invoke(from, to);
-                    from.TargetLocked = false;
-                }
-                else if (toI != null)
-                {
-                    from.TargetLocked = true;
-
-                    if (from.UseSkill(e.SkillID))
-                        from.Target.Invoke(from, toI);
-                    from.TargetLocked = false;
-                }
+                from.TargetLocked = false;
             }
-            catch { }
+            else if (toItem != null)
+            {
+                from.TargetLocked = true;
 
+                if (from.UseSkill(e.SkillID))
+                    from.Target.Invoke(from, toItem);
+
+                from.TargetLocked = false;
+            }
+        }
+
+        public static void EquipMacro(EquipMacroEventArgs e)
+        {
+            PlayerMobile pm = e.Mobile as PlayerMobile;
+
+            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
+            {
+                Container pack = pm.Backpack;
+
+                e.List.ForEach(serial =>
+                {
+                    Item item = pack.Items.FirstOrDefault(i => i.Serial == serial);
+
+                    if (item != null)
+                    {
+                        Item toMove = pm.FindItemOnLayer(item.Layer);
+
+                        if (toMove != null)
+                        {
+                            //pack.DropItem(toMove);
+                            toMove.Internalize();
+
+                            if (!pm.EquipItem(item))
+                            {
+                                pm.EquipItem(toMove);
+                            }
+                            else
+                            {
+                                pack.DropItem(toMove);
+                            }
+                        }
+                        else
+                        {
+                            pm.EquipItem(item);
+                        }
+                    }
+                });
+            }
+        }
+
+        public static void UnequipMacro(UnequipMacroEventArgs e)
+        {
+            PlayerMobile pm = e.Mobile as PlayerMobile;
+
+            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
+            {
+                Container pack = pm.Backpack;
+
+                List<Item> worn = new List<Item>(pm.Items);
+
+                foreach (var item in worn)
+                {
+                    if (e.List.Contains((int)item.Layer))
+                    {
+                        pack.TryDropItem(pm, item, false);
+                    }
+                }
+
+                ColUtility.Free(worn);
+            }
         }
         #endregion
 
@@ -3428,69 +3483,69 @@ namespace Server.Mobiles
             		}
         	}
 
-		public override bool OnBeforeDeath()
-		{
-			NetState state = NetState;
+        public override bool OnBeforeDeath()
+        {
+            NetState state = NetState;
 
-			if (state != null)
-			{
-				state.CancelAllTrades();
-			}
+            if (state != null)
+            {
+                state.CancelAllTrades();
+            }
 
-			if (Criminal)
-                		BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
+            if (Criminal)
+                BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
 
             DropHolding();
 
-			if (Core.AOS && Backpack != null && !Backpack.Deleted)
-			{
-				var ilist = Backpack.FindItemsByType<Item>(FindItems_Callback);
+            if (Core.AOS && Backpack != null && !Backpack.Deleted)
+            {
+                var ilist = Backpack.FindItemsByType<Item>(FindItems_Callback);
 
-				for (int i = 0; i < ilist.Count; i++)
-				{
-					Backpack.AddItem(ilist[i]);
-				}
-			}
+                for (int i = 0; i < ilist.Count; i++)
+                {
+                    Backpack.AddItem(ilist[i]);
+                }
+            }
 
-			m_EquipSnapshot = new List<Item>(Items);
+            m_EquipSnapshot = new List<Item>(Items);
 
-			m_NonAutoreinsuredItems = 0;
-			m_InsuranceCost = 0;
-			m_InsuranceAward = base.FindMostRecentDamager(false);
+            m_NonAutoreinsuredItems = 0;
+            m_InsuranceCost = 0;
+            m_InsuranceAward = base.FindMostRecentDamager(false);
 
-			if (m_InsuranceAward is BaseCreature)
-			{
-				Mobile master = ((BaseCreature)m_InsuranceAward).GetMaster();
+            if (m_InsuranceAward is BaseCreature)
+            {
+                Mobile master = ((BaseCreature)m_InsuranceAward).GetMaster();
 
-				if (master != null)
-				{
-					m_InsuranceAward = master;
-				}
-			}
+                if (master != null)
+                {
+                    m_InsuranceAward = master;
+                }
+            }
 
-			if (m_InsuranceAward != null && (!m_InsuranceAward.Player || m_InsuranceAward == this))
-			{
-				m_InsuranceAward = null;
-			}
+            if (m_InsuranceAward != null && (!m_InsuranceAward.Player || m_InsuranceAward == this))
+            {
+                m_InsuranceAward = null;
+            }
 
-			if (m_InsuranceAward is PlayerMobile)
-			{
-				((PlayerMobile)m_InsuranceAward).m_InsuranceBonus = 0;
-			}
+            if (m_InsuranceAward is PlayerMobile)
+            {
+                ((PlayerMobile)m_InsuranceAward).m_InsuranceBonus = 0;
+            }
 
-			if (m_ReceivedHonorContext != null)
-			{
-				m_ReceivedHonorContext.OnTargetKilled();
-			}
-			if (m_SentHonorContext != null)
-			{
-				m_SentHonorContext.OnSourceKilled();
-			}
+            if (m_ReceivedHonorContext != null)
+            {
+                m_ReceivedHonorContext.OnTargetKilled();
+            }
+            if (m_SentHonorContext != null)
+            {
+                m_SentHonorContext.OnSourceKilled();
+            }
 
-			RecoverAmmo();
+            RecoverAmmo();
 
-			return base.OnBeforeDeath();
-		}
+            return base.OnBeforeDeath();
+        }
 
 		private bool CheckInsuranceOnDeath(Item item)
 		{

@@ -15,11 +15,12 @@ namespace Server.Engines.Quests
             AddObjective(new QuestionAndAnswerObjective(4, m_EntryTable));
         }
 
+        public override bool ShowDescription { get { return false; } }
+
         public override QuestChain ChainID { get { return QuestChain.CloakOfHumility; } }
         public override Type NextQuest { get { return typeof(CommunityServiceMuseumQuest); } }
 
-        //The Question
-        public override object Title { get { return 1076081; } }
+        public override object Title { get { return 1075850; } } // Know Thy Humility
 
         /*Greetings my friend! My name is Gareth, and I represent a group of citizens who wish to rejuvenate interest in our
          * kingdom's noble heritage. 'Tis our belief that one of Britannia's greatest triumphs was the institution of the Virtues,

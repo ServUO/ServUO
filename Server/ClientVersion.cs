@@ -53,6 +53,11 @@ namespace Server
 			m_Patch = pat;
 			m_Type = type;
 
+            if (m_Type != ClientType.SA && m_Major >= 67)
+            {
+                m_Type = ClientType.SA;
+            }
+
 			m_SourceString = _ToStringImpl();
 		}
 
@@ -182,7 +187,7 @@ namespace Server
 					}
 				}
 
-                if (m_Major >= 6 && m_Revision >= 14 && m_Patch >= 3)
+                if (m_Major >= 67)
                 {
                     m_Type = ClientType.SA;
                 }

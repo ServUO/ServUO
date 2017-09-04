@@ -5,7 +5,7 @@ using Server.Engines.Harvest;
 
 namespace Server.Items
 {
-    public abstract class BasePoleArm : BaseMeleeWeapon
+    public abstract class BasePoleArm : BaseMeleeWeapon, IHarvestTool
     {
         public BasePoleArm(int itemID)
             : base(itemID)
