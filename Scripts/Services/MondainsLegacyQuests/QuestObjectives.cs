@@ -183,28 +183,44 @@ namespace Server.Engines.Quests
 
     public class SlayObjective : BaseObjective
     {
-        private Type m_Creature;
+        private Type[] m_Creatures;
         private string m_Name;
         private Region m_Region;
+
         public SlayObjective(Type creature, string name, int amount)
-            : this(creature, name, amount, null)
+            : this(new Type[] { creature }, name, amount, null, 0)
         {
         }
 
         public SlayObjective(Type creature, string name, int amount, string region)
-            : this(creature, name, amount, region, 0)
+            : this(new Type[] { creature }, name, amount, region, 0)
         {
         }
 
         public SlayObjective(Type creature, string name, int amount, int seconds)
-            : this(creature, name, amount, null, seconds)
+            : this(new Type[] { creature }, name, amount, null, seconds)
         {
         }
 
-        public SlayObjective(Type creature, string name, int amount, string region, int seconds)
+        public SlayObjective(string name, int amount, params Type[] creatures)
+            : this(creatures, name, amount, null, 0)
+        {
+        }
+
+        public SlayObjective(string name, int amount, string region, params Type[] creatures)
+            : this(creatures, name, amount, region, 0)
+        {
+        }
+
+        public SlayObjective(string name, int amount, int seconds, params Type[] creatures)
+            : this(creatures, name, amount, null, seconds)
+        {
+        }
+
+        public SlayObjective(Type[] creatures, string name, int amount, string region, int seconds)
             : base(amount, seconds)
-        { 
-            m_Creature = creature;
+        {
+            m_Creatures = creatures;
             m_Name = name;
 
             if (region != null)
@@ -216,15 +232,15 @@ namespace Server.Engines.Quests
             }
         }
 
-        public Type Creature
+        public Type[] Creatures
         { 
             get
             {
-                return m_Creature;
+                return m_Creatures;
             }
             set
             {
-                m_Creature = value;
+                m_Creatures = value;
             }
         }
         public string Name
@@ -249,6 +265,7 @@ namespace Server.Engines.Quests
                 m_Region = value;
             }
         }
+
         public virtual void OnKill(Mobile killed)
         {
             if (Completed)
@@ -259,15 +276,18 @@ namespace Server.Engines.Quests
 
         public virtual bool IsObjective(Mobile mob)
         { 
-            if (m_Creature == null)
+            if (m_Creatures == null)
                 return false;
-		
-            if (m_Creature.IsAssignableFrom(mob.GetType()))
+
+            foreach (var type in m_Creatures)
             {
-                if (m_Region != null && !m_Region.Contains(mob.Location))
-                    return false;
-					
-                return true;
+                if (type.IsAssignableFrom(mob.GetType()))
+                {
+                    if (m_Region != null && !m_Region.Contains(mob.Location))
+                        return false;
+
+                    return true;
+                }
             }
 			
             return false;
@@ -294,7 +314,7 @@ namespace Server.Engines.Quests
 
         public override Type Type()
         {
-            return m_Creature;
+            return m_Creatures != null && m_Creatures.Length > 0 ? m_Creatures[0] : null;
         }
 
         public override void Serialize(GenericWriter writer)

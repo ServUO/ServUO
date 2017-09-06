@@ -4256,7 +4256,7 @@ namespace Server.Mobiles
             }
         }
 
-        /*public override void DoHarmful(IDamageable damageable, bool indirect)
+        public override void DoHarmful(IDamageable damageable, bool indirect)
         {
             base.DoHarmful(damageable, indirect);
 
@@ -4270,39 +4270,13 @@ namespace Server.Mobiles
                 return;
             }
 
-            var list = Aggressors;
+            Mobile master = GetMaster();
 
-            for (int i = 0; i < list.Count; ++i)
+            if (master != null)
             {
-                AggressorInfo ai = list[i];
-
-                if (ai.Attacker == target)
-                {
-                    return;
-                }
+                master.OnHarmfulAction(target, master.IsHarmfulCriminal(target));
             }
-
-            list = Aggressed;
-
-            for (int i = 0; i < list.Count; ++i)
-            {
-                AggressorInfo ai = list[i];
-
-                if (ai.Defender == target)
-                {
-                    if (m_ControlMaster != null && m_ControlMaster.Player && m_ControlMaster.CanBeHarmful(target, false))
-                    {
-                        m_ControlMaster.DoHarmful(target, true);
-                    }
-                    else if (m_SummonMaster != null && m_SummonMaster.Player && m_SummonMaster.CanBeHarmful(target, false))
-                    {
-                        m_SummonMaster.DoHarmful(target, true);
-                    }
-
-                    return;
-                }
-            }
-        }*/
+        }
 
         private static Mobile m_NoDupeGuards;
 

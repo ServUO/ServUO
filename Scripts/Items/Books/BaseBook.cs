@@ -413,7 +413,7 @@ namespace Server.Items
                 // send for new page
                 state.Send(new BookPageDetails(this, page, m_Pages[index]));
             }
-            else
+            else if (m_Writable && state.Mobile != null && state.Mobile.InRange(GetWorldLocation(), 1))
             {
                 // updates after page is moved away from
                 if (lineCount <= 19)
