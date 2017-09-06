@@ -658,6 +658,11 @@
     <Compile Include="Items\Artifacts\Equipment\Weapons\Glenda.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\BowOfTheInfiniteSwarm.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\TheDeceiver.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\BaseSpecialScrollBook.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\PowerScrollBook.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\ScrollOfAlacrityBook.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\ScrollOfTranscendenceBook.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\SpecialScrollBookGump.cs" />
     <Compile Include="Items\Consumables\DeliciouslyTastyTreat.cs" />
     <Compile Include="Items\Consumables\IrresistiblyTastyTreat.cs" />
     <Compile Include="Items\Consumables\TastyTreat.cs" />

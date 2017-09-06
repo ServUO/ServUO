@@ -259,21 +259,21 @@ namespace Server.Items
 			}
 		}
 
-		public static void BaseContentChange( BaseBook book, NetState state, PacketReader pvSrc )
-		{
-			Mobile from = state.Mobile;
+        public static void BaseContentChange(BaseBook book, NetState state, PacketReader pvSrc)
+        {
+            Mobile from = state.Mobile;
 
-			if ( book == null || !book.Writable || !from.InRange( book.GetWorldLocation(), 1 ) )
-				return;
+            if (book == null)
+                return;
 
-			int pageCount = pvSrc.ReadUInt16();
+            int pageCount = pvSrc.ReadUInt16();
 
             if (state.IsEnhancedClient && pageCount == 1)
             {
                 book.ContentChangeEC(state, pvSrc);
                 return;
             }
-            else
+            else if (book.Writable && from.InRange(book.GetWorldLocation(), 1))
             {
                 if (pageCount > book.PagesCount)
                     return;
@@ -309,7 +309,7 @@ namespace Server.Items
                     }
                 }
             }
-		}
+        }
 #endif
 	}
 

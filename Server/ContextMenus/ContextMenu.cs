@@ -104,15 +104,25 @@ namespace Server.ContextMenus
         /// <returns>actual index of pre-desribed index from client</returns>
         public int GetIndexEC(int index)
         {
-            // Bank, Bulk Order Info
-            if (index == 0x0078 || index == 0x0193)
+            int number = index;
+
+            switch (index)
             {
-                return 1;
+                default: break;
+                case 0x0078: number = 3006105; break;     // Bank
+                case 0x0193: number = 3006152; break;     // Bulk Order Info
+                case 0x01A3: number = 1152294; break;   // Bribe
             }
-            // Bribe
-            else if (index == 0x1A3)
+
+            if (index >= 0x64)
             {
-                return 2;
+                for (int i = 0; i < m_Entries.Length; i++)
+                {
+                    if (m_Entries[i].Number == number)
+                    {
+                        return i;
+                    }
+                }
             }
 
             return index;
