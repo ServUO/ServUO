@@ -4274,7 +4274,7 @@ namespace Server.Mobiles
 
             if (master != null)
             {
-                master.OnHarmfulAction(target, master.IsHarmfulCriminal(target));
+                target.OnHarmfulAction(master, target.IsHarmfulCriminal(master));
             }
         }
 
