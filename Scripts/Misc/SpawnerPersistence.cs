@@ -65,25 +65,11 @@ namespace Server
             Utility.PopColor();
         }
 
-        private static void CheckSmartSpawn(Type check, bool subclasses)
-        {
-            int count = 0;
-
-            List<XmlSpawner> spawners = World.Items.Values.OfType<XmlSpawner>().Where(s => s.SmartSpawning).ToList();
-
-            foreach (var spawner in spawners)
-            {
-                if (CheckSmartSpawn(spawner, check, subclasses))
-                    count++;
-            }
-
-            ColUtility.Free(spawners);
-
-            ToConsole(String.Format("Smart Spawn Removal: {0} spawners [type {1}] smart spawning disabled.", count.ToString(), check.Name));
-        }
-
         public static Dictionary<Type, Type[]> QuestQuesterTypes;
 
+        /// <summary>
+        /// Any quests that have questers as null, will assign the quester. Some quests don't have questers...
+        /// </summary>
         public static void CheckQuestQuesters()
         {
             ToConsole("Assigning Questers where null...");
@@ -143,6 +129,28 @@ namespace Server
             ToConsole(String.Format("Quester Re-assignment: {0} quests re-assigned quester type. Some quester types may still be null. These quests will need to be quit.", count.ToString()), ConsoleColor.DarkRed);
         }
 
+        /// <summary>
+        /// Disables SmartSpawning on XmlSpawners for any spawners that have paramater 'check' as a spawn object type
+        /// </summary>
+        /// <param name="check">System.Type to look for in SpawnObject lines</param>
+        /// <param name="subclasses">Can the spawn object type derive from check?</param>
+        private static void CheckSmartSpawn(Type check, bool subclasses)
+        {
+            int count = 0;
+
+            List<XmlSpawner> spawners = World.Items.Values.OfType<XmlSpawner>().Where(s => s.SmartSpawning).ToList();
+
+            foreach (var spawner in spawners)
+            {
+                if (CheckSmartSpawn(spawner, check, subclasses))
+                    count++;
+            }
+
+            ColUtility.Free(spawners);
+
+            ToConsole(String.Format("Smart Spawn Removal: {0} spawners [type {1}] smart spawning disabled.", count.ToString(), check.Name));
+        }
+
         private static bool CheckSmartSpawn(XmlSpawner spawner, Type check, bool subclasses)
         {
             foreach (var obj in spawner.SpawnObjects)
@@ -166,6 +174,12 @@ namespace Server
             return false;
         }
 
+        /// <summary>
+        /// Replaces a certain string value with another in any XmlSpawner SpawnObject line
+        /// </summary>
+        /// <param name="current">What we're looing for</param>
+        /// <param name="replace">What we're replacing it with</param>
+        /// <param name="check">if the SpawnObject line contains check, we ignore this line altogether</param>
         public static void Relpace(string current, string replace, string check)
         {
             int count = 0;
@@ -179,6 +193,13 @@ namespace Server
             ToConsole(String.Format("Spawn Replacement: {0} spawners replaced [{1} replaced with {2}].", count.ToString(), current, replace));
         }
 
+        /// <summary>
+        /// Replaces a certain string value with another in any XmlSpawner SpawnObject line
+        /// </summary>
+        /// <param name="current">What we're looing for</param>
+        /// <param name="replace">What we're replacing it with</param>
+        /// <param name="name">executes replace only if spawner name contains name</param>
+        /// <param name="check">if the SpawnObject line contains check, we ignore this line altogether</param>
         public static void Relpace(string current, string replace, string name, string check)
         {
             int count = 0;
@@ -215,6 +236,11 @@ namespace Server
             return replaced;
         }
 
+        /// <summary>
+        /// Removes a SpawnerObject string, either the string or entire line
+        /// </summary>
+        /// <param name="toRemove">string to remove from line</param>
+        /// <param name="entireLine">if toRemove is found, this removes the entire line</param>
         public static void Remove(string toRemove, bool entireLine = true)
         {
             int count = 0;
