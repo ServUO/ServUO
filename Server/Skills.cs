@@ -575,6 +575,8 @@ namespace Server
 
         public bool IsMastery { get; set; }
 
+        public int Localization { get { return 1044060 + SkillID; } }
+
         private static SkillInfo[] m_Table = new SkillInfo[58]
 		{
 			new SkillInfo(0, "Alchemy", 0.0, 5.0, 5.0, "Alchemist", null, 0.0, 0.5, 0.5, 1.0, StatCode.Int, StatCode.Dex),

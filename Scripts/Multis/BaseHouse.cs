@@ -2126,7 +2126,7 @@ namespace Server.Multis
             {
                 m.SendLocalizedMessage(1010550); // This is already locked down and cannot be secured.
             }
-            else if (!(item is Container))
+            else if (!(item is Container) || item is BaseSpecialScrollBook)
             {
                 LockDown(m, item);
             }
@@ -3356,6 +3356,9 @@ namespace Server.Multis
                     Item item = kvp.Key;
 
                     if (item is Server.Engines.Plants.Seed && item.Parent is Server.Engines.Plants.SeedBox)
+                        continue;
+
+                    if (item is SpecialScroll && item.Parent is BaseSpecialScrollBook)
                         continue;
 
                     if (!(item is Container))
