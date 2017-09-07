@@ -81,13 +81,13 @@ namespace Server.Engines.Quests
             }
             else
             {
-                if (m_Quest == null)
+                if (m_Quest != null && !m_Quest.ShowDescription)
                 {
-                    AddImage(379, 60, 0x15A9);
+                    AddImage(379, 60, 0x15E8); // world image
                 }
-                else if (!m_Quest.ShowDescription)
+                else
                 {
-                    AddImage(379, 60, 0x15E8);
+                    AddImage(379, 60, 0x15A9); // uo image
                 }
             }                
 						
@@ -162,6 +162,9 @@ namespace Server.Engines.Quests
             for (int i = m_From.Quests.Count - 1; i >= 0; i--)
             {
                 BaseQuest quest = m_From.Quests[i];
+
+                if (!quest.ShowDescription)
+                    continue;
 				
                 AddHtmlObject(98, offset, 270, 21, quest.Title, quest.Failed ? 0x3C00 : White, false, false);					
                 AddButton(368, offset, 0x26B0, 0x26B1, ButtonOffset + i, GumpButtonType.Reply, 0);	
