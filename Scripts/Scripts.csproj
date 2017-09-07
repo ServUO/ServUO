@@ -11768,6 +11768,7 @@
     <Compile Include="Skills\RemoveTrap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Skills\SkillCategory.cs" />
     <Compile Include="Skills\Snooping.cs">
       <SubType>Code</SubType>
     </Compile>
