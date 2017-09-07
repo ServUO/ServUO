@@ -207,6 +207,14 @@ namespace Server.Engines.VeteranRewards
                 return false;
             }
 
+            public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+            {
+                base.GetContextMenuEntries(from, list);
+
+                if(Addon is DaviesLockerAddon)
+                    SetSecureLevelEntry.AddTo(from, (DaviesLockerAddon)Addon, list);
+            }
+
             public DaviesLockerComponent(Serial serial)
                 : base(serial)
             {

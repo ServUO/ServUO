@@ -126,6 +126,7 @@ namespace Server.Engines.Quests
         private List<BaseReward> m_Rewards;
         private PlayerMobile m_Owner;
         private object m_Quester;
+        private Type m_QuesterType;
         private Timer m_Timer;
 
         public List<BaseObjective> Objectives
@@ -165,6 +166,21 @@ namespace Server.Engines.Quests
             set
             {
                 m_Quester = value;
+
+                if (m_Quester != null)
+                    m_QuesterType = m_Quester.GetType();
+            }
+        }
+
+        public Type QuesterType
+        {
+            get
+            {
+                return m_QuesterType;
+            }
+            set
+            {
+                m_QuesterType = value;
             }
         }
 		
@@ -530,8 +546,10 @@ namespace Server.Engines.Quests
 		
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version	
-			
+            writer.WriteEncodedInt((int)1); // version	
+
+            writer.Write(m_QuesterType == null ? null : m_QuesterType.Name);
+
             if (m_Quester == null)
                 writer.Write((int)0x0);
             else if (m_Quester is Mobile)
@@ -556,7 +574,15 @@ namespace Server.Engines.Quests
         public virtual void Deserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();
-			
+
+            if (version > 0)
+            {
+                string questerType = reader.ReadString();
+
+                if(questerType != null)
+                    m_QuesterType = ScriptCompiler.FindTypeByName(questerType);
+            }
+
             switch ( reader.ReadInt() )
             {
                 case 0x0:
@@ -581,6 +607,11 @@ namespace Server.Engines.Quests
                 BaseQuestItem item = (BaseQuestItem)m_Quester;
 				
                 item.Quest = this;
+            }
+
+            if (version == 0 && m_Quester != null)
+            {
+                m_QuesterType = m_Quester.GetType();
             }
 			
             for (int i = 0; i < m_Objectives.Count; i ++)
