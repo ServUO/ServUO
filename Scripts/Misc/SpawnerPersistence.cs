@@ -11,7 +11,7 @@ namespace Server
 {
     public class SpawnerPresistence
     {
-        public static string FilePath = Path.Combine("Saves", "SpawnerPresistence.bin");
+        public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
 
         private static int _Version;
         public static int Version { get { return _Version; } }
