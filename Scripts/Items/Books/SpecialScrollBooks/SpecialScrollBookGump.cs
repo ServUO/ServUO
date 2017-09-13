@@ -93,6 +93,7 @@ namespace Server.Gumps
 
             int x = 45;
             int y = 55;
+            int buttonX = 30;
             int split = list.Count >= 9 ? list.Count / 2 : -1;
 
             for (int i = 0; i < list.Count; i++)
@@ -103,13 +104,14 @@ namespace Server.Gumps
                 {
                     x = 205;
                     y = 55;
+                    buttonX = 190;
                 }
 
                 AddHtmlLocalized(x, y, 110, 20, SkillInfo.Table[(int)skill].Localization, false, false);
 
                 if (HasScroll(skill))
                 {
-                    AddButton(30, y + 4, 2103, 2104, 100 + i, GumpButtonType.Reply, 0);
+                    AddButton(buttonX, y + 4, 2103, 2104, 100 + i, GumpButtonType.Reply, 0);
                 }
 
                 y += 15;

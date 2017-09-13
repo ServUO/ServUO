@@ -259,6 +259,7 @@ namespace Server.Engines.Events
                 return Poison.Regular;
             }
         }
+
         public override void GenerateLoot()
         {
             switch( Utility.Random(10) )
