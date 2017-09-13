@@ -6,6 +6,11 @@ namespace Server.Mobiles
     [CorpseName("an ant lion corpse")]
     public class AntLion : BaseCreature
     {
+        private DateTime _NextTunnel;
+        private Map _StartTunnelMap;
+        private Point3D _StartTunnelLoc;
+        private bool _Tunneling;
+
         [Constructable]
         public AntLion()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -63,10 +68,12 @@ namespace Server.Mobiles
                     orepile = new BronzeOre();
                     break;
             }
+
             orepile.Amount = Utility.RandomMinMax(1, 10);
             orepile.ItemID = 0x19B9;
             PackItem(orepile);
-            // TODO: skeleton
+
+            PackBones();
 			
 			if ( 0.07 >= Utility.RandomDouble() )
 			{
@@ -77,7 +84,100 @@ namespace Server.Mobiles
 					case 2: PackItem( new UnknownRogueSkeleton() ); break;
 				}
 			}					
-        }		
+        }
+
+        public override bool HasBreath { get { return true; } }
+        public override int BreathPoisonDamage { get { return 100; } }
+        public override int BreathFireDamage { get { return 0; } }
+        public override int BreathEffectHue { get { return 0x3F; } }
+        public override int BreathEffectSound { get { return 0; } }
+        public override int BreathAngerSound { get { return 0; } }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+
+            if (!(Combatant is Mobile))
+                return;
+            
+            Mobile combatant = Combatant as Mobile;
+
+            if (_NextTunnel < DateTime.UtcNow && combatant.InRange(Location, 10))
+            {
+                _NextTunnel = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 40));
+                DoTunnel(combatant);
+            }
+        }
+
+        private void DoTunnel(Mobile combatant)
+        {
+            PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3B3, false, "* The ant lion begins tunneling into the ground *");
+            Effects.SendTargetParticles(this, 0x36B0, 20, 10, 1734, 0, 5044, EffectLayer.Head, 0);
+
+            Frozen = true;
+            _Tunneling = true;
+            _StartTunnelLoc = Location;
+            _StartTunnelMap = Map;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
+                {
+                    if (_Tunneling)
+                    {
+                        Hidden = true;
+                        Blessed = true;
+
+                        Item item = new InternalItem(3892);
+                        item.MoveToWorld(Location, Map);
+
+                        item = new InternalItem(4967);
+                        item.MoveToWorld(Location, Map);
+
+                        Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
+                            {
+                                Hidden = false;
+                                Blessed = false;
+
+                                if (!combatant.Alive || !combatant.InRange(_StartTunnelLoc, 20) || combatant.Map != _StartTunnelMap)
+                                {
+                                    MoveToWorld(_StartTunnelLoc, _StartTunnelMap);
+                                }
+                                else
+                                {
+                                    MoveToWorld(combatant.Location, combatant.Map);
+                                    AOS.Damage(combatant, this, 25, 70, 0, 0, 30, 0);
+
+                                    Item item2 = new InternalItem(3892);
+                                    item2.MoveToWorld(Location, Map);
+
+                                    item2 = new InternalItem(4967);
+                                    item2.MoveToWorld(Location, Map);
+                                }
+
+                                _StartTunnelLoc = Point3D.Zero;
+                                _StartTunnelMap = null;
+                                _Tunneling = false;
+                                Frozen = false;
+                            });
+                    }
+                });
+        }
+
+        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        {
+            if (_Tunneling && !Hidden && 0.25 > Utility.RandomDouble())
+            {
+                PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3B3, false, "* You interrupt the ant lion's digging! *");
+
+                Frozen = false;
+                Hidden = false;
+                Blessed = false;
+                _Tunneling = false;
+                _StartTunnelLoc = Point3D.Zero;
+                _StartTunnelMap = null;
+            }
+
+            base.Damage(amount, from, informMount, checkDisrupt);
+        }
 
         public AntLion(Serial serial)
             : base(serial)
@@ -124,6 +224,37 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+        }
+
+        private class InternalItem : Item
+        {
+            public override int LabelNumber { get { return 1027025; } }
+
+            public InternalItem(int id)
+                : base(id)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(10), Delete);
+                Hue = 1;
+            }
+
+            public InternalItem(Serial serial)
+                : base(serial)
+            {
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                base.Serialize(writer);
+                writer.Write((int)0);
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                base.Deserialize(reader);
+                int version = reader.ReadInt();
+
+                Delete();
+            }
         }
     }
 }

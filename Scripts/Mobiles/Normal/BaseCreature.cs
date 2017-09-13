@@ -5128,6 +5128,46 @@ namespace Server.Mobiles
             PackItem(reg);
         }
 
+        public void PackBodyPart()
+        {
+            switch (Utility.Random(5))
+            {
+                case 0: PackItem(new LeftArm()); break;
+                case 1: PackItem(new RightArm()); break;
+                case 2: PackItem(new Torso()); break;
+                case 3: PackItem(new RightLeg()); break;
+                case 4: PackItem(new LeftLeg()); break;
+            }
+        }
+
+        public void PackBones()
+        {
+            switch (Utility.Random(6))
+            {
+                case 0: PackItem(new Bone()); break;
+                case 1: PackItem(new RibCage()); break;
+                case 2: PackItem(new RibCage()); break;
+                case 3: PackItem(new BonePile()); break;
+                case 4: PackItem(new BonePile()); break;
+                case 5: PackItem(new BonePile()); break;
+            }
+        }
+
+        public void PackBodyPartOrBones()
+        {
+            switch (Utility.Random(8))
+            {
+                case 0: PackItem(new LeftArm()); break;
+                case 1: PackItem(new RightArm()); break;
+                case 2: PackItem(new Torso()); break;
+                case 3: PackItem(new RightLeg()); break;
+                case 4: PackItem(new LeftLeg()); break;
+                case 5: PackItem(new Bone()); break;
+                case 6: PackItem(new RibCage()); break;
+                case 7: PackItem(new BonePile()); break;
+            }
+        }
+
         public void PackItem(Item item)
         {
             if (Summoned || item == null)

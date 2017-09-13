@@ -43,16 +43,7 @@ namespace Server.Mobiles
 			Fame = 500;
 			Karma = -500;
 
-			switch ( Utility.Random( 10 ) )
-			{
-				case 0: PackItem( new LeftArm() ); break;
-				case 1: PackItem( new RightArm() ); break;
-				case 2: PackItem( new Torso() ); break;
-				case 3: PackItem( new Bone() ); break;
-				case 4: PackItem( new RibCage() ); break;
-				case 5: PackItem( new RibCage() ); break;
-				case 6: PackItem( new BonePile() ); break;
-			}
+            PackBodyPartOrBones();
 		}
 
 		public Rotworm( Serial serial )
