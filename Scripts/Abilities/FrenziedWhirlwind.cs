@@ -46,18 +46,16 @@ namespace Server.Items
             List<Mobile> targets = new List<Mobile>();
 
             IPooledEnumerable eable = attacker.GetMobilesInRange(2);
+
             foreach (Mobile m in eable)
             {
                 if (m != attacker && SpellHelper.ValidIndirectTarget(attacker, m))
                 {
-                    if (m == null || m.Deleted || m.Map != attacker.Map || !m.Alive || !attacker.CanSee(m) || !attacker.CanBeHarmful(m))
+                    if (m == null || m.Deleted || m.Map != attacker.Map || !m.Alive || !attacker.CanSee(m) ||
+                        !attacker.CanBeHarmful(m) || !attacker.InLOS(m))
                         continue;
 
-                    if (!attacker.InRange(m, weapon.MaxRange))
-                        continue;
-
-                    if (attacker.InLOS(m))
-                        targets.Add(m);
+                    targets.Add(m);
                 }
             }
             eable.Free();
@@ -70,19 +68,17 @@ namespace Server.Items
                 attacker.FixedEffect(0x3728, 10, 15);
                 attacker.PlaySound(0x2A1);
 
-                for (int i = 0; i < targets.Count; ++i)
+                if (m_Registry.ContainsKey(attacker))
                 {
-                    Mobile m = targets[i];
-                    attacker.DoHarmful(m, true);
+                    RemoveFromRegistry(attacker);
+                }
 
-                    if (m_Registry.ContainsKey(m) && m_Registry[m] != null)
-                        m_Registry[m].Stop();
+                m_Registry[attacker] = new InternalTimer(attacker, targets);
 
-                    Timer t = new InternalTimer(attacker, m);
-                    t.Start();
-                    m_Registry[m] = t;
-
-                    m.Send(SpeedControl.WalkSpeed);
+                if (defender is Server.Mobiles.PlayerMobile)
+                {
+                    defender.Send(SpeedControl.WalkSpeed);
+                    Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(2), mob => mob.Send(SpeedControl.Disable), defender);
                 }
             }
         }
@@ -90,48 +86,60 @@ namespace Server.Items
         public static void RemoveFromRegistry(Mobile from)
         {
             if (m_Registry.ContainsKey(from))
+            {
+                m_Registry[from].Stop();
                 m_Registry.Remove(from);
-
-            Timer.DelayCall(TimeSpan.FromSeconds(2), () => from.Send(SpeedControl.Disable));
+            }
         }
 
         private class InternalTimer : Timer
         {
             private Mobile m_Attacker;
-            private Mobile m_Defender;
+            private List<Mobile> m_List;
+            private long m_Start;
 
-            public InternalTimer(Mobile attacker, Mobile defender)
-                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+            public InternalTimer(Mobile attacker, List<Mobile> list)
+                : base(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(500))
             {
                 m_Attacker = attacker;
-                m_Defender = defender;
+                m_List = list;
 
-                DoHit();
+                m_Start = Core.TickCount;
+
                 Priority = TimerPriority.TwentyFiveMS;
+                DoHit();
+
+                Start();
             }
 
             protected override void OnTick()
             {
-                if (m_Defender.Alive && m_Attacker.Alive)
+                if (m_Attacker.Alive)
                     DoHit();
 
-                Server.Items.FrenziedWhirlwind.RemoveFromRegistry(m_Defender);
-                Stop();
+                if (!m_Attacker.Alive || m_Start + 2000 < Core.TickCount)
+                {
+                    ColUtility.Free(m_List);
+                    Server.Items.FrenziedWhirlwind.RemoveFromRegistry(m_Attacker);
+                }
             }
 
             private void DoHit()
             {
-                if (m_Attacker.InRange(m_Defender.Location, 2))
+                foreach (Mobile m in m_List)
                 {
-                    m_Attacker.FixedEffect(0x3728, 10, 15);
-                    m_Attacker.PlaySound(0x2A1);
+                    if (m_Attacker.InRange(m.Location, 2) && m.Alive && m.Map == m_Attacker.Map)
+                    {
+                        m_Attacker.FixedEffect(0x3728, 10, 15);
+                        m_Attacker.PlaySound(0x2A1);
 
-                    int amount = (int)(10.0 * ((Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value) - 50.0) / 70.0 + 5));
+                        int amount = (int)(10.0 * ((Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value) - 50.0) / 70.0 )) + 5;
 
-                    AOS.Damage(m_Defender, m_Attacker, amount, 100, 0, 0, 0, 0);
+                        AOS.Damage(m, m_Attacker, amount, 100, 0, 0, 0, 0);
 
-                    m_Attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
-                    m_Defender.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!
+                        //m_Attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
+                        //m_Defender.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!
+                    }
                 }
             }
         }
