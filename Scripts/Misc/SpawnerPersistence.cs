@@ -68,6 +68,7 @@ namespace Server
             Utility.PopColor();
         }
 
+        #region Version 0
         public static Dictionary<Type, Type[]> QuestQuesterTypes;
 
         /// <summary>
@@ -176,6 +177,7 @@ namespace Server
 
             return false;
         }
+        #endregion
 
         /// <summary>
         /// Replaces a certain string value with another in any XmlSpawner SpawnObject line
