@@ -86,9 +86,8 @@ namespace Server.Items
                 {
                     defender.Send(SpeedControl.WalkSpeed);
                     BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1152144, TimeSpan.FromSeconds(2.0), defender));
+                    Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(2), mob => mob.Send(SpeedControl.Disable), defender);
                 }
-
-                m_Registry[attacker] = new InternalTimer(attacker, targets);
             }
         }
 
