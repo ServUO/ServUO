@@ -122,22 +122,22 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        public virtual Dictionary<SkillCategory, List<SkillName>> SkillInfo { get { return null; } }
+        public virtual Dictionary<SkillCat, List<SkillName>> SkillInfo { get { return null; } }
         public virtual Dictionary<int, double> ValueInfo { get { return null; } }
 
-        public static int GetCategoryLocalization(SkillCategory category)
+        public static int GetCategoryLocalization(SkillCat category)
         {
             switch (category)
             {
                 default:
-                case SkillCategory.None: return 0;
-                case SkillCategory.Miscellaneous: return 1078596;
-                case SkillCategory.Combat: return 1078592;
-                case SkillCategory.TradeSkills: return 1078591;
-                case SkillCategory.Magic: return 1078593;
-                case SkillCategory.Wilderness: return 1078595;
-                case SkillCategory.Thievery: return 1078594;
-                case SkillCategory.Bard: return 1078590;
+                case SkillCat.None: return 0;
+                case SkillCat.Miscellaneous: return 1078596;
+                case SkillCat.Combat: return 1078592;
+                case SkillCat.TradeSkills: return 1078591;
+                case SkillCat.Magic: return 1078593;
+                case SkillCat.Wilderness: return 1078595;
+                case SkillCat.Thievery: return 1078594;
+                case SkillCat.Bard: return 1078590;
             }
         }
     }

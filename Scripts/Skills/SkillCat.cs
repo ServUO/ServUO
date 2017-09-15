@@ -2,7 +2,7 @@ using System;
 
 namespace Server
 {
-    public enum SkillCategory
+    public enum SkillCat
     {
         None,
         Miscellaneous,
