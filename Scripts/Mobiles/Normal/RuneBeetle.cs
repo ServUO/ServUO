@@ -13,77 +13,45 @@ namespace Server.Mobiles
         public RuneBeetle()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a rune beetle";
-            this.Body = 244;
+            Name = "a rune beetle";
+            Body = 244;
 
-            this.SetStr(401, 460);
-            this.SetDex(121, 170);
-            this.SetInt(376, 450);
+            SetStr(401, 460);
+            SetDex(121, 170);
+            SetInt(376, 450);
 
-            this.SetHits(301, 360);
+            SetHits(301, 360);
 
-            this.SetDamage(15, 22);
+            SetDamage(15, 22);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Poison, 10);
-            this.SetDamageType(ResistanceType.Energy, 70);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Poison, 10);
+            SetDamageType(ResistanceType.Energy, 70);
 
-            this.SetResistance(ResistanceType.Physical, 40, 65);
-            this.SetResistance(ResistanceType.Fire, 35, 50);
-            this.SetResistance(ResistanceType.Cold, 35, 50);
-            this.SetResistance(ResistanceType.Poison, 75, 95);
-            this.SetResistance(ResistanceType.Energy, 40, 60);
+            SetResistance(ResistanceType.Physical, 40, 65);
+            SetResistance(ResistanceType.Fire, 35, 50);
+            SetResistance(ResistanceType.Cold, 35, 50);
+            SetResistance(ResistanceType.Poison, 75, 95);
+            SetResistance(ResistanceType.Energy, 40, 60);
 
-            this.SetSkill(SkillName.EvalInt, 100.1, 125.0);
-            this.SetSkill(SkillName.Magery, 100.1, 110.0);
-            this.SetSkill(SkillName.Poisoning, 120.1, 140.0);
-            this.SetSkill(SkillName.MagicResist, 95.1, 110.0);
-            this.SetSkill(SkillName.Tactics, 78.1, 93.0);
-            this.SetSkill(SkillName.Wrestling, 70.1, 77.5);
+            SetSkill(SkillName.EvalInt, 100.1, 125.0);
+            SetSkill(SkillName.Magery, 100.1, 110.0);
+            SetSkill(SkillName.Poisoning, 120.1, 140.0);
+            SetSkill(SkillName.MagicResist, 95.1, 110.0);
+            SetSkill(SkillName.Tactics, 78.1, 93.0);
+            SetSkill(SkillName.Wrestling, 70.1, 77.5);
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
             if (Utility.RandomDouble() < .25)
-                this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
-            switch (Utility.Random(10))
-            {
-                case 0:
-                    this.PackItem(new LeftArm());
-                    break;
-                case 1:
-                    this.PackItem(new RightArm());
-                    break;
-                case 2:
-                    this.PackItem(new Torso());
-                    break;
-                case 3:
-                    this.PackItem(new Bone());
-                    break;
-                case 4:
-                    this.PackItem(new RibCage());
-                    break;
-                case 5:
-                    this.PackItem(new RibCage());
-                    break;
-                case 6:
-                    this.PackItem(new BonePile());
-                    break;
-                case 7:
-                    this.PackItem(new BonePile());
-                    break;
-                case 8:
-                    this.PackItem(new BonePile());
-                    break;
-                case 9:
-                    this.PackItem(new BonePile());
-                    break;
-            }
+            PackBodyPartOrBones();
 
-            this.Tamable = true;
-            this.ControlSlots = 3;
-            this.MinTameSkill = 93.9;
+            Tamable = true;
+            ControlSlots = 3;
+            MinTameSkill = 93.9;
         }
 
         public RuneBeetle(Serial serial)
@@ -151,8 +119,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
-            this.AddLoot(LootPack.MedScrolls, 1);
+            AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.MedScrolls, 1);
         }
 
         int phy, fire, cold, poison, energy;
@@ -284,13 +252,13 @@ namespace Server.Mobiles
 
             if (version < 1)
             {
-                for (int i = 0; i < this.Skills.Length; ++i)
+                for (int i = 0; i < Skills.Length; ++i)
                 {
-                    this.Skills[i].Cap = Math.Max(100.0, this.Skills[i].Cap * 0.9);
+                    Skills[i].Cap = Math.Max(100.0, Skills[i].Cap * 0.9);
 
-                    if (this.Skills[i].Base > this.Skills[i].Cap)
+                    if (Skills[i].Base > Skills[i].Cap)
                     {
-                        this.Skills[i].Base = this.Skills[i].Cap;
+                        Skills[i].Base = Skills[i].Cap;
                     }
                 }
             }
@@ -303,24 +271,24 @@ namespace Server.Mobiles
             public ExpireTimer(Mobile m, List<ResistanceMod> mods, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Mobile = m;
-                this.m_Mods = mods;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Mobile = m;
+                m_Mods = mods;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             public void DoExpire()
             {
-                for (int i = 0; i < this.m_Mods.Count; ++i)
-                    this.m_Mobile.RemoveResistanceMod(this.m_Mods[i]);
+                for (int i = 0; i < m_Mods.Count; ++i)
+                    m_Mobile.RemoveResistanceMod(m_Mods[i]);
 
-                this.Stop();
-                m_Table.Remove(this.m_Mobile);
+                Stop();
+                m_Table.Remove(m_Mobile);
             }
 
             protected override void OnTick()
             {
-                this.m_Mobile.SendMessage("The corruption of your armor has worn off");
-                this.DoExpire();
+                m_Mobile.SendMessage("The corruption of your armor has worn off");
+                DoExpire();
             }
         }
     }

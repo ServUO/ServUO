@@ -12,7 +12,7 @@ namespace Server.Gumps
     {
         public BaseSpecialScrollBook Book { get; private set; }
 
-        public SkillCategory Category { get; set; }
+        public SkillCat Category { get; set; }
         public SkillName Skill { get; set; }
 
         public SpecialScrollBookGump(PlayerMobile pm, BaseSpecialScrollBook book)
@@ -40,7 +40,7 @@ namespace Server.Gumps
                 AddImage(xOffset - 5, 45, 59);
             }
 
-            if (Category != SkillCategory.None)
+            if (Category != SkillCat.None)
             {
                 if (Skill != SkillName.Alchemy)
                 {
@@ -86,13 +86,14 @@ namespace Server.Gumps
         {
             AddHtmlLocalized(0, 15, 175, 20, CenterLoc, String.Format("#{0}", BaseSpecialScrollBook.GetCategoryLocalization(Category)), 0, false, false); // Power Scrolls
 
-            if (Category == SkillCategory.None || Book == null || Book.Deleted || Book.SkillInfo == null)
+            if (Category == SkillCat.None || Book == null || Book.Deleted || Book.SkillInfo == null)
                 return;
 
             List<SkillName> list = Book.SkillInfo[Category];
 
             int x = 45;
             int y = 55;
+            int buttonX = 30;
             int split = list.Count >= 9 ? list.Count / 2 : -1;
 
             for (int i = 0; i < list.Count; i++)
@@ -103,13 +104,14 @@ namespace Server.Gumps
                 {
                     x = 205;
                     y = 55;
+                    buttonX = 190;
                 }
 
                 AddHtmlLocalized(x, y, 110, 20, SkillInfo.Table[(int)skill].Localization, false, false);
 
                 if (HasScroll(skill))
                 {
-                    AddButton(30, y + 4, 2103, 2104, 100 + i, GumpButtonType.Reply, 0);
+                    AddButton(buttonX, y + 4, 2103, 2104, 100 + i, GumpButtonType.Reply, 0);
                 }
 
                 y += 15;
@@ -163,7 +165,7 @@ namespace Server.Gumps
             }
             else if (info.ButtonID == 2)
             {
-                Category = SkillCategory.None;
+                Category = SkillCat.None;
                 Skill = SkillName.Alchemy;
 
                 Refresh();
@@ -178,7 +180,7 @@ namespace Server.Gumps
 
                     if (id >= 0 && id <= 7)
                     {
-                        Category = (SkillCategory)id;
+                        Category = (SkillCat)id;
                         Refresh();
                     }
                 }
@@ -186,7 +188,7 @@ namespace Server.Gumps
                 {
                     id -= 100;
 
-                    if (Category > SkillCategory.None)
+                    if (Category > SkillCat.None)
                     {
                         List<SkillName> list = Book.SkillInfo[Category];
 

@@ -47,6 +47,9 @@ namespace Server
                     });
         }
 
+        /// <summary>
+        /// Checks version, and calls code appropriately.  Do not use goto keyword unless you want to call the previous version.
+        /// </summary>
         public static void CheckVersion()
         {
             switch (_Version)
@@ -65,6 +68,7 @@ namespace Server
             Utility.PopColor();
         }
 
+        #region Version 0
         public static Dictionary<Type, Type[]> QuestQuesterTypes;
 
         /// <summary>
@@ -173,6 +177,7 @@ namespace Server
 
             return false;
         }
+        #endregion
 
         /// <summary>
         /// Replaces a certain string value with another in any XmlSpawner SpawnObject line
@@ -180,7 +185,7 @@ namespace Server
         /// <param name="current">What we're looing for</param>
         /// <param name="replace">What we're replacing it with</param>
         /// <param name="check">if the SpawnObject line contains check, we ignore this line altogether</param>
-        public static void Relpace(string current, string replace, string check)
+        public static void Replace(string current, string replace, string check)
         {
             int count = 0;
 
@@ -198,9 +203,9 @@ namespace Server
         /// </summary>
         /// <param name="current">What we're looing for</param>
         /// <param name="replace">What we're replacing it with</param>
-        /// <param name="name">executes replace only if spawner name contains name</param>
+        /// <param name="name">executes replace only if spawner name contains parameter</param>
         /// <param name="check">if the SpawnObject line contains check, we ignore this line altogether</param>
-        public static void Relpace(string current, string replace, string name, string check)
+        public static void Replace(string current, string replace, string name, string check)
         {
             int count = 0;
 
@@ -219,13 +224,14 @@ namespace Server
 
             foreach (var obj in spawner.SpawnObjects)
             {
-                string typeName = obj.TypeName;
+                string typeName = obj.TypeName.ToLower();
+                string lookingFor = current.ToLower();
 
-                if (typeName != null && typeName.IndexOf(current) >= 0)
+                if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
                 {
-                    if (check == null || typeName.IndexOf(check) < 0)
+                    if (String.IsNullOrEmpty(check) || typeName.IndexOf(check) < 0)
                     {
-                        obj.TypeName = typeName.Replace(current, replace);
+                        obj.TypeName = typeName.Replace(lookingFor, replace);
 
                         if (!replaced)
                             replaced = true;
@@ -259,9 +265,10 @@ namespace Server
 
             foreach (var obj in spawner.SpawnObjects)
             {
-                string typeName = obj.TypeName;
+                string typeName = obj.TypeName.ToLower();
+                string lookingFor = toRemove.ToLower();
 
-                if (typeName != null && typeName.IndexOf(toRemove) >= 0)
+                if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
                 {
                     if (entireLine)
                     {
@@ -271,12 +278,56 @@ namespace Server
                     else
                     {
                         count++;
-                        obj.TypeName = typeName.Replace(toRemove, "");
+                        obj.TypeName = typeName.Replace(lookingFor, "");
                     }
                 }
             }
 
             return count;
+        }
+
+        /// <summary>
+        /// performs a pre-specified action (use lamba with action) if the conditions are met
+        /// </summary>
+        /// <param name="lineCheck">Condition for a specific string in the spawn object line</param>
+        /// <param name="nameCheck">Condition for the spawner name</param>
+        /// <param name="exempt">Condition to prevent action being performed on spawner</param>
+        /// <param name="action">action to be performed, setup in calling method</param>
+        public static void ActionOnSpawner(string lineCheck, string nameCheck, string exempt, Action<XmlSpawner> action)
+        {
+            int count = 0;
+
+            if (action != null)
+            {
+                List<XmlSpawner> list = World.Items.Values.OfType<XmlSpawner>().Where(s => nameCheck == null || s.Name.ToLower().IndexOf(nameCheck.ToLower()) >= 0).ToList();
+
+                foreach (var spawner in list)
+                {
+                    if (ActionOnSpawner(spawner, lineCheck, exempt, action))
+                        count++;
+                }
+
+                ColUtility.Free(list);
+            }
+
+            ToConsole(String.Format("Spawner Action: Performed action to {0} spawners{1}.", count.ToString(), lineCheck != null ? " containing " + lineCheck + "." : "."));
+        }
+
+        public static bool ActionOnSpawner(XmlSpawner spawner, string lineCheck, string exempt, Action<XmlSpawner> action)
+        {
+            foreach (var obj in spawner.SpawnObjects.Where(o => !String.IsNullOrEmpty(o.TypeName)))
+            {
+                string spawnObject = obj.TypeName.ToLower();
+                string lookFor = lineCheck != null ? lineCheck.ToLower() : null;
+
+                if ((lookFor == null || spawnObject.IndexOf(lookFor) >= 0) && (exempt == null || spawnObject.IndexOf(exempt.ToLower()) >= 0))
+                {
+                    action(spawner);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

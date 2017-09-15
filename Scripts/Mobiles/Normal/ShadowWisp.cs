@@ -10,71 +10,39 @@ namespace Server.Mobiles
         public ShadowWisp()
             : base(AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.3, 0.6)
         {
-            this.Name = "a shadow wisp";
-            this.Body = 165;
-            this.BaseSoundID = 466;
+            Name = "a shadow wisp";
+            Body = 165;
+            BaseSoundID = 466;
 
-            this.SetStr(16, 40);
-            this.SetDex(16, 45);
-            this.SetInt(11, 25);
+            SetStr(16, 40);
+            SetDex(16, 45);
+            SetInt(11, 25);
 
-            this.SetHits(10, 24);
+            SetHits(10, 24);
 
-            this.SetDamage(5, 10);
+            SetDamage(5, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 15, 20);
-            this.SetResistance(ResistanceType.Fire, 5, 10);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
-            this.SetResistance(ResistanceType.Energy, 15, 20);
+            SetResistance(ResistanceType.Physical, 15, 20);
+            SetResistance(ResistanceType.Fire, 5, 10);
+            SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Energy, 15, 20);
 
-            this.SetSkill(SkillName.EvalInt, 40.0);
-            this.SetSkill(SkillName.Magery, 50.0);
-            this.SetSkill(SkillName.Meditation, 40.0);
-            this.SetSkill(SkillName.MagicResist, 10.0);
-            this.SetSkill(SkillName.Tactics, 0.1, 15.0);
-            this.SetSkill(SkillName.Wrestling, 25.1, 40.0);
+            SetSkill(SkillName.EvalInt, 40.0);
+            SetSkill(SkillName.Magery, 50.0);
+            SetSkill(SkillName.Meditation, 40.0);
+            SetSkill(SkillName.MagicResist, 10.0);
+            SetSkill(SkillName.Tactics, 0.1, 15.0);
+            SetSkill(SkillName.Wrestling, 25.1, 40.0);
 
-            this.Fame = 500;
+            Fame = 500;
 
-            this.VirtualArmor = 18;
+            VirtualArmor = 18;
 
-            this.AddItem(new LightSource());
+            AddItem(new LightSource());
 
-            switch ( Utility.Random(10))
-            {
-                case 0:
-                    this.PackItem(new LeftArm());
-                    break;
-                case 1:
-                    this.PackItem(new RightArm());
-                    break;
-                case 2:
-                    this.PackItem(new Torso());
-                    break;
-                case 3:
-                    this.PackItem(new Bone());
-                    break;
-                case 4:
-                    this.PackItem(new RibCage());
-                    break;
-                case 5:
-                    this.PackItem(new RibCage());
-                    break;
-                case 6:
-                    this.PackItem(new BonePile());
-                    break;
-                case 7:
-                    this.PackItem(new BonePile());
-                    break;
-                case 8:
-                    this.PackItem(new BonePile());
-                    break;
-                case 9:
-                    this.PackItem(new BonePile());
-                    break;
-            }
+            PackBones();
         }
 
         public ShadowWisp(Serial serial)

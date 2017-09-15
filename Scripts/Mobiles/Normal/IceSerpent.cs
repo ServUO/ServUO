@@ -11,36 +11,36 @@ namespace Server.Mobiles
         public IceSerpent()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a giant ice serpent";
-            this.Body = 89;
-            this.BaseSoundID = 219;
+            Name = "a giant ice serpent";
+            Body = 89;
+            BaseSoundID = 219;
 
-            this.SetStr(216, 245);
-            this.SetDex(26, 50);
-            this.SetInt(66, 85);
+            SetStr(216, 245);
+            SetDex(26, 50);
+            SetInt(66, 85);
 
-            this.SetHits(130, 147);
-            this.SetMana(0);
+            SetHits(130, 147);
+            SetMana(0);
 
-            this.SetDamage(7, 17);
+            SetDamage(7, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 10);
-            this.SetDamageType(ResistanceType.Cold, 90);
+            SetDamageType(ResistanceType.Physical, 10);
+            SetDamageType(ResistanceType.Cold, 90);
 
-            this.SetResistance(ResistanceType.Physical, 30, 35);
-            this.SetResistance(ResistanceType.Cold, 80, 90);
-            this.SetResistance(ResistanceType.Poison, 15, 25);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 30, 35);
+            SetResistance(ResistanceType.Cold, 80, 90);
+            SetResistance(ResistanceType.Poison, 15, 25);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.Anatomy, 27.5, 50.0);
-            this.SetSkill(SkillName.MagicResist, 25.1, 40.0);
-            this.SetSkill(SkillName.Tactics, 75.1, 80.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 80.0);
+            SetSkill(SkillName.Anatomy, 27.5, 50.0);
+            SetSkill(SkillName.MagicResist, 25.1, 40.0);
+            SetSkill(SkillName.Tactics, 75.1, 80.0);
+            SetSkill(SkillName.Wrestling, 60.1, 80.0);
 
-            this.Fame = 3500;
-            this.Karma = -3500;
+            Fame = 3500;
+            Karma = -3500;
 
-            this.VirtualArmor = 32;
+            VirtualArmor = 32;
 
         }
 
@@ -79,45 +79,13 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
-            this.PackItem(Loot.RandomArmorOrShieldOrWeapon());
+            AddLoot(LootPack.Meager);
+            PackItem(Loot.RandomArmorOrShieldOrWeapon());
 
-            switch (Utility.Random(10))
-            {
-                case 0:
-                    this.PackItem(new LeftArm());
-                    break;
-                case 1:
-                    this.PackItem(new RightArm());
-                    break;
-                case 2:
-                    this.PackItem(new Torso());
-                    break;
-                case 3:
-                    this.PackItem(new Bone());
-                    break;
-                case 4:
-                    this.PackItem(new RibCage());
-                    break;
-                case 5:
-                    this.PackItem(new RibCage());
-                    break;
-                case 6:
-                    this.PackItem(new BonePile());
-                    break;
-                case 7:
-                    this.PackItem(new BonePile());
-                    break;
-                case 8:
-                    this.PackItem(new BonePile());
-                    break;
-                case 9:
-                    this.PackItem(new BonePile());
-                    break;
-            }
+            PackBodyPartOrBones();
 
             if (0.025 > Utility.RandomDouble())
-                this.PackItem(new GlacialStaff());
+                PackItem(new GlacialStaff());
         }
 
         public override void Serialize(GenericWriter writer)
@@ -133,8 +101,8 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (this.BaseSoundID == -1)
-                this.BaseSoundID = 219;
+            if (BaseSoundID == -1)
+                BaseSoundID = 219;
         }
     }
 }
