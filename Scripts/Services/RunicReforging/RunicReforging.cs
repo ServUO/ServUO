@@ -879,7 +879,25 @@ namespace Server.Items
 		
 		private static Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
 		private static Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
-		
+
+        public static void Initialize()
+        {
+            m_AllowableTable[typeof(BaseGlovesOfMining)] = DefTailoring.CraftSystem;
+            m_AllowableTable[typeof(RingmailGlovesOfMining)] = DefTailoring.CraftSystem;
+            m_AllowableTable[typeof(StuddedGlovesOfMining)] = DefTailoring.CraftSystem;
+            m_AllowableTable[typeof(JukaBow)] = DefBowFletching.CraftSystem;
+            m_AllowableTable[typeof(TribalSpear)] = DefBlacksmithy.CraftSystem;
+            m_AllowableTable[typeof(Pickaxe)] = DefBlacksmithy.CraftSystem;
+            m_AllowableTable[typeof(Cleaver)] = DefBlacksmithy.CraftSystem;
+            m_AllowableTable[typeof(SkinningKnife)] = DefBlacksmithy.CraftSystem;
+            m_AllowableTable[typeof(ButcherKnife)] = DefBlacksmithy.CraftSystem;
+            m_AllowableTable[typeof(GargishNecklace)] = DefBlacksmithy.CraftSystem;
+            m_AllowableTable[typeof(GargishEarrings)] = DefBlacksmithy.CraftSystem;
+
+            m_AllowableTable[typeof(GargishAmulet)] = DefBlacksmithy.CraftSystem;
+            m_AllowableTable[typeof(GargishStoneAmulet)] = DefMasonry.CraftSystem;
+        }
+
         public static void Configure()
         {
             Server.Commands.CommandSystem.Register("GetCreatureScore", AccessLevel.GameMaster, e =>
@@ -908,21 +926,6 @@ namespace Server.Items
             m_ArmorList.AddRange(m_ArmorStandard);
             m_JewelList.AddRange(m_JewelStandard);
             m_ShieldList.AddRange(m_ShieldStandard);
-
-            m_AllowableTable[typeof(BaseGlovesOfMining)] = DefTailoring.CraftSystem;
-            m_AllowableTable[typeof(RingmailGlovesOfMining)] = DefTailoring.CraftSystem;
-            m_AllowableTable[typeof(StuddedGlovesOfMining)] = DefTailoring.CraftSystem;
-            m_AllowableTable[typeof(JukaBow)] = DefBowFletching.CraftSystem;
-            m_AllowableTable[typeof(TribalSpear)] = DefBlacksmithy.CraftSystem;
-            m_AllowableTable[typeof(Pickaxe)] = DefBlacksmithy.CraftSystem;
-            m_AllowableTable[typeof(Cleaver)] = DefBlacksmithy.CraftSystem;
-            m_AllowableTable[typeof(SkinningKnife)] = DefBlacksmithy.CraftSystem;
-            m_AllowableTable[typeof(ButcherKnife)] = DefBlacksmithy.CraftSystem;
-            m_AllowableTable[typeof(GargishNecklace)] = DefBlacksmithy.CraftSystem;
-            m_AllowableTable[typeof(GargishEarrings)] = DefBlacksmithy.CraftSystem;
-
-            m_AllowableTable[typeof(GargishAmulet)] = DefBlacksmithy.CraftSystem;
-            m_AllowableTable[typeof(GargishStoneAmulet)] = DefMasonry.CraftSystem;
 
 			// TypeIndex 0 - Weapon; 1 - Armor; 2 - Shield; 3 - Jewels
             // RunicIndex 0 - dullcopper; 1 - shadow; 2 - copper; 3 - spined; 4 - Oak; 5 - ash

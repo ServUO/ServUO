@@ -4,6 +4,7 @@ using Server;
 using Server.Spells;
 using Server.Engines.PartySystem;
 using Server.Network;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -44,6 +45,7 @@ namespace Server.Items
                 return;
 
             List<Mobile> targets = new List<Mobile>();
+            targets.Add(defender);
 
             IPooledEnumerable eable = attacker.GetMobilesInRange(2);
 
@@ -54,6 +56,11 @@ namespace Server.Items
                     if (m == null || m.Deleted || m.Map != attacker.Map || !m.Alive || !attacker.CanSee(m) ||
                         !attacker.CanBeHarmful(m) || !attacker.InLOS(m))
                         continue;
+
+                    if(m is PlayerMobile)
+                    {
+                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SplinteringEffect, 1028852, 1028852, TimeSpan.FromSeconds(2.0), m));
+                    }
 
                     targets.Add(m);
                 }
@@ -75,9 +82,11 @@ namespace Server.Items
 
                 m_Registry[attacker] = new InternalTimer(attacker, targets);
 
-                if (defender is Server.Mobiles.PlayerMobile)
+                if (defender is PlayerMobile)
                 {
                     defender.Send(SpeedControl.WalkSpeed);
+
+                    BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1028852, 1152144, TimeSpan.FromSeconds(2.0), defender));
                     Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(2), mob => mob.Send(SpeedControl.Disable), defender);
                 }
             }
