@@ -6,20 +6,9 @@ public class SmallBushel : BaseContainer
 {
     [Constructable]
     public SmallBushel()
-        : this(1)
-    {
-        this.Weight = 1.0; 
-    }
-
-    [Constructable]
-    public SmallBushel(int amount)
         : base(0x09B1)
     {
-        this.Weight = 1.0;
-
-        //Hue = 0;  			
-        this.Stackable = true;
-        this.Amount = amount; 
+        this.Weight = 1.0; 
     }
 
     public SmallBushel(Serial serial)
@@ -33,14 +22,8 @@ public class SmallBushel : BaseContainer
         {
             return 1112337;
         }
-    }// Basket
-    public bool RetainsColorFrom
-    {
-        get
-        {
-            return true;
-        }
-    }
+    }// small bushel
+
     public override void Serialize(GenericWriter writer)
     {
         base.Serialize(writer);

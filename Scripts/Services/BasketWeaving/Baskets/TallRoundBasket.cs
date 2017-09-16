@@ -6,20 +6,9 @@ public class TallRoundBasket : BaseContainer
 {
     [Constructable]
     public TallRoundBasket()
-        : this(1)
-    {
-        this.Weight = 1.0; 
-    }
-
-    [Constructable]
-    public TallRoundBasket(int amount)
         : base(0x24D8)
     {
-        this.Weight = 1.0;
-
-        //Hue = 0;  			
-        this.Stackable = true;
-        this.Amount = amount; 
+        this.Weight = 1.0; 
     }
 
     public TallRoundBasket(Serial serial)
@@ -34,13 +23,7 @@ public class TallRoundBasket : BaseContainer
             return 1112297;
         }
     }//Tall Round Basket
-    public bool RetainsColorFrom
-    {
-        get
-        {
-            return true;
-        }
-    }
+
     public override void Serialize(GenericWriter writer)
     {
         base.Serialize(writer);

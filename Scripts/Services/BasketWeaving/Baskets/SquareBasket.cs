@@ -6,20 +6,9 @@ public class SquareBasket : BaseContainer
 {
     [Constructable]
     public SquareBasket()
-        : this(1)
-    {
-        this.Weight = 1.0; 
-    }
-
-    [Constructable]
-    public SquareBasket(int amount)
         : base(0x24D5)
     {
-        this.Weight = 1.0;
-
-        //Hue = 0;  			
-        this.Stackable = true;
-        this.Amount = amount; 
+        this.Weight = 1.0; 
     }
 
     public SquareBasket(Serial serial)
@@ -33,14 +22,8 @@ public class SquareBasket : BaseContainer
         {
             return 1112295;
         }
-    }// Basket
-    public bool RetainsColorFrom
-    {
-        get
-        {
-            return true;
-        }
-    }
+    }// square basket
+
     public override void Serialize(GenericWriter writer)
     {
         base.Serialize(writer);
