@@ -215,17 +215,29 @@ namespace Server.Items
 
         public override bool ForceShowProperties { get { return false; } }
 
+        [Constructable]
+        public DamageableItem(int startID)
+            : this(startID, startID, -1)
+        {
+        }
+
+        [Constructable]
+        public DamageableItem(int startID, int halfID)
+            : this(startID, halfID, -1)
+        {
+        }
+
 		[Constructable]
-		public DamageableItem(int StartID, int HalfID, int destroyID = -1)
-			: base(StartID)
+        public DamageableItem(int startID, int halfID, int destroyID = -1)
+            : base(startID)
 		{
 			Hue = 0;
 			Movable = false;
 
 			Level = ItemLevel.NotSet;
 
-			IDStart = StartID;
-			IDHalfHits = HalfID;
+			IDStart = startID;
+			IDHalfHits = halfID;
             IDDestroyed = destroyID;
 		}
 
