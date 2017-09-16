@@ -157,10 +157,12 @@ namespace Server.Targeting
 
 		public void Invoke(Mobile from, object targeted)
 		{
+            bool enhancedClient = from.NetState != null && from.NetState.IsEnhancedClient;
+
 			CancelTimeout();
 			from.ClearTarget();
 
-			if (from.Deleted)
+            if (from.Deleted)
 			{
 				OnTargetCancel(from, TargetCancelType.Canceled);
 				OnTargetFinish(from);
@@ -174,6 +176,13 @@ namespace Server.Targeting
 			{
 				loc = ((LandTarget)targeted).Location;
 				map = from.Map;
+
+                if (enhancedClient && (loc.X == 0 && loc.Y == 0) && !from.InRange(loc, 10))
+                {
+                    OnTargetCancel(from, TargetCancelType.Canceled);
+                    OnTargetFinish(from);
+                    return;
+                }
 			}
 			else if (targeted is StaticTarget)
 			{
@@ -240,7 +249,7 @@ namespace Server.Targeting
 			}
 			else
 			{
-				if (!from.CanSee(targeted))
+                if (!from.CanSee(targeted))
 				{
 					OnCantSeeTarget(from, targeted);
 				}
