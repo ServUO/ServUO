@@ -1121,6 +1121,16 @@ namespace Server.Gumps
                                             // You cannot perform this action while you still have vendors rented out in this house.
                                             from.SendGump(new NoticeGump(1060637, 30720, 1062395, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), this.m_House));
                                         }
+                                        else if (m_House.HasAddonContainers)
+                                        {
+                                            // The house can not be customized when add-on containers such as aquariums, elven furniture containers, vanities, and boiling cauldrons 
+                                            // are present in the house.  Please re-deed the add-on containers before customizing the house.
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1074863, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
+                                        }
+                                        else if (m_House.Map == Map.TerMur && !Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
+                                        {
+                                            from.SendLocalizedMessage(1113714, "2000"); //You can't resize a house in Ter Mur unless you have at least ~1_MIN~ loyalty to the Gargoyle Queen.
+                                        }
                                         else
                                         {
                                             HousePlacementEntry e = this.m_House.ConvertEntry;
@@ -1139,12 +1149,6 @@ namespace Server.Gumps
                                             }
                                         }
                                     }
-                                    #region SA
-                                    else if (m_House.Map == Map.TerMur && !Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
-                                    {
-                                        from.SendLocalizedMessage(1113714, "2000"); //You can't resize a house in Ter Mur unless you have at least ~1_MIN~ loyalty to the Gargoyle Queen.
-                                    }
-                                    #endregion
 
                                     break;
                                 }
