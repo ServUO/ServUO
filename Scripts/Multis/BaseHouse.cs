@@ -13,6 +13,7 @@ using Server.Network;
 using Server.Regions;
 using Server.Targeting;
 using Server.Engines.Auction;
+using System.Linq;
 
 namespace Server.Multis
 {
@@ -2654,7 +2655,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)19); // version
+            writer.Write((int)20); // version
 
             writer.WriteItemList(m_Carpets, true);
 
@@ -2778,6 +2779,7 @@ namespace Server.Multis
 
             switch (version)
             {
+                case 20: // version 20, Addons resulted in version 18 bug added to dictionary
                 case 19: // version 19, Visit change to dictionary
                 case 18: // version 18, converted addons list to dictionary
                 case 17:
@@ -3081,6 +3083,25 @@ namespace Server.Multis
 
                 if (m_Owner == null && m_Friends.Count == 0 && m_CoOwners.Count == 0)
                     Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerCallback(Delete));
+            }
+
+            if (version == 19)
+            {
+                Timer.DelayCall(CheckUnregisteredAddons);
+            }
+        }
+
+        private void CheckUnregisteredAddons()
+        {
+            if (Region == null || m_Addons == null)
+                return;
+
+            foreach (var item in Region.GetEnumeratedItems().Where(i => i is IAddon))
+            {
+                if(m_Addons.ContainsKey(item))
+                    continue;
+
+                m_Addons[item] = Owner;
             }
         }
 
@@ -3615,6 +3636,8 @@ namespace Server.Multis
 
                 list.Remove(this);
             }
+
+            CheckUnregisteredAddons();
 
             if (m_Region != null)
             {
