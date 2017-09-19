@@ -109,9 +109,11 @@ namespace Server.ContextMenus
             switch (index)
             {
                 default: break;
-                case 0x0078: number = 3006105; break;     // Bank
-                case 0x0193: number = 3006152; break;     // Bulk Order Info
+                case 0x0078: number = 3006105; break;   // Bank
+                case 0x0193: number = 3006152; break;   // Bulk Order Info
                 case 0x01A3: number = 1152294; break;   // Bribe
+                case 0x032A: number = 3000197; break;   // Add Party Member
+                case 0x032B: number = 3000198; break;   // Remove Party Member
             }
 
             if (index >= 0x64)
