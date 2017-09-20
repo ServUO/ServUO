@@ -34,7 +34,9 @@ namespace Server.Items
         {
             0x1797, 0x179C
         };
+
         private bool m_InUse;
+
         [Constructable]
         public SpecialFishingNet()
             : base(0x0DCA)

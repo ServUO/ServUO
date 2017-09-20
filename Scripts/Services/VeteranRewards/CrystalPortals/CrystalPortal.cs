@@ -13,6 +13,8 @@ namespace Server.Items
 {
 	public class CrystalPortal : Item, ISecurable
 	{
+        public override int LabelNumber { get { return 1113945; } } // Crystal Portal
+
 		private SecureLevel m_Level;
 		
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -27,7 +29,6 @@ namespace Server.Items
 		[Constructable]
 		public CrystalPortal()
 		{
-			Name = "Crystal Portal";
 			ItemID = 18059;
 			//Weight = 20;
 			Movable = true;
@@ -40,7 +41,9 @@ namespace Server.Items
 
 		public virtual bool ValidateUse(Mobile m, bool message)
 		{
-			if (Movable)
+            BaseHouse house = BaseHouse.FindHouseAt(this);
+
+			if (house == null || !IsLockedDown)
 			{
 				if (message)
 				{
@@ -49,6 +52,16 @@ namespace Server.Items
 
 				return false;
 			}
+
+            if (!house.HasSecureAccess(m, m_Level))
+            {
+                if (message)
+                {
+                    m.SendLocalizedMessage(503301, "", 0x22); // You don't have permission to do that.
+                }
+
+                return false;
+            }
 
 			if (Sigil.ExistsOn(m))
 			{
