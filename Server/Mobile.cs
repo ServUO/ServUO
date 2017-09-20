@@ -10224,8 +10224,9 @@ namespace Server
                 else
                 {
                     m_Face.ItemID = value;
-                    Delta(MobileDelta.Face);
                 }
+
+                Delta(MobileDelta.Face);
             }
         }
 
@@ -11329,7 +11330,7 @@ namespace Server
 					}
 				}
 
-                if (sendFace)
+                if (sendFace && ourState.IsEnhancedClient)
                 {
                     if (removeFace)
                     {
@@ -11337,6 +11338,7 @@ namespace Server
                     }
                     else
                     {
+                        ourState.Send(new RemoveFace(m));
                         ourState.Send(new FaceEquipUpdate(m));
                     }
                 }
@@ -11365,7 +11367,8 @@ namespace Server
 				Packet facialhairPacket = null;
 				Packet hbpPacket = null;
 				Packet hbyPacket = null;
-                Packet facePacket = null;
+                Packet faceRemovePacket = null;
+                Packet faceSendPacket = null;
 
                 var eable = m.Map.GetClientsInRange(m.m_Location);
 
@@ -11513,21 +11516,24 @@ namespace Server
 							state.Send(facialhairPacket);
 						}
 
-                        if (sendFace)
+                        if (sendFace && state.IsEnhancedClient)
                         {
-                            if (facePacket == null)
+                            if (faceRemovePacket == null)
                             {
-                                if (removeFace)
+                                faceRemovePacket = Packet.Acquire(new RemoveFace(m));
+
+                                if (!removeFace)
                                 {
-                                    facePacket = Packet.Acquire(new RemoveFace(m));
-                                }
-                                else
-                                {
-                                    facePacket = Packet.Acquire(new FaceEquipUpdate(m));
+                                    faceSendPacket = Packet.Acquire(new FaceEquipUpdate(m));
                                 }
                             }
 
-                            state.Send(facePacket);
+                            state.Send(faceRemovePacket);
+
+                            if (!removeFace)
+                            {
+                                state.Send(faceSendPacket);
+                            }
                         }
 
                         if (sendOPLUpdate)
@@ -11545,7 +11551,8 @@ namespace Server
 				Packet.Release(facialhairPacket);
 				Packet.Release(hbpPacket);
 				Packet.Release(hbyPacket);
-                Packet.Release(facePacket);
+                Packet.Release(faceRemovePacket);
+                Packet.Release(faceSendPacket);
 
                 eable.Free();
 			}
