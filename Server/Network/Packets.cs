@@ -3904,6 +3904,10 @@ m_Stream.Write( (int) renderMode );
 			{
 				count++;
 			}
+            if (beheld.FaceItemID > 0)
+            {
+                count++;
+            }
 
 			EnsureCapacity(23 + (count * 9));
 
@@ -3994,6 +3998,28 @@ m_Stream.Write( (int) renderMode );
 					m_Stream.Write((short)hue);
 				}
 			}
+
+            if (beheld.FaceItemID > 0)
+            {
+                if (m_DupedLayers[(int)Layer.Face] != m_Version)
+                {
+                    m_DupedLayers[(int)Layer.Face] = m_Version;
+                    hue = beheld.FaceHue;
+
+                    if (beheld.SolidHueOverride >= 0)
+                    {
+                        hue = beheld.SolidHueOverride;
+                    }
+
+                    int itemID = beheld.FaceItemID & 0xFFFF;
+
+                    m_Stream.Write(FaceInfo.FakeSerial(beheld));
+                    m_Stream.Write((ushort)itemID);
+                    m_Stream.Write((byte)Layer.Face);
+
+                    m_Stream.Write((short)hue);
+                }
+            }
 
 			m_Stream.Write(0); // terminate
 		}

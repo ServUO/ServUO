@@ -3147,8 +3147,6 @@ namespace Server.Network
         // KR Client Character Creation
         public static void KRCreateCharacter(NetState state, PacketReader pvSrc)
         {
-            int flags = 0;
-
             int length = pvSrc.Size;
 
             int unk1 = pvSrc.ReadInt32(); // Pattern
@@ -3157,7 +3155,7 @@ namespace Server.Network
             string unknown1 = pvSrc.ReadString(30); // "Unknow"
 
             int profession = pvSrc.ReadByte();
-            int clientFlags = pvSrc.ReadByte();
+            int cityIndex = pvSrc.ReadByte();
 
             int gender = pvSrc.ReadByte();
             int genderRace = pvSrc.ReadByte();
@@ -3201,7 +3199,6 @@ namespace Server.Network
             int beardColor = pvSrc.ReadInt16();
             int beardID = pvSrc.ReadInt16();
 
-            int cityIndex = 0; // Obsolete
             int pantsHue = shirtHue; // Obsolete
             Race race = null;
             bool female = false;
@@ -3211,12 +3208,8 @@ namespace Server.Network
             if (race == null)
                 race = Race.DefaultRace;
 
-
             CityInfo[] info = state.CityInfo;
             IAccount a = state.Account;
-
-            if (clientFlags > 0)
-                flags = clientFlags;
 
             if (info == null || a == null || cityIndex < 0 || cityIndex >= info.Length)
             {
@@ -3236,8 +3229,6 @@ namespace Server.Network
                         return;
                     }
                 }
-
-                state.Flags = (ClientFlags)flags;
 
                 CharacterCreatedEventArgs args = new CharacterCreatedEventArgs(
                     state, a,
