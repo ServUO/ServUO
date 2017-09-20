@@ -865,18 +865,41 @@ namespace Server
 		}
 
 		#region Random
+        /// <summary>
+        /// Enables or disables floating dice. 
+        /// Floating dice uses a double to obtain a lower average value range.
+        /// Consistent average values for [1,000,000 x 1d6+0] rolls: [Integral: 3.50]  [Floating: 2.25]
+        /// </summary>
+		public static bool FloatingDice = false;
+
 		//4d6+8 would be: Utility.Dice( 4, 6, 8 )
 		public static int Dice(int numDice, int numSides, int bonus)
 		{
+			return Dice(numDice, numSides, bonus, FloatingDice);
+		}
+
+		public static int Dice(int numDice, int numSides, int bonus, bool floating)
+		{
+			if (floating)
+			{
+				double min = numDice, max = min;
+
+				for (int i = 0; i < numDice; ++i)
+				{
+					max += Random(numSides);
+				}
+
+				return (int)Math.Round(RandomMinMax(min, max)) + bonus;
+			}
+
 			int total = 0;
 
 			for (int i = 0; i < numDice; ++i)
 			{
-				total += RandomImpl.Next(numSides) + 1;
+				total += Random(numSides) + 1;
 			}
 
-			total += bonus;
-			return total;
+			return total + bonus;
 		}
 
 		public static T RandomList<T>(params T[] list)
@@ -887,6 +910,22 @@ namespace Server
 		public static bool RandomBool()
 		{
 			return RandomImpl.NextBool();
+		}
+
+		public static double RandomMinMax(double min, double max)
+		{
+			if (min > max)
+			{
+				double copy = min;
+				min = max;
+				max = copy;
+			}
+			else if (min == max)
+			{
+				return min;
+			}
+
+			return min + (RandomImpl.NextDouble() * (max - min));
 		}
 
 		public static int RandomMinMax(int min, int max)
