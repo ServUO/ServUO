@@ -207,10 +207,7 @@ namespace Server.Items
 
             if (index >= 0 && index < m_Entries.Length)
             {
-                if (m_From.AccessLevel < AccessLevel.GameMaster && BaseHouse.HasAccountHouse(m_From))
-                    m_From.SendLocalizedMessage(501271); // You already own a house, you may not place another!
-                else
-                    m_From.Target = new NewHousePlacementTarget(m_Entries, m_Entries[index]);
+                m_From.Target = new NewHousePlacementTarget(m_Entries, m_Entries[index]);
             }
             else
             {
@@ -707,63 +704,54 @@ namespace Server.Items
             {
                 case HousePlacementResult.Valid:
                     {
-                        if (from.AccessLevel < AccessLevel.GameMaster && BaseHouse.HasAccountHouse(from))
+                        from.SendLocalizedMessage(1011576); // This is a valid location.
+
+                        PreviewHouse prev = new PreviewHouse(m_MultiID);
+
+                        MultiComponentList mcl = prev.Components;
+
+                        Point3D banLoc = new Point3D(center.X + mcl.Min.X, center.Y + mcl.Max.Y + 1, center.Z);
+
+                        for (int i = 0; i < mcl.List.Length; ++i)
                         {
-                            from.SendLocalizedMessage(501271); // You already own a house, you may not place another!
-                        }
-                        else
-                        {
-                            from.SendLocalizedMessage(1011576); // This is a valid location.
+                            MultiTileEntry entry = mcl.List[i];
 
-                            PreviewHouse prev = new PreviewHouse(m_MultiID);
+                            int itemID = entry.m_ItemID;
 
-                            MultiComponentList mcl = prev.Components;
-
-                            Point3D banLoc = new Point3D(center.X + mcl.Min.X, center.Y + mcl.Max.Y + 1, center.Z);
-
-                            for (int i = 0; i < mcl.List.Length; ++i)
+                            if (itemID >= 0xBA3 && itemID <= 0xC0E)
                             {
-                                MultiTileEntry entry = mcl.List[i];
-
-                                int itemID = entry.m_ItemID;
-
-                                if (itemID >= 0xBA3 && itemID <= 0xC0E)
-                                {
-                                    banLoc = new Point3D(center.X + entry.m_OffsetX, center.Y + entry.m_OffsetY, center.Z);
-                                    break;
-                                }
+                                banLoc = new Point3D(center.X + entry.m_OffsetX, center.Y + entry.m_OffsetY, center.Z);
+                                break;
                             }
-
-                            for (int i = 0; i < toMove.Count; ++i)
-                            {
-                                object o = toMove[i];
-
-                                if (o is Mobile)
-                                    ((Mobile)o).Location = banLoc;
-                                else if (o is Item)
-                                    ((Item)o).Location = banLoc;
-                            }
-
-                            prev.MoveToWorld(center, from.Map);
-
-                            /* You are about to place a new house.
-                            * Placing this house will condemn any and all of your other houses that you may have.
-                            * All of your houses on all shards will be affected.
-                            * 
-                            * In addition, you will not be able to place another house or have one transferred to you for one (1) real-life week.
-                            * 
-                            * Once you accept these terms, these effects cannot be reversed.
-                            * Re-deeding or transferring your new house will not uncondemn your other house(s) nor will the one week timer be removed.
-                            * 
-                            * If you are absolutely certain you wish to proceed, click the button next to OKAY below.
-                            * If you do not wish to trade for this house, click CANCEL.
-                            */
-                            from.SendGump(new WarningGump(1060635, 30720, 1049583, 32512, 420, 280, new WarningGumpCallback(PlacementWarning_Callback), prev));
-
-                            return true;
                         }
 
-                        break;
+                        for (int i = 0; i < toMove.Count; ++i)
+                        {
+                            object o = toMove[i];
+
+                            if (o is Mobile)
+                                ((Mobile)o).Location = banLoc;
+                            else if (o is Item)
+                                ((Item)o).Location = banLoc;
+                        }
+
+                        prev.MoveToWorld(center, from.Map);
+
+                        /* You are about to place a new house.
+                        * Placing this house will condemn any and all of your other houses that you may have.
+                        * All of your houses on all shards will be affected.
+                        * 
+                        * In addition, you will not be able to place another house or have one transferred to you for one (1) real-life week.
+                        * 
+                        * Once you accept these terms, these effects cannot be reversed.
+                        * Re-deeding or transferring your new house will not uncondemn your other house(s) nor will the one week timer be removed.
+                        * 
+                        * If you are absolutely certain you wish to proceed, click the button next to OKAY below.
+                        * If you do not wish to trade for this house, click CANCEL.
+                        */
+                        from.SendGump(new WarningGump(1060635, 30720, 1049583, 32512, 420, 280, new WarningGumpCallback(PlacementWarning_Callback), prev));
+
+                        return true;
                     }
                 case HousePlacementResult.BadItem:
                 case HousePlacementResult.BadLand:
