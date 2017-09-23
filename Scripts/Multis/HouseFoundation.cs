@@ -863,13 +863,6 @@ namespace Server.Multis
             CheckSignpost();
 
             SetSign(x, y, 7);
-
-            NetState ns = owner.NetState;
-
-            if (ns.IsEnhancedClient)
-            {
-                Timer.DelayCall(TimeSpan.Zero, ECEndConfirmCommit, owner); 
-            }
         }
 
         public HouseFoundation(Serial serial)
@@ -1182,35 +1175,21 @@ namespace Server.Multis
         }
 
         #region Enhanced Client
-        public void ECEndConfirmCommit(Mobile from)
+        /// <summary>
+        /// for EC, the details cache gets fucked up when prior to MoveToWorld (null map).
+        /// So, we clear the cache on the current design state AFTER MoveToWorld, which at this point, is the only
+        /// state. We still need to send details, regardless of client type, so the cache is set correctly for EC
+        /// </summary>
+        /// <param name="from"></param>
+        public void OnPlacement()
         {
             if (Deleted)
                 return;
 
-            // Commit design state : Construct a copy of the current design state
-            DesignState copyState = new DesignState(DesignState);
+            DesignState designState = CurrentState;
+            designState.OnRevised();
 
-            // Commit design state : Clear visible fixtures
-            ClearFixtures(from);
-
-            // Commit design state : Melt fixtures from constructed state
-            copyState.MeltFixtures();
-
-            // Commit design state : Add melted fixtures from constructed state
-            AddFixtures(from, copyState.Fixtures);
-
-            // Commit design state : Assign constructed state to foundation
-            CurrentState = copyState;
-
-            // Remove design context
-            DesignContext.Remove(from);
-
-            // Notify the core that the foundation has changed and should be resent to all clients
             Delta(ItemDelta.Update);
-            ProcessDelta();
-            CurrentState.SendDetailedInfoTo(from.NetState);
-
-            RestoreRelocatedEntities();
         }
         #endregion
 

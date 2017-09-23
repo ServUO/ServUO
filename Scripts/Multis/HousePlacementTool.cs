@@ -641,6 +641,9 @@ namespace Server.Items
 
                             house.MoveToWorld(center, from.Map);
 
+                            if (house is HouseFoundation)
+                                ((HouseFoundation)house).OnPlacement();
+
                             for (int i = 0; i < toMove.Count; ++i)
                             {
                                 object o = toMove[i];
