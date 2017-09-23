@@ -3904,6 +3904,10 @@ m_Stream.Write( (int) renderMode );
 			{
 				count++;
 			}
+            if (beheld.FaceItemID > 0)
+            {
+                count++;
+            }
 
 			EnsureCapacity(23 + (count * 9));
 
@@ -3994,6 +3998,28 @@ m_Stream.Write( (int) renderMode );
 					m_Stream.Write((short)hue);
 				}
 			}
+
+            if (beheld.FaceItemID > 0)
+            {
+                if (m_DupedLayers[(int)Layer.Face] != m_Version)
+                {
+                    m_DupedLayers[(int)Layer.Face] = m_Version;
+                    hue = beheld.FaceHue;
+
+                    if (beheld.SolidHueOverride >= 0)
+                    {
+                        hue = beheld.SolidHueOverride;
+                    }
+
+                    int itemID = beheld.FaceItemID & 0xFFFF;
+
+                    m_Stream.Write(FaceInfo.FakeSerial(beheld));
+                    m_Stream.Write((ushort)itemID);
+                    m_Stream.Write((byte)Layer.Face);
+
+                    m_Stream.Write((short)hue);
+                }
+            }
 
 			m_Stream.Write(0); // terminate
 		}
@@ -5132,106 +5158,6 @@ m_Stream.Write( (int) renderMode );
         public KRDropConfirm()
             : base(0x29, 1)
         {
-        }
-    }
-
-    public enum WaypointType : ushort
-    {
-        Corpse = 0x01,
-        PartyMember = 0x02,
-        RallyPoint = 0x03,
-        QuestGiver = 0x04,
-        QuestDestination = 0x05,
-        Resurrection = 0x06,
-        PointOfInterest = 0x07,
-        Landmark = 0x08,
-        Town = 0x09,
-        Dungeon = 0x0A,
-        Moongate = 0x0B,
-        Shop = 0x0C,
-        Player = 0x0D,
-    }
-
-    public sealed class DisplayWaypoint : Packet
-    {
-        public DisplayWaypoint(Serial serial, int x, int y, int z, int mapID, /*int type*/WaypointType type, string name)
-            : base(0xE5)
-        {
-            this.EnsureCapacity(25);
-
-            m_Stream.Write((int)serial);
-
-            m_Stream.Write((short)x);
-            m_Stream.Write((short)y);
-            m_Stream.Write((sbyte)z);
-            m_Stream.Write((byte)mapID); //map 
-
-            m_Stream.Write((ushort)type);
-            //m_Stream.Write((short)type); //type 
-
-            m_Stream.Write((short)0);
-
-            if (type.Equals(1))
-                m_Stream.Write((int)1046414);
-            else
-                m_Stream.Write((int)1062613);
-
-            m_Stream.WriteLittleUniNull(name);
-
-            m_Stream.Write((short)0); // terminate 
-        }
-    }
-
-    public class KRDisplayWaypoint : Packet
-    {
-        public KRDisplayWaypoint(IEntity e, WaypointType type, int cliLoc)
-            : this(e.Serial, e.Location, e.Map, type, false, cliLoc, String.Empty)
-        {
-        }
-
-        public KRDisplayWaypoint(IEntity e, WaypointType type, bool ignoreSerial, int cliLoc, string args)
-            : this(e.Serial, e.Location, e.Map, type, ignoreSerial, cliLoc, args)
-        {
-        }
-
-        public KRDisplayWaypoint(Serial serial, IPoint3D location, Map map, WaypointType type, bool ignoreSerial, int cliLoc)
-            : this(serial, location, map, type, ignoreSerial, cliLoc, String.Empty)
-        {
-        }
-
-        public KRDisplayWaypoint(Serial serial, IPoint3D location, Map map, WaypointType type, bool ignoreSerial, int cliLoc, string args)
-            : base(0xE5)
-        {
-            if (args == null)
-            {
-                args = String.Empty;
-            }
-
-            EnsureCapacity(21 + (args.Length * 2));
-
-            m_Stream.Write((int)serial);
-
-            m_Stream.Write((ushort)location.X);
-            m_Stream.Write((ushort)location.Y);
-            m_Stream.Write((byte)location.Z);
-
-            m_Stream.Write((byte)map.MapID);
-
-            m_Stream.Write((ushort)type);
-
-            m_Stream.Write((ushort)(ignoreSerial ? 1 : 0));
-
-            m_Stream.Write(cliLoc);
-            m_Stream.WriteLittleUniNull(args);
-        }
-    }
-
-    public class RemoveWaypoint : Packet
-    {
-        public RemoveWaypoint(Serial serial)
-            : base(0xE6, 5)
-        {
-            m_Stream.Write((int)serial);
         }
     }
 

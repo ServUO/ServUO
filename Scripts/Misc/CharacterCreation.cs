@@ -225,6 +225,19 @@ namespace Server.Misc
                 newChar.FacialHairHue = race.ClipHairHue(args.BeardHue & 0x3FFF);
             }
 
+            int faceID = args.FaceID;
+
+            if (faceID > 0 && race.ValidateFace(newChar.Female, faceID))
+            {
+                newChar.FaceItemID = faceID;
+                newChar.FaceHue = args.FaceHue;
+            }
+            else
+            {
+                newChar.FaceItemID = race.RandomFace(newChar.Female);
+                newChar.FaceHue = newChar.Hue;
+            }
+
             if (args.Profession <= 3)
             {
                 AddShirt(newChar, args.ShirtHue);
@@ -242,7 +255,7 @@ namespace Server.Misc
                 newChar.BankBox.DropItem(ticket);
             }
 
-            CityInfo city = GetStartLocation(args, young);
+            CityInfo city = args.City;
             Map map = Siege.SiegeShard && city.Map == Map.Trammel ? Map.Felucca : city.Map;
 
             newChar.MoveToWorld(city.Location, map);
@@ -261,105 +274,6 @@ namespace Server.Misc
 				XmlAttach.AttachTo(newChar, new XmlPoints());
 			if(XmlSpawner.FactionsEnabled)
 				XmlAttach.AttachTo(newChar, new XmlMobFactions());
-        }
-
-        private static CityInfo GetStartLocation(CharacterCreatedEventArgs args, bool isYoung)
-        {
-            //bool siege = Siege.SiegeShard;
-
-            // TODO: Find out how the client gives TerMur as an option. Find out how siege shards only give royal city and britain as an option
-            //if (Core.ML && !siege)
-            //{
-                //if( args.State != null && args.State.NewHaven )
-            //    return m_NewHavenInfo;	//We don't get the client Version until AFTER Character creation
-                //return args.City;  TODO: Uncomment when the old quest system is actually phased out
-            //}
-
-            //bool useHaven = isYoung && !siege;
-
-            //ClientFlags flags = args.State == null ? ClientFlags.None : args.State.Flags;
-            Mobile m = args.Mobile;
-
-            // Removed this as its not used in EA.
-            //switch ( args.Profession )
-            //{
-            //    case 4: //Necro
-            //        {
-            //            if ((flags & ClientFlags.Malas) != 0)
-            //            {
-            //                return new CityInfo("Umbra", "Mardoth's Tower", 2114, 1301, -50, Map.Malas);
-            //            }
-            //            else
-            //            {
-            //                useHaven = !siege; 
-
-            //                new BadStartMessage(m, 1062205);
-            //                /*
-            //                * Unfortunately you are playing on a *NON-Age-Of-Shadows* game 
-            //                * installation and cannot be transported to Malas.  
-            //                * You will not be able to take your new player quest in Malas 
-            //                * without an AOS client.  You are now being taken to the city of 
-            //                * Haven on the Trammel facet.
-            //                * */
-            //            }
-
-            //            break;
-            //        }
-            //    case 5:	//Paladin
-            //        {
-            //            return m_NewHavenInfo;
-            //        }
-            //    case 6:	//Samurai
-            //        {
-            //            if ((flags & ClientFlags.Tokuno) != 0)
-            //            {
-            //                return new CityInfo("Samurai DE", "Haoti's Grounds", 368, 780, -1, Map.Malas);
-            //            }
-            //            else
-            //            {
-            //                useHaven = !siege;
-
-            //                new BadStartMessage(m, 1063487);
-            //                /*
-            //                * Unfortunately you are playing on a *NON-Samurai-Empire* game 
-            //                * installation and cannot be transported to Tokuno. 
-            //                * You will not be able to take your new player quest in Tokuno 
-            //                * without an SE client. You are now being taken to the city of 
-            //                * Haven on the Trammel facet.
-            //                * */
-            //            }
-
-            //            break;
-            //        }
-            //    case 7:	//Ninja
-            //        {
-            //            if ((flags & ClientFlags.Tokuno) != 0)
-            //            {
-            //                return new CityInfo("Ninja DE", "Enimo's Residence", 414,	823, -1, Map.Malas);
-            //            }
-            //            else
-            //            {
-            //                useHaven = !siege;
-
-            //                new BadStartMessage(m, 1063487);
-            //                /*
-            //                * Unfortunately you are playing on a *NON-Samurai-Empire* game 
-            //                * installation and cannot be transported to Tokuno. 
-            //                * You will not be able to take your new player quest in Tokuno 
-            //                * without an SE client. You are now being taken to the city of 
-            //                * Haven on the Trammel facet.
-            //                * */
-            //            }
-
-            //            break;
-            //        }
-            //}
-
-            //if (useHaven)
-            //    return m_NewHavenInfo;
-            //else
-
-            return args.City;
         }
 
         private static void FixStats(ref int str, ref int dex, ref int intel, int max)

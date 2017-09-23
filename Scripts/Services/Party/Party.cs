@@ -16,64 +16,64 @@ namespace Server.Engines.PartySystem
         private readonly List<Mobile> m_Listeners;// staff listening
         public Party(Mobile leader)
         {
-            this.m_Leader = leader;
+            m_Leader = leader;
 
-            this.m_Members = new List<PartyMemberInfo>();
-            this.m_Candidates = new List<Mobile>();
-            this.m_Listeners = new List<Mobile>();
+            m_Members = new List<PartyMemberInfo>();
+            m_Candidates = new List<Mobile>();
+            m_Listeners = new List<Mobile>();
 
-            this.m_Members.Add(new PartyMemberInfo(leader));
+            m_Members.Add(new PartyMemberInfo(leader));
         }
 
         public int Count
         {
             get
             {
-                return this.m_Members.Count;
+                return m_Members.Count;
             }
         }
         public bool Active
         {
             get
             {
-                return this.m_Members.Count > 1;
+                return m_Members.Count > 1;
             }
         }
         public Mobile Leader
         {
             get
             {
-                return this.m_Leader;
+                return m_Leader;
             }
         }
         public List<PartyMemberInfo> Members
         {
             get
             {
-                return this.m_Members;
+                return m_Members;
             }
         }
         public List<Mobile> Candidates
         {
             get
             {
-                return this.m_Candidates;
+                return m_Candidates;
             }
         }
         public PartyMemberInfo this[int index]
         {
             get
             {
-                return this.m_Members[index];
+                return m_Members[index];
             }
         }
         public PartyMemberInfo this[Mobile m]
         {
             get
             {
-                for (int i = 0; i < this.m_Members.Count; ++i)
-                    if (this.m_Members[i].Mobile == m)
-                        return this.m_Members[i];
+                for (int i = 0; i < m_Members.Count; ++i)
+                    if (m_Members[i].Mobile == m)
+                        return m_Members[i];
 
                 return null;
             }
@@ -201,15 +201,15 @@ namespace Server.Engines.PartySystem
 
             if (mi == null)
             {
-                this.m_Members.Add(new PartyMemberInfo(m));
+                m_Members.Add(new PartyMemberInfo(m));
                 m.Party = this;
 
                 Packet memberList = Packet.Acquire(new PartyMemberList(this));
                 Packet attrs = Packet.Acquire(new MobileAttributesN(m));
 
-                for (int i = 0; i < this.m_Members.Count; ++i)
+                for (int i = 0; i < m_Members.Count; ++i)
                 {
-                    Mobile f = ((PartyMemberInfo)this.m_Members[i]).Mobile;
+                    Mobile f = ((PartyMemberInfo)m_Members[i]).Mobile;
 
                     f.Send(memberList);
 
@@ -217,10 +217,15 @@ namespace Server.Engines.PartySystem
                     {
                         f.Send(new MobileStatusCompact(m.CanBeRenamedBy(f), m));
                         f.Send(attrs);
-                        f.Send(new KRDisplayWaypoint(m, WaypointType.PartyMember, false, 1062613, m.Name));
+
+                        if (f.NetState != null && f.NetState.IsEnhancedClient)
+                            Waypoints.Create(f, m, WaypointType.PartyMember);
+
                         m.Send(new MobileStatusCompact(f.CanBeRenamedBy(m), f));
                         m.Send(new MobileAttributesN(f));
-                        m.Send(new KRDisplayWaypoint(f, WaypointType.PartyMember, false, 1062613, f.Name));
+
+                        if (m.NetState != null && m.NetState.IsEnhancedClient)
+                            Waypoints.Create(m, f, WaypointType.PartyMember);
                     }
                 }
 
@@ -231,24 +236,24 @@ namespace Server.Engines.PartySystem
 
         public void OnAccept(Mobile from)
         {
-            this.OnAccept(from, false);
+            OnAccept(from, false);
         }
 
         public void OnAccept(Mobile from, bool force)
         {
-            Faction ourFaction = Faction.Find(this.m_Leader);
+            Faction ourFaction = Faction.Find(m_Leader);
             Faction theirFaction = Faction.Find(from);
 
             if (!force && ourFaction != null && theirFaction != null && ourFaction != theirFaction)
                 return;
 
             //  : joined the party.
-            this.SendToAll(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008094, "", AffixType.Prepend | AffixType.System, from.Name, ""));
+            SendToAll(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008094, "", AffixType.Prepend | AffixType.System, from.Name, ""));
 
             from.SendLocalizedMessage(1005445); // You have been added to the party.
 
-            this.m_Candidates.Remove(from);
-            this.Add(from);
+            m_Candidates.Remove(from);
+            Add(from);
         }
 
         public void OnDecline(Mobile from, Mobile leader)
@@ -258,51 +263,65 @@ namespace Server.Engines.PartySystem
 
             from.SendLocalizedMessage(1008092); // You notify them that you do not wish to join the party.
 
-            this.m_Candidates.Remove(from);
+            m_Candidates.Remove(from);
             from.Send(new PartyEmptyList(from));
 
-            if (this.m_Candidates.Count == 0 && this.m_Members.Count <= 1)
+            if (m_Candidates.Count == 0 && m_Members.Count <= 1)
             {
-                for (int i = 0; i < this.m_Members.Count; ++i)
+                for (int i = 0; i < m_Members.Count; ++i)
                 {
                     this[i].Mobile.Send(new PartyEmptyList(this[i].Mobile));
                     this[i].Mobile.Party = null;
                 }
 
-                this.m_Members.Clear();
+                m_Members.Clear();
             }
         }
 
         public void Remove(Mobile m)
         {
-            if (m == this.m_Leader)
+            if (m == m_Leader)
             {
-                this.Disband();
+                Disband();
             }
             else
             {
-                for (int i = 0; i < this.m_Members.Count; ++i)
+                for (int i = 0; i < m_Members.Count; ++i)
                 {
-                    if (((PartyMemberInfo)this.m_Members[i]).Mobile == m)
+                    Mobile mob = m_Members[i].Mobile;
+
+                    if (mob == m)
                     {
-                        this.m_Members.RemoveAt(i);
+                        m_Members.RemoveAt(i);
 
                         m.Party = null;
                         m.Send(new PartyEmptyList(m));
 
                         m.SendLocalizedMessage(1005451); // You have been removed from the party.
 
-                        this.SendToAll(new PartyRemoveMember(m, this));
-                        this.SendToAll(1005452); // A player has been removed from your party.
+                        SendToAll(new PartyRemoveMember(m, this));
+                        SendToAll(1005452); // A player has been removed from your party.
 
                         break;
                     }
+                    else
+                    {
+                        if (mob != null && mob.NetState != null && mob.NetState.IsEnhancedClient)
+                        {
+                            Waypoints.Remove(mob, m);
+                        }
+
+                        if (m.NetState != null && m.NetState.IsEnhancedClient)
+                        {
+                            Waypoints.Remove(m, mob);
+                        }
+                    }
                 }
 
-                if (this.m_Members.Count == 1)
+                if (m_Members.Count == 1)
                 {
-                    this.SendToAll(1005450); // The last person has left the party...
-                    this.Disband();
+                    SendToAll(1005450); // The last person has left the party...
+                    Disband();
                 }
             }
         }
@@ -314,74 +333,74 @@ namespace Server.Engines.PartySystem
 
         public void Disband()
         {
-            this.SendToAll(1005449); // Your party has disbanded.
+            SendToAll(1005449); // Your party has disbanded.
 
-            for (int i = 0; i < this.m_Members.Count; ++i)
+            for (int i = 0; i < m_Members.Count; ++i)
             {
                 this[i].Mobile.Send(new PartyEmptyList(this[i].Mobile));
                 this[i].Mobile.Party = null;
             }
 
-            this.m_Members.Clear();
+            m_Members.Clear();
         }
 
         public void SendToAll(int number)
         {
-            this.SendToAll(number, "", 0x3B2);
+            SendToAll(number, "", 0x3B2);
         }
 
         public void SendToAll(int number, string args)
         {
-            this.SendToAll(number, args, 0x3B2);
+            SendToAll(number, args, 0x3B2);
         }
 
         public void SendToAll(int number, string args, int hue)
         {
-            this.SendToAll(new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, hue, 3, number, "System", args));
+            SendToAll(new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, hue, 3, number, "System", args));
         }
 
         public void SendPublicMessage(Mobile from, string text)
         {
-            this.SendToAll(new PartyTextMessage(true, from, text));
+            SendToAll(new PartyTextMessage(true, from, text));
 
-            for (int i = 0; i < this.m_Listeners.Count; ++i)
+            for (int i = 0; i < m_Listeners.Count; ++i)
             {
-                Mobile mob = this.m_Listeners[i];
+                Mobile mob = m_Listeners[i];
 
                 if (mob.Party != this)
-                    this.m_Listeners[i].SendMessage("[{0}]: {1}", from.Name, text);
+                    m_Listeners[i].SendMessage("[{0}]: {1}", from.Name, text);
             }
 
-            this.SendToStaffMessage(from, "[Party]: {0}", text);
+            SendToStaffMessage(from, "[Party]: {0}", text);
         }
 
         public void SendPrivateMessage(Mobile from, Mobile to, string text)
         {
             to.Send(new PartyTextMessage(false, from, text));
 
-            for (int i = 0; i < this.m_Listeners.Count; ++i)
+            for (int i = 0; i < m_Listeners.Count; ++i)
             {
-                Mobile mob = this.m_Listeners[i];
+                Mobile mob = m_Listeners[i];
 
                 if (mob.Party != this)
-                    this.m_Listeners[i].SendMessage("[{0}]->[{1}]: {2}", from.Name, to.Name, text);
+                    m_Listeners[i].SendMessage("[{0}]->[{1}]: {2}", from.Name, to.Name, text);
             }
 
-            this.SendToStaffMessage(from, "[Party]->[{0}]: {1}", to.Name, text);
+            SendToStaffMessage(from, "[Party]->[{0}]: {1}", to.Name, text);
         }
 
         public void SendToAll(Packet p)
         {
             p.Acquire();
 
-            for (int i = 0; i < this.m_Members.Count; ++i)
-                this.m_Members[i].Mobile.Send(p);
+            for (int i = 0; i < m_Members.Count; ++i)
+                m_Members[i].Mobile.Send(p);
 
             if (p is MessageLocalized || p is MessageLocalizedAffix || p is UnicodeMessage || p is AsciiMessage)
             {
-                for (int i = 0; i < this.m_Listeners.Count; ++i)
+                for (int i = 0; i < m_Listeners.Count; ++i)
                 {
-                    Mobile mob = this.m_Listeners[i];
+                    Mobile mob = m_Listeners[i];
 
                     if (mob.Party != this)
                         mob.Send(p);
@@ -395,9 +414,9 @@ namespace Server.Engines.PartySystem
         {
             Packet p = null;
 
-            for (int i = 0; i < this.m_Members.Count; ++i)
+            for (int i = 0; i < m_Members.Count; ++i)
             {
-                Mobile c = this.m_Members[i].Mobile;
+                Mobile c = m_Members[i].Mobile;
 
                 if (c != m && m.Map == c.Map && Utility.InUpdateRange(c, m) && c.CanSee(m))
                 {
@@ -415,9 +434,9 @@ namespace Server.Engines.PartySystem
         {
             Packet p = null;
 
-            for (int i = 0; i < this.m_Members.Count; ++i)
+            for (int i = 0; i < m_Members.Count; ++i)
             {
-                Mobile c = this.m_Members[i].Mobile;
+                Mobile c = m_Members[i].Mobile;
 
                 if (c != m && m.Map == c.Map && Utility.InUpdateRange(c, m) && c.CanSee(m))
                 {
@@ -433,7 +452,7 @@ namespace Server.Engines.PartySystem
 
         public void OnStatsQuery(Mobile beholder, Mobile beheld)
         {
-            if (beholder != beheld && this.Contains(beholder) && beholder.Map == beheld.Map && Utility.InUpdateRange(beholder, beheld))
+            if (beholder != beheld && Contains(beholder) && beholder.Map == beheld.Map && Utility.InUpdateRange(beholder, beheld))
             {
                 if (!beholder.CanSee(beheld))
                     beholder.Send(new MobileStatusCompact(beheld.CanBeRenamedBy(beholder), beheld));
@@ -450,7 +469,7 @@ namespace Server.Engines.PartySystem
             {
                 Mobile mob = ns.Mobile;
 
-                if (mob != null && mob.AccessLevel >= AccessLevel.GameMaster && mob.AccessLevel > from.AccessLevel && mob.Party != this && !this.m_Listeners.Contains(mob))
+                if (mob != null && mob.AccessLevel >= AccessLevel.GameMaster && mob.AccessLevel > from.AccessLevel && mob.Party != this && !m_Listeners.Contains(mob))
                 {
                     if (p == null)
                         p = Packet.Acquire(new UnicodeMessage(from.Serial, from.Body, MessageType.Regular, from.SpeechHue, 3, from.Language, from.Name, text));
@@ -464,7 +483,7 @@ namespace Server.Engines.PartySystem
 
         private void SendToStaffMessage(Mobile from, string format, params object[] args)
         {
-            this.SendToStaffMessage(from, String.Format(format, args));
+            SendToStaffMessage(from, String.Format(format, args));
         }
 
         private class RejoinTimer : Timer
@@ -473,34 +492,36 @@ namespace Server.Engines.PartySystem
             public RejoinTimer(Mobile m)
                 : base(TimeSpan.FromSeconds(1.0))
             {
-                this.m_Mobile = m;
+                m_Mobile = m;
             }
 
             protected override void OnTick()
             {
-                Party p = Party.Get(this.m_Mobile);
+                Party p = Party.Get(m_Mobile);
 
                 if (p == null)
                     return;
 
-                this.m_Mobile.SendLocalizedMessage(1005437); // You have rejoined the party.
-                this.m_Mobile.Send(new PartyMemberList(p));
+                m_Mobile.SendLocalizedMessage(1005437); // You have rejoined the party.
+                m_Mobile.Send(new PartyMemberList(p));
 
-                Packet message = Packet.Acquire(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008087, "", AffixType.Prepend | AffixType.System, this.m_Mobile.Name, ""));
-                Packet attrs = Packet.Acquire(new MobileAttributesN(this.m_Mobile));
+                Packet message = Packet.Acquire(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008087, "", AffixType.Prepend | AffixType.System, m_Mobile.Name, ""));
+                Packet attrs = Packet.Acquire(new MobileAttributesN(m_Mobile));
 
                 foreach (PartyMemberInfo mi in p.Members)
                 {
                     Mobile m = mi.Mobile;
 
-                    if (m != this.m_Mobile)
+                    if (m != m_Mobile)
                     {
                         m.Send(message);
-                        m.Send(new MobileStatusCompact(this.m_Mobile.CanBeRenamedBy(m), this.m_Mobile));
+                        m.Send(new MobileStatusCompact(m_Mobile.CanBeRenamedBy(m), m_Mobile));
                         m.Send(attrs);
-                        this.m_Mobile.Send(new MobileStatusCompact(m.CanBeRenamedBy(this.m_Mobile), m));
-                        this.m_Mobile.Send(new MobileAttributesN(m));
-                        m_Mobile.Send(new KRDisplayWaypoint(m, WaypointType.PartyMember, false, 1062613, m.Name));
+                        m_Mobile.Send(new MobileStatusCompact(m.CanBeRenamedBy(m_Mobile), m));
+                        m_Mobile.Send(new MobileAttributesN(m));
+
+                        if(m_Mobile.NetState != null && m_Mobile.NetState.IsEnhancedClient)
+                            Waypoints.Create(m_Mobile, m, WaypointType.PartyMember);
                     }
                 }
 
