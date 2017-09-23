@@ -1757,6 +1757,7 @@
     <Compile Include="Misc\Siege.cs" />
     <Compile Include="Misc\SpawnerPersistence.cs" />
     <Compile Include="Misc\UntamedPetsCleaning.cs" />
+    <Compile Include="Misc\Waypoints.cs" />
     <Compile Include="Misc\WorldLocationInfo.cs" />
     <Compile Include="Mobiles\AI\PaladinAI.cs" />
     <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
