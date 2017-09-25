@@ -114,6 +114,8 @@ namespace Server.ContextMenus
                 case 0x01A3: number = 1152294; break;   // Bribe
                 case 0x032A: number = 3000197; break;   // Add Party Member
                 case 0x032B: number = 3000198; break;   // Remove Party Member
+                case 0x012D: number = 3006130; break;   // Tame
+
             }
 
             if (index >= 0x64)

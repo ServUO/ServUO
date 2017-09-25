@@ -888,6 +888,7 @@ namespace Server.Engines.Craft
 			maxAmount = int.MaxValue;
 
 			CraftSubResCol resCol = (m_UseSubRes2 ? craftSystem.CraftSubRes2 : craftSystem.CraftSubRes);
+            MasterCraftsmanTalisman talisman = null;
 
 			for (int i = 0; i < types.Length; ++i)
 			{
@@ -963,11 +964,16 @@ namespace Server.Engines.Craft
 				}
 				// ****************************
 
-				if (isFailure && !craftSystem.ConsumeOnFailure(from, types[i][0], this))
+                if (isFailure && (talisman != null || !craftSystem.ConsumeOnFailure(from, types[i][0], this, ref talisman)))
 				{
 					amounts[i] = 0;
 				}
 			}
+
+            if (talisman != null)
+            {
+                talisman.Charges--;
+            }
 
 			// We adjust the amount of each resource to consume the max posible
 			if (UseAllRes)
@@ -1190,7 +1196,7 @@ namespace Server.Engines.Craft
 			{
 				BaseTalisman talisman = (BaseTalisman)from.Talisman;
 
-				if (talisman.Skill == system.MainSkill)
+				if (talisman.CheckSkill(system))
 				{
 					bonus = talisman.ExceptionalBonus / 100.0;
 				}
@@ -1308,7 +1314,7 @@ namespace Server.Engines.Craft
 			{
 				BaseTalisman talisman = (BaseTalisman)from.Talisman;
 
-				if (talisman.Skill == craftSystem.MainSkill)
+				if (talisman.CheckSkill(craftSystem))
 				{
 					chance += talisman.SuccessBonus / 100.0;
 				}
