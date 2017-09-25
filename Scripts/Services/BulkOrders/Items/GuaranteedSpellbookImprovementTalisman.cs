@@ -17,7 +17,7 @@ namespace Server.Items
         {
             Charges = charges;
 
-            Skill = SkillName.Inscribe;
+            Skill = TalismanSkill.Inscription;
             SuccessBonus = BaseTalisman.GetRandomSuccessful();
             ExceptionalBonus = BaseTalisman.GetRandomExceptional();
         }

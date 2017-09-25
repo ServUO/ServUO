@@ -9,12 +9,12 @@ namespace Server.Items
         public TreatiseonAlchemyTalisman()
             : base(0x2F58)
         { 
-            this.Skill = SkillName.Alchemy;
-            this.SuccessBonus = GetRandomSuccessful();
-            this.Blessed = GetRandomBlessed();	
+            Skill = TalismanSkill.Alchemy;
+            SuccessBonus = GetRandomSuccessful();
+            Blessed = GetRandomBlessed();	
 			
-            this.Attributes.EnhancePotions = 15;			
-            this.SkillBonuses.SetValues(0, SkillName.Magery, 5.0);
+            Attributes.EnhancePotions = 15;			
+            SkillBonuses.SetValues(0, SkillName.Magery, 5.0);
         }
 
         public TreatiseonAlchemyTalisman(Serial serial)
@@ -57,14 +57,14 @@ namespace Server.Items
         public PrimerOnArmsTalisman()
             : base(0x2F59)
         { 
-            this.Blessed = GetRandomBlessed();	
+            Blessed = GetRandomBlessed();	
 			
-            this.Attributes.BonusStr = 1;			
-            this.Attributes.RegenHits = 2;
-            this.Attributes.WeaponDamage = 20;
+            Attributes.BonusStr = 1;			
+            Attributes.RegenHits = 2;
+            Attributes.WeaponDamage = 20;
 						
-            this.Removal = TalismanRemoval.Damage;
-            this.MaxChargeTime = 1200;
+            Removal = TalismanRemoval.Damage;
+            MaxChargeTime = 1200;
         }
 
         public PrimerOnArmsTalisman(Serial serial)
@@ -107,14 +107,14 @@ namespace Server.Items
         public MyBookTalisman()
             : base(0x2F5A)
         { 
-            this.Blessed = GetRandomBlessed();	
+            Blessed = GetRandomBlessed();	
 			
-            this.Skill = SkillName.Inscribe;
-            this.SuccessBonus = GetRandomSuccessful();			
-            this.ExceptionalBonus = GetRandomExceptional();	
+            Skill = TalismanSkill.Inscription;
+            SuccessBonus = GetRandomSuccessful();			
+            ExceptionalBonus = GetRandomExceptional();	
 			
-            this.Attributes.BonusInt = 5;			
-            this.Attributes.BonusMana = 2;
+            Attributes.BonusInt = 5;			
+            Attributes.BonusMana = 2;
         }
 
         public MyBookTalisman(Serial serial)
@@ -157,13 +157,13 @@ namespace Server.Items
         public TalkingtoWispsTalisman()
             : base(0x2F5B)
         { 
-            this.Blessed = GetRandomBlessed();	
+            Blessed = GetRandomBlessed();	
 			
-            this.SkillBonuses.SetValues(0, SkillName.SpiritSpeak, 3.0);
-            this.SkillBonuses.SetValues(1, SkillName.EvalInt, 5.0);
+            SkillBonuses.SetValues(0, SkillName.SpiritSpeak, 3.0);
+            SkillBonuses.SetValues(1, SkillName.EvalInt, 5.0);
 			
-            this.Removal = TalismanRemoval.Ward;
-            this.MaxChargeTime = 1200;
+            Removal = TalismanRemoval.Ward;
+            MaxChargeTime = 1200;
         }
 
         public TalkingtoWispsTalisman(Serial serial)
@@ -206,14 +206,14 @@ namespace Server.Items
         public GrammarOfOrchishTalisman()
             : base(0x2F59)
         { 
-            this.Blessed = GetRandomBlessed();	
-            this.Protection = GetRandomProtection();
-            this.Summoner = new TalismanAttribute(typeof(SummonedOrcBrute), 0, 1072414);
+            Blessed = GetRandomBlessed();	
+            Protection = GetRandomProtection();
+            Summoner = new TalismanAttribute(typeof(SummonedOrcBrute), 0, 1072414);
 			
-            this.SkillBonuses.SetValues(0, SkillName.MagicResist, 5.0);
-            this.SkillBonuses.SetValues(1, SkillName.Anatomy, 7.0);
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 5.0);
+            SkillBonuses.SetValues(1, SkillName.Anatomy, 7.0);
 			
-            this.MaxChargeTime = 1800;
+            MaxChargeTime = 1800;
         }
 
         public GrammarOfOrchishTalisman(Serial serial)
@@ -256,13 +256,13 @@ namespace Server.Items
         public BirdsofBritanniaTalisman()
             : base(0x2F5A)
         { 
-            this.Blessed = GetRandomBlessed();	
-            this.Slayer = TalismanSlayerName.Bird;
+            Blessed = GetRandomBlessed();	
+            Slayer = TalismanSlayerName.Bird;
 			
-            this.SkillBonuses.SetValues(0, SkillName.AnimalTaming, 5.0);
-            this.SkillBonuses.SetValues(1, SkillName.AnimalLore, 5.0);
+            SkillBonuses.SetValues(0, SkillName.AnimalTaming, 5.0);
+            SkillBonuses.SetValues(1, SkillName.AnimalLore, 5.0);
 			
-            this.MaxChargeTime = 1800;
+            MaxChargeTime = 1800;
         }
 
         public BirdsofBritanniaTalisman(Serial serial)
@@ -310,14 +310,14 @@ namespace Server.Items
         public TheLifeOfTravelingMinstrelTalisman()
             : base(0x2F5B)
         { 
-            this.Blessed = GetRandomBlessed();	
-            this.Protection = GetRandomProtection();
+            Blessed = GetRandomBlessed();	
+            Protection = GetRandomProtection();
 			
-            this.SkillBonuses.SetValues(0, SkillName.Provocation, 5.0);
-            this.SkillBonuses.SetValues(1, SkillName.Musicianship, 5.0);
+            SkillBonuses.SetValues(0, SkillName.Provocation, 5.0);
+            SkillBonuses.SetValues(1, SkillName.Musicianship, 5.0);
 			
-            this.Removal = TalismanRemoval.Curse;
-            this.MaxChargeTime = 1200;		
+            Removal = TalismanRemoval.Curse;
+            MaxChargeTime = 1200;		
         }
 
         public TheLifeOfTravelingMinstrelTalisman(Serial serial)
