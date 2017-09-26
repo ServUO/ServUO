@@ -165,7 +165,7 @@ namespace Server.Engines.Quests
 
 		public static Item CarpRecipe()
 		{
-            int[] array = new int[23];
+            int[] array = new int[24];
 
             for (int i = 0; i <= 20; i++)
             {
