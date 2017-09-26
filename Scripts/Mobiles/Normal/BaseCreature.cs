@@ -3339,18 +3339,30 @@ namespace Server.Mobiles
             if (m_ControlMaster != null)
             {
                 m_ControlMaster.Followers -= ControlSlots;
+
                 if (m_ControlMaster is PlayerMobile)
                 {
-                    ((PlayerMobile)m_ControlMaster).AllFollowers.Remove(this);
-                    if (((PlayerMobile)m_ControlMaster).AutoStabled.Contains(this))
+                    PlayerMobile pm = (PlayerMobile)m_ControlMaster;
+
+                    pm.AllFollowers.Remove(this);
+
+                    if (pm.AutoStabled.Contains(this))
                     {
-                        ((PlayerMobile)m_ControlMaster).AutoStabled.Remove(this);
+                        pm.AutoStabled.Remove(this);
+                    }
+
+                    NetState ns = m_ControlMaster.NetState;
+
+                    if (ns != null && ns.IsEnhancedClient && Commandable)
+                    {
+                        ns.Send(new PetWindow(pm, this));
                     }
                 }
             }
             else if (m_SummonMaster != null)
             {
                 m_SummonMaster.Followers -= ControlSlots;
+
                 if (m_SummonMaster is PlayerMobile)
                 {
                     ((PlayerMobile)m_SummonMaster).AllFollowers.Remove(this);
@@ -3377,6 +3389,13 @@ namespace Server.Mobiles
                 if (m_ControlMaster is PlayerMobile && !(this is PersonalAttendant))
                 {
                     ((PlayerMobile)m_ControlMaster).AllFollowers.Add(this);
+                }
+
+                NetState ns = m_ControlMaster.NetState;
+
+                if (ns != null && ns.IsEnhancedClient && Commandable)
+                {
+                    ns.Send(new PetWindow((PlayerMobile)m_ControlMaster, this));
                 }
             }
             else if (m_SummonMaster != null)
@@ -7812,6 +7831,26 @@ namespace Server.Mobiles
             foreach (BaseCreature c in toRemove)
             {
                 c.Delete();
+            }
+        }
+    }
+
+    public sealed class PetWindow : Packet
+    {
+        public PetWindow(PlayerMobile owner, Mobile pet)
+            : base(0x31)
+        {
+            int count = owner.AllFollowers.Count;
+
+            EnsureCapacity(6 + (6 * count));
+
+            m_Stream.Write(owner.Serial);
+            m_Stream.Write((byte)count);
+
+            for (int i = 0; i < owner.AllFollowers.Count; i++)
+            {
+                m_Stream.Write(owner.AllFollowers[i].Serial);
+                m_Stream.Write((byte)0x01);
             }
         }
     }
