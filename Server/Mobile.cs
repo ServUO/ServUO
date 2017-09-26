@@ -31,9 +31,28 @@ using Server.Targeting;
 
 namespace Server
 {
+    public enum AnimationType
+    {
+        Attack = 0,
+        Parry = 1,
+        Block = 2,
+        Die = 3,
+        Impact = 4,
+        Fidget = 5,
+        Eat = 6,
+        Emote = 7,
+        Alert = 8,
+        TakeOff = 9,
+        Land = 10,
+        Spell = 11,
+        StartCombat = 12,
+        EndCombat = 13,
+        Pillage = 14,
+        Spawn = 15
+    }
 
-	#region Callbacks
-	public delegate void TargetCallback(Mobile from, object targeted);
+    #region Callbacks
+    public delegate void TargetCallback(Mobile from, object targeted);
 
 	public delegate void TargetStateCallback(Mobile from, object targeted, object state);
 
@@ -727,7 +746,7 @@ namespace Server
 		private string m_Language;
 		private NetState m_NetState;
 		private bool m_Female, m_Warmode, m_Hidden, m_Blessed, m_Flying;
-		private int m_StatCap;
+        private int m_StatCap;
 		private int m_StrCap;
 		private int m_DexCap;
 		private int m_IntCap;
@@ -6735,7 +6754,37 @@ namespace Server
 			}
 		}
 
-		public virtual void Animate(int action, int frameCount, int repeatCount, bool forward, bool repeat, int delay)
+        public virtual void Animate(AnimationType type, int action)
+        {
+            Map map = m_Map;
+
+            if (map != null)
+            {
+                ProcessDelta();
+
+                Packet p = null;
+
+                var eable = map.GetClientsInRange(m_Location);
+
+                foreach (NetState state in eable)
+                {
+                    if (state.Mobile.CanSee(this))
+                    {
+                        state.Mobile.ProcessDelta();
+                        
+                        p = Packet.Acquire(new NewMobileAnimation(this, type, action, Utility.Random(0, 60)));                          
+
+                        state.Send(p);
+                    }
+                }
+
+                Packet.Release(p);
+
+                eable.Free();
+            }
+        }
+
+        public virtual void Animate(int action, int frameCount, int repeatCount, bool forward, bool repeat, int delay)
 		{
 			Map map = m_Map;
 
@@ -6744,7 +6793,6 @@ namespace Server
 				ProcessDelta();
 
 				Packet p = null;
-				//Packet pNew = null;
 
 				var eable = map.GetClientsInRange(m_Location);
 
@@ -6754,103 +6802,95 @@ namespace Server
 					{
 						state.Mobile.ProcessDelta();
 
-						//if ( state.StygianAbyss ) {
-						//if( pNew == null )
-						//pNew = Packet.Acquire( new NewMobileAnimation( this, action, frameCount, delay ) );
+                        if (p == null)
+                        {
+                            #region SA
+                            if (Body.IsGargoyle)
+                            {
+                                frameCount = 10;
 
-						//state.Send( pNew );
-						//} else {
-						if (p == null)
-						{
-							#region SA
-							if (Body.IsGargoyle)
-							{
-								frameCount = 10;
+                                if (Flying)
+                                {
+                                    if (action >= 200 && action <= 270)
+                                    {
+                                        action = 75;
+                                    }
+                                    else
+                                    {
+                                        switch (action)
+                                        {
+                                            case 9:
+                                            case 10:
+                                            case 11:
+                                                action = 71;
+                                                break;
+                                            case 12:
+                                            case 13:
+                                            case 14:
+                                                action = 72;
+                                                break;
+                                            case 18:
+                                            case 19:
+                                                action = 71;
+                                                break;
+                                            case 20:
+                                                action = 77;
+                                                break;
+                                            case 31:
+                                                action = 71;
+                                                break;
+                                            case 34:
+                                                action = 78;
+                                                break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (action >= 260 && action <= 270)
+                                    {
+                                        action = 16;
+                                    }
+                                    else if (action >= 200 && action < 260)
+                                    {
+                                        action = 17;
+                                    }
+                                    else
+                                    {
+                                        switch (action)
+                                        {
+                                            case 9:
+                                                action = 13;
+                                                break;
+                                            case 10:
+                                                action = 14;
+                                                break;
+                                            case 11:
+                                                action = 13;
+                                                break;
+                                            case 12:
+                                            case 13:
+                                            case 14:
+                                                action = 12;
+                                                break;
+                                            case 18:
+                                            case 19:
+                                                action = 9;
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
 
-								if (Flying)
-								{
-									if (action >= 200 && action <= 270)
-									{
-										action = 75;
-									}
-									else
-									{
-										switch (action)
-										{
-											case 9:
-											case 10:
-											case 11:
-												action = 71;
-												break;
-											case 12:
-											case 13:
-											case 14:
-												action = 72;
-												break;
-											case 18:
-											case 19:
-												action = 71;
-												break;
-											case 20:
-												action = 77;
-												break;
-											case 31:
-												action = 71;
-												break;
-											case 34:
-												action = 78;
-												break;
-										}
-									}
-								}
-								else
-								{
-									if (action >= 260 && action <= 270)
-									{
-										action = 16;
-									}
-									else if (action >= 200 && action < 260)
-									{
-										action = 17;
-									}
-									else
-									{
-										switch (action)
-										{
-											case 9:
-												action = 13;
-												break;
-											case 10:
-												action = 14;
-												break;
-											case 11:
-												action = 13;
-												break;
-											case 12:
-											case 13:
-											case 14:
-												action = 12;
-												break;
-											case 18:
-											case 19:
-												action = 9;
-												break;
-										}
-									}
-								}
-							}
-							#endregion
+                            p = Packet.Acquire(new MobileAnimation(this, action, frameCount, repeatCount, forward, repeat, delay));
+                        }
 
-							p = Packet.Acquire(new MobileAnimation(this, action, frameCount, repeatCount, forward, repeat, delay));
-						}
-
-						state.Send(p);
-						//}
+                        state.Send(p);
 					}
 				}
 
 				Packet.Release(p);
-				//Packet.Release( pNew );
 
 				eable.Free();
 			}
@@ -8584,12 +8624,12 @@ namespace Server
 				flags |= 0x02;
 			}
 
-			if (m_Flying)
-			{
-				flags |= 0x04;
-			}
+            if (m_Flying)
+            {
+                flags |= 0x04;
+            }
 
-			if (m_Blessed || m_YellowHealthbar)
+            if (m_Blessed || m_YellowHealthbar)
 			{
 				flags |= 0x08;
 			}
@@ -8673,22 +8713,22 @@ namespace Server
 		public virtual void OnGenderChanged(bool oldFemale)
 		{ }
 
-		[CommandProperty(AccessLevel.Decorator)]
-		public bool Flying
-		{
-			get { return m_Flying; }
-			set
-			{
-				if (m_Flying != value)
-				{
-					m_Flying = value;
-					Delta(MobileDelta.Flags);
-				}
-			}
-		}
+        [CommandProperty(AccessLevel.Decorator)]
+        public bool Flying
+        {
+            get { return m_Flying; }
+            set
+            {
+                if (m_Flying != value)
+                {
+                    m_Flying = value;
+                    Delta(MobileDelta.Flags);
+                }
+            }
+        }
 
-		#region Stygian Abyss
-		public virtual void ToggleFlying()
+        #region Stygian Abyss
+        public virtual void ToggleFlying()
 		{ }
 		#endregion
 

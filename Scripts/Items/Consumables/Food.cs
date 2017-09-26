@@ -179,7 +179,7 @@ namespace Server.Items
                 from.PlaySound(Utility.Random(0x3A, 3));
 
                 if (from.Body.IsHuman && !from.Mounted)
-                    from.Animate(34, 5, 1, true, false, 0);
+                    from.Animate(AnimationType.Eat, 0);
 
                 if (m_Poison != null)
                     from.ApplyPoison(m_Poisoner, m_Poison);

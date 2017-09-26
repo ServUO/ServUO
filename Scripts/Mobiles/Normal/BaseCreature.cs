@@ -2979,14 +2979,7 @@ namespace Server.Mobiles
                             SayTo(from, 502060); // Your pet looks happier.
                         }
 
-                        if (Body.IsAnimal)
-                        {
-                            Animate(3, 5, 1, true, false, 0);
-                        }
-                        else if (Body.IsMonster)
-                        {
-                            Animate(17, 5, 1, true, false, 0);
-                        }
+                        Animate(AnimationType.Eat, 0);
 
                         if (IsBondable && !IsBonded)
                         {
@@ -4337,52 +4330,7 @@ namespace Server.Mobiles
 
             m_IdleReleaseTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(15, 25));
 
-            if (Body.IsHuman && !Mounted)
-            {
-                if (Flying)
-                {
-                    Animate(66, 10, 1, true, false, 1);
-                }
-                else
-                {
-                    switch (Utility.Random(2))
-                    {
-                        case 0:
-                            Animate(5, 5, 1, true, true, 1);
-                            break;
-                        case 1:
-                            Animate(6, 5, 1, true, false, 1);
-                            break;
-                    }
-                }
-            }
-            else if (Body.IsAnimal)
-            {
-                switch (Utility.Random(3))
-                {
-                    case 0:
-                        Animate(3, 3, 1, true, false, 1);
-                        break;
-                    case 1:
-                        Animate(9, 5, 1, true, false, 1);
-                        break;
-                    case 2:
-                        Animate(10, 5, 1, true, false, 1);
-                        break;
-                }
-            }
-            else if (Body.IsMonster)
-            {
-                switch (Utility.Random(2))
-                {
-                    case 0:
-                        Animate(17, 5, 1, true, false, 1);
-                        break;
-                    case 1:
-                        Animate(18, 5, 1, true, false, 1);
-                        break;
-                }
-            }
+            Animate(AnimationType.Fidget, 0);
 
             PlaySound(GetIdleSound());
             return true; // entered idle state
