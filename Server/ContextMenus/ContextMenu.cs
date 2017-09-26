@@ -115,7 +115,11 @@ namespace Server.ContextMenus
                 case 0x032A: number = 3000197; break;   // Add Party Member
                 case 0x032B: number = 3000198; break;   // Remove Party Member
                 case 0x012D: number = 3006130; break;   // Tame
-
+                case 0x082: number = 3006107; break;    // Command: Guard
+                case 0x083: number = 3006108; break;    // Command: Follow
+                case 0x086: number = 3006111; break;    // Command: Kill
+                case 0x087: number = 3006114; break;    // Command: Stay
+                case 0x089: number = 3006112; break;    // Command: Stop
             }
 
             if (index >= 0x64)
