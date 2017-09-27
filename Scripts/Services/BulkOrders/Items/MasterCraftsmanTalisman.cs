@@ -6,7 +6,7 @@ namespace Server.Items
 	public class MasterCraftsmanTalisman : BaseTalisman
     {
         [Constructable]
-        public MasterCraftsmanTalisman(int charges, int itemID, SkillName skill)
+        public MasterCraftsmanTalisman(int charges, int itemID, TalismanSkill skill)
             : base(itemID)
         {
             Skill = skill;

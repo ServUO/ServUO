@@ -368,7 +368,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
+
+            writer.Write((int)m_Resource);
 
             writer.WriteItemList<AddonComponent>(this.m_Components);
         }
@@ -381,6 +383,9 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 2:
+                    m_Resource = (CraftResource)reader.ReadInt();
+                    goto case 1;
                 case 1:
                 case 0:
                     {

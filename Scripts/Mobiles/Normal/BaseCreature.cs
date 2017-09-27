@@ -2979,14 +2979,7 @@ namespace Server.Mobiles
                             SayTo(from, 502060); // Your pet looks happier.
                         }
 
-                        if (Body.IsAnimal)
-                        {
-                            Animate(3, 5, 1, true, false, 0);
-                        }
-                        else if (Body.IsMonster)
-                        {
-                            Animate(17, 5, 1, true, false, 0);
-                        }
+                        Animate(AnimationType.Eat, 0);
 
                         if (IsBondable && !IsBonded)
                         {
@@ -3339,18 +3332,30 @@ namespace Server.Mobiles
             if (m_ControlMaster != null)
             {
                 m_ControlMaster.Followers -= ControlSlots;
+
                 if (m_ControlMaster is PlayerMobile)
                 {
-                    ((PlayerMobile)m_ControlMaster).AllFollowers.Remove(this);
-                    if (((PlayerMobile)m_ControlMaster).AutoStabled.Contains(this))
+                    PlayerMobile pm = (PlayerMobile)m_ControlMaster;
+
+                    pm.AllFollowers.Remove(this);
+
+                    if (pm.AutoStabled.Contains(this))
                     {
-                        ((PlayerMobile)m_ControlMaster).AutoStabled.Remove(this);
+                        pm.AutoStabled.Remove(this);
+                    }
+
+                    NetState ns = m_ControlMaster.NetState;
+
+                    if (ns != null && ns.IsEnhancedClient && Commandable)
+                    {
+                        ns.Send(new PetWindow(pm, this));
                     }
                 }
             }
             else if (m_SummonMaster != null)
             {
                 m_SummonMaster.Followers -= ControlSlots;
+
                 if (m_SummonMaster is PlayerMobile)
                 {
                     ((PlayerMobile)m_SummonMaster).AllFollowers.Remove(this);
@@ -3377,6 +3382,13 @@ namespace Server.Mobiles
                 if (m_ControlMaster is PlayerMobile && !(this is PersonalAttendant))
                 {
                     ((PlayerMobile)m_ControlMaster).AllFollowers.Add(this);
+                }
+
+                NetState ns = m_ControlMaster.NetState;
+
+                if (ns != null && ns.IsEnhancedClient && Commandable)
+                {
+                    ns.Send(new PetWindow((PlayerMobile)m_ControlMaster, this));
                 }
             }
             else if (m_SummonMaster != null)
@@ -4318,52 +4330,7 @@ namespace Server.Mobiles
 
             m_IdleReleaseTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(15, 25));
 
-            if (Body.IsHuman && !Mounted)
-            {
-                if (Flying)
-                {
-                    Animate(66, 10, 1, true, false, 1);
-                }
-                else
-                {
-                    switch (Utility.Random(2))
-                    {
-                        case 0:
-                            Animate(5, 5, 1, true, true, 1);
-                            break;
-                        case 1:
-                            Animate(6, 5, 1, true, false, 1);
-                            break;
-                    }
-                }
-            }
-            else if (Body.IsAnimal)
-            {
-                switch (Utility.Random(3))
-                {
-                    case 0:
-                        Animate(3, 3, 1, true, false, 1);
-                        break;
-                    case 1:
-                        Animate(9, 5, 1, true, false, 1);
-                        break;
-                    case 2:
-                        Animate(10, 5, 1, true, false, 1);
-                        break;
-                }
-            }
-            else if (Body.IsMonster)
-            {
-                switch (Utility.Random(2))
-                {
-                    case 0:
-                        Animate(17, 5, 1, true, false, 1);
-                        break;
-                    case 1:
-                        Animate(18, 5, 1, true, false, 1);
-                        break;
-                }
-            }
+            Animate(AnimationType.Fidget, 0);
 
             PlaySound(GetIdleSound());
             return true; // entered idle state
@@ -7812,6 +7779,26 @@ namespace Server.Mobiles
             foreach (BaseCreature c in toRemove)
             {
                 c.Delete();
+            }
+        }
+    }
+
+    public sealed class PetWindow : Packet
+    {
+        public PetWindow(PlayerMobile owner, Mobile pet)
+            : base(0x31)
+        {
+            int count = owner.AllFollowers.Count;
+
+            EnsureCapacity(6 + (6 * count));
+
+            m_Stream.Write(owner.Serial);
+            m_Stream.Write((byte)count);
+
+            for (int i = 0; i < owner.AllFollowers.Count; i++)
+            {
+                m_Stream.Write(owner.AllFollowers[i].Serial);
+                m_Stream.Write((byte)0x01);
             }
         }
     }

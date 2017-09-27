@@ -15,20 +15,20 @@ namespace Server.Misc
 
             int action;
 
-            switch ( e.Action )
+            switch (e.Action)
             {
                 case "bow":
-                    action = 32;
+                    action = 0;
                     break;
                 case "salute":
-                    action = 33;
+                    action = 1;
                     break;
                 default:
                     return;
             }
 
-            if (from.Alive && !from.Mounted && from.Body.IsHuman)
-                from.Animate(action, 5, 1, true, false, 0);
+            if (from.Alive && !from.Mounted && (from.Body.IsHuman || from.Body.IsGargoyle))
+                from.Animate(AnimationType.Emote, action);
         }
     }
 }

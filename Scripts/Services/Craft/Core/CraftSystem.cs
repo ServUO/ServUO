@@ -252,25 +252,27 @@ namespace Server.Engines.Craft
 
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-		    Item item = from.FindItemOnLayer(Layer.Talisman);
+            return true;
+        }
 
-			if (item is MasterCraftsmanTalisman)
-			{
-				MasterCraftsmanTalisman mct = (MasterCraftsmanTalisman)item;
-				
-				if( mct.Charges > 0 )
-				{
-					mct.Charges--;
+        public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem, ref MasterCraftsmanTalisman talisman)
+        {
+            if (!ConsumeOnFailure(from, resourceType, craftItem))
+                return false;
 
-                    if (mct.Charges <= 0)
-                    {
-                        mct.Delete();
-                        from.SendLocalizedMessage(1157211); // Your talisman has been destroyed.
-                    }
+            Item item = from.FindItemOnLayer(Layer.Talisman);
 
-					return false;
-				}
-			}
+            if (item is MasterCraftsmanTalisman)
+            {
+                MasterCraftsmanTalisman mct = (MasterCraftsmanTalisman)item;
+
+                if (mct.Charges > 0)
+                {
+                    talisman = mct;
+                    return false;
+                }
+            }
+
             return true;
         }
 

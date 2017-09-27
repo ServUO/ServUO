@@ -175,11 +175,17 @@ namespace Server.Gumps
                 }
                 else
                 {
+                    OnItemCreated(item);
+
                     User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
                     RemovePoints(citem.Points);
                     User.PlaySound(0x5A7);
                 }
             }
+        }
+
+        public virtual void OnItemCreated(Item item)
+        {
         }
 
         public virtual int GetItemHue(Item i, CollectionItem item)
