@@ -31,26 +31,6 @@ using Server.Targeting;
 
 namespace Server
 {
-    public enum AnimationType
-    {
-        Attack = 0,
-        Parry = 1,
-        Block = 2,
-        Die = 3,
-        Impact = 4,
-        Fidget = 5,
-        Eat = 6,
-        Emote = 7,
-        Alert = 8,
-        TakeOff = 9,
-        Land = 10,
-        Spell = 11,
-        StartCombat = 12,
-        EndCombat = 13,
-        Pillage = 14,
-        Spawn = 15
-    }
-
     #region Callbacks
     public delegate void TargetCallback(Mobile from, object targeted);
 
@@ -488,6 +468,26 @@ namespace Server
 		HigherPoisonActive,
 		Cured
 	}
+
+    public enum AnimationType
+    {
+        Attack = 0,
+        Parry = 1,
+        Block = 2,
+        Die = 3,
+        Impact = 4,
+        Fidget = 5,
+        Eat = 6,
+        Emote = 7,
+        Alert = 8,
+        TakeOff = 9,
+        Land = 10,
+        Spell = 11,
+        StartCombat = 12,
+        EndCombat = 13,
+        Pillage = 14,
+        Spawn = 15
+    }
 	#endregion
 
 	[Serializable]
@@ -7503,11 +7503,13 @@ namespace Server
 								if (m.Poisoned)
 								{
 									ns.Send(new HealthbarPoison(m));
+                                    ns.Send(new HealthbarPoisonEC(m));
 								}
 
 								if (m.Blessed || m.YellowHealthbar)
 								{
 									ns.Send(new HealthbarYellow(m));
+                                    ns.Send(new HealthbarYellowEC(m));
 								}
 							}
 
@@ -10009,11 +10011,13 @@ namespace Server
                                             if (m_Poison != null)
                                             {
                                                 m.m_NetState.Send(new HealthbarPoison(this));
+                                                m.m_NetState.Send(new HealthbarPoisonEC(this));
                                             }
 
                                             if (m_Blessed || m_YellowHealthbar)
                                             {
                                                 m.m_NetState.Send(new HealthbarYellow(this));
+                                                m.m_NetState.Send(new HealthbarYellowEC(this));
                                             }
                                         }
 
@@ -10040,11 +10044,13 @@ namespace Server
                                             if (m.Poisoned)
                                             {
                                                 ourState.Send(new HealthbarPoison(m));
+                                                ourState.Send(new HealthbarPoisonEC(m));
                                             }
 
                                             if (m.Blessed || m.YellowHealthbar)
                                             {
                                                 ourState.Send(new HealthbarYellow(m));
+                                                ourState.Send(new HealthbarYellowEC(m));
                                             }
                                         }
 
@@ -10084,11 +10090,13 @@ namespace Server
                                     if (m_Poison != null)
                                     {
                                         ns.Send(new HealthbarPoison(this));
+                                        ns.Send(new HealthbarPoisonEC(this));
                                     }
 
                                     if (m_Blessed || m_YellowHealthbar)
                                     {
                                         ns.Send(new HealthbarYellow(this));
+                                        ns.Send(new HealthbarYellowEC(this));
                                     }
                                 }
 
@@ -10578,11 +10586,13 @@ namespace Server
 							if (m_Poison != null)
 							{
 								state.Send(new HealthbarPoison(this));
+                                state.Send(new HealthbarPoisonEC(this));
 							}
 
 							if (m_Blessed || m_YellowHealthbar)
 							{
 								state.Send(new HealthbarYellow(this));
+                                state.Send(new HealthbarYellowEC(this));
 							}
 						}
 
@@ -11289,11 +11299,13 @@ namespace Server
 					if (sendHealthbarPoison)
 					{
 						ourState.Send(new HealthbarPoison(m));
+                        ourState.Send(new HealthbarPoisonEC(m));
 					}
 
 					if (sendHealthbarYellow)
 					{
 						ourState.Send(new HealthbarYellow(m));
+                        ourState.Send(new HealthbarYellowEC(m));
 					}
 				}
 				else
@@ -11407,6 +11419,8 @@ namespace Server
 				Packet facialhairPacket = null;
 				Packet hbpPacket = null;
 				Packet hbyPacket = null;
+                Packet hbpPacketEC = null;
+                Packet hbyPacketEC = null;
                 Packet faceRemovePacket = null;
                 Packet faceSendPacket = null;
 
@@ -11459,9 +11473,11 @@ namespace Server
 								if (hbpPacket == null)
 								{
 									hbpPacket = Packet.Acquire(new HealthbarPoison(m));
+                                    hbpPacketEC = Packet.Acquire(new HealthbarPoisonEC(m));
 								}
 
 								state.Send(hbpPacket);
+                                state.Send(hbpPacketEC);
 							}
 
 							if (sendHealthbarYellow)
@@ -11469,9 +11485,11 @@ namespace Server
 								if (hbyPacket == null)
 								{
 									hbyPacket = Packet.Acquire(new HealthbarYellow(m));
+                                    hbyPacketEC = Packet.Acquire(new HealthbarYellowEC(m));
 								}
 
 								state.Send(hbyPacket);
+                                state.Send(hbyPacketEC);
 							}
 						}
 						else
@@ -11591,6 +11609,8 @@ namespace Server
 				Packet.Release(facialhairPacket);
 				Packet.Release(hbpPacket);
 				Packet.Release(hbyPacket);
+                Packet.Release(hbpPacketEC);
+                Packet.Release(hbyPacketEC);
                 Packet.Release(faceRemovePacket);
                 Packet.Release(faceSendPacket);
 

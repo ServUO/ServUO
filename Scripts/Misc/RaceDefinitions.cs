@@ -363,17 +363,6 @@ namespace Server.Misc
                     return Utility.RandomList(0, 0x42AD, 0x42AE, 0x42AF, 0x42B0);
             }
 
-            // Todo Finish body hues
-            private static readonly int[] m_BodyHues = new int[]
-            {
-                0x86DB, 0x86DC, 0x86DD, 0x86DE,
-                0x86DF, 0x86E0, 0x86E1, 0x86E2,
-                0x86E3, 0x86E4, 0x86E5, 0x86E6
-                // 0x, 0x, 0x, 0x, // 86E7/86E8/86E9/86EA?
-                // 0x, 0x, 0x, 0x, // 86EB/86EC/86ED/86EE?
-                // 0x86F3, 0x86DB, 0x86DC, 0x86DD
-            };
-
             public override bool ValidateFace(bool female, int itemID)
             {
                 if (itemID.Equals(0))
@@ -402,7 +391,7 @@ namespace Server.Misc
 
             public override int RandomSkinHue()
             {
-                return m_BodyHues[Utility.Random(m_BodyHues.Length)] | 0x8000;
+                return Utility.Random(1755, 25) | 0x8000;
             }
 
             private static readonly int[] m_HornHues = new int[]

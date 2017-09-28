@@ -87,7 +87,7 @@ namespace Server.Items
         {
             get
             {
-                return WeaponAnimation.Slash1H;
+                return WeaponAnimation.Throwing;
             }
         }
         public override SkillName AccuracySkill
