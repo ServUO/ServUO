@@ -3644,41 +3644,13 @@ namespace Server.Items
 
 		public virtual void PlayHurtAnimation(Mobile from)
 		{
-			int action;
-			int frames;
-
-			switch (from.Body.Type)
-			{
-				case BodyType.Sea:
-				case BodyType.Animal:
-					{
-						action = 7;
-						frames = 5;
-						break;
-					}
-				case BodyType.Monster:
-					{
-						action = 10;
-						frames = 4;
-						break;
-					}
-				case BodyType.Human:
-					{
-						action = 20;
-						frames = 5;
-						break;
-					}
-				default:
-					return;
-			}
-
 			if (from.Mounted)
 			{
 				return;
 			}
 
-			from.Animate(action, frames, 1, true, false, 0);
-		}
+            from.Animate(AnimationType.Impact, 0);
+        }
 
 		public virtual void PlaySwingAnimation(Mobile from)
 		{

@@ -191,7 +191,7 @@ namespace Server.Mobiles
                 {
                     dismounted.Flying = false;
                     dismounted.Freeze(TimeSpan.FromSeconds(1));
-                    dismounted.Animate(61, 10, 1, true, false, 0);
+                    dismounted.Animate(AnimationType.Land, 0);
                 }
             }
             else

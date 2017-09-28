@@ -562,7 +562,7 @@ namespace Server.Engines.Shadowguard
         {
             base.OnGaveMeleeAttack(defender);
 
-            if (0.25 > Utility.RandomDouble())
+            if (this.Map != null && 0.25 > Utility.RandomDouble())
             {
                 int pushRange = Utility.RandomMinMax(2, 4);
 
