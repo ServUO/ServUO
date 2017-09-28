@@ -1779,6 +1779,11 @@ namespace Server.Items
 					defender.FixedEffect(0x37B9, 10, 16);
 					damage = 0;
 
+                    if (Core.SA)
+                    {
+                        defender.Animate(AnimationType.Parry, 0);
+                    }
+
 					// Successful block removes the Honorable Execution penalty.
 					HonorableExecution.RemovePenalty(defender);
 
@@ -3649,82 +3654,149 @@ namespace Server.Items
 				return;
 			}
 
-            from.Animate(AnimationType.Impact, 0);
+            if (Core.SA)
+            {
+                from.Animate(AnimationType.Impact, 0);
+            }
+            else
+            {
+                int action;
+                int frames;
+
+                switch (from.Body.Type)
+                {
+                    case BodyType.Sea:
+                    case BodyType.Animal:
+                        {
+                            action = 7;
+                            frames = 5;
+                            break;
+                        }
+                    case BodyType.Monster:
+                        {
+                            action = 10;
+                            frames = 4;
+                            break;
+                        }
+                    case BodyType.Human:
+                        {
+                            action = 20;
+                            frames = 5;
+                            break;
+                        }
+                    default:
+                        return;
+                }
+
+                from.Animate(action, frames, 1, true, false, 0);
+            }
         }
 
 		public virtual void PlaySwingAnimation(Mobile from)
 		{
 			int action;
 
-			switch (from.Body.Type)
-			{
-				case BodyType.Sea:
-				case BodyType.Animal:
-					{
-						action = Utility.Random(5, 2);
-						break;
-					}
-				case BodyType.Monster:
-					{
-						switch (Animation)
-						{
-							default:
-							case WeaponAnimation.Wrestle:
-							case WeaponAnimation.Bash1H:
-							case WeaponAnimation.Pierce1H:
-							case WeaponAnimation.Slash1H:
-							case WeaponAnimation.Bash2H:
-							case WeaponAnimation.Pierce2H:
-							case WeaponAnimation.Slash2H:
-								action = Utility.Random(4, 3);
-								break;
-							case WeaponAnimation.ShootBow:
-								return; // 7
-							case WeaponAnimation.ShootXBow:
-								return; // 8
-						}
+            if (Core.SA)
+            {
+                action = GetNewAnimationAction(from);
 
-						break;
-					}
-				case BodyType.Human:
-					{
-						if (!from.Mounted)
-						{
-							action = (int)Animation;
-						}
-						else
-						{
-							switch (Animation)
-							{
-								default:
-								case WeaponAnimation.Wrestle:
-								case WeaponAnimation.Bash1H:
-								case WeaponAnimation.Pierce1H:
-								case WeaponAnimation.Slash1H:
-									action = 26;
-									break;
-								case WeaponAnimation.Bash2H:
-								case WeaponAnimation.Pierce2H:
-								case WeaponAnimation.Slash2H:
-									action = 29;
-									break;
-								case WeaponAnimation.ShootBow:
-									action = 27;
-									break;
-								case WeaponAnimation.ShootXBow:
-									action = 28;
-									break;
-							}
-						}
+                from.Animate(AnimationType.Attack, action); 
+            }
+            else
+            {
+                switch (from.Body.Type)
+                {
+                    case BodyType.Sea:
+                    case BodyType.Animal:
+                        {
+                            action = Utility.Random(5, 2);
+                            break;
+                        }
+                    case BodyType.Monster:
+                        {
+                            switch (Animation)
+                            {
+                                default:
+                                case WeaponAnimation.Wrestle:
+                                case WeaponAnimation.Bash1H:
+                                case WeaponAnimation.Pierce1H:
+                                case WeaponAnimation.Slash1H:
+                                case WeaponAnimation.Bash2H:
+                                case WeaponAnimation.Pierce2H:
+                                case WeaponAnimation.Slash2H:
+                                    action = Utility.Random(4, 3);
+                                    break;
+                                case WeaponAnimation.ShootBow:
+                                    return; // 7
+                                case WeaponAnimation.ShootXBow:
+                                    return; // 8
+                            }
 
-						break;
-					}
-				default:
-					return;
-			}
+                            break;
+                        }
+                    case BodyType.Human:
+                        {
+                            if (!from.Mounted)
+                            {
+                                action = (int)Animation;
+                            }
+                            else
+                            {
+                                switch (Animation)
+                                {
+                                    default:
+                                    case WeaponAnimation.Wrestle:
+                                    case WeaponAnimation.Bash1H:
+                                    case WeaponAnimation.Pierce1H:
+                                    case WeaponAnimation.Slash1H:
+                                        action = 26;
+                                        break;
+                                    case WeaponAnimation.Bash2H:
+                                    case WeaponAnimation.Pierce2H:
+                                    case WeaponAnimation.Slash2H:
+                                        action = 29;
+                                        break;
+                                    case WeaponAnimation.ShootBow:
+                                        action = 27;
+                                        break;
+                                    case WeaponAnimation.ShootXBow:
+                                        action = 28;
+                                        break;
+                                }
+                            }
 
-			from.Animate(action, 7, 1, true, false, 0);
+                            break;
+                        }
+                    default:
+                        return;
+                }
+
+                from.Animate(action, 7, 1, true, false, 0);
+            }
 		}
+
+        public int GetNewAnimationAction(Mobile from)
+        {
+            if (from.Body.Type == BodyType.Human)
+            {
+                switch (Animation)
+                {
+                    default:
+                    case WeaponAnimation.Wrestle: return 0;
+                    case WeaponAnimation.Bash1H: return 3;
+                    case WeaponAnimation.Pierce1H: return 5;
+                    case WeaponAnimation.Slash1H: return 4;
+                    case WeaponAnimation.Bash2H: return 6;
+                    case WeaponAnimation.Pierce2H: return 8;
+                    case WeaponAnimation.Slash2H: return 7;
+                    case WeaponAnimation.ShootBow: return 1;
+                    case WeaponAnimation.ShootXBow: return 2;
+                    case WeaponAnimation.Throwing: return 9;
+                }
+            }
+
+            return 0;
+        }
 
 		#region Serialization/Deserialization
 		private static void SetSaveFlag(ref SaveFlag flags, SaveFlag toSet, bool setIf)

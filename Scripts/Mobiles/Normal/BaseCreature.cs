@@ -816,7 +816,14 @@ namespace Server.Mobiles
 
         public virtual void BreathPlayAngerAnimation()
         {
-            Animate(BreathAngerAnimation, 5, 1, true, false, 0);
+            if (Core.SA)
+            {
+                Animate(AnimationType.Pillage, 0);
+            }
+            else
+            {
+                Animate(BreathAngerAnimation, 5, 1, true, false, 0);
+            }
         }
 
         public virtual void BreathEffect_Callback(object state)
@@ -1042,7 +1049,15 @@ namespace Server.Mobiles
         {
             _Stunning = true;
 
-            defender.Animate(21, 6, 1, true, false, 0);
+            if (Core.SA)
+            {
+                defender.Animate(AnimationType.Die, 0);
+            }
+            else
+            {
+                defender.Animate(21, 6, 1, true, false, 0);
+            }
+
             PlaySound(0xEE);
             defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1070696); // You have been stunned by a colossal blow!
 
@@ -1434,13 +1449,13 @@ namespace Server.Mobiles
 
             PlaySound(GetAngerSound());
 
-            if (Body.IsAnimal)
+            if (Core.SA)
             {
-                Animate(10, 5, 1, true, false, 0);
+                Animate(AnimationType.Alert, 0);
             }
-            else if (Body.IsMonster)
+            else
             {
-                Animate(18, 5, 1, true, false, 0);
+                Animate(Body.IsAnimal ? 10 : 18, 5, 1, true, false, 0);
             }
 
             Loyalty -= 3;
@@ -2979,7 +2994,14 @@ namespace Server.Mobiles
                             SayTo(from, 502060); // Your pet looks happier.
                         }
 
-                        Animate(AnimationType.Eat, 0);
+                        if (Core.SA)
+                        {
+                            Animate(AnimationType.Eat, 0);
+                        }
+                        else
+                        {
+                            Animate(Body.IsAnimal ? 3 : Body.IsHuman ? 34 : 17, 5, 1, true, false, 0);
+                        }
 
                         if (IsBondable && !IsBonded)
                         {
@@ -4330,7 +4352,61 @@ namespace Server.Mobiles
 
             m_IdleReleaseTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(15, 25));
 
-            Animate(AnimationType.Fidget, 0);
+            if (Core.SA)
+            {
+                Animate(AnimationType.Fidget, 0);
+            }
+            else
+            {
+                if (Body.IsHuman && !Mounted)
+                {
+                    if (Flying)
+                    {
+                        Animate(66, 10, 1, true, false, 1);
+                    }
+                    else
+                    {
+                        switch (Utility.Random(2))
+                        {
+                            case 0:
+                                Animate(5, 5, 1, true, true, 1);
+                                break;
+                            case 1:
+                                Animate(6, 5, 1, true, false, 1);
+                                break;
+                        }
+                    }
+                }
+                else if (Body.IsAnimal)
+                {
+                    switch (Utility.Random(3))
+                    {
+                        case 0:
+                            Animate(3, 3, 1, true, false, 1);
+                            break;
+                        case 1:
+                            Animate(9, 5, 1, true, false, 1);
+                            break;
+                        case 2:
+                            Animate(10, 5, 1, true, false, 1);
+                            break;
+                    }
+                }
+                else if (Body.IsMonster)
+                {
+                    switch (Utility.Random(2))
+                    {
+                        case 0:
+                            Animate(17, 5, 1, true, false, 1);
+                            break;
+                        case 1:
+                            Animate(18, 5, 1, true, false, 1);
+                            break;
+                    }
+                }
+
+
+            }
 
             PlaySound(GetIdleSound());
             return true; // entered idle state
@@ -4458,7 +4534,14 @@ namespace Server.Mobiles
                 {
                     if (Body.IsMonster)
                     {
-                        Animate(11, 5, 1, true, false, 1);
+                        if (Core.SA)
+                        {
+                            Animate(AnimationType.Pillage, 0);
+                        }
+                        else
+                        {
+                            Animate(11, 5, 1, true, false, 1);
+                        }
                     }
 
                     PlaySound(GetAngerSound());
@@ -6786,7 +6869,15 @@ namespace Server.Mobiles
         {
             if (attacker != null && attacker.Alive)
             {
-                attacker.Animate(21, 6, 1, true, false, 0);
+                if (Core.SA)
+                {
+                    attacker.Animate(AnimationType.Pillage, 0);
+                }
+                else
+                {
+                    attacker.Animate(21, 6, 1, true, false, 0);
+                }
+
                 PlaySound(0xEE);
                 attacker.LocalOverheadMessage(MessageType.Regular, 0x20, 1070696); // You have been stunned by a colossal blow!
 
