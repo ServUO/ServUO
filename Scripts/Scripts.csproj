@@ -2723,7 +2723,6 @@
     <Compile Include="Items\Equipment\Talismans\TalismanofGoblinSlaying.cs" />
     <Compile Include="Mobiles\NPCs\Neville.cs" />
     <Compile Include="Items\Containers\RewardBackpack.cs" />
-    <Compile Include="Mobiles\NPCs\Percolem.cs" />
     <Compile Include="Quests\Percolem.cs" />
     <Compile Include="Items\Containers\EssenceBox.cs" />
     <Compile Include="Mobiles\NPCs\Sliem.cs" />
