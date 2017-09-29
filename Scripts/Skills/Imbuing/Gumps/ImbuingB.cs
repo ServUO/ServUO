@@ -33,7 +33,7 @@ namespace Server.Gumps
             m_Item = context.LastImbued;
 
             int itemRef = ImbuingGump.GetItemRef(m_Item);
-            bool ranged = item is BaseRanged;
+            bool twoHanded = item.Layer == Layer.TwoHanded;
 
             AddPage(0);
             AddBackground(0, 0, 520, 520, 5054);
@@ -239,7 +239,7 @@ namespace Server.Gumps
                         yOffset += 1;
                     }
 
-                    if (ranged)
+                    if (twoHanded)
                     {
                         AddButton(250, 90 + (yOffset * 22), 4005, 4007, 10161, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(295, 90 + (yOffset * 22), 150, 18, 1072792, LabelColor, false, false);   //Balanced
@@ -250,10 +250,6 @@ namespace Server.Gumps
                 {
                     AddButton(250, 90 + (yOffset * 22), 4005, 4007, 10101, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 22), 150, 18, 1075620, LabelColor, false, false);       //Defense Chance Increase
-                    yOffset += 1;
-
-                    AddButton(250, 90 + (yOffset * 22), 4005, 4007, 10102, GumpButtonType.Reply, 0);
-                    AddHtmlLocalized(295, 90 + (yOffset * 22), 150, 18, 1075616, LabelColor, false, false);       //Hit Chance Increase
                     yOffset += 1;
 
                 }                

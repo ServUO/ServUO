@@ -1182,6 +1182,18 @@ namespace Server.Mobiles
                 menu.BeginClose();
                 from.SendGump(menu);
             }
+
+            if (from.NetState != null && from.NetState.IsEnhancedClient && from.Mount is EtherealMount)
+            {
+                Timer.DelayCall<EtherealMount>(TimeSpan.FromSeconds(1), mount =>
+                    {
+                        if (mount.IsChildOf(from.Backpack))
+                        {
+                            mount.Rider = from;
+                        }
+                    }, 
+                    (EtherealMount)from.Mount);
+            }
         }
 
 		private bool m_NoDeltaRecursion;
