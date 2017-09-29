@@ -4433,9 +4433,17 @@ namespace Server.Mobiles
 
             Warmode = (Combatant != null && !Combatant.Deleted && Combatant.Alive);
 
-            if (CanFly && Warmode)
+            if (Warmode)
             {
-                Flying = false;
+                if (Core.SA)
+                {
+                    Animate(AnimationType.Alert, 0);
+                }
+
+                if (CanFly)
+                {
+                    Flying = false;
+                }
             }
         }
 

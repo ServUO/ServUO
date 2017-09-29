@@ -318,10 +318,10 @@ namespace Server.Gumps
 
         public static int GetItemRef(object i)
         {
-            if (i is BaseWeapon) return 1;
             if (i is BaseRanged) return 2;
-            if (i is BaseArmor) return 3;
+            if (i is BaseWeapon) return 1;
             if (i is BaseShield) return 4;
+            if (i is BaseArmor) return 3;
             if (i is BaseHat) return 5;
             if (i is BaseJewel) return 6;
 

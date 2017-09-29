@@ -1112,7 +1112,7 @@ namespace Server.Items
 					m_MageMod.Remove();
 				}
 
-				m_MageMod = new DefaultSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon);
+                m_MageMod = new DefaultSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon);
 				from.AddSkillMod(m_MageMod);
 			}
 
@@ -3777,25 +3777,20 @@ namespace Server.Items
 
         public int GetNewAnimationAction(Mobile from)
         {
-            if (from.Body.Type == BodyType.Human)
+            switch (Animation)
             {
-                switch (Animation)
-                {
-                    default:
-                    case WeaponAnimation.Wrestle: return 0;
-                    case WeaponAnimation.Bash1H: return 3;
-                    case WeaponAnimation.Pierce1H: return 5;
-                    case WeaponAnimation.Slash1H: return 4;
-                    case WeaponAnimation.Bash2H: return 6;
-                    case WeaponAnimation.Pierce2H: return 8;
-                    case WeaponAnimation.Slash2H: return 7;
-                    case WeaponAnimation.ShootBow: return 1;
-                    case WeaponAnimation.ShootXBow: return 2;
-                    case WeaponAnimation.Throwing: return 9;
-                }
+                default:
+                case WeaponAnimation.Wrestle: return 0;
+                case WeaponAnimation.Bash1H: return 3;
+                case WeaponAnimation.Pierce1H: return 5;
+                case WeaponAnimation.Slash1H: return 4;
+                case WeaponAnimation.Bash2H: return 6;
+                case WeaponAnimation.Pierce2H: return 8;
+                case WeaponAnimation.Slash2H: return 7;
+                case WeaponAnimation.ShootBow: return 1;
+                case WeaponAnimation.ShootXBow: return 2;
+                case WeaponAnimation.Throwing: return 9;
             }
-
-            return 0;
         }
 
 		#region Serialization/Deserialization
