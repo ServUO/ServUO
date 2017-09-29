@@ -665,6 +665,7 @@
     <Compile Include="Items\Books\SpecialScrollBooks\SpecialScrollBookGump.cs" />
     <Compile Include="Items\Consumables\DeliciouslyTastyTreat.cs" />
     <Compile Include="Items\Consumables\IrresistiblyTastyTreat.cs" />
+    <Compile Include="Items\Consumables\SkinTingeingTincture.cs" />
     <Compile Include="Items\Consumables\TastyTreat.cs" />
     <Compile Include="Items\Decorative\AllegiancePouch.cs" />
     <Compile Include="Items\Decorative\DecorativeCarpet.cs" />
