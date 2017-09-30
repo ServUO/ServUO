@@ -33,10 +33,6 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                #region Salvage Bag
-                if (Core.ML)
-                    Add(new GenericBuyInfo("1079931", typeof(SalvageBag), 1255, 20, 0xE76, Utility.RandomBlueHue()));
-                #endregion
                 Add(new GenericBuyInfo("1060834", typeof(Engines.Plants.PlantBowl), 2, 20, 0x15FD, 0));
 
                 Add(new GenericBuyInfo(typeof(Arrow), 2, 20, 0xF3F, 0, true));
@@ -115,6 +111,12 @@ namespace Server.Mobiles
 
                 if (!Guild.NewGuildSystem)
                     Add(new GenericBuyInfo("1041055", typeof(GuildDeed), 12450, 20, 0x14F0, 0));
+
+                if (Core.ML)
+                    Add(new GenericBuyInfo("1079931", typeof(SalvageBag), 1255, 20, 0xE76, Utility.RandomBlueHue()));
+
+                if (Core.SA)
+                    Add(new GenericBuyInfo("1114770", typeof(SkinTingeingTincture), 1255, 20, 0xEFF, 90));
             }
         }
 

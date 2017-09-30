@@ -231,12 +231,24 @@ namespace Server.Items
 
 		public void ConvertToWorld( int x, int y, out int worldX, out int worldY )
 		{
+            if (Width == 0 || Height == 0)
+            {
+                worldX = worldY = 0;
+                return;
+            }
+
 			worldX = ( ( m_Bounds.Width * x ) / Width ) + m_Bounds.X;
 			worldY = ( ( m_Bounds.Height * y ) / Height ) + m_Bounds.Y;
 		}
 
 		public void ConvertToMap( int x, int y, out int mapX, out int mapY )
 		{
+            if (m_Bounds.Width == 0 || m_Bounds.Height == 0)
+            {
+                mapX = mapY = 0;
+                return;
+            }
+
 			mapX = ( ( x - m_Bounds.X ) * Width ) / m_Bounds.Width;
 			mapY = ( ( y - m_Bounds.Y ) * Width ) / m_Bounds.Height;
 		}

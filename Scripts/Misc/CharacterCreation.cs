@@ -181,8 +181,7 @@ namespace Server.Misc
             else
                 newChar.Race = Race.DefaultRace;
 
-            //newChar.Hue = Utility.ClipSkinHue( args.Hue & 0x3FFF ) | 0x8000;
-            newChar.Hue = newChar.Race.ClipSkinHue(args.Hue & 0x3FFF) | 0x8000;
+            newChar.Hue = args.Hue | 0x8000;
 
             newChar.Hunger = 20;
 
@@ -216,13 +215,13 @@ namespace Server.Misc
             if (race.ValidateHair(newChar, args.HairID))
             {
                 newChar.HairItemID = args.HairID;
-                newChar.HairHue = race.ClipHairHue(args.HairHue & 0x3FFF);
+                newChar.HairHue = args.HairHue;
             }
 
             if (race.ValidateFacialHair(newChar, args.BeardID))
             {
                 newChar.FacialHairItemID = args.BeardID;
-                newChar.FacialHairHue = race.ClipHairHue(args.BeardHue & 0x3FFF);
+                newChar.FacialHairHue = args.BeardHue;
             }
 
             int faceID = args.FaceID;
