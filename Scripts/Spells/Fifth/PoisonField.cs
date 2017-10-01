@@ -31,23 +31,23 @@ namespace Server.Spells.Fifth
         }
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IPoint3D p)
         {
-            if (!this.Caster.CanSee(p))
+            if (!Caster.CanSee(p))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (SpellHelper.CheckTown(p, this.Caster) && this.CheckSequence())
+            else if (SpellHelper.CheckTown(p, Caster) && SpellHelper.CheckWater(new Point3D(p), Caster.Map) && CheckSequence())
             {
-                SpellHelper.Turn(this.Caster, p);
+                SpellHelper.Turn(Caster, p);
 
                 SpellHelper.GetSurfaceTop(ref p);
 
-                int dx = this.Caster.Location.X - p.X;
-                int dy = this.Caster.Location.Y - p.Y;
+                int dx = Caster.Location.X - p.X;
+                int dy = Caster.Location.Y - p.Y;
                 int rx = (dx - dy) * 44;
                 int ry = (dx + dy) * 44;
 
@@ -70,21 +70,30 @@ namespace Server.Spells.Fifth
                     eastToWest = false;
                 }
 
-                Effects.PlaySound(p, this.Caster.Map, 0x20B);
+                Effects.PlaySound(p, Caster.Map, 0x20B);
 
                 int itemID = eastToWest ? 0x3915 : 0x3922;
 
-                TimeSpan duration = TimeSpan.FromSeconds(3 + (this.Caster.Skills.Magery.Fixed / 25));
+                TimeSpan duration = TimeSpan.FromSeconds(3 + (Caster.Skills.Magery.Fixed / 25));
 
-                for (int i = -2; i <= 2; ++i)
+                new InternalItem(itemID, new Point3D(p), Caster, Caster.Map, duration);
+
+                for (int i = 1; i <= 2; ++i)
                 {
-                    Point3D loc = new Point3D(eastToWest ? p.X + i : p.X, eastToWest ? p.Y : p.Y + i, p.Z);
+                    Timer.DelayCall<int>(TimeSpan.FromMilliseconds(i * 300), index =>
+                    {
+                        IPoint3D pnt = new Point3D(eastToWest ? p.X + index : p.X, eastToWest ? p.Y : p.Y + index, p.Z);
+                        SpellHelper.GetSurfaceTop(ref pnt);
+                        new InternalItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
 
-                    new InternalItem(itemID, loc, this.Caster, this.Caster.Map, duration, i);
+                        pnt = new Point3D(eastToWest ? p.X + -index : p.X, eastToWest ? p.Y : p.Y + -index, p.Z);
+                        SpellHelper.GetSurfaceTop(ref pnt);
+                        new InternalItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
+                    }, i);
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         [DispellableField]
@@ -96,23 +105,23 @@ namespace Server.Spells.Fifth
 
             public Mobile Caster { get { return m_Caster; } }
 
-            public InternalItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration, int val)
+            public InternalItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration)
                 : base(itemID)
             {
                 bool canFit = SpellHelper.AdjustField(ref loc, map, 12, false);
 
-                this.Visible = false;
-                this.Movable = false;
-                this.Light = LightType.Circle300;
+                Movable = false;
+                Light = LightType.Circle300;
 
-                this.MoveToWorld(loc, map);
+                MoveToWorld(loc, map);
+                Effects.SendLocationParticles(EffectItem.Create(loc, map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5029);
 
-                this.m_Caster = caster;
+                m_Caster = caster;
 
-                this.m_End = DateTime.UtcNow + duration;
+                m_End = DateTime.UtcNow + duration;
 
-                this.m_Timer = new InternalTimer(this, TimeSpan.FromSeconds(Math.Abs(val) * 0.2), caster.InLOS(this), canFit);
-                this.m_Timer.Start();
+                m_Timer = new InternalTimer(this, caster.InLOS(this), canFit);
+                m_Timer.Start();
             }
 
             public InternalItem(Serial serial)
@@ -131,8 +140,8 @@ namespace Server.Spells.Fifth
             {
                 base.OnAfterDelete();
 
-                if (this.m_Timer != null)
-                    this.m_Timer.Stop();
+                if (m_Timer != null)
+                    m_Timer.Stop();
             }
 
             public override void Serialize(GenericWriter writer)
@@ -141,8 +150,8 @@ namespace Server.Spells.Fifth
 
                 writer.Write((int)1); // version
 
-                writer.Write(this.m_Caster);
-                writer.WriteDeltaTime(this.m_End);
+                writer.Write(m_Caster);
+                writer.WriteDeltaTime(m_End);
             }
 
             public override void Deserialize(GenericReader reader)
@@ -155,16 +164,16 @@ namespace Server.Spells.Fifth
                 {
                     case 1:
                         {
-                            this.m_Caster = reader.ReadMobile();
+                            m_Caster = reader.ReadMobile();
 
                             goto case 0;
                         }
                     case 0:
                         {
-                            this.m_End = reader.ReadDeltaTime();
+                            m_End = reader.ReadDeltaTime();
 
-                            this.m_Timer = new InternalTimer(this, TimeSpan.Zero, true, true);
-                            this.m_Timer.Start();
+                            m_Timer = new InternalTimer(this, true, true);
+                            m_Timer.Start();
 
                             break;
                         }
@@ -173,14 +182,14 @@ namespace Server.Spells.Fifth
 
             public void ApplyPoisonTo(Mobile m)
             {
-                if (this.m_Caster == null)
+                if (m_Caster == null)
                     return;
 
                 Poison p;
 
                 if (Core.AOS)
                 {
-                    int total = (this.m_Caster.Skills.Magery.Fixed + this.m_Caster.Skills.Poisoning.Fixed) / 2;
+                    int total = (m_Caster.Skills.Magery.Fixed + m_Caster.Skills.Poisoning.Fixed) / 2;
 
                     if (total >= 1000)
                         p = Poison.Deadly;
@@ -196,21 +205,21 @@ namespace Server.Spells.Fifth
                     p = Poison.Regular;
                 }
 
-                if (m.ApplyPoison(this.m_Caster, p) == ApplyPoisonResult.Poisoned)
+                if (m.ApplyPoison(m_Caster, p) == ApplyPoisonResult.Poisoned)
                     if (SpellHelper.CanRevealCaster(m))
-                        this.m_Caster.RevealingAction();
+                        m_Caster.RevealingAction();
 
                 if (m is BaseCreature)
-                    ((BaseCreature)m).OnHarmfulSpell(this.m_Caster);
+                    ((BaseCreature)m).OnHarmfulSpell(m_Caster);
             }
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (this.Visible && this.m_Caster != null && (!Core.AOS || m != this.m_Caster) && SpellHelper.ValidIndirectTarget(this.m_Caster, m) && this.m_Caster.CanBeHarmful(m, false))
+                if (Visible && m_Caster != null && (!Core.AOS || m != m_Caster) && SpellHelper.ValidIndirectTarget(m_Caster, m) && m_Caster.CanBeHarmful(m, false))
                 {
-                    this.m_Caster.DoHarmful(m);
+                    m_Caster.DoHarmful(m);
 
-                    this.ApplyPoisonTo(m);
+                    ApplyPoisonTo(m);
                     m.PlaySound(0x474);
                 }
 
@@ -223,52 +232,39 @@ namespace Server.Spells.Fifth
                 private readonly InternalItem m_Item;
                 private readonly bool m_InLOS;
                 private readonly bool m_CanFit;
-                public InternalTimer(InternalItem item, TimeSpan delay, bool inLOS, bool canFit)
-                    : base(delay, TimeSpan.FromSeconds(1.5))
+                public InternalTimer(InternalItem item, bool inLOS, bool canFit)
+                    : base(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1.5))
                 {
-                    this.m_Item = item;
-                    this.m_InLOS = inLOS;
-                    this.m_CanFit = canFit;
+                    m_Item = item;
+                    m_InLOS = inLOS;
+                    m_CanFit = canFit;
 
-                    this.Priority = TimerPriority.FiftyMS;
+                    Priority = TimerPriority.FiftyMS;
                 }
 
                 protected override void OnTick()
                 {
-                    if (this.m_Item.Deleted)
+                    if (m_Item.Deleted)
                         return;
 
-                    if (!this.m_Item.Visible)
+                    if (DateTime.UtcNow > m_Item.m_End)
                     {
-                        if (this.m_InLOS && this.m_CanFit)
-                            this.m_Item.Visible = true;
-                        else
-                            this.m_Item.Delete();
-
-                        if (!this.m_Item.Deleted)
-                        {
-                            this.m_Item.ProcessDelta();
-                            Effects.SendLocationParticles(EffectItem.Create(this.m_Item.Location, this.m_Item.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5040);
-                        }
-                    }
-                    else if (DateTime.UtcNow > this.m_Item.m_End)
-                    {
-                        this.m_Item.Delete();
-                        this.Stop();
+                        m_Item.Delete();
+                        Stop();
                     }
                     else
                     {
-                        Map map = this.m_Item.Map;
-                        Mobile caster = this.m_Item.m_Caster;
+                        Map map = m_Item.Map;
+                        Mobile caster = m_Item.m_Caster;
 
                         if (map != null && caster != null)
                         {
-                            bool eastToWest = (this.m_Item.ItemID == 0x3915);
-                            IPooledEnumerable eable = map.GetMobilesInBounds(new Rectangle2D(this.m_Item.X - (eastToWest ? 0 : 1), this.m_Item.Y - (eastToWest ? 1 : 0), (eastToWest ? 1 : 2), (eastToWest ? 2 : 1)));
+                            bool eastToWest = (m_Item.ItemID == 0x3915);
+                            IPooledEnumerable eable = map.GetMobilesInBounds(new Rectangle2D(m_Item.X - (eastToWest ? 0 : 1), m_Item.Y - (eastToWest ? 1 : 0), (eastToWest ? 1 : 2), (eastToWest ? 2 : 1)));
 
                             foreach (Mobile m in eable)
                             {
-                                if ((m.Z + 16) > this.m_Item.Z && (this.m_Item.Z + 12) > m.Z && (!Core.AOS || m != caster) && SpellHelper.ValidIndirectTarget(caster, m) && caster.CanBeHarmful(m, false))
+                                if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && (!Core.AOS || m != caster) && SpellHelper.ValidIndirectTarget(caster, m) && caster.CanBeHarmful(m, false))
                                     m_Queue.Enqueue(m);
                             }
 
@@ -280,7 +276,7 @@ namespace Server.Spells.Fifth
 
                                 caster.DoHarmful(m);
 
-                                this.m_Item.ApplyPoisonTo(m);
+                                m_Item.ApplyPoisonTo(m);
                                 m.PlaySound(0x474);
                             }
                         }
@@ -295,18 +291,18 @@ namespace Server.Spells.Fifth
             public InternalTarget(PoisonFieldSpell owner)
                 : base(Core.ML ? 10 : 12, true, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is IPoint3D)
-                    this.m_Owner.Target((IPoint3D)o);
+                    m_Owner.Target((IPoint3D)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

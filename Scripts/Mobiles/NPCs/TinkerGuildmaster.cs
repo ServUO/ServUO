@@ -43,7 +43,9 @@ namespace Server.Mobiles
         }
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
-        { 
+        {
+            base.AddCustomContextEntries(from, list);
+
             if (Core.ML && from.Alive)
             {
                 RechargeEntry entry = new RechargeEntry(from, this);
@@ -53,8 +55,6 @@ namespace Server.Mobiles
 					
                 list.Add(entry);
             }
-			
-            base.AddCustomContextEntries(from, list);
         }
 
         private class RechargeEntry : ContextMenuEntry

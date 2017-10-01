@@ -259,9 +259,39 @@ namespace Server.Spells
                     p = loc;
                     return true;
                 }
+
+                loc = new Point3D(p.X, p.Y, p.Z + offset);
+
+                if (map.CanFit(loc, height, true, mobsBlock))
+                {
+                    p = loc;
+                    return true;
+                }
             }
 
             return false;
+        }
+
+        public static bool CheckWater(Point3D p, Map map)
+        {
+            var landTile = map.Tiles.GetLandTile(p.X, p.Y);
+
+            if (landTile.Z == p.Z && ((landTile.ID >= 168 && landTile.ID <= 171) || (landTile.ID >= 310 && landTile.ID <= 311)))
+            {
+                return false;
+            }
+
+            var tiles = map.Tiles.GetStaticTiles(p.X, p.Y, true);
+
+            foreach (var tile in tiles)
+            {
+                if (tile.Z == p.Z && tile.ID >= 0x1796 && tile.ID <= 0x17B2)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 		
         public static bool CanRevealCaster(Mobile m)
