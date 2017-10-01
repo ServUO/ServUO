@@ -74,7 +74,7 @@ namespace Server
         #region Version 1
         public static void RemoveSpawnVersion1()
         {
-            Remove("SeaHorse", true);
+            Remove("SeaHorse");
             Delete("Valem");
         }
         #endregion
@@ -196,8 +196,6 @@ namespace Server
         /// <param name="current"></param>
         public static void Delete(string current)
         {
-            int count = 0;
-
             List<XmlSpawner> toDelete = new List<XmlSpawner>();
 
             foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
@@ -298,24 +296,26 @@ namespace Server
         /// Removes a SpawnerObject string, either the string or entire line
         /// </summary>
         /// <param name="toRemove">string to remove from line</param>
-        /// <param name="entireLine">if toRemove is found, this removes the entire line</param>
-        public static void Remove(string toRemove, bool entireLine = true)
+        public static void Remove(string toRemove)
         {
             int count = 0;
 
             foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
             {
-                count += Remove(spawner, toRemove, entireLine);
+                count += Remove(spawner, toRemove);
             }
 
-            ToConsole(String.Format("Spawn Removal: {0} spawn lines {1} containing -{2}-.", count.ToString(), entireLine ? "removed" : "cut", toRemove));
+            ToConsole(String.Format("Spawn Removal: {0} spawn lines removed containing -{1}-.", count.ToString(), toRemove));
         }
 
-        public static int Remove(XmlSpawner spawner, string toRemove, bool entireLine)
+        public static int Remove(XmlSpawner spawner, string toRemove)
         {
             int count = 0;
 
-            foreach (var obj in spawner.SpawnObjects)
+            List<XmlSpawner.SpawnObject> remove = new List<XmlSpawner.SpawnObject>();
+            List<XmlSpawner.SpawnObject> objects = spawner.SpawnObjects.ToList();
+
+            foreach (var obj in objects)
             {
                 if (obj == null || obj.TypeName == null)
                     continue;
@@ -325,18 +325,19 @@ namespace Server
 
                 if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
                 {
-                    if (entireLine)
-                    {
-                        count++;
-                        obj.TypeName = null;
-                    }
-                    else
-                    {
-                        count++;
-                        obj.TypeName = typeName.Replace(lookingFor, "");
-                    }
+                    remove.Add(obj);
                 }
             }
+
+            count = remove.Count;
+
+            foreach (var obj in remove)
+                objects.Remove(obj);
+
+            if (count > 0)
+                spawner.SpawnObjects = objects.ToArray();
+
+            ColUtility.Free(remove);
 
             return count;
         }
