@@ -42,7 +42,7 @@ namespace Server.Engines.CannedEvil
         {
             AddonComponent ac = new AddonComponent(id);
 
-            ac.Hue = 0x497;
+            ac.Hue = 0x452;
 
             this.AddComponent(ac, x, y, z);
         }
@@ -59,7 +59,7 @@ namespace Server.Engines.CannedEvil
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 
             writer.Write(this.m_Spawn);
         }
@@ -72,6 +72,7 @@ namespace Server.Engines.CannedEvil
 
             switch ( version )
             {
+                case 1:
                 case 0:
                     {
                         this.m_Spawn = reader.ReadItem() as ChampionSpawn;
@@ -81,6 +82,43 @@ namespace Server.Engines.CannedEvil
 
                         break;
                     }
+            }
+
+            if (version == 0)
+            {
+                Hue = 0x452;
+
+                foreach (var comp in Components)
+                {
+                    comp.Hue = 0x452;
+
+                    if (comp.ItemID == 0x750)
+                        comp.ItemID = 0x3EE;
+
+                    if (comp.ItemID == 0x751)
+                        comp.ItemID = 0x3EF;
+
+                    if (comp.ItemID == 0x752)
+                        comp.ItemID = 0x3F0;
+
+                    if (comp.ItemID == 0x753)
+                        comp.ItemID = 0x3F1;
+
+                    if (comp.ItemID == 0x754)
+                        comp.ItemID = 0x3F2;
+
+                    if (comp.ItemID == 0x759)
+                        comp.ItemID = 0x3F7;
+
+                    if (comp.ItemID == 0x75A)
+                        comp.ItemID = 0x3F8;
+
+                    if (comp.ItemID == 0x75B)
+                        comp.ItemID = 0x3F9;
+
+                    if (comp.ItemID == 0x75C)
+                        comp.ItemID = 0x3FA;
+                }
             }
         }
     }

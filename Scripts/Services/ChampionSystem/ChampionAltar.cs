@@ -8,7 +8,8 @@ namespace Server.Engines.CannedEvil
         private ChampionSpawn m_Spawn;
         public ChampionAltar(ChampionSpawn spawn)
         {
-            this.m_Spawn = spawn;
+            m_Spawn = spawn;
+            Hue = 0x455;
         }
 
         public ChampionAltar(Serial serial)
@@ -20,8 +21,8 @@ namespace Server.Engines.CannedEvil
         {
             base.OnAfterDelete();
 
-            if (this.m_Spawn != null)
-                this.m_Spawn.Delete();
+            if (m_Spawn != null)
+                m_Spawn.Delete();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -30,7 +31,7 @@ namespace Server.Engines.CannedEvil
 
             writer.Write((int)0); // version
 
-            writer.Write(this.m_Spawn);
+            writer.Write(m_Spawn);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -43,10 +44,14 @@ namespace Server.Engines.CannedEvil
             {
                 case 0:
                     {
-                        this.m_Spawn = reader.ReadItem() as ChampionSpawn;
+                        m_Spawn = reader.ReadItem() as ChampionSpawn;
 
-                        if (this.m_Spawn == null)
-                            this.Delete();
+                        if (m_Spawn == null)
+                            Delete();
+                        else if (!m_Spawn.Active)
+                            Hue = 0x455;
+                        else
+                            Hue = 0;
 
                         break;
                     }
