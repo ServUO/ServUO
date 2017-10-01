@@ -8,8 +8,9 @@ namespace Server.Engines.Quests
         [Constructable]
         public Beninort()
             : base("Beninort", "the Artificer")
-        { 
-            this.SetSkill(SkillName.Imbuing, 60.0, 80.0);
+        {
+            SetSkill(SkillName.ItemID, 60.0, 83.0);
+            SetSkill(SkillName.Imbuing, 60.0, 83.0);
         }
 
         public Beninort(Serial serial)
@@ -28,40 +29,39 @@ namespace Server.Engines.Quests
             }
         }
         public override void InitBody()
-        { 
-            this.HairItemID = 0x2044;//
-            this.HairHue = 1153;
-            this.FacialHairItemID = 0x204B;
-            this.FacialHairHue = 1153;
-            this.Body = 666;            
-            this.Blessed = true;
+        {
+            InitStats(100, 100, 25);
+
+            CantWalk = true;
+            Race = Race.Gargoyle;
+
+            Hue = 0x86E8;
+            HairItemID = 0x4258;
+            HairHue = 0x31D;
         }
 
         public override void InitOutfit()
-        { 
-            this.AddItem(new Backpack());		
-            this.AddItem(new Boots());
-            this.AddItem(new LongPants(0x6C7));
-            this.AddItem(new FancyShirt(0x6BB));
-            this.AddItem(new Cloak(0x59));		
+        {
+            AddItem(new SerpentStoneStaff());
+            AddItem(new GargishClothChest(1609));
+            AddItem(new GargishClothArms(1651));
+            AddItem(new GargishClothKilt(1649));
         }
 
         public override void Advertise()
         {
-            this.Say(1112521);  // Know the secrets. Learn of the soulforge.
+            Say(1112521);  // Know the secrets. Learn of the soulforge.
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
