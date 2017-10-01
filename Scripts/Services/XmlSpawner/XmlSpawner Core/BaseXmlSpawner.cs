@@ -7456,7 +7456,7 @@ namespace Server.Mobiles
 		public static string ParseObjectType(string str)
 		{
 			string[] arglist = ParseSlashArgs(str, 2);
-			if (arglist.Length > 0)
+			if (arglist != null && arglist.Length > 0)
 			{
 				// parse out any arguments of the form typename,arg,arg,..
 				string[] typeargs = ParseCommaArgs(arglist[0], 2);
