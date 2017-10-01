@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Server.Network;
+using Server.Gumps;
 
 namespace Server.Items
 {
@@ -388,9 +389,17 @@ namespace Server.Items
     public class ArcheryButteAddon : BaseAddon
     {
         [Constructable]
-        public ArcheryButteAddon()
+        public ArcheryButteAddon(AddonFacing facing)
         {
-            this.AddComponent(new ArcheryButte(0x100A), 0, 0, 0);
+            switch (facing)
+            {
+                case AddonFacing.East:
+                    AddComponent(new ArcheryButte(0x100A), 0, 0, 0);
+                    break;
+                case AddonFacing.South:
+                    AddComponent(new ArcheryButte(0x100B), 0, 0, 0);
+                    break;
+            }
         }
 
         public ArcheryButteAddon(Serial serial)
@@ -405,6 +414,7 @@ namespace Server.Items
                 return new ArcheryButteDeed();
             }
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -420,8 +430,10 @@ namespace Server.Items
         }
     }
 
-    public class ArcheryButteDeed : BaseAddonDeed
+    public class ArcheryButteDeed : BaseAddonDeed, IRewardOption
     {
+        private AddonFacing Facing { get; set; }
+
         [Constructable]
         public ArcheryButteDeed()
         {
@@ -436,16 +448,28 @@ namespace Server.Items
         {
             get
             {
-                return new ArcheryButteAddon();
+                return new ArcheryButteAddon(Facing);
             }
         }
         public override int LabelNumber
         {
             get
             {
-                return 1024106;
+                return 1080205;
             }
         }// archery butte
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+            {
+                from.CloseGump(typeof(RewardOptionGump));
+                from.SendGump(new RewardOptionGump(this));
+            }
+            else
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.       	
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -458,6 +482,21 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+        }
+
+        public void GetOptions(RewardOptionList list)
+        {
+            list.Add((int)AddonFacing.South, 1080204);
+            list.Add((int)AddonFacing.East, 1080203);
+        }
+
+
+        public void OnOptionSelected(Mobile from, int choice)
+        {
+            Facing = (AddonFacing)choice;
+
+            if (!Deleted)
+                base.OnDoubleClick(from);
         }
     }
 }

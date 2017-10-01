@@ -132,6 +132,7 @@ namespace Server.Spells.Mysticism
 
                 int value = (50 * (prim + sec)) / 240;
                 double duration = ((double)(prim + sec) / 2.0) + 30.0;
+                int malus = 0;
 
                 if (Table == null)
                     Table = new Dictionary<Mobile, EnchantmentTimer>();
@@ -142,9 +143,10 @@ namespace Server.Spells.Mysticism
                 {
                     Enhancement.SetValue(Caster, AosAttribute.SpellChanneling, 1, ModName);
                     Enhancement.SetValue(Caster, AosAttribute.CastSpeed, -1, ModName);
+                    malus = 1;
                 }
 
-                Table[Caster] = new EnchantmentTimer(Caster, Weapon, this.Attribute, value, duration);
+                Table[Caster] = new EnchantmentTimer(Caster, Weapon, this.Attribute, value, malus, duration);
 
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Enchant, 1080126, 1080129, TimeSpan.FromSeconds(duration), Caster, value));
 
@@ -184,11 +186,7 @@ namespace Server.Spells.Mysticism
         public static bool CastingMalus(Mobile from, BaseWeapon weapon)
         {
             if (Table.ContainsKey(from))
-            {
-                SkillName damageSkill = from.Skills[SkillName.Imbuing].Value > from.Skills[SkillName.Focus].Value ? SkillName.Imbuing : SkillName.Focus;
-
-                return from.Skills[SkillName.Mysticism].Value >= 80 && from.Skills[damageSkill].Value >= 80;
-            }
+                return Table[from].CastingMalus > 0;
 
             return false;
         }
@@ -224,13 +222,15 @@ namespace Server.Spells.Mysticism
         public BaseWeapon Weapon { get; set; }
         public AosWeaponAttribute WeaponAttribute { get; set; }
         public int AttributeValue { get; set; }
+        public int CastingMalus { get; set; }
 
-        public EnchantmentTimer(Mobile owner, BaseWeapon wep, AosWeaponAttribute attribute, int value, double duration) : base(TimeSpan.FromSeconds(duration))
+        public EnchantmentTimer(Mobile owner, BaseWeapon wep, AosWeaponAttribute attribute, int value, int malus, double duration) : base(TimeSpan.FromSeconds(duration))
         {
             Owner = owner;
             Weapon = wep;
             WeaponAttribute = attribute;
             AttributeValue = value;
+            CastingMalus = malus;
 
             this.Start();
         }
