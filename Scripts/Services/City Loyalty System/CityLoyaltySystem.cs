@@ -844,8 +844,8 @@ namespace Server.Engines.CityLoyalty
 				case CityTitle.Baron:	return !female ? 6 : 7;
 				case CityTitle.Viscount:return !female ? 8 : 9;
 				case CityTitle.Earl:	return !female ? 10 : 11;
-                case CityTitle.Marquis: return !female ? 11 : 12;
-				case CityTitle.Duke:	return !female ? 13 : 14;
+                case CityTitle.Marquis: return !female ? 12 : 13;
+				case CityTitle.Duke:	return !female ? 14 : 15;
 			}
         }
 		
