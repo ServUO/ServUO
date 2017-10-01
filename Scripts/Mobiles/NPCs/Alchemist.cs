@@ -64,7 +64,7 @@ namespace Server.Mobiles
         }
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBAlchemist(Race == Race.Gargoyle));
+            this.m_SBInfos.Add(new SBAlchemist(this));
         }
 
         public override void InitOutfit()
