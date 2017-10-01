@@ -379,15 +379,7 @@ namespace Server.Engines.CannedEvil
             m_RestartTimer = null;
 
             if (m_Altar != null)
-            {
-                if (m_Champion != null)
-                    m_Altar.Hue = 0x26;
-                else
-                    m_Altar.Hue = 0;
-            }
-
-            if (m_Platform != null)
-                m_Platform.Hue = 0x452;
+                m_Altar.Hue = 0;
 
             PrimevalLichPuzzle.Update(this);
 
@@ -433,10 +425,7 @@ namespace Server.Engines.CannedEvil
             m_RestartTimer = null;
 
             if (m_Altar != null)
-                m_Altar.Hue = 0;
-
-            if (m_Platform != null)
-                m_Platform.Hue = 0x497;
+                m_Altar.Hue = 0x455;
 
             PrimevalLichPuzzle.Update(this);
 
@@ -578,12 +567,9 @@ namespace Server.Engines.CannedEvil
 
                     m_DamageEntries.Clear();
 
-                    if (m_Platform != null)
-                        m_Platform.Hue = 0x497;
-
                     if (m_Altar != null)
                     {
-                        m_Altar.Hue = 0;
+                        m_Altar.Hue = 0x455;
 
                         if (!Core.ML || Map == Map.Felucca)
                         {
@@ -756,12 +742,6 @@ namespace Server.Engines.CannedEvil
 
         public void SpawnChampion()
         {
-            if (m_Altar != null)
-                m_Altar.Hue = 0x26;
-
-            if (m_Platform != null)
-                m_Platform.Hue = 0x452;
-
             m_Kills = 0;
             Level = 0;
             InvalidateProperties();
