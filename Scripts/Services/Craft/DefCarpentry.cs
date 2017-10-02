@@ -677,6 +677,11 @@ namespace Server.Engines.Craft
 
             if (Core.SA)
             {
+                index = AddCraft(typeof(AudChar), 1044293, 1095315, 78.9, 103.9, typeof(Board), 1044041, 35, 1044351);
+                AddSkill(index, SkillName.Musicianship, 45.0, 50.0);
+                AddRes(index, typeof(Granite), 1044514, 3, 1044513);
+                SetNeededExpansion(index, Expansion.SA);
+
                 index = AddCraft(typeof(SnakeCharmerFlute), 1044293, 1112174, 80.0, 105.0, typeof(Board), 1044041, 15, 1044351);
                 AddSkill(index, SkillName.Musicianship, 45.0, 50.0);
                 AddRes(index, typeof(LuminescentFungi), 1073475, 3, 1044253);
@@ -771,6 +776,12 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(AbbatoirDeed), 1044290, 1044329, 100.0, 125.0, typeof(Board), 1044041, 100, 1044351);
             AddSkill(index, SkillName.Magery, 50.0, 55.0);
             AddRes(index, typeof(IronIngot), 1044036, 40, 1044037);
+
+            if (Core.AOS)
+            {
+                AddCraft(typeof(PlayerBBEast), 1044290, 1062420, 85.0, 110.0, typeof(Board), 1044041, 50, 1044351);
+                AddCraft(typeof(PlayerBBSouth), 1044290, 1062421, 85.0, 110.0, typeof(Board), 1044041, 50, 1044351);
+            }
 
             // Tailoring and Cooking
             index = AddCraft(typeof(Dressform), 1044298, 1044339, 63.1, 88.1, typeof(Board), 1044041, 25, 1044351);

@@ -21,7 +21,7 @@ namespace Server.Engines.Quests
         public Vrulkax()
             : base("the Exalted Artificer")
         {
-            this.SetSkill(SkillName.Imbuing, 60.0, 80.0);
+            Name = "Vrulkax";
         }
 
         private Type[][] _Table = 
@@ -84,25 +84,22 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            InitStats(100, 100, 100);
-            Body = 666;
+            InitStats(100, 100, 25);
+
+            CantWalk = true;
             Race = Race.Gargoyle;
-            HairItemID = 0x2044;//
-            HairHue = 1153;
-            Name = "Vrulkax";
-            Hue = Race.RandomSkinHue();
-            HairItemID = Race.RandomHair(false);
-            HairHue = Race.RandomHairHue();
-            SpeechHue = 0x3B2;
-            this.Blessed = true;
+
+            Hue = 34545;
+            HairItemID = 0x4259;
+            HairHue = 0x0;
         }
 
         public override void InitOutfit()
         {
-            SetWearable(new Backpack());
-            SetWearable(new LeatherTalons());
-            SetWearable(new GargishRobe(1645));
-            SetWearable(new GargishClothWingArmor(1645));
+            AddItem(new SerpentStoneStaff());
+            AddItem(new GargishClothChest(902));
+            AddItem(new GargishClothArms(902));
+            AddItem(new GargishClothKilt(902));
         }
 
         public override void Serialize(GenericWriter writer)

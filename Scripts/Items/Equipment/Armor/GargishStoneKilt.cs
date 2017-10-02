@@ -2,24 +2,24 @@ using System;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.MaleGargishStoneChest")]
-    public class GargishStoneChest : BaseArmor
+    [TypeAlias("Server.Items.MaleGargishStoneKilt")]
+    public class GargishStoneKilt : BaseArmor
     {
         [Constructable]
-        public GargishStoneChest()
+        public GargishStoneKilt()
             : this(0)
         {
         }
 
         [Constructable]
-        public GargishStoneChest(int hue)
-            : base(0x286)
+        public GargishStoneKilt(int hue)
+            : base(0x288)
         {
-            Weight = 15.0;
+            Weight = 10.0;
             Hue = hue;
         }
 
-        public GargishStoneChest(Serial serial)
+        public GargishStoneKilt(Serial serial)
             : base(serial)
         {
         }

@@ -114,11 +114,12 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            Female = false;
+            InitStats(100, 100, 25);
+            
             CantWalk = true;
             Race = Race.Gargoyle;
 
-            Hue = 0x86ED;
+            Hue = 34536;
             HairItemID = 0x425D;
             HairHue = 0x31D;
         }
@@ -126,9 +127,9 @@ namespace Server.Engines.Quests
         public override void InitOutfit()
         {
             AddItem(new Cyclone());
-            AddItem(new GargishLeatherKilt(0x901));
-            AddItem(new GargishLeatherChest(0x901));
-            AddItem(new GargishLeatherArms(0x901));
+            AddItem(new GargishLeatherKilt(2305));
+            AddItem(new GargishLeatherChest(2305));
+            AddItem(new GargishLeatherArms(2305));
         }
 
         public override void Serialize(GenericWriter writer)
