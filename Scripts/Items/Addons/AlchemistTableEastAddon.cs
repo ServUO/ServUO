@@ -7,7 +7,8 @@ namespace Server.Items
         [Constructable]
         public AlchemistTableEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x2DD3), 0, 0, 0);
+            AddComponent(new AddonComponent(0x3077), 0, 0, 0);
+            AddComponent(new AddonComponent(0x3078), 0, -1, 0);
         }
 
         public AlchemistTableEastAddon(Serial serial)

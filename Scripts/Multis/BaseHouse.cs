@@ -20,6 +20,7 @@ namespace Server.Multis
     public abstract class BaseHouse : BaseMulti
     {
 		private static int m_AccountHouseLimit = Config.Get("Housing.AccountHouseLimit", 1);
+        public static int AccountHouseLimit { get { return m_AccountHouseLimit; } }
 
         public static bool NewVendorSystem
         {
@@ -1868,7 +1869,7 @@ namespace Server.Multis
                 if (Deleted || m_House == null || m_House.Deleted || !m_House.IsOwner(from) || !from.CheckAlive() || !to.CheckAlive())
                     return false;
 
-                if (BaseHouse.HasAccountHouse(to))
+                if (BaseHouse.AtAccountHouseLimit(to))
                 {
                     from.SendLocalizedMessage(501388); // You cannot transfer ownership to another house owner or co-owner!
                     return false;
@@ -1952,7 +1953,7 @@ namespace Server.Multis
             }
             else if (to.Player)
             {
-                if (BaseHouse.HasAccountHouse(to))
+                if (BaseHouse.AtAccountHouseLimit(to))
                 {
                     from.SendLocalizedMessage(501388); // You cannot transfer ownership to another house owner or co-owner!
                 }
@@ -2016,7 +2017,7 @@ namespace Server.Multis
             }
             else if (to.Player)
             {
-                if (BaseHouse.HasAccountHouse(to))
+                if (BaseHouse.AtAccountHouseLimit(to))
                 {
                     from.SendLocalizedMessage(501388); // You cannot transfer ownership to another house owner or co-owner!
                 }
@@ -3148,7 +3149,7 @@ namespace Server.Multis
                 {
                 Mobile check = house.CoOwners[j] as Mobile;
 
-                if ( check != null && !check.Deleted && !HasAccountHouse( check ) )
+                if ( check != null && !check.Deleted && !AtAccountHouseLimit( check ) )
                 {
                 canClaim = true;
                 break;
@@ -3793,50 +3794,58 @@ namespace Server.Multis
             m_AllHouses.Remove(this);
         }
 
-        public static bool HasHouse(Mobile m)
+        public static int GetAccountHouseCount(Mobile m)
+        {
+            Account a = m.Account as Account;
+
+            if (a == null)
+                return 0;
+
+            int count = 0;
+
+            for (int i = 0; i < a.Length; ++i)
+            {
+                if (a[i] != null)
+                {
+                    count += GetHouseCount(a[i]);
+                }
+            }
+
+            return count;
+        }
+
+        public static int GetHouseCount(Mobile m)
         {
             if (m == null)
-                return false;
+                return 0;
 
             List<BaseHouse> list = null;
             m_Table.TryGetValue(m, out list);
 
             if (list == null)
-                return false;
+                return 0;
+
+            int count = 0;
 
             for (int i = 0; i < list.Count; ++i)
             {
                 BaseHouse h = list[i];
 
                 if (!h.Deleted)
-                    return true;
+                    count++;
             }
 
-            return false;
+            return count;
         }
 
-        public static bool HasAccountHouse(Mobile m)
+        public static bool HasHouse(Mobile m)
         {
-            Account a = m.Account as Account;
+            return GetHouseCount(m) > 0;
+        }
 
-            if (a == null)
-                return false;
-
-			if(HasHouse(m))
-			{
-				return true;
-			}
-
-			int count = 0;
-			for (int i = 0; i < a.Length; ++i)
-			{
-				if (a[i] != null && HasHouse(a[i]))
-				{
-					++count;
-				}
-			}
-
-			return count >= m_AccountHouseLimit;
+        public static bool AtAccountHouseLimit(Mobile m)
+        {
+            return GetAccountHouseCount(m) >= m_AccountHouseLimit;
         }
 
         public bool IsOwner(Mobile m)

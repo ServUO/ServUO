@@ -2,13 +2,21 @@ using System;
 
 namespace Server.Items
 {
+    [TypeAlias("Server.Items.MaleGargishStoneLegs")]
     public class GargishStoneLegs : BaseArmor
     {
         [Constructable]
         public GargishStoneLegs()
-            : base(0x028A)
+            : this(0)
         {
-            this.Weight = 2.0;
+        }
+
+        [Constructable]
+        public GargishStoneLegs(int hue)
+            : base(0x28A)
+        {
+            Weight = 15.0;
+            Hue = hue;
         }
 
         public GargishStoneLegs(Serial serial)
@@ -16,116 +24,21 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 50;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 65;
-            }
-        }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 70;
-            }
-        }
-        public override int OldStrReq
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -2;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override ArmorMaterialType MaterialType
-        {
-            get
-            {
-                return ArmorMaterialType.Plate;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
-            {
-                if (((Mobile)parent).Female && this.ItemID != 0x0289)
-                    this.ItemID = 0x0289;
-                else if (this.ItemID != 0x028A)
-                    this.ItemID = 0x028A;
-            }
+        public override int BasePhysicalResistance { get { return 6; } }
+        public override int BaseFireResistance { get { return 6; } }
+        public override int BaseColdResistance { get { return 4; } }
+        public override int BasePoisonResistance { get { return 8; } }
+        public override int BaseEnergyResistance { get { return 6; } }
 
-            base.OnAdded(parent);
-        }
+        public override int InitMinHits { get { return 40; } }
+        public override int InitMaxHits { get { return 50; } }
+
+        public override int AosStrReq { get { return 40; } }
+
+        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Plate; } }
+
+        public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

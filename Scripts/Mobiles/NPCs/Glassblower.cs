@@ -37,7 +37,7 @@ namespace Server.Mobiles
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBGlassblower());
-            this.m_SBInfos.Add(new SBAlchemist());
+            this.m_SBInfos.Add(new SBAlchemist(this));
         }
 
         public override void Serialize(GenericWriter writer)

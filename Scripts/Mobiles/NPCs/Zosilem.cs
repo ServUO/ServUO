@@ -1,14 +1,19 @@
 using System;
 using Server.Items;
+using Server.Mobiles;
+using System.Collections.Generic;
+using Server.Engines.BulkOrders;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class Zosilem : MondainQuester
     {
         [Constructable]
         public Zosilem()
             : base("Zosilem", "the Alchemist")
-        { 
+        {
+            SetSkill(SkillName.Alchemy, 85.0, 100.0);
+            SetSkill(SkillName.TasteID, 65.0, 88.0);
         }
 
         public Zosilem(Serial serial)
@@ -17,254 +22,173 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests
-        { 
-            get
-            {
-                return new Type[] 
-                {
-                    typeof(DabblingontheDarkSide)
-                };
-            }
+        {
+            get { return new Type[] { typeof(DabblingontheDarkSide) }; }
         }
+
+        #region Bulk Orders
+        public override BODType BODType { get { return BODType.Alchemy; } }
+
+        public override bool IsValidBulkOrder(Item item)
+        {
+            return (item is SmallAlchemyBOD || item is LargeAlchemyBOD);
+        }
+
+        public override bool SupportsBulkOrders(Mobile from)
+        {
+            return BulkOrderSystem.NewSystemEnabled && from is PlayerMobile && from.Skills[SkillName.Alchemy].Base > 0;
+        }
+
+        public override void OnSuccessfulBulkOrderReceive(Mobile from)
+        {
+            if (from is PlayerMobile)
+                ((PlayerMobile)from).NextAlchemyBulkOrder = TimeSpan.Zero;
+        }
+
+        #endregion
+
+        public override bool IsActiveVendor { get { return true; } }
+
+        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+
+        public override void InitSBInfo()
+        {
+            m_SBInfos.Add(new SBAlchemist(this));
+        }
+
         public override void InitBody()
-        { 
-            this.HairItemID = 0x2044;//
-            this.HairHue = 1153;
-            this.FacialHairItemID = 0x204B;
-            this.FacialHairHue = 1153;
-            this.Body = 666;            
-            this.Blessed = true;
+        {
+            InitStats(100, 100, 25);
+
+            Female = true;
+            Race = Race.Gargoyle;
+
+            Hue = 0x86EA;
+            HairItemID = 0x4273;
+            HairHue = 0x323;
         }
 
         public override void InitOutfit()
-        { 
-            this.AddItem(new Backpack());		
-            this.AddItem(new Boots());
-            this.AddItem(new LongPants(0x6C7));
-            this.AddItem(new FancyShirt(0x6BB));
-            this.AddItem(new Cloak(0x59));		
+        {
+            AddItem(new FemaleGargishClothLegs(0x736));
+            AddItem(new FemaleGargishClothKilt(0x73D));
+            AddItem(new FemaleGargishClothChest(0x38B));
+            AddItem(new FemaleGargishClothArms(0x711));
         }
 
-        public override bool OnDragDrop(Mobile from, Item item1)
+        private static Type[][] m_PileTypes = new Type[][]
+            {
+                new Type[] {typeof(DullCopperIngot),  typeof(PileofInspectedDullCopperIngots) },
+                new Type[] {typeof(ShadowIronIngot),  typeof(PileofInspectedShadowIronIngots) },
+                new Type[] {typeof(BronzeIngot),      typeof(PileofInspectedBronzeIngots) },
+                new Type[] {typeof(GoldIngot),        typeof(PileofInspectedGoldIngots) },
+                new Type[] {typeof(AgapiteIngot),     typeof(PileofInspectedAgapiteIngots) },
+                new Type[] {typeof(VeriteIngot),      typeof(PileofInspectedVeriteIngots) },
+                new Type[] {typeof(ValoriteIngot),    typeof(PileofInspectedValoriteIngots) }
+            };
+
+        private static object[][] m_KegTypes = new object[][]
+            {
+                new object[] {PotionEffect.RefreshTotal,  typeof(InspectedKegofTotalRefreshment) },
+                new object[] {PotionEffect.PoisonGreater, typeof(InspectedKegofGreaterPoison) }
+            };
+
+        private const int NeededIngots = 20;
+
+        private Type GetPileType(Item item)
         {
-            if (item1 is PotionKeg)
+            Type itemType = item.GetType();
+
+            for (int i = 0; i < m_PileTypes.Length; i++)
             {
-                PotionKeg m_Pot1 = item1 as PotionKeg;
+                Type[] pair = m_PileTypes[i];
 
-                if (m_Pot1.Type == PotionEffect.RefreshTotal)
-                {
-                    from.SendMessage("OHHHH YESSS !!!");
-                      
-                    int toConsume = m_Pot1.Amount;
-
-                    if ((m_Pot1.Amount < 2) && (m_Pot1.Amount > 0))
-                    {
-                        from.SendMessage("You have converted 1 Keg of Total Refreshment Potion in a Inspected Keg of Total Refreshment");
-                        m_Pot1.Delete();
-                        from.AddToBackpack(new InspectedKegofTotalRefreshment()); 
-                        
-                        return true;
-                    }
-                    else
-                    {
-                        from.SendMessage("You can only convert 1 Keg of Total Refreshment Potion at a time !");
-                    }
-                }
-                else if (m_Pot1.Type == PotionEffect.PoisonGreater)
-                {
-                    from.SendMessage("OHHHH YESSS !!!");
-                      
-                    int toConsume = m_Pot1.Amount;
-
-                    if ((m_Pot1.Amount < 2) && (m_Pot1.Amount > 0))
-                    {
-                        from.SendMessage("You have converted 1 Keg of Greater Poison Potion in a Inspected Keg of Greater Poison");
-                        m_Pot1.Delete();
-                        from.AddToBackpack(new InspectedKegofGreaterPoison()); 
-                        
-                        return true;
-                    }
-                    else
-                    {
-                        from.SendMessage("You can only convert 1 Keg of Greater Poison Potion at a time !");
-                    }
-                }
+                if (itemType == pair[0])
+                    return pair[1];
             }
-                
-            if (item1 is GoldIngot)
+
+            return null;
+        }
+
+        private Type GetKegType(PotionEffect effect)
+        {
+            for (int i = 0; i < m_KegTypes.Length; i++)
             {
-                BaseIngot m_Ing1 = item1 as BaseIngot;
+                object[] pair = m_KegTypes[i];
 
-                int toConsume = m_Ing1.Amount;
+                if (effect == (PotionEffect)pair[0])
+                    return (Type)pair[1];
+            }
 
-                if ((m_Ing1.Amount > 19) && (m_Ing1.Amount < 21)) 
+            return null;
+        }
+
+        public override bool OnDragDrop(Mobile from, Item item)
+        {
+            Type inspectedType = null;
+            bool success = false;
+
+            inspectedType = GetPileType(item);
+
+            if (inspectedType != null)
+            {
+                if (item.Amount > NeededIngots)
                 {
-                    from.SendMessage("You have converted 20 Gold Ingot in a Pile of Inspected Gold Ingots");
-                    m_Ing1.Delete();
-                    from.AddToBackpack(new PileofInspectedGoldIngots()); 
-                        
-                    return true;
+                    SayTo(from, 1113037); // That's too many.
+                }
+                else if (item.Amount < NeededIngots)
+                {
+                    SayTo(from, 1113036); // That's not enough.
                 }
                 else
                 {
-                    from.SendMessage("You can only convert 20 Gold Ingot at a time !");
+                    success = true;
                 }
             }
-
-            if (item1 is DullCopperIngot)
+            else if (item is PotionKeg)
             {
-                BaseIngot m_Ing2 = item1 as BaseIngot;
+                PotionKeg keg = (PotionKeg)item;
 
-                int toConsume = m_Ing2.Amount;
+                inspectedType = GetKegType(keg.Type);
 
-                if ((m_Ing2.Amount > 19) && (m_Ing2.Amount < 21)) 
+                if (inspectedType == null)
                 {
-                    from.SendMessage("You have converted 20 DullCopper Ingot in a Pile of Inspected DullCopper Ingots");
-                    m_Ing2.Delete();
-                    from.AddToBackpack(new PileofInspectedDullCopperIngots()); 
-                        
-                    return true;
+                    SayTo(from, 1113039); // It is the wrong type.
+                }
+                else if (keg.Held < 100)
+                {
+                    SayTo(from, 1113038); // It is not full.
                 }
                 else
                 {
-                    from.SendMessage("You can only convert 20 DullCopper Ingot at a time !");
+                    success = true;
                 }
             }
-                 
-            if (item1 is ShadowIronIngot)
+            else
             {
-                BaseIngot m_Ing3 = item1 as BaseIngot;
-
-                int toConsume = m_Ing3.Amount;
-
-                if ((m_Ing3.Amount > 19) && (m_Ing3.Amount < 21)) 
-                {
-                    from.SendMessage("You have converted 20 ShadowIron Ingot in a Pile of Inspected ShadowIron Ingots");
-                    m_Ing3.Delete();
-                    from.AddToBackpack(new PileofInspectedShadowIronIngots()); 
-                        
-                    return true;
-                }
-                else
-                {
-                    from.SendMessage("You can only convert 20 ShadowIron Ingot at a time !");
-                }
+                SayTo(from, 1113035); // Oooh, shiney. I have no use for this, though.
             }
 
-            if (item1 is CopperIngot)
+            if (success)
             {
-                BaseIngot m_Ing4 = item1 as BaseIngot;
+                SayTo(from, 1113040); // Good. I can use 
 
-                int toConsume = m_Ing4.Amount;
-
-                if ((m_Ing4.Amount > 19) && (m_Ing4.Amount < 21)) 
-                {
-                    from.SendMessage("You have converted 20 Copper Ingot in a Pile of Inspected Copper Ingots");
-                    m_Ing4.Delete();
-                    from.AddToBackpack(new PileofInspectedCopperIngots()); 
-                        
-                    return true;
-                }
-                else
-                {
-                    from.SendMessage("You can only convert 20 Copper Ingot at a time !");
-                }
+                from.AddToBackpack(Activator.CreateInstance(inspectedType) as Item);
+                from.SendLocalizedMessage(1113041); // Now mark the inspected item as a quest item to turn it in.
             }
 
-            if (item1 is BronzeIngot)
-            {
-                BaseIngot m_Ing5 = item1 as BaseIngot;
-
-                int toConsume = m_Ing5.Amount;
-
-                if ((m_Ing5.Amount > 19) && (m_Ing5.Amount < 21)) 
-                {
-                    from.SendMessage("You have converted 20 Bronze Ingot in a Pile of Inspected Bronze Ingots");
-                    m_Ing5.Delete();
-                    from.AddToBackpack(new PileofInspectedBronzeIngots()); 
-                        
-                    return true;
-                }
-                else
-                {
-                    from.SendMessage("You can only convert 20 Bronze Ingot at a time !");
-                }
-            }
-
-            if (item1 is AgapiteIngot)
-            {
-                BaseIngot m_Ing6 = item1 as BaseIngot;
-
-                int toConsume = m_Ing6.Amount;
-
-                if ((m_Ing6.Amount > 19) && (m_Ing6.Amount < 21)) 
-                {
-                    from.SendMessage("You have converted 20 Agapite Ingot in a Pile of Inspected Bronze Ingots");
-                    m_Ing6.Delete();
-                    from.AddToBackpack(new PileofInspectedAgapiteIngots()); 
-                        
-                    return true;
-                }
-                else
-                {
-                    from.SendMessage("You can only convert 20 Agapite Ingot at a time !");
-                }
-            }
-
-            if (item1 is VeriteIngot)
-            {
-                BaseIngot m_Ing7 = item1 as BaseIngot;
-
-                int toConsume = m_Ing7.Amount;
-
-                if ((m_Ing7.Amount > 19) && (m_Ing7.Amount < 21)) 
-                {
-                    from.SendMessage("You have converted 20 Verite Ingot in a Pile of Inspected Verite Ingots");
-                    m_Ing7.Delete();
-                    from.AddToBackpack(new PileofInspectedVeriteIngots()); 
-                        
-                    return true;
-                }
-                else
-                {
-                    from.SendMessage("You can only convert 20 Verite Ingot at a time !");
-                }
-            }
-
-            if (item1 is ValoriteIngot)
-            {
-                BaseIngot m_Ing8 = item1 as BaseIngot;
-
-                int toConsume = m_Ing8.Amount;
-
-                if ((m_Ing8.Amount > 19) && (m_Ing8.Amount < 21)) 
-                {
-                    from.SendMessage("You have converted 20 Valorite Ingot in a Pile of Inspected Valorite Ingots");
-                    m_Ing8.Delete();
-                    from.AddToBackpack(new PileofInspectedValoriteIngots()); 
-                        
-                    return true;
-                }
-                else
-                {
-                    from.SendMessage("You can only convert 20 Verite Ingot at a time !");
-                }
-            }
-   
-            return base.OnDragDrop(from, item1);
+            return success;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

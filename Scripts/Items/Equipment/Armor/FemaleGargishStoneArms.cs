@@ -6,9 +6,16 @@ namespace Server.Items
     {
         [Constructable]
         public FemaleGargishStoneArms()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public FemaleGargishStoneArms(int hue)
             : base(0x283)
         {
-            this.Weight = 5.0;
+            Weight = 10.0;
+            Hue = hue;
         }
 
         public FemaleGargishStoneArms(Serial serial)
@@ -16,111 +23,22 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 50;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 65;
-            }
-        }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 80;
-            }
-        }
-        public override int OldStrReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -2;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override ArmorMaterialType MaterialType
-        {
-            get
-            {
-                return ArmorMaterialType.Plate;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AllowMaleWearer
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int BasePhysicalResistance { get { return 6; } }
+        public override int BaseFireResistance { get { return 6; } }
+        public override int BaseColdResistance { get { return 4; } }
+        public override int BasePoisonResistance { get { return 8; } }
+        public override int BaseEnergyResistance { get { return 6; } }
+
+        public override int InitMinHits { get { return 40; } }
+        public override int InitMaxHits { get { return 50; } }
+
+        public override int AosStrReq { get { return 40; } }
+
+        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Plate; } }
+
+        public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

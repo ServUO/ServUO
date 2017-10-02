@@ -10,8 +10,8 @@ namespace Server.Items
         public GargishLeatherWingArmor()
             : base(0x457E)
         {
-            this.Weight = 2.0;
-            this.Layer = Layer.Cloak;
+            Weight = 2.0;
+            Layer = Layer.Cloak;
 
         }
 
@@ -26,67 +26,16 @@ namespace Server.Items
         public override int PoisonResistance { get { return 0; } }
         public override int EnergyResistance { get { return 0; } }
 
-        public override int AosStrReq
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int OldStrReq
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override ArmorMaterialType MaterialType
-        {
-            get
-            {
-                return ArmorMaterialType.Leather;
-            }
-        }
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
-        public override ArmorMeditationAllowance DefMedAllowance
-        {
-            get
-            {
-                return ArmorMeditationAllowance.All;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int AosStrReq { get { return 10; } }
+        public override int OldStrReq { get { return 10; } }
+        public override int ArmorBase { get { return 13; } }
+        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
+        public override CraftResource DefaultResource { get { return CraftResource.RegularLeather; } }
+        public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
+        public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
 
-        public override int GetLuckBonus()
-        {
-            return 0;
-        }
+        public override int GetLuckBonus() { return 0; }
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {

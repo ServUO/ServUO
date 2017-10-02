@@ -4,9 +4,6 @@
 // **********
 #endregion
 
-//TODO: Implement skeleton keys, and fail lockpick destroying items.
-//TODO: Implement Facet in MapItem and new Map packet
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -274,7 +271,6 @@ namespace Server.Items
             }
         }
 
-        [Constructable]
         public TreasureMap()
         {
         }

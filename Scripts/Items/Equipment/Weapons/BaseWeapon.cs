@@ -2856,55 +2856,28 @@ namespace Server.Items
 			XmlAttach.OnWeaponHit(this, attacker, defender, damageGiven);
 		}
 
-		public virtual double GetAosDamage(Mobile attacker, int bonus, int dice, int sides)
+		public virtual double GetAosSpellDamage(Mobile attacker, Mobile defender, int bonus, int dice, int sides)
 		{
-			int damage = Utility.Dice(dice, sides, bonus) * 100;
-			int damageBonus = 0;
+            int damage = Utility.Dice(dice, sides, bonus) * 100;
+            int damageBonus = 0;
 
-			// Inscription bonus
-			int inscribeSkill = attacker.Skills[SkillName.Inscribe].Fixed;
+            int inscribeSkill = attacker.Skills[SkillName.Inscribe].Fixed;
+            int inscribeBonus = (inscribeSkill + (1000 * (inscribeSkill / 1000))) / 200;
 
-			if (inscribeSkill >= 1000)
-			{
-				damageBonus += 10;
-			}
+            damageBonus += inscribeBonus;
+            damageBonus += attacker.Int / 10;
+            damageBonus += SpellHelper.GetSpellDamageBonus(attacker, defender, SkillName.Magery, attacker is PlayerMobile && defender is PlayerMobile);
+            damage = AOS.Scale(damage, 100 + damageBonus);
 
-			if (attacker.Player)
-			{
-				// Int bonus
-				damageBonus += (attacker.Int / 10);
+            if (defender != null && Feint.Registry.ContainsKey(defender) && Feint.Registry[defender].Enemy == attacker)
+                damage -= (int)((double)damage * ((double)Feint.Registry[defender].DamageReduction / 100));
 
-				// SDI bonus
-				damageBonus += AosAttributes.GetValue(attacker, AosAttribute.SpellDamage);
+            // All hit spells use 80 eval
+            int evalScale = 30 + ((9 * 800) / 100);
 
-				if (attacker.Race == Race.Gargoyle)
-				{
-					double perc = ((double)attacker.Hits / (double)attacker.HitsMax) * 100;
+            damage = AOS.Scale(damage, evalScale);
 
-					perc = 100 - perc;
-					perc /= 20;
-
-					if (perc > 4)
-						damageBonus += 12;
-					else if (perc >= 3)
-						damageBonus += 9;
-					else if (perc >= 2)
-						damageBonus += 6;
-					else if (perc >= 1)
-						damageBonus += 3;
-				}
-
-				TransformContext context = TransformationSpellHelper.GetContext(attacker);
-
-				if (context != null && context.Spell is ReaperFormSpell)
-				{
-					damageBonus += ((ReaperFormSpell)context.Spell).SpellDamageBonus;
-				}
-			}
-
-			damage = AOS.Scale(damage, 100 + damageBonus);
-
-			return damage / 100;
+            return damage / 100;
 		}
 
 		#region Do<AoSEffect>
@@ -2917,7 +2890,7 @@ namespace Server.Items
 
 			attacker.DoHarmful(defender);
 
-			double damage = GetAosDamage(attacker, 10, 1, 4);
+			double damage = GetAosSpellDamage(attacker, defender, 10, 1, 4);
 
 			attacker.MovingParticles(defender, 0x36E4, 5, 0, false, true, 3006, 4006, 0);
 			attacker.PlaySound(0x1E5);
@@ -2934,7 +2907,7 @@ namespace Server.Items
 
 			attacker.DoHarmful(defender);
 
-			double damage = GetAosDamage(attacker, 17, 1, 5);
+			double damage = GetAosSpellDamage(attacker, defender, 17, 1, 5);
 
 			if (!defender.InRange(attacker, 2))
 			{
@@ -2960,7 +2933,7 @@ namespace Server.Items
 
 			attacker.DoHarmful(defender);
 
-			double damage = GetAosDamage(attacker, 19, 1, 5);
+			double damage = GetAosSpellDamage(attacker, defender, 19, 1, 5);
 
 			attacker.MovingParticles(defender, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
 			attacker.PlaySound(0x15E);
@@ -2977,7 +2950,7 @@ namespace Server.Items
 
 			attacker.DoHarmful(defender);
 
-			double damage = GetAosDamage(attacker, 23, 1, 4);
+			double damage = GetAosSpellDamage(attacker, defender, 23, 1, 4);
 
 			defender.BoltEffect(0);
 

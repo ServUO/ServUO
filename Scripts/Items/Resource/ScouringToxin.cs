@@ -23,7 +23,7 @@ namespace Server.Items
 
         [Constructable]
         public ScouringToxin(int amount)
-            : base(3625)
+            : base(0x1848)
         {
             m_UsesRemaining = amount;
         }
@@ -151,7 +151,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
             writer.Write(m_UsesRemaining);
         }
 
@@ -161,8 +161,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if(version > 0)
+            if (version > 0)
                 m_UsesRemaining = reader.ReadInt();
+
+            if (version == 1)
+                ItemID = 0x1848;
         }
     }
 }

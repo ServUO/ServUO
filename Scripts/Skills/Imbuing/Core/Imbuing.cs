@@ -1607,7 +1607,7 @@ namespace Server.SkillHandlers
 
         private static Type[] m_CannotImbue = new Type[]
         {
-            typeof(GargishPlateWingArmor), typeof(GargishLeatherWingArmor), typeof(GargishClothWingArmor), typeof(GargishStoneWingArmor)
+            typeof(GargishLeatherWingArmor), typeof(GargishClothWingArmor)
         };
 
         public static object GetAttribute(int mod)
@@ -1740,10 +1740,22 @@ namespace Server.SkillHandlers
 
         public static int GetIntensityForAttribute(Item item, object attr, int checkMod, int value)
         {
-            if (value <= 0)
+            // This is terribly clunky, however we're accomidating 1 out of 50+ attributes that acts differently
+            if (value <= 0 && (!(attr is AosAttribute) || (AosAttribute)attr != AosAttribute.CastSpeed))
                 return 0;
 
             int mod = GetMod(attr);
+
+            if ((item is BaseWeapon || item is BaseShield) && mod == 16)
+            {
+                AosAttributes attrs = RunicReforging.GetAosAttributes(item);
+
+                if (attrs != null && attrs.SpellChanneling > 0)
+                    value++;
+            }
+            
+            if (value <= 0)
+                return 0;
 
             if (mod != checkMod && m_Table.ContainsKey(mod))
             {
@@ -2216,7 +2228,7 @@ namespace Server.SkillHandlers
                 if (armor.MaterialType == ArmorMaterialType.Dragon)
                     return 12;
 
-                if (armor is GargishStoneKilt || armor is GargishStoneChest || armor is GargishStoneLegs || armor is GargishStoneArms || armor is GargishStoneAmulet)
+                if (armor is GargishStoneKilt || armor is GargishStoneChest || armor is GargishStoneLegs || armor is GargishStoneArms || armor is FemaleGargishStoneKilt || armor is FemaleGargishStoneChest || armor is FemaleGargishStoneLegs || armor is FemaleGargishStoneArms || armor is GargishStoneAmulet)
                     return 11;
 
                 if (armor is WoodlandGorget || armor is WoodlandLegs || armor is WoodlandGloves || armor is WoodlandChest || armor is WoodlandArms)

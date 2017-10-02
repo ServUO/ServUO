@@ -36,16 +36,15 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Backpack), 15, 20, 0x9B2, 0));
                 Add(new GenericBuyInfo(typeof(Leather), 6, 20, 0x1081, 0, true));
                 Add(new GenericBuyInfo(typeof(GargishDagger), 20, 20, 0x902, 0));
-                Add(new GenericBuyInfo("1041279", typeof(TaxidermyKit), 100000, 20, 0x1EBA, 0));
+                Add(new GenericBuyInfo(typeof(TaxidermyKit), 100000, 20, 0x1EBA, 0));
 
-                Add(new GenericBuyInfo(typeof(GargishLeatherArms), 73, 20, 0x301, 0));
-                Add(new GenericBuyInfo(typeof(GargishLeatherArms), 78, 20, 0x302, 0));
-                Add(new GenericBuyInfo(typeof(GargishLeatherChest), 86, 20, 0x303, 0));
-                Add(new GenericBuyInfo(typeof(GargishLeatherChest), 91, 20, 0x304, 0));
-                Add(new GenericBuyInfo(typeof(GargishLeatherKilt), 82, 20, 0x310, 0));
-                Add(new GenericBuyInfo(typeof(GargishLeatherKilt), 92, 20, 0x311, 0));
-                Add(new GenericBuyInfo(typeof(GargishLeatherLegs), 71, 20, 0x305, 0));
-
+                Add(new GenericBuyInfo(typeof(FemaleGargishLeatherArms), 73, 20, 0x301, 0));
+                Add(new GenericBuyInfo(typeof(GargishLeatherArms), 80, 20, 0x302, 0));
+                Add(new GenericBuyInfo(typeof(FemaleGargishLeatherChest), 77, 20, 0x303, 0));
+                Add(new GenericBuyInfo(typeof(GargishLeatherChest), 77, 20, 0x304, 0));
+                Add(new GenericBuyInfo(typeof(FemaleGargishLeatherKilt), 92, 20, 0x310, 0));
+                Add(new GenericBuyInfo(typeof(GargishLeatherKilt), 85, 20, 0x311, 0));
+                Add(new GenericBuyInfo(typeof(GargishLeatherLegs), 67, 20, 0x305, 0));
             }
         }
 
@@ -59,13 +58,13 @@ namespace Server.Mobiles
                 Add(typeof(Leather), 5);
                 Add(typeof(GargishDagger), 10);
 
-                Add(typeof(GargishLeatherArms), 36);
-                Add(typeof(GargishLeatherArms), 39);
-                Add(typeof(GargishLeatherChest), 43);
-                Add(typeof(GargishLeatherChest), 45);
-                Add(typeof(GargishLeatherKilt), 41);
-                Add(typeof(GargishLeatherKilt), 46);
-                Add(typeof(GargishLeatherLegs), 35);
+                Add(typeof(FemaleGargishLeatherArms), 42);
+                Add(typeof(GargishLeatherArms), 41);
+                Add(typeof(FemaleGargishLeatherChest), 44);
+                Add(typeof(GargishLeatherChest), 38);
+                Add(typeof(FemaleGargishLeatherKilt), 46);
+                Add(typeof(GargishLeatherKilt), 48);
+                Add(typeof(GargishLeatherLegs), 34);
             }
         }
     }
