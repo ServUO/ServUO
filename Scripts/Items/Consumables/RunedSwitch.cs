@@ -69,7 +69,7 @@ namespace Server.Items
 
                     if (talisman.Charges == 0)
                     {
-                        int toCharge = talisman is MasterCraftsmanTalisman ? Utility.RandomMinMax(1, talisman.MaxCharges) : talisman.MaxCharges;
+                        int toCharge = talisman is MasterCraftsmanTalisman ? Utility.RandomMinMax(1, ((MasterCraftsmanTalisman)talisman).Type) : talisman.MaxCharges;
                         talisman.Charges = toCharge;
                         m_Item.Delete();
                         from.SendLocalizedMessage(1075100); // The item has been recharged.

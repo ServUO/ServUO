@@ -128,9 +128,16 @@ namespace Server.Multis.Deeds
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (from.AccessLevel < AccessLevel.GameMaster && BaseHouse.HasAccountHouse(from))
+            else if (from.AccessLevel < AccessLevel.GameMaster && BaseHouse.AtAccountHouseLimit(from))
             {
-                from.SendLocalizedMessage(501271); // You already own a house, you may not place another!
+                if (BaseHouse.AccountHouseLimit == 1)
+                {
+                    from.SendLocalizedMessage(501271); // You already own a house, you may not place another!
+                }
+                else
+                {
+                    from.SendMessage("You already own {0} houses, you may not place any more!", BaseHouse.AccountHouseLimit.ToString());
+                }
             }
             else
             {
@@ -153,9 +160,16 @@ namespace Server.Multis.Deeds
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (from.AccessLevel < AccessLevel.GameMaster && BaseHouse.HasAccountHouse(from))
+            else if (from.AccessLevel < AccessLevel.GameMaster && BaseHouse.AtAccountHouseLimit(from))
             {
-                from.SendLocalizedMessage(501271); // You already own a house, you may not place another!
+                if (BaseHouse.AccountHouseLimit == 1)
+                {
+                    from.SendLocalizedMessage(501271); // You already own a house, you may not place another!
+                }
+                else
+                {
+                    from.SendMessage("You already own {0} houses, you may not place any more!", BaseHouse.AccountHouseLimit.ToString());
+                }
             }
             else
             {
