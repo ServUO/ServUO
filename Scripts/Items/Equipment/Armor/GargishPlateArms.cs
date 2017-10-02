@@ -1,14 +1,23 @@
+using Server.Engines.Craft;
 using System;
 
 namespace Server.Items
 {
+    [TypeAlias("Server.Items.MaleGargishPlateArms")]
     public class GargishPlateArms : BaseArmor
     {
         [Constructable]
         public GargishPlateArms()
-            : base(0x4050)
+            : this(0)
         {
-            this.Weight = 4.0;
+        }
+
+        [Constructable]
+        public GargishPlateArms(int hue)
+            : base(0x308)
+        {
+            Weight = 5.0;
+            Hue = hue;
         }
 
         public GargishPlateArms(Serial serial)
@@ -16,96 +25,43 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
+        public override int BasePhysicalResistance { get { return 8; } }
+        public override int BaseFireResistance { get { return 6; } }
+        public override int BaseColdResistance { get { return 5; } }
+        public override int BasePoisonResistance { get { return 6; } }
+        public override int BaseEnergyResistance { get { return 5; } }
+
+        public override int InitMinHits { get { return 50; } }
+        public override int InitMaxHits { get { return 65; } }
+
+        public override int AosStrReq { get { return 80; } }
+        
+        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Plate; } }
+
+        public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
+
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 35;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 45;
-            }
-        }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 25;
-            }
-        }
-        public override int OldStrReq
-        {
-            get
-            {
-                return 25;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override ArmorMaterialType MaterialType
-        {
-            get
-            {
-                return ArmorMaterialType.Plate;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
+            Quality = (ItemQuality)quality;
+
+            if (makersMark)
+                Crafter = from;
+
+            Type resourceType = typeRes;
+
+            if (resourceType == null)
+                resourceType = craftItem.Resources.GetAt(0).ItemType;
+
+            Resource = CraftResources.GetFromType(resourceType);
+
+            PlayerConstructed = true;
+
+            CraftContext context = craftSystem.GetContext(from);
+
+            Hue = CraftResources.GetHue(Resource);
+
+            return quality;
         }
 
         public override void Serialize(GenericWriter writer)
