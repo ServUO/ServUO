@@ -750,6 +750,7 @@
     <Compile Include="Items\Equipment\Armor\TigerPeltLongSkirt.cs" />
     <Compile Include="Items\Equipment\Armor\TigerPeltShorts.cs" />
     <Compile Include="Items\Equipment\Armor\TigerPeltSkirt.cs" />
+    <Compile Include="Items\Equipment\Instruments\AudChar.cs" />
     <Compile Include="Items\Equipment\Instruments\SnakeCharmerFlute.cs" />
     <Compile Include="Items\Equipment\Light\TwilightLantern.cs" />
     <Compile Include="Items\Equipment\Spellbooks\BookOfMasteries.cs" />
