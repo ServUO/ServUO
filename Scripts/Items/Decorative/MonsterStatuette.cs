@@ -165,7 +165,7 @@ namespace Server.Items
         }
     }
 
-    public class MonsterStatuette : Item, IRewardItem
+    public class MonsterStatuette : Item, IRewardItem, IEngravable
     {
         private MonsterStatuetteType m_Type;
         private bool m_TurnedOn;
@@ -261,6 +261,7 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
+
         public override int LabelNumber
         {
             get
@@ -279,6 +280,25 @@ namespace Server.Items
             }
         }
 
+        #region IEngraveable
+        private string m_EngravedText = string.Empty;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string EngravedText
+        {
+            get { return m_EngravedText; }
+            set
+            {
+                if (value != null)
+                    m_EngravedText = value;
+                else
+                    m_EngravedText = string.Empty;
+
+                InvalidateProperties();
+            }
+        }
+        #endregion
+
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (m_TurnedOn && IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, Location, 2) && !Utility.InRange(oldLocation, Location, 2))
@@ -290,6 +310,16 @@ namespace Server.Items
             }
 
             base.OnMovement(m, oldLocation);
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            base.AddNameProperty(list);
+
+            if (!String.IsNullOrEmpty(EngravedText))
+            {
+                list.Add(1072305, Utility.FixHtml(EngravedText)); // Engraved: ~1_INSCRIPTION~
+            }
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -328,7 +358,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+
+            writer.Write(m_EngravedText);
 
             writer.WriteEncodedInt((int)m_Type);
             writer.Write((bool)m_TurnedOn);
@@ -342,6 +374,9 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 1:
+                    m_EngravedText = reader.ReadString();
+                    goto case 0;
                 case 0:
                     {
                         m_Type = (MonsterStatuetteType)reader.ReadEncodedInt();

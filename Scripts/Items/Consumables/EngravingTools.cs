@@ -27,7 +27,9 @@ namespace Server.Items
         {
             Weight = 1.0;
             Hue = 0x48D;
-			
+
+            LootType = LootType.Blessed;
+
             m_UsesRemaining = uses;
         }
 
@@ -118,7 +120,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 			
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 			
             writer.Write((int)m_UsesRemaining);
         }
@@ -130,6 +132,9 @@ namespace Server.Items
             int version = reader.ReadInt();
 			
             m_UsesRemaining = reader.ReadInt();
+
+            if (version == 0)
+                LootType = LootType.Blessed;
         }
 
         private class InternalTarget : Target
@@ -506,6 +511,52 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 			
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class StatuetteEngravingTool : BaseEngravingTool
+    {
+        [Constructable]
+        public StatuetteEngravingTool()
+            : base(0x12B3, 10)
+        {
+            Hue = 0;
+        }
+
+        public StatuetteEngravingTool(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override int LabelNumber
+        {
+            get
+            {
+                return 1080201;
+            }
+        }// Statuette Engraving Tool
+        public override Type[] Engraves
+        {
+            get
+            {
+                return new Type[]
+                {
+                    typeof(MonsterStatuette)
+                };
+            }
+        }
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }
