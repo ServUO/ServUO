@@ -321,8 +321,8 @@ namespace Server.Engines.Craft
                 SetRequiresBasketWeaving(index);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(SmallRoundBasket), 1044042, 1112298, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
-                AddRes(index, typeof(Shaft), 1027125, 1, 1044351);
+                index = AddCraft(typeof(SmallRoundBasket), 1044042, 1112298, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
+                AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
                 SetRequireResTarget(index);
                 SetRequiresBasketWeaving(index);
                 SetNeededExpansion(index, Expansion.SA);

@@ -1740,10 +1740,22 @@ namespace Server.SkillHandlers
 
         public static int GetIntensityForAttribute(Item item, object attr, int checkMod, int value)
         {
-            if (value <= 0)
+            // This is terribly clunky, however we're accomidating 1 out of 50+ attributes that acts differently
+            if (value <= 0 && (!(attr is AosAttribute) || (AosAttribute)attr != AosAttribute.CastSpeed))
                 return 0;
 
             int mod = GetMod(attr);
+
+            if ((item is BaseWeapon || item is BaseShield) && mod == 16)
+            {
+                AosAttributes attrs = RunicReforging.GetAosAttributes(item);
+
+                if (attrs != null && attrs.SpellChanneling > 0)
+                    value++;
+            }
+            
+            if (value <= 0)
+                return 0;
 
             if (mod != checkMod && m_Table.ContainsKey(mod))
             {

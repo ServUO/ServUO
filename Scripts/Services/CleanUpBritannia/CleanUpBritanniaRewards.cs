@@ -38,6 +38,7 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(HonorVirtueTileDeed), 0x14EF, 1080485, 0, 10000));
             Rewards.Add(new CollectionItem(typeof(HumilityVirtueTileDeed), 0x14EF, 1080483, 0, 10000));
             Rewards.Add(new CollectionItem(typeof(SacrificeVirtueTileDeed), 0x14EF, 1080482, 0, 10000));
+            Rewards.Add(new CollectionItem(typeof(JusticeVirtueTileDeed), 0x14EF, 1080487, 0, 10000));
             Rewards.Add(new CollectionItem(typeof(StewardDeed), 0x14F0, 1153344, 0, 10000));
 
             Rewards.Add(new CollectionItem(typeof(KnightsBascinet), 0x140C, 1151247, 1150, 10000));
@@ -92,7 +93,7 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(ChestOfDrawers), 0x0A2C, 1022604, 0, 50000));
             Rewards.Add(new CollectionItem(typeof(FootedChestOfDrawers), 0x0A30, 1151221, 0, 50000));
 
-            Rewards.Add(new CollectionItem(typeof(DragonHeadDeed), 0x2234, 1028756, 0, 50000));
+            Rewards.Add(new CollectionItem(typeof(DragonHeadAddonDeed), 0x2234, 1028756, 0, 50000));
             Rewards.Add(new CollectionItem(typeof(NestWithEggs), 0x1AD4, 1026868, 2415, 50000));
 
             Rewards.Add(new CollectionItem(typeof(FishermansHat), 0x1716, 1151238, 2578, 50000));
@@ -125,7 +126,7 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(FirePitDeed), 0x29FD, 1080206, 0, 75000));
             Rewards.Add(new CollectionItem(typeof(PresentationStone), 0x32F2, 1154745, 0, 75000));
             Rewards.Add(new CollectionItem(typeof(Beehive), 0x091A, 1080263, 0, 80000));
-            Rewards.Add(new CollectionItem(typeof(ArcheryButteAddon), 0x100B, 1024106, 0, 80000));
+            Rewards.Add(new CollectionItem(typeof(ArcheryButteDeed), 0x100B, 1024106, 0, 80000));
 
             Rewards.Add(new CollectionItem(typeof(NovoBleue), 0x1086, 1151242, 1165, 150000));
             Rewards.Add(new CollectionItem(typeof(EtoileBleue), 0x108A, 1151241, 1165, 150000));

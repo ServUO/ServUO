@@ -3127,12 +3127,12 @@ namespace Server
 			{
 				// We are actually moving (not just a direction change)
 
-				if (m_Spell != null && !m_Spell.OnCasterMoving(d))
+				if (!Core.ML && m_Spell != null && !m_Spell.OnCasterMoving(d))
 				{
 					return false;
 				}
 
-				if (m_Paralyzed || m_Frozen)
+				if (m_Paralyzed || m_Frozen || (Core.ML && m_Spell != null && !m_Spell.CheckMovement(this)))
 				{
 					SendLocalizedMessage(500111); // You are frozen and can not move.
 
@@ -8616,7 +8616,7 @@ namespace Server
 		{
 			int flags = 0x0;
 
-			if (m_Paralyzed || m_Frozen)
+			if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
 			{
 				flags |= 0x01;
 			}

@@ -14,7 +14,8 @@ namespace Server.Items
 		}
 		
 		[Constructable]
-		public WheatWort(int num) : base(3625)
+        public WheatWort(int num)
+            : base(0x1848)
 		{
 			Stackable = true;
 			Amount = num;
@@ -28,13 +29,16 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
+			writer.Write((int)1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+            if (version == 0)
+                ItemID = 0x1848;
 		}
 	}
 }

@@ -689,6 +689,12 @@ namespace Server.Engines.Craft
             }
 
             // Misc
+            if (Core.AOS)
+            {
+                AddCraft(typeof(PlayerBBEast), 1044290, 1062420, 85.0, 110.0, typeof(Board), 1044041, 50, 1044351);
+                AddCraft(typeof(PlayerBBSouth), 1044290, 1062421, 85.0, 110.0, typeof(Board), 1044041, 50, 1044351);
+            }
+
             #region Mondain's Legacy
             if (Core.ML)
             {
@@ -728,18 +734,22 @@ namespace Server.Engines.Craft
                 SetNeededExpansion(index, Expansion.ML);
 
                 index = AddCraft(typeof(ElvenLoveseatSouthDeed), 1044290, 1072867, 80.0, 105.0, typeof(Board), 1044041, 50, 1044351);
+                SetDisplayID(index, 0x2DDF);
                 ForceNonExceptional(index);
                 SetNeededExpansion(index, Expansion.ML);
 
                 index = AddCraft(typeof(ElvenLoveseatEastDeed), 1044290, 1073372, 80.0, 105.0, typeof(Board), 1044041, 50, 1044351);
+                SetDisplayID(index, 0x2DE0);
                 ForceNonExceptional(index);
                 SetNeededExpansion(index, Expansion.ML);
 
                 index = AddCraft(typeof(AlchemistTableSouthDeed), 1044290, 1074902, 85.0, 110.0, typeof(Board), 1044041, 70, 1044351);
+                SetDisplayID(index, 0x2DD4);
                 ForceNonExceptional(index);
                 SetNeededExpansion(index, Expansion.ML);
 
                 index = AddCraft(typeof(AlchemistTableEastDeed), 1044290, 1074903, 85.0, 110.0, typeof(Board), 1044041, 70, 1044351);
+                SetDisplayID(index, 0x2DD3);
                 ForceNonExceptional(index);
                 SetNeededExpansion(index, Expansion.ML);
             }
