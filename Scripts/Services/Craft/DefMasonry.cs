@@ -217,17 +217,31 @@ namespace Server.Engines.Craft
             #region Gargish Armor
             if (Core.SA)
             {
-                int index = this.AddCraft(typeof(GargishStoneArms), 1111705, 1020643, 52.0, 102.0, typeof(Granite), 1044514, 8, 1044513);
+                int index = this.AddCraft(typeof(FemaleGargishStoneArms), 1111705, 1020643, 52.0, 102.0, typeof(Granite), 1044514, 8, 1044513);
+                this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(FemaleGargishStoneChest), 1111705, 1020645, 55.0, 105.0, typeof(Granite), 1044514, 12, 1044513);
+                this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(FemaleGargishStoneLegs), 1111705, 1020649, 53.5, 103.5, typeof(Granite), 1044514, 10, 1044513);
+                this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(FemaleGargishStoneKilt), 1111705, 1020647, 50.0, 100.0, typeof(Granite), 1044514, 6, 1044513);
+                this.SetNeededExpansion(index, Expansion.SA);               
+
+
+                index = this.AddCraft(typeof(GargishStoneArms), 1111705, 1020643, 52.0, 102.0, typeof(Granite), 1044514, 8, 1044513);
                 this.SetNeededExpansion(index, Expansion.SA);
  
                 index = this.AddCraft(typeof(GargishStoneChest), 1111705, 1020645, 55.0, 105.0, typeof(Granite), 1044514, 12, 1044513);
                 this.SetNeededExpansion(index, Expansion.SA);
- 
-                index = this.AddCraft(typeof(GargishStoneKilt), 1111705, 1020647, 50.0, 100.0, typeof(Granite), 1044514, 6, 1044513);
-                this.SetNeededExpansion(index, Expansion.SA);
- 
+
                 index = this.AddCraft(typeof(GargishStoneLegs), 1111705, 1020649, 53.5, 103.5, typeof(Granite), 1044514, 10, 1044513);
                 this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(GargishStoneKilt), 1111705, 1020647, 50.0, 100.0, typeof(Granite), 1044514, 6, 1044513);
+                this.SetNeededExpansion(index, Expansion.SA);               
+
  
                 index = this.AddCraft(typeof(LargeStoneShield), 1111705, 1095773, 55.0, 105.0, typeof(Granite), 1044514, 16, 1044513);
                 this.SetNeededExpansion(index, Expansion.SA);

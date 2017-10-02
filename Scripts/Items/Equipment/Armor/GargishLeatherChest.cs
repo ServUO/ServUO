@@ -3,6 +3,7 @@ using System;
 
 namespace Server.Items
 {
+    [TypeAlias("Server.Items.MaleGargishLeatherChest")]
     public class GargishLeatherChest : BaseArmor
     {
         [Constructable]

@@ -1607,7 +1607,7 @@ namespace Server.SkillHandlers
 
         private static Type[] m_CannotImbue = new Type[]
         {
-            typeof(GargishPlateWingArmor), typeof(GargishLeatherWingArmor), typeof(GargishClothWingArmor), typeof(GargishStoneWingArmor)
+            typeof(GargishLeatherWingArmor), typeof(GargishClothWingArmor)
         };
 
         public static object GetAttribute(int mod)
@@ -2216,7 +2216,7 @@ namespace Server.SkillHandlers
                 if (armor.MaterialType == ArmorMaterialType.Dragon)
                     return 12;
 
-                if (armor is GargishStoneKilt || armor is GargishStoneChest || armor is GargishStoneLegs || armor is GargishStoneArms || armor is GargishStoneAmulet)
+                if (armor is GargishStoneKilt || armor is GargishStoneChest || armor is GargishStoneLegs || armor is GargishStoneArms || armor is FemaleGargishStoneKilt || armor is FemaleGargishStoneChest || armor is FemaleGargishStoneLegs || armor is FemaleGargishStoneArms || armor is GargishStoneAmulet)
                     return 11;
 
                 if (armor is WoodlandGorget || armor is WoodlandLegs || armor is WoodlandGloves || armor is WoodlandChest || armor is WoodlandArms)

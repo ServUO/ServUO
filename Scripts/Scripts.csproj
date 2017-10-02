@@ -3820,7 +3820,7 @@
     <Compile Include="Items\Equipment\Armor\FemaleGargishStoneLegs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Equipment\Armor\FemaleGargishStonePlateKilt.cs">
+    <Compile Include="Items\Equipment\Armor\FemaleGargishStoneKilt.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Armor\GargishLeatherArms.cs">
@@ -3850,9 +3850,6 @@
     <Compile Include="Items\Equipment\Armor\GargishPlateLegs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Equipment\Armor\GargishPlateWingArmor.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Equipment\Armor\GargishStoneArms.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -3862,10 +3859,7 @@
     <Compile Include="Items\Equipment\Armor\GargishStoneLegs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Equipment\Armor\GargishStonePlateKilt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\GargishStoneWingArmor.cs">
+    <Compile Include="Items\Equipment\Armor\GargishStoneKilt.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Glasses\AnthropomorphistGlasses.cs">
@@ -4097,42 +4091,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Mage\LeafweavePauldrons.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishLeatherArms.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishLeatherChest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishLeatherKilt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishLeatherLegs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishPlateArms.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishPlateChest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishPlateKilt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishPlateLegs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishStoneArms.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishStoneChest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishStoneLegs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\MaleGargishStonePlateKilt.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Marksman\Feathernock.cs">
