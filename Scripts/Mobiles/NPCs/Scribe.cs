@@ -43,7 +43,7 @@ namespace Server.Mobiles
         }
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBScribe());
+            this.m_SBInfos.Add(new SBScribe(this));
         }
 
         public override void InitOutfit()
