@@ -33,7 +33,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)1);
+                    writer.Write((int)2);
                 });
         }
 
@@ -54,6 +54,9 @@ namespace Server
         {
             switch (_Version)
             {
+                case 1:
+                    RemoveSpawnVersion1();
+                    break;
                 case 0:
                     CheckSmartSpawn(typeof(BaseVendor), true);
                     CheckQuestQuesters();
@@ -67,6 +70,14 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Version 1
+        public static void RemoveSpawnVersion1()
+        {
+            Remove("SeaHorse");
+            Delete("Valem");
+        }
+        #endregion
 
         #region Version 0
         public static Dictionary<Type, Type[]> QuestQuesterTypes;
@@ -180,6 +191,42 @@ namespace Server
         #endregion
 
         /// <summary>
+        /// Deletes the entire spawner if 'current' if found as an spawn object
+        /// </summary>
+        /// <param name="current"></param>
+        public static void Delete(string current)
+        {
+            List<XmlSpawner> toDelete = new List<XmlSpawner>();
+
+            foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
+            {
+                foreach (var obj in spawner.SpawnObjects)
+                {
+                    if (obj == null || obj.TypeName == null)
+                        continue;
+
+                    string typeName = obj.TypeName.ToLower();
+                    string lookingFor = current.ToLower();
+
+                    if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
+                    {
+                        toDelete.Add(spawner);
+                        break;
+                    }
+                }
+            }
+
+            foreach (var spawner in toDelete)
+            {
+                spawner.Delete();
+            }
+
+            ToConsole(String.Format("Spawner Deletion: deleted {0} spawners containing -{1}-.", toDelete.Count.ToString(), current));
+
+            ColUtility.Free(toDelete);
+        }
+
+        /// <summary>
         /// Replaces a certain string value with another in any XmlSpawner SpawnObject line
         /// </summary>
         /// <param name="current">What we're looing for</param>
@@ -224,6 +271,9 @@ namespace Server
 
             foreach (var obj in spawner.SpawnObjects)
             {
+                if (obj == null || obj.TypeName == null)
+                    continue;
+
                 string typeName = obj.TypeName.ToLower();
                 string lookingFor = current.ToLower();
 
@@ -246,42 +296,48 @@ namespace Server
         /// Removes a SpawnerObject string, either the string or entire line
         /// </summary>
         /// <param name="toRemove">string to remove from line</param>
-        /// <param name="entireLine">if toRemove is found, this removes the entire line</param>
-        public static void Remove(string toRemove, bool entireLine = true)
+        public static void Remove(string toRemove)
         {
             int count = 0;
 
             foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
             {
-                count += Remove(spawner, toRemove, entireLine);
+                count += Remove(spawner, toRemove);
             }
 
-            ToConsole(String.Format("Spawn Removal: {0} spawn lines {1} containing -{2}-.", count.ToString(), entireLine ? "removed" : "cut", toRemove));
+            ToConsole(String.Format("Spawn Removal: {0} spawn lines removed containing -{1}-.", count.ToString(), toRemove));
         }
 
-        public static int Remove(XmlSpawner spawner, string toRemove, bool entireLine)
+        public static int Remove(XmlSpawner spawner, string toRemove)
         {
             int count = 0;
 
-            foreach (var obj in spawner.SpawnObjects)
+            List<XmlSpawner.SpawnObject> remove = new List<XmlSpawner.SpawnObject>();
+            List<XmlSpawner.SpawnObject> objects = spawner.SpawnObjects.ToList();
+
+            foreach (var obj in objects)
             {
+                if (obj == null || obj.TypeName == null)
+                    continue;
+
                 string typeName = obj.TypeName.ToLower();
                 string lookingFor = toRemove.ToLower();
 
                 if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
                 {
-                    if (entireLine)
-                    {
-                        count++;
-                        obj.TypeName = null;
-                    }
-                    else
-                    {
-                        count++;
-                        obj.TypeName = typeName.Replace(lookingFor, "");
-                    }
+                    remove.Add(obj);
                 }
             }
+
+            count = remove.Count;
+
+            foreach (var obj in remove)
+                objects.Remove(obj);
+
+            if (count > 0)
+                spawner.SpawnObjects = objects.ToArray();
+
+            ColUtility.Free(remove);
 
             return count;
         }
@@ -317,6 +373,9 @@ namespace Server
         {
             foreach (var obj in spawner.SpawnObjects.Where(o => !String.IsNullOrEmpty(o.TypeName)))
             {
+                if (obj == null || obj.TypeName == null)
+                    continue;
+
                 string spawnObject = obj.TypeName.ToLower();
                 string lookFor = lineCheck != null ? lineCheck.ToLower() : null;
 
