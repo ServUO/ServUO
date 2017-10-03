@@ -606,6 +606,7 @@
     <Compile Include="Items\Addons\HitchingPost.cs" />
     <Compile Include="Items\Addons\GardenShed.cs" />
     <Compile Include="Items\Addons\LighthouseAddon.cs" />
+    <Compile Include="Items\Addons\RitualTableAddon.cs" />
     <Compile Include="Items\Addons\NexusAddon.cs" />
     <Compile Include="Items\Addons\RoseRug.cs" />
     <Compile Include="Items\Addons\SkullRug.cs" />

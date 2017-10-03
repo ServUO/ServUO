@@ -8,7 +8,7 @@ namespace Server.Items
         public StatueSouth()
             : base(0x139A)
         { 
-            this.Weight = 10; 
+            Weight = 10; 
         }
 
         public StatueSouth(Serial serial)
@@ -16,24 +16,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -44,7 +37,7 @@ namespace Server.Items
         public StatueSouth2()
             : base(0x1227)
         { 
-            this.Weight = 10; 
+            Weight = 10; 
         }
 
         public StatueSouth2(Serial serial)
@@ -52,24 +45,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -80,7 +66,7 @@ namespace Server.Items
         public StatueNorth()
             : base(0x139B)
         { 
-            this.Weight = 10; 
+            Weight = 10; 
         }
 
         public StatueNorth(Serial serial)
@@ -88,24 +74,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -116,7 +95,7 @@ namespace Server.Items
         public StatueWest()
             : base(0x1226)
         { 
-            this.Weight = 10; 
+            Weight = 10; 
         }
 
         public StatueWest(Serial serial)
@@ -124,24 +103,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -152,7 +124,7 @@ namespace Server.Items
         public StatueEast()
             : base(0x139C)
         { 
-            this.Weight = 10; 
+            Weight = 10; 
         }
 
         public StatueEast(Serial serial)
@@ -160,24 +132,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -188,7 +153,7 @@ namespace Server.Items
         public StatueEast2()
             : base(0x1224)
         { 
-            this.Weight = 10; 
+            Weight = 10; 
         }
 
         public StatueEast2(Serial serial)
@@ -196,24 +161,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -224,7 +182,7 @@ namespace Server.Items
         public StatueSouthEast()
             : base(0x1225)
         { 
-            this.Weight = 10; 
+            Weight = 10; 
         }
 
         public StatueSouthEast(Serial serial)
@@ -232,24 +190,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -260,7 +211,7 @@ namespace Server.Items
         public BustSouth()
             : base(0x12CB)
         { 
-            this.Weight = 10; 
+            Weight = 10; 
         }
 
         public BustSouth(Serial serial)
@@ -268,24 +219,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -296,7 +240,7 @@ namespace Server.Items
         public BustEast()
             : base(0x12CA)
         { 
-            this.Weight = 10; 
+            Weight = 10; 
         }
 
         public BustEast(Serial serial)
@@ -304,24 +248,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -332,7 +269,7 @@ namespace Server.Items
         public StatuePegasus()
             : base(0x139D)
         { 
-            this.Weight = 10; 
+            Weight = 1.0; 
         }
 
         public StatuePegasus(Serial serial)
@@ -340,24 +277,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
             base.Deserialize(reader); 
-
             int version = reader.ReadInt(); 
         }
     }
@@ -368,7 +298,7 @@ namespace Server.Items
         public StatuePegasus2()
             : base(0x1228)
         { 
-            this.Weight = 10; 
+            Weight = 1.0; 
         }
 
         public StatuePegasus2(Serial serial)
@@ -376,24 +306,17 @@ namespace Server.Items
         { 
         }
 
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
         public override void Serialize(GenericWriter writer) 
         { 
-            base.Serialize(writer); 
-
+            base.Serialize(writer);
             writer.Write((int)0); 
         }
 
         public override void Deserialize(GenericReader reader) 
         { 
-            base.Deserialize(reader); 
-
+            base.Deserialize(reader);
             int version = reader.ReadInt(); 
         }
     }
@@ -404,7 +327,7 @@ namespace Server.Items
         public SmallTowerSculpture()
             : base(0x241A)
         {
-            this.Weight = 20.0;
+            Weight = 1.0;
         }
 
         public SmallTowerSculpture(Serial serial)
@@ -415,14 +338,128 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 
+    public class StatueGargoyleEast : Item
+    {
+        [Constructable]
+        public StatueGargoyleEast()
+            : base(0x494E)
+        {
+            Weight = 1.0;
+        }
+
+        public StatueGargoyleEast(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class StatueGargoyleSouth : Item
+    {
+        [Constructable]
+        public StatueGargoyleSouth()
+            : base(0x494D)
+        {
+            Weight = 1.0;
+        }
+
+        public StatueGargoyleSouth(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class StatueGryphonEast : Item
+    {
+        [Constructable]
+        public StatueGryphonEast()
+            : base(0x493C)
+        {
+            Weight = 1.0;
+        }
+
+        public StatueGryphonEast(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class StatueGryphonSouth : Item
+    {
+        [Constructable]
+        public StatueGryphonSouth()
+            : base(0x493B)
+        {
+            Weight = 1.0;
+        }
+
+        public StatueGryphonSouth(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }
