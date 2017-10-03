@@ -8,7 +8,7 @@ namespace Server.Items
         public Vase()
             : base(0xB46)
         {
-            this.Weight = 10;
+            this.Weight = 1.0;
         }
 
         public Vase(Serial serial)
@@ -37,7 +37,7 @@ namespace Server.Items
         public LargeVase()
             : base(0xB45)
         {
-            this.Weight = 15;
+            this.Weight = 1.0;
         }
 
         public LargeVase(Serial serial)
@@ -66,7 +66,7 @@ namespace Server.Items
         public SmallUrn()
             : base(0x241C)
         {
-            this.Weight = 20.0;
+            this.Weight = 1.0;
         }
 
         public SmallUrn(Serial serial)

@@ -2536,7 +2536,10 @@ namespace Server
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write(10); // version
+            writer.Write(11); // version
+
+            //version 11
+            writer.Write(m_GridLocation);
 
             //version 10
             writer.Write(m_HonestyPickup);
@@ -3007,6 +3010,11 @@ namespace Server
 
             switch (version)
             {
+                case 11:
+                    {
+                        m_GridLocation = reader.ReadByte();
+                        goto case 10;
+                    }
                 case 10:
                     {
                         m_HonestyPickup = reader.ReadDateTime();

@@ -165,6 +165,7 @@ namespace Server.Engines.ShameRevamped
                 var wall = new ShameWall(dictionary, altarLoc, new Point3D(5621, 43, 0), Map.Felucca);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Felucca);
+                ShameWall.AddTeleporters(wall);
             }
 
             e.Mobile.SendMessage("Shame Revamped setup! Don't forget to setup the spawners!");
