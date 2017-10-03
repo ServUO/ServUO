@@ -21,6 +21,7 @@ namespace Server.Spells.Mysticism
 
 		public override bool DelayedDamage{ get{ return true; } }
         public override bool DelayedDamageStacking { get { return false; } }
+        public override Type[] DelayDamageFamily { get { return new Type[] { typeof(Server.Spells.First.MagicArrowSpell) }; } }
 
 		public override void OnCast()
 		{

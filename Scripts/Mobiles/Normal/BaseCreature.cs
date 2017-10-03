@@ -3404,13 +3404,13 @@ namespace Server.Mobiles
                 if (m_ControlMaster is PlayerMobile && !(this is PersonalAttendant))
                 {
                     ((PlayerMobile)m_ControlMaster).AllFollowers.Add(this);
-                }
 
-                NetState ns = m_ControlMaster.NetState;
+                    NetState ns = m_ControlMaster.NetState;
 
-                if (ns != null && ns.IsEnhancedClient && Commandable)
-                {
-                    ns.Send(new PetWindow((PlayerMobile)m_ControlMaster, this));
+                    if (ns != null && ns.IsEnhancedClient && Commandable)
+                    {
+                        ns.Send(new PetWindow((PlayerMobile)m_ControlMaster, this));
+                    }
                 }
             }
             else if (m_SummonMaster != null)

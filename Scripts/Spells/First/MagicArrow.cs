@@ -36,6 +36,7 @@ namespace Server.Spells.First
                 return true;
             }
         }
+        public override Type[] DelayDamageFamily { get { return new Type[] { typeof(Server.Spells.Mysticism.NetherBoltSpell) }; } }
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);
