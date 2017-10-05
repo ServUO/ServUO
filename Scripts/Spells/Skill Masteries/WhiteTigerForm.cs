@@ -121,7 +121,7 @@ namespace Server.Spells.SkillMasteries
                 Caster.BodyMod = bodyMod;
                 Caster.HueMod = hueMod;
 
-                Caster.Send(SpeedControl.MountSpeed);
+                Caster.SendSpeedControl(SpeedControlType.MountSpeed);
 
                 Timer timer = new AnimalFormTimer(Caster, bodyMod, hueMod);
                 timer.Start();

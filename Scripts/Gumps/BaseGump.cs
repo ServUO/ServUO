@@ -251,7 +251,7 @@ namespace Server.Gumps
 
         protected string ColorAndCenter(string color, string str)
         {
-            return String.Format("<basefont color={0}><center>{1}</center>", color, str);
+            return String.Format("<center><basefont color={0}>{1}</center>", color, str);
         }
 
         protected string ColorAndSize(string color, int size, string str)

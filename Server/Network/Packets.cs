@@ -750,19 +750,30 @@ namespace Server.Network
 		}
 	}
 
+    public enum SpeedControlType : byte
+    {
+        Disable,
+        MountSpeed,
+        WalkSpeed,
+        WalkSpeedFast,
+        NoMove
+    }
+
 	public sealed class SpeedControl : Packet
 	{
-		public static readonly Packet WalkSpeed = SetStatic(new SpeedControl(2));
-		public static readonly Packet MountSpeed = SetStatic(new SpeedControl(1));
-		public static readonly Packet Disable = SetStatic(new SpeedControl(0));
+        public static readonly Packet NoMove = SetStatic(new SpeedControl(SpeedControlType.NoMove));
+        public static readonly Packet WalkSpeedFast = SetStatic(new SpeedControl(SpeedControlType.WalkSpeedFast));
+        public static readonly Packet WalkSpeed = SetStatic(new SpeedControl(SpeedControlType.WalkSpeed));
+        public static readonly Packet MountSpeed = SetStatic(new SpeedControl(SpeedControlType.MountSpeed));
+        public static readonly Packet Disable = SetStatic(new SpeedControl(SpeedControlType.Disable));
 
-		public SpeedControl(int speedControl)
+		public SpeedControl(SpeedControlType type)
 			: base(0xBF)
 		{
 			EnsureCapacity(3);
 
 			m_Stream.Write((short)0x26);
-			m_Stream.Write((byte)speedControl);
+            m_Stream.Write((byte)type);
 		}
 	}
 

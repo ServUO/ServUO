@@ -252,7 +252,7 @@ namespace Server.Mobiles
 		
             if (to.Alive && to.Player && m_Table[to] == null)
             {
-                to.Send(SpeedControl.WalkSpeed);
+                to.SendSpeedControl(SpeedControlType.WalkSpeed);
                 to.SendLocalizedMessage(1072069); // A cacophonic sound lambastes you, suppressing your ability to move.
                 to.PlaySound(0x584);
 				
@@ -271,7 +271,7 @@ namespace Server.Mobiles
 
             BuffInfo.RemoveBuff(from, BuffIcon.HowlOfCacophony);
 
-            from.Send(SpeedControl.Disable);
+            from.SendSpeedControl(SpeedControlType.Disable);
         }
 
         public virtual void DropOoze()

@@ -77,49 +77,49 @@ namespace Server.Items
 			Explode( (Mobile) states[ 0 ], (Point3D) states[ 1 ], (Map) states[ 2 ] );
 		}
 
-		public virtual void Explode( Mobile from, Point3D loc, Map map )
-		{
-			if ( Deleted || map == null )
-				return;
+        public virtual void Explode(Mobile from, Point3D loc, Map map)
+        {
+            if (Deleted || map == null)
+                return;
 
-			Consume();
+            Consume();
 
-			// Check if any other players are using this potion
-			for ( int i = 0; i < m_Users.Count; i ++ )
-			{
-				ThrowTarget targ = m_Users[ i ].Target as ThrowTarget;
+            // Check if any other players are using this potion
+            for (int i = 0; i < m_Users.Count; i++)
+            {
+                ThrowTarget targ = m_Users[i].Target as ThrowTarget;
 
-				if ( targ != null && targ.Potion == this )
-					Target.Cancel( from );
-			}
+                if (targ != null && targ.Potion == this)
+                    Target.Cancel(from);
+            }
 
-			// Effects
-			Effects.PlaySound( loc, map, 0x207 );
+            // Effects
+            Effects.PlaySound(loc, map, 0x207);
 
-			Geometry.Circle2D( loc, map, Radius, new DoEffect_Callback( TarEffect ), 270, 90 );
+            Geometry.Circle2D(loc, map, Radius, new DoEffect_Callback(TarEffect), 270, 90);
 
-			Timer.DelayCall( TimeSpan.FromSeconds( 1 ), new TimerStateCallback( CircleEffect2 ), new object[] { loc, map } );
-  
-                      	foreach ( Mobile mobile in map.GetMobilesInRange( loc, Radius ) )
-			{					
-                             if ( mobile != from ) 
-			     {
-                                  if ( mobile is PlayerMobile )
-				  {
-					PlayerMobile player = (PlayerMobile) mobile;
- 
-                                        player.SendLocalizedMessage(1095151);    
-                                  }
-				
-                                  mobile.Send( SpeedControl.WalkSpeed );
+            Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerStateCallback(CircleEffect2), new object[] { loc, map });
 
-                                  Timer.DelayCall(TimeSpan.FromMinutes(1.0), delegate()
-                                  {                                
-					mobile.Send( SpeedControl.Disable );
-                                  });            
-			     } 
-		       }
-		}
+            foreach (Mobile mobile in map.GetMobilesInRange(loc, Radius))
+            {
+                if (mobile != from)
+                {
+                    if (mobile is PlayerMobile)
+                    {
+                        PlayerMobile player = (PlayerMobile)mobile;
+
+                        player.SendLocalizedMessage(1095151);
+                    }
+
+                    mobile.SendSpeedControl(SpeedControlType.WalkSpeed);
+
+                    Timer.DelayCall(TimeSpan.FromMinutes(1.0), delegate()
+                    {
+                        mobile.SendSpeedControl(SpeedControlType.Disable);
+                    });
+                }
+            }
+        }
 
 		#region Effects
 		public virtual void TarEffect( Point3D p, Map map )

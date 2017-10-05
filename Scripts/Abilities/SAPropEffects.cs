@@ -423,12 +423,12 @@ namespace Server.Items
         {
             if (m.NetState != null && !TransformationSpellHelper.UnderTransformation(m, typeof(AnimalForm))
                 && m.AccessLevel < AccessLevel.GameMaster)
-                m.Send(SpeedControl.WalkSpeed);
+                m.SendSpeedControl(SpeedControlType.WalkSpeed);
         }
 
         public void EndForceWalk(Mobile m)
         {
-		    m.Send( SpeedControl.Disable );
+            m.SendSpeedControl(SpeedControlType.Disable);
         }
 
         public void DoBleed(Mobile m, Mobile from, int level)
