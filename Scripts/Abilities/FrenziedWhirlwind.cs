@@ -84,9 +84,9 @@ namespace Server.Items
 
                 if (defender is PlayerMobile)
                 {
-                    defender.Send(SpeedControl.WalkSpeed);
+                    defender.SendSpeedControl(SpeedControlType.WalkSpeed);
                     BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1152144, TimeSpan.FromSeconds(2.0), defender));
-                    Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(2), mob => mob.Send(SpeedControl.Disable), defender);
+                    Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(2), mob => mob.SendSpeedControl(SpeedControlType.Disable), defender);
                 }
             }
         }

@@ -3644,6 +3644,11 @@ namespace Server.Mobiles
                 DrainLife();
             }
 
+            if (m_InRage && RageProbability >= Utility.RandomDouble())
+            {
+                DoRageHit(defender);
+            }
+
             if (DoesColossalBlow && !_Stunning && ColossalBlowChance > Utility.RandomDouble())
             {
                 DoColossalBlow(defender);
@@ -4183,6 +4188,11 @@ namespace Server.Mobiles
         {
             base.GetContextMenuEntries(from, list);
 
+            if (m_bControlled && m_ControlMaster == from && !m_bSummoned)
+            {
+                list.Add(new RenameEntry(from, this));
+            }
+
             if (m_AI != null && Commandable)
             {
                 m_AI.GetContextMenuEntries(from, list);
@@ -4191,11 +4201,6 @@ namespace Server.Mobiles
             if (m_bTamable && !m_bControlled && from.Alive)
             {
                 list.Add(new TameEntry(from, this));
-            }
-
-            if (m_bControlled && m_ControlMaster == from && !m_bSummoned)
-            {
-                list.Add(new RenameEntry(from, this));
             }
 
             AddCustomContextEntries(from, list);

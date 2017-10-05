@@ -626,6 +626,11 @@ namespace Server.Multis
         }
         #endregion
 
+        public override int GetUpdateRange(Mobile m)
+        {
+            return Core.GlobalMaxUpdateRange;
+        }
+
         public List<Mobile> AvailableVendorsFor(Mobile m)
         {
             List<Mobile> list = new List<Mobile>();

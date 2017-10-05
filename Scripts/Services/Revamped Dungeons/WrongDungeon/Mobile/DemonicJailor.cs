@@ -86,7 +86,7 @@ namespace Server.Mobiles
 
             if (to.Alive && to.Player && m_Table[to] == null)
             {
-                to.Send(SpeedControl.WalkSpeed);
+                to.SendSpeedControl(SpeedControlType.WalkSpeed);
                 to.FixedEffect(0x376A, 6, 1);
                 to.SendLocalizedMessage(500111); // You are frozen and cannot move.
                 to.PlaySound(0x204);
@@ -108,7 +108,7 @@ namespace Server.Mobiles
 
             m_Table[from] = null;
 
-            from.Send(SpeedControl.Disable);
+            from.SendSpeedControl(SpeedControlType.Disable);
         }
 
         public static bool UnderParalyzeAttack(Mobile from)

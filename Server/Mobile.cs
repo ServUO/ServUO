@@ -4619,7 +4619,7 @@ namespace Server
 							Map fixMap = item.Map;
 							bool shouldFix = (item.Parent == null);
 
-							item.RecordBounce(oldStack);
+							item.RecordBounce(this, oldStack);
 							item.OnItemLifted(from, item);
 							item.Internalize();
 
@@ -7239,6 +7239,11 @@ namespace Server
 				eable.Free();
 			}
 		}
+
+        public virtual bool SendSpeedControl(SpeedControlType type)
+        {
+            return Send(new SpeedControl(type));
+        }
 
 		public bool Send(Packet p)
 		{

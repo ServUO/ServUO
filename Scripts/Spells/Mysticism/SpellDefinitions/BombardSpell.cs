@@ -1,4 +1,5 @@
 using System;
+using Server.Mobiles;
 using Server.Targeting;
 
 namespace Server.Spells.Mysticism
@@ -41,26 +42,39 @@ namespace Server.Spells.Mysticism
 				Caster.MovingEffect( target, 0x1363, 12, 1, false, true, 0, 0 );
 				Caster.PlaySound( 0x64B );
 
-				if (!CheckResisted(target))
+				if (target is PlayerMobile && Caster is PlayerMobile && !CheckResisted(target))
 				{
-					Direction d = Caster.GetDirectionTo( target );
-					Point3D point = new Point3D( target.Location );
+                    if (target != Caster)
+                    {
+                        Direction d = Caster.GetDirectionTo(target);
+                        Point3D point = new Point3D(target.Location);
 
-					switch( d )
-					{
-						case (Direction)0x0: case (Direction)0x80: point.Y--; break; //North
-						case (Direction)0x1: case (Direction)0x81: { point.X++; point.Y--; break; } //Right
-						case (Direction)0x2: case (Direction)0x82: point.X++; break; //East
-						case (Direction)0x3: case (Direction)0x83: { point.X++; point.Y++; break; } //Down
-						case (Direction)0x4: case (Direction)0x84: point.Y++; break; //South
-						case (Direction)0x5: case (Direction)0x85: { point.X--; point.Y++; break; } //Left
-						case (Direction)0x6: case (Direction)0x86: point.X--; break; //West
-						case (Direction)0x7: case (Direction)0x87: { point.X--; point.Y--; break; } //Up
-						default: { break; }
-					}
+                        switch (d)
+                        {
+                            case (Direction)0x0:
+                            case (Direction)0x80: point.Y--; break; //North
+                            case (Direction)0x1:
+                            case (Direction)0x81: { point.X++; point.Y--; break; } //Right
+                            case (Direction)0x2:
+                            case (Direction)0x82: point.X++; break; //East
+                            case (Direction)0x3:
+                            case (Direction)0x83: { point.X++; point.Y++; break; } //Down
+                            case (Direction)0x4:
+                            case (Direction)0x84: point.Y++; break; //South
+                            case (Direction)0x5:
+                            case (Direction)0x85: { point.X--; point.Y++; break; } //Left
+                            case (Direction)0x6:
+                            case (Direction)0x86: point.X--; break; //West
+                            case (Direction)0x7:
+                            case (Direction)0x87: { point.X--; point.Y--; break; } //Up
+                            default: { break; }
+                        }
 
-					if ( target.Map.CanFit( point, 16, false, false ) )
-						target.MoveToWorld( point, target.Map );
+                        if (target.Map.CanFit(point, 16, false, false))
+                            target.MoveToWorld(point, target.Map);
+                    }
+
+                    target.Paralyze(TimeSpan.FromSeconds(3));
 				}
 
 				SpellHelper.Damage( this, target, (int)GetNewAosDamage( 40, 1, 5, target ), 100, 0, 0, 0, 0 );

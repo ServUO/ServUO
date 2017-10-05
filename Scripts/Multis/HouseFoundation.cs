@@ -145,19 +145,22 @@ namespace Server.Multis
 
         public override int GetMaxUpdateRange()
         {
-            return 24;
+            return Core.GlobalMaxUpdateRange;
         }
 
         public override int GetUpdateRange(Mobile m)
         {
+            int min = m.NetState != null ? m.NetState.UpdateRange : 18;
+            int max = Core.GlobalMaxUpdateRange;
+
             int w = CurrentState.Components.Width;
             int h = CurrentState.Components.Height - 1;
-            int v = 18 + ((w > h ? w : h) / 2);
+            int v = min + ((w > h ? w : h) / 2);
 
-            if (v > 24)
-                v = 24;
-            else if (v < 18)
-                v = 18;
+            if (v > max)
+                v = max;
+            else if (v < min)
+                v = min;
 
             return v;
         }
@@ -1001,6 +1004,11 @@ namespace Server.Multis
 
                         break;
                     }
+            }
+
+            if (m_LastRevision == 0)
+            {
+                OnPlacement();
             }
 
             base.Deserialize(reader);
