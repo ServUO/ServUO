@@ -1,23 +1,21 @@
 using System;
-using Server.Mobiles;
+using Server;
 
 namespace Server.Items
 {
-    public class KotlBlackRod : BlackStaff
+    public class FancyCouchWestAddon : BaseAddon
     {
-        public override int LabelNumber { get { return 1156990; } } // kotl black rod
+        public override BaseAddonDeed Deed { get { return new FancyCouchWestDeed(); } }
 
         [Constructable]
-        public KotlBlackRod()
+        public FancyCouchWestAddon()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
+            AddComponent(new AddonComponent(0x9C5F), 0, -1, 0);
+            AddComponent(new AddonComponent(0x9C5E), 0, 0, 0);
+            AddComponent(new AddonComponent(0x9C5D), 0, 1, 0);
         }
 
-        public KotlBlackRod(Serial serial)
+        public FancyCouchWestAddon(Serial serial)
             : base(serial)
         {
         }
@@ -35,21 +33,17 @@ namespace Server.Items
         }
     }
 
-    public class GargishKotlBlackRod : GargishGnarledStaff
+    public class FancyCouchWestDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1156994; } } // gargish kotl black rod
+        public override BaseAddon Addon { get { return new FancyCouchWestAddon(); } }
+        public override int LabelNumber { get { return 1156583; } } // Fancy Couch (West)
 
         [Constructable]
-        public GargishKotlBlackRod()
+        public FancyCouchWestDeed()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
         }
 
-        public GargishKotlBlackRod(Serial serial)
+        public FancyCouchWestDeed(Serial serial)
             : base(serial)
         {
         }

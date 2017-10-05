@@ -1,23 +1,20 @@
 using System;
-using Server.Mobiles;
+using Server;
 
 namespace Server.Items
 {
-    public class KotlBlackRod : BlackStaff
+    public class SmallDisplayCaseSouthAddon : BaseAddon
     {
-        public override int LabelNumber { get { return 1156990; } } // kotl black rod
+        public override BaseAddonDeed Deed { get { return new SmallDisplayCaseSouthDeed(); } }
 
         [Constructable]
-        public KotlBlackRod()
+        public SmallDisplayCaseSouthAddon()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
+            AddComponent(new AddonComponent(0x0B0A), 0, 0, 0);
+            AddComponent(new AddonComponent(0x0B0C), 0, 0, 3);
         }
 
-        public KotlBlackRod(Serial serial)
+        public SmallDisplayCaseSouthAddon(Serial serial)
             : base(serial)
         {
         }
@@ -35,21 +32,17 @@ namespace Server.Items
         }
     }
 
-    public class GargishKotlBlackRod : GargishGnarledStaff
+    public class SmallDisplayCaseSouthDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1156994; } } // gargish kotl black rod
+        public override BaseAddon Addon { get { return new SmallDisplayCaseSouthAddon(); } }
+        public override int LabelNumber { get { return 1155842; } } // Small Display Case (South)
 
         [Constructable]
-        public GargishKotlBlackRod()
+        public SmallDisplayCaseSouthDeed()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
         }
 
-        public GargishKotlBlackRod(Serial serial)
+        public SmallDisplayCaseSouthDeed(Serial serial)
             : base(serial)
         {
         }

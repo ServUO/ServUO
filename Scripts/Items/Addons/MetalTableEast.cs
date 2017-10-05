@@ -1,23 +1,22 @@
 using System;
-using Server.Mobiles;
+using Server;
 
 namespace Server.Items
 {
-    public class KotlBlackRod : BlackStaff
+    public class MetalTableEastAddon : BaseAddon
     {
-        public override int LabelNumber { get { return 1156990; } } // kotl black rod
+        public override BaseAddonDeed Deed { get { return new MetalTableEastDeed(); } }
 
         [Constructable]
-        public KotlBlackRod()
+        public MetalTableEastAddon()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
+            AddComponent(new AddonComponent(0x4CBA), 0, 0, 0);
+            AddComponent(new AddonComponent(0x4CB9), 0, 1, 0);
+            AddComponent(new AddonComponent(0x4CBB), 1, 0, 0);
+            AddComponent(new AddonComponent(0x4CB8), 1, 1, 0);
         }
 
-        public KotlBlackRod(Serial serial)
+        public MetalTableEastAddon(Serial serial)
             : base(serial)
         {
         }
@@ -35,21 +34,17 @@ namespace Server.Items
         }
     }
 
-    public class GargishKotlBlackRod : GargishGnarledStaff
+    public class MetalTableEastDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1156994; } } // gargish kotl black rod
+        public override BaseAddon Addon { get { return new MetalTableEastAddon(); } }
+        public override int LabelNumber { get { return 1154155; } } // Metal Table (East)
 
         [Constructable]
-        public GargishKotlBlackRod()
+        public MetalTableEastDeed()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
         }
 
-        public GargishKotlBlackRod(Serial serial)
+        public MetalTableEastDeed(Serial serial)
             : base(serial)
         {
         }
