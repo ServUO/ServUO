@@ -432,12 +432,13 @@ namespace Server.Engines.Craft
 
 			typeof(BaseArmor), typeof(BaseWeapon), typeof(BaseClothing), typeof(BaseInstrument), typeof(BaseTool),
 			typeof(BaseHarvestTool), typeof(BaseQuiver), typeof(DragonBardingDeed), typeof(Fukiya), typeof(FukiyaDarts),
-			typeof(Shuriken), typeof(Spellbook), typeof(Runebook), typeof(ShortMusicStand), typeof(TallMusicStand),
-			typeof(RedHangingLantern), typeof(WhiteHangingLantern), typeof(BambooScreen), typeof(ShojiScreen), typeof(Easle),
+			typeof(Shuriken), typeof(Spellbook), typeof(Runebook), typeof(ShortMusicStandLeft), typeof(ShortMusicStandRight),
+            typeof(TallMusicStandLeft), typeof(TallMusicStandRight), typeof(EasleNorth), typeof(EasleEast), typeof(EasleSouth),
+            typeof(RedHangingLantern), typeof(WhiteHangingLantern), typeof(BambooScreen), typeof(ShojiScreen),
 			typeof(FishingPole), typeof(Stool), typeof(FootStool), typeof(WoodenBench), typeof(WoodenThrone), typeof(Throne),
 			typeof(BambooChair), typeof(WoodenChair), typeof(FancyWoodenChairCushion), typeof(WoodenChairCushion),
 			typeof(Nightstand), typeof(LargeTable), typeof(WritingTable), typeof(YewWoodTable), typeof(PlainLowTable),
-			typeof(ElegantLowTable), typeof(Dressform), typeof(BasePlayerBB), typeof(BaseContainer), typeof(BarrelStaves),
+			typeof(ElegantLowTable), typeof(DressformFront), typeof(DressformSide), typeof(BasePlayerBB), typeof(BaseContainer), typeof(BarrelStaves),
 			typeof(BarrelLid), typeof(Clippers), typeof(Scissors), typeof(BaseTool),
 
             typeof(KeyRing), typeof(Key), typeof(Globe), typeof(Spyglass), typeof(Lantern), typeof(Candelabra), typeof(Scales),

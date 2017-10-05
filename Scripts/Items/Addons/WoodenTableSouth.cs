@@ -1,18 +1,20 @@
 using System;
+using Server;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.Dressform")]
-    public class DressformFront : Item
+    public class WoodenTableSouthAddon : BaseAddon
     {
+        public override BaseAddonDeed Deed { get { return new WoodenTableSouthDeed(); } }
+
         [Constructable]
-        public DressformFront()
-            : base(0xec6)
+        public WoodenTableSouthAddon()
         {
-            this.Weight = 10;
+            AddComponent(new AddonComponent(0x4CC8), 0, 0, 0);
+            AddComponent(new AddonComponent(0x4CC9), 1, 0, 0);
         }
 
-        public DressformFront(Serial serial)
+        public WoodenTableSouthAddon(Serial serial)
             : base(serial)
         {
         }
@@ -20,7 +22,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -29,17 +31,18 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-    
-    public class DressformSide : Item
+
+    public class WoodenTableSouthDeed : BaseAddonDeed
     {
+        public override BaseAddon Addon { get { return new WoodenTableSouthAddon(); } }
+        public override int LabelNumber { get { return 1154156; } } // Wooden Table (South)
+
         [Constructable]
-        public DressformSide()
-            : base(0xec7)
+        public WoodenTableSouthDeed()
         {
-            Weight = 10;
         }
 
-        public DressformSide(Serial serial)
+        public WoodenTableSouthDeed(Serial serial)
             : base(serial)
         {
         }
@@ -47,7 +50,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)

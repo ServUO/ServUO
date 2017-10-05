@@ -1,18 +1,19 @@
 using System;
+using Server;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.Dressform")]
-    public class DressformFront : Item
+    public class PlainWoodenShelfEastAddon : BaseAddon
     {
+        public override BaseAddonDeed Deed { get { return new PlainWoodenShelfEastDeed(); } }
+
         [Constructable]
-        public DressformFront()
-            : base(0xec6)
+        public PlainWoodenShelfEastAddon()
         {
-            this.Weight = 10;
+            AddComponent(new AddonComponent(0x4C3B), 0, 0, 0);
         }
 
-        public DressformFront(Serial serial)
+        public PlainWoodenShelfEastAddon(Serial serial)
             : base(serial)
         {
         }
@@ -20,7 +21,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -29,17 +30,18 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-    
-    public class DressformSide : Item
+
+    public class PlainWoodenShelfEastDeed : BaseAddonDeed
     {
+        public override BaseAddon Addon { get { return new PlainWoodenShelfEastAddon(); } }
+        public override int LabelNumber { get { return 1154161; } } // Plain Wooden Shelf (East)
+
         [Constructable]
-        public DressformSide()
-            : base(0xec7)
+        public PlainWoodenShelfEastDeed()
         {
-            Weight = 10;
         }
 
-        public DressformSide(Serial serial)
+        public PlainWoodenShelfEastDeed(Serial serial)
             : base(serial)
         {
         }
@@ -47,7 +49,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
