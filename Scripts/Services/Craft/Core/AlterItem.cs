@@ -282,10 +282,10 @@ namespace Server.Engines.Craft
                 {
                     newitem.Name = origItem.Name;
                 }
-                else if (Server.Engines.VendorSearhing.VendorSearch.StringList != null)
+                else if (Server.Engines.VendorSearching.VendorSearch.StringList != null)
                 {
                     if (origItem.LabelNumber > 0 && RetainsName(origItem))
-                        newitem.Name = Server.Engines.VendorSearhing.VendorSearch.StringList.GetString(origItem.LabelNumber);
+                        newitem.Name = Server.Engines.VendorSearching.VendorSearch.StringList.GetString(origItem.LabelNumber);
                 }
 
                 newitem.Hue = origItem.Hue;

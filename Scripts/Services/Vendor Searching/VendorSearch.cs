@@ -12,7 +12,7 @@ using Server.Targeting;
 using System.Text.RegularExpressions;
 using Server.Regions;
 
-namespace Server.Engines.VendorSearhing
+namespace Server.Engines.VendorSearching
 {
 	public class VendorSearch
 	{

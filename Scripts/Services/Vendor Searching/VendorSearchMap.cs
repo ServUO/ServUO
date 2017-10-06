@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Server.Gumps;
-using Server.Engines.VendorSearhing;
+using Server.Engines.VendorSearching;
 using Server.Mobiles;
 using Server.ContextMenus;
 using Server.Multis;
