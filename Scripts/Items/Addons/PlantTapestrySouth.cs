@@ -6,6 +6,7 @@ namespace Server.Items
     public class PlantTapestrySouthAddon : BaseAddon
     {
         public override BaseAddonDeed Deed { get { return new PlantTapestrySouthDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
         public PlantTapestrySouthAddon()

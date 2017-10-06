@@ -6,6 +6,7 @@ namespace Server.Items
     public class LongMetalTableSouthAddon : BaseAddon
     {
         public override BaseAddonDeed Deed { get { return new LongMetalTableSouthDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
         public LongMetalTableSouthAddon()

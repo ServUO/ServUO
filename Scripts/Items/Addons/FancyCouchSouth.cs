@@ -6,6 +6,7 @@ namespace Server.Items
     public class FancyCouchSouthAddon : BaseAddon
     {
         public override BaseAddonDeed Deed { get { return new FancyCouchSouthDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
         public FancyCouchSouthAddon()

@@ -6,6 +6,7 @@ namespace Server.Items
     public class WoodenTableEastAddon : BaseAddon
     {
         public override BaseAddonDeed Deed { get { return new WoodenTableEastDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
         public WoodenTableEastAddon()
