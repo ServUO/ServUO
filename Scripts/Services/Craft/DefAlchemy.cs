@@ -144,15 +144,15 @@ namespace Server.Engines.Craft
 
             if (Core.SA)
             {
-                index = AddCraft(typeof(ElixirOfRebirth), 1116348, 1112762, 65.0, 130.0, typeof(MedusaBlood), 1031702, 1, 1044253);
-                AddRes(index, typeof(SpidersSilk), 1044360, 7, 1044368);
+                index = AddCraft(typeof(ElixirOfRebirth), 1116348, 1112762, 65.0, 115.0, typeof(MedusaBlood), 1031702, 1, 1044253);
+                AddRes(index, typeof(SpidersSilk), 1044360, 3, 1044368);
                 AddRes(index, typeof(Bottle), 1044529, 1, 500315);
-                this.SetNeededExpansion(index, Expansion.SA);
+                SetNeededExpansion(index, Expansion.SA);
             }
 
             if (Core.TOL)
             {
-                index = AddCraft(typeof(BarrabHemolymphConcentrate), 1116348, 1156724, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
+                index = AddCraft(typeof(BarrabHemolymphConcentrate), 1116348, 1156724, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
                 AddRes(index, typeof(Ginseng), 1044356, 20, 1044364);
                 AddRes(index, typeof(PlantClippings), 1112131, 5, 1044253);
                 AddRes(index, typeof(MyrmidexEggsac), 1156725, 5, 1044253);
@@ -180,28 +180,28 @@ namespace Server.Engines.Craft
             {
                 index = AddCraft(typeof(InvisibilityPotion), 1116349, 1074860, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
                 AddRes(index, typeof(Bloodmoss), 1044354, 4, 1044362);
-                AddRes(index, typeof(Nightshade), 1044358, 4, 1044366);
+                AddRes(index, typeof(Nightshade), 1044358, 3, 1044366);
                 AddRecipe(index, (int)TinkerRecipes.InvisibilityPotion);
                 SetNeededExpansion(index, Expansion.ML);
             }
             
             if (Core.TOL)
             {
-                index = AddCraft(typeof(JukariBurnPoiltice), 1116349, 1156726, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
+                index = AddCraft(typeof(JukariBurnPoiltice), 1116349, 1156726, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
                 AddRes(index, typeof(BlackPearl), 1044353, 20, 1044361);
                 AddRes(index, typeof(Vanilla), 1080000, 10, 1080008);
                 AddRes(index, typeof(LavaBerry), 1156727, 5, 1044253);
                 AddRecipe(index, (int)AlchemyRecipes.JukariBurnPoiltice);
                 SetNeededExpansion(index, Expansion.TOL);
 
-                index = AddCraft(typeof(KurakAmbushersEssence), 1116349, 1156728, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
+                index = AddCraft(typeof(KurakAmbushersEssence), 1116349, 1156728, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
                 AddRes(index, typeof(Bloodmoss), 1044354, 20, 1044362);
                 AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044253);
                 AddRes(index, typeof(TigerPelt), 1156727, 10, 1044253);
                 AddRecipe(index, (int)AlchemyRecipes.KurakAmbushersEssence);
                 SetNeededExpansion(index, Expansion.TOL);
 
-                index = AddCraft(typeof(BarakoDraftOfMight), 1116349, 1156734, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
+                index = AddCraft(typeof(BarakoDraftOfMight), 1116349, 1156729, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
                 AddRes(index, typeof(SpidersSilk), 1044360, 20, 1044368);
                 AddRes(index, typeof(BaseBeverage), 1022459, 10, 1044253);
                 AddRes(index, typeof(PerfectBanana), 1156730, 5, 1044253);
@@ -209,14 +209,14 @@ namespace Server.Engines.Craft
                 AddRecipe(index, (int)AlchemyRecipes.BarakoDraftOfMight);
                 SetNeededExpansion(index, Expansion.TOL);
 
-                index = AddCraft(typeof(UraliTranceTonic), 1116349, 1156729, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
+                index = AddCraft(typeof(UraliTranceTonic), 1116349, 1156734, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
                 AddRes(index, typeof(MandrakeRoot), 1044357, 20, 1044365);
                 AddRes(index, typeof(YellowScales), 1156799, 10, 1044253);
                 AddRes(index, typeof(RiverMoss), 1156731, 5, 1044253);
                 AddRecipe(index, (int)AlchemyRecipes.UraliTranceTonic);
                 SetNeededExpansion(index, Expansion.TOL);
 
-                index = AddCraft(typeof(SakkhraProphylaxisPotion), 1116349, 1156732, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
+                index = AddCraft(typeof(SakkhraProphylaxisPotion), 1116349, 1156732, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
                 AddRes(index, typeof(Nightshade), 1044358, 20, 1044366);
                 AddRes(index, typeof(BaseBeverage), 1022503, 10, 1044253);
                 AddRes(index, typeof(BlueCorn), 1156733, 5, 1044253);
