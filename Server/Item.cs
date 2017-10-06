@@ -567,14 +567,18 @@ namespace Server
         public Point3D m_Location, m_WorldLoc;
         public object m_Parent;
         public IEntity m_ParentStack;
+        public byte m_GridLocation;
+        public Mobile m_Mobile;
 
-        public BounceInfo(Item item)
+        public BounceInfo(Mobile from, Item item)
         {
             m_Map = item.Map;
             m_Location = item.Location;
             m_WorldLoc = item.GetWorldLocation();
             m_Parent = item.Parent;
             m_ParentStack = null;
+            m_GridLocation = item.GridLocation;
+            m_Mobile = from;
         }
 
         private BounceInfo(Map map, Point3D loc, Point3D worldLoc, object parent)
@@ -1130,11 +1134,11 @@ namespace Server
             return null;
         }
 
-        public void RecordBounce(Item parentstack = null)
+        public void RecordBounce(Mobile from, Item parentstack = null)
         {
             CompactInfo info = AcquireCompactInfo();
 
-            info.m_Bounce = new BounceInfo(this);
+            info.m_Bounce = new BounceInfo(from, this);
             info.m_Bounce.m_ParentStack = parentstack;
         }
 

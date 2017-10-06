@@ -1,3 +1,4 @@
+using Server.Network;
 using System;
 
 namespace Server.Items
@@ -67,7 +68,7 @@ namespace Server.Items
         public LocalizedAddonComponent(int itemID, int labelNumber)
             : base(itemID)
         {
-            this.m_LabelNumber = labelNumber;
+            m_LabelNumber = labelNumber;
         }
 
         public LocalizedAddonComponent(Serial serial)
@@ -80,19 +81,19 @@ namespace Server.Items
         {
             get
             {
-                return this.m_LabelNumber;
+                return m_LabelNumber;
             }
             set
             {
-                this.m_LabelNumber = value;
-                this.InvalidateProperties();
+                m_LabelNumber = value;
+                InvalidateProperties();
             }
         }
         public override int LabelNumber
         {
             get
             {
-                return this.m_LabelNumber;
+                return m_LabelNumber;
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -101,7 +102,7 @@ namespace Server.Items
 
             writer.Write((int)0); // version
 
-            writer.Write((int)this.m_LabelNumber);
+            writer.Write((int)m_LabelNumber);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -114,7 +115,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_LabelNumber = reader.ReadInt();
+                        m_LabelNumber = reader.ReadInt();
                         break;
                     }
             }
@@ -138,7 +139,7 @@ namespace Server.Items
         public AddonComponent(int itemID)
             : base(itemID)
         {
-            this.Movable = false;
+            Movable = false;
             ApplyLightTo(this);
         }
 
@@ -152,11 +153,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Addon;
+                return m_Addon;
             }
             set
             {
-                this.m_Addon = value;
+                m_Addon = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -164,11 +165,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Offset;
+                return m_Offset;
             }
             set
             {
-                this.m_Offset = value;
+                m_Offset = value;
             }
         }
         [Hue, CommandProperty(AccessLevel.GameMaster)]
@@ -182,8 +183,8 @@ namespace Server.Items
             {
                 base.Hue = value;
 
-                if (this.m_Addon != null && this.m_Addon.ShareHue)
-                    this.m_Addon.Hue = value;
+                if (m_Addon != null && m_Addon.ShareHue)
+                    m_Addon.Hue = value;
             }
         }
         public virtual bool NeedsWall
@@ -226,36 +227,36 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_Addon != null)
-                this.m_Addon.OnComponentUsed(this, from);
+            if (m_Addon != null)
+                m_Addon.OnComponentUsed(this, from);
         }
 
         public void OnChop(Mobile from)
         {
-            if (this.m_Addon != null && from.InRange(this.GetWorldLocation(), 3))
-                this.m_Addon.OnChop(from);
+            if (m_Addon != null && from.InRange(GetWorldLocation(), 3))
+                m_Addon.OnChop(from);
             else
                 from.SendLocalizedMessage(500446); // That is too far away.
         }
 
         public override void OnLocationChange(Point3D old)
         {
-            if (this.m_Addon != null)
-                this.m_Addon.Location = new Point3D(this.X - this.m_Offset.X, this.Y - this.m_Offset.Y, this.Z - this.m_Offset.Z);
+            if (m_Addon != null)
+                m_Addon.Location = new Point3D(X - m_Offset.X, Y - m_Offset.Y, Z - m_Offset.Z);
         }
 
         public override void OnMapChange()
         {
-            if (this.m_Addon != null)
-                this.m_Addon.Map = this.Map;
+            if (m_Addon != null)
+                m_Addon.Map = Map;
         }
 
         public override void OnAfterDelete()
         {
             base.OnAfterDelete();
 
-            if (this.m_Addon != null)
-                this.m_Addon.Delete();
+            if (m_Addon != null)
+                m_Addon.Delete();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -264,8 +265,8 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write(this.m_Addon);
-            writer.Write(this.m_Offset);
+            writer.Write(m_Addon);
+            writer.Write(m_Offset);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -279,11 +280,11 @@ namespace Server.Items
                 case 1:
                 case 0:
                     {
-                        this.m_Addon = reader.ReadItem() as BaseAddon;
-                        this.m_Offset = reader.ReadPoint3D();
+                        m_Addon = reader.ReadItem() as BaseAddon;
+                        m_Offset = reader.ReadPoint3D();
 
-                        if (this.m_Addon != null)
-                            this.m_Addon.OnComponentLoaded(this);
+                        if (m_Addon != null)
+                            m_Addon.OnComponentLoaded(this);
 
                         ApplyLightTo(this);
 
@@ -291,8 +292,8 @@ namespace Server.Items
                     }
             }
 
-            if (version < 1 && this.Weight == 0)
-                this.Weight = -1;
+            if (version < 1 && Weight == 0)
+                Weight = -1;
         }
 
         private class LightEntry
@@ -301,9 +302,64 @@ namespace Server.Items
             public readonly int[] m_ItemIDs;
             public LightEntry(LightType light, params int[] itemIDs)
             {
-                this.m_Light = light;
-                this.m_ItemIDs = itemIDs;
+                m_Light = light;
+                m_ItemIDs = itemIDs;
             }
+        }
+    }
+
+    public class InstrumentedAddonComponent : AddonComponent
+    {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SuccessSound { get; set; }
+
+        [Constructable]
+        public InstrumentedAddonComponent(int itemID, int wellSound)
+            : base(itemID)
+        {
+            SuccessSound = wellSound;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!from.InRange(GetWorldLocation(), 2))
+            {
+                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+            }
+            else if (from.BeginAction(typeof(InstrumentedAddonComponent)))
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(1000), () =>
+                {
+                    from.EndAction(typeof(InstrumentedAddonComponent));
+                });
+
+                from.PlaySound(SuccessSound);
+            }
+            else
+            {
+                from.SendLocalizedMessage(500119); // You must wait to perform another action
+            }
+        }
+
+        public InstrumentedAddonComponent(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+
+            writer.Write((int)SuccessSound);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            SuccessSound = reader.ReadInt();
         }
     }
 }

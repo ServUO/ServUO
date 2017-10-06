@@ -507,7 +507,7 @@ namespace Server.Items
 
                         ++idx;
                     }
-
+                    
                     groups.Add(group);
                 }
 

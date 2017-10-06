@@ -17,8 +17,8 @@ namespace Server.Mobiles
             Hue = 0x96D;
 
             SetStr(147, 245);
-            SetDex(101, 135);
-            SetInt(86, 110);
+            SetDex(91, 115);
+            SetInt(61, 85);
 
             SetHits(97, 139);
 
@@ -33,8 +33,8 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, 25, 30);
 
             SetSkill(SkillName.MagicResist, 60.1, 85.0);
-            SetSkill(SkillName.Swords, 75.1, 90.0);
-            SetSkill(SkillName.Tactics, 60.1, 85.0);
+            SetSkill(SkillName.Tactics, 75.1, 90.0);
+            SetSkill(SkillName.Wrestling, 60.1, 85.0);
 
             Fame = 4500;
             Karma = -4500;

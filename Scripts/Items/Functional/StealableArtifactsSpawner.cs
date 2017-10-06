@@ -207,6 +207,10 @@ namespace Server.Items
             new StealableEntry(Map.Trammel, new Point3D(5680, 537, 0), 46864, 55296, typeof(TortureRackEast)),
             new StealableEntry(Map.Felucca, new Point3D(5680, 537, 0), 46864, 55296, typeof(TortureRackEast)),
 
+            // Bedlam - Artifact Rarity 8
+            new StealableEntry(Map.Malas, new Point3D(168, 1609, 0), 9216, 13824, typeof(AcademicBooksArtifact)),
+            new StealableEntry(Map.Malas, new Point3D(165, 1650, 0), 9216, 13824, typeof(AcademicBooksArtifact)),
+            new StealableEntry(Map.Malas, new Point3D(85, 1644, 20), 9216, 13824, typeof(AcademicBooksArtifact)),
         };
 
         private static Type[] m_TypesOfEntries = null;

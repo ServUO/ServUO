@@ -1,23 +1,23 @@
 using System;
-using Server.Mobiles;
+using Server;
 
 namespace Server.Items
 {
-    public class KotlBlackRod : BlackStaff
+    public class MetalTableSouthAddon : BaseAddon
     {
-        public override int LabelNumber { get { return 1156990; } } // kotl black rod
+        public override BaseAddonDeed Deed { get { return new MetalTableSouthDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
-        public KotlBlackRod()
+        public MetalTableSouthAddon()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
+            AddComponent(new AddonComponent(0x4CB4), 0, 0, 0);
+            AddComponent(new AddonComponent(0x4CB7), 0, 1, 0);
+            AddComponent(new AddonComponent(0x4CB5), 1, 0, 0);
+            AddComponent(new AddonComponent(0x4CB6), 1, 1, 0);
         }
 
-        public KotlBlackRod(Serial serial)
+        public MetalTableSouthAddon(Serial serial)
             : base(serial)
         {
         }
@@ -35,21 +35,17 @@ namespace Server.Items
         }
     }
 
-    public class GargishKotlBlackRod : GargishGnarledStaff
+    public class MetalTableSouthDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1156994; } } // gargish kotl black rod
+        public override BaseAddon Addon { get { return new MetalTableSouthAddon(); } }
+        public override int LabelNumber { get { return 1154154; } } // Metal Table (South)
 
         [Constructable]
-        public GargishKotlBlackRod()
+        public MetalTableSouthDeed()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
         }
 
-        public GargishKotlBlackRod(Serial serial)
+        public MetalTableSouthDeed(Serial serial)
             : base(serial)
         {
         }

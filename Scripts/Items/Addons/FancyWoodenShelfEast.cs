@@ -1,23 +1,20 @@
 using System;
-using Server.Mobiles;
+using Server;
 
 namespace Server.Items
 {
-    public class KotlBlackRod : BlackStaff
+    public class FancyWoodenShelfEastAddon : BaseAddon
     {
-        public override int LabelNumber { get { return 1156990; } } // kotl black rod
+        public override BaseAddonDeed Deed { get { return new FancyWoodenShelfEastDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
-        public KotlBlackRod()
+        public FancyWoodenShelfEastAddon()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
+            AddComponent(new AddonComponent(0x4C39), 0, 0, 0);
         }
 
-        public KotlBlackRod(Serial serial)
+        public FancyWoodenShelfEastAddon(Serial serial)
             : base(serial)
         {
         }
@@ -35,21 +32,17 @@ namespace Server.Items
         }
     }
 
-    public class GargishKotlBlackRod : GargishGnarledStaff
+    public class FancyWoodenShelfEastDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1156994; } } // gargish kotl black rod
+        public override BaseAddon Addon { get { return new FancyWoodenShelfEastAddon(); } }
+        public override int LabelNumber { get { return 1154159; } } // Fancy Wooden Shelf (East)
 
         [Constructable]
-        public GargishKotlBlackRod()
+        public FancyWoodenShelfEastDeed()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
         }
 
-        public GargishKotlBlackRod(Serial serial)
+        public FancyWoodenShelfEastDeed(Serial serial)
             : base(serial)
         {
         }

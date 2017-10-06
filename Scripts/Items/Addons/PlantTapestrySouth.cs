@@ -1,23 +1,21 @@
 using System;
-using Server.Mobiles;
+using Server;
 
 namespace Server.Items
 {
-    public class KotlBlackRod : BlackStaff
+    public class PlantTapestrySouthAddon : BaseAddon
     {
-        public override int LabelNumber { get { return 1156990; } } // kotl black rod
+        public override BaseAddonDeed Deed { get { return new PlantTapestrySouthDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
-        public KotlBlackRod()
+        public PlantTapestrySouthAddon()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
+            AddComponent(new AddonComponent(0x4C9C), 0, 0, 0);
+            AddComponent(new AddonComponent(0x4C9D), 1, 0, 0);
         }
 
-        public KotlBlackRod(Serial serial)
+        public PlantTapestrySouthAddon(Serial serial)
             : base(serial)
         {
         }
@@ -35,21 +33,17 @@ namespace Server.Items
         }
     }
 
-    public class GargishKotlBlackRod : GargishGnarledStaff
+    public class PlantTapestrySouthDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1156994; } } // gargish kotl black rod
+        public override BaseAddon Addon { get { return new PlantTapestrySouthAddon(); } }
+        public override int LabelNumber { get { return 1154146; } } // Plant Tapestry (South)
 
         [Constructable]
-        public GargishKotlBlackRod()
+        public PlantTapestrySouthDeed()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
         }
 
-        public GargishKotlBlackRod(Serial serial)
+        public PlantTapestrySouthDeed(Serial serial)
             : base(serial)
         {
         }

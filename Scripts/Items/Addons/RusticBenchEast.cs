@@ -1,23 +1,21 @@
 using System;
-using Server.Mobiles;
+using Server;
 
 namespace Server.Items
 {
-    public class KotlBlackRod : BlackStaff
+    public class RusticBenchEastAddon : BaseAddon
     {
-        public override int LabelNumber { get { return 1156990; } } // kotl black rod
+        public override BaseAddonDeed Deed { get { return new RusticBenchEastDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
-        public KotlBlackRod()
+        public RusticBenchEastAddon()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
+            AddComponent(new AddonComponent(0x0E53), 0, 0, 0);
+            AddComponent(new AddonComponent(0x0E52), 0, 1, 0);
         }
 
-        public KotlBlackRod(Serial serial)
+        public RusticBenchEastAddon(Serial serial)
             : base(serial)
         {
         }
@@ -35,21 +33,17 @@ namespace Server.Items
         }
     }
 
-    public class GargishKotlBlackRod : GargishGnarledStaff
+    public class RusticBenchEastDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1156994; } } // gargish kotl black rod
+        public override BaseAddon Addon { get { return new RusticBenchEastAddon(); } }
+        public override int LabelNumber { get { return 1150594; } } // rustic bench (east)
 
         [Constructable]
-        public GargishKotlBlackRod()
+        public RusticBenchEastDeed()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
         }
 
-        public GargishKotlBlackRod(Serial serial)
+        public RusticBenchEastDeed(Serial serial)
             : base(serial)
         {
         }

@@ -1,23 +1,21 @@
 using System;
-using Server.Mobiles;
+using Server;
 
 namespace Server.Items
 {
-    public class KotlBlackRod : BlackStaff
+    public class FancyLoveseatSouthAddon : BaseAddon
     {
-        public override int LabelNumber { get { return 1156990; } } // kotl black rod
+        public override BaseAddonDeed Deed { get { return new FancyLoveseatSouthDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
-        public KotlBlackRod()
+        public FancyLoveseatSouthAddon()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
+            AddComponent(new AddonComponent(0x4C87), 0, 0, 0);
+            AddComponent(new AddonComponent(0x4C86), 1, 0, 0);
         }
 
-        public KotlBlackRod(Serial serial)
+        public FancyLoveseatSouthAddon(Serial serial)
             : base(serial)
         {
         }
@@ -35,21 +33,17 @@ namespace Server.Items
         }
     }
 
-    public class GargishKotlBlackRod : GargishGnarledStaff
+    public class FancyLoveseatSouthDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1156994; } } // gargish kotl black rod
+        public override BaseAddon Addon { get { return new FancyLoveseatSouthAddon(); } }
+        public override int LabelNumber { get { return 1154137; } } // Fancy Loveseat (South)
 
         [Constructable]
-        public GargishKotlBlackRod()
+        public FancyLoveseatSouthDeed()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
         }
 
-        public GargishKotlBlackRod(Serial serial)
+        public FancyLoveseatSouthDeed(Serial serial)
             : base(serial)
         {
         }

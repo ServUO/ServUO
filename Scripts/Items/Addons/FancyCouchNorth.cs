@@ -1,23 +1,22 @@
 using System;
-using Server.Mobiles;
+using Server;
 
 namespace Server.Items
 {
-    public class KotlBlackRod : BlackStaff
+    public class FancyCouchNorthAddon : BaseAddon
     {
-        public override int LabelNumber { get { return 1156990; } } // kotl black rod
+        public override BaseAddonDeed Deed { get { return new FancyCouchNorthDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
-        public KotlBlackRod()
+        public FancyCouchNorthAddon()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
+            AddComponent(new AddonComponent(0x9C62), -1, 0, 0);
+            AddComponent(new AddonComponent(0x9C61), 0, 0, 0);
+            AddComponent(new AddonComponent(0x9C60), 1, 0, 0);
         }
 
-        public KotlBlackRod(Serial serial)
+        public FancyCouchNorthAddon(Serial serial)
             : base(serial)
         {
         }
@@ -35,21 +34,17 @@ namespace Server.Items
         }
     }
 
-    public class GargishKotlBlackRod : GargishGnarledStaff
+    public class FancyCouchNorthDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1156994; } } // gargish kotl black rod
+        public override BaseAddon Addon { get { return new FancyCouchNorthAddon(); } }
+        public override int LabelNumber { get { return 1156582; } } // Fancy Couch (North)
 
         [Constructable]
-        public GargishKotlBlackRod()
+        public FancyCouchNorthDeed()
         {
-            WeaponAttributes.MageWeapon = 30;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = 2;
-            Attributes.LowerManaCost = 5;
-            Attributes.LowerRegCost = 10;
         }
 
-        public GargishKotlBlackRod(Serial serial)
+        public FancyCouchNorthDeed(Serial serial)
             : base(serial)
         {
         }
