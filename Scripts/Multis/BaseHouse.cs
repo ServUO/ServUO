@@ -4626,6 +4626,41 @@ namespace Server.Multis
         }
     }
 
+    public class ReleaseEntry : ContextMenuEntry
+    {
+        public Mobile Mobile { get; set; }
+        public Item Item { get; set; }
+        public BaseHouse House { get; set; }
+
+        public ReleaseEntry(Mobile m, Item item, BaseHouse house)
+            : base(1153880, 8)
+        {
+            Item = item;
+            Mobile = m;
+            House = house;
+        }
+
+        public override void OnClick()
+        {
+            if (BaseHouse.FindHouseAt(Mobile) == House && House.IsOwner(Mobile))
+            {
+                if (Mobile.Backpack == null || !Mobile.Backpack.CheckHold(Mobile, Item, false))
+                {
+                    Mobile.SendLocalizedMessage(1153881); // Your pack cannot hold this
+                }
+                else
+                {
+                    House.Release(Mobile, Item);
+                    Mobile.Backpack.DropItem(Item);
+                }
+            }
+            else
+            {
+                Mobile.SendLocalizedMessage(1153882); // You do not own that.
+            }
+        }
+    }
+
     public class TempNoHousingRegion : BaseRegion
     {
         private readonly Mobile m_RegionOwner;

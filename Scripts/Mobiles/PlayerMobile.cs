@@ -2163,7 +2163,7 @@ namespace Server.Mobiles
 			{
                 if (Core.HS && Alive)
                 {
-                    list.Add(new Server.Engines.VendorSearhing.SearchVendors(this));
+                    list.Add(new Server.Engines.VendorSearching.SearchVendors(this));
                 }
 
                 if (Core.SA)

@@ -78,6 +78,19 @@ namespace Server.Items
             SetSecureLevelEntry.AddTo(from, this, list);
         }
 
+        public override void GetChildContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)
+        {
+            if (IsLockedDown)
+            {
+                BaseHouse house = BaseHouse.FindHouseAt(this);
+
+                if (house != null && house.IsOwner(from) && house.IsLockedDown(this) && house.IsLockedDown(item))
+                {
+                    list.Add(new ReleaseEntry(from, item, house));
+                }
+            }
+        }
+
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
             if (!CheckHold(from, dropped, sendFullMessage, !CheckStack(from, dropped)))
