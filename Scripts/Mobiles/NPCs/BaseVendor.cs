@@ -1333,11 +1333,9 @@ namespace Server.Mobiles
 
                     return true;
                 }
-                else
-                {
-                    this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
-                }
             }
+
+            this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
 
             return false;
         }

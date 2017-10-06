@@ -31,21 +31,7 @@ namespace Server.Items
         {
             if (!IsFreePosition(pos))
             {
-                BounceInfo bounce = item.GetBounce();
-
-                if (bounce != null && 
-                    bounce.m_Parent == this && 
-                    bounce.m_Mobile != null &&
-                    bounce.m_Mobile.NetState != null &&
-                    bounce.m_Mobile.NetState.IsEnhancedClient)
-                {
-                    item.Bounce(bounce.m_Mobile);
-                    return;
-                }
-                else
-                {
-                    pos = GetNewPosition(pos);
-                }
+                pos = GetNewPosition(pos);
             }
 
             if (item.GridLocation != pos)

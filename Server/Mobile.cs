@@ -4619,7 +4619,7 @@ namespace Server
 							Map fixMap = item.Map;
 							bool shouldFix = (item.Parent == null);
 
-							item.RecordBounce(this, oldStack);
+							item.RecordBounce(oldStack);
 							item.OnItemLifted(from, item);
 							item.Internalize();
 
