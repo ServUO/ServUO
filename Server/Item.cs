@@ -1563,7 +1563,6 @@ namespace Server
                     if (p.IsAccessibleTo(from) && (!(root is Mobile) || ((Mobile)root).CheckNonlocalDrop(from, this, p)))
                     {
                         Location = bounce.m_Location;
-                        m_GridLocation = bounce.m_GridLocation;
 
                         p.AddItem(this);
                     }

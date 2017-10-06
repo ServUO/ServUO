@@ -2133,6 +2133,29 @@ m_Stream.Write( (int) renderMode );
 		}
 	}
 
+    public sealed class BoltEffectNew : Packet
+    {
+        public BoltEffectNew(IEntity target)
+            : base(0x70, 28)
+        {
+            m_Stream.Write((byte)0x01); // type
+            m_Stream.Write(target.Serial);
+            m_Stream.Write(Serial.Zero);
+            m_Stream.Write((short)0); // itemID
+            m_Stream.Write((short)target.X);
+            m_Stream.Write((short)target.Y);
+            m_Stream.Write((sbyte)target.Z);
+            m_Stream.Write((short)target.X);
+            m_Stream.Write((short)target.Y);
+            m_Stream.Write((sbyte)target.Z);
+            m_Stream.Write((byte)0); // speed
+            m_Stream.Write((byte)0); // duration
+            m_Stream.Write((short)0); // unk
+            m_Stream.Write(false); // fixed direction
+            m_Stream.Write(false); // explode
+        }
+    }
+
 	public sealed class DisplaySpellbook : Packet
 	{
 		public DisplaySpellbook(Item book)
