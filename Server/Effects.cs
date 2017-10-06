@@ -81,6 +81,18 @@ namespace Server
 			SendBoltEffect(e, sound, 0);
 		}
 
+        public static void SendBoltEffect(IEntity e, bool sound, int hue, bool delay)
+        {
+            if (delay)
+            {
+                Timer.DelayCall(() => SendBoltEffect(e, sound, hue));
+            }
+            else
+            {
+                SendBoltEffect(e, sound, hue);
+            }
+        }
+
 		public static void SendBoltEffect(IEntity e, bool sound, int hue)
 		{
 			Map map = e.Map;
@@ -92,7 +104,7 @@ namespace Server
 
 			e.ProcessDelta();
 
-			Packet preEffect = null, boltEffect = null, playSound = null;
+            Packet preEffect = null, postEffect = null, boltEffect = null, playSound = null;
 
 			var eable = map.GetClientsInRange(e.Location);
 
@@ -100,7 +112,9 @@ namespace Server
 			{
 				if (state.Mobile.CanSee(e))
 				{
-					if (SendParticlesTo(state))
+                    bool sendParticles = SendParticlesTo(state);
+
+                    if (sendParticles)
 					{
 						if (preEffect == null)
 						{
@@ -112,10 +126,27 @@ namespace Server
 
 					if (boltEffect == null)
 					{
-						boltEffect = Packet.Acquire(new BoltEffect(e, hue));
+                        if (Core.SA && hue == 0)
+                        {
+                            boltEffect = Packet.Acquire(new BoltEffectNew(e));
+                        }
+                        else
+                        {
+                            boltEffect = Packet.Acquire(new BoltEffect(e, hue));
+                        }
 					}
 
 					state.Send(boltEffect);
+
+                    if (sendParticles)
+                    {
+                        if (postEffect == null)
+                        {
+                            postEffect = Packet.Acquire(new GraphicalEffect(EffectType.FixedFrom, e.Serial, Serial.Zero, 0, e.Location, e.Location, 0, 0, false, 0));
+                        }
+
+                        state.Send(postEffect);
+                    }
 
 					if (sound)
 					{

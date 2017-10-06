@@ -25,7 +25,15 @@ namespace Server
 		TOL
 	}
 
-	[Flags]
+    public enum ThemePack
+    {
+        None = 0,
+        Kings,
+        Rustic,
+        Gothic
+    }
+
+    [Flags]
 	public enum ClientFlags
 	{
 		None = 0x00000000,

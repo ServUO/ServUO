@@ -1009,7 +1009,7 @@ namespace Server.Mobiles
             if (oldRace == Race.Gargoyle && Flying)
             {
                 Flying = false;
-                Send(SpeedControl.Disable);
+                SendSpeedControl(SpeedControlType.Disable);
                 BuffInfo.RemoveBuff(this, BuffIcon.Fly);
             }
             else if (oldRace != Race.Gargoyle && Race == Race.Gargoyle && Mounted)
@@ -1076,6 +1076,22 @@ namespace Server.Mobiles
 			ns.Send(GlobalLightLevel.Instantiate(global));
 			ns.Send(new PersonalLightLevel(this, personal));
 		}
+
+        public override bool SendSpeedControl(SpeedControlType type)
+        {
+            AnimalFormContext context = AnimalForm.GetContext(this);
+
+            if (context != null && context.SpeedBoost)
+            {
+                switch (type)
+                {
+                    case SpeedControlType.WalkSpeed: return base.SendSpeedControl(SpeedControlType.WalkSpeedFast);
+                    case SpeedControlType.Disable: return base.SendSpeedControl(SpeedControlType.MountSpeed);
+                }
+            }
+
+            return base.SendSpeedControl(type);
+        }
 
 		public override int GetMinResistance(ResistanceType type)
 		{
@@ -2147,7 +2163,7 @@ namespace Server.Mobiles
 			{
                 if (Core.HS && Alive)
                 {
-                    list.Add(new Server.Engines.VendorSearhing.SearchVendors(this));
+                    list.Add(new Server.Engines.VendorSearching.SearchVendors(this));
                 }
 
                 if (Core.SA)

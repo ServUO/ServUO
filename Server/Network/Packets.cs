@@ -750,19 +750,30 @@ namespace Server.Network
 		}
 	}
 
+    public enum SpeedControlType : byte
+    {
+        Disable,
+        MountSpeed,
+        WalkSpeed,
+        WalkSpeedFast,
+        NoMove
+    }
+
 	public sealed class SpeedControl : Packet
 	{
-		public static readonly Packet WalkSpeed = SetStatic(new SpeedControl(2));
-		public static readonly Packet MountSpeed = SetStatic(new SpeedControl(1));
-		public static readonly Packet Disable = SetStatic(new SpeedControl(0));
+        public static readonly Packet NoMove = SetStatic(new SpeedControl(SpeedControlType.NoMove));
+        public static readonly Packet WalkSpeedFast = SetStatic(new SpeedControl(SpeedControlType.WalkSpeedFast));
+        public static readonly Packet WalkSpeed = SetStatic(new SpeedControl(SpeedControlType.WalkSpeed));
+        public static readonly Packet MountSpeed = SetStatic(new SpeedControl(SpeedControlType.MountSpeed));
+        public static readonly Packet Disable = SetStatic(new SpeedControl(SpeedControlType.Disable));
 
-		public SpeedControl(int speedControl)
+		public SpeedControl(SpeedControlType type)
 			: base(0xBF)
 		{
 			EnsureCapacity(3);
 
 			m_Stream.Write((short)0x26);
-			m_Stream.Write((byte)speedControl);
+            m_Stream.Write((byte)type);
 		}
 	}
 
@@ -2121,6 +2132,29 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write(0); // render mode
 		}
 	}
+
+    public sealed class BoltEffectNew : Packet
+    {
+        public BoltEffectNew(IEntity target)
+            : base(0x70, 28)
+        {
+            m_Stream.Write((byte)0x01); // type
+            m_Stream.Write(target.Serial);
+            m_Stream.Write(Serial.Zero);
+            m_Stream.Write((short)0); // itemID
+            m_Stream.Write((short)target.X);
+            m_Stream.Write((short)target.Y);
+            m_Stream.Write((sbyte)target.Z);
+            m_Stream.Write((short)target.X);
+            m_Stream.Write((short)target.Y);
+            m_Stream.Write((sbyte)target.Z);
+            m_Stream.Write((byte)0); // speed
+            m_Stream.Write((byte)0); // duration
+            m_Stream.Write((short)0); // unk
+            m_Stream.Write(false); // fixed direction
+            m_Stream.Write(false); // explode
+        }
+    }
 
 	public sealed class DisplaySpellbook : Packet
 	{

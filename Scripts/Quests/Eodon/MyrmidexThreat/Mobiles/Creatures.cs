@@ -234,9 +234,9 @@ namespace Server.Mobiles
                     });
  
                 AOS.Damage(target, this, Utility.RandomMinMax(80, 100), 100, 0, 0, 0, 0);
-                target.Send(SpeedControl.WalkSpeed);
+                target.SendSpeedControl(SpeedControlType.WalkSpeed);
 
-                Timer.DelayCall(TimeSpan.FromSeconds(5), () => target.Send(SpeedControl.Disable));
+                Timer.DelayCall(TimeSpan.FromSeconds(5), () => target.SendSpeedControl(SpeedControlType.Disable));
             }
 
             ColUtility.Free(random);

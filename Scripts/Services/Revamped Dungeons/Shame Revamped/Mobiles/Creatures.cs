@@ -89,7 +89,7 @@ namespace Server.Mobiles
                     EndEffects(from);
                 });
 
-                from.Send(SpeedControl.WalkSpeed);
+                from.SendSpeedControl(SpeedControlType.WalkSpeed);
                 from.SendLocalizedMessage(1150886); // Splashes from the creature encrust your weapon and equipment, slowing your movement.
 
                 from.Delta(MobileDelta.WeaponDamage);
@@ -103,7 +103,7 @@ namespace Server.Mobiles
                 Table.Remove(from);
                 from.SendLocalizedMessage(1150887); // You are no longer slowed and encrusted.
 
-                from.Send(SpeedControl.Disable);
+                from.SendSpeedControl(SpeedControlType.Disable);
 
                 from.Delta(MobileDelta.WeaponDamage);
             }

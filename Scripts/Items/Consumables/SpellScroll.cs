@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Spells;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -95,6 +96,14 @@ namespace Server.Items
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 return;
             }
+
+            #region SA
+            else if (from.Flying && from is PlayerMobile && BaseMount.OnFlightPath(from))
+            {
+                from.SendLocalizedMessage(1113749); // You may not use that while flying over such precarious terrain.
+                return;
+            }
+            #endregion
 
             Spell spell = SpellRegistry.NewSpell(this.m_SpellID, from, this);
 

@@ -1,5 +1,6 @@
 using System;
 using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Spells.Third
 {
@@ -11,6 +12,38 @@ namespace Server.Spells.Third
             9061,
             Reagent.Garlic,
             Reagent.MandrakeRoot);
+
+        private static Dictionary<Mobile, InternalTimer> _Table;
+
+        public static bool IsBlessed(Mobile m)
+        {
+            return _Table != null && _Table.ContainsKey(m);
+        }
+
+        public static void AddBless(Mobile m, TimeSpan duration)
+        {
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, InternalTimer>();
+
+            if (_Table.ContainsKey(m))
+            {
+                _Table[m].Stop();
+            }
+
+            _Table[m] = new InternalTimer(m, duration);
+        }
+
+        public static void RemoveBless(Mobile m, bool early = false)
+        {
+            if (_Table != null && _Table.ContainsKey(m))
+            {
+                _Table[m].Stop();
+                m.Delta(MobileDelta.Stat);
+
+                _Table.Remove(m);
+            }
+        }
+
         public BlessSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -23,6 +56,7 @@ namespace Server.Spells.Third
                 return SpellCircle.Third;
             }
         }
+
         public override bool CheckCast()
         {
             if (Engines.ConPVP.DuelContext.CheckSuddenDeath(this.Caster))
@@ -61,7 +95,7 @@ namespace Server.Spells.Third
 				m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
                 m.PlaySound(0x1EA);
 
-                Timer.DelayCall(length, () => m.Delta(MobileDelta.Stat));
+                AddBless(Caster, length + TimeSpan.FromMilliseconds(50));
             }
 
             this.FinishSequence();
@@ -87,6 +121,23 @@ namespace Server.Spells.Third
             protected override void OnTargetFinish(Mobile from)
             {
                 this.m_Owner.FinishSequence();
+            }
+        }
+
+        private class InternalTimer : Timer
+        {
+            public Mobile Mobile { get; set; }
+
+            public InternalTimer(Mobile m, TimeSpan duration)
+                : base(duration)
+            {
+                Mobile = m;
+                Start();
+            }
+
+            protected override void OnTick()
+            {
+                BlessSpell.RemoveBless(Mobile);
             }
         }
     }

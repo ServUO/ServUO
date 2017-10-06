@@ -31,7 +31,7 @@ namespace Server.Spells.Ninjitsu
 
 			if (context != null && context.SpeedBoost)
 			{
-				e.Mobile.Send(SpeedControl.MountSpeed);
+                e.Mobile.SendSpeedControl(SpeedControlType.MountSpeed);
 			}
 		}
 
@@ -238,7 +238,7 @@ namespace Server.Spells.Ninjitsu
 
 			if (entry.SpeedBoost)
 			{
-				m.Send(SpeedControl.MountSpeed);
+                m.SendSpeedControl(SpeedControlType.MountSpeed);
 			}
 
 			SkillMod mod = null;
@@ -299,7 +299,10 @@ namespace Server.Spells.Ninjitsu
 
 			if (context.SpeedBoost)
 			{
-				m.Send(SpeedControl.Disable);
+                if (m.Region is Server.Regions.TwistedWealdDesert)
+                    m.SendSpeedControl(SpeedControlType.WalkSpeed);
+                else
+                    m.SendSpeedControl(SpeedControlType.Disable);
 			}
 
 			SkillMod mod = context.Mod;

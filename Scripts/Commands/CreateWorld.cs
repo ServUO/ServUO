@@ -26,12 +26,15 @@ namespace Server.Commands
 			public string CreateCommand;
 			public string DeleteCommand;
 			public int checkId;
-			public CommandEntry(string n, string c, string d, int i)
+            public int Delay;
+
+			public CommandEntry(string n, string c, string d, int i, int delay = 0)
 			{
 				Name = n;
 				CreateCommand = c;
 				DeleteCommand = d;
 				checkId = i;
+                Delay = delay;
 			}
 		}
 
@@ -63,6 +66,7 @@ namespace Server.Commands
             new CommandEntry("Time of Legends",      "DecorateTOL",         null,                                  124),
             new CommandEntry("New Wrong",      "GenWrongRewamp",            null,                                  125),
             new CommandEntry("Kotl City",      "GenerateTreasuresOfKotlCity", null,  126),
+            new CommandEntry("Fillable Containers",      "CheckFillables", null,  127, 5),
 		});
 
         public CreateWorld()
@@ -148,6 +152,7 @@ namespace Server.Commands
 		{
 			World.Broadcast(0x35, false, "The world is generating. This may take some time...");
 			string prefix = Server.Commands.CommandSystem.Prefix;
+
 			foreach (int sel in selections)
 			{
 				foreach (CreateWorld.CommandEntry entry in CreateWorld.Commands)
@@ -158,10 +163,21 @@ namespace Server.Commands
 						{
 							case CreateWorld.GumpType.Create:
 								from.Say("Generating " + entry.Name);
-								CommandSystem.Handle(from, prefix + entry.CreateCommand);
 
-                                if (CreateWorldData.CreateTable.ContainsKey(entry.checkId))
-                                    CreateWorldData.CreateTable[sel] = true;
+                                if (CanGenerate(entry))
+                                {
+                                    if (entry.Delay > 0)
+                                    {
+                                        DoDelayedCommand(from, TimeSpan.FromMinutes(entry.Delay), prefix + entry.CreateCommand);
+                                    }
+                                    else
+                                    {
+                                        CommandSystem.Handle(from, prefix + entry.CreateCommand);
+                                    }
+
+                                    if (CreateWorldData.CreateTable.ContainsKey(entry.checkId))
+                                        CreateWorldData.CreateTable[sel] = true;
+                                }
 
 								break;
 							case CreateWorld.GumpType.Delete:
@@ -191,6 +207,36 @@ namespace Server.Commands
 			}
 			World.Broadcast(0x35, false, "World generation complete.");
 		}
+
+        private static bool _CheckingFillables = false;
+
+        public static bool CanGenerate(CommandEntry entry)
+        {
+            if (entry.checkId == 127)
+            {
+                if (CreateWorldData.HasGenerated(116) && CreateWorldData.HasGenerated(113))
+                {
+                    return true;
+                }
+
+                Console.WriteLine("Cannot generate {0}. You need to generate Decorations and Spawners first.", entry.Name);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public static void DoDelayedCommand(Mobile from, TimeSpan delay, string command)
+        {
+            Console.WriteLine("Setting delayed create command: {0} [{1}] minutes", command, delay.TotalMinutes);
+
+            Timer.DelayCall(delay, () =>
+                {
+                    CommandSystem.Handle(from, command);
+                });
+        }
+
 	}
 }
 

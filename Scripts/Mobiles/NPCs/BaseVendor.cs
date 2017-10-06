@@ -19,6 +19,7 @@ using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
 using Server.Regions;
+using Server.Targeting;
 #endregion
 
 namespace Server.Mobiles
@@ -1166,7 +1167,11 @@ namespace Server.Mobiles
 
 		public override bool OnDragDrop(Mobile from, Item dropped)
 		{
-			/* TODO: Thou art giving me? and fame/karma for gold gifts */
+            if (ConvertsMageArmor && dropped is BaseArmor && CheckConvertArmor(from, (BaseArmor)dropped))
+            {
+                return false;
+            }
+
 			if (dropped is SmallBOD || dropped is LargeBOD)
 			{
 				PlayerMobile pm = from as PlayerMobile;
@@ -1272,9 +1277,68 @@ namespace Server.Mobiles
 				dropped.Delete();
 				return true;
 			}
+            else if (AcceptsGift(from, dropped))
+            {
+                dropped.Delete();
+            }
 
 			return base.OnDragDrop(from, dropped);
 		}
+
+        public bool AcceptsGift(Mobile from, Item dropped)
+        {
+            string name;
+
+            if (dropped.Name != null)
+            {
+                if (dropped.Amount > 0)
+                {
+                    name = String.Format("{0} {1}", dropped.Amount, dropped.Name);
+                }
+                else
+                {
+                    name = dropped.Name;
+                }
+            }
+            else
+            {
+                name = Server.Engines.VendorSearching.VendorSearch.GetItemName(dropped);
+            }
+
+            if (!String.IsNullOrEmpty(name))
+            {
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, true, String.Format("Thou art giving me {0}.", name), from.NetState);
+            }
+            else
+            {
+                this.SayTo(from, 1071971, String.Format("#{0}", dropped.LabelNumber.ToString()), 0x3B2); // Thou art giving me ~1_VAL~?
+            }
+
+            if (dropped is Gold)
+            {
+                this.SayTo(from, 501548, 0x3B2); // I thank thee.
+                Titles.AwardFame(from, dropped.Amount / 100, true);
+
+                return true;
+            }
+
+            var info = GetSellInfo();
+
+            foreach (IShopSellInfo ssi in info)
+            {
+                if (ssi.IsSellable(dropped))
+                {
+                    this.SayTo(from, 501548, 0x3B2); // I thank thee.
+                    Titles.AwardFame(from, ssi.GetSellPriceFor(dropped, this) * dropped.Amount, true);
+
+                    return true;
+                }
+            }
+
+            this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
+
+            return false;
+        }
 
         #region BOD Bribing
         [CommandProperty(AccessLevel.GameMaster)]
@@ -2300,6 +2364,11 @@ namespace Server.Mobiles
 
 		public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
 		{
+            if (ConvertsMageArmor)
+            {
+                list.Add(new UpgradeMageArmor(from, this));
+            }
+
 			if (from.Alive && IsActiveVendor)
 			{
 				if (SupportsBulkOrders(from))
@@ -2335,8 +2404,165 @@ namespace Server.Mobiles
 		public virtual IBuyItemInfo[] GetBuyInfo()
 		{
 			return (IBuyItemInfo[])m_ArmorBuyInfo.ToArray(typeof(IBuyItemInfo));
-		}
-	}
+        }
+
+        #region Mage Armor Conversion
+        public virtual bool ConvertsMageArmor { get { return false; } }
+
+        private List<PendingConvert> _PendingConvertEntries = new List<PendingConvert>();
+
+        private bool CheckConvertArmor(Mobile from, BaseArmor armor)
+        {
+            var convert = GetConvert(from, armor);
+
+            if (convert == null || !(from is PlayerMobile))
+                return false;
+
+            object state = convert.Armor;
+
+            RemoveConvertEntry(convert);
+            from.CloseGump(typeof(Server.Gumps.ConfirmCallbackGump));
+
+            from.SendGump(new Server.Gumps.ConfirmCallbackGump((PlayerMobile)from, 1049004, 1154115, state, null, 
+                (m, obj) =>
+                {
+                    BaseArmor ar = obj as BaseArmor;
+
+                    if (!Deleted && ar != null && armor.IsChildOf(m.Backpack) && CanConvertArmor(m, ar))
+                    {
+                        if (!Banker.Withdraw(m, 250000, true))
+                        {
+                            m.SendLocalizedMessage(1019022); // You do not have enough gold.
+                        }
+                        else if (!InRange(m.Location, 3))
+                        {
+                            m.SendLocalizedMessage(1149654); // You are too far away.
+                        }
+                        else
+                        {
+                            ConvertMageArmor(m, ar);
+                        }
+                    }
+                },
+                (m, obj) =>
+                {
+                    var con = GetConvert(m, armor);
+
+                    if (con != null)
+                    {
+                        RemoveConvertEntry(con);
+                    }
+                }));
+
+            return true;
+        }
+
+        protected virtual bool CanConvertArmor(Mobile from, BaseArmor armor)
+        {
+            if (armor == null || armor is BaseShield || armor.ArtifactRarity != 0 || armor.IsArtifact)
+            {
+                from.SendLocalizedMessage(1113044); // You can't convert that.
+                return false;
+            }
+
+            if (armor.ArmorAttributes.MageArmor == 0 &&
+                Server.SkillHandlers.Imbuing.GetTotalMods(armor) > 4)
+            {
+                from.SendLocalizedMessage(1154119); // This action would exceed a stat cap
+                return false;
+            }
+
+            return true;
+        }
+
+        public void TryConvertArmor(Mobile from, BaseArmor armor)
+        {
+            if (CanConvertArmor(from, armor))
+            {
+                from.SendLocalizedMessage(1154117); // Ah yes, I will convert this piece of armor but it's gonna cost you 250,000 gold coin. Payment is due immediately. Just hand me the armor.
+
+                var convert = GetConvert(from, armor);
+
+                if (convert != null)
+                {
+                    convert.ResetTimer();
+                }
+                else
+                {
+                    _PendingConvertEntries.Add(new PendingConvert(from, armor, this));
+                }
+            }
+        }
+
+        public virtual void ConvertMageArmor(Mobile from, BaseArmor armor)
+        {
+            if (armor.ArmorAttributes.MageArmor > 0)
+                armor.ArmorAttributes.MageArmor = 0;
+            else
+                armor.ArmorAttributes.MageArmor = 1;
+
+            from.SendLocalizedMessage(1154118); // Your armor has been converted.
+        }
+
+        private void RemoveConvertEntry(PendingConvert convert)
+        {
+            _PendingConvertEntries.Remove(convert);
+
+            if (convert.Timer != null)
+            {
+                convert.Timer.Stop();
+            }
+        }
+
+        private PendingConvert GetConvert(Mobile from, BaseArmor armor)
+        {
+            return _PendingConvertEntries.FirstOrDefault(c => c.From == from && c.Armor == armor);
+        }
+
+        protected class PendingConvert
+        {
+            public Mobile From { get; set; }
+            public BaseArmor Armor { get; set; }
+            public BaseVendor Vendor { get; set; }
+
+            public Timer Timer { get; set; }
+            public DateTime Expires { get; set; }
+
+            public bool Expired { get { return DateTime.UtcNow > Expires; } }
+
+            public PendingConvert(Mobile from, BaseArmor armor, BaseVendor vendor)
+            {
+                From = from;
+                Armor = armor;
+                Vendor = vendor;
+
+                ResetTimer();
+            }
+
+            public void ResetTimer()
+            {
+                if (Timer != null)
+                {
+                    Timer.Stop();
+                    Timer = null;
+                }
+
+                Expires = DateTime.UtcNow + TimeSpan.FromSeconds(120);
+
+                Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), OnTick);
+                Timer.Start();
+            }
+
+            public void OnTick()
+            {
+                if (Expired)
+                {
+                    Vendor.RemoveConvertEntry(this);
+                }
+            }
+        }
+        #endregion
+    }
 }
 
 namespace Server.ContextMenus
@@ -2374,6 +2600,47 @@ namespace Server.ContextMenus
 			m_Vendor.VendorSell(Owner.From);
 		}
 	}
+
+    public class UpgradeMageArmor : ContextMenuEntry
+    {
+        public Mobile From { get; set; }
+        public BaseVendor Vendor { get; set; }
+
+        public UpgradeMageArmor(Mobile from, BaseVendor vendor)
+            : base(1154114) // Convert Mage Armor
+        {
+            From = from;
+            Vendor = vendor;
+        }
+
+        public override void OnClick()
+        {
+            From.Target = new InternalTarget(From, Vendor);
+            From.SendLocalizedMessage(1154116); // Target a piece of armor to show to the guild master.
+        }
+
+        private class InternalTarget : Target
+        {
+            public Mobile From { get; set; }
+            public BaseVendor Vendor { get; set; }
+
+            public InternalTarget(Mobile from, BaseVendor vendor)
+                : base(1, false, TargetFlags.None)
+            {
+                From = from;
+                Vendor = vendor;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (targeted is BaseArmor)
+                {
+                    BaseArmor armor = (BaseArmor)targeted;
+                    Vendor.TryConvertArmor(from, armor);
+                }
+            }
+        }
+    }
 }
 
 namespace Server

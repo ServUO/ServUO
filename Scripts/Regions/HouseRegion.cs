@@ -192,26 +192,10 @@ namespace Server.Regions
         {
             if (m_House.IsOwner(from) && item.Parent == null && m_House.IsLockedDown(item))
             {
-                list.Add(new SimpleContextMenuEntry(from, 1153880, m => // Retrieve
-                    {
-                        if (BaseHouse.FindHouseAt(m) == m_House && m_House.IsOwner(m))
-                        {
-                            if (m.Backpack == null || !m.Backpack.CheckHold(m, item, false))
-                            {
-                                m.SendLocalizedMessage(1153881); // Your pack cannot hold this
-                            }
-                            else
-                            {
-                                m_House.Release(m, item);
-                                m.Backpack.DropItem(item);
-                            }
-                        }
-                        else
-                        {
-                            m.SendLocalizedMessage(1153882); // You do not own that.
-                        }
-                    }, 8));
+                list.Add(new ReleaseEntry(from, item, m_House));
             }
+
+            base.GetContextMenuEntries(from, list, item);
         }
 
         public override bool OnDecay(Item item)

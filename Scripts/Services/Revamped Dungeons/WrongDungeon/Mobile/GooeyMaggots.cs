@@ -120,14 +120,14 @@ namespace Server.Mobiles
         public override bool OnMoveOver(Mobile from)
         {
             if (!from.IsStaff() && from.Alive && from.Player)
-            {                
-                from.Send(SpeedControl.WalkSpeed);
+            {
+                from.SendSpeedControl(SpeedControlType.WalkSpeed);
                 from.SendLocalizedMessage(1152144); // You suddenly find yourself unable to run.
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(
                     delegate
                     {
-                        from.Send(SpeedControl.Disable);
+                        from.SendSpeedControl(SpeedControlType.Disable);
                         from.SendLocalizedMessage(1152145); // You are are free to move again.
                     }));
 

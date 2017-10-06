@@ -7,7 +7,6 @@ namespace Server.Mobiles
     [CorpseName("a juggernaut corpse")]
     public class Juggernaut : BaseCreature
     {
-        private bool m_Stunning;
         [Constructable]
         public Juggernaut()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.3, 0.6)

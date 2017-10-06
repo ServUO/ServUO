@@ -9,7 +9,7 @@ using Server.Network;
 using Server.Gumps;
 using Server.SkillHandlers;
 
-namespace Server.Engines.VendorSearhing
+namespace Server.Engines.VendorSearching
 {
     public class VendorSearchGump : Gump
     {

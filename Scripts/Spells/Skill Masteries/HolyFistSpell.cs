@@ -84,13 +84,13 @@ namespace Server.Spells.SkillMasteries
                     if (!CheckResisted(m) && m.NetState != null)
                     {
                         if (!TransformationSpellHelper.UnderTransformation(m, typeof(AnimalForm)))
-                            m.Send(SpeedControl.WalkSpeed);
+                            m.SendSpeedControl(SpeedControlType.WalkSpeed);
 
                         Server.Timer.DelayCall(TimeSpan.FromSeconds(skill / 60), () =>
                             {
                                 if (!TransformationSpellHelper.UnderTransformation(m, typeof(AnimalForm)) &&
                                     !TransformationSpellHelper.UnderTransformation(m, typeof(Server.Spells.Spellweaving.ReaperFormSpell)))
-                                    m.Send(SpeedControl.Disable);
+                                    m.SendSpeedControl(SpeedControlType.Disable);
                             });
                     }
                 }
