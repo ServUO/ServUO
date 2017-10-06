@@ -77,6 +77,7 @@ namespace Server.Engines.Craft
 		public bool ForceNonExceptional { get { return m_ForceNonExceptional; } set { m_ForceNonExceptional = value; } }
 
 		public Expansion RequiredExpansion { get; set; }
+        public ThemePack RequiredThemePack { get; set; }
 
         #region SA
         public bool RequiresBasketWeaving { get; set; }
@@ -1459,7 +1460,7 @@ namespace Server.Engines.Craft
 			}
 		}
 
-		public void CompleteCraft(
+        public void CompleteCraft(
 			int quality,
 			bool makersMark,
 			Mobile from,

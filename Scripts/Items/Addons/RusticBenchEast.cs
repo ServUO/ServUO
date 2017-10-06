@@ -6,6 +6,7 @@ namespace Server.Items
     public class RusticBenchEastAddon : BaseAddon
     {
         public override BaseAddonDeed Deed { get { return new RusticBenchEastDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
         public RusticBenchEastAddon()

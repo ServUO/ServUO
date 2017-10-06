@@ -396,6 +396,12 @@ namespace Server.Engines.Craft
             craftItem.RequiredExpansion = expansion;
         }
 
+        public void SetNeededThemePack(int index, ThemePack pack)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.RequiredThemePack = pack;
+        }
+
         #region SA
         public void SetRequiresBasketWeaving(int index)
         {

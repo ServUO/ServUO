@@ -6,6 +6,7 @@ namespace Server.Items
     public class MetalTableEastAddon : BaseAddon
     {
         public override BaseAddonDeed Deed { get { return new MetalTableEastDeed(); } }
+        public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]
         public MetalTableEastAddon()
