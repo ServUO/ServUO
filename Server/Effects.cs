@@ -161,6 +161,7 @@ namespace Server
 			}
 
 			Packet.Release(preEffect);
+            Packet.Release(postEffect);
 			Packet.Release(boltEffect);
 			Packet.Release(playSound);
 

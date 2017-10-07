@@ -1696,11 +1696,11 @@ namespace Server.Multis
             i.Movable = !locked;
             i.IsLockedDown = locked;
 
-            Timer.DelayCall(() =>
-            i.PrivateOverheadMessage(MessageType.Regular, 0, locked ? 501721 : 501657, m.NetState)); // locked down! : [no longer locked down]
-
             if (m == null)
                 m = Owner;
+
+            Timer.DelayCall(() =>
+                i.PrivateOverheadMessage(MessageType.Regular, 0, locked ? 501721 : 501657, m.NetState)); // locked down! : [no longer locked down]
 
             if (locked)
             {
@@ -3768,7 +3768,9 @@ namespace Server.Multis
                             {
                                 if (retainDeedHue)
                                     deed.Hue = hue;
+
                                 deed.MoveToWorld(item.Location, item.Map);
+                                deed.SendLocalizedMessage(501657, ""); // [no longer locked down]
                             }
                         }
 
