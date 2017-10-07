@@ -164,7 +164,11 @@ namespace Server
 				m_From = m;
 				m_Mobile = m;
 				m_Poison = p;
-			}
+
+                int damage = 1 + (int)(m.Hits * p.m_Scalar);
+
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Poison, 1017383, 1075633, TimeSpan.FromSeconds((int)((p.m_Count + 1) * p.m_Interval.TotalSeconds)), m, $"{damage}\t{(int)p.m_Interval.TotalSeconds}"));
+            }
 
             protected override void OnTick()
             {
