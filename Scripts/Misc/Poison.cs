@@ -167,7 +167,7 @@ namespace Server
 
                 int damage = 1 + (int)(m.Hits * p.m_Scalar);
 
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Poison, 1017383, 1075633, TimeSpan.FromSeconds((int)((p.m_Count + 1) * p.m_Interval.TotalSeconds)), m, $"{damage}\t{(int)p.m_Interval.TotalSeconds}"));
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Poison, 1017383, 1075633, TimeSpan.FromSeconds((int)((p.m_Count + 1) * p.m_Interval.TotalSeconds)), m, String.Format("{0}\t{1}", damage, (int)p.m_Interval.TotalSeconds)));
             }
 
             protected override void OnTick()
