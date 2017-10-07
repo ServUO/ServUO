@@ -83,9 +83,7 @@ namespace Server.Items
                 return;
             }
 
-            if (HarvestSystem is Mining)
-                from.SendLocalizedMessage(503033); // Where do you wish to dig?
-            else
+            if (!(HarvestSystem is Mining))
                 from.SendLocalizedMessage(1010018); // What do you want to use this item on?
 
             HarvestSystem.BeginHarvesting(from, this);
