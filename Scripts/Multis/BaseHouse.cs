@@ -1696,9 +1696,6 @@ namespace Server.Multis
             i.Movable = !locked;
             i.IsLockedDown = locked;
 
-            Timer.DelayCall(() =>
-            i.PrivateOverheadMessage(MessageType.Regular, 0, locked ? 501721 : 501657, m.NetState)); // locked down! : [no longer locked down]
-
             if (m == null)
                 m = Owner;
 
