@@ -95,7 +95,7 @@ namespace Server.Engines.HuntsmasterChallenge
 				
 				if(HuntingPermit.HasPermit(from))
 					from.SendLocalizedMessage(1155702); // You already have a hunting permit.
-				else if(Banker.Withdraw(from, 5000))
+				else if(Banker.Withdraw(from, 5000, true))
 				{
 					HuntingPermit permit = new HuntingPermit(from);
 					
