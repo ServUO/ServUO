@@ -111,7 +111,7 @@ namespace Server.Items
 
             foreach (NetState ns in eable)
             {
-                ns.Send(new MessageLocalized(item.Serial, item.ItemID, MessageType.Regular, 0x3B2, 3, number, "", args));
+                ns.Send(new MessageLocalized(item.Serial, item.ItemID, MessageType.Regular, 0x3B2, 3, number, item.Name, args));
             }
             
             eable.Free();

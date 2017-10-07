@@ -2388,6 +2388,8 @@ namespace Server.Items
 			}
 			#endregion
 
+            percentageBonus += ForceOfNature.GetBonus(attacker, defender);
+
             if (m_ExtendedWeaponAttributes.AssassinHoned > 0 && attacker.Direction == defender.Direction)
             {
                 if (!ranged || 0.5 > Utility.RandomDouble())
