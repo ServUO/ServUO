@@ -1,146 +1,132 @@
-//----------------------------------------------------------------------------------//
-// Created by Vano. Email: vano2006uo@mail.ru      //
-//---------------------------------------------------------------------------------//
 using System;
-using System.Collections;
+using Server;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
     public class ForceOfNature : WeaponAbility
     {
-        private static readonly Hashtable m_Table = new Hashtable();
         public ForceOfNature()
         {
         }
 
-        public override int BaseMana
+        public override int BaseMana { get { return 35; } }
+
+        public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            get
-            {
-                return 35;
-            }
+            if (!Validate(attacker) || !CheckMana(attacker, true))
+                return;
+
+            ClearCurrentAbility(attacker);
+
+            attacker.SendLocalizedMessage(1074374); // You attack your enemy with the force of nature!
+            defender.SendLocalizedMessage(1074375); // You are assaulted with great force!
+
+            defender.PlaySound(0x22F);
+            defender.FixedParticles(0x36CB, 1, 9, 9911, 67, 5, EffectLayer.Head);
+            defender.FixedParticles(0x374A, 1, 17, 9502, 1108, 4, (EffectLayer)255);
+
+            if (m_Table.ContainsKey(attacker))
+                Remove(attacker);
+
+            ForceOfNatureTimer t = new ForceOfNatureTimer(attacker, defender);
+            t.Start();
+
+            m_Table[attacker] = t;
         }
-        public static bool RemoveCurse(Mobile m)
+
+        private static Dictionary<Mobile, ForceOfNatureTimer> m_Table = new Dictionary<Mobile, ForceOfNatureTimer>();
+
+        public static bool Remove(Mobile m)
         {
-            Timer t = (Timer)m_Table[m];
+            ForceOfNatureTimer t;
+
+            m_Table.TryGetValue(m, out t);
 
             if (t == null)
                 return false;
 
             t.Stop();
-            m.SendLocalizedMessage(1061687); // You can breath normally again.
-
             m_Table.Remove(m);
             return true;
         }
 
-        public override void OnHit(Mobile attacker, Mobile defender, int damage)
+        public static void OnHit(Mobile from, Mobile target)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
-                return;
-
-            ClearCurrentAbility(attacker);
-
-            attacker.SendMessage("You attack with Nature's Fury"); 
-            defender.SendMessage("You are attacked by Nature's Fury");
-
-            defender.PlaySound(0x22F);
-            defender.FixedParticles(0x36CB, 1, 9, 9911, 67, 5, EffectLayer.Head);
-            defender.FixedParticles(0x374A, 1, 17, 9502, 1108, 4, (EffectLayer)255);
-            if (!m_Table.Contains(defender))
+            if (m_Table.ContainsKey(from))
             {
-                Timer t = new InternalTimer(defender, attacker);
-                t.Start();
+                ForceOfNatureTimer t = m_Table[from];
 
-                m_Table[defender] = t;
+                t.Hits++;
+                t.LastHit = DateTime.Now;
+
+                if (t.Hits % 12 == 0)
+                {
+                    int duration = target.Skills[SkillName.MagicResist].Value >= 90.0 ? 1 : 2;
+                    target.Paralyze(TimeSpan.FromSeconds(duration));
+                    t.Hits = 0;
+
+                    from.SendLocalizedMessage(1004013); // You successfully stun your opponent!
+                    target.SendLocalizedMessage(1004014); // You have been stunned!
+                }
             }
         }
 
-        private class InternalTimer : Timer
+        public static int GetBonus(Mobile from, Mobile target)
         {
-            private readonly Mobile m_Target;
-            private readonly Mobile m_From;
-            private readonly double m_MinBaseDamage;
-            private readonly double m_MaxBaseDamage;
-            private readonly int m_MaxCount;
-            private DateTime m_NextHit;
-            private int m_HitDelay;
-            private int m_Count;
-            public InternalTimer(Mobile target, Mobile from)
-                : base(TimeSpan.FromSeconds(0.1), TimeSpan.FromSeconds(0.1))
+            if (m_Table.ContainsKey(from))
             {
-                this.Priority = TimerPriority.FiftyMS;
+                ForceOfNatureTimer t = m_Table[from];
 
-                this.m_Target = target;
-                this.m_From = from;
+                if (t.Target == target)
+                {
+                    int bonus = Math.Max(50, from.Str - 50);
+                    if (bonus > 100) bonus = 100;
+                    return bonus;
+                }
+            }
 
-                double spiritLevel = from.Skills[SkillName.SpiritSpeak].Value / 15;
+            return 0;
+        }
 
-                this.m_MinBaseDamage = spiritLevel - 2;
-                this.m_MaxBaseDamage = spiritLevel + 1;
+        private class ForceOfNatureTimer : Timer
+        {
+            private Mobile m_Target, m_From;
+            private double m_MinBaseDamage, m_MaxBaseDamage;
 
-                this.m_HitDelay = 5;
-                this.m_NextHit = DateTime.UtcNow + TimeSpan.FromSeconds(this.m_HitDelay);
+            private DateTime m_LastHit;
+            private int m_Tick, m_Hits;
 
-                this.m_Count = (int)spiritLevel;
+            public Mobile Target { get { return m_Target; } }
+            public Mobile From { get { return m_From; } }
+            public int Hits { get { return m_Hits; } set { m_Hits = value; } }
+            public DateTime LastHit { get { return m_LastHit; } set { m_LastHit = value; } }
 
-                if (this.m_Count < 4)
-                    this.m_Count = 4;
-
-                this.m_MaxCount = this.m_Count;
+            public ForceOfNatureTimer(Mobile from, Mobile target)
+                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+            {
+                m_Target = target;
+                m_From = from;
+                m_Tick = 0;
+                m_Hits = 1;
+                m_LastHit = DateTime.Now;
             }
 
             protected override void OnTick()
             {
-                if (!this.m_Target.Alive)
-                {
-                    m_Table.Remove(this.m_Target);
-                    this.Stop();
-                }
+                m_Tick++;
 
-                if (!this.m_Target.Alive || DateTime.UtcNow < this.m_NextHit)
+                if (!m_From.Alive || !m_Target.Alive || m_Target.Map != m_From.Map || m_Target.GetDistanceToSqrt(m_From.Location) > 10 || m_LastHit + TimeSpan.FromSeconds(20) < DateTime.Now || m_Tick > 36)
+                {
+                    Server.Items.ForceOfNature.Remove(m_From);
                     return;
-
-                --this.m_Count;
-
-                if (this.m_HitDelay > 1)
-                {
-                    if (this.m_MaxCount < 5)
-                    {
-                        --this.m_HitDelay;
-                    }
-                    else
-                    {
-                        int delay = (int)(Math.Ceiling((1.0 + (5 * this.m_Count)) / this.m_MaxCount));
-
-                        if (delay <= 5)
-                            this.m_HitDelay = delay;
-                        else
-                            this.m_HitDelay = 5;
-                    }
                 }
 
-                if (this.m_Count == 0)
+                if (m_Tick == 1)
                 {
-                    this.m_Target.SendLocalizedMessage(1061687); // You can breath normally again.
-                    m_Table.Remove(this.m_Target);
-                    this.Stop();
-                }
-                else
-                {
-                    this.m_NextHit = DateTime.UtcNow + TimeSpan.FromSeconds(this.m_HitDelay);
+                    int damage = Utility.RandomMinMax(15, 35);
 
-                    double damage = this.m_MinBaseDamage + (Utility.RandomDouble() * (this.m_MaxBaseDamage - this.m_MinBaseDamage));
-
-                    damage *= (3 - (((double)this.m_Target.Stam / this.m_Target.StamMax) * 2));
-
-                    if (damage < 1)
-                        damage = 1;
-
-                    if (!this.m_Target.Player)
-                        damage *= 1.75;
-
-                    AOS.Damage(this.m_Target, this.m_From, (int)damage, 0, 0, 0, 100, 0);
+                    AOS.Damage(m_Target, m_From, damage, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
                 }
             }
         }

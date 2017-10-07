@@ -1696,6 +1696,9 @@ namespace Server.Multis
             i.Movable = !locked;
             i.IsLockedDown = locked;
 
+            Timer.DelayCall(() =>
+            i.PrivateOverheadMessage(MessageType.Regular, 0, locked ? 501721 : 501657, m.NetState)); // locked down! : [no longer locked down]
+
             if (m == null)
                 m = Owner;
 
@@ -2103,7 +2106,6 @@ namespace Server.Multis
                 }
                 else if (CanRelease(m, item))
                 {
-                    item.PublicOverheadMessage(Server.Network.MessageType.Label, 0x3B2, 501657);//[no longer locked down]
                     SetLockdown(m, item, false);
 
                     if (item is RewardBrazier)
@@ -3682,6 +3684,8 @@ namespace Server.Multis
                         item.IsSecure = false;
                         item.Movable = true;
                         item.SetLastMoved();
+
+                        item.SendLocalizedMessage(501657, ""); // [no longer locked down]
                     }
                 }
 
@@ -3700,6 +3704,8 @@ namespace Server.Multis
                         item.IsSecure = false;
                         item.Movable = true;
                         item.SetLastMoved();
+
+                        item.SendLocalizedMessage(501657, ""); // [no longer locked down]
                     }
                 }
 
@@ -3722,6 +3728,8 @@ namespace Server.Multis
                         info.Item.IsSecure = false;
                         info.Item.Movable = true;
                         info.Item.SetLastMoved();
+
+                        info.Item.SendLocalizedMessage(501718, ""); // no longer secure!
                     }
                 }
 
