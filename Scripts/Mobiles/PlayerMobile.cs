@@ -4048,8 +4048,13 @@ namespace Server.Mobiles
             Damage(amount, from, informMount, false);
         }
 
-		#region Poison
-		public override ApplyPoisonResult ApplyPoison(Mobile from, Poison poison)
+        #region Poison
+        public override void OnCured(Mobile from, Poison oldPoison)
+        {
+            BuffInfo.RemoveBuff(this, BuffIcon.Poison);
+        }
+
+        public override ApplyPoisonResult ApplyPoison(Mobile from, Poison poison)
 		{
 			if (!Alive)
 			{
