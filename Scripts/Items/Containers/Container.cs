@@ -1269,6 +1269,7 @@ namespace Server.Items
     }
 
     [Furniture]
+    [FlipableAttribute(0xA99, 0xA97)]
     public class AcademicBookCase : BaseContainer
     {
         public override int LabelNumber { get { return 1071213; } } // academic bookcase

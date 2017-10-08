@@ -104,7 +104,7 @@ namespace Server.Items
 
         public static void SendLocalizedMessage(this Item item, int number, string args)
         {
-            if (item == null)
+            if (item == null || item.Map == null)
                 return;
 
             IPooledEnumerable eable = item.Map.GetClientsInRange(item.Location, 12);
@@ -119,7 +119,7 @@ namespace Server.Items
 
         public static void SendLocalizedMessage(this Item item, MessageType type, int number, AffixType affixType, string affix, string args)
         {
-            if (item == null)
+            if (item == null || item.Map == null)
                 return;
 
             IPooledEnumerable eable = item.Map.GetClientsInRange(item.Location, 12);

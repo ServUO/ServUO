@@ -1370,7 +1370,14 @@ namespace Server.Items
                 {
                     if (m_From.Body.IsHuman && !m_From.Mounted)
                     {
-                        m_From.Animate(11, 5, 1, true, false, 0);
+                        if (Core.SA)
+                        {
+                            m_From.Animate(AnimationType.Attack, 3);
+                        }
+                        else
+                        {
+                            m_From.Animate(11, 5, 1, true, false, 0);
+                        }
                     }
 
                     new SoundTimer(m_From, 0x125 + (m_Count % 2)).Start();

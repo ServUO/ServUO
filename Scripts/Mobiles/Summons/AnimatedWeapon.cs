@@ -1,78 +1,108 @@
 using System;
-using Server;
-using Server.Items;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "the remains of a broken weapon" )]
-	public class AnimatedWeapon : BaseCreature
-	{
-		public override double DispelDifficulty{ get{ return 125.0; } }
-		public override double DispelFocus{ get{ return 45.0; } }
+    [CorpseName("an animated weapon corpse")]
+    public class AnimatedWeapon : BaseCreature
+    {
+        public override bool DeleteCorpseOnDeath { get { return true; } }
+        public override bool IsHouseSummonable { get { return true; } }
 
-		[Constructable]
-		public AnimatedWeapon() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 )
-		{
-			Name = "Animated Weapon";
-			Body = 692;
+        public override double DispelDifficulty { get { return 0.0; } }
+        public override double DispelFocus { get { return 20.0; } }
 
-			SetStr( 150 );
-			SetDex( 150 );
-			SetInt( 100 );
+        [Constructable]
+        public AnimatedWeapon(Mobile caster, int level)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.3, 0.6)
+        {
+            Name = "an animated weapon";
+            Body = 692;
 
-            SetHits(180);
+            SetStr(10 + level);
+            SetDex(10 + level);
+            SetInt(10);
 
-			SetDamage( 14, 21 );
+            SetHits(20 + (level * 3 / 2));
+            SetStam(10 + level);
+            SetMana(0);
 
-			SetDamageType( ResistanceType.Physical, 0 );
-			SetDamageType( ResistanceType.Poison, 100 );
+            if (level >= 120)
+                SetDamage(14, 18);
+            else if (level >= 105)
+                SetDamage(13, 17);
+            else if (level >= 90)
+                SetDamage(12, 15);
+            else if (level >= 75)
+                SetDamage(11, 14);
+            else if (level >= 60)
+                SetDamage(10, 12);
+            else if (level >= 45)
+                SetDamage(9, 11);
+            else if (level >= 30)
+                SetDamage(8, 9);
+            else
+                SetDamage(7, 8);
 
-			SetResistance( ResistanceType.Physical, 45, 55 );
-			SetResistance( ResistanceType.Fire, 45, 55 );
-			SetResistance( ResistanceType.Cold, 45, 55 );
-			SetResistance( ResistanceType.Poison, 100 );
-			SetResistance( ResistanceType.Energy, 30, 40 );
+            SetDamageType(ResistanceType.Physical, 60);
+            SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Energy, 20);
 
-			SetSkill( SkillName.MagicResist, 90.1, 100.0 );
-			SetSkill( SkillName.Tactics, 100.0 );
-			SetSkill( SkillName.Wrestling, 100.0 );
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-			VirtualArmor = 58;
-			ControlSlots = 4;
-		}
+            SetSkill(SkillName.MagicResist, level);
+            SetSkill(SkillName.Tactics, caster.Skills[SkillName.Tactics].Value / 2);
+            SetSkill(SkillName.Wrestling, level);
+            SetSkill(SkillName.Anatomy, caster.Skills[SkillName.Anatomy].Value / 2);
+            SetSkill(SkillName.DetectHidden, 40, 50);
 
-		public override int GetAttackSound()
-		{
-			return 0x64A;
-		}
+            Fame = 0;
+            Karma = 0;
 
-		public override int GetHurtSound()
-		{
-			return 0x64A;
-		}
+            ControlSlots = 4;
+        }
+
+        public override int GetAngerSound()
+        {
+            return 0x23A;
+        }
+
+        public override int GetAttackSound()
+        {
+            return 0x3B8;
+        }
+
+        public override int GetHurtSound()
+        {
+            return 0x23A;
+        }
+
+        public AnimatedWeapon(Serial serial) : base(serial)
+        {
+        }
 
         public override double GetFightModeRanking(Mobile m, FightMode acqType, bool bPlayerOnly)
         {
             return (m.Str + m.Skills[SkillName.Tactics].Value) / Math.Max(GetDistanceToSqrt(m), 1.0);
         }
 
-		public override bool BleedImmune{ get{ return true; } }
-		public override Poison PoisonImmune{ get{ return Poison.Parasitic; } } // Immune to poison?
+        public override bool AlwaysMurderer { get { return true; } }
+        public override bool BleedImmune { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
 
-		public AnimatedWeapon( Serial serial ) : base( serial )
-		{
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( (int) 0 );
-		}
-
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
-		}
-	}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }
