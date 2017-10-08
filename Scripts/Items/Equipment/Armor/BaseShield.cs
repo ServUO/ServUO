@@ -185,5 +185,85 @@ namespace Server.Items
                 return damage;
             }
         }
+
+        public override void DistributeExceptionalBonuses(Mobile from, int amount)
+        {
+        }
+
+        protected override void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
+        {
+            if (CraftResources.GetType(Resource) != CraftResourceType.Wood)
+            {
+                base.DistributeMaterialBonus(attrInfo);
+            }
+            else
+            {
+                if (Resource != CraftResource.Heartwood)
+                {
+                    Attributes.SpellChanneling += attrInfo.ShieldSpellChanneling;
+                    ArmorAttributes.LowerStatReq += attrInfo.ShieldLowerRequirements;
+                    Attributes.Luck += attrInfo.ShieldLuck;
+                    Attributes.RegenHits += attrInfo.ShieldRegenHits;
+                }
+                else
+                {
+                    switch (Utility.Random(7))
+                    {
+                        case 0: Attributes.BonusDex += attrInfo.ShieldBonusDex; break;
+                        case 1: Attributes.BonusStr += attrInfo.ShieldBonusStr; break;
+                        case 2: PhysicalBonus += attrInfo.ShieldPhysicalRandom; break;
+                        case 3: Attributes.ReflectPhysical += attrInfo.ShieldReflectPhys; break;
+                        case 4: ArmorAttributes.SelfRepair += attrInfo.ShieldSelfRepair; break;
+                        case 5: ColdBonus += attrInfo.ShieldColdRandom; break;
+                        case 6: Attributes.SpellChanneling += attrInfo.ShieldSpellChanneling; break;
+                    }
+                }
+            }
+        }
+
+        protected override void ApplyResourceResistances(CraftResource oldResource)
+        {
+            if (CraftResources.GetType(Resource) != CraftResourceType.Wood)
+            {
+                base.ApplyResourceResistances(oldResource);
+            }
+            else
+            {
+                CraftAttributeInfo info;
+
+                if (oldResource > CraftResource.None)
+                {
+                    info = GetResourceAttrs(oldResource);
+                    // Remove old bonus
+
+                    PhysicalBonus = Math.Max(0, PhysicalBonus - info.ShieldPhysicalResist);
+                    FireBonus = Math.Max(0, FireBonus - info.ShieldFireResist);
+                    ColdBonus = Math.Max(0, ColdBonus - info.ShieldColdResist);
+                    PoisonBonus = Math.Max(0, PoisonBonus - info.ShieldPoisonResist);
+                    EnergyBonus = Math.Max(0, EnergyBonus - info.ShieldEnergyResist);
+
+                    PhysNonImbuing = Math.Max(0, PhysNonImbuing - info.ShieldPhysicalResist);
+                    FireNonImbuing = Math.Max(0, FireNonImbuing - info.ShieldFireResist);
+                    ColdNonImbuing = Math.Max(0, ColdNonImbuing - info.ShieldColdResist);
+                    PoisonNonImbuing = Math.Max(0, PoisonNonImbuing - info.ShieldPoisonResist);
+                    EnergyNonImbuing = Math.Max(0, EnergyNonImbuing - info.ShieldEnergyResist);
+                }
+
+                info = GetResourceAttrs(Resource);
+
+                // add new bonus
+                PhysicalBonus += info.ShieldPhysicalResist;
+                FireBonus += info.ShieldFireResist;
+                ColdBonus += info.ShieldColdResist;
+                PoisonBonus += info.ShieldPoisonResist;
+                EnergyBonus += info.ShieldEnergyResist;
+
+                PhysNonImbuing += info.ShieldPhysicalResist;
+                FireNonImbuing += info.ShieldFireResist;
+                ColdNonImbuing += info.ShieldColdResist;
+                PoisonNonImbuing += info.ShieldPoisonResist;
+                EnergyNonImbuing += info.ShieldEnergyResist;
+            }
+        }
     }
 }
