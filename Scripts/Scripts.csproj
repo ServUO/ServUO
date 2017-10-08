@@ -7937,9 +7937,6 @@
     <Compile Include="Items\Equipment\Weapons\SkinningKnife.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Equipment\Weapons\ThrowingDagger.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Equipment\Weapons\Club.cs">
       <SubType>Code</SubType>
     </Compile>

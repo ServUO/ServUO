@@ -2,6 +2,34 @@ using System;
 
 namespace Server.Items
 {
+    [Flipable(0x4C3E, 0x4C3F)]
+    public class CelloComponent : InstrumentedAddonComponent
+    {
+        public override int LabelNumber { get { return 1098390; } } // cello
+
+        public CelloComponent()
+            : base(0x4C3E, 0x66E)
+        {
+        }
+
+        public CelloComponent(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
     public class CelloDeed : BaseAddonDeed
     {
         public override int LabelNumber { get { return 1098390; } } // cello
@@ -39,7 +67,7 @@ namespace Server.Items
         [Constructable]
         public CelloAddon()
         {
-            AddComponent(new InstrumentedAddonComponent(0x4C3E, 0x66E), 0, 0, 10);
+            AddComponent(new CelloComponent(), 0, 0, 0);
         }
 
         public CelloAddon(Serial serial)
