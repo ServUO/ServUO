@@ -204,7 +204,7 @@ namespace Server.Items
             int version = reader.ReadInt(); 
         }
     }
-
+    
     public class BustSouth : Item 
     { 
         [Constructable] 
@@ -233,7 +233,7 @@ namespace Server.Items
             int version = reader.ReadInt(); 
         }
     }
-
+    
     public class BustEast : Item 
     { 
         [Constructable] 
@@ -263,16 +263,19 @@ namespace Server.Items
         }
     }
 
-    public class StatuePegasus : Item 
-    { 
+    [TypeAlias("Server.Items.StatuePegasus")]
+    public class StatuePegasusSouth : Item 
+    {
+        public override int LabelNumber { get { return 1044510; } } // pegasus statuette
+
         [Constructable] 
-        public StatuePegasus()
+        public StatuePegasusSouth()
             : base(0x139D)
         { 
             Weight = 1.0; 
         }
 
-        public StatuePegasus(Serial serial)
+        public StatuePegasusSouth(Serial serial)
             : base(serial)
         { 
         }
@@ -292,16 +295,19 @@ namespace Server.Items
         }
     }
 
-    public class StatuePegasus2 : Item 
-    { 
+    [TypeAlias("Server.Items.StatuePegasus2")]
+    public class StatuePegasusEast : Item 
+    {
+        public override int LabelNumber { get { return 1044510; } } // pegasus statuette
+
         [Constructable] 
-        public StatuePegasus2()
+        public StatuePegasusEast()
             : base(0x1228)
         { 
             Weight = 1.0; 
         }
 
-        public StatuePegasus2(Serial serial)
+        public StatuePegasusEast(Serial serial)
             : base(serial)
         { 
         }
@@ -348,6 +354,7 @@ namespace Server.Items
         }
     }
 
+    [FlipableAttribute(0x494E, 0x494D)]
     public class StatueGargoyleEast : Item
     {
         [Constructable]
@@ -377,6 +384,7 @@ namespace Server.Items
         }
     }
 
+    [FlipableAttribute(0x494D, 0x494E)]
     public class StatueGargoyleSouth : Item
     {
         [Constructable]
@@ -406,6 +414,7 @@ namespace Server.Items
         }
     }
 
+    [FlipableAttribute(0x493C, 0x493B)]
     public class StatueGryphonEast : Item
     {
         [Constructable]
@@ -435,6 +444,7 @@ namespace Server.Items
         }
     }
 
+    [FlipableAttribute(0x493B, 0x493C)]
     public class StatueGryphonSouth : Item
     {
         [Constructable]

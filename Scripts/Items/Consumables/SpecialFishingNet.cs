@@ -194,7 +194,15 @@ namespace Server.Items
                 this.MoveToWorld(p, map);
 
                 SpellHelper.Turn(from, p);
-                from.Animate(12, 5, 1, true, false, 0);
+
+                if (Core.SA)
+                {
+                    from.Animate(AnimationType.Attack, 6);
+                }
+                else
+                {
+                    from.Animate(12, 5, 1, true, false, 0);
+                }
 
                 Effects.SendLocationEffect(p, map, 0x352D, 16, 4);
                 Effects.PlaySound(p, map, 0x364);

@@ -1163,7 +1163,14 @@ namespace Server.Items
                             this.m_Drunk.Direction = (Direction)Utility.Random(8);
 
                             // heave
-                            this.m_Drunk.Animate(32, 5, 1, true, false, 0);
+                            if (Core.SA)
+                            {
+                                m_Drunk.Animate(AnimationType.Emote, 0);
+                            }
+                            else
+                            {
+                                m_Drunk.Animate(32, 5, 1, true, false, 0);
+                            }
                         }
 
                         // *hic*

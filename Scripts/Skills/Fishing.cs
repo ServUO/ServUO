@@ -70,7 +70,7 @@ namespace Server.Engines.Harvest
             fish.ConsumedPerFeluccaHarvest = 1;
 
             // The fishing
-            fish.EffectActions = new int[] { 12 };
+            fish.EffectActions = new int[] { Core.SA ? 6 : 12 };
             fish.EffectSounds = new int[0];
             fish.EffectCounts = new int[] { 1 };
             fish.EffectDelay = TimeSpan.Zero;

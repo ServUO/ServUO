@@ -650,7 +650,7 @@ namespace Server.Mobiles
 
 			BounceInfo bi = item.GetBounce();
 
-			if (bi != null)
+			if (bi != null && (!Core.SA || AccessLevel >= AccessLevel.Counselor))
 			{
 				Type type = item.GetType();
 
