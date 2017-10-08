@@ -58,6 +58,11 @@ namespace Server.Items
         private int m_WeaponLuck;
         private int m_WeaponGoldIncrease;
         private int m_WeaponLowerRequirements;
+        private int m_WeaponDamage;
+        private int m_WeaponHitChance;
+        private int m_WeaponHitLifeLeech;
+        private int m_WeaponRegenHits;
+        private int m_WeaponSwingSpeed;
 
         private int m_ArmorPhysicalResist;
         private int m_ArmorFireResist;
@@ -68,275 +73,6 @@ namespace Server.Items
         private int m_ArmorLuck;
         private int m_ArmorGoldIncrease;
         private int m_ArmorLowerRequirements;
-
-        private int m_RunicMinAttributes;
-        private int m_RunicMaxAttributes;
-        private int m_RunicMinIntensity;
-        private int m_RunicMaxIntensity;
-
-        public int WeaponFireDamage
-        {
-            get
-            {
-                return this.m_WeaponFireDamage;
-            }
-            set
-            {
-                this.m_WeaponFireDamage = value;
-            }
-        }
-        public int WeaponColdDamage
-        {
-            get
-            {
-                return this.m_WeaponColdDamage;
-            }
-            set
-            {
-                this.m_WeaponColdDamage = value;
-            }
-        }
-        public int WeaponPoisonDamage
-        {
-            get
-            {
-                return this.m_WeaponPoisonDamage;
-            }
-            set
-            {
-                this.m_WeaponPoisonDamage = value;
-            }
-        }
-        public int WeaponEnergyDamage
-        {
-            get
-            {
-                return this.m_WeaponEnergyDamage;
-            }
-            set
-            {
-                this.m_WeaponEnergyDamage = value;
-            }
-        }
-        public int WeaponChaosDamage
-        {
-            get
-            {
-                return this.m_WeaponChaosDamage;
-            }
-            set
-            {
-                this.m_WeaponChaosDamage = value;
-            }
-        }
-        public int WeaponDirectDamage
-        {
-            get
-            {
-                return this.m_WeaponDirectDamage;
-            }
-            set
-            {
-                this.m_WeaponDirectDamage = value;
-            }
-        }
-        public int WeaponDurability
-        {
-            get
-            {
-                return this.m_WeaponDurability;
-            }
-            set
-            {
-                this.m_WeaponDurability = value;
-            }
-        }
-        public int WeaponLuck
-        {
-            get
-            {
-                return this.m_WeaponLuck;
-            }
-            set
-            {
-                this.m_WeaponLuck = value;
-            }
-        }
-        public int WeaponGoldIncrease
-        {
-            get
-            {
-                return this.m_WeaponGoldIncrease;
-            }
-            set
-            {
-                this.m_WeaponGoldIncrease = value;
-            }
-        }
-        public int WeaponLowerRequirements
-        {
-            get
-            {
-                return this.m_WeaponLowerRequirements;
-            }
-            set
-            {
-                this.m_WeaponLowerRequirements = value;
-            }
-        }
-
-        public int ArmorPhysicalResist
-        {
-            get
-            {
-                return this.m_ArmorPhysicalResist;
-            }
-            set
-            {
-                this.m_ArmorPhysicalResist = value;
-            }
-        }
-        public int ArmorFireResist
-        {
-            get
-            {
-                return this.m_ArmorFireResist;
-            }
-            set
-            {
-                this.m_ArmorFireResist = value;
-            }
-        }
-        public int ArmorColdResist
-        {
-            get
-            {
-                return this.m_ArmorColdResist;
-            }
-            set
-            {
-                this.m_ArmorColdResist = value;
-            }
-        }
-        public int ArmorPoisonResist
-        {
-            get
-            {
-                return this.m_ArmorPoisonResist;
-            }
-            set
-            {
-                this.m_ArmorPoisonResist = value;
-            }
-        }
-        public int ArmorEnergyResist
-        {
-            get
-            {
-                return this.m_ArmorEnergyResist;
-            }
-            set
-            {
-                this.m_ArmorEnergyResist = value;
-            }
-        }
-        public int ArmorDurability
-        {
-            get
-            {
-                return this.m_ArmorDurability;
-            }
-            set
-            {
-                this.m_ArmorDurability = value;
-            }
-        }
-        public int ArmorLuck
-        {
-            get
-            {
-                return this.m_ArmorLuck;
-            }
-            set
-            {
-                this.m_ArmorLuck = value;
-            }
-        }
-        public int ArmorGoldIncrease
-        {
-            get
-            {
-                return this.m_ArmorGoldIncrease;
-            }
-            set
-            {
-                this.m_ArmorGoldIncrease = value;
-            }
-        }
-        public int ArmorLowerRequirements
-        {
-            get
-            {
-                return this.m_ArmorLowerRequirements;
-            }
-            set
-            {
-                this.m_ArmorLowerRequirements = value;
-            }
-        }
-
-        public int RunicMinAttributes
-        {
-            get
-            {
-                return this.m_RunicMinAttributes;
-            }
-            set
-            {
-                this.m_RunicMinAttributes = value;
-            }
-        }
-        public int RunicMaxAttributes
-        {
-            get
-            {
-                return this.m_RunicMaxAttributes;
-            }
-            set
-            {
-                this.m_RunicMaxAttributes = value;
-            }
-        }
-        public int RunicMinIntensity
-        {
-            get
-            {
-                return this.m_RunicMinIntensity;
-            }
-            set
-            {
-                this.m_RunicMinIntensity = value;
-            }
-        }
-        public int RunicMaxIntensity
-        {
-            get
-            {
-                return this.m_RunicMaxIntensity;
-            }
-            set
-            {
-                this.m_RunicMaxIntensity = value;
-            }
-        }
-
-        #region Mondain's Legacy
-        private int m_WeaponDamage;
-        private int m_WeaponHitChance;
-        private int m_WeaponHitLifeLeech;
-        private int m_WeaponRegenHits;
-        private int m_WeaponSwingSpeed;
-
         private int m_ArmorDamage;
         private int m_ArmorHitChance;
         private int m_ArmorRegenHits;
@@ -347,164 +83,84 @@ namespace Server.Items
         private int m_ShieldColdResist;
         private int m_ShieldPoisonResist;
         private int m_ShieldEnergyResist;
+        private int m_ShieldPhysicalRandom;
+        private int m_ShieldColdRandom;
+        private int m_ShieldSpellChanneling;
+        private int m_ShieldLuck;
+        private int m_ShieldLowerRequirements;
+        private int m_ShieldRegenHits;
+        private int m_ShieldBonusDex;
+        private int m_ShieldBonusStr;
+        private int m_ShieldReflectPhys;
+        private int m_SelfRepair;
 
-        public int WeaponDamage
-        {
-            get
-            {
-                return this.m_WeaponDamage;
-            }
-            set
-            {
-                this.m_WeaponDamage = value;
-            }
-        }
-        public int WeaponHitChance
-        {
-            get
-            {
-                return this.m_WeaponHitChance;
-            }
-            set
-            {
-                this.m_WeaponHitChance = value;
-            }
-        }
-        public int WeaponHitLifeLeech
-        {
-            get
-            {
-                return this.m_WeaponHitLifeLeech;
-            }
-            set
-            {
-                this.m_WeaponHitLifeLeech = value;
-            }
-        }
-        public int WeaponRegenHits
-        {
-            get
-            {
-                return this.m_WeaponRegenHits;
-            }
-            set
-            {
-                this.m_WeaponRegenHits = value;
-            }
-        }
-        public int WeaponSwingSpeed
-        {
-            get
-            {
-                return this.m_WeaponSwingSpeed;
-            }
-            set
-            {
-                this.m_WeaponSwingSpeed = value;
-            }
-        }
+        private int m_OtherSpellChanneling;
+        private int m_OtherLuck;
+        private int m_OtherRegenHits;
+        private int m_OtherLowerRequirements;
 
-        public int ArmorDamage
-        {
-            get
-            {
-                return this.m_ArmorDamage;
-            }
-            set
-            {
-                this.m_ArmorDamage = value;
-            }
-        }
-        public int ArmorHitChance
-        {
-            get
-            {
-                return this.m_ArmorHitChance;
-            }
-            set
-            {
-                this.m_ArmorHitChance = value;
-            }
-        }
-        public int ArmorRegenHits
-        {
-            get
-            {
-                return this.m_ArmorRegenHits;
-            }
-            set
-            {
-                this.m_ArmorRegenHits = value;
-            }
-        }
-        public int ArmorMage
-        {
-            get
-            {
-                return this.m_ArmorMage;
-            }
-            set
-            {
-                this.m_ArmorMage = value;
-            }
-        }
+        private int m_RunicMinAttributes;
+        private int m_RunicMaxAttributes;
+        private int m_RunicMinIntensity;
+        private int m_RunicMaxIntensity;
 
-        public int ShieldPhysicalResist
-        {
-            get
-            {
-                return this.m_ShieldPhysicalResist;
-            }
-            set
-            {
-                this.m_ShieldPhysicalResist = value;
-            }
-        }
-        public int ShieldFireResist
-        {
-            get
-            {
-                return this.m_ShieldFireResist;
-            }
-            set
-            {
-                this.m_ShieldFireResist = value;
-            }
-        }
-        public int ShieldColdResist
-        {
-            get
-            {
-                return this.m_ShieldColdResist;
-            }
-            set
-            {
-                this.m_ShieldColdResist = value;
-            }
-        }
-        public int ShieldPoisonResist
-        {
-            get
-            {
-                return this.m_ShieldPoisonResist;
-            }
-            set
-            {
-                this.m_ShieldPoisonResist = value;
-            }
-        }
-        public int ShieldEnergyResist
-        {
-            get
-            {
-                return this.m_ShieldEnergyResist;
-            }
-            set
-            {
-                this.m_ShieldEnergyResist = value;
-            }
-        }
-        #endregion
+        private double m_ImbuingUnravelBonus;
+
+        public int WeaponFireDamage { get { return m_WeaponFireDamage; } set { m_WeaponFireDamage = value; } }
+        public int WeaponColdDamage { get { return m_WeaponColdDamage; } set { m_WeaponColdDamage = value; } }
+        public int WeaponPoisonDamage { get { return m_WeaponPoisonDamage; } set { m_WeaponPoisonDamage = value; } }
+        public int WeaponEnergyDamage { get { return m_WeaponEnergyDamage; } set { m_WeaponEnergyDamage = value; } }
+        public int WeaponChaosDamage { get { return m_WeaponChaosDamage; } set { m_WeaponChaosDamage = value; } }
+        public int WeaponDirectDamage { get { return m_WeaponDirectDamage; } set { m_WeaponDirectDamage = value; } }
+        public int WeaponDurability { get { return m_WeaponDurability; } set { m_WeaponDurability = value; } }
+        public int WeaponLuck { get { return m_WeaponLuck; } set { m_WeaponLuck = value; } }
+        public int WeaponGoldIncrease { get { return m_WeaponGoldIncrease; } set { m_WeaponGoldIncrease = value; } }
+        public int WeaponLowerRequirements { get { return m_WeaponLowerRequirements; } set { m_WeaponLowerRequirements = value; } }
+        public int WeaponDamage { get { return m_WeaponDamage; } set { m_WeaponDamage = value; } }
+        public int WeaponHitChance { get { return m_WeaponHitChance; } set { m_WeaponHitChance = value; } }
+        public int WeaponHitLifeLeech { get { return m_WeaponHitLifeLeech; } set { m_WeaponHitLifeLeech = value; } }
+        public int WeaponRegenHits { get { return m_WeaponRegenHits; } set { m_WeaponRegenHits = value; } }
+        public int WeaponSwingSpeed { get { return m_WeaponSwingSpeed; } set { m_WeaponSwingSpeed = value; } }
+
+        public int ArmorPhysicalResist { get { return m_ArmorPhysicalResist; } set { m_ArmorPhysicalResist = value; } }
+        public int ArmorFireResist { get { return m_ArmorFireResist; } set { m_ArmorFireResist = value; } }
+        public int ArmorColdResist { get { return m_ArmorColdResist; } set { m_ArmorColdResist = value; } }
+        public int ArmorPoisonResist { get { return m_ArmorPoisonResist; } set { m_ArmorPoisonResist = value; } }
+        public int ArmorEnergyResist { get { return m_ArmorEnergyResist; } set { m_ArmorEnergyResist = value; } }
+        public int ArmorDurability { get { return m_ArmorDurability; } set { m_ArmorDurability = value; } }
+        public int ArmorLuck { get { return m_ArmorLuck; } set { m_ArmorLuck = value; } }
+        public int ArmorGoldIncrease { get { return m_ArmorGoldIncrease; } set { m_ArmorGoldIncrease = value; } }
+        public int ArmorLowerRequirements { get { return m_ArmorLowerRequirements; } set { m_ArmorLowerRequirements = value; } }
+        public int ArmorDamage { get { return m_ArmorDamage; } set { m_ArmorDamage = value; } }
+        public int ArmorHitChance { get { return m_ArmorHitChance; } set { m_ArmorHitChance = value; } }
+        public int ArmorRegenHits { get { return m_ArmorRegenHits; } set { m_ArmorRegenHits = value; } }
+        public int ArmorMage { get { return m_ArmorMage; } set { m_ArmorMage = value; } }
+
+        public int ShieldPhysicalResist { get { return m_ShieldPhysicalResist; } set { m_ShieldPhysicalResist = value; } }
+        public int ShieldFireResist { get { return m_ShieldFireResist; } set { m_ShieldFireResist = value; } }
+        public int ShieldColdResist { get { return m_ShieldColdResist; } set { m_ShieldColdResist = value; } }
+        public int ShieldPoisonResist { get { return m_ShieldPoisonResist; } set { m_ShieldPoisonResist = value; } }
+        public int ShieldEnergyResist { get { return m_ShieldEnergyResist; } set { m_ShieldEnergyResist = value; } }
+        public int ShieldPhysicalRandom { get { return m_ShieldPhysicalRandom; } set { m_ShieldPhysicalRandom = value; } }
+        public int ShieldColdRandom { get { return m_ShieldColdRandom; } set { m_ShieldColdRandom = value; } }
+        public int ShieldSpellChanneling { get { return m_ShieldSpellChanneling; } set { m_ShieldSpellChanneling = value; } }
+        public int ShieldLuck { get { return m_ShieldLuck; } set { m_ShieldLuck = value; } }
+        public int ShieldLowerRequirements { get { return m_ShieldLowerRequirements; } set { m_ShieldLowerRequirements = value; } }
+        public int ShieldRegenHits { get { return m_ShieldRegenHits; } set { m_ShieldRegenHits = value; } }
+        public int ShieldBonusDex { get { return m_ShieldBonusDex; } set { m_ShieldBonusDex = value; } }
+        public int ShieldBonusStr { get { return m_ShieldBonusStr; } set { m_ShieldBonusStr = value; } }
+        public int ShieldReflectPhys { get { return m_ShieldReflectPhys; } set { m_ShieldReflectPhys = value; } }
+        public int ShieldSelfRepair { get { return m_SelfRepair; } set { m_SelfRepair = value; } }
+
+        public int OtherSpellChanneling { get { return m_OtherSpellChanneling; } set { m_OtherSpellChanneling = value; } }
+        public int OtherLuck { get { return m_OtherLuck; } set { m_OtherLuck = value; } }
+        public int OtherRegenHits { get { return m_OtherRegenHits; } set { m_OtherRegenHits = value; } }
+        public int OtherLowerRequirements { get { return m_OtherLowerRequirements; } set { m_OtherLowerRequirements = value; } }
+
+        public int RunicMinAttributes { get { return m_RunicMinAttributes; } set { m_RunicMinAttributes = value; } }
+        public int RunicMaxAttributes { get { return m_RunicMaxAttributes; } set { m_RunicMaxAttributes = value; } }
+        public int RunicMinIntensity { get { return m_RunicMinIntensity; } set { m_RunicMinIntensity = value; } }
+        public int RunicMaxIntensity { get { return m_RunicMaxIntensity; } set { m_RunicMaxIntensity = value; } }
 
         public CraftAttributeInfo()
         {
@@ -529,6 +185,7 @@ namespace Server.Items
             dullCopper.WeaponLowerRequirements = 50;
             dullCopper.RunicMinAttributes = 1;
             dullCopper.RunicMaxAttributes = 2;
+
             if (Core.ML)
             {
                 dullCopper.RunicMinIntensity = 40;
@@ -546,8 +203,10 @@ namespace Server.Items
             shadowIron.ArmorFireResist = 2;
             shadowIron.ArmorEnergyResist = 7;
             shadowIron.ArmorDurability = 100;
+
             shadowIron.WeaponColdDamage = 20;
             shadowIron.WeaponDurability = 50;
+
             shadowIron.RunicMinAttributes = 2;
             shadowIron.RunicMaxAttributes = 2;
             if (Core.ML)
@@ -798,8 +457,6 @@ namespace Server.Items
             blue.ArmorPoisonResist = -3;
             blue.ArmorEnergyResist = 11;
 
-            //public static readonly CraftAttributeInfo OakWood, AshWood, YewWood, Heartwood, Bloodwood, Frostwood;
-
             #region Mondain's Legacy
             CraftAttributeInfo oak = OakWood = new CraftAttributeInfo();
 
@@ -808,13 +465,16 @@ namespace Server.Items
             oak.ArmorPoisonResist = 2;
             oak.ArmorEnergyResist = 3;
             oak.ArmorLuck = 40;
+
             oak.ShieldPhysicalResist = 1;
             oak.ShieldFireResist = 1;
             oak.ShieldColdResist = 1;
             oak.ShieldPoisonResist = 1;
             oak.ShieldEnergyResist = 1;
+
             oak.WeaponLuck = 40;
             oak.WeaponDamage = 5;
+
             oak.RunicMinAttributes = 1;
             oak.RunicMaxAttributes = 2;
             oak.RunicMinIntensity = 1;
@@ -827,9 +487,13 @@ namespace Server.Items
             ash.ArmorPoisonResist = 1;
             ash.ArmorEnergyResist = 6;
             ash.ArmorLowerRequirements = 20;
+
             ash.ShieldEnergyResist = 3;
+            ash.ShieldLowerRequirements = 3;
+
             ash.WeaponSwingSpeed = 10;
             ash.WeaponLowerRequirements = 20;
+
             ash.RunicMinAttributes = 2;
             ash.RunicMaxAttributes = 3;
             ash.RunicMinIntensity = 35;
@@ -842,9 +506,13 @@ namespace Server.Items
             yew.ArmorColdResist = 3;
             yew.ArmorEnergyResist = 3;
             yew.ArmorRegenHits = 1;
+
             yew.ShieldPhysicalResist = 3;
+            yew.ShieldRegenHits = 1;
+
             yew.WeaponHitChance = 5;
             yew.WeaponDamage = 10;
+
             yew.RunicMinAttributes = 3;
             yew.RunicMaxAttributes = 3;
             yew.RunicMinIntensity = 40;
@@ -873,6 +541,14 @@ namespace Server.Items
             heartwood.WeaponLowerRequirements = 20;
             heartwood.WeaponSwingSpeed = 10;
 
+            heartwood.ShieldBonusDex = 2;
+            heartwood.ShieldBonusStr = 2;
+            heartwood.ShieldPhysicalRandom = 5;
+            heartwood.ShieldReflectPhys = 5;
+            heartwood.ShieldSelfRepair = 2;
+            heartwood.ShieldColdRandom = 3;
+            heartwood.ShieldSpellChanneling = 1;
+
             heartwood.RunicMinAttributes = 4;
             heartwood.RunicMaxAttributes = 4;
             heartwood.RunicMinIntensity = 50;
@@ -886,18 +562,25 @@ namespace Server.Items
             bloodwood.ArmorPoisonResist = 3;
             bloodwood.ArmorEnergyResist = 3;
             bloodwood.ArmorRegenHits = 2;
+
             bloodwood.ShieldFireResist = 3;
+            bloodwood.ShieldLuck = 40;
+            bloodwood.ShieldRegenHits = 2;
+
             bloodwood.WeaponRegenHits = 2;
             bloodwood.WeaponHitLifeLeech = 16;
 
             CraftAttributeInfo frostwood = Frostwood = new CraftAttributeInfo();
-            // Needs Spellchanneling on shields?
+
             frostwood.ArmorPhysicalResist = 2;
             frostwood.ArmorFireResist = 1;
             frostwood.ArmorColdResist = 8;
             frostwood.ArmorPoisonResist = 3;
             frostwood.ArmorEnergyResist = 4;
+
             frostwood.ShieldColdResist = 3;
+            frostwood.ShieldSpellChanneling = 1;
+
             frostwood.WeaponColdDamage = 40;
             frostwood.WeaponDamage = 12;
             #endregion
