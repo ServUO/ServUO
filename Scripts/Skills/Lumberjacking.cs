@@ -63,7 +63,7 @@ namespace Server.Engines.Harvest
             lumber.ConsumedPerFeluccaHarvest = 20;
 
             // The chopping effect
-            lumber.EffectActions = new int[] { 13 };
+            lumber.EffectActions = new int[] { Core.SA ? 0 : 13 };
             lumber.EffectSounds = new int[] { 0x13E };
             lumber.EffectCounts = (Core.AOS ? new int[] { 1 } : new int[] { 1, 2, 2, 2, 3 });
             lumber.EffectDelay = TimeSpan.FromSeconds(1.6);
