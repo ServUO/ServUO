@@ -2,6 +2,34 @@ using System;
 
 namespace Server.Items
 {
+    [Flipable(0x4C5A, 0x4C5B)]
+    public class CowBellComponent : InstrumentedAddonComponent
+    {
+        public override int LabelNumber { get { return 1098418; } } // cowbell
+
+        public CowBellComponent()
+            : base(0x4C5A, 0x66F)
+        {
+        }
+
+        public CowBellComponent(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
     public class CowBellDeed : BaseAddonDeed
     {
         public override int LabelNumber { get { return 1098418; } } // cowbell
@@ -38,8 +66,8 @@ namespace Server.Items
 
         [Constructable]
         public CowBellAddon()
-        { 
-            AddComponent(new InstrumentedAddonComponent(0x4C5A, 0x66F), 0, 0, 10);
+        {
+            AddComponent(new CowBellComponent(), 0, 0, 0);
         }
 
         public CowBellAddon(Serial serial)
