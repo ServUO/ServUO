@@ -1034,7 +1034,7 @@ namespace Server.Spells
             if (map == Map.Felucca && loc.X >= 6975 && loc.X <= 7042 && loc.Y >= 2048 && loc.Y <= 2115)
                 return true;
 
-            return map == Map.TerMur && loc.X > 64 && loc.X < 1015 && loc.Y > 1344 && loc.Y < 2239;
+            return map == Map.TerMur && loc.X >= 64 && loc.X <= 1015 && loc.Y >= 1344 && loc.Y <= 2239;
         }
 
         public static bool IsNewDungeon(Map map, Point3D loc)
