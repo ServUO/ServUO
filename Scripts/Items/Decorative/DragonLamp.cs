@@ -1,67 +1,25 @@
 using System;
-using Server;
 
 namespace Server.Items
 {
-	public class CraftableDragonLamp : BaseLight, IFlipable
-	{
-		public override int LitItemID
-		{
-			get
-			{
-                if(ItemID == 0x4C4C)
-                    return 0x4C4D;
+    [TypeAlias("Server.Items.CraftableDragonLamp")]
+    public class DragonLamp : BaseLight, IFlipable
+    {
+        public override int LitItemID { get { return ItemID == 0x4C4C ? 0x4C4D : 0x4C4F; } }
+        public override int UnlitItemID { get { return ItemID == 0x4C4D ? 0x4C4C : 0x4C4E; } }
 
-                return 0x4C4F;
-			}
-		}
+        public int NorthID { get { return Burning ? 0x4C4D : 0x4C4C; } }
+        public int WestID { get { return Burning ? 0x4C4F : 0x4C4E; } }
 
-		public override int UnlitItemID
-		{
-			get
-			{
-                if(ItemID == 0x4C4D)
-				    return 0x4C4C;
-
-                return 0x4C4E;
-			}
-		}
-
-        public int NorthID
-        {
-            get
-            {
-                if (Burning)
-                    return 0x4C4D;
-                else
-                    return 0x4C4C;
-            }
-        }
-
-        public int WestID
-        {
-            get
-            {
-                if (Burning)
-                    return 0x4C4F;
-                else
-                    return 0x4C4E;
-            }
-        }
-
-		[Constructable]
-        public CraftableDragonLamp()
+        [Constructable]
+        public DragonLamp()
             : base(0x4C4C)
-		{
-			if ( Burnout )
-				Duration = TimeSpan.FromMinutes( 60 );
-			else
-				Duration = TimeSpan.Zero;
-
-			Burning = false;
+        {
+            Duration = Burnout ? TimeSpan.FromMinutes(60) : TimeSpan.Zero;
+            Burning = false;
             Light = LightType.Circle225;
-			Weight = 5.0;
-		}
+            Weight = 1.0;
+        }
 
         public void OnFlip()
         {
@@ -71,21 +29,21 @@ namespace Server.Items
                 ItemID = NorthID;
         }
 
-        public CraftableDragonLamp(Serial serial)
+        public DragonLamp(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( (int) 0 );
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
-		}
-	}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }
