@@ -421,10 +421,7 @@ namespace Server.Engines.Harvest
             {
                 if (Core.SA)
                 {
-                    if (Utility.RandomList(def.EffectActions) != 0)
-                    {
-                        from.Animate(AnimationType.Attack, Utility.RandomList(def.EffectActions));
-                    }
+                    from.Animate(AnimationType.Attack, Utility.RandomList(def.EffectActions));
                 }
                 else
                 {

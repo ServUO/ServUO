@@ -580,6 +580,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\AdvancedTrainingDummy.cs" />
+    <Compile Include="Items\Addons\WeatheredBronzeFairySculpture.cs" />
+    <Compile Include="Items\Addons\WeatheredBronzeArcherSculpture.cs" />
+    <Compile Include="Items\Addons\WeatheredBronzeManOnABench.cs" />
+    <Compile Include="Items\Addons\WeatheredBronzeGlobeSculpture.cs" />
     <Compile Include="Items\Addons\BaseAddon.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -700,6 +704,7 @@
     <Compile Include="Items\Consumables\SkinTingeingTincture.cs" />
     <Compile Include="Items\Consumables\TastyTreat.cs" />
     <Compile Include="Items\Decorative\AllegiancePouch.cs" />
+    <Compile Include="Items\Decorative\Bridle.cs" />
     <Compile Include="Items\Decorative\DecorativeCarpet.cs" />
     <Compile Include="Items\Decorative\DecorativeVine.cs" />
     <Compile Include="Items\Decorative\UpholsteredChair.cs" />
@@ -7199,10 +7204,7 @@
     <Compile Include="Items\Decorative\PlayingCards2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Decorative\Bridle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Bridle2.cs">
+    <Compile Include="Items\Decorative\TerMurStyleCandelabra.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Decorative\DecoHay.cs">
