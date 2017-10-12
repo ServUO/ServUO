@@ -442,7 +442,7 @@ namespace Server.Engines.Craft
 			typeof(ElegantLowTable), typeof(DressformFront), typeof(DressformSide), typeof(BasePlayerBB), typeof(BaseContainer), typeof(BarrelStaves),
 			typeof(BarrelLid), typeof(Clippers), typeof(Scissors), typeof(BaseTool),
 
-            typeof(KeyRing), typeof(Key), typeof(Globe), typeof(Spyglass), typeof(Lantern), typeof(Candelabra), typeof(Scales),
+            typeof(KeyRing), typeof(Key), typeof(Globe), typeof(Spyglass), typeof(Lantern), typeof(Candelabra), typeof(Scales), typeof(BroadcastCrystal), typeof(TerMurStyleCandelabra),
             typeof(BaseUtensil), typeof(BaseBeverage)
 		};
 
