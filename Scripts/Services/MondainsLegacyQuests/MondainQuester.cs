@@ -11,7 +11,7 @@ namespace Server.Engines.Quests
         public MondainQuester()
             : base(null)
         {
-            this.SpeechHue = 0x3B2;
+            SpeechHue = 0x3B2;
         }
 
         public MondainQuester(string name)
@@ -22,8 +22,8 @@ namespace Server.Engines.Quests
         public MondainQuester(string name, string title)
             : base(title)
         {
-            this.Name = name;
-            this.SpeechHue = 0x3B2;
+            Name = name;
+            SpeechHue = 0x3B2;
         }
 
         public MondainQuester(Serial serial)
@@ -96,7 +96,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_SBInfos;
+                return m_SBInfos;
             }
         }
         public override void InitSBInfo()
@@ -119,7 +119,7 @@ namespace Server.Engines.Quests
             {
                 BaseChain chain = pair.Value;
 																			
-                if (chain != null && chain.Quester != null && chain.Quester == this.GetType())
+                if (chain != null && chain.Quester != null && chain.Quester == GetType())
                 {
                     BaseQuest quest = QuestHelper.RandomQuest(player, new Type[] { chain.CurrentQuest }, this);
 					
@@ -132,7 +132,7 @@ namespace Server.Engines.Quests
                 }
             }
 					
-            BaseQuest questt = QuestHelper.RandomQuest(player, this.Quests, this);
+            BaseQuest questt = QuestHelper.RandomQuest(player, Quests, this);
 						
             if (questt != null)
             {
@@ -143,12 +143,12 @@ namespace Server.Engines.Quests
 
         public virtual void OnOfferFailed()
         { 
-            this.Say(1075575); // I'm sorry, but I don't have anything else for you right now. Could you check back with me in a few minutes?
+            Say(1075575); // I'm sorry, but I don't have anything else for you right now. Could you check back with me in a few minutes?
         }
 
         public virtual void Advertise()
         {
-            this.Say(Utility.RandomMinMax(1074183, 1074223));
+            Say(Utility.RandomMinMax(1074183, 1074223));
         }
 
         public override bool CanBeDamaged()
@@ -158,13 +158,13 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            if (this.Race != null)
+            if (Race != null)
             {
-                this.HairItemID = this.Race.RandomHair(this.Female);
-                this.HairHue = this.Race.RandomHairHue();
-                this.FacialHairItemID = this.Race.RandomFacialHair(this.Female);
-                this.FacialHairHue = this.Race.RandomHairHue();
-                this.Hue = this.Race.RandomSkinHue();
+                HairItemID = Race.RandomHair(Female);
+                HairHue = Race.RandomHairHue();
+                FacialHairItemID = Race.RandomFacialHair(Female);
+                FacialHairHue = Race.RandomHairHue();
+                Hue = Race.RandomSkinHue();
             }
         }
 
@@ -174,19 +174,19 @@ namespace Server.Engines.Quests
             {
                 PlayerMobile pm = (PlayerMobile)m;
 
-                int range = this.AutoTalkRange;
+                int range = AutoTalkRange;
 
-                if (range >= 0 && this.InRange(m, range) && !this.InRange(oldLocation, range))
-                    this.OnTalk(pm);
+                if (range >= 0 && InRange(m, range) && !InRange(oldLocation, range))
+                    OnTalk(pm);
 					
-                range = this.AutoSpeakRange;
+                range = AutoSpeakRange;
 				
-                if (range >= 0 && this.InRange(m, range) && !this.InRange(oldLocation, range) && DateTime.UtcNow >= this.m_Spoken + this.SpeakDelay)
+                if (InLOS(m) && range >= 0 && InRange(m, range) && !InRange(oldLocation, range) && DateTime.UtcNow >= m_Spoken + SpeakDelay)
                 {
                     if (Utility.Random(100) < 50)
-                        this.Advertise();
+                        Advertise();
 					
-                    this.m_Spoken = DateTime.UtcNow;
+                    m_Spoken = DateTime.UtcNow;
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace Server.Engines.Quests
         public override void OnDoubleClick(Mobile m)
         {
             if (m.Alive && m is PlayerMobile)
-                this.OnTalk((PlayerMobile)m);				
+                OnTalk((PlayerMobile)m);				
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -215,8 +215,8 @@ namespace Server.Engines.Quests
 
             writer.Write((int)0); // version
 			
-            if (this.CantWalk)
-                this.Frozen = true;	
+            if (CantWalk)
+                Frozen = true;	
         }
 
         public override void Deserialize(GenericReader reader)
@@ -225,10 +225,10 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadInt();		
 			
-            this.m_Spoken = DateTime.UtcNow;
+            m_Spoken = DateTime.UtcNow;
 			
-            if (this.CantWalk)
-                this.Frozen = true;	
+            if (CantWalk)
+                Frozen = true;	
         }
     }
 }

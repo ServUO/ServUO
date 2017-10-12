@@ -10,7 +10,11 @@ namespace Server.Spells.Spellweaving
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Thunderstorm", "Erelonia",
             -1);
+
         private static readonly Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
+
+        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+
         public ThunderstormSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -58,15 +62,15 @@ namespace Server.Spells.Spellweaving
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                this.Caster.PlaySound(0x5CE);
+                Caster.PlaySound(0x5CE);
 
-                double skill = this.Caster.Skills[SkillName.Spellweaving].Value;
+                double skill = Caster.Skills[SkillName.Spellweaving].Value;
 
-                int damage = Math.Max(11, 10 + (int)(skill / 24)) + this.FocusLevel;
+                int damage = Math.Max(11, 10 + (int)(skill / 24)) + FocusLevel;
 
-                int sdiBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
+                int sdiBonus = AosAttributes.GetValue(Caster, AosAttribute.SpellDamage);
 						
                 int pvmDamage = damage * (100 + sdiBonus);
                 pvmDamage /= 100;
@@ -77,14 +81,14 @@ namespace Server.Spells.Spellweaving
                 int pvpDamage = damage * (100 + sdiBonus);
                 pvpDamage /= 100;
 
-                int range = 2 + this.FocusLevel;
-                TimeSpan duration = TimeSpan.FromSeconds(5 + this.FocusLevel);
+                int range = 2 + FocusLevel;
+                TimeSpan duration = TimeSpan.FromSeconds(5 + FocusLevel);
 
                 List<Mobile> targets = new List<Mobile>();
 
-                foreach (Mobile m in this.Caster.GetMobilesInRange(range))
+                foreach (Mobile m in Caster.GetMobilesInRange(range))
                 {
-                    if (this.Caster != m && SpellHelper.ValidIndirectTarget(this.Caster, m) && this.Caster.CanBeHarmful(m, false) && this.Caster.InLOS(m))
+                    if (Caster != m && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false) && Caster.InLOS(m))
                         targets.Add(m);
                 }
 
@@ -92,16 +96,16 @@ namespace Server.Spells.Spellweaving
                 {
                     Mobile m = targets[i];
 
-                    this.Caster.DoHarmful(m);
+                    Caster.DoHarmful(m);
 
                     Spell oldSpell = m.Spell as Spell;
 
-                    SpellHelper.Damage(this, m, (m.Player && this.Caster.Player) ? pvpDamage : pvmDamage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, m, (m.Player && Caster.Player) ? pvpDamage : pvmDamage, 0, 0, 0, 0, 100);
                     Effects.SendPacket(m.Location, m.Map, new HuedEffect(EffectType.FixedFrom, m.Serial, Serial.Zero, 0x1B6C, m.Location, m.Location, 10, 10, false, false, 0x480, 4));
 
                     if (oldSpell != null && oldSpell != m.Spell)
                     {
-                        if (!this.CheckResisted(m))
+                        if (!CheckResisted(m))
                         {
                             m_Table[m] = Timer.DelayCall<Mobile>(duration, DoExpire, m);
 
@@ -112,7 +116,7 @@ namespace Server.Spells.Spellweaving
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
     }
 }

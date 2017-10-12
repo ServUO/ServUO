@@ -7,6 +7,9 @@ namespace Server.Spells.Spellweaving
     {
         private static readonly SpellInfo m_Info = new SpellInfo("Essence of Wind", "Anathrae", -1);
         private static readonly Dictionary<Mobile, EssenceOfWindInfo> m_Table = new Dictionary<Mobile, EssenceOfWindInfo>();
+
+        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+
         public EssenceOfWindSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -68,27 +71,27 @@ namespace Server.Spells.Spellweaving
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                this.Caster.PlaySound(0x5C6);
+                Caster.PlaySound(0x5C6);
 
-                int range = 5 + this.FocusLevel;
-                int damage = 10 + this.FocusLevel;
+                int range = 5 + FocusLevel;
+                int damage = 10 + FocusLevel;
 
-                double skill = this.Caster.Skills[SkillName.Spellweaving].Value;
+                double skill = Caster.Skills[SkillName.Spellweaving].Value;
                 int dmgBonus = Math.Max((int)(skill / 24.0d), 1);
                 damage += dmgBonus;
 
-                TimeSpan duration = TimeSpan.FromSeconds((int)(skill / 24) + this.FocusLevel);
+                TimeSpan duration = TimeSpan.FromSeconds((int)(skill / 24) + FocusLevel);
 
-                int fcMalus = this.FocusLevel + 1;
-                int ssiMalus = 2 * (this.FocusLevel + 1);
+                int fcMalus = FocusLevel + 1;
+                int ssiMalus = 2 * (FocusLevel + 1);
 
                 List<Mobile> targets = new List<Mobile>();
 
-                foreach (Mobile m in this.Caster.GetMobilesInRange(range))
+                foreach (Mobile m in Caster.GetMobilesInRange(range))
                 {
-                    if (this.Caster != m && this.Caster.InLOS(m) && SpellHelper.ValidIndirectTarget(this.Caster, m) && this.Caster.CanBeHarmful(m, false))
+                    if (Caster != m && Caster.InLOS(m) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
                         targets.Add(m);
                 }
 
@@ -96,11 +99,11 @@ namespace Server.Spells.Spellweaving
                 {
                     Mobile m = targets[i];
 
-                    this.Caster.DoHarmful(m);
+                    Caster.DoHarmful(m);
 
                     SpellHelper.Damage(this, m, damage, 0, 0, 100, 0, 0);
 
-                    if (!this.CheckResisted(m))	//No message on resist
+                    if (!CheckResisted(m))	//No message on resist
                     {
                         m_Table[m] = new EssenceOfWindInfo(m, fcMalus, ssiMalus, duration);
 
@@ -111,7 +114,7 @@ namespace Server.Spells.Spellweaving
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class EssenceOfWindInfo
@@ -122,40 +125,40 @@ namespace Server.Spells.Spellweaving
             private readonly ExpireTimer m_Timer;
             public EssenceOfWindInfo(Mobile defender, int fcMalus, int ssiMalus, TimeSpan duration)
             {
-                this.m_Defender = defender;
-                this.m_FCMalus = fcMalus;
-                this.m_SSIMalus = ssiMalus;
+                m_Defender = defender;
+                m_FCMalus = fcMalus;
+                m_SSIMalus = ssiMalus;
 
-                this.m_Timer = new ExpireTimer(this.m_Defender, duration);
-                this.m_Timer.Start();
+                m_Timer = new ExpireTimer(m_Defender, duration);
+                m_Timer.Start();
             }
 
             public Mobile Defender
             {
                 get
                 {
-                    return this.m_Defender;
+                    return m_Defender;
                 }
             }
             public int FCMalus
             {
                 get
                 {
-                    return this.m_FCMalus;
+                    return m_FCMalus;
                 }
             }
             public int SSIMalus
             {
                 get
                 {
-                    return this.m_SSIMalus;
+                    return m_SSIMalus;
                 }
             }
             public ExpireTimer Timer
             {
                 get
                 {
-                    return this.m_Timer;
+                    return m_Timer;
                 }
             }
         }
@@ -166,22 +169,22 @@ namespace Server.Spells.Spellweaving
             public ExpireTimer(Mobile m, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Mobile = m;
+                m_Mobile = m;
             }
 
             public void DoExpire(bool message)
             {
-                this.Stop();
+                Stop();
 
-                m_Table.Remove(this.m_Mobile);
+                m_Table.Remove(m_Mobile);
 
-                BuffInfo.RemoveBuff(this.m_Mobile, BuffIcon.EssenceOfWind);
+                BuffInfo.RemoveBuff(m_Mobile, BuffIcon.EssenceOfWind);
                 m_Mobile.Delta(MobileDelta.WeaponDamage);
             }
 
             protected override void OnTick()
             {
-                this.DoExpire(true);
+                DoExpire(true);
             }
         }
     }

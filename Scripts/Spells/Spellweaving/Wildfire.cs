@@ -160,7 +160,7 @@ namespace Server.Spells.Spellweaving
 						
                     Effects.PlaySound(m.Location, m.Map, 0x5CF);
 					
-                    AOS.Damage(m, m_Owner, m_Damage, 0, 100, 0, 0, 0);	
+                    AOS.Damage(m, m_Owner, m_Damage, 0, 100, 0, 0, 0, DamageType.SpellAOE);	
                 }
 
                 list.Clear();

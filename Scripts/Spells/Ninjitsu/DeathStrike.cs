@@ -153,9 +153,9 @@ namespace Server.Spells.Ninjitsu
             }
 
             if (Core.ML)
-                info.m_Target.Damage(damage, info.m_Attacker); // Damage is direct.
+                AOS.Damage(info.m_Target, info.m_Attacker, damage, 0, 0, 0, 0, 0, 0, 100); // Damage is direct.
             else
-                AOS.Damage(info.m_Target, info.m_Attacker, damage, true, 100, 0, 0, 0, 0, 0, 0, false, false, true); // Damage is physical.
+                AOS.Damage(info.m_Target, info.m_Attacker, damage, true, 100, 0, 0, 0, 0); // Damage is physical.
 
             if (info.m_Timer != null)
                 info.m_Timer.Stop();

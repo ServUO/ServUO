@@ -8,6 +8,7 @@ namespace Server.Spells.Mysticism
 	public class NetherCycloneSpell : MysticSpell
 	{
         public override SpellCircle Circle { get { return SpellCircle.Eighth; } }
+        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
 
 		private static SpellInfo m_Info = new SpellInfo(
 				"Nether Cyclone", "Grav Hur",

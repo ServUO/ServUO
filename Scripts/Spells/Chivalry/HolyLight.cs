@@ -6,10 +6,13 @@ namespace Server.Spells.Chivalry
 {
     public class HolyLightSpell : PaladinSpell
     {
+        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Holy Light", "Augus Luminos",
             -1,
             9002);
+
         public HolyLightSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
