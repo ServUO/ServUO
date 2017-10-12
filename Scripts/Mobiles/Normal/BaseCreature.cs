@@ -6811,7 +6811,9 @@ namespace Server.Mobiles
                     AuraColdDamage,
                     AuraPoisonDamage,
                     AuraEnergyDamage,
-                    AuraChaosDamage);
+                    AuraChaosDamage,
+                    0,
+                    DamageType.SpellAOE);
 
                 m.RevealingAction();
                 AuraEffect(m);

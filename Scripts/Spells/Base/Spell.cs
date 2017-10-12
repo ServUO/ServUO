@@ -70,6 +70,8 @@ namespace Server.Spells
 		//the possibility of stacking 'em.  Note that a MA & an Explosion will stack, but
 		//of course, two MA's won't.
 
+        public virtual DamageType SpellDamageType { get { return DamageType.Spell; } }
+
 		private static readonly Dictionary<Type, DelayedDamageContextWrapper> m_ContextTable =
 			new Dictionary<Type, DelayedDamageContextWrapper>();
 

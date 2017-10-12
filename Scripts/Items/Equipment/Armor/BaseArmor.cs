@@ -2721,15 +2721,7 @@ namespace Server.Items
 
         public virtual int GetLuckBonus()
         {
-            if (m_Resource == CraftResource.Heartwood)
-                return 0;
-
-            CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
-
-            if (resInfo == null)
-                return 0;
-
-            CraftAttributeInfo attrInfo = resInfo.AttributeInfo;
+            CraftAttributeInfo attrInfo = GetResourceAttrs(Resource);
 
             if (attrInfo == null)
                 return 0;

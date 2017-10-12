@@ -14,10 +14,13 @@ namespace Server.Spells.Necromancy
             203,
             9031,
             Reagent.NoxCrystal);
+
         public PoisonStrikeSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
         }
+
+        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
 
         public override TimeSpan CastDelayBase
         {
@@ -49,21 +52,21 @@ namespace Server.Spells.Necromancy
         }
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IDamageable m)
         {
-            if (this.CheckHSequence(m))
+            if (CheckHSequence(m))
             {
                 Mobile mob = m as Mobile;
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
                 ApplyEffects(m);
                 ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public void ApplyEffects(IDamageable m, double strength = 1.0)
@@ -76,7 +79,7 @@ namespace Server.Spells.Necromancy
             Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
             Effects.PlaySound(m.Location, m.Map, 0x229);
 
-            double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (this.GetDamageSkill(this.Caster) * 9)) / 1000);
+            double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (GetDamageSkill(Caster) * 9)) / 1000);
             damage *= strength;
 
             double sdiBonus;
@@ -89,16 +92,16 @@ namespace Server.Spells.Necromancy
                 }
                 else
                 {
-                    sdiBonus = (double)AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage) / 100;
+                    sdiBonus = (double)AosAttributes.GetValue(Caster, AosAttribute.SpellDamage) / 100;
 
                     // PvP spell damage increase cap of 15% from an item’s magic property in Publish 33(SE)
-                    if (m is PlayerMobile && this.Caster.Player && sdiBonus > 15)
+                    if (m is PlayerMobile && Caster.Player && sdiBonus > 15)
                         sdiBonus = 15;
                 }
             }
             else
             {
-                sdiBonus = (double)AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage) / 100;
+                sdiBonus = (double)AosAttributes.GetValue(Caster, AosAttribute.SpellDamage) / 100;
             }
 
             double pvmDamage = (damage * (1 + sdiBonus)) * strength;
@@ -110,7 +113,7 @@ namespace Server.Spells.Necromancy
             {
                 List<IDamageable> targets = new List<IDamageable>();
 
-                if (this.Caster.CanBeHarmful(m, false))
+                if (Caster.CanBeHarmful(m, false))
                     targets.Add(m);
 
                 IPooledEnumerable eable = m.Map.GetObjectsInRange(m.Location, 2);
@@ -119,12 +122,12 @@ namespace Server.Spells.Necromancy
                 {
                     IDamageable id = o as IDamageable;
 
-                    if (!(this.Caster is BaseCreature && id is BaseCreature))
+                    if (!(Caster is BaseCreature && id is BaseCreature))
                     {
                         if ((id is Mobile && (Mobile)id == Caster) || id == m)
                             continue;
 
-                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(this.Caster, (Mobile)id)) && this.Caster.CanBeHarmful(id, false))
+                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(Caster, (Mobile)id)) && Caster.CanBeHarmful(id, false))
                             targets.Add(id);
                     }
                 }
@@ -144,8 +147,8 @@ namespace Server.Spells.Necromancy
                     else
                         num = 3;
 
-                    this.Caster.DoHarmful(id);
-                    SpellHelper.Damage(this, id, ((id is PlayerMobile && this.Caster.Player) ? pvpDamage : pvmDamage) / num, 0, 0, 0, 100, 0);
+                    Caster.DoHarmful(id);
+                    SpellHelper.Damage(this, id, ((id is PlayerMobile && Caster.Player) ? pvpDamage : pvmDamage) / num, 0, 0, 0, 100, 0);
                 }
 
                 targets.Clear();
@@ -159,18 +162,18 @@ namespace Server.Spells.Necromancy
             public InternalTarget(PoisonStrikeSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is IDamageable)
-                    this.m_Owner.Target((IDamageable)o);
+                    m_Owner.Target((IDamageable)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

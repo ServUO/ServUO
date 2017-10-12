@@ -88,7 +88,7 @@ namespace Server.Misc
             if (RequiredEC != null)
             {
                 Utility.PushColor(ConsoleColor.White);
-                Console.WriteLine("Restricting enhanced client version to {0}. Action to be taken: {1}", RequiredEC, m_OldClientResponse);
+                Console.WriteLine("Restricting enhanced client version to {0}. Action to be taken: {1}", RequiredEC, "Kick");
                 Utility.PopColor();
             }
         }

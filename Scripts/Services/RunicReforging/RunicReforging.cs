@@ -2523,6 +2523,12 @@ namespace Server.Items
             if (item is BaseQuiver)
                 return ((BaseQuiver)item).Attributes;
 
+            if (item is Spellbook)
+                return ((Spellbook)item).Attributes;
+
+            if(item is FishingPole)
+                return ((FishingPole)item).Attributes;
+
             return null;
         }
 

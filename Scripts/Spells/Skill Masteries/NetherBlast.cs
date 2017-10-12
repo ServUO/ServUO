@@ -202,7 +202,7 @@ namespace Server.Spells.SkillMasteries
 
                     int damage = (int)skill + Utility.RandomMinMax(-3, 3);
 
-                    AOS.Damage(m, Caster, damage, 0, 0, 0, 0, 0, 100, 0);
+                    AOS.Damage(m, Caster, damage, 0, 0, 0, 0, 0, 100, 0, DamageType.SpellAOE);
                 }
 
                 return true;

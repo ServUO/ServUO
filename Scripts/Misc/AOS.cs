@@ -20,6 +20,14 @@ using Server.Misc;
 
 namespace Server
 {
+    public enum DamageType
+    {
+        Melee,
+        Ranged,
+        Spell,
+        SpellAOE
+    }
+
     public class AOS
     {
         public static void DisableStatInfluences()
@@ -47,30 +55,45 @@ namespace Server
 
         public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy)
         {
-            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, false, false, false);
+            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, false);
         }
 
         public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos)
         {
-            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, 0, false, false, false);
+            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, 0, false);
         }
 
         public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct)
         {
-            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, direct, false, false, false);
+            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, direct, false);
         }
 
         public static int Damage(IDamageable m, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy)
         {
-            return Damage(m, from, damage, ignoreArmor, phys, fire, cold, pois, nrgy, 0, 0, false, false, false);
+            return Damage(m, from, damage, ignoreArmor, phys, fire, cold, pois, nrgy, 0, 0, false);
         }
 
         public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, bool keepAlive)
         {
-            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, keepAlive, false, false);
+            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, keepAlive);
         }
 
-        public static int Damage(IDamageable damageable, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, bool archer, bool deathStrike)
+        public static int Damage(IDamageable m, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, bool archer, bool deathStrike)
+        {
+            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, keepAlive, archer ? DamageType.Ranged : DamageType.Melee); // old deathStrike damage, kept for compatibility
+        }
+
+        public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, DamageType type)
+        {
+            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, false, type);
+        }
+
+        public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, DamageType type)
+        {
+            return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, direct, false, type);
+        }
+
+        public static int Damage(IDamageable damageable, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, DamageType type = DamageType.Melee)
         {
             Mobile m = damageable as Mobile;
 
@@ -131,9 +154,10 @@ namespace Server
                 }
             }
 
+            bool ranged = type == DamageType.Ranged;
             BaseQuiver quiver = null;
 
-            if (archer && from != null)
+            if (ranged && from.Race != Race.Gargoyle)
                 quiver = from.FindItemOnLayer(Layer.Cloak) as BaseQuiver;
 
             int totalDamage;
@@ -168,10 +192,7 @@ namespace Server
                 if (quiver != null)
                     damage += damage * quiver.DamageIncrease / 100;
 
-                if (!deathStrike)
-                    totalDamage = Math.Min(damage, Core.TOL && archer ? 30 : 35);	// Direct Damage cap of 30/35
-                else
-                    totalDamage = Math.Min(damage, 70);	// Direct Damage cap of 70
+                totalDamage = Math.Min(damage, Core.TOL && ranged ? 30 : 35);	// Direct Damage cap of 30/35
             }
             else
             {
@@ -308,6 +329,15 @@ namespace Server
             Spells.Mysticism.SleepSpell.OnDamage(m);
             Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
             #endregion
+
+            if (Core.ML && type == DamageType.SpellAOE)
+            {
+                if (m.Hidden && Utility.RandomBool())
+                {
+                    m.RevealingAction();
+                    m.NextSkillTime = Core.TickCount + (12000 - ((int)m.Skills[SkillName.Hiding].Value) * 100);
+                }
+            }
 
             return totalDamage;
         }
@@ -472,85 +502,35 @@ namespace Server
             if (!Core.AOS)
                 return 0;
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                Item obj = items[i];
+                Item obj = m.Items[i];
 
-                if (obj is BaseWeapon)
+                AosAttributes attrs = RunicReforging.GetAosAttributes(obj);
+
+                if (attrs != null)
+                    value += attrs[attribute];
+
+                if (attribute == AosAttribute.Luck)
                 {
-                    AosAttributes attrs = ((BaseWeapon)obj).Attributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-
-                    if (attribute == AosAttribute.Luck)
+                    if (obj is BaseWeapon)
                         value += ((BaseWeapon)obj).GetLuckBonus();
-                }
-                else if (obj is BaseArmor)
-                {
-                    AosAttributes attrs = ((BaseArmor)obj).Attributes;
 
-                    if (attrs != null)
-                        value += attrs[attribute];
-
-                    if (attribute == AosAttribute.Luck)
+                    if (obj is BaseArmor)
                         value += ((BaseArmor)obj).GetLuckBonus();
-                }
-                else if (obj is BaseJewel)
-                {
-                    AosAttributes attrs = ((BaseJewel)obj).Attributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-                else if (obj is BaseClothing)
-                {
-                    AosAttributes attrs = ((BaseClothing)obj).Attributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-                else if (obj is Spellbook)
-                {
-                    AosAttributes attrs = ((Spellbook)obj).Attributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-                else if (obj is FishingPole)
-                {
-                    AosAttributes attrs = ((FishingPole)obj).Attributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-                else if (obj is BaseQuiver)
-                {
-                    AosAttributes attrs = ((BaseQuiver)obj).Attributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-                else if (obj is BaseTalisman)
-                {
-                    AosAttributes attrs = ((BaseTalisman)obj).Attributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
                 }
 
                 if (obj is ISetItem)
                 {
                     ISetItem item = (ISetItem)obj;
 
-                    AosAttributes attrs = item.SetAttributes;
+                    attrs = item.SetAttributes;
 
                     if (attrs != null && item.LastEquipped)
                         value += attrs[attribute];
@@ -1328,33 +1308,18 @@ namespace Server
             if (!Core.AOS)
                 return 0;
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; i++)
             {
-                Item obj = items[i];
+                AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(m.Items[i]);
 
-                if (obj is BaseWeapon)
-                {
-                    AosWeaponAttributes attrs = ((BaseWeapon)obj).WeaponAttributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-                #region Mondain's Legacy
-                else if (obj is Glasses)
-                {
-                    AosWeaponAttributes attrs = ((Glasses)obj).WeaponAttributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-                #endregion
+                if (attrs != null)
+                    value += attrs[attribute];
             }
 
             return value;
@@ -1877,16 +1842,15 @@ namespace Server
             if (!Core.AOS)
                 return 0;
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                Item obj = items[i];
+                Item obj = m.Items[i];
 
                 if (obj is BaseWeapon)
                 {
@@ -2031,27 +1995,14 @@ namespace Server
             if (!Core.AOS)
                 return 0;
 
-            List<Item> items = m.Items;
             int value = 0;
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                Item obj = items[i];
+                AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(m.Items[i]);
 
-                if (obj is BaseArmor)
-                {
-                    AosArmorAttributes attrs = ((BaseArmor)obj).ArmorAttributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-                else if (obj is BaseClothing)
-                {
-                    AosArmorAttributes attrs = ((BaseClothing)obj).ClothingAttributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
+                if (attrs != null)
+                    value += attrs[attribute];
             }
 
             return value;
@@ -2574,32 +2525,18 @@ namespace Server
             if (!Core.AOS)
                 return 0;
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                Item obj = items[i];
+                SAAbsorptionAttributes attrs = RunicReforging.GetSAAbsorptionAttributes(m.Items[i]);
 
-                if (obj is BaseArmor)
-                {
-                    SAAbsorptionAttributes attrs = ((BaseArmor)obj).AbsorptionAttributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-                else
-                    if (obj is BaseWeapon)
-                    {
-                        SAAbsorptionAttributes attrs = ((BaseWeapon)obj).AbsorptionAttributes;
-
-                        if (attrs != null)
-                            value += attrs[attribute];
-                    }
+                if (attrs != null)
+                    value += attrs[attribute];
             }
 
             value += SkillMasterySpell.GetAttributeBonus(m, attribute);
