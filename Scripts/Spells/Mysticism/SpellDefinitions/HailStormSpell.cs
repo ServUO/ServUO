@@ -39,13 +39,15 @@ namespace Server.Spells.Mysticism
         {
             if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
             {
-                Point3D point = new Point3D(p);
+                SpellHelper.Turn(Caster, p);
+                SpellHelper.GetSurfaceTop(ref p);
+
                 Map map = Caster.Map;
 
                 if (map == null)
                     return;
 
-                IPooledEnumerable eable = map.GetMobilesInRange(point, 2);
+                IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 2);
                 Rectangle2D effectArea = new Rectangle2D(p.X - 3, p.Y - 3, 6, 6);
 
                 List<Mobile> toEffect = new List<Mobile>();
@@ -69,12 +71,14 @@ namespace Server.Spells.Mysticism
                             y == effectArea.Y && x >= effectArea.X + effectArea.Width - 1)
                                 continue;
 
-                        Point3D pn = new Point3D(x, y, map.GetAverageZ(x, y));
-                        Timer.DelayCall<Point3D>(TimeSpan.FromMilliseconds(Utility.RandomMinMax(100, 300)), pnt =>
+                        IPoint3D pnt = new Point3D(x, y, p.Z);
+                        SpellHelper.GetSurfaceTop(ref pnt);
+
+                        Timer.DelayCall<Point3D>(TimeSpan.FromMilliseconds(Utility.RandomMinMax(100, 300)), point =>
                             {
-                                Effects.SendLocationEffect(pnt, map, 0x3779, 12, 11, 0x63, 0);
+                                Effects.SendLocationEffect(point, map, 0x3779, 12, 11, 0x63, 0);
                             },
-                            pn);
+                            new Point3D(pnt));
                     }
                 }
 
