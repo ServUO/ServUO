@@ -35,6 +35,8 @@ namespace Server.Spells.Mysticism
 
 			if (p != null && CheckSequence())
             {
+                SpellHelper.Turn(Caster, p);
+                SpellHelper.GetSurfaceTop(ref p);
                 Map map = Caster.Map;
 
                 if (map != null)
@@ -63,12 +65,14 @@ namespace Server.Spells.Mysticism
                                 y == effectArea.Y && x >= effectArea.X + effectArea.Width - 1)
                                 continue;
 
-                            Point3D pn = new Point3D(x, y, map.GetAverageZ(x, y));
-                            Timer.DelayCall<Point3D>(TimeSpan.FromMilliseconds(Utility.RandomMinMax(100, 300)), pnt =>
+                            IPoint3D pnt = new Point3D(x, y, p.Z);
+                            SpellHelper.GetSurfaceTop(ref pnt);
+
+                            Timer.DelayCall<Point3D>(TimeSpan.FromMilliseconds(Utility.RandomMinMax(100, 300)), point =>
                             {
-                                Effects.SendLocationEffect(pnt, map, 0x375A, 8, 11, 0x49A, 0);
+                                Effects.SendLocationEffect(point, map, 0x375A, 8, 11, 0x49A, 0);
                             },
-                                pn);
+                            new Point3D(pnt));
                         }
                     }
 
