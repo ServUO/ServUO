@@ -628,7 +628,19 @@ namespace Server.Multis
 
         public override int GetUpdateRange(Mobile m)
         {
-            return Core.GlobalMaxUpdateRange;
+            int min = m.NetState != null ? m.NetState.UpdateRange : 18;
+            int max = Core.GlobalMaxUpdateRange;
+
+            int w = Components.Width;
+            int h = Components.Height - 1;
+            int v = min + ((w > h ? w : h) / 2);
+
+            if (v > max)
+                v = max;
+            else if (v < min)
+                v = min;
+
+            return v;
         }
 
         public List<Mobile> AvailableVendorsFor(Mobile m)
@@ -4596,6 +4608,9 @@ namespace Server.Multis
 
                 if (!isOwned)
                     isOwned = house.IsLockedDown(item);
+
+                if (!isOwned)
+                    isOwned = item is BaseAddon;
 
                 if (isOwned)
                     sec = (ISecurable)item;

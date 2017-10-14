@@ -145,8 +145,8 @@ namespace Server.SkillHandlers
             if (RunicReforging.GetArtifactRarity(item) > 0)
                 return true;
 
-			if (item.GetType() == typeof(SilverRing) || item.GetType() == typeof(SilverBracelet))
-				return false;
+            if (NonCraftableImbuable(item))
+                return false;
 
             foreach (CraftSystem system in CraftSystem.Systems)
             {
@@ -175,6 +175,27 @@ namespace Server.SkillHandlers
         {
             typeof(ClockworkLeggings), typeof(GargishClockworkLeggings)
         };
+
+        private static Type[] _NonCraftables =
+        {
+            typeof(SilverRing), typeof(SilverBracelet)
+        };
+
+        public static bool NonCraftableImbuable(Item item)
+        {
+            if (item is BaseWand)
+                return true;
+
+            Type type = item.GetType();
+
+            foreach (var t in _NonCraftables)
+            {
+                if (t == type)
+                    return true;
+            }
+
+            return false;
+        }
 
         public static double GetSuccessChance(Mobile from, Item item, int totalItemWeight, int propWeight, out double dif)
         {
@@ -709,11 +730,6 @@ namespace Server.SkillHandlers
 
                 if (attr == AosWeaponAttribute.HitLeechMana || attr == AosWeaponAttribute.HitLeechHits)
                     return GetPropRange(item, attr)[1];
-            }
-
-            if ((item is BaseArmor || item is BaseHat) && def.Attribute is AosElementAttribute)
-            {
-                return GetPropRange(item, (AosElementAttribute)def.Attribute)[1];
             }
 
             return def.MaxIntensity;
@@ -1767,10 +1783,6 @@ namespace Server.SkillHandlers
                 {
                     max = GetPropRange((BaseWeapon)item, (AosWeaponAttribute)attr)[1];
                 }
-                else if(item is BaseArmor && attr is AosElementAttribute)
-                {
-                    max = GetPropRange((BaseArmor)item, (AosElementAttribute)attr)[1];
-                }
                 else if (item is BaseJewel && attr is AosAttribute && (AosAttribute)attr == AosAttribute.WeaponDamage)
                 {
                     max = 25;
@@ -2179,11 +2191,26 @@ namespace Server.SkillHandlers
             return new int[] { 1, 15 };
         }
 
-        public static int[] GetPropRange(Item item, AosElementAttribute attr)
+        /*public static int[] GetPropRange(Item item, AosElementAttribute attr)
         {
+            return new int[] { 1, 15 };
             int index = GetArmorIndex(item);
 
-            if (index < 0 || index > _MaxResistArmorTable.Length) // Default Value
+            if (item is BaseArmor)
+            {
+                BaseArmor ar = item as BaseArmor;
+
+                switch (attr)
+                {
+                    default:
+                    case AosElementAttribute.Physical: return new int[] { ar.BasePhysicalResistance + 1, ar.BasePhysicalResistance + 15 };
+                    case AosElementAttribute.Fire: return new int[] { ar.BaseFireResistance + 1, ar.BaseFireResistance + 15 };
+                    case AosElementAttribute.Cold: return new int[] { ar.BaseColdResistance + 1, ar.BaseColdResistance + 15 };
+                    case AosElementAttribute.Poison: return new int[] { ar.BasePoisonResistance + 1, ar.BasePoisonResistance + 15 };
+                    case AosElementAttribute.Energy: return new int[] { ar.BaseEnergyResistance + 1, ar.BaseEnergyResistance + 15 };
+                }
+            }*/
+            /*if (index < 0 || index > _MaxResistArmorTable.Length) // Default Value
                 return new int[] { 1, 15 };
 
             int attrIndex;
@@ -2199,7 +2226,7 @@ namespace Server.SkillHandlers
             }
 
             return new int[] { 1, _MaxResistArmorTable[index][attrIndex] };
-        }
+        }*/
 
         public static int[] GetPropRange(Item item, ExtendedWeaponAttribute attr)
         {
@@ -2213,7 +2240,7 @@ namespace Server.SkillHandlers
             }
         }
 
-        private static int GetArmorIndex(Item item)
+        /*private static int GetArmorIndex(Item item)
         {
             if (item is BaseHat)
                 return 0;
@@ -2283,7 +2310,7 @@ namespace Server.SkillHandlers
             new int[] { 18, 18, 18, 18, 18 }, // dragon
             new int[] { 22, 17, 17, 17, 17 }, // helmets
 
-        };
+        };*/
         #endregion
     }
 }        

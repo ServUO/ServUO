@@ -71,10 +71,17 @@ namespace Server.Engines.VeteranRewards
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (from.InRange(component.Location, 2) && CanUse(from))
+            if (from.InRange(component.Location, 2))
             {
-                from.CloseGump(typeof(DaviesLockerGump));
-                from.SendGump(new DaviesLockerGump(from, this));
+                if (CanUse(from))
+                {
+                    from.CloseGump(typeof(DaviesLockerGump));
+                    from.SendGump(new DaviesLockerGump(from, this));
+                }
+                else
+                {
+                    from.SendLocalizedMessage(503301, "", 0x22); // You don't have permission to do that.
+                }
             }
         }
 
@@ -194,6 +201,8 @@ namespace Server.Engines.VeteranRewards
 
         public class DaviesLockerComponent : LocalizedAddonComponent
         {
+            public override bool ForceShowProperties { get { return true; } }
+
             public DaviesLockerComponent(int id)
                 : base(id, 1153534) // Davies' Locker
             {

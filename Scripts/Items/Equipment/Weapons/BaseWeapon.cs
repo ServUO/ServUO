@@ -2557,10 +2557,6 @@ namespace Server.Items
 				false,
 				ranged ? Server.DamageType.Ranged : Server.DamageType.Melee);
 
-            #region Stygian Abyss
-            SoulChargeContext.CheckHit(attacker, defender, damageGiven);
-            #endregion
-
             if (sparks)
             {
                 int mana = attacker.Mana + damageGiven;
