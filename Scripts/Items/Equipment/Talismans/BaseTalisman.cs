@@ -1122,7 +1122,7 @@ namespace Server.Items
 
                         if (GetSaveFlag(flags, SaveFlag.Skill))
                         {
-                            if (version == 3)
+                            if (version <= 3)
                             {
                                 m_Skill = GetTalismanSkill((SkillName)reader.ReadEncodedInt());
                             }
