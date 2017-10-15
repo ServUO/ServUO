@@ -203,7 +203,24 @@ namespace Server.Gumps
                 else if (maxInt <= 8 || m_Mod == 21 || m_Mod == 17)  // - Show Property Value as just Number ( i.e [Mana Regen 2] )
                     AddHtml(240, 368, 40, 20, String.Format("<CENTER><BASEFONT COLOR=#CCCCFF> {0}</CENTER>", m_Value), false, false);
                 else                                                 // - Show Property Value as % ( i.e [Hit Fireball 25%] )
-                    AddHtml(240, 368, 40, 20, String.Format("<CENTER><BASEFONT COLOR=#CCCCFF> {0}%</CENTER>", m_Value), false, false);
+                {
+                    int val = m_Value;
+
+                    if (m_Mod >= 51 && m_Mod <= 55 && item is BaseArmor)
+                    {
+                        var armor = (BaseArmor)item;
+                        switch (m_Mod)
+                        {
+                            case 51: val += armor.BasePhysicalResistance; break;
+                            case 52: val += armor.BaseFireResistance; break;
+                            case 53: val += armor.BaseColdResistance; break;
+                            case 54: val += armor.BasePoisonResistance; break;
+                            case 55: val += armor.BaseEnergyResistance; break;
+                        }
+                    }
+
+                    AddHtml(240, 368, 40, 20, String.Format("<CENTER><BASEFONT COLOR=#CCCCFF> {0}%</CENTER>", val), false, false);
+                }
 
                 // == Buttons ==
                 AddButton(180, 370, 5230, 5230, 10053, GumpButtonType.Reply, 0); // To Minimum Value

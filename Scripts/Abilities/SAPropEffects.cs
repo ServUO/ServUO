@@ -179,7 +179,7 @@ namespace Server.Items
         private bool m_Active;
 
         public SoulChargeContext(Mobile from, Item item)
-            : base(from, null, item, EffectsType.SoulCharge, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15))
+            : base(from, null, item, EffectsType.SoulCharge, TimeSpan.FromSeconds(40), TimeSpan.FromSeconds(40))
         {
             m_Active = true;
         }
@@ -191,6 +191,9 @@ namespace Server.Items
                 double mod = BaseFishPie.IsUnderEffects(this.Mobile, FishPieEffect.SoulCharge) ? .50 : .30;
                 this.Mobile.Mana += (int)Math.Min(this.Mobile.ManaMax, damage * mod);
                 m_Active = false;
+
+                Server.Effects.SendTargetParticles(this.Mobile, 0x375A, 0x1, 0xA, 0x71, 0x2, 0x1AE9, (EffectLayer)0, 0);
+
                 this.Mobile.SendLocalizedMessage(1113636); //The soul charge effect converts some of the damage you received into mana.
             }
         }
@@ -198,6 +201,7 @@ namespace Server.Items
         public static void CheckHit(Mobile attacker, Mobile defender, int damage)
         {
             BaseShield shield = defender.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
+
             if (shield != null && shield.ArmorAttributes.SoulCharge > 0 && shield.ArmorAttributes.SoulCharge > Utility.Random(100))
             {
                 SoulChargeContext sc = PropertyEffect.GetContext<SoulChargeContext>(defender, EffectsType.SoulCharge);

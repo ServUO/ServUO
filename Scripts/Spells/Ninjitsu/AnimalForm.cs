@@ -6,7 +6,7 @@
 
 #region References
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 using Server.Gumps;
 using Server.Items;
@@ -48,6 +48,17 @@ namespace Server.Spells.Ninjitsu
 		public AnimalForm(Mobile caster, Item scroll)
 			: base(caster, scroll, m_Info)
 		{ }
+
+        public override bool Cast()
+        {
+            if (CasterIsMoving() && GetLastAnimalForm(Caster) == 16)
+            {
+                SkillMasteries.WhiteTigerFormSpell.AutoCast(Caster);
+                return false;
+            }
+
+            return base.Cast();
+        }
 
 		public override bool CheckCast()
 		{
@@ -129,7 +140,7 @@ namespace Server.Spells.Ninjitsu
 				{
 					bool skipGump = (m_WasMoving || CasterIsMoving());
 
-					if (GetLastAnimalForm(Caster) == -1 || !skipGump)
+					if (GetLastAnimalForm(Caster) == -1 || GetLastAnimalForm(Caster) == 16 || !skipGump)
 					{
 						Caster.CloseGump(typeof(AnimalFormGump));
 						Caster.SendGump(new AnimalFormGump(Caster, m_Entries, this));
@@ -164,13 +175,18 @@ namespace Server.Spells.Ninjitsu
 			FinishSequence();
 		}
 
-		private static readonly Hashtable m_LastAnimalForms = new Hashtable();
+        private static readonly Dictionary<Mobile, int> m_LastAnimalForms = new Dictionary<Mobile, int>();
+
+        public static void AddLastAnimalForm(Mobile m, int id)
+        {
+            m_LastAnimalForms[m] = id;
+        }
 
 		public int GetLastAnimalForm(Mobile m)
 		{
-			if (m_LastAnimalForms.Contains(m))
+			if (m_LastAnimalForms.ContainsKey(m))
 			{
-				return (int)m_LastAnimalForms[m];
+				return m_LastAnimalForms[m];
 			}
 
 			return -1;
@@ -192,7 +208,7 @@ namespace Server.Spells.Ninjitsu
 
 			AnimalFormEntry entry = m_Entries[entryID];
 
-			m_LastAnimalForms[m] = entryID; //On OSI, it's the last /attempted/ one not the last succeeded one
+			AddLastAnimalForm(m, entryID); //On OSI, it's the last /attempted/ one not the last succeeded one
 
 			if (m.Skills.Ninjitsu.Value < entry.ReqSkill)
 			{
@@ -266,7 +282,7 @@ namespace Server.Spells.Ninjitsu
 			return MorphResult.Success;
 		}
 
-		private static readonly Hashtable m_Table = new Hashtable();
+		private static readonly Dictionary<Mobile, AnimalFormContext> m_Table = new Dictionary<Mobile, AnimalFormContext>();
 
 		public static void AddContext(Mobile m, AnimalFormContext context)
 		{
@@ -330,11 +346,15 @@ namespace Server.Spells.Ninjitsu
 			context.Timer.Stop();
 			
 			BuffInfo.RemoveBuff(m, BuffIcon.AnimalForm);
+            BuffInfo.RemoveBuff(m, BuffIcon.WhiteTigerForm);
 		}
 
 		public static AnimalFormContext GetContext(Mobile m)
 		{
-			return (m_Table[m] as AnimalFormContext);
+            if (m_Table.ContainsKey(m))
+                return m_Table[m];
+
+            return null;
 		}
 
 		public static bool UnderTransformation(Mobile m)
@@ -433,6 +453,7 @@ namespace Server.Spells.Ninjitsu
 			new AnimalFormEntry(typeof(Ferret), "ferret", 11672, 0, 1075220, 40.0, 0x117, 0, 0, false, false, true),
 			new AnimalFormEntry(typeof(CuSidhe), "cu sidhe", 11670, 0, 1075221, 60.0, 0x115, 0, 0, false, false, false),
 			new AnimalFormEntry(typeof(Reptalon), "reptalon", 11669, 0, 1075222, 90.0, 0x114, 0, 0, false, false, false),
+            new AnimalFormEntry(typeof(WildWhiteTiger), "white tiger", 38980, 2500, 0, 0, 0x4E7, 0, 0, false, false, false),
 		};
 
 		public static AnimalFormEntry[] Entries { get { return m_Entries; } }
@@ -470,7 +491,7 @@ namespace Server.Spells.Ninjitsu
 
 				for (int i = 0; i < entries.Length; ++i)
 				{
-					bool enabled = (ninjitsu >= entries[i].ReqSkill && BaseFormTalisman.EntryEnabled(caster, entries[i].Type));
+					bool enabled = (ninjitsu >= entries[i].ReqSkill && BaseFormTalisman.EntryEnabled(caster, entries[i].Type) && entries[i].Type != typeof(WildWhiteTiger));
 
 					int page = current / 10 + 1;
 					int pos = current % 10;

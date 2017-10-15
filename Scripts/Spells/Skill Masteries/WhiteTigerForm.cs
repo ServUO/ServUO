@@ -34,6 +34,17 @@ namespace Server.Spells.SkillMasteries
         {
         }
 
+        public override void SendCastEffect()
+        {
+            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 0x66C, 3);
+        }
+
+        public static void AutoCast(Mobile m)
+        {
+            var spell = new WhiteTigerFormSpell(m, null);
+            spell.Cast();
+        }
+
         public override bool CheckCast()
         {
             if (!Caster.CanBeginAction(typeof(PolymorphSpell)))
@@ -79,6 +90,8 @@ namespace Server.Spells.SkillMasteries
             {
                 AnimalFormContext context = AnimalForm.GetContext(Caster);
                 int mana = ScaleMana(RequiredMana);
+
+                Ninjitsu.AnimalForm.AddLastAnimalForm(Caster, 16);
 
                 if (mana > Caster.Mana)
                 {

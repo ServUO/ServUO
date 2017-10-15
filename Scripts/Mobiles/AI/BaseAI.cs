@@ -3012,6 +3012,7 @@ namespace Server.Mobiles
 					}
 
 					chance /= 100;
+                    double shadow = Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(trg);
 
 					if (chance > Utility.RandomDouble())
 					{

@@ -43,6 +43,8 @@ namespace Server.Spells.SkillMasteries
         public virtual bool CancelsSpecialMove { get { return CancelsWeaponAbility; } }
         public virtual bool ClearOnSpecialAbility { get { return false; } }
 
+        public virtual bool RevealOnTick { get { return true; } }
+
         public virtual TimeSpan ExpirationPeriod { get { return TimeSpan.FromMinutes(30); } }
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.25); } }
 
@@ -144,7 +146,11 @@ namespace Server.Spells.SkillMasteries
 
 		public virtual bool OnTick()
 		{
-            Caster.RevealingAction();
+            if (RevealOnTick)
+            {
+                Caster.RevealingAction();
+            }
+
             int upkeep = ScaleUpkeep();
 
             if (0.10 > Utility.RandomDouble())

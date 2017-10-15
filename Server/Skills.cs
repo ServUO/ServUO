@@ -526,7 +526,8 @@ namespace Server
 			double gainFactor,
 			StatCode primary,
             StatCode secondary, 
-            bool mastery = false)
+            bool mastery = false,
+            bool usewhilecasting = false)
 		{
 			Name = name;
 			Title = title;
@@ -542,6 +543,7 @@ namespace Server
 			Primary = primary;
 			Secondary = secondary;
             IsMastery = mastery;
+            UseWhileCasting = usewhilecasting;
 
 			StatTotal = strScale + dexScale + intScale;
 		}
@@ -574,6 +576,8 @@ namespace Server
 		public double GainFactor { get; set; }
 
         public bool IsMastery { get; set; }
+
+        public bool UseWhileCasting { get; set; }
 
         public int Localization { get { return 1044060 + SkillID; } }
 
@@ -611,7 +615,7 @@ namespace Server
 			new SkillInfo(29, "Musicianship", 0.0, 0.0, 0.0, "Bard", null, 0.0, 0.8, 0.2, 1.0, StatCode.Dex, StatCode.Int),
 			new SkillInfo(30, "Poisoning", 0.0, 4.0, 16.0, "Assassin", null, 0.0, 0.4, 1.6, 1.0, StatCode.Int, StatCode.Dex, true ),
 			new SkillInfo(31, "Archery", 2.5, 7.5, 0.0, "Archer", null, 0.25, 0.75, 0.0, 1.0, StatCode.Dex, StatCode.Str, true ),
-			new SkillInfo(32, "Spirit Speak", 0.0, 0.0, 0.0, "Medium", null, 0.0, 0.0, 1.0, 1.0, StatCode.Int, StatCode.Str),
+			new SkillInfo(32, "Spirit Speak", 0.0, 0.0, 0.0, "Medium", null, 0.0, 0.0, 1.0, 1.0, StatCode.Int, StatCode.Str, false, true),
 			new SkillInfo(33, "Stealing", 0.0, 10.0, 0.0, "Pickpocket", null, 0.0, 1.0, 0.0, 1.0, StatCode.Dex, StatCode.Int),
 			new SkillInfo(34, "Tailoring", 3.75, 16.25, 5.0, "Tailor", null, 0.38, 1.63, 0.5, 1.0, StatCode.Dex, StatCode.Int),
 			new SkillInfo(35, "Animal Taming", 14.0, 2.0, 4.0, "Tamer", null, 1.4, 0.2, 0.4, 1.0, StatCode.Str, StatCode.Int, true ),
@@ -895,7 +899,7 @@ namespace Server
 
 				if (info.Callback != null)
 				{
-					if (Core.TickCount - from.NextSkillTime >= 0 && from.Spell == null)
+					if (Core.TickCount - from.NextSkillTime >= 0 && (info.UseWhileCasting || from.Spell == null))
 					{
 						from.DisruptiveAction();
 

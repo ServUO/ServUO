@@ -1,5 +1,7 @@
 #region References
 using System;
+using System.Collections.Generic;
+
 using Server.Factions;
 using Server.Gumps;
 using Server.Misc;
@@ -7,6 +9,7 @@ using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
 using Server.Multis;
+using Server.ContextMenus;
 #endregion
 
 namespace Server.Items
@@ -38,6 +41,13 @@ namespace Server.Items
 		public CrystalPortal(Serial serial)
 			: base(serial)
 		{ }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            SetSecureLevelEntry.AddTo(from, this, list);
+        }
 
 		public virtual bool ValidateUse(Mobile m, bool message)
 		{
