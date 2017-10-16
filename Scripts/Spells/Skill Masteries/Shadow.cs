@@ -17,6 +17,7 @@ namespace Server.Spells.SkillMasteries
         public override double UpKeep { get { return 4; } }
         public override int RequiredMana { get { return 10; } }
         public override bool RevealOnTick { get { return false; } }
+        public override bool RevealOnCast { get { return false; } }
 
         public override SkillName CastSkill { get { return SkillName.Ninjitsu; } }
         public override SkillName DamageSkill { get { return SkillName.Stealth; } }

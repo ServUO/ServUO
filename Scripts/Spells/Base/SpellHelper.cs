@@ -377,8 +377,8 @@ namespace Server.Spells
 
 			if (mod != null)
 				offset = Math.Max(mod.Offset, offset);
-
-			offset *= -1;
+            
+            offset *= -1;
 
             target.AddStatMod(new StatMod(type, name, offset, TimeSpan.Zero));
 			return true;

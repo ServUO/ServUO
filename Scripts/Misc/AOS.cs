@@ -575,9 +575,6 @@ namespace Server
                     value -= 30;
 
                 #region SA
-                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
-                    value -= 10;
-
                 if (m is PlayerMobile && m.Race == Race.Gargoyle)
                 {
                     value += ((PlayerMobile)m).GetRacialBerserkBuff(false);

@@ -303,7 +303,7 @@ namespace Server.Spells.Necromancy
             Mobile mob = (Mobile)state;
 
             if (mob.Hits > 0)
-                --mob.Hits;
+                mob.Hits -= 2;
             else
                 mob.Kill();
         }

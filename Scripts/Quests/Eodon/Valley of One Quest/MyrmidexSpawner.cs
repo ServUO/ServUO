@@ -42,7 +42,8 @@ namespace Server.Items
         public override bool HandlesOnMovement { get { return NextSpawn < DateTime.UtcNow; } }
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m.InRange(this.Location, 7) && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
+            if (m.InRange(this.Location, 7) && m.AccessLevel == AccessLevel.Player &&
+                (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
             {
                 Focus = m;
                 DoSpawn();
