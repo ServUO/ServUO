@@ -99,6 +99,12 @@ namespace Server.Spells.Fourth
 
         public static void DoCurse(Mobile caster, Mobile m, bool masscurse)
         {
+            if (Mysticism.StoneFormSpell.CheckImmunity(m))
+            {
+                caster.SendLocalizedMessage(1080192); // Your target resists your ability reduction magic.
+                return;
+            }
+
             int oldStr = SpellHelper.GetCurseOffset(m, StatType.Str);
             int oldDex = SpellHelper.GetCurseOffset(m, StatType.Dex);
             int oldInt = SpellHelper.GetCurseOffset(m, StatType.Int);

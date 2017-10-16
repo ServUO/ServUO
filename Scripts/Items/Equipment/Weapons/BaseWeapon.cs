@@ -2400,6 +2400,9 @@ namespace Server.Items
 
 			percentageBonus = Math.Min(percentageBonus, 300);
 
+            // bonus is seprate from weapon damage, ie not capped
+            percentageBonus += Spells.Mysticism.StoneFormSpell.GetMaxResistBonus(attacker);
+
 			damage = AOS.Scale(damage, 100 + percentageBonus);
 			#endregion
 

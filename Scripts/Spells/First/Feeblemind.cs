@@ -65,8 +65,13 @@ namespace Server.Spells.First
             else if (CheckHSequence(m))
             {
                 SpellHelper.Turn(Caster, m);
-
                 SpellHelper.CheckReflect((int)Circle, Caster, ref m);
+
+                if (Mysticism.StoneFormSpell.CheckImmunity(m))
+                {
+                    Caster.SendLocalizedMessage(1080192); // Your target resists your ability reduction magic.
+                    return;
+                }
 
                 int oldOffset = SpellHelper.GetCurseOffset(m, StatType.Int);
 				SpellHelper.AddStatCurse(Caster, m, StatType.Int, false);

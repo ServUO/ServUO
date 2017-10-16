@@ -778,7 +778,10 @@ namespace Server.Spells.SkillMasteries
 			AddToTable(Caster, this);
 			AddStatMods();
 
-            Caster.RevealingAction();
+            if (RevealOnTick)
+            {
+                Caster.RevealingAction();
+            }
 
             Caster.Delta(MobileDelta.WeaponDamage);
 
