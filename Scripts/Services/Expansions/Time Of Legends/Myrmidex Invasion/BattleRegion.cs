@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Server.Engines.MyrmidexInvasion
 {
-    public class BattleRegion : StygianAbyssRegion
+    public class BattleRegion : DungeonRegion
 	{
         public BattleSpawner Spawner { get; set; }
 

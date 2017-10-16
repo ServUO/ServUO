@@ -377,8 +377,8 @@ namespace Server.Spells
 
 			if (mod != null)
 				offset = Math.Max(mod.Offset, offset);
-            
-            offset *= -1;
+
+			offset *= -1;
 
             target.AddStatMod(new StatMod(type, name, offset, TimeSpan.Zero));
 			return true;
@@ -727,19 +727,23 @@ namespace Server.Spells
             new TravelValidator(IsGuardianRoom),
             new TravelValidator(IsHeartwood),
             new TravelValidator(IsMLDungeon),
+            new TravelValidator(IsSADungeon),
+            new TravelValidator(IsTombOfKings),
+            new TravelValidator(IsMazeOfDeath),
+            new TravelValidator(IsSAEntrance),
             new TravelValidator(IsEodon),
         };
 
         private static readonly bool[,] m_Rules = new bool[,]
         {
-					/*T2A(Fel),	Khaldun,	Ilshenar,	Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel),	CrystalCave(Malas),	Gauntlet(Malas),	Gauntlet(Ferry),	SafeZone,	Stronghold,	ChampionSpawn,	Dungeons(Tokuno[Malas]),	LampRoom(Doom),	GuardianRoom(Doom),	Heartwood,	MLDungeons, Eodon*/
-/* Recall From */	{ false,	false,		true,		true,		false,		false,			true,			false,		false,				false,				false,				true,		true,		false,			true,						false,			false,				false,		false,      true} ,
-/* Recall To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
-/* Gate From */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
-/* Gate To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
-/* Mark In */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
-/* Tele From */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				true,				true,		false,		true,			true,						true,			true,				false,		true,       true },
-/* Tele To */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				false,				false,		false, 		true,			true,						true,			true,				false,		false,      true },
+					/*T2A(Fel),	Khaldun,	Ilshenar,	Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel),	CrystalCave(Malas),	Gauntlet(Malas),	Gauntlet(Ferry),	SafeZone,	Stronghold,	ChampionSpawn,	Dungeons(Tokuno[Malas]),	LampRoom(Doom),	GuardianRoom(Doom),	Heartwood,	MLDungeons, SA Dungeons		Tomb of Kings	Maze of Death	SA Entrance,    Eodon*/
+/* Recall From */	{ false,	false,		true,		true,		false,		false,			true,			false,		false,				false,				false,				true,		true,		false,			true,						false,			false,				false,		false,      true,           true,           false,          false,          true} ,
+/* Recall To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
+/* Gate From */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
+/* Gate To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
+/* Mark In */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
+/* Tele From */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				true,				true,		false,		true,			true,						true,			true,				false,		true,       true,           false,          false,          false,          true },
+/* Tele To */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				false,				false,		false, 		true,			true,						true,			true,				false,		false,      true,           false,          false,          false,          true },
         };
 
         public static void SendInvalidMessage(Mobile caster, TravelCheckType type)
@@ -1029,12 +1033,36 @@ namespace Server.Spells
             return MondainsLegacy.IsMLRegion(Region.Find(loc, map));
         }
 
+        public static bool IsTombOfKings(Map map, Point3D loc)
+        {
+            return (Region.Find(loc, map).IsPartOf(typeof(TombOfKingsRegion)));
+        }
+
+        public static bool IsMazeOfDeath(Map map, Point3D loc)
+        {
+            return (Region.Find(loc, map).IsPartOf(typeof(MazeOfDeathRegion)));
+        }
+
+        public static bool IsSAEntrance(Map map, Point3D loc)
+        {
+            return map == Map.TerMur && loc.X >= 1122 && loc.Y >= 1067 && loc.X <= 1144 && loc.Y <= 1086;
+        }
+
+        public static bool IsSADungeon(Map map, Point3D loc)
+        {
+            if (map != Map.TerMur)
+                return false;
+
+            Region region = Region.Find(loc, map);
+            return (region.IsPartOf(typeof(DungeonRegion)) && !region.IsPartOf(typeof(TombOfKingsRegion)));
+        }
+
         public static bool IsEodon(Map map, Point3D loc)
         {
             if (map == Map.Felucca && loc.X >= 6975 && loc.X <= 7042 && loc.Y >= 2048 && loc.Y <= 2115)
                 return true;
 
-            return map == Map.TerMur && loc.X >= 64 && loc.X <= 1015 && loc.Y >= 1344 && loc.Y <= 2239;
+            return map == Map.TerMur && loc.X > 64 && loc.X < 1015 && loc.Y > 1344 && loc.Y < 2239;
         }
 
         public static bool IsNewDungeon(Map map, Point3D loc)
@@ -1270,9 +1298,8 @@ namespace Server.Spells
                     ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage);
 
                 WeightOverloading.DFA = dfa;
-                DamageType dtype = spell != null ? spell.SpellDamageType : DamageType.Spell;
 
-                int damageGiven = AOS.Damage(damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, dtype);
+                int damageGiven = AOS.Damage(damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct);
 
                 if (from != null && target != null) // sanity check
                 {
@@ -1454,9 +1481,8 @@ namespace Server.Spells
                     ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
 
                 WeightOverloading.DFA = m_DFA;
-                DamageType dtype = m_Spell != null ? m_Spell.SpellDamageType : DamageType.Spell;
 
-                int damageGiven = AOS.Damage(m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy, m_Chaos, m_Direct, dtype);
+                int damageGiven = AOS.Damage(m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy, m_Chaos, m_Direct);
 
                 if (m_From != null && target != null) // sanity check
                 {

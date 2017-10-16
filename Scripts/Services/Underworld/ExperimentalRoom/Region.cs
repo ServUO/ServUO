@@ -6,7 +6,7 @@ using Server.Items;
 
 namespace Server.Regions
 {
-    public class ExperimentalRoomRegion : StygianAbyssRegion
+    public class ExperimentalRoomRegion : DungeonRegion
     {
         public ExperimentalRoomRegion(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
