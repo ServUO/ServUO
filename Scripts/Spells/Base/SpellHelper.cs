@@ -1062,7 +1062,7 @@ namespace Server.Spells
             if (map == Map.Felucca && loc.X >= 6975 && loc.X <= 7042 && loc.Y >= 2048 && loc.Y <= 2115)
                 return true;
 
-            return map == Map.TerMur && loc.X > 64 && loc.X < 1015 && loc.Y > 1344 && loc.Y < 2239;
+            return map == Map.TerMur && loc.X >= 64 && loc.X <= 1015 && loc.Y >= 1344 && loc.Y <= 2239;
         }
 
         public static bool IsNewDungeon(Map map, Point3D loc)
@@ -1298,8 +1298,9 @@ namespace Server.Spells
                     ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage);
 
                 WeightOverloading.DFA = dfa;
+                DamageType dtype = spell != null ? spell.SpellDamageType : DamageType.Spell;
 
-                int damageGiven = AOS.Damage(damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct);
+                int damageGiven = AOS.Damage(damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, dtype);
 
                 if (from != null && target != null) // sanity check
                 {
@@ -1481,8 +1482,9 @@ namespace Server.Spells
                     ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
 
                 WeightOverloading.DFA = m_DFA;
+                DamageType dtype = m_Spell != null ? m_Spell.SpellDamageType : DamageType.Spell;
 
-                int damageGiven = AOS.Damage(m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy, m_Chaos, m_Direct);
+                int damageGiven = AOS.Damage(m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy, m_Chaos, m_Direct, dtype);
 
                 if (m_From != null && target != null) // sanity check
                 {
