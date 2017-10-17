@@ -8922,9 +8922,6 @@
     <Compile Include="Regions\Spawning\SpawnPersistence.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Regions\StygianAbyssRegion.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Regions\TownRegion.cs">
       <SubType>Code</SubType>
     </Compile>
