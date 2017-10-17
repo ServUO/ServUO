@@ -17,15 +17,35 @@ namespace Server.Items
         }
 
         [Constructable]
-        public StoneFootwear(int itemID) : base(itemID)
+        public StoneFootwear(int itemID) 
+            : base(itemID)
         {
-            Weight = 3.0;
+            string name = GetNameInfo(ItemID);
+
+            if (name == "thigh boots")
+            {
+                Weight = 4.0;
+            }
+            else if (name == "boots")
+            {
+                Weight = 3.0;
+            }
+            else if (name == "shoes")
+            {
+                Weight = 2.0;
+            }
+            else if (name == "sandals")
+            {
+                Weight = 1.0;
+            }
+
+            StrRequirement = 10;
         }
 
-        public string GetNameInfo()
+        public string GetNameInfo(int itemID)
         {
             string name = "foot wear";
-            switch (ItemID)
+            switch (itemID)
             {
                 case 5899:
                 case 5900: name = "boots"; break;
@@ -43,18 +63,20 @@ namespace Server.Items
         {
             if (parent is Mobile)
             {
+                ((Mobile)parent).SendLocalizedMessage(1151094, GetNameInfo(ItemID)); // You manage to equip the stone ~1_token~ and find you can no longer move!
+
                 if (((Mobile)parent).Frozen && Navrey.Table.ContainsKey((Mobile)parent))
                 {
                     ((Mobile)parent).Frozen = false;
                     Navrey.RemoveFromTable((Mobile)parent);
-                    ((Mobile)parent).SendMessage("You have been released from Navrey's web!");
+                    ((Mobile)parent).SendLocalizedMessage(1005603); //You can move again!
                 }
             }
         }
 
-        public override void AddNameProperties(ObjectPropertyList list)
+        public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1151095, GetNameInfo());
+            list.Add(1151095, GetNameInfo(ItemID)); // stone ~1_token~
         }
 
         public static void EventSink_Movement(MovementEventArgs e)
@@ -75,13 +97,37 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version < 1)
+            {
+                string name = GetNameInfo(ItemID);
+
+                if (name == "thigh boots")
+                {
+                    Weight = 4.0;
+                }
+                else if (name == "boots")
+                {
+                    Weight = 3.0;
+                }
+                else if (name == "shoes")
+                {
+                    Weight = 2.0;
+                }
+                else if (name == "sandals")
+                {
+                    Weight = 1.0;
+                }
+
+                StrRequirement = 10;
+            }
         }
     }
 
