@@ -2723,7 +2723,7 @@ namespace Server.Items
         {
             CraftAttributeInfo attrInfo = GetResourceAttrs(Resource);
 
-            if (attrInfo == null)
+            if (attrInfo == null || Resource == CraftResource.Heartwood)
                 return 0;
 
             return attrInfo.ArmorLuck;
@@ -3189,17 +3189,17 @@ namespace Server.Items
                 m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
                 m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
                 m_AosAttributes.RegenHits += attrInfo.ArmorRegenHits;
-                m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
+                //m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
             }
             else
             {
-                switch (Utility.Random(5))
+                switch (Utility.Random(4))
                 {
                     case 0: m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage; break;
                     case 1: m_AosAttributes.AttackChance += attrInfo.ArmorHitChance; break;
-                    case 2: m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage; break;
-                    case 3: m_AosAttributes.Luck += attrInfo.ArmorLuck; break;
-                    case 4: m_AosArmorAttributes.LowerStatReq += attrInfo.ArmorLowerRequirements; break;
+                    //case 2: m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage; break;
+                    case 2: m_AosAttributes.Luck += attrInfo.ArmorLuck; break;
+                    case 3: m_AosArmorAttributes.LowerStatReq += attrInfo.ArmorLowerRequirements; break;
                 }
             }
         }

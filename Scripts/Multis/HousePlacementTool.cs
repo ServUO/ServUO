@@ -23,17 +23,21 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1060651;
-            }
-        }// a house placement tool
+        public override int LabelNumber { get { return 1060651; } } // a house placement tool
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))
+            {
+                if (from.Map == Map.TerMur && !Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
+                {                    
+                    from.SendLocalizedMessage(1113713); // You must rise to the rank of noble in the eyes of the Gargoyle Queen before her majesty will allow you to build a house in her lands.
+                    return;
+                }
+
                 from.SendGump(new HousePlacementCategoryGump(from));
+            }
+                
             else
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
         }
@@ -41,14 +45,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             if (Weight == 0.0)
