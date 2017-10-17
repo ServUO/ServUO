@@ -23,17 +23,17 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public SecureLevel Level 
 		{
-			get { return this.m_Level; }
-			set { this.m_Level = value; }
+			get { return m_Level; }
+			set { m_Level = value; }
 		}
 		
 		public override bool HandlesOnSpeech { get { return true; } }
 
 		[Constructable]
 		public CrystalPortal()
+            : base(0x468B)
 		{
-			ItemID = 18059;
-			//Weight = 20;
+			Weight = 5.0;
 			Movable = true;
 			LootType = LootType.Blessed;
 		}
@@ -193,19 +193,24 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(0); // version
-			
-			writer.WriteEncodedInt((int)this.m_Level);
+			writer.Write(1); // version			
+			writer.WriteEncodedInt((int)m_Level);
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
+            int version = reader.ReadInt();
 
-			reader.ReadInt();
-			
-			this.m_Level = (SecureLevel)reader.ReadEncodedInt();
-		}
+            m_Level = (SecureLevel)reader.ReadEncodedInt();
+
+            if (version < 1)
+            {
+                ItemID = 0x468B;
+                Hue = 0;
+                Weight = 5.0;
+            }
+        }
 
 		public static void ResolveDest(string name, ref Point3D loc, ref Map map)
 		{
