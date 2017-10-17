@@ -159,7 +159,7 @@ namespace Server.Engines.Harvest
 
             Type type = null;
 
-            if (skillBase >= resource.ReqSkill && from.CheckSkill(def.Skill, resource.MinSkill, resource.MaxSkill))
+            if (CheckHarvestSkill(map, loc, skillBase, resource.ReqSkill) && from.CheckSkill(def.Skill, resource.MinSkill, resource.MaxSkill))
             {
                 type = GetResourceType(from, tool, def, map, loc, resource);
 
@@ -260,6 +260,11 @@ namespace Server.Engines.Harvest
                 def.SendMessageTo(from, def.FailMessage);
 
             OnHarvestFinished(from, tool, def, vein, bank, resource, toHarvest);
+        }
+
+        public virtual bool CheckHarvestSkill(Map map, Point3D loc, double skillBase, double reqSkill)
+        {
+            return skillBase >= reqSkill;
         }
 
         public virtual void OnToolUsed(Mobile from, Item tool, bool caughtSomething)

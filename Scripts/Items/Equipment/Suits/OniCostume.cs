@@ -8,9 +8,16 @@ namespace Server.Items
 		[Constructable]
 		public OniCostume() : base( )
 		{
-            Name = "an oni halloween costume";
             this.CostumeBody = 241;
 		}
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1114242;
+            }
+        }// oni costume
 
 		public OniCostume( Serial serial ) : base( serial )
 		{

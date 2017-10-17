@@ -8,9 +8,16 @@ namespace Server.Items
 		[Constructable]
 		public OphidianMatriarchCostume() : base( )
 		{
-            Name = "an ophidian matriarch halloween costume";
             this.CostumeBody = 87;
 		}
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1114230;
+            }
+        }// ophidian matriarch costume
 
 		public OphidianMatriarchCostume( Serial serial ) : base( serial )
 		{

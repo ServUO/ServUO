@@ -8,9 +8,16 @@ namespace Server.Items
 		[Constructable]
 		public VoidWandererCostume() : base( )
 		{
-            Name = "a wanderer of the void halloween costume";
             this.CostumeBody = 316;
 		}
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1114286;
+            }
+        }// void wanderer costume
 
 		public VoidWandererCostume( Serial serial ) : base( serial )
 		{

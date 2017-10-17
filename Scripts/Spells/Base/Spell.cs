@@ -719,7 +719,7 @@ namespace Server.Spells
 			{
 				m_Caster.SendLocalizedMessage(502643); // You can not cast a spell while frozen.
 			}
-			else if (m_Caster.Spell != null && m_Caster.Spell.IsCasting)
+            else if (SkillHandlers.SpiritSpeak.IsInSpiritSpeak(m_Caster) || (m_Caster.Spell != null && m_Caster.Spell.IsCasting))
 			{
 				m_Caster.SendLocalizedMessage(502642); // You are already casting a spell.
 			}

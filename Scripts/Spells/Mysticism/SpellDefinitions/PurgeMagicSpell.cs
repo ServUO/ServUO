@@ -227,7 +227,7 @@ namespace Server.Spells.Mysticism
             }
         }
 
-        public static void RemoveCurse(Mobile from)
+        public static void RemoveCurse(Mobile from, Mobile caster)
         {
             if (m_CurseTable.ContainsKey(from))
             {
@@ -244,7 +244,7 @@ namespace Server.Spells.Mysticism
 
                     m_CurseTable.Remove(from);
 
-                    SpellHelper.Damage(TimeSpan.Zero, from, damage, 0, 0, 0, 0, 0, 100, 0);
+                    AOS.Damage(from, caster, damage, 0, 0, 0, 0, 0, 100, 0);
                 }
             }
 
@@ -254,7 +254,7 @@ namespace Server.Spells.Mysticism
         public static void OnMobileDoDamage(Mobile from)
         {
             if (from != null && m_CurseTable.ContainsKey(from))
-                RemoveCurse(from);
+                RemoveCurse(from, m_CurseTable[from].Caster);
         }
 
         public static bool IsUnderCurseEffects(Mobile from)
@@ -298,7 +298,7 @@ namespace Server.Spells.Mysticism
 
             protected override void OnTick()
             {
-                PurgeMagicSpell.RemoveCurse(m_Mobile);
+                PurgeMagicSpell.RemoveCurse(m_Mobile, m_Caster);
             }
         }
 	}

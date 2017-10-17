@@ -248,6 +248,11 @@ namespace Server.Items
 
             PublicOverheadMessage(MessageType.Regular, 0, 1116364); //**bob**
 
+            if (m_Owner != null && (!SpecialFishingNet.ValidateDeepWater(Map, X, Y) || m_Owner.Skills[SkillName.Fishing].Base >= 75.0))
+            {
+                m_Owner.CheckSkill(SkillName.Fishing, 0, 120);
+            }
+
             if (!m_InUse)
             {
                 EndTimer(null);

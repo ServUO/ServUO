@@ -8,9 +8,16 @@ namespace Server.Items
 		[Constructable]
 		public WolfSpiderCostume() : base( )
 		{
-            Name = "a wolf spider halloween costume";
             this.CostumeBody = 376;
 		}
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1114232;
+            }
+        }// wolf spider costume
 
 		public WolfSpiderCostume( Serial serial ) : base( serial )
 		{

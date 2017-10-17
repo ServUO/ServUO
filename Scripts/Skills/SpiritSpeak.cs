@@ -106,6 +106,11 @@ namespace Server.SkillHandlers
             return false;
         }
 
+        public static bool IsInSpiritSpeak(Mobile m)
+        {
+            return _Table != null && _Table.ContainsKey(m);
+        }
+
         public static void Remove(Mobile m)
         {
             if (_Table != null && _Table.ContainsKey(m))
@@ -115,6 +120,9 @@ namespace Server.SkillHandlers
 
                 m.SendSpeedControl(SpeedControlType.Disable);
                 _Table.Remove(m);
+
+                if (_Table.Count == 0)
+                    _Table = null;
             }
         }
 

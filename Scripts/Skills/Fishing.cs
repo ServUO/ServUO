@@ -266,7 +266,7 @@ namespace Server.Engines.Harvest
             if (FishInfo.IsRareFish(type))
                 return type;
 
-            bool deepWater = SpecialFishingNet.FullValidation(map, loc.X, loc.Y);
+            bool deepWater = Items.SpecialFishingNet.ValidateDeepWater(map, loc.X, loc.Y);
             bool junkproof = HasTypeHook(tool, HookType.JunkProof); 
 
             double skillBase = from.Skills[SkillName.Fishing].Base;
@@ -1016,6 +1016,14 @@ namespace Server.Engines.Harvest
             }
             else
                 base.FinishHarvesting(from, tool, def, toHarvest, locked);
+        }
+
+        public override bool CheckHarvestSkill(Map map, Point3D loc, double skillBase, double reqSkill)
+        {
+            if (SpecialFishingNet.ValidateDeepWater(map, loc.X, loc.Y) && skillBase < 75.0)
+                return false;
+
+            return base.CheckHarvestSkill(map, loc, skillBase, reqSkill);
         }
 
         public Type GetSpecialLavaItem(Mobile from, Item type, Map map, Point3D pnt, object toHarvest)

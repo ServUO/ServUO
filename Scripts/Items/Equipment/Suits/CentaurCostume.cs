@@ -9,9 +9,16 @@ namespace Server.Items
         [Constructable]
         public CentaurCostume() : base()
         {
-            Name = "a Centaur halloween Costume";
             this.CostumeBody = 101;
         }
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1114235;
+            }
+        }// centaur costume
 
         public CentaurCostume(Serial serial)
             : base(serial)

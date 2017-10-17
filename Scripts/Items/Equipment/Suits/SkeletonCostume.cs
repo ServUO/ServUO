@@ -8,9 +8,16 @@ namespace Server.Items
 		[Constructable]
 		public SkeletonCostume() : base( )
 		{
-            Name = "a skeleton halloween costume";
             this.CostumeBody = 50;
 		}
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1113996;
+            }
+        }// skeleton halloween costume
 
 		public SkeletonCostume( Serial serial ) : base( serial )
 		{
