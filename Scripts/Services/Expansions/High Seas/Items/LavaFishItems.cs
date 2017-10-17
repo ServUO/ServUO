@@ -19,12 +19,65 @@ namespace Server.Items
         [Constructable]
         public StoneFootwear(int itemID) : base(itemID)
         {
-            Weight = 3.0;
+            Name = GetNameInfo(itemID);
+
+            if (Name == "Stone Thigh Boots")
+            {
+                Weight = 4.0;
+            }
+            else if (Name == "Stone Boots")
+            {
+                Weight = 3.0;
+            }            
+            else if (Name == "Stone Shoes")
+            {
+                Weight = 2.0;
+            }
+            else if (Name == "Stone Sandals")
+            {
+                Weight = 1.0;
+            }
+
+            StrRequirement = 10;
         }
 
-        public string GetNameInfo()
+        public string GetNameInfo(int itemID)
         {
-            string name = "foot wear";
+            string name = "";
+
+            switch (ItemID)
+            {
+                case 5899:
+                case 5900: name = "Stone Boots"; break;
+                case 5901:
+                case 5902: name = "Stone Sandals"; break;
+                case 5903:
+                case 5904: name = "Stone Shoes"; break;
+                case 5905:
+                case 5906: name = "Stone Thigh Boots"; break;
+            }
+
+            return name;
+        }
+
+        public override void OnAdded(object parent)
+        {
+            if (parent is Mobile)
+            {
+                ((Mobile)parent).SendLocalizedMessage(1151094, GetClilocName()); // You manage to equip the stone ~1_token~ and find you can no longer move!
+
+                if (((Mobile)parent).Frozen && Navrey.Table.ContainsKey((Mobile)parent))
+                {
+                    ((Mobile)parent).Frozen = false;
+                    Navrey.RemoveFromTable((Mobile)parent);                    
+                }
+            }
+        }
+
+        public string GetClilocName()
+        {
+            string name = "";
+
             switch (ItemID)
             {
                 case 5899:
@@ -36,25 +89,8 @@ namespace Server.Items
                 case 5905:
                 case 5906: name = "thigh boots"; break;
             }
+
             return name;
-        }
-
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
-            {
-                if (((Mobile)parent).Frozen && Navrey.Table.ContainsKey((Mobile)parent))
-                {
-                    ((Mobile)parent).Frozen = false;
-                    Navrey.RemoveFromTable((Mobile)parent);
-                    ((Mobile)parent).SendMessage("You have been released from Navrey's web!");
-                }
-            }
-        }
-
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            list.Add(1151095, GetNameInfo());
         }
 
         public static void EventSink_Movement(MovementEventArgs e)
@@ -70,18 +106,44 @@ namespace Server.Items
             }
         }
 
-        public StoneFootwear(Serial serial) : base(serial) { }
+        public StoneFootwear(Serial serial) : base(serial)
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version < 1)
+            {
+                Name = GetNameInfo(ItemID);
+
+                if (Name == "Stone Thigh Boots")
+                {
+                    Weight = 4.0;
+                }
+                else if (Name == "Stone Boots")
+                {
+                    Weight = 3.0;
+                }
+                else if (Name == "Stone Shoes")
+                {
+                    Weight = 2.0;
+                }
+                else if (Name == "Stone Sandals")
+                {
+                    Weight = 1.0;
+                }
+
+                StrRequirement = 10;
+            }
         }
     }
 
