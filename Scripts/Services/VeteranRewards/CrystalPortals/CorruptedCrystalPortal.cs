@@ -16,24 +16,25 @@ namespace Server.Items
 {
 	public class CorruptedCrystalPortal : Item, ISecurable
 	{
-		private SecureLevel m_Level;
+        public override int LabelNumber { get { return 1150074; } } // Corrupted Crystal Portal
+
+        private SecureLevel m_Level;
 		
 		[CommandProperty(AccessLevel.GameMaster)]
 		public SecureLevel Level 
 		{
-			get { return this.m_Level; }
-			set { this.m_Level = value; }
+			get { return m_Level; }
+			set { m_Level = value; }
 		}
 		
 		public override bool HandlesOnSpeech { get { return true; } }
 
 		[Constructable]
 		public CorruptedCrystalPortal()
+            : base(0x468A)
 		{
-			Name = "Corrupted Crystal Portal";
-			ItemID = 18059;
-			//Weight = 20;
-			Hue = 1164;
+            Hue = 2601;
+			Weight = 1.0;
 			Movable = true;
 			LootType = LootType.Blessed;
 		}
@@ -192,19 +193,23 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-
-			writer.Write(0); // version
+			writer.Write(1); // version
 			
-			writer.WriteEncodedInt((int)this.m_Level);
+			writer.WriteEncodedInt((int)m_Level);
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
+            int version = reader.ReadInt();
 
-			reader.ReadInt();
-			
-			this.m_Level = (SecureLevel)reader.ReadEncodedInt();
+            m_Level = (SecureLevel)reader.ReadEncodedInt();
+
+            if (version < 1)
+            {
+                ItemID = 0x468A;
+                Hue = 2601;
+            }
 		}
 
 		public static void ResolveDest(Mobile m, string name, ref Point3D loc, ref Map map)
