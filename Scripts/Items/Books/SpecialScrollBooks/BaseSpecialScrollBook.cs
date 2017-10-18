@@ -104,7 +104,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    scroll.Movable = false;
+                    scroll.Movable = true;
                     m.SendLocalizedMessage(RemoveMessage);
                 }
             }
