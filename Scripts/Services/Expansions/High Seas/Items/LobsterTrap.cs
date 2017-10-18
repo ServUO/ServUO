@@ -237,9 +237,6 @@ namespace Server.Items
                 if (from.Backpack == null || !from.Backpack.TryDropItem(from, this, false))
                     this.MoveToWorld(from.Location, from.Map);
             }
-
-            if(Items.Count > 0)
-                from.CheckSkill(SkillName.Fishing, 0.0, 75.0);
         }
 
         public void OnTick()
@@ -250,7 +247,7 @@ namespace Server.Items
 
             if (m_Owner != null && (!SpecialFishingNet.ValidateDeepWater(Map, X, Y) || m_Owner.Skills[SkillName.Fishing].Base >= 75.0))
             {
-                m_Owner.CheckSkill(SkillName.Fishing, 0, 120);
+                m_Owner.CheckSkill(SkillName.Fishing, 0, m_Owner.Skills[SkillName.Fishing].Cap);
             }
 
             if (!m_InUse)

@@ -112,8 +112,9 @@ namespace Server.Spells.Mysticism
 
         public virtual double GetResistPercentForCircle(Mobile target, SpellCircle circle)
         {
-            double firstPercent = target.Skills[SkillName.MagicResist].Value / 5.0;
-            double secondPercent = target.Skills[SkillName.MagicResist].Value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
+            double value = GetResistSkill(target);
+            double firstPercent = value / 5.0;
+            double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
 
             return (firstPercent > secondPercent ? firstPercent : secondPercent) / 2.0; // Seems should be about half of what stratics says.
         }

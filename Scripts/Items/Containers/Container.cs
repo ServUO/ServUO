@@ -89,6 +89,10 @@ namespace Server.Items
                     list.Add(new ReleaseEntry(from, item, house));
                 }
             }
+            else
+            {
+                base.GetChildContextMenuEntries(from, list, item);
+            }
         }
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)

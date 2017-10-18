@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Spells.SkillMasteries;
@@ -14,7 +14,9 @@ namespace Server.Spells.Necromancy
             9031,
             Reagent.BatWing,
             Reagent.NoxCrystal);
-        private static readonly Hashtable m_Table = new Hashtable();
+
+        private static readonly Dictionary<Mobile, double> m_Table = new Dictionary<Mobile, double>();
+
         public EvilOmenSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -53,15 +55,23 @@ namespace Server.Spells.Necromancy
             return m_Table.ContainsKey(m);
         }
 
+        public static double GetResistMalus(Mobile m)
+        {
+            if (UnderEffects(m))
+            {
+                return m_Table[m];
+            }
+
+            return 0;
+        }
+
         public static bool TryEndEffect(Mobile m)
         {
-            SkillMod mod = (SkillMod)m_Table[m];
-
-            if (mod == null)
-                return false;
-
-            m_Table.Remove(m);
-            mod.Remove();
+            if (m_Table.ContainsKey(m))
+            {
+                m_Table.Remove(m);
+                BuffInfo.RemoveBuff(m, BuffIcon.EvilOmen);
+            }
 
             return true;
         }
@@ -76,6 +86,10 @@ namespace Server.Spells.Necromancy
             if (!(m is BaseCreature || m is PlayerMobile))
             {
                 Caster.SendLocalizedMessage(1060508); // You can't curse that.
+            }
+            else if (UnderEffects(m))
+            {
+                DoFizzle();
             }
             else if (CheckHSequence(m))
             {
@@ -105,21 +119,13 @@ namespace Server.Spells.Necromancy
             m.FixedParticles(0x3728, 1, 13, 9912, 1150, 7, EffectLayer.Head);
             m.FixedParticles(0x3779, 1, 15, 9502, 67, 7, EffectLayer.Head);
 
-            if (!m_Table.Contains(m))
-            {
-                SkillMod mod = new DefaultSkillMod(SkillName.MagicResist, false, 50.0);
+            HarmfulSpell(m);
 
-                if (m.Skills[SkillName.MagicResist].Base > 50.0)
-                    m.AddSkillMod(mod);
-
-                m_Table[m] = mod;
-            }
+            m_Table[m] = m.Skills[SkillName.MagicResist].Base / 2;
 
             TimeSpan duration = TimeSpan.FromSeconds(((Caster.Skills[SkillName.SpiritSpeak].Value / 12) + 1.0) * strength);
 
             Timer.DelayCall(duration, new TimerStateCallback(EffectExpire_Callback), m);
-
-            HarmfulSpell(m);
 
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.EvilOmen, 1075647, 1075648, duration, m));
         }
@@ -132,6 +138,7 @@ namespace Server.Spells.Necromancy
         private class InternalTarget : Target
         {
             private readonly EvilOmenSpell m_Owner;
+
             public InternalTarget(EvilOmenSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
             {

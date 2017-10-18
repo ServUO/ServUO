@@ -52,17 +52,6 @@ namespace Server.Spells
             return m_ManaTable[(int)this.Circle];
         }
 
-        public override double GetResistSkill(Mobile m)
-        {
-            int maxSkill = (1 + (int)this.Circle) * 10;
-            maxSkill += (1 + ((int)this.Circle / 6)) * 25;
-
-            if (m.Skills[SkillName.MagicResist].Value < maxSkill)
-                m.CheckSkill(SkillName.MagicResist, 0.0, m.Skills[SkillName.MagicResist].Cap);
-
-            return m.Skills[SkillName.MagicResist].Value;
-        }
-
         public virtual bool CheckResisted(Mobile target)
         {
             double n = this.GetResistPercent(target);
@@ -86,8 +75,9 @@ namespace Server.Spells
 
         public virtual double GetResistPercentForCircle(Mobile target, SpellCircle circle)
         {
-            double firstPercent = target.Skills[SkillName.MagicResist].Value / 5.0;
-            double secondPercent = target.Skills[SkillName.MagicResist].Value - (((this.Caster.Skills[this.CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
+            double value = GetResistSkill(target);
+            double firstPercent = value / 5.0;
+            double secondPercent = value - (((this.Caster.Skills[this.CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
 
             return (firstPercent > secondPercent ? firstPercent : secondPercent) / 2.0; // Seems should be about half of what stratics says.
         }
