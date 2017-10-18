@@ -50,7 +50,7 @@ namespace Server.Spells.Mysticism
             else if (CheckHSequence(target))
             {
                 double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 2;
-                duration -= target.Skills[SkillName.MagicResist].Value / 10;
+                duration -= GetResistSkill(target) / 10;
 
                 if (duration <= 0 || StoneFormSpell.CheckImmunity(target))
                 {

@@ -8,9 +8,16 @@ namespace Server.Items
 		[Constructable]
 		public TerathanWarriorCostume() : base( )
 		{
-            Name = "a terathan warrior halloween costume";
             this.CostumeBody = 70;
 		}
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1114228;
+            }
+        }// terathan warrior costume
 
 		public TerathanWarriorCostume( Serial serial ) : base( serial )
 		{

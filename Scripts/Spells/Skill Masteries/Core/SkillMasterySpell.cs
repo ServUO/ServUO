@@ -323,7 +323,7 @@ namespace Server.Spells.SkillMasteries
 		public virtual double DamageModifier(Mobile victim)
 		{
             double dSkill = Caster.Skills[DamageSkill].Value;
-			double vSkill = victim.Skills[SkillName.MagicResist].Value;
+            double vSkill = GetResistSkill(victim);
 				
 			double reduce = (dSkill - vSkill) / dSkill;
 				
@@ -359,8 +359,9 @@ namespace Server.Spells.SkillMasteries
 
         public virtual double GetResistPercent(Mobile target, int level)
         {
-            double firstPercent = target.Skills[SkillName.MagicResist].Value / 5.0;
-            double secondPercent = target.Skills[SkillName.MagicResist].Value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + level) * 5.0);
+            double value = GetResistSkill(target);
+            double firstPercent = value / 5.0;
+            double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + level) * 5.0);
 
             return (firstPercent > secondPercent ? firstPercent : secondPercent) / 2.0;
         }

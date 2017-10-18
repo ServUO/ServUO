@@ -70,20 +70,20 @@ namespace Server.Spells.Necromancy
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (this.CheckHSequence(m))
+            if (CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
                 ApplyEffects(m);
                 ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public void ApplyEffects(Mobile m, double strength = 1.0)
@@ -113,9 +113,9 @@ namespace Server.Spells.Necromancy
             m.FixedParticles(0x373A, 1, 15, 9913, 67, 7, EffectLayer.Head);
             m.PlaySound(0x1BB);
 
-            double ss = this.GetDamageSkill(this.Caster);
-            double mr = (this.Caster == m ? 0.0 : this.GetResistSkill(m));
-            m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
+            double ss = GetDamageSkill(Caster);
+            double mr = GetResistSkill(m);
+            m.CheckSkill(SkillName.MagicResist, 0.0, m.Skills[SkillName.MagicResist].Cap);	//Skill check for gain
 
             TimeSpan duration = TimeSpan.FromSeconds((((ss - mr) / 2.5) + 40.0) * strength);
 
@@ -141,7 +141,7 @@ namespace Server.Spells.Necromancy
             for (int i = 0; i < mods.Length; ++i)
                 m.AddResistanceMod(mods[i]);
 
-            this.HarmfulSpell(m);
+            HarmfulSpell(m);
         }
 
         private class ExpireTimer : Timer
@@ -155,15 +155,15 @@ namespace Server.Spells.Necromancy
             public ExpireTimer(Mobile m, ResistanceMod[] mods, int malus, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Mobile = m;
-                this.m_Mods = mods;
-                this.m_Malus = malus;
+                m_Mobile = m;
+                m_Mods = mods;
+                m_Malus = malus;
             }
 
             public void DoExpire(bool message = true)
             {
-                for (int i = 0; i < this.m_Mods.Length; ++i)
-                    this.m_Mobile.RemoveResistanceMod(this.m_Mods[i]);
+                for (int i = 0; i < m_Mods.Length; ++i)
+                    m_Mobile.RemoveResistanceMod(m_Mods[i]);
 
                 Stop();
                 BuffInfo.RemoveBuff(m_Mobile, BuffIcon.CorpseSkin);
@@ -179,7 +179,7 @@ namespace Server.Spells.Necromancy
 
             protected override void OnTick()
             {
-                this.DoExpire();
+                DoExpire();
             }
         }
 
@@ -189,18 +189,18 @@ namespace Server.Spells.Necromancy
             public InternalTarget(CorpseSkinSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

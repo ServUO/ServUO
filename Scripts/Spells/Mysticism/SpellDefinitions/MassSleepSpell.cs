@@ -61,7 +61,7 @@ namespace Server.Spells.Mysticism
 						Mobile m = targets[i];
 
                         double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 3;
-                        duration -= target.Skills[SkillName.MagicResist].Value / 10;
+                        duration -= GetResistSkill(target) / 10;
 
                         if (duration > 0)
                         {

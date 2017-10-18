@@ -413,7 +413,10 @@ namespace Server.Spells
             double percent;
 
             if (curse)
-                percent = 8 + (caster.Skills.EvalInt.Fixed / 100) - (target.Skills.MagicResist.Fixed / 100);
+            {
+                double resistFixed = target.Skills.MagicResist.Fixed - (EvilOmenSpell.GetResistMalus(target) * 10);
+                percent = 8 + (caster.Skills.EvalInt.Fixed / 100) - (resistFixed / 100);
+            }
             else
                 percent = 1 + (caster.Skills.EvalInt.Fixed / 100);
 

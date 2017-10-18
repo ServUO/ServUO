@@ -67,25 +67,6 @@ namespace Server.Items
 
         public virtual bool RequireDeepWater { get { return true; } }
 
-        public static bool FullValidation(Map map, int x, int y)
-        {
-            bool valid = ValidateDeepWater(map, x, y);
-
-            for (int j = 1, offset = 4; valid && j <= 4; ++j, offset += 4)
-            {
-                if (!ValidateDeepWater(map, x + offset, y + offset))
-                    valid = false;
-                else if (!ValidateDeepWater(map, x + offset, y - offset))
-                    valid = false;
-                else if (!ValidateDeepWater(map, x - offset, y + offset))
-                    valid = false;
-                else if (!ValidateDeepWater(map, x - offset, y - offset))
-                    valid = false;
-            }
-
-            return valid;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -157,7 +138,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(500979); // You cannot see that location.
             }
-            else if (this.RequireDeepWater ? FullValidation(map, x, y) : (ValidateDeepWater(map, x, y) || ValidateUndeepWater(map, obj, ref z)))
+            else if (this.RequireDeepWater ? SpecialFishingNet.FullValidation(map, x, y) : (SpecialFishingNet.ValidateDeepWater(map, x, y) || SpecialFishingNet.ValidateUndeepWater(map, obj, ref z)))
             {
                 Point3D p = new Point3D(x, y, z);
 
@@ -260,17 +241,6 @@ namespace Server.Items
                     spawn.Combatant = from;
                 }
             }
-        }
-
-        private static bool ValidateDeepWater(Map map, int x, int y)
-        {
-            int tileID = map.Tiles.GetLandTile(x, y).ID;
-            bool water = false;
-
-            for (int i = 0; !water && i < m_WaterTiles.Length; i += 2)
-                water = (tileID >= m_WaterTiles[i] && tileID <= m_WaterTiles[i + 1]);
-
-            return water;
         }
 
         private static bool ValidateUndeepWater(Map map, object obj, ref int z)

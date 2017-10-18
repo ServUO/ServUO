@@ -300,7 +300,7 @@ namespace Server.Items
             this.Delete();
         }
 
-        private static bool ValidateDeepWater(Map map, int x, int y)
+        public static bool ValidateDeepWater(Map map, int x, int y)
         {
             int tileID = map.Tiles.GetLandTile(x, y).ID;
             bool water = false;
@@ -311,7 +311,7 @@ namespace Server.Items
             return water;
         }
 
-        private static bool ValidateUndeepWater(Map map, object obj, ref int z)
+        public static bool ValidateUndeepWater(Map map, object obj, ref int z)
         {
             if (!(obj is StaticTarget))
                 return false;

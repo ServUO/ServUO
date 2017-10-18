@@ -8,9 +8,16 @@ namespace Server.Items
 		[Constructable]
 		public ExodusMinionCostume() : base( )
 		{
-            Name = "a exodus minion halloween costume";
             this.CostumeBody = 757;
 		}
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1114239;
+            }
+        }// exodus minion costume
 
 		public ExodusMinionCostume( Serial serial ) : base( serial )
 		{

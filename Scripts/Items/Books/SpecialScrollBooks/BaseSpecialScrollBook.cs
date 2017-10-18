@@ -38,6 +38,10 @@ namespace Server.Items
             {
                 BaseGump.SendGump(new SpecialScrollBookGump((PlayerMobile)m, this));
             }
+            else if (m.AccessLevel > AccessLevel.Player)
+            {
+                base.OnDoubleClick(m);
+            }
         }
 
 
@@ -77,6 +81,8 @@ namespace Server.Items
                     DropItem(dropped);
                     m.SendLocalizedMessage(DropMessage);
 
+                    dropped.Movable = false;
+
                     m.CloseGump(typeof(SpecialScrollBookGump));
 
                     return true;
@@ -98,6 +104,7 @@ namespace Server.Items
                 }
                 else
                 {
+                    scroll.Movable = true;
                     m.SendLocalizedMessage(RemoveMessage);
                 }
             }
@@ -112,7 +119,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -120,6 +127,15 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if(version < 1)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                    {
+                        foreach (var item in Items)
+                            item.Movable = false;
+                    });
+            }
         }
 
         public virtual Dictionary<SkillCat, List<SkillName>> SkillInfo { get { return null; } }

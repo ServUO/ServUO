@@ -15,6 +15,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             Locked = true;
 
             Hue = 2591;
+            LiftOverride = true;
 
             RequiredSkill = 90;
             LockLevel =  RequiredSkill - Utility.Random(1, 10);

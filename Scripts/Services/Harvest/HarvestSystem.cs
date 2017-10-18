@@ -155,11 +155,10 @@ namespace Server.Engines.Harvest
             HarvestResource resource = MutateResource(from, tool, def, map, loc, vein, primary, fallback);
 
             double skillBase = from.Skills[def.Skill].Base;
-            double skillValue = from.Skills[def.Skill].Value;
 
             Type type = null;
 
-            if (skillBase >= resource.ReqSkill && from.CheckSkill(def.Skill, resource.MinSkill, resource.MaxSkill))
+            if(CheckHarvestSkill(map, loc, from, resource, def))
             {
                 type = GetResourceType(from, tool, def, map, loc, resource);
 
@@ -260,6 +259,11 @@ namespace Server.Engines.Harvest
                 def.SendMessageTo(from, def.FailMessage);
 
             OnHarvestFinished(from, tool, def, vein, bank, resource, toHarvest);
+        }
+
+        public virtual bool CheckHarvestSkill(Map map, Point3D loc, Mobile from, HarvestResource resource, HarvestDefinition def)
+        {
+            return from.Skills[def.Skill].Value >= resource.ReqSkill && from.CheckSkill(def.Skill, resource.MinSkill, resource.MaxSkill);
         }
 
         public virtual void OnToolUsed(Mobile from, Item tool, bool caughtSomething)

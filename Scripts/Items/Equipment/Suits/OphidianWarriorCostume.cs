@@ -8,13 +8,20 @@ namespace Server.Items
 		[Constructable]
 		public OphidianWarriorCostume() : base( )
 		{
-            Name = "a ophidian warrior halloween costume";
             this.CostumeBody = 86;
 		}
 
 		public OphidianWarriorCostume( Serial serial ) : base( serial )
 		{
 		}
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1114229;
+            }
+        }// ophidian warrior costume
 
 		public override void Serialize( GenericWriter writer )
 		{
