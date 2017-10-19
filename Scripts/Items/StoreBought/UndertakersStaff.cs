@@ -154,7 +154,7 @@ namespace Server.Items
             {
                 List<Corpse> copy = new List<Corpse>(corpses);
 
-                foreach (var c in corpses)
+                foreach (var c in copy)
                 {
                     bool remove = false;
 
