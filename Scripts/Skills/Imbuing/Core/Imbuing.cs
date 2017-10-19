@@ -1178,9 +1178,15 @@ namespace Server.SkillHandlers
                 }
             }
             
-            if (item is BaseArmor && mod >= 51 && mod <= 55)
+            if (item is BaseArmor)
             {
-                weight += CheckResists((BaseArmor)item, mod);
+                var arm = (BaseArmor)item;
+
+                if (arm.PhysicalBonus > arm.PhysNonImbuing) { if (mod != 51) { weight += ((double)(100.0 / 15) * (double)(arm.PhysicalBonus - arm.PhysNonImbuing)); } }
+                if (arm.FireBonus > arm.FireNonImbuing) { if (mod != 52) { weight += ((double)(100.0 / 15) * (double)(arm.FireBonus - arm.FireNonImbuing)); } }
+                if (arm.ColdBonus > arm.ColdNonImbuing) { if (mod != 53) { weight += ((double)(100.0 / 15) * (double)(arm.ColdBonus - arm.ColdNonImbuing)); } }
+                if (arm.PoisonBonus > arm.PoisonNonImbuing) { if (mod != 54) { weight += ((double)(100.0 / 15) * (double)(arm.PoisonBonus - arm.PoisonNonImbuing)); } }
+                if (arm.EnergyBonus > arm.EnergyNonImbuing) { if (mod != 55) { weight += ((double)(100.0 / 15) * (double)(arm.EnergyBonus - arm.EnergyNonImbuing)); } }
             }
 
             if (aosAttrs != null)
@@ -1232,20 +1238,6 @@ namespace Server.SkillHandlers
                 if (skills.GetBonus(3) > 0) { if (mod < 167 || mod > 173) { weight += ((double)(140.0 / 15.0) * (double)skills.GetBonus(3)); } }
                 if (skills.GetBonus(4) > 0) { if (mod < 174 || mod > 180) { weight += ((double)(140.0 / 15.0) * (double)skills.GetBonus(4)); } }
             }
-
-            return (int)Math.Round(weight);
-        }
-
-        private static int CheckResists(BaseArmor i, int mod)
-        {
-            double weight = 0;
-            int max = GetMaxIntensity(i, Imbuing.Table[mod]);
-
-            if (i.PhysicalBonus > i.PhysNonImbuing) { if (mod != 51) { weight += ((double)(100.0 / max) * (double)(i.PhysicalBonus - i.PhysNonImbuing)); } }
-            if (i.FireBonus > i.FireNonImbuing) { if (mod != 52) { weight += ((double)(100.0 / max) * (double)(i.FireBonus - i.FireNonImbuing)); } }
-            if (i.ColdBonus > i.ColdNonImbuing) { if (mod != 53) { weight += ((double)(100.0 / max) * (double)(i.ColdBonus - i.ColdNonImbuing)); } }
-            if (i.PoisonBonus > i.PoisonNonImbuing) { if (mod != 54) { weight += ((double)(100.0 / max) * (double)(i.PoisonBonus - i.PoisonNonImbuing)); } }
-            if (i.EnergyBonus > i.EnergyNonImbuing) { if (mod != 55) { weight += ((double)(100.0 / max) * (double)(i.EnergyBonus - i.EnergyNonImbuing)); } }
 
             return (int)Math.Round(weight);
         }
