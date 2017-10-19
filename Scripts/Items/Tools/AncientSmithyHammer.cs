@@ -18,10 +18,10 @@ namespace Server.Items
         public AncientSmithyHammer(int bonus, int uses)
             : base(uses, 0x13E4)
         {
-            this.m_Bonus = bonus;
-            this.Weight = 8.0;
-            this.Layer = Layer.OneHanded;
-            this.Hue = 0x482;
+            m_Bonus = bonus;
+            Weight = 8.0;
+            Layer = Layer.OneHanded;
+            Hue = 0x482;
         }
 
         public AncientSmithyHammer(Serial serial)
@@ -34,28 +34,28 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Bonus;
+                return m_Bonus;
             }
             set
             {
-                this.m_Bonus = value;
-                this.InvalidateProperties();
+                m_Bonus = value;
+                InvalidateProperties();
 
-                if (this.m_Bonus == 0)
+                if (m_Bonus == 0)
                 {
-                    if (this.m_SkillMod != null)
-                        this.m_SkillMod.Remove();
+                    if (m_SkillMod != null)
+                        m_SkillMod.Remove();
 
-                    this.m_SkillMod = null;
+                    m_SkillMod = null;
                 }
-                else if (this.m_SkillMod == null && this.Parent is Mobile)
+                else if (m_SkillMod == null && Parent is Mobile)
                 {
-                    this.m_SkillMod = new DefaultSkillMod(SkillName.Blacksmith, true, this.m_Bonus);
-                    ((Mobile)this.Parent).AddSkillMod(this.m_SkillMod);
+                    m_SkillMod = new DefaultSkillMod(SkillName.Blacksmith, true, m_Bonus);
+                    ((Mobile)Parent).AddSkillMod(m_SkillMod);
                 }
-                else if (this.m_SkillMod != null)
+                else if (m_SkillMod != null)
                 {
-                    this.m_SkillMod.Value = this.m_Bonus;
+                    m_SkillMod.Value = m_Bonus;
                 }
             }
         }
@@ -77,13 +77,13 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (this.m_Bonus != 0 && parent is Mobile)
+            if (m_Bonus != 0 && parent is Mobile)
             {
-                if (this.m_SkillMod != null)
-                    this.m_SkillMod.Remove();
+                if (m_SkillMod != null)
+                    m_SkillMod.Remove();
 
-                this.m_SkillMod = new DefaultSkillMod(SkillName.Blacksmith, true, this.m_Bonus);
-                ((Mobile)parent).AddSkillMod(this.m_SkillMod);
+                m_SkillMod = new DefaultSkillMod(SkillName.Blacksmith, true, m_Bonus);
+                ((Mobile)parent).AddSkillMod(m_SkillMod);
             }
         }
 
@@ -91,27 +91,27 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (this.m_SkillMod != null)
-                this.m_SkillMod.Remove();
+            if (m_SkillMod != null)
+                m_SkillMod.Remove();
 
-            this.m_SkillMod = null;
+            m_SkillMod = null;
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.m_Bonus != 0)
-                list.Add(1060451, "#1042354\t{0}", this.m_Bonus.ToString()); // ~1_skillname~ +~2_val~
+            if (m_Bonus != 0)
+                list.Add(1060451, "#1042354\t{0}", m_Bonus.ToString()); // ~1_skillname~ +~2_val~
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 
-            writer.Write((int)this.m_Bonus);
+            writer.Write((int)m_Bonus);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -124,22 +124,22 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Bonus = reader.ReadInt();
+                        m_Bonus = reader.ReadInt();
                         break;
                     }
             }
 
-            if (this.m_Bonus != 0 && this.Parent is Mobile)
+            if (m_Bonus != 0 && Parent is Mobile)
             {
-                if (this.m_SkillMod != null)
-                    this.m_SkillMod.Remove();
+                if (m_SkillMod != null)
+                    m_SkillMod.Remove();
 
-                this.m_SkillMod = new DefaultSkillMod(SkillName.Blacksmith, true, this.m_Bonus);
-                ((Mobile)this.Parent).AddSkillMod(this.m_SkillMod);
+                m_SkillMod = new DefaultSkillMod(SkillName.Blacksmith, true, m_Bonus);
+                ((Mobile)Parent).AddSkillMod(m_SkillMod);
             }
 
-            if (this.Hue == 0)
-                this.Hue = 0x482;
+            if (version == 0 && Hue == 0)
+                Hue = 0x482;
         }
     }
 }
