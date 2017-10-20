@@ -29,7 +29,11 @@ namespace Server.SkillHandlers
 		{
 			if (Core.AOS)
 			{
-                if (BeginSpiritSpeak(m))
+                if (m.Spell != null && m.Spell.IsCasting)
+                {
+                    m.SendLocalizedMessage(502642); // You are already casting a spell.
+                }
+                else if (BeginSpiritSpeak(m))
                 {
                     return TimeSpan.FromSeconds(5.0);
                 }

@@ -136,6 +136,8 @@ namespace Server.Engines.Plants
                 {
                     entry = new SeedEntry(seed);
                     DropItem(seed);
+
+                    seed.Movable = false;
                 }
                 else
                 {
@@ -247,6 +249,8 @@ namespace Server.Engines.Plants
                 entry.Seed.Amount -= amount;
             }
 
+            seed.Movable = true;
+
             if (from.Backpack == null || !from.Backpack.TryDropItem(from, seed, false))
             {
                 seed.MoveToWorld(from.Location, from.Map);
@@ -319,7 +323,7 @@ namespace Server.Engines.Plants
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
 
             writer.Write(IsRewardItem);
             writer.Write((int)Level);
@@ -367,6 +371,17 @@ namespace Server.Engines.Plants
                             Entries.Add(entry);
                         break;
                 }
+            }
+
+            if (v == 0)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                    {
+                        foreach (var item in Items)
+                        {
+                            item.Movable = false;
+                        }
+                    });
             }
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckEntries);
