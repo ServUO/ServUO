@@ -122,6 +122,7 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 1:
                 case 0:
                     {
                         m_Bonus = reader.ReadInt();
