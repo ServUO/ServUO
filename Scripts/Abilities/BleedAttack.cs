@@ -155,7 +155,6 @@ namespace Server.Items
                 m_Mobile = m;
                 Priority = TimerPriority.TwoFiftyMS;
 				m_BloodDrinker = blooddrinker;
-                Splintering = splintering;
 
                 m_MaxCount = Spells.SkillMasteries.BardSpell.GetSpellForParty(m, typeof(Spells.SkillMasteries.ResilienceSpell)) != null ? 3 : 5;
 			}
