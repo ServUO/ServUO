@@ -121,12 +121,12 @@ namespace Server.Mobiles
 
 		public override void OnThink()
 		{
-			Mobile master = ControlMaster;
-
-			if (Deleted)
+            if (Deleted || Map == null)
 			{
 				return;
 			}
+
+            Mobile master = ControlMaster;
 
 			if (master == null || master.Deleted)
 			{

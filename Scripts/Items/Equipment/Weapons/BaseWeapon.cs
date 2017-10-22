@@ -2799,18 +2799,42 @@ namespace Server.Items
 				}
 				#endregion
 
-				int laChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLowerAttack) * propertyBonus);
-				int ldChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLowerDefend) * propertyBonus);
+                int laChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLowerAttack) * propertyBonus);
 
 				if (laChance != 0 && laChance > Utility.Random(100))
 				{
 					DoLowerAttack(attacker, defender);
 				}
 
-				if (ldChance != 0 && ldChance > Utility.Random(100))
-				{
-					DoLowerDefense(attacker, defender);
-				}
+                if (!Core.HS)
+                {
+                    int ldChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLowerDefend) * propertyBonus);
+
+                    if (ldChance != 0 && ldChance > Utility.Random(100))
+                    {
+                        DoLowerDefense(attacker, defender);
+                    }
+                }
+                else
+                {
+                    int hldWep = m_AosWeaponAttributes.HitLowerDefend;
+                    int hldGlasses = 0;
+                    
+                    var helm = attacker.FindItemOnLayer(Layer.Helm);
+
+                    if (helm != null)
+                    {
+                        var attrs = RunicReforging.GetAosWeaponAttributes(helm);
+
+                        if(attrs != null)
+                            hldGlasses = attrs.HitLowerDefend;
+                    }
+
+                    if ((hldWep > 0 && hldWep > Utility.Random(100)) || (hldGlasses > 0 && hldGlasses > Utility.Random(100)))
+                    {
+                        DoLowerDefense(attacker, defender);
+                    }
+                }
 			}
 
 			if (attacker is BaseCreature)
