@@ -35,6 +35,7 @@ namespace Server.Items
 		
 		public static void BeginBleed(Mobile m, Mobile from, bool splintering = false)
         {
+            EndBleed(m, true);
             bool blooddrinker = CheckBloodDrink(from);
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Bleed, 1075829, 1075830, TimeSpan.FromSeconds(10), m, String.Format("{0}\t{1}\t{2}", "1", "10", "2")));
 
@@ -187,7 +188,7 @@ namespace Server.Items
 
                     DoBleed(m_Mobile, m_From, damage, m_BloodDrinker);
 
-                    if (++m_Count == m_MaxCount)
+                    if (++m_Count >= m_MaxCount)
                         EndBleed(m_Mobile, true);
                 }
             }
