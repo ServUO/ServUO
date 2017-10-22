@@ -35,22 +35,24 @@ namespace Server.Items
 		
 		public static void BeginBleed(Mobile m, Mobile from, bool splintering = false)
         {
-            bool blooddrinker = CheckBloodDrink(from);
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Bleed, 1075829, 1075830, TimeSpan.FromSeconds(10), m, String.Format("{0}\t{1}\t{2}", "1", "10", "2")));
-
-            BleedTimer timer;
+            BleedTimer timer = null;
 
             if (m_BleedTable.ContainsKey(m))
             {
-                timer = m_BleedTable[m];
-
-                if (timer.Splintering != splintering)
+                if (splintering)
                 {
+                    timer = m_BleedTable[m];
                     timer.Stop();
+                }
+                else
+                {
+                    return;
                 }
             }
 
-            timer = new BleedTimer(from, m, blooddrinker, splintering);
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Bleed, 1075829, 1075830, TimeSpan.FromSeconds(10), m, String.Format("{0}\t{1}\t{2}", "1", "10", "2")));
+
+            timer = new BleedTimer(from, m, CheckBloodDrink(from));
             m_BleedTable[m] = timer;
             timer.Start();
         }
@@ -103,19 +105,7 @@ namespace Server.Items
 		
 		public static bool CheckBloodDrink(Mobile attacker)
 		{
-			Item onehand = attacker.FindItemOnLayer( Layer.OneHanded );
-			Item twohand = attacker.FindItemOnLayer( Layer.TwoHanded );
-
-			BaseWeapon bw = null;
-			if (onehand is BaseWeapon)
-				bw = onehand as BaseWeapon;
-			else if (twohand is BaseWeapon)
-				bw = twohand as BaseWeapon;
-
-		    if (bw !=null)
-                return (bw.WeaponAttributes.BloodDrinker != 0);
-
-		    return false;
+            return attacker.Weapon is BaseWeapon && ((BaseWeapon)attacker.Weapon).WeaponAttributes.BloodDrinker > 0;
 		}
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
@@ -158,9 +148,7 @@ namespace Server.Items
             private int m_MaxCount;
             private readonly bool m_BloodDrinker;
 
-            public bool Splintering { get; private set; }
-
-            public BleedTimer(Mobile from, Mobile m, bool blooddrinker, bool splintering)
+            public BleedTimer(Mobile from, Mobile m, bool blooddrinker)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
             {
                 m_From = from;
