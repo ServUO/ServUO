@@ -246,7 +246,7 @@ namespace Server
                         from.Damage(totalDamage, m);
                     }
                 }
-                else
+                else if (!ignoreArmor)
                 {
                     int reflectPhys = Math.Min(105, AosAttributes.GetValue(m, AosAttribute.ReflectPhysical));
 
