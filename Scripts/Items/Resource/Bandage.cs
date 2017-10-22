@@ -271,7 +271,7 @@ namespace Server.Items
 
         public void CheckPoisonOrBleed()
         {
-            bool bleeding = BleedAttack.IsBleeding(m_Patient) || SplinteringWeaponContext.IsBleeding(m_Patient);
+            bool bleeding = BleedAttack.IsBleeding(m_Patient);
             bool poisoned = m_Patient.Poisoned;
 
             if (bleeding || poisoned)
@@ -298,10 +298,6 @@ namespace Server.Items
                         if (BleedAttack.IsBleeding(m_Patient))
                         {
                             BleedAttack.EndBleed(m_Patient, false);
-                        }
-                        else
-                        {
-                            SplinteringWeaponContext.EndBleeding(m_Patient, false);
                         }
 
                         m_Patient.SendLocalizedMessage(1060088); // You bind the wound and stop the bleeding
@@ -466,13 +462,6 @@ namespace Server.Items
                 patientNumber = 1060167; // The bleeding wounds have healed, you are no longer bleeding!
 
                 BleedAttack.EndBleed(m_Patient, false);
-            }
-            else if (SplinteringWeaponContext.IsBleeding(m_Patient))
-            {
-                healerNumber = 1060088; // You bind the wound and stop the bleeding
-                patientNumber = 1060167; // The bleeding wounds have healed, you are no longer bleeding!
-
-                SplinteringWeaponContext.EndBleeding(m_Patient);
             }
             else if (MortalStrike.IsWounded(m_Patient))
             {
@@ -654,7 +643,7 @@ namespace Server.Items
             {
                 healer.SendLocalizedMessage(500951); // You cannot heal that.
             }
-            else if (!patient.Poisoned && patient.Hits == patient.HitsMax && !BleedAttack.IsBleeding(patient) && !SplinteringWeaponContext.IsBleeding(patient) && !isDeadPet)
+            else if (!patient.Poisoned && patient.Hits == patient.HitsMax && !BleedAttack.IsBleeding(patient) && !isDeadPet)
             {
                 healer.SendLocalizedMessage(500955); // That being is not damaged!
             }
