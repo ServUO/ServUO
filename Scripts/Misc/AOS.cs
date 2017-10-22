@@ -214,13 +214,13 @@ namespace Server
                 return totalDamage;
             }
 
-            #region Evil Omen and Blood Oath
+            #region Evil Omen, Blood Oath and reflect physical
             if (EvilOmenSpell.TryEndEffect(m))
             {
                 totalDamage = (int)(totalDamage * 1.25);
             }
 
-            if (from != null)
+            if (from != null && !from.Deleted && from.Alive && !from.IsDeadBondedPet)
             {
                 Mobile oath = BloodOathSpell.GetBloodOath(from);
 
@@ -244,6 +244,24 @@ namespace Server
                     else
                     {
                         from.Damage(totalDamage, m);
+                    }
+                }
+                else if (!ignoreArmor)
+                {
+                    int reflectPhys = Math.Min(105, AosAttributes.GetValue(m, AosAttribute.ReflectPhysical));
+
+                    if (reflectPhys != 0)
+                    {
+                        if (from is ExodusMinion && ((ExodusMinion)from).FieldActive || from is ExodusOverseer && ((ExodusOverseer)from).FieldActive)
+                        {
+                            from.FixedParticles(0x376A, 20, 10, 0x2530, EffectLayer.Waist);
+                            from.PlaySound(0x2F4);
+                            m.SendAsciiMessage("Your weapon cannot penetrate the creature's magical barrier");
+                        }
+                        else
+                        {
+                            from.Damage(Scale((damage * phys * (100 - (ignoreArmor ? 0 : m.PhysicalResistance))) / 10000, reflectPhys), m);
+                        }
                     }
                 }
             }
@@ -291,25 +309,6 @@ namespace Server
                 totalDamage = m.Hits;
 
             SpiritualityVirtue.GetDamageReduction(m, ref totalDamage);
-
-            if (from != null && !from.Deleted && from.Alive)
-            {
-                int reflectPhys = Math.Min(105, AosAttributes.GetValue(m, AosAttribute.ReflectPhysical));
-
-                if (reflectPhys != 0)
-                {
-                    if (from is ExodusMinion && ((ExodusMinion)from).FieldActive || from is ExodusOverseer && ((ExodusOverseer)from).FieldActive)
-                    {
-                        from.FixedParticles(0x376A, 20, 10, 0x2530, EffectLayer.Waist);
-                        from.PlaySound(0x2F4);
-                        m.SendAsciiMessage("Your weapon cannot penetrate the creature's magical barrier");
-                    }
-                    else
-                    {
-                        from.Damage(Scale((damage * phys * (100 - (ignoreArmor ? 0 : m.PhysicalResistance))) / 10000, reflectPhys), m);
-                    }
-                }
-            }
 
             #region Berserk
             BestialSetHelper.OnDamage(m, from, ref totalDamage);

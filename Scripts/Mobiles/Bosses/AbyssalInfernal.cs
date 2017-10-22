@@ -90,7 +90,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 4);
+            AddLoot(LootPack.UltraRich, 4);
         }
 
         public override void OnDeath(Container c)
@@ -102,10 +102,10 @@ namespace Server.Mobiles
                 switch (Utility.Random(2))
                 {
                     case 0:
-                        this.AddToBackpack(new HornAbyssalInferno());
+                        AddToBackpack(new HornAbyssalInferno());
                         break;
                     case 1:
-                        this.AddToBackpack(new NetherCycloneScroll());
+                        AddToBackpack(new NetherCycloneScroll());
                         break;
                 }
             }
@@ -116,9 +116,9 @@ namespace Server.Mobiles
             base.OnGaveMeleeAttack(defender);
 
             if (0.25 >= Utility.RandomDouble())
-                this.DrainLife();
+                DrainLife();
 
-            this.DoSpecialAbility(defender);
+            DoSpecialAbility(defender);
         }
 
         public override void OnGotMeleeAttack(Mobile attacker)
@@ -126,9 +126,9 @@ namespace Server.Mobiles
             base.OnGotMeleeAttack(attacker);
 
             if (0.25 >= Utility.RandomDouble())
-                this.DrainLife();
+                DrainLife();
 
-            this.DoSpecialAbility(attacker);
+            DoSpecialAbility(attacker);
         }
 
         public void DoSpecialAbility(Mobile target)
@@ -137,15 +137,15 @@ namespace Server.Mobiles
                 return;
 
             if (0.05 >= Utility.RandomDouble()) // 20% chance to more ratmen
-                this.SpawnFollowers(target);
+                SpawnFollowers(target);
         }
 
         public override void OnActionCombat()
         {
-            if (DateTime.UtcNow > this.m_Delay)
+            if (DateTime.UtcNow > m_Delay)
             {
                 Ability.CrimsonMeteor(this, 100);
-                this.m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 35));
+                m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 35));
             }
 
             base.OnActionCombat();
@@ -153,11 +153,11 @@ namespace Server.Mobiles
 
         public override void OnDamagedBySpell(Mobile caster)
         {
-            if (this.Map != null && caster != this && caster is PlayerMobile && 0.20 > Utility.RandomDouble())
+            if (Map != null && caster != this && caster is PlayerMobile && 0.20 > Utility.RandomDouble())
             {
-                this.Combatant = caster;
-                this.Map = caster.Map;
-                this.Location = caster.Location;
+                Combatant = caster;
+                Map = caster.Map;
+                Location = caster.Location;
 
                 switch (Utility.Random(5))
                 {
@@ -209,10 +209,13 @@ namespace Server.Mobiles
 
         public void SpawnFollowers(Mobile from)
         {
+            if (Map == null)
+                return;
+
             Point3D loc = Map.GetSpawnPosition(Location, 8);
             Type type = m_SummonTypes[Utility.Random(m_SummonTypes.Length)];
 
-            this.PlaySound(0x218);
+            PlaySound(0x218);
 
             for (int i = 0; i < 4; i++)
             {
