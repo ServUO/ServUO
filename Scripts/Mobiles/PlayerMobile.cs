@@ -809,7 +809,7 @@ namespace Server.Mobiles
             {
                 from.TargetLocked = true;
 
-                if (from.UseSkill(e.SkillID))
+                if (from.UseSkill(e.SkillID) && from.Target != null)
                     from.Target.Invoke(from, to);
 
                 from.TargetLocked = false;
@@ -818,7 +818,7 @@ namespace Server.Mobiles
             {
                 from.TargetLocked = true;
 
-                if (from.UseSkill(e.SkillID))
+                if (from.UseSkill(e.SkillID) && from.Target != null)
                     from.Target.Invoke(from, toItem);
 
                 from.TargetLocked = false;

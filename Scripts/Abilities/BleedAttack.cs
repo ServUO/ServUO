@@ -57,7 +57,7 @@ namespace Server.Items
 
         public static void DoBleed(Mobile m, Mobile from, int damage, bool blooddrinker)
         {
-            if (m.Alive)
+            if (m.Alive && !m.IsDeadBondedPet)
             {
                 if (!m.Player)
                     damage *= 2;
