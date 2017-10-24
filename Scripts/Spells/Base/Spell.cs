@@ -212,11 +212,6 @@ namespace Server.Spells
 
             damageBonus += SpellHelper.GetSpellDamageBonus(m_Caster, target, CastSkill, playerVsPlayer);
 
-            Console.WriteLine("Base Damage: {0}", damage);
-            Console.WriteLine("scribe Bonus: {0}", inscribeBonus);
-            Console.WriteLine("scribe Bonus: {0}", inscribeBonus);
-            Console.WriteLine("sdi bonus: {0}", SpellHelper.GetSpellDamageBonus(m_Caster, target, CastSkill, playerVsPlayer));
-            Console.WriteLine("total sdi bonus: {0}", damageBonus);
 			damage = AOS.Scale(damage, 100 + damageBonus);
 
             if (target != null && Feint.Registry.ContainsKey(target) && Feint.Registry[target].Enemy == Caster)
