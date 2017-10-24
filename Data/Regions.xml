@@ -2782,11 +2782,6 @@
       <rect x="624" y="3296" width="303" height="287" />
       <go x="750" y="3440" z="-20" />
       <music name="RoyalCity" />
-      <region name="Royal Soulforge">
-        <rect x="745" y="3371" width="8" height="8" />
-        <go x="797" y="3436" z="-10" />
-        <music name="QueenPalace" />
-      </region>
       <region name="Queen's Palace">
         <rect x="717" y="3339" width="68" height="73" />
         <go x="748" y="3357" z="55" />
