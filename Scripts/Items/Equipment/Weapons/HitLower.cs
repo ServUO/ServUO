@@ -24,6 +24,9 @@ namespace Server.Items
             m_AttackTable[m] = new AttackTimer(m);
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.HitLowerAttack, 1151315, 1151314, AttackEffectDuration, m, "25"));
             m.SendLocalizedMessage(1062319); // Your attack chance has been reduced!
+
+            m.Delta(MobileDelta.WeaponDamage);
+
             return true;
         }
 
@@ -42,6 +45,9 @@ namespace Server.Items
                 m_DefenseTable[m] = new DefenseTimer(m, 25);
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.HitLowerDefense, 1151313, 1151286, DefenseEffectDuration, m, "35"));
                 m.SendLocalizedMessage(1062318); // Your defense chance has been reduced!
+
+                m.Delta(MobileDelta.WeaponDamage);
+
                 return true;
             }
             else
@@ -53,6 +59,7 @@ namespace Server.Items
                     if (timer != null)
                     {
                         timer.Stop();
+                        timer.DefenseMalus = 0;
                     }
                 }
 
@@ -71,6 +78,9 @@ namespace Server.Items
                 m_DefenseTable[m] = new DefenseTimer(m, malus);
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.HitLowerDefense, 1151313, 1151286, DefenseEffectDuration, m, malus.ToString()));
                 m.SendLocalizedMessage(1062318); // Your defense chance has been reduced!
+
+                m.Delta(MobileDelta.WeaponDamage);
+
                 return true;
             }
         }
@@ -126,7 +136,7 @@ namespace Server.Items
         private class DefenseTimer : Timer
         {
             private readonly Mobile m_Player;
-            public int DefenseMalus { get; private set; }
+            public int DefenseMalus { get; set; }
 
             public DefenseTimer(Mobile player, int malus)
                 : base(DefenseEffectDuration)
