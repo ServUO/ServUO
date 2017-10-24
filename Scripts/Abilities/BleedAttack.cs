@@ -170,7 +170,7 @@ namespace Server.Items
                     int damage = 0;
 
                     if (!Server.Spells.SkillMasteries.WhiteTigerFormSpell.HasBleedMod(m_From, out damage))
-                        damage = Math.Max(1, Utility.RandomMinMax(1 + (m_MaxCount - m_Count), 10 - m_Count));
+                        damage = Math.Max(1, Utility.RandomMinMax(5 - m_Count, (5 - m_Count) * 2));
 
                     DoBleed(m_Mobile, m_From, damage, m_BloodDrinker);
 

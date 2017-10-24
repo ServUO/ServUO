@@ -125,11 +125,11 @@ namespace Server.Items
 
             protected override void OnTick()
             {
-                if (m_Effect.Mobile == null || (m_Effect.Mobile.Deleted || !m_Effect.Mobile.Alive))
+                if (m_Effect.Mobile == null || (m_Effect.Mobile.Deleted || !m_Effect.Mobile.Alive || m_Effect.Mobile.IsDeadBondedPet))
                 {
                     m_Effect.RemoveEffects();
                 }
-                else if (m_Effect.Victim != null && (m_Effect.Victim.Deleted || !m_Effect.Victim.Alive))
+                else if (m_Effect.Victim != null && (m_Effect.Victim.Deleted || !m_Effect.Victim.Alive || m_Effect.Mobile.IsDeadBondedPet))
                 {
                     m_Effect.RemoveEffects();
                 }
@@ -391,34 +391,23 @@ namespace Server.Items
 
     public class SplinteringWeaponContext : PropertyEffect
     {
-        private int m_Level;
-        private bool m_Bleeding;
-
-        public bool Bleeding { get { return m_Bleeding; } }
-
         public SplinteringWeaponContext(Mobile from, Mobile defender, Item weapon)
-            : base(from, defender, weapon, EffectsType.Splintering, TimeSpan.MinValue, TimeSpan.FromSeconds(2))
+            : base(from, defender, weapon, EffectsType.Splintering, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))
         {
-            m_Bleeding = true;
-            m_Level = 0;
-
             StartForceWalk(defender);
             BleedAttack.BeginBleed(defender, from, true);
 
             defender.SendLocalizedMessage(1112486); // A shard of the brittle weapon has become lodged in you!
+            Server.Effects.PlaySound(from.Location, from.Map, 0x1DF);
+
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1154670, 1152144, TimeSpan.FromSeconds(10), defender));
         }
 
         public override void OnTick()
         {
-            m_Level++;
+            base.OnTick();
 
-            if (m_Level > 4)
-            {
-                RemoveEffects();
-                BuffInfo.RemoveBuff(Victim, BuffIcon.SplinteringEffect);
-                return;
-            }
+            BuffInfo.RemoveBuff(Victim, BuffIcon.SplinteringEffect);
         }
 
         public void StartForceWalk(Mobile m)

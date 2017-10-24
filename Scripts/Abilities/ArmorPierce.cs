@@ -63,6 +63,7 @@ namespace Server.Items
                     _Table[defender].Stop();
                 }
 
+                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ArmorPierce, 1028860, 1154367, TimeSpan.FromSeconds(3), defender, "10"));
                 _Table[defender] = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), RemoveEffects, defender);
             }
 
