@@ -172,13 +172,9 @@ namespace Server.Engines.Craft
                     number = 1094793;
                 }
             }
-            else if (!Server.SkillHandlers.Imbuing.CheckSoulForge(from, 2, false))
+            else if (!Server.SkillHandlers.Imbuing.CheckSoulForge(from, 2, false, false))
             {
                 number = 1111867; // You must be near a soulforge to alter an item.
-            }
-            else if (!Server.SkillHandlers.Imbuing.CheckQueen(from))
-            {
-                number = 1113736; // You must rise to the rank of noble in the eyes of the Gargoyle Queen before her majesty will allow you to use this soulforge.
             }
             else if (m_Contract == null && value < 100.0)
             {

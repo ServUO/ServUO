@@ -25,6 +25,12 @@ namespace Server.SkillHandlers
             CommandSystem.Register("GetTotalMods", AccessLevel.GameMaster, new CommandEventHandler(GetTotalMods_OnCommand));
         }
 
+        private static void OnLogin(LoginEventArgs e)
+        {
+            if (!e.Mobile.CanBeginAction(typeof(Imbuing)))
+                e.Mobile.EndAction(typeof(Imbuing));
+        }
+
         private static Dictionary<Mobile, ImbuingContext> m_ContextTable = new Dictionary<Mobile, ImbuingContext>();
         public static Dictionary<Mobile, ImbuingContext> ContextTable { get { return m_ContextTable; } }
 
@@ -33,9 +39,10 @@ namespace Server.SkillHandlers
             if (!from.Alive)
                 from.SendLocalizedMessage(500949); //You can't do that when you're dead.
             else
-            {
+            {                
                 from.CloseGump(typeof(ImbuingGump));
                 from.SendGump(new ImbuingGump(from));
+                from.BeginAction(typeof(Imbuing));
             }
 
             return TimeSpan.FromSeconds(1.0);
@@ -60,24 +67,46 @@ namespace Server.SkillHandlers
 
         public static bool CanImbueItem(Mobile from, Item item)
         {
+            if (!Imbuing.CheckSoulForge(from, 2))
+            {
+                return false;
+            }
             if (item == null || !item.IsChildOf(from.Backpack))
+            {
                 from.SendLocalizedMessage(1079575);  // The item must be in your backpack to imbue it.
+            }
             else if (item.LootType == LootType.Blessed || item.LootType == LootType.Newbied)
+            {
                 from.SendLocalizedMessage(1080438);  // You cannot imbue a blessed item.
+            }
             else if (item is BaseWeapon && Spells.Mysticism.EnchantSpell.IsUnderSpellEffects(from, (BaseWeapon)item))
+            {
                 from.SendLocalizedMessage(1080130);  // You cannot imbue an item that is currently enchanted.
+            }
             else if (item is BaseWeapon && ((BaseWeapon)item).FocusWeilder != null)
+            {
                 from.SendLocalizedMessage(1080444);  //You cannot imbue an item that is under the effects of the ninjitsu focus attack ability.
+            }
             else if (IsSpecialItem(item))
-                from.SendMessage("You cannot imbue an item with such strange magical properties.");
+            {
+                from.SendLocalizedMessage(1079576); // You cannot imbue this item.
+            }
             else if (item is IFactionItem && ((IFactionItem)item).FactionItemState != null)
+            {
                 from.SendLocalizedMessage(1114312); // You cannot imbue faction items.
+            }
             else if (item is BaseJewel && !(item is BaseRing) && !(item is BaseBracelet))
+            {
                 from.SendLocalizedMessage(1079576); // You cannot imbue this item.
+            }
             else if (IsInNonImbueList(item.GetType()))
+            {
                 from.SendLocalizedMessage(1079576); // You cannot imbue this item.
+            }
             else
+            {
                 return true;
+            }
 
             return false;
         }
@@ -101,15 +130,24 @@ namespace Server.SkillHandlers
 
         public static bool CanUnravelItem(Mobile from, Item item, bool message = true)
         {
-            if (!item.IsChildOf(from.Backpack))
+            if (!CheckSoulForge(from, 2, false, false))
             {
-                if(message)
+                from.SendLocalizedMessage(1080433); // You must be near a soulforge to magically unravel an item.
+            }
+            else if (!item.IsChildOf(from.Backpack))
+            {
+                if (message)
                     from.SendLocalizedMessage(1080424);  // The item must be in your backpack to magically unravel it.
             }
             else if (item.LootType == LootType.Blessed || item.LootType == LootType.Newbied)
             {
                 if (message)
                     from.SendLocalizedMessage(1080421);  // You cannot unravel the magic of a blessed item.
+            }
+            else if (!(item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat))
+            {
+                if (message)
+                    from.SendLocalizedMessage(1080425); // You cannot magically unravel this item.
             }
             else if (item is BaseWeapon && Spells.Mysticism.EnchantSpell.IsUnderSpellEffects(from, (BaseWeapon)item))
             {
@@ -127,7 +165,10 @@ namespace Server.SkillHandlers
                     from.SendLocalizedMessage(1112408); // You cannot magically unravel a faction reward item.
             }
             else
+            {
                 return true;
+            }
+
             return false;
         }
 
@@ -267,7 +308,7 @@ namespace Server.SkillHandlers
         /// <param name="value">value for mod</param>
         public static void ImbueItem(Mobile from, Item i, int mod, int value)
         {
-            if (!CheckSoulForge(from, 1))
+            if (!CheckSoulForge(from, 2))
                 return;
 
             ImbuingContext context = Imbuing.GetContext(from);
@@ -325,6 +366,9 @@ namespace Server.SkillHandlers
 
                 from.Backpack.ConsumeTotal(primary, primResAmount);
 
+                Effects.SendPacket(from, from.Map, new GraphicalEffect(EffectType.FixedFrom, from.Serial, Server.Serial.Zero, 0x375A, from.Location, from.Location, 1, 17, true, false));
+                Effects.SendTargetParticles(from, 0, 1, 0, 0x1593, EffectLayer.Waist);
+
                 if (success >= Utility.RandomDouble() || mod < 0 || mod > 180)
                 {
                     if(from.AccessLevel == AccessLevel.Player)
@@ -334,11 +378,7 @@ namespace Server.SkillHandlers
                         from.Backpack.ConsumeTotal(special, specResAmount);
 
                     from.SendLocalizedMessage(1079775); // You successfully imbue the item!
-
-                    from.PlaySound(0x5D1);
-                    Effects.SendLocationParticles(
-                    EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0x373A,
-                          10, 30, 0, 4, 0, 0);
+                    from.PlaySound(0x1EB);
 
                     object prop = GetAttribute(mod);
 
@@ -589,10 +629,12 @@ namespace Server.SkillHandlers
                 } 
                 else
                 {
-                    from.SendLocalizedMessage(1079774); // Fail
-                    from.PlaySound(0x5AC);
+                    from.SendLocalizedMessage(1079774); // You attempt to imbue the item, but fail.
+                    from.PlaySound(0x1E4);
                 }
             }
+
+            from.EndAction(typeof(Imbuing));
         }
 
 	    public static bool UnravelItem(Mobile from, Item item, bool message = true)
@@ -1285,24 +1327,13 @@ namespace Server.SkillHandlers
             new SkillName[] { SkillName.Mysticism, SkillName.Bushido, SkillName.Necromancy, SkillName.Veterinary, SkillName.Stealing, SkillName.EvalInt, SkillName.Anatomy },
             new SkillName[] { SkillName.Peacemaking, SkillName.Ninjitsu, SkillName.Chivalry, SkillName.Archery, SkillName.MagicResist, SkillName.Healing, SkillName.Throwing }
         };
-
-        // == SoulForge Check ==
+        
         public static bool CheckSoulForge(Mobile from, int range)
         {
             return CheckSoulForge(from, range, true);
         }
 
-        public static bool CheckQueen(Mobile from)
-        {
-            PlayerMobile pm = from as PlayerMobile;
-
-            if (pm != null && pm.Region.IsPartOf("Queen's Palace"))
-                return Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from);
-
-            return true;
-        }
-
-        public static bool CheckSoulForge(Mobile from, int range, bool message)
+        public static bool CheckSoulForge(Mobile from, int range, bool message, bool checkqueen = true)
         {
             PlayerMobile m = from as PlayerMobile;
 
@@ -1319,9 +1350,7 @@ namespace Server.SkillHandlers
 
             foreach (Item item in eable)
             {
-                if ((item.ItemID >= 0x4277 && item.ItemID <= 0x4286) ||
-						(item.ItemID >= 0x4263 && item.ItemID <= 0x4272) ||
-						(item.ItemID >= 17607 && item.ItemID <= 17610))
+                if ((item.ItemID >= 0x4277 && item.ItemID <= 0x4286) || (item.ItemID >= 0x4263 && item.ItemID <= 0x4272) || (item.ItemID >= 17607 && item.ItemID <= 17610))
 				{
 					isForge = true;
 					break;
@@ -1334,26 +1363,33 @@ namespace Server.SkillHandlers
 			{
 				if (message)
 					from.SendLocalizedMessage(1079787); // You must be near a soulforge to imbue an item.
+
 				return false;
 			}
 
-			if (from.Region != null && from.Region.IsPartOf("Royal Soulforge"))
-			{
-				//long level = ((PlayerMobile)from).Exp;
+            if (checkqueen)
+            {
+                if (from.Region != null && from.Region.IsPartOf("Queen's Palace"))
+                {
+                    if (!Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
+                    {
+                        if (message)
+                        {
+                            from.SendLocalizedMessage(1113736); // You must rise to the rank of noble in the eyes of the Gargoyle Queen before her majesty will allow you to use this soulforge.
+                        }
 
-                if (!Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
-				{
-					if (message)
-						from.SendMessage("You must be of Noble loyalty to the Queen in order to use this forge.");
-					return false;
-				}
-				else
-					context.Imbue_SFBonus = 10;
-			}
-			else if (from.Region != null && from.Region.IsPartOf("Royal City"))
-			{
-				context.Imbue_SFBonus = 5;
-			}
+                        return false;
+                    }
+                    else
+                    {
+                        context.Imbue_SFBonus = 10;
+                    }
+                }
+                else if (from.Region != null && from.Region.IsPartOf("Royal City"))
+                {
+                    context.Imbue_SFBonus = 5;
+                }
+            }
 
             return true;
         }
@@ -1376,7 +1412,7 @@ namespace Server.SkillHandlers
 			m_Table[9] = new ImbuingDefinition(AosAttribute.BonusHits,    	        1075630, 110, 	typeof(EnchantedEssence), typeof(Ruby),			typeof(LuminescentFungi),    5, 1, 1111993, false, false, true, false, false);
 			m_Table[10] = new ImbuingDefinition(AosAttribute.BonusStam,     	    1075632, 110, 	typeof(EnchantedEssence), typeof(Diamond), 		typeof(LuminescentFungi),   8, 1, 1112042, false, false, true, false, false);
 			m_Table[11] = new ImbuingDefinition(AosAttribute.BonusMana,   	        1075631, 110, 	typeof(EnchantedEssence), typeof(Sapphire), 	typeof(LuminescentFungi),   8, 1, 1112002, false, false, true, false, false);
-			m_Table[12] = new ImbuingDefinition(AosAttribute.WeaponDamage,          1075619, 100, 	typeof(EnchantedEssence), typeof(Citrine), 		typeof(CrystalShards), 	    50, 1, 1112005, true, true, false, false, true);
+			m_Table[12] = new ImbuingDefinition(AosAttribute.WeaponDamage,          1079399, 100, 	typeof(EnchantedEssence), typeof(Citrine), 		typeof(CrystalShards), 	    50, 1, 1112005, true, true, false, false, true);
 			m_Table[13] = new ImbuingDefinition(AosAttribute.WeaponSpeed, 	        1075629, 110, 	typeof(RelicFragment), 	typeof(Tourmaline), 	typeof(EssenceControl),     30, 5, 1112045, true, true, false, false, false);
 			m_Table[14] = new ImbuingDefinition(AosAttribute.SpellDamage,           1075628, 100, 	typeof(EnchantedEssence), typeof(Emerald), 		typeof(CrystalShards), 	    12, 1, 1112041, false, false, false, false, true);
 			m_Table[15] = new ImbuingDefinition(AosAttribute.CastRecovery,          1075618, 120, 	typeof(RelicFragment), 	typeof(Amethyst), 	    typeof(EssenceDiligence),   3, 1, 1111952, false, false, false, false, true);
@@ -1421,35 +1457,35 @@ namespace Server.SkillHandlers
 			m_Table[61] = new ImbuingDefinition(AosAttribute.BalancedWeapon,	    1072792, 150, 	typeof(RelicFragment),  typeof(Amber), 		    typeof(EssenceBalance),     1, 0, 1112047, false, true, false, false, false);
             m_Table[62] = new ImbuingDefinition("SearingWeapon",	                1151183, 150, 	null,                   null, 		            null,                       1, 0, -1, true, false, false, false, false);
 
-			m_Table[101] = new ImbuingDefinition(SlayerName.OrcSlaying,			1060470, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111977, true, true);
-			m_Table[102] = new ImbuingDefinition(SlayerName.TrollSlaughter,  	1060480, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111990, true, true);
-			m_Table[103] = new ImbuingDefinition(SlayerName.OgreTrashing,   	1060468, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111975, true, true);
-			m_Table[104] = new ImbuingDefinition(SlayerName.DragonSlaying,   	1060462, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111970, true, true);
-			m_Table[105] = new ImbuingDefinition(SlayerName.Terathan, 			1060478, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111989, true, true);
-			m_Table[106] = new ImbuingDefinition(SlayerName.SnakesBane, 		1060475, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111980, true, true);
-			m_Table[107] = new ImbuingDefinition(SlayerName.LizardmanSlaughter,	1060467, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111974, true, true);
+			m_Table[101] = new ImbuingDefinition(SlayerName.OrcSlaying,         1079741, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111977, true, true);
+			m_Table[102] = new ImbuingDefinition(SlayerName.TrollSlaughter,     1079754, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111990, true, true);
+			m_Table[103] = new ImbuingDefinition(SlayerName.OgreTrashing,       1079739, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111975, true, true);
+			m_Table[104] = new ImbuingDefinition(SlayerName.DragonSlaying,      1061284, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111970, true, true);
+			m_Table[105] = new ImbuingDefinition(SlayerName.Terathan,           1079753, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111989, true, true);
+			m_Table[106] = new ImbuingDefinition(SlayerName.SnakesBane,         1079744, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111980, true, true);
+			m_Table[107] = new ImbuingDefinition(SlayerName.LizardmanSlaughter, 1079738, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111974, true, true);
 			//m_Table[108] = new ImbuingDefinition(SlayerName.DaemonDismissal,  	 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl), 1, 0, 1112984);  //check
-			m_Table[108] = new ImbuingDefinition(SlayerName.GargoylesFoe, 		1060466, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111973, true, true);
+			m_Table[108] = new ImbuingDefinition(SlayerName.GargoylesFoe,       1079737, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111973, true, true);
 			//m_Table[110] = new ImbuingDefinition(SlayerName.BalronDamnation,   	 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl), 1, 0, 1112001);  //check
-			m_Table[111] = new ImbuingDefinition(SlayerName.Ophidian,  			1060469, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111976, true, true);
-			m_Table[112] = new ImbuingDefinition(SlayerName.SpidersDeath,   	1060477, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111982, true, true);
-			m_Table[113] = new ImbuingDefinition(SlayerName.ScorpionsBane, 		1060474, 100,	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111979, true, true);
-			m_Table[114] = new ImbuingDefinition(SlayerName.FlameDousing,  		1060465, 100,	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111972, true, true);
-			m_Table[115] = new ImbuingDefinition(SlayerName.WaterDissipation,	1060481, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111991, true, true);
-			m_Table[116] = new ImbuingDefinition(SlayerName.Vacuum,		        1060457, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111968, true, true);
-			m_Table[117] = new ImbuingDefinition(SlayerName.ElementalHealth, 	1060471, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111978, true, true);
-			m_Table[118] = new ImbuingDefinition(SlayerName.EarthShatter,		1060463, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111971, true, true);
-			m_Table[119] = new ImbuingDefinition(SlayerName.BloodDrinking,		1060459, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111969, true, true);
-			m_Table[120] = new ImbuingDefinition(SlayerName.SummerWind,			1060476, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111981, true, true);
+			m_Table[111] = new ImbuingDefinition(SlayerName.Ophidian,           1079740, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111976, true, true);
+			m_Table[112] = new ImbuingDefinition(SlayerName.SpidersDeath,       1079746, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111982, true, true);
+			m_Table[113] = new ImbuingDefinition(SlayerName.ScorpionsBane,      1079743, 100,	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111979, true, true);
+			m_Table[114] = new ImbuingDefinition(SlayerName.FlameDousing,       1079736, 100,	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111972, true, true);
+			m_Table[115] = new ImbuingDefinition(SlayerName.WaterDissipation,   1079755, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111991, true, true);
+			m_Table[116] = new ImbuingDefinition(SlayerName.Vacuum,             1079733, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111968, true, true);
+			m_Table[117] = new ImbuingDefinition(SlayerName.ElementalHealth,    1079742, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111978, true, true);
+			m_Table[118] = new ImbuingDefinition(SlayerName.EarthShatter,       1079735, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111971, true, true);
+			m_Table[119] = new ImbuingDefinition(SlayerName.BloodDrinking,      1079734, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111969, true, true);
+			m_Table[120] = new ImbuingDefinition(SlayerName.SummerWind,         1079745, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111981, true, true);
 		
             //Super Slayers
-			m_Table[121] = new ImbuingDefinition(SlayerName.Silver,			    1060479, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(UndyingFlesh), 	    1, 0, 1111988, true, true);
-			m_Table[122] = new ImbuingDefinition(SlayerName.Repond,			    1060472, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(GoblinBlood), 	    1, 0, 1111986, true, true);
-            m_Table[123] = new ImbuingDefinition(SlayerName.ReptilianDeath,     1060473, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(LavaSerpentCrust),   1, 0, 1111987, true, true);
-			m_Table[124] = new ImbuingDefinition(SlayerName.Exorcism,		    1060460, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(DaemonClaw), 	    1, 0, 1111984, true, true);
-			m_Table[125] = new ImbuingDefinition(SlayerName.ArachnidDoom,	    1060458, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(SpiderCarapace),     1, 0, 1111983, true, true);
-			m_Table[126] = new ImbuingDefinition(SlayerName.ElementalBan,	    1060464, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(VialOfVitriol), 	    1, 0, 1111985, true, true);
-            m_Table[127] = new ImbuingDefinition(SlayerName.Fey,                1070855, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(FeyWings),           1, 0, 1154652, true, true);
+			m_Table[121] = new ImbuingDefinition(SlayerName.Silver,             1079752, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(UndyingFlesh), 	    1, 0, 1111988, true, true);
+			m_Table[122] = new ImbuingDefinition(SlayerName.Repond,             1079750, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(GoblinBlood), 	    1, 0, 1111986, true, true);
+            m_Table[123] = new ImbuingDefinition(SlayerName.ReptilianDeath,     1079751, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(LavaSerpentCrust),   1, 0, 1111987, true, true);
+			m_Table[124] = new ImbuingDefinition(SlayerName.Exorcism,           1079748, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(DaemonClaw), 	    1, 0, 1111984, true, true);
+			m_Table[125] = new ImbuingDefinition(SlayerName.ArachnidDoom,       1079747, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(SpiderCarapace),     1, 0, 1111983, true, true);
+			m_Table[126] = new ImbuingDefinition(SlayerName.ElementalBan,       1079749, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(VialOfVitriol), 	    1, 0, 1111985, true, true);
+            m_Table[127] = new ImbuingDefinition(SlayerName.Fey,                1154652, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(FeyWings),           1, 0, 1154652, true, true);
 
             m_Table[128] = new ImbuingDefinition(SlayerName.Dinosaur,           1156240, 130, null, null, null, 1, 0, -1, true, true);
             m_Table[129] = new ImbuingDefinition(SlayerName.Myrmidex,           1156241, 130, null, null, null, 1, 0, -1, true, true);
