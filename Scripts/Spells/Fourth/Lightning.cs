@@ -55,7 +55,7 @@ namespace Server.Spells.Fourth
 
                 if (Core.AOS)
                 {
-                    damage = this.GetNewAosDamage(23, 1, 4, m);
+                    damage = GetNewAosDamage(69, 1, 11, m);
                 }
                 else if (mob != null)
                 {

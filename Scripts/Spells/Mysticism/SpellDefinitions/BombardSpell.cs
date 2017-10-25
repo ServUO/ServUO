@@ -77,7 +77,7 @@ namespace Server.Spells.Mysticism
                     target.Paralyze(TimeSpan.FromSeconds(3));
 				}
 
-				SpellHelper.Damage( this, target, (int)GetNewAosDamage( 40, 1, 5, target ), 100, 0, 0, 0, 0 );
+                SpellHelper.Damage(this, target, (int)GetNewAosDamage(120, 1, 14, target), 100, 0, 0, 0, 0);
 			}
 
 			FinishSequence();

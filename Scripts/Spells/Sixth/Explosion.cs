@@ -95,7 +95,7 @@ namespace Server.Spells.Sixth
 
                     if (Core.AOS)
                     {
-                        damage = this.m_Spell.GetNewAosDamage(40, 1, 5, m_Target);
+                        damage = this.m_Spell.GetNewAosDamage(120, 1, 14, m_Target);
                     }
                     else if (defender != null)
                     {

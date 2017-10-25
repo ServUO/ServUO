@@ -38,7 +38,7 @@ namespace Server.Spells.Mysticism
 			}
 			else if ( CheckHSequence( target ) )
 			{
-				double damage = GetNewAosDamage( 10, 1, 4, target );
+                double damage = GetNewAosDamage(31, 1, 10, target);
 
                 SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 0, 100, 0);
 

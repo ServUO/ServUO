@@ -72,7 +72,7 @@ namespace Server.Spells.First
 				
                 if (Core.AOS)
                 {
-                    damage = this.GetNewAosDamage(10, 1, 4, d);
+                    damage = GetNewAosDamage(31, 1, 10, d);
                 }
                 else if (m != null)
                 {

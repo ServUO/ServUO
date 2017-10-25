@@ -200,28 +200,20 @@ namespace Server.Spells
 		{
             Mobile target = damageable as Mobile;
 
-			int damage = Utility.Dice(dice, sides, bonus) * 100;
-			int damageBonus = 0;
+            int damage = Utility.Dice(dice, sides, bonus) * 10;
+            int intBonus = Caster.Int / 10;
 
 			int inscribeSkill = GetInscribeFixed(m_Caster);
-			int inscribeBonus = (inscribeSkill + (1000 * (inscribeSkill / 1000))) / 200;
-			damageBonus += inscribeBonus;
+            int evalSkill = GetDamageFixed(m_Caster);
 
-			int intBonus = Caster.Int / 10;
-			damageBonus += intBonus;
-
-            damageBonus += SpellHelper.GetSpellDamageBonus(m_Caster, target, CastSkill, playerVsPlayer);
+            int inscribeBonus = inscribeSkill >= 1000 ? 10 : inscribeSkill / 200;
+            int damageBonus = intBonus + inscribeBonus + SpellHelper.GetSpellDamageBonus(m_Caster, target, CastSkill, playerVsPlayer);
 
 			damage = AOS.Scale(damage, 100 + damageBonus);
 
-            if (target != null && Feint.Registry.ContainsKey(target) && Feint.Registry[target].Enemy == Caster)
-                damage -= (int)((double)damage * ((double)Feint.Registry[target].DamageReduction / 100));
-
-			int evalSkill = GetDamageFixed(m_Caster);
-			int evalScale = 30 + ((9 * evalSkill) / 100);
+            int evalScale = (((evalSkill * 3) / 100) + 1) * 10;
 
 			damage = AOS.Scale(damage, evalScale);
-
 			damage = AOS.Scale(damage, (int)(scalar * 100));
 
 			return damage / 100;

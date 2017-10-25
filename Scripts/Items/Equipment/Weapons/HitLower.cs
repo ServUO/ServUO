@@ -100,6 +100,8 @@ namespace Server.Items
             {
                 m_DefenseTable.Remove(m);
                 m.SendLocalizedMessage(1062321); // Your defense chance has returned to normal.
+
+                m.Delta(MobileDelta.WeaponDamage);
             }
         }
 

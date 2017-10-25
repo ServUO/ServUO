@@ -63,7 +63,7 @@ namespace Server.Spells.Third
 
                 if (Core.AOS)
                 {
-                    damage = this.GetNewAosDamage(19, 1, 5, m);
+                    damage = this.GetNewAosDamage(60, 1, 12, m);
                 }
                 else if (target != null)
                 {
