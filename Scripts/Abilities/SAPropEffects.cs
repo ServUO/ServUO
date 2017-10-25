@@ -398,7 +398,9 @@ namespace Server.Items
             BleedAttack.BeginBleed(defender, from, true);
 
             defender.SendLocalizedMessage(1112486); // A shard of the brittle weapon has become lodged in you!
-            Server.Effects.PlaySound(from.Location, from.Map, 0x1DF);
+            from.SendLocalizedMessage(1113077); // A shard of your blade breaks off and sticks in your opponent!
+
+            Server.Effects.PlaySound(defender.Location, defender.Map, 0x1DF);
 
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1154670, 1152144, TimeSpan.FromSeconds(10), defender));
         }

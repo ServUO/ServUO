@@ -50,7 +50,7 @@ namespace Server.Spells.Mysticism
                     Caster.PlaySound(0x64D);
                 });
 
-				SpellHelper.Damage( this, target, (int)GetNewAosDamage( 19, 1, 5, target ), 0, 0, 0, 0, 100 );
+                SpellHelper.Damage(this, target, (int)GetNewAosDamage(60, 1, 12, target), 0, 0, 0, 0, 100);
 			}
 
 			FinishSequence();

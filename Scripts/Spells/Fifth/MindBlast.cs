@@ -52,10 +52,9 @@ namespace Server.Spells.Fifth
                     Mobile from = this.Caster, target = m;
 
                     SpellHelper.Turn(from, target);
-
                     SpellHelper.CheckReflect((int)this.Circle, ref from, ref target);
 
-                    int damage = (int)((this.Caster.Skills[SkillName.Magery].Value + this.Caster.Int) / 5);
+                    int damage = (int)((this.Caster.Skills[SkillName.Magery].Value + this.Caster.Int) / 5) + Utility.RandomMinMax(2, 6);
 					
                     if (damage > 60)
                         damage = 60;

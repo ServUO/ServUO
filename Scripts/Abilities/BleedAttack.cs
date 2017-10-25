@@ -55,6 +55,18 @@ namespace Server.Items
             timer = new BleedTimer(from, m, CheckBloodDrink(from));
             m_BleedTable[m] = timer;
             timer.Start();
+
+            from.SendLocalizedMessage(1060159); // Your target is bleeding!
+            m.SendLocalizedMessage(1060160); // You are bleeding!
+
+            if (m is PlayerMobile)
+            {
+                m.LocalOverheadMessage(MessageType.Regular, 0x21, 1060757); // You are bleeding profusely
+                m.NonlocalOverheadMessage(MessageType.Regular, 0x21, 1060758, m.Name); // ~1_NAME~ is bleeding profusely
+            }
+
+            m.PlaySound(0x133);
+            m.FixedParticles(0x377A, 244, 25, 9950, 31, 0, EffectLayer.Waist);
         }
 
         public static void DoBleed(Mobile m, Mobile from, int damage, bool blooddrinker)
@@ -124,18 +136,6 @@ namespace Server.Items
                 attacker.SendLocalizedMessage(1062052); // Your target is not affected by the bleed attack!
                 return;
             }
-
-            attacker.SendLocalizedMessage(1060159); // Your target is bleeding!
-            defender.SendLocalizedMessage(1060160); // You are bleeding!
-
-            if (defender is PlayerMobile)
-            {
-                defender.LocalOverheadMessage(MessageType.Regular, 0x21, 1060757); // You are bleeding profusely
-                defender.NonlocalOverheadMessage(MessageType.Regular, 0x21, 1060758, defender.Name); // ~1_NAME~ is bleeding profusely
-            }
-
-            defender.PlaySound(0x133);
-            defender.FixedParticles(0x377A, 244, 25, 9950, 31, 0, EffectLayer.Waist);
 
 			BeginBleed(defender, attacker);
         }

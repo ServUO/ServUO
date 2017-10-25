@@ -314,6 +314,9 @@ namespace Server
             BestialSetHelper.OnDamage(m, from, ref totalDamage);
             #endregion
 
+            if (type == DamageType.Spell && m != null && Feint.Registry.ContainsKey(m) && Feint.Registry[m].Enemy == from)
+                damage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
+
             m.Damage(totalDamage, from, true, false);
 
             SpiritSpeak.CheckDisrupt(m);
