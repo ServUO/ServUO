@@ -113,26 +113,6 @@ namespace Server.Items
             GetTime(from.Map, from.X, from.Y, out generalNumber, out exactTime);
         }
 
-        public override void OnMovement(Mobile m, Point3D old)
-        {
-            base.OnMovement(m, old);
-
-            if (!Utility.InRange(old, Location, 5) && Utility.InRange(m.Location, Location, 5))
-            {
-                if (this is LargeGrandfatherClock || this is SmallGrandfatherClock || this is WhiteGrandfatherClock)
-                {
-                    int hours, minutes;
-
-                    GetTime(m.Map, m.X, m.Y, out hours, out minutes);
-
-                    if (minutes == 00 && (hours == 12 || hours == 00))
-                        m.PlaySound(0x663);
-                    else if (minutes == 00)
-                        m.PlaySound(0x664);
-                }
-            }
-        }
-
         public static void GetTime(Map map, int x, int y, out int generalNumber, out string exactTime)
         {
             int hours, minutes;
