@@ -11,20 +11,15 @@ namespace Server.Gumps
 {
     public class ImbuingGump : Gump
     {
-        private const int LabelHue = 0x480;
-        private const int LabelColor = 0x7FFF;  //Localized
-        private const int FontColor = 0xFFFFFF; //string
+        private const int LabelColor = 0x7FFF;
 
         public ImbuingGump(Mobile from)
             : base(25, 50)
         {
-            Mobile m = from;
-            PlayerMobile pm = from as PlayerMobile;
-
             from.CloseGump(typeof(ImbuingGumpB));
             from.CloseGump(typeof(ImbuingGumpC));
 
-            ImbuingContext context = Imbuing.GetContext(pm);
+            ImbuingContext context = Imbuing.GetContext(from);
 
             context.Imbue_ModVal = 0;
             context.ImbMenu_Cat = 0;
@@ -57,26 +52,19 @@ namespace Server.Gumps
             AddHtmlLocalized(50, 210, 430, 20, 1114275, LabelColor, false, false); //Unravel Container - Unravels all items in a container
 
             AddButton(15, 280, 4017, 4019, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(50, 280, 50, 20, 1011012, FontColor, false, false); //CANCEL
-
+            AddHtmlLocalized(50, 280, 50, 20, 1011012, LabelColor, false, false); //CANCEL
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
             Mobile from = state.Mobile;
-            PlayerMobile pm = from as PlayerMobile;
 
-            ImbuingContext context = Imbuing.GetContext(pm);
+            ImbuingContext context = Imbuing.GetContext(from);
 
             switch (info.ButtonID)
             {
                 case 0: // Close
-                    {
-                        from.EndAction(typeof(Imbuing));
-
-                        break;
-                    }
-                case 1: // Cancel button
+                case 1:
                     {
                         from.EndAction(typeof(Imbuing));
 
@@ -104,7 +92,7 @@ namespace Server.Gumps
                             break;
                         }
 
-                        if (Imbuing.CanImbueItem(pm, it) && Imbuing.OnBeforeImbue(from, it, mod, modint))
+                        if (Imbuing.CanImbueItem(from, it) && Imbuing.OnBeforeImbue(from, it, mod, modint))
                         {
                             Imbuing.ImbueItem(from, it, mod, modint);
                             from.SendGump(new ImbuingGump(from));
@@ -226,7 +214,7 @@ namespace Server.Gumps
                     AddHtmlLocalized(45, 180, 430, 20, 1114292, LabelColor, false, false); // Unravel Item
 
                     AddButton(10, 212, 4017, 4019, 0, GumpButtonType.Reply, 0);
-                    AddHtmlLocalized(45, 212, 50, 20, 1011012, FontColor, false, false); // CANCEL
+                    AddHtmlLocalized(45, 212, 50, 20, 1011012, LabelColor, false, false); // CANCEL
                 }
 
                 public override void OnResponse(NetState sender, RelayInfo info)
@@ -239,8 +227,8 @@ namespace Server.Gumps
                     
                     if (Imbuing.CanUnravelItem(from, m_Item) && Imbuing.UnravelItem(from, m_Item))
                     {
-                        Effects.PlaySound(from.Location, from.Map, 0x1ED);
-                        Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0x373A, 10, 30, 0, 4, 0, 0);
+                        Effects.SendPacket(from, from.Map, new GraphicalEffect(EffectType.FixedFrom, from.Serial, Server.Serial.Zero, 0x375A, from.Location, from.Location, 1, 17, true, false));
+                        from.PlaySound(0x1EB);
 
                         from.SendLocalizedMessage(1080429); // You magically unravel the item!
                         from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
@@ -335,7 +323,7 @@ namespace Server.Gumps
                     AddHtmlLocalized(45, 180, 430, 20, 1049717, LabelColor, false, false); // YES
 
                     AddButton(10, 212, 4017, 4019, 0, GumpButtonType.Reply, 0);
-                    AddHtmlLocalized(45, 212, 50, 20, 1049718, FontColor, false, false); // NO
+                    AddHtmlLocalized(45, 212, 50, 20, 1049718, LabelColor, false, false); // NO
                 }
 
                 public override void OnResponse(NetState sender, RelayInfo info)
@@ -393,8 +381,7 @@ namespace Server.Gumps
                 }
                 
                 Item item = (Item)o;
-                PlayerMobile pm = from as PlayerMobile;
-                ImbuingContext context = Imbuing.GetContext(pm);
+                ImbuingContext context = Imbuing.GetContext(from);
 
                 int itemRef = ImbuingGump.GetItemRef(o);
 
@@ -427,12 +414,14 @@ namespace Server.Gumps
 
         public static void ImbueStep1(Mobile from, Item it)
         {
-            PlayerMobile pm = from as PlayerMobile;
-            ImbuingContext context = Imbuing.GetContext(pm);
+            ImbuingContext context = Imbuing.GetContext(from);
 
-            if (Imbuing.CanImbueItem(pm, it))
+            if (Imbuing.CanImbueItem(from, it))
             {
                 context.LastImbued = it;
+
+                if (context.ImbMenu_Cat == 0)
+                    context.ImbMenu_Cat = 1;
 
                 from.CloseGump(typeof(ImbuingGump));
                 from.SendGump(new ImbuingGumpB(from, it));
@@ -460,16 +449,15 @@ namespace Server.Gumps
                     from.SendLocalizedMessage(1079576); // You cannot imbue this item.
                     return;
                 }                    
-
-                PlayerMobile pm = from as PlayerMobile;
-                ImbuingContext context = Imbuing.GetContext(pm);
+                
+                ImbuingContext context = Imbuing.GetContext(from);
 
                 int mod = context.Imbue_Mod;
                 int modInt = context.Imbue_ModInt;
 
                 Item it = o as Item;
 
-                if (!Imbuing.CanImbueItem(pm, it) || !Imbuing.OnBeforeImbue(from, it, mod, modInt) || !Imbuing.CanImbueProperty(from, it, mod))
+                if (!Imbuing.CanImbueItem(from, it) || !Imbuing.OnBeforeImbue(from, it, mod, modInt) || !Imbuing.CanImbueProperty(from, it, mod))
                 {
                     from.SendGump(new ImbuingGump(from));
                     return;
