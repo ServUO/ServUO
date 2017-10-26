@@ -16,13 +16,10 @@ namespace Server.Gumps
         public ImbuingGump(Mobile from)
             : base(25, 50)
         {
-            Mobile m = from;
-            PlayerMobile pm = from as PlayerMobile;
-
             from.CloseGump(typeof(ImbuingGumpB));
             from.CloseGump(typeof(ImbuingGumpC));
 
-            ImbuingContext context = Imbuing.GetContext(pm);
+            ImbuingContext context = Imbuing.GetContext(from);
 
             context.Imbue_ModVal = 0;
             context.ImbMenu_Cat = 0;
@@ -61,9 +58,8 @@ namespace Server.Gumps
         public override void OnResponse(NetState state, RelayInfo info)
         {
             Mobile from = state.Mobile;
-            PlayerMobile pm = from as PlayerMobile;
 
-            ImbuingContext context = Imbuing.GetContext(pm);
+            ImbuingContext context = Imbuing.GetContext(from);
 
             switch (info.ButtonID)
             {
@@ -96,7 +92,7 @@ namespace Server.Gumps
                             break;
                         }
 
-                        if (Imbuing.CanImbueItem(pm, it) && Imbuing.OnBeforeImbue(from, it, mod, modint))
+                        if (Imbuing.CanImbueItem(from, it) && Imbuing.OnBeforeImbue(from, it, mod, modint))
                         {
                             Imbuing.ImbueItem(from, it, mod, modint);
                             from.SendGump(new ImbuingGump(from));
@@ -418,10 +414,9 @@ namespace Server.Gumps
 
         public static void ImbueStep1(Mobile from, Item it)
         {
-            PlayerMobile pm = from as PlayerMobile;
-            ImbuingContext context = Imbuing.GetContext(pm);
+            ImbuingContext context = Imbuing.GetContext(from);
 
-            if (Imbuing.CanImbueItem(pm, it))
+            if (Imbuing.CanImbueItem(from, it))
             {
                 context.LastImbued = it;
 
