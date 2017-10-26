@@ -1189,16 +1189,14 @@ namespace Server.Items
                 list.Add(1153213, OwnerName);
             }
 
-            #region Stygian Abyss
+            if (m_Crafter != null)
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+
+            if (m_Quality == ItemQuality.Exceptional)
+                list.Add(1018303); // Exceptional
+            
             if (IsImbued == true)
                 list.Add(1080418); // (Imbued)
-
-            if (m_GorgonLenseCharges > 0)
-                list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
-            #endregion
-			
-            if (m_Crafter != null)
-				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (m_Altered)
                 list.Add(1111880); // Altered
@@ -1208,6 +1206,9 @@ namespace Server.Items
                 list.Add(1041350); // faction item
             #endregion
 
+            if (m_GorgonLenseCharges > 0)
+                list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
+            
             #region Mondain's Legacy Sets
             if (IsSetItem)
             {
@@ -1233,9 +1234,6 @@ namespace Server.Items
                 }
             }
             #endregion
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1060636); // exceptional
 
             if (RequiredRace == Race.Elf)
                 list.Add(1075086); // Elves Only

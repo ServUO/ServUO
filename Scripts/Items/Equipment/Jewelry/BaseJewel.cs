@@ -792,22 +792,18 @@ namespace Server.Items
                 list.Add(1153213, OwnerName);
             }
 
-            #region Stygian Abyss
-            if (IsImbued)
-                list.Add(1080418); // (Imbued)
+            if (m_Crafter != null)
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
-            if (m_GorgonLenseCharges > 0)
-                list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
-            #endregion
-
-            #region Mondain's Legacy
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1063341); // exceptional
 
-            if (m_Crafter != null)
-				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-            #endregion
+            if (IsImbued)
+                list.Add(1080418); // (Imbued)            
 
+            if (m_GorgonLenseCharges > 0)
+                list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
+            
             #region Mondain's Legacy Sets
             if (IsSetItem)
             {

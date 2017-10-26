@@ -5199,16 +5199,20 @@ namespace Server.Items
 				}
 			}
 
+            if (m_Crafter != null)
+            {
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+            }
 
-			if (IsImbued)
+            if (m_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+
+            if (IsImbued)
 			{
 				list.Add(1080418); // (Imbued)
-			}
-
-			if (m_Crafter != null)
-			{
-				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-			}
+			}			
 
             if (m_Altered)
                 list.Add(1111880); // Altered
@@ -5250,19 +5254,14 @@ namespace Server.Items
 			if (m_AosSkillBonuses != null)
 			{
 				m_AosSkillBonuses.GetProperties(list);
-			}
-
-			if (m_Quality == ItemQuality.Exceptional)
-			{
-				list.Add(1060636); // exceptional
-			}
+			}			
 
 			if (RequiredRace == Race.Elf)
 			{
 				list.Add(1075086); // Elves Only
 			}
 
-				#region Stygian Abyss
+			#region Stygian Abyss
 			else if (RequiredRace == Race.Gargoyle)
 			{
 				list.Add(1111709); // Gargoyles Only
