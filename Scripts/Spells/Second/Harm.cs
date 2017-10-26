@@ -60,7 +60,7 @@ namespace Server.Spells.Second
 				
                 if (Core.AOS)
                 {
-                    damage = this.GetNewAosDamage(52, 1, 14, m);
+                    damage = this.GetNewAosDamage(57, 1, 13, m);
                 }
                 else if (mob != null)
                 {
