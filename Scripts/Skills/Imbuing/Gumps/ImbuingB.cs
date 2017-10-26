@@ -76,7 +76,7 @@ namespace Server.Gumps
 
             if (itemRef == 2)
             {
-                AddButton(15, 90 + (yOffset * 25), 4005, 4007, 10000, GumpButtonType.Reply, 0);
+                AddButton(15, 90 + (yOffset * 25), 4005, 4007, 10015, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, 90 + (yOffset * 25), 150, 18, 1114253, LabelColor, false, false);   //Ranged
                 yOffset += 1;
             }
@@ -694,7 +694,7 @@ namespace Server.Gumps
                 yOffset += 1;
             }
 
-            AddButton(15, 490, 4005, 4007, 10099, GumpButtonType.Reply, 0);
+            AddButton(15, 490, 4005, 4007, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(50, 490, 150, 20, 1011012, LabelColor, false, false); //Cancel
         }
 
@@ -708,17 +708,11 @@ namespace Server.Gumps
             switch (info.ButtonID)
             {
                 case 0: // Close/Cancel
+                case 1:
                     {
                         from.EndAction(typeof(Imbuing));
                         break;
-                    }
-                case 10000:
-                    {
-                        context.ImbMenu_Cat = 15;
-
-                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
-                        break;
-                    }
+                    }                
                 case 10001:
                     {
                         context.ImbMenu_Cat = 1;
@@ -817,21 +811,27 @@ namespace Server.Gumps
                         from.SendGump(new ImbuingGumpB(from, context.LastImbued));
                         break;
                     }
-                case 10099:  // = Cancel
+                case 10015:
                     {
-                        from.EndAction(typeof(Imbuing));
+                        context.ImbMenu_Cat = 15;
+
+                        from.SendGump(new ImbuingGumpB(from, context.LastImbued));
                         break;
                     }
                 default:  // = Proceed to Attribute Intensity Menu [ImbuingC.cs]
                     {
                         int buttonNum = info.ButtonID - 10100;
-
                         context.Imbue_Mod = buttonNum;
 
-                        from.SendGump(new ImbuingGumpC(from, context.LastImbued, buttonNum, -1));
+                        if (Imbuing.OnBeforeImbue(from, context.LastImbued, buttonNum, -1))
+                        {
+                            from.SendGump(new ImbuingGumpC(from, context.LastImbued, buttonNum, -1));
+                        }
+                        
                         break;
                     }
             }
+
             return;
         }
     }
