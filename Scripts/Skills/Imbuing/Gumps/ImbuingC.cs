@@ -153,14 +153,14 @@ namespace Server.Gumps
             AddHtmlLocalized(350, 200, 150, 20, 1113650, LabelColor, false, false); // RESULTS
 
             AddHtmlLocalized(280, 220, 150, 20, 1113645, LabelColor, false, false); // Properties:
-            AddLabel(430, 220, m_TotalProps + 1 >= 5 ? Red : Green, String.Format("{0}/5", m_TotalProps + 1));
+            AddLabel(430, 220, GetColor(m_TotalProps + 1, 5), String.Format("{0}/5", m_TotalProps + 1));
 
             int projWeight = m_TotalItemWeight + m_PropWeight;
             AddHtmlLocalized(280, 240, 150, 20, 1113646, LabelColor, false, false); // Total Property Weight:
-            AddLabel(430, 240, projWeight >= m_MaxWeight ? Red : Green, String.Format("{0}/{1}", projWeight, m_MaxWeight));
+            AddLabel(430, 240, GetColor(projWeight, m_MaxWeight), String.Format("{0}/{1}", projWeight, m_MaxWeight));
 
             AddHtmlLocalized(280, 260, 150, 20, 1113647, LabelColor, false, false); // Times Imbued:
-            AddLabel(430, 260, timesImbued >= 20 ? Red : Green, String.Format("{0}/20", timesImbued));
+            AddLabel(430, 260, GetColor(timesImbued, 20), String.Format("{0}/20", timesImbued));
 
             // ===== CALCULATE DIFFICULTY =====
             double dif;
@@ -179,9 +179,9 @@ namespace Server.Gumps
                 AddHtmlLocalized(235, 350, 100, 17, 1062300, LabelColor, false, false); // New Value:
 
                 if (m_Mod == 41)                                     // - Mage Weapon Value ( i.e [Mage Weapon -25] )
-                    AddHtml(240, 368, 40, 20, String.Format("<CENTER><BASEFONT COLOR=#CCCCFF> -{0}</CENTER>", 30 - m_Value), false, false);
+                    AddLabel(250, 370, IceHue, String.Format("-{0}", 30 - m_Value));
                 else if (maxInt <= 8 || m_Mod == 21 || m_Mod == 17)  // - Show Property Value as just Number ( i.e [Mana Regen 2] )
-                    AddHtml(240, 368, 40, 20, String.Format("<CENTER><BASEFONT COLOR=#CCCCFF> {0}</CENTER>", m_Value), false, false);
+                    AddLabel(256, 370, IceHue, String.Format("{0}", m_Value));
                 else                                                 // - Show Property Value as % ( i.e [Hit Fireball 25%] )
                 {
                     int val = m_Value;
@@ -245,6 +245,16 @@ namespace Server.Gumps
 
             AddButton(390, 410, 4005, 4007, 10100, GumpButtonType.Reply, 0);
             AddHtmlLocalized(425, 410, 120, 18, 1114267, LabelColor, false, false); // Imbue Item
+        }
+
+        private int GetColor(int value, int limit)
+        {
+            if (value < limit)
+                return Green;
+            else if (value == limit)
+                return Yellow;
+            else
+                return Red;
         }
 
         private int GetSuccessChanceHue(double suc)

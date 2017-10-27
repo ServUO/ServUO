@@ -80,6 +80,9 @@ namespace Server.Items
 
         public static bool IsUnderEffects(Mobile m)
         {
+            if(m == null)
+                return false;
+                
             return _Table.ContainsKey(m);
         }
     }

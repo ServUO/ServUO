@@ -122,6 +122,7 @@ namespace Server.SkillHandlers
             {
                 from.SendLocalizedMessage(1079772); // You cannot imbue this item with any more item properties.
                 from.CloseGump(typeof(ImbuingGumpC));
+                from.EndAction(typeof(Imbuing));
                 return false;
             }
 
