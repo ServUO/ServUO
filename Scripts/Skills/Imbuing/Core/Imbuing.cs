@@ -1444,7 +1444,7 @@ namespace Server.SkillHandlers
 			m_Table[39] = new ImbuingDefinition(AosWeaponAttribute.HitDispel,		1079702, 100, 	typeof(MagicalResidue), typeof(Amber), 		    typeof(SlithTongue),        50, 2, 1111959, true, true, false, false, false);
 			m_Table[40] = new ImbuingDefinition(AosWeaponAttribute.UseBestSkill, 	1079592, 150, 	typeof(EnchantedEssence), typeof(Amber), 		    typeof(DelicateScales), 1, 0, 1111946, true, false, false, false, false);
 			m_Table[41] = new ImbuingDefinition(AosWeaponAttribute.MageWeapon,		1079759, 100, 	typeof(EnchantedEssence), typeof(Emerald), 		typeof(ArcanicRuneStone),   10, 1, 1112001, true, true, false, false, false);
-			m_Table[42] = new ImbuingDefinition(AosWeaponAttribute.DurabilityBonus,	1017323, 100, 	typeof(EnchantedEssence), typeof(Diamond), 		typeof(PowderedIron),       100, 10, 1112949, true, true, false, false, false);
+			m_Table[42] = new ImbuingDefinition(AosWeaponAttribute.DurabilityBonus,	1017323, 100, 	typeof(EnchantedEssence), typeof(Diamond), 		typeof(PowderedIron),       100, 10, 1111949, true, true, false, false, false);
 
             m_Table[49] = new ImbuingDefinition(AosArmorAttribute.MageArmor,        1079758, 0,     typeof(EnchantedEssence), typeof(Diamond),        typeof(AbyssalCloth), 1, 0, 1112000, false, false, true, false, false);
 

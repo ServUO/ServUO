@@ -100,7 +100,7 @@ namespace Server.Items
         {
             get
             {
-                return Race.Elf;
+                return ItemID == 0x2B6E ? Race.Elf : null;
             }
         }
         public override void Serialize(GenericWriter writer)
