@@ -177,15 +177,20 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Level = (SecureLevel)reader.ReadInt();
+            switch (version)
+            {
+                case 1:
+                    Level = (SecureLevel)reader.ReadInt();
+                    break;
+                case 0:
+                    break;
+            }
         }
     }
 
-
     public class ClockTime : Clock
     {
-        private static List<ClockTime> _Instances = new List<ClockTime>();
-        
+        private static List<ClockTime> _Instances = new List<ClockTime>();        
 
         public static void Initialize()
         {
