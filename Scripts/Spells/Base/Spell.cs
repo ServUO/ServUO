@@ -335,8 +335,13 @@ namespace Server.Spells
 
 		public virtual bool OnCasterEquiping(Item item)
 		{
-			if (IsCasting)
+            if (IsCasting)
 			{
+                if ((item.Layer == Layer.OneHanded || item.Layer == Layer.TwoHanded) && item.AllowEquipedCast(Caster))
+                {
+                    return true;
+                }
+
 				Disturb(DisturbType.EquipRequest);
 			}
 

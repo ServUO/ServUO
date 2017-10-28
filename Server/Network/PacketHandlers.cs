@@ -157,7 +157,6 @@ namespace Server.Network
 			RegisterExtended(0x1A, true, StatLockChange);
 			RegisterExtended(0x1C, true, CastSpell);
 			RegisterExtended(0x24, false, UnhandledBF);
-			RegisterExtended(0x2C, true, BandageTarget);
 
 			#region Stygian Abyss
 			RegisterExtended(0x32, true, ToggleFlying);
@@ -1866,41 +1865,6 @@ namespace Server.Network
 			int spellID = pvSrc.ReadInt16() - 1;
 
 			EventSink.InvokeCastSpellRequest(new CastSpellRequestEventArgs(from, spellID, spellbook));
-		}
-
-		public static void BandageTarget(NetState state, PacketReader pvSrc)
-		{
-			Mobile from = state.Mobile;
-
-			if (from == null)
-			{
-				return;
-			}
-
-			if (from.IsStaff() || Core.TickCount - from.NextActionTime >= 0)
-			{
-				Item bandage = World.FindItem(pvSrc.ReadInt32());
-
-				if (bandage == null)
-				{
-					return;
-				}
-
-				Mobile target = World.FindMobile(pvSrc.ReadInt32());
-
-				if (target == null)
-				{
-					return;
-				}
-
-				EventSink.InvokeBandageTargetRequest(new BandageTargetRequestEventArgs(from, bandage, target));
-
-				from.NextActionTime = Core.TickCount + Mobile.ActionDelay;
-			}
-			else
-			{
-				from.SendActionMessage();
-			}
 		}
 
 		#region Stygain Abyss

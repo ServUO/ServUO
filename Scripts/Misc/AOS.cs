@@ -681,9 +681,6 @@ namespace Server
 
                 value += HonorableExecution.GetSwingBonus(m);
 
-                if (DualWield.Registry.Contains(m))
-                    value += ((DualWield.DualWieldTimer)DualWield.Registry[m]).BonusSwingSpeed;
-
                 TransformContext context = TransformationSpellHelper.GetContext(m);
 
                 if (context != null && context.Spell is ReaperFormSpell)

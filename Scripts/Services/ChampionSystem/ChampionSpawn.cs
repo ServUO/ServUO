@@ -395,6 +395,9 @@ namespace Server.Engines.CannedEvil
                 Level = 1;
             else
                 Level = 0;
+
+            if (Level > 0)
+                AdvanceLevel();
         }
 
         public void Stop()

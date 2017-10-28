@@ -47,8 +47,6 @@ namespace Server
 
 	public delegate void CastSpellRequestEventHandler(CastSpellRequestEventArgs e);
 
-	public delegate void BandageTargetRequestEventHandler(BandageTargetRequestEventArgs e);
-
 	public delegate void AnimateRequestEventHandler(AnimateRequestEventArgs e);
 
 	public delegate void LogoutEventHandler(LogoutEventArgs e);
@@ -532,24 +530,6 @@ namespace Server
 			m_Mobile = m;
 			m_Spellbook = book;
 			m_SpellID = spellID;
-		}
-	}
-
-	public class BandageTargetRequestEventArgs : EventArgs
-	{
-		private readonly Mobile m_Mobile;
-		private readonly Item m_Bandage;
-		private readonly Mobile m_Target;
-
-		public Mobile Mobile { get { return m_Mobile; } }
-		public Item Bandage { get { return m_Bandage; } }
-		public Mobile Target { get { return m_Target; } }
-
-		public BandageTargetRequestEventArgs(Mobile m, Item bandage, Mobile target)
-		{
-			m_Mobile = m;
-			m_Bandage = bandage;
-			m_Target = target;
 		}
 	}
 
@@ -1255,7 +1235,6 @@ namespace Server
 		public static event StunRequestEventHandler StunRequest;
 		public static event OpenSpellbookRequestEventHandler OpenSpellbookRequest;
 		public static event CastSpellRequestEventHandler CastSpellRequest;
-		public static event BandageTargetRequestEventHandler BandageTargetRequest;
 		public static event AnimateRequestEventHandler AnimateRequest;
 		public static event LogoutEventHandler Logout;
 		public static event SocketConnectEventHandler SocketConnect;
@@ -1522,14 +1501,6 @@ namespace Server
 			if (CastSpellRequest != null)
 			{
 				CastSpellRequest(e);
-			}
-		}
-
-		public static void InvokeBandageTargetRequest(BandageTargetRequestEventArgs e)
-		{
-			if (BandageTargetRequest != null)
-			{
-				BandageTargetRequest(e);
 			}
 		}
 
@@ -1845,7 +1816,6 @@ namespace Server
 			StunRequest = null;
 			OpenSpellbookRequest = null;
 			CastSpellRequest = null;
-			BandageTargetRequest = null;
 			AnimateRequest = null;
 			Logout = null;
 			SocketConnect = null;

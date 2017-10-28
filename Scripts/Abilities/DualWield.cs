@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -8,25 +8,16 @@ namespace Server.Items
     /// </summary>
     public class DualWield : WeaponAbility
     {
-        private static readonly Hashtable m_Registry = new Hashtable();
+        private static readonly Dictionary<Mobile, DualWieldTimer> m_Registry = new Dictionary<Mobile, DualWieldTimer>();
+
         public DualWield()
         {
         }
 
-        public static Hashtable Registry
-        {
-            get
-            {
-                return m_Registry;
-            }
-        }
-        public override int BaseMana
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        public static Dictionary<Mobile, DualWieldTimer> Registry { get { return m_Registry; } }
+        public override int BaseMana { get { return 20; } }
+
+        public static readonly TimeSpan Duration = TimeSpan.FromSeconds(8);
 
         public override SkillName GetSecondarySkill(Mobile from)
         {
@@ -38,49 +29,98 @@ namespace Server.Items
             if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
-            if (Registry.Contains(attacker))
+            if (HasRegistry(attacker))
             {
-                DualWieldTimer existingtimer = (DualWieldTimer)Registry[attacker];
-                existingtimer.Stop();
-                Registry.Remove(attacker);
+                var timer = m_Registry[attacker];
+
+                if (timer.DualHitChance < .75)
+                {
+                    timer.Expires += TimeSpan.FromSeconds(2);
+                    timer.DualHitChance += .25;
+                    BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.DualWield, 1151294, 1151293, timer.Expires - DateTime.UtcNow, attacker, (timer.DualHitChance * 100).ToString()));
+
+                    attacker.SendLocalizedMessage(timer.DualHitChance == .75 ? 1150283 : 1150282); // Dual wield level increased to peak! : Dual wield level increased!
+                }
+
+                ClearCurrentAbility(attacker);
+                return;
             }
 
             ClearCurrentAbility(attacker);
+            attacker.SendLocalizedMessage(1150281); // You begin trying to strike with both your weapons at once.
+            attacker.SendLocalizedMessage(1150284, true, Duration.TotalSeconds.ToString()); // Remaining Duration (seconds):
 
-            attacker.SendLocalizedMessage(1063362); // You dually wield for increased speed!
+            DualWieldTimer t = new DualWieldTimer(attacker, .25);
+            BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.DualWield, 1151294, 1151293, Duration, attacker, "25"));
+
+            Registry[attacker] = t;
 
             attacker.FixedParticles(0x3779, 1, 15, 0x7F6, 0x3E8, 3, EffectLayer.LeftHand);
+            Effects.PlaySound(attacker.Location, attacker.Map, 0x524);
+        }
 
-            Timer t = new DualWieldTimer(attacker, (int)(20.0 + 3.0 * (attacker.Skills[SkillName.Ninjitsu].Value - 50.0) / 7.0));	//20-50 % increase
+        public static bool HasRegistry(Mobile attacker)
+        {
+            return m_Registry.ContainsKey(attacker);
+        }
 
-            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.DualWield, 1151294, 1151293, TimeSpan.FromSeconds(6.0), attacker, damage));
+        public static void RemoveFromRegistry(Mobile from)
+        {
+            if (m_Registry.ContainsKey(from))
+            {
+                from.SendLocalizedMessage(1150285); // You no longer try to strike with both weapons at the same time.
 
-            t.Start();
-            Registry.Add(attacker, t);
+                m_Registry[from].Stop();
+                m_Registry.Remove(from);
+            }
+        }
+
+        private bool _SecondHit;
+
+        /// <summary>
+        /// Called from BaseWeapon, on successful hit
+        /// </summary>
+        /// <param name="from"></param>
+        public static void DoHit(Mobile attacker, Mobile defender, int damage)
+        {
+            if (HasRegistry(attacker) && attacker.Weapon is BaseWeapon && m_Registry[attacker].DualHitChance > Utility.RandomDouble())
+            {
+                if (!m_Registry[attacker].SecondHit)
+                {
+                    m_Registry[attacker].SecondHit = true;
+                    ((BaseWeapon)attacker.Weapon).OnHit(attacker, defender, .6);
+                    m_Registry[attacker].SecondHit = false;
+                }
+            }
         }
 
         public class DualWieldTimer : Timer
         {
-            private readonly Mobile m_Owner;
-            private readonly int m_BonusSwingSpeed;
-            public DualWieldTimer(Mobile owner, int bonusSwingSpeed)
-                : base(TimeSpan.FromSeconds(6.0))
+            public Mobile Owner { get; set; }
+            public double DualHitChance { get; set; }
+            public DateTime Expires { get; set; }
+            public bool SecondHit { get; set; }
+
+            private readonly TimeSpan Duration = TimeSpan.FromSeconds(8);
+
+            public DualWieldTimer(Mobile owner, double dualHitChance)
+                : base(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(250))
             {
-                m_Owner = owner;
-                m_BonusSwingSpeed = bonusSwingSpeed;
+                Owner = owner;
+                DualHitChance = dualHitChance;
+
+                Expires = DateTime.UtcNow + Duration;
+
                 Priority = TimerPriority.FiftyMS;
+                Start();
             }
 
-            public int BonusSwingSpeed
-            {
-                get
-                {
-                    return m_BonusSwingSpeed;
-                }
-            }
             protected override void OnTick()
             {
-                Registry.Remove(m_Owner);
+                if (DateTime.UtcNow > Expires)
+                {
+                    RemoveFromRegistry(Owner);
+                }
             }
         }
     }

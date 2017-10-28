@@ -59,6 +59,8 @@ namespace Server.Items
         public static void Initialize()
         {
             m_ServerStart = DateTime.UtcNow;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), new TimerCallback(ClockTime.Tick_Callback));
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -192,11 +194,6 @@ namespace Server.Items
     {
         private static List<ClockTime> _Instances = new List<ClockTime>();        
 
-        public static void Initialize()
-        {
-            Timer.DelayCall(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), new TimerCallback(Tick_Callback));
-        }
-
         [Constructable]
         public ClockTime()
             : this(0x104B)
@@ -224,7 +221,7 @@ namespace Server.Items
             _Instances.Remove(this);
         }
 
-        private static void Tick_Callback()
+        public static void Tick_Callback()
         {
             foreach (var clock in _Instances.Where(p => p != null && !p.Deleted && p.IsLockedDown))
             {

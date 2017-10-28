@@ -120,6 +120,22 @@ namespace Server.ContextMenus
                 case 0x086: number = 3006111; break;    // Command: Kill
                 case 0x087: number = 3006114; break;    // Command: Stay
                 case 0x089: number = 3006112; break;    // Command: Stop
+                case 0x0140: number = 1113797; break;   // Enable PVP Warning TODO: Not Enabled
+                case 0x025A: number = 3006205; break;   // Release Co-Ownership TODO: Not Enabled
+                case 0x025C: number = 3006207; break;   // Leave House
+                case 0x0196: number = 3006156; break;   // Quest Conversation
+                case 0x0194: number = 3006154; break;   // View Quest Log
+                case 0x0195: number = 3006155; break;   // Cancel Quest
+                case 0x0321: number = 3006169; break;   // Toggle Quest Item
+                case 0x01A0: number = 1114299; break;   // Open Item Insurance Menu
+                case 0x01A2: number = 3006201; break;   // Toggle Item Insurance
+                case 0x0396: number = 1115022; break;   // Open Titles Menu
+                case 0x0393: number = 1049594; break;   // Loyalty Rating
+                case 0x0134: number = 3006157; break;   // Cancel Protection
+                case 0x03F2: number = 1152531; break;   // Void Pool
+                case 0x03F5: number = 1154112; break;   // Allow Trades
+                case 0x03F6: number = 1154113; break;   // Refuse Trades
+                case 0x0334: number = 3006168; break;   // Siege Bless Item
             }
 
             if (index >= 0x64)
