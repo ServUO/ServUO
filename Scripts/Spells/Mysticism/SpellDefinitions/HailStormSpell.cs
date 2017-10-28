@@ -87,7 +87,7 @@ namespace Server.Spells.Mysticism
                     if (m.Deleted || !m.Alive)
                         continue;
 
-                    int damage = GetNewAosDamage(155, 1, 13, m is PlayerMobile, m);
+                    int damage = GetNewAosDamage(51, 1, 5, m is PlayerMobile, m);
 
                     if (toEffect.Count > 2)
                         damage = (damage * 2) / toEffect.Count;
