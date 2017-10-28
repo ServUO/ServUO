@@ -85,7 +85,7 @@ namespace Server.Spells.SkillMasteries
 
                         if (weapon.CheckHit(Caster, mob))
                         {
-                            damage = GetNewAosDamage(165, 1, 13, mob);
+                            damage = GetNewAosDamage(40, 1, 5, mob);
 
                             if (targets.Count > 2)
                                 damage = damage / targets.Count;

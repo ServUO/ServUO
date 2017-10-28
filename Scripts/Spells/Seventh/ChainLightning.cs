@@ -92,7 +92,7 @@ namespace Server.Spells.Seventh
                         Mobile m = id as Mobile;
 
                         if (Core.AOS)
-                            damage = GetNewAosDamage(155, 1, 13, id is PlayerMobile, id);
+                            damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
                         else
                             damage = Utility.Random(27, 22);
 

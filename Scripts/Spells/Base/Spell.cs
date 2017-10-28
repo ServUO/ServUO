@@ -200,23 +200,21 @@ namespace Server.Spells
 		{
             Mobile target = damageable as Mobile;
 
-            int damage = Utility.Dice(dice, sides, bonus) * 10;
-            int intBonus = Caster.Int / 10;
+            int damage = Utility.Dice(dice, sides, bonus) * 100;
 
-			int inscribeSkill = GetInscribeFixed(m_Caster);
+            int inscribeSkill = GetInscribeFixed(m_Caster);
+            int damageBonus = inscribeSkill >= 1000 ? 10 : inscribeSkill / 200 +
+                              (Caster.Int / 10) +
+                              SpellHelper.GetSpellDamageBonus(m_Caster, target, CastSkill, playerVsPlayer);
+
             int evalSkill = GetDamageFixed(m_Caster);
+            int evalScale = 30 + ((9 * evalSkill) / 100);
 
-            int inscribeBonus = inscribeSkill >= 1000 ? 10 : inscribeSkill / 200;
-            int damageBonus = intBonus + inscribeBonus + SpellHelper.GetSpellDamageBonus(m_Caster, target, CastSkill, playerVsPlayer);
+            damage = AOS.Scale(damage, evalScale);
+            damage = AOS.Scale(damage, 100 + damageBonus);
+            damage = AOS.Scale(damage, (int)(scalar * 100));
 
-			damage = AOS.Scale(damage, 100 + damageBonus);
-
-            int evalScale = (((evalSkill * 3) / 100) + 1) * 10;
-
-			damage = AOS.Scale(damage, evalScale);
-			damage = AOS.Scale(damage, (int)(scalar * 100));
-
-			return damage / 100;
+            return damage / 100;
 		}
 
 		public virtual bool IsCasting { get { return m_State == SpellState.Casting; } }

@@ -71,9 +71,11 @@ namespace Server.Spells.Necromancy
             {
                 m_Table.Remove(m);
                 BuffInfo.RemoveBuff(m, BuffIcon.EvilOmen);
+
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         public override void OnCast()

@@ -26,7 +26,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-
+        
         public override int BasePhysicalResistance { get { return 10; } }
         public override int BaseFireResistance { get { return 9; } }
         public override int BaseColdResistance { get { return 7; } }
