@@ -1,4 +1,9 @@
 using System;
+using Server.Multis;
+using Server.Gumps;
+using System.Collections.Generic;
+using System.Linq;
+using Server.ContextMenus;
 
 namespace Server.Items
 {
@@ -15,12 +20,16 @@ namespace Server.Items
     }
 
     [Flipable(0x104B, 0x104C)]
-    public class Clock : Item
+    public class Clock : Item, ISecurable
     {
         public const double SecondsPerUOMinute = 5.0;
         public const double MinutesPerUODay = SecondsPerUOMinute * 24;
         private static readonly DateTime WorldStart = new DateTime(1997, 9, 1);
         private static DateTime m_ServerStart;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public SecureLevel Level { get; set; }
+
         [Constructable]
         public Clock()
             : this(0x104B)
@@ -31,7 +40,8 @@ namespace Server.Items
         public Clock(int itemID)
             : base(itemID)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
+            Level = SecureLevel.CoOwners;
         }
 
         public Clock(Serial serial)
@@ -49,6 +59,13 @@ namespace Server.Items
         public static void Initialize()
         {
             m_ServerStart = DateTime.UtcNow;
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            SetSecureLevelEntry.AddTo(from, this, list);
         }
 
         public static MoonPhase GetMoonPhase(Map map, int x, int y)
@@ -143,25 +160,106 @@ namespace Server.Items
 
             GetTime(from, out genericNumber, out exactTime);
 
-            this.SendLocalizedMessageTo(from, genericNumber);
-            this.SendLocalizedMessageTo(from, 1042958, exactTime); // ~1_TIME~ to be exact
-        }
+            SendLocalizedMessageTo(from, genericNumber);
+            SendLocalizedMessageTo(from, 1042958, exactTime); // ~1_TIME~ to be exact
+        }        
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+            writer.Write((int)1); // version
 
-            writer.Write((int)0); // version
+            writer.Write((int)Level);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            if (this.Weight == 2.0)
-                this.Weight = 3.0;
+            switch (version)
+            {
+                case 1:
+                    Level = (SecureLevel)reader.ReadInt();
+                    break;
+                case 0:
+                    break;
+            }
+        }
+    }
+
+    public class ClockTime : Clock
+    {
+        private static List<ClockTime> _Instances = new List<ClockTime>();        
+
+        public static void Initialize()
+        {
+            Timer.DelayCall(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), new TimerCallback(Tick_Callback));
+        }
+
+        [Constructable]
+        public ClockTime()
+            : this(0x104B)
+        {
+        }
+
+        [Constructable]
+        public ClockTime(int itemID)
+            : base(itemID)
+        {
+            Weight = 10.0;
+            LootType = LootType.Blessed;            
+            _Instances.Add(this);
+        }
+
+        public ClockTime(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+
+            _Instances.Remove(this);
+        }
+
+        private static void Tick_Callback()
+        {
+            foreach (var clock in _Instances.Where(p => p != null && !p.Deleted && p.IsLockedDown))
+            {
+                IPooledEnumerable ie = clock.GetMobilesInRange(10);
+
+                foreach (Mobile m in ie)
+                {
+                    if (m.Player)
+                    {
+                        int hours, minutes;
+                        GetTime(m.Map, m.X, m.Y, out hours, out minutes);
+
+                        if (minutes == 00 && (hours == 12 || hours == 00 || hours == 06 || hours == 18))
+                            m.PlaySound(1634);
+                        else if (minutes == 00)
+                            m.PlaySound(1635);
+                    }
+                }
+
+                ie.Free();
+            }
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version            
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+            
+            _Instances.Add(this);
         }
     }
 
@@ -182,14 +280,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
@@ -211,14 +307,99 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 
+    [Flipable(0x44DD, 0x44E1)]
+    public class LargeGrandfatherClock : ClockTime
+    {
+        public override int LabelNumber { get { return 1149902; } } // Large Grandfather Clock
+
+        [Constructable]
+        public LargeGrandfatherClock()
+            : base(0x44DD)
+        {
+        }
+
+        public LargeGrandfatherClock(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    [Flipable(0x44D5, 0x44D9)]
+    public class SmallGrandfatherClock : ClockTime
+    {
+        public override int LabelNumber { get { return 1149901; } } // Small Grandfather Clock
+
+        [Constructable]
+        public SmallGrandfatherClock()
+            : base(0x44D5)
+        {
+        }
+
+        public SmallGrandfatherClock(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    [Flipable(0x48D4, 0x48D8)]
+    public class WhiteGrandfatherClock : ClockTime
+    {
+        public override int LabelNumber { get { return 1149903; } } // White Grandfather Clock
+
+        [Constructable]
+        public WhiteGrandfatherClock()
+            : base(0x48D4)
+        {
+        }
+
+        public WhiteGrandfatherClock(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }
