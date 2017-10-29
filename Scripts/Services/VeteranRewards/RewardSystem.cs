@@ -607,6 +607,10 @@ namespace Server.Engines.VeteranRewards
 
                     new RewardEntry(houseAddOns,    1153491, typeof(GardenShedDeed), Expansion.TOL),
                 }),
+                new RewardList(RewardInterval, 20, new RewardEntry[]
+                {
+                    new RewardEntry(etherealSteeds, 1157995, typeof(EtherealSerpentineDragon), Expansion.TOL)
+                }),
             };
         }
 
