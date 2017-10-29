@@ -456,6 +456,15 @@ namespace Server.Engines.CityLoyalty
                     bc.RawStr += (int)(bc.RawStr * difficulty);
                     bc.RawInt += (int)(bc.RawInt * difficulty);
                     bc.RawDex += (int)(bc.RawDex * difficulty);
+                    
+                    if (bc.HitsMaxSeed == -1)
+                        bc.HitsMaxSeed = bc.RawStr;
+
+                    if (bc.StamMaxSeed == -1)
+                        bc.StamMaxSeed = bc.RawDex;
+
+                    if (bc.ManaMaxSeed == -1)
+                        bc.ManaMaxSeed = bc.RawInt;
 
                     bc.HitsMaxSeed += (int)(bc.HitsMaxSeed * difficulty);
                     bc.StamMaxSeed += (int)(bc.StamMaxSeed * difficulty);
