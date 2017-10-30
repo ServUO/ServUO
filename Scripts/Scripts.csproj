@@ -580,7 +580,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\AdvancedTrainingDummy.cs" />
-    <Compile Include="Items\Addons\Craft Addons\BowStringer.cs" />
     <Compile Include="Items\Addons\KoiPond.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeFairySculpture.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeArcherSculpture.cs" />
