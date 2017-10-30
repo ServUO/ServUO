@@ -775,26 +775,28 @@ namespace Server.Mobiles
         #region Enhanced Client
         private static void Targeted_Item(TargetedItemUseEventArgs e)
         {
-            Item from = World.FindItem(e.Source.Serial);
-            Mobile to = World.FindMobile(e.Target.Serial);
-            Item toItem = World.FindItem(e.Target.Serial);
+            Mobile from = e.Mobile;
+            Item item = World.FindItem(e.Source.Serial);
+            IEntity target = e.Target;
 
-            if (from != null && e.Mobile.Target != null)
+            if (from == null || item == null || target == null)
+                return;
+
+            if (item is Bandage && target is Mobile)
             {
-                if (to != null)
+                Bandage.BandageTargetRequest((Bandage)item, from, (Mobile)target);
+            }
+            else if (from.InRange(item.GetWorldLocation(), Core.AOS ? 2 : 1))
+            {
+                from.TargetLocked = true;
+                from.Use(item);
+
+                if (from.Target != null)
                 {
-                    e.Mobile.TargetLocked = true;
-                    e.Mobile.Use(from);
-                    e.Mobile.Target.Invoke(e.Mobile, to);
-                    e.Mobile.TargetLocked = false;
+                    from.Target.Invoke(from, target);
                 }
-                else if (toItem != null)
-                {
-                    e.Mobile.TargetLocked = true;
-                    e.Mobile.Use(from);
-                    e.Mobile.Target.Invoke(e.Mobile, toItem);
-                    e.Mobile.TargetLocked = false;
-                }
+
+                from.TargetLocked = false;
             }
         }
 
@@ -802,27 +804,19 @@ namespace Server.Mobiles
         {
             Mobile from = e.Mobile;
             int SkillId = e.SkillID;
-            Mobile to = World.FindMobile(e.Target.Serial);
-            Item toItem = World.FindItem(e.Target.Serial);
+            IEntity target = e.Target;
 
-            if (to != null)
+            if (from == null || target == null || target == null)
+                return;
+
+            from.TargetLocked = true;
+
+            if (from.UseSkill(e.SkillID) && from.Target != null)
             {
-                from.TargetLocked = true;
-
-                if (from.UseSkill(e.SkillID) && from.Target != null)
-                    from.Target.Invoke(from, to);
-
-                from.TargetLocked = false;
+                from.Target.Invoke(from, target);
             }
-            else if (toItem != null)
-            {
-                from.TargetLocked = true;
 
-                if (from.UseSkill(e.SkillID) && from.Target != null)
-                    from.Target.Invoke(from, toItem);
-
-                from.TargetLocked = false;
-            }
+            from.TargetLocked = false;
         }
 
         public static void EquipMacro(EquipMacroEventArgs e)

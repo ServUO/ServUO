@@ -2560,6 +2560,8 @@ namespace Server.Items
 				false,
 				ranged ? Server.DamageType.Ranged : Server.DamageType.Melee);
 
+            DualWield.DoHit(attacker, defender, damage);
+
             if (sparks)
             {
                 int mana = attacker.Mana + damageGiven;

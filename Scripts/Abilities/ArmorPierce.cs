@@ -51,6 +51,8 @@ namespace Server.Items
             ClearCurrentAbility(attacker);
 
             attacker.SendLocalizedMessage(1063350); // You pierce your opponent's armor!
+
+            defender.SendLocalizedMessage(1153764); // Your armor has been pierced!
             defender.SendLocalizedMessage(1063351); // Your attacker pierced your armor!            
 
             if (Core.HS)
@@ -67,6 +69,7 @@ namespace Server.Items
                 _Table[defender] = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), RemoveEffects, defender);
             }
 
+            defender.PlaySound(0x28E);
             defender.FixedParticles(0x3728, 1, 26, 0x26D6, 0, 0, EffectLayer.Waist);
         }
 
@@ -74,6 +77,7 @@ namespace Server.Items
         {
             if (IsUnderEffects(m))
             {
+                m.SendLocalizedMessage(1153904); // Your armor has returned to normal.
                 _Table.Remove(m);
             }
         }

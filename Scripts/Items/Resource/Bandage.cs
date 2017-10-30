@@ -23,11 +23,6 @@ namespace Server.Items
 
 		public override double DefaultWeight { get { return 0.1; } }
 
-		public static void Initialize()
-		{
-			EventSink.BandageTargetRequest += EventSink_BandageTargetRequest;
-		}
-
 		[Constructable]
 		public Bandage()
 			: this(1)
@@ -87,16 +82,10 @@ namespace Server.Items
 			}
 		}
 
-		private static void EventSink_BandageTargetRequest(BandageTargetRequestEventArgs e)
+        public static void BandageTargetRequest(Bandage b, Mobile from, Mobile target)
 		{
-			Bandage b = e.Bandage as Bandage;
-
-			if (b == null || b.Deleted)
-			{
-				return;
-			}
-
-			Mobile from = e.Mobile;
+            if (b.Deleted)
+                return;
 
 			if (from.InRange(b.GetWorldLocation(), Range))
 			{
@@ -109,10 +98,9 @@ namespace Server.Items
 				}
 
 				from.RevealingAction();
-
 				from.SendLocalizedMessage(500948); // Who will you use the bandages on?
 
-				new InternalTarget(b).Invoke(from, e.Target);
+                new InternalTarget(b).Invoke(from, target);
 			}
 			else
 			{
