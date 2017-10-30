@@ -108,8 +108,8 @@ namespace Server.Items
     public class KoiPondDeed : BaseAddonDeed
     {
         public override int LabelNumber { get { return 1157996; } } // Koi Pond
-        public override BaseAddon Addon { get { return new KoiPondAddon(m_Direction); } }
-        public KoiPondSize m_Direction;
+        public override BaseAddon Addon { get { return new KoiPondAddon(m_Size); } }
+        public KoiPondSize m_Size;
 
         [Constructable]
         public KoiPondDeed()
@@ -186,7 +186,7 @@ namespace Server.Items
                 if (m_Deed == null || m_Deed.Deleted || info.ButtonID == 0)
                     return;
 
-                m_Deed.m_Direction = (KoiPondSize)info.ButtonID;
+                m_Deed.m_Size = (KoiPondSize)info.ButtonID;
                 m_Deed.SendTarget(sender.Mobile);
             }
         }
