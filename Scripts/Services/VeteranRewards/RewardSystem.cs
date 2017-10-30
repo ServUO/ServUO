@@ -562,6 +562,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1150091, typeof(RoseRugSouthAddonDeed), Expansion.SA),
                     new RewardEntry(houseAddOns,    1150094, typeof(DolphinRugEastAddonDeed), Expansion.SA),
                     new RewardEntry(houseAddOns,    1150093, typeof(DolphinRugSouthAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1157996, typeof(KoiPondDeed), Expansion.TOL),
 
                     new RewardEntry( miscellaneous, 1150424, typeof(ChestOfSending), Expansion.SA),
                 }),
