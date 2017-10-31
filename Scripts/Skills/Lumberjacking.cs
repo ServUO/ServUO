@@ -139,12 +139,6 @@ namespace Server.Engines.Harvest
             if (!base.CheckHarvest(from, tool))
                 return false;
 
-            if (tool.Parent != from)
-            {
-                from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
-                return false;
-            }
-
             return true;
         }
 

@@ -137,7 +137,8 @@ namespace Server.Items
                     typeof(Niporailem), typeof(DreamWraith),
                     typeof(EffeteUndeadGargoyle), typeof(UndeadGargoyle),
                     typeof(UndeadGuardian), typeof(PutridUndeadGargoyle),
-                    typeof(PutridUndeadGuardian), typeof(Juonar)
+                    typeof(PutridUndeadGuardian), typeof(Juonar),
+                    typeof(Spellbinder)
                 );
 
             undead.Entries = new SlayerEntry[0];
@@ -534,14 +535,14 @@ namespace Server.Items
                     (
                         SlayerName.SnakesBane,
 
-                        typeof(Serado),         typeof(DeepSeaSerpent),
-                        typeof(GiantIceWorm),   typeof(GiantSerpent),
-                        typeof(IceSerpent),     typeof(IceSnake),
-                        typeof(LavaSerpent),    typeof(LavaSnake),
-                        typeof(SeaSerpent),     typeof(Serado),
-                        typeof(SilverSerpent),  typeof(Snake),
-                        typeof(Yamandon),       typeof(CrystalSeaSerpent),
-                        typeof(Coil),           typeof(CoralSnake)
+                        typeof(CrystalSeaSerpent),  typeof(Coil),
+                        typeof(CoralSnake),         typeof(DeepSeaSerpent),
+                        typeof(GiantIceWorm),       typeof(GiantSerpent),
+                        typeof(IceSerpent),         typeof(IceSnake),
+                        typeof(LavaSerpent),        typeof(LavaSnake),
+                        typeof(SeaSerpent),         typeof(Serado),
+                        typeof(SilverSerpent),      typeof(Snake),
+                        typeof(Yamandon)
                     )
             };
 

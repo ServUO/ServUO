@@ -127,6 +127,10 @@ namespace Server.Items
                     from.AddToBackpack(deed);
                 }
             }
+            else
+            {
+                from.SendLocalizedMessage(1113134); // You can only redeed items in your own house!
+            }
         }
 
         public virtual BaseAddonDeed Deed
