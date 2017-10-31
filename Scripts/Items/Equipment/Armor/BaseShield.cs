@@ -207,7 +207,7 @@ namespace Server.Items
         {
         }
 
-        protected override void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
+        public override void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
         {
             if (CraftResources.GetType(Resource) != CraftResourceType.Wood)
             {

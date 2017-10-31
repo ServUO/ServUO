@@ -6166,43 +6166,36 @@ namespace Server.Items
 					return quality;
 				}
 
-				if (m_Resource != CraftResource.Heartwood)
-				{
-					m_AosAttributes.WeaponDamage += attrInfo.WeaponDamage;
-					m_AosAttributes.WeaponSpeed += attrInfo.WeaponSwingSpeed;
-					m_AosAttributes.AttackChance += attrInfo.WeaponHitChance;
-					m_AosAttributes.RegenHits += attrInfo.WeaponRegenHits;
-					m_AosWeaponAttributes.HitLeechHits += attrInfo.WeaponHitLifeLeech;
-				}
-				else
-				{
-					switch (Utility.Random(6))
-					{
-						case 0:
-							m_AosAttributes.WeaponDamage += attrInfo.WeaponDamage;
-							break;
-						case 1:
-							m_AosAttributes.WeaponSpeed += attrInfo.WeaponSwingSpeed;
-							break;
-						case 2:
-							m_AosAttributes.AttackChance += attrInfo.WeaponHitChance;
-							break;
-						case 3:
-							m_AosAttributes.Luck += attrInfo.WeaponLuck;
-							break;
-						case 4:
-							m_AosWeaponAttributes.LowerStatReq += attrInfo.WeaponLowerRequirements;
-							break;
-						case 5:
-							m_AosWeaponAttributes.HitLeechHits += attrInfo.WeaponHitLifeLeech;
-							break;
-					}
-				}
+                DistributeMaterialBonus(attrInfo);
 			}
 			#endregion
 
 			return quality;
 		}
+
+        public virtual void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
+        {
+            if (m_Resource != CraftResource.Heartwood)
+            {
+                m_AosAttributes.WeaponDamage += attrInfo.WeaponDamage;
+                m_AosAttributes.WeaponSpeed += attrInfo.WeaponSwingSpeed;
+                m_AosAttributes.AttackChance += attrInfo.WeaponHitChance;
+                m_AosAttributes.RegenHits += attrInfo.WeaponRegenHits;
+                m_AosWeaponAttributes.HitLeechHits += attrInfo.WeaponHitLifeLeech;
+            }
+            else
+            {
+                switch (Utility.Random(6))
+                {
+                    case 0: m_AosAttributes.WeaponDamage += attrInfo.WeaponDamage; break;
+                    case 1: m_AosAttributes.WeaponSpeed += attrInfo.WeaponSwingSpeed; break;
+                    case 2: m_AosAttributes.AttackChance += attrInfo.WeaponHitChance; break;
+                    case 3: m_AosAttributes.Luck += attrInfo.WeaponLuck; break;
+                    case 4: m_AosWeaponAttributes.LowerStatReq += attrInfo.WeaponLowerRequirements; break;
+                    case 5: m_AosWeaponAttributes.HitLeechHits += attrInfo.WeaponHitLifeLeech; break;
+                }
+            }
+        }
 
 		#region Mondain's Legacy Sets
 		public override bool OnDragLift(Mobile from)

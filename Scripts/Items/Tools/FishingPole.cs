@@ -10,7 +10,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class FishingPole : Item, ICraftable, IUsesRemaining
+    public class FishingPole : Item, ICraftable, IUsesRemaining, IResource
     {
         private Type m_BaitType;
         private bool m_EnhancedBait;
@@ -25,9 +25,12 @@ namespace Server.Items
         private AosAttributes m_AosAttributes;
         private AosSkillBonuses m_AosSkillBonuses;
         private CraftResource m_Resource;
+        private bool m_PlayerConstructed;
         
         private int m_UsesRemaining;
         private bool m_ShowUsesRemaining;
+
+        private int m_LowerStatReq;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Type BaitType
@@ -130,6 +133,13 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public bool PlayerConstructed
+        {
+            get { return m_PlayerConstructed; }
+            set { m_PlayerConstructed = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public int OriginalHue
         {
             get { return m_OriginalHue; }
@@ -169,12 +179,20 @@ namespace Server.Items
             set { m_ShowUsesRemaining = value; InvalidateProperties(); }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int LowerStatReq
+        {
+            get { return m_LowerStatReq; }
+            set { m_LowerStatReq = value; InvalidateProperties(); }
+        }
+
         [Constructable]
         public FishingPole()
             : base(0x0DC0)
         {
             Layer = Layer.OneHanded;
             Weight = 8.0;
+            Resource = CraftResource.RegularWood;
 
             m_BaitType = null;
             m_HookType = HookType.None;
@@ -202,6 +220,11 @@ namespace Server.Items
                 return 200;
 
             return 100;
+        }
+
+        public int GetStrRequirement()
+        {
+            return AOS.Scale(10, 100 - m_LowerStatReq);
         }
 
         public void OnFishedHarvest(Mobile from, bool caughtAnything)
@@ -254,6 +277,17 @@ namespace Server.Items
             base.GetContextMenuEntries(from, list);
 
             BaseHarvestTool.AddContextMenuEntries(from, this, list, Fishing.System);
+        }
+
+        public override bool CanEquip(Mobile from)
+        {
+            if (from.Str < GetStrRequirement())
+            {
+                from.SendLocalizedMessage(500213); // You are not strong enough to equip that.
+                return false;
+            }
+
+            return base.CanEquip(from);
         }
 
         public override bool OnEquip(Mobile from)
@@ -323,7 +357,7 @@ namespace Server.Items
             if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
 
-            if (m_Quality == ItemQuality.Exceptional) // Change this to same position in BaseWeapon.cs
+            if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
 
             if (m_AosSkillBonuses != null)
@@ -371,8 +405,8 @@ namespace Server.Items
             if ((prop = m_AosAttributes.LowerRegCost) != 0)
                 list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%
 
-            //if ( (prop = GetLowerStatReq()) != 0 )
-            //	list.Add( 1060435, prop.ToString() ); // lower requirements ~1_val~%
+            if ((prop = m_LowerStatReq) != 0)
+                list.Add(1060435, m_LowerStatReq.ToString()); // lower requirements ~1_val~%
 
             if ((prop = m_AosAttributes.SpellChanneling) != 0)
                 list.Add(1060482); // spell channeling	
@@ -429,8 +463,10 @@ namespace Server.Items
                 else if (label is string)
                     list.Add(1116468, (string)label);
 
-                list.Add(1116466, m_BaitUses.ToString());
+                list.Add(1116466, m_BaitUses.ToString()); // amount: ~1_val~
             }
+
+            list.Add(1061170, GetStrRequirement().ToString()); // strength requirement ~1_val~
         }
 
         public FishingPole(Serial serial)
@@ -453,10 +489,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write((int)4); // version
 
-            writer.Write(m_UsesRemaining);
-            writer.Write(m_ShowUsesRemaining);
+            writer.Write(m_PlayerConstructed);
+            writer.Write(m_LowerStatReq);
+
+            writer.Write(m_PlayerConstructed);
+            writer.Write(m_LowerStatReq);
 
             writer.Write(m_OriginalHue);
 
@@ -488,6 +527,10 @@ namespace Server.Items
 
             switch (version)
             {
+                case 4:
+                    m_PlayerConstructed = reader.ReadBool();
+                    m_LowerStatReq = reader.ReadInt();
+                    goto case 3;
                 case 3:
                     m_UsesRemaining = reader.ReadInt();
                     m_ShowUsesRemaining = reader.ReadBool();
@@ -550,6 +593,18 @@ namespace Server.Items
 
             if (m_HookType != HookType.None && m_HookUses <= 0)
                 HookType = HookType.None;
+
+            if (version < 3 && m_Crafter != null)
+            {
+                m_PlayerConstructed = true;
+
+                if (m_Resource == CraftResource.None)
+                    Resource = CraftResource.RegularWood;
+                else
+                {
+                    DistributeMaterialBonus();
+                }
+            }
         }
 
         private enum SaveFlag
@@ -563,6 +618,8 @@ namespace Server.Items
         {
             Quality = (ItemQuality)quality;
 
+            PlayerConstructed = true;
+
             if (makersMark) // Add to CraftItem.cs mark table
                 Crafter = from;
 
@@ -571,55 +628,45 @@ namespace Server.Items
             if (resourceType == null)
                 resourceType = craftItem.Resources.GetAt(0).ItemType;
 
-            if (!craftItem.ForceNonExceptional)
-                Resource = CraftResources.GetFromType(resourceType);
-
-            CraftContext context = craftSystem.GetContext(from);
-
-            if (context != null && context.DoNotColor)
-                Hue = 0;
-
-            if (craftItem != null)
-            {
-                if (tool is BaseRunicTool)
-                    ((BaseRunicTool)tool).ApplyAttributesTo(this);
-
-                CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
-
-                if (resInfo == null)
-                    return quality;
-
-                CraftAttributeInfo attrInfo = resInfo.AttributeInfo;
-
-                if (attrInfo == null)
-                    return quality;
-
-                if (m_Resource != CraftResource.Heartwood)
-                {
-                    m_AosAttributes.WeaponDamage += attrInfo.WeaponDamage;
-                    m_AosAttributes.WeaponSpeed += attrInfo.WeaponSwingSpeed;
-                    m_AosAttributes.AttackChance += attrInfo.WeaponHitChance;
-                    m_AosAttributes.RegenHits += attrInfo.WeaponRegenHits;
-                }
-                else
-                {
-                    switch (Utility.Random(6))
-                    {
-                        case 0: m_AosAttributes.WeaponDamage += attrInfo.WeaponDamage; break;
-                        case 1: m_AosAttributes.WeaponSpeed += attrInfo.WeaponSwingSpeed; break;
-                        case 2: m_AosAttributes.AttackChance += attrInfo.WeaponHitChance; break;
-                        case 3: m_AosAttributes.Luck += attrInfo.WeaponLuck; break;
-                    }
-                }
-
-                if ((m_Resource == CraftResource.Frostwood || m_Resource == CraftResource.Heartwood) && m_AosAttributes.SpellChanneling == 0)
-                {
-                    Attributes.SpellChanneling = 1;
-                    Attributes.CastSpeed -= 1;
-                }
-            }
+            Resource = CraftResources.GetFromType(resourceType);
+            DistributeMaterialBonus();
 
             return quality;
+        }
+
+        public void DistributeMaterialBonus()
+        {
+            CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
+
+            if (resInfo == null)
+                return;
+
+            CraftAttributeInfo attrInfo = resInfo.AttributeInfo;
+
+            if (attrInfo != null)
+                DistributeMaterialBonus(attrInfo);
+        }
+
+        public void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
+        {
+            if (m_Resource != CraftResource.Heartwood)
+            {
+                Attributes.SpellChanneling = attrInfo.OtherSpellChanneling;
+                Attributes.Luck = attrInfo.OtherLuck;
+                Attributes.RegenHits = attrInfo.OtherRegenHits;
+                LowerStatReq = attrInfo.OtherLowerRequirements;
+            }
+            else
+            {
+                switch (Utility.Random(5))
+                {
+                    case 0: Attributes.Luck += 40; break;
+                    case 1: Attributes.Luck += 10; break;
+                    case 2: Attributes.RegenHits += attrInfo.OtherRegenHits; break;
+                    case 3: Attributes.SpellChanneling = attrInfo.OtherSpellChanneling; break;
+                    case 4: LowerStatReq = attrInfo.OtherLowerRequirements; break;
+                }
+            }
         }
     }
 }

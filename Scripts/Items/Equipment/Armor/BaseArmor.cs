@@ -3173,7 +3173,7 @@ namespace Server.Items
             m_EnergyNonImbuing += info.ArmorEnergyResist;
         }
 
-        protected virtual void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
+        public virtual void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
         {
             if (m_Resource != CraftResource.Heartwood)
             {
