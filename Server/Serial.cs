@@ -13,15 +13,16 @@ namespace Server
 	public struct Serial : IComparable, IComparable<Serial>
 	{
 		private readonly int m_Serial;
+        public static readonly Serial Zero = new Serial(0);
 
-		private static Serial m_LastMobile = Zero;
+        private static Serial m_LastMobile = Zero;
 		private static Serial m_LastItem = 0x40000000;
 
 		public static Serial LastMobile { get { return m_LastMobile; } }
 		public static Serial LastItem { get { return m_LastItem; } }
 
 		public static readonly Serial MinusOne = new Serial(-1);
-		public static readonly Serial Zero = new Serial(0);
+
 
 		public static Serial NewMobile
 		{
