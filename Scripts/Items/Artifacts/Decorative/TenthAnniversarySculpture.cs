@@ -123,7 +123,7 @@ namespace Server.Items
 
                 if(account != null)
                 {
-                    return (int)Math.Max(MinLuckBonus, Math.Min(MaxLuckBonus, ((DateTime.UtcNow - account.Created).TotalDays / 365) * 50));
+                    return (int)Math.Min(MaxLuckBonus, 200 + (int)((DateTime.UtcNow - account.Created).TotalDays / 365) * 50);
                 }
             }
 
