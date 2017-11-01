@@ -247,12 +247,7 @@ namespace Server.Engines.Harvest
             if (!base.CheckHarvest(from, tool))
                 return false;
 
-            if (from.Mounted)
-            {
-                from.SendLocalizedMessage(501864); // You can't mine while riding.
-                return false;
-            }
-            else if (from.IsBodyMod && !from.Body.IsHuman)
+            if (from.IsBodyMod && !from.Body.IsHuman)
             {
                 from.SendLocalizedMessage(501865); // You can't mine while polymorphed.
                 return false;
@@ -483,9 +478,17 @@ namespace Server.Engines.Harvest
         public override void OnBadHarvestTarget(Mobile from, Item tool, object toHarvest)
         {
             if (toHarvest is LandTarget)
+            {
                 from.SendLocalizedMessage(501862); // You can't mine there.
-            else
+            }            
+            else if (!(toHarvest is LandTarget))
+            {
                 from.SendLocalizedMessage(501863); // You can't mine that.
+            }
+            else if (from.Mounted || from.Flying)
+            {
+                from.SendLocalizedMessage(501864); // You can't dig while riding or flying.
+            }
         }
 
         #region Tile lists

@@ -12,9 +12,38 @@ namespace Server.Items
 	public class Volcano
     {
         public static readonly Rectangle2D LavaStart = new Rectangle2D(927, 1615, 2, 2);
-        public static readonly Rectangle2D[] FlameZone = new Rectangle2D[] { new Rectangle2D(903, 1591, 50, 50) };
-        public static readonly int MaxFlames = 12;
-        public static readonly int LastLavaStage = 31;
+        public static readonly int LastLavaStage = 70;
+
+        public static readonly Rectangle2D[] SafeZone = new Rectangle2D[] 
+        {
+            new Rectangle2D(959, 1704, 15, 14),
+            new Rectangle2D(915, 1696, 15, 15),
+            new Rectangle2D(1056, 1584, 17, 19),
+            new Rectangle2D(884, 1695, 13, 15),
+            new Rectangle2D(1009, 1663, 13, 13),
+            new Rectangle2D(994, 1526, 15, 15),
+            new Rectangle2D(1012, 1541, 15, 14),
+            new Rectangle2D(1032, 1520, 19, 18),
+            new Rectangle2D(1011, 1601, 9, 9),
+            new Rectangle2D(897, 1554, 15, 15),
+            new Rectangle2D(834, 1546, 23, 20),
+            new Rectangle2D(837, 1675, 11, 14),
+            new Rectangle2D(838, 1636, 15, 12),
+            new Rectangle2D(856, 1697, 19, 18),
+            new Rectangle2D(879, 1668, 15, 19),
+            new Rectangle2D(991, 1590, 15, 15)
+        };
+
+        public static bool InSafeZone(IPoint3D point)
+        {
+            foreach (Rectangle2D rec in SafeZone)
+            {
+                if (rec.Contains(point))
+                    return true;
+            }
+
+            return false;
+        }
 
         public static TimeSpan FlameRespawn { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(1, 3)); } }
         public static TimeSpan LavaRespawn { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)); } }
@@ -27,6 +56,7 @@ namespace Server.Items
         private long _NextLavaAdvance;
         private int _LavaStage;
         private Rectangle2D _CurrentLava;
+        private Rectangle2D _SafeZone;
         private Region _Region;
 
         public static void Initialize()
@@ -65,14 +95,15 @@ namespace Server.Items
                 ColUtility.Free(players);
 
                 _CurrentLava = LavaStart;
-                _NextLavaAdvance = Core.TickCount + 1000;
+                _NextLavaAdvance = Core.TickCount + 450;
 
                 _LavaTimer = Timer.DelayCall(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(250), () =>
                 {
                     if (Core.TickCount - _NextLavaAdvance >= 0)
                     {
                         _CurrentLava = new Rectangle2D(_CurrentLava.X - 2, _CurrentLava.Y - 2, _CurrentLava.Width + 4, _CurrentLava.Height + 4);
-                        _NextLavaAdvance = Core.TickCount + 1000;
+                        _SafeZone = new Rectangle2D(_CurrentLava.X + 2, _CurrentLava.Y + 2, _CurrentLava.Width - 4, _CurrentLava.Height - 4);
+                        _NextLavaAdvance = Core.TickCount + 450;
 
                         AddLava();
                     }
@@ -80,6 +111,16 @@ namespace Server.Items
 
                 _LavaTimer.Start();
             }
+        }
+
+        public bool CheckCoordinate(int x, int y)
+        {
+            if (x <= _CurrentLava.X + 2 || x >= (_CurrentLava.X + _CurrentLava.Width) - 2 || y <= _CurrentLava.Y + 2 || y >= (_CurrentLava.Y + _CurrentLava.Height) - 2)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public void AddLava()
@@ -90,13 +131,23 @@ namespace Server.Items
             {
                 for (int y = _CurrentLava.Y; y <= _CurrentLava.Y + _CurrentLava.Height; y++)
                 {
-                    if (x <= _CurrentLava.X + 2 || x >= (_CurrentLava.X + _CurrentLava.Width) - 2 ||
-                       y <= _CurrentLava.Y + 2 || y >= (_CurrentLava.Y + _CurrentLava.Height) - 2)
+                    if (CheckCoordinate(x, y))
                     {
-                        if (Map.TerMur.CanFit(x, y, 0, 16, false, false, true))
+                        Point3D p = new Point3D(x, y, 0);
+
+                        IPooledEnumerable mobiles = Map.TerMur.GetMobilesInRange(p, 20);
+
+                        foreach (Mobile m in mobiles)
                         {
-                            Point3D p = new Point3D(x, y, 0);
-                            Effects.SendLocationEffect(p, Map.TerMur, 4847, (int)LavaAdvance.TotalSeconds * 30);
+                            if (m.AccessLevel == AccessLevel.Player && m is PlayerMobile)
+                                m.PlaySound(520);
+                        }
+
+                        mobiles.Free();
+
+                        if (Map.TerMur.CanFit(x, y, 0, 16, false, false, true) && !InSafeZone(p))
+                        {                            
+                            Effects.SendLocationEffect(p, Map.TerMur, 4847, (int)LavaAdvance.TotalSeconds * 10);
 
                             IPooledEnumerable eable = Map.TerMur.GetMobilesInRange(p, 0);
 
@@ -130,7 +181,7 @@ namespace Server.Items
             if (!m.Alive || m.AccessLevel > AccessLevel.Player || (m is BaseCreature && ((BaseCreature)m).GetMaster() == null))
                 return;
 
-            if (_LavaTimer != null && _CurrentLava.Contains(m) && m.Alive && m.AccessLevel == AccessLevel.Player)
+            if (_LavaTimer != null && m.AccessLevel == AccessLevel.Player && m.Alive && _CurrentLava.Contains(m) && !_SafeZone.Contains(m) && !InSafeZone(m))
             {
                 DoLavaDamageDelayed(m);
             }
