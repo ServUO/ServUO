@@ -14,7 +14,7 @@ namespace Server.Spells.Necromancy
             Reagent.GraveDust,
             Reagent.PigIron);
 
-        private static readonly Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
+        private static readonly Dictionary<Mobile, InternalTimer> m_Table = new Dictionary<Mobile, InternalTimer>();
 
         public PainSpikeSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -51,14 +51,14 @@ namespace Server.Spells.Necromancy
         }
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (this.CheckHSequence(m))
+            if (CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
                 ApplyEffects(m);
                 ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
@@ -69,7 +69,7 @@ namespace Server.Spells.Necromancy
 
         public void ApplyEffects(Mobile m, double strength = 1.0)
         {
-            //SpellHelper.CheckReflect( (int)this.Circle, Caster, ref m ); //Irrelevent asfter AoS
+            //SpellHelper.CheckReflect( (int)Circle, Caster, ref m ); //Irrelevent asfter AoS
 
             /* Temporarily causes intense physical pain to the target, dealing direct damage.
              * After 10 seconds the spell wears off, and if the target is still alive, 
@@ -87,25 +87,25 @@ namespace Server.Spells.Necromancy
                 damage = 1;
 
             TimeSpan buffTime = TimeSpan.FromSeconds(10.0 * strength);
+            InternalTimer t;
 
             if (m_Table.ContainsKey(m))
             {
                 damage = Utility.RandomMinMax(3, 7);
-                Timer t = m_Table[m];
+                t = m_Table[m];
 
                 if (t != null)
                 {
-                    t.Delay += TimeSpan.FromSeconds(2.0);
-
-                    buffTime = t.Next - DateTime.UtcNow;
+                    t.Expires += TimeSpan.FromSeconds(2);
                 }
             }
             else
             {
-                new InternalTimer(m, damage).Start();
+                t = new InternalTimer(m, damage);
+                t.Start();
             }
 
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PainSpike, 1075667, buffTime, m, Convert.ToString((int)damage)));
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PainSpike, 1075667, t.Expires - DateTime.UtcNow, m, Convert.ToString((int)damage)));
 
             Misc.WeightOverloading.DFA = Misc.DFAlgorithm.PainSpike;
             AOS.Damage(m, Caster, (int)damage, 0, 0, 0, 0, 0, 0, 100);
@@ -119,26 +119,34 @@ namespace Server.Spells.Necromancy
         {
             private readonly Mobile m_Mobile;
             private readonly int m_ToRestore;
-            public InternalTimer(Mobile m, double toRestore)
-                : base(TimeSpan.FromSeconds(10.0))
-            {
-                this.Priority = TimerPriority.OneSecond;
 
-                this.m_Mobile = m;
-                this.m_ToRestore = (int)toRestore;
+            public DateTime Expires { get; set; }
+
+            public InternalTimer(Mobile m, double toRestore)
+                : base(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(250))
+            {
+                Priority = TimerPriority.FiftyMS;
+
+                m_Mobile = m;
+                m_ToRestore = (int)toRestore;
+
+                Expires = DateTime.UtcNow + TimeSpan.FromSeconds(10);
 
                 m_Table[m] = this;
             }
 
             protected override void OnTick()
             {
-                if (m_Table.ContainsKey(m_Mobile))
-                    m_Table.Remove(this.m_Mobile);
+                if (DateTime.UtcNow >= Expires)
+                {
+                    if (m_Table.ContainsKey(m_Mobile))
+                        m_Table.Remove(m_Mobile);
 
-                if (this.m_Mobile.Alive && !this.m_Mobile.IsDeadBondedPet)
-                    this.m_Mobile.Hits += this.m_ToRestore;
+                    if (m_Mobile.Alive && !m_Mobile.IsDeadBondedPet)
+                        m_Mobile.Hits += m_ToRestore;
 
-                BuffInfo.RemoveBuff(this.m_Mobile, BuffIcon.PainSpike);
+                    BuffInfo.RemoveBuff(m_Mobile, BuffIcon.PainSpike);
+                }
             }
         }
 
@@ -148,18 +156,18 @@ namespace Server.Spells.Necromancy
             public InternalTarget(PainSpikeSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }
