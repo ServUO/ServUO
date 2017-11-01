@@ -365,7 +365,7 @@ namespace Server
 			int fromPlatSend = 0, fromGoldSend = 0, fromPlatRecv = 0, fromGoldRecv = 0;
 			int toPlatSend = 0, toGoldSend = 0, toPlatRecv = 0, toGoldRecv = 0;
 
-			if (m_From.Plat > 0 & m_From.Mobile.Account.WithdrawPlat(m_From.Plat))
+			if (m_From.Plat > 0 && m_From.Mobile.Account.WithdrawPlat(m_From.Plat))
 			{
 				fromPlatSend = m_From.Plat;
 
@@ -375,7 +375,7 @@ namespace Server
 				}
 			}
 
-			if (m_From.Gold > 0 & m_From.Mobile.Account.WithdrawGold(m_From.Gold))
+			if (m_From.Gold > 0 && m_From.Mobile.Account.WithdrawGold(m_From.Gold))
 			{
 				fromGoldSend = m_From.Gold;
 
@@ -385,7 +385,7 @@ namespace Server
 				}
 			}
 
-			if (m_To.Plat > 0 & m_To.Mobile.Account.WithdrawPlat(m_To.Plat))
+			if (m_To.Plat > 0 && m_To.Mobile.Account.WithdrawPlat(m_To.Plat))
 			{
 				toPlatSend = m_To.Plat;
 
@@ -395,7 +395,7 @@ namespace Server
 				}
 			}
 
-			if (m_To.Gold > 0 & m_To.Mobile.Account.WithdrawGold(m_To.Gold))
+			if (m_To.Gold > 0 && m_To.Mobile.Account.WithdrawGold(m_To.Gold))
 			{
 				toGoldSend = m_To.Gold;
 
