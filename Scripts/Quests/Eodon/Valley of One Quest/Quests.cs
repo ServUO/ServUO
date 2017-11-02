@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Engines.Harvest;
+using Server.Network;
 
 namespace Server.Engines.Quests
 {
@@ -351,22 +352,28 @@ namespace Server.Engines.Quests
 		
 		public static bool OnHarvest(Mobile m, Item tool)
 		{
-            if (m is PlayerMobile && VolcanoMineBounds.Contains(m.Location))
-			{
+            if (!(m is PlayerMobile))
+                return false;
+
+            PlayerMobile pm = m as PlayerMobile;
+
+            if (pm.ToggleMiningStone && VolcanoMineBounds.Contains(m.Location))
+			{                
                 object locked = tool;
 
                 if (!m.BeginAction(locked))
-                    return false;
+                    return false;                
 
-                m.Animate(Utility.RandomList(Mining.System.OreAndStone.EffectActions), 5, 1, true, false, 0);
+                m.Animate(AnimationType.Attack, 3);
+
                 Timer.DelayCall(Mining.System.OreAndStone.EffectSoundDelay, () =>
-                    {
-                        m.PlaySound(Utility.RandomList(Mining.System.OreAndStone.EffectSounds));
-                    });
+                {
+                    m.PlaySound(Utility.RandomList(Mining.System.OreAndStone.EffectSounds));
+                });
 
                 Timer.DelayCall(Mining.System.OreAndStone.EffectDelay, () =>
                     {
-                        TheGreatVolcanoQuest quest = QuestHelper.GetQuest((PlayerMobile)m, typeof(TheGreatVolcanoQuest)) as TheGreatVolcanoQuest;
+                        TheGreatVolcanoQuest quest = QuestHelper.GetQuest(pm, typeof(TheGreatVolcanoQuest)) as TheGreatVolcanoQuest;
                         Map map = m.Map;
 
                         if (map != null && map != Map.Internal && quest != null && !quest.Completed && 0.05 > Utility.RandomDouble())
@@ -400,18 +407,17 @@ namespace Server.Engines.Quests
                                 }
                                 else if (0.55 > chance)
                                 {
-                                    //m.AddToBackpack(new LavaStone());
                                     m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156507, m.NetState); // *You uncover a lava rock and carefully store it for later!*
                                     quest.Update(m);
                                 }
                                 else
-                                    m.SendLocalizedMessage(1156509);  // You loosen some dirt but fail to find anything.
+                                    m.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1156509); // You loosen some dirt but fail to find anything.
                             }
                             else
-                                m.SendLocalizedMessage(1156509);  // You loosen some dirt but fail to find anything.
+                                m.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1156509); // You loosen some dirt but fail to find anything.
                         }
                         else
-                            m.SendLocalizedMessage(1156509);  // You loosen some dirt but fail to find anything.
+                            m.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1156509); // You loosen some dirt but fail to find anything.
 
                         if (tool is IUsesRemaining)
                         {
