@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -12,7 +12,10 @@ namespace Server.Items
     {
         public static readonly TimeSpan PlayerDuration = TimeSpan.FromSeconds(6.0);
         public static readonly TimeSpan NPCDuration = TimeSpan.FromSeconds(12.0);
-        private static readonly Hashtable m_Table = new Hashtable();
+
+        private static readonly Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
+        private static readonly List<Mobile> m_EffectReduction = new List<Mobile>();
+
         public MortalStrike()
         {
         }
@@ -26,15 +29,26 @@ namespace Server.Items
         }
         public static bool IsWounded(Mobile m)
         {
-            return m_Table.Contains(m);
+            return m_Table.ContainsKey(m);
         }
 
         public static void BeginWound(Mobile m, TimeSpan duration)
         {
-            Timer t = (Timer)m_Table[m];
+            Timer t;
 
-            if (t != null)
-                t.Stop();
+            if (m_Table.ContainsKey(m))
+            {
+                t = m_Table[m];
+
+                if (t != null)
+                    t.Stop();
+            }
+
+            if (Core.HS && m_EffectReduction.Contains(m))
+            {
+                double d = duration.TotalSeconds;
+                duration = TimeSpan.FromSeconds(d / 2);
+            }
 
             t = new InternalTimer(m, duration);
             m_Table[m] = t;
@@ -42,14 +56,15 @@ namespace Server.Items
             t.Start();
 
             m.YellowHealthbar = true;
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.MortalStrike, 1075810, 1075811, duration, m));
         }
 
-        public static void EndWound(Mobile m)
+        public static void EndWound(Mobile m, bool natural = false)
         {
             if (!IsWounded(m))
                 return;
 
-            Timer t = (Timer)m_Table[m];
+            Timer t = m_Table[m];
 
             if (t != null)
                 t.Stop();
@@ -60,11 +75,22 @@ namespace Server.Items
 
             m.YellowHealthbar = false;
             m.SendLocalizedMessage(1060208); // You are no longer mortally wounded.
+
+            if (Core.HS && natural && !m_EffectReduction.Contains(m))
+            {
+                m_EffectReduction.Add(m);
+
+                Timer.DelayCall(TimeSpan.FromSeconds(8), () =>
+                    {
+                        if (m_EffectReduction.Contains(m))
+                            m_EffectReduction.Remove(m);
+                    });
+            }
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
+            if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
             ClearCurrentAbility(attacker);
@@ -91,13 +117,13 @@ namespace Server.Items
             public InternalTimer(Mobile m, TimeSpan duration)
                 : base(duration)
             {
-                this.m_Mobile = m;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Mobile = m;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                EndWound(this.m_Mobile);
+                EndWound(m_Mobile, true);
             }
         }
     }
