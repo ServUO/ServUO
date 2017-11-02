@@ -584,6 +584,7 @@
     <Compile Include="Items\Addons\Craft Addons\BBQSmoker.cs" />
     <Compile Include="Items\Addons\Craft Addons\WritingDesk.cs" />
     <Compile Include="Items\Addons\KoiPond.cs" />
+    <Compile Include="Items\Addons\SheepStatue.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeFairySculpture.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeArcherSculpture.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeManOnABench.cs" />

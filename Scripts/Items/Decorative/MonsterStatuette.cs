@@ -68,7 +68,7 @@ namespace Server.Items
         TRex,
         Zipactriotal,
         MyrmidexQueen,
-        Tarantula
+        Virtuebane
     }
 
     public class MonsterStatuetteInfo
@@ -137,7 +137,7 @@ namespace Server.Items
             /* TRex */              new MonsterStatuetteInfo(1157078, 0x9DED, 278),
             /* Zipactriotl */       new MonsterStatuetteInfo(1157079, 0x9DE4, 609),
             /* Myrmidex Queen */    new MonsterStatuetteInfo(1157080, 0x9DB6, 959),
-            /* Tarantula */         new MonsterStatuetteInfo(1157081, 0x9DD6, 1170),
+            /* Virtuebane */        new MonsterStatuetteInfo(1153592, 0x4C06, 357),
         };
 
         private readonly int m_LabelNumber;
