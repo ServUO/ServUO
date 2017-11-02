@@ -210,6 +210,9 @@ namespace Server.SkillHandlers
                 if (item.GetType() == type)
                     return true;
 
+            if (item is BaseGlovesOfMining)
+                return true;
+
             return false;
         }
 

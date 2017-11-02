@@ -47,13 +47,6 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            if (Server.Items.ParalyzingBlow.IsImmune(defender))	//After mana consumption intentional
-            {
-                attacker.SendLocalizedMessage(1070804); // Your target resists paralysis.
-                defender.SendLocalizedMessage(1070813); // You resist paralysis.
-                return;
-            }
-
             attacker.SendLocalizedMessage(1063356); // You cripple your target with a nerve strike!
             defender.SendLocalizedMessage(1063357); // Your attacker dealt a crippling nerve strike!
 
@@ -64,18 +57,33 @@ namespace Server.Items
             if (Core.ML)
             {
                 AOS.Damage(defender, attacker, (int)(15.0 * (attacker.Skills[SkillName.Bushido].Value - 50.0) / 70.0 + Utility.Random(10)), true, 100, 0, 0, 0, 0);	//0-25
-                if (((150.0 / 7.0 + (4.0 * attacker.Skills[SkillName.Bushido].Value) / 7.0) / 100.0) > Utility.RandomDouble())
+
+                if (Server.Items.ParalyzingBlow.IsImmune(defender))	//After mana consumption intentional
                 {
-                    defender.Paralyze(TimeSpan.FromSeconds(2.0));
-                    Server.Items.ParalyzingBlow.BeginImmunity(defender, Server.Items.ParalyzingBlow.FreezeDelayDuration);				
+                    attacker.SendLocalizedMessage(1070804); // Your target resists paralysis.
+                    defender.SendLocalizedMessage(1070813); // You resist paralysis.
+                }
+                else if (((150.0 / 7.0 + (4.0 * attacker.Skills[SkillName.Bushido].Value) / 7.0) / 100.0) > Utility.RandomDouble())
+                {
+                    defender.Paralyze(TimeSpan.FromSeconds(2.0));				
                 }
             }
             else
             {
                 AOS.Damage(defender, attacker, (int)(15.0 * (attacker.Skills[SkillName.Bushido].Value - 50.0) / 70.0 + 10), true, 100, 0, 0, 0, 0); //10-25
-                defender.Freeze(TimeSpan.FromSeconds(2.0));
-                Server.Items.ParalyzingBlow.BeginImmunity(defender, Server.Items.ParalyzingBlow.FreezeDelayDuration);				
+
+                if (Server.Items.ParalyzingBlow.IsImmune(defender))	//After mana consumption intentional
+                {
+                    attacker.SendLocalizedMessage(1070804); // Your target resists paralysis.
+                    defender.SendLocalizedMessage(1070813); // You resist paralysis.
+                }
+                else
+                {
+                    defender.Freeze(TimeSpan.FromSeconds(2.0));
+                }
             }
+
+            Server.Items.ParalyzingBlow.BeginImmunity(defender, Server.Items.ParalyzingBlow.FreezeDelayDuration);
         }
     }
 }

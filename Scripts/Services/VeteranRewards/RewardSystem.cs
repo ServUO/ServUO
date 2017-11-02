@@ -525,6 +525,7 @@ namespace Server.Engines.VeteranRewards
                 {
                     new RewardEntry(houseAddOns,    1076157, typeof(CannonDeed),           Expansion.ML),
                     new RewardEntry(houseAddOns,    1080550, typeof(TreeStumpDeed),        Expansion.ML),
+                    new RewardEntry(houseAddOns,    1151835, typeof(SheepStatueDeed),      Expansion.ML),
                     new RewardEntry(houseAddOns,    1123504, typeof(SewingMachineDeed),    Expansion.TOL),
                     new RewardEntry(houseAddOns,    1123577, typeof(SmithingPressDeed),    Expansion.TOL),
                     new RewardEntry(houseAddOns,    1156369, typeof(SpinningLatheDeed),    Expansion.TOL),
@@ -541,6 +542,7 @@ namespace Server.Engines.VeteranRewards
                 }),
                 new RewardList(RewardInterval, 9, new RewardEntry[]
                 {
+                    new RewardEntry(monsterStatues, 1153592, typeof(MonsterStatuette), Expansion.TOL, MonsterStatuetteType.Virtuebane),
                     new RewardEntry(etherealSteeds, 1076159, typeof(RideablePolarBear), Expansion.ML),
                     new RewardEntry(houseAddOns,    1080549, typeof(WallBannerDeed), Expansion.ML)
                 }),

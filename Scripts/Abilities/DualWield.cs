@@ -37,6 +37,8 @@ namespace Server.Items
                 {
                     timer.Expires += TimeSpan.FromSeconds(2);
                     timer.DualHitChance += .25;
+
+                    BuffInfo.RemoveBuff(attacker, BuffIcon.DualWield);
                     BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.DualWield, 1151294, 1151293, timer.Expires - DateTime.UtcNow, attacker, (timer.DualHitChance * 100).ToString()));
 
                     attacker.SendLocalizedMessage(timer.DualHitChance == .75 ? 1150283 : 1150282); // Dual wield level increased to peak! : Dual wield level increased!
