@@ -431,7 +431,7 @@ namespace Server
 
         public static void ConvertXmlToSpanwers()
         {
-            string filename = Spawner.SpawnDirectory;
+            string filename = "Spawns";
 
             if (System.IO.Directory.Exists(filename) == true)
             {
@@ -482,7 +482,7 @@ namespace Server
                             continue;
                         }
 
-                        DataSet ds = new DataSet(Spawner.SpawnDirectory);
+                        DataSet ds = new DataSet("Spawns");
 
                         try
                         {
