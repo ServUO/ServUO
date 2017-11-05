@@ -6,6 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Server.Engines.Quests;
+using System.Xml;
+using System.Data;
+using Server.Commands;
+using Server.Gumps;
 
 namespace Server
 {
@@ -13,8 +17,13 @@ namespace Server
     {
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
 
+        private static bool _FirstRun = true;
+
         private static int _Version;
         public static int Version { get { return _Version; } }
+
+        private static bool _SpawnsConverted;
+        public static bool SpawnsConverted { get { return _SpawnsConverted; } }
 
         public static void Configure()
         {
@@ -24,7 +33,28 @@ namespace Server
 
         public static void Initialize()
         {
-            CheckVersion();
+            if (!_FirstRun)
+            {
+                CheckVersion();
+            }
+
+            CommandSystem.Register("ConvertSpawners", AccessLevel.GameMaster, e =>
+            {
+                string str = "By selecting OK, you will wipe all XmlSpawners that were placed via World Load, and will replace " +
+                             "with standard spawners. Any existing spawner with special symbols, such as , <> / will not be converted.";
+
+                if (_SpawnsConverted)
+                    str += "<br><br>You have already ran this conversion. Run Again?";
+
+                e.Mobile.SendGump(new WarningGump(1019005, 30720, str, 0xFFFFFF, 400, 300, (from, ok, state) =>
+                {
+                    if (ok)
+                    {
+                        from.SendMessage("Stand by while spawners are converted. This may take a few minutes...");
+                        ConvertXmlToSpanwers();
+                    }
+                }, null, true));
+            });
         }
 
         public static void OnSave(WorldSaveEventArgs e)
@@ -33,7 +63,9 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)2);
+                    writer.Write((int)3);
+                    writer.Write(false);
+                    writer.Write(_SpawnsConverted);
                 });
         }
 
@@ -44,6 +76,12 @@ namespace Server
                     reader =>
                     {
                         _Version = reader.ReadInt();
+
+                        if (_Version > 2)
+                        {
+                            _FirstRun = reader.ReadBool();
+                            _SpawnsConverted = reader.ReadBool();
+                        }
                     });
         }
 
@@ -54,6 +92,8 @@ namespace Server
         {
             switch (_Version)
             {
+                case 2: // Nothing
+                    break;
                 case 1:
                     RemoveSpawnVersion1();
                     break;
@@ -388,5 +428,207 @@ namespace Server
 
             return false;
         }
+
+        public static void ConvertXmlToSpanwers()
+        {
+            string filename = Spawner.SpawnDirectory;
+
+            if (System.IO.Directory.Exists(filename) == true)
+            {
+                List<string> files = null;
+                string[] dirs = null;
+
+                try
+                {
+                    files = new List<string>(Directory.GetFiles(filename, "*.xml"));
+                    dirs = Directory.GetDirectories(filename);
+                }
+                catch { }
+
+                if (dirs != null && dirs.Length > 0)
+                {
+                    foreach (var dir in dirs)
+                    {
+                        try
+                        {
+                            string[] dirFiles = Directory.GetFiles(dir, "*.xml");
+                            files.AddRange(dirFiles);
+                        }
+                        catch { }
+                    }
+                }
+
+                ToConsole(String.Format("Found {0} Xmlspawner files for conversion.", files.Count), files != null && files.Count > 0 ? ConsoleColor.Green : ConsoleColor.Red);
+
+                if (files != null && files.Count > 0)
+                {
+                    int converted = 0;
+                    int failed = 0;
+                    int keep = 0;
+
+                    foreach (string file in files)
+                    {
+                        FileStream fs = null;
+
+                        try
+                        {
+                            fs = File.Open(file, FileMode.Open, FileAccess.Read);
+                        }
+                        catch { }
+
+                        if (fs == null)
+                        {
+                            ToConsole(String.Format("Unable to open {0} for loading", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        DataSet ds = new DataSet(Spawner.SpawnDirectory);
+
+                        try
+                        {
+                            ds.ReadXml(fs);
+                        }
+                        catch
+                        {
+                            fs.Close();
+                            ToConsole(String.Format("Error reading xml file {0}", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        if (ds.Tables != null && ds.Tables.Count > 0)
+                        {
+                            if (ds.Tables["Points"] != null && ds.Tables["Points"].Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in ds.Tables["Points"].Rows)
+                                {
+                                    string id = null;
+
+                                    try
+                                    {
+                                        id = (string)dr["UniqueId"];
+                                    }
+                                    catch { }
+
+                                    bool convert = id != null && ConvertSpawner(id, dr);
+
+                                    if (!convert)
+                                    {
+                                        Point3D loc = Point3D.Zero;
+                                        Map spawnMap = null;
+
+                                        try
+                                        {
+                                            loc = new Point3D(int.Parse((string)dr["CentreX"]), int.Parse((string)dr["CentreY"]), int.Parse((string)dr["CentreZ"]));
+                                            spawnMap = Map.Parse((string)dr["Map"]);
+                                        }
+                                        catch{}
+
+                                        if (loc != Point3D.Zero && spawnMap != null && spawnMap != Map.Internal && !ConvertSpawnerByLocation(loc, spawnMap, dr, ref keep))
+                                        {
+                                            failed++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        converted++;
+                                    }
+                                }
+                            }
+                        }
+
+                        fs.Close();
+                    }
+
+                    if (converted > 0)
+                        ToConsole(String.Format("Converted {0} XmlSpawners to standard spawners.", converted), ConsoleColor.Green);
+
+                    if (failed > 0)
+                        ToConsole(String.Format("Failed to convert {0} XmlSpawners to standard spawners. {1} kept due to XmlSpawner Functionality", failed, keep), ConsoleColor.Red);
+
+                    _SpawnsConverted = true;
+                }
+                else
+                {
+                    ToConsole(String.Format("Directory Not Found: {0}", filename), ConsoleColor.Red);
+                }
+            }
+        }
+
+        private static bool ConvertSpawnerByLocation(Point3D p, Map map, DataRow dr, ref int keep)
+        {
+            XmlSpawner spawner = World.Items.Values.OfType<XmlSpawner>().FirstOrDefault(s => s.Location == p && s.Map == map);
+
+            return ConvertSpawner(spawner, dr, ref keep);
+        }
+
+        private static bool ConvertSpawner(string id, DataRow dr)
+        {
+            XmlSpawner spawner = World.Items.Values.OfType<XmlSpawner>().FirstOrDefault(s => s.UniqueId == id);
+
+            int c = 0;
+            return ConvertSpawner(spawner, dr, ref c);
+        }
+
+        private static bool ConvertSpawner(XmlSpawner spawner, DataRow d, ref int keep)
+        {
+            if (spawner != null)
+            {
+                string[] spawns = new string[spawner.SpawnObjects.Length];
+
+                for (int i = 0; i < spawner.SpawnObjects.Length; i++)
+                {
+                    var obj = spawner.SpawnObjects[i];
+
+                    if (obj == null || obj.TypeName == null)
+                        continue;
+
+                    spawns[i] = obj.TypeName;
+                }
+
+                if (HasSpecialXmlSpawnerString(spawns))
+                {
+                    keep++;
+                    return false;
+                }
+
+                Spawner newSpawner = new Spawner(spawner.MaxCount,
+                                                 spawner.MinDelay,
+                                                 spawner.MaxDelay,
+                                                 spawner.Team,
+                                                 spawner.HomeRange,
+                                                 spawns.ToList());
+
+                newSpawner.Group = spawner.Group;
+                newSpawner.Running = spawner.Running;
+
+                newSpawner.MoveToWorld(spawner.Location, spawner.Map);
+                spawner.Delete();
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool HasSpecialXmlSpawnerString(string[] spawns)
+        {
+            foreach (var line in spawns)
+            {
+                if (line != null)
+                {
+                    foreach (var s in _SpawnerSymbols)
+                    {
+                        if (line.Contains(s))
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static string[] _SpawnerSymbols =
+        {
+            "/", "<", ">", ",", "{", "}"
+        };
     }
 }
