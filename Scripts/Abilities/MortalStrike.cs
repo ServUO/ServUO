@@ -38,10 +38,7 @@ namespace Server.Items
 
             if (m_Table.ContainsKey(m))
             {
-                t = m_Table[m];
-
-                if (t != null)
-                    t.Stop();
+                EndWound(m, true);
             }
 
             if (Core.HS && m_EffectReduction.Contains(m))
@@ -102,7 +99,7 @@ namespace Server.Items
             defender.FixedParticles(0x37B9, 244, 25, 9944, 31, 0, EffectLayer.Waist);
 
             // Do not reset timer if one is already in place.
-            if (!IsWounded(defender))
+            if (Core.HS || !IsWounded(defender))
             {
                 if (Spells.SkillMasteries.BardSpell.GetSpellForParty(defender, typeof(Spells.SkillMasteries.ResilienceSpell)) != null)//Halves time
                     BeginWound(defender, defender.Player ? TimeSpan.FromSeconds(3.0) : TimeSpan.FromSeconds(6));
