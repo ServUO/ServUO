@@ -356,7 +356,7 @@ namespace Server
 
             if (Core.ML && type >= DamageType.Spell)
             {
-                int chance = (int)Math.Min(33, Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(m) * 100);
+                int chance = (int)Math.Max(33, Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(m) * 100);
 
                 if (m.Hidden && Utility.Random(100) < chance)
                 {
