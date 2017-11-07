@@ -146,6 +146,8 @@ namespace Server.Spells.Necromancy
                         m_Mobile.Hits += m_ToRestore;
 
                     BuffInfo.RemoveBuff(m_Mobile, BuffIcon.PainSpike);
+                    
+                    Stop();
                 }
             }
         }
