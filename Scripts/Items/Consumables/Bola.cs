@@ -32,32 +32,28 @@ namespace Server.Items
         {
             if (!IsChildOf(from.Backpack))
             {
-                from.SendLocalizedMessage(1040019); // The bola must be in your pack to use it.
+                this.PrivateOverheadMessage(MessageType.Regular, 946, 1040019, from.NetState); // The bola must be in your pack to use it.
             }
             else if (!from.CanBeginAction(typeof(Bola)))
             {
-                from.SendLocalizedMessage(1049624); // You have to wait a few moments before you can use another bola!
+                this.PrivateOverheadMessage(MessageType.Regular, 946, 1049624, from.NetState); // // You have to wait a few moments before you can use another bola!
             }
             else if (from.Target is BolaTarget)
             {
-                from.SendLocalizedMessage(1049631); // This bola is already being used.
-            }
-            else if (!Core.AOS && (from.FindItemOnLayer(Layer.OneHanded) != null || from.FindItemOnLayer(Layer.TwoHanded) != null))
-            {
-                from.SendLocalizedMessage(1040015); // Your hands must be free to use this
+                this.PrivateOverheadMessage(MessageType.Regular, 946, 1049631, from.NetState); // This bola is already being used.
             }
             else if (from.Mounted)
             {
-                from.SendLocalizedMessage(1040016); // You cannot use this while riding a mount
+                this.PrivateOverheadMessage(MessageType.Regular, 946, 1042053, from.NetState); // You can't use this while on a mount!
             }
-            else if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(from))
+            else if (from.Flying)
             {
-                from.SendLocalizedMessage(1070902); // You can't use this while in an animal form!
+                this.PrivateOverheadMessage(MessageType.Regular, 946, 1113414, from.NetState); // You can't use this while flying!
             }
-			else if (from.Flying)
-			{
-				from.SendLocalizedMessage(1113414); // You cannot use this while flying!
-			}
+            else if (AnimalForm.UnderTransformation(from))
+            {
+                this.PrivateOverheadMessage(MessageType.Regular, 946, 1070902, from.NetState); // You can't use this while in an animal form!
+            }
             else
             {
                 EtherealMount.StopMounting(from);
@@ -75,22 +71,20 @@ namespace Server.Items
                 }
 
                 from.Target = new BolaTarget(this);
-                from.LocalOverheadMessage(MessageType.Emote, 0x3B2, 1049632); // * You begin to swing the bola...*
-                from.NonlocalOverheadMessage(MessageType.Emote, 0x3B2, 1049633, from.Name); // ~1_NAME~ begins to menacingly swing a bola...
+                from.LocalOverheadMessage(MessageType.Emote, 201, 1049632); // * You begin to swing the bola...*
+                from.NonlocalOverheadMessage(MessageType.Emote, 201, 1049633, from.Name); // ~1_NAME~ begins to menacingly swing a bola...
             }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
@@ -105,57 +99,63 @@ namespace Server.Items
 
             Mobile from = (Mobile)states[0];
             Mobile to = (Mobile)states[1];
+            Item bola = (Item)states[2];
 
-            if (Core.AOS)
+            if (!from.Alive)
+            {
+                return;
+            }
+            if (!bola.IsChildOf(from.Backpack))
+            {
+                bola.PrivateOverheadMessage(MessageType.Regular, 946, 1040019, from.NetState); // The bola must be in your pack to use it.
+            }
+            else if (!from.InRange(to, 15) || !from.InLOS(to) || !from.CanSee(to))
+            {
+                from.PrivateOverheadMessage(MessageType.Regular, 946, 1042060, from.NetState); // You cannot see that target!
+            }
+            else if (!to.Mounted && !to.Flying && (!Core.ML || !AnimalForm.UnderTransformation(to)))
+            {
+                to.PrivateOverheadMessage(MessageType.Regular, 946, 1049628, from.NetState); // You have no reason to throw a bola at that.
+            }
+            else
+            {
+                bola.Consume();
+
+                from.Direction = from.GetDirectionTo(to);
+                from.Animate(AnimationType.Attack, 4);
+                from.MovingEffect(to, 0x26AC, 10, 0, false, false);
+
                 new Bola().MoveToWorld(to.Location, to.Map);
 
-            if (!to.Hidden && !to.InLOS(from) && to.InRange(from.Location, 12) && CheckHit(to, from))
-            {
-                to.Damage(1, from);
-
-                if (to is ChaosDragoon || to is ChaosDragoonElite)
-                    from.SendLocalizedMessage(1042047); // You fail to knock the rider from its mount.
-
-                IMount mt = to.Mount;
-
-                if ((mt != null || to.Flying || (Core.ML && Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))) && !(to is ChaosDragoon || to is ChaosDragoonElite))
+                if (to is Neira || to is ChaosDragoon || to is ChaosDragoonElite)
                 {
-                    from.SendMessage("You knock them from their mount!");
-
-                    if (to is PlayerMobile)
+                    to.PrivateOverheadMessage(MessageType.Regular, 946, 1042047, from.NetState); // You fail to knock the rider from its mount.
+                }
+                else
+                {
+                    if (CheckHit(to, from))
                     {
-                        if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))
-                        {
-                            to.SendLocalizedMessage(1114066, from.Name); // ~1_NAME~ knocked you out of animal form!
-                        }
-                        else if (to.Mounted)
-                        {
-                            to.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
-                        }
-                        else if (to.Flying)
-                        {
-                            to.SendMessage(1113590, from.Name); // You have been grounded by ~1_NAME~!
-                        }
+                        to.Damage(Utility.RandomMinMax(10, 20), from);
 
-                        ((PlayerMobile)to).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(Core.ML ? 10 : 3), true);
-                    }
+                        if (from.Flying)
+                            to.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113590, from.Name); // You have been grounded by ~1_NAME~!
+                        else
+                            to.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1049623, from.Name); // You have been knocked off of your mount by ~1_NAME~!
 
-                    if (Core.AOS && from is PlayerMobile) /* only failsafe, attacker should already be dismounted */
-                    {
-                        ((PlayerMobile)from).SetMountBlock(BlockMountType.BolaRecovery, TimeSpan.FromSeconds(Core.ML ? 10 : 3), false);
+                        BaseMount.Dismount(to);
+
+                        BaseMount.SetMountPrevention(to, BlockMountType.Dazed, TimeSpan.FromSeconds(10.0));
                     }
                 }
             }
-
-            Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(ReleaseBolaLock), from);
         }
 
-        private  static bool CheckHit(Mobile to, Mobile from)
+        private static bool CheckHit(Mobile to, Mobile from)
         {
             if (!Core.TOL)
                 return true;
 
-            double toChance = Math.Min(45 + BaseArmor.GetRefinedDefenseChance(to), 
+            double toChance = Math.Min(45 + BaseArmor.GetRefinedDefenseChance(to),
                                        AosAttributes.GetValue(to, AosAttribute.DefendChance)) + 1;
             double fromChance = AosAttributes.GetValue(from, AosAttribute.AttackChance) + 1;
 
@@ -181,7 +181,7 @@ namespace Server.Items
         {
             private readonly Bola m_Bola;
             public BolaTarget(Bola bola)
-                : base(8, false, TargetFlags.Harmful)
+                : base(20, false, TargetFlags.Harmful)
             {
                 m_Bola = bola;
             }
@@ -191,67 +191,68 @@ namespace Server.Items
                 if (m_Bola.Deleted)
                     return;
 
+                if ((obj is Item))
+                {
+                    ((Item)obj).PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1049628, from.NetState); // You have no reason to throw a bola at that.
+                    return;
+                }
+
                 if (obj is Mobile)
                 {
                     Mobile to = (Mobile)obj;
 
                     if (!m_Bola.IsChildOf(from.Backpack))
                     {
-                        from.SendLocalizedMessage(1040019); // The bola must be in your pack to use it.
-                    }
-                    else if (!Core.AOS && (from.FindItemOnLayer(Layer.OneHanded) != null || from.FindItemOnLayer(Layer.TwoHanded) != null))
-                    {
-                        from.SendLocalizedMessage(1040015); // Your hands must be free to use this
+                        m_Bola.PrivateOverheadMessage(MessageType.Regular, 946, 1040019, from.NetState); // The bola must be in your pack to use it.
                     }
                     else if (from.Mounted)
                     {
-                        from.SendLocalizedMessage(1040016); // You cannot use this while riding a mount
+                        m_Bola.PrivateOverheadMessage(MessageType.Regular, 946, 1042053, from.NetState); // You can't use this while on a mount!
                     }
-                    else if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(from))
+                    else if (from.Flying)
                     {
-                        from.SendLocalizedMessage(1070902); // You can't use this while in an animal form!
+                        m_Bola.PrivateOverheadMessage(MessageType.Regular, 946, 1113414, from.NetState); // You can't use this while flying!
                     }
-                    else if (!to.Mounted && !to.Flying && (!Core.ML || !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to)))
+                    else if (from == to)
                     {
-                        from.SendLocalizedMessage(1049628); // You have no reason to throw a bola at that.
+                        from.SendLocalizedMessage(1005576); // You can't throw this at yourself.
+                    }
+                    else if (AnimalForm.UnderTransformation(from))
+                    {
+                        from.PrivateOverheadMessage(MessageType.Regular, 946, 1070902, from.NetState); // You can't use this while in an animal form!
+                    }
+                    else if (!to.Mounted && !to.Flying && (!Core.ML || !AnimalForm.UnderTransformation(to)))
+                    {
+                        to.PrivateOverheadMessage(MessageType.Regular, 946, 1049628, from.NetState); // You have no reason to throw a bola at that.
                     }
                     else if (!from.CanBeHarmful(to))
                     {
                     }
                     else if (from.BeginAction(typeof(Bola)))
                     {
+                        from.RevealingAction();
+
                         EtherealMount.StopMounting(from);
 
-                        if (Core.AOS)
-                        {
-                            Item one = from.FindItemOnLayer(Layer.OneHanded);
-                            Item two = from.FindItemOnLayer(Layer.TwoHanded);
+                        Item one = from.FindItemOnLayer(Layer.OneHanded);
+                        Item two = from.FindItemOnLayer(Layer.TwoHanded);
 
-                            if (one != null)
-                                from.AddToBackpack(one);
+                        if (one != null)
+                            from.AddToBackpack(one);
 
-                            if (two != null)
-                                from.AddToBackpack(two);
-                        }
+                        if (two != null)
+                            from.AddToBackpack(two);
 
                         from.DoHarmful(to);
 
-                        m_Bola.Consume();
-
-                        from.Direction = from.GetDirectionTo(to);
-                        from.Animate(11, 5, 1, true, false, 0);
-                        from.MovingEffect(to, 0x26AC, 10, 0, false, false);
-
-                        Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerStateCallback(FinishThrow), new object[] { from, to });
+                        BaseMount.SetMountPrevention(from, BlockMountType.BolaRecovery, TimeSpan.FromSeconds(10.0));
+                        Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerStateCallback(ReleaseBolaLock), from);
+                        Timer.DelayCall(TimeSpan.FromSeconds(3.0), new TimerStateCallback(FinishThrow), new object[] { from, to, m_Bola });
                     }
                     else
                     {
-                        from.SendLocalizedMessage(1049624); // You have to wait a few moments before you can use another bola!
+                        m_Bola.PrivateOverheadMessage(MessageType.Regular, 946, 1049624, from.NetState); // You have to wait a few moments before you can use another bola!
                     }
-                }
-                else
-                {
-                    from.SendLocalizedMessage(1049629); // You cannot throw a bola at that.
                 }
             }
         }

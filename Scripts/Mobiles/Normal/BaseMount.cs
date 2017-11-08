@@ -200,6 +200,7 @@ namespace Server.Mobiles
                     dismounted.Flying = false;
                     dismounted.Freeze(TimeSpan.FromSeconds(1));
                     dismounted.Animate(AnimationType.Land, 0);
+                    BuffInfo.RemoveBuff(dismounted, BuffIcon.Fly);
                 }
             }
             else
