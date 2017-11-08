@@ -209,7 +209,6 @@ namespace Server.Mobiles
 
             if (delay != TimeSpan.MinValue)
             {
-                BuffInfo.AddBuff(dismounted, new BuffInfo(BuffIcon.DismountPrevention, 1075635, 1075636, delay, dismounted));
                 BaseMount.SetMountPrevention(dismounted, blockmounttype, delay);
             }
         }
@@ -238,7 +237,6 @@ namespace Server.Mobiles
                 return;
 
             DateTime expiration = DateTime.UtcNow + duration;
-
             BlockEntry entry = m_Table[mob] as BlockEntry;
 
             if (entry != null)
@@ -250,6 +248,8 @@ namespace Server.Mobiles
             {
                 m_Table[mob] = entry = new BlockEntry(type, expiration);
             }
+
+            BuffInfo.AddBuff(mob, new BuffInfo(BuffIcon.DismountPrevention, 1075635, 1075636, duration, mob));
         }
 
         public static void ClearMountPrevention(Mobile mob)

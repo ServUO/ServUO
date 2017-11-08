@@ -761,8 +761,6 @@ namespace Server
                 if (DivineFurySpell.UnderEffect(m))
                     value -= DivineFurySpell.GetDefendMalus(m);
 
-                //if (HitLower.IsUnderDefenseEffect(m))
-                //    value -= 25; // Under Hit Lower Defense effect -> 25% malus
                 value -= HitLower.GetDefenseMalus(m);
 
                 int discordanceEffect = 0;

@@ -41,6 +41,8 @@ namespace Server.Items
 			defender.SendLocalizedMessage( 1063361 ); // You were deceived by an attacker's feint!
 
 			attacker.FixedParticles( 0x3728, 1, 13, 0x7F3, 0x962, 0, EffectLayer.Waist );
+            attacker.PlaySound(0x525);
+
             int bonus = (int)(20.0 + 3.0 * (Math.Max(attacker.Skills[SkillName.Ninjitsu].Value, attacker.Skills[SkillName.Bushido].Value) - 50.0) / 7.0);
 
 			FeintTimer t = new FeintTimer( attacker, defender, bonus );	//20-50 % decrease

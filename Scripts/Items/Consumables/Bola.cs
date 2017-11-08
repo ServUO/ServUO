@@ -18,9 +18,9 @@ namespace Server.Items
         public Bola(int amount)
             : base(0x26AC)
         {
-            this.Weight = 4.0;
-            this.Stackable = true;
-            this.Amount = amount;
+            Weight = 4.0;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Bola(Serial serial)
@@ -30,7 +30,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1040019); // The bola must be in your pack to use it.
             }
@@ -105,46 +105,76 @@ namespace Server.Items
 
             Mobile from = (Mobile)states[0];
             Mobile to = (Mobile)states[1];
-			
+
             if (Core.AOS)
                 new Bola().MoveToWorld(to.Location, to.Map);
 
-            to.Damage(1, from);
-
-            if (to is ChaosDragoon || to is ChaosDragoonElite)
-                from.SendLocalizedMessage(1042047); // You fail to knock the rider from its mount.
-
-            IMount mt = to.Mount;
-
-            if ((mt != null || to.Flying || (Core.ML && Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))) && !(to is ChaosDragoon || to is ChaosDragoonElite))
+            if (!to.Hidden && !to.InLOS(from) && to.InRange(from.Location, 12) && CheckHit(to, from))
             {
-                from.SendMessage("You knock them from their mount!");
+                to.Damage(1, from);
 
-                if (to is PlayerMobile)
+                if (to is ChaosDragoon || to is ChaosDragoonElite)
+                    from.SendLocalizedMessage(1042047); // You fail to knock the rider from its mount.
+
+                IMount mt = to.Mount;
+
+                if ((mt != null || to.Flying || (Core.ML && Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))) && !(to is ChaosDragoon || to is ChaosDragoonElite))
                 {
-                    if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))
+                    from.SendMessage("You knock them from their mount!");
+
+                    if (to is PlayerMobile)
                     {
-                        to.SendLocalizedMessage(1114066, from.Name); // ~1_NAME~ knocked you out of animal form!
-                    }
-                    else if (to.Mounted)
-                    {
-                        to.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
-                    }
-                    else if (to.Flying)
-                    {
-                        to.SendMessage(1113590, from.Name); // You have been grounded by ~1_NAME~!
+                        if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))
+                        {
+                            to.SendLocalizedMessage(1114066, from.Name); // ~1_NAME~ knocked you out of animal form!
+                        }
+                        else if (to.Mounted)
+                        {
+                            to.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
+                        }
+                        else if (to.Flying)
+                        {
+                            to.SendMessage(1113590, from.Name); // You have been grounded by ~1_NAME~!
+                        }
+
+                        ((PlayerMobile)to).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(Core.ML ? 10 : 3), true);
                     }
 
-                    ((PlayerMobile)to).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(Core.ML ? 10 : 3), true);
-                }
-
-                if (Core.AOS && from is PlayerMobile) /* only failsafe, attacker should already be dismounted */
-                {
-                    ((PlayerMobile)from).SetMountBlock(BlockMountType.BolaRecovery, TimeSpan.FromSeconds(Core.ML ? 10 : 3), false);
+                    if (Core.AOS && from is PlayerMobile) /* only failsafe, attacker should already be dismounted */
+                    {
+                        ((PlayerMobile)from).SetMountBlock(BlockMountType.BolaRecovery, TimeSpan.FromSeconds(Core.ML ? 10 : 3), false);
+                    }
                 }
             }
 
             Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(ReleaseBolaLock), from);
+        }
+
+        private  static bool CheckHit(Mobile to, Mobile from)
+        {
+            if (!Core.TOL)
+                return true;
+
+            double toChance = Math.Min(45 + BaseArmor.GetRefinedDefenseChance(to), 
+                                       AosAttributes.GetValue(to, AosAttribute.DefendChance)) + 1;
+            double fromChance = AosAttributes.GetValue(from, AosAttribute.AttackChance) + 1;
+
+            double hitChance = toChance / (fromChance * 2);
+
+            if (Utility.RandomDouble() < hitChance)
+            {
+                if (BaseWeapon.CheckParry(to))
+                {
+                    to.FixedEffect(0x37B9, 10, 16);
+                    to.Animate(AnimationType.Parry, 0);
+                    return false;
+                }
+
+                return true;
+            }
+
+            to.NonlocalOverheadMessage(MessageType.Emote, 0x3B2, false, "*miss*");
+            return false;
         }
 
         private class BolaTarget : Target
@@ -153,19 +183,19 @@ namespace Server.Items
             public BolaTarget(Bola bola)
                 : base(8, false, TargetFlags.Harmful)
             {
-                this.m_Bola = bola;
+                m_Bola = bola;
             }
 
             protected override void OnTarget(Mobile from, object obj)
             {
-                if (this.m_Bola.Deleted)
+                if (m_Bola.Deleted)
                     return;
 
                 if (obj is Mobile)
                 {
                     Mobile to = (Mobile)obj;
 
-                    if (!this.m_Bola.IsChildOf(from.Backpack))
+                    if (!m_Bola.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1040019); // The bola must be in your pack to use it.
                     }
@@ -206,16 +236,13 @@ namespace Server.Items
 
                         from.DoHarmful(to);
 
-                        //if (Core.AOS)
-                        //    BaseMount.SetMountPrevention(from, BlockMountType.BolaRecovery, TimeSpan.FromSeconds(3.0));
-
-                        this.m_Bola.Consume();
+                        m_Bola.Consume();
 
                         from.Direction = from.GetDirectionTo(to);
                         from.Animate(11, 5, 1, true, false, 0);
                         from.MovingEffect(to, 0x26AC, 10, 0, false, false);
 
-                        Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(FinishThrow), new object[] { from, to });
+                        Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerStateCallback(FinishThrow), new object[] { from, to });
                     }
                     else
                     {
