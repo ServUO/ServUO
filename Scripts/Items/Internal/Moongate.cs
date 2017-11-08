@@ -19,11 +19,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Target;
+                return m_Target;
             }
             set
             {
-                this.m_Target = value;
+                m_Target = value;
             }
         }
 
@@ -32,11 +32,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TargetMap;
+                return m_TargetMap;
             }
             set
             {
-                this.m_TargetMap = value;
+                m_TargetMap = value;
             }
         }
 
@@ -45,11 +45,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_bDispellable;
+                return m_bDispellable;
             }
             set
             {
-                this.m_bDispellable = value;
+                m_bDispellable = value;
             }
         }
 
@@ -67,25 +67,25 @@ namespace Server.Items
         public Moongate()
             : this(Point3D.Zero, null)
         {
-            this.m_bDispellable = true;
+            m_bDispellable = true;
         }
 
         [Constructable]
         public Moongate(bool bDispellable)
             : this(Point3D.Zero, null)
         {
-            this.m_bDispellable = bDispellable;
+            m_bDispellable = bDispellable;
         }
 
         [Constructable]
         public Moongate(Point3D target, Map targetMap)
             : base(0xF6C)
         {
-            this.Movable = false;
-            this.Light = LightType.Circle300;
+            Movable = false;
+            Light = LightType.Circle300;
 
-            this.m_Target = target;
-            this.m_TargetMap = targetMap;
+            m_Target = target;
+            m_TargetMap = targetMap;
         }
 
         public Moongate(Serial serial)
@@ -98,8 +98,8 @@ namespace Server.Items
             if (!from.Player)
                 return;
 
-            if (from.InRange(this.GetWorldLocation(), 1))
-                this.CheckGate(from, 1);
+            if (from.InRange(GetWorldLocation(), 1))
+                CheckGate(from, 1);
             else
                 from.SendLocalizedMessage(500446); // That is too far away.
         }
@@ -107,7 +107,7 @@ namespace Server.Items
         public override bool OnMoveOver(Mobile m)
         {
             if (m.Player)
-                this.CheckGate(m, 0);
+                CheckGate(m, 0);
 
             return true;
         }
@@ -134,11 +134,11 @@ namespace Server.Items
             {
                 m.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
             }
-            else if (this.m_TargetMap == Map.Felucca && m is PlayerMobile && ((PlayerMobile)m).Young)
+            else if (m_TargetMap == Map.Felucca && m is PlayerMobile && ((PlayerMobile)m).Young)
             {
                 m.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
-            else if ((m.Murderer && this.m_TargetMap != Map.Felucca) || (this.m_TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) || (this.m_TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0) || (this.m_TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0))
+            else if ((m.Murderer && m_TargetMap != Map.Felucca) || (m_TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) || (m_TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0) || (m_TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0))
             {
                 m.SendLocalizedMessage(1019004); // You are not allowed to travel there.
             }
@@ -150,17 +150,17 @@ namespace Server.Items
             {
                 m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
             }
-            else if (this.m_TargetMap != null && this.m_TargetMap != Map.Internal)
+            else if (m_TargetMap != null && m_TargetMap != Map.Internal)
             {
                 if (TeleportPets)
-                    BaseCreature.TeleportPets(m, this.m_Target, this.m_TargetMap);
+                    BaseCreature.TeleportPets(m, m_Target, m_TargetMap);
 
-                m.MoveToWorld(this.m_Target, this.m_TargetMap);
+                m.MoveToWorld(m_Target, m_TargetMap);
 
                 if (m.IsPlayer() || !m.Hidden)
                     m.PlaySound(0x1FE);
 
-                this.OnGateUsed(m);
+                OnGateUsed(m);
             }
             else
             {
@@ -174,11 +174,11 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write(this.m_Target);
-            writer.Write(this.m_TargetMap);
+            writer.Write(m_Target);
+            writer.Write(m_TargetMap);
 
             // Version 1
-            writer.Write(this.m_bDispellable);
+            writer.Write(m_bDispellable);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -187,19 +187,19 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_Target = reader.ReadPoint3D();
-            this.m_TargetMap = reader.ReadMap();
+            m_Target = reader.ReadPoint3D();
+            m_TargetMap = reader.ReadMap();
 
             if (version >= 1)
-                this.m_bDispellable = reader.ReadBool();
+                m_bDispellable = reader.ReadBool();
         }
 
         public virtual bool ValidateUse(Mobile from, bool message)
         {
-            if (from.Deleted || this.Deleted)
+            if (from.Deleted || Deleted)
                 return false;
 
-            if (from.Map != this.Map || !from.InRange(this, 1))
+            if (from.Map != Map || !from.InRange(this, 1))
             {
                 if (message)
                     from.SendLocalizedMessage(500446); // That is too far away.
@@ -212,7 +212,7 @@ namespace Server.Items
 
         public virtual void BeginConfirmation(Mobile from)
         {
-            if (IsInTown(from.Location, from.Map) && !IsInTown(this.m_Target, this.m_TargetMap) || (from.Map != Map.Felucca && this.TargetMap == Map.Felucca && this.ShowFeluccaWarning))
+            if (IsInTown(from.Location, from.Map) && !IsInTown(m_Target, m_TargetMap) || (from.Map != Map.Felucca && TargetMap == Map.Felucca && ShowFeluccaWarning))
             {
                 if (from.IsPlayer() || !from.Hidden)
                     from.Send(new PlaySound(0x20E, from.Location));
@@ -221,25 +221,25 @@ namespace Server.Items
             }
             else
             {
-                this.EndConfirmation(from);
+                EndConfirmation(from);
             }
         }
 
         public virtual void EndConfirmation(Mobile from)
         {
-            if (!this.ValidateUse(from, true))
+            if (!ValidateUse(from, true))
                 return;
 
-            this.UseGate(from);
+            UseGate(from);
         }
 
         public virtual void DelayCallback(Mobile from, int range)
         {
-            if (!this.ValidateUse(from, false) || !from.InRange(this, range))
+            if (!ValidateUse(from, false) || !from.InRange(this, range))
                 return;
 
-            if (this.m_TargetMap != null)
-                this.BeginConfirmation(from);
+            if (m_TargetMap != null)
+                BeginConfirmation(from);
             else
                 from.SendMessage("This moongate does not seem to go anywhere.");
         }
@@ -263,14 +263,14 @@ namespace Server.Items
             public DelayTimer(Mobile from, Moongate gate, int range)
                 : base(TimeSpan.FromSeconds(1.0))
             {
-                this.m_From = from;
-                this.m_Gate = gate;
-                this.m_Range = range;
+                m_From = from;
+                m_Gate = gate;
+                m_Range = range;
             }
 
             protected override void OnTick()
             {
-                this.m_Gate.DelayCallback(this.m_From, this.m_Range);
+                m_Gate.DelayCallback(m_From, m_Range);
             }
         }
     }
@@ -284,8 +284,9 @@ namespace Server.Items
         private int m_MessageColor;
 
         private int m_TitleNumber;
-        private int m_MessageNumber;
+        private string m_TitleString;
 
+        private int m_MessageNumber;
         private string m_MessageString;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -293,11 +294,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_GumpWidth;
+                return m_GumpWidth;
             }
             set
             {
-                this.m_GumpWidth = value;
+                m_GumpWidth = value;
             }
         }
 
@@ -306,11 +307,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_GumpHeight;
+                return m_GumpHeight;
             }
             set
             {
-                this.m_GumpHeight = value;
+                m_GumpHeight = value;
             }
         }
 
@@ -319,11 +320,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TitleColor;
+                return m_TitleColor;
             }
             set
             {
-                this.m_TitleColor = value;
+                m_TitleColor = value;
             }
         }
 
@@ -332,11 +333,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MessageColor;
+                return m_MessageColor;
             }
             set
             {
-                this.m_MessageColor = value;
+                m_MessageColor = value;
             }
         }
 
@@ -345,11 +346,24 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TitleNumber;
+                return m_TitleNumber;
             }
             set
             {
-                this.m_TitleNumber = value;
+                m_TitleNumber = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string TitleString
+        {
+            get
+            {
+                return m_TitleString;
+            }
+            set
+            {
+                m_TitleString = value;
             }
         }
 
@@ -358,11 +372,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MessageNumber;
+                return m_MessageNumber;
             }
             set
             {
-                this.m_MessageNumber = value;
+                m_MessageNumber = value;
             }
         }
 
@@ -371,11 +385,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MessageString;
+                return m_MessageString;
             }
             set
             {
-                this.m_MessageString = value;
+                m_MessageString = value;
             }
         }
 
@@ -399,15 +413,17 @@ namespace Server.Items
         public virtual void Warning_Callback(Mobile from, bool okay, object state)
         {
             if (okay)
-                this.EndConfirmation(from);
+                EndConfirmation(from);
         }
 
         public override void BeginConfirmation(Mobile from)
         {
-            if (this.m_GumpWidth > 0 && this.m_GumpHeight > 0 && this.m_TitleNumber > 0 && (this.m_MessageNumber > 0 || this.m_MessageString != null))
+            if (m_GumpWidth > 0 && m_GumpHeight > 0 && (m_TitleNumber > 0|| m_TitleString != null) && (m_MessageNumber > 0 || m_MessageString != null))
             {
                 from.CloseGump(typeof(WarningGump));
-                from.SendGump(new WarningGump(this.m_TitleNumber, this.m_TitleColor, this.m_MessageString == null ? (object)this.m_MessageNumber : (object)this.m_MessageString, this.m_MessageColor, this.m_GumpWidth, this.m_GumpHeight, new WarningGumpCallback(Warning_Callback), from));
+                from.SendGump(new WarningGump(m_TitleString == null ? new TextDefinition(m_TitleNumber) : new TextDefinition(m_TitleString),
+                                              m_TitleColor, m_MessageString == null ? new TextDefinition(m_MessageNumber) : new TextDefinition(m_MessageString),
+                                              m_MessageColor, m_GumpWidth, m_GumpHeight, new WarningGumpCallback(Warning_Callback), from));
             }
             else
             {
@@ -419,18 +435,20 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 
-            writer.WriteEncodedInt(this.m_GumpWidth);
-            writer.WriteEncodedInt(this.m_GumpHeight);
+            writer.Write(m_TitleString);
 
-            writer.WriteEncodedInt(this.m_TitleColor);
-            writer.WriteEncodedInt(this.m_MessageColor);
+            writer.WriteEncodedInt(m_GumpWidth);
+            writer.WriteEncodedInt(m_GumpHeight);
 
-            writer.WriteEncodedInt(this.m_TitleNumber);
-            writer.WriteEncodedInt(this.m_MessageNumber);
+            writer.WriteEncodedInt(m_TitleColor);
+            writer.WriteEncodedInt(m_MessageColor);
 
-            writer.Write(this.m_MessageString);
+            writer.WriteEncodedInt(m_TitleNumber);
+            writer.WriteEncodedInt(m_MessageNumber);
+
+            writer.Write(m_MessageString);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -441,18 +459,23 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 1:
+                    {
+                        m_TitleString = reader.ReadString();
+                        goto case 0;
+                    }
                 case 0:
                     {
-                        this.m_GumpWidth = reader.ReadEncodedInt();
-                        this.m_GumpHeight = reader.ReadEncodedInt();
+                        m_GumpWidth = reader.ReadEncodedInt();
+                        m_GumpHeight = reader.ReadEncodedInt();
 
-                        this.m_TitleColor = reader.ReadEncodedInt();
-                        this.m_MessageColor = reader.ReadEncodedInt();
+                        m_TitleColor = reader.ReadEncodedInt();
+                        m_MessageColor = reader.ReadEncodedInt();
 
-                        this.m_TitleNumber = reader.ReadEncodedInt();
-                        this.m_MessageNumber = reader.ReadEncodedInt();
+                        m_TitleNumber = reader.ReadEncodedInt();
+                        m_MessageNumber = reader.ReadEncodedInt();
 
-                        this.m_MessageString = reader.ReadString();
+                        m_MessageString = reader.ReadString();
 
                         break;
                     }
@@ -468,60 +491,60 @@ namespace Server.Items
         public MoongateConfirmGump(Mobile from, Moongate gate)
             : base(Core.AOS ? 110 : 20, Core.AOS ? 100 : 30)
         {
-            this.m_From = from;
-            this.m_Gate = gate;
+            m_From = from;
+            m_Gate = gate;
 
             if (Core.AOS)
             {
-                this.Closable = false;
+                Closable = false;
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 0, 420, 280, 5054);
+                AddBackground(0, 0, 420, 280, 5054);
 
-                this.AddImageTiled(10, 10, 400, 20, 2624);
-                this.AddAlphaRegion(10, 10, 400, 20);
+                AddImageTiled(10, 10, 400, 20, 2624);
+                AddAlphaRegion(10, 10, 400, 20);
 
-                this.AddHtmlLocalized(10, 10, 400, 20, 1062051, 30720, false, false); // Gate Warning
+                AddHtmlLocalized(10, 10, 400, 20, 1062051, 30720, false, false); // Gate Warning
 
-                this.AddImageTiled(10, 40, 400, 200, 2624);
-                this.AddAlphaRegion(10, 40, 400, 200);
+                AddImageTiled(10, 40, 400, 200, 2624);
+                AddAlphaRegion(10, 40, 400, 200);
 
                 if (from.Map != Map.Felucca && gate.TargetMap == Map.Felucca && gate.ShowFeluccaWarning)
-                    this.AddHtmlLocalized(10, 40, 400, 200, 1062050, 32512, false, true); // This Gate goes to Felucca... Continue to enter the gate, Cancel to stay here
+                    AddHtmlLocalized(10, 40, 400, 200, 1062050, 32512, false, true); // This Gate goes to Felucca... Continue to enter the gate, Cancel to stay here
                 else
-                    this.AddHtmlLocalized(10, 40, 400, 200, 1062049, 32512, false, true); // Dost thou wish to step into the moongate? Continue to enter the gate, Cancel to stay here
+                    AddHtmlLocalized(10, 40, 400, 200, 1062049, 32512, false, true); // Dost thou wish to step into the moongate? Continue to enter the gate, Cancel to stay here
 
-                this.AddImageTiled(10, 250, 400, 20, 2624);
-                this.AddAlphaRegion(10, 250, 400, 20);
+                AddImageTiled(10, 250, 400, 20, 2624);
+                AddAlphaRegion(10, 250, 400, 20);
 
-                this.AddButton(10, 250, 4005, 4007, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(40, 250, 170, 20, 1011036, 32767, false, false); // OKAY
+                AddButton(10, 250, 4005, 4007, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(40, 250, 170, 20, 1011036, 32767, false, false); // OKAY
 
-                this.AddButton(210, 250, 4005, 4007, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(240, 250, 170, 20, 1011012, 32767, false, false); // CANCEL
+                AddButton(210, 250, 4005, 4007, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(240, 250, 170, 20, 1011012, 32767, false, false); // CANCEL
             }
             else
             {
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 0, 420, 400, 5054);
-                this.AddBackground(10, 10, 400, 380, 3000);
+                AddBackground(0, 0, 420, 400, 5054);
+                AddBackground(10, 10, 400, 380, 3000);
 
-                this.AddHtml(20, 40, 380, 60, @"Dost thou wish to step into the moongate? Continue to enter the gate, Cancel to stay here", false, false);
+                AddHtml(20, 40, 380, 60, @"Dost thou wish to step into the moongate? Continue to enter the gate, Cancel to stay here", false, false);
 
-                this.AddHtmlLocalized(55, 110, 290, 20, 1011012, false, false); // CANCEL
-                this.AddButton(20, 110, 4005, 4007, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(55, 110, 290, 20, 1011012, false, false); // CANCEL
+                AddButton(20, 110, 4005, 4007, 0, GumpButtonType.Reply, 0);
 
-                this.AddHtmlLocalized(55, 140, 290, 40, 1011011, false, false); // CONTINUE
-                this.AddButton(20, 140, 4005, 4007, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(55, 140, 290, 40, 1011011, false, false); // CONTINUE
+                AddButton(20, 140, 4005, 4007, 1, GumpButtonType.Reply, 0);
             }
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
             if (info.ButtonID == 1)
-                this.m_Gate.EndConfirmation(this.m_From);
+                m_Gate.EndConfirmation(m_From);
         }
     }
 }

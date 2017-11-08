@@ -619,7 +619,7 @@ namespace Server.Items
 			return BeginHeal(healer, patient, false);
 		}
 
-        public static BandageContext BeginHeal(Mobile healer, Mobile patient, bool enhanced) // TODO: Implement Pub 71 healing changes
+        public static BandageContext BeginHeal(Mobile healer, Mobile patient, bool enhanced)
         {
             bool isDeadPet = (patient is BaseCreature && ((BaseCreature)patient).IsDeadPet);
 

@@ -12,13 +12,14 @@ namespace Server.Multis
         private DateTime m_DecayTime;
         private Timer m_DecayTimer;
         private TimeSpan m_DecayDelay;
+
         public BaseCamp(int multiID)
             : base(multiID)
         {
-            this.m_Items = new List<Item>();
-            this.m_Mobiles = new List<Mobile>();
-            this.m_DecayDelay = TimeSpan.FromMinutes(30.0);
-            this.RefreshDecay(true);
+            m_Items = new List<Item>();
+            m_Mobiles = new List<Mobile>();
+            m_DecayDelay = TimeSpan.FromMinutes(30.0);
+            RefreshDecay(true);
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(CheckAddComponents));
         }
@@ -39,12 +40,12 @@ namespace Server.Multis
         {
             get
             {
-                return this.m_DecayDelay;
+                return m_DecayDelay;
             }
             set
             {
-                this.m_DecayDelay = value;
-                this.RefreshDecay(true);
+                m_DecayDelay = value;
+                RefreshDecay(true);
             }
         }
         public override bool HandlesOnMovement
@@ -56,10 +57,10 @@ namespace Server.Multis
         }
         public void CheckAddComponents()
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 			
-            this.AddComponents();
+            AddComponents();
         }
 
         public virtual void AddComponents()
@@ -68,32 +69,32 @@ namespace Server.Multis
 
         public virtual void RefreshDecay(bool setDecayTime)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (this.m_DecayTimer != null)
-                this.m_DecayTimer.Stop();
+            if (m_DecayTimer != null)
+                m_DecayTimer.Stop();
 
             if (setDecayTime)
-                this.m_DecayTime = DateTime.UtcNow + this.DecayDelay;
+                m_DecayTime = DateTime.UtcNow + DecayDelay;
 
-            this.m_DecayTimer = Timer.DelayCall(this.DecayDelay, new TimerCallback(Delete));
+            m_DecayTimer = Timer.DelayCall(DecayDelay, new TimerCallback(Delete));
         }
 
         public virtual void AddItem(Item item, int xOffset, int yOffset, int zOffset)
         {
-            this.m_Items.Add(item);
+            m_Items.Add(item);
 
-            int zavg = this.Map.GetAverageZ(this.X + xOffset, this.Y + yOffset);
-            item.MoveToWorld(new Point3D(this.X + xOffset, this.Y + yOffset, zavg + zOffset), this.Map);
+            int zavg = Map.GetAverageZ(X + xOffset, Y + yOffset);
+            item.MoveToWorld(new Point3D(X + xOffset, Y + yOffset, zavg + zOffset), Map);
         }
 
         public virtual void AddMobile(Mobile m, int wanderRange, int xOffset, int yOffset, int zOffset)
         {
-            this.m_Mobiles.Add(m);
+            m_Mobiles.Add(m);
 
-            int zavg = this.Map.GetAverageZ(this.X + xOffset, this.Y + yOffset);
-            Point3D loc = new Point3D(this.X + xOffset, this.Y + yOffset, zavg + zOffset);
+            int zavg = Map.GetAverageZ(X + xOffset, Y + yOffset);
+            Point3D loc = new Point3D(X + xOffset, Y + yOffset, zavg + zOffset);
             BaseCreature bc = m as BaseCreature;
 
             if (bc != null)
@@ -105,49 +106,49 @@ namespace Server.Multis
             if (m is BaseVendor || m is Banker)
                 m.Direction = Direction.South;
 
-            m.MoveToWorld(loc, this.Map);
+            m.MoveToWorld(loc, Map);
         }
 
         public virtual void OnEnter(Mobile m)
         {
-            this.RefreshDecay(true);
+            RefreshDecay(true);
         }
 
         public virtual void OnExit(Mobile m)
         {
-            this.RefreshDecay(true);
+            RefreshDecay(true);
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            bool inOldRange = Utility.InRange(oldLocation, this.Location, this.EventRange);
-            bool inNewRange = Utility.InRange(m.Location, this.Location, this.EventRange);
+            bool inOldRange = Utility.InRange(oldLocation, Location, EventRange);
+            bool inNewRange = Utility.InRange(m.Location, Location, EventRange);
 
             if (inNewRange && !inOldRange)
-                this.OnEnter(m);
+                OnEnter(m);
             else if (inOldRange && !inNewRange)
-                this.OnExit(m);
+                OnExit(m);
         }
 
         public override void OnAfterDelete()
         {
             base.OnAfterDelete();
 
-            for (int i = 0; i < this.m_Items.Count; ++i)
-                this.m_Items[i].Delete();
+            for (int i = 0; i < m_Items.Count; ++i)
+                m_Items[i].Delete();
 
-            for (int i = 0; i < this.m_Mobiles.Count; ++i)
+            for (int i = 0; i < m_Mobiles.Count; ++i)
             {
-                BaseCreature bc = (BaseCreature)this.m_Mobiles[i];
+                BaseCreature bc = (BaseCreature)m_Mobiles[i];
 
                 if (bc.IsPrisoner == false)
-                    this.m_Mobiles[i].Delete();
-                else if (this.m_Mobiles[i].CantWalk == true)
-                    this.m_Mobiles[i].Delete();
+                    m_Mobiles[i].Delete();
+                else if (m_Mobiles[i].CantWalk == true)
+                    m_Mobiles[i].Delete();
             }
 
-            this.m_Items.Clear();
-            this.m_Mobiles.Clear();
+            m_Items.Clear();
+            m_Mobiles.Clear();
         }
 
 		protected virtual void AddCampChests()
@@ -164,11 +165,11 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 
-            writer.Write(this.m_Items, true);
-            writer.Write(this.m_Mobiles, true);
-            writer.WriteDeltaTime(this.m_DecayTime);
+            writer.Write(m_Items, true);
+            writer.Write(m_Mobiles, true);
+            writer.WriteDeltaTime(m_DecayTime);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -179,16 +180,22 @@ namespace Server.Multis
 
             switch ( version )
             {
+                case 1:
                 case 0:
                     {
-                        this.m_Items = reader.ReadStrongItemList();
-                        this.m_Mobiles = reader.ReadStrongMobileList();
-                        this.m_DecayTime = reader.ReadDeltaTime();
+                        m_Items = reader.ReadStrongItemList();
+                        m_Mobiles = reader.ReadStrongMobileList();
+                        m_DecayTime = reader.ReadDeltaTime();
 
-                        this.RefreshDecay(false);
+                        RefreshDecay(false);
 
                         break;
                     }
+            }
+
+            if (version == 0 && ItemID == 0x10EE)
+            {
+                ItemID = 0x1F6D;
             }
         }
     }

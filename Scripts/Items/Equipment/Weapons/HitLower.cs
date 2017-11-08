@@ -67,7 +67,7 @@ namespace Server.Items
 
                 if (m is PlayerMobile)
                 {
-                    malus = (int)(Math.Min(45, AosAttributes.GetValue(m, AosAttribute.DefendChance)));
+                    malus = 45 + BaseArmor.GetRefinedDefenseChance(m);
                     malus = malus - (int)((double)malus * .35);
                 }
                 else
