@@ -823,7 +823,7 @@ namespace Server.Items
             }
             set
             {
-                if (m_Resource != value)
+                if (m_Resource != value || m_Resource == DefaultResource)
                 {
                     UnscaleDurability();
                     CraftResource old = m_Resource;
@@ -3158,7 +3158,7 @@ namespace Server.Items
             }
 
             info = GetResourceAttrs(m_Resource);
-
+            Console.WriteLine("Resource: {0}", m_Resource);
             // add new bonus
             m_PhysicalBonus += info.ArmorPhysicalResist;
             m_FireBonus += info.ArmorFireResist;

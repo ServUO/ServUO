@@ -25,6 +25,7 @@ namespace Server.Mobiles
         private bool m_Running;
         private bool m_Group;
         private WayPoint m_WayPoint;
+
         [Constructable]
         public Spawner()
             : this(null)

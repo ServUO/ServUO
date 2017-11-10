@@ -32,8 +32,8 @@ namespace Server.Mobiles
         public BaseEscortable()
             : base(AIType.AI_Melee, FightMode.Aggressor, 22, 1, 0.2, 1.0)
         {
-            this.InitBody();
-            this.InitOutfit();
+            InitBody();
+            InitOutfit();
         }
 
         public BaseEscortable(Serial serial)
@@ -63,62 +63,62 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Destination == null ? null : this.m_Destination.Name;
+                return m_Destination == null ? null : m_Destination.Name;
             }
             set
             {
-                this.m_DestinationString = value;
-                this.m_Destination = EDI.Find(value);
+                m_DestinationString = value;
+                m_Destination = EDI.Find(value);
             }
         }
         public virtual void InitBody()
         {
-            this.SetStr(90, 100);
-            this.SetDex(90, 100);
-            this.SetInt(15, 25);
+            SetStr(90, 100);
+            SetDex(90, 100);
+            SetInt(15, 25);
 
-            this.Hue = Utility.RandomSkinHue();
+            Hue = Utility.RandomSkinHue();
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 401;
-                this.Name = NameList.RandomName("female");
+                Body = 401;
+                Name = NameList.RandomName("female");
             }
             else
             {
-                this.Body = 400;
-                this.Name = NameList.RandomName("male");
+                Body = 400;
+                Name = NameList.RandomName("male");
             }
         }
 
         public virtual void InitOutfit()
         {
-            this.AddItem(new FancyShirt(Utility.RandomNeutralHue()));
-            this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
-            this.AddItem(new Boots(Utility.RandomNeutralHue()));
+            AddItem(new FancyShirt(Utility.RandomNeutralHue()));
+            AddItem(new ShortPants(Utility.RandomNeutralHue()));
+            AddItem(new Boots(Utility.RandomNeutralHue()));
 
             Utility.AssignRandomHair(this);
 
-            this.PackGold(200, 250);
+            PackGold(200, 250);
         }
 
         public virtual bool SayDestinationTo(Mobile m)
         {
-            EDI dest = this.GetDestination();
+            EDI dest = GetDestination();
 
             if (dest == null || !m.Alive)
                 return false;
 
-            Mobile escorter = this.GetEscorter();
+            Mobile escorter = GetEscorter();
 
             if (escorter == null)
             {
-                this.Say("I am looking to go to {0}, will you take me?", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
+                Say("I am looking to go to {0}, will you take me?", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
                 return true;
             }
             else if (escorter == m)
             {
-                this.Say("Lead on! Payment will be made when we arrive in {0}.", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
+                Say("Lead on! Payment will be made when we arrive in {0}.", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
                 return true;
             }
 
@@ -127,12 +127,12 @@ namespace Server.Mobiles
 
         public virtual bool AcceptEscorter(Mobile m)
         {
-            EDI dest = this.GetDestination();
+            EDI dest = GetDestination();
 
             if (dest == null)
                 return false;
 
-            Mobile escorter = this.GetEscorter();
+            Mobile escorter = GetEscorter();
 
             if (escorter != null || !m.Alive)
                 return false;
@@ -141,26 +141,26 @@ namespace Server.Mobiles
 
             if (escortable != null && !escortable.Deleted && escortable.GetEscorter() == m)
             {
-                this.Say("I see you already have an escort.");
+                Say("I see you already have an escort.");
                 return false;
             }
             else if (m is PlayerMobile && (((PlayerMobile)m).LastEscortTime + m_EscortDelay) >= DateTime.UtcNow)
             {
                 int minutes = (int)Math.Ceiling(((((PlayerMobile)m).LastEscortTime + m_EscortDelay) - DateTime.UtcNow).TotalMinutes);
 
-                this.Say("You must rest {0} minute{1} before we set out on this journey.", minutes, minutes == 1 ? "" : "s");
+                Say("You must rest {0} minute{1} before we set out on this journey.", minutes, minutes == 1 ? "" : "s");
                 return false;
             }
-            else if (this.SetControlMaster(m))
+            else if (SetControlMaster(m))
             {
-                this.m_LastSeenEscorter = DateTime.UtcNow;
+                m_LastSeenEscorter = DateTime.UtcNow;
 
                 if (m is PlayerMobile)
                     ((PlayerMobile)m).LastEscortTime = DateTime.UtcNow;
 
-                this.Say("Lead on! Payment will be made when we arrive in {0}.", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
+                Say("Lead on! Payment will be made when we arrive in {0}.", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
                 m_EscortTable[m] = this;
-                this.StartFollow();
+                StartFollow();
                 return true;
             }
 
@@ -169,7 +169,7 @@ namespace Server.Mobiles
 
         public override bool HandlesOnSpeech(Mobile from)
         {
-            if (from.InRange(this.Location, 3))
+            if (from.InRange(Location, 3))
                 return true;
 
             return base.HandlesOnSpeech(from);
@@ -179,23 +179,23 @@ namespace Server.Mobiles
         {
             base.OnSpeech(e);
 
-            EDI dest = this.GetDestination();
+            EDI dest = GetDestination();
 
-            if (dest != null && !e.Handled && e.Mobile.InRange(this.Location, 3))
+            if (dest != null && !e.Handled && e.Mobile.InRange(Location, 3))
             {
                 if (e.HasKeyword(0x1D)) // *destination*
-                    e.Handled = this.SayDestinationTo(e.Mobile);
+                    e.Handled = SayDestinationTo(e.Mobile);
                 else if (e.HasKeyword(0x1E)) // *i will take thee*
-                    e.Handled = this.AcceptEscorter(e.Mobile);
+                    e.Handled = AcceptEscorter(e.Mobile);
             }
         }
 
         public override void OnAfterDelete()
         {
-            if (this.m_DeleteTimer != null)
-                this.m_DeleteTimer.Stop();
+            if (m_DeleteTimer != null)
+                m_DeleteTimer.Stop();
 
-            this.m_DeleteTimer = null;
+            m_DeleteTimer = null;
 
             base.OnAfterDelete();
         }
@@ -203,12 +203,12 @@ namespace Server.Mobiles
         public override void OnThink()
         {
             base.OnThink();
-            this.CheckAtDestination();
+            CheckAtDestination();
         }
 
         public virtual void StartFollow()
         {
-            this.StartFollow(this.GetEscorter());
+            StartFollow(GetEscorter());
         }
 
         public virtual void StartFollow(Mobile escorter)
@@ -216,52 +216,53 @@ namespace Server.Mobiles
             if (escorter == null)
                 return;
 
-            this.ActiveSpeed = 0.1;
-            this.PassiveSpeed = 0.2;
+            ActiveSpeed = 0.1;
+            PassiveSpeed = 0.2;
 
-            this.ControlOrder = OrderType.Follow;
-            this.ControlTarget = escorter;
+            ControlOrder = OrderType.Follow;
+            ControlTarget = escorter;
 
-            if ((this.IsPrisoner == true) && (this.CantWalk == true))
+            if (IsPrisoner && CantWalk)
             {
-                this.CantWalk = false;
+                CantWalk = false;
             }
-            this.CurrentSpeed = 0.1;
+
+            CurrentSpeed = 0.1;
         }
 
         public virtual void StopFollow()
         {
-            this.ActiveSpeed = 0.2;
-            this.PassiveSpeed = 1.0;
+            ActiveSpeed = 0.2;
+            PassiveSpeed = 1.0;
 
-            this.ControlOrder = OrderType.None;
-            this.ControlTarget = null;
+            ControlOrder = OrderType.None;
+            ControlTarget = null;
 
-            this.CurrentSpeed = 1.0;
+            CurrentSpeed = 1.0;
         }
 
         public virtual Mobile GetEscorter()
         {
-            if (!this.Controlled)
+            if (!Controlled)
                 return null;
 
-            Mobile master = this.ControlMaster;
+            Mobile master = ControlMaster;
 
             if (master == null)
                 return null;
 
-            if (master.Deleted || master.Map != this.Map || !master.InRange(this.Location, 30) || !master.Alive)
+            if (master.Deleted || master.Map != Map || !master.InRange(Location, 30) || !master.Alive)
             {
-                this.StopFollow();
+                StopFollow();
 
-                TimeSpan lastSeenDelay = DateTime.UtcNow - this.m_LastSeenEscorter;
+                TimeSpan lastSeenDelay = DateTime.UtcNow - m_LastSeenEscorter;
 
                 if (lastSeenDelay >= TimeSpan.FromMinutes(2.0))
                 {
                     master.SendLocalizedMessage(1042473); // You have lost the person you were escorting.
-                    this.Say(1005653); // Hmmm. I seem to have lost my master.
+                    Say(1005653); // Hmmm. I seem to have lost my master.
 
-                    this.SetControlMaster(null);
+                    SetControlMaster(null);
                     m_EscortTable.Remove(master);
 
                     Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(Delete));
@@ -269,48 +270,48 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    this.ControlOrder = OrderType.Stay;
+                    ControlOrder = OrderType.Stay;
                     return master;
                 }
             }
 
-            if (this.ControlOrder != OrderType.Follow)
-                this.StartFollow(master);
+            if (ControlOrder != OrderType.Follow)
+                StartFollow(master);
 
-            this.m_LastSeenEscorter = DateTime.UtcNow;
+            m_LastSeenEscorter = DateTime.UtcNow;
             return master;
         }
 
         public virtual void BeginDelete()
         {
-            if (this.m_DeleteTimer != null)
-                this.m_DeleteTimer.Stop();
+            if (m_DeleteTimer != null)
+                m_DeleteTimer.Stop();
 
-            this.m_DeleteTime = DateTime.UtcNow + TimeSpan.FromSeconds(30.0);
+            m_DeleteTime = DateTime.UtcNow + TimeSpan.FromSeconds(30.0);
 
-            this.m_DeleteTimer = new DeleteTimer(this, this.m_DeleteTime - DateTime.UtcNow);
-            this.m_DeleteTimer.Start();
+            m_DeleteTimer = new DeleteTimer(this, m_DeleteTime - DateTime.UtcNow);
+            m_DeleteTimer.Start();
         }
 
         public virtual bool CheckAtDestination()
         {
-            EDI dest = this.GetDestination();
+            EDI dest = GetDestination();
 
             if (dest == null)
                 return false;
 
-            Mobile escorter = this.GetEscorter();
+            Mobile escorter = GetEscorter();
 
             if (escorter == null)
                 return false;
 
-            if (dest.Contains(this.Location))
+            if (dest.Contains(Location))
             {
-                this.Say(1042809, escorter.Name); // We have arrived! I thank thee, ~1_PLAYER_NAME~! I have no further need of thy services. Here is thy pay.
+                Say(1042809, escorter.Name); // We have arrived! I thank thee, ~1_PLAYER_NAME~! I have no further need of thy services. Here is thy pay.
 
                 // not going anywhere
-                this.m_Destination = null;
-                this.m_DestinationString = null;
+                m_Destination = null;
+                m_DestinationString = null;
 
                 Container cont = escorter.Backpack;
 
@@ -322,10 +323,10 @@ namespace Server.Mobiles
                 if (!cont.TryDropItem(escorter, gold, false))
                     gold.MoveToWorld(escorter.Location, escorter.Map);
 
-                this.StopFollow();
-                this.SetControlMaster(null);
+                StopFollow();
+                SetControlMaster(null);
                 m_EscortTable.Remove(escorter);
-                this.BeginDelete();
+                BeginDelete();
 
                 Misc.Titles.AwardFame(escorter, 10, true);
 
@@ -345,7 +346,7 @@ namespace Server.Mobiles
                     {
                         pm.SendLocalizedMessage(1053004); // You must wait about a day before you can gain in compassion again.
                     }
-                    else if (VirtueHelper.Award(pm, VirtueName.Compassion, this.IsPrisoner ? 400 : 200, ref gainedPath))
+                    else if (VirtueHelper.Award(pm, VirtueName.Compassion, IsPrisoner ? 400 : 200, ref gainedPath))
                     {
                         if (gainedPath)
                             pm.SendLocalizedMessage(1053005); // You have achieved a path in compassion!
@@ -373,17 +374,17 @@ namespace Server.Mobiles
 
             writer.Write((int)0); // version
 
-            EDI dest = this.GetDestination();
+            EDI dest = GetDestination();
 
             writer.Write(dest != null);
 
             if (dest != null)
                 writer.Write(dest.Name);
 
-            writer.Write(this.m_DeleteTimer != null);
+            writer.Write(m_DeleteTimer != null);
 
-            if (this.m_DeleteTimer != null)
-                writer.WriteDeltaTime(this.m_DeleteTime);
+            if (m_DeleteTimer != null)
+                writer.WriteDeltaTime(m_DeleteTime);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -393,13 +394,13 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             if (reader.ReadBool())
-                this.m_DestinationString = reader.ReadString(); // NOTE: We cannot EDI.Find here, regions have not yet been loaded :-(
+                m_DestinationString = reader.ReadString(); // NOTE: We cannot EDI.Find here, regions have not yet been loaded :-(
 
             if (reader.ReadBool())
             {
-                this.m_DeleteTime = reader.ReadDeltaTime();
-                this.m_DeleteTimer = new DeleteTimer(this, this.m_DeleteTime - DateTime.UtcNow);
-                this.m_DeleteTimer.Start();
+                m_DeleteTime = reader.ReadDeltaTime();
+                m_DeleteTimer = new DeleteTimer(this, m_DeleteTime - DateTime.UtcNow);
+                m_DeleteTimer.Start();
             }
         }
 
@@ -410,11 +411,11 @@ namespace Server.Mobiles
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            EDI dest = this.GetDestination();
+            EDI dest = GetDestination();
 
             if (dest != null && from.Alive)
             {
-                Mobile escorter = this.GetEscorter();
+                Mobile escorter = GetEscorter();
 
                 if (escorter == null || escorter == from)
                     list.Add(new AskDestinationEntry(this, from));
@@ -438,10 +439,10 @@ namespace Server.Mobiles
 
         public virtual string PickRandomDestination()
         {
-            if (Map.Felucca.Regions.Count == 0 || this.Map == null || this.Map == Map.Internal || this.Location == Point3D.Zero)
+            if (Map.Felucca.Regions.Count == 0 || Map == null || Map == Map.Internal || Location == Point3D.Zero)
                 return null; // Not yet fully initialized
 
-            string[] possible = this.GetPossibleDestinations();
+            string[] possible = GetPossibleDestinations();
             string picked = null;
 
             while (picked == null)
@@ -449,7 +450,7 @@ namespace Server.Mobiles
                 picked = possible[Utility.Random(possible.Length)];
                 EDI test = EDI.Find(picked);
 
-                if (test != null && test.Contains(this.Location))
+                if (test != null && test.Contains(Location))
                     picked = null;
             }
 
@@ -458,16 +459,16 @@ namespace Server.Mobiles
 
         public EDI GetDestination()
         {
-            if (this.m_DestinationString == null && this.m_DeleteTimer == null)
-                this.m_DestinationString = this.PickRandomDestination();
+            if (m_DestinationString == null && m_DeleteTimer == null)
+                m_DestinationString = PickRandomDestination();
 
-            if (this.m_Destination != null && this.m_Destination.Name == this.m_DestinationString)
-                return this.m_Destination;
+            if (m_Destination != null && m_Destination.Name == m_DestinationString)
+                return m_Destination;
 
             if (Map.Felucca.Regions.Count > 0)
-                return (this.m_Destination = EDI.Find(this.m_DestinationString));
+                return (m_Destination = EDI.Find(m_DestinationString));
 
-            return (this.m_Destination = null);
+            return (m_Destination = null);
         }
 
         protected override bool OnMove(Direction d)
@@ -475,7 +476,7 @@ namespace Server.Mobiles
             if (!base.OnMove(d))
                 return false;
 
-            this.CheckAtDestination();
+            CheckAtDestination();
 
             return true;
         }
@@ -486,14 +487,14 @@ namespace Server.Mobiles
             public DeleteTimer(Mobile m, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Mobile = m;
+                m_Mobile = m;
 
-                this.Priority = TimerPriority.OneSecond;
+                Priority = TimerPriority.OneSecond;
             }
 
             protected override void OnTick()
             {
-                this.m_Mobile.Delete();
+                m_Mobile.Delete();
             }
         }
     }
@@ -506,22 +507,22 @@ namespace Server.Mobiles
         //private Rectangle2D[] m_Bounds;
         public EscortDestinationInfo(string name, Region region)
         {
-            this.m_Name = name;
-            this.m_Region = region;
+            m_Name = name;
+            m_Region = region;
         }
 
         public string Name
         {
             get
             {
-                return this.m_Name;
+                return m_Name;
             }
         }
         public Region Region
         {
             get
             {
-                return this.m_Region;
+                return m_Region;
             }
         }
         public static void LoadTable()
@@ -560,7 +561,7 @@ namespace Server.Mobiles
         }*/
         public bool Contains(Point3D p)
         {
-            return this.m_Region.Contains(p);
+            return m_Region.Contains(p);
         }
     }
 
@@ -571,13 +572,13 @@ namespace Server.Mobiles
         public AskDestinationEntry(BaseEscortable m, Mobile from)
             : base(6100, 3)
         {
-            this.m_Mobile = m;
-            this.m_From = from;
+            m_Mobile = m;
+            m_From = from;
         }
 
         public override void OnClick()
         {
-            this.m_Mobile.SayDestinationTo(this.m_From);
+            m_Mobile.SayDestinationTo(m_From);
         }
     }
 
@@ -588,13 +589,13 @@ namespace Server.Mobiles
         public AcceptEscortEntry(BaseEscortable m, Mobile from)
             : base(6101, 3)
         {
-            this.m_Mobile = m;
-            this.m_From = from;
+            m_Mobile = m;
+            m_From = from;
         }
 
         public override void OnClick()
         {
-            this.m_Mobile.AcceptEscorter(this.m_From);
+            m_Mobile.AcceptEscorter(m_From);
         }
     }
 
@@ -605,13 +606,13 @@ namespace Server.Mobiles
         public AbandonEscortEntry(BaseEscortable m, Mobile from)
             : base(6102, 3)
         {
-            this.m_Mobile = m;
-            this.m_From = from;
+            m_Mobile = m;
+            m_From = from;
         }
 
         public override void OnClick()
         {
-            this.m_Mobile.Delete(); // OSI just seems to delete instantly
+            m_Mobile.Delete(); // OSI just seems to delete instantly
         }
     }
 }

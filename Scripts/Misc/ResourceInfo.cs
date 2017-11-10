@@ -358,6 +358,7 @@ namespace Server.Items
             spined.ArmorLuck = 40;
             spined.RunicMinAttributes = 1;
             spined.RunicMaxAttributes = 3;
+
             if (Core.ML)
             {
                 spined.RunicMinIntensity = 40;

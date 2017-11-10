@@ -354,11 +354,11 @@ namespace Server
             Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
             #endregion
 
-            if (Core.ML && type >= DamageType.Spell)
+            if (m.Hidden && Core.ML && type >= DamageType.Spell)
             {
-                int chance = (int)Math.Max(33, Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(m) * 100);
+                int chance = (int)Math.Min(33, 100 - (Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(m) * 100));
 
-                if (m.Hidden && Utility.Random(100) < chance)
+                if (Utility.Random(100) < chance)
                 {
                     m.RevealingAction();
                     m.NextSkillTime = Core.TickCount + (12000 - ((int)m.Skills[SkillName.Hiding].Value) * 100);

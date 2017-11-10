@@ -324,7 +324,43 @@ namespace Server.Items
 						loc = new Point3D( 1732, 975, -75 );
 						map = Map.Malas;
 					}
-					break;
+                    break;
+                    case "dungeon prism":
+                    {
+                        loc = new Point3D(3786, 1095, 18);
+                        map = Map.Trammel;
+                    }
+                    break;
+                    case "dungeon sanctuary":
+                    {
+                        loc = new Point3D(761, 1644, 0);
+                        map = Map.Trammel;
+                    }
+                    break;
+                    case "dungeon palace":
+                    {
+                        loc = new Point3D(5624, 3040, 13);
+                        map = Map.Trammel;
+                    }
+                    break;
+                    case "dungeon grove":
+                    {
+                        loc = new Point3D(580, 1655, 0);
+                        map = Map.Trammel;
+                    }
+                    break;
+                    case "dungeon caves":
+                    {
+                        loc = new Point3D(1717, 2991, 0);
+                        map = Map.Trammel;
+                    }
+                    break;
+                    case "dungeon blackthorn":
+                    {
+                        loc = new Point3D(1482, 1474, 0);
+                        map = Map.Trammel;
+                    }
+                    break;
 					case "dungeon underworld":
 					{
 						loc = new Point3D( 1143, 1085, -37 );
@@ -411,7 +447,43 @@ namespace Server.Items
 						loc = new Point3D( 1361, 895, 0 );
 						map = Map.Felucca;
 					}
-					break;
+                    break;
+                    case "fel dungeon prism":
+                    {
+                        loc = new Point3D(3786, 1095, 18);
+                        map = Map.Felucca;
+                    }
+                    break;
+                    case "fel dungeon sanctuary":
+                    {
+                        loc = new Point3D(761, 1644, 0);
+                        map = Map.Felucca;
+                    }
+                    break;
+                    case "fel dungeon palace":
+                    {
+                        loc = new Point3D(5624, 3040, 13);
+                        map = Map.Felucca;
+                    }
+                    break;
+                    case "fel dungeon grove":
+                    {
+                        loc = new Point3D(580, 1655, 0);
+                        map = Map.Felucca;
+                    }
+                    break;
+                    case "fel dungeon caves":
+                    {
+                        loc = new Point3D(1717, 2991, 0);
+                        map = Map.Felucca;
+                    }
+                    break;
+                    case "fel dungeon blackthorn":
+                    {
+                        loc = new Point3D(1520, 1418, 15);
+                        map = Map.Felucca;
+                    }
+                    break;
 			}
 		}
 	}

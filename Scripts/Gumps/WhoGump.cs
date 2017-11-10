@@ -48,6 +48,9 @@ namespace Server.Gumps
         private readonly Mobile m_Owner;
         private readonly List<Mobile> m_Mobiles;
         private int m_Page;
+
+        public bool EC { get { return m_Owner != null && m_Owner.NetState != null && m_Owner.NetState.IsEnhancedClient; } }
+
         public WhoGump(Mobile owner, string filter)
             : this(owner, BuildList(owner, filter), 0)
         {
@@ -240,30 +243,26 @@ namespace Server.Gumps
             e.Mobile.SendGump(new WhoGump(e.Mobile, e.ArgString));
         }
 
-        private static int GetHueFor(Mobile m)
+        private int GetHueFor(Mobile m)
         {
             switch ( m.AccessLevel )
             {
                 case AccessLevel.Owner:
                 case AccessLevel.Developer:
-                case AccessLevel.Administrator:
-                    return 0x516;
-                case AccessLevel.Seer:
-                    return 0x144;
-                case AccessLevel.GameMaster:
-                    return 0x21;
-                case AccessLevel.Decorator:
-                    return 0x2;
+                case AccessLevel.Administrator: return EC ? 0x51D : 0x516;
+                case AccessLevel.Seer: return EC ? 0x142 : 0x144;
+                case AccessLevel.GameMaster: return EC ? 0x11 : 0x21;
+                case AccessLevel.Decorator: return 0x2;
                 case AccessLevel.VIP:
                 case AccessLevel.Player:
                 default:
                     {
-                        if (m.Murderer)
-                            return 0x21;
+                        if (m.Kills >= 5)
+                            return EC ? 0x20 : 0x21;
                         else if (m.Criminal)
-                            return 0x3B1;
+                            return EC ? 0x3AE : 0x3B1;
 
-                        return 0x58;
+                        return EC ? 0x5C : 0x58;
                     }
             }
         }

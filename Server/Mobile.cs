@@ -4225,6 +4225,8 @@ namespace Server
 				Effects.PlaySound(this, Map, sound);
 			}
 
+            RevealingAction();
+
 			if (!m_Player)
 			{
 				Delete();
