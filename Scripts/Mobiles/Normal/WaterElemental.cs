@@ -96,7 +96,7 @@ namespace Server.Mobiles
             base.Serialize(writer);
             writer.Write((int)1);
 
-            writer.Write((Boolean)m_HasDecanter);
+            writer.Write(m_HasDecanter);
         }
 
         public override void Deserialize(GenericReader reader)

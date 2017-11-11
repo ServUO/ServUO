@@ -7,7 +7,6 @@ namespace Server.Multis
 {
      public class PrisonerCamp : BaseCamp
      {
-         private Mobile m_Prisoner;
          private BaseDoor m_Gate;
 
          [Constructable]
@@ -28,63 +27,65 @@ namespace Server.Multis
 
              switch (Utility.Random(4))
              {
-                 case 0: 
+                 case 0:
                      {
-                         AddMobile(new Orc(), 15, 0, -2, 0);
-                         AddMobile(new OrcishMage(), 15, 0, 1, 0);
-                         AddMobile(new OrcishLord(), 15, 0, -2, 0);
-                         AddMobile(new OrcCaptain(), 15, 0, 1, 0);
-                         AddMobile(new Orc(), 15, 0, -1, 0);
-                         AddMobile(new OrcChopper(), 15, 0, -2, 0);
-                     }break;
-                 
+                         AddMobile(new Orc(), 0, -2, 0);
+                         AddMobile(new OrcishMage(), 0, 1, 0);
+                         AddMobile(new OrcishLord(), 0, -2, 0);
+                         AddMobile(new OrcCaptain(), 0, 1, 0);
+                         AddMobile(new Orc(),  0, -1, 0);
+                         AddMobile(new OrcChopper(), 0, -2, 0);
+                     } break;
+
                  case 1:
                      {
-                         AddMobile(new Ratman(), 15, 0, -2, 0);
-                         AddMobile(new Ratman(), 15, 0, 1, 0);
-                         AddMobile(new RatmanMage(), 15, 0, -2, 0);
-                         AddMobile(new Ratman(), 15, 0, 1, 0);
-                         AddMobile(new RatmanArcher(), 15, 0, -1, 0);
-                         AddMobile(new Ratman(), 15, 0, -2, 0);
+                         AddMobile(new Ratman(), 0, -2, 0);
+                         AddMobile(new Ratman(), 0, 1, 0);
+                         AddMobile(new RatmanMage(), 0, -2, 0);
+                         AddMobile(new Ratman(), 0, 1, 0);
+                         AddMobile(new RatmanArcher(), 0, -1, 0);
+                         AddMobile(new Ratman(), 0, -2, 0);
                      } break;
 
                  case 2:
                      {
-                         AddMobile(new Lizardman(), 15, 0, -2, 0);
-                         AddMobile(new Lizardman(), 15, 0, 1, 0);
-                         AddMobile(new Lizardman(), 15, 0, -2, 0);
-                         AddMobile(new Lizardman(), 15, 0, 1, 0);
-                         AddMobile(new Lizardman(), 15, 0, -1, 0);
-                         AddMobile(new Lizardman(), 15, 0, -2, 0);
+                         AddMobile(new Lizardman(), 0, -2, 0);
+                         AddMobile(new Lizardman(), 0, 1, 0);
+                         AddMobile(new Lizardman(), 0, -2, 0);
+                         AddMobile(new Lizardman(), 0, 1, 0);
+                         AddMobile(new Lizardman(), 0, -1, 0);
+                         AddMobile(new Lizardman(), 0, -2, 0);
                      } break;
 
-                      case 3:
+                 case 3:
                      {
-                         AddMobile(new Brigand(), 15, 0, -2, 0);
-                         AddMobile(new Brigand(), 15, 0, 1, 0);
-                         AddMobile(new Brigand(), 15, 0, -2, 0);
-                         AddMobile(new Brigand(), 15, 0, 1, 0);
-                         AddMobile(new Brigand(), 15, 0, -1, 0);
-                         AddMobile(new Brigand(), 15, 0, -2, 0);
+                         AddMobile(new Brigand(), 0, -2, 0);
+                         AddMobile(new Brigand(), 0, 1, 0);
+                         AddMobile(new Brigand(),  0, -2, 0);
+                         AddMobile(new Brigand(), 0, 1, 0);
+                         AddMobile(new Brigand(),  0, -1, 0);
+                         AddMobile(new Brigand(), 0, -2, 0);
                      } break;
              }
              
              switch ( Utility.Random( 2 ) )
              {
-                 case 0: m_Prisoner = new Noble(); break;
-                 case 1: m_Prisoner = new SeekerOfAdventure(); break;
+                 case 0: Prisoner = new Noble(); break;
+                 case 1: Prisoner = new SeekerOfAdventure(); break;
              }
 
-             m_Prisoner.YellHue = Utility.RandomList( 0x57, 0x67, 0x77, 0x87, 0x117 );
+             Prisoner.IsPrisoner = true;
+             Prisoner.CantWalk = true;
 
-             AddMobile( m_Prisoner, 2, -2, 0, 0 );
+             Prisoner.YellHue = Utility.RandomList( 0x57, 0x67, 0x77, 0x87, 0x117 );
+             AddMobile( Prisoner, -2, 0, 0 );
          }
 
          public override void OnEnter( Mobile m )
          {
              base.OnEnter( m );
 
-             if ( m.Player && m_Prisoner != null && m_Gate != null && m_Gate.Locked )
+             if ( m.Player && Prisoner != null && m_Gate != null && m_Gate.Locked )
              {
                  int number;
 
@@ -103,7 +104,7 @@ namespace Server.Multis
 					 case 9: number = 502268; break; // Quickly, I beg thee! Unlock my chains! If thou dost look at me close thou canst see them.	 
 					 }
 
-                 m_Prisoner.Yell( number );
+                 Prisoner.Yell( number );
              }
          }
 
@@ -115,9 +116,8 @@ namespace Server.Multis
          {
              base.Serialize( writer );
 
-             writer.Write( (int) 0 ); // version
+             writer.Write( (int) 1 ); // version
 
-             writer.Write( m_Prisoner );
              writer.Write( m_Gate );
          }
 
@@ -129,9 +129,12 @@ namespace Server.Multis
 
              switch ( version )
              {
+                 case 1:
+                     m_Gate = reader.ReadItem() as BaseDoor;
+                     break;
                  case 0:
                  {
-                     m_Prisoner = reader.ReadMobile();
+                     Prisoner = reader.ReadMobile() as BaseCreature;
                      m_Gate = reader.ReadItem() as BaseDoor;
                      break;
                  }

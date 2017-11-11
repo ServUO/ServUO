@@ -6,7 +6,6 @@ namespace Server.Multis
 { 
     public class RatCamp : BaseCamp
     {
-        private Mobile m_Prisoner;
         [Constructable]
         public RatCamp()
             : base(0x1F6D)// dummy garbage at center
@@ -25,69 +24,66 @@ namespace Server.Multis
                 return new Ratman();
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override TimeSpan DecayDelay { get { return TimeSpan.FromMinutes(5.0); } }
+
         public override void AddComponents()
         {
-            BaseCreature bc;
-            //BaseEscortable be;
-
-            this.Visible = false;
-            this.DecayDelay = TimeSpan.FromMinutes(5.0);
-            this.AddItem(new Static(0x10ee), 0, 0, 0);
-            this.AddItem(new Static(0xfac), 0, 6, 0);
+            Visible = false;
+            AddItem(new Static(0x10ee), 0, 0, 0);
+            AddItem(new Static(0xfac), 0, 6, 0);
 			
             switch ( Utility.Random(3) )
             {
                 case 0:
                     {
-                        this.AddItem(new Item(0xDE3), 0, 6, 0); // Campfire
-                        this.AddItem(new Item(0x974), 0, 6, 1); // Cauldron
+                        AddItem(new Item(0xDE3), 0, 6, 0); // Campfire
+                        AddItem(new Item(0x974), 0, 6, 1); // Cauldron
                         break;
                     }
                 case 1:
                     {
-                        this.AddItem(new Item(0x1E95), 0, 6, 1); // Rabbit on a spit
+                        AddItem(new Item(0x1E95), 0, 6, 1); // Rabbit on a spit
                         break;
                     }
                 default:
                     {
-                        this.AddItem(new Item(0x1E94), 0, 6, 1); // Chicken on a spit
+                        AddItem(new Item(0x1E94), 0, 6, 1); // Chicken on a spit
                         break;
                     }
             }
-            this.AddItem(new Item(0x41F), 5, 5, 0); // Gruesome Standart South
 
-            this.AddCampChests();
+            AddItem(new Item(0x41F), 5, 5, 0); // Gruesome Standart South
+
+            AddCampChests();
 			
             for (int i = 0; i < 4; i ++)
             { 
-                this.AddMobile(this.Ratmen, 6, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
+                AddMobile(Ratmen, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
             }
 			
             switch ( Utility.Random(2) )
             {
                 case 0:
-                    this.m_Prisoner = new Noble();
+                    Prisoner = new Noble();
                     break;
                 default:
-                    this.m_Prisoner = new SeekerOfAdventure();
+                    Prisoner = new SeekerOfAdventure();
                     break;
             }
+
+            Prisoner.IsPrisoner = true;
+            Prisoner.CantWalk = true;
 			
-            //be = (BaseEscortable)m_Prisoner;
-            //be.m_Captive = true;
-			
-            bc = (BaseCreature)this.m_Prisoner;
-            bc.IsPrisoner = true;
-            bc.CantWalk = true;
-			
-            this.m_Prisoner.YellHue = Utility.RandomList(0x57, 0x67, 0x77, 0x87, 0x117);
-            this.AddMobile(this.m_Prisoner, 2, Utility.RandomMinMax(-2, 2), Utility.RandomMinMax(-2, 2), 0);
+            Prisoner.YellHue = Utility.RandomList(0x57, 0x67, 0x77, 0x87, 0x117);
+            AddMobile(Prisoner, Utility.RandomMinMax(-2, 2), Utility.RandomMinMax(-2, 2), 0);
         }
 
         // Don't refresh decay timer
         public override void OnEnter(Mobile m)
         {
-            if (m.Player && this.m_Prisoner != null && this.m_Prisoner.CantWalk)
+            if (m.Player && Prisoner != null && Prisoner.CantWalk)
             {
                 int number;
 
@@ -118,7 +114,7 @@ namespace Server.Multis
                         number = 502268;
                         break; // Quickly, I beg thee! Unlock my chains! If thou dost look at me close thou canst see them.	
                 }
-                this.m_Prisoner.Yell(number);
+                Prisoner.Yell(number);
             }
         }
 
@@ -139,9 +135,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
-
-            writer.Write(this.m_Prisoner);
+            writer.Write((int)2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -152,14 +146,15 @@ namespace Server.Multis
 
             switch ( version )
             {
+                case 2: break;
                 case 1:
                     {
-                        this.m_Prisoner = reader.ReadMobile();
+                        Prisoner = reader.ReadMobile() as BaseCreature;
                         break;
                     }
                 case 0:
                     {
-                        this.m_Prisoner = reader.ReadMobile();
+                        Prisoner = reader.ReadMobile() as BaseCreature;
                         reader.ReadItem();
                         break;
                     }

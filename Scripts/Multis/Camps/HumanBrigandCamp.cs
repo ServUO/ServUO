@@ -6,7 +6,6 @@ namespace Server.Multis
 {
     public class HumanBrigandCamp : BaseCamp
     { 
-        private Mobile m_Prisoner;
         [Constructable]
         public HumanBrigandCamp()
             : base(0x1F6D)
@@ -27,9 +26,9 @@ namespace Server.Multis
         }
         public override void AddComponents()
         {
-            this.AddItem(new Item(0xFAC), 0, 0, 0); // fire pit
-            this.AddItem(new Item(0xDE3), 0, 0, 0); // camp fire
-            this.AddItem(new Item(0x974), 0, 0, 1); // cauldron
+            AddItem(new Item(0xFAC), 0, 0, 0); // fire pit
+            AddItem(new Item(0xDE3), 0, 0, 0); // camp fire
+            AddItem(new Item(0x974), 0, 0, 1); // cauldron
 			
             for (int i = 0; i < 2; i ++)
             {
@@ -92,31 +91,34 @@ namespace Server.Multis
                     cont.DropItem(item);
                 }
 				
-                Point3D loc = this.GetRandomSpawnPoint(3);
+                Point3D loc = GetRandomSpawnPoint(3);
 				
-                this.AddItem(cont, loc.X, loc.Y, loc.Z);			
+                AddItem(cont, loc.X, loc.Y, loc.Z);
+                Treasure1 = cont;
             }
 			
             switch ( Utility.Random(2) )
             {
                 case 0:
-                    this.m_Prisoner = new Noble();
+                    Prisoner = new Noble();
                     break;
                 case 1:
-                    this.m_Prisoner = new SeekerOfAdventure();
+                    Prisoner = new SeekerOfAdventure();
                     break;
             }
 			
             for (int i = 0; i < 4; i ++)
             {
-                Point3D loc = this.GetRandomSpawnPoint(5);				
+                Point3D loc = GetRandomSpawnPoint(5);				
 				
-                this.AddMobile(this.Camper, 6, loc.X, loc.Y, loc.Z);
+                AddMobile(Camper,loc.X, loc.Y, loc.Z);
             }
-			
-            Point3D p = this.GetRandomSpawnPoint(3);
-			
-            this.AddMobile(this.m_Prisoner, 0, p.X, p.Y, p.Z);
+
+            Prisoner.IsPrisoner = true;
+            Prisoner.CantWalk = true;
+
+            Point3D p = GetRandomSpawnPoint(3);	
+            AddMobile(Prisoner, p.X, p.Y, p.Z);
         }
 
         public override void AddItem(Item item, int xOffset, int yOffset, int zOffset)
@@ -129,34 +131,34 @@ namespace Server.Multis
 
         public virtual Point3D GetRandomSpawnPoint(int range)
         { 
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
-                return this.Location;				
+                return Location;				
 
             // Try 10 times to find a Spawnable location.
             for (int i = 0; i < 10; i++)
             {
-                int x = this.Location.X + (Utility.Random((range * 2) + 1) - range);
-                int y = this.Location.Y + (Utility.Random((range * 2) + 1) - range);
-                int z = this.Map.GetAverageZ(x, y);
+                int x = Location.X + (Utility.Random((range * 2) + 1) - range);
+                int y = Location.Y + (Utility.Random((range * 2) + 1) - range);
+                int z = Map.GetAverageZ(x, y);
 
-                if (this.Map.CanSpawnMobile(new Point2D(x, y), this.Z))
-                    return new Point3D(x, y, this.Z);
-                else if (this.Map.CanSpawnMobile(new Point2D(x, y), z))
+                if (Map.CanSpawnMobile(new Point2D(x, y), Z))
+                    return new Point3D(x, y, Z);
+                else if (Map.CanSpawnMobile(new Point2D(x, y), z))
                     return new Point3D(x, y, z);
             }
 
-            return this.Location;
+            return Location;
         }
 
         public override void OnEnter(Mobile m)
         {
             base.OnEnter(m);
 
-            if (m.Player && this.m_Prisoner != null)
+            if (m.Player && Prisoner != null)
             {
-                this.m_Prisoner.Yell(Utility.RandomMinMax(502261, 502268));
+                Prisoner.Yell(Utility.RandomMinMax(502261, 502268));
             }
         }
 
@@ -164,9 +166,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-
-            writer.Write(this.m_Prisoner);
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -174,8 +174,14 @@ namespace Server.Multis
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-			
-            this.m_Prisoner = reader.ReadMobile();
+
+            switch (version)
+            {
+                case 1: break;
+                case 0:
+                    Prisoner = reader.ReadMobile() as BaseCreature;
+                    break;
+            }
         }
     }
 }
