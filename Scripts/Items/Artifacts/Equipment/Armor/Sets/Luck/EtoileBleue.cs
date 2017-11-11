@@ -9,6 +9,7 @@ namespace Server.Items
 		public override int LabelNumber{ get{ return 1080238; } } // Etoile Bleue
         public override SetItem SetID{ get{ return SetItem.Luck; } }
 		public override int Pieces{ get{ return 2; } }
+
 		[Constructable]
 		public EtoileBleue() : base()
 		{

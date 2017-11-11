@@ -2380,8 +2380,6 @@ namespace Server
 				}
 			}
 
-			bool setCombatant = false;
-
 			if (addAggressor)
 			{
 				m_Aggressors.Add(AggressorInfo.Create(aggressor, this, criminal));
@@ -2390,11 +2388,6 @@ namespace Server
 				if (CanSee(aggressor) && m_NetState != null)
 				{
 					m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
-				}
-
-				if (Combatant == null)
-				{
-					setCombatant = true;
 				}
 
 				UpdateAggrExpire();
@@ -2410,15 +2403,10 @@ namespace Server
 					m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
 				}
 
-				if (Combatant == null)
-				{
-					setCombatant = true;
-				}
-
 				UpdateAggrExpire();
 			}
 
-			if (setCombatant)
+            if (Combatant == null && !Hidden)
 			{
 				Combatant = aggressor;
 			}

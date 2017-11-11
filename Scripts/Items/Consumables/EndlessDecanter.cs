@@ -50,9 +50,9 @@ namespace Server.Items
         {
             if (!beverage.IsFull)
             {
-                thrower.SendLocalizedMessage(1113038);
+                thrower.SendLocalizedMessage(1113038);  // It is not full. 
             }
-            else if (!thrower.InRange(elemental.Location, 5))   // It is not full. 
+            else if (!thrower.InRange(elemental.Location, 5))
             {
                 thrower.SendLocalizedMessage(500295);   // You are too far away to do that.
             }

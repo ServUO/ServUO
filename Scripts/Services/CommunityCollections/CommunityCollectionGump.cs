@@ -18,6 +18,7 @@ namespace Server.Gumps
         private int m_Index;
         private int m_Page;
         private int m_Max;
+
         public CommunityCollectionGump(PlayerMobile from, IComunityCollection collection, Point3D location)
             : this(from, collection, location, Section.Donates)
         {
