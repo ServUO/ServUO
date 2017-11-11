@@ -3158,7 +3158,7 @@ namespace Server.Items
             }
 
             info = GetResourceAttrs(m_Resource);
-            Console.WriteLine("Resource: {0}", m_Resource);
+            
             // add new bonus
             m_PhysicalBonus += info.ArmorPhysicalResist;
             m_FireBonus += info.ArmorFireResist;
