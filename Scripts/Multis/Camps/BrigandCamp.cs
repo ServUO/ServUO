@@ -24,6 +24,7 @@ namespace Server.Multis
                 return new Brigand();
             }
         }
+
         public virtual Mobile Executioners
         {
             get

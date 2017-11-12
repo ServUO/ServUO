@@ -3875,6 +3875,28 @@ namespace Server.Multis
             return GetAccountHouseCount(m) >= m_AccountHouseLimit;
         }
 
+        public static bool CheckAccountHouseLimit(Mobile m, bool message = true)
+        {
+            if (AtAccountHouseLimit(m))
+            {
+                if (message)
+                {
+                    if (AccountHouseLimit == 1)
+                    {
+                        m.SendLocalizedMessage(501271); // You already own a house, you may not place another!
+                    }
+                    else
+                    {
+                        m.SendMessage("You already own {0} houses, you may not place any more!", BaseHouse.AccountHouseLimit.ToString());
+                    }
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
         public bool IsOwner(Mobile m)
         {
             if (m == null)

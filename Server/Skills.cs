@@ -198,7 +198,7 @@ namespace Server
 
 		public void Serialize(GenericWriter writer)
 		{
-			if (m_Base == 0 && m_Cap == 1000 && m_Lock == SkillLock.Up)
+            if (m_Base == 0 && m_Cap == 1000 && m_Lock == SkillLock.Up && VolumeLearned == 0 && NextGGSGain == DateTime.MinValue)
 			{
 				writer.Write((byte)0xFF); // default
 			}

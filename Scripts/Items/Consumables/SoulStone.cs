@@ -31,11 +31,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = value;
+                m_Level = value;
             }
         }
 
@@ -44,14 +44,14 @@ namespace Server.Items
         {
             get
             {
-                return this.m_ActiveItemID;
+                return m_ActiveItemID;
             }
             set
             {
-                this.m_ActiveItemID = value;
+                m_ActiveItemID = value;
 
-                if (!this.IsEmpty)
-                    this.ItemID = this.m_ActiveItemID;
+                if (!IsEmpty)
+                    ItemID = m_ActiveItemID;
             }
         }
 
@@ -60,14 +60,14 @@ namespace Server.Items
         {
             get
             {
-                return this.m_InactiveItemID;
+                return m_InactiveItemID;
             }
             set
             {
-                this.m_InactiveItemID = value;
+                m_InactiveItemID = value;
 
-                if (this.IsEmpty)
-                    this.ItemID = this.m_InactiveItemID;
+                if (IsEmpty)
+                    ItemID = m_InactiveItemID;
             }
         }
 
@@ -82,11 +82,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Account;
+                return m_Account;
             }
             set
             {
-                this.m_Account = value;
+                m_Account = value;
             }
         }
 
@@ -95,12 +95,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_LastUserName;
+                return m_LastUserName;
             }
             set
             {
-                this.m_LastUserName = value;
-                this.InvalidateProperties();
+                m_LastUserName = value;
+                InvalidateProperties();
             }
         }
 
@@ -109,12 +109,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Skill;
+                return m_Skill;
             }
             set
             {
-                this.m_Skill = value;
-                this.InvalidateProperties();
+                m_Skill = value;
+                InvalidateProperties();
             }
         }
 
@@ -123,18 +123,18 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SkillValue;
+                return m_SkillValue;
             }
             set
             {
-                this.m_SkillValue = value;
+                m_SkillValue = value;
 
-                if (!this.IsEmpty)
-                    this.ItemID = this.m_ActiveItemID;
+                if (!IsEmpty)
+                    ItemID = m_ActiveItemID;
                 else
-                    this.ItemID = this.m_InactiveItemID;
+                    ItemID = m_InactiveItemID;
 
-                this.InvalidateProperties();
+                InvalidateProperties();
             }
         }
 
@@ -143,7 +143,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SkillValue <= 0.0;
+                return m_SkillValue <= 0.0;
             }
         }
 
@@ -167,23 +167,23 @@ namespace Server.Items
         public SoulStone(string account, int inactiveItemID, int activeItemID)
             : base(inactiveItemID)
         {
-            this.Light = LightType.Circle300;
-            this.LootType = LootType.Blessed;
+            Light = LightType.Circle300;
+            LootType = LootType.Blessed;
 
-            this.m_InactiveItemID = inactiveItemID;
-            this.m_ActiveItemID = activeItemID;
+            m_InactiveItemID = inactiveItemID;
+            m_ActiveItemID = activeItemID;
 
-            this.m_Account = account;
+            m_Account = account;
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (!this.IsEmpty)
-                list.Add(1070721, "#{0}\t{1:0.0}", AosSkillBonuses.GetLabel(this.Skill), this.SkillValue); // Skill stored: ~1_skillname~ ~2_skillamount~
+            if (!IsEmpty)
+                list.Add(1070721, "#{0}\t{1:0.0}", AosSkillBonuses.GetLabel(Skill), SkillValue); // Skill stored: ~1_skillname~ ~2_skillamount~
 
-            string name = this.LastUserName;
+            string name = LastUserName;
 
             if (name == null)
                 name = String.Format("#{0}", 1074235); // Unknown
@@ -210,16 +210,16 @@ namespace Server.Items
 
             PlayerMobile pm = from as PlayerMobile;
 
-            if (this.Deleted || !this.IsAccessibleTo(from))
+            if (Deleted || !IsAccessibleTo(from))
             {
                 return false;
             }
-            else if (from.Map != this.Map || !from.InRange(this.GetWorldLocation(), 2))
+            else if (from.Map != Map || !from.InRange(GetWorldLocation(), 2))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 return false;
             }
-            else if (this.Account != null && (!(from.Account is Account) || from.Account.Username != this.Account))
+            else if (Account != null && (!(from.Account is Account) || from.Account.Username != Account))
             {
                 from.SendLocalizedMessage(1070714); // This is an Account Bound Soulstone, and your character is not bound to it.  You cannot use this Soulstone.
                 return false;
@@ -284,7 +284,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.CheckUse(from))
+            if (!CheckUse(from))
                 return;
 
             from.CloseGump(typeof(SelectSkillGump));
@@ -293,7 +293,7 @@ namespace Server.Items
             from.CloseGump(typeof(ConfirmRemovalGump));
             from.CloseGump(typeof(ErrorGump));
 
-            if (this.IsEmpty)
+            if (IsEmpty)
                 from.SendGump(new SelectSkillGump(this, from));
             else
                 from.SendGump(new ConfirmTransferGump(this, from));
@@ -306,22 +306,22 @@ namespace Server.Items
             public SelectSkillGump(SoulStone stone, Mobile from)
                 : base(50, 50)
             {
-                this.m_Stone = stone;
+                m_Stone = stone;
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 0, 520, 440, 0x13BE);
+                AddBackground(0, 0, 520, 440, 0x13BE);
 
-                this.AddImageTiled(10, 10, 500, 20, 0xA40);
-                this.AddImageTiled(10, 40, 500, 360, 0xA40);
-                this.AddImageTiled(10, 410, 500, 20, 0xA40);
+                AddImageTiled(10, 10, 500, 20, 0xA40);
+                AddImageTiled(10, 40, 500, 360, 0xA40);
+                AddImageTiled(10, 410, 500, 20, 0xA40);
 
-                this.AddAlphaRegion(10, 10, 500, 420);
+                AddAlphaRegion(10, 10, 500, 420);
 
-                this.AddHtmlLocalized(10, 12, 500, 20, 1061087, 0x7FFF, false, false); // Which skill do you wish to transfer to the Soulstone?
+                AddHtmlLocalized(10, 12, 500, 20, 1061087, 0x7FFF, false, false); // Which skill do you wish to transfer to the Soulstone?
 
-                this.AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
+                AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
 
                 for (int i = 0, n = 0; i < from.Skills.Length; i++)
                 {
@@ -337,24 +337,24 @@ namespace Server.Items
 
                             if (page > 0)
                             {
-                                this.AddButton(260, 380, 0xFA5, 0xFA6, 0, GumpButtonType.Page, page + 1);
-                                this.AddHtmlLocalized(305, 382, 200, 20, 1011066, 0x7FFF, false, false); // Next page
+                                AddButton(260, 380, 0xFA5, 0xFA6, 0, GumpButtonType.Page, page + 1);
+                                AddHtmlLocalized(305, 382, 200, 20, 1011066, 0x7FFF, false, false); // Next page
                             }
 
-                            this.AddPage(page + 1);
+                            AddPage(page + 1);
 
                             if (page > 0)
                             {
-                                this.AddButton(10, 380, 0xFAE, 0xFAF, 0, GumpButtonType.Page, page);
-                                this.AddHtmlLocalized(55, 382, 200, 20, 1011067, 0x7FFF, false, false); // Previous page
+                                AddButton(10, 380, 0xFAE, 0xFAF, 0, GumpButtonType.Page, page);
+                                AddHtmlLocalized(55, 382, 200, 20, 1011067, 0x7FFF, false, false); // Previous page
                             }
                         }
 
                         int x = (p % 2 == 0) ? 10 : 260;
                         int y = (p / 2) * 20 + 40;
 
-                        this.AddButton(x, y, 0xFA5, 0xFA6, i + 1, GumpButtonType.Reply, 0);
-                        this.AddHtmlLocalized(x + 45, y + 2, 200, 20, AosSkillBonuses.GetLabel(skill.SkillName), 0x7FFF, false, false);
+                        AddButton(x, y, 0xFA5, 0xFA6, i + 1, GumpButtonType.Reply, 0);
+                        AddHtmlLocalized(x + 45, y + 2, 200, 20, AosSkillBonuses.GetLabel(skill.SkillName), 0x7FFF, false, false);
 
                         n++;
                     }
@@ -363,7 +363,7 @@ namespace Server.Items
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (info.ButtonID == 0 || !this.m_Stone.IsEmpty)
+                if (info.ButtonID == 0 || !m_Stone.IsEmpty)
                     return;
 
                 Mobile from = sender.Mobile;
@@ -376,10 +376,10 @@ namespace Server.Items
                 if (skill.Base <= 0.0)
                     return;
 
-                if (!this.m_Stone.CheckUse(from))
+                if (!m_Stone.CheckUse(from))
                     return;
 
-                from.SendGump(new ConfirmSkillGump(this.m_Stone, skill));
+                from.SendGump(new ConfirmSkillGump(m_Stone, skill));
             }
         }
 
@@ -391,18 +391,18 @@ namespace Server.Items
             public ConfirmSkillGump(SoulStone stone, Skill skill)
                 : base(50, 50)
             {
-                this.m_Stone = stone;
-                this.m_Skill = skill;
+                m_Stone = stone;
+                m_Skill = skill;
 
-                this.AddBackground(0, 0, 520, 440, 0x13BE);
+                AddBackground(0, 0, 520, 440, 0x13BE);
 
-                this.AddImageTiled(10, 10, 500, 20, 0xA40);
-                this.AddImageTiled(10, 40, 500, 360, 0xA40);
-                this.AddImageTiled(10, 410, 500, 20, 0xA40);
+                AddImageTiled(10, 10, 500, 20, 0xA40);
+                AddImageTiled(10, 40, 500, 360, 0xA40);
+                AddImageTiled(10, 410, 500, 20, 0xA40);
 
-                this.AddAlphaRegion(10, 10, 500, 420);
+                AddAlphaRegion(10, 10, 500, 420);
 
-                this.AddHtmlLocalized(10, 12, 500, 20, 1070709, 0x7FFF, false, false); // <CENTER>Confirm Soulstone Transfer</CENTER>
+                AddHtmlLocalized(10, 12, 500, 20, 1070709, 0x7FFF, false, false); // <CENTER>Confirm Soulstone Transfer</CENTER>
 
                 /* <CENTER>Soulstone</CENTER><BR>
                 * You are using a Soulstone.  This powerful artifact allows you to remove skill points
@@ -419,50 +419,50 @@ namespace Server.Items
                 * This is an Account Bound Soulstone.  Skill pointsstored inside can be retrieved by any
                 * character on the same account as the character who placed them into the stone.
                 */
-                this.AddHtmlLocalized(10, 42, 500, 110, 1061067, 0x7FFF, false, true);
+                AddHtmlLocalized(10, 42, 500, 110, 1061067, 0x7FFF, false, true);
 
-                this.AddHtmlLocalized(10, 200, 390, 20, 1062297, 0x7FFF, false, false); // Skill Chosen:
-                this.AddHtmlLocalized(210, 200, 390, 20, AosSkillBonuses.GetLabel(skill.SkillName), 0x7FFF, false, false);
+                AddHtmlLocalized(10, 200, 390, 20, 1062297, 0x7FFF, false, false); // Skill Chosen:
+                AddHtmlLocalized(210, 200, 390, 20, AosSkillBonuses.GetLabel(skill.SkillName), 0x7FFF, false, false);
 
-                this.AddHtmlLocalized(10, 220, 390, 20, 1062298, 0x7FFF, false, false); // Current Value:
-                this.AddLabel(210, 220, 0x481, skill.Base.ToString("0.0"));
+                AddHtmlLocalized(10, 220, 390, 20, 1062298, 0x7FFF, false, false); // Current Value:
+                AddLabel(210, 220, 0x481, skill.Base.ToString("0.0"));
 
-                this.AddHtmlLocalized(10, 240, 390, 20, 1062299, 0x7FFF, false, false); // Current Cap:
-                this.AddLabel(210, 240, 0x481, skill.Cap.ToString("0.0"));
+                AddHtmlLocalized(10, 240, 390, 20, 1062299, 0x7FFF, false, false); // Current Cap:
+                AddLabel(210, 240, 0x481, skill.Cap.ToString("0.0"));
 
-                this.AddHtmlLocalized(10, 260, 390, 20, 1062300, 0x7FFF, false, false); // New Value:
-                this.AddLabel(210, 260, 0x481, "0.0");
+                AddHtmlLocalized(10, 260, 390, 20, 1062300, 0x7FFF, false, false); // New Value:
+                AddLabel(210, 260, 0x481, "0.0");
 
-                this.AddButton(10, 360, 0xFA5, 0xFA6, 2, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 362, 450, 20, 1070720, 0x7FFF, false, false); // Activate the stone.  I am ready to transfer the skill points to it.
+                AddButton(10, 360, 0xFA5, 0xFA6, 2, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 362, 450, 20, 1070720, 0x7FFF, false, false); // Activate the stone.  I am ready to transfer the skill points to it.
 
-                this.AddButton(10, 380, 0xFA5, 0xFA6, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 382, 450, 20, 1062279, 0x7FFF, false, false); // No, let me make another selection.
+                AddButton(10, 380, 0xFA5, 0xFA6, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 382, 450, 20, 1062279, 0x7FFF, false, false); // No, let me make another selection.
 
-                this.AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
+                AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (info.ButtonID == 0 || !this.m_Stone.IsEmpty)
+                if (info.ButtonID == 0 || !m_Stone.IsEmpty)
                     return;
 
                 Mobile from = sender.Mobile;
 
-                if (!this.m_Stone.CheckUse(from))
+                if (!m_Stone.CheckUse(from))
                     return;
 
                 if (info.ButtonID == 1) // Is asking for another selection
                 {
-                    from.SendGump(new SelectSkillGump(this.m_Stone, from));
+                    from.SendGump(new SelectSkillGump(m_Stone, from));
                     return;
                 }
 
-                if (this.m_Skill.Base <= 0.0)
+                if (m_Skill.Base <= 0.0)
                     return;
 
-                if (this.m_Skill.Lock != SkillLock.Down)
+                if (m_Skill.Lock != SkillLock.Down)
                 {
                     // <CENTER>Unable to Transfer Selected Skill to Soulstone</CENTER>
                     /* You cannot transfer the selected skill to the Soulstone at this time. The selected
@@ -471,20 +471,20 @@ namespace Server.Items
                     * Make any needed adjustments, then click "Continue". If you do not wish to transfer
                     * the selected skill at this time, click "Cancel".
                     */
-                    from.SendGump(new ErrorGump(this.m_Stone, 1070710, 1070711));
+                    from.SendGump(new ErrorGump(m_Stone, 1070710, 1070711));
                     return;
                 }
 
-                this.m_Stone.Skill = this.m_Skill.SkillName;
-                this.m_Stone.SkillValue = this.m_Skill.Base;
+                m_Stone.Skill = m_Skill.SkillName;
+                m_Stone.SkillValue = m_Skill.Base;
 
-                this.m_Skill.Base = 0.0;
+                m_Skill.Base = 0.0;
 
                 CheckSkill(from);
 
                 from.SendLocalizedMessage(1070712); // You have successfully transferred your skill points into the Soulstone.
 
-                this.m_Stone.LastUserName = from.Name;
+                m_Stone.LastUserName = from.Name;
 
                 Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
                 Effects.PlaySound(from.Location, from.Map, 0x243);
@@ -520,13 +520,6 @@ namespace Server.Items
                         }
                     }
                 }
-
-                if (m_Skill.Owner.CurrentMastery == m_Skill.SkillName)
-                {
-                    SkillName mastery = m_Skill.Owner.CurrentMastery;
-                    m_Skill.Owner.CurrentMastery = SkillName.Alchemy;
-                    Server.Spells.SkillMasteries.MasteryInfo.OnMasteryChanged(from, mastery);
-                }
             }
         }
 
@@ -537,17 +530,17 @@ namespace Server.Items
             public ConfirmTransferGump(SoulStone stone, Mobile from)
                 : base(50, 50)
             {
-                this.m_Stone = stone;
+                m_Stone = stone;
 
-                this.AddBackground(0, 0, 520, 440, 0x13BE);
+                AddBackground(0, 0, 520, 440, 0x13BE);
 
-                this.AddImageTiled(10, 10, 500, 20, 0xA40);
-                this.AddImageTiled(10, 40, 500, 360, 0xA40);
-                this.AddImageTiled(10, 410, 500, 20, 0xA40);
+                AddImageTiled(10, 10, 500, 20, 0xA40);
+                AddImageTiled(10, 40, 500, 360, 0xA40);
+                AddImageTiled(10, 410, 500, 20, 0xA40);
 
-                this.AddAlphaRegion(10, 10, 500, 420);
+                AddAlphaRegion(10, 10, 500, 420);
 
-                this.AddHtmlLocalized(10, 12, 500, 20, 1070709, 0x7FFF, false, false); // <CENTER>Confirm Soulstone Transfer</CENTER>
+                AddHtmlLocalized(10, 12, 500, 20, 1070709, 0x7FFF, false, false); // <CENTER>Confirm Soulstone Transfer</CENTER>
 
                 /* <CENTER>Soulstone</CENTER><BR>
                 * You are using a Soulstone.  This powerful artifact allows you to remove skill points
@@ -564,51 +557,51 @@ namespace Server.Items
                 * This is an Account Bound Soulstone.  Skill pointsstored inside can be retrieved by any
                 * character on the same account as the character who placed them into the stone.
                 */
-                this.AddHtmlLocalized(10, 42, 500, 110, 1061067, 0x7FFF, false, true);
+                AddHtmlLocalized(10, 42, 500, 110, 1061067, 0x7FFF, false, true);
 
-                this.AddHtmlLocalized(10, 200, 390, 20, 1070718, 0x7FFF, false, false); // Skill Stored:
-                this.AddHtmlLocalized(210, 200, 390, 20, AosSkillBonuses.GetLabel(stone.Skill), 0x7FFF, false, false);
+                AddHtmlLocalized(10, 200, 390, 20, 1070718, 0x7FFF, false, false); // Skill Stored:
+                AddHtmlLocalized(210, 200, 390, 20, AosSkillBonuses.GetLabel(stone.Skill), 0x7FFF, false, false);
 
                 Skill fromSkill = from.Skills[stone.Skill];
 
-                this.AddHtmlLocalized(10, 220, 390, 20, 1062298, 0x7FFF, false, false); // Current Value:
-                this.AddLabel(210, 220, 0x481, fromSkill.Base.ToString("0.0"));
+                AddHtmlLocalized(10, 220, 390, 20, 1062298, 0x7FFF, false, false); // Current Value:
+                AddLabel(210, 220, 0x481, fromSkill.Base.ToString("0.0"));
 
-                this.AddHtmlLocalized(10, 240, 390, 20, 1062299, 0x7FFF, false, false); // Current Cap:
-                this.AddLabel(210, 240, 0x481, fromSkill.Cap.ToString("0.0"));
+                AddHtmlLocalized(10, 240, 390, 20, 1062299, 0x7FFF, false, false); // Current Cap:
+                AddLabel(210, 240, 0x481, fromSkill.Cap.ToString("0.0"));
 
-                this.AddHtmlLocalized(10, 260, 390, 20, 1062300, 0x7FFF, false, false); // New Value:
-                this.AddLabel(210, 260, 0x481, stone.SkillValue.ToString("0.0"));
+                AddHtmlLocalized(10, 260, 390, 20, 1062300, 0x7FFF, false, false); // New Value:
+                AddLabel(210, 260, 0x481, stone.SkillValue.ToString("0.0"));
 
-                this.AddButton(10, 360, 0xFA5, 0xFA6, 2, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 362, 450, 20, 1070719, 0x7FFF, false, false); // Activate the stone.  I am ready to retrieve the skill points from it.
+                AddButton(10, 360, 0xFA5, 0xFA6, 2, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 362, 450, 20, 1070719, 0x7FFF, false, false); // Activate the stone.  I am ready to retrieve the skill points from it.
 
-                this.AddButton(10, 380, 0xFA5, 0xFA6, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 382, 450, 20, 1070723, 0x7FFF, false, false); // Remove all skill points from this stone and DO NOT absorb them.
+                AddButton(10, 380, 0xFA5, 0xFA6, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 382, 450, 20, 1070723, 0x7FFF, false, false); // Remove all skill points from this stone and DO NOT absorb them.
 
-                this.AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
+                AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (info.ButtonID == 0 || this.m_Stone.IsEmpty)
+                if (info.ButtonID == 0 || m_Stone.IsEmpty)
                     return;
 
                 Mobile from = sender.Mobile;
 
-                if (!this.m_Stone.CheckUse(from))
+                if (!m_Stone.CheckUse(from))
                     return;
 
                 if (info.ButtonID == 1) // Remove skill points
                 {
-                    from.SendGump(new ConfirmRemovalGump(this.m_Stone));
+                    from.SendGump(new ConfirmRemovalGump(m_Stone));
                     return;
                 }
 
-                SkillName skill = this.m_Stone.Skill;
-                double skillValue = this.m_Stone.SkillValue;
-                Skill fromSkill = from.Skills[this.m_Stone.Skill];
+                SkillName skill = m_Stone.Skill;
+                double skillValue = m_Stone.SkillValue;
+                Skill fromSkill = from.Skills[m_Stone.Skill];
 
                 /* If we have, say, 88.4 in our skill and the stone holds 100, we need
                 * 11.6 free points. Also, if we're below our skillcap by, say, 8.2 points,
@@ -648,7 +641,7 @@ namespace Server.Items
                     * then click "Continue". If you do not wish to transfer the selected skill at this
                     * time, click "Cancel".
                     */
-                    from.SendGump(new ErrorGump(this.m_Stone, 1070717, 1070716));
+                    from.SendGump(new ErrorGump(m_Stone, 1070717, 1070716));
                     return;
                 }
 
@@ -660,7 +653,7 @@ namespace Server.Items
                     * obtain a Power Scroll of the appropriate type and level in order to increase your
                     * skill cap.  You cannot currently retrieve the skill points stored in this stone.
                     */
-                    from.SendGump(new ErrorGump(this.m_Stone, 1070717, 1070715));
+                    from.SendGump(new ErrorGump(m_Stone, 1070717, 1070715));
                     return;
                 }
 
@@ -671,7 +664,7 @@ namespace Server.Items
                     * skill has a skill level higher than what is stored in the Soulstone.
                     */
                     // Wrong message?!
-                    from.SendGump(new ErrorGump(this.m_Stone, 1070717, 1070802));
+                    from.SendGump(new ErrorGump(m_Stone, 1070717, 1070802));
                     return;
                 }
 
@@ -682,7 +675,7 @@ namespace Server.Items
                     // <CENTER>Unable to Absorb Selected Skill from Soulstone</CENTER>
                     /*You may not use a soulstone while your character is under the effects of a Scroll of Alacrity.*/
                     // Wrong message?!
-                    from.SendGump(new ErrorGump(this.m_Stone, 1070717, 1078115));
+                    from.SendGump(new ErrorGump(m_Stone, 1070717, 1078115));
                     return;
                 }
                 #endregion
@@ -708,11 +701,11 @@ namespace Server.Items
                 }
 
                 fromSkill.Base = skillValue;
-                this.m_Stone.SkillValue = 0.0;
+                m_Stone.SkillValue = 0.0;
 
                 from.SendLocalizedMessage(1070713); // You have successfully absorbed the Soulstone's skill points.
 
-                this.m_Stone.LastUserName = from.Name;
+                m_Stone.LastUserName = from.Name;
 
                 Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
                 Effects.PlaySound(from.Location, from.Map, 0x243);
@@ -721,9 +714,9 @@ namespace Server.Items
 
                 Effects.SendTargetParticles(from, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
 
-                if (this.m_Stone is SoulstoneFragment)
+                if (m_Stone is SoulstoneFragment)
                 {
-                    SoulstoneFragment frag = this.m_Stone as SoulstoneFragment;
+                    SoulstoneFragment frag = m_Stone as SoulstoneFragment;
 
                     if (--frag.UsesRemaining <= 0)
                         from.SendLocalizedMessage(1070974); // You have used up your soulstone fragment.
@@ -738,17 +731,17 @@ namespace Server.Items
             public ConfirmRemovalGump(SoulStone stone)
                 : base(50, 50)
             {
-                this.m_Stone = stone;
+                m_Stone = stone;
 
-                this.AddBackground(0, 0, 520, 440, 0x13BE);
+                AddBackground(0, 0, 520, 440, 0x13BE);
 
-                this.AddImageTiled(10, 10, 500, 20, 0xA40);
-                this.AddImageTiled(10, 40, 500, 360, 0xA40);
-                this.AddImageTiled(10, 410, 500, 20, 0xA40);
+                AddImageTiled(10, 10, 500, 20, 0xA40);
+                AddImageTiled(10, 40, 500, 360, 0xA40);
+                AddImageTiled(10, 410, 500, 20, 0xA40);
 
-                this.AddAlphaRegion(10, 10, 500, 420);
+                AddAlphaRegion(10, 10, 500, 420);
 
-                this.AddHtmlLocalized(10, 12, 500, 20, 1070725, 0x7FFF, false, false); // <CENTER>Confirm Soulstone Skill Removal</CENTER>
+                AddHtmlLocalized(10, 12, 500, 20, 1070725, 0x7FFF, false, false); // <CENTER>Confirm Soulstone Skill Removal</CENTER>
 
                 /* WARNING!<BR><BR>
                 *
@@ -757,26 +750,26 @@ namespace Server.Items
                 *
                 * Are you sure you wish to do this?  If not, press the Cancel button.
                 */
-                this.AddHtmlLocalized(10, 42, 500, 110, 1070724, 0x7FFF, false, true);
+                AddHtmlLocalized(10, 42, 500, 110, 1070724, 0x7FFF, false, true);
 
-                this.AddButton(10, 380, 0xFA5, 0xFA6, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 382, 450, 20, 1052072, 0x7FFF, false, false); // Continue
+                AddButton(10, 380, 0xFA5, 0xFA6, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 382, 450, 20, 1052072, 0x7FFF, false, false); // Continue
 
-                this.AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
+                AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (info.ButtonID == 0 || this.m_Stone.IsEmpty)
+                if (info.ButtonID == 0 || m_Stone.IsEmpty)
                     return;
 
                 Mobile from = sender.Mobile;
 
-                if (!this.m_Stone.CheckUse(from))
+                if (!m_Stone.CheckUse(from))
                     return;
 
-                this.m_Stone.SkillValue = 0.0;
+                m_Stone.SkillValue = 0.0;
                 from.SendLocalizedMessage(1070726); // You have successfully deleted the Soulstone's skill points.
             }
         }
@@ -788,25 +781,25 @@ namespace Server.Items
             public ErrorGump(SoulStone stone, int title, int message)
                 : base(50, 50)
             {
-                this.m_Stone = stone;
+                m_Stone = stone;
 
-                this.AddBackground(0, 0, 520, 440, 0x13BE);
+                AddBackground(0, 0, 520, 440, 0x13BE);
 
-                this.AddImageTiled(10, 10, 500, 20, 0xA40);
-                this.AddImageTiled(10, 40, 500, 360, 0xA40);
-                this.AddImageTiled(10, 410, 500, 20, 0xA40);
+                AddImageTiled(10, 10, 500, 20, 0xA40);
+                AddImageTiled(10, 40, 500, 360, 0xA40);
+                AddImageTiled(10, 410, 500, 20, 0xA40);
 
-                this.AddAlphaRegion(10, 10, 500, 420);
+                AddAlphaRegion(10, 10, 500, 420);
 
-                this.AddHtmlLocalized(10, 12, 500, 20, title, 0x7FFF, false, false);
+                AddHtmlLocalized(10, 12, 500, 20, title, 0x7FFF, false, false);
 
-                this.AddHtmlLocalized(10, 42, 500, 110, message, 0x7FFF, false, true);
+                AddHtmlLocalized(10, 42, 500, 110, message, 0x7FFF, false, true);
 
-                this.AddButton(10, 380, 0xFA5, 0xFA6, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 382, 450, 20, 1052072, 0x7FFF, false, false); // Continue
+                AddButton(10, 380, 0xFA5, 0xFA6, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 382, 450, 20, 1052072, 0x7FFF, false, false); // Continue
 
-                this.AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
+                AddButton(10, 410, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 412, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
@@ -816,13 +809,13 @@ namespace Server.Items
 
                 Mobile from = sender.Mobile;
 
-                if (!this.m_Stone.CheckUse(from))
+                if (!m_Stone.CheckUse(from))
                     return;
 
-                if (this.m_Stone.IsEmpty)
-                    from.SendGump(new SelectSkillGump(this.m_Stone, from));
+                if (m_Stone.IsEmpty)
+                    from.SendGump(new SelectSkillGump(m_Stone, from));
                 else
-                    from.SendGump(new ConfirmTransferGump(this.m_Stone, from));
+                    from.SendGump(new ConfirmTransferGump(m_Stone, from));
             }
         }
 
@@ -838,19 +831,19 @@ namespace Server.Items
             writer.WriteEncodedInt(3); // version
 
             //version 3
-            writer.Write((string)this.m_LastUserName);
+            writer.Write((string)m_LastUserName);
 
             //version 2
-            writer.Write((int)this.m_Level);
+            writer.Write((int)m_Level);
 
-            writer.Write(this.m_ActiveItemID);
-            writer.Write(this.m_InactiveItemID);
+            writer.Write(m_ActiveItemID);
+            writer.Write(m_InactiveItemID);
 
-            writer.Write((string)this.m_Account);
-            writer.Write((DateTime)this.m_NextUse); //TODO: delete it in a harmless way
+            writer.Write((string)m_Account);
+            writer.Write((DateTime)m_NextUse); //TODO: delete it in a harmless way
 
-            writer.WriteEncodedInt((int)this.m_Skill);
-            writer.Write((double)this.m_SkillValue);
+            writer.WriteEncodedInt((int)m_Skill);
+            writer.Write((double)m_SkillValue);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -863,36 +856,36 @@ namespace Server.Items
             {
                 case 3:
                     {
-                        this.m_LastUserName = reader.ReadString();
+                        m_LastUserName = reader.ReadString();
                         goto case 2;
                     }
                 case 2:
                     {
-                        this.m_Level = (SecureLevel)reader.ReadInt();
+                        m_Level = (SecureLevel)reader.ReadInt();
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_ActiveItemID = reader.ReadInt();
-                        this.m_InactiveItemID = reader.ReadInt();
+                        m_ActiveItemID = reader.ReadInt();
+                        m_InactiveItemID = reader.ReadInt();
 
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_Account = reader.ReadString();
-                        this.m_NextUse = reader.ReadDateTime(); //TODO: delete it in a harmless way
+                        m_Account = reader.ReadString();
+                        m_NextUse = reader.ReadDateTime(); //TODO: delete it in a harmless way
 
-                        this.m_Skill = (SkillName)reader.ReadEncodedInt();
-                        this.m_SkillValue = reader.ReadDouble();
+                        m_Skill = (SkillName)reader.ReadEncodedInt();
+                        m_SkillValue = reader.ReadDouble();
                         break;
                     }
             }
 
             if (version == 0)
             {
-                this.m_ActiveItemID = 0x2A94;
-                this.m_InactiveItemID = 0x2A93;
+                m_ActiveItemID = 0x2A94;
+                m_InactiveItemID = 0x2A93;
             }
         }
     }
@@ -931,14 +924,14 @@ namespace Server.Items
         public SoulstoneFragment(int usesRemaining, string account)
             : base(account, Utility.Random(0x2AA1, 9))
         {
-            this.m_UsesRemaining = usesRemaining;
+            m_UsesRemaining = usesRemaining;
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -946,12 +939,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
 
@@ -969,7 +962,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(2); // version
 
-            writer.WriteEncodedInt(this.m_UsesRemaining);
+            writer.WriteEncodedInt(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -978,24 +971,24 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_UsesRemaining = reader.ReadEncodedInt();
+            m_UsesRemaining = reader.ReadEncodedInt();
 
             if (version <= 1)
             {
-                if (this.ItemID == 0x2A93 || this.ItemID == 0x2A94)
+                if (ItemID == 0x2A93 || ItemID == 0x2A94)
                 {
-                    this.ActiveItemID = Utility.Random(0x2AA1, 9);
+                    ActiveItemID = Utility.Random(0x2AA1, 9);
                 }
                 else
                 {
-                    this.ActiveItemID = this.ItemID;
+                    ActiveItemID = ItemID;
                 }
 
-                this.InactiveItemID = this.ActiveItemID;
+                InactiveItemID = ActiveItemID;
             }
 
-            if (version == 0 && this.Weight == 1)
-                this.Weight = -1;
+            if (version == 0 && Weight == 1)
+                Weight = -1;
         }
 
         public SoulstoneFragment(Serial serial)
@@ -1009,7 +1002,7 @@ namespace Server.Items
 
             if (canUse)
             {
-                if (this.m_UsesRemaining <= 0)
+                if (m_UsesRemaining <= 0)
                 {
                     from.SendLocalizedMessage(1070975); // That soulstone fragment has no more uses.
                     return false;
@@ -1060,19 +1053,19 @@ namespace Server.Items
 
         public void Flip()
         {
-            switch( this.ItemID )
+            switch( ItemID )
             {
                 case 0x2ADC:
-                    this.ItemID = 0x2AEC;
+                    ItemID = 0x2AEC;
                     break;
                 case 0x2ADD:
-                    this.ItemID = 0x2AED;
+                    ItemID = 0x2AED;
                     break;
                 case 0x2AEC:
-                    this.ItemID = 0x2ADC;
+                    ItemID = 0x2ADC;
                     break;
                 case 0x2AED:
-                    this.ItemID = 0x2ADD;
+                    ItemID = 0x2ADD;
                     break;
             }
         }
@@ -1118,12 +1111,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
 
@@ -1131,7 +1124,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1076217); // 1st Year Veteran Reward
         }
 
@@ -1141,7 +1134,7 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write((bool)this.m_IsRewardItem);
+            writer.Write((bool)m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1154,7 +1147,7 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_IsRewardItem = reader.ReadBool();
+                        m_IsRewardItem = reader.ReadBool();
                         break;
                     }
             }
