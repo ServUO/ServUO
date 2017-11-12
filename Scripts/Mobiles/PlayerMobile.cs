@@ -5650,6 +5650,16 @@ namespace Server.Mobiles
 				}
 			}
 
+            if (Skills.CurrentMastery == skill)
+            {
+                SendLocalizedMessage(1156236, String.Format("{0}\t{1}", MasteryInfo.MinSkillRequirement.ToString(), Skills[skill].Info.Name)); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that mastery.
+
+                SkillName mastery = Skills.CurrentMastery;
+                Skills.CurrentMastery = SkillName.Alchemy;
+
+                Server.Spells.SkillMasteries.MasteryInfo.OnMasteryChanged(this, mastery);
+            }
+
 			InvalidateMyRunUO();
 		}
 

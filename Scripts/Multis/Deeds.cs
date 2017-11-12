@@ -128,17 +128,6 @@ namespace Server.Multis.Deeds
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (from.AccessLevel < AccessLevel.GameMaster && BaseHouse.AtAccountHouseLimit(from))
-            {
-                if (BaseHouse.AccountHouseLimit == 1)
-                {
-                    from.SendLocalizedMessage(501271); // You already own a house, you may not place another!
-                }
-                else
-                {
-                    from.SendMessage("You already own {0} houses, you may not place any more!", BaseHouse.AccountHouseLimit.ToString());
-                }
-            }
             else
             {
                 from.SendLocalizedMessage(1010433); /* House placement cancellation could result in a
@@ -160,17 +149,6 @@ namespace Server.Multis.Deeds
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (from.AccessLevel < AccessLevel.GameMaster && BaseHouse.AtAccountHouseLimit(from))
-            {
-                if (BaseHouse.AccountHouseLimit == 1)
-                {
-                    from.SendLocalizedMessage(501271); // You already own a house, you may not place another!
-                }
-                else
-                {
-                    from.SendMessage("You already own {0} houses, you may not place any more!", BaseHouse.AccountHouseLimit.ToString());
-                }
-            }
             else
             {
                 ArrayList toMove;
@@ -181,20 +159,22 @@ namespace Server.Multis.Deeds
                 {
                     case HousePlacementResult.Valid:
                         {
-                            BaseHouse house = this.GetHouse(from);
-                            house.MoveToWorld(center, from.Map);
-                            this.Delete();
-
-                            for (int i = 0; i < toMove.Count; ++i)
+                            if (from.AccessLevel > AccessLevel.Player || BaseHouse.CheckAccountHouseLimit(from))
                             {
-                                object o = toMove[i];
+                                BaseHouse house = this.GetHouse(from);
+                                house.MoveToWorld(center, from.Map);
+                                this.Delete();
 
-                                if (o is Mobile)
-                                    ((Mobile)o).Location = house.BanLocation;
-                                else if (o is Item)
-                                    ((Item)o).Location = house.BanLocation;
+                                for (int i = 0; i < toMove.Count; ++i)
+                                {
+                                    object o = toMove[i];
+
+                                    if (o is Mobile)
+                                        ((Mobile)o).Location = house.BanLocation;
+                                    else if (o is Item)
+                                        ((Item)o).Location = house.BanLocation;
+                                }
                             }
-
                             break;
                         }
                     case HousePlacementResult.BadItem:

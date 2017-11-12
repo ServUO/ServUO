@@ -251,7 +251,7 @@ namespace Server.Engines.Quests
         public CommonBrigandsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective("common brigands", 20, typeof(Brigand), typeof(HumanBrigand)));
+            this.AddObjective(new SlayObjective("common brigands", 20, typeof(Brigand)));
 			
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }

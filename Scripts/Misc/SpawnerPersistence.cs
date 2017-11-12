@@ -64,7 +64,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)4);
+                    writer.Write((int)5);
                     writer.Write(false);
                     writer.Write(_SpawnsConverted);
                 });
@@ -93,6 +93,9 @@ namespace Server
         {
             switch (_Version)
             {
+                case 4:
+                    BrigandsVersion4();
+                    break;
                 case 3:
                     FixCampSpawnersVersion3();
                     break;
@@ -114,6 +117,14 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Version 4
+        public static void BrigandsVersion4()
+        {
+            Replace("humanbrigand", "brigand", null);
+            Replace("humanbrigandcamp", "brigandcamp", null);
+        }
+        #endregion
 
         #region Version 3
         private static void FixCampSpawnersVersion3()
@@ -303,7 +314,7 @@ namespace Server
         {
             int count = 0;
 
-            foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
+            foreach (var spawner in World.Items.Values.OfType<ISpawner>())
             {
                 if (Replace(spawner, current, replace, check))
                     count++;
@@ -323,7 +334,7 @@ namespace Server
         {
             int count = 0;
 
-            foreach (var spawner in World.Items.Values.OfType<XmlSpawner>().Where(s => s.Name != null && s.Name.ToLower().IndexOf(name.ToLower()) >= 0))
+            foreach (var spawner in World.Items.Values.OfType<ISpawner>().Where(s => s is Item && ((Item)s).Name != null && ((Item)s).Name.ToLower().IndexOf(name.ToLower()) >= 0))
             {
                 if (Replace(spawner, current, replace, check))
                     count++;
@@ -332,26 +343,52 @@ namespace Server
             ToConsole(String.Format("Spawn Replacement: {0} spawners named {1} replaced [{2} replaced with {3}].", count.ToString(), name, current, replace));
         }
 
-        public static bool Replace(XmlSpawner spawner, string current, string replace, string check)
+        public static bool Replace(ISpawner spwner, string current, string replace, string check)
         {
             bool replaced = false;
 
-            foreach (var obj in spawner.SpawnObjects)
+            if (spwner is XmlSpawner)
             {
-                if (obj == null || obj.TypeName == null)
-                    continue;
+                XmlSpawner spawner = (XmlSpawner)spwner;
 
-                string typeName = obj.TypeName.ToLower();
-                string lookingFor = current.ToLower();
-
-                if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
+                foreach (var obj in spawner.SpawnObjects)
                 {
-                    if (String.IsNullOrEmpty(check) || typeName.IndexOf(check) < 0)
-                    {
-                        obj.TypeName = typeName.Replace(lookingFor, replace);
+                    if (obj == null || obj.TypeName == null)
+                        continue;
 
-                        if (!replaced)
-                            replaced = true;
+                    string typeName = obj.TypeName.ToLower();
+                    string lookingFor = current.ToLower();
+
+                    if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
+                    {
+                        if (String.IsNullOrEmpty(check) || typeName.IndexOf(check) < 0)
+                        {
+                            obj.TypeName = typeName.Replace(lookingFor, replace);
+
+                            if (!replaced)
+                                replaced = true;
+                        }
+                    }
+                }
+            }
+            else if (spwner is Spawner)
+            {
+                Spawner spawner = (Spawner)spwner;
+
+                for(int i = 0; i < spawner.SpawnNames.Count; i++)
+                {
+                    string typeName = spawner.SpawnNames[i].ToLower();
+                    string lookingFor = current.ToLower();
+
+                    if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
+                    {
+                        if (String.IsNullOrEmpty(check) || typeName.IndexOf(check) < 0)
+                        {
+                            spawner.SpawnNames[i] = typeName.Replace(lookingFor, replace);
+
+                            if (!replaced)
+                                replaced = true;
+                        }
                     }
                 }
             }

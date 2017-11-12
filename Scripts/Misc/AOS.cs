@@ -192,7 +192,7 @@ namespace Server
                 if (totalDamage < 1)
                     totalDamage = 1;           
             }
-            else if (Core.ML && m is PlayerMobile && from is PlayerMobile)
+            else if (Core.ML && m is PlayerMobile)
             {
                 if (quiver != null)
                     damage += damage * quiver.DamageIncrease / 100;
@@ -335,6 +335,17 @@ namespace Server
             if (type == DamageType.Spell && m != null && Feint.Registry.ContainsKey(m) && Feint.Registry[m].Enemy == from)
                 damage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
 
+            if (m.Hidden && Core.ML && type >= DamageType.Spell)
+            {
+                int chance = (int)Math.Min(33, 100 - (Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(m) * 100));
+
+                if (Utility.Random(100) < chance)
+                {
+                    m.RevealingAction();
+                    m.NextSkillTime = Core.TickCount + (12000 - ((int)m.Skills[SkillName.Hiding].Value) * 100);
+                }
+            }
+
             m.Damage(totalDamage, from, true, false);
 
             SpiritSpeak.CheckDisrupt(m);
@@ -353,17 +364,6 @@ namespace Server
             Spells.Mysticism.SleepSpell.OnDamage(m);
             Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
             #endregion
-
-            if (m.Hidden && Core.ML && type >= DamageType.Spell)
-            {
-                int chance = (int)Math.Min(33, 100 - (Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(m) * 100));
-
-                if (Utility.Random(100) < chance)
-                {
-                    m.RevealingAction();
-                    m.NextSkillTime = Core.TickCount + (12000 - ((int)m.Skills[SkillName.Hiding].Value) * 100);
-                }
-            }
 
             return totalDamage;
         }

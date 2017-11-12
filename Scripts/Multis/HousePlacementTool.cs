@@ -609,18 +609,7 @@ namespace Server.Items
             {
                 case HousePlacementResult.Valid:
                     {
-                        if (from.AccessLevel < AccessLevel.GameMaster && BaseHouse.AtAccountHouseLimit(from))
-                        {
-                            if (BaseHouse.AccountHouseLimit == 1)
-                            {
-                                from.SendLocalizedMessage(501271); // You already own a house, you may not place another!
-                            }
-                            else
-                            {
-                                from.SendMessage("You already own {0} houses, you may not place any more!", BaseHouse.AccountHouseLimit.ToString());
-                            }
-                        }
-                        else
+                        if (from.AccessLevel > AccessLevel.Player || BaseHouse.CheckAccountHouseLimit(from))
                         {
                             BaseHouse house = ConstructHouse(from);
 
