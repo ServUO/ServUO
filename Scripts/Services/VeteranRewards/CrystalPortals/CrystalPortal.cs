@@ -338,6 +338,13 @@ namespace Server.Items
 				}
 					break;
 
+                case "yew mint":
+                    {
+                        loc = new Point3D(643, 858, 0);
+                        map = Map.Trammel;
+                    }
+                    break;
+
 				// fel banks
 
 				case "fel britain mint":
@@ -426,6 +433,13 @@ namespace Server.Items
 					map = Map.Felucca;
 				}
 					break;
+
+                case "fel yew mint":
+                    {
+                        loc = new Point3D(643, 858, 0);
+                        map = Map.Felucca;
+                    }
+                    break;
 
 				// tram moongates
 

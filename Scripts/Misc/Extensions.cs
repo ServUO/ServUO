@@ -161,6 +161,21 @@ namespace Server.Mobiles
             mobile.PrivateOverheadMessage(MessageType.Regular, hue, ascii, text, to.NetState);
         }
 
+        public static void Say(this Mobile mobile, int number, int hue)
+        {
+            mobile.PublicOverheadMessage(MessageType.Regular, hue, number);
+        }
+
+        public static void Say(this Mobile mobile, int number, string args, int hue)
+        {
+            mobile.PublicOverheadMessage(MessageType.Regular, hue, number, args);
+        }
+
+        public static void Say(this Mobile mobile, string text, int hue, bool ascii = false)
+        {
+            mobile.PublicOverheadMessage(MessageType.Regular, hue, ascii, text);
+        }
+
         public static void PrivateOverheadMessage(this Mobile mobile, MessageType type, int hue, int number, AffixType affixType, string affix, string args, NetState state)
         {
             state.Send(new MessageLocalizedAffix(mobile.Serial, mobile.Body, type, hue, 3, number, mobile.Name, affixType, affix, args));

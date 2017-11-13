@@ -382,12 +382,13 @@ namespace Server.Mobiles
 									break;
 								}
 
-								if (AccountGold.Enabled && e.Mobile.Account != null)
+								if (AccountGold.Enabled && e.Mobile.Account is Account)
 								{
-									vendor.Say(
-										"Thy current bank balance is {0:#,0} platinum and {1:#,0} gold.",
-										e.Mobile.Account.TotalPlat,
-										e.Mobile.Account.TotalGold);
+                                    vendor.Say(1155855, String.Format("{0:#,0}\t{1:#,0}",
+                                        e.Mobile.Account.TotalPlat,
+                                        e.Mobile.Account.TotalGold), 0x3BC);
+
+                                    vendor.Say(1155848, String.Format("{0:#,0}", ((Account)e.Mobile.Account).GetSecureAccountAmount(e.Mobile)), 0x3BC);
 								}
 								else
 								{

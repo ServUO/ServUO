@@ -274,7 +274,7 @@ namespace Server.Regions
                     {
                         TimeSpan ts = moveBy - DateTime.UtcNow;
 
-                        if ((int)ts.TotalMinutes < 6)
+                        if ((int)ts.TotalMinutes <= 10)
                         {
                             int rem = Math.Max(1, (int)ts.TotalMinutes);
                             boat.Owner.SendLocalizedMessage(1149787 + (rem - 1));

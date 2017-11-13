@@ -177,7 +177,7 @@ namespace Server.Items
                             if(info.Complex)
                                 from.AddToBackpack(new HuntTrophyAddonDeed(from.Name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species));
                             else
-                                from.AddToBackpack(new HuntTrophyDeed(from.Name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species));
+                                from.AddToBackpack(new HuntTrophyDeed(from.Name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species, info.FlippedIDs));
                             
                             lic.ProducedTrophy = true;
                             m_Kit.Delete();

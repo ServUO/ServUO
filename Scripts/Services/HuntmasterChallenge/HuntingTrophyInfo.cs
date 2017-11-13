@@ -23,7 +23,11 @@ namespace Server.Engines.HuntsmasterChallenge
         Dimetrosaur,
         Saurosaurus,
         Tiger,
-        MyrmidexDrone
+        MyrmidexDrone,
+        Triceratops,
+        Lion,
+        WhiteTiger,
+        BlackTiger
     }
 
     public enum MeasuredBy
@@ -50,8 +54,8 @@ namespace Server.Engines.HuntsmasterChallenge
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Alligator,   typeof(Alligator),      0x9A34, new TextDefinition(1155717), 5,   15,   MeasuredBy.Length));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Eagle,       typeof(Eagle),          0x9A36, new TextDefinition(1072461), 5,   15,   MeasuredBy.Wingspan));
         
-            // Pub 91 Additions - Not Yet yo
-            m_Infos.Add(new HuntingTrophyInfo(HuntType.MyrmidexDrone,   typeof(MyrmidexLarvae), 0x9C00, new TextDefinition(1156276), 200, 400, MeasuredBy.Weight, true));
+            // Pub 91 Additions
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.MyrmidexLarvae,  typeof(MyrmidexLarvae), 0x9C00, new TextDefinition(1156276), 200, 400, MeasuredBy.Weight, true));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Najasaurus,      typeof(Najasaurus),     0x9C02, new TextDefinition(1156283), 400, 800, MeasuredBy.Weight, true));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Anchisaur,       typeof(Anchisaur),      0x9C08, new TextDefinition(1156284), 400, 800, MeasuredBy.Weight));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Allosaurus,      typeof(Allosaurus),     0x9C0A, new TextDefinition(1156280), 400, 800, MeasuredBy.Weight));
@@ -59,7 +63,12 @@ namespace Server.Engines.HuntsmasterChallenge
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Saurosaurus,     typeof(Saurosaurus),    0x9C0E, new TextDefinition(1156289), 400, 800, MeasuredBy.Weight));
 
             m_Infos.Add(new HuntingTrophyInfo(HuntType.MyrmidexDrone,   typeof(MyrmidexDrone),  0x9DA6, new TextDefinition(1156134), 300, 600, MeasuredBy.Weight));
-            m_Infos.Add(new HuntingTrophyInfo(HuntType.Saurosaurus,     typeof(WildTiger),      0x9DA4, new TextDefinition(1156286), 400, 800, MeasuredBy.Weight));
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.Tiger,           typeof(WildTiger),      0x9DA4, new TextDefinition(1156286), 400, 800, MeasuredBy.Weight));
+
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.Triceratops,     typeof(Triceratops),    0x9F2B, new TextDefinition(1124731), 400, 800, MeasuredBy.Weight, flippedids: true));
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.Lion,            typeof(Lion),           0x9F2D, new TextDefinition(1124736), 400, 800, MeasuredBy.Weight, flippedids: true));
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.WhiteTiger,      typeof(WildWhiteTiger), 0x9F2F, new TextDefinition(1156286), 400, 800, MeasuredBy.Weight, flippedids: true));
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.BlackTiger,      typeof(WildBlackTiger), 0x9F31, new TextDefinition(1156286), 400, 800, MeasuredBy.Weight, flippedids: true));
         }
 
         private HuntType m_HuntType;
@@ -70,6 +79,7 @@ namespace Server.Engines.HuntsmasterChallenge
         private int m_MinMeasurement;
         private int m_MaxMeasurement;
         private bool m_Complex;
+        private bool m_FlippedIDs;
 
         public HuntType HuntType { get { return m_HuntType; } }
         public Type CreatureType { get { return m_CreatureType; } }
@@ -79,8 +89,9 @@ namespace Server.Engines.HuntsmasterChallenge
         public int MinMeasurement { get { return m_MinMeasurement; } }
         public int MaxMeasurement { get { return m_MaxMeasurement; } }
         public bool Complex { get { return m_Complex; } }
+        public bool FlippedIDs { get { return m_FlippedIDs; } }
 
-        public HuntingTrophyInfo(HuntType type, Type creatureType, int id, TextDefinition species, int minMeasurement, int maxMeasurement, MeasuredBy measuredBy, bool complex = false)
+        public HuntingTrophyInfo(HuntType type, Type creatureType, int id, TextDefinition species, int minMeasurement, int maxMeasurement, MeasuredBy measuredBy, bool complex = false, bool flippedids = false)
         {
             m_HuntType = type;
             m_CreatureType = creatureType;
@@ -90,6 +101,7 @@ namespace Server.Engines.HuntsmasterChallenge
             m_MinMeasurement = minMeasurement;
             m_MaxMeasurement = maxMeasurement;
             m_Complex = complex;
+            m_FlippedIDs = flippedids;
         }
 
         public static HuntingTrophyInfo GetInfo(HuntType type)
