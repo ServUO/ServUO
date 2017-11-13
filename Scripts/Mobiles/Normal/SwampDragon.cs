@@ -154,9 +154,9 @@ namespace Server.Mobiles
                         return BardingExceptional ? 12000 : 10000;
                     case CraftResource.DullCopper:
                     case CraftResource.Valorite:
-                        return BardingExceptional ? 12500 : 14500;
+                        return BardingExceptional ? 14500 : 12500;
                     case CraftResource.ShadowIron:
-                        return BardingExceptional ? 15000 : 17000;
+                        return BardingExceptional ? 17000 : 15000;
                 }
             }
         }
