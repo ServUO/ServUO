@@ -57,13 +57,5 @@ namespace Server.Regions
         {
             global = LightCycle.DungeonLevel;
         }
-
-        public override bool CanUseStuckMenu(Mobile m)
-        {
-            if (this.Map == Map.Felucca)
-                return false;
-
-            return base.CanUseStuckMenu(m);
-        }
     }
 }
