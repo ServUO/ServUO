@@ -103,14 +103,14 @@ namespace Server.Spells.Mysticism
             public SleepTimer(Mobile target, TimeSpan duration)
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(0.5))
             {
-                m_EndTime = DateTime.Now + duration;
+                m_EndTime = DateTime.UtcNow + duration;
                 m_Target = target;
                 Start();
             }
 
             protected override void OnTick()
             {
-                if (m_EndTime < DateTime.Now)
+                if (m_EndTime < DateTime.UtcNow)
                 {
                     EndSleep(m_Target);
                     Stop();
