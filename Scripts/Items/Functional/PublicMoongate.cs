@@ -368,6 +368,7 @@ namespace Server.Items
         private readonly Mobile m_Mobile;
         private readonly Item m_Moongate;
         private readonly PMList[] m_Lists;
+
         public MoongateGump(Mobile mobile, Item moongate)
             : base(100, 100)
         {
@@ -582,6 +583,9 @@ namespace Server.Items
         private void RenderPage(int index, int offset)
         {
             PMList list = m_Lists[index];
+
+            if (Siege.SiegeShard && list.Number == 1012000) // Trammel
+                return;
 
             AddPage(index + 1);
 
