@@ -1,79 +1,94 @@
 using System;
 using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Spells;
 using Server.Targeting;
 using System.Collections.Generic;
-using Server.Network;
 
 namespace Server.Spells.Mysticism
 {
-	public class MassSleepSpell : MysticSpell
-	{
+    public class MassSleepSpell : MysticSpell
+    {
         public override SpellCircle Circle { get { return SpellCircle.Fifth; } }
 
-		private static SpellInfo m_Info = new SpellInfo(
-				"Mass Sleep", "Vas Zu",
-				230,
-				9022,
-				Reagent.Ginseng,
-				Reagent.Nightshade,
-				Reagent.SpidersSilk
-			);
+        private static SpellInfo m_Info = new SpellInfo(
+                "Mass Sleep", "Vas Zu",
+                230,
+                9022,
+                Reagent.Ginseng,
+                Reagent.Nightshade,
+                Reagent.SpidersSilk
+            );
 
-		public MassSleepSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
-		{
-		}
+        public MassSleepSpell(Mobile caster, Item scroll) : base(caster, scroll, m_Info)
+        {
+        }
 
-		public override void OnCast()
-		{
-			Caster.Target = new MysticSpellTarget( this, TargetFlags.Harmful );
-		}
+        public override void OnCast()
+        {
+            Caster.Target = new InternalTarget(this);
+        }
 
-		public override void OnTarget( Object o )
-		{
-			Mobile target = o as Mobile;
+        public class InternalTarget : Target
+        {
+            private MassSleepSpell m_Owner;
 
-			if ( target == null )
-			{
-				return;
-			}
-			else if ( CheckHSequence( target ) )
-			{
+            public InternalTarget(MassSleepSpell owner)
+                : base(10, true, TargetFlags.None)
+            {
+                m_Owner = owner;
+            }
 
-				Map map = Caster.Map;
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o is IPoint3D)
+                    m_Owner.Target((IPoint3D)o);
+            }
 
-				if ( map != null )
-				{
-					List<Mobile> targets = new List<Mobile>();
+            protected override void OnTargetFinish(Mobile from)
+            {
+                m_Owner.FinishSequence();
+            }
+        }
 
-                    IPooledEnumerable eable = target.GetMobilesInRange(3);
-                    foreach (Mobile m in eable)
+        public void Target(IPoint3D p)
+        {
+            if (!Caster.CanSee(p))
+            {
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
+            }
+            else if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
+            {
+                Map map = Caster.Map;
+
+                if (map == null)
+                    return;
+
+                List<Mobile> targets = new List<Mobile>();               
+
+                IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 3);
+                foreach (Mobile m in eable)
+                {
+                    if (Caster != m && Caster.InLOS(m) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false) && !SleepSpell.IsUnderSleepEffects(m) && !m.Paralyzed)
+                        targets.Add(m);
+                }
+                eable.Free();
+
+                for (int i = 0; i < targets.Count; ++i)
+                {
+                    Mobile m = targets[i];
+
+                    double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 3;
+                    duration -= GetResistSkill(m) / 10;
+
+                    if (duration > 0)
                     {
-                        if (Caster != m && target.InLOS(m) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false) && !SleepSpell.IsUnderSleepEffects(m) && !m.Paralyzed)
-                            targets.Add(m);
+                        Caster.DoHarmful(m);
+
+                        SleepSpell.DoSleep(Caster, m, TimeSpan.FromSeconds(duration));
                     }
-                    eable.Free();
+                }
+            }
 
-					for ( int i = 0; i < targets.Count; ++i )
-					{
-						Mobile m = targets[i];
-
-                        double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 3;
-                        duration -= GetResistSkill(target) / 10;
-
-                        if (duration > 0)
-                        {
-                            Caster.DoHarmful(m);
-
-                            SleepSpell.DoSleep(Caster, m, TimeSpan.FromSeconds(duration));
-                        }
-					}
-				}
-			}
-
-			FinishSequence();
-		}
-	}
+            FinishSequence();
+        }
+    }
 }
