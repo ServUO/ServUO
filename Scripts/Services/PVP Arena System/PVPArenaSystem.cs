@@ -96,6 +96,14 @@ namespace Server.Engines.ArenaSystem
 
         }
 
+        public static void Initialize()
+        {
+            foreach (var arena in Arenas)
+            {
+                arena.ConfigureArena();
+            }
+        }
+
         public static void InitializeArenas()
         {
             Register(new PVPArena(ArenaDefinition.LostLandsTrammel));
