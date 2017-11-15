@@ -14,7 +14,7 @@ namespace Server.Engines.Points
 		public override PointsType Loyalty { get { return PointsType.VoidPool; } }
 		public override TextDefinition Name { get { return m_Name; } }
 		public override bool AutoAdd { get { return true; } }
-		public override double MaxPoints { get { return int.MaxValue; } }
+        public override double MaxPoints { get { return double.MaxValue; } }
 
         private TextDefinition m_Name = new TextDefinition(1152733);
 		

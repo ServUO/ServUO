@@ -38,7 +38,8 @@ namespace Server.Engines.Points
         CleanUpBritannia,
         ViceVsVirtue,
 
-        TreasuresOfKotlCity
+        TreasuresOfKotlCity,
+        PVPArenaStats
     }
 
     public abstract class PointsSystem
@@ -321,6 +322,7 @@ namespace Server.Engines.Points
         public static CleanUpBritanniaData CleanUpBritannia { get; set; }
         public static ViceVsVirtueSystem ViceVsVirtue { get; set; }
         public static KotlCityData TreasuresOfKotlCity { get; set; }
+        public static PVPArenaSystem ArenaSystem { get; set; }
 
         public static void Configure()
         {
@@ -340,6 +342,7 @@ namespace Server.Engines.Points
             TreasuresOfKotlCity = new KotlCityData();
 
             CityLoyaltySystem.ConstructSystems();
+            PVPArenaSystem = new PVPArenaSystem();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)
