@@ -3582,7 +3582,7 @@ m_Stream.Write( (int) renderMode );
 
 			int type;
 
-            if (Core.HS && ns != null && ns.ExtendedStatus)
+            if (Core.ML && ns != null && ns.ExtendedStatus)
 			{
 				type = 6;
 				EnsureCapacity(ns.IsEnhancedClient ? 151 : 121);
@@ -3693,7 +3693,7 @@ m_Stream.Write( (int) renderMode );
                 type = 0;
                 EnsureCapacity(43);
             }
-            else if (Core.HS && ns != null && ns.ExtendedStatus)
+            else if (Core.ML && ns != null && ns.ExtendedStatus)
             {
                 type = 6;
                 EnsureCapacity(isEnhancedClient ? 151 : 121);
