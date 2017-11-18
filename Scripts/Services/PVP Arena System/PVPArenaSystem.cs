@@ -7,11 +7,12 @@ using Server.Engines.Points;
 
 namespace Server.Engines.ArenaSystem
 {
-    public class PVPArenaStats : PointsSystem
+    public class PVPArenaSystem : PointsSystem
     {
+        public static PVPArenaSystem Instance { get; set; }
         public static bool Enabled = Config.Get("PVPArena.Enabled", true);
 
-        public override PointsType Loyalty { get { return PointsType.PVPArenaStats; } }
+        public override PointsType Loyalty { get { return PointsType.PVPArena; } }
         public override TextDefinition Name { get { return m_Name; } }
         public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return double.MaxValue; } }
@@ -21,12 +22,20 @@ namespace Server.Engines.ArenaSystem
 
         public static List<PVPArena> Arenas { get; set; }
 
-        public PVPArenaStats()
+        public PVPArenaSystem()
         {
+            Instance = this;
+
             if (Enabled)
             {
                 InitializeArenas();
+                Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), OnTick);
             }
+        }
+
+        public void OnTick()
+        {
+            Arenas.ForEach(a => a.OnTick());
         }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
@@ -51,8 +60,6 @@ namespace Server.Engines.ArenaSystem
 
             if (!Arenas.Contains(arena))
                 Arenas.Add(arena);
-
-            arena.Register();
         }
 
         public void Unregister(PVPArena arena)
@@ -91,9 +98,25 @@ namespace Server.Engines.ArenaSystem
             }
         }
 
-        public static void SendMessage(Mobile from, string message, int hue)
+        public static void SendMessage(Mobile from, string message, int hue = 0x1F)
         {
+            from.SendMessage(hue, message);
+        }
 
+        public static void SendMessage(Mobile from, int message, string args = "", int hue = 0x1F)
+        {
+            from.SendLocalizedMessage(message, args, hue);
+        }
+
+        public static void SendParticipantMessage(ArenaDuel duel, int message, string args = "", int hue = 0x1F)
+        {
+            foreach (var team in duel.Teams)
+            {
+                foreach (var pm in team.Players)
+                {
+                    SendMessage(pm, message, args, hue);
+                }
+            }
         }
 
         public static void Initialize()
@@ -106,32 +129,50 @@ namespace Server.Engines.ArenaSystem
 
         public static void InitializeArenas()
         {
-            Register(new PVPArena(ArenaDefinition.LostLandsTrammel));
-            Register(new PVPArena(ArenaDefinition.LostLandsFelucca));
-            Register(new PVPArena(ArenaDefinition.HavenTrammel));
-            Register(new PVPArena(ArenaDefinition.HavenFelucca));
+            Instance.Register(new PVPArena(ArenaDefinition.LostLandsTrammel));
+            Instance.Register(new PVPArena(ArenaDefinition.LostLandsFelucca));
+            Instance.Register(new PVPArena(ArenaDefinition.HavenTrammel));
+            Instance.Register(new PVPArena(ArenaDefinition.HavenFelucca));
         }
     }
 
     public class PlayerStatsEntry : PointsEntry
     {
+        public int SurvivalWins { get; set; }
+        public int SurvivalLosses { get; set; }
+        public int SurvivalDraws { get; set; }
+
+        public int TeamWins { get; set; }
+        public int TeamLosses { get; set; }
+        public int TeamDraws { get; set; }
+
         public int Kills { get; set; }
-        public int Losses { get; set; }
-        public int Draws { get; set; }
+        public int Deaths { get; set; }
+
+        public bool IgnoreInvites { get; set; }
 
         public PlayerStatsEntry(PlayerMobile pm)
             : base(pm)
         {
+            IgnoreInvites = true;
         }
 
+        // Rating, seems to start at 10000, then +33 for win, -33 for loss
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write(0);
 
+            writer.Write(SurvivalWins);
+            writer.Write(SurvivalLosses);
+            writer.Write(SurvivalDraws);
+
+            writer.Write(TeamWins);
+            writer.Write(TeamLosses);
+            writer.Write(TeamDraws);
+
             writer.Write(Kills);
-            writer.Write(Losses);
-            writer.Write(Draws);
+            writer.Write(Deaths);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -139,9 +180,16 @@ namespace Server.Engines.ArenaSystem
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
+            SurvivalWins = reader.ReadInt();
+            SurvivalLosses = reader.ReadInt();
+            SurvivalDraws = reader.ReadInt();
+
+            TeamWins = reader.ReadInt();
+            TeamLosses = reader.ReadInt();
+            TeamDraws = reader.ReadInt();
+
             Kills = reader.ReadInt();
-            Losses = reader.ReadInt();
-            Draws = reader.ReadInt();
+            Deaths = reader.ReadInt();
         }
     }
 }

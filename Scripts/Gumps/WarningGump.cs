@@ -14,7 +14,7 @@ namespace Server.Gumps
         {
         }
 
-        public WarningGump(TextDefinition header, int headerColor, TextDefinition content, int contentColor, int width, int height, WarningGumpCallback callback, object state, bool cancelButton)
+        public WarningGump(TextDefinition header, int headerColor, TextDefinition content, int contentColor, int width, int height, WarningGumpCallback callback, object state, bool cancelButton, int ok = 1011036, int cancel = 1011012)
             : base((640 - width) / 2, (480 - height) / 2)
         {
             m_Callback = callback;
@@ -55,12 +55,12 @@ namespace Server.Gumps
             AddAlphaRegion(10, height - 30, width - 20, 20);
 
             AddButton(10, height - 30, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(40, height - 30, 170, 20, 1011036, 32767, false, false); // OKAY
+            AddHtmlLocalized(40, height - 30, 170, 20, ok, 32767, false, false); // OKAY
 
             if (m_CancelButton)
             {
                 AddButton(10 + ((width - 20) / 2), height - 30, 4005, 4007, 0, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(40 + ((width - 20) / 2), height - 30, 170, 20, 1011012, 32767, false, false); // CANCEL
+                AddHtmlLocalized(40 + ((width - 20) / 2), height - 30, 170, 20, cancel, 32767, false, false); // CANCEL
             }
         }
 

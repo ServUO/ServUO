@@ -1,54 +1,43 @@
 using Server;
 using System;
 using Server.Items;
-using Server.Gumps;
-using Server.Mobiles;
 
 namespace Server.Engines.ArenaSystem
 {
-    public class ArenaStone : Item
+    public class ArenaExitBanner : Item
     {
         public override bool ForceShowProperties { get { return true; } }
-        public override int LabelNumber { get { return 1115878; } }
+        public override int LabelNumber { get { return 1116111; } } // Arena Exit Banner
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PVPArena Arena { get; set; }
 
         [Constructable]
-        public ArenaStone(PVPArena arena)
-            : base(0xEDD)
+        public ArenaExitBanner(int itemid, PVPArena arena)
+            : base(itemid)
         {
             Arena = arena;
-
             Movable = false;
-            Hue = 1194;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(Location, 10))
+            if (from.InRange(Location, 3))
             {
-                if (Arena != null && PVPArenaSystem.Enabled)
+                from.SendGump(new WarningGump(1115969, C32216(0xB22222), 1115970, 0xFFFF, 348, 222, (from, okeedokee, state) =>
                 {
-                    var duel = Arena.GetPendingDuel(from);
+                    var duel = Arena.CurrentDuel;
 
-                    if (duel == null)
+                    if (duel != null && from is PlayerMobile)
                     {
-                        BaseGump.SendGump(new ArenaStoneGump(from as PlayerMobile, Arena));
+                        duel.RemovePlayer((PlayerMobile)from);
+                        duel.OnPlayerLeave((PlayerMobile)from);
                     }
-                    else
-                    {
-                        BaseGump.SendGump(new PendingDuelGump(from as PlayerMobile, duel, Arena));
-                    }
-                }
-            }
-            else
-            {
-                from.SendLocalizedMessage(502138); // That is too far away for you to use.
+                }, null, true));
             }
         }
 
-        public ArenaStone(Serial serial)
+        public ArenaExitBanner(Serial serial)
             : base(serial)
         {
         }
