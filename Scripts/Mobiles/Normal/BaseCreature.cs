@@ -5466,7 +5466,12 @@ namespace Server.Mobiles
                     }
                     else if (/*(Map == Map.Felucca || Map == Map.Trammel) &&*/TreasureMapChance >= Utility.RandomDouble())
                     {
-                        PackItem(new TreasureMap(treasureLevel, Map));
+                        Map map = Map;
+
+                        if (map == Map.Trammel && Siege.SiegeShard)
+                            map = Map.Felucca;
+
+                        PackItem(new TreasureMap(treasureLevel, map));
                     }
                 }
 
