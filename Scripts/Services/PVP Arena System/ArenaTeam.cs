@@ -22,20 +22,19 @@ namespace Server.Engines.ArenaSystem
 
         public ArenaTeam()
         {
+            Players = new Dictionary<PlayerMobile, PlayerStatsEntry>();
         }
 
         public ArenaTeam(PlayerMobile pm)
         {
+            Players = new Dictionary<PlayerMobile, PlayerStatsEntry>();
             AddParticipant(pm);
         }
 
         public void AddParticipant(PlayerMobile pm)
         {
-            if (Players == null)
-            {
-                Players = new Dictionary<PlayerMobile, PlayerStatsEntry>();
+            if (Players.Count == 0)
                 PlayerZero = pm;
-            }
 
             Players[pm] = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(pm);
         }
@@ -61,7 +60,7 @@ namespace Server.Engines.ArenaSystem
 
         public bool Contains(PlayerMobile pm)
         {
-            return Players.Contains(pm);
+            return Players.ContainsKey(pm);
         }
     }
 }

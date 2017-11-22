@@ -55,7 +55,7 @@ namespace Server.Engines.ArenaSystem
 
         public static TimeSpan KickTime = TimeSpan.FromSeconds(40);
         public static TimeSpan EntryTime = TimeSpan.FromSeconds(90);
-        public static TimeSpan StartTime = TimeSpan.FromSeconds(5);
+        public static TimeSpan StartTimeDuration = TimeSpan.FromSeconds(5);
 
         public PVPArena Arena { get; private set; }
 
@@ -126,8 +126,8 @@ namespace Server.Engines.ArenaSystem
         public DateTime EndTime { get { return StartTime + TimeSpan.FromMinutes((int)TimeLimit); } }
 
         // used in team mode
-        public ArenaTeam TeamOrder { get { return Teams[0]; } }
-        public ArenaTeam TeamChaos { get { return Teams[1]; } }
+        public ArenaTeam TeamOrder { get { return Teams != null && Teams.Count > 0 ? Teams[0] : null; } }
+        public ArenaTeam TeamChaos { get { return Teams != null && Teams.Count > 1 ?Teams[1] : null; } }
 
         public int ParticipantCount
         {
@@ -156,10 +156,15 @@ namespace Server.Engines.ArenaSystem
             KillRecord = new Dictionary<string, string>();
             Banned = new List<PlayerMobile>();
 
-            Teams.Add(new ArenaTeam());
+            Teams.Add(new ArenaTeam(host));
             Teams.Add(new ArenaTeam());
 
             Complete = false;
+        }
+
+        public override string ToString()
+        {
+            return "...";
         }
 
         public void SetDuel()
@@ -182,7 +187,14 @@ namespace Server.Engines.ArenaSystem
 
         public List<PlayerMobile> ParticipantList()
         {
-            return GetParticipants().ToList();
+            List<PlayerMobile> list = new List<PlayerMobile>();
+
+            foreach (var part in GetParticipants())
+            {
+                list.Add(part.Key);
+            }
+
+            return list;
         }
 
         public bool InArena(Mobile m)
@@ -190,15 +202,16 @@ namespace Server.Engines.ArenaSystem
             if (m == null)
                 return false;
 
-            return Region.Find(m.Location, m.Map) == Arena.Definition.Region;
+            return Region.Find(m.Location, m.Map) == Arena.Region;
         }
 
         public PlayerStatsEntry GetStats(PlayerMobile check)
         {
-            var kvp = GetParticipants().FirstOrDefault(kvp => kvp.Key == check);
-
-            if (kvp != null)
-                return kvp.Value;
+            foreach (var kvp in GetParticipants())
+            {
+                if (kvp.Key == check)
+                    return kvp.Value;
+            }
 
             return null;
         }
@@ -220,11 +233,36 @@ namespace Server.Engines.ArenaSystem
 
         public bool TryAddPlayer(PlayerMobile pm)
         {
+            if (ParticipantCount >= MaxEntries)
+            {
+                pm.SendLocalizedMessage(1115954); // This session is already full.
+            }
+            else if (InPreFight || HasBegun)
+            {
+                pm.SendLocalizedMessage(1115953); // This session has already been closed.
+            }
+            else if (!Arena.PendingDuels.ContainsKey(this))
+            {
+                pm.SendLocalizedMessage(1115957); // This session has expired. Please create a new session and try again.
+            }
+            else if (pm.Map != Arena.Definition.Map)
+            {
+                pm.SendLocalizedMessage(1115959); // You need to return to the facet that you opened the session on to start this duel.
+            }
+            else
+            {
+                RegisterPlayer(pm);
+                return true;
+            }
 
+            return false;
         }
 
         public void RegisterPlayer(PlayerMobile pm)
         {
+            PVPArenaSystem.SendParticipantMessage(this, 1115956); // A new duelist has joined your session!
+            PVPArenaSystem.SendMessage(pm, 1115955); // You have joined the session.
+
             if (BattleMode == BattleMode.Team)
             {
                 if (TeamOrder.Count > TeamChaos.Count)
@@ -265,6 +303,14 @@ namespace Server.Engines.ArenaSystem
                 if (ban)
                 {
                     Banned.Add(pm);
+
+                    PVPArenaSystem.SendMessage(Host, 1115951); // You have banned the specified participant.
+                    PVPArenaSystem.SendParticipantMessage(this, 1115951); // You have been banned from the session by the host player.
+                }
+                else
+                {
+                    PVPArenaSystem.SendMessage(pm, 1115948); // One of the participants has left your duel session.
+                    PVPArenaSystem.SendParticipantMessage(this, 1115948); // One of the participants has left your duel session.
                 }
             }
         }
@@ -287,12 +333,11 @@ namespace Server.Engines.ArenaSystem
         public void MoveToArena(PlayerMobile pm)
         {
             Map map = Arena.Definition.Map;
-            Rectangle2D rec = Arena.Definition.RegionBounds[Utility.Random(Arena.Definition.RegionBounds.Length)];
-            rec = new Rectangle2D(rec.X + 2, rec.Y + 2, rec.Width - 4, rec.Height - 4);
+            Rectangle2D rec = _StartPoints[pm];
 
             Point3D p = rec.GetRandomSpawnPoint(map);
 
-            //TODO: Handle pets? for now they'll have to use mounts or pet ball summon?
+            BaseCreature.TeleportPets(pm, p, map);
             pm.MoveToWorld(p, Arena.Definition.Map);
             pm.SendSpeedControl(SpeedControlType.NoMove);
 
@@ -356,6 +401,8 @@ namespace Server.Engines.ArenaSystem
         {
             HasBegun = true;
 
+            AssignStartPoints();
+
             Gate = new ArenaGate(this);
             Gate.MoveToWorld(Arena.Definition.GateLocation, Arena.Definition.Map);
 
@@ -363,6 +410,8 @@ namespace Server.Engines.ArenaSystem
 
             EntryDeadline = DateTime.UtcNow + EntryTime;
             PVPArenaSystem.SendParticipantMessage(this, 1115875);
+
+            PlaceBlockers();
         }
 
         public void BeginDuel()
@@ -382,10 +431,7 @@ namespace Server.Engines.ArenaSystem
             {
                 if (present.Count == 1)
                 {
-                    foreach (var pm in present.Players.Keys)
-                    {
-                        PVPArenaSystem.SendMessage(pm, 1116476); // Your duel is about to begin but the opposing team has not came to the arena. This session will be aborted and you will be ejected from the arena.
-                    }
+                    PVPArenaSystem.SendParticipantMessage(this, 1116476, true); // Your duel is about to begin but the opposing team has not came to the arena. This session will be aborted and you will be ejected from the arena.
                 }
 
                 CancelDuel();
@@ -396,15 +442,33 @@ namespace Server.Engines.ArenaSystem
 
             ColUtility.Free(present);
 
-            Timer.DelayCall(StartTime, () =>
-                {
-                    DoStartEffects();
+            PVPArenaSystem.SendParticipantMessage(this, 1115964, true); // The duel will start in 5 seconds!
 
-                    foreach (var m in GetParticipants(true))
-                    {
-                        m.SendSpeedControl(SpeedControlType.Disable);
-                    }
+            Timer.DelayCall(StartTimeDuration, () =>
+                {
+                    RemoveBlockers();
+                    DoStartEffects();
                 });
+        }
+
+        private Dictionary<PlayerMobile, Rectangle2D> _StartPoints;
+
+        public void AssignStartPoints()
+        {
+            _StartPoints = new Dictionary<PlayerMobile, Rectangle2D>();
+
+            var pm1 = Teams[0].PlayerZero;
+            var pm2 = Teams[1].PlayerZero;
+
+            _StartPoints[pm1] = Arena.Definition.StartLocations[0];
+            _StartPoints[pm2] = Arena.Definition.StartLocations[1];
+
+            List<PlayerMobile> partList = ParticipantList();
+
+            foreach (var pm in partList.Where(p => p != pm1 && p != pm2))
+            {
+                _StartPoints[pm] = Arena.Definition.StartLocations[_StartPoints.Count];
+            }
         }
 
         private List<ArenaTeam> GetTeamsPresent()
@@ -422,6 +486,36 @@ namespace Server.Engines.ArenaSystem
             }
 
             return present;
+        }
+
+        public void PlaceBlockers()
+        {
+            foreach (var rec in Arena.Definition.EffectAreas)
+            {
+                for (int x = rec.X; x < rec.X + rec.Width; x++)
+                {
+                    for (int y = rec.Y; y < rec.Y + rec.Height; y++)
+                    {
+                        Item blocker = Arena.Blockers.FirstOrDefault(bl => !bl.Deleted && bl.Map == Map.Internal);
+
+                        if (blocker == null)
+                        {
+                            blocker = new Blocker();
+                            Arena.Blockers.Add(blocker);
+                        }
+
+                        blocker.MoveToWorld(new Point3D(x, y, Arena.Definition.Map.GetAverageZ(x, y)), Arena.Definition.Map);
+                    }
+                }
+            }
+        }
+
+        public void RemoveBlockers()
+        {
+            foreach (var item in Arena.Blockers)
+            {
+                item.Internalize();
+            }
         }
 
         public void DoStartEffects()
@@ -443,11 +537,11 @@ namespace Server.Engines.ArenaSystem
             Timer.DelayCall(TimeSpan.FromSeconds(5), RemovePlayers);
             Complete = true;
 
-            if (EntryFee > EntryFee.None)
+            if (EntryFee > EntryFee.Zero)
             {
                 foreach (var part in GetParticipants())
                 {
-                    Banker.Depost(part.Key, (int)EntryFee, true);
+                    Banker.Deposit(part.Key, (int)EntryFee, true);
                     PVPArenaSystem.SendMessage(part.Key, 1149606); // The entry fee has been refunded to your bank box.
                 }
             }
@@ -463,7 +557,7 @@ namespace Server.Engines.ArenaSystem
             Timer.DelayCall(KickTime, RemovePlayers);
             Complete = true;
 
-            SendResults();
+            SendResults(winner);
 
             if (winner != null)
             {
@@ -482,13 +576,15 @@ namespace Server.Engines.ArenaSystem
             {
                 foreach (var pm in team.Players.Keys)
                 {
-                    PVPArenaSystem.SendMessage(pm, team.Count > 0 ? 1116489 : 1116488); // You have lost the duel... : Your team has lost the duel...
+                    PVPArenaSystem.SendMessage(pm, team.Count == 1 ? 1116489 : 1116488); // You have lost the duel... : Your team has lost the duel...
                 }
             }
 
+            RecordStats(winner);
+
             if (Ranked)
             {
-                RecordStats(winner);
+                Arena.RecordRankings(this, winner);
             }
 
             PVPArenaSystem.SendParticipantMessage(this, 1115965); // All participants will be ejected from this arena in 40 seconds.
@@ -498,27 +594,13 @@ namespace Server.Engines.ArenaSystem
         {
             foreach (var part in GetParticipants(true))
             {
-                RemovePlayer(part.Key);
+                Arena.RemovePlayer(part.Key);
             }
 
             PVPArenaSystem.SendParticipantMessage(this, 1115973); // Thank you for your participation! Please return to the arena stone for additional dueling opportunities!
+            Arena.OnDuelEnd(this);
 
-            Arena.OnDuelEnd();
-        }
-
-        public void RemovePlayer(PlayerMobile pm)
-        {
-            Rectangle2D rec = new Rectangle2D(Arena.Stone.X - 2, Arena.Stone.Y - 5, 5, 11);
-            Map map = Arena.Definition.Map;
-
-            Point3D p = Arena.Stone.Location;
-
-            while (p == Arena.Stone.Location)
-            {
-                p = rec.GetRandomSpawnPoint(map);
-            }
-
-            pm.Key.MoveToWorld(p, map);
+            Closeout();
         }
 
         public void RecordStats(ArenaTeam winner)
@@ -566,16 +648,22 @@ namespace Server.Engines.ArenaSystem
             {
                 KillRecord[victim.Name] = killer != null ? killer.Name : "Unknown";
 
-                if (Ranked && killer != null && killer != victim) // if not ranked, does it keep track of this?
+                if (killer is PlayerMobile && killer != victim) // if not ranked, does it keep track of this?
                 {
                     PlayerStatsEntry victimEntry = GetStats((PlayerMobile)victim);
                     PlayerStatsEntry killerEntry = GetStats((PlayerMobile)killer);
 
                     if (victimEntry != null)
+                    {
                         victimEntry.Deaths++;
+                        victimEntry.HandleDeath(killer, true);
+                    }
 
                     if (killerEntry != null)
+                    {
                         killerEntry.Kills++;
+                        killerEntry.HandleDeath(victim, false);
+                    }
                 }
 
                 List<ArenaTeam> stillAlive = new List<ArenaTeam>();
@@ -595,11 +683,11 @@ namespace Server.Engines.ArenaSystem
             }
         }
 
-        public void SendResults()
+        public void SendResults(ArenaTeam winner)
         {
-            foreach (var pm in GetParticipants().Keys.Where(p => Region.Find(p.Location, p.Map) == Arena.Region))
+            foreach (var part in GetParticipants(true))
             {
-                BaseGump.SendGump(new DuelResultsGump(pm, this));
+                BaseGump.SendGump(new DuelResultsGump(part.Key, this, winner));
             }
         }
 
@@ -616,6 +704,24 @@ namespace Server.Engines.ArenaSystem
                     EndDuel();
                 }
             }
+        }
+
+        public void Closeout()
+        {
+            foreach (var team in Teams)
+            {
+                team.Players.Clear();
+                team.Players = null;
+                team.PlayerZero = null;
+            }
+
+            ColUtility.Free(Teams);
+            ColUtility.Free(Banned);
+            KillRecord.Clear();
+
+            Teams = null;
+            Banned = null;
+            KillRecord = null;
         }
     }
 }

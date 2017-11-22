@@ -4,15 +4,16 @@ using Server.Items;
 using Server.Gumps;
 using System.Collections.Generic;
 using Server.Mobiles;
+using System.Linq;
 
 namespace Server.Engines.ArenaSystem
 {
-    public class ArenaStoneGump : BaseGump
+    public class BaseArenaGump : BaseGump
     {
         public PVPArena Arena { get; private set; }
 
-        public ArenaStoneGump(PlayerMobile pm, PVPArena arena)
-            : base(pm)
+        public BaseArenaGump(PlayerMobile pm, PVPArena arena)
+            : base(pm, 30, 30)
         {
             Arena = arena;
             CloseArenaGumps(pm);
@@ -20,22 +21,104 @@ namespace Server.Engines.ArenaSystem
 
         public override void AddGumpLayout()
         {
+        }
+
+        public static void CloseArenaGumps(Mobile m)
+        {
+            m.CloseGump(typeof(CreateDuelGump));
+            m.CloseGump(typeof(ArenaStoneGump));
+            m.CloseGump(typeof(PendingDuelGump));
+            m.CloseGump(typeof(CreateDuelGump));
+            m.CloseGump(typeof(JoinDuelGump));
+            m.CloseGump(typeof(OfferDuelGump));
+            m.CloseGump(typeof(BookedDuelsGump));
+            m.CloseGump(typeof(IndividualStatsGump));
+            m.CloseGump(typeof(DuelResultsGump));
+            m.CloseGump(typeof(DuelRulesGump));
+            m.CloseGump(typeof(ArenaRankingsGump));
+            m.CloseGump(typeof(OfferDuelGump));
+        }
+    }
+
+    public class BaseDuelGump : BaseArenaGump
+    {
+        public ArenaDuel Duel { get; protected set; }
+
+        public BaseDuelGump(PlayerMobile pm, PVPArena arena, ArenaDuel duel)
+            : base(pm, arena)
+        {
+            Duel = duel;
+        }
+
+        protected string GetTimeLimit()
+        {
+            switch (Duel.TimeLimit)
+            {
+                default:
+                case TimeLimit.FiveMinutes: return "5 minutes";
+                case TimeLimit.TenMinutes: return "10 minutes";
+                case TimeLimit.FifteenMinutes: return "15 minutes";
+                case TimeLimit.TwentyMinutes: return "20 minutes";
+                case TimeLimit.ThirtyMinutes: return "30 minutes";
+            }
+        }
+
+        protected string GetEntryFee()
+        {
+            switch (Duel.EntryFee)
+            {
+                default:
+                case EntryFee.Zero: return "0 gold";
+                case EntryFee.OneThousand: return "1,000 gold";
+                case EntryFee.FiveThousand: return "5,000 gold";
+                case EntryFee.TenThousand: return "10,000 gold";
+                case EntryFee.TwentyFiveThousand: return "25,000 gold";
+                case EntryFee.FiftyThousand: return "50,000 gold";
+            }
+        }
+
+        protected string GetSlots()
+        {
+            return String.Format("{0} slot(s)", Duel.PetSlots);
+        }
+
+        protected string GetPotion()
+        {
+            switch (Duel.PotionRules)
+            {
+                default:
+                case PotionRules.All: return "ALL OK";
+                case PotionRules.None: return "NONE";
+                case PotionRules.NoHealing: return "NO HEALING";
+            }
+        }
+    }
+
+    public class ArenaStoneGump : BaseArenaGump
+    {
+        public ArenaStoneGump(PlayerMobile pm, PVPArena arena)
+            : base(pm, arena)
+        {
+        }
+
+        public override void AddGumpLayout()
+        {
             AddBackground(0, 0, 300, 295, 9200);
 
-            AddImageTiled(8, 8, 284, 25, 2624);
-            AddAlphaRegion(8, 8, 284, 25);
+            AddImageTiled(8, 8, 284, 27, 2624);
+            AddAlphaRegion(8, 8, 284, 27);
 
-            AddImageTiled(8, 43, 284, 45, 2624);
-            AddAlphaRegion(8, 43, 284, 45);
+            AddImageTiled(8, 41, 284, 51, 2624);
+            AddAlphaRegion(8, 41, 284, 51);
 
-            AddImageTiled(8, 98, 284, 160, 2624);
-            AddAlphaRegion(8, 98, 284, 160);
+            AddImageTiled(8, 98, 284, 164, 2624);
+            AddAlphaRegion(8, 98, 284, 164);
 
             AddImageTiled(8, 268, 284, 20, 2624);
             AddAlphaRegion(8, 268, 284, 20);
 
-            AddHtmlLocalized(0, 10, 300, 20, CenterLoc, "#1115619", 0xFFFF, false, false); // Arena Menu - Main
-            AddHtmlLocalized(12, 45, 274, 40, 1115620, 0xFFFF, false, false); // You can host/join a duel or check your duel stats.
+            AddHtmlLocalized(0, 12, 300, 20, CenterLoc, "#1115619", 0xFFFF, false, false); // Arena Menu - Main
+            AddHtmlLocalized(12, 47, 274, 40, 1115620, 0xFFFF, false, false); // You can host/join a duel or check your duel stats.
 
             var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
 
@@ -69,7 +152,14 @@ namespace Server.Engines.ArenaSystem
 
                     if (list != null && list.Count > 0)
                     {
-                        BaseGump.SendGump(new JoinDuelGump(User, list, Arena));
+                        if (list.Count < ArenaDuel.MaxEntries)
+                        {
+                            BaseGump.SendGump(new JoinDuelGump(User, list, Arena));
+                        }
+                        else
+                        {
+                            User.SendLocalizedMessage(1115954); // This session is already full.
+                        }
                     }
                     else
                     {
@@ -80,7 +170,7 @@ namespace Server.Engines.ArenaSystem
                     BaseGump.SendGump(new BookedDuelsGump(User, Arena));
                     break;
                 case 4: // check stats
-                    BaseGump.SendGump(new IndividualStatsGump(User));
+                    BaseGump.SendGump(new IndividualStatsGump(User, Arena, User));
                     break;
                 case 5: // arena rankings
                     BaseGump.SendGump(new ArenaRankingsGump(User, Arena));
@@ -95,64 +185,47 @@ namespace Server.Engines.ArenaSystem
                     break;
             }
         }
-
-        public static void CloseArenaGumps(Mobile m)
-        {
-            m.CloseGump(typeof(CreateDuelGump));
-            m.CloseGump(typeof(ArenaStoneGump));
-            m.CloseGump(typeof(PendingDuelGump));
-            m.CloseGump(typeof(CreateDuelGump));
-            m.CloseGump(typeof(JoinDuelGump));
-            m.CloseGump(typeof(BookedDuelsGump));
-            m.CloseGump(typeof(IndividualStatsGump));
-            m.CloseGump(typeof(DuelResultsGump));
-            m.CloseGump(typeof(ArenaRankingsGump));
-            m.CloseGump(typeof(OfferDuelGump));
-        }
     }
 
-    public class CreateDuelGump : BaseGump
+    public class CreateDuelGump : BaseDuelGump
     {
-        public PVPArena Arena { get; private set; }
-        public ArenaDuel Duel { get; private set; }
-
         public CreateDuelGump(PlayerMobile pm, PVPArena arena)
-            : base(pm, 50, 50)
+            : base(pm, arena, null)
         {
-            Arena = arena;
+            Duel = new ArenaDuel(arena, pm);
         }
 
         public override void AddGumpLayout()
         {
             AddBackground(0, 0, 315, 410, 9200);
 
-            AddImageTiled(8, 8, 299, 25, 2624);
-            AddAlphaRegion(8, 8, 299, 25);
+            AddImageTiled(8, 8, 299, 27, 2624);
+            AddAlphaRegion(8, 8, 299, 27);
 
-            AddImageTiled(8, 40, 200, 335, 2624);
-            AddAlphaRegion(8, 40, 200, 335);
+            AddImageTiled(8, 40, 200, 337, 2624);
+            AddAlphaRegion(8, 40, 200, 337);
 
-            AddImageTiled(210, 40, 97, 335, 2624);
-            AddAlphaRegion(210, 40, 97, 335);
+            AddImageTiled(210, 40, 97, 337, 2624);
+            AddAlphaRegion(210, 40, 97, 337);
 
             AddImageTiled(8, 383, 299, 20, 2624);
             AddAlphaRegion(8, 383, 299, 20);
 
-            AddHtmlLocalized(0, 10, 315, 20, CenterLoc, "#1115787", 0xFFFF, false, false); // Arena Menu - Rules
+            AddHtmlLocalized(0, 12, 315, 20, CenterLoc, "#1115787", 0xFFFF, false, false); // Arena Menu - Rules
 
-            AddButton(10, 47, 4007, 4009, 1, GumpButtonType.Reply, 0);
-            AddButton(10, 72, 4007, 4009, 2, GumpButtonType.Reply, 0);
-            AddButton(10, 97, 4007, 4009, 3, GumpButtonType.Reply, 0);
-            AddButton(10, 122, 4007, 4009, 4, GumpButtonType.Reply, 0);
-            AddButton(10, 147, 4007, 4009, 5, GumpButtonType.Reply, 0);
-            AddButton(10, 172, 4007, 4009, 6, GumpButtonType.Reply, 0);
-            AddButton(10, 197, 4007, 4009, 7, GumpButtonType.Reply, 0);
-            AddButton(10, 222, 4007, 4009, 8, GumpButtonType.Reply, 0);
-            AddButton(10, 247, 4007, 4009, 9, GumpButtonType.Reply, 0);
-            AddButton(10, 272, 4007, 4009, 10, GumpButtonType.Reply, 0);
-            AddButton(10, 297, 4007, 4009, 11, GumpButtonType.Reply, 0);
-            AddButton(10, 322, 4007, 4009, 12, GumpButtonType.Reply, 0);
-            AddButton(10, 347, 4007, 4009, 13, GumpButtonType.Reply, 0);
+            AddButton(10, 47, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddButton(10, 72, 4005, 4007, 2, GumpButtonType.Reply, 0);
+            AddButton(10, 97, 4005, 4007, 3, GumpButtonType.Reply, 0);
+            AddButton(10, 122, 4005, 4007, 4, GumpButtonType.Reply, 0);
+            AddButton(10, 147, 4005, 4007, 5, GumpButtonType.Reply, 0);
+            AddButton(10, 172, 4005, 4007, 6, GumpButtonType.Reply, 0);
+            AddButton(10, 197, 4005, 4007, 7, GumpButtonType.Reply, 0);
+            AddButton(10, 222, 4005, 4007, 8, GumpButtonType.Reply, 0);
+            AddButton(10, 247, 4005, 4007, 9, GumpButtonType.Reply, 0);
+            AddButton(10, 272, 4005, 4007, 10, GumpButtonType.Reply, 0);
+            AddButton(10, 297, 4005, 4007, 11, GumpButtonType.Reply, 0);
+            AddButton(10, 322, 4005, 4007, 12, GumpButtonType.Reply, 0);
+            AddButton(10, 347, 4005, 4007, 13, GumpButtonType.Reply, 0);
 
             AddHtmlLocalized(45, 47, 170, 20, 1115780, 0xFFFF, false, false);  // Maximum Entries
             AddHtmlLocalized(45, 72, 170, 20, 1116146, 0xFFFF, false, false);  // Room Type
@@ -202,18 +275,18 @@ namespace Server.Engines.ArenaSystem
                     case 1:
                         Duel.Entries++;
                         if (Duel.Entries > ArenaDuel.MaxEntries)
-                            Duel.Entries = 0;
+                            Duel.Entries = 2;
                         Refresh();
                         break;
                     case 2:
-                        Duel.RoomType = Duel.RoomType.Public ? RoomType.Private : RoomType.Public;
+                        Duel.RoomType = Duel.RoomType == RoomType.Public ? RoomType.Private : RoomType.Public;
                         Refresh();
                         break;
                     case 3:
                         Refresh();
                         break;
                     case 4:
-                        Duel.BattleMode = Duel.BattleMode.Survival ? BattleMode.Team : BattleMode.Survival;
+                        Duel.BattleMode = Duel.BattleMode == BattleMode.Survival ? BattleMode.Team : BattleMode.Survival;
                         Refresh();
                         break;
                     case 5:
@@ -237,9 +310,9 @@ namespace Server.Engines.ArenaSystem
                             case EntryFee.Zero: Duel.EntryFee = EntryFee.OneThousand; break;
                             case EntryFee.OneThousand: Duel.EntryFee = EntryFee.FiveThousand; break;
                             case EntryFee.FiveThousand: Duel.EntryFee = EntryFee.TenThousand; break;
-                            case EntryFee.TenThousand: Duel.EntryFee = EntryFee.TwentyThousand; break;
-                            case EntryFee.TwentyThousand: Duel.EntryFee = EntryFee.ThirtyThousand; break;
-                            case EntryFee.ThirtyThousand: Duel.EntryFee = EntryFee.Zero; break;
+                            case EntryFee.TenThousand: Duel.EntryFee = EntryFee.TwentyFiveThousand; break;
+                            case EntryFee.TwentyFiveThousand: Duel.EntryFee = EntryFee.FiftyThousand; break;
+                            case EntryFee.FiftyThousand: Duel.EntryFee = EntryFee.Zero; break;
                         }
                         Refresh();
                         break;
@@ -268,9 +341,9 @@ namespace Server.Engines.ArenaSystem
                     case 13:
                         switch (Duel.PotionRules)
                         {
-                            case PotionRules.All: Duel.PotionRules = PotionRules.None;
-                            case PotionRules.None: Duel.PotionRules = PotionRules.AllHealing;
-                            case PotionRules.NoHealing: Duel.PotionRules = PotionRules.All;
+                            case PotionRules.All: Duel.PotionRules = PotionRules.None; break;
+                            case PotionRules.None: Duel.PotionRules = PotionRules.NoHealing; break;
+                            case PotionRules.NoHealing: Duel.PotionRules = PotionRules.All; break;
                         }
                         Refresh();
                         break;
@@ -282,68 +355,84 @@ namespace Server.Engines.ArenaSystem
                 }
             }
         }
+    }
 
-        private string GetTimeLimit()
+    public class DuelRulesGump : BaseDuelGump
+    {
+        public DuelRulesGump(PlayerMobile pm, PVPArena arena, ArenaDuel duel)
+            : base(pm, arena, duel)
         {
-            switch (Duel.TimeLimit)
-            {
-                default:
-                case TimeLimit.FiveMinutes: return "5 minutes";
-                case TimeLimit.TenMinutes: return "10 minutes";
-                case TimeLimit.FifteenMinutes: return "15 minutes";
-                case TimeLimit.TwentyMinutes: return "20 minutes";
-                case TimeLimit.ThrityMinutes: return "30 minutes";
-            }
         }
 
-        private string GetEntryFee()
+        public override void AddGumpLayout()
         {
-            switch (Duel.EntryFee)
-            {
-                default:
-                case EntryFee.Zero: return "0 gold";
-                case EntryFee.OneThousand: return "1000 gold";
-                case EntryFee.FiveThousand: return "5000 gold";
-                case EntryFee.TenThousand: return "10000 gold";
-                case EntryFee.TwentyThousand: return "20000 gold";
-                case EntryFee.FiftyThousand: return "50000 gold";
-            }
+            AddBackground(0, 0, 290, 410, 9200);
+
+            AddImageTiled(8, 8, 274, 25, 2624);
+            AddAlphaRegion(8, 8, 274, 25);
+
+            AddImageTiled(8, 40, 175, 335, 2624);
+            AddAlphaRegion(8, 40, 175, 335);
+
+            AddImageTiled(186, 40, 97, 335, 2624);
+            AddAlphaRegion(186, 40, 97, 335);
+
+            AddImageTiled(8, 383, 274, 20, 2624);
+            AddAlphaRegion(8, 383, 274, 20);
+
+            AddHtmlLocalized(0, 10, 315, 20, CenterLoc, "#1115787", 0xFFFF, false, false); // Arena Menu - Rules
+
+            AddHtmlLocalized(20, 47, 170, 20, 1115780, 0xFFFF, false, false);  // Maximum Entries
+            AddHtmlLocalized(20, 72, 170, 20, 1116146, 0xFFFF, false, false);  // Room Type
+            AddHtmlLocalized(20, 97, 170, 20, 1115785, 0xFFFF, false, false);  // Arena
+            AddHtmlLocalized(20, 122, 170, 20, 1115781, 0xFFFF, false, false); // Battle Mode
+            AddHtmlLocalized(20, 147, 170, 20, 1150173, 0xFFFF, false, false); // Ranked
+            AddHtmlLocalized(20, 172, 170, 20, 1115782, 0xFFFF, false, false); // Time Limit
+            AddHtmlLocalized(20, 197, 170, 20, 1149605, 0xFFFF, false, false); // Entry Fee
+            AddHtmlLocalized(20, 222, 170, 20, 1115783, 0xFFFF, false, false); // Pet Slots
+            AddHtmlLocalized(20, 247, 170, 20, 1115784, 0xFFFF, false, false); // Riding/Flying
+            AddHtmlLocalized(20, 272, 170, 20, 1115786, 0xFFFF, false, false); // Ranged Weapons
+            AddHtmlLocalized(20, 297, 170, 20, 1149604, 0xFFFF, false, false); // Summoning Spells
+            AddHtmlLocalized(20, 322, 170, 20, 1151915, 0xFFFF, false, false); // Field Spells
+            AddHtmlLocalized(20, 347, 170, 20, 1151916, 0xFFFF, false, false); // Potion
+
+            AddHtmlLocalized(193, 47, 170, 20, 1114057, Duel.Entries.ToString(), 0xFFFF, false, false);  // Maximum Entries
+            AddHtmlLocalized(193, 72, 170, 20, Duel.RoomType == RoomType.Public ? 1116494 : 1116495, 0xFFFF, false, false);  // Room Type
+            AddHtmlLocalized(193, 97, 170, 20, 1114057, Arena.Definition.Name, 0xFFFF, false, false);  // Arena
+            AddHtmlLocalized(193, 122, 170, 20, Duel.BattleMode == BattleMode.Survival ? 1116492 : 1116493, 0xFFFF, false, false); // Battle Mode
+            AddHtmlLocalized(193, 147, 170, 20, Duel.Ranked ? 1152994 : 1152995, 0xFFFF, false, false); // Ranked
+            AddHtml(193, 172, 170, 20, Color("#FFFFFF", GetTimeLimit()), false, false); // Time Limit
+            AddHtml(193, 197, 170, 20, Color("#FFFFFF", GetEntryFee()), false, false); // Entry Fee
+            AddHtml(193, 222, 170, 20, Color("#FFFFFF", GetSlots()), false, false); // Pet Slots
+            AddHtmlLocalized(193, 247, 170, 20, Duel.RidingFlyingAllowed ? 1152994 : 1152995, 0xFFFF, false, false); // Riding/Flying
+            AddHtmlLocalized(193, 272, 170, 20, Duel.RangedWeaponsAllowed ? 1152994 : 1152995, 0xFFFF, false, false); // Ranged Weapons
+            AddHtmlLocalized(193, 297, 170, 20, Duel.SummonSpellsAllowed ? 1152994 : 1152995, 0xFFFF, false, false); // Summoning Spells
+            AddHtmlLocalized(193, 322, 170, 20, Duel.FieldSpellsAllowed ? 1152994 : 1152995, 0xFFFF, false, false); // Field Spells
+            AddHtml(193, 347, 170, 20, Color("#FFFFFF", GetPotion()), false, false); // Potion
+
+            AddButton(8, 383, 4014, 4016, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 383, 100, 20, 1150154, 0xFFFF, false, false); // BACK
         }
 
-        private string GetSlots()
+        public override void OnResponse(RelayInfo info)
         {
-            return String.Format("{0} slot(s)", Duel.PetSlots);
-        }
-
-        private string GetPotion()
-        {
-            switch (Duel.PotionRules)
-            {
-                default:
-                case PotionRules.All: return "ALL OK";
-                case PotionRules.None: return "NONE";
-                case PotionRules.NoHealing: return "NO HEALING";
-            }
+            BaseGump.SendGump(new PendingDuelGump(User, Duel, Arena));
         }
     }
 
-    public class PendingDuelGump : BaseGump
+    public class PendingDuelGump : BaseDuelGump
     {
-        public PVPArena Arena { get; private set; }
-        public ArenaDuel Duel { get; private set; }
         public List<PlayerMobile> Participants { get; private set; }
 
         public PendingDuelGump(PlayerMobile pm, ArenaDuel duel, PVPArena arena)
-            : base(pm, 50, 50)
+            : base(pm, arena, duel)
         {
-            Duel = duel;
-            Arena = arena;
             Participants = Duel.ParticipantList();
         }
 
         public override void AddGumpLayout()
         {
-            int width = duel.ParticipantCount > 5 ? 400 : 300;
+            int width = Duel.ParticipantCount > 5 ? 400 : 300;
             AddBackground(0, 0, width, 377, 9200);
 
             AddImageTiled(8, 8, width - 16, 25, 2624);
@@ -379,7 +468,6 @@ namespace Server.Engines.ArenaSystem
 
             int x = 10;
             int y = 215;
-            int index = 0;
 
             if (Duel.BattleMode == BattleMode.Survival)
             {
@@ -387,7 +475,7 @@ namespace Server.Engines.ArenaSystem
                 {
                     AddButton(x, y, 4011, 4013, 50 + i, GumpButtonType.Reply, 0);
                     AddButton(x + 37, y, 4017, 4019, 100 + i, GumpButtonType.Reply, 0);
-                    AddLabelCropped(x + 105, y, 135, 20, 0x481, kvp.Key.Name);
+                    AddLabelCropped(x + 75, y, 135, 20, 0x481, Participants[i].Name);
 
                     y += 25;
 
@@ -405,7 +493,7 @@ namespace Server.Engines.ArenaSystem
                     AddButton(x, y, 4011, 4013, 50 + i, GumpButtonType.Reply, 0);
                     AddButton(x + 37, y, 4017, 4019, 100 + i, GumpButtonType.Reply, 0);
                     AddButton(x + 74, y, 4026, 4029, 200 + i, GumpButtonType.Reply, 0);
-                    AddLabelCropped(x + 105, y, 135, 20, Duel.TeamOrder.Contains(kvp.Key) ? 493 : 437, kvp.Key.Name);
+                    AddLabelCropped(x + 107, y, 135, 20, Duel.TeamOrder.Contains(Participants[i]) ? 487 : 37, Participants[i].Name);
 
                     y += 25;
 
@@ -417,7 +505,7 @@ namespace Server.Engines.ArenaSystem
                 }
             }
 
-            AddImage(218, 245, 5587);
+            AddImage(218, 70, 5587);
 
             AddButton(8, 349, 4017, 4019, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(45, 349, 120, 20, 1150300, 0xFFFF, false, false); // CANCEL
@@ -441,7 +529,7 @@ namespace Server.Engines.ArenaSystem
                         if (id >= 0 && id < Participants.Count)
                         {
                             Refresh();
-                            BaseGump.SendGump(new IndividualStatsGump(User, Participants[id]));
+                            BaseGump.SendGump(new IndividualStatsGump(User, Arena, Participants[id]));
                         }
                     }
                     else if (info.ButtonID < 200)
@@ -450,35 +538,36 @@ namespace Server.Engines.ArenaSystem
 
                         if (id >= 0 && id < Participants.Count)
                         {
-                            if (Participant[id] == Duel.Host)
+                            if (Participants[id] == Duel.Host)
                             {
                                 User.SendLocalizedMessage(1115838); // You cannot ban yourself!
                                 Refresh();
                             }
                             else
                             {
-                                User.SendGump(new WarningGump(1115834, C32216(0xB22222), 1115835, 0xFFFF, 348, 222, (from, okeedokee, state) =>
+                                User.SendGump(new ConfirmCallbackGump(User, 1115834, 1115835, null, null, (from, state) =>
                                 {
                                     if (!Arena.PendingDuels.ContainsKey(Duel))
                                     {
                                         PVPArenaSystem.SendMessage(User, 1115957); // This session has expired. Please create a new session and try again.
                                     }
-                                    else if (okeedokee)
+                                    else
                                     {
                                         Duel.RemovePlayer(User, true);
                                     }
-                                }, null, true, 1115836, 1115837));
+                                }, confirmLoc: 1115836, closeLoc: 1115837));
                             }
                         }
                     }
                     else
                     {
-                        int id = info.ButtonID - 100;
+                        int id = info.ButtonID - 200;
 
                         if (id >= 0 && id < Participants.Count)
                         {
                             Duel.SwapParticipant(Participants[id]);
                             PVPArenaSystem.SendMessage(Participants[id], 1116462); // The host player has moved you to another team.
+                            Refresh();
                         }
                     }
                     break;
@@ -489,7 +578,7 @@ namespace Server.Engines.ArenaSystem
                     }
                     else if (Duel.ParticipantCount == 1)
                     {
-                        PvpArenaSystem.SendMessage(User, 1115958); // To start a duel, you will need to gather more players/participants.
+                        PVPArenaSystem.SendMessage(User, 1115958); // To start a duel, you will need to gather more players/participants.
                     }
                     else
                     {
@@ -497,25 +586,24 @@ namespace Server.Engines.ArenaSystem
                     }
                     break;
                 case 2:
-                    if (User != Duel.Host)
-                    {
-                        PVPArenaSystem.SendMessage(User, 1115949); // Only the session's host may use this function.
-                    }
-                    else
-                    {
-                        User.SendGump(new WarningGump(1115819, C32216(0xB22222), 1115820, 0xFFFF, 348, 222, (from, okeedokee, state) =>
+                    User.SendGump(new ConfirmCallbackGump(User, 1115819, 1115820, null, null, (from, obj) =>
+                        {
+                            if (!Arena.PendingDuels.ContainsKey(Duel))
                             {
-                                if (!Arena.PendingDuels.ContainsKey(Duel))
-                                {
-                                    PVPArenaSystem.SendMessage(User, 1115957); // This session has expired. Please create a new session and try again.
-                                }
-                                else if (okeedokee)
+                                PVPArenaSystem.SendMessage(User, 1115957); // This session has expired. Please create a new session and try again.
+                            }
+                            else
+                            {
+                                if (from == Duel.Host)
                                 {
                                     Arena.RemovePendingDuel(Duel, true);
                                 }
-                            }, null, true, 1115821, 1115822));
-                        
-                    }
+                                else
+                                {
+                                    Duel.RemovePlayer((PlayerMobile)from, false);
+                                }
+                            }
+                        }, confirmLoc: 1115821, closeLoc: 1115822));
                     break;
                 case 3:
                     if (User != Duel.Host)
@@ -524,76 +612,97 @@ namespace Server.Engines.ArenaSystem
                     }
                     else
                     {
-                        User.BeginTarget(10, false, TargetFlags.None, (from, targeted) =>
-                            {
-                                if (!Arena.PendingDuels.ContainsKey(Duel))
-                                {
-                                    PVPArenaSystem.SendMessage(User, 1115957); // This session has expired. Please create a new session and try again.
-                                }
-                                else if (from is PlayerMobile)
-                                {
-                                    var pm = from as PlayerMobile;
-                                    var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
-
-                                    if (!pm.Alive)
-                                    {
-                                        PVPArenaSystem.SendMessage(User, 1116148); // You cannot invite dead players.
-                                    }
-                                    if (pm.IsYoung)
-                                    {
-                                        PVPArenaSystem.SendMessage(User, 1116152); // You have sent the invitation to the player.
-                                    }
-                                    else if (entry.IgnoreInvites)
-                                    {
-                                        PVPArenaSystem.SendMessage(User, 1116157); // The player is not accepting invitations.
-                                    }
-                                    else if (Duel.IsParticipant(pm))
-                                    {
-                                        PVPArenaSystem.SendMessage(User, 1116150); // The player has already joined in the session.
-                                    }
-                                    else if (Duel.IsBanned(pm))
-                                    {
-                                        PVPArenaSystem.SendMessage(User, 1116151); // You have already banned the player once.
-                                    }
-                                    else if (!pm.InRange(Arena.Stone.Location, 12))
-                                    {
-                                        PVPArenaSystem.SendMessage(User, 1116149); // The targeted player is too far away from the arena stone.
-                                    }
-                                    else
-                                    {
-                                        PVPArenaSystem.SendMessage(User, 1116152); // You have sent the invitation to the player.
-                                        PVPArenaSystem.SendMessage(pm, 1116212); // You have been invited to a duel.  Select the “OK” button to join this duel.
-
-                                        BaseGump.SendGump(new OfferDuelGump(pm, Duel, Arena, true));
-                                    }
-                                }
-                                else
-                                {
-                                    User.SendLocalizedMessage(503348); // You can only do this to players.
-                                    Refresh();
-                                }
-                            });
+                        User.Target = new InternalTarget(Arena, Duel);
                     }
+                    break;
                 case 4:
-                    BaseGump.SendGump(new BookedDuelsGump(User));
+                    BaseGump.SendGump(new BookedDuelsGump(User, Arena));
                     break;
                 case 5:
-                    BaseGump.SendGump(new DuelRulesGump(User));
+                    BaseGump.SendGump(new DuelRulesGump(User, Arena, Duel));
                     break;
+            }
+        }
+
+        private class InternalTarget : Server.Targeting.Target
+        {
+            public PVPArena Arena { get; private set; }
+            public ArenaDuel Duel { get; private set; }
+
+            public InternalTarget(PVPArena arena, ArenaDuel duel)
+                : base(10, false, Server.Targeting.TargetFlags.None)
+            {
+                Arena = arena;
+                Duel = duel;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (!Arena.PendingDuels.ContainsKey(Duel))
+                {
+                    PVPArenaSystem.SendMessage(from, 1115957); // This session has expired. Please create a new session and try again.
+                }
+                else if (targeted is PlayerMobile)
+                {
+                    var pm = targeted as PlayerMobile;
+                    var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(pm);
+
+                    if (!pm.Alive)
+                    {
+                        PVPArenaSystem.SendMessage(from, 1116148); // You cannot invite dead players.
+                    }
+                    if (pm.Young)
+                    {
+                        PVPArenaSystem.SendMessage(from, 1116152); // You have sent the invitation to the player.
+                    }
+                    else if (entry.IgnoreInvites)
+                    {
+                        PVPArenaSystem.SendMessage(from, 1116157); // The player is not accepting invitations.
+                    }
+                    else if (Duel.IsParticipant(pm))
+                    {
+                        PVPArenaSystem.SendMessage(from, 1116150); // The player has already joined in the session.
+                    }
+                    else if (Duel.IsBanned(pm))
+                    {
+                        PVPArenaSystem.SendMessage(from, 1116151); // You have already banned the player once.
+                    }
+                    else if (!pm.InRange(Arena.Stone.Location, 12))
+                    {
+                        PVPArenaSystem.SendMessage(from, 1116149); // The targeted player is too far away from the arena stone.
+                    }
+                    else if(from != pm)
+                    {
+                        PVPArenaSystem.SendMessage(from, 1116152); // You have sent the invitation to the player.
+                        PVPArenaSystem.SendMessage(pm, 1116212); // You have been invited to a duel.  Select the “OK” button to join this duel.
+
+                        BaseGump.SendGump(new OfferDuelGump(pm, Duel, Arena, true));
+                    }
+                }
+                else
+                {
+                    from.SendLocalizedMessage(503348); // You can only do this to players.
+                }
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                if (from is PlayerMobile)
+                {
+                    BaseGump.SendGump(new PendingDuelGump((PlayerMobile)from, Duel, Arena));
+                }
             }
         }
     }
 
-    public class JoinDuelGump : BaseGump
+    public class JoinDuelGump : BaseArenaGump
     {
         public List<ArenaDuel> PendingDuels { get; private set; }
-        public PVPArena Arena { get; private set; }
 
         public JoinDuelGump(PlayerMobile pm, List<ArenaDuel> list, PVPArena arena)
-            : base(pm, 50, 50)
+            : base(pm, arena)
         {
             PendingDuels = list;
-            Arena = arena;
         }
 
         public override void AddGumpLayout()
@@ -637,7 +746,7 @@ namespace Server.Engines.ArenaSystem
                 var duel = PendingDuels[i];
 
                 AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
-                AddLabel(54, y, 0x481, String.Format("{0}/{1}", (i + 1).ToString, duel.Entries.ToString()));
+                AddLabel(54, y, 0x481, String.Format("{0}/{1}", (i + 1).ToString(), duel.Entries.ToString()));
                 AddLabel(103, y, 0x481, duel.Host.Name);
 
                 if (i != 0 && i % perPage == 0)
@@ -646,13 +755,13 @@ namespace Server.Engines.ArenaSystem
 
                     if (i < PendingDuels.Count - 1)
                     {
-                        AddButton(272, 337, 4005, 4007, GumpButtonType.Page, i + 1);
+                        AddButton(272, 337, 4005, 4007, 0, GumpButtonType.Page, i + 1);
                         AddPage(page);
                     }
 
                     if (page > 1)
                     {
-                        AddButton(240, 337, 4005, 4007, GumpButtonType.Page, i - 1);
+                        AddButton(240, 337, 4005, 4007, 0, GumpButtonType.Page, i - 1);
                     }
 
                     y = 44;
@@ -690,18 +799,14 @@ namespace Server.Engines.ArenaSystem
         }
     }
 
-    public class OfferDuelGump : BaseGump
+    public class OfferDuelGump : BaseDuelGump
     {
-        public ArenaDuel Duel { get; private set; }
-        public PVPArena Arena { get; private set; }
         public bool FromPlayer { get; private set; }
         public bool DetailsOnly { get; private set; }
 
         public OfferDuelGump(PlayerMobile pm, ArenaDuel duel, PVPArena arena, bool fromPlayer, bool detailsOnly = false)
-            : base(pm, 50, 50)
+            : base(pm, arena, duel)
         {
-            Duel = duel;
-            Arena = arena;
             FromPlayer = fromPlayer;
             DetailsOnly = detailsOnly;
         }
@@ -772,7 +877,7 @@ namespace Server.Engines.ArenaSystem
 
             if (DetailsOnly)
             {
-                AddHtmlLocalized(20, 415, 460, CenterLoc, "#1115874", C32216(0xFF6347), false, false);
+                AddHtmlLocalized(20, 415, 460, 40, CenterLoc, "#1115874", C32216(0xFF6347), false, false);
                 // The arena gate has opened near the arena stone. <br>You've ninety seconds to use the gate or you'll be removed from this duel.
             }
             else
@@ -811,18 +916,313 @@ namespace Server.Engines.ArenaSystem
         }
     }
 
-    public class BookedDuelsGump : BaseGump
+    public class BookedDuelsGump : BaseArenaGump
     {
-        public PVPArena Arena { get; private set; }
+        public List<ArenaDuel> BookedDuels { get; set; }
 
         public BookedDuelsGump(PlayerMobile pm, PVPArena arena)
-            : base(pm, 50, 50)
+            : base(pm, arena)
         {
-            Arena = arena;
+            BookedDuels = PVPArenaSystem.Instance.GetBookedDuels();
         }
 
         public override void AddGumpLayout()
         {
+            AddBackground(0, 0, 310, 370, 9200);
+            AddPage(0);
+
+            AddImageTiled(8, 8, 294, 25, 2624);
+            AddAlphaRegion(8, 8, 294, 25);
+
+            AddImageTiled(8, 38, 85, 27, 2624);
+            AddAlphaRegion(8, 38, 85, 27);
+
+            AddImageTiled(96, 38, 207, 27, 2624);
+            AddAlphaRegion(96, 38, 207, 27);
+
+            AddImageTiled(8, 70, 85, 268, 2624);
+            AddAlphaRegion(8, 70, 85, 268);
+
+            AddImageTiled(96, 70, 207, 268, 2624);
+            AddAlphaRegion(96, 70, 207, 268);
+
+            AddImageTiled(8, 343, 294, 20, 2624);
+            AddAlphaRegion(8, 343, 294, 20);
+
+            AddHtmlLocalized(0, 12, 310, 20, CenterLoc, "#1115926", 0xFFFF, false, false); // Arena Menu - Booking Status
+            AddHtmlLocalized(0, 42, 93, 20, CenterLoc, "#1115785", 0xFFFF, false, false); // Arena
+            AddHtmlLocalized(96, 42, 207, 20, CenterLoc, "#1115848", 0xFFFF, false, false); // Host Player
+
+            int y = 80;
+            int page = 1;
+            int perPage = 10;
+
+            AddPage(1);
+
+            for (int i = 0; i < BookedDuels.Count; i++)
+            {
+                var duel = BookedDuels[i];
+
+                AddLabel(10, y, 0x481, duel.Arena.Definition.Name);
+                AddLabel(100, y, 0x481, duel.Host.Name);
+
+                y += 20;
+
+                if(i != 0 && i % perPage == 0)
+                {
+                    y = 80;
+
+                    if (i < BookedDuels.Count - 1)
+                        AddButton(273, 343, 4005, 4007, 0, GumpButtonType.Page, page + 1);
+
+                    page++;
+                    AddPage(page);
+
+                    AddButton(240, 343, 4014, 4015, 0, GumpButtonType.Page, page - 1);
+                }
+            }
+
+            AddButton(8, 343, 4014, 4016, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 343, 100, 20, 1150154, 0xFFFF, false, false); // BACK
+        }
+
+        public override void OnResponse(RelayInfo info)
+        {
+            if (info.ButtonID == 0)
+            {
+                var duel = Arena.GetPendingDuel(User);
+
+                if (duel == null)
+                {
+                    BaseGump.SendGump(new ArenaStoneGump(User, Arena));
+                }
+                else
+                {
+                    BaseGump.SendGump(new PendingDuelGump(User, duel, Arena));
+                }
+            }
+        }
+    }
+
+    public class IndividualStatsGump : BaseArenaGump
+    {
+        public PlayerMobile WhosStats { get; private set; }
+
+        public IndividualStatsGump(PlayerMobile pm, PVPArena arena, PlayerMobile stats)
+            : base(pm, arena)
+        {
+            WhosStats = stats;
+        }
+
+        public override void AddGumpLayout()
+        {
+            PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(WhosStats);
+            PlayerStatsEntry userEntry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
+
+            AddBackground(0, 0, 580, 440, 9200);
+
+            AddImageTiled(8, 8, 564, 46, 2624);
+            AddAlphaRegion(8, 8, 564, 46);
+
+            AddImageTiled(8, 62, 214, 25, 2624);
+            AddAlphaRegion(8, 62, 214, 25);
+
+            AddImageTiled(229, 62, 344, 25, 2624);
+            AddAlphaRegion(229, 62, 344, 25);
+
+            AddImageTiled(8, 93, 109, 78, 2624);
+            AddAlphaRegion(8, 93, 109, 78);
+
+            AddImageTiled(121, 93, 101, 78, 2624);
+            AddAlphaRegion(121, 93, 101, 78);
+
+            AddImageTiled(8, 178, 214, 25, 2624);
+            AddAlphaRegion(8, 178, 214, 25);
+
+            AddImageTiled(121, 209, 101, 78, 2624);
+            AddAlphaRegion(121, 209, 101, 78);
+
+            AddImageTiled(8, 294, 214, 25, 2624);
+            AddAlphaRegion(8, 294, 214, 25);
+
+            AddImageTiled(8, 325, 214, 25, 2624);
+            AddAlphaRegion(8, 325, 214, 25);
+
+            AddImageTiled(121, 325, 101, 78, 2624);
+            AddAlphaRegion(121, 325, 101, 78);
+
+            AddImageTiled(228, 93, 101, 312, 2624);
+            AddAlphaRegion(228, 93, 101, 312);
+
+            AddImageTiled(331, 93, 86, 312, 2624);
+            AddAlphaRegion(331, 93, 86, 312);
+
+            AddImageTiled(421, 93, 152, 312, 2624);
+            AddAlphaRegion(421, 93, 152, 312);
+
+            AddImageTiled(8, 422, 564, 20, 2624);
+            AddAlphaRegion(8, 422, 564, 20);
+
+            AddHtmlLocalized(0, 20, 580, 20, 1115926, 0xFFFF, false, false); // <CENTER>Arena Menu - Stats</CENTER>
+
+            AddHtmlLocalized(8, 72, 222, 20, CenterLoc, "#1115983", 0xFFFF, false, false); // Stats - Survival
+            AddHtmlLocalized(15, 103, 100, 20, 1115977, 0xFFFF, false, false); // Wins
+            AddHtmlLocalized(15, 128, 100, 20, 1115978, 0xFFFF, false, false); // Losses
+            AddHtmlLocalized(15, 153, 100, 20, 1115979, 0xFFFF, false, false); // Draws
+
+            AddHtmlLocalized(8, 188, 222, 20, CenterLoc, "#1116485", 0xFFFF, false, false); // Stats - Team Battle
+            AddHtmlLocalized(15, 219, 100, 20, 1115977, 0xFFFF, false, false); // Wins
+            AddHtmlLocalized(15, 234, 100, 20, 1115978, 0xFFFF, false, false); // Losses
+            AddHtmlLocalized(15, 259, 100, 20, 1115979, 0xFFFF, false, false); // Draws
+
+            AddHtmlLocalized(15, 304, 222, 20, CenterLoc, "#1116486", 0xFFFF, false, false); // Stats - Others
+            AddHtmlLocalized(15, 335, 100, 20, 1115980, 0xFFFF, false, false); // Latest Stats
+            AddHtmlLocalized(15, 360, 100, 20, 1115981, 0xFFFF, false, false); // Kills
+            AddHtmlLocalized(15, 385, 100, 20, 1115982, 0xFFFF, false, false); // Deaths
+
+            AddHtmlLocalized(229, 72, 344, 20, CenterLoc, "#1115984", 0xFFFF, false, false); // Kill/Death Stats
+
+            AddButton(8, 422, 4014, 4016, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 422, 100, 20, 1150154, 0xFFFF, false, false); // BACK
+
+            if (entry == null)
+                return;
+
+            AddLabel(128, 103, 0x481, entry.SurvivalWins.ToString());
+            AddLabel(128, 128, 0x481, entry.SurvivalLosses.ToString());
+            AddLabel(128, 153, 0x481, entry.SurvivalDraws.ToString());
+
+            AddLabel(128, 219, 0x481, entry.TeamWins.ToString());
+            AddLabel(128, 244, 0x481, entry.TeamLosses.ToString());
+            AddLabel(128, 269, 0x481, entry.TeamDraws.ToString());
+
+            AddLabel(128, 244, 0x481, entry.Kills.ToString());
+            AddLabel(128, 269, 0x481, entry.Deaths.ToString());
+
+            string latest = "";
+
+            for (int i = 0; i < entry.Record.Count; i++)
+            {
+                var record = entry.Record[i];
+
+                if (i < 5)
+                {
+                    latest += String.Format("-{0}", record.KilledBy ? "L" : "W");
+                }
+
+                AddLabel(237, 103 + (i * 25), 0x481, record.DuelDate.ToShortDateString());
+                AddHtmlLocalized(340, 103 + (i * 25), 80, 20, record.KilledBy ? 1115987 : 1115986, 0xFFFF, false, false); // KILLED BY : KILLED
+                AddLabel(429, 103 + (i * 25), 0x481, record.Opponent == null ? "Unknown" : record.Opponent.Name);
+            }
+
+            AddLabel(128, 219, 0x481, latest);
+
+            AddButton(8, 422, 4014, 4016, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 422, 100, 20, 1150154, 0xFFFF, false, false); // BACK
+
+            AddButton(408, 422, 4014, 4016, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(442, 422, 100, 20, userEntry.OpenStats ? 1149594 : 1149595, 0xFFFF, false, false); // OPEN STATS (ON) / OPEN STATS (OFF)
+        }
+
+        public override void OnResponse(RelayInfo info)
+        {
+            if (info.ButtonID == 0)
+            {
+                var duel = Arena.GetPendingDuel(User);
+
+                if (duel == null)
+                {
+                    BaseGump.SendGump(new ArenaStoneGump(User, Arena));
+                }
+                else
+                {
+                    BaseGump.SendGump(new PendingDuelGump(User, duel, Arena));
+                }
+            }
+            else if(info.ButtonID == 1)
+            {
+                PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
+
+                entry.OpenStats = !entry.OpenStats;
+            }
+        }
+    }
+
+    public class ArenaRankingsGump : BaseArenaGump
+    {
+        public int Page { get; private set; }
+        public BattleMode ViewType { get; private set; }
+
+        public List<ArenaStats> Stats { get; private set; }
+
+        public ArenaRankingsGump(PlayerMobile pm, PVPArena arena, int page = 0)
+            : base(pm, arena)
+        {
+            Page = page;
+            ViewType = BattleMode.Team;
+
+            Stats = Arena.TeamRankings;
+        }
+
+        public override void AddGumpLayout()
+        {
+            PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
+
+            AddBackground(0, 0, 500, 395, 9200);
+
+            AddImageTiled(8, 8, 484, 25, 2624);
+            AddAlphaRegion(8, 8, 484, 25);
+
+            AddImageTiled(8, 42, 484, 20, 2624);
+            AddAlphaRegion(8, 42, 484, 20);
+
+            AddImageTiled(8, 69, 484, 292, 2624);
+            AddAlphaRegion(8, 69, 484, 292);
+
+            AddImageTiled(8, 367, 484, 20, 2624);
+            AddAlphaRegion(8, 367, 484, 20);
+
+            AddHtmlLocalized(0, 10, 500, 20, CenterLoc, ViewType == BattleMode.Team ? "#1150130" : "#1150131", 0xFFFF, false, false); // Arena Menu - Survival Rankings : Arena Menu - Team Rankings
+
+            AddButton(8, 42, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(74, 42, 100, 20, 1150159, 0xFFFF, false, false); // TOP RANKING
+
+            AddButton(181, 42, 4005, 4007, 2, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(216, 42, 100, 20, 1150160, 0xFFFF, false, false); // MY RANKING
+
+            AddButton(316, 42, 4005, 4007, 3, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(351, 42, 100, 20, 1150133, 0xFFFF, false, false); // VIEW TEAM RANKINGS
+
+            AddHtmlLocalized(10, 128, 50, 20, 1150170, 0xFFFF, false, false); // RANK
+            AddHtmlLocalized(96, 128, 50, 20, 1150171, 0xFFFF, false, false); // NAME
+            AddHtmlLocalized(472, 128, 75, 20, 1150171, 0xFFFF, false, false); // RATING
+
+            int index = Page * 10;
+            int pageIndex = 0;
+
+            for (int i = index; i < Stats.Count && pageIndex < 10; i++)
+            {
+                var stats = Stats[i];
+
+                AddLabel(10, 98 + (index * 25), 0x481, (index + 1).ToString());
+                AddLabel(96, 98 + (index * 25), 0x481, stats.Owner.Name);
+                AddLabel(472, 98 + (index * 25), 0x481, stats.Ranking.ToString());
+
+                pageIndex++;
+            }
+
+            if (Page < Stats.Count / 10)
+            {
+                AddButton(280, 341, 4005, 4007, 4, GumpButtonType.Reply, 0);
+            }
+
+            if (Page > 0)
+            {
+                AddButton(220, 341, 4014, 4016, 5, GumpButtonType.Reply, 0);
+            }
+
+            AddButton(8, 367, 4014, 4016, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 367, 100, 20, 1150154, 0xFFFF, false, false); // BACK
         }
 
         public override void OnResponse(RelayInfo info)
@@ -842,87 +1242,46 @@ namespace Server.Engines.ArenaSystem
             }
             else
             {
+                switch (info.ButtonID)
+                {
+                    case 1:
+                        Stats = ViewType == BattleMode.Team ? Arena.TeamRankings : Arena.SurvivalRankings;
+                        Refresh();
+                        break;
+                    case 2:
+                        var stats = Stats.FirstOrDefault(s => s.Owner == User);
 
+                        if (stats != null)
+                        {
+                            int index = Stats.IndexOf(stats);
+                            Page = index / 10;
+                        }
+                        Refresh();
+                        break;
+                    case 3:
+                        ViewType = ViewType == BattleMode.Survival ? BattleMode.Team : BattleMode.Survival;
+                        Refresh();
+                        break;
+                    case 4:
+                        Page++;
+                        Refresh();
+                        break;
+                    case 5:
+                        Page--;
+                        Refresh();
+                        break;
+                }
             }
         }
     }
 
-    public class IndividualStatsGump : BaseGump
+    public class DuelResultsGump : BaseDuelGump
     {
-        public IndividualStatsGump(PlayerMobile pm, PlayerMobile stats)
-            : base(pm, 50, 50)
-        {
-        }
-
-        public override void AddGumpLayout()
-        {
-        }
-
-        public override void OnResponse(RelayInfo info)
-        {
-            if (info.ButtonID == 0)
-            {
-                var duel = Arena.GetPendingDuel(User);
-
-                if (duel == null)
-                {
-                    BaseGump.SendGump(new ArenaStoneGump(User, Arena));
-                }
-                else
-                {
-                    BaseGump.SendGump(new PendingDuelGump(User, duel, Arena));
-                }
-            }
-            else
-            {
-            }
-        }
-    }
-
-    public class ArenaRankingsGump : BaseGump
-    {
-        public PVPArena Arena { get; private set; }
-
-        public ArenaRankingsGump(PlayerMobile pm, PVPArena arena)
-            : base(pm, 50, 50)
-        {
-            Arena = arena;
-        }
-
-        public override void AddGumpLayout()
-        {
-        }
-
-        public override void OnResponse(RelayInfo info)
-        {
-            if (info.ButtonID == 0)
-            {
-                var duel = Arena.GetPendingDuel(User);
-
-                if (duel == null)
-                {
-                    BaseGump.SendGump(new ArenaStoneGump(User, Arena));
-                }
-                else
-                {
-                    BaseGump.SendGump(new PendingDuelGump(User, duel, Arena));
-                }
-            }
-            else
-            {
-            }
-        }
-    }
-
-    public class DuelResultsGump : BaseGump
-    {
-        public ArenaDuel Duel { get; private set; }
         public ArenaTeam Winners { get; private set; }
 
         public DuelResultsGump(PlayerMobile pm, ArenaDuel duel, ArenaTeam winners)
-            : base(pm, 50, 50)
+            : base(pm, duel.Arena, duel)
         {
-            Duel = duel;
             Winners = winners;
         }
 
@@ -971,11 +1330,11 @@ namespace Server.Engines.ArenaSystem
 
             int i = 0;
 
-            foreach (var kvp in Dual.KillRecord)
+            foreach (var kvp in Duel.KillRecord)
             {
-                AddLabel(15, 100 + (i * 25), 0x481, kvp.Key.Name);
+                AddLabel(15, 100 + (i * 25), 0x481, kvp.Key);
                 AddHtmlLocalized(158, 100 + (i * 25), 100, 20, 1115986, 0xFFFF, false, false); // KILLED
-                AddLabel(231, 100 + (i * 25), 0x481, kvp.Value.Name);
+                AddLabel(231, 100 + (i * 25), 0x481, kvp.Value);
 
                 i++;
 

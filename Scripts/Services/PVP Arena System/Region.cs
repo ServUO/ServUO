@@ -130,5 +130,15 @@ namespace Server.Engines.ArenaSystem
 
             base.OnDeath(m);
         }
+
+        public override bool AllowHarmful(Mobile from, IDamageable target)
+        {
+            if (Arena != null && Arena.CurrentDuel != null && Arena.CurrentDuel.Complete)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

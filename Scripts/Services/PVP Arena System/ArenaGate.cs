@@ -51,7 +51,7 @@ namespace Server.Engines.ArenaSystem
 
         private bool CheckValidation(PlayerMobile pm)
         {
-            if (pm.ControlSlots > Duel.PetSlots)
+            if (pm.Followers > Duel.PetSlots)
             {
                 PVPArenaSystem.SendMessage(pm, 1115974); // You currently exceed the maximum number of pet slots for this duel. Please stable your pet(s) with the arena manager before proceeding.
             }

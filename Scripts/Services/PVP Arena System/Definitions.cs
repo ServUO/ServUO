@@ -31,9 +31,9 @@ namespace Server.Engines.ArenaSystem
 
         public Rectangle2D[] EffectAreas { get; private set; }
         public Rectangle2D[] RegionBounds { get; private set; }
+        public Rectangle2D[] StartLocations { get; private set; }
 
         public Rectangle2D StartLocation1 { get; private set; }
-
         public Rectangle2D StartLocation2 { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -52,8 +52,7 @@ namespace Server.Engines.ArenaSystem
             int id1, 
             int id2, 
             Rectangle2D[] effectAreas, 
-            Rectangle2D start1,
-            Rectangle2D start2,
+            Rectangle2D[] startLocs,
             Point3D gateLoc,
             Rectangle2D[] bounds)
         {
@@ -66,8 +65,9 @@ namespace Server.Engines.ArenaSystem
             BannerID1 = id1;
             BannerID2 = id2;
             EffectAreas = effectAreas;
-            StartLocation1 = start1;
-            StartLocation2 = start2;
+            StartLocations = startLocs;
+            StartLocation1 = startLocs[0];
+            StartLocation2 = startLocs[1];
             GateLocation = gateLoc;
             RegionBounds = bounds;
         }
@@ -88,14 +88,25 @@ namespace Server.Engines.ArenaSystem
                 17099,
                 new Rectangle2D[]
                 {
-                    new Rectangle2D(6072, 3718, 23, 1),
-                    new Rectangle2D(6072, 3723, 23, 1),
-                    new Rectangle2D(6075, 3714, 1, 13),
-                    new Rectangle2D(6083, 3713, 1, 15),
-                    new Rectangle2D(6090, 3713, 1, 13),
+                    new Rectangle2D(6072, 3718, 24, 1),
+                    new Rectangle2D(6072, 3723, 24, 1),
+                    new Rectangle2D(6075, 3714, 1, 14),
+                    new Rectangle2D(6083, 3713, 1, 16),
+                    new Rectangle2D(6091, 3714, 1, 14),
                 },
-                new Rectangle2D(6076, 3718, 2, 3),
-                new Rectangle2D(6089, 3718, 2, 3),
+                new Rectangle2D[]
+                {
+                    new Rectangle2D(6071, 3719, 4, 3),
+                    new Rectangle2D(6092, 3719, 4, 3),
+                    new Rectangle2D(6077, 3713, 5, 4),
+                    new Rectangle2D(6084, 3713, 5, 4),
+                    new Rectangle2D(6076, 3724, 5, 4),
+                    new Rectangle2D(6084, 3724, 5, 4),
+                    new Rectangle2D(6073, 3716, 1, 1),
+                    new Rectangle2D(6073, 3724, 1, 1),
+                    new Rectangle2D(6091, 3714, 2, 2),
+                    new Rectangle2D(6091, 3724, 2, 2),
+                },
                 new Point3D(6100, 3721, 25),
                 new Rectangle2D[]
                 {
@@ -111,14 +122,25 @@ namespace Server.Engines.ArenaSystem
                 17099,
                 new Rectangle2D[]
                 {
-                    new Rectangle2D(6072, 3718, 23, 1),
-                    new Rectangle2D(6072, 3723, 23, 1),
-                    new Rectangle2D(6075, 3714, 1, 13),
-                    new Rectangle2D(6083, 3713, 1, 15),
-                    new Rectangle2D(6090, 3713, 1, 13),
+                    new Rectangle2D(6072, 3718, 24, 1),
+                    new Rectangle2D(6072, 3723, 24, 1),
+                    new Rectangle2D(6075, 3714, 1, 14),
+                    new Rectangle2D(6083, 3713, 1, 16),
+                    new Rectangle2D(6090, 3713, 1, 16),
                 },
-                new Rectangle2D(6076, 3718, 2, 3),
-                new Rectangle2D(6089, 3718, 2, 3),
+                new Rectangle2D[]
+                {
+                    new Rectangle2D(6071, 3719, 4, 3),
+                    new Rectangle2D(6092, 3719, 4, 3),
+                    new Rectangle2D(6077, 3713, 5, 4),
+                    new Rectangle2D(6084, 3713, 5, 4),
+                    new Rectangle2D(6076, 3724, 5, 4),
+                    new Rectangle2D(6084, 3724, 5, 4),
+                    new Rectangle2D(6073, 3716, 1, 1),
+                    new Rectangle2D(6073, 3724, 1, 1),
+                    new Rectangle2D(6091, 3714, 2, 2),
+                    new Rectangle2D(6091, 3724, 2, 2),
+                },
                 new Point3D(6100, 3721, 25),
                 new Rectangle2D[]
                 {
@@ -134,14 +156,25 @@ namespace Server.Engines.ArenaSystem
                 17099,
                 new Rectangle2D[]
                 {
-                    new Rectangle2D(3760, 2765, 24, 1),
-                    new Rectangle2D(3760, 2772, 24, 1),
-                    new Rectangle2D(3766, 2761, 1, 15),
-                    new Rectangle2D(3772, 2761, 1, 15),
-                    new Rectangle2D(3778, 2761, 1, 15),
+                    new Rectangle2D(3760, 2766, 25, 1),
+                    new Rectangle2D(3760, 2772, 25, 1),
+                    new Rectangle2D(3765, 2761, 1, 16),
+                    new Rectangle2D(3772, 2761, 1, 16),
+                    new Rectangle2D(3780, 2761, 1, 16),
                 },
-                new Rectangle2D(3763, 2767, 2, 5),
-                new Rectangle2D(3781, 2767, 2, 5),
+                new Rectangle2D[]
+                {
+                    new Rectangle2D(3760, 2767, 4, 4),
+                    new Rectangle2D(3781, 2767, 3, 4),
+                    new Rectangle2D(3766, 2761, 4, 4),
+                    new Rectangle2D(3773, 2761, 4, 4),
+                    new Rectangle2D(3766, 2773, 4, 4),
+                    new Rectangle2D(3773, 2773, 4, 4),
+                    new Rectangle2D(3760, 2761, 3, 3),
+                    new Rectangle2D(3781, 2761, 3, 3),
+                    new Rectangle2D(3781, 2773, 3, 3),
+                    new Rectangle2D(3760, 2773, 3, 3),
+                },
                 new Point3D(3792, 2768, 6),
                 new Rectangle2D[]
                 {
@@ -157,14 +190,25 @@ namespace Server.Engines.ArenaSystem
                 17099,
                 new Rectangle2D[]
                 {
-                    new Rectangle2D(3749, 2761, 24, 1),
-                    new Rectangle2D(3749, 2769, 24, 1),
-                    new Rectangle2D(3756, 2757, 1, 15),
-                    new Rectangle2D(3761, 2757, 1, 15),
-                    new Rectangle2D(3766, 2757, 1, 15),
+                    new Rectangle2D(3749, 2762, 25, 1),
+                    new Rectangle2D(3749, 2768, 25, 1),
+                    new Rectangle2D(3754, 2757, 1, 16),
+                    new Rectangle2D(3761, 2757, 1, 16),
+                    new Rectangle2D(3769, 2757, 1, 16),
                 },
-                new Rectangle2D(3752, 2763, 2, 5),
-                new Rectangle2D(3770, 2763, 2, 5),
+                new Rectangle2D[]
+                {
+                    new Rectangle2D(3749, 2763, 4, 4),
+                    new Rectangle2D(3770, 2763, 3, 4),
+                    new Rectangle2D(3755, 2757, 4, 4),
+                    new Rectangle2D(3762, 2757, 4, 4),
+                    new Rectangle2D(3755, 2769, 4, 4),
+                    new Rectangle2D(3762, 2769, 4, 4),
+                    new Rectangle2D(3749, 2757, 3, 3),
+                    new Rectangle2D(3770, 2757, 3, 3),
+                    new Rectangle2D(3770, 2769, 3, 3),
+                    new Rectangle2D(3759, 2769, 3, 3),
+                },
                 new Point3D(3781, 2764, 5),
                 new Rectangle2D[]
                 {

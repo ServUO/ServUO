@@ -243,7 +243,7 @@ namespace Server.Engines.Despise
 		}
 		
 		[Constructable]
-		public Sagittarri(int powerLevel) : base(AIType.AI_Melee, FightMode.Evil)
+		public Sagittarri(int powerLevel) : base(AIType.AI_Archer, FightMode.Evil)
 		{
             Name = "Sagittarri";
 			Body = 101;
@@ -289,13 +289,18 @@ namespace Server.Engines.Despise
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
+			writer.Write((int)1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int v = reader.ReadInt();
+
+            if (v == 0)
+            {
+                AI = AIType.AI_Archer;
+            }
 		}
 	}
 	

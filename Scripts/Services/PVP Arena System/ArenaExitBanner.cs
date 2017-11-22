@@ -1,6 +1,8 @@
 using Server;
 using System;
 using Server.Items;
+using Server.Gumps;
+using Server.Mobiles;
 
 namespace Server.Engines.ArenaSystem
 {
@@ -22,18 +24,19 @@ namespace Server.Engines.ArenaSystem
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(Location, 3))
+            if (from is PlayerMobile && from.InRange(Location, 3))
             {
-                from.SendGump(new WarningGump(1115969, C32216(0xB22222), 1115970, 0xFFFF, 348, 222, (from, okeedokee, state) =>
+                from.SendGump(new ConfirmCallbackGump((PlayerMobile)from, 1115969, 1115970, null, null, (m, state) =>
                 {
                     var duel = Arena.CurrentDuel;
 
-                    if (duel != null && from is PlayerMobile)
+                    Arena.RemovePlayer((PlayerMobile)m);
+
+                    if (duel != null && !duel.Complete)
                     {
-                        duel.RemovePlayer((PlayerMobile)from);
-                        duel.OnPlayerLeave((PlayerMobile)from);
+                        duel.OnPlayerLeave((PlayerMobile)m);
                     }
-                }, null, true));
+                }));
             }
         }
 
