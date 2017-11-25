@@ -2390,7 +2390,7 @@ namespace Server.Items
 
             percentageBonus += ForceOfNature.GetBonus(attacker, defender);
 
-            if (m_ExtendedWeaponAttributes.AssassinHoned > 0 && attacker.Direction == defender.Direction)
+            if (m_ExtendedWeaponAttributes.AssassinHoned > 0 && GetOppositeDir(attacker.Direction) == defender.Direction)
             {
                 if (!ranged || 0.5 > Utility.RandomDouble())
                 {
@@ -2882,7 +2882,38 @@ namespace Server.Items
 			XmlAttach.OnWeaponHit(this, attacker, defender, damageGiven);
 		}
 
-		public virtual double GetAosSpellDamage(Mobile attacker, Mobile defender, int bonus, int dice, int sides)
+        public Direction GetOppositeDir(Direction d)
+        {
+            Direction direction = Direction.Down;
+
+            if (d == Direction.West)
+                direction = Direction.East;
+
+            if (d == Direction.East)
+                direction = Direction.West;
+
+            if (d == Direction.North)
+                direction = Direction.South;
+
+            if (d == Direction.South)
+                direction = Direction.North;
+
+            if (d == Direction.Right)
+                direction = Direction.Left;
+
+            if (d == Direction.Left)
+                direction = Direction.Right;
+
+            if (d == Direction.Up)
+                direction = Direction.Down;
+
+            if (d == Direction.Down)
+                direction = Direction.Up;
+
+            return direction;
+        }
+
+        public virtual double GetAosSpellDamage(Mobile attacker, Mobile defender, int bonus, int dice, int sides)
 		{
             int damage = Utility.Dice(dice, sides, bonus) * 100;
             int damageBonus = 0;
