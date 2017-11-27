@@ -116,7 +116,8 @@ namespace Server.Mobiles
     {
         Ribs,
         Bird,
-        LambLeg
+        LambLeg,
+        Rotworm
     }
 
     public enum HideType
@@ -2135,45 +2136,28 @@ namespace Server.Mobiles
 
                 if (feathers != 0)
                 {
-                    var feather = new Feather(feathers);
-                    if (!special || !from.PlaceInBackpack(feather))
-                    {
-                        corpse.AddCarvedItem(feather, from);
-                        from.SendLocalizedMessage(500479); // You pluck the bird. The feathers are now on the corpse.
-                    }
-                    else
-                        from.SendLocalizedMessage(1114097); // You pluck the bird and place the feathers in your backpack.
+                    corpse.AddCarvedItem(new Feather(feathers), from);
+                    from.SendLocalizedMessage(500479); // You pluck the bird. The feathers are now on the corpse.
                 }
 
                 if (wool != 0)
                 {
-                    var w = new TaintedWool(wool);
-                    if (!special || !from.PlaceInBackpack(w))
-                    {
-                        corpse.AddCarvedItem(w, from);
-                        from.SendLocalizedMessage(500483); // You shear it, and the wool is now on the corpse.
-                    }
-                    else
-                        from.SendLocalizedMessage(1114099); // You shear the creature and put the resources in your backpack.
+                    corpse.AddCarvedItem(new TaintedWool(wool), from);
+                    from.SendLocalizedMessage(500483); // You shear it, and the wool is now on the corpse.
                 }
 
                 if (meat != 0)
                 {
-                    Item m = null;
                     if (MeatType == MeatType.Ribs)
-                        m = new RawRibs(meat);
+                        corpse.AddCarvedItem(new RawRibs(meat), from);
                     else if (MeatType == MeatType.Bird)
-                        m = new RawBird(meat);
+                        corpse.AddCarvedItem(new RawBird(meat), from);
                     else if (MeatType == MeatType.LambLeg)
-                        m = new RawLambLeg(meat);
+                        corpse.AddCarvedItem(new RawLambLeg(meat), from);
+                    else if (MeatType == MeatType.Rotworm)
+                        corpse.AddCarvedItem(new RawRotwormMeat(meat), from);
 
-                    if (m != null && (!special || !from.PlaceInBackpack(m)))
-                    {
-                        corpse.AddCarvedItem(m, from);
-                        from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
-                    }
-                    else if (m != null)
-                        from.SendLocalizedMessage(1114101); // You carve some meat and put it in your backpack.
+                    from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
                 }
 
                 if (hides != 0)
@@ -2242,38 +2226,21 @@ namespace Server.Mobiles
                                 break;
                             }
                     }
-
-                    bool onCorpse = false;
-                    bool inPack = false;
-
+                    
                     foreach (Item s in list)
                     {
-                        if (!special || !from.PlaceInBackpack(s))
-                        {
-                            corpse.AddCarvedItem(s, from);
-                            onCorpse = true;
-                        }
-                        else
-                            inPack = true;
+                        corpse.AddCarvedItem(s, from);
                     }
 
                     list.Clear();
 
-                    if (onCorpse)
-                        from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
-
-                    if (inPack)
-                        from.SendLocalizedMessage(1114098); // You cut away some scales and put them in your backpack.
+                    from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
                 }
 
                 if (dragonblood != 0)
                 {
-                    Item db = new DragonBlood(dragonblood);
-
-                    if (!special || !from.PlaceInBackpack(db))
-                    {
-                        corpse.AddCarvedItem(db, from);
-                    }
+                    corpse.AddCarvedItem(new DragonBlood(dragonblood), from);
+                    from.SendLocalizedMessage(1094946); // Some blood is left on the corpse.
                 }
 
                 corpse.Carved = true;
