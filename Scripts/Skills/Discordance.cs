@@ -249,16 +249,18 @@ namespace Server.SkillHandlers
                             #endregion
 
 							m_Table[targ] = info;
-						}
+
+                            from.NextSkillTime = Core.TickCount + (8000 - ((masteryBonus / 5) * 1000));
+                        }
 						else
 						{
 							from.SendLocalizedMessage(1049540); // You fail to disrupt your target
 							m_Instrument.PlayInstrumentBadly(from);
 							m_Instrument.ConsumeUse(from);
-						}
 
-						from.NextSkillTime = Core.TickCount + 12000;
-					}
+                            from.NextSkillTime = Core.TickCount + 5000;
+                        }                        
+                    }
 					else
 					{
 						m_Instrument.PlayInstrumentBadly(from);
