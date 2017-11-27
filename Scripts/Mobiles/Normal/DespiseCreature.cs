@@ -91,7 +91,7 @@ namespace Server.Engines.Despise
 
         public virtual int StatRatio { get { return Utility.RandomMinMax(35, 60); } }
 
-        public virtual double SkillStart { get { return Utility.RandomMinMax(35, 50); } }
+        public virtual double SkillStart { get { return Utility.RandomMinMax(80.0, 130.0); } }
         public virtual double SkillMax { get { return m_MaxPower == 15 ? 130.0 : 110.0; } }
 
         public virtual int StrStart { get { return Utility.RandomMinMax(91, 100); } }
@@ -144,6 +144,29 @@ namespace Server.Engines.Despise
             SetHits(HitsStart);
             SetStam(StamStart);
             SetMana(ManaStart);
+
+            SetDamageType(ResistanceType.Physical, 100);
+
+            SetResistance(ResistanceType.Physical, 5, 50);
+            SetResistance(ResistanceType.Fire, 5, 50);
+            SetResistance(ResistanceType.Cold, 5, 50);
+            SetResistance(ResistanceType.Poison, 5, 50);
+            SetResistance(ResistanceType.Energy, 5, 50);
+
+            SetSkill(SkillName.Wrestling, SkillStart);
+            SetSkill(SkillName.Tactics, SkillStart);
+            SetSkill(SkillName.MagicResist, SkillStart);
+            SetSkill(SkillName.Anatomy, SkillStart);
+            SetSkill(SkillName.Poisoning, SkillStart);
+            SetSkill(SkillName.DetectHidden, SkillStart);
+            SetSkill(SkillName.Parry, SkillStart);
+            SetSkill(SkillName.Magery, SkillStart);
+            SetSkill(SkillName.EvalInt, SkillStart);
+            SetSkill(SkillName.Meditation, SkillStart);
+            SetSkill(SkillName.Necromancy, SkillStart);
+            SetSkill(SkillName.SpiritSpeak, SkillStart);
+            SetSkill(SkillName.Focus, SkillStart);
+            SetSkill(SkillName.Discordance, SkillStart);
 
             NoLootOnDeath = true;
 

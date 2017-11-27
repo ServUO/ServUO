@@ -472,7 +472,8 @@ namespace Server.Items
                 double chance = ((healing + 10.0) / 100.0) - (m_Slips * 0.02);
 
                 #region Heritage Items
-                healing += EnhancedBandage.HealingBonus;
+                if( m_Enhanced )
+                    healing += EnhancedBandage.HealingBonus;
                 #endregion
 
                 #region Exodus Items
