@@ -50,9 +50,9 @@ namespace Server.Engines.ArenaSystem
     [PropertyObject]
     public class ArenaDuel
     {
-        public const int MaxEntries = 10;
-        public const int MaxPetSlots = 5;
 
+        public static int MaxEntries = 10;
+        public static int MaxPetSlots = 5;
         public static TimeSpan KickTime = TimeSpan.FromSeconds(40);
         public static TimeSpan EntryTime = TimeSpan.FromSeconds(90);
         public static TimeSpan StartTimeDuration = TimeSpan.FromSeconds(5);
@@ -139,26 +139,14 @@ namespace Server.Engines.ArenaSystem
         {
             Host = host;
 
-            PlayerStatsEntry.DuelProfile profile = null;
             var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(host);
 
-            if (entry != null)
-                profile = entry.Profile;
+            if (entry.Profile != null)
+                ConfigureFromProfile(entry.Profile);
+            else
+                ConfigureDefault();
 
             Arena = arena;
-
-            Entries = profile != null ? profile.Entries : 2;
-            RoomType = profile != null ? profile.RoomType : RoomType.Public;
-            BattleMode = profile != null ? profile.BattleMode : BattleMode.Team;
-            Ranked = profile != null ? profile.Ranked : true;
-            TimeLimit = profile != null ? profile.TimeLimit : TimeLimit.TenMinutes;
-            EntryFee = profile != null ? profile.EntryFee : EntryFee.Zero;
-            PetSlots = profile != null ? profile.PetSlots : 5;
-            RidingFlyingAllowed = profile != null ? profile.RidingFlyingAllowed : true;
-            RangedWeaponsAllowed = profile != null ? profile.RangedWeaponsAllowed : true;
-            SummonSpellsAllowed = profile != null ? profile.SummonSpellsAllowed : true;
-            FieldSpellsAllowed = profile != null ? profile.FieldSpellsAllowed : true;
-            PotionRules = profile != null ? profile.PotionRules : PotionRules.All;
 
             Teams = new List<ArenaTeam>();
             KillRecord = new Dictionary<string, string>();
@@ -169,6 +157,38 @@ namespace Server.Engines.ArenaSystem
             Teams.Add(new ArenaTeam());
 
             Complete = false;
+        }
+
+        public void ConfigureFromProfile(PlayerStatsEntry.DuelProfile profile)
+        {
+            Entries = profile.Entries;
+            RoomType = profile.RoomType;
+            BattleMode = profile.BattleMode;
+            Ranked = profile.Ranked;
+            TimeLimit = profile.TimeLimit;
+            EntryFee = profile.EntryFee;
+            PetSlots = profile.PetSlots;
+            RidingFlyingAllowed = profile.RidingFlyingAllowed;
+            RangedWeaponsAllowed = profile.RangedWeaponsAllowed;
+            SummonSpellsAllowed = profile.SummonSpellsAllowed;
+            FieldSpellsAllowed = profile.FieldSpellsAllowed;
+            PotionRules = profile.PotionRules;
+        }
+
+        public void ConfigureDefault()
+        {
+            Entries = 2;
+            RoomType = RoomType.Public;
+            BattleMode = BattleMode.Team;
+            Ranked = true;
+            TimeLimit = TimeLimit.TenMinutes;
+            EntryFee = EntryFee.Zero;
+            PetSlots = 5;
+            RidingFlyingAllowed = true;
+            RangedWeaponsAllowed = true;
+            SummonSpellsAllowed = true;
+            FieldSpellsAllowed = true;
+            PotionRules = PotionRules.All;
         }
 
         public override string ToString()
@@ -910,6 +930,110 @@ namespace Server.Engines.ArenaSystem
             Banned = null;
             Warned = null;
             KillRecord = null;
+        }
+
+        public ArenaDuel(GenericReader reader, PVPArena arena)
+        {
+            int version = reader.ReadInt();
+
+            Arena = arena;
+
+            Teams = new List<ArenaTeam>();
+            KillRecord = new Dictionary<string, string>();
+            Banned = new List<PlayerMobile>();
+            Warned = new List<PlayerMobile>();
+
+            Host = reader.ReadMobile() as PlayerMobile;
+            Pot = reader.ReadInt();
+
+            Entries = reader.ReadInt();
+            RoomType = (RoomType)reader.ReadInt();
+            BattleMode = (BattleMode)reader.ReadInt();
+            Ranked = reader.ReadBool();
+            TimeLimit = (TimeLimit)reader.ReadInt();
+            EntryFee = (EntryFee)reader.ReadInt();
+            PetSlots = reader.ReadInt();
+            RidingFlyingAllowed = reader.ReadBool();
+            RangedWeaponsAllowed = reader.ReadBool();
+            SummonSpellsAllowed = reader.ReadBool();
+            FieldSpellsAllowed = reader.ReadBool();
+            PotionRules = (PotionRules)reader.ReadInt();
+
+            HasBegun = reader.ReadBool();
+            Complete = reader.ReadBool();
+            InPreFight = reader.ReadBool();
+            StartTime = reader.ReadDateTime();
+            EntryDeadline = reader.ReadDateTime();
+
+            int count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                Teams.Add(new ArenaTeam(reader));
+            }
+
+            count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                string a = reader.ReadString();
+                string b = reader.ReadString();
+
+                KillRecord[a] = b;
+            }
+
+            count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
+
+                if(pm != null)
+                    Warned.Add(pm);
+            }
+        }
+
+        public void Serialize(GenericWriter writer)
+        {
+            writer.Write(0);
+
+            writer.Write(Host);
+            writer.Write(Pot);
+
+            writer.Write(Entries);
+            writer.Write((int)RoomType);
+            writer.Write((int)BattleMode);
+            writer.Write(Ranked);
+            writer.Write((int)TimeLimit);
+            writer.Write((int)EntryFee);
+            writer.Write(PetSlots);
+            writer.Write(RidingFlyingAllowed);
+            writer.Write(RangedWeaponsAllowed);
+            writer.Write(SummonSpellsAllowed);
+            writer.Write(FieldSpellsAllowed);
+            writer.Write((int)PotionRules);
+
+            writer.Write(HasBegun);
+            writer.Write(Complete);
+            writer.Write(InPreFight);
+            writer.Write(StartTime);
+            writer.Write(EntryDeadline);
+
+            writer.Write(Teams.Count);
+            for (int i = 0; i < Teams.Count; i++)
+            {
+                Teams[i].Serialize(writer);
+            }
+
+            writer.Write(KillRecord.Count);
+            foreach (var kvp in KillRecord)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value);
+            }
+
+            writer.Write(Warned.Count);
+            foreach (var pm in Warned)
+            {
+                writer.Write(pm);
+            }
         }
     }
 }

@@ -58,5 +58,42 @@ namespace Server.Engines.ArenaSystem
         {
             return Players.ContainsKey(pm);
         }
+
+        public ArenaTeam(GenericReader reader)
+        {
+            int version = reader.ReadInt();
+
+            Players = new Dictionary<PlayerMobile, PlayerStatsEntry>();
+            List<PlayerMobile> list = new List<PlayerMobile>();
+
+            int count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
+
+                if (pm != null)
+                    list.Add(pm);
+            }
+
+            // have to wait for everything else to deserialize :(
+            Timer.DelayCall(() =>
+            {
+                foreach (var pm in list)
+                {
+                    AddParticipant(pm);
+                }
+            });
+        }
+
+        public void Serialize(GenericWriter writer)
+        {
+            writer.Write(0);
+
+            writer.Write(Players.Count);
+            foreach(var kvp in Players)
+            {
+                writer.Write(kvp.Key);
+            }
+        }
     }
 }

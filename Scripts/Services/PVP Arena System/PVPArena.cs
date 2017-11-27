@@ -356,6 +356,29 @@ namespace Server.Engines.ArenaSystem
             writer.Write(Manager);
             writer.Write(Banner1);
             writer.Write(Banner2);
+
+            writer.Write(PendingDuels.Count);
+            foreach (var kvp in PendingDuels)
+            {
+                kvp.Key.Serialize(writer);
+                writer.WriteDeltaTime(kvp.Value);
+            }
+
+            writer.Write(BookedDuels.Count);
+            foreach (var duel in BookedDuels)
+            {
+                duel.Serialize(writer);
+            }
+
+            if (CurrentDuel != null)
+            {
+                writer.Write(1);
+                CurrentDuel.Serialize(writer);
+            }
+            else
+            {
+                writer.Write(0);
+            }
         }
 
         public void Deserialize(GenericReader reader)
@@ -393,6 +416,26 @@ namespace Server.Engines.ArenaSystem
             Manager = reader.ReadMobile() as ArenaManager;
             Banner1 = reader.ReadItem() as ArenaExitBanner;
             Banner2 = reader.ReadItem() as ArenaExitBanner;
+
+            count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                ArenaDuel duel = new ArenaDuel(reader, this);
+                DateTime dt = reader.ReadDeltaTime();
+
+                PendingDuels[duel] = dt;
+            }
+
+            count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                BookedDuels.Add(new ArenaDuel(reader, this));
+            }
+
+            if (reader.ReadInt() == 1)
+            {
+                CurrentDuel = new ArenaDuel(reader, this);
+            }
 
             if (Stone != null)
                 Stone.Arena = this;

@@ -1165,19 +1165,22 @@ namespace Server.Engines.ArenaSystem
             AddLabel(128, 380, LabelHue, entry.Deaths.ToString());
 
             string latest = "";
+            int y = 103;
 
-            for (int i = 0; i < entry.Record.Count; i++)
+            for (int i = entry.Record.Count - 1; i >= 0; i--)
             {
                 var record = entry.Record[i];
 
-                if (i < 5)
+                if (i > entry.Record.Count - 6)
                 {
                     latest += String.Format("{0}-", record.KilledBy ? "L" : "W");
                 }
 
-                AddLabel(237, 103 + (i * 25), LabelHue, record.DuelDate.ToShortDateString());
-                AddHtmlLocalized(340, 103 + (i * 25), 80, 20, record.KilledBy ? 1115987 : 1115986, 0xFFFF, false, false); // KILLED BY : KILLED
-                AddLabel(429, 103 + (i * 25), LabelHue, record.Opponent == null ? "Unknown" : record.Opponent.Name);
+                AddLabel(237, y, LabelHue, record.DuelDate.ToShortDateString());
+                AddHtmlLocalized(340, y, 80, 20, record.KilledBy ? 1115987 : 1115986, 0xFFFF, false, false); // KILLED BY : KILLED
+                AddLabel(429, y, LabelHue, record.Opponent == null ? "Unknown" : record.Opponent.Name);
+
+                y += 25;
             }
 
             AddLabel(128, 330, LabelHue, latest);

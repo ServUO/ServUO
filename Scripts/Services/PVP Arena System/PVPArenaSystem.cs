@@ -12,7 +12,7 @@ namespace Server.Engines.ArenaSystem
     public class PVPArenaSystem : PointsSystem
     {
         public static PVPArenaSystem Instance { get; set; }
-        public static bool Enabled = Config.Get("PVPArena.Enabled", true);
+        public static bool Enabled { get { return Core.HS; } }
 
         public override PointsType Loyalty { get { return PointsType.PVPArena; } }
         public override TextDefinition Name { get { return m_Name; } }
@@ -31,7 +31,6 @@ namespace Server.Engines.ArenaSystem
             if (Enabled)
             {
                 InitializeArenas();
-                Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), OnTick);
             }
         }
 
@@ -67,7 +66,6 @@ namespace Server.Engines.ArenaSystem
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
-            //from.SendLocalizedMessage(1153423, ((int)points).ToString()); // You have gained ~1_AMT~ Dungeon Crystal Points of Despise.
         }
 
         public override TextDefinition GetTitle(PlayerMobile from)
@@ -171,9 +169,14 @@ namespace Server.Engines.ArenaSystem
 
         public static void Initialize()
         {
-            foreach (var arena in Arenas)
+            if (Enabled)
             {
-                arena.ConfigureArena();
+                foreach (var arena in Arenas)
+                {
+                    arena.ConfigureArena();
+                }
+
+                Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), () => Instance.OnTick() );
             }
         }
 
