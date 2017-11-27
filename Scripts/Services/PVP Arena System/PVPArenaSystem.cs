@@ -6,6 +6,7 @@ using Server.Mobiles;
 using Server.Engines.Points;
 using System.Linq;
 
+//TODO: Party: 1152064 You cannot invite other players in an arena to your party!
 namespace Server.Engines.ArenaSystem
 {
     public class PVPArenaSystem : PointsSystem
@@ -51,6 +52,19 @@ namespace Server.Engines.ArenaSystem
             return booked;
         }
 
+        public ArenaDuel GetBookedDuel(PlayerMobile pm)
+        {
+            foreach (var arena in Arenas.Where(a => a.BookedDuels.Count > 0))
+            {
+                foreach (var duel in arena.BookedDuels.Where(d => d.IsParticipant(pm)))
+                {
+                    return duel;
+                }
+            }
+
+            return null;
+        }
+
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
             //from.SendLocalizedMessage(1153423, ((int)points).ToString()); // You have gained ~1_AMT~ Dungeon Crystal Points of Despise.
@@ -83,6 +97,32 @@ namespace Server.Engines.ArenaSystem
             }
 
             arena.Unregister();
+        }
+
+        public static bool IsEnemy(Mobile source, Mobile target)
+        {
+            var sourceRegion = Region.Find(source.Location, source.Map) as ArenaRegion;
+            var targetRegion = Region.Find(target.Location, target.Map) as ArenaRegion;
+
+            if (sourceRegion != null && sourceRegion.Arena.CurrentDuel != null && sourceRegion == targetRegion)
+            {
+                return sourceRegion.Arena.CurrentDuel.IsEnemy(source, target);
+            }
+
+            return false;
+        }
+
+        public static bool IsFriendly(Mobile source, Mobile target)
+        {
+            var sourceRegion = Region.Find(source.Location, source.Map) as ArenaRegion;
+            var targetRegion = Region.Find(target.Location, target.Map) as ArenaRegion;
+
+            if (sourceRegion != null && sourceRegion.Arena.CurrentDuel != null && sourceRegion == targetRegion)
+            {
+                return sourceRegion.Arena.CurrentDuel.IsFriendly(source, target);
+            }
+
+            return false;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -164,6 +204,8 @@ namespace Server.Engines.ArenaSystem
 
         public List<DuelRecord> Record { get; set; }
 
+        public DuelProfile Profile { get; set; }
+
         public PlayerStatsEntry(PlayerMobile pm)
             : base(pm)
         {
@@ -177,9 +219,9 @@ namespace Server.Engines.ArenaSystem
         {
             Record.Add(new DuelRecord(m, killedBy));
 
-            if (Record.Count > 10)
+            if (Record.Count > 12)
             {
-                Record.RemoveAt(10);
+                Record.RemoveAt(12);
             }
         }
 
@@ -189,6 +231,16 @@ namespace Server.Engines.ArenaSystem
             base.Serialize(writer);
             writer.Write(0);
 
+            if (Profile != null)
+            {
+                writer.Write(1);
+                Profile.Serialize(writer);
+            }
+            else
+            {
+                writer.Write(0);
+            }
+
             writer.Write(Record.Count);
             for (int i = 0; i < Record.Count; i++)
             {
@@ -196,6 +248,7 @@ namespace Server.Engines.ArenaSystem
             }
 
             writer.Write(OpenStats);
+            writer.Write(IgnoreInvites);
 
             writer.Write(SurvivalWins);
             writer.Write(SurvivalLosses);
@@ -216,6 +269,11 @@ namespace Server.Engines.ArenaSystem
 
             Record = new List<DuelRecord>();
 
+            if (reader.ReadInt() == 1)
+            {
+                Profile = new DuelProfile(reader);
+            }
+
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)
             {
@@ -223,6 +281,7 @@ namespace Server.Engines.ArenaSystem
             }
 
             OpenStats = reader.ReadBool();
+            IgnoreInvites = reader.ReadBool();
 
             SurvivalWins = reader.ReadInt();
             SurvivalLosses = reader.ReadInt();
@@ -265,6 +324,74 @@ namespace Server.Engines.ArenaSystem
                 writer.Write(Opponent);
                 writer.Write(KilledBy);
                 writer.Write(DuelDate);
+            }
+        }
+
+        public class DuelProfile
+        {
+            public int Entries { get; set; }
+            public RoomType RoomType { get; set; }
+            public BattleMode BattleMode { get; set; }
+            public bool Ranked { get; set; }
+            public TimeLimit TimeLimit { get; set; }
+            public EntryFee EntryFee { get; set; }
+            public int PetSlots { get; set; }
+            public bool RidingFlyingAllowed { get; set; }
+            public bool RangedWeaponsAllowed { get; set; }
+            public bool SummonSpellsAllowed { get; set; }
+            public bool FieldSpellsAllowed { get; set; }
+            public PotionRules PotionRules { get; set; }
+
+            public DuelProfile(ArenaDuel duel)
+            {
+                Entries = duel.Entries;
+                RoomType = duel.RoomType;
+                BattleMode = duel.BattleMode;
+                Ranked = duel.Ranked;
+                TimeLimit = duel.TimeLimit;
+                EntryFee = duel.EntryFee;
+                PetSlots = duel.PetSlots;
+                RidingFlyingAllowed = duel.RidingFlyingAllowed;
+                RangedWeaponsAllowed = duel.RangedWeaponsAllowed;
+                SummonSpellsAllowed = duel.SummonSpellsAllowed;
+                FieldSpellsAllowed = duel.FieldSpellsAllowed;
+                PotionRules = duel.PotionRules;
+            }
+
+            public DuelProfile(GenericReader reader)
+            {
+                int version = reader.ReadInt();
+
+                Entries = reader.ReadInt();
+                RoomType = (RoomType)reader.ReadInt();
+                BattleMode = (BattleMode)reader.ReadInt();
+                Ranked = reader.ReadBool();
+                TimeLimit = (TimeLimit)reader.ReadInt();
+                EntryFee = (EntryFee)reader.ReadInt();
+                PetSlots = reader.ReadInt();
+                RidingFlyingAllowed = reader.ReadBool();
+                RangedWeaponsAllowed = reader.ReadBool();
+                SummonSpellsAllowed = reader.ReadBool();
+                FieldSpellsAllowed = reader.ReadBool();
+                PotionRules = (PotionRules)reader.ReadInt();
+            }
+
+            public void Serialize(GenericWriter writer)
+            {
+                writer.Write(0);
+
+                writer.Write(Entries);
+                writer.Write((int)RoomType);
+                writer.Write((int)BattleMode);
+                writer.Write(Ranked);
+                writer.Write((int)TimeLimit);
+                writer.Write((int)EntryFee);
+                writer.Write(PetSlots);
+                writer.Write(RidingFlyingAllowed);
+                writer.Write(RangedWeaponsAllowed);
+                writer.Write(SummonSpellsAllowed);
+                writer.Write(FieldSpellsAllowed);
+                writer.Write((int)PotionRules);
             }
         }
     }

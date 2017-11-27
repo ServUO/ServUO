@@ -34,19 +34,48 @@ namespace Server.Engines.ArenaSystem
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(Location, 10))
+            if (from is PlayerMobile && from.InRange(Location, 10))
             {
-                if (Arena != null && PVPArenaSystem.Enabled)
-                {
-                    var duel = Arena.GetPendingDuel(from);
+                PlayerMobile pm = from as PlayerMobile;
 
-                    if (duel == null)
+                if (pm.Young)
+                {
+                    from.SendLocalizedMessage(1116002); // Young players and Trial Account users may not participate in duels.
+                }
+                else if (Arena != null && PVPArenaSystem.Enabled)
+                {
+                    if (Arena.CurrentDuel != null && Arena.CurrentDuel.IsParticipant(pm))
                     {
-                        BaseGump.SendGump(new ArenaStoneGump(from as PlayerMobile, Arena));
+                        if (Arena.CurrentDuel.InPreFight)
+                        {
+                            BaseGump.SendGump(new OfferDuelGump(pm, Arena.CurrentDuel, Arena, false, true));
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1116387); // Please wait until the session which you participated is finished completely.
+                        }
                     }
                     else
                     {
-                        BaseGump.SendGump(new PendingDuelGump(from as PlayerMobile, duel, Arena));
+                        var duel = Arena.GetPendingDuel(from);
+
+                        if (duel == null)
+                        {
+                            var booked = PVPArenaSystem.Instance.GetBookedDuel(pm);
+
+                            if (booked != null)
+                            {
+                                BaseGump.SendGump(new OfferDuelGump(pm, booked, booked.Arena, true));
+                            }
+                            else
+                            {
+                                BaseGump.SendGump(new ArenaStoneGump(pm, Arena));
+                            }
+                        }
+                        else
+                        {
+                            BaseGump.SendGump(new PendingDuelGump(pm, duel, Arena));
+                        }
                     }
                 }
             }
@@ -71,7 +100,6 @@ namespace Server.Engines.ArenaSystem
                         var st = new Static(0x3709);
                         st.MoveToWorld(new Point3D(x, y, Arena.Definition.Map.GetAverageZ(x, y)), Map);
                         _Items.Add(st);
-                        //Effects.SendLocationEffect(new Point3D(x, y, Arena.Definition.Map.GetAverageZ(x, y)), Arena.Definition.Map, 0x3709, 60, 10);
                     }
                 }
             }

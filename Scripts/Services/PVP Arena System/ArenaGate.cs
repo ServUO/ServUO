@@ -5,7 +5,7 @@ using Server.Mobiles;
 
 namespace Server.Engines.ArenaSystem
 {
-    public class ArenaGate : Moongate
+    public class ArenaGate : Item
     {
         public override bool ForceShowProperties { get { return true; } }
         public override int LabelNumber { get { return 1115879; } } // Arena Gate
@@ -45,18 +45,50 @@ namespace Server.Engines.ArenaSystem
                     Effects.SendLocationEffect(m.Location, m.Map, 0x3728, 10, 10);
                     Duel.MoveToArena((PlayerMobile)m);
                     Effects.SendLocationEffect(m.Location, m.Map, 0x3728, 10, 10);
+
+                    m.PlaySound(0x1FE);
+                    m.ProcessDelta();
                 });
             }
         }
 
         private bool CheckValidation(PlayerMobile pm)
         {
-            if (pm.Followers > Duel.PetSlots)
+            if (!Duel.IsParticipant(pm))
+                return false;
+
+            if (pm.Young)
+            {
+                PVPArenaSystem.SendMessage(pm, 1149696); // As a young player, you may not enter this area.
+                return false;
+            }
+            else if (pm.Followers > Duel.PetSlots)
             {
                 PVPArenaSystem.SendMessage(pm, 1115974); // You currently exceed the maximum number of pet slots for this duel. Please stable your pet(s) with the arena manager before proceeding.
+                return false;
+            }
+            else if (Duel.EntryFee > EntryFee.Zero)
+            {
+                int fee = (int)Duel.EntryFee;
+
+                if (pm.Backpack != null && pm.Backpack.ConsumeTotal(typeof(Gold), fee))
+                {
+                    pm.SendLocalizedMessage(1149610); // You have paid the entry fee from your backpack.
+                }
+                else if (Banker.Withdraw(pm, fee, true))
+                {
+                    pm.SendLocalizedMessage(1149609); // You have paid the entry fee from your bank account.
+                }
+                else
+                {
+                    pm.SendLocalizedMessage(1149611); // You don't have enough money to pay the entry fee.
+                    return false;
+                }
+
+                Duel.Pot += fee;
             }
 
-            return Duel.IsParticipant(pm);
+            return true;
         }
 
         public ArenaGate(Serial serial)

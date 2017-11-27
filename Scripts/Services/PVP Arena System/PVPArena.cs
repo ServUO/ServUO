@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using System.Linq;
+using Server.Regions;
 
 namespace Server.Engines.ArenaSystem
 {
@@ -36,6 +37,7 @@ namespace Server.Engines.ArenaSystem
         public ArenaDuel CurrentDuel { get; set; }
 
         public ArenaRegion Region { get; set; }
+        public GuardedRegion GuardRegion { get; set; }
 
         public Dictionary<ArenaDuel, DateTime> PendingDuels { get; set; }
         public List<ArenaDuel> BookedDuels { get; set; }
@@ -92,6 +94,12 @@ namespace Server.Engines.ArenaSystem
                 Region = new ArenaRegion(this);
                 Region.Register();
             }
+
+            if (GuardRegion == null)
+            {
+                GuardRegion = new GuardedRegion(String.Format("{0}_Guarded", Definition.Name), Definition.Map, 1, Definition.GuardBounds);
+                GuardRegion.Register();
+            }
         }
 
         public void Unregister()
@@ -100,6 +108,12 @@ namespace Server.Engines.ArenaSystem
             {
                 Region.Unregister();
                 Region = null;
+            }
+
+            if (GuardRegion != null)
+            {
+                GuardRegion.Unregister();
+                GuardRegion = null;
             }
         }
 
@@ -155,12 +169,12 @@ namespace Server.Engines.ArenaSystem
 
         public ArenaDuel GetPendingDuel(Mobile m)
         {
-            return PendingDuels.Keys.FirstOrDefault(d => d.Host == m);
+            return PendingDuels.Keys.FirstOrDefault(d => m is PlayerMobile && d.IsParticipant((PlayerMobile)m));
         }
 
         public List<ArenaDuel> GetPendingPublic()
         {
-            return PendingDuels.Keys.Where(d => d.RoomType == RoomType.Public).ToList();
+            return PendingDuels.Keys.Where(d => d.RoomType == RoomType.Public && d.ParticipantCount < d.Entries).ToList();
         }
 
         public void TryBeginDuel(ArenaDuel duel)
@@ -170,7 +184,7 @@ namespace Server.Engines.ArenaSystem
                 PendingDuels.Remove(duel);
             }
 
-            if (BookedDuels.Count == 0)
+            if (CurrentDuel == null && BookedDuels.Count == 0)
             {
                 CurrentDuel = duel;
                 duel.DoPreDuel();
@@ -209,15 +223,18 @@ namespace Server.Engines.ArenaSystem
                     {
                         newDuel.DoPreDuel();
                     });
+
+                BookedDuels.Remove(newDuel);
             }
         }
 
-        public void RemovePlayer(Mobile m)
+        public void RemovePlayer(Mobile m, bool winner = false)
         {
             Map map = Definition.Map;
-            Point3D p = GetRandomRemovalLocation();
+            Point3D p = GetRandomRemovalLocation(m);
 
             m.MoveToWorld(p, map);
+            m.Delta(MobileDelta.Noto);
 
             // lets remove pets, too
             if (m is PlayerMobile && ((PlayerMobile)m).AllFollowers.Count > 0)
@@ -225,18 +242,54 @@ namespace Server.Engines.ArenaSystem
                 foreach (var mob in ((PlayerMobile)m).AllFollowers.Where(pet => pet.Region.IsPartOf<ArenaRegion>()))
                 {
                     mob.MoveToWorld(p, map);
+                    mob.Delta(MobileDelta.Noto);
                 }
+            }
+
+            if(winner)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    Timer.DelayCall(TimeSpan.FromMilliseconds(i * 1000), () =>
+                        {
+                            m.FixedParticles(0x373A, 10, 15, 5018, 0x36, 0, EffectLayer.Waist);
+                        });
+                }
+            }
+
+            if (!m.Alive)
+            {
+                IPooledEnumerable eable = map.GetMobilesInRange(m.Location, 5);
+
+                foreach(Mobile mob in eable)
+                {
+                    if (mob is ArenaManager)
+                    {
+                        ((ArenaManager)mob).OfferResurrection(m);
+                        break;
+                    }
+                }
+
+                eable.Free();
             }
         }
 
-        private Point3D GetRandomRemovalLocation()
+        private Point3D GetRandomRemovalLocation(Mobile m = null)
         {
-            Rectangle2D rec = new Rectangle2D(Stone.X - 2, Stone.Y - 5, 5, 11);
-            Point3D p = Stone.Location;
+            Rectangle2D rec = (m == null || m.Alive) ? Definition.EjectLocation : Definition.DeadEjectLocation;
+            Point3D loc = (m == null || m.Alive) ? Definition.StoneLocation : Definition.ManagerLocation;
+            Point3D p = loc;
 
-            while (p == Stone.Location)
+            Map map = Definition.Map;
+
+            while (p == loc || !map.CanSpawnMobile(p.X, p.Y, p.Z))
             {
-                p = rec.GetRandomSpawnPoint(Definition.Map);
+                p = rec.GetRandomSpawnPoint(map);
+
+                if (m == null || m.Alive)
+                    p.Z = Definition.StoneLocation.Z;
+                else
+                    p.Z = Definition.ManagerLocation.Z;
             }
 
             return p;

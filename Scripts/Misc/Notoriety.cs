@@ -445,6 +445,12 @@ namespace Server.Misc
             }
             #endregion
 
+            if (Server.Engines.ArenaSystem.PVPArenaSystem.IsEnemy(source, target))
+                return Notoriety.Enemy;
+
+            if (Server.Engines.ArenaSystem.PVPArenaSystem.IsFriendly(source, target))
+                return Notoriety.Ally;
+
             if (target.IsStaff())
                 return Notoriety.CanBeAttacked;
 

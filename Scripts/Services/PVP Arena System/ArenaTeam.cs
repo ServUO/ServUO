@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace Server.Engines.ArenaSystem
 {
+    [PropertyObject]
     public class ArenaTeam
     {
         public Dictionary<PlayerMobile, PlayerStatsEntry> Players { get; set; }
@@ -51,11 +52,6 @@ namespace Server.Engines.ArenaSystem
             }
 
             return false;
-        }
-
-        public bool CheckTeamDead()
-        {
-            return Players.Keys.FirstOrDefault(pm => pm.Alive) == null;
         }
 
         public bool Contains(PlayerMobile pm)

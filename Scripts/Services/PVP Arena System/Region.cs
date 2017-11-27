@@ -14,6 +14,7 @@ using Server.Spells.Third;
 using Server.Spells.Mysticism;
 using Server.Spells.Spellweaving;
 using Server.Spells.Necromancy;
+using Server.Spells.Ninjitsu;
 using Server.Targeting;
 
 namespace Server.Engines.ArenaSystem
@@ -37,15 +38,6 @@ namespace Server.Engines.ArenaSystem
             {
                 var duel = Arena.CurrentDuel;
 
-                if (!duel.RidingFlyingAllowed)
-                {
-                    if (o is EtherealMount || o is BaseMount)
-                    {
-                        m.SendLocalizedMessage(1115997); // The rules prohibit riding a mount or flying.
-                        return false;
-                    }
-                }
-
                 if (o is BasePotion && duel.PotionRules != PotionRules.All)
                 {
                     if (duel.PotionRules == PotionRules.None || o is BaseHealPotion)
@@ -55,7 +47,23 @@ namespace Server.Engines.ArenaSystem
                 }
             }
 
+            if (o is Corpse && ((Corpse)o).Owner != m)
+            {
+                m.SendLocalizedMessage(1010054); // You cannot loot that corpse!!
+                return false;
+            }
+
             return base.OnDoubleClick(m, o);
+        }
+
+        public override bool AllowFlying(Mobile from)
+        {
+            if (Arena.CurrentDuel != null && !Arena.CurrentDuel.RidingFlyingAllowed)
+            {
+                return false;
+            }
+
+            return base.AllowFlying(from);
         }
 
         public override bool OnBeginSpellCast(Mobile m, ISpell spell)
@@ -64,12 +72,9 @@ namespace Server.Engines.ArenaSystem
             {
                 var duel = Arena.CurrentDuel;
 
-                if (!duel.SummonSpellsAllowed && (spell is AirElementalSpell || spell is EarthElementalSpell || spell is EnergyVortexSpell
-                    || spell is FireElementalSpell || spell is SummonDaemonSpell || spell is WaterElementalSpell || spell is BladeSpiritsSpell
-                    || spell is VengefulSpiritSpell || spell is RisingColossusSpell || spell is AnimatedWeaponSpell || spell is SummonFiendSpell
-                    || spell is SummonFeySpell))
+                if (duel.InPreFight)
                 {
-                    m.SendLocalizedMessage(1149603); // The rules prohibit the use of summoning spells!
+                    m.SendLocalizedMessage(502629); // You cannot cast spells here.
                     return false;
                 }
 
@@ -79,13 +84,12 @@ namespace Server.Engines.ArenaSystem
                     return false;
                 }
 
-                // TODO: Do these fail at cast, or target?
-                /*if(!duel.FieldSpellsAllowed && (spell is FireFieldSpell || spell is ParalyzeFieldSpell || spell is PoisonFieldSpell || spell is EnergyFieldSpell
+                if(!duel.FieldSpellsAllowed && (spell is FireFieldSpell || spell is ParalyzeFieldSpell || spell is PoisonFieldSpell || spell is EnergyFieldSpell
                     || spell is WallOfStoneSpell))
                 {
-
+                    m.SendLocalizedMessage(1010391); // A magical aura surrounds you and prevents the spell.
                     return false;
-                }*/
+                }
             }
 
             return base.OnBeginSpellCast(m, spell);
@@ -101,24 +105,12 @@ namespace Server.Engines.ArenaSystem
                 return false;
             }
 
-            if (duel != null && !duel.FieldSpellsAllowed && (t is FireFieldSpell.InternalTarget || t is ParalyzeFieldSpell.InternalTarget || 
-                t is PoisonFieldSpell.InternalTarget || t is EnergyFieldSpell.InternalTarget || t is WallOfStoneSpell.InternalTarget))
-            {
-                //TODO: Message? Effects?
-                return false;
-            }
-
             return base.OnTarget(m, t, o);
         }
 
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
         {
             return type > TravelCheckType.Mark;
-        }
-
-        public override bool AllowSpawn()
-        {
-            return false;
         }
 
         public override void OnDeath(Mobile m)
@@ -135,6 +127,31 @@ namespace Server.Engines.ArenaSystem
         {
             if (Arena != null && Arena.CurrentDuel != null && Arena.CurrentDuel.Complete)
             {
+                return false;
+            }
+
+            return true;
+        }
+
+        public override bool OnResurrect(Mobile m)
+        {
+            bool res = base.OnResurrect(m);
+
+            if (Arena != null)
+            {
+                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(.2), mob => Arena.RemovePlayer(mob), m);
+            }
+
+            return res;
+        }
+
+        public bool AllowItemEquip(PlayerMobile pm, Item item)
+        {
+            ArenaDuel duel = Arena.CurrentDuel;
+
+            if (duel != null && !duel.RangedWeaponsAllowed && item is BaseRanged)
+            {
+                pm.SendLocalizedMessage(1115996); // The rules prohibit the use of ranged weapons!
                 return false;
             }
 

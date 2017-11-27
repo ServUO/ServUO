@@ -10,6 +10,8 @@ namespace Server.Engines.ArenaSystem
 {
     public class BaseArenaGump : BaseGump
     {
+        public int LabelHue = 0x480;
+
         public PVPArena Arena { get; private set; }
 
         public BaseArenaGump(PlayerMobile pm, PVPArena arena)
@@ -36,7 +38,6 @@ namespace Server.Engines.ArenaSystem
             m.CloseGump(typeof(DuelResultsGump));
             m.CloseGump(typeof(DuelRulesGump));
             m.CloseGump(typeof(ArenaRankingsGump));
-            m.CloseGump(typeof(OfferDuelGump));
         }
     }
 
@@ -129,12 +130,12 @@ namespace Server.Engines.ArenaSystem
             AddHtmlLocalized(45, 205, 200, 20, 1150128, 0xFFFF, false, false); // Check arena rankings
             AddHtmlLocalized(45, 230, 200, 20, entry.IgnoreInvites ? 1116155 : 1116156, 0xFFFF, false, false); // Ignore duel invite (ON) / Ignore duel invite (OFF)
 
-            AddButton(10, 105, 4023, 4025, 1, GumpButtonType.Reply, 0);
-            AddButton(10, 130, 4023, 4025, 2, GumpButtonType.Reply, 0);
-            AddButton(10, 155, 4023, 4025, 3, GumpButtonType.Reply, 0);
-            AddButton(10, 180, 4023, 4025, 4, GumpButtonType.Reply, 0);
-            AddButton(10, 205, 4023, 4025, 5, GumpButtonType.Reply, 0);
-            AddButton(10, 230, 4023, 4025, 6, GumpButtonType.Reply, 0);
+            AddButton(10, 105, 4023, 4024, 1, GumpButtonType.Reply, 0);
+            AddButton(10, 130, 4023, 4024, 2, GumpButtonType.Reply, 0);
+            AddButton(10, 155, 4023, 4024, 3, GumpButtonType.Reply, 0);
+            AddButton(10, 180, 4023, 4024, 4, GumpButtonType.Reply, 0);
+            AddButton(10, 205, 4023, 4024, 5, GumpButtonType.Reply, 0);
+            AddButton(10, 230, 4023, 4024, 6, GumpButtonType.Reply, 0);
 
             AddHtmlLocalized(42, 268, 150, 20, 1150300, 0xFFFF, false, false); // CANCEL
             AddButton(8, 268, 4017, 4019, 0, GumpButtonType.Reply, 0);
@@ -351,6 +352,14 @@ namespace Server.Engines.ArenaSystem
                         Arena.AddPendingDuel(Duel);
                         BaseGump.SendGump(new PendingDuelGump(User, Duel, Arena));
                         PVPArenaSystem.SendMessage(User, 1115800); // You have created a new duel session.
+
+                        var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
+
+                        if (entry != null)
+                        {
+                            entry.Profile = new PlayerStatsEntry.DuelProfile(Duel);
+                        }
+
                         break;
                 }
             }
@@ -438,21 +447,21 @@ namespace Server.Engines.ArenaSystem
             AddImageTiled(8, 8, width - 16, 25, 2624);
             AddAlphaRegion(8, 8, width - 16, 25);
 
-            AddHtmlLocalized(0, 10, 300, 20, CenterLoc, "#1115624", 0xFFFF, false, false); // Arena Menu - Queuing
+            AddHtmlLocalized(0, 10, width, 20, CenterLoc, "#1115624", 0xFFFF, false, false); // Arena Menu - Queuing
 
-            AddImageTiled(8, 40, 284, 132, 2624);
-            AddAlphaRegion(8, 40, 284, 132);
+            AddImageTiled(8, 40, width - 16, 133, 2624);
+            AddAlphaRegion(8, 40, width - 16, 133);
 
-            AddImageTiled(8, 180, 284, 25, 2624);
-            AddAlphaRegion(8, 180, 284, 25);
+            AddImageTiled(8, 180, width - 16, 25, 2624);
+            AddAlphaRegion(8, 180, width - 16, 25);
 
             AddHtmlLocalized(0, 183, 300, 20, CenterLoc, Duel.BattleMode == BattleMode.Survival ? "#1115763" : "#1116392", 0xFFFF, false, false); // Participant list : Team: Order (Blue) / Chaos (Red)
 
-            AddImageTiled(8, 212, 284, 129, 2624);
-            AddAlphaRegion(8, 212, 284, 129);
+            AddImageTiled(8, 212, width - 16, 130, 2624);
+            AddAlphaRegion(8, 212, width - 16, 130);
 
-            AddImageTiled(8, 350, 284, 20, 2624);
-            AddAlphaRegion(8, 350, 284, 20);
+            AddImageTiled(8, 350, width - 16, 20, 2624);
+            AddAlphaRegion(8, 350, width - 16, 20);
 
             AddButton(10, 45, 4023, 4025, 1, GumpButtonType.Reply, 0);
             AddButton(10, 70, 4023, 4025, 2, GumpButtonType.Reply, 0);
@@ -466,46 +475,64 @@ namespace Server.Engines.ArenaSystem
             AddHtmlLocalized(45, 120, 150, 20, 1115925, 0xFFFF, false, false); // See booked duels
             AddHtmlLocalized(45, 145, 150, 20, 1153084, 0xFFFF, false, false); // See the rules
 
-            int x = 10;
             int y = 215;
 
             if (Duel.BattleMode == BattleMode.Survival)
             {
                 for(int i = 0; i < Participants.Count; i++)
                 {
-                    AddButton(x, y, 4011, 4013, 50 + i, GumpButtonType.Reply, 0);
-                    AddButton(x + 37, y, 4017, 4019, 100 + i, GumpButtonType.Reply, 0);
-                    AddLabelCropped(x + 75, y, 135, 20, 0x481, Participants[i].Name);
+                    int x = 10;
 
-                    y += 25;
+                    if (i >= 5)
+                        x += 200;
 
                     if (i == 5)
-                    {
-                        x = 210;
                         y = 215;
+
+                    AddButton(x, y, 4011, 4013, 50 + i, GumpButtonType.Reply, 0);
+                    x += 37;
+
+                    if (User == Duel.Host)
+                    {
+                        AddButton(x, y, 4017, 4019, 100 + i, GumpButtonType.Reply, 0);
+                        x += 37;
                     }
+
+                    AddLabelCropped(x, y, 135, 20, LabelHue, Participants[i].Name);
+
+                    y += 25;
                 }
             }
             else
             {
                 for (int i = 0; i < Participants.Count; i++)
                 {
-                    AddButton(x, y, 4011, 4013, 50 + i, GumpButtonType.Reply, 0);
-                    AddButton(x + 37, y, 4017, 4019, 100 + i, GumpButtonType.Reply, 0);
-                    AddButton(x + 74, y, 4026, 4029, 200 + i, GumpButtonType.Reply, 0);
-                    AddLabelCropped(x + 107, y, 135, 20, Duel.TeamOrder.Contains(Participants[i]) ? 487 : 37, Participants[i].Name);
+                    int x = 10;
 
-                    y += 25;
+                    if (i >= 5)
+                        x += 200;
 
                     if (i == 5)
-                    {
-                        x = 210;
                         y = 215;
+
+                    AddButton(x, y, 4011, 4013, 50 + i, GumpButtonType.Reply, 0);
+                    x += 37;
+
+                    if (User == Duel.Host)
+                    {
+                        AddButton(x, y, 4017, 4019, 100 + i, GumpButtonType.Reply, 0);
+                        x += 37;
+                        AddButton(x, y, 4026, 4029, 200 + i, GumpButtonType.Reply, 0);
+                        x += 37;
                     }
+
+                    AddLabelCropped(x, y, 135, 20, Duel.TeamOrder.Contains(Participants[i]) ? 487 : 37, Participants[i].Name);
+
+                    y += 25;
                 }
             }
 
-            AddImage(218, 70, 5587);
+            AddImage(width - 82, 70, 5587);
 
             AddButton(8, 349, 4017, 4019, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(45, 349, 120, 20, 1150300, 0xFFFF, false, false); // CANCEL
@@ -565,8 +592,11 @@ namespace Server.Engines.ArenaSystem
 
                         if (id >= 0 && id < Participants.Count)
                         {
-                            Duel.SwapParticipant(Participants[id]);
-                            PVPArenaSystem.SendMessage(Participants[id], 1116462); // The host player has moved you to another team.
+                            if (Duel.SwapParticipant(Participants[id]))
+                            {
+                                PVPArenaSystem.SendMessage(Participants[id], 1116462); // The host player has moved you to another team.
+                            }
+
                             Refresh();
                         }
                     }
@@ -624,6 +654,20 @@ namespace Server.Engines.ArenaSystem
             }
         }
 
+        public static void RefreshAll(ArenaDuel duel)
+        {
+            foreach (var kvp in duel.GetParticipants())
+            {
+                var pm = kvp.Key;
+                
+                if (pm.HasGump(typeof(PendingDuelGump)))
+                {
+                    pm.CloseGump(typeof(PendingDuelGump));
+                    BaseGump.SendGump(new PendingDuelGump(pm, duel, duel.Arena));
+                }
+            }
+        }
+
         private class InternalTarget : Server.Targeting.Target
         {
             public PVPArena Arena { get; private set; }
@@ -647,13 +691,17 @@ namespace Server.Engines.ArenaSystem
                     var pm = targeted as PlayerMobile;
                     var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(pm);
 
-                    if (!pm.Alive)
+                    if (Duel.ParticipantCount >= Duel.Entries)
+                    {
+                        // TODO: Message?
+                    }
+                    else if (!pm.Alive)
                     {
                         PVPArenaSystem.SendMessage(from, 1116148); // You cannot invite dead players.
                     }
-                    if (pm.Young)
+                    else if (pm.Young)
                     {
-                        PVPArenaSystem.SendMessage(from, 1116152); // You have sent the invitation to the player.
+                        PVPArenaSystem.SendMessage(from, 1116154); // You cannot invite young players.
                     }
                     else if (entry.IgnoreInvites)
                     {
@@ -713,11 +761,11 @@ namespace Server.Engines.ArenaSystem
             AddImageTiled(8, 8, 294, 25, 2624);
             AddAlphaRegion(8, 8, 294, 25);
 
-            AddImageTiled(8, 38, 84, 25, 2624);
-            AddAlphaRegion(8, 38, 84, 25);
+            AddImageTiled(8, 40, 85, 27, 2624);
+            AddAlphaRegion(8, 40, 85, 27);
 
-            AddImageTiled(95, 38, 207, 25, 2624);
-            AddAlphaRegion(95, 38, 207, 25);
+            AddImageTiled(95, 40, 207, 27, 2624);
+            AddAlphaRegion(95, 40, 207, 27);
 
             AddImageTiled(8, 70, 37, 260, 2624);
             AddAlphaRegion(8, 70, 37, 260);
@@ -731,13 +779,13 @@ namespace Server.Engines.ArenaSystem
             AddImageTiled(8, 337, 294, 20, 2624);
             AddAlphaRegion(8, 337, 294, 20);
 
-            AddHtmlLocalized(0, 10, 310, 20, CenterLoc, "#1115842", 0xFFFF, false, false); // Arena Menu - Entry
+            AddHtmlLocalized(0, 11, 310, 20, CenterLoc, "#1115842", 0xFFFF, false, false); // Arena Menu - Entry
             AddHtmlLocalized(8, 42, 310, 20, CenterLoc, "#1115847", 0xFFFF, false, false); // Entry
-            AddHtmlLocalized(103, 42, 310, 20, 1115848, 0xFFFF, false, false); // Host Player
+            AddHtmlLocalized(10, 42, 310, 20, 1115848, 0xFFFF, false, false); // Host Player
 
             int perPage = 8;
             int page = 1;
-            int y = 44;
+            int y = 70;
 
             AddPage(page);
 
@@ -746,8 +794,8 @@ namespace Server.Engines.ArenaSystem
                 var duel = PendingDuels[i];
 
                 AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
-                AddLabel(54, y, 0x481, String.Format("{0}/{1}", (i + 1).ToString(), duel.Entries.ToString()));
-                AddLabel(103, y, 0x481, duel.Host.Name);
+                AddLabel(54, y, LabelHue, String.Format("{0}/{1}", duel.ParticipantCount.ToString(), duel.Entries.ToString()));
+                AddLabel(103, y, LabelHue, duel.Host.Name);
 
                 if (i != 0 && i % perPage == 0)
                 {
@@ -844,7 +892,14 @@ namespace Server.Engines.ArenaSystem
 
             for(int i = 0; i < partList.Count; i++)
             {
-                AddLabel(17, 80 + (i * 20), 0x481, partList[i].Name);
+                int hue = LabelHue;
+
+                if (Duel.BattleMode == BattleMode.Team)
+                {
+                    hue = Duel.TeamOrder.Contains(partList[i]) ? 487 : 37;
+                }
+
+                AddLabel(17, 80 + (i * 20), hue, partList[i].Name);
             }
 
             AddHtmlLocalized(220, 80, 170, 20, 1115780, 0xFFFF, false, false);  // Maximum Entries
@@ -877,7 +932,7 @@ namespace Server.Engines.ArenaSystem
 
             if (DetailsOnly)
             {
-                AddHtmlLocalized(20, 415, 460, 40, CenterLoc, "#1115874", C32216(0xFF6347), false, false);
+                AddHtmlLocalized(20, 412, 460, 40, CenterLoc, "#1115874", C32216(0xFF6347), false, false);
                 // The arena gate has opened near the arena stone. <br>You've ninety seconds to use the gate or you'll be removed from this duel.
             }
             else
@@ -885,8 +940,8 @@ namespace Server.Engines.ArenaSystem
                 AddButton(8, 433, 4014, 4016, 0, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(45, 433, 100, 20, FromPlayer ? 1150300 : 1150154, 0xFFFF, false, false); // CANCEL : BACK
 
-                AddButton(407, 433, 4023, 4025, 50, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(442, 383, 60, 20, 1115873, 0xFFFF, false, false); // ENTRY
+                AddButton(407, 433, 4023, 4025, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(442, 433, 60, 20, 1115873, 0xFFFF, false, false); // ENTRY
             }
         }
 
@@ -903,14 +958,14 @@ namespace Server.Engines.ArenaSystem
                         {
                             BaseGump.SendGump(new JoinDuelGump(User, list, Arena));
                         }
-                        else
-                        {
-                            User.SendLocalizedMessage(1115966); // There are no duel sessions available.
-                        }
                     }
                     break;
                 case 1:
-                    Duel.TryAddPlayer(User);
+                    if (Duel.TryAddPlayer(User))
+                    {
+                        PendingDuelGump.RefreshAll(Duel);
+                        BaseGump.SendGump(new PendingDuelGump(User, Duel, Arena));
+                    }
                     break;
             }
         }
@@ -963,8 +1018,8 @@ namespace Server.Engines.ArenaSystem
             {
                 var duel = BookedDuels[i];
 
-                AddLabel(10, y, 0x481, duel.Arena.Definition.Name);
-                AddLabel(100, y, 0x481, duel.Host.Name);
+                AddLabel(10, y, LabelHue, duel.Arena.Definition.Name);
+                AddLabel(100, y, LabelHue, duel.Host.Name);
 
                 y += 20;
 
@@ -1021,83 +1076,93 @@ namespace Server.Engines.ArenaSystem
 
             AddBackground(0, 0, 580, 440, 9200);
 
-            AddImageTiled(8, 8, 564, 46, 2624);
-            AddAlphaRegion(8, 8, 564, 46);
+            AddImageTiled(8, 8, 564, 48, 2624);
+            AddAlphaRegion(8, 8, 564, 48);
 
-            AddImageTiled(8, 62, 214, 25, 2624);
-            AddAlphaRegion(8, 62, 214, 25);
+            AddImageTiled(8, 62, 217, 28, 2624);
+            AddAlphaRegion(8, 62, 217, 28);
 
-            AddImageTiled(229, 62, 344, 25, 2624);
-            AddAlphaRegion(229, 62, 344, 25);
+            AddImageTiled(230, 62, 342, 28, 2624);
+            AddAlphaRegion(230, 62, 342, 28);
 
-            AddImageTiled(8, 93, 109, 78, 2624);
-            AddAlphaRegion(8, 93, 109, 78);
+            AddImageTiled(8, 95, 110, 80, 2624);
+            AddAlphaRegion(8, 95, 110, 80);
 
-            AddImageTiled(121, 93, 101, 78, 2624);
-            AddAlphaRegion(121, 93, 101, 78);
+            AddImageTiled(120, 95, 105, 80, 2624);
+            AddAlphaRegion(120, 95, 105, 80);
 
-            AddImageTiled(8, 178, 214, 25, 2624);
-            AddAlphaRegion(8, 178, 214, 25);
+            AddImageTiled(8, 180, 217, 25, 2624);
+            AddAlphaRegion(8, 180, 217, 25);
 
-            AddImageTiled(121, 209, 101, 78, 2624);
-            AddAlphaRegion(121, 209, 101, 78);
+            AddImageTiled(8, 210, 110, 80, 2624);
+            AddAlphaRegion(8, 210, 110, 80);
 
-            AddImageTiled(8, 294, 214, 25, 2624);
-            AddAlphaRegion(8, 294, 214, 25);
+            AddImageTiled(120, 210, 105, 80, 2624);
+            AddAlphaRegion(120, 210, 105, 80);
 
-            AddImageTiled(8, 325, 214, 25, 2624);
-            AddAlphaRegion(8, 325, 214, 25);
+            AddImageTiled(8, 295, 217, 25, 2624);
+            AddAlphaRegion(8, 295, 217, 25);
 
-            AddImageTiled(121, 325, 101, 78, 2624);
-            AddAlphaRegion(121, 325, 101, 78);
+            AddImageTiled(8, 325, 110, 82, 2624);
+            AddAlphaRegion(8, 325, 110, 80);
 
-            AddImageTiled(228, 93, 101, 312, 2624);
-            AddAlphaRegion(228, 93, 101, 312);
+            AddImageTiled(120, 325, 105, 82, 2624);
+            AddAlphaRegion(120, 325, 105, 80);
 
-            AddImageTiled(331, 93, 86, 312, 2624);
-            AddAlphaRegion(331, 93, 86, 312);
+            AddImageTiled(230, 95, 95, 312, 2624);
+            AddAlphaRegion(230, 95, 95, 312);
 
-            AddImageTiled(421, 93, 152, 312, 2624);
-            AddAlphaRegion(421, 93, 152, 312);
+            AddImageTiled(330, 95, 85, 312, 2624);
+            AddAlphaRegion(330, 95, 85, 312);
 
-            AddImageTiled(8, 422, 564, 20, 2624);
-            AddAlphaRegion(8, 422, 564, 20);
+            AddImageTiled(420, 95, 152, 312, 2624);
+            AddAlphaRegion(420, 95, 152, 312);
 
-            AddHtmlLocalized(0, 20, 580, 20, 1115926, 0xFFFF, false, false); // <CENTER>Arena Menu - Stats</CENTER>
+            AddImageTiled(8, 412, 564, 20, 2624);
+            AddAlphaRegion(8, 412, 564, 20);
 
-            AddHtmlLocalized(8, 72, 222, 20, CenterLoc, "#1115983", 0xFFFF, false, false); // Stats - Survival
-            AddHtmlLocalized(15, 103, 100, 20, 1115977, 0xFFFF, false, false); // Wins
-            AddHtmlLocalized(15, 128, 100, 20, 1115978, 0xFFFF, false, false); // Losses
-            AddHtmlLocalized(15, 153, 100, 20, 1115979, 0xFFFF, false, false); // Draws
+            int titleIndex = WhosStats.SelectedTitle;
+            object title = titleIndex >= 0 && titleIndex < WhosStats.RewardTitles.Count ? WhosStats.RewardTitles[titleIndex] : null;
+            string rewardTitle = "None";
 
-            AddHtmlLocalized(8, 188, 222, 20, CenterLoc, "#1116485", 0xFFFF, false, false); // Stats - Team Battle
-            AddHtmlLocalized(15, 219, 100, 20, 1115977, 0xFFFF, false, false); // Wins
-            AddHtmlLocalized(15, 234, 100, 20, 1115978, 0xFFFF, false, false); // Losses
-            AddHtmlLocalized(15, 259, 100, 20, 1115979, 0xFFFF, false, false); // Draws
+            if(title is int)
+                rewardTitle = String.Format("#{0}", (int)title);
+            else if(title is string)
+                rewardTitle = (string)title;
 
-            AddHtmlLocalized(15, 304, 222, 20, CenterLoc, "#1116486", 0xFFFF, false, false); // Stats - Others
-            AddHtmlLocalized(15, 335, 100, 20, 1115980, 0xFFFF, false, false); // Latest Stats
-            AddHtmlLocalized(15, 360, 100, 20, 1115981, 0xFFFF, false, false); // Kills
-            AddHtmlLocalized(15, 385, 100, 20, 1115982, 0xFFFF, false, false); // Deaths
+            AddHtmlLocalized(0, 12, 580, 20, CenterLoc, "#1115976", 0xFFFF, false, false); // <CENTER>Arena Menu - Stats</CENTER>
+            AddHtmlLocalized(0, 32, 580, 20, 1149602, String.Format("{0}\t{1}", WhosStats.Name, rewardTitle), 0xFFFF, false, false); // <CENTER>Arena Menu - Stats</CENTER>
 
-            AddHtmlLocalized(229, 72, 344, 20, CenterLoc, "#1115984", 0xFFFF, false, false); // Kill/Death Stats
+            AddHtmlLocalized(8, 66, 222, 20, CenterLoc, "#1115983", 0xFFFF, false, false); // Stats - Survival
+            AddHtmlLocalized(15, 100, 100, 20, 1115977, 0xFFFF, false, false); // Wins
+            AddHtmlLocalized(15, 125, 100, 20, 1115978, 0xFFFF, false, false); // Losses
+            AddHtmlLocalized(15, 150, 100, 20, 1115979, 0xFFFF, false, false); // Draws
 
-            AddButton(8, 422, 4014, 4016, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(45, 422, 100, 20, 1150154, 0xFFFF, false, false); // BACK
+            AddHtmlLocalized(8, 182, 222, 20, CenterLoc, "#1116485", 0xFFFF, false, false); // Stats - Team Battle
+            AddHtmlLocalized(15, 215, 100, 20, 1115977, 0xFFFF, false, false); // Wins
+            AddHtmlLocalized(15, 240, 100, 20, 1115978, 0xFFFF, false, false); // Losses
+            AddHtmlLocalized(15, 265, 100, 20, 1115979, 0xFFFF, false, false); // Draws
+
+            AddHtmlLocalized(15, 298, 222, 20, CenterLoc, "#1116486", 0xFFFF, false, false); // Stats - Others
+            AddHtmlLocalized(15, 330, 100, 20, 1115980, 0xFFFF, false, false); // Latest Stats
+            AddHtmlLocalized(15, 355, 100, 20, 1115981, 0xFFFF, false, false); // Kills
+            AddHtmlLocalized(15, 380, 100, 20, 1115982, 0xFFFF, false, false); // Deaths
+
+            AddHtmlLocalized(229, 66, 344, 20, CenterLoc, "#1115984", 0xFFFF, false, false); // Kill/Death Stats
 
             if (entry == null)
                 return;
 
-            AddLabel(128, 103, 0x481, entry.SurvivalWins.ToString());
-            AddLabel(128, 128, 0x481, entry.SurvivalLosses.ToString());
-            AddLabel(128, 153, 0x481, entry.SurvivalDraws.ToString());
+            AddLabel(128, 100, LabelHue, entry.SurvivalWins.ToString());
+            AddLabel(128, 125, LabelHue, entry.SurvivalLosses.ToString());
+            AddLabel(128, 150, LabelHue, entry.SurvivalDraws.ToString());
 
-            AddLabel(128, 219, 0x481, entry.TeamWins.ToString());
-            AddLabel(128, 244, 0x481, entry.TeamLosses.ToString());
-            AddLabel(128, 269, 0x481, entry.TeamDraws.ToString());
+            AddLabel(128, 215, LabelHue, entry.TeamWins.ToString());
+            AddLabel(128, 240, LabelHue, entry.TeamLosses.ToString());
+            AddLabel(128, 265, LabelHue, entry.TeamDraws.ToString());
 
-            AddLabel(128, 244, 0x481, entry.Kills.ToString());
-            AddLabel(128, 269, 0x481, entry.Deaths.ToString());
+            AddLabel(128, 355, LabelHue, entry.Kills.ToString());
+            AddLabel(128, 380, LabelHue, entry.Deaths.ToString());
 
             string latest = "";
 
@@ -1107,21 +1172,21 @@ namespace Server.Engines.ArenaSystem
 
                 if (i < 5)
                 {
-                    latest += String.Format("-{0}", record.KilledBy ? "L" : "W");
+                    latest += String.Format("{0}-", record.KilledBy ? "L" : "W");
                 }
 
-                AddLabel(237, 103 + (i * 25), 0x481, record.DuelDate.ToShortDateString());
+                AddLabel(237, 103 + (i * 25), LabelHue, record.DuelDate.ToShortDateString());
                 AddHtmlLocalized(340, 103 + (i * 25), 80, 20, record.KilledBy ? 1115987 : 1115986, 0xFFFF, false, false); // KILLED BY : KILLED
-                AddLabel(429, 103 + (i * 25), 0x481, record.Opponent == null ? "Unknown" : record.Opponent.Name);
+                AddLabel(429, 103 + (i * 25), LabelHue, record.Opponent == null ? "Unknown" : record.Opponent.Name);
             }
 
-            AddLabel(128, 219, 0x481, latest);
+            AddLabel(128, 330, LabelHue, latest);
 
-            AddButton(8, 422, 4014, 4016, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(45, 422, 100, 20, 1150154, 0xFFFF, false, false); // BACK
+            AddButton(8, 412, 4014, 4016, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 412, 100, 20, 1150154, 0xFFFF, false, false); // BACK
 
-            AddButton(408, 422, 4014, 4016, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(442, 422, 100, 20, userEntry.OpenStats ? 1149594 : 1149595, 0xFFFF, false, false); // OPEN STATS (ON) / OPEN STATS (OFF)
+            AddButton(408, 412, 4014, 4016, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(442, 412, 200, 20, userEntry.OpenStats ? 1149594 : 1149595, 0xFFFF, false, false); // OPEN STATS (ON) / OPEN STATS (OFF)
         }
 
         public override void OnResponse(RelayInfo info)
@@ -1143,7 +1208,18 @@ namespace Server.Engines.ArenaSystem
             {
                 PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
 
-                entry.OpenStats = !entry.OpenStats;
+                if (entry.OpenStats)
+                {
+                    User.SendLocalizedMessage(1149598); // You set your stats to the closed mode. Only you can see your stats.
+                    entry.OpenStats = false;
+                }
+                else
+                {
+                    User.SendLocalizedMessage(1149597); // You set your stats to the open mode. Other players can see your stats from now on.
+                    entry.OpenStats = true;
+                }
+
+                Refresh();
             }
         }
     }
@@ -1170,8 +1246,8 @@ namespace Server.Engines.ArenaSystem
 
             AddBackground(0, 0, 500, 395, 9200);
 
-            AddImageTiled(8, 8, 484, 25, 2624);
-            AddAlphaRegion(8, 8, 484, 25);
+            AddImageTiled(8, 8, 484, 27, 2624);
+            AddAlphaRegion(8, 8, 484, 27);
 
             AddImageTiled(8, 42, 484, 20, 2624);
             AddAlphaRegion(8, 42, 484, 20);
@@ -1182,20 +1258,20 @@ namespace Server.Engines.ArenaSystem
             AddImageTiled(8, 367, 484, 20, 2624);
             AddAlphaRegion(8, 367, 484, 20);
 
-            AddHtmlLocalized(0, 10, 500, 20, CenterLoc, ViewType == BattleMode.Team ? "#1150130" : "#1150131", 0xFFFF, false, false); // Arena Menu - Survival Rankings : Arena Menu - Team Rankings
+            AddHtmlLocalized(0, 12, 500, 20, CenterLoc, ViewType == BattleMode.Team ? "#1150130" : "#1150131", 0xFFFF, false, false); // Arena Menu - Survival Rankings : Arena Menu - Team Rankings
 
             AddButton(8, 42, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(74, 42, 100, 20, 1150159, 0xFFFF, false, false); // TOP RANKING
+            AddHtmlLocalized(40, 42, 100, 20, 1150159, 0xFFFF, false, false); // TOP RANKING
 
-            AddButton(181, 42, 4005, 4007, 2, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(216, 42, 100, 20, 1150160, 0xFFFF, false, false); // MY RANKING
+            AddButton(143, 42, 4005, 4007, 2, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(178, 42, 100, 20, 1150160, 0xFFFF, false, false); // MY RANKING
 
-            AddButton(316, 42, 4005, 4007, 3, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(351, 42, 100, 20, 1150133, 0xFFFF, false, false); // VIEW TEAM RANKINGS
+            AddButton(279, 42, 4005, 4007, 3, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(313, 42, 150, 20, ViewType == BattleMode.Team ? 1150133 : 1150132, 0xFFFF, false, false); // VIEW TEAM RANKINGS
 
-            AddHtmlLocalized(10, 128, 50, 20, 1150170, 0xFFFF, false, false); // RANK
-            AddHtmlLocalized(96, 128, 50, 20, 1150171, 0xFFFF, false, false); // NAME
-            AddHtmlLocalized(472, 128, 75, 20, 1150171, 0xFFFF, false, false); // RATING
+            AddHtmlLocalized(10, 70, 50, 20, 1150170, 0xFFFF, false, false); // RANK
+            AddHtmlLocalized(60, 70, 50, 20, 1150171, 0xFFFF, false, false); // NAME
+            AddHtmlLocalized(435, 70, 75, 20, 1150172, 0xFFFF, false, false); // RATING
 
             int index = Page * 10;
             int pageIndex = 0;
@@ -1203,22 +1279,23 @@ namespace Server.Engines.ArenaSystem
             for (int i = index; i < Stats.Count && pageIndex < 10; i++)
             {
                 var stats = Stats[i];
+                int hue = stats.Owner == User ? 0x488 : LabelHue;
 
-                AddLabel(10, 98 + (index * 25), 0x481, (index + 1).ToString());
-                AddLabel(96, 98 + (index * 25), 0x481, stats.Owner.Name);
-                AddLabel(472, 98 + (index * 25), 0x481, stats.Ranking.ToString());
+                AddLabel(10, 98 + (pageIndex * 25), hue, (index + pageIndex + 1).ToString());
+                AddLabel(60, 98 + (pageIndex * 25), hue, stats.Owner.Name);
+                AddLabel(435, 98 + (pageIndex * 25), hue, stats.Ranking.ToString());
 
                 pageIndex++;
             }
 
-            if (Page < Stats.Count / 10)
+            if (Page < (Stats.Count / 10) - 1)
             {
-                AddButton(280, 341, 4005, 4007, 4, GumpButtonType.Reply, 0);
+                AddButton(462, 367, 4005, 4007, 4, GumpButtonType.Reply, 0);
             }
 
             if (Page > 0)
             {
-                AddButton(220, 341, 4014, 4016, 5, GumpButtonType.Reply, 0);
+                AddButton(428, 367, 4014, 4016, 5, GumpButtonType.Reply, 0);
             }
 
             AddButton(8, 367, 4014, 4016, 0, GumpButtonType.Reply, 0);
@@ -1259,7 +1336,16 @@ namespace Server.Engines.ArenaSystem
                         Refresh();
                         break;
                     case 3:
-                        ViewType = ViewType == BattleMode.Survival ? BattleMode.Team : BattleMode.Survival;
+                        if (ViewType == BattleMode.Survival)
+                        {
+                            Stats = Arena.TeamRankings;
+                            ViewType = BattleMode.Team;
+                        }
+                        else
+                        {
+                            Stats = Arena.SurvivalRankings;
+                            ViewType = BattleMode.Survival;
+                        }
                         Refresh();
                         break;
                     case 4:
@@ -1304,19 +1390,19 @@ namespace Server.Engines.ArenaSystem
             AddImageTiled(222, 90, 139, 246, 2624);
             AddAlphaRegion(222, 90, 139, 246);
 
-            AddImageTiled(8, 343, 355, 246, 2624);
-            AddAlphaRegion(8, 343, 355, 246);
+            AddImageTiled(8, 343, 355, 20, 2624);
+            AddAlphaRegion(8, 343, 355, 20);
 
-            string winner = "Draw";
+            string winner = "#1116483"; // DRAW
 
             if (Winners != null)
             {
                 if (Duel.BattleMode == BattleMode.Team)
                 {
                     if (Winners == Duel.TeamOrder)
-                        winner = "Team Order";
+                        winner = "#1116479"; // Order Team (Blue)
                     else if (Winners == Duel.TeamChaos)
-                        winner = "Team Chaos";
+                        winner = "#1116480"; // Chaos Team (Red)
                 }
                 else
                 {
@@ -1326,15 +1412,15 @@ namespace Server.Engines.ArenaSystem
             }
 
             AddHtmlLocalized(0, 10, 371, 20, CenterLoc, "#1115990", 0xFFFF, false, false); // Arena Menu - Results
-            AddHtmlLocalized(145, 50, 371, 20, 1153207, winner, 0xFFFF, false, false); // Winner: ~1_VAL~
+            AddHtmlLocalized(100, winner == "#1116483" ? 75 : 50, 371, 20, 1153207, winner, 0xFFFF, false, false); // Winner: ~1_VAL~
 
             int i = 0;
 
             foreach (var kvp in Duel.KillRecord)
             {
-                AddLabel(15, 100 + (i * 25), 0x481, kvp.Key);
+                AddLabel(15, 100 + (i * 25), LabelHue, kvp.Value);
                 AddHtmlLocalized(158, 100 + (i * 25), 100, 20, 1115986, 0xFFFF, false, false); // KILLED
-                AddLabel(231, 100 + (i * 25), 0x481, kvp.Value);
+                AddLabel(231, 100 + (i * 25), LabelHue, kvp.Key);
 
                 i++;
 

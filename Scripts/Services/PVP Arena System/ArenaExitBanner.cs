@@ -26,10 +26,16 @@ namespace Server.Engines.ArenaSystem
         {
             if (from is PlayerMobile && from.InRange(Location, 3))
             {
+                var duel = Arena.CurrentDuel;
+
+                if (duel != null && duel.InPreFight)
+                {
+                    from.SendLocalizedMessage(1115968); // You cannot exit until this duel has started.
+                    return;
+                }
+
                 from.SendGump(new ConfirmCallbackGump((PlayerMobile)from, 1115969, 1115970, null, null, (m, state) =>
                 {
-                    var duel = Arena.CurrentDuel;
-
                     Arena.RemovePlayer((PlayerMobile)m);
 
                     if (duel != null && !duel.Complete)

@@ -3,6 +3,7 @@ using System;
 
 namespace Server.Engines.ArenaSystem
 {
+    [PropertyObject]
     public class ArenaDefinition
     {
         [CommandProperty(AccessLevel.GameMaster)]
@@ -31,10 +32,20 @@ namespace Server.Engines.ArenaSystem
 
         public Rectangle2D[] EffectAreas { get; private set; }
         public Rectangle2D[] RegionBounds { get; private set; }
+        public Rectangle2D[] GuardBounds { get; private set; }
         public Rectangle2D[] StartLocations { get; private set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public Rectangle2D StartLocation1 { get; private set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public Rectangle2D StartLocation2 { get; private set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Rectangle2D EjectLocation { get; private set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Rectangle2D DeadEjectLocation { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MapIndex { get; private set; }
@@ -43,18 +54,21 @@ namespace Server.Engines.ArenaSystem
         public Map Map { get { return Map.Maps[MapIndex]; } }
 
         public ArenaDefinition(
-            TextDefinition name, 
-            int mapIndex, 
-            Point3D stoneLoc, 
-            Point3D manLoc, 
+            TextDefinition name,
+            int mapIndex,
+            Point3D stoneLoc,
+            Point3D manLoc,
             Point3D banloc1,
-            Point3D banloc2, 
-            int id1, 
-            int id2, 
-            Rectangle2D[] effectAreas, 
+            Point3D banloc2,
+            int id1,
+            int id2,
+            Rectangle2D[] effectAreas,
             Rectangle2D[] startLocs,
             Point3D gateLoc,
-            Rectangle2D[] bounds)
+            Rectangle2D[] bounds,
+            Rectangle2D[] guardbounds,
+            Rectangle2D eject,
+            Rectangle2D deadEject)
         {
             Name = name;
             MapIndex = mapIndex;
@@ -70,6 +84,9 @@ namespace Server.Engines.ArenaSystem
             StartLocation2 = startLocs[1];
             GateLocation = gateLoc;
             RegionBounds = bounds;
+            GuardBounds = guardbounds;
+            EjectLocation = eject;
+            DeadEjectLocation = deadEject;
         }
 
         public static ArenaDefinition LostLandsTrammel { get; set; }
@@ -111,7 +128,13 @@ namespace Server.Engines.ArenaSystem
                 new Rectangle2D[]
                 {
                     new Rectangle2D(6070, 3713, 27, 16)
-                });
+                },
+                new Rectangle2D[]
+                {
+                    new Rectangle2D(6059, 3697, 53, 56)
+                },
+                new Rectangle2D(6099, 3718, 5, 7),
+                new Rectangle2D(6097, 3729, 2, 2));
 
             LostLandsFelucca = new ArenaDefinition("Lostland (F)", 0, 
                 new Point3D(6102, 3721, 25),
@@ -145,7 +168,13 @@ namespace Server.Engines.ArenaSystem
                 new Rectangle2D[]
                 {
                     new Rectangle2D(6070, 3713, 27, 16)
-                });
+                },
+                new Rectangle2D[]
+                {
+                    new Rectangle2D(6059, 3697, 53, 56)
+                },
+                new Rectangle2D(6099, 3718, 5, 7),
+                new Rectangle2D(6097, 3729, 2, 2));
 
             HavenTrammel = new ArenaDefinition("New Haven", 1, 
                 new Point3D(3793, 2770, 6), 
@@ -178,11 +207,17 @@ namespace Server.Engines.ArenaSystem
                 new Point3D(3792, 2768, 6),
                 new Rectangle2D[]
                 {
-                    new Rectangle2D(3760, 2761, 26, 16)
-                });
+                    new Rectangle2D(3760, 2761, 25, 16)
+                },
+                new Rectangle2D[]
+                {
+                    new Rectangle2D(3740, 2747, 63, 51)
+                },
+                new Rectangle2D(3791, 2766, 4, 9),
+                new Rectangle2D(3790, 2781, 2, 5));
 
             HavenFelucca = new ArenaDefinition("New Haven", 0,
-                new Point3D(3782, 2766, 6), 
+                new Point3D(3782, 2766, 5), 
                 new Point3D(3779, 2778, 5),
                 new Point3D(3749, 2765, 12),
                 new Point3D(3772, 2757, 10),
@@ -213,7 +248,13 @@ namespace Server.Engines.ArenaSystem
                 new Rectangle2D[]
                 {
                     new Rectangle2D(3749, 2757, 25, 16)
-                });
+                },
+                new Rectangle2D[]
+                {
+                    new Rectangle2D(3735, 2747, 68, 51)
+                },
+                new Rectangle2D(3780, 2763, 4, 9),
+                new Rectangle2D(3779, 2776, 2, 5));
         }
     }
 }
