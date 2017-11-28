@@ -112,7 +112,7 @@ namespace Server.Spells.Seventh
 
                         if (m != null)
                         {
-                            SpellHelper.CheckReflect((int)Circle, ref source, ref m);
+                            SpellHelper.CheckReflect((int)Circle, ref source, ref m, SpellDamageType);
                             damage *= GetDamageScalar(m);
                         }
 

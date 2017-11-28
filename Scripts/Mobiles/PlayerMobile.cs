@@ -3239,7 +3239,7 @@ namespace Server.Mobiles
 
 		public override bool CheckShove(Mobile shoved)
 		{
-			if (TransformationSpellHelper.UnderTransformation(shoved, typeof(WraithFormSpell)))
+			if (TransformationSpellHelper.UnderTransformation(shoved, typeof(WraithFormSpell)) || shoved is Clone)
 			{
 				return true;
 			}

@@ -66,6 +66,8 @@ namespace Server.Spells.SkillMasteries
             {
                 if (CheckHSequence(m))
                 {
+                    SpellHelper.CheckReflect(0, Caster, ref m);
+
                     double skill = (Caster.Skills[CastSkill].Value + GetWeaponSkill() + (GetMasteryLevel() * 40)) / 3;
                     double damage = skill + (double)Caster.Karma / 1000;
 

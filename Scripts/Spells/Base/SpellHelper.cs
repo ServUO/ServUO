@@ -1150,9 +1150,26 @@ namespace Server.Spells
             return CheckReflect(circle, ref caster, ref target);
         }
 
-        public static bool CheckReflect(int circle, ref Mobile caster, ref Mobile target)
+        public static bool CheckReflect(int circle, ref Mobile caster, ref Mobile target, DamageType type = DamageType.Spell)
         {
             bool reflect = false;
+
+            if (Core.AOS && type == DamageType.Spell)
+            {
+                Clone clone = null;
+
+                if (target != null)
+                {
+                    clone = MirrorImage.GetDeflect(caster, target);
+                }
+
+                if (clone != null)
+                {
+                    target = clone;
+                    return false;
+                }
+            }
+
 
             if (target.MagicDamageAbsorb > 0)
             {

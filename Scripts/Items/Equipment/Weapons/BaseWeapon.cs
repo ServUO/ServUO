@@ -2067,8 +2067,19 @@ namespace Server.Items
         public virtual void OnHit(Mobile attacker, IDamageable damageable, double damageBonus)
 		{
             Mobile defender = damageable as Mobile;
+            Clone clone = null;
 
-			if (defender != null && MirrorImage.HasClone(defender) && (defender.Skills.Ninjitsu.Value / 150.0) > Utility.RandomDouble())
+            if (defender != null)
+            {
+                clone = MirrorImage.GetDeflect(attacker, defender);
+            }
+
+            if (clone != null)
+            {
+                defender = clone;
+            }
+
+			/*if (defender != null && MirrorImage.HasClone(defender) && (defender.Skills.Ninjitsu.Value / 150.0) > Utility.RandomDouble())
 			{
 				Clone bc;
 
@@ -2081,17 +2092,11 @@ namespace Server.Items
 						attacker.SendLocalizedMessage(1063141); // Your attack has been diverted to a nearby mirror image of your target!
 						defender.SendLocalizedMessage(1063140); // You manage to divert the attack onto one of your nearby mirror images.
 
-						/*
-                        * TODO: What happens if the Clone parries a blow?
-                        * And what about if the attacker is using Honorable Execution
-                        * and kills it?
-                        */
-
 						defender = m;
 						break;
 					}
 				}
-			}
+			}*/
 
 			PlaySwingAnimation(attacker);
 

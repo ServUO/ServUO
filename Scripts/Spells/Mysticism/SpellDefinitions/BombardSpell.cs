@@ -39,6 +39,8 @@ namespace Server.Spells.Mysticism
 			}
 			else if ( CheckHSequence( target ) )
 			{
+                SpellHelper.CheckReflect((int)Circle, Caster, ref target);
+
 				Caster.MovingEffect( target, 0x1363, 12, 1, false, true, 0, 0 );
 				Caster.PlaySound( 0x64B );
 

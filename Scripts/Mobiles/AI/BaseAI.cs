@@ -1472,7 +1472,7 @@ namespace Server.Mobiles
 							m_Mobile.Warmode = false;
 							if (Core.AOS)
 							{
-								m_Mobile.CurrentSpeed = 0.1;
+                                m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 							}
 						}
 					}
@@ -1654,7 +1654,7 @@ namespace Server.Mobiles
 				m_Mobile.Warmode = false;
 				if (Core.AOS)
 				{
-					m_Mobile.CurrentSpeed = 0.1;
+                    m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 				}
 
 				WalkMobileRange(controlMaster, 1, false, 0, 1);
