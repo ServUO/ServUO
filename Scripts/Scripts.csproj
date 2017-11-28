@@ -9749,6 +9749,19 @@
     <Compile Include="Services\PointsSystems\QueensLoyalty.cs" />
     <Compile Include="Services\PointsSystems\ShameCrystals.cs" />
     <Compile Include="Services\PointsSystems\VoidPool.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaDuel.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaExitBanner.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaGate.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaManager.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaStats.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaStone.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaTeam.cs" />
+    <Compile Include="Services\PVP Arena System\Blank.cs" />
+    <Compile Include="Services\PVP Arena System\Definitions.cs" />
+    <Compile Include="Services\PVP Arena System\Gumps.cs" />
+    <Compile Include="Services\PVP Arena System\PVPArena.cs" />
+    <Compile Include="Services\PVP Arena System\PVPArenaSystem.cs" />
+    <Compile Include="Services\PVP Arena System\Region.cs" />
     <Compile Include="Services\Reports\Persistence\PersistableObject.cs">
       <SubType>Code</SubType>
     </Compile>
