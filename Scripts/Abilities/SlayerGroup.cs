@@ -743,5 +743,17 @@ namespace Server.Items
 
             return entries;
         }
+
+        public static SlayerName RandomSuperSlayerAOS(bool excludeFey = true)
+        {
+            int maxIndex = excludeFey ? 5 : 6;
+
+            return Groups[Utility.Random(maxIndex)].Super.Name;
+        }
+
+        public static SlayerName RandomSuperSlayerTOL()
+        {
+            return Groups[Utility.Random(Groups.Length)].Super.Name;
+        }
     }
 }
