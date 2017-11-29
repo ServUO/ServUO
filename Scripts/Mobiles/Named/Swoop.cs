@@ -18,19 +18,19 @@ namespace Server.Mobiles
             this.AI = AIType.AI_Melee;
 
             this.SetStr(100, 150);
-            this.SetDex(400, 500);
-            this.SetInt(80, 90);
+            this.SetDex(400, 480);
+            this.SetInt(75, 90);
 
-            this.SetHits(1500, 2000);
+            this.SetHits(1350, 1550);
 
             this.SetDamage(20, 30);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
             this.SetResistance(ResistanceType.Physical, 75, 90);
-            this.SetResistance(ResistanceType.Fire, 60, 77);
+            this.SetResistance(ResistanceType.Fire, 60, 70);
             this.SetResistance(ResistanceType.Cold, 70, 85);
-            this.SetResistance(ResistanceType.Poison, 55, 85);
+            this.SetResistance(ResistanceType.Poison, 55, 60);
             this.SetResistance(ResistanceType.Energy, 50, 60);
 
             this.SetSkill(SkillName.Wrestling, 120.0, 140.0);
