@@ -119,7 +119,7 @@ namespace Server.Spells.Seventh
                         Caster.DoHarmful(m != null ? m : id);
                         SpellHelper.Damage(this, m != null ? m : id, damage, 0, 0, 0, 0, 100);
 
-                        Effects.SendBoltEffect(m, true, 0, true);
+                        Effects.SendBoltEffect(id, true, 0, true);
                     }
                 }
                 else

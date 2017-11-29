@@ -190,7 +190,7 @@ namespace Server.Regions
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)
         {
-            if (m_House.IsOwner(from) && item.Parent == null && m_House.IsLockedDown(item))
+            if (m_House.IsOwner(from) && item.Parent == null && (m_House.IsLockedDown(item) || m_House.IsSecure(item)))
             {
                 list.Add(new ReleaseEntry(from, item, m_House));
             }

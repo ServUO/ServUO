@@ -60,8 +60,8 @@ namespace Server.Spells.SkillMasteries
 
                         int bonus = (int)(BaseSkillBonus / 4);
 
-                        BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.InjectedStrike, 1155927, 1156163, String.Format("{0}\t{1}", bonus.ToString(), (bonus / 2).ToString())));
                         // Your next successful attack will poison your target and reduce its poison resist by:<br>~1_VAL~% PvM<br>~2_VAL~% PvP
+                        BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.InjectedStrike, 1155927, 1156163, String.Format("{0}\t{1}", bonus.ToString(), (bonus / 2).ToString())));
 
                         Effects.SendLocationParticles(EffectItem.Create(Caster.Location, Caster.Map, EffectItem.DefaultDuration), 0x36CB, 0, 14, 1271, 7, 9915, 0);
 
@@ -230,7 +230,8 @@ namespace Server.Spells.SkillMasteries
                 defender.SendLocalizedMessage(1008097, false, Caster.Name); //  : poisoned you!
             }
 
-            int malus = (int)(BaseSkillBonus / 4);
+            int malus = 30;
+
             if (defender is PlayerMobile)
                 malus /= 2;
 
@@ -240,12 +241,12 @@ namespace Server.Spells.SkillMasteries
             ResistanceMod mod = new ResistanceMod(ResistanceType.Poison, -malus);
             defender.AddResistanceMod(mod);
 
-            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.InjectedStrikeDebuff, 1155927, BuffInfo.Blank, ""));
+            // ~2_NAME~ reduces your poison resistance by ~1_VAL~.
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.InjectedStrikeDebuff, 1155927, 1156133, TimeSpan.FromSeconds(7), defender, String.Format("{0}\t{1}", malus, Caster.Name)));
 
-            Server.Timer.DelayCall(TimeSpan.FromSeconds(4), () =>
+            Server.Timer.DelayCall(TimeSpan.FromSeconds(7), () =>
                 {
                     defender.RemoveResistanceMod(mod);
-                    BuffInfo.RemoveBuff(defender, BuffIcon.InjectedStrikeDebuff);
                 });
 
             Expire();

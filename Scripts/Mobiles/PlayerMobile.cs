@@ -2221,7 +2221,7 @@ namespace Server.Mobiles
                         }
                     }
                 }
-                else
+                else if(Siege.SiegeShard)
                 {
                     list.Add(new CallbackEntry(3006168, SiegeBlessItem));
                 }
@@ -4103,6 +4103,18 @@ namespace Server.Mobiles
 			{
 				poison = PoisonImpl.IncreaseLevel(poison);
 			}
+
+            //Skill Masteries
+            if ((this.Poison == null || this.Poison.Level < poison.Level) && ToleranceSpell.OnPoisonApplied(this))
+            {
+                poison = PoisonImpl.DecreaseLevel(poison);
+
+                if (poison == null || poison.Level <= 0)
+                {
+                    PrivateOverheadMessage(MessageType.Regular, 0x3F, 1053092, this.NetState); // * You feel yourself resisting the effects of the poison *
+                    return ApplyPoisonResult.Immune;
+                }
+            }
 
 			ApplyPoisonResult result = base.ApplyPoison(from, poison);
 
