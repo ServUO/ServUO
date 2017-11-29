@@ -90,7 +90,14 @@ namespace Server.Engines.Craft
                 }
                 else
                 {
-                    return mob.CheckSkill(skill, difficulty - 25.0, difficulty + 25.0);
+                    SkillLock sl = mob.Skills[SkillName.Tinkering].Lock;
+                    mob.Skills[SkillName.Tinkering].SetLockNoRelay(SkillLock.Locked);
+
+                    bool check = mob.CheckSkill(skill, difficulty - 25.0, difficulty + 25.0);
+
+                    mob.Skills[SkillName.Tinkering].SetLockNoRelay(sl);
+
+                    return check;
                 }
             }
 
@@ -572,8 +579,13 @@ namespace Server.Engines.Craft
                         if (damage > (int)(skillValue * 0.6))
                             damage = (int)(skillValue * 0.6);
 
+                        SkillLock sl = from.Skills[SkillName.Tinkering].Lock;
+                        from.Skills[SkillName.Tinkering].SetLockNoRelay(SkillLock.Locked);
+
                         if (!from.CheckSkill(SkillName.Tinkering, 0.0, 100.0))
                             damage /= 6;
+
+                        from.Skills[SkillName.Tinkering].SetLockNoRelay(sl);
 
                         Container pack = from.Backpack;
 
