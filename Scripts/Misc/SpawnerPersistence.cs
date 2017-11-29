@@ -39,7 +39,7 @@ namespace Server
                 CheckVersion();
             }
 
-            CommandSystem.Register("ConvertSpawners", AccessLevel.GameMaster, e =>
+            /*CommandSystem.Register("ConvertSpawners", AccessLevel.GameMaster, e =>
             {
                 string str = "By selecting OK, you will wipe all XmlSpawners that were placed via World Load, and will replace " +
                              "with standard spawners. Any existing spawner with special symbols, such as , <> / will not be converted.";
@@ -55,7 +55,7 @@ namespace Server
                         ConvertXmlToSpanwers();
                     }
                 }, null, true));
-            });
+            });*/
         }
 
         public static void OnSave(WorldSaveEventArgs e)
