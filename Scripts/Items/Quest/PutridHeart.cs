@@ -20,6 +20,7 @@ namespace Server.Items
         {
             Stackable = true;
             Amount = amount;
+            Hue = 2599;
         }
 
         public override void OnDoubleClick(Mobile from)
