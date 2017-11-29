@@ -22,24 +22,24 @@ namespace Server.Engines.BulkOrders
         public SmallBOD(int hue, int amountMax, Type type, int number, int graphic, bool requireExeptional, BulkMaterialType material, int graphichue = 0)
             : base(Core.AOS ? 0x2258 : 0x14EF)
         {
-            this.Weight = 1.0;
-            this.Hue = hue; // Blacksmith: 0x44E; Tailoring: 0x483
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            Hue = hue; // Blacksmith: 0x44E; Tailoring: 0x483
+            LootType = LootType.Blessed;
 
-            this.m_AmountMax = amountMax;
-            this.m_Type = type;
-            this.m_Number = number;
-            this.m_Graphic = graphic;
-            this.m_GraphicHue = graphichue;
-            this.m_RequireExceptional = requireExeptional;
-            this.m_Material = material;
+            m_AmountMax = amountMax;
+            m_Type = type;
+            m_Number = number;
+            m_Graphic = graphic;
+            m_GraphicHue = graphichue;
+            m_RequireExceptional = requireExeptional;
+            m_Material = material;
         }
 
         public SmallBOD()
             : base(Core.AOS ? 0x2258 : 0x14EF)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public SmallBOD(Serial serial)
@@ -52,12 +52,12 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_AmountCur;
+                return m_AmountCur;
             }
             set
             {
-                this.m_AmountCur = value;
-                this.InvalidateProperties();
+                m_AmountCur = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -65,12 +65,12 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_AmountMax;
+                return m_AmountMax;
             }
             set
             {
-                this.m_AmountMax = value;
-                this.InvalidateProperties();
+                m_AmountMax = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -78,11 +78,11 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
+                m_Type = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -90,12 +90,12 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_Number;
+                return m_Number;
             }
             set
             {
-                this.m_Number = value;
-                this.InvalidateProperties();
+                m_Number = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -103,11 +103,11 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_Graphic;
+                return m_Graphic;
             }
             set
             {
-                this.m_Graphic = value;
+                m_Graphic = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -115,11 +115,11 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_GraphicHue;
+                return m_GraphicHue;
             }
             set
             {
-                this.m_GraphicHue = value;
+                m_GraphicHue = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -127,12 +127,12 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_RequireExceptional;
+                return m_RequireExceptional;
             }
             set
             {
-                this.m_RequireExceptional = value;
-                this.InvalidateProperties();
+                m_RequireExceptional = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -140,12 +140,12 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_Material;
+                return m_Material;
             }
             set
             {
-                this.m_Material = value;
-                this.InvalidateProperties();
+                m_Material = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -153,7 +153,7 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return (this.m_AmountCur == this.m_AmountMax);
+                return (m_AmountCur == m_AmountMax);
             }
         }
         public override int LabelNumber
@@ -227,19 +227,19 @@ namespace Server.Engines.BulkOrders
 
             list.Add(1060654); // small bulk order
 
-            if (this.m_RequireExceptional)
+            if (m_RequireExceptional)
                 list.Add(1045141); // All items must be exceptional.
 
-            if (this.m_Material != BulkMaterialType.None)
-                list.Add(SmallBODGump.GetMaterialNumberFor(this.m_Material)); // All items must be made with x material.
+            if (m_Material != BulkMaterialType.None)
+                list.Add(SmallBODGump.GetMaterialNumberFor(m_Material)); // All items must be made with x material.
 
-            list.Add(1060656, this.m_AmountMax.ToString()); // amount to make: ~1_val~
-            list.Add(1060658, "#{0}\t{1}", this.m_Number, this.m_AmountCur); // ~1_val~: ~2_val~
+            list.Add(1060656, m_AmountMax.ToString()); // amount to make: ~1_val~
+            list.Add(1060658, "#{0}\t{1}", m_Number, m_AmountCur); // ~1_val~: ~2_val~
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack) || this.InSecureTrade || this.RootParent is PlayerVendor)
+            if (IsChildOf(from.Backpack) || InSecureTrade || RootParent is PlayerVendor)
 			{
 				EventSink.InvokeBODUsed(new BODUsedEventArgs(from, this));
 				from.SendGump(new SmallBODGump(from, this));
@@ -252,17 +252,17 @@ namespace Server.Engines.BulkOrders
 
         public override void OnDoubleClickNotAccessible(Mobile from)
         {
-            this.OnDoubleClick(from);
+            OnDoubleClick(from);
         }
 
         public override void OnDoubleClickSecureTrade(Mobile from)
         {
-            this.OnDoubleClick(from);
+            OnDoubleClick(from);
         }
 
         public void BeginCombine(Mobile from)
         {
-            if (this.m_AmountCur < this.m_AmountMax)
+            if (m_AmountCur < m_AmountMax)
                 from.Target = new SmallBODTarget(this);
             else
                 from.SendLocalizedMessage(1045166); // The maximum amount of requested items have already been combined to this deed.
@@ -277,12 +277,12 @@ namespace Server.Engines.BulkOrders
         public virtual void GetRewards(out Item reward, out int gold, out int fame)
         {
             reward = null;
-            gold = this.ComputeGold();
-            fame = this.ComputeFame();
+            gold = ComputeGold();
+            fame = ComputeFame();
 
             if (!BulkOrderSystem.NewSystemEnabled)
             {
-                List<Item> rewards = this.ComputeRewards(false);
+                List<Item> rewards = ComputeRewards(false);
 
                 if (rewards.Count > 0)
                 {
@@ -297,6 +297,11 @@ namespace Server.Engines.BulkOrders
             }
         }
 
+        public virtual bool CheckType(Type itemType)
+        {
+            return m_Type != null && (itemType == m_Type || itemType.IsSubclassOf(m_Type));
+        }
+
         public void EndCombine(Mobile from, object o)
         {
             if (o is Item && ((Item)o).IsChildOf(from.Backpack))
@@ -304,11 +309,11 @@ namespace Server.Engines.BulkOrders
                 Type objectType = o.GetType();
                 Item item = o as Item;
 
-                if (this.m_AmountCur >= this.m_AmountMax)
+                if (m_AmountCur >= m_AmountMax)
                 {
                     from.SendLocalizedMessage(1045166); // The maximum amount of requested items have already been combined to this deed.
                 }
-                else if (this.m_Type == null || (objectType != this.m_Type && !objectType.IsSubclassOf(this.m_Type)) /*|| (!(o is BaseWeapon) && !(o is BaseArmor) && !(o is BaseClothing))*/)
+                else if (!CheckType(objectType))
                 {
                     from.SendLocalizedMessage(1045169); // The item is not in the request.
                 }
@@ -319,7 +324,7 @@ namespace Server.Engines.BulkOrders
                     if (o is IResource)
                         material = GetMaterial(((IResource)o).Resource);
 
-                    if (material != this.m_Material)
+                    if (material != m_Material)
                     {
                         from.SendLocalizedMessage(1157310); // The item is not made from the requested resource.
                     }
@@ -330,7 +335,7 @@ namespace Server.Engines.BulkOrders
                         if (o is IQuality)
                             isExceptional = (((IQuality)o).Quality == ItemQuality.Exceptional);
 
-                        if (this.m_RequireExceptional && !isExceptional)
+                        if (m_RequireExceptional && !isExceptional)
                         {
                             from.SendLocalizedMessage(1045167); // The item must be exceptional.
                         }
@@ -352,15 +357,15 @@ namespace Server.Engines.BulkOrders
                             else
                             {
                                 item.Delete();
-                                ++this.AmountCur;
+                                ++AmountCur;
                             }
 
                             from.SendLocalizedMessage(1045170); // The item has been combined with the deed.
 
                             from.SendGump(new SmallBODGump(from, this));
 
-                            if (this.m_AmountCur < this.m_AmountMax)
-                                this.BeginCombine(from);
+                            if (m_AmountCur < m_AmountMax)
+                                BeginCombine(from);
                         }
                     }
                 }
@@ -437,13 +442,13 @@ namespace Server.Engines.BulkOrders
 
             writer.Write(m_GraphicHue);
 
-            writer.Write(this.m_AmountCur);
-            writer.Write(this.m_AmountMax);
-            writer.Write(this.m_Type == null ? null : this.m_Type.FullName);
-            writer.Write(this.m_Number);
-            writer.Write(this.m_Graphic);
-            writer.Write(this.m_RequireExceptional);
-            writer.Write((int)this.m_Material);
+            writer.Write(m_AmountCur);
+            writer.Write(m_AmountMax);
+            writer.Write(m_Type == null ? null : m_Type.FullName);
+            writer.Write(m_Number);
+            writer.Write(m_Graphic);
+            writer.Write(m_RequireExceptional);
+            writer.Write((int)m_Material);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -461,31 +466,31 @@ namespace Server.Engines.BulkOrders
                     }
                 case 0:
                     {
-                        this.m_AmountCur = reader.ReadInt();
-                        this.m_AmountMax = reader.ReadInt();
+                        m_AmountCur = reader.ReadInt();
+                        m_AmountMax = reader.ReadInt();
 
                         string type = reader.ReadString();
 
                         if (type != null)
-                            this.m_Type = ScriptCompiler.FindTypeByFullName(type);
+                            m_Type = ScriptCompiler.FindTypeByFullName(type);
 
-                        this.m_Number = reader.ReadInt();
-                        this.m_Graphic = reader.ReadInt();
-                        this.m_RequireExceptional = reader.ReadBool();
-                        this.m_Material = (BulkMaterialType)reader.ReadInt();
+                        m_Number = reader.ReadInt();
+                        m_Graphic = reader.ReadInt();
+                        m_RequireExceptional = reader.ReadBool();
+                        m_Material = (BulkMaterialType)reader.ReadInt();
 
                         break;
                     }
             }
 
-            if (this.Weight == 0.0)
-                this.Weight = 1.0;
+            if (Weight == 0.0)
+                Weight = 1.0;
 
-            if (Core.AOS && this.ItemID == 0x14EF)
-                this.ItemID = 0x2258;
+            if (Core.AOS && ItemID == 0x14EF)
+                ItemID = 0x2258;
 
-            if (this.Parent == null && this.Map == Map.Internal && this.Location == Point3D.Zero)
-                this.Delete();
+            if (Parent == null && Map == Map.Internal && Location == Point3D.Zero)
+                Delete();
         }
     }
 }

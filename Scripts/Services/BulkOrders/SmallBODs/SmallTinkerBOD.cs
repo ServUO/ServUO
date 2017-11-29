@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Engines.Craft;
+using Server.Items;
 
 namespace Server.Engines.BulkOrders
 {
@@ -165,6 +166,62 @@ namespace Server.Engines.BulkOrders
             }
 
             return null;
+        }
+
+        public override bool CheckType(Type itemType)
+        {
+            bool check = base.CheckType(itemType);
+
+            if (!check)
+            {
+                check = CheckTinkerType(itemType, this.Type);
+            }
+
+            return check;
+        }
+
+        /* Tinkering needs conditional check for combining:
+        * SpoonLeft/SpoonRight, ForkLeft/ForkRight, KnifeLeft/KnifeRight, ClockRight/ClockLeft
+        */
+        private static Type[][] _TinkerTypeTable =
+        {
+            new Type[] { typeof(Spoon), typeof(SpoonRight), typeof(SpoonLeft) },
+            new Type[] { typeof(Fork), typeof(ForkRight), typeof(ForkLeft) },
+            new Type[] { typeof(Knife), typeof(KnifeRight), typeof(KnifeLeft) },
+            new Type[] { typeof(Clock), typeof(ClockRight), typeof(ClockLeft) },
+            new Type[] { typeof(GoldRing), typeof(SilverRing) },
+            new Type[] { typeof(GoldBracelet), typeof(SilverBracelet) },
+        };
+
+        public static bool CheckTinkerType(Type actual, Type lookingfor)
+        {
+            foreach (Type[] types in _TinkerTypeTable)
+            {
+                foreach (Type t in types)
+                {
+                    if (t == lookingfor) // found the list, lets see if the actual is here
+                    {
+                        foreach (Type t2 in types)
+                        {
+                            if (t2 == actual)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                /*if (types[0] == lookingfor)
+                {
+                    foreach (Type t in types)
+                    {
+                        if (actual == t)
+                            return true;
+                    }
+                }*/
+            }
+
+            return false;
         }
 
         public override int ComputeFame()
