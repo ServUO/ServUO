@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Server.Engines.CityLoyalty;
 using Server.Engines.VvV;
+using Server.Engines.ArenaSystem;
 
 namespace Server.Engines.Points
 {
@@ -38,7 +39,8 @@ namespace Server.Engines.Points
         CleanUpBritannia,
         ViceVsVirtue,
 
-        TreasuresOfKotlCity
+        TreasuresOfKotlCity,
+        PVPArena
     }
 
     public abstract class PointsSystem
@@ -321,6 +323,7 @@ namespace Server.Engines.Points
         public static CleanUpBritanniaData CleanUpBritannia { get; set; }
         public static ViceVsVirtueSystem ViceVsVirtue { get; set; }
         public static KotlCityData TreasuresOfKotlCity { get; set; }
+        public static PVPArenaSystem ArenaSystem { get; set; }
 
         public static void Configure()
         {
@@ -340,6 +343,7 @@ namespace Server.Engines.Points
             TreasuresOfKotlCity = new KotlCityData();
 
             CityLoyaltySystem.ConstructSystems();
+            ArenaSystem = new PVPArenaSystem();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)

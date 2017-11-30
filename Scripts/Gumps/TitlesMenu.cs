@@ -1070,6 +1070,9 @@ namespace Server.Gumps
                 if (id >= 1156985 && id <= 1156987)
                     return 1156984; // This title is obtained from the Halloween Treasures of the Kotl City Event.	
 
+                if (id >= 1152068 && id <= 1152073)
+                    return 1152075; // This is a reward title given for your valorous fights in arenas.
+
                 switch (id)
                 {
                     default: return "This reward title has no desciption.";

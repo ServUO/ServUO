@@ -515,6 +515,9 @@ namespace Server.Spells
             }
             #endregion
 
+            if (Server.Engines.ArenaSystem.PVPArenaSystem.IsFriendly(from, to))
+                return false;
+
             Guild fromGuild = GetGuildFor(from);
             Guild toGuild = GetGuildFor(to);
 
