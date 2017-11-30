@@ -119,12 +119,12 @@ namespace Server.Engines.Despise
             m_SummonTimer = null;
 		}
 
-        public override void OnDeath(Container c)
+        public override void Delete()
         {
+            base.Delete();
+
             if (m_Wisp != null && m_Wisp.Alive)
                 m_Wisp.Kill();
-
-            base.OnDeath(c);
         }
 		
 		private static Type[] m_Artifacts = new Type[]
