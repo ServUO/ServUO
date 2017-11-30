@@ -9756,7 +9756,6 @@
     <Compile Include="Services\PVP Arena System\ArenaStats.cs" />
     <Compile Include="Services\PVP Arena System\ArenaStone.cs" />
     <Compile Include="Services\PVP Arena System\ArenaTeam.cs" />
-    <Compile Include="Services\PVP Arena System\Blank.cs" />
     <Compile Include="Services\PVP Arena System\Definitions.cs" />
     <Compile Include="Services\PVP Arena System\Gumps.cs" />
     <Compile Include="Services\PVP Arena System\PVPArena.cs" />

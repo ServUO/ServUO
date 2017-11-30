@@ -193,11 +193,11 @@ namespace Server.Engines.CityLoyalty
         {
             switch (entry.Completed)
             {
-                case 1: entry.Player.AddRewardTitle((int)TradeTitle.Trader); break;
-                case 25: entry.Player.AddRewardTitle((int)TradeTitle.Exporter); break;
-                case 50: entry.Player.AddRewardTitle((int)TradeTitle.Broker); break;
-                case 100: entry.Player.AddRewardTitle((int)TradeTitle.Tycoon); break;
-                case 150: entry.Player.AddRewardTitle((int)TradeTitle.Magnate); break;
+                case 1: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Trader); break;
+                case 25: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Exporter); break;
+                case 50: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Broker); break;
+                case 100: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Tycoon); break;
+                case 150: entry.Player.AddRewardTitle(1152068 + (int)TradeTitle.Magnate); break;
             }
 
             if(entry.CompletedSlim == 50)

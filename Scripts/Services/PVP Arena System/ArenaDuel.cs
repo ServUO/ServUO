@@ -673,6 +673,7 @@ namespace Server.Engines.ArenaSystem
             foreach (var part in GetParticipants(true))
             {
                 Arena.RemovePlayer(part.Key, winners != null && winners.Contains(part.Key));
+                PVPArenaSystem.Instance.CheckTitle(part.Key);
             }
 
             PVPArenaSystem.SendParticipantMessage(this, 1115973); // Thank you for your participation! Please return to the arena stone for additional dueling opportunities!

@@ -167,6 +167,27 @@ namespace Server.Engines.ArenaSystem
             }
         }
 
+        public void CheckTitle(PlayerMobile pm)
+        {
+            var entry = GetPlayerEntry<PlayerStatsEntry>(pm);
+            int title = 0;
+
+            switch (entry.TotalDuels)
+            {
+                case 1: title = 1152068 + (int)ArenaTitle.FledglingGladiator; break;
+                case 50: title = 1152068 + (int)ArenaTitle.BuddingGladiator; break;
+                case 100: title = 1152068 + (int)ArenaTitle.Gladiator; break;
+                case 250: title = 1152068 + (int)ArenaTitle.WellKnownGladiator; break;
+                case 500: title = 1152068 + (int)ArenaTitle.VeteranGladiator; break;
+            }
+
+            if (title > 0)
+            {
+                pm.AddRewardTitle(title);
+                pm.SendLocalizedMessage(1152067, String.Format("#{0}", title.ToString())); // You have gotten a new subtitle, ~1_VAL~, in reward for your duel!
+            }
+        }
+
         public static void Initialize()
         {
             if (Enabled)
@@ -204,6 +225,8 @@ namespace Server.Engines.ArenaSystem
 
         public bool IgnoreInvites { get; set; }
         public bool OpenStats { get; set; }
+
+        public int TotalDuels { get { return SurvivalWins + SurvivalLosses + SurvivalDraws + TeamWins + TeamLosses + TeamDraws; } }
 
         public List<DuelRecord> Record { get; set; }
 
@@ -397,5 +420,17 @@ namespace Server.Engines.ArenaSystem
                 writer.Write((int)PotionRules);
             }
         }
+    }
+}
+
+namespace Server.Mobiles
+{
+    public enum ArenaTitle
+    {
+        FledglingGladiator = 0,
+        BuddingGladiator = 1,
+        Gladiator = 3,
+        WellKnownGladiator = 4,
+        VeteranGladiator =5
     }
 }
