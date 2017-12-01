@@ -13,6 +13,7 @@ namespace Server.Engines.ArenaSystem
     {
         public static PVPArenaSystem Instance { get; set; }
         public static bool Enabled { get { return Core.HS; } }
+        public static bool BlockSameIP { get { return true; } }
 
         public override PointsType Loyalty { get { return PointsType.PVPArena; } }
         public override TextDefinition Name { get { return m_Name; } }
@@ -186,6 +187,33 @@ namespace Server.Engines.ArenaSystem
                 pm.AddRewardTitle(title);
                 pm.SendLocalizedMessage(1152067, String.Format("#{0}", title.ToString())); // You have gotten a new subtitle, ~1_VAL~, in reward for your duel!
             }
+        }
+
+        public static bool HasSameIP(Mobile m, ArenaDuel duel)
+        {
+            if (duel == null || m.AccessLevel > AccessLevel.Player)
+                return false;
+
+            foreach (var kvp in duel.GetParticipants())
+            {
+                if (IsSameIP(m, kvp.Key))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsSameIP(Mobile one, Mobile two)
+        {
+            if (one.NetState == null || two.NetState == null || one.AccessLevel > AccessLevel.Player || two.AccessLevel > AccessLevel.Player)
+                return false;
+
+            var oneAddress = one.NetState.Address;
+            var twoAddress = two.NetState.Address;
+
+            return one.NetState.Address == two.NetState.Address;
         }
 
         public static void Initialize()
