@@ -719,7 +719,11 @@ namespace Server.Engines.ArenaSystem
                     {
                         PVPArenaSystem.SendMessage(from, 1116149); // The targeted player is too far away from the arena stone.
                     }
-                    else if(from != pm)
+                    else if (PVPArenaSystem.BlockSameIP && PVPArenaSystem.IsSameIP(from, pm))
+                    {
+                        PVPArenaSystem.SendMessage(from, 1116150); // The player has already joined in the session.
+                    }
+                    else if (from != pm)
                     {
                         PVPArenaSystem.SendMessage(from, 1116152); // You have sent the invitation to the player.
                         PVPArenaSystem.SendMessage(pm, 1116212); // You have been invited to a duel.  Select the “OK” button to join this duel.
@@ -793,7 +797,11 @@ namespace Server.Engines.ArenaSystem
             {
                 var duel = PendingDuels[i];
 
-                AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
+                if (!PVPArenaSystem.BlockSameIP || !PVPArenaSystem.HasSameIP(User, duel))
+                {
+                    AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
+                }
+
                 AddLabel(54, y, LabelHue, String.Format("{0}/{1}", duel.ParticipantCount.ToString(), duel.Entries.ToString()));
                 AddLabel(103, y, LabelHue, duel.Host.Name);
 
