@@ -2421,7 +2421,10 @@ namespace Server.Items
 				((BaseCreature)defender).AlterMeleeDamageFrom(attacker, ref damage);
 			}
 
-			damage = AbsorbDamage(attacker, defender, damage);
+            if (!Core.HS || m_AosAttributes.BalancedWeapon == 0)
+            {
+                damage = AbsorbDamage(attacker, defender, damage);
+            }
 
 			if (!Core.AOS && damage < 1)
 			{
@@ -2429,14 +2432,19 @@ namespace Server.Items
 			}
 			else if (Core.AOS && damage == 0) // parried
 			{
-				if (a != null && a.Validate(attacker) /*&& a.CheckMana( attacker, true )*/)
-					// Parried special moves have no mana cost
+				if ((a != null && a.Validate(attacker)) || (move != null && move.Validate(attacker)))
+					// Parried special moves have no mana cost - era specific
 				{
-					a = null;
-					WeaponAbility.ClearCurrentAbility(attacker);
+                    if (Core.SE || (a != null && a.CheckMana(attacker, true)))
+                    {
+                        WeaponAbility.ClearCurrentAbility(attacker);
+                        SpecialMove.ClearCurrentMove(attacker);
 
-					attacker.SendLocalizedMessage(1061140); // Your attack was parried!
+                        attacker.SendLocalizedMessage(1061140); // Your attack was parried!
+                    }
 				}
+
+                return;
 			}
 
             // Skill Masteries
@@ -2509,7 +2517,6 @@ namespace Server.Items
 				}
 			}
 
-			// TODO: Scale damage, alongside the leech effects below, to weapon speed.
 			if (ImmolatingWeaponSpell.IsImmolating(this) && damage > 0)
 			{
 				ImmolatingWeaponSpell.DoEffect(this, defender);

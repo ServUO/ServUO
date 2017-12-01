@@ -35,19 +35,13 @@ namespace Server.Spells.SkillMasteries
 
                 _Radius = skill / 40;
                 _DamageMalus = (int)((double)skill / 2.4);
-                int duration = 120;
-
-                if (skill >= 120)
-                    duration = 60;
-                else if (skill >= 100)
-                    duration = 80;
 
                 Caster.PrivateOverheadMessage(MessageType.Regular, 1150, false, "Prepare Yourself!", Caster.NetState);
                 Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
                 TimeSpan d;
 
                 if (Caster.AccessLevel == AccessLevel.Player)
-                    d = TimeSpan.FromMinutes(duration);
+                    d = TimeSpan.FromMinutes(20);
                 else
                     d = TimeSpan.FromSeconds(10);
 

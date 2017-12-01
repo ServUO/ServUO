@@ -21,7 +21,7 @@ namespace Server.Items
         {
             get
             {
-                return 20;
+                return Core.TOL ? 25 : 20;
             }
         }
         public override bool Validate(Mobile from)
@@ -74,6 +74,8 @@ namespace Server.Items
             defender.PlaySound(0x140);
             defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);
 
+            int delay = Core.TOL && attacker.Weapon is BaseRanged ? 8 : 10;
+
             if (defender is PlayerMobile)
             {
                 if (Core.ML && Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
@@ -89,7 +91,7 @@ namespace Server.Items
                     defender.SendLocalizedMessage(1060083); // You fall off of your mount and take damage!
                 }
 
-                ((PlayerMobile)defender).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
+                ((PlayerMobile)defender).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(delay), true);
             }
             else if (mount != null)
             {
@@ -98,7 +100,7 @@ namespace Server.Items
 
             if (attacker is PlayerMobile)
             {
-                ((PlayerMobile)attacker).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), false);
+                ((PlayerMobile)attacker).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(delay), false);
             }
             else if (Core.ML && attacker is BaseCreature)
             {
@@ -108,7 +110,7 @@ namespace Server.Items
                 {
                     PlayerMobile pm = bc.ControlMaster as PlayerMobile;
 
-                    pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), false);
+                    pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(delay), false);
                 }
             }
 
