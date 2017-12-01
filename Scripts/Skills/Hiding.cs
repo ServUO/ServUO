@@ -97,7 +97,8 @@ namespace Server.SkillHandlers
 
                 m.LocalOverheadMessage(MessageType.Regular, 0x22, 501237); // You can't seem to hide right now.
 
-                return TimeSpan.FromSeconds(1.0);
+                return TimeSpan.Zero;
+                //return TimeSpan.FromSeconds(1.0);
             }
             else 
             {

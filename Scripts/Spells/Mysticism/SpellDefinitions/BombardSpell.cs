@@ -39,10 +39,12 @@ namespace Server.Spells.Mysticism
 			}
 			else if ( CheckHSequence( target ) )
 			{
+                SpellHelper.CheckReflect((int)Circle, Caster, ref target);
+
 				Caster.MovingEffect( target, 0x1363, 12, 1, false, true, 0, 0 );
 				Caster.PlaySound( 0x64B );
 
-				if (target is PlayerMobile && Caster is PlayerMobile && !CheckResisted(target))
+				/*if (target is PlayerMobile && Caster is PlayerMobile && !CheckResisted(target))
 				{
                     if (target != Caster)
                     {
@@ -75,9 +77,14 @@ namespace Server.Spells.Mysticism
                     }
 
                     target.Paralyze(TimeSpan.FromSeconds(3));
-				}
+				}*/
 
                 SpellHelper.Damage(this, target, (int)GetNewAosDamage(40, 1, 5, target), 100, 0, 0, 0, 0);
+
+                if (!CheckResisted(target))
+                {
+                    target.Paralyze(TimeSpan.FromSeconds(3));
+                }
 			}
 
 			FinishSequence();

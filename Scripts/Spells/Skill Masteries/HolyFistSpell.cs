@@ -66,15 +66,17 @@ namespace Server.Spells.SkillMasteries
             {
                 if (CheckHSequence(m))
                 {
+                    SpellHelper.CheckReflect(0, Caster, ref m);
+
                     double skill = (Caster.Skills[CastSkill].Value + GetWeaponSkill() + (GetMasteryLevel() * 40)) / 3;
                     double damage = skill + (double)Caster.Karma / 1000;
+
+                    damage += Utility.RandomMinMax(0, 5);
 
                     if (m is BaseCreature && IsUndead((BaseCreature)m))
                         damage *= 1.5;
                     else if (m is PlayerMobile)
-                        damage /= 1.5;
-
-                    damage += Utility.RandomMinMax(0, 5);
+                        damage = Math.Min(35, damage);
 
                     Caster.MovingParticles(m, 0x9BB5, 7, 0, false, true, 9502, 4019, 0x160);
                     Caster.PlaySound(0x5CE);

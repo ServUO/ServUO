@@ -525,9 +525,16 @@ namespace Server.Items
                     return false;
                 }
 
-				if(attrs != null && value > 0 && attrs[(AosAttribute)attribute] == 0)
+                bool hasValue;
+
+                if ((AosAttribute)attribute == AosAttribute.CastSpeed && attrs.SpellChanneling > 0)
+                    hasValue = attrs.CastSpeed > -1;
+                else
+                    hasValue = attrs[(AosAttribute)attribute] > 0;
+
+                if (!hasValue)
 				{
-					attrs[(AosAttribute)attribute] = value;
+					attrs[(AosAttribute)attribute] += value;
                     budget -= Imbuing.GetIntensityForAttribute(item, (AosAttribute)attribute, -1, value);
 
                     if ((AosAttribute)attribute == AosAttribute.SpellChanneling && attrs[AosAttribute.CastSpeed] > -1)
@@ -2357,9 +2364,16 @@ namespace Server.Items
 
                     value = CalculateValue(attr, min, max, perclow, perchigh, ref budget, luckchance, playerMade);
 
-                    if (aosattrs[(AosAttribute)attr] == 0)
+                    bool hasValue;
+
+                    if ((AosAttribute)attr == AosAttribute.CastSpeed && aosattrs.SpellChanneling > 0)
+                        hasValue = aosattrs.CastSpeed > -1;
+                    else
+                        hasValue = aosattrs[(AosAttribute)attr] > 0;
+
+                    if (!hasValue)
                     {
-                        aosattrs[(AosAttribute)attr] = value;
+                        aosattrs[(AosAttribute)attr] += value;
                         budget -= Imbuing.GetIntensityForAttribute(item, (AosAttribute)attr, -1, value);
 
                         if ((AosAttribute)attr == AosAttribute.SpellChanneling && aosattrs[AosAttribute.CastSpeed] > -1)
@@ -2421,6 +2435,16 @@ namespace Server.Items
                         {
                             BaseRunicTool.ApplyElementalDamage((BaseWeapon)item, perclow, perchigh);
                         }
+                        else if (item is BaseRanged && str == "WeaponVelocity")
+                        {
+                            value = CalculateValue(attr, 2, 50, perclow, perchigh, ref budget, luckchance, playerMade);
+
+                            if (((BaseRanged)item).Velocity == 0)
+                            {
+                                ((BaseRanged)item).Velocity = value;
+                                budget -= Imbuing.GetIntensityForAttribute(item, attr, -1, value);
+                            }
+                        }
                     }
                     else if (skillbonuses != null && str == "SkillBonus")
                     {
@@ -2456,6 +2480,16 @@ namespace Server.Items
                 attrList.Clear();
 
             return true;
+        }
+
+        public static bool HasAosAttributesValue(AosAttributes attrs, AosAttribute attr)
+        {
+            if (attr == AosAttribute.CastSpeed && attrs.SpellChanneling > 0)
+            {
+                return attrs.CastSpeed >= 0;
+            }
+
+            return attrs[attr] > 0;
         }
 
         public static bool CheckAttribute(Item item, object attr)
@@ -2744,8 +2778,8 @@ namespace Server.Items
 
         private static object[] m_RangedStandard = new object[]
         {
-            //AosAttribute.BalancedWeapon,
-            //AosWeaponAttribute.WeaponVelocity
+            AosAttribute.BalancedWeapon,
+            "WeaponVelocity"
         };
 
         private static object[] m_MeleeStandard = new object[]

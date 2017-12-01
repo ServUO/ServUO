@@ -10,8 +10,8 @@ namespace Server.Items
             : base()
         {
             this.Hue = 0x5E5;
-			
-            this.Slayer = SlayerGroup.Groups[Utility.Random(SlayerGroup.Groups.Length)].Super.Name;
+
+            this.Slayer = SlayerGroup.RandomSuperSlayerAOS();
 			
             this.Attributes.WeaponSpeed = 25;
             this.Attributes.WeaponDamage = 50;
@@ -69,8 +69,8 @@ namespace Server.Items
             : base()
         {
             this.Hue = 0x47E;
-			
-            this.Slayer = SlayerGroup.Groups[Utility.Random(SlayerGroup.Groups.Length)].Super.Name;
+
+            this.Slayer = SlayerGroup.RandomSuperSlayerAOS();
 			
             this.Attributes.SpellChanneling = 1;
             this.Attributes.CastSpeed = -1;
@@ -130,8 +130,8 @@ namespace Server.Items
             : base()
         {
             this.Hue = 0x21;
-			
-            this.Slayer = SlayerGroup.Groups[Utility.Random(SlayerGroup.Groups.Length)].Super.Name;
+
+            this.Slayer = SlayerGroup.RandomSuperSlayerAOS();
 			
             this.Attributes.BonusStr = 10;
             this.Attributes.AttackChance = 15;

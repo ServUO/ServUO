@@ -24,11 +24,11 @@ namespace Server.Items
         public AncientFarmersKasa()
             : base()
         {
-            this.Attributes.BonusStr = 5;
-            this.Attributes.BonusStam = 5;
-            this.Attributes.RegenStam = 5;
+            Attributes.BonusStr = 5;
+            Attributes.BonusStam = 5;
+            Attributes.RegenStam = 5;
 
-            this.SkillBonuses.SetValues(0, SkillName.AnimalLore, 5.0);
+            SkillBonuses.SetValues(0, SkillName.AnimalLore, 5.0);
         }
 
         public AncientFarmersKasa(Serial serial)
@@ -79,12 +79,12 @@ namespace Server.Items
 
             if (version <= 1)
             {
-                this.MaxHitPoints = 255;
-                this.HitPoints = 255;
+                MaxHitPoints = 255;
+                HitPoints = 255;
             }
 
             if (version == 0)
-                this.SkillBonuses.SetValues(0, SkillName.AnimalLore, 5.0);
+                SkillBonuses.SetValues(0, SkillName.AnimalLore, 5.0);
         }
     }
 
@@ -95,9 +95,9 @@ namespace Server.Items
         public AncientSamuraiDo()
             : base()
         {
-            this.ArmorAttributes.LowerStatReq = 100;
-            this.ArmorAttributes.MageArmor = 1;
-            this.SkillBonuses.SetValues(0, SkillName.Parry, 10.0);
+            ArmorAttributes.LowerStatReq = 100;
+            ArmorAttributes.MageArmor = 1;
+            SkillBonuses.SetValues(0, SkillName.Parry, 10.0);
         }
 
         public AncientSamuraiDo(Serial serial)
@@ -183,8 +183,8 @@ namespace Server.Items
         public ArmsOfTacticalExcellence()
             : base()
         {
-            this.Attributes.BonusDex = 5;
-            this.SkillBonuses.SetValues(0, SkillName.Tactics, 12.0);
+            Attributes.BonusDex = 5;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 12.0);
         }
 
         public ArmsOfTacticalExcellence(Serial serial)
@@ -256,9 +256,9 @@ namespace Server.Items
         public BlackLotusHood()
             : base()
         {
-            this.Attributes.LowerManaCost = 6;
-            this.Attributes.AttackChance = 6;
-            this.ClothingAttributes.SelfRepair = 5;
+            Attributes.LowerManaCost = 6;
+            Attributes.AttackChance = 6;
+            ClothingAttributes.SelfRepair = 5;
         }
 
         public BlackLotusHood(Serial serial)
@@ -337,8 +337,8 @@ namespace Server.Items
 
             if (version == 0)
             {
-                this.MaxHitPoints = 255;
-                this.HitPoints = 255;
+                MaxHitPoints = 255;
+                HitPoints = 255;
             }
         }
     }
@@ -350,10 +350,10 @@ namespace Server.Items
         public DaimyosHelm()
             : base()
         {
-            this.ArmorAttributes.LowerStatReq = 100;
-            this.ArmorAttributes.MageArmor = 1;
-            this.ArmorAttributes.SelfRepair = 3;
-            this.Attributes.WeaponSpeed = 10;
+            ArmorAttributes.LowerStatReq = 100;
+            ArmorAttributes.MageArmor = 1;
+            ArmorAttributes.SelfRepair = 3;
+            Attributes.WeaponSpeed = 10;
         }
 
         public DaimyosHelm(Serial serial)
@@ -411,12 +411,12 @@ namespace Server.Items
         public DemonForks()
             : base()
         {
-            this.WeaponAttributes.ResistFireBonus = 10;
-            this.WeaponAttributes.ResistPoisonBonus = 10;
+            WeaponAttributes.ResistFireBonus = 10;
+            WeaponAttributes.ResistPoisonBonus = 10;
 
-            this.Attributes.ReflectPhysical = 10;
-            this.Attributes.WeaponDamage = 35;
-            this.Attributes.DefendChance = 10;
+            Attributes.ReflectPhysical = 10;
+            Attributes.WeaponDamage = 35;
+            Attributes.DefendChance = 10;
         }
 
         public DemonForks(Serial serial)
@@ -467,12 +467,12 @@ namespace Server.Items
         public DragonNunchaku()
             : base()
         {
-            this.WeaponAttributes.ResistFireBonus = 5;
-            this.WeaponAttributes.SelfRepair = 3;
-            this.WeaponAttributes.HitFireball = 50;
+            WeaponAttributes.ResistFireBonus = 5;
+            WeaponAttributes.SelfRepair = 3;
+            WeaponAttributes.HitFireball = 50;
 
-            this.Attributes.WeaponDamage = 40;
-            this.Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 40;
+            Attributes.WeaponSpeed = 20;
         }
 
         public DragonNunchaku(Serial serial)
@@ -523,11 +523,11 @@ namespace Server.Items
         public Exiler()
             : base()
         {
-            this.WeaponAttributes.HitDispel = 33;
-            this.Slayer = SlayerName.Exorcism;
+            WeaponAttributes.HitDispel = 33;
+            Slayer = SlayerName.Exorcism;
 
-            this.Attributes.WeaponDamage = 40;
-            this.Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 40;
+            Attributes.WeaponSpeed = 20;
         }
 
         public Exiler(Serial serial)
@@ -585,10 +585,10 @@ namespace Server.Items
         public GlovesOfTheSun()
             : base()
         {
-            this.Attributes.RegenHits = 2;
-            this.Attributes.NightSight = 1;
-            this.Attributes.LowerManaCost = 5;
-            this.Attributes.LowerRegCost = 18;
+            Attributes.RegenHits = 2;
+            Attributes.NightSight = 1;
+            Attributes.LowerManaCost = 5;
+            Attributes.LowerRegCost = 18;
         }
 
         public GlovesOfTheSun(Serial serial)
@@ -646,12 +646,12 @@ namespace Server.Items
         public HanzosBow()
             : base()
         {
-            this.WeaponAttributes.HitLeechHits = 40;
-            this.WeaponAttributes.SelfRepair = 3;
+            WeaponAttributes.HitLeechHits = 40;
+            WeaponAttributes.SelfRepair = 3;
 
-            this.Attributes.WeaponDamage = 50;
+            Attributes.WeaponDamage = 50;
 
-            this.SkillBonuses.SetValues(0, SkillName.Ninjitsu, 10);
+            SkillBonuses.SetValues(0, SkillName.Ninjitsu, 10);
         }
 
         public HanzosBow(Serial serial)
@@ -702,11 +702,11 @@ namespace Server.Items
         public LegsOfStability()
             : base()
         {
-            this.Attributes.BonusStam = 5;
+            Attributes.BonusStam = 5;
 
-            this.ArmorAttributes.SelfRepair = 3;
-            this.ArmorAttributes.LowerStatReq = 100;
-            this.ArmorAttributes.MageArmor = 1;
+            ArmorAttributes.SelfRepair = 3;
+            ArmorAttributes.LowerStatReq = 100;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public LegsOfStability(Serial serial)
@@ -771,12 +771,12 @@ namespace Server.Items
         public PeasantsBokuto()
             : base()
         {
-            this.WeaponAttributes.SelfRepair = 3;
-            this.WeaponAttributes.HitLowerDefend = 30;
+            WeaponAttributes.SelfRepair = 3;
+            WeaponAttributes.HitLowerDefend = 30;
 
-            this.Attributes.WeaponDamage = 35;
-            this.Attributes.WeaponSpeed = 10;
-            this.Slayer = SlayerName.SnakesBane;
+            Attributes.WeaponDamage = 35;
+            Attributes.WeaponSpeed = 10;
+            Slayer = SlayerName.SnakesBane;
         }
 
         public PeasantsBokuto(Serial serial)
@@ -827,11 +827,11 @@ namespace Server.Items
         public PilferedDancerFans()
             : base()
         {
-            this.Attributes.WeaponDamage = 20;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.CastRecovery = 2;
-            this.Attributes.DefendChance = 5;
-            this.Attributes.SpellChanneling = 1;
+            Attributes.WeaponDamage = 20;
+            Attributes.WeaponSpeed = 20;
+            Attributes.CastRecovery = 2;
+            Attributes.DefendChance = 5;
+            Attributes.SpellChanneling = 1;
         }
 
         public PilferedDancerFans(Serial serial)
@@ -882,11 +882,11 @@ namespace Server.Items
         public TheDestroyer()
             : base()
         {
-            this.WeaponAttributes.HitLeechStam = 40;
+            WeaponAttributes.HitLeechStam = 40;
 
-            this.Attributes.BonusStr = 6;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponDamage = 50;
+            Attributes.BonusStr = 6;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponDamage = 50;
         }
 
         public TheDestroyer(Serial serial)
@@ -937,12 +937,12 @@ namespace Server.Items
         public TomeOfEnlightenment()
             : base()
         {
-            this.LootType = LootType.Regular;
-            this.Hue = 0x455;
+            LootType = LootType.Regular;
+            Hue = 0x455;
 
-            this.Attributes.BonusInt = 5;
-            this.Attributes.SpellDamage = 10;
-            this.Attributes.CastSpeed = 1;
+            Attributes.BonusInt = 5;
+            Attributes.SpellDamage = 10;
+            Attributes.CastSpeed = 1;
         }
 
         public TomeOfEnlightenment(Serial serial)
@@ -979,11 +979,11 @@ namespace Server.Items
         public LeurociansMempoOfFortune()
             : base()
         {
-            this.LootType = LootType.Regular;
-            this.Hue = 0x501;
+            LootType = LootType.Regular;
+            Hue = 0x501;
 
-            this.Attributes.Luck = 300;
-            this.Attributes.RegenMana = 1;
+            Attributes.Luck = 300;
+            Attributes.RegenMana = 1;
         }
 
         public LeurociansMempoOfFortune(Serial serial)
@@ -1109,8 +1109,8 @@ namespace Server.Items
         public AncientUrn(string urnName)
             : base(0x241D)
         {
-            this.m_UrnName = urnName;
-            this.Weight = 1.0;
+            m_UrnName = urnName;
+            Weight = 1.0;
         }
 
         [Constructable]
@@ -1136,11 +1136,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UrnName;
+                return m_UrnName;
             }
             set
             {
-                this.m_UrnName = value;
+                m_UrnName = value;
             }
         }
         public override int LabelNumber
@@ -1155,7 +1155,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.Write((int)0);
-            writer.Write(this.m_UrnName);
+            writer.Write(m_UrnName);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1163,19 +1163,19 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            this.m_UrnName = reader.ReadString();
+            m_UrnName = reader.ReadString();
 
-            Utility.Intern(ref this.m_UrnName);
+            Utility.Intern(ref m_UrnName);
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1070935, this.m_UrnName); // Ancient Urn of ~1_name~
+            list.Add(1070935, m_UrnName); // Ancient Urn of ~1_name~
         }
 
         public override void OnSingleClick(Mobile from)
         {
-            this.LabelTo(from, 1070935, this.m_UrnName); // Ancient Urn of ~1_name~
+            LabelTo(from, 1070935, m_UrnName); // Ancient Urn of ~1_name~
         }
     }
 
@@ -1187,9 +1187,9 @@ namespace Server.Items
         public HonorableSwords(string swordsName)
             : base(0x2853)
         {
-            this.m_SwordsName = swordsName;
+            m_SwordsName = swordsName;
 
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         [Constructable]
@@ -1208,11 +1208,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SwordsName;
+                return m_SwordsName;
             }
             set
             {
-                this.m_SwordsName = value;
+                m_SwordsName = value;
             }
         }
         public override int LabelNumber
@@ -1227,7 +1227,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.Write((int)0);
-            writer.Write(this.m_SwordsName);
+            writer.Write(m_SwordsName);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1235,19 +1235,19 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            this.m_SwordsName = reader.ReadString();
+            m_SwordsName = reader.ReadString();
 
-            Utility.Intern(ref this.m_SwordsName);
+            Utility.Intern(ref m_SwordsName);
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1070936, this.m_SwordsName); // Honorable Swords of ~1_name~
+            list.Add(1070936, m_SwordsName); // Honorable Swords of ~1_name~
         }
 
         public override void OnSingleClick(Mobile from)
         {
-            this.LabelTo(from, 1070936, this.m_SwordsName); // Honorable Swords of ~1_name~
+            LabelTo(from, 1070936, m_SwordsName); // Honorable Swords of ~1_name~
         }
     }
 
@@ -1260,16 +1260,16 @@ namespace Server.Items
         public ChestOfHeirlooms()
             : base(0x2811)
         {
-            this.Locked = true;
-            this.LockLevel = 95;
-            this.MaxLockLevel = 140;
-            this.RequiredSkill = 95;
+            Locked = true;
+            LockLevel = 95;
+            MaxLockLevel = 140;
+            RequiredSkill = 95;
 			
-            this.TrapType = TrapType.ExplosionTrap;
-            this.TrapLevel = 10;
-            this.TrapPower = 100;
+            TrapType = TrapType.ExplosionTrap;
+            TrapLevel = 10;
+            TrapPower = 100;
 			
-            this.GumpID = 0x10B;
+            GumpID = 0x10B;
 			
             for (int i = 0; i < 10; ++i)
             {
@@ -1309,7 +1309,7 @@ namespace Server.Items
                 else if (item is BaseJewel && Core.AOS)
                     BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
 				
-                this.DropItem(item);
+                DropItem(item);
             }
         }
 
@@ -1347,9 +1347,9 @@ namespace Server.Items
         public FluteOfRenewal()
             : base()
         {
-            this.Slayer = SlayerGroup.Groups[Utility.Random(SlayerGroup.Groups.Length - 1)].Super.Name; //-1 to exclude Fey slayer.  Try to confrim no fey slayer on this on OSI
+            Slayer = SlayerGroup.RandomSuperSlayerAOS();
 
-            this.ReplenishesCharges = true;
+            ReplenishesCharges = true;
         }
 
         public FluteOfRenewal(Serial serial)
@@ -1391,8 +1391,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Slayer == SlayerName.Fey)
-                this.Slayer = SlayerGroup.Groups[Utility.Random(SlayerGroup.Groups.Length - 1)].Super.Name;
+            if (version == 0 && Slayer == SlayerName.Fey)
+                Slayer = SlayerGroup.Groups[Utility.Random(SlayerGroup.Groups.Length - 1)].Super.Name;
         }
     }
 
@@ -1425,8 +1425,8 @@ namespace Server.Items
         public LesserPigmentsOfTokuno(LesserPigmentType type)
             : base(1)
         {
-            this.Weight = 1.0;
-            this.Type = type;
+            Weight = 1.0;
+            Type = type;
         }
 
         public LesserPigmentsOfTokuno(Serial serial)
@@ -1439,23 +1439,23 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
+                m_Type = value;
 				
-                int v = (int)this.m_Type;
+                int v = (int)m_Type;
 
                 if (v >= 0 && v < m_Table.Length)
                 {
-                    this.Hue = m_Table[v][0];
-                    this.Label = m_Table[v][1];
+                    Hue = m_Table[v][0];
+                    Label = m_Table[v][1];
                 }
                 else
                 {
-                    this.Hue = 0;
-                    this.Label = -1;
+                    Hue = 0;
+                    Label = -1;
                 }
             }
         }
@@ -1475,19 +1475,19 @@ namespace Server.Items
 
             writer.Write((int)1);
 
-            writer.WriteEncodedInt((int)this.m_Type);
+            writer.WriteEncodedInt((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BasePigmentsOfTokuno insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BasePigmentsOfTokuno insertion
 			
             switch ( version )
             {
                 case 1:
-                    this.Type = (LesserPigmentType)reader.ReadEncodedInt();
+                    Type = (LesserPigmentType)reader.ReadEncodedInt();
                     break;
                 case 0:
                     break;
@@ -1502,8 +1502,8 @@ namespace Server.Items
         public MetalPigmentsOfTokuno()
             : base(1)
         {
-            this.RandomHue();
-            this.Label = -1;
+            RandomHue();
+            Label = -1;
         }
 
         public MetalPigmentsOfTokuno(Serial serial)
@@ -1515,9 +1515,9 @@ namespace Server.Items
         {
             int a = Utility.Random(0, 30);
             if (a != 0)
-                this.Hue = a + 0x960;
+                Hue = a + 0x960;
             else
-                this.Hue = 0;
+                Hue = 0;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -1531,7 +1531,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BasePigmentsOfTokuno insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BasePigmentsOfTokuno insertion
         }
     }
 }
