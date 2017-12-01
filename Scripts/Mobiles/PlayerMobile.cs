@@ -2970,6 +2970,16 @@ namespace Server.Mobiles
 			}
 			#endregion
 
+            Region r = Region.Find(Location, Map);
+
+            if (r is Server.Engines.ArenaSystem.ArenaRegion)
+            {
+                if (!((Server.Engines.ArenaSystem.ArenaRegion)r).AllowItemEquip(this, item))
+                {
+                    return false;
+                }
+            }
+
 			#region Factions
 			FactionItem factionItem = FactionItem.Find(item);
 

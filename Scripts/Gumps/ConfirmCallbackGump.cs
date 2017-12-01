@@ -15,8 +15,22 @@ namespace Server.Gumps
 		public object Body { get; set; }
 		public object State { get; set; }
 		public string Arguments { get; set; }
+
+        public int ConfirmLocalization { get; private set; }
+        public int CloseLocalization { get; private set; }
 		
-        public ConfirmCallbackGump(PlayerMobile user, object title, object body, object state, string args = null, Action<Mobile, object> confirm = null, Action<Mobile, object> close = null, int x = 20, int y = 20)
+        public ConfirmCallbackGump(
+            PlayerMobile user, 
+            object title, 
+            object body, 
+            object state, 
+            string args = null, 
+            Action<Mobile, object> confirm = null, 
+            Action<Mobile, object> close = null,
+            int x = 20, 
+            int y = 20,
+            int confirmLoc = 1074976,
+            int closeLoc = 1074977)
             : base(user, x, y)
 		{
 			Title = title;
@@ -26,6 +40,9 @@ namespace Server.Gumps
 			
 			ConfirmCallback = confirm;
 			CloseCallback = close;
+
+            ConfirmLocalization = confirmLoc;
+            CloseLocalization = closeLoc;
 
             if(!Open)
                 AddGumpLayout();
@@ -72,8 +89,8 @@ namespace Server.Gumps
 			AddRadio( 25, 175, 0x25F8, 0x25FB, true, 1);
 			AddRadio( 25, 210, 0x25F8, 0x25FB, false, 2);
 
-			AddHtmlLocalized( 60, 180, 280, 20, 1074976, 0xFFFFFF, false, false );
-			AddHtmlLocalized( 60, 215, 280, 20, 1074977, 0xFFFFFF, false, false );
+            AddHtmlLocalized(60, 180, 280, 20, ConfirmLocalization, 0xFFFFFF, false, false);
+            AddHtmlLocalized(60, 215, 280, 20, CloseLocalization, 0xFFFFFF, false, false);
 
             AddButton(265, 220, 0xF7, 0xF8, 1, GumpButtonType.Reply, 0);
 		}

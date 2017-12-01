@@ -201,7 +201,7 @@ namespace Server.Spells.Third
             }
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly WallOfStoneSpell m_Owner;
             public InternalTarget(WallOfStoneSpell owner)
