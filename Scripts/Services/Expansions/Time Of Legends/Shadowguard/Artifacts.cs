@@ -498,7 +498,7 @@ namespace Server.Items
             Hue = 2500;
 
 			SkillBonuses.SetValues( 0, SkillName.Necromancy, 15.0 );
-			Slayer = SlayerGroup.Groups[Utility.Random(SlayerGroup.Groups.Length)].Super.Name;
+            Slayer = SlayerGroup.RandomSuperSlayerTOL();
 			
 			Attributes.BonusInt = 8;
 			Attributes.SpellDamage = 15;

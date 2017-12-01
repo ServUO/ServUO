@@ -112,14 +112,14 @@ namespace Server.Spells.Seventh
 
                         if (m != null)
                         {
-                            SpellHelper.CheckReflect((int)Circle, ref source, ref m);
+                            SpellHelper.CheckReflect((int)Circle, ref source, ref m, SpellDamageType);
                             damage *= GetDamageScalar(m);
                         }
 
                         Caster.DoHarmful(m != null ? m : id);
                         SpellHelper.Damage(this, m != null ? m : id, damage, 0, 0, 0, 0, 100);
 
-                        Effects.SendBoltEffect(m, true, 0, true);
+                        Effects.SendBoltEffect(id, true, 0, true);
                     }
                 }
                 else

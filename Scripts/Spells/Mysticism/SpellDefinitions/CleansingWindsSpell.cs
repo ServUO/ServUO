@@ -137,7 +137,7 @@ namespace Server.Spells.Mysticism
             }
         }
 
-        private static int RemoveCurses(Mobile m)
+        public static int RemoveCurses(Mobile m)
         {
             int curseLevel = 0;
 

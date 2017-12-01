@@ -66,6 +66,7 @@ namespace Server.Spells.SkillMasteries
                     }
                     else
                     {
+                        SpellHelper.CheckReflect(0, Caster, ref m);
                         SkillMasterySpell spell = GetSpell(Caster, this.GetType());
 
                         if (spell != null && spell.Target == m)

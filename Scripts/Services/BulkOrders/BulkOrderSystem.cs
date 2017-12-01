@@ -464,37 +464,6 @@ namespace Server.Engines.BulkOrders
             return 0;
         }
 
-        /* Tinkering needs conditional check for combining:
-        * SpoonLeft/SpoonRight, ForkLeft/ForkRight, KnifeLeft/KnifeRight, ClockRight/ClockLeft
-         * TODO: Craft and make sure they show crafter/exceptional etc
-        */
-        private static Type[][] _TinkerTable =
-        {
-            new Type[] { typeof(Spoon), typeof(SpoonRight), typeof(SpoonLeft) },
-            new Type[] { typeof(Fork), typeof(ForkRight), typeof(ForkLeft) },
-            new Type[] { typeof(Knife), typeof(KnifeRight), typeof(KnifeLeft) },
-            new Type[] { typeof(Clock), typeof(ClockRight), typeof(ClockLeft) },
-            new Type[] { typeof(GoldRing), typeof(SilverRing) },
-            new Type[] { typeof(GoldBracelet), typeof(SilverBracelet) },
-        };
-
-        public static bool CheckTinker(Type actual, Type lookingfor)
-        {
-            foreach (Type[] types in _TinkerTable)
-            {
-                if (types[0] == lookingfor)
-                {
-                    foreach (Type t in types)
-                    {
-                        if (actual == t)
-                            return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         public static bool CanExchangeBOD(Mobile from, BaseVendor vendor, IBOD bod, int cost)
         {
             if (bod.BODType != vendor.BODType)

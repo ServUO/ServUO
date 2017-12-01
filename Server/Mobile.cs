@@ -2289,130 +2289,128 @@ namespace Server
 			AggressiveAction(aggressor, false);
 		}
 
-		public virtual void AggressiveAction(Mobile aggressor, bool criminal)
-		{
-			if (aggressor == this)
-			{
-				return;
-			}
+        public virtual void AggressiveAction(Mobile aggressor, bool criminal)
+        {
+            if (aggressor == this)
+                return;
 
-			AggressiveActionEventArgs args = AggressiveActionEventArgs.Create(this, aggressor, criminal);
+            AggressiveActionEventArgs args = AggressiveActionEventArgs.Create(this, aggressor, criminal);
 
-			EventSink.InvokeAggressiveAction(args);
+            EventSink.InvokeAggressiveAction(args);
 
-			args.Free();
+            args.Free();
 
-			if (Combatant == aggressor)
-			{
-				if (m_ExpireCombatant == null)
-				{
-					m_ExpireCombatant = new ExpireCombatantTimer(this);
-				}
-				else
-				{
-					m_ExpireCombatant.Stop();
-				}
+            if (Combatant == aggressor)
+            {
+                if (m_ExpireCombatant == null)
+                    m_ExpireCombatant = new ExpireCombatantTimer(this);
+                else
+                    m_ExpireCombatant.Stop();
 
-				m_ExpireCombatant.Start();
-			}
+                m_ExpireCombatant.Start();
+            }
 
-			bool addAggressor = true;
+            bool addAggressor = true;
 
-			var list = m_Aggressors;
+            List<AggressorInfo> list = m_Aggressors;
 
-			for (int i = 0; i < list.Count; ++i)
-			{
-				AggressorInfo info = list[i];
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
 
-				if (info.Attacker == aggressor)
-				{
-					info.Refresh();
-					info.CriminalAggression = criminal;
-					info.CanReportMurder = criminal;
+                if (info.Attacker == aggressor)
+                {
+                    info.Refresh();
+                    info.CriminalAggression = criminal;
+                    info.CanReportMurder = criminal;
 
-					addAggressor = false;
-				}
-			}
+                    addAggressor = false;
+                }
+            }
 
-			list = aggressor.m_Aggressors;
+            list = aggressor.m_Aggressors;
 
-			for (int i = 0; i < list.Count; ++i)
-			{
-				AggressorInfo info = list[i];
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
 
-				if (info.Attacker == this)
-				{
-					info.Refresh();
+                if (info.Attacker == this)
+                {
+                    info.Refresh();
 
-					addAggressor = false;
-				}
-			}
+                    addAggressor = false;
+                }
+            }
 
-			bool addAggressed = true;
+            bool addAggressed = true;
 
-			list = m_Aggressed;
+            list = m_Aggressed;
 
-			for (int i = 0; i < list.Count; ++i)
-			{
-				AggressorInfo info = list[i];
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
 
-				if (info.Defender == aggressor)
-				{
-					info.Refresh();
+                if (info.Defender == aggressor)
+                {
+                    info.Refresh();
 
-					addAggressed = false;
-				}
-			}
+                    addAggressed = false;
+                }
+            }
 
-			list = aggressor.m_Aggressed;
+            list = aggressor.m_Aggressed;
 
-			for (int i = 0; i < list.Count; ++i)
-			{
-				AggressorInfo info = list[i];
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
 
-				if (info.Defender == this)
-				{
-					info.Refresh();
-					info.CriminalAggression = criminal;
-					info.CanReportMurder = criminal;
+                if (info.Defender == this)
+                {
+                    info.Refresh();
+                    info.CriminalAggression = criminal;
+                    info.CanReportMurder = criminal;
 
-					addAggressed = false;
-				}
-			}
+                    addAggressed = false;
+                }
+            }
 
-			if (addAggressor)
-			{
-				m_Aggressors.Add(AggressorInfo.Create(aggressor, this, criminal));
-				// new AggressorInfo( aggressor, this, criminal, true ) );
+            bool setCombatant = false;
 
-				if (CanSee(aggressor) && m_NetState != null)
-				{
-					m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
-				}
+            if (addAggressor)
+            {
+                m_Aggressors.Add(AggressorInfo.Create(aggressor, this, criminal)); // new AggressorInfo( aggressor, this, criminal, true ) );
 
-				UpdateAggrExpire();
-			}
+                if (this.CanSee(aggressor) && m_NetState != null)
+                {
+                    m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
+                }
 
-			if (addAggressed)
-			{
-				aggressor.m_Aggressed.Add(AggressorInfo.Create(aggressor, this, criminal));
-				// new AggressorInfo( aggressor, this, criminal, false ) );
+                if (Combatant == null)
+                    setCombatant = true;
 
-				if (CanSee(aggressor) && m_NetState != null)
-				{
-					m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
-				}
+                UpdateAggrExpire();
+            }
 
-				UpdateAggrExpire();
-			}
+            if (addAggressed)
+            {
+                aggressor.m_Aggressed.Add(AggressorInfo.Create(aggressor, this, criminal)); // new AggressorInfo( aggressor, this, criminal, false ) );
 
-            if (Combatant == null && !Hidden)
-			{
-				Combatant = aggressor;
-			}
+                if (this.CanSee(aggressor) && m_NetState != null)
+                {
+                    m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
+                }
 
-			Region.OnAggressed(aggressor, this, criminal);
-		}
+                if (Combatant == null)
+                    setCombatant = true;
+
+                UpdateAggrExpire();
+            }
+
+            if (setCombatant && !Hidden)
+                Combatant = aggressor;
+
+            Region.OnAggressed(aggressor, this, criminal);
+        }
 
 		public void RemoveAggressed(Mobile aggressed)
 		{
@@ -8793,7 +8791,18 @@ namespace Server
 				if (m_Hidden != value)
 				{
 					m_Hidden = value;
-					//Delta( MobileDelta.Flags );
+
+                    if (m_Hidden)
+                    {
+                        if (Warmode)
+                        {
+                            Warmode = false;
+                        }
+                        else
+                        {
+                            Combatant = null;
+                        }
+                    }
 
 					OnHiddenChanged();
 				}

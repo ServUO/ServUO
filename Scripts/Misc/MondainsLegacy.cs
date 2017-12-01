@@ -287,16 +287,19 @@ namespace Server
             {
             }
 
-            if (!FindItem(new Point3D(1431, 1696, 0), Map.Trammel, 0x307F))
+            if (Core.ML)
             {
-                var addon = new ArcaneCircleAddon();
-                addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Trammel);
-            }
+                if (!FindItem(new Point3D(1431, 1696, 0), Map.Trammel, 0x307F))
+                {
+                    var addon = new ArcaneCircleAddon();
+                    addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Trammel);
+                }
 
-            if (!FindItem(new Point3D(1431, 1696, 0), Map.Felucca, 0x307F))
-            {
-                var addon = new ArcaneCircleAddon();
-                addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Felucca);
+                if (!FindItem(new Point3D(1431, 1696, 0), Map.Felucca, 0x307F))
+                {
+                    var addon = new ArcaneCircleAddon();
+                    addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Felucca);
+                }
             }
         }
 

@@ -114,7 +114,7 @@ namespace Server.Spells.Seventh
 
                         if (m != null)
                         {
-                            if (SpellHelper.CheckReflect((int)Circle, ref source, ref m))
+                            if (SpellHelper.CheckReflect((int)Circle, ref source, ref m, SpellDamageType))
                             {
                                 Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                                     {

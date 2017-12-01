@@ -8,6 +8,8 @@ namespace Server.Items
 {
     public class EnchantedApple : BaseMagicalFood
     {
+        private TimeSpan _CooldownDuration;
+
         [Constructable]
         public EnchantedApple()
             : base(0x2FD8)
@@ -62,7 +64,19 @@ namespace Server.Items
                     IEntity mto = new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 50), from.Map);
                     Effects.SendMovingParticles(mfrom, mto, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                    if (Core.SA)
+                    if (Core.TOL)
+                    {
+                        int power = CleansingWindsSpell.RemoveCurses(from);
+                        power = Math.Min(power, 15);
+
+                        from.SendLocalizedMessage(EatMessage);
+
+                        StartInfluence(from, FoodID, Duration, TimeSpan.FromSeconds(30 + power));
+                        Consume();
+
+                        return true;
+                    }
+                    else if (Core.SA)
                     {
                         int totalCurses = GetTotalCurses(from);
 

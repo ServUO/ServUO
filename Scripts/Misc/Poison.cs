@@ -64,6 +64,13 @@ namespace Server
 			return newPoison ?? oldPoison;
 		}
 
+        public static Poison DecreaseLevel(Poison oldPoison)
+        {
+            Poison newPoison = (oldPoison == null ? null : GetPoison(oldPoison.Level - 1));
+
+            return (newPoison == null ? oldPoison : newPoison);
+        }
+
 		// Info
 		private readonly string m_Name;
 		private readonly int m_Level;
