@@ -203,7 +203,9 @@ namespace Server.Spells
             int damage = Utility.Dice(dice, sides, bonus) * 100;
 
             int inscribeSkill = GetInscribeFixed(m_Caster);
-            int damageBonus = inscribeSkill >= 1000 ? 10 : inscribeSkill / 200 +
+            int scribeBonus = inscribeSkill >= 1000 ? 10 : inscribeSkill / 200;
+
+            int damageBonus = scribeBonus +
                               (Caster.Int / 10) +
                               SpellHelper.GetSpellDamageBonus(m_Caster, target, CastSkill, playerVsPlayer);
 
