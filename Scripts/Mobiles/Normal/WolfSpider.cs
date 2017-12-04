@@ -93,7 +93,7 @@ namespace Server.Mobiles
 			if (Controlled)
 				return;
 
-            if (Utility.RandomDouble() < 0.01)
+            if (!Controlled && Utility.RandomDouble() < 0.01)
                 c.DropItem(new LuckyCoin());
         }
 
