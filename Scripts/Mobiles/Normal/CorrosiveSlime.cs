@@ -80,7 +80,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (!Controlled && Utility.Random(10) == 0)
+            if (!Controlled && Map != null && Map != Map.TerMur && Utility.Random(10) == 0)
             {
                 Item item = null;
 
