@@ -88,13 +88,16 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
+            
+            if (Controlled)
+                return;
 
-            if (Utility.RandomDouble() < 0.05)
+            if (!Controlled && Utility.RandomDouble() < 0.05)
             {
                 c.DropItem(new SlithEye());
             }
 
-            if (Utility.RandomDouble() < 0.25)
+            if (!Controlled && Utility.RandomDouble() < 0.25)
             {
                 switch (Utility.Random(2))
                 {
@@ -107,7 +110,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (c != null && !c.Deleted && c is Corpse)
+            if (!Controlled && c != null && !c.Deleted && c is Corpse)
             {
                 var corpse = (Corpse) c;
                 if (Utility.RandomDouble() < 0.01 && corpse.Killer != null && !corpse.Killer.Deleted)
