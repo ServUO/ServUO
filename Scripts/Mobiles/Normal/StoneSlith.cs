@@ -88,9 +88,6 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-            
-            if (Controlled)
-                return;
 
             if (!Controlled && Utility.RandomDouble() < 0.05)
             {
