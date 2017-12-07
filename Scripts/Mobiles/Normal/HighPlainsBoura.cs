@@ -140,10 +140,14 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
+            
+            if (Controlled)
+                return;
 
+            if (!Controlled)
             c.DropItem(new BouraSkin());
 
-            if (c != null && !c.Deleted && c is Corpse)
+            if (!Controlled && c != null && !c.Deleted && c is Corpse)
             {
                 var corpse = (Corpse) c;
 
