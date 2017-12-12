@@ -58,7 +58,7 @@ namespace Server.Spells.SkillMasteries
                         BeginTimer();
                         Caster.SendLocalizedMessage(1156138); // You ready your weapon to unleash an injected strike!
 
-                        int bonus = (int)(BaseSkillBonus / 4);
+                        int bonus = 30;
 
                         // Your next successful attack will poison your target and reduce its poison resist by:<br>~1_VAL~% PvM<br>~2_VAL~% PvP
                         BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.InjectedStrike, 1155927, 1156163, String.Format("{0}\t{1}", bonus.ToString(), (bonus / 2).ToString())));

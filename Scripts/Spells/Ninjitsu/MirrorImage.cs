@@ -217,6 +217,8 @@ namespace Server.Mobiles
             SummonEnd = DateTime.UtcNow + duration;
 
             MirrorImage.AddClone(m_Caster);
+
+            IgnoreMobiles = true;
         }
 
         public Clone(Serial serial)
@@ -257,7 +259,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public override bool CheckShove(Mobile shoved)
+        public override bool OnMoveOver(Mobile m)
         {
             return true;
         }

@@ -83,10 +83,29 @@ namespace Server.Items
             if (IsLockedDown)
             {
                 BaseHouse house = BaseHouse.FindHouseAt(this);
+                bool owner = house.IsOwner(from);
 
-                if (house != null && house.IsOwner(from) && house.IsLockedDown(this) && house.IsLockedDown(item))
+                if (house != null)
                 {
-                    list.Add(new ReleaseEntry(from, item, house));
+                    if (owner && house != null && house.IsLockedDown(this) && house.IsLockedDown(item))
+                    {
+                        list.Add(new ReleaseEntry(from, item, house));
+                    }
+
+                    if (!(item is BaseContainer))
+                    {
+                        var myInfo = house.Secures.FirstOrDefault(i => i.Item == this && (owner || i.Owner == from));
+
+                        if (myInfo != null)
+                        {
+                            if (house.Secures.FirstOrDefault(i => i.Item == item) == null)
+                            {
+                                house.Secures.Add(new SecureInfo(item, SecureLevel.Owner, from, true));
+                            }
+
+                            SetSecureLevelEntry.AddTo(from, item, list);
+                        }
+                    }
                 }
             }
             else

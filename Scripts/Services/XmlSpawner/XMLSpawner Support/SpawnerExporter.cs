@@ -109,7 +109,7 @@ namespace Server.Mobiles
 				xml.WriteStartElement( "spawner" );
 	
 				xml.WriteStartElement( "count" );
-				xml.WriteString( spawner.Count.ToString() );		
+				xml.WriteString( spawner.MaxCount.ToString() );		
 				xml.WriteEndElement();
 				
 				xml.WriteStartElement( "group" );
@@ -137,10 +137,10 @@ namespace Server.Mobiles
 				xml.WriteEndElement();
 				
 				xml.WriteStartElement( "creaturesname" );
-				foreach( string creatureName in spawner.SpawnNames )
+                foreach(var kvp in spawner.SpawnObjects)
 				{
 					xml.WriteStartElement( "creaturename" );
-					xml.WriteString( creatureName );
+                    xml.WriteString(kvp.SpawnName);
 					xml.WriteEndElement();
 				}
 				xml.WriteEndElement();

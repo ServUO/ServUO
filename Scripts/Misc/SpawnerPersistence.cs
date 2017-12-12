@@ -39,10 +39,11 @@ namespace Server
                 CheckVersion();
             }
 
-            /*CommandSystem.Register("ConvertSpawners", AccessLevel.GameMaster, e =>
+            CommandSystem.Register("ConvertSpawners", AccessLevel.Administrator, e =>
             {
                 string str = "By selecting OK, you will wipe all XmlSpawners that were placed via World Load, and will replace " +
-                             "with standard spawners. Any existing spawner with special symbols, such as , <> / will not be converted.";
+                             "with standard spawners. Any existing spawner with special symbols, such as , <> / will not be converted. " +
+                             "Be advised, this process will take several minutes to complete.";
 
                 if (_SpawnsConverted)
                     str += "<br><br>You have already ran this conversion. Run Again?";
@@ -52,22 +53,23 @@ namespace Server
                     if (ok)
                     {
                         from.SendMessage("Stand by while spawners are converted. This may take a few minutes...");
-                        ConvertXmlToSpawners();
+                        Timer.DelayCall(ConvertXmlToSpawners);
                     }
                 }, null, true));
-            });*/
+            });
 
-            CommandSystem.Register("RevertXmlSpawners", AccessLevel.GameMaster, e =>
+            CommandSystem.Register("RevertXmlSpawners", AccessLevel.Administrator, e =>
                 {
                     string str = "By selecting OK, you will wipe all XmlSpawners that were left over from conversion to " +
-                                 "standard spawners. All standard spawners will be deleted, and xmlspawners will be re-added.";
+                                 "standard spawners. All standard spawners will be deleted, and xmlspawners will be re-added. " +
+                                 "Be advised, this process will take several minutes to complete.";
 
                     e.Mobile.SendGump(new WarningGump(1019005, 30720, str, 0xFFFFFF, 400, 300, (from, ok, state) =>
                     {
                         if (ok)
                         {
                             from.SendMessage("Stand by while spawners are converted back to XmlSpawners. This may take a few minutes...");
-                            RevertToXmlSpawners(e.Mobile);
+                            Timer.DelayCall(() => RevertToXmlSpawners(e.Mobile));
                         }
                     }, null, true));
                 });
@@ -390,16 +392,18 @@ namespace Server
             {
                 Spawner spawner = (Spawner)spwner;
 
-                for(int i = 0; i < spawner.SpawnNames.Count; i++)
+                for(int i = 0; i < spawner.SpawnObjects.Count; i++)
                 {
-                    string typeName = spawner.SpawnNames[i].ToLower();
+                    var so = spawner.SpawnObjects[i];
+
+                    string typeName = so.SpawnName.ToLower();
                     string lookingFor = current.ToLower();
 
                     if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
                     {
                         if (String.IsNullOrEmpty(check) || typeName.IndexOf(check) < 0)
                         {
-                            spawner.SpawnNames[i] = typeName.Replace(lookingFor, replace);
+                            so.SpawnName = typeName.Replace(lookingFor, replace);
 
                             if (!replaced)
                                 replaced = true;
@@ -593,15 +597,15 @@ namespace Server
             {
                 list = ((XmlSpawner)spawner).SpawnObjects.Select(obj => obj.TypeName).ToArray();
             }
-            else if (spawner is Spawner && ((Spawner)spawner).SpawnNames != null && ((Spawner)spawner).SpawnNames.Count > 0)
+            else if (spawner is Spawner && ((Spawner)spawner).SpawnObjects != null && ((Spawner)spawner).SpawnObjects.Count > 0)
             {
-                List<string> names = ((Spawner)spawner).SpawnNames;
+                List<SpawnObject> names = ((Spawner)spawner).SpawnObjects;
 
                 list = new string[names.Count];
 
                 for (int i = 0; i < names.Count; i++)
                 {
-                    list[i] = names[i];
+                    list[i] = names[i].SpawnName;
                 }
             }
 
@@ -703,9 +707,16 @@ namespace Server
                                         }
                                         catch{}
 
-                                        if (loc != Point3D.Zero && spawnMap != null && spawnMap != Map.Internal && !ConvertSpawnerByLocation(loc, spawnMap, dr, ref keep))
+                                        if (loc != Point3D.Zero && spawnMap != null && spawnMap != Map.Internal)
                                         {
-                                            failed++;
+                                            if (!ConvertSpawnerByLocation(loc, spawnMap, dr, ref keep))
+                                            {
+                                                failed++;
+                                            }
+                                            else
+                                            {
+                                                converted++;
+                                            }
                                         }
                                     }
                                     else
@@ -769,7 +780,7 @@ namespace Server
         {
             if (spawner != null)
             {
-                string[] spawns = new string[spawner.SpawnObjects.Length];
+                SpawnObject[] spawns = new SpawnObject[spawner.SpawnObjects.Length];
 
                 for (int i = 0; i < spawner.SpawnObjects.Length; i++)
                 {
@@ -778,7 +789,7 @@ namespace Server
                     if (obj == null || obj.TypeName == null)
                         continue;
 
-                    spawns[i] = obj.TypeName;
+                    spawns[i] = new SpawnObject(obj.TypeName, obj.MaxCount);
                 }
 
                 if (HasSpecialXmlSpawnerString(spawns))
@@ -791,7 +802,7 @@ namespace Server
                                                  spawner.MinDelay,
                                                  spawner.MaxDelay,
                                                  spawner.Team,
-                                                 spawner.HomeRange,
+                                                 spawner.SpawnRange,
                                                  spawns.ToList());
 
                 newSpawner.Group = spawner.Group;
@@ -805,15 +816,15 @@ namespace Server
             return false;
         }
 
-        private static bool HasSpecialXmlSpawnerString(string[] spawns)
+        private static bool HasSpecialXmlSpawnerString(SpawnObject[] spawns)
         {
-            foreach (var line in spawns)
+            foreach (var obj in spawns)
             {
-                if (line != null)
+                if (obj.SpawnName != null)
                 {
                     foreach (var s in _SpawnerSymbols)
                     {
-                        if (line.Contains(s))
+                        if (obj.SpawnName.Contains(s))
                             return true;
                     }
                 }

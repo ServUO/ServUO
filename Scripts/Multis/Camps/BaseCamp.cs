@@ -292,11 +292,15 @@ namespace Server.Multis
 
         public static void OnTick()
         {
-            _Camps.ForEach(c =>
+            List<BaseCamp> list = new List<BaseCamp>(_Camps);
+
+            list.ForEach(c =>
                 {
                     if (!c.Deleted && c.Map != null && c.Map != Map.Internal && !c.RestrictDecay)
                         c.CheckDecay();
                 });
+
+            ColUtility.Free(list);
         }
     }
 }

@@ -148,7 +148,19 @@ namespace Server.Spells.Mysticism
 
                 Table[Caster] = new EnchantmentTimer(Caster, Weapon, this.Attribute, value, malus, duration);
 
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Enchant, 1080126, 1080129, TimeSpan.FromSeconds(duration), Caster, value));
+                int loc;
+
+                switch (this.Attribute)
+                {
+                    default:
+                    case AosWeaponAttribute.HitLightning: loc = 1060423; break;
+                    case AosWeaponAttribute.HitFireball: loc = 1060420; break;
+                    case AosWeaponAttribute.HitHarm: loc = 1060421; break;
+                    case AosWeaponAttribute.HitMagicArrow: loc = 1060426; break;
+                    case AosWeaponAttribute.HitDispel: loc = 1060417; break;
+                }
+
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Enchant, 1080126, loc, TimeSpan.FromSeconds(duration), Caster, value.ToString()));
 
                 Weapon.EnchantedWeilder = Caster;
                 Weapon.InvalidateProperties();
