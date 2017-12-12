@@ -39,38 +39,6 @@ namespace Server.Engines.Despise
                 WeakEntityCollection.Add("despise", ankh);
                 ankh.MoveToWorld(new Point3D(5472, 754, 10), Map.Trammel);
 
-                /*Moongate gate1 = new Moongate(false);
-                Moongate gate2 = new Moongate(false);
-                WeakEntityCollection.Add("despise", gate1);
-                WeakEntityCollection.Add("despise", gate2);
-
-                //Gate1
-                gate1.MoveToWorld(new Point3D(5475, 735, 5), Map.Trammel);
-                gate2.MoveToWorld(new Point3D(5458, 610, 50), Map.Trammel);
-                HueGates(gate1, gate2);
-                LinkGates(gate1, gate2);
-
-                gate1 = new Moongate(false);
-                gate2 = new Moongate(false);
-                WeakEntityCollection.Add("despise", gate1);
-                WeakEntityCollection.Add("despise", gate2);
-
-                //Gate2
-                gate1.MoveToWorld(new Point3D(5459, 674, 20), Map.Trammel);
-                gate2.MoveToWorld(new Point3D(5454, 522, 60), Map.Trammel);
-                HueGates(gate1, gate2);
-                LinkGates(gate1, gate2);
-
-                gate1 = new Moongate(false);
-                gate2 = new Moongate(false);
-                WeakEntityCollection.Add("despise", gate1);
-                WeakEntityCollection.Add("despise", gate2);
-
-                //Gate3
-                gate1.MoveToWorld(new Point3D(5388, 753, 5), Map.Trammel);
-                gate2.MoveToWorld(new Point3D(5387, 628, 30), Map.Trammel);
-                HueGates(gate1, gate2);
-                LinkGates(gate1, gate2);*/
                 SetupTeleporters();
 
                 //Teleporters
@@ -103,6 +71,8 @@ namespace Server.Engines.Despise
             }
             else
                 e.Mobile.SendMessage("Despise appears to already be setup");
+
+            DespiseController.Instance.CheckSpawnersVersion3();
         }
 
         public static void SetupTeleporters()

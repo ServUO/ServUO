@@ -129,11 +129,14 @@ namespace Server.Engines.ArenaSystem
             base.Serialize(writer);
 
             writer.Write(0);
-            writer.Write(Arenas.Count);
+            writer.Write(Arenas == null ? 0 : Arenas.Count);
 
-            for (int i = 0; i < Arenas.Count; i++)
+            if (Arenas != null)
             {
-                Arenas[i].Serialize(writer);
+                for (int i = 0; i < Arenas.Count; i++)
+                {
+                    Arenas[i].Serialize(writer);
+                }
             }
         }
 

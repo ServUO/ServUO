@@ -823,7 +823,7 @@ namespace Server.Multis
                     list.Add(item, Owner);
             }
 
-            foreach (SecureInfo info in Secures)
+            foreach (SecureInfo info in Secures.Where(i => !(i.Item is BaseContainer)))
             {
                 Item item = info.Item;
 
@@ -1342,7 +1342,7 @@ namespace Server.Multis
                 SecureInfo info = (SecureInfo)m_Secures[i];
 
                 if (info.Item == item)
-                    return HasSecureAccess(m, info.Level) ? SecureAccessResult.Accessible : SecureAccessResult.Inaccessible;
+                    return HasSecureAccess(m, info) ? SecureAccessResult.Accessible : SecureAccessResult.Inaccessible;
             }
 
             return SecureAccessResult.Insecure;
@@ -1702,11 +1702,25 @@ namespace Server.Multis
             #region Mondain's Legacy
             if (i is BaseAddonContainer)
                 i.Movable = false;
-            else
             #endregion
 
             i.Movable = !locked;
             i.IsLockedDown = locked;
+
+            if (i is BaseContainer)
+            {
+                if (!locked)
+                {
+                    var secure = m_Secures.FirstOrDefault(info => info.Item == i);
+
+                    if (secure != null)
+                        m_Secures.Remove(secure);
+                }
+                else
+                {
+                    m_Secures.Add(new SecureInfo(i, SecureLevel.Owner, m, true));
+                }
+            }
 
             if (m == null)
                 m = Owner;
@@ -1731,6 +1745,11 @@ namespace Server.Multis
             {
                 VendorRentalContracts.Remove(i);
                 m_LockDowns.Remove(i);
+
+                var secure = m_Secures.FirstOrDefault(info => info.Item == i);
+
+                if (secure != null)
+                    m_Secures.Remove(secure);
             }
 
             if (!locked)
@@ -1750,7 +1769,7 @@ namespace Server.Multis
 
         public bool LockDown(Mobile m, Item item, bool checkIsInside)
         {
-            if (!IsCoOwner(m) || !IsActive)
+            if (!IsFriend(m) || !IsActive)
                 return false;
 
             if ((item is BaseAddonContainer || item.Movable) && !IsSecure(item))
@@ -2083,6 +2102,13 @@ namespace Server.Multis
             if(IsOwner(m))
                 return true;
 
+            if(item is BaseContainer || item.Parent is BaseContainer)
+            {
+                Item check = item.Parent is BaseContainer ? (Item)item.Parent : item;
+
+                return m_Secures.FirstOrDefault(i => i.Item == check && HasSecureAccess(m, i)) != null;
+            }
+
             return LockDowns.ContainsKey(item) && IsSameAccount(m, LockDowns[item]);
         }
 
@@ -2188,7 +2214,7 @@ namespace Server.Multis
                 }
                 else
                 {
-                    info = new SecureInfo((Container)item, SecureLevel.Owner);
+                    info = new SecureInfo((Container)item, SecureLevel.Owner, m);
 
                     item.IsLockedDown = false;
                     item.IsSecure = true;
@@ -2204,7 +2230,7 @@ namespace Server.Multis
                     {
                         GardenShedAddonSecond ad = ((GardenShedAddon)item).SecondContainer as GardenShedAddonSecond;
 
-                        SecureInfo info2 = new SecureInfo((Container)ad, SecureLevel.Owner);
+                        SecureInfo info2 = new SecureInfo((Container)ad, SecureLevel.Owner, m);
 
                         ad.IsLockedDown = false;
                         ad.IsSecure = true;
@@ -2242,6 +2268,14 @@ namespace Server.Multis
             return false;
         }
 
+        public bool HasSecureAccess(Mobile m, SecureInfo info)
+        {
+            if (info.Owner == m)
+                return true;
+
+            return HasSecureAccess(m, info.Level);
+        }
+
         public bool HasSecureAccess(Mobile m, SecureLevel level)
         {
             if (m.AccessLevel >= AccessLevel.GameMaster)
@@ -2250,7 +2284,7 @@ namespace Server.Multis
             if (IsCombatRestricted(m))
                 return false;
 
-            switch ( level )
+            switch (level)
             {
                 case SecureLevel.Owner:
                     return IsOwner(m);
@@ -2262,10 +2296,26 @@ namespace Server.Multis
                     return true;
                 case SecureLevel.Guild:
                     return IsGuildMember(m) | IsOwner(m);
-//Check
             }
 
             return false;
+        }
+
+        public SecureLevel GetSecureAccess(Mobile m)
+        {
+            if (IsOwner(m) || m.AccessLevel > AccessLevel.Player)
+                return SecureLevel.Owner;
+
+            if (IsCoOwner(m))
+                return SecureLevel.CoOwners;
+
+            if (IsFriend(m))
+                return SecureLevel.Friends;
+
+            if (IsGuildMember(m))
+                return SecureLevel.Guild;
+
+            return SecureLevel.Anyone;
         }
 
         public void ReleaseSecure(Mobile m, Item item)
@@ -2343,9 +2393,9 @@ namespace Server.Multis
 
             foreach (SecureInfo info in m_Secures)
             {
-                Container c = info.Item;
+                StrongBox c = info.Item as StrongBox;
 
-                if (!c.Deleted && c is StrongBox && ((StrongBox)c).Owner == from)
+                if (c != null && !c.Deleted && c.Owner == from)
                 {
                     from.SendLocalizedMessage(502112);//You already have a strong box
                     return;
@@ -2374,7 +2424,7 @@ namespace Server.Multis
             sb.Movable = false;
             sb.IsLockedDown = false;
             sb.IsSecure = true;
-            m_Secures.Add(new SecureInfo(sb, SecureLevel.CoOwners));
+            m_Secures.Add(new SecureInfo(sb, SecureLevel.CoOwners, from));
             sb.MoveToWorld(from.Location, from.Map);
         }
 
@@ -2603,9 +2653,9 @@ namespace Server.Multis
 
                 foreach (SecureInfo info in m_Secures)
                 {
-                    Container c = info.Item;
+                    StrongBox c = info.Item as StrongBox;
 
-                    if (c is StrongBox && ((StrongBox)c).Owner == targ)
+                    if (c != null  && c.Owner == targ)
                     {
                         c.IsLockedDown = false;
                         c.IsSecure = false;
@@ -2675,7 +2725,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)20); // version
+            writer.Write((int)21); // version
 
             writer.WriteItemList(m_Carpets, true);
 
@@ -2797,8 +2847,14 @@ namespace Server.Multis
 
             m_Visits = new Dictionary<Mobile, DateTime>();
 
+            if (version < 21)
+            {
+                SecureInfo.VersionInsertion = true;
+            }
+
             switch (version)
             {
+                case 21: // version 21, version insertion for secureinfo
                 case 20: // version 20, Addons resulted in version 18 bug added to dictionary
                 case 19: // version 19, Visit change to dictionary
                 case 18: // version 18, converted addons list to dictionary
@@ -2941,7 +2997,7 @@ namespace Server.Multis
 
                             if (info.Item != null)
                             {
-                                info.Item.IsSecure = true;
+                                info.Item.IsSecure = info.IsLockdown ? false : true;
                                 m_Secures.Add(info);
                             }
                         }
@@ -3046,7 +3102,7 @@ namespace Server.Multis
                                 if (c != null)
                                 {
                                     c.IsSecure = true;
-                                    m_Secures.Add(new SecureInfo(c, SecureLevel.CoOwners));
+                                    m_Secures.Add(new SecureInfo(c, SecureLevel.CoOwners, Owner));
                                 }
                             }
                         }
@@ -3732,7 +3788,7 @@ namespace Server.Multis
 
                     if (info.Item is StrongBox)
                     {
-                        info.Item.Destroy();
+                        ((StrongBox)info.Item).Destroy();
                     }
                     else
                     {
@@ -4193,42 +4249,56 @@ namespace Server.Multis
 
     public class SecureInfo : ISecurable
     {
-        private readonly Container m_Item;
+        private readonly Item m_Item;
         private SecureLevel m_Level;
+        private Mobile m_Owner;
+        private bool m_IsLockdown;
 
-        public Container Item
-        {
-            get
-            {
-                return m_Item;
-            }
-        }
-        public SecureLevel Level
-        {
-            get
-            {
-                return m_Level;
-            }
-            set
-            {
-                m_Level = value;
-            }
-        }
+        public Item Item { get { return m_Item; } }
+        public SecureLevel Level { get { return m_Level; } set { m_Level = value; } }
+        public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
+        public bool IsLockdown { get { return m_IsLockdown; } set { m_IsLockdown = value; } }
 
-        public SecureInfo(Container item, SecureLevel level)
+        #region *ONLY USED IN BASEHOUSE VERSION 21*
+        public static bool VersionInsertion { get; set; }
+        #endregion
+
+        public SecureInfo(Item item, SecureLevel level, Mobile owner, bool isLockdown = false)
         {
             m_Item = item;
             m_Level = level;
+            m_Owner = owner;
+            m_IsLockdown = isLockdown;
         }
 
         public SecureInfo(GenericReader reader)
         {
-            m_Item = reader.ReadItem() as Container;
-            m_Level = (SecureLevel)reader.ReadByte();
+            int version = VersionInsertion ? 0 : reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    {
+                        m_IsLockdown = reader.ReadBool();
+                        m_Owner = reader.ReadMobile();
+                        goto case 0;
+                    }
+                case 0:
+                    {
+                        m_Item = reader.ReadItem();
+                        m_Level = (SecureLevel)reader.ReadByte();
+                        break;
+                    }
+            }
         }
 
         public void Serialize(GenericWriter writer)
         {
+            writer.Write(1); // version
+
+            writer.Write(m_IsLockdown);
+            writer.Write(m_Owner);
+
             writer.Write(m_Item);
             writer.Write((byte)m_Level);
         }
@@ -4295,11 +4365,13 @@ namespace Server.Multis
 
         protected override void OnTarget(Mobile from, object targeted)
         {
-            if (!from.Alive || m_House.Deleted || !m_House.IsCoOwner(from))
+            if (!from.Alive || m_House.Deleted || !m_House.IsFriend(from))
                 return;
 
             if (targeted is Item)
             {
+                Item item = targeted as Item;
+
                 if (m_Release)
                 {
                     #region Mondain's legacy
@@ -4310,9 +4382,15 @@ namespace Server.Multis
                         if (component.Addon != null)
                             m_House.Release(from, component.Addon);
                     }
-                    else
                     #endregion
+                    else if (item.Parent is Container)
+                    {
+                        from.SendLocalizedMessage(1080387); // You may not release this while it is in a container. 
+                    }
+                    else
+                    {
                         m_House.Release(from, (Item)targeted);
+                    }
                 }
                 else
                 {
@@ -4338,8 +4416,9 @@ namespace Server.Multis
                         }
                         else
                         #endregion
-
+                        {
                             m_House.LockDown(from, (Item)targeted);
+                        }
                     }
                 }
             }
@@ -4616,13 +4695,17 @@ namespace Server.Multis
         {
             BaseHouse house = BaseHouse.FindHouseAt(item);
 
-            if (house == null || !house.IsOwner(from) || !house.IsAosRules)
+            if (house == null || !house.IsAosRules)
                 return null;
 
+            bool owner = house.IsOwner(from);
             ISecurable sec = null;
 
             if (item is ISecurable)
             {
+                if (!owner)
+                    return null;
+
                 bool isOwned = house.Doors.Contains(item);
 
                 if (!isOwned)
@@ -4639,15 +4722,7 @@ namespace Server.Multis
             }
             else
             {
-                List<SecureInfo> list = house.Secures;
-
-                for (int i = 0; sec == null && list != null && i < list.Count; ++i)
-                {
-                    SecureInfo si = list[i];
-
-                    if (si.Item == item)
-                        sec = si;
-                }
+                sec = house.Secures.FirstOrDefault(i => i.Item == item && (owner || i.Owner == from));
             }
 
             return sec;
@@ -4667,8 +4742,10 @@ namespace Server.Multis
 
             if (sec != null)
             {
+                Mobile owner = sec is SecureInfo ? ((SecureInfo)sec).Owner : Owner.From;
+
                 Owner.From.CloseGump(typeof (SetSecureLevelGump));
-                Owner.From.SendGump(new SetSecureLevelGump(Owner.From, sec, BaseHouse.FindHouseAt(m_Item)));
+                Owner.From.SendGump(new SetSecureLevelGump(owner, sec, BaseHouse.FindHouseAt(m_Item)));
             }
         }
     }

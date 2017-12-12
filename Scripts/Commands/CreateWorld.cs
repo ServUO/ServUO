@@ -63,7 +63,7 @@ namespace Server.Commands
             new CommandEntry("City Loyalty",        "SetupCityLoyaltySystem",   "DeleteCityLoyaltySystem",        122),
             new CommandEntry("Castle Blackthorn",   "GenBlackthorn",       null,                                  123),
             new CommandEntry("Time of Legends",     "DecorateTOL",         null,                                  124),
-            new CommandEntry("New Wrong",           "GenWrongRewamp",            null,                            125),
+            new CommandEntry("New Wrong",           "GenWrongRevamp",            null,                            125),
             new CommandEntry("Kotl City",           "GenerateTreasuresOfKotlCity", null,  126),
             new CommandEntry("Fillable Containers", "CheckFillables", null,  127, 5),
 		});

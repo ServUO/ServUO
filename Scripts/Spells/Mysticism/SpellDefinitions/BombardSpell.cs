@@ -81,10 +81,13 @@ namespace Server.Spells.Mysticism
 
                 SpellHelper.Damage(this, target, (int)GetNewAosDamage(40, 1, 5, target), 100, 0, 0, 0, 0);
 
-                if (!CheckResisted(target))
-                {
-                    target.Paralyze(TimeSpan.FromSeconds(3));
-                }
+                Timer.DelayCall(TimeSpan.FromMilliseconds(1200), () =>
+                    {
+                        if (!CheckResisted(target))
+                        {
+                            target.Paralyze(TimeSpan.FromSeconds(3));
+                        }
+                    });
 			}
 
 			FinishSequence();

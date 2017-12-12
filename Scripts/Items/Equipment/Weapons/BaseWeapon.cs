@@ -1720,6 +1720,11 @@ namespace Server.Items
 			{
 				BaseWeapon weapon = defender.Weapon as BaseWeapon;
 
+                if (Core.HS && weapon.Attributes.BalancedWeapon == 0)
+                {
+                    return false;
+                }
+
 				double divisor = (weapon.Layer == Layer.OneHanded) ? 48000.0 : 41140.0;
 
 				double chance = (parry * bushido) / divisor;
@@ -2421,10 +2426,7 @@ namespace Server.Items
 				((BaseCreature)defender).AlterMeleeDamageFrom(attacker, ref damage);
 			}
 
-            if (!Core.HS || m_AosAttributes.BalancedWeapon == 0)
-            {
-                damage = AbsorbDamage(attacker, defender, damage);
-            }
+            damage = AbsorbDamage(attacker, defender, damage);
 
 			if (!Core.AOS && damage < 1)
 			{

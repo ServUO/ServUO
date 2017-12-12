@@ -23,7 +23,7 @@ namespace Server.Engines.Blackthorn
             Generate(Map.Trammel);
             Generate(Map.Felucca);
 
-            CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/BlackthornDungeon.xml");
+            CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "XmlLoad RevampedSpawns/BlackthornDungeon.xml");
         }
 
         public static void Generate(Map map)
