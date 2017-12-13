@@ -27,3 +27,7 @@ reportHistory.xml
 *.DotSettings.user
 *.log
 *.bin
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal
