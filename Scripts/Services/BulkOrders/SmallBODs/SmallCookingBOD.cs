@@ -76,7 +76,7 @@ namespace Server.Engines.BulkOrders
         {
             SmallBulkEntry[] entries;
 
-            double theirSkill = m.Skills[SkillName.Cooking].Base;
+            double theirSkill = BulkOrderSystem.GetBODSkill(m, SkillName.Cooking);
             bool nonexceptional = false;
 
             if (0.20 > Utility.RandomDouble())

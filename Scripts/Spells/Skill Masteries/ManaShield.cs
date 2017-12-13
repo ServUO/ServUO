@@ -67,7 +67,7 @@ namespace Server.Spells.SkillMasteries
                 IEntity from = new Entity(Serial.Zero, new Point3D(Caster.X, Caster.Y, Caster.Z), Caster.Map);
                 IEntity to = new Entity(Serial.Zero, new Point3D(Caster.X, Caster.Y, Caster.Z + 50), Caster.Map);
                 Effects.SendMovingParticles(from, to, 5494, 1, 0, false, false, 33, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
-
+                
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ManaShield, 1155902, 1156056, TimeSpan.FromSeconds(600), Caster, String.Format("{0}\t{1}\t{1}", ((int)(Chance * 100)).ToString(), "50"))); // ~1_CHANCE~% chance to reduce incoming damage by ~2_DAMAGE~%. Costs ~2_DAMAGE~% of original damage in mana.
             }
 
@@ -83,11 +83,11 @@ namespace Server.Spells.SkillMasteries
 
         public static void CheckManaShield(Mobile m, ref int damage)
         {
-            SkillMasterySpell spell = GetSpell(m, typeof(ManaShieldSpell));
+            ManaShieldSpell spell = GetSpell<ManaShieldSpell>(m);
 
-            if (spell is ManaShieldSpell)
+            if (spell != null)
             {
-                if (((ManaShieldSpell)spell).Chance >= Utility.RandomDouble())
+                if (spell.Chance >= Utility.RandomDouble())
                 {
                     int toShield = damage / 2;
 

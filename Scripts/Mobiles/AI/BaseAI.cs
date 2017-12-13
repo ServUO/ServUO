@@ -2997,7 +2997,7 @@ namespace Server.Mobiles
 			IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
 			foreach (Mobile trg in eable)
 			{
-				if (trg != m_Mobile && trg.Player && trg.Alive && trg.Hidden && trg.IsPlayer() && m_Mobile.InLOS(trg))
+                if (trg != m_Mobile && trg.Player && trg.Alive && trg.Hidden && trg.IsPlayer() && m_Mobile.InLOS(trg) && SpellHelper.ValidIndirectTarget(m_Mobile, trg))
 				{
 					m_Mobile.DebugSay("Trying to detect {0}", trg.Name);
 

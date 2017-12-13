@@ -141,6 +141,11 @@ namespace Server.Engines.BulkOrders
             }
         }
 
+        public static double GetBODSkill(Mobile m, SkillName skill)
+        {
+            return m.Skills[skill].Base + m.GetRacialSkillBonus(skill);
+        }
+
         public static List<CollectionItem> GetRewardCollection(BODType type)
         {
             switch (type)
@@ -192,26 +197,6 @@ namespace Server.Engines.BulkOrders
 
                     return true;
                 }
-                /*int cached = context.Entries[type].CachedDeeds;
-
-                if (cached > 0)
-                {
-                    if (cached == MaxCachedDeeds)
-                    {
-                        context.Entries[type].LastBulkOrder = DateTime.UtcNow;
-                    }
-                    else
-                    {
-                        //TimeSpan remainder = last - TimeSpan.FromHours(Delay);
-                        TimeSpan remainder = (DateTime.UtcNow - last) + TimeSpan.FromHours(Delay);
-
-                        context.Entries[type].LastBulkOrder = DateTime.UtcNow - remainder;
-                    }
-
-                    context.Entries[type].CachedDeeds--;
-
-                    return true;
-                }*/
             }
 
             return false;

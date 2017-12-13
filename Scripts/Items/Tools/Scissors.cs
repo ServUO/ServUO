@@ -18,18 +18,22 @@ namespace Server.Items
 	}
 
 	[Flipable(0xf9f, 0xf9e)]
-	public class Scissors : Item, ICraftable, IQuality
+	public class Scissors : Item, ICraftable, IQuality, IUsesRemaining
 	{
         private int m_UsesRemaining;
         private Mobile m_Crafter;
         private ItemQuality m_Quality;
+        private bool m_ShowUsesRemaining;
         
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining { get { return m_UsesRemaining; } set { m_UsesRemaining = value; InvalidateProperties(); } }
     
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter { get { return m_Crafter; } set { m_Crafter = value; InvalidateProperties(); } }
-        
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ShowUsesRemaining { get { return m_ShowUsesRemaining; } set { m_ShowUsesRemaining = value; InvalidateProperties(); } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality 
         { 
@@ -51,6 +55,9 @@ namespace Server.Items
 			Weight = 1.0;
             
             m_UsesRemaining = 50;
+
+            if (Siege.SiegeShard)
+                m_ShowUsesRemaining = true;
 		}
 
         public override void GetProperties(ObjectPropertyList list)
@@ -75,8 +82,10 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(1); // version
-            
+			writer.Write(2); // version
+
+            writer.Write(m_ShowUsesRemaining);
+
             writer.Write(m_UsesRemaining);
             writer.Write(m_Crafter);
             writer.Write((int)m_Quality);
@@ -90,6 +99,9 @@ namespace Server.Items
             
             switch(version)
             {
+                case 2:
+                    m_ShowUsesRemaining = reader.ReadBool();
+                    goto case 1;
                 case 1:
                     m_UsesRemaining = reader.ReadInt();
                     m_Crafter = reader.ReadMobile();
