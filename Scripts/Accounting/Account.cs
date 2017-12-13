@@ -199,8 +199,9 @@ namespace Server.Accounting
 			var plainPassword = Utility.GetText(node["password"], null);
 			var MD5Password = Utility.GetText(node["cryptPassword"], null);
 			var SHA1Password = Utility.GetText(node["newCryptPassword"], null);
+            var SHA512Password = Utility.GetText(node["securenewCryptPassword"], null);
 
-			switch (AccountHandler.ProtectPasswords)
+            switch (AccountHandler.ProtectPasswords)
 			{
 				case PasswordProtection.None:
 				{
@@ -208,11 +209,15 @@ namespace Server.Accounting
 					{
 						SetPassword(plainPassword);
 					}
-					else if (SHA1Password != null)
+					else if (SHA512Password != null)
 					{
-						_SHA1Password = SHA1Password;
+						_SHA512Password = SHA512Password;
 					}
-					else if (MD5Password != null)
+                    else if (SHA1Password != null)
+                    {
+                        _SHA1Password = SHA1Password;
+                    }
+                    else if (MD5Password != null)
 					{
 						_MD5Password = MD5Password;
 					}
@@ -237,7 +242,11 @@ namespace Server.Accounting
 					{
 						_SHA1Password = SHA1Password;
 					}
-					else
+                    else if (SHA512Password != null)
+                    {
+                        _SHA512Password = SHA512Password;
+                    }
+                        else
 					{
 						SetPassword("empty");
 					}
@@ -389,11 +398,16 @@ namespace Server.Accounting
 		/// </summary>
 		public string _SHA1Password { get; set; }
 
-		/// <summary>
-		///     Internal bitfield of account flags. Consider using direct access properties (Banned, Young), or GetFlag/SetFlag
-		///     methods
-		/// </summary>
-		public int Flags { get; set; }
+        /// <summary>
+        ///     Account username and password hashed with SHA512. May be null.
+        /// </summary>
+        public string _SHA512Password { get; set; }
+
+        /// <summary>
+        ///     Internal bitfield of account flags. Consider using direct access properties (Banned, Young), or GetFlag/SetFlag
+        ///     methods
+        /// </summary>
+        public int Flags { get; set; }
 
 		/// <summary>
 		///     Gets or sets a flag indiciating if this account is banned.
