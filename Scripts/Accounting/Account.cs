@@ -197,8 +197,8 @@ namespace Server.Accounting
 			Username = Utility.GetText(node["username"], "empty");
 
 			var plainPassword = Utility.GetText(node["password"], null);
-			var cryptPassword = Utility.GetText(node["cryptPassword"], null);
-			var newCryptPassword = Utility.GetText(node["newCryptPassword"], null);
+			var MD5Password = Utility.GetText(node["cryptPassword"], null);
+			var SHA1Password = Utility.GetText(node["newCryptPassword"], null);
 
 			switch (AccountHandler.ProtectPasswords)
 			{
@@ -208,13 +208,13 @@ namespace Server.Accounting
 					{
 						SetPassword(plainPassword);
 					}
-					else if (newCryptPassword != null)
+					else if (SHA1Password != null)
 					{
-						NewCryptPassword = newCryptPassword;
+						_SHA1Password = SHA1Password;
 					}
-					else if (cryptPassword != null)
+					else if (MD5Password != null)
 					{
-						CryptPassword = cryptPassword;
+						_MD5Password = MD5Password;
 					}
 					else
 					{
@@ -225,17 +225,17 @@ namespace Server.Accounting
 				}
 				case PasswordProtection.Crypt:
 				{
-					if (cryptPassword != null)
+					if (MD5Password != null)
 					{
-						CryptPassword = cryptPassword;
+						_MD5Password = MD5Password;
 					}
 					else if (plainPassword != null)
 					{
 						SetPassword(plainPassword);
 					}
-					else if (newCryptPassword != null)
+					else if (SHA1Password != null)
 					{
-						NewCryptPassword = newCryptPassword;
+						_SHA1Password = SHA1Password;
 					}
 					else
 					{
@@ -246,17 +246,17 @@ namespace Server.Accounting
 				}
 				default: // PasswordProtection.NewCrypt
 				{
-					if (newCryptPassword != null)
+					if (SHA1Password != null)
 					{
-						NewCryptPassword = newCryptPassword;
+						_SHA1Password = SHA1Password;
 					}
 					else if (plainPassword != null)
 					{
 						SetPassword(plainPassword);
 					}
-					else if (cryptPassword != null)
+					else if (MD5Password != null)
 					{
-						CryptPassword = cryptPassword;
+						_MD5Password = MD5Password;
 					}
 					else
 					{
@@ -382,12 +382,12 @@ namespace Server.Accounting
 		/// <summary>
 		///     Account password. Hashed with MD5. May be null.
 		/// </summary>
-		public string CryptPassword { get; set; }
+		public string _MD5Password { get; set; }
 
 		/// <summary>
 		///     Account username and password hashed with SHA1. May be null.
 		/// </summary>
-		public string NewCryptPassword { get; set; }
+		public string _SHA1Password { get; set; }
 
 		/// <summary>
 		///     Internal bitfield of account flags. Consider using direct access properties (Banned, Young), or GetFlag/SetFlag
@@ -637,22 +637,22 @@ namespace Server.Accounting
 				case PasswordProtection.None:
 				{
 					PlainPassword = plainPassword;
-					CryptPassword = null;
-					NewCryptPassword = null;
+					_MD5Password = null;
+					_SHA1Password = null;
 				}
 					break;
 				case PasswordProtection.Crypt:
 				{
 					PlainPassword = null;
-					CryptPassword = HashMD5(plainPassword);
-					NewCryptPassword = null;
+					_MD5Password = HashMD5(plainPassword);
+					_SHA1Password = null;
 				}
 					break;
 				default: // PasswordProtection.NewCrypt
 				{
 					PlainPassword = null;
-					CryptPassword = null;
-					NewCryptPassword = HashSHA1(Username + plainPassword);
+					_MD5Password = null;
+					_SHA1Password = HashSHA1(Username + plainPassword);
 				}
 					break;
 			}
@@ -668,14 +668,14 @@ namespace Server.Accounting
 				ok = (PlainPassword == plainPassword);
 				curProt = PasswordProtection.None;
 			}
-			else if (CryptPassword != null)
+			else if (_MD5Password != null)
 			{
-				ok = (CryptPassword == HashMD5(plainPassword));
+				ok = (_MD5Password == HashMD5(plainPassword));
 				curProt = PasswordProtection.Crypt;
 			}
 			else
 			{
-				ok = (NewCryptPassword == HashSHA1(Username + plainPassword));
+				ok = (_SHA1Password == HashSHA1(Username + plainPassword));
 				curProt = PasswordProtection.NewCrypt;
 			}
 
@@ -1255,17 +1255,17 @@ namespace Server.Accounting
 				xml.WriteEndElement();
 			}
 
-			if (CryptPassword != null)
+			if (_MD5Password != null)
 			{
 				xml.WriteStartElement("cryptPassword");
-				xml.WriteString(CryptPassword);
+				xml.WriteString(_MD5Password);
 				xml.WriteEndElement();
 			}
 
-			if (NewCryptPassword != null)
+			if (_SHA1Password != null)
 			{
 				xml.WriteStartElement("newCryptPassword");
-				xml.WriteString(NewCryptPassword);
+				xml.WriteString(_SHA1Password);
 				xml.WriteEndElement();
 			}
 
