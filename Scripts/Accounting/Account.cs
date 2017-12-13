@@ -32,7 +32,8 @@ namespace Server.Accounting
 
 		private static MD5CryptoServiceProvider m_MD5HashProvider;
 		private static SHA1CryptoServiceProvider m_SHA1HashProvider;
-		private static byte[] m_HashBuffer;
+        private static SHA512CryptoServiceProvider m_SHA512HashProvider;
+        private static byte[] m_HashBuffer;
 
 		public static void Configure()
 		{
@@ -199,7 +200,7 @@ namespace Server.Accounting
 			var plainPassword = Utility.GetText(node["password"], null);
 			var MD5Password = Utility.GetText(node["cryptPassword"], null);
 			var SHA1Password = Utility.GetText(node["newCryptPassword"], null);
-            var SHA512Password = Utility.GetText(node["securenewCryptPassword"], null);
+            var SHA512Password = Utility.GetText(node["newSecureCryptPassword"], null);
 
             switch (AccountHandler.ProtectPasswords)
 			{
@@ -246,22 +247,51 @@ namespace Server.Accounting
                     {
                         _SHA512Password = SHA512Password;
                     }
-                        else
+                    else
 					{
 						SetPassword("empty");
 					}
 
 					break;
 				}
-				default: // PasswordProtection.NewCrypt
-				{
-					if (SHA1Password != null)
-					{
-						_SHA1Password = SHA1Password;
-					}
+                case PasswordProtection.NewCrypt:
+                {
+                    if (SHA1Password != null)
+                    {
+                    _SHA1Password = SHA1Password;
+                    }
+                    else if (plainPassword != null)
+                    {
+                        SetPassword(plainPassword);
+                    }
+                    else if (MD5Password != null)
+                    {
+                        _MD5Password = MD5Password;
+                    }
+                    else if (SHA512Password != null)
+                    {
+                        _SHA512Password = SHA512Password;
+                    }
+                    else
+                    {
+                        SetPassword("empty");
+                    }
+
+                    break;
+                }
+                default: // PasswordProtection.NewSecureCrypt
+                {
+                    if (SHA512Password != null)
+                    {
+                        _SHA512Password = SHA512Password;
+                    }
 					else if (plainPassword != null)
 					{
 						SetPassword(plainPassword);
+					}
+                    else if (SHA1Password != null)
+					{
+						_SHA1Password = SHA1Password;
 					}
 					else if (MD5Password != null)
 					{
@@ -662,11 +692,19 @@ namespace Server.Accounting
 					_SHA1Password = null;
 				}
 					break;
-				default: // PasswordProtection.NewCrypt
+                case PasswordProtection.NewCrypt:
+                {
+                    PlainPassword = null;
+                    _MD5Password = null;
+                    _SHA1Password = HashSHA1(Username + plainPassword);
+                }
+                    break;
+                default: // PasswordProtection.NewSecureCrypt
 				{
 					PlainPassword = null;
 					_MD5Password = null;
-					_SHA1Password = HashSHA1(Username + plainPassword);
+					_SHA1Password = null;
+                    _SHA512Password = HashSHA512(Username + plainPassword); 
 				}
 					break;
 			}
@@ -687,13 +725,18 @@ namespace Server.Accounting
 				ok = (_MD5Password == HashMD5(plainPassword));
 				curProt = PasswordProtection.Crypt;
 			}
-			else
-			{
+			else if (_SHA1Password != null)
+            {
 				ok = (_SHA1Password == HashSHA1(Username + plainPassword));
 				curProt = PasswordProtection.NewCrypt;
 			}
+            else
+            {
+                ok = (_SHA512Password == HashSHA512(Username + plainPassword));
+                curProt = PasswordProtection.NewSecureCrypt;
+            }
 
-			if (ok && curProt != AccountHandler.ProtectPasswords)
+            if (ok && curProt != AccountHandler.ProtectPasswords)
 			{
 				SetPassword(plainPassword);
 			}
@@ -766,8 +809,25 @@ namespace Server.Accounting
 
 			return BitConverter.ToString(hashed);
 		}
+        public static string HashSHA512(string phrase)
+        {
+            if (m_SHA512HashProvider == null)
+            {
+                m_SHA512HashProvider = new SHA512CryptoServiceProvider();
+            }
 
-		public static void Initialize()
+            if (m_HashBuffer == null)
+            {
+                m_HashBuffer = new byte[256];
+            }
+
+            var length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
+            var hashed = m_SHA512HashProvider.ComputeHash(m_HashBuffer, 0, length);
+
+            return BitConverter.ToString(hashed);
+        }
+
+        public static void Initialize()
 		{
 			EventSink.Connected += EventSink_Connected;
 			EventSink.Disconnected += EventSink_Disconnected;
@@ -1283,7 +1343,14 @@ namespace Server.Accounting
 				xml.WriteEndElement();
 			}
 
-			if (m_AccessLevel >= AccessLevel.Counselor)
+            if (_SHA512Password != null)
+            {
+                xml.WriteStartElement("newSecureCryptPassword");
+                xml.WriteString(_SHA512Password);
+                xml.WriteEndElement();
+            }
+
+            if (m_AccessLevel >= AccessLevel.Counselor)
 			{
 				xml.WriteStartElement("accessLevel");
 				xml.WriteString(m_AccessLevel.ToString());
