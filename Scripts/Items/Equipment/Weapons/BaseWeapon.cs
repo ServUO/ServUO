@@ -1720,7 +1720,7 @@ namespace Server.Items
 			{
 				BaseWeapon weapon = defender.Weapon as BaseWeapon;
 
-                if (Core.HS && weapon.Attributes.BalancedWeapon == 0)
+                if (Core.HS && weapon.Attributes.BalancedWeapon > 0)
                 {
                     return false;
                 }
