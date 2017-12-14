@@ -2110,7 +2110,7 @@ namespace Server.Mobiles
                     hides = (int)Math.Ceiling(hides * 1.1); // 10% bonus only applies to hides, ore & logs
                 }
 
-                if (corpse.Map == Map.Felucca)
+                if (corpse.Map == Map.Felucca && !Siege.SiegeShard)
                 {
                     feathers *= 2;
                     wool *= 2;

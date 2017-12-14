@@ -823,7 +823,7 @@ namespace Server.Multis
                     list.Add(item, Owner);
             }
 
-            foreach (SecureInfo info in Secures.Where(i => !(i.Item is BaseContainer)))
+            foreach (SecureInfo info in Secures.Where(i => !LockDowns.ContainsKey(i.Item)))
             {
                 Item item = info.Item;
 

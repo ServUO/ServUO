@@ -9,7 +9,6 @@ namespace Server.Items
 
         [Constructable]
         public MudPuppy()
-            : base(0x9cc)
         {
             Hue = 643;
         }

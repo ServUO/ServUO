@@ -458,6 +458,16 @@ namespace Server.Spells.SkillMasteries
             return null;
         }
 
+        public static TSpell GetSpell<TSpell>(Mobile m) where TSpell : SkillMasterySpell
+        {
+            if (m_Table.ContainsKey(m))
+            {
+                return m_Table[m].FirstOrDefault(sms => sms.GetType() == typeof(TSpell)) as TSpell;
+            }
+
+            return null;
+        }
+
         public static SkillMasterySpell GetSpell(Func<SkillMasterySpell, bool> predicate)
 		{
             foreach (SkillMasterySpell spell in EnumerateAllSpells())
@@ -628,7 +638,10 @@ namespace Server.Spells.SkillMasteries
                     m_Table[from] = new List<SkillMasterySpell>();
                 }
 
-                m_Table[from].Add(spell);
+                if (!m_Table[from].Contains(spell))
+                {
+                    m_Table[from].Add(spell);
+                }
             }
 		}
 		

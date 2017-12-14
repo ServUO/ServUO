@@ -100,7 +100,7 @@ namespace Server.Engines.BulkOrders
 
             if (entries.Length > 0)
             {
-                double theirSkill = m.Skills[SkillName.Tinkering].Base;
+                double theirSkill = BulkOrderSystem.GetBODSkill(m, SkillName.Tinkering);
                 int amountMax;
 
                 if (theirSkill >= 70.1)

@@ -2065,7 +2065,7 @@ namespace Server.Items
                         if (.95 >= chance)
                             return 0;
 
-                        switch (Utility.Random(item is BaseJewel ? 6 : 8))
+                        switch (Utility.Random(item is BaseJewel ? 8 : 10))
                         {
                             case 0: neg.Prized = 1; break;
                             case 1: neg.Antique = 1; break;
@@ -2074,7 +2074,9 @@ namespace Server.Items
                             case 4:
                             case 5: attrs.Luck = -100; break;
                             case 6:
-                            case 7: neg.Massive = 1; break;
+                            case 7: item.LootType = LootType.Cursed; break;
+                            case 8:
+                            case 9: neg.Massive = 1; break;
                         }
 
                         return 100;
@@ -2111,7 +2113,7 @@ namespace Server.Items
 
                             return 100;
                         }
-                        else
+                        else if (.85 > chance)
                         {
                             if (Utility.RandomBool())
                                 neg.Antique = 1;
@@ -2120,7 +2122,11 @@ namespace Server.Items
 
                             return 150;
                         }
-
+                        else
+                        {
+                            item.LootType = LootType.Cursed;
+                            return 100;
+                        }
                     }
                 case ItemPower.Major: // major magic
                     {
@@ -2136,7 +2142,7 @@ namespace Server.Items
                         }
                         else if (.6 > chance)
                         {
-                            switch (Utility.Random(item is BaseJewel ? 6 : 8))
+                            switch (Utility.Random(item is BaseJewel ? 8 : 10))
                             {
                                 case 0: neg.Prized = 1; break;
                                 case 1: neg.Antique = 1; break;
@@ -2145,7 +2151,9 @@ namespace Server.Items
                                 case 4:
                                 case 5: attrs.Luck = -100; break;
                                 case 6:
-                                case 7: neg.Massive = 1; break;
+                                case 7: item.LootType = LootType.Cursed; break;
+                                case 8:
+                                case 9: neg.Massive = 1; break;
                             }
 
                             return 100;
@@ -2173,14 +2181,19 @@ namespace Server.Items
                             neg.Prized = 1;
                             return 100;
                         }
-                        else if (0.9 > chance)
+                        else if (0.88 > chance)
                         {
-                            neg.Antique = 1;
+                            neg.Brittle = 1;
+                            return 150;
+                        }
+                        else if (0.98 > chance)
+                        {
+                            item.LootType = LootType.Cursed;
                             return 150;
                         }
                         else
                         {
-                            neg.Brittle = 1;
+                            neg.Antique = 1;
                             return 150;
                         }
                     }

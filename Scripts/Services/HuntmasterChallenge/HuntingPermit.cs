@@ -125,11 +125,16 @@ namespace Server.Items
                         from.SendLocalizedMessage(1155707);	  // You cannot document someone else's kill.
                     else
                     {
+                        Type t = c.Owner.GetType();
+
+                        if (t == typeof(RagingGrizzlyBear)) // Bandaid Fix, we'll keep this until others arise
+                            t = typeof(GrizzlyBear);
+
                         for (int i = 0; i < HuntingTrophyInfo.Infos.Count; i++)
                         {
                             HuntingTrophyInfo info = HuntingTrophyInfo.Infos[i];
 
-                            if (c.Owner.GetType() == info.CreatureType)
+                            if (t == info.CreatureType)
                             {
                                 int v = 0;
 
