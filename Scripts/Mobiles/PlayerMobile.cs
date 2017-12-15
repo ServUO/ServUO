@@ -6750,8 +6750,7 @@ namespace Server.Mobiles
 
 			if (!Alive)
 			{
-				SendLocalizedMessage(1076251);
-				// Your pet was unable to join you while you are a ghost.  Please re-login once you have ressurected to claim your pets.
+                SendGump(new ReLoginClaimGump());
 				return;
 			}
 

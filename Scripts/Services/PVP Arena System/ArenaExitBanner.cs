@@ -20,12 +20,17 @@ namespace Server.Engines.ArenaSystem
         {
             Arena = arena;
             Movable = false;
+            Weight = 0;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(Location, 3))
+            if (!from.InRange(Location, 3) || !from.InLOS(this) || !from.CanSee(this))
             {
+                from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+            }
+            else
+            { 
                 var duel = Arena.CurrentDuel;
 
                 if (duel != null && duel.InPreFight)

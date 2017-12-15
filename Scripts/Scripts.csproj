@@ -538,6 +538,7 @@
     <Compile Include="Gumps\ReclaimVendorGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\ReLoginClaimGump.cs" />
     <Compile Include="Gumps\ReportMurderer.cs">
       <SubType>Code</SubType>
     </Compile>

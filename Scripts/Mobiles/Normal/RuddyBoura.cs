@@ -142,6 +142,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
+            if (!Controlled)
             c.DropItem(new BouraSkin());
         }
 
