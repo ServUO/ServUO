@@ -683,6 +683,7 @@ namespace Server.Accounting
 					PlainPassword = plainPassword;
 					_MD5Password = null;
 					_SHA1Password = null;
+					_SHA512Password = null;
 				}
 					break;
 				case PasswordProtection.Crypt:
@@ -690,6 +691,7 @@ namespace Server.Accounting
 					PlainPassword = null;
 					_MD5Password = HashMD5(plainPassword);
 					_SHA1Password = null;
+					_SHA512Password = null;
 				}
 					break;
                 case PasswordProtection.NewCrypt:
@@ -697,6 +699,7 @@ namespace Server.Accounting
                     PlainPassword = null;
                     _MD5Password = null;
                     _SHA1Password = HashSHA1(Username + plainPassword);
+					_SHA512Password = null;
                 }
                     break;
                 default: // PasswordProtection.NewSecureCrypt
