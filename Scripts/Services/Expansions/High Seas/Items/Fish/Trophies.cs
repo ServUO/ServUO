@@ -309,8 +309,17 @@ namespace Server.Items
             {
                 if (info.CreatureType == m_TypeName)
                 {
-                    from.AddToBackpack(new FishTrophyDeed(m_FishWeight, m_Fisher, m_DateCaught, info.DeedNumber, info.AddonNumber, info.NorthID));
-                    Delete();
+                    BaseHouse house = BaseHouse.FindHouseAt(c);
+
+                    if (house != null && (house.IsCoOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
+                    {
+                        from.AddToBackpack(new FishTrophyDeed(m_FishWeight, m_Fisher, m_DateCaught, info.DeedNumber, info.AddonNumber, info.NorthID));
+                        Delete();
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(502092); // You must be in your house to do this.
+                    }
                 }
             }
         }
