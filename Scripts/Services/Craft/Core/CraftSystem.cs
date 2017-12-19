@@ -276,7 +276,7 @@ namespace Server.Engines.Craft
             return true;
         }
 
-        public void CreateItem(Mobile from, Type type, Type typeRes, BaseTool tool, CraftItem realCraftItem)
+        public void CreateItem(Mobile from, Type type, Type typeRes, ITool tool, CraftItem realCraftItem)
         { 
             // Verify if the type is in the list of the craftable item
             CraftItem craftItem = m_CraftItems.SearchFor(type);
@@ -483,13 +483,13 @@ namespace Server.Engines.Craft
             craftItem.MinSkillOffset = skillOffset;
         }
 
-        public void AddCraftAction(int index, Action<Mobile, CraftItem, BaseTool> action)
+        public void AddCraftAction(int index, Action<Mobile, CraftItem, ITool> action)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.TryCraft = action;
         }
 
-        public void AddCreateItem(int index, Func<Mobile, CraftItem, BaseTool, Item> func)
+        public void AddCreateItem(int index, Func<Mobile, CraftItem, ITool, Item> func)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.CreateItem = func;
@@ -565,6 +565,6 @@ namespace Server.Engines.Craft
 
         public abstract int PlayEndingEffect(Mobile from, bool failed, bool lostMaterial, bool toolBroken, int quality, bool makersMark, CraftItem item);
 
-        public abstract int CanCraft(Mobile from, BaseTool tool, Type itemType);
+        public abstract int CanCraft(Mobile from, ITool tool, Type itemType);
     }
 }

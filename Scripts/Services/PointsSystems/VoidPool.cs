@@ -46,10 +46,11 @@ namespace Server.Engines.Points
 
         public override void OnClick()
         {
-            Region r = Region.Find(m_From.Location, m_From.Map);
-
-            if (m_From is PlayerMobile && r is VoidPoolRegion && ((VoidPoolRegion)r).Controller != null)
-                m_From.SendGump(new VoidPoolGump(((VoidPoolRegion)r).Controller, m_From as PlayerMobile));
+            if (m_From is PlayerMobile)
+            {
+                var controller = m_From.Map == Map.Trammel ? VoidPoolController.InstanceTram : VoidPoolController.InstanceFel;
+                m_From.SendGump(new VoidPoolGump(controller, m_From as PlayerMobile));
+            }
         }
     }
 }

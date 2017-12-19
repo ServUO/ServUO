@@ -50,7 +50,7 @@ namespace Server.Engines.Craft
         {
         }
 
-        public override int CanCraft(Mobile from, BaseTool tool, Type typeItem)
+        public override int CanCraft(Mobile from, ITool tool, Type typeItem)
         {
             int num = 0;
 

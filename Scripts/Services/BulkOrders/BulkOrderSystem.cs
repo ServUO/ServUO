@@ -143,7 +143,7 @@ namespace Server.Engines.BulkOrders
 
         public static double GetBODSkill(Mobile m, SkillName skill)
         {
-            return m.Skills[skill].Base + m.GetRacialSkillBonus(skill);
+            return Math.Max(m.Skills[skill].Base, m.GetRacialSkillBonus(skill));
         }
 
         public static List<CollectionItem> GetRewardCollection(BODType type)

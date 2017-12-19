@@ -221,7 +221,7 @@ namespace Server.Items
         public JesterHatOfChuckles(int hue)
             : base(hue)
         {
-            this.Attributes.Luck = 150;
+            Attributes.Luck = 150;
         }
 
         public JesterHatOfChuckles(Serial serial)
@@ -315,7 +315,7 @@ namespace Server.Items
         public NystulsWizardsHat(int hue)
             : base(hue)
         {
-            this.Attributes.LowerManaCost = 15;
+            Attributes.LowerManaCost = 15;
         }
 
         public NystulsWizardsHat(Serial serial)
@@ -441,11 +441,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsShipwreckedItem;
+                return m_IsShipwreckedItem;
             }
             set
             {
-                this.m_IsShipwreckedItem = value;
+                m_IsShipwreckedItem = value;
             }
         }
 
@@ -470,7 +470,7 @@ namespace Server.Items
 
             writer.Write((int)2); // version
 
-            writer.Write(this.m_IsShipwreckedItem);
+            writer.Write(m_IsShipwreckedItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -484,7 +484,7 @@ namespace Server.Items
                 case 2: goto case 1;
                 case 1:
                     {
-                        this.m_IsShipwreckedItem = reader.ReadBool();
+                        m_IsShipwreckedItem = reader.ReadBool();
                         break;
                     }
             }
@@ -499,7 +499,7 @@ namespace Server.Items
         {
             base.AddEquipInfoAttributes(from, attrs);
 
-            if (this.m_IsShipwreckedItem)
+            if (m_IsShipwreckedItem)
                 attrs.Add(new EquipInfoAttribute(1041645));	// recovered from a shipwreck
         }
 
@@ -507,16 +507,16 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            if (this.m_IsShipwreckedItem)
+            if (m_IsShipwreckedItem)
                 list.Add(1041645); // recovered from a shipwreck
         }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
-            if (this.Quality == ItemQuality.Exceptional)
-                this.DistributeBonuses((tool is BaseRunicTool ? 6 : (Core.SE ? 15 : 14)));	//BLAME OSI. (We can't confirm it's an OSI bug yet.)
+            if (Quality == ItemQuality.Exceptional)
+                DistributeBonuses((tool is BaseRunicTool ? 6 : (Core.SE ? 15 : 14)));	//BLAME OSI. (We can't confirm it's an OSI bug yet.)
 
             return base.OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, craftItem, resHue);
         }
@@ -1875,8 +1875,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            /*if (this.Hue != 0x8A4)
-                this.Hue = 0x8A4;*/
+            /*if (Hue != 0x8A4)
+                Hue = 0x8A4;*/
         }
     }
 
@@ -2074,8 +2074,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            /*if (this.Hue != 0 && (this.Hue < 2101 || this.Hue > 2130))
-                this.Hue = GetRandomHue();*/
+            /*if (Hue != 0 && (Hue < 2101 || Hue > 2130))
+                Hue = GetRandomHue();*/
         }
     }
 

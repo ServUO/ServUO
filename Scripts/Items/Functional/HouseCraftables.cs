@@ -161,7 +161,7 @@ namespace Server.Items
             list.Add(1153494); // House Only
         }
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             if (craftItem != null && craftItem.Data is CraftableItemType)
             {
@@ -707,7 +707,7 @@ namespace Server.Items
             Movable = true;
         }
 
-        public static Item Create(Mobile m, CraftItem craftItem, BaseTool tool)
+        public static Item Create(Mobile m, CraftItem craftItem, ITool tool)
         {
             DoorType type = DoorType.LeftMetalDoor_S_In;
 
@@ -719,7 +719,7 @@ namespace Server.Items
             return new CraftableMetalHouseDoor(type, GetDoorFacing(type));
         }
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             if (craftItem != null)
             {
@@ -912,7 +912,7 @@ namespace Server.Items
             Movable = true;
         }
 
-        public static Item Create(Mobile m, CraftItem craftItem, BaseTool tool)
+        public static Item Create(Mobile m, CraftItem craftItem, ITool tool)
         {
             DoorType type = DoorType.StoneDoor_S_In;
 
@@ -924,7 +924,7 @@ namespace Server.Items
             return new CraftableStoneHouseDoor(type, CraftableMetalHouseDoor.GetDoorFacing(type));
         }
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             if (craftItem != null)
             {

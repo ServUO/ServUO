@@ -11,7 +11,7 @@ namespace Server.Engines.Craft
         private readonly Mobile m_From;
         private readonly CraftSystem m_CraftSystem;
         private readonly CraftItem m_CraftItem;
-        private readonly BaseTool m_Tool;
+        private readonly ITool m_Tool;
 
         private const int LabelHue = 0x480; // 0x384
         private const int RedLabelHue = 0x20;
@@ -23,7 +23,7 @@ namespace Server.Engines.Craft
 
         private int m_OtherCount;
 
-        public CraftGumpItem(Mobile from, CraftSystem craftSystem, CraftItem craftItem, BaseTool tool)
+        public CraftGumpItem(Mobile from, CraftSystem craftSystem, CraftItem craftItem, ITool tool)
             : base(40, 40)
         {
             this.m_From = from;
