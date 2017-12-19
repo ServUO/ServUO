@@ -135,7 +135,7 @@ namespace Server.Items
             }
         }
 
-        public int OnCraft(int quality, bool markersMark, Mobile from, CraftSystem system, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public int OnCraft(int quality, bool markersMark, Mobile from, CraftSystem system, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             switch (resHue)
             {

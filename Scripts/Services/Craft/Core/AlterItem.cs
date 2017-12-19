@@ -45,7 +45,7 @@ namespace Server.Engines.Craft
 
     public class AlterItem
     {
-        public static void BeginTarget(Mobile from, CraftSystem system, BaseTool tool)
+        public static void BeginTarget(Mobile from, CraftSystem system, ITool tool)
         {
             from.Target = new AlterItemTarget(system, tool);
             from.SendLocalizedMessage(1094730); //Target the item to altar
@@ -61,7 +61,7 @@ namespace Server.Engines.Craft
     public class AlterItemTarget : Target
     {
         private readonly CraftSystem m_System;
-        private readonly BaseTool m_Tool;
+        private readonly ITool m_Tool;
         private Item m_Contract;
 
         public AlterItemTarget(CraftSystem system, Item contract)
@@ -71,7 +71,7 @@ namespace Server.Engines.Craft
             m_Contract = contract;
         }
 
-        public AlterItemTarget(CraftSystem system, BaseTool tool)
+        public AlterItemTarget(CraftSystem system, ITool tool)
             : base(1, false, TargetFlags.None)
         {
             this.m_System = system;

@@ -17,7 +17,7 @@ namespace Server.Engines.Craft
         {
         }
 
-        public static void Do(Mobile from, CraftSystem craftSystem, BaseTool tool)
+        public static void Do(Mobile from, CraftSystem craftSystem, ITool tool)
         {
             int num = craftSystem.CanCraft(from, tool, null);
 
@@ -35,8 +35,8 @@ namespace Server.Engines.Craft
         private class InternalTarget : Target
         {
             private readonly CraftSystem m_CraftSystem;
-            private readonly BaseTool m_Tool;
-            public InternalTarget(CraftSystem craftSystem, BaseTool tool)
+            private readonly ITool m_Tool;
+            public InternalTarget(CraftSystem craftSystem, ITool tool)
                 : base(2, false, TargetFlags.None)
             {
                 this.m_CraftSystem = craftSystem;

@@ -185,9 +185,9 @@ namespace Server.Items
                 BaseHouse house = BaseHouse.FindHouseAt(this);
                 CraftAddon addon = Addon as CraftAddon;
 
-                if (house != null && addon != null && house.HasSecureAccess(from, addon.Level) && dropped is BaseTool && !(dropped is BaseRunicTool))
+                if (house != null && addon != null && house.HasSecureAccess(from, addon.Level) && dropped is ITool && !(dropped is BaseRunicTool))
                 {
-                    BaseTool tool = dropped as BaseTool;
+                    var tool = dropped as ITool;
 
                     if (addon != null && tool.CraftSystem == addon.CraftSystem)
                     {

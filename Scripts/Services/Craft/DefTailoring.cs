@@ -103,7 +103,7 @@ namespace Server.Engines.Craft
         {
         }
 
-        public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
+        public override int CanCraft(Mobile from, ITool tool, Type itemType)
         {
             int num = 0;
 
@@ -835,7 +835,7 @@ namespace Server.Engines.Craft
 			this.CanAlter = Core.SA;
         }
 
-        private void CutUpCloth(Mobile m, CraftItem craftItem, BaseTool tool)
+        private void CutUpCloth(Mobile m, CraftItem craftItem, ITool tool)
         {
             PlayCraftEffect(m);
 
@@ -908,7 +908,7 @@ namespace Server.Engines.Craft
                 });
         }
 
-        private void CombineCloth(Mobile m, CraftItem craftItem, BaseTool tool)
+        private void CombineCloth(Mobile m, CraftItem craftItem, ITool tool)
         {
             PlayCraftEffect(m);
 
@@ -984,11 +984,11 @@ namespace Server.Engines.Craft
                 });
         }
 
-        private void DropItem(Mobile from, Item item, BaseTool tool)
+        private void DropItem(Mobile from, Item item, ITool tool)
         {
-            if (tool.Parent is Container)
+            if (tool is Item && ((Item)tool).Parent is Container)
             {
-                Container cntnr = (Container)tool.Parent;
+                Container cntnr = (Container)((Item)tool).Parent;
 
                 if (!cntnr.TryDropItem(from, item, false))
                 {

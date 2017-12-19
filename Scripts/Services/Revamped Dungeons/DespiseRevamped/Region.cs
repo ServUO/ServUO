@@ -164,7 +164,7 @@ namespace Server.Engines.Despise
 
                                 if (!master.Backpack.TryDropItem(master, heart, false))
                                 {
-                                    heart.MoveToWorld(master.Location, heart.Map);
+                                    heart.MoveToWorld(master.Location, master.Map);
                                 }
                             }
                         }

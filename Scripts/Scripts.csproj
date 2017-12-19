@@ -9944,6 +9944,7 @@
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\TemporaryForge.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\VoidPoolRewards.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\WoodsmanTalisman.cs" />
+    <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Level3Spawner.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Region.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\VoidPoolController.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\VoidPoolStats.cs" />

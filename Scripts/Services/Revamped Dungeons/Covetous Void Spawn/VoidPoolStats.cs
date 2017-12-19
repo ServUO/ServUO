@@ -1,82 +1,61 @@
-using System.IO;
-using Server;
-using System;
 using System.Collections.Generic;
 using Server.Mobiles;
 using Server.Items;
 using System.Linq;
+using System;
+using System.IO;
 
 namespace Server.Engines.VoidPool
 {
-	public static class VoidPoolStats
-	{
-		public static string FilePath = Path.Combine("Saves/VoidPoolStats", "VoidPoolStats.bin");
-		
-		public static Dictionary<Mobile, long> BestSingle { get; set; }
-		public static Dictionary<Mobile, long> OverallTotal { get; set; }
-		public static List<Dictionary<Mobile, long>> Top20 { get; set; }
-        public static BestWave BestWave { get; set; }
-		
-		public static void Configure()
-		{
-			EventSink.WorldSave += OnSave;
-			EventSink.WorldLoad += OnLoad;
-		}
-		
-		public static void OnSave(WorldSaveEventArgs e)
-		{
-            Persistence.Serialize(
-                FilePath,
-                writer =>
-                {
-                    writer.Write((int)0);
+    public class VoidPoolStats
+    {
+        public static string FilePath = Path.Combine("Saves/VoidPoolStats", "VoidPoolStats.bin");
 
-                    if (BestWave != null)
-                    {
-                        writer.Write(1);
-                        BestWave.Serialize(writer);
-                    }
-                    else
-                        writer.Write(0);
+        public static List<VoidPoolStats> Stats { get; set; }
 
-                    writer.Write(BestSingle.Count);
-                    foreach (KeyValuePair<Mobile, long> kvp in BestSingle)
-                    {
-                        writer.Write(kvp.Key);
-                        writer.Write(kvp.Value);
-                    }
+        public VoidPoolController Controller { get; set; }
 
-                    writer.Write(OverallTotal.Count);
-                    foreach (KeyValuePair<Mobile, long> kvp in OverallTotal)
-                    {
-                        writer.Write(kvp.Key);
-                        writer.Write(kvp.Value);
-                    }
+        public Dictionary<Mobile, long> BestSingle { get; set; }
+        public Dictionary<Mobile, long> OverallTotal { get; set; }
+        public List<Dictionary<Mobile, long>> Top20 { get; set; }
+        public BestWave BestWave { get; set; }
 
-                    writer.Write(Top20.Count);
-                    foreach(Dictionary<Mobile, long> dic in Top20)
-                    {
-                        writer.Write(dic.Count);
-                        foreach (KeyValuePair<Mobile, long> kvp in dic)
-                        {
-                            writer.Write(kvp.Key);
-                            writer.Write(kvp.Value);
-                        }
-                    };
-                });
-		}
-
-        public static void OnLoad()
+        public VoidPoolStats(VoidPoolController controller)
         {
             BestSingle = new Dictionary<Mobile, long>();
             OverallTotal = new Dictionary<Mobile, long>();
             Top20 = new List<Dictionary<Mobile, long>>();
 
-            Persistence.Deserialize(
-                FilePath,
-                reader =>
-                {
-                    int version = reader.ReadInt();
+            Controller = controller;
+            Stats.Add(this);
+        }
+
+        public static VoidPoolStats GetStats(VoidPoolController controller)
+        {
+            var stats = Stats.FirstOrDefault(s => s.Controller == controller);
+
+            if (stats == null)
+                stats = new VoidPoolStats(controller);
+
+            return stats;
+        }
+
+        public VoidPoolStats(GenericReader reader, bool conversion)
+        {
+            BestSingle = new Dictionary<Mobile, long>();
+            OverallTotal = new Dictionary<Mobile, long>();
+            Top20 = new List<Dictionary<Mobile, long>>();
+
+            int version = conversion ? 0 : reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    Controller = reader.ReadItem() as VoidPoolController;
+                    goto case 0;
+                case 0:
+                    if (version == 0)
+                        Timer.DelayCall(() => Controller = VoidPoolController.InstanceTram);
 
                     if (reader.ReadInt() == 1)
                         BestWave = new BestWave(reader);
@@ -118,93 +97,187 @@ namespace Server.Engines.VoidPool
                         if (dic.Count > 0)
                             Top20.Add(dic);
                     }
+                    break;
+            }
+        }
+
+        public void Serialize(GenericWriter writer)
+        {
+            writer.Write((int)1);
+
+            writer.Write(Controller);
+
+            if (BestWave != null)
+            {
+                writer.Write(1);
+                BestWave.Serialize(writer);
+            }
+            else
+                writer.Write(0);
+
+            writer.Write(BestSingle.Count);
+            foreach (KeyValuePair<Mobile, long> kvp in BestSingle)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value);
+            }
+
+            writer.Write(OverallTotal.Count);
+            foreach (KeyValuePair<Mobile, long> kvp in OverallTotal)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value);
+            }
+
+            writer.Write(Top20.Count);
+            foreach (Dictionary<Mobile, long> dic in Top20)
+            {
+                writer.Write(dic.Count);
+                foreach (KeyValuePair<Mobile, long> kvp in dic)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
+            };
+        }
+
+        public static void Configure()
+        {
+            EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
+        }
+
+        public static void OnSave(WorldSaveEventArgs e)
+        {
+            Persistence.Serialize(
+                FilePath,
+                writer =>
+                {
+                    writer.Write((int)1);
+
+                    writer.Write(Stats.Count);
+                    foreach (var stats in Stats)
+                    {
+                        stats.Serialize(writer);
+                    }
                 });
         }
-		
-		public static bool CheckBestSingle(Dictionary<Mobile, long> score)
-		{
-			foreach(KeyValuePair<Mobile, long> kvp in score)
-			{
-				if(!BestSingle.ContainsKey(kvp.Key) || kvp.Value > BestSingle[kvp.Key])
-				{
-					BestSingle[kvp.Key] = kvp.Value;
-					return true;
-				}
-			}
 
-            return false;
-		}
-		
-		public static void AddToOverallTotal(Dictionary<Mobile, long> score)
-		{
-			foreach(KeyValuePair<Mobile, long> kvp in score)
-			{
-				if(!OverallTotal.ContainsKey(kvp.Key))
-					OverallTotal[kvp.Key] = kvp.Value;
-				else
-					OverallTotal[kvp.Key] += kvp.Value;
-			}
-		}
-		
-		public static bool CheckAddTop20(Dictionary<Mobile, long> score)
-		{
-			long total = GetCollectiveScore(score);
-			
-			List<Dictionary<Mobile, long>> copy = new List<Dictionary<Mobile, long>>(Top20);
-			
-			foreach(Dictionary<Mobile, long> s in copy.OrderBy(dic => -GetCollectiveScore(dic)))
-			{
-				if(total > GetCollectiveScore(s))
-				{
-					Top20.Remove(copy[copy.Count - 1]);
-					Top20.Add(s);
-					return true;
-				}
-			}
-			
-			return false;
-		}
-		
-		public static long GetCollectiveScore(Dictionary<Mobile, long> score)
-		{
-			if(score == null)
-				return 0;
-				
-			long s = 0;
-				
-			foreach(long i in score.Values)
-			{
-				s += i;
-			}
-			
-			return s;
-		}
-
-        public static long GetCollectiveScore(Mobile m)
+        public static void OnLoad()
         {
-            if (OverallTotal.ContainsKey(m))
-                return OverallTotal[m];
+            Stats = new List<VoidPoolStats>();
 
-            return 0;
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    int version = reader.ReadInt();
+
+                    if (version == 0)
+                    {
+                        Stats.Add(new VoidPoolStats(reader, true));
+                    }
+                    else
+                    {
+                        int count = reader.ReadInt();
+                        for (int i = 0; i < count; i++)
+                        {
+                            var stats = new VoidPoolStats(reader, false);
+
+                            if (stats.Controller != null)
+                            {
+                                Stats.Add(stats);
+                            }
+                        }
+                    }
+                });
+
         }
 
-        public static void CheckBestWave(Dictionary<Mobile, long> score, int wave)
+        public static bool CheckBestSingle(VoidPoolController controller)
         {
-            if (BestWave == null || wave > BestWave.Waves)
+            var stats = GetStats(controller);
+
+            foreach (KeyValuePair<Mobile, long> kvp in controller.CurrentScore)
             {
-                BestWave = new BestWave(score, wave);
+                if (!stats.BestSingle.ContainsKey(kvp.Key) || kvp.Value > stats.BestSingle[kvp.Key])
+                {
+                    stats.BestSingle[kvp.Key] = kvp.Value;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static void AddToOverallTotal(VoidPoolController controller)
+        {
+            var stats = GetStats(controller);
+
+            foreach (KeyValuePair<Mobile, long> kvp in controller.CurrentScore)
+            {
+                if (!stats.OverallTotal.ContainsKey(kvp.Key))
+                    stats.OverallTotal[kvp.Key] = kvp.Value;
+                else
+                    stats.OverallTotal[kvp.Key] += kvp.Value;
+            }
+        }
+
+        public static bool CheckAddTop20(VoidPoolController controller)
+        {
+            long total = GetCollectiveScore(controller.CurrentScore);
+            var stats = GetStats(controller);
+
+            List<Dictionary<Mobile, long>> copy = new List<Dictionary<Mobile, long>>(stats.Top20);
+
+            foreach (Dictionary<Mobile, long> s in copy.OrderBy(dic => -GetCollectiveScore(dic)))
+            {
+                if (total > GetCollectiveScore(s))
+                {
+                    stats.Top20.Remove(copy[copy.Count - 1]);
+                    stats.Top20.Add(s);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static long GetCollectiveScore(Dictionary<Mobile, long> score)
+        {
+            if (score == null)
+                return 0;
+
+            long s = 0;
+
+            foreach (long i in score.Values)
+            {
+                s += i;
+            }
+
+            return s;
+        }
+
+        public static void CheckBestWave(VoidPoolController controller)
+        {
+            var stats = GetStats(controller);
+            int wave = controller.Wave;
+
+            if (stats.BestWave == null || wave > stats.BestWave.Waves)
+            {
+                stats.BestWave = new BestWave(controller.CurrentScore, wave);
                 Timer.DelayCall(TimeSpan.FromSeconds(1.5), () => World.Broadcast(2072, false, String.Format("A new Void Pool Invasion record has been made: {0}!", wave.ToString())));
             }
         }
 
-        public static void OnInvasionEnd(Dictionary<Mobile, long> score, int wave)
+        public static void OnInvasionEnd(VoidPoolController controller)
         {
-            CheckAddTop20(score);
-            CheckBestSingle(score);
-            AddToOverallTotal(score);
-            CheckBestWave(score, wave);
+            CheckAddTop20(controller);
+            CheckBestSingle(controller);
+            AddToOverallTotal(controller);
+            CheckBestWave(controller);
         }
-	}
+    }
 
     public class BestWave
     {

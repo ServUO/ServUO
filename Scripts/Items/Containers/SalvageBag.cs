@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Network;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -193,14 +194,7 @@ namespace Server.Items
         #region Salvaging
         private void SalvageIngots(Mobile from)
         {
-            Item[] tools = from.Backpack.FindItemsByType(typeof(BaseTool));
-
-            bool ToolFound = false;
-            foreach (Item tool in tools)
-            {
-                if (tool is BaseTool && ((BaseTool)tool).CraftSystem == DefBlacksmithy.CraftSystem)
-                    ToolFound = true;
-            }
+            bool ToolFound = from.Backpack.Items.FirstOrDefault(i => i is BaseTool && ((ITool)i).CraftSystem == DefBlacksmithy.CraftSystem) != null;
 
             if (!ToolFound)
             {

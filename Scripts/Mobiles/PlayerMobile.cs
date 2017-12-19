@@ -2251,8 +2251,7 @@ namespace Server.Mobiles
                 Region r = Region.Find(Location, Map);
 
                 #region Void Pool
-                if (r is Server.Engines.VoidPool.VoidPoolRegion && ((Server.Engines.VoidPool.VoidPoolRegion)r).Controller != null)
-                    list.Add(new Server.Engines.Points.VoidPoolInfo(this));
+                list.Add(new Server.Engines.Points.VoidPoolInfo(this));
                 #endregion
 
                 #region TOL Shadowguard

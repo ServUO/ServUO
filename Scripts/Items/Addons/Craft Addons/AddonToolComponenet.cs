@@ -171,9 +171,9 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is BaseTool)
+            if (dropped is ITool)
             {
-                BaseTool tool = dropped as BaseTool;
+                var tool = dropped as ITool;
 
                 if (tool.CraftSystem == _CraftSystem)
                 {

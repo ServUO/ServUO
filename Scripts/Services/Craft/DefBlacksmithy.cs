@@ -190,7 +190,7 @@ namespace Server.Engines.Craft
             }
         }
 
-        public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
+        public override int CanCraft(Mobile from, ITool tool, Type itemType)
         {
             int num = 0;
 
@@ -199,7 +199,7 @@ namespace Server.Engines.Craft
                 return 1044038; // You have worn out your tool!
             }
 
-            if (!BaseTool.CheckTool(tool, from))
+            if (tool is Item && !BaseTool.CheckTool((Item)tool, from))
             {
                 return 1048146; // If you have a tool equipped, you must use that tool.
             }
@@ -209,7 +209,7 @@ namespace Server.Engines.Craft
                 return num; // The tool must be on your person to use.
             }
 
-            if (tool is AddonToolComponent && from.InRange(tool.GetWorldLocation(), 2))
+            if (tool is AddonToolComponent && from.InRange(((AddonToolComponent)tool).GetWorldLocation(), 2))
             {
                 return 0;
             }
