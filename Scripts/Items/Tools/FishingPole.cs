@@ -494,8 +494,8 @@ namespace Server.Items
             writer.Write(m_PlayerConstructed);
             writer.Write(m_LowerStatReq);
 
-            writer.Write(m_PlayerConstructed);
-            writer.Write(m_LowerStatReq);
+            writer.Write(m_UsesRemaining);
+            writer.Write(m_ShowUsesRemaining);
 
             writer.Write(m_OriginalHue);
 
