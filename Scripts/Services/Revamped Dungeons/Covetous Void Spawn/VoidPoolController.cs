@@ -91,7 +91,7 @@ namespace Server.Engines.VoidPool
             {
                 if (Wave < 2)
                     return 0;
-                //TODO: Make this like EA?
+
                 return Math.Max(1, Wave / 5); 
             } 
         }
