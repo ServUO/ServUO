@@ -1177,7 +1177,7 @@ namespace Server.Items
 			Mobile from,
 			CraftSystem craftSystem,
 			Type typeRes,
-			BaseTool tool,
+            ITool tool,
 			CraftItem craftItem,
 			int resHue)
 		{

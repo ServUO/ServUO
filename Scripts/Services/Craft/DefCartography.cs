@@ -46,7 +46,7 @@ namespace Server.Engines.Craft
             return 0.0; // 0%
         }
 
-        public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
+        public override int CanCraft(Mobile from, ITool tool, Type itemType)
         {
             int num = 0;
 

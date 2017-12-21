@@ -68,10 +68,12 @@ namespace Server.Engines.VoidPool
             AddButton(140, 110, 4005, 4006, 3, GumpButtonType.Reply, 0);
 			AddHtmlLocalized(180, 110, 200, 16, 1152537, Orange, false, false); 		//Overall Total Scores
 
-            if (VoidPoolStats.BestWave != null)
+            var stats = VoidPoolStats.GetStats(Controller);
+
+            if (stats.BestWave != null)
             {
                 AddButton(140, 130, 4005, 4006, 4, GumpButtonType.Reply, 0);
-                AddHtml(180, 130, 200, 16, String.Format("<basefont color=#A52A2A>Best Wave: {0}", VoidPoolStats.BestWave.Waves.ToString()), false, false);
+                AddHtml(180, 130, 200, 16, String.Format("<basefont color=#A52A2A>Best Wave: {0}", stats.BestWave.Waves.ToString()), false, false);
             }
 			
 			AddHtmlLocalized(10, 150, 400, 16, 1152552, Orange, false, false);			// See Loyalty Menu for Reward Points
@@ -83,6 +85,8 @@ namespace Server.Engines.VoidPool
 		
 		public override void OnResponse(Server.Network.NetState state, RelayInfo info)
 		{
+            var stats = VoidPoolStats.GetStats(Controller);
+
 			switch(info.ButtonID)
 			{
 				default: break;
@@ -96,7 +100,7 @@ namespace Server.Engines.VoidPool
                     User.SendGump(new ScoresGump(Controller, User, ScoreType.OverallTotal));
 					break;
                 case 4:
-                    if(VoidPoolStats.BestWave != null)
+                    if (stats.BestWave != null)
                         User.SendGump(new ScoresGump(Controller, User, ScoreType.BestWave));
                     break;
 			}
@@ -142,16 +146,18 @@ namespace Server.Engines.VoidPool
             AddBackground(0, 0, 500, 620, 9350);
             AddPage(page);
 
-            if (this.ScoreType == ScoreType.BestWave && VoidPoolStats.BestWave == null)
+            var stats = VoidPoolStats.GetStats(Controller);
+
+            if (this.ScoreType == ScoreType.BestWave && stats.BestWave == null)
                 return;
 
             switch (this.ScoreType)
             {
                 default:
                 case ScoreType.Current: Score = Controller.CurrentScore; loc = 1152535; break;
-                case ScoreType.BestSingle: Score = VoidPoolStats.BestSingle; loc = 1152536; break;
-                case ScoreType.OverallTotal: Score = VoidPoolStats.OverallTotal; loc = 1152537; break;
-                case ScoreType.BestWave: Score = VoidPoolStats.BestWave.Score; loc = "Best Wave Scoreboard"; break;
+                case ScoreType.BestSingle: Score = stats.BestSingle; loc = 1152536; break;
+                case ScoreType.OverallTotal: Score = stats.OverallTotal; loc = 1152537; break;
+                case ScoreType.BestWave: Score = stats.BestWave.Score; loc = "Best Wave Scoreboard"; break;
             }
 
             AddHtmlLocalized(10, 10, 200, 16, 1152531, Red, false, false); // The Void Pool
@@ -164,8 +170,8 @@ namespace Server.Engines.VoidPool
 
             if (this.ScoreType == ScoreType.BestWave)
             {
-                AddHtml(200, 30, 200, 16, String.Format("<basefont color=#8B0000>Total Waves: {0}", VoidPoolStats.BestWave.Waves.ToString()), false, false);
-                AddHtml(200, 50, 200, 16, String.Format("<basefont color=#8B0000>Total Score: {0}", VoidPoolStats.BestWave.TotalScore.ToString()), false, false);
+                AddHtml(200, 30, 200, 16, String.Format("<basefont color=#8B0000>Total Waves: {0}", stats.BestWave.Waves.ToString()), false, false);
+                AddHtml(200, 50, 200, 16, String.Format("<basefont color=#8B0000>Total Score: {0}", stats.BestWave.TotalScore.ToString()), false, false);
             }
 
             AddHtmlLocalized(10, 90, 100, 16, 1152541, Orange, false, false); // RANK

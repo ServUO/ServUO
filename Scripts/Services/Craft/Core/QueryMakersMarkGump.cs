@@ -11,8 +11,8 @@ namespace Server.Engines.Craft
         private readonly CraftItem m_CraftItem;
         private readonly CraftSystem m_CraftSystem;
         private readonly Type m_TypeRes;
-        private readonly BaseTool m_Tool;
-        public QueryMakersMarkGump(int quality, Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool)
+        private readonly ITool m_Tool;
+        public QueryMakersMarkGump(int quality, Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, ITool tool)
             : base(100, 200)
         {
             from.CloseGump(typeof(QueryMakersMarkGump));

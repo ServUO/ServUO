@@ -11,9 +11,9 @@ namespace Server.Engines.Craft
         private Mobile m_From;
         private CraftSystem m_CraftSystem;
         private CraftItem m_CraftItem;
-        private BaseTool m_Tool;
+        private ITool m_Tool;
 
-        public MakeNumberCraftPrompt(Mobile from, CraftSystem system, CraftItem item, BaseTool tool)
+        public MakeNumberCraftPrompt(Mobile from, CraftSystem system, CraftItem item, ITool tool)
         {
             m_From = from;
             m_CraftSystem = system;
@@ -62,7 +62,7 @@ namespace Server.Engines.Craft
         private Mobile m_From;
         private CraftSystem m_CraftSystem;
         private CraftItem m_CraftItem;
-        private BaseTool m_Tool;
+        private ITool m_Tool;
         private int m_Amount;
         private int m_Success;
         private int m_Ticks;
@@ -71,7 +71,7 @@ namespace Server.Engines.Craft
         public int Amount { get { return m_Amount; } }
         public int Attempts { get { return m_Success; } }
 
-        public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, BaseTool tool, int amount, TimeSpan delay, TimeSpan interval)
+        public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, ITool tool, int amount, TimeSpan delay, TimeSpan interval)
             : base(delay, interval)
         {
             m_From = from;
@@ -98,7 +98,8 @@ namespace Server.Engines.Craft
             this.Start();
         }
 
-        public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, BaseTool tool, int amount) : this(from,system,item,tool,amount,TimeSpan.FromSeconds(2.5), TimeSpan.FromSeconds(2.5))
+        public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, ITool tool, int amount)
+            : this(from, system, item, tool, amount, TimeSpan.FromSeconds(2.5), TimeSpan.FromSeconds(2.5))
         {
         }
 
