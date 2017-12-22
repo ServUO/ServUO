@@ -1711,7 +1711,7 @@ namespace Server.Multis
             {
                 if (!locked)
                 {
-                    var secure = m_Secures.FirstOrDefault(info => info.Item == i);
+                    var secure = GetSecureInfoFor(i);
 
                     if (secure != null)
                         m_Secures.Remove(secure);
@@ -1746,7 +1746,7 @@ namespace Server.Multis
                 VendorRentalContracts.Remove(i);
                 m_LockDowns.Remove(i);
 
-                var secure = m_Secures.FirstOrDefault(info => info.Item == i);
+                var secure = GetSecureInfoFor(i);
 
                 if (secure != null)
                     m_Secures.Remove(secure);
@@ -2316,6 +2316,16 @@ namespace Server.Multis
                 return SecureLevel.Guild;
 
             return SecureLevel.Anyone;
+        }
+
+        public SecureInfo GetSecureInfoFor(Item item)
+        {
+            return m_Secures.FirstOrDefault(info => info.Item == item);
+        }
+
+        public SecureInfo GetSecureInfoFor(Mobile from, Item item)
+        {
+            return m_Secures.FirstOrDefault(info => info.Item == item && (info.Owner == from || IsOwner(from)));
         }
 
         public void ReleaseSecure(Mobile m, Item item)
@@ -4722,7 +4732,7 @@ namespace Server.Multis
             }
             else
             {
-                sec = house.Secures.FirstOrDefault(i => i.Item == item && (owner || i.Owner == from));
+                sec = house.GetSecureInfoFor(from, item);
             }
 
             return sec;
