@@ -166,6 +166,8 @@ namespace Server.Engines.VoidPool
 
             ClearSpawners();
 			Active = true;
+            
+            Level3Spawner = new Level3Spawner(this);
 		}
 
         public override void OnDoubleClick(Mobile from)
