@@ -94,7 +94,7 @@ namespace Server.Items
 
                     if (!(item is BaseContainer))
                     {
-                        var myInfo = house.Secures.FirstOrDefault(i => i.Item == this && (owner || i.Owner == from));
+                        var myInfo = house.GetSecureInfoFor(from, item);
 
                         if (myInfo != null)
                         {

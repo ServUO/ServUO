@@ -21,8 +21,6 @@ namespace Server.Items
 
     public interface IFlipable
     {
-        int WestID { get; }
-        int NorthID { get; }
         void OnFlip();
     }
 

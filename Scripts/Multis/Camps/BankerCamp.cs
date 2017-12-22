@@ -10,6 +10,7 @@ namespace Server.Multis
         public BankerCamp()
             : base(0x1F6)
         {
+            Visible = true;
         }
 
         public BankerCamp(Serial serial)
