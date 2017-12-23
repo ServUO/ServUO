@@ -94,7 +94,7 @@ namespace Server.Items
 
                     if (!(item is BaseContainer))
                     {
-                        var myInfo = house.GetSecureInfoFor(from, item);
+                        var myInfo = house.GetSecureInfoFor(from, this);
 
                         if (myInfo != null)
                         {

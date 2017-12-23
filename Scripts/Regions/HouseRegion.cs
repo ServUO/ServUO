@@ -321,7 +321,7 @@ namespace Server.Regions
             }
             else if (e.HasKeyword(0x25)) // I wish to secure this
             {
-                if (isOwner)
+                if (isCoOwner)
                 {
                     from.SendLocalizedMessage(502103); // Choose the item you wish to secure
                     from.Target = new SecureTarget(false, m_House);

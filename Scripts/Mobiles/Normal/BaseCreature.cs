@@ -7209,7 +7209,7 @@ namespace Server.Mobiles
             IPooledEnumerable eable = GetMobilesInRange(RangePerception);
             foreach (Mobile trg in eable)
             {
-                if (trg != this && trg.Player && trg.Alive && trg.Hidden && trg.IsPlayer() && InLOS(trg))
+                if (trg != this && trg.Player && trg.Alive && trg.Hidden && trg.IsPlayer() && InLOS(trg) && SpellHelper.ValidIndirectTarget(this, trg))
                 {
                     DebugSay("Trying to detect {0}", trg.Name);
 
