@@ -44,7 +44,7 @@ namespace Server.Spells.Mysticism
 
                 SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 0, 100, 0);
 
-                target.FixedParticles(0x36CB, 1, 9, 9911, 1455, 5, EffectLayer.Head);
+                Caster.MovingParticles(target, 0x36D4, 7, 0, false, true, 0x49A, 0, 0, 9502, 4019, 0x160);
                 target.PlaySound(0x211);
 			}
 

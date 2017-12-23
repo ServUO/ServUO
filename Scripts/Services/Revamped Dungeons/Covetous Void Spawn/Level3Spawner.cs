@@ -10,6 +10,7 @@ namespace Server.Engines.VoidPool
 	{
         public VoidPoolController Controller { get; set; }
         public List<SpawnEntry> Spawns { get; set; }
+        public bool Active { get; set; }
 
         #region ISpawner Stuff
         public bool UnlinkOnTaming { get { return true; } }
@@ -26,6 +27,8 @@ namespace Server.Engines.VoidPool
 		{
             Controller = controller;
             LoadSpawns();
+
+            Active = true;
 
             StartSpawn();
 		}
@@ -98,6 +101,9 @@ namespace Server.Engines.VoidPool
 
         public void Reset(SpawnEntry entry)
         {
+            if (!Active)
+                return;
+
             var type = entry.SpawnType;
 
             do
@@ -113,7 +119,7 @@ namespace Server.Engines.VoidPool
         {
             foreach (var entry in Spawns)
             {
-                entry.SpawnType = (VoidType)Utility.RandomMinMax(0, 4); Reset(entry);
+                entry.SpawnType = (VoidType)Utility.RandomMinMax(0, 4); 
                 entry.DoSpawn();
             }
         }
@@ -123,23 +129,54 @@ namespace Server.Engines.VoidPool
             return Spawns.FirstOrDefault(sp => sp.Spawn.Contains(bc));
         }
 
+        public void Deactivate()
+        {
+            Active = false;
+
+            foreach (var entry in Spawns)
+            {
+                var list = new List<BaseCreature>();
+
+                foreach (var bc in entry.Spawn)
+                {
+                    list.Add(bc);
+                }
+
+                foreach (var creature in list)
+                    creature.Delete();
+
+                ColUtility.Free(list);
+            }
+        }
+
         public Level3Spawner(GenericReader reader, VoidPoolController controller)
         {
             Controller = controller;
             LoadSpawns();
 
             int version = reader.ReadInt();
-            int count = reader.ReadInt();
 
-            for (int i = 0; i < count; i++)
+            switch (version)
             {
-                Spawns[i].Deserialize(reader);
+                case 1:
+                    Active = reader.ReadBool();
+                    goto case 0;
+                case 0:
+                    int count = reader.ReadInt();
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        Spawns[i].Deserialize(reader);
+                    }
+                    break;
             }
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(Active);
 
             writer.Write(Spawns.Count);
             for (int i = 0; i < Spawns.Count; i++)
@@ -170,7 +207,7 @@ namespace Server.Engines.VoidPool
 
             public void DoSpawn()
             {
-                if (Spawner == null || Spawner.Controller == null)
+                if (Spawner == null || Spawner.Controller == null || !Spawner.Active)
                     return;
 
                 Map map = Spawner.Controller.Map;
