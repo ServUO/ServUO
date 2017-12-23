@@ -1248,45 +1248,56 @@ namespace Server.Multis
                     return false;
             }
 
-            if (!IsLockedDown(item))
+            // staff or not locked down
+            if (from.AccessLevel >= AccessLevel.GameMaster || !IsLockedDown(item))
                 return true;
-            else if (from.AccessLevel >= AccessLevel.GameMaster)
-                return true;
-            else if (item is Runebook)
-                return true;
-            else if (item is ISecurable)
+
+            // ISecureable will set its own rules
+            if (item is ISecurable)
                 return HasSecureAccess(from, ((ISecurable)item).Level);
-            else if (item is Container)
-                return IsCoOwner(from);
-            else if (item.Stackable)
+
+            if (item.Stackable)
                 return true;
-            else if (item is BaseLight)
-                return IsFriend(from);
-            else if (item is PotionKeg)
-                return IsFriend(from);
-            else if (item is BaseBoard)
-                return true;
-            else if (item is Dices)
-                return true;
-            else if (item is RecallRune)
-                return true;
-            else if (item is TreasureMap)
-                return true;
-            else if (item is Clock)
-                return true;
-            else if (item is BaseInstrument)
-                return true;
-            else if (item is Dyes || item is DyeTub)
-                return true;
-            else if (item is VendorRentalContract)
-                return true;
-            else if (item is RewardBrazier)
-                return true;
-            else if (item is TenthAnniversarySculpture)
-                return true;
+
+            // locked down
+            if (m_LockDowns.ContainsKey(item))
+            {
+                // non friend, but item is on friends only list
+                if (!IsFriend(from) && IsInList(item, _AccessibleToFriends))
+                    return false;
+
+                // anyone can use list, house must be public or player must have access to house
+                if (IsInList(item, _AccessibleToAll) && (m_Public || m_Access.Contains(from)))
+                    return true;
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsInList(Item item, Type[] list)
+        {
+            foreach (var t in list)
+            {
+                if (t == item.GetType() || item.GetType().IsSubclassOf(t))
+                    return true;
+            }
 
             return false;
         }
+
+        private Type[] _AccessibleToAll =
+        {
+            typeof(TenthAnniversarySculpture), typeof(RewardBrazier), typeof(VendorRentalContract), typeof(Dyes), typeof(DyeTub),
+            typeof(BaseInstrument), typeof(Clock), typeof(TreasureMap), typeof(RecallRune), typeof(Dices), typeof(BaseBoard), 
+            typeof(Runebook)
+        };
+
+        private Type[] _AccessibleToFriends =
+        {
+            typeof(PotionKeg), typeof(BaseLight)
+        };
 
         public virtual bool IsInside(Point3D p, int height)
         {
@@ -2133,14 +2144,14 @@ namespace Server.Multis
 
         public void Release(Mobile m, Item item)
         {
-            if (!IsCoOwner(m) || !IsActive)
+            if (!IsFriend(m) || !IsActive)
                 return;
 
             if (IsLockedDown(item))
             {
                 if (!CheckLockdownOwnership(m, item))
                 {
-                    m.SendLocalizedMessage(1010418); // You did not lock this down, and you are not able to release 
+                    m.LocalOverheadMessage(MessageType.Regular, 0x3E9, 1010418); // You did not lock this down, and you are not able to release this.
                 }
                 else if (CanRelease(m, item))
                 {
@@ -2328,16 +2339,21 @@ namespace Server.Multis
             return m_Secures.FirstOrDefault(info => info.Item == item && (info.Owner == from || IsOwner(from)));
         }
 
+        public List<SecureInfo> GetSecureInfosFor(Mobile from)
+        {
+            return m_Secures.Where(s => s.Owner == from).ToList();
+        }
+
         public void ReleaseSecure(Mobile m, Item item)
         {
-            if (m_Secures == null || !IsOwner(m) || item is StrongBox || !IsActive || !CanRelease(m, item))
+            if (m_Secures == null || !IsCoOwner(m) || item is StrongBox || !IsActive || !CanRelease(m, item))
                 return;
 
-            for (int i = 0; i < m_Secures.Count; ++i)
-            {
-                SecureInfo info = (SecureInfo)m_Secures[i];
+            var info = GetSecureInfoFor(item);
 
-                if (info.Item == item && HasSecureAccess(m, info.Level))
+            if (info != null)
+            {
+                if ((IsOwner(m) || info.Owner == m) && HasSecureAccess(m, info.Level))
                 {
                     item.IsLockedDown = false;
                     item.IsSecure = false;
@@ -2351,12 +2367,17 @@ namespace Server.Multis
 
                     item.SetLastMoved();
                     item.PublicOverheadMessage(Server.Network.MessageType.Label, 0x3B2, 501656);//[no longer secure]
-                    m_Secures.RemoveAt(i);
-                    return;
+                    m_Secures.Remove(info);
                 }
+                else
+                {
+                    m.LocalOverheadMessage(MessageType.Regular, 0x3E9, 1010418); // You did not lock this down, and you are not able to release this.
+                }
+
+                return;
             }
 
-            m.SendLocalizedMessage(501717);//This isn't secure...
+            m.SendLocalizedMessage(501717); //This isn't secure...
         }
 
         private bool CanRelease(Mobile from, Item item)
@@ -2649,6 +2670,11 @@ namespace Server.Multis
 
         public void RemoveCoOwner(Mobile from, Mobile targ)
         {
+            RemoveCoOwner(from, targ, true);
+        }
+
+        public void RemoveCoOwner(Mobile from, Mobile targ, bool fromMessage)
+        {
             if (!IsOwner(from) || m_CoOwners == null)
                 return;
 
@@ -2658,20 +2684,28 @@ namespace Server.Multis
 
                 targ.Delta(MobileDelta.Noto);
 
-                from.SendLocalizedMessage(501299); // Co-owner removed from list.
+                if(fromMessage)
+                    from.SendLocalizedMessage(501299); // Co-owner removed from list.
+
                 targ.SendLocalizedMessage(501300); // You have been removed as a house co-owner.
 
-                foreach (SecureInfo info in m_Secures)
-                {
-                    StrongBox c = info.Item as StrongBox;
+                var infos = GetSecureInfosFor(targ);
 
-                    if (c != null  && c.Owner == targ)
+                foreach (var info in infos)
+                {
+                    if (info.Item is StrongBox)
                     {
+                        StrongBox c = info.Item as StrongBox;
+
                         c.IsLockedDown = false;
                         c.IsSecure = false;
-                        m_Secures.Remove(info);
                         c.Destroy();
-                        break;
+
+                        m_Secures.Remove(info);
+                    }
+                    else
+                    {
+                        info.Owner = from;
                     }
                 }
             }
@@ -2717,6 +2751,11 @@ namespace Server.Multis
 
         public void RemoveFriend(Mobile from, Mobile targ)
         {
+            RemoveFriend(from, targ, true);
+        }
+
+        public void RemoveFriend(Mobile from, Mobile targ, bool fromMessage)
+        {
             if (!IsCoOwner(from) || m_Friends == null)
                 return;
 
@@ -2726,8 +2765,17 @@ namespace Server.Multis
 
                 targ.Delta(MobileDelta.Noto);
 
-                from.SendLocalizedMessage(501298); // Friend removed from list.
+                if(fromMessage)
+                    from.SendLocalizedMessage(501298); // Friend removed from list.
+
                 targ.SendLocalizedMessage(1060751); // You are no longer a friend of this house.
+
+                var infos = GetSecureInfosFor(targ);
+
+                foreach (var info in infos)
+                {
+                    info.Owner = from;
+                }
             }
         }
 

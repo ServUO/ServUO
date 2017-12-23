@@ -5,9 +5,11 @@ namespace Server.Mobiles
     [CorpseName("a skree corpse")]
     public class Skree : BaseCreature
     {
+        public override bool CanAngerOnTame { get { return true; } }
+
         [Constructable]
         public Skree()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mystic, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a skree";
             Body = 733;
@@ -34,6 +36,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 75.1, 90.0);
             SetSkill(SkillName.Tactics, 20.2, 24.7);
             SetSkill(SkillName.Wrestling, 20.2, 34.8);
+            SetSkill(SkillName.Mysticism, 20.1, 35.0);
 
             Tamable = true;
             ControlSlots = 4;

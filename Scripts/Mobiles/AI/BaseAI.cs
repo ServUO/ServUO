@@ -2978,52 +2978,6 @@ namespace Server.Mobiles
 			return false;
 		}
 
-		public virtual void DetectHidden()
-		{
-			if (m_Mobile.Deleted || m_Mobile.Map == null)
-			{
-				return;
-			}
-
-			m_Mobile.DebugSay("Checking for hidden players");
-
-			double srcSkill = m_Mobile.Skills[SkillName.DetectHidden].Value;
-
-			if (srcSkill <= 0)
-			{
-				return;
-			}
-
-			IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
-			foreach (Mobile trg in eable)
-			{
-                if (trg != m_Mobile && trg.Player && trg.Alive && trg.Hidden && trg.IsPlayer() && m_Mobile.InLOS(trg) && SpellHelper.ValidIndirectTarget(m_Mobile, trg))
-				{
-					m_Mobile.DebugSay("Trying to detect {0}", trg.Name);
-
-					double trgHiding = trg.Skills[SkillName.Hiding].Value / 2.9;
-					double trgStealth = trg.Skills[SkillName.Stealth].Value / 1.8;
-
-					double chance = srcSkill / 1.2 - Math.Min(trgHiding, trgStealth);
-
-					if (chance < srcSkill / 10)
-					{
-						chance = srcSkill / 10;
-					}
-
-					chance /= 100;
-                    double shadow = Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(trg);
-
-					if (chance > Utility.RandomDouble())
-					{
-						trg.RevealingAction();
-						trg.SendLocalizedMessage(500814); // You have been revealed!
-					}
-				}
-			}
-			eable.Free();
-		}
-
 		public virtual void Deactivate()
 		{
 			if (m_Mobile.PlayerRangeSensitive)

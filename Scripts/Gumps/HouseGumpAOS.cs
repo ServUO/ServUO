@@ -621,7 +621,16 @@ namespace Server.Gumps
             if (okay && house.IsOwner(from))
             {
                 if (house.CoOwners != null)
-                    house.CoOwners.Clear();
+                {
+                    List<Mobile> list = new List<Mobile>(house.CoOwners);
+
+                    foreach (var m in list)
+                    {
+                        house.RemoveCoOwner(from, m, false);
+                    }
+
+                    ColUtility.Free(list);
+                }
 
                 from.SendLocalizedMessage(501333); // All co-owners have been removed from this house.
             }
@@ -639,7 +648,16 @@ namespace Server.Gumps
             if (okay && house.IsCoOwner(from))
             {
                 if (house.Friends != null)
-                    house.Friends.Clear();
+                {
+                    List<Mobile> list = new List<Mobile>(house.Friends);
+
+                    foreach (var m in list)
+                    {
+                        house.RemoveFriend(from, m, false);
+                    }
+
+                    ColUtility.Free(list);
+                }
 
                 from.SendLocalizedMessage(501332); // All friends have been removed from this house.
             }
