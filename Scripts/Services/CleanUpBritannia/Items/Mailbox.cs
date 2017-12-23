@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Server.Multis;
 using Server.ContextMenus;
@@ -109,9 +109,12 @@ namespace Server.Items
             return true;
         }
 
-        public override bool IsAccessibleTo(Mobile check)
+        public override bool IsAccessibleTo(Mobile m)
         {
-            return true;
+            if (!BaseHouse.CheckAccessible(m, this))
+                return false;
+
+            return base.IsAccessibleTo(m);
         }
 
         public override void SendFullItemsMessage(Mobile to, Item item) // That mailbox is completely full.
@@ -177,8 +180,7 @@ namespace Server.Items
         public override void Open(Mobile from)
         {
             Defrag();
-
-            base.Open(from);
+            DisplayTo(from);
         }
 
         private void Defrag()
