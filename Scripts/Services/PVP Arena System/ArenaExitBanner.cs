@@ -10,6 +10,7 @@ namespace Server.Engines.ArenaSystem
     {
         public override bool ForceShowProperties { get { return true; } }
         public override int LabelNumber { get { return 1116111; } } // Arena Exit Banner
+        public override bool HandlesOnMovement { get { return true; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PVPArena Arena { get; set; }
@@ -21,6 +22,20 @@ namespace Server.Engines.ArenaSystem
             Arena = arena;
             Movable = false;
             Weight = 0;
+        }
+
+        public override void OnMovement(Mobile m, Point3D oldLocation)
+        {
+            if (m is PlayerMobile && Arena != null && !m.Alive && m.InRange(Location, 2) && !m.HasGump(typeof(ResurrectGump)))
+            {
+                m.SendGump(new ResurrectGump(m, null, ResurrectMessage.Generic, false, 0.0, mob =>
+                    {
+                        Arena.RemovePlayer((PlayerMobile)mob);
+
+                        if (mob.Corpse != null)
+                            mob.Corpse.MoveToWorld(mob.Location, mob.Map);
+                    }));
+            }
         }
 
         public override void OnDoubleClick(Mobile from)
