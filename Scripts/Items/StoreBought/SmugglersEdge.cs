@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Mobiles;
 using Server.Engines.CreatureStealing;
@@ -25,6 +25,11 @@ namespace Server.Items
             if (!Siege.SiegeShard)
                 LootType = LootType.Blessed;
         }
+
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+        public override int AosMinDamage { get { return 9; } }
+        public override int AosMaxDamage { get { return 11; } }
 
         public SmugglersEdge(Serial serial)
             : base(serial)
@@ -70,7 +75,7 @@ namespace Server.Items
         }
     }
 
-    public class GargishSmugglersEdge : GargishDagger
+    public class GargishSmugglersEdge : GargishButcherKnife
     {
         public override int LabelNumber { get { return 1071499; } } // Smuggler's Edge
         public override bool CanFortify { get { return false; } }
@@ -88,6 +93,11 @@ namespace Server.Items
             if (!Siege.SiegeShard)
                 LootType = LootType.Blessed;
         }
+
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+        public override int AosMinDamage { get { return 9; } }
+        public override int AosMaxDamage { get { return 11; } }
 
         public GargishSmugglersEdge(Serial serial)
             : base(serial)
