@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Mobiles;
 using Server.Engines.CreatureStealing;
@@ -25,6 +25,9 @@ namespace Server.Items
             if (!Siege.SiegeShard)
                 LootType = LootType.Blessed;
         }
+
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public SmugglersEdge(Serial serial)
             : base(serial)
@@ -88,6 +91,9 @@ namespace Server.Items
             if (!Siege.SiegeShard)
                 LootType = LootType.Blessed;
         }
+
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public GargishSmugglersEdge(Serial serial)
             : base(serial)
