@@ -379,6 +379,9 @@ namespace Server.Items
                 else if (m_DestroyedID >= 0)
                 {
                     ItemID = m_DestroyedID;
+
+                    if (Spawner != null)
+                        Spawner.Remove(this);
                 }
 
                 Destroyed = true;

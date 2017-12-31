@@ -20,11 +20,6 @@ namespace Server.Engines.VoidPool
 
 	public class VoidPoolGump : Gump
 	{
-        public static void Initialize()
-        {
-            CommandSystem.Register("VoidPool", AccessLevel.Player, SendGump_OnCommand);
-        }
-
         public static readonly int Red = 0x4800;
         public static readonly int Orange = 0xB104;
 	
@@ -105,18 +100,6 @@ namespace Server.Engines.VoidPool
                     break;
 			}
 		}
-
-        [Usage("VoidPool")]
-        [Description("Sends Void Pool Gump to player.")]
-        public static void SendGump_OnCommand(CommandEventArgs e)
-        {
-            Mobile from = e.Mobile;
-
-            if (VoidPoolController.InstanceTram != null || VoidPoolController.InstanceFel != null)
-            {
-                e.Mobile.SendGump(new VoidPoolGump(from.Map == Map.Trammel ? VoidPoolController.InstanceTram : VoidPoolController.InstanceFel, from as PlayerMobile));
-            }
-        }
 	}
 
     public class ScoresGump : Gump

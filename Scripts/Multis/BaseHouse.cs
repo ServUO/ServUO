@@ -1252,7 +1252,7 @@ namespace Server.Multis
             if (from.AccessLevel >= AccessLevel.GameMaster || !IsLockedDown(item))
                 return true;
 
-            // ISecureable will set its own rules
+            // ISecurable will set its own rules
             if (item is ISecurable)
                 return HasSecureAccess(from, ((ISecurable)item).Level);
 

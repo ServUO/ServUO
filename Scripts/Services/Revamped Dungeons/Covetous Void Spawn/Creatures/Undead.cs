@@ -159,14 +159,16 @@ namespace Server.Mobiles
 			Body = 400;
             Hue = 0x847E;
 
-            var shroud = new Server.Items.HoodedShroudOfShadows();
+            var shroud = new Server.Items.Robe();
+            shroud.ItemID = 0x2683;
+            shroud.Hue = 0x455;
             shroud.Movable = false;
-            AddItem(shroud);
+            SetWearable(shroud);
 
             var boots = new Server.Items.Boots();
             boots.Hue = 1;
             boots.Movable = false;
-            AddItem(boots);
+            SetWearable(boots);
 		}
 		
 		[Constructable]

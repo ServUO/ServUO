@@ -1696,6 +1696,9 @@ namespace Server.Items
 					chance = 0;
 				}
 
+                // Skill Masteries
+                chance += HeightenedSensesSpell.GetParryBonus(defender);
+
 				// Parry/Bushido over 100 grants a 5% bonus.
 				if (parry >= 100.0 || bushido >= 100.0)
 				{
@@ -1810,8 +1813,8 @@ namespace Server.Items
 
 						double bushido = defender.Skills.Bushido.Value;
 
-						defender.Hits += Utility.RandomMinMax(1, (int)(bushido / 12));
-						defender.Stam += Utility.RandomMinMax(1, (int)(bushido / 5));
+                        defender.Hits += Utility.RandomMinMax(1, (int)(bushido / 12)) + MasteryInfo.AnticipateHitBonus(defender) / 10;
+                        defender.Stam += Utility.RandomMinMax(1, (int)(bushido / 5)) + MasteryInfo.AnticipateHitBonus(defender) / 10;
 					}
 
 					BaseShield shield = defender.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
@@ -2546,7 +2549,6 @@ namespace Server.Items
                 damage += (int)((double)damage * ((double)MasteryInfo.GetKnockoutModifier(attacker, defender is PlayerMobile) / 100.0));
 
             SkillMasterySpell.OnHit(attacker, defender, ref damage);
-            BodyGuardSpell.CheckBodyGuard(attacker, defender, ref damage, phys, fire, cold, pois, nrgy);
 
             // Bane
             if (m_ExtendedWeaponAttributes.Bane > 0 && defender.Hits < defender.HitsMax / 2)
