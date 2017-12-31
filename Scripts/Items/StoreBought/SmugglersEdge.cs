@@ -75,7 +75,7 @@ namespace Server.Items
         }
     }
 
-    public class GargishSmugglersEdge : GargishDagger
+    public class GargishSmugglersEdge : GargishButcherKnife
     {
         public override int LabelNumber { get { return 1071499; } } // Smuggler's Edge
         public override bool CanFortify { get { return false; } }
