@@ -1886,6 +1886,7 @@ namespace Server.Items
             Layer.Pants,
             Layer.Shirt,
             Layer.Helm,
+            Layer.Arms,
             Layer.Gloves,
             Layer.Ring,
             Layer.Talisman,
