@@ -6,11 +6,49 @@ using System.Linq;
 
 namespace Server.Engines.VoidPool
 {
+    [PropertyObject]
 	public class Level3Spawner : ISpawner
 	{
+        private bool _Active;
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public VoidPoolController Controller { get; set; }
+
         public List<SpawnEntry> Spawns { get; set; }
-        public bool Active { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int EntryCount { get { return Spawns == null ? 0 : Spawns.Count; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Active
+        {
+            get { return _Active; }
+            set
+            {
+                bool active = _Active;
+
+                if (value != active)
+                {
+                    _Active = value;
+
+                    if (!_Active)
+                    {
+                        Deactivate();
+                    }
+                    else
+                    {
+                        if (Spawns != null)
+                        {
+                            Spawns = null;
+                            Deactivate(false);
+                        }
+
+                        LoadSpawns();
+                        StartSpawn();
+                    }
+                }
+            }
+        }
 
         #region ISpawner Stuff
         public bool UnlinkOnTaming { get { return true; } }
@@ -26,15 +64,23 @@ namespace Server.Engines.VoidPool
         public Level3Spawner(VoidPoolController controller)
 		{
             Controller = controller;
-            LoadSpawns();
 
-            Active = true;
-
-            StartSpawn();
+            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                {
+                    Active = true;
+                });
 		}
+
+        public override string ToString()
+        {
+            return "...";
+        }
 
         public void LoadSpawns()
         {
+            if (Spawns != null)
+                Spawns.Clear();
+
             Spawns = new List<SpawnEntry>();
             Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5564, 1888, 26, 31) }));
             Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5554, 1888, 8, 28) }));
@@ -129,9 +175,12 @@ namespace Server.Engines.VoidPool
             return Spawns.FirstOrDefault(sp => sp.Spawn.Contains(bc));
         }
 
-        public void Deactivate()
+        public void Deactivate(bool deactivate = true)
         {
-            Active = false;
+            if (deactivate)
+            {
+                Active = false;
+            }
 
             foreach (var entry in Spawns)
             {
@@ -158,8 +207,12 @@ namespace Server.Engines.VoidPool
 
             switch (version)
             {
+                case 2:
                 case 1:
-                    Active = reader.ReadBool();
+                    if (version == 1)
+                        Active = controller.Active;
+
+                    _Active = reader.ReadBool();
                     goto case 0;
                 case 0:
                     int count = reader.ReadInt();
@@ -174,9 +227,9 @@ namespace Server.Engines.VoidPool
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(1);
+            writer.Write(2);
 
-            writer.Write(Active);
+            writer.Write(_Active);
 
             writer.Write(Spawns.Count);
             for (int i = 0; i < Spawns.Count; i++)
@@ -208,7 +261,9 @@ namespace Server.Engines.VoidPool
             public void DoSpawn()
             {
                 if (Spawner == null || Spawner.Controller == null || !Spawner.Active)
+                {
                     return;
+                }
 
                 Map map = Spawner.Controller.Map;
                 Type[] types = VoidPoolController.SpawnTable[(int)SpawnType];

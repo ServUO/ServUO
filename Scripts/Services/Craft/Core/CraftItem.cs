@@ -413,6 +413,15 @@ namespace Server.Engines.Craft
             #endregion
 		};
 
+        private static readonly Type[] m_ClothColoredItemTable = new[]
+        {
+            typeof( GozaMatSouthDeed ), typeof( GozaMatEastDeed ),
+			typeof( SquareGozaMatSouthDeed ), typeof( SquareGozaMatEastDeed ),
+			typeof( BrocadeGozaMatSouthDeed ), typeof( BrocadeGozaMatEastDeed ),
+			typeof( BrocadeSquareGozaMatSouthDeed ), typeof( BrocadeSquareGozaMatEastDeed ),
+            typeof( Tessen )
+        };
+
 		private static readonly Type[] m_ColoredResourceTable = new[]
 		{
 			#region Mondain's Legacy
@@ -515,6 +524,19 @@ namespace Server.Engines.Craft
 
 			return (inItemTable && inResourceTable);
 		}
+
+        public bool RetainsColorFromCloth(Item item)
+        {
+            Type t = item.GetType();
+
+            foreach (var type in m_ClothColoredItemTable)
+            {
+                if (type == t)
+                    return true;
+            }
+
+            return false;
+        }
 
 		public bool Find(Mobile from, int[] itemIDs)
 		{
@@ -1147,6 +1169,7 @@ namespace Server.Engines.Craft
 		}
 
 		private int m_ResHue;
+        private int m_ClothHue;
 		private int m_ResAmount;
 		private CraftSystem m_System;
 
@@ -1172,6 +1195,11 @@ namespace Server.Engines.Craft
 			{
 				return;
 			}
+
+            if (item is Cloth || item is UncutCloth || item is AbyssalCloth)
+            {
+                m_ClothHue = item.Hue;
+            }
 
             if (amount >= m_ResAmount)
 			{
@@ -1695,6 +1723,11 @@ namespace Server.Engines.Craft
 					{
 						item.Hue = resHue;
 					}
+
+                    if (item.Hue == 0 && RetainsColorFromCloth(item) && m_ClothHue != 0)
+                    {
+                        item.Hue = m_ClothHue;
+                    }
 
 					if (maxAmount > 0)
 					{

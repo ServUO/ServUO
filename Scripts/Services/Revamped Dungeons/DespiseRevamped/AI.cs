@@ -126,6 +126,59 @@ namespace Server.Engines.Despise
             return true;
         }
 
+        public override bool DoOrderGuard()
+        {
+            if (m_Creature.Orb == null || !m_Creature.Controlled)
+                return base.DoOrderGuard();
+
+            switch (m_Creature.Orb.Aggression)
+            {
+                case Aggression.Following:
+                    return base.DoOrderGuard();
+                case Aggression.Defensive:
+                    {
+                        int length = m_Creature.GetLeashLength();
+                        IPoint3D p = m_Creature.Orb.Anchor as IPoint3D;
+
+                        if (p == null)
+                            p = m_Creature;
+
+                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant as Mobile : m_Creature.ControlMaster != null ? m_Creature.ControlMaster.Combatant as Mobile : null;
+
+                        if (combatant != null && combatant.GetDistanceToSqrt(p) <= length)
+                        {
+                            if (m_Creature.Debug)
+                                m_Creature.DebugSay("I have detected {0} as an aggressor, attacking", m_Creature.FocusMob.Name);
+
+                            m_Creature.Combatant = combatant;
+                            m_Creature.ControlTarget = combatant;
+                            m_Creature.ControlOrder = OrderType.Attack;
+                            Action = ActionType.Combat;
+                        }
+                        else
+                            return base.DoOrderNone();
+                    }
+                    break;
+                case Aggression.Aggressive:
+                    {
+                        if (AcquireFocusMob(m_Creature.GetLeashLength(), m_Creature.FightMode, false, false, true))
+                        {
+                            if (m_Creature.Debug)
+                                m_Creature.DebugSay("I have detected {0}, attacking", m_Creature.FocusMob.Name);
+
+                            m_Creature.Combatant = m_Creature.FocusMob;
+                            m_Creature.ControlTarget = m_Creature.FocusMob;
+                            m_Creature.ControlOrder = OrderType.Attack;
+                            Action = ActionType.Combat;
+                        }
+                        else
+                            return base.DoOrderNone();
+                    }
+                    break;
+            }
+            return true;
+        }
+
         public override bool DoOrderNone()
         {
             if (m_Creature.Orb == null || !m_Creature.Controlled)
@@ -442,6 +495,59 @@ namespace Server.Engines.Despise
             if (!fighting)
                 return base.DoOrderFollow();
 
+            return true;
+        }
+
+        public override bool DoOrderGuard()
+        {
+            if (m_Creature.Orb == null || !m_Creature.Controlled)
+                return base.DoOrderGuard();
+
+            switch (m_Creature.Orb.Aggression)
+            {
+                case Aggression.Following:
+                    return base.DoOrderGuard();
+                case Aggression.Defensive:
+                    {
+                        int length = m_Creature.GetLeashLength();
+                        IPoint3D p = m_Creature.Orb.Anchor as IPoint3D;
+
+                        if (p == null)
+                            p = m_Creature;
+
+                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant as Mobile : m_Creature.ControlMaster != null ? m_Creature.ControlMaster.Combatant as Mobile : null;
+
+                        if (combatant != null && combatant.GetDistanceToSqrt(p) <= length)
+                        {
+                            if (m_Creature.Debug)
+                                m_Creature.DebugSay("I have detected {0} as an aggressor, attacking", m_Creature.FocusMob.Name);
+
+                            m_Creature.Combatant = combatant;
+                            m_Creature.ControlTarget = combatant;
+                            m_Creature.ControlOrder = OrderType.Attack;
+                            Action = ActionType.Combat;
+                        }
+                        else
+                            return base.DoOrderNone();
+                    }
+                    break;
+                case Aggression.Aggressive:
+                    {
+                        if (AcquireFocusMob(m_Creature.GetLeashLength(), m_Creature.FightMode, false, false, true))
+                        {
+                            if (m_Creature.Debug)
+                                m_Creature.DebugSay("I have detected {0}, attacking", m_Creature.FocusMob.Name);
+
+                            m_Creature.Combatant = m_Creature.FocusMob;
+                            m_Creature.ControlTarget = m_Creature.FocusMob;
+                            m_Creature.ControlOrder = OrderType.Attack;
+                            Action = ActionType.Combat;
+                        }
+                        else
+                            return base.DoOrderNone();
+                    }
+                    break;
+            }
             return true;
         }
 

@@ -86,20 +86,17 @@ namespace Server.Items
                 return false;
             }
 
-            DropItem(dropped);
-
-            if (house != null)
+            if (house != null && IsLockedDown)
             {
-                if (IsLockedDown)
+                if (!house.CheckAccessibility(this, from))
                 {
-                    if (!house.CheckAccessibility(this, from))
-                    {
-                        this.PrivateOverheadMessage(MessageType.Regular, 0x21, 1061637, from.NetState); // You are not allowed to access this!
-                        from.SendLocalizedMessage(501727); // You cannot lock that down!
-                        return false;
-                    }
+                    this.PrivateOverheadMessage(MessageType.Regular, 0x21, 1061637, from.NetState); // You are not allowed to access this!
+                    from.SendLocalizedMessage(501727); // You cannot lock that down!
+                    return false;
                 }
             }
+
+            DropItem(dropped);
 
             if (house != null && !IsLockedDown)
             {
@@ -111,10 +108,7 @@ namespace Server.Items
 
         public override bool IsAccessibleTo(Mobile m)
         {
-            if (!BaseHouse.CheckAccessible(m, this))
-                return false;
-
-            return base.IsAccessibleTo(m);
+            return true;
         }
 
         public override void SendFullItemsMessage(Mobile to, Item item) // That mailbox is completely full.

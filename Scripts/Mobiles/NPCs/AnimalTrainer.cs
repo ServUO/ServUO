@@ -428,10 +428,26 @@ namespace Server.Mobiles
 					Claim(e.Mobile);
 				}
 			}
-			else
-			{
-				base.OnSpeech(e);
-			}
+            else if (!e.Handled && e.Speech.ToLower().IndexOf("stablecount") >= 0)
+            {
+                IPooledEnumerable eable = e.Mobile.Map.GetMobilesInRange(e.Mobile.Location, 8);
+                e.Handled = true;
+
+                foreach (Mobile m in eable)
+                {
+                    if (m is AnimalTrainer)
+                    {
+                        e.Mobile.SendLocalizedMessage(1071250, String.Format("{0}\t{1}", e.Mobile.Stabled.Count.ToString(), GetMaxStabled(e.Mobile).ToString())); // ~1_USED~/~2_MAX~ stable stalls used.
+                        break;
+                    }
+                }
+
+                eable.Free();
+            }
+            else
+            {
+                base.OnSpeech(e);
+            }
 		}
 
 		public override void Serialize(GenericWriter writer)

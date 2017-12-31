@@ -226,20 +226,30 @@ namespace Server
 
                 /* Per EA's UO Herald Pub48 (ML):
                 * ((resist spellsx10)/20 + 10=percentage of damage resisted)
+                * 
+                * Tested 12/29/2017-
+                * No cap, also, above forumula is no longer in effect.
                 */
 
                 if (oath == m)
                 {
                     totalDamage = (int)(totalDamage * 1.1);
 
-                    if (totalDamage > 35 && from is PlayerMobile) /* capped @ 35, seems no expansion */
+                    if (!Core.TOL && totalDamage > 35 && from is PlayerMobile) /* capped @ 35, seems no expansion */
                     {
                         totalDamage = 35;
                     }
 
                     if (Core.ML)
                     {
-                        from.Damage((int)(totalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
+                        if (m is PlayerMobile)
+                        {
+                            from.Damage((int)(totalDamage * 1.20), m);
+                        }
+                        else
+                        {
+                            from.Damage((int)(totalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
+                        }
                     }
                     else
                     {
@@ -320,6 +330,7 @@ namespace Server
             }
 
             ManaShieldSpell.CheckManaShield(m, ref totalDamage);
+            BodyGuardSpell.CheckBodyGuard(from, m, type, ref totalDamage);
             SkillMasterySpell.OnDamaged(m, from, ref totalDamage);
             #endregion
 
@@ -333,7 +344,7 @@ namespace Server
             #endregion
 
             if (type == DamageType.Spell && m != null && Feint.Registry.ContainsKey(m) && Feint.Registry[m].Enemy == from)
-                damage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
+                totalDamage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
 
             if (m.Hidden && Core.ML && type >= DamageType.Spell)
             {

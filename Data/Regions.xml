@@ -624,20 +624,20 @@
         <logoutDelay active="false" />
       </region>
     </region>
-    <region type="TownRegion" priority="50" name="Magincia">
-      <rect x="3653" y="2046" width="27" height="48" />
-      <rect x="3752" y="2046" width="52" height="48" />
-      <rect x="3680" y="2045" width="72" height="49" />
-      <rect x="3652" y="2094" width="160" height="180" />
-      <rect x="3649" y="2256" width="54" height="47" />
-      <go x="3714" y="2220" z="20" />
-      <music name="Magincia" />
-      <region>
-        <rect x="3680" y="2152" width="24" height="8" />
-        <rect x="3720" y="2216" width="16" height="16" />
-        <logoutDelay active="false" />
-      </region>
-    </region>
+    <region type="NewMaginciaRegion" priority="50" name="Magincia">
+		<rect x="3632" y="2032" width="50" height="70" />
+		<rect x="3624" y="2162" width="95" height="70" />
+		<rect x="3752" y="2046" width="52" height="48" />
+		<rect x="3680" y="2045" width="72" height="49" />
+		<rect x="3652" y="2094" width="160" height="180" />
+		<rect x="3649" y="2256" width="54" height="47" />
+		<go x="3714" y="2220" z="20" />
+		<music name="Magincia" />
+		<region>
+			<rect x="3687" y="2246" width="12" height="16" />
+			<logoutDelay active="false" />
+		</region>
+	</region>
     <region type="TownRegion" priority="50" name="Buccaneer's Den">
       <rect x="2612" y="2057" width="164" height="210" />
       <rect x="2604" y="2065" width="8" height="189" zmin="0" />
@@ -1677,20 +1677,20 @@
         <logoutDelay active="false" />
       </region>
     </region>
-    <region priority="50" name="Magincia">
-      <rect x="3653" y="2046" width="27" height="48" />
-      <rect x="3752" y="2046" width="52" height="48" />
-      <rect x="3680" y="2045" width="72" height="49" />
-      <rect x="3652" y="2094" width="160" height="180" />
-      <rect x="3649" y="2256" width="54" height="47" />
-      <go x="3714" y="2220" z="20" />
-      <music name="Magincia" />
-      <region>
-        <rect x="3680" y="2152" width="24" height="8" />
-        <rect x="3720" y="2216" width="16" height="16" />
-        <logoutDelay active="false" />
-      </region>
-    </region>
+    <region type="NewMaginciaRegion" priority="50" name="Magincia">
+		<rect x="3632" y="2032" width="50" height="70" />
+		<rect x="3624" y="2162" width="95" height="70" />
+		<rect x="3752" y="2046" width="52" height="48" />
+		<rect x="3680" y="2045" width="72" height="49" />
+		<rect x="3652" y="2094" width="160" height="180" />
+		<rect x="3649" y="2256" width="54" height="47" />
+		<go x="3714" y="2220" z="20" />
+		<music name="Magincia" />
+		<region>
+			<rect x="3687" y="2246" width="12" height="16" />
+			<logoutDelay active="false" />
+		</region>
+	</region>
     <region type="TownRegion" priority="50" name="Buccaneer's Den">
       <rect x="2612" y="2057" width="164" height="210" />
       <rect x="2604" y="2065" width="8" height="189" zmin="0" />
