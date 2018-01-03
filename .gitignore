@@ -27,3 +27,4 @@ reportHistory.xml
 *.DotSettings.user
 *.log
 *.bin
+.vs/

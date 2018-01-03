@@ -1271,7 +1271,7 @@ namespace Server.Mobiles
 
 				if (Core.ML && pm != null)
 				{
-					pm.NextBODTurnInTime = DateTime.UtcNow + TimeSpan.FromSeconds(10.0);
+					pm.NextBODTurnInTime = DateTime.UtcNow + TimeSpan.FromSeconds(2.0);
 				}
 
 				dropped.Delete();

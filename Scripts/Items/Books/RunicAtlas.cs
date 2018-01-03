@@ -305,6 +305,10 @@ namespace Server.Items
                 Atlas.OnTravel();
                 new RecallSpell(User, null, e, null).Cast();
             }
+            else
+            {
+                User.SendLocalizedMessage(500015); // You do not have that spell!
+            }
 
             Atlas.Openers.Remove(User);
         }
