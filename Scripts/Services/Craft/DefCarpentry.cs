@@ -133,9 +133,14 @@ namespace Server.Engines.Craft
             }
         }
 
+        private System.Collections.Generic.List<Type> _NoConsumeOfFailure = new System.Collections.Generic.List<Type>
+        {
+            typeof(StaffOfTheMagi), typeof(BlackrockMoonstone)
+        };
+
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(StaffOfTheMagi))
+            if (_NoConsumeOfFailure.Contains(resourceType))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);

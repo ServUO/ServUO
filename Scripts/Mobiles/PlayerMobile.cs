@@ -4079,16 +4079,6 @@ namespace Server.Mobiles
 			SendToStaffMessage(from, String.Format(format, args));
 		}
 
-        public override void Damage(int amount, Mobile from)
-        {
-            Damage(amount, from, false, false);
-        }
-
-        public override void Damage(int amount, Mobile from, bool informMount)
-        {
-            Damage(amount, from, informMount, false);
-        }
-
         #region Poison
         public override void OnCured(Mobile from, Poison oldPoison)
         {
@@ -4103,7 +4093,7 @@ namespace Server.Mobiles
 			}
 
             //Skill Masteries
-            if (SkillMasterySpell.GetSpellForParty(this, typeof(Spells.SkillMasteries.ResilienceSpell)) != null && 0.25 > Utility.RandomDouble())
+            if (SkillMasterySpell.UnderPartyEffects(this, typeof(Spells.SkillMasteries.ResilienceSpell)) && 0.25 > Utility.RandomDouble())
             {
                 return ApplyPoisonResult.Immune;
             }

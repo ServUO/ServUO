@@ -53,9 +53,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            PlayingTheOddsSpell spell = GetSpellForParty(Caster, typeof(PlayingTheOddsSpell)) as PlayingTheOddsSpell;
-
-            if (spell != null)
+            if (SkillMasterySpell.UnderPartyEffects(Caster, typeof(PlayingTheOddsSpell)))
             {
                 Caster.SendLocalizedMessage(1062945); // That ability is already in effect.
                 return false;

@@ -57,8 +57,7 @@ namespace Server.Spells.SkillMasteries
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Perseverance, 1115615, 1115732, args.ToString()));
                 }
 
-                list.Clear();
-                list.TrimExcess();
+                ColUtility.Free(list);
 
 				BeginTimer();
 			}
@@ -80,7 +79,7 @@ namespace Server.Spells.SkillMasteries
         }
 		
 		/// <summary>
-		/// Called in AOS.cs - Defense Chance Bonus
+		/// Defense Chance Bonus
 		/// </summary>
 		/// <returns>Defense Chance Bonus</returns>
 		public override int PropertyBonus()
@@ -89,7 +88,7 @@ namespace Server.Spells.SkillMasteries
 		}
 
         /// <summary>
-        /// Called in AOS.cs - Casting Focus
+        /// Casting Focus
         /// </summary>
         /// <returns>Casting Focus</returns>
 		public override int PropertyBonus2()
@@ -98,10 +97,10 @@ namespace Server.Spells.SkillMasteries
 		}
 		
 		/// <summary>
-		/// Called in AOS.cs, modifies total damage dealt
+		/// modifies total damage dealt
 		/// </summary>
 		/// <param name="damage"></param>
-		public override void AbsorbDamage(ref int damage)
+		public void AbsorbDamage(ref int damage)
 		{
 			damage -= (int)(damage * m_DamageMod);
 		}

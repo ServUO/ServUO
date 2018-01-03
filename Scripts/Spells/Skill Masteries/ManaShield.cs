@@ -81,26 +81,22 @@ namespace Server.Spells.SkillMasteries
             BuffInfo.RemoveBuff(Caster, BuffIcon.ManaShield);
         }
 
-        public static void CheckManaShield(Mobile m, ref int damage)
+        public override void OnDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
         {
-            ManaShieldSpell spell = GetSpell<ManaShieldSpell>(m);
-
-            if (spell != null)
+            Console.WriteLine("Chance for {0} is {1}", defender.Name, Chance);
+            if (Chance >= Utility.RandomDouble())
             {
-                if (spell.Chance >= Utility.RandomDouble())
-                {
-                    int toShield = damage / 2;
+                int toShield = damage / 2;
 
-                    if (m.Mana >= toShield)
-                    {
-                        m.Mana -= toShield;
-                        damage -= toShield;
-                    }
-                    else
-                    {
-                        damage -= m.Mana;
-                        m.Mana = 0;
-                    }
+                if (defender.Mana >= toShield)
+                {
+                    defender.Mana -= toShield;
+                    damage -= toShield;
+                }
+                else
+                {
+                    damage -= defender.Mana;
+                    defender.Mana = 0;
                 }
             }
         }

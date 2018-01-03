@@ -258,10 +258,15 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.IsStaff() || from.InRange(GetWorldLocation(), 2) || RootParent is PlayerVendor)
+            if (from.IsStaff() || RootParent is PlayerVendor ||
+                (from.InRange(GetWorldLocation(), 2) && (Parent != null || (Z >= from.Z - 8 && Z <= from.Z + 16))))
+            {
                 Open(from);
+            }
             else
+            {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+            }
         }
 
 		public override void AddNameProperty(ObjectPropertyList list)
