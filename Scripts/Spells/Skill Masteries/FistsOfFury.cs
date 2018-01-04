@@ -66,7 +66,7 @@ namespace Server.Spells.SkillMasteries
                 });
         }
 
-        public override void OnDamaged(Mobile attacker, Mobile defender, int damage)
+        public override void OnDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
         {
             BaseWeapon wep = defender.Weapon as BaseWeapon;
 

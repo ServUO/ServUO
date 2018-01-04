@@ -173,14 +173,12 @@ namespace Server.Spells.SkillMasteries
             RemoveGumpTimer(protectee, Caster);
             FinishSequence();
         }
-		
-		public static void CheckBodyGuard(Mobile attacker, Mobile defender, DamageType type, ref int damage)
+
+        public override void OnTargetDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
 		{
-			BodyGuardSpell spell = GetSpell(s => s.GetType() == typeof(BodyGuardSpell) && s.Target == defender) as BodyGuardSpell;
-			
-			if(spell != null && spell.Caster.InRange(spell.Target, 2))
+            if (defender == Target && Caster.InRange(defender, 2))
 			{
-				double mod = (double)spell.PropertyBonus() / 100.0;
+				double mod = (double)PropertyBonus() / 100.0;
 				
 				damage = damage - (int)((double)damage * mod);
                 int casterDamage = damage - (int)((double)damage * (mod - .05));
@@ -188,7 +186,7 @@ namespace Server.Spells.SkillMasteries
                 if (type >= DamageType.Spell)
                     casterDamage /= 2;
 
-                spell.Caster.Damage(casterDamage, attacker);
+                Caster.Damage(casterDamage, attacker);
 			}
 		}
 

@@ -91,9 +91,14 @@ namespace Server.Engines.Craft
             return 0.0; // 0%
         }
 
+        private System.Collections.Generic.List<Type> _NoConsumeOnFail = new System.Collections.Generic.List<Type>
+        {
+            typeof(LeggingsOfBane), typeof(GauntletsOfNobility)
+        };
+
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(LeggingsOfBane) || resourceType == typeof(GauntletsOfNobility))
+            if (_NoConsumeOnFail.Contains(resourceType))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);

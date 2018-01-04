@@ -167,9 +167,15 @@ namespace Server.Engines.Craft
             }
         }
 
+        private System.Collections.Generic.List<Type> _NoConsumeOnFailure = new System.Collections.Generic.List<Type>
+        {
+            typeof(Silver), typeof(RingOfTheElements), typeof(HatOfTheMagi), typeof(AutomatonActuator),
+            typeof(BlackrockMoonstone)
+        };
+
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements) || resourceType == typeof(HatOfTheMagi) || resourceType == typeof(AutomatonActuator))
+            if (_NoConsumeOnFailure.Contains(resourceType))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);

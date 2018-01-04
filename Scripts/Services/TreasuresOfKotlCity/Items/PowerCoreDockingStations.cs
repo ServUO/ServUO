@@ -178,6 +178,8 @@ namespace Server.Engines.TreasuresOfKotlCity
 
             foreach (Item item in delete)
                 item.Delete();
+
+            _Active = false;
         }
 
         private void AddComplexComponent(int item, int xoffset, int yoffset, int zoffset, int hue, int localization = 0)

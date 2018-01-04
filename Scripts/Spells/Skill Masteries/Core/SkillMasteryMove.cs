@@ -94,7 +94,7 @@ namespace Server.Spells.SkillMasteries
         {
         }
 
-        public virtual void OnDamaged(Mobile attacker, Mobile defender, int damage)
+        public virtual void OnDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
         {
         }
     }

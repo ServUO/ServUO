@@ -228,32 +228,26 @@ namespace Server
                 * ((resist spellsx10)/20 + 10=percentage of damage resisted)
                 * 
                 * Tested 12/29/2017-
-                * No cap, also, above forumula is no longer in effect.
+                * No cap, also, above forumula is only in effect vs. creatures
                 */
 
                 if (oath == m)
                 {
-                    totalDamage = (int)(totalDamage * 1.1);
+                    int originalDamage = totalDamage;
+                    totalDamage = (int)(totalDamage * 1.2);
 
                     if (!Core.TOL && totalDamage > 35 && from is PlayerMobile) /* capped @ 35, seems no expansion */
                     {
                         totalDamage = 35;
                     }
 
-                    if (Core.ML)
+                    if (Core.ML && m is BaseCreature)
                     {
-                        if (m is PlayerMobile)
-                        {
-                            from.Damage((int)(totalDamage * 1.20), m);
-                        }
-                        else
-                        {
-                            from.Damage((int)(totalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
-                        }
+                        from.Damage((int)(originalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
                     }
                     else
                     {
-                        from.Damage(totalDamage, m);
+                        from.Damage(originalDamage, m);
                     }
                 }
                 else if (!ignoreArmor)
@@ -316,22 +310,7 @@ namespace Server
             #endregion
 
             #region Skill Mastery
-            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
-
-            if (spell != null)
-                spell.AbsorbDamage(ref totalDamage);
-
-            if (type >= DamageType.Spell)
-            {
-                spell = SkillMasterySpell.GetHarmfulSpell(from, typeof(TribulationSpell));
-
-                if (spell != null)
-                    spell.AbsorbDamage(ref damage);
-            }
-
-            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
-            BodyGuardSpell.CheckBodyGuard(from, m, type, ref totalDamage);
-            SkillMasterySpell.OnDamaged(m, from, ref totalDamage);
+            SkillMasterySpell.OnDamage(m, from, type, ref totalDamage);
             #endregion
 
             if (keepAlive && totalDamage > m.Hits)
@@ -358,7 +337,6 @@ namespace Server
             }
 
             m.Damage(totalDamage, from, true, false);
-
             SpiritSpeak.CheckDisrupt(m);
 
             #region Stygian Abyss

@@ -36,7 +36,7 @@ namespace Server.Spells.SkillMasteries
                 _Radius = skill / 40;
                 _DamageMalus = (int)((double)skill / 2.4);
 
-                Caster.PrivateOverheadMessage(MessageType.Regular, 1150, false, "Prepare Yourself!", Caster.NetState);
+                Caster.PublicOverheadMessage(MessageType.Regular, Caster.SpeechHue, false, "Prepare Yourself!");
                 Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
                 TimeSpan d;
 
@@ -49,21 +49,25 @@ namespace Server.Spells.SkillMasteries
 
                 Expires = DateTime.UtcNow + TimeSpan.FromSeconds(10);
                 BeginTimer();
+
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Warcry, 1155906, 1156058, TimeSpan.FromSeconds(10), Caster, String.Format("{0}\t{1}", _Radius.ToString(), _DamageMalus.ToString())));
+                //Reduces all incoming attack damage from opponents who hear the war cry within ~1_RANGE~ tiles by ~2_val~%.
             }
 
             FinishSequence();
         }
 
-        public override void OnGotHit(Mobile attacker, ref int damage)
+        //public override void OnGotHit(Mobile attacker, ref int damage)
+        public override void OnDamaged(Mobile attacker, Mobile victim, DamageType type, ref int damage)
         {
             if (attacker.InRange(Caster, _Radius))
             {
                 damage -= (int)((double)damage * ((double)_DamageMalus / 100.00));
 
                 Caster.PlaySound(attacker.Female ? 0x338 : 0x44A);
-                Caster.FixedEffect(0x3779, 10, 20, 1372, 0);
+                Caster.FixedEffect(0x3779, 10, 20, 1372, 4);
 
-                Caster.SendLocalizedMessage(1156161, attacker.Name); // ~1_NAME~ attacks you for 50% damage.
+                //Caster.SendLocalizedMessage(1156161, attacker.Name); // ~1_NAME~ attacks you for 50% damage.
             }
         }
     }

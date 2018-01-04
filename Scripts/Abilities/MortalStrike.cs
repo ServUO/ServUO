@@ -101,7 +101,7 @@ namespace Server.Items
             // Do not reset timer if one is already in place.
             if (Core.HS || !IsWounded(defender))
             {
-                if (Spells.SkillMasteries.BardSpell.GetSpellForParty(defender, typeof(Spells.SkillMasteries.ResilienceSpell)) != null)//Halves time
+                if (Spells.SkillMasteries.SkillMasterySpell.UnderPartyEffects(defender, typeof(Spells.SkillMasteries.ResilienceSpell))) //Halves time
                     BeginWound(defender, defender.Player ? TimeSpan.FromSeconds(3.0) : TimeSpan.FromSeconds(6));
                 else
                     BeginWound(defender, defender.Player ? PlayerDuration : NPCDuration);
