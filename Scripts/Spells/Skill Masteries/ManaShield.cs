@@ -83,7 +83,6 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
         {
-            Console.WriteLine("Chance for {0} is {1}", defender.Name, Chance);
             if (Chance >= Utility.RandomDouble())
             {
                 int toShield = damage / 2;
