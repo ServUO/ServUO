@@ -373,7 +373,7 @@ namespace Server.Engines.Quests
         {
             if (from.Backpack == null || itemType == null || amount <= 0)
                 return;
-								
+
             Item[] items = from.Backpack.FindItemsByType(itemType);
 			
             int deleted = 0;
@@ -419,7 +419,7 @@ namespace Server.Engines.Quests
         }
 
         public static void DeleteItems(BaseQuest quest)
-        { 
+        {
             for (int i = 0; i < quest.Objectives.Count; i ++)
             { 
                 BaseObjective objective = quest.Objectives[i];				
@@ -433,7 +433,7 @@ namespace Server.Engines.Quests
         {
             if (quest == null)
                 return false;
-				
+
             for (int i = 0; i < quest.Objectives.Count; i ++)
             {
                 if (quest.Objectives[i] is ObtainObjective)
