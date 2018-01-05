@@ -9,6 +9,7 @@ namespace Server.Mobiles
     public class DemonKnight : BaseCreature
     {
         private DateTime m_NextArea;
+        private bool m_InHere;
 
         public static Type[] DoomArtifact { get { return m_DoomArtifact; } }
         private static Type[] m_DoomArtifact = new Type[]
@@ -51,8 +52,6 @@ namespace Server.Mobiles
                 typeof(DivineCountenance)
             }
         };
-
-        private static bool m_InHere;
 
         [Constructable]
         public DemonKnight()

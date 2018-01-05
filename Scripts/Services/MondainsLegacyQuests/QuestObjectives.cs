@@ -337,6 +337,8 @@ namespace Server.Engines.Quests
         private Type m_Obtain;
         private string m_Name;
         private int m_Image;
+        private int m_Hue;
+
         public ObtainObjective(Type obtain, string name, int amount)
             : this(obtain, name, amount, 0, 0)
         {
@@ -348,11 +350,17 @@ namespace Server.Engines.Quests
         }
 
         public ObtainObjective(Type obtain, string name, int amount, int image, int seconds)
+            : this(obtain, name, amount, image, seconds, 0)
+        {
+        }
+
+        public ObtainObjective(Type obtain, string name, int amount, int image, int seconds, int hue)
             : base(amount, seconds)
         { 
             m_Obtain = obtain;
             m_Name = name;
             m_Image = image;
+            m_Hue = hue;
         }
 
         public Type Obtain
@@ -386,6 +394,17 @@ namespace Server.Engines.Quests
             set
             {
                 m_Image = value;
+            }
+        }
+        public int Hue
+        {
+            get
+            {
+                return m_Hue;
+            }
+            set
+            {
+                m_Hue = value;
             }
         }
         public override bool Update(object obj)

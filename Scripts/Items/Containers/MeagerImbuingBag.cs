@@ -10,16 +10,16 @@ namespace Server.Items
             switch (Utility.Random(4))
             {
                 case 0:
-                    this.AddItem(new SlithTongue());
+                    DropItem(new SlithTongue());
                     break;
                 case 1:
-                    this.AddItem(new GoblinBlood());
+                    DropItem(new GoblinBlood());
                     break;
                 case 2:
-                    this.AddItem(new ReflectiveWolfEye());
+                    DropItem(new ReflectiveWolfEye());
                     break;
                 case 3:
-                    this.AddItem(new RaptorTeeth());
+                    DropItem(new RaptorTeeth());
                     break;
             }
         }
