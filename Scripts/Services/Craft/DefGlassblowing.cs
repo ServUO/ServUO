@@ -147,13 +147,16 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(EmptyVenomVial), 1044050, 1112215, 52.5, 102.5, typeof(Sand), 1044625, 1, 1044627);
                 this.SetNeededExpansion(index, Expansion.SA);
 
-                //Weapons
-                index = AddCraft(typeof(GlassSword), 1044566, 1022316, 55.0, 105.0, typeof(Sand), 1044625, 14, 1044627);
+                //Glass Weapons
+                index = AddCraft(typeof(GlassSword), 1111745, 1022316, 55.0, 105.0, typeof(Sand), 1044625, 14, 1044627);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(GlassStaff), 1044566, 1095368, 53.6, 103.6, typeof(Sand), 1044625, 10, 1044627);
+                index = AddCraft(typeof(GlassStaff), 1111745, 1095368, 53.6, 103.6, typeof(Sand), 1044625, 10, 1044627);
                 SetNeededExpansion(index, Expansion.SA);
             }
+
+            Repair = Core.SA;
+            MarkOption = Core.SA;
         }
 
         // Delay to synchronize the sound with the hit on the anvil

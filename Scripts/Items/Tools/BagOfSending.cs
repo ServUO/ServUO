@@ -290,7 +290,7 @@ namespace Server.Items
                     {
                         MessageHelper.SendLocalizedMessageTo(m_Bag, from, 1054108, 0x59); // The bag of sending rejects the cursed item.
                     }
-                    else if (!item.VerifyMove(from) || item is Server.Engines.Quests.QuestItem)
+                    else if (!item.VerifyMove(from) || item is Server.Engines.Quests.QuestItem || item.QuestItem)
                     {
                         MessageHelper.SendLocalizedMessageTo(m_Bag, from, 1054109, 0x59); // The bag of sending rejects that item.
                     }

@@ -76,7 +76,8 @@ namespace Server.Spells.Fifth
 
                 TimeSpan duration = TimeSpan.FromSeconds(3 + (Caster.Skills.Magery.Fixed / 25));
 
-                new InternalItem(itemID, new Point3D(p), Caster, Caster.Map, duration);
+                if (SpellHelper.CheckField(new Point3D(p), Caster.Map))
+                    new InternalItem(itemID, new Point3D(p), Caster, Caster.Map, duration);
 
                 for (int i = 1; i <= 2; ++i)
                 {
@@ -84,11 +85,15 @@ namespace Server.Spells.Fifth
                     {
                         IPoint3D pnt = new Point3D(eastToWest ? p.X + index : p.X, eastToWest ? p.Y : p.Y + index, p.Z);
                         SpellHelper.GetSurfaceTop(ref pnt);
-                        new InternalItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
+
+                        if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
+                            new InternalItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
 
                         pnt = new Point3D(eastToWest ? p.X + -index : p.X, eastToWest ? p.Y : p.Y + -index, p.Z);
                         SpellHelper.GetSurfaceTop(ref pnt);
-                        new InternalItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
+
+                        if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
+                            new InternalItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
                     }, i);
                 }
             }

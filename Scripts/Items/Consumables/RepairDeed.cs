@@ -10,6 +10,7 @@ namespace Server.Items
         private RepairSkillType m_Skill;
         private double m_SkillLevel;
         private Mobile m_Crafter;
+
         [Constructable]
         public RepairDeed()
             : this(RepairSkillType.Smithing, 100.0, null, true)
@@ -37,14 +38,14 @@ namespace Server.Items
             : base(0x14F0)
         {
             if (normalizeLevel)
-                this.SkillLevel = (int)(level / 10) * 10;
+                SkillLevel = (int)(level / 10) * 10;
             else
-                this.SkillLevel = level;
+                SkillLevel = level;
 
-            this.m_Skill = skill;
-            this.m_Crafter = crafter;
-            this.Hue = 0x1BC;
-            this.LootType = LootType.Regular;
+            m_Skill = skill;
+            m_Crafter = crafter;
+            Hue = 0x1BC;
+            LootType = LootType.Regular;
         }
 
         public RepairDeed(Serial serial)
@@ -58,7 +59,9 @@ namespace Server.Items
             Tailoring,
             Tinkering,
             Carpentry,
-            Fletching
+            Fletching,
+            Masonry,
+            Glassblowing
         }
         public override bool DisplayLootType
         {
@@ -72,12 +75,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Skill;
+                return m_Skill;
             }
             set
             {
-                this.m_Skill = value;
-                this.InvalidateProperties();
+                m_Skill = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -85,12 +88,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SkillLevel;
+                return m_SkillLevel;
             }
             set
             {
-                this.m_SkillLevel = Math.Max(Math.Min(value, 120.0), 0) ;
-                this.InvalidateProperties();
+                m_SkillLevel = Math.Max(Math.Min(value, 120.0), 0) ;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -98,12 +101,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Crafter;
+                return m_Crafter;
             }
             set
             {
-                this.m_Crafter = value;
-                this.InvalidateProperties();
+                m_Crafter = value;
+                InvalidateProperties();
             }
         }
         public static RepairSkillType GetTypeFor(CraftSystem s)
@@ -119,41 +122,45 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1061133, String.Format("{0}\t{1}", GetSkillTitle(this.m_SkillLevel).ToString(), RepairSkillInfo.GetInfo(this.m_Skill).Name)); // A repair service contract from ~1_SKILL_TITLE~ ~2_SKILL_NAME~.
+            list.Add(1061133, String.Format("{0}\t{1}", GetSkillTitle(m_SkillLevel).ToString(), RepairSkillInfo.GetInfo(m_Skill).Name)); // A repair service contract from ~1_SKILL_TITLE~ ~2_SKILL_NAME~.
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.m_Crafter != null)
+            if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-            //On OSI it says it's exceptional.  Intentional difference.
+
+            var type = RepairSkillInfo.GetInfo(m_Skill);
+
+            if (type.Description != null)
+                TextDefinition.AddTo(list, type.Description);
         }
 
         public override void OnSingleClick(Mobile from)
         {
-            if (this.Deleted || !from.CanSee(this))
+            if (Deleted || !from.CanSee(this))
                 return;
 
-            this.LabelTo(from, 1061133, String.Format("{0}\t{1}", GetSkillTitle(this.m_SkillLevel).ToString(), RepairSkillInfo.GetInfo(this.m_Skill).Name)); // A repair service contract from ~1_SKILL_TITLE~ ~2_SKILL_NAME~.
+            LabelTo(from, 1061133, String.Format("{0}\t{1}", GetSkillTitle(m_SkillLevel).ToString(), RepairSkillInfo.GetInfo(m_Skill).Name)); // A repair service contract from ~1_SKILL_TITLE~ ~2_SKILL_NAME~.
 
-            if (this.m_Crafter != null)
-				this.LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+            if (m_Crafter != null)
+				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.Check(from))
-                Repair.Do(from, RepairSkillInfo.GetInfo(this.m_Skill).System, this);
+            if (Check(from))
+                Repair.Do(from, RepairSkillInfo.GetInfo(m_Skill).System, this);
         }
 
         public bool Check(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
                 from.SendLocalizedMessage(1047012); // The contract must be in your backpack to use it.
-            else if (!this.VerifyRegion(from))
-                TextDefinition.SendMessageTo(from, RepairSkillInfo.GetInfo(this.m_Skill).NotNearbyMessage);
+            else if (!VerifyRegion(from))
+                TextDefinition.SendMessageTo(from, RepairSkillInfo.GetInfo(m_Skill).NotNearbyMessage);
             else
                 return true;
 
@@ -166,7 +173,7 @@ namespace Server.Items
             if (!m.Region.IsPartOf<TownRegion>())
                 return false;
 
-            return Server.Factions.Faction.IsNearType(m, RepairSkillInfo.GetInfo(this.m_Skill).NearbyTypes, 6);
+            return Server.Factions.Faction.IsNearType(m, RepairSkillInfo.GetInfo(m_Skill).NearbyTypes, 6);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -175,9 +182,9 @@ namespace Server.Items
 
             writer.Write((int)0); // version
 
-            writer.Write((int)this.m_Skill);
-            writer.Write(this.m_SkillLevel);
-            writer.Write(this.m_Crafter);
+            writer.Write((int)m_Skill);
+            writer.Write(m_SkillLevel);
+            writer.Write(m_Crafter);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -190,9 +197,9 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Skill = (RepairSkillType)reader.ReadInt();
-                        this.m_SkillLevel = reader.ReadDouble();
-                        this.m_Crafter = reader.ReadMobile();
+                        m_Skill = (RepairSkillType)reader.ReadInt();
+                        m_SkillLevel = reader.ReadDouble();
+                        m_Crafter = reader.ReadMobile();
 
                         break;
                     }
@@ -223,26 +230,32 @@ namespace Server.Items
         {
             private static readonly RepairSkillInfo[] m_Table = new RepairSkillInfo[]
             {
-                new RepairSkillInfo(DefBlacksmithy.CraftSystem, typeof(Blacksmith), 1047013, 1023015),
-                new RepairSkillInfo(DefTailoring.CraftSystem, typeof(Tailor), 1061132, 1022981),
-                new RepairSkillInfo(DefTinkering.CraftSystem, typeof(Tinker), 1061166, 1022983),
-                new RepairSkillInfo(DefCarpentry.CraftSystem, typeof(Carpenter), 1061135, 1060774),
-                new RepairSkillInfo(DefBowFletching.CraftSystem, typeof(Bowyer), 1061134, 1023005)
+                new RepairSkillInfo(DefBlacksmithy.CraftSystem,     typeof(Blacksmith), 1047013, 1023015),
+                new RepairSkillInfo(DefTailoring.CraftSystem,       typeof(Tailor),     1061132, 1022981),
+                new RepairSkillInfo(DefTinkering.CraftSystem,       typeof(Tinker),     1061166, 1022983),
+                new RepairSkillInfo(DefCarpentry.CraftSystem,       typeof(Carpenter),  1061135, 1060774),
+                new RepairSkillInfo(DefBowFletching.CraftSystem,    typeof(Bowyer),     1061134, 1023005),
+                new RepairSkillInfo(DefMasonry.CraftSystem,         typeof(Carpenter),  1061135, 1060774, 1044635),
+                new RepairSkillInfo(DefGlassblowing.CraftSystem,    typeof(Alchemist),  1111838, 1115634, 1044636),
             };
+
             private readonly CraftSystem m_System;
             private readonly Type[] m_NearbyTypes;
             private readonly TextDefinition m_NotNearbyMessage;
             private readonly TextDefinition m_Name;
-            public RepairSkillInfo(CraftSystem system, Type[] nearbyTypes, TextDefinition notNearbyMessage, TextDefinition name)
+            private readonly TextDefinition m_Description;
+
+            public RepairSkillInfo(CraftSystem system, Type[] nearbyTypes, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = null)
             {
-                this.m_System = system;
-                this.m_NearbyTypes = nearbyTypes;
-                this.m_NotNearbyMessage = notNearbyMessage;
-                this.m_Name = name;
+                m_System = system;
+                m_NearbyTypes = nearbyTypes;
+                m_NotNearbyMessage = notNearbyMessage;
+                m_Name = name;
+                m_Description = description;
             }
 
-            public RepairSkillInfo(CraftSystem system, Type nearbyType, TextDefinition notNearbyMessage, TextDefinition name)
-                : this(system, new Type[] { nearbyType }, notNearbyMessage, name)
+            public RepairSkillInfo(CraftSystem system, Type nearbyType, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = null)
+                : this(system, new Type[] { nearbyType }, notNearbyMessage, name, description)
             {
             }
 
@@ -257,28 +270,35 @@ namespace Server.Items
             {
                 get
                 {
-                    return this.m_NotNearbyMessage;
+                    return m_NotNearbyMessage;
                 }
             }
             public TextDefinition Name
             {
                 get
                 {
-                    return this.m_Name;
+                    return m_Name;
+                }
+            }
+            public TextDefinition Description
+            {
+                get
+                {
+                    return m_Description;
                 }
             }
             public CraftSystem System
             {
                 get
                 {
-                    return this.m_System;
+                    return m_System;
                 }
             }
             public Type[] NearbyTypes
             {
                 get
                 {
-                    return this.m_NearbyTypes;
+                    return m_NearbyTypes;
                 }
             }
             public static RepairSkillInfo GetInfo(RepairSkillType type)

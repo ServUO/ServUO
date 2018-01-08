@@ -11,7 +11,7 @@ namespace Server.Spells.SkillMasteries
     {
         private static SpellInfo m_Info = new SpellInfo(
                 "Mana Shield", "Faerkulggen",
-                204,
+                -1,
                 9061
             );
 
@@ -32,7 +32,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void SendCastEffect()
         {
-            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
+            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 1371, 0);
         }
 
         public override bool CheckCast()
@@ -53,7 +53,10 @@ namespace Server.Spells.SkillMasteries
                 SkillMasterySpell spell = GetSpell(Caster, this.GetType());
 
                 if (spell != null)
+                {
                     spell.Expire();
+                    return;
+                }
 
                 double skill = ((Caster.Skills[CastSkill].Value + ArcanistSpell.GetFocusLevel(Caster) * 20) / 2) + (GetMasteryLevel() * 20) + 20;
                 Chance = (skill / 13.0) / 100.0;
@@ -61,13 +64,9 @@ namespace Server.Spells.SkillMasteries
                 Expires = DateTime.UtcNow + TimeSpan.FromSeconds(600);
                 BeginTimer();
 
-                Caster.PlaySound(0x20C);
-                Caster.FixedParticles(0x3779, 1, 30, 9964, 3, 3, EffectLayer.Waist);
+                Caster.PlaySound(0x29);
+                Caster.FixedParticles(0x4B8F, 0x1, 0xF, 9502, 0x811, 0, EffectLayer.Waist);
 
-                IEntity from = new Entity(Serial.Zero, new Point3D(Caster.X, Caster.Y, Caster.Z), Caster.Map);
-                IEntity to = new Entity(Serial.Zero, new Point3D(Caster.X, Caster.Y, Caster.Z + 50), Caster.Map);
-                Effects.SendMovingParticles(from, to, 5494, 1, 0, false, false, 33, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
-                
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ManaShield, 1155902, 1156056, TimeSpan.FromSeconds(600), Caster, String.Format("{0}\t{1}\t{1}", ((int)(Chance * 100)).ToString(), "50"))); // ~1_CHANCE~% chance to reduce incoming damage by ~2_DAMAGE~%. Costs ~2_DAMAGE~% of original damage in mana.
             }
 

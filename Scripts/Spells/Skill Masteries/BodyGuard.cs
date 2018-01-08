@@ -7,9 +7,6 @@ using Server.Gumps;
 using System.Collections.Generic;
 using Server.Items;
 
-/*The shield user chooses a protectee to absorb a percentage of damage done to the protectee based on parry skill, 
-  best weapon skill, and mastery level.*/
-
 namespace Server.Spells.SkillMasteries
 {
     public class BodyGuardSpell : SkillMasterySpell
@@ -161,7 +158,12 @@ namespace Server.Spells.SkillMasteries
         public override void EndEffects()
         {
             if (Target != null)
+            {
+                Target.SendLocalizedMessage(1156103); // Bodyguard has expired.
                 BuffInfo.RemoveBuff(Target, BuffIcon.Bodyguard);
+            }
+
+            Caster.SendLocalizedMessage(1156103); // Bodyguard has expired.
             BuffInfo.RemoveBuff(Caster, BuffIcon.Bodyguard);
         }
 

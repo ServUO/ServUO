@@ -67,8 +67,8 @@ namespace Server.Spells.Sixth
 
                 TimeSpan duration = TimeSpan.FromSeconds(3.0 + (Caster.Skills[SkillName.Magery].Value / 3.0));
 
-                Item item = new InternalItem(Caster, itemID, new Point3D(p), Caster.Map, duration);
-                item.ProcessDelta();
+                if (SpellHelper.CheckField(new Point3D(p), Caster.Map))
+                    new InternalItem(Caster, itemID, new Point3D(p), Caster.Map, duration);
 
                 for (int i = 1; i <= 2; ++i)
                 {
@@ -76,13 +76,15 @@ namespace Server.Spells.Sixth
                     {
                         IPoint3D pnt = new Point3D(eastToWest ? p.X + index : p.X, eastToWest ? p.Y : p.Y + index, p.Z);
                         SpellHelper.GetSurfaceTop(ref pnt);
-                        item = new InternalItem(Caster, itemID, new Point3D(pnt), Caster.Map, duration);
-                        item.ProcessDelta();
+
+                        if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
+                            new InternalItem(Caster, itemID, new Point3D(pnt), Caster.Map, duration);
 
                         pnt = new Point3D(eastToWest ? p.X + -index : p.X, eastToWest ? p.Y : p.Y + -index, p.Z);
                         SpellHelper.GetSurfaceTop(ref pnt);
-                        item = new InternalItem(Caster, itemID, new Point3D(pnt), Caster.Map, duration);
-                        item.ProcessDelta();
+
+                        if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
+                            new InternalItem(Caster, itemID, new Point3D(pnt), Caster.Map, duration);
                     }, i);
                 }
             }
