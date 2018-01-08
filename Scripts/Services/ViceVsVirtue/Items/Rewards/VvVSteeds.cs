@@ -24,8 +24,8 @@ namespace Server.Engines.VvV
                 switch (this.SteedType)
                 {
                     default:
-                    case SteedType.Ostard: return new VvVMount("VvV War Ostard", 0xDA, 0x3EA4, this.Hue);
-                    case SteedType.WarHorse: return new VvVMount("VvV War Horse", 0xE2, 0x3EA0, this.Hue);
+                    case SteedType.Ostard: return new VvVMount("a war ostard", 0xDA, 0x3EA4, this.Hue);
+                    case SteedType.WarHorse: return new VvVMount("a war horse", 0xE2, 0x3EA0, this.Hue);
                 }
             }
         }
