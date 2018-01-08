@@ -268,7 +268,7 @@ namespace Server.Factions
 			if (buff != null)
 				offset += buff.Offset;
 			if (curse != null)
-				offset += buff.Offset;
+				offset += curse.Offset;
 
 			return offset;
 		}
