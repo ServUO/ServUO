@@ -272,6 +272,28 @@ namespace Server.Spells
             return false;
         }
 
+        public static bool CheckField(Point3D p, Map map)
+        {
+            if (map == null)
+                return false;
+
+            IPooledEnumerable eable = map.GetItemsInRange(p, 0);
+
+            foreach (Item item in eable)
+            {
+                Type t = item.GetType();
+
+                if(t.IsDefined(typeof(DispellableFieldAttribute), false) || t.IsDefined(typeof(DispellableFieldAttribute), true))
+                {
+                    eable.Free();
+                    return false;
+                }
+            }
+
+            eable.Free();
+            return true;
+        }
+
         public static bool CheckWater(Point3D p, Map map)
         {
             var landTile = map.Tiles.GetLandTile(p.X, p.Y);
@@ -361,6 +383,11 @@ namespace Server.Spells
 			Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
 
             return true;
+        }
+
+        public static bool AddStatCurse(Mobile caster, Mobile target, StatType type)
+        {
+            return AddStatCurse(caster, target, type, true);
         }
 
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, bool blockSkill)
@@ -1172,7 +1199,6 @@ namespace Server.Spells
                     return false;
                 }
             }
-
 
             if (target.MagicDamageAbsorb > 0)
             {

@@ -1388,11 +1388,6 @@ namespace Server
                 AddLockedDownProperty(list);
             }
 
-            if (HonestyItem)
-            {
-                AddHonestyProperty(list);
-            }
-
             Mobile blessedFor = BlessedFor;
 
             if (blessedFor != null && !blessedFor.Deleted)
@@ -1454,6 +1449,12 @@ namespace Server
         {
             if (HonestyItem)
             {
+                if (m_HonestyPickup != DateTime.MinValue)
+                {
+                    int minutes = (int)(m_HonestyPickup + TimeSpan.FromHours(3) - DateTime.UtcNow).TotalMinutes;
+                    list.Add(1151914, minutes.ToString()); // Minutes remaining for credit: ~1_val~
+                }
+
                 list.Add(1151520); // lost item (Return to gain Honesty)
             }
         }
@@ -1944,6 +1945,8 @@ namespace Server
 
         public void CheckHonestyExpiry()
         {
+            InvalidateProperties();
+
             if ((m_HonestyPickup + TimeSpan.FromHours(3)) < DateTime.UtcNow)
             {
                 HonestyItem = false;

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using Server.Items;
 using Server.Mobiles;
+using Server.Network;
 #endregion
 
 namespace Server.Services.Virtues
@@ -162,6 +163,7 @@ namespace Server.Services.Virtues
 					}
 
 					item.HonestyItem = true;
+                    RunicReforging.GenerateRandomItem(item, 0, 100, 1000);
 
 					lock (_ItemsLock)
 					{
@@ -370,6 +372,10 @@ namespace Server.Services.Virtues
 			: base(serial)
 		{ }
 
+        public override void OnDoubleClick(Mobile m)
+        {
+        }
+
 		public override bool OnDragDrop(Mobile from, Item dropped)
 		{
 			return CheckGain(from, dropped);
@@ -384,7 +390,7 @@ namespace Server.Services.Virtues
 		{
 			if (from == null || from.Deleted || item == null || !item.HonestyItem)
 			{
-                from.SendLocalizedMessage(1151530); // This is not a lost item.
+                this.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1151530, from.NetState); // This is not a lost item.
 				return false;
 			}
 
@@ -401,7 +407,10 @@ namespace Server.Services.Virtues
 				VirtueHelper.Award(from, VirtueName.Honesty, 30, ref gainedPath);
 			}
 
-			from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
+            this.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1151523, from.NetState); // You place the item in the lost and found.  You have gained some Honesty!
+
+            if(gainedPath)
+			    from.SendMessage("You have gained a path in Honesty!");
 
 			item.Delete();
 

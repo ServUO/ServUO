@@ -6,15 +6,6 @@ using Server.Mobiles;
 using Server.Items;
 using Server.Spells.Spellweaving;
 
-/*"Summon Reaper" with 120 Spellweaving/120 Meditation summons a stationary Reaper that has 603 Health/180 Stam/200 Mana, 
- * 650 STR/180 DEX/200 INT, Resists on this one are 70/15/18/100/69, it deals 80% Physical/20% Poison Damage with 16-20 
- * Base Damage and GM Wrest/GM Tact/GM Resist/GM Anat, no Magery skills. It does cast some Spellweaving spells though,
- * and it has a damage aura, plus it can do Dismount. It did 20-25 damage per hit to a player with max Resists. Arcane 
- * Focus Level does not affect it. 
- 
- The spellweaver summons a stationary reaper for a duration based on spellweaving skill, and arcane focus.  The strength 
- * of the summoned reaper is determined by spellweaving skill, arcane focus, and mastery level.*/
-
 namespace Server.Spells.SkillMasteries
 {
     public class SummonReaperSpell : SkillMasterySpell
@@ -39,7 +30,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void SendCastEffect()
         {
-            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
+            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 1371, 0);
         }
 
         public override bool CheckCast()

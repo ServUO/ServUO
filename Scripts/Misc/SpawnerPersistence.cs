@@ -81,7 +81,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)5);
+                    writer.Write((int)6);
                     writer.Write(false);
                     writer.Write(_SpawnsConverted);
                 });
@@ -110,6 +110,9 @@ namespace Server
         {
             switch (_Version)
             {
+                case 5:
+                    HonestyItemsVersion5();
+                    break;
                 case 4:
                     BrigandsVersion4();
                     break;
@@ -134,6 +137,23 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Version 5
+        public static void HonestyItemsVersion5()
+        {
+            Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                {
+                    int count = 0;
+                    foreach (var item in World.Items.Values.Where(i => i.HonestyItem && !ItemFlags.GetTaken(i)))
+                    {
+                        RunicReforging.GenerateRandomItem(item, 0, 100, 1000);
+                        count++;
+                    }
+
+                    ToConsole(String.Format("Honesty items given magical properties: {0}", count.ToString()));
+                });
+        }
+        #endregion
 
         #region Version 4
         public static void BrigandsVersion4()

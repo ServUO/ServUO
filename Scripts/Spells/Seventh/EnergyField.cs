@@ -81,8 +81,8 @@ namespace Server.Spells.Seventh
 
                 int itemID = eastToWest ? 0x3946 : 0x3956;
 
-                Item item = new InternalItem(new Point3D(p), Caster.Map, duration, itemID, Caster);
-                item.ProcessDelta();
+                if (SpellHelper.CheckField(new Point3D(p), Caster.Map))
+                    new InternalItem(new Point3D(p), Caster.Map, duration, itemID, Caster);
 
                 for (int i = 1; i <= 2; ++i)
                 {
@@ -90,13 +90,15 @@ namespace Server.Spells.Seventh
                     {
                         IPoint3D pnt = new Point3D(eastToWest ? p.X + index : p.X, eastToWest ? p.Y : p.Y + index, p.Z);
                         SpellHelper.GetSurfaceTop(ref pnt);
-                        item = new InternalItem(new Point3D(pnt), Caster.Map, duration, itemID, Caster);
-                        item.ProcessDelta();
+
+                        if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
+                            new InternalItem(new Point3D(pnt), Caster.Map, duration, itemID, Caster);
 
                         pnt = new Point3D(eastToWest ? p.X + -index : p.X, eastToWest ? p.Y : p.Y + -index, p.Z);
                         SpellHelper.GetSurfaceTop(ref pnt);
-                        item = new InternalItem(new Point3D(pnt), Caster.Map, duration, itemID, Caster);
-                        item.ProcessDelta();
+
+                        if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
+                            new InternalItem(new Point3D(pnt), Caster.Map, duration, itemID, Caster);
                     }, i);
                 }
             }

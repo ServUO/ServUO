@@ -2088,25 +2088,6 @@ namespace Server.Items
                 defender = clone;
             }
 
-			/*if (defender != null && MirrorImage.HasClone(defender) && (defender.Skills.Ninjitsu.Value / 150.0) > Utility.RandomDouble())
-			{
-				Clone bc;
-
-				foreach (Mobile m in defender.GetMobilesInRange(4))
-				{
-					bc = m as Clone;
-
-					if (bc != null && bc.Summoned && bc.SummonMaster == defender)
-					{
-						attacker.SendLocalizedMessage(1063141); // Your attack has been diverted to a nearby mirror image of your target!
-						defender.SendLocalizedMessage(1063140); // You manage to divert the attack onto one of your nearby mirror images.
-
-						defender = m;
-						break;
-					}
-				}
-			}*/
-
 			PlaySwingAnimation(attacker);
 
             if(defender != null)
@@ -5933,6 +5914,8 @@ namespace Server.Items
 				list.Add(1072378); // <br>Only when full set is present:
 				GetSetProperties(list);
 			}
+
+            AddHonestyProperty(list);
 
             if (m_ItemPower != ItemPower.None)
             {
