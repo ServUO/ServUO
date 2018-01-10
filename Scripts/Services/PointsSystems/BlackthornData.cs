@@ -29,6 +29,9 @@ namespace Server.Engines.Points
 
         public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
         {
+            if (victim.Controlled || victim.Owners.Count > 0 || victim.Fame <= 0)
+                return;
+        
             Region r = victim.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("BlackthornDungeon"))
