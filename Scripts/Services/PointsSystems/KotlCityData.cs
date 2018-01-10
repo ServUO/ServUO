@@ -33,6 +33,9 @@ namespace Server.Engines.Points
         {
             if (!Enabled)
                 return;
+                
+            if (victim.Controlled || victim.Owners.Count > 0 || victim.Fame <= 0)
+                return;
 
             Region r = victim.Region;
 
