@@ -562,7 +562,7 @@ namespace Server.Items
                     typeof(TribeWarrior), typeof(TribeShaman), 
                     typeof(TribeChieftan), typeof(WildTiger), 
                     typeof(WildBlackTiger), typeof(WildWhiteTiger), 
-                    typeof(SilverbackGorilla));
+                    typeof(TRex), typeof(SilverbackGorilla));
 
             eodon.Entries = new SlayerEntry[] { };
 
@@ -582,7 +582,7 @@ namespace Server.Items
                     typeof(Archaeosaurus), typeof(Najasaurus),
                     typeof(Saurosaurus), typeof(Allosaurus),
                     typeof(MyrmidexLarvae), typeof(MyrmidexDrone),
-                    typeof(MyrmidexWarrior));
+                    typeof(TRex), typeof(MyrmidexWarrior));
 
             dino.Entries = new SlayerEntry[] { };
 
