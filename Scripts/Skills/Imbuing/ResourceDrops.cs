@@ -136,6 +136,9 @@ namespace Server.Items
 
         public static void CheckDrop(BaseCreature bc, Container c)
         {
+            if (bc.Controlled == true)
+				return;
+            
             if (m_IngredientTable != null)
             {
                 foreach (IngredientDropEntry entry in m_IngredientTable)
