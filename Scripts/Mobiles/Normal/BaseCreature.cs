@@ -6104,7 +6104,7 @@ namespace Server.Mobiles
             }
 
             #region SA
-            if(!c.Deleted)
+            if(!c.Deleted && !Controlled)
                 IngredientDropEntry.CheckDrop(this, c);
 
             if (LastKiller is BaseVoidCreature)
