@@ -323,7 +323,7 @@ namespace Server.Engines.Harvest
 
             IPooledEnumerable eable = m.GetItemsInRange(0);
 
-            foreach (Item obj in m.GetItemsInRange(0))
+            foreach (Item obj in eable)
                 atFeet.Add(obj);
 
             eable.Free();
