@@ -57,7 +57,7 @@ namespace Server.Items
 
         protected override void OnTarget(Mobile from, object target)
         {
-            if (m_Potion == null || m_Potion.Deleted)
+            if (m_Potion == null || m_Potion.Deleted || !m_Potion.IsChildOf(from.Backpack))
                     return;
                     
             if (target is BaseCreature)
