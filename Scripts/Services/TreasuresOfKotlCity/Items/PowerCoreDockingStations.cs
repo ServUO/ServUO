@@ -215,7 +215,7 @@ namespace Server.Engines.TreasuresOfKotlCity
                 Chest2.Delete();
             }
 
-            if (Stations.Contains(this))
+            if (Stations != null && Stations.Contains(this))
             {
                 Stations.Remove(this);
             }

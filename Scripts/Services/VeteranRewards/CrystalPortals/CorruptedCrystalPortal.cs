@@ -141,13 +141,6 @@ namespace Server.Items
 			}
 		}
 
-		public override void GetProperties(ObjectPropertyList list)
-		{
-			base.GetProperties(list);
-
-			list.Add(Movable ? "This must be locked down in a house to use!" : "Double-click to open help menu");
-		}
-
 		public virtual void OnTeleport(Mobile m, Point3D loc, Map map)
 		{
 			if (m == null || loc == Point3D.Zero || map == null || map == Map.Internal)
