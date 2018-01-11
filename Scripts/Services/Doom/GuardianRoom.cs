@@ -51,7 +51,7 @@ namespace Server.Engines.Doom
 		{
 			base.OnLocationChanged( m, oldLocation );
 			
-			if(!Active && CanActivate && m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
+			if(!Active && CanActivate && m is PlayerMobile && m.AccessLevel == AccessLevel.Player && m.Alive)
 			{
 				for(int x = m.X - 3; x <= m.X + 3; x++)
 				{
@@ -122,7 +122,8 @@ namespace Server.Engines.Doom
                 if (mob.NetState != null)
                     mob.SendLocalizedMessage(1050000, "", 365); // The locks on the door click loudly and you begin to hear a faint hissing near the walls.
 
-                count++;
+                if(mob.Alive)
+                    count++;
             }
 
             count = Math.Min(1, count * 2);
