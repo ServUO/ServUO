@@ -1692,7 +1692,9 @@ namespace Server.Mobiles
 					Mobile newCombatant = null;
 					double newScore = 0.0;
 
-					foreach (Mobile aggr in m_Mobile.GetMobilesInRange(m_Mobile.RangePerception))
+                    IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
+
+                    foreach (Mobile aggr in eable)
 					{
 						if (!m_Mobile.CanSee(aggr) || aggr.Combatant != m_Mobile)
 						{
@@ -1712,6 +1714,8 @@ namespace Server.Mobiles
 							newScore = aggrScore;
 						}
 					}
+
+                    eable.Free();
 
 					if (newCombatant != null)
 					{

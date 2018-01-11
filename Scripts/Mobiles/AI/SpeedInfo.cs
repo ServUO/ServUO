@@ -125,7 +125,7 @@ namespace Server
                 typeof(Relanord), typeof(Ortanord), typeof(Korpre),
                 typeof(Anzuanord), typeof(Anlorzen), typeof(UndeadGuardian),
                 typeof(PutridUndeadGuardian), typeof(CorgulTheSoulBinder), typeof(GooeyMaggots),
-                typeof(Fezzik)
+                typeof(Fezzik), typeof(Ronin)
             }),
             /* Fast */
             new SpeedInfo(0.2, 0.4, new Type[]
@@ -140,7 +140,7 @@ namespace Server
                 typeof(SnowElemental), typeof(WhiteWyrm), typeof(Wisp),
                 typeof(DemonKnight), typeof(GiantBlackWidow), typeof(SummonedAirElemental),
                 typeof(LesserHiryu), typeof(Hiryu), typeof(LadyOfTheSnow),
-                typeof(RaiJu), typeof(Ronin), typeof(RuneBeetle),
+                typeof(RaiJu), typeof(RuneBeetle),
                 typeof(Changeling), typeof(SentinelSpider), typeof(Anlorvaglem),
                 typeof(Medusa), typeof(PrimevalLich), typeof(StygianDragon),
                 typeof(CoralSnake), typeof(DarkWisp), typeof(DreamWraith),

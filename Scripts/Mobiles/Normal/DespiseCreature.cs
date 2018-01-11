@@ -85,9 +85,9 @@ namespace Server.Engines.Despise
             }
         }
 
-        public virtual int TightLeashLength { get { return 2; } }
-        public virtual int ShortLeashLength { get { return 5; } }
-        public virtual int LongLeashLength { get { return 12; } }
+        public virtual int TightLeashLength { get { return 1; } }
+        public virtual int ShortLeashLength { get { return 1; } }
+        public virtual int LongLeashLength { get { return 10; } }
 
         public virtual int StatRatio { get { return Utility.RandomMinMax(35, 60); } }
 
@@ -130,6 +130,21 @@ namespace Server.Engines.Despise
         public override bool ForceNotoriety { get { return true; } }
         public override bool IsBondable { get { return false; } }
         public override bool GivesFameAndKarmaAward { get { return false; } }
+
+        public override TimeSpan ReacquireDelay
+        { 
+            get
+            {
+                if (!Controlled || m_Orb == null || m_Orb.Aggression == Aggression.Defensive)
+                {
+                    return TimeSpan.FromSeconds(10.0);
+                }
+                else
+                {
+                    return TimeSpan.FromSeconds(Utility.RandomMinMax(4, 6));
+                }
+            } 
+        }
 
         public DespiseCreature(AIType ai, FightMode fightmode)
             : base(ai, fightmode, 10, 1, .2, .4)
@@ -259,9 +274,8 @@ namespace Server.Engines.Despise
 
             switch (m_Orb.LeashLength)
             {
-                case LeashLength.Tight: return TightLeashLength;
-                case LeashLength.Short: return ShortLeashLength;
                 default:
+                case LeashLength.Short: return ShortLeashLength;
                 case LeashLength.Long: return LongLeashLength;
             }
         }

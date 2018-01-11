@@ -327,7 +327,8 @@ namespace Server.Items
                 double chance = ((healing - 68.0) / 50.0) - (m_Slips * 0.02);
 
                 if (((checkSkills = (healing >= 80.0 && anatomy >= 80.0)) && chance > Utility.RandomDouble()) ||
-                    (Core.SE && petPatient is FactionWarHorse && petPatient.ControlMaster == m_Healer))
+                    (Core.SE && petPatient is FactionWarHorse && petPatient.ControlMaster == m_Healer) ||
+                    (Server.Engines.VvV.ViceVsVirtueSystem.Enabled && petPatient is Server.Engines.VvV.VvVMount && petPatient.ControlMaster == m_Healer))
                 //TODO: Dbl check doesn't check for faction of the horse here?
                 {
                     if (m_Patient.Map == null || !m_Patient.Map.CanFit(m_Patient.Location, 16, false, false))

@@ -14,6 +14,9 @@ namespace Server.Mobiles
             Body = 20;
             BaseSoundID = 0x388;
 
+            if (Utility.RandomBool())
+                Hue = 1154;
+
             SetStr(76, 100);
             SetDex(126, 145);
             SetInt(36, 60);

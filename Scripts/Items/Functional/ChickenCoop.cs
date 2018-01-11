@@ -331,10 +331,6 @@ namespace Server.Items
             }
             else
             {
-                //Container bank = from.FindBankNoCreate();
-
-                //if (bank != null && bank.ConsumeTotal(typeof(Gold), 30))
-                //{
                 pet.ControlTarget = null;
                 pet.ControlOrder = OrderType.Stay;
                 pet.Internalize();
@@ -354,12 +350,6 @@ namespace Server.Items
                     m_Stored[from].Add(pet);
 
                 from.SendMessage("Your chicken has been stabled.");
-                //from.SendLocalizedMessage(502679); // Very well, thy pet is stabled. Thou mayst recover it by saying 'claim' to me. In one real world week, I shall sell it off if it is not claimed!
-                //}
-                //else
-                //{
-                //from.SendLocalizedMessage(502677); // But thou hast not the funds in thy bank account!
-                //}
             }
         }
 

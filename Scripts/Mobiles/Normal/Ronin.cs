@@ -12,7 +12,7 @@ namespace Server.Mobiles
         private DateTime m_NextWeaponChange;
 
 		[Constructable]
-		public Ronin() : base( AIType.AI_Samurai, FightMode.Closest, 10, 1, 0.2, 0.4 )
+		public Ronin() : base( AIType.AI_Samurai, FightMode.Closest, 10, 1, 0.3, 0.6 )
 		{
 			SpeechHue = Utility.RandomDyedHue();
 			Hue = Utility.RandomSkinHue();

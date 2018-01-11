@@ -2142,10 +2142,10 @@ namespace Server.Multis
             return false;
         }
 
-        public void Release(Mobile m, Item item)
+        public bool Release(Mobile m, Item item)
         {
             if (!IsFriend(m) || !IsActive)
-                return;
+                return false;
 
             if (IsLockedDown(item))
             {
@@ -2159,16 +2159,22 @@ namespace Server.Multis
 
                     if (item is RewardBrazier)
                         ((RewardBrazier)item).TurnOff();
+
+                    return true;
                 }
+
+                return false;
             }
             else if (IsSecure(item))
             {
-                ReleaseSecure(m, item);
+                return ReleaseSecure(m, item);
             }
             else
             {
                 m.LocalOverheadMessage(MessageType.Regular, 0x3E9, 1010416); // This is not locked down or secured.
             }
+
+            return false;
         }
 
         public void AddSecure(Mobile m, Item item)
@@ -2344,10 +2350,10 @@ namespace Server.Multis
             return m_Secures.Where(s => s.Owner == from).ToList();
         }
 
-        public void ReleaseSecure(Mobile m, Item item)
+        public bool ReleaseSecure(Mobile m, Item item)
         {
             if (m_Secures == null || !IsCoOwner(m) || item is StrongBox || !IsActive || !CanRelease(m, item))
-                return;
+                return false;
 
             var info = GetSecureInfoFor(item);
 
@@ -2368,16 +2374,19 @@ namespace Server.Multis
                     item.SetLastMoved();
                     item.PublicOverheadMessage(Server.Network.MessageType.Label, 0x3B2, 501656);//[no longer secure]
                     m_Secures.Remove(info);
+
+                    return true;
                 }
                 else
                 {
                     m.LocalOverheadMessage(MessageType.Regular, 0x3E9, 1010418); // You did not lock this down, and you are not able to release this.
                 }
 
-                return;
+                return false;
             }
 
             m.SendLocalizedMessage(501717); //This isn't secure...
+            return false;
         }
 
         private bool CanRelease(Mobile from, Item item)
@@ -4830,9 +4839,8 @@ namespace Server.Multis
                 {
                     Mobile.SendLocalizedMessage(1153881); // Your pack cannot hold this
                 }
-                else
+                else if (House.Release(Mobile, Item))
                 {
-                    House.Release(Mobile, Item);
                     Mobile.Backpack.DropItem(Item);
                 }
             }

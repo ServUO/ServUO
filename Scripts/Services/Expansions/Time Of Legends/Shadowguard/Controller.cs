@@ -700,16 +700,16 @@ namespace Server.Engines.Shadowguard
             ankh.MoveToWorld(new Point3D(503, 2191, 25), Map.TerMur);    
 
             Item item = new Static(19343);
-            item.MoveToWorld(new Point3D(64, 2336, 30), Map.TerMur);
+            item.MoveToWorld(new Point3D(64, 2336, 29), Map.TerMur);
 
             item = new Static(19343);
-            item.MoveToWorld(new Point3D(160, 2336, 30), Map.TerMur);
+            item.MoveToWorld(new Point3D(160, 2336, 29), Map.TerMur);
 
             item = new Static(19343);
-            item.MoveToWorld(new Point3D(64, 2432, 30), Map.TerMur);
+            item.MoveToWorld(new Point3D(64, 2432, 29), Map.TerMur);
 
             item = new Static(19343);
-            item.MoveToWorld(new Point3D(160, 2432, 30), Map.TerMur);
+            item.MoveToWorld(new Point3D(160, 2432, 29), Map.TerMur);
 
             from.SendMessage("Shadowguard has been setup!");
             Console.WriteLine("Shadowguard setup!");
