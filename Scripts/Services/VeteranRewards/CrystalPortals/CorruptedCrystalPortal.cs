@@ -356,8 +356,8 @@ namespace Server.Items
                     break;
 					case "dungeon underworld":
 					{
-						loc = new Point3D( 1143, 1085, -37 );
-						map = Map.TerMur;
+						loc = new Point3D( 4195, 3263, 5 );
+						map = Map.Trammel;
 					}
 					break;
 					case "dungeon abyss":
