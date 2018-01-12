@@ -181,6 +181,19 @@ namespace Server.Engines.VvV
             }
         }
 
+        public void CheckBattleStatus()
+        {
+            if (Battle.OnGoing)
+                return;
+
+            int count = EnemyGuildCount();
+
+            if (count > 1)
+            {
+                Battle.Begin();
+            }
+        }
+
         public void CheckBattleStatus(PlayerMobile pm)
         {
             if (!IsVvV(pm) || !Enabled)

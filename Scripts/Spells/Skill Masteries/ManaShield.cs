@@ -32,7 +32,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void SendCastEffect()
         {
-            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 1371, 0);
+            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 1371, 2);
         }
 
         public override bool CheckCast()
@@ -43,6 +43,14 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
+            SkillMasterySpell spell = GetSpell(Caster, this.GetType());
+
+            if (spell != null)
+            {
+                spell.Expire();
+                return false;
+            }
+
             return base.CheckCast();
         }
 
@@ -50,14 +58,6 @@ namespace Server.Spells.SkillMasteries
         {
             if (CheckSequence())
             {
-                SkillMasterySpell spell = GetSpell(Caster, this.GetType());
-
-                if (spell != null)
-                {
-                    spell.Expire();
-                    return;
-                }
-
                 double skill = ((Caster.Skills[CastSkill].Value + ArcanistSpell.GetFocusLevel(Caster) * 20) / 2) + (GetMasteryLevel() * 20) + 20;
                 Chance = (skill / 13.0) / 100.0;
 

@@ -105,7 +105,6 @@ namespace Server.Items
 			list.Add( (int) HumilityTileType.West, 1080232 );
 		}
 
-
 		public void OnOptionSelected( Mobile from, int choice )
 		{
 			m_HumilityTileType = (HumilityTileType) choice;

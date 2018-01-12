@@ -430,6 +430,11 @@ namespace Server.Engines.VvV
             NextAltarActivate = DateTime.MinValue;
             ManaSpikeEndEffects = DateTime.MinValue;
             NextManaSpike = DateTime.MinValue;
+
+            Timer.DelayCall(TimeSpan.FromMinutes(Cooldown), () =>
+                {
+                    System.CheckBattleStatus();
+                });
         }
 
         public void TallyStats()

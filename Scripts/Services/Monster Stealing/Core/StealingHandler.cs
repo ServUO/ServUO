@@ -34,7 +34,7 @@ namespace Server.Engines.CreatureStealing
                 return; 
             }
             
-            if (from.Controlled == true || from.Owners.Count > 0 || from.Fame <= 0)
+            if (from.Controlled || from.Summoned)
             {
                 thief.SendLocalizedMessage(502708); //You can't steal from this.
                 return; 

@@ -53,6 +53,12 @@ namespace Server.Engines.ArenaSystem
                 return false;
             }
 
+            if (o is BallOfSummoning)
+            {
+                MessageHelper.SendLocalizedMessageTo((BallOfSummoning)o, m, 1054125, 0x5); // The Crystal Ball fills with a blue mist. Your pet is not responding to the summons.
+                return false;
+            }
+
             return base.OnDoubleClick(m, o);
         }
 
@@ -95,21 +101,32 @@ namespace Server.Engines.ArenaSystem
             return base.OnBeginSpellCast(m, spell);
         }
 
-        public override bool OnTarget(Mobile m, Target t, object o)
+        /*public override bool OnTarget(Mobile m, Target t, object o)
         {
-            ArenaDuel duel = Arena.CurrentDuel;
-
-            if (t is TeleportSpell.InternalTarget && Region.Find(m.Location, m.Map) != this)
+            if (t is TeleportSpell.InternalTarget)
             {
-                m.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                if (Region.Find(m.Location, m.Map) != this || (o is IPoint3D && ((IPoint3D)o).Z != m.Z))
+                {
+                    m.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                }
+
                 return false;
             }
 
             return base.OnTarget(m, t, o);
-        }
+        }*/ // this no workey
 
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
         {
+            if (type == TravelCheckType.TeleportTo)
+            {
+                if (Region.Find(traveller.Location, traveller.Map) != this || traveller.Z != p.Z)
+                {
+                    traveller.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                    return false;
+                }
+            }
+
             return type > TravelCheckType.Mark;
         }
 
