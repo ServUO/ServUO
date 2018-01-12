@@ -62,29 +62,29 @@ namespace Server.Spells.Sixth
                     eastToWest = false;
 
                 Effects.PlaySound(p, Caster.Map, 0x20B);
-
                 int itemID = eastToWest ? 0x3967 : 0x3979;
 
+                Point3D pnt = new Point3D(p);
                 TimeSpan duration = TimeSpan.FromSeconds(3.0 + (Caster.Skills[SkillName.Magery].Value / 3.0));
 
-                if (SpellHelper.CheckField(new Point3D(p), Caster.Map))
-                    new InternalItem(Caster, itemID, new Point3D(p), Caster.Map, duration);
+                if (SpellHelper.CheckField(pnt, Caster.Map))
+                    new InternalItem(itemID, pnt, Caster, Caster.Map, duration);
 
                 for (int i = 1; i <= 2; ++i)
                 {
                     Timer.DelayCall<int>(TimeSpan.FromMilliseconds(i * 300), index =>
                     {
-                        IPoint3D pnt = new Point3D(eastToWest ? p.X + index : p.X, eastToWest ? p.Y : p.Y + index, p.Z);
-                        SpellHelper.GetSurfaceTop(ref pnt);
+                        Point3D point = new Point3D(eastToWest ? pnt.X + index : pnt.X, eastToWest ? pnt.Y : pnt.Y + index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
-                        if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
-                            new InternalItem(Caster, itemID, new Point3D(pnt), Caster.Map, duration);
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
 
-                        pnt = new Point3D(eastToWest ? p.X + -index : p.X, eastToWest ? p.Y : p.Y + -index, p.Z);
-                        SpellHelper.GetSurfaceTop(ref pnt);
+                        point = new Point3D(eastToWest ? pnt.X + -index : pnt.X, eastToWest ? pnt.Y : pnt.Y + -index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
-                        if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
-                            new InternalItem(Caster, itemID, new Point3D(pnt), Caster.Map, duration);
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
                     }, i);
                 }
             }
@@ -101,7 +101,7 @@ namespace Server.Spells.Sixth
 
             public Mobile Caster { get { return m_Caster; } }
 
-            public InternalItem(Mobile caster, int itemID, Point3D loc, Map map, TimeSpan duration)
+            public InternalItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration)
                 : base(itemID)
             {
                 Movable = false;

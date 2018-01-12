@@ -73,7 +73,6 @@ namespace Server.Spells.Fourth
                 Effects.PlaySound(p, Caster.Map, 0x20C);
 
                 int itemID = eastToWest ? 0x398C : 0x3996;
-
                 TimeSpan duration;
 
                 if (Core.AOS)
@@ -81,25 +80,27 @@ namespace Server.Spells.Fourth
                 else
                     duration = TimeSpan.FromSeconds(4.0 + (Caster.Skills[SkillName.Magery].Value * 0.5));
 
-                if(SpellHelper.CheckField(new Point3D(p), Caster.Map))
-                    new FireFieldItem(itemID, new Point3D(p), Caster, Caster.Map, duration);
+                Point3D pnt = new Point3D(p);
+
+                if (SpellHelper.CheckField(pnt, Caster.Map))
+                    new FireFieldItem(itemID, pnt, Caster, Caster.Map, duration);
 
                 for (int i = 1; i <= 2; ++i)
                 {
                     Timer.DelayCall<int>(TimeSpan.FromMilliseconds(i * 300), index =>
-                        {
-                            IPoint3D pnt = new Point3D(eastToWest ? p.X + index : p.X, eastToWest ? p.Y : p.Y + index, p.Z);
-                            SpellHelper.GetSurfaceTop(ref pnt);
+                    {
+                        Point3D point = new Point3D(eastToWest ? pnt.X + index : pnt.X, eastToWest ? pnt.Y : pnt.Y + index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
-                            if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
-                                new FireFieldItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new FireFieldItem(itemID, point, Caster, Caster.Map, duration);
 
-                            pnt = new Point3D(eastToWest ? p.X + -index : p.X, eastToWest ? p.Y : p.Y + -index, p.Z);
-                            SpellHelper.GetSurfaceTop(ref pnt);
+                        point = new Point3D(eastToWest ? pnt.X + -index : pnt.X, eastToWest ? pnt.Y : pnt.Y + -index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
-                            if (SpellHelper.CheckField(new Point3D(pnt), Caster.Map))
-                                new FireFieldItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
-                        }, i);
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new FireFieldItem(itemID, point, Caster, Caster.Map, duration);
+                    }, i);
                 }
             }
 
