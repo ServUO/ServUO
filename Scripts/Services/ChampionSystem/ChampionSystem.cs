@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,8 +71,8 @@ namespace Server.Engines.CannedEvil
 			m_Enabled = Config.Get("Champions.Enabled", true);
 			m_RotateDelay = Config.Get("Champions.RotateDelay", TimeSpan.FromDays(1.0d));
 			m_GoldShowerPiles = Config.Get("Champions.GoldPiles", 50);
-			m_GoldShowerMinAmount = Config.Get("Champions.GoldMin", 2500);
-			m_GoldShowerMaxAmount = Config.Get("Champions.GoldMax", 7500);
+			m_GoldShowerMinAmount = Config.Get("Champions.GoldMin", 4000);
+			m_GoldShowerMaxAmount = Config.Get("Champions.GoldMax", 5500);
 			m_HarrowerGoldPiles = Config.Get("Champions.HarrowerGoldPiles", 75);
 			m_HarrowerGoldMinAmount = Config.Get("Champions.HarrowerGoldMin", 5000);
 			m_HarrowerGoldMaxAmount = Config.Get("Champions.HarrowerGoldMax", 10000);
