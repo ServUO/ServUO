@@ -12,6 +12,7 @@ namespace Server.Engines.VvV
     public class BattleWarningGump : Gump
     {
         public PlayerMobile User { get; set; }
+        public Timer Timer { get; set; }
 
         public BattleWarningGump(PlayerMobile pm)
             : base(50, 50)
@@ -25,10 +26,22 @@ namespace Server.Engines.VvV
 
             AddButton(463, 168, 4005, 4007, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(250, 171, 250, 20, 1155647, 0xFFFF, false, false); // Teleport to nearest Moongate?
+
+            Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), () =>
+                {
+                    User.CloseGump(typeof(BattleWarningGump));
+                    ViceVsVirtueSystem.AddTempParticipant(User);
+                });
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
+            if (Timer != null)
+            {
+                Timer.Stop();
+                Timer = null;
+            }
+
             if (info.ButtonID == 1)
             {
                 PublicMoongate closestGate = null;
@@ -63,11 +76,13 @@ namespace Server.Engines.VvV
                 else
                 {
                     User.SendLocalizedMessage(1155584); // You are now open to attack!
+                    ViceVsVirtueSystem.AddTempParticipant(User);
                 }
             }
             else
             {
                 User.SendLocalizedMessage(1155584); // You are now open to attack!
+                ViceVsVirtueSystem.AddTempParticipant(User);
             }
         }
     }

@@ -50,7 +50,7 @@ namespace Server.Engines.VvV
         public bool HasGenerated { get; set; }
 
         public Dictionary<Guild, VvVGuildStats> GuildStats { get; set; }
-        public static Dictionary<Mobile, Mobile> FlaggedTo { get; set; }
+        public static Dictionary<Mobile, DateTime> TempParticipants { get; set; }
 
         public List<VvVCity> ExemptCities { get; set; }
 
@@ -188,7 +188,7 @@ namespace Server.Engines.VvV
 
             int count = EnemyGuildCount();
 
-            if (count > 1)
+            if (count > 0)
             {
                 Battle.Begin();
             }
@@ -523,6 +523,36 @@ namespace Server.Engines.VvV
                 e.Mobile.SendGump(new ExemptCitiesGump());
             });
 
+            Server.Commands.CommandSystem.Register("VvVKick", AccessLevel.GameMaster, e =>
+            {
+                e.Mobile.SendMessage("Target the person you'd like to remove from VvV.");
+                e.Mobile.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+                    {
+                        if (targeted is PlayerMobile)
+                        {
+                            var pm = targeted as PlayerMobile;
+                            VvVPlayerEntry entry = Instance.GetPlayerEntry<VvVPlayerEntry>(pm);
+
+                            if (entry != null && entry.Active)
+                            {
+                                pm.PrivateOverheadMessage(MessageType.Regular, 1154, 1155561, pm.NetState); // You are no longer in Vice vs Virtue!
+
+                                entry.Active = false;
+                                entry.ResignExpiration = DateTime.MinValue;
+                                pm.Delta(MobileDelta.Noto);
+                                pm.ValidateEquipment();
+
+                                from.SendMessage("{0} has been removed from VvV.", pm.Name);
+                                pm.SendMessage("You have been removed from VvV.");
+                            }
+                            else
+                            {
+                                from.SendMessage("{0} is not an active VvV member.", pm.Name);
+                            }
+                        }
+                    });
+            });
+
             if (!Instance.HasGenerated)
             {
                 CreateSilverTraders();
@@ -624,21 +654,110 @@ namespace Server.Engines.VvV
             VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
             VvVPlayerEntry toentry = Instance.GetPlayerEntry<VvVPlayerEntry>(to);
 
+            Guild fromguild = fromentry == null ? null : fromentry.Guild;
+            Guild toguild = toentry == null ? null : toentry.Guild;
+
             if (fromentry == null || toentry == null || !fromentry.Active || !toentry.Active)
             {
-                if (fromentry != null && toentry == null && FlaggedTo != null && FlaggedTo.ContainsKey(from) && FlaggedTo[from] == to)
-                    return true;
+                if (TempParticipants != null)
+                {
+                    CheckTempParticipants();
+
+                    if ((fromentry != null && toentry == null || (fromentry == null && toentry != null)) &&
+                        (TempParticipants.ContainsKey(from) || TempParticipants.ContainsKey(to)) &&
+                        ((fromguild == null && toguild == null) || fromguild != toguild)) // one is vvv and the other isnt, seperate guilds
+                    {
+                        return true;
+                    }
+
+                    if (fromentry == null && toentry == null &&
+                        ((fromguild == null && toguild == null) || fromguild != toguild) &&
+                        TempParticipants.ContainsKey(from) &&
+                        TempParticipants.ContainsKey(to)) // neither are vvv, seperate guilds
+                    {
+                        return true;
+                    }
+                }
 
                 return false;
             }
-
-            Guild fromguild = fromentry.Guild;
-            Guild toguild = toentry.Guild;
 
             if (toguild == null || fromguild == null)
                 return true;
 
             return fromguild != toguild && !fromguild.IsAlly(toguild);
+        }
+
+        public static void AddTempParticipant(Mobile m)
+        {
+            if (TempParticipants == null)
+                TempParticipants = new Dictionary<Mobile, DateTime>();
+
+            TempParticipants[m] = DateTime.UtcNow + TimeSpan.FromMinutes(30);
+            m.Delta(MobileDelta.Noto);
+        }
+
+        public static void CheckHarmful(Mobile attacker, Mobile defender)
+        {
+            if (attacker == null || defender == null)
+                return;
+
+            if (!IsVvV(attacker) && IsVvV(defender))
+            {
+                Guild attackerguild = attacker.Guild as Guild;
+                Guild defenderguild = defender.Guild as Guild;
+
+                if ((attackerguild == null && defenderguild == null) || attackerguild != defenderguild)
+                {
+                    AddTempParticipant(attacker);
+                }
+            }
+        }
+
+        public static void CheckBeneficial(Mobile from, Mobile target)
+        {
+            if (from == null || target == null)
+                return;
+
+            if (!IsVvV(from) && IsVvV(target))
+            {
+                AddTempParticipant(from);
+            }
+        }
+
+        public static void RemoveTempParticipant(Mobile m)
+        {
+            if (TempParticipants == null)
+                return;
+
+            if (TempParticipants.ContainsKey(m))
+            {
+                TempParticipants.Remove(m);
+                m.Delta(MobileDelta.Noto);
+            }
+        }
+
+        public static void CheckTempParticipants()
+        {
+            if (TempParticipants == null)
+                return;
+
+            List<Mobile> remove = new List<Mobile>();
+
+            foreach (var kvp in TempParticipants)
+            {
+                if (kvp.Value < DateTime.UtcNow)
+                {
+                    remove.Add(kvp.Key);
+                }
+            }
+
+            foreach (var m in remove)
+            {
+                RemoveTempParticipant(m);
+            }
+
+            ColUtility.Free(remove);
         }
 
         public static bool IsBattleRegion(Region r)

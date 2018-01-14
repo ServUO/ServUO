@@ -116,6 +116,9 @@ namespace Server.Engines.Quests.Doom
             if (creature == null || creature.Controlled || creature.Summoned)
                 return 0;
 
+            if (creature is DarkGuardian)
+                return 30;
+
             int fame = creature.Fame;
 
             if (fame < 1500)

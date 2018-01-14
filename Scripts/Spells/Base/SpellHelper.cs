@@ -1431,8 +1431,6 @@ namespace Server.Spells
 
                 if (realAmount > 0 && target != from && from is PlayerMobile && target is PlayerMobile)
                     SpiritualityVirtue.OnHeal(from, realAmount);
-
-                SpiritualityVirtue.OnHeal(from, realAmount);
             }
 
             target.Heal(amount, from, message);

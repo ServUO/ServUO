@@ -254,6 +254,9 @@ namespace Server.Mobiles
                 return new CloneAI(this);
             }
         }
+
+        public override bool CanDetectHidden { get { return false; } }
+
         public override bool IsHumanInTown()
         {
             return false;
@@ -323,13 +326,6 @@ namespace Server.Mobiles
             m.CurrentSpeed = m.ActiveSpeed;
         }
 
-        public override bool CanDetectHidden
-        {
-            get
-            {
-                return false;
-            }
-        }
         public override bool Think()
         {
             // Clones only follow their owners

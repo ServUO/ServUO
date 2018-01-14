@@ -19,6 +19,7 @@ namespace Server.Spells.SkillMasteries
         public override double UpKeep { get { return 0; } }
         public override int RequiredMana { get { return 40; } }
         public override bool PartyEffects { get { return false; } }
+        public override bool RevealOnTick { get { return true; } }
 
         public override SkillName CastSkill { get { return SkillName.Spellweaving; } }
         public override SkillName DamageSkill { get { return SkillName.Meditation; } }

@@ -87,7 +87,6 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            //Borno - Changed to false so we're not using double mana- the NewAbility will use mana instead
             if (CheckMana(attacker, false))
             {
                 BladeWeaveRedirect bwr;

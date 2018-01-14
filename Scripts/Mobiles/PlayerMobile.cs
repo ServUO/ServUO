@@ -45,6 +45,7 @@ using Server.Targeting;
 using System.Linq;
 using Server.Engines.VoidPool;
 using Server.Spells.SkillMasteries;
+using Server.Engines.VvV;
 
 using RankDefinition = Server.Guilds.RankDefinition;
 #endregion
@@ -1672,6 +1673,27 @@ namespace Server.Mobiles
 			}
 		}
 
+        public override void DoHarmful(IDamageable damageable, bool indirect)
+        {
+            base.DoHarmful(damageable, indirect);
+
+            if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet && damageable is Mobile)
+            {
+                ViceVsVirtueSystem.CheckHarmful(this, (Mobile)damageable);
+            }
+        }
+
+        public override void DoBeneficial(Mobile target)
+        {
+            Console.WriteLine("Doing BENE");
+            base.DoBeneficial(target);
+
+            if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet && target != null)
+            {
+                ViceVsVirtueSystem.CheckBeneficial(this, target);
+            }
+        }
+
 		public override bool CanBeHarmful(IDamageable damageable, bool message, bool ignoreOurBlessedness)
 		{
             Mobile target = damageable as Mobile;
@@ -3120,7 +3142,7 @@ namespace Server.Mobiles
 
 		private static int CheckContentForTrade(Item item)
 		{
-			if (item is TrapableContainer && ((TrapableContainer)item).TrapType != TrapType.None)
+			if (item is TrapableContainer && ((TrapableContainer)item).TrapType != Server.Items.TrapType.None)
 			{
 				return 1004044; // You may not trade trapped items.
 			}
@@ -3273,6 +3295,8 @@ namespace Server.Mobiles
 			{
 				InvalidateProperties();
 			}
+
+            BaseGump.CheckCloseGumps(this);
 
 			#region Dueling
 			if (m_DuelContext != null)

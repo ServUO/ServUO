@@ -6,6 +6,7 @@ using Server.Mobiles;
 using System.Linq;
 using Server.Network;
 using Server.Gumps;
+using Server.Spells;
 
 namespace Server.Engines.ArenaSystem
 {
@@ -377,6 +378,13 @@ namespace Server.Engines.ArenaSystem
 
             BaseCreature.TeleportPets(pm, p, map);
             pm.MoveToWorld(p, Arena.Definition.Map);
+
+            if (pm.Spell is Spell)
+            {
+                ((Spell)pm.Spell).Disturb(DisturbType.Hurt);
+            }
+
+            Server.Targeting.Target.Cancel(pm);
 
             bool allin = true;
 

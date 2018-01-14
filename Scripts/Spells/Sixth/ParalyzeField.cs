@@ -231,7 +231,7 @@ namespace Server.Spells.Sixth
         {
             private readonly ParalyzeFieldSpell m_Owner;
             public InternalTarget(ParalyzeFieldSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(Core.TOL ? 15 : Core.ML ? 10 : 12, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }
