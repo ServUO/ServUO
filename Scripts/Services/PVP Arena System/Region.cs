@@ -59,6 +59,11 @@ namespace Server.Engines.ArenaSystem
                 return false;
             }
 
+            if (o is BraceletOfBinding)
+            {
+                return false;
+            }
+
             return base.OnDoubleClick(m, o);
         }
 
