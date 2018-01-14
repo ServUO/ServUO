@@ -1685,7 +1685,6 @@ namespace Server.Mobiles
 
         public override void DoBeneficial(Mobile target)
         {
-            Console.WriteLine("Doing BENE");
             base.DoBeneficial(target);
 
             if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet && target != null)
