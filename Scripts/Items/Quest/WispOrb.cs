@@ -117,9 +117,9 @@ namespace Server.Engines.Despise
                 if (m_Pet != null && m_Anchor == null)
                 {
                     m_Anchor = m_Owner;
+                    m_Pet.Home = GetAnchorLocation();
                 }
-
-                m_Pet.Home = GetAnchorLocation();
+                
                 //m_Pet.RangeHome = m_Pet.GetLeashLength();
 
                 InvalidateProperties(); 

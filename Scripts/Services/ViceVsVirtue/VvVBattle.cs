@@ -533,6 +533,9 @@ namespace Server.Engines.VvV
 
         public void ActivateArrows()
         {
+            if (Altars == null)
+                return;
+
             foreach (PlayerMobile pm in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 if (pm.NetState != null && pm.QuestArrow == null)
