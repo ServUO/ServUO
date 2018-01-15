@@ -66,7 +66,6 @@ namespace Server.Mobiles
         public override int GetAngerSound() { return 1606; }
         public override int GetHurtSound() { return 1608; }
         public override int GetDeathSound() { return 1607; }
-        public override bool GivesSAArtifact { get { return true; } }
 
         public Niporailem(Serial serial)
             : base(serial)

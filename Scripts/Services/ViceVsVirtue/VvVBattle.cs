@@ -156,6 +156,8 @@ namespace Server.Engines.VvV
 
         public void Begin()
         {
+            OnGoing = true;
+
             VvVCity newCity = City;
             List<VvVCity> cities = new List<VvVCity>();
 
@@ -184,8 +186,6 @@ namespace Server.Engines.VvV
             }
 
             ColUtility.Free(cities);
-
-            OnGoing = true;
             City = newCity;
             BeginTimer();
 
@@ -302,20 +302,22 @@ namespace Server.Engines.VvV
 
             ActivateArrows();
 
-            List<Mobile> list = KillCooldown.Keys.Where(mob => KillCooldown[mob] < DateTime.UtcNow).ToList();
-
-            foreach (Mobile m in list)
+            if (KillCooldown != null)
             {
-                KillCooldown.Remove(m);
+                List<Mobile> list = KillCooldown.Keys.Where(mob => KillCooldown[mob] < DateTime.UtcNow).ToList();
+
+                foreach (Mobile m in list)
+                {
+                    KillCooldown.Remove(m);
+                }
+
+                ColUtility.Free(list);
             }
 
-            if (OnGoing)
+            if (Turrets != null)
             {
                 Turrets.ForEach(t => { t.Scan(); });
             }
-
-            list.Clear();
-            list.TrimExcess();
         }
 
         public void CheckParticipation()
@@ -345,6 +347,7 @@ namespace Server.Engines.VvV
 
         public void EndBattle()
         {
+            OnGoing = false;
             EndTimer();
 
             if (Region is GuardedRegion)
@@ -406,20 +409,18 @@ namespace Server.Engines.VvV
             ColUtility.Free(Warned);
             ColUtility.Free(Turrets);
 
-            Altars = null;
+            /*Altars = null;
             Teams = null;
             KillCooldown = null;
             Messages = null;
             Traps = null;
             Warned = null;
-            Turrets = null;
+            Turrets = null;*/
 
             if (Region is GuardedRegion)
             {
                 ((GuardedRegion)Region).Disabled = false;
             }
-
-            OnGoing = false;
 
             NextSigilSpawn = DateTime.MinValue;
             LastOccupationCheck = DateTime.MinValue;
@@ -533,7 +534,7 @@ namespace Server.Engines.VvV
 
         public void ActivateArrows()
         {
-            if (Altars == null)
+            if (Altars == null || Region == null)
                 return;
 
             foreach (PlayerMobile pm in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())

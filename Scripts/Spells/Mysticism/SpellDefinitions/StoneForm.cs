@@ -75,7 +75,8 @@ namespace Server.Spells.Mysticism
 
         public void MobileDelta_Callback()
         {
-            Caster.Delta( MobileDelta.WeaponDamage );
+            Caster.Delta(MobileDelta.WeaponDamage);
+            Caster.UpdateResistances();
         }
 
 		public override void RemoveEffect( Mobile m )

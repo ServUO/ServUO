@@ -119,8 +119,6 @@ namespace Server.Engines.Despise
                     m_Anchor = m_Owner;
                     m_Pet.Home = GetAnchorLocation();
                 }
-                
-                //m_Pet.RangeHome = m_Pet.GetLeashLength();
 
                 InvalidateProperties(); 
             } 
