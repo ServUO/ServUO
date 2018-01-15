@@ -5784,44 +5784,6 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual bool GivesSAArtifact { get { return false; } }
-
-        private static readonly Type[] m_SAArtifacts = new[]
-        {
-            typeof(AxesOfFury), typeof(BreastplateOfTheBerserker), typeof(EternalGuardianStaff), typeof(LegacyOfDespair),
-            typeof(GiantSteps), typeof(StaffOfShatteredDreams), typeof(PetrifiedSnake), typeof(StoneDragonsTooth),
-            typeof(TokenOfHolyFavor), typeof(SwordOfShatteredHopes), typeof(Venom), typeof(StormCaller)
-        };
-
-        public static void GiveSAArtifact(Mobile m)
-        {
-            Item item = Activator.CreateInstance(m_SAArtifacts[Utility.Random(m_SAArtifacts.Length)]) as Item;
-            m.PlaySound(0x5B4);
-
-            if (item == null)
-            {
-                return;
-            }
-
-            if (m.AddToBackpack(item))
-            {
-                m.SendLocalizedMessage(1062317);
-                // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-                m.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
-            }
-            else if (m.BankBox != null && m.BankBox.TryDropItem(m, item, false))
-            {
-                m.SendLocalizedMessage(1062317);
-                // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-                m.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
-            }
-            else
-            {
-                item.MoveToWorld(m.Location, m.Map);
-                m.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
-            }
-        }
-
         public static void CheckRecipeDrop(BaseCreature bc, Container c)
         {
             if (SpellHelper.IsEodon(c.Map, c.Location))
@@ -5906,11 +5868,6 @@ namespace Server.Mobiles
                 }
             }
             #endregion
-
-            if (GivesSAArtifact && Paragon.CheckArtifactChance(mob, this))
-            {
-                GiveSAArtifact(mob);
-            }
 
             EventSink.InvokeOnKilledBy(new OnKilledByEventArgs(this, mob));
         }

@@ -14,7 +14,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SBInfos;
+                return m_SBInfos;
             }
         }
 
@@ -37,7 +37,7 @@ namespace Server.Mobiles
         { 
             get
             {
-                return this.m_Donations;
+                return m_Donations;
             }
         }
 		
@@ -45,7 +45,7 @@ namespace Server.Mobiles
         { 
             get
             {
-                return this.m_Rewards;
+                return m_Rewards;
             }
         }
 		
@@ -60,22 +60,22 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Points;
+                return m_Points;
             }
             set
             { 
-                this.m_Points = value; 
+                m_Points = value; 
 				
-                if (this.m_Points < 0)
-                    this.m_Points = 0;
+                if (m_Points < 0)
+                    m_Points = 0;
 				
-                while (this.m_Tier > 0 && this.m_Points < this.PreviousTier)
-                    this.DecreaseTier();
+                while (m_Tier > 0 && m_Points < PreviousTier)
+                    DecreaseTier();
 					
-                while (this.m_Tier < this.MaxTier && this.m_Points > this.CurrentTier)
-                    this.IncreaseTier();
+                while (m_Tier < MaxTier && m_Points > CurrentTier)
+                    IncreaseTier();
 				
-                this.InvalidateProperties(); 
+                InvalidateProperties(); 
             }
         }
 		
@@ -84,17 +84,17 @@ namespace Server.Mobiles
         {
             get
             {
-                if (this.m_Tier > 2)
+                if (m_Tier > 2)
                 {
-                    long tier = this.m_StartTier * 2;
+                    long tier = m_StartTier * 2;
 					
-                    for (int i = 0; i < this.m_Tier - 2; i ++)
-                        tier += (i + 3) * this.m_NextTier;				
+                    for (int i = 0; i < m_Tier - 2; i ++)
+                        tier += (i + 3) * m_NextTier;				
 					
                     return tier; 
                 }
 				
-                return this.m_StartTier * this.m_Tier;
+                return m_StartTier * m_Tier;
             }
         }
 		
@@ -103,10 +103,10 @@ namespace Server.Mobiles
         {
             get
             {
-                if (this.m_Tier > 1)
-                    return this.PreviousTier + (this.m_Tier + 1) * this.m_NextTier;
+                if (m_Tier > 1)
+                    return PreviousTier + (m_Tier + 1) * m_NextTier;
 				
-                return this.m_StartTier + this.m_StartTier * this.m_Tier;
+                return m_StartTier + m_StartTier * m_Tier;
             }
         }
 		
@@ -115,12 +115,12 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_StartTier;
+                return m_StartTier;
             }
             set
             {
-                this.m_StartTier = value;
-                this.InvalidateProperties();
+                m_StartTier = value;
+                InvalidateProperties();
             }
         }
 		
@@ -129,12 +129,12 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_NextTier;
+                return m_NextTier;
             }
             set
             {
-                this.m_NextTier = value;
-                this.InvalidateProperties();
+                m_NextTier = value;
+                InvalidateProperties();
             }
         }
 		
@@ -143,12 +143,12 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_DailyDecay;
+                return m_DailyDecay;
             }
             set
             {
-                this.m_DailyDecay = value;
-                this.InvalidateProperties();
+                m_DailyDecay = value;
+                InvalidateProperties();
             }
         }
 		
@@ -157,7 +157,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Tier;
+                return m_Tier;
             }
         }
         #endregion
@@ -169,7 +169,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Tiers;
+                return m_Tiers;
             }
         }
 		
@@ -178,11 +178,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_DonationTitle is int ? (int)this.m_DonationTitle : 0;
+                return m_DonationTitle is int ? (int)m_DonationTitle : 0;
             }
             set
             {
-                this.m_DonationTitle = value;
+                m_DonationTitle = value;
             }
         }
 		
@@ -191,22 +191,22 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_DonationTitle is string ? (string)this.m_DonationTitle : null;
+                return m_DonationTitle is string ? (string)m_DonationTitle : null;
             }
             set
             {
-                this.m_DonationTitle = value;
+                m_DonationTitle = value;
             }
         }
 		
         public BaseCollectionMobile(string name, string title)
             : base(title)
         {
-            this.Name = name;
-            this.Frozen = true;
-            this.CantWalk = true;
+            Name = name;
+            Frozen = true;
+            CantWalk = true;
 		
-            this.Init();
+            Init();
 
 			CollectionsSystem.RegisterMobile(this);
         }
@@ -235,10 +235,10 @@ namespace Server.Mobiles
                     return;
                 }
 			
-                if (from.InRange(this.Location, 2) && from is PlayerMobile && this.CanDonate((PlayerMobile)from))
+                if (from.InRange(Location, 2) && from is PlayerMobile && CanDonate((PlayerMobile)from))
                 {
                     from.CloseGump(typeof(CommunityCollectionGump));
-                    from.SendGump(new CommunityCollectionGump((PlayerMobile)from, this, this.Location));
+                    from.SendGump(new CommunityCollectionGump((PlayerMobile)from, this, Location));
                 }
                 else
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
@@ -249,14 +249,14 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 			
-            list.Add(1072819, this.m_Tier.ToString()); // Current Tier: ~1_TIER~
-            list.Add(1072820, this.m_Points.ToString()); // Current Points: ~1_POINTS~
-            list.Add(1072821, this.m_Tier > this.MaxTier ? 0.ToString() : this.CurrentTier.ToString()); // Points until next tier: ~1_POINTS~
+            list.Add(1072819, m_Tier.ToString()); // Current Tier: ~1_TIER~
+            list.Add(1072820, m_Points.ToString()); // Current Points: ~1_POINTS~
+            list.Add(1072821, m_Tier > MaxTier ? 0.ToString() : CurrentTier.ToString()); // Points until next tier: ~1_POINTS~
 			
-            if (this.DonationLabel > 0)
-                list.Add(this.DonationLabel);
-            else if (this.DonationString != null)
-                list.Add(this.DonationString);
+            if (DonationLabel > 0)
+                list.Add(DonationLabel);
+            else if (DonationString != null)
+                list.Add(DonationString);
         }
 		
 		public CollectionData GetData()
@@ -277,10 +277,10 @@ namespace Server.Mobiles
 
 		public void SetData(CollectionData data)
 		{
-			Points = data.Points;
-			StartTier = data.StartTier;
-			NextTier = data.NextTier;
-			DailyDecay = data.DailyDecay;
+			m_Points = data.Points;
+            m_StartTier = data.StartTier;
+            m_NextTier = data.NextTier;
+            m_DailyDecay = data.DailyDecay;
 			m_Tier = data.Tier;
 			m_DonationTitle = data.DonationTitle;
 			m_Tiers = data.Tiers;
@@ -299,17 +299,17 @@ namespace Server.Mobiles
 			
             int version = reader.ReadInt();
 
-			this.Init();
+			Init();
 
 			if (version == 0)
 			{
-				this.m_Points = reader.ReadLong();
-				this.m_StartTier = reader.ReadLong();
-				this.m_NextTier = reader.ReadLong();
-				this.m_DailyDecay = reader.ReadLong();
-				this.m_Tier = reader.ReadInt();
+				m_Points = reader.ReadLong();
+				m_StartTier = reader.ReadLong();
+				m_NextTier = reader.ReadLong();
+				m_DailyDecay = reader.ReadLong();
+				m_Tier = reader.ReadInt();
 
-				this.m_DonationTitle = QuestReader.Object(reader);
+				m_DonationTitle = QuestReader.Object(reader);
 
 				for (int i = reader.ReadInt(); i > 0; i--)
 				{
@@ -318,13 +318,13 @@ namespace Server.Mobiles
 					for (int j = reader.ReadInt(); j > 0; j--)
 						list.Add(QuestReader.Object(reader));
 
-					this.m_Tiers.Add(list);
+					m_Tiers.Add(list);
 				}
 				CollectionsSystem.RegisterMobile(this);
 			}
 
-			if (this.CantWalk)
-                this.Frozen = true;
+			if (CantWalk)
+                Frozen = true;
         }
 		
         #region IComunityCollection
@@ -332,15 +332,15 @@ namespace Server.Mobiles
         {
             int points = (int)Math.Round(amount * item.Points);
 		
-            player.AddCollectionPoints(this.CollectionID, points);
+            player.AddCollectionPoints(CollectionID, points);
 			
             player.SendLocalizedMessage(1072816); // Thank you for your donation!
             player.SendLocalizedMessage(1072817, points.ToString()); // You have earned ~1_POINTS~ reward points for this donation.	
             player.SendLocalizedMessage(1072818, points.ToString()); // The Collection has been awarded ~1_POINTS~ points
 			
-            this.Points += points;
+            Points += points;
 			
-            this.InvalidateProperties();
+            InvalidateProperties();
         }
 		
         public virtual void Reward(PlayerMobile player, CollectionItem reward, int hue)
@@ -352,7 +352,7 @@ namespace Server.Mobiles
                 if (hue > 0)
                     item.Hue = hue;
 				
-                player.AddCollectionPoints(this.CollectionID, (int)reward.Points * -1);
+                player.AddCollectionPoints(CollectionID, (int)reward.Points * -1);
                 player.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
                 player.PlaySound(0x5A7);
 
@@ -367,16 +367,16 @@ namespace Server.Mobiles
 			
             reward.OnGiveReward(player, this, hue);	
 			
-            player.SendGump(new CommunityCollectionGump(player, this, this.Location));
+            player.SendGump(new CommunityCollectionGump(player, this, Location));
         }
 		
         public virtual void DonatePet(PlayerMobile player, BaseCreature pet)
         {
-            for (int i = 0; i < this.m_Donations.Count; i ++)
-                if (this.m_Donations[i].Type == pet.GetType())
+            for (int i = 0; i < m_Donations.Count; i ++)
+                if (m_Donations[i].Type == pet.GetType())
                 {
                     pet.Delete();
-                    this.Donate(player, this.m_Donations[i], 1);
+                    Donate(player, m_Donations[i], 1);
                     return;
                 }
 				
@@ -387,40 +387,40 @@ namespace Server.Mobiles
 		
         public virtual void IncreaseTier()
         { 
-            this.m_Tier += 1;
+            m_Tier += 1;
         }
 		
         public virtual void DecreaseTier()
         { 
-            this.m_Tier -= 1;
+            m_Tier -= 1;
 			
-            if (this.m_Tiers != null && this.m_Tiers.Count > 0)
+            if (m_Tiers != null && m_Tiers.Count > 0)
             {
-                for (int i = 0; i < this.m_Tiers[this.m_Tiers.Count - 1].Count; i ++)
+                for (int i = 0; i < m_Tiers[m_Tiers.Count - 1].Count; i ++)
                 {
-                    if (this.m_Tiers[this.m_Tiers.Count - 1][i] is Item)
-                        ((Item)this.m_Tiers[this.m_Tiers.Count - 1][i]).Delete();
-                    else if (this.m_Tiers[this.m_Tiers.Count - 1][i] is Mobile)
-                        ((Mobile)this.m_Tiers[this.m_Tiers.Count - 1][i]).Delete();
+                    if (m_Tiers[m_Tiers.Count - 1][i] is Item)
+                        ((Item)m_Tiers[m_Tiers.Count - 1][i]).Delete();
+                    else if (m_Tiers[m_Tiers.Count - 1][i] is Mobile)
+                        ((Mobile)m_Tiers[m_Tiers.Count - 1][i]).Delete();
                 }
 				
-                this.m_Tiers.RemoveAt(this.m_Tiers.Count - 1);
+                m_Tiers.RemoveAt(m_Tiers.Count - 1);
             }
         }
 		
         public virtual void Init()
         { 
-            if (this.m_Donations == null)
-                this.m_Donations = new List<CollectionItem>();
+            if (m_Donations == null)
+                m_Donations = new List<CollectionItem>();
 				
-            if (this.m_Rewards == null)
-                this.m_Rewards = new List<CollectionItem>();
+            if (m_Rewards == null)
+                m_Rewards = new List<CollectionItem>();
 			
-            if (this.m_Tiers == null)
-                this.m_Tiers = new List<List<object>>();
+            if (m_Tiers == null)
+                m_Tiers = new List<List<object>>();
 					
             // start decay timer
-            if (this.m_DailyDecay > 0)
+            if (m_DailyDecay > 0)
             {
                 DateTime today = DateTime.Today;
                 today.AddDays(1);

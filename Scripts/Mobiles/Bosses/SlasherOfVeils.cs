@@ -81,7 +81,7 @@ namespace Server.Mobiles
                 return new Type[] { typeof(AxesOfFury), typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(PetrifiedSnake), typeof(PillarOfStrength), typeof(SwordOfShatteredHopes), typeof(SummonersKilt), typeof(BreastplateOfTheBerserker) };
             }
         }
-        // public override bool GivesSAArtifact { get { return true; } }
+
         public override bool Unprovokable
         {
             get
