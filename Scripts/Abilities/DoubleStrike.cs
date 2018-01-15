@@ -15,6 +15,16 @@ namespace Server.Items
 		public override int BaseMana { get { return 30; } }
 		public override double DamageScalar { get { return 0.9; } }
 
+        public override bool OnBeforeDamage(Mobile attacker, Mobile defender)
+        {
+            BaseWeapon wep = attacker.Weapon as BaseWeapon;
+
+            if (wep != null)
+                wep.ProcessingMultipleHits = true;
+
+            return true;
+        }
+
 		public override void OnHit(Mobile attacker, Mobile defender, int damage)
 		{
 			if (!Validate(attacker) || !CheckMana(attacker, true))
@@ -40,7 +50,7 @@ namespace Server.Items
 				return;
 			}
 
-			IWeapon weapon = attacker.Weapon;
+			BaseWeapon weapon = attacker.Weapon as BaseWeapon;
 
 			if (weapon == null)
 			{
@@ -54,10 +64,10 @@ namespace Server.Items
 
 			if (attacker.InLOS(defender))
 			{
-				BaseWeapon.InDoubleStrike = true;
+                weapon.InDoubleStrike = true;
 				attacker.RevealingAction();
 				attacker.NextCombatTime = Core.TickCount + (int)weapon.OnSwing(attacker, defender).TotalMilliseconds;
-				BaseWeapon.InDoubleStrike = false;
+                weapon.InDoubleStrike = false;
 			}
 		}
 	}

@@ -170,7 +170,7 @@ namespace Server.Items
 
 			ResolveDest(e.Mobile, e.Speech.Trim(), ref loc, ref map);
 
-			if (loc == Point3D.Zero || map == null || map == Map.Internal)
+            if (loc == Point3D.Zero || map == null || map == Map.Internal || (Siege.SiegeShard && map == Map.Trammel))
 			{
 				return;
 			}

@@ -226,7 +226,7 @@ namespace Server.Engines.Harvest
 								}
 								else
 								{
-									item.Delete();
+                                    bonusItem.Delete();
 								}
 							}
                         }
@@ -316,7 +316,7 @@ namespace Server.Engines.Harvest
 
             Map map = m.Map;
 
-            if (map == null)
+            if (map == null || map == Map.Internal)
                 return false;
 
             List<Item> atFeet = new List<Item>();

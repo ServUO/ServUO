@@ -126,7 +126,7 @@ namespace Server.Engines.Doom
                     count++;
             }
 
-            count = Math.Min(1, count * 2);
+            count = Math.Max(1, count * 2);
 
 			for(int i = 0; i < count; i++)
 			{

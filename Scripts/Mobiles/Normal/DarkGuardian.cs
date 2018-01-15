@@ -46,7 +46,6 @@ namespace Server.Mobiles
 
             VirtualArmor = 50;
             PackNecroReg(15, 25);
-            PackItem(new DaemonBone(30));
         }
 
         public DarkGuardian(Serial serial)

@@ -11,40 +11,40 @@ namespace Server.Mobiles
         public TyballsShadow()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.15, 0.4)
         {
-            this.Body = 0x190;
-            this.Hue = 0x4001;
-            this.Female = false;
-            this.Name = "Tyball's Shadow";
-           
-            this.AddItem(new Robe(2406));
-                                
-            this.SetStr(400, 450);
-            this.SetDex(210, 250);
-            this.SetInt(310, 330);
+            Body = 0x190;
+            Hue = 0x4001;
+            Female = false;
+            Name = "Tyball's Shadow";
+                            
+            SetStr(400, 450);
+            SetDex(210, 250);
+            SetInt(310, 330);
 
-            this.SetHits(2800, 3000);
+            SetHits(2800, 3000);
 
-            this.SetDamage(20, 25);
+            SetDamage(20, 25);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
-            this.SetDamageType(ResistanceType.Energy, 25);
-            this.SetDamageType(ResistanceType.Poison, 20);
-            this.SetDamageType(ResistanceType.Energy, 20);
+            SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Energy, 25);
+            SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 70);
-            this.SetResistance(ResistanceType.Fire, 70);
-            this.SetResistance(ResistanceType.Cold, 70);
-            this.SetResistance(ResistanceType.Poison, 70);
-            this.SetResistance(ResistanceType.Energy, 70);
+            SetResistance(ResistanceType.Physical, 70);
+            SetResistance(ResistanceType.Fire, 70);
+            SetResistance(ResistanceType.Cold, 70);
+            SetResistance(ResistanceType.Poison, 70);
+            SetResistance(ResistanceType.Energy, 70);
 
-            this.SetSkill(SkillName.Magery, 100.0);
-            this.SetSkill(SkillName.MagicResist, 120.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.MagicResist, 120.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0);
 
-            this.Fame = 20000; 
-            this.Karma = -20000;
-            this.VirtualArmor = 65;
+            SetWearable(new ShroudOfTheCondemned(), -1, 0.1);
+
+            Fame = 20000; 
+            Karma = -20000;
+            VirtualArmor = 65;
         }
 
         public TyballsShadow(Serial serial)
@@ -82,12 +82,12 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.FilthyRich, 3);
         }
 
         public override void OnDeath(Container c)
         {
-            if (this.Map == Map.TerMur)
+            if (Map == Map.TerMur)
             {
                 List<DamageStore> rights = GetLootingRights();
                 List<Mobile> toGive = new List<Mobile>();
@@ -101,12 +101,6 @@ namespace Server.Mobiles
 
                 if (toGive.Count > 0)
                     toGive[Utility.Random(toGive.Count)].AddToBackpack(new YellowKey1());
-
-                /*else
-                c.DropItem(new YellowKey1());*/
-
-                if (Utility.RandomDouble() < 0.10)
-                    c.DropItem(new ShroudOfTheCondemned());
             }
             base.OnDeath(c);
         }

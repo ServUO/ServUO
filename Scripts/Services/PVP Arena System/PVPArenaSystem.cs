@@ -5,6 +5,8 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Engines.Points;
 using System.Linq;
+using Server.Commands;
+using Server.Gumps;
 
 //TODO: Party: 1152064 You cannot invite other players in an arena to your party!
 namespace Server.Engines.ArenaSystem
@@ -32,6 +34,8 @@ namespace Server.Engines.ArenaSystem
             if (Enabled)
             {
                 InitializeArenas();
+
+                CommandSystem.Register("ResetArenaStats", AccessLevel.Administrator, ResetStats_OnTarget);
             }
         }
 
@@ -238,6 +242,38 @@ namespace Server.Engines.ArenaSystem
             Instance.Register(new PVPArena(ArenaDefinition.LostLandsFelucca));
             Instance.Register(new PVPArena(ArenaDefinition.HavenTrammel));
             Instance.Register(new PVPArena(ArenaDefinition.HavenFelucca));
+        }
+
+        [Usage("ResetArenaStats")]
+        [Description("Target an arena stone to reset/wipe the stats associated with that arena.")]
+        public static void ResetStats_OnTarget(CommandEventArgs e)
+        {
+            Mobile m = e.Mobile;
+
+            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (fro, targeted) =>
+                {
+                    if (m is PlayerMobile && targeted is ArenaStone)
+                    {
+                        var stone = (ArenaStone)targeted;
+
+                        if (stone.Arena != null)
+                        {
+                            var arena = stone.Arena;
+
+                            BaseGump.SendGump(new GenericConfirmCallbackGump<PVPArena>((PlayerMobile)m,
+                                String.Format("Reset {0} Statistics?", arena.Definition.Name),
+                                "By selecting yes, you will permanently wipe the stats associated to this arena.",
+                                arena,
+                                null,
+                                (from, a) =>
+                                {
+                                    ColUtility.Free(a.TeamRankings);
+                                    ColUtility.Free(a.SurvivalRankings);
+                                    from.SendMessage("Arena stats cleared.");
+                                }));
+                        }
+                    }
+                });
         }
     }
 

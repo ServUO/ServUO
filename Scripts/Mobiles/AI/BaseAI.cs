@@ -3044,10 +3044,6 @@ namespace Server.Mobiles
 			m_Timer.Start();
 		}
 
-		private long m_NextDetectHidden;
-
-		public virtual bool CanDetectHidden { get { return m_Mobile.Skills[SkillName.DetectHidden].Value > 0; } }
-
         public virtual void AfterThink()
         {
         }
@@ -3065,8 +3061,6 @@ namespace Server.Mobiles
 					TimeSpan.FromSeconds(Utility.RandomDouble()), TimeSpan.FromSeconds(Math.Max(0.0, owner.m_Mobile.CurrentSpeed)))
 			{
 				m_Owner = owner;
-
-				m_Owner.m_NextDetectHidden = Core.TickCount;
 
 				Priority = TimerPriority.FiftyMS;
 			}

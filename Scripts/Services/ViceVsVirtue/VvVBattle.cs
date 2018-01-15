@@ -28,7 +28,7 @@ namespace Server.Engines.VvV
     [PropertyObject]
     public class VvVBattle
     {
-        public static readonly int Duration = 05;
+        public static readonly int Duration = 30;
         public static readonly int Cooldown = 5;
         public static readonly int Announcement = 2;
         public static readonly int KillCooldownDuration = 5;
@@ -357,8 +357,6 @@ namespace Server.Engines.VvV
                 }
             }
 
-            CooldownEnds = DateTime.UtcNow + TimeSpan.FromMinutes(Cooldown);
-
             foreach (VvVAltar altar in Altars)
             {
                 if(!altar.Deleted)
@@ -430,6 +428,8 @@ namespace Server.Engines.VvV
             NextAltarActivate = DateTime.MinValue;
             ManaSpikeEndEffects = DateTime.MinValue;
             NextManaSpike = DateTime.MinValue;
+
+            CooldownEnds = DateTime.UtcNow + TimeSpan.FromMinutes(Cooldown);
 
             Timer.DelayCall(TimeSpan.FromMinutes(Cooldown), () =>
                 {

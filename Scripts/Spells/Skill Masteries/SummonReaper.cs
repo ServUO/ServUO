@@ -30,7 +30,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void SendCastEffect()
         {
-            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 1371, 0);
+            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 1371, 2);
         }
 
         public override bool CheckCast()
@@ -54,31 +54,39 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            if (CheckSequence())
+            Caster.Target = new MasteryTarget(this, 10, true, Server.Targeting.TargetFlags.None);
+        }
+
+        protected override void OnTarget(object o)
+        {
+            if (o is IPoint3D)
             {
-                TimeSpan duration = TimeSpan.FromSeconds((2 * (Caster.Skills[CastSkill].Fixed) + (ArcanistSpell.GetFocusLevel(Caster) * 200)) / 5);
-                var reaper = new SummonedReaper(Caster, this);
+                Map map = Caster.Map;
+                IPoint3D p = o as IPoint3D;
 
-                Point3D p = Caster.Location;
+                SpellHelper.GetSurfaceTop(ref p);
 
-                if (SpellHelper.FindValidSpawnLocation(Caster.Map, ref p, true))
+                if (map == null || !map.CanSpawnMobile(p.X, p.Y, p.Z))
                 {
-                    BaseCreature.Summon(reaper, false, Caster, p, 442, duration);
+                    this.Caster.SendLocalizedMessage(501942); // That location is blocked.
                 }
-                else
-                    reaper.Delete();
+                else if (SpellHelper.CheckTown(p, this.Caster) && this.CheckSequence())
+                {
+                    TimeSpan duration = TimeSpan.FromSeconds(((Caster.Skills[CastSkill].Value + (ArcanistSpell.GetFocusLevel(Caster) * 20)) / 240) * 75);
+                    BaseCreature.Summon(new SummonedReaper(Caster, this), false, this.Caster, new Point3D(p), 442, duration);
+                }
             }
-
-            FinishSequence();
         }
     }
 
     [CorpseName("a reapers corpse")]
     public class SummonedReaper : BaseCreature
     {
+        private DateTime _StartTime;
+
         [Constructable]
         public SummonedReaper(Mobile caster, SummonReaperSpell spell)
-            : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a reaper";
             Body = 47;
@@ -124,10 +132,39 @@ namespace Server.Spells.SkillMasteries
                         PackItem(f);
                     }
                 });
+
+            _StartTime = DateTime.UtcNow + TimeSpan.FromSeconds(3);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.WhirlwindAttack;
         }
 
         public override Poison PoisonImmune { get { return Poison.Greater; } }
         public override bool DisallowAllMoves { get { return true; } }
+        public override bool AlwaysMurderer { get { return true; } }
+
+        public override bool HasAura { get { return _StartTime < DateTime.UtcNow; } }
+        public override TimeSpan AuraInterval { get { return TimeSpan.FromSeconds(2); } }
+        public override int AuraBaseDamage { get { return Utility.RandomMinMax(10, 20); } }
+        public override int AuraFireDamage { get { return 0; } }
+        public override int AuraPoisonDamage { get { return 100; } }
+
+        public override void AuraDamage()
+        {
+            Server.Misc.Geometry.Circle2D(Location, Map, AuraRange, (pnt, map) =>
+            {
+                Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
+            });
+
+            Server.Misc.Geometry.Circle2D(this.Location, this.Map, AuraRange + 1, (pnt, map) =>
+            {
+                Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
+            });
+
+            base.AuraDamage();
+        }
 
         public SummonedReaper(Serial serial)
             : base(serial)

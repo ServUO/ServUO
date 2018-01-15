@@ -105,7 +105,13 @@ namespace Server.Items
                         continue;
 
                     ConfirmCleanupItem(items[i]);
-                    items[i].Delete();
+
+                    #region SA
+                    if (.01 > Utility.RandomDouble())
+                        TrashBarrel.DropToCavernOfDiscarded(items[i]);
+                    else
+                        items[i].Delete();
+                    #endregion
                 }
 
                 if (this.m_Cleanup.Any(x => x.mobiles != null))

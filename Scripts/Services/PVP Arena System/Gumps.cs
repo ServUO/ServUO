@@ -14,6 +14,8 @@ namespace Server.Engines.ArenaSystem
 
         public PVPArena Arena { get; private set; }
 
+        public override bool CloseOnMapChange { get { return true; } }
+
         public BaseArenaGump(PlayerMobile pm, PVPArena arena)
             : base(pm, 30, 30)
         {
@@ -143,6 +145,11 @@ namespace Server.Engines.ArenaSystem
 
         public override void OnResponse(RelayInfo info)
         {
+            if (Arena.Stone != null && !User.InRange(Arena.Stone.Location, 15))
+            {
+                return;
+            }
+
             switch (info.ButtonID)
             {
                 case 1: // host
