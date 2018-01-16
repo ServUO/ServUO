@@ -165,12 +165,15 @@ namespace Server.Mobiles
         public override void CheckReflect(Mobile caster, ref bool reflect)
         {
             int c = 0;
-            foreach (Mobile m in this.GetMobilesInRange(20))
+            IPooledEnumerable eable = GetMobilesInRange(20);
+
+            foreach (Mobile m in eable)
             {
                 if (m != null && m is DarkWisp)
                     c++;
                 continue;
             }
+            eable.Free();
             if (c > 0)
                 reflect = true; // Reflect spells if ShadowLord having wisps around
         }
@@ -185,8 +188,9 @@ namespace Server.Mobiles
 
             ArrayList list = new ArrayList();
             int count = 0;
+            IPooledEnumerable eable = GetMobilesInRange(20);
 
-            foreach (Mobile m in this.GetMobilesInRange(20))
+            foreach (Mobile m in eable)
             {
                 if (m == this || !this.CanBeHarmful(m))
                 {
@@ -199,6 +203,8 @@ namespace Server.Mobiles
                 else if (m.Player)
                     list.Add(m);
             }
+
+            eable.Free();
 
             foreach (Mobile m in list)
             {

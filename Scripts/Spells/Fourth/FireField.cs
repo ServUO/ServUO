@@ -270,11 +270,15 @@ namespace Server.Spells.Fourth
 
                         if (map != null && caster != null)
                         {
-                            foreach (Mobile m in m_Item.GetMobilesInRange(0))
+                            IPooledEnumerable eable = m_Item.GetMobilesInRange(0);
+
+                            foreach (Mobile m in eable)
                             {
                                 if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && (!Core.AOS || m != caster) && SpellHelper.ValidIndirectTarget(caster, m) && caster.CanBeHarmful(m, false))
                                     m_Queue.Enqueue(m);
                             }
+
+                            eable.Free();
 
                             while (m_Queue.Count > 0)
                             {

@@ -76,12 +76,14 @@ namespace Server.Spells.Chivalry
             if (this.CheckSequence())
             {
                 List<Mobile> targets = new List<Mobile>();
+                IPooledEnumerable eable = Caster.GetMobilesInRange(8);
 
-                foreach (Mobile m in this.Caster.GetMobilesInRange(8))
+                foreach (Mobile m in eable)
                 {
                     if (this.Caster != m && SpellHelper.ValidIndirectTarget(this.Caster, m) && this.Caster.CanBeHarmful(m, false))
                         targets.Add(m);
                 }
+                eable.Free();
 				
                 this.Caster.PlaySound(0xF5);
                 this.Caster.PlaySound(0x299);

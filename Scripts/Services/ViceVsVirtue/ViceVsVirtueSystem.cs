@@ -654,8 +654,8 @@ namespace Server.Engines.VvV
             VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
             VvVPlayerEntry toentry = Instance.GetPlayerEntry<VvVPlayerEntry>(to);
 
-            Guild fromguild = fromentry == null ? null : fromentry.Guild;
-            Guild toguild = toentry == null ? null : toentry.Guild;
+            Guild fromguild = from.Guild as Guild;
+            Guild toguild = to.Guild as Guild;
 
             if (fromentry == null || toentry == null || !fromentry.Active || !toentry.Active)
             {

@@ -289,7 +289,9 @@ namespace Server.Spells.Chivalry
 
 		private void DeltaEnemies()
 		{
-			foreach (var m in m_Owner.GetMobilesInRange(18))
+            IPooledEnumerable eable = m_Owner.GetMobilesInRange(18);
+
+			foreach (Mobile m in eable)
 			{
                 if (m_PlayerOrPet != null)
                 {
@@ -303,6 +305,8 @@ namespace Server.Spells.Chivalry
                     m.Delta(MobileDelta.Noto);
                 }
 			}
+
+            eable.Free();
 		}
 	}
 }

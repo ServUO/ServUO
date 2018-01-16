@@ -401,7 +401,8 @@ namespace Server.Items
 
         public virtual void DoDamage(Item g, int mindmg, int maxdmg)
         {
-            foreach (Mobile m in g.GetMobilesInRange(4))
+            IPooledEnumerable eable = g.GetMobilesInRange(4);
+            foreach (Mobile m in eable)
             {
                 if (m != null)
                 {
@@ -415,6 +416,7 @@ namespace Server.Items
                     }
                 }                    
             }
+            eable.Free();
 
             n_SourceItem.Delete();
         }
@@ -507,7 +509,8 @@ namespace Server.Items
             if (g.Deleted || g == null)
                 return;
 
-            foreach (Mobile m in g.GetMobilesInRange(4))
+            IPooledEnumerable eable = g.GetMobilesInRange(4);
+            foreach (Mobile m in eable)
             {
                 if (m != null)
                 {
@@ -522,6 +525,7 @@ namespace Server.Items
                 }
             }
 
+            eable.Free();
             g.Delete();
         }
     }

@@ -2018,7 +2018,9 @@ namespace Server.Items
 
 			int inPack = 1;
 
-			foreach (Mobile m in defender.GetMobilesInRange(1))
+            IPooledEnumerable eable = defender.GetMobilesInRange(1);
+
+			foreach (Mobile m in eable)
 			{
 				if (m != attacker && m is BaseCreature)
 				{
@@ -2042,6 +2044,8 @@ namespace Server.Items
 					}
 				}
 			}
+
+            eable.Free();
 
 			if (inPack >= 5)
 			{
@@ -3173,7 +3177,9 @@ namespace Server.Items
 
 			var list = new List<Mobile>();
 
-			foreach (Mobile m in from.GetMobilesInRange(5))
+            IPooledEnumerable eable = from.GetMobilesInRange(5);
+
+			foreach (Mobile m in eable)
 			{
 				if (from != m && defender != m && SpellHelper.ValidIndirectTarget(from, m) && from.CanBeHarmful(m, false) &&
 					(!Core.ML || from.InLOS(m)))
@@ -3181,6 +3187,8 @@ namespace Server.Items
 					list.Add(m);
 				}
 			}
+
+            eable.Free();
 
             if (list.Count > 0)
             {

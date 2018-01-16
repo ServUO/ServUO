@@ -8911,11 +8911,13 @@ namespace Server.Mobiles
 										}
 										else if(invoker!=null && invoker is IEntity)
 										{
-											foreach(Mobile m in map.GetMobilesInRange(((IEntity)invoker).Location, range))
+                                            IPooledEnumerable eable = map.GetMobilesInRange(((IEntity)invoker).Location, range);
+											foreach(Mobile m in eable)
 											{
 												if(objecttype.IsAssignableFrom(m.GetType()) && CheckNameMatch(objectname, m.Name))
 													mobs.Add(m);
 											}
+                                            eable.Free();
 										}
 										for(int x = mobs.Count - 1; x>=0; --x)
 										{
