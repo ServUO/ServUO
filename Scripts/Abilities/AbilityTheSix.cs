@@ -99,11 +99,14 @@ namespace Server
             from.Say("*Vas Grav Hur*");
 
             List<PlayerMobile> list = new List<PlayerMobile>();
+            IPooledEnumerable eable = from.GetMobilesInRange(8);
 
-            foreach (Mobile m in from.GetMobilesInRange(8))
+            foreach (Mobile m in eable)
                 if (m != null)
                     if (m is PlayerMobile)
                         list.Add((PlayerMobile)m);
+
+            eable.Free();
 
             new SoulDrainTimer(from, list).Start();
         }
@@ -244,13 +247,16 @@ namespace Server
 
             private void SetupDamage(Mobile from)
             {
-                foreach (Mobile m in from.GetMobilesInRange(10))
+                IPooledEnumerable eable = from.GetMobilesInRange(10);
+                foreach (Mobile m in eable)
                 {
                     if (CanTarget(from, m, true, false, false))
                     {
                         Timer.DelayCall(TimeSpan.FromMilliseconds(300 * (this.GetDist(this.m_StartingLocation, m.Location) / 3)), new TimerStateCallback(Hurt), m);
                     }
                 }
+
+                eable.Free();
             }
 
             public void Hurt(object o)
@@ -645,7 +651,8 @@ namespace Server
                     this.Delete();
                 else if (this.m_MinDamage != 0)
                 {
-                    foreach (Mobile m in this.GetMobilesInRange(0))
+                    IPooledEnumerable eable = GetMobilesInRange(0);
+                    foreach (Mobile m in eable)
                     {
                         if (m == null)
                             continue;
@@ -657,6 +664,8 @@ namespace Server
                         else
                             this.m_List.Add(m);
                     }
+
+                    eable.Free();
 
                     for (int i = 0; i < this.m_List.Count; i++)
                     {

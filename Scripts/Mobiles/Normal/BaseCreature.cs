@@ -5565,6 +5565,16 @@ namespace Server.Mobiles
             return null;
         }
 
+        public virtual bool IsMonster
+        {
+            get
+            {
+                var master = GetMaster();
+
+                return master == null || (master is BaseCreature && master != this && ((BaseCreature)master).IsMonster);
+            }
+        }
+
         private class FKEntry
         {
             public Mobile m_Mobile;

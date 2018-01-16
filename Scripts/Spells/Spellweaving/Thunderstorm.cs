@@ -85,12 +85,15 @@ namespace Server.Spells.Spellweaving
                 TimeSpan duration = TimeSpan.FromSeconds(5 + FocusLevel);
 
                 List<Mobile> targets = new List<Mobile>();
+                IPooledEnumerable eable = Caster.GetMobilesInRange(range);
 
-                foreach (Mobile m in Caster.GetMobilesInRange(range))
+                foreach (Mobile m in eable)
                 {
                     if (Caster != m && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false) && Caster.InLOS(m))
                         targets.Add(m);
                 }
+
+                eable.Free();
 
                 for (int i = 0; i < targets.Count; i++)
                 {

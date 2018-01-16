@@ -121,8 +121,9 @@ namespace Server.SkillHandlers
 								int range = BaseInstrument.GetBardRange(from, SkillName.Peacemaking);
 
 								bool calmed = false;
+                                IPooledEnumerable eable = from.GetMobilesInRange(range);
 
-								foreach (Mobile m in from.GetMobilesInRange(range))
+								foreach (Mobile m in eable)
 								{
 									if ((m is BaseCreature && ((BaseCreature)m).Uncalmable) ||
 										(m is BaseCreature && ((BaseCreature)m).AreaPeaceImmune) || m == from || !from.CanBeHarmful(m, false))
@@ -141,6 +142,7 @@ namespace Server.SkillHandlers
 										((BaseCreature)m).Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(1.0));
 									}
 								}
+                                eable.Free();
 
 								if (!calmed)
 								{

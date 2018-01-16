@@ -59,7 +59,11 @@ namespace Server.Items
         {
             if (targeted is Item)
             {
-                if (targeted is BaseArmor)
+                if (!IsChildOf(from.Backpack) || !((Item)targeted).IsChildOf(from.Backpack))
+                {
+                    from.SendLocalizedMessage(1054107); // This item must be in your backpack.
+                }
+                else if (targeted is BaseArmor)
                 {
                     BaseArmor armor = (BaseArmor)targeted;
                     if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (armor.RequiredRace == Race.Gargoyle && armor.Layer== Layer.Earrings))

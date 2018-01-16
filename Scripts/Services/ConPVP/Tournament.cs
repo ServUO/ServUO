@@ -2642,13 +2642,15 @@ namespace Server.Engines.ConPVP
                     for (int j = 0; j < p.Players.Count; ++j)
                     {
                         Mobile mob = (Mobile)p.Players[j];
+                        IPooledEnumerable eable = mob.GetMobilesInRange(18);
 
-                        foreach (Mobile view in mob.GetMobilesInRange(18))
+                        foreach (Mobile view in eable)
                         {
                             if (!mob.CanSee(view))
                                 mob.Send(view.RemovePacket);
                         }
 
+                        eable.Free();
                         mob.LocalOverheadMessage(MessageType.Emote, 0x3B2, false, "* Your mind focuses intently on the fight and all other distractions fade away *");
                     }
                 }

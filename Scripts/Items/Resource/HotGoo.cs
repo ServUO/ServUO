@@ -64,8 +64,9 @@ namespace Server.Items
                 }
 
                 var toDamage = new List<Mobile>();
+                IPooledEnumerable eable = GetMobilesInRange(0);
 
-                foreach (var m in GetMobilesInRange(0))
+                foreach (Mobile m in eable)
                 {
                     var bc = m as BaseCreature;
                     if (m.Alive && !m.IsDeadBondedPet && (bc == null || bc.Controlled || bc.Summoned))
@@ -73,6 +74,7 @@ namespace Server.Items
                         toDamage.Add(m);
                     }
                 }
+                eable.Free();
 
                 for (var i = 0; i < toDamage.Count; i++)
                     Damage(toDamage[i]);

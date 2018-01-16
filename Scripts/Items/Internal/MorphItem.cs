@@ -119,8 +119,9 @@ namespace Server.Items
         public void Refresh()
         {
             bool found = false;
+            IPooledEnumerable eable = GetMobilesInRange(CurrentRange);
 
-            foreach (Mobile mob in this.GetMobilesInRange(this.CurrentRange))
+            foreach (Mobile mob in eable)
             {
                 if (mob.Hidden && mob.IsStaff())
                     continue;
@@ -128,6 +129,7 @@ namespace Server.Items
                 found = true;
                 break;
             }
+            eable.Free();
 
             if (found)
                 this.ItemID = this.ActiveItemID;

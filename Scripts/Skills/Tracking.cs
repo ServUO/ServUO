@@ -191,13 +191,15 @@ namespace Server.SkillHandlers
             int range = 10 + (int)(from.Skills[SkillName.Tracking].Value / 10);
 
             List<Mobile> list = new List<Mobile>();
+            IPooledEnumerable eable = from.GetMobilesInRange(range);
 
-            foreach (Mobile m in from.GetMobilesInRange(range))
+            foreach (Mobile m in eable)
             {
                 // Ghosts can no longer be tracked 
                 if (m != from && (!Core.AOS || m.Alive) && (!m.Hidden || m.IsPlayer() || from.AccessLevel > m.AccessLevel) && check(m) && CheckDifficulty(from, m))
                     list.Add(m);
             }
+            eable.Free();
 
             if (list.Count > 0)
             {

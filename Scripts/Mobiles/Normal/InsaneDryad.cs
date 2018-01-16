@@ -99,8 +99,9 @@ namespace Server.Mobiles
                 return;
 
             TimeSpan duration = TimeSpan.FromSeconds(Utility.RandomMinMax(20, 80));
+            IPooledEnumerable eable = GetMobilesInRange(RangePerception);
 
-            foreach (Mobile m in this.GetMobilesInRange(this.RangePerception))
+            foreach (Mobile m in eable)
             {
                 PlayerMobile p = m as PlayerMobile;
 
@@ -112,6 +113,7 @@ namespace Server.Mobiles
                     p.Combatant = null;
                 }
             }
+            eable.Free();
 
             this.m_NextPeace = DateTime.UtcNow + TimeSpan.FromSeconds(10);
             this.PlaySound(0x1D3);
@@ -135,7 +137,9 @@ namespace Server.Mobiles
             if (this.Combatant == null || this.Deleted || !this.Alive || this.m_NextUndress > DateTime.UtcNow || 0.005 < Utility.RandomDouble())
                 return;
 
-            foreach (Mobile m in this.GetMobilesInRange(this.RangePerception))
+            IPooledEnumerable eable = GetMobilesInRange(RangePerception);
+
+            foreach (Mobile m in eable)
             {
                 if (m != null && m.Player && !m.Female && !m.Hidden && m.IsPlayer() && this.CanBeHarmful(m))
                 {
@@ -148,6 +152,7 @@ namespace Server.Mobiles
                     m.SendLocalizedMessage(1072197); // The dryad's beauty makes your blood race. Your clothing is too confining.
                 }
             }
+            eable.Free();
 
             this.m_NextUndress = DateTime.UtcNow + TimeSpan.FromMinutes(1);
         }

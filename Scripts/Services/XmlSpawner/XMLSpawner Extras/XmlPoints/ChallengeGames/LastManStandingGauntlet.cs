@@ -270,37 +270,39 @@ namespace Server.Items
 		{
 			if (killed == null) return;
 
-			/*
-			// move the killed player and their corpse to a location
-			// you have to replace x,y,z with some valid coordinates
-			int x = this.Location.X + 30;
-			int y = this.Location.Y + 30;
-			int z = this.Location.Z;
-			Point3D killedloc = new Point3D(x, y, z);
+            /*
+            // move the killed player and their corpse to a location
+            // you have to replace x,y,z with some valid coordinates
+            int x = this.Location.X + 30;
+            int y = this.Location.Y + 30;
+            int z = this.Location.Z;
+            Point3D killedloc = new Point3D(x, y, z);
 
-			ArrayList petlist = new ArrayList();
+            ArrayList petlist = new ArrayList();
+            IPooledEnumerable eable = killed.GetMobilesInRange(16);
+             * 
+            foreach (Mobile m in eable)
+            {
+                if (m is BaseCreature && ((BaseCreature)m).ControlMaster == killed)
+                {
+                    petlist.Add(m);
+                }
+            }
+            eable.Free();
 
-			foreach (Mobile m in killed.GetMobilesInRange(16))
-			{
-				if (m is BaseCreature && ((BaseCreature)m).ControlMaster == killed)
-				{
-					petlist.Add(m);
-				}
-			}
+            // port the pets
+            foreach (Mobile m in petlist)
+            {
+                m.MoveToWorld(killedloc, killed.Map);
+            }
 
-			// port the pets
-			foreach (Mobile m in petlist)
-			{
-				m.MoveToWorld(killedloc, killed.Map);
-			}
+            // do the actual moving
+            killed.MoveToWorld(killedloc, killed.Map);
+            if (killed.Corpse != null)
+                killed.Corpse.MoveToWorld(killedloc, killed.Map);
+            */
 
-			// do the actual moving
-			killed.MoveToWorld(killedloc, killed.Map);
-			if (killed.Corpse != null)
-				killed.Corpse.MoveToWorld(killedloc, killed.Map);
-			*/
-
-			if (AutoRes)
+            if (AutoRes)
             {
                 // prepare the autores callback
                     Timer.DelayCall( RespawnTime, new TimerStateCallback( XmlPoints.AutoRes_Callback ),

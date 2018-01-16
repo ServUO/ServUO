@@ -137,14 +137,17 @@ namespace Server.Mobiles
 
 		private Mobile FindTarget()
 		{
-			foreach (Mobile m in GetMobilesInRange(10))
+            IPooledEnumerable eable = GetMobilesInRange(10);
+			foreach (Mobile m in eable)
 			{
 				if (m.Player && m.Hidden && m.IsPlayer())
 				{
+                    eable.Free();
 					return m;
 				}
 			}
 
+            eable.Free();
 			return null;
 		}
 

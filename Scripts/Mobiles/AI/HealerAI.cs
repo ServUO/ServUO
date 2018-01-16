@@ -140,8 +140,9 @@ namespace Server.Mobiles
             {
                 double prio = 0.0;
                 Mobile found = null;
+                IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
 
-                foreach (Mobile m in this.m_Mobile.GetMobilesInRange(this.m_Mobile.RangePerception))
+                foreach (Mobile m in eable)
                 {
                     if (!this.m_Mobile.CanSee(m) || !(m is BaseCreature) || ((BaseCreature)m).Team != this.m_Mobile.Team)
                         continue;
@@ -163,6 +164,7 @@ namespace Server.Mobiles
                     }
                 }
 
+                eable.Free();
                 return found;
             }
 

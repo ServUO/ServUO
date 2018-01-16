@@ -84,8 +84,9 @@ namespace Server.Items
                 return;
 
             bool foundPlayer = false;
+            IPooledEnumerable eable = GetMobilesInRange(3);
 
-            foreach (Mobile mob in this.GetMobilesInRange(3))
+            foreach (Mobile mob in eable)
             {
                 if (!mob.Player || !mob.Alive || mob.IsStaff())
                     continue;
@@ -96,6 +97,7 @@ namespace Server.Items
                     break;
                 }
             }
+            eable.Free();
 
             if (!foundPlayer)
             {

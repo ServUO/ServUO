@@ -152,8 +152,9 @@ namespace Server.Mobiles
             }
 
             List<BaseCreature> list = new List<BaseCreature>();
+            IPooledEnumerable eable = m_Mobile.GetMobilesInRange(5);
 
-            foreach (Mobile m in this.m_Mobile.GetMobilesInRange(5))
+            foreach (Mobile m in eable)
             {
                 if (m != null && m is BaseCreature && m != this.m_Mobile)
                 {
@@ -168,6 +169,7 @@ namespace Server.Mobiles
                     list.Add(bc);
                 }
             }
+            eable.Free();
 
             if (list.Count == 0)
                 return false;

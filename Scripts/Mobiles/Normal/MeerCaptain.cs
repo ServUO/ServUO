@@ -153,12 +153,14 @@ namespace Server.Mobiles
                 this.m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 15));
 
                 ArrayList list = new ArrayList();
+                IPooledEnumerable eable = GetMobilesInRange(8);
 
-                foreach (Mobile m in this.GetMobilesInRange(8))
+                foreach (Mobile m in eable)
                 {
                     if (m is MeerWarrior && this.IsFriend(m) && this.CanBeBeneficial(m) && m.Hits < m.HitsMax && !m.Poisoned && !MortalStrike.IsWounded(m))
                         list.Add(m);
                 }
+                eable.Free();
 
                 for (int i = 0; i < list.Count; ++i)
                 {

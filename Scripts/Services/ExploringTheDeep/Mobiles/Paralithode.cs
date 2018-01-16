@@ -103,13 +103,17 @@ namespace Server.Mobiles
                         return;
                     }
 
-                    foreach (Mobile m in this.m_Creature.GetMobilesInRange(5))
+                    IPooledEnumerable eable = m_Creature.GetMobilesInRange(5);
+
+                    foreach (Mobile m in eable)
                     {
                         if (m == this.m_Creature || (m is Paralithode) || !this.m_Creature.CanBeHarmful(m))
                             continue;
 
                         m_Creature.CantWalk = false;
                     }
+
+                    eable.Free();
                 }
                 else
                 {
