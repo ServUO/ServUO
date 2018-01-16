@@ -657,8 +657,6 @@ namespace Server.Mobiles
 
     public class Trapper : Brigand
     {
-        private DateTime _Deletes;
-
         [Constructable]
         public Trapper()
         {

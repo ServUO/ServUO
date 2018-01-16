@@ -1,7 +1,5 @@
 using System;
 using Server;
-using Server.Spells;
-using Server.Network;
 using Server.Mobiles;
 using Server.Items;
 using System.Collections.Generic;
@@ -27,8 +25,6 @@ namespace Server.Spells.SkillMasteries
 
         private int _HCIBonus;
         private int _SSIBonus;
-
-        private Dictionary<Mobile, DateTime> _Cooldown;
 
         public PlayingTheOddsSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

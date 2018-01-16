@@ -36,7 +36,7 @@ namespace Server.Engines.Quests
                 return 1072552;
             }
         }
-        /*Well, if you change your mind, I’ll be here.*/
+        /*Well, if you change your mind, Iâ€™ll be here.*/
         public override object Refuse
         {
             get
@@ -77,7 +77,6 @@ namespace Server.Engines.Quests
 
     public class Lenley : BaseEscort
     {
-        private DateTime recoverDelay;
         private static bool m_Talked;
       
          string[] Lenleysay = new string[]  

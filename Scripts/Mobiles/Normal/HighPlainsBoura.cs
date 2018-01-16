@@ -13,7 +13,6 @@ namespace Server.Mobiles
         };
 
         private bool GatheredFur { get; set; }
-        private bool m_Stunning;
 
         [Constructable]
         public HighPlainsBoura()

@@ -11,7 +11,6 @@ namespace Server.Multis
         public static int MaxCharges = 1000;
 
 		private int _Charges;
-		private SecureLevel _Level;
 
 		[CommandProperty(AccessLevel.GameMaster)]
         public HouseTeleporterTile Link

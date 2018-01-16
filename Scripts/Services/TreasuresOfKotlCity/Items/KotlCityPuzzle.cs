@@ -15,7 +15,6 @@ namespace Server.Engines.TreasuresOfKotlCity
         public int Next { get { return _Order == null || _Order.Count == 0 ? -1 : _Order[0]; } }
 
         private List<int> _Order;
-        private DateTime _NextReset;
         private int _Index;
         private bool _Complete;
         private int _Fails;

@@ -9,8 +9,6 @@ namespace Server.Mobiles
     public class BlackSolenQueen : BaseCreature, IBlackSolen
     {
         private bool m_BurstSac;
-
-        private DateTime recoverDelay;
         private static bool m_Laid;
 
         [Constructable]

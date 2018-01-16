@@ -1,13 +1,13 @@
+using System;
 using Server.Mobiles;
 using Server.Network;
-using System;
 
 namespace Server.Spells
 {
     public class FlySpell : Spell
     {
         private static readonly SpellInfo m_Info = new SpellInfo("Gargoyle Flight", null, -1, 9002);
-        private bool m_Stop;
+
         public FlySpell(Mobile caster)
             : base(caster, null, m_Info)
         {

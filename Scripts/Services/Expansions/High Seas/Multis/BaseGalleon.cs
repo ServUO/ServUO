@@ -8,7 +8,6 @@ using Server.Accounting;
 using Server.Engines.PartySystem;
 using Server.ContextMenus;
 using Server.Gumps;
-using Server.Network;
 using System.Linq;
 
 namespace Server.Multis
@@ -49,9 +48,6 @@ namespace Server.Multis
 
         private BindingPole m_Pole;
         private Mobile m_CapturedCaptain;
-
-        private Mobile m_Captive;
-        private ShippingCrate m_ShippingCrate;
 
         private List<Item> m_MooringLines = new List<Item>();
         private List<Item> m_Cannons = new List<Item>();

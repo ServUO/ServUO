@@ -207,8 +207,6 @@ namespace Server.Commands
 			World.Broadcast(0x35, false, "World generation complete.");
 		}
 
-        private static bool _CheckingFillables = false;
-
         public static bool CanGenerate(CommandEntry entry)
         {
             if (entry.checkId == 127)
