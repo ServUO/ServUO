@@ -231,7 +231,7 @@ namespace Server.Spells
             else if (this is MomentumStrike)
                 option = "Momentum Strike";
 
-            if (option != null && !Engines.ConPVP.DuelContext.AllowSpecialMove(from, option, this))
+            if (option != null)
                 return false;
             #endregion
 

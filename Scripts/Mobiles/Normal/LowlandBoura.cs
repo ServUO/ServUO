@@ -13,7 +13,6 @@ namespace Server.Mobiles
         };
 
         private bool GatheredFur { get; set; }
-        private bool m_Stunning;
 
         [Constructable]
         public LowlandBoura() : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)

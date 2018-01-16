@@ -103,9 +103,7 @@ namespace Server.Items
         private int m_RunicMaxAttributes;
         private int m_RunicMinIntensity;
         private int m_RunicMaxIntensity;
-
-        private double m_ImbuingUnravelBonus;
-
+        
         public int WeaponFireDamage { get { return m_WeaponFireDamage; } set { m_WeaponFireDamage = value; } }
         public int WeaponColdDamage { get { return m_WeaponColdDamage; } set { m_WeaponColdDamage = value; } }
         public int WeaponPoisonDamage { get { return m_WeaponPoisonDamage; } set { m_WeaponPoisonDamage = value; } }

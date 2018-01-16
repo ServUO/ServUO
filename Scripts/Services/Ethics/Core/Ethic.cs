@@ -159,9 +159,6 @@ namespace Server.Ethics
             }
             else
             {
-                if (e.Mobile is PlayerMobile && (e.Mobile as PlayerMobile).DuelContext != null)
-                    return;
-
                 Ethic ethic = pl.Ethic;
 
                 for (int i = 0; i < ethic.Definition.Powers.Length; ++i)

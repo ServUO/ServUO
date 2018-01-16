@@ -80,12 +80,8 @@ namespace Server.SkillHandlers
                         new InternalTimer(from, (Item)targeted, this.m_Potion).Start();
 
                         from.PlaySound(0x4F);
-
-                        if (!Engines.ConPVP.DuelContext.IsFreeConsume(from))
-                        {
-                            this.m_Potion.Consume();
-                            from.AddToBackpack(new Bottle());
-                        }
+                        m_Potion.Consume();
+                        from.AddToBackpack(new Bottle());
                     }
                     else // Target can't be poisoned
                     {

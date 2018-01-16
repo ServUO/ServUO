@@ -331,7 +331,7 @@ namespace Server.Items
             else if (this is ArmorPierce)
                 option = "Armor Pierce";
 
-            if (option != null && !Engines.ConPVP.DuelContext.AllowSpecialAbility(from, option, true))
+            if (option != null)
                 return false;
             #endregion
 

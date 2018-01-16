@@ -2,7 +2,6 @@ using System;
 using Server;
 using Server.Mobiles;
 using System.Collections.Generic;
-using System.Linq;
 using Server.Items;
 
 namespace Server.Engines.TreasuresOfKotlCity
@@ -18,7 +17,6 @@ namespace Server.Engines.TreasuresOfKotlCity
         public static TimeSpan NextSpawnDuration { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(2, 25)); } }
 
         private bool _Active;
-        private bool _Spawning;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active

@@ -52,12 +52,9 @@ namespace Server.Items
                 {
                     if (from.BeginAction(typeof(BaseHealPotion)))
                     {
-                        this.DoHeal(from);
-
-                        BasePotion.PlayDrinkEffect(from);
-
-                        if (!Engines.ConPVP.DuelContext.IsFreeConsume(from))
-                            this.Consume();
+                        DoHeal(from);
+                        PlayDrinkEffect(from);
+                        Consume();
 
                         Timer.DelayCall(TimeSpan.FromSeconds(this.Delay), new TimerStateCallback(ReleaseHealLock), from);
                     }

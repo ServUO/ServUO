@@ -7,8 +7,6 @@
 #region References
 using System;
 using System.Collections.Generic;
-
-using Server.Engines.ConPVP;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
@@ -379,11 +377,6 @@ namespace Server.Spells
 				return true;
 			}
 
-			if (DuelContext.IsFreeConsume(m_Caster))
-			{
-				return true;
-			}
-
 			Container pack = m_Caster.Backpack;
 
 			if (pack == null)
@@ -744,12 +737,6 @@ namespace Server.Spells
 			{
 				m_Caster.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
 			}
-				#region Dueling
-			else if (m_Caster is PlayerMobile && ((PlayerMobile)m_Caster).DuelContext != null &&
-					 !((PlayerMobile)m_Caster).DuelContext.AllowSpellCast(m_Caster, this))
-			{ }
-				#endregion
-
 			else if (m_Caster.Mana >= ScaleMana(GetMana()))
 			{
 				#region Stygian Abyss

@@ -92,7 +92,6 @@ namespace Server.Items
         private class ForceOfNatureTimer : Timer
         {
             private Mobile m_Target, m_From;
-            private double m_MinBaseDamage, m_MaxBaseDamage;
 
             private DateTime m_LastHit;
             private int m_Tick, m_Hits;

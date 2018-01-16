@@ -5,8 +5,6 @@ using Server.Mobiles;
 using Server.Items;
 using System.Linq;
 using Server.Engines.Points;
-using Server.Regions;
-using System.Text.RegularExpressions;
 
 namespace Server.Engines.VoidPool
 {
@@ -25,7 +23,6 @@ namespace Server.Engines.VoidPool
 		public static VoidPoolController InstanceFel { get; set; }
 
         private readonly int RestartSpan = 15;
-		private readonly int StartMessage = 5;
 		private readonly int PoolStartHits = 15;
 		private readonly int StartPointVariance = 8;
 		

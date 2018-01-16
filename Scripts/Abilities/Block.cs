@@ -132,8 +132,6 @@ namespace Server.Items
 
         private class BlockInfo
         {
-            public readonly Mobile m_Target;
-
             public readonly int _DCIBonus;
             public readonly int _SpellReduction;
             public readonly int _MeleeReduction;

@@ -7,7 +7,6 @@ namespace Server.Mobiles
     [CorpseName("a betrayer corpse")]
     public class Betrayer : BaseCreature
     {
-        private bool m_Stunning;
         private DateTime m_NextAbilityTime;
         [Constructable]
         public Betrayer()

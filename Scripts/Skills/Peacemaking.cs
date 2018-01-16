@@ -6,8 +6,6 @@
 
 #region References
 using System;
-
-using Server.Engines.ConPVP;
 using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.Mobiles;
@@ -67,14 +65,6 @@ namespace Server.SkillHandlers
 				if (!(targeted is Mobile))
 				{
 					from.SendLocalizedMessage(1049528); // You cannot calm that!
-				}
-				else if (from.Region.IsPartOf<SafeZone>())
-				{
-					from.SendMessage("You may not peacemake in this area.");
-				}
-				else if (((Mobile)targeted).Region.IsPartOf<SafeZone>())
-				{
-					from.SendMessage("You may not peacemake there.");
 				}
 				else if (!m_Instrument.IsChildOf(from.Backpack))
 				{
