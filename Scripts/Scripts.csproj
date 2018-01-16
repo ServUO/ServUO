@@ -9609,11 +9609,6 @@
     <Compile Include="Services\MiniChampionSystem\MiniChampionSpawn.cs" />
     <Compile Include="Services\MiniChampionSystem\MiniChampSpawnInfo.cs" />
     <Compile Include="Services\MiniChampionSystem\MiniChampType.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MCRestartTimer.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MCSliceTimer.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MiniChampionAltar.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MiniChampionSpawn.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MiniChampType.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Gumps\QAndAGump.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Q&amp;AEntry.cs" />
     <Compile Include="Services\MondainsLegacyQuests\SimpleObjective.cs" />
