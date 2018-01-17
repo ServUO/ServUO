@@ -616,15 +616,11 @@ namespace Server.Engines.CannedEvil
             ArrayList list = new ArrayList();
             Point3D loc1 = new Point3D(388, 1920, 0);
 
-            IPooledEnumerable eable = map.GetMobilesInRange(loc1, 50);
-
-            foreach (Mobile m in eable)
+            foreach (Mobile m in map.GetMobilesInRange(loc1, 50))
             {
                 if (m is PlayerMobile)
                     m.SendLocalizedMessage(cliloc, "", 0x22);
             }
-
-            eable.Free();
         }
 
         public bool WhatIsDead(Mobile Mon)
