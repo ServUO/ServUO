@@ -297,11 +297,15 @@ namespace Server.Engines.MiniChamps
                     break;
             }
 
-            GetMobilesInRange(m_SpawnRange).ToList().ForEach(x =>
+            IPooledEnumerable eable = GetMobilesInRange(m_SpawnRange);
+
+            foreach(Mobile x in eable)
             {
                 if (x is PlayerMobile)
                     x.SendLocalizedMessage(cliloc);
-            });
+            }
+
+            eable.Free();
         }
 
         public override void GetProperties(ObjectPropertyList list)

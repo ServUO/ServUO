@@ -260,9 +260,13 @@ namespace Server.Items
                 Effects.PlaySound(m_Navrey.Location, m_Navrey.Map, Utility.RandomList(0x305, 0x306, 0x307, 0x309));
 
                 int amount = Utility.RandomMinMax(100, 150);
+                IPooledEnumerable eable = m_Navrey.GetMobilesInRange(1);
 
-                foreach (Mobile m in m_Navrey.GetMobilesInRange(1).Where(m => m != null && m.Alive))
+                foreach (Mobile m in eable)
                 {
+                    if (m == null || !m.Alive)
+                        continue;
+
                     if (m is Navrey)
                     {
                         m.Damage(amount);
@@ -274,6 +278,7 @@ namespace Server.Items
                         AOS.Damage(m, amount, 100, 0, 0, 0, 0);
                     }
                 }
+                eable.Free();
 
                 if (m_Ticks == 0 || !m_Navrey.Alive)
                 {

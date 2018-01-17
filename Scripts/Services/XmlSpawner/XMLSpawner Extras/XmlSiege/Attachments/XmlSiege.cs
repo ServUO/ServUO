@@ -329,8 +329,9 @@ namespace Server.Engines.XmlSpawner2
 					if (m_Siege.AttachedTo is Item)
 					{
 						// check to see if anyone is around
+                        IPooledEnumerable eable = ((Item)m_Siege.AttachedTo).GetMobilesInRange(24);
 
-						foreach (Mobile p in ((Item)m_Siege.AttachedTo).GetMobilesInRange(24))
+						foreach (Mobile p in eable)
 						{
 							if (p.Player /*&& p.AccessLevel == AccessLevel.Player */)
 							{
@@ -338,6 +339,7 @@ namespace Server.Engines.XmlSpawner2
 								break;
 							}
 						}
+                        eable.Free();
 					}
 
 					// if not, the no need to update
@@ -803,10 +805,13 @@ namespace Server.Engines.XmlSpawner2
 
 			// make sure nearby mobiles are in valid locations
 			ArrayList mobilelist = new ArrayList();
-			foreach (Mobile p in targetitem.GetMobilesInRange(0))
+            IPooledEnumerable eable = targetitem.GetMobilesInRange(0);
+
+			foreach (Mobile p in eable)
 			{
 				mobilelist.Add(p);
 			}
+            eable.Free();
 
 			if (targetitem is BaseAddon)
 			{
@@ -817,11 +822,13 @@ namespace Server.Engines.XmlSpawner2
 					{
 						if (i != null)
 						{
-							foreach (Mobile p in i.GetMobilesInRange(0))
+                            IPooledEnumerable eable2 = i.GetMobilesInRange(0);
+							foreach (Mobile p in eable2)
 							{
 								if (!mobilelist.Contains(p))
 									mobilelist.Add(p);
 							}
+                            eable2.Free();
 						}
 					}
 				}
@@ -842,11 +849,14 @@ namespace Server.Engines.XmlSpawner2
 						int x = t.m_OffsetX + targetitem.X;
 						int y = t.m_OffsetY + targetitem.Y;
 						int z = t.m_OffsetZ + targetitem.Z;
-						foreach (Mobile p in targetitem.Map.GetMobilesInRange(new Point3D(x, y, z), 0))
+                        IPooledEnumerable eable2 = targetitem.Map.GetMobilesInRange(new Point3D(x, y, z), 0);
+
+						foreach (Mobile p in eable2)
 						{
 							if (!mobilelist.Contains(p))
 								mobilelist.Add(p);
 						}
+                        eable2.Free();
 
 					}
 				}

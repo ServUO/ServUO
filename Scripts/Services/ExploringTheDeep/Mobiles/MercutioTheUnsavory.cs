@@ -172,11 +172,15 @@ namespace Server.Mobiles
 
             int brigands = 0;
 
-            foreach (Mobile m in GetMobilesInRange(10))
+            IPooledEnumerable eable = GetMobilesInRange(10);
+
+            foreach (Mobile m in eable)
             {
                 if (m is Brigand)
                     ++brigands;
             }
+
+            eable.Free();
 
             if (brigands < 16)
             {

@@ -136,8 +136,9 @@ namespace Server.Mobiles
 
             BaseCreature bc = null;
             int power = 1;
+            IPooledEnumerable eable = m_Mobile.GetMobilesInRange(10);
 
-            foreach (Mobile m in this.m_Mobile.GetMobilesInRange(10))
+            foreach (Mobile m in eable)
             {
                 if (m == null)
                     continue;
@@ -152,6 +153,7 @@ namespace Server.Mobiles
                     if (this.m_Mobile.Controlled == bc.Controlled && this.m_Mobile.Summoned == bc.Summoned)
                         power++;
             }
+            eable.Free();
 
             if (power > 6)
                 power = 6;

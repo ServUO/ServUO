@@ -145,11 +145,13 @@ namespace Server.Items
 
         public virtual void TriggerDamage()
         {
-            foreach (Mobile mob in this.GetMobilesInRange(1))
+            IPooledEnumerable eable = GetMobilesInRange(1);
+            foreach (Mobile mob in eable)
             {
                 if (mob.Alive && !mob.IsDeadBondedPet && mob.IsPlayer())
                     Spells.SpellHelper.Damage(TimeSpan.FromTicks(1), mob, mob, Utility.Dice(3, 15, 0));
             }
+            eable.Free();
         }
 
         public override void Serialize(GenericWriter writer)

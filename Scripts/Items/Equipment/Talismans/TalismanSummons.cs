@@ -637,13 +637,16 @@ namespace Server.Mobiles
 
 				if (r != null && mob.Alive)
 				{
-					foreach (Mobile m in GetMobilesInRange(2))
+                    IPooledEnumerable eable = GetMobilesInRange(2);
+					foreach (Mobile m in eable)
 					{
 						if (!mob.CanBeHarmful(m))
 						{
 							mob.CriminalAction(false);
 						}
 					}
+
+                    eable.Free();
 				}
 			}
 

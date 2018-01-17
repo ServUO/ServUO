@@ -181,12 +181,14 @@ namespace Server.Mobiles
         private void DoAreaLeech_Finish()
         {
             ArrayList list = new ArrayList();
+            IPooledEnumerable eable = GetMobilesInRange(6);
 
-            foreach (Mobile m in this.GetMobilesInRange(6))
+            foreach (Mobile m in eable)
             {
                 if (this.CanBeHarmful(m) && this.IsEnemy(m))
                     list.Add(m);
             }
+            eable.Free();
 
             if (list.Count == 0)
             {

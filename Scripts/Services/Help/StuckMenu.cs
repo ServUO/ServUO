@@ -268,7 +268,7 @@ namespace Server.Menus.Questions
             {
                 Map fromMap = m_Mobile.LogoutMap;
                 Point3D fromLoc = m_Mobile.LogoutLocation;
-                fromMap.GetMobilesInRange(fromLoc, 3);
+
                 var move = fromMap.GetMobilesInRange(fromLoc, 3).Where(m => m is BaseCreature).Cast<BaseCreature>()
                     .Where(pet => pet.Controlled && pet.ControlMaster == m_Mobile && pet.ControlOrder == OrderType.Guard || pet.ControlOrder == OrderType.Follow || pet.ControlOrder == OrderType.Come).ToList();
 

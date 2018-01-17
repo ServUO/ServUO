@@ -641,10 +641,13 @@ namespace Server.Engines.Doom
                             IEntity m_IEntity = new Entity(Serial.Zero, RandomPointIn(this.m_Player.Location, 10), this.m_Player.Map);
 
                             List<Mobile> mobiles = new List<Mobile>();
-                            foreach (Mobile m in m_IEntity.Map.GetMobilesInRange(m_IEntity.Location, 2))
+                            IPooledEnumerable eable = m_IEntity.Map.GetMobilesInRange(m_IEntity.Location, 2);
+
+                            foreach (Mobile m in eable)
                             {
                                 mobiles.Add(m);
                             }
+                            eable.Free();
                             for (int k = 0; k < mobiles.Count; k++)
                             {
                                 if (IsValidDamagable(mobiles[k]) && mobiles[k] != this.m_Player)

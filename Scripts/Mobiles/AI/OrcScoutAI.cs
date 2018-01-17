@@ -216,7 +216,8 @@ namespace Server.Mobiles
 
 			double dist = 9999.0;
 
-			foreach (Mobile m in m_Mobile.GetMobilesInRange(m_Mobile.RangePerception))
+            IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
+			foreach (Mobile m in eable)
 			{
 				if (m.Player && !m.Hidden && m.IsPlayer() && m.Combatant == m_Mobile)
 				{
@@ -226,6 +227,8 @@ namespace Server.Mobiles
 					}
 				}
 			}
+
+            eable.Free();
 
 			return nearest;
 		}

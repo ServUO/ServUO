@@ -161,7 +161,9 @@ namespace Server.Mobiles
                     return;
                 }
 
-                foreach (Mobile m in this.m_Owner.GetMobilesInRange(10))
+                IPooledEnumerable eable = m_Owner.GetMobilesInRange(10);
+
+                foreach (Mobile m in eable)
                 {
                     if (m == null || !(m is PlayerMobile))
                         continue;
@@ -177,6 +179,8 @@ namespace Server.Mobiles
                         NewMobile.Combatant = m;
                     }
                 }
+
+                eable.Free();
             }
         }
 

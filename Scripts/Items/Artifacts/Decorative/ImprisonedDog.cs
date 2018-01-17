@@ -175,7 +175,8 @@ namespace Server.Mobiles
         {
             if (!this.Morphed && this.m_NextAttempt <= DateTime.UtcNow)
             {
-                foreach (Mobile m in this.GetMobilesInRange(6))
+                IPooledEnumerable eable = GetMobilesInRange(6);
+                foreach (Mobile m in eable)
                 {
                     if (!m.Hidden && m.Alive && Utility.RandomDouble() < 0.25)
                     {
@@ -183,6 +184,7 @@ namespace Server.Mobiles
                         break;
                     }
                 }
+                eable.Free();
 				
                 this.m_NextAttempt = DateTime.UtcNow + TimeSpan.FromSeconds(90);
             }

@@ -41,8 +41,9 @@ namespace Server.Spells.Bushido
             BaseWeapon weapon = attacker.Weapon as BaseWeapon;
 
             List<Mobile> targets = new List<Mobile>();
+            IPooledEnumerable eable = attacker.GetMobilesInRange(weapon.MaxRange);
 
-            foreach (Mobile m in attacker.GetMobilesInRange(weapon.MaxRange))
+            foreach (Mobile m in eable)
             {
                 if (m == defender)
                     continue;
@@ -52,6 +53,7 @@ namespace Server.Spells.Bushido
 
                 targets.Add(m);
             }
+            eable.Free();
 
             if (targets.Count > 0)
             {

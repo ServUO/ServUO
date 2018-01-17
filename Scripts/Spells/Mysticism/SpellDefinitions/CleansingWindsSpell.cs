@@ -126,7 +126,9 @@ namespace Server.Spells.Mysticism
             if (casterParty == null)
                 yield break;
 
-            foreach (var m in Caster.Map.GetMobilesInRange(new Point3D(targeted), 2))
+            IPooledEnumerable eable = Caster.Map.GetMobilesInRange(new Point3D(targeted), 2);
+
+            foreach (Mobile m in eable)
             {
                 if (m == null || m == targeted)
                     continue;
@@ -135,6 +137,8 @@ namespace Server.Spells.Mysticism
                 if (Caster.CanBeBeneficial(m, false) && casterParty.Contains(m))
                     yield return m;
             }
+
+            eable.Free();
         }
 
         public static int RemoveCurses(Mobile m)
