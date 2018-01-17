@@ -79,9 +79,7 @@ namespace Server.Items
                     ((BaseWeapon)from.Weapon).ProcessingMultipleHits = false;
             }
         }
-
-        private bool _SecondHit;
-
+        
         /// <summary>
         /// Called from BaseWeapon, on successful hit
         /// </summary>

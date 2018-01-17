@@ -1,15 +1,12 @@
 using System;
 using Server;
 using Server.Items;
-using Server.Mobiles;
-using System.Collections.Generic;
 
 namespace Server.Engines.NewMagincia
 {
 	public class WarehouseContainer : MediumCrate
 	{
 		private Mobile m_Owner;
-		private int m_AmountOwed;
 		
 		[CommandProperty(AccessLevel.GameMaster)]
 		public Mobile Owner { get { return m_Owner; } }

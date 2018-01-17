@@ -16,7 +16,6 @@ namespace Server.Multis
 
         private List<Item> m_Items;
         private List<Mobile> m_Mobiles;
-        private TimeSpan m_DecayDelay;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime TimeOfDecay { get; set; }

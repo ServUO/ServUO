@@ -1,9 +1,7 @@
 using Server;
 using System;
 using Server.Items;
-using Server.Mobiles;
 using System.Collections.Generic;
-using Server.Gumps;
 
 namespace Server.Engines.Distillation
 {
@@ -32,8 +30,6 @@ namespace Server.Engines.Distillation
 	public class DistillationSystem
 	{
 		public static readonly TimeSpan MaturationPeriod = TimeSpan.FromHours(48);
-
-		private static Timer m_Timer;
 		
 		private static List<CraftDefinition> m_CraftDefs = new List<CraftDefinition>();
 		public static List<CraftDefinition> CraftDefs { get { return m_CraftDefs; } }

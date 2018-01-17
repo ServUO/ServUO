@@ -17,8 +17,7 @@ namespace Server.Items
         {
             Decorate.Generate("exodus", "Data/Decoration/Exodus", Map.Ilshenar);
         }
-
-        private bool m_Active;
+        
         private static readonly TimeSpan m_UseTimeout = TimeSpan.FromMinutes(2.0);
         private Dictionary<Mobile, DamageTimer> DamageTable = new Dictionary<Mobile, DamageTimer>();
         private int m_SideLength;

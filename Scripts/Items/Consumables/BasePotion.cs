@@ -212,13 +212,8 @@ namespace Server.Items
         public static void PlayDrinkEffect(Mobile m)
         {
             m.RevealingAction();
-
             m.PlaySound(0x2D6);
-
-            #region Dueling
-            if (!Engines.ConPVP.DuelContext.IsFreeConsume(m))
-                m.AddToBackpack(new Bottle());
-            #endregion
+            m.AddToBackpack(new Bottle());
 
             if (m.Body.IsHuman && !m.Mounted)
             {

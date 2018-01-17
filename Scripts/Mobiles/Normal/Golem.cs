@@ -16,7 +16,6 @@ namespace Server.Mobiles
             }
         }
 
-        private bool m_Stunning;
         [Constructable]
         public Golem()
             : this(false, 1.0)

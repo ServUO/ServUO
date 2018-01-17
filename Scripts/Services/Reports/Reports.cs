@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading;
 using Server.Accounting;
 using Server.Commands;
-using Server.Engines.ConPVP;
 using Server.Factions;
 using Server.Mobiles;
 using Server.Network;
@@ -80,9 +79,6 @@ namespace Server.Engines.Reports
         public static void FillSnapshot(Snapshot ss)
         {
             ss.Children.Add(CompileGeneralStats());
-            ss.Children.Add(CompilePCByDL());
-            ss.Children.Add(CompileTop15());
-            ss.Children.Add(CompileDislikedArenas());
             ss.Children.Add(CompileStatChart());
 
             PersistableObject[] obs = CompileSkillReports();
@@ -420,130 +416,7 @@ namespace Server.Engines.Reports
             renderer.Render();
             renderer.Upload();
         }
-
-        private static Chart CompilePCByDL()
-        {
-            BarGraph chart = new BarGraph("Player Count By Dueling Level", "graphs_pc_by_dl", 5, "Dueling Level", "Players", BarGraphRenderMode.Bars);
-
-            int lastLevel = -1;
-            ChartItem lastItem = null;
-
-            Ladder ladder = Ladder.Instance;
-
-            if (ladder != null)
-            {
-                ArrayList entries = ladder.ToArrayList();
-
-                for (int i = entries.Count - 1; i >= 0; --i)
-                {
-                    LadderEntry entry = (LadderEntry)entries[i];
-                    int level = Ladder.GetLevel(entry.Experience);
-
-                    if (lastItem == null || level != lastLevel)
-                    {
-                        chart.Items.Add(lastItem = new ChartItem(level.ToString(), 1));
-                        lastLevel = level;
-                    }
-                    else
-                    {
-                        lastItem.Value++;
-                    }
-                }
-            }
-
-            return chart;
-        }
-
-        private static Report CompileTop15()
-        {
-            Report report = new Report("Top 15 Duelists", "80%");
-
-            report.Columns.Add("6%", "center", "Rank");
-            report.Columns.Add("6%", "center", "Level");
-            report.Columns.Add("6%", "center", "Guild");
-            report.Columns.Add("70%", "left", "Name");
-            report.Columns.Add("6%", "center", "Wins");
-            report.Columns.Add("6%", "center", "Losses");
-
-            Ladder ladder = Ladder.Instance;
-
-            if (ladder != null)
-            {
-                ArrayList entries = ladder.ToArrayList();
-
-                for (int i = 0; i < entries.Count && i < 15; ++i)
-                {
-                    LadderEntry entry = (LadderEntry)entries[i];
-                    int level = Ladder.GetLevel(entry.Experience);
-                    string guild = "";
-
-                    if (entry.Mobile.Guild != null)
-                        guild = entry.Mobile.Guild.Abbreviation;
-
-                    ReportItem item = new ReportItem();
-
-                    item.Values.Add(LadderGump.Rank(entry.Index + 1));
-                    item.Values.Add(level.ToString(), "N0");
-                    item.Values.Add(guild);
-                    item.Values.Add(entry.Mobile.Name);
-                    item.Values.Add(entry.Wins.ToString(), "N0");
-                    item.Values.Add(entry.Losses.ToString(), "N0");
-
-                    report.Items.Add(item);
-                }
-            }
-
-            return report;
-        }
-
-        private static Chart CompileDislikedArenas()
-        {
-            PieChart chart = new PieChart("Most Disliked Arenas", "graphs_arenas_disliked", false);
-
-            Preferences prefs = Preferences.Instance;
-
-            if (prefs != null)
-            {
-                List<Arena> arenas = Arena.Arenas;
-
-                for (int i = 0; i < arenas.Count; ++i)
-                {
-                    Arena arena = arenas[i];
-
-                    string name = arena.Name;
-
-                    if (name != null)
-                        chart.Items.Add(name, 0);
-                }
-
-                ArrayList entries = prefs.Entries;
-
-                for (int i = 0; i < entries.Count; ++i)
-                {
-                    PreferencesEntry entry = (PreferencesEntry)entries[i];
-                    ArrayList list = entry.Disliked;
-
-                    for (int j = 0; j < list.Count; ++j)
-                    {
-                        string disliked = (string)list[j];
-
-                        for (int k = 0; k < chart.Items.Count; ++k)
-                        {
-                            ChartItem item = chart.Items[k];
-
-                            if (item.Name == disliked)
-                            {
-                                ++item.Value;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return chart;
-        }
-
+                
         public class SkillDistribution : IComparable
         {
             public SkillInfo m_Skill;

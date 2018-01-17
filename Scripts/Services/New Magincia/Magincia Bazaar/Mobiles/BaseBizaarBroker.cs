@@ -2,7 +2,6 @@ using System;
 using Server;
 using Server.Items;
 using Server.Mobiles;
-using System.Collections.Generic;
 
 namespace Server.Engines.NewMagincia
 {
@@ -10,7 +9,6 @@ namespace Server.Engines.NewMagincia
 	{
 		private MaginciaBazaarPlot m_Plot;
 		private int m_BankBalance;
-		private string m_ShopName;
 		private DateTime m_NextFee;
 		
 		[CommandProperty(AccessLevel.GameMaster)]
