@@ -213,6 +213,7 @@ namespace Server.Items
         {
             m.RevealingAction();
             m.PlaySound(0x2D6);
+            m.AddToBackpack(new Bottle());
 
             if (m.Body.IsHuman && !m.Mounted)
             {
