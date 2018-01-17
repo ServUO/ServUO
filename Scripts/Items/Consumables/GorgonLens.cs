@@ -214,7 +214,11 @@ namespace Server.Items
 
         public override void Confirm(Mobile from)
         {
-            if (m_Item is BaseShield || m_Item.Layer == Layer.Neck || m_Item.Layer == Layer.Earrings || m_Item.Layer == Layer.Helm)
+            if (!m_Lense.IsChildOf(from.Backpack) || !m_Item.IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1054107); // This item must be in your backpack.
+            }
+            else if (m_Item is BaseShield || m_Item.Layer == Layer.Neck || m_Item.Layer == Layer.Earrings || m_Item.Layer == Layer.Helm)
             {
                 if (m_Item is BaseArmor)
                 {
