@@ -641,7 +641,6 @@ namespace Server.Engines.VvV
             if (!Enabled || from == to)
                 return false;
 
-            //TODO: Support for VvV city games regarding non-participants in the city, as well as ones who flagged
             if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
                 from = ((BaseCreature)from).GetMaster();
 
@@ -789,7 +788,7 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(2);
 
             writer.Write(ExemptCities.Count);
             ExemptCities.ForEach(c => writer.Write((int)c));
@@ -857,6 +856,26 @@ namespace Server.Engines.VvV
                         }
                     }
                     break;
+            }
+
+            if (version == 1)
+                Timer.DelayCall(FixVvVItems);
+        }
+
+        public void FixVvVItems()
+        {
+            foreach (var item in VvVItems.Where(i => i is Spellbook))
+            {
+                var book = item as Spellbook;
+                var attrs = RunicReforging.GetNegativeAttributes(item);
+
+                if (attrs != null)
+                {
+                    attrs.Antique = 0;
+                }
+
+                book.MaxHitPoints = 0;
+                book.HitPoints = 0;
             }
         }
 

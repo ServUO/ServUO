@@ -128,7 +128,7 @@ namespace Server.Engines.VvV
 
             NegativeAttributes neg = RunicReforging.GetNegativeAttributes(item);
 
-            if (neg != null)
+            if (neg != null && !(item is Spellbook))
             {
                 neg.Antique = 1;
 

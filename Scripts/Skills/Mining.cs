@@ -2,6 +2,7 @@ using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using System.Linq;
 
 namespace Server.Engines.Harvest
 {
@@ -234,6 +235,30 @@ namespace Server.Engines.Harvest
             return base.GetResourceType(from, tool, def, map, loc, resource);
         }
 
+        public override void SendSuccessTo(Mobile from, Item item, HarvestResource resource)
+        {
+            if (item is BaseGranite)
+                from.SendLocalizedMessage(1044606); // You carefully extract some workable stone from the ore vein!
+            else if (item is IGem)
+                from.SendLocalizedMessage(1112233); // You carefully extract a glistening gem from the vein!
+            else if (item != null)
+            {
+                foreach (var res in OreAndStone.Resources.Where(r => r.Types != null))
+                {
+                    foreach (var type in res.Types)
+                    {
+                        if (item.GetType() == type)
+                        {
+                            res.SendSuccessTo(from);
+                            return;
+                        }
+                    }
+                }
+
+                base.SendSuccessTo(from, item, resource);
+            }
+        }
+
         public override bool CheckResources(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
         {
             if (HarvestMap.CheckMapOnHarvest(from, loc, def) == null)
@@ -254,16 +279,6 @@ namespace Server.Engines.Harvest
             }
 
             return true;
-        }
-
-        public override void SendSuccessTo(Mobile from, Item item, HarvestResource resource)
-        {
-            if (item is BaseGranite)
-                from.SendLocalizedMessage(1044606); // You carefully extract some workable stone from the ore vein!
-            else if (item is IGem)
-                from.SendLocalizedMessage(1112233); // You carefully extract a glistening gem from the vein!
-            else
-                base.SendSuccessTo(from, item, resource);
         }
 
         public override bool CheckHarvest(Mobile from, Item tool, HarvestDefinition def, object toHarvest)

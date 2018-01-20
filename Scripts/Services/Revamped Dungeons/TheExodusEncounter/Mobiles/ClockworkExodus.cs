@@ -284,9 +284,7 @@ namespace Server.Mobiles
                     return;
 
                 Gold g = new Gold(500, 1000);
-
-                if (0.5 >= Utility.RandomDouble())
-                    g.MoveToWorld(new Point3D(m_X, m_Y, z), m_Map);
+                g.MoveToWorld(new Point3D(m_X, m_Y, z), m_Map);
 
                 if (0.3 >= Utility.RandomDouble())
                 {                    

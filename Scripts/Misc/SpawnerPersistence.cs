@@ -14,7 +14,7 @@ using Server.Multis;
 
 namespace Server
 {
-    public class SpawnerPresistence
+    public class SpawnerPersistence
     {
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
 
@@ -81,7 +81,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)6);
+                    writer.Write((int)7);
                     writer.Write(false);
                     writer.Write(_SpawnsConverted);
                 });
@@ -110,6 +110,9 @@ namespace Server
         {
             switch (_Version)
             {
+                case 6:
+                    RunicReforging.ItemNerfVersion6();
+                    break;
                 case 5:
                     HonestyItemsVersion5();
                     break;

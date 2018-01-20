@@ -16,8 +16,8 @@ namespace Server.Items
             Hue = 2130;
         }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        //public override int InitMinHits { get { return 255; } }
+        //public override int InitMaxHits { get { return 255; } }
 
         public FemaleKimonoBearingTheCrestOfBlackthorn3(Serial serial)
             : base(serial)
@@ -27,13 +27,19 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                MaxHitPoints = 0;
+                HitPoints = 0;
+            }
         }
     }
 }

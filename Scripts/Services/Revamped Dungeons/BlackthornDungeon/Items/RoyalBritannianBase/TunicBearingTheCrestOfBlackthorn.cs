@@ -6,7 +6,9 @@ namespace Server.Items
     public class TunicBearingTheCrestOfBlackthorn : Tunic
     {
         public override bool IsArtifact { get { return true; } }
-        
+        public override int InitMinHits { get { return 150; } }
+        public override int InitMaxHits { get { return 150; } }
+
         [Constructable]
         public TunicBearingTheCrestOfBlackthorn()
             : base()
@@ -17,21 +19,6 @@ namespace Server.Items
             Attributes.LowerRegCost = 10;
             StrRequirement = 10;
             Hue = 0xe8;
-        }
-
-        public override int InitMinHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 150;
-            }
         }
 
         public TunicBearingTheCrestOfBlackthorn(Serial serial)

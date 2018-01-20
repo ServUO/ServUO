@@ -22,7 +22,7 @@ namespace Server.Items
 
         [Constructable]
         public PowderOfFortKeg(int uses)
-            : base(6871)
+            : base(0x1940)
         {
             _Charges = uses;
 
@@ -118,7 +118,7 @@ namespace Server.Items
                 number = 502255; // The keg is about three quarters full.
             else if (perc < 90)
                 number = 502256; // The keg is very full.
-            else if (perc < 250)
+            else if (perc < 100)
                 number = 502257; // The liquid is almost to the top of the keg.
             else
                 number = 502258; // The keg is completely full.
@@ -135,7 +135,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 
             writer.Write(_Charges);
         }
@@ -148,8 +148,8 @@ namespace Server.Items
 
             _Charges = reader.ReadInt();
 
-            if (ItemID != 6871)
-                ItemID = 6871;
+            if (version == 0)
+                ItemID = 0x1940;
         }
     }
 }

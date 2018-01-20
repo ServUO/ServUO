@@ -2600,7 +2600,6 @@ namespace Server.Items
 				int lifeLeech = 0;
 				int stamLeech = 0;
 				int manaLeech = 0;
-				int wraithLeech = 0;
 
 				if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechStam) * propertyBonus) >
 					Utility.Random(100))
@@ -2637,20 +2636,6 @@ namespace Server.Items
 
 				context = TransformationSpellHelper.GetContext(attacker);
 
-                int toHealVampiricEmbraceSpell = 0;
-
-                if (context != null && context.Type == typeof(VampiricEmbraceSpell))
-				{
-                    toHealVampiricEmbraceSpell += (int)(AOS.Scale(damageGiven, 20)); // Vampiric embrace gives an additional 20% life leech
-                }
-
-				if (context != null && context.Type == typeof(WraithFormSpell))
-				{
-					wraithLeech = (5 + (int)((15 * attacker.Skills.SpiritSpeak.Value) / 100));
-						// Wraith form gives an additional 5-20% mana leech
-					manaLeech += wraithLeech;
-				}
-
 				if (stamLeech != 0)
 				{
 					attacker.Stam += AOS.Scale(damageGiven, stamLeech);
@@ -2678,11 +2663,6 @@ namespace Server.Items
                         attacker.Hits += toHealCursedWeaponSpell;
                     }
 
-                    if (toHealVampiricEmbraceSpell != 0 && !(defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura))
-                    {
-                        attacker.Hits += toHealVampiricEmbraceSpell;
-                    }
-
                     if (manaLeech != 0)
 					{
                         attacker.Mana += Utility.RandomMinMax(0, (int)(AOS.Scale(damageGiven, manaLeech) * 0.4));
@@ -2695,11 +2675,6 @@ namespace Server.Items
                         attacker.Hits += toHealCursedWeaponSpell;
                     }
 
-                    if (toHealVampiricEmbraceSpell != 0)
-                    {
-                        attacker.Hits += toHealVampiricEmbraceSpell;
-                    }
-
 					if (lifeLeech != 0)
 					{
 						attacker.Hits += AOS.Scale(damageGiven, lifeLeech);
@@ -2708,11 +2683,10 @@ namespace Server.Items
 					if (manaLeech != 0)
 					{
 						attacker.Mana += AOS.Scale(damageGiven, manaLeech);
-						defender.Mana -= AOS.Scale(damageGiven, wraithLeech);
 					}
 				}
 
-                if (lifeLeech != 0 || stamLeech != 0 || manaLeech != 0 || toHealCursedWeaponSpell != 0 || toHealVampiricEmbraceSpell != 0)
+                if (lifeLeech != 0 || stamLeech != 0 || manaLeech != 0 || toHealCursedWeaponSpell != 0)
 				{
 					attacker.PlaySound(0x44D);
 				}

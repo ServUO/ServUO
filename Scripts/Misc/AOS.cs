@@ -339,6 +339,11 @@ namespace Server
             m.Damage(totalDamage, from, true, false);
             SpiritSpeak.CheckDisrupt(m);
 
+            if (from != null)
+            {
+                DoLeech(totalDamage, from, m);
+            }
+
             #region Stygian Abyss
             if (m.Spell != null)
                 ((Spell)m.Spell).CheckCasterDisruption(true, phys, fire, cold, pois, nrgy);
@@ -366,6 +371,42 @@ namespace Server
         public static int Scale(int input, int percent)
         {
             return (input * percent) / 100;
+        }
+
+        public static void DoLeech(int damageGiven, Mobile from, Mobile target)
+        {
+            TransformContext context = TransformationSpellHelper.GetContext(from);
+
+            if (context != null)
+            {
+                if (context.Type == typeof(WraithFormSpell))
+                {
+                    int manaLeech = AOS.Scale(damageGiven, Math.Min(target.Mana, (5 + (int)((15 * from.Skills.SpiritSpeak.Value) / 100)))); // Wraith form gives 5-20% mana leech
+
+                    if (manaLeech != 0)
+                    {
+                        from.Mana += manaLeech;
+                        from.PlaySound(0x44D);
+
+                        target.Mana -= manaLeech;
+                    }
+                }
+                else if (context.Type == typeof(VampiricEmbraceSpell))
+                {
+                    #region High Seas
+                    if (target is BaseCreature && ((BaseCreature)target).TaintedLifeAura)
+                    {
+                        AOS.Damage(from, target, AOS.Scale(damageGiven, 20), false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+                        from.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
+                    }
+                    #endregion
+                    else
+                    {
+                        from.Hits += AOS.Scale(damageGiven, 20);
+                        from.PlaySound(0x44D);
+                    }
+                }
+            }
         }
 
         #region AOS Status Bar
