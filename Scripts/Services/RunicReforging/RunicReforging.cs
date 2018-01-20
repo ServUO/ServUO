@@ -94,7 +94,9 @@ namespace Server.Items
 
             bool goodtogo = true;
             int mods = GetTotalMods(item);
-            int maxmods = item is JukaBow ||item is BaseWeapon && !((BaseWeapon)item).DImodded ? 1 : 0;
+            int maxmods = item is JukaBow || 
+                (item is BaseWeapon && !((BaseWeapon)item).DImodded) || 
+                (item is BaseArmor && ((BaseArmor)item).ArmorAttributes.MageArmor > 0 && BaseArmor.IsMageArmorType((BaseArmor)item)) ? 1 : 0;
 
             if (mods > maxmods)
                 goodtogo = false;

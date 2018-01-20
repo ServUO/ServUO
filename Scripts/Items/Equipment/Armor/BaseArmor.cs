@@ -3122,16 +3122,9 @@ namespace Server.Items
             #endregion
 
             // Gives MageArmor property for certain armor types
-            if (Core.SA && m_AosArmorAttributes.MageArmor <= 0)
+            if (Core.SA && m_AosArmorAttributes.MageArmor <= 0 && IsMageArmorType(this))
             {
-                foreach (Type type in _MageArmorTypes)
-                {
-                    if (type == GetType())
-                    {
-                        m_AosArmorAttributes.MageArmor = 1;
-                        break;
-                    }
-                }
+                m_AosArmorAttributes.MageArmor = 1;
             }
 
             InvalidateProperties();
@@ -3207,7 +3200,22 @@ namespace Server.Items
             return info.AttributeInfo;
         }
 
-        private Type[] _MageArmorTypes = new Type[]
+        public static bool IsMageArmorType(BaseArmor armor)
+        {
+            Type t = armor.GetType();
+
+            foreach (Type type in _MageArmorTypes)
+            {
+                if (type == t || t.IsSubclassOf(type))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static Type[] _MageArmorTypes = new Type[]
         {
             typeof(HeavyPlateJingasa),  typeof(LightPlateJingasa),
             typeof(PlateMempo),         typeof(PlateDo),
