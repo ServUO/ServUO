@@ -365,8 +365,17 @@ namespace Server.Mobiles
 
 				Gold gold = new Gold( 500, 1000 );
 
-				if ( cont == null || !cont.TryDropItem( escorter, gold, false ) )
-					gold.MoveToWorld( escorter.Location, escorter.Map );
+                if (cont == null || !cont.TryDropItem(escorter, gold, false))
+                {
+                    if (escorter.Map != null && escorter.Map != Map.Internal)
+                    {
+                        gold.MoveToWorld(escorter.Location, escorter.Map);
+                    }
+                    else
+                    {
+                        gold.Delete();
+                    }
+                }
 
 				Misc.Titles.AwardFame( escorter, 10, true );
 

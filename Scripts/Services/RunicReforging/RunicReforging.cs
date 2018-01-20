@@ -7,6 +7,7 @@ using Server.SkillHandlers;
 using Server.Misc;
 using Server.Gumps;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -1070,7 +1071,7 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.LowerManaCost, ArmorStamManaLMCTable),
                         new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
                         new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable),
-                        new NamedInfoCol(AosAttribute.CastSpeed, 2),
+                        new NamedInfoCol(AosAttribute.CastSpeed, 1),
                         new NamedInfoCol(AosAttribute.CastRecovery, 4),
                         new NamedInfoCol(AosAttribute.SpellDamage, 15),
                     },
@@ -1155,7 +1156,7 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.RegenHits, ArmorRegenTable),
                         new NamedInfoCol(AosAttribute.RegenStam, ArmorRegenTable),
                         new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
-                        new NamedInfoCol("RandomEater", EaterTable),
+                        //new NamedInfoCol("RandomEater", EaterTable),
                     },
 				};
 			m_PrefixSuffixInfo[8] = new NamedInfoCol[][]	// Fortified
@@ -1281,7 +1282,7 @@ namespace Server.Items
                     new NamedInfoCol[]
                     {
                         new NamedInfoCol(AosAttribute.DefendChance, ArmorHCIDCITable),
-                        new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, ArmorCastingFocusTable),
+                        //new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, ArmorCastingFocusTable),
                     },
 				};
         }
@@ -2005,44 +2006,6 @@ namespace Server.Items
             return RandomItemGenerator.GetDifficultyFor(bc);
         }
 
-        /* LegendaryArtifact:
-         * None: NEVER
-         * Antique: Common
-         * Brittle: Less Common
-         * 
-         * GreaterArtifact:
-         * None: Never
-         * Antique/Prized: Common
-         * Brittle: Uncommon
-         * 
-         * LesserArtifact:
-         * None: Very Uncommon (-.1%)
-         * Prized: Common
-         * Antique: Uncommon
-         * Brittle: Rare
-         * 
-         * MajorMagicItem: 
-         * None: semi common
-         * prized: semi common
-         * Antique: uncommon
-         * Unlucky: uncommon
-         * Brittle: Rare
-         * 
-         * GreaterMagicItem:
-         * None: common (60%)
-         * Prized: uncommon
-         * Unluck: uncommon
-         * Brittle/Antique: rare
-         * 
-         * LesserMagicItem:
-         * None: very common(75%)
-         * Prized/Antique/Unlucky: Uncommon
-         * 
-         * Minor Magic Item
-         * None: most common: (95%)
-         * Prized/Antique/Unlucky: Uncommon
-         */
-
         private static int TryApplyRandomDisadvantage(Item item)
         {
             AosAttributes attrs = GetAosAttributes(item);
@@ -2052,9 +2015,17 @@ namespace Server.Items
                 return 0;
 
             int max = Imbuing.GetMaxWeight(item);
+            ItemPower power = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), false);
             double chance = Utility.RandomDouble();
 
-            ItemPower power = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), false);
+            if (item is BaseJewel && power >= ItemPower.MajorArtifact)
+            {
+                if (chance > .25)
+                    neg.Antique = 1;
+                else
+                    item.LootType = LootType.Cursed;
+                return 100;
+            }
 
             switch (power)
             {
@@ -2115,7 +2086,7 @@ namespace Server.Items
                         }
                         else if (.85 > chance)
                         {
-                            if (Utility.RandomBool())
+                            if (Utility.RandomBool() || item is BaseJewel)
                                 neg.Antique = 1;
                             else
                                 neg.Brittle = 1;
@@ -2158,7 +2129,7 @@ namespace Server.Items
 
                             return 100;
                         }
-                        else if (.9 > chance)
+                        else if (.9 > chance || item is BaseJewel)
                         {
                             neg.Antique = 1;
                             return 150;
@@ -2170,51 +2141,32 @@ namespace Server.Items
                         }
                     }
                 case ItemPower.LesserArtifact: // lesser arty
+                case ItemPower.GreaterArtifact: // greater arty
                     {
-                        if (0.01 > chance)
+                        if (0.001 > chance)
                             return 0;
 
                         chance = Utility.RandomDouble();
 
-                        if (0.5 > chance)
-                        {
-                            neg.Prized = 1;
-                            return 100;
-                        }
-                        else if (0.88 > chance)
+                        if (0.33 > chance && !(item is BaseJewel))
                         {
                             neg.Brittle = 1;
                             return 150;
                         }
-                        else if (0.98 > chance)
+                        else if (0.66 > chance)
                         {
                             item.LootType = LootType.Cursed;
                             return 150;
                         }
-                        else
+                        else if (0.85 > chance)
                         {
                             neg.Antique = 1;
                             return 150;
                         }
-                    }
-                case ItemPower.GreaterArtifact: // greater arty
-                    {
-                        if (0.001 > Utility.RandomDouble())
-                            return 0;
-
-                        if (0.85 > chance)
-                        {
-                            if (Utility.RandomBool())
-                                neg.Antique = 1;
-                            else
-                                neg.Prized = 1;
-
-                            return 100;
-                        }
                         else
                         {
-                            neg.Brittle = 1;
-                            return 150;
+                            neg.Prized = 1;
+                            return 100;
                         }
                     }
                 case ItemPower.MajorArtifact:
@@ -2223,15 +2175,20 @@ namespace Server.Items
                         if (0.0001 > Utility.RandomDouble())
                             return 0;
 
-                        if (0.99 > chance)
+                        if (0.85 > chance)
                         {
                             neg.Antique = 1;
+                            return 100;
+                        }
+                        else if (.95 > chance)
+                        {
+                            item.LootType = LootType.Cursed;
                             return 100;
                         }
                         else
                         {
                             neg.Brittle = 1;
-                            return 150;
+                            return 100;
                         }
                     }
             }
@@ -2723,7 +2680,7 @@ namespace Server.Items
                 if (attr == AosAttribute.Luck)
                     return 10;
 
-                if (attr == AosAttribute.WeaponSpeed)
+                if (attr == AosAttribute.WeaponSpeed || attr == AosAttribute.EnhancePotions)
                     return 5;
             }
             else if (o is AosArmorAttribute)
@@ -3242,6 +3199,69 @@ namespace Server.Items
             new int[] { 25, 30, 30, 30, 30, 30, 30 },
         };
         #endregion
+        #endregion
+
+        #region Updates
+        public static void ItemNerfVersion6()
+        {
+            int fc2 = 0;
+            int eater = 0;
+            int focus = 0;
+            int brittle = 0;
+
+            foreach (var jewel in World.Items.Values.OfType<BaseJewel>().Where(j => j.ReforgedPrefix > ReforgedPrefix.None || j.ReforgedSuffix > ReforgedSuffix.None))
+            {
+                if (jewel.Attributes.CastSpeed > 1)
+                {
+                    jewel.Attributes.CastSpeed = 1;
+                    fc2++;
+                }
+
+                SAAbsorptionAttributes attr = GetSAAbsorptionAttributes(jewel);
+                NegativeAttributes neg = GetNegativeAttributes(jewel);
+
+                if (HasEater(jewel) && attr != null)
+                {
+                    if (attr != null)
+                    {
+                        if (attr.EaterKinetic > 0)
+                            attr.EaterKinetic = 0;
+
+                        if (attr.EaterFire > 0)
+                            attr.EaterFire = 0;
+
+                        if (attr.EaterCold > 0)
+                            attr.EaterCold = 0;
+
+                        if (attr.EaterPoison > 0)
+                            attr.EaterPoison = 0;
+
+                        if (attr.EaterEnergy > 0)
+                            attr.EaterEnergy = 0;
+
+                        if (attr.EaterDamage > 0)
+                            attr.EaterDamage = 0;
+
+                        eater++;
+                    }
+                }
+
+                if (attr != null && attr.CastingFocus > 0)
+                {
+                    attr.CastingFocus = 0;
+                    focus++;
+                }
+
+                if (neg != null && neg.Brittle > 0)
+                {
+                    neg.Brittle = 0;
+                    neg.Antique = 1;
+                    brittle++;
+                }
+            }
+
+            SpawnerPersistence.ToConsole(String.Format("Cleauned up {0} items: {1} fc2, {2} non-Armor eater, {3} non armor casting focus, {4} brittle jewels converted to Antique.", fc2 + eater + focus + brittle, fc2, eater, focus, brittle));
+        }
         #endregion
     }
 

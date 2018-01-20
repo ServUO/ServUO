@@ -1297,11 +1297,6 @@ namespace Server.Spells
 
                 int damageGiven = AOS.Damage(damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, dtype);
 
-                if (from != null && target != null) // sanity check
-                {
-                    DoLeech(damageGiven, from, target);
-                }
-
                 if(target != null)
                     Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(target);
 
@@ -1323,42 +1318,6 @@ namespace Server.Spells
 
                 c.OnHarmfulSpell(from);
                 c.OnDamagedBySpell(from);
-            }
-        }
-
-        public static void DoLeech(int damageGiven, Mobile from, Mobile target)
-        {
-            TransformContext context = TransformationSpellHelper.GetContext(from);
-
-            if (context != null) /* cleanup */
-            {
-                if (context.Type == typeof(WraithFormSpell))
-                {
-                    int wraithLeech = Math.Min(target.Mana, (5 + (int)((15 * from.Skills.SpiritSpeak.Value) / 100))); // Wraith form gives 5-20% mana leech
-                    int manaLeech = AOS.Scale(damageGiven, wraithLeech);
-                    if (manaLeech != 0)
-                    {
-                        from.Mana += manaLeech;
-                        from.PlaySound(0x44D);
-
-                        target.Mana -= manaLeech;
-                    }
-                }
-                else if (context.Type == typeof(VampiricEmbraceSpell))
-                {
-                    #region High Seas
-                    if (target is BaseCreature && ((BaseCreature)target).TaintedLifeAura)
-                    {
-                        AOS.Damage(from, target, AOS.Scale(damageGiven, 20), false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
-                        from.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
-                    }
-                    #endregion
-                    else
-                    {
-                        from.Hits += AOS.Scale(damageGiven, 20);
-                        from.PlaySound(0x44D);
-                    }
-                }
             }
         }
 
@@ -1478,11 +1437,6 @@ namespace Server.Spells
                 DamageType dtype = m_Spell != null ? m_Spell.SpellDamageType : DamageType.Spell;
 
                 int damageGiven = AOS.Damage(m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy, m_Chaos, m_Direct, dtype);
-
-                if (m_From != null && target != null) // sanity check
-                {
-                    DoLeech(damageGiven, m_From, target);
-                }
 
                 WeightOverloading.DFA = DFAlgorithm.Standard;
 

@@ -13,6 +13,8 @@ namespace Server.Engines.Shadowguard
         public const int MaxSummons = 3;
 
 		public List<BaseCreature> SummonedHelpers { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool IsLastBoss { get; set; }
 
 		public DateTime _NextSummon;
@@ -121,13 +123,21 @@ namespace Server.Engines.Shadowguard
                         }
                     }
                 }
-
-                DoGoldSpray();
             }
 			base.OnDeath(c);
 		}
 
-        private void DoGoldSpray()
+        public override bool OnBeforeDeath()
+        {
+            if (IsLastBoss)
+            {
+                DoGoldSpray(Map);
+            }
+
+            return base.OnBeforeDeath();
+        }
+
+        private void DoGoldSpray(Map map)
         {
             if (this.Map != null)
             {
@@ -138,7 +148,7 @@ namespace Server.Engines.Shadowguard
                         double dist = Math.Sqrt(x * x + y * y);
 
                         if (dist <= 12)
-                            new GoodiesTimer(this.Map, X + x, Y + y).Start();
+                            new GoodiesTimer(map, X + x, Y + y).Start();
                     }
                 }
             }
@@ -173,7 +183,7 @@ namespace Server.Engines.Shadowguard
                 if (!canFit)
                     return;
 
-                Gold g = new Gold(500, 1000); // [WarLocke] Changed to vary by champion. Originally 500, 1000.
+                Gold g = new Gold(500, 1000);
                 g.MoveToWorld(new Point3D(m_X, m_Y, z), m_Map);
 
                 if (0.5 >= Utility.RandomDouble())
