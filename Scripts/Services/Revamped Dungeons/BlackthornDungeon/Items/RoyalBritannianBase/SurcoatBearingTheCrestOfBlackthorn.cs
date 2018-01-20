@@ -6,7 +6,9 @@ namespace Server.Items
     public class SurcoatBearingTheCrestOfBlackthorn : Surcoat
     {
         public override bool IsArtifact { get { return true; } }
-        
+        public override int InitMinHits { get { return 150; } }
+        public override int InitMaxHits { get { return 150; } }
+
         [Constructable]
         public SurcoatBearingTheCrestOfBlackthorn()
             : base()
@@ -27,19 +29,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                MaxHitPoints = 0;
-                HitPoints = 0;
-            }
         }
     }
 }
