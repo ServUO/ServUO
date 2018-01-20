@@ -788,7 +788,7 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(2);
 
             writer.Write(ExemptCities.Count);
             ExemptCities.ForEach(c => writer.Write((int)c));
@@ -856,6 +856,26 @@ namespace Server.Engines.VvV
                         }
                     }
                     break;
+            }
+
+            if (version == 1)
+                Timer.DelayCall(FixVvVItems);
+        }
+
+        public void FixVvVItems()
+        {
+            foreach (var item in VvVItems.Where(i => i is Spellbook))
+            {
+                var book = item as Spellbook;
+                var attrs = RunicReforging.GetNegativeAttributes(item);
+
+                if (attrs != null)
+                {
+                    attrs.Antique = 0;
+                }
+
+                book.MaxHitPoints = 0;
+                book.HitPoints = 0;
             }
         }
 
