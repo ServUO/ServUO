@@ -7,8 +7,7 @@ namespace Server.Items
     [Flipable(0x2684, 0x2683)]
     public class HoodedRobeBearingTheCrestOfBlackthorn1 : BaseOuterTorso, IRepairable
     {
-        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
-
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }       
         public override int LabelNumber { get { return 1029863; } } // Hooded Robe
         public override bool IsArtifact { get { return true; } }        
         
@@ -22,9 +21,6 @@ namespace Server.Items
             Hue = 2075;
         }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
-
         public HoodedRobeBearingTheCrestOfBlackthorn1(Serial serial)
             : base(serial)
         {
@@ -33,13 +29,19 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+			
+			if (version == 0)
+            {
+                MaxHitPoints = 0;
+                HitPoints = 0;
+            }
         }
     }
 }

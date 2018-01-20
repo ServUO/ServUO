@@ -18,12 +18,9 @@ namespace Server.Items
             ItemID = 0x9986;
             SkillBonuses.SetValues(0, SkillName.Stealth, 10.0);
             Hue = 2130;
-
-            Layer = Layer.OuterTorso;
+			
+			Layer = Layer.OuterTorso;
         }
-
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
 
         public GargishEpauletteBearingTheCrestOfBlackthorn3(Serial serial)
             : base(serial)
@@ -33,22 +30,28 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (Layer != Layer.OuterTorso)
+			
+			if (version == 0)
             {
-                if (Parent is Mobile)
-                {
-                    ((Mobile)Parent).AddToBackpack(this);
-                }
+                MaxHitPoints = 0;
+                HitPoints = 0;
 
-                Layer = Layer.OuterTorso;
+                if (Layer != Layer.OuterTorso)
+                {
+                    if (Parent is Mobile)
+                    {
+                        ((Mobile)Parent).AddToBackpack(this);
+                    }
+
+                    Layer = Layer.OuterTorso;
+                }
             }
         }
     }
