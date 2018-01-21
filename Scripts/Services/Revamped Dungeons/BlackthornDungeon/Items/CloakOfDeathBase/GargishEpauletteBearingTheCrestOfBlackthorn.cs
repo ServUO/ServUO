@@ -20,12 +20,9 @@ namespace Server.Items
             Attributes.DefendChance = 3;
             Attributes.SpellDamage = 3;
             Hue = 2019;
-
-            Layer = Layer.OuterTorso;
+			
+			Layer = Layer.OuterTorso;
         }
-
-        //public override int InitMinHits { get { return 255; } }
-        //public override int InitMaxHits { get { return 255; } }
 
         public GargishEpauletteBearingTheCrestOfBlackthorn6(Serial serial)
             : base(serial)
@@ -42,8 +39,8 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
+			
+			if (version == 0)
             {
                 MaxHitPoints = 0;
                 HitPoints = 0;
