@@ -4955,9 +4955,6 @@
     <Compile Include="Items\Functional\FarmableWheat.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\AdmiralHeartyRum.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Consumables\Asian.cs">
       <SubType>Code</SubType>
     </Compile>

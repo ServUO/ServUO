@@ -3211,7 +3211,7 @@ namespace Server.Items
             int focus = 0;
             int brittle = 0;
 
-            foreach (var jewel in World.Items.Values.OfType<BaseJewel>().Where(j => j.ReforgedPrefix > ReforgedPrefix.None || j.ReforgedSuffix > ReforgedSuffix.None))
+            foreach (var jewel in World.Items.Values.OfType<BaseJewel>().Where(j => j.ItemPower > ItemPower.None))
             {
                 if (jewel.Attributes.CastSpeed > 1)
                 {

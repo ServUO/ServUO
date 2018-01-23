@@ -1,6 +1,7 @@
 using System;
 using Server;
 using Server.Mobiles;
+using Server.Items;
 
 namespace Server.Network
 {
@@ -25,7 +26,7 @@ namespace Server.Network
                     if (toDisarm == null || !toDisarm.Movable)
                         toDisarm = from.FindItemOnLayer(Layer.TwoHanded);
 
-                    if (toDisarm != null && toDisarm.Movable)
+                    if (toDisarm != null && toDisarm.Movable && toDisarm is BaseWeapon)
                         from.Backpack.DropItem(toDisarm);
 
                     from.EquipItem(toEquip);

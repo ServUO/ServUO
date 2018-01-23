@@ -516,7 +516,30 @@ namespace Server.Items
             Quality = (ItemQuality)quality;
 
             if (Quality == ItemQuality.Exceptional)
-                DistributeBonuses((tool is BaseRunicTool ? 6 : (Core.SE ? 15 : 14)));	//BLAME OSI. (We can't confirm it's an OSI bug yet.)
+            {
+                DistributeBonuses((tool is BaseRunicTool ? 6 : (Core.SE ? 15 : 14)));
+
+                // Arms Lore Bonus - Verified on EA
+                if (Core.ML && from != null)
+                {
+                    double div = Siege.SiegeShard ? 12.5 : 20;
+                    int bonus = (int)Math.Min(4, (from.Skills.ArmsLore.Value / div));
+
+                    for (int i = 0; i < bonus; i++)
+                    {
+                        switch (Utility.Random(5))
+                        {
+                            case 0: Resistances.Physical++; break;
+                            case 1: Resistances.Fire++; break;
+                            case 2: Resistances.Cold++; break;
+                            case 3: Resistances.Poison++; break;
+                            case 4: Resistances.Energy++; break;
+                        }
+                    }
+
+                    from.CheckSkill(SkillName.ArmsLore, 0, 100);
+                }
+            }
 
             return base.OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, craftItem, resHue);
         }

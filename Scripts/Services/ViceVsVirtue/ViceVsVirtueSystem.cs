@@ -820,6 +820,7 @@ namespace Server.Engines.VvV
 
             switch (version)
             {
+                case 2:
                 case 1:
                     {
                         int count = reader.ReadInt();

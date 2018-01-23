@@ -19,58 +19,70 @@ namespace Server.Mobiles
             -1, 0,
             2, 0
         };
+
         private Mobile m_MorphedInto;
         private DateTime m_LastMorph;
         private DateTime m_NextFireRing;
+
         [Constructable]
         public Changeling()
             : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = this.DefaultName;
-            this.Body = 264;
-            this.Hue = this.DefaultHue;
+            Name = DefaultName;
+            Body = 264;
+            Hue = DefaultHue;
 
-            this.SetStr(36, 105);
-            this.SetDex(212, 262);
-            this.SetInt(317, 399);
+            SetStr(36, 105);
+            SetDex(212, 262);
+            SetInt(317, 399);
 
-            this.SetHits(201, 211);
-            this.SetStam(212, 262);
-            this.SetMana(317, 399);
+            SetHits(201, 211);
+            SetStam(212, 262);
+            SetMana(317, 399);
 
-            this.SetDamage(9, 15);
+            SetDamage(9, 15);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 81, 90);
-            this.SetResistance(ResistanceType.Fire, 40, 50);
-            this.SetResistance(ResistanceType.Cold, 40, 49);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 43, 50);
+            SetResistance(ResistanceType.Physical, 81, 90);
+            SetResistance(ResistanceType.Fire, 40, 50);
+            SetResistance(ResistanceType.Cold, 40, 49);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 43, 50);
 
-            this.SetSkill(SkillName.Wrestling, 10.4, 12.5);
-            this.SetSkill(SkillName.Tactics, 101.1, 108.3);
-            this.SetSkill(SkillName.MagicResist, 121.6, 132.2);
-            this.SetSkill(SkillName.Magery, 91.6, 99.5);
-            this.SetSkill(SkillName.EvalInt, 91.5, 98.8);
-            this.SetSkill(SkillName.Meditation, 91.7, 98.5);
+            SetSkill(SkillName.Wrestling, 10.4, 12.5);
+            SetSkill(SkillName.Tactics, 101.1, 108.3);
+            SetSkill(SkillName.MagicResist, 121.6, 132.2);
+            SetSkill(SkillName.Magery, 91.6, 99.5);
+            SetSkill(SkillName.EvalInt, 91.5, 98.8);
+            SetSkill(SkillName.Meditation, 91.7, 98.5);
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
-            this.PackItem(new Arrow(35));
-            this.PackItem(new Bolt(25));
-            this.PackGem(2);
+            PackItem(new Arrow(35));
+            PackItem(new Bolt(25));
+            PackGem(2);
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 
         public Changeling(Serial serial)
             : base(serial)
         {
+        }
+
+        public override bool IsEnemy(Mobile m)
+        {
+            if (m is BaseCreature && ((BaseCreature)m).IsMonster && m.Karma > 0)
+            {
+                return true;
+            }
+
+            return base.IsEnemy(m);
         }
 
         public virtual string DefaultName
@@ -101,7 +113,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return (this.m_MorphedInto != null);
+                return (m_MorphedInto != null);
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -109,31 +121,31 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_MorphedInto;
+                return m_MorphedInto;
             }
             set
             {
                 if (value == this)
                     value = null;
 
-                if (this.m_MorphedInto != value)
+                if (m_MorphedInto != value)
                 {
-                    this.Revert();
+                    Revert();
 
                     if (value != null)
                     {
-                        this.Morph(value);
-                        this.m_LastMorph = DateTime.UtcNow;
+                        Morph(value);
+                        m_LastMorph = DateTime.UtcNow;
                     }
 
-                    this.m_MorphedInto = value;
-                    this.Delta(MobileDelta.Noto);
+                    m_MorphedInto = value;
+                    Delta(MobileDelta.Noto);
                 }
             }
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosRich, 3);
+            AddLoot(LootPack.AosRich, 3);
             AddLoot(LootPack.LowScrolls);
             AddLoot(LootPack.MedScrolls);
         }
@@ -167,16 +179,16 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (this.Combatant != null)
+            if (Combatant != null)
             {
-                if (this.m_NextFireRing <= DateTime.UtcNow && Utility.RandomDouble() < 0.02)
+                if (m_NextFireRing <= DateTime.UtcNow && Utility.RandomDouble() < 0.02)
                 {
-                    this.FireRing();
-                    this.m_NextFireRing = DateTime.UtcNow + TimeSpan.FromMinutes(2);
+                    FireRing();
+                    m_NextFireRing = DateTime.UtcNow + TimeSpan.FromMinutes(2);
                 }
 
-                if (this.Combatant is PlayerMobile && this.m_MorphedInto != this.Combatant && Utility.RandomDouble() < 0.05)
-                    this.MorphedInto = this.Combatant as Mobile;
+                if (Combatant is PlayerMobile && m_MorphedInto != Combatant && Utility.RandomDouble() < 0.05)
+                    MorphedInto = Combatant as Mobile;
             }
         }
 
@@ -184,27 +196,27 @@ namespace Server.Mobiles
         {
             bool idle = base.CheckIdle();
 
-            if (idle && this.m_MorphedInto != null && DateTime.UtcNow - this.m_LastMorph > TimeSpan.FromSeconds(30))
-                this.MorphedInto = null;
+            if (idle && m_MorphedInto != null && DateTime.UtcNow - m_LastMorph > TimeSpan.FromSeconds(30))
+                MorphedInto = null;
 
             return idle;
         }
 
         public void DeleteClonedItems()
         {
-            for (int i = this.Items.Count - 1; i >= 0; --i)
+            for (int i = Items.Count - 1; i >= 0; --i)
             {
-                Item item = this.Items[i];
+                Item item = Items[i];
 
                 if (item is ClonedItem)
                     item.Delete();
             }
 
-            if (this.Backpack != null)
+            if (Backpack != null)
             {
-                for (int i = this.Backpack.Items.Count - 1; i >= 0; --i)
+                for (int i = Backpack.Items.Count - 1; i >= 0; --i)
                 {
-                    Item item = this.Backpack.Items[i];
+                    Item item = Backpack.Items[i];
 
                     if (item is ClonedItem)
                         item.Delete();
@@ -214,7 +226,7 @@ namespace Server.Mobiles
 
         public override void OnAfterDelete()
         {
-            this.DeleteClonedItems();
+            DeleteClonedItems();
 
             base.OnAfterDelete();
         }
@@ -228,7 +240,7 @@ namespace Server.Mobiles
             base.Serialize(writer);
 
             writer.Write((int)0); // version
-            writer.Write((this.m_MorphedInto != null));
+            writer.Write((m_MorphedInto != null));
         }
 
         public override void Deserialize(GenericReader reader)
@@ -243,72 +255,72 @@ namespace Server.Mobiles
 
         public void Validate()
         {
-            this.Revert();
+            Revert();
         }
 
         protected virtual void FireRing()
         {
-            this.FireEffects(0x3E27, m_FireNorth);
-            this.FireEffects(0x3E31, m_FireEast);
+            FireEffects(0x3E27, m_FireNorth);
+            FireEffects(0x3E31, m_FireEast);
         }
 
         protected virtual void Morph(Mobile m)
         {
-            this.Body = m.Body;
-            this.Hue = m.Hue;
-            this.Female = m.Female;
-            this.Name = m.Name;
-            this.NameHue = m.NameHue;
-            this.Title = m.Title;
-            this.Kills = m.Kills;
-            this.HairItemID = m.HairItemID;
-            this.HairHue = m.HairHue;
-            this.FacialHairItemID = m.FacialHairItemID;
-            this.FacialHairHue = m.FacialHairHue;
+            Body = m.Body;
+            Hue = m.Hue;
+            Female = m.Female;
+            Name = m.Name;
+            NameHue = m.NameHue;
+            Title = m.Title;
+            Kills = m.Kills;
+            HairItemID = m.HairItemID;
+            HairHue = m.HairHue;
+            FacialHairItemID = m.FacialHairItemID;
+            FacialHairHue = m.FacialHairHue;
 
             // TODO: Skills?
 
             foreach (Item item in m.Items)
             {
                 if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount && item.Layer != Layer.Bank)
-                    this.AddItem(new ClonedItem(item)); // TODO: Clone weapon/armor attributes
+                    AddItem(new ClonedItem(item)); // TODO: Clone weapon/armor attributes
             }
 
-            this.PlaySound(0x511);
-            this.FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
+            PlaySound(0x511);
+            FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
         }
 
         protected virtual void Revert()
         {
-            this.Body = 264;
-            this.Hue = (this.IsParagon && this.DefaultHue == 0) ? Paragon.Hue : this.DefaultHue;
-            this.Female = false;
-            this.Name = this.DefaultName;
-            this.NameHue = -1;
-            this.Title = null;
-            this.Kills = 0;
-            this.HairItemID = 0;
-            this.HairHue = 0;
-            this.FacialHairItemID = 0;
-            this.FacialHairHue = 0;
+            Body = 264;
+            Hue = (IsParagon && DefaultHue == 0) ? Paragon.Hue : DefaultHue;
+            Female = false;
+            Name = DefaultName;
+            NameHue = -1;
+            Title = null;
+            Kills = 0;
+            HairItemID = 0;
+            HairHue = 0;
+            FacialHairItemID = 0;
+            FacialHairHue = 0;
 
-            this.DeleteClonedItems();
+            DeleteClonedItems();
 
-            this.PlaySound(0x511);
-            this.FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
+            PlaySound(0x511);
+            FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
         }
 
         private void FireEffects(int itemID, int[] offsets)
         {
             for (int i = 0; i < offsets.Length; i += 2)
             {
-                Point3D p = this.Location;
+                Point3D p = Location;
 
                 p.X += offsets[i];
                 p.Y += offsets[i + 1];
 
-                if (SpellHelper.AdjustField(ref p, this.Map, 12, false))
-                    Effects.SendLocationEffect(p, this.Map, itemID, 50);
+                if (SpellHelper.AdjustField(ref p, Map, 12, false))
+                    Effects.SendLocationEffect(p, Map, itemID, 50);
             }
         }
 
@@ -317,11 +329,11 @@ namespace Server.Mobiles
             public ClonedItem(Item item)
                 : base(item.ItemID)
             {
-                this.Name = item.Name;
-                this.Weight = item.Weight;
-                this.Hue = item.Hue;
-                this.Layer = item.Layer;
-                this.Movable = false;
+                Name = item.Name;
+                Weight = item.Weight;
+                Hue = item.Hue;
+                Layer = item.Layer;
+                Movable = false;
             }
 
             public ClonedItem(Serial serial)

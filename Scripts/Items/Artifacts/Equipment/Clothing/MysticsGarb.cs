@@ -5,17 +5,17 @@ namespace Server.Items
     public class MysticsGarb : Robe
 	{
 		public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1113649; } } // Mystic's Garb
+
         [Constructable]
         public MysticsGarb()
             : base()
         {
-            //TODO: GargishRobe ItemID
-            this.Name = ("Mystic's Garb");
-		
-            this.Hue = 1420;
+            ItemID = 0x4000;
+            Hue = 1420;
 			
-            this.Attributes.BonusMana = 5;
-            this.Attributes.LowerManaCost = 1;
+            Attributes.BonusMana = 5;
+            Attributes.LowerManaCost = 1;
         }
 
         public MysticsGarb(Serial serial)
@@ -55,7 +55,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 			
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -63,6 +63,9 @@ namespace Server.Items
             base.Deserialize(reader);
 			
             int version = reader.ReadInt();
+
+            if (version == 0)
+                ItemID = 0x4000;
         }
     }
 }
