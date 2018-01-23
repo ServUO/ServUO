@@ -1,124 +1,14 @@
 using System;
 using Server;
 using Server.Mobiles;
+using Server.Gumps;
 
 namespace Server.Items
 {
-	public class DolphinRugEastAddon : BaseAddon
+    [TypeAlias("Server.Items.DolphinRugEastAddon", "Server.Items.DolphinRugSouthAddon")]
+	public class DolphinRugAddon : BaseAddon
 	{
-        private static int[,] m_AddOnSimpleComponents = new int[,]
-        {
-			  {14553, -3, 2, 0}, {14554, -3, 1, 0}, {14555, -3, 0, 0}// 1	2	3	
-			, {14556, -3, -1, 0}, {14557, -2, 1, 0}, {14558, -2, 0, 0}// 4	5	6	
-			, {14559, -2, -1, 0}, {14560, -2, 2, 0}, {14561, -1, 1, 0}// 7	8	9	
-			, {14562, -1, 0, 0}, {14564, -1, 2, 0}, {14565, 0, 1, 0}// 10	11	12	
-			, {14568, 0, 2, 0}, {14563, -1, -1, 0}, {14567, 0, -1, 0}// 13	14	15	
-			, {14566, 0, 0, 0}, {14571, 1, -1, 0}, {14578, 3, 0, 0}// 16	17	18	
-			, {14572, 1, 2, 0}, {14569, 1, 1, 0}, {14576, 2, 2, 0}// 19	20	21	
-			, {14580, 3, 2, 0}, {14573, 2, 1, 0}, {14577, 3, 1, 0}// 22	23	24	
-			, {14579, 3, -1, 0}, {14575, 2, -1, 0}, {14570, 1, 0, 0}// 25	26	27	
-			, {14574, 2, 0, 0}// 28	
-		};
-
-        public override BaseAddonDeed Deed { get { return new DolphinRugEastAddonDeed(m_NextUse); } }
-
-        private DateTime m_NextUse;
-
-        [Constructable]
-        public DolphinRugEastAddon() : this(DateTime.UtcNow)
-        {
-        }
-
-		[ Constructable ]
-		public DolphinRugEastAddon(DateTime nextuse)
-		{
-            m_NextUse = nextuse;
-
-            for (int i = 0; i < m_AddOnSimpleComponents.Length / 4; i++)
-                AddComponent( new AddonComponent( m_AddOnSimpleComponents[i,0] ), m_AddOnSimpleComponents[i,1], m_AddOnSimpleComponents[i,2], m_AddOnSimpleComponents[i,3] );
-		}
-
-        public override void OnComponentUsed(AddonComponent component, Mobile from)
-        {
-            if (m_NextUse < DateTime.UtcNow)
-            {
-                Container cont = from.Backpack;
-
-                MessageInABottle mib = new MessageInABottle();
-
-                if (cont == null || !cont.TryDropItem(from, mib, false))
-                {
-                    from.BankBox.DropItem(mib);
-                    from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
-                }
-                else
-                    from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
-
-                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
-            }
-        }
-
-        public DolphinRugEastAddon(Serial serial)
-            : base(serial)
-		{
-		}
-
-
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( 0 ); // Version
-            writer.Write(m_NextUse);
-		}
-
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
-            m_NextUse = reader.ReadDateTime();
-		}
-	}
-
-	public class DolphinRugEastAddonDeed : BaseAddonDeed
-	{
-        public override BaseAddon Addon { get { return new DolphinRugEastAddon(m_NextUse); } }
-        public override int LabelNumber { get { return 1150051; } } // A Dolphin Rug (East)
-
-        private DateTime m_NextUse;
-
-        [Constructable]
-        public DolphinRugEastAddonDeed() : this(DateTime.UtcNow)
-        {
-        }
-
-		[Constructable]
-		public DolphinRugEastAddonDeed(DateTime nextuse)
-		{
-            m_NextUse = nextuse;
-		}
-
-		public DolphinRugEastAddonDeed( Serial serial ) : base( serial )
-		{
-		}
-
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( 0 ); // Version
-            writer.Write(m_NextUse);
-		}
-
-		public override void	Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
-            m_NextUse = reader.ReadDateTime();
-		}
-	}
-
-    public class DolphinRugSouthAddon : BaseAddon
-    {
-        private static int[,] m_AddOnSimpleComponents = new int[,] 
+        private static int[,] _EastLarge = new int[,] 
         {
 			  {14590, 1, -1, 0}, {14586, 1, -2, 0}, {14589, 0, -1, 0}// 1	2	3	
 			, {14592, -1, -1, 0}, {14593, 0, 0, 0}, {14597, 0, 1, 0}// 4	5	6	
@@ -132,24 +22,75 @@ namespace Server.Items
 			, {14598, 1, 2, 0}// 28	
 		};
 
-        public override BaseAddonDeed Deed { get { return new DolphinRugSouthAddonDeed(m_NextUse); } }
+        private static int[,] _SouthLarge = new int[,]
+        {
+			  {14553, -3, 2, 0}, {14554, -3, 1, 0}, {14555, -3, 0, 0}// 1	2	3	
+			, {14556, -3, -1, 0}, {14557, -2, 1, 0}, {14558, -2, 0, 0}// 4	5	6	
+			, {14559, -2, -1, 0}, {14560, -2, 2, 0}, {14561, -1, 1, 0}// 7	8	9	
+			, {14562, -1, 0, 0}, {14564, -1, 2, 0}, {14565, 0, 1, 0}// 10	11	12	
+			, {14568, 0, 2, 0}, {14563, -1, -1, 0}, {14567, 0, -1, 0}// 13	14	15	
+			, {14566, 0, 0, 0}, {14571, 1, -1, 0}, {14578, 3, 0, 0}// 16	17	18	
+			, {14572, 1, 2, 0}, {14569, 1, 1, 0}, {14576, 2, 2, 0}// 19	20	21	
+			, {14580, 3, 2, 0}, {14573, 2, 1, 0}, {14577, 3, 1, 0}// 22	23	24	
+			, {14579, 3, -1, 0}, {14575, 2, -1, 0}, {14570, 1, 0, 0}// 25	26	27	
+			, {14574, 2, 0, 0}// 28	
+		};
+
+        private static int[,] _EastSmall = 
+        {	
+              {18283, 1, 0, 0}, {18276, 1, 1, 0},   {18289, 1, 2, 0}    // 1	2	3	
+			, {18288, 0, 2, 0}, {18287, -1, -2, 0}, {18286, 1, -2, 0}   // 4	5	6	
+			, {18285, 0, -2, 0}, {18284, -1, 2, 0}, {18282, -1, 1, 0}   // 7	8	9	
+			, {18281, -1, 0, 0}, {18280, 1, -1, 0}, {18279, 0, -1, 0}   // 10	11	12	
+			, {18278, -1, -1, 0}, {18277, 0, 1, 0}, {18275, 0, 0, 0}    // 13	14	15	
+		};
+
+        private static int[,] _SouthSmall = 
+        {
+              {18393, 2, -1, 0},  {18392, -2, -1, 0}, {18391, -2, 1, 0} // 1	2	3	
+			, {18390, 1, -1, 0},  {18300, 1, 0, 0},   {18299, 1, 1, 0}  // 4	5	6	
+			, {18298, 0, -1, 0},  {18297, 2, 0, 0},   {18296, 0, 1, 0}  // 7	8	9	
+			, {18295, -1, -1, 0}, {18294, -1, 0, 0},  {18293, -1, 1, 0} // 10	11	12	
+			, {18292, 2, 1, 0},   {18291, -2, 0, 0},  {18290, 0, 0, 0}  // 13	14	15	
+        };
+
+        public override BaseAddonDeed Deed { get { return new DolphinRugAddonDeed(RugType, m_NextUse); } }
 
         private DateTime m_NextUse;
 
+        public RugType RugType { get; set; }
+
         [Constructable]
-        public DolphinRugSouthAddon()
-            : this(DateTime.UtcNow)
+        public DolphinRugAddon()
+            : this(RugType.EastLarge)
         {
         }
 
         [Constructable]
-        public DolphinRugSouthAddon(DateTime nextuse)
+        public DolphinRugAddon(RugType type) : this(type, DateTime.UtcNow)
         {
+        }
+
+		[ Constructable ]
+		public DolphinRugAddon(RugType type, DateTime nextuse)
+		{
             m_NextUse = nextuse;
+            RugType = type;
 
-            for (int i = 0; i < m_AddOnSimpleComponents.Length / 4; i++)
-                AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
-        }
+            int[,] list;
+
+            switch (type)
+            {
+                default:
+                case RugType.EastLarge: list = _EastLarge; break;
+                case RugType.SouthLarge: list = _SouthLarge; break;
+                case RugType.EastSmall: list = _EastSmall; break;
+                case RugType.SouthSmall: list = _SouthSmall; break;
+            }
+
+            for (int i = 0; i < list.Length / 4; i++)
+                AddComponent(new AddonComponent(list[i, 0]), list[i, 1], list[i, 2], list[i, 3]);
+		}
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
@@ -171,63 +112,139 @@ namespace Server.Items
             }
         }
 
-        public DolphinRugSouthAddon(Serial serial)
+        public DolphinRugAddon(Serial serial)
             : base(serial)
-        {
-        }
+		{
+		}
 
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // Version
+            writer.Write(1); // Version
+
             writer.Write(m_NextUse);
+            writer.Write((int)RugType);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            m_NextUse = reader.ReadDateTime();
-        }
-    }
 
-    public class DolphinRugSouthAddonDeed : BaseAddonDeed
-    {
-        public override BaseAddon Addon { get { return new DolphinRugSouthAddon(m_NextUse); } }
-        public override int LabelNumber { get { return 1150050; } } // A Dolphin Rug (South)
+            switch (version)
+            {
+                case 1:
+                    m_NextUse = reader.ReadDateTime();
+                    RugType = (RugType)reader.ReadInt();
+                    break;
+                case 0:
+                    m_NextUse = reader.ReadDateTime();
+                    break;
+            }
+        }
+	}
+
+    [TypeAlias("Server.Items.DolphinRugSouthAddonDeed", "Server.Items.DolphinRugEastAddonDeed")]
+    public class DolphinRugAddonDeed : BaseAddonDeed, IRewardOption
+	{
+        public override BaseAddon Addon { get { return new DolphinRugAddon(RugType, m_NextUse); } }
+
+        public override int LabelNumber
+        {
+            get
+            {
+                switch ((int)RugType)
+                {
+                    default: return 1150050;
+                    case 0:
+                    case 2: return 1150051;
+                }
+            }
+        }
 
         private DateTime m_NextUse;
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public RugType RugType { get; set; }
+
         [Constructable]
-        public DolphinRugSouthAddonDeed()
-            : this(DateTime.UtcNow)
+        public DolphinRugAddonDeed()
+            : this(RugType.EastLarge)
         {
         }
 
         [Constructable]
-        public DolphinRugSouthAddonDeed(DateTime nextuse)
+        public DolphinRugAddonDeed(RugType type)
+            : this(type, DateTime.UtcNow)
         {
+        }
+
+		[Constructable]
+		public DolphinRugAddonDeed(RugType type, DateTime nextuse)
+		{
+            RugType = type;
             m_NextUse = nextuse;
+            LootType = LootType.Blessed;
+		}
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+            {
+                from.CloseGump(typeof(RewardOptionGump));
+                from.SendGump(new RewardOptionGump(this, 1076583)); // Please select your rug size
+            }
+            else
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.       	
         }
 
-        public DolphinRugSouthAddonDeed(Serial serial)
-            : base(serial)
+        public void GetOptions(RewardOptionList list)
         {
+            list.Add(1, "Dolphin Rug East 7x7");
+            list.Add(2, "Dolphin Rug South 7x7");
+            list.Add(3, "Dolphin Rug East 3x5");
+            list.Add(4, "Dolphin Rug South 3x5");
         }
+
+
+        public void OnOptionSelected(Mobile from, int choice)
+        {
+            RugType = (RugType)choice - 1;
+
+            if (!Deleted && IsChildOf(from.Backpack))
+                base.OnDoubleClick(from);
+        }
+
+        public DolphinRugAddonDeed(Serial serial)
+            : base(serial)
+		{
+		}
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // Version
+            writer.Write(1); // Version
+
             writer.Write(m_NextUse);
+            writer.Write((int)RugType);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            m_NextUse = reader.ReadDateTime();
+
+            switch (version)
+            {
+                case 1:
+                    m_NextUse = reader.ReadDateTime();
+                    RugType = (RugType)reader.ReadInt();
+                    break;
+                case 0:
+                    m_NextUse = reader.ReadDateTime();
+                    break;
+            }
         }
-    }
+	}
 }

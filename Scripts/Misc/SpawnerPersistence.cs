@@ -81,7 +81,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)7);
+                    writer.Write((int)8);
                     writer.Write(false);
                     writer.Write(_SpawnsConverted);
                 });
@@ -110,7 +110,9 @@ namespace Server
         {
             switch (_Version)
             {
+                case 7:
                 case 6:
+                    ReplaceTwistedWealdVersion7();
                     RunicReforging.ItemNerfVersion6();
                     break;
                 case 5:
@@ -140,6 +142,13 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Version 6 & 7
+        public static void ReplaceTwistedWealdVersion7()
+        {
+            ReplaceSpawnersByRegionName("Twisted Weald", Map.Ilshenar, "twistedweald");
+        }
+        #endregion
 
         #region Version 5
         public static void HonestyItemsVersion5()
@@ -633,6 +642,45 @@ namespace Server
             }
 
             return list;
+        }
+
+        public static void ReplaceSpawnersByRegionName(string region, Map map, string file)
+        {
+            string path = string.Format("Spawns/{0}.xml", file);
+
+            if (!File.Exists(path))
+            {
+                ToConsole(String.Format("Cannot proceed. {0} does not exist.", file), ConsoleColor.Red);
+                return;
+            }
+
+            foreach (var r in Region.Regions.Where(reg => reg.Map == map && reg.Name == region))
+            {
+                List<Item> list = r.GetEnumeratedItems().Where(i => i is XmlSpawner || i is Spawner).ToList();
+
+                foreach (var item in list)
+                {
+                    item.Delete();
+                }
+
+                ToConsole(String.Format("Deleted {0} Spawners in {1}.", list.Count, region));
+                ColUtility.Free(list);
+            }
+
+            LoadFromXmlSpawner(path, map);
+        }
+
+        public static void LoadFromXmlSpawner(string location, Map map, string prefix = null)
+        {
+            string filename = XmlSpawner.LocateFile(location);
+
+            string SpawnerPrefix = prefix == null ? string.Empty : prefix;
+            int processedmaps;
+            int processedspawners;
+
+            XmlSpawner.XmlLoadFromFile(filename, SpawnerPrefix, null, Point3D.Zero, map, false, 0, false, out processedmaps, out processedspawners);
+
+            ToConsole(String.Format("Created {0} spawners from {1}.", processedspawners, location));
         }
 
         #region XmlSpawner to Spawner Conversion

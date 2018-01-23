@@ -378,48 +378,6 @@
     <Objects2>Gargoyle:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Spawner</Name>
-    <UniqueId>0417d38a-b925-4efc-9338-3a967e23e2bf</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2144</X>
-    <Y>1208</Y>
-    <Width>30</Width>
-    <Height>30</Height>
-    <CentreX>2159</CentreX>
-    <CentreY>1223</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>15</Range>
-    <MaxCount>10</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>BlightedCotton:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Outdoors#92</Name>
     <UniqueId>043e0afd-3ea6-4420-b952-750049c93f1d</UniqueId>
     <Map>Ilshenar</Map>
@@ -1300,48 +1258,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Eldergazer:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Gazer:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Swooplet me know if and when you get the messageall the peerless are updatedall the arty givers are updated</Name>
-    <UniqueId>0cdf0def-62bc-4cf4-b9a0-f67b6976b34d</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2220</X>
-    <Y>1219</Y>
-    <Width>6</Width>
-    <Height>6</Height>
-    <CentreX>2223</CentreX>
-    <CentreY>1222</CentreY>
-    <CentreZ>9</CentreZ>
-    <Range>10</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>30</MinDelay>
-    <MaxDelay>60</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>Swoop:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Ankh#8</Name>
@@ -3108,48 +3024,6 @@
     <Objects2>PowerGenerator:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>TwistedWeald#18</Name>
-    <UniqueId>260bef2b-e540-437b-9434-17050c7813e2</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2136</X>
-    <Y>1210</Y>
-    <Width>22</Width>
-    <Height>22</Height>
-    <CentreX>2147</CentreX>
-    <CentreY>1221</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>11</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Spite:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Ankh#24</Name>
     <UniqueId>2677ff48-29b9-4d10-ad4b-432d2f80b2ee</UniqueId>
     <Map>Ilshenar</Map>
@@ -3442,48 +3316,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Stoneharpy:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Stonegargoyle:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#3</Name>
-    <UniqueId>2b316b07-2d95-44ba-bd50-932cbed8683d</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2129</X>
-    <Y>1169</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>2134</CentreX>
-    <CentreY>1174</CentreY>
-    <CentreZ>-46</CentreZ>
-    <Range>5</Range>
-    <MaxCount>5</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>DireWolf:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Gnaw:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#9</Name>
@@ -4116,48 +3948,6 @@
     <Objects2>Daemon:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>TwistedWeald#13</Name>
-    <UniqueId>341de7c8-0daf-4b3b-8625-6ddc906eefec</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2123</X>
-    <Y>1163</Y>
-    <Width>22</Width>
-    <Height>22</Height>
-    <CentreX>2134</CentreX>
-    <CentreY>1174</CentreY>
-    <CentreZ>-46</CentreZ>
-    <Range>11</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Gnaw:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Towns#9</Name>
     <UniqueId>34dd8e59-6088-4094-b8af-c31f13a5bf14</UniqueId>
     <Map>Ilshenar</Map>
@@ -4576,48 +4366,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Dreadspider:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Poisonelemental:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Stonegargoyle:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Wyvern:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Skeleton:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Skeletalknight:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#9</Name>
-    <UniqueId>38f65575-6fc1-4924-9b62-ce7eed44ff90</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2132</X>
-    <Y>1211</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>2137</CentreX>
-    <CentreY>1216</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Silk:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Rock#5</Name>
@@ -5248,48 +4996,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Skeleton:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Skeletalknight:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Boneknight:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Imp:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#14</Name>
-    <UniqueId>42a81472-0763-4c09-90e9-0083127ba2ed</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2166</X>
-    <Y>1199</Y>
-    <Width>22</Width>
-    <Height>22</Height>
-    <CentreX>2177</CentreX>
-    <CentreY>1210</CentreY>
-    <CentreZ>13</CentreZ>
-    <Range>11</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>LadyLissith:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Ancientlair#2</Name>
@@ -6046,48 +5752,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>wanderinghealer:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#7</Name>
-    <UniqueId>4b21e630-ab6e-4295-99e5-03636c486a5d</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2155</X>
-    <Y>1181</Y>
-    <Width>16</Width>
-    <Height>16</Height>
-    <CentreX>2163</CentreX>
-    <CentreY>1189</CentreY>
-    <CentreZ>-48</CentreZ>
-    <Range>8</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Changeling:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>shadowironele</Name>
@@ -7768,48 +7432,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>savage:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=savagerider:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#12</Name>
-    <UniqueId>65e0b1f4-1b5b-4f76-8312-98b2f2ec7163</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2162</X>
-    <Y>1261</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>2167</CentreX>
-    <CentreY>1266</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Malefic:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Sorcerers#19</Name>
@@ -9744,48 +9366,6 @@
     <Objects2>Tropicalbird:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Boar:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Snake:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Giantserpent:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Forestostard:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Gorilla:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Panther:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>TwistedWeald#11</Name>
-    <UniqueId>7bb26364-15e4-4cc7-8fed-a97516e6af31</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2152</X>
-    <Y>1201</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>2157</CentreX>
-    <CentreY>1206</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>virulent:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Outdoors#98</Name>
     <UniqueId>7c0d5c9c-1abe-4fe3-988b-39d941ef8645</UniqueId>
     <Map>Ilshenar</Map>
@@ -9826,48 +9406,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Earthelemental:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#4</Name>
-    <UniqueId>7c2ac6c2-be90-440e-8c2b-255e547d5eb0</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2186</X>
-    <Y>1200</Y>
-    <Width>40</Width>
-    <Height>40</Height>
-    <CentreX>2206</CentreX>
-    <CentreY>1220</CentreY>
-    <CentreZ>-8</CentreZ>
-    <Range>20</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>CuSidhe:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Sorcerers#14</Name>
@@ -10836,48 +10374,6 @@
     <Objects2>GolemController:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=ExodusOverseer:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>TwistedWeald#1</Name>
-    <UniqueId>89e049f7-269a-4314-9a7c-dfc175e3d4fa</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2151</X>
-    <Y>1161</Y>
-    <Width>40</Width>
-    <Height>40</Height>
-    <CentreX>2171</CentreX>
-    <CentreY>1181</CentreY>
-    <CentreZ>-44</CentreZ>
-    <Range>20</Range>
-    <MaxCount>10</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>CuSidhe:MX=8:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=MLDryad:MX=8:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Changeling:MX=8:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Satyr:MX=8:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=DireWolf:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Sorcerers#30</Name>
     <UniqueId>8a04ec90-3088-461a-88c5-c3e1df280158</UniqueId>
     <Map>Ilshenar</Map>
@@ -11130,48 +10626,6 @@
     <Objects2>swampdragon:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>TwistedWeald#15</Name>
-    <UniqueId>8bba0b01-7a05-46bb-ad6b-88066af7137c</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2166</X>
-    <Y>1199</Y>
-    <Width>22</Width>
-    <Height>22</Height>
-    <CentreX>2177</CentreX>
-    <CentreY>1210</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>11</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>LadySabrix:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Towns#22</Name>
     <UniqueId>8c24fbfd-06b1-4479-8558-48290624df33</UniqueId>
     <Map>Ilshenar</Map>
@@ -11212,48 +10666,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>hind:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=greathart:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=blackbear:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=direwolf:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#0</Name>
-    <UniqueId>8c3e5df8-c33e-4acb-ab0b-7eeaae68bef4</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2212</X>
-    <Y>1208</Y>
-    <Width>22</Width>
-    <Height>22</Height>
-    <CentreX>2223</CentreX>
-    <CentreY>1219</CentreY>
-    <CentreZ>13</CentreZ>
-    <Range>11</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Swoop:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#110</Name>
@@ -12010,48 +11422,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Lichlord:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Shade:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Spectre:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Wraith:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Zombie:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ghoul:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#16</Name>
-    <UniqueId>97c68ddc-6e68-4a62-951b-a6d8a3669d8a</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2157</X>
-    <Y>1215</Y>
-    <Width>22</Width>
-    <Height>22</Height>
-    <CentreX>2168</CentreX>
-    <CentreY>1226</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>11</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Irk:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#143</Name>
@@ -13650,48 +13020,6 @@
     <Objects2>Tropicalbird:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Boar:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Snake:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Giantserpent:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Forestostard:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Gorilla:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Panther:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Twisted Weild 6 GBW/Silk</Name>
-    <UniqueId>a97fb48b-8652-4dd8-b397-8f37a59c8b6c</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2154</X>
-    <Y>1203</Y>
-    <Width>6</Width>
-    <Height>6</Height>
-    <CentreX>2157</CentreX>
-    <CentreY>1206</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>25</Range>
-    <MaxCount>4</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>6</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>GiantBlackWidow:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Silk:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Outdoors#181</Name>
     <UniqueId>aa0e1be5-43cb-4f34-ae61-3caf6bfba229</UniqueId>
     <Map>Ilshenar</Map>
@@ -13816,48 +13144,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Bloodelemental:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#8</Name>
-    <UniqueId>aabb0391-b0d9-4970-b40a-1ccf22e25b84</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2182</X>
-    <Y>1155</Y>
-    <Width>50</Width>
-    <Height>50</Height>
-    <CentreX>2207</CentreX>
-    <CentreY>1180</CentreY>
-    <CentreZ>-36</CentreZ>
-    <Range>25</Range>
-    <MaxCount>15</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Cusidhe:MX=12:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=MLDryad:MX=12:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=changeling:MX=12:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Satyr:MX=12:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=DireWolf:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#158</Name>
@@ -14742,48 +14028,6 @@
     <Objects2>Efreet:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>TwistedWeald#5</Name>
-    <UniqueId>b3660ffb-f574-4e87-b294-734a81327468</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2149</X>
-    <Y>1213</Y>
-    <Width>20</Width>
-    <Height>20</Height>
-    <CentreX>2159</CentreX>
-    <CentreY>1223</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>10</Range>
-    <MaxCount>5</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Corpser:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=changeling:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=giantblackwidow:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>compassionhealer</Name>
     <UniqueId>b3689e1d-8cde-4937-baf5-c78506c92d63</UniqueId>
     <Map>Ilshenar</Map>
@@ -15498,48 +14742,6 @@
     <Objects2>Yorus:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>TwistedWeald#17</Name>
-    <UniqueId>bf92f0e9-6767-4ea8-81b3-f4278efe5530</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2135</X>
-    <Y>1210</Y>
-    <Width>22</Width>
-    <Height>22</Height>
-    <CentreX>2146</CentreX>
-    <CentreY>1221</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>11</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Guile:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Towns#12</Name>
     <UniqueId>c03db82c-1178-46ba-ae99-415cb709505a</UniqueId>
     <Map>Ilshenar</Map>
@@ -15706,90 +14908,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Hellcat:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>TwistedWeald#2</Name>
-    <UniqueId>c26a5191-1d52-4289-a157-e233ed6522f4</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2118</X>
-    <Y>1192</Y>
-    <Width>40</Width>
-    <Height>40</Height>
-    <CentreX>2138</CentreX>
-    <CentreY>1212</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>20</Range>
-    <MaxCount>8</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Quagmire:MX=8:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=WhippingVine:MX=8:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Changeling:MX=8:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Twisted Weild GBW/Virulent</Name>
-    <UniqueId>c3ce6e0b-fafd-481b-b1ad-201e768b14ae</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2173</X>
-    <Y>1224</Y>
-    <Width>8</Width>
-    <Height>8</Height>
-    <CentreX>2177</CentreX>
-    <CentreY>1228</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>25</Range>
-    <MaxCount>4</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>8</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>GiantBlackWidow:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Virulent:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Vendors#39</Name>
@@ -17262,48 +16380,6 @@
     <Objects2>innkeeper:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>TwistedWeald#6</Name>
-    <UniqueId>d743b5f8-59f6-4e7f-a382-4ca19bc68be3</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2160</X>
-    <Y>1237</Y>
-    <Width>20</Width>
-    <Height>20</Height>
-    <CentreX>2170</CentreX>
-    <CentreY>1247</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>10</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Malefic:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Virulent:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Outdoors#100</Name>
     <UniqueId>d749e436-8c41-45b3-a3c0-6c30ec79e95f</UniqueId>
     <Map>Ilshenar</Map>
@@ -17472,48 +16548,6 @@
     <Objects2>Shade:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Boneknight:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Bonemagi:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>TwistedWeald#10</Name>
-    <UniqueId>d97ba065-f567-4098-9d7a-a6e29e1fb4b0</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2172</X>
-    <Y>1224</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>2177</CentreX>
-    <CentreY>1229</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>5</Range>
-    <MaxCount>4</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>giantblackwidow:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Outdoors#2</Name>
     <UniqueId>d9bb53fa-fd2e-4b66-80df-dcdea2937b8b</UniqueId>
     <Map>Ilshenar</Map>
@@ -17680,48 +16714,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Drake:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Harpy:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Twisted Weild 5 GBW</Name>
-    <UniqueId>dab9a9b5-0a57-4083-b7e2-984ff0cfc525</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2134</X>
-    <Y>1213</Y>
-    <Width>6</Width>
-    <Height>6</Height>
-    <CentreX>2137</CentreX>
-    <CentreY>1216</CentreY>
-    <CentreZ>-60</CentreZ>
-    <Range>25</Range>
-    <MaxCount>4</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>5</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>GiantBlackWidow:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#95</Name>
@@ -19948,48 +18940,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Tropicalbird:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Boar:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Snake:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Giantserpent:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Forestostard:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Gorilla:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Panther:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Spawner</Name>
-    <UniqueId>f66b4fb6-39ea-4b69-83b1-b6459efae182</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>2191</X>
-    <Y>1150</Y>
-    <Width>40</Width>
-    <Height>40</Height>
-    <CentreX>2211</CentreX>
-    <CentreY>1170</CentreY>
-    <CentreZ>-35</CentreZ>
-    <Range>20</Range>
-    <MaxCount>3</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>ThornyBriar:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#78</Name>

@@ -336,13 +336,11 @@ namespace Server
                 }
             }
 
+            if (from != null)
+                DoLeech(totalDamage, from, m);
+
             m.Damage(totalDamage, from, true, false);
             SpiritSpeak.CheckDisrupt(m);
-
-            if (from != null)
-            {
-                DoLeech(totalDamage, from, m);
-            }
 
             #region Stygian Abyss
             if (m.Spell != null)
