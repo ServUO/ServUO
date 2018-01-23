@@ -163,7 +163,7 @@ namespace Server.Items
 
         [Constructable]
         public DolphinRugAddonDeed(DateTime nextuse, RugType type)
-            : base(DateTime.UtcNow, type)
+            : base(nextuse, type)
         {
         }
 

@@ -178,7 +178,7 @@ namespace Server.Items
 
         [Constructable]
         public SkullRugAddonDeed(DateTime nextuse, RugType type)
-            : base(DateTime.UtcNow, type)
+            : base(nextuse, type)
         {
         }
 

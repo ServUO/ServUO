@@ -15,6 +15,7 @@ namespace Server.Items
     {
         public abstract override BaseAddon Addon { get; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextUse { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
