@@ -281,60 +281,6 @@ namespace Server.Items
                 return false;
             }
 
-            #region Dueling
-            string option = null;
-
-            if (this is ArmorIgnore)
-                option = "Armor Ignore";
-            else if (this is BleedAttack)
-                option = "Bleed Attack";
-            else if (this is ConcussionBlow)
-                option = "Concussion Blow";
-            else if (this is CrushingBlow)
-                option = "Crushing Blow";
-            else if (this is Disarm)
-                option = "Disarm";
-            else if (this is Dismount)
-                option = "Dismount";
-            else if (this is DoubleStrike)
-                option = "Double Strike";
-            else if (this is InfectiousStrike)
-                option = "Infectious Strike";
-            else if (this is MortalStrike)
-                option = "Mortal Strike";
-            else if (this is MovingShot)
-                option = "Moving Shot";
-            else if (this is ParalyzingBlow)
-                option = "Paralyzing Blow";
-            else if (this is ShadowStrike)
-                option = "Shadow Strike";
-            else if (this is WhirlwindAttack)
-                option = "Whirlwind Attack";
-            else if (this is RidingSwipe)
-                option = "Riding Swipe";
-            else if (this is FrenziedWhirlwind)
-                option = "Frenzied Whirlwind";
-            else if (this is Block)
-                option = "Block";
-            else if (this is DefenseMastery)
-                option = "Defense Mastery";
-            else if (this is NerveStrike)
-                option = "Nerve Strike";
-            else if (this is TalonStrike)
-                option = "Talon Strike";
-            else if (this is Feint)
-                option = "Feint";
-            else if (this is DualWield)
-                option = "Dual Wield";
-            else if (this is DoubleShot)
-                option = "Double Shot";
-            else if (this is ArmorPierce)
-                option = "Armor Pierce";
-
-            if (option != null)
-                return false;
-            #endregion
-
             return CheckSkills(from) && CheckMana(from, false);
         }
 
