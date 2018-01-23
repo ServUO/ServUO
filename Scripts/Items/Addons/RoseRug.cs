@@ -1,7 +1,9 @@
 using System;
 using Server;
-using Server.Mobiles;
 using Server.Gumps;
+using Server.Accounting;
+using Server.Engines.VeteranRewards;
+using Server.Multis;
 
 namespace Server.Items
 {
@@ -102,21 +104,43 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.UtcNow)
+            Account acct = from.Account as Account;
+
+            if (acct != null && from.IsPlayer())
             {
-                Container cont = from.Backpack;
+                TimeSpan time = TimeSpan.FromDays(RewardSystem.RewardInterval.TotalDays * 6) - (DateTime.Now - acct.Created);
 
-                Engines.Plants.Seed seed = new Engines.Plants.Seed();
-
-                if (cont == null || !cont.TryDropItem(from, seed, false))
+                if (time > TimeSpan.Zero)
                 {
-                    from.BankBox.DropItem(seed);
-                    from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
+                    from.SendLocalizedMessage(1008126, true, Math.Ceiling(time.TotalDays / RewardSystem.RewardInterval.TotalDays).ToString()); // Your account is not old enough to use this item. Months until you can use this item :
+                    return;
                 }
-                else
-                    from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+            }
 
-                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+            BaseHouse house = BaseHouse.FindHouseAt(from);
+
+            if (house != null && house.IsOwner(from))
+            {
+                if (m_NextUse < DateTime.UtcNow)
+                {
+                    Container cont = from.Backpack;
+
+                    Engines.Plants.Seed seed = new Engines.Plants.Seed();
+
+                    if (cont == null || !cont.TryDropItem(from, seed, false))
+                    {
+                        from.BankBox.DropItem(seed);
+                        from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
+                    }
+                    else
+                        from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+
+                    m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                }
+            }
+            else
+            {
+                from.SendLocalizedMessage(502092); // You must be in your house to do this.
             }
         }
 

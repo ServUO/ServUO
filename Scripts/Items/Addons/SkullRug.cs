@@ -1,7 +1,9 @@
 using System;
 using Server;
-using Server.Mobiles;
 using Server.Gumps;
+using Server.Accounting;
+using Server.Engines.VeteranRewards;
+using Server.Multis;
 
 namespace Server.Items
 {
@@ -95,36 +97,58 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.UtcNow)
+            Account acct = from.Account as Account;
+
+            if (acct != null && from.IsPlayer())
             {
-                Container cont = from.Backpack;
-                Map facet;
-                int level = Utility.RandomMinMax(1, 4);
+                TimeSpan time = TimeSpan.FromDays(RewardSystem.RewardInterval.TotalDays * 6) - (DateTime.Now - acct.Created);
 
-                int choose = Siege.SiegeShard ? Utility.RandomMinMax(1, 5) : Utility.Random(6);
-
-                switch (choose)
+                if (time > TimeSpan.Zero)
                 {
-                    default:
-                    case 0: facet = Map.Trammel; break;
-                    case 1: facet = Map.Ilshenar; break;
-                    case 2: facet = Map.Malas; break;
-                    case 3: facet = Map.Felucca; break;
-                    case 4: facet = Map.Tokuno; break;
-                    case 5: facet = Map.TerMur; break;
+                    from.SendLocalizedMessage(1008126, true, Math.Ceiling(time.TotalDays / RewardSystem.RewardInterval.TotalDays).ToString()); // Your account is not old enough to use this item. Months until you can use this item :
+                    return;
                 }
+            }
 
-                TreasureMap map = new TreasureMap(level, facet);
+            BaseHouse house = BaseHouse.FindHouseAt(from);
 
-                if (cont == null || !cont.TryDropItem(from, map, false))
+            if (house != null && house.IsOwner(from))
+            {
+                if (m_NextUse < DateTime.UtcNow)
                 {
-                    from.BankBox.DropItem(map);
-                    from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
-                }
-                else
-                    from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+                    Container cont = from.Backpack;
+                    Map facet;
+                    int level = Utility.RandomMinMax(1, 4);
 
-                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                    int choose = Siege.SiegeShard ? Utility.RandomMinMax(1, 5) : Utility.Random(6);
+
+                    switch (choose)
+                    {
+                        default:
+                        case 0: facet = Map.Trammel; break;
+                        case 1: facet = Map.Ilshenar; break;
+                        case 2: facet = Map.Malas; break;
+                        case 3: facet = Map.Felucca; break;
+                        case 4: facet = Map.Tokuno; break;
+                        case 5: facet = Map.TerMur; break;
+                    }
+
+                    TreasureMap map = new TreasureMap(level, facet);
+
+                    if (cont == null || !cont.TryDropItem(from, map, false))
+                    {
+                        from.BankBox.DropItem(map);
+                        from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
+                    }
+                    else
+                        from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+
+                    m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                }
+            }
+            else
+            {
+                from.SendLocalizedMessage(502092); // You must be in your house to do this.
             }
         }
 
