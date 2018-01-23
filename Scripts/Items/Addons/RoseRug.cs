@@ -179,6 +179,8 @@ namespace Server.Items
             {
                 case 2:
                     m_IsRewardItem = reader.ReadBool();
+                    m_NextUse = reader.ReadDateTime();
+                    RugType = (RugType)reader.ReadInt();
                     break;
                 case 1:
                     m_NextUse = reader.ReadDateTime();
@@ -316,6 +318,8 @@ namespace Server.Items
             {
                 case 2:
                     m_IsRewardItem = reader.ReadBool();
+                    m_NextUse = reader.ReadDateTime();
+                    RugType = (RugType)reader.ReadInt();
                     break;
                 case 1:
                     m_NextUse = reader.ReadDateTime();
