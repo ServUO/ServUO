@@ -32,6 +32,7 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
+                from.CloseGump(typeof(RugGump));
                 from.SendGump(new RugGump(from, this));
             }
             else
