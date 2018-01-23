@@ -112,7 +112,7 @@ namespace Server.Items
             return quality;
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly BaseAddonDeed m_Deed;
             public InternalTarget(BaseAddonDeed deed)

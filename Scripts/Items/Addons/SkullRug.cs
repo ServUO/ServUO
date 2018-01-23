@@ -1,14 +1,15 @@
 using System;
 using Server;
-using Server.Mobiles;
-using Server.Gumps;
+using Server.Accounting;
+using Server.Engines.VeteranRewards;
+using Server.Multis;
 
 namespace Server.Items
 {
     [TypeAlias("Server.Items.SkullRugEastAddon", "Server.Items.SkullRugSouthAddon")]
 	public class SkullRugAddon : BaseAddon
 	{
-        private static int[,] _EastLarge = new int[,] 
+        private static int[,] _SouthLarge = new int[,] 
         {
 			  {14495, -1, -3, 0}, {14494, 0, -3, 0}, {14493, 1, -3, 0}// 1	2	3	
 			, {14496, 2, -3, 0}, {14486, 0, -1, 0}, {14487, -1, -1, 0}// 4	5	6	
@@ -22,7 +23,7 @@ namespace Server.Items
 			, {14482, 0, 0, 0}// 28	
 		};
 
-        private static int[,] _SouthLarge =
+        private static int[,] _EastLarge =
         {
 			  {14456, 0, 2, 0}, {14455, 0, -1, 0}, {14441, -3, 2, 0}// 1	2	3	
 			, {14451, -1, -1, 0}, {14466, 3, 0, 0}, {14442, -3, 1, 0}// 4	5	6	
@@ -36,7 +37,7 @@ namespace Server.Items
 			, {14443, -3, 0, 0}// 28	
 		};
 
-        private static int[,] _EastSmall = 
+        private static int[,] _SouthSmall = 
         {	
               {18198, 1, 2, 0},   {18199, 0, 2, 0},  {18200, -1, 2, 0}  // 1	2	3	
 			, {18209, 1, 1, 0},   {18210, 0, 1, 0},  {18211, -1, 1, 0}  // 4	5	6	
@@ -45,7 +46,7 @@ namespace Server.Items
 			, {18238, -1, 0, 0},  {18236, 1, 0, 0},  {18237, 0, 0, 0}   // 13	14	15	
 		};
 
-        private static int[,] _SouthSmall = 
+        private static int[,] _EastSmall = 
         {
               {18197, 1, 1, 0},   {18196, -2, 1, 0}, {18195, -1, 1, 0}  // 1	2	3	
 			, {18194, 2, 1, 0},   {18193, 0, 1, 0},  {18192, 1, 0, 0}   // 4	5	6	
@@ -54,10 +55,9 @@ namespace Server.Items
 			, {18185, -2, -1, 0}, {18184, -2, 0, 0}, {18183, 0, 0, 0}   // 13	14	15	
         };
 
-        public override BaseAddonDeed Deed { get { return new SkullRugAddonDeed(RugType, m_NextUse); } }
+        public override BaseAddonDeed Deed { get { return new SkullRugAddonDeed(NextUse, RugType); } }
 
-        private DateTime m_NextUse;
-
+        private DateTime NextUse { get; set; }
         public RugType RugType { get; set; }
 
         [Constructable]
@@ -75,7 +75,7 @@ namespace Server.Items
 		[ Constructable ]
 		public SkullRugAddon(RugType type, DateTime nextuse)
 		{
-            m_NextUse = nextuse;
+            NextUse = nextuse;
             RugType = type;
 
             int[,] list;
@@ -95,36 +95,58 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.UtcNow)
+            Account acct = from.Account as Account;
+
+            if (acct != null && from.IsPlayer())
             {
-                Container cont = from.Backpack;
-                Map facet;
-                int level = Utility.RandomMinMax(1, 4);
+                TimeSpan time = TimeSpan.FromDays(RewardSystem.RewardInterval.TotalDays * 6) - (DateTime.Now - acct.Created);
 
-                int choose = Siege.SiegeShard ? Utility.RandomMinMax(1, 5) : Utility.Random(6);
-
-                switch (choose)
+                if (time > TimeSpan.Zero)
                 {
-                    default:
-                    case 0: facet = Map.Trammel; break;
-                    case 1: facet = Map.Ilshenar; break;
-                    case 2: facet = Map.Malas; break;
-                    case 3: facet = Map.Felucca; break;
-                    case 4: facet = Map.Tokuno; break;
-                    case 5: facet = Map.TerMur; break;
+                    from.SendLocalizedMessage(1008126, true, Math.Ceiling(time.TotalDays / RewardSystem.RewardInterval.TotalDays).ToString()); // Your account is not old enough to use this item. Months until you can use this item :
+                    return;
                 }
+            }
 
-                TreasureMap map = new TreasureMap(level, facet);
+            BaseHouse house = BaseHouse.FindHouseAt(from);
 
-                if (cont == null || !cont.TryDropItem(from, map, false))
+            if (house != null && house.IsOwner(from))
+            {
+                if (NextUse < DateTime.UtcNow)
                 {
-                    from.BankBox.DropItem(map);
-                    from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
-                }
-                else
-                    from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+                    Container cont = from.Backpack;
+                    Map facet;
+                    int level = Utility.RandomMinMax(1, 4);
 
-                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                    int choose = Siege.SiegeShard ? Utility.RandomMinMax(1, 5) : Utility.Random(6);
+
+                    switch (choose)
+                    {
+                        default:
+                        case 0: facet = Map.Trammel; break;
+                        case 1: facet = Map.Ilshenar; break;
+                        case 2: facet = Map.Malas; break;
+                        case 3: facet = Map.Felucca; break;
+                        case 4: facet = Map.Tokuno; break;
+                        case 5: facet = Map.TerMur; break;
+                    }
+
+                    TreasureMap map = new TreasureMap(level, facet);
+
+                    if (cont == null || !cont.TryDropItem(from, map, false))
+                    {
+                        from.BankBox.DropItem(map);
+                        from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
+                    }
+                    else
+                        from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+
+                    NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                }
+            }
+            else
+            {
+                from.SendLocalizedMessage(502092); // You must be in your house to do this.
             }
         }
 
@@ -139,7 +161,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(1); // Version
 
-            writer.Write(m_NextUse);
+            writer.Write(NextUse);
             writer.Write((int)RugType);
         }
 
@@ -151,20 +173,20 @@ namespace Server.Items
             switch (version)
             {
                 case 1:
-                    m_NextUse = reader.ReadDateTime();
+                    NextUse = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
                     break;
                 case 0:
-                    m_NextUse = reader.ReadDateTime();
+                    NextUse = reader.ReadDateTime();
                     break;
             }
         }
 	}
 
     [TypeAlias("Server.Items.SkullRugSouthAddonDeed", "Server.Items.SkullRugEastAddonDeed")]
-    public class SkullRugAddonDeed : BaseAddonDeed, IRewardOption
-	{
-        public override BaseAddon Addon { get { return new SkullRugAddon(RugType, m_NextUse); } }
+    public class SkullRugAddonDeed : BaseRugAddonDeed
+    {
+        public override BaseAddon Addon { get { return new SkullRugAddon(RugType, NextUse); } }
 
         public override int LabelNumber
         {
@@ -179,57 +201,22 @@ namespace Server.Items
             }
         }
 
-        private DateTime m_NextUse;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public RugType RugType { get; set; }
-
         [Constructable]
-        public SkullRugAddonDeed()
-            : this(RugType.EastLarge)
+        public SkullRugAddonDeed(DateTime nextuse, RugType type)
+            : base(nextuse, type)
         {
         }
 
         [Constructable]
         public SkullRugAddonDeed(RugType type)
-            : this(type, DateTime.UtcNow)
+            : base(DateTime.UtcNow, type)
         {
         }
 
-		[Constructable]
-		public SkullRugAddonDeed(RugType type, DateTime nextuse)
-		{
-            RugType = type;
-            m_NextUse = nextuse;
-            LootType = LootType.Blessed;
-		}
-
-        public override void OnDoubleClick(Mobile from)
+        [Constructable]
+        public SkullRugAddonDeed()
+            : this(RugType.EastLarge)
         {
-            if (IsChildOf(from.Backpack))
-            {
-                from.CloseGump(typeof(RewardOptionGump));
-                from.SendGump(new RewardOptionGump(this, 1076583)); // Please select your rug size
-            }
-            else
-                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.       	
-        }
-
-        public void GetOptions(RewardOptionList list)
-        {
-            list.Add(1, "Skull Rug East 7x7");
-            list.Add(2, "Skull Rug South 7x7");
-            list.Add(3, "Skull Rug East 3x5");
-            list.Add(4, "Skull Rug South 3x5");
-        }
-
-
-        public void OnOptionSelected(Mobile from, int choice)
-        {
-            RugType = (RugType)choice - 1;
-
-            if (!Deleted && IsChildOf(from.Backpack))
-                base.OnDoubleClick(from);
         }
 
         public SkullRugAddonDeed(Serial serial)
@@ -240,27 +227,11 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); // Version
-
-            writer.Write(m_NextUse);
-            writer.Write((int)RugType);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            switch (version)
-            {
-                case 1:
-                    m_NextUse = reader.ReadDateTime();
-                    RugType = (RugType)reader.ReadInt();
-                    break;
-                case 0:
-                    m_NextUse = reader.ReadDateTime();
-                    break;
-            }
         }
 	}
 }
