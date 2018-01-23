@@ -1,8 +1,6 @@
 using System;
 using Server;
 using Server.Gumps;
-using Server.Accounting;
-using Server.Engines.VeteranRewards;
 using Server.Multis;
 
 namespace Server.Items
@@ -96,19 +94,6 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            Account acct = from.Account as Account;
-
-            if (acct != null && from.IsPlayer())
-            {
-                TimeSpan time = TimeSpan.FromDays(RewardSystem.RewardInterval.TotalDays * 6) - (DateTime.Now - acct.Created);
-
-                if (time > TimeSpan.Zero)
-                {
-                    from.SendLocalizedMessage(1008126, true, Math.Ceiling(time.TotalDays / RewardSystem.RewardInterval.TotalDays).ToString()); // Your account is not old enough to use this item. Months until you can use this item :
-                    return;
-                }
-            }
-
             BaseHouse house = BaseHouse.FindHouseAt(from);
 
             if (house != null && house.IsOwner(from))
@@ -231,13 +216,19 @@ namespace Server.Items
             list.Add(4, "Dolphin Rug South 3x5");
         }
 
-
         public void OnOptionSelected(Mobile from, int choice)
         {
             RugType = (RugType)choice - 1;
 
             if (!Deleted && IsChildOf(from.Backpack))
                 base.OnDoubleClick(from);
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1080457); // 10th Year Veteran Reward
         }
 
         public DolphinRugAddonDeed(Serial serial)
