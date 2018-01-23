@@ -1,14 +1,12 @@
 using System;
 using Server;
-using Server.Mobiles;
-using Server.Gumps;
 
 namespace Server.Items
 {
     [TypeAlias("Server.Items.DolphinRugEastAddon", "Server.Items.DolphinRugSouthAddon")]
 	public class DolphinRugAddon : BaseAddon
 	{
-        private static int[,] _EastLarge = new int[,] 
+        private static int[,] _SouthLarge = new int[,] 
         {
 			  {14590, 1, -1, 0}, {14586, 1, -2, 0}, {14589, 0, -1, 0}// 1	2	3	
 			, {14592, -1, -1, 0}, {14593, 0, 0, 0}, {14597, 0, 1, 0}// 4	5	6	
@@ -22,7 +20,7 @@ namespace Server.Items
 			, {14598, 1, 2, 0}// 28	
 		};
 
-        private static int[,] _SouthLarge = new int[,]
+        private static int[,] _EastLarge = new int[,]
         {
 			  {14553, -3, 2, 0}, {14554, -3, 1, 0}, {14555, -3, 0, 0}// 1	2	3	
 			, {14556, -3, -1, 0}, {14557, -2, 1, 0}, {14558, -2, 0, 0}// 4	5	6	
@@ -36,7 +34,7 @@ namespace Server.Items
 			, {14574, 2, 0, 0}// 28	
 		};
 
-        private static int[,] _EastSmall = 
+        private static int[,] _SouthSmall = 
         {	
               {18283, 1, 0, 0}, {18276, 1, 1, 0},   {18289, 1, 2, 0}    // 1	2	3	
 			, {18288, 0, 2, 0}, {18287, -1, -2, 0}, {18286, 1, -2, 0}   // 4	5	6	
@@ -45,7 +43,7 @@ namespace Server.Items
 			, {18278, -1, -1, 0}, {18277, 0, 1, 0}, {18275, 0, 0, 0}    // 13	14	15	
 		};
 
-        private static int[,] _SouthSmall = 
+        private static int[,] _EastSmall = 
         {
               {18393, 2, -1, 0},  {18392, -2, -1, 0}, {18391, -2, 1, 0} // 1	2	3	
 			, {18390, 1, -1, 0},  {18300, 1, 0, 0},   {18299, 1, 1, 0}  // 4	5	6	
@@ -54,10 +52,9 @@ namespace Server.Items
 			, {18292, 2, 1, 0},   {18291, -2, 0, 0},  {18290, 0, 0, 0}  // 13	14	15	
         };
 
-        public override BaseAddonDeed Deed { get { return new DolphinRugAddonDeed(RugType, m_NextUse); } }
+        public override BaseAddonDeed Deed { get { return new DolphinRugAddonDeed(NextUse, RugType); } }
 
-        private DateTime m_NextUse;
-
+        private DateTime NextUse { get; set; }
         public RugType RugType { get; set; }
 
         [Constructable]
@@ -67,14 +64,15 @@ namespace Server.Items
         }
 
         [Constructable]
-        public DolphinRugAddon(RugType type) : this(type, DateTime.UtcNow)
+        public DolphinRugAddon(RugType type)
+            : this(type, DateTime.UtcNow)
         {
         }
 
 		[ Constructable ]
 		public DolphinRugAddon(RugType type, DateTime nextuse)
 		{
-            m_NextUse = nextuse;
+            NextUse = nextuse;
             RugType = type;
 
             int[,] list;
@@ -94,7 +92,7 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.UtcNow)
+            if (NextUse < DateTime.UtcNow)
             {
                 Container cont = from.Backpack;
 
@@ -108,7 +106,7 @@ namespace Server.Items
                 else
                     from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
 
-                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
             }
         }
 
@@ -123,7 +121,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(1); // Version
 
-            writer.Write(m_NextUse);
+            writer.Write(NextUse);
             writer.Write((int)RugType);
         }
 
@@ -135,20 +133,20 @@ namespace Server.Items
             switch (version)
             {
                 case 1:
-                    m_NextUse = reader.ReadDateTime();
+                    NextUse = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
                     break;
                 case 0:
-                    m_NextUse = reader.ReadDateTime();
+                    NextUse = reader.ReadDateTime();
                     break;
             }
         }
 	}
 
     [TypeAlias("Server.Items.DolphinRugSouthAddonDeed", "Server.Items.DolphinRugEastAddonDeed")]
-    public class DolphinRugAddonDeed : BaseAddonDeed, IRewardOption
-	{
-        public override BaseAddon Addon { get { return new DolphinRugAddon(RugType, m_NextUse); } }
+    public class DolphinRugAddonDeed : BaseRugAddonDeed
+    {
+        public override BaseAddon Addon { get { return new DolphinRugAddon(RugType, NextUse); } }
 
         public override int LabelNumber
         {
@@ -163,57 +161,22 @@ namespace Server.Items
             }
         }
 
-        private DateTime m_NextUse;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public RugType RugType { get; set; }
-
         [Constructable]
-        public DolphinRugAddonDeed()
-            : this(RugType.EastLarge)
+        public DolphinRugAddonDeed(DateTime nextuse, RugType type)
+            : base(DateTime.UtcNow, type)
         {
         }
 
         [Constructable]
         public DolphinRugAddonDeed(RugType type)
-            : this(type, DateTime.UtcNow)
+            : base(DateTime.UtcNow, type)
         {
         }
 
-		[Constructable]
-		public DolphinRugAddonDeed(RugType type, DateTime nextuse)
-		{
-            RugType = type;
-            m_NextUse = nextuse;
-            LootType = LootType.Blessed;
-		}
-
-        public override void OnDoubleClick(Mobile from)
+        [Constructable]
+        public DolphinRugAddonDeed()
+            : this(RugType.EastLarge)
         {
-            if (IsChildOf(from.Backpack))
-            {
-                from.CloseGump(typeof(RewardOptionGump));
-                from.SendGump(new RewardOptionGump(this, 1076583)); // Please select your rug size
-            }
-            else
-                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.       	
-        }
-
-        public void GetOptions(RewardOptionList list)
-        {
-            list.Add(1, "Dolphin Rug East 7x7");
-            list.Add(2, "Dolphin Rug South 7x7");
-            list.Add(3, "Dolphin Rug East 3x5");
-            list.Add(4, "Dolphin Rug South 3x5");
-        }
-
-
-        public void OnOptionSelected(Mobile from, int choice)
-        {
-            RugType = (RugType)choice - 1;
-
-            if (!Deleted && IsChildOf(from.Backpack))
-                base.OnDoubleClick(from);
         }
 
         public DolphinRugAddonDeed(Serial serial)
@@ -224,27 +187,11 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); // Version
-
-            writer.Write(m_NextUse);
-            writer.Write((int)RugType);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            switch (version)
-            {
-                case 1:
-                    m_NextUse = reader.ReadDateTime();
-                    RugType = (RugType)reader.ReadInt();
-                    break;
-                case 0:
-                    m_NextUse = reader.ReadDateTime();
-                    break;
-            }
         }
 	}
 }

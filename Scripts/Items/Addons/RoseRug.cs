@@ -1,24 +1,14 @@
 using System;
 using Server;
-using Server.Mobiles;
-using Server.Gumps;
 
 namespace Server.Items
 {
-    public enum RugType
-    {
-        EastLarge,
-        SouthLarge,
-        EastSmall,
-        SouthSmall
-    }
-
     [TypeAlias("Server.Items.RoseRugEastAddon", "Server.Items.RoseRugSouthAddon")]
-	public class RoseRugAddon : BaseAddon
-	{
-        private static int[,] _EastLarge =
+    public class RoseRugAddon : BaseAddon
+    {
+        private static int[,] _SouthLarge =
         {
-			  {14551, 2, -3, 0}, {14550, 0, -3, 0}, {14549, 1, -3, 0}   // 1	2	3	
+              {14551, 2, -3, 0}, {14550, 0, -3, 0}, {14549, 1, -3, 0}   // 1	2	3	
 			, {14552, -1, -3, 0}, {14542, 0, -1, 0}, {14543, 2, -1, 0}  // 4	5	6	
 			, {14536, -1, 1, 0}, {14527, 0, 3, 0}, {14530, 0, 2, 0}     // 7	8	9	
 			, {14537, 1, 0, 0}, {14535, 2, 1, 0}, {14544, -1, -1, 0}    // 10	11	12	
@@ -30,9 +20,9 @@ namespace Server.Items
 			, {14538, 0, 0, 0}// 28	
 		};
 
-        private static int[,] _SouthLarge =
+        private static int[,] _EastLarge =
         {
-			  {14512, 0, -1, 0}, {14511, 0, 2, 0}, {14497, -3, 2, 0}// 1	2	3	
+              {14512, 0, -1, 0}, {14511, 0, 2, 0}, {14497, -3, 2, 0}// 1	2	3	
 			, {14507, -1, 2, 0}, {14498, -3, 1, 0}, {14501, -2, 1, 0}// 4	5	6	
 			, {14509, 0, 1, 0}, {14500, -3, -1, 0}, {14516, 1, -1, 0}// 7	8	9	
 			, {14517, 2, 1, 0}, {14518, 2, 0, 0}, {14515, 1, 2, 0}// 10	11	12	
@@ -44,7 +34,7 @@ namespace Server.Items
 			, {14524, 3, -1, 0}// 28	
 		};
 
-        private static int[,] _EastSmall = 
+        private static int[,] _SouthSmall =
         {
               {18249, 0, -1, 0},  {18248, -1, -1, 0}, {18250, 1, -1, 0} // 1	2	3	
 			, {18251, -1, 0, 0},  {18252, 1, 2, 0},   {18253, 1, 0, 0}  // 4	5	6	
@@ -53,7 +43,7 @@ namespace Server.Items
 			, {18259, -1, -2, 0}, {18245, 0, 0, 0},   {18247, 1, -2, 0} // 13	14	15	
 		};
 
-        private static int[,] _SouthSmall = 
+        private static int[,] _EastSmall =
         {
               {18269, 1, 1, 0},  {18270, 1, 0, 0},   {18271, 1, -1, 0}  // 1	2	3	
 			, {18272, -2, 0, 0}, {18273, -2, 1, 0},  {18274, -2, -1, 0} // 4	5	6	
@@ -62,10 +52,9 @@ namespace Server.Items
 			, {18267, 2, 1, 0},  {18262, 2, -1, 0},  {18263, -1, 1, 0}  // 13	14	15
         };
 
-        public override BaseAddonDeed Deed { get { return new RoseRugAddonDeed(RugType, m_NextUse); } }
+        public override BaseAddonDeed Deed { get { return new RoseRugAddonDeed(NextUse, RugType); } }
 
-        private DateTime m_NextUse;
-
+        private DateTime NextUse { get; set; }
         public RugType RugType { get; set; }
 
         [Constructable]
@@ -75,14 +64,15 @@ namespace Server.Items
         }
 
         [Constructable]
-        public RoseRugAddon(RugType type) : this(type, DateTime.UtcNow)
+        public RoseRugAddon(RugType type)
+            : this(type, DateTime.UtcNow)
         {
         }
 
-		[ Constructable ]
+        [Constructable]
         public RoseRugAddon(RugType type, DateTime nextuse)
-		{
-            m_NextUse = nextuse;
+        {
+            NextUse = nextuse;
             RugType = type;
 
             int[,] list;
@@ -98,11 +88,11 @@ namespace Server.Items
 
             for (int i = 0; i < list.Length / 4; i++)
                 AddComponent(new AddonComponent(list[i, 0]), list[i, 1], list[i, 2], list[i, 3]);
-		}
+        }
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.UtcNow)
+            if (NextUse < DateTime.UtcNow)
             {
                 Container cont = from.Backpack;
 
@@ -116,68 +106,70 @@ namespace Server.Items
                 else
                     from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
 
-                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
             }
         }
 
         public RoseRugAddon(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( 1 ); // Version
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(1); // Version
 
-            writer.Write(m_NextUse);
+            writer.Write(NextUse);
             writer.Write((int)RugType);
-		}
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             switch (version)
             {
                 case 1:
-                    m_NextUse = reader.ReadDateTime();
+                    NextUse = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
                     break;
                 case 0:
-                    m_NextUse = reader.ReadDateTime();
+                    NextUse = reader.ReadDateTime();
                     break;
             }
-		}
-	}
+        }
+    }
 
     [TypeAlias("Server.Items.RoseRugSouthAddonDeed", "Server.Items.RoseRugEastAddonDeed")]
-    public class RoseRugAddonDeed : BaseAddonDeed, IRewardOption
-	{
-        public override BaseAddon Addon { get { return new RoseRugAddon(RugType, m_NextUse); } }
+    public class RoseRugAddonDeed : BaseRugAddonDeed
+    {
+        public override BaseAddon Addon { get { return new RoseRugAddon(RugType, NextUse); } }
 
         public override int LabelNumber
-        { 
-            get 
+        {
+            get
             {
                 switch ((int)RugType)
                 {
                     default: return 1150048;
                     case 0:
-                    case 2: return 1150049; 
+                    case 2: return 1150049;
                 }
             }
         }
 
-        private DateTime m_NextUse;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public RugType RugType { get; set; }
+        [Constructable]
+        public RoseRugAddonDeed(DateTime nextuse, RugType type)
+            : base(DateTime.UtcNow, type)
+        {
+        }
 
         [Constructable]
-        public RoseRugAddonDeed(RugType type) : this(type, DateTime.UtcNow)
+        public RoseRugAddonDeed(RugType type)
+            : base(DateTime.UtcNow, type)
         {
         }
 
@@ -187,71 +179,19 @@ namespace Server.Items
         {
         }
 
-		[Constructable]
-        public RoseRugAddonDeed(RugType type, DateTime nextuse)
-		{
-            RugType = type;
-            m_NextUse = nextuse;
-            LootType = LootType.Blessed;
-		}
-
-        public override void OnDoubleClick(Mobile from)
-        {
-            if (IsChildOf(from.Backpack))
-            {
-                from.CloseGump(typeof(RewardOptionGump));
-                from.SendGump(new RewardOptionGump(this, 1076583)); // Please select your rug size
-            }
-            else
-                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.       	
-        }
-
-        public void GetOptions(RewardOptionList list)
-        {
-            list.Add(1, "Rose Rug East 7x7");
-            list.Add(2, "Rose Rug South 7x7");
-            list.Add(3, "Rose Rug East 3x5");
-            list.Add(4, "Rose Rug South 3x5");
-        }
-
-
-        public void OnOptionSelected(Mobile from, int choice)
-        {
-            RugType = (RugType)choice - 1;
-
-            if (!Deleted && IsChildOf(from.Backpack))
-                base.OnDoubleClick(from);
-        }
-
         public RoseRugAddonDeed(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write(1); // Version
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+        }
 
-            writer.Write(m_NextUse);
-            writer.Write((int)RugType);
-		}
-
-		public override void	Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
-
-            switch (version)
-            {
-                case 1:
-                    m_NextUse = reader.ReadDateTime();
-                    RugType = (RugType)reader.ReadInt();
-                    break;
-                case 0:
-                    m_NextUse = reader.ReadDateTime();
-                    break;
-            }
-		}
-	}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+        }
+    }
 }
