@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Mobiles;
 using Server.ContextMenus;
@@ -281,7 +281,7 @@ namespace Server.Items
                         list.Add(kvp.Key);
                 }
 
-                if (list.Count >= 15)
+                if (list != null && list.Count >= 15)
                     break;
             }
 
