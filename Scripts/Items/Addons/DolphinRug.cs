@@ -1,16 +1,33 @@
 using System;
 using Server;
-using Server.Mobiles;
+using Server.Engines.VeteranRewards;
 using Server.Gumps;
+using Server.Multis;
 
 namespace Server.Items
 {
     [TypeAlias("Server.Items.DolphinRugEastAddon", "Server.Items.DolphinRugSouthAddon")]
-	public class DolphinRugAddon : BaseAddon
-	{
-        private static int[,] _EastLarge = new int[,] 
+    public class DolphinRugAddon : BaseAddon, IRewardItem
+    {
+        private bool m_IsRewardItem;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem
         {
-			  {14590, 1, -1, 0}, {14586, 1, -2, 0}, {14589, 0, -1, 0}// 1	2	3	
+            get
+            {
+                return m_IsRewardItem;
+            }
+            set
+            {
+                m_IsRewardItem = value;
+                InvalidateProperties();
+            }
+        }
+
+        private static int[,] _EastLarge = new int[,]
+        {
+              {14590, 1, -1, 0}, {14586, 1, -2, 0}, {14589, 0, -1, 0}// 1	2	3	
 			, {14592, -1, -1, 0}, {14593, 0, 0, 0}, {14597, 0, 1, 0}// 4	5	6	
 			, {14596, -1, 0, 0}, {14600, -1, 1, 0}, {14604, -1, 2, 0}// 7	8	9	
 			, {14585, 0, -2, 0}, {14587, 2, -2, 0}, {14591, 2, -1, 0}// 10	11	12	
@@ -24,7 +41,7 @@ namespace Server.Items
 
         private static int[,] _SouthLarge = new int[,]
         {
-			  {14553, -3, 2, 0}, {14554, -3, 1, 0}, {14555, -3, 0, 0}// 1	2	3	
+              {14553, -3, 2, 0}, {14554, -3, 1, 0}, {14555, -3, 0, 0}// 1	2	3	
 			, {14556, -3, -1, 0}, {14557, -2, 1, 0}, {14558, -2, 0, 0}// 4	5	6	
 			, {14559, -2, -1, 0}, {14560, -2, 2, 0}, {14561, -1, 1, 0}// 7	8	9	
 			, {14562, -1, 0, 0}, {14564, -1, 2, 0}, {14565, 0, 1, 0}// 10	11	12	
@@ -36,8 +53,8 @@ namespace Server.Items
 			, {14574, 2, 0, 0}// 28	
 		};
 
-        private static int[,] _EastSmall = 
-        {	
+        private static int[,] _EastSmall =
+        {
               {18283, 1, 0, 0}, {18276, 1, 1, 0},   {18289, 1, 2, 0}    // 1	2	3	
 			, {18288, 0, 2, 0}, {18287, -1, -2, 0}, {18286, 1, -2, 0}   // 4	5	6	
 			, {18285, 0, -2, 0}, {18284, -1, 2, 0}, {18282, -1, 1, 0}   // 7	8	9	
@@ -45,7 +62,7 @@ namespace Server.Items
 			, {18278, -1, -1, 0}, {18277, 0, 1, 0}, {18275, 0, 0, 0}    // 13	14	15	
 		};
 
-        private static int[,] _SouthSmall = 
+        private static int[,] _SouthSmall =
         {
               {18393, 2, -1, 0},  {18392, -2, -1, 0}, {18391, -2, 1, 0} // 1	2	3	
 			, {18390, 1, -1, 0},  {18300, 1, 0, 0},   {18299, 1, 1, 0}  // 4	5	6	
@@ -54,10 +71,18 @@ namespace Server.Items
 			, {18292, 2, 1, 0},   {18291, -2, 0, 0},  {18290, 0, 0, 0}  // 13	14	15	
         };
 
-        public override BaseAddonDeed Deed { get { return new DolphinRugAddonDeed(RugType, m_NextUse); } }
+        public override BaseAddonDeed Deed
+        {
+            get
+            {
+                DolphinRugAddonDeed deed = new DolphinRugAddonDeed(RugType, m_NextUse);
+                deed.IsRewardItem = m_IsRewardItem;
+
+                return deed;
+            }
+        }
 
         private DateTime m_NextUse;
-
         public RugType RugType { get; set; }
 
         [Constructable]
@@ -67,13 +92,14 @@ namespace Server.Items
         }
 
         [Constructable]
-        public DolphinRugAddon(RugType type) : this(type, DateTime.UtcNow)
+        public DolphinRugAddon(RugType type)
+            : this(type, DateTime.UtcNow)
         {
         }
 
-		[ Constructable ]
-		public DolphinRugAddon(RugType type, DateTime nextuse)
-		{
+        [Constructable]
+        public DolphinRugAddon(RugType type, DateTime nextuse)
+        {
             m_NextUse = nextuse;
             RugType = type;
 
@@ -90,39 +116,48 @@ namespace Server.Items
 
             for (int i = 0; i < list.Length / 4; i++)
                 AddComponent(new AddonComponent(list[i, 0]), list[i, 1], list[i, 2], list[i, 3]);
-		}
+        }
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.UtcNow)
+            BaseHouse house = BaseHouse.FindHouseAt(from);
+
+            if (house != null && house.IsOwner(from))
             {
-                Container cont = from.Backpack;
-
-                MessageInABottle mib = new MessageInABottle();
-
-                if (cont == null || !cont.TryDropItem(from, mib, false))
+                if (m_NextUse < DateTime.UtcNow)
                 {
-                    from.BankBox.DropItem(mib);
-                    from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
-                }
-                else
-                    from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+                    Container cont = from.Backpack;
 
-                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                    MessageInABottle mib = new MessageInABottle();
+
+                    if (cont == null || !cont.TryDropItem(from, mib, false))
+                    {
+                        from.BankBox.DropItem(mib);
+                        from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
+                    }
+                    else
+                        from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+
+                    m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                }
+            }
+            else
+            {
+                from.SendLocalizedMessage(502092); // You must be in your house to do this.
             }
         }
 
         public DolphinRugAddon(Serial serial)
             : base(serial)
-		{
-		}
-
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); // Version
+            writer.Write(2); // Version
 
+            writer.Write((bool)m_IsRewardItem);
             writer.Write(m_NextUse);
             writer.Write((int)RugType);
         }
@@ -134,6 +169,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
+                    m_IsRewardItem = reader.ReadBool();
+                    m_NextUse = reader.ReadDateTime();
+                    RugType = (RugType)reader.ReadInt();
+                    break;
                 case 1:
                     m_NextUse = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
@@ -143,12 +183,21 @@ namespace Server.Items
                     break;
             }
         }
-	}
+    }
 
     [TypeAlias("Server.Items.DolphinRugSouthAddonDeed", "Server.Items.DolphinRugEastAddonDeed")]
-    public class DolphinRugAddonDeed : BaseAddonDeed, IRewardOption
-	{
-        public override BaseAddon Addon { get { return new DolphinRugAddon(RugType, m_NextUse); } }
+    public class DolphinRugAddonDeed : BaseAddonDeed, IRewardOption, IRewardItem
+    {
+        public override BaseAddon Addon
+        {
+            get
+            {
+                DolphinRugAddon addon = new DolphinRugAddon(RugType, m_NextUse);
+                addon.IsRewardItem = m_IsRewardItem;
+
+                return addon;
+            }
+        }
 
         public override int LabelNumber
         {
@@ -164,6 +213,21 @@ namespace Server.Items
         }
 
         private DateTime m_NextUse;
+        private bool m_IsRewardItem;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem
+        {
+            get
+            {
+                return m_IsRewardItem;
+            }
+            set
+            {
+                m_IsRewardItem = value;
+                InvalidateProperties();
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public RugType RugType { get; set; }
@@ -180,13 +244,13 @@ namespace Server.Items
         {
         }
 
-		[Constructable]
-		public DolphinRugAddonDeed(RugType type, DateTime nextuse)
-		{
+        [Constructable]
+        public DolphinRugAddonDeed(RugType type, DateTime nextuse)
+        {
             RugType = type;
             m_NextUse = nextuse;
             LootType = LootType.Blessed;
-		}
+        }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -207,7 +271,6 @@ namespace Server.Items
             list.Add(4, "Dolphin Rug South 3x5");
         }
 
-
         public void OnOptionSelected(Mobile from, int choice)
         {
             RugType = (RugType)choice - 1;
@@ -216,16 +279,25 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (m_IsRewardItem)
+                list.Add(1080457); // 10th Year Veteran Reward
+        }
+
         public DolphinRugAddonDeed(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); // Version
+            writer.Write(2); // Version
 
+            writer.Write((bool)m_IsRewardItem);
             writer.Write(m_NextUse);
             writer.Write((int)RugType);
         }
@@ -237,6 +309,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
+                    m_IsRewardItem = reader.ReadBool();
+                    m_NextUse = reader.ReadDateTime();
+                    RugType = (RugType)reader.ReadInt();
+                    break;
                 case 1:
                     m_NextUse = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
@@ -246,5 +323,5 @@ namespace Server.Items
                     break;
             }
         }
-	}
+    }
 }

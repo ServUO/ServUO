@@ -1,16 +1,33 @@
 using System;
 using Server;
-using Server.Mobiles;
+using Server.Engines.VeteranRewards;
 using Server.Gumps;
+using Server.Multis;
 
 namespace Server.Items
 {
     [TypeAlias("Server.Items.SkullRugEastAddon", "Server.Items.SkullRugSouthAddon")]
-	public class SkullRugAddon : BaseAddon
-	{
-        private static int[,] _EastLarge = new int[,] 
+    public class SkullRugAddon : BaseAddon, IRewardItem
+    {
+        private bool m_IsRewardItem;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem
         {
-			  {14495, -1, -3, 0}, {14494, 0, -3, 0}, {14493, 1, -3, 0}// 1	2	3	
+            get
+            {
+                return m_IsRewardItem;
+            }
+            set
+            {
+                m_IsRewardItem = value;
+                InvalidateProperties();
+            }
+        }
+
+        private static int[,] _EastLarge = new int[,]
+        {
+              {14495, -1, -3, 0}, {14494, 0, -3, 0}, {14493, 1, -3, 0}// 1	2	3	
 			, {14496, 2, -3, 0}, {14486, 0, -1, 0}, {14487, -1, -1, 0}// 4	5	6	
 			, {14480, 2, 1, 0}, {14471, 0, 3, 0}, {14474, 0, 2, 0}// 7	8	9	
 			, {14481, 1, 0, 0}, {14479, -1, 1, 0}, {14488, 2, -1, 0}// 10	11	12	
@@ -24,7 +41,7 @@ namespace Server.Items
 
         private static int[,] _SouthLarge =
         {
-			  {14456, 0, 2, 0}, {14455, 0, -1, 0}, {14441, -3, 2, 0}// 1	2	3	
+              {14456, 0, 2, 0}, {14455, 0, -1, 0}, {14441, -3, 2, 0}// 1	2	3	
 			, {14451, -1, -1, 0}, {14466, 3, 0, 0}, {14442, -3, 1, 0}// 4	5	6	
 			, {14445, -2, 1, 0}, {14468, 3, 2, 0}, {14453, 0, 1, 0}// 7	8	9	
 			, {14444, -3, -1, 0}, {14460, 1, 2, 0}, {14467, 3, -1, 0}// 10	11	12	
@@ -36,8 +53,8 @@ namespace Server.Items
 			, {14443, -3, 0, 0}// 28	
 		};
 
-        private static int[,] _EastSmall = 
-        {	
+        private static int[,] _EastSmall =
+        {
               {18198, 1, 2, 0},   {18199, 0, 2, 0},  {18200, -1, 2, 0}  // 1	2	3	
 			, {18209, 1, 1, 0},   {18210, 0, 1, 0},  {18211, -1, 1, 0}  // 4	5	6	
 			, {18244, -1, -2, 0}, {18243, 0, -2, 0}, {18242, 1, -2, 0}  // 7	8	9	
@@ -45,7 +62,7 @@ namespace Server.Items
 			, {18238, -1, 0, 0},  {18236, 1, 0, 0},  {18237, 0, 0, 0}   // 13	14	15	
 		};
 
-        private static int[,] _SouthSmall = 
+        private static int[,] _SouthSmall =
         {
               {18197, 1, 1, 0},   {18196, -2, 1, 0}, {18195, -1, 1, 0}  // 1	2	3	
 			, {18194, 2, 1, 0},   {18193, 0, 1, 0},  {18192, 1, 0, 0}   // 4	5	6	
@@ -54,10 +71,18 @@ namespace Server.Items
 			, {18185, -2, -1, 0}, {18184, -2, 0, 0}, {18183, 0, 0, 0}   // 13	14	15	
         };
 
-        public override BaseAddonDeed Deed { get { return new SkullRugAddonDeed(RugType, m_NextUse); } }
+        public override BaseAddonDeed Deed
+        {
+            get
+            {
+                SkullRugAddonDeed deed = new SkullRugAddonDeed(RugType, m_NextUse);
+                deed.IsRewardItem = m_IsRewardItem;
+
+                return deed;
+            }
+        }
 
         private DateTime m_NextUse;
-
         public RugType RugType { get; set; }
 
         [Constructable]
@@ -72,9 +97,9 @@ namespace Server.Items
         {
         }
 
-		[ Constructable ]
-		public SkullRugAddon(RugType type, DateTime nextuse)
-		{
+        [Constructable]
+        public SkullRugAddon(RugType type, DateTime nextuse)
+        {
             m_NextUse = nextuse;
             RugType = type;
 
@@ -91,54 +116,64 @@ namespace Server.Items
 
             for (int i = 0; i < list.Length / 4; i++)
                 AddComponent(new AddonComponent(list[i, 0]), list[i, 1], list[i, 2], list[i, 3]);
-		}
+        }
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.UtcNow)
+            BaseHouse house = BaseHouse.FindHouseAt(from);
+
+            if (house != null && house.IsOwner(from))
             {
-                Container cont = from.Backpack;
-                Map facet;
-                int level = Utility.RandomMinMax(1, 4);
-
-                int choose = Siege.SiegeShard ? Utility.RandomMinMax(1, 5) : Utility.Random(6);
-
-                switch (choose)
+                if (m_NextUse < DateTime.UtcNow)
                 {
-                    default:
-                    case 0: facet = Map.Trammel; break;
-                    case 1: facet = Map.Ilshenar; break;
-                    case 2: facet = Map.Malas; break;
-                    case 3: facet = Map.Felucca; break;
-                    case 4: facet = Map.Tokuno; break;
-                    case 5: facet = Map.TerMur; break;
+                    Container cont = from.Backpack;
+                    Map facet;
+                    int level = Utility.RandomMinMax(1, 4);
+
+                    int choose = Siege.SiegeShard ? Utility.RandomMinMax(1, 5) : Utility.Random(6);
+
+                    switch (choose)
+                    {
+                        default:
+                        case 0: facet = Map.Trammel; break;
+                        case 1: facet = Map.Ilshenar; break;
+                        case 2: facet = Map.Malas; break;
+                        case 3: facet = Map.Felucca; break;
+                        case 4: facet = Map.Tokuno; break;
+                        case 5: facet = Map.TerMur; break;
+                    }
+
+                    TreasureMap map = new TreasureMap(level, facet);
+
+                    if (cont == null || !cont.TryDropItem(from, map, false))
+                    {
+                        from.BankBox.DropItem(map);
+                        from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
+                    }
+                    else
+                        from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
+
+                    m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
                 }
-
-                TreasureMap map = new TreasureMap(level, facet);
-
-                if (cont == null || !cont.TryDropItem(from, map, false))
-                {
-                    from.BankBox.DropItem(map);
-                    from.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
-                }
-                else
-                    from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
-
-                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+            }
+            else
+            {
+                from.SendLocalizedMessage(502092); // You must be in your house to do this.
             }
         }
 
         public SkullRugAddon(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); // Version
+            writer.Write(2); // Version
 
+            writer.Write((bool)m_IsRewardItem);
             writer.Write(m_NextUse);
             writer.Write((int)RugType);
         }
@@ -150,6 +185,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
+                    m_IsRewardItem = reader.ReadBool();
+                    m_NextUse = reader.ReadDateTime();
+                    RugType = (RugType)reader.ReadInt();
+                    break;
                 case 1:
                     m_NextUse = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
@@ -159,12 +199,21 @@ namespace Server.Items
                     break;
             }
         }
-	}
+    }
 
     [TypeAlias("Server.Items.SkullRugSouthAddonDeed", "Server.Items.SkullRugEastAddonDeed")]
-    public class SkullRugAddonDeed : BaseAddonDeed, IRewardOption
-	{
-        public override BaseAddon Addon { get { return new SkullRugAddon(RugType, m_NextUse); } }
+    public class SkullRugAddonDeed : BaseAddonDeed, IRewardOption, IRewardItem
+    {
+        public override BaseAddon Addon
+        {
+            get
+            {
+                SkullRugAddon addon = new SkullRugAddon(RugType, m_NextUse);
+                addon.IsRewardItem = m_IsRewardItem;
+
+                return addon;
+            }
+        }
 
         public override int LabelNumber
         {
@@ -180,6 +229,21 @@ namespace Server.Items
         }
 
         private DateTime m_NextUse;
+        private bool m_IsRewardItem;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem
+        {
+            get
+            {
+                return m_IsRewardItem;
+            }
+            set
+            {
+                m_IsRewardItem = value;
+                InvalidateProperties();
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public RugType RugType { get; set; }
@@ -196,13 +260,13 @@ namespace Server.Items
         {
         }
 
-		[Constructable]
-		public SkullRugAddonDeed(RugType type, DateTime nextuse)
-		{
+        [Constructable]
+        public SkullRugAddonDeed(RugType type, DateTime nextuse)
+        {
             RugType = type;
             m_NextUse = nextuse;
             LootType = LootType.Blessed;
-		}
+        }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -223,7 +287,6 @@ namespace Server.Items
             list.Add(4, "Skull Rug South 3x5");
         }
 
-
         public void OnOptionSelected(Mobile from, int choice)
         {
             RugType = (RugType)choice - 1;
@@ -232,16 +295,25 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (m_IsRewardItem)
+                list.Add(1080457); // 10th Year Veteran Reward
+        }
+
         public SkullRugAddonDeed(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); // Version
+            writer.Write(2); // Version
 
+            writer.Write((bool)m_IsRewardItem);
             writer.Write(m_NextUse);
             writer.Write((int)RugType);
         }
@@ -253,6 +325,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
+                    m_IsRewardItem = reader.ReadBool();
+                    m_NextUse = reader.ReadDateTime();
+                    RugType = (RugType)reader.ReadInt();
+                    break;
                 case 1:
                     m_NextUse = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
@@ -262,5 +339,5 @@ namespace Server.Items
                     break;
             }
         }
-	}
+    }
 }
