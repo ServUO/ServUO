@@ -367,6 +367,7 @@ namespace Server.Engines.Help
 				if (m != null && m.IsStaff() && m.AutoPageNotify && m.LastMoveTime - Core.TickCount < 600000)
 				{
 					isStaffOnline = true;
+					break;
 				}
 			}
 
