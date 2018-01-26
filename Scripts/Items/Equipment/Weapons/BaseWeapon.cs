@@ -4271,7 +4271,8 @@ namespace Server.Items
                     }
                 case 16:
                     {
-                        _VvVItem = reader.ReadBool();
+                        if(version == 17)
+                            reader.ReadBool();
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
                         goto case 15;
