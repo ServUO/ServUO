@@ -5,9 +5,8 @@ SDKPATH=${CURPATH}/Ultima
 REFS=System.Drawing.dll
 NOWARNS=0618,0219,0414,1635
 
-# Detect whether we are on 64 bit environment or not
-LBITS := $(shell getconf LONG_BIT)
-ifeq ($(LBITS),64)
+# Detect whether we are on Mac OS X environment or not
+ifeq ($(shell uname -s),Darwin)
   MONO=mono64
 else
   MONO=mono

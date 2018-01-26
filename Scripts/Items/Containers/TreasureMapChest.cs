@@ -20,7 +20,7 @@ namespace Server.Items
             typeof(LunaLance), typeof(NightsKiss), typeof(NoxRangersHeavyCrossbow),
             typeof(PolarBearMask), typeof(VioletCourage), typeof(HeartOfTheLion),
             typeof(ColdBlood), typeof(AlchemistsBauble), typeof(CaptainQuacklebushsCutlass),
-			typeof(ForgedPardon), typeof(ShieldOfInvulnerability), typeof(AncientShipModelOfTheHMSCape),
+			typeof(ShieldOfInvulnerability), typeof(AncientShipModelOfTheHMSCape),
 			typeof(AdmiralsHeartyRum)
         };
 
