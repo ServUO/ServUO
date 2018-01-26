@@ -199,7 +199,6 @@ namespace Server.Items
         #endregion
 
         #region Runic Reforging
-        private bool m_BlockRepair;
         private ItemPower m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
@@ -708,12 +707,6 @@ namespace Server.Items
         #endregion
 
         #region Runic Reforging
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool BlockRepair
-        {
-            get { return m_BlockRepair; }
-            set { m_BlockRepair = value; }
-        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemPower ItemPower
@@ -3866,12 +3859,13 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(17); // version
+			writer.Write(18); // version
+
+            // Version 18 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
 
             writer.Write(m_UsesRemaining);
             writer.Write(m_ShowUsesRemaining);
 
-            writer.Write(_VvVItem);
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
@@ -3887,7 +3881,6 @@ namespace Server.Items
             writer.Write((int)m_ReforgedPrefix);
             writer.Write((int)m_ReforgedSuffix);
             writer.Write((int)m_ItemPower);
-            writer.Write(m_BlockRepair);
             #endregion
 
             #region Stygian Abyss
@@ -4269,6 +4262,7 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 18:
                 case 17:
                     {
                         m_UsesRemaining = reader.ReadInt();
@@ -4295,7 +4289,13 @@ namespace Server.Items
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
-                        m_BlockRepair = reader.ReadBool();
+                        if (version == 17 && reader.ReadBool())
+                        {
+                            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                            {
+                                m_NegativeAttributes.NoRepair = 1;
+                            });
+                        }
                         #endregion
 
                         #region Stygian Abyss

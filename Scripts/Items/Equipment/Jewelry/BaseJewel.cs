@@ -41,7 +41,6 @@ namespace Server.Items
         #endregion
 
         #region Runic Reforging
-        private bool m_BlockRepair;
         private ItemPower m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
@@ -317,13 +316,6 @@ namespace Server.Items
         { 
             get { return m_ReforgedSuffix; } 
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool BlockRepair
-        {
-            get { return m_BlockRepair; }
-            set { m_BlockRepair = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1000,7 +992,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(11); // version
+            writer.Write(12); // version
+
+            // Version 12 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
 
             writer.Write(m_SetPhysicalBonus);
             writer.Write(m_SetFireBonus);
@@ -1012,7 +1006,6 @@ namespace Server.Items
 
             m_TalismanProtection.Serialize(writer);
 
-            writer.Write(_VvVItem);
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
@@ -1027,7 +1020,6 @@ namespace Server.Items
             writer.Write((int)m_ReforgedPrefix);
             writer.Write((int)m_ReforgedSuffix);
             writer.Write((int)m_ItemPower);
-            writer.Write(m_BlockRepair);
             #endregion
 
             #region Stygian Abyss
@@ -1071,6 +1063,7 @@ namespace Server.Items
 
             switch (version)
             {
+                case 12:
                 case 11:
                     {
                         m_SetPhysicalBonus = reader.ReadInt();
@@ -1092,7 +1085,8 @@ namespace Server.Items
                     }
                 case 8:
                     {
-                        _VvVItem = reader.ReadBool();
+                        if (version == 11)
+                            reader.ReadBool();
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
                         goto case 7;
@@ -1113,7 +1107,8 @@ namespace Server.Items
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
-                        m_BlockRepair = reader.ReadBool();
+                        if(version == 11 && reader.ReadBool())
+                            m_NegativeAttributes.NoRepair = 1;
                         #endregion
 
                         #region Stygian Abyss

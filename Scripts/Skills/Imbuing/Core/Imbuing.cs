@@ -218,7 +218,7 @@ namespace Server.SkillHandlers
 
         private static Type[] _SpecialImbuable =
         {
-            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings)
+            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings), typeof(OrcishKinMask), typeof(SavageMask)
         };
 
         private static Type[] _NonCraftables =

@@ -9,8 +9,8 @@ namespace Server.Items
         public SentinelsGuard()
             : base()
         {
-            this.Hue = 0x21;
-            BlockRepair = true;
+            Hue = 0x21;
+            NegativeAttributes.NoRepair = 1;
         }
 
         public SentinelsGuard(Serial serial)

@@ -9,14 +9,14 @@ namespace Server.Items
         public JaanasStaff()
             : base()
         {
-            this.Hue = 0x58C;
+            Hue = 0x58C;
 
-            this.WeaponAttributes.MageWeapon = 10;
+            WeaponAttributes.MageWeapon = 10;
 
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.Luck = 220;
-            this.Attributes.DefendChance = 15;
-            this.BlockRepair = true;
+            Attributes.SpellChanneling = 1;
+            Attributes.Luck = 220;
+            Attributes.DefendChance = 15;
+            NegativeAttributes.NoRepair = 1;
         }
 
         public JaanasStaff(Serial serial)

@@ -199,7 +199,7 @@ namespace Server.Engines.Craft
                             {
                                 number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
-                            else if (weapon.BlockRepair || weapon.NegativeAttributes.NoRepair > 0)
+                            else if (weapon.NegativeAttributes.NoRepair > 0)
                             {
                                 number = 1044277; // That item cannot be repaired.
                             }
@@ -264,7 +264,7 @@ namespace Server.Engines.Craft
                             {
                                 number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
-                            else if (armor.BlockRepair || armor.NegativeAttributes.NoRepair > 0)
+                            else if (armor.NegativeAttributes.NoRepair > 0)
                             {
                                 number = 1044277; // That item cannot be repaired.
                             }
@@ -329,7 +329,7 @@ namespace Server.Engines.Craft
                             {
                                 number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
-                            else if (jewel.BlockRepair || jewel.NegativeAttributes.NoRepair > 0)
+                            else if (jewel.NegativeAttributes.NoRepair > 0)
                             {
                                 number = 1044277; // That item cannot be repaired.
                             }
@@ -394,7 +394,7 @@ namespace Server.Engines.Craft
                             {
                                 number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
-                            else if (clothing.BlockRepair || clothing.NegativeAttributes.NoRepair > 0)// quick fix
+                            else if (clothing.NegativeAttributes.NoRepair > 0)// quick fix
                             {
                                 number = 1044277; // That item cannot be repaired.
                             }

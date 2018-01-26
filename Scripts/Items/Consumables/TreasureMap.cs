@@ -322,8 +322,7 @@ namespace Server.Items
 
             AddWorldPin(m_Location.X, m_Location.Y);
 
-            if (map != Map.Trammel && map != Map.Felucca)
-                m_NextReset = DateTime.UtcNow + ResetTime;
+            m_NextReset = DateTime.UtcNow + ResetTime;
         }
 
         public Map GetRandomMap()
@@ -786,6 +785,7 @@ namespace Server.Items
                 m_Decoder = null;
                 GetRandomLocation(Facet);
                 InvalidateProperties();
+                m_NextReset = DateTime.UtcNow + ResetTime;
             }
         }
 
@@ -966,6 +966,11 @@ namespace Server.Items
             if (Core.AOS && m_Decoder != null && LootType == LootType.Regular)
             {
                 LootType = LootType.Blessed;
+            }
+
+            if (m_NextReset == DateTime.MinValue)
+            {
+                m_NextReset = DateTime.UtcNow + ResetTime;
             }
         }
 

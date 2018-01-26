@@ -3013,6 +3013,9 @@ namespace Server
 
         public void GetProperties(ObjectPropertyList list, Item item)
         {
+            if (NoRepair > 0)
+                list.Add(1151782);
+
             if (Brittle > 0 ||
                 item is BaseWeapon && ((BaseWeapon)item).Attributes.Brittle > 0 ||
                 item is BaseArmor && ((BaseArmor)item).Attributes.Brittle > 0 ||
@@ -3031,9 +3034,6 @@ namespace Server
 
             if (Antique > 0)
                 list.Add(1076187);
-
-            if (NoRepair > 0)
-                list.Add(1151782);
         }
 
         public const double CombatDecayChance = 0.02;
