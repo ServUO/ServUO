@@ -194,16 +194,18 @@ namespace Server.Items
                 int i = 0;
                 int mods = 0;
 
-                int moddedPercLow = CalculateMinIntensity(perclow, perchigh, option);
-                int moddedPercHigh = perchigh;
+                //int moddedPercLow = CalculateMinIntensity(perclow, perchigh, option);
+                //int moddedPercHigh = perchigh;
 
                 if (prefix != ReforgedPrefix.None && suffix == ReforgedSuffix.None && prefixCol != null)
                 {
-                    int specialAdd = GetModsPer(index, prefixID, maxmods, prefixCol.Count, false);
+                    int specialAdd = 0;
+                    int nothing = 0;
+                    GetNamedModCount(index, prefixID, 0, maxmods, prefixCol.Count, 0, ref specialAdd, ref nothing);
 
                     while (budget > 25 && mods < maxmods && i < 25)
                     {
-                        if (prefixCol.Count > 0 && specialAdd > 0)
+                        if (prefixCol.Count > 0 && specialAdd > 0) 
                         {
                             int random = Utility.Random(prefixCol.Count);
                             if (ApplyPrefixSuffixAttribute(item, prefixCol[random].Attribute, prefixCol[random].Min(resIndex, preIndex, item), prefixCol[random].Max(resIndex, preIndex, item), perclow, perchigh, ref budget, luckchance, playermade))
@@ -214,8 +216,11 @@ namespace Server.Items
 
                             prefixCol.RemoveAt(random);
                         }
-                        else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
+                        else if ((playermade && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
+                            ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
+                        {
                             mods++;
+                        }
 
                         i++;
                     }
@@ -225,7 +230,9 @@ namespace Server.Items
                 }
                 else if (prefix == ReforgedPrefix.None && suffix != ReforgedSuffix.None && suffixCol != null)
                 {
-                    int specialAdd = GetModsPer(index, suffixID, maxmods, suffixCol.Count, false);
+                    int specialAdd = 0;
+                    int nothing = 0;
+                    GetNamedModCount(index, 0, suffixID, maxmods, 0, suffixCol.Count, ref nothing, ref specialAdd);
 
                     while (budget > 25 && mods < maxmods && i < 25)
                     {
@@ -240,8 +247,11 @@ namespace Server.Items
 
                             suffixCol.RemoveAt(random);
                         }
-                        else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
+                        else if ((playermade && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
+                            ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
+                        {
                             mods++;
+                        }
 
                         i++;
                     }
@@ -251,8 +261,10 @@ namespace Server.Items
                 }
                 else if (prefix != ReforgedPrefix.None && suffix != ReforgedSuffix.None && prefixCol != null && suffixCol != null)
                 {
-                    int specialAddPrefix = GetModsPer(index, prefixID, maxmods, prefixCol.Count, true, prefixID == suffixID);
-                    int specialAddSuffix = GetModsPer(index, suffixID, maxmods, suffixCol.Count, true, prefixID == suffixID);
+                    int specialAddPrefix = 0;
+                    int specialAddSuffix = 0;
+
+                    GetNamedModCount(index, prefixID, suffixID, maxmods, prefixCol.Count, suffixCol.Count, ref specialAddPrefix, ref specialAddSuffix);
 
                     while (budget > 25 && mods < maxmods && i < 25)
                     {
@@ -275,11 +287,13 @@ namespace Server.Items
                                 specialAddSuffix--;
                                 mods++;
                             }
-
                             suffixCol.RemoveAt(random);
                         }
-                        else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
+                        else if ((playermade && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
+                            ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
+                        {
                             mods++;
+                        }
 
                         i++;
                     }
@@ -290,6 +304,9 @@ namespace Server.Items
                     if (suffix != ReforgedSuffix.None)
                         ApplySuffixName(item, suffix);
                 }
+
+                if (_Elements.ContainsKey(item))
+                    _Elements.Remove(item);
             }
         }
 
@@ -438,37 +455,66 @@ namespace Server.Items
             }
         }
 
-        private static int GetModsPer(int itemIndex, int prefixsuffixid, int maxmods, int collectionCount, bool prefixandsuffix, bool sameID = false)
+        private static void GetNamedModCount(int itemIndex, int prefixID, int suffixID, int maxmods, int precolcount, int suffixcolcount, ref int prefixCount, ref int suffixCount)
         {
-            //Shilds with fortified/of defense
-            if (itemIndex == 3 && prefixsuffixid == 8)
-                return 1;
-
-            int mods = 0;
-
-            switch (maxmods)
+            if (prefixID > 0 && suffixID > 0)
             {
-                default:
-                case 8: mods = prefixandsuffix ? maxmods / 4 : maxmods / 2; break;
-                case 7:
-                case 6: mods = prefixandsuffix ? 2 : 3; break;
-                case 5:
-                case 4: mods = prefixandsuffix ? Utility.RandomDouble() > .5 ? 1 : 2 : 3; break;
-                case 3: mods = prefixandsuffix ? 1 : 2; break;
-                case 2:
-                case 1: mods = 1; break;
+                if (0.5 > Utility.RandomDouble())
+                {
+                    // Even Split
+                    if (0.5 > Utility.RandomDouble())
+                    {
+                        prefixCount = maxmods / 2;
+                        suffixCount = maxmods - prefixCount;
+                    }
+                    else
+                    {
+                        suffixCount = maxmods / 2;
+                        prefixCount = maxmods - suffixCount;
+                    }
+                }
+                else if (0.5 > Utility.RandomDouble())
+                {
+                    prefixCount = (maxmods / 2) - 1;
+                    suffixCount = maxmods - prefixCount;
+                }
+                else
+                {
+                    suffixCount = (maxmods / 2) - 1;
+                    prefixCount = maxmods - suffixCount;
+                }
+            }
+            else
+            {
+                int mods = 0;
+
+                switch (maxmods)
+                {
+                    default:
+                    case 8:
+                    case 7: mods = maxmods / 2; break;
+                    case 6:
+                    case 5:
+                    case 4: mods = Utility.RandomBool() ? 2 : 3; break;
+                    case 3: mods = Utility.RandomBool() ? 1 : 2; break;
+                    case 2:
+                    case 1: mods = 1; break;
+                }
+
+                if (prefixID > 0)
+                    prefixCount = mods;
+                else
+                    suffixCount = mods;
             }
 
-            // This ensures that the suffix is applied and not snuffed out by too many prefix mods
-            if (prefixandsuffix && collectionCount >= mods && sameID)
-            {
-                mods = Math.Max(1, (int)Math.Ceiling((double)collectionCount / 2.0));
-            }
+            if (prefixCount > precolcount)
+                prefixCount = precolcount;
 
-            return mods;
+            if (suffixCount > suffixcolcount)
+                suffixCount = suffixcolcount;
         }
 
-        private static bool ApplyPrefixSuffixAttribute(Item item, object attribute, int min, int max, int percLow, int percHigh, ref int budget, int luckchance, bool playerMade)
+        private static bool ApplyPrefixSuffixAttribute(Item item, object attribute, int min, int max, int percLow, int percHigh, ref int budget, int luckchance, bool playerMade, bool named = true)
 		{
             int start = budget;
 
@@ -510,7 +556,7 @@ namespace Server.Items
                         budget -= weight;
                     }
                 }
-                else if (str == "WeaponVelocity" && item is BaseRanged)
+                else if (str == "WeaponVelocity" && item is BaseRanged && ((BaseRanged)item).Velocity == 0)
                 {
                     int value = CalculateValue(attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
 
@@ -612,6 +658,8 @@ namespace Server.Items
 			return start != budget;
 		}
 
+        private static Dictionary<Item, int[]> _Elements = new Dictionary<Item, int[]>();
+
         public static bool ApplyResistance(Item item, int value, AosElementAttribute attribute)
         {
             if (item is BaseJewel && ((BaseJewel)item).Resistances[attribute] == 0)
@@ -626,64 +674,77 @@ namespace Server.Items
             }
             else
             {
+                if (!_Elements.ContainsKey(item))
+                {
+                    if (item is BaseArmor)
+                    {
+                        _Elements[item] = new int[] { ((BaseArmor)item).PhysicalBonus, ((BaseArmor)item).FireBonus, ((BaseArmor)item).ColdBonus, ((BaseArmor)item).PoisonBonus, ((BaseArmor)item).EnergyBonus };
+                    }
+                    else if (item is BaseWeapon)
+                    {
+                        _Elements[item] = new int[] { ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus, ((BaseWeapon)item).WeaponAttributes.ResistFireBonus,
+                            ((BaseWeapon)item).WeaponAttributes.ResistColdBonus, ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus, ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus };
+                    }
+                }
+
                 switch (attribute)
                 {
                     default:
                     case AosElementAttribute.Physical:
-                        if (item is BaseArmor && ((BaseArmor)item).PhysicalBonus == 0)
+                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).PhysicalBonus == _Elements[item][0]))
                         {
                             ((BaseArmor)item).PhysicalBonus = value;
                             return true;
                         }
-                        else if (item is BaseWeapon && ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus == 0)
+                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus == _Elements[item][0]))
                         {
                             ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus = value;
                             return true;
                         }
                         break;
                     case AosElementAttribute.Fire:
-                        if (item is BaseArmor && ((BaseArmor)item).FireBonus == 0)
+                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).FireBonus == _Elements[item][1]))
                         {
                             ((BaseArmor)item).FireBonus = value;
                             return true;
                         }
-                        else if (item is BaseWeapon && ((BaseWeapon)item).WeaponAttributes.ResistFireBonus == 0)
+                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistFireBonus == _Elements[item][1]))
                         {
                             ((BaseWeapon)item).WeaponAttributes.ResistFireBonus = value;
                             return true;
                         }
                         break;
                     case AosElementAttribute.Cold:
-                        if (item is BaseArmor && ((BaseArmor)item).ColdBonus == 0)
+                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).ColdBonus == _Elements[item][2]))
                         {
                             ((BaseArmor)item).ColdBonus = value;
                             return true;
                         }
-                        else if (item is BaseWeapon && ((BaseWeapon)item).WeaponAttributes.ResistColdBonus == 0)
+                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistColdBonus == _Elements[item][2]))
                         {
                             ((BaseWeapon)item).WeaponAttributes.ResistColdBonus = value;
                             return true;
                         }
                         break;
                     case AosElementAttribute.Poison:
-                        if (item is BaseArmor && ((BaseArmor)item).PoisonBonus == 0)
+                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).PoisonBonus == _Elements[item][3]))
                         {
                             ((BaseArmor)item).PoisonBonus = value;
                             return true;
                         }
-                        else if (item is BaseWeapon && ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus == 0)
+                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus == _Elements[item][3]))
                         {
                             ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus = value;
                             return true;
                         }
                         break;
                     case AosElementAttribute.Energy:
-                        if (item is BaseArmor && ((BaseArmor)item).EnergyBonus == 0)
+                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).EnergyBonus == _Elements[item][4]))
                         {
                             ((BaseArmor)item).EnergyBonus = value;
                             return true;
                         }
-                        else if (item is BaseWeapon && ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus == 0)
+                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus == _Elements[item][4]))
                         {
                             ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus = value;
                             return true;
@@ -1310,7 +1371,7 @@ namespace Server.Items
                 HardCap = hardcap;
             }
 
-            public int Min(int resIndex, int preIndex, Item item)
+            public int Min(int resIndex, int preIndex, Item item, bool random = false)
             {
                 if (HardCap == 1)
                     return 1;
@@ -1319,7 +1380,9 @@ namespace Server.Items
 
                 if (resIndex != -1 && preIndex != -1)
                 {
-                    return (int)((double)max * .8);
+                    double mod = random ? .66 : .8;
+
+                    return (int)((double)max * mod);
                 }
 
                 return (int)((double)max * .5);
@@ -1978,10 +2041,18 @@ namespace Server.Items
 
         public static ReforgedPrefix ChooseRandomPrefix(Item item)
         {
-            if (item is BaseWeapon)
-                return (ReforgedPrefix)m_Weapon[Utility.Random(m_Weapon.Length)];
+            return ChooseRandomSuffix(item, ReforgedSuffix.None);
+        }
 
-            return (ReforgedPrefix)m_Standard[Utility.Random(m_Standard.Length)];
+        public static ReforgedPrefix ChooseRandomSuffix(Item item, ReforgedSuffix suffix)
+        {
+            int random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+
+            while ((int)suffix != 0 && random == (int)suffix)
+                random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+
+            return (ReforgedPrefix)random;
+
         }
 
         public static ReforgedSuffix ChooseRandomSuffix(Item item)
@@ -1995,9 +2066,6 @@ namespace Server.Items
 
             while ((int)prefix != 0 && random == (int)prefix)
                 random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
-
-            if (random == 13 || random == 14)
-                random = 50;
 
             return (ReforgedSuffix)random;
 
@@ -2196,18 +2264,6 @@ namespace Server.Items
             }
         }
 
-        public static void SetBlockRepair(Item item)
-        {
-            if (item is BaseWeapon)
-                ((BaseWeapon)item).BlockRepair = true;
-            else if (item is BaseArmor)
-                ((BaseArmor)item).BlockRepair = true;
-            else if (item is BaseJewel)
-                ((BaseJewel)item).BlockRepair = true;
-            else if (item is BaseClothing)
-                ((BaseClothing)item).BlockRepair = true;
-        }
-
         public static ItemPower ApplyItemPower(Item item, bool playermade)
         {
             ItemPower ip = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
@@ -2256,6 +2312,30 @@ namespace Server.Items
                 return ItemPower.MajorArtifact;
 
             return playermade ? ItemPower.ReforgedLegendary : ItemPower.LegendaryArtifact;
+        }
+
+        private static bool ApplyNewAttributes(Item item, int prefixID, int suffixID, int colIndex, int percLow, int percHigh, int resIndex, int preIndex, int luckchance, bool playermade, ref int budget)
+        {
+            int randomCol = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+
+            while (prefixID != 0 && randomCol == prefixID && suffixID != 0 && randomCol == suffixID)
+                randomCol = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+
+            ReforgedPrefix prefix = (ReforgedPrefix)randomCol;
+            var collection = new List<NamedInfoCol>(m_PrefixSuffixInfo[randomCol][colIndex]);
+
+            if (collection == null)
+            {
+                return false;
+            }
+
+            CheckAttributes(item, collection, playermade);
+            int random = Utility.Random(collection.Count);
+
+            return ApplyPrefixSuffixAttribute(item, 
+                collection[random].Attribute, 
+                collection[random].Min(resIndex, preIndex, item), 
+                collection[random].Max(resIndex, preIndex, item), percLow, percHigh, ref budget, luckchance, playermade);
         }
 
         private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance, bool playerMade)

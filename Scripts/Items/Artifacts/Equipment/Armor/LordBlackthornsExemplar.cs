@@ -9,8 +9,8 @@ namespace Server.Items
         public LordBlackthornsExemplar()
             : base()
         {
-            this.Hue = 0x501;
-            this.BlockRepair = true;
+            Hue = 0x501;
+            NegativeAttributes.NoRepair = 1;
         }
 
         public LordBlackthornsExemplar(Serial serial)

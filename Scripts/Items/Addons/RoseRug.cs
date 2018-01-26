@@ -129,7 +129,7 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(from);
 
-            if (house != null && house.IsOwner(from))
+            if (house != null && (house.IsOwner(from) || (house.LockDowns.ContainsKey(this) && house.LockDowns[this] == from)))
             {
                 if (m_NextUse < DateTime.UtcNow)
                 {

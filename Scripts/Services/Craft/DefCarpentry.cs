@@ -261,7 +261,7 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(ChickenCoop), 1044294, 1112570, 90.0, 115.0, typeof(Board), 1044041, 150, 1044351);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(ExodusSummoningAlter), 1044294, 1153502, 95.0, 120.0, typeof(Log), 1044041, 100, 1044351);
+                index = AddCraft(typeof(ExodusSummoningAlter), 1044294, 1153502, 95.0, 120.0, typeof(Board), 1044041, 100, 1044351);
                 AddSkill(index, SkillName.Magery, 75.0, 120.0);
                 AddRes(index, typeof(Granite), 1044607, 10, 1044253);
                 AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
@@ -272,12 +272,12 @@ namespace Server.Engines.Craft
             #region TOL
             if (Core.TOL)
             {
-                index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155849, 42.1, 77.7, typeof(Log), 1044041, 5, 1044351);
+                index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155849, 42.1, 77.7, typeof(Board), 1044041, 5, 1044351);
                 SetData(index, CraftableItemType.DarkWoodenSignHanger);
                 SetDisplayID(index, 2967);
                 SetNeededExpansion(index, Expansion.TOL);
 
-                index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155850, 42.1, 77.7, typeof(Log), 1044041, 5, 1044351);
+                index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155850, 42.1, 77.7, typeof(Board), 1044041, 5, 1044351);
                 SetData(index, CraftableItemType.LightWoodenSignHanger);
                 SetDisplayID(index, 2969);
                 SetNeededExpansion(index, Expansion.TOL);
@@ -840,10 +840,10 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(GargishCouchSouthDeed), 1044290, 1111775, 90.0, 115.0, typeof(Board), 1044041, 75, 1044351);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(LongTableSouthDeed), 1044290, 1111781, 90.0, 115.0, typeof(Log), 1044041, 80, 1044351);
+                index = AddCraft(typeof(LongTableSouthDeed), 1044290, 1111781, 90.0, 115.0, typeof(Board), 1044041, 80, 1044351);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(LongTableEastDeed), 1044290, 1111782, 90.0, 115.0, typeof(Log), 1044041, 80, 1044351);
+                index = AddCraft(typeof(LongTableEastDeed), 1044290, 1111782, 90.0, 115.0, typeof(Board), 1044041, 80, 1044351);
                 SetNeededExpansion(index, Expansion.SA);
            
                 index = AddCraft(typeof(TerMurDresserEastDeed), 1044290, 1111784, 90.0, 115.0, typeof(Board), 1044041, 60, 1044351);

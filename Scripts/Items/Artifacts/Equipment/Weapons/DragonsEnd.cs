@@ -9,15 +9,15 @@ namespace Server.Items
         public DragonsEnd()
             : base()
         {
-            this.Hue = 0x554;
+            Hue = 0x554;
 
-            this.Slayer = SlayerName.DragonSlaying;
+            Slayer = SlayerName.DragonSlaying;
 
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponDamage = 60;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponDamage = 60;
 
-            this.WeaponAttributes.ResistFireBonus = 20;
-            this.BlockRepair = true;
+            WeaponAttributes.ResistFireBonus = 20;
+            NegativeAttributes.NoRepair = 1;
         }
 
         public DragonsEnd(Serial serial)

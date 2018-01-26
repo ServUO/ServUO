@@ -960,7 +960,7 @@ namespace Server.Factions
 
         #region Skill Loss
         public const double SkillLossFactor = 1.0 / 3;
-        public static readonly TimeSpan SkillLossPeriod = TimeSpan.FromMinutes(20.0);
+        public static TimeSpan SkillLossPeriod { get { return Core.SA ? TimeSpan.FromMinutes(5) : TimeSpan.FromMinutes(20.0); } }
 
         private static readonly Dictionary<Mobile, SkillLossContext> m_SkillLoss = new Dictionary<Mobile, SkillLossContext>();
 

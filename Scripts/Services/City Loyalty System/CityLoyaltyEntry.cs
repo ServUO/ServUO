@@ -126,6 +126,7 @@ namespace Server.Engines.CityLoyalty
 			writer.Write(Love);
 			writer.Write(Hate);
 			writer.Write(Neutrality);
+
 			writer.Write((int)Titles);
             writer.Write(TradeDealExpires);
             writer.Write(_Utilizing);
