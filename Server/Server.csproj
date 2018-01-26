@@ -211,4 +211,5 @@
       <Name>Ultima</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\VersionSpecificSymbols.Common.prop" />
 </Project>
