@@ -140,7 +140,11 @@ namespace Server.Engines.VvV
 
         public void Complete(Guild g)
         {
-            Timer.DelayCall<Guild>(TimeSpan.FromSeconds(5), Battle.OccupyAltar, g);
+            if (g != null)
+            {
+                Timer.DelayCall<Guild>(TimeSpan.FromSeconds(5), Battle.OccupyAltar, g);
+            }
+
             Timer.DelayCall(TimeSpan.FromSeconds(2), DoFireworks);
             IsActive = false;
 
