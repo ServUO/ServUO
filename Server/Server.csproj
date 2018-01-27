@@ -215,9 +215,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ServUO.exe.manifest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="ServUO.exe.manifest" />
   </ItemGroup>
   <Import Project="..\VersionSpecificSymbols.Common.prop" />
 </Project>
