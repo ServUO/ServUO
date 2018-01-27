@@ -28,3 +28,5 @@ reportHistory.xml
 *.log
 *.bin
 .vs/
+drng64.dll
+drng32.dll
