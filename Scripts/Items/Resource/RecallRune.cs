@@ -144,8 +144,6 @@ namespace Server.Items
                         m_Target = reader.ReadPoint3D();
                         m_TargetMap = reader.ReadMap();
 
-                        CalculateHue();
-
                         break;
                     }
             }
