@@ -38,6 +38,9 @@
     <DefineConstants>TRACE;NEWTIMERS, ServUO</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>ServUO.exe.manifest</ApplicationManifest>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -210,6 +213,11 @@
       <Project>{e08cfbe4-e013-44ee-8829-426d05bc083f}</Project>
       <Name>Ultima</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ServUO.exe.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="..\VersionSpecificSymbols.Common.prop" />
 </Project>
