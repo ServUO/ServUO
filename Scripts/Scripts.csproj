@@ -9610,6 +9610,7 @@
     <Compile Include="Services\MiniChampionSystem\MiniChampType.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Gumps\QAndAGump.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Q&amp;AEntry.cs" />
+    <Compile Include="Services\MondainsLegacyQuests\QuestHintItem.cs" />
     <Compile Include="Services\MondainsLegacyQuests\SimpleObjective.cs" />
     <Compile Include="Services\Monster Stealing\Core\BaseBalmOrLotion.cs" />
     <Compile Include="Services\Monster Stealing\Core\BaseThieveConsumable.cs" />
