@@ -490,7 +490,8 @@ namespace Server.Gumps
                 if ((m_Options & ReforgingOption.Fortified) != 0)
                     durability = 150;
 
-                item.Hue = 2500;
+                if (item is BaseArmor || item is BaseClothing)
+                    item.Hue = 2500;
             }
 
             if ((m_Options & ReforgingOption.Fundamental) != 0)
@@ -500,7 +501,8 @@ namespace Server.Gumps
 
                 durability = (m_Options & ReforgingOption.Integral) != 0 ? 255 : 200;
 
-                item.Hue = 2500;
+                if (item.Hue == 0 && (item is BaseArmor || item is BaseClothing))
+                    item.Hue = 2500;
             }
 
             if (durability > 0 && item is IDurability)

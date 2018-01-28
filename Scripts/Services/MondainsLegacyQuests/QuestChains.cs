@@ -28,7 +28,8 @@ namespace Server.Engines.Quests
         CloakOfHumility,
         ValleyOfOne,
         MyrmidexAlliance,
-        EodonianAlliance
+        EodonianAlliance,
+        FlintTheQuartermaster
     }
 
     public class BaseChain

@@ -18,17 +18,19 @@ namespace Server.Network
 
             if (from != null)
             {
-                if (from.LastWeapon != null && from.LastWeapon.IsChildOf(from.Backpack))
+                Item toEquip = from.LastWeapon;
+                Item toDisarm = from.FindItemOnLayer(Layer.OneHanded);
+
+                if (toDisarm == null || !toDisarm.Movable)
+                    toDisarm = from.FindItemOnLayer(Layer.TwoHanded);
+
+                if (toDisarm != null)
                 {
-                    Item toEquip = from.LastWeapon;
-                    Item toDisarm = from.FindItemOnLayer(Layer.OneHanded);
+                    from.Backpack.DropItem(toDisarm);
+                }
 
-                    if (toDisarm == null || !toDisarm.Movable)
-                        toDisarm = from.FindItemOnLayer(Layer.TwoHanded);
-
-                    if (toDisarm != null && toDisarm.Movable && toDisarm is BaseWeapon)
-                        from.Backpack.DropItem(toDisarm);
-
+                if (toEquip != null && toDisarm.Movable && toDisarm is BaseWeapon && toEquip.IsChildOf(from.Backpack))
+                {
                     from.EquipItem(toEquip);
                 }
             }

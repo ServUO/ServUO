@@ -241,30 +241,35 @@ namespace Server.Items
             set { m_GorgonLenseType = value; InvalidateProperties(); }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int PhysNonImbuing
         {
             get { return m_PhysNonImbuing; }
             set { m_PhysNonImbuing = value; }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int FireNonImbuing
         {
             get { return m_FireNonImbuing; }
             set { m_FireNonImbuing = value; }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int ColdNonImbuing
         {
             get { return m_ColdNonImbuing; }
             set { m_ColdNonImbuing = value; }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int PoisonNonImbuing
         {
             get { return m_PoisonNonImbuing; }
             set { m_PoisonNonImbuing = value; }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int EnergyNonImbuing
         {
             get { return m_EnergyNonImbuing; }
@@ -1966,36 +1971,47 @@ namespace Server.Items
             return false;
         }
 
-        public void DistributeBonuses(int amount)
+        public void DistributeBonuses(Mobile from, int amount)
         {
             for (int i = 0; i < amount; ++i)
             {
                 switch ( Utility.Random(5) )
                 {
-                    case 0:
-                        ++m_AosResistances.Physical;
-                        break;
-                    case 1:
-                        ++m_AosResistances.Fire;
-                        break;
-                    case 2:
-                        ++m_AosResistances.Cold;
-                        break;
-                    case 3:
-                        ++m_AosResistances.Poison;
-                        break;
-                    case 4:
-                        ++m_AosResistances.Energy;
-                        break;
+                    case 0: ++m_AosResistances.Physical; break;
+                    case 1: ++m_AosResistances.Fire; break;
+                    case 2: ++m_AosResistances.Cold; break;
+                    case 3: ++m_AosResistances.Poison; break;
+                    case 4: ++m_AosResistances.Energy; break;
                 }
             }
 
+            // Arms Lore Bonus - Verified on EA
+            if (Core.ML && from != null)
+            {
+                double div = Siege.SiegeShard ? 12.5 : 20;
+                int bonus = (int)Math.Min(4, (from.Skills.ArmsLore.Value / div));
+
+                for (int i = 0; i < bonus; i++)
+                {
+                    switch (Utility.Random(5))
+                    {
+                        case 0: Resistances.Physical++; break;
+                        case 1: Resistances.Fire++; break;
+                        case 2: Resistances.Cold++; break;
+                        case 3: Resistances.Poison++; break;
+                        case 4: Resistances.Energy++; break;
+                    }
+                }
+
+                from.CheckSkill(SkillName.ArmsLore, 0, 100);
+            }
+
             #region Stygian Abyss
-            m_PhysNonImbuing = m_AosResistances.Physical;
-            m_FireNonImbuing = m_AosResistances.Fire;
-            m_ColdNonImbuing = m_AosResistances.Cold;
-            m_PoisonNonImbuing = m_AosResistances.Poison;
-            m_EnergyNonImbuing = m_AosResistances.Energy;
+            m_PhysNonImbuing = PhysicalResistance;
+            m_FireNonImbuing = FireResistance;
+            m_ColdNonImbuing = ColdResistance;
+            m_PoisonNonImbuing = PoisonResistance;
+            m_EnergyNonImbuing = EnergyResistance;
             #endregion
 
             InvalidateProperties();
@@ -2010,6 +2026,8 @@ namespace Server.Items
             if (makersMark)
                 Crafter = from;
 
+            CraftContext context = craftSystem.GetContext(from);
+
             #region Mondain's Legacy
             if (!craftItem.ForceNonExceptional)
             {
@@ -2022,7 +2040,7 @@ namespace Server.Items
 
                     Resource = CraftResources.GetFromType(resourceType);
                 }
-                else
+                else if(context == null || !context.DoNotColor)
                 {
                     Hue = resHue;
                 }
@@ -2030,11 +2048,6 @@ namespace Server.Items
             #endregion
 
             PlayerConstructed = true;
-
-            CraftContext context = craftSystem.GetContext(from);
-
-            if (context != null && context.DoNotColor)
-                Hue = 0;
 
             return quality;
         }

@@ -16,7 +16,17 @@ namespace Server.Engines.NewMagincia
 		
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int BankBalance { get { return m_BankBalance; } set { m_BankBalance = value; } }
-		
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool SendToWarehouse
+        {
+            get { return false; }
+            set
+            {
+                Delete();
+            }
+        }
+
 		public virtual int ComissionFee { get { return MaginciaBazaar.DefaultComissionFee; } }
 
         public override bool IsInvulnerable { get { return true; } }

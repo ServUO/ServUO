@@ -7,6 +7,7 @@ using Server.Accounting;
 
 namespace Server.Engines.NewMagincia
 {	
+    [PropertyObject]
 	public class MaginciaPlotAuction
 	{
 		private Dictionary<Mobile, BidEntry> m_Auctioners = new Dictionary<Mobile, BidEntry>();
@@ -15,8 +16,21 @@ namespace Server.Engines.NewMagincia
 		private MaginciaBazaarPlot m_Plot;
 		private DateTime m_AuctionEnd;
 		
+        [CommandProperty(AccessLevel.GameMaster)]
         public MaginciaBazaarPlot Plot { get { return m_Plot; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
 		public DateTime AuctionEnd { get { return m_AuctionEnd; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool EndCurrentAuction
+        {
+            get { return false; }
+            set
+            {
+                EndAuction();
+            }
+        }
 		
 		public MaginciaPlotAuction(MaginciaBazaarPlot plot) : this(plot, MaginciaBazaar.GetShortAuctionTime)
 		{
@@ -27,6 +41,11 @@ namespace Server.Engines.NewMagincia
 			m_Plot = plot;
 			m_AuctionEnd = DateTime.UtcNow + auctionDuration;
 		}
+
+        public override string ToString()
+        {
+            return "...";
+        }
 		
 		public void MakeBid(Mobile bidder, int amount)
 		{

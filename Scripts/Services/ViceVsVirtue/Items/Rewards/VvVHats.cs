@@ -19,8 +19,6 @@ namespace Server.Engines.VvV
 
         public VvVWizardsHat()
         {
-            IsVvVItem = true;
-
             Attributes.BonusHits = 5;
             Attributes.RegenMana = 3;
             Attributes.DefendChance = 4;
@@ -36,13 +34,16 @@ namespace Server.Engines.VvV
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
 		}
 	}
 
@@ -59,8 +60,6 @@ namespace Server.Engines.VvV
 
         public VvVGargishEarrings()
         {
-            IsVvVItem = true;
-
             Attributes.BonusHits = 5;
             Attributes.RegenMana = 3;
             Attributes.DefendChance = 4;
@@ -76,13 +75,16 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
     }
 }

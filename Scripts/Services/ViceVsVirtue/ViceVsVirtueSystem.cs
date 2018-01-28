@@ -301,14 +301,21 @@ namespace Server.Engines.VvV
 
         private List<Item> VvVItems = new List<Item>();
 
-        public void AddVvVItem(Item item)
+        public void AddVvVItem(Item item, bool initial = false)
         {
-            if (item is IVvVItem)
+            if (ViceVsVirtueSystem.Enabled && item is IVvVItem)
             {
                 ((IVvVItem)item).IsVvVItem = true;
-                VvVItems.Add(item);
 
-                CheckProperties(item);
+                if (!VvVItems.Contains(item))
+                {
+                    VvVItems.Add(item);
+                }
+
+                if (initial)
+                {
+                    CheckProperties(item);
+                }
             }
         }
 
@@ -647,7 +654,7 @@ namespace Server.Engines.VvV
             if (to is BaseCreature && ((BaseCreature)to).GetMaster() is PlayerMobile)
                 to = ((BaseCreature)to).GetMaster();
 
-            if (from == to)
+            if (from == to || IsVvVCombatant(to) || IsVvVCombatant(from))
                 return false;
 
             VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
@@ -694,6 +701,11 @@ namespace Server.Engines.VvV
 
             TempParticipants[m] = DateTime.UtcNow + TimeSpan.FromMinutes(30);
             m.Delta(MobileDelta.Noto);
+        }
+
+        public static bool IsVvVCombatant(Mobile mobile)
+        {
+            return IsVvV(mobile) || (TempParticipants != null && TempParticipants.ContainsKey(mobile));
         }
 
         public static void CheckHarmful(Mobile attacker, Mobile defender)

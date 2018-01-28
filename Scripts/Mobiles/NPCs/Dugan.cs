@@ -29,32 +29,35 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
-            this.Body = 0x190;
+            Female = true;
+            Race = Race.Human;
+            Body = 0x190;
 
-            this.Hue = 0x83EA;
-            this.HairItemID = 0x203C;
+            Hue = 0x83EA;
+            HairItemID = 0x203C;
+            CantWalk = true;
+
+            Direction = Direction.Left;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes());
-            this.AddItem(new LeatherArms());
-            this.AddItem(new LeatherChest());
-            this.AddItem(new LeatherLegs());
-            this.AddItem(new LeatherGloves());
-            this.AddItem(new GnarledStaff());
+            AddItem(new Backpack());
+            AddItem(new Shoes(1819));
+            AddItem(new LeatherArms());
+            AddItem(new LeatherChest());
+            AddItem(new LeatherLegs());
+            AddItem(new LeatherGloves());
+            AddItem(new GnarledStaff());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -62,6 +65,18 @@ namespace Server.Engines.Quests
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                Female = true;
+                CantWalk = true;
+
+                Direction = Direction.Left;
+
+                var item = FindItemOnLayer(Layer.Shoes);
+                if (item != null)
+                    item.Hue = 1819;
+            }
         }
     }
 }

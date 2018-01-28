@@ -139,7 +139,7 @@ namespace Server.Engines.VvV
                 }
             }
 
-            ViceVsVirtueSystem.Instance.AddVvVItem(item);
+            ViceVsVirtueSystem.Instance.AddVvVItem(item, true);
         }
     }
 }

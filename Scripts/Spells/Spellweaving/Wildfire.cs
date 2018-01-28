@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.Targeting;
 using Server.Multis;
 using Server.Regions;
+using Server.Mobiles;
 
 namespace Server.Spells.Spellweaving
 {
@@ -54,8 +55,8 @@ namespace Server.Spells.Spellweaving
                 int level = GetFocusLevel(Caster);
                 double skill = Caster.Skills[CastSkill].Value;
 
-                int tiles = 2 + level;
-                int damage = 15 + level;
+                int tiles = 5 + level;
+                int damage = 10 + (int)Math.Max(1, (skill / 24)) + level;
                 int duration = (int)Math.Max(1, skill / 24) + level; 
 				
                 for (int x = p.X - tiles; x <= p.X + tiles; x += tiles)
@@ -97,6 +98,22 @@ namespace Server.Spells.Spellweaving
                     return false;
             }
             return true;
+        }
+
+        private static Dictionary<Mobile, long> m_Table = new Dictionary<Mobile, long>();
+        public static Dictionary<Mobile, long> Table { get { return m_Table; } }
+
+        public static void DefragTable()
+        {
+            List<Mobile> mobiles = new List<Mobile>(m_Table.Keys);
+
+            foreach (Mobile m in mobiles)
+            {
+                if (Core.TickCount - m_Table[m] >= 0)
+                    m_Table.Remove(m);
+            }
+
+            ColUtility.Free(mobiles);
         }
 
         public class InternalTarget : Target
@@ -154,35 +171,46 @@ namespace Server.Spells.Spellweaving
                 foreach (Mobile m in list)
                 {
                     m_Owner.DoHarmful(m);
-					
+
                     if (m_Owner.Map.CanFit(m.Location, 12, true, false))
                         new FireItem(m_LifeSpan).MoveToWorld(m.Location, m.Map);
-						
+
                     Effects.PlaySound(m.Location, m.Map, 0x5CF);
-					
-                    AOS.Damage(m, m_Owner, m_Damage, 0, 100, 0, 0, 0, DamageType.SpellAOE);	
+                    double sdiBonus = (double)AosAttributes.GetValue(m_Owner, AosAttribute.SpellDamage) / 100;
+
+                    if (m is PlayerMobile && sdiBonus > .15)
+                        sdiBonus = .15;
+
+                    int damage = m_Damage + (int)((double)m_Damage * sdiBonus);
+
+                    if (list.Count > 1)
+                        damage /= Math.Min(3, list.Count);
+
+                    AOS.Damage(m, m_Owner, damage, 0, 100, 0, 0, 0, 0, 0, DamageType.SpellAOE);
+                    WildfireSpell.Table[m] = Core.TickCount + 1000;
                 }
 
-                list.Clear();
+                ColUtility.Free(list);
             }
 
             private List<Mobile> GetTargets()
             {
                 List<Mobile> targets = new List<Mobile>();
-                IPooledEnumerable eable = m_Map.GetMobilesInRange(m_Location, m_Range);
 
+                WildfireSpell.DefragTable();
+
+                IPooledEnumerable eable = m_Owner.GetMobilesInRange(m_Range);
                 foreach (Mobile m in eable)
                 {
-                    if (BaseHouse.FindHouseAt(m.Location, m.Map, 20) != null)
+                    if (WildfireSpell.Table.ContainsKey(m))
                         continue;
 
-                    if (m != m_Owner && SpellHelper.ValidIndirectTarget(m_Owner, m) && m_Owner.CanBeHarmful(m, false))
+                    if (m != m_Owner && SpellHelper.ValidIndirectTarget(m_Owner, m) && m_Owner.CanBeHarmful(m, false) && m_Owner.InLOS(m))
                         targets.Add(m);
                 }
-
                 eable.Free();
-                return targets;					
-            }
+                return targets;
+            }			
         }
 
         public class FireItem : Item
