@@ -55,8 +55,6 @@ namespace Server.Engines.VvV
             base.OnDoubleClick(m);
         }
 		
-
-
 		public VvVSteedStatuette(Serial serial) : base(serial)
 		{
 		}

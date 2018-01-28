@@ -2202,9 +2202,11 @@
     <Compile Include="Mobiles\NPCs\Kodar.cs" />
     <Compile Include="Mobiles\NPCs\Lenley.cs" />
     <Compile Include="Mobiles\NPCs\Percolem.cs" />
+    <Compile Include="Mobiles\NPCs\QuartermasterFlint.cs" />
     <Compile Include="Mobiles\NPCs\Regina.cs" />
     <Compile Include="Mobiles\NPCs\ShrineHealer.cs" />
     <Compile Include="Mobiles\NPCs\Thalia.cs" />
+    <Compile Include="Mobiles\NPCs\Tobin.cs" />
     <Compile Include="Mobiles\NPCs\Vrulkax.cs" />
     <Compile Include="Mobiles\NPCs\WanderingShaman.cs" />
     <Compile Include="Mobiles\PlayerMobile.cs" />

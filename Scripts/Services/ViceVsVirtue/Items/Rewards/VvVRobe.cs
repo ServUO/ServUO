@@ -22,27 +22,30 @@ namespace Server.Engines.VvV
             }
         }
 
+        [Constructable]
         public VvVRobe(int hue)
             : base(0x2684, hue)
         {
-            IsVvVItem = true;
         }
 
         public VvVRobe(Serial serial)
             : base(serial)
 		{
 		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(1);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
+        }
 	}
 }

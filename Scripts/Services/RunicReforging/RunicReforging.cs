@@ -194,9 +194,6 @@ namespace Server.Items
                 int i = 0;
                 int mods = 0;
 
-                //int moddedPercLow = CalculateMinIntensity(perclow, perchigh, option);
-                //int moddedPercHigh = perchigh;
-
                 if (prefix != ReforgedPrefix.None && suffix == ReforgedSuffix.None && prefixCol != null)
                 {
                     int specialAdd = 0;
@@ -216,7 +213,7 @@ namespace Server.Items
 
                             prefixCol.RemoveAt(random);
                         }
-                        else if ((playermade && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
+                        else if (((playermade || Utility.RandomBool()) && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
                             ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
                         {
                             mods++;
@@ -247,7 +244,7 @@ namespace Server.Items
 
                             suffixCol.RemoveAt(random);
                         }
-                        else if ((playermade && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
+                        else if (((playermade || Utility.RandomBool()) && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
                             ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
                         {
                             mods++;
@@ -289,7 +286,7 @@ namespace Server.Items
                             }
                             suffixCol.RemoveAt(random);
                         }
-                        else if ((playermade && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
+                        else if (((playermade || Utility.RandomBool()) && ApplyNewAttributes(item, prefixID, suffixID, index, perclow, perchigh, resIndex, preIndex, luckchance, playermade, ref budget)) ||
                             ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, playermade))
                         {
                             mods++;
@@ -662,95 +659,118 @@ namespace Server.Items
 
         public static bool ApplyResistance(Item item, int value, AosElementAttribute attribute)
         {
-            if (item is BaseJewel && ((BaseJewel)item).Resistances[attribute] == 0)
-            {
-                ((BaseJewel)item).Resistances[attribute] = value;
-                return true;
-            }
-            else if (item is BaseClothing && ((BaseClothing)item).Resistances[attribute] == 0)
-            {
-                ((BaseClothing)item).Resistances[attribute] = value;
-                return true;
-            }
-            else
-            {
-                if (!_Elements.ContainsKey(item))
-                {
-                    if (item is BaseArmor)
-                    {
-                        _Elements[item] = new int[] { ((BaseArmor)item).PhysicalBonus, ((BaseArmor)item).FireBonus, ((BaseArmor)item).ColdBonus, ((BaseArmor)item).PoisonBonus, ((BaseArmor)item).EnergyBonus };
-                    }
-                    else if (item is BaseWeapon)
-                    {
-                        _Elements[item] = new int[] { ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus, ((BaseWeapon)item).WeaponAttributes.ResistFireBonus,
-                            ((BaseWeapon)item).WeaponAttributes.ResistColdBonus, ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus, ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus };
-                    }
-                }
+            var resists = GetElementalAttributes(item);
 
-                switch (attribute)
+            if (!_Elements.ContainsKey(item))
+            {
+                if (item is BaseArmor)
                 {
-                    default:
-                    case AosElementAttribute.Physical:
-                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).PhysicalBonus == _Elements[item][0]))
-                        {
-                            ((BaseArmor)item).PhysicalBonus = value;
-                            return true;
-                        }
-                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus == _Elements[item][0]))
-                        {
-                            ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus = value;
-                            return true;
-                        }
-                        break;
-                    case AosElementAttribute.Fire:
-                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).FireBonus == _Elements[item][1]))
-                        {
-                            ((BaseArmor)item).FireBonus = value;
-                            return true;
-                        }
-                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistFireBonus == _Elements[item][1]))
-                        {
-                            ((BaseWeapon)item).WeaponAttributes.ResistFireBonus = value;
-                            return true;
-                        }
-                        break;
-                    case AosElementAttribute.Cold:
-                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).ColdBonus == _Elements[item][2]))
-                        {
-                            ((BaseArmor)item).ColdBonus = value;
-                            return true;
-                        }
-                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistColdBonus == _Elements[item][2]))
-                        {
-                            ((BaseWeapon)item).WeaponAttributes.ResistColdBonus = value;
-                            return true;
-                        }
-                        break;
-                    case AosElementAttribute.Poison:
-                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).PoisonBonus == _Elements[item][3]))
-                        {
-                            ((BaseArmor)item).PoisonBonus = value;
-                            return true;
-                        }
-                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus == _Elements[item][3]))
-                        {
-                            ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus = value;
-                            return true;
-                        }
-                        break;
-                    case AosElementAttribute.Energy:
-                        if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).EnergyBonus == _Elements[item][4]))
-                        {
-                            ((BaseArmor)item).EnergyBonus = value;
-                            return true;
-                        }
-                        else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus == _Elements[item][4]))
-                        {
-                            ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus = value;
-                            return true;
-                        }
-                        break;
+                    _Elements[item] = new int[] { ((BaseArmor)item).PhysicalBonus, ((BaseArmor)item).FireBonus, ((BaseArmor)item).ColdBonus, ((BaseArmor)item).PoisonBonus, ((BaseArmor)item).EnergyBonus };
                 }
+                else if (item is BaseWeapon)
+                {
+                    _Elements[item] = new int[] { ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus, ((BaseWeapon)item).WeaponAttributes.ResistFireBonus,
+                            ((BaseWeapon)item).WeaponAttributes.ResistColdBonus, ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus, ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus };
+                }
+                else if (resists != null)
+                {
+                    _Elements[item] = new int[] { resists[AosElementAttribute.Physical], resists[AosElementAttribute.Fire], resists[AosElementAttribute.Cold], 
+                        resists[AosElementAttribute.Poison], resists[AosElementAttribute.Energy] };
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            switch (attribute)
+            {
+                default:
+                case AosElementAttribute.Physical:
+                    if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).PhysicalBonus == _Elements[item][0]))
+                    {
+                        ((BaseArmor)item).PhysicalBonus = value;
+                        return true;
+                    }
+                    else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus == _Elements[item][0]))
+                    {
+                        ((BaseWeapon)item).WeaponAttributes.ResistPhysicalBonus = value;
+                        return true;
+                    }
+                    else if (resists != null && (!_Elements.ContainsKey(item) || resists[attribute] == _Elements[item][0]))
+                    {
+                        resists[attribute] = value;
+                        return true;
+                    }
+                    break;
+                case AosElementAttribute.Fire:
+                    if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).FireBonus == _Elements[item][1]))
+                    {
+                        ((BaseArmor)item).FireBonus = value;
+                        return true;
+                    }
+                    else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistFireBonus == _Elements[item][1]))
+                    {
+                        ((BaseWeapon)item).WeaponAttributes.ResistFireBonus = value;
+                        return true;
+                    }
+                    else if (resists != null && (!_Elements.ContainsKey(item) || resists[attribute] == _Elements[item][1]))
+                    {
+                        resists[attribute] = value;
+                        return true;
+                    }
+                    break;
+                case AosElementAttribute.Cold:
+                    if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).ColdBonus == _Elements[item][2]))
+                    {
+                        ((BaseArmor)item).ColdBonus = value;
+                        return true;
+                    }
+                    else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistColdBonus == _Elements[item][2]))
+                    {
+                        ((BaseWeapon)item).WeaponAttributes.ResistColdBonus = value;
+                        return true;
+                    }
+                    else if (resists != null && (!_Elements.ContainsKey(item) || resists[attribute] == _Elements[item][2]))
+                    {
+                        resists[attribute] = value;
+                        return true;
+                    }
+                    break;
+                case AosElementAttribute.Poison:
+                    if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).PoisonBonus == _Elements[item][3]))
+                    {
+                        ((BaseArmor)item).PoisonBonus = value;
+                        return true;
+                    }
+                    else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus == _Elements[item][3]))
+                    {
+                        ((BaseWeapon)item).WeaponAttributes.ResistPoisonBonus = value;
+                        return true;
+                    }
+                    else if (resists != null && (!_Elements.ContainsKey(item) || resists[attribute] == _Elements[item][3]))
+                    {
+                        resists[attribute] = value;
+                        return true;
+                    }
+                    break;
+                case AosElementAttribute.Energy:
+                    if (item is BaseArmor && (!_Elements.ContainsKey(item) || ((BaseArmor)item).EnergyBonus == _Elements[item][4]))
+                    {
+                        ((BaseArmor)item).EnergyBonus = value;
+                        return true;
+                    }
+                    else if (item is BaseWeapon && (!_Elements.ContainsKey(item) || ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus == _Elements[item][4]))
+                    {
+                        ((BaseWeapon)item).WeaponAttributes.ResistEnergyBonus = value;
+                        return true;
+                    }
+                    else if (resists != null && (!_Elements.ContainsKey(item) || resists[attribute] == _Elements[item][4]))
+                    {
+                        resists[attribute] = value;
+                        return true;
+                    }
+                    break;
             }
 
             return false;
@@ -1219,7 +1239,6 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.RegenHits, ArmorRegenTable),
                         new NamedInfoCol(AosAttribute.RegenStam, ArmorRegenTable),
                         new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
-                        //new NamedInfoCol("RandomEater", EaterTable),
                     },
 				};
 			m_PrefixSuffixInfo[8] = new NamedInfoCol[][]	// Fortified
@@ -1922,6 +1941,11 @@ namespace Server.Items
                     }
                     while (ApplyItemPower(item, false) < ItemPower.LesserArtifact);
                 }
+
+                if (power == ItemPower.LegendaryArtifact && (item is BaseArmor || item is BaseClothing))
+                {
+                    item.Hue = 2500;
+                }
             }
         }
 
@@ -2324,7 +2348,7 @@ namespace Server.Items
             ReforgedPrefix prefix = (ReforgedPrefix)randomCol;
             var collection = new List<NamedInfoCol>(m_PrefixSuffixInfo[randomCol][colIndex]);
 
-            if (collection == null)
+            if (collection == null || collection.Count == 0)
             {
                 return false;
             }

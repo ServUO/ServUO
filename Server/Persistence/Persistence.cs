@@ -109,10 +109,6 @@ namespace Server
 						Console.WriteLine("[Persistence]: {0}", eos);
 					}
 				}
-				catch (Exception e)
-				{
-					Console.WriteLine("[Persistence]: {0}", e);
-				}
 				finally
 				{
 					reader.Close();

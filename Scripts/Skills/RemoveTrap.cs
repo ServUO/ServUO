@@ -158,6 +158,26 @@ namespace Server.SkillHandlers
                         }
                     }
                 }
+                else if (targeted is GoblinFloorTrap)
+                {
+                    GoblinFloorTrap targ = (GoblinFloorTrap)targeted;
+
+                    if (from.InRange(targ.Location, 3))
+                    {
+                        from.Direction = from.GetDirectionTo(targ);
+
+                        if (targ.Owner == null)
+                        {
+                            Item item = new FloorTrapComponent();
+
+                            if (from.Backpack == null || !from.Backpack.TryDropItem(from, item, false))
+                                item.MoveToWorld(from.Location, from.Map);
+                        }
+
+                        targ.Delete();
+                        from.SendLocalizedMessage(502377); // You successfully render the trap harmless
+                    }
+                }
                 else
                 {
                     from.SendLocalizedMessage(502373); // That does'nt appear to be trapped

@@ -122,7 +122,7 @@ namespace Server.Engines.NewMagincia
 				from.SendLocalizedMessage(1150379); // Unable to transfer that pet to you because you have no chance at all of controlling it.
             else if (from.Stabled.Count >= AnimalTrainer.GetMaxStabled(from)/*from.Followers + pet.ControlSlots >= from.FollowersMax*/)
 				from.SendLocalizedMessage(1150376); // You do not have any available stable slots. The Animal Broker can only transfer pets to your stables. Please make a stables slot available and try again.
-			else if (!Banker.Withdraw(from, toDeduct))
+			else if (!Banker.Withdraw(from, toDeduct, true))
 				from.SendLocalizedMessage(1150252); // You do not have the funds needed to make this trade available in your bank box. Brokers are only able to transfer funds from your bank box. Please deposit the necessary funds into your bank box and try again.
 			else
 			{

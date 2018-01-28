@@ -275,6 +275,10 @@ namespace Server.Engines.Quests
                 obj.UpdateTime();
             }
         }
+
+        public virtual void OnObjectiveUpdate(Item item)
+        {
+        }
 		
         public virtual bool CanOffer()
         {

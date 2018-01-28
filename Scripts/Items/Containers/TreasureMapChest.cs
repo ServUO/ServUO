@@ -422,7 +422,7 @@ namespace Server.Items
                 }
                 else if (level >= 5)
                 {
-                    if (0.05 > Utility.RandomDouble())
+                    if (0.005 > Utility.RandomDouble())
                         special = Loot.Construct(m_LevelFiveToSeven);
                     else if (0.25 > Utility.RandomDouble())
                         special = GetRandomSpecial(level, cont.Map);

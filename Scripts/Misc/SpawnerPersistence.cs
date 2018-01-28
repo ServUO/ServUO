@@ -81,7 +81,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)8);
+                    writer.Write((int)9);
                     writer.Write(false);
                     writer.Write(_SpawnsConverted);
                 });
@@ -110,6 +110,9 @@ namespace Server
         {
             switch (_Version)
             {
+                case 8:
+                    ReplaceSolenHivesVersion8();
+                    break;
                 case 7:
                 case 6:
                     ReplaceTwistedWealdVersion7();
@@ -142,6 +145,14 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Version 8
+        public static void ReplaceSolenHivesVersion8()
+        {
+            ReplaceSpawnersByRectangle(new Rectangle2D(5640, 1776, 295, 263), Map.Trammel, null);
+            ReplaceSpawnersByRectangle(new Rectangle2D(5640, 1776, 295, 263), Map.Felucca, "solenhives");
+        }
+        #endregion
 
         #region Version 6 & 7
         public static void ReplaceTwistedWealdVersion7()
@@ -646,12 +657,17 @@ namespace Server
 
         public static void ReplaceSpawnersByRegionName(string region, Map map, string file)
         {
-            string path = string.Format("Spawns/{0}.xml", file);
+            string path = null;
 
-            if (!File.Exists(path))
+            if (file != null)
             {
-                ToConsole(String.Format("Cannot proceed. {0} does not exist.", file), ConsoleColor.Red);
-                return;
+                path = string.Format("Spawns/{0}.xml", file);
+
+                if (!File.Exists(path))
+                {
+                    ToConsole(String.Format("Cannot proceed. {0} does not exist.", file), ConsoleColor.Red);
+                    return;
+                }
             }
 
             foreach (var r in Region.Regions.Where(reg => reg.Map == map && reg.Name == region))
@@ -667,7 +683,50 @@ namespace Server
                 ColUtility.Free(list);
             }
 
-            LoadFromXmlSpawner(path, map);
+            if (path != null)
+            {
+                LoadFromXmlSpawner(path, map);
+            }
+        }
+
+        public static void ReplaceSpawnersByRectangle(Rectangle2D rec, Map map, string file)
+        {
+            string path = null;
+
+            if (file != null)
+            {
+                path = string.Format("Spawns/{0}.xml", file);
+
+                if (!File.Exists(path))
+                {
+                    ToConsole(String.Format("Cannot proceed. {0} does not exist.", file), ConsoleColor.Red);
+                    return;
+                }
+            }
+
+            IPooledEnumerable eable = map.GetItemsInBounds(rec);
+            List<Item> list = new List<Item>();
+
+            foreach (Item item in eable)
+            {
+                if(item is XmlSpawner || item is Spawner)
+                {
+                    list.Add(item);
+                }
+            }
+
+            foreach (var item in list)
+                item.Delete();
+
+            ToConsole(String.Format("Deleted {0} Spawners in {1}.", list.Count, map.ToString()));
+
+            ColUtility.Free(list);
+            eable.Free();
+
+            if (path != null)
+            {
+                LoadFromXmlSpawner(path, map);
+            }
         }
 
         public static void LoadFromXmlSpawner(string location, Map map, string prefix = null)

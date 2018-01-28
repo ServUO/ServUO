@@ -421,6 +421,8 @@ namespace Server.Engines.Quests
 							
                         obtained.QuestItem = true;
                         Quest.Owner.SendLocalizedMessage(1072353); // You set the item to Quest Item status
+
+                        Quest.OnObjectiveUpdate(obtained);
                     }
                     else
                     {
