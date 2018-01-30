@@ -149,10 +149,15 @@ namespace Server.Gumps
                                         from.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
                                     else
                                     {
-                                        Banker.Deposit(from, v, true);
-                                        ac.WithdrawFromSecure(from, v);
-
-                                        from.SendLocalizedMessage(1153188); // Transaction successful:
+                                        if (Banker.Deposit(from, v, true))
+                                        {
+                                            ac.WithdrawFromSecure(from, v);
+                                            from.SendLocalizedMessage(1153188); // Transaction successful:
+                                        }
+                                        else
+                                        {
+                                            from.SendLocalizedMessage(500390); // Your bank box is full.
+                                        }
                                     }
 
                                     Timer.DelayCall(TimeSpan.FromSeconds(2), SendGump);
