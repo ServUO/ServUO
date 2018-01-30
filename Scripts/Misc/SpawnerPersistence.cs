@@ -81,7 +81,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)9);
+                    writer.Write((int)10);
                     writer.Write(false);
                     writer.Write(_SpawnsConverted);
                 });
@@ -110,6 +110,14 @@ namespace Server
         {
             switch (_Version)
             {
+                case 9:
+                     //LoadFromXmlSpawner(string location, Map map, string prefix = null)
+                    LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger1");
+                    LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger2");
+                    LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger3");
+                    LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger4");
+                    ReplaceUnderworldVersion9();
+                    break;
                 case 8:
                     ReplaceSolenHivesVersion8();
                     break;
@@ -145,6 +153,38 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Version 9
+        public static void ReplaceUnderworldVersion9()
+        {
+            ReplaceSpawnersByRegionName("Underworld", Map.TerMur, "underworld");
+
+            QuestHintItem hint = new DuganMissingQuestCorpse();
+            hint.MoveToWorld(new Point3D(1038, 1182, -52), Map.TerMur);
+
+            Static item = new Static(7400);
+            item.MoveToWorld(new Point3D(1040, 1181, -53), Map.TerMur);
+
+            item = new Static(7390);
+            item.MoveToWorld(new Point3D(1041, 1185, -50), Map.TerMur);
+
+            item = new Static(7390);
+            item.MoveToWorld(new Point3D(1036, 1185, -52), Map.TerMur);
+
+            hint = new FlintLostLogbookHint();
+            hint.MoveToWorld(new Point3D(1044, 976, -30), Map.TerMur);
+
+            hint = new FlintLostBarrelHint();
+            hint.MoveToWorld(new Point3D(1043, 1003, -43), Map.TerMur);
+
+            hint = new FlintLostBarrelHint();
+            hint.MoveToWorld(new Point3D(1048, 1027, -32), Map.TerMur);
+
+            GenerateUnderworldRooms.GenerateRevealTiles();
+
+            ToConsole("Placed Quest Statics.");
+        }
+        #endregion
 
         #region Version 8
         public static void ReplaceSolenHivesVersion8()
@@ -739,7 +779,7 @@ namespace Server
 
             XmlSpawner.XmlLoadFromFile(filename, SpawnerPrefix, null, Point3D.Zero, map, false, 0, false, out processedmaps, out processedspawners);
 
-            ToConsole(String.Format("Created {0} spawners from {1}.", processedspawners, location));
+            ToConsole(String.Format("Created {0} spawners from {1} with -{2}- prefix.", processedspawners, location, SpawnerPrefix == string.Empty ? "NO" : SpawnerPrefix));
         }
 
         #region XmlSpawner to Spawner Conversion

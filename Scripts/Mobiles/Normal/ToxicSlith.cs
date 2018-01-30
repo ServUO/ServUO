@@ -10,6 +10,7 @@ namespace Server.Mobiles
         {
             Name = "a toxic slith";
             Body = 734;
+            Hue = 476;
 
             SetStr(223, 306);
             SetDex(231, 258);
@@ -101,13 +102,18 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             var version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                Hue = 476;
+            }
         }
     }
 }
