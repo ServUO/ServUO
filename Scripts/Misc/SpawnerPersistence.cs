@@ -159,6 +159,9 @@ namespace Server
         {
             ReplaceSpawnersByRegionName("Underworld", Map.TerMur, "underworld");
 
+            ReplaceSpawnersByRectangle(new Rectangle2D(5640, 1776, 295, 263), Map.Trammel, null);
+            ReplaceSpawnersByRectangle(new Rectangle2D(5640, 1776, 295, 263), Map.Felucca, "solenhives");
+
             QuestHintItem hint = new DuganMissingQuestCorpse();
             hint.MoveToWorld(new Point3D(1038, 1182, -52), Map.TerMur);
 
