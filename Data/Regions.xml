@@ -2724,7 +2724,7 @@
         <go x="924" y="595" z="-14" />
       </region>
     </region>
-    <region type="DungeonRegion" priority="50" name="AbyssEntrance">
+    <region type="DungeonRegion" priority="50" name="Underworld">
       <rect x="898" y="808" width="382" height="423" />
 			<go x="1128" y="1207" z="-2" />
 			<music name="HumanLevel" />

@@ -1182,19 +1182,19 @@ namespace Server.Items
         }
     }
 
-    public class FlintLostBarrellHint : QuestHintItem
+    public class FlintLostBarrelHint : QuestHintItem
     {
         public override Type QuestType { get { return typeof(Server.Engines.Quests.ThievesBeAfootQuest); } }
         public override Type QuestItemType { get { return typeof(BarrelOfBarley); } }
         public override int DefaultRange { get { return 5; } }
 
         [Constructable]
-        public FlintLostBarrellHint()
+        public FlintLostBarrelHint()
             : base(1094963) // The smug smell of Barley fills this chamber.
         {
         }
 
-        public FlintLostBarrellHint(Serial serial)
+        public FlintLostBarrelHint(Serial serial)
             : base(serial)
         {
         }

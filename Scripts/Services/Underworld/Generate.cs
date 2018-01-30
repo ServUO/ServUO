@@ -97,13 +97,6 @@ namespace Server.Items
             box = new PuzzleBox(PuzzleType.NorthBox);
             box.MoveToWorld(new Point3D(1097, 1163, 11), Map.TerMur);
 
-            XmlSpawner spawner = new XmlSpawner("MagicKey");
-            spawner.MoveToWorld(new Point3D(1109, 1150, -12), Map.TerMur);
-            spawner.SpawnRange = 0;
-            spawner.MinDelay = TimeSpan.FromSeconds(30);
-            spawner.MaxDelay = TimeSpan.FromSeconds(45);
-            spawner.DoRespawn = true;
-
             PuzzleBook book = new PuzzleBook();
             book.Movable = false;
             book.MoveToWorld(new Point3D(1109, 1153, -17), Map.TerMur);
@@ -199,7 +192,41 @@ namespace Server.Items
             tile = new InvisibleTile();
             tile.MoveToWorld(new Point3D(1121, 959, -41), Map.TerMur);
 
+            GenerateRevealTiles();
+
             Console.WriteLine("Experimental Room, Puzzle Room and Maze of Death initialized.");
+        }
+
+        public static void GenerateRevealTiles()
+        {
+            Map map = Map.TerMur;
+
+            for (int x = 1182; x <= 1192; x++)
+            {
+                for (int y = 1120; y <= 1134; y++)
+                {
+                    if (map != null && map.CanSpawnMobile(x, y, -42))
+                    {
+                        var t = new RevealTile();
+                        t.MoveToWorld(new Point3D(x, y, -42), map);
+                    }
+                }
+            }
+
+            var tile = new RevealTile();
+            tile.MoveToWorld(new Point3D(1180, 883, 0), map);
+
+            tile = new RevealTile();
+            tile.MoveToWorld(new Point3D(1180, 882, 0), map);
+
+            tile = new RevealTile();
+            tile.MoveToWorld(new Point3D(1180, 881, 0), map);
+
+            tile = new RevealTile();
+            tile.MoveToWorld(new Point3D(1180, 880, 0), map);
+
+            tile = new RevealTile();
+            tile.MoveToWorld(new Point3D(1180, 879, 0), map);
         }
     }
 }

@@ -109,7 +109,7 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (Map != null && Region.Find(Location, Map).IsPartOf("AbyssEntrance"))
+            if (Map != null && Region.Find(Location, Map).IsPartOf("Underworld"))
             {
                 if (Z < 0 && X >= 1177 && X <= 1183 && Y >= 877 && Y <= 886)
                     Z = 0;

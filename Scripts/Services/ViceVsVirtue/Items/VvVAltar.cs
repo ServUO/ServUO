@@ -140,10 +140,7 @@ namespace Server.Engines.VvV
 
         public void Complete(Guild g)
         {
-            if (g != null)
-            {
-                Timer.DelayCall<Guild>(TimeSpan.FromSeconds(5), Battle.OccupyAltar, g);
-            }
+            Timer.DelayCall(TimeSpan.FromSeconds(5), DoOccupy, new object[] { Battle, g });
 
             Timer.DelayCall(TimeSpan.FromSeconds(2), DoFireworks);
             IsActive = false;
@@ -164,6 +161,16 @@ namespace Server.Engines.VvV
                     Torches.ForEach(t => t.Delete());
                     Torches.Clear();
                 });
+        }
+
+        public static void DoOccupy(object obj)
+        {
+            object[] objs = obj as object[];
+            VvVBattle battle = objs[0] as VvVBattle;
+            Guild g = objs[1] as Guild;
+
+            if (battle != null && g != null)
+                battle.OccupyAltar(g);
         }
 
         public void DoFireworks()
