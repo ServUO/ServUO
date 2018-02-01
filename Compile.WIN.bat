@@ -42,7 +42,7 @@
 
 @ECHO ON
 
-%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /define:DEBUG /r:"%CURPATH%Ultima.dll" /target:exe /out:"%CURPATH%ServUO.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /d:NEWTIMERS /nowarn:0618 /debug /nologo /optimize /unsafe
+%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /r:"%CURPATH%Ultima.dll" /target:exe /out:"%CURPATH%ServUO.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /d:NEWTIMERS /d:DEBUG /d:NETFX_40 /nowarn:0618 /debug /nologo /optimize /unsafe
 
 @ECHO OFF
 
