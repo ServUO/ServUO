@@ -220,15 +220,14 @@ namespace Server.Mobiles
 			{
 				if (from == m_Mobile.ControlMaster)
 				{
+                    list.Add(new InternalEntry(from, 6111, 14, m_Mobile, this, OrderType.Attack)); // Command: Kill
+                    list.Add(new InternalEntry(from, 6108, 14, m_Mobile, this, OrderType.Follow)); // Command: Follow
 					list.Add(new InternalEntry(from, 6107, 14, m_Mobile, this, OrderType.Guard)); // Command: Guard
-					list.Add(new InternalEntry(from, 6108, 14, m_Mobile, this, OrderType.Follow)); // Command: Follow
 
-					if (m_Mobile.CanDrop)
-					{
-						list.Add(new InternalEntry(from, 6109, 14, m_Mobile, this, OrderType.Drop)); // Command: Drop
-					}
-
-					list.Add(new InternalEntry(from, 6111, 14, m_Mobile, this, OrderType.Attack)); // Command: Kill
+                    if (m_Mobile.CanDrop)
+                    {
+                        list.Add(new InternalEntry(from, 6109, 14, m_Mobile, this, OrderType.Drop)); // Command: Drop
+                    }
 
 					list.Add(new InternalEntry(from, 6112, 14, m_Mobile, this, OrderType.Stop)); // Command: Stop
 					list.Add(new InternalEntry(from, 6114, 14, m_Mobile, this, OrderType.Stay)); // Command: Stay
@@ -240,7 +239,7 @@ namespace Server.Mobiles
 						list.Add(new InternalEntry(from, 6113, 14, m_Mobile, this, OrderType.Transfer)); // Transfer
 					}
 
-					list.Add(new InternalEntry(from, 6118, 14, m_Mobile, this, OrderType.Release)); // Release
+					list.Add(new InternalEntry(from, m_Mobile is BaseHire ? 6129 : 6118, 14, m_Mobile, this, OrderType.Release)); // Dismiss / Release
 				}
 				else if (m_Mobile.IsPetFriend(from))
 				{
@@ -1747,6 +1746,7 @@ namespace Server.Mobiles
 			m_Mobile.DebugSay("I have been released");
 
 			m_Mobile.PlaySound(m_Mobile.GetAngerSound());
+            Mobile master = m_Mobile.ControlMaster;
 
 			m_Mobile.SetControlMaster(null);
 			m_Mobile.SummonMaster = null;
@@ -1768,7 +1768,19 @@ namespace Server.Mobiles
 			}
 
 			m_Mobile.BeginDeleteTimer();
-			m_Mobile.DropBackpack();
+
+            if (m_Mobile is BaseHire)
+            {
+                if(master != null)
+                {
+                    m_Mobile.SayTo(master, 502034, 0x3B2); // I thank thee for thy kindness!
+                    m_Mobile.SayTo(master, 502005, 0x3B2); // I quit.
+                }
+            }
+            else
+            {
+                m_Mobile.DropBackpack();
+            }
 
 			return true;
 		}

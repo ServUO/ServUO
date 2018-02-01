@@ -16,12 +16,21 @@ namespace Server
 {
     public class SpawnerPersistence
     {
+        [Flags]
+        public enum SpawnerVersion
+        {
+            None = 0x00000000,
+            Initial = 0x00000001,
+        }
+
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
 
         private static bool _FirstRun = true;
 
         private static int _Version;
         public static int Version { get { return _Version; } }
+
+        public static SpawnerVersion VersionFlag { get; set; }
 
         private static bool _SpawnsConverted;
         public static bool SpawnsConverted { get { return _SpawnsConverted; } }
@@ -39,6 +48,7 @@ namespace Server
                 CheckVersion();
             }
 
+            #region Commands
             CommandSystem.Register("ConvertSpawners", AccessLevel.Administrator, e =>
             {
                 string str = "By selecting OK, you will wipe all XmlSpawners that were placed via World Load, and will replace " +
@@ -73,6 +83,7 @@ namespace Server
                         }
                     }, null, true));
                 });
+            #endregion
         }
 
         public static void OnSave(WorldSaveEventArgs e)
@@ -81,7 +92,10 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)10);
+                    writer.Write((int)11);
+
+                    writer.Write((int)VersionFlag);
+
                     writer.Write(false);
                     writer.Write(_SpawnsConverted);
                 });
@@ -95,6 +109,9 @@ namespace Server
                     {
                         _Version = reader.ReadInt();
 
+                        if (_Version > 10)
+                            VersionFlag = (SpawnerVersion)reader.ReadInt();
+
                         if (_Version > 2)
                         {
                             _FirstRun = reader.ReadBool();
@@ -104,14 +121,17 @@ namespace Server
         }
 
         /// <summary>
-        /// Checks version, and calls code appropriately.  Do not use goto keyword unless you want to call the previous version.
+        /// Checks version, and calls code appropriately.  Version 10 implements SpawnerFlag so servers don't miss out and skip versions
         /// </summary>
         public static void CheckVersion()
         {
             switch (_Version)
             {
+                case 10:
+                    if((VersionFlag & SpawnerVersion.Initial) == 0)
+                        VersionFlag |= SpawnerVersion.Initial;
+                    break;
                 case 9:
-                     //LoadFromXmlSpawner(string location, Map map, string prefix = null)
                     LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger1");
                     LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger2");
                     LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger3");

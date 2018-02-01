@@ -8,71 +8,71 @@ namespace Server.Mobiles
         [Constructable] 
         public HireFighter()
         {
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Hue = Utility.RandomSkinHue();
+            SpeechHue = Utility.RandomDyedHue();
+            Hue = Utility.RandomSkinHue();
 
-            if (this.Female = Utility.RandomBool()) 
+            if (Female = Utility.RandomBool()) 
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
+                Body = 0x191;
+                Name = NameList.RandomName("female");
             }
             else 
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
-                this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+                AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
-            this.Title = "the fighter";
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
-            this.Race.RandomFacialHair(this);
+            Title = "the fighter";
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
+            Race.RandomFacialHair(this);
 
-            this.SetStr(91, 91);
-            this.SetDex(91, 91);
-            this.SetInt(50, 50);
+            SetStr(91, 91);
+            SetDex(91, 91);
+            SetInt(50, 50);
 
-            this.SetDamage(7, 14);
+            SetDamage(7, 14);
 
-            this.SetSkill(SkillName.Tactics, 36, 67);
-            this.SetSkill(SkillName.Magery, 22, 22);
-            this.SetSkill(SkillName.Swords, 64, 100);
-            this.SetSkill(SkillName.Parry, 60, 82);
-            this.SetSkill(SkillName.Macing, 36, 67);
-            this.SetSkill(SkillName.Focus, 36, 67);
-            this.SetSkill(SkillName.Wrestling, 25, 47);
+            SetSkill(SkillName.Tactics, 36, 67);
+            SetSkill(SkillName.Magery, 22, 22);
+            SetSkill(SkillName.Swords, 64, 100);
+            SetSkill(SkillName.Parry, 60, 82);
+            SetSkill(SkillName.Macing, 36, 67);
+            SetSkill(SkillName.Focus, 36, 67);
+            SetSkill(SkillName.Wrestling, 25, 47);
 
-            this.Fame = 100;
-            this.Karma = 100;
+            Fame = 100;
+            Karma = 100;
 
             switch ( Utility.Random(2)) 
             {
                 case 0:
-                    this.AddItem(new Shoes(Utility.RandomNeutralHue()));
+                    AddItem(new Shoes(Utility.RandomNeutralHue()));
                     break;
                 case 1:
-                    this.AddItem(new Boots(Utility.RandomNeutralHue()));
+                    AddItem(new Boots(Utility.RandomNeutralHue()));
                     break;
             }
 			
-            this.AddItem(new Shirt());
+            AddItem(new Shirt());
 
             // Pick a random sword
             switch ( Utility.Random(5)) 
             {
                 case 0:
-                    this.AddItem(new Longsword());
+                    AddItem(new Longsword());
                     break;
                 case 1:
-                    this.AddItem(new Broadsword());
+                    AddItem(new Broadsword());
                     break;
                 case 2:
-                    this.AddItem(new VikingSword());
+                    AddItem(new VikingSword());
                     break;
                 case 3:
-                    this.AddItem(new BattleAxe());
+                    AddItem(new BattleAxe());
                     break;
                 case 4:
-                    this.AddItem(new TwoHandedAxe());
+                    AddItem(new TwoHandedAxe());
                     break;
             }
 
@@ -80,28 +80,28 @@ namespace Server.Mobiles
             switch ( Utility.Random(8)) 
             {
                 case 0:
-                    this.AddItem(new BronzeShield());
+                    AddItem(new BronzeShield());
                     break;
                 case 1:
-                    this.AddItem(new HeaterShield());
+                    AddItem(new HeaterShield());
                     break;
                 case 2:
-                    this.AddItem(new MetalKiteShield());
+                    AddItem(new MetalKiteShield());
                     break;
                 case 3:
-                    this.AddItem(new MetalShield());
+                    AddItem(new MetalShield());
                     break;
                 case 4:
-                    this.AddItem(new WoodenKiteShield());
+                    AddItem(new WoodenKiteShield());
                     break;
                 case 5:
-                    this.AddItem(new WoodenShield());
+                    AddItem(new WoodenShield());
                     break;
                 case 6:
-                    this.AddItem(new OrderShield());
+                    AddItem(new OrderShield());
                     break;
                 case 7:
-                    this.AddItem(new ChaosShield());
+                    AddItem(new ChaosShield());
                     break;
             }
 		  
@@ -110,49 +110,49 @@ namespace Server.Mobiles
                 case 0:
                     break;
                 case 1:
-                    this.AddItem(new Bascinet());
+                    AddItem(new Bascinet());
                     break;
                 case 2:
-                    this.AddItem(new CloseHelm());
+                    AddItem(new CloseHelm());
                     break;
                 case 3:
-                    this.AddItem(new NorseHelm());
+                    AddItem(new NorseHelm());
                     break;
                 case 4:
-                    this.AddItem(new Helmet());
+                    AddItem(new Helmet());
                     break;
             }
             // Pick some armour
             switch( Utility.Random(4) )
             {
                 case 0: // Leather
-                    this.AddItem(new LeatherChest());
-                    this.AddItem(new LeatherArms());
-                    this.AddItem(new LeatherGloves());
-                    this.AddItem(new LeatherGorget());
-                    this.AddItem(new LeatherLegs());
+                    AddItem(new LeatherChest());
+                    AddItem(new LeatherArms());
+                    AddItem(new LeatherGloves());
+                    AddItem(new LeatherGorget());
+                    AddItem(new LeatherLegs());
                     break;
                 case 1: // Studded Leather
-                    this.AddItem(new StuddedChest());
-                    this.AddItem(new StuddedArms());
-                    this.AddItem(new StuddedGloves());
-                    this.AddItem(new StuddedGorget());
-                    this.AddItem(new StuddedLegs());
+                    AddItem(new StuddedChest());
+                    AddItem(new StuddedArms());
+                    AddItem(new StuddedGloves());
+                    AddItem(new StuddedGorget());
+                    AddItem(new StuddedLegs());
                     break;
                 case 2: // Ringmail
-                    this.AddItem(new RingmailChest());
-                    this.AddItem(new RingmailArms());
-                    this.AddItem(new RingmailGloves());
-                    this.AddItem(new RingmailLegs());
+                    AddItem(new RingmailChest());
+                    AddItem(new RingmailArms());
+                    AddItem(new RingmailGloves());
+                    AddItem(new RingmailLegs());
                     break;
                 case 3: // Chain
-                    this.AddItem(new ChainChest());
-                    this.AddItem(new ChainCoif());
-                    this.AddItem(new ChainLegs());
+                    AddItem(new ChainChest());
+                    AddItem(new ChainCoif());
+                    AddItem(new ChainLegs());
                     break;
             }
 
-            this.PackGold(25, 100);
+            PackGold(25, 100);
         }
 
         public HireFighter(Serial serial)

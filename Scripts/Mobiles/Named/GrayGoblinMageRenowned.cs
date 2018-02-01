@@ -11,78 +11,81 @@ namespace Server.Mobiles
         public GrayGoblinMageRenowned()
             : base(AIType.AI_Mage)
         {
-            this.Name = "Gray Goblin Mage";
-            this.Title = "[Renowned]";
-            this.Body = 723;
-            this.BaseSoundID = 437;
+            Name = "Gray Goblin Mage";
+            Title = "[Renowned]";
 
-            this.SetStr(550, 600);
-            this.SetDex(70, 75);
-            this.SetInt(500, 600);
+            Body = 723;
+            Hue = 1900;
 
-            this.SetHits(1100, 1300);
+            BaseSoundID = 437;
 
-            this.SetDamage(5, 7);
+            SetStr(550, 600);
+            SetDex(70, 75);
+            SetInt(500, 600);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetHits(1100, 1300);
 
-            this.SetResistance(ResistanceType.Physical, 30, 35);
-            this.SetResistance(ResistanceType.Fire, 45, 50);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 20, 25);
+            SetDamage(5, 7);
 
-            this.SetSkill(SkillName.MagicResist, 120.0, 125.0);
-            this.SetSkill(SkillName.Tactics, 95.0, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0, 110.0);
-            this.SetSkill(SkillName.EvalInt, 100.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 100.0, 105.0);
-            this.SetSkill(SkillName.Magery, 100.0, 110.0);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            SetResistance(ResistanceType.Physical, 30, 35);
+            SetResistance(ResistanceType.Fire, 45, 50);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 20, 25);
 
-            this.VirtualArmor = 28;
+            SetSkill(SkillName.MagicResist, 120.0, 125.0);
+            SetSkill(SkillName.Tactics, 95.0, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0, 110.0);
+            SetSkill(SkillName.EvalInt, 100.0, 120.0);
+            SetSkill(SkillName.Meditation, 100.0, 105.0);
+            SetSkill(SkillName.Magery, 100.0, 110.0);
+
+            Fame = 1500;
+            Karma = -1500;
+
+            VirtualArmor = 28;
 			
             switch ( Utility.Random(20) )
             {
                 case 0:
-                    this.PackItem(new Scimitar());
+                    PackItem(new Scimitar());
                     break;
                 case 1:
-                    this.PackItem(new Katana());
+                    PackItem(new Katana());
                     break;
                 case 2:
-                    this.PackItem(new WarMace());
+                    PackItem(new WarMace());
                     break;
                 case 3:
-                    this.PackItem(new WarHammer());
+                    PackItem(new WarHammer());
                     break;
                 case 4:
-                    this.PackItem(new Kryss());
+                    PackItem(new Kryss());
                     break;
                 case 5:
-                    this.PackItem(new Pitchfork());
+                    PackItem(new Pitchfork());
                     break;
             }
 
-            this.PackItem(new ThighBoots());
+            PackItem(new ThighBoots());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    this.PackItem(new Ribs());
+                    PackItem(new Ribs());
                     break;
                 case 1:
-                    this.PackItem(new Shaft());
+                    PackItem(new Shaft());
                     break;
                 case 2:
-                    this.PackItem(new Candle());
+                    PackItem(new Candle());
                     break;
             }
 
             if (0.2 > Utility.RandomDouble())
-                this.PackItem(new BolaBall());
+                PackItem(new BolaBall());
         }
 
         public GrayGoblinMageRenowned(Serial serial)
@@ -120,19 +123,25 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.FilthyRich);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                Body = 723;
+                Hue = 1900;
+            }
         }
     }
 }

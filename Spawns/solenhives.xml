@@ -808,7 +808,7 @@
     <CentreX>5665</CentreX>
     <CentreY>1869</CentreY>
     <CentreZ>10</CentreZ>
-    <Range>16</Range>
+    <Range>14</Range>
     <MaxCount>3</MaxCount>
     <MinDelay>1</MinDelay>
     <MaxDelay>180</MaxDelay>
@@ -2301,7 +2301,7 @@
     <CentreX>5665</CentreX>
     <CentreY>1869</CentreY>
     <CentreZ>10</CentreZ>
-    <Range>16</Range>
+    <Range>14</Range>
     <MaxCount>3</MaxCount>
     <MinDelay>1</MinDelay>
     <MaxDelay>180</MaxDelay>

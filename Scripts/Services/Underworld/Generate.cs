@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Server.Mobiles;
 using Server.Gumps;
+using Server.Engines.Quests.Haven;
 
 namespace Server.Items
 {
@@ -12,6 +13,8 @@ namespace Server.Items
         {
             if (ExperimentalRoomController.Instance == null && Core.SA)
                 Generate();
+
+            CheckCannoneers();
         }
 
         public static void Generate()
@@ -227,6 +230,61 @@ namespace Server.Items
 
             tile = new RevealTile();
             tile.MoveToWorld(new Point3D(1180, 879, 0), map);
+        }
+
+        public static void CheckCannoneers()
+        {
+            Cannon cannon = Map.TerMur.FindItem<Cannon>(new Point3D(1126, 1200, -2));
+            MilitiaCanoneer cannoneer = null;
+
+            if (cannon == null)
+            {
+                cannon = new Cannon(CannonDirection.North);
+                cannon.MoveToWorld(new Point3D(1126, 1200, -2), Map.TerMur);
+            }
+
+            cannoneer = Map.TerMur.FindMobile<MilitiaCanoneer>(new Point3D(1126, 1203, -2));
+
+            if (cannoneer == null)
+            {
+                cannoneer = new MilitiaCanoneer();
+                cannoneer.MoveToWorld(new Point3D(1126, 1203, -2), Map.TerMur);
+            }
+
+            cannon.Canoneer = cannoneer;
+
+            cannon = Map.TerMur.FindItem<Cannon>(new Point3D(1131, 1200, -2));
+            cannoneer = null;
+
+            if (cannon == null)
+            {
+                cannon = new Cannon(CannonDirection.North);
+                cannon.MoveToWorld(new Point3D(1131, 1200, -2), Map.TerMur);
+            }
+
+            cannoneer = Map.TerMur.FindMobile<MilitiaCanoneer>(new Point3D(1131, 1203, -2));
+
+            if (cannoneer == null)
+            {
+                cannoneer = new MilitiaCanoneer();
+                cannoneer.MoveToWorld(new Point3D(1131, 1203, -2), Map.TerMur);
+            }
+
+            cannon.Canoneer = cannoneer;
+        }
+
+        private static bool FindItem(Point3D p, Map map)
+        {
+            IPooledEnumerable eable = map.GetItemsInRange(p, 0);
+
+            foreach (Item item in eable)
+            {
+                eable.Free();
+                return true;
+            }
+
+            eable.Free();
+            return false;
         }
     }
 }

@@ -16,20 +16,20 @@ namespace Server.Network
         {
             PlayerMobile from = state.Mobile as PlayerMobile;
 
-            if (from != null)
+            if (from != null && from.Backpack != null)
             {
-                Item toEquip = from.LastWeapon;
-                Item toDisarm = from.FindItemOnLayer(Layer.OneHanded);
+                BaseWeapon toEquip = from.LastWeapon;
+                BaseWeapon toDisarm = from.FindItemOnLayer(Layer.OneHanded) as BaseWeapon;
 
-                if (toDisarm == null || !toDisarm.Movable)
-                    toDisarm = from.FindItemOnLayer(Layer.TwoHanded);
+                if (toDisarm == null)
+                    toDisarm = from.FindItemOnLayer(Layer.TwoHanded) as BaseWeapon;
 
                 if (toDisarm != null)
                 {
                     from.Backpack.DropItem(toDisarm);
                 }
 
-                if (toEquip != null && toDisarm.Movable && toDisarm is BaseWeapon && toEquip.IsChildOf(from.Backpack))
+                if (toEquip != toDisarm && toEquip != null && toEquip.Movable && toEquip.IsChildOf(from.Backpack))
                 {
                     from.EquipItem(toEquip);
                 }

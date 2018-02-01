@@ -4159,12 +4159,13 @@ namespace Server.Mobiles
         { }
 
         public virtual bool CanDrop { get { return IsBonded; } }
+        public virtual bool OwnerCanRename { get { return true; } }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
 
-            if (m_bControlled && m_ControlMaster == from && !m_bSummoned)
+            if (m_bControlled && m_ControlMaster == from && !m_bSummoned && OwnerCanRename)
             {
                 list.Add(new RenameEntry(from, this));
             }
@@ -5376,7 +5377,11 @@ namespace Server.Mobiles
             }
             else if (Controlled && Commandable)
             {
-                if (IsBonded) //Intentional difference (showing ONLY bonded when bonded instead of bonded & tame)
+                if (this is BaseHire)
+                {
+                    list.Add(1062030); // (hired)
+                }
+                else if (IsBonded) //Intentional difference (showing ONLY bonded when bonded instead of bonded & tame)
                 {
                     list.Add(1049608); // (bonded)
                 }
