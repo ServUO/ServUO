@@ -415,7 +415,7 @@ namespace Server.Items
                 {
                     if (0.025 > Utility.RandomDouble())
                         special = Loot.Construct(m_LevelFiveToSeven);
-                    else if (0.10 > Utility.RandomDouble())
+                    else if (0.20 > Utility.RandomDouble())
                         special = GetRandomSpecial(level, cont.Map);
 
                     arty = Loot.Construct(m_Artifacts);
@@ -424,7 +424,7 @@ namespace Server.Items
                 {
                     if (0.005 > Utility.RandomDouble())
                         special = Loot.Construct(m_LevelFiveToSeven);
-                    else if (0.25 > Utility.RandomDouble())
+                    else if (0.15 > Utility.RandomDouble())
                         special = GetRandomSpecial(level, cont.Map);
                 }
                 else if (.10 > Utility.RandomDouble())
