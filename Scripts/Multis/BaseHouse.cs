@@ -1249,7 +1249,7 @@ namespace Server.Multis
             }
 
             // staff or not locked down
-            if (from.AccessLevel >= AccessLevel.GameMaster || !IsLockedDown(item))
+            if (from.AccessLevel >= AccessLevel.GameMaster || IsOwner(from) || !IsLockedDown(item))
                 return true;
 
             // ISecurable will set its own rules
@@ -1296,7 +1296,7 @@ namespace Server.Multis
 
         private Type[] _AccessibleToFriends =
         {
-            typeof(PotionKeg), typeof(BaseLight)
+            typeof(PotionKeg)
         };
 
         public virtual bool IsInside(Point3D p, int height)

@@ -185,6 +185,49 @@ namespace Server.Mobiles
 
 namespace Server
 {
+    public static class MapExtensions
+    {
+        public static TItem FindItem<TItem>(this Map map, Point3D p, int range = 0) where TItem : Item
+        {
+            if (map == null)
+                return null;
+
+            IPooledEnumerable eable = map.GetItemsInRange(p, range);
+
+            foreach (Item item in eable)
+            {
+                if (item.GetType() == typeof(TItem))
+                {
+                    eable.Free();
+                    return item as TItem;
+                }
+            }
+
+            eable.Free();
+            return null;
+        }
+
+        public static TMob FindMobile<TMob>(this Map map, Point3D p, int range = 0) where TMob : Mobile
+        {
+            if (map == null)
+                return null;
+
+            IPooledEnumerable eable = map.GetMobilesInRange(p, range);
+
+            foreach (Mobile m in eable)
+            {
+                if (m.GetType() == typeof(TMob))
+                {
+                    eable.Free();
+                    return m as TMob;
+                }
+            }
+
+            eable.Free();
+            return null;
+        }
+    }
+
     public static class GeomontryExtentions
     {
         public static Point3D GetRandomSpawnPoint(this Rectangle2D rec, Map map)
