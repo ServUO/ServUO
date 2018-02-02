@@ -2029,7 +2029,6 @@
     <Compile Include="Mobiles\Normal\ExodusMinion.cs" />
     <Compile Include="Mobiles\Normal\ExodusOverseer.cs" />
     <Compile Include="Mobiles\Normal\FairyDragon.cs" />
-    <Compile Include="Mobiles\Normal\FairyDragon1.cs" />
     <Compile Include="Mobiles\Normal\FanDancer.cs" />
     <Compile Include="Mobiles\Normal\FeralTreefellow.cs" />
     <Compile Include="Mobiles\Normal\Ferret.cs" />

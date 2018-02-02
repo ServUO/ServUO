@@ -14,7 +14,8 @@ namespace Server.Items
         public override BaseAddonDeed Deed { get { return new SkeletalHangmanAddonDeed(); } }
 
         [Constructable]
-        public SkeletalHangmanAddon() : this(0)
+        public SkeletalHangmanAddon() 
+            : this(null)
         {
         }
 
