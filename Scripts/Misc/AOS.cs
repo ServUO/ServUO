@@ -649,6 +649,8 @@ namespace Server
                 if (context != null && context.Spell is ReaperFormSpell)
                     value += ((ReaperFormSpell)context.Spell).SpellDamageBonus;
 
+                value += ArcaneEmpowermentSpell.GetSpellBonus(m, true);
+
                 #region SA
                 if (m is PlayerMobile && m.Race == Race.Gargoyle)
                 {

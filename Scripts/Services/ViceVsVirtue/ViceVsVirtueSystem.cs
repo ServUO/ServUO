@@ -34,8 +34,8 @@ namespace Server.Engines.VvV
 
     public class ViceVsVirtueSystem : PointsSystem
     {
-        public static int VirtueHue = 2124; //TODO: Get
-        public static int ViceHue = 2118; //TODO: Get
+        public static int VirtueHue = 2124;
+        public static int ViceHue = 2118;
 
         public static bool Enabled = Config.Get("VvV.Enabled", true);
         public static int StartSilver = Config.Get("VvV.StartSilver", 2000);
@@ -800,7 +800,9 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(2);
+            writer.Write(3);
+
+            writer.Write(Enabled);
 
             writer.Write(ExemptCities.Count);
             ExemptCities.ForEach(c => writer.Write((int)c));
@@ -829,9 +831,13 @@ namespace Server.Engines.VvV
 
             GuildStats = new Dictionary<Guild, VvVGuildStats>();
             ExemptCities = new List<VvVCity>();
+            bool enabled = false;
 
             switch (version)
             {
+                case 3:
+                    enabled = reader.ReadBool();
+                    goto case 2;
                 case 2:
                 case 1:
                     {
@@ -873,6 +879,16 @@ namespace Server.Engines.VvV
 
             if (version == 1)
                 Timer.DelayCall(FixVvVItems);
+
+            if (Enabled && !enabled)
+            {
+                CreateSilverTraders();
+                Server.Factions.Generator.RemoveFactions();
+            }
+            else if (!Enabled && enabled)
+            {
+                DeleteSilverTraders();
+            }
         }
 
         public void FixVvVItems()
@@ -921,6 +937,18 @@ namespace Server.Engines.VvV
                     trader.MoveToWorld(info.TraderLoc, map);
                 }
             }
+        }
+
+        public static void DeleteSilverTraders()
+        {
+            var list = new List<Mobile>(World.Mobiles.Values.Where(m => m is SilverTrader));
+
+            foreach (var mob in list)
+            {
+                mob.Delete();
+            }
+
+            ColUtility.Free(list);
         }
     }
 

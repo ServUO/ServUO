@@ -20,7 +20,7 @@ namespace Server.Factions
         public static void Configure()
         {
             NewCoMLocation = Config.Get("Factions.NewCoMLocation", true);
-            Enabled = Config.Get("Factions.Enabled", false);
+            Enabled = !Server.Engines.VvV.ViceVsVirtueSystem.Enabled;
 
             /*  Disabling Factions:
              *  PlayerStates are not loaded, ie faction players lose their faction status 

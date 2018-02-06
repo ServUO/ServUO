@@ -122,11 +122,11 @@ namespace Server.Mobiles
 		{
 			if (dismount)
 			{
-				BaseMount.Dismount(this, this, type, duration, false);
+                BaseMount.Dismount(this, this, type, duration, false);
 			}
 			else
 			{
-				BaseMount.SetMountPrevention(this, type, duration);
+                BaseMount.SetMountPrevention(this, type, duration);
 			}
 		}
 		#endregion
@@ -2025,6 +2025,11 @@ namespace Server.Mobiles
                 }
             }
 
+            if (oldValue < HitsMax && Hits >= HitsMax)
+            {
+                BaseMount.GetMountPrevention(this);
+            }
+
             base.OnHitsChange(oldValue);
         }
 
@@ -3450,21 +3455,27 @@ namespace Server.Mobiles
 			return false;
 		}
 
-		public override bool Criminal
-        	{
-            		get
-            		{
-                		if (Alive)
-                		{
-                    			if (base.Criminal)
-                        			BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.CriminalStatus, 1153802, 1153828));
-                    			else
-                        			BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
-                		}
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override bool Criminal
+        {
+            get
+            {
+                return base.Criminal;
+            }
+            set
+            {
+                bool crim = base.Criminal;
+                base.Criminal = value;
 
-                		return base.Criminal;
-            		}
-        	}
+                if (value != crim)
+                {
+                    if (value)
+                        BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.CriminalStatus, 1153802, 1153828));
+                    else
+                        BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
+                }
+            }
+        }
 
         public override bool OnBeforeDeath()
         {

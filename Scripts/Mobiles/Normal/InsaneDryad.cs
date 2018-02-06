@@ -205,6 +205,8 @@ namespace Server.Mobiles
             Name = "an insane dryad";	
             Hue = 0x487;
 
+            FightMode = FightMode.Closest;
+
             Fame = 7000;
             Karma = -7000;
         }
