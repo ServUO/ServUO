@@ -158,7 +158,7 @@ namespace Server
             new HonorContext(source, target);
 
             source.Direction = source.GetDirectionTo(target);
-            source.SendLocalizedMessage(1115884); // Your Started Honorable Combat!
+            source.SendLocalizedMessage(1115884); // You Started Honorable Combat!
 
             if (!source.Mounted)
                 source.Animate(32, 5, 1, true, true, 0);
