@@ -112,7 +112,7 @@ namespace Server
             {
                 if (honorTarget.ReceivedHonorContext.Source == source)
 				{
-					source.SendLocalizedMessage(1115882); // You don't need to declare again. You are already under Honorable Combat with this target.
+				    source.SendLocalizedMessage(1115882); // You don't need to declare again. You are already under Honorable Combat with this target.
                     return;
 				}
                 if (honorTarget.ReceivedHonorContext.CheckDistance())
