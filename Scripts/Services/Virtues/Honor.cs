@@ -111,8 +111,10 @@ namespace Server
             if (honorTarget.ReceivedHonorContext != null)
             {
                 if (honorTarget.ReceivedHonorContext.Source == source)
+                {
+                    source.SendLocalizedMessage(1115882); // You don't need to declare again. You are already under Honorable Combat with this target.
                     return;
-
+                }
                 if (honorTarget.ReceivedHonorContext.CheckDistance())
                 {
                     source.SendLocalizedMessage(1063233); // Somebody else is honoring this opponent
@@ -156,6 +158,7 @@ namespace Server
             new HonorContext(source, target);
 
             source.Direction = source.GetDirectionTo(target);
+            source.SendLocalizedMessage(1115884); // Your Started Honorable Combat!
 
             if (!source.Mounted)
                 source.Animate(32, 5, 1, true, true, 0);
