@@ -55,7 +55,28 @@
 @CLS
 
 ::##########
+:Ask
+echo Would you like to use debug mode?(Y/N)
+set INPUT=
+set /P INPUT=Type input: %=%
+If /I "%INPUT%"=="y" goto yes 
+If /I "%INPUT%"=="n" goto no
+echo Incorrect input & goto Ask
 
+:yes
+@ECHO:
+@ECHO: Ready To Run! ServUO will be started in DEBUG Mode (-debug)
+@ECHO:
+
+@PAUSE
+
+@CLS
+
+@ECHO OFF
+
+%CURPATH%ServUO.exe -debug
+
+:no
 @ECHO:
 @ECHO: Ready To Run!
 @ECHO:
@@ -66,4 +87,5 @@
 
 @ECHO OFF
 
-%CURPATH%ServUO.exe -debug
+%CURPATH%ServUO.exe
+
