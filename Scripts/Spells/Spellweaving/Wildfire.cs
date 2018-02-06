@@ -199,7 +199,7 @@ namespace Server.Spells.Spellweaving
 
                 WildfireSpell.DefragTable();
 
-                IPooledEnumerable eable = m_Owner.GetMobilesInRange(m_Range);
+                IPooledEnumerable eable = m_Map.GetMobilesInRange(m_Location, m_Range);
                 foreach (Mobile m in eable)
                 {
                     if (WildfireSpell.Table.ContainsKey(m))

@@ -104,7 +104,17 @@ namespace Server.Items
                 }
                 else
                 {
-                    scroll.Movable = true;
+                    BaseHouse house = BaseHouse.FindHouseAt(this);
+
+                    if (house != null && house.LockDowns.ContainsKey(scroll))
+                    {
+                        house.Release(m, scroll);
+                    }
+                    else
+                    {
+                        scroll.Movable = true;
+                    }
+
                     m.SendLocalizedMessage(RemoveMessage);
                 }
             }

@@ -123,10 +123,6 @@ namespace Server.Spells
 
             int sdiBonus = AosAttributes.GetValue(caster, AosAttribute.SpellDamage);
 
-            #region Mondain's Legacy
-            sdiBonus += ArcaneEmpowermentSpell.GetSpellBonus(caster, playerVsPlayer);
-            #endregion
-
             if (target != null)
             {
                 if (RunedSashOfWarding.IsUnderEffects(target, WardingEffect.SpellDamage))
