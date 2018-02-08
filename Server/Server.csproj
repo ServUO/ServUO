@@ -190,6 +190,7 @@
     <Compile Include="PromptExtensions.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Items\VirtualCheck.cs" />
+    <Compile Include="SpawnArea.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="servuo.ico" />

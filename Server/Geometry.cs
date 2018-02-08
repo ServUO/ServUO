@@ -72,7 +72,8 @@ namespace Server
 			{
 				return CompareTo((Point2D)other);
 			}
-			else if (other == null)
+			
+			if (other == null)
 			{
 				return -1;
 			}
@@ -82,7 +83,7 @@ namespace Server
 
 		public override bool Equals(object o)
 		{
-			if (o == null || !(o is IPoint2D))
+			if (!(o is IPoint2D))
 			{
 				return false;
 			}
@@ -94,7 +95,15 @@ namespace Server
 
 		public override int GetHashCode()
 		{
-			return m_X ^ m_Y;
+			unchecked
+			{
+				var hash = X + Y;
+
+				hash = (hash * 397) ^ X;
+				hash = (hash * 397) ^ Y;
+
+				return hash;
+			}
 		}
 
 		public static bool operator ==(Point2D l, Point2D r)
@@ -248,7 +257,7 @@ namespace Server
 
 		public override bool Equals(object o)
 		{
-			if (o == null || !(o is IPoint3D))
+			if (!(o is IPoint3D))
 			{
 				return false;
 			}
@@ -260,7 +269,16 @@ namespace Server
 
 		public override int GetHashCode()
 		{
-			return m_X ^ m_Y ^ m_Z;
+			unchecked
+			{
+				var hash = X + Y + Z;
+
+				hash = (hash * 397) ^ X;
+				hash = (hash * 397) ^ Y;
+				hash = (hash * 397) ^ Z;
+
+				return hash;
+			}
 		}
 
 		public static Point3D Parse(string value)
@@ -336,7 +354,8 @@ namespace Server
 			{
 				return CompareTo((Point3D)other);
 			}
-			else if (other == null)
+			
+			if (other == null)
 			{
 				return -1;
 			}
@@ -459,6 +478,19 @@ namespace Server
 		{
 			return String.Format("({0}, {1})+({2}, {3})", X, Y, Width, Height);
 		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hash = Start.X + Start.Y + End.X + End.Y;
+
+				hash = (hash * 397) ^ Start.GetHashCode();
+				hash = (hash * 397) ^ End.GetHashCode();
+
+				return hash;
+			}
+		}
 	}
 
 	[NoSort]
@@ -505,6 +537,19 @@ namespace Server
 		{
 			return (p.X >= m_Start.m_X) && (p.X < m_End.m_X) && (p.Y >= m_Start.m_Y) && (p.Y < m_End.m_Y) && (p.Z >= m_Start.m_Z) &&
 				   (p.Z < m_End.m_Z);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hash = Start.X + Start.Y + Start.Z + End.X + End.Y + End.Z;
+
+				hash = (hash * 397) ^ Start.GetHashCode();
+				hash = (hash * 397) ^ End.GetHashCode();
+
+				return hash;
+			}
 		}
 	}
 }
