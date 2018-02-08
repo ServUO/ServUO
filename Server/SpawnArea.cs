@@ -314,9 +314,9 @@ namespace Server
 					y1 = Math.Min(y1, o.Start.Y);
 					z1 = Math.Min(z1, o.Start.Z);
 
-					x2 = Math.Min(x2, o.End.X);
-					y2 = Math.Min(y2, o.End.Y);
-					z2 = Math.Min(z2, o.End.Z);
+					x2 = Math.Max(x2, o.End.X);
+					y2 = Math.Max(y2, o.End.Y);
+					z2 = Math.Max(z2, o.End.Z);
 				}
 
 				_Bounds = new Rectangle3D(x1, y1, z1, x2 - x1, y2 - y1, z2 - z1);
