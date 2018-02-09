@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
 #endregion
@@ -24,15 +25,21 @@ namespace Server
 
 	public sealed class SpawnArea : ICollection<Point3D>
 	{
+		private static readonly Bitmap _EmptyImage;
+
 		private static readonly TileFlag[] _EmptyFilters;
 		private static readonly TileFlag[] _AllFilters;
 
 		private static readonly Dictionary<int, SpawnArea> _Cache;
 
+		public const ushort PixelColor = 0xFC1F;
+
 		public const int Stride = 16;
 
 		static SpawnArea()
 		{
+			_EmptyImage = new Bitmap(1, 1);
+
 			_EmptyFilters = new TileFlag[0];
 
 			_AllFilters = Enum.GetValues(typeof(TileFlag)).Cast<TileFlag>().Where(f => f != TileFlag.None).ToArray();
@@ -181,6 +188,8 @@ namespace Server
 
 		public int Count { get { return _Points.Count; } }
 
+		public Bitmap Image { get { return GetImage(); } }
+
 		bool ICollection<Point3D>.IsReadOnly { get { return true; } }
 
 		private SpawnArea(Map facet, string region, TileFlag[] filters, SpawnValidator validator)
@@ -195,6 +204,11 @@ namespace Server
 
 		public Bitmap GetImage()
 		{
+			if (Facet == null)
+			{
+				return _EmptyImage;
+			}
+
 			if (_Image != null)
 			{
 				return _Image;
@@ -223,18 +237,32 @@ namespace Server
 					umap = Ultima.Map.TerMur;
 					break;
 				default:
-					return null;
+					return _Image = _EmptyImage;
 			}
 
-			using (var map = umap.GetImage(0, 0, umap.Width / 8, umap.Height / 8, true))
-			{
-				foreach (var p in _Points.Values)
-				{
-					map.SetPixel(p.X, p.Y, Color.Yellow);
-				}
+			var b = new Rectangle(_Bounds.Start.X >> 3, _Bounds.Start.Y >> 3, _Bounds.Width, _Bounds.Height);
 
-				return map.Clone(new Rectangle(_Bounds.Start.X, _Bounds.Start.Y, _Bounds.Width, _Bounds.Height), map.PixelFormat);
-			}
+			var map = new Bitmap(b.Width, b.Height, PixelFormat.Format16bppRgb565);
+
+			umap.GetImage(b.X, b.Y, b.Width >> 3, b.Height >> 3, map, true);
+
+			b = new Rectangle(Point.Empty, map.Size);
+
+			var data = map.LockBits(b, ImageLockMode.ReadWrite, map.PixelFormat);
+
+			Parallel.ForEach(_Points.Values, o => SetPixel(o.X, o.Y, data.Scan0, data.Stride));
+
+			map.UnlockBits(data);
+
+			return _Image = map;
+		}
+
+		private static unsafe void SetPixel(int x, int y, IntPtr ptr, int stride)
+		{
+			var pixel = (byte*)ptr + (y * stride) + (x * 2);
+
+			pixel[0] = (PixelColor >> 0) & 0xFF;
+			pixel[1] = (PixelColor >> 8) & 0xFF;
 		}
 
 		public bool Contains(int x, int y)
@@ -254,6 +282,11 @@ namespace Server
 				return Point3D.Zero;
 			}
 
+			if (Count <= 1024)
+			{
+				return _Points.Values.ElementAt(Utility.Random(Count));
+			}
+
 			int x, y;
 
 			do
@@ -263,7 +296,14 @@ namespace Server
 			}
 			while (!Contains(x, y));
 
-			return new Point3D(x, y, Facet.GetAverageZ(x, y));
+			var z = Facet.GetAverageZ(x, y);
+
+			if (Validator == null || Validator(Facet, x, y, z))
+			{
+				return new Point3D(x, y, z);
+			}
+
+			return GetRandom();
 		}
 
 		public void Invalidate()
@@ -305,8 +345,8 @@ namespace Server
 			}
 			else
 			{
-				int x1 = Int32.MaxValue, y1 = Int32.MaxValue, z1 = Int32.MaxValue;
-				int x2 = Int32.MinValue, y2 = Int32.MinValue, z2 = Int32.MinValue;
+				int x1 = Int16.MaxValue, y1 = Int16.MaxValue, z1 = SByte.MaxValue;
+				int x2 = Int16.MinValue, y2 = Int16.MinValue, z2 = SByte.MinValue;
 
 				foreach (var o in region.Area)
 				{

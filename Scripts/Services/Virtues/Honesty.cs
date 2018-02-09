@@ -9,11 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Server.Engines.CannedEvil;
 using Server.Items;
 using Server.Mobiles;
+using Server.Multis;
 using Server.Network;
 using Server.Regions;
 #endregion
@@ -31,32 +34,33 @@ namespace Server.Services.Virtues
 
 		private const TileFlag _Filter = TileFlag.Wet | TileFlag.Roof | TileFlag.Impassable;
 
-		private static SpawnArea _FeluccaArea, _TrammelArea;
-
 		private static readonly List<Item> _Items;
+
+		private static SpawnArea _FeluccaArea, _TrammelArea;
 
 		static Honesty()
 		{
-			_Items = new List<Item>(0x400);
+			_Items = new List<Item>(MaxGeneration);
 		}
 
 		private static void GenerateImages()
 		{
+			if (!Directory.Exists("Honesty"))
+			{
+				Directory.CreateDirectory("Honesty");
+			}
+
 			if (_FeluccaArea != null)
 			{
-				var image = _FeluccaArea.GetImage();
-
-				image.Save("Honesty/Felucca.png", ImageFormat.Png);
+				_FeluccaArea.Image.Save("Honesty/Felucca.png", ImageFormat.Png);
 			}
 
 			if (_TrammelArea != null)
 			{
-				var image = _TrammelArea.GetImage();
-
-				image.Save("Honesty/Trammel.png", ImageFormat.Png);
+				_TrammelArea.Image.Save("Honesty/Trammel.png", ImageFormat.Png);
 			}
 		}
-		
+
 		public static void Initialize()
 		{
 			EventSink.ItemDeleted += OnItemDeleted;
@@ -114,19 +118,59 @@ namespace Server.Services.Virtues
 		{
 			_Items.RemoveAll(ItemFlags.GetTaken);
 		}
-
+		/*
 		private static bool ValidateSpawnPoint(Map map, int x, int y, int z)
 		{
-			var r = Region.Find(new Point3D(x,y,z),map);
+			return TreasureMap.ValidateLocation(x, y, map);
+		}
+		*/
+		private static bool ValidateSpawnPoint(Map map, int x, int y, int z)
+		{
+			var lt = map.Tiles.GetLandTile(x, y);
+			var ld = TileData.LandTable[lt.ID];
 
-			if (r.IsPartOf<GuardedRegion>() || r.IsPartOf<DungeonRegion>())
+			if (lt.Ignored || (ld.Flags & TileFlag.Impassable) > 0)
 			{
 				return false;
 			}
 
+			for (var i = 0; i < HousePlacement.RoadIDs.Length; i += 2)
+			{
+				if (lt.ID >= HousePlacement.RoadIDs[i] && lt.ID <= HousePlacement.RoadIDs[i + 1])
+				{
+					return false;
+				}
+			}
+
+			var p = new Point3D(x, y, lt.Z);
+
+			var reg = Region.Find(p, map);
+
+			//no-go in towns, houses, dungeons and champspawns
+			if (reg != null)
+			{
+				if (reg.IsPartOf<TownRegion>() || reg.IsPartOf<DungeonRegion>() ||
+					reg.IsPartOf<ChampionSpawnRegion>() || reg.IsPartOf<HouseRegion>())
+				{
+					return false;
+				}
+			}
+
+			//check for house within 5 tiles
+			for (p.X = x - 5; p.X <= x + 5; p.X++)
+			{
+				for (p.Y = y - 5; p.Y <= y + 5; p.Y++)
+				{
+					if (BaseHouse.FindHouseAt(p, map, Region.MaxZ - p.Z) != null)
+					{
+						return false;
+					}
+				}
+			}
+
 			return true;
 		}
-
+		
 		private static void GenerateHonestyItems()
 		{
 			CheckChests();
@@ -264,13 +308,12 @@ namespace Server.Services.Virtues
 			catch (Exception e)
 			{
 				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine(" Failed!");
 				Console.WriteLine(e);
 				Utility.PopColor();
 			}
 
 			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Honesty generation completed in {0:F2} seconds.", s);
+			Console.WriteLine("[Honesty]: Generation completed in {0:F2} seconds.", s);
 			Utility.PopColor();
 		}
 
