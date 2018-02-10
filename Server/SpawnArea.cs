@@ -85,9 +85,6 @@ namespace Server
 				yield break;
 			}
 
-			var w = Math.Min(rect.Width, Stride);
-			var h = Math.Min(rect.Height, Stride);
-
 			int x, y, z = Math.Min(rect.Start.Z, rect.End.Z);
 			int ow, oh, od = rect.Depth;
 
@@ -95,13 +92,13 @@ namespace Server
 
 			while (x < rect.End.X)
 			{
-				ow = Math.Min(w, rect.End.X - x);
+				ow = Math.Min(Stride, rect.End.X - x);
 				
 				y = rect.Start.Y;
 
 				while (y < rect.End.Y)
 				{
-					oh = Math.Min(h, rect.End.Y - y);
+					oh = Math.Min(Stride, rect.End.Y - y);
 					
 					yield return new Rectangle3D(x, y, z, ow, oh, od);
 
@@ -209,60 +206,66 @@ namespace Server
 				return _EmptyImage;
 			}
 
-			if (_Image != null)
+			lock (this)
 			{
-				return _Image;
+				if (_Image != null)
+				{
+					return _Image;
+				}
+
+				Ultima.Map umap;
+
+				switch (Facet.MapID)
+				{
+					case 0:
+						umap = Ultima.Map.Felucca;
+						break;
+					case 1:
+						umap = Ultima.Map.Trammel;
+						break;
+					case 2:
+						umap = Ultima.Map.Ilshenar;
+						break;
+					case 3:
+						umap = Ultima.Map.Malas;
+						break;
+					case 4:
+						umap = Ultima.Map.Tokuno;
+						break;
+					case 5:
+						umap = Ultima.Map.TerMur;
+						break;
+					default:
+						return _Image = _EmptyImage;
+				}
+
+				var map = new Bitmap(_Bounds.Width, _Bounds.Height, PixelFormat.Format16bppRgb555);
+
+				var b = new Rectangle(_Bounds.Start.X >> 3, _Bounds.Start.Y >> 3, _Bounds.Width >> 3, _Bounds.Height >> 3);
+
+				umap.GetImage(b.X, b.Y, b.Width, b.Height, map, true);
+
+				b = new Rectangle(Point.Empty, map.Size);
+
+				var data = map.LockBits(b, ImageLockMode.ReadWrite, map.PixelFormat);
+
+				b = new Rectangle(_Bounds.Start.X, _Bounds.Start.Y, _Bounds.Width, _Bounds.Height);
+
+				Parallel.ForEach(_Points.Values, o => SetPixel(o.X - b.X, o.Y - b.Y, data));
+
+				map.UnlockBits(data);
+
+				return _Image = map;
 			}
-
-			Ultima.Map umap;
-
-			switch (Facet.MapID)
-			{
-				case 0:
-					umap = Ultima.Map.Felucca;
-					break;
-				case 1:
-					umap = Ultima.Map.Trammel;
-					break;
-				case 2:
-					umap = Ultima.Map.Ilshenar;
-					break;
-				case 3:
-					umap = Ultima.Map.Malas;
-					break;
-				case 4:
-					umap = Ultima.Map.Tokuno;
-					break;
-				case 5:
-					umap = Ultima.Map.TerMur;
-					break;
-				default:
-					return _Image = _EmptyImage;
-			}
-
-			var b = new Rectangle(_Bounds.Start.X >> 3, _Bounds.Start.Y >> 3, _Bounds.Width, _Bounds.Height);
-
-			var map = new Bitmap(b.Width, b.Height, PixelFormat.Format16bppRgb565);
-
-			umap.GetImage(b.X, b.Y, b.Width >> 3, b.Height >> 3, map, true);
-
-			b = new Rectangle(Point.Empty, map.Size);
-
-			var data = map.LockBits(b, ImageLockMode.ReadWrite, map.PixelFormat);
-
-			Parallel.ForEach(_Points.Values, o => SetPixel(o.X, o.Y, data.Scan0, data.Stride));
-
-			map.UnlockBits(data);
-
-			return _Image = map;
 		}
 
-		private static unsafe void SetPixel(int x, int y, IntPtr ptr, int stride)
+		private static unsafe void SetPixel(int x, int y, BitmapData data)
 		{
-			var pixel = (byte*)ptr + (y * stride) + (x * 2);
+			var index = (y * data.Stride) + (x * 2);
+			var pixel = (byte*)data.Scan0.ToPointer();
 
-			pixel[0] = (PixelColor >> 0) & 0xFF;
-			pixel[1] = (PixelColor >> 8) & 0xFF;
+			pixel[index + 0] = (PixelColor >> 0) & 0xFF;
+			pixel[index + 1] = (PixelColor >> 8) & 0xFF;
 		}
 
 		public bool Contains(int x, int y)
