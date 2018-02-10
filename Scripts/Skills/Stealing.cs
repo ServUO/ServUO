@@ -348,10 +348,19 @@ namespace Server.SkillHandlers
 							}
 						}
 
-                        // Non-movable stealable items cannot result in the stealer getting caught
-                        if (stolen != null && stolen.Movable)
+                        // Non-movable stealable (not in fillable container) items cannot result in the stealer getting caught
+                        if (stolen != null && (root is FillableContainer || stolen.Movable))
                         {
-                            caught = (m_Thief.Skills[SkillName.Stealing].Value < Utility.Random(150));
+                            double skillValue = m_Thief.Skills[SkillName.Stealing].Value;
+
+                            if (root is FillableContainer)
+                            {
+                                caught = (Utility.Random((int)(skillValue / 2.5)) == 0); // 1 of 48 chance at 120
+                            }
+                            else
+                            {
+                                caught = (skillValue < Utility.Random(150));
+                            }
                         }
                         else
                         {

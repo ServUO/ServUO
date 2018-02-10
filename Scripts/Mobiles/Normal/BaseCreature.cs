@@ -6603,6 +6603,16 @@ namespace Server.Mobiles
             m_HealTimer = Timer.DelayCall(TimeSpan.FromSeconds(seconds), new TimerStateCallback(Heal_Callback), patient);
         }
 
+        public override void OnHitsChange(int oldValue)
+        {
+            if (ControlMaster != null && oldValue < HitsMax && Hits >= HitsMax)
+            {
+                BaseMount.GetMountPrevention(ControlMaster);
+            }
+
+            base.OnHitsChange(oldValue);
+        }
+
         private void Heal_Callback(object state)
         {
             if (state is Mobile)

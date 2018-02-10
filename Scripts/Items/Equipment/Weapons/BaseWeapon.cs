@@ -1537,7 +1537,7 @@ namespace Server.Items
 
 			WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
 
-            if (a != null && (!a.OnBeforeSwing(attacker, defender) || SkillMasterySpell.CancelWeaponAbility(attacker)))
+            if (a != null && (!a.OnBeforeSwing(attacker, defender) /*|| SkillMasterySpell.CancelWeaponAbility(attacker)*/))
             {
                 WeaponAbility.ClearCurrentAbility(attacker);
             }
