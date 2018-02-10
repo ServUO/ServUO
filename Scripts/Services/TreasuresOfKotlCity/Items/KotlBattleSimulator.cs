@@ -14,6 +14,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public static Rectangle2D SpawnBounds = new Rectangle2D(500, 2272, 87, 71);
         public static Type[] SpawnTypes = new Type[] { typeof(SpectralKotlWarrior), typeof(SpectralMyrmidexWarrior) };
 
+        public static TimeSpan BattleDuration = TimeSpan.FromMinutes(60);
         public static TimeSpan NextSpawnDuration { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(2, 25)); } }
 
         private bool _Active;
@@ -52,6 +53,8 @@ namespace Server.Engines.TreasuresOfKotlCity
         public int SpawnPerWave { get { return 10 + (Level * 2); } }
         public int KillsPerWave { get { return 20 + (Level * 2); } }
 
+        public Timer Timer { get; set; }
+
         public KotlBattleSimulator()
             : base(40147)
         {
@@ -66,9 +69,28 @@ namespace Server.Engines.TreasuresOfKotlCity
             Kills = 0;
             Level = 0;
 
+            StartTimer();
+
             for (int i = 0; i < SpawnPerWave; i++)
             {
                 Timer.DelayCall(NextSpawnDuration, DoSpawn);
+            }
+        }
+
+        public void StartTimer()
+        {
+            EndTimer();
+
+            Timer = Timer.DelayCall(BattleDuration, EndSimulation());
+            Timer.Start();
+        }
+
+        public void EndTimer()
+        {
+            if (Timer != null)
+            {
+                Timer.Stop();
+                Timer = null;
             }
         }
 
@@ -84,6 +106,7 @@ namespace Server.Engines.TreasuresOfKotlCity
                     if (Level >= Levels)
                     {
                         EndSimulation();
+                        return;
                     }
                     else
                     {
@@ -114,6 +137,8 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public void EndSimulation()
         {
+            EndTimer();
+
             if (WheelsOfTime.RockBarrier == null || WheelsOfTime.RockBarrier.Deleted)
             {
                 WheelsOfTime.RockBarrier = new KotlWallAddon();

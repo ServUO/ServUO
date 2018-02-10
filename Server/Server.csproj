@@ -180,10 +180,6 @@
     <Compile Include="Gumps\GumpTextEntry.cs" />
     <Compile Include="Gumps\GumpTextEntryLimited.cs" />
     <Compile Include="Gumps\GumpTooltip.cs" />
-    <Compile Include="Gumps\KRGumpButton.cs" />
-    <Compile Include="Gumps\KRGumpHtmlLocalized.cs" />
-    <Compile Include="Gumps\KRGumpImage.cs" />
-    <Compile Include="Gumps\KRGumpLabel.cs" />
     <Compile Include="Gumps\RelayInfo.cs" />
     <Compile Include="Network\PingListener.cs" />
     <Compile Include="Persistence\Persistence.cs" />

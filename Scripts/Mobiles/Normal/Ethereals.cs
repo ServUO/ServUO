@@ -753,7 +753,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public EtherealUnicorn()
-            : base(0x25CE, 0x3E9B, 0x3EB4)
+            : base(0x25CE, 0x3E9B, 0x3EB4, DefaultEtherealHue)
         { }
 
         public EtherealUnicorn(Serial serial)
@@ -765,7 +765,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(1); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -778,6 +778,11 @@ namespace Server.Mobiles
             {
                 NonTransparentMountedID = 0x3EB4;
                 Transparent = true;
+            }
+
+            if (version == 1)
+            {
+                TransparentMountedHue = DefaultEtherealHue;
             }
         }
     }
@@ -819,7 +824,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public EtherealKirin()
-            : base(0x25A0, 0x3E9C, 0x3EAD)
+            : base(0x25A0, 0x3E9C, 0x3EAD, DefaultEtherealHue)
         { }
 
         public EtherealKirin(Serial serial)
@@ -831,7 +836,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(1); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -844,6 +849,11 @@ namespace Server.Mobiles
             {
                 NonTransparentMountedID = 0x3EAD;
                 Transparent = true;
+            }
+
+            if (version == 1)
+            {
+                TransparentMountedHue = DefaultEtherealHue;
             }
         }
     }
