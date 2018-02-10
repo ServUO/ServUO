@@ -81,7 +81,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         {
             EndTimer();
 
-            Timer = Timer.DelayCall(BattleDuration, EndSimulation());
+            Timer = Timer.DelayCall(BattleDuration, EndSimulation);
             Timer.Start();
         }
 
