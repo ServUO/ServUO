@@ -10,7 +10,8 @@ namespace Server.Mobiles
         public SpeckledScorpion()
             : base()
         {
-            this.Name = "a speckled scorpion";
+            Name = "a speckled scorpion";
+            Tamable = false;
         }
 
         public SpeckledScorpion(Serial serial)
