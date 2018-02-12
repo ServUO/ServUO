@@ -10,7 +10,6 @@ namespace Server.Items
             : base()
         {
             Hue = 0x21;
-            NegativeAttributes.NoRepair = 1;
         }
 
         public SentinelsGuard(Serial serial)
@@ -85,7 +84,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write((int)2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -93,6 +92,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 1)
+            {
+                NegativeAttributes.NoRepair = 0;
+            }
         }
     }
 }

@@ -854,6 +854,7 @@
     <Compile Include="Items\Functional\CoralTheOwl.cs" />
     <Compile Include="Items\Functional\DragonTurtleEgg.cs" />
     <Compile Include="Items\Functional\EtherealRetouchingTool.cs" />
+    <Compile Include="Items\Functional\GoblinFloorTrap.cs" />
     <Compile Include="Items\Functional\HouseCraftables.cs" />
     <Compile Include="Items\Functional\Incubator.cs" />
     <Compile Include="Items\Functional\ScaleCollar.cs" />
@@ -940,6 +941,7 @@
     <Compile Include="Items\Resource\SmallFish.cs" />
     <Compile Include="Items\Resource\WorkableGlass.cs" />
     <Compile Include="Items\StoreBought\MerchantsTrinket.cs" />
+    <Compile Include="Items\StoreBought\MythicalCharacterToken.cs" />
     <Compile Include="Items\StoreBought\PetBrandingIron.cs" />
     <Compile Include="Items\StoreBought\SmugglersEdge.cs" />
     <Compile Include="Items\StoreBought\StableSlotIncreaseToken.cs" />
@@ -3332,6 +3334,12 @@
     <Compile Include="Services\ExploringTheDeep\Questers\SBHepler.cs" />
     <Compile Include="Services\ExploringTheDeep\Regions.cs" />
     <Compile Include="Services\Factions\Core\Persistence.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\CollectionBox.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\EnhanctedBandage.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\FactionEquipment.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\PowderOfPerseverance.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\ShrineGem.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\StrongholdRune.cs" />
     <Compile Include="Services\FireCasino\CasinoGumps.cs" />
     <Compile Include="Services\FireCasino\DiceGames.cs" />
     <Compile Include="Services\FireCasino\FortuesFireGrog.cs" />

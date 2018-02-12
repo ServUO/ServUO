@@ -11,10 +11,14 @@ namespace Server.Mobiles
     {
         public virtual Item GetPelt { get { return new TigerPelt(4); } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual bool CanRide { get; set; }
+
         [Constructable]
         public WildTiger()
             : this("a wild tiger")
         {
+            CanRide = false;
         }
 
         [Constructable]
@@ -54,6 +58,22 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 95.1;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (CanRide)
+                base.OnDoubleClick(from);
+
+            else if (from.AccessLevel >= AccessLevel.GameMaster && !Body.IsHuman)
+            {
+                Container pack = Backpack;
+
+                if (pack != null)
+                {
+                    pack.DisplayTo(from);
+                }
+            }
         }
 
         public override int GetIdleSound() { return 0x673; }
@@ -97,7 +117,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+
+            writer.Write(CanRide);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -105,6 +127,18 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    CanRide = reader.ReadBool();
+                    break;
+                case 0:
+                    break;
+            }
+
+            if (version == 0 && Rider != null)
+                Rider = null;
         }
     }
 

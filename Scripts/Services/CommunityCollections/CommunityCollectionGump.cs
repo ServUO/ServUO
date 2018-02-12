@@ -229,7 +229,7 @@ namespace Server.Gumps
 
                 int height = Math.Max(item.Height, 20);
 				
-                if (points >= item.Points)
+                if (points >= item.Points && item.CanSelect(m_Owner))
                 {
                     AddButton(35, offset + (int)(height / 2) - 5, 0x837, 0x838, 200 + m_Index, GumpButtonType.Reply, 0);
                     AddTooltip(item.Tooltip);
@@ -340,21 +340,24 @@ namespace Server.Gumps
             {
                 CollectionItem item = m_Collection.Rewards[info.ButtonID - 200];
                 int points = m_Owner.GetCollectionPoints(m_Collection.CollectionID);
-				
-                if (item.Points <= points)
+
+                if (item.CanSelect(m_Owner))
                 {
-                    if (item is CollectionHuedItem)
-					{
-						m_Owner.SendGump(new CommunityCollectionGump(m_Owner, m_Collection, m_Location, Section.Hues, (CollectionHuedItem)item));
-					}
-					else
-					{
-						m_Owner.CloseGump(typeof(ConfirmRewardGump));
-						m_Owner.SendGump(new ConfirmRewardGump(m_Collection, m_Location, item, 0));
-					}
-				}
-                else
-                    m_Owner.SendLocalizedMessage(1073122); // You don't have enough points for that!
+                    if (item.Points <= points)
+                    {
+                        if (item is CollectionHuedItem)
+                        {
+                            m_Owner.SendGump(new CommunityCollectionGump(m_Owner, m_Collection, m_Location, Section.Hues, (CollectionHuedItem)item));
+                        }
+                        else
+                        {
+                            m_Owner.CloseGump(typeof(ConfirmRewardGump));
+                            m_Owner.SendGump(new ConfirmRewardGump(m_Collection, m_Location, item, 0));
+                        }
+                    }
+                    else
+                        m_Owner.SendLocalizedMessage(1073122); // You don't have enough points for that!
+                }
             }
             else if (info.ButtonID >= 100 && m_Item != null && info.ButtonID - 200 < m_Item.Hues.Length && m_Section == Section.Hues)
 			{

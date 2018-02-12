@@ -2752,8 +2752,7 @@ namespace Server.Items
                 list.Add(1111880); // Altered
 
             #region Factions
-            if (m_FactionState != null)
-                list.Add(1041350); // faction item
+            FactionEquipment.AddFactionProperties(this, list);
             #endregion
 
             if (m_GorgonLenseCharges > 0)

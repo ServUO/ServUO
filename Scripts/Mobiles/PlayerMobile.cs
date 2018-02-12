@@ -1257,187 +1257,187 @@ namespace Server.Mobiles
 				Ethic ethic = Ethic.Find(from);
 				#endregion
 
-				for (int i = items.Count - 1; i >= 0; --i)
-				{
-					if (i >= items.Count)
-					{
-						continue;
-					}
+                for (int i = items.Count - 1; i >= 0; --i)
+                {
+                    if (i >= items.Count)
+                    {
+                        continue;
+                    }
 
-					Item item = items[i];
+                    Item item = items[i];
 
-					#region Ethics
-					if ((item.SavedFlags & 0x100) != 0)
-					{
-						if (item.Hue != Ethic.Hero.Definition.PrimaryHue)
-						{
-							item.SavedFlags &= ~0x100;
-						}
-						else if (ethic != Ethic.Hero)
-						{
-							from.AddToBackpack(item);
-							moved = true;
-							continue;
-						}
-					}
-					else if ((item.SavedFlags & 0x200) != 0)
-					{
-						if (item.Hue != Ethic.Evil.Definition.PrimaryHue)
-						{
-							item.SavedFlags &= ~0x200;
-						}
-						else if (ethic != Ethic.Evil)
-						{
-							from.AddToBackpack(item);
-							moved = true;
-							continue;
-						}
-					}
-					#endregion
+                    #region Ethics
+                    if ((item.SavedFlags & 0x100) != 0)
+                    {
+                        if (item.Hue != Ethic.Hero.Definition.PrimaryHue)
+                        {
+                            item.SavedFlags &= ~0x100;
+                        }
+                        else if (ethic != Ethic.Hero)
+                        {
+                            from.AddToBackpack(item);
+                            moved = true;
+                            continue;
+                        }
+                    }
+                    else if ((item.SavedFlags & 0x200) != 0)
+                    {
+                        if (item.Hue != Ethic.Evil.Definition.PrimaryHue)
+                        {
+                            item.SavedFlags &= ~0x200;
+                        }
+                        else if (ethic != Ethic.Evil)
+                        {
+                            from.AddToBackpack(item);
+                            moved = true;
+                            continue;
+                        }
+                    }
+                    #endregion
 
                     bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
 
-					if (item is BaseWeapon)
-					{
-						BaseWeapon weapon = (BaseWeapon)item;
+                    if (item is BaseWeapon)
+                    {
+                        BaseWeapon weapon = (BaseWeapon)item;
 
-						bool drop = false;
+                        bool drop = false;
 
-						if (dex < weapon.DexRequirement)
-						{
-							drop = true;
-						}
-						else if (str < AOS.Scale(weapon.StrRequirement, 100 - weapon.GetLowerStatReq()))
-						{
-							drop = true;
-						}
-						else if (intel < weapon.IntRequirement)
-						{
-							drop = true;
-						}
+                        if (dex < weapon.DexRequirement)
+                        {
+                            drop = true;
+                        }
+                        else if (str < AOS.Scale(weapon.StrRequirement, 100 - weapon.GetLowerStatReq()))
+                        {
+                            drop = true;
+                        }
+                        else if (intel < weapon.IntRequirement)
+                        {
+                            drop = true;
+                        }
                         else if (weapon.RequiredRace != null && weapon.RequiredRace != Race && !morph)
-						{
-							drop = true;
-						}
+                        {
+                            drop = true;
+                        }
 
-						if (drop)
-						{
-							string name = weapon.Name;
+                        if (drop)
+                        {
+                            string name = weapon.Name;
 
-							if (name == null)
-							{
-								name = String.Format("#{0}", weapon.LabelNumber);
-							}
+                            if (name == null)
+                            {
+                                name = String.Format("#{0}", weapon.LabelNumber);
+                            }
 
-							from.SendLocalizedMessage(1062001, name); // You can no longer wield your ~1_WEAPON~
-							from.AddToBackpack(weapon);
-							moved = true;
-						}
-					}
-					else if (item is BaseArmor)
-					{
-						BaseArmor armor = (BaseArmor)item;
+                            from.SendLocalizedMessage(1062001, name); // You can no longer wield your ~1_WEAPON~
+                            from.AddToBackpack(weapon);
+                            moved = true;
+                        }
+                    }
+                    else if (item is BaseArmor)
+                    {
+                        BaseArmor armor = (BaseArmor)item;
 
-						bool drop = false;
+                        bool drop = false;
 
-						if (!armor.AllowMaleWearer && !from.Female && from.AccessLevel < AccessLevel.GameMaster)
-						{
-							drop = true;
-						}
-						else if (!armor.AllowFemaleWearer && from.Female && from.AccessLevel < AccessLevel.GameMaster)
-						{
-							drop = true;
-						}
+                        if (!armor.AllowMaleWearer && !from.Female && from.AccessLevel < AccessLevel.GameMaster)
+                        {
+                            drop = true;
+                        }
+                        else if (!armor.AllowFemaleWearer && from.Female && from.AccessLevel < AccessLevel.GameMaster)
+                        {
+                            drop = true;
+                        }
                         else if (armor.RequiredRace != null && armor.RequiredRace != Race && !morph)
-						{
-							drop = true;
-						}
-						else
-						{
-							int strBonus = armor.ComputeStatBonus(StatType.Str), strReq = armor.ComputeStatReq(StatType.Str);
-							int dexBonus = armor.ComputeStatBonus(StatType.Dex), dexReq = armor.ComputeStatReq(StatType.Dex);
-							int intBonus = armor.ComputeStatBonus(StatType.Int), intReq = armor.ComputeStatReq(StatType.Int);
+                        {
+                            drop = true;
+                        }
+                        else
+                        {
+                            int strBonus = armor.ComputeStatBonus(StatType.Str), strReq = armor.ComputeStatReq(StatType.Str);
+                            int dexBonus = armor.ComputeStatBonus(StatType.Dex), dexReq = armor.ComputeStatReq(StatType.Dex);
+                            int intBonus = armor.ComputeStatBonus(StatType.Int), intReq = armor.ComputeStatReq(StatType.Int);
 
-							if (dex < dexReq || (dex + dexBonus) < 1)
-							{
-								drop = true;
-							}
-							else if (str < strReq || (str + strBonus) < 1)
-							{
-								drop = true;
-							}
-							else if (intel < intReq || (intel + intBonus) < 1)
-							{
-								drop = true;
-							}
-						}
+                            if (dex < dexReq || (dex + dexBonus) < 1)
+                            {
+                                drop = true;
+                            }
+                            else if (str < strReq || (str + strBonus) < 1)
+                            {
+                                drop = true;
+                            }
+                            else if (intel < intReq || (intel + intBonus) < 1)
+                            {
+                                drop = true;
+                            }
+                        }
 
-						if (drop)
-						{
-							string name = armor.Name;
+                        if (drop)
+                        {
+                            string name = armor.Name;
 
-							if (name == null)
-							{
-								name = String.Format("#{0}", armor.LabelNumber);
-							}
+                            if (name == null)
+                            {
+                                name = String.Format("#{0}", armor.LabelNumber);
+                            }
 
-							if (armor is BaseShield)
-							{
-								from.SendLocalizedMessage(1062003, name); // You can no longer equip your ~1_SHIELD~
-							}
-							else
-							{
-								from.SendLocalizedMessage(1062002, name); // You can no longer wear your ~1_ARMOR~
-							}
+                            if (armor is BaseShield)
+                            {
+                                from.SendLocalizedMessage(1062003, name); // You can no longer equip your ~1_SHIELD~
+                            }
+                            else
+                            {
+                                from.SendLocalizedMessage(1062002, name); // You can no longer wear your ~1_ARMOR~
+                            }
 
-							from.AddToBackpack(armor);
-							moved = true;
-						}
-					}
-					else if (item is BaseClothing)
-					{
-						BaseClothing clothing = (BaseClothing)item;
+                            from.AddToBackpack(armor);
+                            moved = true;
+                        }
+                    }
+                    else if (item is BaseClothing)
+                    {
+                        BaseClothing clothing = (BaseClothing)item;
 
-						bool drop = false;
+                        bool drop = false;
 
-						if (!clothing.AllowMaleWearer && !from.Female && from.AccessLevel < AccessLevel.GameMaster)
-						{
-							drop = true;
-						}
-						else if (!clothing.AllowFemaleWearer && from.Female && from.AccessLevel < AccessLevel.GameMaster)
-						{
-							drop = true;
-						}
+                        if (!clothing.AllowMaleWearer && !from.Female && from.AccessLevel < AccessLevel.GameMaster)
+                        {
+                            drop = true;
+                        }
+                        else if (!clothing.AllowFemaleWearer && from.Female && from.AccessLevel < AccessLevel.GameMaster)
+                        {
+                            drop = true;
+                        }
                         else if (clothing.RequiredRace != null && clothing.RequiredRace != Race && !morph)
-						{
-							drop = true;
-						}
-						else
-						{
-							int strBonus = clothing.ComputeStatBonus(StatType.Str);
-							int strReq = clothing.ComputeStatReq(StatType.Str);
+                        {
+                            drop = true;
+                        }
+                        else
+                        {
+                            int strBonus = clothing.ComputeStatBonus(StatType.Str);
+                            int strReq = clothing.ComputeStatReq(StatType.Str);
 
-							if (str < strReq || (str + strBonus) < 1)
-							{
-								drop = true;
-							}
-						}
+                            if (str < strReq || (str + strBonus) < 1)
+                            {
+                                drop = true;
+                            }
+                        }
 
-						if (drop)
-						{
-							string name = clothing.Name;
+                        if (drop)
+                        {
+                            string name = clothing.Name;
 
-							if (name == null)
-							{
-								name = String.Format("#{0}", clothing.LabelNumber);
-							}
+                            if (name == null)
+                            {
+                                name = String.Format("#{0}", clothing.LabelNumber);
+                            }
 
-							from.SendLocalizedMessage(1062002, name); // You can no longer wear your ~1_ARMOR~
+                            from.SendLocalizedMessage(1062002, name); // You can no longer wear your ~1_ARMOR~
 
-							from.AddToBackpack(clothing);
-							moved = true;
-						}
-					}
+                            from.AddToBackpack(clothing);
+                            moved = true;
+                        }
+                    }
                     else if (item is BaseQuiver)
                     {
                         if (Race == Race.Gargoyle)
@@ -1449,28 +1449,36 @@ namespace Server.Mobiles
                         }
                     }
 
-					FactionItem factionItem = FactionItem.Find(item);
+                    FactionItem factionItem = FactionItem.Find(item);
 
-					if (factionItem != null)
-					{
-						bool drop = false;
+                    if (factionItem != null)
+                    {
+                        bool drop = false;
 
-						Faction ourFaction = Faction.Find(this);
+                        PlayerState state = PlayerState.Find(this);
+                        Faction ourFaction = null;
 
-						if (ourFaction == null || ourFaction != factionItem.Faction)
-						{
-							drop = true;
-						}
-						else if (++factionItemCount > FactionItem.GetMaxWearables(this))
-						{
-							drop = true;
-						}
+                        if (state != null)
+                            ourFaction = state.Faction;
 
-						if (drop)
-						{
-							from.AddToBackpack(item);
-							moved = true;
-						}
+                        if (ourFaction == null || ourFaction != factionItem.Faction)
+                        {
+                            drop = true;
+                        }
+                        else if (state != null && state.Rank.Rank < factionItem.MinRank)
+                        {
+                            drop = true;
+                        }
+                        else if (++factionItemCount > FactionItem.GetMaxWearables(this))
+                        {
+                            drop = true;
+                        }
+
+                        if (drop)
+                        {
+                            from.AddToBackpack(item);
+                            moved = true;
+                        }
                     }
 
                     #region Vice Vs Virtue
@@ -2992,7 +3000,13 @@ namespace Server.Mobiles
 
 			if (factionItem != null)
 			{
-				Faction faction = Faction.Find(this);
+                PlayerState state = PlayerState.Find(this);
+                Faction faction = null;
+
+                if (state != null)
+                {
+                    faction = state.Faction;
+                }
 
 				if (faction == null)
 				{
@@ -3004,26 +3018,40 @@ namespace Server.Mobiles
 					SendLocalizedMessage(1010372); // You cannot equip an opposing faction's item!
 					return false;
 				}
-				else
-				{
-					int maxWearables = FactionItem.GetMaxWearables(this);
+                else if (state != null && state.Rank.Rank < factionItem.MinRank)
+                {
+                    SendLocalizedMessage(1094804); // You are not high enough in rank to equip this item.
+                    return false;
+                }
+                else
+                {
+                    int maxWearables = FactionItem.GetMaxWearables(this);
 
-					for (int i = 0; i < Items.Count; ++i)
-					{
-						Item equiped = Items[i];
+                    for (int i = 0; i < Items.Count; ++i)
+                    {
+                        Item equiped = Items[i];
 
-						if (item != equiped && FactionItem.Find(equiped) != null)
-						{
-							if (--maxWearables == 0)
-							{
-								SendLocalizedMessage(1010373); // You do not have enough rank to equip more faction items!
-								return false;
-							}
-						}
-					}
-				}
+                        if (item != equiped && FactionItem.Find(equiped) != null)
+                        {
+                            if (--maxWearables == 0)
+                            {
+                                SendLocalizedMessage(1010373); // You do not have enough rank to equip more faction items!
+                                return false;
+                            }
+                        }
+                    }
+                }
 			}
 			#endregion
+
+            #region Vice Vs Virtue
+            IVvVItem vvvItem = item as IVvVItem;
+
+            if (vvvItem != null && vvvItem.IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(this))
+            {
+                return false;
+            }
+            #endregion
 
 			if (AccessLevel < AccessLevel.GameMaster && item.Layer != Layer.Mount && HasTrade)
 			{
@@ -3075,6 +3103,10 @@ namespace Server.Mobiles
                 else if (to is PlayerMobile && ((PlayerMobile)to).RefuseTrades)
                 {
                     msgNum = 1154111; // ~1_NAME~ is refusing all trades.
+                }
+                else if (item is IFactionItem && ((IFactionItem)item).FactionItemState != null)
+                {
+                    msgNum = 1094803; // This faction reward is bound to you, and cannot be traded.
                 }
 			}
 
