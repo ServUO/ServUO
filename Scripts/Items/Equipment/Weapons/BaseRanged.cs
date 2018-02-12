@@ -67,7 +67,7 @@ namespace Server.Items
 		public override TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
 		{
 			// Make sure we've been standing still for .25/.5/1 second depending on Era
-			if (Core.TickCount - attacker.LastMoveTime >= (Core.SE ? 250 : Core.AOS ? 500 : 1000) ||
+			if (Core.TickCount - attacker.LastMoveTime >= (Core.SE ? 350 : Core.AOS ? 500 : 1000) ||
 				(Core.AOS && WeaponAbility.GetCurrentAbility(attacker) is MovingShot))
 			{
 				bool canSwing = true;

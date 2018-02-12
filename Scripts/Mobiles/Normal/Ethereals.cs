@@ -720,7 +720,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public EtherealRidgeback()
-            : base(0x2615, 0x3E9A, 0x3EBA)
+            : base(0x2615, 0x3E9A, 0x3EBA, DefaultEtherealHue)
         { }
 
         public EtherealRidgeback(Serial serial)
@@ -732,7 +732,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(1); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -745,6 +745,11 @@ namespace Server.Mobiles
             {
                 NonTransparentMountedID = 0x3EBA;
                 Transparent = true;
+            }
+
+            if (version == 1)
+            {
+                TransparentMountedHue = DefaultEtherealHue;
             }
         }
     }
@@ -791,7 +796,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public EtherealBeetle()
-            : base(0x260F, 0x3E97, 0x3EBC)
+            : base(0x260F, 0x3E97, 0x3EBC, DefaultEtherealHue)
         { }
 
         public EtherealBeetle(Serial serial)
@@ -803,7 +808,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(1); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -816,6 +821,11 @@ namespace Server.Mobiles
             {
                 NonTransparentMountedID = 0x3EBC;
                 Transparent = true;
+            }
+
+            if (version == 1)
+            {
+                TransparentMountedHue = DefaultEtherealHue;
             }
         }
     }
