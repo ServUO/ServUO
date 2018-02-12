@@ -281,13 +281,13 @@ namespace Server.Items
                 var entry3 = info.GetTextEntry(3);
 
                 if (entry1 != null)
-                    Str = Math.Max(10, Utility.ToInt32(entry1.Text));
+                    Str = Math.Min(125, Math.Max(10, Utility.ToInt32(entry1.Text)));
 
                 if (entry2 != null)
-                    Dex = Math.Max(10, Utility.ToInt32(entry2.Text));
+                    Dex = Math.Min(125, Math.Max(10, Utility.ToInt32(entry2.Text)));
 
                 if (entry3 != null)
-                    Int = Math.Max(10, Utility.ToInt32(entry3.Text));
+                    Int = Math.Min(125, Math.Max(10, Utility.ToInt32(entry3.Text)));
             }
 
             private bool CanSelect(SkillName skill)
