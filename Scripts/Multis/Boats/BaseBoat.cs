@@ -1830,7 +1830,7 @@ namespace Server.Multis
         {
             foreach (var ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e) && e != m_TillerMan))
             {
-                ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z);
+                ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z + xOffset);
             }
 
             Location = new Point3D(X + xOffset, Y + yOffset, Z + zOffset);

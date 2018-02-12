@@ -281,14 +281,14 @@ namespace Server.Items
 
                 if (reward.QuestItem)
                     CollectionsObtainObjective.CheckReward(player, item);
+
+                reward.OnGiveReward(player, item, this, hue);
             }
             else if (item != null)
             {
                 player.SendLocalizedMessage(1074361); // The reward could not be given.  Make sure you have room in your pack.
                 item.Delete();
             }
-			
-            reward.OnGiveReward(player, this, hue);
 
 			player.CloseGump(typeof(CommunityCollectionGump));
             player.SendGump(new CommunityCollectionGump(player, this, Location));

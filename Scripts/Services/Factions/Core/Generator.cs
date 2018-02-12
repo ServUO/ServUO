@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Commands;
+using System.Linq;
 
 namespace Server.Factions
 {
@@ -24,6 +25,15 @@ namespace Server.Factions
                 if (!sig.Deleted)
                     sig.Delete();
             }
+
+            List<Item> items = new List<Item>(World.Items.Values.Where(i => i is StrongholdRune || i is ShrineGem || i is EnchantedBandage || i is PowderOfPerseverance));
+
+            foreach (var item in items)
+            {
+                item.Delete();
+            }
+
+            ColUtility.Free(items);
         }
 
 		public static void DeleteFactions_OnCommand(CommandEventArgs e)
@@ -110,6 +120,13 @@ namespace Server.Factions
 					WeakEntityCollection.Add("factions", mono);
 					mono.MoveToWorld(monolith, facet);
 				}
+            }
+
+            if (Core.ML && !CheckExistance(stronghold.FactionStone, facet, typeof(FactionCollectionBox)))
+            {
+                FactionCollectionBox box = new FactionCollectionBox(faction);
+                WeakEntityCollection.Add("factions", box);
+                box.MoveToWorld(stronghold.CollectionBox, facet);
             }
         }
 

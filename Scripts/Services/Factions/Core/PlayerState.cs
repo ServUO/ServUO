@@ -20,20 +20,21 @@ namespace Server.Factions
         private DateTime m_LastHonorTime;
         private bool m_InvalidateRank = true;
         private int m_RankIndex = -1;
+
         public PlayerState(Mobile mob, Faction faction, List<PlayerState> owner)
         {
-            this.m_Mobile = mob;
-            this.m_Faction = faction;
-            this.m_Owner = owner;
+            m_Mobile = mob;
+            m_Faction = faction;
+            m_Owner = owner;
 
-            this.Attach();
-            this.Invalidate();
+            Attach();
+            Invalidate();
         }
 
         public PlayerState(GenericReader reader, Faction faction, List<PlayerState> owner)
         {
-            this.m_Faction = faction;
-            this.m_Owner = owner;
+            m_Faction = faction;
+            m_Owner = owner;
 
             int version = reader.ReadEncodedInt();
 
@@ -41,125 +42,125 @@ namespace Server.Factions
             {
                 case 1:
                     {
-                        this.m_IsActive = reader.ReadBool();
-                        this.m_LastHonorTime = reader.ReadDateTime();
+                        m_IsActive = reader.ReadBool();
+                        m_LastHonorTime = reader.ReadDateTime();
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_Mobile = reader.ReadMobile();
+                        m_Mobile = reader.ReadMobile();
 
-                        this.m_KillPoints = reader.ReadEncodedInt();
-                        this.m_MerchantTitle = (MerchantTitle)reader.ReadEncodedInt();
+                        m_KillPoints = reader.ReadEncodedInt();
+                        m_MerchantTitle = (MerchantTitle)reader.ReadEncodedInt();
 
-                        this.m_Leaving = reader.ReadDateTime();
+                        m_Leaving = reader.ReadDateTime();
 
                         break;
                     }
             }
 
-            this.Attach();
+            Attach();
         }
 
         public Mobile Mobile
         {
             get
             {
-                return this.m_Mobile;
+                return m_Mobile;
             }
         }
         public Faction Faction
         {
             get
             {
-                return this.m_Faction;
+                return m_Faction;
             }
         }
         public List<PlayerState> Owner
         {
             get
             {
-                return this.m_Owner;
+                return m_Owner;
             }
         }
         public MerchantTitle MerchantTitle
         {
             get
             {
-                return this.m_MerchantTitle;
+                return m_MerchantTitle;
             }
             set
             {
-                this.m_MerchantTitle = value;
-                this.Invalidate();
+                m_MerchantTitle = value;
+                Invalidate();
             }
         }
         public Town Sheriff
         {
             get
             {
-                return this.m_Sheriff;
+                return m_Sheriff;
             }
             set
             {
-                this.m_Sheriff = value;
-                this.Invalidate();
+                m_Sheriff = value;
+                Invalidate();
             }
         }
         public Town Finance
         {
             get
             {
-                return this.m_Finance;
+                return m_Finance;
             }
             set
             {
-                this.m_Finance = value;
-                this.Invalidate();
+                m_Finance = value;
+                Invalidate();
             }
         }
         public List<SilverGivenEntry> SilverGiven
         {
             get
             {
-                return this.m_SilverGiven;
+                return m_SilverGiven;
             }
         }
         public int KillPoints
         { 
             get
             {
-                return this.m_KillPoints;
+                return m_KillPoints;
             }
             set
             { 
-                if (this.m_KillPoints != value)
+                if (m_KillPoints != value)
                 {
-                    if (value > this.m_KillPoints)
+                    if (value > m_KillPoints)
                     {
-                        if (this.m_KillPoints <= 0)
+                        if (m_KillPoints <= 0)
                         {
                             if (value <= 0)
                             {
-                                this.m_KillPoints = value;
-                                this.Invalidate();
+                                m_KillPoints = value;
+                                Invalidate();
                                 return;
                             }
 							
-                            this.m_Owner.Remove(this);
-                            this.m_Owner.Insert(this.m_Faction.ZeroRankOffset, this);
+                            m_Owner.Remove(this);
+                            m_Owner.Insert(m_Faction.ZeroRankOffset, this);
 
-                            this.m_RankIndex = this.m_Faction.ZeroRankOffset;
-                            this.m_Faction.ZeroRankOffset++;
+                            m_RankIndex = m_Faction.ZeroRankOffset;
+                            m_Faction.ZeroRankOffset++;
                         }
-                        while ((this.m_RankIndex - 1) >= 0)
+                        while ((m_RankIndex - 1) >= 0)
                         {
-                            PlayerState p = this.m_Owner[this.m_RankIndex - 1] as PlayerState;
+                            PlayerState p = m_Owner[m_RankIndex - 1] as PlayerState;
                             if (value > p.KillPoints)
                             {
-                                this.m_Owner[this.m_RankIndex] = p;
-                                this.m_Owner[this.m_RankIndex - 1] = this;
-                                this.RankIndex--;
+                                m_Owner[m_RankIndex] = p;
+                                m_Owner[m_RankIndex - 1] = this;
+                                RankIndex--;
                                 p.RankIndex++;
                             }
                             else
@@ -170,35 +171,35 @@ namespace Server.Factions
                     {
                         if (value <= 0)
                         {
-                            if (this.m_KillPoints <= 0)
+                            if (m_KillPoints <= 0)
                             {
-                                this.m_KillPoints = value;
-                                this.Invalidate();
+                                m_KillPoints = value;
+                                Invalidate();
                                 return;
                             }
 
-                            while ((this.m_RankIndex + 1) < this.m_Faction.ZeroRankOffset)
+                            while ((m_RankIndex + 1) < m_Faction.ZeroRankOffset)
                             {
-                                PlayerState p = this.m_Owner[this.m_RankIndex + 1] as PlayerState;
-                                this.m_Owner[this.m_RankIndex + 1] = this;
-                                this.m_Owner[this.m_RankIndex] = p;
-                                this.RankIndex++;
+                                PlayerState p = m_Owner[m_RankIndex + 1] as PlayerState;
+                                m_Owner[m_RankIndex + 1] = this;
+                                m_Owner[m_RankIndex] = p;
+                                RankIndex++;
                                 p.RankIndex--;
                             }
 
-                            this.m_RankIndex = -1;
-                            this.m_Faction.ZeroRankOffset--;
+                            m_RankIndex = -1;
+                            m_Faction.ZeroRankOffset--;
                         }
                         else
                         {
-                            while ((this.m_RankIndex + 1) < this.m_Faction.ZeroRankOffset)
+                            while ((m_RankIndex + 1) < m_Faction.ZeroRankOffset)
                             {
-                                PlayerState p = this.m_Owner[this.m_RankIndex + 1] as PlayerState;
+                                PlayerState p = m_Owner[m_RankIndex + 1] as PlayerState;
                                 if (value < p.KillPoints)
                                 {
-                                    this.m_Owner[this.m_RankIndex + 1] = this;
-                                    this.m_Owner[this.m_RankIndex] = p;
-                                    this.RankIndex++;
+                                    m_Owner[m_RankIndex + 1] = this;
+                                    m_Owner[m_RankIndex] = p;
+                                    RankIndex++;
                                     p.RankIndex--;
                                 }
                                 else
@@ -207,8 +208,8 @@ namespace Server.Factions
                         }
                     }
 
-                    this.m_KillPoints = value;
-                    this.Invalidate();
+                    m_KillPoints = value;
+                    Invalidate();
                 }
             }
         }
@@ -216,14 +217,14 @@ namespace Server.Factions
         {
             get
             {
-                return this.m_RankIndex;
+                return m_RankIndex;
             }
             set
             {
-                if (this.m_RankIndex != value)
+                if (m_RankIndex != value)
                 {
-                    this.m_RankIndex = value;
-                    this.m_InvalidateRank = true;
+                    m_RankIndex = value;
+                    m_InvalidateRank = true;
                 }
             }
         }
@@ -231,17 +232,17 @@ namespace Server.Factions
         { 
             get
             { 
-                if (this.m_InvalidateRank)
+                if (m_InvalidateRank)
                 {
-                    RankDefinition[] ranks = this.m_Faction.Definition.Ranks;
+                    RankDefinition[] ranks = m_Faction.Definition.Ranks;
                     int percent;
 
-                    if (this.m_Owner.Count == 1)
+                    if (m_Owner.Count == 1)
                         percent = 1000;
-                    else if (this.m_RankIndex == -1)
+                    else if (m_RankIndex == -1)
                         percent = 0;
                     else
-                        percent = ((this.m_Faction.ZeroRankOffset - this.m_RankIndex) * 1000) / this.m_Faction.ZeroRankOffset;
+                        percent = ((m_Faction.ZeroRankOffset - m_RankIndex) * 1000) / m_Faction.ZeroRankOffset;
 
                     for (int i = 0; i < ranks.Length; i++)
                     {
@@ -249,56 +250,56 @@ namespace Server.Factions
 
                         if (percent >= check.Required)
                         {
-                            this.m_Rank = check;
-                            this.m_InvalidateRank = false;
+                            m_Rank = check;
+                            m_InvalidateRank = false;
                             break;
                         }
                     }
 
-                    this.Invalidate();
+                    Invalidate();
                 }
 
-                return this.m_Rank;
+                return m_Rank;
             }
         }
         public DateTime LastHonorTime
         {
             get
             {
-                return this.m_LastHonorTime;
+                return m_LastHonorTime;
             }
             set
             {
-                this.m_LastHonorTime = value;
+                m_LastHonorTime = value;
             }
         }
         public DateTime Leaving
         {
             get
             {
-                return this.m_Leaving;
+                return m_Leaving;
             }
             set
             {
-                this.m_Leaving = value;
+                m_Leaving = value;
             }
         }
         public bool IsLeaving
         {
             get
             {
-                return (this.m_Leaving > DateTime.MinValue);
+                return (m_Leaving > DateTime.MinValue);
             }
         }
         public bool IsActive
         {
             get
             {
-                return this.m_IsActive;
+                return m_IsActive;
             }
             set
             {
-                this.m_IsActive = value;
+                m_IsActive = value;
             }
         }
         public static PlayerState Find(Mobile mob)
@@ -311,15 +312,15 @@ namespace Server.Factions
 
         public bool CanGiveSilverTo(Mobile mob)
         {
-            if (this.m_SilverGiven == null)
+            if (m_SilverGiven == null)
                 return true;
 
-            for (int i = 0; i < this.m_SilverGiven.Count; ++i)
+            for (int i = 0; i < m_SilverGiven.Count; ++i)
             {
-                SilverGivenEntry sge = this.m_SilverGiven[i];
+                SilverGivenEntry sge = m_SilverGiven[i];
 
                 if (sge.IsExpired)
-                    this.m_SilverGiven.RemoveAt(i--);
+                    m_SilverGiven.RemoveAt(i--);
                 else if (sge.GivenTo == mob)
                     return false;
             }
@@ -329,17 +330,17 @@ namespace Server.Factions
 
         public void OnGivenSilverTo(Mobile mob)
         {
-            if (this.m_SilverGiven == null)
-                this.m_SilverGiven = new List<SilverGivenEntry>();
+            if (m_SilverGiven == null)
+                m_SilverGiven = new List<SilverGivenEntry>();
 
-            this.m_SilverGiven.Add(new SilverGivenEntry(mob));
+            m_SilverGiven.Add(new SilverGivenEntry(mob));
         }
 
         public void Invalidate()
         {
-            if (this.m_Mobile is PlayerMobile)
+            if (m_Mobile is PlayerMobile)
             {
-                PlayerMobile pm = (PlayerMobile)this.m_Mobile;
+                PlayerMobile pm = (PlayerMobile)m_Mobile;
                 pm.InvalidateProperties();
                 pm.InvalidateMyRunUO();
             }
@@ -347,28 +348,28 @@ namespace Server.Factions
 
         public void Attach()
         {
-            if (Settings.Enabled && this.m_Mobile is PlayerMobile)
-                ((PlayerMobile)this.m_Mobile).FactionPlayerState = this;
+            if (Settings.Enabled && m_Mobile is PlayerMobile)
+                ((PlayerMobile)m_Mobile).FactionPlayerState = this;
         }
 
         public void Serialize(GenericWriter writer)
         {
             writer.WriteEncodedInt((int)1); // version
 
-            writer.Write(this.m_IsActive);
-            writer.Write(this.m_LastHonorTime);
+            writer.Write(m_IsActive);
+            writer.Write(m_LastHonorTime);
 
-            writer.Write((Mobile)this.m_Mobile);
+            writer.Write((Mobile)m_Mobile);
 
-            writer.WriteEncodedInt((int)this.m_KillPoints);
-            writer.WriteEncodedInt((int)this.m_MerchantTitle);
+            writer.WriteEncodedInt((int)m_KillPoints);
+            writer.WriteEncodedInt((int)m_MerchantTitle);
 
-            writer.Write((DateTime)this.m_Leaving);
+            writer.Write((DateTime)m_Leaving);
         }
 
         public int CompareTo(object obj)
         {
-            return ((PlayerState)obj).m_KillPoints - this.m_KillPoints;
+            return ((PlayerState)obj).m_KillPoints - m_KillPoints;
         }
     }
 }
