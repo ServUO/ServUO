@@ -5697,6 +5697,8 @@ namespace Server.Mobiles
 		private long m_NextMovementTime;
 		private bool m_HasMoved;
 
+        public long NextMovementTime { get { return m_NextMovementTime; } }
+
 		public virtual bool UsesFastwalkPrevention { get { return (IsPlayer()) & !Flying; } }
 
 		public override int ComputeMovementSpeed(Direction dir, bool checkTurning)
