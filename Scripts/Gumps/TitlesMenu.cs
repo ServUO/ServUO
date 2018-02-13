@@ -320,7 +320,13 @@ namespace Server.Gumps
                         if (sk.Base < 30)
                             continue;
 
-                        AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", Titles.GetSkillTitle(User, sk)), false, false);
+                        string title = Titles.GetSkillTitle(User, sk);
+
+                        if (title != null)
+                        {
+                            AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", title), false, false);
+                        }
+
                         AddCallbackButton(225, 70 + (index * 22), 4005, 4007, sk.Info.SkillID + 102, GumpButtonType.Reply, 0, b =>
                             {
                                 TitleSelected = b.ButtonID - 102;
@@ -339,7 +345,11 @@ namespace Server.Gumps
 
                     AddHtmlLocalized(225, 70, 270, 200, 1115056 + TitleSelected, 0xFFFF, false, false);
                     AddHtmlLocalized(225, 220, 160, 16, 1115027, 0xFFFF, false, false); // Paperdoll Name (Suffix)
-                    AddHtml(275, 240, 245, 16, Color("#FFFFFF", str), false, false);
+
+                    if (str != null)
+                    {
+                        AddHtml(275, 240, 245, 16, Color("#FFFFFF", str), false, false);
+                    }
 
                     AddHtmlLocalized(225, 275, 200, 16, 1115035, 0xFFFF, false, false); // Do you wish to apply this title?
 
@@ -724,7 +734,13 @@ namespace Server.Gumps
                         if (sk.Base < 30)
                             continue;
 
-                        AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", Titles.GetSkillTitle(User, sk)), false, false);
+                        string title = Titles.GetSkillTitle(User, sk);
+
+                        if (title != null)
+                        {
+                            AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", title), false, false);
+                        }
+
                         AddCallbackButton(225, 70 + (index * 22), 4005, 4007, sk.Info.SkillID + 404, GumpButtonType.Reply, 0, b =>
                         {
                             TitleSelected = b.ButtonID - 404;
@@ -751,10 +767,14 @@ namespace Server.Gumps
                     {
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                         title = Titles.GetSkillTitle(User, User.Skills[(SkillName)TitleSelected]);
-                        User.SubtitleSkillTitle = title;
 
-                        User.SelectRewardTitle(-1, true);
-                        User.DisplayGuildTitle = false;
+                        if (title != null)
+                        {
+                            User.SubtitleSkillTitle = title;
+
+                            User.SelectRewardTitle(-1, true);
+                            User.DisplayGuildTitle = false;
+                        }
 
                         Refresh(false);
                     });
