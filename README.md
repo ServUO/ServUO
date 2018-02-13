@@ -14,7 +14,13 @@ Getting started with ServUO is quite easy.
 
 #### Windows
 
-Just run `Compile.WIN.bat` and follow the prompts. This script will compile both the server binary and Ultima SDK binary for you and run the server for you at end. After this you can run the server by executing `ServUO.exe`.
+Just run `Compile.WIN - Debug.bat` and follow the prompts. This script will compile both the server binary and Ultima SDK binary for you and run the server for you at end. 
+
+Run `Compile.WIN - Debug.bat` for development, attaching a debugger and/or extended output.
+
+Run `Compile.WIN - Release.bat` for production environement (-debug is still a supported parameter for script debugging).
+
+After this you can run the server by executing `ServUO.exe`.
 
 #### OSX
 
