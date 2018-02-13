@@ -5,13 +5,6 @@ SDKPATH=${CURPATH}/Ultima
 REFS=System.Drawing.dll
 NOWARNS=0618,0219,0414,1635
 
-# Detect whether we are on Mac OS X environment or not
-ifeq ($(shell uname -s),Darwin)
-  MONO=mono64
-else
-  MONO=mono
-endif
-
 PHONY : default build clean run
 
 default: run
@@ -37,5 +30,5 @@ ServUO.MONO.exe: Ultima.dll Server/*.cs
 
 ServUO.sh: ServUO.MONO.exe
 	echo "#!/bin/sh" > ${CURPATH}/ServUO.sh
-	echo "${MONO} ${CURPATH}/ServUO.MONO.exe" >> ${CURPATH}/ServUO.sh
+	echo "mono ${CURPATH}/ServUO.MONO.exe" >> ${CURPATH}/ServUO.sh
 	chmod a+x ${CURPATH}/ServUO.sh
