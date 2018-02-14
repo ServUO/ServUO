@@ -236,9 +236,9 @@ namespace Server.Engines.CityLoyalty
             return new CityLoyaltyEntry(pm, this.City);
         }
 		
-		public bool IsCitizen(Mobile from)
+		public bool IsCitizen(Mobile from, bool staffIsCitizen = true)
 		{
-            if (from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.Player && staffIsCitizen)
                 return true;
 
             CityLoyaltyEntry entry = GetPlayerEntry<CityLoyaltyEntry>(from);
@@ -697,6 +697,9 @@ namespace Server.Engines.CityLoyalty
 
         public static bool CanAddCitizen(Mobile from)
         {
+            if (from.AccessLevel > AccessLevel.Player)
+                return true;
+
             foreach (var city in Cities)
             {
                 if (!city.CanAdd(from))
@@ -800,12 +803,12 @@ namespace Server.Engines.CityLoyalty
             return sys != null && sys.IsCitizen(from);
         }
 		
-		public static CityLoyaltySystem GetCitizenship(Mobile from)
+		public static CityLoyaltySystem GetCitizenship(Mobile from, bool staffIsCitizen = true)
 		{
             if (Cities == null)
                 return null;
 
-			return Cities.FirstOrDefault(sys => sys.IsCitizen(from));
+            return Cities.FirstOrDefault(sys => sys.IsCitizen(from, staffIsCitizen));
 		}
 
         public static bool ApplyCityTitle(PlayerMobile pm, ObjectPropertyList list, string prefix, int loc)
@@ -844,7 +847,7 @@ namespace Server.Engines.CityLoyalty
             {
                 CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-                if (entry != null)
+                if (entry != null && !String.IsNullOrEmpty(entry.CustomTitle))
                     str = String.Format("{0}\t{1}", entry.CustomTitle, city.Definition.Name);
             }
 

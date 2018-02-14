@@ -1680,6 +1680,31 @@ namespace Server.Mobiles
 			}
 		}
 
+        public override void AggressiveAction(Mobile aggressor, bool criminal)
+        {
+            base.AggressiveAction(aggressor, criminal);
+
+            if (aggressor is BaseCreature && ((BaseCreature)aggressor).ControlMaster != null)
+            {
+                Mobile aggressiveMaster = ((BaseCreature)aggressor).ControlMaster;
+
+                if (NotorietyHandlers.CheckAggressor(Aggressors, aggressor))
+                {
+                    Aggressors.Add(AggressorInfo.Create(aggressiveMaster, this, criminal));
+                    aggressiveMaster.Delta(MobileDelta.Noto);
+
+                    if (NotorietyHandlers.CheckAggressed(aggressor.Aggressed, this))
+                        aggressiveMaster.Aggressed.Add(AggressorInfo.Create(aggressiveMaster, this, criminal));
+
+                    if (aggressiveMaster is PlayerMobile || (aggressiveMaster is BaseCreature && !((BaseCreature)aggressiveMaster).IsMonster))
+                    {
+                        BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, this, true));
+                        BuffInfo.AddBuff(aggressiveMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, aggressiveMaster, true));
+                    }
+                }
+            }
+        }
+
         public override void DoHarmful(IDamageable damageable, bool indirect)
         {
             base.DoHarmful(damageable, indirect);

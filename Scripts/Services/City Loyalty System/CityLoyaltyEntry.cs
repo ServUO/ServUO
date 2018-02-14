@@ -95,6 +95,7 @@ namespace Server.Engines.CityLoyalty
                 Player.RemoveRewardTitle(CityLoyaltySystem.GetTitleLocalization(Player, (CityTitle)i, City), true);
             }
 
+            CustomTitle = null;
             Player.RemoveRewardTitle(1154017, true);
 
 			IsCitizen = false;

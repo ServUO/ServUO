@@ -227,7 +227,7 @@ namespace Server.Spells
                     return true;
             }
 
-            if (Core.Expansion == Expansion.AOS)
+            if (Core.AOS)
             {
                 for (int i = 0; i < m.Aggressors.Count; ++i)
                 {
