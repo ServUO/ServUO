@@ -581,7 +581,6 @@ namespace Server.Mobiles
 
 									if (m_Mobile.CheckControlChance(e.Mobile))
 									{
-
 										m_Mobile.ControlOrder = OrderType.Guard;
                                         m_Mobile.ControlTarget = null;
 									}

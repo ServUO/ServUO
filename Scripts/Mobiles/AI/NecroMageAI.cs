@@ -148,6 +148,26 @@ namespace Server.Mobiles
                 return base.ChooseSpell(c);
         }
 
+        protected override Spell CheckCastHealingSpell()
+        {
+            if (m_Mobile.Summoned || m_Mobile.Hits >= m_Mobile.HitsMax)
+                return null;
+
+            if (!SmartAI)
+            {
+                if (ScaleByNecromancy(HealChance) < Utility.RandomDouble())
+                    return base.CheckCastHealingSpell();
+            }
+            else
+            {
+                if (Utility.Random(0, 4 + (m_Mobile.Hits == 0 ? m_Mobile.HitsMax : (m_Mobile.HitsMax / m_Mobile.Hits))) < 3)
+                    return base.CheckCastHealingSpell();
+            }
+
+            m_Mobile.UseSkill(SkillName.SpiritSpeak);
+            return null;
+        }
+
         protected enum NecroComboType
         {
             None,

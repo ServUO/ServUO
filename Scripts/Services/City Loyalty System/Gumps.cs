@@ -19,7 +19,7 @@ namespace Server.Engines.CityLoyalty
         public BaseCityGump(PlayerMobile pm) : base(120, 120)
         {
             User = pm;
-            Citizenship = CityLoyaltySystem.GetCitizenship(User);
+            Citizenship = CityLoyaltySystem.GetCitizenship(User, false);
 
             pm.CloseGump(typeof(BaseCityGump));
         }
@@ -746,12 +746,26 @@ namespace Server.Engines.CityLoyalty
             TextRelay relay = info.GetTextEntry(1);
             CityLoyaltyEntry entry = City.GetPlayerEntry<CityLoyaltyEntry>(Citizen);
 
+            if (entry == null)
+                return;
+
             if (relay == null || String.IsNullOrEmpty(relay.Text))
             {
-                entry.CustomTitle = null;
-                User.SendMessage("You have removed their title.");
-                Citizen.SendMessage("{0} has removed your city title.", User.Name);
-                //TODO: Clilocs???
+                if (entry != null)
+                {
+                    entry.CustomTitle = null;
+                    Citizen.RemoveRewardTitle(1154017, true);
+
+                    if (User != Citizen)
+                    {
+                        User.SendMessage("You have removed their title.");
+                        Citizen.SendMessage("{0} has removed your city title.", User.Name);
+                    }
+                    else
+                    {
+                        User.SendMessage("You have removed your title.");
+                    }
+                }
             }
             else
             {
@@ -759,13 +773,16 @@ namespace Server.Engines.CityLoyalty
 
                 if (Server.Guilds.BaseGuildGump.CheckProfanity(text) && text.Trim().Length > 3)
                 {
-                    User.AddRewardTitle(1154017); // ~1_TITLE~ of ~2_CITY~
-                    entry.CustomTitle = text.Trim();
+                    if (entry != null && entry.IsCitizen)
+                    {
+                        Citizen.AddRewardTitle(1154017); // ~1_TITLE~ of ~2_CITY~
+                        entry.CustomTitle = text.Trim();
 
-                    if(User != Citizen)
-                        User.SendMessage("You have bestowed {0} the title: {1} of {2}.", Citizen.Name, text, City.Definition.Name);
+                        if (User != Citizen)
+                            User.SendMessage("You have bestowed {0} the title: {1} of {2}.", Citizen.Name, text, City.Definition.Name);
 
-                    Citizen.SendLocalizedMessage(1155605, String.Format("{0}\t{1}", text, City.Definition.Name)); // Thou hath been bestowed the title ~1_TITLE~! - ~1_TITLE~ of ~2_CITY~
+                        Citizen.SendLocalizedMessage(1155605, String.Format("{0}\t{1}", text, City.Definition.Name)); // Thou hath been bestowed the title ~1_TITLE~! - ~1_TITLE~ of ~2_CITY~
+                    }
                 }
                 else
                     User.SendLocalizedMessage(501179); // That title is disallowed.

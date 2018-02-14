@@ -891,7 +891,7 @@ namespace Server.Spells
 
 		public virtual bool CheckFizzle()
 		{
-			if (m_Scroll is BaseWand)
+			if (m_Scroll is BaseWand || m_Caster is BaseCreature)
 			{
 				return true;
 			}

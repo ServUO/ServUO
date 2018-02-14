@@ -47,7 +47,7 @@ namespace Server.Mobiles
             2, 2
         };
 
-        protected const double HealChance = 0.10;// 10% chance to heal at gm magery
+        protected const double HealChance = 0.25;// 10% chance to heal at gm magery
         protected const double DispelChance = 0.75;// 75% chance to dispel at gm magery
 
         protected double TeleportChance { get { return m_Mobile.TeleportChance; } }
@@ -201,20 +201,40 @@ namespace Server.Mobiles
                 OnFailedMove();
         }
 
+        /// <summary>
+        /// Obsolete. Creatures don't fizzle based on spell, but cast spells depending on mana pool
+        /// </summary>
+        /// <returns></returns>
         public virtual int GetMaxCircle()
         {
             return (int)((m_Mobile.Skills[SkillName.Magery].Value + 20.0) / (100.0 / 7.0));
         }
 
+        private int[] m_ManaTable = new int[] { 4, 6, 9, 11, 14, 20, 40, 50 };
+
+        public virtual bool CheckCast(int circle)
+        {
+            if (circle < 1) circle = 1;
+            if (circle > 8) circle = 8;
+
+            return m_Mobile.Mana >= m_ManaTable[circle - 1];
+        }
+
         public virtual Spell GetRandomDamageSpell()
         {
-            int maxCircle = GetMaxCircle() * 2;
+            int select;
 
-            if (maxCircle < 1) maxCircle = 1;
-            if (maxCircle > 11) maxCircle = 12;
+            if (CheckCast(8)) select = 13;
+            else if (CheckCast(7)) select = 12;
+            else if (CheckCast(5)) select = 10;
+            else if (CheckCast(4)) select = 8;
+            else if (CheckCast(3)) select = 6;
+            else if (CheckCast(2)) select = 4;
+            else select = 2;
 
-            switch (Utility.Random(maxCircle))
+            switch (Utility.Random(select))
             {
+                default:
                 case 0:
                 case 1: return new MagicArrowSpell(m_Mobile, null);
                 case 2:
@@ -227,13 +247,13 @@ namespace Server.Mobiles
                 case 9: return new MindBlastSpell(m_Mobile, null);
                 case 10: return new EnergyBoltSpell(m_Mobile, null);
                 case 11: return new ExplosionSpell(m_Mobile, null);
-                default: return new FlameStrikeSpell(m_Mobile, null);
+                case 12: return new FlameStrikeSpell(m_Mobile, null);
             }
         }
 
         public virtual Spell GetRandomCurseSpell()
         {
-            if (Utility.RandomBool() && GetMaxCircle() >= 5)
+            if (Utility.RandomBool() && CheckCast(5))
                 return new CurseSpell(m_Mobile, null);
 
             switch (Utility.Random(3))
@@ -247,10 +267,9 @@ namespace Server.Mobiles
 
         public virtual Spell GetRandomManaDrainSpell()
         {
-            int maxCircle = GetMaxCircle();
-            if (Utility.RandomBool() && maxCircle >= 7)
+            if (Utility.RandomBool() && CheckCast(7))
                 return new ManaVampireSpell(m_Mobile, null);
-            else if (maxCircle >= 4)
+            else if ((CheckCast(4)))
                 return new ManaDrainSpell(m_Mobile, null);
 
             return null;
@@ -258,9 +277,9 @@ namespace Server.Mobiles
 
         public virtual Spell GetRandomSummonSpell()
         {
-            if (GetMaxCircle() >= 8)
+            if (CheckCast(8))
                 return new EnergyVortexSpell(m_Mobile, null);
-            else if (GetMaxCircle() >= 5)
+            else if (CheckCast(5))
                 return new BladeSpiritsSpell(m_Mobile, null);
 
             return null;
@@ -268,15 +287,14 @@ namespace Server.Mobiles
 
         public virtual Spell GetRandomFieldSpell()
         {
-            int maxCircle = GetMaxCircle();
             bool pois = m_Mobile.Skills[SkillName.Poisoning].Value >= 80.0 || m_Mobile.HitPoison == Poison.Greater || m_Mobile.HitPoison == Poison.Lethal;
 
-            if (pois && maxCircle >= 5)
+            if (pois && CheckCast(5))
                 return new PoisonFieldSpell(m_Mobile, null);
 
-            else if (Utility.RandomBool() && maxCircle >= 6)
+            else if (Utility.RandomBool() && CheckCast(6))
                 return new ParalyzeFieldSpell(m_Mobile, null);
-            else if (maxCircle >= 4)
+            else if (CheckCast(4))
                 return new FireFieldSpell(m_Mobile, null);
 
             return null;
@@ -284,14 +302,17 @@ namespace Server.Mobiles
 
         public virtual Spell GetRandomBuffSpell()
         {
-            return new BlessSpell(m_Mobile, null);
+            if(CheckCast(3))
+                return new BlessSpell(m_Mobile, null);
+
+            return null;
         }
 
         public virtual Spell DoDispel(Mobile toDispel)
         {
             if (!SmartAI)
             {
-                if (ScaleByMagery(DispelChance) > Utility.RandomDouble())
+                if (CheckCast(6) && ScaleByMagery(DispelChance) > Utility.RandomDouble())
                     return new DispelSpell(m_Mobile, null);
 
                 return ChooseSpell(toDispel);
@@ -301,11 +322,11 @@ namespace Server.Mobiles
 
             if (spell == null)
             {
-                if (!m_Mobile.DisallowAllMoves && Utility.Random((int)m_Mobile.GetDistanceToSqrt(toDispel)) == 0)
+                if (!m_Mobile.DisallowAllMoves && Utility.Random((int)m_Mobile.GetDistanceToSqrt(toDispel)) == 0 && CheckCast(3))
                     spell = new TeleportSpell(m_Mobile, null);
-                else if (Utility.Random(3) == 0 && !m_Mobile.InRange(toDispel, 3) && !toDispel.Paralyzed && !toDispel.Frozen)
+                else if (Utility.Random(3) == 0 && !m_Mobile.InRange(toDispel, 3) && !toDispel.Paralyzed && !toDispel.Frozen && CheckCast(5))
                     spell = new ParalyzeSpell(m_Mobile, null);
-                else
+                else if(CheckCast(6))
                     spell = new DispelSpell(m_Mobile, null);
             }
 
@@ -327,20 +348,18 @@ namespace Server.Mobiles
             {
                 spell = CheckCastHealingSpell();
 
-                if (spell == null && m_Mobile.RawInt >= 80)
-                    spell = CheckCastDispelField();
-
                 if (spell != null)
                     return spell;
 
-                int maxCircle = GetMaxCircle();
+                if (spell == null && m_Mobile.RawInt >= 80)
+                    spell = CheckCastDispelField();
 
                 switch (Utility.Random(15))
                 {
                     case 0:
                     case 1:	// Poison them
                         {
-                            if (c.Poisoned)
+                            if (c.Poisoned || !CheckCast(3))
                                 goto default;
 
                             m_Mobile.DebugSay("Attempting to poison");
@@ -350,6 +369,9 @@ namespace Server.Mobiles
                         }
                     case 2:	// Bless ourselves
                         {
+                            if (BlessSpell.IsBlessed(m_Mobile) || !CheckCast(3))
+                                goto default;
+
                             m_Mobile.DebugSay("Blessing myself");
 
                             spell = GetRandomBuffSpell();//new BlessSpell(m_Mobile, null);
@@ -361,16 +383,22 @@ namespace Server.Mobiles
                             m_Mobile.DebugSay("Attempting to curse");
 
                             spell = GetRandomCurseSpell();
+
+                            if (spell == null)
+                                goto default;
                             break;
                         }
                     case 5:	// Paralyze them
                         {
                             m_Mobile.DebugSay("Attempting to paralyze");
 
-                            if (maxCircle >= 5)
+                            if (CheckCast(5))
                                 spell = new ParalyzeSpell(m_Mobile, null);
                             else
                                 spell = GetRandomCurseSpell();
+
+                            if (spell == null)
+                                goto default;
                             break;
                         }
                     case 6: // Drain mana
@@ -378,6 +406,9 @@ namespace Server.Mobiles
                             m_Mobile.DebugSay("Attempting to drain mana");
 
                             spell = GetRandomManaDrainSpell();
+
+                            if (spell == null)
+                                goto default;
                             break;
                         }
                     default: // Damage them
@@ -679,7 +710,7 @@ namespace Server.Mobiles
                 {
                     m_Mobile.DebugSay("I am going to cure myself");
 
-                    spell = new CureSpell(m_Mobile, null);
+                    spell = CheckCastCureSpell();
                 }
                 else if (toDispel != null) // Something dispellable is attacking us
                 {
@@ -703,7 +734,7 @@ namespace Server.Mobiles
                 // Now we have a spell picked
                 // Move first before casting
 
-                TimeSpan ts = !SmartAI && !(spell is DispelSpell) ? TimeSpan.FromSeconds(1.5) : m_Combo > -1 ? TimeSpan.FromSeconds(.5) : TimeSpan.FromSeconds(1.5);
+                TimeSpan ts = !SmartAI && !(spell is DispelSpell) ? TimeSpan.FromSeconds(1) : m_Combo > -1 ? TimeSpan.FromSeconds(.5) : TimeSpan.FromSeconds(1.5);
                 TimeSpan delay = spell == null ? TimeSpan.FromSeconds(m_Mobile.ActiveSpeed) : spell.GetCastDelay() + spell.GetCastRecovery() + ts;
 
                 RunTo(c);
@@ -713,7 +744,7 @@ namespace Server.Mobiles
 
                 m_NextCastTime = DateTime.UtcNow + delay;
             }
-            else/* if (m_Mobile.Spell == null || !m_Mobile.Spell.IsCasting)*/
+            else
             {
                 RunTo(c);
             }
@@ -918,11 +949,11 @@ namespace Server.Mobiles
             return (m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful(m, false) && !((BaseCreature)m).IsAnimatedDead);
         }
 
-        protected Spell CheckCastHealingSpell()
+        protected virtual Spell CheckCastHealingSpell()
         {
             // If I'm poisoned, always attempt to cure.
             if (m_Mobile.Poisoned)
-                return new CureSpell(m_Mobile, null);
+                return CheckCastCureSpell();
 
             // Summoned creatures never heal themselves.
             if (m_Mobile.Summoned)
@@ -971,14 +1002,28 @@ namespace Server.Mobiles
             return spell;
         }
 
+        public virtual Spell CheckCastCureSpell()
+        {
+            if (m_Mobile.Poison.Level > 1 && CheckCast(4))
+            {
+                return new ArchCureSpell(m_Mobile, null);
+            }
+            else if (CheckCast(2))
+            {
+                return new CureSpell(m_Mobile, null);
+            }
+ 
+            return null;
+        }
+
         public Spell CheckCastDispelField()
         {
             if (m_Mobile.Frozen || m_Mobile.Paralyzed)
                 return null;
 
-            int maxCircle = GetMaxCircle();
+            int mana = m_Mobile.Mana;
 
-            if (maxCircle < 5)
+            if (mana < 14)
                 return null;
 
             Item field = GetHarmfulFieldItem();
