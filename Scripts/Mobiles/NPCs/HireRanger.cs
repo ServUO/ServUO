@@ -22,6 +22,7 @@ namespace Server.Mobiles
                 Name = NameList.RandomName("male");
                 AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
+
             Title = "the ranger";
             HairItemID = Race.RandomHair(Female);
             HairHue = Race.RandomHairHue();
@@ -61,11 +62,11 @@ namespace Server.Mobiles
                     break;
             }
 
-            AddItem(new RangerChest());
-            AddItem(new RangerArms());
-            AddItem(new RangerGloves());
-            AddItem(new RangerGorget());
-            AddItem(new RangerLegs());
+            SetWearable(new StuddedChest(), 0x59C);
+            SetWearable(new StuddedArms(), 0x59C);
+            SetWearable(new StuddedGloves(), 0x59C);
+            SetWearable(new StuddedLegs(), 0x59C);
+            SetWearable(new StuddedGorget(), 0x59C);
 
             PackItem(new Arrow(20));
             PackGold(10, 75);
