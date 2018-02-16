@@ -64,7 +64,7 @@ namespace Server.Misc
 
         public static void Save(bool permitBackgroundWrite)
         {
-            if (AutoRestart.Restarting)
+            if (AutoRestart.Restarting || Commands.CreateWorld.WorldCreating)
                 return;
 
             World.WaitForWriteCompletion();

@@ -40,6 +40,8 @@ namespace Server.Engines.CityLoyalty
 
         public bool Expired { get { return Expires < DateTime.UtcNow; } }
 
+        public override int DefaultMaxWeight { get { return 1000; } }
+
         public TradeOrderCrate(Mobile from, TradeEntry entry)
             : base(Utility.Random(0xE3C, 4))
 		{
