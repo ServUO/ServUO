@@ -7208,7 +7208,7 @@ namespace Server
 					{
 						Mobile m = (Mobile)o;
 
-						if (m != this && Utility.InUpdateRange(m_Location, m.m_Location))
+						if (m != this && Utility.InUpdateRange(m, m_Location, m.m_Location))
 						{
 							ns.Send(m.RemovePacket);
 						}
@@ -7466,7 +7466,7 @@ namespace Server
 
 		public void SendEverything()
 		{
-			SendEverything(0, m_NetState != null ? m_NetState.UpdateRange : Core.GlobalMaxUpdateRange);
+			SendEverything(0, m_NetState != null ? m_NetState.UpdateRange : Core.GlobalUpdateRange);
 		}
 
 		public void SendEverything(int minRange, int maxRange)

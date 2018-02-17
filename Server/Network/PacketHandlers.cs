@@ -1728,7 +1728,6 @@ namespace Server.Network
 
 		public static void SetUpdateRange(NetState state, PacketReader pvSrc)
 		{
-            
             //            min   max  default
             /* 640x480    5     18   15
              * 800x600    5     18   18
@@ -1736,6 +1735,7 @@ namespace Server.Network
              * 1152x864   5     24   24 
              * 1280x720   5     24   24
              */
+
 			int range = pvSrc.ReadByte();
 
             int old = state.UpdateRange;
@@ -1747,12 +1747,12 @@ namespace Server.Network
 
 			state.UpdateRange = range;
 
+			state.Send(ChangeUpdateRange.Instantiate(state.UpdateRange));
+
             if (state.Mobile != null)
             {
-                state.Mobile.OnUpdateRangeChanged(old, range);
-            }
-
-            state.Send(ChangeUpdateRange.Instantiate(range));
+				state.Mobile.OnUpdateRangeChanged(old, state.UpdateRange);
+			}
 		}
 
 		private const int BadFood = unchecked((int)0xBAADF00D);
