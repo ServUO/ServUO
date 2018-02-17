@@ -1728,8 +1728,7 @@ namespace Server.Network
 
 		public static void SetUpdateRange(NetState state, PacketReader pvSrc)
 		{
-            int range = pvSrc.ReadByte();
-
+            
             //            min   max  default
             /* 640x480    5     18   15
              * 800x600    5     18   18
@@ -1737,9 +1736,16 @@ namespace Server.Network
              * 1152x864   5     24   24 
              * 1280x720   5     24   24
              */
+			int range = pvSrc.ReadByte();
 
             int old = state.UpdateRange;
-            state.UpdateRange = range;
+
+			if (old == range)
+			{
+				return;
+			}
+
+			state.UpdateRange = range;
 
             if (state.Mobile != null)
             {
