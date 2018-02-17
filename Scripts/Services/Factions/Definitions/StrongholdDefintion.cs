@@ -8,40 +8,51 @@ namespace Server.Factions
         private readonly Point3D m_JoinStone;
         private readonly Point3D m_FactionStone;
         private readonly Point3D[] m_Monoliths;
-        public StrongholdDefinition(Rectangle2D[] area, Point3D joinStone, Point3D factionStone, Point3D[] monoliths)
+        private readonly Point3D m_CollectionBox;
+
+        public StrongholdDefinition(Rectangle2D[] area, Point3D joinStone, Point3D factionStone, Point3D[] monoliths, Point3D collectionBox)
         {
-            this.m_Area = area;
-            this.m_JoinStone = joinStone;
-            this.m_FactionStone = factionStone;
-            this.m_Monoliths = monoliths;
+            m_Area = area;
+            m_JoinStone = joinStone;
+            m_FactionStone = factionStone;
+            m_Monoliths = monoliths;
+            m_CollectionBox = collectionBox;
         }
 
         public Rectangle2D[] Area
         {
             get
             {
-                return this.m_Area;
+                return m_Area;
             }
         }
         public Point3D JoinStone
         {
             get
             {
-                return this.m_JoinStone;
+                return m_JoinStone;
             }
         }
         public Point3D FactionStone
         {
             get
             {
-                return this.m_FactionStone;
+                return m_FactionStone;
             }
         }
         public Point3D[] Monoliths
         {
             get
             {
-                return this.m_Monoliths;
+                return m_Monoliths;
+            }
+        }
+
+        public Point3D CollectionBox
+        {
+            get
+            {
+                return m_CollectionBox;
             }
         }
     }

@@ -20,53 +20,71 @@ namespace Server.Commands
 			Recreate,
 		}
 
-		public struct CommandEntry
-		{
-			public string Name;
-			public string CreateCommand;
-			public string DeleteCommand;
-			public int checkId;
-            public int Delay;
+        public enum Category
+        {
+            All,
+            Decoration,
+            Spawn,
+            System,
+            Dungeon,
+            RevampedDungeon,
+            Expansion
+        }
 
-			public CommandEntry(string n, string c, string d, int i, int delay = 0)
+		public class CommandEntry
+		{
+            public string Name { get; set; }
+            public string CreateCommand { get; set; }
+            public string DeleteCommand { get; set; }
+            public int CheckID { get; set; }
+            public int Delay { get; set; }
+
+            public Category Category { get; set; }
+            public Expansion RequiredExpansion { get; set; }
+
+			public CommandEntry(string n, string c, string d, Category cat, Expansion expansion, int i, int delay = 0)
 			{
 				Name = n;
 				CreateCommand = c;
 				DeleteCommand = d;
-				checkId = i;
+                Category = cat;
+                RequiredExpansion = expansion;
+				CheckID = i;
                 Delay = delay;
 			}
 		}
 
 		public static List<CommandEntry> Commands = new List<CommandEntry>(new CommandEntry[] 
         {
-			new CommandEntry("Moongates",           "Moongen",			"MoonGenDelete",		101),
-			new CommandEntry("Doors",               "DoorGen",			"DoorGenDelete",		102),
-			new CommandEntry("Signs",               "SignGen",			"SignGenDelete",		103),
-			new CommandEntry("Teleporters",         "TelGen",			"TelGenDelete",			104),
-			new CommandEntry("Doom Lamp",           "GenLeverPuzzle",   "LampPuzzleDelete",		105),
-			new CommandEntry("Doom Gauntlet",       "GenGauntlet",      "DeleteGauntlet",		106),
-            new CommandEntry("Khaldun",             "GenKhaldun",       "DeleteKhaldun",        107),
-            new CommandEntry("Stealables",          "GenStealArties",   "RemoveStealArties",	108),
-			new CommandEntry("Solen Hives",         "SHTelGen",         "SHTelGenDelete",		109),
-			new CommandEntry("Malas Secrets",       "SecretLocGen",     "SecretLocDelete",		110),
-			new CommandEntry("Factions",            "GenerateFactions",	"DeleteFactions",		111),
-			new CommandEntry("Decorations",         "Decorate",         "DecorateDelete",		113),
-			new CommandEntry("ML Decorations",      "DecorateML",		"DecorateMLDelete",		114),
-			new CommandEntry("SA Decorations",      "DecorateSA",		"DecorateSADelete",		115),
-			new CommandEntry("Spawners",		    "XmlLoad Spawns",	"XmlSpawnerWipeAll",	116),
-            new CommandEntry("New Despise",         "SetupDespise",     "DeleteDespise",        117),
-            new CommandEntry("New Covetous",        "SetupNewCovetous", "DeleteCovetous",       118),
-            new CommandEntry("New Shame",           "GenerateNewShame", "DeleteShame",          119),
-            new CommandEntry("New Magincia",        "GenNewMagincia",   "DeleteNewMagincia",    120),
-            new CommandEntry("High Seas",           "DecorateHS",       "DeleteHS",             121),
-            new CommandEntry("City Loyalty",        "SetupCityLoyaltySystem",   "DeleteCityLoyaltySystem",        122),
-            new CommandEntry("Castle Blackthorn",   "GenBlackthorn",       null,                                  123),
-            new CommandEntry("Time of Legends",     "DecorateTOL",         null,                                  124),
-            new CommandEntry("New Wrong",           "GenWrongRevamp",            null,                            125),
-            new CommandEntry("Kotl City",           "GenerateTreasuresOfKotlCity", null,  126),
-            new CommandEntry("Fillable Containers", "CheckFillables", null,  127, 5),
+			new CommandEntry("Moongates",           "Moongen",			"MoonGenDelete",		Category.Decoration,      Expansion.None,   101),
+			new CommandEntry("Doors",               "DoorGen",			"DoorGenDelete",		Category.Decoration,      Expansion.None,   102),
+			new CommandEntry("Signs",               "SignGen",			"SignGenDelete",		Category.Decoration,      Expansion.None,   103),
+			new CommandEntry("Teleporters",         "TelGen",			"TelGenDelete",			Category.Decoration,      Expansion.None,   104),
+			new CommandEntry("Doom Lamp",           "GenLeverPuzzle",   "LampPuzzleDelete",		Category.System,          Expansion.AOS,    105),
+			new CommandEntry("Doom Gauntlet",       "GenGauntlet",      "DeleteGauntlet",		Category.Dungeon,         Expansion.AOS,    106),
+            new CommandEntry("Khaldun",             "GenKhaldun",       "DeleteKhaldun",        Category.Dungeon,         Expansion.None,   107),
+            new CommandEntry("Stealables",          "GenStealArties",   "RemoveStealArties",	Category.Spawn,           Expansion.AOS,    108),
+			new CommandEntry("Solen Hives",         "SHTelGen",         "SHTelGenDelete",		Category.Dungeon,         Expansion.LBR,    109),
+			new CommandEntry("Malas Secrets",       "SecretLocGen",     "SecretLocDelete",		Category.System,          Expansion.AOS,    110),
+			new CommandEntry("Factions",            "GenerateFactions",	"DeleteFactions",		Category.System,          Expansion.None,   111),
+			new CommandEntry("Decorations",         "Decorate",         "DecorateDelete",		Category.Decoration,      Expansion.None,   113),
+			new CommandEntry("ML Decorations",      "DecorateML",		"DecorateMLDelete",		Category.Decoration,      Expansion.ML,     114),
+			new CommandEntry("SA Decorations",      "DecorateSA",		"DecorateSADelete",		Category.Decoration,      Expansion.SA,     115),
+			new CommandEntry("Spawners",		    "XmlLoad Spawns",	"XmlSpawnerWipeAll",	Category.Spawn,           Expansion.None,   116),
+            new CommandEntry("New Despise",         "SetupDespise",     "DeleteDespise",        Category.RevampedDungeon, Expansion.SA,     117),
+            new CommandEntry("New Covetous",        "SetupNewCovetous", "DeleteCovetous",       Category.RevampedDungeon, Expansion.SA,     118),
+            new CommandEntry("New Shame",           "GenerateNewShame", "DeleteShame",          Category.RevampedDungeon, Expansion.SA,     119),
+            new CommandEntry("New Magincia",        "GenNewMagincia",   "DeleteNewMagincia",    Category.Decoration,      Expansion.None,   120),
+            new CommandEntry("High Seas",           "DecorateHS",       "DeleteHS",             Category.Expansion,       Expansion.HS,     121),
+            new CommandEntry("City Loyalty",        "SetupCityLoyaltySystem","DeleteCityLoyaltySystem",Category.System,     Expansion.SA,   122),
+            new CommandEntry("Castle Blackthorn",   "GenBlackthorn",                null,       Category.RevampedDungeon, Expansion.SA,     123),
+            new CommandEntry("TOL Decorations",     "DecorateTOL",                  null,       Category.Decoration,      Expansion.TOL,    124),
+            new CommandEntry("New Wrong",           "GenWrongRevamp",               null,       Category.RevampedDungeon, Expansion.SA,     125),
+            new CommandEntry("Kotl City",           "GenerateTreasuresOfKotlCity",  null,       Category.System,          Expansion.TOL,    126),
+            new CommandEntry("Fillable Containers", "CheckFillables",               null,       Category.Spawn,           Expansion.None,   127, 5),
 		});
+
+        public static bool WorldCreating { get; set; }
 
         public CreateWorld()
         {
@@ -85,7 +103,10 @@ namespace Server.Commands
 		{
 			if (String.IsNullOrEmpty(e.ArgString))
 			{
-				e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Create));
+                if (e.Mobile is PlayerMobile)
+                    BaseGump.SendGump(new NewCreateWorldGump((PlayerMobile)e.Mobile, GumpType.Create));
+                else
+				    e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Create));
 			}
 			else if (e.ArgString.ToLower().Equals("nogump"))
 			{
@@ -104,7 +125,10 @@ namespace Server.Commands
 		{
 			if (String.IsNullOrEmpty(e.ArgString))
 			{
-				e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Delete));
+                if (e.Mobile is PlayerMobile)
+                    BaseGump.SendGump(new NewCreateWorldGump((PlayerMobile)e.Mobile, GumpType.Delete));
+                else
+				    e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Delete));
 			}
 			else if (e.ArgString.ToLower().Equals("nogump"))
 			{
@@ -142,7 +166,7 @@ namespace Server.Commands
 			List<int> ids = new List<int>();
 			foreach (CommandEntry entry in Commands)
 			{
-				ids.Add(entry.checkId);
+				ids.Add(entry.CheckID);
 			}
 			DoCommands(ids.ToArray(), type, from);
 		}
@@ -152,18 +176,21 @@ namespace Server.Commands
 			World.Broadcast(0x35, false, "The world is generating. This may take some time...");
 			string prefix = Server.Commands.CommandSystem.Prefix;
 
+            string error = null;
+            WorldCreating = true;
+
 			foreach (int sel in selections)
 			{
 				foreach (CreateWorld.CommandEntry entry in CreateWorld.Commands)
 				{
-					if (entry.checkId == sel)
+					if (entry.CheckID == sel)
 					{
 						switch (type)
 						{
 							case CreateWorld.GumpType.Create:
 								from.Say("Generating " + entry.Name);
 
-                                if (CanGenerate(entry))
+                                if (CanGenerate(entry, ref error))
                                 {
                                     if (entry.Delay > 0)
                                     {
@@ -174,7 +201,7 @@ namespace Server.Commands
                                         CommandSystem.Handle(from, prefix + entry.CreateCommand);
                                     }
 
-                                    if (CreateWorldData.CreateTable.ContainsKey(entry.checkId))
+                                    if (CreateWorldData.CreateTable.ContainsKey(sel))
                                         CreateWorldData.CreateTable[sel] = true;
                                 }
 
@@ -185,40 +212,66 @@ namespace Server.Commands
 									from.Say("Deleting " + entry.Name);
 									CommandSystem.Handle(from, prefix + entry.DeleteCommand);
 
-                                    if (CreateWorldData.CreateTable.ContainsKey(entry.checkId))
+                                    if (CreateWorldData.CreateTable.ContainsKey(sel))
                                         CreateWorldData.CreateTable[sel] = false;
-								}
-								break;
-							case CreateWorld.GumpType.Recreate:
-								if (!String.IsNullOrEmpty(entry.DeleteCommand))
-								{
-									from.Say("Recreating " + entry.Name);
-									CommandSystem.Handle(from, prefix + entry.DeleteCommand);
-									CommandSystem.Handle(from, prefix + entry.CreateCommand);
-
-                                    if (CreateWorldData.CreateTable.ContainsKey(entry.checkId))
-                                        CreateWorldData.CreateTable[sel] = true;
 								}
 								break;
 						}
 					}
 				}
 			}
+
+            if (error != null)
+            {
+                from.SendGump(new BasicInfoGump(error, "World Generation Error"));
+            }
+
+            WorldCreating = false;
 			World.Broadcast(0x35, false, "World generation complete.");
 		}
 
-        public static bool CanGenerate(CommandEntry entry)
+        public static bool CanGenerate(CommandEntry entry, ref string error)
         {
-            if (entry.checkId == 127)
+            if (CreateWorldData.CreateTable.ContainsKey(entry.CheckID) && CreateWorldData.CreateTable[entry.CheckID])
+            {
+                string er = String.Format("<br>- {0} have been generated already.", entry.Name);
+                Console.WriteLine(er);
+
+                error += er;
+
+                return false;
+            }
+
+            if (entry.CheckID == 127)
             {
                 if (CreateWorldData.HasGenerated(116) && CreateWorldData.HasGenerated(113))
                 {
                     return true;
                 }
 
-                Console.WriteLine("Cannot generate {0}. You need to generate Decorations and Spawners first.", entry.Name);
+                string er = String.Format("<br>- Cannot generate {0}. You need to generate Decorations and Spawners first.", entry.Name);
+                Console.WriteLine(er);
+
+                error += er;
 
                 return false;
+            }
+
+            if (entry.Category == Category.RevampedDungeon)
+            {
+                if (CreateWorldData.HasGenerated(116))
+                {
+                    return true;
+                }
+                else
+                {
+                    string er = String.Format("<br>- Cannot generate {0}. You need to generate Spawners first.", entry.Name);
+                    Console.WriteLine(er);
+
+                    error += er;
+
+                    return false;
+                }
             }
 
             return true;
@@ -248,32 +301,32 @@ namespace Server.Gumps
             : base(50,50)
         {
 			m_Type = type;
-            this.m_CommandEventArgs = e;
-            this.Closable = true;
-            this.Dragable = true;
+            m_CommandEventArgs = e;
+            Closable = true;
+            Dragable = true;
 
-            this.AddPage(1);
+            AddPage(1);
 
 			int items = CreateWorld.Commands.Count;
 
             if (!Server.Factions.Settings.Enabled)
                 items--;
 
-			this.AddBackground(0, 0, 240, 75 + items * 25, 5054);
+			AddBackground(0, 0, 240, 75 + items * 25, 5054);
 			switch (m_Type)
 			{
 				case CreateWorld.GumpType.Create:
-					this.AddLabel(40, 2, 200, "CREATE WORLD GUMP");
+					AddLabel(40, 2, 200, "CREATE WORLD GUMP");
 					break;
 				case CreateWorld.GumpType.Delete:
-					this.AddLabel(40, 2, 200, "DELETE WORLD GUMP");
+					AddLabel(40, 2, 200, "DELETE WORLD GUMP");
 					break;
 				case CreateWorld.GumpType.Recreate:
-					this.AddLabel(40, 2, 200, "RECREATE WORLD GUMP");
+					AddLabel(40, 2, 200, "RECREATE WORLD GUMP");
 					break;
 			}
 
-			this.AddImageTiled(10, 20, 220, 10 + items * 25, 3004);
+			AddImageTiled(10, 20, 220, 10 + items * 25, 3004);
 			int y = 25;
 
 			foreach(CreateWorld.CommandEntry entry in CreateWorld.Commands)
@@ -281,18 +334,18 @@ namespace Server.Gumps
                 if (entry.Name == "Factions" && !Server.Factions.Settings.Enabled)
                     continue;
 
-                bool created = CreateWorldData.CreateTable.ContainsKey(entry.checkId) && CreateWorldData.CreateTable[entry.checkId];
+                bool created = CreateWorldData.CreateTable.ContainsKey(entry.CheckID) && CreateWorldData.CreateTable[entry.CheckID];
 
-				this.AddLabel(20, y + 1, created ? 200 : 338, String.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
-				this.AddCheck(210, y - 2, 210, 211, m_Type == CreateWorld.GumpType.Create ? !created : created, entry.checkId);
+				AddLabel(20, y + 1, created ? 200 : 338, String.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
+				AddCheck(210, y - 2, 210, 211, m_Type == CreateWorld.GumpType.Create ? !created : created, entry.CheckID);
 
 				y += 25;
 			}
 
             y = 25 + (items * 25);
 
-			this.AddButton(60, y + 15, 247, 249, 1, GumpButtonType.Reply, 0);
-			this.AddButton(130, y + 15, 241, 243, 0, GumpButtonType.Reply, 0);
+			AddButton(60, y + 15, 247, 249, 1, GumpButtonType.Reply, 0);
+			AddButton(130, y + 15, 241, 243, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState state, RelayInfo info) 
@@ -307,6 +360,138 @@ namespace Server.Gumps
 					CreateWorld.DoCommands(info.Switches, m_Type, from);
 					break;
 			}
+        }
+    }
+
+    public class NewCreateWorldGump : BaseGump
+    {
+        public CreateWorld.GumpType GumpType { get; set; }
+        public CreateWorld.Category CategoryFilter { get; set; }
+
+        public bool CheckAll { get; set; }
+        public bool UncheckAll { get; set; }
+
+        public NewCreateWorldGump(PlayerMobile pm, CreateWorld.GumpType type)
+            : base(pm, 50, 50)
+        {
+            GumpType = type;
+        }
+
+        public override void AddGumpLayout()
+        {
+            AddBackground(0, 0, 600, 500, 5054);
+
+            AddImageTiled(10, 10, 140, 28, 3004);
+            AddImageTiled(152, 10, 438, 28, 3004);
+
+            AddImageTiled(10, 40, 140, 430, 3004);
+            AddImageTiled(152, 40, 438, 430, 3004);
+
+            string label = GumpType == CreateWorld.GumpType.Create ? "CREATE WORLD GUMP" : "DELETE WORLD GUMP";
+            switch (GumpType)
+            {
+                default:
+                case CreateWorld.GumpType.Create:
+                    label = "CREATE WORLD GUMP";
+                    break;
+                case CreateWorld.GumpType.Delete:
+                    label = "DELETE WORLD GUMP";
+                    break;
+            }
+
+            AddHtml(152, 15, 450, 20, ColorAndCenter("#00FFFF", label), false, false);
+            AddHtml(12, 15, 140, 20, ColorAndCenter("#696969", String.Format("Your Expansion: {0}", Core.Expansion.ToString())), false, false);
+
+            for (int i = 0; i < 6; i++)
+            {
+                CreateWorld.Category cat = (CreateWorld.Category)i;
+                int id = CategoryFilter == cat || CategoryFilter == CreateWorld.Category.All ? 4030 : 4029;
+
+                AddButton(12, 55 + (i * 25), id, id == 4030 ? 4029 : 4030, i + 500, GumpButtonType.Reply, 0);
+                AddHtml(45, 55 + (i * 25), 100, 20, Color("#696969", cat.ToString()), false, false);
+            }
+
+            List<CreateWorld.CommandEntry> commands = new List<CreateWorld.CommandEntry>(CreateWorld.Commands.Where(c =>
+                CategoryFilter == CreateWorld.Category.All || CategoryFilter == c.Category));
+
+            int perpage = CreateWorld.Commands.Count / 2;
+            int x = 154;
+            int y = 55;
+
+            for (int i = 0; i < commands.Count; i++)
+            {
+                var entry = commands[i];
+                bool created = CreateWorldData.CreateTable[entry.CheckID];
+                bool meetsExpansion = entry.RequiredExpansion <= Core.Expansion;
+
+                bool check;
+
+                if (CheckAll)
+                    check = true;
+                else if (UncheckAll)
+                    check = false;
+                else
+                    check = GumpType == CreateWorld.GumpType.Create ? !created : created;
+
+                if (meetsExpansion)
+                {
+                    AddLabel(x + 21, y, created ? 200 : 338, String.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
+                    AddCheck(x, y - 2, 210, 211, check, entry.CheckID);
+                }
+                else
+                {
+                    AddLabel(x + 21, y, created ? 200 : 338, String.Format("{0} {1}", entry.Name, "[Wrong Expansion]"));
+                }
+
+                y += 20;
+
+                if (i == perpage)
+                {
+                    x = 380;
+                    y = 55;
+                }
+            }
+
+            AddButton(154, 426, 4005, 4007, 2500, GumpButtonType.Reply, 0);
+            AddHtml(187, 426, 150, 20, Color("#696969", "Check All"), false, false);
+
+            AddButton(154, 448, 4017, 4019, 2501, GumpButtonType.Reply, 0);
+            AddHtml(187, 448, 150, 20, Color("#696969", "Uncheck All"), false, false);
+
+            AddButton(240, 473, 247, 249, 1, GumpButtonType.Reply, 0);
+            AddButton(303, 473, 241, 243, 0, GumpButtonType.Reply, 0);
+        }
+
+        public override void OnResponse(RelayInfo info)
+        {
+            switch (info.ButtonID)
+            {
+                case 0: // Closed or Cancel
+                    return;
+                case 1:
+                    CreateWorld.DoCommands(info.Switches, GumpType, User);
+                    break;
+                case 2500:
+                    CheckAll = true;
+                    UncheckAll = false;
+                    Refresh();
+                    break;
+                case 2501:
+                    CheckAll = false;
+                    UncheckAll = true;
+                    Refresh();
+                    break;
+                default:
+                    int id = info.ButtonID - 500;
+
+                    if (id >= 0 && id <= 6)
+                    {
+                        CategoryFilter = (CreateWorld.Category)id;
+                    }
+
+                    Refresh();
+                    break;
+            }
         }
     }
 
@@ -393,12 +578,61 @@ namespace Server.Gumps
 
         public static void Initialize()
         {
-            CreateTable = new Dictionary<int, bool>();
-
-            foreach (CreateWorld.CommandEntry entry in CreateWorld.Commands)
+            if (!_HasRan)
             {
-                CreateTable[entry.checkId] = HasGenerated(entry.checkId);
+                CreateTable = new Dictionary<int, bool>();
+
+                foreach (CreateWorld.CommandEntry entry in CreateWorld.Commands)
+                {
+                    CreateTable[entry.CheckID] = HasGenerated(entry.CheckID);
+                }
             }
+        }
+
+        public static readonly string FilePath = Path.Combine("Saves/Misc", "Persistence.bin");
+        private static bool _HasRan;
+
+        public static void Configure()
+        {
+            EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
+        }
+
+        public static void OnSave(WorldSaveEventArgs e)
+        {
+            Persistence.Serialize(
+                FilePath,
+                writer =>
+                {
+                    writer.Write(0);
+                    writer.Write(true);
+
+                    writer.Write(CreateTable.Count);
+                    foreach (var kvp in CreateTable)
+                    {
+                        writer.Write(kvp.Key);
+                        writer.Write(kvp.Value);
+                    }
+                });
+        }
+
+        public static void OnLoad()
+        {
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    int version = reader.ReadInt();
+                    _HasRan = reader.ReadBool();
+
+                    CreateTable = new Dictionary<int, bool>();
+
+                    int count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        CreateTable[reader.ReadInt()] = reader.ReadBool();
+                    }
+                });
         }
     }
 }

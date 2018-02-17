@@ -1537,7 +1537,7 @@ namespace Server.Items
 
 			WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
 
-            if (a != null && (!a.OnBeforeSwing(attacker, defender) || SkillMasterySpell.CancelWeaponAbility(attacker)))
+            if (a != null && (!a.OnBeforeSwing(attacker, defender) /*|| SkillMasterySpell.CancelWeaponAbility(attacker)*/))
             {
                 WeaponAbility.ClearCurrentAbility(attacker);
             }
@@ -5290,10 +5290,7 @@ namespace Server.Items
                 list.Add(1111880); // Altered
 
             #region Factions
-            if (m_FactionState != null)
-			{
-				list.Add(1041350); // faction item
-			}
+            FactionEquipment.AddFactionProperties(this, list);
 			#endregion
 
 			#region Mondain's Legacy Sets

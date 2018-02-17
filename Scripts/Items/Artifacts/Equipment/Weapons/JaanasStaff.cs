@@ -16,7 +16,6 @@ namespace Server.Items
             Attributes.SpellChanneling = 1;
             Attributes.Luck = 220;
             Attributes.DefendChance = 15;
-            NegativeAttributes.NoRepair = 1;
         }
 
         public JaanasStaff(Serial serial)
@@ -56,7 +55,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -64,6 +63,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                NegativeAttributes.NoRepair = 0;
+            }
         }
     }
 }

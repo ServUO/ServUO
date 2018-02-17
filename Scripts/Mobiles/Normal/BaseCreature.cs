@@ -4095,9 +4095,19 @@ namespace Server.Mobiles
 
             if (ControlMaster != null)
             {
-                if (NotorietyHandlers.CheckAggressor(ControlMaster.Aggressors, aggressor))
+                if (NotorietyHandlers.CheckAggressor(Aggressors, aggressor))
                 {
-                    aggressor.Aggressors.Add(AggressorInfo.Create(this, aggressor, true));
+                    ControlMaster.Aggressors.Add(AggressorInfo.Create(aggressor, ControlMaster, criminal));
+                    ControlMaster.Delta(MobileDelta.Noto);
+
+                    if (NotorietyHandlers.CheckAggressed(aggressor.Aggressed, this))
+                        aggressor.Aggressed.Add(AggressorInfo.Create(aggressor, ControlMaster, criminal));
+
+                    if (aggressor is PlayerMobile || (aggressor is BaseCreature && !((BaseCreature)aggressor).IsMonster))
+                    {
+                        BuffInfo.AddBuff(ControlMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, ControlMaster, true));
+                        BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, aggressor, true));
+                    }
                 }
             }
 
@@ -4284,13 +4294,6 @@ namespace Server.Mobiles
             if (target == this || target == m_ControlMaster || target == m_SummonMaster || (!Controlled && !Summoned))
             {
                 return;
-            }
-
-            Mobile master = GetMaster();
-
-            if (master != null)
-            {
-                target.OnHarmfulAction(master, target.IsHarmfulCriminal(master));
             }
 
             if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet)
@@ -6601,6 +6604,16 @@ namespace Server.Mobiles
             double seconds = (onSelf ? HealDelay : HealOwnerDelay) + (patient.Alive ? 0.0 : 5.0);
 
             m_HealTimer = Timer.DelayCall(TimeSpan.FromSeconds(seconds), new TimerStateCallback(Heal_Callback), patient);
+        }
+
+        public override void OnHitsChange(int oldValue)
+        {
+            if (ControlMaster != null && oldValue < HitsMax && Hits >= HitsMax)
+            {
+                BaseMount.GetMountPrevention(ControlMaster);
+            }
+
+            base.OnHitsChange(oldValue);
         }
 
         private void Heal_Callback(object state)

@@ -88,7 +88,7 @@ namespace Server.Engines.CityLoyalty
 			public TradeMinister Minister { get; private set; }
 			public Mobile Player { get; private set; }
 			
-			public TradeOrderEntry(Mobile player, TradeMinister minister) : base(1114453, 3) // Get Trade Order
+			public TradeOrderEntry(Mobile player, TradeMinister minister) : base(1114453, 5) // Get Trade Order
 			{
 				Player = player;
 				Minister = minister;
@@ -283,8 +283,17 @@ namespace Server.Engines.CityLoyalty
 
             public override void OnResponse(NetState state, RelayInfo info)
             {
-                if(info.ButtonID == 1)
-                    CityLoyaltySystem.CityTrading.TryOfferTrade(User, Minister);
+                if (info.ButtonID == 1)
+                {
+                    if (!Minister.InRange(User, 5))
+                    {
+                        User.SendLocalizedMessage(500295); // You are too far away to do that.
+                    }
+                    else
+                    {
+                        CityLoyaltySystem.CityTrading.TryOfferTrade(User, Minister);
+                    }
+                }
             }
 		}
 		

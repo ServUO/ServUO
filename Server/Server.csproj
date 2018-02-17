@@ -38,6 +38,9 @@
     <DefineConstants>TRACE;NEWTIMERS, ServUO</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>ServUO.exe.manifest</ApplicationManifest>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -180,10 +183,6 @@
     <Compile Include="Gumps\GumpTextEntry.cs" />
     <Compile Include="Gumps\GumpTextEntryLimited.cs" />
     <Compile Include="Gumps\GumpTooltip.cs" />
-    <Compile Include="Gumps\KRGumpButton.cs" />
-    <Compile Include="Gumps\KRGumpHtmlLocalized.cs" />
-    <Compile Include="Gumps\KRGumpImage.cs" />
-    <Compile Include="Gumps\KRGumpLabel.cs" />
     <Compile Include="Gumps\RelayInfo.cs" />
     <Compile Include="Network\PingListener.cs" />
     <Compile Include="Persistence\Persistence.cs" />
@@ -202,15 +201,16 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ultima\Ultima.csproj">
       <Project>{e08cfbe4-e013-44ee-8829-426d05bc083f}</Project>
       <Name>Ultima</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ServUO.exe.manifest" />
   </ItemGroup>
   <Import Project="..\VersionSpecificSymbols.Common.prop" />
 </Project>

@@ -230,11 +230,16 @@ namespace Server.Mobiles
 
             if (delay != TimeSpan.MinValue)
             {
-                SetMountPrevention(dismounted, blockmounttype, delay);
+                SetMountPrevention(dismounted, mount as Mobile, blockmounttype, delay);
             }
         }
 
         public static void SetMountPrevention(Mobile mob, BlockMountType type, TimeSpan duration)
+        {
+            SetMountPrevention(mob, null, type, duration);   
+        }
+
+        public static void SetMountPrevention(Mobile mob, Mobile mount, BlockMountType type, TimeSpan duration)
         {
             if (mob == null)
                 return;
@@ -252,7 +257,7 @@ namespace Server.Mobiles
             }
             else
             {
-                m_Table[mob] = entry = new BlockEntry(mob, type, expiration);
+                m_Table[mob] = entry = new BlockEntry(mob, mount, type, expiration);
             }
 
             if (type == BlockMountType.RidingSwipe)
@@ -501,12 +506,14 @@ namespace Server.Mobiles
         private class BlockEntry
         {
             public Mobile m_Mobile;
+            public Mobile m_Mount;
             public BlockMountType m_Type;
             public DateTime m_Expiration;
 
-            public BlockEntry(Mobile m, BlockMountType type, DateTime expiration)
+            public BlockEntry(Mobile m, Mobile mount, BlockMountType type, DateTime expiration)
             {
                 m_Mobile = m;
+                m_Mount = mount;
                 m_Type = type;
                 m_Expiration = expiration;
             }
@@ -517,7 +524,9 @@ namespace Server.Mobiles
                 {
                     if (m_Type == BlockMountType.RidingSwipe)
                     {
-                        return m_Mobile.Hits >= m_Mobile.HitsMax;
+                        Mobile m = m_Mount != null ? m_Mount : m_Mobile;
+
+                        return m.Hits >= m.HitsMax;
                     }
 
                     return (DateTime.UtcNow >= m_Expiration);

@@ -3,6 +3,7 @@ using Server;
 using System.Collections.Generic;
 using Server.Mobiles;
 using Server.Items;
+using Server.Factions;
 using Server.Engines.VvV;
 
 namespace Server.Items
@@ -90,7 +91,7 @@ namespace Server.Items
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
 
-            if (version == 0)
+            if (version == 0 && ViceVsVirtueSystem.Enabled)
                 Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
 		}
 	}

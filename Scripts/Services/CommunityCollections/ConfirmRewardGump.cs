@@ -9,6 +9,7 @@ namespace Server.Gumps
         private readonly Point3D m_Location;
         private readonly CollectionItem m_Item;
         private readonly int m_Hue;
+
         public ConfirmRewardGump(IComunityCollection collection, Point3D location, CollectionItem item)
             : this(collection, location, item, 0)
         {
@@ -17,13 +18,13 @@ namespace Server.Gumps
         public ConfirmRewardGump(IComunityCollection collection, Point3D location, CollectionItem item, int hue)
             : base()
         {
-            this.m_Collection = collection;
-            this.m_Location = location;
-            this.m_Item = item;
-            this.m_Hue = hue;
+            m_Collection = collection;
+            m_Location = location;
+            m_Item = item;
+            m_Hue = hue;
 			
-            if (this.m_Item != null)			
-                this.AddItem(150, 100, this.m_Item.ItemID, this.m_Item.Hue);
+            if (m_Item != null)			
+                AddItem(150, 100, m_Item.ItemID, m_Item.Hue);
         }
 
         public override int TitleNumber
@@ -42,7 +43,7 @@ namespace Server.Gumps
         }// Are you sure you wish to select this?
         public override void Confirm(Mobile from)
         { 
-            if (this.m_Collection == null || !from.InRange(this.m_Location, 2))
+            if (m_Collection == null || !from.InRange(m_Location, 2))
                 return;
 			
             if (from is PlayerMobile)
@@ -52,10 +53,10 @@ namespace Server.Gumps
 				{
 					player.SendLocalizedMessage(1073122); // You don't have enough points for that!
 				}
-				else
-				{
-					this.m_Collection.Reward(player, this.m_Item, this.m_Hue);
-				}
+                else if (m_Item.CanSelect(player))
+                {
+                    m_Collection.Reward(player, m_Item, m_Hue);
+                }
 			}
 		}
     }

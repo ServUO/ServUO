@@ -425,10 +425,10 @@ namespace Server.Misc
                     return Notoriety.CanBeAttacked;
             }
 
-            if (CheckAggressor(source.Aggressors, target))
+            if (CheckAggressor(source.Aggressors, target) || (source is PlayerMobile && CheckPetAggressor((PlayerMobile)source, target)))
                 return Notoriety.CanBeAttacked;
 
-            if (CheckAggressed(source.Aggressed, target))
+            if (CheckAggressed(source.Aggressed, target) || (source is PlayerMobile && CheckPetAggressed((PlayerMobile)source, target)))
                 return Notoriety.CanBeAttacked;
 
             if (target is BaseCreature)
@@ -496,6 +496,28 @@ namespace Server.Misc
                 AggressorInfo info = list[i];
 
                 if (!info.CriminalAggression && info.Defender == target)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool CheckPetAggressor(PlayerMobile source, Mobile target)
+        {
+            foreach (var bc in source.AllFollowers)
+            {
+                if (CheckAggressor(bc.Aggressors, target))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool CheckPetAggressed(PlayerMobile source, Mobile target)
+        {
+            foreach (var bc in source.AllFollowers)
+            {
+                if (CheckAggressed(bc.Aggressed, target))
                     return true;
             }
 

@@ -170,11 +170,6 @@ namespace Server.Gumps
 			Add(new GumpBackground(x, y, width, height, gumpID));
 		}
 
-        public void AddKRButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param)
-        {
-            Add(new KRGumpButton(x, y, normalID, pressedID, buttonID, type, param));
-        }
-
         public void AddButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param)
 		{
 			Add(new GumpButton(x, y, normalID, pressedID, buttonID, type, param));
@@ -231,26 +226,6 @@ namespace Server.Gumps
 		{
 			Add(new GumpHtmlLocalized(x, y, width, height, number, args, color, background, scrollbar));
 		}
-
-        public void AddKRHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
-        {
-            Add(new KRGumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
-        }
-
-        public void AddKRHtmlLocalized(int x, int y, int width, int height, int number, int color, bool background, bool scrollbar)
-        {
-            Add(new KRGumpHtmlLocalized(x, y, width, height, number, color, background, scrollbar));
-        }
-
-        public void AddKRLabel(int x, int y, int width, int height, int number, bool background, bool scrollbar)
-        {
-            Add(new KRGumpLabel(x, y, width, height, number, background, scrollbar));
-        }
-
-        public void AddKRImage(int x, int y, int gumpID)
-        {
-            Add(new KRGumpImage(x, y, gumpID));
-        }
 
         public void AddImage(int x, int y, int gumpID)
 		{
