@@ -9933,6 +9933,8 @@ namespace Server
 					{
 						m_NetState.Send(new MobileUpdateOld(this));
 					}
+
+					ClearFastwalkStack();
 				}
 
 				Map map = m_Map;
