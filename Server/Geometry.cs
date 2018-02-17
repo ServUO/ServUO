@@ -97,7 +97,7 @@ namespace Server
 		{
 			unchecked
 			{
-				var hash = X + Y;
+				var hash = 1 + Math.Abs(X) + Math.Abs(Y);
 
 				hash = (hash * 397) ^ X;
 				hash = (hash * 397) ^ Y;
@@ -271,7 +271,7 @@ namespace Server
 		{
 			unchecked
 			{
-				var hash = X + Y + Z;
+				var hash = 1 + Math.Abs(X) + Math.Abs(Y) + Math.Abs(Z);
 
 				hash = (hash * 397) ^ X;
 				hash = (hash * 397) ^ Y;
@@ -483,7 +483,7 @@ namespace Server
 		{
 			unchecked
 			{
-				var hash = Start.X + Start.Y + End.X + End.Y;
+				var hash = 1 + Math.Abs(Start.X + Start.Y) + Math.Abs(End.X + End.Y);
 
 				hash = (hash * 397) ^ Start.GetHashCode();
 				hash = (hash * 397) ^ End.GetHashCode();
@@ -543,7 +543,7 @@ namespace Server
 		{
 			unchecked
 			{
-				var hash = Start.X + Start.Y + Start.Z + End.X + End.Y + End.Z;
+				var hash = 1 + Math.Abs(Start.X + Start.Y + Start.Z) + Math.Abs(End.X + End.Y + End.Z);
 
 				hash = (hash * 397) ^ Start.GetHashCode();
 				hash = (hash * 397) ^ End.GetHashCode();

@@ -38,7 +38,7 @@ namespace Server
 
 		static SpawnArea()
 		{
-			_EmptyImage = new Bitmap(1, 1);
+			_EmptyImage = new Bitmap(1, 1, PixelFormat.Format16bppRgb555);
 
 			_EmptyFilters = new TileFlag[0];
 
