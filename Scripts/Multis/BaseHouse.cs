@@ -625,24 +625,7 @@ namespace Server.Multis
             }
         }
         #endregion
-
-        public override int GetUpdateRange(Mobile m)
-        {
-            int min = m.NetState != null ? m.NetState.UpdateRange : 18;
-            int max = Core.GlobalMaxUpdateRange;
-
-            int w = Components.Width;
-            int h = Components.Height - 1;
-            int v = min + ((w > h ? w : h) / 2);
-
-            if (v > max)
-                v = max;
-            else if (v < min)
-                v = min;
-
-            return v;
-        }
-
+        
         public List<Mobile> AvailableVendorsFor(Mobile m)
         {
             List<Mobile> list = new List<Mobile>();

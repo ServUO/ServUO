@@ -220,21 +220,35 @@ namespace Server.Items
 
         public virtual bool CanTeleport(Mobile m)
         {
+            if (!m_Active)
+            {
+                return false;
+            }
+
             if (!m_Creatures && !m.Player)
             {
                 return false;
             }
-            else if (m_CriminalCheck && m.Criminal)
+
+            if (m.Holding != null)
+            {
+                m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
+                return false;
+            }
+            
+            if (m_CriminalCheck && m.Criminal)
             {
                 m.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
                 return false;
             }
-            else if (m_CombatCheck && SpellHelper.CheckCombat(m))
+            
+            if (m_CombatCheck && SpellHelper.CheckCombat(m))
             {
                 m.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
                 return false;
             }
-            else if (!CheckDestination(m) || (Siege.SiegeShard && m_MapDest == Map.Trammel))
+            
+            if (!CheckDestination(m) || (Siege.SiegeShard && m_MapDest == Map.Trammel))
             {
                 return false;
             }
@@ -248,7 +262,7 @@ namespace Server.Items
 
             if (map == null || map == Map.Internal)
             {
-                map = this.Map;
+                map = Map;
             }
 
             Region myRegion = Region.Find(m.Location, m.Map);
@@ -264,20 +278,49 @@ namespace Server.Items
 
         public virtual void StartTeleport(Mobile m)
         {
-
-            if (m.Holding != null)
+            if (!m.CanBeginAction(typeof(Teleporter)))
             {
-                m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
+                m.SendMessage("Teleport in progress...");
                 return;
             }
-            else if (m_Delay == TimeSpan.Zero)
+
+            if (!m_Active || !CanTeleport(m))
             {
-                DoTeleport(m);
+                return;
+            }
+
+            if (m_Delay > TimeSpan.Zero)
+            {
+                DelayedTeleport(m);
             }
             else
             {
-                Timer.DelayCall(m_Delay, DoTeleport, m);
+                // Allow OnMoveOver to return before processing the map/location changes
+                Timer.DelayCall(DoTeleport, m); 
             }
+        }
+
+        private void DelayedTeleport(Mobile m)
+        {
+            m.BeginAction(typeof(Teleporter));
+
+            m.Frozen = true;
+
+            m.SendMessage(
+                "Teleporting in {0:#,0.##} second{1}",
+                m_Delay.TotalSeconds,
+                m_Delay.TotalSeconds != 1 ? "s" : String.Empty);
+
+            Timer.DelayCall(m_Delay, DelayedTeleportCallback, m);
+        }
+
+        private void DelayedTeleportCallback(Mobile m)
+        {
+            m.EndAction(typeof(Teleporter));
+
+            m.Frozen = false;
+
+            DoTeleport(m);
         }
 
         public virtual void DoTeleport(Mobile m)
@@ -286,7 +329,7 @@ namespace Server.Items
 
             if (map == null || map == Map.Internal)
             {
-                map = m.Map;
+                map = Map;
             }
 
             Point3D p = m_PointDest;
@@ -296,14 +339,14 @@ namespace Server.Items
                 p = m.Location;
             }
 
-            BaseCreature.TeleportPets(m, p, map);
-
             bool sendEffect = (!m.Hidden || m.IsPlayer());
 
             if (m_SourceEffect && sendEffect)
             {
                 Effects.SendLocationEffect(m.Location, m.Map, 0x3728, 10, 10);
             }
+
+            BaseCreature.TeleportPets(m, p, map);
 
             m.MoveToWorld(p, map);
 
@@ -320,17 +363,8 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m.Holding != null)
-            {
-                m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
-                return true;
-            }
-            else if (m_Active && CanTeleport(m))
-            {
-                StartTeleport(m);
-                return false;
-            }
-
+            StartTeleport(m);
+            
             return true;
         }
 

@@ -1269,7 +1269,7 @@ namespace Server
 					m_Aggressors.RemoveAt(i);
 					info.Free();
 
-					if (m_NetState != null && CanSee(attacker) && Utility.InUpdateRange(m_Location, attacker.m_Location))
+					if (m_NetState != null && Utility.InUpdateRange(this, attacker) && CanSee(attacker))
 					{
 						m_NetState.Send(MobileIncoming.Create(m_NetState, this, attacker));
 					}
@@ -1293,7 +1293,7 @@ namespace Server
 					m_Aggressed.RemoveAt(i);
 					info.Free();
 
-					if (m_NetState != null && CanSee(defender) && Utility.InUpdateRange(m_Location, defender.m_Location))
+					if (m_NetState != null && Utility.InUpdateRange(this, defender) && CanSee(defender))
 					{
 						m_NetState.Send(MobileIncoming.Create(m_NetState, this, defender));
 					}
@@ -7208,7 +7208,7 @@ namespace Server
 					{
 						Mobile m = (Mobile)o;
 
-						if (m != this && Utility.InUpdateRange(m_Location, m.m_Location))
+						if (m != this && Utility.InUpdateRange(m, m_Location, m.m_Location))
 						{
 							ns.Send(m.RemovePacket);
 						}
@@ -7463,7 +7463,7 @@ namespace Server
 		/// </summary>
 		public virtual void OnSpeech(SpeechEventArgs e)
 		{ }
-
+		
 		public void SendEverything()
 		{
 			NetState ns = m_NetState;
@@ -7471,14 +7471,14 @@ namespace Server
 			if (m_Map != null && ns != null)
 			{
 				var eable = m_Map.GetObjectsInRange(m_Location, ns.UpdateRange);
-                
-				foreach (IEntity o in eable)
+
+				foreach (var o in eable)
 				{
 					if (o is Item)
 					{
 						Item item = (Item)o;
 
-						if (CanSee(item) && InRange(item.Location, item.GetUpdateRange(this)))
+						if (InRange(item.GetWorldLocation(), item.GetUpdateRange(this)) && CanSee(item))
 						{
 							item.SendInfoTo(ns);
 						}
@@ -7487,23 +7487,19 @@ namespace Server
 					{
 						Mobile m = (Mobile)o;
 
-						if (CanSee(m) && Utility.InUpdateRange(m_Location, m.m_Location))
+						if (CanSee(m))
 						{
 							ns.Send(MobileIncoming.Create(ns, this, m));
 
-							if (ns.StygianAbyss)
+							if (ns.IsEnhancedClient)
 							{
-								if (m.Poisoned)
-								{
-									ns.Send(new HealthbarPoison(m));
-                                    ns.Send(new HealthbarPoisonEC(m));
-								}
-
-								if (m.Blessed || m.YellowHealthbar)
-								{
-									ns.Send(new HealthbarYellow(m));
-                                    ns.Send(new HealthbarYellowEC(m));
-								}
+								ns.Send(new HealthbarPoisonEC(m));
+								ns.Send(new HealthbarYellowEC(m));
+							}
+							else if (ns.StygianAbyss)
+							{
+								ns.Send(new HealthbarPoison(m));
+								ns.Send(new HealthbarYellow(m));
 							}
 
 							if (m.IsDeadBondedPet)
@@ -7514,9 +7510,6 @@ namespace Server
 							if (ObjectPropertyList.Enabled)
 							{
 								ns.Send(m.OPLPacket);
-
-								//foreach ( Item item in m.m_Items )
-								//	ns.Send( item.OPLPacket );
 							}
 						}
 					}
@@ -7526,14 +7519,11 @@ namespace Server
 			}
 		}
 
-        public virtual void OnUpdateRangeChanged(int oldRange, int newRange)
-        {
-            if (oldRange != newRange)
-            {
-                ClearScreen();
-                SendEverything();
-            }
-        }
+		public virtual void OnUpdateRangeChanged(int oldRange, int newRange)
+		{
+			ClearScreen();
+			SendEverything();
+		}
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public Map Map
@@ -8913,8 +8903,6 @@ namespace Server
 
 					if (m_NetState == null)
 					{
-                        _FirstStep = false;
-
 						OnDisconnected();
 						EventSink.InvokeDisconnected(new DisconnectedEventArgs(this));
 
@@ -9780,9 +9768,7 @@ namespace Server
 
 			Point3D oldLocation = m_Location;
 			Map oldMap = m_Map;
-
-			Region oldRegion = m_Region;
-
+			
 			if (oldMap != null)
 			{
 				oldMap.OnLeave(this);
@@ -9791,9 +9777,9 @@ namespace Server
 				SendRemovePacket();
 			}
 
-			for (int i = 0; i < m_Items.Count; ++i)
+			foreach (Item o in m_Items)
 			{
-				m_Items[i].Map = map;
+				o.Map = map;
 			}
 
 			m_Map = map;
@@ -9802,85 +9788,48 @@ namespace Server
 
 			NetState ns = m_NetState;
 
+			if (ns != null)
+			{
+				ns.Sequence = 0;
+				ClearFastwalkStack();
+			}
+
 			if (m_Map != null)
 			{
 				m_Map.OnEnter(this);
-
-				UpdateRegion();
-
-				if (ns != null && m_Map != null)
-				{
-					ns.Sequence = 0;
-					ns.Send(new MapChange(this));
-					ns.Send(new MapPatches());
-					ns.Send(SeasonChange.Instantiate(GetSeason(), true));
-
-					if (ns.StygianAbyss)
-					{
-						ns.Send(new MobileUpdate(this));
-					}
-					else
-					{
-						ns.Send(new MobileUpdateOld(this));
-					}
-
-					ClearFastwalkStack();
-				}
-			}
-			else
-			{
-				UpdateRegion();
 			}
 
-			if (ns != null)
-			{
-				if (m_Map != null)
-				{
-					Send(new ServerChange(this, m_Map));
-				}
+			UpdateRegion();
 
-				ns.Sequence = 0;
-				ClearFastwalkStack();
+			if (m_Map != null && ns != null)
+			{
+				ns.Send(new MapChange(this));
+				ns.Send(new MapPatches());
+
+				ns.Send(SeasonChange.Instantiate(GetSeason(), true));
+
+				Send(new ServerChange(this, m_Map));
 
 				ns.Send(MobileIncoming.Create(ns, this, this));
 
 				if (ns.StygianAbyss)
 				{
 					ns.Send(new MobileUpdate(this));
-					CheckLightLevels(true);
-					ns.Send(new MobileUpdate(this));
 				}
 				else
 				{
 					ns.Send(new MobileUpdateOld(this));
-					CheckLightLevels(true);
-					ns.Send(new MobileUpdateOld(this));
 				}
+
+				ns.Send(new MobileAttributes(this));
+
+				CheckLightLevels(true);
+
+				ns.Send(SupportedFeatures.Instantiate(ns));
 			}
 
 			SendEverything();
 			SendIncomingPacket();
-
-			if (ns != null)
-			{
-				ns.Sequence = 0;
-				ClearFastwalkStack();
-
-				ns.Send(MobileIncoming.Create(ns, this, this));
-
-				if (ns.StygianAbyss)
-				{
-					ns.Send(SupportedFeatures.Instantiate(ns));
-					ns.Send(new MobileUpdate(this));
-					ns.Send(new MobileAttributes(this));
-				}
-				else
-				{
-					ns.Send(SupportedFeatures.Instantiate(ns));
-					ns.Send(new MobileUpdateOld(this));
-					ns.Send(new MobileAttributes(this));
-				}
-			}
 
 			OnMapChange(oldMap);
 			OnLocationChange(oldLocation);
@@ -9890,9 +9839,7 @@ namespace Server
 				m_Region.OnLocationChanged(this, oldLocation);
 			}
 		}
-
-        private bool _FirstStep;
-
+		
 		public virtual void SetLocation(Point3D newLocation, bool isTeleport)
 		{
 			if (m_Deleted)
@@ -9907,11 +9854,14 @@ namespace Server
 				m_Location = newLocation;
 				UpdateRegion();
 
-				BankBox box = FindBankNoCreate();
-
-				if (box != null && box.Opened)
+				if (AccessLevel == AccessLevel.Player)
 				{
-					box.Close();
+					BankBox box = FindBankNoCreate();
+
+					if (box != null && box.Opened)
+					{
+						box.Close();
+					}
 				}
 
 				if (m_NetState != null)
@@ -9924,7 +9874,7 @@ namespace Server
 					m_Map.OnMove(oldLocation, this);
 				}
 
-				if (isTeleport && m_NetState != null && (!m_NetState.HighSeas || !m_NoMoveHS))
+				if (isTeleport && m_NetState != null && (!m_NetState.HighSeas || !NoMoveHS))
 				{
 					m_NetState.Sequence = 0;
 
@@ -9950,7 +9900,7 @@ namespace Server
 
 					foreach (NetState ns in eable)
 					{
-						if (ns != m_NetState && !Utility.InUpdateRange(newLocation, ns.Mobile.Location))
+						if (ns != m_NetState && !Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile))
 						{
 							ns.Send(RemovePacket);
 						}
@@ -9958,171 +9908,160 @@ namespace Server
 
 					eable.Free();
 
+					Packet hbpPacket = Packet.Acquire(new HealthbarPoison(this)), 
+						   hbyPacket = Packet.Acquire(new HealthbarYellow(this));
+
+					Packet hbpKRPacket = Packet.Acquire(new HealthbarPoisonEC(this)),
+						   hbyKRPacket = Packet.Acquire(new HealthbarYellowEC(this));
+
 					NetState ourState = m_NetState;
 
 					// Check to see if we are attached to a client
-                    if (ourState != null)
-                    {
-                        // We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
+					if (ourState != null)
+					{
+						var eeable = map.GetObjectsInRange(newLocation);
 
-                        if (!_FirstStep)
-                        {
-                            SendEverything();
-                            _FirstStep = true;
-                        }
+						// We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
+						foreach (IEntity o in eeable)
+						{
+							if (o is Item)
+							{
+								Item item = (Item)o;
 
-                        var eeable = map.GetObjectsInRange(newLocation, Core.GlobalMaxUpdateRange);
+								int range = item.GetUpdateRange(this);
+								Point3D loc = item.GetWorldLocation();
 
-                        foreach (IEntity o in eeable)
-                        {
-                            if (o is Item)
-                            {
-                                Item item = (Item)o;
+								if (!Utility.InRange(oldLocation, loc, range) && Utility.InRange(newLocation, loc, range) && CanSee(item))
+								{
+									item.SendInfoTo(ourState);
+								}
+							}
+							else if (o != this && o is Mobile)
+							{
+								Mobile m = (Mobile)o;
 
-                                int range = item.GetUpdateRange(this);
-                                Point3D loc = item.Location;
+								// Will we enter their update range? (Y: Update)
+								bool update = Utility.InUpdateRange(m, newLocation, m);
 
-                                if (!Utility.InRange(oldLocation, loc, range) && 
-                                    Utility.InRange(newLocation, loc, range) && 
-                                    CanSee(item))
-                                {
-                                    item.SendInfoTo(ourState);
-                                }
-                                else if (Utility.InRange(oldLocation, loc, range) && 
-                                         !Utility.InRange(newLocation, loc, range) &&
-                                         CanSee(item))
-                                {
-                                    ourState.Send(item.RemovePacket);
-                                }
-                            }
-                            else if (o != this && o is Mobile)
-                            {
-                                Mobile m = (Mobile)o;
+								// Were we already in their update range? (Y: Cancel Update)
+								if (update && Utility.InUpdateRange(m, oldLocation, m))
+								{
+									update = false;
+								}
 
-                                if (!Utility.InUpdateRange(this, newLocation, m.m_Location) &&
-                                    !Utility.InUpdateRange(m, newLocation, m.m_Location))
-                                {
-                                    continue;
-                                }
+								if (m.m_NetState != null && (update || (isTeleport && (!m.m_NetState.HighSeas || !NoMoveHS))) && m.CanSee(this))
+								{
+									m.m_NetState.Send(MobileIncoming.Create(m.m_NetState, m, this));
 
-                                bool inMyOldRange = Utility.InUpdateRange(this, oldLocation, m.m_Location);
-                                bool inThierOldRange = Utility.InUpdateRange(m, oldLocation, m.m_Location);
+									if (m.m_NetState.IsEnhancedClient)
+									{
+										m.m_NetState.Send(hbpKRPacket);
+										m.m_NetState.Send(hbyKRPacket);
+									}
+									else if (m.m_NetState.StygianAbyss)
+									{
+										m.m_NetState.Send(hbpPacket);
+										m.m_NetState.Send(hbyPacket);
+									}
 
-                                if (m.m_NetState != null && ((isTeleport && (!m.m_NetState.HighSeas || !m_NoMoveHS)) || !inThierOldRange) &&
-                                    m.CanSee(this))
-                                {
-                                    m.m_NetState.Send(MobileIncoming.Create(m.m_NetState, m, this));
+									if (IsDeadBondedPet)
+									{
+										m.m_NetState.Send(new BondedStatus(0, m_Serial, 1));
+									}
 
-                                    if (m.m_NetState.StygianAbyss)
-                                    {
-                                        if (m_Poison != null)
-                                        {
-                                            m.m_NetState.Send(new HealthbarPoison(this));
-                                            m.m_NetState.Send(new HealthbarPoisonEC(this));
-                                        }
+									if (ObjectPropertyList.Enabled)
+									{
+										m.m_NetState.Send(OPLPacket);
+									}
+								}
 
-                                        if (m_Blessed || m_YellowHealthbar)
-                                        {
-                                            m.m_NetState.Send(new HealthbarYellow(this));
-                                            m.m_NetState.Send(new HealthbarYellowEC(this));
-                                        }
-                                    }
+								// Will they enter in our update range? (Y: Update)
+								update = Utility.InUpdateRange(this, newLocation, m);
 
-                                    if (IsDeadBondedPet)
-                                    {
-                                        m.m_NetState.Send(new BondedStatus(0, m_Serial, 1));
-                                    }
+								// Were they already in our update range? (Y: Cancel Update)
+								if (update && Utility.InUpdateRange(this, oldLocation, m))
+								{
+									update = false;
+								}
 
-                                    if (ObjectPropertyList.Enabled)
-                                    {
-                                        m.m_NetState.Send(OPLPacket);
+								if (update && CanSee(m))
+								{
+									ourState.Send(MobileIncoming.Create(ourState, this, m));
 
-                                        //foreach ( Item item in m_Items )
-                                        //	m.m_NetState.Send( item.OPLPacket );
-                                    }
-                                }
+									if (ourState.IsEnhancedClient)
+									{
+										ourState.Send(new HealthbarPoisonEC(m));
+										ourState.Send(new HealthbarYellowEC(m));
+									}
+									else if (ourState.StygianAbyss)
+									{
+										ourState.Send(new HealthbarPoison(m));
+										ourState.Send(new HealthbarYellow(m));
+									}
 
-                                if (!inMyOldRange && CanSee(m))
-                                {
-                                    ourState.Send(MobileIncoming.Create(ourState, this, m));
+									if (m.IsDeadBondedPet)
+									{
+										ourState.Send(new BondedStatus(0, m.m_Serial, 1));
+									}
 
-                                    if (ourState.StygianAbyss)
-                                    {
-                                        if (m.Poisoned)
-                                        {
-                                            ourState.Send(new HealthbarPoison(m));
-                                            ourState.Send(new HealthbarPoisonEC(m));
-                                        }
+									if (ObjectPropertyList.Enabled)
+									{
+										ourState.Send(m.OPLPacket);
+									}
+								}
+							}
+						}
 
-                                        if (m.Blessed || m.YellowHealthbar)
-                                        {
-                                            ourState.Send(new HealthbarYellow(m));
-                                            ourState.Send(new HealthbarYellowEC(m));
-                                        }
-                                    }
+						eeable.Free();
+					}
+					else
+					{
+						eable = map.GetClientsInRange(newLocation);
 
-                                    if (m.IsDeadBondedPet)
-                                    {
-                                        ourState.Send(new BondedStatus(0, m.m_Serial, 1));
-                                    }
+						// We're not attached to a client, so simply send an Incoming
+						foreach (NetState ns in eable)
+						{
+							bool update = Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile);
 
-                                    if (ObjectPropertyList.Enabled)
-                                    {
-                                        ourState.Send(m.OPLPacket);
+							if (update && Utility.InUpdateRange(ns.Mobile, oldLocation, ns.Mobile))
+							{
+								update = false;
+							}
 
-                                        //foreach ( Item item in m.m_Items )
-                                        //	ourState.Send( item.OPLPacket );
-                                    }
-                                }
-                            }
-                        }
+							if ((update || (isTeleport && (!ns.HighSeas || !NoMoveHS))) && ns.Mobile.CanSee(this))
+							{
+								ns.Send(MobileIncoming.Create(ns, ns.Mobile, this));
 
-                        eeable.Free();
-                    }
-                    else
-                    {
-                        eable = map.GetClientsInRange(newLocation);
+								if (ns.IsEnhancedClient)
+								{
+									ns.Send(hbpKRPacket);
+									ns.Send(hbyKRPacket);
+								}
+								else if (ns.StygianAbyss)
+								{
+									ns.Send(hbpPacket);
+									ns.Send(hbyPacket);
+								}
 
-                        // We're not attached to a client, so simply send an Incoming
-                        foreach (NetState ns in eable)
-                        {
-                            if (((isTeleport && (!ns.HighSeas || !m_NoMoveHS)) || (!ns.Mobile.InUpdateRange(oldLocation) && ns.Mobile.InUpdateRange(newLocation))) &&
-                                ns.Mobile.CanSee(this))
-                            {
-                                ns.Send(MobileIncoming.Create(ns, ns.Mobile, this));
+								if (IsDeadBondedPet)
+								{
+									ns.Send(new BondedStatus(0, m_Serial, 1));
+								}
 
-                                if (ns.StygianAbyss)
-                                {
-                                    if (m_Poison != null)
-                                    {
-                                        ns.Send(new HealthbarPoison(this));
-                                        ns.Send(new HealthbarPoisonEC(this));
-                                    }
+								if (ObjectPropertyList.Enabled)
+								{
+									ns.Send(OPLPacket);
+								}
+							}
+						}
 
-                                    if (m_Blessed || m_YellowHealthbar)
-                                    {
-                                        ns.Send(new HealthbarYellow(this));
-                                        ns.Send(new HealthbarYellowEC(this));
-                                    }
-                                }
+						eable.Free();
+					}
 
-                                if (IsDeadBondedPet)
-                                {
-                                    ns.Send(new BondedStatus(0, m_Serial, 1));
-                                }
-
-                                if (ObjectPropertyList.Enabled)
-                                {
-                                    ns.Send(OPLPacket);
-
-                                    //foreach ( Item item in m_Items )
-                                    //	ns.Send( item.OPLPacket );
-                                }
-                            }
-                        }
-
-                        eable.Free();
-                    }
+					Packet.Release(hbpKRPacket);
+					Packet.Release(hbyKRPacket);
+					Packet.Release(hbpPacket);
+					Packet.Release(hbyPacket);
 				}
 
 				OnLocationChange(oldLocation);
@@ -11193,17 +11132,6 @@ namespace Server
 				sendIncoming = true;
 			}
 
-			/*if ( (delta & MobileDelta.Hue) != 0 )
-			{
-			sendNonlocalIncoming = true;
-			sendUpdate = true;
-			}
-			else if ( (delta & (MobileDelta.Direction | MobileDelta.Body)) != 0 )
-			{
-			sendNonlocalMoving = true;
-			sendUpdate = true;
-			}
-			else*/
 			if ((delta & (MobileDelta.Flags | MobileDelta.Noto)) != 0)
 			{
 				sendMoving = true;
@@ -11434,7 +11362,7 @@ namespace Server
 				{
 					beholder = state.Mobile;
 
-					if (beholder != m && beholder.CanSee(m))
+					if (beholder != m && Utility.InUpdateRange(beholder, m) && beholder.CanSee(m))
 					{
 						if (sendRemove)
 						{
