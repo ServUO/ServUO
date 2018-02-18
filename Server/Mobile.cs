@@ -11132,17 +11132,6 @@ namespace Server
 				sendIncoming = true;
 			}
 
-			/*if ( (delta & MobileDelta.Hue) != 0 )
-			{
-			sendNonlocalIncoming = true;
-			sendUpdate = true;
-			}
-			else if ( (delta & (MobileDelta.Direction | MobileDelta.Body)) != 0 )
-			{
-			sendNonlocalMoving = true;
-			sendUpdate = true;
-			}
-			else*/
 			if ((delta & (MobileDelta.Flags | MobileDelta.Noto)) != 0)
 			{
 				sendMoving = true;
@@ -11373,7 +11362,7 @@ namespace Server
 				{
 					beholder = state.Mobile;
 
-					if (beholder != m && beholder.CanSee(m))
+					if (beholder != m && Utility.InUpdateRange(beholder, m) && beholder.CanSee(m))
 					{
 						if (sendRemove)
 						{
