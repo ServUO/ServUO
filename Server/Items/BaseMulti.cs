@@ -89,17 +89,14 @@ namespace Server.Items
 		}
 
 		public virtual bool AllowsRelativeDrop { get { return false; } }
-
-        // Removed as it will use update range
-		/*public override int GetMaxUpdateRange()
-		{
-            return base.GetMaxUpdateRange() + 4;
-		}
-
+	
 		public override int GetUpdateRange(Mobile m)
 		{
-            return base.GetUpdateRange(m) + 4;
-		}*/
+			// Multis should update at maximum range given their center tile must be in the update range.
+			// This will prevent castles, keeps and the minax fortress from suddenly appearaing out of nowhere.
+			// (Any return value higher than the global max will cause the multi to not load at all)
+			return Core.GlobalMaxUpdateRange;
+		}
 
 		public virtual MultiComponentList Components { get { return MultiData.GetComponents(ItemID); } }
 

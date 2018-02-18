@@ -9929,7 +9929,7 @@ namespace Server
 								Item item = (Item)o;
 
 								int range = item.GetUpdateRange(this);
-								Point3D loc = item.Location;
+								Point3D loc = item.GetWorldLocation();
 
 								if (!Utility.InRange(oldLocation, loc, range) && Utility.InRange(newLocation, loc, range) && CanSee(item))
 								{
