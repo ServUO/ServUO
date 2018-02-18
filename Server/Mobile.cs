@@ -1269,7 +1269,7 @@ namespace Server
 					m_Aggressors.RemoveAt(i);
 					info.Free();
 
-					if (m_NetState != null && CanSee(attacker) && Utility.InUpdateRange(m_Location, attacker.m_Location))
+					if (m_NetState != null && Utility.InUpdateRange(this, attacker) && CanSee(attacker))
 					{
 						m_NetState.Send(MobileIncoming.Create(m_NetState, this, attacker));
 					}
@@ -1293,7 +1293,7 @@ namespace Server
 					m_Aggressed.RemoveAt(i);
 					info.Free();
 
-					if (m_NetState != null && CanSee(defender) && Utility.InUpdateRange(m_Location, defender.m_Location))
+					if (m_NetState != null && Utility.InUpdateRange(this, defender) && CanSee(defender))
 					{
 						m_NetState.Send(MobileIncoming.Create(m_NetState, this, defender));
 					}
@@ -7463,32 +7463,22 @@ namespace Server
 		/// </summary>
 		public virtual void OnSpeech(SpeechEventArgs e)
 		{ }
-
+		
 		public void SendEverything()
-		{
-			SendEverything(0, m_NetState != null ? m_NetState.UpdateRange : Core.GlobalUpdateRange);
-		}
-
-		public void SendEverything(int minRange, int maxRange)
 		{
 			NetState ns = m_NetState;
 
 			if (m_Map != null && ns != null)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location, maxRange);
+				var eable = m_Map.GetObjectsInRange(m_Location, ns.UpdateRange);
 
-				foreach (IEntity o in eable)
+				foreach (var o in eable)
 				{
-					if (minRange > 0 && InRange(o, minRange))
-					{
-						continue;
-					}
-
 					if (o is Item)
 					{
 						Item item = (Item)o;
 
-						if (CanSee(item) && InRange(item.Location, item.GetUpdateRange(this)))
+						if (InRange(item.GetWorldLocation(), item.GetUpdateRange(this)) && CanSee(item))
 						{
 							item.SendInfoTo(ns);
 						}
@@ -7497,7 +7487,7 @@ namespace Server
 					{
 						Mobile m = (Mobile)o;
 
-						if (CanSee(m) && Utility.InUpdateRange(m_Location, m.m_Location))
+						if (CanSee(m))
 						{
 							ns.Send(MobileIncoming.Create(ns, this, m));
 
@@ -9798,85 +9788,48 @@ namespace Server
 
 			NetState ns = m_NetState;
 
+			if (ns != null)
+			{
+				ns.Sequence = 0;
+				ClearFastwalkStack();
+			}
+
 			if (m_Map != null)
 			{
 				m_Map.OnEnter(this);
-
-				UpdateRegion();
-
-				if (ns != null && m_Map != null)
-				{
-					ns.Sequence = 0;
-					ns.Send(new MapChange(this));
-					ns.Send(new MapPatches());
-					ns.Send(SeasonChange.Instantiate(GetSeason(), true));
-
-					if (ns.StygianAbyss)
-					{
-						ns.Send(new MobileUpdate(this));
-					}
-					else
-					{
-						ns.Send(new MobileUpdateOld(this));
-					}
-
-					ClearFastwalkStack();
-				}
-			}
-			else
-			{
-				UpdateRegion();
 			}
 
-			if (ns != null)
-			{
-				if (m_Map != null)
-				{
-					Send(new ServerChange(this, m_Map));
-				}
+			UpdateRegion();
 
-				ns.Sequence = 0;
-				ClearFastwalkStack();
+			if (m_Map != null && ns != null)
+			{
+				ns.Send(new MapChange(this));
+				ns.Send(new MapPatches());
+
+				ns.Send(SeasonChange.Instantiate(GetSeason(), true));
+
+				Send(new ServerChange(this, m_Map));
 
 				ns.Send(MobileIncoming.Create(ns, this, this));
 
 				if (ns.StygianAbyss)
 				{
 					ns.Send(new MobileUpdate(this));
-					CheckLightLevels(true);
-					ns.Send(new MobileUpdate(this));
 				}
 				else
 				{
 					ns.Send(new MobileUpdateOld(this));
-					CheckLightLevels(true);
-					ns.Send(new MobileUpdateOld(this));
 				}
+
+				ns.Send(new MobileAttributes(this));
+
+				CheckLightLevels(true);
+
+				ns.Send(SupportedFeatures.Instantiate(ns));
 			}
 
 			SendEverything();
 			SendIncomingPacket();
-
-			if (ns != null)
-			{
-				ns.Sequence = 0;
-				ClearFastwalkStack();
-
-				ns.Send(MobileIncoming.Create(ns, this, this));
-
-				if (ns.StygianAbyss)
-				{
-					ns.Send(SupportedFeatures.Instantiate(ns));
-					ns.Send(new MobileUpdate(this));
-					ns.Send(new MobileAttributes(this));
-				}
-				else
-				{
-					ns.Send(SupportedFeatures.Instantiate(ns));
-					ns.Send(new MobileUpdateOld(this));
-					ns.Send(new MobileAttributes(this));
-				}
-			}
 
 			OnMapChange(oldMap);
 			OnLocationChange(oldLocation);
@@ -9947,7 +9900,7 @@ namespace Server
 
 					foreach (NetState ns in eable)
 					{
-						if (ns != m_NetState && !Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile.Location))
+						if (ns != m_NetState && !Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile))
 						{
 							ns.Send(RemovePacket);
 						}
@@ -9966,7 +9919,7 @@ namespace Server
 					// Check to see if we are attached to a client
 					if (ourState != null)
 					{
-						var eeable = map.GetObjectsInRange(newLocation, Core.GlobalMaxUpdateRange);
+						var eeable = map.GetObjectsInRange(newLocation);
 
 						// We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
 						foreach (IEntity o in eeable)
@@ -9987,15 +9940,16 @@ namespace Server
 							{
 								Mobile m = (Mobile)o;
 
-								if (!Utility.InUpdateRange(newLocation, m.m_Location))
+								// Will we enter their update range? (Y: Update)
+								bool update = Utility.InUpdateRange(m, newLocation, m);
+
+								// Were we already in their update range? (Y: Cancel Update)
+								if (update && Utility.InUpdateRange(m, oldLocation, m))
 								{
-									continue;
+									update = false;
 								}
 
-								bool inOldRange = Utility.InUpdateRange(m, oldLocation, m.m_Location);
-
-								if (m.m_NetState != null && ((isTeleport && (!m.m_NetState.HighSeas || !NoMoveHS)) || !inOldRange) &&
-									m.CanSee(this))
+								if (m.m_NetState != null && (update || (isTeleport && (!m.m_NetState.HighSeas || !NoMoveHS))) && m.CanSee(this))
 								{
 									m.m_NetState.Send(MobileIncoming.Create(m.m_NetState, m, this));
 
@@ -10021,7 +9975,16 @@ namespace Server
 									}
 								}
 
-								if (!inOldRange && CanSee(m))
+								// Will they enter in our update range? (Y: Update)
+								update = Utility.InUpdateRange(this, newLocation, m);
+
+								// Were they already in our update range? (Y: Cancel Update)
+								if (update && Utility.InUpdateRange(this, oldLocation, m))
+								{
+									update = false;
+								}
+
+								if (update && CanSee(m))
 								{
 									ourState.Send(MobileIncoming.Create(ourState, this, m));
 
@@ -10058,8 +10021,14 @@ namespace Server
 						// We're not attached to a client, so simply send an Incoming
 						foreach (NetState ns in eable)
 						{
-							if (((isTeleport && (!ns.HighSeas || !NoMoveHS)) || !Utility.InUpdateRange(ns.Mobile, oldLocation, ns.Mobile.Location)) &&
-								ns.Mobile.CanSee(this))
+							bool update = Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile);
+
+							if (update && Utility.InUpdateRange(ns.Mobile, oldLocation, ns.Mobile))
+							{
+								update = false;
+							}
+
+							if ((update || (isTeleport && (!ns.HighSeas || !NoMoveHS))) && ns.Mobile.CanSee(this))
 							{
 								ns.Send(MobileIncoming.Create(ns, ns.Mobile, this));
 

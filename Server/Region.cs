@@ -1018,16 +1018,19 @@ namespace Server
 				int oldRChild = (oldR != null ? oldR.ChildLevel : -1);
 				int newRChild = (newR != null ? newR.ChildLevel : -1);
 
-				if (oldRChild >= newRChild)
+				if (oldRChild >= newRChild && oldR != null)
 				{
 					oldR.OnExit(m);
+
 					oldR = oldR.Parent;
 				}
 
-				if (newRChild >= oldRChild)
+				if (newRChild >= oldRChild && newR != null)
 				{
 					newR.OnEnter(m);
+
 					EventSink.InvokeOnEnterRegion(new OnEnterRegionEventArgs(m, oldRegion, newR));
+
 					newR = newR.Parent;
 				}
 			}

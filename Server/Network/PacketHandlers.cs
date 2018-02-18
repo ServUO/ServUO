@@ -597,8 +597,7 @@ namespace Server.Network
 			{
 				Item item = World.FindItem(serial);
 
-				if (item != null && from.Map == item.Map && Utility.InUpdateRange(item.GetWorldLocation(), from.Location) &&
-					from.CanSee(item))
+				if (item != null && from.Map == item.Map && Utility.InUpdateRange(from, item) && from.CanSee(item))
 				{
 					item.OnHelpRequest(from);
 				}
@@ -607,7 +606,7 @@ namespace Server.Network
 			{
 				Mobile m = World.FindMobile(serial);
 
-				if (m != null && from.Map == m.Map && Utility.InUpdateRange(m.Location, from.Location) && from.CanSee(m))
+				if (m != null && from.Map == m.Map && Utility.InUpdateRange(from, m) && from.CanSee(m))
 				{
 					m.OnHelpRequest(m);
 				}
@@ -1682,7 +1681,7 @@ namespace Server.Network
 			{
 				Mobile m = World.FindMobile(s);
 
-				if (m != null && from.CanSee(m) && Utility.InUpdateRange(from, m))
+				if (m != null && Utility.InUpdateRange(from, m) && from.CanSee(m))
 				{
 					if (m_SingleClickProps)
 					{
@@ -1701,8 +1700,7 @@ namespace Server.Network
 			{
 				Item item = World.FindItem(s);
 
-				if (item != null && !item.Deleted && from.CanSee(item) &&
-					Utility.InUpdateRange(from.Location, item.GetWorldLocation()))
+				if (item != null && !item.Deleted && Utility.InUpdateRange(from, item) && from.CanSee(item))
 				{
 					if (m_SingleClickProps)
 					{
@@ -2166,11 +2164,7 @@ namespace Server.Network
 
 			if (from != null && target != null && from.Map == target.Map && from.CanSee(target))
 			{
-				if (target is Mobile && !Utility.InUpdateRange(from.Location, target.Location))
-				{
-					return;
-				}
-				else if (target is Item && !Utility.InUpdateRange(from.Location, ((Item)target).GetWorldLocation()))
+				if (!Utility.InUpdateRange(from, target))
 				{
 					return;
 				}
