@@ -258,7 +258,7 @@ namespace Server.Items
 
         public virtual void OnStatsQuery(Mobile from)
         {
-            if (from.Map == Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
+            if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))
             {
                 from.Send(new MobileStatusCompact(false, this));
             }

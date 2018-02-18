@@ -3575,7 +3575,7 @@ namespace Server
 
         public virtual int GetMaxUpdateRange()
         {
-            return 24;
+            return Core.GlobalMaxUpdateRange;
         }
 
         public virtual int GetUpdateRange(Mobile m)

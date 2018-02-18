@@ -142,29 +142,7 @@ namespace Server.Multis
                 return m_Current.Components;
             }
         }
-
-        public override int GetMaxUpdateRange()
-        {
-            return Core.GlobalMaxUpdateRange;
-        }
-
-        public override int GetUpdateRange(Mobile m)
-        {
-            int min = m.NetState != null ? m.NetState.UpdateRange : 18;
-            int max = Core.GlobalMaxUpdateRange;
-
-            int w = CurrentState.Components.Width;
-            int h = CurrentState.Components.Height - 1;
-            int v = min + ((w > h ? w : h) / 2);
-
-            if (v > max)
-                v = max;
-            else if (v < min)
-                v = min;
-
-            return v;
-        }
-
+        
         public DesignState CurrentState
         {
             get
