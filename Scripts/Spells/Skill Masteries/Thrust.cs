@@ -23,11 +23,11 @@ namespace Server.Spells.SkillMasteries
 		public override SkillName DamageSkill { get { return SkillName.Tactics; } }
 		
 		public const int MaxAttack = 54;
-		public const int MaxDefense = 50;
+		public const int MaxDefense = 54;
 		
 		public int AttackModifier { get; set; }
 		public int DefenseModifier { get; set; }
-			
+
         public ThrustSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -60,14 +60,17 @@ namespace Server.Spells.SkillMasteries
 				spell.Expire();
 				return false;
 			}
-			
+
 			return base.CheckCast();
 		}
  
         public override void OnCast()
         {
+            if (!CheckSequence())
+                return;
+
             Caster.PlaySound(0x101);
-            Caster.FixedEffect(0x37C4, 10, 20, 2724, 3);
+            Caster.FixedEffect(0x37C4, 0x1, 0x8, 0x4EB, 0);
 
             AttackModifier = GetMasteryLevel() * 6;
             DefenseModifier = GetMasteryLevel() * 6;
@@ -76,34 +79,23 @@ namespace Server.Spells.SkillMasteries
 			
 			BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Thrust, 1155989, 1155990, String.Format("{0}\t{1}\t{2}", AttackModifier.ToString(), DefenseModifier.ToString(), ScaleMana(30).ToString())));
 			//Your next physical attack will be increased by +~1_VAL~% damage while reducing your victim's physical attack damage by ~2_VAL~%.<br>Mana Upkeep Cost: ~3_VAL~.
-			
+
+            FinishSequence();
 			BeginTimer();
         }
 		
 		public override void OnHit(Mobile defender, ref int damage)
 		{
-			int mana = ScaleMana( GetMana() );
-			
-			if(Caster.Mana < mana)
-			{
-				Expire();
-				return;
-			}
-			
-			Caster.Mana -= mana;
-			
 			if(Target != defender)
 			{
 				AttackModifier = GetMasteryLevel() * 6;
 				DefenseModifier = GetMasteryLevel() * 6;
 				
 				Target = defender;
-                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ThrustDebuff, 1155989, BuffInfo.Blank, ""));
-				
-				Server.Timer.DelayCall(TimeSpan.FromSeconds(8), () =>
-				{
-					Reset();
-				});
+                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ThrustDebuff, 1155989, 1156234, TimeSpan.FromSeconds(8), defender, DefenseModifier.ToString()));
+                // All damage from your physical attacks have been reduced by ~1_val~%.
+
+                new InternalTimer(this, defender);
 			}
 			else
 			{
@@ -115,9 +107,15 @@ namespace Server.Spells.SkillMasteries
 			
 			BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Thrust, 1155989, 1155990, String.Format("{0}\t{1}\t{2}", AttackModifier.ToString(), DefenseModifier.ToString(), ScaleMana(30).ToString())));
 			//Your next physical attack will be increased by +~1_VAL~% damage while reducing your victim's physical attack damage by ~2_VAL~%.<br>Mana Upkeep Cost: ~3_VAL~.
-			
+
 			damage = (int)((double)damage + ((double)damage * ((double)DefenseModifier / 100.0)));
-            defender.FixedEffect(0x36BD, 20, 10, 2725, 5);
+            defender.FixedEffect(0x36BD, 0x1, 0xE, 0x776, 0);
+
+            if (!CheckMana())
+            {
+                Reset();
+                Expire();
+            }
 		}
 		
 		public override void OnGotHit(Mobile attacker, ref int damage)
@@ -125,17 +123,70 @@ namespace Server.Spells.SkillMasteries
 			if(Target == attacker && DefenseModifier > 0)
 				damage = (int)((double)damage - ((double)damage * ((double)DefenseModifier / 100.0)));
 		}
+
+        private bool CheckMana()
+        {
+            int mana = ScaleMana(GetMana());
+
+            if (Caster.Mana < mana)
+            {
+                Expire();
+                return false;
+            }
+
+            Caster.Mana -= mana;
+            return true;
+        }
 		
 		private void Reset()
 		{
-			AttackModifier = 0;
+			//AttackModifier = 0;
 			DefenseModifier = 0;
 
             if (Target != null)
             {
                 BuffInfo.RemoveBuff(Target, BuffIcon.ThrustDebuff);
-                Target = null;
             }
 		}
+
+        private class InternalTimer : Timer
+        {
+            public Mobile Target { get; set; }
+            public DateTime Expires { get; set; }
+            public ThrustSpell Spell { get; set; }
+
+            public int DamageModifier { get; set; }
+
+            public InternalTimer(ThrustSpell spell, Mobile target)
+                : base(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(250))
+            {
+                Target = target;
+                Spell = spell;
+                DamageModifier = spell.DefenseModifier;
+
+                Expires = DateTime.UtcNow + TimeSpan.FromSeconds(8);
+                Start();
+            }
+
+            protected override void OnTick()
+            {
+                if (Expires < DateTime.UtcNow)
+                {
+                    Spell.Reset();
+                    Stop();
+                }
+                else
+                {
+                    if (Spell.DefenseModifier != DamageModifier)
+                    {
+                        int expires = (int)(Expires - DateTime.UtcNow).TotalSeconds;
+                        BuffInfo.AddBuff(Target, new BuffInfo(BuffIcon.ThrustDebuff, 1155989, 1156234, TimeSpan.FromSeconds(expires), Target, Spell.DefenseModifier.ToString()));
+                        // All damage from your physical attacks have been reduced by ~1_val~%.
+
+                        DamageModifier = Spell.DefenseModifier;
+                    }
+                }
+            }
+        }
     }
 }

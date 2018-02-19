@@ -240,9 +240,9 @@ namespace Server.Items
                                 sk.Base = 90;
                             }
 
-                            User.Str = Str;
-                            User.Dex = Dex;
-                            User.Int = Int;
+                            User.RawStr = Str;
+                            User.RawDex = Dex;
+                            User.RawInt = Int;
 
                             Token.Delete();
                             return;
