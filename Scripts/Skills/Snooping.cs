@@ -71,7 +71,7 @@ namespace Server.SkillHandlers
                 }
 
                 if (from.IsPlayer())
-                    Titles.AwardKarma(from, -3, true);
+                    Titles.AwardKarma(from, -4, true);
 
                 if (from.IsStaff() || from.CheckTargetSkill(SkillName.Snooping, cont, 0.0, 100.0))
                 {
