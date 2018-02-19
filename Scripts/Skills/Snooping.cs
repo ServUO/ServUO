@@ -64,22 +64,14 @@ namespace Server.SkillHandlers
 
                     if (map != null)
                     {
-                        string message = String.Format("You notice {0} attempting to peek into {1}'s belongings.", from.Name, root.Name);
+                        string message = String.Format("You notice {0} peeking into your belongings!", from.Name);
 
-                        IPooledEnumerable eable = map.GetClientsInRange(from.Location, 8);
-
-                        foreach (NetState ns in eable)
-                        {
-                            if (ns.Mobile != from)
-                                ns.Mobile.SendMessage(message);
-                        }
-
-                        eable.Free();
+                        root.Send(new AsciiMessage(-1, -1, MessageType.Label, 946, 3, "", message));                        
                     }
                 }
 
                 if (from.IsPlayer())
-                    Titles.AwardKarma(from, -4, true);
+                    Titles.AwardKarma(from, -3, true);
 
                 if (from.IsStaff() || from.CheckTargetSkill(SkillName.Snooping, cont, 0.0, 100.0))
                 {
