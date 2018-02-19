@@ -59,7 +59,7 @@ namespace Server.Items
             if (!attacker.Mounted)
             {
                 IMount mount = defender.Mount;
-                Server.Items.Dismount.DoDismount(attacker, defender, mount, 600, true);
+                Server.Items.Dismount.DoDismount(attacker, defender, mount, 10, true);
 
                 if(mount is Mobile)
                     AOS.Damage((Mobile)mount, attacker, amount, 100, 0, 0, 0, 0);

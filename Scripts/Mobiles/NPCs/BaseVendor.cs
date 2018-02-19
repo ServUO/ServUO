@@ -1068,7 +1068,7 @@ namespace Server.Mobiles
 					}
 				}
 
-				SayTo(from, 500186); // Greetings.  Have a look around.
+                this.SayTo(from, 500186, 0x3B2); // Greetings.  Have a look around.
 			}
 		}
 
@@ -1459,7 +1459,7 @@ namespace Server.Mobiles
 			List<BuyItemResponse> validBuy,
 			ref int controlSlots,
 			ref bool fullPurchase,
-			ref double totalCost)
+			ref double cost)
 		{
 			int amount = buy.Amount;
 
@@ -1485,7 +1485,7 @@ namespace Server.Mobiles
 				return;
 			}
 
-			totalCost += (double)bii.Price * amount;
+			cost = (double)bii.Price * amount;
 			validBuy.Add(buy);
 		}
 
@@ -1612,6 +1612,7 @@ namespace Server.Mobiles
 			{
 				Serial ser = buy.Serial;
 				int amount = buy.Amount;
+                double cost = 0;
 
 				if (ser.IsItem)
 				{
@@ -1626,7 +1627,7 @@ namespace Server.Mobiles
 
 					if (gbi != null)
 					{
-						ProcessSinglePurchase(buy, gbi, validBuy, ref controlSlots, ref fullPurchase, ref totalCost);
+						ProcessSinglePurchase(buy, gbi, validBuy, ref controlSlots, ref fullPurchase, ref cost);
 					}
 					else if (item != BuyPack && item.IsChildOf(BuyPack))
 					{
@@ -1646,13 +1647,25 @@ namespace Server.Mobiles
 							{
 								if (ssi.IsResellable(item))
 								{
-									totalCost += (double)ssi.GetBuyPriceFor(item, this) * amount;
+									cost = (double)ssi.GetBuyPriceFor(item, this) * amount;
 									validBuy.Add(buy);
 									break;
 								}
 							}
 						}
 					}
+
+                    if (validBuy.Contains(buy))
+                    {
+                        if (ValidateBought(buyer, item))
+                        {
+                            totalCost += cost;
+                        }
+                        else
+                        {
+                            validBuy.Remove(buy);
+                        }
+                    }
 				}
 				else if (ser.IsMobile)
 				{
@@ -1667,18 +1680,30 @@ namespace Server.Mobiles
 
 					if (gbi != null)
 					{
-						ProcessSinglePurchase(buy, gbi, validBuy, ref controlSlots, ref fullPurchase, ref totalCost);
+						ProcessSinglePurchase(buy, gbi, validBuy, ref controlSlots, ref fullPurchase, ref cost);
 					}
+
+                    if (validBuy.Contains(buy))
+                    {
+                        if (ValidateBought(buyer, mob))
+                        {
+                            totalCost += cost;
+                        }
+                        else
+                        {
+                            validBuy.Remove(buy);
+                        }
+                    }
 				}
 			} //foreach
 
 			if (fullPurchase && validBuy.Count == 0)
 			{
-				SayTo(buyer, 500190); // Thou hast bought nothing!
+                this.SayTo(buyer, 500190, 0x3B2); // Thou hast bought nothing!
 			}
 			else if (validBuy.Count == 0)
 			{
-				SayTo(buyer, 500187); // Your order cannot be fulfilled, please try again.
+				this.SayTo(buyer, 500187, 0x3B2); // Your order cannot be fulfilled, please try again.
 			}
 
 			if (validBuy.Count == 0)
@@ -1716,52 +1741,44 @@ namespace Server.Mobiles
 				bought = true;
 			}
 
-			//if (totalCost >= 2000)
-			//{
-				if (!bought)
+			if (!bought)
+			{
+				if (totalCost <= Int32.MaxValue)
 				{
-					if (totalCost <= Int32.MaxValue)
-					{
-						if (Banker.Withdraw(buyer, (int)totalCost))
-						{
-							bought = true;
-							fromBank = true;
-						}
-					}
-					else if (buyer.Account != null && AccountGold.Enabled)
-					{
-						if (buyer.Account.WithdrawCurrency(totalCost / AccountGold.CurrencyThreshold))
-						{
-							bought = true;
-							fromBank = true;
-						}
-					}
-				}
-
-				if (!bought)
-				{
-					cont = buyer.FindBankNoCreate();
-
-					if (cont != null && ConsumeGold(cont, totalCost))
+					if (Banker.Withdraw(buyer, (int)totalCost))
 					{
 						bought = true;
 						fromBank = true;
 					}
 				}
-			//}
+				else if (buyer.Account != null && AccountGold.Enabled)
+				{
+					if (buyer.Account.WithdrawCurrency(totalCost / AccountGold.CurrencyThreshold))
+					{
+						bought = true;
+						fromBank = true;
+					}
+				}
+			}
+
+			if (!bought)
+			{
+				cont = buyer.FindBankNoCreate();
+
+				if (cont != null && ConsumeGold(cont, totalCost))
+				{
+					bought = true;
+					fromBank = true;
+				}
+			}
 
 			if (!bought)
 			{
 				// ? Begging thy pardon, but thy bank account lacks these funds. 
 				// : Begging thy pardon, but thou casnt afford that.
-				SayTo(buyer, totalCost >= 2000 ? 500191 : 500192);
+                this.SayTo(buyer, totalCost >= 2000 ? 500191 : 500192, 0x3B2);
 
 				return false;
-			}
-
-			if (discount > 0)
-			{
-				SayTo(buyer, 1151517, discount.ToString());
 			}
 
 			buyer.PlaySound(0x32);
@@ -1853,57 +1870,77 @@ namespace Server.Mobiles
 
 			if (discount > 0)
 			{
-				SayTo(buyer, 1151517, discount.ToString());
+                this.SayTo(buyer, 1151517, discount.ToString(), 0x3B2);
 			}
 
 			if (fullPurchase)
 			{
 				if (buyer.AccessLevel >= AccessLevel.GameMaster)
 				{
-					SayTo(buyer, true, "I would not presume to charge thee anything.  Here are the goods you requested.");
+                    this.SayTo(
+                        buyer,
+                        0x3B2,
+                        "I would not presume to charge thee anything.  Here are the goods you requested.", 
+                        null,
+                        !Core.AOS);
 				}
 				else if (fromBank)
 				{
-					SayTo(
+					this.SayTo(
 						buyer,
-						true,
+                        0x3B2,
 						"The total of thy purchase is {0} gold, which has been withdrawn from your bank account.  My thanks for the patronage.",
-						totalCost);
+                        totalCost.ToString(),
+                        !Core.AOS);
 				}
 				else
 				{
-					SayTo(buyer, true, "The total of thy purchase is {0} gold.  My thanks for the patronage.", totalCost);
+                    this.SayTo(buyer, String.Format("The total of thy purchase is {0} gold.  My thanks for the patronage.", totalCost), 0x3B2, true);
 				}
 			}
 			else
 			{
 				if (buyer.AccessLevel >= AccessLevel.GameMaster)
 				{
-					SayTo(
+					this.SayTo(
 						buyer,
-						true,
-						"I would not presume to charge thee anything.  Unfortunately, I could not sell you all the goods you requested.");
+                        0x3B2,
+						"I would not presume to charge thee anything.  Unfortunately, I could not sell you all the goods you requested.",
+                        null,
+                        !Core.AOS);
 				}
 				else if (fromBank)
 				{
-					SayTo(
-						buyer,
-						true,
-						"The total of thy purchase is {0} gold, which has been withdrawn from your bank account.  My thanks for the patronage.  Unfortunately, I could not sell you all the goods you requested.",
-						totalCost);
+                    this.SayTo(
+                        buyer,
+                        0x3B2,
+                        "The total of thy purchase is {0} gold, which has been withdrawn from your bank account.  My thanks for the patronage.  Unfortunately, I could not sell you all the goods you requested.", 
+                        totalCost.ToString(),
+                        !Core.AOS);
 				}
 				else
 				{
-					SayTo(
+					this.SayTo(
 						buyer,
-						true,
+                        0x3B2,
 						"The total of thy purchase is {0} gold.  My thanks for the patronage.  Unfortunately, I could not sell you all the goods you requested.",
-						totalCost);
+                        totalCost.ToString(),
+                        !Core.AOS);
 				}
 			}
 
 			return true;
 		}
+
+        public virtual bool ValidateBought(Mobile buyer, Item item)
+        {
+            return true;
+        }
+
+        public virtual bool ValidateBought(Mobile buyer, Mobile m)
+        {
+            return true;
+        }
 
 		public static bool ConsumeGold(Container cont, double amount)
 		{
@@ -2062,7 +2099,7 @@ namespace Server.Mobiles
 
 			if (Sold > MaxSell)
 			{
-				SayTo(seller, true, "You may only sell {0} items at a time!", MaxSell);
+                this.SayTo(seller, "You may only sell {0} items at a time!", MaxSell, 0x3B2, true);
 				return false;
 			}
 			else if (Sold == 0)
