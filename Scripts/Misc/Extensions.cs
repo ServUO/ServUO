@@ -156,9 +156,15 @@ namespace Server.Mobiles
             mobile.PrivateOverheadMessage(MessageType.Regular, hue, number, args, to.NetState);
         }
 
-        public static void SayTo(this Mobile mobile, Mobile to, string text, int hue, bool ascii = false)
+        public static void SayTo(this Mobile mobile, Mobile to, int hue, string text, string args)
         {
-            mobile.PrivateOverheadMessage(MessageType.Regular, hue, ascii, text, to.NetState);
+            mobile.SayTo(to, text, args, hue, false);
+            //mobile.PrivateOverheadMessage(MessageType.Regular, hue, false, text, to.NetState);
+        }
+
+        public static void SayTo(this Mobile mobile, Mobile to, int hue, string text, string args, bool ascii)
+        {
+            mobile.PrivateOverheadMessage(MessageType.Regular, hue, ascii, String.Format(text, args), to.NetState);
         }
 
         public static void Say(this Mobile mobile, int number, int hue)

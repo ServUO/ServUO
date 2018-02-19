@@ -260,14 +260,7 @@ namespace Server.Mobiles
                 m_Table[mob] = entry = new BlockEntry(mob, mount, type, expiration);
             }
 
-            if (type == BlockMountType.RidingSwipe)
-            {
-                BuffInfo.AddBuff(mob, new BuffInfo(BuffIcon.DismountPrevention, 1075635, 1075636));
-            }
-            else
-            {
-                BuffInfo.AddBuff(mob, new BuffInfo(BuffIcon.DismountPrevention, 1075635, 1075636, duration, mob));
-            }
+            BuffInfo.AddBuff(mob, new BuffInfo(BuffIcon.DismountPrevention, 1075635, 1075636, duration, mob));
         }
 
         public static void ClearMountPrevention(Mobile mob)
@@ -524,12 +517,15 @@ namespace Server.Mobiles
                 {
                     if (m_Type == BlockMountType.RidingSwipe)
                     {
+                        if (DateTime.UtcNow < m_Expiration)
+                            return false;
+
                         Mobile m = m_Mount != null ? m_Mount : m_Mobile;
 
                         return m.Hits >= m.HitsMax;
                     }
 
-                    return (DateTime.UtcNow >= m_Expiration);
+                    return DateTime.UtcNow >= m_Expiration;
                 }
             }
         }
