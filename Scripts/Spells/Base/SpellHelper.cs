@@ -191,7 +191,13 @@ namespace Server.Spells
 
         public static void Turn(Mobile from, object to)
         {
+            Turn(from, to, 0);
+        }
+
+        public static void Turn(Mobile from, object to, int delay)
+        {
             IPoint3D target = to as IPoint3D;
+            int d = -1;
 
             if (target == null)
                 return;
@@ -201,11 +207,23 @@ namespace Server.Spells
                 Item item = (Item)target;
 
                 if (item.RootParent != from)
-                    from.Direction = from.GetDirectionTo(item.GetWorldLocation());
+                    d = (int)from.GetDirectionTo(item.GetWorldLocation());
             }
             else if (from != target)
             {
-                from.Direction = from.GetDirectionTo(target);
+                d = (int)from.GetDirectionTo(target);
+            }
+
+            if (d > -1 && delay > 0)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(delay), () =>
+                    {
+                        from.Direction = (Direction)d;
+                    });
+            }
+            else if (d > -1)
+            {
+                from.Direction = (Direction)d;
             }
         }
 

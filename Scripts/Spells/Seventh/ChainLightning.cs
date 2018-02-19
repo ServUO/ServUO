@@ -50,7 +50,7 @@ namespace Server.Spells.Seventh
             }
             else if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
             {
-                SpellHelper.Turn(Caster, p);
+                SpellHelper.Turn(Caster, p, 100);
 
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
@@ -119,7 +119,7 @@ namespace Server.Spells.Seventh
                         Caster.DoHarmful(m != null ? m : id);
                         SpellHelper.Damage(this, m != null ? m : id, damage, 0, 0, 0, 0, 100);
 
-                        Effects.SendBoltEffect(id, true, 0, true);
+                        Effects.SendBoltEffect(id, true, 0, false);
                     }
                 }
                 else

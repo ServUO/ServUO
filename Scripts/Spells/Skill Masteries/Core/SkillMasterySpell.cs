@@ -875,7 +875,6 @@ namespace Server.Spells.SkillMasteries
 
             if (m_Table.ContainsKey(m))
             {
-
                 foreach (SkillMasterySpell sp in EnumerateSpells(m))
                 {
                     if (sp.ClearOnSpecialAbility)

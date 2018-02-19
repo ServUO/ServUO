@@ -50,8 +50,8 @@ namespace Server.Spells.SkillMasteries
 			ClearCurrentMove(attacker);
 			
             BaseWeapon weapon = attacker.Weapon as BaseWeapon;
- 
-            if (weapon != null && (_Table == null || _Table.ContainsKey(attacker)))
+
+            if (weapon != null && (_Table == null || !_Table.ContainsKey(attacker)))
             {
                 int toDrain = (int)(attacker.Skills[MoveSkill].Value + attacker.Skills[SkillName.Tactics].Value + (MasteryInfo.GetMasteryLevel(attacker, SkillName.Fencing) * 40) / 3);
                 toDrain /= 3;
@@ -61,8 +61,8 @@ namespace Server.Spells.SkillMasteries
                 if (_Table == null)
                     _Table = new Dictionary<Mobile, Timer>();
 
-				_Table[attacker] = t = new InternalTimer(this, attacker, defender, toDrain);
-				t.Start();
+                _Table[attacker] = t = new InternalTimer(this, attacker, defender, toDrain);
+                t.Start();
 
                 attacker.PrivateOverheadMessage(MessageType.Regular, 1150, 1155993, attacker.NetState); // You deliver a piercing blow!
                 defender.FixedEffect(0x36BD, 20, 10, 2725, 5);
@@ -71,7 +71,11 @@ namespace Server.Spells.SkillMasteries
 
                 BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Pierce, 1155994, 1155995, TimeSpan.FromSeconds(10), defender, (drain / 7).ToString()));
                 //-~1_VAL~ Stamina Regeneration.
-			}
+            }
+            else
+            {
+                attacker.SendLocalizedMessage(1095215); // Your target is already under the effect of this attack.
+            }
         }
 
         public void RemoveEffects(Mobile attacker)

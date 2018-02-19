@@ -85,9 +85,9 @@ namespace Server.Engines.Quests
                 {
                     AddImage(379, 60, 0x15A9);
                 }
-                else if (!m_Quest.ShowDescription)
+                else
                 {
-                    AddImage(379, 60, 0x15E8);
+                    AddImage(379, 60, 0x1580);
                 }
             }                
 						
@@ -454,7 +454,7 @@ namespace Server.Engines.Quests
                 if (reward != null)
                 {
                     AddImage(105, offset, 0x4B9);
-                    AddHtmlObject(133, offset, 280, 32, reward.Name, LightGreen, false, false);
+                    AddHtmlObject(133, offset, 280, m_Quest.Rewards.Count == 1 ? 100 : 16, reward.Name, LightGreen, false, false);
 
                     offset += 16;
                 }

@@ -140,10 +140,10 @@ namespace Server.Spells.Fifth
 
             if (caster.HarmfulCheck(defender))
             {
-                SpellHelper.Damage(this, target, Utility.RandomMinMax(damage, damage + 4), 0, 0, 100, 0, 0);
-
                 target.FixedParticles(0x374A, 10, 15, 5038, 1181, 2, EffectLayer.Head);
                 target.PlaySound(0x213);
+
+                SpellHelper.Damage(this, target, Utility.RandomMinMax(damage, damage + 4), 0, 0, 100, 0, 0);
             }
         }
 

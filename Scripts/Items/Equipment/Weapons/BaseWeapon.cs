@@ -2744,8 +2744,12 @@ namespace Server.Items
 				int lightningChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLightning) * propertyBonus);
 				int dispelChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitDispel) * propertyBonus);
 
-				#region Stygian Abyss
-				int curseChance = (int)(m_AosWeaponAttributes.HitCurse * propertyBonus);
+                #region Mondains Legacy
+                int velocityChance = this is BaseRanged ? (int)((BaseRanged)this).Velocity : 0;
+                #endregion
+
+                #region Stygian Abyss
+                int curseChance = (int)(m_AosWeaponAttributes.HitCurse * propertyBonus);
 				int fatigueChance = (int)(m_AosWeaponAttributes.HitFatigue * propertyBonus);
 				int manadrainChance = (int)(m_AosWeaponAttributes.HitManaDrain * propertyBonus);
 				#endregion
@@ -2773,10 +2777,17 @@ namespace Server.Items
 				if (dispelChance != 0 && dispelChance > Utility.Random(100))
 				{
 					DoDispel(attacker, defender);
-				}
+                }
 
-				#region Stygian Abyss
-				if (curseChance != 0 && curseChance > Utility.Random(100))
+                #region Mondains Legacy
+                if (Core.ML && velocityChance != 0 && velocityChance > Utility.Random(100))
+                {
+                    DoHitVelocity(attacker, damageable);
+                }
+                #endregion
+
+                #region Stygian Abyss
+                if (curseChance != 0 && curseChance > Utility.Random(100))
 				{
 					DoCurse(attacker, defender);
 				}
@@ -3053,6 +3064,29 @@ namespace Server.Items
 				defender.Delete();
 			}
 		}
+
+        public virtual void DoHitVelocity(Mobile attacker, IDamageable damageable)
+        {
+            int bonus = (int)attacker.GetDistanceToSqrt(damageable);
+
+            if (bonus > 0)
+            {
+                AOS.Damage(damageable, attacker, bonus * 3, 100, 0, 0, 0, 0);
+
+                if (attacker.Player)
+                {
+                    attacker.SendLocalizedMessage(1072794); // Your arrow hits its mark with velocity!
+                }
+
+                if (damageable is Mobile && ((Mobile)damageable).Player)
+                {
+                    ((Mobile)damageable).SendLocalizedMessage(1072795); // You have been hit by an arrow with velocity!
+                }
+            }
+
+            if (ProcessingMultipleHits)
+                BlockHitEffects = true;
+        }
 
 		#region Stygian Abyss
 		public virtual void DoCurse(Mobile attacker, Mobile defender)
