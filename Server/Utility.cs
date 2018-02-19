@@ -701,7 +701,7 @@ namespace Server
 			return (p1.m_X >= (p2.m_X - range)) && (p1.m_X <= (p2.m_X + range)) && (p1.m_Y >= (p2.m_Y - range)) &&
 				   (p1.m_Y <= (p2.m_Y + range));
 		}
-		/*
+
 		public static bool InUpdateRange(Point3D p1, Point3D p2)
 		{
             int range = Core.GlobalUpdateRange;
@@ -718,13 +718,6 @@ namespace Server
                    (p1.m_Y <= (p2.m_Y + range));
 		}
 
-		public static bool InUpdateRange(IPoint2D p1, IPoint2D p2)
-		{
-            int range = Core.GlobalUpdateRange;
-
-            return (p1.X >= (p2.X - range)) && (p1.X <= (p2.X + range)) && (p1.Y >= (p2.Y - range)) && (p1.Y <= (p2.Y + range));
-		}
-		*/
 		public static bool InUpdateRange(Mobile m, IPoint3D p)
 		{
 			return InUpdateRange(m, m, p);
