@@ -1903,16 +1903,21 @@ namespace Server.Multis
 
             HouseFoundation foundation = World.FindItem(pvSrc.ReadInt32()) as HouseFoundation;
 
-            if (foundation != null && from.Map == foundation.Map && from.InRange(foundation.GetWorldLocation(), 24) && from.CanSee(foundation))
+            if (foundation != null && from.Map == foundation.Map)
             {
-                DesignState stateToSend;
+                var range = foundation.GetUpdateRange(from);
 
-                if (context != null && context.Foundation == foundation)
-                    stateToSend = foundation.DesignState;
-                else
-                    stateToSend = foundation.CurrentState;
+                if (Utility.InRange(from.Location, foundation.GetWorldLocation(), range) && from.CanSee(foundation))
+                {
+                    DesignState stateToSend;
 
-                stateToSend.SendDetailedInfoTo(state);
+                    if (context != null && context.Foundation == foundation)
+                        stateToSend = foundation.DesignState;
+                    else
+                        stateToSend = foundation.CurrentState;
+
+                    stateToSend.SendDetailedInfoTo(state);
+                }
             }
         }
 

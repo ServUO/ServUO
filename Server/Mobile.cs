@@ -7470,7 +7470,7 @@ namespace Server
 
 			if (m_Map != null && ns != null)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location, ns.UpdateRange);
+				var eable = m_Map.GetObjectsInRange(m_Location);
 
 				foreach (var o in eable)
 				{
@@ -7487,7 +7487,7 @@ namespace Server
 					{
 						Mobile m = (Mobile)o;
 
-						if (CanSee(m))
+						if (Utility.InUpdateRange(this, m) && CanSee(m))
 						{
 							ns.Send(MobileIncoming.Create(ns, this, m));
 
