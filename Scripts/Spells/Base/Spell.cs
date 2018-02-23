@@ -85,6 +85,14 @@ namespace Server.Spells
 				{
 					oldTimer.Stop();
 					m_Contexts.Remove(d);
+
+                    if (Core.SA && oldTimer is SpellHelper.SpellDamageTimerAOS)
+                    {
+                        var spell = ((SpellHelper.SpellDamageTimerAOS)oldTimer).Spell;
+
+                        if (spell != null)
+                            spell.DoFizzle();
+                    }
 				}
 
 				m_Contexts.Add(d, t);
@@ -310,9 +318,6 @@ namespace Server.Spells
 		{
             if (IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
 			{
-                if (m_Caster is BaseCreature)
-                    m_Caster.Say("Trying to move...");
-
 				m_Caster.SendLocalizedMessage(500111); // You are frozen and can not move.
 				return false;
 			}

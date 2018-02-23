@@ -1392,29 +1392,22 @@ namespace Server.Spells
             }
         }
 
-        private class SpellDamageTimerAOS : Timer
+        public class SpellDamageTimerAOS : Timer
         {
-            private readonly IDamageable m_Target;
-
+            private IDamageable m_Target;
             private readonly Mobile m_From;
-
             private int m_Damage;
-            private readonly int m_Phys;
+            private int m_Phys;
+            private int m_Fire;
+            private int m_Cold;
+            private int m_Pois;
+            private int m_Nrgy;
+            private int m_Chaos;
+            private int m_Direct;
+            private DFAlgorithm m_DFA;
+            private Spell m_Spell;
 
-            private readonly int m_Fire;
-
-            private readonly int m_Cold;
-
-            private readonly int m_Pois;
-
-            private readonly int m_Nrgy;
-
-            private readonly int m_Chaos;
-
-            private readonly int m_Direct;
-
-            private readonly DFAlgorithm m_DFA;
-            private readonly Spell m_Spell;
+            public Spell Spell { get { return m_Spell; } }
 
             public SpellDamageTimerAOS(Spell s, IDamageable target, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, TimeSpan delay, DFAlgorithm dfa)
                 : base(delay)
@@ -1431,6 +1424,7 @@ namespace Server.Spells
                 m_Direct = direct;
                 m_DFA = dfa;
                 m_Spell = s;
+
                 if (m_Spell != null && m_Spell.DelayedDamage && !m_Spell.DelayedDamageStacking)
                     m_Spell.StartDelayedDamageContext(target, this);
 

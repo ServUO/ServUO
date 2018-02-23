@@ -450,7 +450,7 @@ namespace Server.Items
 					break;
 				case "jhelom moongate":
 				{
-					loc = new Point3D(1330, 3780, 0);
+					loc = new Point3D(1495, 3773, 0);
 					map = Map.Trammel;
 				}
 					break;
@@ -608,7 +608,7 @@ namespace Server.Items
 					break;
 				case "fel jhelom moongate":
 				{
-					loc = new Point3D(1330, 3780, 0);
+					loc = new Point3D(1495, 3773, 0);
 					map = Map.Felucca;
 				}
 					break;

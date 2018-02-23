@@ -36,6 +36,10 @@ namespace Server.Engines.Points
             {
                 points = Entries[type];
 
+                // Kind of ametuar, but if this arrizes more, we'll make a seperate function
+                if (item is SOS && ((SOS)item).IsAncient)
+                    points = 2500;
+
                 if (item.Stackable)
                     points = points * item.Amount;                
 
@@ -167,6 +171,7 @@ namespace Server.Engines.Points
             Entries[typeof(LavaRock)] = 500.0;
             Entries[typeof(SmugglersLiquor)] = 30.0;
             Entries[typeof(MessageInABottle)] = 100.0;
+            Entries[typeof(SOS)] = 100.0;
             Entries[typeof(RunedDriftwoodBow)] = 500.0;
             Entries[typeof(Rope)] = 1600.0;
             Entries[typeof(SpecialFishingNet)] = 250.0;

@@ -1435,7 +1435,7 @@ namespace Server.Mobiles
 			{
 				int iCurrDist = (int)m_Mobile.GetDistanceToSqrt(m_Mobile.ControlTarget);
 
-				if (iCurrDist > m_Mobile.RangePerception)
+				if (iCurrDist > m_Mobile.RangePerception * 5)
 				{
 					m_Mobile.DebugSay("I have lost the one to follow. I stay here");
 
