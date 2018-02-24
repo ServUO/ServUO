@@ -224,30 +224,25 @@ namespace Server.Mobiles
         {
             int select;
 
-            if (CheckCast(8)) select = 13;
-            else if (CheckCast(7)) select = 12;
-            else if (CheckCast(5)) select = 10;
-            else if (CheckCast(4)) select = 8;
-            else if (CheckCast(3)) select = 6;
-            else if (CheckCast(2)) select = 4;
-            else select = 2;
+            if (CheckCast(8)) select = 8;
+            else if (CheckCast(6)) select = 6;
+            else if (CheckCast(5)) select = 5;
+            else if (CheckCast(4)) select = 4;
+            else if (CheckCast(3)) select = 3;
+            else if (CheckCast(2)) select = 2;
+            else select = 1;
 
             switch (Utility.Random(select))
             {
                 default:
-                case 0:
-                case 1: return new MagicArrowSpell(m_Mobile, null);
-                case 2:
-                case 3: return new HarmSpell(m_Mobile, null);
-                case 4:
-                case 5: return new FireballSpell(m_Mobile, null);
-                case 6:
-                case 7: return new LightningSpell(m_Mobile, null);
-                case 8:
-                case 9: return new MindBlastSpell(m_Mobile, null);
-                case 10: return new EnergyBoltSpell(m_Mobile, null);
-                case 11: return new ExplosionSpell(m_Mobile, null);
-                case 12: return new FlameStrikeSpell(m_Mobile, null);
+                case 0: return new MagicArrowSpell(m_Mobile, null);
+                case 1: return new HarmSpell(m_Mobile, null);
+                case 2: return new FireballSpell(m_Mobile, null);
+                case 3: return new LightningSpell(m_Mobile, null);
+                case 4: return new MindBlastSpell(m_Mobile, null);
+                case 5: return new EnergyBoltSpell(m_Mobile, null);
+                case 6: return new ExplosionSpell(m_Mobile, null);
+                case 7: return new FlameStrikeSpell(m_Mobile, null);
             }
         }
 
@@ -788,15 +783,12 @@ namespace Server.Mobiles
             }
             else
             {
-                if (!m_Mobile.Controlled)
-                {
-                    ProcessTarget();
+                ProcessTarget();
 
-                    Spell spell = CheckCastHealingSpell();
+                Spell spell = CheckCastHealingSpell();
 
-                    if (spell != null)
-                        spell.Cast();
-                }
+                if (spell != null)
+                    spell.Cast();
 
                 base.DoActionGuard();
             }

@@ -116,10 +116,10 @@ namespace Server.Spells.Seventh
                             damage *= GetDamageScalar(m);
                         }
 
+                        Effects.SendBoltEffect(id, true, 0, false);
+
                         Caster.DoHarmful(m != null ? m : id);
                         SpellHelper.Damage(this, m != null ? m : id, damage, 0, 0, 0, 0, 100);
-
-                        Effects.SendBoltEffect(id, true, 0, false);
                     }
                 }
                 else

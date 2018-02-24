@@ -271,6 +271,11 @@ namespace Server.Mobiles
 
         public static BlockMountType GetMountPrevention(Mobile mob)
         {
+            return GetMountPrevention(mob, null);
+        }
+
+        public static BlockMountType GetMountPrevention(Mobile mob, BaseMount mount)
+        {
             if (mob == null)
                 return BlockMountType.None;
 
@@ -282,18 +287,27 @@ namespace Server.Mobiles
             if (entry == null)
                 return BlockMountType.None;
 
-            if (entry.IsExpired)
+            if (entry.IsExpired(mount))
             {
-                ExpireMountPrevention(mob);
                 return BlockMountType.None;
             }
 
             return entry.m_Type;
         }
 
-        public static bool CheckMountAllowed(Mobile mob, bool message, bool flying = false)
+        public static bool CheckMountAllowed(Mobile mob, bool message)
         {
-            BlockMountType type = GetMountPrevention(mob);
+            return CheckMountAllowed(mob, message, false);
+        }
+
+        public static bool CheckMountAllowed(Mobile mob, bool message, bool flying)
+        {
+            return CheckMountAllowed(mob, null, message, flying);
+        }
+
+        public static bool CheckMountAllowed(Mobile mob, BaseMount mount, bool message, bool flying)
+        {
+            BlockMountType type = GetMountPrevention(mob, mount);
 
             if (type == BlockMountType.None)
                 return true;
@@ -414,7 +428,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (!CheckMountAllowed(from, true))
+            if (!CheckMountAllowed(from, this, true, false))
                 return;
 
             if (from.Mounted)
@@ -511,22 +525,39 @@ namespace Server.Mobiles
                 m_Expiration = expiration;
             }
 
-            public bool IsExpired
+            public bool IsExpired(BaseMount mount)
             {
-                get
+                if (m_Type == BlockMountType.RidingSwipe)
                 {
-                    if (m_Type == BlockMountType.RidingSwipe)
+                    Console.WriteLine("{0} - {1}", m_Mount, mount);
+                    if (DateTime.UtcNow < m_Expiration)
                     {
-                        if (DateTime.UtcNow < m_Expiration)
-                            return false;
-
-                        Mobile m = m_Mount != null ? m_Mount : m_Mobile;
-
-                        return m.Hits >= m.HitsMax;
+                        return false;
+                    }
+                    else if (m_Mount != null && mount != null && m_Mount == mount)
+                    {
+                        if (mount.Hits >= mount.HitsMax)
+                        {
+                            BaseMount.ExpireMountPrevention(m_Mobile);
+                            Console.WriteLine("Expired1");
+                            return true;
+                        }
+                    }
+                    else if (m_Mobile != null)
+                    {
+                        if (m_Mobile.Hits >= m_Mobile.HitsMax)
+                        {
+                            BaseMount.ExpireMountPrevention(m_Mobile);
+                            Console.WriteLine("Expired2");
+                            return true;
+                        }
                     }
 
-                    return DateTime.UtcNow >= m_Expiration;
+                    return false;
                 }
+                Console.WriteLine("Expired3");
+                BaseMount.ExpireMountPrevention(m_Mobile);
+                return DateTime.UtcNow >= m_Expiration;
             }
         }
     }
