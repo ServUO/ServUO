@@ -51,8 +51,9 @@ namespace Server.Misc
                 return;
             
             double vapoints = pm.VASTotalMonsterFame;
+            int luck = Math.Max(0, pm.RealLuck);
 
-            pm.VASTotalMonsterFame += (int)(bc.Fame * (1 + Math.Sqrt(pm.RealLuck) / 100));
+            pm.VASTotalMonsterFame += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)));
 
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
