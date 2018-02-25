@@ -529,7 +529,6 @@ namespace Server.Mobiles
             {
                 if (m_Type == BlockMountType.RidingSwipe)
                 {
-                    Console.WriteLine("{0} - {1}", m_Mount, mount);
                     if (DateTime.UtcNow < m_Expiration)
                     {
                         return false;
@@ -539,7 +538,6 @@ namespace Server.Mobiles
                         if (mount.Hits >= mount.HitsMax)
                         {
                             BaseMount.ExpireMountPrevention(m_Mobile);
-                            Console.WriteLine("Expired1");
                             return true;
                         }
                     }
@@ -548,14 +546,13 @@ namespace Server.Mobiles
                         if (m_Mobile.Hits >= m_Mobile.HitsMax)
                         {
                             BaseMount.ExpireMountPrevention(m_Mobile);
-                            Console.WriteLine("Expired2");
                             return true;
                         }
                     }
 
                     return false;
                 }
-                Console.WriteLine("Expired3");
+                
                 BaseMount.ExpireMountPrevention(m_Mobile);
                 return DateTime.UtcNow >= m_Expiration;
             }
