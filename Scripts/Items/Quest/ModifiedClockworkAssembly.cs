@@ -63,7 +63,7 @@ namespace Server.Items
         {
             // Clockwork Leather Wolf
             new GolemInfo(1,
-                new Type[] { typeof(Leather), typeof(Gears) },  //typeof( FlaskOfOil ) },
+                new Type[] { typeof(Leather), typeof(OilFlask) },
                 new int[] { 100, 1 },
                 new int[] { 1113058, 1113059 }),
             // ClockWork Scorpion
