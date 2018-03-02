@@ -2,6 +2,7 @@ using System;
 
 namespace Server.Items
 {
+    [TypeAlias("Server.Items.FlaskOfOil ")]
     public class OilFlask : Item
     {
         [Constructable]
