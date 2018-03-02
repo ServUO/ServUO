@@ -3,10 +3,10 @@ using System;
 namespace Server.Items
 {
     [Flipable(0x1F03, 0x1F04)]
-    public override bool CanBeWornByGargoyles { get { return true; } }
     public class ConjureresGarb : BaseOuterTorso, ITokunoDyable
 	{
 		public override bool IsArtifact { get { return true; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
         [Constructable]
         public ConjureresGarb()
             : base(0x1F03, 0x486)
