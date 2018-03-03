@@ -238,7 +238,7 @@ namespace Server.Engines.BulkOrders
                 {
                     if (context.Entries.ContainsKey(type))
                     {
-                        context.Entries[type].LastBulkOrder = (DateTime.UtcNow + ts) - TimeSpan.FromHours(Delay);
+                        context.Entries[type].LastBulkOrder = (context.Entries[type].LastBulkOrder + ts) - TimeSpan.FromHours(Delay);
                     }
                 }
                 else if (context.Entries.ContainsKey(type))
