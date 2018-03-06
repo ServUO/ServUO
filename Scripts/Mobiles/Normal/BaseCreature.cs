@@ -612,6 +612,38 @@ namespace Server.Mobiles
 				Masteries = masteries;
 			}
 		}
+        
+        public void CheckMastery()
+        {
+            if(Spell == null && Masteries != null && Masteries.Length > 0)
+			{
+				var info = Masteries[Utility.Random(Masteries.Length)];
+				
+				if(info != null)
+				{
+					if(info.SpellType.IsSubclassOf(typeof(SkillMasteryMove)))
+					{
+						var move = SpellRegistry.GetSpecialMove(info.SpellID);
+						
+						if(move != null)
+						{
+							SpecialMove.SetCurrentMove(this, move);
+							NextMastery = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 20));
+						}
+					}
+					else
+					{
+						 var spell = SpellRegistry.NewSpell(info.SpellID, this, null);
+						 
+						 if(spell != null)
+						 {
+							 spell.Cast();
+							 NextMastery = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 20));
+						 }
+					}
+				}
+			}
+        }
         #endregion
 
         public virtual bool AutoRearms { get { return false; } }
@@ -7203,6 +7235,8 @@ namespace Server.Mobiles
             {
                 SpecialAbility.CheckThinkTrigger(this);
                 AreaEffect.CheckThinkTrigger(this);
+                
+                CheckMastery();
             }
 
             if (EnableRummaging && CanRummageCorpses && !Summoned && !Controlled && tc >= m_NextRummageTime)
