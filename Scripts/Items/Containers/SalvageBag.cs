@@ -71,7 +71,25 @@ namespace Server.Items
 		
         private bool Scissorables() //Where context menu checks for Leather items and cloth items
         {
-            return Items.Any(i => (i != null) && (!i.Deleted) && (i is IScissorable) && (i is Item));
+            foreach (Item i in this.Items)
+            {
+                if (i != null && !i.Deleted)
+                {
+                    if (i is IScissorable)
+                    {
+                        if (i is BaseClothing)
+                            return true;
+                        if (i is BaseArmor)
+                        {
+                            if (CraftResources.GetType(((BaseArmor)i).Resource) == CraftResourceType.Leather)
+                                return true;
+                        }
+                        if ((i is Cloth) || (i is BoltOfCloth) || (i is Hides) || (i is BonePile))
+                            return true;
+                    }
+                }
+            }
+            return false;
         }
 
         #endregion	
