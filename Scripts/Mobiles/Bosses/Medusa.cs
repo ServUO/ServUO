@@ -65,6 +65,9 @@ namespace Server.Mobiles
             AddItem(Bow);
 
             m_Scales = Utility.RandomMinMax(1, 2) + 7;
+
+            SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetSpecialAbility(SpecialAbility.VenemousBite);
         }
 
         public Medusa(Serial serial)
@@ -540,11 +543,6 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.025)
                 c.DropItem(new MedusaStatue());
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.MortalStrike;
         }
 
         public override void OnAfterDelete()

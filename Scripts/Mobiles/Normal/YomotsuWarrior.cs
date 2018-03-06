@@ -10,61 +10,63 @@ namespace Server.Mobiles
         public YomotsuWarrior()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a yomotsu warrior";
-            this.Body = 245;
-            this.BaseSoundID = 0x452;
+            Name = "a yomotsu warrior";
+            Body = 245;
+            BaseSoundID = 0x452;
 
-            this.SetStr(486, 530);
-            this.SetDex(151, 165);
-            this.SetInt(17, 31);
+            SetStr(486, 530);
+            SetDex(151, 165);
+            SetInt(17, 31);
 
-            this.SetHits(486, 530);
-            this.SetMana(17, 31);
+            SetHits(486, 530);
+            SetMana(17, 31);
 
-            this.SetDamage(8, 10);
+            SetDamage(8, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 65, 85);
-            this.SetResistance(ResistanceType.Fire, 30, 50);
-            this.SetResistance(ResistanceType.Cold, 45, 65);
-            this.SetResistance(ResistanceType.Poison, 35, 55);
-            this.SetResistance(ResistanceType.Energy, 25, 50);
+            SetResistance(ResistanceType.Physical, 65, 85);
+            SetResistance(ResistanceType.Fire, 30, 50);
+            SetResistance(ResistanceType.Cold, 45, 65);
+            SetResistance(ResistanceType.Poison, 35, 55);
+            SetResistance(ResistanceType.Energy, 25, 50);
 
-            this.SetSkill(SkillName.Anatomy, 85.1, 95.0);
-            this.SetSkill(SkillName.MagicResist, 82.6, 90.5);
-            this.SetSkill(SkillName.Tactics, 95.1, 105.0);
-            this.SetSkill(SkillName.Wrestling, 97.6, 107.5);
+            SetSkill(SkillName.Anatomy, 85.1, 95.0);
+            SetSkill(SkillName.MagicResist, 82.6, 90.5);
+            SetSkill(SkillName.Tactics, 95.1, 105.0);
+            SetSkill(SkillName.Wrestling, 97.6, 107.5);
 
-            this.Fame = 4200;	
-            this.Karma = -4200;
+            Fame = 4200;	
+            Karma = -4200;
 
-            this.PackItem(new GreenGourd());
-            this.PackItem(new ExecutionersAxe());
+            PackItem(new GreenGourd());
+            PackItem(new ExecutionersAxe());
 
             if (Utility.RandomBool())
-                this.PackItem(new LongPants());
+                PackItem(new LongPants());
             else
-                this.PackItem(new ShortPants());
+                PackItem(new ShortPants());
 
             switch ( Utility.Random(4) )
             {
                 case 0:
-                    this.PackItem(new Shoes());
+                    PackItem(new Shoes());
                     break;
                 case 1:
-                    this.PackItem(new Sandals());
+                    PackItem(new Sandals());
                     break;
                 case 2:
-                    this.PackItem(new Boots());
+                    PackItem(new Boots());
                     break;
                 case 3:
-                    this.PackItem(new ThighBoots());
+                    PackItem(new ThighBoots());
                     break;
             }
 
             if (Utility.RandomDouble() < .25)
-                this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+
+            SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
         public YomotsuWarrior(Serial serial)
@@ -100,15 +102,11 @@ namespace Server.Mobiles
                 return 3;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.DoubleStrike;
-        }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
-            this.AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Gems, 2);
         }
 
         // TODO: Throwing Dagger

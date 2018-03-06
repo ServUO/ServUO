@@ -10,37 +10,39 @@ namespace Server.Mobiles
         public IceHound()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an ice hound";
-            this.Body = 98;
-            this.BaseSoundID = 229;
-            this.Hue = 1153;
+            Name = "an ice hound";
+            Body = 98;
+            BaseSoundID = 229;
+            Hue = 1153;
 
-            this.SetStr(102, 150);
-            this.SetDex(81, 105);
-            this.SetInt(36, 60);
+            SetStr(102, 150);
+            SetDex(81, 105);
+            SetInt(36, 60);
 
-            this.SetHits(66, 125);
+            SetHits(66, 125);
 
-            this.SetDamage(11, 17);
+            SetDamage(11, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Cold, 80);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Cold, 80);
 
-            this.SetResistance(ResistanceType.Physical, 25, 35);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 10, 20);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 25, 35);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 10, 20);
 			
-            this.SetSkill(SkillName.Swords, 99.0);
+            SetSkill(SkillName.Swords, 99.0);
 
-            this.Fame = 3400;
-            this.Karma = -3400;
+            Fame = 3400;
+            Karma = -3400;
 
-            this.VirtualArmor = 30;
+            VirtualArmor = 30;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 85.5;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 85.5;
+
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public IceHound(Serial serial)
@@ -69,15 +71,11 @@ namespace Server.Mobiles
                 return PackInstinct.Canine;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.ParalyzingBlow;
-        }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)
