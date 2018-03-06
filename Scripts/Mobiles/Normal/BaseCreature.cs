@@ -583,6 +583,36 @@ namespace Server.Mobiles
             PetTrainingHelper.GetProfile(this, true).AddAbility(ability);
         }
         #endregion
+        
+        #region Skill Masteries
+        private SkillName _Mastery;
+
+		public SkillName Mastery 
+		{
+			get { return _Mastery; } 
+			set
+			{
+				var old = _Mastery;
+				_Mastery = value;
+				
+				if(old != _Mastery)
+					UpdateMasteryInfo();
+			}
+		}
+		
+		public MasteryInfo[] Masteries { get; set; }
+		public DateTime NextMastery { get; set; }
+
+		public void UpdateMasteryInfo
+		{
+			var masteries = MasteryInfo.Infos.Where(i => i.MasterySkill == Mastery && !i.Passive).ToArray();
+			
+			if(masteries != null && masteries.Length > 0)
+			{
+				Masteries = masteries;
+			}
+		}
+        #endregion
 
         public virtual bool AutoRearms { get { return false; } }
 
