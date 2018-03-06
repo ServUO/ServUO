@@ -164,6 +164,8 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(NecromancersPhylactery), 0x2F5A, 1154742, 1912, 300000));
             Rewards.Add(new CollectionItem(typeof(WizardsCurio), 0x2F58, 1154743, 1912, 300000));
             Rewards.Add(new CollectionItem(typeof(MysticsMemento), 0x2F5B, 1154744, 1912, 300000));
+
+            Rewards.Add(new CollectionItem(typeof(VollemHeldInCrystal), 0x1f19, 1113629, 1154, 500000));
         }
     }
 }

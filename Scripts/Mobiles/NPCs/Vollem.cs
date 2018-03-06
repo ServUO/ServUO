@@ -9,112 +9,51 @@ namespace Server.Mobiles
 
         [Constructable]
         public Vollem()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.8)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a vollem";
-            this.Body = 293;
-            //			BaseSoundID = 397;
+            Name = "a vollem";
+            Body = 0x125;
 
-            this.SetStr(225, 245);
-            this.SetDex(80, 100);
-            this.SetInt(30, 40);
+            SetStr(496, 524);
+            SetDex(88, 105);
+            SetInt(94, 117);
 
-            this.SetHits(151, 210);
+            SetHits(300, 315);
 
-            this.SetDamage(5, 10);
+            SetDamage(16, 22);
 
-            this.SetDamageType(ResistanceType.Physical, 60);
-            this.SetDamageType(ResistanceType.Poison, 40);
+            SetDamageType(ResistanceType.Physical, 40);
+            SetDamageType(ResistanceType.Fire, 40);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 80, 100);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 60, 80);
-            this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 10, 25);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.MagicResist, 30.1, 50.0);
-            this.SetSkill(SkillName.Poisoning, 95.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 70.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 80.0);
+            SetSkill(SkillName.MagicResist, 90.4, 97.8);
+            SetSkill(SkillName.Tactics, 99.0, 99.5);
+            SetSkill(SkillName.Wrestling, 84.2, 87.7);
+            SetSkill(SkillName.EvalInt, 21.9, 43.3);
+            SetSkill(SkillName.Magery, 25.6, 38.6);
 
-            this.Fame = 3500;
-            this.Karma = -3500;
-
-            this.ControlSlots = 1;
+            ControlSlots = 2;
         }
 
-        public Vollem(Serial serial)
-            : base(serial)
-        {
-        }
+        public override bool IsScaredOfScaryThings { get { return false; } }
+        public override bool IsScaryToPets { get { return true; } }
+        public override bool IsBondable { get { return false; } }
+        public override bool DeleteOnRelease { get { return true; } }
+        public override bool AutoDispel { get { return !Controlled; } }
+        public override bool BleedImmune { get { return true; } }
+        public override bool BardImmune { get { return !Core.AOS || Controlled; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool HasBreath { get { return true; } }
 
-        public override bool IsScaredOfScaryThings
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsScaryToPets
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsBondable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
-        public override bool DeleteOnRelease
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return !this.Controlled;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS || this.Controlled;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override void GenerateLoot()
-        {
-            this.AddLoot(LootPack.Meager, 2);
-        }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override int Meat { get { return 5; } }
+        public override int Hides { get { return 10; } }
 
         public override int GetAngerSound()
         {
@@ -123,7 +62,7 @@ namespace Server.Mobiles
 
         public override int GetIdleSound()
         {
-            if (!this.Controlled)
+            if (!Controlled)
                 return 542;
 
             return base.GetIdleSound();
@@ -131,7 +70,7 @@ namespace Server.Mobiles
 
         public override int GetDeathSound()
         {
-            if (!this.Controlled)
+            if (!Controlled)
                 return 545;
 
             return base.GetDeathSound();
@@ -144,7 +83,7 @@ namespace Server.Mobiles
 
         public override int GetHurtSound()
         {
-            if (this.Controlled)
+            if (Controlled)
                 return 320;
 
             return base.GetHurtSound();
@@ -152,14 +91,14 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            if (this.Controlled || this.Summoned)
+            if (Controlled || Summoned)
             {
-                Mobile master = (this.ControlMaster);
+                Mobile master = (ControlMaster);
 
                 if (master == null)
-                    master = this.SummonMaster;
+                    master = SummonMaster;
 
-                if (master != null && master.Player && master.Map == this.Map && master.InRange(this.Location, 20))
+                if (master != null && master.Player && master.Map == Map && master.InRange(Location, 20))
                 {
                     if (master.Mana >= amount)
                     {
@@ -175,6 +114,11 @@ namespace Server.Mobiles
             }
 
             base.OnDamage(amount, from, willKill);
+        }
+
+        public Vollem(Serial serial)
+            : base(serial)
+        {
         }
 
         public override void Serialize(GenericWriter writer)
