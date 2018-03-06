@@ -385,7 +385,7 @@ namespace Server.Mobiles
         #region Bonding
         public const bool BondingEnabled = true;
 
-        public virtual bool IsBondable { get { return (BondingEnabled && !Summoned && !m_Allured && !IsGolem); } }
+        public virtual bool IsBondable { get { return (BondingEnabled && !Summoned && !m_Allured); } }
         public virtual TimeSpan BondingDelay { get { return TimeSpan.FromDays(7.0); } }
         public virtual TimeSpan BondingAbandonDelay { get { return TimeSpan.FromDays(1.0); } }
 
@@ -395,7 +395,6 @@ namespace Server.Mobiles
 
         public override bool IsDeadBondedPet { get { return m_IsDeadPet; } }
 
-        private bool m_IsGolem;
         private bool m_IsBonded;
         private bool m_IsDeadPet;
         private DateTime m_BondingBegin;
@@ -428,13 +427,6 @@ namespace Server.Mobiles
 
                 return m_Owners[m_Owners.Count - 1];
             }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsGolem
-        {
-            get { return m_IsGolem; }
-            set { m_IsGolem = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -2526,9 +2518,7 @@ namespace Server.Mobiles
             // Pet Branding version 22
             writer.Write(m_EngravedText);
 
-            // Version 23
-            writer.Write(m_IsGolem);
-            // Version 24 Pet Training
+            // Version 23 Pet Training
             if (_Profile != null)
             {
                 writer.Write(1);
@@ -2819,16 +2809,7 @@ namespace Server.Mobiles
                 m_EngravedText = reader.ReadString();
             }
 
-            if (version >= 23)
-            {
-                m_IsGolem = reader.ReadBool();
-            }
-            else
-            {
-                m_IsGolem = this is Golem;
-            }
-            
-            if (version >= 24 && reader.ReadInt() == 1)
+            if (version >= 23 && reader.ReadInt() == 1)
             {
                 _Profile = new AbilityProfile(this, reader);
             }
@@ -5466,9 +5447,6 @@ namespace Server.Mobiles
                     list.Add(1080078); // guarding
                 }
             }
-
-            if (IsGolem)
-                list.Add(1113697); // (Golem)
 
             if (Summoned && !IsAnimatedDead && !IsNecroFamiliar && !(this is Clone))
             {
