@@ -17,7 +17,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public FairyDragon()
-            : base(AIType.AI_Mage, FightMode.Evil, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mystic, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "Fairy Dragon";
             Body = 718;
@@ -49,7 +49,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 90.1, 92.5);
 
             Fame = 15000;
-            Karma = 15000;
+            Karma = -15000;
 
             VirtualArmor = 39;
         }

@@ -85,7 +85,7 @@ namespace Server.Engines.Craft
             return 0.0; // 0%
         }
 
-        public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
+        public override int CanCraft(Mobile from, ITool tool, Type itemType)
         {
             int num = 0;
 
@@ -167,9 +167,15 @@ namespace Server.Engines.Craft
             }
         }
 
+        private System.Collections.Generic.List<Type> _NoConsumeOnFailure = new System.Collections.Generic.List<Type>
+        {
+            typeof(Silver), typeof(RingOfTheElements), typeof(HatOfTheMagi), typeof(AutomatonActuator),
+            typeof(BlackrockMoonstone)
+        };
+
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements) || resourceType == typeof(HatOfTheMagi) || resourceType == typeof(AutomatonActuator))
+            if (_NoConsumeOnFailure.Contains(resourceType))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);
@@ -348,8 +354,8 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Shovel), 1044046, 1023898, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             AddCraft(typeof(Hammer), 1044046, 1024138, 30.0, 80.0, typeof(IronIngot), 1044036, 1, 1044037);
             AddCraft(typeof(Tongs), 1044046, 1024028, 35.0, 85.0, typeof(IronIngot), 1044036, 1, 1044037);
-            AddCraft(typeof(SmithHammer), 1044046, 1025091, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
-            AddCraft(typeof(SledgeHammer), 1044046, 1024021, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
+            AddCraft(Core.AOS ? typeof(SmithyHammer) : typeof(SmithHammer), 1044046, 1025091, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
+            AddCraft(Core.AOS ? typeof(SledgeHammerWeapon) : typeof(SledgeHammer), 1044046, 1024021, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             AddCraft(typeof(Inshave), 1044046, 1024326, 30.0, 80.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(Pickaxe), 1044046, 1023718, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);            
             AddCraft(typeof(Lockpick), 1044046, 1025371, 45.0, 95.0, typeof(IronIngot), 1044036, 1, 1044037);
@@ -461,9 +467,9 @@ namespace Server.Engines.Craft
             }
 
             index = AddCraft(typeof(BroadcastCrystal), 1044050, 1153097, 80.0, 130.0, typeof(IronIngot), 1044036, 20, 1044037);
-            AddRes(index, typeof(Emerald), 1062601, 20, 1044240);
+            AddRes(index, typeof(Emerald), 1062601, 10, 1044240);
             AddRes(index, typeof(Ruby), 1062603, 10, 1044240);
-            AddRes(index, typeof(CopperWire), 1026265, 5, 1150700);
+            AddRes(index, typeof(CopperWire), 1026265, 1, 1150700);
             
             if (Core.SA)
             {
@@ -865,7 +871,7 @@ namespace Server.Engines.Craft
 
         public abstract TrapType TrapType { get; }
 
-        public TrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool, int quality)
+        public TrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, ITool tool, int quality)
             : base(from, craftItem, craftSystem, typeRes, tool, quality)
         {
         }
@@ -940,7 +946,7 @@ namespace Server.Engines.Craft
             private void Failure(int message)
             {
                 Mobile from = m_TrapCraft.From;
-                BaseTool tool = m_TrapCraft.Tool;
+                ITool tool = m_TrapCraft.Tool;
 
                 if (Siege.SiegeShard)
                 {
@@ -986,7 +992,7 @@ namespace Server.Engines.Craft
             }
         }
 
-        public DartTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool, int quality)
+        public DartTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, ITool tool, int quality)
             : base(from, craftItem, craftSystem, typeRes, tool, quality)
         {
         }
@@ -1003,7 +1009,7 @@ namespace Server.Engines.Craft
             }
         }
 
-        public PoisonTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool, int quality)
+        public PoisonTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, ITool tool, int quality)
             : base(from, craftItem, craftSystem, typeRes, tool, quality)
         {
         }
@@ -1020,7 +1026,7 @@ namespace Server.Engines.Craft
             }
         }
 
-        public ExplosionTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool, int quality)
+        public ExplosionTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, ITool tool, int quality)
             : base(from, craftItem, craftSystem, typeRes, tool, quality)
         {
         }

@@ -537,8 +537,7 @@ namespace Server.Engines.VeteranRewards
                 new RewardList(RewardInterval, 8, new RewardEntry[]
                 {
                     new RewardEntry(miscellaneous,  1076158, typeof(WeaponEngravingTool), Expansion.ML),
-                    new RewardEntry(houseAddOns,   "Davies' Locker (South)", typeof(DaviesLockerAddonDeed), Expansion.SA, true),
-                    new RewardEntry(houseAddOns,   "Davies' Locker (East)", typeof(DaviesLockerAddonDeed), Expansion.SA, false),
+                    new RewardEntry(houseAddOns,   1153535, typeof(DaviesLockerAddonDeed), Expansion.SA),
                 }),
                 new RewardList(RewardInterval, 9, new RewardEntry[]
                 {
@@ -566,12 +565,9 @@ namespace Server.Engines.VeteranRewards
 
                     new RewardEntry(houseAddOns,    1080548, typeof(MiningCartDeed), Expansion.ML),
                     new RewardEntry(houseAddOns,    1080397, typeof(AnkhOfSacrificeDeed), Expansion.ML),
-                    new RewardEntry(houseAddOns,    1150090, typeof(SkullRugEastAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150089, typeof(SkullRugSouthAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150092, typeof(RoseRugEastAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150091, typeof(RoseRugSouthAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150094, typeof(DolphinRugEastAddonDeed), Expansion.SA),
-                    new RewardEntry(houseAddOns,    1150093, typeof(DolphinRugSouthAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150120, typeof(SkullRugAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150121, typeof(RoseRugAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150122, typeof(DolphinRugAddonDeed), Expansion.SA),
                     new RewardEntry(houseAddOns,    1157996, typeof(KoiPondDeed), Expansion.TOL),
 
                     new RewardEntry( miscellaneous, 1150424, typeof(ChestOfSending), Expansion.SA),

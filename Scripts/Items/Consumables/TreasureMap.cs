@@ -10,9 +10,12 @@ using System.Collections.Generic;
 using System.IO;
 
 using Server.ContextMenus;
+using Server.Engines.CannedEvil;
 using Server.Engines.Harvest;
 using Server.Mobiles;
+using Server.Multis;
 using Server.Network;
+using Server.Regions;
 using Server.Targeting;
 #endregion
 
@@ -322,8 +325,7 @@ namespace Server.Items
 
             AddWorldPin(m_Location.X, m_Location.Y);
 
-            if (map != Map.Trammel && map != Map.Felucca)
-                m_NextReset = DateTime.UtcNow + ResetTime;
+            m_NextReset = DateTime.UtcNow + ResetTime;
         }
 
         public Map GetRandomMap()
@@ -377,55 +379,71 @@ namespace Server.Items
 
         public static bool ValidateLocation(int x, int y, Map map)
         {
-            int z = map.GetAverageZ(x, y);
-
-            LandTile lt = map.Tiles.GetLandTile(x, y);
-            LandData landID = TileData.LandTable[lt.ID];
-            TileFlag landFlags = landID.Flags;
+            var lt = map.Tiles.GetLandTile(x, y);
+            var ld = TileData.LandTable[lt.ID];
 
             //Checks for impassable flag..cant walk, cant have a chest
-            if ((landFlags & TileFlag.Impassable) > 0)
+            if (lt.Ignored || (ld.Flags & TileFlag.Impassable) > 0)
+            {
                 return false;
+            }
 
-            Region reg = Region.Find(new Point3D(x, y, z), map);
+            //Checks for roads
+            for (var i = 0; i < HousePlacement.RoadIDs.Length; i += 2)
+            {
+                if (lt.ID >= HousePlacement.RoadIDs[i] && lt.ID <= HousePlacement.RoadIDs[i + 1])
+                {
+                    return false;
+                }
+            }
+
+            var reg = Region.Find(new Point3D(x, y, lt.Z), map);
 
             //no-go in towns, houses, dungeons and champspawns
-            if (reg != null && (reg is Server.Regions.TownRegion || reg is Server.Regions.HouseRegion || reg is Server.Regions.DungeonRegion || reg is Server.Engines.CannedEvil.ChampionSpawnRegion))
+            if (reg != null)
+            {
+                if (reg.IsPartOf<TownRegion>() || reg.IsPartOf<DungeonRegion>() ||
+                    reg.IsPartOf<ChampionSpawnRegion>() || reg.IsPartOf<HouseRegion>())
+                {
+                    return false;
+                }
+            }
+
+            var n = (ld.Name ?? String.Empty).ToLower();
+                
+            if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
+            {
                 return false;
+            }
+
+            //Rare occrunces where a static tile needs to be checked
+            foreach (var tile in map.Tiles.GetStaticTiles(x, y, true))
+            {
+                var td = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+
+                if ((td.Flags & TileFlag.Impassable) > 0)
+                {
+                    return false;
+                }
+
+                n = (td.Name ?? String.Empty).ToLower();
+                
+                if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
+                {
+                    return false;
+                }
+            }
 
             //check for house within 5 tiles
             for (int xx = x - 5; xx <= x + 5; xx++)
             {
                 for (int yy = y - 5; yy <= y + 5; yy++)
                 {
-                    if (Server.Multis.BaseHouse.FindHouseAt(new Point3D(xx, yy, map.GetAverageZ(xx, yy)), map, 16) != null)
+                    if (BaseHouse.FindHouseAt(new Point3D(xx, yy, lt.Z), map, Region.MaxZ - lt.Z) != null)
+                    {
                         return false;
+                    }
                 }
-            }
-
-            //Checks for roads
-            for (int i = 0; i < Server.Multis.HousePlacement.RoadIDs.Length; i += 2)
-            {
-                if (lt.ID >= Server.Multis.HousePlacement.RoadIDs[i] && lt.ID <= Server.Multis.HousePlacement.RoadIDs[i + 1])
-                    return false;
-            }
-
-            string n = landID.Name == null ? "" : landID.Name.ToLower();
-            if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
-                return false;
-
-            //Rare occrunces where a static tile needs to be checked
-            StaticTile[] st = map.Tiles.GetStaticTiles(x, y, true);
-            foreach (StaticTile tile in st)
-            {
-                ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
-                n = id.Name == null ? "" : id.Name.ToLower();
-                TileFlag flags = id.Flags;
-                if ((flags & TileFlag.Impassable) > 0)
-                    return false;
-
-                if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
-                    return false;
             }
 
             return true;
@@ -786,6 +804,7 @@ namespace Server.Items
                 m_Decoder = null;
                 GetRandomLocation(Facet);
                 InvalidateProperties();
+                m_NextReset = DateTime.UtcNow + ResetTime;
             }
         }
 
@@ -966,6 +985,11 @@ namespace Server.Items
             if (Core.AOS && m_Decoder != null && LootType == LootType.Regular)
             {
                 LootType = LootType.Blessed;
+            }
+
+            if (m_NextReset == DateTime.MinValue)
+            {
+                m_NextReset = DateTime.UtcNow + ResetTime;
             }
         }
 

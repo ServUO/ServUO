@@ -34,8 +34,8 @@ namespace Server.Engines.VvV
 
     public class ViceVsVirtueSystem : PointsSystem
     {
-        public static int VirtueHue = 2124; //TODO: Get
-        public static int ViceHue = 2118; //TODO: Get
+        public static int VirtueHue = 2124;
+        public static int ViceHue = 2118;
 
         public static bool Enabled = Config.Get("VvV.Enabled", true);
         public static int StartSilver = Config.Get("VvV.StartSilver", 2000);
@@ -50,7 +50,7 @@ namespace Server.Engines.VvV
         public bool HasGenerated { get; set; }
 
         public Dictionary<Guild, VvVGuildStats> GuildStats { get; set; }
-        public static Dictionary<Mobile, Mobile> FlaggedTo { get; set; }
+        public static Dictionary<Mobile, DateTime> TempParticipants { get; set; }
 
         public List<VvVCity> ExemptCities { get; set; }
 
@@ -181,6 +181,19 @@ namespace Server.Engines.VvV
             }
         }
 
+        public void CheckBattleStatus()
+        {
+            if (Battle.OnGoing)
+                return;
+
+            int count = EnemyGuildCount();
+
+            if (count > 0)
+            {
+                Battle.Begin();
+            }
+        }
+
         public void CheckBattleStatus(PlayerMobile pm)
         {
             if (!IsVvV(pm) || !Enabled)
@@ -288,200 +301,21 @@ namespace Server.Engines.VvV
 
         private List<Item> VvVItems = new List<Item>();
 
-        public void AddVvVItem(Item item)
+        public void AddVvVItem(Item item, bool initial = false)
         {
-            if (item is IVvVItem)
+            if (ViceVsVirtueSystem.Enabled && item is IVvVItem)
             {
                 ((IVvVItem)item).IsVvVItem = true;
-                VvVItems.Add(item);
 
-                CheckProperties(item);
-            }
-        }
+                if (!VvVItems.Contains(item))
+                {
+                    VvVItems.Add(item);
+                }
 
-        private void CheckProperties(Item item)
-        {
-            if (item is PrimerOnArmsTalisman && ((PrimerOnArmsTalisman)item).Attributes.AttackChance != 10)
-            {
-                ((PrimerOnArmsTalisman)item).Attributes.AttackChance = 10;
-            }
-
-            if (item is ClaininsSpellbook && ((ClaininsSpellbook)item).Attributes.LowerManaCost != 10)
-            {
-                ((ClaininsSpellbook)item).Attributes.LowerManaCost = 10;
-            }
-
-            if(item is CrimsonCincture && ((CrimsonCincture)item).Attributes.BonusDex != 10)
-            {
-                ((CrimsonCincture)item).Attributes.BonusDex = 10;
-            }
-
-            if (item is CrystallineRing && ((CrystallineRing)item).Attributes.CastRecovery != 3)
-            {
-                ((CrystallineRing)item).Attributes.CastRecovery = 3;
-            }
-
-            if (item is FeyLeggings)
-            {
-                if (((FeyLeggings)item).PhysicalBonus != 3)
-                    ((FeyLeggings)item).PhysicalBonus = 3;
-
-                if (((FeyLeggings)item).FireBonus != 3)
-                    ((FeyLeggings)item).FireBonus = 3;
-
-                if (((FeyLeggings)item).ColdBonus != 3)
-                    ((FeyLeggings)item).ColdBonus = 3;
-
-                if (((FeyLeggings)item).EnergyBonus != 3)
-                    ((FeyLeggings)item).EnergyBonus = 3;
-            }
-
-            if (item is FoldedSteelGlasses && ((FoldedSteelGlasses)item).Attributes.DefendChance != 25)
-            {
-                ((FoldedSteelGlasses)item).Attributes.DefendChance = 25;
-            }
-
-            if (item is HeartOfTheLion)
-            {
-                if (((HeartOfTheLion)item).PhysicalBonus != 5)
-                    ((HeartOfTheLion)item).PhysicalBonus = 5;
-
-                if (((HeartOfTheLion)item).FireBonus != 5)
-                    ((HeartOfTheLion)item).FireBonus = 5;
-
-                if (((HeartOfTheLion)item).ColdBonus != 5)
-                    ((HeartOfTheLion)item).ColdBonus = 5;
-
-                if (((HeartOfTheLion)item).PoisonBonus != 5)
-                    ((HeartOfTheLion)item).PoisonBonus = 5;
-
-                if (((HeartOfTheLion)item).EnergyBonus != 5)
-                    ((HeartOfTheLion)item).EnergyBonus = 5;
-            }
-
-            if (item is HuntersHeaddress)
-            {
-                if (((HuntersHeaddress)item).Resistances.Physical != 8)
-                    ((HuntersHeaddress)item).Resistances.Physical = 8;
-
-                if (((HuntersHeaddress)item).Resistances.Fire != 4)
-                    ((HuntersHeaddress)item).Resistances.Fire = 4;
-
-                if (((HuntersHeaddress)item).Resistances.Cold != -8)
-                    ((HuntersHeaddress)item).Resistances.Cold = -8;
-
-                if (((HuntersHeaddress)item).Resistances.Poison != 9)
-                    ((HuntersHeaddress)item).Resistances.Poison = 9;
-
-                if (((HuntersHeaddress)item).Resistances.Energy != 3)
-                    ((HuntersHeaddress)item).Resistances.Energy = 3;
-            }
-
-            if (item is KasaOfTheRajin && ((KasaOfTheRajin)item).Attributes.DefendChance != 10)
-            {
-                ((KasaOfTheRajin)item).Attributes.DefendChance = 10;
-            }
-
-            if (item is MaceAndShieldGlasses && ((MaceAndShieldGlasses)item).Attributes.WeaponDamage != 10)
-            {
-                ((MaceAndShieldGlasses)item).Attributes.WeaponDamage = 10;
-            }
-
-            if (item is VesperOrderShield && ((VesperOrderShield)item).Attributes.CastSpeed != 0)
-            {
-                ((VesperOrderShield)item).Attributes.CastSpeed = 0;
-
-                if (item.Name != "Order Shield")
-                    item.Name = "Order Shield";
-            }
-
-            if (item is OrnamentOfTheMagician && ((OrnamentOfTheMagician)item).Attributes.RegenMana != 3)
-            {
-                ((OrnamentOfTheMagician)item).Attributes.RegenMana = 3;
-            }
-
-            if (item is RingOfTheVile && ((RingOfTheVile)item).Attributes.AttackChance != 25)
-            {
-                ((RingOfTheVile)item).Attributes.AttackChance = 25;
-            }
-
-            if (item is RuneBeetleCarapace)
-            {
-                if (((RuneBeetleCarapace)item).PhysicalBonus != 3)
-                    ((RuneBeetleCarapace)item).PhysicalBonus = 3;
-
-                if (((RuneBeetleCarapace)item).FireBonus != 3)
-                    ((RuneBeetleCarapace)item).FireBonus = 3;
-
-                if (((RuneBeetleCarapace)item).ColdBonus != 3)
-                    ((RuneBeetleCarapace)item).ColdBonus = 3;
-
-                if (((RuneBeetleCarapace)item).PoisonBonus != 3)
-                    ((RuneBeetleCarapace)item).PoisonBonus = 3;
-
-                if (((RuneBeetleCarapace)item).EnergyBonus != 3)
-                    ((RuneBeetleCarapace)item).EnergyBonus = 3;
-            }
-
-            if (item is SpiritOfTheTotem)
-            {
-                if (((SpiritOfTheTotem)item).Resistances.Fire != 7)
-                    ((SpiritOfTheTotem)item).Resistances.Fire = 7;
-
-                if (((SpiritOfTheTotem)item).Resistances.Cold != 2)
-                    ((SpiritOfTheTotem)item).Resistances.Cold = 2;
-
-                if (((SpiritOfTheTotem)item).Resistances.Poison != 6)
-                    ((SpiritOfTheTotem)item).Resistances.Poison = 6;
-
-                if (((SpiritOfTheTotem)item).Resistances.Energy != 6)
-                    ((SpiritOfTheTotem)item).Resistances.Energy = 6;
-            }
-
-            if (item is Stormgrip && ((Stormgrip)item).Attributes.AttackChance != 10)
-            {
-                ((Stormgrip)item).Attributes.AttackChance = 10;
-            }
-
-            if (item is InquisitorsResolution)
-            {
-                if (((InquisitorsResolution)item).PhysicalBonus != 5)
-                    ((InquisitorsResolution)item).PhysicalBonus = 5;
-
-                if (((InquisitorsResolution)item).FireBonus != 7)
-                    ((InquisitorsResolution)item).FireBonus = 7;
-
-                if (((InquisitorsResolution)item).ColdBonus != -2)
-                    ((InquisitorsResolution)item).ColdBonus = -2;
-
-                if (((InquisitorsResolution)item).PoisonBonus != 7)
-                    ((InquisitorsResolution)item).PoisonBonus = 7;
-
-                if (((InquisitorsResolution)item).EnergyBonus != -7)
-                    ((InquisitorsResolution)item).EnergyBonus = -7;
-            }
-
-            if (item is TomeOfLostKnowledge && ((TomeOfLostKnowledge)item).Attributes.RegenMana != 3)
-            {
-                ((TomeOfLostKnowledge)item).Attributes.RegenMana = 3;
-            }
-
-            if (item is WizardsCrystalGlasses)
-            {
-                if (((WizardsCrystalGlasses)item).PhysicalBonus != 5)
-                    ((WizardsCrystalGlasses)item).PhysicalBonus = 5;
-
-                if (((WizardsCrystalGlasses)item).FireBonus != 5)
-                    ((WizardsCrystalGlasses)item).FireBonus = 5;
-
-                if (((WizardsCrystalGlasses)item).ColdBonus != 5)
-                    ((WizardsCrystalGlasses)item).ColdBonus = 5;
-
-                if (((WizardsCrystalGlasses)item).PoisonBonus != 5)
-                    ((WizardsCrystalGlasses)item).PoisonBonus = 5;
-
-                if (((WizardsCrystalGlasses)item).EnergyBonus != 5)
-                    ((WizardsCrystalGlasses)item).EnergyBonus = 5;
+                if (initial)
+                {
+                    FactionEquipment.CheckProperties(item);
+                }
             }
         }
 
@@ -508,6 +342,36 @@ namespace Server.Engines.VvV
             Server.Commands.CommandSystem.Register("ExemptCities", AccessLevel.Administrator, e =>
             {
                 e.Mobile.SendGump(new ExemptCitiesGump());
+            });
+
+            Server.Commands.CommandSystem.Register("VvVKick", AccessLevel.GameMaster, e =>
+            {
+                e.Mobile.SendMessage("Target the person you'd like to remove from VvV.");
+                e.Mobile.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+                    {
+                        if (targeted is PlayerMobile)
+                        {
+                            var pm = targeted as PlayerMobile;
+                            VvVPlayerEntry entry = Instance.GetPlayerEntry<VvVPlayerEntry>(pm);
+
+                            if (entry != null && entry.Active)
+                            {
+                                pm.PrivateOverheadMessage(MessageType.Regular, 1154, 1155561, pm.NetState); // You are no longer in Vice vs Virtue!
+
+                                entry.Active = false;
+                                entry.ResignExpiration = DateTime.MinValue;
+                                pm.Delta(MobileDelta.Noto);
+                                pm.ValidateEquipment();
+
+                                from.SendMessage("{0} has been removed from VvV.", pm.Name);
+                                pm.SendMessage("You have been removed from VvV.");
+                            }
+                            else
+                            {
+                                from.SendMessage("{0} is not an active VvV member.", pm.Name);
+                            }
+                        }
+                    });
             });
 
             if (!Instance.HasGenerated)
@@ -598,34 +462,127 @@ namespace Server.Engines.VvV
             if (!Enabled || from == to)
                 return false;
 
-            //TODO: Support for VvV city games regarding non-participants in the city, as well as ones who flagged
             if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
                 from = ((BaseCreature)from).GetMaster();
 
             if (to is BaseCreature && ((BaseCreature)to).GetMaster() is PlayerMobile)
                 to = ((BaseCreature)to).GetMaster();
 
-            if (from == to)
+            if (from == to || IsVvVCombatant(to) || IsVvVCombatant(from))
                 return false;
 
             VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
             VvVPlayerEntry toentry = Instance.GetPlayerEntry<VvVPlayerEntry>(to);
 
+            Guild fromguild = from.Guild as Guild;
+            Guild toguild = to.Guild as Guild;
+
             if (fromentry == null || toentry == null || !fromentry.Active || !toentry.Active)
             {
-                if (fromentry != null && toentry == null && FlaggedTo != null && FlaggedTo.ContainsKey(from) && FlaggedTo[from] == to)
-                    return true;
+                if (TempParticipants != null)
+                {
+                    CheckTempParticipants();
+
+                    if ((fromentry != null && toentry == null || (fromentry == null && toentry != null)) &&
+                        (TempParticipants.ContainsKey(from) || TempParticipants.ContainsKey(to)) &&
+                        ((fromguild == null && toguild == null) || fromguild != toguild)) // one is vvv and the other isnt, seperate guilds
+                    {
+                        return true;
+                    }
+
+                    if (fromentry == null && toentry == null &&
+                        ((fromguild == null && toguild == null) || fromguild != toguild) &&
+                        TempParticipants.ContainsKey(from) &&
+                        TempParticipants.ContainsKey(to)) // neither are vvv, seperate guilds
+                    {
+                        return true;
+                    }
+                }
 
                 return false;
             }
-
-            Guild fromguild = fromentry.Guild;
-            Guild toguild = toentry.Guild;
 
             if (toguild == null || fromguild == null)
                 return true;
 
             return fromguild != toguild && !fromguild.IsAlly(toguild);
+        }
+
+        public static void AddTempParticipant(Mobile m)
+        {
+            if (TempParticipants == null)
+                TempParticipants = new Dictionary<Mobile, DateTime>();
+
+            TempParticipants[m] = DateTime.UtcNow + TimeSpan.FromMinutes(30);
+            m.Delta(MobileDelta.Noto);
+        }
+
+        public static bool IsVvVCombatant(Mobile mobile)
+        {
+            return IsVvV(mobile) || (TempParticipants != null && TempParticipants.ContainsKey(mobile));
+        }
+
+        public static void CheckHarmful(Mobile attacker, Mobile defender)
+        {
+            if (attacker == null || defender == null)
+                return;
+
+            if (!IsVvV(attacker) && IsVvV(defender))
+            {
+                Guild attackerguild = attacker.Guild as Guild;
+                Guild defenderguild = defender.Guild as Guild;
+
+                if ((attackerguild == null && defenderguild == null) || attackerguild != defenderguild)
+                {
+                    AddTempParticipant(attacker);
+                }
+            }
+        }
+
+        public static void CheckBeneficial(Mobile from, Mobile target)
+        {
+            if (from == null || target == null)
+                return;
+
+            if (!IsVvV(from) && IsVvV(target))
+            {
+                AddTempParticipant(from);
+            }
+        }
+
+        public static void RemoveTempParticipant(Mobile m)
+        {
+            if (TempParticipants == null)
+                return;
+
+            if (TempParticipants.ContainsKey(m))
+            {
+                TempParticipants.Remove(m);
+                m.Delta(MobileDelta.Noto);
+            }
+        }
+
+        public static void CheckTempParticipants()
+        {
+            if (TempParticipants == null)
+                return;
+
+            List<Mobile> remove = new List<Mobile>();
+
+            foreach (var kvp in TempParticipants)
+            {
+                if (kvp.Value < DateTime.UtcNow)
+                {
+                    remove.Add(kvp.Key);
+                }
+            }
+
+            foreach (var m in remove)
+            {
+                RemoveTempParticipant(m);
+            }
+
+            ColUtility.Free(remove);
         }
 
         public static bool IsBattleRegion(Region r)
@@ -657,7 +614,9 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(3);
+
+            writer.Write(Enabled);
 
             writer.Write(ExemptCities.Count);
             ExemptCities.ForEach(c => writer.Write((int)c));
@@ -686,9 +645,14 @@ namespace Server.Engines.VvV
 
             GuildStats = new Dictionary<Guild, VvVGuildStats>();
             ExemptCities = new List<VvVCity>();
+            bool enabled = false;
 
             switch (version)
             {
+                case 3:
+                    enabled = reader.ReadBool();
+                    goto case 2;
+                case 2:
                 case 1:
                     {
                         int count = reader.ReadInt();
@@ -726,6 +690,36 @@ namespace Server.Engines.VvV
                     }
                     break;
             }
+
+            if (version == 1)
+                Timer.DelayCall(FixVvVItems);
+
+            if (Enabled && !enabled)
+            {
+                CreateSilverTraders();
+                Server.Factions.Generator.RemoveFactions();
+            }
+            else if (!Enabled && enabled)
+            {
+                DeleteSilverTraders();
+            }
+        }
+
+        public void FixVvVItems()
+        {
+            foreach (var item in VvVItems.Where(i => i is Spellbook))
+            {
+                var book = item as Spellbook;
+                var attrs = RunicReforging.GetNegativeAttributes(item);
+
+                if (attrs != null)
+                {
+                    attrs.Antique = 0;
+                }
+
+                book.MaxHitPoints = 0;
+                book.HitPoints = 0;
+            }
         }
 
         public static void CreateSilverTraders()
@@ -757,6 +751,18 @@ namespace Server.Engines.VvV
                     trader.MoveToWorld(info.TraderLoc, map);
                 }
             }
+        }
+
+        public static void DeleteSilverTraders()
+        {
+            var list = new List<Mobile>(World.Mobiles.Values.Where(m => m is SilverTrader));
+
+            foreach (var mob in list)
+            {
+                mob.Delete();
+            }
+
+            ColUtility.Free(list);
         }
     }
 

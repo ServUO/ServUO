@@ -24,7 +24,6 @@ namespace Server.Mobiles
 			Name = "a revenant";
 			Body = 400;
 			Hue = 1;
-			// TODO: Sound values?
 
 			double scalar = caster.Skills[SkillName.SpiritSpeak].Value * 0.01;
 
@@ -60,20 +59,16 @@ namespace Server.Mobiles
 
 			VirtualArmor = 32;
 
-			Item shroud = new DeathShroud();
-
+			Item shroud = new Robe();
+            shroud.ItemID = 0x2683;
 			shroud.Hue = 0x455;
-
 			shroud.Movable = false;
-
-			AddItem(shroud);
+			SetWearable(shroud);
 
 			Halberd weapon = new Halberd();
-
 			weapon.Hue = 1;
 			weapon.Movable = false;
-
-			AddItem(weapon);
+            SetWearable(weapon);
 		}
 
 		public Revenant(Serial serial)

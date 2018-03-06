@@ -13,6 +13,7 @@
 /Scripts/bin
 /Scripts/obj
 /Scripts/Output
+/Honesty
 /Logs
 /Backups
 /Saves
@@ -27,3 +28,7 @@ reportHistory.xml
 *.DotSettings.user
 *.log
 *.bin
+.vs/
+drng64.dll
+drng32.dll
+libdrng.so

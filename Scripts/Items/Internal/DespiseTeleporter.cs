@@ -53,8 +53,9 @@ namespace Server.Items
         public static void TeleportPets(Mobile master, Point3D loc, Map map)
         {
             var move = new List<Mobile>();
+            IPooledEnumerable eable = master.GetMobilesInRange(3);
 
-            foreach (Mobile m in master.GetMobilesInRange(3))
+            foreach (Mobile m in eable)
             {
                 if (m is BaseCreature && !(m is DespiseCreature))
                 {
@@ -70,6 +71,8 @@ namespace Server.Items
                     }
                 }
             }
+
+            eable.Free();
 
             foreach (Mobile m in move)
             {

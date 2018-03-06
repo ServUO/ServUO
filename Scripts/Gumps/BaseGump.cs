@@ -17,6 +17,8 @@ namespace Server.Gumps
         public PlayerMobile User { get; private set; }
         public bool Open { get; set; }
 
+        public virtual bool CloseOnMapChange { get { return false; } }
+
         public Gump Parent 
         {
             get { return _Parent; }
@@ -214,6 +216,55 @@ namespace Server.Gumps
             }
 
             AddItemProperty(mob.Serial);
+        }
+
+        public static List<T> GetGumps<T>(PlayerMobile pm) where T : BaseGump
+        {
+            var ns = pm.NetState;
+            List<T> list = new List<T>();
+
+            if (ns == null)
+                return list;
+
+            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => g.GetType() == typeof(T)))
+            {
+                list.Add(gump as T);
+            }
+
+            return list;
+        }
+
+        public static List<BaseGump> GetGumps(PlayerMobile pm, bool checkOpen = false)
+        {
+            var ns = pm.NetState;
+            List<BaseGump> list = new List<BaseGump>();
+
+            if (ns == null)
+                return list;
+
+            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => (!checkOpen || g.Open)))
+            {
+                list.Add(gump);
+            }
+
+            return list;
+        }
+
+        public static void CheckCloseGumps(PlayerMobile pm, bool checkOpen = false)
+        {
+            var ns = pm.NetState;
+
+            if (ns != null)
+            {
+                var gumps = GetGumps(pm, checkOpen);
+
+                foreach (BaseGump gump in gumps.Where(g => g.CloseOnMapChange))
+                {
+                    pm.CloseGump(gump.GetType());
+                }
+
+                ColUtility.Free(gumps);
+            }
         }
 
         #region Formatting

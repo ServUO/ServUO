@@ -494,8 +494,8 @@ namespace Server.Items
             writer.Write(m_PlayerConstructed);
             writer.Write(m_LowerStatReq);
 
-            writer.Write(m_PlayerConstructed);
-            writer.Write(m_LowerStatReq);
+            writer.Write(m_UsesRemaining);
+            writer.Write(m_ShowUsesRemaining);
 
             writer.Write(m_OriginalHue);
 
@@ -614,7 +614,7 @@ namespace Server.Items
             SkillBonuses = 0x00000002
         }
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
 

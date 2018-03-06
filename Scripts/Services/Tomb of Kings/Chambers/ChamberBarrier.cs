@@ -80,13 +80,21 @@ namespace Server.Engines.TombOfKings
             if (reader.ReadBool())
             {
                 m_Blocker = reader.ReadItem() as Blocker;
-                m_Blocker.Delete();
+
+                if (m_Blocker != null)
+                {
+                    m_Blocker.Delete();
+                }
             }
 
             if (reader.ReadBool())
             {
                 m_LOSBlocker = reader.ReadItem() as LOSBlocker;
-                m_LOSBlocker.Delete();
+
+                if (m_LOSBlocker != null)
+                {
+                    m_LOSBlocker.Delete();
+                }
             }
 
             Delete();

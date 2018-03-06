@@ -47,6 +47,8 @@ namespace Server.Engines.Help
 
     public class HelpGump : Gump
     {
+		public static readonly string SupportWebsite = Config.Get("General.SupportWebsite", null);
+		
         public HelpGump(Mobile from)
             : base(0, 0)
         {
@@ -75,10 +77,10 @@ namespace Server.Engines.Help
                 this.AddHtml(110, 205, 450, 58, @"<u>My character is physically stuck in the game.</u> This choice only covers cases where your character is physically stuck in a location they cannot move out of. This option will only work two times in 24 hours.", true, true);
 
                 this.AddButton(80, 270, 5540, 5541, 0, GumpButtonType.Page, 3);
-                this.AddHtml(110, 270, 450, 58, @"<u>Another player is harassing me.</u> Another player is verbally harassing your character. When you select this option you will be sending a text log to Origin Systems. To see what constitutes harassment please visit http://support.uo.com/gm_9.html.", true, true);
+                this.AddHtml(110, 270, 450, 58, @"<u>Another player is harassing me.</u> Another player is verbally harassing your character. When you select this option you will be sending a text log to Origin Systems. To see what constitutes harassment please visit " + (SupportWebsite == null ? "http://support.uo.com/gm_9.html" : SupportWebsite) + ".", true, true);
 
                 this.AddButton(80, 335, 5540, 5541, 0, GumpButtonType.Page, 2);
-                this.AddHtml(110, 335, 450, 58, @"<u>Other.</u> If you are experiencing a problem in the game that does not fall into one of the other categories or is not addressed on the Support web page (located at http://support.uo.com), please use this option.", true, true);
+                this.AddHtml(110, 335, 450, 58, @"<u>Other.</u> If you are experiencing a problem in the game that does not fall into one of the other categories or is not addressed on the Support web page (located at  " + (SupportWebsite == null ? "http://support.uo.com" : SupportWebsite) + "), please use this option.", true, true);
             }
             else
             {
@@ -89,10 +91,10 @@ namespace Server.Engines.Help
                 this.AddHtml(110, 170, 450, 74, @"<u>My character is physically stuck in the game.</u> This choice only covers cases where your character is physically stuck in a location they cannot move out of. This option will only work two times in 24 hours.", true, true);
 
                 this.AddButton(80, 250, 5540, 5541, 0, GumpButtonType.Page, 3);
-                this.AddHtml(110, 250, 450, 74, @"<u>Another player is harassing me.</u> Another player is verbally harassing your character. When you select this option you will be sending a text log to Origin Systems. To see what constitutes harassment please visit http://support.uo.com/gm_9.html.", true, true);
+                this.AddHtml(110, 250, 450, 74, @"<u>Another player is harassing me.</u> Another player is verbally harassing your character. When you select this option you will be sending a text log to Origin Systems. To see what constitutes harassment please visit " + (SupportWebsite == null ? "http://support.uo.com/gm_9.html" : SupportWebsite) + ".", true, true);
 
                 this.AddButton(80, 330, 5540, 5541, 0, GumpButtonType.Page, 2);
-                this.AddHtml(110, 330, 450, 74, @"<u>Other.</u> If you are experiencing a problem in the game that does not fall into one of the other categories or is not addressed on the Support web page (located at http://support.uo.com), please use this option.", true, true);
+                this.AddHtml(110, 330, 450, 74, @"<u>Other.</u> If you are experiencing a problem in the game that does not fall into one of the other categories or is not addressed on the Support web page (located at  " + (SupportWebsite == null ? "http://support.uo.com" : SupportWebsite) + "), please use this option.", true, true);
             }
 
             this.AddPage(2);
@@ -107,7 +109,7 @@ namespace Server.Engines.Help
             this.AddHtml(110, 250, 450, 74, @"<u>Account Management</u> For questions regarding your account such as forgotten passwords, payment options, account activation, and account transfer, please choose this option.", true, true);
 
             this.AddButton(80, 330, 5540, 5541, 6, GumpButtonType.Reply, 0);
-            this.AddHtml(110, 330, 450, 74, @"<u>Other.</u> If you are experiencing a problem in the game that does not fall into one of the other categories or is not addressed on the Support web page (located at http://support.uo.com), and requires in-game assistance, use this option. ", true, true);
+            this.AddHtml(110, 330, 450, 74, @"<u>Other.</u> If you are experiencing a problem in the game that does not fall into one of the other categories or is not addressed on the Support web page (located at " + (SupportWebsite == null ? "http://support.uo.com" : SupportWebsite) + ", and requires in-game assistance, use this option. ", true, true);
 
             this.AddPage(3);
 
@@ -117,21 +119,21 @@ namespace Server.Engines.Help
             * Use this option when another player is verbally harassing your character.
             * Verbal harassment behaviors include but are not limited to, using bad language, threats etc..
             * Before you submit a complaint be sure you understand what constitutes harassment
-            * <A HREF="http://uo.custhelp.com/cgi-bin/uo.cfg/php/enduser/std_adp.php?p_faqid=40">– what is verbal harassment? -</A>
+            * <A HREF="http://uo.custhelp.com/cgi-bin/uo.cfg/php/enduser/std_adp.php?p_faqid=40">â€“ what is verbal harassment? -</A>
             * and that you have followed these steps:<BR>
             * 1. You have asked the player to stop and they have continued.<BR>
             * 2. You have tried to remove yourself from the situation.<BR>
             * 3. You have done nothing to instigate or further encourage the harassment.<BR>
             * 4. You have added the player to your ignore list.
             * <A HREF="http://uo.custhelp.com/cgi-bin/uo.cfg/php/enduser/std_adp.php?p_faqid=138">- How do I ignore a player?</A><BR>
-            * 5. You have read and understand Origin’s definition of harassment.<BR>
+            * 5. You have read and understand Originâ€™s definition of harassment.<BR>
             * 6. Your account information is up to date. (Including a current email address)<BR>
             * *If these steps have not been taken, GMs may be unable to take action against the offending player.<BR>
             * **A chat log will be review by a GM to assess the validity of this complaint.
             * Abuse of this system is a violation of the Rules of Conduct.<BR>
             * EXPLOITING<BR>
             * Use this option to report someone who may be exploiting or cheating.
-            * <A HREF="http://uo.custhelp.com/cgi-bin/uo.cfg/php/enduser/std_adp.php?p_faqid=41">– What constitutes an exploit?</a>
+            * <A HREF="http://uo.custhelp.com/cgi-bin/uo.cfg/php/enduser/std_adp.php?p_faqid=41">â€“ What constitutes an exploit?</a>
             */
 
             this.AddButton(80, 240, 5540, 5541, 8, GumpButtonType.Reply, 0);
@@ -141,14 +143,14 @@ namespace Server.Engines.Help
             * Use this option when another player is harassing your character using game mechanics.
             * Physical harassment includes but is not limited to luring, Kill Stealing, and any act that causes a players death in Trammel.
             * Before you submit a complaint be sure you understand what constitutes harassment
-            * <A HREF="http://uo.custhelp.com/cgi-bin/uo.cfg/php/enduser/std_adp.php?p_faqid=59"> – what is physical harassment?</A>
+            * <A HREF="http://uo.custhelp.com/cgi-bin/uo.cfg/php/enduser/std_adp.php?p_faqid=59"> â€“ what is physical harassment?</A>
             * and that you have followed these steps:<BR>
             * 1. You have asked the player to stop and they have continued.<BR>
             * 2. You have tried to remove yourself from the situation.<BR>
             * 3. You have done nothing to instigate or further encourage the harassment.<BR>
             * 4. You have added the player to your ignore list.
             * <A HREF="http://uo.custhelp.com/cgi-bin/uo.cfg/php/enduser/std_adp.php?p_faqid=138"> - how do I ignore a player?</A><BR>
-            * 5. You have read and understand Origin’s definition of harassment.<BR>
+            * 5. You have read and understand Originâ€™s definition of harassment.<BR>
             * 6. Your account information is up to date. (Including a current email address)<BR>
             * *If these steps have not been taken, GMs may be unable to take action against the offending player.<BR>
             * **This issue will be reviewed by a GM to assess the validity of this complaint.
@@ -200,7 +202,7 @@ namespace Server.Engines.Help
                     {
                         BaseHouse house = BaseHouse.FindHouseAt(from);
 
-                        if (house != null && house.IsAosRules && !from.Region.IsPartOf<Engines.ConPVP.SafeZone>()) // Dueling
+                        if (house != null && house.IsAosRules)
                         {
                             from.Location = house.BanLocation;
                         }

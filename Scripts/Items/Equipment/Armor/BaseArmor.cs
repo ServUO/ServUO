@@ -86,7 +86,6 @@ namespace Server.Items
         private int m_PhysicalBonus, m_FireBonus, m_ColdBonus, m_PoisonBonus, m_EnergyBonus;
 
         #region Runic Reforging
-        private bool m_BlockRepair;
         private ItemPower m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
@@ -677,17 +676,10 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ReforgedSuffix ReforgedSuffix 
-        { 
-            get { return m_ReforgedSuffix; }
-            set { m_ReforgedSuffix = value; InvalidateProperties(); } 
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool BlockRepair
+        public ReforgedSuffix ReforgedSuffix
         {
-            get { return m_BlockRepair; }
-            set { m_BlockRepair = value; InvalidateProperties(); }
+            get { return m_ReforgedSuffix; }
+            set { m_ReforgedSuffix = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1627,9 +1619,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)13); // version
+            writer.Write((int)14); // version
 
-            writer.Write(_VvVItem);
+            // Version 14 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
+
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
@@ -1648,7 +1641,6 @@ namespace Server.Items
             writer.Write((int)m_ReforgedPrefix);
             writer.Write((int)m_ReforgedSuffix);
             writer.Write((int)m_ItemPower);
-            writer.Write(m_BlockRepair);
             #endregion
 
             #region Stygian Abyss
@@ -1840,10 +1832,12 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 14:
                 case 13:
                 case 12:
                     {
-                        _VvVItem = reader.ReadBool();
+                        if (version == 13)
+                            reader.ReadBool();
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
                         goto case 11;
@@ -1868,7 +1862,13 @@ namespace Server.Items
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
-                        m_BlockRepair = reader.ReadBool();
+                        if (version == 13 && reader.ReadBool())
+                        {
+                            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                            {
+                                m_NegativeAttributes.NoRepair = 1;
+                            });
+                        }
                         #endregion
 
                         #region Stygian Abyss
@@ -2752,8 +2752,7 @@ namespace Server.Items
                 list.Add(1111880); // Altered
 
             #region Factions
-            if (m_FactionState != null)
-                list.Add(1041350); // faction item
+            FactionEquipment.AddFactionProperties(this, list);
             #endregion
 
             if (m_GorgonLenseCharges > 0)
@@ -2948,6 +2947,8 @@ namespace Server.Items
                 GetSetProperties(list);
             }
 
+            AddHonestyProperty(list);
+
             if (m_ItemPower != ItemPower.None)
             {
                 if (m_ItemPower <= ItemPower.LegendaryArtifact)
@@ -3019,7 +3020,7 @@ namespace Server.Items
 
         #region ICraftable Members
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
 
@@ -3120,16 +3121,9 @@ namespace Server.Items
             #endregion
 
             // Gives MageArmor property for certain armor types
-            if (Core.SA && m_AosArmorAttributes.MageArmor <= 0)
+            if (Core.SA && m_AosArmorAttributes.MageArmor <= 0 && IsMageArmorType(this))
             {
-                foreach (Type type in _MageArmorTypes)
-                {
-                    if (type == GetType())
-                    {
-                        m_AosArmorAttributes.MageArmor = 1;
-                        break;
-                    }
-                }
+                m_AosArmorAttributes.MageArmor = 1;
             }
 
             InvalidateProperties();
@@ -3205,7 +3199,22 @@ namespace Server.Items
             return info.AttributeInfo;
         }
 
-        private Type[] _MageArmorTypes = new Type[]
+        public static bool IsMageArmorType(BaseArmor armor)
+        {
+            Type t = armor.GetType();
+
+            foreach (Type type in _MageArmorTypes)
+            {
+                if (type == t || t.IsSubclassOf(type))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static Type[] _MageArmorTypes = new Type[]
         {
             typeof(HeavyPlateJingasa),  typeof(LightPlateJingasa),
             typeof(PlateMempo),         typeof(PlateDo),

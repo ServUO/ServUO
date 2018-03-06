@@ -177,6 +177,10 @@ namespace Server.Engines.CityLoyalty
                 if (entry != null && entry.CustomTitle != null)
                 {
                     entry.CustomTitle = null;
+
+                    if(m is PlayerMobile)
+                        ((PlayerMobile)m).RemoveRewardTitle(1154017, true);
+
                     m.SendMessage("City Title removed.");
                 }
             }, enabled: entry != null && entry.CustomTitle != null));

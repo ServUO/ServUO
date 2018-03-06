@@ -281,6 +281,7 @@ namespace Server.Spells.SkillMasteries
                     from.CheckTargetSkill(SkillName.AnimalTaming, (BaseCreature)targeted, taming - 25, taming + 25);
                     from.CheckTargetSkill(SkillName.AnimalLore, (BaseCreature)targeted, lore - 25, lore + 25);
 
+                    from.CloseGump(typeof(ChooseTrainingGump));
                     from.SendGump(new ChooseTrainingGump(from, (BaseCreature)targeted, Spell));
                 }
             }

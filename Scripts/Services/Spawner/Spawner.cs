@@ -6,6 +6,7 @@ using System.Text;
 using Server.Commands;
 using Server.Items;
 using CPA = Server.CommandPropertyAttribute;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -14,17 +15,18 @@ namespace Server.Mobiles
         private static WarnTimer m_WarnTimer;
         private int m_Team;
         private int m_HomeRange;
+        private int m_SpawnRange;
         private int m_WalkingRange;
-        private int m_Count;
         private TimeSpan m_MinDelay;
         private TimeSpan m_MaxDelay;
-        private List<string> m_SpawnNames;
-        private List<ISpawnable> m_Spawned;
         private DateTime m_End;
         private InternalTimer m_Timer;
         private bool m_Running;
         private bool m_Group;
         private WayPoint m_WayPoint;
+
+        private List<SpawnObject> m_SpawnObjects;
+        private int m_MaxCount;
 
         [Constructable]
         public Spawner()
@@ -39,21 +41,34 @@ namespace Server.Mobiles
         }
 
         [Constructable]
-        public Spawner(int amount, int minDelay, int maxDelay, int team, int homeRange, string spawnName)
+        public Spawner(int amount, int minDelay, int maxDelay, int team, int spawnRange, string spawnName)
             : base(0x1f13)
         {
-            List<string> spawnNames = new List<string>();
+            List<SpawnObject> objects = new List<SpawnObject>();
 
             if (!String.IsNullOrEmpty(spawnName))
-                spawnNames.Add(spawnName);
+                objects.Add(new SpawnObject(spawnName));
 
-            InitSpawner(amount, TimeSpan.FromMinutes(minDelay), TimeSpan.FromMinutes(maxDelay), team, homeRange, spawnNames);
+            InitSpawner(amount, TimeSpan.FromMinutes(minDelay), TimeSpan.FromMinutes(maxDelay), team, spawnRange, objects);
         }
 
-        public Spawner(int amount, TimeSpan minDelay, TimeSpan maxDelay, int team, int homeRange, List<string> spawnNames)
+        public Spawner(int amount, TimeSpan minDelay, TimeSpan maxDelay, int team, int spawnRange, List<string> spawnNames)
             : base(0x1f13)
         {
-            InitSpawner(amount, minDelay, maxDelay, team, homeRange, spawnNames);
+            List<SpawnObject> objects = new List<SpawnObject>();
+
+            foreach (var name in spawnNames)
+            {
+                objects.Add(new SpawnObject(name));
+            }
+
+            InitSpawner(amount, minDelay, maxDelay, team, spawnRange, objects);
+        }
+
+        public Spawner(int amount, TimeSpan minDelay, TimeSpan maxDelay, int team, int spawnRange, List<SpawnObject> objects)
+            : base(0x1f13)
+        {
+            InitSpawner(amount, minDelay, maxDelay, team, spawnRange, objects);
         }
 
         public Spawner(Serial serial)
@@ -61,81 +76,44 @@ namespace Server.Mobiles
         {
         }
 
-        public bool IsFull
+        public bool IsFull { get { return (SpawnCount >= m_MaxCount); } }
+        public bool IsEmpty { get { return (SpawnCount == 0); } }
+
+        public List<SpawnObject> SpawnObjects
         {
-            get
-            {
-                return (m_Spawned.Count >= m_Count);
-            }
-        }
-        public bool IsEmpty
-        {
-            get
-            {
-                return (m_Spawned.Count == 0);
-            }
-        }
-        public List<string> SpawnNames
-        {
-            get
-            {
-                return m_SpawnNames;
-            }
+            get { return m_SpawnObjects; }
             set
             {
-                m_SpawnNames = value;
-                if (m_SpawnNames.Count < 1)
+                m_SpawnObjects = value;
+
+                if (m_SpawnObjects.Count < 1)
                     Stop();
 
                 InvalidateProperties();
             }
         }
-        public List<ISpawnable> Spawned
-        {
-            get
-            {
-                return m_Spawned;
-            }
-        }
-        public virtual int SpawnNamesCount
-        {
-            get
-            {
-                return m_SpawnNames.Count;
-            }
-        }
+
         [CommandProperty(AccessLevel.Spawner)]
-        public int Count
+        public int MaxCount
         {
-            get
-            {
-                return m_Count;
-            }
+            get { return m_MaxCount; }
             set
             {
-                m_Count = value;
+                m_MaxCount = value;
                 InvalidateProperties();
             }
         }
+
         [CommandProperty(AccessLevel.Spawner)]
-        public WayPoint WayPoint
-        {
-            get
-            {
-                return m_WayPoint;
-            }
-            set
-            {
-                m_WayPoint = value;
-            }
-        }
+        public virtual int SpawnObjectCount {  get{ return m_SpawnObjects.Count; } }
+
+        [CommandProperty(AccessLevel.Spawner)]
+        public WayPoint WayPoint { get { return m_WayPoint; } set { m_WayPoint = value; } }
+
         [CommandProperty(AccessLevel.Spawner)]
         public bool Running
         {
-            get
-            {
-                return m_Running;
-            }
+            get { return m_Running; }
             set
             {
                 if (value)
@@ -146,82 +124,27 @@ namespace Server.Mobiles
                 InvalidateProperties();
             }
         }
+
         [CommandProperty(AccessLevel.Spawner)]
-        public int HomeRange
-        {
-            get
-            {
-                return m_HomeRange;
-            }
-            set
-            {
-                m_HomeRange = value;
-                InvalidateProperties();
-            }
-        }
+        public int HomeRange { get { return m_HomeRange; } set { m_HomeRange = value; InvalidateProperties(); } }
+
         [CommandProperty(AccessLevel.Spawner)]
-        public int WalkingRange
-        {
-            get
-            {
-                return m_WalkingRange;
-            }
-            set
-            {
-                m_WalkingRange = value;
-                InvalidateProperties();
-            }
-        }
+        public int SpawnRange { get { return m_SpawnRange; } set { m_SpawnRange = value; InvalidateProperties(); } }
+
         [CommandProperty(AccessLevel.Spawner)]
-        public int Team
-        {
-            get
-            {
-                return m_Team;
-            }
-            set
-            {
-                m_Team = value;
-                InvalidateProperties();
-            }
-        }
+        public int WalkingRange { get { return m_WalkingRange; } set { m_WalkingRange = value; InvalidateProperties(); } }
+
         [CommandProperty(AccessLevel.Spawner)]
-        public TimeSpan MinDelay
-        {
-            get
-            {
-                return m_MinDelay;
-            }
-            set
-            {
-                m_MinDelay = value;
-                InvalidateProperties();
-            }
-        }
+        public int Team { get { return m_Team;  } set { m_Team = value; InvalidateProperties(); } }
+
         [CommandProperty(AccessLevel.Spawner)]
-        public TimeSpan MaxDelay
-        {
-            get
-            {
-                return m_MaxDelay;
-            }
-            set
-            {
-                m_MaxDelay = value;
-                InvalidateProperties();
-            }
-        }
-        public DateTime End
-        {
-            get
-            {
-                return m_End;
-            }
-            set
-            {
-                m_End = value;
-            }
-        }
+        public TimeSpan MinDelay { get { return m_MinDelay; } set { m_MinDelay = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.Spawner)]
+        public TimeSpan MaxDelay { get { return m_MaxDelay; } set { m_MaxDelay = value; InvalidateProperties(); } }
+
+        public DateTime End { get { return m_End; } set { m_End = value; } }
+
         [CommandProperty(AccessLevel.Spawner)]
         public TimeSpan NextSpawn
         {
@@ -238,40 +161,754 @@ namespace Server.Mobiles
                 DoTimer(value);
             }
         }
+
         [CommandProperty(AccessLevel.Spawner)]
-        public bool Group
+        public bool Group { get { return m_Group; } set { m_Group = value; InvalidateProperties(); } }
+
+        public override string DefaultName { get { return "Spawner"; } }
+        public Point3D HomeLocation { get { return Location; } }
+        bool ISpawner.UnlinkOnTaming { get { return true; } }
+
+        [CommandProperty(AccessLevel.Spawner)]
+        public int SpawnCount
         {
             get
             {
-                return m_Group;
+                int count = 0;
+
+                foreach (var so in m_SpawnObjects)
+                {
+                    count += GetSpawnCount(so);
+                }
+
+                return count;
             }
-            set
+        }
+
+        public override void OnAfterDuped(Item newItem)
+        {
+            Spawner s = newItem as Spawner;
+
+            if (s == null)
+                return;
+
+            s.m_SpawnObjects = new List<SpawnObject>(m_SpawnObjects);
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (from.AccessLevel < AccessLevel.Spawner)
+                return;
+
+            SpawnerGump g = new SpawnerGump(this);
+            from.SendGump(g);
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (m_Running)
             {
-                m_Group = value;
+                list.Add(1060742); // active
+
+                list.Add(1060656, m_MaxCount.ToString()); // amount to make: ~1_val~
+                list.Add(1061169, m_HomeRange.ToString()); // range ~1_val~
+                list.Add(1060658, "walking range\t{0}", m_WalkingRange); // ~1_val~: ~2_val~
+
+                list.Add(1060659, "group\t{0}", m_Group); // ~1_val~: ~2_val~
+                list.Add(1060660, "team\t{0}", m_Team); // ~1_val~: ~2_val~
+                list.Add(1060661, "speed\t{0} to {1}", m_MinDelay, m_MaxDelay); // ~1_val~: ~2_val~
+
+                if (m_SpawnObjects.Count != 0)
+                    list.Add(SpawnedStats());
+            }
+            else
+            {
+                list.Add(1060743); // inactive
+            }
+        }
+
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
+            if (m_Running)
+                LabelTo(from, "[Running]");
+            else
+                LabelTo(from, "[Off]");
+        }
+
+        public void Start()
+        {
+            if (!m_Running)
+            {
+                if (SpawnObjectCount > 0)
+                {
+                    m_Running = true;
+                    DoTimer();
+                }
+            }
+        }
+
+        public void Stop()
+        {
+            if (m_Running)
+            {
+                if (m_Timer != null)
+                    m_Timer.Stop();
+
+                m_Running = false;
+            }
+        }
+
+        public void Defrag()
+        {
+            bool removed = false;
+            List<ISpawnable> toRemove = new List<ISpawnable>();
+
+            for (int i = 0; i < m_SpawnObjects.Count; ++i)
+            {
+                foreach (var e in m_SpawnObjects[i].SpawnedObjects)
+                {
+                    bool remove = false;
+
+                    if (e is Item)
+                    {
+                        Item item = (Item)e;
+
+                        if (item.Deleted || item.Parent != null)
+                            remove = true;
+                    }
+                    else if (e is Mobile)
+                    {
+                        Mobile m = (Mobile)e;
+
+                        if (m.Deleted)
+                        {
+                            remove = true;
+                        }
+                        else if (m is BaseCreature)
+                        {
+                            BaseCreature bc = (BaseCreature)m;
+
+                            if (bc.Controlled || bc.IsStabled)
+                            {
+                                remove = true;
+                            }
+                        }
+                    }
+
+                    if (remove)
+                    {
+                        toRemove.Add(e);
+                        removed = true;
+                    }
+                }
+            }
+
+            if (removed)
+            {
+                foreach (var spawnable in toRemove)
+                {
+                    RemoveSpawn(spawnable);
+                }
+
                 InvalidateProperties();
             }
+
+            ColUtility.Free(toRemove);
         }
-        public override string DefaultName
+
+        public IEnumerable<ISpawnable> GetSpawn()
         {
-            get
+            if (m_SpawnObjects == null || m_SpawnObjects.Count == 0)
+                yield break;
+
+            foreach (var so in m_SpawnObjects)
             {
-                return "Spawner";
+                foreach (var spawnable in so.SpawnedObjects)
+                {
+                    yield return spawnable;
+                }
             }
         }
-        public Point3D HomeLocation
+
+        public void RemoveSpawn(ISpawnable e)
         {
-            get
+            SpawnObject so = m_SpawnObjects.FirstOrDefault(s => s.SpawnedObjects.Contains(e));
+
+            if (so != null)
             {
-                return Location;
+                so.SpawnedObjects.Remove(e);
             }
         }
-        bool ISpawner.UnlinkOnTaming
+
+        public bool AddSpawnObject(SpawnObject so)
         {
-            get
+            if(m_SpawnObjects.FirstOrDefault(s => ParseType(s.SpawnName.ToLower()) == ParseType(so.SpawnName.ToLower())) == null
+                && m_SpawnObjects.Count < SpawnerGump.MaxEntries)
             {
+                SpawnObjects.Add(so);
                 return true;
             }
+
+            return false;
         }
+
+        public void OnTick()
+        {
+            DoTimer();
+
+            if (m_Group)
+            {
+                Defrag();
+
+                if (SpawnCount == 0)
+                {
+                    Respawn();
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                Spawn();
+            }
+        }
+
+        public virtual bool CheckSpawnerFull()
+        {
+            return (SpawnCount >= m_MaxCount);
+        }
+
+        public virtual void Respawn()
+        {
+            RemoveSpawned();
+
+            for (int i = 0; i < m_MaxCount; i++)
+                Spawn();
+        }
+
+        public virtual void Spawn()
+        {
+            List<SpawnObject> avail = GetAvailableSpawnObjects();
+
+            if (avail != null && avail.Count > 0)
+            {
+                Spawn(avail[Utility.Random(avail.Count)]);
+            }
+        }
+
+        public void Spawn(int index)
+        {
+            if (index >= 0 && index < m_SpawnObjects.Count)
+            {
+                var so = m_SpawnObjects[index];
+
+                if (m_Group)
+                {
+                    int toSpawn = so.MaxCount - GetSpawnCount(so);
+
+                    for (int i = 0; i < toSpawn; i++)
+                    {
+                        Spawn(so);
+                    }
+                }
+                else
+                {
+                    Spawn(so);
+                }
+            }
+        }
+
+        public void Spawn(SpawnObject so)
+        {
+            Map map = Map;
+
+            if (map == null || map == Map.Internal || SpawnObjectCount == 0 || so == null || Parent != null || GetSpawnCount(so) >= so.MaxCount)
+                return;
+
+            Defrag();
+
+            if (CheckSpawnerFull())
+                return;
+
+            ISpawnable spawned = CreateSpawnedObject(so);
+
+            if (spawned == null)
+                return;
+
+            spawned.Spawner = this;
+            so.SpawnedObjects.Add(spawned);
+
+            Point3D loc = (spawned is BaseVendor ? Location : GetSpawnPosition(spawned));
+
+            spawned.OnBeforeSpawn(loc, map);
+
+            InvalidateProperties();
+
+            spawned.MoveToWorld(loc, map);
+
+            if (spawned is BaseCreature)
+            {
+                BaseCreature bc = (BaseCreature)spawned;
+
+                if (m_WalkingRange >= 0)
+                    bc.RangeHome = m_WalkingRange;
+                else
+                    bc.RangeHome = m_HomeRange;
+
+                bc.CurrentWayPoint = m_WayPoint;
+
+                if (m_Team > 0)
+                    bc.Team = m_Team;
+
+                bc.Home = HomeLocation;
+            }
+        }
+
+        public Point3D GetSpawnPosition()
+        {
+            return GetSpawnPosition(null);
+        }
+
+        public Point3D GetSpawnPosition(ISpawnable spawned)
+        {
+            Map map = Map;
+
+            if (map == null)
+                return Location;
+
+            bool waterMob, waterOnlyMob;
+
+            if (spawned is Mobile)
+            {
+                Mobile mob = (Mobile)spawned;
+
+                waterMob = mob.CanSwim;
+                waterOnlyMob = (mob.CanSwim && mob.CantWalk);
+            }
+            else
+            {
+                waterMob = false;
+                waterOnlyMob = false;
+            }
+
+            // Try 10 times to find a spawnable location.
+            for (int i = 0; i < 10; ++i)
+            {
+                int x, y;
+
+                if (m_HomeRange > 0)
+                {
+                    x = Location.X + (Utility.Random((m_SpawnRange * 2) + 1) - m_HomeRange);
+                    y = Location.Y + (Utility.Random((m_SpawnRange * 2) + 1) - m_HomeRange);
+                }
+                else
+                {
+                    x = Location.X;
+                    y = Location.Y;
+                }
+
+                int mapZ = map.GetAverageZ(x, y);
+
+                if (waterMob)
+                {
+                    if (IsValidWater(map, x, y, Z))
+                        return new Point3D(x, y, Z);
+                    else if (IsValidWater(map, x, y, mapZ))
+                        return new Point3D(x, y, mapZ);
+                }
+
+                if (!waterOnlyMob)
+                {
+                    if (map.CanSpawnMobile(x, y, Z))
+                        return new Point3D(x, y, Z);
+                    else if (map.CanSpawnMobile(x, y, mapZ))
+                        return new Point3D(x, y, mapZ);
+                }
+            }
+
+            return Location;
+        }
+
+        public List<SpawnObject> GetAvailableSpawnObjects()
+        {
+            if (SpawnObjectCount == 0)
+                return null;
+
+            List<SpawnObject> objects = null;
+
+            foreach (var so in m_SpawnObjects)
+            {
+                if (so.CurrentCount < so.MaxCount)
+                {
+                    if(objects == null)
+                        objects = new List<SpawnObject>();
+
+                    objects.Add(so);
+                }
+            }
+
+            return objects;
+        }
+
+        public int GetSpawnCount(SpawnObject so)
+        {
+            return so != null ? so.CurrentCount : 0;
+        }
+
+        public void DoTimer()
+        {
+            if (!m_Running)
+                return;
+
+            int minSeconds = (int)m_MinDelay.TotalSeconds;
+            int maxSeconds = (int)m_MaxDelay.TotalSeconds;
+
+            TimeSpan delay = TimeSpan.FromSeconds(Utility.RandomMinMax(minSeconds, maxSeconds));
+            DoTimer(delay);
+        }
+
+        public virtual void DoTimer(TimeSpan delay)
+        {
+            if (!m_Running)
+                return;
+
+            m_End = DateTime.UtcNow + delay;
+
+            if (m_Timer != null)
+                m_Timer.Stop();
+
+            m_Timer = new InternalTimer(this, delay);
+            m_Timer.Start();
+        }
+
+        public string SpawnedStats()
+        {
+            Defrag();
+
+            Dictionary<string, int> counts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var entry in m_SpawnObjects)
+            {
+                string name = ParseType(entry.SpawnName);
+                Type type = ScriptCompiler.FindTypeByName(name);
+
+                if (type == null)
+                    counts[name] = 0;
+                else
+                    counts[type.Name] = 0;
+            }
+
+            foreach (var spawned in GetSpawn())
+            {
+                string name = spawned.GetType().Name;
+
+                if (counts.ContainsKey(name))
+                    ++counts[name];
+                else
+                    counts[name] = 1;
+            }
+
+            List<string> names = new List<string>(counts.Keys);
+            names.Sort();
+
+            StringBuilder result = new StringBuilder();
+
+            for (int i = 0; i < names.Count; ++i)
+                result.AppendFormat("{0}{1}: {2}", (i == 0) ? "" : "<BR>", names[i], counts[names[i]]);
+
+            return result.ToString();
+        }
+
+        public int CountCreatures(SpawnObject so)
+        {
+            Defrag();
+
+            return so.CurrentCount;
+        }
+
+        public void RemoveSpawned(int index)
+        {
+            if (index >= 0 && index < m_SpawnObjects.Count)
+            {
+                var so = m_SpawnObjects[index];
+
+                if (m_Group)
+                {
+                    int count = GetSpawnCount(so);
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        RemoveSpawned(so);
+                    }
+                }
+                else
+                {
+                    RemoveSpawned(so);
+                }
+            }
+        }
+
+        public void RemoveSpawned(SpawnObject so)
+        {
+            Defrag();
+
+            if (so.CurrentCount > 0)
+                so.SpawnedObjects[0].Delete();
+
+            InvalidateProperties();
+        }
+
+        public void RemoveSpawned()
+        {
+            Defrag();
+
+            List<ISpawnable> toRemove = new List<ISpawnable>();
+
+            foreach (var spawn in GetSpawn())
+            {
+                toRemove.Add(spawn);
+            }
+
+            foreach (var spawn in toRemove)
+                spawn.Delete();
+
+            ColUtility.Free(toRemove);
+            InvalidateProperties();
+        }
+
+        public void BringToHome()
+        {
+            Defrag();
+
+            foreach (var spawn in GetSpawn())
+            {
+                spawn.MoveToWorld(Location, Map);
+            }
+        }
+
+        public override void OnDelete()
+        {
+            base.OnDelete();
+
+            RemoveSpawned();
+
+            if (m_Timer != null)
+                m_Timer.Stop();
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)5); // version
+            writer.Write(m_WalkingRange);
+
+            writer.Write(m_WayPoint);
+
+            writer.Write(m_Group);
+
+            writer.Write(m_MinDelay);
+            writer.Write(m_MaxDelay);
+            writer.Write(m_MaxCount);
+            writer.Write(m_Team);
+            writer.Write(m_HomeRange);
+            writer.Write(m_Running);
+
+            if (m_Running)
+                writer.WriteDeltaTime(m_End);
+
+            writer.Write(m_SpawnObjects.Count);
+            for (int i = 0; i < m_SpawnObjects.Count; ++i)
+            {
+                m_SpawnObjects[i].Serialize(writer);
+            }
+
+            /*writer.Write(m_Spawned.Count);
+            foreach(var kvp in m_Spawned)
+            {
+                ISpawnable e = kvp.Key;
+
+                if (e is Item)
+                    writer.Write((Item)e);
+                else if (e is Mobile)
+                    writer.Write((Mobile)e);
+                else
+                    writer.Write(Serial.MinusOne);
+
+                
+            }*/
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            switch ( version )
+            {
+                case 5:
+                case 4:
+                    {
+                        m_WalkingRange = reader.ReadInt();
+
+                        goto case 3;
+                    }
+                case 3:
+                case 2:
+                    {
+                        m_WayPoint = reader.ReadItem() as WayPoint;
+
+                        goto case 1;
+                    }
+
+                case 1:
+                    {
+                        m_Group = reader.ReadBool();
+
+                        goto case 0;
+                    }
+
+                case 0:
+                    {
+                        m_MinDelay = reader.ReadTimeSpan();
+                        m_MaxDelay = reader.ReadTimeSpan();
+                        m_MaxCount = reader.ReadInt();
+                        m_Team = reader.ReadInt();
+                        m_HomeRange = reader.ReadInt();
+                        m_Running = reader.ReadBool();
+
+                        TimeSpan ts = TimeSpan.Zero;
+
+                        if (m_Running)
+                            ts = reader.ReadDeltaTime() - DateTime.UtcNow;
+
+                        int size = reader.ReadInt();
+
+                        m_SpawnObjects = new List<SpawnObject>(size);
+
+                        for (int i = 0; i < size; ++i)
+                        {
+                            if (version > 4)
+                            {
+                                SpawnObject so = new SpawnObject(reader);
+
+                                if (AddSpawnObject(so))
+                                {
+                                    string typeName = ParseType(so.SpawnName);
+
+                                    if (ScriptCompiler.FindTypeByName(typeName) == null)
+                                    {
+                                        if (m_WarnTimer == null)
+                                            m_WarnTimer = new WarnTimer();
+
+                                        m_WarnTimer.Add(Location, Map, typeName);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                string creatureString = reader.ReadString();
+
+                                AddSpawnObject(new SpawnObject(creatureString));
+                                string typeName = ParseType(creatureString);
+
+                                if (ScriptCompiler.FindTypeByName(typeName) == null)
+                                {
+                                    if (m_WarnTimer == null)
+                                        m_WarnTimer = new WarnTimer();
+
+                                    m_WarnTimer.Add(Location, Map, typeName);
+                                }
+                            }
+                        }
+
+                        if (version < 5)
+                        {
+                            int count = reader.ReadInt();
+                            for (int i = 0; i < count; ++i)
+                            {
+                                ISpawnable e = World.FindEntity(reader.ReadInt()) as ISpawnable;
+
+                                if (e != null)
+                                {
+                                    e.Delete(); // lets make this easy
+                                }
+                            }
+                        }
+
+                        if (m_Running)
+                            DoTimer(ts);
+
+                        break;
+                    }
+            }
+
+            if (version < 3 && Weight == 0)
+                Weight = -1;
+        }
+
+        protected virtual ISpawnable CreateSpawnedObject(SpawnObject obj)
+        {
+            if (!m_SpawnObjects.Contains(obj))
+                return null;
+
+            Type type = ScriptCompiler.FindTypeByName(ParseType(obj.SpawnName));
+
+            if (type != null)
+            {
+                try
+                {
+                    return Build(type, CommandSystem.Split(obj.SpawnName));
+                }
+                catch
+                {
+                }
+            }
+
+            return null;
+        }
+
+        private void InitSpawner(int amount, TimeSpan minDelay, TimeSpan maxDelay, int team, int spawnRange, List<SpawnObject> spawnObjects)
+        {
+            Visible = false;
+            Movable = false;
+            m_Running = true;
+            m_Group = false;
+            m_MinDelay = minDelay;
+            m_MaxDelay = maxDelay;
+            m_MaxCount = amount;
+            m_Team = team;
+            m_SpawnRange = spawnRange;
+            m_WalkingRange = -1;
+            m_SpawnObjects = spawnObjects;
+            DoTimer(TimeSpan.FromSeconds(1));
+
+            m_HomeRange = 5;
+
+            int max = 1;
+
+            if (spawnObjects != null)
+            {
+                foreach (var obj in spawnObjects)
+                {
+                    max += obj.MaxCount;
+                }
+            }
+        }
+
+        void ISpawner.Remove(ISpawnable spawn)
+        {
+            RemoveSpawn(spawn);
+            InvalidateProperties();
+        }
+
         public static string ParseType(string s)
         {
             return s.Split(null, 2)[0];
@@ -404,596 +1041,6 @@ namespace Server.Mobiles
             }
 
             return false;
-        }
-
-        public override void OnAfterDuped(Item newItem)
-        {
-            Spawner s = newItem as Spawner;
-
-            if (s == null)
-                return;
-
-            s.m_SpawnNames = new List<string>(m_SpawnNames);
-            s.m_Spawned = new List<ISpawnable>();
-        }
-
-        public override void OnDoubleClick(Mobile from)
-        {
-            if (from.AccessLevel < AccessLevel.Spawner)
-                return;
-
-            SpawnerGump g = new SpawnerGump(this);
-            from.SendGump(g);
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            if (m_Running)
-            {
-                list.Add(1060742); // active
-
-                list.Add(1060656, m_Count.ToString()); // amount to make: ~1_val~
-                list.Add(1061169, m_HomeRange.ToString()); // range ~1_val~
-                list.Add(1060658, "walking range\t{0}", m_WalkingRange); // ~1_val~: ~2_val~
-
-                list.Add(1060659, "group\t{0}", m_Group); // ~1_val~: ~2_val~
-                list.Add(1060660, "team\t{0}", m_Team); // ~1_val~: ~2_val~
-                list.Add(1060661, "speed\t{0} to {1}", m_MinDelay, m_MaxDelay); // ~1_val~: ~2_val~
-
-                if (m_SpawnNames.Count != 0)
-                    list.Add(SpawnedStats());
-            }
-            else
-            {
-                list.Add(1060743); // inactive
-            }
-        }
-
-        public override void OnSingleClick(Mobile from)
-        {
-            base.OnSingleClick(from);
-
-            if (m_Running)
-                LabelTo(from, "[Running]");
-            else
-                LabelTo(from, "[Off]");
-        }
-
-        public void Start()
-        {
-            if (!m_Running)
-            {
-                if (SpawnNamesCount > 0)
-                {
-                    m_Running = true;
-                    DoTimer();
-                }
-            }
-        }
-
-        public void Stop()
-        {
-            if (m_Running)
-            {
-                if (m_Timer != null)
-                    m_Timer.Stop();
-
-                m_Running = false;
-            }
-        }
-
-        public void Defrag()
-        {
-            bool removed = false;
-
-            for (int i = 0; i < m_Spawned.Count; ++i)
-            {
-                ISpawnable e = m_Spawned[i];
-
-                bool toRemove = false;
-
-                if (e is Item)
-                {
-                    Item item = (Item)e;
-
-                    if (item.Deleted || item.Parent != null)
-                        toRemove = true;
-                }
-                else if (e is Mobile)
-                {
-                    Mobile m = (Mobile)e;
-
-                    if (m.Deleted)
-                    {
-                        toRemove = true;
-                    }
-                    else if (m is BaseCreature)
-                    {
-                        BaseCreature bc = (BaseCreature)m;
-
-                        if (bc.Controlled || bc.IsStabled)
-                        {
-                            toRemove = true;
-                        }
-                    }
-                }
-
-                if (toRemove)
-                {
-                    m_Spawned.RemoveAt(i);
-                    --i;
-                    removed = true;
-                }
-            }
-
-            if (removed)
-                InvalidateProperties();
-        }
-
-        public void OnTick()
-        {
-            DoTimer();
-
-            if (m_Group)
-            {
-                Defrag();
-
-                if (m_Spawned.Count == 0)
-                {
-                    Respawn();
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                Spawn();
-            }
-        }
-
-        public virtual void Respawn()
-        {
-            RemoveSpawned();
-
-            for (int i = 0; i < m_Count; i++)
-                Spawn();
-        }
-
-        public virtual void Spawn()
-        {
-            if (SpawnNamesCount > 0)
-                Spawn(Utility.Random(SpawnNamesCount));
-        }
-
-        public void Spawn(string creatureName)
-        {
-            for (int i = 0; i < m_SpawnNames.Count; i++)
-            {
-                if (m_SpawnNames[i] == creatureName)
-                {
-                    Spawn(i);
-                    break;
-                }
-            }
-        }
-
-        public virtual bool CheckSpawnerFull()
-        {
-            return (m_Spawned.Count >= m_Count);
-        }
-
-        public void Spawn(int index)
-        {
-            Map map = Map;
-
-            if (map == null || map == Map.Internal || SpawnNamesCount == 0 || index >= SpawnNamesCount || Parent != null)
-                return;
-
-            Defrag();
-
-            if (CheckSpawnerFull())
-                return;
-
-            ISpawnable spawned = CreateSpawnedObject(index);
-
-            if (spawned == null)
-                return;
-
-            spawned.Spawner = this;
-            m_Spawned.Add(spawned);
-
-            Point3D loc = (spawned is BaseVendor ? Location : GetSpawnPosition(spawned));
-
-            spawned.OnBeforeSpawn(loc, map);
-
-            InvalidateProperties();
-
-            spawned.MoveToWorld(loc, map);
-
-            if (spawned is BaseCreature)
-            {
-                BaseCreature bc = (BaseCreature)spawned;
-
-                if (m_WalkingRange >= 0)
-                    bc.RangeHome = m_WalkingRange;
-                else
-                    bc.RangeHome = m_HomeRange;
-
-                bc.CurrentWayPoint = m_WayPoint;
-
-                if (m_Team > 0)
-                    bc.Team = m_Team;
-
-                bc.Home = HomeLocation;
-            }
-        }
-
-        public Point3D GetSpawnPosition()
-        {
-            return GetSpawnPosition(null);
-        }
-
-        public Point3D GetSpawnPosition(ISpawnable spawned)
-        {
-            Map map = Map;
-
-            if (map == null)
-                return Location;
-
-            bool waterMob, waterOnlyMob;
-
-            if (spawned is Mobile)
-            {
-                Mobile mob = (Mobile)spawned;
-
-                waterMob = mob.CanSwim;
-                waterOnlyMob = (mob.CanSwim && mob.CantWalk);
-            }
-            else
-            {
-                waterMob = false;
-                waterOnlyMob = false;
-            }
-
-            // Try 10 times to find a spawnable location.
-            for (int i = 0; i < 10; ++i)
-            {
-                int x, y;
-
-                if (m_HomeRange > 0)
-                {
-                    x = Location.X + (Utility.Random((m_HomeRange * 2) + 1) - m_HomeRange);
-                    y = Location.Y + (Utility.Random((m_HomeRange * 2) + 1) - m_HomeRange);
-                }
-                else
-                {
-                    x = Location.X;
-                    y = Location.Y;
-                }
-
-                int mapZ = map.GetAverageZ(x, y);
-
-                if (waterMob)
-                {
-                    if (IsValidWater(map, x, y, Z))
-                        return new Point3D(x, y, Z);
-                    else if (IsValidWater(map, x, y, mapZ))
-                        return new Point3D(x, y, mapZ);
-                }
-
-                if (!waterOnlyMob)
-                {
-                    if (map.CanSpawnMobile(x, y, Z))
-                        return new Point3D(x, y, Z);
-                    else if (map.CanSpawnMobile(x, y, mapZ))
-                        return new Point3D(x, y, mapZ);
-                }
-            }
-
-            return Location;
-        }
-
-        public void DoTimer()
-        {
-            if (!m_Running)
-                return;
-
-            int minSeconds = (int)m_MinDelay.TotalSeconds;
-            int maxSeconds = (int)m_MaxDelay.TotalSeconds;
-
-            TimeSpan delay = TimeSpan.FromSeconds(Utility.RandomMinMax(minSeconds, maxSeconds));
-            DoTimer(delay);
-        }
-
-        public virtual void DoTimer(TimeSpan delay)
-        {
-            if (!m_Running)
-                return;
-
-            m_End = DateTime.UtcNow + delay;
-
-            if (m_Timer != null)
-                m_Timer.Stop();
-
-            m_Timer = new InternalTimer(this, delay);
-            m_Timer.Start();
-        }
-
-        public string SpawnedStats()
-        {
-            Defrag();
-
-            Dictionary<string, int> counts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (string entry in m_SpawnNames)
-            {
-                string name = ParseType(entry);
-                Type type = ScriptCompiler.FindTypeByName(name);
-
-                if (type == null)
-                    counts[name] = 0;
-                else
-                    counts[type.Name] = 0;
-            }
-
-            foreach (ISpawnable spawned in m_Spawned)
-            {
-                string name = spawned.GetType().Name;
-
-                if (counts.ContainsKey(name))
-                    ++counts[name];
-                else
-                    counts[name] = 1;
-            }
-
-            List<string> names = new List<string>(counts.Keys);
-            names.Sort();
-
-            StringBuilder result = new StringBuilder();
-
-            for (int i = 0; i < names.Count; ++i)
-                result.AppendFormat("{0}{1}: {2}", (i == 0) ? "" : "<BR>", names[i], counts[names[i]]);
-
-            return result.ToString();
-        }
-
-        public int CountCreatures(string creatureName)
-        {
-            Defrag();
-
-            int count = 0;
-
-            for (int i = 0; i < m_Spawned.Count; ++i)
-                if (Insensitive.Equals(creatureName, m_Spawned[i].GetType().Name))
-                    ++count;
-
-            return count;
-        }
-
-        public void RemoveSpawned(string creatureName)
-        {
-            Defrag();
-
-            for (int i = m_Spawned.Count - 1; i >= 0; --i)
-            {
-                IEntity e = m_Spawned[i];
-
-                if (Insensitive.Equals(creatureName, e.GetType().Name))
-                    e.Delete();
-            }
-
-            InvalidateProperties();
-        }
-
-        public void RemoveSpawned()
-        {
-            Defrag();
-
-            for (int i = m_Spawned.Count - 1; i >= 0; --i)
-                m_Spawned[i].Delete();
-
-            InvalidateProperties();
-        }
-
-        public void BringToHome()
-        {
-            Defrag();
-
-            for (int i = 0; i < m_Spawned.Count; ++i)
-            {
-                ISpawnable e = m_Spawned[i];
-
-                e.MoveToWorld(Location, Map);
-            }
-        }
-
-        public override void OnDelete()
-        {
-            base.OnDelete();
-
-            RemoveSpawned();
-
-            if (m_Timer != null)
-                m_Timer.Stop();
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)4); // version
-            writer.Write(m_WalkingRange);
-
-            writer.Write(m_WayPoint);
-
-            writer.Write(m_Group);
-
-            writer.Write(m_MinDelay);
-            writer.Write(m_MaxDelay);
-            writer.Write(m_Count);
-            writer.Write(m_Team);
-            writer.Write(m_HomeRange);
-            writer.Write(m_Running);
-
-            if (m_Running)
-                writer.WriteDeltaTime(m_End);
-
-            writer.Write(m_SpawnNames.Count);
-
-            for (int i = 0; i < m_SpawnNames.Count; ++i)
-                writer.Write(m_SpawnNames[i]);
-
-            writer.Write(m_Spawned.Count);
-
-            for (int i = 0; i < m_Spawned.Count; ++i)
-            {
-                IEntity e = m_Spawned[i];
-
-                if (e is Item)
-                    writer.Write((Item)e);
-                else if (e is Mobile)
-                    writer.Write((Mobile)e);
-                else
-                    writer.Write(Serial.MinusOne);
-            }
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            switch ( version )
-            {
-                case 4:
-                    {
-                        m_WalkingRange = reader.ReadInt();
-
-                        goto case 3;
-                    }
-                case 3:
-                case 2:
-                    {
-                        m_WayPoint = reader.ReadItem() as WayPoint;
-
-                        goto case 1;
-                    }
-
-                case 1:
-                    {
-                        m_Group = reader.ReadBool();
-
-                        goto case 0;
-                    }
-
-                case 0:
-                    {
-                        m_MinDelay = reader.ReadTimeSpan();
-                        m_MaxDelay = reader.ReadTimeSpan();
-                        m_Count = reader.ReadInt();
-                        m_Team = reader.ReadInt();
-                        m_HomeRange = reader.ReadInt();
-                        m_Running = reader.ReadBool();
-
-                        TimeSpan ts = TimeSpan.Zero;
-
-                        if (m_Running)
-                            ts = reader.ReadDeltaTime() - DateTime.UtcNow;
-
-                        int size = reader.ReadInt();
-
-                        m_SpawnNames = new List<string>(size);
-
-                        for (int i = 0; i < size; ++i)
-                        {
-                            string creatureString = reader.ReadString();
-
-                            m_SpawnNames.Add(creatureString);
-                            string typeName = ParseType(creatureString);
-
-                            if (ScriptCompiler.FindTypeByName(typeName) == null)
-                            {
-                                if (m_WarnTimer == null)
-                                    m_WarnTimer = new WarnTimer();
-
-                                m_WarnTimer.Add(Location, Map, typeName);
-                            }
-                        }
-
-                        int count = reader.ReadInt();
-
-                        m_Spawned = new List<ISpawnable>(count);
-
-                        for (int i = 0; i < count; ++i)
-                        {
-                            ISpawnable e = World.FindEntity(reader.ReadInt()) as ISpawnable;
-
-                            if (e != null)
-                            {
-                                e.Spawner = this;
-                                m_Spawned.Add(e);
-                            }
-                        }
-
-                        if (m_Running)
-                            DoTimer(ts);
-
-                        break;
-                    }
-            }
-
-            if (version < 3 && Weight == 0)
-                Weight = -1;
-        }
-
-        protected virtual ISpawnable CreateSpawnedObject(int index)
-        {
-            if (index >= m_SpawnNames.Count)
-                return null;
-
-            Type type = ScriptCompiler.FindTypeByName(ParseType(m_SpawnNames[index]));
-
-            if (type != null)
-            {
-                try
-                {
-                    return Build(type, CommandSystem.Split(m_SpawnNames[index]));
-                }
-                catch
-                {
-                }
-            }
-
-            return null;
-        }
-
-        private void InitSpawner(int amount, TimeSpan minDelay, TimeSpan maxDelay, int team, int homeRange, List<string> spawnNames)
-        {
-            Visible = false;
-            Movable = false;
-            m_Running = true;
-            m_Group = false;
-            m_MinDelay = minDelay;
-            m_MaxDelay = maxDelay;
-            m_Count = amount;
-            m_Team = team;
-            m_HomeRange = homeRange;
-            m_WalkingRange = -1;
-            m_SpawnNames = spawnNames;
-            m_Spawned = new List<ISpawnable>();
-            DoTimer(TimeSpan.FromSeconds(1));
-        }
-
-        void ISpawner.Remove(ISpawnable spawn)
-        {
-            m_Spawned.Remove(spawn);
-
-            InvalidateProperties();
         }
 
         private class InternalTimer : Timer

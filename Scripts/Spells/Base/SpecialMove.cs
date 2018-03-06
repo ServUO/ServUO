@@ -211,30 +211,6 @@ namespace Server.Spells
                 return false;
             }
 
-            #region Dueling
-            string option = null;
-
-            if (this is Backstab)
-                option = "Backstab";
-            else if (this is DeathStrike)
-                option = "Death Strike";
-            else if (this is FocusAttack)
-                option = "Focus Attack";
-            else if (this is KiAttack)
-                option = "Ki Attack";
-            else if (this is SurpriseAttack)
-                option = "Surprise Attack";
-            else if (this is HonorableExecution)
-                option = "Honorable Execution";
-            else if (this is LightningStrike)
-                option = "Lightning Strike";
-            else if (this is MomentumStrike)
-                option = "Momentum Strike";
-
-            if (option != null && !Engines.ConPVP.DuelContext.AllowSpecialMove(from, option, this))
-                return false;
-            #endregion
-
             return this.CheckSkills(from) && this.CheckMana(from, false);
         }
 

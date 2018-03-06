@@ -12,14 +12,14 @@ namespace Server.Engines.Despise
 {
 	public enum LeashLength
 	{
-		Tight,
+		//Tight,
 		Short,
 		Long
 	}
 		
 	public enum Aggression
 	{
-		Following,
+		//Following,
 		Defensive, 
 		Aggressive
 	}
@@ -35,7 +35,7 @@ namespace Server.Engines.Despise
 		private LeashLength m_LeashLength;
 		private Aggression m_Aggression;
 		private Alignment m_Alignment;
-		private IPoint3D m_Anchor;
+		private IEntity m_Anchor;
 		private bool m_Conscripted;
 		
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -75,8 +75,8 @@ namespace Server.Engines.Despise
 			{ 
 				m_LeashLength = value;
 
-                if (m_Pet != null)
-                    m_Pet.RangeHome = m_Pet.GetLeashLength();
+                //if (m_Pet != null)
+                //    m_Pet.RangeHome = m_Pet.GetLeashLength();
 
 				InvalidateHue();
                 InvalidateProperties();
@@ -92,29 +92,6 @@ namespace Server.Engines.Despise
 				if(value != m_Aggression)
 				{
 					m_Aggression = value;
-
-                    if (m_Pet != null)
-                    {
-                        if (m_Anchor != m_Pet.ControlMaster)
-                            m_Anchor = m_Pet.ControlMaster;
-                        m_Pet.ControlTarget = m_Pet.ControlMaster;
-                        m_Pet.Home = Point3D.Zero;
-                        switch (m_Aggression)
-                        {
-                            case Aggression.Following:
-                                m_Pet.ControlOrder = OrderType.Follow;
-                                m_Pet.AIObject.Action = ActionType.Backoff;
-                                break;
-                            case Aggression.Defensive:
-                                m_Pet.ControlOrder = OrderType.Guard;
-                                m_Pet.AIObject.Action = ActionType.Wander;
-                                break;
-                            case Aggression.Aggressive:
-                                m_Pet.ControlOrder = OrderType.Guard;
-                                m_Pet.AIObject.Action = ActionType.Wander;
-                                break;
-                        }
-                    }
 				}
 
 				InvalidateHue();
@@ -130,7 +107,7 @@ namespace Server.Engines.Despise
 		}
 		
 		[CommandProperty(AccessLevel.GameMaster)]
-		public IPoint3D Anchor
+		public IEntity Anchor
 		{ 
 			get { return m_Anchor; } 
 			set 
@@ -138,7 +115,10 @@ namespace Server.Engines.Despise
                 m_Anchor = value;
 
                 if (m_Pet != null && m_Anchor == null)
-                    m_Pet.Home = Point3D.Zero;
+                {
+                    m_Anchor = m_Owner;
+                    m_Pet.Home = GetAnchorLocation();
+                }
 
                 InvalidateProperties(); 
             } 
@@ -171,7 +151,7 @@ namespace Server.Engines.Despise
         {
             m_Pet = null;
             m_Anchor = null;
-            m_Aggression = Aggression.Following;
+            m_Aggression = Aggression.Aggressive;
             InvalidateProperties();
         }
 		
@@ -225,8 +205,8 @@ namespace Server.Engines.Despise
 					list.Add(1153265, (string)name);
 			}
 			
-			int leash = 1153261 + (int)m_LeashLength;
-			int aggr = 1153268 + (int)m_Aggression;
+			int leash = 1153262 + (int)m_LeashLength;
+			int aggr = 1153269 + (int)m_Aggression;
 			
 			list.Add(1153260, String.Format("#{0}", leash.ToString())); // Leash: ~1_VAL~
 			list.Add(1153267, String.Format("#{0}", aggr.ToString())); // Aggression: ~1_VAL~
@@ -272,6 +252,41 @@ namespace Server.Engines.Despise
             }
 
             return base.OnDroppedOnto(from, target);
+        }
+
+        public Point3D GetAnchorLocation()
+        {
+            if (m_Pet == null)
+                return Point3D.Zero;
+
+            if (m_Anchor == null)
+                m_Anchor = m_Pet.ControlMaster;
+
+            if (m_Anchor is Item)
+            {
+                if (((Item)m_Anchor).HeldBy != null)
+                    return ((Item)m_Anchor).HeldBy.Location;
+
+                return ((Item)m_Anchor).GetWorldLocation();
+            }
+
+            return m_Anchor.Location;
+        }
+
+        public IPoint3D GetAnchorActual()
+        {
+            if (m_Pet == null)
+                return null;
+
+            if (m_Anchor == null)
+                m_Anchor = m_Pet.ControlMaster;
+
+            if (m_Anchor is Item && ((Item)m_Anchor).RootParentEntity != null)
+            {
+                return ((Item)m_Anchor).RootParentEntity;
+            }
+
+            return m_Anchor;
         }
 		
 		private class ConscriptEntry : ContextMenuEntry
@@ -330,7 +345,7 @@ namespace Server.Engines.Despise
 		{
 			private WispOrb m_Orb;
 			
-			public InternalTarget(WispOrb orb) : base(3, true, TargetFlags.None)
+			public InternalTarget(WispOrb orb) : base(8, true, TargetFlags.None)
 			{
 				m_Orb = orb;
 			}
@@ -351,10 +366,9 @@ namespace Server.Engines.Despise
                             from.SendLocalizedMessage(1153336); // That creature is too powerful for you to coerce.
                         else
                         {
-                            m_Orb.Anchor = null;
+                            m_Orb.Anchor = from;
 
                             m_Orb.Pet = creature;
-                            creature.Power = 1;
                             creature.Link(m_Orb);
 
                             m_Orb.Pet.SetControlMaster(from);
@@ -368,7 +382,7 @@ namespace Server.Engines.Despise
                     else if (targeted == m_Orb.Pet)
                     {
                         int aggr = (int)m_Orb.Aggression + 1;
-                        if (aggr >= 3) aggr = 0;
+                        if (aggr >= 2) aggr = 0;
 
                         m_Orb.Aggression = (Aggression)aggr;
 
@@ -382,7 +396,7 @@ namespace Server.Engines.Despise
 				else if (targeted == m_Orb)
 				{
 					int length = (int)m_Orb.LeashLength + 1;
-					if(length >= 3) length = 0;
+					if(length >= 2) length = 0;
 
                     m_Orb.LeashLength = (LeashLength)length;
 					
@@ -426,12 +440,6 @@ namespace Server.Engines.Despise
 		{
             if (!CheckOwnerAlignment() || from != m_Owner)
 				return;
-				
-			if(p is Item && (((Item)p).RootParent != null || ((Item)p).Movable))
-			{
-				from.SendMessage("That wouldn't be a suitable anchor.");
-				return;
-			}
 
             if (p is Mobile)
             {
@@ -442,51 +450,24 @@ namespace Server.Engines.Despise
 
                 m_Pet.ControlTarget = m;
                 m_Pet.ControlOrder = OrderType.Follow;
-
-                return;
             }
 
-            Point3D point = new Point3D(p);
-            bool success = false;
-
-            for (int x = -1; x <= 1; x++)
+            if (p is Item)
             {
-                for (int y = -1; y <= 1; y++)
-                {
-                    int xx = point.X + x;
-                    int yy = point.Y + y;
-                    Point3D newPoint = new Point3D(xx, yy, from.Map.GetAverageZ(xx, yy));
+                Item item = p as Item;
 
-                    MovementPath path = new MovementPath(m_Pet, newPoint);
+                Anchor = item;
 
-                    if (path.Success)
-                    {
-                        success = true;
-                        break;
-                    }
-                }
+                object name = GetAnchorName(); // Your possessed creature is now anchored to ~1_NAME~
 
-                if (success)
-                    break;
+                if (name is int)
+                    from.SendLocalizedMessage(1153280, String.Format("#{0}", (int)name));
+                else if (name is string)
+                    from.SendLocalizedMessage(1153280, (string)name);
+
+                m_Pet.ControlTarget = m_Pet.ControlMaster;
+                m_Pet.ControlOrder = OrderType.Follow;
             }
-
-			if(success)
-			{
-				Anchor = p;
-				
-				object name = GetAnchorName(); // Your possessed creature is now anchored to ~1_NAME~
-				
-				if(name is int)
-					from.SendLocalizedMessage(1153280, String.Format("#{0}", (int) name)); 
-				else if (name is string)
-					from.SendLocalizedMessage(1153280, (string)name);
-
-                m_Pet.ControlOrder = OrderType.None;
-                m_Pet.CurrentSpeed = m_Pet.ActiveSpeed;
-                m_Pet.Home = new Point3D(p);
-			}
-			else
-				from.SendMessage("There must be a clear path to set an anchor.");
 		}
 
         private int GetAlignment()
@@ -507,15 +488,22 @@ namespace Server.Engines.Despise
                 Hue = 1910; // shadow wisp color
             else if (m_Pet.Combatant != null)
                 Hue = 1931; // Orange
+            else if (IsFollowing())
+                Hue = 1912;
             else
             {
                 switch (m_Aggression)
                 {
-                    case Aggression.Following: Hue = 1912; break; // Yellow
+                    //case Aggression.Following: Hue = 1912; break; // Yellow
                     case Aggression.Defensive: Hue = 1917; break; // blue
                     case Aggression.Aggressive: Hue = 1914; break;  // green
                 }
             }
+        }
+
+        public bool IsFollowing()
+        {
+            return (int)m_Pet.GetDistanceToSqrt(GetAnchorLocation()) > m_Pet.GetLeashLength() + 1 && m_Pet.ControlOrder == OrderType.Follow;
         }
 		
 		public override void Delete()
@@ -570,17 +558,19 @@ namespace Server.Engines.Despise
 			writer.Write((int)m_Alignment);
             writer.Write(m_Conscripted);
 
-            if (m_Anchor == null)
-                writer.Write((int)0);
-            else if (m_Anchor is Mobile)
+            if (m_Anchor is Mobile)
             {
                 writer.Write((int)1);
                 writer.Write((Mobile)m_Anchor);
             }
-            else
+            else if(m_Anchor is Item)
             {
                 writer.Write((int)2);
-                writer.Write(new Point3D(m_Anchor));
+                writer.Write((Item)m_Anchor);
+            }
+            else
+            {
+                writer.Write(0);
             }
 		}
 		
@@ -599,12 +589,14 @@ namespace Server.Engines.Despise
             switch (reader.ReadInt())
             {
                 case 0: break;
-                case 1: m_Anchor = (IPoint3D)reader.ReadMobile(); break;
-                case 2: m_Anchor = (IPoint3D)reader.ReadPoint3D(); break;
+                case 1: m_Anchor = (IEntity)reader.ReadMobile(); break;
+                case 2: m_Anchor = (IEntity)reader.ReadItem(); break;
             }
 
             if (m_Anchor == null && m_Pet != null)
-                m_Pet.Home = m_Pet.Location;
+            {
+                Anchor = m_Owner;
+            }
 
 			m_Orbs.Add(this);
 		}

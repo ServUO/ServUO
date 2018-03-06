@@ -212,13 +212,8 @@ namespace Server.Items
         public static void PlayDrinkEffect(Mobile m)
         {
             m.RevealingAction();
-
             m.PlaySound(0x2D6);
-
-            #region Dueling
-            if (!Engines.ConPVP.DuelContext.IsFreeConsume(m))
-                m.AddToBackpack(new Bottle());
-            #endregion
+            m.AddToBackpack(new Bottle());
 
             if (m.Body.IsHuman && !m.Mounted)
             {
@@ -279,7 +274,7 @@ namespace Server.Items
 
         #region ICraftable Members
 
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             if (craftSystem is DefAlchemy)
             {

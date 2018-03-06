@@ -194,8 +194,9 @@ namespace Server.Mobiles
             if (DateTime.UtcNow > m_NextPetCommand)
             {
                 BaseCreature bc = null;
+                IPooledEnumerable eable = m_Mobile.GetMobilesInRange(10);
 
-                foreach (Mobile m in m_Mobile.GetMobilesInRange(10))
+                foreach (Mobile m in eable)
                 {
                     if (m == null)
                         continue;
@@ -210,6 +211,7 @@ namespace Server.Mobiles
                         }
                     }
                 }
+                eable.Free();
 
                 m_NextPetCommand = DateTime.UtcNow + TimeSpan.FromSeconds(10);
             }
@@ -522,8 +524,9 @@ namespace Server.Mobiles
             if (targ is DispelSpell.InternalTarget && !(m_Mobile.AutoDispel))
             {
                 List<Mobile> targets = new List<Mobile>();
+                IPooledEnumerable eable = m_Mobile.GetMobilesInRange(12);
 
-                foreach (Mobile m in m_Mobile.GetMobilesInRange(12))
+                foreach (Mobile m in eable)
                 {
                     if (m is BaseCreature)
                     {
@@ -531,6 +534,8 @@ namespace Server.Mobiles
                             targets.Add(m);
                     }
                 }
+
+                eable.Free();
 
                 if (targets.Count >= 0)
                 {
@@ -665,8 +670,9 @@ namespace Server.Mobiles
         public static Mobile FindRandomTarget(Mobile from, bool allowcombatant)
         {
             List<Mobile> list = new List<Mobile>();
+            IPooledEnumerable eable = from.GetMobilesInRange(12);
 
-            foreach (Mobile m in from.GetMobilesInRange(12))
+            foreach (Mobile m in eable)
             {
                 if (m != null && m != from)
                     if (CanTarget(from, m) && from.InLOS(m))
@@ -677,6 +683,7 @@ namespace Server.Mobiles
                             list.Add(m);
                     }
             }
+            eable.Free();
 
             if (list.Count == 0)
                 return null;

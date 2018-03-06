@@ -74,11 +74,12 @@ namespace Server.Items
 
                 m_Registry[from].Stop();
                 m_Registry.Remove(from);
+
+                if(from.Weapon is BaseWeapon)
+                    ((BaseWeapon)from.Weapon).ProcessingMultipleHits = false;
             }
         }
-
-        private bool _SecondHit;
-
+        
         /// <summary>
         /// Called from BaseWeapon, on successful hit
         /// </summary>
@@ -87,11 +88,18 @@ namespace Server.Items
         {
             if (HasRegistry(attacker) && attacker.Weapon is BaseWeapon && m_Registry[attacker].DualHitChance > Utility.RandomDouble())
             {
+                BaseWeapon wep = (BaseWeapon)attacker.Weapon;
+
                 if (!m_Registry[attacker].SecondHit)
                 {
+                    wep.ProcessingMultipleHits = true;
                     m_Registry[attacker].SecondHit = true;
-                    ((BaseWeapon)attacker.Weapon).OnHit(attacker, defender, .6);
+                    wep.OnHit(attacker, defender, .6);
                     m_Registry[attacker].SecondHit = false;
+                }
+                else if (wep.ProcessingMultipleHits)
+                {
+                    wep.EndDualWield = true;
                 }
             }
         }

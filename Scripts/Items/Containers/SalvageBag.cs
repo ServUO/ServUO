@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Network;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -70,25 +71,7 @@ namespace Server.Items
 		
         private bool Scissorables() //Where context menu checks for Leather items and cloth items
         {
-            foreach (Item i in this.Items)
-            {
-                if (i != null && !i.Deleted)
-                {
-                    if (i is IScissorable)
-                    {
-                        if (i is BaseClothing)
-                            return true;
-                        if (i is BaseArmor)
-                        {
-                            if (CraftResources.GetType(((BaseArmor)i).Resource) == CraftResourceType.Leather)
-                                return true;
-                        }
-                        if ((i is Cloth) || (i is BoltOfCloth) || (i is Hides) || (i is BonePile))
-                            return true;
-                    }
-                }
-            }
-            return false;
+            return Items.Any(i => (i != null) && (!i.Deleted) && (i is IScissorable) && (i is Item));
         }
 
         #endregion	
@@ -193,14 +176,7 @@ namespace Server.Items
         #region Salvaging
         private void SalvageIngots(Mobile from)
         {
-            Item[] tools = from.Backpack.FindItemsByType(typeof(BaseTool));
-
-            bool ToolFound = false;
-            foreach (Item tool in tools)
-            {
-                if (tool is BaseTool && ((BaseTool)tool).CraftSystem == DefBlacksmithy.CraftSystem)
-                    ToolFound = true;
-            }
+            bool ToolFound = from.Backpack.Items.FirstOrDefault(i => i is BaseTool && ((ITool)i).CraftSystem == DefBlacksmithy.CraftSystem) != null;
 
             if (!ToolFound)
             {

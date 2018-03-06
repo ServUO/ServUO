@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class ShrineOfSingularity : Item
     {
-        private static readonly TimeSpan FailDelay = TimeSpan.FromHours(24);
+        private static readonly TimeSpan FailDelay = TimeSpan.FromHours(2);
 
         [Constructable]
         public ShrineOfSingularity() : base(0x48A8)

@@ -17,8 +17,7 @@ namespace Server.Items
         private static List<TenthAnniversarySculpture> m_sculptures = new List<TenthAnniversarySculpture>();
 
         private static Timer m_Timer;
-
-        private static readonly int MinLuckBonus = 200;
+        
         private static readonly int MaxLuckBonus = 1000;
 
         [Constructable]

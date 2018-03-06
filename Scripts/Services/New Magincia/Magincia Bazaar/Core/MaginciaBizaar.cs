@@ -467,10 +467,14 @@ namespace Server.Engines.NewMagincia
 		{
             StorageEntry newEntry = null;
 
-            if (broker is CommodityBroker && ((CommodityBroker)broker).CommodityEntries.Count > 0 && ((CommodityBroker)broker).HasValidEntry())
+            if (broker is CommodityBroker && ((CommodityBroker)broker).HasValidEntry())
+            {
                 newEntry = new StorageEntry(((CommodityBroker)broker).CommodityEntries, broker.BankBalance);
-            else if (broker is PetBroker && ((PetBroker)broker).BrokerEntries.Count > 0 && ((PetBroker)broker).HasValidEntry())
+            }
+            else if (broker is PetBroker && ((PetBroker)broker).HasValidEntry())
+            {
                 newEntry = new StorageEntry(((PetBroker)broker).BrokerEntries, broker.BankBalance);
+            }
 
             if (newEntry != null)
             {

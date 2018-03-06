@@ -99,7 +99,7 @@ namespace Server.Items
             get { return ArmorMeditationAllowance.All; }
         }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             return base.OnCraft(quality, makersMark, from, craftSystem, null, tool, craftItem, resHue);
         }
@@ -238,7 +238,7 @@ namespace Server.Items
         public override CraftResource DefaultResource { get { return CraftResource.None; } }
         public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             return base.OnCraft(quality, makersMark, from, craftSystem, null, tool, craftItem, resHue);
         }
@@ -378,7 +378,7 @@ namespace Server.Items
         public override CraftResource DefaultResource { get { return CraftResource.None; } }        
         public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             return base.OnCraft(quality, makersMark, from, craftSystem, null, tool, craftItem, resHue);
         }
@@ -498,7 +498,7 @@ namespace Server.Items
         public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             return base.OnCraft(quality, makersMark, from, craftSystem, null, tool, craftItem, resHue);
         }

@@ -127,8 +127,9 @@ namespace Server.Mobiles
             if (Core.SE && Summoned)
             {
                 ArrayList spirtsOrVortexes = new ArrayList();
+                IPooledEnumerable eable = GetMobilesInRange(5);
 
-                foreach (Mobile m in GetMobilesInRange(5))
+                foreach (Mobile m in eable)
                 {
                     if (m is EnergyVortex || m is BladeSpirits)
                     {
@@ -136,6 +137,8 @@ namespace Server.Mobiles
                             spirtsOrVortexes.Add(m);
                     }
                 }
+
+                eable.Free();
 
                 while (spirtsOrVortexes.Count > 6)
                 {

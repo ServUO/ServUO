@@ -66,8 +66,15 @@ namespace Server.Items
 
 		public override TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
 		{
+            long nextShoot;
+
+            if (attacker is PlayerMobile)
+                nextShoot = ((PlayerMobile)attacker).NextMovementTime + (Core.SE ? 250 : Core.AOS ? 500 : 1000);
+            else
+                nextShoot = attacker.LastMoveTime + attacker.ComputeMovementSpeed();
+
 			// Make sure we've been standing still for .25/.5/1 second depending on Era
-			if (Core.TickCount - attacker.LastMoveTime >= (Core.SE ? 250 : Core.AOS ? 500 : 1000) ||
+            if (nextShoot <= Core.TickCount ||
 				(Core.AOS && WeaponAbility.GetCurrentAbility(attacker) is MovingShot))
 			{
 				bool canSwing = true;
@@ -83,18 +90,6 @@ namespace Server.Items
 						canSwing = (sp == null || !sp.IsCasting || !sp.BlocksMovement);
 					}
 				}
-
-				#region Dueling
-				if (attacker is PlayerMobile)
-				{
-					PlayerMobile pm = (PlayerMobile)attacker;
-
-					if (pm.DuelContext != null && !pm.DuelContext.CheckItemEquip(attacker, this))
-					{
-						canSwing = false;
-					}
-				}
-				#endregion
 
 				if (canSwing && attacker.HarmfulCheck(damageable))
 				{
@@ -130,26 +125,6 @@ namespace Server.Items
 				0.4 >= Utility.RandomDouble())
 			{
 				((Mobile)damageable).AddToBackpack(Ammo);
-			}
-
-			if (Core.ML && m_Velocity > 0)
-			{
-                int bonus = (int)attacker.GetDistanceToSqrt(damageable);
-
-				if (bonus > 0 && m_Velocity > Utility.Random(100))
-				{
-                    AOS.Damage(damageable, attacker, bonus * 3, 100, 0, 0, 0, 0);
-
-					if (attacker.Player)
-					{
-						attacker.SendLocalizedMessage(1072794); // Your arrow hits its mark with velocity!
-					}
-
-                    if (damageable is Mobile && ((Mobile)damageable).Player)
-					{
-						((Mobile)damageable).SendLocalizedMessage(1072795); // You have been hit by an arrow with velocity!
-					}
-				}
 			}
 
 			base.OnHit(attacker, damageable, damageBonus);

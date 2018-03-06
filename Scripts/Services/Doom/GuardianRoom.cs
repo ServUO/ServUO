@@ -51,7 +51,7 @@ namespace Server.Engines.Doom
 		{
 			base.OnLocationChanged( m, oldLocation );
 			
-			if(!Active && CanActivate && m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
+			if(!Active && CanActivate && m is PlayerMobile && m.AccessLevel == AccessLevel.Player && m.Alive)
 			{
 				for(int x = m.X - 3; x <= m.X + 3; x++)
 				{
@@ -116,7 +116,17 @@ namespace Server.Engines.Doom
             if (Guardians == null)
                 Guardians = new List<DarkGuardian>();
 
-            int count = MobileCount() * 2;
+            int count = 0;
+            foreach (var mob in this.GetEnumeratedMobiles().Where(mob => mob is PlayerMobile || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != null && !mob.IsDeadBondedPet)))
+            {
+                if (mob.NetState != null)
+                    mob.SendLocalizedMessage(1050000, "", 365); // The locks on the door click loudly and you begin to hear a faint hissing near the walls.
+
+                if(mob.Alive)
+                    count++;
+            }
+
+            count = Math.Max(1, count * 2);
 
 			for(int i = 0; i < count; i++)
 			{
@@ -142,11 +152,6 @@ namespace Server.Engines.Doom
 			m_Timer.Start();
 		}
 
-        private int MobileCount()
-        {
-            return this.GetEnumeratedMobiles().Where(m => m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() != null)).Count();
-        }
-
 		public void Reset()
 		{
             if (m_Timer != null)
@@ -159,7 +164,7 @@ namespace Server.Engines.Doom
 			DoorTwo.Locked = false;
 
             Active = false;
-			NextActivate = DateTime.UtcNow + TimeSpan.FromMinutes(3);
+			NextActivate = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(15, 60));
 		}
 		
 		public void CheckDoors()

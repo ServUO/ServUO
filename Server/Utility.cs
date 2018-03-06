@@ -718,20 +718,31 @@ namespace Server
                    (p1.m_Y <= (p2.m_Y + range));
 		}
 
-		public static bool InUpdateRange(IPoint2D p1, IPoint2D p2)
+		public static bool InUpdateRange(Mobile m, IPoint3D p)
 		{
-            int range = Core.GlobalUpdateRange;
-
-            return (p1.X >= (p2.X - range)) && (p1.X <= (p2.X + range)) && (p1.Y >= (p2.Y - range)) && (p1.Y <= (p2.Y + range));
+			return InUpdateRange(m, m, p);
 		}
 
-        public static bool InUpdateRange(Mobile m, Point3D p1, Point3D p2)
-        {
-            Server.Network.NetState state = m.NetState;
+		public static bool InUpdateRange(Mobile m, IPoint3D p1, IPoint3D p2)
+		{
+			int range = Core.GlobalUpdateRange;
 
-            int range = state != null ? state.UpdateRange : Core.GlobalUpdateRange;
+			if (m.NetState != null)
+			{
+				range = m.NetState.UpdateRange;
+			}
 
-            return InRange(p1, p2, range);
+			if (p1 is Item)
+			{
+				p1 = ((Item)p1).GetWorldLocation();
+			}
+
+			if (p2 is Item)
+			{
+				p2 = ((Item)p2).GetWorldLocation();
+			}
+
+			return (p1.X >= (p2.X - range)) && (p1.X <= (p2.X + range)) && (p1.Y >= (p2.Y - range)) && (p1.Y <= (p2.Y + range));
         }
 		#endregion
 

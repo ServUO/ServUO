@@ -660,7 +660,7 @@ namespace Server.Items
         }
     }
 
-    public abstract class BaseBeverage : Item, IHasQuantity, ICraftable
+    public abstract class BaseBeverage : Item, IHasQuantity, ICraftable, IResource
     {
         private BeverageType m_Content;
         private int m_Quantity;
@@ -678,6 +678,8 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
+        public bool PlayerConstructed { get { return _Crafter != null; } }
 
         public override int LabelNumber
         {
@@ -886,7 +888,7 @@ namespace Server.Items
             }
         }
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
 

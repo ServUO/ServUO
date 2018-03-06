@@ -226,24 +226,28 @@ namespace Server
 
                 /* Per EA's UO Herald Pub48 (ML):
                 * ((resist spellsx10)/20 + 10=percentage of damage resisted)
+                * 
+                * Tested 12/29/2017-
+                * No cap, also, above forumula is only in effect vs. creatures
                 */
 
                 if (oath == m)
                 {
-                    totalDamage = (int)(totalDamage * 1.1);
+                    int originalDamage = totalDamage;
+                    totalDamage = (int)(totalDamage * 1.2);
 
-                    if (totalDamage > 35 && from is PlayerMobile) /* capped @ 35, seems no expansion */
+                    if (!Core.TOL && totalDamage > 35 && from is PlayerMobile) /* capped @ 35, seems no expansion */
                     {
                         totalDamage = 35;
                     }
 
-                    if (Core.ML)
+                    if (Core.ML && m is BaseCreature)
                     {
-                        from.Damage((int)(totalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
+                        from.Damage((int)(originalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
                     }
                     else
                     {
-                        from.Damage(totalDamage, m);
+                        from.Damage(originalDamage, m);
                     }
                 }
                 else if (!ignoreArmor)
@@ -306,21 +310,7 @@ namespace Server
             #endregion
 
             #region Skill Mastery
-            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
-
-            if (spell != null)
-                spell.AbsorbDamage(ref totalDamage);
-
-            if (type >= DamageType.Spell)
-            {
-                spell = SkillMasterySpell.GetHarmfulSpell(from, typeof(TribulationSpell));
-
-                if (spell != null)
-                    spell.AbsorbDamage(ref damage);
-            }
-
-            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
-            SkillMasterySpell.OnDamaged(m, from, ref totalDamage);
+            SkillMasterySpell.OnDamage(m, from, type, ref totalDamage);
             #endregion
 
             if (keepAlive && totalDamage > m.Hits)
@@ -333,7 +323,7 @@ namespace Server
             #endregion
 
             if (type == DamageType.Spell && m != null && Feint.Registry.ContainsKey(m) && Feint.Registry[m].Enemy == from)
-                damage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
+                totalDamage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
 
             if (m.Hidden && Core.ML && type >= DamageType.Spell)
             {
@@ -346,8 +336,10 @@ namespace Server
                 }
             }
 
-            m.Damage(totalDamage, from, true, false);
+            if (from != null)
+                DoLeech(totalDamage, from, m);
 
+            m.Damage(totalDamage, from, true, false);
             SpiritSpeak.CheckDisrupt(m);
 
             #region Stygian Abyss
@@ -377,6 +369,42 @@ namespace Server
         public static int Scale(int input, int percent)
         {
             return (input * percent) / 100;
+        }
+
+        public static void DoLeech(int damageGiven, Mobile from, Mobile target)
+        {
+            TransformContext context = TransformationSpellHelper.GetContext(from);
+
+            if (context != null)
+            {
+                if (context.Type == typeof(WraithFormSpell))
+                {
+                    int manaLeech = AOS.Scale(damageGiven, Math.Min(target.Mana, (5 + (int)((15 * from.Skills.SpiritSpeak.Value) / 100)))); // Wraith form gives 5-20% mana leech
+
+                    if (manaLeech != 0)
+                    {
+                        from.Mana += manaLeech;
+                        from.PlaySound(0x44D);
+
+                        target.Mana -= manaLeech;
+                    }
+                }
+                else if (context.Type == typeof(VampiricEmbraceSpell))
+                {
+                    #region High Seas
+                    if (target is BaseCreature && ((BaseCreature)target).TaintedLifeAura)
+                    {
+                        AOS.Damage(from, target, AOS.Scale(damageGiven, 20), false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+                        from.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
+                    }
+                    #endregion
+                    else
+                    {
+                        from.Hits += AOS.Scale(damageGiven, 20);
+                        from.PlaySound(0x44D);
+                    }
+                }
+            }
         }
 
         #region AOS Status Bar
@@ -620,6 +648,8 @@ namespace Server
 
                 if (context != null && context.Spell is ReaperFormSpell)
                     value += ((ReaperFormSpell)context.Spell).SpellDamageBonus;
+
+                value += ArcaneEmpowermentSpell.GetSpellBonus(m, true);
 
                 #region SA
                 if (m is PlayerMobile && m.Race == Race.Gargoyle)
@@ -2985,6 +3015,9 @@ namespace Server
 
         public void GetProperties(ObjectPropertyList list, Item item)
         {
+            if (NoRepair > 0)
+                list.Add(1151782);
+
             if (Brittle > 0 ||
                 item is BaseWeapon && ((BaseWeapon)item).Attributes.Brittle > 0 ||
                 item is BaseArmor && ((BaseArmor)item).Attributes.Brittle > 0 ||
@@ -3003,9 +3036,6 @@ namespace Server
 
             if (Antique > 0)
                 list.Add(1076187);
-
-            if (NoRepair > 0)
-                list.Add(1151782);
         }
 
         public const double CombatDecayChance = 0.02;

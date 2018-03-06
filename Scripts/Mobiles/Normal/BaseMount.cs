@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using Server.Network;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -9,15 +9,17 @@ namespace Server.Mobiles
         None = -1,
         Dazed,
         BolaRecovery,
-        DismountRecovery
+        DismountRecovery,
+        RidingSwipe
     }
 
     public abstract class BaseMount : BaseCreature, IMount
     {
-        private static readonly Hashtable m_Table = new Hashtable();
+        private static Dictionary<Mobile, BlockEntry> m_Table = new Dictionary<Mobile, BlockEntry>();
         private Mobile m_Rider;
         private Item m_InternalItem;
         private DateTime m_NextMountAbility;
+
         public BaseMount(string name, int bodyID, int itemID, AIType aiType, FightMode fightMode, int rangePerception, int rangeFight, double activeSpeed, double passiveSpeed)
             : base(aiType, fightMode, rangePerception, rangeFight, activeSpeed, passiveSpeed)
         {
@@ -160,6 +162,24 @@ namespace Server.Mobiles
             }
         }
 
+        public static bool OnFlightPath(Mobile m)
+        {
+            if (!m.Flying)
+                return false;
+
+            StaticTile[] tiles = m.Map.Tiles.GetStaticTiles(m.X, m.Y, true);
+            ItemData itemData;
+            bool onpath = false;
+
+            for (int i = 0; i < tiles.Length && !onpath; ++i)
+            {
+                itemData = TileData.ItemTable[tiles[i].ID & TileData.MaxItemValue];
+                onpath = (itemData.Name == "hover over");
+            }
+
+            return onpath;
+        }
+
         public static void Dismount(Mobile dismounted)
         {
             Dismount(dismounted, dismounted, BlockMountType.None, TimeSpan.MinValue, false);
@@ -210,35 +230,25 @@ namespace Server.Mobiles
 
             if (delay != TimeSpan.MinValue)
             {
-                BaseMount.SetMountPrevention(dismounted, blockmounttype, delay);
+                SetMountPrevention(dismounted, mount as Mobile, blockmounttype, delay);
             }
-        }
-
-        public static bool OnFlightPath(Mobile m)
-        {
-            if (!m.Flying)
-                return false;
-
-            StaticTile[] tiles = m.Map.Tiles.GetStaticTiles(m.X, m.Y, true);
-            ItemData itemData;
-            bool onpath = false;
-
-            for (int i = 0; i < tiles.Length && !onpath; ++i)
-            {
-                itemData = TileData.ItemTable[tiles[i].ID & TileData.MaxItemValue];
-                onpath = (itemData.Name == "hover over");
-            }
-
-            return onpath;
         }
 
         public static void SetMountPrevention(Mobile mob, BlockMountType type, TimeSpan duration)
+        {
+            SetMountPrevention(mob, null, type, duration);   
+        }
+
+        public static void SetMountPrevention(Mobile mob, Mobile mount, BlockMountType type, TimeSpan duration)
         {
             if (mob == null)
                 return;
 
             DateTime expiration = DateTime.UtcNow + duration;
-            BlockEntry entry = m_Table[mob] as BlockEntry;
+            BlockEntry entry = null;
+
+            if (m_Table.ContainsKey(mob))
+                entry = m_Table[mob];
 
             if (entry != null)
             {
@@ -247,7 +257,7 @@ namespace Server.Mobiles
             }
             else
             {
-                m_Table[mob] = entry = new BlockEntry(type, expiration);
+                m_Table[mob] = entry = new BlockEntry(mob, mount, type, expiration);
             }
 
             BuffInfo.AddBuff(mob, new BuffInfo(BuffIcon.DismountPrevention, 1075635, 1075636, duration, mob));
@@ -255,33 +265,49 @@ namespace Server.Mobiles
 
         public static void ClearMountPrevention(Mobile mob)
         {
-            if (mob != null)
+            if (mob != null && m_Table.ContainsKey(mob))
                 m_Table.Remove(mob);
         }
 
         public static BlockMountType GetMountPrevention(Mobile mob)
         {
+            return GetMountPrevention(mob, null);
+        }
+
+        public static BlockMountType GetMountPrevention(Mobile mob, BaseMount mount)
+        {
             if (mob == null)
                 return BlockMountType.None;
 
-            BlockEntry entry = m_Table[mob] as BlockEntry;
+            BlockEntry entry = null;
+
+            if (m_Table.ContainsKey(mob))
+                entry = m_Table[mob];
 
             if (entry == null)
                 return BlockMountType.None;
 
-            if (entry.IsExpired)
+            if (entry.IsExpired(mount))
             {
-                m_Table.Remove(mob);
-                BuffInfo.RemoveBuff(mob, BuffIcon.DismountPrevention);
                 return BlockMountType.None;
             }
 
             return entry.m_Type;
         }
 
-        public static bool CheckMountAllowed(Mobile mob, bool message, bool flying = false)
+        public static bool CheckMountAllowed(Mobile mob, bool message)
         {
-            BlockMountType type = GetMountPrevention(mob);
+            return CheckMountAllowed(mob, message, false);
+        }
+
+        public static bool CheckMountAllowed(Mobile mob, bool message, bool flying)
+        {
+            return CheckMountAllowed(mob, null, message, flying);
+        }
+
+        public static bool CheckMountAllowed(Mobile mob, BaseMount mount, bool message, bool flying)
+        {
+            BlockMountType type = GetMountPrevention(mob, mount);
 
             if (type == BlockMountType.None)
                 return true;
@@ -300,6 +326,7 @@ namespace Server.Mobiles
                             mob.SendLocalizedMessage(flying ? 1112455 : 1062910); // You cannot mount while recovering from a bola throw.
                             break;
                         }
+                    case BlockMountType.RidingSwipe:
                     case BlockMountType.DismountRecovery:
                         {
                             mob.SendLocalizedMessage(flying ? 1112456 : 1070859); // You cannot mount while recovering from a dismount special maneuver.
@@ -309,6 +336,14 @@ namespace Server.Mobiles
             }
 
             return false;
+        }
+
+        public static void ExpireMountPrevention(Mobile m)
+        {
+            if(m_Table.ContainsKey(m))
+                m_Table.Remove(m);
+
+            BuffInfo.RemoveBuff(m, BuffIcon.DismountPrevention);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -393,7 +428,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (!CheckMountAllowed(from, true))
+            if (!CheckMountAllowed(from, this, true, false))
                 return;
 
             if (from.Mounted)
@@ -418,7 +453,7 @@ namespace Server.Mobiles
             if (!Multis.DesignContext.Check(from))
                 return;
 
-            if (from.HasTrade || !Server.Items.RidingSwipe.CanMount(this))
+            if (from.HasTrade)
             {
                 from.SendLocalizedMessage(1042317); // You may not ride at this time
                 return;
@@ -477,20 +512,49 @@ namespace Server.Mobiles
 
         private class BlockEntry
         {
+            public Mobile m_Mobile;
+            public Mobile m_Mount;
             public BlockMountType m_Type;
             public DateTime m_Expiration;
-            public BlockEntry(BlockMountType type, DateTime expiration)
+
+            public BlockEntry(Mobile m, Mobile mount, BlockMountType type, DateTime expiration)
             {
+                m_Mobile = m;
+                m_Mount = mount;
                 m_Type = type;
                 m_Expiration = expiration;
             }
 
-            public bool IsExpired
+            public bool IsExpired(BaseMount mount)
             {
-                get
+                if (m_Type == BlockMountType.RidingSwipe)
                 {
-                    return (DateTime.UtcNow >= m_Expiration);
+                    if (DateTime.UtcNow < m_Expiration)
+                    {
+                        return false;
+                    }
+                    else if (m_Mount != null && mount != null && m_Mount == mount)
+                    {
+                        if (mount.Hits >= mount.HitsMax)
+                        {
+                            BaseMount.ExpireMountPrevention(m_Mobile);
+                            return true;
+                        }
+                    }
+                    else if (m_Mobile != null)
+                    {
+                        if (m_Mobile.Hits >= m_Mobile.HitsMax)
+                        {
+                            BaseMount.ExpireMountPrevention(m_Mobile);
+                            return true;
+                        }
+                    }
+
+                    return false;
                 }
+                
+                BaseMount.ExpireMountPrevention(m_Mobile);
+                return DateTime.UtcNow >= m_Expiration;
             }
         }
     }

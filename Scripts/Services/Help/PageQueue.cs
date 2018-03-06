@@ -47,6 +47,9 @@ namespace Server.Engines.Help
 		private  Point3D m_PageLocation;
 		private  Map m_PageMap;
 		private  List<SpeechLogEntry> m_SpeechLog;
+		
+        public static readonly string SupportEmail = Config.Get("General.SupportEmail", null);
+        public static readonly string SupportWebsite = Config.Get("General.SupportWebsite", null);
 
 		private readonly PageInfo m_PageInfo;
 
@@ -170,8 +173,15 @@ namespace Server.Engines.Help
 				{
 					m_Entry.Sender.SendLocalizedMessage(1008077, true, (index + 1).ToString());
 						// Thank you for paging. Queue status : 
-					m_Entry.Sender.SendLocalizedMessage(1008084);
-						// You can reference our website at www.uo.com or contact us at support@uo.com. To cancel your page, please select the help button again and select cancel.
+					if(SupportEmail == null || SupportWebsite == null)
+					{
+						m_Entry.Sender.SendLocalizedMessage(1008084);
+							// You can reference our website at www.uo.com or contact us at support@uo.com. To cancel your page, please select the help button again and select cancel.
+					}
+					else
+					{
+						m_Entry.Sender.SendMessage("You can reference our website at " + SupportWebsite + " or contact us at " + SupportEmail + ". To cancel your page, please select the help button again and select cancel.");
+					}
 
 					if (m_Entry.Handler != null && m_Entry.Handler.NetState == null)
 					{
@@ -196,6 +206,8 @@ namespace Server.Engines.Help
 		private static readonly ArrayList m_List = new ArrayList();
 		private static readonly Hashtable m_KeyedByHandler = new Hashtable();
 		private static readonly Hashtable m_KeyedBySender = new Hashtable();
+		
+		public static readonly bool ShowStaffOffline = Config.Get("General.ShowStaffOffline", true);
 
 		public static void Initialize()
 		{
@@ -367,10 +379,11 @@ namespace Server.Engines.Help
 				if (m != null && m.IsStaff() && m.AutoPageNotify && m.LastMoveTime - Core.TickCount < 600000)
 				{
 					isStaffOnline = true;
+					break;
 				}
 			}
 
-			if (!isStaffOnline)
+			if (!isStaffOnline && ShowStaffOffline)
 			{
 				entry.Sender.SendMessage(
 					"We are sorry, but no staff members are currently available to assist you.  Your page will remain in the queue until one becomes available, or until you cancel it manually.");

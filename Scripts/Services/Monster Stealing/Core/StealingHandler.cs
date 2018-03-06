@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Server;
@@ -31,6 +31,12 @@ namespace Server.Engines.CreatureStealing
             if (from.HasBeenStolen)
             {
                 thief.SendLocalizedMessage(1094948); //That creature has already been stolen from.  There is nothing left to steal.
+                return; 
+            }
+            
+            if (from.Controlled || from.Summoned)
+            {
+                thief.SendLocalizedMessage(502708); //You can't steal from this.
                 return; 
             }
 

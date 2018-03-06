@@ -258,7 +258,7 @@ namespace Server.Items
 
         public virtual void OnStatsQuery(Mobile from)
         {
-            if (from.Map == Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
+            if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))
             {
                 from.Send(new MobileStatusCompact(false, this));
             }
@@ -379,6 +379,9 @@ namespace Server.Items
                 else if (m_DestroyedID >= 0)
                 {
                     ItemID = m_DestroyedID;
+
+                    if (Spawner != null)
+                        Spawner.Remove(this);
                 }
 
                 Destroyed = true;

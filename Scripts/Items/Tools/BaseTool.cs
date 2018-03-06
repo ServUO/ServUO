@@ -6,7 +6,16 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public abstract class BaseTool : Item, IUsesRemaining, IResource
+    public interface ITool : IUsesRemaining
+    {
+        CraftSystem CraftSystem { get; }
+        bool BreakOnDepletion { get; }
+        bool Deleted { get; }
+        void Delete();
+        bool CheckAccessible(Mobile from, ref int num);
+    }
+
+    public abstract class BaseTool : Item, ITool, IResource
     {
         private Mobile m_Crafter;
         private ItemQuality m_Quality;
@@ -157,9 +166,9 @@ namespace Server.Items
 
             bool res;
 
-            if (tool is BaseTool)
+            if (tool is ITool)
             {
-                res = ((BaseTool)tool).CheckAccessible(m, ref num);
+                res = ((ITool)tool).CheckAccessible(m, ref num);
             }
             else
             {
@@ -178,12 +187,12 @@ namespace Server.Items
         {
             Item check = m.FindItemOnLayer(Layer.OneHanded);
 
-            if (check is BaseTool && check != tool && !(check is AncientSmithyHammer))
+            if (check is ITool && check != tool && !(check is AncientSmithyHammer))
                 return false;
 
             check = m.FindItemOnLayer(Layer.TwoHanded);
 
-            if (check is BaseTool && check != tool && !(check is AncientSmithyHammer))
+            if (check is ITool && check != tool && !(check is AncientSmithyHammer))
                 return false;
 
             return true;
@@ -282,7 +291,7 @@ namespace Server.Items
 
         #region ICraftable Members
 
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             PlayerConstructed = true;
 

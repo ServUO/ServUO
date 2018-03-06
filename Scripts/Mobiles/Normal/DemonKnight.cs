@@ -9,6 +9,7 @@ namespace Server.Mobiles
     public class DemonKnight : BaseCreature
     {
         private DateTime m_NextArea;
+        private bool m_InHere;
 
         public static Type[] DoomArtifact { get { return m_DoomArtifact; } }
         private static Type[] m_DoomArtifact = new Type[]
@@ -51,8 +52,6 @@ namespace Server.Mobiles
                 typeof(DivineCountenance)
             }
         };
-
-        private static bool m_InHere;
 
         [Constructable]
         public DemonKnight()
@@ -181,8 +180,9 @@ namespace Server.Mobiles
                 return;
              
             double gpoints = pm.GauntletPoints;
+            int luck = Math.Max(0, pm.RealLuck);
 
-            pm.GauntletPoints += (int)(bc.Fame * (1 + Math.Sqrt(pm.RealLuck) / 100))/2;
+            pm.GauntletPoints += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)) / 2);
 
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
@@ -200,8 +200,6 @@ namespace Server.Mobiles
 
                     if (ran >= m_RewardTable.Length)
                     {
-                        int luck = killer is PlayerMobile ? ((PlayerMobile)killer).RealLuck : killer.Luck;
-
                         i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
                         RunicReforging.GenerateRandomArtifactItem(i, luck, Utility.RandomMinMax(1000, 1200));
                         NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(i);

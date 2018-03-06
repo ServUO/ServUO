@@ -10,77 +10,79 @@ namespace Server.Mobiles
         public GrayGoblin()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a gray goblin";
-            this.Body = 334;
-            this.BaseSoundID = 0x45A;
+            Name = "a gray goblin";
 
-            this.SetStr(258, 327);
-            this.SetDex(62, 80);
-            this.SetInt(103, 150);
+            Body = 723;
+            Hue = 1900;
+            BaseSoundID = 0x45A;
 
-            this.SetHits(159, 194);
-            this.SetStam(62, 80);
-            this.SetMana(103, 150);
+            SetStr(258, 327);
+            SetDex(62, 80);
+            SetInt(103, 150);
 
-            this.SetDamage(5, 7);
+            SetHits(159, 194);
+            SetStam(62, 80);
+            SetMana(103, 150);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamage(5, 7);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 25, 32);
-            this.SetResistance(ResistanceType.Poison, 10, 19);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetSkill(SkillName.MagicResist, 120.9, 129.1);
-            this.SetSkill(SkillName.Tactics, 80.6, 89.4);
-            this.SetSkill(SkillName.Anatomy, 80.3, 89.4);
-            this.SetSkill(SkillName.Wrestling, 96.1, 105.5);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 25, 32);
+            SetResistance(ResistanceType.Poison, 10, 19);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            SetSkill(SkillName.MagicResist, 120.9, 129.1);
+            SetSkill(SkillName.Tactics, 80.6, 89.4);
+            SetSkill(SkillName.Anatomy, 80.3, 89.4);
+            SetSkill(SkillName.Wrestling, 96.1, 105.5);
 
-            this.VirtualArmor = 28;
+            Fame = 1500;
+            Karma = -1500;
+
+            VirtualArmor = 28;
 
             switch ( Utility.Random(20) )
             {
                 case 0:
-                    this.PackItem(new Scimitar());
+                    PackItem(new Scimitar());
                     break;
                 case 1:
-                    this.PackItem(new Katana());
+                    PackItem(new Katana());
                     break;
                 case 2:
-                    this.PackItem(new WarMace());
+                    PackItem(new WarMace());
                     break;
                 case 3:
-                    this.PackItem(new WarHammer());
+                    PackItem(new WarHammer());
                     break;
                 case 4:
-                    this.PackItem(new Kryss());
+                    PackItem(new Kryss());
                     break;
                 case 5:
-                    this.PackItem(new Pitchfork());
+                    PackItem(new Pitchfork());
                     break;
             }
 
-            this.PackItem(new ThighBoots());
+            PackItem(new ThighBoots());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    this.PackItem(new Ribs());
+                    PackItem(new Ribs());
                     break;
                 case 1:
-                    this.PackItem(new Shaft());
+                    PackItem(new Shaft());
                     break;
                 case 2:
-                    this.PackItem(new Candle());
+                    PackItem(new Candle());
                     break;
             }
 
             if (0.2 > Utility.RandomDouble())
-                this.PackItem(new BolaBall());
+                PackItem(new BolaBall());
         }
 
         public GrayGoblin(Serial serial)
@@ -114,19 +116,25 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                Body = 723;
+                Hue = 1900;
+            }
         }
     }
 }

@@ -7,8 +7,6 @@
 #region References
 using System;
 using System.Collections.Generic;
-
-using Server.Engines.ConPVP;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
@@ -87,6 +85,14 @@ namespace Server.Spells
 				{
 					oldTimer.Stop();
 					m_Contexts.Remove(d);
+
+                    if (Core.SA && oldTimer is SpellHelper.SpellDamageTimerAOS)
+                    {
+                        var spell = ((SpellHelper.SpellDamageTimerAOS)oldTimer).Spell;
+
+                        if (spell != null)
+                            spell.DoFizzle();
+                    }
 				}
 
 				m_Contexts.Add(d, t);
@@ -203,7 +209,9 @@ namespace Server.Spells
             int damage = Utility.Dice(dice, sides, bonus) * 100;
 
             int inscribeSkill = GetInscribeFixed(m_Caster);
-            int damageBonus = inscribeSkill >= 1000 ? 10 : inscribeSkill / 200 +
+            int scribeBonus = inscribeSkill >= 1000 ? 10 : inscribeSkill / 200;
+
+            int damageBonus = scribeBonus +
                               (Caster.Int / 10) +
                               SpellHelper.GetSpellDamageBonus(m_Caster, target, CastSkill, playerVsPlayer);
 
@@ -285,7 +293,9 @@ namespace Server.Spells
                 #endregion
 
                 if (disturb)
+                {
                     Disturb(DisturbType.Hurt, false, true);
+                }
             }
         }
 
@@ -308,9 +318,6 @@ namespace Server.Spells
 		{
             if (IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
 			{
-                if (m_Caster is BaseCreature)
-                    m_Caster.Say("Trying to move...");
-
 				m_Caster.SendLocalizedMessage(500111); // You are frozen and can not move.
 				return false;
 			}
@@ -371,11 +378,6 @@ namespace Server.Spells
 			}
 
 			if (AosAttributes.GetValue(m_Caster, AosAttribute.LowerRegCost) > Utility.Random(100))
-			{
-				return true;
-			}
-
-			if (DuelContext.IsFreeConsume(m_Caster))
 			{
 				return true;
 			}
@@ -740,12 +742,6 @@ namespace Server.Spells
 			{
 				m_Caster.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
 			}
-				#region Dueling
-			else if (m_Caster is PlayerMobile && ((PlayerMobile)m_Caster).DuelContext != null &&
-					 !((PlayerMobile)m_Caster).DuelContext.AllowSpellCast(m_Caster, this))
-			{ }
-				#endregion
-
 			else if (m_Caster.Mana >= ScaleMana(GetMana()))
 			{
 				#region Stygian Abyss
@@ -900,7 +896,7 @@ namespace Server.Spells
 
 		public virtual bool CheckFizzle()
 		{
-			if (m_Scroll is BaseWand)
+			if (m_Scroll is BaseWand || m_Caster is BaseCreature)
 			{
 				return true;
 			}

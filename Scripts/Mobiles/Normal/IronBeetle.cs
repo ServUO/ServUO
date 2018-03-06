@@ -14,42 +14,42 @@ namespace Server.Mobiles
         public IronBeetle()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.25, 0.5)
         {
-            this.Name = "an iron beetle";
-            this.Body = 714;
-            this.BaseSoundID = 397;
+            Name = "an iron beetle";
+            Body = 714;
+            BaseSoundID = 397;
 
-            this.SetStr(816, 883);
-            this.SetDex(68, 73);
-            this.SetInt(40, 49);
+            SetStr(816, 883);
+            SetDex(68, 73);
+            SetInt(40, 49);
 
-            this.SetHits(762, 830);
+            SetHits(762, 830);
 
-            this.SetDamage(15, 20);
+            SetDamage(15, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 55, 60);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 45, 55);
+            SetResistance(ResistanceType.Physical, 55, 60);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 45, 55);
 
-            this.SetSkill(SkillName.Anatomy, 80.1, 85.0);
-            this.SetSkill(SkillName.MagicResist, 125.1, 130.0);
-            this.SetSkill(SkillName.Tactics, 90.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 110.0);
-            this.SetSkill(SkillName.Mining, 50.1, 70.0);
+            SetSkill(SkillName.Anatomy, 80.1, 85.0);
+            SetSkill(SkillName.MagicResist, 125.1, 130.0);
+            SetSkill(SkillName.Tactics, 90.1, 100.0);
+            SetSkill(SkillName.Wrestling, 90.1, 110.0);
+            SetSkill(SkillName.Mining, 50.1, 70.0);
 
-            this.Skills.Mining.Cap = 120;
+            Skills.Mining.Cap = 120;
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
-            this.Tamable = true;
-            this.MinTameSkill = 71.1;
-            this.ControlSlots = 4;
+            Tamable = true;
+            MinTameSkill = 71.1;
+            ControlSlots = 4;
 
-            this.VirtualArmor = 38;
+            VirtualArmor = 38;
 
             m_MiningTimer = Timer.DelayCall(MiningInterval, MiningInterval, DoMining);
         }
@@ -146,10 +146,10 @@ namespace Server.Mobiles
             HarvestDefinition def = Mining.System.OreAndStone;
 
             // Our target is the land tile under us
-            Map map = this.Map;
-            Point3D loc = this.Location;
+            Map map = Map;
+            Point3D loc = Location;
             int x = 0, y = 0;
-            GetMiningOffset(this.Direction, ref x, ref y);
+            GetMiningOffset(Direction, ref x, ref y);
             loc.X += x;
             loc.Y += y;
             int tileId = map.Tiles.GetLandTile(loc.X, loc.Y).ID & 0x3FFF;
@@ -172,11 +172,11 @@ namespace Server.Mobiles
 
             HarvestResource resource = system.MutateResource(this, null, def, map, loc, vein, primary, fallback);
 
-            double skillBase = this.Skills[def.Skill].Base;
+            double skillBase = Skills[def.Skill].Base;
 
             Type type = null;
 
-            if (skillBase >= resource.ReqSkill && this.CheckSkill(def.Skill, resource.MinSkill, resource.MaxSkill))
+            if (skillBase >= resource.ReqSkill && CheckSkill(def.Skill, resource.MinSkill, resource.MaxSkill))
             {
                 type = system.GetResourceType(this, null, def, map, loc, resource);
 
@@ -220,7 +220,7 @@ namespace Server.Mobiles
                         {
                             Item bonusItem = system.Construct(bonus.Type, this, null);
 
-                            item.MoveToWorld(loc, map);
+                            bonusItem.MoveToWorld(loc, map);
                         }
                     }
                 }

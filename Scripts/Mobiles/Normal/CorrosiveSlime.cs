@@ -78,9 +78,7 @@ namespace Server.Mobiles
         }
         public override void OnDeath(Container c)
         {
-            base.OnDeath(c);
-
-            if (!Controlled && Utility.Random(10) == 0)
+            if (!Controlled && Map != null && Map != Map.TerMur && Utility.Random(10) == 0)
             {
                 Item item = null;
 
@@ -94,6 +92,8 @@ namespace Server.Mobiles
 				if (item != null)
 					c.DropItem(item);
             }
+
+            base.OnDeath(c);
         }
         public override void Serialize(GenericWriter writer)
         {

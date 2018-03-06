@@ -85,9 +85,9 @@ namespace Server.Engines.Quests
                 {
                     AddImage(379, 60, 0x15A9);
                 }
-                else if (!m_Quest.ShowDescription)
+                else
                 {
-                    AddImage(379, 60, 0x15E8);
+                    AddImage(379, 60, 0x1580);
                 }
             }                
 						
@@ -301,7 +301,7 @@ namespace Server.Engines.Quests
                             AddLabel(143, offset, 0x481, obtain.MaxProgress + " " + obtain.Name); // %count% + %name%
 
                             if (obtain.Image > 0)
-                                AddItem(350, offset, obtain.Image); // Image
+                                AddItem(350, offset, obtain.Image, obtain.Hue); // Image
 
                             offset += 16;
 
@@ -454,7 +454,7 @@ namespace Server.Engines.Quests
                 if (reward != null)
                 {
                     AddImage(105, offset, 0x4B9);
-                    AddHtmlObject(133, offset, 280, 32, reward.Name, LightGreen, false, false);
+                    AddHtmlObject(133, offset, 280, m_Quest.Rewards.Count == 1 ? 100 : 16, reward.Name, LightGreen, false, false);
 
                     offset += 16;
                 }
@@ -664,15 +664,20 @@ namespace Server.Engines.Quests
                             m_From.SendLocalizedMessage(1074861); // You do not have everything you need!
                         else
                         {
-                            QuestHelper.DeleteItems(m_Quest);
-					
-                            if (m_Quester != null)
-                                m_Quest.Quester = m_Quester;
-								
-                            if (!QuestHelper.AnyRewards(m_Quest))		
-                                m_Quest.GiveRewards();
+                            if (QuestHelper.TryDeleteItems(m_Quest))
+                            {
+                                if (m_Quester != null)
+                                    m_Quest.Quester = m_Quester;
+
+                                if (!QuestHelper.AnyRewards(m_Quest))
+                                    m_Quest.GiveRewards();
+                                else
+                                    m_From.SendGump(new MondainQuestGump(m_Quest, Section.Rewards, false, true));
+                            }
                             else
-                                m_From.SendGump(new MondainQuestGump(m_Quest, Section.Rewards, false, true));
+                            {
+                                m_From.SendLocalizedMessage(1074861); // You do not have everything you need!
+                            }
                         }
                     }
                     break;

@@ -73,7 +73,6 @@ namespace Server.Spells.Fourth
                 Effects.PlaySound(p, Caster.Map, 0x20C);
 
                 int itemID = eastToWest ? 0x398C : 0x3996;
-
                 TimeSpan duration;
 
                 if (Core.AOS)
@@ -81,20 +80,27 @@ namespace Server.Spells.Fourth
                 else
                     duration = TimeSpan.FromSeconds(4.0 + (Caster.Skills[SkillName.Magery].Value * 0.5));
 
-                new FireFieldItem(itemID, new Point3D(p), Caster, Caster.Map, duration);
+                Point3D pnt = new Point3D(p);
+
+                if (SpellHelper.CheckField(pnt, Caster.Map))
+                    new FireFieldItem(itemID, pnt, Caster, Caster.Map, duration);
 
                 for (int i = 1; i <= 2; ++i)
                 {
                     Timer.DelayCall<int>(TimeSpan.FromMilliseconds(i * 300), index =>
-                        {
-                            IPoint3D pnt = new Point3D(eastToWest ? p.X + index : p.X, eastToWest ? p.Y : p.Y + index, p.Z);
-                            SpellHelper.GetSurfaceTop(ref pnt);
-                            new FireFieldItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
+                    {
+                        Point3D point = new Point3D(eastToWest ? pnt.X + index : pnt.X, eastToWest ? pnt.Y : pnt.Y + index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
-                            pnt = new Point3D(eastToWest ? p.X + -index : p.X, eastToWest ? p.Y : p.Y + -index, p.Z);
-                            SpellHelper.GetSurfaceTop(ref pnt);
-                            new FireFieldItem(itemID, new Point3D(pnt), Caster, Caster.Map, duration);
-                        }, i);
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new FireFieldItem(itemID, point, Caster, Caster.Map, duration);
+
+                        point = new Point3D(eastToWest ? pnt.X + -index : pnt.X, eastToWest ? pnt.Y : pnt.Y + -index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
+
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new FireFieldItem(itemID, point, Caster, Caster.Map, duration);
+                    }, i);
                 }
             }
 
@@ -264,11 +270,15 @@ namespace Server.Spells.Fourth
 
                         if (map != null && caster != null)
                         {
-                            foreach (Mobile m in m_Item.GetMobilesInRange(0))
+                            IPooledEnumerable eable = m_Item.GetMobilesInRange(0);
+
+                            foreach (Mobile m in eable)
                             {
                                 if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && (!Core.AOS || m != caster) && SpellHelper.ValidIndirectTarget(caster, m) && caster.CanBeHarmful(m, false))
                                     m_Queue.Enqueue(m);
                             }
+
+                            eable.Free();
 
                             while (m_Queue.Count > 0)
                             {
@@ -304,7 +314,7 @@ namespace Server.Spells.Fourth
         {
             private readonly FireFieldSpell m_Owner;
             public InternalTarget(FireFieldSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(Core.TOL ? 15 : Core.ML ? 10 : 12, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }

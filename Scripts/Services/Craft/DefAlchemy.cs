@@ -54,7 +54,7 @@ namespace Server.Engines.Craft
         {
         }
 
-        public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
+        public override int CanCraft(Mobile from, ITool tool, Type itemType)
         {
             int num = 0;
 
@@ -349,7 +349,7 @@ namespace Server.Engines.Craft
                 SetItemHue(index, 2625);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(CrystalDust), 1044495, 1112328, 75.0, 100.0, typeof(CrystallineFragments), 1153988, 1, 1044253);
+                index = AddCraft(typeof(CrystalDust), 1044495, 1112328, 75.0, 100.0, typeof(CrystallineFragments), 1153988, 4, 1044253);
                 SetItemHue(index, 2103);
                 SetNeededExpansion(index, Expansion.SA);                
 

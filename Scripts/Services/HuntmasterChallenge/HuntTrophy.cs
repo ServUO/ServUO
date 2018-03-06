@@ -132,7 +132,7 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
-            if (house != null && house.IsCoOwner(from))
+            if (house != null && (house.IsCoOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
             {
                 if (from.InRange(GetWorldLocation(), 1))
                 {
@@ -143,6 +143,10 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(500295); // You are too far away to do that.
                 }
+            }
+            else
+            {
+                from.SendLocalizedMessage(502092); // You must be in your house to do this.
             }
         }
 		

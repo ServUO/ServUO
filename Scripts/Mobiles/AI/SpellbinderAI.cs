@@ -611,7 +611,8 @@ namespace Server.Mobiles
                         actPrio = inactPrio = m_Mobile.GetDistanceToSqrt(comb);
                     }
 
-                    foreach (Mobile m in m_Mobile.GetMobilesInRange(12))
+                    IPooledEnumerable eable = m_Mobile.GetMobilesInRange(12);
+                    foreach (Mobile m in eable)
                     {
                         if (m != m_Mobile && CanDispel(m))
                         {
@@ -630,6 +631,8 @@ namespace Server.Mobiles
                             }
                         }
                     }
+
+                    eable.Free();
 
                     return active != null ? active : inactive;
                 }

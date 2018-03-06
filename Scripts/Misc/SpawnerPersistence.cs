@@ -14,14 +14,23 @@ using Server.Multis;
 
 namespace Server
 {
-    public class SpawnerPresistence
+    public class SpawnerPersistence
     {
+        [Flags]
+        public enum SpawnerVersion
+        {
+            None = 0x00000000,
+            Initial = 0x00000001,
+        }
+
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
 
         private static bool _FirstRun = true;
 
         private static int _Version;
         public static int Version { get { return _Version; } }
+
+        public static SpawnerVersion VersionFlag { get; set; }
 
         private static bool _SpawnsConverted;
         public static bool SpawnsConverted { get { return _SpawnsConverted; } }
@@ -39,10 +48,12 @@ namespace Server
                 CheckVersion();
             }
 
-            CommandSystem.Register("ConvertSpawners", AccessLevel.GameMaster, e =>
+            #region Commands
+            CommandSystem.Register("ConvertSpawners", AccessLevel.Administrator, e =>
             {
                 string str = "By selecting OK, you will wipe all XmlSpawners that were placed via World Load, and will replace " +
-                             "with standard spawners. Any existing spawner with special symbols, such as , <> / will not be converted.";
+                             "with standard spawners. Any existing spawner with special symbols, such as , <> / will not be converted. " +
+                             "Be advised, this process will take several minutes to complete.";
 
                 if (_SpawnsConverted)
                     str += "<br><br>You have already ran this conversion. Run Again?";
@@ -52,10 +63,27 @@ namespace Server
                     if (ok)
                     {
                         from.SendMessage("Stand by while spawners are converted. This may take a few minutes...");
-                        ConvertXmlToSpanwers();
+                        Timer.DelayCall(ConvertXmlToSpawners);
                     }
                 }, null, true));
             });
+
+            CommandSystem.Register("RevertXmlSpawners", AccessLevel.Administrator, e =>
+                {
+                    string str = "By selecting OK, you will wipe all XmlSpawners that were left over from conversion to " +
+                                 "standard spawners. All standard spawners will be deleted, and xmlspawners will be re-added. " +
+                                 "Be advised, this process will take several minutes to complete.";
+
+                    e.Mobile.SendGump(new WarningGump(1019005, 30720, str, 0xFFFFFF, 400, 300, (from, ok, state) =>
+                    {
+                        if (ok)
+                        {
+                            from.SendMessage("Stand by while spawners are converted back to XmlSpawners. This may take a few minutes...");
+                            Timer.DelayCall(() => RevertToXmlSpawners(e.Mobile));
+                        }
+                    }, null, true));
+                });
+            #endregion
         }
 
         public static void OnSave(WorldSaveEventArgs e)
@@ -64,7 +92,10 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)5);
+                    writer.Write((int)11);
+
+                    writer.Write((int)VersionFlag);
+
                     writer.Write(false);
                     writer.Write(_SpawnsConverted);
                 });
@@ -78,6 +109,9 @@ namespace Server
                     {
                         _Version = reader.ReadInt();
 
+                        if (_Version > 10)
+                            VersionFlag = (SpawnerVersion)reader.ReadInt();
+
                         if (_Version > 2)
                         {
                             _FirstRun = reader.ReadBool();
@@ -87,12 +121,34 @@ namespace Server
         }
 
         /// <summary>
-        /// Checks version, and calls code appropriately.  Do not use goto keyword unless you want to call the previous version.
+        /// Checks version, and calls code appropriately.  Version 10 implements SpawnerFlag so servers don't miss out and skip versions
         /// </summary>
         public static void CheckVersion()
         {
             switch (_Version)
             {
+                case 10:
+                    if((VersionFlag & SpawnerVersion.Initial) == 0)
+                        VersionFlag |= SpawnerVersion.Initial;
+                    break;
+                case 9:
+                    LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger1");
+                    LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger2");
+                    LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger3");
+                    LoadFromXmlSpawner("Spawns/twistedweald.xml", Map.Ilshenar, "TwistedWealdTrigger4");
+                    ReplaceUnderworldVersion9();
+                    break;
+                case 8:
+                    ReplaceSolenHivesVersion8();
+                    break;
+                case 7:
+                case 6:
+                    ReplaceTwistedWealdVersion7();
+                    RunicReforging.ItemNerfVersion6();
+                    break;
+                case 5:
+                    HonestyItemsVersion5();
+                    break;
                 case 4:
                     BrigandsVersion4();
                     break;
@@ -117,6 +173,73 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Version 9
+        public static void ReplaceUnderworldVersion9()
+        {
+            ReplaceSpawnersByRegionName("Underworld", Map.TerMur, "underworld");
+
+            ReplaceSpawnersByRectangle(new Rectangle2D(5640, 1776, 295, 263), Map.Trammel, null);
+            ReplaceSpawnersByRectangle(new Rectangle2D(5640, 1776, 295, 263), Map.Felucca, "solenhives");
+
+            QuestHintItem hint = new DuganMissingQuestCorpse();
+            hint.MoveToWorld(new Point3D(1038, 1182, -52), Map.TerMur);
+
+            Static item = new Static(7400);
+            item.MoveToWorld(new Point3D(1040, 1181, -53), Map.TerMur);
+
+            item = new Static(7390);
+            item.MoveToWorld(new Point3D(1041, 1185, -50), Map.TerMur);
+
+            item = new Static(7390);
+            item.MoveToWorld(new Point3D(1036, 1185, -52), Map.TerMur);
+
+            hint = new FlintLostLogbookHint();
+            hint.MoveToWorld(new Point3D(1044, 976, -30), Map.TerMur);
+
+            hint = new FlintLostBarrelHint();
+            hint.MoveToWorld(new Point3D(1043, 1003, -43), Map.TerMur);
+
+            hint = new FlintLostBarrelHint();
+            hint.MoveToWorld(new Point3D(1048, 1027, -32), Map.TerMur);
+
+            GenerateUnderworldRooms.GenerateRevealTiles();
+
+            ToConsole("Placed Quest Statics.");
+        }
+        #endregion
+
+        #region Version 8
+        public static void ReplaceSolenHivesVersion8()
+        {
+            ReplaceSpawnersByRectangle(new Rectangle2D(5640, 1776, 295, 263), Map.Trammel, null);
+            ReplaceSpawnersByRectangle(new Rectangle2D(5640, 1776, 295, 263), Map.Felucca, "solenhives");
+        }
+        #endregion
+
+        #region Version 6 & 7
+        public static void ReplaceTwistedWealdVersion7()
+        {
+            ReplaceSpawnersByRegionName("Twisted Weald", Map.Ilshenar, "twistedweald");
+        }
+        #endregion
+
+        #region Version 5
+        public static void HonestyItemsVersion5()
+        {
+            Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                {
+                    int count = 0;
+                    foreach (var item in World.Items.Values.Where(i => i.HonestyItem && !ItemFlags.GetTaken(i)))
+                    {
+                        RunicReforging.GenerateRandomItem(item, 0, 100, 1000);
+                        count++;
+                    }
+
+                    ToConsole(String.Format("Honesty items given magical properties: {0}", count.ToString()));
+                });
+        }
+        #endregion
 
         #region Version 4
         public static void BrigandsVersion4()
@@ -375,16 +498,18 @@ namespace Server
             {
                 Spawner spawner = (Spawner)spwner;
 
-                for(int i = 0; i < spawner.SpawnNames.Count; i++)
+                for(int i = 0; i < spawner.SpawnObjects.Count; i++)
                 {
-                    string typeName = spawner.SpawnNames[i].ToLower();
+                    var so = spawner.SpawnObjects[i];
+
+                    string typeName = so.SpawnName.ToLower();
                     string lookingFor = current.ToLower();
 
                     if (typeName != null && typeName.IndexOf(lookingFor) >= 0)
                     {
                         if (String.IsNullOrEmpty(check) || typeName.IndexOf(check) < 0)
                         {
-                            spawner.SpawnNames[i] = typeName.Replace(lookingFor, replace);
+                            so.SpawnName = typeName.Replace(lookingFor, replace);
 
                             if (!replaced)
                                 replaced = true;
@@ -578,23 +703,110 @@ namespace Server
             {
                 list = ((XmlSpawner)spawner).SpawnObjects.Select(obj => obj.TypeName).ToArray();
             }
-            else if (spawner is Spawner && ((Spawner)spawner).SpawnNames != null && ((Spawner)spawner).SpawnNames.Count > 0)
+            else if (spawner is Spawner && ((Spawner)spawner).SpawnObjects != null && ((Spawner)spawner).SpawnObjects.Count > 0)
             {
-                List<string> names = ((Spawner)spawner).SpawnNames;
+                List<SpawnObject> names = ((Spawner)spawner).SpawnObjects;
 
                 list = new string[names.Count];
 
                 for (int i = 0; i < names.Count; i++)
                 {
-                    list[i] = names[i];
+                    list[i] = names[i].SpawnName;
                 }
             }
 
             return list;
         }
 
+        public static void ReplaceSpawnersByRegionName(string region, Map map, string file)
+        {
+            string path = null;
+
+            if (file != null)
+            {
+                path = string.Format("Spawns/{0}.xml", file);
+
+                if (!File.Exists(path))
+                {
+                    ToConsole(String.Format("Cannot proceed. {0} does not exist.", file), ConsoleColor.Red);
+                    return;
+                }
+            }
+
+            foreach (var r in Region.Regions.Where(reg => reg.Map == map && reg.Name == region))
+            {
+                List<Item> list = r.GetEnumeratedItems().Where(i => i is XmlSpawner || i is Spawner).ToList();
+
+                foreach (var item in list)
+                {
+                    item.Delete();
+                }
+
+                ToConsole(String.Format("Deleted {0} Spawners in {1}.", list.Count, region));
+                ColUtility.Free(list);
+            }
+
+            if (path != null)
+            {
+                LoadFromXmlSpawner(path, map);
+            }
+        }
+
+        public static void ReplaceSpawnersByRectangle(Rectangle2D rec, Map map, string file)
+        {
+            string path = null;
+
+            if (file != null)
+            {
+                path = string.Format("Spawns/{0}.xml", file);
+
+                if (!File.Exists(path))
+                {
+                    ToConsole(String.Format("Cannot proceed. {0} does not exist.", file), ConsoleColor.Red);
+                    return;
+                }
+            }
+
+            IPooledEnumerable eable = map.GetItemsInBounds(rec);
+            List<Item> list = new List<Item>();
+
+            foreach (Item item in eable)
+            {
+                if(item is XmlSpawner || item is Spawner)
+                {
+                    list.Add(item);
+                }
+            }
+
+            foreach (var item in list)
+                item.Delete();
+
+            ToConsole(String.Format("Deleted {0} Spawners in {1}.", list.Count, map.ToString()));
+
+            ColUtility.Free(list);
+            eable.Free();
+
+            if (path != null)
+            {
+                LoadFromXmlSpawner(path, map);
+            }
+        }
+
+        public static void LoadFromXmlSpawner(string location, Map map, string prefix = null)
+        {
+            string filename = XmlSpawner.LocateFile(location);
+
+            string SpawnerPrefix = prefix == null ? string.Empty : prefix;
+            int processedmaps;
+            int processedspawners;
+
+            XmlSpawner.XmlLoadFromFile(filename, SpawnerPrefix, null, Point3D.Zero, map, false, 0, false, out processedmaps, out processedspawners);
+
+            ToConsole(String.Format("Created {0} spawners from {1} with -{2}- prefix.", processedspawners, location, SpawnerPrefix == string.Empty ? "NO" : SpawnerPrefix));
+        }
+
         #region XmlSpawner to Spawner Conversion
-        public static void ConvertXmlToSpanwers()
+        public static void ConvertXmlToSpawners()
         {
             string filename = "Spawns";
 
@@ -688,9 +900,16 @@ namespace Server
                                         }
                                         catch{}
 
-                                        if (loc != Point3D.Zero && spawnMap != null && spawnMap != Map.Internal && !ConvertSpawnerByLocation(loc, spawnMap, dr, ref keep))
+                                        if (loc != Point3D.Zero && spawnMap != null && spawnMap != Map.Internal)
                                         {
-                                            failed++;
+                                            if (!ConvertSpawnerByLocation(loc, spawnMap, dr, ref keep))
+                                            {
+                                                failed++;
+                                            }
+                                            else
+                                            {
+                                                converted++;
+                                            }
                                         }
                                     }
                                     else
@@ -734,11 +953,27 @@ namespace Server
             return ConvertSpawner(spawner, dr, ref c);
         }
 
+        private static bool DeleteSpawner(string id)
+        {
+            if (id == null)
+                return false;
+
+            XmlSpawner spawner = World.Items.Values.OfType<XmlSpawner>().FirstOrDefault(s => s.UniqueId == id);
+
+            if (spawner != null)
+            {
+                spawner.Delete();
+                return true;
+            }
+
+            return false;
+        }
+
         private static bool ConvertSpawner(XmlSpawner spawner, DataRow d, ref int keep)
         {
             if (spawner != null)
             {
-                string[] spawns = new string[spawner.SpawnObjects.Length];
+                SpawnObject[] spawns = new SpawnObject[spawner.SpawnObjects.Length];
 
                 for (int i = 0; i < spawner.SpawnObjects.Length; i++)
                 {
@@ -747,7 +982,7 @@ namespace Server
                     if (obj == null || obj.TypeName == null)
                         continue;
 
-                    spawns[i] = obj.TypeName;
+                    spawns[i] = new SpawnObject(obj.TypeName, obj.MaxCount);
                 }
 
                 if (HasSpecialXmlSpawnerString(spawns))
@@ -760,7 +995,7 @@ namespace Server
                                                  spawner.MinDelay,
                                                  spawner.MaxDelay,
                                                  spawner.Team,
-                                                 spawner.HomeRange,
+                                                 spawner.SpawnRange,
                                                  spawns.ToList());
 
                 newSpawner.Group = spawner.Group;
@@ -774,15 +1009,15 @@ namespace Server
             return false;
         }
 
-        private static bool HasSpecialXmlSpawnerString(string[] spawns)
+        private static bool HasSpecialXmlSpawnerString(SpawnObject[] spawns)
         {
-            foreach (var line in spawns)
+            foreach (var obj in spawns)
             {
-                if (line != null)
+                if (obj.SpawnName != null)
                 {
                     foreach (var s in _SpawnerSymbols)
                     {
-                        if (line.Contains(s))
+                        if (obj.SpawnName.Contains(s))
                             return true;
                     }
                 }
@@ -795,6 +1030,124 @@ namespace Server
         {
             "/", "<", ">", ",", "{", "}"
         };
+
+        public static void RevertToXmlSpawners(Mobile from)
+        {
+            string filename = "Spawns";
+
+            if (System.IO.Directory.Exists(filename) == true)
+            {
+                List<string> files = null;
+                string[] dirs = null;
+
+                try
+                {
+                    files = new List<string>(Directory.GetFiles(filename, "*.xml"));
+                    dirs = Directory.GetDirectories(filename);
+                }
+                catch { }
+
+                if (dirs != null && dirs.Length > 0)
+                {
+                    foreach (var dir in dirs)
+                    {
+                        try
+                        {
+                            string[] dirFiles = Directory.GetFiles(dir, "*.xml");
+                            files.AddRange(dirFiles);
+                        }
+                        catch { }
+                    }
+                }
+
+                ToConsole(String.Format("Found {0} Xmlspawner files for conversion.", files.Count), files != null && files.Count > 0 ? ConsoleColor.Green : ConsoleColor.Red);
+                ToConsole("Deleting spawners...", ConsoleColor.Cyan);
+                long start = Core.TickCount;
+
+                if (files != null && files.Count > 0)
+                {
+                    int deletedxml = 0;
+                    int deletedreg = 0;
+
+                    foreach (string file in files)
+                    {
+                        FileStream fs = null;
+
+                        try
+                        {
+                            fs = File.Open(file, FileMode.Open, FileAccess.Read);
+                        }
+                        catch { }
+
+                        if (fs == null)
+                        {
+                            ToConsole(String.Format("Unable to open {0} for loading", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        DataSet ds = new DataSet("Spawns");
+
+                        try
+                        {
+                            ds.ReadXml(fs);
+                        }
+                        catch
+                        {
+                            fs.Close();
+                            ToConsole(String.Format("Error reading xml file {0}", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        if (ds.Tables != null && ds.Tables.Count > 0)
+                        {
+                            if (ds.Tables["Points"] != null && ds.Tables["Points"].Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in ds.Tables["Points"].Rows)
+                                {
+                                    string id = null;
+
+                                    try
+                                    {
+                                        id = (string)dr["UniqueId"];
+                                    }
+                                    catch { }
+
+                                    if (DeleteSpawner(id))
+                                    {
+                                        deletedxml++;
+                                    }
+                                }
+                            }
+                        }
+
+                        fs.Close();
+                    }
+
+                    List<Spawner> list = new List<Spawner>(World.Items.Values.OfType<Spawner>());
+
+                    foreach (var item in list)
+                    {
+                        item.Delete();
+                        deletedreg++;
+                    }
+
+                    ColUtility.Free(list);
+
+                    ToConsole(String.Format("Deleted {0} XmlSpawners and {1} Spawners in {2} seconds.", deletedxml, deletedreg, ((Core.TickCount - start) / 1000).ToString()), ConsoleColor.Cyan);
+
+                    ToConsole("Reproducing Spawners...", ConsoleColor.Green);
+
+                    CommandSystem.Handle(from, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns");
+                    _SpawnsConverted = false;
+
+                    ToConsole(String.Format("Complete. Total Seconds: {0}.", ((Core.TickCount - start) / 1000).ToString()), ConsoleColor.Green);
+                }
+                else
+                {
+                    ToConsole(String.Format("Directory Not Found: {0}", filename), ConsoleColor.Red);
+                }
+            }
+        }
         #endregion
     }
 }

@@ -31,9 +31,9 @@ namespace Server.Engines.Points
 
         public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
         {
-            if (!Enabled)
+            if (!Enabled || victim.Controlled || victim.Summoned)
                 return;
-
+                
             Region r = victim.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("KotlCity"))
@@ -42,7 +42,9 @@ namespace Server.Engines.Points
                     DungeonPoints[damager] = 0;
 
                 int fame = victim.Fame / 2;
-                DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(((PlayerMobile)damager).RealLuck) / 100));
+                int luck = Math.Max(0, ((PlayerMobile)damager).RealLuck);
+
+                DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(luck) / 100));
 
                 int x = DungeonPoints[damager];
                 const double A = 0.000863316841;

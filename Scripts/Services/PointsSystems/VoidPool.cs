@@ -14,7 +14,7 @@ namespace Server.Engines.Points
 		public override PointsType Loyalty { get { return PointsType.VoidPool; } }
 		public override TextDefinition Name { get { return m_Name; } }
 		public override bool AutoAdd { get { return true; } }
-		public override double MaxPoints { get { return int.MaxValue; } }
+        public override double MaxPoints { get { return double.MaxValue; } }
 
         private TextDefinition m_Name = new TextDefinition(1152733);
 		
@@ -46,10 +46,11 @@ namespace Server.Engines.Points
 
         public override void OnClick()
         {
-            Region r = Region.Find(m_From.Location, m_From.Map);
-
-            if (m_From is PlayerMobile && r is VoidPoolRegion && ((VoidPoolRegion)r).Controller != null)
-                m_From.SendGump(new VoidPoolGump(((VoidPoolRegion)r).Controller, m_From as PlayerMobile));
+            if (m_From is PlayerMobile)
+            {
+                var controller = m_From.Map == Map.Trammel ? VoidPoolController.InstanceTram : VoidPoolController.InstanceFel;
+                m_From.SendGump(new VoidPoolGump(controller, m_From as PlayerMobile));
+            }
         }
     }
 }

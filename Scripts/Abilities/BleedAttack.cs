@@ -156,7 +156,7 @@ namespace Server.Items
                 Priority = TimerPriority.TwoFiftyMS;
 				m_BloodDrinker = blooddrinker;
 
-                m_MaxCount = Spells.SkillMasteries.BardSpell.GetSpellForParty(m, typeof(Spells.SkillMasteries.ResilienceSpell)) != null ? 3 : 5;
+                m_MaxCount = Spells.SkillMasteries.SkillMasterySpell.UnderPartyEffects(m, typeof(Spells.SkillMasteries.ResilienceSpell)) ? 3 : 5;
 			}
 
             protected override void OnTick()

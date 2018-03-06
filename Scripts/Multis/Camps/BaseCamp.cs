@@ -16,7 +16,6 @@ namespace Server.Multis
 
         private List<Item> m_Items;
         private List<Mobile> m_Mobiles;
-        private TimeSpan m_DecayDelay;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime TimeOfDecay { get; set; }
@@ -292,11 +291,15 @@ namespace Server.Multis
 
         public static void OnTick()
         {
-            _Camps.ForEach(c =>
+            List<BaseCamp> list = new List<BaseCamp>(_Camps);
+
+            list.ForEach(c =>
                 {
                     if (!c.Deleted && c.Map != null && c.Map != Map.Internal && !c.RestrictDecay)
                         c.CheckDecay();
                 });
+
+            ColUtility.Free(list);
         }
     }
 }

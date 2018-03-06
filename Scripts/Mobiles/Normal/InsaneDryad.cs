@@ -25,53 +25,53 @@ namespace Server.Mobiles
 
         [Constructable]
         public MLDryad()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mage, FightMode.Evil, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a dryad";
-            this.Body = 266;
-            this.BaseSoundID = 0x57B;
+            Name = "a dryad";
+            Body = 266;
+            BaseSoundID = 0x57B;
 
-            this.SetStr(132, 149);
-            this.SetDex(152, 168);
-            this.SetInt(251, 280);
+            SetStr(132, 149);
+            SetDex(152, 168);
+            SetInt(251, 280);
 
-            this.SetHits(304, 321);
+            SetHits(304, 321);
 
-            this.SetDamage(11, 20);
+            SetDamage(11, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 15, 25);
-            this.SetResistance(ResistanceType.Cold, 40, 45);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 25, 35);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 15, 25);
+            SetResistance(ResistanceType.Cold, 40, 45);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 25, 35);
 
-            this.SetSkill(SkillName.Meditation, 80.0, 90.0);
-            this.SetSkill(SkillName.EvalInt, 70.0, 80.0);
-            this.SetSkill(SkillName.Magery, 70.0, 80.0);
-            this.SetSkill(SkillName.Anatomy, 0);
-            this.SetSkill(SkillName.MagicResist, 100.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 70.0, 80.0);
-            this.SetSkill(SkillName.Wrestling, 70.0, 80.0);
+            SetSkill(SkillName.Meditation, 80.0, 90.0);
+            SetSkill(SkillName.EvalInt, 70.0, 80.0);
+            SetSkill(SkillName.Magery, 70.0, 80.0);
+            SetSkill(SkillName.Anatomy, 0);
+            SetSkill(SkillName.MagicResist, 100.0, 120.0);
+            SetSkill(SkillName.Tactics, 70.0, 80.0);
+            SetSkill(SkillName.Wrestling, 70.0, 80.0);
 
-            this.Fame = 5000;
-            this.Karma = 5000;
+            Fame = 5000;
+            Karma = 5000;
 
-            this.VirtualArmor = 28; // Don't know what it should be
+            VirtualArmor = 28; // Don't know what it should be
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
             if (Core.ML && Utility.RandomDouble() < .60)
-                this.PackItem(Seed.RandomPeculiarSeed(1));
+                PackItem(Seed.RandomPeculiarSeed(1));
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Rich);
         }
 
         public override int Meat
@@ -86,8 +86,8 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            this.AreaPeace();
-            this.AreaUndress();
+            AreaPeace();
+            AreaUndress();
         }
 
         #region Area Peace
@@ -95,16 +95,17 @@ namespace Server.Mobiles
 
         public void AreaPeace()
         {
-            if (this.Combatant == null || this.Deleted || !this.Alive || this.m_NextPeace > DateTime.UtcNow || 0.1 < Utility.RandomDouble())
+            if (Combatant == null || Deleted || !Alive || m_NextPeace > DateTime.UtcNow || 0.1 < Utility.RandomDouble())
                 return;
 
             TimeSpan duration = TimeSpan.FromSeconds(Utility.RandomMinMax(20, 80));
+            IPooledEnumerable eable = GetMobilesInRange(RangePerception);
 
-            foreach (Mobile m in this.GetMobilesInRange(this.RangePerception))
+            foreach (Mobile m in eable)
             {
                 PlayerMobile p = m as PlayerMobile;
 
-                if (this.IsValidTarget(p))
+                if (IsValidTarget(p))
                 {
                     p.PeacedUntil = DateTime.UtcNow + duration;
                     p.SendLocalizedMessage(1072065); // You gaze upon the dryad's beauty, and forget to continue battling!
@@ -112,14 +113,15 @@ namespace Server.Mobiles
                     p.Combatant = null;
                 }
             }
+            eable.Free();
 
-            this.m_NextPeace = DateTime.UtcNow + TimeSpan.FromSeconds(10);
-            this.PlaySound(0x1D3);
+            m_NextPeace = DateTime.UtcNow + TimeSpan.FromSeconds(10);
+            PlaySound(0x1D3);
         }
 
         public bool IsValidTarget(PlayerMobile m)
         {
-            if (m != null && m.PeacedUntil < DateTime.UtcNow && !m.Hidden && m.IsPlayer() && this.CanBeHarmful(m))
+            if (m != null && m.PeacedUntil < DateTime.UtcNow && !m.Hidden && m.IsPlayer() && CanBeHarmful(m))
                 return true;
 
             return false;
@@ -132,24 +134,27 @@ namespace Server.Mobiles
 
         public void AreaUndress()
         {
-            if (this.Combatant == null || this.Deleted || !this.Alive || this.m_NextUndress > DateTime.UtcNow || 0.005 < Utility.RandomDouble())
+            if (Combatant == null || Deleted || !Alive || m_NextUndress > DateTime.UtcNow || 0.005 < Utility.RandomDouble())
                 return;
 
-            foreach (Mobile m in this.GetMobilesInRange(this.RangePerception))
+            IPooledEnumerable eable = GetMobilesInRange(RangePerception);
+
+            foreach (Mobile m in eable)
             {
-                if (m != null && m.Player && !m.Female && !m.Hidden && m.IsPlayer() && this.CanBeHarmful(m))
+                if (m != null && m.Player && !m.Female && !m.Hidden && m.IsPlayer() && CanBeHarmful(m))
                 {
-                    this.UndressItem(m, Layer.OuterTorso);
-                    this.UndressItem(m, Layer.InnerTorso);
-                    this.UndressItem(m, Layer.MiddleTorso);
-                    this.UndressItem(m, Layer.Pants);
-                    this.UndressItem(m, Layer.Shirt);
+                    UndressItem(m, Layer.OuterTorso);
+                    UndressItem(m, Layer.InnerTorso);
+                    UndressItem(m, Layer.MiddleTorso);
+                    UndressItem(m, Layer.Pants);
+                    UndressItem(m, Layer.Shirt);
 
                     m.SendLocalizedMessage(1072197); // The dryad's beauty makes your blood race. Your clothing is too confining.
                 }
             }
+            eable.Free();
 
-            this.m_NextUndress = DateTime.UtcNow + TimeSpan.FromMinutes(1);
+            m_NextUndress = DateTime.UtcNow + TimeSpan.FromMinutes(1);
         }
 
         public void UndressItem(Mobile m, Layer layer)
@@ -197,11 +202,13 @@ namespace Server.Mobiles
         public InsaneDryad()
             : base()
         {
-            this.Name = "an insane dryad";	
-            this.Hue = 0x487;
+            Name = "an insane dryad";	
+            Hue = 0x487;
 
-            this.Fame = 7000;
-            this.Karma = -7000;
+            FightMode = FightMode.Closest;
+
+            Fame = 7000;
+            Karma = -7000;
         }
 		
         public InsaneDryad(Serial serial)

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Server.Engines.CityLoyalty;
 using Server.Engines.VvV;
+using Server.Engines.ArenaSystem;
 
 namespace Server.Engines.Points
 {
@@ -38,7 +39,8 @@ namespace Server.Engines.Points
         CleanUpBritannia,
         ViceVsVirtue,
 
-        TreasuresOfKotlCity
+        TreasuresOfKotlCity,
+        PVPArena
     }
 
     public abstract class PointsSystem
@@ -299,14 +301,33 @@ namespace Server.Engines.Points
                     if (version < 2)
                         reader.ReadBool();
 
+                    List<PointsType> loaded = new List<PointsType>();
+
 					int count = reader.ReadInt();
 					for(int i = 0; i < count; i++)
 					{
-						PointsType type = (PointsType)reader.ReadInt();
-						PointsSystem s = GetSystemInstance(type);
+                        try
+                        {
+                            PointsType type = (PointsType)reader.ReadInt();
+                            PointsSystem s = GetSystemInstance(type);
 
-					    s.Deserialize(reader);
-					}	
+                            s.Deserialize(reader);
+
+                            if (!loaded.Contains(type))
+                                loaded.Add(type);
+                        }
+                        catch (Exception e)
+                        {
+                            foreach (var success in loaded)
+                                Console.WriteLine("[Points System] Successfully Loaded: {0}", success.ToString());
+
+                            loaded.Clear();
+
+                            throw new Exception(String.Format("[Points System]: {0}", e));
+                        }
+					}
+
+                    loaded.Clear();
 				});
 		}
 
@@ -321,6 +342,7 @@ namespace Server.Engines.Points
         public static CleanUpBritanniaData CleanUpBritannia { get; set; }
         public static ViceVsVirtueSystem ViceVsVirtue { get; set; }
         public static KotlCityData TreasuresOfKotlCity { get; set; }
+        public static PVPArenaSystem ArenaSystem { get; set; }
 
         public static void Configure()
         {
@@ -340,6 +362,7 @@ namespace Server.Engines.Points
             TreasuresOfKotlCity = new KotlCityData();
 
             CityLoyaltySystem.ConstructSystems();
+            ArenaSystem = new PVPArenaSystem();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)

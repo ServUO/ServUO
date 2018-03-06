@@ -204,6 +204,8 @@ namespace Server.Engines.Despise
             AddItem(new Bow());
             PackItem(new Arrow(Utility.RandomMinMax(5, 10)));
             Power = powerLevel;
+
+            RangeFight = 8;
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }

@@ -19,11 +19,17 @@ namespace Server.Engines.ShameRevamped
         private static void Delete(CommandEventArgs e)
         {
             WeakEntityCollection.Delete("newshame");
+            ResetOldSpawners(false);
         }
 
         public static void Generate(CommandEventArgs e)
         {
+            if (!Core.ML)
+                return;
+
             RemoveItems();
+
+            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad RevampedSpawns/ShameRevamped.xml");
 
             // Level 1
             Point3D altarLoc = new Point3D(5403, 43, 30);
@@ -168,7 +174,7 @@ namespace Server.Engines.ShameRevamped
                 ShameWall.AddTeleporters(wall);
             }
 
-            e.Mobile.SendMessage("Shame Revamped setup! Don't forget to setup the spawners!");
+            e.Mobile.SendMessage("Shame Revamped setup!");
         }
 
         public static void RemoveItems()
@@ -182,16 +188,33 @@ namespace Server.Engines.ShameRevamped
             RemoveItem(new Point3D(5538, 170, 5), Map.Trammel, typeof(Teleporter));
             RemoveItem(new Point3D(5538, 170, 5), Map.Felucca, typeof(Teleporter));
 
+            ResetOldSpawners();
+        }
+
+        public static void ResetOldSpawners(bool reset = true)
+        {
             Region r = Region.Find(new Point3D(5538, 170, 5), Map.Trammel);
-            foreach (Item item in r.GetEnumeratedItems().Where(i => i is XmlSpawner && i.Name.ToLower() != "shame_revamped" && i.Name.ToLower() != "shame_chest"))
+            foreach (var spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
             {
-                ((XmlSpawner)item).DoReset = true;
+                if (spawner.Name.ToLower() != "shame_revamped" && spawner.Name.ToLower() != "shame_chest")
+                {
+                    if (reset)
+                        spawner.DoReset = true;
+                    else
+                        spawner.DoRespawn = true;
+                }
             }
 
             r = Region.Find(new Point3D(5538, 170, 5), Map.Felucca);
-            foreach (Item item in r.GetEnumeratedItems().Where(i => i is XmlSpawner && i.Name.ToLower() != "shame_revamped" && i.Name.ToLower() != "shame_chest"))
+            foreach (var spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
             {
-                ((XmlSpawner)item).DoReset = true;
+                if (spawner.Name.ToLower() != "shame_revamped" && spawner.Name.ToLower() != "shame_chest")
+                {
+                    if (reset)
+                        spawner.DoReset = true;
+                    else
+                        spawner.DoRespawn = true;
+                }
             }
         }
 

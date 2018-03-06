@@ -73,7 +73,7 @@ namespace Server.Items
             return d;
         }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, Server.Engines.Craft.CraftSystem craftSystem, Type typeRes, BaseTool tool, Server.Engines.Craft.CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, Server.Engines.Craft.CraftSystem craftSystem, Type typeRes, ITool tool, Server.Engines.Craft.CraftItem craftItem, int resHue)
         {
             if (makersMark)
                 Crafter = from;
@@ -304,6 +304,10 @@ namespace Server.Items
 
                 Atlas.OnTravel();
                 new RecallSpell(User, null, e, null).Cast();
+            }
+            else
+            {
+                User.SendLocalizedMessage(500015); // You do not have that spell!
             }
 
             Atlas.Openers.Remove(User);

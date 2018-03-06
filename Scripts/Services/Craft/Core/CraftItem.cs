@@ -33,7 +33,7 @@ namespace Server.Engines.Craft
 			Mobile from,
 			CraftSystem craftSystem,
 			Type typeRes,
-			BaseTool tool,
+            ITool tool,
 			CraftItem craftItem,
 			int resHue);
 	}
@@ -45,13 +45,13 @@ namespace Server.Engines.Craft
         /// such as resource check, actual crafting, etc. 
         /// For use for abnormal crafting, ie combine cloth, etc.
         /// </summary>
-        public Action<Mobile, CraftItem, BaseTool> TryCraft { get; set; }
+        public Action<Mobile, CraftItem, ITool> TryCraft { get; set; }
 
         /// <summary>
         /// this func will create complex items that may require args, or other
         /// things to create that Activator may not be able to accomidate.
         /// </summary>
-        public Func<Mobile, CraftItem, BaseTool, Item> CreateItem { get; set; }
+        public Func<Mobile, CraftItem, ITool, Item> CreateItem { get; set; }
 
 		private readonly CraftResCol m_arCraftRes;
 		private readonly CraftSkillCol m_arCraftSkill;
@@ -413,6 +413,15 @@ namespace Server.Engines.Craft
             #endregion
 		};
 
+        private static readonly Type[] m_ClothColoredItemTable = new[]
+        {
+            typeof( GozaMatSouthDeed ), typeof( GozaMatEastDeed ),
+			typeof( SquareGozaMatSouthDeed ), typeof( SquareGozaMatEastDeed ),
+			typeof( BrocadeGozaMatSouthDeed ), typeof( BrocadeGozaMatEastDeed ),
+			typeof( BrocadeSquareGozaMatSouthDeed ), typeof( BrocadeSquareGozaMatEastDeed ),
+            typeof( Tessen )
+        };
+
 		private static readonly Type[] m_ColoredResourceTable = new[]
 		{
 			#region Mondain's Legacy
@@ -440,7 +449,7 @@ namespace Server.Engines.Craft
 			typeof(BambooChair), typeof(WoodenChair), typeof(FancyWoodenChairCushion), typeof(WoodenChairCushion),
 			typeof(Nightstand), typeof(LargeTable), typeof(WritingTable), typeof(YewWoodTable), typeof(PlainLowTable),
 			typeof(ElegantLowTable), typeof(DressformFront), typeof(DressformSide), typeof(BasePlayerBB), typeof(BaseContainer), typeof(BarrelStaves),
-			typeof(BarrelLid), typeof(Clippers), typeof(Scissors), typeof(BaseTool),
+			typeof(BarrelLid), typeof(Clippers), typeof(Scissors),
 
             typeof(KeyRing), typeof(Key), typeof(Globe), typeof(Spyglass), typeof(Lantern), typeof(Candelabra), typeof(Scales), typeof(BroadcastCrystal), typeof(TerMurStyleCandelabra),
             typeof(BaseUtensil), typeof(BaseBeverage)
@@ -515,6 +524,19 @@ namespace Server.Engines.Craft
 
 			return (inItemTable && inResourceTable);
 		}
+
+        public bool RetainsColorFromCloth(Item item)
+        {
+            Type t = item.GetType();
+
+            foreach (var type in m_ClothColoredItemTable)
+            {
+                if (type == t)
+                    return true;
+            }
+
+            return false;
+        }
 
 		public bool Find(Mobile from, int[] itemIDs)
 		{
@@ -1147,6 +1169,7 @@ namespace Server.Engines.Craft
 		}
 
 		private int m_ResHue;
+        private int m_ClothHue;
 		private int m_ResAmount;
 		private CraftSystem m_System;
 
@@ -1172,6 +1195,11 @@ namespace Server.Engines.Craft
 			{
 				return;
 			}
+
+            if (item is Cloth || item is UncutCloth || item is AbyssalCloth)
+            {
+                m_ClothHue = item.Hue;
+            }
 
             if (amount >= m_ResAmount)
 			{
@@ -1330,7 +1358,7 @@ namespace Server.Engines.Craft
 			return chance;
 		}
 
-		public void Craft(Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool)
+        public void Craft(Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool)
 		{
 			if (from.BeginAction(typeof(CraftSystem)))
 			{
@@ -1466,7 +1494,7 @@ namespace Server.Engines.Craft
 			Mobile from,
 			CraftSystem craftSystem,
 			Type typeRes,
-			BaseTool tool,
+			ITool tool,
 			CustomCraft customCraft)
 		{
 			int badCraft = craftSystem.CanCraft(from, tool, m_Type);
@@ -1696,6 +1724,11 @@ namespace Server.Engines.Craft
 						item.Hue = resHue;
 					}
 
+                    if (item.Hue == 0 && RetainsColorFromCloth(item) && m_ClothHue != 0)
+                    {
+                        item.Hue = m_ClothHue;
+                    }
+
 					if (maxAmount > 0)
 					{
 						if (!item.Stackable && item is IUsesRemaining)
@@ -1738,9 +1771,9 @@ namespace Server.Engines.Craft
                     m_PlantPigmentHue = PlantPigmentHue.None;
 					#endregion
 
-                    if (tool.Parent is Container)
+                    if (tool is Item && ((Item)tool).Parent is Container)
                     {
-                        Container cntnr = (Container)tool.Parent;
+                        Container cntnr = (Container)((Item)tool).Parent;
 
                         if (!cntnr.TryDropItem(from, item, false))
                         {
@@ -1755,7 +1788,10 @@ namespace Server.Engines.Craft
                         from.AddToBackpack(item);
                     }
 
-					EventSink.InvokeCraftSuccess(new CraftSuccessEventArgs(from, item, tool));
+                    if (tool is Item) // sanity check
+                    {
+                        EventSink.InvokeCraftSuccess(new CraftSuccessEventArgs(from, item, (Item)tool));
+                    }
 
 					if (from.IsStaff())
 					{
@@ -1922,11 +1958,11 @@ namespace Server.Engines.Craft
 			private readonly CraftItem m_CraftItem;
 			private readonly CraftSystem m_CraftSystem;
 			private readonly Type m_TypeRes;
-			private readonly BaseTool m_Tool;
+			private readonly ITool m_Tool;
             private bool m_AutoCraft;
 
 			public InternalTimer(
-				Mobile from, CraftSystem craftSystem, CraftItem craftItem, Type typeRes, BaseTool tool, int iCountMax)
+				Mobile from, CraftSystem craftSystem, CraftItem craftItem, Type typeRes, ITool tool, int iCountMax)
 				: base(TimeSpan.Zero, TimeSpan.FromSeconds(craftSystem.Delay), iCountMax)
 			{
 				m_From = from;
@@ -2099,9 +2135,9 @@ namespace Server.Engines.Craft
             private CraftItem m_CraftItem;
             private CraftSystem m_CraftSystem;
             private Type m_TypeRes;
-            private BaseTool m_Tool;
+            private ITool m_Tool;
 
-            public ChooseResTarget(Mobile from, CraftItem craftitem, CraftSystem craftSystem, Type typeRes, BaseTool tool)
+            public ChooseResTarget(Mobile from, CraftItem craftitem, CraftSystem craftSystem, Type typeRes, ITool tool)
                 : base(-1, false, Server.Targeting.TargetFlags.None)
             {
                 m_CraftItem = craftitem;

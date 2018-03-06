@@ -211,6 +211,8 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime PostedOn { get; set; }
 
+        private Dictionary<Mobile, DateTime> CitizenWait { get; set; }
+
 		public CityLoyaltySystem(City city)
 		{
             City = city;
@@ -219,6 +221,7 @@ namespace Server.Engines.CityLoyalty
                 Cities = new List<CityLoyaltySystem>();
 
             Election = new CityElection(this);
+            CitizenWait = new Dictionary<Mobile, DateTime>();
 
 			Cities.Add(this);
 		}
@@ -233,9 +236,9 @@ namespace Server.Engines.CityLoyalty
             return new CityLoyaltyEntry(pm, this.City);
         }
 		
-		public bool IsCitizen(Mobile from)
+		public bool IsCitizen(Mobile from, bool staffIsCitizen = true)
 		{
-            if (from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.Player && staffIsCitizen)
                 return true;
 
             CityLoyaltyEntry entry = GetPlayerEntry<CityLoyaltyEntry>(from);
@@ -287,7 +290,7 @@ namespace Server.Engines.CityLoyalty
                         Stone.InvalidateProperties();
                 }
 
-                _CitizenWait[from] = DateTime.UtcNow + TimeSpan.FromDays(CitizenJoinWait);
+                CitizenWait[from] = DateTime.UtcNow + TimeSpan.FromDays(CitizenJoinWait);
             }
 		}
 		
@@ -568,13 +571,55 @@ namespace Server.Engines.CityLoyalty
                 to.SendLocalizedMessage(message);
         }
 
+        public bool CanAdd(Mobile from)
+        {
+            if (CitizenWait.ContainsKey(from))
+            {
+                if (CitizenWait[from] < DateTime.UtcNow)
+                {
+                    RemoveWaitTime(from);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public int NextJoin(Mobile from)
+        {
+            if (CitizenWait.ContainsKey(from))
+            {
+                return (int)(CitizenWait[from] - DateTime.UtcNow).TotalDays;
+            }
+
+            return 0;
+        }
+
+        public void RemoveWaitTime(Mobile from)
+        {
+            if (CitizenWait.ContainsKey(from))
+            {
+                CitizenWait.Remove(from);
+            }
+        }
+
         public static void Initialize()
         {
             EventSink.Login += OnLogin;
-            _CitizenWait = new Dictionary<Mobile, DateTime>();
+            Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), OnTick);
 
             CommandSystem.Register("ElectionStartTime", AccessLevel.Administrator, e => e.Mobile.SendGump(new ElectionStartTimeGump(e.Mobile as PlayerMobile)));
-           
+            CommandSystem.Register("RemoveWait", AccessLevel.Administrator, e =>
+                {
+                    foreach (var city in Cities)
+                    {
+                        city.RemoveWaitTime(e.Mobile);
+                    }
+                });
+
             CommandSystem.Register("SystemInfo", AccessLevel.Administrator, e => 
             {
                 e.Mobile.CloseGump(typeof(SystemInfoGump));
@@ -583,7 +628,6 @@ namespace Server.Engines.CityLoyalty
         }
 
 		private static DateTime _NextAtrophy;
-		private static Dictionary<Mobile, DateTime> _CitizenWait;
 		
 		public static List<CityLoyaltySystem> Cities { get; private set; }
 
@@ -651,41 +695,48 @@ namespace Server.Engines.CityLoyalty
                 });
         }
 
-        public static bool CanAddCitizen(Mobile from, out int days)
+        public static bool CanAddCitizen(Mobile from)
         {
-            if (_CitizenWait.ContainsKey(from))
+            if (from.AccessLevel > AccessLevel.Player)
+                return true;
+
+            foreach (var city in Cities)
             {
-                if (_CitizenWait[from] < DateTime.UtcNow)
-                {
-                    RemoveWaitTime(from);
-                }
-                else
-                {
-                    days = (int)(_CitizenWait[from] - DateTime.UtcNow).TotalDays;
+                if (!city.CanAdd(from))
                     return false;
+            }
+            return true;
+        }
+
+        public static int NextJoinCity(Mobile from)
+        {
+            foreach (var city in Cities)
+            {
+                if (!city.CanAdd(from))
+                {
+                    return city.NextJoin(from);
                 }
             }
-            days = 0;
-            return true;
+
+            return 0;
         }
 
         public static void OnTick()
         {
-            List<PlayerMobile> list = new List<PlayerMobile>(_CitizenWait.Keys.OfType<PlayerMobile>());
-
-            foreach (PlayerMobile pm in list)
+            foreach (var sys in Cities)
             {
-                if (_CitizenWait[pm] < DateTime.UtcNow)
+                List<Mobile> list = new List<Mobile>(sys.CitizenWait.Keys);
+
+                foreach (var m in list)
                 {
-                    RemoveWaitTime(pm);
+                    if (sys.CitizenWait[m] < DateTime.UtcNow)
+                    {
+                        sys.RemoveWaitTime(m);
+                    }
                 }
-            }
 
-            list.Clear();
-            list.TrimExcess();
+                ColUtility.Free(list);
 
-            Cities.ForEach(sys =>
-            {
                 if (DateTime.UtcNow > _NextAtrophy)
                 {
                     sys.PlayerTable.ForEach(t =>
@@ -726,18 +777,10 @@ namespace Server.Engines.CityLoyalty
                 }
                 else
                     sys.Election = new CityElection(sys);
-            });
+            }
 
             CityTradeSystem.OnTick();
         }
-		
-		public static void RemoveWaitTime(Mobile from)
-		{
-			if(_CitizenWait.ContainsKey(from))
-			{
-				_CitizenWait.Remove(from);
-			}
-		}
 		
 		public static bool HasCitizenship(Mobile from)
 		{
@@ -760,12 +803,12 @@ namespace Server.Engines.CityLoyalty
             return sys != null && sys.IsCitizen(from);
         }
 		
-		public static CityLoyaltySystem GetCitizenship(Mobile from)
+		public static CityLoyaltySystem GetCitizenship(Mobile from, bool staffIsCitizen = true)
 		{
             if (Cities == null)
                 return null;
 
-			return Cities.FirstOrDefault(sys => sys.IsCitizen(from));
+            return Cities.FirstOrDefault(sys => sys.IsCitizen(from, staffIsCitizen));
 		}
 
         public static bool ApplyCityTitle(PlayerMobile pm, ObjectPropertyList list, string prefix, int loc)
@@ -804,7 +847,7 @@ namespace Server.Engines.CityLoyalty
             {
                 CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-                if (entry != null)
+                if (entry != null && !String.IsNullOrEmpty(entry.CustomTitle))
                     str = String.Format("{0}\t{1}", entry.CustomTitle, city.Definition.Name);
             }
 
@@ -1053,8 +1096,15 @@ namespace Server.Engines.CityLoyalty
             writer.Write((int)City);
 
 			base.Serialize(writer);
-			writer.Write(0);
-			
+			writer.Write(1);
+
+            writer.Write(CitizenWait.Count);
+            foreach (var kvp in CitizenWait)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value);
+            }
+
 			writer.Write(CompletedTrades);
             writer.Write(Governor);
             writer.Write(GovernorElect);
@@ -1076,16 +1126,6 @@ namespace Server.Engines.CityLoyalty
             }
             else
                 writer.Write(1);
-
-            if (this.City == City.Britain)
-            {
-                writer.Write(_CitizenWait.Count);
-                foreach (KeyValuePair<Mobile, DateTime> kvp in _CitizenWait)
-                {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
-                }
-            }
 		}
 		
 		public override void Deserialize(GenericReader reader)
@@ -1094,30 +1134,48 @@ namespace Server.Engines.CityLoyalty
 
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
-			
-			CompletedTrades = reader.ReadInt();
-            Governor = reader.ReadMobile();
-            GovernorElect = reader.ReadMobile();
-            PendingGovernor = reader.ReadBool();
-            Treasury = reader.ReadLong();
-            ActiveTradeDeal = (TradeDeal)reader.ReadInt();
-            TradeDealStart = reader.ReadDateTime();
-            NextTradeDealCheck = reader.ReadDateTime();
-            CanUtilize = reader.ReadBool();
 
-            Headline = reader.ReadString();
-            Body = reader.ReadString();
-            PostedOn = reader.ReadDateTime();
-
-            if (reader.ReadInt() == 0)
-                Election = new CityElection(this, reader);
-            else
-                Election = new CityElection(this);
-
-            if (this.City == City.Britain)
+            switch (version)
             {
-                _CitizenWait = new Dictionary<Mobile, DateTime>();
+                case 1:
+                    {
+                        int count = reader.ReadInt();
+                        for (int i = 0; i < count; i++)
+                        {
+                            Mobile m = reader.ReadMobile();
+                            DateTime dt = reader.ReadDateTime();
 
+                            if (m != null && dt > DateTime.UtcNow)
+                                CitizenWait[m] = dt;
+                        }
+                    }
+                    goto case 0;
+                case 0:
+                    {
+                        CompletedTrades = reader.ReadInt();
+                        Governor = reader.ReadMobile();
+                        GovernorElect = reader.ReadMobile();
+                        PendingGovernor = reader.ReadBool();
+                        Treasury = reader.ReadLong();
+                        ActiveTradeDeal = (TradeDeal)reader.ReadInt();
+                        TradeDealStart = reader.ReadDateTime();
+                        NextTradeDealCheck = reader.ReadDateTime();
+                        CanUtilize = reader.ReadBool();
+
+                        Headline = reader.ReadString();
+                        Body = reader.ReadString();
+                        PostedOn = reader.ReadDateTime();
+
+                        if (reader.ReadInt() == 0)
+                            Election = new CityElection(this, reader);
+                        else
+                            Election = new CityElection(this);
+                    }
+                    break;
+            }
+
+            if (version == 0 && this.City == City.Britain)
+            {
                 int count = reader.ReadInt();
                 for (int i = 0; i < count; i++)
                 {
@@ -1125,10 +1183,8 @@ namespace Server.Engines.CityLoyalty
                     DateTime dt = reader.ReadDateTime();
 
                     if (m != null && dt > DateTime.UtcNow)
-                        _CitizenWait[m] = dt;
+                        CitizenWait[m] = dt;
                 }
-
-                Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), OnTick);
             }
 		}
 	}

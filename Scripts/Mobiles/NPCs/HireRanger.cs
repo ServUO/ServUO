@@ -8,67 +8,68 @@ namespace Server.Mobiles
         [Constructable] 
         public HireRanger()
         {
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Hue = Utility.RandomSkinHue();
+            SpeechHue = Utility.RandomDyedHue();
+            Hue = Utility.RandomSkinHue();
 
-            if (this.Female = Utility.RandomBool()) 
+            if (Female = Utility.RandomBool()) 
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
+                Body = 0x191;
+                Name = NameList.RandomName("female");
             }
             else 
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
-                this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+                AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
-            this.Title = "the ranger";
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
-            this.Race.RandomFacialHair(this);
 
-            this.SetStr(91, 91);
-            this.SetDex(76, 76);
-            this.SetInt(61, 61);
+            Title = "the ranger";
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
+            Race.RandomFacialHair(this);
 
-            this.SetDamage(13, 24);
+            SetStr(91, 91);
+            SetDex(76, 76);
+            SetInt(61, 61);
 
-            this.SetSkill(SkillName.Wrestling, 15, 37);
-            this.SetSkill(SkillName.Parry, 45, 60);
-            this.SetSkill(SkillName.Archery, 66, 97);
-            this.SetSkill(SkillName.Magery, 62, 62);
-            this.SetSkill(SkillName.Swords, 35, 57);
-            this.SetSkill(SkillName.Fencing, 15, 37);
-            this.SetSkill(SkillName.Tactics, 65, 87);
+            SetDamage(13, 24);
 
-            this.Fame = 100;
-            this.Karma = 125;
+            SetSkill(SkillName.Wrestling, 15, 37);
+            SetSkill(SkillName.Parry, 45, 60);
+            SetSkill(SkillName.Archery, 66, 97);
+            SetSkill(SkillName.Magery, 62, 62);
+            SetSkill(SkillName.Swords, 35, 57);
+            SetSkill(SkillName.Fencing, 15, 37);
+            SetSkill(SkillName.Tactics, 65, 87);
 
-            this.AddItem(new Shoes(Utility.RandomNeutralHue()));
-            this.AddItem(new Shirt());
+            Fame = 100;
+            Karma = 125;
+
+            AddItem(new Shoes(Utility.RandomNeutralHue()));
+            AddItem(new Shirt());
 
             // Pick a random sword
             switch ( Utility.Random(3)) 
             {
                 case 0:
-                    this.AddItem(new Longsword());
+                    AddItem(new Longsword());
                     break;
                 case 1:
-                    this.AddItem(new VikingSword());
+                    AddItem(new VikingSword());
                     break;
                 case 2:
-                    this.AddItem(new Broadsword());
+                    AddItem(new Broadsword());
                     break;
             }
 
-            this.AddItem(new RangerChest());
-            this.AddItem(new RangerArms());
-            this.AddItem(new RangerGloves());
-            this.AddItem(new RangerGorget());
-            this.AddItem(new RangerLegs());
+            SetWearable(new StuddedChest(), 0x59C);
+            SetWearable(new StuddedArms(), 0x59C);
+            SetWearable(new StuddedGloves(), 0x59C);
+            SetWearable(new StuddedLegs(), 0x59C);
+            SetWearable(new StuddedGorget(), 0x59C);
 
-            this.PackItem(new Arrow(20));
-            this.PackGold(10, 75);
+            PackItem(new Arrow(20));
+            PackGold(10, 75);
         }
 
         public HireRanger(Serial serial)

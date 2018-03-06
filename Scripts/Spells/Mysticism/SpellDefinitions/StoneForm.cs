@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Server.Network;
-using Server.Items;
-using Server.Targeting;
-using Server.Mobiles;
 
 namespace Server.Spells.Mysticism
 {
@@ -26,8 +21,6 @@ namespace Server.Spells.Mysticism
 			);
 
         private int m_ResisMod;
-        private int m_MaxResisMod;
-        private int m_DamageBonus;
 
         public override SpellCircle Circle { get { return SpellCircle.Fourth; } }
 
@@ -75,7 +68,8 @@ namespace Server.Spells.Mysticism
 
         public void MobileDelta_Callback()
         {
-            Caster.Delta( MobileDelta.WeaponDamage );
+            Caster.Delta(MobileDelta.WeaponDamage);
+            Caster.UpdateResistances();
         }
 
 		public override void RemoveEffect( Mobile m )

@@ -10,7 +10,7 @@ namespace Server.Items
         public GargishButcherKnife()
             : base(0x48B6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public GargishButcherKnife(Serial serial)
@@ -36,7 +36,7 @@ namespace Server.Items
         {
             get
             {
-                return 5;
+                return 10;
             }
         }
         public override int AosMinDamage
@@ -126,14 +126,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

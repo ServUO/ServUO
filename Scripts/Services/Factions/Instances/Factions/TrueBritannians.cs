@@ -58,7 +58,8 @@ namespace Server.Factions
                             new Point3D(1340, 1621, 50),
                             new Point3D(1345, 1621, 50),
                             new Point3D(1345, 1627, 50)
-                        }),
+                        },
+                        new Point3D(1331, 1621, 50)),
                     new RankDefinition[]
                     {
                         new RankDefinition(10, 991, 8, new TextDefinition(1060794, "Knight of the Codex")),

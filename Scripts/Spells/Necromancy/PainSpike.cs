@@ -109,7 +109,7 @@ namespace Server.Spells.Necromancy
 
             Misc.WeightOverloading.DFA = Misc.DFAlgorithm.PainSpike;
             AOS.Damage(m, Caster, (int)damage, 0, 0, 0, 0, 0, 0, 100);
-            SpellHelper.DoLeech((int)damage, Caster, m);
+            AOS.DoLeech((int)damage, Caster, m);
             Misc.WeightOverloading.DFA = Misc.DFAlgorithm.Standard;
 
             HarmfulSpell(m);

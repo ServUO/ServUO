@@ -142,7 +142,7 @@ namespace Server.Spells.SkillMasteries
             BuffInfo.RemoveBuff(Caster, BuffIcon.TribulationCaster);
         }
 		
-        public override void OnTargetDamaged(Mobile attacker, Mobile victim, int damageTaken)
+        public override void OnTargetDamaged(Mobile attacker, Mobile victim, DamageType type, ref int damageTaken)
 		{
 			if(m_NextDamage > DateTime.UtcNow)
 				return;

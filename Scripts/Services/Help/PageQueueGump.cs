@@ -25,7 +25,7 @@ namespace Server.Engines.Help
 
             AddBackground(0, 0, 92, 75, 0xA3C);
 
-            if (mobile.NetState.IsEnhancedClient)
+            if (mobile != null && mobile.NetState != null && mobile.NetState.IsEnhancedClient)
                 AddBackground(5, 7, 82, 61, 9300);
             else
             {
@@ -55,7 +55,7 @@ namespace Server.Engines.Help
         {
             Add(new GumpPage(0));
 
-            if (m.NetState.IsEnhancedClient)
+            if (m != null && m.NetState != null && m.NetState.IsEnhancedClient)
                 AddBackground(1, 1, 408, 446, 9300);
             else
             {
@@ -279,7 +279,7 @@ namespace Server.Engines.Help
 
             if (response == null)
             {
-                if (from.NetState.IsEnhancedClient)
+                if (from != null && from.NetState != null && from.NetState.IsEnhancedClient)
                     AddBackground(1, 1, 408, 446, 9300);
                 else
                 {
@@ -529,7 +529,7 @@ namespace Server.Engines.Help
 
                 AddPage(0);
 
-                if (m.NetState.IsEnhancedClient)
+                if (m != null && m.NetState != null && m.NetState.IsEnhancedClient)
                     AddBackground(1, 1, 408, 454, 9300);
                 else
                 {

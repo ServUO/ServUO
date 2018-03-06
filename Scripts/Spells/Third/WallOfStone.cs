@@ -73,7 +73,7 @@ namespace Server.Spells.Third
                 {
                     Point3D loc = new Point3D(eastToWest ? p.X + i : p.X, eastToWest ? p.Y : p.Y + i, p.Z);
 
-                    if (SpellHelper.CheckWater(loc, Caster.Map))
+                    if (SpellHelper.CheckWater(loc, Caster.Map) && SpellHelper.CheckField(loc, Caster.Map))
                     {
                         Item item = new InternalItem(loc, Caster.Map, Caster);
                         Effects.SendLocationParticles(item, 0x376A, 9, 10, 5025);
@@ -201,11 +201,11 @@ namespace Server.Spells.Third
             }
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly WallOfStoneSpell m_Owner;
             public InternalTarget(WallOfStoneSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(Core.TOL ? 15 : Core.ML ? 10 : 12, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }

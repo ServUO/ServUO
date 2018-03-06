@@ -218,7 +218,7 @@ namespace Server.SkillHandlers
 
         private static Type[] _SpecialImbuable =
         {
-            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings)
+            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings), typeof(OrcishKinMask), typeof(SavageMask)
         };
 
         private static Type[] _NonCraftables =
@@ -678,7 +678,7 @@ namespace Server.SkillHandlers
 					return false;
 				}
 				
-				if (from.CheckSkill(SkillName.Imbuing, 95.0, 120.0))
+				if (from.CheckSkill(SkillName.Imbuing, 90.1, 120.0))
 				{
 					success = true;
 					resType = typeof(RelicFragment);

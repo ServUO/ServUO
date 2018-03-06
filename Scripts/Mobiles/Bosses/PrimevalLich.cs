@@ -207,7 +207,8 @@ namespace Server.Mobiles
 
             PlaySound(0x64C);
 
-            foreach (Mobile m in this.GetMobilesInRange(BlastRange))
+            IPooledEnumerable eable = GetMobilesInRange(BlastRange);
+            foreach (Mobile m in eable)
             {
                 if (this != m && this.GetDistanceToSqrt(m) <= BlastRange && CanBeHarmful(m))
                 {
@@ -228,6 +229,8 @@ namespace Server.Mobiles
                     AOS.Damage(m, this, (int)damage, 0, 0, 0, 0, 100);
                 }
             }
+
+            eable.Free();
         }
         #endregion
 
@@ -236,7 +239,8 @@ namespace Server.Mobiles
         {
             int count = 0;
 
-            foreach (Mobile m in this.GetMobilesInRange(BlastRange))
+            IPooledEnumerable eable = GetMobilesInRange(BlastRange);
+            foreach (Mobile m in eable)
             {
                 if (m is ShadowDweller)
                     continue;
@@ -263,6 +267,8 @@ namespace Server.Mobiles
                         break;
                 }
             }
+
+            eable.Free();
         }
         #endregion
 

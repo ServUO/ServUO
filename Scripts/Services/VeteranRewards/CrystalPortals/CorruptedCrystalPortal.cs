@@ -141,13 +141,6 @@ namespace Server.Items
 			}
 		}
 
-		public override void GetProperties(ObjectPropertyList list)
-		{
-			base.GetProperties(list);
-
-			list.Add(Movable ? "This must be locked down in a house to use!" : "Double-click to open help menu");
-		}
-
 		public virtual void OnTeleport(Mobile m, Point3D loc, Map map)
 		{
 			if (m == null || loc == Point3D.Zero || map == null || map == Map.Internal)
@@ -177,7 +170,7 @@ namespace Server.Items
 
 			ResolveDest(e.Mobile, e.Speech.Trim(), ref loc, ref map);
 
-			if (loc == Point3D.Zero || map == null || map == Map.Internal)
+            if (loc == Point3D.Zero || map == null || map == Map.Internal || (Siege.SiegeShard && map == Map.Trammel))
 			{
 				return;
 			}
@@ -363,8 +356,8 @@ namespace Server.Items
                     break;
 					case "dungeon underworld":
 					{
-						loc = new Point3D( 1143, 1085, -37 );
-						map = Map.TerMur;
+						loc = new Point3D( 4195, 3263, 5 );
+						map = Map.Trammel;
 					}
 					break;
 					case "dungeon abyss":

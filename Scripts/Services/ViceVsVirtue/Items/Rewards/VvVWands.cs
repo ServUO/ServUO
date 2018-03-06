@@ -69,7 +69,6 @@ namespace Server.Engines.VvV
 
         public VvVWand1() : base(WandEffect.None, 0, 0)
         {
-            IsVvVItem = true;
             ItemID = 3571;
 
             Attributes.SpellChanneling = 1;
@@ -87,7 +86,7 @@ namespace Server.Engines.VvV
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 
             if (this.IsArcane)
             {
@@ -111,6 +110,9 @@ namespace Server.Engines.VvV
                 m_CurArcaneCharges = reader.ReadInt();
                 m_MaxArcaneCharges = reader.ReadInt();
             }
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
 		}
 	}
 
@@ -178,7 +180,6 @@ namespace Server.Engines.VvV
         public VvVWand2()
             : base(WandEffect.None, 0, 0)
         {
-            IsVvVItem = true;
             ItemID = 3571;
 
             Attributes.SpellChanneling = 1;
@@ -196,7 +197,7 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
 
             if (this.IsArcane)
             {
@@ -220,6 +221,10 @@ namespace Server.Engines.VvV
                 m_CurArcaneCharges = reader.ReadInt();
                 m_MaxArcaneCharges = reader.ReadInt();
             }
+
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
     }
 }

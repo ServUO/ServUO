@@ -43,7 +43,7 @@ namespace Server.Engines.NewMagincia
         {
             get 
             {
-                if(m_Broker != null && m_Broker.BankBalance < m_BuyLimit * m_BuyPricePer)
+                if (m_Broker != null && m_Broker.BankBalance < m_BuyLimit * m_BuyPricePer && m_BuyPricePer > 0)
                     return m_Broker.BankBalance / m_BuyPricePer;
 
                 int limit = m_BuyLimit - m_Stock;

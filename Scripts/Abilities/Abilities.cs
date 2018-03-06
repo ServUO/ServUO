@@ -105,12 +105,14 @@ namespace Server
                 return;
 
             List<Mobile> targets = new List<Mobile>();
+            IPooledEnumerable eable = map.GetMobilesInRange(location, range);
 
-            foreach (Mobile m in Map.AllMaps[map.MapID].GetMobilesInRange(location, range))
+            foreach (Mobile m in eable)
             {
                 if (CanTarget(from, m, true, false, allownull))
                     targets.Add(m);
             }
+            eable.Free();
 
             if (effects && from != null)
                 from.Animate(12, 5, 1, true, false, 0);
@@ -513,12 +515,14 @@ namespace Server
 
             List<Mobile> mobiles = new List<Mobile>();
             Point3D point;
+            IPooledEnumerable eable = from.GetMobilesInRange(14);
 
-            foreach (Mobile m in from.Map.GetMobilesInRange(from.Location, 14))
+            foreach (Mobile m in eable)
             {
                 if (m != from && CanTarget(from, m, true, false, false))
                     mobiles.Add(m);
             }
+            eable.Free();
 
             for (int i = 0; i < mobiles.Count; i++)
             {
@@ -818,8 +822,9 @@ namespace Server
         public static Mobile FindRandomTarget(Mobile from, bool allowcombatant)
         {
             List<Mobile> list = new List<Mobile>();
+            IPooledEnumerable eable = from.GetMobilesInRange(12);
 
-            foreach (Mobile m in from.GetMobilesInRange(12))
+            foreach (Mobile m in eable)
             {
                 if (m != null && m != from)
                     if (CanTarget(from, m) && from.InLOS(m))
@@ -830,6 +835,7 @@ namespace Server
                             list.Add(m);
                     }
             }
+            eable.Free();
 
             if (list.Count == 0)
                 return null;
@@ -1031,14 +1037,15 @@ namespace Server
                 return false;
 
             int count = 0;
+            IPooledEnumerable eable = from.GetMobilesInRange(10);
 
-            foreach (Mobile m in from.GetMobilesInRange(10))
+            foreach (Mobile m in eable)
             {
                 if (m != null)
                     if (m.GetType() == type)
                         count++;
             }
-
+            eable.Free();
             return count >= maxcount;
         }
 
@@ -1048,15 +1055,16 @@ namespace Server
                 return false;
 
             int count = 0;
+            IPooledEnumerable eable = from.GetMobilesInRange(10);
 
-            foreach (Mobile m in from.GetMobilesInRange(10))
+            foreach (Mobile m in eable)
             {
                 for (int i = 0; i < types.Length; i++)
                     if (m != null)
                         if (m.GetType() == types[i])
                             count++;
             }
-
+            eable.Free();
             return count >= maxcount;
         }
 

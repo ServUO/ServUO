@@ -140,13 +140,6 @@ namespace Server.Items
 			}
 		}
 
-		public override void GetProperties(ObjectPropertyList list)
-		{
-			base.GetProperties(list);
-
-			list.Add(Movable ? "This must be locked down in a house to use!" : "Double-click to open help menu");
-		}
-
 		public virtual void OnTeleport(Mobile m, Point3D loc, Map map)
 		{
 			if (m == null || loc == Point3D.Zero || map == null || map == Map.Internal)
@@ -176,7 +169,7 @@ namespace Server.Items
 
 			ResolveDest(e.Speech.Trim(), ref loc, ref map);
 
-			if (loc == Point3D.Zero || map == null || map == Map.Internal)
+			if (loc == Point3D.Zero || map == null || map == Map.Internal || (Siege.SiegeShard && map == Map.Trammel))
 			{
 				return;
 			}
@@ -457,7 +450,7 @@ namespace Server.Items
 					break;
 				case "jhelom moongate":
 				{
-					loc = new Point3D(1330, 3780, 0);
+					loc = new Point3D(1495, 3773, 0);
 					map = Map.Trammel;
 				}
 					break;
@@ -615,7 +608,7 @@ namespace Server.Items
 					break;
 				case "fel jhelom moongate":
 				{
-					loc = new Point3D(1330, 3780, 0);
+					loc = new Point3D(1495, 3773, 0);
 					map = Map.Felucca;
 				}
 					break;

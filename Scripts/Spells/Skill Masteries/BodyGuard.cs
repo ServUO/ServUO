@@ -7,9 +7,6 @@ using Server.Gumps;
 using System.Collections.Generic;
 using Server.Items;
 
-/*The shield user chooses a protectee to absorb a percentage of damage done to the protectee based on parry skill, 
-  best weapon skill, and mastery level.*/
-
 namespace Server.Spells.SkillMasteries
 {
     public class BodyGuardSpell : SkillMasterySpell
@@ -20,7 +17,7 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
  
-        public override int RequiredMana { get { return 40; } } // TODO: How much?
+        public override int RequiredMana { get { return 40; } }
         public override int DisruptMessage { get { return 1156103; } } // Bodyguard has expired.
         public override bool BlocksMovement { get { return false; } }
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
@@ -126,8 +123,8 @@ namespace Server.Spells.SkillMasteries
                 Caster.SendLocalizedMessage(1049452, "\t" + toGuard.Name); // You are now protecting ~2_NAME~.
                 toGuard.SendLocalizedMessage(1049451, Caster.Name); // You are now being protected by ~1_NAME~.
 
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), Caster, String.Format("{0}\t{1}\t{2}\t{2}", Caster.Name, (_Block + 5).ToString(), toGuard.Name, _Block.ToString())));
-                BuffInfo.AddBuff(toGuard, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), toGuard, String.Format("{0}\t{1}\t{2}\t{2}", Caster.Name, (_Block + 5).ToString(), toGuard.Name, _Block.ToString())));
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), Caster, String.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, (_Block + 5).ToString(), toGuard.Name, _Block.ToString())));
+                BuffInfo.AddBuff(toGuard, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), toGuard, String.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, (_Block + 5).ToString(), toGuard.Name, _Block.ToString())));
                 //~1_NAME~ receives ~2_DAMAGE~% of all damage dealt to ~3_NAME~. All damage dealt to ~3_NAME~ will be reduced by ~4_DAMAGE~%. Body guard must be within 2 tiles. 
 			}
 
@@ -161,7 +158,12 @@ namespace Server.Spells.SkillMasteries
         public override void EndEffects()
         {
             if (Target != null)
+            {
+                Target.SendLocalizedMessage(1156103); // Bodyguard has expired.
                 BuffInfo.RemoveBuff(Target, BuffIcon.Bodyguard);
+            }
+
+            Caster.SendLocalizedMessage(1156103); // Bodyguard has expired.
             BuffInfo.RemoveBuff(Caster, BuffIcon.Bodyguard);
         }
 
@@ -173,18 +175,20 @@ namespace Server.Spells.SkillMasteries
             RemoveGumpTimer(protectee, Caster);
             FinishSequence();
         }
-		
-		public static void CheckBodyGuard(Mobile attacker, Mobile defender, ref int damage, int phys, int fire, int cold, int pois, int nrgy)
-		{
-			BodyGuardSpell spell = GetSpell(s => s.GetType() == typeof(BodyGuardSpell) && s.Target == defender) as BodyGuardSpell;
-			
-			if(spell != null && spell.Caster.InRange(spell.Target, 2))
-			{
-				double mod = (double)spell.PropertyBonus() / 100.0;
-				int casterDamage = damage - (int)((double)damage * (mod + .05));
-				damage = damage - (int)((double)damage * mod);
 
-                AOS.Damage(spell.Caster, attacker, casterDamage, phys, fire, cold, pois, nrgy);
+        public override void OnTargetDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
+		{
+            if (defender == Target && Caster.InRange(defender, 2))
+			{
+				double mod = (double)PropertyBonus() / 100.0;
+				
+				damage = damage - (int)((double)damage * mod);
+                int casterDamage = damage - (int)((double)damage * (mod - .05));
+
+                if (type >= DamageType.Spell)
+                    casterDamage /= 2;
+
+                Caster.Damage(casterDamage, attacker);
 			}
 		}
 

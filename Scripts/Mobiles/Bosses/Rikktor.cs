@@ -18,7 +18,7 @@ namespace Server.Mobiles
             this.SetDex(201, 350);
             this.SetInt(51, 100);
 
-            this.SetHits(3000);
+            this.SetHits(15000);
             this.SetStam(203, 650);
 
             this.SetDamage(28, 55);
@@ -140,7 +140,9 @@ namespace Server.Mobiles
 
             ArrayList targets = new ArrayList();
 
-            foreach (Mobile m in this.GetMobilesInRange(8))
+            IPooledEnumerable eable = GetMobilesInRange(8);
+
+            foreach (Mobile m in eable)
             {
                 if (m == this || !this.CanBeHarmful(m))
                     continue;
@@ -150,6 +152,8 @@ namespace Server.Mobiles
                 else if (m.Player)
                     targets.Add(m);
             }
+
+            eable.Free();
 
             this.PlaySound(0x2F3);
 

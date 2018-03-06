@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Mobiles;
+using Server.Factions;
 
 namespace Server.Items
 {
@@ -20,8 +21,21 @@ namespace Server.Items
         Diamond
     }
 
-    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability, IResource, IVvVItem, IOwnerRestricted, ITalismanProtection
+    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability, IResource, IVvVItem, IOwnerRestricted, ITalismanProtection, IFactionItem
     {
+        #region Factions
+        private FactionItem m_FactionState;
+
+        public FactionItem FactionItemState
+        {
+            get { return m_FactionState; }
+            set
+            {
+                m_FactionState = value;
+            }
+        }
+        #endregion
+
         private int m_MaxHitPoints;
         private int m_HitPoints;
 
@@ -41,7 +55,6 @@ namespace Server.Items
         #endregion
 
         #region Runic Reforging
-        private bool m_BlockRepair;
         private ItemPower m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
@@ -317,13 +330,6 @@ namespace Server.Items
         { 
             get { return m_ReforgedSuffix; } 
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool BlockRepair
-        {
-            get { return m_BlockRepair; }
-            set { m_BlockRepair = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -801,6 +807,10 @@ namespace Server.Items
             if (IsImbued)
                 list.Add(1080418); // (Imbued)            
 
+            #region Factions
+            FactionEquipment.AddFactionProperties(this, list);
+            #endregion
+
             if (m_GorgonLenseCharges > 0)
                 list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
             
@@ -966,6 +976,8 @@ namespace Server.Items
                 SetHelper.GetSetProperties(list, this);
             }
 
+            AddHonestyProperty(list);
+
             if (m_ItemPower != ItemPower.None)
             {
                 if (m_ItemPower <= ItemPower.LegendaryArtifact)
@@ -998,7 +1010,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(11); // version
+            writer.Write(12); // version
+
+            // Version 12 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
 
             writer.Write(m_SetPhysicalBonus);
             writer.Write(m_SetFireBonus);
@@ -1010,7 +1024,6 @@ namespace Server.Items
 
             m_TalismanProtection.Serialize(writer);
 
-            writer.Write(_VvVItem);
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
@@ -1025,7 +1038,6 @@ namespace Server.Items
             writer.Write((int)m_ReforgedPrefix);
             writer.Write((int)m_ReforgedSuffix);
             writer.Write((int)m_ItemPower);
-            writer.Write(m_BlockRepair);
             #endregion
 
             #region Stygian Abyss
@@ -1069,6 +1081,7 @@ namespace Server.Items
 
             switch (version)
             {
+                case 12:
                 case 11:
                     {
                         m_SetPhysicalBonus = reader.ReadInt();
@@ -1090,7 +1103,8 @@ namespace Server.Items
                     }
                 case 8:
                     {
-                        _VvVItem = reader.ReadBool();
+                        if (version == 11)
+                            reader.ReadBool();
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
                         goto case 7;
@@ -1111,7 +1125,8 @@ namespace Server.Items
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
-                        m_BlockRepair = reader.ReadBool();
+                        if(version == 11 && reader.ReadBool())
+                            m_NegativeAttributes.NoRepair = 1;
                         #endregion
 
                         #region Stygian Abyss
@@ -1219,7 +1234,7 @@ namespace Server.Items
 
         #region ICraftable Members
 
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             PlayerConstructed = true;
 

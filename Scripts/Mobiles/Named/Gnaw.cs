@@ -14,27 +14,27 @@ namespace Server.Mobiles
             this.Name = "Gnaw";
             this.Hue = 0x130;
 
-            this.SetStr(151, 172);
-            this.SetDex(124, 145);
-            this.SetInt(60, 86);
+            this.SetStr(142, 169);
+            this.SetDex(102, 145);
+            this.SetInt(44, 69);
 
-            this.SetHits(817, 857);
-            this.SetStam(124, 145);
-            this.SetMana(52, 86);
+            this.SetHits(786, 837);
+            this.SetStam(102, 145);
+            this.SetMana(44, 69);
 
             this.SetDamage(16, 22);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 64, 69);
-            this.SetResistance(ResistanceType.Fire, 53, 56);
-            this.SetResistance(ResistanceType.Cold, 22, 27);
-            this.SetResistance(ResistanceType.Poison, 27, 30);
-            this.SetResistance(ResistanceType.Energy, 21, 34);
+            this.SetResistance(ResistanceType.Physical, 60, 70);
+            this.SetResistance(ResistanceType.Fire, 50, 60);
+            this.SetResistance(ResistanceType.Cold, 20, 30);
+            this.SetResistance(ResistanceType.Poison, 20, 30);
+            this.SetResistance(ResistanceType.Energy, 23, 40);
 
-            this.SetSkill(SkillName.Wrestling, 106.4, 116.5);
-            this.SetSkill(SkillName.Tactics, 84.1, 103.2);
-            this.SetSkill(SkillName.MagicResist, 96.8, 110.7);
+            this.SetSkill(SkillName.Wrestling, 96.3, 119.7);
+            this.SetSkill(SkillName.Tactics, 89.5, 107.7);
+            this.SetSkill(SkillName.MagicResist, 93.6, 112.8);
 
             this.Fame = 17500;
             this.Karma = -17500;
@@ -46,15 +46,15 @@ namespace Server.Mobiles
                 this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
-		public override bool CanBeParagon { get { return false; } }
-        public override void OnDeath( Container c )
+        public override bool CanBeParagon { get { return false; } }
+        public override void OnDeath(Container c)
         {
-            base.OnDeath( c );
+            base.OnDeath(c);
 
-            if ( Utility.RandomDouble() < 0.3 )
-                c.DropItem( new GnawsFang() );
+            if (Utility.RandomDouble() < 0.3)
+                c.DropItem(new GnawsFang());
         }
-        
+
         public Gnaw(Serial serial)
             : base(serial)
         {

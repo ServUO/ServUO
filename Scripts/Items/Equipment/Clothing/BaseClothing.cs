@@ -97,7 +97,6 @@ namespace Server.Items
         #endregion
 
         #region Runic Reforging
-        private bool m_BlockRepair;
         private ItemPower m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
@@ -242,30 +241,35 @@ namespace Server.Items
             set { m_GorgonLenseType = value; InvalidateProperties(); }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int PhysNonImbuing
         {
             get { return m_PhysNonImbuing; }
             set { m_PhysNonImbuing = value; }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int FireNonImbuing
         {
             get { return m_FireNonImbuing; }
             set { m_FireNonImbuing = value; }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int ColdNonImbuing
         {
             get { return m_ColdNonImbuing; }
             set { m_ColdNonImbuing = value; }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int PoisonNonImbuing
         {
             get { return m_PoisonNonImbuing; }
             set { m_PoisonNonImbuing = value; }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int EnergyNonImbuing
         {
             get { return m_EnergyNonImbuing; }
@@ -286,13 +290,6 @@ namespace Server.Items
         {
             get { return m_ReforgedSuffix; }
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool BlockRepair
-        {
-            get { return m_BlockRepair; }
-            set { m_BlockRepair = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1202,8 +1199,7 @@ namespace Server.Items
                 list.Add(1111880); // Altered
 
             #region Factions
-            if (m_FactionState != null)
-                list.Add(1041350); // faction item
+            FactionEquipment.AddFactionProperties(this, list);
             #endregion
 
             if (m_GorgonLenseCharges > 0)
@@ -1285,6 +1281,9 @@ namespace Server.Items
 
             if ((prop = m_AosAttributes.LowerRegCost) != 0)
                 list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%
+            
+            if ((prop = m_AosAttributes.LowerAmmoCost) != 0)
+				list.Add(1075208, prop.ToString()); // Lower Ammo Cost ~1_Percentage~%
 
             if ((prop = m_AosClothingAttributes.LowerStatReq) != 0)
                 list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
@@ -1392,6 +1391,8 @@ namespace Server.Items
                 GetSetProperties(list);
             }
             #endregion
+
+            AddHonestyProperty(list);
 
             if (m_ItemPower != ItemPower.None)
             {
@@ -1525,9 +1526,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(9); // version
+            writer.Write(10); // version
 
-            writer.Write(_VvVItem);
+            // Version 10 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
+
             writer.Write(_Owner);
             writer.Write(_OwnerName);
 
@@ -1541,7 +1543,6 @@ namespace Server.Items
             writer.Write((int)m_ReforgedPrefix);
             writer.Write((int)m_ReforgedSuffix);
             writer.Write((int)m_ItemPower);
-            writer.Write(m_BlockRepair);
             #endregion
 
             #region Stygian Abyss
@@ -1676,9 +1677,12 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 10:
                 case 9:
                     {
-                        _VvVItem = reader.ReadBool();
+                        if (version == 9)
+                            reader.ReadBool();
+
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
                         goto case 8;
@@ -1696,7 +1700,14 @@ namespace Server.Items
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
-                        m_BlockRepair = reader.ReadBool();
+
+                        if (version == 9 && reader.ReadBool())
+                        {
+                            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                                {
+                                    m_NegativeAttributes.NoRepair = 1;
+                                });
+                        }
                         #endregion
 
                         #region Stygian Abyss
@@ -1962,36 +1973,47 @@ namespace Server.Items
             return false;
         }
 
-        public void DistributeBonuses(int amount)
+        public void DistributeBonuses(Mobile from, int amount)
         {
             for (int i = 0; i < amount; ++i)
             {
                 switch ( Utility.Random(5) )
                 {
-                    case 0:
-                        ++m_AosResistances.Physical;
-                        break;
-                    case 1:
-                        ++m_AosResistances.Fire;
-                        break;
-                    case 2:
-                        ++m_AosResistances.Cold;
-                        break;
-                    case 3:
-                        ++m_AosResistances.Poison;
-                        break;
-                    case 4:
-                        ++m_AosResistances.Energy;
-                        break;
+                    case 0: ++m_AosResistances.Physical; break;
+                    case 1: ++m_AosResistances.Fire; break;
+                    case 2: ++m_AosResistances.Cold; break;
+                    case 3: ++m_AosResistances.Poison; break;
+                    case 4: ++m_AosResistances.Energy; break;
                 }
             }
 
+            // Arms Lore Bonus - Verified on EA
+            if (Core.ML && from != null)
+            {
+                double div = Siege.SiegeShard ? 12.5 : 20;
+                int bonus = (int)Math.Min(4, (from.Skills.ArmsLore.Value / div));
+
+                for (int i = 0; i < bonus; i++)
+                {
+                    switch (Utility.Random(5))
+                    {
+                        case 0: Resistances.Physical++; break;
+                        case 1: Resistances.Fire++; break;
+                        case 2: Resistances.Cold++; break;
+                        case 3: Resistances.Poison++; break;
+                        case 4: Resistances.Energy++; break;
+                    }
+                }
+
+                from.CheckSkill(SkillName.ArmsLore, 0, 100);
+            }
+
             #region Stygian Abyss
-            m_PhysNonImbuing = m_AosResistances.Physical;
-            m_FireNonImbuing = m_AosResistances.Fire;
-            m_ColdNonImbuing = m_AosResistances.Cold;
-            m_PoisonNonImbuing = m_AosResistances.Poison;
-            m_EnergyNonImbuing = m_AosResistances.Energy;
+            m_PhysNonImbuing = PhysicalResistance;
+            m_FireNonImbuing = FireResistance;
+            m_ColdNonImbuing = ColdResistance;
+            m_PoisonNonImbuing = PoisonResistance;
+            m_EnergyNonImbuing = EnergyResistance;
             #endregion
 
             InvalidateProperties();
@@ -1999,12 +2021,14 @@ namespace Server.Items
 
         #region ICraftable Members
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
 
             if (makersMark)
                 Crafter = from;
+
+            CraftContext context = craftSystem.GetContext(from);
 
             #region Mondain's Legacy
             if (!craftItem.ForceNonExceptional)
@@ -2018,7 +2042,7 @@ namespace Server.Items
 
                     Resource = CraftResources.GetFromType(resourceType);
                 }
-                else
+                else if(context == null || !context.DoNotColor)
                 {
                     Hue = resHue;
                 }
@@ -2026,11 +2050,6 @@ namespace Server.Items
             #endregion
 
             PlayerConstructed = true;
-
-            CraftContext context = craftSystem.GetContext(from);
-
-            if (context != null && context.DoNotColor)
-                Hue = 0;
 
             return quality;
         }

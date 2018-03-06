@@ -9,8 +9,7 @@ namespace Server.Items
         public LordBlackthornsExemplar()
             : base()
         {
-            this.Hue = 0x501;
-            this.BlockRepair = true;
+            Hue = 0x501;
         }
 
         public LordBlackthornsExemplar(Serial serial)
@@ -85,7 +84,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -93,6 +92,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                NegativeAttributes.NoRepair = 0;
+            }
         }
     }
 }

@@ -8,7 +8,6 @@ namespace Server.Mobiles
     public class RuddyBoura : BaseCreature, ICarvable
     {
         private bool GatheredFur { get; set; }
-        private bool m_Stunning;
 
         [Constructable]
         public RuddyBoura() : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
@@ -142,6 +141,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
+            if (!Controlled)
             c.DropItem(new BouraSkin());
         }
 

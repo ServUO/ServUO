@@ -83,10 +83,29 @@ namespace Server.Items
             if (IsLockedDown)
             {
                 BaseHouse house = BaseHouse.FindHouseAt(this);
+                bool owner = house.IsOwner(from);
 
-                if (house != null && house.IsOwner(from) && house.IsLockedDown(this) && house.IsLockedDown(item))
+                if (house != null)
                 {
-                    list.Add(new ReleaseEntry(from, item, house));
+                    if (owner && house != null && house.IsLockedDown(this) && house.IsLockedDown(item))
+                    {
+                        list.Add(new ReleaseEntry(from, item, house));
+                    }
+
+                    if (!(item is BaseContainer))
+                    {
+                        var myInfo = house.GetSecureInfoFor(from, this);
+
+                        if (myInfo != null)
+                        {
+                            if (house.Secures.FirstOrDefault(i => i.Item == item) == null)
+                            {
+                                house.Secures.Add(new SecureInfo(item, SecureLevel.Owner, from, true));
+                            }
+
+                            SetSecureLevelEntry.AddTo(from, item, list);
+                        }
+                    }
                 }
             }
             else
@@ -239,10 +258,15 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.IsStaff() || from.InRange(GetWorldLocation(), 2) || RootParent is PlayerVendor)
+            if (from.IsStaff() || RootParent is PlayerVendor ||
+                (from.InRange(GetWorldLocation(), 2) && (Parent != null || (Z >= from.Z - 8 && Z <= from.Z + 16))))
+            {
                 Open(from);
+            }
             else
+            {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+            }
         }
 
 		public override void AddNameProperty(ObjectPropertyList list)

@@ -16,36 +16,39 @@ namespace Server.Mobiles
         public FireSteed(string name)
             : base(name, 0xBE, 0x3E9E, AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.BaseSoundID = 0xA8;
-            this.Hue = 1161;
+            BaseSoundID = 0xA8;
+            Hue = 1161;
 
-            this.SetStr(376, 400);
-            this.SetDex(91, 120);
-            this.SetInt(291, 300);
+            SetStr(376, 400);
+            SetDex(91, 120);
+            SetInt(291, 300);
 
-            this.SetHits(226, 240);
+            SetHits(226, 240);
 
-            this.SetDamage(11, 30);
+            SetDamage(11, 30);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Fire, 80);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 80);
 
-            this.SetResistance(ResistanceType.Physical, 30, 40);
-            this.SetResistance(ResistanceType.Fire, 70, 80);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 30, 40);
+            SetResistance(ResistanceType.Fire, 70, 80);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.MagicResist, 100.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.MagicResist, 100.0, 120.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0);
 
-            this.Fame = 20000;
-            this.Karma = -20000;
+            Fame = 20000;
+            Karma = -20000;
 
-            this.Tamable = true;
-            this.ControlSlots = 2;
-            this.MinTameSkill = 106.0;
+            Tamable = true;
+            ControlSlots = 2;
+            MinTameSkill = 106.0;
+
+            PackItem(new SulfurousAsh(Utility.RandomMinMax(151, 300)));
+            PackItem(new Ruby(Utility.RandomMinMax(16, 30)));
         }
 
         public FireSteed(Serial serial)
@@ -74,11 +77,6 @@ namespace Server.Mobiles
                 return PackInstinct.Daemon | PackInstinct.Equine;
             }
         }
-        public override void GenerateLoot()
-        {
-            this.PackItem(new SulfurousAsh(Utility.RandomMinMax(151, 300)));
-            this.PackItem(new Ruby(Utility.RandomMinMax(16, 30)));
-        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -93,18 +91,18 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (this.BaseSoundID <= 0)
-                this.BaseSoundID = 0xA8;
+            if (BaseSoundID <= 0)
+                BaseSoundID = 0xA8;
 
             if (version < 1)
             {
-                for (int i = 0; i < this.Skills.Length; ++i)
+                for (int i = 0; i < Skills.Length; ++i)
                 {
-                    this.Skills[i].Cap = Math.Max(100.0, this.Skills[i].Cap * 0.9);
+                    Skills[i].Cap = Math.Max(100.0, Skills[i].Cap * 0.9);
 
-                    if (this.Skills[i].Base > this.Skills[i].Cap)
+                    if (Skills[i].Base > Skills[i].Cap)
                     {
-                        this.Skills[i].Base = this.Skills[i].Cap;
+                        Skills[i].Base = Skills[i].Cap;
                     }
                 }
             }

@@ -241,7 +241,7 @@ namespace Server.Engines.Despise
         public Hellion(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
         {
             Name = "Hellion";
-            Body = 130;
+            Body = 4;
             BaseSoundID = 0x174;
             Hue = 2671;
 

@@ -124,8 +124,9 @@ namespace Server.Regions
 		public override void MakeGuard(Mobile focus)
 		{
 			BaseGuard useGuard = null;
+            IPooledEnumerable eable = focus.GetMobilesInRange(8);
 
-			foreach (Mobile m in focus.GetMobilesInRange(8))
+            foreach (Mobile m in eable)
 			{
 				if (m is BaseGuard)
 				{
@@ -138,6 +139,8 @@ namespace Server.Regions
 					}
 				}
 			}
+
+            eable.Free();
 
 			if (useGuard == null)
 			{
@@ -198,7 +201,7 @@ namespace Server.Regions
 
 			if (!IsDisabled() && aggressor != aggressed && criminal)
 			{
-				CheckGuardCandidate(aggressor);
+				CheckGuardCandidate(aggressor, aggressor is BaseCreature && ((BaseCreature)aggressor).IsMonster);
 			}
 		}
 
@@ -229,7 +232,12 @@ namespace Server.Regions
 			}
 		}
 
-		public void CheckGuardCandidate(Mobile m)
+        public void CheckGuardCandidate(Mobile m)
+        {
+            CheckGuardCandidate(m, false);
+        }
+
+		public void CheckGuardCandidate(Mobile m, bool autoCallGuards)
 		{
 			if (IsDisabled())
 			{
@@ -241,7 +249,18 @@ namespace Server.Regions
 				GuardTimer timer = null;
 				m_GuardCandidates.TryGetValue(m, out timer);
 
-				if (timer == null)
+                if (autoCallGuards)
+                {
+                    MakeGuard(m);
+
+                    if (timer != null)
+                    {
+                        timer.Stop();
+                        m_GuardCandidates.Remove(m);
+                        m.SendLocalizedMessage(502276); // Guards can no longer be called on you.
+                    }
+                }
+				else if (timer == null)
 				{
 					timer = new GuardTimer(m, m_GuardCandidates);
 					timer.Start();
@@ -256,7 +275,9 @@ namespace Server.Regions
 						Mobile fakeCall = null;
 						double prio = 0.0;
 
-						foreach (Mobile v in m.GetMobilesInRange(8))
+                        IPooledEnumerable eable = m.GetMobilesInRange(8);
+
+                        foreach (Mobile v in eable)
 						{
 							if (!v.Player && v != m && !IsGuardCandidate(v) &&
 								((v is BaseCreature) ? ((BaseCreature)v).IsHumanInTown() : (v.Body.IsHuman && v.Region.IsPartOf(this))))
@@ -270,6 +291,8 @@ namespace Server.Regions
 								}
 							}
 						}
+
+                        eable.Free();
 
 						if (fakeCall != null)
 						{
@@ -300,20 +323,26 @@ namespace Server.Regions
 
 			foreach (Mobile m in eable)
 			{
-				if (IsGuardCandidate(m) &&
-					((!AllowReds && m.Murderer && m.Region.IsPartOf(this)) || m_GuardCandidates.ContainsKey(m)))
+				if (IsGuardCandidate(m))
 				{
-					GuardTimer timer = null;
-					m_GuardCandidates.TryGetValue(m, out timer);
+                    if (m_GuardCandidates.ContainsKey(m) || !AllowReds && m.Murderer && m.Region.IsPartOf(this))
+                    {
+                        GuardTimer timer = null;
+                        m_GuardCandidates.TryGetValue(m, out timer);
 
-					if (timer != null)
-					{
-						timer.Stop();
-						m_GuardCandidates.Remove(m);
-					}
+                        if (timer != null)
+                        {
+                            timer.Stop();
+                            m_GuardCandidates.Remove(m);
+                        }
 
-					MakeGuard(m);
-					m.SendLocalizedMessage(502276); // Guards can no longer be called on you.
+                        MakeGuard(m);
+                        m.SendLocalizedMessage(502276); // Guards can no longer be called on you.
+                    }
+                    else if (m is BaseCreature && ((BaseCreature)m).IsMonster && m.Region.IsPartOf(this))
+                    {
+                        MakeGuard(m);
+                    }
 					break;
 				}
 			}
@@ -329,7 +358,7 @@ namespace Server.Regions
 				return false;
 			}
 
-			return (!AllowReds && m.Murderer) || m.Criminal;
+			return (!AllowReds && m.Murderer) || m.Criminal || (m is BaseCreature && ((BaseCreature)m).IsMonster);
 		}
 
 		[Usage("CheckGuarded")]

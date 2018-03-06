@@ -66,7 +66,6 @@ namespace Server.Mobiles
         public override int GetAngerSound() { return 1606; }
         public override int GetHurtSound() { return 1608; }
         public override int GetDeathSound() { return 1607; }
-        public override bool GivesSAArtifact { get { return true; } }
 
         public Niporailem(Serial serial)
             : base(serial)
@@ -129,27 +128,34 @@ namespace Server.Mobiles
             spawned.MoveToWorld(loc, map);
             spawned.Combatant = m;
 
-            foreach (Mobile anim in this.GetMobilesInRange(20))
+            IPooledEnumerable eable = GetMobilesInRange(20);
+
+            foreach (Mobile anim in eable)
             {
                 if (anim is SpectralArmour && (anim is BaseCreature))
                 {
                     ((BaseCreature)anim).SummonMaster = this;
                 }
             }
+
+            eable.Free();
         }
 
         public void DeleteSpectralArmour(Mobile target)
         {
             ArrayList list = new ArrayList();
 
+            IPooledEnumerable eable = GetMobilesInRange(30);
 
-            foreach (Mobile m in this.GetMobilesInRange(30))
+            foreach (Mobile m in eable)
             {
 
                 if (m is SpectralArmour)
                     list.Add(m);
 
             }
+
+            eable.Free();
 
             foreach (Mobile m in list)
             {

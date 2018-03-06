@@ -13,7 +13,7 @@ namespace Server.Engines.VeteranRewards
 {
     public class DaviesLockerAddon : BaseAddon, ISecurable
     {
-        public override BaseAddonDeed Deed { get { return new DaviesLockerAddonDeed(m_South, m_Entries); } }
+        public override BaseAddonDeed Deed { get { return new DaviesLockerAddonDeed(m_Entries); } }
 
         private List<DaviesLockerEntry> m_Entries = new List<DaviesLockerEntry>();
         public List<DaviesLockerEntry> Entries { get { return m_Entries; } }
@@ -243,7 +243,7 @@ namespace Server.Engines.VeteranRewards
         }
     }
 
-    public class DaviesLockerAddonDeed : BaseAddonDeed
+    public class DaviesLockerAddonDeed : BaseAddonDeed, IRewardOption
     {
         public override BaseAddon Addon { get { return new DaviesLockerAddon(m_South, m_Entries); } }
         public override int LabelNumber { get { return 1153535; } } // deed to davies' locker
@@ -260,20 +260,23 @@ namespace Server.Engines.VeteranRewards
         }
 
         [Constructable]
-        public DaviesLockerAddonDeed() : this(true, null)
+        public DaviesLockerAddonDeed() : this(null)
         {
         }
 
-        [Constructable]
-        public DaviesLockerAddonDeed(bool south) : this(south, null)
+        public override void OnDoubleClick(Mobile from)
         {
+            if (IsChildOf(from.Backpack))
+            {
+                from.CloseGump(typeof(RewardOptionGump));
+                from.SendGump(new RewardOptionGump(this));
+            }
+            else
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
         }
 
-        [Constructable]
-        public DaviesLockerAddonDeed(bool south, List<DaviesLockerEntry> list)
+        public DaviesLockerAddonDeed(List<DaviesLockerEntry> list)
         {
-            m_South = south;
-
             if (list == null)
                 m_Entries = new List<DaviesLockerEntry>();
             else
@@ -286,8 +289,21 @@ namespace Server.Engines.VeteranRewards
         {
             base.GetProperties(list);
 
-            list.Add(m_South ? "South" : "East");
             list.Add(1153648, m_Entries.Count.ToString()); // ~1_COUNT~ maps
+        }
+
+        public void GetOptions(RewardOptionList list)
+        {
+            list.Add(0, 1116332); // South 
+            list.Add(1, 1116333); // East
+        }
+
+        public void OnOptionSelected(Mobile from, int choice)
+        {
+            m_South = choice == 0;
+
+            if (!Deleted)
+                base.OnDoubleClick(from);
         }
 
         public DaviesLockerAddonDeed(Serial serial)
@@ -367,14 +383,24 @@ namespace Server.Engines.VeteranRewards
         {
             int v = reader.ReadInt();
 
-            m_Map = reader.ReadMap();
-            m_Location = reader.ReadPoint3D();
-            m_Level = reader.ReadInt();
+            switch (v)
+            {
+                case 1:
+                    m_QuestItem = reader.ReadBool();
+                    goto case 0;
+                case 0:
+                    m_Map = reader.ReadMap();
+                    m_Location = reader.ReadPoint3D();
+                    m_Level = reader.ReadInt();
+                    break;
+            }
         }
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            writer.Write(m_QuestItem);
 
             writer.Write(m_Map);
             writer.Write(m_Location);
@@ -397,6 +423,9 @@ namespace Server.Engines.VeteranRewards
             m_Opened = false;
             m_IsAncient = false;
             m_MessageIndex = -1;
+
+            if (mib is SaltySeaMIB)
+                QuestItem = true;
         }
 
         public SOSEntry(SOS sos) : base(sos.TargetMap, sos.TargetLocation, sos.Level)
@@ -404,6 +433,9 @@ namespace Server.Engines.VeteranRewards
             m_Opened = true;
             m_IsAncient = sos.IsAncient;
             m_MessageIndex = sos.MessageIndex;
+
+            if (sos is SaltySeaSOS)
+                QuestItem = true;
         }
 
         public SOSEntry(GenericReader reader) : base(reader)
@@ -444,6 +476,9 @@ namespace Server.Engines.VeteranRewards
             m_CompletedBy = map.CompletedBy;
             m_Decoder = map.Decoder;
             m_NextReset = map.NextReset;
+
+            if (map is HiddenTreasuresTreasureMap)
+                QuestItem = true;
         }
 
         public TreasureMapEntry(GenericReader reader) : base(reader)
@@ -621,7 +656,12 @@ namespace Server.Engines.VeteranRewards
 
             if (entry.Opened)
             {
-                SOS sos = new SOS(entry.Map, entry.Level);
+                SOS sos;
+
+                if (entry.QuestItem)
+                    sos = new SaltySeaSOS(entry.Map, entry.Level);
+                else
+                    sos = new SOS(entry.Map, entry.Level);
 
                 sos.MessageIndex = entry.MessageIndex;
                 sos.TargetLocation = entry.Location;
@@ -629,7 +669,14 @@ namespace Server.Engines.VeteranRewards
             }
             else
             {
-                return new MessageInABottle(entry.Map, entry.Level);
+                MessageInABottle mib;
+
+                if (entry.QuestItem)
+                    mib = new SaltySeaMIB(entry.Map, entry.Level);
+                else
+                    mib = new MessageInABottle(entry.Map, entry.Level);
+
+                return mib;
             }
         }
 
@@ -638,11 +685,19 @@ namespace Server.Engines.VeteranRewards
             if (entry == null)
                 return null;
 
-            TreasureMap map = new TreasureMap();
-            map.ChestLocation = new Point2D(entry.Location.X, entry.Location.Y);
+            
+            TreasureMap map;
 
-            map.Level = entry.Level;
-            map.Facet = entry.Map;
+            if (entry.QuestItem)
+                map = new HiddenTreasuresTreasureMap(entry.Level, entry.Map, new Point2D(entry.Location.X, entry.Location.Y));
+            else
+            {
+                map = new TreasureMap();
+
+                map.Facet = entry.Map;
+                map.Level = entry.Level;
+                map.ChestLocation = new Point2D(entry.Location.X, entry.Location.Y);
+            }
 
             map.Completed = entry.Completed;
             map.CompletedBy = entry.CompletedBy;

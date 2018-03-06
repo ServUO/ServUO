@@ -142,29 +142,7 @@ namespace Server.Multis
                 return m_Current.Components;
             }
         }
-
-        public override int GetMaxUpdateRange()
-        {
-            return Core.GlobalMaxUpdateRange;
-        }
-
-        public override int GetUpdateRange(Mobile m)
-        {
-            int min = m.NetState != null ? m.NetState.UpdateRange : 18;
-            int max = Core.GlobalMaxUpdateRange;
-
-            int w = CurrentState.Components.Width;
-            int h = CurrentState.Components.Height - 1;
-            int v = min + ((w > h ? w : h) / 2);
-
-            if (v > max)
-                v = max;
-            else if (v < min)
-                v = min;
-
-            return v;
-        }
-
+        
         public DesignState CurrentState
         {
             get
@@ -1386,7 +1364,8 @@ namespace Server.Multis
             0x3EE, 0x709, 0x71E, 0x721,
             0x738, 0x750, 0x76C, 0x788,
             0x7A3, 0x7BA, 0x35D2, 0x3609,
-            0x4317, 0x4318, 0x4B07, 0x7807
+            0x4317, 0x4318, 0x4B07, 0x7807,
+            0x9AEA, 0x9B4F
         };
 
         /* Stair sequence IDs
@@ -1396,7 +1375,8 @@ namespace Server.Multis
         private static readonly int[] m_StairSeqs = new int[]
         {
             0x3EF, 0x70A, 0x722, 0x739,
-            0x751, 0x76D, 0x789, 0x7A4
+            0x751, 0x76D, 0x789, 0x7A4,
+            0x9B50, 0x9AEB
         };
 
         /* Other stair IDs
@@ -1413,7 +1393,9 @@ namespace Server.Multis
             0x4364, 0x4362, 0x4363, 0x4365,
             0x4B05, 0x4B04, 0x4B34, 0x4B33,
             0x7809, 0x7808, 0x780A, 0x780B,
-            0x7BB, 0x7BC
+            0x7BB,  0x7BC,  0x9AEB, 0x9AEC,
+            0x9AED, 0x9B50, 0x9AEE, 0x9B51,
+            0x9B52, 0x9B53
         };
 
         public static bool IsStairBlock(int id)
@@ -1681,18 +1663,110 @@ namespace Server.Multis
                 // Add the stairs : Insert described components
                 int z = GetLevelZ(context.Level, context.Foundation);
 
-                for (int i = 0; i < stairs.List.Length; ++i)
+                if (itemID >= 7668 && itemID <= 7675)
                 {
-                    MultiTileEntry entry = stairs.List[i];
+                    int idOffset = itemID <= 7671 ? 101 : 0;
+                    int[][] list = new int[][]{};
 
-                    if (entry.m_ItemID != 1)
-                        mcl.Add(entry.m_ItemID, x + entry.m_OffsetX, y + entry.m_OffsetY, z + entry.m_OffsetZ);
+                    switch (itemID)
+                    {
+                        case 7668: list = _StairsSouth; break;
+                        case 7669: list = _StairsWest; break;
+                        case 7670: list = _StairsNorth; break;
+                        case 7671: list = _StairsEast; break;
+                        case 7672: list = _StairsSouth; break;
+                        case 7673: list = _StairsWest; break;
+                        case 7674: list = _StairsNorth; break;
+                        case 7675: list = _StairsEast; break;
+                    }
+
+                    for (int i = 0; i < list.Length; i++)
+                    {
+                        if (list[i][0] != 1)
+                        {
+                            mcl.Add(list[i][0] - idOffset, x + list[i][1], y + list[i][2], z + list[i][3]);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < stairs.List.Length; ++i)
+                    {
+                        MultiTileEntry entry = stairs.List[i];
+
+                        if (entry.m_ItemID != 1)
+                        {
+                            mcl.Add(entry.m_ItemID, x + entry.m_OffsetX, y + entry.m_OffsetY, z + entry.m_OffsetZ);
+                        }
+                    }
                 }
 
                 // Update revision
                 design.OnRevised();
             }
         }
+
+        #region TOL Stair Components cannot be found in MultiData
+        private static int[][] _StairsSouth = 
+        {
+            new int[] { 0x9B4F, 0,  -3, 0,  },
+            new int[] { 0x9B4F, 0,  -3, 5,  },
+            new int[] { 0x9B4F, 0,  -3, 10, },
+            new int[] { 0x9B50, 0,  -3, 15, },
+            new int[] { 0x9B4F, 0,  -2, 0,  },
+            new int[] { 0x9B4F, 0,  -2, 5,  },
+            new int[] { 0x9B50, 0,  -2, 10, },
+            new int[] { 0x9B4F, 0,  -1, 0,  },
+            new int[] { 0x9B50, 0,  -1, 5,  },
+            new int[] { 0x0001, 0 , 0, 0,  },
+            new int[] { 0x9B50, 0 , 0, 0,  },
+        };
+
+        private static int[][] _StairsWest = 
+        {
+            new int[] { 0x0001, 0,  0, 0,  },
+            new int[] { 0x9B53, 0,  0, 0,  },
+            new int[] { 0x9B4F, 1,  0, 0,  },
+            new int[] { 0x9B53, 1,  0, 5,  },
+            new int[] { 0x9B4F, 2,  0, 0,  },
+            new int[] { 0x9B4F, 2,  0, 5,  },
+            new int[] { 0x9B53, 2,  0, 10, },
+            new int[] { 0x9B4F, 3,  0, 0,  },
+            new int[] { 0x9B4F, 3,  0, 5,  },
+            new int[] { 0x9B4F, 3, 0, 10, },
+            new int[] { 0x9B53, 3 , 0, 15, },
+        };
+
+        private static int[][] _StairsNorth = 
+        {
+            new int[] { 0x0001, 0,  0, 0,  },
+            new int[] { 0x9B52, 0,  0, 0,  },
+            new int[] { 0x9B4F, 0,  1, 0,  },
+            new int[] { 0x9B52, 0,  1, 5,  },
+            new int[] { 0x9B4F, 0,  2, 0,  },
+            new int[] { 0x9B4F, 0,  2, 5,  },
+            new int[] { 0x9B52, 0,  2, 10, },
+            new int[] { 0x9B4F, 0,  3, 0,  },
+            new int[] { 0x9B4F, 0,  3, 5,  },
+            new int[] { 0x9B4F, 0,  3, 10,  },
+            new int[] { 0x9B52, 0,  3, 15,  },
+        };
+
+        private static int[][] _StairsEast = 
+        {
+            new int[] { 0x9B4F, -3, 0, 0  },
+            new int[] { 0x9B4F, -3, 0, 5  },
+            new int[] { 0x9B4F, -3, 0, 10 },
+            new int[] { 0x9B51, -3, 0, 15 },
+            new int[] { 0x9B4F, -2, 0, 0  },
+            new int[] { 0x9B4F, -2, 0, 5  },
+            new int[] { 0x9B51, -2, 0, 10 },
+            new int[] { 0x9B4F, -1, 0, 0  },
+            new int[] { 0x9B51, -1, 0, 5  },
+            new int[] { 0x0001, 0, 0, 0  },
+            new int[] { 0x9B51, 0, 0, 0  },
+        };
+        #endregion
 
         private static void TraceValidity(NetState state, int itemID)
         {
@@ -1829,16 +1903,21 @@ namespace Server.Multis
 
             HouseFoundation foundation = World.FindItem(pvSrc.ReadInt32()) as HouseFoundation;
 
-            if (foundation != null && from.Map == foundation.Map && from.InRange(foundation.GetWorldLocation(), 24) && from.CanSee(foundation))
+            if (foundation != null && from.Map == foundation.Map)
             {
-                DesignState stateToSend;
+                var range = foundation.GetUpdateRange(from);
 
-                if (context != null && context.Foundation == foundation)
-                    stateToSend = foundation.DesignState;
-                else
-                    stateToSend = foundation.CurrentState;
+                if (Utility.InRange(from.Location, foundation.GetWorldLocation(), range) && from.CanSee(foundation))
+                {
+                    DesignState stateToSend;
 
-                stateToSend.SendDetailedInfoTo(state);
+                    if (context != null && context.Foundation == foundation)
+                        stateToSend = foundation.DesignState;
+                    else
+                        stateToSend = foundation.CurrentState;
+
+                    stateToSend.SendDetailedInfoTo(state);
+                }
             }
         }
 

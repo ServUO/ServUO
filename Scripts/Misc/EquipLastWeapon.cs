@@ -1,6 +1,7 @@
 using System;
 using Server;
 using Server.Mobiles;
+using Server.Items;
 
 namespace Server.Network
 {
@@ -15,19 +16,21 @@ namespace Server.Network
         {
             PlayerMobile from = state.Mobile as PlayerMobile;
 
-            if (from != null)
+            if (from != null && from.Backpack != null)
             {
-                if (from.LastWeapon != null && from.LastWeapon.IsChildOf(from.Backpack))
+                BaseWeapon toEquip = from.LastWeapon;
+                BaseWeapon toDisarm = from.FindItemOnLayer(Layer.OneHanded) as BaseWeapon;
+
+                if (toDisarm == null)
+                    toDisarm = from.FindItemOnLayer(Layer.TwoHanded) as BaseWeapon;
+
+                if (toDisarm != null)
                 {
-                    Item toEquip = from.LastWeapon;
-                    Item toDisarm = from.FindItemOnLayer(Layer.OneHanded);
+                    from.Backpack.DropItem(toDisarm);
+                }
 
-                    if (toDisarm == null || !toDisarm.Movable)
-                        toDisarm = from.FindItemOnLayer(Layer.TwoHanded);
-
-                    if (toDisarm != null && toDisarm.Movable)
-                        from.Backpack.DropItem(toDisarm);
-
+                if (toEquip != toDisarm && toEquip != null && toEquip.Movable && toEquip.IsChildOf(from.Backpack))
+                {
                     from.EquipItem(toEquip);
                 }
             }

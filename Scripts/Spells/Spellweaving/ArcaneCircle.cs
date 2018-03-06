@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
+using Server.Spells.SkillMasteries;
+using System.Linq;
 
 namespace Server.Spells.Spellweaving
 {
@@ -44,15 +46,15 @@ namespace Server.Spells.Spellweaving
 
         public override bool CheckCast()
         {
-            if (!IsValidLocation(this.Caster.Location, this.Caster.Map))
+            if (!IsValidLocation(Caster.Location, Caster.Map))
             {
-                this.Caster.SendLocalizedMessage(1072705); // You must be standing on an arcane circle, pentagram or abbatoir to use this spell.
+                Caster.SendLocalizedMessage(1072705); // You must be standing on an arcane circle, pentagram or abbatoir to use this spell.
                 return false;
             }
 
-            if (this.GetArcanists().Count < 2)
+            if (GetArcanists().Count < 2)
             {
-                this.Caster.SendLocalizedMessage(1080452); //There are not enough spellweavers present to create an Arcane Focus.
+                Caster.SendLocalizedMessage(1080452); //There are not enough spellweavers present to create an Arcane Focus.
                 return false;
             }
 
@@ -61,24 +63,26 @@ namespace Server.Spells.Spellweaving
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                this.Caster.FixedParticles(0x3779, 10, 20, 0x0, EffectLayer.Waist);
-                this.Caster.PlaySound(0x5C0);
+                Caster.FixedParticles(0x3779, 10, 20, 0x0, EffectLayer.Waist);
+                Caster.PlaySound(0x5C0);
 
-                List<Mobile> Arcanists = this.GetArcanists();
+                List<Mobile> Arcanists = GetArcanists();
 
-                TimeSpan duration = TimeSpan.FromHours(Math.Max(1, (int)(this.Caster.Skills.Spellweaving.Value / 24)));
+                TimeSpan duration = TimeSpan.FromHours(Math.Max(1, (int)(Caster.Skills.Spellweaving.Value / 24)));
 
                 duration += TimeSpan.FromHours(Math.Min(5, Arcanists.Count));
 
-                int strengthBonus = Math.Min(Arcanists.Count, IsBonus(this.Caster.Location, this.Caster.Map) ? 6 : 5);	//The Sanctuary is a special, single location place
+                int strengthBonus = Math.Min(IsBonus(Caster.Location, Caster.Map) ? 6 : 5, Arcanists.Sum(m => GetStrength(m))); // Math.Min(Arcanists.Count, IsBonus(Caster.Location, Caster.Map) ? 6 : 5);	//The Sanctuary is a special, single location place
 
                 for (int i = 0; i < Arcanists.Count; i++)
-                    this.GiveArcaneFocus(Arcanists[i], duration, strengthBonus);
+                {
+                    GiveArcaneFocus(Arcanists[i], duration, strengthBonus);
+                }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private static bool IsBonus(Point3D p, Map m)
@@ -87,6 +91,11 @@ namespace Server.Spells.Spellweaving
                 (p.X == 6267 && p.Y == 131) ||
                 (p.X == 6589 && p.Y == 178) ||
                 (p.X == 1431 && p.Y == 1696); // new brit bank
+        }
+
+        private static int GetStrength(Mobile m)
+        {
+            return Math.Max(1, MasteryInfo.GetMasteryLevel(m, SkillName.Spellweaving));
         }
 
         private static bool IsValidLocation(Point3D location, Map map)
@@ -134,17 +143,20 @@ namespace Server.Spells.Spellweaving
         {
             List<Mobile> weavers = new List<Mobile>();
 
-            weavers.Add(this.Caster);
+            weavers.Add(Caster);
 
             //OSI Verified: Even enemies/combatants count
-            foreach (Mobile m in this.Caster.GetMobilesInRange(1))	//Range verified as 1
+            IPooledEnumerable eable = Caster.GetMobilesInRange(1);
+            foreach (Mobile m in eable)	//Range verified as 1
             {
-                if (m != this.Caster && m is PlayerMobile && this.Caster.CanBeBeneficial(m, false) && Math.Abs(this.Caster.Skills.Spellweaving.Value - m.Skills.Spellweaving.Value) <= 20 && !(m is Clone))
+                if (m != Caster && m is PlayerMobile && Caster.CanBeBeneficial(m, false) && Math.Abs(Caster.Skills.Spellweaving.Value - m.Skills.Spellweaving.Value) <= 20 && !(m is Clone))
                 {
                     weavers.Add(m);
                 }
                 // Everyone gets the Arcane Focus, power capped elsewhere
             }
+
+            eable.Free();
 
             return weavers;
         }

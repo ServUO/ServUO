@@ -8,8 +8,6 @@ namespace Server.Items
 {
     public class EnchantedApple : BaseMagicalFood
     {
-        private TimeSpan _CooldownDuration;
-
         [Constructable]
         public EnchantedApple()
             : base(0x2FD8)

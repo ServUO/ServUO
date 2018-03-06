@@ -217,6 +217,8 @@ namespace Server.Mobiles
             SummonEnd = DateTime.UtcNow + duration;
 
             MirrorImage.AddClone(m_Caster);
+
+            IgnoreMobiles = true;
         }
 
         public Clone(Serial serial)
@@ -252,12 +254,15 @@ namespace Server.Mobiles
                 return new CloneAI(this);
             }
         }
+
+        public override bool CanDetectHidden { get { return false; } }
+
         public override bool IsHumanInTown()
         {
             return false;
         }
 
-        public override bool CheckShove(Mobile shoved)
+        public override bool OnMoveOver(Mobile m)
         {
             return true;
         }
@@ -321,13 +326,6 @@ namespace Server.Mobiles
             m.CurrentSpeed = m.ActiveSpeed;
         }
 
-        public override bool CanDetectHidden
-        {
-            get
-            {
-                return false;
-            }
-        }
         public override bool Think()
         {
             // Clones only follow their owners

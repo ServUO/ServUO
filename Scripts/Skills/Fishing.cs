@@ -194,40 +194,32 @@ namespace Server.Engines.Harvest
                     }
                 }
 
-                foreach (BaseQuest quest in player.Quests)
+                if (from.Region.IsPartOf("Underworld"))
                 {
-                    if (quest is SomethingFishy)
+                    foreach (BaseQuest quest in player.Quests)
                     {
-                        if (Utility.RandomDouble() < 0.1 && (from.Region != null && from.Region.IsPartOf("AbyssEntrance")))
+                        if (quest is SomethingFishy && Utility.RandomDouble() < 0.1)
                         {
                             Item red = new RedHerring();
-                            pack.AddItem(red);
+                            from.AddToBackpack(red);
                             player.SendLocalizedMessage(1095047, "", 0x23); // You pull a shellfish out of the water, but it doesn't have a rainbow pearl.
-                            break;
+                            return true;
                         }
-                        return true;
-                    }
 
-                    if (quest is ScrapingtheBottom)
-                    {
-                        if (Utility.RandomDouble() < 0.1 && (from.Region != null && from.Region.IsPartOf("AbyssEntrance")))
+                        if (quest is ScrapingtheBottom && Utility.RandomDouble() < 0.1)
                         {
                             Item mug = new MudPuppy();
-                            pack.AddItem(mug);
+                            from.AddToBackpack(mug);
                             player.SendLocalizedMessage(1095064, "", 0x23); // You pull a shellfish out of the water, but it doesn't have a rainbow pearl.
-                            break;
+                            return true;
                         }
-                        return true;
                     }
                 }
 
                 #region High Seas Charydbis
                 if (Core.HS && tool is FishingPole && CharydbisSpawner.SpawnInstance != null && CharydbisSpawner.SpawnInstance.IsSummoned)
                 {
-                    if (pack == null)
-                        return false;
-
-                    Item oracle = pack.FindItemByType(typeof(OracleOfTheSea));
+                    Item oracle = from.Backpack.FindItemByType(typeof(OracleOfTheSea));
                     FishingPole pole = tool as FishingPole;
                     CharydbisSpawner sp = CharydbisSpawner.SpawnInstance;
 

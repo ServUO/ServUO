@@ -59,7 +59,11 @@ namespace Server.Items
         {
             if (targeted is Item)
             {
-                if (targeted is BaseArmor)
+                if (!IsChildOf(from.Backpack) || !((Item)targeted).IsChildOf(from.Backpack))
+                {
+                    from.SendLocalizedMessage(1054107); // This item must be in your backpack.
+                }
+                else if (targeted is BaseArmor)
                 {
                     BaseArmor armor = (BaseArmor)targeted;
                     if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (armor.RequiredRace == Race.Gargoyle && armor.Layer== Layer.Earrings))
@@ -135,7 +139,7 @@ namespace Server.Items
             }
         }
 
-        public int OnCraft(int quality, bool markersMark, Mobile from, CraftSystem system, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public int OnCraft(int quality, bool markersMark, Mobile from, CraftSystem system, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             switch (resHue)
             {
@@ -210,7 +214,11 @@ namespace Server.Items
 
         public override void Confirm(Mobile from)
         {
-            if (m_Item is BaseShield || m_Item.Layer == Layer.Neck || m_Item.Layer == Layer.Earrings || m_Item.Layer == Layer.Helm)
+            if (!m_Lense.IsChildOf(from.Backpack) || !m_Item.IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1054107); // This item must be in your backpack.
+            }
+            else if (m_Item is BaseShield || m_Item.Layer == Layer.Neck || m_Item.Layer == Layer.Earrings || m_Item.Layer == Layer.Helm)
             {
                 if (m_Item is BaseArmor)
                 {

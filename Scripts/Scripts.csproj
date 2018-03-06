@@ -44,7 +44,6 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounting\AccessRestrictions.cs">
@@ -538,6 +537,7 @@
     <Compile Include="Gumps\ReclaimVendorGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\ReLoginClaimGump.cs" />
     <Compile Include="Gumps\ReportMurderer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -854,6 +854,7 @@
     <Compile Include="Items\Functional\CoralTheOwl.cs" />
     <Compile Include="Items\Functional\DragonTurtleEgg.cs" />
     <Compile Include="Items\Functional\EtherealRetouchingTool.cs" />
+    <Compile Include="Items\Functional\GoblinFloorTrap.cs" />
     <Compile Include="Items\Functional\HouseCraftables.cs" />
     <Compile Include="Items\Functional\Incubator.cs" />
     <Compile Include="Items\Functional\ScaleCollar.cs" />
@@ -863,6 +864,7 @@
     <Compile Include="Items\Functional\WallSafe.cs" />
     <Compile Include="Items\Internal\BlightedGroveTeleporters.cs" />
     <Compile Include="Items\Internal\BlueNinjaQuestTeleporter.cs" />
+    <Compile Include="Items\Internal\CrystalTeleporter.cs" />
     <Compile Include="Items\Internal\GreenNinjaQuestTeleporter.cs" />
     <Compile Include="Items\Internal\ItemInterfaces.cs" />
     <Compile Include="Items\Internal\MacawSpawner.cs" />
@@ -936,9 +938,11 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\WardedDemonboneBracers.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\WardensArmorOfAugmentation.cs" />
     <Compile Include="Items\Resource\BloodOfTheDarkFather.cs" />
+    <Compile Include="Items\Resource\OilFlask.cs" />
     <Compile Include="Items\Resource\SmallFish.cs" />
     <Compile Include="Items\Resource\WorkableGlass.cs" />
     <Compile Include="Items\StoreBought\MerchantsTrinket.cs" />
+    <Compile Include="Items\StoreBought\MythicalCharacterToken.cs" />
     <Compile Include="Items\StoreBought\PetBrandingIron.cs" />
     <Compile Include="Items\StoreBought\SmugglersEdge.cs" />
     <Compile Include="Items\StoreBought\StableSlotIncreaseToken.cs" />
@@ -2028,7 +2032,6 @@
     <Compile Include="Mobiles\Normal\ExodusMinion.cs" />
     <Compile Include="Mobiles\Normal\ExodusOverseer.cs" />
     <Compile Include="Mobiles\Normal\FairyDragon.cs" />
-    <Compile Include="Mobiles\Normal\FairyDragon1.cs" />
     <Compile Include="Mobiles\Normal\FanDancer.cs" />
     <Compile Include="Mobiles\Normal\FeralTreefellow.cs" />
     <Compile Include="Mobiles\Normal\Ferret.cs" />
@@ -2201,9 +2204,11 @@
     <Compile Include="Mobiles\NPCs\Kodar.cs" />
     <Compile Include="Mobiles\NPCs\Lenley.cs" />
     <Compile Include="Mobiles\NPCs\Percolem.cs" />
+    <Compile Include="Mobiles\NPCs\QuartermasterFlint.cs" />
     <Compile Include="Mobiles\NPCs\Regina.cs" />
     <Compile Include="Mobiles\NPCs\ShrineHealer.cs" />
     <Compile Include="Mobiles\NPCs\Thalia.cs" />
+    <Compile Include="Mobiles\NPCs\Tobin.cs" />
     <Compile Include="Mobiles\NPCs\Vrulkax.cs" />
     <Compile Include="Mobiles\NPCs\WanderingShaman.cs" />
     <Compile Include="Mobiles\PlayerMobile.cs" />
@@ -2846,7 +2851,6 @@
     <Compile Include="Quests\StudyOfTheSolenHive\Objectives.cs" />
     <Compile Include="Quests\StudyOfTheSolenHive\StudyOfSolenQuest.cs" />
     <Compile Include="Quests\Mad Scientist\Items\SuteksDirtyGear.cs" />
-    <Compile Include="Items\Quest\FlaskOfOil.cs" />
     <Compile Include="Items\Quest\ModifiedClockworkAssembly.cs" />
     <Compile Include="Items\Quest\SecretWallTeleporters.cs" />
     <Compile Include="Mobiles\NPCs\Vollem.cs" />
@@ -3330,6 +3334,12 @@
     <Compile Include="Services\ExploringTheDeep\Questers\SBHepler.cs" />
     <Compile Include="Services\ExploringTheDeep\Regions.cs" />
     <Compile Include="Services\Factions\Core\Persistence.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\CollectionBox.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\EnhanctedBandage.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\FactionEquipment.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\PowderOfPerseverance.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\ShrineGem.cs" />
+    <Compile Include="Services\Factions\Items\Equipment\StrongholdRune.cs" />
     <Compile Include="Services\FireCasino\CasinoGumps.cs" />
     <Compile Include="Services\FireCasino\DiceGames.cs" />
     <Compile Include="Services\FireCasino\FortuesFireGrog.cs" />
@@ -4952,9 +4962,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\FarmableWheat.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Consumables\AdmiralHeartyRum.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\Asian.cs">
@@ -9109,73 +9116,6 @@
     <Compile Include="Items\Artifacts\Equipment\Weapons\MuseumWeapons.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ConPVP\AcceptDuelGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\Arena.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\ArenaGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\BeginGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\DuelContext.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\DuelContextGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\DuelTeleporterAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\Games\EventGame.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\Ladder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\LadderGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\Participant.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\ParticipantGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\PickRulesetGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\Preferences.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\ReadyGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\ReadyUpGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\Ruleset.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\RulesetGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\RulesetLayout.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\SafeZone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\StakesContainer.cs" />
-    <Compile Include="Services\ConPVP\Tournament.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ConPVP\Trophy.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Craft\Core\AlterItem.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9675,13 +9615,9 @@
     <Compile Include="Services\MiniChampionSystem\MiniChampionSpawn.cs" />
     <Compile Include="Services\MiniChampionSystem\MiniChampSpawnInfo.cs" />
     <Compile Include="Services\MiniChampionSystem\MiniChampType.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MCRestartTimer.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MCSliceTimer.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MiniChampionAltar.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MiniChampionSpawn.cs" />
-    <Compile Include="Services\MiniChampionSystem\OldSystem\MiniChampType.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Gumps\QAndAGump.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Q&amp;AEntry.cs" />
+    <Compile Include="Services\MondainsLegacyQuests\QuestHintItem.cs" />
     <Compile Include="Services\MondainsLegacyQuests\SimpleObjective.cs" />
     <Compile Include="Services\Monster Stealing\Core\BaseBalmOrLotion.cs" />
     <Compile Include="Services\Monster Stealing\Core\BaseThieveConsumable.cs" />
@@ -9749,6 +9685,18 @@
     <Compile Include="Services\PointsSystems\QueensLoyalty.cs" />
     <Compile Include="Services\PointsSystems\ShameCrystals.cs" />
     <Compile Include="Services\PointsSystems\VoidPool.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaDuel.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaExitBanner.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaGate.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaManager.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaStats.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaStone.cs" />
+    <Compile Include="Services\PVP Arena System\ArenaTeam.cs" />
+    <Compile Include="Services\PVP Arena System\Definitions.cs" />
+    <Compile Include="Services\PVP Arena System\Gumps.cs" />
+    <Compile Include="Services\PVP Arena System\PVPArena.cs" />
+    <Compile Include="Services\PVP Arena System\PVPArenaSystem.cs" />
+    <Compile Include="Services\PVP Arena System\Region.cs" />
     <Compile Include="Services\Reports\Persistence\PersistableObject.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9931,6 +9879,7 @@
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\TemporaryForge.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\VoidPoolRewards.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\WoodsmanTalisman.cs" />
+    <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Level3Spawner.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Region.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\VoidPoolController.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\VoidPoolStats.cs" />
@@ -10015,6 +9964,7 @@
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\MysteriousTunnel.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\WrongMazeWall.cs" />
     <Compile Include="Services\RunicReforging\ReforgingContext.cs" />
+    <Compile Include="Services\Spawner\SpawnObject.cs" />
     <Compile Include="Services\Tomb of Kings\Arisen Invasion\ArisenController.cs" />
     <Compile Include="Services\Tomb of Kings\Chambers\Chamber.cs" />
     <Compile Include="Services\Tomb of Kings\Chambers\ChamberBarrier.cs" />

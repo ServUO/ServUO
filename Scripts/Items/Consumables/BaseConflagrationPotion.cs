@@ -351,9 +351,11 @@ namespace Server.Items
                         return;
 					
                     List<Mobile> mobiles = new List<Mobile>();
+                    IPooledEnumerable eable = m_Item.GetMobilesInRange(0);
 
-                    foreach (Mobile mobile in this.m_Item.GetMobilesInRange(0))
+                    foreach (Mobile mobile in eable)
                         mobiles.Add(mobile);
+                    eable.Free();
 
                     for (int i = 0; i < mobiles.Count; i++)
                     {

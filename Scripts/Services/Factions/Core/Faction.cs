@@ -17,10 +17,77 @@ namespace Server.Factions
         public static bool NewCoMLocation { get; private set; }
         public static bool Enabled { get; private set; }
 
+        public static List<Mobile> FactionsDisabledNotice;
+
+        public static void AddDisabledNotice(Mobile m)
+        {
+            if (FactionsDisabledNotice == null)
+            {
+                FactionsDisabledNotice = new List<Mobile>();
+                FactionsDisabledNotice.Add(m);
+            }
+            else if(!FactionsDisabledNotice.Contains(m))
+            {
+                FactionsDisabledNotice.Add(m);
+            }
+        }
+
+        public static void Serialize(GenericWriter writer)
+        {
+            writer.Write(0);
+            writer.Write(FactionsDisabledNotice == null ? 0 : FactionsDisabledNotice.Count);
+
+            if (FactionsDisabledNotice != null)
+            {
+                for (int i = 0; i < FactionsDisabledNotice.Count; i++)
+                {
+                    writer.Write(FactionsDisabledNotice[i]);
+                }
+            }
+        }
+
+        public static void Deserlialize(GenericReader reader)
+        {
+            int version = reader.ReadInt();
+            int count = reader.ReadInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                Mobile m = reader.ReadMobile();
+
+                if (m != null)
+                {
+                    AddDisabledNotice(m);
+                }
+            }
+        }
+
+        public static void OnLogin(LoginEventArgs e)
+        {
+            Mobile m = e.Mobile;
+
+            if (FactionsDisabledNotice != null && FactionsDisabledNotice.Contains(m))
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
+                    {
+                        m.SendGump(new Server.Gumps.BasicInfoGump(1155489));
+                        /*Notice: The faction system has been replaced with the Vice vs Virtue system.  We invite you to check out 
+                         * this new and exciting PvP experience!  As a result some items including Greater Stamina Potions, Supernova
+                         * Potions, Shrine Gems, Faction Stronghold Runes, and Cloaks of Command have been removed from your 
+                         * inventory.  Some of these items are available from participating in Vice vs Virtue.  You can join Vice 
+                         * vs Virtue by clicking on "Join Vice vs Virtue" from the front page of the guild menu.*/
+
+                        FactionsDisabledNotice.Remove(m);
+                    });
+            }
+        }
+
         public static void Configure()
         {
             NewCoMLocation = Config.Get("Factions.NewCoMLocation", true);
-            Enabled = Config.Get("Factions.Enabled", false);
+            Enabled = !Server.Engines.VvV.ViceVsVirtueSystem.Enabled;
+
+            EventSink.Login += OnLogin;
 
             /*  Disabling Factions:
              *  PlayerStates are not loaded, ie faction players lose their faction status 
@@ -960,7 +1027,7 @@ namespace Server.Factions
 
         #region Skill Loss
         public const double SkillLossFactor = 1.0 / 3;
-        public static readonly TimeSpan SkillLossPeriod = TimeSpan.FromMinutes(20.0);
+        public static TimeSpan SkillLossPeriod { get { return Core.SA ? TimeSpan.FromMinutes(5) : TimeSpan.FromMinutes(20.0); } }
 
         private static readonly Dictionary<Mobile, SkillLossContext> m_SkillLoss = new Dictionary<Mobile, SkillLossContext>();
 
@@ -1194,11 +1261,6 @@ namespace Server.Factions
 
             if (victimState == null)
                 return;
-
-            #region Dueling
-            if (victim.Region.IsPartOf<Engines.ConPVP.SafeZone>())
-                return;
-            #endregion
 
             if (killer == victim || killerState.Faction != victimState.Faction)
                 ApplySkillLoss(victim);

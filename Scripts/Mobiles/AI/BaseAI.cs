@@ -220,15 +220,14 @@ namespace Server.Mobiles
 			{
 				if (from == m_Mobile.ControlMaster)
 				{
+                    list.Add(new InternalEntry(from, 6111, 14, m_Mobile, this, OrderType.Attack)); // Command: Kill
+                    list.Add(new InternalEntry(from, 6108, 14, m_Mobile, this, OrderType.Follow)); // Command: Follow
 					list.Add(new InternalEntry(from, 6107, 14, m_Mobile, this, OrderType.Guard)); // Command: Guard
-					list.Add(new InternalEntry(from, 6108, 14, m_Mobile, this, OrderType.Follow)); // Command: Follow
 
-					if (m_Mobile.CanDrop)
-					{
-						list.Add(new InternalEntry(from, 6109, 14, m_Mobile, this, OrderType.Drop)); // Command: Drop
-					}
-
-					list.Add(new InternalEntry(from, 6111, 14, m_Mobile, this, OrderType.Attack)); // Command: Kill
+                    if (m_Mobile.CanDrop)
+                    {
+                        list.Add(new InternalEntry(from, 6109, 14, m_Mobile, this, OrderType.Drop)); // Command: Drop
+                    }
 
 					list.Add(new InternalEntry(from, 6112, 14, m_Mobile, this, OrderType.Stop)); // Command: Stop
 					list.Add(new InternalEntry(from, 6114, 14, m_Mobile, this, OrderType.Stay)); // Command: Stay
@@ -240,7 +239,7 @@ namespace Server.Mobiles
 						list.Add(new InternalEntry(from, 6113, 14, m_Mobile, this, OrderType.Transfer)); // Transfer
 					}
 
-					list.Add(new InternalEntry(from, 6118, 14, m_Mobile, this, OrderType.Release)); // Release
+					list.Add(new InternalEntry(from, m_Mobile is BaseHire ? 6129 : 6118, 14, m_Mobile, this, OrderType.Release)); // Dismiss / Release
 				}
 				else if (m_Mobile.IsPetFriend(from))
 				{
@@ -582,7 +581,6 @@ namespace Server.Mobiles
 
 									if (m_Mobile.CheckControlChance(e.Mobile))
 									{
-
 										m_Mobile.ControlOrder = OrderType.Guard;
                                         m_Mobile.ControlTarget = null;
 									}
@@ -1437,7 +1435,7 @@ namespace Server.Mobiles
 			{
 				int iCurrDist = (int)m_Mobile.GetDistanceToSqrt(m_Mobile.ControlTarget);
 
-				if (iCurrDist > m_Mobile.RangePerception)
+				if (iCurrDist > m_Mobile.RangePerception * 5)
 				{
 					m_Mobile.DebugSay("I have lost the one to follow. I stay here");
 
@@ -1692,7 +1690,9 @@ namespace Server.Mobiles
 					Mobile newCombatant = null;
 					double newScore = 0.0;
 
-					foreach (Mobile aggr in m_Mobile.GetMobilesInRange(m_Mobile.RangePerception))
+                    IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
+
+                    foreach (Mobile aggr in eable)
 					{
 						if (!m_Mobile.CanSee(aggr) || aggr.Combatant != m_Mobile)
 						{
@@ -1712,6 +1712,8 @@ namespace Server.Mobiles
 							newScore = aggrScore;
 						}
 					}
+
+                    eable.Free();
 
 					if (newCombatant != null)
 					{
@@ -1743,6 +1745,7 @@ namespace Server.Mobiles
 			m_Mobile.DebugSay("I have been released");
 
 			m_Mobile.PlaySound(m_Mobile.GetAngerSound());
+            Mobile master = m_Mobile.ControlMaster;
 
 			m_Mobile.SetControlMaster(null);
 			m_Mobile.SummonMaster = null;
@@ -1764,7 +1767,19 @@ namespace Server.Mobiles
 			}
 
 			m_Mobile.BeginDeleteTimer();
-			m_Mobile.DropBackpack();
+
+            if (m_Mobile is BaseHire)
+            {
+                if(master != null)
+                {
+                    m_Mobile.SayTo(master, 502034, 0x3B2); // I thank thee for thy kindness!
+                    m_Mobile.SayTo(master, 502005, 0x3B2); // I quit.
+                }
+            }
+            else
+            {
+                m_Mobile.DropBackpack();
+            }
 
 			return true;
 		}
@@ -2978,52 +2993,6 @@ namespace Server.Mobiles
 			return false;
 		}
 
-		public virtual void DetectHidden()
-		{
-			if (m_Mobile.Deleted || m_Mobile.Map == null)
-			{
-				return;
-			}
-
-			m_Mobile.DebugSay("Checking for hidden players");
-
-			double srcSkill = m_Mobile.Skills[SkillName.DetectHidden].Value;
-
-			if (srcSkill <= 0)
-			{
-				return;
-			}
-
-			IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
-			foreach (Mobile trg in eable)
-			{
-				if (trg != m_Mobile && trg.Player && trg.Alive && trg.Hidden && trg.IsPlayer() && m_Mobile.InLOS(trg))
-				{
-					m_Mobile.DebugSay("Trying to detect {0}", trg.Name);
-
-					double trgHiding = trg.Skills[SkillName.Hiding].Value / 2.9;
-					double trgStealth = trg.Skills[SkillName.Stealth].Value / 1.8;
-
-					double chance = srcSkill / 1.2 - Math.Min(trgHiding, trgStealth);
-
-					if (chance < srcSkill / 10)
-					{
-						chance = srcSkill / 10;
-					}
-
-					chance /= 100;
-                    double shadow = Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(trg);
-
-					if (chance > Utility.RandomDouble())
-					{
-						trg.RevealingAction();
-						trg.SendLocalizedMessage(500814); // You have been revealed!
-					}
-				}
-			}
-			eable.Free();
-		}
-
 		public virtual void Deactivate()
 		{
 			if (m_Mobile.PlayerRangeSensitive)
@@ -3086,10 +3055,6 @@ namespace Server.Mobiles
 			m_Timer.Start();
 		}
 
-		private long m_NextDetectHidden;
-
-		public virtual bool CanDetectHidden { get { return m_Mobile.Skills[SkillName.DetectHidden].Value > 0; } }
-
         public virtual void AfterThink()
         {
         }
@@ -3107,8 +3072,6 @@ namespace Server.Mobiles
 					TimeSpan.FromSeconds(Utility.RandomDouble()), TimeSpan.FromSeconds(Math.Max(0.0, owner.m_Mobile.CurrentSpeed)))
 			{
 				m_Owner = owner;
-
-				m_Owner.m_NextDetectHidden = Core.TickCount;
 
 				Priority = TimerPriority.FiftyMS;
 			}

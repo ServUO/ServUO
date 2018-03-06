@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using Server.Items;
-using System.Collections;
 using System.Collections.Generic;
 using Server.Engines.Quests;
 using System.Linq;
@@ -10,15 +9,12 @@ namespace Server.Mobiles
     [CorpseName("a mercutio corpse")]
     public class MercutioTheUnsavory : BaseCreature
     {
-        private static readonly ArrayList m_Instances = new ArrayList();
-        public static ArrayList Instances { get { return m_Instances; } }
+        public static List<MercutioTheUnsavory> Instances { get; set; }
 
         [Constructable]
         public MercutioTheUnsavory()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            m_Instances.Add(this);
-
             Body = 0x190;
             Hue = Utility.RandomSkinHue();
             Name = "Mercutio";
@@ -48,6 +44,11 @@ namespace Server.Mobiles
 
             Fame = 3000;
             Karma = -3000;
+
+            if (Instances == null)
+                Instances = new List<MercutioTheUnsavory>();
+
+            Instances.Add(this);
 
             AddImmovableItem(new Cutlass());
             AddImmovableItem(new ChainChest());
@@ -94,12 +95,15 @@ namespace Server.Mobiles
                 }
             }
 
+            if (Instances != null && Instances.Contains(this))
+                Instances.Remove(this);
+
             base.OnDeath(c);
         }
 
         public static MercutioTheUnsavory Spawn(Point3D platLoc, Map platMap)
         {
-            if (m_Instances.Count > 0)
+            if (Instances != null && Instances.Count > 0)
                 return null;
 
             MercutioTheUnsavory creature = new MercutioTheUnsavory();
@@ -141,7 +145,7 @@ namespace Server.Mobiles
 
         public override void OnAfterDelete()
         {
-            m_Instances.Remove(this);
+            Instances.Remove(this);
 
             base.OnAfterDelete();
         }
@@ -172,11 +176,15 @@ namespace Server.Mobiles
 
             int brigands = 0;
 
-            foreach (Mobile m in GetMobilesInRange(10))
+            IPooledEnumerable eable = GetMobilesInRange(10);
+
+            foreach (Mobile m in eable)
             {
                 if (m is Brigand)
                     ++brigands;
             }
+
+            eable.Free();
 
             if (brigands < 16)
             {
@@ -205,7 +213,6 @@ namespace Server.Mobiles
                             loc = new Point3D(x, y, z);
                     }
 
-                    m_Instances.Add(brigand);
                     brigand.MoveToWorld(loc, map);
                     brigand.Combatant = target;
                 }
@@ -224,6 +231,9 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            Instances = new List<MercutioTheUnsavory>();
+            Instances.Add(this);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();

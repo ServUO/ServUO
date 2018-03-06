@@ -651,8 +651,10 @@ namespace Server.Mobiles
 								else if (i is Spawner)
 								{
 									// search the entries of the spawner
-									foreach (string so in ((Spawner)i).SpawnNames)
+									foreach (var obj in ((Spawner)i).SpawnObjects)
 									{
+                                        string so = obj.SpawnName;
+
 										if (criteria.Dosearchspawntype)
 										{
 											// search by entry type

@@ -359,11 +359,6 @@ namespace Server
                     return false;
             }
 
-            if (Core.SA)
-            {
-                return t != typeof(BlankScroll);
-            }
-
             return true;
         }
 
@@ -382,7 +377,9 @@ namespace Server
             typeof(Flax),
             typeof(SpoolOfThread),
             typeof(Feather),
-            typeof(Shaft)
+            typeof(Shaft),
+            typeof(Arrow),
+            typeof(Bolt)
         };
 
         public static void TryBlessItem(PlayerMobile pm, object targeted)

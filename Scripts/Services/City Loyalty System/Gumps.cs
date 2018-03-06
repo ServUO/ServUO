@@ -19,7 +19,7 @@ namespace Server.Engines.CityLoyalty
         public BaseCityGump(PlayerMobile pm) : base(120, 120)
         {
             User = pm;
-            Citizenship = CityLoyaltySystem.GetCitizenship(User);
+            Citizenship = CityLoyaltySystem.GetCitizenship(User, false);
 
             pm.CloseGump(typeof(BaseCityGump));
         }
@@ -65,9 +65,8 @@ namespace Server.Engines.CityLoyalty
             for (int i = 0; i < CityLoyaltySystem.Cities.Count; i++)
             {
                 CityLoyaltySystem city = CityLoyaltySystem.Cities[i];
-                int days = 0;
 
-                if (city.CanUtilize && Citizenship == null && CityLoyaltySystem.CanAddCitizen(User, out days))
+                if (city.CanUtilize && Citizenship == null && CityLoyaltySystem.CanAddCitizen(User))
                     AddButton(30, y + 3, 2103, 2104, 100 + i, GumpButtonType.Reply, 0);
 
                 AddHtmlLocalized(50, y, 200, 16, CityLoyaltySystem.CityLocalization(city.City), false, false);
@@ -99,8 +98,7 @@ namespace Server.Engines.CityLoyalty
             }
             else
             {
-                int days = 0;
-                if (CityLoyaltySystem.CanAddCitizen(User, out days))
+                if (CityLoyaltySystem.CanAddCitizen(User))
                 {
                     AddHtmlLocalized(30, y, 280, 90, 1152885, false, false);
                     /*Click the gem next to the name of a city to declare your 
@@ -109,7 +107,7 @@ namespace Server.Engines.CityLoyalty
                 }
                 else
                 {
-                    AddHtmlLocalized(30, y, 285, 80, 1152886, days.ToString(), 0, false, false);
+                    AddHtmlLocalized(30, y, 285, 80, 1152886, CityLoyaltySystem.NextJoinCity(User).ToString(), 0, false, false);
                     /*You recently renounced citizenship, so you must wait ~1_COUNT~ 
                      * more days before you may declare citizenship again.*/
                 }
@@ -184,9 +182,7 @@ namespace Server.Engines.CityLoyalty
 
             if(info.ButtonID == 1 && City != null)
             {
-                int i = 0;
-
-                if (CityLoyaltySystem.CanAddCitizen(User, out i))
+                if (CityLoyaltySystem.CanAddCitizen(User))
                 {
                     City.DeclareCitizen(User);
                 }
@@ -232,9 +228,7 @@ namespace Server.Engines.CityLoyalty
 
             if (info.ButtonID == 1 && Citizenship != null)
             {
-                int i = 0;
-
-                if (CityLoyaltySystem.CanAddCitizen(User, out i))
+                if (CityLoyaltySystem.CanAddCitizen(User))
                 {
                     Citizenship.RenounceCitizenship(User);
                     User.SendMessage("You renounce your citizenship to {0}!", Citizenship.Definition.Name);
@@ -752,12 +746,26 @@ namespace Server.Engines.CityLoyalty
             TextRelay relay = info.GetTextEntry(1);
             CityLoyaltyEntry entry = City.GetPlayerEntry<CityLoyaltyEntry>(Citizen);
 
+            if (entry == null)
+                return;
+
             if (relay == null || String.IsNullOrEmpty(relay.Text))
             {
-                entry.CustomTitle = null;
-                User.SendMessage("You have removed their title.");
-                Citizen.SendMessage("{0} has removed your city title.", User.Name);
-                //TODO: Clilocs???
+                if (entry != null)
+                {
+                    entry.CustomTitle = null;
+                    Citizen.RemoveRewardTitle(1154017, true);
+
+                    if (User != Citizen)
+                    {
+                        User.SendMessage("You have removed their title.");
+                        Citizen.SendMessage("{0} has removed your city title.", User.Name);
+                    }
+                    else
+                    {
+                        User.SendMessage("You have removed your title.");
+                    }
+                }
             }
             else
             {
@@ -765,13 +773,16 @@ namespace Server.Engines.CityLoyalty
 
                 if (Server.Guilds.BaseGuildGump.CheckProfanity(text) && text.Trim().Length > 3)
                 {
-                    User.AddRewardTitle(1154017); // ~1_TITLE~ of ~2_CITY~
-                    entry.CustomTitle = text.Trim();
+                    if (entry != null && entry.IsCitizen)
+                    {
+                        Citizen.AddRewardTitle(1154017); // ~1_TITLE~ of ~2_CITY~
+                        entry.CustomTitle = text.Trim();
 
-                    if(User != Citizen)
-                        User.SendMessage("You have bestowed {0} the title: {1} of {2}.", Citizen.Name, text, City.Definition.Name);
+                        if (User != Citizen)
+                            User.SendMessage("You have bestowed {0} the title: {1} of {2}.", Citizen.Name, text, City.Definition.Name);
 
-                    Citizen.SendLocalizedMessage(1155605, String.Format("{0}\t{1}", text, City.Definition.Name)); // Thou hath been bestowed the title ~1_TITLE~! - ~1_TITLE~ of ~2_CITY~
+                        Citizen.SendLocalizedMessage(1155605, String.Format("{0}\t{1}", text, City.Definition.Name)); // Thou hath been bestowed the title ~1_TITLE~! - ~1_TITLE~ of ~2_CITY~
+                    }
                 }
                 else
                     User.SendLocalizedMessage(501179); // That title is disallowed.

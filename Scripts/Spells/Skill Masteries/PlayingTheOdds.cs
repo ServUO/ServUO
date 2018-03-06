@@ -1,7 +1,5 @@
 using System;
 using Server;
-using Server.Spells;
-using Server.Network;
 using Server.Mobiles;
 using Server.Items;
 using System.Collections.Generic;
@@ -28,8 +26,6 @@ namespace Server.Spells.SkillMasteries
         private int _HCIBonus;
         private int _SSIBonus;
 
-        private Dictionary<Mobile, DateTime> _Cooldown;
-
         public PlayingTheOddsSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -53,9 +49,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            PlayingTheOddsSpell spell = GetSpellForParty(Caster, typeof(PlayingTheOddsSpell)) as PlayingTheOddsSpell;
-
-            if (spell != null)
+            if (SkillMasterySpell.UnderPartyEffects(Caster, typeof(PlayingTheOddsSpell)))
             {
                 Caster.SendLocalizedMessage(1062945); // That ability is already in effect.
                 return false;

@@ -49,11 +49,11 @@ using Server.Engines.VoidPool;
             Fame = 32000;
             Karma = -32000;
 
-            AddAndEquip(new WildStaff(), 2963);
-            AddAndEquip(new ThighBoots(), 1150);
-            AddAndEquip(new LongPants(), 2724);
-            AddAndEquip(new LeatherGloves(), 2724);
-            AddAndEquip(new LeatherBustierArms(), 2527);
+            AddAndEquip(new WildStaff(), 1971);
+            AddAndEquip(new ThighBoots(), 1910);
+            AddAndEquip(new ChainLegs(), 1936);
+            AddAndEquip(new LeatherGloves(), 1910);
+            AddAndEquip(new LeatherBustierArms(), 1947);
         }
 
         public override int BreathChaosDamage { get { return 100; } }

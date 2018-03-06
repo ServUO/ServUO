@@ -3,32 +3,33 @@ using Server;
 
 namespace Server.Items
 {
-	public class RedHerring : Item
-	{		
-		public override int LabelNumber{ get{ return 1095046; } } // Britain Crown Fish
-		
-		[Constructable]
-		public RedHerring() : base( 0x9cc )
-		{
-                    Hue = 337;
-		}
+    public class RedHerring : BigFish
+    {
+        public override int LabelNumber { get { return 1095046; } } // Britain Crown Fish
 
-		public RedHerring( Serial serial ) : base( serial )
-		{		
-		}
+        [Constructable]
+        public RedHerring()
+        {
+            Hue = 337;
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public RedHerring(Serial serial)
+            : base(serial)
+        {
+        }
 
-			writer.Write( (int) 0 ); // version
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+            writer.Write((int)0); // version
+        }
 
-			int version = reader.ReadInt();
-		}
-	}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BigFish insertion
+        }
+    }
 }

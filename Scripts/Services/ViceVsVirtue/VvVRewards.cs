@@ -80,7 +80,7 @@ namespace Server.Engines.VvV
             Rewards.Add(new CollectionItem(typeof(HeartOfTheLion), 5141, 0, 1281, 500));
             Rewards.Add(new CollectionItem(typeof(CrimsonCincture), 5435, 0, 1157, 500));
             Rewards.Add(new CollectionItem(typeof(RingOfTheVile), 4234, 0, 1271, 500));
-            Rewards.Add(new CollectionItem(typeof(FeyLeggings), 5054, 0, 0, 500));
+            Rewards.Add(new CollectionItem(typeof(HumanFeyLeggings), 5054, 0, 0, 500));
             Rewards.Add(new CollectionItem(typeof(Stormgrip), 10130, 0, 0, 500));
             Rewards.Add(new CollectionItem(typeof(RuneBeetleCarapace), 10109, 0, 0, 500));
             Rewards.Add(new CollectionItem(typeof(KasaOfTheRajin), 10136, 0, 0, 500));
@@ -128,7 +128,7 @@ namespace Server.Engines.VvV
 
             NegativeAttributes neg = RunicReforging.GetNegativeAttributes(item);
 
-            if (neg != null)
+            if (neg != null && !(item is Spellbook))
             {
                 neg.Antique = 1;
 
@@ -139,7 +139,7 @@ namespace Server.Engines.VvV
                 }
             }
 
-            ViceVsVirtueSystem.Instance.AddVvVItem(item);
+            ViceVsVirtueSystem.Instance.AddVvVItem(item, true);
         }
     }
 }

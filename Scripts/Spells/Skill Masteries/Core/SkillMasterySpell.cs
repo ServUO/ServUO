@@ -226,10 +226,10 @@ namespace Server.Spells.SkillMasteries
 		{
 			return 0;
 		}
-		
-		public virtual void AbsorbDamage(ref int damage)
-		{
-		}
+
+        public virtual void OnDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
+        {
+        }
 		
 		public virtual void DoDamage(Mobile victim, int damageTaken)
 		{
@@ -259,11 +259,7 @@ namespace Server.Spells.SkillMasteries
         {
         }
 
-        public virtual void OnDamaged(Mobile attacker, Mobile victim, int damage)
-        {
-        }
-
-        public virtual void OnTargetDamaged(Mobile attacker, Mobile victim, int damage)
+        public virtual void OnTargetDamaged(Mobile attacker, Mobile victim, DamageType type, ref int damage)
         {
         }
 
@@ -458,6 +454,16 @@ namespace Server.Spells.SkillMasteries
             return null;
         }
 
+        public static TSpell GetSpell<TSpell>(Mobile m) where TSpell : SkillMasterySpell
+        {
+            if (m_Table.ContainsKey(m))
+            {
+                return m_Table[m].FirstOrDefault(sms => sms.GetType() == typeof(TSpell)) as TSpell;
+            }
+
+            return null;
+        }
+
         public static SkillMasterySpell GetSpell(Func<SkillMasterySpell, bool> predicate)
 		{
             foreach (SkillMasterySpell spell in EnumerateAllSpells())
@@ -505,6 +511,11 @@ namespace Server.Spells.SkillMasteries
             }
 
             return false;
+        }
+
+        public static bool UnderPartyEffects(Mobile from, Type type)
+        {
+            return GetSpellForParty(from, type) != null;
         }
 
         public static SkillMasterySpell GetSpellForParty(Mobile from, Type type)
@@ -628,7 +639,10 @@ namespace Server.Spells.SkillMasteries
                     m_Table[from] = new List<SkillMasterySpell>();
                 }
 
-                m_Table[from].Add(spell);
+                if (!m_Table[from].Contains(spell))
+                {
+                    m_Table[from].Add(spell);
+                }
             }
 		}
 		
@@ -654,7 +668,7 @@ namespace Server.Spells.SkillMasteries
         /// <param name="victim"></param>
         /// <param name="damager"></param>
         /// <param name="damage"></param>
-		public static void OnDamaged(Mobile victim, Mobile damager, ref int damage)
+		public static void OnDamage(Mobile victim, Mobile damager, DamageType type, ref int damage)
 		{
 			if(victim == null)
 				return;
@@ -666,20 +680,20 @@ namespace Server.Spells.SkillMasteries
                 if (sp.DamageCanDisrupt && damage > sp.DamageThreshold)
                     sp.Expire(true);
 
-                sp.OnDamaged(damager, victim, damage);
+                sp.OnDamaged(damager, victim, type, ref damage);
             }
 
             foreach (SkillMasterySpell sp in GetSpells(s => s.Target == victim))
             {
-                sp.OnTargetDamaged(damager, victim, damage);
+                sp.OnTargetDamaged(damager, victim, type, ref damage);
             }
 
             SkillMasteryMove move = SpecialMove.GetCurrentMove(victim) as SkillMasteryMove;
 
             if (move != null)
-                move.OnDamaged(damager, victim, damage);
+                move.OnDamaged(damager, victim, type, ref damage);
 
-            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(victim, typeof(PerseveranceSpell));
+            PerseveranceSpell spell = SkillMasterySpell.GetSpellForParty(victim, typeof(PerseveranceSpell)) as PerseveranceSpell;
 
             if (spell != null)
                 spell.AbsorbDamage(ref damage);
@@ -861,7 +875,6 @@ namespace Server.Spells.SkillMasteries
 
             if (m_Table.ContainsKey(m))
             {
-
                 foreach (SkillMasterySpell sp in EnumerateSpells(m))
                 {
                     if (sp.ClearOnSpecialAbility)

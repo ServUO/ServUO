@@ -13,7 +13,7 @@ namespace Server.Engines.Points
         public override PointsType Loyalty { get { return PointsType.CleanUpBritannia; } }
         public override TextDefinition Name { get { return m_Name; } }
         public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return int.MaxValue; } }
+        public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
         private TextDefinition m_Name = null;
@@ -35,6 +35,10 @@ namespace Server.Engines.Points
             if (Entries.ContainsKey(type))
             {
                 points = Entries[type];
+
+                // Kind of ametuar, but if this arrizes more, we'll make a seperate function
+                if (item is SOS && ((SOS)item).IsAncient)
+                    points = 2500;
 
                 if (item.Stackable)
                     points = points * item.Amount;                
@@ -167,6 +171,7 @@ namespace Server.Engines.Points
             Entries[typeof(LavaRock)] = 500.0;
             Entries[typeof(SmugglersLiquor)] = 30.0;
             Entries[typeof(MessageInABottle)] = 100.0;
+            Entries[typeof(SOS)] = 100.0;
             Entries[typeof(RunedDriftwoodBow)] = 500.0;
             Entries[typeof(Rope)] = 1600.0;
             Entries[typeof(SpecialFishingNet)] = 250.0;

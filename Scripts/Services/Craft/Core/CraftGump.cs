@@ -10,7 +10,7 @@ namespace Server.Engines.Craft
     {
         private readonly Mobile m_From;
         private readonly CraftSystem m_CraftSystem;
-        private readonly BaseTool m_Tool;
+        private readonly ITool m_Tool;
 
         private readonly CraftPage m_Page;
 
@@ -27,16 +27,16 @@ namespace Server.Engines.Craft
             PickResource2
         }
 
-        /*public CraftGump( Mobile from, CraftSystem craftSystem, BaseTool tool ): this( from, craftSystem, -1, -1, tool, null )
+        /*public CraftGump( Mobile from, CraftSystem craftSystem, ITool tool ): this( from, craftSystem, -1, -1, tool, null )
         {
         }*/
 
-        public CraftGump(Mobile from, CraftSystem craftSystem, BaseTool tool, object notice)
+        public CraftGump(Mobile from, CraftSystem craftSystem, ITool tool, object notice)
             : this(from, craftSystem, tool, notice, CraftPage.None)
         {
         }
 
-        private CraftGump(Mobile from, CraftSystem craftSystem, BaseTool tool, object notice, CraftPage page)
+        private CraftGump(Mobile from, CraftSystem craftSystem, ITool tool, object notice, CraftPage page)
             : base(40, 40)
         {
             this.m_From = from;

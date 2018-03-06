@@ -6,6 +6,7 @@ namespace Server.Items
     public class ConjureresGarb : BaseOuterTorso, ITokunoDyable
 	{
 		public override bool IsArtifact { get { return true; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
         [Constructable]
         public ConjureresGarb()
             : base(0x1F03, 0x486)

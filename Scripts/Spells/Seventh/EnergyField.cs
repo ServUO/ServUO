@@ -79,24 +79,27 @@ namespace Server.Spells.Seventh
                 else
                     duration = TimeSpan.FromSeconds(Caster.Skills[SkillName.Magery].Value * 0.28 + 2.0); // (28% of magery) + 2.0 seconds
 
+                Point3D pnt = new Point3D(p);
                 int itemID = eastToWest ? 0x3946 : 0x3956;
 
-                Item item = new InternalItem(new Point3D(p), Caster.Map, duration, itemID, Caster);
-                item.ProcessDelta();
+                if (SpellHelper.CheckField(pnt, Caster.Map))
+                    new InternalItem(itemID, pnt, Caster, Caster.Map, duration);
 
                 for (int i = 1; i <= 2; ++i)
                 {
                     Timer.DelayCall<int>(TimeSpan.FromMilliseconds(i * 300), index =>
                     {
-                        IPoint3D pnt = new Point3D(eastToWest ? p.X + index : p.X, eastToWest ? p.Y : p.Y + index, p.Z);
-                        SpellHelper.GetSurfaceTop(ref pnt);
-                        item = new InternalItem(new Point3D(pnt), Caster.Map, duration, itemID, Caster);
-                        item.ProcessDelta();
+                        Point3D point = new Point3D(eastToWest ? pnt.X + index : pnt.X, eastToWest ? pnt.Y : pnt.Y + index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
-                        pnt = new Point3D(eastToWest ? p.X + -index : p.X, eastToWest ? p.Y : p.Y + -index, p.Z);
-                        SpellHelper.GetSurfaceTop(ref pnt);
-                        item = new InternalItem(new Point3D(pnt), Caster.Map, duration, itemID, Caster);
-                        item.ProcessDelta();
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
+
+                        point = new Point3D(eastToWest ? pnt.X + -index : pnt.X, eastToWest ? pnt.Y : pnt.Y + -index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
+
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
                     }, i);
                 }
             }
@@ -109,7 +112,8 @@ namespace Server.Spells.Seventh
         {
             private readonly Timer m_Timer;
             private readonly Mobile m_Caster;
-            public InternalItem(Point3D loc, Map map, TimeSpan duration, int itemID, Mobile caster)
+
+            public InternalItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration)
                 : base(itemID)
             {
                 Movable = false;
@@ -201,7 +205,7 @@ namespace Server.Spells.Seventh
             private readonly EnergyFieldSpell m_Owner;
 
             public InternalTarget(EnergyFieldSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(Core.TOL ? 15 : Core.ML ? 10 : 12, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }

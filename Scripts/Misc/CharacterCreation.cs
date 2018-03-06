@@ -1,6 +1,5 @@
 using System;
 using Server.Accounting;
-using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
@@ -268,11 +267,6 @@ namespace Server.Misc
             Utility.PopColor();
 
             new WelcomeTimer(newChar).Start();
-
-			if (XmlSpawner.PointsEnabled)
-				XmlAttach.AttachTo(newChar, new XmlPoints());
-			if(XmlSpawner.FactionsEnabled)
-				XmlAttach.AttachTo(newChar, new XmlMobFactions());
         }
 
         private static void FixStats(ref int str, ref int dex, ref int intel, int max)

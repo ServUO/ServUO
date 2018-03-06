@@ -7,7 +7,6 @@ namespace Server.Mobiles
     [CorpseName("a betrayer corpse")]
     public class Betrayer : BaseCreature
     {
-        private bool m_Stunning;
         private DateTime m_NextAbilityTime;
         [Constructable]
         public Betrayer()
@@ -151,13 +150,17 @@ namespace Server.Mobiles
                 this.FixedParticles(0x376A, 9, 32, 0x2539, EffectLayer.LeftHand);
                 this.PlaySound(0x1DE);
 
-                foreach (Mobile m in this.GetMobilesInRange(2))
+                IPooledEnumerable eable = GetMobilesInRange(2);
+
+                foreach (Mobile m in eable)
                 {
                     if (m != this && this.IsEnemy(m))
                     {
                         m.ApplyPoison(this, Poison.Deadly);
                     }
                 }
+
+                eable.Free();
             }
         }
 

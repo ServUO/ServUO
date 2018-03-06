@@ -123,10 +123,6 @@ namespace Server.Spells
 
             int sdiBonus = AosAttributes.GetValue(caster, AosAttribute.SpellDamage);
 
-            #region Mondain's Legacy
-            sdiBonus += ArcaneEmpowermentSpell.GetSpellBonus(caster, playerVsPlayer);
-            #endregion
-
             if (target != null)
             {
                 if (RunedSashOfWarding.IsUnderEffects(target, WardingEffect.SpellDamage))
@@ -135,7 +131,7 @@ namespace Server.Spells
                 sdiBonus -= Block.GetSpellReduction(target);
             }
 
-            // PvP spell damage increase cap of 15% from an item’s magic property, 30% if spell school focused.
+            // PvP spell damage increase cap of 15% from an itemâ€™s magic property, 30% if spell school focused.
             if (Core.SE && playerVsPlayer)
             {
                 sdiBonus = Math.Min(sdiBonus, PvPSpellDamageCap(caster, skill));
@@ -195,7 +191,13 @@ namespace Server.Spells
 
         public static void Turn(Mobile from, object to)
         {
+            Turn(from, to, 0);
+        }
+
+        public static void Turn(Mobile from, object to, int delay)
+        {
             IPoint3D target = to as IPoint3D;
+            int d = -1;
 
             if (target == null)
                 return;
@@ -205,11 +207,23 @@ namespace Server.Spells
                 Item item = (Item)target;
 
                 if (item.RootParent != from)
-                    from.Direction = from.GetDirectionTo(item.GetWorldLocation());
+                    d = (int)from.GetDirectionTo(item.GetWorldLocation());
             }
             else if (from != target)
             {
-                from.Direction = from.GetDirectionTo(target);
+                d = (int)from.GetDirectionTo(target);
+            }
+
+            if (d > -1 && delay > 0)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(delay), () =>
+                    {
+                        from.Direction = (Direction)d;
+                    });
+            }
+            else if (d > -1)
+            {
+                from.Direction = (Direction)d;
             }
         }
 
@@ -231,7 +245,7 @@ namespace Server.Spells
                     return true;
             }
 
-            if (Core.Expansion == Expansion.AOS)
+            if (Core.AOS)
             {
                 for (int i = 0; i < m.Aggressors.Count; ++i)
                 {
@@ -270,6 +284,28 @@ namespace Server.Spells
             }
 
             return false;
+        }
+
+        public static bool CheckField(Point3D p, Map map)
+        {
+            if (map == null)
+                return false;
+
+            IPooledEnumerable eable = map.GetItemsInRange(p, 0);
+
+            foreach (Item item in eable)
+            {
+                Type t = item.GetType();
+
+                if(t.IsDefined(typeof(DispellableFieldAttribute), false) || t.IsDefined(typeof(DispellableFieldAttribute), true))
+                {
+                    eable.Free();
+                    return false;
+                }
+            }
+
+            eable.Free();
+            return true;
         }
 
         public static bool CheckWater(Point3D p, Map map)
@@ -363,6 +399,11 @@ namespace Server.Spells
             return true;
         }
 
+        public static bool AddStatCurse(Mobile caster, Mobile target, StatType type)
+        {
+            return AddStatCurse(caster, target, type, true);
+        }
+
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, bool blockSkill)
         {
             return AddStatCurse(caster, target, type, GetOffset(caster, target, type, true, blockSkill), TimeSpan.Zero);
@@ -390,7 +431,7 @@ namespace Server.Spells
             {
                 int span = (((6 * caster.Skills.EvalInt.Fixed) / 50) + 1);
 
-                if (caster.Spell is CurseSpell && SkillMasterySpell.GetSpellForParty(target, typeof(ResilienceSpell)) != null)
+                if (caster.Spell is CurseSpell && SkillMasterySpell.UnderPartyEffects(target, typeof(ResilienceSpell)))
                     span /= 2;
 
                 return TimeSpan.FromSeconds(span);
@@ -488,32 +529,8 @@ namespace Server.Spells
             if (to.Hidden && to.AccessLevel > from.AccessLevel)
                 return false;
 
-            #region Dueling
-            PlayerMobile pmFrom = from as PlayerMobile;
-            PlayerMobile pmTarg = to as PlayerMobile;
-
-            if (pmFrom == null && from is BaseCreature)
-            {
-                BaseCreature bcFrom = (BaseCreature)from;
-
-                if (bcFrom.Summoned)
-                    pmFrom = bcFrom.SummonMaster as PlayerMobile;
-            }
-
-            if (pmTarg == null && to is BaseCreature)
-            {
-                BaseCreature bcTarg = (BaseCreature)to;
-
-                if (bcTarg.Summoned)
-                    pmTarg = bcTarg.SummonMaster as PlayerMobile;
-            }
-
-            if (pmFrom != null && pmTarg != null)
-            {
-                if (pmFrom.DuelContext != null && pmFrom.DuelContext == pmTarg.DuelContext && pmFrom.DuelContext.Started && pmFrom.DuelPlayer != null && pmTarg.DuelPlayer != null)
-                    return (pmFrom.DuelPlayer.Participant != pmTarg.DuelPlayer.Participant);
-            }
-            #endregion
+            if (Server.Engines.ArenaSystem.PVPArenaSystem.IsFriendly(from, to))
+                return false;
 
             Guild fromGuild = GetGuildFor(from);
             Guild toGuild = GetGuildFor(to);
@@ -930,21 +947,6 @@ namespace Server.Spells
 
         public static bool IsSafeZone(Map map, Point3D loc)
         {
-            #region Duels
-            if (Region.Find(loc, map).IsPartOf<Engines.ConPVP.SafeZone>())
-            {
-                if (m_TravelType == TravelCheckType.TeleportTo || m_TravelType == TravelCheckType.TeleportFrom)
-                {
-                    PlayerMobile pm = m_TravelCaster as PlayerMobile;
-
-                    if (pm != null && pm.DuelPlayer != null && !pm.DuelPlayer.Eliminated)
-                        return true;
-                }
-
-                return true;
-            }
-            #endregion
-
             return false;
         }
 
@@ -1107,19 +1109,7 @@ namespace Server.Spells
 
             if (map == null)
                 return false;
-
-            #region Dueling
-            Engines.ConPVP.SafeZone sz = (Engines.ConPVP.SafeZone)Region.Find(loc, map).GetRegion(typeof(Engines.ConPVP.SafeZone));
-
-            if (sz != null)
-            {
-                PlayerMobile pm = (PlayerMobile)caster;
-
-                if (pm == null || pm.DuelContext == null || !pm.DuelContext.Started || pm.DuelPlayer == null || pm.DuelPlayer.Eliminated)
-                    return true;
-            }
-            #endregion
-
+            
             GuardedRegion reg = (GuardedRegion)Region.Find(loc, map).GetRegion(typeof(GuardedRegion));
 
             return (reg != null && !reg.IsDisabled());
@@ -1169,7 +1159,6 @@ namespace Server.Spells
                     return false;
                 }
             }
-
 
             if (target.MagicDamageAbsorb > 0)
             {
@@ -1322,11 +1311,6 @@ namespace Server.Spells
 
                 int damageGiven = AOS.Damage(damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, dtype);
 
-                if (from != null && target != null) // sanity check
-                {
-                    DoLeech(damageGiven, from, target);
-                }
-
                 if(target != null)
                     Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(target);
 
@@ -1351,42 +1335,6 @@ namespace Server.Spells
             }
         }
 
-        public static void DoLeech(int damageGiven, Mobile from, Mobile target)
-        {
-            TransformContext context = TransformationSpellHelper.GetContext(from);
-
-            if (context != null) /* cleanup */
-            {
-                if (context.Type == typeof(WraithFormSpell))
-                {
-                    int wraithLeech = Math.Min(target.Mana, (5 + (int)((15 * from.Skills.SpiritSpeak.Value) / 100))); // Wraith form gives 5-20% mana leech
-                    int manaLeech = AOS.Scale(damageGiven, wraithLeech);
-                    if (manaLeech != 0)
-                    {
-                        from.Mana += manaLeech;
-                        from.PlaySound(0x44D);
-
-                        target.Mana -= manaLeech;
-                    }
-                }
-                else if (context.Type == typeof(VampiricEmbraceSpell))
-                {
-                    #region High Seas
-                    if (target is BaseCreature && ((BaseCreature)target).TaintedLifeAura)
-                    {
-                        AOS.Damage(from, target, AOS.Scale(damageGiven, 20), false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
-                        from.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
-                    }
-                    #endregion
-                    else
-                    {
-                        from.Hits += AOS.Scale(damageGiven, 20);
-                        from.PlaySound(0x44D);
-                    }
-                }
-            }
-        }
-
         public static void Heal(int amount, Mobile target, Mobile from)
         {
             Heal(amount, target, from, true);
@@ -1402,8 +1350,6 @@ namespace Server.Spells
 
                 if (realAmount > 0 && target != from && from is PlayerMobile && target is PlayerMobile)
                     SpiritualityVirtue.OnHeal(from, realAmount);
-
-                SpiritualityVirtue.OnHeal(from, realAmount);
             }
 
             target.Heal(amount, from, message);
@@ -1446,29 +1392,22 @@ namespace Server.Spells
             }
         }
 
-        private class SpellDamageTimerAOS : Timer
+        public class SpellDamageTimerAOS : Timer
         {
-            private readonly IDamageable m_Target;
-
+            private IDamageable m_Target;
             private readonly Mobile m_From;
-
             private int m_Damage;
-            private readonly int m_Phys;
+            private int m_Phys;
+            private int m_Fire;
+            private int m_Cold;
+            private int m_Pois;
+            private int m_Nrgy;
+            private int m_Chaos;
+            private int m_Direct;
+            private DFAlgorithm m_DFA;
+            private Spell m_Spell;
 
-            private readonly int m_Fire;
-
-            private readonly int m_Cold;
-
-            private readonly int m_Pois;
-
-            private readonly int m_Nrgy;
-
-            private readonly int m_Chaos;
-
-            private readonly int m_Direct;
-
-            private readonly DFAlgorithm m_DFA;
-            private readonly Spell m_Spell;
+            public Spell Spell { get { return m_Spell; } }
 
             public SpellDamageTimerAOS(Spell s, IDamageable target, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, TimeSpan delay, DFAlgorithm dfa)
                 : base(delay)
@@ -1485,6 +1424,7 @@ namespace Server.Spells
                 m_Direct = direct;
                 m_DFA = dfa;
                 m_Spell = s;
+
                 if (m_Spell != null && m_Spell.DelayedDamage && !m_Spell.DelayedDamageStacking)
                     m_Spell.StartDelayedDamageContext(target, this);
 
@@ -1505,11 +1445,6 @@ namespace Server.Spells
                 DamageType dtype = m_Spell != null ? m_Spell.SpellDamageType : DamageType.Spell;
 
                 int damageGiven = AOS.Damage(m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy, m_Chaos, m_Direct, dtype);
-
-                if (m_From != null && target != null) // sanity check
-                {
-                    DoLeech(damageGiven, m_From, target);
-                }
 
                 WeightOverloading.DFA = DFAlgorithm.Standard;
 

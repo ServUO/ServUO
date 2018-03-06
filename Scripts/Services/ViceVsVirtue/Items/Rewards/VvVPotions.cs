@@ -3,6 +3,7 @@ using System;
 using Server.Items;
 using Server.Mobiles;
 using System.Collections.Generic;
+using Server.Factions;
 
 namespace Server.Engines.VvV
 {
@@ -115,7 +116,7 @@ namespace Server.Engines.VvV
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-
+            
             list.Add(1155569, Charges.ToString()); // Potions: ~1_val~
             list.Add(1154937); // VvV Item
         }
@@ -144,8 +145,21 @@ namespace Server.Engines.VvV
         }
     }
 
-    public abstract class VvVPotion : Item
+    public abstract class VvVPotion : Item, IFactionItem
     {
+        #region Factions
+        private FactionItem m_FactionState;
+
+        public FactionItem FactionItemState
+        {
+            get { return m_FactionState; }
+            set
+            {
+                m_FactionState = value;
+            }
+        }
+        #endregion
+
         public virtual TimeSpan CooldownDuration { get { return TimeSpan.MinValue; } }
         public virtual PotionType CooldownType { get { return PotionType.None; } }
 
@@ -215,6 +229,16 @@ namespace Server.Engines.VvV
             Stackable = true;
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (!FactionEquipment.AddFactionProperties(this, list))
+            {
+                list.Add(1154937); // VvV Item
+            }
+        }
+
         public bool IsInCooldown(Mobile m, ref DateTime dt)
         {
             if (_Cooldown.ContainsKey(m))
@@ -266,9 +290,12 @@ namespace Server.Engines.VvV
             {
                 DateTime dt = DateTime.UtcNow;
 
-                if (!ViceVsVirtueSystem.IsVvV(m))
+                if (ViceVsVirtueSystem.Enabled && !ViceVsVirtueSystem.IsVvV(m))
                 {
                     m.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                }
+                else if (Server.Factions.Settings.Enabled && !FactionEquipment.CanUse(this, m))
+                {
                 }
                 else if (!BasePotion.HasFreeHand(m))
                 {
@@ -324,12 +351,6 @@ namespace Server.Engines.VvV
 
         public virtual void DrinkEffects(Mobile m)
         {
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-            list.Add(1154937); // VvV Item
         }
 
         public VvVPotion(Serial serial)

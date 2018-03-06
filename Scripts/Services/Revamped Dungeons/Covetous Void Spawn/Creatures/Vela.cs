@@ -16,6 +16,7 @@ namespace Server.Engines.VoidPool
         {
             Name = "Vela";
             Title = "the sorceress";
+            Blessed = true;
 
             SetStr(110);
             SetDex(100);
@@ -26,19 +27,11 @@ namespace Server.Engines.VoidPool
             HairItemID = 0x203C;
             HairHue = 0x46D;
 
-            Item item = new FancyShirt();
-            item.Hue = 1150;
-            AddItem(item);
+            SetWearable(new FancyShirt(), 1928);
+            SetWearable(new LeatherLegs(), 1928);
+            SetWearable(new ThighBoots(), 1917);
 
-            item = new LongPants();
-            item.Hue = 108;
-            AddItem(item);
-
-            item = new Shoes();
-            item.Hue = 108;
-            AddItem(item);
-
-            item = new BraceletOfProtection();
+            Item item = new BraceletOfProtection();
             item.Movable = false;
             PackItem(item);
 
@@ -73,13 +66,34 @@ namespace Server.Engines.VoidPool
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                Blessed = true;
+
+                Item item = FindItemOnLayer(Layer.Shirt);
+                if (item != null)
+                    item.Delete();
+
+                item = FindItemOnLayer(Layer.Pants);
+                if (item != null)
+                    item.Delete();
+
+                item = FindItemOnLayer(Layer.Shoes);
+                if (item != null)
+                    item.Delete();
+
+                SetWearable(new FancyShirt(), 1928);
+                SetWearable(new LeatherLegs(), 1928);
+                SetWearable(new ThighBoots(), 1917);
+            }
         }
     }
 }

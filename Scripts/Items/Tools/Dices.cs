@@ -1,15 +1,30 @@
 using System;
 using Server.Network;
+using Server.Gumps;
+using Server.Multis;
+using System.Collections.Generic;
+using Server.ContextMenus;
 
 namespace Server.Items
 {
-    public class Dices : Item, ITelekinesisable
+    public class Dices : Item, ITelekinesisable, ISecurable
     {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public SecureLevel Level { get; set; }
+
         [Constructable]
         public Dices()
             : base(0xFA7)
         {
             Weight = 1.0;
+
+            Level = SecureLevel.Friends;
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+            SetSecureLevelEntry.AddTo(from, this, list);
         }
 
         public Dices(Serial serial)
@@ -47,13 +62,24 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            writer.Write((int)Level);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version > 0)
+            {
+                Level = (SecureLevel)reader.ReadInt();
+            }
+            else
+            {
+                Level = SecureLevel.Friends;
+            }
         }
     }
 }

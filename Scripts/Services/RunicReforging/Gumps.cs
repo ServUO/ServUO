@@ -298,6 +298,9 @@ namespace Server.Gumps
 
                             if ((m_Options & ReforgingOption.GrandArtifice) != 0)
                             {
+                                if (0.8 > Utility.RandomDouble())
+                                    maxprops++;
+
                                 // choosing name 1
                                 if ((m_Options & ReforgingOption.InspiredArtifice) != 0)
                                 {
@@ -354,11 +357,21 @@ namespace Server.Gumps
                                 }
                             }
 
+                            // 50% chance to switch prefix/suffix around
+                            if ((prefix != ReforgedPrefix.None || suffix != ReforgedSuffix.None) && 0.5 > Utility.RandomDouble())
+                            {
+                                int pre = (int)prefix;
+                                int suf = (int)suffix;
+
+                                prefix = (ReforgedPrefix)suf;
+                                suffix = (ReforgedSuffix)pre;
+                            }
+
                             RunicReforging.ApplyReforgedProperties(m_ToReforge, prefix, suffix, true, budget, min, max, maxprops, 0, m_Tool, m_Options);
 
                             OnAfterReforged(m_ToReforge);
                             from.SendLocalizedMessage(1152286); // You re-forge the item!
-                            from.FixedParticles(0x374A, 10, 30, 5021, EffectLayer.Head);
+                            //from.FixedParticles(0x374A, 10, 30, 5021, EffectLayer.Head);
                             from.PlaySound(0x665);
 
                             m_Tool.UsesRemaining -= totalCharges;
@@ -453,18 +466,14 @@ namespace Server.Gumps
             if ((m_Options & ReforgingOption.Fundamental) != 0)
                 budget += 100;
 
-            if (((m_Options & ReforgingOption.Powerful) != 0 && (m_Options & ReforgingOption.Structural) != 0) || (m_Options & ReforgingOption.Fundamental) != 0)
-                maxprops++;
-
-            if (maxprops <= 6 && budget >= 650 && 0.10 > Utility.RandomDouble())
-                maxprops = 7;
-
             return budget;
         }
 
         public void OnAfterReforged(Item item)
         {
-            AosAttributes attr = null;
+            AosAttributes attr = RunicReforging.GetAosAttributes(item);
+            NegativeAttributes neg = RunicReforging.GetNegativeAttributes(item);
+
             int durability = 0;
 
             if (item is BaseWeapon)
@@ -475,16 +484,25 @@ namespace Server.Gumps
 
             if (attr != null && (m_Options & ReforgingOption.Structural) != 0)
             {
-                attr.Brittle = 1;
+                if(neg != null)
+                    neg.Brittle = 1;
 
                 if ((m_Options & ReforgingOption.Fortified) != 0)
                     durability = 150;
+
+                if (item is BaseArmor || item is BaseClothing)
+                    item.Hue = 2500;
             }
 
             if ((m_Options & ReforgingOption.Fundamental) != 0)
             {
-                RunicReforging.SetBlockRepair(item);
+                if (neg != null)
+                    neg.NoRepair = 1;
+
                 durability = (m_Options & ReforgingOption.Integral) != 0 ? 255 : 200;
+
+                if (item.Hue == 0 && (item is BaseArmor || item is BaseClothing))
+                    item.Hue = 2500;
             }
 
             if (durability > 0 && item is IDurability)

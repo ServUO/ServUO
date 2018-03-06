@@ -7,55 +7,55 @@ namespace Server.Items
         [Constructable]
         public BulgingMuseumBag()
         {
-            this.AddItem(new Gold(10000));
+            DropItem(new Gold(10000));
 
             switch (Utility.Random(9))
             {
                 case 0:
-                    this.AddItem(new Amber(10));
+                    DropItem(new Amber(10));
                     break;
                 case 1:
-                    this.AddItem(new Amethyst(10));
+                    DropItem(new Amethyst(10));
                     break;
                 case 2:
-                    this.AddItem(new Citrine(10));
+                    DropItem(new Citrine(10));
                     break;
                 case 3:
-                    this.AddItem(new Ruby(10));
+                    DropItem(new Ruby(10));
                     break;
                 case 4:
-                    this.AddItem(new Emerald(10));
+                    DropItem(new Emerald(10));
                     break;
                 case 5:
-                    this.AddItem(new Diamond(10));
+                    DropItem(new Diamond(10));
                     break;
                 case 6:
-                    this.AddItem(new Sapphire(10));
+                    DropItem(new Sapphire(10));
                     break;
                 case 7:
-                    this.AddItem(new StarSapphire(10));
+                    DropItem(new StarSapphire(10));
                     break;
                 case 8:
-                    this.AddItem(new Tourmaline(10));
+                    DropItem(new Tourmaline(10));
                     break;
             }
 
             switch (Utility.Random(5))
             {
                 case 0:
-                    this.AddItem(new ElvenFletching(20));
+                    DropItem(new ElvenFletching(20));
                     break;
                 case 1:
-                    this.AddItem(new RelicFragment(20));
+                    DropItem(new RelicFragment(20));
                     break;
                 case 2:
-                    this.AddItem(new DelicateScales(20));
+                    DropItem(new DelicateScales(20));
                     break;
                 case 3:
-                    this.AddItem(new ChagaMushroom(20));
+                    DropItem(new ChagaMushroom(20));
                     break;
                 case 4:
-                    this.AddItem(new FeyWings(20));
+                    DropItem(new FeyWings(20));
                     break;
             }
         }

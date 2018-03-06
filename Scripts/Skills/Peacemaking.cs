@@ -6,8 +6,6 @@
 
 #region References
 using System;
-
-using Server.Engines.ConPVP;
 using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.Mobiles;
@@ -68,14 +66,6 @@ namespace Server.SkillHandlers
 				{
 					from.SendLocalizedMessage(1049528); // You cannot calm that!
 				}
-				else if (from.Region.IsPartOf<SafeZone>())
-				{
-					from.SendMessage("You may not peacemake in this area.");
-				}
-				else if (((Mobile)targeted).Region.IsPartOf<SafeZone>())
-				{
-					from.SendMessage("You may not peacemake there.");
-				}
 				else if (!m_Instrument.IsChildOf(from.Backpack))
 				{
 					from.SendLocalizedMessage(1062488); // The instrument you are trying to play is no longer in your backpack!
@@ -121,8 +111,9 @@ namespace Server.SkillHandlers
 								int range = BaseInstrument.GetBardRange(from, SkillName.Peacemaking);
 
 								bool calmed = false;
+                                IPooledEnumerable eable = from.GetMobilesInRange(range);
 
-								foreach (Mobile m in from.GetMobilesInRange(range))
+								foreach (Mobile m in eable)
 								{
 									if ((m is BaseCreature && ((BaseCreature)m).Uncalmable) ||
 										(m is BaseCreature && ((BaseCreature)m).AreaPeaceImmune) || m == from || !from.CanBeHarmful(m, false))
@@ -141,6 +132,7 @@ namespace Server.SkillHandlers
 										((BaseCreature)m).Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(1.0));
 									}
 								}
+                                eable.Free();
 
 								if (!calmed)
 								{

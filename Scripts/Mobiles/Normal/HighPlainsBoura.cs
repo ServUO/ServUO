@@ -13,7 +13,6 @@ namespace Server.Mobiles
         };
 
         private bool GatheredFur { get; set; }
-        private bool m_Stunning;
 
         [Constructable]
         public HighPlainsBoura()
@@ -141,9 +140,10 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
+            if (!Controlled)
             c.DropItem(new BouraSkin());
 
-            if (c != null && !c.Deleted && c is Corpse)
+            if (!Controlled && c != null && !c.Deleted && c is Corpse)
             {
                 var corpse = (Corpse) c;
 

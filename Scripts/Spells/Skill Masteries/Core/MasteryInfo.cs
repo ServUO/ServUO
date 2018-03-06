@@ -460,7 +460,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (IsActivePassive(m, PassiveSpell.AnticipateHit))
             {
-                return (int)(m.Skills[SkillName.Bushido].Value / 2);
+                return (int)(m.Skills[SkillName.Bushido].Value * .67);
             }
 
             return 0;
