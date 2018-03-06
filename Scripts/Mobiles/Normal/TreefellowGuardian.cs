@@ -39,7 +39,9 @@ namespace Server.Mobiles
             this.PackItem(new Log(Utility.RandomMinMax(23, 34)));
 
             if (0.05 > Utility.RandomDouble())
-                this.PackItem(new TreefellowWood()); 
+                this.PackItem(new TreefellowWood());
+
+            SetWeaponAbility(WeaponAbility.Dismount);
         }
 
         public TreefellowGuardian(Serial serial)
@@ -60,10 +62,6 @@ namespace Server.Mobiles
             {
                 return true;
             }
-        }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.Dismount;
         }
 
         public override int GetIdleSound()

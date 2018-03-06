@@ -12,42 +12,45 @@ namespace Server.Mobiles
         private bool m_HasTeleportedAway;
         [Constructable]
         public ShadowKnight()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("shadow knight");
-            this.Title = "the Shadow Knight";
-            this.Body = 311;
+            Name = NameList.RandomName("shadow knight");
+            Title = "the Shadow Knight";
+            Body = 311;
 
-            this.SetStr(250);
-            this.SetDex(100);
-            this.SetInt(100);
+            SetStr(250);
+            SetDex(100);
+            SetInt(100);
 
-            this.SetHits(2000);
+            SetHits(2000);
 
-            this.SetDamage(20, 30);
+            SetDamage(20, 30);
 
-            this.SetDamageType(ResistanceType.Physical, 60);
-            this.SetDamageType(ResistanceType.Cold, 40);
+            SetDamageType(ResistanceType.Physical, 60);
+            SetDamageType(ResistanceType.Cold, 40);
 
-            this.SetResistance(ResistanceType.Physical, 90);
-            this.SetResistance(ResistanceType.Fire, 65);
-            this.SetResistance(ResistanceType.Cold, 75);
-            this.SetResistance(ResistanceType.Poison, 75);
-            this.SetResistance(ResistanceType.Energy, 55);
+            SetResistance(ResistanceType.Physical, 90);
+            SetResistance(ResistanceType.Fire, 65);
+            SetResistance(ResistanceType.Cold, 75);
+            SetResistance(ResistanceType.Poison, 75);
+            SetResistance(ResistanceType.Energy, 55);
 
-            this.SetSkill(SkillName.Chivalry, 120.0);
-            this.SetSkill(SkillName.DetectHidden, 80.0);
-            this.SetSkill(SkillName.EvalInt, 100.0);
-            this.SetSkill(SkillName.Magery, 100.0);
-            this.SetSkill(SkillName.Meditation, 100.0);
-            this.SetSkill(SkillName.MagicResist, 120.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.Chivalry, 120.0);
+            SetSkill(SkillName.DetectHidden, 80.0);
+            SetSkill(SkillName.EvalInt, 100.0);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.Meditation, 100.0);
+            SetSkill(SkillName.MagicResist, 120.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0);
 
-            this.Fame = 25000;
-            this.Karma = -25000;
+            Fame = 25000;
+            Karma = -25000;
 
-            this.VirtualArmor = 54;
+            VirtualArmor = 54;
+
+            SetWeaponAbility(WeaponAbility.ConcussionBlow);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public ShadowKnight(Serial serial)
@@ -119,14 +122,10 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return Utility.RandomBool() ? WeaponAbility.ConcussionBlow : WeaponAbility.CrushingBlow;
-        }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.UltraRich, 2);
         }
 
         public override int GetIdleSound()
@@ -153,66 +152,66 @@ namespace Server.Mobiles
         {
             base.OnCombatantChange();
 
-            if (this.Hidden && this.Combatant != null)
-                this.Combatant = null;
+            if (Hidden && Combatant != null)
+                Combatant = null;
         }
 
         public virtual void SendTrackingSound()
         {
-            if (this.Hidden)
+            if (Hidden)
             {
-                Effects.PlaySound(this.Location, this.Map, 0x2C8);
-                this.Combatant = null;
+                Effects.PlaySound(Location, Map, 0x2C8);
+                Combatant = null;
             }
             else
             {
-                this.Frozen = false;
+                Frozen = false;
 
-                if (this.m_SoundTimer != null)
-                    this.m_SoundTimer.Stop();
+                if (m_SoundTimer != null)
+                    m_SoundTimer.Stop();
 
-                this.m_SoundTimer = null;
+                m_SoundTimer = null;
             }
         }
 
         public override void OnThink()
         {
-            if (!this.m_HasTeleportedAway && this.Hits < (this.HitsMax / 2))
+            if (!m_HasTeleportedAway && Hits < (HitsMax / 2))
             {
-                Map map = this.Map;
+                Map map = Map;
 
                 if (map != null)
                 {
                     // try 10 times to find a teleport spot
                     for (int i = 0; i < 10; ++i)
                     {
-                        int x = this.X + (Utility.RandomMinMax(5, 10) * (Utility.RandomBool() ? 1 : -1));
-                        int y = this.Y + (Utility.RandomMinMax(5, 10) * (Utility.RandomBool() ? 1 : -1));
-                        int z = this.Z;
+                        int x = X + (Utility.RandomMinMax(5, 10) * (Utility.RandomBool() ? 1 : -1));
+                        int y = Y + (Utility.RandomMinMax(5, 10) * (Utility.RandomBool() ? 1 : -1));
+                        int z = Z;
 
                         if (!map.CanFit(x, y, z, 16, false, false))
                             continue;
 
-                        Point3D from = this.Location;
+                        Point3D from = Location;
                         Point3D to = new Point3D(x, y, z);
 
-                        if (!this.InLOS(to))
+                        if (!InLOS(to))
                             continue;
 
-                        this.Location = to;
-                        this.ProcessDelta();
-                        this.Hidden = true;
-                        this.Combatant = null;
+                        Location = to;
+                        ProcessDelta();
+                        Hidden = true;
+                        Combatant = null;
 
                         Effects.SendLocationParticles(EffectItem.Create(from, map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
                         Effects.SendLocationParticles(EffectItem.Create(to, map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
 
                         Effects.PlaySound(to, map, 0x1FE);
 
-                        this.m_HasTeleportedAway = true;
-                        this.m_SoundTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(2.5), new TimerCallback(SendTrackingSound));
+                        m_HasTeleportedAway = true;
+                        m_SoundTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(2.5), new TimerCallback(SendTrackingSound));
 
-                        this.Frozen = true;
+                        Frozen = true;
 
                         break;
                     }
@@ -233,8 +232,8 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (this.BaseSoundID == 357)
-                this.BaseSoundID = -1;
+            if (BaseSoundID == 357)
+                BaseSoundID = -1;
         }
     }
 }

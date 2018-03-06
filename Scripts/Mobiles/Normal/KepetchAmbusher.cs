@@ -122,12 +122,7 @@ namespace Server.Mobiles
         {
             get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; }
         }
-        /*
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.ShadowStrike;
-        }
-        */
+
         public override int DragonBlood { get { return 8; } }
 
         public override void GenerateLoot()
