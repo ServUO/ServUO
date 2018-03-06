@@ -6,6 +6,7 @@ namespace Server.Items
     public class RobeOfTheEclipse : BaseOuterTorso
 	{
 		public override bool IsArtifact { get { return true; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
         [Constructable]
         public RobeOfTheEclipse()
             : base(0x1F03, 0x486)
