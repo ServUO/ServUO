@@ -44,8 +44,6 @@ namespace Server.Mobiles
             this.VirtualArmor = 50;
             //PackItem( new GnarledStaff() );
             this.PackNecroReg(17, 24);
-
-            SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
         public ShadowDweller(Serial serial)

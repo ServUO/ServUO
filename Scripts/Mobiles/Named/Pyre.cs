@@ -9,45 +9,42 @@ namespace Server.Mobiles
         [Constructable]
         public Pyre()
         {
-            Name = "Pyre";
-            Hue = 0x489;
+            this.Name = "Pyre";
+            this.Hue = 0x489;
 
-            FightMode = FightMode.Closest;
+            this.FightMode = FightMode.Closest;
 
-            SetStr(605, 611);
-            SetDex(391, 519);
-            SetInt(669, 818);
+            this.SetStr(605, 611);
+            this.SetDex(391, 519);
+            this.SetInt(669, 818);
 
-            SetHits(1783, 1939);
+            this.SetHits(1783, 1939);
 
-            SetDamage(30);
+            this.SetDamage(30);
 
-            SetDamageType(ResistanceType.Physical, 50);
-            SetDamageType(ResistanceType.Fire, 50);
+            this.SetDamageType(ResistanceType.Physical, 50);
+            this.SetDamageType(ResistanceType.Fire, 50);
 
-            SetResistance(ResistanceType.Physical, 65);
-            SetResistance(ResistanceType.Fire, 72, 75);
-            SetResistance(ResistanceType.Poison, 36, 41);
-            SetResistance(ResistanceType.Energy, 50, 51);
+            this.SetResistance(ResistanceType.Physical, 65);
+            this.SetResistance(ResistanceType.Fire, 72, 75);
+            this.SetResistance(ResistanceType.Poison, 36, 41);
+            this.SetResistance(ResistanceType.Energy, 50, 51);
 
-            SetSkill(SkillName.Wrestling, 121.9, 130.6);
-            SetSkill(SkillName.Tactics, 114.4, 117.4);
-            SetSkill(SkillName.MagicResist, 147.7, 153.0);
-            SetSkill(SkillName.Poisoning, 122.8, 124.0);
-            SetSkill(SkillName.Magery, 121.8, 127.8);
-            SetSkill(SkillName.EvalInt, 103.6, 117.0);
-            SetSkill(SkillName.Meditation, 100.0, 110.0);
+            this.SetSkill(SkillName.Wrestling, 121.9, 130.6);
+            this.SetSkill(SkillName.Tactics, 114.4, 117.4);
+            this.SetSkill(SkillName.MagicResist, 147.7, 153.0);
+            this.SetSkill(SkillName.Poisoning, 122.8, 124.0);
+            this.SetSkill(SkillName.Magery, 121.8, 127.8);
+            this.SetSkill(SkillName.EvalInt, 103.6, 117.0);
+            this.SetSkill(SkillName.Meditation, 100.0, 110.0);
 
-            Fame = 21000;
-            Karma = -21000;
+            this.Fame = 21000;
+            this.Karma = -21000;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetWeaponAbility(WeaponAbility.BleedAttack);
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public override bool GivesMLMinorArtifact
@@ -87,7 +84,15 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 3);
+            this.AddLoot(LootPack.UltraRich, 3);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            if (Utility.RandomBool())
+                return WeaponAbility.ParalyzingBlow;
+            else
+                return WeaponAbility.BleedAttack;
         }
 
         public override void Serialize(GenericWriter writer)

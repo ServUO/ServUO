@@ -1590,7 +1590,7 @@ namespace Server.Items
 				if (attacker is BaseCreature)
 				{
 					BaseCreature bc = (BaseCreature)attacker;
-					WeaponAbility ab = bc.TryGetWeaponAbility();
+					WeaponAbility ab = bc.GetWeaponAbility();
 
 					if (ab != null)
 					{

@@ -34,8 +34,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 53.1);
             SetSkill(SkillName.Tactics, 77.2);
             SetSkill(SkillName.Wrestling, 75.4);
-
-            SetAreaEffect(AreaEffect.ExplosiveGoo);
         }
 
         public FireAnt(Serial serial) : base(serial)
@@ -65,6 +63,39 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 850;
+        }
+
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            if (from != null && from.Map != null)
+            {
+                var amt = 0;
+                Mobile target = this;
+                var rand = Utility.Random(1, 100);
+                if (willKill)
+                {
+                    amt = (((rand%5) >> 2) + 3);
+                }
+                if ((Hits < 100) && (rand < 21))
+                {
+                    target = (rand%2) < 1 ? this : from;
+                    amt++;
+                }
+                if (amt > 0)
+                {
+                    SpillAcid(target, amt);
+                    from.SendLocalizedMessage(1112365);
+                    if (Mana > 14)
+                        Mana -= 15;
+                    amt ^= amt;
+                }
+            }
+            base.OnDamage(amount, from, willKill);
+        }
+
+        public override Item NewHarmfulItem()
+        {
+            return new HotGoo(TimeSpan.FromSeconds(10), 5, 10);
         }
 
         public override void OnDeath(Container c)

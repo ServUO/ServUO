@@ -10,43 +10,41 @@ namespace Server.Mobiles
         public Miasma()
         {
 
-            Name = "Miasma";
-            Hue = 0x8FD;
+            this.Name = "Miasma";
+            this.Hue = 0x8FD;
 
-            SetStr(255, 847);
-            SetDex(145, 428);
-            SetInt(26, 380);
+            this.SetStr(255, 847);
+            this.SetDex(145, 428);
+            this.SetInt(26, 380);
 
-            SetHits(272, 2000);
-            SetMana(5, 60);
+            this.SetHits(272, 2000);
+            this.SetMana(5, 60);
 
-            SetDamage(20, 30);
+            this.SetDamage(20, 30);
 
-            SetDamageType(ResistanceType.Physical, 60);
-            SetDamageType(ResistanceType.Poison, 40);
+            this.SetDamageType(ResistanceType.Physical, 60);
+            this.SetDamageType(ResistanceType.Poison, 40);
 
-            SetResistance(ResistanceType.Physical, 50, 54);
-            SetResistance(ResistanceType.Fire, 40, 45);
-            SetResistance(ResistanceType.Cold, 50, 55);
-            SetResistance(ResistanceType.Poison, 70, 80);
-            SetResistance(ResistanceType.Energy, 40, 45);
+            this.SetResistance(ResistanceType.Physical, 50, 54);
+            this.SetResistance(ResistanceType.Fire, 40, 45);
+            this.SetResistance(ResistanceType.Cold, 50, 55);
+            this.SetResistance(ResistanceType.Poison, 70, 80);
+            this.SetResistance(ResistanceType.Energy, 40, 45);
 
-            SetSkill(SkillName.Wrestling, 64.9, 73.3);
-            SetSkill(SkillName.Tactics, 98.4, 110.6);
-            SetSkill(SkillName.MagicResist, 74.4, 77.7);
-            SetSkill(SkillName.Poisoning, 128.5, 143.6);
+            this.SetSkill(SkillName.Wrestling, 64.9, 73.3);
+            this.SetSkill(SkillName.Tactics, 98.4, 110.6);
+            this.SetSkill(SkillName.MagicResist, 74.4, 77.7);
+            this.SetSkill(SkillName.Poisoning, 128.5, 143.6);
 
-            Fame = 21000;
-            Karma = -21000;
+            this.Fame = 21000;
+            this.Karma = -21000;
 
-            Tamable = false;
+            this.Tamable = false;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetWeaponAbility(WeaponAbility.MortalStrike);
         }
 
         public Miasma(Serial serial)
@@ -101,7 +99,12 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 2);
+            this.AddLoot(LootPack.UltraRich, 2);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.MortalStrike;
         }
 
         public override void Serialize(GenericWriter writer)

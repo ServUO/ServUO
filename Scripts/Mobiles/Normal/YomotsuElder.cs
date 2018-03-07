@@ -10,67 +10,65 @@ namespace Server.Mobiles
         public YomotsuElder()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a yomotsu elder";
-            Body = 255;
-            BaseSoundID = 0x452;
+            this.Name = "a yomotsu elder";
+            this.Body = 255;
+            this.BaseSoundID = 0x452;
 
-            SetStr(686, 830);
-            SetDex(251, 365);
-            SetInt(17, 31);
+            this.SetStr(686, 830);
+            this.SetDex(251, 365);
+            this.SetInt(17, 31);
 
-            SetHits(801, 900);
+            this.SetHits(801, 900);
 
-            SetDamage(19, 27);
+            this.SetDamage(19, 27);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 65, 85);
-            SetResistance(ResistanceType.Fire, 30, 50);
-            SetResistance(ResistanceType.Cold, 45, 65);
-            SetResistance(ResistanceType.Poison, 35, 55);
-            SetResistance(ResistanceType.Energy, 25, 50);
+            this.SetResistance(ResistanceType.Physical, 65, 85);
+            this.SetResistance(ResistanceType.Fire, 30, 50);
+            this.SetResistance(ResistanceType.Cold, 45, 65);
+            this.SetResistance(ResistanceType.Poison, 35, 55);
+            this.SetResistance(ResistanceType.Energy, 25, 50);
 
-            SetSkill(SkillName.Anatomy, 115.1, 130.0);
-            SetSkill(SkillName.MagicResist, 100.1, 120.0);
-            SetSkill(SkillName.Tactics, 115.1, 130.0);
-            SetSkill(SkillName.Wrestling, 110.1, 130.0);
+            this.SetSkill(SkillName.Anatomy, 115.1, 130.0);
+            this.SetSkill(SkillName.MagicResist, 100.1, 120.0);
+            this.SetSkill(SkillName.Tactics, 115.1, 130.0);
+            this.SetSkill(SkillName.Wrestling, 110.1, 130.0);
 
-            Fame = 12000;
-            Karma = -12000;
+            this.Fame = 12000;
+            this.Karma = -12000;
 
-            PackItem(new GreenGourd());
-            PackItem(new ExecutionersAxe());
+            this.PackItem(new GreenGourd());
+            this.PackItem(new ExecutionersAxe());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    PackItem(new LongPants());
+                    this.PackItem(new LongPants());
                     break;
                 case 1:
-                    PackItem(new ShortPants());
+                    this.PackItem(new ShortPants());
                     break;
             }
 
             switch ( Utility.Random(6) )
             {
                 case 0:
-                    PackItem(new Shoes());
+                    this.PackItem(new Shoes());
                     break;
                 case 1:
-                    PackItem(new Sandals());
+                    this.PackItem(new Sandals());
                     break;
                 case 2:
-                    PackItem(new Boots());
+                    this.PackItem(new Boots());
                     break;
                 case 3:
-                    PackItem(new ThighBoots());
+                    this.PackItem(new ThighBoots());
                     break;
             }
 
             if (Utility.RandomDouble() < .25)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
-            SetWeaponAbility(WeaponAbility.DoubleStrike);
+                this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
         }
 
         public YomotsuElder(Serial serial)
@@ -106,11 +104,15 @@ namespace Server.Mobiles
                 return 5;
             }
         }
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.DoubleStrike;
+        }
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 3);
-            AddLoot(LootPack.Gems, 2);
+            this.AddLoot(LootPack.FilthyRich, 3);
+            this.AddLoot(LootPack.Gems, 2);
         }
 
         // TODO: Axe Throw

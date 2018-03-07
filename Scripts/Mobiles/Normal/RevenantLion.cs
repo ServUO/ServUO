@@ -44,8 +44,6 @@ namespace Server.Mobiles
             PackNecroReg(6, 8);
 
             PackBodyPartOrBones();
-
-            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public RevenantLion(Serial serial)
@@ -73,6 +71,10 @@ namespace Server.Mobiles
             {
                 return Poison.Greater;
             }
+        }
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.BleedAttack;
         }
 
         public override int GetAngerSound()

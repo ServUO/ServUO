@@ -10,42 +10,40 @@ namespace Server.Mobiles
         public LadyLissith()
         {
 
-            Name = "Lady Lissith";
-            Hue = 0x452;
+            this.Name = "Lady Lissith";
+            this.Hue = 0x452;
 
-            SetStr(81, 130);
-            SetDex(116, 152);
-            SetInt(44, 100);
+            this.SetStr(81, 130);
+            this.SetDex(116, 152);
+            this.SetInt(44, 100);
 
-            SetHits(245, 375);
-            SetStam(116, 157);
-            SetMana(44, 100);
+            this.SetHits(245, 375);
+            this.SetStam(116, 157);
+            this.SetMana(44, 100);
 
-            SetDamage(15, 22);
+            this.SetDamage(15, 22);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 40, 50);
-            SetResistance(ResistanceType.Fire, 31, 39);
-            SetResistance(ResistanceType.Cold, 30, 40);
-            SetResistance(ResistanceType.Poison, 71, 80);
-            SetResistance(ResistanceType.Energy, 30, 40);
+            this.SetResistance(ResistanceType.Physical, 40, 50);
+            this.SetResistance(ResistanceType.Fire, 31, 39);
+            this.SetResistance(ResistanceType.Cold, 30, 40);
+            this.SetResistance(ResistanceType.Poison, 71, 80);
+            this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            SetSkill(SkillName.Wrestling, 108.6, 123.0);
-            SetSkill(SkillName.Tactics, 102.7, 119.0);
-            SetSkill(SkillName.MagicResist, 78.8, 95.6);
-            SetSkill(SkillName.Anatomy, 68.6, 106.8);
-            SetSkill(SkillName.Poisoning, 96.6, 112.9);
+            this.SetSkill(SkillName.Wrestling, 108.6, 123.0);
+            this.SetSkill(SkillName.Tactics, 102.7, 119.0);
+            this.SetSkill(SkillName.MagicResist, 78.8, 95.6);
+            this.SetSkill(SkillName.Anatomy, 68.6, 106.8);
+            this.SetSkill(SkillName.Poisoning, 96.6, 112.9);
 
-            Fame = 18900;
-            Karma = -18900;
+            this.Fame = 18900;
+            this.Karma = -18900;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public LadyLissith(Serial serial)
@@ -76,7 +74,12 @@ namespace Server.Mobiles
         }*/
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 2);
+            this.AddLoot(LootPack.UltraRich, 2);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.BleedAttack;
         }
 
         public override void Serialize(GenericWriter writer)

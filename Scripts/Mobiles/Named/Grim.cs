@@ -10,44 +10,42 @@ namespace Server.Mobiles
         public Grim()
             : base()
         {
-            Name = "Grim";
-            Hue = 1744;
+            this.Name = "Grim";
+            this.Hue = 1744;
 
-            SetStr(527, 580);
-            SetDex(284, 322);
-            SetInt(249, 386);
+            this.SetStr(527, 580);
+            this.SetDex(284, 322);
+            this.SetInt(249, 386);
 
-            SetHits(1762, 2502);
+            this.SetHits(1762, 2502);
 
-            SetDamage(17, 25);
+            this.SetDamage(17, 25);
 
-            SetDamageType(ResistanceType.Physical, 80);
-            SetDamageType(ResistanceType.Fire, 20);
+            this.SetDamageType(ResistanceType.Physical, 80);
+            this.SetDamageType(ResistanceType.Fire, 20);
 
-            SetResistance(ResistanceType.Physical, 55, 60);
-            SetResistance(ResistanceType.Fire, 62, 68);
-            SetResistance(ResistanceType.Cold, 52, 57);
-            SetResistance(ResistanceType.Poison, 30, 40);
-            SetResistance(ResistanceType.Energy, 40, 44);
+            this.SetResistance(ResistanceType.Physical, 55, 60);
+            this.SetResistance(ResistanceType.Fire, 62, 68);
+            this.SetResistance(ResistanceType.Cold, 52, 57);
+            this.SetResistance(ResistanceType.Poison, 30, 40);
+            this.SetResistance(ResistanceType.Energy, 40, 44);
 
-            SetSkill(SkillName.MagicResist, 105.8, 115.6);
-            SetSkill(SkillName.Tactics, 102.8, 120.8);
-            SetSkill(SkillName.Wrestling, 111.7, 119.2);
-            SetSkill(SkillName.Anatomy, 105.0, 128.4);
+            this.SetSkill(SkillName.MagicResist, 105.8, 115.6);
+            this.SetSkill(SkillName.Tactics, 102.8, 120.8);
+            this.SetSkill(SkillName.Wrestling, 111.7, 119.2);
+            this.SetSkill(SkillName.Anatomy, 105.0, 128.4);
 
-            Fame = 17500;
-            Karma = -5500;
+            this.Fame = 17500;
+            this.Karma = -5500;
 
-            VirtualArmor = 54;
+            this.VirtualArmor = 54;
 
-            Tamable = false;
+            this.Tamable = false;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public override bool GivesMLMinorArtifact
@@ -88,12 +86,17 @@ namespace Server.Mobiles
                 return 20;
             }
         }
+        // Varchild's
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.CrushingBlow;
+        }
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 3);
-            AddLoot(LootPack.MedScrolls);
-            AddLoot(LootPack.HighScrolls, 2);
+            this.AddLoot(LootPack.FilthyRich, 3);
+            this.AddLoot(LootPack.MedScrolls);
+            this.AddLoot(LootPack.HighScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)

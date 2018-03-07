@@ -47,10 +47,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 3;
             MinTameSkill = 102.0;
-
-            SetAreaEffect(AreaEffect.PoisonBreath);
-            SetWeaponAbility(WeaponAbility.MortalStrike);
-            SetWeaponAbility(WeaponAbility.Dismount);
         }
 
         public override int GetIdleSound()
@@ -84,6 +80,16 @@ namespace Server.Mobiles
             SetHits(360, 380);
         }
 
+        public override WeaponAbility GetWeaponAbility()
+        {
+            switch (Utility.Random(2))
+            {
+                default:
+                case 0: return WeaponAbility.MortalStrike;
+                case 1: return WeaponAbility.Dismount;
+            }
+        }
+
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }
         public override int Meat { get { return 1; } }
@@ -91,8 +97,14 @@ namespace Server.Mobiles
         public override HideType HideType { get { return HideType.Spined; } }
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
 
+        public override bool CanAreaPoison { get { return !Controlled; } }
         public override Poison HitAreaPoison { get { return Poison.Lethal; } }
-        public override int AreaPoisonDamage { get { return 50; } }
+        public override int AreaPoisonDamage { get { return 0; } }
+        public override double AreaPosionChance { get { return 1.0; } }
+        public override TimeSpan AreaPoisonDelay { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(20, 40)); } }
+
+        public override bool HasBreath { get { return true; } }
+        public override int BreathPoisonDamage { get { return 100; } }
 
         public override void GenerateLoot()
         {

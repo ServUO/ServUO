@@ -10,12 +10,10 @@ namespace Server.Mobiles
         public EnslavedSatyr()
             : base()
         {
-            Name = "an enslaved satyr";
+            this.Name = "an enslaved satyr";
 
-            Fame = 10000;
-            Karma = -10000;
-
-            SetSpecialAbility(SpecialAbility.AngryFire);
+            this.Fame = 10000;
+            this.Karma = -10000;
         }
 
         public EnslavedSatyr(Serial serial)

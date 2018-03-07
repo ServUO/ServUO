@@ -163,47 +163,47 @@ namespace Server.SkillHandlers
         public AnimalLoreGump(BaseCreature c)
             : base(250, 50)
         {
-            AddPage(0);
+            this.AddPage(0);
 
-            AddImage(100, 100, 2080);
-            AddImage(118, 137, 2081);
-            AddImage(118, 207, 2081);
-            AddImage(118, 277, 2081);
-            AddImage(118, 347, 2083);
+            this.AddImage(100, 100, 2080);
+            this.AddImage(118, 137, 2081);
+            this.AddImage(118, 207, 2081);
+            this.AddImage(118, 277, 2081);
+            this.AddImage(118, 347, 2083);
 
-            AddHtml(147, 108, 210, 18, String.Format("<center><i>{0}</i></center>", c.Name), false, false);
+            this.AddHtml(147, 108, 210, 18, String.Format("<center><i>{0}</i></center>", c.Name), false, false);
 
-            AddButton(240, 77, 2093, 2093, 2, GumpButtonType.Reply, 0);
+            this.AddButton(240, 77, 2093, 2093, 2, GumpButtonType.Reply, 0);
 
-            AddImage(140, 138, 2091);
-            AddImage(140, 335, 2091);
+            this.AddImage(140, 138, 2091);
+            this.AddImage(140, 335, 2091);
 
             int pages = (Core.AOS ? 5 : 3);
             int page = 0;
 
             #region Attributes
-            AddPage(++page);
+            this.AddPage(++page);
 
-            AddImage(128, 152, 2086);
-            AddHtmlLocalized(147, 150, 160, 18, 1049593, 200, false, false); // Attributes
+            this.AddImage(128, 152, 2086);
+            this.AddHtmlLocalized(147, 150, 160, 18, 1049593, 200, false, false); // Attributes
 
-            AddHtmlLocalized(153, 168, 160, 18, 1049578, LabelColor, false, false); // Hits
-            AddHtml(280, 168, 75, 18, FormatAttributes(c.Hits, c.HitsMax), false, false);
+            this.AddHtmlLocalized(153, 168, 160, 18, 1049578, LabelColor, false, false); // Hits
+            this.AddHtml(280, 168, 75, 18, FormatAttributes(c.Hits, c.HitsMax), false, false);
 
-            AddHtmlLocalized(153, 186, 160, 18, 1049579, LabelColor, false, false); // Stamina
-            AddHtml(280, 186, 75, 18, FormatAttributes(c.Stam, c.StamMax), false, false);
+            this.AddHtmlLocalized(153, 186, 160, 18, 1049579, LabelColor, false, false); // Stamina
+            this.AddHtml(280, 186, 75, 18, FormatAttributes(c.Stam, c.StamMax), false, false);
 
-            AddHtmlLocalized(153, 204, 160, 18, 1049580, LabelColor, false, false); // Mana
-            AddHtml(280, 204, 75, 18, FormatAttributes(c.Mana, c.ManaMax), false, false);
+            this.AddHtmlLocalized(153, 204, 160, 18, 1049580, LabelColor, false, false); // Mana
+            this.AddHtml(280, 204, 75, 18, FormatAttributes(c.Mana, c.ManaMax), false, false);
 
-            AddHtmlLocalized(153, 222, 160, 18, 1028335, LabelColor, false, false); // Strength
-            AddHtml(320, 222, 35, 18, FormatStat(c.Str), false, false);
+            this.AddHtmlLocalized(153, 222, 160, 18, 1028335, LabelColor, false, false); // Strength
+            this.AddHtml(320, 222, 35, 18, FormatStat(c.Str), false, false);
 
-            AddHtmlLocalized(153, 240, 160, 18, 3000113, LabelColor, false, false); // Dexterity
-            AddHtml(320, 240, 35, 18, FormatStat(c.Dex), false, false);
+            this.AddHtmlLocalized(153, 240, 160, 18, 3000113, LabelColor, false, false); // Dexterity
+            this.AddHtml(320, 240, 35, 18, FormatStat(c.Dex), false, false);
 
-            AddHtmlLocalized(153, 258, 160, 18, 3000112, LabelColor, false, false); // Intelligence
-            AddHtml(320, 258, 35, 18, FormatStat(c.Int), false, false);
+            this.AddHtmlLocalized(153, 258, 160, 18, 3000112, LabelColor, false, false); // Intelligence
+            this.AddHtml(320, 258, 35, 18, FormatStat(c.Int), false, false);
 
             if (Core.AOS)
             {
@@ -215,147 +215,147 @@ namespace Server.SkillHandlers
                     if (c.Uncalmable)
                         bd = 0;
 
-                    AddHtmlLocalized(153, 276, 160, 18, 1070793, LabelColor, false, false); // Barding Difficulty
-                    AddHtml(320, y, 35, 18, FormatDouble(bd), false, false);
+                    this.AddHtmlLocalized(153, 276, 160, 18, 1070793, LabelColor, false, false); // Barding Difficulty
+                    this.AddHtml(320, y, 35, 18, FormatDouble(bd), false, false);
 
                     y += 18;
                 }
 
-                AddImage(128, y + 2, 2086);
-                AddHtmlLocalized(147, y, 160, 18, 1049594, 200, false, false); // Loyalty Rating
+                this.AddImage(128, y + 2, 2086);
+                this.AddHtmlLocalized(147, y, 160, 18, 1049594, 200, false, false); // Loyalty Rating
                 y += 18;
 
-                AddHtmlLocalized(153, y, 160, 18, (!c.Controlled || c.Loyalty == 0) ? 1061643 : 1049595 + (c.Loyalty / 10), LabelColor, false, false);
+                this.AddHtmlLocalized(153, y, 160, 18, (!c.Controlled || c.Loyalty == 0) ? 1061643 : 1049595 + (c.Loyalty / 10), LabelColor, false, false);
             }
             else
             {
-                AddImage(128, 278, 2086);
-                AddHtmlLocalized(147, 276, 160, 18, 3001016, 200, false, false); // Miscellaneous
+                this.AddImage(128, 278, 2086);
+                this.AddHtmlLocalized(147, 276, 160, 18, 3001016, 200, false, false); // Miscellaneous
 
-                AddHtmlLocalized(153, 294, 160, 18, 1049581, LabelColor, false, false); // Armor Rating
-                AddHtml(320, 294, 35, 18, FormatStat(c.VirtualArmor), false, false);
+                this.AddHtmlLocalized(153, 294, 160, 18, 1049581, LabelColor, false, false); // Armor Rating
+                this.AddHtml(320, 294, 35, 18, FormatStat(c.VirtualArmor), false, false);
             }
 
-            AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, page + 1);
-            AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, pages);
+            this.AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, page + 1);
+            this.AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, pages);
             #endregion
 
             #region Resistances
             if (Core.AOS)
             {
-                AddPage(++page);
+                this.AddPage(++page);
 
-                AddImage(128, 152, 2086);
-                AddHtmlLocalized(147, 150, 160, 18, 1061645, 200, false, false); // Resistances
+                this.AddImage(128, 152, 2086);
+                this.AddHtmlLocalized(147, 150, 160, 18, 1061645, 200, false, false); // Resistances
 
-                AddHtmlLocalized(153, 168, 160, 18, 1061646, LabelColor, false, false); // Physical
-                AddHtml(320, 168, 35, 18, FormatElement(c.PhysicalResistance), false, false);
+                this.AddHtmlLocalized(153, 168, 160, 18, 1061646, LabelColor, false, false); // Physical
+                this.AddHtml(320, 168, 35, 18, FormatElement(c.PhysicalResistance), false, false);
 
-                AddHtmlLocalized(153, 186, 160, 18, 1061647, LabelColor, false, false); // Fire
-                AddHtml(320, 186, 35, 18, FormatElement(c.FireResistance), false, false);
+                this.AddHtmlLocalized(153, 186, 160, 18, 1061647, LabelColor, false, false); // Fire
+                this.AddHtml(320, 186, 35, 18, FormatElement(c.FireResistance), false, false);
 
-                AddHtmlLocalized(153, 204, 160, 18, 1061648, LabelColor, false, false); // Cold
-                AddHtml(320, 204, 35, 18, FormatElement(c.ColdResistance), false, false);
+                this.AddHtmlLocalized(153, 204, 160, 18, 1061648, LabelColor, false, false); // Cold
+                this.AddHtml(320, 204, 35, 18, FormatElement(c.ColdResistance), false, false);
 
-                AddHtmlLocalized(153, 222, 160, 18, 1061649, LabelColor, false, false); // Poison
-                AddHtml(320, 222, 35, 18, FormatElement(c.PoisonResistance), false, false);
+                this.AddHtmlLocalized(153, 222, 160, 18, 1061649, LabelColor, false, false); // Poison
+                this.AddHtml(320, 222, 35, 18, FormatElement(c.PoisonResistance), false, false);
 
-                AddHtmlLocalized(153, 240, 160, 18, 1061650, LabelColor, false, false); // Energy
-                AddHtml(320, 240, 35, 18, FormatElement(c.EnergyResistance), false, false);
+                this.AddHtmlLocalized(153, 240, 160, 18, 1061650, LabelColor, false, false); // Energy
+                this.AddHtml(320, 240, 35, 18, FormatElement(c.EnergyResistance), false, false);
 
-                AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, page + 1);
-                AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, page - 1);
+                this.AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, page + 1);
+                this.AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, page - 1);
             }
             #endregion
 
             #region Damage
             if (Core.AOS)
             {
-                AddPage(++page);
+                this.AddPage(++page);
 
-                AddImage(128, 152, 2086);
-                AddHtmlLocalized(147, 150, 160, 18, 1017319, 200, false, false); // Damage
+                this.AddImage(128, 152, 2086);
+                this.AddHtmlLocalized(147, 150, 160, 18, 1017319, 200, false, false); // Damage
 
-                AddHtmlLocalized(153, 168, 160, 18, 1061646, LabelColor, false, false); // Physical
-                AddHtml(320, 168, 35, 18, FormatElement(c.PhysicalDamage), false, false);
+                this.AddHtmlLocalized(153, 168, 160, 18, 1061646, LabelColor, false, false); // Physical
+                this.AddHtml(320, 168, 35, 18, FormatElement(c.PhysicalDamage), false, false);
 
-                AddHtmlLocalized(153, 186, 160, 18, 1061647, LabelColor, false, false); // Fire
-                AddHtml(320, 186, 35, 18, FormatElement(c.FireDamage), false, false);
+                this.AddHtmlLocalized(153, 186, 160, 18, 1061647, LabelColor, false, false); // Fire
+                this.AddHtml(320, 186, 35, 18, FormatElement(c.FireDamage), false, false);
 
-                AddHtmlLocalized(153, 204, 160, 18, 1061648, LabelColor, false, false); // Cold
-                AddHtml(320, 204, 35, 18, FormatElement(c.ColdDamage), false, false);
+                this.AddHtmlLocalized(153, 204, 160, 18, 1061648, LabelColor, false, false); // Cold
+                this.AddHtml(320, 204, 35, 18, FormatElement(c.ColdDamage), false, false);
 
-                AddHtmlLocalized(153, 222, 160, 18, 1061649, LabelColor, false, false); // Poison
-                AddHtml(320, 222, 35, 18, FormatElement(c.PoisonDamage), false, false);
+                this.AddHtmlLocalized(153, 222, 160, 18, 1061649, LabelColor, false, false); // Poison
+                this.AddHtml(320, 222, 35, 18, FormatElement(c.PoisonDamage), false, false);
 
-                AddHtmlLocalized(153, 240, 160, 18, 1061650, LabelColor, false, false); // Energy
-                AddHtml(320, 240, 35, 18, FormatElement(c.EnergyDamage), false, false);
+                this.AddHtmlLocalized(153, 240, 160, 18, 1061650, LabelColor, false, false); // Energy
+                this.AddHtml(320, 240, 35, 18, FormatElement(c.EnergyDamage), false, false);
 
                 #region Mondain's Legacy
                 if (Core.ML)
                 {
-                    AddHtmlLocalized(153, 258, 160, 18, 1076750, LabelColor, false, false); // Base Damage
-                    AddHtml(300, 258, 55, 18, FormatDamage(c.DamageMin, c.DamageMax), false, false);
+                    this.AddHtmlLocalized(153, 258, 160, 18, 1076750, LabelColor, false, false); // Base Damage
+                    this.AddHtml(300, 258, 55, 18, FormatDamage(c.DamageMin, c.DamageMax), false, false);
                 }
                 #endregion
 
-                AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, page + 1);
-                AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, page - 1);
+                this.AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, page + 1);
+                this.AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, page - 1);
             }
             #endregion
 
             #region Skills
-            AddPage(++page);
+            this.AddPage(++page);
 
-            AddImage(128, 152, 2086);
-            AddHtmlLocalized(147, 150, 160, 18, 3001030, 200, false, false); // Combat Ratings
+            this.AddImage(128, 152, 2086);
+            this.AddHtmlLocalized(147, 150, 160, 18, 3001030, 200, false, false); // Combat Ratings
 
-            AddHtmlLocalized(153, 168, 160, 18, 1044103, LabelColor, false, false); // Wrestling
-            AddHtml(320, 168, 35, 18, FormatSkill(c, SkillName.Wrestling), false, false);
+            this.AddHtmlLocalized(153, 168, 160, 18, 1044103, LabelColor, false, false); // Wrestling
+            this.AddHtml(320, 168, 35, 18, FormatSkill(c, SkillName.Wrestling), false, false);
 
-            AddHtmlLocalized(153, 186, 160, 18, 1044087, LabelColor, false, false); // Tactics
-            AddHtml(320, 186, 35, 18, FormatSkill(c, SkillName.Tactics), false, false);
+            this.AddHtmlLocalized(153, 186, 160, 18, 1044087, LabelColor, false, false); // Tactics
+            this.AddHtml(320, 186, 35, 18, FormatSkill(c, SkillName.Tactics), false, false);
 
-            AddHtmlLocalized(153, 204, 160, 18, 1044086, LabelColor, false, false); // Magic Resistance
-            AddHtml(320, 204, 35, 18, FormatSkill(c, SkillName.MagicResist), false, false);
+            this.AddHtmlLocalized(153, 204, 160, 18, 1044086, LabelColor, false, false); // Magic Resistance
+            this.AddHtml(320, 204, 35, 18, FormatSkill(c, SkillName.MagicResist), false, false);
 
-            AddHtmlLocalized(153, 222, 160, 18, 1044061, LabelColor, false, false); // Anatomy
-            AddHtml(320, 222, 35, 18, FormatSkill(c, SkillName.Anatomy), false, false);
+            this.AddHtmlLocalized(153, 222, 160, 18, 1044061, LabelColor, false, false); // Anatomy
+            this.AddHtml(320, 222, 35, 18, FormatSkill(c, SkillName.Anatomy), false, false);
 
             #region Mondain's Legacy
             if (c is CuSidhe)
             {
-                AddHtmlLocalized(153, 240, 160, 18, 1044077, LabelColor, false, false); // Healing
-                AddHtml(320, 240, 35, 18, FormatSkill(c, SkillName.Healing), false, false);
+                this.AddHtmlLocalized(153, 240, 160, 18, 1044077, LabelColor, false, false); // Healing
+                this.AddHtml(320, 240, 35, 18, FormatSkill(c, SkillName.Healing), false, false);
             }
             else
             {
-                AddHtmlLocalized(153, 240, 160, 18, 1044090, LabelColor, false, false); // Poisoning
-                AddHtml(320, 240, 35, 18, FormatSkill(c, SkillName.Poisoning), false, false);
+                this.AddHtmlLocalized(153, 240, 160, 18, 1044090, LabelColor, false, false); // Poisoning
+                this.AddHtml(320, 240, 35, 18, FormatSkill(c, SkillName.Poisoning), false, false);
             }
             #endregion
 
-            AddImage(128, 260, 2086);
-            AddHtmlLocalized(147, 258, 160, 18, 3001032, 200, false, false); // Lore & Knowledge
+            this.AddImage(128, 260, 2086);
+            this.AddHtmlLocalized(147, 258, 160, 18, 3001032, 200, false, false); // Lore & Knowledge
 
-            AddHtmlLocalized(153, 276, 160, 18, 1044085, LabelColor, false, false); // Magery
-            AddHtml(320, 276, 35, 18, FormatSkill(c, SkillName.Magery), false, false);
+            this.AddHtmlLocalized(153, 276, 160, 18, 1044085, LabelColor, false, false); // Magery
+            this.AddHtml(320, 276, 35, 18, FormatSkill(c, SkillName.Magery), false, false);
 
-            AddHtmlLocalized(153, 294, 160, 18, 1044076, LabelColor, false, false); // Evaluating Intelligence
-            AddHtml(320, 294, 35, 18, FormatSkill(c, SkillName.EvalInt), false, false);
+            this.AddHtmlLocalized(153, 294, 160, 18, 1044076, LabelColor, false, false); // Evaluating Intelligence
+            this.AddHtml(320, 294, 35, 18, FormatSkill(c, SkillName.EvalInt), false, false);
 
-            AddHtmlLocalized(153, 312, 160, 18, 1044106, LabelColor, false, false); // Meditation
-            AddHtml(320, 312, 35, 18, FormatSkill(c, SkillName.Meditation), false, false);
+            this.AddHtmlLocalized(153, 312, 160, 18, 1044106, LabelColor, false, false); // Meditation
+            this.AddHtml(320, 312, 35, 18, FormatSkill(c, SkillName.Meditation), false, false);
 
-            AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, page + 1);
-            AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, page - 1);
+            this.AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, page + 1);
+            this.AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, page - 1);
             #endregion
 
             #region Misc
-            AddPage(++page);
+            this.AddPage(++page);
 
-            AddImage(128, 152, 2086);
-            AddHtmlLocalized(147, 150, 160, 18, 1049563, 200, false, false); // Preferred Foods
+            this.AddImage(128, 152, 2086);
+            this.AddHtmlLocalized(147, 150, 160, 18, 1049563, 200, false, false); // Preferred Foods
 
             int foodPref = 3000340;
 
@@ -370,10 +370,10 @@ namespace Server.SkillHandlers
             else if ((c.FavoriteFood & FoodType.Eggs) != 0)
                 foodPref = 1044477; // Eggs
 
-            AddHtmlLocalized(153, 168, 160, 18, foodPref, LabelColor, false, false);
+            this.AddHtmlLocalized(153, 168, 160, 18, foodPref, LabelColor, false, false);
 
-            AddImage(128, 188, 2086);
-            AddHtmlLocalized(147, 186, 160, 18, 1049569, 200, false, false); // Pack Instincts
+            this.AddImage(128, 188, 2086);
+            this.AddHtmlLocalized(147, 186, 160, 18, 1049569, 200, false, false); // Pack Instincts
 
             int packInstinct = 3000340;
 
@@ -394,18 +394,18 @@ namespace Server.SkillHandlers
             else if ((c.PackInstinct & PackInstinct.Bull) != 0)
                 packInstinct = 1049577; // Bull
 
-            AddHtmlLocalized(153, 204, 160, 18, packInstinct, LabelColor, false, false);
+            this.AddHtmlLocalized(153, 204, 160, 18, packInstinct, LabelColor, false, false);
 
             if (!Core.AOS)
             {
-                AddImage(128, 224, 2086);
-                AddHtmlLocalized(147, 222, 160, 18, 1049594, 200, false, false); // Loyalty Rating
+                this.AddImage(128, 224, 2086);
+                this.AddHtmlLocalized(147, 222, 160, 18, 1049594, 200, false, false); // Loyalty Rating
 
-                AddHtmlLocalized(153, 240, 160, 18, (!c.Controlled || c.Loyalty == 0) ? 1061643 : 1049595 + (c.Loyalty / 10), LabelColor, false, false);
+                this.AddHtmlLocalized(153, 240, 160, 18, (!c.Controlled || c.Loyalty == 0) ? 1061643 : 1049595 + (c.Loyalty / 10), LabelColor, false, false);
             }
 
-            AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, 1);
-            AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, page - 1);
+            this.AddButton(340, 358, 5601, 5605, 0, GumpButtonType.Page, 1);
+            this.AddButton(317, 358, 5603, 5607, 0, GumpButtonType.Page, page - 1);
             #endregion
         }
     }

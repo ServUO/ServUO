@@ -50,8 +50,6 @@ namespace Server.Mobiles
             Karma = 5000; //Lose Karma for killing
 
             VirtualArmor = 16;
-
-            SetSpecialAbility(SpecialAbility.TailSwipe);
         }
 
         public HighPlainsBoura(Serial serial) : base(serial)

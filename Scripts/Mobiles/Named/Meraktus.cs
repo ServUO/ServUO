@@ -59,58 +59,65 @@ namespace Server.Mobiles
             }
         }
 
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.Dismount;
+        }
+
         [Constructable]
         public Meraktus()
             : base(AIType.AI_Melee)
         {
-            Name = "Meraktus";
-            Title = "the Tormented";
-            Body = 263;
-            BaseSoundID = 680;
-            Hue = 0x835;
+            this.Name = "Meraktus";
+            this.Title = "the Tormented";
+            this.Body = 263;
+            this.BaseSoundID = 680;
+            this.Hue = 0x835;
 
-            SetStr(1419, 1438);
-            SetDex(309, 413);
-            SetInt(129, 131);
+            this.SetStr(1419, 1438);
+            this.SetDex(309, 413);
+            this.SetInt(129, 131);
 
-            SetHits(4100, 4200);
+            this.SetHits(4100, 4200);
 
-            SetDamage(16, 30);
+            this.SetDamage(16, 30);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 65, 90);
-            SetResistance(ResistanceType.Fire, 65, 70);
-            SetResistance(ResistanceType.Cold, 50, 60);
-            SetResistance(ResistanceType.Poison, 40, 60);
-            SetResistance(ResistanceType.Energy, 50, 55);
+            this.SetResistance(ResistanceType.Physical, 65, 90);
+            this.SetResistance(ResistanceType.Fire, 65, 70);
+            this.SetResistance(ResistanceType.Cold, 50, 60);
+            this.SetResistance(ResistanceType.Poison, 40, 60);
+            this.SetResistance(ResistanceType.Energy, 50, 55);
 
-            SetSkill(SkillName.Anatomy, 0);
-            SetSkill(SkillName.MagicResist, 107.0, 111.3);
-            SetSkill(SkillName.Tactics, 107.0, 117.0);
-            SetSkill(SkillName.Wrestling, 100.0, 105.0);
+            //SetSkill( SkillName.Meditation, Unknown );
+            //SetSkill( SkillName.EvalInt, Unknown );
+            //SetSkill( SkillName.Magery, Unknown );
+            //SetSkill( SkillName.Poisoning, Unknown );
+            this.SetSkill(SkillName.Anatomy, 0);
+            this.SetSkill(SkillName.MagicResist, 107.0, 111.3);
+            this.SetSkill(SkillName.Tactics, 107.0, 117.0);
+            this.SetSkill(SkillName.Wrestling, 100.0, 105.0);
 
-            Fame = 70000;
-            Karma = -70000;
+            this.Fame = 70000;
+            this.Karma = -70000;
 
-            VirtualArmor = 28; // Don't know what it should be
+            this.VirtualArmor = 28; // Don't know what it should be
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            NoKillAwards = true;
+            this.NoKillAwards = true;
 
             if (Core.ML)
             {
-                PackResources(8);
-                PackTalismans(5);
+                this.PackResources(8);
+                this.PackTalismans(5);
             }
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(SpawnTormented));
-
-            SetWeaponAbility(WeaponAbility.Dismount);
         }
 
         public virtual void PackResources(int amount)
@@ -119,22 +126,22 @@ namespace Server.Mobiles
                 switch (Utility.Random(6))
                 {
                     case 0:
-                        PackItem(new Blight());
+                        this.PackItem(new Blight());
                         break;
                     case 1:
-                        PackItem(new Scourge());
+                        this.PackItem(new Scourge());
                         break;
                     case 2:
-                        PackItem(new Taint());
+                        this.PackItem(new Taint());
                         break;
                     case 3:
-                        PackItem(new Putrefication());
+                        this.PackItem(new Putrefication());
                         break;
                     case 4:
-                        PackItem(new Corruption());
+                        this.PackItem(new Corruption());
                         break;
                     case 5:
-                        PackItem(new Muculent());
+                        this.PackItem(new Muculent());
                         break;
                 }
         }
@@ -144,7 +151,7 @@ namespace Server.Mobiles
             int count = Utility.Random(amount);
 
             for (int i = 0; i < count; i++)
-                PackItem(new RandomTalisman());
+                this.PackItem(new RandomTalisman());
         }
 
         public override void OnDeath(Container c)
@@ -180,7 +187,7 @@ namespace Server.Mobiles
         {
             if (Core.ML)
             {
-                AddLoot(LootPack.AosSuperBoss, 5);  // Need to verify
+                this.AddLoot(LootPack.AosSuperBoss, 5);  // Need to verify
             }
         }
 
@@ -270,27 +277,27 @@ namespace Server.Mobiles
         {
             base.OnGaveMeleeAttack(defender);
             if (0.2 >= Utility.RandomDouble())
-                Earthquake();
+                this.Earthquake();
         }
 
         public void Earthquake()
         {
-            Map map = Map;
+            Map map = this.Map;
             if (map == null)
                 return;
             ArrayList targets = new ArrayList();
             IPooledEnumerable eable = GetMobilesInRange(8);
             foreach (Mobile m in eable)
             {
-                if (m == this || !CanBeHarmful(m))
+                if (m == this || !this.CanBeHarmful(m))
                     continue;
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
+                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
                     targets.Add(m);
                 else if (m.Player)
                     targets.Add(m);
             }
             eable.Free();
-            PlaySound(0x2F3);
+            this.PlaySound(0x2F3);
             for (int i = 0; i < targets.Count; ++i)
             {
                 Mobile m = (Mobile)targets[i];
@@ -307,7 +314,7 @@ namespace Server.Mobiles
                     damage = 10.0;
                 else if (damage > 75.0)
                     damage = 75.0;
-                DoHarmful(m);
+                this.DoHarmful(m);
                 AOS.Damage(m, this, (int)damage, 100, 0, 0, 0, 0);
                 if (m.Alive && m.Body.IsHuman && !m.Mounted)
                     m.Animate(20, 7, 1, true, false, 0); // take hit
@@ -335,16 +342,16 @@ namespace Server.Mobiles
         public void SpawnTormented()
         {
             BaseCreature spawna = new TormentedMinotaur();
-            spawna.MoveToWorld(Location, Map);
+            spawna.MoveToWorld(this.Location, this.Map);
 
             BaseCreature spawnb = new TormentedMinotaur();
-            spawnb.MoveToWorld(Location, Map);
+            spawnb.MoveToWorld(this.Location, this.Map);
 
             BaseCreature spawnc = new TormentedMinotaur();
-            spawnc.MoveToWorld(Location, Map);
+            spawnc.MoveToWorld(this.Location, this.Map);
 
             BaseCreature spawnd = new TormentedMinotaur();
-            spawnd.MoveToWorld(Location, Map);
+            spawnd.MoveToWorld(this.Location, this.Map);
         }
         #endregion
     }

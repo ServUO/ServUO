@@ -10,40 +10,38 @@ namespace Server.Mobiles
         public CrystalElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a crystal elemental";
-            Body = 300;
-            BaseSoundID = 278;
+            this.Name = "a crystal elemental";
+            this.Body = 300;
+            this.BaseSoundID = 278;
 
-            SetStr(136, 160);
-            SetDex(51, 65);
-            SetInt(86, 110);
+            this.SetStr(136, 160);
+            this.SetDex(51, 65);
+            this.SetInt(86, 110);
 
-            SetHits(150);
+            this.SetHits(150);
 
-            SetDamage(10, 15);
+            this.SetDamage(10, 15);
 
-            SetDamageType(ResistanceType.Physical, 80);
-            SetDamageType(ResistanceType.Energy, 20);
+            this.SetDamageType(ResistanceType.Physical, 80);
+            this.SetDamageType(ResistanceType.Energy, 20);
 
-            SetResistance(ResistanceType.Physical, 50, 60);
-            SetResistance(ResistanceType.Fire, 40, 50);
-            SetResistance(ResistanceType.Cold, 40, 50);
-            SetResistance(ResistanceType.Poison, 100);
-            SetResistance(ResistanceType.Energy, 55, 70);
+            this.SetResistance(ResistanceType.Physical, 50, 60);
+            this.SetResistance(ResistanceType.Fire, 40, 50);
+            this.SetResistance(ResistanceType.Cold, 40, 50);
+            this.SetResistance(ResistanceType.Poison, 100);
+            this.SetResistance(ResistanceType.Energy, 55, 70);
 
-            SetSkill(SkillName.EvalInt, 70.1, 75.0);
-            SetSkill(SkillName.Magery, 70.1, 75.0);
-            SetSkill(SkillName.Meditation, 65.1, 75.0);
-            SetSkill(SkillName.MagicResist, 80.1, 90.0);
-            SetSkill(SkillName.Tactics, 75.1, 85.0);
-            SetSkill(SkillName.Wrestling, 65.1, 75.0);
+            this.SetSkill(SkillName.EvalInt, 70.1, 75.0);
+            this.SetSkill(SkillName.Magery, 70.1, 75.0);
+            this.SetSkill(SkillName.Meditation, 65.1, 75.0);
+            this.SetSkill(SkillName.MagicResist, 80.1, 90.0);
+            this.SetSkill(SkillName.Tactics, 75.1, 85.0);
+            this.SetSkill(SkillName.Wrestling, 65.1, 75.0);
 
-            Fame = 6500;
-            Karma = -6500;
+            this.Fame = 6500;
+            this.Karma = -6500;
 
-            VirtualArmor = 54;
-
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            this.VirtualArmor = 54;
         }
 
         public CrystalElemental(Serial serial)
@@ -72,11 +70,15 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.BleedAttack;
+        }
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Rich);
-            AddLoot(LootPack.Average);
+            this.AddLoot(LootPack.Rich);
+            this.AddLoot(LootPack.Average);
         }
 
         public override void Serialize(GenericWriter writer)

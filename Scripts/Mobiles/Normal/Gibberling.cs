@@ -10,38 +10,36 @@ namespace Server.Mobiles
         public Gibberling()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a gibberling";
-            Body = 307;
-            BaseSoundID = 422;
+            this.Name = "a gibberling";
+            this.Body = 307;
+            this.BaseSoundID = 422;
 
-            SetStr(141, 165);
-            SetDex(101, 125);
-            SetInt(56, 80);
+            this.SetStr(141, 165);
+            this.SetDex(101, 125);
+            this.SetInt(56, 80);
 
-            SetHits(85, 99);
+            this.SetHits(85, 99);
 
-            SetDamage(12, 17);
+            this.SetDamage(12, 17);
 
-            SetDamageType(ResistanceType.Physical, 0);
-            SetDamageType(ResistanceType.Fire, 40);
-            SetDamageType(ResistanceType.Energy, 60);
+            this.SetDamageType(ResistanceType.Physical, 0);
+            this.SetDamageType(ResistanceType.Fire, 40);
+            this.SetDamageType(ResistanceType.Energy, 60);
 
-            SetResistance(ResistanceType.Physical, 45, 55);
-            SetResistance(ResistanceType.Fire, 25, 35);
-            SetResistance(ResistanceType.Cold, 25, 35);
-            SetResistance(ResistanceType.Poison, 10, 20);
-            SetResistance(ResistanceType.Energy, 30, 40);
+            this.SetResistance(ResistanceType.Physical, 45, 55);
+            this.SetResistance(ResistanceType.Fire, 25, 35);
+            this.SetResistance(ResistanceType.Cold, 25, 35);
+            this.SetResistance(ResistanceType.Poison, 10, 20);
+            this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            SetSkill(SkillName.MagicResist, 45.1, 70.0);
-            SetSkill(SkillName.Tactics, 67.6, 92.5);
-            SetSkill(SkillName.Wrestling, 60.1, 80.0);
+            this.SetSkill(SkillName.MagicResist, 45.1, 70.0);
+            this.SetSkill(SkillName.Tactics, 67.6, 92.5);
+            this.SetSkill(SkillName.Wrestling, 60.1, 80.0);
 
-            Fame = 1500;
-            Karma = -1500;
+            this.Fame = 1500;
+            this.Karma = -1500;
 
-            VirtualArmor = 27;
-
-            SetWeaponAbility(WeaponAbility.Dismount);
+            this.VirtualArmor = 27;
         }
 
         public Gibberling(Serial serial)
@@ -56,10 +54,14 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.Dismount;
+        }
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Meager);
+            this.AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)

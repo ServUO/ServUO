@@ -937,6 +937,10 @@ namespace Server.Engines.Shadowguard
 		private Type[] _SummonTypes = new Type[] { typeof(LesserHiryu), typeof(EliteNinja), typeof(TsukiWolf) };
 		
 		public override double WeaponAbilityChance{ get{ return 0.4; } }
+		public override WeaponAbility GetWeaponAbility()
+		{
+			return WeaponAbility.Dismount;
+		}
 		
 		[Constructable]
 		public Ozymandias() : base(AIType.AI_Melee)
@@ -981,8 +985,6 @@ namespace Server.Engines.Shadowguard
 
             var hiryu = new LesserHiryu();
             hiryu.Rider = this;
-
-            SetWeaponAbility(WeaponAbility.Dismount);
 		}
 
         private DateTime _NextWeaponSwitch;

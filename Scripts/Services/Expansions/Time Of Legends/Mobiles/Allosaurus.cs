@@ -12,50 +12,46 @@ namespace Server.Mobiles
         [Constructable]
         public Allosaurus() : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
         {
-            Name = "an allosaurus";
-            Body = 1290;
+            this.Name = "an allosaurus";
+            this.Body = 1290;
 
-            SetStr(699, 828);
-            SetDex(200);
-            SetInt(127, 150);
+            this.SetStr(699, 828);
+            this.SetDex(200);
+            this.SetInt(127, 150);
 
-            SetDamage(21, 23);
+            this.SetDamage(21, 23);
 
-            SetHits(18000);
-            SetMana(48, 70);
+            this.SetHits(18000);
+            this.SetMana(48, 70);
 
-            SetResistance(ResistanceType.Physical, 65, 75);
-            SetResistance(ResistanceType.Fire, 55, 65);
-            SetResistance(ResistanceType.Cold, 60, 70);
-            SetResistance(ResistanceType.Poison, 90, 100);
-            SetResistance(ResistanceType.Energy, 60, 70);
+            this.SetResistance(ResistanceType.Physical, 65, 75);
+            this.SetResistance(ResistanceType.Fire, 55, 65);
+            this.SetResistance(ResistanceType.Cold, 60, 70);
+            this.SetResistance(ResistanceType.Poison, 90, 100);
+            this.SetResistance(ResistanceType.Energy, 60, 70);
 
-            SetDamageType(ResistanceType.Physical, 50);
-            SetDamageType(ResistanceType.Fire, 50);
+            this.SetDamageType(ResistanceType.Physical, 50);
+            this.SetDamageType(ResistanceType.Fire, 50);
 
-            SetSkill(SkillName.MagicResist, 100.0, 110.0);
-            SetSkill(SkillName.Tactics, 120.0, 140.0);
-            SetSkill(SkillName.Wrestling, 120.0, 150.0);
-            SetSkill(SkillName.Poisoning, 50.0, 60.0);
-            SetSkill(SkillName.Wrestling, 55.0, 65.0);
-            SetSkill(SkillName.Parry, 80.0, 90.0);
-            SetSkill(SkillName.Magery, 70.0, 80.0);
-            SetSkill(SkillName.EvalInt, 75.0, 85.0);
+            this.SetSkill(SkillName.MagicResist, 100.0, 110.0);
+            this.SetSkill(SkillName.Tactics, 120.0, 140.0);
+            this.SetSkill(SkillName.Wrestling, 120.0, 150.0);
+            this.SetSkill(SkillName.Poisoning, 50.0, 60.0);
+            this.SetSkill(SkillName.Wrestling, 55.0, 65.0);
+            this.SetSkill(SkillName.Parry, 80.0, 90.0);
+            this.SetSkill(SkillName.Magery, 70.0, 80.0);
+            this.SetSkill(SkillName.EvalInt, 75.0, 85.0);
 
-            Fame = 21000;
-            Karma = -21000;
-
-            SetWeaponAbility(WeaponAbility.ArmorPierce);
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
-            SetWeaponAbility(WeaponAbility.Disarm);
+            this.Fame = 21000;
+            this.Karma = -21000;
         }
 
         public override void GenerateLoot()
         {
             if (IsChampionSpawn)
-                AddLoot(LootPack.FilthyRich, 3);
+                this.AddLoot(LootPack.FilthyRich, 3);
             else
-                AddLoot(LootPack.UltraRich, 3);
+                this.AddLoot(LootPack.UltraRich, 3);
         }
 
         public override int GetIdleSound()
@@ -87,6 +83,17 @@ namespace Server.Mobiles
         {
             SetStr(347, 387);
             SetHits(940, 1000);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            switch (Utility.Random(3))
+            {
+                default:
+                case 0: return WeaponAbility.Disarm;
+                case 1: return WeaponAbility.ArmorPierce;
+                case 2: return WeaponAbility.CrushingBlow;
+            }
         }
 
         public override int Meat { get { return 3; } }

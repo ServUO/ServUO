@@ -8,6 +8,11 @@ namespace Server.Mobiles
 	[CorpseName( "a skeletal corpse" )]
 	public class SkeletalLich : BaseCreature
 	{
+		public override WeaponAbility GetWeaponAbility()
+		{
+			return WeaponAbility.Dismount;
+		}
+
 		[Constructable]
 		public SkeletalLich() : base( AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4 )
 		{
@@ -46,8 +51,7 @@ namespace Server.Mobiles
 			Fame = 6000;
 			Karma = -6000;
 
-            VirtualArmor = 40; 
-            SetWeaponAbility(WeaponAbility.Dismount);
+			VirtualArmor = 40;
 		}
 
 		public override void GenerateLoot()

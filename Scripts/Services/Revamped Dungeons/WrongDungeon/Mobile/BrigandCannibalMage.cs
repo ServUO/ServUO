@@ -40,8 +40,6 @@ namespace Server.Mobiles
             {
                 PackItem(new SeveredHumanEars());
             }
-
-            SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
         public BrigandCannibalMage(Serial serial)

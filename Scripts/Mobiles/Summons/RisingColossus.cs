@@ -17,38 +17,35 @@ namespace Server.Mobiles
             int hitsbonus = (int)((baseskill - 83) * 1.14 + ((boostskill - 30) * 1.03) + 20);
             double skillvalue = boostskill != 0 ? ((baseskill + boostskill) / 2) : ((baseskill + 20) / 2);
 
-            Name = "a rising colossus";
-            Body = 829;
+            this.Name = "a rising colossus";
+            this.Body = 829;
 
-            SetHits(315 + hitsbonus);
+            this.SetHits(315 + hitsbonus);
 
-            SetStr(677 + statbonus);
-            SetDex(107 + statbonus);
-            SetInt(127 + statbonus);
+            this.SetStr(677 + statbonus);
+            this.SetDex(107 + statbonus);
+            this.SetInt(127 + statbonus);
 
-            SetDamage(level / 12, level / 10);
+            this.SetDamage(level / 12, level / 10);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 65, 70);
-            SetResistance(ResistanceType.Fire, 50, 55);
-            SetResistance(ResistanceType.Cold, 50, 55);
-            SetResistance(ResistanceType.Poison, 100);
-            SetResistance(ResistanceType.Energy, 65, 70);
+            this.SetResistance(ResistanceType.Physical, 65, 70);
+            this.SetResistance(ResistanceType.Fire, 50, 55);
+            this.SetResistance(ResistanceType.Cold, 50, 55);
+            this.SetResistance(ResistanceType.Poison, 100);
+            this.SetResistance(ResistanceType.Energy, 65, 70);
 
-            SetSkill(SkillName.MagicResist, skillvalue);
-            SetSkill(SkillName.Tactics, skillvalue);
-            SetSkill(SkillName.Wrestling, skillvalue);
-            SetSkill(SkillName.Anatomy, skillvalue);
-            SetSkill(SkillName.Mysticism, skillvalue);
+            this.SetSkill(SkillName.MagicResist, skillvalue);
+            this.SetSkill(SkillName.Tactics, skillvalue);
+            this.SetSkill(SkillName.Wrestling, skillvalue);
+            this.SetSkill(SkillName.Anatomy, skillvalue);
+            this.SetSkill(SkillName.Mysticism, skillvalue);
 
-            VirtualArmor = 58;
-            ControlSlots = 5;
+            this.VirtualArmor = 58;
+            this.ControlSlots = 5;
 
             m_DispelDifficulty = 91 + (int)((baseskill * 83) / 5.2);
-
-            SetWeaponAbility(WeaponAbility.ArmorIgnore);
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public override double GetFightModeRanking(Mobile m, FightMode acqType, bool bPlayerOnly)
@@ -72,6 +69,18 @@ namespace Server.Mobiles
         public override int GetHurtSound()
         {
             return 0x629;
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            switch (Utility.Random(2))
+            {
+                default:
+                case 0:
+                    return WeaponAbility.ArmorIgnore;
+                case 1:
+                    return WeaponAbility.CrushingBlow;
+            }
         }
 
         public override bool BleedImmune { get { return true; } }

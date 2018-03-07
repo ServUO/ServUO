@@ -48,7 +48,6 @@ namespace Server.Mobiles
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            SetWeaponAbility(WeaponAbility.Dismount);
             /*
             // TODO: uncomment once added
             if ( Utility.RandomDouble() < 0.1 )
@@ -71,6 +70,11 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.Dismount;
         }
 
         public override void Serialize(GenericWriter writer)

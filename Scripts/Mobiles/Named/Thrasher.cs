@@ -10,38 +10,36 @@ namespace Server.Mobiles
         public Thrasher()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.1, 0.2)
         {
-            Name = "Thrasher";
-            Body = 0xCE;
-            Hue = 0x497;
-            BaseSoundID = 0x294;
+            this.Name = "Thrasher";
+            this.Body = 0xCE;
+            this.Hue = 0x497;
+            this.BaseSoundID = 0x294;
 
-            SetStr(93, 327);
-            SetDex(7, 201);
-            SetInt(15, 67);
+            this.SetStr(93, 327);
+            this.SetDex(7, 201);
+            this.SetInt(15, 67);
 
-            SetHits(260, 984);
+            this.SetHits(260, 984);
 
-            SetDamage(15, 25);
+            this.SetDamage(15, 25);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 53, 55);
-            SetResistance(ResistanceType.Fire, 25, 29);
-            SetResistance(ResistanceType.Poison, 25, 28);
+            this.SetResistance(ResistanceType.Physical, 53, 55);
+            this.SetResistance(ResistanceType.Fire, 25, 29);
+            this.SetResistance(ResistanceType.Poison, 25, 28);
 
-            SetSkill(SkillName.Wrestling, 101.2, 118.3);
-            SetSkill(SkillName.Tactics, 99.1, 117.3);
-            SetSkill(SkillName.MagicResist, 102.4, 118.6);
+            this.SetSkill(SkillName.Wrestling, 101.2, 118.3);
+            this.SetSkill(SkillName.Tactics, 99.1, 117.3);
+            this.SetSkill(SkillName.MagicResist, 102.4, 118.6);
 
-            Fame = 22400;
-            Karma = -22400;
+            this.Fame = 22400;
+            this.Karma = -22400;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
         public Thrasher(Serial serial)
@@ -72,7 +70,12 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosFilthyRich, 4);
+            this.AddLoot(LootPack.AosFilthyRich, 4);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ArmorIgnore;
         }
 
         public override void OnDeath(Container c)

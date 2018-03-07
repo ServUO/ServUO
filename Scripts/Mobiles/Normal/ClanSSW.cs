@@ -10,38 +10,36 @@ namespace Server.Mobiles
         public ClanSSW()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "Clan Scratch Savage Wolf";
-            Body = 98;
-            Hue = 0x2C;
-            BaseSoundID = 229;
+            this.Name = "Clan Scratch Savage Wolf";
+            this.Body = 98;
+            this.Hue = 0x2C;
+            this.BaseSoundID = 229;
 
-            SetStr(170);
-            SetDex(244);
-            SetInt(57);
+            this.SetStr(170);
+            this.SetDex(244);
+            this.SetInt(57);
 
-            SetHits(65);
+            this.SetHits(65);
 
-            SetDamage(8, 10);
+            this.SetDamage(8, 10);
 
-            SetDamageType(ResistanceType.Physical, 20);
-            SetDamageType(ResistanceType.Cold, 80);
+            this.SetDamageType(ResistanceType.Physical, 20);
+            this.SetDamageType(ResistanceType.Cold, 80);
 
-            SetResistance(ResistanceType.Physical, 30, 35);
-            SetResistance(ResistanceType.Cold, 40, 45);
-            SetResistance(ResistanceType.Poison, 25, 30);
-            SetResistance(ResistanceType.Energy, 20, 25);
+            this.SetResistance(ResistanceType.Physical, 30, 35);
+            this.SetResistance(ResistanceType.Cold, 40, 45);
+            this.SetResistance(ResistanceType.Poison, 25, 30);
+            this.SetResistance(ResistanceType.Energy, 20, 25);
 			
-            SetSkill(SkillName.Swords, 99.0, 100.0);
-            SetSkill(SkillName.MagicResist, 41.5, 42.5);
-            SetSkill(SkillName.Tactics, 65.1, 70.0);
-            SetSkill(SkillName.Wrestling, 42.3, 45.5);
+            this.SetSkill(SkillName.Swords, 99.0, 100.0);
+            this.SetSkill(SkillName.MagicResist, 41.5, 42.5);
+            this.SetSkill(SkillName.Tactics, 65.1, 70.0);
+            this.SetSkill(SkillName.Wrestling, 42.3, 45.5);
 
-            Fame = 3400;
-            Karma = -3400;
+            this.Fame = 3400;
+            this.Karma = -3400;
 
-            VirtualArmor = 50;
-
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            this.VirtualArmor = 50;
         }
 
         public ClanSSW(Serial serial)
@@ -70,11 +68,15 @@ namespace Server.Mobiles
                 return PackInstinct.Canine;
             }
         }
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ParalyzingBlow;
+        }
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Average);
-            AddLoot(LootPack.Meager);
+            this.AddLoot(LootPack.Average);
+            this.AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)
