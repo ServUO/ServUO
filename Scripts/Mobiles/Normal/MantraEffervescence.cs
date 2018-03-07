@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public MantraEffervescence()
-            : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a mantra effervescence";
             Body = 0x111;
@@ -36,8 +36,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 90.0, 110.0);
             SetSkill(SkillName.EvalInt, 80.0, 90.0);
             SetSkill(SkillName.Meditation, 90.0, 100.0);
-
-            SetSkill(SkillName.Spellweaving, 90.0, 96.0);
 			
             Fame = 6500;
             Karma = -6500;

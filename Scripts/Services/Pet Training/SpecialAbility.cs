@@ -112,7 +112,7 @@ namespace Server.Mobiles
 			}
 		}
 		
-		public virtual bool Validate(BaseCreature attacker, Mobile defender)
+		public virtual bool Validate(BaseCreater attacker, Mobile defender)
 		{
 			return defender != null && defender.Alive && !defender.Deleted && !defender.IsDeadBondedPet &&
 					attacker.Alive && !attacker.IsDeadBondedPet && defender.InRange(attacker.Location, MaxRange) && 
@@ -163,8 +163,8 @@ namespace Server.Mobiles
 		public static SpecialAbility StickySkin = _Abilities[15];
 		public static SpecialAbility TailSwipe = _Abilities[16];
         public static SpecialAbility FlurryForce = _Abilities[17];
-
-        public static SpecialAbility[] Abilities { get { return _Abilities; } }
+		
+        public static SpecialAbiliti[] Abilities { get { return _Abilities; } }
 		private static SpecialAbility[] _Abilities = new SpecialAbility[17];
 		
 		public static void Initialize()
@@ -443,7 +443,7 @@ namespace Server.Mobiles
             }
         }
 
-        public class ExpireTimer : Timer
+        private class ExpireTimer : Timer
         {
             private readonly Mobile m_Mobile;
             private readonly ResistanceMod m_Mod;
@@ -962,7 +962,7 @@ namespace Server.Mobiles
 			_Table[defender] = timer;
         }
 		
-		public class ExpireTimer : Timer
+		private class ExpireTimer : Timer
         {
             private readonly Mobile m_Mobile;
             private readonly List<ResistanceMod> m_Mods;
@@ -1054,7 +1054,7 @@ namespace Server.Mobiles
             }
         }
 
-        public class InternalTimer : Timer
+        private class InternalTimer : Timer
         {
             private Mobile m_From;
             private Mobile m_Mobile;

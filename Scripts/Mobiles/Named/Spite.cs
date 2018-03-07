@@ -35,7 +35,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 108.4, 119.2);
             SetSkill(SkillName.EvalInt, 108.4, 120.0);
             SetSkill(SkillName.Meditation, 109.2, 120.0);
-            SetSkill(SkillName.Spellweaving, 120.0);
 
             Fame = 21000;
             Karma = -21000;

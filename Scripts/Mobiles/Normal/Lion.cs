@@ -43,7 +43,9 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 96.0;
 
-            SetMagicalAbility(WeaponAbility.Piercing);
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public override int GetIdleSound() { return 0x673; }

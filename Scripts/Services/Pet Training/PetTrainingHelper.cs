@@ -2,7 +2,6 @@ using System;
 using Server;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Items;
 
 // Notes:
 /* 1. combo of 3. Once 3 is chosen, only magical abilty can replace another magical ability.
@@ -36,7 +35,7 @@ namespace Server.Mobiles
         Magical     = 0x00000001,
         Necromantic = 0x00000002,
         Tokuno      = 0x00000004,
-        StickySkin  = 0x00000008,
+        StickSkin   = 0x00000008,
         Clawed      = 0x00000010,
         Tailed      = 0x00000020,
         Insectoid   = 0x00000040,
@@ -47,7 +46,7 @@ namespace Server.Mobiles
         MagicalAndTailed = Magical | Tailed,
         ClawedAndTailed = Clawed | Tailed,
         MagicalAndInsectoid = Magical | Insectoid,
-        StickySkinAndTailed = StickySkin | Tailed,
+        StickySkinAndTailed = StickySkinn | Tailed,
         TailedAndNecromantic = Tailed | Necromantic,
 
         ClawedNecromanticAndTokuno = Clawed | Necromantic | Tokuno,
@@ -80,7 +79,7 @@ namespace Server.Mobiles
         Bushido             = 0x00000040,
         Ninjitsu            = 0x00000080,
         Discordance         = 0x00000100,
-        MageryMastery       = 0x00000200,
+        MageryMaster        = 0x00000200,
         Mysticism           = 0x00000400,
         Spellweaving        = 0x00000800,
         Chivalry            = 0x00001000,
@@ -102,13 +101,13 @@ namespace Server.Mobiles
         Cusidhe = Chivalry | Discordance | Mysticism | Poisoning | Spellweaving | WrestlingMastery,
         Wolf = Bashing | Tokuno | Necromage | Piercing | Poisoning | Slashing | WrestlingMastery,
         DragonWolf = Bashing | BattleDefense | Piercing | Poisoning | Slashing | WrestlingMastery,
-        DreadSpider = Bashing | Tokuno | Chivalry | Discordance | MageryMastery | Mysticism | Necromage | Necromancy | Piercing | Slashing | Spellweaving | WrestlingMastery,
-        DreadWarhorse = Bashing | BattleDefense | Chivalry | Discordance | MageryMastery | Mysticism | Necromage | Necromancy | Piercing | Poisoning | Slashing | Spellweaving | WrestlingMastery,
+        DreadSpider = Bashing | Tokuno | Chivlary | Discordance | MageryMastery | Mysticism | Necromage | Necromancy | Piercing | Slashing | Spellweaving | WrestlingMastery,
+        DreadWarhorse = Bashing | BattleDefense | Chivarly | Discordance | MageryMastery | Mysticism | Necromage | Necromancy | Piercing | Poisoning | Slashing | Spellweaving | WrestlingMastery,
         GreaterDragon = Chivalry | Discordance | MageryMastery | Mysticism | Poisoning | Spellweaving,
         Hellcat = Bashing | Necromage | Necromancy | Piercing | Poisoning | Slashing | WrestlingMastery,
         Hiryu = Tokuno | Chivalry | Discordance | Poisoning | Spellweaving | WrestlingMastery,
         LavaLizard = Tokuno | Chivalry | Bashing,
-        RuneBeetle = Chivalry | Discordance | MageryMastery | Mysticism | Spellweaving,
+        RuneBeetle = Chivlary | Discordance | MageryMastery | Mysticism | Spellweaving,
         StygianDrake = Bashing | Chivalry | Discordance | Mysticism | Piercing | Poisoning | Slashing | Spellweaving | WrestlingMastery,
         Triceratops = Bashing | Poisoning | Slashing | WrestlingMastery,
         TsukiWolf = Tokuno | Chivalry | Discordance | Mysticism | Necromage | Necromancy | Poisoning | Spellweaving | WrestlingMastery
@@ -285,7 +284,7 @@ namespace Server.Mobiles
         };
 
         #region Accessors
-        public static TrainingDefinition GetTrainingDefinition(BaseCreature bc)
+        public TrainingDefinition GetTrainingDefinition(BaseCreature bc)
         {
             if (bc == null || !bc.Controlled)
                 return null;
@@ -298,7 +297,7 @@ namespace Server.Mobiles
             return _TrainingPoints.FirstOrDefault(tp => tp.TrainPoint == o);
         }
 
-        public static AbilityProfile GetProfile(BaseCreature bc, bool create = false)
+        public AbilityProfile GetProfile(BaseCreature bc, bool create = false)
         {
             var profile = bc.AbilityProfile;
 
@@ -428,11 +427,11 @@ namespace Server.Mobiles
             SpecialAbility.TailSwipe
         };
 
-        /*public static SpecialAbility[] StickySkin =
+        public static SpecialAbility[] StickySkin =
         {
             SpecialAbility.ManaDrain, SpecialAbility.Repel, SpecialAbility.SearingWounds,
             SpecialAbility.StickySkin, SpecialAbility.TailSwipe
-        };*/
+        };
 
         public static SpecialAbility[] ClawedAndNecromantic =
         {
@@ -496,7 +495,7 @@ namespace Server.Mobiles
         #endregion
 
         #region AreaEffect Defs
-        public static AreaEffect[] AreaEffects =
+        public AreaEffect[] AreaEffects =
         {
             AreaEffect.AuraOfEnergy,
             AreaEffect.Firestorm,
@@ -506,36 +505,36 @@ namespace Server.Mobiles
             AreaEffect.EssenceOfDisease,
         };
 
-        public static AreaEffect[] Earthen = 
+        public AreaEffec[] Earthen = 
         {
             AreaEffect.EssenceOfEarth, AreaEffect.ExplosiveGoo
         };
 
-        public static AreaEffect[] Disease = 
+        public AreaEffec[] Disease = 
         {
             AreaEffect.AuraOfNausea, AreaEffect.EssenceOfDisease
         };
 
-        public static AreaEffect[] Area1 = 
+        public AreaEffec[] Area1 = 
         {
             AreaEffect.EssenceOfEarth, AreaEffect.ExplosiveGoo, AreaEffect.AuraOfEnergy
         };
 
-        public static AreaEffect[] Area2 = 
+        public AreaEffec[] Area2 = 
         {
             AreaEffect.EssenceOfEarth, AreaEffect.ExplosiveGoo, AreaEffect.AuraOfEnergy, 
             AreaEffect.AuraOfNausea, AreaEffect.EssenceOfDisease,
             AreaEffect.PoisonBreath
         };
 
-        public static AreaEffect[] Area3 = 
+        public AreaEffec[] Area3 = 
         {
             AreaEffect.AuraOfNauesea, AreaEffect.EssenceOfDisease, AreaEffect.PoisonBreath, 
         };
         #endregion
 
         #region Weapon Ability Defs
-        public static WeaponAbility[] WeaponAbilities =
+        public WeaponAbility[] WeaponAbilities =
         {
             WeaponAbility.NerveStrike,
             WeaponAbility.WhirlwindAttack,
@@ -908,7 +907,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public static bool ValidateTrainingPoint(BaseCreature bc, MagicalAbility ability)
+        public static bool ValidateTrainingPoint(BaseCreature bc, MagicalAbilitiy ability)
         {
             var def = GetTrainingDefinition(bc);
 

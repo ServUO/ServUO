@@ -8,44 +8,43 @@ namespace Server.Mobiles
     {
         [Constructable]
         public ShimmeringEffusion()
-            : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a shimmering effusion";
-            Body = 0x105;			
+            this.Name = "a shimmering effusion";
+            this.Body = 0x105;			
 
-            SetStr(500, 550);
-            SetDex(350, 400);
-            SetInt(1500, 1600);
+            this.SetStr(500, 550);
+            this.SetDex(350, 400);
+            this.SetInt(1500, 1600);
 
-            SetHits(20000);
+            this.SetHits(20000);
 
-            SetDamage(27, 31);
+            this.SetDamage(27, 31);
 			
-            SetDamageType(ResistanceType.Physical, 20);
-            SetDamageType(ResistanceType.Fire, 20);
-            SetDamageType(ResistanceType.Cold, 20);
-            SetDamageType(ResistanceType.Poison, 20);
-            SetDamageType(ResistanceType.Energy, 20);
+            this.SetDamageType(ResistanceType.Physical, 20);
+            this.SetDamageType(ResistanceType.Fire, 20);
+            this.SetDamageType(ResistanceType.Cold, 20);
+            this.SetDamageType(ResistanceType.Poison, 20);
+            this.SetDamageType(ResistanceType.Energy, 20);
 			
-            SetResistance(ResistanceType.Physical, 60, 80);
-            SetResistance(ResistanceType.Fire, 60, 80);
-            SetResistance(ResistanceType.Cold, 60, 80);
-            SetResistance(ResistanceType.Poison, 60, 80);
-            SetResistance(ResistanceType.Energy, 60, 80);
+            this.SetResistance(ResistanceType.Physical, 60, 80);
+            this.SetResistance(ResistanceType.Fire, 60, 80);
+            this.SetResistance(ResistanceType.Cold, 60, 80);
+            this.SetResistance(ResistanceType.Poison, 60, 80);
+            this.SetResistance(ResistanceType.Energy, 60, 80);
 
-            SetSkill(SkillName.Wrestling, 100.0, 105.0);
-            SetSkill(SkillName.Tactics, 100.0, 105.0);
-            SetSkill(SkillName.MagicResist, 150);
-            SetSkill(SkillName.Magery, 150.0);
-            SetSkill(SkillName.EvalInt, 150.0);
-            SetSkill(SkillName.Meditation, 120.0);
-            SetSkill(SkillName.Spellweaving, 120.0);
+            this.SetSkill(SkillName.Wrestling, 100.0, 105.0);
+            this.SetSkill(SkillName.Tactics, 100.0, 105.0);
+            this.SetSkill(SkillName.MagicResist, 150);
+            this.SetSkill(SkillName.Magery, 150.0);
+            this.SetSkill(SkillName.EvalInt, 150.0);
+            this.SetSkill(SkillName.Meditation, 120.0);
 
-            Fame = 30000;
-            Karma = -30000;
+            this.Fame = 30000;
+            this.Karma = -30000;
 			
-            PackResources(8);
-            PackTalismans(5);
+            this.PackResources(8);
+            this.PackTalismans(5);
 
             for (int i = 0; i < Utility.RandomMinMax(1, 6); i++)
             {
@@ -55,10 +54,10 @@ namespace Server.Mobiles
 		
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.SuperBoss, 8);
-            AddLoot(LootPack.Parrot, 2);
-            AddLoot(LootPack.HighScrolls, 3);
-            AddLoot(LootPack.MedScrolls, 3);
+            this.AddLoot(LootPack.SuperBoss, 8);
+            this.AddLoot(LootPack.Parrot, 2);
+            this.AddLoot(LootPack.HighScrolls, 3);
+            this.AddLoot(LootPack.MedScrolls, 3);
         }
 		
         public override void OnDeath(Container c)
@@ -195,8 +194,8 @@ namespace Server.Mobiles
         {
             int amount = 1;
 		
-            if (Altar != null)
-                amount = Altar.Fighters.Count;
+            if (this.Altar != null)
+                amount = this.Altar.Fighters.Count;
 				
             if (amount > 5)
                 amount = 5;
@@ -206,13 +205,13 @@ namespace Server.Mobiles
                 switch ( Utility.Random(3) )
                 {
                     case 0:
-                        SpawnHelper(new MantraEffervescence(), 2);
+                        this.SpawnHelper(new MantraEffervescence(), 2);
                         break;
                     case 1:
-                        SpawnHelper(new CorporealBrume(), 2);
+                        this.SpawnHelper(new CorporealBrume(), 2);
                         break;
                     case 2:
-                        SpawnHelper(new FetidEssence(), 2);
+                        this.SpawnHelper(new FetidEssence(), 2);
                         break;
                 }
             }
