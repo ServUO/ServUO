@@ -1,11 +1,10 @@
 using System;
 using Server;
 using Server.Gumps;
-using Server.Items;
 
 namespace Server.Mobiles
 {
-    public class TrainingDefinition
+    public class TrainingDefintion
     {
         public Type CreatureType { get; private set; }
         public Class Class { get; private set; }
@@ -14,13 +13,13 @@ namespace Server.Mobiles
         public AreaEffect[] AreaEffects { get; private set; }
         public WeaponAbility[] WeaponAbilities { get; private set; }
 
-        public TrainingDefinition(
+        public TrainingDefintion(
             Type type,
             Class classificaion,
             MagicalAbility magicalAbility,
             SpecialAbility[] specialAbility,
             AreaEffect[] areaEffect,
-            WeaponAbility[] weaponAbility)
+            WeaponAbilities[] weaponAbility)
         {
             CreatureType = type;
             Class = Class;

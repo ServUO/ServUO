@@ -527,6 +527,11 @@ namespace Server.Items
                         toHeal /= m_HealedPoisonOrBleed;
                     }
 
+                    if (SearingWounds.IsUnderEffects(m_Patient))
+                    {
+                        toHeal /= 2;
+                    }
+
                     if (toHeal < 1)
                     {
                         toHeal = 1;

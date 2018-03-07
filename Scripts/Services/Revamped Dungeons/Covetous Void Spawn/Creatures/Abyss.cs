@@ -129,6 +129,8 @@ namespace Server.Mobiles
         {
             Name = "a lesser oni";
             Body = 241;
+
+            SetSpecialAbility(SpecialAbility.AngryFire);
         }
 
         [Constructable]

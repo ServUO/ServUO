@@ -14,7 +14,7 @@ namespace Server.Mobiles
 
         public TrainingPointRequirement[] Requirements { get; set; }
 
-        public TrainingPoint(object trainpoint, double weight, int max, TextDefinition name, TextDefinition description, params TrainingPointRequirement[] requirements)
+        public TrainingPoint(object trainpoint, double weight, int max, TextDefinition name, TextDefinition description, params TrainingPointRequirement[] requirements = null)
         {
             TrainPoint = trainpoint;
             Weight = weight;

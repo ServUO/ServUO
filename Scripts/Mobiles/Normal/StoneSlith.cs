@@ -44,6 +44,10 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 65.1;
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetSpecialAbility(SpecialAbility.GraspingClaw);
+            SetSpecialAbility(SpecialAbility.TailSwipe);
         }
 
         public StoneSlith(Serial serial)
@@ -77,12 +81,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average, 2);
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.BleedAttack;
-            //return WeaponAbility.LowerPhysicalResist;
         }
 
         public override void OnDeath(Container c)
@@ -134,13 +132,19 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             var version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                SetSpecialAbility(SpecialAbility.GraspingClaw);
+                SetWeaponAbility(WeaponAbility.BleedAttack);
+            }
         }
     }
 }

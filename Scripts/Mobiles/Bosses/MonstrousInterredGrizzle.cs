@@ -23,52 +23,50 @@ namespace Server.Mobiles
         };
         private static Hashtable m_Table;
         private readonly DateTime m_NextDrop = DateTime.UtcNow;
-
         [Constructable]
         public MonstrousInterredGrizzle()
-            : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a monstrous interred grizzle";
-            Body = 0x103;			
-            BaseSoundID = 589;
+            this.Name = "a monstrous interred grizzle";
+            this.Body = 0x103;			
+            this.BaseSoundID = 589;
 
-            SetStr(1198, 1207);
-            SetDex(127, 135);
-            SetInt(595, 646);
+            this.SetStr(1198, 1207);
+            this.SetDex(127, 135);
+            this.SetInt(595, 646);
 
-            SetHits(50000);
+            this.SetHits(50000);
 
-            SetDamage(27, 31);
+            this.SetDamage(27, 31);
 
-            SetDamageType(ResistanceType.Physical, 60);
-            SetDamageType(ResistanceType.Fire, 20);
-            SetDamageType(ResistanceType.Energy, 20);
+            this.SetDamageType(ResistanceType.Physical, 60);
+            this.SetDamageType(ResistanceType.Fire, 20);
+            this.SetDamageType(ResistanceType.Energy, 20);
 
-            SetResistance(ResistanceType.Physical, 48, 52);
-            SetResistance(ResistanceType.Fire, 77, 82);
-            SetResistance(ResistanceType.Cold, 56, 61);
-            SetResistance(ResistanceType.Poison, 32, 40);
-            SetResistance(ResistanceType.Energy, 69, 71);
+            this.SetResistance(ResistanceType.Physical, 48, 52);
+            this.SetResistance(ResistanceType.Fire, 77, 82);
+            this.SetResistance(ResistanceType.Cold, 56, 61);
+            this.SetResistance(ResistanceType.Poison, 32, 40);
+            this.SetResistance(ResistanceType.Energy, 69, 71);
 
-            SetSkill(SkillName.Wrestling, 112.6, 116.9);
-            SetSkill(SkillName.Tactics, 118.5, 119.2);
-            SetSkill(SkillName.MagicResist, 120);
-            SetSkill(SkillName.Anatomy, 111.0, 111.7);
-            SetSkill(SkillName.Magery, 100.0);
-            SetSkill(SkillName.EvalInt, 100);
-            SetSkill(SkillName.Meditation, 100);
-            SetSkill(SkillName.Spellweaving, 100.0);
+            this.SetSkill(SkillName.Wrestling, 112.6, 116.9);
+            this.SetSkill(SkillName.Tactics, 118.5, 119.2);
+            this.SetSkill(SkillName.MagicResist, 120);
+            this.SetSkill(SkillName.Anatomy, 111.0, 111.7);
+            this.SetSkill(SkillName.Magery, 100.0);
+            this.SetSkill(SkillName.EvalInt, 100);
+            this.SetSkill(SkillName.Meditation, 100);
 
-            Fame = 24000;
-            Karma = -24000;
+            this.Fame = 24000;
+            this.Karma = -24000;
 
-            VirtualArmor = 80;
-            PackResources(8);
-            PackTalismans(5);
+            this.VirtualArmor = 80;
+            this.PackResources(8);
+            this.PackTalismans(5);
 
             for (int i = 0; i < Utility.RandomMinMax(1, 6); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 
@@ -101,7 +99,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 8);
+            this.AddLoot(LootPack.AosSuperBoss, 8);
         }
 
         public override void OnDeath(Container c)
@@ -166,16 +164,16 @@ namespace Server.Mobiles
             base.OnGaveMeleeAttack(defender);
 
             if (Utility.RandomDouble() < 0.15)
-                CacophonicAttack(defender);
+                this.CacophonicAttack(defender);
         }
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         { 
             if (Utility.RandomDouble() < 0.15)
-                CacophonicAttack(from);
+                this.CacophonicAttack(from);
 				
             if (Utility.RandomDouble() < 0.3)
-                DropOoze();
+                this.DropOoze();
 			
             base.OnDamage(amount, from, willKill);
         }
@@ -184,18 +182,18 @@ namespace Server.Mobiles
         {
             base.OnThink();
 			
-            if (Combatant == null)
+            if (this.Combatant == null)
                 return;	
 				
-            if (Hits > 0.8 * HitsMax && Utility.RandomDouble() < 0.0025)
-                FireRing();
+            if (this.Hits > 0.8 * this.HitsMax && Utility.RandomDouble() < 0.0025)
+                this.FireRing();
         }
 
         public override void FireRing()
         {
             for (int i = 0; i < m_Tiles.Length; i += 2) 
             {
-                Point3D p = Location;
+                Point3D p = this.Location;
 				
                 p.X += m_Tiles[i];
                 p.Y += m_Tiles[i + 1];
@@ -204,7 +202,7 @@ namespace Server.Mobiles
 				
                 SpellHelper.GetSurfaceTop(ref po);
 				
-                Effects.SendLocationEffect(po, Map, Utility.RandomBool() ? 0x3E31 : 0x3E27, 100);
+                Effects.SendLocationEffect(po, this.Map, Utility.RandomBool() ? 0x3E31 : 0x3E27, 100);
             }
         }
 
@@ -284,14 +282,14 @@ namespace Server.Mobiles
             for (int i = 0; i < amount; i ++)
             {
                 Item ooze = new InfernalOoze(corrosive);				
-                Point3D p = new Point3D(Location);
+                Point3D p = new Point3D(this.Location);
 				
                 for (int j = 0; j < 5; j ++)
                 {
-                    p = GetSpawnPosition(2);
+                    p = this.GetSpawnPosition(2);
                     bool found = false;
 				
-                    foreach (Item item in Map.GetItemsInRange(p, 0))
+                    foreach (Item item in this.Map.GetItemsInRange(p, 0))
                         if (item is InfernalOoze)
                         {
                             found = true;
@@ -302,10 +300,10 @@ namespace Server.Mobiles
                         break;			
                 }
 				
-                ooze.MoveToWorld(p, Map);
+                ooze.MoveToWorld(p, this.Map);
             }
 			
-            if (Combatant is PlayerMobile)
+            if (this.Combatant is PlayerMobile)
             {
                 if (corrosive)
                     ((PlayerMobile)Combatant).SendLocalizedMessage(1072071); // A corrosive gas seeps out of your enemy's skin!
@@ -317,7 +315,7 @@ namespace Server.Mobiles
         private void EndCacophonic_Callback(object state)
         {
             if (state is Mobile)
-                CacophonicEnd((Mobile)state);
+                this.CacophonicEnd((Mobile)state);
         }
     }
 
@@ -338,12 +336,12 @@ namespace Server.Mobiles
         public InfernalOoze(bool corrosive, int damage = 40)
             : base(0x122A)
         {
-            Movable = false;
-            Hue = 0x95;
+            this.Movable = false;
+            this.Hue = 0x95;
 
             m_Damage = damage;
 			
-            m_Corrosive = corrosive;			
+            this.m_Corrosive = corrosive;			
             Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerCallback(Morph));
         }
 
@@ -357,36 +355,36 @@ namespace Server.Mobiles
         {
             get
             {
-                return m_Corrosive;
+                return this.m_Corrosive;
             }
             set
             {
-                m_Corrosive = value;
+                this.m_Corrosive = value;
             }
         }
         public override bool OnMoveOver(Mobile m)
         {
-            if (m_Table == null)
-                m_Table = new Hashtable();
+            if (this.m_Table == null)
+                this.m_Table = new Hashtable();
 			
             if ((m is BaseCreature && ((BaseCreature)m).Controlled) || m.Player)
-                m_Table[m] = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerStateCallback(Damage_Callback), m);
+                this.m_Table[m] = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerStateCallback(Damage_Callback), m);
 			
             return base.OnMoveOver(m);
         }
 
         public override bool OnMoveOff(Mobile m)
         { 
-            if (m_Table == null)
-                m_Table = new Hashtable();
+            if (this.m_Table == null)
+                this.m_Table = new Hashtable();
 				
-            if (m_Table[m] is Timer)
+            if (this.m_Table[m] is Timer)
             {
-                Timer timer = (Timer)m_Table[m];
+                Timer timer = (Timer)this.m_Table[m];
 				
                 timer.Stop();
 				
-                m_Table[m] = null;
+                this.m_Table[m] = null;
             }
 			
             return base.OnMoveOff(m);
@@ -398,7 +396,7 @@ namespace Server.Mobiles
 			
             writer.Write((int)0); // version
 			
-            writer.Write((bool)m_Corrosive);
+            writer.Write((bool)this.m_Corrosive);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -407,15 +405,15 @@ namespace Server.Mobiles
 			
             int version = reader.ReadInt();
 			
-            m_Corrosive = reader.ReadBool();
+            this.m_Corrosive = reader.ReadBool();
         }
 
         public virtual void Damage(Mobile m)
         { 
             if (!m.Alive)
-                StopTimer(m);
+                this.StopTimer(m);
 
-            if (m_Corrosive)
+            if (this.m_Corrosive)
             {
                 for (int i = 0; i < m.Items.Count; i++)
                 {
@@ -447,39 +445,39 @@ namespace Server.Mobiles
 
         public virtual void Morph()
         {
-            ItemID += 1;
+            this.ItemID += 1;
 			
             Timer.DelayCall(TimeSpan.FromSeconds(5), new TimerCallback(Decay));
         }
 
         public virtual void StopTimer(Mobile m)
         {
-            if (m_Table[m] is Timer)
+            if (this.m_Table[m] is Timer)
             {
-                Timer timer = (Timer)m_Table[m];				
+                Timer timer = (Timer)this.m_Table[m];				
                 timer.Stop();			
-                m_Table[m] = null;	
+                this.m_Table[m] = null;	
             }
         }
 
         public virtual void Decay()
         { 
-            if (m_Table == null)
-                m_Table = new Hashtable();
+            if (this.m_Table == null)
+                this.m_Table = new Hashtable();
 				
-            foreach (DictionaryEntry entry in m_Table)
+            foreach (DictionaryEntry entry in this.m_Table)
                 if (entry.Value is Timer)
                     ((Timer)entry.Value).Stop();
 			
-            m_Table.Clear();
+            this.m_Table.Clear();
 			
-            Delete();
+            this.Delete();
         }
 
         private void Damage_Callback(object state)
         {
             if (state is Mobile)
-                Damage((Mobile)state);
+                this.Damage((Mobile)state);
         }
     }
 }

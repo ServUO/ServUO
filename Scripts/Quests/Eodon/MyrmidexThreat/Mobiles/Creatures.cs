@@ -470,6 +470,9 @@ namespace Server.Mobiles
 
             Fame = 35000;
             Karma = -35000;
+
+            SetWeaponAbility(WeaponAbility.Disarm);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public override bool TeleportsTo { get { return true; } }
@@ -497,11 +500,6 @@ namespace Server.Mobiles
 
             ColUtility.Free(list);
             return mob;
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return 0.5 > Utility.RandomDouble() ? WeaponAbility.Disarm : WeaponAbility.ParalyzingBlow;
         }
 
         public override void OnThink()

@@ -2,7 +2,6 @@ using System;
 using Server;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -49,6 +48,16 @@ namespace Server.Mobiles
             {
                 TokunoTame = true;
             }
+        }
+
+        private void AddToHistory(object o)
+        {
+            if (History == null)
+            {
+                History = new List<object>();
+            }
+
+            History.Add(o);
         }
 
         public bool AddAbility(MagicalAbility ability)
@@ -311,36 +320,17 @@ namespace Server.Mobiles
                 (MagicalAbilities & MagicalAbility.WrestlingMastery) != 0;
         }
 
-        public IEnumerable<object> EnumerateAllAbilities()
+        public void CheckAreaEffect()
         {
-            if (MagicalAbility != MagicalAbility.None)
+            if (AreaEffects == null)
             {
-                yield return MagicalAbility;
+                return;
             }
+        }
 
-            if (SpecialAbilities != null)
-            {
-                foreach (var abil in SpecialAbilities)
-                {
-                    yield return abil;
-                }
-            }
+        public void CheckSpecialAbility()
+        {
 
-            if (AreaEffects != null)
-            {
-                foreach (var effect in AreaEffects)
-                {
-                    yield return effect;
-                }
-            }
-
-            if (WeaponAbilities != null)
-            {
-                foreach (var abil in WeaponAbilities)
-                {
-                    yield return abil;
-                }
-            }
         }
 
         public IEnumerable<SpecialAbility> EnumerateSpecialAbilities()
