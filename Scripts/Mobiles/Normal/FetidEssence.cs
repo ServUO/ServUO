@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public FetidEssence()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a fetid essence";
             Body = 273;

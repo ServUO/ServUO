@@ -54,7 +54,7 @@ namespace Server.Mobiles
 			}
 		}
 		
-		public virtual bool Validate(BaseCreater attacker, Mobile defender)
+		public virtual bool Validate(BaseCreature attacker, Mobile defender)
 		{
 			return defender != null && defender.Alive && !defender.Deleted && !defender.IsDeadBondedPet &&
 					attacker.Alive && !attacker.IsDeadBondedPet && defender.InRange(attacker.Location, MaxRange) && 

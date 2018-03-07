@@ -9,8 +9,6 @@ namespace Server.Mobiles
         [Constructable]
         public Guile()
         {
-
-
             Hue = DefaultHue;
 
             SetStr(53, 214);
