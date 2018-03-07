@@ -33,7 +33,6 @@ using System.Linq;
 using Server.Spells.SkillMasteries;
 using Server.Prompts;
 using Server.Engines.VvV;
-using Server.PetTraining;
 #endregion
 
 namespace Server.Mobiles

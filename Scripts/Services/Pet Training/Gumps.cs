@@ -1,6 +1,7 @@
 using System;
 using Server;
 using Server.Gumps;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -301,15 +302,12 @@ namespace Server.Mobiles
 
             AddHtmlLocalized(47, 74, 160, 18, 3001032, 0xC8, false, false); // Lore & Knowledge
 
-            if (profile != null && profile.History != null)
+            if (profile != null)
             {
                 int y = 92;
 
-                for (int i = profile.History.Count - 1; i >= 0; i--)
+                foreach (object o in profile.EnumerateAllAbilities())
                 {
-                    if (!profile.HasAbility(profile.History[i]))
-                        continue;
-
                     var loc = PetTrainingHelper.GetLocalization(profile.History[i]);
 
                     AddHtmlLocalized(53, y, 180, 18, loc[0], _Label, false, false);
@@ -318,27 +316,30 @@ namespace Server.Mobiles
                     y += 18;
                 }
 
-                AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 9);
-                AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, 7);
-
-                AddPage(9);
-
-                AddImage(28, 76, 0x826);
-
-                AddHtmlLocalized(47, 74, 160, 18, 1157505, 0xC8, false, false); // Pet Advancements
-
-                for (int i = 0; i > profile.History.Count; i++)
+                if (profile.History != null)
                 {
-                    var loc = PetTrainingHelper.GetLocalization(profile.History[i]);
+                    AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 9);
+                    AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, 7);
 
-                    AddHtmlLocalized(53, y, 180, 18, loc[0], 0xFF00, false, false);
-                    AddTooltip(PetTrainingHelper.GetCategoryLocalization(profile.History[i]));
+                    AddPage(9);
 
-                    y += 18;
+                    AddImage(28, 76, 0x826);
+
+                    AddHtmlLocalized(47, 74, 160, 18, 1157505, 0xC8, false, false); // Pet Advancements
+
+                    for (int i = 0; i > profile.History.Count; i++)
+                    {
+                        var loc = PetTrainingHelper.GetLocalization(profile.History[i]);
+
+                        AddHtmlLocalized(53, y, 180, 18, loc[0], 0xFF00, false, false);
+                        AddTooltip(PetTrainingHelper.GetCategoryLocalization(profile.History[i]));
+
+                        y += 18;
+                    }
+
+                    AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 8);
+                    AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, 1);
                 }
-
-                AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 8);
-                AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, 1);
             }
         }
 
