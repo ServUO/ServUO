@@ -25,17 +25,17 @@ namespace Server.Mobiles
 
             Requirements = requirements;
         }
+    }
 
-        public class TrainingPointRequirement
+    public class TrainingPointRequirement
+    {
+        public object Requirement { get; set; }
+        public int Cost { get; set; }
+
+        public TrainingPointRequirement(object requirement, int cost)
         {
-            public object Requirement { get; set; }
-            public int Cost { get; set; }
-
-            public TrainingPointRequirement(object requirement, int cost)
-            {
-                Requirement = requirement;
-                Cost = cost;
-            }
+            Requirement = requirement;
+            Cost = cost;
         }
     }
 }

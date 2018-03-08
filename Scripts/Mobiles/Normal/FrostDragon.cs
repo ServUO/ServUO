@@ -82,8 +82,8 @@ namespace Server.Mobiles
         public override int AuraBaseDamage { get { return 10; } }
         public override bool HasAura { get { return true; } }
         public override int AuraRange { get { return 10; } }
-        public virtual int AuraFireDamage { get { return 0; } }
-        public virtual int AuraColdDamage { get { return 100; } }
+        public override int AuraFireDamage { get { return 0; } }
+        public override int AuraColdDamage { get { return 100; } }
 
         public override void AuraEffect(Mobile m)
         {

@@ -2,6 +2,7 @@ using System;
 using Server;
 using Server.Gumps;
 using Server.Items;
+using Server.SkillHandlers;
 
 namespace Server.Mobiles
 {
@@ -9,9 +10,12 @@ namespace Server.Mobiles
     {
         private int _Label = 0xF424E5;
 
+        public BaseCreature Creature { get; private set; }
+
         public NewAnimalLoreGump(PlayerMobile pm, BaseCreature bc)
             : base(pm, 250, 50)
         {
+            Creature = bc;
         }
 
         public override void AddGumpLayout()
@@ -22,7 +26,7 @@ namespace Server.Mobiles
             AddBackground(0, 24, 310, 325, 0x24A4);
             AddHtml(47, 32, 210, 18, ColorAndCenter("#000080", Creature.Name), false, false);
 
-            AddButton(140, 0, 0x82D, 0x82D, 0, GumpButtonType.Response, 0);
+            AddButton(140, 0, 0x82D, 0x82D, 0, GumpButtonType.Reply, 0);
 
             AddImage(40, 62, 0x82B);
             AddImage(40, 258, 0x82B);
@@ -35,13 +39,13 @@ namespace Server.Mobiles
             AddBackground(53, 290, (int)(109.0 * (progress / 100)), 11, 0x806);
 
             AddHtml(162, 285, 50, 18, FormatDouble(progress) + "%", false, false);
-            AddButton(215, 288, 0x15E1, 0x15E5, 1, GumpButtonType.Response, 0);
+            AddButton(215, 288, 0x15E1, 0x15E5, 1, GumpButtonType.Reply, 0);
             AddTooltip(1157568); // View real-time training progress. 
 
-            AddButton(53, 305, 0x837, 0x838, 2, GumpButtonType.Response, 0);
+            AddButton(53, 305, 0x837, 0x838, 2, GumpButtonType.Reply, 0);
             AddHtmlLocalized(73, 300, 160, 18, 1157492, false, false); // Pet Training Options
 
-            AddButton(250, 280, 0x9AA, 0x9A9, 3, GumpButtonType.Reponse, 0);
+            AddButton(250, 280, 0x9AA, 0x9A9, 3, GumpButtonType.Reply, 0);
             AddTooltip(1158013); // Cancel Training Process. All remaining points will be removed.
 
             AddPage(1);
@@ -67,21 +71,21 @@ namespace Server.Mobiles
             AddHtmlLocalized(53, 182, 160, 18, 3000112, _Label, false, false); // Intelligence
             AddHtml(180, 182, 75, 18, FormatStat(Creature.RawInt), false, false);
 
-            double bd = Items.BaseInstrument.GetBaseDifficulty(c);
+            double bd = Items.BaseInstrument.GetBaseDifficulty(Creature);
 
-            if (c.Uncalmable)
+            if (Creature.Uncalmable)
                 bd = 0;
 
             AddHtmlLocalized(53, 200, 160, 18, 1070793, _Label, false, false); // Barding Difficulty
-            AddHtml(180, 200, 75, 18, FormatDouble(db), false, false);
+            AddHtml(180, 200, 75, 18, FormatDouble(bd), false, false);
 
             AddImage(28, 220, 0x826);
 
             AddHtmlLocalized(47, 220, 160, 18, 1049594, 0xC8, false, false); // Loyalty Rating
-            AddHtmlLocalized(53, 236, 160, 18, (!c.Controlled || c.Loyalty == 0) ? 1061643 : 1049595 + (c.Loyalty / 10), _Label, false, false);
+            AddHtmlLocalized(53, 236, 160, 18, (!Creature.Controlled || Creature.Loyalty == 0) ? 1061643 : 1049595 + (Creature.Loyalty / 10), _Label, false, false);
 
             AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 2);
-            AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, Pages);
+            AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, Pages(profile));
 
             AddPage(2);
 
@@ -182,7 +186,7 @@ namespace Server.Mobiles
             AddHtml(180, 218, 35, 18, FormatSkill(Creature, SkillName.Hiding), false, false);
 
             AddHtmlLocalized(53, 236, 160, 18, 1002118, _Label, false, false); // Parrying
-            AddHtml(180, 236, 35, 18, FormatSkill(Creature, SkillName.Parrying), false, false);
+            AddHtml(180, 236, 35, 18, FormatSkill(Creature, SkillName.Parry), false, false);
 
             AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 6);
             AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, 4);
@@ -308,7 +312,7 @@ namespace Server.Mobiles
 
                 foreach (object o in profile.EnumerateAllAbilities())
                 {
-                    var loc = PetTrainingHelper.GetLocalization(profile.History[i]);
+                    var loc = PetTrainingHelper.GetLocalization(o);
 
                     AddHtmlLocalized(53, y, 180, 18, loc[0], _Label, false, false);
                     AddTooltip(loc[1]);
@@ -371,9 +375,12 @@ namespace Server.Mobiles
             return AnimalLoreGump.FormatDouble(val);
         }
 
-        private static string FormatElement(int val)
+        private static string FormatElement(int val, string color)
         {
-            return AnimalLoreGump.FormatElement(val);
+            if (val <= 0)
+                return String.Format("<BASEFONT COLOR={0}><div align=right>---</div>", color);
+
+            return String.Format("<BASEFONT COLOR={1}><div align=right>{0}%</div>", val, color);
         }
 
         private static string FormatDamage(int min, int max)

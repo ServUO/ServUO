@@ -68,7 +68,7 @@ namespace Server.Mobiles
                 return 10;
             }
         }
-        public override bool CanBreath
+        public override bool HasBreath
         {
             get
             {

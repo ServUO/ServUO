@@ -27,8 +27,16 @@ namespace Server.SkillHandlers
 			{
                 from.CheckTargetSkill(SkillName.AnimalLore, c, 0.0, 120.0);
 
-				from.CloseGump(typeof(AnimalLoreGump));
-				from.SendGump(new AnimalLoreGump(c));
+                if (PetTrainingHelper.Enabled && from is PlayerMobile)
+                {
+                    from.CloseGump(typeof(NewAnimalLoreGump));
+                    BaseGump.SendGump(new NewAnimalLoreGump((PlayerMobile)from, c));
+                }
+                else
+                {
+                    from.CloseGump(typeof(AnimalLoreGump));
+                    from.SendGump(new AnimalLoreGump(c));
+                }
 			}
 
 			private static void Check(Mobile from, BaseCreature c, double min)
@@ -105,7 +113,7 @@ namespace Server.SkillHandlers
 
     public class AnimalLoreGump : Gump
     {
-        private static string FormatSkill(BaseCreature c, SkillName name)
+        public static string FormatSkill(BaseCreature c, SkillName name)
         {
             Skill skill = c.Skills[name];
 
@@ -115,7 +123,7 @@ namespace Server.SkillHandlers
             return String.Format("<div align=right>{0:F1}</div>", skill.Value);
         }
 
-        private static string FormatAttributes(int cur, int max)
+        public static string FormatAttributes(int cur, int max)
         {
             if (max == 0)
                 return "<div align=right>---</div>";
@@ -123,7 +131,7 @@ namespace Server.SkillHandlers
             return String.Format("<div align=right>{0}/{1}</div>", cur, max);
         }
 
-        private static string FormatStat(int val)
+        public static string FormatStat(int val)
         {
             if (val == 0)
                 return "<div align=right>---</div>";
@@ -131,7 +139,7 @@ namespace Server.SkillHandlers
             return String.Format("<div align=right>{0}</div>", val);
         }
 
-        private static string FormatDouble(double val)
+        public static string FormatDouble(double val)
         {
             if (val == 0)
                 return "<div align=right>---</div>";
@@ -139,7 +147,7 @@ namespace Server.SkillHandlers
             return String.Format("<div align=right>{0:F1}</div>", val);
         }
 
-        private static string FormatElement(int val)
+        public static string FormatElement(int val)
         {
             if (val <= 0)
                 return "<div align=right>---</div>";
@@ -148,7 +156,7 @@ namespace Server.SkillHandlers
         }
 
         #region Mondain's Legacy
-        private static string FormatDamage(int min, int max)
+        public static string FormatDamage(int min, int max)
         {
             if (min <= 0 || max <= 0)
                 return "<div align=right>---</div>";

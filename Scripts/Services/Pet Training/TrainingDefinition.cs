@@ -11,23 +11,23 @@ namespace Server.Mobiles
         public Class Class { get; private set; }
         public MagicalAbility MagicalAbilities { get; private set; }
         public SpecialAbility[] SpecialAbilities { get; private set; }
-        public AreaEffect[] AreaEffects { get; private set; }
         public WeaponAbility[] WeaponAbilities { get; private set; }
+        public AreaEffect[] AreaEffects { get; private set; }
 
         public TrainingDefinition(
             Type type,
             Class classificaion,
             MagicalAbility magicalAbility,
             SpecialAbility[] specialAbility,
-            AreaEffect[] areaEffect,
-            WeaponAbility[] weaponAbility)
+            WeaponAbility[] weaponAbility, 
+            AreaEffect[] areaEffect)
         {
             CreatureType = type;
             Class = Class;
             MagicalAbilities = magicalAbility;
             SpecialAbilities = specialAbility;
-            AreaEffects = areaEffect;
             WeaponAbilities = weaponAbility;
+            AreaEffects = areaEffect;
         }
     }
 }

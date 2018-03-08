@@ -538,6 +538,11 @@ namespace Server.Mobiles
             return null;
         }
 
+        public virtual TrainingDefinition GetTrainingDefinition()
+        {
+            return PetTrainingHelper.Definitions.FirstOrDefault(d => d.CreatureType == GetType());
+        }
+
         public virtual void InitializeAbilities()
         {
             switch (AIType)
@@ -580,6 +585,68 @@ namespace Server.Mobiles
         public void SetWeaponAbility(WeaponAbility ability)
         {
             PetTrainingHelper.GetProfile(this, true).AddAbility(ability);
+        }
+        #endregion
+
+        #region Skill Masteries
+        private SkillName _Mastery;
+
+		public SkillName Mastery 
+		{
+			get { return _Mastery; } 
+			set
+			{
+				var old = _Mastery;
+				_Mastery = value;
+				
+				if(old != _Mastery)
+					UpdateMasteryInfo();
+			}
+		}
+		
+		public virtual MasteryInfo[] Masteries { get; set; }
+		public DateTime NextMastery { get; set; }
+
+        public void UpdateMasteryInfo()
+        {
+            var masteries = MasteryInfo.Infos.Where(i => i.MasterySkill == Mastery && !i.Passive).ToArray();
+
+            if (masteries != null && masteries.Length > 0)
+            {
+                Masteries = masteries;
+            }
+        }
+
+        public virtual void CheckCastMastery()
+        {
+            if (Spell == null && Masteries != null && Masteries.Length > 0 && NextMastery < DateTime.UtcNow)
+            {
+                var info = Masteries[Utility.Random(Masteries.Length)];
+
+                if (info != null)
+                {
+                    if (info.SpellType.IsSubclassOf(typeof(SkillMasteryMove)))
+                    {
+                        var move = SpellRegistry.GetSpecialMove(info.SpellID);
+
+                        if (move != null)
+                        {
+                            SpecialMove.SetCurrentMove(this, move);
+                            NextMastery = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 20));
+                        }
+                    }
+                    else
+                    {
+                        var spell = SpellRegistry.NewSpell(info.SpellID, this, null);
+
+                        if (spell != null)
+                        {
+                            spell.Cast();
+                            NextMastery = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 20));
+                        }
+                    }
+                }
+            }
         }
         #endregion
 
@@ -838,6 +905,9 @@ namespace Server.Mobiles
 
         // Is immune to breath damages
         public virtual bool BreathImmune { get { return false; } }
+
+        public virtual double BreathMinDelay { get { return 30.0; } }
+        public virtual double BreathMaxDelay { get { return 45.0; } }
 
         // Effect details and sound
         public virtual int BreathEffectItemID { get { return 0x36D4; } }
@@ -2383,7 +2453,17 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(23); // version
+            writer.Write(24); // version
+
+            if (_Profile != null)
+            {
+                writer.Write(1);
+                _Profile.Serialize(writer);
+            }
+            else
+            {
+                writer.Write(0);
+            }
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
@@ -7172,6 +7252,11 @@ namespace Server.Mobiles
             {
                 SpecialAbility.CheckThinkTrigger(this);
                 AreaEffect.CheckThinkTrigger(this);
+
+                if (Combatant != null)
+                {
+                    CheckCastMastery();
+                }
             }
 
             if (EnableRummaging && CanRummageCorpses && !Summoned && !Controlled && tc >= m_NextRummageTime)

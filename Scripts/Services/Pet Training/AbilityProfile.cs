@@ -31,7 +31,7 @@ namespace Server.Mobiles
         public int RegenStam { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ReganMana { get; set; }
+        public int RegenMana { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseCreature Creature { get; private set; }
@@ -165,51 +165,47 @@ namespace Server.Mobiles
         {
             AddToHistory(newAbility);
 
-            if (Creature.Controlled)
-            {
-                var trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
+            var trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
 
-                if (trainPoint != null && trainPoint.Requirements != null)
+            if (trainPoint != null && trainPoint.Requirements != null)
+            {
+                foreach (var req in trainPoint.Requirements)
                 {
-                    foreach (var req in trainPoint.Requirements)
+                    // Verified on EA that skill is not zeroed out
+                    /*if (req is SkillName)
                     {
-                        // Verified on EA that skill is not zeroed out
-                        /*if (req is SkillName)
-                        {
-                            Creature.Skills[(SkillName)req].Base = 0;
-                        }
-                        else */
-                        if (req is WeaponAbility)
-                        {
-                            AddAbility((WeaponAbility)req);
-                        }
+                        Creature.Skills[(SkillName)req].Base = 0;
+                    }
+                    else */
+                    if (req is WeaponAbility)
+                    {
+                        AddAbility((WeaponAbility)req);
                     }
                 }
+            }
 
-                if (newAbility is MagicalAbility && (MagicalAbility)newAbility <= MagicalAbility.WrestlingMastery)
+            if (newAbility is MagicalAbility && (MagicalAbility)newAbility <= MagicalAbility.WrestlingMastery)
+            {
+                AddSpecialMagicalAbility((MagicalAbility)newAbility);
+            }
+
+            var trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
+
+            if (trainPoint != null && trainPoint.Requirements != null)
+            {
+                foreach (var req in trainPoint.Requirements)
                 {
-                    SpecialAbilities = null;
-                    WeaponAbilities = null;
-                }
-
-                var trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
-
-                if (trainPoint != null && trainPoint.Requirements != null)
-                {
-                    foreach (var req in trainPoint.Requirements)
+                    if (req is SkillName)
                     {
-                        if (req is SkillName)
-                        {
-                            double skill = Creature.Skills[(SkillName)req].Base;
-                            double toAdd = req.Cost == 500 ? 40 : 20;
+                        double skill = Creature.Skills[(SkillName)req].Base;
+                        double toAdd = req.Cost == 500 ? 40 : 20;
 
-                            if (skill < 20)
-                                Creature.Skills[(SkillName)req].Base = 20;
-                        }
-                        else if (req is WeaponAbility)
-                        {
-                            AddAbility((WeaponAbility)req);
-                        }
+                        if (skill < 20)
+                            Creature.Skills[(SkillName)req].Base = 20;
+                    }
+                    else if (req is WeaponAbility)
+                    {
+                        AddAbility((WeaponAbility)req);
                     }
                 }
             }
@@ -309,6 +305,21 @@ namespace Server.Mobiles
                 (MagicalAbilities & MagicalAbility.Slashing) != 0 ||
                 (MagicalAbilities & MagicalAbility.BattleDefense) != 0 ||
                 (MagicalAbilities & MagicalAbility.WrestlingMastery) != 0;
+        }
+
+        public void AddSpecialMagicalAbility(MagicalAbility ability)
+        {
+            SpecialAbilities = null;
+            WeaponAbilities = null;
+
+            switch ((MagicalAbility)ability)
+            {
+                case MagicalAbility.Piercing: Creature.Mastery = SkillName.Fencing; break;
+                case MagicalAbility.Bashing: Creature.Mastery = SkillName.Macing; break;
+                case MagicalAbility.Slashing: Creature.Mastery = SkillName.Swords; break;
+                case MagicalAbility.BattleDefense: Creature.Mastery = SkillName.Parrying; break;
+                case MagicalAbility.WrestlingMastery: Creature.Mastery = SkillName.Wrestling; break;
+            }
         }
 
         public IEnumerable<object> EnumerateAllAbilities()

@@ -57,19 +57,26 @@ namespace Server.Mobiles
 
         public override bool InitialInnocent { get { return true; } }
 
-        /*public override bool PlayerRangeSensitive
+        public override MasteryInfo[] Masteries
         {
             get
             {
-                if (this.Region != null && this.Region.IsPartOf<BattleRegion>())
+                BaseWeapon wep = Weapon as BaseWeapon;
+
+                if (wep == null)
+                    return null;
+
+                var infos = MasteryInfo.Infos.Where(i => i.MasterySkill == wep.DefSkill && !i.PassiveSpell).ToArray();
+
+                if (infos != null && infos.Length > 0)
                 {
-                    if (((BattleRegion)this.Region).Spawner != null)
-                       return !((BattleRegion)this.Region).Spawner.HasPlayers();
+                    return infos;
                 }
 
-                return base.PlayerRangeSensitive;
+                return null;
             }
-        }*/
+            set { }
+        }
 
         private void AddImmovableItem(Item item)
         {
@@ -189,41 +196,6 @@ namespace Server.Mobiles
                 valid = MyrmidexInvasionSystem.IsEnemies(this, m);
 
             return valid;
-        }
-
-        public override void OnThink()
-        {
-            base.OnThink();
-
-            if (Combatant == null)
-                return;
-
-            if (Core.TickCount - _NextMastery >= 0)
-            {
-                object spell = GetMasterySpell();
-
-                if (spell == null)
-                    return;
-
-                if (spell is SkillMasterySpell && !SkillMasterySpell.HasSpell(this, ((SkillMasterySpell)spell).GetType()))
-                {
-                    ((SkillMasterySpell)spell).Cast();
-                    _NextMastery = Core.TickCount + (int)TimeSpan.FromSeconds(Utility.RandomMinMax(15, 30)).TotalMilliseconds;
-                }
-                else if (spell is SpecialMove)
-                {
-                    SpecialMove.SetCurrentMove(this, (SpecialMove)spell);
-                    _NextMastery = Core.TickCount + (int)TimeSpan.FromSeconds(Utility.RandomMinMax(15, 30)).TotalMilliseconds;
-                }
-            }
-        }
-
-        public virtual object GetMasterySpell()
-        {
-            if (TribeType == EodonTribe.Urali && FindItemOnLayer(Layer.TwoHanded) is BaseShield)
-                return new ShieldBashSpell(this, null);
-
-            return null;
         }
 
         public override WeaponAbility GetWeaponAbility()
@@ -426,53 +398,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich, 2);
-        }
-
-        public override object GetMasterySpell()
-        {
-            if (TribeType != EodonTribe.Urali)
-            {
-                BaseWeapon wep = Weapon as BaseWeapon;
-
-                if (wep == null)
-                    return null;
-
-                switch (wep.DefSkill)
-                {
-                    case SkillName.Swords:
-                        if (.5 > Utility.RandomDouble())
-                            return new FocusedEyeSpell(this, null);
-                        else
-                            return SpellRegistry.GetSpecialMove(728);
-                    case SkillName.Fencing:
-                        if (.5 > Utility.RandomDouble())
-                            return new ThrustSpell(this, null);
-                        else
-                            return SpellRegistry.GetSpecialMove(725);
-                    case SkillName.Macing:
-                        if (.5 > Utility.RandomDouble())
-                            return new ToughnessSpell(this, null);
-                        else
-                            return SpellRegistry.GetSpecialMove(726);
-                    case SkillName.Wrestling:
-                        if (.5 > Utility.RandomDouble())
-                            return new RampageSpell(this, null);
-                        else
-                            return SpellRegistry.GetSpecialMove(740);
-                    case SkillName.Archery:
-                        if (.5 > Utility.RandomDouble())
-                            return new FlamingShotSpell(this, null);
-                        else
-                            return new PlayingTheOddsSpell(this, null);
-                    case SkillName.Throwing:
-                        if (.5 > Utility.RandomDouble())
-                            return new ElementalFurySpell(this, null);
-                        else
-                            return new CalledShotSpell(this, null);
-                }
-            }   
-
-            return null;
         }
 
 		public TribeWarrior(Serial serial) : base(serial)
@@ -805,53 +730,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);
-        }
-
-        public override object GetMasterySpell()
-        {
-            if (TribeType != EodonTribe.Urali)
-            {
-                BaseWeapon wep = Weapon as BaseWeapon;
-
-                if (wep == null)
-                    return null;
-
-                switch (wep.DefSkill)
-                {
-                    case SkillName.Swords:
-                        if (.5 > Utility.RandomDouble())
-                            return new FocusedEyeSpell(this, null);
-                        else
-                            return SpellRegistry.GetSpecialMove(728);
-                    case SkillName.Fencing:
-                        if (.5 > Utility.RandomDouble())
-                            return new ThrustSpell(this, null);
-                        else
-                            return SpellRegistry.GetSpecialMove(725);
-                    case SkillName.Macing:
-                        if (.5 > Utility.RandomDouble())
-                            return new ToughnessSpell(this, null);
-                        else
-                            return SpellRegistry.GetSpecialMove(726);
-                    case SkillName.Wrestling:
-                        if (.5 > Utility.RandomDouble())
-                            return new RampageSpell(this, null);
-                        else
-                            return SpellRegistry.GetSpecialMove(740);
-                    case SkillName.Archery:
-                        if (.5 > Utility.RandomDouble())
-                            return new FlamingShotSpell(this, null);
-                        else
-                            return new PlayingTheOddsSpell(this, null);
-                    case SkillName.Throwing:
-                        if (.5 > Utility.RandomDouble())
-                            return new ElementalFurySpell(this, null);
-                        else
-                            return new CalledShotSpell(this, null);
-                }
-            }
-
-            return null;
         }
 
 		public TribeChieftan(Serial serial) : base(serial)

@@ -66,14 +66,6 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal());
         }
 
-        public override void OnGotMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (!IsUnderEffects(defender) && 0.25 > Utility.RandomDouble())
-                DoEffects(defender);
-        }
-
         public override void GenerateLoot()
         {
             //this.AddLoot(LootPack.Random(230, 400, 2, 300, 550));
