@@ -292,7 +292,7 @@ namespace Server.Mobiles
             AddImage(28, 218, 0x826);
 
             AddHtmlLocalized(47, 216, 160, 18, 1115783, 0xC8, false, false); // Pet Slots
-            AddHtml(53, 236, 80, 18, FormatPetSlots(Creature.MinPetSlots, Creature.MaxPetSlots), false, false);
+            AddHtml(53, 236, 80, 18, FormatPetSlots(Creature.ControlSlotsMin, Creature.ControlSlotsMax), false, false);
 
             AddHtmlLocalized(158, 236, 115, 18, 1157600, Creature.MinTameSkill.ToString(), _Label, false, false);
             AddTooltip(1157586);
@@ -357,7 +357,7 @@ namespace Server.Mobiles
 
         private static string FormatSkill(BaseCreature c, SkillName name)
         {
-            return AnimalLoreGump.FormatSkills(c, name);
+            return AnimalLoreGump.FormatSkill(c, name);
         }
 
         private static string FormatAttributes(int cur, int max)
@@ -390,14 +390,14 @@ namespace Server.Mobiles
 
         private string FormatPetSlots(int min, int max)
         {
-            return String.Format("<BASEFONT COLOR=#57412F>{0} => {1}", min.ToString, max.ToString());
+            return String.Format("<BASEFONT COLOR=#57412F>{0} => {1}", min.ToString(), max.ToString());
         }
     }
 
     public class BaseAnimalTrainingGump : BaseGump
     {
         public BaseAnimalTrainingGump(PlayerMobile pm, BaseCreature bc)
-            : base(250, 50)
+            : base(pm, 250, 50)
         {
         }
 

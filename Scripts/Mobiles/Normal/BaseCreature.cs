@@ -3675,6 +3675,12 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.Administrator)]
         public int ControlSlots { get { return m_iControlSlots; } set { m_iControlSlots = value; } }
 
+        [CommandProperty(AccessLevel.Administrator)]
+        public int ControlSlotsMax { get; set; }
+
+        [CommandProperty(AccessLevel.Administrator)]
+        public int ControlSlotsMin { get; set; }
+
         public virtual bool NoHouseRestrictions { get { return false; } }
         public virtual bool IsHouseSummonable { get { return false; } }
 

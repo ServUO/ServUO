@@ -1125,6 +1125,31 @@ namespace Server.Mobiles
 
             return _AreaEffectLocalizations[index];
         }
+
+        public static int GetCategoryLocalization(object o)
+        {
+            if (o is MagicalAbility)
+            {
+                return 1157481;
+            }
+
+            if (o is SpecialAbility)
+            {
+                return 1157480;
+            }
+
+            if (o is AreaEffect)
+            {
+                return 1157482;
+            }
+
+            if (o is WeaponAbility)
+            {
+                return 1157479;
+            }
+
+            return 0;
+        }
         #endregion
     }
 }
