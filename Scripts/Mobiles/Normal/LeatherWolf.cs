@@ -47,6 +47,7 @@ namespace Server.Mobiles
             Karma = -4500;
 
             Tamable = false;
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public LeatherWolf(Serial serial)
@@ -185,12 +186,6 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 1543;
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.BleedAttack;
-            //return WeaponAbility.SummonPack;
         }
 
         public override void Serialize(GenericWriter writer)

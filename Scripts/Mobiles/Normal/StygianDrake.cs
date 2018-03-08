@@ -9,45 +9,47 @@ namespace Server.Mobiles
         public StygianDrake()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Stygian Drake";
-            this.Body = 0x58E;
-            this.Hue = 32768;
-            this.Female = true;
-            this.BaseSoundID = 362;
+            Name = "Stygian Drake";
+            Body = 0x58E;
+            Hue = 32768;
+            Female = true;
+            BaseSoundID = 362;
 
-            this.SetStr(790, 830);
-            this.SetDex(85, 125);
-            this.SetInt(400, 450);
+            SetStr(790, 830);
+            SetDex(85, 125);
+            SetInt(400, 450);
 
-            this.SetHits(480, 510);
+            SetHits(480, 510);
 
-            this.SetDamage(11, 17);
+            SetDamage(11, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 60, 70);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 60, 70);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 60, 70);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetSkill(SkillName.MagicResist, 95.0, 105.0);
-            this.SetSkill(SkillName.Tactics, 95.0, 105.0);
-            this.SetSkill(SkillName.Wrestling, 90.0, 100.0);
-            this.SetSkill(SkillName.DetectHidden, 75.0);
-            this.SetSkill(SkillName.Magery, 100.0);
-            this.SetSkill(SkillName.EvalInt, 95.0, 105.0);
+            SetSkill(SkillName.MagicResist, 95.0, 105.0);
+            SetSkill(SkillName.Tactics, 95.0, 105.0);
+            SetSkill(SkillName.Wrestling, 90.0, 100.0);
+            SetSkill(SkillName.DetectHidden, 75.0);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.EvalInt, 95.0, 105.0);
 
-            this.Fame = 5500;
-            this.Karma = -5500;
+            Fame = 5500;
+            Karma = -5500;
 
-            this.VirtualArmor = 46;
+            VirtualArmor = 46;
 
-            this.Tamable = true;
-            this.ControlSlots = 4;
-            this.MinTameSkill = 85.0;
+            Tamable = true;
+            ControlSlots = 4;
+            MinTameSkill = 85.0;
 
-            this.PackReg(3);
+            PackReg(3);
+
+            SetMagicalAbility(MagicalAbility.MageryMastery);
         }
 
         public StygianDrake(Serial serial)
@@ -55,8 +57,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AutoDispel { get { return !this.Controlled; } }
-        public override bool ReacquireOnMovement { get { return !this.Controlled; } }
+        public override bool AutoDispel { get { return !Controlled; } }
+        public override bool ReacquireOnMovement { get { return !Controlled; } }
         public override int TreasureMapLevel { get { return 2; } }
         public override int Meat { get { return 10; } }
         public override int DragonBlood { get { return 8; } }
@@ -71,8 +73,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)

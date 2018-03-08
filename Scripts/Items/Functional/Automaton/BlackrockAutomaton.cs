@@ -43,21 +43,13 @@ namespace Server.Items
             SetSkill(SkillName.MagicResist, 121.0, 126.7);
             SetSkill(SkillName.Tactics, 82.0, 94.8);
             SetSkill(SkillName.Wrestling, 94.4, 108.4);
+
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(WeaponAbility.Disarm);
+            SetWeaponAbility(WeaponAbility.ArmorPierce);
         }
 
         public override double WeaponAbilityChance { get { return 0.45; } }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            double chance = Utility.RandomDouble();
-
-            if (chance <= .33)
-                return WeaponAbility.ParalyzingBlow;
-            else if (chance <= .66)
-                return WeaponAbility.Disarm;
-
-            return WeaponAbility.ArmorPierce;
-        }
 
         public override void OnResourceChanged()
         {

@@ -10,7 +10,7 @@ namespace Server.Mobiles
         private bool m_SpawnedQueen;
         [Constructable]
         public LordOaks()
-            : base(AIType.AI_Mage, FightMode.Evil)
+            : base(AIType.AI_Paladin, FightMode.Evil)
         {
             this.Body = 175;
             this.Name = "Lord Oaks";
