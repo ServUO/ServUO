@@ -87,7 +87,7 @@ namespace Server.Mobiles
                 for (int i = 0; i < temp.Length; i++)
                     SpecialAbilities[i] = temp[i];
 
-                SpecialAbilities[temp.Length - 1] = ability;
+                SpecialAbilities[temp.Length] = ability;
             }
 
             OnAddAbility(ability);
@@ -110,7 +110,7 @@ namespace Server.Mobiles
                 for (int i = 0; i < temp.Length; i++)
                     AreaEffects[i] = temp[i];
 
-                AreaEffects[temp.Length - 1] = ability;
+                AreaEffects[temp.Length] = ability;
             }
 
             OnAddAbility(ability);
