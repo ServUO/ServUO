@@ -1346,11 +1346,6 @@ namespace Server.Spells
 
             if (amount > 0 && target != from && from is PlayerMobile && target is PlayerMobile)
             {
-                if (SearingWounds.IsUnderEffects(target))
-                {
-                    amount /= 2;
-                }
-
                 int realAmount = Math.Min(amount, target.HitsMax - target.Hits);
 
                 if (realAmount > 0 && target != from && from is PlayerMobile && target is PlayerMobile)

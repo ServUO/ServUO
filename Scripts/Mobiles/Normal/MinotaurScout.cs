@@ -10,41 +10,43 @@ namespace Server.Mobiles
         public MinotaurScout()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)// NEED TO CHECK
         {
-            Name = "a minotaur scout";
-            Body = 281;
+            this.Name = "a minotaur scout";
+            this.Body = 281;
 		   
-            SetStr(353, 375);
-            SetDex(111, 130);
-            SetInt(34, 50);
+            this.SetStr(353, 375);
+            this.SetDex(111, 130);
+            this.SetInt(34, 50);
 
-            SetHits(354, 383);
+            this.SetHits(354, 383);
 
-            SetDamage(11, 20);
+            this.SetDamage(11, 20);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 55, 65);
-            SetResistance(ResistanceType.Fire, 25, 35);
-            SetResistance(ResistanceType.Cold, 30, 40);
-            SetResistance(ResistanceType.Poison, 30, 40);
-            SetResistance(ResistanceType.Energy, 30, 40);
+            this.SetResistance(ResistanceType.Physical, 55, 65);
+            this.SetResistance(ResistanceType.Fire, 25, 35);
+            this.SetResistance(ResistanceType.Cold, 30, 40);
+            this.SetResistance(ResistanceType.Poison, 30, 40);
+            this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            SetSkill(SkillName.Anatomy, 0);
-            SetSkill(SkillName.MagicResist, 60.6, 67.5);
-            SetSkill(SkillName.Tactics, 86.9, 103.6);
-            SetSkill(SkillName.Wrestling, 85.6, 104.5);
+            //SetSkill( SkillName.Meditation, Unknown );
+            //SetSkill( SkillName.EvalInt, Unknown );
+            //SetSkill( SkillName.Magery, Unknown );
+            //SetSkill( SkillName.Poisoning, Unknown );
+            this.SetSkill(SkillName.Anatomy, 0);
+            this.SetSkill(SkillName.MagicResist, 60.6, 67.5);
+            this.SetSkill(SkillName.Tactics, 86.9, 103.6);
+            this.SetSkill(SkillName.Wrestling, 85.6, 104.5);
 
-            Fame = 5000;
-            Karma = -5000;
+            this.Fame = 5000;
+            this.Karma = -5000;
 
-            VirtualArmor = 28; // Don't know what it should be
+            this.VirtualArmor = 28; // Don't know what it should be
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public MinotaurScout(Serial serial)
@@ -52,9 +54,14 @@ namespace Server.Mobiles
         {
         }
 
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ParalyzingBlow;
+        }
+
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Rich);  // Need to verify
+            this.AddLoot(LootPack.Rich);  // Need to verify
         }
 
         // Using Tormented Minotaur sounds - Need to veryfy

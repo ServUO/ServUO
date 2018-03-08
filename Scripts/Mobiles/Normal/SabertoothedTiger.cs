@@ -10,40 +10,46 @@ namespace Server.Mobiles
         public SabertoothedTiger()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "saber-toothed tiger";
-            Body = 0x588;
-            Female = true;
+            this.Name = "saber-toothed tiger";
+            this.Body = 0x588;
+            this.Female = true;
 
-            SetStr(521);
-            SetDex(403);
-            SetInt(448);
+            this.SetStr(521);
+            this.SetDex(403);
+            this.SetInt(448);
 
-            SetHits(404);
+            this.SetHits(404);
 
-            SetDamage(21, 28);
+            this.SetDamage(21, 28);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 40, 50);
-            SetResistance(ResistanceType.Fire, 30, 40);
-            SetResistance(ResistanceType.Cold, 50, 60);
-            SetResistance(ResistanceType.Poison, 30, 40);
-            SetResistance(ResistanceType.Energy, 40, 50);
+            this.SetResistance(ResistanceType.Physical, 40, 50);
+            this.SetResistance(ResistanceType.Fire, 30, 40);
+            this.SetResistance(ResistanceType.Cold, 50, 60);
+            this.SetResistance(ResistanceType.Poison, 30, 40);
+            this.SetResistance(ResistanceType.Energy, 40, 50);
 
-            SetSkill(SkillName.Parry, 105.0, 110.0);
-            SetSkill(SkillName.Tactics, 90.0, 100.0);
-            SetSkill(SkillName.Wrestling, 100.0, 105.0);
-            SetSkill(SkillName.DetectHidden, 75.0);
-            SetSkill(SkillName.Focus, 95.0, 105.0);
+            this.SetSkill(SkillName.Parry, 105.0, 110.0);
+            this.SetSkill(SkillName.Tactics, 90.0, 100.0);
+            this.SetSkill(SkillName.Wrestling, 100.0, 105.0);
+            this.SetSkill(SkillName.DetectHidden, 75.0);
+            this.SetSkill(SkillName.Focus, 95.0, 105.0);
 
-            Fame = 11000;
-            Karma = -11000;
+            this.Fame = 11000;
+            this.Karma = -11000;
             
+<<<<<<< HEAD
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 102.0;
 
             SetMagicalAbility(MagicalAbility.Slashing);
+=======
+            this.Tamable = true;
+            this.ControlSlots = 2;
+            this.MinTameSkill = 102.0;
+>>>>>>> master
         }
 
         public override int GetIdleSound() { return 0x673; }
@@ -52,6 +58,17 @@ namespace Server.Mobiles
         public override int GetDeathSound() { return 0x671; }
 
         public override double WeaponAbilityChance { get { return 0.5; } }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            switch(Utility.Random(3))
+            {
+                default:
+                case 0: return WeaponAbility.Disarm; 
+                case 1: return WeaponAbility.ArmorIgnore; 
+                case 2: return WeaponAbility.NerveStrike;
+            }
+        }
         
         public override int Hides { get { return 11; } }
         public override HideType HideType { get { return HideType.Regular; } }

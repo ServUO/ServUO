@@ -10,40 +10,38 @@ namespace Server.Mobiles
         public ChiefParoxysmus()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a chief paroxysmus";
-            Body = 0x100;
+            this.Name = "a chief paroxysmus";
+            this.Body = 0x100;
 
-            SetStr(1232, 1400);
-            SetDex(76, 82);
-            SetInt(76, 85);
+            this.SetStr(1232, 1400);
+            this.SetDex(76, 82);
+            this.SetInt(76, 85);
 
-            SetHits(50000);
+            this.SetHits(50000);
 
-            SetDamage(27, 31);
+            this.SetDamage(27, 31);
 
-            SetDamageType(ResistanceType.Physical, 80);
-            SetDamageType(ResistanceType.Poison, 20);
+            this.SetDamageType(ResistanceType.Physical, 80);
+            this.SetDamageType(ResistanceType.Poison, 20);
 
-            SetResistance(ResistanceType.Physical, 75, 85);
-            SetResistance(ResistanceType.Fire, 40, 50);
-            SetResistance(ResistanceType.Cold, 50, 60);
-            SetResistance(ResistanceType.Poison, 55, 65);
-            SetResistance(ResistanceType.Energy, 50, 60);
+            this.SetResistance(ResistanceType.Physical, 75, 85);
+            this.SetResistance(ResistanceType.Fire, 40, 50);
+            this.SetResistance(ResistanceType.Cold, 50, 60);
+            this.SetResistance(ResistanceType.Poison, 55, 65);
+            this.SetResistance(ResistanceType.Energy, 50, 60);
 			
-            SetSkill(SkillName.Wrestling, 120.0);
-            SetSkill(SkillName.Tactics, 120.0);
-            SetSkill(SkillName.MagicResist, 120.0);
-            SetSkill(SkillName.Anatomy, 120.0);
-            SetSkill(SkillName.Poisoning, 120.0);
+            this.SetSkill(SkillName.Wrestling, 120.0);
+            this.SetSkill(SkillName.Tactics, 120.0);
+            this.SetSkill(SkillName.MagicResist, 120.0);
+            this.SetSkill(SkillName.Anatomy, 120.0);
+            this.SetSkill(SkillName.Poisoning, 120.0);
 
-            PackResources(8);
-            PackTalismans(5);
+            this.PackResources(8);
+            this.PackTalismans(5);
             Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(SpawnBulbous));  //BulbousPutrification
 
-            Fame = 25000;
-            Karma = -25000;
-
-            SetAreaEffect(AreaEffect.PoisonBreath);
+            this.Fame = 25000;
+            this.Karma = -25000;
         }
 
         public ChiefParoxysmus(Serial serial)
@@ -72,7 +70,13 @@ namespace Server.Mobiles
                 return Poison.Lethal;
             }
         }
-
+        public override bool CanAreaPoison
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override Poison HitAreaPoison
         {
             get
@@ -80,12 +84,9 @@ namespace Server.Mobiles
                 return Poison.Lethal;
             }
         }
-
-        public override int AreaPoisonDamage { get { return 50; } }
-
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 8);
+            this.AddLoot(LootPack.AosSuperBoss, 8);
         }
 
         public override void OnDeath(Container c)
@@ -162,19 +163,19 @@ namespace Server.Mobiles
 				
                 if (creature.Controlled || creature.Summoned)
                 {
-                    Heal(creature.Hits);					
+                    this.Heal(creature.Hits);					
                     creature.Kill();				
 					
-                    Effects.PlaySound(Location, Map, 0x574);
+                    Effects.PlaySound(this.Location, this.Map, 0x574);
                 }
             }
 			
             // teleports player near
-            if (from is PlayerMobile && !InRange(from.Location, 1))
+            if (from is PlayerMobile && !this.InRange(from.Location, 1))
             {
-                Combatant = from;
+                this.Combatant = from;
 				
-                from.MoveToWorld(GetSpawnPosition(1), Map);				
+                from.MoveToWorld(this.GetSpawnPosition(1), this.Map);				
                 from.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
                 from.PlaySound(0x1FE);
             }
@@ -199,7 +200,7 @@ namespace Server.Mobiles
             for (int i = 0; i < 3; i++)
             {
                 Mobile blobus = new BulbousPutrification();
-                blobus.MoveToWorld(GetSpawnPosition(4), Map);
+                blobus.MoveToWorld(this.GetSpawnPosition(4), this.Map);
             }
         }
     }

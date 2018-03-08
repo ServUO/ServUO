@@ -10,36 +10,34 @@ namespace Server.Mobiles
         public FleshGolem()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a flesh golem";
-            Body = 304;
-            BaseSoundID = 684;
+            this.Name = "a flesh golem";
+            this.Body = 304;
+            this.BaseSoundID = 684;
 
-            SetStr(176, 200);
-            SetDex(51, 75);
-            SetInt(46, 70);
+            this.SetStr(176, 200);
+            this.SetDex(51, 75);
+            this.SetInt(46, 70);
 
-            SetHits(106, 120);
+            this.SetHits(106, 120);
 
-            SetDamage(18, 22);
+            this.SetDamage(18, 22);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 50, 60);
-            SetResistance(ResistanceType.Fire, 25, 35);
-            SetResistance(ResistanceType.Cold, 15, 25);
-            SetResistance(ResistanceType.Poison, 60, 70);
-            SetResistance(ResistanceType.Energy, 30, 40);
+            this.SetResistance(ResistanceType.Physical, 50, 60);
+            this.SetResistance(ResistanceType.Fire, 25, 35);
+            this.SetResistance(ResistanceType.Cold, 15, 25);
+            this.SetResistance(ResistanceType.Poison, 60, 70);
+            this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            SetSkill(SkillName.MagicResist, 50.1, 75.0);
-            SetSkill(SkillName.Tactics, 55.1, 80.0);
-            SetSkill(SkillName.Wrestling, 60.1, 70.0);
+            this.SetSkill(SkillName.MagicResist, 50.1, 75.0);
+            this.SetSkill(SkillName.Tactics, 55.1, 80.0);
+            this.SetSkill(SkillName.Wrestling, 60.1, 70.0);
 
-            Fame = 1000;
-            Karma = -1800;
+            this.Fame = 1000;
+            this.Karma = -1800;
 
-            VirtualArmor = 34;
-
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            this.VirtualArmor = 34;
         }
 
         public FleshGolem(Serial serial)
@@ -61,10 +59,14 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.BleedAttack;
+        }
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Average);
+            this.AddLoot(LootPack.Average);
         }
 
         public override void Serialize(GenericWriter writer)

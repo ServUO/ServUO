@@ -148,8 +148,6 @@ namespace Server.Engines.Despise
             Fame = GetFame;
             Karma = GetKarmaGood;
             Power = powerLevel;
-
-            SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -161,6 +159,11 @@ namespace Server.Engines.Despise
 
         public override double WeaponAbilityChance { get { return 0.5; } }
 
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ArmorIgnore;
+        }
+
         public DespiseUnicorn(Serial serial) : base(serial)
         {
         }
@@ -168,18 +171,13 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
-
-            if (v == 0)
-            {
-                SetWeaponAbility(WeaponAbility.ArmorIgnore);
-            }
         }
     }
 
@@ -252,8 +250,6 @@ namespace Server.Engines.Despise
             Fame = GetFame;
             Karma = GetKarmaGood;
             Power = powerLevel;
-
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -267,6 +263,11 @@ namespace Server.Engines.Despise
 
         public override double WeaponAbilityChance { get { return 0.5; } }
 
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.CrushingBlow;
+        }
+
         public Ursadane(Serial serial) : base(serial)
         {
         }
@@ -274,18 +275,13 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
-
-            if (v == 0)
-            {
-                SetWeaponAbility(WeaponAbility.CrushingBlow);
-            }
         }
     }
 
@@ -306,8 +302,6 @@ namespace Server.Engines.Despise
             Fame = GetFame;
             Karma = GetKarmaGood;
             Power = powerLevel;
-
-            SetWeaponAbility(WeaponAbility.ConcussionBlow);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -320,6 +314,11 @@ namespace Server.Engines.Despise
 
         public override double WeaponAbilityChance { get { return 0.5; } }
 
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ConcussionBlow;
+        }
+
         public DivineGuardian(Serial serial) : base(serial)
         {
         }
@@ -327,18 +326,13 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
-
-            if (v == 0)
-            {
-                SetWeaponAbility(WeaponAbility.ConcussionBlow);
-            }
         }
     }
 
@@ -358,8 +352,6 @@ namespace Server.Engines.Despise
             Fame = GetFame;
             Karma = GetKarmaGood;
             Power = powerLevel;
-
-            SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
         public override int GetIdleSound()
@@ -387,6 +379,11 @@ namespace Server.Engines.Despise
 
         public override double WeaponAbilityChance { get { return 0.5; } }
 
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.DoubleStrike;
+        }
+
         public Dendrite(Serial serial) : base(serial)
         {
         }
@@ -394,18 +391,13 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
-
-            if (v == 0)
-            {
-                SetWeaponAbility(WeaponAbility.DoubleStrike);
-            }
         }
     }
 

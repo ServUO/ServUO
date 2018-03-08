@@ -40,8 +40,6 @@ namespace Server.Mobiles
             this.Tamable = true;
             this.ControlSlots = 3;
             this.MinTameSkill = 102.0;
-
-            SetMagicalAbility(MagicalAbility.Piercing);
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)
@@ -69,6 +67,17 @@ namespace Server.Mobiles
         public override int GetDeathSound() { return 0x671; }
 
         public override double WeaponAbilityChance { get { return 0.5; } }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            switch(Utility.Random(3))
+            {
+                default:
+                case 0: return WeaponAbility.ArmorIgnore; 
+                case 1: return WeaponAbility.ArmorPierce;
+                case 2: return WeaponAbility.BleedAttack;
+            }
+        }
         
         public override int Hides { get { return 11; } }
         public override HideType HideType { get { return HideType.Regular; } }

@@ -134,8 +134,11 @@ namespace Server.Spells.SkillMasteries
                 });
 
             _StartTime = DateTime.UtcNow + TimeSpan.FromSeconds(3);
+        }
 
-            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.WhirlwindAttack;
         }
 
         public override Poison PoisonImmune { get { return Poison.Greater; } }

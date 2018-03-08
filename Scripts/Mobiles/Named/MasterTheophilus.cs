@@ -9,51 +9,49 @@ namespace Server.Mobiles
         [Constructable]
         public MasterTheophilus()
         {
-            Name = "Master Theophilus";
-            Title = "the necromancer";
-            Hue = 0;
+            this.Name = "Master Theophilus";
+            this.Title = "the necromancer";
+            this.Hue = 0;
 
-            SetStr(137, 187);
-            SetDex(253, 301);
-            SetInt(393, 444);
+            this.SetStr(137, 187);
+            this.SetDex(253, 301);
+            this.SetInt(393, 444);
 
-            SetHits(663, 876);
+            this.SetHits(663, 876);
 
-            SetDamage(15, 20);
+            this.SetDamage(15, 20);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 55, 60);
-            SetResistance(ResistanceType.Fire, 50, 58);
-            SetResistance(ResistanceType.Cold, 50, 60);
-            SetResistance(ResistanceType.Poison, 50, 60);
-            SetResistance(ResistanceType.Energy, 50, 60);
+            this.SetResistance(ResistanceType.Physical, 55, 60);
+            this.SetResistance(ResistanceType.Fire, 50, 58);
+            this.SetResistance(ResistanceType.Cold, 50, 60);
+            this.SetResistance(ResistanceType.Poison, 50, 60);
+            this.SetResistance(ResistanceType.Energy, 50, 60);
 
-            SetSkill(SkillName.Wrestling, 69.9, 105.3);
-            SetSkill(SkillName.Tactics, 113.0, 117.9);
-            SetSkill(SkillName.MagicResist, 127.0, 132.8);
-            SetSkill(SkillName.Magery, 138.1, 143.7);
-            SetSkill(SkillName.EvalInt, 125.6, 133.8);
-            SetSkill(SkillName.Necromancy, 125.6, 133.8);
-            SetSkill(SkillName.SpiritSpeak, 125.6, 133.8);
-            SetSkill(SkillName.Meditation, 128.8, 132.9);
+            this.SetSkill(SkillName.Wrestling, 69.9, 105.3);
+            this.SetSkill(SkillName.Tactics, 113.0, 117.9);
+            this.SetSkill(SkillName.MagicResist, 127.0, 132.8);
+            this.SetSkill(SkillName.Magery, 138.1, 143.7);
+            this.SetSkill(SkillName.EvalInt, 125.6, 133.8);
+            this.SetSkill(SkillName.Necromancy, 125.6, 133.8);
+            this.SetSkill(SkillName.SpiritSpeak, 125.6, 133.8);
+            this.SetSkill(SkillName.Meditation, 128.8, 132.9);
 
-            Fame = 18000;
-            Karma = -18000;
+            this.Fame = 18000;
+            this.Karma = -18000;
 
-            AddItem(new Shoes(0x537));
-            AddItem(new Robe(0x452));
+            this.AddItem(new Shoes(0x537));
+            this.AddItem(new Robe(0x452));
 
-            PackReg(7);
-            PackReg(7);
-            PackReg(8);
+            this.PackReg(7);
+            this.PackReg(7);
+            this.PackReg(8);
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public MasterTheophilus(Serial serial)
@@ -97,9 +95,14 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 3);
-            AddLoot(LootPack.MedScrolls, 4);
-            AddLoot(LootPack.HighScrolls, 4);
+            this.AddLoot(LootPack.UltraRich, 3);
+            this.AddLoot(LootPack.MedScrolls, 4);
+            this.AddLoot(LootPack.HighScrolls, 4);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ParalyzingBlow;
         }
 
         public override void Serialize(GenericWriter writer)

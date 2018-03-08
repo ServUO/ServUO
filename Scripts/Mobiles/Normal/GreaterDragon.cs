@@ -10,45 +10,43 @@ namespace Server.Mobiles
         public GreaterDragon()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.3, 0.5)
         {
-            Name = "a greater dragon";
-            Body = Utility.RandomList(12, 59);
-            BaseSoundID = 362;
+            this.Name = "a greater dragon";
+            this.Body = Utility.RandomList(12, 59);
+            this.BaseSoundID = 362;
 
-            SetStr(1025, 1425);
-            SetDex(81, 148);
-            SetInt(475, 675);
+            this.SetStr(1025, 1425);
+            this.SetDex(81, 148);
+            this.SetInt(475, 675);
 
-            SetHits(1000, 2000);
+            this.SetHits(1000, 2000);
             
-            SetDamage(24, 33);
+            this.SetDamage(24, 33);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 60, 85);
-            SetResistance(ResistanceType.Fire, 65, 90);
-            SetResistance(ResistanceType.Cold, 40, 55);
-            SetResistance(ResistanceType.Poison, 40, 60);
-            SetResistance(ResistanceType.Energy, 50, 75);
+            this.SetResistance(ResistanceType.Physical, 60, 85);
+            this.SetResistance(ResistanceType.Fire, 65, 90);
+            this.SetResistance(ResistanceType.Cold, 40, 55);
+            this.SetResistance(ResistanceType.Poison, 40, 60);
+            this.SetResistance(ResistanceType.Energy, 50, 75);
 
-            SetSkill(SkillName.Meditation, 0);
-            SetSkill(SkillName.EvalInt, 110.0, 140.0);
-            SetSkill(SkillName.Magery, 110.0, 140.0);
-            SetSkill(SkillName.Poisoning, 0);
-            SetSkill(SkillName.Anatomy, 0);
-            SetSkill(SkillName.MagicResist, 110.0, 140.0);
-            SetSkill(SkillName.Tactics, 110.0, 140.0);
-            SetSkill(SkillName.Wrestling, 115.0, 145.0);
+            this.SetSkill(SkillName.Meditation, 0);
+            this.SetSkill(SkillName.EvalInt, 110.0, 140.0);
+            this.SetSkill(SkillName.Magery, 110.0, 140.0);
+            this.SetSkill(SkillName.Poisoning, 0);
+            this.SetSkill(SkillName.Anatomy, 0);
+            this.SetSkill(SkillName.MagicResist, 110.0, 140.0);
+            this.SetSkill(SkillName.Tactics, 110.0, 140.0);
+            this.SetSkill(SkillName.Wrestling, 115.0, 145.0);
 
-            Fame = 22000;
-            Karma = -15000;
+            this.Fame = 22000;
+            this.Karma = -15000;
 
-            VirtualArmor = 60;
+            this.VirtualArmor = 60;
 
-            Tamable = true;
-            ControlSlots = 5;
-            MinTameSkill = 104.7;
-
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            this.Tamable = true;
+            this.ControlSlots = 5;
+            this.MinTameSkill = 104.7;
         }
 
         public GreaterDragon(Serial serial)
@@ -67,7 +65,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return !Controlled;
+                return !this.Controlled;
             }
         }
         public override bool HasBreath
@@ -81,7 +79,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return !Controlled;
+                return !this.Controlled;
             }
         }
         public override int TreasureMapLevel
@@ -123,7 +121,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return (Body == 12 ? ScaleType.Yellow : ScaleType.Red);
+                return (this.Body == 12 ? ScaleType.Yellow : ScaleType.Red);
             }
         }
         public override FoodType FavoriteFood
@@ -149,14 +147,19 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 4);
-            AddLoot(LootPack.Gems, 8);
+            this.AddLoot(LootPack.FilthyRich, 4);
+            this.AddLoot(LootPack.Gems, 8);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.BleedAttack;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)3);
+            writer.Write((int)2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -166,25 +169,19 @@ namespace Server.Mobiles
 
 			switch(version)
 			{
-                case 3:
 				case 2:
 					break;
 				case 1:
-					SetDamage(24, 33);
+					this.SetDamage(24, 33);
 					SetStam(0);
 					break;
 				case 0:
 					Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.50);
 					Server.SkillHandlers.AnimalTaming.ScaleSkills(this, 0.80, 0.90); // 90% * 80% = 72% of original skills trainable to 90%
-					Skills[SkillName.Magery].Base = Skills[SkillName.Magery].Cap; // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
+					this.Skills[SkillName.Magery].Base = this.Skills[SkillName.Magery].Cap; // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
 					SetStam(0);
 					break;
 			}
-
-            if (version == 2)
-            {
-                SetWeaponAbility(WeaponAbility.BleedAttack);
-            }
         }
     }
 }

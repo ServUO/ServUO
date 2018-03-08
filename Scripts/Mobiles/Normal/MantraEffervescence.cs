@@ -9,27 +9,28 @@ namespace Server.Mobiles
         public MantraEffervescence()
             : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a mantra effervescence";
-            Body = 0x111;
-            BaseSoundID = 0x56E;
+            this.Name = "a mantra effervescence";
+            this.Body = 0x111;
+            this.BaseSoundID = 0x56E;
 
-            SetStr(130, 150);
-            SetDex(120, 130);
-            SetInt(150, 230);
+            this.SetStr(130, 150);
+            this.SetDex(120, 130);
+            this.SetInt(150, 230);
 
-            SetHits(150, 250);
+            this.SetHits(150, 250);
 
-            SetDamage(21, 25);
+            this.SetDamage(21, 25);
 
-            SetDamageType(ResistanceType.Physical, 30);
-            SetDamageType(ResistanceType.Energy, 70);
+            this.SetDamageType(ResistanceType.Physical, 30);
+            this.SetDamageType(ResistanceType.Energy, 70);
 
-            SetResistance(ResistanceType.Physical, 60, 65);
-            SetResistance(ResistanceType.Fire, 40, 50);
-            SetResistance(ResistanceType.Cold, 40, 50);
-            SetResistance(ResistanceType.Poison, 50, 60);
-            SetResistance(ResistanceType.Energy, 100);
+            this.SetResistance(ResistanceType.Physical, 60, 65);
+            this.SetResistance(ResistanceType.Fire, 40, 50);
+            this.SetResistance(ResistanceType.Cold, 40, 50);
+            this.SetResistance(ResistanceType.Poison, 50, 60);
+            this.SetResistance(ResistanceType.Energy, 100);
 
+<<<<<<< HEAD
             SetSkill(SkillName.Wrestling, 80.0, 85.0);
             SetSkill(SkillName.Tactics, 80.0, 85.0);
             SetSkill(SkillName.MagicResist, 105.0, 115.0);
@@ -38,11 +39,17 @@ namespace Server.Mobiles
             SetSkill(SkillName.Meditation, 90.0, 100.0);
 
             SetSkill(SkillName.Spellweaving, 90.0, 96.0);
+=======
+            this.SetSkill(SkillName.Wrestling, 80.0, 85.0);
+            this.SetSkill(SkillName.Tactics, 80.0, 85.0);
+            this.SetSkill(SkillName.MagicResist, 105.0, 115.0);
+            this.SetSkill(SkillName.Magery, 90.0, 110.0);
+            this.SetSkill(SkillName.EvalInt, 80.0, 90.0);
+            this.SetSkill(SkillName.Meditation, 90.0, 100.0);
+>>>>>>> master
 			
-            Fame = 6500;
-            Karma = -6500;
-
-            SetAreaEffect(AreaEffect.AuraOfEnergy);
+            this.Fame = 6500;
+            this.Karma = -6500;
         }
 
         public MantraEffervescence(Serial serial)
@@ -52,8 +59,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich);
-            AddLoot(LootPack.Rich);
+            this.AddLoot(LootPack.FilthyRich);
+            this.AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)

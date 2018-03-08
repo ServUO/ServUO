@@ -9,26 +9,27 @@ namespace Server.Mobiles
         [Constructable]
         public Spite()
         {
-            Hue = DefaultHue;
+            this.Hue = this.DefaultHue;
 
-            SetStr(53, 214);
-            SetDex(243, 367);
-            SetInt(369, 586);
+            this.SetStr(53, 214);
+            this.SetDex(243, 367);
+            this.SetInt(369, 586);
 
-            SetHits(1013, 1052);
-            SetStam(243, 367);
-            SetMana(369, 586);
+            this.SetHits(1013, 1052);
+            this.SetStam(243, 367);
+            this.SetMana(369, 586);
 
-            SetDamage(14, 20);
+            this.SetDamage(14, 20);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 85, 90);
-            SetResistance(ResistanceType.Fire, 41, 46);
-            SetResistance(ResistanceType.Cold, 40, 44);
-            SetResistance(ResistanceType.Poison, 42, 46);
-            SetResistance(ResistanceType.Energy, 45, 47);
+            this.SetResistance(ResistanceType.Physical, 85, 90);
+            this.SetResistance(ResistanceType.Fire, 41, 46);
+            this.SetResistance(ResistanceType.Cold, 40, 44);
+            this.SetResistance(ResistanceType.Poison, 42, 46);
+            this.SetResistance(ResistanceType.Energy, 45, 47);
 
+<<<<<<< HEAD
             SetSkill(SkillName.Wrestling, 12.8, 16.7);
             SetSkill(SkillName.Tactics, 102.6, 131.0);
             SetSkill(SkillName.MagicResist, 141.2, 161.6);
@@ -36,16 +37,22 @@ namespace Server.Mobiles
             SetSkill(SkillName.EvalInt, 108.4, 120.0);
             SetSkill(SkillName.Meditation, 109.2, 120.0);
             SetSkill(SkillName.Spellweaving, 120.0);
+=======
+            this.SetSkill(SkillName.Wrestling, 12.8, 16.7);
+            this.SetSkill(SkillName.Tactics, 102.6, 131.0);
+            this.SetSkill(SkillName.MagicResist, 141.2, 161.6);
+            this.SetSkill(SkillName.Magery, 108.4, 119.2);
+            this.SetSkill(SkillName.EvalInt, 108.4, 120.0);
+            this.SetSkill(SkillName.Meditation, 109.2, 120.0);
+>>>>>>> master
 
-            Fame = 21000;
-            Karma = -21000;
+            this.Fame = 21000;
+            this.Karma = -21000;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetSpecialAbility(SpecialAbility.ManaDrain);
         }
 
         public Spite(Serial serial)
@@ -76,7 +83,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 2);
+            this.AddLoot(LootPack.UltraRich, 2);
         }
 
         public override void Serialize(GenericWriter writer)

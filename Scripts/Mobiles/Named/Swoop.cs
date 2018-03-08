@@ -7,48 +7,47 @@ namespace Server.Mobiles
     [CorpseName("a Swoop corpse")]
     public class Swoop : Eagle
     {
+        private static readonly Hashtable m_Table = new Hashtable();
         [Constructable]
         public Swoop()
         {
 
-            Name = "Swoop";
-            Hue = 0xE0;
+            this.Name = "Swoop";
+            this.Hue = 0xE0;
 
-            AI = AIType.AI_Melee;
+            this.AI = AIType.AI_Melee;
 
-            SetStr(100, 150);
-            SetDex(400, 480);
-            SetInt(75, 90);
+            this.SetStr(100, 150);
+            this.SetDex(400, 480);
+            this.SetInt(75, 90);
 
-            SetHits(1350, 1550);
+            this.SetHits(1350, 1550);
 
-            SetDamage(20, 30);
+            this.SetDamage(20, 30);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 75, 90);
-            SetResistance(ResistanceType.Fire, 60, 70);
-            SetResistance(ResistanceType.Cold, 70, 85);
-            SetResistance(ResistanceType.Poison, 55, 60);
-            SetResistance(ResistanceType.Energy, 50, 60);
+            this.SetResistance(ResistanceType.Physical, 75, 90);
+            this.SetResistance(ResistanceType.Fire, 60, 70);
+            this.SetResistance(ResistanceType.Cold, 70, 85);
+            this.SetResistance(ResistanceType.Poison, 55, 60);
+            this.SetResistance(ResistanceType.Energy, 50, 60);
 
-            SetSkill(SkillName.Wrestling, 120.0, 140.0);
-            SetSkill(SkillName.Tactics, 120.0, 140.0);
-            SetSkill(SkillName.MagicResist, 95.0, 105.0);
+            this.SetSkill(SkillName.Wrestling, 120.0, 140.0);
+            this.SetSkill(SkillName.Tactics, 120.0, 140.0);
+            this.SetSkill(SkillName.MagicResist, 95.0, 105.0);
 
-            Fame = 18000;
-            Karma = 0;
+            this.Fame = 18000;
+            this.Karma = 0;
 
-            PackReg(4);
+            this.PackReg(4);
 
             Tamable = false;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
 
 		public override bool CanBeParagon { get { return false; } }
@@ -114,8 +113,38 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 2);
+            this.AddLoot(LootPack.UltraRich, 2);
             AddLoot(LootPack.HighScrolls);
+        }
+
+        // TODO: Put this attack shared with Hiryu and Lesser Hiryu in one place
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            base.OnGaveMeleeAttack(defender);
+
+            if (0.1 > Utility.RandomDouble())
+            {
+                ExpireTimer timer = (ExpireTimer)m_Table[defender];
+
+                if (timer != null)
+                {
+                    timer.DoExpire();
+                    defender.SendLocalizedMessage(1070837); // The creature lands another blow in your weakened state.
+                }
+                else
+                    defender.SendLocalizedMessage(1070836); // The blow from the creature's claws has made you more susceptible to physical attacks.
+
+                int effect = -(defender.PhysicalResistance * 15 / 100);
+
+                ResistanceMod mod = new ResistanceMod(ResistanceType.Physical, effect);
+
+                defender.FixedEffect(0x37B9, 10, 5);
+                defender.AddResistanceMod(mod);
+
+                timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(5.0));
+                timer.Start();
+                m_Table[defender] = timer;
+            }
         }
 
         public override void Serialize(GenericWriter writer)
@@ -130,6 +159,32 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+        }
+
+        private class ExpireTimer : Timer
+        {
+            private readonly Mobile m_Mobile;
+            private readonly ResistanceMod m_Mod;
+            public ExpireTimer(Mobile m, ResistanceMod mod, TimeSpan delay)
+                : base(delay)
+            {
+                this.m_Mobile = m;
+                this.m_Mod = mod;
+                this.Priority = TimerPriority.TwoFiftyMS;
+            }
+
+            public void DoExpire()
+            {
+                this.m_Mobile.RemoveResistanceMod(this.m_Mod);
+                this.Stop();
+                m_Table.Remove(this.m_Mobile);
+            }
+
+            protected override void OnTick()
+            {
+                this.m_Mobile.SendLocalizedMessage(1070838); // Your resistance to physical attacks has returned.
+                this.DoExpire();
+            }
         }
     }
 }

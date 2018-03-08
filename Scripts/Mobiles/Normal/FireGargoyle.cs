@@ -10,38 +10,38 @@ namespace Server.Mobiles
         public FireGargoyle()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = NameList.RandomName("fire gargoyle");
-            Body = 130;
-            BaseSoundID = 0x174;
+            this.Name = NameList.RandomName("fire gargoyle");
+            this.Body = 130;
+            this.BaseSoundID = 0x174;
 
-            SetStr(351, 400);
-            SetDex(126, 145);
-            SetInt(226, 250);
+            this.SetStr(351, 400);
+            this.SetDex(126, 145);
+            this.SetInt(226, 250);
 
-            SetHits(211, 240);
+            this.SetHits(211, 240);
 
-            SetDamage(7, 14);
+            this.SetDamage(7, 14);
 
-            SetDamageType(ResistanceType.Physical, 20);
-            SetDamageType(ResistanceType.Fire, 80);
+            this.SetDamageType(ResistanceType.Physical, 20);
+            this.SetDamageType(ResistanceType.Fire, 80);
 
-            SetResistance(ResistanceType.Physical, 30, 35);
-            SetResistance(ResistanceType.Fire, 50, 60);
-            SetResistance(ResistanceType.Poison, 20, 30);
-            SetResistance(ResistanceType.Energy, 20, 30);
+            this.SetResistance(ResistanceType.Physical, 30, 35);
+            this.SetResistance(ResistanceType.Fire, 50, 60);
+            this.SetResistance(ResistanceType.Poison, 20, 30);
+            this.SetResistance(ResistanceType.Energy, 20, 30);
 
-            SetSkill(SkillName.Anatomy, 75.1, 85.0);
-            SetSkill(SkillName.EvalInt, 90.1, 105.0);
-            SetSkill(SkillName.Magery, 90.1, 105.0);
-            SetSkill(SkillName.Meditation, 90.1, 105.0);
-            SetSkill(SkillName.MagicResist, 90.1, 105.0);
-            SetSkill(SkillName.Tactics, 80.1, 100.0);
-            SetSkill(SkillName.Wrestling, 40.1, 80.0);
+            this.SetSkill(SkillName.Anatomy, 75.1, 85.0);
+            this.SetSkill(SkillName.EvalInt, 90.1, 105.0);
+            this.SetSkill(SkillName.Magery, 90.1, 105.0);
+            this.SetSkill(SkillName.Meditation, 90.1, 105.0);
+            this.SetSkill(SkillName.MagicResist, 90.1, 105.0);
+            this.SetSkill(SkillName.Tactics, 80.1, 100.0);
+            this.SetSkill(SkillName.Wrestling, 40.1, 80.0);
 
-            Fame = 3500;
-            Karma = -3500;
+            this.Fame = 3500;
+            this.Karma = -3500;
 
-            VirtualArmor = 32;
+            this.VirtualArmor = 32;
         }
 
         public FireGargoyle(Serial serial)
@@ -88,8 +88,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Rich);
-            AddLoot(LootPack.Gems);
+            this.AddLoot(LootPack.Rich);
+            this.AddLoot(LootPack.Gems);
         }
         
         public override void Serialize(GenericWriter writer)

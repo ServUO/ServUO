@@ -4,10 +4,8 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class ExplosiveGoo : Item
+    public class HotGoo : Item
     {
-        public override int LabelNumber { get { return 1157463; } } // Explosive Goo
-
         private bool m_Drying;
         private readonly DateTime m_Created;
         private readonly TimeSpan m_Duration;
@@ -16,12 +14,12 @@ namespace Server.Items
         private readonly Timer m_Timer;
 
         [Constructable]
-        public ExplosiveGoo() : this(TimeSpan.FromSeconds(10.0), 5, 10)
+        public HotGoo() : this(TimeSpan.FromSeconds(10.0), 5, 10)
         {
         }
 
         [Constructable]
-        public ExplosiveGoo(TimeSpan duration, int minDamage, int maxDamage)
+        public HotGoo(TimeSpan duration, int minDamage, int maxDamage)
             : base(0x122A)
         {
             Hue = 1932;
@@ -33,9 +31,13 @@ namespace Server.Items
             m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), OnTick);
         }
 
-        public ExplosiveGoo(Serial serial)
-            : base(serial)
+        public HotGoo(Serial serial) : base(serial)
         {
+        }
+
+        public override string DefaultName
+        {
+            get { return "hot goo"; }
         }
 
         public override void OnAfterDelete()
@@ -87,9 +89,11 @@ namespace Server.Items
 
         public void Damage(Mobile m)
         {
-            m.SendLocalizedMessage(1112366); // The flammable goo covering you bursts into flame!
-
-            AOS.Damage(m, Utility.RandomMinMax(m_MinDamage, m_MaxDamage), 0, 100, 0, 0, 0);
+            var damage = Utility.RandomMinMax(m_MinDamage, m_MaxDamage);
+            if (Core.AOS)
+                AOS.Damage(m, damage, 0, 0, 0, 100, 0);
+            else
+                m.Damage(damage);
         }
 
         public override void Serialize(GenericWriter writer)

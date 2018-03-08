@@ -9,42 +9,40 @@ namespace Server.Mobiles
         [Constructable]
         public LadySabrix()
         {
-            Name = "Lady Sabrix";
-            Hue = 0x497;
+            this.Name = "Lady Sabrix";
+            this.Hue = 0x497;
 
-            SetStr(82, 130);
-            SetDex(117, 146);
-            SetInt(50, 98);
+            this.SetStr(82, 130);
+            this.SetDex(117, 146);
+            this.SetInt(50, 98);
 
-            SetHits(233, 361);
-            SetStam(117, 146);
-            SetMana(50, 98);
+            this.SetHits(233, 361);
+            this.SetStam(117, 146);
+            this.SetMana(50, 98);
 
-            SetDamage(15, 22);
+            this.SetDamage(15, 22);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 40, 50);
-            SetResistance(ResistanceType.Fire, 30, 40);
-            SetResistance(ResistanceType.Cold, 30, 39);
-            SetResistance(ResistanceType.Poison, 70, 80);
-            SetResistance(ResistanceType.Energy, 35, 44);
+            this.SetResistance(ResistanceType.Physical, 40, 50);
+            this.SetResistance(ResistanceType.Fire, 30, 40);
+            this.SetResistance(ResistanceType.Cold, 30, 39);
+            this.SetResistance(ResistanceType.Poison, 70, 80);
+            this.SetResistance(ResistanceType.Energy, 35, 44);
 
-            SetSkill(SkillName.Wrestling, 109.8, 122.8);
-            SetSkill(SkillName.Tactics, 102.8, 120.0);
-            SetSkill(SkillName.MagicResist, 79.4, 95.1);
-            SetSkill(SkillName.Anatomy, 68.8, 105.1);
-            SetSkill(SkillName.Poisoning, 97.8, 116.7);
+            this.SetSkill(SkillName.Wrestling, 109.8, 122.8);
+            this.SetSkill(SkillName.Tactics, 102.8, 120.0);
+            this.SetSkill(SkillName.MagicResist, 79.4, 95.1);
+            this.SetSkill(SkillName.Anatomy, 68.8, 105.1);
+            this.SetSkill(SkillName.Poisoning, 97.8, 116.7);
 
-            Fame = 18900;
-            Karma = -18900;
+            this.Fame = 18900;
+            this.Karma = -18900;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-
-            SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
         public LadySabrix(Serial serial)
@@ -72,9 +70,21 @@ namespace Server.Mobiles
             c.DropItem( new ParrotItem() );
         }
 
+        /*public override bool GivesMLMinorArtifact
+        {
+            get
+            {
+                return true;
+            }
+        }*/
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 2);
+            this.AddLoot(LootPack.UltraRich, 2);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ArmorIgnore;
         }
 
         public override void Serialize(GenericWriter writer)

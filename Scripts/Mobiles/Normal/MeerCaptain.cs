@@ -11,7 +11,7 @@ namespace Server.Mobiles
         private DateTime m_NextAbilityTime;
         [Constructable]
         public MeerCaptain()
-            : base(AIType.AI_Paladin, FightMode.Evil, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Archer, FightMode.Evil, 10, 1, 0.2, 0.4)
         {
             this.Name = "a meer captain";
             this.Body = 773;

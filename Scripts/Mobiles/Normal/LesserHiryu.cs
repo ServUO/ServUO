@@ -12,42 +12,39 @@ namespace Server.Mobiles
         public LesserHiryu()
             : base("a lesser hiryu", 243, 0x3E94, AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Hue = GetHue();
+            this.Hue = GetHue();
 
-            SetStr(301, 410);
-            SetDex(171, 270);
-            SetInt(301, 325);
+            this.SetStr(301, 410);
+            this.SetDex(171, 270);
+            this.SetInt(301, 325);
 
-            SetHits(401, 600);
-            SetMana(60);
+            this.SetHits(401, 600);
+            this.SetMana(60);
 
-            SetDamage(18, 23);
+            this.SetDamage(18, 23);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 45, 70);
-            SetResistance(ResistanceType.Fire, 60, 80);
-            SetResistance(ResistanceType.Cold, 5, 15);
-            SetResistance(ResistanceType.Poison, 30, 40);
-            SetResistance(ResistanceType.Energy, 30, 40);
+            this.SetResistance(ResistanceType.Physical, 45, 70);
+            this.SetResistance(ResistanceType.Fire, 60, 80);
+            this.SetResistance(ResistanceType.Cold, 5, 15);
+            this.SetResistance(ResistanceType.Poison, 30, 40);
+            this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            SetSkill(SkillName.Anatomy, 75.1, 80.0);
-            SetSkill(SkillName.MagicResist, 85.1, 100.0);
-            SetSkill(SkillName.Tactics, 100.1, 110.0);
-            SetSkill(SkillName.Wrestling, 100.1, 120.0);
+            this.SetSkill(SkillName.Anatomy, 75.1, 80.0);
+            this.SetSkill(SkillName.MagicResist, 85.1, 100.0);
+            this.SetSkill(SkillName.Tactics, 100.1, 110.0);
+            this.SetSkill(SkillName.Wrestling, 100.1, 120.0);
 
-            Fame = 10000;
-            Karma = -10000;
+            this.Fame = 10000;
+            this.Karma = -10000;
 
-            Tamable = true;
-            ControlSlots = 3;
-            MinTameSkill = 98.7;
+            this.Tamable = true;
+            this.ControlSlots = 3;
+            this.MinTameSkill = 98.7;
 
             if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
-            SetWeaponAbility(WeaponAbility.Dismount);
-            SetSpecialAbility(SpecialAbility.GraspingClaw);
+                this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
         }
 
         public LesserHiryu(Serial serial)
@@ -97,10 +94,14 @@ namespace Server.Mobiles
                 return true;
             }
         }
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.Dismount;
+        }
 
         public override bool OverrideBondingReqs()
         {
-            if (ControlMaster.Skills[SkillName.Bushido].Base >= 90.0)
+            if (this.ControlMaster.Skills[SkillName.Bushido].Base >= 90.0)
                 return true;
             return false;
         }
@@ -132,8 +133,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 2);
-            AddLoot(LootPack.Gems, 4);
+            this.AddLoot(LootPack.FilthyRich, 2);
+            this.AddLoot(LootPack.Gems, 4);
         }
 
         public override double GetControlChance(Mobile m, bool useBaseSkill)
@@ -198,7 +199,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)3);
+            writer.Write((int)2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -207,33 +208,28 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             if (version == 0)
-                Timer.DelayCall(TimeSpan.Zero, delegate { Hue = GetHue(); });
+                Timer.DelayCall(TimeSpan.Zero, delegate { this.Hue = GetHue(); });
 
             if (version <= 1)
                 Timer.DelayCall(TimeSpan.Zero, delegate
                 {
-                    if (InternalItem != null)
+                    if (this.InternalItem != null)
                     {
-                        InternalItem.Hue = Hue;
+                        this.InternalItem.Hue = this.Hue;
                     }
                 });
 
             if (version < 2)
             {
-                for (int i = 0; i < Skills.Length; ++i)
+                for (int i = 0; i < this.Skills.Length; ++i)
                 {
-                    Skills[i].Cap = Math.Max(100.0, Skills[i].Cap * 0.9);
+                    this.Skills[i].Cap = Math.Max(100.0, this.Skills[i].Cap * 0.9);
 
-                    if (Skills[i].Base > Skills[i].Cap)
+                    if (this.Skills[i].Base > this.Skills[i].Cap)
                     {
-                        Skills[i].Base = Skills[i].Cap;
+                        this.Skills[i].Base = this.Skills[i].Cap;
                     }
                 }
-            }
-
-            if (version < 3)
-            {
-                SetWeaponAbility(WeaponAbility.Dismount);
             }
         }
 
@@ -264,6 +260,32 @@ namespace Server.Mobiles
                 return 0x8295;
 
             return 0;
+        }
+
+        private class ExpireTimer : Timer
+        {
+            private readonly Mobile m_Mobile;
+            private readonly ResistanceMod m_Mod;
+            public ExpireTimer(Mobile m, ResistanceMod mod, TimeSpan delay)
+                : base(delay)
+            {
+                this.m_Mobile = m;
+                this.m_Mod = mod;
+                this.Priority = TimerPriority.TwoFiftyMS;
+            }
+
+            public void DoExpire()
+            {
+                this.m_Mobile.RemoveResistanceMod(this.m_Mod);
+                this.Stop();
+                m_Table.Remove(this.m_Mobile);
+            }
+
+            protected override void OnTick()
+            {
+                this.m_Mobile.SendLocalizedMessage(1070838); // Your resistance to physical attacks has returned.
+                this.DoExpire();
+            }
         }
     }
 }
