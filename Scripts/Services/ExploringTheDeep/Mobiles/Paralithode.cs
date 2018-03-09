@@ -52,7 +52,7 @@ namespace Server.Mobiles
             m_Timer = new HideTimer(this);
             m_Timer.Start();
 
-            SetWeaponAbility(WeaponAbility.DualWeild);
+            SetWeaponAbility(WeaponAbility.DualWield);
             SetWeaponAbility(WeaponAbility.ForceOfNature);
         }
 

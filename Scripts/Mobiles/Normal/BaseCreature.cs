@@ -528,7 +528,7 @@ namespace Server.Mobiles
         {
             if (_Profile != null && _Profile.WeaponAbilities != null && _Profile.WeaponAbilities.Length > 0)
             {
-                return _Profile.WeaponAbilities.WeaponAbilities[Utility.Random(_Profile.WeaponAbilities.WeaponAbilities.Length)];
+                return _Profile.WeaponAbilities[Utility.Random(_Profile.WeaponAbilities.Length)];
             }
             else
             {
@@ -545,7 +545,7 @@ namespace Server.Mobiles
 
         public virtual void InitializeAbilities()
         {
-            switch (AIType)
+            switch (AI)
             {
                 case AIType.AI_Mage: SetMagicalAbility(MagicalAbility.Magery); break;
                 case AIType.AI_NecroMage: SetMagicalAbility(MagicalAbility.Necromage); break;
@@ -2601,7 +2601,7 @@ namespace Server.Mobiles
             if (_Profile != null)
             {
                 writer.Write(1);
-                writer.Write(_Profile);
+                _Profile.Serialize(writer);
             }
             else
             {

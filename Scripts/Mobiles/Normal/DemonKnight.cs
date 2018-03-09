@@ -101,7 +101,7 @@ namespace Server.Mobiles
 
             m_NextArea = DateTime.UtcNow;
 
-            SetWeaponAbility(WeaponAbility.DualWeild);
+            SetWeaponAbility(WeaponAbility.DualWield);
             SetWeaponAbility(WeaponAbility.CrushingBlow);
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }

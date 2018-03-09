@@ -139,7 +139,7 @@ namespace Server.Mobiles
 			
             int count = 0;
 
-            IPooledEnumerable eable = GetMobilesInRange(BreathRange);
+            IPooledEnumerable eable = GetMobilesInRange(5);
 
             foreach (Mobile m in eable)
             {

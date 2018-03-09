@@ -45,7 +45,7 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
-            AddSpecialAbility(SpecialAbility.AngryFire);
+            SetSpecialAbility(SpecialAbility.AngryFire);
         }
 
         public Oni(Serial serial)

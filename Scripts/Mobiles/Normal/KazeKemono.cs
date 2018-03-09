@@ -45,8 +45,8 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = -8000;
 
-            AddSpecialAbility(SpecialAbility.ConductiveBlast);
-            AddSpecialAbility(SpecialAbility.FlurryForce);
+            SetSpecialAbility(SpecialAbility.ConductiveBlast);
+            SetSpecialAbility(SpecialAbility.FlurryForce);
         }
 
         public KazeKemono(Serial serial)

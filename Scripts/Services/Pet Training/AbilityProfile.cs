@@ -13,7 +13,7 @@ namespace Server.Mobiles
         public MagicalAbility MagicalAbility { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AreaEffect AreaEffects { get; private set; }
+        public AreaEffect[] AreaEffects { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SpecialAbility[] SpecialAbilities { get; private set; }
@@ -53,23 +53,19 @@ namespace Server.Mobiles
 
         public bool AddAbility(MagicalAbility ability)
         {
-            var old = MagicalAbilities;
-
             if (Creature.Controlled)
             {
                 History.Add(ability);
                 MagicalAbility = ability;
-                OnAddAbility(old, ability);
+                OnAddAbility(ability);
                 return true;
             }
             else
             {
                 MagicalAbility |= ability;
-                OnAddAbility(old, ability);
+                OnAddAbility(ability);
                 return true;
             }
-
-            return false;
         }
 
         public bool AddAbility(SpecialAbility ability)
@@ -103,7 +99,7 @@ namespace Server.Mobiles
             }
             else if (!AreaEffects.Any(a => a == ability))
             {
-                var temp = SpecialAbilities;
+                var temp = AreaEffects;
 
                 AreaEffects = new AreaEffect[temp.Length + 1];
 
@@ -143,7 +139,7 @@ namespace Server.Mobiles
 
         public bool CanAddAbility(object o)
         {
-            if (!Controlled)
+            if (!Creature.Controlled)
                 return true;
 
             if (o is MagicalAbility)
@@ -152,7 +148,7 @@ namespace Server.Mobiles
             if (o is SpecialAbility && (SpecialAbilities == null || SpecialAbilities.Length == 0))
                 return true;
 
-            if (o is AreaEffect && AreaEffects == AreaEffect.None)
+            if (o is AreaEffect && (AreaEffects == null || AreaEffects.Length == 0))
                 return true;
 
             if (o is WeaponAbility && (WeaponAbilities == null || WeaponAbilities.Length < 2))
@@ -161,7 +157,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public void OnAddAbility(object oldAbility, object newAbility)
+        public void OnAddAbility(object newAbility)
         {
             AddToHistory(newAbility);
 
@@ -177,9 +173,9 @@ namespace Server.Mobiles
                         Creature.Skills[(SkillName)req].Base = 0;
                     }
                     else */
-                    if (req is WeaponAbility)
+                    if (req.Requirement is WeaponAbility)
                     {
-                        AddAbility((WeaponAbility)req);
+                        AddAbility((WeaponAbility)req.Requirement);
                     }
                 }
             }
@@ -189,23 +185,21 @@ namespace Server.Mobiles
                 AddSpecialMagicalAbility((MagicalAbility)newAbility);
             }
 
-            var trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
-
             if (trainPoint != null && trainPoint.Requirements != null)
             {
                 foreach (var req in trainPoint.Requirements)
                 {
-                    if (req is SkillName)
+                    if (req.Requirement is SkillName)
                     {
-                        double skill = Creature.Skills[(SkillName)req].Base;
+                        double skill = Creature.Skills[(SkillName)req.Requirement].Base;
                         double toAdd = req.Cost == 500 ? 40 : 20;
 
                         if (skill < 20)
-                            Creature.Skills[(SkillName)req].Base = 20;
+                            Creature.Skills[(SkillName)req.Requirement].Base = 20;
                     }
-                    else if (req is WeaponAbility)
+                    else if (req.Requirement is WeaponAbility)
                     {
-                        AddAbility((WeaponAbility)req);
+                        AddAbility((WeaponAbility)req.Requirement);
                     }
                 }
             }
@@ -234,7 +228,7 @@ namespace Server.Mobiles
         {
             if (o is MagicalAbility)
             {
-                return (MagicalAbilities & (MagicAbility)o) != 0;
+                return (MagicalAbility & (MagicalAbility)o) != 0;
             }
 
             if (o is SpecialAbility && SpecialAbilities != null)
@@ -262,14 +256,14 @@ namespace Server.Mobiles
             if (MagicalAbility != MagicalAbility.None)
                 count++;
 
-            if (SpecialAbility != null)
-                count += SpecialAbilities.Sum(a => a != null);
+            if (SpecialAbilities != null)
+                count += SpecialAbilities.Length;
 
-            if (AreaEffect != AreaEffect.None)
-                count++;
+            if (AreaEffects != null)
+                count += AreaEffects.Length;
 
             if (WeaponAbilities != null)
-                count += WeaponAbilities.Sum(a => a != null);
+                count += WeaponAbilities.Length;
 
             return count;
         }
@@ -287,7 +281,7 @@ namespace Server.Mobiles
             if (!Creature.Controlled)
                 return true;
 
-            return !HasSpecialMagicalAbility() && AreaEffect == AreaEffect.None && AbilityCount() < 3;
+            return !HasSpecialMagicalAbility() && (AreaEffects == null || AreaEffects.Length == 0) && AbilityCount() < 3;
         }
 
         public bool CanChooseWeaponAbility()
@@ -300,11 +294,11 @@ namespace Server.Mobiles
 
         public bool HasSpecialMagicalAbility()
         {
-            return (MagicalAbilities & MagicalAbility.Piercing) != 0 ||
-                (MagicalAbilities & MagicalAbility.Bashing) != 0 ||
-                (MagicalAbilities & MagicalAbility.Slashing) != 0 ||
-                (MagicalAbilities & MagicalAbility.BattleDefense) != 0 ||
-                (MagicalAbilities & MagicalAbility.WrestlingMastery) != 0;
+            return (MagicalAbility & MagicalAbility.Piercing) != 0 ||
+                (MagicalAbility & MagicalAbility.Bashing) != 0 ||
+                (MagicalAbility & MagicalAbility.Slashing) != 0 ||
+                (MagicalAbility & MagicalAbility.BattleDefense) != 0 ||
+                (MagicalAbility & MagicalAbility.WrestlingMastery) != 0;
         }
 
         public void AddSpecialMagicalAbility(MagicalAbility ability)
@@ -317,7 +311,7 @@ namespace Server.Mobiles
                 case MagicalAbility.Piercing: Creature.Mastery = SkillName.Fencing; break;
                 case MagicalAbility.Bashing: Creature.Mastery = SkillName.Macing; break;
                 case MagicalAbility.Slashing: Creature.Mastery = SkillName.Swords; break;
-                case MagicalAbility.BattleDefense: Creature.Mastery = SkillName.Parrying; break;
+                case MagicalAbility.BattleDefense: Creature.Mastery = SkillName.Parry; break;
                 case MagicalAbility.WrestlingMastery: Creature.Mastery = SkillName.Wrestling; break;
             }
         }
@@ -356,17 +350,16 @@ namespace Server.Mobiles
 
         public IEnumerable<SpecialAbility> EnumerateSpecialAbilities()
         {
-            var profile = PetTrainingHelper.GetProfile(this);
+            var profile = PetTrainingHelper.GetProfile(Creature);
 
-            if (pofile == null)
+            if (profile == null)
             {
                 yield break;
             }
 
-            foreach (int i in Enum.GetValues(typeof(SpecialAbility)))
+            foreach (var ability in SpecialAbilities)
             {
-                if (profile.HasAbility((SpecialAbility)i))
-                    yield return ability;
+                yield return ability;
             }
         }
 
@@ -377,17 +370,16 @@ namespace Server.Mobiles
 
         public IEnumerable<AreaEffect> EnumerateAreaEffects()
         {
-            var profile = PetTrainingHelper.GetProfile(this);
+            var profile = PetTrainingHelper.GetProfile(Creature);
 
-            if (pofile == null)
+            if (profile == null)
             {
                 yield break;
             }
 
-            foreach (int i in Enum.GetValues(typeof(AreaEffect)))
+            foreach (var ability in AreaEffects)
             {
-                if (profile.HasAbility((AreaEffect)i))
-                    yield return ability;
+                yield return ability;
             }
         }
 
@@ -402,11 +394,11 @@ namespace Server.Mobiles
 
             Creature = bc;
 
-            MagicalAbilities = (MagicalAbility)reader.ReadInt();
+            MagicalAbility = (MagicalAbility)reader.ReadInt();
             TokunoTame = reader.ReadBool();
 
             int count = reader.ReadInt();
-            SpecialAbilities = new SpecialAbilities[count];
+            SpecialAbilities = new SpecialAbility[count];
 
             for (int i = 0; i < count; i++)
             {
@@ -422,7 +414,7 @@ namespace Server.Mobiles
             }
 
             count = reader.ReadInt();
-            WeaponAbilities = new WeaponAbilities[count];
+            WeaponAbilities = new WeaponAbility[count];
 
             for (int i = 0; i < count; i++)
             {
@@ -437,8 +429,8 @@ namespace Server.Mobiles
                 switch (reader.ReadInt())
                 {
                     case 1: History.Add((MagicalAbility)reader.ReadInt()); break;
-                    case 2: History.Add((SpecialAbility)reader.ReadInt()); break;
-                    case 3: History.Add((AreaEffect)reader.ReadInt()); break;
+                    case 2: History.Add(SpecialAbility.Abilities[reader.ReadInt()]); break;
+                    case 3: History.Add(AreaEffect.Effects[reader.ReadInt()]); break;
                     case 4: History.Add(WeaponAbility.Abilities[reader.ReadInt()]); break;
                 }
             }
@@ -448,7 +440,7 @@ namespace Server.Mobiles
         {
             writer.Write(0);
 
-            writer.Write((int)MagicalAbilities);
+            writer.Write((int)MagicalAbility);
             writer.Write(TokunoTame);
 
             writer.Write(SpecialAbilities != null ? SpecialAbilities.Length : 0);
@@ -483,12 +475,12 @@ namespace Server.Mobiles
                     else if (o is SpecialAbility)
                     {
                         writer.Write(2);
-                        writer.Write((int)(SpecialAbility)o);
+                        writer.Write(Array.IndexOf(SpecialAbility.Abilities, (SpecialAbility)o));
                     }
                     else if (o is AreaEffect)
                     {
                         writer.Write(3);
-                        writer.Write((int)(AreaEffect)o);
+                        writer.Write(Array.IndexOf(AreaEffect.Effects, (AreaEffect)o));
                     }
                     else if (o is WeaponAbility)
                     {

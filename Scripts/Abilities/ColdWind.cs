@@ -40,9 +40,9 @@ namespace Server.Items
             foreach (Mobile m in eable)
             {
                 if (m.Alive && !m.IsDeadBondedPet &&
-                    m.CanBeHarmful(creature) &&
-                    SpellHelper.ValidIndirectTarget(m, creature) &&
-                    (!Core.AOS || creature.InLOS(m)))
+                    m.CanBeHarmful(attacker) &&
+                    SpellHelper.ValidIndirectTarget(m, attacker) &&
+                    (!Core.AOS || attacker.InLOS(m)))
                 {
                     toAffect.Add(m);
                 }
@@ -50,7 +50,7 @@ namespace Server.Items
 
             eable.Free();
 
-            foreach (var m in toEffect)
+            foreach (var m in toAffect)
             {
                 AOS.Damage(m, attacker, Utility.RandomMinMax(20, 30), 0, 0, 100, 0, 0);
                 m.SendLocalizedMessage(1008111, false, this.Name); //  : The intense cold is damaging you!
@@ -59,7 +59,7 @@ namespace Server.Items
                 m.PlaySound(0x5C6);
             }
 
-            ColUtility.Free(toEffect);
+            ColUtility.Free(toAffect);
         }
     }
 }

@@ -66,7 +66,7 @@ namespace Server.Mobiles
                 if (wep == null)
                     return null;
 
-                var infos = MasteryInfo.Infos.Where(i => i.MasterySkill == wep.DefSkill && !i.PassiveSpell).ToArray();
+                var infos = MasteryInfo.Infos.Where(i => i.MasterySkill == wep.DefSkill && !i.Passive).ToArray();
 
                 if (infos != null && infos.Length > 0)
                 {

@@ -67,7 +67,7 @@ namespace Server.Mobiles
             m_Scales = Utility.RandomMinMax(1, 2) + 7;
 
             SetWeaponAbility(WeaponAbility.MortalStrike);
-            SetSpecialAbility(SpecialAbility.VenemousBite);
+            SetSpecialAbility(SpecialAbility.VenomousBite);
         }
 
         public Medusa(Serial serial)

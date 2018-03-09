@@ -2,6 +2,9 @@ using System;
 using Server;
 using System.Collections.Generic;
 using Server.Spells;
+using System.Linq;
+using Server.Network;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -30,7 +33,7 @@ namespace Server.Mobiles
                 {
                     AreaEffect effect = null;
 
-                    var effects = profile.GetAreaEffects().Where(a => !a.IsInCooldown(attacker));
+                    var effects = profile.GetAreaEffects().Where(a => !a.IsInCooldown(bc)).ToArray();
 
                     if (effects != null && effects.Length > 0)
                     {
@@ -47,10 +50,10 @@ namespace Server.Mobiles
 		
 		public virtual void Trigger(BaseCreature creature, Mobile combatant)
 		{
-            if (CheckMana(attacker) && Validate(attacker, combatant) && TriggerChance >= Utility.RandomDouble())
+            if (CheckMana(creature) && Validate(creature, combatant) && TriggerChance >= Utility.RandomDouble())
 			{
                 DoEffects(creature, combatant);
-				AddToCooldown(attacker);
+                AddToCooldown(creature);
 			}
 		}
 		
@@ -68,7 +71,7 @@ namespace Server.Mobiles
 
         public virtual void DoEffects(BaseCreature creature, Mobile combatant)
         {
-            if (Creature.Map == null || Creature.Map == Map.Internal)
+            if (creature.Map == null || creature.Map == Map.Internal)
                 return;
 
             IPooledEnumerable eable = creature.GetMobilesInRange(EffectRange);
@@ -87,26 +90,26 @@ namespace Server.Mobiles
 
             eable.Free();
 
-            foreach (var m in toEffect)
+            foreach (var m in toAffect)
             {
                 DoEffect(creature, m);
             }
 
-            ColUtility.Free(toEffect);
+            ColUtility.Free(toAffect);
         }
 
         public virtual void DoEffect(BaseCreature creature, Mobile defender)
         {
         }
 		
-		public List<Mobile> _CooldownTable;
+		public List<Mobile> _Cooldown;
 		
 		public bool IsInCooldown(Mobile m)
 		{
 			return _Cooldown != null && _Cooldown.Contains(m);
 		}
 		
-		public bool AddToCooldown(Mobile m)
+		public void AddToCooldown(Mobile m)
 		{
 			if(CooldownDuration != TimeSpan.MinValue)
 			{
@@ -151,10 +154,10 @@ namespace Server.Mobiles
 
         public override void DoEffect(BaseCreature creature, Mobile defender)
         {
-            AOS.Damage(m, attacker, Utility.RandomMinMax(20, 30), 0, 0, 0, 0, 100);
+            AOS.Damage(defender, creature, Utility.RandomMinMax(20, 30), 0, 0, 0, 0, 100);
 
-            m.FixedParticles(0x374A, 10, 30, 5052, 1278, 0, EffectLayer.Waist);
-            m.PlaySound(0x51D);
+            defender.FixedParticles(0x374A, 10, 30, 5052, 1278, 0, EffectLayer.Waist);
+            defender.PlaySound(0x51D);
         }
     }
 
@@ -177,24 +180,24 @@ namespace Server.Mobiles
                 _Table = new Dictionary<Mobile, Timer>();
             }
 
-            if (_Table.ContainsKey(m))
+            if (_Table.ContainsKey(defender))
             {
-                Timer timer = _Table[m];
+                Timer timer = _Table[defender];
 
                 if (timer != null)
                     timer.Stop();
 
-                m_Table[m] = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(30), EndNausea, m);
+                _Table[defender] = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(30), EndNausea, defender);
             }
             else
             {
-                m_Table.Add(m, Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(30), EndNausea, m));
+                _Table.Add(defender, Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(30), EndNausea, defender));
             }
 
-            m.Animate(32, 5, 1, true, false, 0); // bow animation
-            m.SendLocalizedMessage(1072068); // Your enemy's putrid presence envelops you, overwhelming you with nausea.
+            defender.Animate(32, 5, 1, true, false, 0); // bow animation
+            defender.SendLocalizedMessage(1072068); // Your enemy's putrid presence envelops you, overwhelming you with nausea.
 
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.AuraOfNausea, 1153792, 1153819, TimeSpan.FromSeconds(30), m, "60\t60\t60\t5"));
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.AuraOfNausea, 1153792, 1153819, TimeSpan.FromSeconds(30), defender, "60\t60\t60\t5"));
         }
 
         public static void EndNausea(Mobile m)
@@ -225,10 +228,10 @@ namespace Server.Mobiles
 
         public override void DoEffect(BaseCreature creature, Mobile defender)
         {
-            AOS.Damage(m, attacker, Utility.RandomMinMax(20, 30), 0, 0, 0, 100, 0);
+            AOS.Damage(defender, creature, Utility.RandomMinMax(20, 30), 0, 0, 0, 100, 0);
 
-            m.FixedParticles(0x374A, 10, 30, 5052, 1272, 0, EffectLayer.Waist);
-            m.PlaySound(0x476);
+            defender.FixedParticles(0x374A, 10, 30, 5052, 1272, 0, EffectLayer.Waist);
+            defender.PlaySound(0x476);
         }
     }
 
@@ -240,10 +243,10 @@ namespace Server.Mobiles
 
         public override void DoEffect(BaseCreature creature, Mobile defender)
         {
-            AOS.Damage(m, attacker, Utility.RandomMinMax(20, 30), 100, 0, 0, 0, 0);
+            AOS.Damage(defender, creature, Utility.RandomMinMax(20, 30), 100, 0, 0, 0, 0);
 
-            m.FixedParticles(0x374A, 10, 30, 5052, 1836, 0, EffectLayer.Waist);
-            m.PlaySound(0x22C);
+            defender.FixedParticles(0x374A, 10, 30, 5052, 1836, 0, EffectLayer.Waist);
+            defender.PlaySound(0x22C);
         }
     }
 
@@ -259,9 +262,9 @@ namespace Server.Mobiles
 
             for (int i = 0; i > amount; i++)
             {
-                Point3D loc = Location;
-                Map map = Map;
-                Item acid = new ExplosiveGoo(TimeSpan.FromSeconds(10), 5, 10);
+                Point3D loc = creature.Location;
+                Map map = creature.Map;
+                Item acid = new Server.Items.ExplosiveGoo();
 
                 bool validLocation = false;
                 for (int j = 0; !validLocation && j < 25; ++j)
@@ -274,11 +277,14 @@ namespace Server.Mobiles
                 acid.MoveToWorld(loc, map);
             }
 
-            IPooledEnumerable eable = creature.Map.GetClientsInRange(15);
+            IPooledEnumerable eable = creature.Map.GetClientsInRange(creature.Location, 15);
 
             foreach (NetState ns in eable)
             {
-                ns.SendLocalizedMessage(1112365); // Flammable goo sprays into the air!
+                if (ns.Mobile != null)
+                {
+                    ns.Mobile.SendLocalizedMessage(1112365); // Flammable goo sprays into the air!
+                }
             }
 
             eable.Free();
@@ -307,12 +313,12 @@ namespace Server.Mobiles
 
         public override void DoEffect(BaseCreature creature, Mobile m)
         {
-            m.ApplyPoison(this, creature.HitAreaPoison);
+            m.ApplyPoison(creature, creature.HitAreaPoison);
 
-            Effects.SendLocationParticles(
+            Server.Effects.SendLocationParticles(
                 EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
 
-            Effects.PlaySound(m.Location, m.Map, 0x229);
+            Server.Effects.PlaySound(m.Location, m.Map, 0x229);
 
             if (creature.AreaPoisonDamage > 0)
             {

@@ -7,14 +7,6 @@ namespace Server.Mobiles
     [CorpseName("a lady melisande corpse")]
     public class LadyMelisande : BasePeerless
     {
-        public static void Initialize()
-        {
-            EventSink.PlayerDeath += new PlayerDeathEventHandler(delegate(PlayerDeathEventArgs e)
-            {
-                HandleDeath(e.Mobile);
-            });
-        }
-
         [Constructable]
         public LadyMelisande()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)

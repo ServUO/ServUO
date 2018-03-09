@@ -666,7 +666,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.CastSpeed)
             {
-                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || EssenceOfNausea.UnderNausea(m))
+                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || AuraOfNausea.UnderNausea(m))
                     value -= 5;
 
                 if (EssenceOfWindSpell.IsDebuffed(m))
@@ -699,7 +699,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.WeaponSpeed)
             {
-                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || EssenceOfNausea.UnderNausea(m))
+                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || AuraOfNausea.UnderNausea(m))
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
@@ -733,7 +733,7 @@ namespace Server
                 if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
                     value -= 10;
 
-                if (MudPie.IsUnderEffects(m))
+                if (StickySkin.IsUnderEffects(m))
                     value -= 30;
                 #endregion
 
@@ -742,7 +742,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.AttackChance)
             {
-                if (EssenceOfNausea.UnderNausea(m))
+                if (AuraOfNausea.UnderNausea(m))
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
@@ -784,7 +784,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.DefendChance)
             {
-                if (EssenceOfNausea.UnderNausea(m))
+                if (AuraOfNausea.UnderNausea(m))
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))

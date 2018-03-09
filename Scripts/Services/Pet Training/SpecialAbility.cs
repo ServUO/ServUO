@@ -712,7 +712,7 @@ namespace Server.Mobiles
 				{
 					_Table.Remove(Defender);
 					
-					if(_Table.Count == null)
+					if(_Table.Count == 0)
 						_Table = null;
 				}
 			}
