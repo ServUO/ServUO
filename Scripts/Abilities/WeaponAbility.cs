@@ -284,7 +284,7 @@ namespace Server.Items
             return CheckSkills(from) && CheckMana(from, false);
         }
 
-        private static readonly WeaponAbility[] m_Abilities = new WeaponAbility[33]
+        private static readonly WeaponAbility[] m_Abilities = new WeaponAbility[34]
         {
             null,
             new ArmorIgnore(),
@@ -318,7 +318,8 @@ namespace Server.Items
             new ForceOfNature(),
             new InfusedThrow(),
             new MysticArc(),
-            new Disrobe()
+            new Disrobe(),
+            new ColdWind()
         };
 
         public static WeaponAbility[] Abilities
@@ -375,6 +376,7 @@ namespace Server.Items
         public static readonly WeaponAbility MysticArc = m_Abilities[31];
 
         public static readonly WeaponAbility Disrobe = m_Abilities[32];
+        public static readonly WeaponAbility ColdWind = m_Abilities[33];
 
         public static bool IsWeaponAbility(Mobile m, WeaponAbility a)
         {

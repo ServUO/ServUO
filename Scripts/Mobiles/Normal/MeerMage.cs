@@ -11,38 +11,39 @@ namespace Server.Mobiles
         private DateTime m_NextAbilityTime;
         [Constructable]
         public MeerMage()
-            : base(AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Spellweaving, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a meer mage";
-            this.Body = 770;
+            Name = "a meer mage";
+            Body = 770;
 
-            this.SetStr(171, 200);
-            this.SetDex(126, 145);
-            this.SetInt(276, 305);
+            SetStr(171, 200);
+            SetDex(126, 145);
+            SetInt(276, 305);
 
-            this.SetHits(103, 120);
+            SetHits(103, 120);
 
-            this.SetDamage(24, 26);
+            SetDamage(24, 26);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 15, 25);
-            this.SetResistance(ResistanceType.Cold, 50);
-            this.SetResistance(ResistanceType.Poison, 25, 35);
-            this.SetResistance(ResistanceType.Energy, 25, 35);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 15, 25);
+            SetResistance(ResistanceType.Cold, 50);
+            SetResistance(ResistanceType.Poison, 25, 35);
+            SetResistance(ResistanceType.Energy, 25, 35);
 
-            this.SetSkill(SkillName.EvalInt, 100.0);
-            this.SetSkill(SkillName.Magery, 70.1, 80.0);
-            this.SetSkill(SkillName.Meditation, 85.1, 95.0);
-            this.SetSkill(SkillName.MagicResist, 80.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 70.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 80.0);
+            SetSkill(SkillName.EvalInt, 100.0);
+            SetSkill(SkillName.Magery, 70.1, 80.0);
+            SetSkill(SkillName.Meditation, 85.1, 95.0);
+            SetSkill(SkillName.MagicResist, 80.1, 100.0);
+            SetSkill(SkillName.Tactics, 70.1, 90.0);
+            SetSkill(SkillName.Wrestling, 60.1, 80.0);
+            SetSkill(SkillName.Spellweaving, 70.1, 80.0);
 
-            this.Fame = 8000;
-            this.Karma = 8000;
+            Fame = 8000;
+            Karma = 8000;
 
-            this.VirtualArmor = 16;
+            VirtualArmor = 16;
 
 			switch (Utility.Random(8))
             {
@@ -50,7 +51,7 @@ namespace Server.Mobiles
                 case 1: PackItem(new WitherScroll()); break;
 			}
 
-            this.m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
+            m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
         }
 
         public MeerMage(Serial serial)
@@ -114,8 +115,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.MedScrolls, 2);
             // TODO: Daemon bone ...
         }
 
@@ -136,13 +137,13 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (DateTime.UtcNow >= this.m_NextAbilityTime)
+            if (DateTime.UtcNow >= m_NextAbilityTime)
             {
-                Mobile combatant = this.Combatant as Mobile;
+                Mobile combatant = Combatant as Mobile;
 
-                if (combatant != null && combatant.Map == this.Map && combatant.InRange(this, 12) && this.IsEnemy(combatant) && !UnderEffect(combatant))
+                if (combatant != null && combatant.Map == Map && combatant.InRange(this, 12) && IsEnemy(combatant) && !UnderEffect(combatant))
                 {
-                    this.m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30));
+                    m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30));
 
                     if (combatant is BaseCreature)
                     {
@@ -150,9 +151,9 @@ namespace Server.Mobiles
 
                         if (bc.Controlled && bc.ControlMaster != null && !bc.ControlMaster.Deleted && bc.ControlMaster.Alive)
                         {
-                            if (bc.ControlMaster.Map == this.Map && bc.ControlMaster.InRange(this, 12) && !UnderEffect(bc.ControlMaster))
+                            if (bc.ControlMaster.Map == Map && bc.ControlMaster.InRange(this, 12) && !UnderEffect(bc.ControlMaster))
                             {
-                                this.Combatant = combatant = bc.ControlMaster;
+                                Combatant = combatant = bc.ControlMaster;
                             }
                         }
                     }
@@ -198,11 +199,11 @@ namespace Server.Mobiles
                             rabid.FocusMob = combatant;
                             rabid.MoveToWorld(loc, combatant.Map);
                         }
-                        this.Say(1071932); //Creatures of the forest, I call to thee!  Aid me in the fight against all that is evil!
+                        Say(1071932); //Creatures of the forest, I call to thee!  Aid me in the fight against all that is evil!
                     }
                     else if (combatant.Player)
                     {
-                        this.Say(true, "I call a plague of insects to sting your flesh!");
+                        Say(true, "I call a plague of insects to sting your flesh!");
                         m_Table[combatant] = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(7.0), new TimerStateCallback(DoEffect), new object[] { combatant, 0 });
                     }
                 }

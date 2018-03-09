@@ -136,21 +136,11 @@ namespace Server
             {
                 switch (Utility.Random(5))
                 {
-                    case 0:
-                        phys += chaos;
-                        break;
-                    case 1:
-                        fire += chaos;
-                        break;
-                    case 2:
-                        cold += chaos;
-                        break;
-                    case 3:
-                        pois += chaos;
-                        break;
-                    case 4:
-                        nrgy += chaos;
-                        break;
+                    case 0: phys += chaos; break;
+                    case 1: fire += chaos; break;
+                    case 2: cold += chaos; break;
+                    case 3: pois += chaos; break;
+                    case 4: nrgy += chaos; break;
                 }
             }
 
@@ -335,6 +325,12 @@ namespace Server
                     m.NextSkillTime = Core.TickCount + (12000 - ((int)m.Skills[SkillName.Hiding].Value) * 100);
                 }
             }
+
+            if (PetTrainingHelper.Enabled && (from is BaseCreature || m is BaseCreature))
+                SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
+
+            if (totalDamage <= 0)
+                return 0;
 
             if (from != null)
                 DoLeech(totalDamage, from, m);
@@ -670,7 +666,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.CastSpeed)
             {
-                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || LadyMelisande.UnderPutridNausea(m))
+                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || AuraOfNausea.UnderNausea(m))
                     value -= 5;
 
                 if (EssenceOfWindSpell.IsDebuffed(m))
@@ -703,7 +699,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.WeaponSpeed)
             {
-                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || LadyMelisande.UnderPutridNausea(m))
+                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || AuraOfNausea.UnderNausea(m))
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
@@ -737,13 +733,16 @@ namespace Server
                 if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
                     value -= 10;
 
-                if (MudPie.IsUnderEffects(m))
+                if (StickySkin.IsUnderEffects(m))
                     value -= 30;
                 #endregion
+
+                if (StickySkin.IsUnderEffects(m))
+                    value -= 60;
             }
             else if (attribute == AosAttribute.AttackChance)
             {
-                if (LadyMelisande.UnderPutridNausea(m))
+                if (AuraOfNausea.UnderNausea(m))
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
@@ -785,7 +784,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.DefendChance)
             {
-                if (LadyMelisande.UnderPutridNausea(m))
+                if (AuraOfNausea.UnderNausea(m))
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))

@@ -8,38 +8,41 @@ namespace Server.Mobiles
     {
         [Constructable]
         public TreefellowGuardian()
-            : base(AIType.AI_Melee, FightMode.Evil, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Spellweaving, FightMode.Evil, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a Treefellow Guardian";
-            this.Body = 301;
+            Name = "a Treefellow Guardian";
+            Body = 301;
 
-            this.SetStr(511, 695);
-            this.SetDex(30, 55);
-            this.SetInt(403, 491);
+            SetStr(511, 695);
+            SetDex(30, 55);
+            SetInt(403, 491);
 
-            this.SetHits(724, 900);
+            SetHits(724, 900);
 
-            this.SetDamage(12, 16);
+            SetDamage(12, 16);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 30, 35);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 80, 90);
+            SetResistance(ResistanceType.Physical, 30, 35);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 80, 90);
 
-            this.SetSkill(SkillName.MagicResist, 40.1, 55.0);
-            this.SetSkill(SkillName.Tactics, 65.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 65.1, 85.0);
+            SetSkill(SkillName.MagicResist, 40.1, 55.0);
+            SetSkill(SkillName.Tactics, 65.1, 90.0);
+            SetSkill(SkillName.Wrestling, 65.1, 85.0);
+            SetSkill(SkillName.Spellweaving, 120.0);
 
-            this.Fame = 500;
-            this.Karma = 1500;
+            Fame = 500;
+            Karma = 1500;
 
-            this.VirtualArmor = 24;
-            this.PackItem(new Log(Utility.RandomMinMax(23, 34)));
+            VirtualArmor = 24;
+            PackItem(new Log(Utility.RandomMinMax(23, 34)));
 
             if (0.05 > Utility.RandomDouble())
-                this.PackItem(new TreefellowWood()); 
+                PackItem(new TreefellowWood());
+
+            SetWeaponAbility(WeaponAbility.Dismount);
         }
 
         public TreefellowGuardian(Serial serial)
@@ -61,10 +64,6 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.Dismount;
-        }
 
         public override int GetIdleSound()
         {
@@ -83,7 +82,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Average);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -97,8 +96,8 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (this.BaseSoundID == 442)
-                this.BaseSoundID = -1;
+            if (BaseSoundID == 442)
+                BaseSoundID = -1;
         }
     }
 }

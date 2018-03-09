@@ -16,48 +16,43 @@ namespace Server.Mobiles
         public Anchisaur()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
         {
-            this.Name = "an anchisaur";
-            this.Body = 1292;
-            this.BaseSoundID = 422;
+            Name = "an anchisaur";
+            Body = 1292;
+            BaseSoundID = 422;
 
-            this.SetStr(441, 511);
-            this.SetDex(166, 185);
-            this.SetInt(362, 431);
+            SetStr(441, 511);
+            SetDex(166, 185);
+            SetInt(362, 431);
 
-            this.SetDamage(16, 19);
+            SetDamage(16, 19);
 
-            this.SetHits(2663, 3718);
+            SetHits(2663, 3718);
 
-            this.SetResistance(ResistanceType.Physical, 3, 4);
-            this.SetResistance(ResistanceType.Fire, 3, 4);
-            this.SetResistance(ResistanceType.Cold, 1);
-            this.SetResistance(ResistanceType.Poison, 2, 3);
-            this.SetResistance(ResistanceType.Energy, 2, 3);
+            SetResistance(ResistanceType.Physical, 3, 4);
+            SetResistance(ResistanceType.Fire, 3, 4);
+            SetResistance(ResistanceType.Cold, 1);
+            SetResistance(ResistanceType.Poison, 2, 3);
+            SetResistance(ResistanceType.Energy, 2, 3);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetSkill(SkillName.MagicResist, 105.0, 115.0);
-            this.SetSkill(SkillName.Tactics, 95.0, 105.0);
-            this.SetSkill(SkillName.Wrestling, 100.0, 110.0);
-            this.SetSkill(SkillName.Anatomy, 95.0, 105.0);
-            this.SetSkill(SkillName.DetectHidden, 75.0, 85.0);
-            this.SetSkill(SkillName.Parry, 75.0, 85.0);
+            SetSkill(SkillName.MagicResist, 105.0, 115.0);
+            SetSkill(SkillName.Tactics, 95.0, 105.0);
+            SetSkill(SkillName.Wrestling, 100.0, 110.0);
+            SetSkill(SkillName.Anatomy, 95.0, 105.0);
+            SetSkill(SkillName.DetectHidden, 75.0, 85.0);
+            SetSkill(SkillName.Parry, 75.0, 85.0);
 
-            this.Fame = 8000;
-            this.Karma = -8000;
+            Fame = 8000;
+            Karma = -8000;
+
+            SetWeaponAbility(WeaponAbility.Disarm);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 1);
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            if (Utility.RandomBool())
-                return WeaponAbility.ParalyzingBlow;
-
-            return WeaponAbility.Disarm;
         }
 
         public override void OnThink()
