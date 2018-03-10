@@ -146,7 +146,7 @@ namespace Server.Mobiles
                 if (count++ > 3)
                     break;
 					
-                if (m != null && m != target && m.Alive && !m.IsDeadBondedPet && CanBeHarmful(m) && m.Map == Map && !IsDeadBondedPet && m.InRange(this, BreathRange) && InLOS(m) && !BardPacified)
+                if (m != null && m != target && m.Alive && !m.IsDeadBondedPet && CanBeHarmful(m) && m.Map == Map && !IsDeadBondedPet && m.InRange(this, 5) && InLOS(m) && !BardPacified)
                     Timer.DelayCall(TimeSpan.FromSeconds(BreathEffectDelay), new TimerStateCallback(BreathEffect_Callback), m);
             }
 

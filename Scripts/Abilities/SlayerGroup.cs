@@ -490,7 +490,7 @@ namespace Server.Items
                     typeof(StoneSlith), typeof(ToxicSlith),
                     typeof(Raptor), typeof(Kepetch),
                     typeof(KepetchAmbusher), typeof(FrostDragon),
-                    typeof(ColdDrake), typeof(Coil),
+                    typeof(ColdDrake), typeof(FrostDrake), typeof(Coil),
                     typeof(SkeletalDrake), typeof(CoralSnake)
                 );
 

@@ -384,7 +384,7 @@ namespace Server.Mobiles
         #region Bonding
         public const bool BondingEnabled = true;
 
-        public virtual bool IsBondable { get { return (BondingEnabled && !Summoned && !m_Allured); } }
+        public virtual bool IsBondable { get { return (BondingEnabled && !Summoned && !m_Allured && !IsGolem); } }
         public virtual TimeSpan BondingDelay { get { return TimeSpan.FromDays(7.0); } }
         public virtual TimeSpan BondingAbandonDelay { get { return TimeSpan.FromDays(1.0); } }
 
@@ -426,6 +426,11 @@ namespace Server.Mobiles
 
                 return m_Owners[m_Owners.Count - 1];
             }
+        }
+
+        public bool IsGolem
+        {
+            get { return this is IRepairableMobile; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -523,7 +528,6 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public AbilityProfile AbilityProfile { get { return _Profile; } set { _Profile = value; } }
 
-        // TODO Convert all fucking specials into SetWeaponAbility
         public virtual WeaponAbility TryGetWeaponAbility()
         {
             if (_Profile != null && _Profile.WeaponAbilities != null && _Profile.WeaponAbilities.Length > 0)
@@ -534,8 +538,6 @@ namespace Server.Mobiles
             {
                 return GetWeaponAbility();
             }
-
-            return null;
         }
 
         public virtual TrainingDefinition GetTrainingDefinition()
@@ -551,8 +553,8 @@ namespace Server.Mobiles
                 case AIType.AI_NecroMage: SetMagicalAbility(MagicalAbility.Necromage); break;
                 case AIType.AI_Spellweaving: SetMagicalAbility(MagicalAbility.Spellweaving); break;
                 case AIType.AI_Mystic: SetMagicalAbility(MagicalAbility.Mysticism); break;
-                case AIType.AI_Bushido: SetMagicalAbility(MagicalAbility.Bushido); break;
-                case AIType.AI_Ninjitsu: SetMagicalAbility(MagicalAbility.Ninjitsu); break;
+                case AIType.AI_Samurai: SetMagicalAbility(MagicalAbility.Bushido); break;
+                case AIType.AI_Ninja: SetMagicalAbility(MagicalAbility.Ninjitsu); break;
                 case AIType.AI_Paladin: SetMagicalAbility(MagicalAbility.Chivalry); break;
             }
 
@@ -585,6 +587,114 @@ namespace Server.Mobiles
         public void SetWeaponAbility(WeaponAbility ability)
         {
             PetTrainingHelper.GetProfile(this, true).AddAbility(ability);
+        }
+
+        private const double AverageThreshold = .1;
+        public List<double> _InitAverage;
+
+        private void SetAverage(double average)
+        {
+            if (PetTrainingHelper.Enabled && CanLowerSlot())
+            {
+                if (_InitAverage == null)
+                    _InitAverage = new List<double>();
+
+                _InitAverage.Add(average);
+            }
+        }
+
+        private Type[] _SlotLowerables =
+        {
+            typeof(Nightmare), typeof(Najasaurus), typeof(RuneBeetle), typeof(GreaterDragon), typeof(FrostDragon),
+            typeof(WhiteWyrm), typeof(Reptalon), typeof(DragonTurtleHatchling), typeof(Phoenix), typeof(FrostMite),
+            typeof(DireWolf), typeof(Skree), typeof(HighPlainsBoura), typeof(LesserHiryu), typeof(DragonWolf),
+            typeof(BloodFox)
+        };
+
+        private bool CanLowerSlot()
+        {
+            return _SlotLowerables.Any(t => t == GetType());
+        }
+
+        public void CalculateSlots()
+        {
+            var def = PetTrainingHelper.GetTrainingDefinition(this);
+
+            if (def == null)
+            {
+                ControlSlotsMin = ControlSlots;
+                ControlSlotsMax = ControlSlots;
+            }
+            else
+            {
+                ControlSlotsMin = def.ControlSlotsMin;
+                ControlSlotsMax = def.ControlSlotsMax;
+            }
+
+            if (_InitAverage == null)
+                return;
+
+            double total = _InitAverage.Sum(d => d);
+
+            if (total / _InitAverage.Count <= AverageThreshold)
+            {
+                ControlSlotsMin--;
+            }
+
+            ColUtility.Free(_InitAverage);
+            _InitAverage = null;
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double TrainingProgress { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double TrainingProgressMax { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double TrainingProgressPercentile { get { return TrainingProgress / TrainingProgressMax; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double BardingDifficulty { get { return BaseInstrument.GetBaseDifficulty(this); } }
+
+        public void CheckProgress(BaseCreature bc)
+        {
+            if (ControlSlots >= ControlSlotsMax || TrainingProgress >= TrainingProgressMax)
+                return;
+
+            int dif = (int)(BardingDifficulty - bc.BardingDifficulty);
+            int level = 1 + (ControlSlots - ControlSlotsMin);
+
+            if (Utility.Random(100) < (6 - level))
+            {
+                if (Math.Abs(dif) <= 50)
+                {
+                    double toAdd = Math.Round(.25 + ((bc.BardingDifficulty / BardingDifficulty) * 2.5), 2);
+
+                    TrainingProgress += toAdd;
+
+                    if (ControlMaster != null)
+                    {
+                        int cliloc = 1157574; // *The pet's battle experience has greatly increased!*
+
+                        if (toAdd < 1.3)
+                            cliloc = 1157565; // *The pet's battle experience has slightly increased!*
+                        else if (toAdd < 2.5)
+                            cliloc = 1157573; // *The pet's battle experience has fairly increased!*
+
+                        PrivateOverheadMessage(MessageType.Regular, 452, cliloc, ControlMaster.NetState);
+
+                        if (TrainingProgress >= TrainingProgressMax)
+                        {
+                            PrivateOverheadMessage(MessageType.Regular, 452, 1157543, ControlMaster.NetState); // *The creature surges with battle experience and is ready to train!*
+                        }
+                    }
+                }
+                else if (ControlMaster != null)
+                {
+                    PrivateOverheadMessage(MessageType.Regular, 452, 1157564, ControlMaster.NetState); // *The pet does not appear to train from that*
+                }
+            }
         }
         #endregion
 
@@ -2455,16 +2565,6 @@ namespace Server.Mobiles
 
             writer.Write(24); // version
 
-            if (_Profile != null)
-            {
-                writer.Write(1);
-                _Profile.Serialize(writer);
-            }
-            else
-            {
-                writer.Write(0);
-            }
-
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
 
@@ -2597,7 +2697,10 @@ namespace Server.Mobiles
             // Pet Branding version 22
             writer.Write(m_EngravedText);
 
-            // Version 23 Pet Training
+            // Version 24 Pet Training
+            writer.Write(ControlSlotsMin);
+            writer.Write(ControlSlotsMax);
+
             if (_Profile != null)
             {
                 writer.Write(1);
@@ -2888,9 +2991,20 @@ namespace Server.Mobiles
                 m_EngravedText = reader.ReadString();
             }
 
-            if (version >= 23 && reader.ReadInt() == 1)
+            if (version == 23)
             {
-                _Profile = new AbilityProfile(this, reader);
+                reader.ReadBool();
+            }
+
+            if (version >= 24)
+            {
+                ControlSlotsMin = reader.ReadInt();
+                ControlSlotsMax = reader.ReadInt();
+
+                if (reader.ReadInt() == 1)
+                {
+                    _Profile = new AbilityProfile(this, reader);
+                }
             }
 
             if (version <= 14 && m_Paragon && Hue == 0x31)
@@ -3673,13 +3787,28 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.Administrator)]
-        public int ControlSlots { get { return m_iControlSlots; } set { m_iControlSlots = value; } }
+        public int ControlSlots
+        {
+            get { return m_iControlSlots; }
+            set
+            {
+                if (PetTrainingHelper.Enabled && ControlSlotsMin == 0 && ControlSlotsMax == 0)
+                {
+                    CalculateSlots();
+                    m_iControlSlots = ControlSlotsMin;
+                }
+                else
+                {
+                    m_iControlSlots = value;
+                }
+            }
+        }
 
         [CommandProperty(AccessLevel.Administrator)]
-        public int ControlSlotsMax { get; set; }
+        public int ControlSlotsMax { get; private set; }
 
         [CommandProperty(AccessLevel.Administrator)]
-        public int ControlSlotsMin { get; set; }
+        public int ControlSlotsMin { get; private set; }
 
         public virtual bool NoHouseRestrictions { get { return false; } }
         public virtual bool IsHouseSummonable { get { return false; } }
@@ -4812,18 +4941,24 @@ namespace Server.Mobiles
         #region Set[...]
         public void SetDamage(int val)
         {
+            SetAverage(1.0);
+
             m_DamageMin = val;
             m_DamageMax = val;
         }
 
         public void SetDamage(int min, int max)
         {
+            SetAverage(min / max);
+
             m_DamageMin = min;
             m_DamageMax = max;
         }
 
         public void SetHits(int val)
         {
+            SetAverage(1.0);
+
             if (val < 1000 && !Core.AOS)
             {
                 val = (val * 100) / 60;
@@ -4835,6 +4970,8 @@ namespace Server.Mobiles
 
         public void SetHits(int min, int max)
         {
+            SetAverage(min / max);
+
             if (min < 1000 && !Core.AOS)
             {
                 min = (min * 100) / 60;
@@ -4847,60 +4984,80 @@ namespace Server.Mobiles
 
         public void SetStam(int val)
         {
+            SetAverage(1.0);
+
             m_StamMax = val;
             Stam = StamMax;
         }
 
         public void SetStam(int min, int max)
         {
+            SetAverage(min / max);
+
             m_StamMax = Utility.RandomMinMax(min, max);
             Stam = StamMax;
         }
 
         public void SetMana(int val)
         {
+            SetAverage(1.0);
+
             m_ManaMax = val;
             Mana = ManaMax;
         }
 
         public void SetMana(int min, int max)
         {
+            SetAverage(min / max);
+
             m_ManaMax = Utility.RandomMinMax(min, max);
             Mana = ManaMax;
         }
 
         public void SetStr(int val)
         {
+            SetAverage(1.0);
+
             RawStr = val;
             Hits = HitsMax;
         }
 
         public void SetStr(int min, int max)
         {
+            SetAverage(min / max);
+
             RawStr = Utility.RandomMinMax(min, max);
             Hits = HitsMax;
         }
 
         public void SetDex(int val)
         {
+            SetAverage(1.0);
+
             RawDex = val;
             Stam = StamMax;
         }
 
         public void SetDex(int min, int max)
         {
+            SetAverage(min / max);
+
             RawDex = Utility.RandomMinMax(min, max);
             Stam = StamMax;
         }
 
         public void SetInt(int val)
         {
+            SetAverage(1.0);
+
             RawInt = val;
             Mana = ManaMax;
         }
 
         public void SetInt(int min, int max)
         {
+            SetAverage(min / max);
+
             RawInt = Utility.RandomMinMax(min, max);
             Mana = ManaMax;
         }
@@ -4932,30 +5089,24 @@ namespace Server.Mobiles
             }
         }
 
-        public void SetResistance(ResistanceType type, int min, int max)
+        public void SetResistance(ResistanceType type, int value)
         {
-            SetResistance(type, Utility.RandomMinMax(min, max));
+            SetResistance(type, value, value);
         }
 
-        public void SetResistance(ResistanceType type, int val)
+        public void SetResistance(ResistanceType type, int min, int max)
         {
+            int val = min == max ? min : Utility.RandomMinMax(min, max);
+
+            SetAverage(min / max);
+
             switch (type)
             {
-                case ResistanceType.Physical:
-                    m_PhysicalResistance = val;
-                    break;
-                case ResistanceType.Fire:
-                    m_FireResistance = val;
-                    break;
-                case ResistanceType.Cold:
-                    m_ColdResistance = val;
-                    break;
-                case ResistanceType.Poison:
-                    m_PoisonResistance = val;
-                    break;
-                case ResistanceType.Energy:
-                    m_EnergyResistance = val;
-                    break;
+                case ResistanceType.Physical: m_PhysicalResistance = val; break;
+                case ResistanceType.Fire: m_FireResistance = val; break;
+                case ResistanceType.Cold: m_ColdResistance = val; break;
+                case ResistanceType.Poison: m_PoisonResistance = val; break;
+                case ResistanceType.Energy: m_EnergyResistance = val; break;
             }
 
             UpdateResistances();
@@ -4963,6 +5114,8 @@ namespace Server.Mobiles
 
         public void SetSkill(SkillName name, double val)
         {
+            SetAverage(1.0);
+
             Skills[name].BaseFixedPoint = (int)(val * 10);
 
             if (Skills[name].Base > Skills[name].Cap)
@@ -4978,6 +5131,8 @@ namespace Server.Mobiles
 
         public void SetSkill(SkillName name, double min, double max)
         {
+            SetAverage(min / max);
+
             int minFixed = (int)(min * 10);
             int maxFixed = (int)(max * 10);
 
