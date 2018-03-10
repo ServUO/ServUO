@@ -132,18 +132,16 @@ namespace Server.Mobiles
         public static AreaEffect PoisonBreath = _Effects[6];
 
         public static AreaEffect[] Effects { get { return _Effects; } }
-        private static AreaEffect[] _Effects = new AreaEffect[7];
-		
-		public static void Initialize()
-		{
-			_Effects[0] = new AuraOfEnergy();
-            _Effects[1] = new AuraOfNausea();
-            _Effects[2] = new EssenceOfDisease();
-            _Effects[3] = new EssenceOfEarth();
-            _Effects[4] = new ExplosiveGoo();
-            _Effects[5] = new Firestorm();
-            _Effects[6] = new PoisonBreath();
-		}
+        private static AreaEffect[] _Effects = 
+        {
+            new AuraOfEnergy(),
+            new AuraOfNausea(),
+            new EssenceOfDisease(),
+            new EssenceOfEarth(),
+            new ExplosiveGoo(),
+            new Firestorm(),
+            new PoisonBreath(),
+        };
     }
 
     public class AuraOfEnergy : AreaEffect

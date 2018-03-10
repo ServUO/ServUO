@@ -14,13 +14,18 @@ namespace Server.Mobiles
         public WeaponAbility[] WeaponAbilities { get; private set; }
         public AreaEffect[] AreaEffects { get; private set; }
 
+        public int ControlSlotsMin { get; private set; }
+        public int ControlSlotsMax { get; private set; }
+
         public TrainingDefinition(
             Type type,
             Class classificaion,
             MagicalAbility magicalAbility,
             SpecialAbility[] specialAbility,
             WeaponAbility[] weaponAbility, 
-            AreaEffect[] areaEffect)
+            AreaEffect[] areaEffect,
+            int controlmin,
+            int controlmax)
         {
             CreatureType = type;
             Class = Class;
@@ -28,6 +33,9 @@ namespace Server.Mobiles
             SpecialAbilities = specialAbility;
             WeaponAbilities = weaponAbility;
             AreaEffects = areaEffect;
+
+            ControlSlotsMin = controlmin;
+            ControlSlotsMax = controlmax;
         }
     }
 }

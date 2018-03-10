@@ -149,49 +149,232 @@ namespace Server.Mobiles
 			_Cooldown.Remove(m);
 		}
 		
-		public static SpecialAbility AngryFire = _Abilities[0];
-		public static SpecialAbility ConductiveBlast = _Abilities[1];
-		public static SpecialAbility DragonBreath = _Abilities[2];
-		public static SpecialAbility GraspingClaw = _Abilities[3];
-		public static SpecialAbility Inferno = _Abilities[4];
-		public static SpecialAbility LightningForce = _Abilities[5];
-		public static SpecialAbility ManaDrain = _Abilities[6];
-		public static SpecialAbility RagingBreath = _Abilities[7];
-		public static SpecialAbility Repel = _Abilities[8];
-		public static SpecialAbility SearingWounds = _Abilities[9];
-		public static SpecialAbility StealLife = _Abilities[10];
-		public static SpecialAbility VenomousBite = _Abilities[11];
-		public static SpecialAbility ViciousBite = _Abilities[12];
-		public static SpecialAbility RuneCorruption = _Abilities[13];
-		public static SpecialAbility LifeLeech = _Abilities[14];
-		public static SpecialAbility StickySkin = _Abilities[15];
-		public static SpecialAbility TailSwipe = _Abilities[16];
-        public static SpecialAbility FlurryForce = _Abilities[17];
+		public static SpecialAbility AngryFire
+        {
+            get
+            {
+                if (_Abilities[0] == null)
+                    _Abilities[0] = new AngryFire();
+
+                return _Abilities[0];
+            }
+        }
+
+		public static SpecialAbility ConductiveBlast
+        {
+            get
+            {
+                if (_Abilities[1] == null)
+                    _Abilities[1] = new ConductiveBlast();
+
+                return _Abilities[1];
+            }
+        }
+
+		public static SpecialAbility DragonBreath
+        {
+            get
+            {
+                if (_Abilities[2] == null)
+                    _Abilities[2] = new DragonBreath();
+
+                return _Abilities[2];
+            }
+        }
+
+		public static SpecialAbility GraspingClaw
+        {
+            get
+            {
+                if (_Abilities[3] == null)
+                    _Abilities[3] = new GraspingClaw();
+
+                return _Abilities[3];
+            }
+        }
+
+		public static SpecialAbility Inferno
+        {
+            get
+            {
+                if (_Abilities[4] == null)
+                    _Abilities[4] = new Inferno();
+
+                return _Abilities[4];
+            }
+        }
+
+		public static SpecialAbility LightningForce
+        {
+            get
+            {
+                if (_Abilities[5] == null)
+                    _Abilities[5] = new LightningForce();
+
+                return _Abilities[5];
+            }
+        }
+
+		public static SpecialAbility ManaDrain
+        {
+            get
+            {
+                if (_Abilities[6] == null)
+                    _Abilities[6] = new ManaDrain();
+
+                return _Abilities[6];
+            }
+        }
+
+        public static SpecialAbility RagingBreath
+        {
+            get
+            {
+                if (_Abilities[7] == null)
+                    _Abilities[7] = new RagingBreath();
+
+                return _Abilities[7];
+            }
+        }
+
+		public static SpecialAbility Repel
+        {
+            get
+            {
+                if (_Abilities[8] == null)
+                    _Abilities[8] = new Repel();
+
+                return _Abilities[8];
+            }
+        }
+
+		public static SpecialAbility SearingWounds
+        {
+            get
+            {
+                if (_Abilities[9] == null)
+                    _Abilities[9] = new SearingWounds();
+
+                return _Abilities[9];
+            }
+        }
+
+		public static SpecialAbility StealLife
+        {
+            get
+            {
+                if (_Abilities[10] == null)
+                    _Abilities[10] = new StealLife();
+
+                return _Abilities[10];
+            }
+        }
+
+		public static SpecialAbility VenomousBite
+        {
+            get
+            {
+                if (_Abilities[11] == null)
+                    _Abilities[11] = new VenomousBite();
+
+                return _Abilities[11];
+            }
+        }
+
+		public static SpecialAbility ViciousBite
+        {
+            get
+            {
+                if (_Abilities[12] == null)
+                    _Abilities[12] = new ViciousBite();
+
+                return _Abilities[12];
+            }
+        }
+
+        public static SpecialAbility RuneCorruption
+        {
+            get
+            {
+                if (_Abilities[13] == null)
+                    _Abilities[13] = new RuneCorruption();
+
+                return _Abilities[13];
+            }
+        }
+
+        public static SpecialAbility LifeLeech
+        {
+            get
+            {
+                if (_Abilities[14] == null)
+                    _Abilities[14] = new LifeLeech();
+
+                return _Abilities[14];
+            }
+        }
+
+        public static SpecialAbility StickySkin
+        {
+            get
+            {
+                if (_Abilities[15] == null)
+                    _Abilities[15] = new StickySkin();
+
+                return _Abilities[15];
+            }
+        }
+
+        public static SpecialAbility TailSwipe
+        {
+            get
+            {
+                if (_Abilities[16] == null)
+                    _Abilities[16] = new TailSwipe();
+
+                return _Abilities[16];
+            }
+        }
+
+        public static SpecialAbility FlurryForce
+        {
+            get
+            {
+                if (_Abilities[17] == null)
+                    _Abilities[17] = new FlurryForce();
+
+                return _Abilities[17];
+            }
+        }
+
 
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-		private static SpecialAbility[] _Abilities = new SpecialAbility[17];
-		
-		public static void Initialize()
-		{
-			_Abilities[0] = new AngryFire();
-			_Abilities[1] = new ConductiveBlast();
-			_Abilities[2] = new DragonBreath();
-			_Abilities[3] = new GraspingClaw();
-			_Abilities[4] = new Inferno();
-			_Abilities[5] = new LightningForce();
-			_Abilities[6] = new ManaDrain();
-			_Abilities[7] = new RagingBreath();
-			_Abilities[8] = new Repel();
-			_Abilities[9] = new SearingWounds();
-			_Abilities[10] = new StealLife();
-			_Abilities[11] = new VenomousBite();
-			_Abilities[12] = new ViciousBite();
-			_Abilities[13] = new RuneCorruption();
-			_Abilities[14] = new LifeLeech();
-			_Abilities[15] = new StickySkin();
-			_Abilities[16] = new TailSwipe();
-            _Abilities[17] = new FlurryForce();
-		}
+        private static readonly SpecialAbility[] _Abilities = new SpecialAbility[18];
+
+        /*static SpecialAbility()
+        {
+            _Abilities = new SpecialAbility[]
+            {
+                new AngryFire(),
+			    new ConductiveBlast(),
+			    new DragonBreath(),
+		        new GraspingClaw(),
+			    new Inferno(),
+			    new LightningForce(),
+			    new ManaDrain(),
+			    new RagingBreath(),
+			    new Repel(),
+		        new SearingWounds(),
+			    new StealLife(),
+			    new VenomousBite(),
+			    new ViciousBite(),
+			    new RuneCorruption(),
+			    new LifeLeech(),
+			    new StickySkin(),
+			    new TailSwipe(),
+                new FlurryForce(),
+            };
+        }*/
     }
 	
 	public class AngryFire : SpecialAbility
@@ -200,6 +383,7 @@ namespace Server.Mobiles
 
 		public AngryFire()
 		{
+            Console.WriteLine("Angry Fire");
 		}
 		
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)

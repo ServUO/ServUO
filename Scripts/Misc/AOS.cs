@@ -327,7 +327,12 @@ namespace Server
             }
 
             if (PetTrainingHelper.Enabled && (from is BaseCreature || m is BaseCreature))
+            {
                 SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
+
+                if (from is BaseCreature && m is BaseCreature)
+                    ((BaseCreature)from).CheckProgress((BaseCreature)m);
+            }
 
             if (totalDamage <= 0)
                 return 0;

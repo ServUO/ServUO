@@ -41,7 +41,7 @@ namespace Server.Items
             {
                 if (m.Alive && !m.IsDeadBondedPet &&
                     m.CanBeHarmful(attacker) &&
-                    SpellHelper.ValidIndirectTarget(m, attacker) &&
+                    Server.Spells.SpellHelper.ValidIndirectTarget(m, attacker) &&
                     (!Core.AOS || attacker.InLOS(m)))
                 {
                     toAffect.Add(m);
@@ -53,7 +53,7 @@ namespace Server.Items
             foreach (var m in toAffect)
             {
                 AOS.Damage(m, attacker, Utility.RandomMinMax(20, 30), 0, 0, 100, 0, 0);
-                m.SendLocalizedMessage(1008111, false, this.Name); //  : The intense cold is damaging you!
+                m.SendLocalizedMessage(1008111, false, attacker.ToString()); //  : The intense cold is damaging you!
 
                 m.FixedParticles(0x374A, 10, 30, 5052, 1319, 0, EffectLayer.Waist);
                 m.PlaySound(0x5C6);
