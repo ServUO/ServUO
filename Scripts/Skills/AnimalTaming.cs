@@ -455,7 +455,7 @@ namespace Server.SkillHandlers
 
                             m_Creature.OnAfterTame(m_Tamer);
 
-                            PetTrainingHelper.GetProfile(m_Creature, true).OnTame();
+                            PetTrainingHelper.GetAbilityProfile(m_Creature, true).OnTame();
 						}
 						else
 						{

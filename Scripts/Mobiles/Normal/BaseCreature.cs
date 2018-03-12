@@ -524,9 +524,16 @@ namespace Server.Mobiles
 
         #region Pet Training
         private AbilityProfile _Profile;
+        private TrainingProfile _TrainingProfile;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public AbilityProfile AbilityProfile { get { return _Profile; } set { _Profile = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TrainingProfile TrainingProfile { get { return _TrainingProfile; } set { _TrainingProfile = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double BardingDifficulty { get { return BaseInstrument.GetBaseDifficulty(this); } }
 
         public virtual WeaponAbility TryGetWeaponAbility()
         {
@@ -538,11 +545,6 @@ namespace Server.Mobiles
             {
                 return GetWeaponAbility();
             }
-        }
-
-        public virtual TrainingDefinition GetTrainingDefinition()
-        {
-            return PetTrainingHelper.Definitions.FirstOrDefault(d => d.CreatureType == GetType());
         }
 
         public virtual void InitializeAbilities()
@@ -571,25 +573,26 @@ namespace Server.Mobiles
 
         public void SetMagicalAbility(MagicalAbility ability)
         {
-            PetTrainingHelper.GetProfile(this, true).AddAbility(ability);
+            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability);
         }
 
         public void SetSpecialAbility(SpecialAbility ability)
         {
-            PetTrainingHelper.GetProfile(this, true).AddAbility(ability);
+            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability);
         }
 
         public void SetAreaEffect(AreaEffect ability)
         {
-            PetTrainingHelper.GetProfile(this, true).AddAbility(ability);
+            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability);
         }
 
         public void SetWeaponAbility(WeaponAbility ability)
         {
-            PetTrainingHelper.GetProfile(this, true).AddAbility(ability);
+            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability);
         }
 
         private const double AverageThreshold = .1;
+
         public List<double> _InitAverage;
 
         private void SetAverage(double average)
@@ -644,63 +647,12 @@ namespace Server.Mobiles
             ColUtility.Free(_InitAverage);
             _InitAverage = null;
         }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double TrainingProgress { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double TrainingProgressMax { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double TrainingProgressPercentile { get { return TrainingProgress / TrainingProgressMax; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double BardingDifficulty { get { return BaseInstrument.GetBaseDifficulty(this); } }
-
-        public void CheckProgress(BaseCreature bc)
-        {
-            if (ControlSlots >= ControlSlotsMax || TrainingProgress >= TrainingProgressMax)
-                return;
-
-            int dif = (int)(BardingDifficulty - bc.BardingDifficulty);
-            int level = 1 + (ControlSlots - ControlSlotsMin);
-
-            if (Utility.Random(100) < (6 - level))
-            {
-                if (Math.Abs(dif) <= 50)
-                {
-                    double toAdd = Math.Round(.25 + ((bc.BardingDifficulty / BardingDifficulty) * 2.5), 2);
-
-                    TrainingProgress += toAdd;
-
-                    if (ControlMaster != null)
-                    {
-                        int cliloc = 1157574; // *The pet's battle experience has greatly increased!*
-
-                        if (toAdd < 1.3)
-                            cliloc = 1157565; // *The pet's battle experience has slightly increased!*
-                        else if (toAdd < 2.5)
-                            cliloc = 1157573; // *The pet's battle experience has fairly increased!*
-
-                        PrivateOverheadMessage(MessageType.Regular, 452, cliloc, ControlMaster.NetState);
-
-                        if (TrainingProgress >= TrainingProgressMax)
-                        {
-                            PrivateOverheadMessage(MessageType.Regular, 452, 1157543, ControlMaster.NetState); // *The creature surges with battle experience and is ready to train!*
-                        }
-                    }
-                }
-                else if (ControlMaster != null)
-                {
-                    PrivateOverheadMessage(MessageType.Regular, 452, 1157564, ControlMaster.NetState); // *The pet does not appear to train from that*
-                }
-            }
-        }
         #endregion
 
         #region Skill Masteries
         private SkillName _Mastery;
 
+        [CommandProperty(AccessLevel.GameMaster)]
 		public SkillName Mastery 
 		{
 			get { return _Mastery; } 
@@ -719,11 +671,18 @@ namespace Server.Mobiles
 
         public void UpdateMasteryInfo()
         {
-            var masteries = MasteryInfo.Infos.Where(i => i.MasterySkill == Mastery && !i.Passive).ToArray();
-
-            if (masteries != null && masteries.Length > 0)
+            if (_Mastery == SkillName.Alchemy)
             {
-                Masteries = masteries;
+                Masteries = null;
+            }
+            else
+            {
+                var masteries = MasteryInfo.Infos.Where(i => i.MasterySkill == Mastery && !i.Passive).ToArray();
+
+                if (masteries != null && masteries.Length > 0)
+                {
+                    Masteries = masteries;
+                }
             }
         }
 
@@ -2701,10 +2660,22 @@ namespace Server.Mobiles
             writer.Write(ControlSlotsMin);
             writer.Write(ControlSlotsMax);
 
+            writer.Write((int)Mastery);
+
             if (_Profile != null)
             {
                 writer.Write(1);
                 _Profile.Serialize(writer);
+            }
+            else
+            {
+                writer.Write(0);
+            }
+
+            if (_TrainingProfile != null)
+            {
+                writer.Write(1);
+                _TrainingProfile.Serialize(writer);
             }
             else
             {
@@ -3001,9 +2972,16 @@ namespace Server.Mobiles
                 ControlSlotsMin = reader.ReadInt();
                 ControlSlotsMax = reader.ReadInt();
 
+                Mastery = (SkillName)reader.ReadInt();
+
                 if (reader.ReadInt() == 1)
                 {
                     _Profile = new AbilityProfile(this, reader);
+                }
+
+                if (reader.ReadInt() == 1)
+                {
+                    _TrainingProfile = new TrainingProfile(this, reader);
                 }
             }
 

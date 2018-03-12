@@ -8,16 +8,18 @@ namespace Server.Mobiles
     {
         public object TrainPoint { get; set; }
         public double Weight { get; set; }
+        public int Start { get; set; }
         public int Max { get; set; }
         public TextDefinition Name { get; set; }
         public TextDefinition Description { get; set; }
 
         public TrainingPointRequirement[] Requirements { get; set; }
 
-        public TrainingPoint(object trainpoint, double weight, int max, TextDefinition name, TextDefinition description, params TrainingPointRequirement[] requirements)
+        public TrainingPoint(object trainpoint, double weight, int start, int max, TextDefinition name, TextDefinition description, params TrainingPointRequirement[] requirements)
         {
             TrainPoint = trainpoint;
             Weight = weight;
+            Start = start;
             Max = max;
 
             Name = name;
@@ -31,11 +33,13 @@ namespace Server.Mobiles
     {
         public object Requirement { get; set; }
         public int Cost { get; set; }
+        public TextDefinition Name { get; set; }
 
-        public TrainingPointRequirement(object requirement, int cost)
+        public TrainingPointRequirement(object requirement, int cost, TextDefinition name)
         {
             Requirement = requirement;
             Cost = cost;
+            Name = name;
         }
     }
 }

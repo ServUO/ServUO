@@ -30,7 +30,7 @@ namespace Server.Mobiles
             if (attacker is BaseCreature && !((BaseCreature)attacker).Summoned)
             {
                 var bc = attacker as BaseCreature;
-                var profile = PetTrainingHelper.GetProfile(bc);
+                var profile = PetTrainingHelper.GetAbilityProfile(bc);
 
                 if (profile != null)
                 {
@@ -55,7 +55,7 @@ namespace Server.Mobiles
             if (defender is BaseCreature && !((BaseCreature)defender).Summoned)
             {
                 var bc = defender as BaseCreature;
-                var profile = PetTrainingHelper.GetProfile(bc);
+                var profile = PetTrainingHelper.GetAbilityProfile(bc);
                 
                 if (profile != null)
                 {
@@ -85,7 +85,7 @@ namespace Server.Mobiles
 			
 			if(combatant is Mobile)
 			{
-                var profile = PetTrainingHelper.GetProfile(bc);
+                var profile = PetTrainingHelper.GetAbilityProfile(bc);
 
                 if (profile != null)
                 {
@@ -349,32 +349,7 @@ namespace Server.Mobiles
 
 
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static readonly SpecialAbility[] _Abilities = new SpecialAbility[18];
-
-        /*static SpecialAbility()
-        {
-            _Abilities = new SpecialAbility[]
-            {
-                new AngryFire(),
-			    new ConductiveBlast(),
-			    new DragonBreath(),
-		        new GraspingClaw(),
-			    new Inferno(),
-			    new LightningForce(),
-			    new ManaDrain(),
-			    new RagingBreath(),
-			    new Repel(),
-		        new SearingWounds(),
-			    new StealLife(),
-			    new VenomousBite(),
-			    new ViciousBite(),
-			    new RuneCorruption(),
-			    new LifeLeech(),
-			    new StickySkin(),
-			    new TailSwipe(),
-                new FlurryForce(),
-            };
-        }*/
+        private static SpecialAbility[] _Abilities = new SpecialAbility[18];
     }
 	
 	public class AngryFire : SpecialAbility
@@ -383,7 +358,6 @@ namespace Server.Mobiles
 
 		public AngryFire()
 		{
-            Console.WriteLine("Angry Fire");
 		}
 		
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)

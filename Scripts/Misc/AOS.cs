@@ -326,13 +326,22 @@ namespace Server
                 }
             }
 
+            #region Pet Training
             if (PetTrainingHelper.Enabled && (from is BaseCreature || m is BaseCreature))
             {
                 SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
 
                 if (from is BaseCreature && m is BaseCreature)
-                    ((BaseCreature)from).CheckProgress((BaseCreature)m);
+                {
+                    var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
+
+                    if (profile != null)
+                    {
+                        profile.CheckProgress((BaseCreature)m);
+                    }
+                }
             }
+            #endregion
 
             if (totalDamage <= 0)
                 return 0;

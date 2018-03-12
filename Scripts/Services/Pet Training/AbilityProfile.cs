@@ -55,6 +55,13 @@ namespace Server.Mobiles
         {
             if (Creature.Controlled)
             {
+                var oldAbility = MagicalAbility;
+
+                if (IsSpecialMagicalAbility(oldAbility))
+                {
+                    RemoveSpecialMagicalAbility(oldAbility);
+                }
+
                 History.Add(ability);
                 MagicalAbility = ability;
                 OnAddAbility(ability);
@@ -161,33 +168,17 @@ namespace Server.Mobiles
         {
             AddToHistory(newAbility);
 
-            var trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
-
-            if (trainPoint != null && trainPoint.Requirements != null)
-            {
-                foreach (var req in trainPoint.Requirements)
-                {
-                    // Verified on EA that skill is not zeroed out
-                    /*if (req is SkillName)
-                    {
-                        Creature.Skills[(SkillName)req].Base = 0;
-                    }
-                    else */
-                    if (req.Requirement is WeaponAbility)
-                    {
-                        AddAbility((WeaponAbility)req.Requirement);
-                    }
-                }
-            }
-
-            if (newAbility is MagicalAbility && (MagicalAbility)newAbility <= MagicalAbility.WrestlingMastery)
+            if (newAbility is MagicalAbility && IsSpecialMagicalAbility((MagicalAbility)newAbility))
             {
                 AddSpecialMagicalAbility((MagicalAbility)newAbility);
             }
 
+            var trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
+            
+            //Console.WriteLine("trainPoint for {1} = {0}", trainPoint == null ? "null" : trainPoint.TrainPoint, newAbility);
             if (trainPoint != null && trainPoint.Requirements != null)
             {
-                foreach (var req in trainPoint.Requirements)
+                foreach (var req in trainPoint.Requirements.Where(r => r != null))
                 {
                     if (req.Requirement is SkillName)
                     {
@@ -301,6 +292,11 @@ namespace Server.Mobiles
                 (MagicalAbility & MagicalAbility.WrestlingMastery) != 0;
         }
 
+        public bool IsSpecialMagicalAbility(MagicalAbility ability)
+        {
+            return ability != MagicalAbility.None && ability <= MagicalAbility.WrestlingMastery;
+        }
+
         public void AddSpecialMagicalAbility(MagicalAbility ability)
         {
             SpecialAbilities = null;
@@ -314,6 +310,14 @@ namespace Server.Mobiles
                 case MagicalAbility.BattleDefense: Creature.Mastery = SkillName.Parry; break;
                 case MagicalAbility.WrestlingMastery: Creature.Mastery = SkillName.Wrestling; break;
             }
+        }
+
+        public void RemoveSpecialMagicalAbility(MagicalAbility ability)
+        {
+            SpecialAbilities = null;
+            WeaponAbilities = null;
+
+            Creature.Mastery = SkillName.Alchemy; // default
         }
 
         public IEnumerable<object> EnumerateAllAbilities()
@@ -350,7 +354,12 @@ namespace Server.Mobiles
 
         public IEnumerable<SpecialAbility> EnumerateSpecialAbilities()
         {
-            var profile = PetTrainingHelper.GetProfile(Creature);
+            if (SpecialAbilities == null)
+            {
+                yield break;
+            }
+
+            var profile = PetTrainingHelper.GetAbilityProfile(Creature);
 
             if (profile == null)
             {
@@ -370,7 +379,12 @@ namespace Server.Mobiles
 
         public IEnumerable<AreaEffect> EnumerateAreaEffects()
         {
-            var profile = PetTrainingHelper.GetProfile(Creature);
+            if (AreaEffects == null)
+            {
+                yield break;
+            }
+
+            var profile = PetTrainingHelper.GetAbilityProfile(Creature);
 
             if (profile == null)
             {
@@ -386,6 +400,11 @@ namespace Server.Mobiles
         public AreaEffect[] GetAreaEffects()
         {
             return EnumerateAreaEffects().ToArray();
+        }
+
+        public override string ToString()
+        {
+            return "...";
         }
 
         public AbilityProfile(BaseCreature bc, GenericReader reader)
@@ -444,21 +463,33 @@ namespace Server.Mobiles
             writer.Write(TokunoTame);
 
             writer.Write(SpecialAbilities != null ? SpecialAbilities.Length : 0);
-            foreach (var abil in SpecialAbilities)
+
+            if (SpecialAbilities != null)
             {
-                writer.Write(Array.IndexOf(SpecialAbility.Abilities, abil));
+                foreach (var abil in SpecialAbilities)
+                {
+                    writer.Write(Array.IndexOf(SpecialAbility.Abilities, abil));
+                }
             }
 
             writer.Write(AreaEffects != null ? AreaEffects.Length : 0);
-            foreach (var abil in AreaEffects)
+
+            if (AreaEffects != null)
             {
-                writer.Write(Array.IndexOf(AreaEffect.Effects, abil));
+                foreach (var abil in AreaEffects)
+                {
+                    writer.Write(Array.IndexOf(AreaEffect.Effects, abil));
+                }
             }
 
             writer.Write(WeaponAbilities != null ? WeaponAbilities.Length : 0);
-            foreach (var abil in WeaponAbilities)
+
+            if (WeaponAbilities != null)
             {
-                writer.Write(Array.IndexOf(WeaponAbility.Abilities, abil));
+                foreach (var abil in WeaponAbilities)
+                {
+                    writer.Write(Array.IndexOf(WeaponAbility.Abilities, abil));
+                }
             }
 
             writer.Write(History != null ? History.Count : 0);

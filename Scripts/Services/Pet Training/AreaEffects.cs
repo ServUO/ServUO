@@ -27,7 +27,7 @@ namespace Server.Mobiles
 			
 			if(combatant is Mobile)
 			{
-                var profile = PetTrainingHelper.GetProfile(bc);
+                var profile = PetTrainingHelper.GetAbilityProfile(bc);
 
                 if (profile != null)
                 {
@@ -123,25 +123,85 @@ namespace Server.Mobiles
 			_Cooldown.Remove(m);
 		}
 
-        public static AreaEffect AuraOfEnergy = _Effects[0];
-		public static AreaEffect AuraOfNausea = _Effects[1];
-		public static AreaEffect EssenceOfDisease = _Effects[2];
-		public static AreaEffect EssenceOfEarth = _Effects[3];
-		public static AreaEffect ExplosiveGoo = _Effects[4];
-		public static AreaEffect Firestorm = _Effects[5];
-        public static AreaEffect PoisonBreath = _Effects[6];
+        public static AreaEffect AuraOfEnergy
+        {
+            get
+            {
+                if (_Effects[0] == null)
+                    _Effects[0] = new AuraOfEnergy();
+
+                return _Effects[0];
+            }
+        }
+
+        public static AreaEffect AuraOfNausea
+        {
+            get
+            {
+                if (_Effects[1] == null)
+                    _Effects[1] = new AuraOfNausea();
+
+                return _Effects[1];
+            }
+        }
+
+        public static AreaEffect EssenceOfDisease
+        {
+            get
+            {
+                if (_Effects[2] == null)
+                    _Effects[2] = new EssenceOfDisease();
+
+                return _Effects[2];
+            }
+        }
+
+        public static AreaEffect EssenceOfEarth
+        {
+            get
+            {
+                if (_Effects[3] == null)
+                    _Effects[3] = new EssenceOfEarth();
+
+                return _Effects[3];
+            }
+        }
+
+        public static AreaEffect ExplosiveGoo
+        {
+            get
+            {
+                if (_Effects[4] == null)
+                    _Effects[4] = new ExplosiveGoo();
+
+                return _Effects[4];
+            }
+        }
+
+        public static AreaEffect Firestorm
+        {
+            get
+            {
+                if (_Effects[5] == null)
+                    _Effects[5] = new Firestorm();
+
+                return _Effects[5];
+            }
+        }
+
+        public static AreaEffect PoisonBreath
+        {
+            get
+            {
+                if (_Effects[6] == null)
+                    _Effects[6] = new PoisonBreath();
+
+                return _Effects[6];
+            }
+        }
 
         public static AreaEffect[] Effects { get { return _Effects; } }
-        private static AreaEffect[] _Effects = 
-        {
-            new AuraOfEnergy(),
-            new AuraOfNausea(),
-            new EssenceOfDisease(),
-            new EssenceOfEarth(),
-            new ExplosiveGoo(),
-            new Firestorm(),
-            new PoisonBreath(),
-        };
+        private static AreaEffect[] _Effects = new AreaEffect[7];
     }
 
     public class AuraOfEnergy : AreaEffect

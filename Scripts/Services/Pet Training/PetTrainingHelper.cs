@@ -15,7 +15,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [Flags]
-    public enum Stats
+    public enum PetStat
     {
         Str,
         Dex,
@@ -264,18 +264,50 @@ namespace Server.Mobiles
         #region Accessors
         public static TrainingDefinition GetTrainingDefinition(BaseCreature bc)
         {
-            if (bc == null || !bc.Controlled)
+            if (bc == null)
                 return null;
 
             return _Defs.FirstOrDefault(def => def.CreatureType == bc.GetType());
         }
 
+        public static List<object> GivenError = new List<object>();
+
         public static TrainingPoint GetTrainingPoint(object o)
         {
-            return _TrainingPoints.FirstOrDefault(tp => tp.TrainPoint == o);
+            foreach (var tp in _TrainingPoints)
+            {
+                if (tp.TrainPoint is PetStat && o is PetStat && (PetStat)tp.TrainPoint == (PetStat)o)
+                    return tp;
+
+                if (tp.TrainPoint is MagicalAbility && o is MagicalAbility && (MagicalAbility)tp.TrainPoint == (MagicalAbility)o)
+                    return tp;
+
+                if (tp.TrainPoint is SpecialAbility && o is SpecialAbility && (SpecialAbility)tp.TrainPoint == (SpecialAbility)o)
+                    return tp;
+
+                if (tp.TrainPoint is WeaponAbility && o is WeaponAbility && (WeaponAbility)tp.TrainPoint == (WeaponAbility)o)
+                    return tp;
+
+                if (tp.TrainPoint is AreaEffect && o is AreaEffect && (AreaEffect)tp.TrainPoint == (AreaEffect)o)
+                    return tp;
+
+                if (tp.TrainPoint is SkillName && o is SkillName && (SkillName)tp.TrainPoint == (SkillName)o)
+                    return tp;
+
+                if (tp.TrainPoint is ResistanceType && o is ResistanceType && (ResistanceType)tp.TrainPoint == (ResistanceType)o)
+                    return tp;
+            }
+
+            if (!GivenError.Contains(o))
+            {
+                Console.WriteLine("Null TP: {0}", o);
+                GivenError.Add(o);
+            }
+
+            return null;
         }
 
-        public static AbilityProfile GetProfile(BaseCreature bc, bool create = false)
+        public static AbilityProfile GetAbilityProfile(BaseCreature bc, bool create = false)
         {
             var profile = bc.AbilityProfile;
 
@@ -284,6 +316,39 @@ namespace Server.Mobiles
 
             return profile;
         }
+
+        public static TrainingProfile GetTrainingProfile(BaseCreature bc, bool create = false)
+        {
+            var profile = bc.TrainingProfile;
+
+            if (profile == null && create)
+                bc.TrainingProfile = profile = new TrainingProfile(bc);
+
+            return profile;
+        }
+        #endregion
+
+        #region Magical Ability Table
+        public static MagicalAbility[] MagicalAbilities =
+        {
+            MagicalAbility.Piercing,
+            MagicalAbility.Bashing,
+            MagicalAbility.Slashing,
+            MagicalAbility.BattleDefense,
+            MagicalAbility.WrestlingMastery,
+            // Magical Schools
+            MagicalAbility.Poisoning,
+            MagicalAbility.Bushido,
+            MagicalAbility.Ninjitsu,
+            MagicalAbility.Discordance,
+            MagicalAbility.MageryMastery,
+            MagicalAbility.Mysticism,
+            MagicalAbility.Spellweaving,
+            MagicalAbility.Chivalry,
+            MagicalAbility.Necromage,
+            MagicalAbility.Necromancy,
+            MagicalAbility.Magery,
+        };
         #endregion
 
         #region SpecialAbility Defs
@@ -435,6 +500,8 @@ namespace Server.Mobiles
         #endregion
 
         #region Training Points Configuration
+
+        #region Table Config
         public static void LoadDefinitions()
         {
             Abilities = new SpecialAbility[]
@@ -666,6 +733,7 @@ namespace Server.Mobiles
                 AreaEffect.AuraOfNausea, AreaEffect.EssenceOfDisease, AreaEffect.PoisonBreath, 
             };
         }
+        #endregion
 
         public static void Configure()
         {
@@ -673,110 +741,110 @@ namespace Server.Mobiles
 
             _TrainingPoints = new List<TrainingPoint>();
 
-            _TrainingPoints.Add(new TrainingPoint(Stats.Str, 3.0, 700, 1061146, 1157507));
-            _TrainingPoints.Add(new TrainingPoint(Stats.Dex, 0.1, 150, 1061147, 1157508));
-            _TrainingPoints.Add(new TrainingPoint(Stats.Int, 0.5, 700, 1061148, 1157509));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.Str, 3.0, 1, 700, 1061146, 1157507));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.Dex, 0.1, 1, 150, 1061147, 1157508));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.Int, 0.5, 1, 700, 1061148, 1157509));
 
-            _TrainingPoints.Add(new TrainingPoint(Stats.Hits, 3.0, 1100, 1061149, 1157510));
-            _TrainingPoints.Add(new TrainingPoint(Stats.Stam, 0.5, 150, 1061150, 1157511));
-            _TrainingPoints.Add(new TrainingPoint(Stats.Mana, 0.5, 1500, 1061151, 1157512));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.Hits, 3.0, 1, 1100, 1061149, 1157510));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.Stam, 0.5, 1, 150, 1061150, 1157511));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.Mana, 0.5, 1, 1500, 1061151, 1157512));
 
-            _TrainingPoints.Add(new TrainingPoint(Stats.RegenHits, 18.0, 20, 1075627, 1157513));
-            _TrainingPoints.Add(new TrainingPoint(Stats.RegenStam, 12.0, 30, 1079410, 1157514));
-            _TrainingPoints.Add(new TrainingPoint(Stats.RegenMana, 12.0, 30, 1079411, 1157515));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.RegenHits, 18.0, 1, 20, 1075627, 1157513));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.RegenStam, 12.0, 1, 30, 1079410, 1157514));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.RegenMana, 12.0, 1, 30, 1079411, 1157515));
 
             // TODO: Damage Per Second 1157516
 
-            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Physical, 3.0, 80, 1061158, 1157517));
-            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Fire, 3.0, 80, 1061159, 1157518));
-            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Cold, 3.0, 80, 1061160, 1157519));
-            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Poison, 3.0, 80, 1061161, 1157520));
-            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Energy, 3.0, 80, 1061162, 1157521));
+            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Physical, 3.0, 1, 80, 1061158, 1157517));
+            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Fire, 3.0, 1, 80, 1061159, 1157518));
+            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Cold, 3.0, 1, 80, 1061160, 1157519));
+            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Poison, 3.0, 1, 80, 1061161, 1157520));
+            _TrainingPoints.Add(new TrainingPoint(ResistanceType.Energy, 3.0, 1, 80, 1061162, 1157521));
 
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Magery, 0.5, 120, 1002106, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.EvalInt, 1.0, 120, 1044076, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Necromancy, 0.5, 120, 1044109, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.SpiritSpeak, 1.0, 120, 1044092, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Chivalry, 0.5, 120, 1044111, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Focus, 0.1, 120, 1044110, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Bushido, 0.5, 120, 1044112, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Ninjitsu, 0.5, 120, 1044113, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Spellweaving, 0.5, 120, 1044114, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Mysticism, 0.5, 120, 1044115, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Meditation, 0.1, 120, 1044106, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.MagicResist, 0.1, 120, 1044086, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Magery, 0.5, 5, 20, 1002106, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.EvalInt, 1.0, 5, 20, 1044076, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Necromancy, 0.5, 5, 20, 1044109, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.SpiritSpeak, 1.0, 5, 20, 1044092, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Chivalry, 0.5, 5, 20, 1044111, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Focus, 0.1, 5, 20, 1044110, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Bushido, 0.5, 5, 20, 1044112, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Ninjitsu, 0.5, 5, 20, 1044113, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Spellweaving, 0.5, 5, 20, 1044114, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Mysticism, 0.5, 5, 20, 1044115, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Meditation, 0.1, 5, 20, 1044106, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.MagicResist, 0.1, 5, 20, 1044086, 1157522));
 
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Wrestling, 1.0, 120, 1044103, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Tactics, 1.0, 120, 1044087, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Anatomy, 0.1, 120, 1044061, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Wrestling, 1.0, 5, 20, 1044103, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Tactics, 1.0, 5, 20, 1044087, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Anatomy, 0.1, 5, 20, 1044061, 1157522));
 
             TextDefinition[][] loc = _MagicalAbilityLocalizations;
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Piercing, 1.0, 1, loc[0][0], loc[0][1],
-                new TrainingPointRequirement(WeaponAbility.ArmorIgnore, 100),
-                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100),
-                new TrainingPointRequirement(WeaponAbility.BleedAttack, 100)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Piercing, 1.0, 1, 1, loc[0][0], loc[0][1],
+                new TrainingPointRequirement(WeaponAbility.ArmorIgnore, 100, 1028838),
+                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100, 1028848),
+                new TrainingPointRequirement(WeaponAbility.BleedAttack, 100, 1028839)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Bashing, 1.0, 1, loc[1][0], loc[1][1],
-                new TrainingPointRequirement(WeaponAbility.MortalStrike, 100),
-                new TrainingPointRequirement(WeaponAbility.ConcussionBlow, 100),
-                new TrainingPointRequirement(WeaponAbility.Disarm, 100)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Bashing, 1.0, 1, 1, loc[1][0], loc[1][1],
+                new TrainingPointRequirement(WeaponAbility.MortalStrike, 100, 1028846),
+                new TrainingPointRequirement(WeaponAbility.ConcussionBlow, 100, 1028840),
+                new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Slashing, 1.0, 1, loc[2][0], loc[2][1],
-                new TrainingPointRequirement(SkillName.Bushido, 500),
-                new TrainingPointRequirement(WeaponAbility.ArmorIgnore, 100),
-                new TrainingPointRequirement(WeaponAbility.Disarm, 100),
-                new TrainingPointRequirement(WeaponAbility.NerveStrike, 100)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Slashing, 1.0, 1, 1, loc[2][0], loc[2][1],
+                new TrainingPointRequirement(SkillName.Bushido, 500, 1044112),
+                new TrainingPointRequirement(WeaponAbility.ArmorIgnore, 100, 1028838),
+                new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842),
+                new TrainingPointRequirement(WeaponAbility.NerveStrike, 100, 1028855)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.BattleDefense, 1.0, 1, loc[3][0], loc[3][1],
-                new TrainingPointRequirement(WeaponAbility.Disarm, 100),
-                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.BattleDefense, 1.0, 1, 1, loc[3][0], loc[3][1],
+                new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842),
+                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100), 1028848));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.WrestlingMastery, 1.0, 1, loc[4][0], loc[4][1],
-                new TrainingPointRequirement(WeaponAbility.Disarm, 100),
-                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.WrestlingMastery, 1.0, 1, 1, loc[4][0], loc[4][1],
+                new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842),
+                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100, 1028848)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Poisoning, 1.0, 1, loc[5][0], loc[5][1],
-                new TrainingPointRequirement(SkillName.Chivalry, 100)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Poisoning, 1.0, 1, 1, loc[5][0], loc[5][1],
+                new TrainingPointRequirement(SkillName.Chivalry, 100, 1044111)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Bushido, 1.0, 1, loc[6][0], loc[6][1],
-                new TrainingPointRequirement(SkillName.Bushido, 500)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Bushido, 1.0, 1, 1, loc[6][0], loc[6][1],
+                new TrainingPointRequirement(SkillName.Bushido, 500, 1044112)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Ninjitsu, 1.0, 1, loc[7][0], loc[7][1],
-                new TrainingPointRequirement(SkillName.Ninjitsu, 500)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Ninjitsu, 1.0, 1, 1, loc[7][0], loc[7][1],
+                new TrainingPointRequirement(SkillName.Ninjitsu, 500, 1044113)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Discordance, 1.0, 1, loc[8][0], loc[8][1],
-                new TrainingPointRequirement(SkillName.Discordance, 500)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Discordance, 1.0, 1, 1, loc[8][0], loc[8][1],
+                new TrainingPointRequirement(SkillName.Discordance, 500, 1044075)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.MageryMastery, 1.0, 1, loc[9][0], loc[9][1],
-                new TrainingPointRequirement(SkillName.Magery, 100),
-                new TrainingPointRequirement(SkillName.EvalInt, 100)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.MageryMastery, 1.0, 1, 1, loc[9][0], loc[9][1],
+                new TrainingPointRequirement(SkillName.Magery, 100, 1044085),
+                new TrainingPointRequirement(SkillName.EvalInt, 100, 1044076)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Mysticism, 1.0, 1, loc[10][0], loc[10][1],
-                new TrainingPointRequirement(SkillName.Mysticism, 500)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Mysticism, 1.0, 1, 1, loc[10][0], loc[10][1],
+                new TrainingPointRequirement(SkillName.Mysticism, 500, 1044115)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Spellweaving, 1.0, 1, loc[11][0], loc[11][1],
-                new TrainingPointRequirement(SkillName.Spellweaving, 500)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Spellweaving, 1.0, 1, 1, loc[11][0], loc[11][1],
+                new TrainingPointRequirement(SkillName.Spellweaving, 50, 1044114)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Chivalry, 1.0, 1, loc[12][0], loc[12][1],
-                new TrainingPointRequirement(SkillName.Chivalry, 500)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Chivalry, 1.0, 1, 1, loc[12][0], loc[12][1],
+                new TrainingPointRequirement(SkillName.Chivalry, 500, 1044111)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Necromage, 1.0, 1, loc[13][0], loc[13][1],
-                new TrainingPointRequirement(SkillName.Magery, 100),
-                new TrainingPointRequirement(SkillName.Necromancy, 100),
-                new TrainingPointRequirement(SkillName.SpiritSpeak, 100),
-                new TrainingPointRequirement(SkillName.EvalInt, 100)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Necromage, 1.0, 1, 1, loc[13][0], loc[13][1],
+                new TrainingPointRequirement(SkillName.Magery, 100, 1044085),
+                new TrainingPointRequirement(SkillName.Necromancy, 100, 1044109),
+                new TrainingPointRequirement(SkillName.SpiritSpeak, 100, 1044092),
+                new TrainingPointRequirement(SkillName.EvalInt, 100, 1044076)));
 
-            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Necromancy, 1.0, 1, loc[14][0], loc[14][1],
-                new TrainingPointRequirement(SkillName.Necromancy, 100),
-                new TrainingPointRequirement(SkillName.SpiritSpeak, 100)));
+            _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Necromancy, 1.0, 1, 1, loc[14][0], loc[14][1],
+                new TrainingPointRequirement(SkillName.Necromancy, 100, 1044109),
+                new TrainingPointRequirement(SkillName.SpiritSpeak, 100, 1044092)));
 
             loc = _SpecialAbilityLocalizations;
             int index = 0;
 
             foreach (var abil in Abilities)
             {
-                _TrainingPoints.Add(new TrainingPoint(abil, 1.0, 100, loc[index][0], loc[index][1]));
+                _TrainingPoints.Add(new TrainingPoint(abil, 1.0, 100, 100, loc[index][0], loc[index][1]));
                 index++;
             }
 
@@ -785,7 +853,7 @@ namespace Server.Mobiles
 
             foreach (var effect in AreaEffects)
             {
-                _TrainingPoints.Add(new TrainingPoint(effect, 1.0, 100, loc[index][0], loc[index][1]));
+                _TrainingPoints.Add(new TrainingPoint(effect, 1.0, 100, 100, loc[index][0], loc[index][1]));
                 index++;
             }
 
@@ -797,33 +865,33 @@ namespace Server.Mobiles
                 TrainingPointRequirement requirement = null;
 
                 if(ability == WeaponAbility.NerveStrike)
-                    requirement = new TrainingPointRequirement(SkillName.Bushido, 500);
+                    requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
                 else if (ability == WeaponAbility.TalonStrike)
-                    requirement = new TrainingPointRequirement(SkillName.Ninjitsu, 500);
+                    requirement = new TrainingPointRequirement(SkillName.Ninjitsu, 500, 1044113);
                 else if (ability == WeaponAbility.Feint)
-                    requirement = new TrainingPointRequirement(SkillName.Bushido, 500);
+                    requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
                 else if (ability == WeaponAbility.FrenziedWhirlwind)
-                    requirement = new TrainingPointRequirement(SkillName.Ninjitsu, 500);
+                    requirement = new TrainingPointRequirement(SkillName.Ninjitsu, 500, 1044113);
                 else if (ability == WeaponAbility.Bladeweave)
-                    requirement = new TrainingPointRequirement(SkillName.Bushido, 500);
+                    requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
 
-                _TrainingPoints.Add(new TrainingPoint(ability, 1.0, 100, loc[index][0], loc[index][1], requirement));
+                _TrainingPoints.Add(new TrainingPoint(ability, 1.0, 100, 100, loc[index][0], loc[index][1], requirement));
                 index++;
             }
         }
         #endregion
 
         #region Training Helpers
-        public static int GetTrainingCapTotal(Stats stat)
+        public static int GetTrainingCapTotal(PetStat stat)
         {
             switch (stat)
             {
-                case Stats.Str:
-                case Stats.Int:
-                case Stats.Dex: return 2300;
-                case Stats.Hits:
-                case Stats.Stam:
-                case Stats.Mana: return 3300;
+                case PetStat.Str:
+                case PetStat.Int:
+                case PetStat.Dex: return 2300;
+                case PetStat.Hits:
+                case PetStat.Stam:
+                case PetStat.Mana: return 3300;
             }
 
             return 0;
@@ -836,9 +904,9 @@ namespace Server.Mobiles
 
         public static int GetTotalStatWeight(BaseCreature bc)
         {
-            var str = GetTrainingPoint(Stats.Str);
-            var dex = GetTrainingPoint(Stats.Dex);
-            var intel = GetTrainingPoint(Stats.Int);
+            var str = GetTrainingPoint(PetStat.Str);
+            var dex = GetTrainingPoint(PetStat.Dex);
+            var intel = GetTrainingPoint(PetStat.Int);
 
             return (int)(((double)bc.RawStr * str.Weight) + 
                 ((double)bc.RawDex * dex.Weight) + 
@@ -847,9 +915,9 @@ namespace Server.Mobiles
 
         public static int GetTotalAttributeWeight(BaseCreature bc)
         {
-            var hits = GetTrainingPoint(Stats.Hits);
-            var stam = GetTrainingPoint(Stats.Stam);
-            var mana = GetTrainingPoint(Stats.Mana);
+            var hits = GetTrainingPoint(PetStat.Hits);
+            var stam = GetTrainingPoint(PetStat.Stam);
+            var mana = GetTrainingPoint(PetStat.Mana);
 
             return (int)(((double)bc.HitsMax * hits.Weight) + 
                 ((double)bc.StamMax * stam.Weight) + 
@@ -873,23 +941,23 @@ namespace Server.Mobiles
 
         public static bool ApplyTrainingPoint(BaseCreature bc, TrainingPoint trainingPoint, int value)
         {
-            var profile = GetProfile(bc, true);
+            var profile = GetAbilityProfile(bc, true);
 
-            if (trainingPoint.TrainPoint is Stats)
+            if (trainingPoint.TrainPoint is PetStat)
             {
-                Stats stat = (Stats)trainingPoint.TrainPoint;
+                PetStat stat = (PetStat)trainingPoint.TrainPoint;
 
                 switch (stat)
                 {
-                    case Stats.Str: bc.SetStr(value); break;
-                    case Stats.Dex: bc.SetDex(value); break;
-                    case Stats.Int: bc.SetInt(value); break;
-                    case Stats.Hits: bc.SetHits(value); break;
-                    case Stats.Stam: bc.SetStam(value); break;
-                    case Stats.Mana: bc.SetMana(value); break;
-                    case Stats.RegenHits: profile.RegenHits = value; break;
-                    case Stats.RegenStam: profile.RegenStam = value; break;
-                    case Stats.RegenMana: profile.RegenMana = value; break;
+                    case PetStat.Str: bc.SetStr(value); break;
+                    case PetStat.Dex: bc.SetDex(value); break;
+                    case PetStat.Int: bc.SetInt(value); break;
+                    case PetStat.Hits: bc.SetHits(value); break;
+                    case PetStat.Stam: bc.SetStam(value); break;
+                    case PetStat.Mana: bc.SetMana(value); break;
+                    case PetStat.RegenHits: profile.RegenHits = value; break;
+                    case PetStat.RegenStam: profile.RegenStam = value; break;
+                    case PetStat.RegenMana: profile.RegenMana = value; break;
                     //TODO: Damage Per Second
                 }
 
@@ -978,6 +1046,31 @@ namespace Server.Mobiles
 
             return def.WeaponAbilities.FirstOrDefault(a => a == ability) != null;
         }
+        #endregion
+
+        #region Skill Categories
+        public static SkillName[] MagerySkills =
+        {
+            SkillName.Magery,
+            SkillName.EvalInt,
+            SkillName.Necromancy,
+            SkillName.SpiritSpeak,
+            SkillName.Chivalry,
+            SkillName.Focus,
+            SkillName.Bushido,
+            SkillName.Ninjitsu,
+            SkillName.Spellweaving,
+            SkillName.Mysticism,
+            SkillName.Meditation,
+            SkillName.MagicResist
+        };
+
+        public static SkillName[] CombatSkills =
+        {
+            SkillName.Wrestling,
+            SkillName.Tactics,
+            SkillName.Anatomy
+        };
         #endregion
 
         #region Localizations
@@ -1106,6 +1199,7 @@ namespace Server.Mobiles
                 case MagicalAbility.Chivalry: return _MagicalAbilityLocalizations[12];
                 case MagicalAbility.Necromage: return _MagicalAbilityLocalizations[13];
                 case MagicalAbility.Necromancy: return _MagicalAbilityLocalizations[14];
+                case MagicalAbility.Magery: return _MagicalAbilityLocalizations[15];
             }
 
             return null;
