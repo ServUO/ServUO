@@ -9,7 +9,7 @@ namespace Server.Items
         public LightsRampart()
         {
             this.ItemID = 0x1B7B;
-            this.Hue = 1272;
+            this.Hue = 637;
 			
             this.Attributes.SpellChanneling = 1;
             this.Attributes.DefendChance = 20;
