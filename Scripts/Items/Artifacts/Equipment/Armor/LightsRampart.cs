@@ -24,9 +24,9 @@ namespace Server.Items
         {
             get
             {
-                return 1112407;
+                return 1112399;
             }
-        }// Light's Rampart 
+        }// Light's Rampart Replica 
         public override int ArtifactRarity
         {
             get
