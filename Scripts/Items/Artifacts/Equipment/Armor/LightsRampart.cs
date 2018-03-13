@@ -9,7 +9,7 @@ namespace Server.Items
         public LightsRampart()
         {
             this.ItemID = 0x1B7B;
-            this.Hue = 1272;
+            this.Hue = 637;
 			
             this.Attributes.SpellChanneling = 1;
             this.Attributes.DefendChance = 20;
@@ -24,9 +24,9 @@ namespace Server.Items
         {
             get
             {
-                return 1112407;
+                return 1112399;
             }
-        }// Light's Rampart 
+        }// Light's Rampart Replica 
         public override int ArtifactRarity
         {
             get
