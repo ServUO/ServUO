@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 
 namespace Server
 {
-	public class TileMatrix
+	public class TileMatrix : IDisposable
 	{
 		private readonly StaticTile[][][][][] m_StaticTiles;
 		private readonly LandTile[][][] m_LandTiles;

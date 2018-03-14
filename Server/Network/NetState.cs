@@ -32,7 +32,7 @@ namespace Server.Network
 
 	public delegate void NetStateCreatedCallback(NetState ns);
 
-	public class NetState : IComparable<NetState>
+	public class NetState : IComparable<NetState>, IDisposable
 	{
 		private Socket m_Socket;
 		private readonly IPAddress m_Address;
