@@ -65,7 +65,7 @@ namespace Server.Gumps
 
                 double decreaseAmount;
 
-                if (from == this.m_Pet.ControlMaster)
+                if (from is PlayerMobile)
                     decreaseAmount = 0.1;
                 else
                     decreaseAmount = 0.2;
