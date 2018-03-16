@@ -27,6 +27,16 @@ namespace Server.Mobiles
 
             Requirements = requirements;
         }
+
+        public int GetMax(BaseCreature bc)
+        {
+            if (TrainPoint is PetStat && (PetStat)TrainPoint == PetStat.BaseDamage)
+            {
+                return PetTrainingHelper.GetMaxDamagePerSecond(bc);
+            }
+
+            return Max;
+        }
     }
 
     public class TrainingPointRequirement

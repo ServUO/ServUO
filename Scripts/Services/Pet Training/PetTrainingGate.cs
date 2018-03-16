@@ -133,7 +133,7 @@ namespace Server.Items
             if (m.InRange(Location, 3))
             {
                 var bag = new Bag();
-                foreach (var sk in PetTrainingHelper.MagerySkills)
+                foreach (var sk in PetTrainingHelper.MagicSkills)
                 {
                     bag.DropItem(new PowerScroll(sk, 120));
                 }

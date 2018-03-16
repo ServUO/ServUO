@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Server.Items;
 using Server.Network;
+using Server.Gumps;
 
 namespace Server.Mobiles
 {
@@ -17,8 +18,6 @@ namespace Server.Mobiles
     [PropertyObject]
     public class TrainingProfile
     {
-        private const int StartTrainingPoints = 1500;
-
         [CommandProperty(AccessLevel.GameMaster)]
         public TrainingMode TrainingMode { get; set; }
 
@@ -56,6 +55,8 @@ namespace Server.Mobiles
         public bool CanApplyOptions { get { return HasBegunTraining && TrainingProgressPercentile >= 1.0; } }
 
         private int _TrainingPoints;
+        private int _StartingTrainingPoints;
+        private PlanningProfile _Plan;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TrainingPoints
@@ -74,16 +75,61 @@ namespace Server.Mobiles
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int StartingTrainingPoints
+        {
+            get { return _StartingTrainingPoints; }
+            set { _StartingTrainingPoints = value; }
+        }
+
+        public PlanningProfile PlanningProfile
+        {
+            get
+            {
+                if (_Plan == null)
+                    _Plan = new PlanningProfile(Creature);
+
+                return _Plan;
+            }
+        }
+
         public TrainingProfile(BaseCreature bc)
         {
             Creature = bc;
         }
 
+        // 1-2: 2556
+        // 1-3: 2381
+        // 1-5: 1501
+        // 2-3: 1501
+        // 3-5: 1501
+
+        private void AssignStartingTrainingPoints()
+        {
+            if (ControlSlotsMin == 1 && ControlSlotsMax == 2)
+            {
+                _StartingTrainingPoints = 2556;
+            }
+            else if (ControlSlotsMin == 1 && ControlSlotsMax == 3)
+            {
+                _StartingTrainingPoints = 2381;
+            }
+            else
+            {
+                _StartingTrainingPoints = 1501;
+            }
+        }
+
         public void BeginTraining()
         {
+            if (_StartingTrainingPoints == 0)
+            {
+                AssignStartingTrainingPoints();
+            }
+
             if (ControlSlots < ControlSlotsMax)
             {
-                TrainingPoints = StartTrainingPoints;
+                TrainingPoints = StartingTrainingPoints;
                 HasBegunTraining = true;
 
                 TrainingProgress = 0;
@@ -91,13 +137,17 @@ namespace Server.Mobiles
             }
         }
 
-        public void OnTrain()
+        public void OnTrain(PlayerMobile pm, int points)
         {
             if (!HasIncreasedControlSlot)
             {
                 Creature.ControlSlots++;
+                pm.SendLocalizedMessage(1157537); // Your pet's control slot have been updated.
+
                 HasIncreasedControlSlot = true;
             }
+
+            TrainingPoints -= points;
         }
 
         public void EndTraining()
@@ -184,6 +234,11 @@ namespace Server.Mobiles
 
             Creature = bc;
 
+            if (reader.ReadInt() == 1)
+            {
+                _Plan = new PlanningProfile(bc, reader);
+            }
+
             TrainingMode = (TrainingMode)reader.ReadInt();
             HasBegunTraining = reader.ReadBool();
             HasIncreasedControlSlot = reader.ReadBool();
@@ -191,6 +246,7 @@ namespace Server.Mobiles
             TrainingProgress = reader.ReadDouble();
             TrainingProgressMax = reader.ReadDouble();
 
+            _StartingTrainingPoints = reader.ReadInt();
             _TrainingPoints = reader.ReadInt();
 
         }
@@ -199,6 +255,16 @@ namespace Server.Mobiles
         {
             writer.Write(0);
 
+            if (_Plan != null)
+            {
+                writer.Write(1);
+                _Plan.Serialize(writer);
+            }
+            else
+            {
+                writer.Write(0);
+            }
+
             writer.Write((int)TrainingMode);
             writer.Write(HasBegunTraining);
             writer.Write(HasIncreasedControlSlot);
@@ -206,6 +272,7 @@ namespace Server.Mobiles
             writer.Write(TrainingProgress);
             writer.Write(TrainingProgressMax);
 
+            writer.Write(_StartingTrainingPoints);
             writer.Write(_TrainingPoints);
         }
     }

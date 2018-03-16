@@ -168,14 +168,13 @@ namespace Server.Mobiles
         {
             AddToHistory(newAbility);
 
-            if (newAbility is MagicalAbility && IsSpecialMagicalAbility((MagicalAbility)newAbility))
+            if (newAbility is MagicalAbility)
             {
-                AddSpecialMagicalAbility((MagicalAbility)newAbility);
+                AddMagicalAbility((MagicalAbility)newAbility);
             }
 
             var trainPoint = PetTrainingHelper.GetTrainingPoint(newAbility);
-            
-            //Console.WriteLine("trainPoint for {1} = {0}", trainPoint == null ? "null" : trainPoint.TrainPoint, newAbility);
+
             if (trainPoint != null && trainPoint.Requirements != null)
             {
                 foreach (var req in trainPoint.Requirements.Where(r => r != null))
@@ -297,18 +296,73 @@ namespace Server.Mobiles
             return ability != MagicalAbility.None && ability <= MagicalAbility.WrestlingMastery;
         }
 
-        public void AddSpecialMagicalAbility(MagicalAbility ability)
+        public void AddMagicalAbility(MagicalAbility ability)
         {
-            SpecialAbilities = null;
-            WeaponAbilities = null;
-
-            switch ((MagicalAbility)ability)
+            if (IsSpecialMagicalAbility(ability))
             {
-                case MagicalAbility.Piercing: Creature.Mastery = SkillName.Fencing; break;
-                case MagicalAbility.Bashing: Creature.Mastery = SkillName.Macing; break;
-                case MagicalAbility.Slashing: Creature.Mastery = SkillName.Swords; break;
-                case MagicalAbility.BattleDefense: Creature.Mastery = SkillName.Parry; break;
-                case MagicalAbility.WrestlingMastery: Creature.Mastery = SkillName.Wrestling; break;
+                SpecialAbilities = null;
+                WeaponAbilities = null;
+                Creature.ChangeAIType(AIType.AI_Melee);
+            }
+
+            switch (ability)
+            {
+                case MagicalAbility.Piercing:
+                    Creature.Mastery = SkillName.Fencing;
+                    break;
+                case MagicalAbility.Bashing:
+                    Creature.Mastery = SkillName.Macing;
+                    break;
+                case MagicalAbility.Slashing:
+                    Creature.Mastery = SkillName.Swords;
+                    break;
+                case MagicalAbility.BattleDefense:
+                    Creature.Mastery = SkillName.Parry;
+                    break;
+                case MagicalAbility.WrestlingMastery:
+                    Creature.Mastery = SkillName.Wrestling;
+                    break;
+                case MagicalAbility.Poisoning:
+                    if(Creature.AI != AIType.AI_Melee) 
+                        Creature.AI = AIType.AI_Melee;
+                    break;
+                case MagicalAbility.Bushido:
+                    if (Creature.AI != AIType.AI_Samurai) 
+                        Creature.AI = AIType.AI_Samurai;
+                    break;
+                case MagicalAbility.Ninjitsu:
+                    if (Creature.AI != AIType.AI_Ninja) 
+                        Creature.AI = AIType.AI_Ninja;
+                    break;
+                case MagicalAbility.Discordance:
+                    if (Creature.AI != AIType.AI_Melee) 
+                        Creature.AI = AIType.AI_Melee;
+                    break;
+                case MagicalAbility.Magery:
+                case MagicalAbility.MageryMastery:
+                    if (Creature.AI != AIType.AI_Mage) 
+                        Creature.AI = AIType.AI_Mage;
+                    break;
+                case MagicalAbility.Mysticism:
+                    if (Creature.AI != AIType.AI_Mystic) 
+                        Creature.AI = AIType.AI_Mystic;
+                    break;
+                case MagicalAbility.Spellweaving:
+                    if (Creature.AI != AIType.AI_Spellweaving) 
+                        Creature.AI = AIType.AI_Spellweaving;
+                    break;
+                case MagicalAbility.Chivalry:
+                    if (Creature.AI != AIType.AI_Paladin)
+                        Creature.AI = AIType.AI_Paladin;
+                    break;
+                case MagicalAbility.Necromage:
+                    if (Creature.AI != AIType.AI_NecroMage) 
+                        Creature.AI = AIType.AI_NecroMage;
+                    break;
+                case MagicalAbility.Necromancy:
+                    if (Creature.AI != AIType.AI_Necro) 
+                        Creature.AI = AIType.AI_Necro;
+                    break;
             }
         }
 

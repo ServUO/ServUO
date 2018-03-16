@@ -553,6 +553,7 @@ namespace Server.Mobiles
             {
                 case AIType.AI_Mage: SetMagicalAbility(MagicalAbility.Magery); break;
                 case AIType.AI_NecroMage: SetMagicalAbility(MagicalAbility.Necromage); break;
+                case AIType.AI_Necro: SetMagicalAbility(MagicalAbility.Necromancy); break;
                 case AIType.AI_Spellweaving: SetMagicalAbility(MagicalAbility.Spellweaving); break;
                 case AIType.AI_Mystic: SetMagicalAbility(MagicalAbility.Mysticism); break;
                 case AIType.AI_Samurai: SetMagicalAbility(MagicalAbility.Bushido); break;
@@ -591,22 +592,23 @@ namespace Server.Mobiles
             PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability);
         }
 
-        private const double AverageThreshold = .1;
+        public virtual double AverageThreshold { get { return 0.33; } }
 
         public List<double> _InitAverage;
 
-        private void SetAverage(double average)
+        private void SetAverage(double min, double max, double value)
         {
-            if (PetTrainingHelper.Enabled && CanLowerSlot())
+            if (PetTrainingHelper.Enabled && CanLowerSlot() && max > min)
             {
                 if (_InitAverage == null)
                     _InitAverage = new List<double>();
 
-                _InitAverage.Add(average);
+                _InitAverage.Add((value - min) / (max - min));
             }
         }
 
-        private Type[] _SlotLowerables =
+        public static Type[] SlotLowerables { get { return _SlotLowerables; } }
+        private static Type[] _SlotLowerables =
         {
             typeof(Nightmare), typeof(Najasaurus), typeof(RuneBeetle), typeof(GreaterDragon), typeof(FrostDragon),
             typeof(WhiteWyrm), typeof(Reptalon), typeof(DragonTurtleHatchling), typeof(Phoenix), typeof(FrostMite),
@@ -639,9 +641,9 @@ namespace Server.Mobiles
 
             double total = _InitAverage.Sum(d => d);
 
-            if (total / _InitAverage.Count <= AverageThreshold)
+            if (total / (double)_InitAverage.Count <= AverageThreshold)
             {
-                ControlSlotsMin--;
+                ControlSlotsMin = Math.Max(1, ControlSlotsMin - 1);
             }
 
             ColUtility.Free(_InitAverage);
@@ -3381,6 +3383,9 @@ namespace Server.Mobiles
                 case AIType.AI_Spellbinder:
                     m_AI = new SpellbinderAI(this);
                     break;
+                case AIType.AI_Necro:
+                    m_AI = new NecroAI(this);
+                    break;
             }
         }
 
@@ -4919,24 +4924,18 @@ namespace Server.Mobiles
         #region Set[...]
         public void SetDamage(int val)
         {
-            SetAverage(1.0);
-
             m_DamageMin = val;
             m_DamageMax = val;
         }
 
         public void SetDamage(int min, int max)
         {
-            SetAverage(min / max);
-
             m_DamageMin = min;
             m_DamageMax = max;
         }
 
         public void SetHits(int val)
         {
-            SetAverage(1.0);
-
             if (val < 1000 && !Core.AOS)
             {
                 val = (val * 100) / 60;
@@ -4948,8 +4947,6 @@ namespace Server.Mobiles
 
         public void SetHits(int min, int max)
         {
-            SetAverage(min / max);
-
             if (min < 1000 && !Core.AOS)
             {
                 min = (min * 100) / 60;
@@ -4958,86 +4955,72 @@ namespace Server.Mobiles
 
             m_HitsMax = Utility.RandomMinMax(min, max);
             Hits = HitsMax;
+            SetAverage(min, max, m_HitsMax);
         }
 
         public void SetStam(int val)
         {
-            SetAverage(1.0);
-
             m_StamMax = val;
             Stam = StamMax;
         }
 
         public void SetStam(int min, int max)
         {
-            SetAverage(min / max);
-
             m_StamMax = Utility.RandomMinMax(min, max);
             Stam = StamMax;
+            SetAverage(min, max, m_StamMax);
         }
 
         public void SetMana(int val)
         {
-            SetAverage(1.0);
-
             m_ManaMax = val;
             Mana = ManaMax;
         }
 
         public void SetMana(int min, int max)
         {
-            SetAverage(min / max);
-
             m_ManaMax = Utility.RandomMinMax(min, max);
             Mana = ManaMax;
+            SetAverage(min, max, m_ManaMax);
         }
 
         public void SetStr(int val)
         {
-            SetAverage(1.0);
-
             RawStr = val;
             Hits = HitsMax;
         }
 
         public void SetStr(int min, int max)
         {
-            SetAverage(min / max);
-
             RawStr = Utility.RandomMinMax(min, max);
             Hits = HitsMax;
+            SetAverage(min, max, RawStr);
         }
 
         public void SetDex(int val)
         {
-            SetAverage(1.0);
-
             RawDex = val;
             Stam = StamMax;
         }
 
         public void SetDex(int min, int max)
         {
-            SetAverage(min / max);
-
             RawDex = Utility.RandomMinMax(min, max);
             Stam = StamMax;
+            SetAverage(min, max, RawDex);
         }
 
         public void SetInt(int val)
         {
-            SetAverage(1.0);
-
             RawInt = val;
             Mana = ManaMax;
         }
 
         public void SetInt(int min, int max)
         {
-            SetAverage(min / max);
-
             RawInt = Utility.RandomMinMax(min, max);
             Mana = ManaMax;
+            SetAverage(min, max, RawInt);
         }
 
         public void SetDamageType(ResistanceType type, int min, int max)
@@ -5075,8 +5058,7 @@ namespace Server.Mobiles
         public void SetResistance(ResistanceType type, int min, int max)
         {
             int val = min == max ? min : Utility.RandomMinMax(min, max);
-
-            SetAverage(min / max);
+            SetAverage(min, max, val);
 
             switch (type)
             {
@@ -5092,8 +5074,6 @@ namespace Server.Mobiles
 
         public void SetSkill(SkillName name, double val)
         {
-            SetAverage(1.0);
-
             Skills[name].BaseFixedPoint = (int)(val * 10);
 
             if (Skills[name].Base > Skills[name].Cap)
@@ -5109,12 +5089,12 @@ namespace Server.Mobiles
 
         public void SetSkill(SkillName name, double min, double max)
         {
-            SetAverage(min / max);
-
             int minFixed = (int)(min * 10);
             int maxFixed = (int)(max * 10);
 
             Skills[name].BaseFixedPoint = Utility.RandomMinMax(minFixed, maxFixed);
+
+            SetAverage(min, max, Skills[name].BaseFixedPoint / 10);
 
             if (Skills[name].Base > Skills[name].Cap)
             {
@@ -7313,10 +7293,9 @@ namespace Server.Mobiles
         #endregion
 
         #region Detect Hidden
-        private long m_NextFindPlayer;
+        private long _NextDetect;
 
         public virtual bool CanDetectHidden { get { return Skills[SkillName.DetectHidden].Value > 0; } }
-        public virtual bool CanFindPlayer { get { return true; } }
 
         public virtual int FindPlayerDelayBase { get { return (15000 / Int); } }
         public virtual int FindPlayerDelayMax { get { return 60; } }
@@ -7503,7 +7482,7 @@ namespace Server.Mobiles
                 m_NextTeleport = tc + (int)TeleportDuration.TotalMilliseconds;
             }
 
-            if (CanFindPlayer && CanDetectHidden && Core.TickCount >= m_NextFindPlayer)
+            if (CanDetectHidden && Core.TickCount >= _NextDetect)
             {
                 TryFindPlayer();
 
@@ -7522,7 +7501,7 @@ namespace Server.Mobiles
                 int min = delay * (FindPlayerDelayLow / FindPlayerDelayHigh); // 13s at 1000 int, 33s at 400 int, 54s at <250 int
                 int max = delay * (FindPlayerDelayHigh / FindPlayerDelayLow); // 16s at 1000 int, 41s at 400 int, 66s at <250 int
 
-                m_NextFindPlayer = Core.TickCount +
+                _NextDetect = Core.TickCount +
                     (int)TimeSpan.FromSeconds(Utility.RandomMinMax(min, max)).TotalMilliseconds;
             }
         }

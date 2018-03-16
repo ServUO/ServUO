@@ -1700,7 +1700,7 @@ namespace Server.Items
 
 				return defender.CheckSkill(SkillName.Parry, chance);
 			}
-			else if (!(defender.Weapon is Fists) && !(defender.Weapon is BaseRanged))
+			else if (defender is BaseCreature || (!(defender.Weapon is Fists) && !(defender.Weapon is BaseRanged)))
 			{
 				BaseWeapon weapon = defender.Weapon as BaseWeapon;
 
@@ -1709,11 +1709,14 @@ namespace Server.Items
                     return false;
                 }
 
-				double divisor = (weapon.Layer == Layer.OneHanded) ? 48000.0 : 41140.0;
+				double divisor = (weapon.Layer == Layer.OneHanded && defender.Player) ? 48000.0 : 41140.0;
 
 				double chance = (parry * bushido) / divisor;
 
 				double aosChance = parry / 800.0;
+
+                if (parry == 0 && defender is BaseCreature)
+                    parry = 20.0;
 
 				// Parry or Bushido over 100 grant a 5% bonus.
 				if (parry >= 100.0)
@@ -1758,7 +1761,9 @@ namespace Server.Items
 
 			bool blocked = false;
 
-			if (defender.Player || defender.Body.IsHuman)
+			if (defender.Player || defender.Body.IsHuman || (defender is BaseCreature && 
+                                                            ((BaseCreature)defender).Controlled &&
+                                                            defender.Skills[SkillName.Wrestling].Base > 100))
 			{
 				blocked = CheckParry(defender);
                 BaseWeapon weapon = defender.Weapon as BaseWeapon;

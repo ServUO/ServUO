@@ -5,8 +5,8 @@ using System.Linq;
 using Server.Items;
 
 // Notes:
-/* 1. combo of 3. Once 3 is chosen, only magical abilty can replace another magical ability.
- * 2, combat check when adding stuff 1156876
+/* 1. bushido/ninja block for special moves on non-tokuno tames
+ * 2, 
  * 
  * 
  * 
@@ -122,155 +122,16 @@ namespace Server.Mobiles
         public static List<TrainingPoint> TrainingPoints { get { return _TrainingPoints; } }
         public static List<TrainingPoint> _TrainingPoints;
 
-        public static TrainingDefinition[] Definitions { get { return _Defs; } }
-        private static TrainingDefinition[] _Defs =
-        {
-            new TrainingDefinition(typeof(Alligator), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 4),  
-            new TrainingDefinition(typeof(BakeKitsune), Class.ClawedTailedAndTokuno, MagicalAbility.Tokuno1, SpecialAbilityClawedTailedAndMagical2, WepAbility2, AreaEffectArea1, 3, 5), 
-            new TrainingDefinition(typeof(BaneDragon), Class.MagicalClawedAndTailed, MagicalAbility.Dragon1, SpecialAbilityBaneDragon, WepAbility2, AreaEffectArea2, 4, 5), 
-            new TrainingDefinition(typeof(BattleChickenLizard), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1), 
-            new TrainingDefinition(typeof(Bird), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2), 
-            new TrainingDefinition(typeof(BlackBear), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3), 
-            new TrainingDefinition(typeof(BloodFox), Class.None, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 3),
-            new TrainingDefinition(typeof(Boar), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(BrownBear), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3), 
-            new TrainingDefinition(typeof(Bull), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1 ,4), 
-            new TrainingDefinition(typeof(BullFrog), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Cat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility4, AreaEffectNone, 1, 3), 
-            new TrainingDefinition(typeof(Chicken), Class.Clawed, MagicalAbility.None, SpecialAbilityClawed, WepAbilityNone, AreaEffectNone, 1, 2), 
-            new TrainingDefinition(typeof(ChickenLizard), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
-            new TrainingDefinition(typeof(LeatherWolf), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
-            new TrainingDefinition(typeof(ColdDrake), Class.None, MagicalAbility.Dragon1, SpecialAbilityNone, WepAbility2, AreaEffectNone, 3, 5),
-            new TrainingDefinition(typeof(CorrosiveSlime), Class.StickySkin, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Cougar), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Cow), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3), 
-            new TrainingDefinition(typeof(CrimsonDrake), Class.None, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 2, 5), // CrimsonDrake[Poison] = AreaEffectArea2
-            new TrainingDefinition(typeof(CuSidhe), Class.MagicalClawedAndTailed, MagicalAbility.Cusidhe, SpecialAbilityClawedTailedAndMagical2, WepAbility5, AreaEffectArea1, 3, 5), 
-            //new TrainingDefinition(typeof(DarkSteed), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone), 
-            new TrainingDefinition(typeof(DeathwatchBeetle), Class.Insectoid, MagicalAbility.Poisoning, SpecialAbilityMagicalInsectoid, WepAbility5, AreaEffectNone, 1, 4), 
-            new TrainingDefinition(typeof(DesertOstard), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3), 
-            new TrainingDefinition(typeof(Dimetrosaur), Class.None, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5), 
-            new TrainingDefinition(typeof(DireWolf), Class.ClawedNecromanticAndTokuno, MagicalAbility.Wolf, SpecialAbilityClawedAndNecromantic, WepAbility1, AreaEffectNone, 1, 4), 
-            new TrainingDefinition(typeof(Dog), Class.Tailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityTailed, WepAbility1, AreaEffectNone, 1, 3), 
-            new TrainingDefinition(typeof(Dragon), Class.MagicalClawedAndTailed, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 4, 5), 
-            new TrainingDefinition(typeof(DragonTurtleHatchling), Class.MagicalAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 4, 5), 
-            new TrainingDefinition(typeof(DragonWolf), Class.None, MagicalAbility.DragonWolf, SpecialAbilityNone, WepAbility1, AreaEffectNone, 4, 5), 
-            new TrainingDefinition(typeof(Drake), Class.MagicalAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 2, 5), 
-            new TrainingDefinition(typeof(DreadSpider), Class.MagicalNecromanticAndTokuno, MagicalAbility.DreadSpider, SpecialAbilityDreadSpider, WepAbility2, AreaEffectArea2, 3, 5), 
-            new TrainingDefinition(typeof(DreadWarhorse), Class.MagicalAndNecromantic, MagicalAbility.DreadWarhorse, SpecialAbilityNone, WepAbility2, AreaEffectArea2, 3, 5), 
-            new TrainingDefinition(typeof(Eagle), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3), 
-            new TrainingDefinition(typeof(Ferret), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2), 
-            new TrainingDefinition(typeof(FireBeetle), Class.MagicalAndInsectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 1 ,5),
-            new TrainingDefinition(typeof(FireSteed), Class.Magical, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 2, 5),
-            new TrainingDefinition(typeof(ForestOstard), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(FrenziedOstard), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(FrostDragon), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 5, 5),
-            new TrainingDefinition(typeof(FrostDrake), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
-            new TrainingDefinition(typeof(FrostMite), Class.Insectoid, MagicalAbility.Poisoning, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 2, 5),
-            new TrainingDefinition(typeof(FrostSpider), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility2, AreaEffectNone, 1, 4),
-            new TrainingDefinition(typeof(Gallusaurus), Class.None, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility1, AreaEffectNone, 3, 5),
-            new TrainingDefinition(typeof(Gaman), Class.Tailed, MagicalAbility.Poisoning, SpecialAbilityTailed, WepAbility1, AreaEffectNone, 1, 4),
-            new TrainingDefinition(typeof(Beetle), Class.Insectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 1, 5),
-            new TrainingDefinition(typeof(IceWyrm), Class.Tailed, MagicalAbility.Variety1, SpecialAbilityBitingTailed, WepAbility2, AreaEffectArea3, 1, 2),
-            new TrainingDefinition(typeof(GiantRat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(GiantSpider), Class.None, MagicalAbility.Variety1, SpecialAbilityBitingAnimal, WepAbility1, AreaEffectArea3, 1, 3),
-            new TrainingDefinition(typeof(GiantToad), Class.StickySkin, MagicalAbility.StandardClawedOrTailed, SpecialAbilityStickySkin, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Goat), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Gorilla), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(GreatHart), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            //new TrainingDefinition(typeof(GreaterChicken), Class.Clawed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone),
-            new TrainingDefinition(typeof(GreaterDragon), Class.MagicalClawedAndTailed, MagicalAbility.GreaterDragon, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 4, 5),
-            new TrainingDefinition(typeof(GreaterMongbat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(GreyWolf), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(GrizzlyBear), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(HellHound), Class.ClawedTailedNecromanticAndTokuno, MagicalAbility.Wolf, SpecialAbilityNone, WepAbility1, AreaEffectExplosiveGoo, 2, 4),
-            new TrainingDefinition(typeof(HellCat), Class.ClawedTailedAndNecromantic, MagicalAbility.Hellcat, SpecialAbilityNone, WepAbility1, AreaEffectExplosiveGoo, 2, 3),
-            new TrainingDefinition(typeof(HighPlainsBoura), Class.Tailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityNone, WepAbility1, AreaEffectNone, 2, 5),
-            new TrainingDefinition(typeof(Hind), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Hiryu), Class.ClawedTailedMagicalAndTokuno, MagicalAbility.Hiryu, SpecialAbilityNone, WepAbility7, AreaEffectArea1, 3, 5),
-            new TrainingDefinition(typeof(Horse), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Imp), Class.MagicalClawedTailedAndNecromantic, MagicalAbility.Variety2, SpecialAbilityImp, WepAbility2, AreaEffectArea2, 3, 4),
-            new TrainingDefinition(typeof(IronBeetle), Class.Insectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 2, 5),
-            new TrainingDefinition(typeof(JackRabbit), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(Kirin), Class.MagicalClawedAndTailed, MagicalAbility.Dragon2, SpecialAbilityClawedTailedAndMagical2, WepAbility2, AreaEffectArea1, 2, 5),
-            new TrainingDefinition(typeof(Lasher), Class.Magical, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(LavaLizard), Class.ClawedTailedMagicalAndTokuno, MagicalAbility.LavaLizard, SpecialAbilityNone, WepAbility6, AreaEffectArea1, 1, 4),
-            new TrainingDefinition(typeof(LesserHiryu), Class.ClawedTailedMagicalAndTokuno, MagicalAbility.Tokuno1, SpecialAbilityNone, WepAbility7, AreaEffectArea1, 1, 5),
-            new TrainingDefinition(typeof(Lion), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityBitingClawedAndTailed, WepAbility1, AreaEffectArea3, 2, 5),
-            new TrainingDefinition(typeof(Llama), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility9, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(LowlandBoura), Class.Tailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityTailed, WepAbility1, AreaEffectNone, 2, 3),
-            //new TrainingDefinition(typeof(MisterGobbles), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone),
-            new TrainingDefinition(typeof(Mongbat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(MountainGoat), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Najasaurus), Class.StickySkinAndTailed, MagicalAbility.Variety1, SpecialAbilityTailedAndStickySkin, WepAbility1, AreaEffectArea3, 2, 5),
-            new TrainingDefinition(typeof(Nightmare), Class.MagicalAndNecromantic, MagicalAbility.Variety2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 2, 5),
-            new TrainingDefinition(typeof(OsseinRam), Class.None, MagicalAbility.Variety2, SpecialAbilityNone, WepAbilityNone, AreaEffectArea1, 2, 5),
-            new TrainingDefinition(typeof(PackHorse), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(PackLlama), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Palomino), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Panther), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Paralithode), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
-            new TrainingDefinition(typeof(ParoxysmusSwampDragon), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
-            new TrainingDefinition(typeof(Phoenix), Class.MagicalAndClawed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
-            new TrainingDefinition(typeof(Pig), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(PlatinumDrake), Class.None, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea1,2, 5), // PlatinumDrake[Poison] = AreaEffectArea2
-            new TrainingDefinition(typeof(PolarBear), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(PredatorHellCat), Class.ClawedTailedAndNecromantic, MagicalAbility.Hellcat, SpecialAbilityNone, WepAbility1, AreaEffectExplosiveGoo, 2, 3),
-            new TrainingDefinition(typeof(Rabbit), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(Raptor), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 2, 5),
-            new TrainingDefinition(typeof(Rat), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(Reptalon), Class.MagicalAndTailed, MagicalAbility.Cusidhe, SpecialAbilityNone, WepAbility10, AreaEffectArea1, 2, 5),
-            new TrainingDefinition(typeof(RidableLlama), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Ridgeback), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(RuddyBoura), Class.Tailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityTailed, WepAbility1, AreaEffectNone, 2, 3),
-            new TrainingDefinition(typeof(RuneBeetle), Class.Insectoid, MagicalAbility.RuneBeetle, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
-            new TrainingDefinition(typeof(SabertoothedTiger), Class.ClawedAndTailed, MagicalAbility.SabreToothedTiger, SpecialAbilitySabreTri, WepAbilityNone, AreaEffectNone, 2, 5),
-            //new TrainingDefinition(typeof(SakkhranBirdOfPrey), Class.MagicalAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
-            new TrainingDefinition(typeof(Saurosaurus), Class.Tailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
-            new TrainingDefinition(typeof(SavageRidgeback), Class.Clawed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Scorpion), Class.Tailed, MagicalAbility.Variety1, SpecialAbilityBitingTailed, WepAbility1, AreaEffectArea3, 1, 3),
-            new TrainingDefinition(typeof(SerpentineDragon), Class.MagicalClawedAndTailed, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea2, 3, 5),
-            new TrainingDefinition(typeof(Sewerrat), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility3, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(ShadowWyrm), Class.TailedAndNecromantic, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 5, 5),
-            new TrainingDefinition(typeof(Sheep), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(SilverSteed), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(SkitteringHopper), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1 , 2),
-            new TrainingDefinition(typeof(Skree), Class.MagicalClawedAndTailed, MagicalAbility.Dragon2, SpecialAbilityClawedTailedAndMagical1, WepAbility2, AreaEffectArea1, 3, 5),
-            new TrainingDefinition(typeof(Slime), Class.StickySkin, MagicalAbility.Variety1, SpecialAbilityBitingStickySkin, WepAbility1, AreaEffectArea3, 1, 2),
-            new TrainingDefinition(typeof(Slith), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityNone, WepAbility1, AreaEffectNone, 1, 4),
-            new TrainingDefinition(typeof(Snake), Class.Tailed, MagicalAbility.Variety1, SpecialAbilityBitingTailed, WepAbility1, AreaEffectArea3, 1, 2),
-            new TrainingDefinition(typeof(SnowLeopard), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Squirrel), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(StoneSlith), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 5),
-            new TrainingDefinition(typeof(StygianDrake), Class.MagicalClawedAndTailed, MagicalAbility.StygianDrake, SpecialAbilityClawedTailedAndMagical1, WepAbility2, AreaEffectArea1, 4, 5),
-            new TrainingDefinition(typeof(SwampDragon), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
-            new TrainingDefinition(typeof(TimberWolf), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(Triceratops), Class.Tailed, MagicalAbility.Triceratops, SpecialAbilitySabreTri, WepAbilityNone, AreaEffectNone, 3, 5),
-            new TrainingDefinition(typeof(TropicalBird), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(TsukiWolf), Class.MagicalClawedTailedNecromanticAndTokuno, MagicalAbility.TsukiWolf, SpecialAbilityTsukiWolf, WepAbility2, AreaEffectArea1, 3, 5),
-            new TrainingDefinition(typeof(Turkey), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2),
-            new TrainingDefinition(typeof(Unicorn), Class.Magical, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 2, 5),
-            new TrainingDefinition(typeof(Vollem), Class.MagicalAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
-            new TrainingDefinition(typeof(Walrus), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-            //new TrainingDefinition(typeof(WarHorse), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone),
-            //new TrainingDefinition(typeof(WarOstard), Class.Clawed, MagicalAbility.None, SpecialAbilityClawed, WepAbilityNone, AreaEffectNone),
-            new TrainingDefinition(typeof(WhiteWolf), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(WhiteWyrm), Class.MagicalClawedAndTailed, MagicalAbility.Dragon1, SpecialAbilityClawedTailedAndMagical2, WepAbility2, AreaEffectEarthen, 3, 5),
-            new TrainingDefinition(typeof(WildTiger), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 5),
-            new TrainingDefinition(typeof(Windrunner), Class.TailedAndNecromantic, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
-            new TrainingDefinition(typeof(WolfSpider), Class.None, MagicalAbility.Vartiety, SpecialAbilityBitingAnimal, WepAbility1, AreaEffectDisease, 1, 3),  
-        };
-
+        public static TrainingDefinition[] Definitions { get; private set; }
+       
         #region Accessors
         public static TrainingDefinition GetTrainingDefinition(BaseCreature bc)
         {
             if (bc == null)
                 return null;
 
-            return _Defs.FirstOrDefault(def => def.CreatureType == bc.GetType());
+            return Definitions.FirstOrDefault(def => def.CreatureType == bc.GetType());
         }
-
-        public static List<object> GivenError = new List<object>();
 
         public static TrainingPoint GetTrainingPoint(object o)
         {
@@ -298,12 +159,6 @@ namespace Server.Mobiles
                     return tp;
             }
 
-            if (!GivenError.Contains(o))
-            {
-                Console.WriteLine("Null TP: {0}", o);
-                GivenError.Add(o);
-            }
-
             return null;
         }
 
@@ -325,6 +180,16 @@ namespace Server.Mobiles
                 bc.TrainingProfile = profile = new TrainingProfile(bc);
 
             return profile;
+        }
+
+        public static PlanningProfile GetPlanningProfile(BaseCreature bc, bool create = false)
+        {
+            var profile = GetTrainingProfile(bc, create);
+
+            if (profile != null)
+                return profile.PlanningProfile;
+
+            return null;
         }
         #endregion
 
@@ -501,9 +366,9 @@ namespace Server.Mobiles
 
         #region Training Points Configuration
 
-        #region Table Config
         public static void LoadDefinitions()
         {
+            #region Special Ability Defs
             Abilities = new SpecialAbility[]
             {
                 SpecialAbility.RuneCorruption,
@@ -688,7 +553,9 @@ namespace Server.Mobiles
             { 
                 SpecialAbility.SearingWounds, SpecialAbility.TailSwipe
             };
+            #endregion
 
+            #region Area Effect Defs
             AreaEffects = new AreaEffect[]
             {
                 AreaEffect.AuraOfEnergy,
@@ -732,8 +599,148 @@ namespace Server.Mobiles
             {
                 AreaEffect.AuraOfNausea, AreaEffect.EssenceOfDisease, AreaEffect.PoisonBreath, 
             };
+            #endregion
+
+            #region Creature Training Definitions
+            Definitions = new TrainingDefinition[]
+            {
+                new TrainingDefinition(typeof(Alligator), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 4),  
+                new TrainingDefinition(typeof(BakeKitsune), Class.ClawedTailedAndTokuno, MagicalAbility.Tokuno1, SpecialAbilityClawedTailedAndMagical2, WepAbility2, AreaEffectArea1, 3, 5), 
+                new TrainingDefinition(typeof(BaneDragon), Class.MagicalClawedAndTailed, MagicalAbility.Dragon1, SpecialAbilityBaneDragon, WepAbility2, AreaEffectArea2, 4, 5), 
+                new TrainingDefinition(typeof(BattleChickenLizard), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1), 
+                new TrainingDefinition(typeof(Bird), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2), 
+                new TrainingDefinition(typeof(BlackBear), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3), 
+                new TrainingDefinition(typeof(BloodFox), Class.None, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 3),
+                new TrainingDefinition(typeof(Boar), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(BrownBear), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3), 
+                new TrainingDefinition(typeof(Bull), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1 ,4), 
+                new TrainingDefinition(typeof(BullFrog), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Cat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility4, AreaEffectNone, 1, 3), 
+                new TrainingDefinition(typeof(Chicken), Class.Clawed, MagicalAbility.None, SpecialAbilityClawed, WepAbilityNone, AreaEffectNone, 1, 2), 
+                new TrainingDefinition(typeof(ChickenLizard), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
+                new TrainingDefinition(typeof(LeatherWolf), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
+                new TrainingDefinition(typeof(ColdDrake), Class.None, MagicalAbility.Dragon1, SpecialAbilityNone, WepAbility2, AreaEffectNone, 3, 5),
+                new TrainingDefinition(typeof(CorrosiveSlime), Class.StickySkin, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Cougar), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Cow), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3), 
+                new TrainingDefinition(typeof(CrimsonDrake), Class.None, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 2, 5), // CrimsonDrake[Poison] = AreaEffectArea2
+                new TrainingDefinition(typeof(CuSidhe), Class.MagicalClawedAndTailed, MagicalAbility.Cusidhe, SpecialAbilityClawedTailedAndMagical2, WepAbility5, AreaEffectArea1, 3, 5), 
+                //new TrainingDefinition(typeof(DarkSteed), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone), 
+                new TrainingDefinition(typeof(DeathwatchBeetle), Class.Insectoid, MagicalAbility.Poisoning, SpecialAbilityMagicalInsectoid, WepAbility5, AreaEffectNone, 1, 4), 
+                new TrainingDefinition(typeof(DesertOstard), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3), 
+                new TrainingDefinition(typeof(Dimetrosaur), Class.None, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5), 
+                new TrainingDefinition(typeof(DireWolf), Class.ClawedNecromanticAndTokuno, MagicalAbility.Wolf, SpecialAbilityClawedAndNecromantic, WepAbility1, AreaEffectNone, 1, 4), 
+                new TrainingDefinition(typeof(Dog), Class.Tailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityTailed, WepAbility1, AreaEffectNone, 1, 3), 
+                new TrainingDefinition(typeof(Dragon), Class.MagicalClawedAndTailed, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 4, 5), 
+                new TrainingDefinition(typeof(DragonTurtleHatchling), Class.MagicalAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 4, 5), 
+                new TrainingDefinition(typeof(DragonWolf), Class.None, MagicalAbility.DragonWolf, SpecialAbilityNone, WepAbility1, AreaEffectNone, 4, 5), 
+                new TrainingDefinition(typeof(Drake), Class.MagicalAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 2, 5), 
+                new TrainingDefinition(typeof(DreadSpider), Class.MagicalNecromanticAndTokuno, MagicalAbility.DreadSpider, SpecialAbilityDreadSpider, WepAbility2, AreaEffectArea2, 3, 5), 
+                new TrainingDefinition(typeof(DreadWarhorse), Class.MagicalAndNecromantic, MagicalAbility.DreadWarhorse, SpecialAbilityNone, WepAbility2, AreaEffectArea2, 3, 5), 
+                new TrainingDefinition(typeof(Eagle), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3), 
+                new TrainingDefinition(typeof(Ferret), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2), 
+                new TrainingDefinition(typeof(FireBeetle), Class.MagicalAndInsectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 1 ,5),
+                new TrainingDefinition(typeof(FireSteed), Class.Magical, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 2, 5),
+                new TrainingDefinition(typeof(ForestOstard), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(FrenziedOstard), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(FrostDragon), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 5, 5),
+                new TrainingDefinition(typeof(FrostDrake), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
+                new TrainingDefinition(typeof(FrostMite), Class.Insectoid, MagicalAbility.Poisoning, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 2, 5),
+                new TrainingDefinition(typeof(FrostSpider), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility2, AreaEffectNone, 1, 4),
+                new TrainingDefinition(typeof(Gallusaurus), Class.None, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility1, AreaEffectNone, 3, 5),
+                new TrainingDefinition(typeof(Gaman), Class.Tailed, MagicalAbility.Poisoning, SpecialAbilityTailed, WepAbility1, AreaEffectNone, 1, 4),
+                new TrainingDefinition(typeof(Beetle), Class.Insectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 1, 5),
+                new TrainingDefinition(typeof(IceWyrm), Class.Tailed, MagicalAbility.Variety1, SpecialAbilityBitingTailed, WepAbility2, AreaEffectArea3, 1, 2),
+                new TrainingDefinition(typeof(GiantRat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(GiantSpider), Class.None, MagicalAbility.Variety1, SpecialAbilityBitingAnimal, WepAbility1, AreaEffectArea3, 1, 3),
+                new TrainingDefinition(typeof(GiantToad), Class.StickySkin, MagicalAbility.StandardClawedOrTailed, SpecialAbilityStickySkin, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Goat), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Gorilla), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(GreatHart), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                //new TrainingDefinition(typeof(GreaterChicken), Class.Clawed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone),
+                new TrainingDefinition(typeof(GreaterDragon), Class.MagicalClawedAndTailed, MagicalAbility.GreaterDragon, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 4, 5),
+                new TrainingDefinition(typeof(GreaterMongbat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(GreyWolf), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(GrizzlyBear), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(HellHound), Class.ClawedTailedNecromanticAndTokuno, MagicalAbility.Wolf, SpecialAbilityNone, WepAbility1, AreaEffectExplosiveGoo, 2, 4),
+                new TrainingDefinition(typeof(HellCat), Class.ClawedTailedAndNecromantic, MagicalAbility.Hellcat, SpecialAbilityNone, WepAbility1, AreaEffectExplosiveGoo, 2, 3),
+                new TrainingDefinition(typeof(HighPlainsBoura), Class.Tailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityNone, WepAbility1, AreaEffectNone, 2, 5),
+                new TrainingDefinition(typeof(Hind), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Hiryu), Class.ClawedTailedMagicalAndTokuno, MagicalAbility.Hiryu, SpecialAbilityNone, WepAbility7, AreaEffectArea1, 3, 5),
+                new TrainingDefinition(typeof(Horse), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Imp), Class.MagicalClawedTailedAndNecromantic, MagicalAbility.Variety2, SpecialAbilityImp, WepAbility2, AreaEffectArea2, 3, 4),
+                new TrainingDefinition(typeof(IronBeetle), Class.Insectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 2, 5),
+                new TrainingDefinition(typeof(JackRabbit), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(Kirin), Class.MagicalClawedAndTailed, MagicalAbility.Dragon2, SpecialAbilityClawedTailedAndMagical2, WepAbility2, AreaEffectArea1, 2, 5),
+                new TrainingDefinition(typeof(Lasher), Class.Magical, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(LavaLizard), Class.ClawedTailedMagicalAndTokuno, MagicalAbility.LavaLizard, SpecialAbilityNone, WepAbility6, AreaEffectArea1, 1, 4),
+                new TrainingDefinition(typeof(LesserHiryu), Class.ClawedTailedMagicalAndTokuno, MagicalAbility.Tokuno1, SpecialAbilityNone, WepAbility7, AreaEffectArea1, 1, 5),
+                new TrainingDefinition(typeof(Lion), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityBitingClawedAndTailed, WepAbility1, AreaEffectArea3, 2, 5),
+                new TrainingDefinition(typeof(Llama), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility9, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(LowlandBoura), Class.Tailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityTailed, WepAbility1, AreaEffectNone, 2, 3),
+                //new TrainingDefinition(typeof(MisterGobbles), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone),
+                new TrainingDefinition(typeof(Mongbat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(MountainGoat), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Najasaurus), Class.StickySkinAndTailed, MagicalAbility.Variety1, SpecialAbilityTailedAndStickySkin, WepAbility1, AreaEffectArea3, 2, 5),
+                new TrainingDefinition(typeof(Nightmare), Class.MagicalAndNecromantic, MagicalAbility.Variety2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 2, 5),
+                new TrainingDefinition(typeof(OsseinRam), Class.None, MagicalAbility.Variety2, SpecialAbilityNone, WepAbilityNone, AreaEffectArea1, 2, 5),
+                new TrainingDefinition(typeof(PackHorse), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(PackLlama), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Palomino), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Panther), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Paralithode), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
+                new TrainingDefinition(typeof(ParoxysmusSwampDragon), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
+                new TrainingDefinition(typeof(Phoenix), Class.MagicalAndClawed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
+                new TrainingDefinition(typeof(Pig), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(PlatinumDrake), Class.None, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea1,2, 5), // PlatinumDrake[Poison] = AreaEffectArea2
+                new TrainingDefinition(typeof(PolarBear), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(PredatorHellCat), Class.ClawedTailedAndNecromantic, MagicalAbility.Hellcat, SpecialAbilityNone, WepAbility1, AreaEffectExplosiveGoo, 2, 3),
+                new TrainingDefinition(typeof(Rabbit), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(Raptor), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 2, 5),
+                new TrainingDefinition(typeof(Rat), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(Reptalon), Class.MagicalAndTailed, MagicalAbility.Cusidhe, SpecialAbilityNone, WepAbility10, AreaEffectArea1, 2, 5),
+                new TrainingDefinition(typeof(RidableLlama), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Ridgeback), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(RuddyBoura), Class.Tailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityTailed, WepAbility1, AreaEffectNone, 2, 3),
+                new TrainingDefinition(typeof(RuneBeetle), Class.Insectoid, MagicalAbility.RuneBeetle, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
+                new TrainingDefinition(typeof(SabertoothedTiger), Class.ClawedAndTailed, MagicalAbility.SabreToothedTiger, SpecialAbilitySabreTri, WepAbilityNone, AreaEffectNone, 2, 5),
+                //new TrainingDefinition(typeof(SakkhranBirdOfPrey), Class.MagicalAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
+                new TrainingDefinition(typeof(Saurosaurus), Class.Tailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
+                new TrainingDefinition(typeof(SavageRidgeback), Class.Clawed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Scorpion), Class.Tailed, MagicalAbility.Variety1, SpecialAbilityBitingTailed, WepAbility1, AreaEffectArea3, 1, 3),
+                new TrainingDefinition(typeof(SerpentineDragon), Class.MagicalClawedAndTailed, MagicalAbility.Dragon2, SpecialAbilityNone, WepAbility2, AreaEffectArea2, 3, 5),
+                new TrainingDefinition(typeof(Sewerrat), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility3, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(ShadowWyrm), Class.TailedAndNecromantic, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 5, 5),
+                new TrainingDefinition(typeof(Sheep), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(SilverSteed), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(SkitteringHopper), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1 , 2),
+                new TrainingDefinition(typeof(Skree), Class.MagicalClawedAndTailed, MagicalAbility.Dragon2, SpecialAbilityClawedTailedAndMagical1, WepAbility2, AreaEffectArea1, 3, 5),
+                new TrainingDefinition(typeof(Slime), Class.StickySkin, MagicalAbility.Variety1, SpecialAbilityBitingStickySkin, WepAbility1, AreaEffectArea3, 1, 2),
+                new TrainingDefinition(typeof(Slith), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityNone, WepAbility1, AreaEffectNone, 1, 4),
+                new TrainingDefinition(typeof(Snake), Class.Tailed, MagicalAbility.Variety1, SpecialAbilityBitingTailed, WepAbility1, AreaEffectArea3, 1, 2),
+                new TrainingDefinition(typeof(SnowLeopard), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Squirrel), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(StoneSlith), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 5),
+                new TrainingDefinition(typeof(StygianDrake), Class.MagicalClawedAndTailed, MagicalAbility.StygianDrake, SpecialAbilityClawedTailedAndMagical1, WepAbility2, AreaEffectArea1, 4, 5),
+                new TrainingDefinition(typeof(SwampDragon), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1),
+                new TrainingDefinition(typeof(TimberWolf), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(Triceratops), Class.Tailed, MagicalAbility.Triceratops, SpecialAbilitySabreTri, WepAbilityNone, AreaEffectNone, 3, 5),
+                new TrainingDefinition(typeof(TropicalBird), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(TsukiWolf), Class.MagicalClawedTailedNecromanticAndTokuno, MagicalAbility.TsukiWolf, SpecialAbilityTsukiWolf, WepAbility2, AreaEffectArea1, 3, 5),
+                new TrainingDefinition(typeof(Turkey), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2),
+                new TrainingDefinition(typeof(Unicorn), Class.Magical, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 2, 5),
+                new TrainingDefinition(typeof(Vollem), Class.MagicalAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
+                new TrainingDefinition(typeof(Walrus), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
+                //new TrainingDefinition(typeof(WarHorse), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone),
+                //new TrainingDefinition(typeof(WarOstard), Class.Clawed, MagicalAbility.None, SpecialAbilityClawed, WepAbilityNone, AreaEffectNone),
+                new TrainingDefinition(typeof(WhiteWolf), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(WhiteWyrm), Class.MagicalClawedAndTailed, MagicalAbility.Dragon1, SpecialAbilityClawedTailedAndMagical2, WepAbility2, AreaEffectEarthen, 3, 5),
+                new TrainingDefinition(typeof(WildTiger), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 5),
+                new TrainingDefinition(typeof(Windrunner), Class.TailedAndNecromantic, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
+                new TrainingDefinition(typeof(WolfSpider), Class.None, MagicalAbility.Vartiety, SpecialAbilityBitingAnimal, WepAbility1, AreaEffectDisease, 1, 3),  
+            };
+            #endregion
         }
-        #endregion
 
         public static void Configure()
         {
@@ -753,7 +760,7 @@ namespace Server.Mobiles
             _TrainingPoints.Add(new TrainingPoint(PetStat.RegenStam, 12.0, 1, 30, 1079410, 1157514));
             _TrainingPoints.Add(new TrainingPoint(PetStat.RegenMana, 12.0, 1, 30, 1079411, 1157515));
 
-            // TODO: Damage Per Second 1157516
+            _TrainingPoints.Add(new TrainingPoint(PetStat.BaseDamage, 5.0, 1, 22, 1157506, 1157516));
 
             _TrainingPoints.Add(new TrainingPoint(ResistanceType.Physical, 3.0, 1, 80, 1061158, 1157517));
             _TrainingPoints.Add(new TrainingPoint(ResistanceType.Fire, 3.0, 1, 80, 1061159, 1157518));
@@ -761,22 +768,23 @@ namespace Server.Mobiles
             _TrainingPoints.Add(new TrainingPoint(ResistanceType.Poison, 3.0, 1, 80, 1061161, 1157520));
             _TrainingPoints.Add(new TrainingPoint(ResistanceType.Energy, 3.0, 1, 80, 1061162, 1157521));
 
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Magery, 0.5, 5, 20, 1002106, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.EvalInt, 1.0, 5, 20, 1044076, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Necromancy, 0.5, 5, 20, 1044109, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.SpiritSpeak, 1.0, 5, 20, 1044092, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Chivalry, 0.5, 5, 20, 1044111, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Focus, 0.1, 5, 20, 1044110, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Bushido, 0.5, 5, 20, 1044112, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Ninjitsu, 0.5, 5, 20, 1044113, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Spellweaving, 0.5, 5, 20, 1044114, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Mysticism, 0.5, 5, 20, 1044115, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Meditation, 0.1, 5, 20, 1044106, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.MagicResist, 0.1, 5, 20, 1044086, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Magery, 0.5, 50, 200, 1002106, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.EvalInt, 1.0, 50, 200, 1044076, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Necromancy, 0.5, 50, 200, 1044109, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.SpiritSpeak, 1.0, 50, 200, 1044092, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Chivalry, 0.5, 50, 200, 1044111, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Focus, 0.1, 50, 200, 1044110, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Bushido, 0.5, 50, 200, 1044112, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Ninjitsu, 0.5, 50, 200, 1044113, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Spellweaving, 0.5, 50, 200, 1044114, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Mysticism, 0.5, 50, 200, 1044115, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Meditation, 0.1, 50, 200, 1044106, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.MagicResist, 0.1, 50, 200, 1044086, 1157522));
 
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Wrestling, 1.0, 5, 20, 1044103, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Tactics, 1.0, 5, 20, 1044087, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Anatomy, 0.1, 5, 20, 1044061, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Wrestling, 1.0, 50, 200, 1044103, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Tactics, 1.0, 50, 200, 1044087, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Anatomy, 0.1, 50, 200, 1044061, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Parry, 0.1, 50, 200, 1044061, 1157522));
 
             TextDefinition[][] loc = _MagicalAbilityLocalizations;
 
@@ -798,7 +806,7 @@ namespace Server.Mobiles
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.BattleDefense, 1.0, 1, 1, loc[3][0], loc[3][1],
                 new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842),
-                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100), 1028848));
+                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100, 1028848)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.WrestlingMastery, 1.0, 1, 1, loc[4][0], loc[4][1],
                 new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842),
@@ -882,6 +890,7 @@ namespace Server.Mobiles
         #endregion
 
         #region Training Helpers
+
         public static int GetTrainingCapTotal(PetStat stat)
         {
             switch (stat)
@@ -939,6 +948,204 @@ namespace Server.Mobiles
                    ((double)bc.EnergyResistSeed * nrgy.Weight));
         }
 
+        public static int GetMaxDamagePerSecond(BaseCreature bc)
+        {
+            int slots = bc.ControlSlots;
+
+            switch (slots)
+            {
+                case 1: return 8;
+                case 2: return 13;
+                case 3: return 17;
+                default: return 22;
+            }
+        }
+
+        public static bool SetDamage(BaseCreature bc, int value)
+        {
+            if (value >= 0 && value < _DamageTable.Length)
+            {
+                bc.SetDamage(_DamageTable[value][0], _DamageTable[value][1]);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static int[][] _DamageTable =
+        {
+            // slot 1 => 2
+            new int[] { 0, 1 },
+            new int[] { 2, 3 },
+            new int[] { 3, 4 },
+            new int[] { 4, 6 },
+            new int[] { 5, 7 },
+            new int[] { 6, 9 },
+            new int[] { 7, 10 },
+            new int[] { 9, 12 },
+            // slot 2 => 3
+            new int[] { 9, 13 },
+            new int[] { 11, 15 },
+            new int[] { 12, 16 },
+            new int[] { 13, 18 },
+            new int[] { 14, 19 },
+            // slot 3 => 4
+            new int[] { 15, 21 },
+            new int[] { 16, 22 },
+            new int[] { 18, 24 },
+            new int[] { 18, 25 },
+            // slot 4 => 5
+            new int[] { 19, 26 },
+            new int[] { 20, 28 },
+            new int[] { 21, 29 },
+            new int[] { 23, 31 },
+            new int[] { 24, 33 },
+        };
+
+         /* 14: 15 to 21
+         * 15: 16 to 22
+         * 16: 18 to 24
+         * 17: 18 to 25 
+         * slot 4 => 5
+         * 18: 19 to 26
+         * 19: 20 to 28
+         * 20: 21 to 29
+         * 21: 23 to 31
+         * 22: 24 to 33
+         */
+
+        public static void GetStartValue(TrainingPoint tp, BaseCreature bc, ref int value)
+        {
+            if (tp.Start != tp.Max)
+            {
+                if (tp.TrainPoint is PetStat)
+                {
+                    var profile = GetAbilityProfile(bc, true);
+
+                    switch ((PetStat)tp.TrainPoint)
+                    {
+                        case PetStat.Str: value = Math.Max(bc.RawStr, value); break;
+                        case PetStat.Dex: value = Math.Max(bc.RawDex, value); break;
+                        case PetStat.Int: value = Math.Max(bc.RawInt, value); break;
+                        case PetStat.Hits: value = Math.Max(bc.HitsMax, value); break;
+                        case PetStat.Stam: value = Math.Max(bc.StamMax, value); break;
+                        case PetStat.Mana: value = Math.Max(bc.ManaMax, value); break;
+                        case PetStat.RegenHits: value = Math.Max(profile.RegenHits, value); break;
+                        case PetStat.RegenStam: value = Math.Max(profile.RegenStam, value); break;
+                        case PetStat.RegenMana: value = Math.Max(profile.RegenMana, value); break;
+                        case PetStat.BaseDamage:
+                            {
+                                if (bc.DamageMin <= 1)
+                                {
+                                    value = 1;
+                                    break;
+                                }
+
+                                for(int i = 0; i < _DamageTable.Length; i++)
+                                {
+                                    int[] list = _DamageTable[i];
+                                    Console.WriteLine("minDam: {0}, low: {1}, high: {2}", bc.DamageMin, list[0], list[1]);
+                                    if (list[0] >= bc.DamageMin && bc.DamageMin <= list[1])
+                                    {
+                                        value = i + 1;
+                                        return;
+                                    }
+                                }
+
+                                value = _DamageTable.Length - 1;
+                            }
+                            break;
+                    }
+                }
+
+                else if (tp.TrainPoint is ResistanceType)
+                {
+                    switch ((ResistanceType)tp.TrainPoint)
+                    {
+                        case ResistanceType.Physical: value = Math.Max(bc.PhysicalResistanceSeed, value); break;
+                        case ResistanceType.Fire: value = Math.Max(bc.FireResistSeed, value); break;
+                        case ResistanceType.Cold: value = Math.Max(bc.ColdResistSeed, value); break;
+                        case ResistanceType.Poison: value = Math.Max(bc.PoisonResistSeed, value); break;
+                        case ResistanceType.Energy: value = Math.Max(bc.EnergyResistSeed, value); break;
+                    }
+                }
+
+                else if (tp.TrainPoint is SkillName)
+                {
+                    Skill skill = bc.Skills[(SkillName)tp.TrainPoint];
+
+                    switch ((int)skill.Cap)
+                    {
+                        case 100: value = 50; break;
+                        case 105: value = 100; break;
+                        case 110: value = 150; break;
+                        case 115: value = 200; break;
+                    }
+                }
+            }
+        }
+
+        public static void CheckAdjustValue(TrainingPoint tp, BaseCreature bc, int startValue, ref int value, bool checkPoints = true)
+        {
+            var profile = GetTrainingProfile(bc, true);
+            int cost = GetTotalCost(tp, bc, value, startValue);
+
+            if (checkPoints && cost > profile.TrainingPoints)
+            {
+                while (cost > profile.TrainingPoints)
+                {
+                    value--;
+
+                    cost = GetTotalCost(tp, bc, value, startValue);
+                }
+            }
+
+            if (tp.TrainPoint is PetStat && (PetStat)tp.TrainPoint < PetStat.Mana)
+            {
+                //TODO: damage
+                var stat = (PetStat)tp.TrainPoint;
+                double cap = GetTrainingCapTotal(stat);
+                int current = stat <= PetStat.Int ? GetTotalStatWeight(bc) : GetTotalAttributeWeight(bc);
+
+                if (current + cost > cap)
+                {
+                    value -= (int)((cost - cap) / tp.Weight);
+                }
+            }
+            else if (tp.TrainPoint is ResistanceType)
+            {
+                var res = (ResistanceType)tp.TrainPoint;
+                double cap = GetTrainingCapTotal(res);
+
+                if (GetTotalResistWeight(bc) + cost > cap)
+                {
+                    value -= (int)((cost - cap) / tp.Weight);
+                }
+            }
+        }
+
+        public static int GetTotalCost(TrainingPoint tp, BaseCreature bc, int value, int startValue)
+        {
+            int cost = (int)((double)value * tp.Weight);
+
+            if (tp.Requirements != null && tp.Requirements.Length > 0)
+            {
+                foreach (var req in tp.Requirements.Where(r => r != null))
+                {
+                    if (req.Requirement is SkillName && bc.Skills[(SkillName)req.Requirement].Base > 0)
+                        continue;
+
+                    cost += req.Cost;
+                }
+            }
+
+            if (startValue > 0)
+            {
+                cost -= (int)((double)startValue * tp.Weight);
+            }
+            return cost;
+        }
+
         public static bool ApplyTrainingPoint(BaseCreature bc, TrainingPoint trainingPoint, int value)
         {
             var profile = GetAbilityProfile(bc, true);
@@ -958,12 +1165,11 @@ namespace Server.Mobiles
                     case PetStat.RegenHits: profile.RegenHits = value; break;
                     case PetStat.RegenStam: profile.RegenStam = value; break;
                     case PetStat.RegenMana: profile.RegenMana = value; break;
-                    //TODO: Damage Per Second
+                    case PetStat.BaseDamage: return SetDamage(bc, value - 1);
                 }
 
                 return true;
             }
-
             else if (trainingPoint.TrainPoint is MagicalAbility)
             {
                 MagicalAbility ability = (MagicalAbility)trainingPoint.TrainPoint;
@@ -973,7 +1179,6 @@ namespace Server.Mobiles
                     return true;
                 }
             }
-
             else if (trainingPoint.TrainPoint is SpecialAbility)
             {
                 SpecialAbility ability = trainingPoint.TrainPoint as SpecialAbility;
@@ -983,7 +1188,6 @@ namespace Server.Mobiles
                     return true;
                 }
             }
-
             else if (trainingPoint.TrainPoint is AreaEffect)
             {
                 AreaEffect ability = trainingPoint.TrainPoint as AreaEffect;
@@ -993,7 +1197,6 @@ namespace Server.Mobiles
                     return true;
                 }
             }
-
             else if (trainingPoint.TrainPoint is WeaponAbility)
             {
                 WeaponAbility ability = trainingPoint.TrainPoint as WeaponAbility;
@@ -1002,6 +1205,30 @@ namespace Server.Mobiles
                 {
                     return true;
                 }
+            }
+            else if (trainingPoint.TrainPoint is SkillName)
+            {
+                SkillName skill = (SkillName)trainingPoint.TrainPoint;
+
+                if (ValidateTrainingPoint(bc, skill))
+                {
+                    bc.Skills[skill].Cap = 100 + (value / 10);
+
+                    return true;
+                }
+            }
+            else if (trainingPoint.TrainPoint is ResistanceType)
+            {
+                switch ((ResistanceType)trainingPoint.TrainPoint)
+                {
+                    case ResistanceType.Physical: bc.PhysicalResistanceSeed = value; break;
+                    case ResistanceType.Fire: bc.FireResistSeed = value; break;
+                    case ResistanceType.Cold: bc.ColdResistSeed = value; break;
+                    case ResistanceType.Poison: bc.PoisonResistSeed = value; break;
+                    case ResistanceType.Energy: bc.EnergyResistSeed = value; break;
+                }
+
+                return true;
             }
 
             return false;
@@ -1046,10 +1273,15 @@ namespace Server.Mobiles
 
             return def.WeaponAbilities.FirstOrDefault(a => a == ability) != null;
         }
+
+        public static bool ValidateTrainingPoint(BaseCreature bc, SkillName skill)
+        {
+            return bc.Skills[skill].Base > 0;
+        }
         #endregion
 
         #region Skill Categories
-        public static SkillName[] MagerySkills =
+        public static SkillName[] MagicSkills =
         {
             SkillName.Magery,
             SkillName.EvalInt,
@@ -1069,7 +1301,8 @@ namespace Server.Mobiles
         {
             SkillName.Wrestling,
             SkillName.Tactics,
-            SkillName.Anatomy
+            SkillName.Anatomy,
+            SkillName.Parry
         };
         #endregion
 
@@ -1165,6 +1398,13 @@ namespace Server.Mobiles
 
         public static TextDefinition[] GetLocalization(object o)
         {
+            var tp = GetTrainingPoint(o);
+
+            if (tp != null)
+            {
+                return new TextDefinition[] { tp.Name, tp.Description };
+            }
+
             if (o is MagicalAbility)
                 return GetLocalization((MagicalAbility)o);
 
@@ -1255,6 +1495,29 @@ namespace Server.Mobiles
             if (o is WeaponAbility)
             {
                 return 1157479;
+            }
+
+            if (o is PetStat)
+            {
+                return 1114262;
+            }
+
+            if (o is ResistanceType)
+            {
+                return 1154539;
+            }
+
+            if (o is SkillName)
+            {
+                foreach (var skill in CombatSkills)
+                {
+                    if ((SkillName)o == skill)
+                    {
+                        return 1157496;
+                    }
+                }
+
+                return 1157495;
             }
 
             return 0;

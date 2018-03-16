@@ -82,7 +82,7 @@ namespace Server.Items
 
                 m_Registry[attacker] = new InternalTimer(attacker, targets);
 
-                if (defender is PlayerMobile)
+                if (defender is PlayerMobile && attacker is PlayerMobile)
                 {
                     defender.SendSpeedControl(SpeedControlType.WalkSpeed);
                     BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1152144, TimeSpan.FromSeconds(2.0), defender));

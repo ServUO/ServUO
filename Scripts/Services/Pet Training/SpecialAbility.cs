@@ -347,9 +347,20 @@ namespace Server.Mobiles
             }
         }
 
+        public static SpecialAbility Rage
+        {
+            get
+            {
+                if (_Abilities[18] == null)
+                    _Abilities[18] = new Rage();
+
+                return _Abilities[18];
+            }
+        }
+
 
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static SpecialAbility[] _Abilities = new SpecialAbility[18];
+        private static SpecialAbility[] _Abilities = new SpecialAbility[19];
     }
 	
 	public class AngryFire : SpecialAbility
@@ -649,14 +660,82 @@ namespace Server.Mobiles
 	public class Inferno : SpecialAbility
 	{
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override double TriggerChance { get { return 0.1; } }
 
-		public Inferno()
+        public static Dictionary<Mobile, ExpireTimer> _Table;
+
+        public Inferno()
 		{
 		}
 		
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
 		{
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, ExpireTimer>();
+
+            ExpireTimer timer = null;
+
+            if (_Table.ContainsKey(defender))
+                timer = _Table[defender];
+
+            if (timer != null)
+            {
+                timer.DoExpire();
+            }
+                
+            defender.SendLocalizedMessage(1070833); // The creature fans you with fire, reducing your resistance to fire attacks.
+
+            int effect = -(defender.FireResistance / 4);
+
+            ResistanceMod mod = new ResistanceMod(ResistanceType.Fire, effect);
+
+            Effects.SendLocationParticles(defender, 0x3709, 10, 30, 5052);
+            Effects.PlaySound(defender.Location, defender.Map, 0x208);
+
+            timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(5.0));
+            timer.Start();
+
+            _Table[defender] = timer;
 		}
+
+        public static void Expire(Mobile m)
+        {
+            if (_Table != null && _Table.ContainsKey(m))
+            {
+                _Table.Remove(m);
+
+                if (_Table.Count == 0)
+                    _Table = null;
+            }
+        }
+
+        public class ExpireTimer : Timer
+        {
+            private readonly Mobile m_Mobile;
+            private readonly ResistanceMod m_Mod;
+
+            public ExpireTimer(Mobile m, ResistanceMod mod, TimeSpan delay)
+                : base(delay)
+            {
+                m_Mobile = m;
+                m_Mod = mod;
+                Priority = TimerPriority.TwoFiftyMS;
+            }
+
+            public void DoExpire()
+            {
+                m_Mobile.RemoveResistanceMod(m_Mod);
+                Stop();
+
+                Expire(m_Mobile);
+            }
+
+            protected override void OnTick()
+            {
+                m_Mobile.SendLocalizedMessage(1070834); // Your resistance to fire attacks has returned.
+                DoExpire();
+            }
+        }
 	}
 	
 	public class LightningForce : SpecialAbility
@@ -814,7 +893,6 @@ namespace Server.Mobiles
 		{
 		}
 		
-		// this will need another function hooked from AOS.Damage to repel damage.
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
 		{
             // TODO: Effects?
@@ -1340,4 +1418,82 @@ namespace Server.Mobiles
 			}
 		}
 	}
+
+    public class Rage : SpecialAbility
+    {
+        public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override double TriggerChance { get { return 0.1; } }
+
+        private static Dictionary<Mobile, ExpireTimer> _Table;
+
+        public Rage()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, ExpireTimer>();
+
+            ExpireTimer timer = null;
+
+            if (_Table.ContainsKey(defender))
+                timer = _Table[defender];
+
+            if (timer != null)
+            {
+                timer.DoExpire();
+                defender.SendLocalizedMessage(1070825); // The creature continues to rage!
+            }
+            else
+                defender.SendLocalizedMessage(1070826); // The creature goes into a rage, inflicting heavy damage!
+
+            timer = new ExpireTimer(defender, creature);
+            timer.Start();
+            _Table[defender] = timer; 
+        }
+
+        private class ExpireTimer : Timer
+        {
+            private Mobile m_Mobile;
+            private Mobile m_From;
+            private int m_Count;
+
+            public ExpireTimer(Mobile m, Mobile from)
+                : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
+            {
+                m_Mobile = m;
+                m_From = from;
+                Priority = TimerPriority.TwoFiftyMS;
+            }
+
+            public void DoExpire()
+            {
+                Stop();
+                _Table.Remove(m_Mobile);
+
+                if (_Table.Count == 0)
+                    _Table = null;
+            }
+
+            public void DrainLife()
+            {
+                if (m_Mobile.Alive)
+                    m_Mobile.Damage(2, m_From);
+                else
+                    DoExpire();
+            }
+
+            protected override void OnTick()
+            {
+                DrainLife();
+
+                if (++m_Count >= 5)
+                {
+                    DoExpire();
+                    m_Mobile.SendLocalizedMessage(1070824); // The creature's rage subsides.
+                }
+            }
+        }
+    }
 }
