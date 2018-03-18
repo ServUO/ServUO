@@ -1,7 +1,6 @@
 using Server;
 using System;
 using Server.Items;
-using System.Collections.Generic;
 using Server.Engines.VoidPool;
 
  namespace Server.Mobiles
@@ -59,11 +58,15 @@ using Server.Engines.VoidPool;
         public override int BreathChaosDamage { get { return 100; } }
         public override bool HasBreath { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
+        public override bool ClickTitle { get { return false; } }
+        public override bool ShowFameTitle { get { return false; } }
 
         public override bool TeleportsTo { get { return true; } }
         public override TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)); } }
         public override double TeleportProb { get { return 1.0; } }
         public override bool TeleportsPets { get { return true; } }
+
+        public override int GetDeathSound() { return 0x316; }
 
         public override void GenerateLoot()
         {
