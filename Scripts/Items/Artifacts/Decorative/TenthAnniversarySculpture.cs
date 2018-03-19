@@ -2,6 +2,7 @@ using System;
 using Server.Mobiles;
 using System.Collections.Generic;
 using Server.Accounting;
+using Server.Engines.VeteranRewards;
 
 namespace Server.Items
 {
@@ -122,7 +123,7 @@ namespace Server.Items
 
                 if(account != null)
                 {
-                    return (int)Math.Min(MaxLuckBonus, 200 + (int)((DateTime.UtcNow - account.Created).TotalDays / 365) * 50);
+                    return (int)Math.Min(MaxLuckBonus, 200 + (RewardSystem.GetRewardLevel(account)) * 50);
                 }
             }
 
