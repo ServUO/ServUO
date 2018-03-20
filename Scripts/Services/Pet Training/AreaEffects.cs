@@ -14,6 +14,7 @@ namespace Server.Mobiles
 		public virtual int MaxRange { get { return 3; } }
 		public virtual double TriggerChance { get { return 1.0; } }
 		public virtual TimeSpan CooldownDuration { get { return TimeSpan.FromSeconds(30); } }
+        public virtual MagicalAbility RequiredSchool { get { return MagicalAbility.None; } }
 
         public virtual int EffectRange { get { return 5; } }
 		
@@ -59,6 +60,16 @@ namespace Server.Mobiles
 		
 		public virtual bool Validate(BaseCreature attacker, Mobile defender)
 		{
+            if (RequiredSchool != MagicalAbility.None)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(attacker);
+
+                if (profile == null || !profile.HasAbility(RequiredSchool))
+                {
+                    return false;
+                }
+            }
+
 			return defender != null && defender.Alive && !defender.Deleted && !defender.IsDeadBondedPet &&
 					attacker.Alive && !attacker.IsDeadBondedPet && defender.InRange(attacker.Location, MaxRange) && 
 					defender.Map == attacker.Map && attacker.InLOS(defender) && !attacker.BardPacified;
@@ -79,7 +90,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m.Alive && !m.IsDeadBondedPet &&
+                if (m != creature && m.Alive && !m.IsDeadBondedPet &&
                     m.CanBeHarmful(creature) &&
                     SpellHelper.ValidIndirectTarget(m, creature) && 
                     (!Core.AOS || creature.InLOS(m)))
@@ -95,13 +106,22 @@ namespace Server.Mobiles
                 DoEffect(creature, m);
             }
 
+            if (toAffect.Count > 0)
+            {
+                OnAfterEffects(creature, combatant);
+            }
+
             ColUtility.Free(toAffect);
         }
 
         public virtual void DoEffect(BaseCreature creature, Mobile defender)
         {
         }
-		
+
+        public virtual void OnAfterEffects(BaseCreature creature, Mobile defender)
+        {
+        }
+
 		public List<Mobile> _Cooldown;
 		
 		public bool IsInCooldown(Mobile m)
@@ -113,6 +133,9 @@ namespace Server.Mobiles
 		{
 			if(CooldownDuration != TimeSpan.MinValue)
 			{
+                if (_Cooldown == null)
+                    _Cooldown = new List<Mobile>();
+
 				_Cooldown.Add(m);
 				Timer.DelayCall<Mobile>(CooldownDuration, RemoveFromCooldown, m);
 			}
@@ -364,6 +387,7 @@ namespace Server.Mobiles
     {
         public override double TriggerChance { get { return 0.4; } }
         public override int EffectRange { get { return 10; } }
+        public override MagicalAbility RequiredSchool { get { return MagicalAbility.Poisoning; } }
 
         public PoisonBreath()
         {
@@ -381,6 +405,17 @@ namespace Server.Mobiles
             if (creature.AreaPoisonDamage > 0)
             {
                 AOS.Damage(m, creature, creature.AreaPoisonDamage, 0, 0, 0, 100, 0);
+            }
+        }
+
+        public override void OnAfterEffects(BaseCreature creature, Mobile defender)
+        {
+            if (creature.Controlled)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(creature);
+
+                if (profile.HasAbility(MagicalAbility.Poisoning))
+                    creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);
             }
         }
     }

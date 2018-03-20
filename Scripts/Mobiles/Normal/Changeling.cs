@@ -22,7 +22,6 @@ namespace Server.Mobiles
 
         private Mobile m_MorphedInto;
         private DateTime m_LastMorph;
-        private DateTime m_NextFireRing;
 
         [Constructable]
         public Changeling()
@@ -181,16 +180,9 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (Combatant != null)
+            if (Combatant is PlayerMobile && m_MorphedInto != Combatant && Utility.RandomDouble() < 0.05)
             {
-                if (m_NextFireRing <= DateTime.UtcNow && Utility.RandomDouble() < 0.02)
-                {
-                    FireRing();
-                    m_NextFireRing = DateTime.UtcNow + TimeSpan.FromMinutes(2);
-                }
-
-                if (Combatant is PlayerMobile && m_MorphedInto != Combatant && Utility.RandomDouble() < 0.05)
-                    MorphedInto = Combatant as Mobile;
+                MorphedInto = Combatant as Mobile;
             }
         }
 
@@ -258,12 +250,6 @@ namespace Server.Mobiles
         public void Validate()
         {
             Revert();
-        }
-
-        protected virtual void FireRing()
-        {
-            FireEffects(0x3E27, m_FireNorth);
-            FireEffects(0x3E31, m_FireEast);
         }
 
         protected virtual void Morph(Mobile m)

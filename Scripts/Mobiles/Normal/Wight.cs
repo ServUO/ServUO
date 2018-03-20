@@ -9,7 +9,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public Wight()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a Wight";
             Body = 252;
@@ -38,6 +38,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 50.0, 60.0);
             SetSkill(SkillName.Magery, 60.0, 80.0);
             SetSkill(SkillName.Meditation, 50.0, 60.0);
+            SetSkill(SkillName.Necromancy, 40.0, 69.3);
+            SetSkill(SkillName.SpiritSpeak, 40.8, 68.9);
 
             Fame = 1500;
             Karma = -1500;

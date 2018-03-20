@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public DaemonMongbat()
-            : base(AIType.AI_Melee)
+            : base(AIType.AI_Necro)
         {
             Name = "a dameon mongbat";
             Body = 39;

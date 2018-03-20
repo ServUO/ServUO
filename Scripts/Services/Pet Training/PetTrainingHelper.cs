@@ -4,14 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Server.Items;
 
-// Notes:
-/* 1. bushido/ninja block for special moves on non-tokuno tames
- * 2, 
- * 
- * 
- * 
- */
-
 namespace Server.Mobiles
 {
     [Flags]
@@ -130,7 +122,14 @@ namespace Server.Mobiles
             if (bc == null)
                 return null;
 
-            return Definitions.FirstOrDefault(def => def.CreatureType == bc.GetType());
+            TrainingDefinition def = Definitions.FirstOrDefault(d => d.CreatureType == bc.GetType());
+
+            if (bc is IDrake && ((IDrake)bc).DrakeType == DrakeType.Poison)
+            {
+                return new TrainingDefinition(bc.GetType(), def.Class, def.MagicalAbilities, def.SpecialAbilities, def.WeaponAbilities, AreaEffectArea2, 2, 5);
+            }
+
+            return def;
         }
 
         public static TrainingPoint GetTrainingPoint(object o)
@@ -371,24 +370,26 @@ namespace Server.Mobiles
             #region Special Ability Defs
             Abilities = new SpecialAbility[]
             {
-                SpecialAbility.RuneCorruption,
-                SpecialAbility.GraspingClaw,
-                SpecialAbility.RagingBreath,
-                SpecialAbility.ConductiveBlast,
-                SpecialAbility.LightningForce,
-                SpecialAbility.StealLife,
                 SpecialAbility.AngryFire,
+                SpecialAbility.ConductiveBlast,
                 SpecialAbility.DragonBreath,
+                SpecialAbility.GraspingClaw,
                 SpecialAbility.Inferno,
-                SpecialAbility.FlurryForce,
-                SpecialAbility.ViciousBite,
+                SpecialAbility.LightningForce,
+                SpecialAbility.ManaDrain,
+                SpecialAbility.RagingBreath,
+                SpecialAbility.Repel,
                 SpecialAbility.SearingWounds,
+                SpecialAbility.StealLife,
+                SpecialAbility.RuneCorruption,
                 SpecialAbility.LifeLeech,
                 SpecialAbility.StickySkin,
                 SpecialAbility.TailSwipe,
                 SpecialAbility.VenomousBite,
-                SpecialAbility.ManaDrain,
-                SpecialAbility.Repel,
+                SpecialAbility.ViciousBite,
+                SpecialAbility.FlurryForce,
+                SpecialAbility.Rage,
+                SpecialAbility.Heal
             };
 
             SpecialAbilityNone = new SpecialAbility[] { };
@@ -564,6 +565,7 @@ namespace Server.Mobiles
                 AreaEffect.EssenceOfEarth,
                 AreaEffect.AuraOfNausea,
                 AreaEffect.EssenceOfDisease,
+                AreaEffect.PoisonBreath
             };
 
             AreaEffectNone = new AreaEffect[] { };
@@ -813,7 +815,7 @@ namespace Server.Mobiles
                 new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100, 1028848)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Poisoning, 1.0, 1, 1, loc[5][0], loc[5][1],
-                new TrainingPointRequirement(SkillName.Chivalry, 100, 1044111)));
+                new TrainingPointRequirement(SkillName.Poisoning, 100, 1044090)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Bushido, 1.0, 1, 1, loc[6][0], loc[6][1],
                 new TrainingPointRequirement(SkillName.Bushido, 500, 1044112)));
@@ -826,13 +828,13 @@ namespace Server.Mobiles
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.MageryMastery, 1.0, 1, 1, loc[9][0], loc[9][1],
                 new TrainingPointRequirement(SkillName.Magery, 100, 1044085),
-                new TrainingPointRequirement(SkillName.EvalInt, 100, 1044076)));
+                new TrainingPointRequirement(SkillName.EvalInt, 1000, 1044076)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Mysticism, 1.0, 1, 1, loc[10][0], loc[10][1],
                 new TrainingPointRequirement(SkillName.Mysticism, 500, 1044115)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Spellweaving, 1.0, 1, 1, loc[11][0], loc[11][1],
-                new TrainingPointRequirement(SkillName.Spellweaving, 50, 1044114)));
+                new TrainingPointRequirement(SkillName.Spellweaving, 500, 1044114)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Chivalry, 1.0, 1, 1, loc[12][0], loc[12][1],
                 new TrainingPointRequirement(SkillName.Chivalry, 500, 1044111)));
@@ -881,6 +883,8 @@ namespace Server.Mobiles
                 else if (ability == WeaponAbility.FrenziedWhirlwind)
                     requirement = new TrainingPointRequirement(SkillName.Ninjitsu, 500, 1044113);
                 else if (ability == WeaponAbility.Bladeweave)
+                    requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
+                else if (ability == WeaponAbility.Block)
                     requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
 
                 _TrainingPoints.Add(new TrainingPoint(ability, 1.0, 100, 100, loc[index][0], loc[index][1], requirement));
@@ -1002,18 +1006,6 @@ namespace Server.Mobiles
             new int[] { 24, 33 },
         };
 
-         /* 14: 15 to 21
-         * 15: 16 to 22
-         * 16: 18 to 24
-         * 17: 18 to 25 
-         * slot 4 => 5
-         * 18: 19 to 26
-         * 19: 20 to 28
-         * 20: 21 to 29
-         * 21: 23 to 31
-         * 22: 24 to 33
-         */
-
         public static void GetStartValue(TrainingPoint tp, BaseCreature bc, ref int value)
         {
             if (tp.Start != tp.Max)
@@ -1102,7 +1094,6 @@ namespace Server.Mobiles
 
             if (tp.TrainPoint is PetStat && (PetStat)tp.TrainPoint < PetStat.Mana)
             {
-                //TODO: damage
                 var stat = (PetStat)tp.TrainPoint;
                 double cap = GetTrainingCapTotal(stat);
                 int current = stat <= PetStat.Int ? GetTotalStatWeight(bc) : GetTotalAttributeWeight(bc);
@@ -1251,7 +1242,12 @@ namespace Server.Mobiles
             if (def == null)
                 return false;
 
-            return def.SpecialAbilities.FirstOrDefault(a => a == ability) != null;
+            if (def.SpecialAbilities.Any(a => a == ability))
+                return true;
+
+            var profile = GetAbilityProfile(bc);
+
+            return profile != null && (ability == SpecialAbility.ViciousBite || ability == SpecialAbility.VenomousBite) && profile.HasAbility(MagicalAbility.Poisoning);
         }
 
         public static bool ValidateTrainingPoint(BaseCreature bc, AreaEffect ability)
@@ -1261,7 +1257,12 @@ namespace Server.Mobiles
             if (def == null)
                 return false;
 
-            return def.AreaEffects.FirstOrDefault(a => a == ability) != null;
+            if(def.AreaEffects.Any(a => a == ability))
+                return true;
+
+            var profile = GetAbilityProfile(bc);
+
+            return profile != null && ability == AreaEffect.PoisonBreath && profile.HasAbility(MagicalAbility.Poisoning);
         }
 
         public static bool ValidateTrainingPoint(BaseCreature bc, WeaponAbility ability)
@@ -1271,12 +1272,42 @@ namespace Server.Mobiles
             if (def == null)
                 return false;
 
-            return def.WeaponAbilities.FirstOrDefault(a => a == ability) != null;
+            return def.WeaponAbilities.Any(a => a == ability);
         }
 
         public static bool ValidateTrainingPoint(BaseCreature bc, SkillName skill)
         {
             return bc.Skills[skill].Base > 0;
+        }
+
+        public static bool CheckSecondarySkill(BaseCreature bc, SkillName skill)
+        {
+            if (Enabled && bc.Controlled)
+            {
+                var profile = GetAbilityProfile(bc);
+
+                if (profile != null && profile.TokunoTame)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public static void OnWeaponAbilityUsed(BaseCreature bc, SkillName skill)
+        {
+            if (Enabled && bc.Controlled)
+            {
+                var profile = GetAbilityProfile(bc);
+
+                if (profile != null && profile.TokunoTame)
+                {
+                    bc.CheckSkill(skill, 0.0, bc.Skills[skill].Cap);
+                }
+            }
         }
         #endregion
 
@@ -1331,24 +1362,26 @@ namespace Server.Mobiles
         public static TextDefinition[][] SpecialAbilityLocalizations { get { return _SpecialAbilityLocalizations; } }
         private static TextDefinition[][] _SpecialAbilityLocalizations =
         {
-            new TextDefinition[] { 1157398, 1157399 }, // Rune Corruption
-            new TextDefinition[] { 1157400, 1157401 }, // Grasping Claw
-            new TextDefinition[] { 1157404, 1157405 }, // Raging Breath
-            new TextDefinition[] { 1157406, 1157407 }, // Conductive Blast
-            new TextDefinition[] { 1157408, 1157409 }, // Lightning Force
-            new TextDefinition[] { 1157410, 1157411 }, // Steal Life
             new TextDefinition[] { 1157412, 1157413 }, // Angry Fire
+            new TextDefinition[] { 1157406, 1157407 }, // Conductive Blast
             new TextDefinition[] { 1157414, 1157415 }, // Dragon Breath
+            new TextDefinition[] { 1157400, 1157401 }, // Grasping Claw
             new TextDefinition[] { 1157416, 1157417 }, // Inferno
-            new TextDefinition[] { 1157418, 1157419 }, // Flurry Force
-            new TextDefinition[] { 1157420, 1157421 }, // Vicious Bite
+            new TextDefinition[] { 1157408, 1157409 }, // Lightning Force
+            new TextDefinition[] { 1157432, 1157433 }, // Mana Drain
+            new TextDefinition[] { 1157404, 1157405 }, // Raging Breath
+            new TextDefinition[] { 1157434, 1157435 }, // Repel //
             new TextDefinition[] { 1157422, 1157423 }, // Searing Wounds
+            new TextDefinition[] { 1157410, 1157411 }, // Steal Life
+            new TextDefinition[] { 1157398, 1157399 }, // Rune Corruption
             new TextDefinition[] { 1157424, 1157425 }, // Life Leech
             new TextDefinition[] { 1157426, 1157427 }, // Sticky Skin
             new TextDefinition[] { 1157428, 1157429 }, // Tail Swipe
             new TextDefinition[] { 1157430, 1157431 }, // Venomous Bite
-            new TextDefinition[] { 1157432, 1157433 }, // Mana Drain
-            new TextDefinition[] { 1157434, 1157435 }, // Repel
+            new TextDefinition[] { 1157420, 1157421 }, // Vicious Bite
+            new TextDefinition[] { 1157418, 1157419 }, // Flurry Force
+            new TextDefinition[] { 1150005, 0       }, // Rage
+            new TextDefinition[] { 1151311, 0       }, // Heal
         };
 
         public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }
@@ -1360,6 +1393,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157465, 1157466 }, // Essence of Earth
             new TextDefinition[] { 1157467, 1157468 }, // Aura of Nausea
             new TextDefinition[] { 1157469, 1157470 }, // Essence of Disease
+            new TextDefinition[] { 1157475, 1157476 }, // Poison Breath
         };
 
         public static TextDefinition[][] WeaponAbilityLocalizations { get { return _WeaponAbilityLocalizations; } }

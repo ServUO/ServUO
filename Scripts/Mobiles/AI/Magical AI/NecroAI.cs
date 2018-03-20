@@ -5,10 +5,11 @@ using Server.Spells;
 
 namespace Server.Mobiles
 {
-	public class NecroAI : MagicalAI
+	public class NecroAI : MageAI
 	{
 		public override SkillName CastSkill { get { return SkillName.Necromancy; } }
-		
+        public override bool UsesMagery { get { return false; } }
+
 		public NecroAI(BaseCreature m)
             : base(m)
         {
@@ -16,15 +17,14 @@ namespace Server.Mobiles
 		
 		public override Spell GetRandomDamageSpell()
 		{
-			int skill = (int)m_Mobile.Skills[SkillName.Necromancy].Value;
 			int mana = m_Mobile.Mana;
 			int select = 1;
 			
-			if(skill >= 65 && mana >= 29)
+			if(mana >= 29)
 				select = 4;
-			else if(skill >= 60 && mana >= 23)
+			else if(mana >= 23)
                 select = 3;
-			else if (skill >= 50 && mana >= 17)
+			else if (mana >= 17)
 				select = 2;
 			
 			switch (Utility.Random(select))
@@ -40,15 +40,14 @@ namespace Server.Mobiles
 		
 		public override Spell GetRandomCurseSpell()
 		{
-			int skill = (int)m_Mobile.Skills[SkillName.Necromancy].Value;
 			int mana = m_Mobile.Mana;
 			int select = 1;
 			
-			if(skill >= 30 && mana >= 17)
+			if(mana >= 17)
 				select = 4;
-			else if (skill >= 20 && mana >= 13)
+			else if (mana >= 13)
 				select = 3;
-			else if (skill >= 20 && mana >= 11)
+			else if (mana >= 11)
 				select = 2;
 			
 			switch (Utility.Random(select))

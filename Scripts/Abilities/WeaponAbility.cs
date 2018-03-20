@@ -255,7 +255,7 @@ namespace Server.Items
 
         public virtual bool Validate(Mobile from)
         {
-            if (!from.Player)
+            if (!from.Player && (!Core.TOL || CheckMana(from, false)))
                 return true;
 
             NetState state = from.NetState;

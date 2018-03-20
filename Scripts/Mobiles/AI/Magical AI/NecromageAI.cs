@@ -34,63 +34,86 @@ namespace Server.Mobiles
 
         public override Spell GetRandomDamageSpell()
         {
-            if(0.5 > Utility.RandomDouble())
-			{
-				int skill = (int)m_Mobile.Skills[SkillName.Necromancy].Value;
-				int mana = m_Mobile.Mana;
-				int select = 1;
-				
-				if(skill >= 65 && mana >= 29)
-					select = 4;
-				else if(skill >= 60 && mana >= 23)
+            if (0.5 > Utility.RandomDouble())
+            {
+                return base.GetRandomDamageSpell();
+            }
+            else
+            {
+                int mana = m_Mobile.Mana;
+                int select = 1;
+
+                if (mana >= 29)
+                    select = 4;
+                else if (mana >= 23)
                     select = 3;
-				else if (skill >= 50 && mana >= 17)
-					select = 2;
-				
-				switch (Utility.Random(select))
-				{
-					case 0: return new PainSpikeSpell(m_Mobile, null);
-					case 1: return new PoisonStrikeSpell(m_Mobile, null);
-					case 2: return new WitherSpell(m_Mobile, null);
-					case 3: return new StrangleSpell(m_Mobile, null);
-				}
-			}
-			
-            return base.GetRandomDamageSpell();
+                else if (mana >= 17)
+                    select = 2;
+
+                switch (Utility.Random(select))
+                {
+                    case 0: return new PainSpikeSpell(m_Mobile, null);
+                    case 1: return new PoisonStrikeSpell(m_Mobile, null);
+                    case 2: return new WitherSpell(m_Mobile, null);
+                    case 3: return new StrangleSpell(m_Mobile, null);
+                }
+            }
+
+            return null;
         }
 
         public override Spell GetRandomCurseSpell()
         {
-            int skill = (int)m_Mobile.Skills[SkillName.Necromancy].Value;
-			int mana = m_Mobile.Mana;
-			int select = 1;
-			
-			if(skill >= 30 && mana >= 17)
-				select = 4;
-			else if (skill >= 20 && mana >= 13)
-				select = 3;
-			else if (skill >= 20 && mana >= 11)
-				select = 2;
-			
-			switch (Utility.Random(select))
-			{
-				case 0: return new CorpseSkinSpell(m_Mobile, null);
-				case 1: return new EvilOmenSpell(m_Mobile, null);
-				case 2: return new BloodOathSpell(m_Mobile, null);
-				case 3: return new MindRotSpell(m_Mobile, null);
-			}
+            if (0.5 > Utility.RandomDouble())
+            {
+                return base.GetRandomCurseSpell();
+            }
+            else
+            {
+                int mana = m_Mobile.Mana;
+                int select = 1;
 
-            return base.GetRandomCurseSpell();
+                if (mana >= 17)
+                    select = 4;
+                else if (mana >= 13)
+                    select = 3;
+                else if (mana >= 11)
+                    select = 2;
+
+                switch (Utility.Random(select))
+                {
+                    case 0: return new CorpseSkinSpell(m_Mobile, null);
+                    case 1: return new EvilOmenSpell(m_Mobile, null);
+                    case 2: return new BloodOathSpell(m_Mobile, null);
+                    case 3: return new MindRotSpell(m_Mobile, null);
+                }
+            }
+
+            return null;
         }
 		
 		public override Spell GetRandomBuffSpell()
 		{
-			return new CurseWeaponSpell(m_Mobile, null);
+            if (0.5 > Utility.RandomDouble())
+            {
+                return base.GetRandomBuffSpell();
+            }
+            else
+            {
+                if (!SmartAI && Utility.RandomBool())
+                {
+                    return new CurseWeaponSpell(m_Mobile, null);
+                }
+                else
+                {
+                    return GetRandomSummonSpell();
+                }
+            }
 		}
 
         public override Spell GetRandomSummonSpell()
 		{
-			if(m_Mobile.Skills[CastSkill].Value >= 40 && m_Mobile.Mana >= 23)
+			if(m_Mobile.Mana >= 23)
 			{
                 return new AnimateDeadSpell(m_Mobile, null);
 			}

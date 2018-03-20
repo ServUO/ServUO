@@ -1,7 +1,7 @@
 using System;
 using Server;
-using Server.Gumps;
 using Server.Items;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -36,6 +36,16 @@ namespace Server.Mobiles
 
             ControlSlotsMin = controlmin;
             ControlSlotsMax = controlmax;
+        }
+
+        public bool HasSpecialAbility(SpecialAbility ability)
+        {
+            return SpecialAbilities != null && SpecialAbilities.Any(a => a == ability);
+        }
+
+        public bool HasAreaEffect(AreaEffect ability)
+        {
+            return AreaEffects != null && AreaEffects.Any(a => a == ability);
         }
     }
 }

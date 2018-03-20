@@ -10,9 +10,13 @@ namespace Server.Mobiles
 	{
 		public virtual int ManaCost { get { return 10;  } }
 		public virtual int MaxRange { get { return 1; } }
-		public virtual double TriggerChance { get { return 1.0; } }
+		public virtual double TriggerChance { get { return 0.1; } }
+        public virtual bool RequiresCombatant { get { return true; } }
 		public virtual TimeSpan CooldownDuration { get { return TimeSpan.FromSeconds(30); } }
-		
+
+        public virtual MagicalAbility RequiredSchool { get { return MagicalAbility.None; } }
+        public virtual bool NaturalAbility { get { return false; } }
+
 		public virtual bool TriggerOnGotMeleeDamage { get { return false; } }
 		public virtual bool TriggerOnDoMeleeDamage { get { return false; } }
 		public virtual bool TriggerOnGotSpellDamage { get { return false; } }
@@ -82,11 +86,10 @@ namespace Server.Mobiles
 		public static void CheckThinkTrigger(BaseCreature bc)
 		{
 			var combatant = bc.Combatant;
-			
-			if(combatant is Mobile)
-			{
-                var profile = PetTrainingHelper.GetAbilityProfile(bc);
+            var profile = PetTrainingHelper.GetAbilityProfile(bc);
 
+            if (combatant is Mobile)
+            {
                 if (profile != null)
                 {
                     SpecialAbility ability = null;
@@ -104,7 +107,24 @@ namespace Server.Mobiles
                         ability.Trigger(bc, (Mobile)combatant, ref d);
                     }
                 }
-			}
+            }
+            else
+            {
+                SpecialAbility ability = null;
+
+                var abilties = profile.EnumerateSpecialAbilities().Where(m => m.TriggerOnThink && !m.IsInCooldown(bc) && !m.RequiresCombatant).ToArray();
+
+                if (abilties != null && abilties.Length > 0)
+                {
+                    ability = abilties[Utility.Random(abilties.Length)];
+                }
+
+                if (ability != null)
+                {
+                    int d = 0;
+                    ability.Trigger(bc, bc, ref d);
+                }
+            }
 		}
 		
 		public virtual void Trigger(BaseCreature creature, Mobile defender, ref int damage)
@@ -118,6 +138,16 @@ namespace Server.Mobiles
 		
 		public virtual bool Validate(BaseCreature attacker, Mobile defender)
 		{
+            if (RequiredSchool != MagicalAbility.None)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(attacker);
+
+                if (profile == null || !profile.HasAbility(RequiredSchool))
+                {
+                    return false;
+                }
+            }
+
 			return defender != null && defender.Alive && !defender.Deleted && !defender.IsDeadBondedPet &&
 					attacker.Alive && !attacker.IsDeadBondedPet && defender.InRange(attacker.Location, MaxRange) && 
 					defender.Map == attacker.Map && attacker.InLOS(defender) && !attacker.BardPacified;
@@ -128,7 +158,7 @@ namespace Server.Mobiles
 			return m.Mana >= ManaCost;
 		}
 		
-		public List<Mobile> _Cooldown;
+		protected List<Mobile> _Cooldown;
 		
 		public bool IsInCooldown(Mobile m)
 		{
@@ -139,6 +169,9 @@ namespace Server.Mobiles
 		{
 			if(CooldownDuration != TimeSpan.MinValue)
 			{
+                if (_Cooldown == null)
+                    _Cooldown = new List<Mobile>();
+
 				_Cooldown.Add(m);
 				Timer.DelayCall<Mobile>(CooldownDuration, RemoveFromCooldown, m);
 			}
@@ -270,28 +303,6 @@ namespace Server.Mobiles
             }
         }
 
-		public static SpecialAbility VenomousBite
-        {
-            get
-            {
-                if (_Abilities[11] == null)
-                    _Abilities[11] = new VenomousBite();
-
-                return _Abilities[11];
-            }
-        }
-
-		public static SpecialAbility ViciousBite
-        {
-            get
-            {
-                if (_Abilities[12] == null)
-                    _Abilities[12] = new ViciousBite();
-
-                return _Abilities[12];
-            }
-        }
-
         public static SpecialAbility RuneCorruption
         {
             get
@@ -336,6 +347,28 @@ namespace Server.Mobiles
             }
         }
 
+        public static SpecialAbility VenomousBite
+        {
+            get
+            {
+                if (_Abilities[11] == null)
+                    _Abilities[11] = new VenomousBite();
+
+                return _Abilities[11];
+            }
+        }
+
+        public static SpecialAbility ViciousBite
+        {
+            get
+            {
+                if (_Abilities[12] == null)
+                    _Abilities[12] = new ViciousBite();
+
+                return _Abilities[12];
+            }
+        }
+
         public static SpecialAbility FlurryForce
         {
             get
@@ -358,9 +391,19 @@ namespace Server.Mobiles
             }
         }
 
+        public static SpecialAbility Heal
+        {
+            get
+            {
+                if (_Abilities[19] == null)
+                    _Abilities[19] = new Heal();
+
+                return _Abilities[19];
+            }
+        }
 
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static SpecialAbility[] _Abilities = new SpecialAbility[19];
+        private static SpecialAbility[] _Abilities = new SpecialAbility[20];
     }
 	
 	public class AngryFire : SpecialAbility
@@ -470,6 +513,7 @@ namespace Server.Mobiles
     public class FlurryForce : SpecialAbility
     {
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override bool NaturalAbility { get { return true; } }
 
         private static Dictionary<Mobile, ExpireTimer> _Table;
 
@@ -569,6 +613,9 @@ namespace Server.Mobiles
         {
             if (CooldownDuration != TimeSpan.MinValue)
             {
+                if (_Cooldown == null)
+                    _Cooldown = new List<Mobile>();
+
                 _Cooldown.Add(m);
                 Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(Utility.RandomMinMax(m.BreathMinDelay, m.BreathMaxDelay)), RemoveFromCooldown, m);
             }
@@ -578,7 +625,6 @@ namespace Server.Mobiles
 	public class GraspingClaw : SpecialAbility
 	{
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
-        public override double TriggerChance { get { return 0.1; } }
 
         public static Dictionary<Mobile, ExpireTimer> _Table;
 
@@ -660,7 +706,6 @@ namespace Server.Mobiles
 	public class Inferno : SpecialAbility
 	{
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
-        public override double TriggerChance { get { return 0.1; } }
 
         public static Dictionary<Mobile, ExpireTimer> _Table;
 
@@ -748,6 +793,8 @@ namespace Server.Mobiles
 		
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
 		{
+            Server.Effects.SendBoltEffect(defender, true);
+            AOS.Damage(defender, creature, Utility.RandomMinMax(15, 20), 0, 0, 0, 0, 100);
 		}
 	}
 	
@@ -755,7 +802,6 @@ namespace Server.Mobiles
 	{
         public override bool TriggerOnGotMeleeDamage { get { return true; } }
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
-        public override double TriggerChance { get { return 0.25; } }
 
 		public ManaDrain()
 		{
@@ -831,6 +877,7 @@ namespace Server.Mobiles
             }
 
             creature.PlaySound(0x227);
+            defender.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
 
             timer = new InternalTimer(creature, defender);
             timer.Start();
@@ -887,7 +934,6 @@ namespace Server.Mobiles
 	{
         public override bool TriggerOnGotMeleeDamage { get { return true; } }
         public override bool TriggerOnGotSpellDamage { get { return true; } }
-        public override double TriggerChance { get { return 0.25; } }
 
 		public Repel()
 		{
@@ -895,8 +941,8 @@ namespace Server.Mobiles
 		
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
 		{
-            // TODO: Effects?
             defender.SendLocalizedMessage(1070844); // The creature repels the attack back at you.
+            defender.FixedEffect(0x37B9, 10, 5);
 
             AOS.Damage(defender, creature, damage, 0, 0, 0, 0, 0, 0, 100);
 
@@ -925,6 +971,9 @@ namespace Server.Mobiles
 				_Table = new Dictionary<Mobile, InternalTimer>();
 			
 			_Table[defender] = new InternalTimer(defender);
+
+            defender.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
+            defender.SendLocalizedMessage(1151177); // The searing attack cauterizes the wound on impact.
 		}
 		
 		public static bool IsUnderEffects(Mobile m)
@@ -965,7 +1014,9 @@ namespace Server.Mobiles
 		
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
 		{
-            //TODO: Effects
+            defender.FixedParticles(0x374A, 1, 15, 5054, 23, 7, EffectLayer.Head);
+            defender.PlaySound(0x1F9);
+
             AOS.Damage(defender, creature, damage, 0, 0, 0, 0, 100);
 
             new InternalTimer(creature, defender, damage);
@@ -984,11 +1035,15 @@ namespace Server.Mobiles
                 Defender = defender;
                 ToHeal = toHeal;
 
+                defender.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
+                defender.PlaySound(0x231);
+
 				Start();
 			}
 			
 			protected override void OnTick()
 			{
+                Defender.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
                 Attacker.Hits = Math.Min(Attacker.HitsMax, Attacker.Hits + (ToHeal / 5));
 			}
 		}
@@ -997,8 +1052,8 @@ namespace Server.Mobiles
 	public class VenomousBite : SpecialAbility
 	{
 		public override int ManaCost { get { return 50;  } }
-		public override double TriggerChance { get { return 0.1; } }
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override MagicalAbility RequiredSchool { get { return MagicalAbility.Poisoning; } }
 
 		public VenomousBite()
 		{
@@ -1006,7 +1061,6 @@ namespace Server.Mobiles
 		
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
 		{
-			//TODO: Effects/Sounds?
             IPooledEnumerable eable = creature.GetMobilesInRange(3);
 			List<Mobile> list = new List<Mobile>();
 			
@@ -1014,36 +1068,40 @@ namespace Server.Mobiles
 			
 			foreach(Mobile m in eable)
 			{
-                if (creature.CanBeHarmful(m) && Server.Spells.SpellHelper.ValidIndirectTarget(creature, m) && creature.InLOS(m))
+                if (creature != m &&
+                    creature.CanBeHarmful(m) && 
+                    Server.Spells.SpellHelper.ValidIndirectTarget(creature, m) && 
+                    creature.InLOS(m))
 				{
 					list.Add(m);
 				}
 			}
 			
 			eable.Free();
-            double total = creature.Skills[SkillName.Poisoning].Value * 2;                        
-			
-			int level = 1;                       
-			double dist = 0;
+            Poison p = creature.GetHitPoison();
+
+            if (p == null)
+                return;
 
 			foreach(var m in list)
 			{
-                dist = creature.GetDistanceToSqrt(m);
+                defender.PlaySound(0xDD);
+                defender.FixedParticles(0x3728, 244, 25, 9941, 1266, 0, EffectLayer.Waist);
 
-				if (dist >= 3.0)
-					total -= (dist - 3.0) * 10.0;
+                m.SendLocalizedMessage(1008097, false, creature.Name); //  : poisoned you!
 
-				if (total >= 200.0 && 1 > Utility.Random(10))
-					level = 3;
-				else if (total > (Core.AOS ? 170.1 : 170.0))
-					level = 2;
-				else if (total > (Core.AOS ? 130.1 : 130.0))
-					level = 1;
-				else
-					level = 0;
-
-                m.ApplyPoison(creature, Poison.GetPoison(level));
+                m.ApplyPoison(creature, p);
 			}
+
+            if (creature.Controlled && list.Count > 0)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(creature);
+
+                if (profile.HasAbility(MagicalAbility.Poisoning))
+                    creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);
+            }
+
+            ColUtility.Free(list);
 		}
 	}
 	
@@ -1260,7 +1318,6 @@ namespace Server.Mobiles
 	public class LifeLeech : SpecialAbility
 	{
 		public override int ManaCost { get { return 15;  } }
-		public override double TriggerChance { get { return 0.5; } }
 		public override TimeSpan CooldownDuration { get { return TimeSpan.FromSeconds(Utility.Random(10, 20)); } }
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
 
@@ -1411,7 +1468,8 @@ namespace Server.Mobiles
 			{
 				defender.SendLocalizedMessage(1112555); // You're left confused as the creature's tail catches you right in the face!
 
-				// TODO: Effects/Sounds?
+                defender.PlaySound(0x204);
+                defender.FixedEffect(0x376A, 6, 1);
 
                 defender.AddStatMod(new StatMod(StatType.Dex, "[TailSwipe] Dex", -20, TimeSpan.FromSeconds(5)));
                 defender.AddStatMod(new StatMod(StatType.Int, "[TailSwipe] Int", -20, TimeSpan.FromSeconds(5)));
@@ -1422,7 +1480,7 @@ namespace Server.Mobiles
     public class Rage : SpecialAbility
     {
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
-        public override double TriggerChance { get { return 0.1; } }
+        public override bool NaturalAbility { get { return true; } }
 
         private static Dictionary<Mobile, ExpireTimer> _Table;
 
@@ -1450,7 +1508,7 @@ namespace Server.Mobiles
 
             timer = new ExpireTimer(defender, creature);
             timer.Start();
-            _Table[defender] = timer; 
+            _Table[defender] = timer;
         }
 
         private class ExpireTimer : Timer
@@ -1494,6 +1552,25 @@ namespace Server.Mobiles
                     m_Mobile.SendLocalizedMessage(1070824); // The creature's rage subsides.
                 }
             }
+        }
+    }
+
+    public class Heal : SpecialAbility
+    {
+        public override bool TriggerOnThink { get { return true; } }
+        public override double TriggerChance { get { return 1.0; } }
+        public override bool RequiresCombatant { get { return false; } }
+        public override int ManaCost { get { return 0; } }
+        public override TimeSpan CooldownDuration { get { return TimeSpan.MinValue; } }
+        public override bool NaturalAbility { get { return true; } }
+
+        public Heal()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile target, ref int damage)
+        {
+            creature.CheckHeal();
         }
     }
 }

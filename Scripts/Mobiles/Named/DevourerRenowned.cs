@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public DevourerRenowned()
-            : base(AIType.AI_Mage)
+            : base(AIType.AI_NecroMage)
         {
             this.Name = "Devourer of Souls";
             this.Title = "[Renowned]";
@@ -33,6 +33,8 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 60, 70);
             this.SetResistance(ResistanceType.Energy, 40, 50);
 
+            this.SetSkill(SkillName.Necromancy, 90.1, 100.0);
+            this.SetSkill(SkillName.SpiritSpeak, 90.1, 100.0);
             this.SetSkill(SkillName.EvalInt, 90.1, 100.0);
             this.SetSkill(SkillName.Magery, 90.1, 100.0);
             this.SetSkill(SkillName.Meditation, 90.1, 100.0);

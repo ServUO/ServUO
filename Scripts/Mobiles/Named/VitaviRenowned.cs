@@ -9,7 +9,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public VitaviRenowned()
-            : base(AIType.AI_Mage)
+            : base(AIType.AI_Mystic)
         {
             this.Name = "Vitavi";
             this.Title = "[Renowned]";

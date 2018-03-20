@@ -1349,6 +1349,7 @@ namespace Server.Spells
                 if (SearingWounds.IsUnderEffects(target))
                 {
                     amount /= 2;
+                    target.SendLocalizedMessage(1151178); // The cauterized wound resists some of your healing.
                 }
 
                 int realAmount = Math.Min(amount, target.HitsMax - target.Hits);

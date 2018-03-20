@@ -838,8 +838,8 @@ namespace Server.Mobiles
                 MagicalAbility abil = PetTrainingHelper.MagicalAbilities[i];
 
                 if ((abil == MagicalAbility.Chivalry && Creature.Karma < 0) ||
-                    (abil == MagicalAbility.Necro && Creature.Karma > 0) ||
-                    (abil == MagicalAbility.Necro && Creature.Karma > 0))
+                    (abil == MagicalAbility.Necromancy && Creature.Karma > 0) ||
+                    (abil == MagicalAbility.Necromancy && Creature.Karma > 0))
                 {
                     continue;
                 }
@@ -864,7 +864,25 @@ namespace Server.Mobiles
         {
             int y = 90;
 
-            for (int i = 0; i < Definition.SpecialAbilities.Length; i++)
+            for (int i = 0; i < SpecialAbility.Abilities.Length; i++)
+            {
+                var abil = SpecialAbility.Abilities[i];
+
+                if (AbilityProfile.HasAbility(abil))
+                    continue;
+
+                if (Definition.HasSpecialAbility(abil) || (AbilityProfile.HasAbility(MagicalAbility.Poisoning) && abil is VenomousBite))
+                {
+                    var tp = PetTrainingHelper.GetTrainingPoint(abil);
+
+                    AddButton(275, y, 4005, 4007, 100 + i, GumpButtonType.Reply, 0);
+                    Record(tp, 320, y + 2);
+
+                    y += 22;
+                }
+            }
+
+            /*for (int i = 0; i < Definition.SpecialAbilities.Length; i++)
             {
                 var abil = Definition.SpecialAbilities[i];
 
@@ -877,7 +895,7 @@ namespace Server.Mobiles
                 Record(tp, 320, y + 2);
 
                 y += 22;
-            }
+            }*/
         }
 
         private void BuildSpecialMovesPage()
@@ -904,7 +922,25 @@ namespace Server.Mobiles
         {
             int y = 90;
 
-            for (int i = 0; i < Definition.AreaEffects.Length; i++)
+            for (int i = 0; i < AreaEffect.Effects.Length; i++)
+            {
+                var abil = AreaEffect.Effects[i];
+
+                if (AbilityProfile.HasAbility(abil))
+                    continue;
+
+                if (Definition.HasAreaEffect(abil) || (AbilityProfile.HasAbility(MagicalAbility.Poisoning) && abil is PoisonBreath))
+                {
+                    var tp = PetTrainingHelper.GetTrainingPoint(abil);
+
+                    AddButton(275, y, 4005, 4007, 100 + i, GumpButtonType.Reply, 0);
+                    Record(tp, 320, y + 2);
+
+                    y += 22;
+                }
+            }
+
+            /*for (int i = 0; i < Definition.AreaEffects.Length; i++)
             {
                 var abil = Definition.AreaEffects[i];
 
@@ -917,7 +953,7 @@ namespace Server.Mobiles
                 Record(tp, 320, y + 2);
 
                 y += 22;
-            }
+            }*/
         }
 
         private void Record(TrainingPoint tp, int x, int y)
@@ -1093,7 +1129,7 @@ namespace Server.Mobiles
                     tp = PetTrainingHelper.GetTrainingPoint(mabil);
                     break;
                 case 5: // spec abil
-                    SpecialAbility sabil = Definition.SpecialAbilities[id - 100];
+                    SpecialAbility sabil = SpecialAbility.Abilities[id - 100];
                     tp = PetTrainingHelper.GetTrainingPoint(sabil);
                     break;
                 case 6: // spec moves
@@ -1101,7 +1137,7 @@ namespace Server.Mobiles
                     tp = PetTrainingHelper.GetTrainingPoint(wabil);
                     break;
                 case 7: // area effects
-                    AreaEffect aabil = Definition.AreaEffects[id - 100];
+                    AreaEffect aabil = AreaEffect.Effects[id - 100];
                     tp = PetTrainingHelper.GetTrainingPoint(aabil);
                     break;
 
@@ -1436,7 +1472,7 @@ namespace Server.Mobiles
                     {
                         User.SendLocalizedMessage(1156876); // Since you have been in combat recently you may not use this feature.
                     }
-                    else if (!profile.HasIncreasedControlSlot)
+                    else if (!profile.HasIncreasedControlSlot && User.Followers >= 5)
                     {
                         User.SendLocalizedMessage(1157498); // You do not have the available pet slots to train this pet. Please free up pet slots and try again.
                     }

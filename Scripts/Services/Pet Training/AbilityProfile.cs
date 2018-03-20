@@ -62,7 +62,7 @@ namespace Server.Mobiles
                     RemoveSpecialMagicalAbility(oldAbility);
                 }
 
-                History.Add(ability);
+                AddToHistory(ability);
                 MagicalAbility = ability;
                 OnAddAbility(ability);
                 return true;
@@ -182,10 +182,10 @@ namespace Server.Mobiles
                     if (req.Requirement is SkillName)
                     {
                         double skill = Creature.Skills[(SkillName)req.Requirement].Base;
-                        double toAdd = req.Cost == 500 ? 40 : 20;
+                        double toAdd = req.Cost == 100 ? 20 : 40;
 
-                        if (skill < 20)
-                            Creature.Skills[(SkillName)req.Requirement].Base = 20;
+                        if (skill < toAdd)
+                            Creature.Skills[(SkillName)req.Requirement].Base = toAdd;
                     }
                     else if (req.Requirement is WeaponAbility)
                     {
@@ -247,7 +247,7 @@ namespace Server.Mobiles
                 count++;
 
             if (SpecialAbilities != null)
-                count += SpecialAbilities.Length;
+                count += SpecialAbilities.Where(a => !a.NaturalAbility).Count();
 
             if (AreaEffects != null)
                 count += AreaEffects.Length;
@@ -263,7 +263,7 @@ namespace Server.Mobiles
             if (!Creature.Controlled)
                 return true;
 
-            return !HasSpecialMagicalAbility() && (SpecialAbilities == null || SpecialAbilities.Length == 0) && AbilityCount() < 3;
+            return !HasSpecialMagicalAbility() && (SpecialAbilities == null || SpecialAbilities.Where(a => !a.NaturalAbility).Count() == 0) && AbilityCount() < 3;
         }
 
         public bool CanChooseAreaEffect()
@@ -300,9 +300,9 @@ namespace Server.Mobiles
         {
             if (IsSpecialMagicalAbility(ability))
             {
-                SpecialAbilities = null;
+                //SpecialAbilities = null;
                 WeaponAbilities = null;
-                Creature.ChangeAIType(AIType.AI_Melee);
+                Creature.AI = AIType.AI_Melee;
             }
 
             switch (ability)
@@ -368,7 +368,7 @@ namespace Server.Mobiles
 
         public void RemoveSpecialMagicalAbility(MagicalAbility ability)
         {
-            SpecialAbilities = null;
+            //SpecialAbilities = null;
             WeaponAbilities = null;
 
             Creature.Mastery = SkillName.Alchemy; // default
@@ -470,6 +470,10 @@ namespace Server.Mobiles
             MagicalAbility = (MagicalAbility)reader.ReadInt();
             TokunoTame = reader.ReadBool();
 
+            RegenHits = reader.ReadInt();
+            RegenStam = reader.ReadInt();
+            RegenMana = reader.ReadInt();
+
             int count = reader.ReadInt();
             SpecialAbilities = new SpecialAbility[count];
 
@@ -515,6 +519,10 @@ namespace Server.Mobiles
 
             writer.Write((int)MagicalAbility);
             writer.Write(TokunoTame);
+
+            writer.Write(RegenHits);
+            writer.Write(RegenStam);
+            writer.Write(RegenMana);
 
             writer.Write(SpecialAbilities != null ? SpecialAbilities.Length : 0);
 

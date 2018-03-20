@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public TreefellowGuardian()
-            : base(AIType.AI_Spellweaving, FightMode.Evil, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mystic, FightMode.Evil, 10, 1, 0.2, 0.4)
         {
             Name = "a Treefellow Guardian";
             Body = 301;

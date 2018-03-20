@@ -48,7 +48,14 @@ namespace Server.Spells.SkillMasteries
 
         public override void SendCastEffect()
         {
-            Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+            if (Caster.Player)
+            {
+                Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+            }
+            else if (Caster is BaseCreature)
+            {
+                Caster.PlaySound(((BaseCreature)Caster).GetAngerSound());
+            }
         }
 
         public override void OnCast()

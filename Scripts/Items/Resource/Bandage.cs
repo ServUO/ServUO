@@ -530,6 +530,7 @@ namespace Server.Items
                     if (SearingWounds.IsUnderEffects(m_Patient))
                     {
                         toHeal /= 2;
+                        m_Patient.SendLocalizedMessage(1151178); // The cauterized wound resists some of your healing.
                     }
 
                     if (toHeal < 1)

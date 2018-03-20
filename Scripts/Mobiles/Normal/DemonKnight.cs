@@ -55,7 +55,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public DemonKnight()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = NameList.RandomName("demon knight");
             Title = "the Dark Father";

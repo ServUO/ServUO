@@ -88,6 +88,9 @@ namespace Server.Items
                     BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1152144, TimeSpan.FromSeconds(2.0), defender));
                     Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(2), mob => mob.SendSpeedControl(SpeedControlType.Disable), defender);
                 }
+
+                if(attacker is BaseCreature)
+                    PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Ninjitsu);
             }
         }
 
@@ -141,7 +144,8 @@ namespace Server.Items
                         m_Attacker.FixedEffect(0x3728, 10, 15);
                         m_Attacker.PlaySound(0x2A1);
 
-                        int skill = (int)Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value);
+                        int skill = m_Attacker is BaseCreature ? (int)m_Attacker.Skills[SkillName.Ninjitsu].Value :
+                                                              (int)Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value);
 
                         int amount = Utility.RandomMinMax((int)(skill / 50) * 5, (int)(skill / 50) * 20) + 2;
                         AOS.Damage(m, m_Attacker, amount, 100, 0, 0, 0, 0);

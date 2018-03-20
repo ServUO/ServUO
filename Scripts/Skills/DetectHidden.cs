@@ -35,7 +35,7 @@ namespace Server.SkillHandlers
             return TimeSpan.FromSeconds(6.0);
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             public InternalTarget()
                 : base(12, true, TargetFlags.None)

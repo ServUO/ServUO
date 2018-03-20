@@ -9,7 +9,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public AbyssalAbomination()
-            : base(AIType.AI_Necro, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "an Abyssal abomination";
             Body = 742;
@@ -35,6 +35,8 @@ namespace Server.Mobiles
 
             SetSkill(SkillName.EvalInt, 200.0);
             SetSkill(SkillName.Magery, 112.6, 117.5);
+            SetSkill(SkillName.SpiritSpeak, 200.0);
+            SetSkill(SkillName.Necromancy, 112.6, 117.5);
             SetSkill(SkillName.Meditation, 200.0);
             SetSkill(SkillName.MagicResist, 117.6, 120.0);
             SetSkill(SkillName.Tactics, 100.0);
