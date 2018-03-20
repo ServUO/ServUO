@@ -152,6 +152,11 @@ namespace Server.Engines.VendorSearching
         {
             if (info.ButtonID != 0)
             {
+                if (!VendorSearch.CanSearch(User))
+                {
+                    User.SendLocalizedMessage(1154680); //Before using vendor search, you must be in a justice region or a safe log-out location (such as an inn or a house which has you on its Owner, Co-owner, or Friends list). 
+                    return;
+                }
                 TextRelay searchname = info.GetTextEntry(0);
 
                 if (searchname != null && !String.IsNullOrEmpty(searchname.Text))
@@ -512,6 +517,10 @@ namespace Server.Engines.VendorSearching
                     if (!VendorMap.CheckVendor())
                     {
                         User.SendLocalizedMessage(1154643); // That item is no longer for sale.
+                    }
+                    else if (!VendorSearch.CanSearch(User))
+                    {
+                        User.SendLocalizedMessage(1154680); //Before using vendor search, you must be in a justice region or a safe log-out location (such as an inn or a house which has you on its Owner, Co-owner, or Friends list). 
                     }
                     else
                     {
