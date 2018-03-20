@@ -110,15 +110,17 @@ namespace Server.Engines.VeteranRewards
         public static int GetRewardLevel(Account acct)
         {
             TimeSpan totalTime = (DateTime.UtcNow - acct.Created);
+            TimeSpan ositotalTime = (DateTime.UtcNow - new DateTime(1997, 9, 24));
 
             int level = (int)(totalTime.TotalDays / RewardInterval.TotalDays);
+            int levelosi = (int)(ositotalTime.TotalDays / 365);
 
             if (level < 0)
                 level = 0;
 
             level += StartingLevel;
 
-            return level;
+            return Math.Min(level, levelosi);
         }
 
         public static bool HasHalfLevel(Mobile mob)

@@ -15,14 +15,15 @@ namespace Server.Misc
     {
         None,
         Crypt,
-        NewCrypt
+        NewCrypt,
+        NewSecureCrypt
     }
 
     public class AccountHandler
     {
 	    public static PasswordProtection ProtectPasswords = Config.GetEnum(
 		    "Accounts.ProtectPasswords",
-			PasswordProtection.NewCrypt);
+			PasswordProtection.NewSecureCrypt);
 
         private static readonly int MaxAccountsPerIP = Config.Get("Accounts.AccountsPerIp", 1);
         private static readonly bool AutoAccountCreation = Config.Get("Accounts.AutoCreateAccounts", true);

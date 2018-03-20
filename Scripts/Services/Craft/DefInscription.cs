@@ -208,7 +208,7 @@ namespace Server.Engines.Craft
             int index = AddCraft(type, 1111671, id, minSkill, minSkill + 1.0, m_RegTypes[(int)regs[0]], GetRegLocalization(regs[0]), 1, 501627);	//Yes, on OSI it's only 1.0 skill diff'.  Don't blame me, blame OSI.
 
             for (int i = 1; i < regs.Length; ++i)
-                AddRes(index, m_RegTypes[(int)regs[0]], GetRegLocalization(regs[i]), 1, 501627);
+                AddRes(index, m_RegTypes[(int)regs[i]], GetRegLocalization(regs[i]), 1, 501627);
 
             AddRes(index, typeof(BlankScroll), 1044377, 1, 1044378);
 

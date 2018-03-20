@@ -9,45 +9,45 @@ namespace Server.Mobiles
         public ShadowWyrm()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a shadow wyrm";
-            this.Body = 106;
-            this.BaseSoundID = 362;
+            Name = "a shadow wyrm";
+            Body = 106;
+            BaseSoundID = 362;
 
-            this.SetStr(898, 1030);
-            this.SetDex(68, 200);
-            this.SetInt(488, 620);
+            SetStr(898, 1030);
+            SetDex(68, 200);
+            SetInt(488, 620);
 
-            this.SetHits(558, 599);
+            SetHits(558, 599);
 
-            this.SetDamage(29, 35);
+            SetDamage(29, 35);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Cold, 25);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Cold, 25);
 
-            this.SetResistance(ResistanceType.Physical, 65, 75);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 45, 55);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 50, 60);
+            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 45, 55);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 50, 60);
 
-            this.SetSkill(SkillName.EvalInt, 80.1, 100.0);
-            this.SetSkill(SkillName.Magery, 80.1, 100.0);
-            this.SetSkill(SkillName.Meditation, 52.5, 75.0);
-            this.SetSkill(SkillName.MagicResist, 100.3, 130.0);
-            this.SetSkill(SkillName.Tactics, 97.6, 100.0);
-            this.SetSkill(SkillName.Wrestling, 97.6, 100.0);
-            this.SetSkill(SkillName.DetectHidden, 90.0, 100.0);
-            this.SetSkill(SkillName.Necromancy, 80.0, 90.0);
-            this.SetSkill(SkillName.SpiritSpeak, 100.0, 105.0);
+            SetSkill(SkillName.EvalInt, 80.1, 100.0);
+            SetSkill(SkillName.Magery, 80.1, 100.0);
+            SetSkill(SkillName.Meditation, 52.5, 75.0);
+            SetSkill(SkillName.MagicResist, 100.3, 130.0);
+            SetSkill(SkillName.Tactics, 97.6, 100.0);
+            SetSkill(SkillName.Wrestling, 97.6, 100.0);
+            SetSkill(SkillName.DetectHidden, 90.0, 100.0);
+            SetSkill(SkillName.Necromancy, 80.0, 90.0);
+            SetSkill(SkillName.SpiritSpeak, 100.0, 105.0);
 
-            this.Fame = 22500;
-            this.Karma = -22500;
+            Fame = 22500;
+            Karma = -22500;
 
-            this.VirtualArmor = 70;
+            VirtualArmor = 70;
 
-            this.Tamable = true;
-            this.ControlSlots = 5;
-            this.MinTameSkill = 105.0;
+            Tamable = true;
+            ControlSlots = 5;
+            MinTameSkill = 105.0;
         }
 
         public ShadowWyrm(Serial serial)
@@ -56,10 +56,9 @@ namespace Server.Mobiles
         }
 
         public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame { get { return true; } }
-        public override bool ReacquireOnMovement { get { return !this.Controlled; } }
+        public override bool ReacquireOnMovement { get { return !Controlled; } }
         public override bool HasBreath { get { return true; } } // fire breath enabled
-        public override bool AutoDispel { get { return !this.Controlled; } }
+        public override bool AutoDispel { get { return !Controlled; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
         public override Poison HitPoison { get { return Poison.Deadly; } }
         public override int TreasureMapLevel { get { return 5; } }
@@ -72,8 +71,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 3);
-            this.AddLoot(LootPack.Gems, 5);
+            AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.Gems, 5);
         }
 
         public override int GetIdleSound()

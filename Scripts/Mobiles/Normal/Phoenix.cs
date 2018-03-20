@@ -9,43 +9,43 @@ namespace Server.Mobiles
         public Phoenix()
             : base(AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a phoenix";
-            this.Body = 5;
-            this.Hue = 0x674;
-            this.BaseSoundID = 0x8F;
+            Name = "a phoenix";
+            Body = 5;
+            Hue = 0x674;
+            BaseSoundID = 0x8F;
 
-            this.SetStr(504, 700);
-            this.SetDex(202, 300);
-            this.SetInt(504, 700);
+            SetStr(504, 700);
+            SetDex(202, 300);
+            SetInt(504, 700);
 
-            this.SetHits(340, 383);
+            SetHits(340, 383);
 
-            this.SetDamage(25);
+            SetDamage(25);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Fire, 50);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Fire, 50);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 60, 70);
-            this.SetResistance(ResistanceType.Poison, 25, 35);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 60, 70);
+            SetResistance(ResistanceType.Poison, 25, 35);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.EvalInt, 90.2, 100.0);
-            this.SetSkill(SkillName.Magery, 90.2, 100.0);
-            this.SetSkill(SkillName.Meditation, 75.1, 100.0);
-            this.SetSkill(SkillName.MagicResist, 86.0, 135.0);
-            this.SetSkill(SkillName.Tactics, 80.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 100.0);
-            this.SetSkill(SkillName.DetectHidden, 70.0, 80.0);
+            SetSkill(SkillName.EvalInt, 90.2, 100.0);
+            SetSkill(SkillName.Magery, 90.2, 100.0);
+            SetSkill(SkillName.Meditation, 75.1, 100.0);
+            SetSkill(SkillName.MagicResist, 86.0, 135.0);
+            SetSkill(SkillName.Tactics, 80.1, 90.0);
+            SetSkill(SkillName.Wrestling, 90.1, 100.0);
+            SetSkill(SkillName.DetectHidden, 70.0, 80.0);
 
-            this.Fame = 15000;
-            this.Karma = 0;
+            Fame = 15000;
+            Karma = 0;
 
-            this.VirtualArmor = 60;
+            VirtualArmor = 60;
 
-            this.Tamable = true;
-            this.ControlSlots = 4;
-            this.MinTameSkill = 102.0;
+            Tamable = true;
+            ControlSlots = 4;
+            MinTameSkill = 102.0;
         }
 
         public Phoenix(Serial serial)
@@ -54,12 +54,11 @@ namespace Server.Mobiles
         }
 
         public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame { get { return true; } }
         public override int Meat { get { return 1; } }
         public override MeatType MeatType { get { return MeatType.Bird; } }
         public override int Feathers { get { return 36; } }
         public override bool CanFly { get { return true; } }
-        public override bool HasAura { get { return !this.Controlled; } }
+        public override bool HasAura { get { return !Controlled; } }
         public override int AuraRange { get { return 2; } }
 
         public override void AuraEffect(Mobile m)
@@ -69,8 +68,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)
