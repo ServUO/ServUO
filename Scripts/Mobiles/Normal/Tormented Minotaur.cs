@@ -10,31 +10,33 @@ namespace Server.Mobiles
         public TormentedMinotaur()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Tormented Minotaur";
-            this.Body = 262;
+            Name = "Tormented Minotaur";
+            Body = 262;
 
-            this.SetStr(822, 930);
-            this.SetDex(401, 415);
-            this.SetInt(128, 138);
+            SetStr(822, 930);
+            SetDex(401, 415);
+            SetInt(128, 138);
 
-            this.SetHits(4000, 4200);
+            SetHits(4000, 4200);
 
-            this.SetDamage(16, 30);
+            SetDamage(16, 30);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 62);
-            this.SetResistance(ResistanceType.Fire, 74);
-            this.SetResistance(ResistanceType.Cold, 54);
-            this.SetResistance(ResistanceType.Poison, 56);
-            this.SetResistance(ResistanceType.Energy, 54);
+            SetResistance(ResistanceType.Physical, 62);
+            SetResistance(ResistanceType.Fire, 74);
+            SetResistance(ResistanceType.Cold, 54);
+            SetResistance(ResistanceType.Poison, 56);
+            SetResistance(ResistanceType.Energy, 54);
 
-            this.SetSkill(SkillName.Wrestling, 110.1, 111.0);
-            this.SetSkill(SkillName.Tactics, 100.7, 102.8);
-            this.SetSkill(SkillName.MagicResist, 104.3, 116.3);
+            SetSkill(SkillName.Wrestling, 110.1, 111.0);
+            SetSkill(SkillName.Tactics, 100.7, 102.8);
+            SetSkill(SkillName.MagicResist, 104.3, 116.3);
 
-            this.Fame = 20000;
-            this.Karma = -20000;
+            Fame = 20000;
+            Karma = -20000;
+
+            SetWeaponAbility(WeaponAbility.Dismount);
         }
 
         public TormentedMinotaur(Serial serial)
@@ -56,14 +58,10 @@ namespace Server.Mobiles
                 return 3;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.Dismount;
-        }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 10);
+            AddLoot(LootPack.FilthyRich, 10);
         }
 
         public override int GetDeathSound()

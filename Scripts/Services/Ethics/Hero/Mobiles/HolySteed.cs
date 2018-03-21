@@ -10,35 +10,35 @@ namespace Server.Mobiles
         public HolySteed()
             : base("a silver steed", 0x75, 0x3EA8, AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.SetStr(496, 525);
-            this.SetDex(86, 105);
-            this.SetInt(86, 125);
+            SetStr(496, 525);
+            SetDex(86, 105);
+            SetInt(86, 125);
 
-            this.SetHits(298, 315);
+            SetHits(298, 315);
 
-            this.SetDamage(16, 22);
+            SetDamage(16, 22);
 
-            this.SetDamageType(ResistanceType.Physical, 40);
-            this.SetDamageType(ResistanceType.Fire, 40);
-            this.SetDamageType(ResistanceType.Energy, 20);
+            SetDamageType(ResistanceType.Physical, 40);
+            SetDamageType(ResistanceType.Fire, 40);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 20, 30);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.MagicResist, 25.1, 30.0);
-            this.SetSkill(SkillName.Tactics, 97.6, 100.0);
-            this.SetSkill(SkillName.Wrestling, 80.5, 92.5);
+            SetSkill(SkillName.MagicResist, 25.1, 30.0);
+            SetSkill(SkillName.Tactics, 97.6, 100.0);
+            SetSkill(SkillName.Wrestling, 80.5, 92.5);
 
-            this.Fame = 14000;
-            this.Karma = 14000;
+            Fame = 14000;
+            Karma = 14000;
 
-            this.VirtualArmor = 60;
+            VirtualArmor = 60;
 
-            this.Tamable = false;
-            this.ControlSlots = 1;
+            Tamable = false;
+            ControlSlots = 1;
         }
 
         public HolySteed(Serial serial)
@@ -61,13 +61,6 @@ namespace Server.Mobiles
             }
         }
         public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanBreath
         {
             get
             {

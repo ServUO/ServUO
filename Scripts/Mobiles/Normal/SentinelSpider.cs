@@ -39,7 +39,9 @@ namespace Server.Mobiles
 			Fame = 775;
 			Karma = -775;
 
-			VirtualArmor = 28; 
+			VirtualArmor = 28;
+
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
 		}
 
 		public override void GenerateLoot()
@@ -61,11 +63,6 @@ namespace Server.Mobiles
 
 		public override FoodType FavoriteFood{ get{ return FoodType.Meat; } }
 		public override PackInstinct PackInstinct{ get{ return PackInstinct.Arachnid; } }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.ArmorIgnore;
-        }
 
 		public SentinelSpider( Serial serial ) : base( serial )
 		{

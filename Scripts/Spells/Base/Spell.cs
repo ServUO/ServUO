@@ -896,7 +896,7 @@ namespace Server.Spells
 
 		public virtual bool CheckFizzle()
 		{
-			if (m_Scroll is BaseWand || m_Caster is BaseCreature)
+			if (m_Scroll is BaseWand)
 			{
 				return true;
 			}
@@ -910,7 +910,9 @@ namespace Server.Spells
 				Caster.CheckSkill(DamageSkill, 0.0, Caster.Skills[DamageSkill].Cap);
 			}
 
-			return Caster.CheckSkill(CastSkill, minSkill, maxSkill);
+            bool skillCheck = Caster.CheckSkill(CastSkill, minSkill, maxSkill);
+
+            return Caster is BaseCreature || skillCheck;
 		}
 
 		public abstract int GetMana();

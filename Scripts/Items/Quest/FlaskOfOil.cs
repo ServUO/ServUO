@@ -2,24 +2,25 @@ using System;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.FlaskOfOil ")]
-    public class OilFlask : Item
+    public class FlaskOfOil : Item
     {
         [Constructable]
-        public OilFlask()
+        public FlaskOfOil()
             : this(1)
         {
         }
 
         [Constructable]
-        public OilFlask(int amount)
-            : base(0x1C18)
+        public FlaskOfOil(int amount)
+            : base(0xEFF)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Weight = 1.0;
+            this.Amount = amount;
+            this.Hue = 33;
         }
 
-        public OilFlask(Serial serial)
+        public FlaskOfOil(Serial serial)
             : base(serial)
         {
         }
@@ -28,7 +29,7 @@ namespace Server.Items
         {
             get
             {
-                return 1027199; // Oil Flask
+                return 1027199;
             }
         }
         public override void Serialize(GenericWriter writer)

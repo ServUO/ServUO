@@ -938,7 +938,6 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\WardedDemonboneBracers.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\WardensArmorOfAugmentation.cs" />
     <Compile Include="Items\Resource\BloodOfTheDarkFather.cs" />
-    <Compile Include="Items\Resource\OilFlask.cs" />
     <Compile Include="Items\Resource\SmallFish.cs" />
     <Compile Include="Items\Resource\WorkableGlass.cs" />
     <Compile Include="Items\StoreBought\MerchantsTrinket.cs" />
@@ -2851,6 +2850,7 @@
     <Compile Include="Quests\StudyOfTheSolenHive\Objectives.cs" />
     <Compile Include="Quests\StudyOfTheSolenHive\StudyOfSolenQuest.cs" />
     <Compile Include="Quests\Mad Scientist\Items\SuteksDirtyGear.cs" />
+    <Compile Include="Items\Quest\FlaskOfOil.cs" />
     <Compile Include="Items\Quest\ModifiedClockworkAssembly.cs" />
     <Compile Include="Items\Quest\SecretWallTeleporters.cs" />
     <Compile Include="Mobiles\NPCs\Vollem.cs" />

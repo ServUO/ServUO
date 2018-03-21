@@ -32,10 +32,10 @@ namespace Server.SkillHandlers
             src.SendLocalizedMessage(500819);//Where will you search?
             src.Target = new InternalTarget();
 
-            return TimeSpan.FromSeconds(10.0);
+            return TimeSpan.FromSeconds(6.0);
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             public InternalTarget()
                 : base(12, true, TargetFlags.None)

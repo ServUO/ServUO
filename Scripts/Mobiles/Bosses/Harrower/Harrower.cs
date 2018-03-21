@@ -47,39 +47,39 @@ namespace Server.Mobiles
         Dictionary<Mobile, int> m_DamageEntries;
         [Constructable]
         public Harrower()
-            : base(AIType.AI_Mage, FightMode.Closest, 18, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 18, 1, 0.2, 0.4)
         {
             m_Instances.Add(this);
 
-            this.Name = "the harrower";
-            this.BodyValue = 146;
+            Name = "the harrower";
+            BodyValue = 146;
 
-            this.SetStr(900, 1000);
-            this.SetDex(125, 135);
-            this.SetInt(1000, 1200);
+            SetStr(900, 1000);
+            SetDex(125, 135);
+            SetInt(1000, 1200);
 
-            this.Fame = 22500;
-            this.Karma = -22500;
+            Fame = 22500;
+            Karma = -22500;
 
-            this.VirtualArmor = 60;
+            VirtualArmor = 60;
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Energy, 50);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Energy, 50);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 60, 80);
-            this.SetResistance(ResistanceType.Cold, 60, 80);
-            this.SetResistance(ResistanceType.Poison, 60, 80);
-            this.SetResistance(ResistanceType.Energy, 60, 80);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 60, 80);
+            SetResistance(ResistanceType.Cold, 60, 80);
+            SetResistance(ResistanceType.Poison, 60, 80);
+            SetResistance(ResistanceType.Energy, 60, 80);
 
-            this.SetSkill(SkillName.Wrestling, 90.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 90.2, 110.0);
-            this.SetSkill(SkillName.MagicResist, 120.2, 160.0);
-            this.SetSkill(SkillName.Magery, 120.0);
-            this.SetSkill(SkillName.EvalInt, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0);
+            SetSkill(SkillName.Wrestling, 90.1, 100.0);
+            SetSkill(SkillName.Tactics, 90.2, 110.0);
+            SetSkill(SkillName.MagicResist, 120.2, 160.0);
+            SetSkill(SkillName.Magery, 120.0);
+            SetSkill(SkillName.EvalInt, 120.0);
+            SetSkill(SkillName.Meditation, 120.0);
 
-            this.m_Tentacles = new List<HarrowerTentacles>();
+            m_Tentacles = new List<HarrowerTentacles>();
         }
 
         public Harrower(Serial serial)
@@ -149,7 +149,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_TrueForm ? 65000 : 30000;
+                return m_TrueForm ? 65000 : 30000;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -164,7 +164,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_TrueForm;
+                return m_TrueForm;
             }
         }
 
@@ -188,30 +188,30 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.SuperBoss, 2);
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.SuperBoss, 2);
+            AddLoot(LootPack.Meager);
         }
 
         public void Morph()
         {
-            if (this.m_TrueForm)
+            if (m_TrueForm)
                 return;
 
-            this.m_TrueForm = true;
+            m_TrueForm = true;
 
-            this.Name = "the true harrower";
-            this.BodyValue = 780;
-            this.Hue = 0x497;
+            Name = "the true harrower";
+            BodyValue = 780;
+            Hue = 0x497;
 
-            this.Hits = this.HitsMax;
-            this.Stam = this.StamMax;
-            this.Mana = this.ManaMax;
+            Hits = HitsMax;
+            Stam = StamMax;
+            Mana = ManaMax;
 
-            this.ProcessDelta();
+            ProcessDelta();
 
-            this.Say(1049499); // Behold my true form!
+            Say(1049499); // Behold my true form!
 
-            Map map = this.Map;
+            Map map = Map;
 
             if (map != null)
             {
@@ -228,11 +228,11 @@ namespace Server.Mobiles
                     {
                         int rdist = 10 + dist;
 
-                        x = this.X + (int)(rx * rdist);
-                        y = this.Y + (int)(ry * rdist);
+                        x = X + (int)(rx * rdist);
+                        y = Y + (int)(ry * rdist);
                         z = map.GetAverageZ(x, y);
 
-                        if (!(ok = map.CanFit(x, y, this.Z, 16, false, false)))
+                        if (!(ok = map.CanFit(x, y, Z, 16, false, false)))
                             ok = map.CanFit(x, y, z, 16, false, false);
 
                         if (dist >= 0)
@@ -246,11 +246,11 @@ namespace Server.Mobiles
 
                     HarrowerTentacles spawn = new HarrowerTentacles(this);
 
-                    spawn.Team = this.Team;
+                    spawn.Team = Team;
 
                     spawn.MoveToWorld(new Point3D(x, y, z), map);
 
-                    this.m_Tentacles.Add(spawn);
+                    m_Tentacles.Add(spawn);
                 }
             }
         }
@@ -268,9 +268,9 @@ namespace Server.Mobiles
 
             writer.Write((int)0); // version
 
-            writer.Write(this.m_TrueForm);
-            writer.Write(this.m_GateItem);
-            writer.WriteMobileList<HarrowerTentacles>(this.m_Tentacles);
+            writer.Write(m_TrueForm);
+            writer.Write(m_GateItem);
+            writer.WriteMobileList<HarrowerTentacles>(m_Tentacles);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -283,9 +283,9 @@ namespace Server.Mobiles
             {
                 case 0:
                     {
-                        this.m_TrueForm = reader.ReadBool();
-                        this.m_GateItem = reader.ReadItem();
-                        this.m_Tentacles = reader.ReadStrongMobileList<HarrowerTentacles>();
+                        m_TrueForm = reader.ReadBool();
+                        m_GateItem = reader.ReadItem();
+                        m_Tentacles = reader.ReadStrongMobileList<HarrowerTentacles>();
 
                         break;
                     }
@@ -377,7 +377,7 @@ namespace Server.Mobiles
 
 		public override bool OnBeforeDeath()
         {
-            if (this.m_TrueForm)
+            if (m_TrueForm)
             {
                 List<DamageStore> rights = GetLootingRights();
 
@@ -389,40 +389,40 @@ namespace Server.Mobiles
                         PlayerMobile.ChampionTitleInfo.AwardHarrowerTitle((PlayerMobile)ds.m_Mobile);
                 }
 
-                if (!this.NoKillAwards)
+                if (!NoKillAwards)
                 {
-                    this.GivePowerScrolls();
+                    GivePowerScrolls();
 
-                    Map map = this.Map;
+                    Map map = Map;
 
 					GoldShower.DoForHarrower(Location, Map);
 
-                    this.m_DamageEntries = new Dictionary<Mobile, int>();
+                    m_DamageEntries = new Dictionary<Mobile, int>();
 
-                    for (int i = 0; i < this.m_Tentacles.Count; ++i)
+                    for (int i = 0; i < m_Tentacles.Count; ++i)
                     {
-                        Mobile m = this.m_Tentacles[i];
+                        Mobile m = m_Tentacles[i];
 
                         if (!m.Deleted)
                             m.Kill();
 
-                        this.RegisterDamageTo(m);
+                        RegisterDamageTo(m);
                     }
 
-                    this.m_Tentacles.Clear();
+                    m_Tentacles.Clear();
 
-                    this.RegisterDamageTo(this);
-                    this.AwardArtifact(this.GetArtifact());
+                    RegisterDamageTo(this);
+                    AwardArtifact(GetArtifact());
 
-                    if (this.m_GateItem != null)
-                        this.m_GateItem.Delete();
+                    if (m_GateItem != null)
+                        m_GateItem.Delete();
                 }
 
                 return base.OnBeforeDeath();
             }
             else
             {
-                this.Morph();
+                Morph();
                 return false;
             }
         }
@@ -441,7 +441,7 @@ namespace Server.Mobiles
                 if (master != null)
                     damager = master;
 
-                this.RegisterDamage(damager, de.DamageGiven);
+                RegisterDamage(damager, de.DamageGiven);
             }
         }
 
@@ -450,12 +450,12 @@ namespace Server.Mobiles
             if (from == null || !from.Player)
                 return;
 
-            if (this.m_DamageEntries.ContainsKey(from))
-                this.m_DamageEntries[from] += amount;
+            if (m_DamageEntries.ContainsKey(from))
+                m_DamageEntries[from] += amount;
             else
-                this.m_DamageEntries.Add(from, amount);
+                m_DamageEntries.Add(from, amount);
 
-            from.SendMessage(String.Format("Total Damage: {0}", this.m_DamageEntries[from]));
+            from.SendMessage(String.Format("Total Damage: {0}", m_DamageEntries[from]));
         }
 
         public void AwardArtifact(Item artifact)
@@ -467,9 +467,9 @@ namespace Server.Mobiles
 
             Dictionary<Mobile, int> validEntries = new Dictionary<Mobile, int>();
 
-            foreach (KeyValuePair<Mobile, int> kvp in this.m_DamageEntries)
+            foreach (KeyValuePair<Mobile, int> kvp in m_DamageEntries)
             {
-                if (this.IsEligible(kvp.Key, artifact))
+                if (IsEligible(kvp.Key, artifact))
                 {
                     validEntries.Add(kvp.Key, kvp.Value);
                     totalDamage += kvp.Value;
@@ -486,7 +486,7 @@ namespace Server.Mobiles
 
                 if (totalDamage >= randomDamage)
                 {
-                    this.GiveArtifact(kvp.Key, artifact);
+                    GiveArtifact(kvp.Key, artifact);
                     return;
                 }
             }
@@ -511,18 +511,18 @@ namespace Server.Mobiles
 
         public bool IsEligible(Mobile m, Item Artifact)
         {
-            return m.Player && m.Alive && m.InRange(this.Location, 32) && m.Backpack != null && m.Backpack.CheckHold(m, Artifact, false);
+            return m.Player && m.Alive && m.InRange(Location, 32) && m.Backpack != null && m.Backpack.CheckHold(m, Artifact, false);
         }
 
         public Item GetArtifact()
         {
             double random = Utility.RandomDouble();
             if (0.05 >= random)
-                return this.CreateArtifact(this.UniqueList);
+                return CreateArtifact(UniqueList);
             else if (0.15 >= random)
-                return this.CreateArtifact(this.SharedList);
+                return CreateArtifact(SharedList);
             else if (0.30 >= random)
-                return this.CreateArtifact(this.DecorativeList);
+                return CreateArtifact(DecorativeList);
             return null;
         }
 
@@ -544,8 +544,8 @@ namespace Server.Mobiles
             public readonly Point3D m_Entrance;
             public SpawnEntry(Point3D loc, Point3D ent)
             {
-                this.m_Location = loc;
-                this.m_Entrance = ent;
+                m_Location = loc;
+                m_Entrance = ent;
             }
         }
     }

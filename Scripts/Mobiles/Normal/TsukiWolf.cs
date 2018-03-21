@@ -63,6 +63,8 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 3;
             MinTameSkill = 96.0;
+
+            SetSpecialAbility(SpecialAbility.Rage);
         }
 
         public TsukiWolf(Serial serial)
@@ -71,6 +73,7 @@ namespace Server.Mobiles
         }
 
         public override bool CanAngerOnTame { get { return true; } }
+
         public override int Meat { get { return 4; } }
         public override int Hides { get { return 25; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
@@ -78,35 +81,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.1 > Utility.RandomDouble())
-            {
-                /* Blood Bath
-                * Start cliloc 1070826
-                * Sound: 0x52B
-                * 2-3 blood spots
-                * Damage: 2 hps per second for 5 seconds
-                * End cliloc: 1070824
-                */
-                ExpireTimer timer = (ExpireTimer)m_Table[defender];
-
-                if (timer != null)
-                {
-                    timer.DoExpire();
-                    defender.SendLocalizedMessage(1070825); // The creature continues to rage!
-                }
-                else
-                    defender.SendLocalizedMessage(1070826); // The creature goes into a rage, inflicting heavy damage!
-
-                timer = new ExpireTimer(defender, this);
-                timer.Start();
-                m_Table[defender] = timer;
-            }
         }
 
         public override void Serialize(GenericWriter writer)
@@ -146,45 +120,6 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 0x52A;
-        }
-
-        private class ExpireTimer : Timer
-        {
-            private readonly Mobile m_Mobile;
-            private readonly Mobile m_From;
-            private int m_Count;
-            public ExpireTimer(Mobile m, Mobile from)
-                : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
-            {
-                m_Mobile = m;
-                m_From = from;
-                Priority = TimerPriority.TwoFiftyMS;
-            }
-
-            public void DoExpire()
-            {
-                Stop();
-                m_Table.Remove(m_Mobile);
-            }
-
-            public void DrainLife()
-            {
-                if (m_Mobile.Alive)
-                    m_Mobile.Damage(2, m_From);
-                else
-                    DoExpire();
-            }
-
-            protected override void OnTick()
-            {
-                DrainLife();
-
-                if (++m_Count >= 5)
-                {
-                    DoExpire();
-                    m_Mobile.SendLocalizedMessage(1070824); // The creature's rage subsides.
-                }
-            }
         }
     }
 }

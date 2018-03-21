@@ -49,7 +49,7 @@ namespace Server.Spells.Chivalry
 				return false;
 			}
 
-			if (Caster.TithingPoints < RequiredTithing)
+			if (Caster.Player && Caster.TithingPoints < RequiredTithing)
 			{
 				Caster.SendLocalizedMessage(1060173, RequiredTithing.ToString());
 					// You must have at least ~1_TITHE_REQUIREMENT~ Tithing Points to use this ability,
@@ -67,7 +67,7 @@ namespace Server.Spells.Chivalry
 
 		public override bool CheckFizzle()
 		{
-			int requiredTithing = RequiredTithing;
+			int requiredTithing = Caster.Player ? RequiredTithing : 0;
 
 			if (AosAttributes.GetValue(Caster, AosAttribute.LowerRegCost) > Utility.Random(100))
 			{
@@ -103,7 +103,8 @@ namespace Server.Spells.Chivalry
 
 		public override void SayMantra()
 		{
-			Caster.PublicOverheadMessage(MessageType.Regular, 0x3B2, MantraNumber, "", false);
+            if(Caster.Player)
+			    Caster.PublicOverheadMessage(MessageType.Regular, 0x3B2, MantraNumber, "", false);
 		}
 
 		public override void DoFizzle()
@@ -125,7 +126,8 @@ namespace Server.Spells.Chivalry
 
 		public override void SendCastEffect()
 		{
-			Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
+            if(Caster.Player)
+			    Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
 		}
 
 		public override void GetCastSkills(out double min, out double max)

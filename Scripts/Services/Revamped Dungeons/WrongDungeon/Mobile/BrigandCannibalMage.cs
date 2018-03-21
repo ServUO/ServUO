@@ -32,6 +32,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 96.9, 96.9);
             SetSkill(SkillName.Tactics, 94.0, 94.0);
             SetSkill(SkillName.Wrestling, 54.3, 54.3);
+            SetSkill(SkillName.Necromancy, 94.0, 94.0);
+            SetSkill(SkillName.SpiritSpeak, 54.3, 54.3);
 
             Fame = 14500;
             Karma = -14500;
@@ -40,6 +42,9 @@ namespace Server.Mobiles
             {
                 PackItem(new SeveredHumanEars());
             }
+
+            AI = AIType.AI_NecroMage;
+            SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
         public BrigandCannibalMage(Serial serial)

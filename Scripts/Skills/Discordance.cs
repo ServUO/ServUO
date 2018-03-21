@@ -21,6 +21,11 @@ namespace Server.SkillHandlers
 	{
 		private static readonly Hashtable m_Table = new Hashtable();
 
+        public static bool UnderEffects(Mobile m)
+        {
+            return m != null && m_Table.Contains(m);
+        }
+
 		public static void Initialize()
 		{
 			SkillInfo.Table[(int)SkillName.Discordance].Callback = OnUse;
@@ -152,6 +157,12 @@ namespace Server.SkillHandlers
 					{
 						double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
 						double music = from.Skills[SkillName.Musicianship].Value;
+
+                        if (from is BaseCreature && music == 0.0)
+                        {
+                            music = from.Skills[SkillName.Discordance].Value;
+                        }
+
                         int masteryBonus = 0;
 
 						diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
@@ -171,7 +182,7 @@ namespace Server.SkillHandlers
                             diff -= (diff * ((double)masteryBonus / 100));
                         }
 
-						if (!BaseInstrument.CheckMusicianship(from))
+						if (from.Player && !BaseInstrument.CheckMusicianship(from))
 						{
 							from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 							m_Instrument.PlayInstrumentBadly(from);
