@@ -202,12 +202,7 @@ namespace Server.Mobiles
                 if (History == null)
                     History = new List<object>();
 
-                if (History.Contains(o))
-                {
-                    History.Remove(o);
-                    History.Add(o);
-                }
-                else
+                if (!History.Contains(o))
                 {
                     History.Add(o);
                 }
@@ -501,7 +496,8 @@ namespace Server.Mobiles
             count = reader.ReadInt();
             for (int i = 0; i < count; i++)
             {
-                History = new List<object>();
+                if (History == null)
+                    History = new List<object>();
 
                 switch (reader.ReadInt())
                 {

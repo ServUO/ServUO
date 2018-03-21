@@ -158,11 +158,6 @@ namespace Server.SkillHandlers
 						double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
 						double music = from.Skills[SkillName.Musicianship].Value;
 
-                        if (from is BaseCreature && music == 0.0)
-                        {
-                            music = from.Skills[SkillName.Discordance].Value;
-                        }
-
                         int masteryBonus = 0;
 
 						diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
@@ -265,6 +260,9 @@ namespace Server.SkillHandlers
                         }
 						else
 						{
+                            if (from is BaseCreature && PetTrainingHelper.Enabled)
+                                from.CheckSkill(SkillName.Discordance, 0, from.Skills[SkillName.Discordance].Cap);
+
 							from.SendLocalizedMessage(1049540); // You fail to disrupt your target
 							m_Instrument.PlayInstrumentBadly(from);
 							m_Instrument.ConsumeUse(from);

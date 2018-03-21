@@ -134,11 +134,6 @@ namespace Server.SkillHandlers
                         double music = from.Skills[SkillName.Musicianship].Value;
                         int masteryBonus = 0;
 
-                        if (from is BaseCreature && music == 0.0)
-                        {
-                            music = from.Skills[SkillName.Provocation].Value;
-                        }
-
                         if (from is PlayerMobile)
                             masteryBonus = Spells.SkillMasteries.BardSpell.GetMasteryBonus((PlayerMobile)from, SkillName.Provocation);
 

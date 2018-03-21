@@ -98,12 +98,6 @@ namespace Server.Mobiles
             Creature = bc;
         }
 
-        // 1-2: 2556
-        // 1-3: 2381
-        // 1-5: 1501
-        // 2-3: 1501
-        // 3-5: 1501
-
         private void AssignStartingTrainingPoints()
         {
             if (ControlSlotsMin == 1 && ControlSlotsMax == 2)
@@ -141,7 +135,10 @@ namespace Server.Mobiles
         {
             if (!HasIncreasedControlSlot)
             {
+                Creature.RemoveFollowers();
                 Creature.ControlSlots++;
+                Creature.AddFollowers();
+
                 pm.SendLocalizedMessage(1157537); // Your pet's control slot have been updated.
 
                 HasIncreasedControlSlot = true;

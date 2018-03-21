@@ -1481,6 +1481,7 @@ namespace Server.Mobiles
     {
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
         public override bool NaturalAbility { get { return true; } }
+        public override int ManaCost { get { return 30; } }
 
         private static Dictionary<Mobile, ExpireTimer> _Table;
 

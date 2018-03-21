@@ -3882,9 +3882,12 @@ namespace Server.Mobiles
                 p = PoisonImpl.IncreaseLevel(p);
             }
 
-            if (p != null && TryHitPoison())
+            if (p != null)
             {
-                defender.ApplyPoison(this, p);
+                if (TryHitPoison())
+                {
+                    defender.ApplyPoison(this, p);
+                }
 
                 if (Controlled)
                 {
@@ -3954,7 +3957,7 @@ namespace Server.Mobiles
             if (profile == null || !profile.HasAbility(MagicalAbility.Poisoning))
                 return false;
 
-            return Skills[SkillName.Poisoning].Value >= Utility.Random(125);
+            return Skills[SkillName.Poisoning].Value >= Utility.Random(300);
         }
 
         public override void OnAfterDelete()
@@ -7127,7 +7130,7 @@ namespace Server.Mobiles
             if (target == null || !target.InLOS(this) || !InRange(target.Location, BaseInstrument.GetBardRange(this, SkillName.Discordance)) || CheckInstrument() == null)
                 return false;
 
-            // TODO: Correct Amount?
+            // TODO: get mana
             if (AbilityProfile != null && AbilityProfile.HasAbility(MagicalAbility.Discordance) && Mana < 25)
             {
                 return false;

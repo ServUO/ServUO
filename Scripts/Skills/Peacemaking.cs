@@ -182,11 +182,6 @@ namespace Server.SkillHandlers
 							double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
 							double music = from.Skills[SkillName.Musicianship].Value;
 
-                            if (from is BaseCreature && music == 0.0)
-                            {
-                                music = from.Skills[SkillName.Peacemaking].Value;
-                            }
-
 							diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
 
 							if (music > 100.0)

@@ -1065,14 +1065,16 @@ namespace Server.Mobiles
                 else if (tp.TrainPoint is SkillName)
                 {
                     Skill skill = bc.Skills[(SkillName)tp.TrainPoint];
+                    int cap = (int)skill.Cap;
 
-                    switch ((int)skill.Cap)
-                    {
-                        case 100: value = 50; break;
-                        case 105: value = 100; break;
-                        case 110: value = 150; break;
-                        case 115: value = 200; break;
-                    }
+                    if (cap <= 100)
+                        value = 50;
+                    else if (cap <= 105)
+                        value = 100;
+                    else if (cap <= 110)
+                        value = 150;
+                    else if (cap <= 115)
+                        value = 200;
                 }
             }
         }
