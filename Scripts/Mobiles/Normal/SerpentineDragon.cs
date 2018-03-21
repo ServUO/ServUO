@@ -58,6 +58,7 @@ namespace Server.Mobiles
 
         public override bool ReacquireOnMovement { get { return !Controlled; } }
         public override bool HasBreath { get { return true; } } // fire breath enabled
+        
         public override double BonusPetDamageScalar { get { return Controlled ? 1.0 : (Core.SE) ? 3.0 : 1.0; } }
         public override bool AutoDispel { get { return !Controlled; } }
         public override HideType HideType { get { return HideType.Barbed; } }
