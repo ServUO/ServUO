@@ -870,7 +870,7 @@ namespace Server.Spells
                     targetArgs = new object[1];
                     targetArgs[0] = InstantTarget as Mobile;
                 }
-                else if (InstantTarget is Mobile && spellTargetParams[0].ParameterType == typeof(IPoint3D))
+                else if (InstantTarget is Mobile && (spellTargetParams[0].ParameterType == typeof(IPoint3D) || spellTargetParams[0].ParameterType == typeof(Point3D)))
                 {
                     targetArgs = new object[1];
                     targetArgs[0] = InstantTarget.Location as IPoint3D;
