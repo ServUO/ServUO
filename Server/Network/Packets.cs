@@ -5026,7 +5026,61 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.WriteAsciiNull(affix);
 			m_Stream.WriteBigUniNull(args);
 		}
-	}
+
+        public MessageLocalizedAffix(
+            NetState state,
+            Serial serial,
+            int graphic,
+            MessageType messageType,
+            int hue,
+            int font,
+            int number,
+            string name,
+            AffixType affixType,
+            string affix,
+            string args)
+            : base(0xCC)
+        {
+            if (name == null)
+            {
+                name = "";
+            }
+            if (affix == null)
+            {
+                affix = "";
+            }
+            if (args == null)
+            {
+                args = "";
+            }
+
+            if (hue == 0)
+            {
+                hue = 0x3B2;
+            }
+
+            EnsureCapacity(52 + affix.Length + (args.Length * 2));
+
+            m_Stream.Write(serial);
+            m_Stream.Write((short)graphic);
+            m_Stream.Write((byte)messageType);
+            m_Stream.Write((short)hue);
+            m_Stream.Write((short)font);
+            m_Stream.Write(number);
+            m_Stream.Write((byte)affixType);
+            m_Stream.WriteAsciiFixed(name, 30);
+            m_Stream.WriteAsciiNull(affix);
+
+            if (state != null && state.IsEnhancedClient)
+            {
+                m_Stream.WriteLittleUniNull(args);
+            }
+            else
+            {
+                m_Stream.WriteBigUniNull(args);
+            }
+        }
+    }
 
 	public sealed class ServerInfo
 	{

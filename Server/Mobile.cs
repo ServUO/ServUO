@@ -11990,9 +11990,31 @@ namespace Server
 						args));
 			}
 		}
-		#endregion
 
-		public void LaunchBrowser(string url)
+        public void SendLocalizedMessageECSupport(int number, bool append, string affix, string args, int hue)
+        {
+            NetState ns = m_NetState;
+
+            if (ns != null)
+            {
+                ns.Send(
+                    new MessageLocalizedAffix(
+                        ns,
+                        Serial.MinusOne,
+                        -1,
+                        MessageType.Regular,
+                        hue,
+                        3,
+                        number,
+                        "System",
+                        (append ? AffixType.Append : AffixType.Prepend) | AffixType.System,
+                        affix,
+                        args));
+            }
+        }
+        #endregion
+
+        public void LaunchBrowser(string url)
 		{
 			if (m_NetState != null)
 			{
