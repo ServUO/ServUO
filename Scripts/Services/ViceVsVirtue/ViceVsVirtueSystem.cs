@@ -296,7 +296,7 @@ namespace Server.Engines.VvV
 
         public void SendVvVMessageTo(Mobile m, int cliloc, string args = "")
         {
-            m.SendLocalizedMessageECSupport(cliloc, false, "[Guild][VvV] ", args, m is PlayerMobile ? ((PlayerMobile)m).GuildMessageHue : 0x34);
+            m.SendLocalizedMessage(cliloc, false, "[Guild][VvV] ", args, m is PlayerMobile ? ((PlayerMobile)m).GuildMessageHue : 0x34);
         }
 
         private List<Item> VvVItems = new List<Item>();

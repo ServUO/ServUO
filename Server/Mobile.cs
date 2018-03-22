@@ -4105,11 +4105,13 @@ namespace Server
 
 					if (res == DeathMoveResult.MoveToCorpse)
 					{
+                        pack.FreePosition(item.GridLocation);
 						content.Add(item);
 					}
 					else
 					{
-						moveToPack.Add(item);
+                        pack.FreePosition(item.GridLocation);
+                        moveToPack.Add(item);
 					}
 				}
 
@@ -5751,7 +5753,7 @@ namespace Server
 						"",
 						AffixType.Append | AffixType.System,
 						amount.ToString(),
-						""));
+						"", false));
 			}
 		}
 
@@ -11779,7 +11781,7 @@ namespace Server
 			if (m_Map != null)
 			{
 				Packet p =
-					Packet.Acquire(new MessageLocalizedAffix(m_Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
+					Packet.Acquire(new MessageLocalizedAffix(m_Serial, Body, type, hue, 3, number, Name, affixType, affix, args, false));
 
 				var eable = m_Map.GetClientsInRange(m_Location);
 
@@ -11987,31 +11989,9 @@ namespace Server
 						"System",
 						(append ? AffixType.Append : AffixType.Prepend) | AffixType.System,
 						affix,
-						args));
+						args, ns.IsEnhancedClient ? true : false));
 			}
 		}
-
-        public void SendLocalizedMessageECSupport(int number, bool append, string affix, string args, int hue)
-        {
-            NetState ns = m_NetState;
-
-            if (ns != null)
-            {
-                ns.Send(
-                    new MessageLocalizedAffix(
-                        ns,
-                        Serial.MinusOne,
-                        -1,
-                        MessageType.Regular,
-                        hue,
-                        3,
-                        number,
-                        "System",
-                        (append ? AffixType.Append : AffixType.Prepend) | AffixType.System,
-                        affix,
-                        args));
-            }
-        }
         #endregion
 
         public void LaunchBrowser(string url)

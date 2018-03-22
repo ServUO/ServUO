@@ -185,7 +185,7 @@ namespace Server.Engines.PartySystem
                 p.Candidates.Add(target);
 
             //  : You are invited to join the party. Type /accept to join or /decline to decline the offer.
-            target.Send(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008089, "", AffixType.Prepend | AffixType.System, from.Name, ""));
+            target.Send(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008089, "", AffixType.Prepend | AffixType.System, from.Name, "", false));
 
             from.SendLocalizedMessage(1008090); // You have invited them to join the party.
 
@@ -248,7 +248,7 @@ namespace Server.Engines.PartySystem
                 return;
 
             //  : joined the party.
-            SendToAll(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008094, "", AffixType.Prepend | AffixType.System, from.Name, ""));
+            SendToAll(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008094, "", AffixType.Prepend | AffixType.System, from.Name, "", false));
 
             from.SendLocalizedMessage(1005445); // You have been added to the party.
 
@@ -505,7 +505,7 @@ namespace Server.Engines.PartySystem
                 m_Mobile.SendLocalizedMessage(1005437); // You have rejoined the party.
                 m_Mobile.Send(new PartyMemberList(p));
 
-                Packet message = Packet.Acquire(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008087, "", AffixType.Prepend | AffixType.System, m_Mobile.Name, ""));
+                Packet message = Packet.Acquire(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008087, "", AffixType.Prepend | AffixType.System, m_Mobile.Name, "", false));
                 Packet attrs = Packet.Acquire(new MobileAttributesN(m_Mobile));
 
                 foreach (PartyMemberInfo mi in p.Members)
