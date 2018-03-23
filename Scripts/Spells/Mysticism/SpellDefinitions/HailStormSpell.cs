@@ -35,8 +35,9 @@ namespace Server.Spells.Mysticism
             Caster.Target = new InternalTarget(this);
         }
 
-        public void OnTarget(IPoint3D p)
+        public override void OnTarget(object o)
         {
+            var p = o as IPoint3D;
             if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
             {
                 SpellHelper.Turn(Caster, p);
@@ -115,7 +116,7 @@ namespace Server.Spells.Mysticism
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is IPoint3D)
-                    m_Owner.OnTarget((IPoint3D)o);
+                    m_Owner.OnTarget(o);
             }
 
             protected override void OnTargetFinish(Mobile from)
