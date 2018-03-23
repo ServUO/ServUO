@@ -24,6 +24,7 @@ using Server.Targeting;
 using Server.Spells.SkillMasteries;
 using System.Reflection;
 using Server.Spells.Mysticism;
+using System.Linq;
 #endregion
 
 namespace Server.Spells
@@ -847,8 +848,10 @@ namespace Server.Spells
             Type spellType = GetType();
             MethodInfo spellTargetMethod = null;
 
-            if (spellType != null && (spellTargetMethod = spellType.GetMethod("Target")) != null) { }
-            else if (spellType != null && (spellTargetMethod = spellType.GetMethod("OnTarget")) != null) { }
+            if (spellType != null)
+            {
+                spellTargetMethod = spellType.GetMethods().Where(m => m.Name == "Target" || m.Name == "OnTarget").FirstOrDefault();
+            }
             else
             {
                 OnCast();
@@ -870,7 +873,7 @@ namespace Server.Spells
                     targetArgs = new object[1];
                     targetArgs[0] = InstantTarget as Mobile;
                 }
-                else if (InstantTarget is Mobile && spellTargetParams[0].ParameterType == typeof(IPoint3D))
+                else if (InstantTarget is Mobile && (spellTargetParams[0].ParameterType == typeof(IPoint3D) || spellTargetParams[0].ParameterType == typeof(Point3D)))
                 {
                     targetArgs = new object[1];
                     targetArgs[0] = InstantTarget.Location as IPoint3D;

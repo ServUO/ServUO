@@ -31,10 +31,10 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new MysticSpellTarget(this, TargetFlags.Beneficial);
+            Caster.Target = new InternalTarget(this, TargetFlags.Beneficial);
         }
 
-        public override void OnTarget(object o)
+        public void OnTarget(object o)
         {
             var targeted = o as Mobile;
 
@@ -219,6 +219,41 @@ namespace Server.Spells.Mysticism
             BuffInfo.RemoveBuff(m, BuffIcon.EvilOmen);
 
             return curseLevel;
+        }
+
+        public class InternalTarget : Target
+        {
+            public CleansingWindsSpell Owner { get; set; }
+
+            public InternalTarget(CleansingWindsSpell owner, TargetFlags flags)
+                : this(owner, false, flags)
+            {
+            }
+
+            public InternalTarget(CleansingWindsSpell owner, bool allowland, TargetFlags flags)
+                : base(12, allowland, flags)
+            {
+                Owner = owner;
+            }
+
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o == null)
+                    return;
+
+                if (!from.CanSee(o))
+                    from.SendLocalizedMessage(500237); // Target can not be seen.
+                else
+                {
+                    SpellHelper.Turn(from, o);
+                    Owner.OnTarget(o);
+                }
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                Owner.FinishSequence();
+            }
         }
     }
 }

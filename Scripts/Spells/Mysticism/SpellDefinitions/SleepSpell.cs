@@ -25,10 +25,10 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new MysticSpellTarget(this, TargetFlags.Harmful);
+            Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
         }
 
-        public override void OnTarget(Object o)
+        public void OnTarget(Object o)
         {
             Mobile target = o as Mobile;
 
@@ -150,6 +150,41 @@ namespace Server.Spells.Mysticism
 
             if (m_ImmunityList.Contains(m))
                 m_ImmunityList.Remove(m);
+        }
+
+        public class InternalTarget : Target
+        {
+            public SleepSpell Owner { get; set; }
+
+            public InternalTarget(SleepSpell owner, TargetFlags flags)
+                : this(owner, false, flags)
+            {
+            }
+
+            public InternalTarget(SleepSpell owner, bool allowland, TargetFlags flags)
+                : base(12, allowland, flags)
+            {
+                Owner = owner;
+            }
+
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o == null)
+                    return;
+
+                if (!from.CanSee(o))
+                    from.SendLocalizedMessage(500237); // Target can not be seen.
+                else
+                {
+                    SpellHelper.Turn(from, o);
+                    Owner.OnTarget(o);
+                }
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                Owner.FinishSequence();
+            }
         }
     }
 }
