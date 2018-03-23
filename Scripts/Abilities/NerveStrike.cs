@@ -1,4 +1,5 @@
 using System;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -59,6 +60,9 @@ namespace Server.Items
                     defender.Paralyze(TimeSpan.FromSeconds(2.0));
                     doEffects = true;
                 }
+
+                if(attacker is BaseCreature)
+                    PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Bushido);
             }
             else
             {

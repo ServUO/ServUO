@@ -22,7 +22,6 @@ namespace Server.Mobiles
 
         private Mobile m_MorphedInto;
         private DateTime m_LastMorph;
-        private DateTime m_NextFireRing;
 
         [Constructable]
         public Changeling()
@@ -56,6 +55,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 91.6, 99.5);
             SetSkill(SkillName.EvalInt, 91.5, 98.8);
             SetSkill(SkillName.Meditation, 91.7, 98.5);
+
+            SetSkill(SkillName.Spellweaving, 91.6, 99.5);
 
             Fame = 15000;
             Karma = -15000;
@@ -179,16 +180,9 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (Combatant != null)
+            if (Combatant is PlayerMobile && m_MorphedInto != Combatant && Utility.RandomDouble() < 0.05)
             {
-                if (m_NextFireRing <= DateTime.UtcNow && Utility.RandomDouble() < 0.02)
-                {
-                    FireRing();
-                    m_NextFireRing = DateTime.UtcNow + TimeSpan.FromMinutes(2);
-                }
-
-                if (Combatant is PlayerMobile && m_MorphedInto != Combatant && Utility.RandomDouble() < 0.05)
-                    MorphedInto = Combatant as Mobile;
+                MorphedInto = Combatant as Mobile;
             }
         }
 
@@ -256,12 +250,6 @@ namespace Server.Mobiles
         public void Validate()
         {
             Revert();
-        }
-
-        protected virtual void FireRing()
-        {
-            FireEffects(0x3E27, m_FireNorth);
-            FireEffects(0x3E31, m_FireEast);
         }
 
         protected virtual void Morph(Mobile m)

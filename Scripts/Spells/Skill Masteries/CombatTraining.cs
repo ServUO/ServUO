@@ -5,6 +5,7 @@ using Server.Network;
 using Server.Mobiles;
 using Server.Gumps;
 using Server.Targeting;
+using System.Linq;
 
 namespace Server.Spells.SkillMasteries
 {
@@ -12,7 +13,8 @@ namespace Server.Spells.SkillMasteries
     {
         Empowerment,
         Berserk,
-        ConsumeDamage
+        ConsumeDamage,
+        AsOne
     }
 
     public class CombatTrainingSpell : SkillMasterySpell
@@ -72,6 +74,12 @@ namespace Server.Spells.SkillMasteries
 
         public void OnSelected(TrainingType type, Mobile target)
         {
+            if (type == TrainingType.AsOne && Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers.Where(mob => mob != target).Count() == 0)
+            {
+                FinishSequence();
+                return;
+            }
+
             SpellType = type;
             Target = target;
 
@@ -113,7 +121,7 @@ namespace Server.Spells.SkillMasteries
 
         public override double DamageModifier(Mobile victim)
         {
-            if (Target == null)
+            if (Target == null || SpellType == TrainingType.AsOne)
                 return 0.0;
 
             double dam = (double)_DamageTaken / (double)Target.HitsMax;
@@ -133,7 +141,7 @@ namespace Server.Spells.SkillMasteries
             Server.Timer.DelayCall(TimeSpan.FromSeconds(8), CheckDamage);
         }
 
-        public static void CheckDamage(Mobile attacker, Mobile defender, ref int damage)
+        public static void CheckDamage(Mobile attacker, Mobile defender, DamageType type, ref int damage)
         {
             if (defender is BaseCreature && (((BaseCreature)defender).Controlled || ((BaseCreature)defender).Summoned))
             {
@@ -154,6 +162,21 @@ namespace Server.Spells.SkillMasteries
                                 defender.FixedParticles(0x376A, 10, 30, 5052, 1261, 7, EffectLayer.LeftFoot, 0);
                                 break;
                             case TrainingType.ConsumeDamage:
+                                break;
+                            case TrainingType.AsOne:
+                                if (master is PlayerMobile)
+                                {
+                                    var list = ((PlayerMobile)master).AllFollowers.Where(m => (m == defender || m.InRange(defender.Location, 3)) && m.CanBeHarmful(attacker)).ToList();
+
+                                    damage = damage / list.Count;
+
+                                    foreach (var m in list.Where(mob => mob != defender))
+                                    {
+                                        m.Damage(damage, attacker, true, false);
+                                    }
+
+                                    ColUtility.Free(list);
+                                }
                                 break;
                         }
 
@@ -183,6 +206,7 @@ namespace Server.Spells.SkillMasteries
                             case TrainingType.Berserk:
                                 break;
                             case TrainingType.ConsumeDamage:
+                            case TrainingType.AsOne:
                                 break;
                         }
                     }
@@ -211,6 +235,7 @@ namespace Server.Spells.SkillMasteries
                                 attacker.FixedParticles(0x376A, 10, 30, 5052, 1261, 7, EffectLayer.LeftFoot, 0);
                                 break;
                             case TrainingType.ConsumeDamage:
+                            case TrainingType.AsOne:
                                 break;
                         }
                     }
@@ -228,7 +253,7 @@ namespace Server.Spells.SkillMasteries
                 {
                     CombatTrainingSpell spell = GetSpell(master, typeof(CombatTrainingSpell)) as CombatTrainingSpell;
 
-                    if (spell != null)
+                    if (spell != null && spell.SpellType != TrainingType.AsOne)
                     {
                         return (int)(30.0 * spell.DamageModifier(m));
                     }
@@ -248,7 +273,7 @@ namespace Server.Spells.SkillMasteries
                 {
                     CombatTrainingSpell spell = GetSpell(master, typeof(CombatTrainingSpell)) as CombatTrainingSpell;
 
-                    if (spell != null)
+                    if (spell != null && spell.SpellType != TrainingType.AsOne)
                     {
                         return (int)(45 * spell.DamageModifier(m));
                     }
@@ -323,6 +348,9 @@ namespace Server.Spells.SkillMasteries
 
             AddButton(20, 80, 9762, 9763, 3, GumpButtonType.Reply, 0);
             AddHtmlLocalized(43, 80, 150, 16, 1156108, Hue, false, false); // Consume Damage
+
+            AddButton(20, 100, 9762, 9763, 4, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(43, 100, 150, 16, 1157544, Hue, false, false); // As One
         }
 
         public override void OnResponse(NetState state, RelayInfo info)

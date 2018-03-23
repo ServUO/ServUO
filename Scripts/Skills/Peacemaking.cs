@@ -39,6 +39,11 @@ namespace Server.SkillHandlers
 			from.NextSkillTime = Core.TickCount + 21600000;
 		}
 
+        public static bool UnderEffects(Mobile m)
+        {
+            return m is BaseCreature && ((BaseCreature)m).BardPacified;
+        }
+
 		public class InternalTarget : Target
 		{
 			private readonly BaseInstrument m_Instrument;
@@ -82,7 +87,7 @@ namespace Server.SkillHandlers
 					if (targeted == from)
 					{
 						// Standard mode : reset combatants for everyone in the area
-						if (!BaseInstrument.CheckMusicianship(from))
+                        if (from.Player && !BaseInstrument.CheckMusicianship(from))
 						{
 							from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 							m_Instrument.PlayInstrumentBadly(from);
@@ -165,7 +170,7 @@ namespace Server.SkillHandlers
 							from.SendLocalizedMessage(1049527); // That creature is already being calmed.
 							m_SetSkillTime = true;
 						}
-						else if (!BaseInstrument.CheckMusicianship(from))
+                        else if (from.Player && !BaseInstrument.CheckMusicianship(from))
 						{
 							from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 							from.NextSkillTime = Core.TickCount + 5000;

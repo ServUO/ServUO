@@ -99,7 +99,15 @@ namespace Server.Spells.SkillMasteries
                     Mobile responsible = master != null ? master : protectee;
 
                     Caster.FixedParticles( 0x376A, 9, 32, 5030, 1168, 0, EffectLayer.Waist, 0 );
-                    Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+
+                    if (Caster.Player)
+                    {
+                        Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+                    }
+                    else if (Caster is BaseCreature)
+                    {
+                        Caster.PlaySound(((BaseCreature)Caster).GetAngerSound());
+                    }
 
                     protectee.SendGump(new AcceptBodyguardGump(Caster as PlayerMobile, protectee, this));
 
@@ -133,6 +141,9 @@ namespace Server.Spells.SkillMasteries
 
         private bool HasShield()
         {
+            if (!Caster.Player)
+                return true;
+
             BaseShield shield = Caster.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
 
             if (shield == null)

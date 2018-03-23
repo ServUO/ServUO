@@ -157,7 +157,8 @@ namespace Server.Spells.Spellweaving
 
 		public override void SendCastEffect()
 		{
-			Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
+            if(Caster.Player)
+			    Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
 		}
 
 		public virtual bool CheckResisted(Mobile m)

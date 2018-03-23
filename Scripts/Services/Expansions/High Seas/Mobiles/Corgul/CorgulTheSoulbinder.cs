@@ -54,7 +54,8 @@ namespace Server.Mobiles
         {
         }
 
-        public CorgulTheSoulBinder(CorgulAltar altar) : base(null, AIType.AI_NecroMage, FightMode.Closest)
+        public CorgulTheSoulBinder(CorgulAltar altar)
+            : base(null, AIType.AI_NecroMage, FightMode.Closest)
         {
             m_Altar = altar;
             Name = "Corgul the Soulbinder";

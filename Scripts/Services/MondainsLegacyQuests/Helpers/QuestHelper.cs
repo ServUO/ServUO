@@ -166,7 +166,7 @@ namespace Server.Engines.Quests
             return false;
         }
 
-        public static bool InProgress(PlayerMobile player, MondainQuester quester)
+        public static bool InProgress(PlayerMobile player, Mobile quester)
         { 
             for (int i = 0; i < player.Quests.Count; i ++)
             {

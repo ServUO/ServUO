@@ -11,62 +11,64 @@ namespace Server.Mobiles
         public DeathwatchBeetle()
             : base(AIType.AI_Melee, Core.ML ? FightMode.Aggressor : FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a deathwatch beetle";
-            this.Body = 242;
+            Name = "a deathwatch beetle";
+            Body = 242;
 
-            this.SetStr(136, 160);
-            this.SetDex(41, 52);
-            this.SetInt(31, 40);
+            SetStr(136, 160);
+            SetDex(41, 52);
+            SetInt(31, 40);
 
-            this.SetHits(121, 145);
-            this.SetMana(20);
+            SetHits(121, 145);
+            SetMana(20);
 
-            this.SetDamage(5, 10);
+            SetDamage(5, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 40);
-            this.SetResistance(ResistanceType.Fire, 15, 30);
-            this.SetResistance(ResistanceType.Cold, 15, 30);
-            this.SetResistance(ResistanceType.Poison, 50, 80);
-            this.SetResistance(ResistanceType.Energy, 20, 35);
+            SetResistance(ResistanceType.Physical, 35, 40);
+            SetResistance(ResistanceType.Fire, 15, 30);
+            SetResistance(ResistanceType.Cold, 15, 30);
+            SetResistance(ResistanceType.Poison, 50, 80);
+            SetResistance(ResistanceType.Energy, 20, 35);
 
-            this.SetSkill(SkillName.MagicResist, 50.1, 58.0);
-            this.SetSkill(SkillName.Tactics, 67.1, 77.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 60.0);
-            this.SetSkill(SkillName.Anatomy, 30.1, 34.0);
+            SetSkill(SkillName.MagicResist, 50.1, 58.0);
+            SetSkill(SkillName.Tactics, 67.1, 77.0);
+            SetSkill(SkillName.Wrestling, 50.1, 60.0);
+            SetSkill(SkillName.Anatomy, 30.1, 34.0);
 
-            this.Fame = 1400;
-            this.Karma = -1400;
+            Fame = 1400;
+            Karma = -1400;
 
             switch ( Utility.Random(12) )
             {
                 case 0:
-                    this.PackItem(new LeatherGorget());
+                    PackItem(new LeatherGorget());
                     break;
                 case 1:
-                    this.PackItem(new LeatherGloves());
+                    PackItem(new LeatherGloves());
                     break;
                 case 2:
-                    this.PackItem(new LeatherArms());
+                    PackItem(new LeatherArms());
                     break;
                 case 3:
-                    this.PackItem(new LeatherLegs());
+                    PackItem(new LeatherLegs());
                     break;
                 case 4:
-                    this.PackItem(new LeatherCap());
+                    PackItem(new LeatherCap());
                     break;
                 case 5:
-                    this.PackItem(new LeatherChest());
+                    PackItem(new LeatherChest());
                     break;
             }
 
             if (Utility.RandomDouble() < .5)
-                this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
-            this.Tamable = true;
-            this.MinTameSkill = 41.1;
-            this.ControlSlots = 1;
+            Tamable = true;
+            MinTameSkill = 41.1;
+            ControlSlots = 1;
+
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public DeathwatchBeetle(Serial serial)
@@ -80,10 +82,6 @@ namespace Server.Mobiles
             {
                 return 8;
             }
-        }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.CrushingBlow;
         }
 
         public override int GetAngerSound()
@@ -113,53 +111,58 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.LowScrolls, 1);
-            this.AddLoot(LootPack.Potions, 1);
+            AddLoot(LootPack.LowScrolls, 1);
+            AddLoot(LootPack.Potions, 1);
         }
 
         public override void AlterMeleeDamageTo(Mobile to, ref int damage)
         {
-            if (Utility.RandomBool() && (this.Mana > 14) && to != null)
+            if (Utility.RandomBool() && (Mana > 14) && to != null)
             {
                 damage = (damage + (damage / 2));
                 to.SendLocalizedMessage(1060091); // You take extra damage from the crushing attack!
                 to.PlaySound(0x1E1);
                 to.FixedParticles(0x377A, 1, 32, 0x26da, 0, 0, 0);
-                this.Mana -= 15;
+                Mana -= 15;
             }
         }
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            Mobile combatant = this.Combatant as Mobile;
+            Mobile combatant = Combatant as Mobile;
 
-            if (combatant == null || combatant.Deleted || combatant.Map != this.Map || !this.InRange(combatant, 12) || !this.CanBeHarmful(combatant) || !this.InLOS(combatant))
+            if (combatant == null || combatant.Deleted || combatant.Map != Map || !InRange(combatant, 12) || !CanBeHarmful(combatant) || !InLOS(combatant))
                 return;
 
             if (Utility.Random(10) == 0)
-                this.PoisonAttack(combatant);
+                PoisonAttack(combatant);
 
             base.OnDamage(amount, from, willKill);
         }
 
         public void PoisonAttack(Mobile m)
         {
-            this.DoHarmful(m);
-            this.MovingParticles(m, 0x36D4, 1, 0, false, false, 0x3F, 0, 0x1F73, 1, 0, (EffectLayer)255, 0x100);
+            DoHarmful(m);
+            MovingParticles(m, 0x36D4, 1, 0, false, false, 0x3F, 0, 0x1F73, 1, 0, (EffectLayer)255, 0x100);
             m.ApplyPoison(this, Poison.Regular);
-            m.SendLocalizedMessage(1070821, this.Name); // %s spits a poisonous substance at you!
+            m.SendLocalizedMessage(1070821, Name); // %s spits a poisonous substance at you!
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                SetWeaponAbility(WeaponAbility.CrushingBlow);
+            }
         }
     }
 }

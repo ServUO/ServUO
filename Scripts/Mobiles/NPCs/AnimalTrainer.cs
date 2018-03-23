@@ -13,6 +13,8 @@ using Server.Gumps;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
+using Server.Engines.Quests;
+using System.Linq;
 #endregion
 
 namespace Server.Mobiles
@@ -68,6 +70,60 @@ namespace Server.Mobiles
 
 			base.AddCustomContextEntries(from, list);
 		}
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (PetTrainingHelper.Enabled)
+            {
+                list.Add(1072269); // Quest Giver
+            }
+        }
+
+        private Type[] _Quests = { typeof(TamingPetQuest), typeof(UsingAnimalLoreQuest), typeof(LeadingIntoBattleQuest), typeof(TeachingSomethingNewQuest) };
+
+        public override void OnDoubleClick(Mobile m)
+        {
+            if (PetTrainingHelper.Enabled && m is PlayerMobile && m.InRange(Location, 5))
+            {
+                var player = m as PlayerMobile;
+
+                for (int i = 0; i < _Quests.Length; i++)
+                {
+                    var quest = player.Quests.FirstOrDefault(q => q.GetType() == _Quests[i]);
+
+                    if (quest != null)
+                    {
+                        if (quest.Completed)
+                        {
+                            if (quest.GetType() != typeof(TeachingSomethingNewQuest))
+                            {
+                                quest.GiveRewards();
+                            }
+                            else
+                            {
+                                player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
+                            }
+                        }
+
+                        else
+                        {
+                            player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
+                            quest.InProgress();
+                        }
+
+                        return;
+                    }
+                }
+
+                BaseQuest questt = new TamingPetQuest();
+                questt.Owner = player;
+                questt.Quester = this;
+                player.CloseGump(typeof(MondainQuestGump));
+                player.SendGump(new MondainQuestGump(questt));
+            }
+        }
 
 		public static int GetMaxStabled(Mobile from)
 		{

@@ -442,7 +442,7 @@ namespace Server.Engines.Blackthorn
             }
             else if (_Sampire)
             {
-                if (0.1 > Utility.RandomDouble() && Weapon is BaseWeapon && !(Weapon is Fists) && !((BaseWeapon)Weapon).Cursed)
+                if (0.1 > Utility.RandomDouble() && Weapon is BaseWeapon && !CurseWeaponSpell.IsCursed(this, (BaseWeapon)Weapon))
                 {
                     CurseWeaponSpell spell = new CurseWeaponSpell(this, null);
                     spell.Cast();

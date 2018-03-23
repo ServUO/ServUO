@@ -37,54 +37,56 @@ namespace Server.Mobiles
         [Constructable]
         public ClockworkExodus() : base(AIType.AI_Mystic, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Clockwork Exodus";
-            this.Body = 1248;
-            this.BaseSoundID = 639;
-            this.Hue = 2500;
-            this.Female = true;
+            Name = "Clockwork Exodus";
+            Body = 1248;
+            BaseSoundID = 639;
+            Hue = 2500;
+            Female = true;
 
-            this.SetStr(851, 950);
-            this.SetDex(581, 683);
-            this.SetInt(601, 750);
+            SetStr(851, 950);
+            SetDex(581, 683);
+            SetInt(601, 750);
 
-            this.SetHits(50000);
-            this.SetStam(507, 669);
+            SetHits(50000);
+            SetStam(507, 669);
 
-            this.SetDamage(20, 30);
+            SetDamage(20, 30);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Fire, 25);
-            this.SetDamageType(ResistanceType.Energy, 50);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Fire, 25);
+            SetDamageType(ResistanceType.Energy, 50);
 
-            this.SetResistance(ResistanceType.Physical, 75, 90);
-            this.SetResistance(ResistanceType.Fire, 50, 65);
-            this.SetResistance(ResistanceType.Cold, 45, 60);
-            this.SetResistance(ResistanceType.Poison, 45, 60);
-            this.SetResistance(ResistanceType.Energy, 45, 60);
+            SetResistance(ResistanceType.Physical, 75, 90);
+            SetResistance(ResistanceType.Fire, 50, 65);
+            SetResistance(ResistanceType.Cold, 45, 60);
+            SetResistance(ResistanceType.Poison, 45, 60);
+            SetResistance(ResistanceType.Energy, 45, 60);
 
-            this.SetSkill(SkillName.EvalInt, 130.0);
-            this.SetSkill(SkillName.Mysticism, 120);
-            this.SetSkill(SkillName.MagicResist, 140.0);
-            this.SetSkill(SkillName.Tactics, 90.1, 105.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 105.0);
-            this.SetSkill(SkillName.SpiritSpeak, 120.0);
-            this.SetSkill(SkillName.Necromancy, 120.0);
-            this.SetSkill(SkillName.Poisoning, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0);
-            this.SetSkill(SkillName.Anatomy, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0);
+            SetSkill(SkillName.EvalInt, 130.0);
+            SetSkill(SkillName.Mysticism, 120);
+            SetSkill(SkillName.MagicResist, 140.0);
+            SetSkill(SkillName.Tactics, 90.1, 105.0);
+            SetSkill(SkillName.Wrestling, 90.1, 105.0);
+            SetSkill(SkillName.SpiritSpeak, 120.0);
+            SetSkill(SkillName.Necromancy, 120.0);
+            SetSkill(SkillName.Poisoning, 120.0);
+            SetSkill(SkillName.Meditation, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0);
+            SetSkill(SkillName.Healing, 120.0);
 
-            this.Fame = 24000;
-            this.Karma = -24000;
+            Fame = 24000;
+            Karma = -24000;
 
-            this.VirtualArmor = 20;
+            VirtualArmor = 20;
 
-            m_MinHits = this.Hits;
+            m_MinHits = Hits;
 
             if (Instances == null)
                 Instances = new List<ClockworkExodus>();
 
             Instances.Add(this);
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }        
 
         public static void DistributeRandomArtifact(BaseCreature bc, Type[] typelist)
@@ -112,7 +114,7 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < 0.2)
                 DistributeRandomArtifact(this, m_Artifact);
 
-            Map map = this.Map;
+            Map map = Map;
 
             if (map != null)
             {
@@ -141,11 +143,6 @@ namespace Server.Mobiles
         public override Poison PoisonImmune { get { return Poison.Greater; } }
         public override int TreasureMapLevel { get { return 5; } }
 
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.BleedAttack;
-        }
-
         public override void GenerateLoot()
         {
             AddLoot(LootPack.AosSuperBoss, 2);
@@ -153,12 +150,12 @@ namespace Server.Mobiles
 
         public void SpawnVortices(Mobile target)
         {
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
                 return;
             
-            this.MovingParticles(target, 0x1AF6, 5, 0, false, false, 0x816, 0, 3006, 0, 0, 0);
+            MovingParticles(target, 0x1AF6, 5, 0, false, false, 0x816, 0, 3006, 0, 0, 0);
 
             DeathVortexTrap dv;
 
@@ -182,7 +179,7 @@ namespace Server.Mobiles
         public override void AuraEffect(Mobile m)
         {
             if (m.NetState != null)
-                m.SendLocalizedMessage(1151112, String.Format("{0}\t#1072073", this.Name)); // : The creature's aura of energy is damaging you!
+                m.SendLocalizedMessage(1151112, String.Format("{0}\t#1072073", Name)); // : The creature's aura of energy is damaging you!
         }
 
         public void DoSpecialAbility(Mobile target)
@@ -191,7 +188,7 @@ namespace Server.Mobiles
             {
                 if (m_LastTarget != target.Location)
                 {
-                    target.SendLocalizedMessage(1152692, this.Name); // ~1_CREATURE~ casts a deadly vortex at you!                    
+                    target.SendLocalizedMessage(1152692, Name); // ~1_CREATURE~ casts a deadly vortex at you!                    
                     SpawnVortices(target);
                 }                
             }
@@ -222,11 +219,11 @@ namespace Server.Mobiles
         {
             base.OnDamage(amount, from, willKill);
 
-            if (this.Hits < m_MinHits && this.Hits < this.HitsMax * 0.60)
-                m_MinHits = this.Hits;
+            if (Hits < m_MinHits && Hits < HitsMax * 0.60)
+                m_MinHits = Hits;
 
-            if (this.Hits >= this.HitsMax * 0.75)
-                m_MinHits = this.HitsMax;            
+            if (Hits >= HitsMax * 0.75)
+                m_MinHits = HitsMax;            
         }
 
         public ClockworkExodus(Serial serial)

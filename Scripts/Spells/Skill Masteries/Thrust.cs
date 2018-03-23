@@ -69,8 +69,6 @@ namespace Server.Spells.SkillMasteries
 		
 		public override bool CheckCast()
 		{
-			BaseWeapon wep = GetWeapon();
-			
 			if(!CheckWeapon())
 			{
 				Caster.SendLocalizedMessage(1155992); // You must have a fencing weapon equipped to use this ability!

@@ -54,6 +54,8 @@ namespace Server.Mobiles
 			Tamable = !isFriend;
 			MinTameSkill = 107.1;
 			ControlSlots = 2;
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
 		}
 
 		public override int Meat
@@ -74,11 +76,6 @@ namespace Server.Mobiles
 		public override PackInstinct PackInstinct
 		{
 			get { return PackInstinct.Ostard; }
-		}
-
-		public override WeaponAbility GetWeaponAbility()
-		{
-			return WeaponAbility.BleedAttack;
 		}
 
 		public override void GenerateLoot()
@@ -214,7 +211,7 @@ namespace Server.Mobiles
 		{
 			base.Serialize(writer);
 
-			writer.Write((int)1);
+			writer.Write((int)2);
 
 			writer.Write((bool)m_IsFriend);
 		}
@@ -227,6 +224,9 @@ namespace Server.Mobiles
 
 			if (version > 0)
 				m_IsFriend = reader.ReadBool();
+
+            if(version == 1)
+                SetWeaponAbility(WeaponAbility.BleedAttack);
 
 			if (m_IsFriend)
 				Delete();
