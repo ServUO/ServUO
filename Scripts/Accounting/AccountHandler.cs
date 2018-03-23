@@ -71,7 +71,7 @@ namespace Server.Misc
 
         private static readonly char[] m_ForbiddenChars = new char[]
         {
-            '<', '>', ':', '"', '/', '\\', '|', '?', '*'
+            '<', '>', ':', '"', '/', '\\', '|', '?', '*', ' '
         };
 
         private static AccessLevel m_LockdownLevel;
