@@ -2678,6 +2678,7 @@
     <Compile Include="Quests\DarkTides\Conversations.cs" />
     <Compile Include="Quests\DarkTides\DarkTidesQuest.cs" />
     <Compile Include="Quests\DarkTides\Objectives.cs" />
+    <Compile Include="Quests\DiscoveringAnimalTraining\DiscoveringAnimalTraining.cs" />
     <Compile Include="Quests\ElfHeritage.cs" />
     <Compile Include="Quests\EminosUndertaking\Conversations.cs" />
     <Compile Include="Quests\EminosUndertaking\EminosUndertakingQuest.cs" />
@@ -9672,6 +9673,17 @@
     <Compile Include="Services\New Magincia\MaginciaPlants\Hoe.cs" />
     <Compile Include="Services\New Magincia\MaginciaPlants\MaginciaPlantItem.cs" />
     <Compile Include="Services\New Magincia\MaginciaPlants\MaginciaPlantSystem.cs" />
+    <Compile Include="Services\Pet Training\AbilityProfile.cs" />
+    <Compile Include="Services\Pet Training\AreaEffects.cs" />
+    <Compile Include="Services\Pet Training\EthologistTitleDeed.cs" />
+    <Compile Include="Services\Pet Training\Gumps.cs" />
+    <Compile Include="Services\Pet Training\PetTrainingGate.cs" />
+    <Compile Include="Services\Pet Training\PetTrainingHelper.cs" />
+    <Compile Include="Services\Pet Training\PlanningProfile.cs" />
+    <Compile Include="Services\Pet Training\SpecialAbility.cs" />
+    <Compile Include="Services\Pet Training\TrainingDefinition.cs" />
+    <Compile Include="Services\Pet Training\TrainingPoint.cs" />
+    <Compile Include="Services\Pet Training\TrainingProfile.cs" />
     <Compile Include="Services\Plants\FertileDirtGump.cs" />
     <Compile Include="Services\Plants\Raised Garden Beds\RaisedGarden.cs" />
     <Compile Include="Services\Plants\Raised Garden Beds\RaisedGardenPlantItem.cs" />

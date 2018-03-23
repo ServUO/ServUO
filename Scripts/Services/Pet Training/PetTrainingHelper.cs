@@ -3,6 +3,8 @@ using Server;
 using System.Collections.Generic;
 using System.Linq;
 using Server.Items;
+using Server.Engines.VvV;
+using Server.SkillHandlers;
 
 namespace Server.Mobiles
 {
@@ -127,6 +129,22 @@ namespace Server.Mobiles
             if (bc is IDrake && ((IDrake)bc).DrakeType == DrakeType.Poison)
             {
                 return new TrainingDefinition(bc.GetType(), def.Class, def.MagicalAbilities, def.SpecialAbilities, def.WeaponAbilities, AreaEffectArea2, 2, 5);
+            }
+            else if (bc is VvVMount)
+            {
+                if (bc.Body == 0xDA)
+                {
+                    new TrainingDefinition(typeof(VvVMount), Class.Clawed, MagicalAbility.None, SpecialAbilityClawed, WepAbilityNone, AreaEffectNone, 1, 3);
+                }
+                else
+                {
+                    new TrainingDefinition(typeof(VvVMount), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3);
+                }
+            }
+
+            if (def == null)
+            {
+                def = new TrainingDefinition(bc.GetType(), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1);
             }
 
             return def;
@@ -733,8 +751,6 @@ namespace Server.Mobiles
                 new TrainingDefinition(typeof(Unicorn), Class.Magical, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 2, 5),
                 new TrainingDefinition(typeof(Vollem), Class.MagicalAndTailed, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 3, 5),
                 new TrainingDefinition(typeof(Walrus), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-                //new TrainingDefinition(typeof(WarHorse), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone),
-                //new TrainingDefinition(typeof(WarOstard), Class.Clawed, MagicalAbility.None, SpecialAbilityClawed, WepAbilityNone, AreaEffectNone),
                 new TrainingDefinition(typeof(WhiteWolf), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(WhiteWyrm), Class.MagicalClawedAndTailed, MagicalAbility.Dragon1, SpecialAbilityClawedTailedAndMagical2, WepAbility2, AreaEffectEarthen, 3, 5),
                 new TrainingDefinition(typeof(WildTiger), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 5),
@@ -1559,5 +1575,80 @@ namespace Server.Mobiles
             return 0;
         }
         #endregion
+
+        public static void Initialize()
+        {
+            // Syntax: [PetTrainTest <PetType>
+            Server.Commands.CommandSystem.Register("PetTrainTest", AccessLevel.GameMaster, e =>
+            {
+                Mobile m = e.Mobile;
+
+                string arg = e.GetString(0);
+
+                if (!String.IsNullOrEmpty(arg))
+                {
+                    Type t = ScriptCompiler.FindTypeByName(arg);
+
+                    if (t != null && t.IsSubclassOf(typeof(BaseCreature)))
+                    {
+                        BaseCreature bc = Activator.CreateInstance(t) as BaseCreature;
+
+                        if (bc != null)
+                        {
+                            if (!bc.Tamable)
+                            {
+                                m.SendMessage("That cannot be tamed!");
+                            }
+                            else if (m.Followers + bc.ControlSlots > m.FollowersMax)
+                            {
+                                m.SendLocalizedMessage(1049611); // You have too many followers to tame that creature.
+                                bc.Delete();
+                            }
+                            else
+                            {
+                                bc.MoveToWorld(m.Location, m.Map);
+
+                                if (bc is GreaterDragon)
+                                {
+                                    AnimalTaming.ScaleSkills(bc, 0.72, 0.90); // 72% of original skills trainable to 90%
+                                    bc.Skills[SkillName.Magery].Base = bc.Skills[SkillName.Magery].Cap;
+                                    // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
+                                }
+                                else
+                                {
+                                    AnimalTaming.ScaleSkills(bc, 0.90);
+                                }
+
+                                if (bc.StatLossAfterTame)
+                                {
+                                    AnimalTaming.ScaleStats(bc, 0.50);
+                                }
+
+                                Timer.DelayCall(TimeSpan.FromSeconds(.25), () =>
+                                {
+                                    bc.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 502799, m.NetState);
+                                    // It seems to accept you as master.
+                                    bc.Owners.Add(m);
+
+                                    bc.SetControlMaster(m);
+                                    bc.IsBonded = true;
+
+                                    bc.OnAfterTame(m);
+
+                                    PetTrainingHelper.GetAbilityProfile(bc, true).OnTame();
+                                });
+                            }
+                        }
+                    }
+                    else
+                    {
+                    }
+                }
+                else
+                {
+                    m.SendMessage("PetTrainTest <type>");
+                }
+            });
+        }
     }
 }

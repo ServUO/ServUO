@@ -41,6 +41,7 @@ namespace Server.Items
             {
                 if (m.Alive && !m.IsDeadBondedPet &&
                     m.CanBeHarmful(attacker) &&
+                    m != attacker &&
                     Server.Spells.SpellHelper.ValidIndirectTarget(m, attacker) &&
                     (!Core.AOS || attacker.InLOS(m)))
                 {

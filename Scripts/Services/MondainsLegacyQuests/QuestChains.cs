@@ -29,7 +29,8 @@ namespace Server.Engines.Quests
         ValleyOfOne,
         MyrmidexAlliance,
         EodonianAlliance,
-        FlintTheQuartermaster
+        FlintTheQuartermaster,
+        AnimalTraining
     }
 
     public class BaseChain

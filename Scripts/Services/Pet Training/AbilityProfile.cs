@@ -45,6 +45,11 @@ namespace Server.Mobiles
 
         public void OnTame()
         {
+            if (Creature.ControlMaster is PlayerMobile)
+            {
+                Server.Engines.Quests.TamingPetQuest.CheckTame((PlayerMobile)Creature.ControlMaster);
+            }
+
             if (Creature.Map == Map.Tokuno)
             {
                 TokunoTame = true;

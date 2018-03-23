@@ -203,7 +203,7 @@ namespace Server.Mobiles
             AddHtmlLocalized(53, 182, 160, 18, 1002122, _Label, false, false); // Poisoning
             AddHtml(180, 182, 35, 18, FormatSkill(Creature, SkillName.Poisoning), false, false);
 
-            AddHtmlLocalized(53, 200, 160, 18, 1044110, _Label, false, false); // Detect Hidden
+            AddHtmlLocalized(53, 200, 160, 18, 1044074, _Label, false, false); // Detect Hidden
             AddHtml(180, 200, 35, 18, FormatSkill(Creature, SkillName.DetectHidden), false, false);
 
             AddHtmlLocalized(53, 218, 160, 18, 1002088, _Label, false, false); // Hiding
@@ -456,6 +456,8 @@ namespace Server.Mobiles
                     var trainProfile2 = PetTrainingHelper.GetTrainingProfile(Creature, true);
                     trainProfile2.BeginTraining();
                     Refresh();
+
+                    Server.Engines.Quests.UsingAnimalLoreQuest.CheckComplete(User);
                     break;
             }
         }
@@ -881,21 +883,6 @@ namespace Server.Mobiles
                     y += 22;
                 }
             }
-
-            /*for (int i = 0; i < Definition.SpecialAbilities.Length; i++)
-            {
-                var abil = Definition.SpecialAbilities[i];
-
-                if (AbilityProfile.HasAbility(abil))
-                    continue;
-
-                var tp = PetTrainingHelper.GetTrainingPoint(abil);
-
-                AddButton(275, y, 4005, 4007, 100 + i, GumpButtonType.Reply, 0);
-                Record(tp, 320, y + 2);
-
-                y += 22;
-            }*/
         }
 
         private void BuildSpecialMovesPage()
@@ -939,21 +926,6 @@ namespace Server.Mobiles
                     y += 22;
                 }
             }
-
-            /*for (int i = 0; i < Definition.AreaEffects.Length; i++)
-            {
-                var abil = Definition.AreaEffects[i];
-
-                if (AbilityProfile.HasAbility(abil))
-                    continue;
-
-                var tp = PetTrainingHelper.GetTrainingPoint(abil);
-
-                AddButton(275, y, 4005, 4007, 100 + i, GumpButtonType.Reply, 0);
-                Record(tp, 320, y + 2);
-
-                y += 22;
-            }*/
         }
 
         private void Record(TrainingPoint tp, int x, int y)
@@ -1468,7 +1440,8 @@ namespace Server.Mobiles
                     {
                         User.SendLocalizedMessage(1153204); // The pet is too far away from you!
                     }
-                    else if (Server.Spells.SpellHelper.CheckCombat(User) || Server.Spells.SpellHelper.CheckCombat(Creature))
+                    else if (Server.Spells.SpellHelper.CheckCombat(User) || Server.Spells.SpellHelper.CheckCombat(Creature) ||
+                        Creature.Aggressors.Count > 0 || Creature.Aggressed.Count > 0)
                     {
                         User.SendLocalizedMessage(1156876); // Since you have been in combat recently you may not use this feature.
                     }
@@ -1525,6 +1498,8 @@ namespace Server.Mobiles
                                             ResendGumps();
                                         });
                                     }
+
+                                    Server.Engines.Quests.TeachingSomethingNewQuest.CheckComplete(User);
                                 }
                             },
                             () =>

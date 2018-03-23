@@ -448,7 +448,7 @@ namespace Server.Engines.Quests
                 RemoveQuest(true);
             else
                 RemoveQuest();
-			
+
             // offer next quest if present
             if (NextQuest != null)
             {

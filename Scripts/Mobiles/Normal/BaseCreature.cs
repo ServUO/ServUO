@@ -3886,6 +3886,11 @@ namespace Server.Mobiles
             {
                 if (TryHitPoison())
                 {
+                    if (Core.TOL)
+                    {
+                        defender.FixedEffect(0x3779, 1, 10, 1271, 0);
+                    }
+
                     defender.ApplyPoison(this, p);
                 }
 

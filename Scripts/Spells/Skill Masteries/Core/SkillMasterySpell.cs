@@ -701,7 +701,7 @@ namespace Server.Spells.SkillMasteries
             if (spell != null)
                 spell.AbsorbDamage(ref damage);
 
-            CombatTrainingSpell.CheckDamage(damager, victim, ref damage);
+            CombatTrainingSpell.CheckDamage(damager, victim, type, ref damage);
 		}
 
         /// <summary>

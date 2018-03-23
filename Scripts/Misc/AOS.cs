@@ -299,13 +299,6 @@ namespace Server
                 SwarmContext.CheckRemove(m);
             #endregion
 
-            #region Skill Mastery
-            SkillMasterySpell.OnDamage(m, from, type, ref totalDamage);
-            #endregion
-
-            if (keepAlive && totalDamage > m.Hits)
-                totalDamage = m.Hits;
-
             SpiritualityVirtue.GetDamageReduction(m, ref totalDamage);
 
             #region Berserk
@@ -339,9 +332,23 @@ namespace Server
                     {
                         profile.CheckProgress((BaseCreature)m);
                     }
+
+                    profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)m);
+
+                    if (profile != null && 0.3 > Utility.RandomDouble())
+                    {
+                        profile.CheckProgress((BaseCreature)from);
+                    }
                 }
             }
             #endregion
+
+            #region Skill Mastery
+            SkillMasterySpell.OnDamage(m, from, type, ref totalDamage);
+            #endregion
+
+            if (keepAlive && totalDamage > m.Hits)
+                totalDamage = m.Hits;
 
             if (totalDamage <= 0)
                 return 0;
