@@ -164,7 +164,6 @@ namespace Server.Engines.Points
             Entries[typeof(LargeFishingNet)] = 500.0;
             Entries[typeof(AntiqueWeddingDress)] = 500.0;
             Entries[typeof(BronzedArmorValkyrie)] = 500.0;
-            Entries[typeof(Bait)] = 10.0;
             Entries[typeof(BaseCrabAndLobster)] = 1.0;
             Entries[typeof(KelpWovenLeggings)] = 500.0;
             Entries[typeof(FabledFishingNet)] = 2500.0;
