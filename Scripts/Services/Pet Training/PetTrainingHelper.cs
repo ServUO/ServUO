@@ -142,9 +142,9 @@ namespace Server.Mobiles
                 }
             }
 
-            if (def == null)
+            if (def == null && bc.Tamable)
             {
-                def = new TrainingDefinition(bc.GetType(), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 1);
+                def = new TrainingDefinition(bc.GetType(), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, bc.ControlSlots, bc.ControlSlots);
             }
 
             return def;
@@ -775,8 +775,8 @@ namespace Server.Mobiles
             _TrainingPoints.Add(new TrainingPoint(PetStat.Mana, 0.5, 1, 1500, 1061151, 1157512));
 
             _TrainingPoints.Add(new TrainingPoint(PetStat.RegenHits, 18.0, 1, 20, 1075627, 1157513));
-            _TrainingPoints.Add(new TrainingPoint(PetStat.RegenStam, 12.0, 1, 30, 1079410, 1157514));
-            _TrainingPoints.Add(new TrainingPoint(PetStat.RegenMana, 12.0, 1, 30, 1079411, 1157515));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.RegenStam, 12.0, 1, 30, 1079411, 1157514));
+            _TrainingPoints.Add(new TrainingPoint(PetStat.RegenMana, 12.0, 1, 30, 1079410, 1157515));
 
             _TrainingPoints.Add(new TrainingPoint(PetStat.BaseDamage, 5.0, 1, 22, 1157506, 1157516));
 
@@ -802,7 +802,7 @@ namespace Server.Mobiles
             _TrainingPoints.Add(new TrainingPoint(SkillName.Wrestling, 1.0, 50, 200, 1044103, 1157522));
             _TrainingPoints.Add(new TrainingPoint(SkillName.Tactics, 1.0, 50, 200, 1044087, 1157522));
             _TrainingPoints.Add(new TrainingPoint(SkillName.Anatomy, 0.1, 50, 200, 1044061, 1157522));
-            _TrainingPoints.Add(new TrainingPoint(SkillName.Parry, 0.1, 50, 200, 1044061, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Parry, 0.1, 50, 200, 1002118, 1157522));
 
             TextDefinition[][] loc = _MagicalAbilityLocalizations;
 
@@ -972,11 +972,18 @@ namespace Server.Mobiles
         {
             int slots = bc.ControlSlots;
 
+            var profile = GetTrainingProfile(bc);
+
+            if (profile != null && !profile.HasIncreasedControlSlot)
+            {
+                slots++;
+            }
+
             switch (slots)
             {
-                case 1: return 8;
-                case 2: return 13;
-                case 3: return 17;
+                case 2: return 8;
+                case 3: return 13;
+                case 4: return 17;
                 default: return 22;
             }
         }
@@ -1052,7 +1059,7 @@ namespace Server.Mobiles
                                 for(int i = 0; i < _DamageTable.Length; i++)
                                 {
                                     int[] list = _DamageTable[i];
-                                    Console.WriteLine("minDam: {0}, low: {1}, high: {2}", bc.DamageMin, list[0], list[1]);
+
                                     if (list[0] >= bc.DamageMin && bc.DamageMin <= list[1])
                                     {
                                         value = i + 1;
@@ -1077,58 +1084,19 @@ namespace Server.Mobiles
                         case ResistanceType.Energy: value = Math.Max(bc.EnergyResistSeed, value); break;
                     }
                 }
-
                 else if (tp.TrainPoint is SkillName)
                 {
                     Skill skill = bc.Skills[(SkillName)tp.TrainPoint];
                     int cap = (int)skill.Cap;
 
-                    if (cap <= 100)
+                    if (cap < 105)
+                        value = 0;
+                    else if (cap < 110)
                         value = 50;
-                    else if (cap <= 105)
+                    else if (cap < 115)
                         value = 100;
-                    else if (cap <= 110)
-                        value = 150;
-                    else if (cap <= 115)
-                        value = 200;
-                }
-            }
-        }
-
-        public static void CheckAdjustValue(TrainingPoint tp, BaseCreature bc, int startValue, ref int value, bool checkPoints = true)
-        {
-            var profile = GetTrainingProfile(bc, true);
-            int cost = GetTotalCost(tp, bc, value, startValue);
-
-            if (checkPoints && cost > profile.TrainingPoints)
-            {
-                while (cost > profile.TrainingPoints)
-                {
-                    value--;
-
-                    cost = GetTotalCost(tp, bc, value, startValue);
-                }
-            }
-
-            if (tp.TrainPoint is PetStat && (PetStat)tp.TrainPoint < PetStat.Mana)
-            {
-                var stat = (PetStat)tp.TrainPoint;
-                double cap = GetTrainingCapTotal(stat);
-                int current = stat <= PetStat.Int ? GetTotalStatWeight(bc) : GetTotalAttributeWeight(bc);
-
-                if (current + cost > cap)
-                {
-                    value -= (int)((cost - cap) / tp.Weight);
-                }
-            }
-            else if (tp.TrainPoint is ResistanceType)
-            {
-                var res = (ResistanceType)tp.TrainPoint;
-                double cap = GetTrainingCapTotal(res);
-
-                if (GetTotalResistWeight(bc) + cost > cap)
-                {
-                    value -= (int)((cost - cap) / tp.Weight);
+                    else if (cap < 120)
+                        value = 115;
                 }
             }
         }
@@ -1165,9 +1133,24 @@ namespace Server.Mobiles
 
                 switch (stat)
                 {
-                    case PetStat.Str: bc.SetStr(value); break;
-                    case PetStat.Dex: bc.SetDex(value); break;
-                    case PetStat.Int: bc.SetInt(value); break;
+                    case PetStat.Str:
+                        if (bc.HitsMaxSeed == -1)
+                        {
+                            bc.HitsMaxSeed = bc.HitsMax;
+                        }
+                        bc.SetStr(value); break;
+                    case PetStat.Dex: 
+                        if(bc.StamMaxSeed == -1)
+                        {
+                            bc.StamMaxSeed = bc.StamMax;
+                        }
+                        bc.SetDex(value); break;
+                    case PetStat.Int:
+                        if (bc.ManaMaxSeed == -1)
+                        {
+                            bc.ManaMaxSeed = bc.ManaMax;
+                        }
+                        bc.SetInt(value); break;
                     case PetStat.Hits: bc.SetHits(value); break;
                     case PetStat.Stam: bc.SetStam(value); break;
                     case PetStat.Mana: bc.SetMana(value); break;
@@ -1353,6 +1336,19 @@ namespace Server.Mobiles
             SkillName.Anatomy,
             SkillName.Parry
         };
+
+        public static bool CommonSkill(BaseCreature bc, SkillName skill)
+        {
+            if (bc.Skills[SkillName.Wrestling].Base > 100 && skill == SkillName.Parry)
+                return true;
+
+            AIType ai = bc.AI;
+
+            if (skill == SkillName.Meditation && (ai == AIType.AI_Mage || ai == AIType.AI_NecroMage || ai == AIType.AI_Spellweaving || ai == AIType.AI_Mystic))
+                return true;
+
+            return skill == SkillName.Focus || skill == SkillName.Tactics || skill == SkillName.Anatomy || skill == SkillName.MagicResist || skill == SkillName.Wrestling;
+        }
         #endregion
 
         #region Localizations
@@ -1474,6 +1470,17 @@ namespace Server.Mobiles
 
         public static TextDefinition[] GetLocalization(MagicalAbility ability)
         {
+            foreach (var abil in Enum.GetValues(typeof(MagicalAbility)))
+            {
+                if ((ability & (MagicalAbility)abil) != 0)
+                    return GetMagicialAbilityLocalization((MagicalAbility)abil);
+            }
+
+            return null;
+        }
+
+        public static TextDefinition[] GetMagicialAbilityLocalization(MagicalAbility ability)
+        {
             switch (ability)
             {
                 case MagicalAbility.Piercing: return _MagicalAbilityLocalizations[0];
@@ -1494,7 +1501,8 @@ namespace Server.Mobiles
                 case MagicalAbility.Magery: return _MagicalAbilityLocalizations[15];
             }
 
-            return null;
+            string error = String.Format("Invalid Loc: {0}", ability.ToString());
+            return new TextDefinition[] { error, error };
         }
 
         public static TextDefinition[] GetLocalization(SpecialAbility ability)
@@ -1502,7 +1510,10 @@ namespace Server.Mobiles
             int index = Array.IndexOf(Abilities, ability);
 
             if (index < 0 || index >= Abilities.Length)
-                return null;
+            {
+                string error = String.Format("Invalid Loc: {0}", ability.ToString());
+                return new TextDefinition[] { error, error };
+            }
 
             return _SpecialAbilityLocalizations[index];
         }
@@ -1512,7 +1523,10 @@ namespace Server.Mobiles
             int index = Array.IndexOf(WeaponAbilities, effect);
 
             if (index < 0 && index >= AreaEffects.Length)
-                return null;
+            {
+                string error = String.Format("Invalid Loc: {0}", effect.ToString());
+                return new TextDefinition[] { error, error };
+            }
 
             return _WeaponAbilityLocalizations[index];
         }
@@ -1522,7 +1536,10 @@ namespace Server.Mobiles
             int index = Array.IndexOf(AreaEffects, effect);
 
             if (index < 0 && index >= AreaEffects.Length)
-                return null;
+            {
+                string error = String.Format("Invalid Loc: {0}", effect.ToString());
+                return new TextDefinition[] { error, error };
+            }
 
             return _AreaEffectLocalizations[index];
         }
