@@ -378,7 +378,11 @@ namespace Server.Mobiles
         {
             if (MagicalAbility != MagicalAbility.None)
             {
-                yield return MagicalAbility;
+                foreach (var abil in PetTrainingHelper.MagicalAbilities)
+                {
+                    if ((MagicalAbility & abil) != 0)
+                        yield return abil;
+                }
             }
 
             if (SpecialAbilities != null)

@@ -3001,6 +3001,11 @@ namespace Server.Mobiles
                     _TrainingProfile = new TrainingProfile(this, reader);
                 }
             }
+            else if(Tamable)
+            {
+                CalculateSlots();
+                ControlSlots = ControlSlotsMin;
+            }
 
             if (version <= 14 && m_Paragon && Hue == 0x31)
             {
@@ -7452,7 +7457,7 @@ namespace Server.Mobiles
         {
             long tc = Core.TickCount;
 
-            if (HasAura && tc >= m_NextAura)
+            if (Combatant != null && HasAura && tc >= m_NextAura)
             {
                 AuraDamage();
                 m_NextAura = tc + (int)AuraInterval.TotalMilliseconds;

@@ -341,8 +341,19 @@ namespace Server.Mobiles
                 {
                     var loc = PetTrainingHelper.GetLocalization(o);
 
-                    AddHtmlLocalized(53, y, 180, 18, loc[0], _Label, false, false);
-                    AddTooltip(loc[1]);
+                    if (loc[0].Number > 0)
+                    {
+                        AddHtmlLocalized(53, y, 180, 18, loc[0].Number, _Label, false, false);
+                    }
+                    else if (loc[1].String != null)
+                    {
+                        AddHtml(53, y, 180, 18, loc[0].String, false, false);
+                    }
+
+                    if (loc[1].Number > 0)
+                    {
+                        AddTooltip(loc[1]);
+                    }
 
                     y += 18;
                 }
@@ -364,7 +375,15 @@ namespace Server.Mobiles
                     {
                         var loc = PetTrainingHelper.GetLocalization(profile.History[i]);
 
-                        AddHtmlLocalized(53, y, 180, 18, loc[0], C32216(0xFF4500), false, false);
+                        if (loc[0].Number > 0)
+                        {
+                            AddHtmlLocalized(53, y, 180, 18, loc[0], C32216(0xFF4500), false, false);
+                        }
+                        else if (loc[0].String != null)
+                        {
+                            AddHtml(53, y, 180, 18, Color("#FF4500", loc[0]), false, false);
+                        }
+
                         AddTooltip(PetTrainingHelper.GetCategoryLocalization(profile.History[i]));
 
                         y += 18;
@@ -801,7 +820,7 @@ namespace Server.Mobiles
 
             foreach (var skill in PetTrainingHelper.MagicSkills)
             {
-                if (Creature.Skills[skill].Base <= 0 || Creature.Skills[skill].Cap >= 120)
+                if ((!PetTrainingHelper.CommonSkill(Creature, skill) && Creature.Skills[skill].Base <= 0) || Creature.Skills[skill].Cap >= 120)
                     continue;
 
                 var tp = PetTrainingHelper.GetTrainingPoint(skill);
@@ -819,7 +838,7 @@ namespace Server.Mobiles
 
             foreach (var skill in PetTrainingHelper.CombatSkills)
             {
-                if (Creature.Skills[skill].Base <= 0 || Creature.Skills[skill].Cap >= 120)
+                if ((!PetTrainingHelper.CommonSkill(Creature, skill) && Creature.Skills[skill].Base <= 0) || Creature.Skills[skill].Cap >= 120)
                     continue;
 
                 var tp = PetTrainingHelper.GetTrainingPoint(skill);
@@ -1190,6 +1209,68 @@ namespace Server.Mobiles
             else if (TrainingPoint.Description.String != null)
                 AddHtml(305, 55, 215, 115, TrainingPoint.Description.String, true, true);
 
+            AddHtmlLocalized(290, 205, 245, 20, CenterLoc, "#1113650", 0, false, false); // RESULTS
+
+            int start = -1;
+            PetTrainingHelper.GetStartValue(TrainingPoint, Creature, ref start);
+            StartValue = start;
+            
+            if (StartValue > Value)
+            {
+                Value = StartValue;
+            }
+
+            if (Value > TrainingPoint.GetMax(Creature))
+                Value = TrainingPoint.GetMax(Creature);
+
+            double weight = TrainingPoint.Weight;
+
+            if (StartValue > 0)
+            {
+                double valueWeight = (int)((double)Value * weight);
+                double maxWeight = TrainingPoint.GetMax(Creature) * weight;
+                double nonAdjustedWeight = (Value - StartValue) * weight;
+
+                if (TrainingPoint.TrainPoint is PetStat && (PetStat)TrainingPoint.TrainPoint <= PetStat.Mana)
+                {
+                    var stat = (PetStat)TrainingPoint.TrainPoint;
+
+                    double maxTotalCap = PetTrainingHelper.GetTrainingCapTotal(stat);
+                    double currentTotal = stat <= PetStat.Int ? PetTrainingHelper.GetTotalStatWeight(Creature) : PetTrainingHelper.GetTotalAttributeWeight(Creature);
+
+                    if (currentTotal >= maxTotalCap)
+                    {
+                        valueWeight = 0;
+                    }
+                    else if (currentTotal + nonAdjustedWeight > maxTotalCap)
+                    {
+                        valueWeight -= (currentTotal + nonAdjustedWeight) - maxTotalCap;
+                    }
+                }
+                else if (TrainingPoint.TrainPoint is ResistanceType)
+                {
+                    var resist = (ResistanceType)TrainingPoint.TrainPoint;
+                    double maxTotalCap = PetTrainingHelper.GetTrainingCapTotal(resist);
+                    double currentTotal = PetTrainingHelper.GetTotalResistWeight(Creature);
+
+                    if (currentTotal >= maxTotalCap)
+                    {
+                        valueWeight = 0;
+                    }
+                    else if (currentTotal + nonAdjustedWeight > maxTotalCap)
+                    {
+                        valueWeight -= (currentTotal + nonAdjustedWeight) - maxTotalCap;
+                    }
+                }
+
+                if (valueWeight > maxWeight)
+                {
+                    valueWeight = maxWeight;
+                }
+
+                Value = (int)(valueWeight / weight);
+            }
+
             AddHtmlLocalized(35, 205, 245, 20, CenterLoc, "#1157493", 0, false, false); // REQUIREMENTS
 
             if (TrainingPoint.Requirements != null && TrainingPoint.Requirements.Length > 0)
@@ -1213,7 +1294,7 @@ namespace Server.Mobiles
                     if (req.Requirement is SkillName && Creature.Skills[(SkillName)req.Requirement].Value > 0)
                         reqCost = 0;
 
-                    AddLabel(245, 225 + (i * 20), 0x27, reqCost.ToString());
+                    AddLabel(245, 225 + (i * 20), 0x26, reqCost.ToString());
                     AddTooltip(1157523);
                 }
 
@@ -1225,48 +1306,23 @@ namespace Server.Mobiles
                 switch (Value)
                 {
                     default:
-                    case 5: cliloc = 1049639; break;
-                    case 10: cliloc = 1049640; break;
-                    case 15: cliloc = 1049641; break;
-                    case 20: cliloc = 1049642; break;
+                    case 50: cliloc = 1049639; break;
+                    case 100: cliloc = 1049640; break;
+                    case 150: cliloc = 1049641; break;
+                    case 200: cliloc = 1049642; break;
                 }
 
                 AddHtmlLocalized(45, 225, 225, 60, cliloc, String.Format("#{0}", TrainingPoint.Name.Number), 0, false, false);
             }
 
-            AddHtmlLocalized(290, 205, 245, 20, CenterLoc, "#1113650", 0, false, false); // RESULTS
-
-            int start = -1;
-            PetTrainingHelper.GetStartValue(TrainingPoint, Creature, ref start);
-            StartValue = start;
-
-            if (StartValue > Value)
-            {
-                Value = StartValue;
-            }
-
-            int weightedValue = (int)((double)Value * TrainingPoint.Weight);
-            
-            // what is available after you train with this value
-            int cost = Value > StartValue ? PetTrainingHelper.GetTotalCost(TrainingPoint, Creature, Value, StartValue) : 0;
+            int cost = PetTrainingHelper.GetTotalCost(TrainingPoint, Creature, Value, StartValue);
             int avail = profile.TrainingPoints - cost;
 
             AddHtmlLocalized(305, 225, 145, 18, 1157490, false, false); // Avail. Training Points:
             AddLabel(455, 225, 0, avail.ToString());
 
-            // max weight for this property. needs to be adjusted for overall cap and available points
-            int maxWeight = TrainingPoint.GetMax(Creature);
-            PetTrainingHelper.CheckAdjustValue(TrainingPoint, Creature, StartValue, ref maxWeight, false);
-            maxWeight = (int)((double)maxWeight * TrainingPoint.Weight);
-
-            if (maxWeight > (int)((double)Value * TrainingPoint.Max))
-            {
-                //Console.WriteLine("Check this shit");
-                maxWeight = (int)((double)Value * TrainingPoint.Max);
-            }
-
             AddHtmlLocalized(305, 245, 145, 18, 1113646, false, false); // Total Property Weight:
-            AddLabel(455, 245, 0, String.Format("{0}/{1}", weightedValue, maxWeight.ToString()));
+            AddLabel(455, 245, 0, String.Format("{0}/{1}", (Value * weight).ToString(), (TrainingPoint.GetMax(Creature) * weight).ToString()));
 
             if (TrainingPoint.Name.Number > 0)
                 AddHtmlLocalized(305, 265, 145, 18, TrainingPoint.Name.Number, false, false);
@@ -1277,34 +1333,54 @@ namespace Server.Mobiles
             {
                 AddLabel(455, 265, 0, (100.0 + ((double)Value / 10)).ToString("0.0"));
             }
-            else if (StartValue > 0 && Value > StartValue)
-            {
-                AddLabel(455, 265, 0, (StartValue + (Value - StartValue)).ToString());
-            }
             else
             {
                 AddLabel(455, 265, 0, Value.ToString());
             }
 
             AddHtmlLocalized(230, 352, 150, 18, 1113586, false, false); // Property Weight:
+            AddHtml(267, 373, 35, 18, Center((Value * weight).ToString()), false, false);
 
-            AddButton(205, 375, 0x1464, 0x1464, 2, GumpButtonType.Reply, 0);
-            AddButton(213, 375, 0x1466, 0x1466, 2, GumpButtonType.Reply, 0);
+            if (CanAdjust())
+            {
+                AddButton(205, 375, 0x1464, 0x1464, 2, GumpButtonType.Reply, 0);
+                AddButton(213, 375, 0x1466, 0x1466, 2, GumpButtonType.Reply, 0);
 
-            AddButton(225, 375, 0x1464, 0x1464, 3, GumpButtonType.Reply, 0);
-            AddButton(233, 375, 0x1466, 0x1466, 3, GumpButtonType.Reply, 0);
+                AddButton(225, 375, 0x1464, 0x1464, 3, GumpButtonType.Reply, 0);
+                AddButton(233, 375, 0x1466, 0x1466, 3, GumpButtonType.Reply, 0);
 
-            AddButton(245, 375, 0x1464, 0x1464, 4, GumpButtonType.Reply, 0);
-            AddButton(253, 375, 0x1466, 0x1466, 4, GumpButtonType.Reply, 0);
+                AddButton(245, 375, 0x1464, 0x1464, 4, GumpButtonType.Reply, 0);
+                AddButton(253, 375, 0x1466, 0x1466, 4, GumpButtonType.Reply, 0);
 
-            AddButton(305, 375, 0x1464, 0x1464, 5, GumpButtonType.Reply, 0);
-            AddButton(313, 375, 0x1466, 0x1466, 5, GumpButtonType.Reply, 0);
+                AddButton(305, 375, 0x1464, 0x1464, 5, GumpButtonType.Reply, 0);
+                AddButton(313, 375, 0x1466, 0x1466, 5, GumpButtonType.Reply, 0);
 
-            AddButton(325, 375, 0x1464, 0x1464, 6, GumpButtonType.Reply, 0);
-            AddButton(333, 375, 0x1466, 0x1466, 6, GumpButtonType.Reply, 0);
+                AddButton(325, 375, 0x1464, 0x1464, 6, GumpButtonType.Reply, 0);
+                AddButton(333, 375, 0x1466, 0x1466, 6, GumpButtonType.Reply, 0);
 
-            AddButton(345, 375, 0x1464, 0x1464, 7, GumpButtonType.Reply, 0);
-            AddButton(353, 375, 0x1466, 0x1466, 7, GumpButtonType.Reply, 0);
+                AddButton(345, 375, 0x1464, 0x1464, 7, GumpButtonType.Reply, 0);
+                AddButton(353, 375, 0x1466, 0x1466, 7, GumpButtonType.Reply, 0);
+            }
+            else
+            {
+                AddImage(205, 375, 0x1464);
+                AddImage(213, 375, 0x1466);
+
+                AddImage(225, 375, 0x1464);
+                AddImage(233, 375, 0x1466);
+
+                AddImage(245, 375, 0x1464);
+                AddImage(253, 375, 0x1466);
+
+                AddImage(305, 375, 0x1464);
+                AddImage(313, 375, 0x1466);
+
+                AddImage(325, 375, 0x1464);
+                AddImage(333, 375, 0x1466);
+
+                AddImage(345, 375, 0x1464);
+                AddImage(353, 375, 0x1466);
+            }
 
             AddLabel(207, 373, 0, "<");
             AddLabel(211, 373, 0, "<");
@@ -1323,14 +1399,15 @@ namespace Server.Mobiles
             AddLabel(348, 373, 0, ">");
             AddLabel(352, 373, 0, ">");
             AddLabel(356, 373, 0, ">");
+        }
 
-            AddHtml(267, 373, 35, 18, Center(weightedValue.ToString()), false, false);
+        private bool CanAdjust()
+        {
+            return TrainingPoint.GetMax(Creature) != TrainingPoint.Start;
         }
 
         public override void OnResponse(RelayInfo info)
         {
-            int value = 0;
-
             switch (info.ButtonID)
             {
                 case 0:
@@ -1345,9 +1422,11 @@ namespace Server.Mobiles
                         });
                     break;
                 case 2: // <<<
-                    value = TrainingPoint.Start;
-                    PetTrainingHelper.CheckAdjustValue(TrainingPoint, Creature, StartValue, ref value);
-                    Value = value;
+                    if (TrainingPoint.Start != TrainingPoint.GetMax(Creature))
+                    {
+                        Value = TrainingPoint.Start;
+                    }
+
                     Refresh();
                     break;
                 case 3: // <<
@@ -1355,15 +1434,12 @@ namespace Server.Mobiles
                     {
                         if (TrainingPoint.TrainPoint is SkillName)
                         {
-                            value = Math.Max(TrainingPoint.Start, Value -= 50);
+                            Value = Math.Max(TrainingPoint.Start, Value -= 50);
                         }
                         else
                         {
-                            value = Math.Max(TrainingPoint.Start, Value -= (TrainingPoint.GetMax(Creature) / 10));
+                            Value = Math.Max(TrainingPoint.Start, Value -= (TrainingPoint.GetMax(Creature) / 10));
                         }
-
-                        PetTrainingHelper.CheckAdjustValue(TrainingPoint, Creature, StartValue, ref value);
-                        Value = value;
                     }
                     Refresh();
                     break;
@@ -1372,16 +1448,13 @@ namespace Server.Mobiles
                     {
                         if (TrainingPoint.TrainPoint is SkillName)
                         {
-                            value = Math.Max(TrainingPoint.Start, Value -= 50);
+                            Value = Math.Max(TrainingPoint.Start, Value -= 50);
                         }
                         else
                         {
                             Value--;
-                            value = Math.Max(TrainingPoint.Start, Value);
+                            Value = Math.Max(TrainingPoint.Start, Value);
                         }
-
-                        PetTrainingHelper.CheckAdjustValue(TrainingPoint, Creature, StartValue, ref value);
-                        Value = value;
                     }
                     Refresh();
                     break;
@@ -1390,16 +1463,13 @@ namespace Server.Mobiles
                     {
                         if (TrainingPoint.TrainPoint is SkillName)
                         {
-                            value = Math.Min(TrainingPoint.GetMax(Creature), Value += 50);
+                            Value = Math.Min(TrainingPoint.GetMax(Creature), Value += 50);
                         }
                         else
                         {
                             Value++;
-                            value = Math.Min(TrainingPoint.GetMax(Creature), Value);
+                            Value = Math.Min(TrainingPoint.GetMax(Creature), Value);
                         }
-
-                        PetTrainingHelper.CheckAdjustValue(TrainingPoint, Creature, StartValue, ref value);
-                        Value = value;
                     }
                     Refresh();
                     break;
@@ -1408,22 +1478,22 @@ namespace Server.Mobiles
                     {
                         if (TrainingPoint.TrainPoint is SkillName)
                         {
-                            value = Math.Min(TrainingPoint.GetMax(Creature), Value += 50);
+                            Value = Math.Min(TrainingPoint.GetMax(Creature), Value += 50);
                         }
                         else
                         {
-                            value = Math.Min(TrainingPoint.GetMax(Creature), Value += (TrainingPoint.GetMax(Creature) / 10));
+                            Value += (TrainingPoint.GetMax(Creature) / 10);
+                            Value = Math.Min(TrainingPoint.GetMax(Creature), Value);
                         }
-
-                        PetTrainingHelper.CheckAdjustValue(TrainingPoint, Creature, StartValue, ref value);
-                        Value = value;
                     }
                     Refresh();
                     break;
                 case 7: // >>>
-                    value = TrainingPoint.GetMax(Creature);
-                    PetTrainingHelper.CheckAdjustValue(TrainingPoint, Creature, StartValue, ref value);
-                    Value = value;
+                    if (TrainingPoint.Start != TrainingPoint.GetMax(Creature))
+                    {
+                        Value = TrainingPoint.GetMax(Creature);
+                    }
+
                     Refresh();
                     break;
                 case 8: // train pet
@@ -1445,7 +1515,7 @@ namespace Server.Mobiles
                     {
                         User.SendLocalizedMessage(1156876); // Since you have been in combat recently you may not use this feature.
                     }
-                    else if (!profile.HasIncreasedControlSlot && User.Followers >= 5)
+                    else if (!profile.HasIncreasedControlSlot && User.Followers >= User.FollowersMax)
                     {
                         User.SendLocalizedMessage(1157498); // You do not have the available pet slots to train this pet. Please free up pet slots and try again.
                     }

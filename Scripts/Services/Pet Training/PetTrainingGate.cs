@@ -1,6 +1,7 @@
 using Server;
 using System;
 using Server.Mobiles;
+using Server.Gumps;
 
 namespace Server.Items
 {
@@ -36,6 +37,16 @@ namespace Server.Items
                 {
                     profile.TrainingProgress = profile.TrainingProgressMax;
                     bc.FixedEffect(0x375A, 10, 30);
+
+                    if (bc.ControlMaster is PlayerMobile)
+                    {
+                        var gump = bc.ControlMaster.FindGump<NewAnimalLoreGump>();
+
+                        if (gump != null)
+                            gump.Refresh();
+                        else
+                            BaseGump.SendGump(new NewAnimalLoreGump((PlayerMobile)bc.ControlMaster, bc));
+                    }
                 }
             }
 
