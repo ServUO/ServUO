@@ -468,44 +468,21 @@ namespace Server.Engines.VvV
             if (to is BaseCreature && ((BaseCreature)to).GetMaster() is PlayerMobile)
                 to = ((BaseCreature)to).GetMaster();
 
-            if (from == to || IsVvVCombatant(to) || IsVvVCombatant(from))
+            if (from == to || !IsVvVCombatant(to) || !IsVvVCombatant(from))
                 return false;
 
             VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
             VvVPlayerEntry toentry = Instance.GetPlayerEntry<VvVPlayerEntry>(to);
 
-            Guild fromguild = from.Guild as Guild;
-            Guild toguild = to.Guild as Guild;
+            Guild fromGuild = from.Guild as Guild;
+            Guild toGuild = to.Guild as Guild;
 
-            if (fromentry == null || toentry == null || !fromentry.Active || !toentry.Active)
+            if (fromGuild == toGuild && fromGuild != null && toGuild != null && fromGuild.IsAlly(toGuild))
             {
-                if (TempParticipants != null)
-                {
-                    CheckTempParticipants();
-
-                    if ((fromentry != null && toentry == null || (fromentry == null && toentry != null)) &&
-                        (TempParticipants.ContainsKey(from) || TempParticipants.ContainsKey(to)) &&
-                        ((fromguild == null && toguild == null) || fromguild != toguild)) // one is vvv and the other isnt, seperate guilds
-                    {
-                        return true;
-                    }
-
-                    if (fromentry == null && toentry == null &&
-                        ((fromguild == null && toguild == null) || fromguild != toguild) &&
-                        TempParticipants.ContainsKey(from) &&
-                        TempParticipants.ContainsKey(to)) // neither are vvv, seperate guilds
-                    {
-                        return true;
-                    }
-                }
-
                 return false;
             }
 
-            if (toguild == null || fromguild == null)
-                return true;
-
-            return fromguild != toguild && !fromguild.IsAlly(toguild);
+            return true;
         }
 
         public static void AddTempParticipant(Mobile m)
