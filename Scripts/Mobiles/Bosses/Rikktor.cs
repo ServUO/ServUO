@@ -11,36 +11,37 @@ namespace Server.Mobiles
         public Rikktor()
             : base(AIType.AI_Melee)
         {
-            this.Body = 172;
-            this.Name = "Rikktor";
+            Body = 172;
+            Name = "Rikktor";
 
-            this.SetStr(701, 900);
-            this.SetDex(201, 350);
-            this.SetInt(51, 100);
+            SetStr(701, 900);
+            SetDex(201, 350);
+            SetInt(51, 100);
 
-            this.SetHits(15000);
-            this.SetStam(203, 650);
+            SetHits(15000);
+            SetStam(203, 650);
 
-            this.SetDamage(28, 55);
+            SetDamage(28, 55);
 
-            this.SetDamageType(ResistanceType.Physical, 25);
-            this.SetDamageType(ResistanceType.Fire, 50);
-            this.SetDamageType(ResistanceType.Energy, 25);
+            SetDamageType(ResistanceType.Physical, 25);
+            SetDamageType(ResistanceType.Fire, 50);
+            SetDamageType(ResistanceType.Energy, 25);
 
-            this.SetResistance(ResistanceType.Physical, 80, 90);
-            this.SetResistance(ResistanceType.Fire, 80, 90);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 80, 90);
-            this.SetResistance(ResistanceType.Energy, 80, 90);
+            SetResistance(ResistanceType.Physical, 80, 90);
+            SetResistance(ResistanceType.Fire, 80, 90);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 80, 90);
+            SetResistance(ResistanceType.Energy, 80, 90);
 
-            this.SetSkill(SkillName.Anatomy, 100.0);
-            this.SetSkill(SkillName.MagicResist, 140.2, 160.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Anatomy, 100.0);
+            SetSkill(SkillName.MagicResist, 140.2, 160.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 118.4, 123.9);
 
-            this.Fame = 22500;
-            this.Karma = -22500;
+            Fame = 22500;
+            Karma = -22500;
 
-            this.VirtualArmor = 130;
+            VirtualArmor = 130;
         }
 
         public Rikktor(Serial serial)
@@ -120,7 +121,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 4);
+            AddLoot(LootPack.UltraRich, 4);
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)
