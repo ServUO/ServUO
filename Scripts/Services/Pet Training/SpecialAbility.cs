@@ -31,6 +31,9 @@ namespace Server.Mobiles
 
         public static void CheckCombatTrigger(Mobile attacker, Mobile defender, ref int damage, DamageType type)
         {
+            if(defender == null)
+                return;
+            
             if (attacker is BaseCreature && !((BaseCreature)attacker).Summoned)
             {
                 var bc = attacker as BaseCreature;
@@ -476,9 +479,6 @@ namespace Server.Mobiles
             if(_Table != null && _Table.ContainsKey(m))
             {
                 _Table.Remove(m);
-
-                if(_Table.Count == 0)
-                    _Table = null;
             }
         }
 
@@ -560,9 +560,6 @@ namespace Server.Mobiles
             if(_Table != null && _Table.ContainsKey(m))
             {
                 _Table.Remove(m);
-
-                if(_Table.Count == 0)
-                    _Table = null;
             }
         }
 
@@ -668,9 +665,6 @@ namespace Server.Mobiles
             if (_Table != null && _Table.ContainsKey(m))
             {
                 _Table.Remove(m);
-
-                if (_Table.Count == 0)
-                    _Table = null;
             }
         }
 
@@ -748,9 +742,6 @@ namespace Server.Mobiles
             if (_Table != null && _Table.ContainsKey(m))
             {
                 _Table.Remove(m);
-
-                if (_Table.Count == 0)
-                    _Table = null;
             }
         }
 
@@ -892,9 +883,6 @@ namespace Server.Mobiles
                 _Table[m].Stop();
                 _Table.Remove(m);
                 m.SendLocalizedMessage(1070843); // The fiery breath dissipates.
-
-                if (_Table.Count == 0)
-                    _Table = null;
             }
         }
 
@@ -996,9 +984,6 @@ namespace Server.Mobiles
 				if(_Table != null && _Table.ContainsKey(Defender))
 				{
 					_Table.Remove(Defender);
-					
-					if(_Table.Count == 0)
-						_Table = null;
 				}
 			}
 		}
@@ -1370,9 +1355,6 @@ namespace Server.Mobiles
                 _Table[m].Stop();
                 _Table.Remove(m);
                 m.SendLocalizedMessage(1070849); // The drain on your life force is gone.
-
-                if (_Table.Count == 0)
-                    _Table = null;
             }
         }
 
@@ -1437,9 +1419,6 @@ namespace Server.Mobiles
             if (_Table != null && _Table.Contains(m))
             {
                 _Table.Remove(m);
-
-                if (_Table.Count == 0)
-                    _Table = null;
             }
         }
 	}
@@ -1530,9 +1509,6 @@ namespace Server.Mobiles
             {
                 Stop();
                 _Table.Remove(m_Mobile);
-
-                if (_Table.Count == 0)
-                    _Table = null;
             }
 
             public void DrainLife()
