@@ -35,7 +35,7 @@ namespace Server
 
 			GlobalMaxUpdateRange = 24;
 			GlobalUpdateRange = 18;
-            GlobalRadarRange = 37;
+            		GlobalRadarRange = 37;
 		}
 
 		private static bool _Crashed;
@@ -89,7 +89,7 @@ namespace Server
 
 		public static bool Service { get; private set; }
 
-        public static bool NoConsole { get; private set; }
+		public static bool NoConsole { get; private set; }
 		public static bool Debug { get; private set; }
 
 		public static bool HaltOnWarning { get; private set; }
@@ -561,14 +561,28 @@ namespace Server
                         dotnet = "4.7.1";
             #endif
 
-            if (String.IsNullOrEmpty(dotnet))
+	    #if MONO
+			Type mono = Type.GetType("Mono.Runtime");
+			if (mono != null)
+			{	
+				MethodInfo displayName = mono.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+				if (displayName != null)
+				{
+					dotnet = displayName.Invoke(null, null).ToString();
+					Unix = true;
+				}
+			}
+	    #endif
+
+            
+	    if (String.IsNullOrEmpty(dotnet))
                 dotnet = "MONO/CSC/Unknown";
             
             Utility.PushColor(ConsoleColor.Green);
-            Console.WriteLine("Core: Compiled for .NET {0}", dotnet);
+            Console.WriteLine("Core: Compiled for " + (Unix ? "MONO " : ".NET ") + "{0}", dotnet);
             Utility.PopColor();
 
-            int platform = (int)Environment.OSVersion.Platform;
+	    int platform = (int)Environment.OSVersion.Platform;
 
 			if (platform == 4 || platform == 128)
 			{
