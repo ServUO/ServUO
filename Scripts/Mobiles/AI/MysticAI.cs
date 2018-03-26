@@ -69,7 +69,7 @@ namespace Server.Mobiles
 		{
 			Target t = m_Mobile.Target;
 			
-			if(t is MysticSpell.MysticSpellTarget && ((MysticSpell.MysticSpellTarget)t).Owner is HailStormSpell)
+			if(t is HailStormSpell.InternalTarget)
 			{
                 if (m_Mobile.Combatant != null && m_Mobile.InRange(m_Mobile.Combatant.Location, 8))
 				{

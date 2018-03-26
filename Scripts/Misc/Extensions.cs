@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -126,7 +126,7 @@ namespace Server.Items
 
             foreach (NetState ns in eable)
             {
-                ns.Send(new MessageLocalizedAffix(item.Serial, item.ItemID, type, 0x3B2, 3, number, "", affixType, affix, args));
+                ns.Send(new MessageLocalizedAffix(item.Serial, item.ItemID, type, 0x3B2, 3, number, "", affixType, affix, args, false));
             }
             
             eable.Free();
@@ -184,7 +184,7 @@ namespace Server.Mobiles
 
         public static void PrivateOverheadMessage(this Mobile mobile, MessageType type, int hue, int number, AffixType affixType, string affix, string args, NetState state)
         {
-            state.Send(new MessageLocalizedAffix(mobile.Serial, mobile.Body, type, hue, 3, number, mobile.Name, affixType, affix, args));
+            state.Send(new MessageLocalizedAffix(mobile.Serial, mobile.Body, type, hue, 3, number, mobile.Name, affixType, affix, args, false));
         }
     }
 }

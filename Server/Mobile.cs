@@ -4103,13 +4103,15 @@ namespace Server
 
 					DeathMoveResult res = GetInventoryMoveResultFor(item);
 
-					if (res == DeathMoveResult.MoveToCorpse)
-					{
+                    pack.FreePosition(item.GridLocation);
+
+                    if (res == DeathMoveResult.MoveToCorpse)
+					{                        
 						content.Add(item);
 					}
 					else
 					{
-						moveToPack.Add(item);
+                        moveToPack.Add(item);
 					}
 				}
 
@@ -5751,7 +5753,7 @@ namespace Server
 						"",
 						AffixType.Append | AffixType.System,
 						amount.ToString(),
-						""));
+						"", false));
 			}
 		}
 
@@ -11779,7 +11781,7 @@ namespace Server
 			if (m_Map != null)
 			{
 				Packet p =
-					Packet.Acquire(new MessageLocalizedAffix(m_Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
+					Packet.Acquire(new MessageLocalizedAffix(m_Serial, Body, type, hue, 3, number, Name, affixType, affix, args, false));
 
 				var eable = m_Map.GetClientsInRange(m_Location);
 
@@ -11987,12 +11989,12 @@ namespace Server
 						"System",
 						(append ? AffixType.Append : AffixType.Prepend) | AffixType.System,
 						affix,
-						args));
+						args, ns.IsEnhancedClient ? true : false));
 			}
 		}
-		#endregion
+        #endregion
 
-		public void LaunchBrowser(string url)
+        public void LaunchBrowser(string url)
 		{
 			if (m_NetState != null)
 			{

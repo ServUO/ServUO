@@ -4992,7 +4992,8 @@ m_Stream.Write( (int) renderMode );
 			string name,
 			AffixType affixType,
 			string affix,
-			string args)
+			string args,
+            bool ECForce)
 			: base(0xCC)
 		{
 			if (name == null)
@@ -5024,9 +5025,17 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((byte)affixType);
 			m_Stream.WriteAsciiFixed(name, 30);
 			m_Stream.WriteAsciiNull(affix);
-			m_Stream.WriteBigUniNull(args);
-		}
-	}
+
+            if (ECForce)
+            {
+                m_Stream.WriteLittleUniNull(args);
+            }
+            else
+            {
+                m_Stream.WriteBigUniNull(args);
+            }
+        }
+    }
 
 	public sealed class ServerInfo
 	{

@@ -1742,12 +1742,12 @@ namespace Server
 
         public void LabelToAffix(Mobile to, int number, AffixType type, string affix)
         {
-            to.Send(new MessageLocalizedAffix(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, number, "", type, affix, ""));
+            to.Send(new MessageLocalizedAffix(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, number, "", type, affix, "", false));
         }
 
         public void LabelToAffix(Mobile to, int number, AffixType type, string affix, string args)
         {
-            to.Send(new MessageLocalizedAffix(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, number, "", type, affix, args));
+            to.Send(new MessageLocalizedAffix(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, number, "", type, affix, args, false));
         }
 
         public virtual void LabelLootTypeTo(Mobile to)
@@ -5394,7 +5394,7 @@ namespace Server
                 return;
             }
 
-            to.Send(new MessageLocalizedAffix(Serial, ItemID, MessageType.Regular, 0x3B2, 3, number, "", affixType, affix, args));
+            to.Send(new MessageLocalizedAffix(Serial, ItemID, MessageType.Regular, 0x3B2, 3, number, "", affixType, affix, args, false));
         }
 
         #region OnDoubleClick[...]
@@ -5717,7 +5717,7 @@ namespace Server
                                 "",
                                 AffixType.Append,
                                 String.Format(" : {0}", m_Amount),
-                                ""));
+                                "", false));
                     }
                 }
                 else

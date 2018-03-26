@@ -897,7 +897,7 @@ namespace Server.Items
                         "",
                         AffixType.Append,
                         String.Format(" completed by {0}", m_CompletedBy == null ? "someone" : m_CompletedBy.Name),
-                        ""));
+                        "", false));
             }
             else if (m_Decoder != null)
             {

@@ -213,7 +213,7 @@ namespace Server.Items
 					"",
 					AffixType.Append,
 					String.Concat(" ", m_Worth.ToString()),
-					"")); // A bank check:
+					"", false)); // A bank check:
 		}
 
 		public override void OnDoubleClick(Mobile from)
