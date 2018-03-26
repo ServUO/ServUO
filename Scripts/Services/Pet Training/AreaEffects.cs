@@ -247,6 +247,7 @@ namespace Server.Mobiles
         public override TimeSpan CooldownDuration { get { return TimeSpan.FromSeconds(40 + Utility.RandomDouble() * 30); } }
         public override int MaxRange { get { return 4; } }
         public override int EffectRange { get { return 4; } }
+        public override int ManaCost { get { return 100; } }
 
         public static Dictionary<Mobile, Timer> _Table;
 
@@ -333,6 +334,8 @@ namespace Server.Mobiles
 
     public class ExplosiveGoo : AreaEffect
     {
+        public override int ManaCost { get { return 30; } }
+
         public ExplosiveGoo()
         {
         }
@@ -388,6 +391,7 @@ namespace Server.Mobiles
         public override double TriggerChance { get { return 0.4; } }
         public override int EffectRange { get { return 10; } }
         public override MagicalAbility RequiredSchool { get { return MagicalAbility.Poisoning; } }
+        public override int ManaCost { get { return 50; } }
 
         public PoisonBreath()
         {

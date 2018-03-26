@@ -94,15 +94,36 @@ namespace Server.Mobiles
         }
 
         public static TimeSpan PowerHourDuration = TimeSpan.FromHours(1);
+        public static TimeSpan PowerHourDelay = TimeSpan.FromHours(24);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime PowerHourBegin { get; set; }
 
-        public bool InPowerHour { get { return PowerHourBegin + PowerHourDuration > DateTime.UtcNow; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool InPowerHour { get; set; }
+
+        public double PowerHourMultiplier
+        {
+            get
+            {
+                if (InPowerHour)
+                {
+                    return 2.0; // 2x gains from creatures during power hour
+                }
+
+                return 1.0;
+            }
+        }
+
+        private static readonly int BaseGainsPerCreature = 50;
+
+        private Dictionary<BaseCreature, int> _ProgressTable;
 
         public TrainingProfile(BaseCreature bc)
         {
             Creature = bc;
+
+            _ProgressTable = new Dictionary<BaseCreature, int>();
         }
 
         private void AssignStartingTrainingPoints()
@@ -163,23 +184,65 @@ namespace Server.Mobiles
             HasIncreasedControlSlot = false;
         }
 
+        private bool CheckCanProgress(BaseCreature bc)
+        {
+            if (_ProgressTable.ContainsKey(bc))
+            {
+                int gains = GetGainsPerCreature();
+
+                if (_ProgressTable[bc] >= gains)
+                {
+                    return false;
+                }
+                else
+                {
+                    _ProgressTable[bc]++;
+                    return true;
+                }
+            }
+
+            _ProgressTable[bc] = 1;
+            return true;
+        }
+
+        private int GetGainsPerCreature()
+        {
+            int level = 1 + (ControlSlots - ControlSlotsMin);
+
+            return (int)(((double)BaseGainsPerCreature / ((double)level * 1.5)) * PowerHourMultiplier);
+        }
+
         public void CheckProgress(BaseCreature bc)
         {
-            if (ControlSlots >= ControlSlotsMax || !HasBegunTraining || TrainingProgress >= TrainingProgressMax)
+            if (ControlSlots >= ControlSlotsMax || !HasBegunTraining || TrainingProgress >= TrainingProgressMax || Creature.ControlMaster == null)
                 return;
 
             int dif = (int)(Creature.BardingDifficulty - bc.BardingDifficulty);
             int level = 1 + (ControlSlots - ControlSlotsMin);
 
-            if (Utility.Random(100) < (6 - level))
+            if (Utility.Random(100) < (8 - level))
             {
-                if (dif <= 50)
+                if (dif <= 50 && CheckCanProgress(bc))
                 {
-                    double toAdd = Math.Round(.25 + (Math.Max(2, (bc.BardingDifficulty / Creature.BardingDifficulty)) * 2.5), 2);
+                    if (PowerHourBegin + PowerHourDelay < DateTime.UtcNow)
+                    {
+                        _ProgressTable.Clear();
+                        
+                        PowerHourBegin = DateTime.UtcNow;
+                        InPowerHour = true;
+                        Creature.ControlMaster.SendLocalizedMessage(1157569); // [Pet Training Power Hour]:  Your pet is under the effects of enhanced training progress for the next hour!
+                    }
+                    else if (InPowerHour && PowerHourBegin + PowerHourDuration < DateTime.UtcNow)
+                    {
+                        InPowerHour = false;
+                        Creature.ControlMaster.SendLocalizedMessage(1157570); // [Pet Training Power Hour]:  Your pet is no longer under the effects of enhanced training progress.
+                    }
+
+                    double toAdd = Math.Round(.25 + (Math.Max(0, (bc.BardingDifficulty / Creature.BardingDifficulty)) * 1.0), 2);
 
                     TrainingProgress = Math.Min(TrainingProgressMax, TrainingProgress + toAdd);
 
-                    if (Creature.ControlMaster != null)
+                    if (!bc.Controlled && !bc.Summoned)
                     {
                         int cliloc = 1157574; // *The pet's battle experience has greatly increased!*
 
@@ -202,10 +265,14 @@ namespace Server.Mobiles
                             Server.Engines.Quests.LeadingIntoBattleQuest.CheckComplete(Creature.ControlMaster as PlayerMobile);
                         }
                     }
+                    else
+                    {
+                        Creature.PrivateOverheadMessage(MessageType.Regular, 0x21, 1157564, Creature.ControlMaster.NetState); // *The pet does not appear to train from that*
+                    }
                 }
-                else if (Creature.ControlMaster != null)
+                else
                 {
-                    Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, 1157564, Creature.ControlMaster.NetState); // *The pet does not appear to train from that*
+                    Creature.PrivateOverheadMessage(MessageType.Regular, 0x21, 1157564, Creature.ControlMaster.NetState); // *The pet does not appear to train from that*
                 }
             }
         }
@@ -238,6 +305,14 @@ namespace Server.Mobiles
         {
             int version = reader.ReadInt();
 
+            switch (version)
+            {
+                case 1:
+                    PowerHourBegin = reader.ReadDateTime();
+                    InPowerHour = reader.ReadBool();
+                    break;
+            }
+
             Creature = bc;
 
             if (reader.ReadInt() == 1)
@@ -255,11 +330,15 @@ namespace Server.Mobiles
             _StartingTrainingPoints = reader.ReadInt();
             _TrainingPoints = reader.ReadInt();
 
+            _ProgressTable = new Dictionary<BaseCreature, int>();
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(PowerHourBegin);
+            writer.Write(InPowerHour);
 
             if (_Plan != null)
             {

@@ -803,6 +803,7 @@ namespace Server.Mobiles
             _TrainingPoints.Add(new TrainingPoint(SkillName.Tactics, 1.0, 50, 200, 1044087, 1157522));
             _TrainingPoints.Add(new TrainingPoint(SkillName.Anatomy, 0.1, 50, 200, 1044061, 1157522));
             _TrainingPoints.Add(new TrainingPoint(SkillName.Parry, 0.1, 50, 200, 1002118, 1157522));
+            _TrainingPoints.Add(new TrainingPoint(SkillName.Healing, 0.1, 50, 200, 1002082, 1157522));
 
             TextDefinition[][] loc = _MagicalAbilityLocalizations;
 
@@ -937,9 +938,11 @@ namespace Server.Mobiles
             var dex = GetTrainingPoint(PetStat.Dex);
             var intel = GetTrainingPoint(PetStat.Int);
 
-            return (int)(((double)bc.RawStr * str.Weight) + 
-                ((double)bc.RawDex * dex.Weight) + 
-                ((double)bc.RawInt * intel.Weight));
+            int v = (int)(Math.Min((double)bc.RawStr * str.Weight, str.GetMax(bc) * str.Weight) +
+                Math.Min((double)bc.RawDex * dex.Weight, dex.GetMax(bc) * dex.Weight) +
+                Math.Min((double)bc.RawInt * intel.Weight, intel.GetMax(bc) * intel.Weight));
+
+            return v;
         }
 
         public static int GetTotalAttributeWeight(BaseCreature bc)
@@ -948,9 +951,11 @@ namespace Server.Mobiles
             var stam = GetTrainingPoint(PetStat.Stam);
             var mana = GetTrainingPoint(PetStat.Mana);
 
-            return (int)(((double)bc.HitsMax * hits.Weight) + 
-                ((double)bc.StamMax * stam.Weight) + 
-                ((double)bc.ManaMax * mana.Weight));
+            int v = (int)(Math.Min((double)bc.HitsMax * hits.Weight, hits.GetMax(bc) * hits.Weight) +
+                Math.Min((double)bc.StamMax * stam.Weight, stam.GetMax(bc) * stam.Weight) +
+                Math.Min((double)bc.ManaMax * mana.Weight, mana.GetMax(bc) * mana.Weight));
+
+            return v;
         }
 
         public static int GetTotalResistWeight(BaseCreature bc)
@@ -993,6 +998,9 @@ namespace Server.Mobiles
             if (value >= 0 && value < _DamageTable.Length)
             {
                 bc.SetDamage(_DamageTable[value][0], _DamageTable[value][1]);
+
+                GetAbilityProfile(bc, true).DamageIndex = value;
+
                 return true;
             }
 
@@ -1050,6 +1058,12 @@ namespace Server.Mobiles
                         case PetStat.RegenMana: value = Math.Max(profile.RegenMana, value); break;
                         case PetStat.BaseDamage:
                             {
+                                if (profile.DamageIndex > -1)
+                                {
+                                    value = profile.DamageIndex + 1;
+                                    break;
+                                }
+
                                 if (bc.DamageMin <= 1)
                                 {
                                     value = 1;
@@ -1202,7 +1216,7 @@ namespace Server.Mobiles
             {
                 SkillName skill = (SkillName)trainingPoint.TrainPoint;
 
-                if (ValidateTrainingPoint(bc, skill))
+                if (ValidateTrainingPoint(bc, skill) && profile.AddAbility(skill))
                 {
                     bc.Skills[skill].Cap = 100 + (value / 10);
 
@@ -1334,12 +1348,13 @@ namespace Server.Mobiles
             SkillName.Wrestling,
             SkillName.Tactics,
             SkillName.Anatomy,
-            SkillName.Parry
+            SkillName.Parry,
+            SkillName.Healing
         };
 
         public static bool CommonSkill(BaseCreature bc, SkillName skill)
         {
-            if (bc.Skills[SkillName.Wrestling].Base > 100 && skill == SkillName.Parry)
+            if (bc.Skills[SkillName.Wrestling].Base >= 100 && skill == SkillName.Parry)
                 return true;
 
             AIType ai = bc.AI;
@@ -1465,6 +1480,9 @@ namespace Server.Mobiles
             if(o is WeaponAbility)
                 return GetLocalization((WeaponAbility)o);
 
+            if (o is SkillName)
+                return GetLocalization((SkillName)o);
+
             return new TextDefinition[] { 0, 0 };
         }
 
@@ -1542,6 +1560,18 @@ namespace Server.Mobiles
             }
 
             return _AreaEffectLocalizations[index];
+        }
+
+        public static TextDefinition[] GetLocalization(SkillName skill)
+        {
+            var tp = _TrainingPoints.FirstOrDefault(t => t.TrainPoint is SkillName && (SkillName)t.TrainPoint == skill);
+
+            if (tp != null)
+            {
+                return new TextDefinition[] { tp.Name, tp.Description };
+            }
+
+            return new TextDefinition[] { SkillInfo.Table[(int)skill].Name, 1157522 };
         }
 
         public static int GetCategoryLocalization(object o)

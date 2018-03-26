@@ -43,11 +43,15 @@ namespace Server.Mobiles
             if(mana >= 15)
                 select = 3;
 
+            if (mana >= 20 && !EnemyOfOneSpell.UnderEffect(m_Mobile))
+                select = 4;
+
             switch (Utility.Random(select))
             {
                 case 0: return new RemoveCurseSpell(m_Mobile, null);
                 case 1: return new DivineFurySpell(m_Mobile, null);
                 case 2: return new ConsecrateWeaponSpell(m_Mobile, null);
+                case 3: return new EnemyOfOneSpell(m_Mobile, null);
             }
 
             return new ConsecrateWeaponSpell(m_Mobile, null);

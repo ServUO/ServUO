@@ -14,29 +14,29 @@ namespace Server.Mobiles
         public Kepetch()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a kepetch";
-            this.Body = 726;
+            Name = "a kepetch";
+            Body = 726;
 
-            this.SetStr(337, 354);
-            this.SetDex(184, 194);
-            this.SetInt(32, 37);
+            SetStr(337, 354);
+            SetDex(184, 194);
+            SetInt(32, 37);
 
-            this.SetHits(308, 366);
+            SetHits(308, 366);
 
-            this.SetDamage(7, 17);
+            SetDamage(7, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 40, 45);
-            this.SetResistance(ResistanceType.Cold, 45, 55);
-            this.SetResistance(ResistanceType.Poison, 55, 65);
-            this.SetResistance(ResistanceType.Energy, 65, 75);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 40, 45);
+            SetResistance(ResistanceType.Cold, 45, 55);
+            SetResistance(ResistanceType.Poison, 55, 65);
+            SetResistance(ResistanceType.Energy, 65, 75);
 
-            this.SetSkill(SkillName.Anatomy, 119.7, 124.1);
-            this.SetSkill(SkillName.MagicResist, 89.9, 97.4);
-            this.SetSkill(SkillName.Tactics, 117.4, 123.5);
-            this.SetSkill(SkillName.Wrestling, 107.7, 113.9);
+            SetSkill(SkillName.Anatomy, 119.7, 124.1);
+            SetSkill(SkillName.MagicResist, 89.9, 97.4);
+            SetSkill(SkillName.Tactics, 117.4, 123.5);
+            SetSkill(SkillName.Wrestling, 107.7, 113.9);
         }
 
         public Kepetch(Serial serial)
@@ -110,7 +110,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.Average, 2);
         }
 
         public override int GetIdleSound()

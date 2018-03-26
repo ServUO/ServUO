@@ -14,11 +14,11 @@ namespace Server.Mobiles
             Body = 0x588;
             Female = true;
 
-            SetStr(521);
-            SetDex(403);
-            SetInt(448);
+            SetStr(496, 523);
+            SetDex(386, 403);
+            SetInt(443, 469);
 
-            SetHits(404);
+            SetHits(362, 423);
 
             SetDamage(21, 28);
 
