@@ -35,7 +35,7 @@ namespace Server
 
 			GlobalMaxUpdateRange = 24;
 			GlobalUpdateRange = 18;
-            		GlobalRadarRange = 37;
+            GlobalRadarRange = 37;
 		}
 
 		private static bool _Crashed;
@@ -561,7 +561,7 @@ namespace Server
                         dotnet = "4.7.1";
             #endif
 
-	    #if MONO
+			#if MONO
 			Type mono = Type.GetType("Mono.Runtime");
 			if (mono != null)
 			{	
@@ -572,7 +572,7 @@ namespace Server
 					Unix = true;
 				}
 			}
-	    #endif
+			#endif
 
             
 	    if (String.IsNullOrEmpty(dotnet))
@@ -582,7 +582,7 @@ namespace Server
             Console.WriteLine("Core: Compiled for " + (Unix ? "MONO " : ".NET ") + "{0}", dotnet);
             Utility.PopColor();
 
-	    int platform = (int)Environment.OSVersion.Platform;
+			int platform = (int)Environment.OSVersion.Platform;
 
 			if (platform == 4 || platform == 128)
 			{
