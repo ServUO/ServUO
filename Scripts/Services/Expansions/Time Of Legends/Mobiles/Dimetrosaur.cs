@@ -84,6 +84,11 @@ namespace Server.Mobiles
             SetHits(360, 380);
         }
 
+        public override void OnAfterTame(Mobile tamer)
+        {
+            SetHits(HitsMax / 4);
+        }
+
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }
         public override int Meat { get { return 1; } }

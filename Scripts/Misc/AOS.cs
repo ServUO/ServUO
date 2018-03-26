@@ -319,32 +319,40 @@ namespace Server
                 }
             }
 
-            #region Pet Training
-            if (PetTrainingHelper.Enabled && (from is BaseCreature || m is BaseCreature))
-            {
-                SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
-
-                if (from is BaseCreature && m is BaseCreature)
-                {
-                    var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
-
-                    if (profile != null)
-                    {
-                        profile.CheckProgress((BaseCreature)m);
-                    }
-
-                    profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)m);
-
-                    if (profile != null && 0.3 > Utility.RandomDouble())
-                    {
-                        profile.CheckProgress((BaseCreature)from);
-                    }
-                }
-            }
-            #endregion
-
             #region Skill Mastery
             SkillMasterySpell.OnDamage(m, from, type, ref totalDamage);
+            #endregion
+
+            #region Pet Training
+            if (PetTrainingHelper.Enabled)
+            {
+                if (from is BaseCreature || m is BaseCreature)
+                {
+                    SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
+
+                    if (from is BaseCreature && m is BaseCreature)
+                    {
+                        var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
+
+                        if (profile != null)
+                        {
+                            profile.CheckProgress((BaseCreature)m);
+                        }
+
+                        profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)m);
+
+                        if (profile != null && 0.3 > Utility.RandomDouble())
+                        {
+                            profile.CheckProgress((BaseCreature)from);
+                        }
+                    }
+                }
+
+                if (from is BaseCreature && ((BaseCreature)from).Controlled && m.Player)
+                {
+                    totalDamage /= 2;
+                }
+            }
             #endregion
 
             if (keepAlive && totalDamage > m.Hits)

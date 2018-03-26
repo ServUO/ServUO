@@ -34,6 +34,9 @@ namespace Server.Mobiles
         public int RegenMana { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public int DamageIndex { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public BaseCreature Creature { get; private set; }
 
         public List<object> History { get; private set; }
@@ -41,6 +44,12 @@ namespace Server.Mobiles
         public AbilityProfile(BaseCreature bc)
         {
             Creature = bc;
+            DamageIndex = -1;
+        }
+
+        public bool HasCustomized()
+        {
+            return History != null && History.Count > 0;
         }
 
         public void OnTame()
@@ -145,6 +154,13 @@ namespace Server.Mobiles
             }
 
             OnAddAbility(ability);
+
+            return true;
+        }
+
+        public bool AddAbility(SkillName skill)
+        {
+            AddToHistory(skill);
 
             return true;
         }
@@ -471,6 +487,16 @@ namespace Server.Mobiles
 
             Creature = bc;
 
+            switch (version)
+            {
+                case 0:
+                    DamageIndex = -1;
+                    break;
+                case 1:
+                    DamageIndex = reader.ReadInt();
+                    break;
+            }
+
             MagicalAbility = (MagicalAbility)reader.ReadInt();
             TokunoTame = reader.ReadBool();
 
@@ -514,13 +540,16 @@ namespace Server.Mobiles
                     case 2: History.Add(SpecialAbility.Abilities[reader.ReadInt()]); break;
                     case 3: History.Add(AreaEffect.Effects[reader.ReadInt()]); break;
                     case 4: History.Add(WeaponAbility.Abilities[reader.ReadInt()]); break;
+                    case 5: History.Add((SkillName)reader.ReadInt()); break;
                 }
             }
         }
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(DamageIndex);
 
             writer.Write((int)MagicalAbility);
             writer.Write(TokunoTame);
@@ -584,6 +613,11 @@ namespace Server.Mobiles
                     {
                         writer.Write(4);
                         writer.Write(Array.IndexOf(WeaponAbility.Abilities, (WeaponAbility)o));
+                    }
+                    else if (o is SkillName)
+                    {
+                        writer.Write(5);
+                        writer.Write((int)(SkillName)o);
                     }
                     else
                     {

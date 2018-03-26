@@ -1653,14 +1653,14 @@ namespace Server.Items
 			double bushidoNonRacial = defender.Skills[SkillName.Bushido].NonRacialValue;
 			double bushido = defender.Skills[SkillName.Bushido].Value;
 
-			if (shield != null)
+			if (shield != null || !defender.Player)
 			{
 				double chance = (parry - bushidoNonRacial) / 400.0;
 					// As per OSI, no negitive effect from the Racial stuffs, ie, 120 parry and '0' bushido with humans
 
 				if (chance < 0) // chance shouldn't go below 0
 				{
-					chance = 0;
+					chance = defender.Player ? 0 : .1;
 				}
 
                 // Skill Masteries
@@ -1679,14 +1679,14 @@ namespace Server.Items
 				}
 
 				// Low dexterity lowers the chance.
-				if (defender.Dex < 80)
+				if (defender.Player && defender.Dex < 80)
 				{
 					chance = chance * (20 + defender.Dex) / 100;
 				}
 
 				return defender.CheckSkill(SkillName.Parry, chance);
 			}
-			else if (defender is BaseCreature || (!(defender.Weapon is Fists) && !(defender.Weapon is BaseRanged)))
+			else if (!(defender.Weapon is Fists) && !(defender.Weapon is BaseRanged))
 			{
 				BaseWeapon weapon = defender.Weapon as BaseWeapon;
 
@@ -1700,9 +1700,6 @@ namespace Server.Items
 				double chance = (parry * bushido) / divisor;
 
 				double aosChance = parry / 800.0;
-
-                if (parry == 0 && defender is BaseCreature)
-                    parry = 20.0;
 
 				// Parry or Bushido over 100 grant a 5% bonus.
 				if (parry >= 100.0)
@@ -1749,7 +1746,7 @@ namespace Server.Items
 
 			if (defender.Player || defender.Body.IsHuman || (defender is BaseCreature && 
                                                             ((BaseCreature)defender).Controlled &&
-                                                            defender.Skills[SkillName.Wrestling].Base > 100))
+                                                            defender.Skills[SkillName.Wrestling].Base >= 100))
 			{
 				blocked = CheckParry(defender);
                 BaseWeapon weapon = defender.Weapon as BaseWeapon;

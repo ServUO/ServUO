@@ -12,38 +12,38 @@ namespace Server.Mobiles
         public Najasaurus()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
         {
-            this.Name = "a najasaurus";
-            this.Body = 1289;
-            this.BaseSoundID = 219;
+            Name = "a najasaurus";
+            Body = 1289;
+            BaseSoundID = 219;
 
-            this.SetStr(160, 300);
-            this.SetDex(160, 300);
-            this.SetInt(20, 40);
+            SetStr(162, 346);
+            SetDex(151, 218);
+            SetInt(21, 40);
 
-            this.SetDamage(13, 24);
-            this.SetHits(700, 900);
+            SetDamage(13, 24);
+            SetHits(746, 844);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Poison, 50);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Poison, 50);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 45, 55);
-            this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 35, 45);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 45, 55);
+            SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Energy, 35, 45);
 
-            this.SetSkill(SkillName.MagicResist, 150.0, 190.0);
-            this.SetSkill(SkillName.Tactics, 80.0, 95.0);
-            this.SetSkill(SkillName.Wrestling, 80.0, 100.0);
-            this.SetSkill(SkillName.Poisoning, 90.0, 100.0);
-            this.SetSkill(SkillName.DetectHidden, 45.0, 55.0);
+            SetSkill(SkillName.MagicResist, 150.0, 190.0);
+            SetSkill(SkillName.Tactics, 80.0, 95.0);
+            SetSkill(SkillName.Wrestling, 80.0, 100.0);
+            SetSkill(SkillName.Poisoning, 90.0, 100.0);
+            SetSkill(SkillName.DetectHidden, 45.0, 55.0);
 
-            this.Fame = 17000;
-            this.Karma = -17000;
+            Fame = 17000;
+            Karma = -17000;
 
-            this.Tamable = true;
-            this.ControlSlots = 2;
-            this.MinTameSkill = 102.0;
+            Tamable = true;
+            ControlSlots = 2;
+            MinTameSkill = 102.0;
         }
 
         public override Poison HitPoison { get { return Poison.Lethal; } }
@@ -53,7 +53,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.FilthyRich);
         }
 
         public Najasaurus(Serial serial)

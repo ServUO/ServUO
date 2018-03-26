@@ -1317,7 +1317,7 @@ namespace Server.Mobiles
 	
 	public class LifeLeech : SpecialAbility
 	{
-		public override int ManaCost { get { return 15;  } }
+		public override int ManaCost { get { return 5;  } }
 		public override TimeSpan CooldownDuration { get { return TimeSpan.FromSeconds(Utility.Random(10, 20)); } }
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
 
@@ -1561,7 +1561,7 @@ namespace Server.Mobiles
         public override bool TriggerOnThink { get { return true; } }
         public override double TriggerChance { get { return 1.0; } }
         public override bool RequiresCombatant { get { return false; } }
-        public override int ManaCost { get { return 0; } }
+        public override int ManaCost { get { return 15; } }
         public override TimeSpan CooldownDuration { get { return TimeSpan.MinValue; } }
         public override bool NaturalAbility { get { return true; } }
 

@@ -3004,6 +3004,12 @@ namespace Server.Mobiles
             else if(Tamable)
             {
                 CalculateSlots();
+
+                if (m_iControlSlots < ControlSlotsMin)
+                {
+                    ControlSlotsMin = m_iControlSlots;
+                }
+
                 ControlSlots = ControlSlotsMin;
             }
 
@@ -5177,7 +5183,7 @@ namespace Server.Mobiles
                 Skills[name].Cap = Skills[name].Base;
             }
 
-            if (name == SkillName.Poisoning && Skills[name].Base > 0)
+            if (name == SkillName.Poisoning && Skills[name].Base > 0 && !PetTrainingHelper.ValidateTrainingPoint(this, MagicalAbility.Poisoning))
             {
                 SetMagicalAbility(MagicalAbility.Poisoning);
             }

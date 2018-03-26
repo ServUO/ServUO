@@ -10,36 +10,36 @@ namespace Server.Mobiles
         public Triceratops()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Triceratops";
-            this.Body = 0x587;
-            this.Female = true;
+            Name = "Triceratops";
+            Body = 0x587;
+            Female = true;
 
-            this.SetStr(1100, 1300);
-            this.SetDex(150, 170);
-            this.SetInt(280, 310);
+            SetStr(1100, 1300);
+            SetDex(150, 170);
+            SetInt(280, 310);
 
-            this.SetHits(1100 , 1200);
+            SetHits(1100 , 1200);
 
-            this.SetDamage(21, 28);
+            SetDamage(21, 28);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 70, 80);
-            this.SetResistance(ResistanceType.Fire, 40, 50);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetResistance(ResistanceType.Physical, 70, 80);
+            SetResistance(ResistanceType.Fire, 40, 50);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.Anatomy, 65.0, 75.0);
-            this.SetSkill(SkillName.Tactics, 90.0, 100.0);
-            this.SetSkill(SkillName.Wrestling, 95.0, 105.0);
-            this.SetSkill(SkillName.DetectHidden, 75.0);
-            this.SetSkill(SkillName.Focus, 95.0, 105.0);
-            this.SetSkill(SkillName.Parry, 0.0, 105.0);
+            SetSkill(SkillName.Anatomy, 65.0, 75.0);
+            SetSkill(SkillName.Tactics, 90.0, 100.0);
+            SetSkill(SkillName.Wrestling, 95.0, 105.0);
+            SetSkill(SkillName.DetectHidden, 75.0);
+            SetSkill(SkillName.Focus, 95.0, 105.0);
+            SetSkill(SkillName.Parry, 0.0, 105.0);
 
-            this.Tamable = true;
-            this.ControlSlots = 3;
-            this.MinTameSkill = 102.0;
+            Tamable = true;
+            ControlSlots = 3;
+            MinTameSkill = 102.0;
 
             SetMagicalAbility(MagicalAbility.Piercing);
         }
