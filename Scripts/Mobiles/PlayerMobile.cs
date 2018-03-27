@@ -1113,7 +1113,7 @@ namespace Server.Mobiles
         #region City Loyalty
         public override int GetResistance(ResistanceType type)
         {
-            int resistance = base.GetResistance(type) + SphynxFortune.GetResistanceBonus(this, type);
+            int resistance = base.GetResistance(type);
 
             if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(this, Server.Engines.CityLoyalty.TradeDeal.SocietyOfClothiers))
             {
@@ -4186,7 +4186,7 @@ namespace Server.Mobiles
 
 		public List<Mobile> PermaFlags { get { return m_PermaFlags; } }
 
-        public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck) + TenthAnniversarySculpture.GetLuckBonus(this) + SphynxFortune.GetAosAttributeBonus(this, AosAttribute.Luck); } }
+        public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck) + TenthAnniversarySculpture.GetLuckBonus(this); } }
 
         public int RealLuck { 
             get
