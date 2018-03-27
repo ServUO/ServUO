@@ -194,7 +194,10 @@ namespace Server.Items
             Fountains.ForEach(x =>
             {
                 if (DateTime.UtcNow > x.Date + TimeSpan.FromHours(24))
+                {
+                    x.Mobile.SendLocalizedMessage(1060859); // The effects of the Sphynx have worn off.
                     Fountains.Remove(x);
+                }
             });
 		}
 
