@@ -505,6 +505,7 @@ namespace Server
     [Flags]
     public enum AosAttribute
     {
+        None = 0x00000000,
         RegenHits = 0x00000001,
         RegenStam = 0x00000002,
         RegenMana = 0x00000004,
@@ -557,6 +558,9 @@ namespace Server
                 return 0;
 
             int value = 0;
+
+            if (attribute == AosAttribute.Luck || attribute == AosAttribute.RegenMana || attribute == AosAttribute.DefendChance || attribute == AosAttribute.EnhancePotions)
+                value += SphynxFortune.GetAosAttributeBonus(m, attribute);
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);

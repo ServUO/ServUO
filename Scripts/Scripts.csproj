@@ -9612,6 +9612,10 @@
     <Compile Include="Services\Harvest\HarvestVein.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Malas\Sphynx\AncientWall.cs" />
+    <Compile Include="Services\Malas\Sphynx\Generate.cs" />
+    <Compile Include="Services\Malas\Sphynx\Sphynx.cs" />
+    <Compile Include="Services\Malas\Sphynx\SphynxFortune.cs" />
     <Compile Include="Services\MiniChampionSystem\MiniChampionSpawn.cs" />
     <Compile Include="Services\MiniChampionSystem\MiniChampSpawnInfo.cs" />
     <Compile Include="Services\MiniChampionSystem\MiniChampType.cs" />
