@@ -39,121 +39,121 @@ namespace Server.Items
             {
                case 0:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Physical, Value = Utility.RandomMinMax(1, 10) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Physical, Value = Utility.RandomMinMax(1, 10) });
                         cliloc = 1060886; // Your endurance shall protect you from your enemies blows.
                         break;
                     }
                 case 1:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Physical, Value = Utility.RandomMinMax(-1, -15) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Physical, Value = Utility.RandomMinMax(-1, -15) });
                         cliloc = 1060901; // Your wounds in battle shall run deep.
                         break;
                     }
                 case 2:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Fire, Value = Utility.RandomMinMax(1, 10) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Fire, Value = Utility.RandomMinMax(1, 10) });
                         cliloc = 1060887; // A smile will be upon your lips, as you gaze into the infernos.
                         break;
                     }
                 case 3:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Fire, Value = Utility.RandomMinMax(-1, -15) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Fire, Value = Utility.RandomMinMax(-1, -15) });
                         cliloc = 1060902; // The fires of the abyss shall tear asunder your flesh!
                         break;
                     }
                 case 4:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Cold, Value = Utility.RandomMinMax(1, 10) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Cold, Value = Utility.RandomMinMax(1, 10) });
                         cliloc = 1060888; // The ice of ages will embrace you, and you will embrace it alike.
                         break;
                     }
                 case 5:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Cold, Value = Utility.RandomMinMax(-1, -15) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Cold, Value = Utility.RandomMinMax(-1, -15) });
                         cliloc = 1060903; // Winter’s touch shall be your undoing.
                         break;
                     }
                 case 6:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Poison, Value = Utility.RandomMinMax(1, 10) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Poison, Value = Utility.RandomMinMax(1, 10) });
                         cliloc = 1060889; // Your blood runs pure and strong.
                         break;
                     }
                 case 7:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Poison, Value = Utility.RandomMinMax(-1, -15) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Poison, Value = Utility.RandomMinMax(-1, -15) });
                         cliloc = 1060904; // Your veins will freeze with poison’s chill.
                         break;
                     }
                 case 8:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Energy, Value = Utility.RandomMinMax(1, 10) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Energy, Value = Utility.RandomMinMax(1, 10) });
                         cliloc = 1060890; // Your flesh shall endure the power of storms.
                         break;
                     }
                 case 9:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.None, attr2 = ResistanceType.Energy, Value = Utility.RandomMinMax(-1, -15) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr2 = ResistanceType.Energy, Value = Utility.RandomMinMax(-1, -15) });
                         cliloc = 1060905; // The wise will seek to avoid the anger of storms.
                         break;
                     }
                 case 10:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.Luck, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(10, 50) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.Luck, Value = Utility.RandomMinMax(10, 50) });
                         cliloc = 1060891; // Seek riches and they will seek you.
                         break;
                     }
                 case 11:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.Luck, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(-10, -50) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.Luck, Value = Utility.RandomMinMax(-10, -50) });
                         cliloc = 1060901; // Your wounds in battle shall run deep.
                         break;
                     }
                 case 12:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.EnhancePotions, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(5, 25) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.EnhancePotions, Value = Utility.RandomMinMax(5, 25) });
                         cliloc = 1060892; // The power of alchemy shall thrive within you.
                         break;
                     }
                 case 13:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.EnhancePotions, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(-5, -25) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.EnhancePotions, Value = Utility.RandomMinMax(-5, -25) });
                         cliloc = 1060907; // The strength of alchemy will fail you.
                         break;
                     }
                 case 14:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.Luck, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(10, 100) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.Luck, Value = Utility.RandomMinMax(10, 100) });
                         cliloc = 1060893; // Fate smiles upon you this day.
                         break;
                     }
                 case 15:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.Luck, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(-10, -100) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.Luck, Value = Utility.RandomMinMax(-10, -100) });
                         cliloc = 1060908; // Only fools take risks in fate’s shadow.
                         break;
                     }
                 case 16:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.DefendChance, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(1, 10) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.DefendChance, Value = Utility.RandomMinMax(1, 10) });
                         cliloc = 1060894; // A keen mind in battle will help you avoid injury.
                         break;
                     }
                 case 17:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.DefendChance, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(-1, -10) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.DefendChance, Value = Utility.RandomMinMax(-1, -10) });
                         cliloc = 1060909; // Your lack of focus in battle shall be your undoing.
                         break;
                     }
                 case 18:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.RegenMana, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(1, 3) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.RegenMana, Value = Utility.RandomMinMax(1, 3) });
                         cliloc = 1060895; // The flow of the ether is strong within you.
                         break;
                     }
                 case 19:
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.RegenMana, attr2 = ResistanceType.None, Value = Utility.RandomMinMax(-1, -3) });
+                        Fountains.Add(new SphynxFortuneArray { Mobile = from, Date = DateTime.UtcNow, attr1 = AosAttribute.RegenMana, Value = Utility.RandomMinMax(-1, -3) });
                         cliloc = 1060910; // Your connection with the ether is weak, take heed.
                         break;
                     }                 
@@ -169,7 +169,7 @@ namespace Server.Items
 
         public static int GetResistanceBonus(Mobile from, ResistanceType type)
         {
-            if (Fountains.Any(x => x.Mobile == from && x.attr2 == type))
+            if (Fountains.Any(x => x.Mobile == from && x.attr2 == type && x.attr1 != AosAttribute.None))
             {
                 return Fountains.Where(x => x.Mobile == from && x.attr2 == type).Sum(y => y.Value);
             }
@@ -179,7 +179,7 @@ namespace Server.Items
 
         public static int GetAosAttributeBonus(Mobile from, AosAttribute type)
         {
-            if (Fountains.Any(x => x.Mobile == from && x.attr1 == type))
+            if (Fountains.Any(x => x.Mobile == from && x.attr1 == type && x.attr2 != ResistanceType.Physical))
             {
                 return Fountains.Where(x => x.Mobile == from && x.attr1 == type).Sum(y => y.Value);
             }

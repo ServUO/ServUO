@@ -458,8 +458,7 @@ namespace Server
 		Fire,
 		Cold,
 		Poison,
-		Energy,
-        None
+		Energy
     }
 
 	public enum ApplyPoisonResult
