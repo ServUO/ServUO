@@ -578,33 +578,36 @@ namespace Server.Mobiles
                 SetSpecialAbility(SpecialAbility.DragonBreath);
             }
 
-            if (CanHeal || CanHealOwner)
+            if (HealChance > 0.0 && HealChance >= Utility.RandomDouble())
             {
                 SetSpecialAbility(SpecialAbility.Heal);
             }
 
-            SetSkill(SkillName.Focus, 2, 20);
-            SetSkill(SkillName.DetectHidden, Utility.RandomList(10, 60));
+            if(Skills[SkillName.Focus].Value == 0)
+                SetSkill(SkillName.Focus, 2, 20);
+
+            if(Skills[SkillName.DetectHidden].Value == 0)
+                SetSkill(SkillName.DetectHidden, Utility.RandomList(10, 60));
         }
 
         public void SetMagicalAbility(MagicalAbility ability)
         {
-            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability);
+            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability, false);
         }
 
         public void SetSpecialAbility(SpecialAbility ability)
         {
-            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability);
+            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability, false);
         }
 
         public void SetAreaEffect(AreaEffect ability)
         {
-            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability);
+            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability, false);
         }
 
         public void SetWeaponAbility(WeaponAbility ability)
         {
-            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability);
+            PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability, false);
         }
 
         public virtual double AverageThreshold { get { return 0.33; } }
@@ -3001,16 +3004,21 @@ namespace Server.Mobiles
                     _TrainingProfile = new TrainingProfile(this, reader);
                 }
             }
-            else if(Tamable)
+            else
             {
-                CalculateSlots();
-
-                if (m_iControlSlots < ControlSlotsMin)
+                if (Tamable)
                 {
-                    ControlSlotsMin = m_iControlSlots;
+                    CalculateSlots();
+
+                    if (m_iControlSlots < ControlSlotsMin)
+                    {
+                        ControlSlotsMin = m_iControlSlots;
+                    }
+
+                    ControlSlots = ControlSlotsMin;
                 }
 
-                ControlSlots = ControlSlotsMin;
+                InitializeAbilities();
             }
 
             if (version <= 14 && m_Paragon && Hue == 0x31)
@@ -6381,6 +6389,16 @@ namespace Server.Mobiles
                             }
                             else
                             {
+                                if (PetTrainingHelper.Enabled && ds.m_Mobile is PlayerMobile)
+                                {
+                                    foreach (var pet in ((PlayerMobile)ds.m_Mobile).AllFollowers.Where(p => DamageEntries.Any(de => de.Damager == p)))
+                                    {
+                                        titles.Add(pet);
+                                        fame.Add(totalFame);
+                                        karma.Add(totalKarma);
+                                    }
+                                }
+
                                 titles.Add(ds.m_Mobile);
                                 fame.Add(totalFame);
                                 karma.Add(totalKarma);
@@ -6786,7 +6804,7 @@ namespace Server.Mobiles
         #endregion
 
         #region Healing
-        public virtual bool CanHeal { get { return false; } }
+        public virtual double HealChance { get { return 0.0; } }
         public virtual bool CanHealOwner { get { return false; } }
         public virtual double HealScalar { get { return 1.0; } }
 
@@ -6812,7 +6830,7 @@ namespace Server.Mobiles
         {
             long tc = Core.TickCount;
 
-            if ((CanHeal || CanHealOwner) && Alive && !IsHealing && !BardPacified)
+            if (Alive && !IsHealing && !BardPacified)
             {
                 Mobile owner = ControlMaster;
 
@@ -6823,7 +6841,7 @@ namespace Server.Mobiles
 
                     m_NextHealOwnerTime = tc + (int)TimeSpan.FromSeconds(HealOwnerInterval).TotalMilliseconds;
                 }
-                else if (CanHeal && tc >= m_NextHealTime && CanBeBeneficial(this) && (Hits < HealTrigger * HitsMax || Poisoned))
+                else if (tc >= m_NextHealTime && CanBeBeneficial(this) && (Hits < HealTrigger * HitsMax || Poisoned))
                 {
                     HealStart(this);
                     m_NextHealTime = tc + (int)TimeSpan.FromSeconds(HealInterval).TotalMilliseconds;

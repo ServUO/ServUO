@@ -1314,7 +1314,7 @@ namespace Server.Mobiles
 		
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
 		{
-            if (_Table != null)
+            if (_Table == null)
                 _Table = new Dictionary<Mobile, InternalTimer>();
 
             InternalTimer t = null;

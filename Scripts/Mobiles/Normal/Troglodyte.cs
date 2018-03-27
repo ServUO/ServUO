@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("a troglodyte corpse")]
     public class Troglodyte : BaseCreature
     {
+        public override double HealChance { get { return 1.0; } }
+
         [Constructable]
         public Troglodyte()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)// NEED TO CHECK
@@ -55,13 +57,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanHeal
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich);  // Need to verify

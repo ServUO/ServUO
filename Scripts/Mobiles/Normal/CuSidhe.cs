@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("a cu sidhe corpse")]
     public class CuSidhe : BaseMount
     {
+        public override double HealChance { get { return 1.0; } }
+
         [Constructable]
         public CuSidhe()
             : this("a cu sidhe")
@@ -73,13 +75,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanHeal
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override bool CanHealOwner
         {
             get

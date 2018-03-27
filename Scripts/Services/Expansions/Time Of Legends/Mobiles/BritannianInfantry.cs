@@ -8,6 +8,8 @@ namespace Server.Mobiles
     [CorpseName("a human corpse")]
     public class BritannianInfantry : BaseCreature
     {
+        public override double HealChance { get { return 1.0; } }
+
         [Constructable]
         public BritannianInfantry()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .15, .3)
@@ -81,7 +83,6 @@ namespace Server.Mobiles
         public override bool ShowFameTitle { get { return false; } }
         public override bool ClickTitle { get { return false; } }
         public override bool AutoRearms { get { return true; } }
-        public override bool CanHeal { get { return true; } }
 
         public override void GenerateLoot()
         {

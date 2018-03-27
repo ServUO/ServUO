@@ -41,7 +41,7 @@ namespace Server.Engines.Blackthorn
         private DateTime _NextSpecial;
 
         public override bool AlwaysMurderer { get { return true; } }
-        public override bool CanHeal { get { return AI == AIType.AI_Melee || AI == AIType.AI_Paladin; } }
+        public override double HealChance { get { return AI == AIType.AI_Melee || AI == AIType.AI_Paladin ? 1.0 : 0.0; } }
         public override double WeaponAbilityChance { get { return AI == AIType.AI_Melee || AI == AIType.AI_Paladin ? 0.4 : 0.1; } }
 
         public override WeaponAbility GetWeaponAbility()
@@ -224,7 +224,7 @@ namespace Server.Engines.Blackthorn
 
         public virtual void EquipSpecialty()
         {
-            if (CanHeal)
+            if (AbilityProfile != null && AbilityProfile.HasAbility(SpecialAbility.Heal))
                 PackItem(new Bandage(Utility.RandomMinMax(10, 25)));
 
             SetWearable(new ThighBoots());

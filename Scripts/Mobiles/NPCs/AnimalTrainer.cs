@@ -81,6 +81,24 @@ namespace Server.Mobiles
             }
         }
 
+        private DateTime _NextTalk;
+
+        public override void OnMovement(Mobile m, Point3D oldLocation)
+        {
+            if (PetTrainingHelper.Enabled && m.Alive && !m.Hidden && m is PlayerMobile)
+            {
+                PlayerMobile pm = (PlayerMobile)m;
+
+                if (InLOS(m) && InRange(m, 8) && !InRange(oldLocation, 8) && DateTime.UtcNow >= _NextTalk)
+                {
+                    if (Utility.Random(100) < 50)
+                        Say(1157526); // Such an exciting time to be an Animal Trainer! New taming techniques have been discovered!
+
+                    _NextTalk = DateTime.UtcNow + TimeSpan.FromSeconds(15);
+                }
+            }
+        }
+
         private Type[] _Quests = { typeof(TamingPetQuest), typeof(UsingAnimalLoreQuest), typeof(LeadingIntoBattleQuest), typeof(TeachingSomethingNewQuest) };
 
         public override void OnDoubleClick(Mobile m)

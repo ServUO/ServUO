@@ -9,6 +9,7 @@ namespace Server.Mobiles
     [CorpseName("a tiger corpse")]
     public class WildTiger : BaseMount
     {
+        public override double HealChance { get { return .167; } }
         public virtual Item GetPelt { get { return new TigerPelt(4); } }
 
         [CommandProperty(AccessLevel.GameMaster)]

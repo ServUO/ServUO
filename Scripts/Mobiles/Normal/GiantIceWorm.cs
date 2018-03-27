@@ -9,40 +9,40 @@ namespace Server.Mobiles
         public GiantIceWorm()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Body = 89;
-            this.Name = "a giant ice worm";
-            this.BaseSoundID = 0xDC;
+            Body = 89;
+            Name = "a giant ice worm";
+            BaseSoundID = 0xDC;
 
-            this.SetStr(216, 245);
-            this.SetDex(76, 100);
-            this.SetInt(66, 85);
+            SetStr(216, 245);
+            SetDex(76, 100);
+            SetInt(66, 85);
 
-            this.SetHits(130, 147);
+            SetHits(130, 147);
 
-            this.SetDamage(7, 17);
+            SetDamage(7, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 10);
-            this.SetDamageType(ResistanceType.Cold, 90);
+            SetDamageType(ResistanceType.Physical, 10);
+            SetDamageType(ResistanceType.Cold, 90);
 
-            this.SetResistance(ResistanceType.Physical, 30, 35);
-            this.SetResistance(ResistanceType.Fire, 0);
-            this.SetResistance(ResistanceType.Cold, 80, 90);
-            this.SetResistance(ResistanceType.Poison, 15, 25);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 30, 35);
+            SetResistance(ResistanceType.Fire, 0);
+            SetResistance(ResistanceType.Cold, 80, 90);
+            SetResistance(ResistanceType.Poison, 15, 25);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.Poisoning, 75.1, 95.0);
-            this.SetSkill(SkillName.MagicResist, 45.1, 60.0);
-            this.SetSkill(SkillName.Tactics, 75.1, 80.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 80.0);
+            SetSkill(SkillName.Poisoning, 75.1, 95.0);
+            SetSkill(SkillName.MagicResist, 45.1, 60.0);
+            SetSkill(SkillName.Tactics, 75.1, 80.0);
+            SetSkill(SkillName.Wrestling, 60.1, 80.0);
 
-            this.Fame = 4500;
-            this.Karma = -4500;
+            Fame = 4500;
+            Karma = -4500;
 
-            this.VirtualArmor = 40;
+            VirtualArmor = 40;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 71.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 71.1;
         }
 
         public GiantIceWorm(Serial serial)

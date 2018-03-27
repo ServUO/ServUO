@@ -38,8 +38,9 @@ namespace Server.Mobiles
                 AddImage(28, 272, 0x826);
 
                 var trainProfile = PetTrainingHelper.GetTrainingProfile(Creature, true);
+                var def = PetTrainingHelper.GetTrainingDefinition(Creature);
 
-                if (trainProfile.HasBegunTraining)
+                if (trainProfile.HasBegunTraining && def != null && def.Class != Class.Untrainable)
                 {
                     AddImage(53, 290, 0x805);
 
@@ -360,7 +361,7 @@ namespace Server.Mobiles
 
                 y = 92;
 
-                if (profile.History != null)
+                if (profile.Advancements != null)
                 {
                     AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 9);
                     AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, 7);
@@ -371,10 +372,10 @@ namespace Server.Mobiles
 
                     AddHtmlLocalized(47, 74, 160, 18, 1157505, 0xC8, false, false); // Pet Advancements
 
-                    for (int i = profile.History.Count - 1; i >= 0; i--)
+                    for (int i = profile.Advancements.Count - 1; i >= 0; i--)
                     {
-                        var loc = PetTrainingHelper.GetLocalization(profile.History[i]);
-                        bool skill = profile.History[i] is SkillName; // ? "#228B22" : "#FF4500";
+                        var loc = PetTrainingHelper.GetLocalization(profile.Advancements[i]);
+                        bool skill = profile.Advancements[i] is SkillName; // ? "#228B22" : "#FF4500";
 
                         if (loc[0].Number > 0)
                         {
@@ -382,7 +383,7 @@ namespace Server.Mobiles
 
                             if (skill)
                             {
-                                AddHtml(180, y, 75, 18, String.Format("<div align=right>{0:F1}</div>", Creature.Skills[(SkillName)profile.History[i]].Cap), false, false);
+                                AddHtml(180, y, 75, 18, String.Format("<div align=right>{0:F1}</div>", Creature.Skills[(SkillName)profile.Advancements[i]].Cap), false, false);
                             }
                         }
                         else if (loc[0].String != null)
@@ -390,7 +391,7 @@ namespace Server.Mobiles
                             AddHtml(53, y, 180, 18, Color(skill ? "#008000" : "#FF4500", loc[0]), false, false);
                         }
 
-                        AddTooltip(PetTrainingHelper.GetCategoryLocalization(profile.History[i]));
+                        AddTooltip(PetTrainingHelper.GetCategoryLocalization(profile.Advancements[i]));
 
                         y += 18;
                     }
@@ -437,6 +438,12 @@ namespace Server.Mobiles
                         });
                     break;
                 case 2: // pet training options
+                    if (User.HasGump(typeof(PetTrainingConfirmationGump)) ||
+                    User.HasGump(typeof(PetTrainingOptionsGump)) ||
+                    User.HasGump(typeof(PetTrainingPlanningGump)) ||
+                    User.HasGump(typeof(PetTrainingConfirmGump)))
+                        break;
+
                     var trainProfile = PetTrainingHelper.GetTrainingProfile(Creature, true);
 
                     if (trainProfile.HasBegunTraining)
@@ -489,7 +496,7 @@ namespace Server.Mobiles
 
         public int Pages(AbilityProfile profile)
         {
-            if (profile == null || profile.History == null || profile.History.Count == 0)
+            if (profile == null || profile.Advancements == null || profile.Advancements.Count == 0)
                 return 8;
 
             return 9;

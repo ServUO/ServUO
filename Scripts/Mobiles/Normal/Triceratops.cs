@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("a triceratops corpse")]
     public class Triceratops : BaseCreature
     {
+        public override double HealChance { get { return .167; } }
+
         [Constructable]
         public Triceratops()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)

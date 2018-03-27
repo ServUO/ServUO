@@ -25,8 +25,32 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
+        public override double UpKeep
+        {
+            get
+            {
+                double taming = Caster.Skills[CastSkill].Base;
+                double lore = Caster.Skills[SkillName.AnimalLore].Base;
+                bool asone = SpellType == TrainingType.AsOne;
+
+                if (taming >= 120.0)
+                {
+                    if (lore >= 120)
+                    {
+                        return asone ? 12 : 6;
+                    }
+
+                    if (lore >= 115)
+                    {
+                        return asone ? 16 : 8;
+                    }
+                }
+
+                return asone ? 20 : 10;
+            }
+        }
+
         public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 12; } }
         public override int RequiredMana { get { return 30; } }
         public override bool PartyEffects { get { return false; } }
         public override SkillName CastSkill { get { return SkillName.AnimalTaming; } }

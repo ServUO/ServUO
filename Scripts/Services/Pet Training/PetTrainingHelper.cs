@@ -144,7 +144,7 @@ namespace Server.Mobiles
 
             if (def == null && bc.Tamable)
             {
-                def = new TrainingDefinition(bc.GetType(), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, bc.ControlSlots, bc.ControlSlots);
+                def = new TrainingDefinition(bc.GetType(), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, bc.ControlSlotsMin, bc.ControlSlotsMax);
             }
 
             return def;
@@ -670,7 +670,7 @@ namespace Server.Mobiles
                 new TrainingDefinition(typeof(Gallusaurus), Class.None, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility1, AreaEffectNone, 3, 5),
                 new TrainingDefinition(typeof(Gaman), Class.Tailed, MagicalAbility.Poisoning, SpecialAbilityTailed, WepAbility1, AreaEffectNone, 1, 4),
                 new TrainingDefinition(typeof(Beetle), Class.Insectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 1, 5),
-                new TrainingDefinition(typeof(IceWyrm), Class.Tailed, MagicalAbility.Variety1, SpecialAbilityBitingTailed, WepAbility2, AreaEffectArea3, 1, 2),
+                new TrainingDefinition(typeof(GiantIceWorm), Class.Tailed, MagicalAbility.Variety1, SpecialAbilityBitingTailed, WepAbility2, AreaEffectArea3, 1, 2),
                 new TrainingDefinition(typeof(GiantRat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(GiantSpider), Class.None, MagicalAbility.Variety1, SpecialAbilityBitingAnimal, WepAbility1, AreaEffectArea3, 1, 3),
                 new TrainingDefinition(typeof(GiantToad), Class.StickySkin, MagicalAbility.StandardClawedOrTailed, SpecialAbilityStickySkin, WepAbility1, AreaEffectNone, 1, 3),
@@ -754,6 +754,8 @@ namespace Server.Mobiles
                 new TrainingDefinition(typeof(WhiteWolf), Class.ClawedAndTailed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawedAndTailed, WepAbility1, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(WhiteWyrm), Class.MagicalClawedAndTailed, MagicalAbility.Dragon1, SpecialAbilityClawedTailedAndMagical2, WepAbility2, AreaEffectEarthen, 3, 5),
                 new TrainingDefinition(typeof(WildTiger), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 5),
+                new TrainingDefinition(typeof(WildWhiteTiger), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 5),
+                new TrainingDefinition(typeof(WildBlackTiger), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 5),
                 new TrainingDefinition(typeof(Windrunner), Class.TailedAndNecromantic, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(WolfSpider), Class.None, MagicalAbility.Vartiety, SpecialAbilityBitingAnimal, WepAbility1, AreaEffectDisease, 1, 3),  
             };
@@ -1340,7 +1342,8 @@ namespace Server.Mobiles
             SkillName.Spellweaving,
             SkillName.Mysticism,
             SkillName.Meditation,
-            SkillName.MagicResist
+            SkillName.MagicResist,
+            SkillName.Discordance
         };
 
         public static SkillName[] CombatSkills =
@@ -1379,7 +1382,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1044112, 1157383 }, // bushido
             new TextDefinition[] { 1044113, 1157388 }, // ninjitsu
             new TextDefinition[] { 1044075, 1157385 }, // discordance
-            new TextDefinition[] { 1155771, 1157400 }, // magery mastery
+            new TextDefinition[] { 1155771, 1157472 }, // magery mastery
             new TextDefinition[] { 1044115, 1157386 }, // mysticism
             new TextDefinition[] { 1044114, 1157390 }, // spellweaving
             new TextDefinition[] { 1044111, 1157384 }, // chivalry - must have pos karma

@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("a saber-toothed tiger corpse")]
     public class SabertoothedTiger : BaseCreature
     {
+        public override double HealChance { get { return .167; } }
+
         [Constructable]
         public SabertoothedTiger()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)

@@ -39,7 +39,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseCreature Creature { get; private set; }
 
-        public List<object> History { get; private set; }
+        public List<object> Advancements { get; private set; }
 
         public AbilityProfile(BaseCreature bc)
         {
@@ -49,7 +49,7 @@ namespace Server.Mobiles
 
         public bool HasCustomized()
         {
-            return History != null && History.Count > 0;
+            return Advancements != null && Advancements.Count > 0;
         }
 
         public void OnTame()
@@ -65,7 +65,7 @@ namespace Server.Mobiles
             }
         }
 
-        public bool AddAbility(MagicalAbility ability)
+        public bool AddAbility(MagicalAbility ability, bool advancement = true)
         {
             if (Creature.Controlled)
             {
@@ -76,20 +76,18 @@ namespace Server.Mobiles
                     RemoveSpecialMagicalAbility(oldAbility);
                 }
 
-                AddToHistory(ability);
                 MagicalAbility = ability;
-                OnAddAbility(ability);
-                return true;
             }
             else
             {
                 MagicalAbility |= ability;
-                OnAddAbility(ability);
-                return true;
             }
+
+            OnAddAbility(ability, advancement);
+            return true;
         }
 
-        public bool AddAbility(SpecialAbility ability)
+        public bool AddAbility(SpecialAbility ability, bool advancement = true)
         {
             if (SpecialAbilities == null)
             {
@@ -107,12 +105,12 @@ namespace Server.Mobiles
                 SpecialAbilities[temp.Length] = ability;
             }
 
-            OnAddAbility(ability);
+            OnAddAbility(ability, advancement);
 
             return true;
         }
 
-        public bool AddAbility(AreaEffect ability)
+        public bool AddAbility(AreaEffect ability, bool advancement = true)
         {
             if (AreaEffects == null)
             {
@@ -130,12 +128,12 @@ namespace Server.Mobiles
                 AreaEffects[temp.Length] = ability;
             }
 
-            OnAddAbility(ability);
+            OnAddAbility(ability, advancement);
 
             return true;
         }
 
-        public bool AddAbility(WeaponAbility ability)
+        public bool AddAbility(WeaponAbility ability, bool advancement = true)
         {
             if (WeaponAbilities == null)
             {
@@ -153,15 +151,14 @@ namespace Server.Mobiles
                 WeaponAbilities[temp.Length] = ability;
             }
 
-            OnAddAbility(ability);
+            OnAddAbility(ability, advancement);
 
             return true;
         }
 
-        public bool AddAbility(SkillName skill)
+        public bool AddAbility(SkillName skill, bool advancement = true)
         {
-            AddToHistory(skill);
-
+            OnAddAbility(skill, advancement);
             return true;
         }
 
@@ -185,9 +182,12 @@ namespace Server.Mobiles
             return false;
         }
 
-        public void OnAddAbility(object newAbility)
+        public void OnAddAbility(object newAbility, bool advancement)
         {
-            AddToHistory(newAbility);
+            if (advancement)
+            {
+                AddPetAdvancement(newAbility);
+            }
 
             if (newAbility is MagicalAbility)
             {
@@ -216,16 +216,16 @@ namespace Server.Mobiles
             }
         }
 
-        public void AddToHistory(object o)
+        public void AddPetAdvancement(object o)
         {
             if (Creature.Controlled)
             {
-                if (History == null)
-                    History = new List<object>();
+                if (Advancements == null)
+                    Advancements = new List<object>();
 
-                if (!History.Contains(o))
+                if (!Advancements.Contains(o))
                 {
-                    History.Add(o);
+                    Advancements.Add(o);
                 }
             }
         }
@@ -531,16 +531,16 @@ namespace Server.Mobiles
             count = reader.ReadInt();
             for (int i = 0; i < count; i++)
             {
-                if (History == null)
-                    History = new List<object>();
+                if (Advancements == null)
+                    Advancements = new List<object>();
 
                 switch (reader.ReadInt())
                 {
-                    case 1: History.Add((MagicalAbility)reader.ReadInt()); break;
-                    case 2: History.Add(SpecialAbility.Abilities[reader.ReadInt()]); break;
-                    case 3: History.Add(AreaEffect.Effects[reader.ReadInt()]); break;
-                    case 4: History.Add(WeaponAbility.Abilities[reader.ReadInt()]); break;
-                    case 5: History.Add((SkillName)reader.ReadInt()); break;
+                    case 1: Advancements.Add((MagicalAbility)reader.ReadInt()); break;
+                    case 2: Advancements.Add(SpecialAbility.Abilities[reader.ReadInt()]); break;
+                    case 3: Advancements.Add(AreaEffect.Effects[reader.ReadInt()]); break;
+                    case 4: Advancements.Add(WeaponAbility.Abilities[reader.ReadInt()]); break;
+                    case 5: Advancements.Add((SkillName)reader.ReadInt()); break;
                 }
             }
         }
@@ -588,11 +588,11 @@ namespace Server.Mobiles
                 }
             }
 
-            writer.Write(History != null ? History.Count : 0);
+            writer.Write(Advancements != null ? Advancements.Count : 0);
 
-            if (History != null)
+            if (Advancements != null)
             {
-                foreach (var o in History)
+                foreach (var o in Advancements)
                 {
                     if (o is MagicalAbility)
                     {

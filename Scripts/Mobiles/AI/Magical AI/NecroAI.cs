@@ -19,20 +19,23 @@ namespace Server.Mobiles
 		{
 			int mana = m_Mobile.Mana;
 			int select = 1;
-			
-			if(mana >= 29)
-				select = 4;
-			else if(mana >= 23)
+
+            if (mana >= 29)
+                select = 5;
+            else if (mana >= 23)
+                select = 4;
+            else if (mana >= 17)
                 select = 3;
-			else if (mana >= 17)
-				select = 2;
+            else if (mana >= 5)
+                select = 2;
 			
 			switch (Utility.Random(select))
 			{
-				case 0: return new PainSpikeSpell(m_Mobile, null);
-				case 1: return new PoisonStrikeSpell(m_Mobile, null);
-				case 2: return new WitherSpell(m_Mobile, null);
-				case 3: return new StrangleSpell(m_Mobile, null);
+                case 0: return new CurseWeaponSpell(m_Mobile, null);
+				case 1: return new PainSpikeSpell(m_Mobile, null);
+				case 2: return new PoisonStrikeSpell(m_Mobile, null);
+				case 3: return new WitherSpell(m_Mobile, null);
+				case 4: return new StrangleSpell(m_Mobile, null);
 			}
 
             return null;
@@ -44,18 +47,19 @@ namespace Server.Mobiles
 			int select = 1;
 			
 			if(mana >= 17)
-				select = 4;
+				select = 5;
 			else if (mana >= 13)
-				select = 3;
+				select = 4;
 			else if (mana >= 11)
-				select = 2;
+				select = 3;
 			
 			switch (Utility.Random(select))
 			{
-				case 0: return new CorpseSkinSpell(m_Mobile, null);
-				case 1: return new EvilOmenSpell(m_Mobile, null);
-				case 2: return new BloodOathSpell(m_Mobile, null);
-				case 3: return new MindRotSpell(m_Mobile, null);
+                case 0: return new CurseWeaponSpell(m_Mobile, null);
+				case 1: return new CorpseSkinSpell(m_Mobile, null);
+				case 2: return new EvilOmenSpell(m_Mobile, null);
+				case 3: return new BloodOathSpell(m_Mobile, null);
+				case 4: return new MindRotSpell(m_Mobile, null);
 			}
 
             return null;
