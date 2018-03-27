@@ -453,14 +453,14 @@ namespace Server
 	}
 
 	public enum ResistanceType
-	{
-        None,
+	{        
 		Physical,
 		Fire,
 		Cold,
 		Poison,
-		Energy
-	}
+		Energy,
+        None
+    }
 
 	public enum ApplyPoisonResult
 	{
