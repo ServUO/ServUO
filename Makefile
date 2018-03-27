@@ -14,6 +14,10 @@ run: build
 
 build: ServUO.sh
 
+debug:
+        ${MCS} -target:library -out:${CURPATH}/Ultima.dll -r:${REFS} -nowarn:${NOWARNS} -d:ServUO -d:NEWTIMERS -d:DEBUG -debug -nologo -optimize -unsafe -recurse:${SDKPATH}/*.cs
+        ${MCS} -win32icon:${SRVPATH}/servuo.ico -r:${CURPATH}/Ultima.dll,${REFS} -nowarn:${NOWARNS} -target:exe -out:${CURPATH}/ServUO.MONO.exe -d:ServUO -d:NEWTIMERS -d:MONO -d:DEBUG -debug -nologo -optimize -unsafe -recurse:${SRVPATH}/*.cs
+
 clean:
 	rm -f ServUO.sh
 	rm -f ServUO.MONO.exe
@@ -23,10 +27,10 @@ clean:
 	rm -f *.bin
 
 Ultima.dll: Ultima/*.cs
-	${MCS} -target:library -out:${CURPATH}/Ultima.dll -r:${REFS} -d:ServUO -d:NEWTIMERS -nowarn:${NOWARNS} -debug -nologo -optimize -unsafe -recurse:${SDKPATH}/*.cs
+	${MCS} -target:library -out:${CURPATH}/Ultima.dll -r:${REFS} -nowarn:${NOWARNS} -d:ServUO -d:NEWTIMERS -nologo -optimize -unsafe -recurse:${SDKPATH}/*.cs
 
 ServUO.MONO.exe: Ultima.dll Server/*.cs
-	${MCS} -win32icon:${SRVPATH}/servuo.ico -r:${CURPATH}/Ultima.dll,${REFS} -nowarn:${NOWARNS} -target:exe -out:${CURPATH}/ServUO.MONO.exe -d:ServUO -d:NEWTIMERS -d:MONO -debug -nologo -optimize -unsafe -recurse:${SRVPATH}/*.cs
+	${MCS} -win32icon:${SRVPATH}/servuo.ico -r:${CURPATH}/Ultima.dll,${REFS} -nowarn:${NOWARNS} -target:exe -out:${CURPATH}/ServUO.MONO.exe -d:ServUO -d:NEWTIMERS -d:MONO -nologo -optimize -unsafe -recurse:${SRVPATH}/*.cs
 
 ServUO.sh: ServUO.MONO.exe
 	echo "#!/bin/sh" > ${CURPATH}/ServUO.sh
