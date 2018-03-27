@@ -4104,7 +4104,9 @@ namespace Server
 
 					DeathMoveResult res = GetInventoryMoveResultFor(item);
 
-					if (res == DeathMoveResult.MoveToCorpse)
+                    pack.FreePosition(item.GridLocation);
+
+                    if (res == DeathMoveResult.MoveToCorpse)
 					{
 						content.Add(item);
 					}
