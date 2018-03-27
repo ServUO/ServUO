@@ -29,31 +29,31 @@ namespace Server.Spells.Mysticism
         Bless
     }
 
-    public class PurgeMagicSpell : MysticSpell
-    {
+	public class PurgeMagicSpell : MysticSpell
+	{
         public override SpellCircle Circle { get { return SpellCircle.Second; } }
 
-        private static SpellInfo m_Info = new SpellInfo(
-                "Purge", "An Ort Sanct ",
-                230,
-                9022,
-                Reagent.Garlic,
-                Reagent.MandrakeRoot,
-                Reagent.SulfurousAsh,
-                Reagent.FertileDirt
-            );
+		private static SpellInfo m_Info = new SpellInfo(
+				"Purge", "An Ort Sanct ",
+				230,
+				9022,
+				Reagent.Garlic,
+				Reagent.MandrakeRoot,
+				Reagent.SulfurousAsh,
+				Reagent.FertileDirt
+			);
 
-        public PurgeMagicSpell(Mobile caster, Item scroll) : base(caster, scroll, m_Info)
-        {
-        }
+		public PurgeMagicSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
+		{
+		}
 
-        public override void OnCast()
-        {
-            Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
-        }
+		public override void OnCast()
+		{
+			Caster.Target = new MysticSpellTarget( this, TargetFlags.Harmful );
+		}
 
-        public void OnTarget(Object o)
-        {
+		public override void OnTarget( Object o )
+		{
             Mobile target = o as Mobile;
 
             if (target == null)
@@ -112,12 +112,12 @@ namespace Server.Spells.Mysticism
                                 break;
                             case BuffType.DexBonus:
                                 arg = "dexterity bonus";
-                                target.RemoveStatMod("[Magic] Dex Buff");
+								target.RemoveStatMod("[Magic] Dex Buff");
                                 BuffInfo.RemoveBuff(target, BuffIcon.Agility);
                                 break;
                             case BuffType.IntBonus:
                                 arg = "intelligence bonus";
-                                target.RemoveStatMod("[Magic] Int Buff");
+								target.RemoveStatMod("[Magic] Int Buff");
                                 BuffInfo.RemoveBuff(target, BuffIcon.Cunning);
                                 break;
                             case BuffType.BarrabHemolymph:
@@ -163,7 +163,7 @@ namespace Server.Spells.Mysticism
             }
 
             FinishSequence();
-        }
+		}
 
         public BuffType GetRandomBuff(Mobile target)
         {
@@ -303,40 +303,5 @@ namespace Server.Spells.Mysticism
                 PurgeMagicSpell.RemoveCurse(m_Mobile, m_Caster);
             }
         }
-
-        public class InternalTarget : Target
-        {
-            public PurgeMagicSpell Owner { get; set; }
-
-            public InternalTarget(PurgeMagicSpell owner, TargetFlags flags)
-                : this(owner, false, flags)
-            {
-            }
-
-            public InternalTarget(PurgeMagicSpell owner, bool allowland, TargetFlags flags)
-                : base(12, allowland, flags)
-            {
-                Owner = owner;
-            }
-
-            protected override void OnTarget(Mobile from, object o)
-            {
-                if (o == null)
-                    return;
-
-                if (!from.CanSee(o))
-                    from.SendLocalizedMessage(500237); // Target can not be seen.
-                else
-                {
-                    SpellHelper.Turn(from, o);
-                    Owner.OnTarget(o);
-                }
-            }
-
-            protected override void OnTargetFinish(Mobile from)
-            {
-                Owner.FinishSequence();
-            }
-        }
-    }
+	}
 }

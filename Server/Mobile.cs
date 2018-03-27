@@ -454,7 +454,6 @@ namespace Server
 
 	public enum ResistanceType
 	{
-        None,
 		Physical,
 		Fire,
 		Cold,
@@ -4104,9 +4103,7 @@ namespace Server
 
 					DeathMoveResult res = GetInventoryMoveResultFor(item);
 
-                    pack.FreePosition(item.GridLocation);
-
-                    if (res == DeathMoveResult.MoveToCorpse)
+					if (res == DeathMoveResult.MoveToCorpse)
 					{
 						content.Add(item);
 					}
