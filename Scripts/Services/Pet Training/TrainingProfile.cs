@@ -128,7 +128,11 @@ namespace Server.Mobiles
 
         private void AssignStartingTrainingPoints()
         {
-            if (ControlSlotsMin == 1 && ControlSlotsMax == 2)
+            if (ControlSlots != ControlSlotsMin)
+            {
+                _StartingTrainingPoints = 1501;
+            }
+            else if (ControlSlotsMin == 1 && ControlSlotsMax == 2)
             {
                 _StartingTrainingPoints = 2556;
             }

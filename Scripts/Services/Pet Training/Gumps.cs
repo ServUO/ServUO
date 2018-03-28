@@ -1007,6 +1007,11 @@ namespace Server.Mobiles
                     return false;
                 }
 
+                if (AbilityProfile.HasAbility(MagicalAbility.Poisoning) && !AbilityProfile.HasAbility(SpecialAbility.VenomousBite))
+                {
+                    return true;
+                }
+
                 foreach (var ability in (SpecialAbility[])o)
                 {
                     if (!AbilityProfile.HasAbility(ability))
@@ -1035,6 +1040,11 @@ namespace Server.Mobiles
                 if (!AbilityProfile.CanChooseAreaEffect())
                 {
                     return false;
+                }
+
+                if (AbilityProfile.HasAbility(MagicalAbility.Poisoning) && !AbilityProfile.HasAbility(AreaEffect.PoisonBreath))
+                {
+                    return true;
                 }
 
                 foreach (var ability in (AreaEffect[])o)
@@ -1227,6 +1237,7 @@ namespace Server.Mobiles
             AddHtmlLocalized(290, 205, 245, 20, CenterLoc, "#1113650", 0, false, false); // RESULTS
 
             int start = -1;
+            int max = TrainingPoint.GetMax(Creature);
             PetTrainingHelper.GetStartValue(TrainingPoint, Creature, ref start);
             StartValue = start;
             
@@ -1235,25 +1246,21 @@ namespace Server.Mobiles
                 Value = StartValue;
             }
 
-            if (Value > TrainingPoint.GetMax(Creature))
-                Value = TrainingPoint.GetMax(Creature);
+            if (Value > max)
+                Value = max;
 
             int cost = PetTrainingHelper.GetTotalCost(TrainingPoint, Creature, Value, StartValue);
             double weight = TrainingPoint.Weight;
 
-            if (CanAdjust())
+            if (CanAdjust() && cost > profile.TrainingPoints)
             {
-                if (cost > profile.TrainingPoints)
-                {
-                    double dif = cost - profile.TrainingPoints;
-                    Value -= (int)Math.Ceiling((dif / weight));
-                }
+                Value = StartValue + (int)(profile.TrainingPoints / weight);
             }
 
             if (StartValue > 0)
             {
-                double valueWeight = (int)((double)Value * weight);
-                double maxWeight = TrainingPoint.GetMax(Creature) * weight;
+                double valueWeight = ((double)Value * weight);
+                double maxWeight = max * weight;
                 double nonAdjustedWeight = (Value - StartValue) * weight;
 
                 double originalValueWeight = valueWeight;
@@ -1349,10 +1356,10 @@ namespace Server.Mobiles
             }
 
             AddHtmlLocalized(305, 225, 145, 18, 1157490, false, false); // Avail. Training Points:
-            AddLabel(455, 225, 0, avail.ToString());
+            AddLabel(455, 225, avail <= 0 ? 0x26 : 0, avail.ToString());
 
             AddHtmlLocalized(305, 245, 145, 18, 1113646, false, false); // Total Property Weight:
-            AddLabel(455, 245, 0, String.Format("{0}/{1}", ((int)(Value * weight)).ToString(), (TrainingPoint.GetMax(Creature) * weight).ToString()));
+            AddLabel(455, 245, 0, String.Format("{0}/{1}", ((int)(Value * weight)).ToString(), (max * weight).ToString()));
 
             if (TrainingPoint.Name.Number > 0)
                 AddHtmlLocalized(305, 265, 145, 18, TrainingPoint.Name.Number, false, false);
@@ -1365,11 +1372,11 @@ namespace Server.Mobiles
             }
             else
             {
-                AddLabel(455, 265, 0, Value.ToString());
+                AddLabel(455, 265, 0, StartValue > Value ? StartValue.ToString() : Value.ToString());
             }
 
             AddHtmlLocalized(230, 352, 150, 18, 1113586, false, false); // Property Weight:
-            AddHtml(267, 373, 75, 18, Center(((int)(Value * weight)).ToString()), false, false);
+            AddHtml(267, 373, 40, 18, Center(((int)(Value * weight)).ToString()), false, false);
 
             if (CanAdjust())
             {
@@ -1524,6 +1531,7 @@ namespace Server.Mobiles
                         }
                         else
                         {
+                            //int cost = PetTrainingHelper.GetTotalCost(TrainingPoint, Creature, Value, StartValue);
                             Value += (TrainingPoint.GetMax(Creature) / 10);
                         }
                     }

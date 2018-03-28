@@ -47,11 +47,6 @@ namespace Server.Mobiles
             DamageIndex = -1;
         }
 
-        public bool HasCustomized()
-        {
-            return Advancements != null && Advancements.Count > 0;
-        }
-
         public void OnTame()
         {
             if (Creature.ControlMaster is PlayerMobile)
@@ -388,6 +383,29 @@ namespace Server.Mobiles
             WeaponAbilities = null;
 
             Creature.Mastery = SkillName.Alchemy; // default
+        }
+
+        public bool HasCustomized()
+        {
+            return Advancements != null && Advancements.Count > 0;
+        }
+
+        public bool IsNaturalAbility(object o)
+        {
+            if (Advancements == null)
+                return true;
+
+            if (o is SpecialAbility)
+            {
+                return SpecialAbilities != null && !Advancements.Any(s => s is SpecialAbility && (SpecialAbility)s == (SpecialAbility)o);
+            }
+
+            if (o is WeaponAbility)
+            {
+                return WeaponAbilities != null && !Advancements.Any(s => s is WeaponAbility && (WeaponAbility)s == (WeaponAbility)o);
+            }
+
+            return false;
         }
 
         public IEnumerable<object> EnumerateAllAbilities()
