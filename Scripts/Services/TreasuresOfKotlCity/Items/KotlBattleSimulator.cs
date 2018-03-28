@@ -168,7 +168,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
             do
             {
-                loc = SpawnBounds.GetRandomSpawnPoint(Map.TerMur); 
+                loc = Map.TerMur.GetRandomSpawnPoint(SpawnBounds); 
             }
             while (!Map.TerMur.CanSpawnMobile(loc));
 

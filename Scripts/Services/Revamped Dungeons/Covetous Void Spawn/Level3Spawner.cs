@@ -260,7 +260,7 @@ namespace Server.Engines.VoidPool
 
             public void DoSpawn()
             {
-                if (Spawner == null || Spawner.Controller == null || !Spawner.Active)
+                if (Spawner == null || Spawner.Controller == null || Spawner.Controller.Map == null || !Spawner.Active)
                 {
                     return;
                 }
@@ -279,7 +279,7 @@ namespace Server.Engines.VoidPool
 
                         for(int j = 0; j < 50; j++)
                         {
-                            p = rec.GetRandomSpawnPoint(map);
+                            p = map.GetRandomSpawnPoint(rec);
 
                             if (map.CanSpawnMobile(p))
                                 break;

@@ -120,6 +120,9 @@ namespace Server.Engines.MyrmidexInvasion
 
         private void Spawn(bool tribe, params Type[] types)
         {
+            if (Map == null)
+                return;
+
             NextSpawn = DateTime.UtcNow + TimeSpan.FromMinutes(10);
 
             for (int i = 0; i < 5; i++)
@@ -141,7 +144,7 @@ namespace Server.Engines.MyrmidexInvasion
 
                     do
                     {
-                        p = rec.GetRandomSpawnPoint(this.Map);
+                        p = this.Map.GetRandomSpawnPoint(rec);
                     }
                     while (p == this.Location || !this.Map.CanSpawnMobile(p));
 

@@ -284,7 +284,7 @@ namespace Server.Engines.ArenaSystem
 
             while (p == loc || !map.CanSpawnMobile(p.X, p.Y, p.Z))
             {
-                p = rec.GetRandomSpawnPoint(map);
+                p = map.GetRandomSpawnPoint(rec);
 
                 if (m == null || m.Alive)
                     p.Z = Definition.StoneLocation.Z;

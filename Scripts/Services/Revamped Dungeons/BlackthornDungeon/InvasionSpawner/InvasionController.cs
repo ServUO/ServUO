@@ -226,11 +226,14 @@ namespace Server.Engines.Blackthorn
 
         private bool SpawnMobile(BaseCreature bc, Rectangle2D spawnrec)
         {
+            if (Map == null)
+                return false;
+
             if (bc != null)
             {
                 for (int i = 0; i < 25; i++)
                 {
-                    Point3D p = spawnrec.GetRandomSpawnPoint(this.Map);
+                    Point3D p = this.Map.GetRandomSpawnPoint(spawnrec);
                     bool exempt = false;
 
                     if (spawnrec.X == 6444 && spawnrec.Y == 2446)
