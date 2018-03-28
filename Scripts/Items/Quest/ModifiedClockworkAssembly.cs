@@ -25,37 +25,37 @@ namespace Server.Items
             {
                 get
                 {
-                    return this.m_Slots;
+                    return m_Slots;
                 }
             }
             public Type[] Types
             {
                 get
                 {
-                    return this.m_Types;
+                    return m_Types;
                 }
             }
             public int[] Amounts
             {
                 get
                 {
-                    return this.m_Amounts;
+                    return m_Amounts;
                 }
             }
             public int[] MsgIds
             {
                 get
                 {
-                    return this.m_MsgIds;
+                    return m_MsgIds;
                 }
             }
 
             public GolemInfo(int slots, Type[] types, int[] amounts, int[] msgids)
             {
-                this.m_Slots = slots;
-                this.m_Types = types;
-                this.m_Amounts = amounts;
-                this.m_MsgIds = msgids;
+                m_Slots = slots;
+                m_Types = types;
+                m_Amounts = amounts;
+                m_MsgIds = msgids;
             }
         }
 
@@ -63,7 +63,7 @@ namespace Server.Items
         {
             // Clockwork Leather Wolf
             new GolemInfo(1,
-                new Type[] { typeof(Leather), typeof(Gears) },  //typeof( FlaskOfOil ) },
+                new Type[] { typeof(Leather), typeof(OilFlask) },
                 new int[] { 100, 1 },
                 new int[] { 1113058, 1113059 }),
             // ClockWork Scorpion
@@ -85,12 +85,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
 
@@ -98,7 +98,7 @@ namespace Server.Items
         {
             get
             {
-                return(1113031 + (int)this.m_Type);
+                return (1113031 + (int)m_Type);
             }
         }
 
@@ -112,8 +112,8 @@ namespace Server.Items
         public ModifiedClockworkAssembly(ClockworkType type)
             : base(0x1EA8)
         {
-            this.m_Type = type;
-            this.Weight = 5.0;
+            m_Type = type;
+            Weight = 5.0;
         }
 
         public ModifiedClockworkAssembly(Serial serial)
@@ -132,7 +132,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1113034);   // You haven't read the Mechanical Life Manual. Talking to Sutek might help!
             }
 
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1071944);   // The clockwork assembly must be in your backpack to construct a golem.
                 return;
@@ -146,10 +146,10 @@ namespace Server.Items
                 return;
             }
 
-            if ((int)this.m_Type > m_Info.Length)
+            if ((int)m_Type > m_Info.Length)
                 return;
 
-            GolemInfo ginfo = m_Info[(int)this.m_Type];
+            GolemInfo ginfo = m_Info[(int)m_Type];
 
             if ((from.Followers + ginfo.Slots) > from.FollowersMax)
             {
@@ -178,7 +178,7 @@ namespace Server.Items
 
             BaseCreature bc = null;
 
-            switch ( this.m_Type )
+            switch (m_Type)
             {
                 case ClockworkType.Scorpion:
                     bc = new ClockworkScorpion();
@@ -193,7 +193,7 @@ namespace Server.Items
 
             if (null != bc && bc.SetControlMaster(from))
             {
-                this.Delete();
+                Delete();
 
                 bc.MoveToWorld(from.Location, from.Map);
                 from.PlaySound(0x241);
@@ -203,22 +203,20 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)1);
 
-            writer.Write((int)this.m_Type);
+            writer.Write((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            switch ( version)
+            switch (version)
             {
                 case 1:
-                    this.m_Type = (ClockworkType)reader.ReadInt();
+                    m_Type = (ClockworkType)reader.ReadInt();
                     break;
             }
         }
@@ -226,17 +224,17 @@ namespace Server.Items
         #region ICraftable Members
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
-            switch ( craftItem.NameNumber )
+            switch (craftItem.NameNumber)
             {
                 default:
                 case 1113031:
-                    this.m_Type = ClockworkType.Wolf;
+                    m_Type = ClockworkType.Wolf;
                     break;
                 case 1113032:
-                    this.m_Type = ClockworkType.Scorpion;
+                    m_Type = ClockworkType.Scorpion;
                     break;
                 case 1113033:
-                    this.m_Type = ClockworkType.Vollem;
+                    m_Type = ClockworkType.Vollem;
                     break;
             }
 

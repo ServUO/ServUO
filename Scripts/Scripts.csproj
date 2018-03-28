@@ -938,6 +938,7 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\WardedDemonboneBracers.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\WardensArmorOfAugmentation.cs" />
     <Compile Include="Items\Resource\BloodOfTheDarkFather.cs" />
+    <Compile Include="Items\Resource\OilFlask.cs" />
     <Compile Include="Items\Resource\SmallFish.cs" />
     <Compile Include="Items\Resource\WorkableGlass.cs" />
     <Compile Include="Items\StoreBought\MerchantsTrinket.cs" />
