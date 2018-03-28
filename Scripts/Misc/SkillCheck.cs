@@ -27,7 +27,7 @@ namespace Server.Misc
             m_PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
             AntiMacroCode = Config.Get("PlayerCaps.EnableAntiMacro", !Core.ML);
             PlayerChanceToGainStats = Config.Get("PlayerCaps.PlayerChanceToGainStats", 5.0);
-            PetChanceToGainStats = Config.Get("PlayerCaps.PetChanceToGainStats", 5.0);
+            PetChanceToGainStats = PetTrainingHelper.Enabled ? 0.0 : Config.Get("PlayerCaps.PetChanceToGainStats", 5.0);
 
             if (!m_StatGainDelayEnabled)
                 m_StatGainDelay = TimeSpan.FromSeconds(0.5);
