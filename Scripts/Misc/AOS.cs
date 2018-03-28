@@ -558,6 +558,9 @@ namespace Server
 
             int value = 0;
 
+            if (attribute == AosAttribute.Luck || attribute == AosAttribute.RegenMana || attribute == AosAttribute.DefendChance || attribute == AosAttribute.EnhancePotions)
+                value += SphynxFortune.GetAosAttributeBonus(m, attribute);
+
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion

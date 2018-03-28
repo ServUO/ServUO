@@ -1113,7 +1113,7 @@ namespace Server.Mobiles
         #region City Loyalty
         public override int GetResistance(ResistanceType type)
         {
-            int resistance = base.GetResistance(type);
+            int resistance = base.GetResistance(type) + SphynxFortune.GetResistanceBonus(this, type);
 
             if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(this, Server.Engines.CityLoyalty.TradeDeal.SocietyOfClothiers))
             {
