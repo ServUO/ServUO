@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using Server.Network;
 using Server.Mobiles;
 using Server.Targeting;
 using System.Collections.Generic;
@@ -28,17 +26,17 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new MysticSpellTarget(this, TargetFlags.Harmful);
+            Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
         }
 
-        public override void OnTarget(object o)
+        public void OnTarget(object o)
         {
             Mobile m = o as Mobile;
 
             if (m == null)
                 return;
 
-            if(!(m is PlayerMobile || m is BaseCreature))
+            if (!(m is PlayerMobile || m is BaseCreature))
             {
                 Caster.SendLocalizedMessage(1080194); // Your target cannot be affected by spell plague.
             }
@@ -130,7 +128,7 @@ namespace Server.Spells.Mysticism
 
             int damage = (int)((prim + sec) / 12) + Utility.RandomMinMax(1, 6);
 
-            if(amount > 1)
+            if (amount > 1)
                 damage /= amount;
 
             from.PlaySound(0x658);
@@ -170,6 +168,41 @@ namespace Server.Spells.Mysticism
                 }
 
                 BuffInfo.RemoveBuff(caster, BuffIcon.SpellPlague);
+            }
+        }
+
+        public class InternalTarget : Target
+        {
+            public SpellPlagueSpell Owner { get; set; }
+
+            public InternalTarget(SpellPlagueSpell owner, TargetFlags flags)
+                : this(owner, false, flags)
+            {
+            }
+
+            public InternalTarget(SpellPlagueSpell owner, bool allowland, TargetFlags flags)
+                : base(12, allowland, flags)
+            {
+                Owner = owner;
+            }
+
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o == null)
+                    return;
+
+                if (!from.CanSee(o))
+                    from.SendLocalizedMessage(500237); // Target can not be seen.
+                else
+                {
+                    SpellHelper.Turn(from, o);
+                    Owner.OnTarget(o);
+                }
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                Owner.FinishSequence();
             }
         }
     }
@@ -218,4 +251,3 @@ namespace Server.Spells.Mysticism
         }
     }
 }
-

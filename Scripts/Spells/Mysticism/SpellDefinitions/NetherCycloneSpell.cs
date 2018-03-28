@@ -5,35 +5,35 @@ using Server.Targeting;
 
 namespace Server.Spells.Mysticism
 {
-	public class NetherCycloneSpell : MysticSpell
-	{
+    public class NetherCycloneSpell : MysticSpell
+    {
         public override SpellCircle Circle { get { return SpellCircle.Eighth; } }
         public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
 
-		private static SpellInfo m_Info = new SpellInfo(
-				"Nether Cyclone", "Grav Hur",
-				230,
-				9022,
-				Reagent.MandrakeRoot,
-				Reagent.Nightshade,
-				Reagent.SulfurousAsh,
-				Reagent.Bloodmoss
-			);
+        private static SpellInfo m_Info = new SpellInfo(
+                "Nether Cyclone", "Grav Hur",
+                230,
+                9022,
+                Reagent.MandrakeRoot,
+                Reagent.Nightshade,
+                Reagent.SulfurousAsh,
+                Reagent.Bloodmoss
+            );
 
-		public NetherCycloneSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
-		{
-		}
+        public NetherCycloneSpell(Mobile caster, Item scroll) : base(caster, scroll, m_Info)
+        {
+        }
 
-		public override void OnCast()
-		{
-			Caster.Target = new MysticSpellTarget(this, true, TargetFlags.None);
-		}
+        public override void OnCast()
+        {
+            Caster.Target = new InternalTarget(this, true, TargetFlags.None);
+        }
 
-		public override void OnTarget( object o )
-		{
+        public void OnTarget(object o)
+        {
             IPoint3D p = o as IPoint3D;
 
-			if (p != null && CheckSequence())
+            if (p != null && CheckSequence())
             {
                 SpellHelper.Turn(Caster, p);
                 SpellHelper.GetSurfaceTop(ref p);
@@ -115,7 +115,42 @@ namespace Server.Spells.Mysticism
                 }
             }
 
-			FinishSequence();
-		}
-	}
+            FinishSequence();
+        }
+
+        public class InternalTarget : Target
+        {
+            public NetherCycloneSpell Owner { get; set; }
+
+            public InternalTarget(NetherCycloneSpell owner, TargetFlags flags)
+                : this(owner, false, flags)
+            {
+            }
+
+            public InternalTarget(NetherCycloneSpell owner, bool allowland, TargetFlags flags)
+                : base(12, allowland, flags)
+            {
+                Owner = owner;
+            }
+
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o == null)
+                    return;
+
+                if (!from.CanSee(o))
+                    from.SendLocalizedMessage(500237); // Target can not be seen.
+                else
+                {
+                    SpellHelper.Turn(from, o);
+                    Owner.OnTarget(o);
+                }
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                Owner.FinishSequence();
+            }
+        }
+    }
 }
