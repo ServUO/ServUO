@@ -348,7 +348,7 @@ namespace Server.Engines.MyrmidexInvasion
                     {
                         for (int j = 0; j < 20; j++)
                         {
-                            Point3D p = _MyrmidexSpawnZone.GetRandomSpawnPoint(Map.TerMur);
+                            Point3D p = Map.TerMur.GetRandomSpawnPoint(_MyrmidexSpawnZone);
 
                             if (Map.TerMur.CanSpawnMobile(p.X, p.Y, p.Z))
                             {
@@ -389,7 +389,7 @@ namespace Server.Engines.MyrmidexInvasion
                     {
                         for (int j = 0; j < 20; j++)
                         {
-                            Point3D p = _TribeSpawnZone.GetRandomSpawnPoint(Map.TerMur);
+                            Point3D p = Map.TerMur.GetRandomSpawnPoint(_TribeSpawnZone);
 
                             if (Map.TerMur.CanSpawnMobile(p.X, p.Y, p.Z))
                             {

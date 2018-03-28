@@ -232,7 +232,7 @@ namespace Server.Engines.VvV
 
                 do
                 {
-                    p = CityInfo.Infos[City].PriestLocation.GetRandomSpawnPoint(Map.Felucca);
+                    p = Map.Felucca.GetRandomSpawnPoint(CityInfo.Infos[City].PriestLocation);
                 }
                 while (!Map.Felucca.CanSpawnMobile(p));
 
@@ -240,7 +240,7 @@ namespace Server.Engines.VvV
 
                 do
                 {
-                    p = CityInfo.Infos[City].PriestLocation.GetRandomSpawnPoint(Map.Felucca);
+                    p = Map.Felucca.GetRandomSpawnPoint(CityInfo.Infos[City].PriestLocation);
                 }
                 while (!Map.Felucca.CanSpawnMobile(p));
 

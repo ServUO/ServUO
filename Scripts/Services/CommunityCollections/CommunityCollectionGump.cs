@@ -414,38 +414,38 @@ namespace Server.Gumps
 
                     int goldcount = 0;
                     int accountcount = acct == null ? 0 : acct.TotalGold;
-
+                    int amountRemaining = amount;
                     foreach (Item item in items)
                         goldcount += item.Amount;
 
-                    if (goldcount >= amount)
+                    if (goldcount >= amountRemaining)
                     {
                         foreach (Item item in items)
                         {
-                            if (item.Amount <= amount)
+                            if (item.Amount <= amountRemaining)
                             {
                                 item.Delete();
-                                amount -= item.Amount;
+                                amountRemaining -= item.Amount;
                             }
                             else
                             {
-                                item.Amount -= amount;
-                                amount = 0;
+                                item.Amount -= amountRemaining;
+                                amountRemaining = 0;
                             }
 
-                            if (amount == 0)
+                            if (amountRemaining == 0)
                                 break;
                         }
                     }
-                    else if (goldcount + accountcount >= amount)
+                    else if (goldcount + accountcount >= amountRemaining)
                     {
                         foreach (Item item in items)
                         {
-                            amount -= item.Amount;
+                            amountRemaining -= item.Amount;
                             item.Delete();
                         }
 
-                        Banker.Withdraw(from, amount);
+                        Banker.Withdraw(from, amountRemaining);
                     }
                     else
                     {

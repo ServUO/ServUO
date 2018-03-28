@@ -1000,7 +1000,44 @@ namespace Server
 		}
         #endregion
 
-        public Point3D GetSpawnPosition(Point3D center, int range)
+        #region Find Item/Mobile
+        public TItem FindItem<TItem>(Point3D p, int range = 0) where TItem : Item
+        {
+            IPooledEnumerable eable = GetItemsInRange(p, range);
+
+            foreach (Item item in eable)
+            {
+                if (item.GetType() == typeof(TItem))
+                {
+                    eable.Free();
+                    return item as TItem;
+                }
+            }
+
+            eable.Free();
+            return null;
+        }
+
+         public TMob FindMobile<TMob>(Point3D p, int range = 0) where TMob : Mobile
+         {
+             IPooledEnumerable eable = GetMobilesInRange(p, range);
+
+             foreach (Mobile m in eable)
+             {
+                 if (m.GetType() == typeof(TMob))
+                 {
+                     eable.Free();
+                     return m as TMob;
+                 }
+             }
+
+             eable.Free();
+             return null;
+         }
+        #endregion
+
+         #region Spawn Position
+         public Point3D GetSpawnPosition(Point3D center, int range)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -1017,15 +1054,28 @@ namespace Server
             return center;
         }
 
-        private class ZComparer : IComparer<Item>
-		{
-			public static readonly ZComparer Default = new ZComparer();
+         public Point3D GetRandomSpawnPoint(Rectangle2D rec)
+         {
+             if (this == Map.Internal)
+                 return Point3D.Zero;
 
-			public int Compare(Item x, Item y)
-			{
-				return x.Z.CompareTo(y.Z);
-			}
-		}
+             int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
+             int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
+             int z = GetAverageZ(x, y);
+
+             return new Point3D(x, y, z);
+         }
+        #endregion
+
+        private class ZComparer : IComparer<Item>
+        {
+            public static readonly ZComparer Default = new ZComparer();
+
+            public int Compare(Item x, Item y)
+            {
+                return x.Z.CompareTo(y.Z);
+            }
+        }
 
 #if Map_PoolFixColumn || Map_AllUpdates
 		private static readonly Queue<List<Item>> _FixPool = new Queue<List<Item>>(128);

@@ -9,9 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Linq;
 
 using Server.Network;
 using Server.Targeting;
+using Server.Items;
 #endregion
 
 namespace Server
@@ -557,6 +559,150 @@ namespace Server
 
 			return count;
 		}
+
+        private static readonly object _ItemLock = new object();
+        private static readonly object _MultiLock = new object();
+        private static readonly object _MobileLock = new object();
+
+        public List<Item> GetItems()
+        {
+            if (Sectors == null)
+                return null;
+
+            List<Item> list = new List<Item>();
+
+            foreach(Sector s in Sectors)
+            {
+                foreach(Item item in s.Items.Where(i => i.GetRegion().IsPartOf(this)))
+                {
+                    list.Add(item);
+                }
+            }
+
+            return list;
+        }
+
+        public IEnumerable<Item> GetEnumeratedItems()
+        {
+            List<Item> list = GetItems();
+            IEnumerable<Item> e;
+
+            lock (_ItemLock)
+            {
+                e = list.AsParallel().Where(i => i != null && i.GetRegion().IsPartOf(this));
+            }
+
+            foreach (Item item in e)
+            {
+                yield return item;
+            }
+
+            list.Clear();
+            list.TrimExcess();
+        }
+
+        public int GetItemCount()
+        {
+            if (Sectors == null)
+            {
+                return 0;
+            }
+
+            int count = 0;
+
+            foreach(Sector s in Sectors)
+            {
+                count += s.Items.Where(i => i.GetRegion().IsPartOf(this)).Count();
+            }
+
+            return count;
+        }
+
+        public int GetItemCount(Func<Item, bool> predicate)
+        {
+            if (Sectors == null)
+            {
+                return 0;
+            }
+
+            int count = 0;
+
+            foreach(Sector s in Sectors)
+            {
+                count += s.Items.Where(i => i.GetRegion().IsPartOf(this) && (predicate == null || predicate(i))).Count();
+            }
+
+            return count;
+        }
+
+        public List<BaseMulti> GetMultis()
+        {
+            if (Sectors == null)
+            {
+                return null;
+            }
+
+            List<BaseMulti> list = new List<BaseMulti>();
+
+            foreach (Sector s in Sectors)
+            {
+                foreach(BaseMulti multi in s.Multis.Where(m => m.GetRegion().IsPartOf(this)))
+                {
+                    list.Add(multi);
+                }
+            }
+
+            return list;
+        }
+
+        public IEnumerable<BaseMulti> GetEnumeratedMultis()
+        {
+            List<BaseMulti> list = GetMultis();
+            IEnumerable<BaseMulti> e;
+
+            lock (_MultiLock)
+            {
+                e = list.AsParallel().Where(m => m != null && m.GetRegion().IsPartOf(this));
+            }
+
+            foreach (BaseMulti multi in e)
+            {
+                yield return multi;
+            }
+
+            list.Clear();
+            list.TrimExcess();
+        }
+
+        public int GetMultiCount()
+        {
+            int count = 0;
+
+            foreach (Sector s in Sectors)
+            {
+                count += s.Multis.Where(m => m.GetRegion().IsPartOf(this)).Count();
+            }
+
+            return count;
+        }
+
+        public IEnumerable<Mobile> GetEnumeratedMobiles()
+        {
+            List<Mobile> list = GetMobiles();
+            IEnumerable<Mobile> e;
+
+            lock (_MobileLock)
+            {
+                e = list.AsParallel().Where(m => m != null && m.Region.IsPartOf(this));
+            }
+
+            foreach (Mobile m in e)
+            {
+                yield return m;
+            }
+
+            ColUtility.Free(list);
+        }
 
 		int IComparable.CompareTo(object obj)
 		{

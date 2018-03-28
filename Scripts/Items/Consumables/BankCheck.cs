@@ -204,6 +204,7 @@ namespace Server.Items
 		{
 			from.Send(
 				new MessageLocalizedAffix(
+                    from.NetState,
 					Serial,
 					ItemID,
 					MessageType.Label,

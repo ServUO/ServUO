@@ -185,7 +185,7 @@ namespace Server.Engines.PartySystem
                 p.Candidates.Add(target);
 
             //  : You are invited to join the party. Type /accept to join or /decline to decline the offer.
-            target.Send(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008089, "", AffixType.Prepend | AffixType.System, from.Name, ""));
+            target.Send(new MessageLocalizedAffix(target.NetState, Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008089, "", AffixType.Prepend | AffixType.System, from.Name, ""));
 
             from.SendLocalizedMessage(1008090); // You have invited them to join the party.
 

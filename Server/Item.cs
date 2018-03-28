@@ -4435,6 +4435,93 @@ namespace Server
             }
         }
 
+        public void PrivateOverheadMessage(MessageType type, int hue, int number, NetState state, string args = "")
+        {
+            if (Map != null && state != null)
+            {
+                Packet p = null;
+                Point3D worldLoc = GetWorldLocation();
+
+                Mobile m = state.Mobile;
+
+                if (m != null && m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                {
+                    if (p == null)
+                        p = Packet.Acquire(new MessageLocalized(m_Serial, m_ItemID, type, hue, 3, number, Name, args));
+
+                    state.Send(p);
+                }
+
+                Packet.Release(p);
+            }
+        }
+
+        public void PrivateOverheadMessage(MessageType type, int hue, bool ascii, string text, NetState state)
+        {
+            if (Map != null && state != null)
+            {
+                Point3D worldLoc = GetWorldLocation();
+                Mobile m = state.Mobile;
+
+                Packet asciip = null;
+                Packet p = null;
+
+                if (m != null && m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                {
+                    if (ascii)
+                    {
+                        if (asciip == null)
+                            asciip = Packet.Acquire(new AsciiMessage(m_Serial, m_ItemID, type, hue, 3, Name, text));
+
+                        state.Send(asciip);
+                    }
+                    else
+                    {
+                        if (p == null)
+                            p = Packet.Acquire(new UnicodeMessage(m_Serial, m_ItemID, type, hue, 3, m.Language, Name, text));
+
+                        state.Send(p);
+                    }
+                }
+
+                Packet.Release(asciip);
+                Packet.Release(p);
+            }
+        }
+
+        public Region GetRegion()
+        {
+            return Region.Find(GetWorldLocation(), Map);
+        }
+
+        public double GetDistanceToSqrt(IPoint3D p)
+        {
+            Point3D loc = GetWorldLocation();
+
+            int xDelta = loc.X - p.X;
+            int yDelta = loc.Y - p.Y;
+
+            return Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
+        }
+
+        public bool InRange(IPoint3D p, int range)
+        {
+            Point3D loc = GetWorldLocation();
+
+            return (p.X >= (loc.X - range))
+                && (p.X <= (loc.X + range))
+                && (p.Y >= (loc.Y - range))
+                && (p.Y <= (loc.Y + range));
+        }
+
+        public bool InLOS(Point3D target)
+        {
+            if (Deleted || Map == null || Parent != null)
+                return false;
+
+            return Map.LineOfSight(this, target);
+        }
+
         public virtual void OnAfterDelete()
         {
             foreach (BaseModule module in World.GetModules(this))
@@ -5370,6 +5457,39 @@ namespace Server
             }
 
             to.Send(new MessageLocalized(Serial, ItemID, MessageType.Regular, 0x3B2, 3, number, "", args));
+        }
+
+        public void SendLocalizedMessage(int number, string args)
+        {
+            if (Deleted || Map == null)
+            {
+                return;
+            }
+
+            IPooledEnumerable eable = Map.GetClientsInRange(Location, Core.GlobalMaxUpdateRange);
+            Packet p = Packet.Acquire(new MessageLocalized(m_Serial, m_ItemID, MessageType.Regular, 0x3B2, 3, number, Name, args));
+
+            foreach (NetState ns in eable)
+            {
+                ns.Send(p);
+            }
+
+            Packet.Release(p);
+            eable.Free();
+        }
+
+        public void SendLocalizedMessage(MessageType type, int number, AffixType affixType, string affix, string args)
+        {
+            IPooledEnumerable eable = Map.GetClientsInRange(Location, Core.GlobalMaxUpdateRange);
+            Packet p = Packet.Acquire(new MessageLocalizedAffix(m_Serial, m_ItemID, type, 0x3B2, 3, number, "", affixType, affix, args));
+
+            foreach (NetState ns in eable)
+            {
+                ns.Send(p);
+            }
+
+            Packet.Release(p);
+            eable.Free();
         }
 
         public void SendLocalizedMessageTo(Mobile to, int number, AffixType affixType, string affix, string args)

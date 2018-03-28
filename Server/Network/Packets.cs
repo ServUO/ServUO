@@ -4982,7 +4982,33 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class MessageLocalizedAffix : Packet
 	{
+        public MessageLocalizedAffix(
+            Serial serial,
+            int graphic,
+            MessageType messageType,
+            int hue,
+            int font,
+            int number,
+            string name,
+            AffixType affixType,
+            string affix,
+            string args)
+            : this(null, 
+                serial, 
+                graphic, 
+                messageType, 
+                hue, 
+                font, 
+                number, 
+                name, 
+                affixType, 
+                affix, 
+                args)
+        {
+        }
+
 		public MessageLocalizedAffix(
+            NetState state,
 			Serial serial,
 			int graphic,
 			MessageType messageType,
@@ -5024,7 +5050,15 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((byte)affixType);
 			m_Stream.WriteAsciiFixed(name, 30);
 			m_Stream.WriteAsciiNull(affix);
-			m_Stream.WriteBigUniNull(args);
+
+            if (state != null && state.IsEnhancedClient)
+            {
+                m_Stream.WriteLittleUniNull(args);
+            }
+            else
+            {
+                m_Stream.WriteBigUniNull(args);
+            }
 		}
 	}
 

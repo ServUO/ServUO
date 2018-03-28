@@ -447,14 +447,17 @@ namespace Server.Engines.CityLoyalty
 
                     Point3D p = m.Location;
 
-                    for (int j = 0; j < 25; j++)
+                    if (m.Map != null)
                     {
-                        Point3D check = zone.GetRandomSpawnPoint(m.Map);
-
-                        if (CanFit(check.X, check.Y, check.Z, m.Map, bc))
+                        for (int j = 0; j < 25; j++)
                         {
-                            p = check;
-                            break;
+                            Point3D check = m.Map.GetRandomSpawnPoint(zone);
+
+                            if (CanFit(check.X, check.Y, check.Z, m.Map, bc))
+                            {
+                                p = check;
+                                break;
+                            }
                         }
                     }
 

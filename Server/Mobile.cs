@@ -4103,7 +4103,9 @@ namespace Server
 
 					DeathMoveResult res = GetInventoryMoveResultFor(item);
 
-					if (res == DeathMoveResult.MoveToCorpse)
+                    pack.FreePosition(item.GridLocation);
+
+                    if (res == DeathMoveResult.MoveToCorpse)
 					{
 						content.Add(item);
 					}
@@ -5742,6 +5744,7 @@ namespace Server
 			{
 				m_NetState.Send(
 					new MessageLocalizedAffix(
+                        m_NetState,
 						Serial.MinusOne,
 						-1,
 						MessageType.Label,
@@ -7065,6 +7068,41 @@ namespace Server
 		{
 			to.Send(new MessageLocalized(m_Serial, Body, MessageType.Regular, m_SpeechHue, 3, number, Name, args));
 		}
+
+        public void SayTo(Mobile to, int number, int hue)
+        {
+            PrivateOverheadMessage(MessageType.Regular, hue, number, to.NetState);
+        }
+
+        public void SayTo(Mobile to, int number, string args, int hue)
+        {
+            PrivateOverheadMessage(MessageType.Regular, hue, number, args, to.NetState);
+        }
+
+        public void SayTo(Mobile to, int hue, string text, string args)
+        {
+            SayTo(to, text, args, hue, false);
+        }
+
+        public void SayTo(Mobile to, int hue, string text, string args, bool ascii)
+        {
+            PrivateOverheadMessage(MessageType.Regular, hue, ascii, String.Format(text, args), to.NetState);
+        }
+
+        public void Say(int number, int hue)
+        {
+            PublicOverheadMessage(MessageType.Regular, hue, number);
+        }
+
+        public void Say(int number, string args, int hue)
+        {
+            PublicOverheadMessage(MessageType.Regular, hue, number, args);
+        }
+
+        public void Say(string text, int hue, bool ascii = false)
+        {
+            PublicOverheadMessage(MessageType.Regular, hue, ascii, text);
+        }
 
 		public void Say(bool ascii, string text)
 		{
@@ -11778,8 +11816,8 @@ namespace Server
 		{
 			if (m_Map != null)
 			{
-				Packet p =
-					Packet.Acquire(new MessageLocalizedAffix(m_Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
+                Packet cp = null;
+                Packet ep = null;
 
 				var eable = m_Map.GetClientsInRange(m_Location);
 
@@ -11787,11 +11825,29 @@ namespace Server
 				{
 					if (state.Mobile.CanSee(this) && (noLineOfSight || state.Mobile.InLOS(this)))
 					{
-						state.Send(p);
+                        if (state.IsEnhancedClient)
+                        {
+                            if (ep == null)
+                            {
+                                ep = Packet.Acquire(new MessageLocalizedAffix(state, m_Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
+                            }
+
+                            state.Send(ep);
+                        }
+                        else
+                        {
+                            if (cp == null)
+                            {
+                                cp = Packet.Acquire(new MessageLocalizedAffix(m_Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
+                            }
+
+                            state.Send(cp);
+                        }
 					}
 				}
 
-				Packet.Release(p);
+				Packet.Release(ep);
+                Packet.Release(cp);
 
 				eable.Free();
 			}
@@ -11818,6 +11874,11 @@ namespace Server
 		{
 			PrivateOverheadMessage(type, hue, number, "", state);
 		}
+
+        public void PrivateOverheadMessage(MessageType type, int hue, int number, AffixType affixType, string affix, string args, NetState state)
+        {
+            Send(new MessageLocalizedAffix(m_NetState, Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
+        }
 
 		public void PrivateOverheadMessage(MessageType type, int hue, int number, string args, NetState state)
 		{
@@ -11978,6 +12039,7 @@ namespace Server
 			{
 				ns.Send(
 					new MessageLocalizedAffix(
+                        ns,
 						Serial.MinusOne,
 						-1,
 						MessageType.Regular,
