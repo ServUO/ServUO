@@ -12562,7 +12562,6 @@
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\XmlSockets\XmlSockets log.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2doc.txt" />
-    <Content Include="Spells\Mysticism\Blank.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
