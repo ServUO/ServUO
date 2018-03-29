@@ -23,9 +23,6 @@ namespace Server.Engines
             Item item = new AncientWall();
             item.MoveToWorld(new Point3D(1824, 1783, -110), Map.Malas);
 
-            item = new SphynxFortune();
-            item.MoveToWorld(new Point3D(1831, 1805, -110), Map.Malas);
-
             e.Mobile.SendMessage("Forgotten Pyramid generation complete.");
         }
     }

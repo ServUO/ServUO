@@ -2,9 +2,9 @@ using System;
 using Server;
 using System.Collections.Generic;
 using Server.Network;
-using Server.Items;
 using Server.ContextMenus;
 using Server.Gumps;
+using Server.Engines.SphynxFortune;
 
 namespace Server.Mobiles
 {
@@ -169,6 +169,8 @@ namespace Server.Mobiles
                         {
                             SphynxFortune.ApplyFortune(from, Sphynx);
                             SphynxFortune.ApplyFortune(from, Sphynx);
+
+                            from.UpdateResistances();
                         }
                         else
                         {

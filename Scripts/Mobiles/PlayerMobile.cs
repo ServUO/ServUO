@@ -47,6 +47,7 @@ using Server.Spells.SkillMasteries;
 using Server.Engines.VvV;
 
 using RankDefinition = Server.Guilds.RankDefinition;
+using Server.Engines.SphynxFortune;
 #endregion
 
 namespace Server.Mobiles

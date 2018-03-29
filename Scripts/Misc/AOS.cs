@@ -17,6 +17,7 @@ using Server.Engines.CityLoyalty;
 using Server.Spells.SkillMasteries;
 using System.Linq;
 using Server.Misc;
+using Server.Engines.SphynxFortune;
 
 namespace Server
 {

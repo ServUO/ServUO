@@ -2,9 +2,10 @@ using Server;
 using Server.Network;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-namespace Server.Items
+namespace Server.Engines.SphynxFortune
 {
     public class SphynxFortuneArray
     {
@@ -34,20 +35,16 @@ namespace Server.Items
         AosAttribute
     }
 
-    public class SphynxFortune : Item
+    public class SphynxFortune
 	{
+        public static string FilePath = Path.Combine("Saves/SphynxFortune", "Persistence.bin");
         private static List<SphynxFortuneArray> Fountains = new List<SphynxFortuneArray>();
         private static Timer m_Timer;
 
-        [Constructable]
-		public SphynxFortune()
-            :base(3796)
-		{
-            Name = "Sphynx Fortune Stone (do not remove)";
-            Movable = false;
-            Visible = false;
-
-            StartTimer();
+        public static void Configure()
+        {
+            EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
         }
 
         public static void ApplyFortune(Mobile from, Mobile m)
@@ -195,8 +192,6 @@ namespace Server.Items
         {
             return Fountains.Where(x => x.Mobile == from && (x.Type == EnumType.AosAttribute) && Enum.GetName(typeof(AosAttribute), type) == x.TypeValue.ToString()).Sum(y => y.Value);
         }
-
-        public override bool HandlesOnMovement { get { return true; } }
 				
 		public static void DefragTables()
 		{
@@ -218,37 +213,41 @@ namespace Server.Items
             m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(DefragTables));
             m_Timer.Start();
         }
-		
-		public SphynxFortune(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)0);
 
-            writer.Write(Fountains.Count);
+        public static void OnSave(WorldSaveEventArgs e)
+        {
+            Persistence.Serialize(
+                FilePath,
+                writer =>
+                {
+                    writer.Write((int)0);
 
-            foreach (var pair in Fountains)
-            {
-                writer.Write(pair.Mobile);
-                writer.Write(pair.Date);
-                writer.Write(pair.Type.ToString());
-                writer.Write(pair.TypeValue.ToString());
-                writer.Write(pair.Value);
-            }
+                    writer.Write(Fountains.Count);
+
+                    Fountains.ForEach(s =>
+                    {
+                        writer.Write(s.Mobile);
+                        writer.Write(s.Date);
+                        writer.Write(s.Type.ToString());
+                        writer.Write(s.TypeValue.ToString());
+                        writer.Write(s.Value);
+                    });
+                });
         }
 
-        public override void Deserialize(GenericReader reader)
+        public static void OnLoad()
         {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    int version = reader.ReadInt();
 
-            for (int i = reader.ReadInt(); i > 0; i--)
-            {
-                Fountains.Add(new SphynxFortuneArray { Mobile = reader.ReadMobile(), Date = reader.ReadDateTime(), Type = (EnumType)Enum.Parse(typeof(EnumType), reader.ReadString()), TypeValue = (EnumTypeValue)Enum.Parse(typeof(EnumTypeValue), reader.ReadString()), Value = reader.ReadInt() });
-            }
+                    for (int i = reader.ReadInt(); i > 0; i--)
+                    {
+                        Fountains.Add(new SphynxFortuneArray { Mobile = reader.ReadMobile(), Date = reader.ReadDateTime(), Type = (EnumType)Enum.Parse(typeof(EnumType), reader.ReadString()), TypeValue = (EnumTypeValue)Enum.Parse(typeof(EnumTypeValue), reader.ReadString()), Value = reader.ReadInt() });
+                    }
+                });
 
             StartTimer();
         }
