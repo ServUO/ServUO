@@ -179,7 +179,7 @@ namespace Server.Gumps
 
                     User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
                     RemovePoints(citem.Points);
-                    User.PlaySound(0x5A7);
+                    User.PlaySound(0x5A8);
                 }
             }
         }
