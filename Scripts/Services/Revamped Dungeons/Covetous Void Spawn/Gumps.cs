@@ -243,7 +243,7 @@ namespace Server.Engines.VoidPool
                     PointsSystem.VoidPool.DeductPoints(User, citem.Points);
 
                     User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
-                    User.PlaySound(0x5A7);
+                    User.PlaySound(0x5A8);
                 }
             }
         }
