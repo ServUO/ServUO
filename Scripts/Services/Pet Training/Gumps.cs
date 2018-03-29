@@ -1747,7 +1747,9 @@ namespace Server.Mobiles
                 else if (loc[0].String != null)
                     AddHtml(260, y, 200, 18, loc[0].String, false, false);
 
-                AddLabel(460, y, entry.Value == 0 ? 0x27 : 0, entry.Value.ToString());
+                var value = entry.TrainPoint is SkillName ? entry.Value + 1000 : entry.Value;
+
+                AddLabel(460, y, entry.Value == 0 ? 0x27 : 0, value.ToString());
                 AddLabel(510, y, entry.Cost == 0 ? 0x27 : 0, String.Format("-{0}", entry.Cost));
 
                 total += entry.Cost;
