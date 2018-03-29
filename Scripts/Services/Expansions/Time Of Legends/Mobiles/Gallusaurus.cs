@@ -58,7 +58,6 @@ namespace Server.Mobiles
 
         public override int Meat { get { return 3; } }
         public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame { get { return true; } }
 
         public Gallusaurus(Serial serial)
             : base(serial)

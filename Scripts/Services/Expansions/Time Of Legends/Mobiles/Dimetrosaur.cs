@@ -123,9 +123,16 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version == 0 && Controlled)
+            if (version == 0)
             {
-                SetHits(HitsMax / 4);
+                if (Controlled)
+                {
+                    SetHits(HitsMax / 4);
+                }
+
+                SetAreaEffect(AreaEffect.PoisonBreath);
+                SetWeaponAbility(WeaponAbility.MortalStrike);
+                SetWeaponAbility(WeaponAbility.Dismount);
             }
         }
     }

@@ -442,7 +442,10 @@ namespace Server.Mobiles
                     User.HasGump(typeof(PetTrainingOptionsGump)) ||
                     User.HasGump(typeof(PetTrainingPlanningGump)) ||
                     User.HasGump(typeof(PetTrainingConfirmGump)))
+                    {
+                        Refresh();
                         break;
+                    }
 
                     var trainProfile = PetTrainingHelper.GetTrainingProfile(Creature, true);
 
@@ -882,7 +885,7 @@ namespace Server.Mobiles
                 }
 
                 if ((Definition.MagicalAbilities & abil) == 0 ||  AbilityProfile.HasAbility(abil) ||
-                    (abil <= MagicalAbility.WrestlingMastery && AbilityProfile.AbilityCount() >= 3) ||
+                    !AbilityProfile.CanChooseMagicalAbility(abil) || /*(abil <= MagicalAbility.WrestlingMastery && AbilityProfile.AbilityCount() >= 3) ||*/
                     ((abil & MagicalAbility.Tokuno) != 0 && !AbilityProfile.TokunoTame))
                 {
                     continue;
@@ -905,7 +908,7 @@ namespace Server.Mobiles
             {
                 var abil = SpecialAbility.Abilities[i];
 
-                if (AbilityProfile.HasAbility(abil))
+                if (AbilityProfile.HasAbility(abil) || (AbilityProfile.HasSpecialMagicalAbility() && !AbilityProfile.IsRuleBreaker(abil)))
                     continue;
 
                 if (Definition.HasSpecialAbility(abil) || (AbilityProfile.HasAbility(MagicalAbility.Poisoning) && abil is VenomousBite))
@@ -1003,7 +1006,7 @@ namespace Server.Mobiles
  
             if (o is SpecialAbility[])
             {
-                if (!AbilityProfile.CanChooseSpecialAbility())
+                if (!AbilityProfile.CanChooseSpecialAbility((SpecialAbility[])o))
                 {
                     return false;
                 }
@@ -1561,7 +1564,7 @@ namespace Server.Mobiles
                         User.SendLocalizedMessage(1153204); // The pet is too far away from you!
                     }
                     else if (Server.Spells.SpellHelper.CheckCombat(User) || Server.Spells.SpellHelper.CheckCombat(Creature) ||
-                        Creature.Aggressed.Count > 0)
+                        Creature.Aggressed.Count > 0 || Creature.Combatant != null)
                     {
                         User.SendLocalizedMessage(1156876); // Since you have been in combat recently you may not use this feature.
                     }

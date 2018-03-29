@@ -264,6 +264,7 @@ namespace Server.Mobiles
         public static SpecialAbility[] SpecialAbilityImp;
         public static SpecialAbility[] SpecialAbilityTsukiWolf;
         public static SpecialAbility[] SpecialAbilitySabreTri;
+        public static SpecialAbility[] RuleBreakers;
         #endregion
 
         #region AreaEffect Defs
@@ -571,6 +572,11 @@ namespace Server.Mobiles
             SpecialAbilitySabreTri = new SpecialAbility[]
             { 
                 SpecialAbility.SearingWounds, SpecialAbility.TailSwipe
+            };
+
+            RuleBreakers = new SpecialAbility[]
+            { 
+                SpecialAbility.SearingWounds, SpecialAbility.TailSwipe, SpecialAbility.DragonBreath, SpecialAbility.LifeLeech, SpecialAbility.ViciousBite
             };
             #endregion
 

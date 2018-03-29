@@ -10,7 +10,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public SabertoothedTiger()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = "saber-toothed tiger";
             Body = 0x588;
@@ -61,7 +61,18 @@ namespace Server.Mobiles
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
 
         public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame { get { return true; } }
+
+        public override void OnAfterTame(Mobile master)
+        {
+            int intel = RawInt;
+            int mana = ManaMax;
+
+            // UO Stratics say they keep their intelligence. Crappy but hey!
+            Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
+
+            SetInt(intel);
+            SetMana(mana);
+        }
 
         public override void GenerateLoot()
         {
@@ -76,13 +87,18 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                SetMagicalAbility(MagicalAbility.Slashing);
+            }
         }
     }
 }

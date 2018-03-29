@@ -125,7 +125,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -144,6 +144,12 @@ namespace Server.Mobiles
                         Skills[i].Base = Skills[i].Cap;
                     }
                 }
+            }
+
+            if (version == 1)
+            {
+                SetSpecialAbility(SpecialAbility.RuneCorruption);
+                SetWeaponAbility(WeaponAbility.BleedAttack);
             }
         }
     }

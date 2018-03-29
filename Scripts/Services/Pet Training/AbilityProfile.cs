@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Server.Items;
 
+// Special Magical Abilities DON't CANCEL these out:
+// SearingWounds, TailSwipe, DragonBreath, LifeLeech, ViciousBite
+
 namespace Server.Mobiles
 {
     [PropertyObject]
@@ -269,17 +272,43 @@ namespace Server.Mobiles
             return count;
         }
 
-        public bool CanChooseSpecialAbility()
+        public bool CanChooseMagicalAbility(MagicalAbility ability)
         {
             if (!Creature.Controlled)
+                return true;
+
+            if (SpecialAbilities != null && SpecialAbilities.Length > 0 && SpecialAbilities.Any(abil => IsRuleBreaker(abil)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool CanChooseSpecialAbility(SpecialAbility[] list)
+        {
+            if (!Creature.Controlled)
+                return true;
+
+            if (HasSpecialMagicalAbility() && list.Any(abil => IsRuleBreaker(abil)) && 
+                (AreaEffects == null || AreaEffects.Length == 0) && 
+                (SpecialAbilities == null || SpecialAbilities.Length == 0))
                 return true;
 
             return !HasSpecialMagicalAbility() && (SpecialAbilities == null || SpecialAbilities.Where(a => !a.NaturalAbility).Count() == 0) && AbilityCount() < 3;
         }
 
+        public bool IsRuleBreaker(SpecialAbility ability)
+        {
+            return PetTrainingHelper.RuleBreakers.Any(abil => abil == ability);
+        }
+
         public bool CanChooseAreaEffect()
         {
             if (!Creature.Controlled)
+                return true;
+
+            if (HasSpecialMagicalAbility() && (AreaEffects == null || AreaEffects.Length == 0) && (SpecialAbilities == null || SpecialAbilities.Length == 0))
                 return true;
 
             return !HasSpecialMagicalAbility() && (AreaEffects == null || AreaEffects.Length == 0) && AbilityCount() < 3;
