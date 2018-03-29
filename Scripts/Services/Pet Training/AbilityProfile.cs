@@ -277,7 +277,11 @@ namespace Server.Mobiles
             if (!Creature.Controlled)
                 return true;
 
-            if (SpecialAbilities != null && SpecialAbilities.Length > 0 && SpecialAbilities.Any(abil => IsRuleBreaker(abil)))
+            if (HasSpecialMagicalAbility() &&
+                IsSpecialMagicalAbility(ability) &&
+                SpecialAbilities != null && 
+                SpecialAbilities.Length > 0 &&
+                SpecialAbilities.Any(a => !a.NaturalAbility))
             {
                 return false;
             }
@@ -290,9 +294,10 @@ namespace Server.Mobiles
             if (!Creature.Controlled)
                 return true;
 
-            if (HasSpecialMagicalAbility() && list.Any(abil => IsRuleBreaker(abil)) && 
+            if (HasSpecialMagicalAbility() && 
+                list.Any(abil => IsRuleBreaker(abil)) && 
                 (AreaEffects == null || AreaEffects.Length == 0) && 
-                (SpecialAbilities == null || SpecialAbilities.Length == 0))
+                (SpecialAbilities == null || SpecialAbilities.Length == 0 || SpecialAbilities.All(a => a.NaturalAbility)))
                 return true;
 
             return !HasSpecialMagicalAbility() && (SpecialAbilities == null || SpecialAbilities.Where(a => !a.NaturalAbility).Count() == 0) && AbilityCount() < 3;

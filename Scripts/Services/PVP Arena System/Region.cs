@@ -106,21 +106,6 @@ namespace Server.Engines.ArenaSystem
             return base.OnBeginSpellCast(m, spell);
         }
 
-        /*public override bool OnTarget(Mobile m, Target t, object o)
-        {
-            if (t is TeleportSpell.InternalTarget)
-            {
-                if (Region.Find(m.Location, m.Map) != this || (o is IPoint3D && ((IPoint3D)o).Z != m.Z))
-                {
-                    m.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
-                }
-
-                return false;
-            }
-
-            return base.OnTarget(m, t, o);
-        }*/ // this no workey
-
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
         {
             if (type == TravelCheckType.TeleportTo)
@@ -178,6 +163,38 @@ namespace Server.Engines.ArenaSystem
             }
 
             return true;
+        }
+    }
+
+    public class GuardedArenaRegion : GuardedRegion
+    {
+        public GuardedArenaRegion(string name, Map map, Rectangle2D[] rec)
+            : base(name, map, 1, rec)
+        {
+        }
+
+        public override bool AllowHarmful(Mobile from, IDamageable target)
+		{
+            Region theirs = Region.Find(target.Location, target.Map);
+
+            if (theirs is ArenaRegion)
+            {
+                return false;
+            }
+
+            return base.AllowHarmful(from, target);
+		}
+
+        public override bool AllowBeneficial(Mobile from, Mobile target)
+        {
+            Region theirs = Region.Find(target.Location, target.Map);
+
+            if (theirs is ArenaRegion)
+            {
+                return false;
+            }
+
+            return base.AllowBeneficial(from, target);
         }
     }
 }
