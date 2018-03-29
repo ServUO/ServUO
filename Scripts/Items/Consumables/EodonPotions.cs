@@ -245,13 +245,17 @@ namespace Server.Items
                 EndTimer();
             else
             {
-                ColUtility.ForEach(Contexts, (key, value) =>
+                var dictionary = new Dictionary<Mobile, List<EodonPotionContext>>(Contexts);
+
+                foreach (var kvp in dictionary)
                 {
-                    if (value != null)
+                    foreach (var context in kvp.Value)
                     {
-                        value.ForEach(c => c.OnTick(key));
+                        context.OnTick(kvp.Key);
                     }
-                });
+                }
+
+                dictionary.Clear();
             }
         }
 
