@@ -21,21 +21,18 @@ namespace Server.Mobiles
 			int select = 1;
 
             if (mana >= 29)
-                select = 5;
-            else if (mana >= 23)
                 select = 4;
-            else if (mana >= 17)
+            else if (mana >= 23)
                 select = 3;
-            else if (mana >= 5)
+            else if (mana >= 17)
                 select = 2;
 			
 			switch (Utility.Random(select))
 			{
-                case 0: return new CurseWeaponSpell(m_Mobile, null);
-				case 1: return new PainSpikeSpell(m_Mobile, null);
-				case 2: return new PoisonStrikeSpell(m_Mobile, null);
-				case 3: return new WitherSpell(m_Mobile, null);
-				case 4: return new StrangleSpell(m_Mobile, null);
+				case 0: return new PainSpikeSpell(m_Mobile, null);
+				case 1: return new PoisonStrikeSpell(m_Mobile, null);
+				case 2: return new WitherSpell(m_Mobile, null);
+				case 3: return new StrangleSpell(m_Mobile, null);
 			}
 
             return null;

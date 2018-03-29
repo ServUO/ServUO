@@ -134,6 +134,8 @@ namespace Server.Mobiles
 		{
             if (CheckMana(creature) && Validate(creature, defender) && TriggerChance >= Utility.RandomDouble())
 			{
+                creature.Mana -= ManaCost;
+
 				DoEffects(creature, defender, ref damage);
                 AddToCooldown(creature);
 			}

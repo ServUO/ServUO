@@ -53,6 +53,8 @@ namespace Server.Mobiles
 		{
             if (CheckMana(creature) && Validate(creature, combatant) && TriggerChance >= Utility.RandomDouble())
 			{
+                creature.Mana -= ManaCost;
+
                 DoEffects(creature, combatant);
                 AddToCooldown(creature);
 			}

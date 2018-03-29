@@ -872,10 +872,11 @@ namespace Server.Mobiles
             for (int i = 0; i < PetTrainingHelper.MagicalAbilities.Length; i++)
             {
                 MagicalAbility abil = PetTrainingHelper.MagicalAbilities[i];
+                var master = Creature.ControlMaster;
 
-                if ((abil == MagicalAbility.Chivalry && Creature.Karma < 0) ||
-                    (abil == MagicalAbility.Necromancy && Creature.Karma > 0) ||
-                    (abil == MagicalAbility.Necromage && Creature.Karma > 0))
+                if ((abil == MagicalAbility.Chivalry && master != null && master.Karma < 0) ||
+                    (abil == MagicalAbility.Necromancy && master != null && master.Karma > 0) ||
+                    (abil == MagicalAbility.Necromage && master != null && master.Karma > 0))
                 {
                     continue;
                 }

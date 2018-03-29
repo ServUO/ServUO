@@ -6805,7 +6805,7 @@ namespace Server.Mobiles
 
         #region Healing
         public virtual double HealChance { get { return 0.0; } }
-        public virtual bool CanHealOwner { get { return false; } }
+        public virtual bool CanHealOwner { get { return PetTrainingHelper.Enabled; } }
         public virtual double HealScalar { get { return 1.0; } }
 
         public virtual int HealSound { get { return 0x57; } }
@@ -6818,7 +6818,7 @@ namespace Server.Mobiles
         public virtual double HealOwnerTrigger { get { return 0.78; } }
         public virtual double HealOwnerDelay { get { return 6.5; } }
         public virtual double HealOwnerInterval { get { return 30.0; } }
-        public virtual bool HealOwnerFully { get { return false; } }
+        public virtual bool HealOwnerFully { get { return PetTrainingHelper.Enabled; } }
 
         private long m_NextHealTime = Core.TickCount;
         private long m_NextHealOwnerTime = Core.TickCount;
@@ -6904,7 +6904,7 @@ namespace Server.Mobiles
                         patient.SendLocalizedMessage(1010059); // You have been cured of all poisons.
 
                         CheckSkill(SkillName.Healing, 0.0, 60.0 + poisonLevel * 10.0); // TODO: Verify formula
-                        CheckSkill(SkillName.Anatomy, 0.0, 100.0);
+                        CheckSkill(SkillName.Anatomy, 0.0, Skills[SkillName.Anatomy].Cap);
                     }
                 }
             }
@@ -6937,8 +6937,13 @@ namespace Server.Mobiles
 
                     patient.Heal((int)toHeal);
 
-                    CheckSkill(SkillName.Healing, 0.0, 90.0);
-                    CheckSkill(SkillName.Anatomy, 0.0, 100.0);
+                    CheckSkill(SkillName.Healing, 0.0, Skills[SkillName.Healing].Cap);
+                    CheckSkill(SkillName.Anatomy, 0.0, Skills[SkillName.Anatomy].Cap);
+                }
+                else if (PetTrainingHelper.Enabled && Controlled)
+                {
+                    CheckSkill(SkillName.Healing, 0.0, 10);
+                    CheckSkill(SkillName.Anatomy, 0.0, 10);
                 }
             }
 

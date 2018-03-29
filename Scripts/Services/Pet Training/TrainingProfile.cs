@@ -126,36 +126,31 @@ namespace Server.Mobiles
             _ProgressTable = new Dictionary<BaseCreature, int>();
         }
 
-        private void AssignStartingTrainingPoints()
+        private int AssignStartingTrainingPoints()
         {
             if (ControlSlots != ControlSlotsMin)
             {
-                _StartingTrainingPoints = 1501;
+                 return 1501;
             }
-            else if (ControlSlotsMin == 1 && ControlSlotsMax == 2)
+            
+            if (ControlSlotsMin == 1 && ControlSlotsMax == 2)
             {
-                _StartingTrainingPoints = 2556;
+                return 2556;
             }
-            else if (ControlSlotsMin == 1 && ControlSlotsMax == 3)
+            
+            if (ControlSlotsMin == 1 && ControlSlotsMax == 3)
             {
-                _StartingTrainingPoints = 2381;
+                return 2381;
             }
-            else
-            {
-                _StartingTrainingPoints = 1501;
-            }
+
+            return 1501;
         }
 
         public void BeginTraining()
         {
-            if (_StartingTrainingPoints == 0)
-            {
-                AssignStartingTrainingPoints();
-            }
-
             if (ControlSlots < ControlSlotsMax)
             {
-                TrainingPoints = StartingTrainingPoints;
+                TrainingPoints = AssignStartingTrainingPoints();
                 HasBegunTraining = true;
 
                 TrainingProgress = 0;
