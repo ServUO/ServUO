@@ -20,8 +20,8 @@ namespace Server.Mobiles
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
+
             Title = "the fighter";
             HairItemID = Race.RandomHair(Female);
             HairHue = Race.RandomHairHue();
@@ -77,32 +77,35 @@ namespace Server.Mobiles
             }
 
             // Pick a random shield
-            switch ( Utility.Random(8)) 
+            if (FindItemOnLayer(Layer.TwoHanded) == null)
             {
-                case 0:
-                    AddItem(new BronzeShield());
-                    break;
-                case 1:
-                    AddItem(new HeaterShield());
-                    break;
-                case 2:
-                    AddItem(new MetalKiteShield());
-                    break;
-                case 3:
-                    AddItem(new MetalShield());
-                    break;
-                case 4:
-                    AddItem(new WoodenKiteShield());
-                    break;
-                case 5:
-                    AddItem(new WoodenShield());
-                    break;
-                case 6:
-                    AddItem(new OrderShield());
-                    break;
-                case 7:
-                    AddItem(new ChaosShield());
-                    break;
+                switch (Utility.Random(8))
+                {
+                    case 0:
+                        AddItem(new BronzeShield());
+                        break;
+                    case 1:
+                        AddItem(new HeaterShield());
+                        break;
+                    case 2:
+                        AddItem(new MetalKiteShield());
+                        break;
+                    case 3:
+                        AddItem(new MetalShield());
+                        break;
+                    case 4:
+                        AddItem(new WoodenKiteShield());
+                        break;
+                    case 5:
+                        AddItem(new WoodenShield());
+                        break;
+                    case 6:
+                        AddItem(new OrderShield());
+                        break;
+                    case 7:
+                        AddItem(new ChaosShield());
+                        break;
+                }
             }
 		  
             switch( Utility.Random(5) )
@@ -147,7 +150,7 @@ namespace Server.Mobiles
                     break;
                 case 3: // Chain
                     AddItem(new ChainChest());
-                    AddItem(new ChainCoif());
+                    //AddItem(new ChainCoif());
                     AddItem(new ChainLegs());
                     break;
             }

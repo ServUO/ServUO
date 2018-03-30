@@ -9,48 +9,51 @@ namespace Server.Mobiles
         public HireMage()
             : base(AIType.AI_Mage)
         {
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Hue = Utility.RandomSkinHue();
-            this.Title = "the mage";
-            if (this.Female = Utility.RandomBool()) 
+            SpeechHue = Utility.RandomDyedHue();
+            Hue = Utility.RandomSkinHue();
+            Title = "the mage";
+            if (Female = Utility.RandomBool()) 
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
+                Body = 0x191;
+                Name = NameList.RandomName("female");
             }
             else 
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
-                this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+                AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
 
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
-            this.Race.RandomFacialHair(this);
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
+            Race.RandomFacialHair(this);
 
-            this.SetStr(61, 75);
-            this.SetDex(81, 95);
-            this.SetInt(86, 100);
+            SetStr(61, 75);
+            SetDex(81, 95);
+            SetInt(86, 100);
 
-            this.SetDamage(10, 23);
+            SetDamage(10, 23);
 
-            this.SetSkill(SkillName.EvalInt, 100.0, 125);
-            this.SetSkill(SkillName.Magery, 100, 125);
-            this.SetSkill(SkillName.Meditation, 100, 125);
-            this.SetSkill(SkillName.MagicResist, 100, 125);
-            this.SetSkill(SkillName.Tactics, 100, 125);
-            this.SetSkill(SkillName.Macing, 100, 125);
+            SetSkill(SkillName.EvalInt, 100.0, 125);
+            SetSkill(SkillName.Magery, 100, 125);
+            SetSkill(SkillName.Meditation, 100, 125);
+            SetSkill(SkillName.MagicResist, 100, 125);
+            SetSkill(SkillName.Tactics, 100, 125);
+            SetSkill(SkillName.Macing, 100, 125);
 
-            this.Fame = 100;
-            this.Karma = 100;
+            Fame = 100;
+            Karma = 100;
 
-            this.AddItem(new Shoes(Utility.RandomNeutralHue()));
-            this.AddItem(new Shirt());
+            AddItem(new Shirt());
 
-            this.AddItem(new Robe(Utility.RandomNeutralHue()));
-            this.AddItem(new ThighBoots());
+            AddItem(new Robe(Utility.RandomNeutralHue()));
 
-            this.PackGold(20, 100);
+            if(Utility.RandomBool())
+                AddItem(new Shoes(Utility.RandomNeutralHue()));
+            else
+                AddItem(new ThighBoots());
+
+            PackGold(20, 100);
         }
 
         public HireMage(Serial serial)

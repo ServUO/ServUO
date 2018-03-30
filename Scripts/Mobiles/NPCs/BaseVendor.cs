@@ -537,27 +537,18 @@ namespace Server.Mobiles
 		}
 
 		#region SA Change
-		public virtual bool CheckTerMur()
-		{
-			Map map = Map;
+        public virtual bool CheckTerMur()
+        {
+            Map map = this.Map;
 
-			if (map != Map.TerMur)
-			{
-				return false;
-			}
+            if (map != Map.TerMur || Server.Spells.SpellHelper.IsEodon(map, this.Location))
+                return false;
 
-			if (!Region.IsPartOf("Royal City") && !Region.IsPartOf("Holy City"))
-			{
-				return false;
-			}
+            if (this.Body != 0x29A || this.Body != 0x29B)
+                this.TurnToGargRace();
 
-			if (Body != 0x29A || Body != 0x29B)
-			{
-				TurnToGargRace();
-			}
-
-			return true;
-		}
+            return true;
+        }
 		#endregion
 
 		public virtual bool CheckNecromancer()

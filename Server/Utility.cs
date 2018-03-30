@@ -1407,6 +1407,13 @@ namespace Server
 
 		private static readonly Stack<ConsoleColor> m_ConsoleColors = new Stack<ConsoleColor>();
 
+        public static void WriteConsoleColor(ConsoleColor color, string str)
+        {
+            PushColor(color);
+            Console.WriteLine(str);
+            PopColor();
+        }
+
 		public static void PushColor(ConsoleColor color)
 		{
 			try
