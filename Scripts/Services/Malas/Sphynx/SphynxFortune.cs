@@ -37,7 +37,7 @@ namespace Server.Engines.SphynxFortune
 
     public class SphynxFortune
 	{
-        public static string FilePath = Path.Combine("Saves/SphynxFortune", "Persistence.bin");
+        public static string FilePath = Path.Combine("Saves/Misc/SphynxFortune", "Persistence.bin");
         private static List<SphynxFortuneArray> Fountains = new List<SphynxFortuneArray>();
         private static Timer m_Timer;
 
