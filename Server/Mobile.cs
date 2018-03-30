@@ -6658,7 +6658,7 @@ namespace Server
 
 		public virtual int MaxWeight { get { return int.MaxValue; } }
 
-		public virtual void AddItem(Item item)
+		public void AddItem(Item item)
 		{
 			if (item == null || item.Deleted)
 			{
@@ -6681,6 +6681,29 @@ namespace Server
 			{
 				item.SendRemovePacket();
 			}
+
+            var equipped = FindItemOnLayer(item.Layer);
+
+            if (equipped != null && equipped != item)
+            {
+                try
+                {
+                    using (StreamWriter op = new StreamWriter("LayerConflict.log", true))
+                    {
+                        op.WriteLine("# {0}", DateTime.UtcNow);
+                        op.WriteLine("Offending Mobile: {0}[{1}]", GetType().ToString(), this);
+                        op.WriteLine("Offending Item: {0}", item.GetType().ToString());
+                        op.WriteLine("Layer: {0}", item.Layer.ToString());
+                        op.WriteLine();
+                    }
+
+                    Utility.WriteConsoleColor(ConsoleColor.DarkRed, String.Format("Offending Mobile: {0}[{1}]", GetType().ToString(), this));
+                    Utility.WriteConsoleColor(ConsoleColor.DarkRed, String.Format("Offending Item: {0}", item.GetType().ToString()));
+                    Utility.WriteConsoleColor(ConsoleColor.DarkRed, String.Format("Layer: {0}", item.Layer.ToString()));
+                }
+                catch
+                { }
+            }
 
 			item.Parent = this;
 			item.Map = m_Map;

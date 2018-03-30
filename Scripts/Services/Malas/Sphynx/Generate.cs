@@ -14,16 +14,30 @@ namespace Server.Engines
 
         public static void Generate_ForgottenPyramid(CommandEventArgs e)
         {
-            XmlSpawner sp = new XmlSpawner("Sphynx");
-            sp.SpawnRange = 10;
-            sp.HomeRange = 15;
-            sp.MoveToWorld(new Point3D(1821, 1797, -110), Map.Malas);
-            sp.Respawn();
+            Generate(e.Mobile);
+        }
 
-            Item item = new AncientWall();
-            item.MoveToWorld(new Point3D(1824, 1783, -110), Map.Malas);
+        public static void Generate(Mobile m)
+        {
+            if (Map.Malas.FindItem<XmlSpawner>(new Point3D(1821, 1797, -110)) == null)
+            {
+                XmlSpawner sp = new XmlSpawner("Sphynx");
+                sp.SpawnRange = 10;
+                sp.HomeRange = 15;
+                sp.MoveToWorld(new Point3D(1821, 1797, -110), Map.Malas);
+                sp.Respawn();
+            }
 
-            e.Mobile.SendMessage("Forgotten Pyramid generation complete.");
+            if (Map.Malas.FindItem<AncientWall>(new Point3D(1824, 1783, -110)) == null)
+            {
+                Item item = new AncientWall();
+                item.MoveToWorld(new Point3D(1824, 1783, -110), Map.Malas);
+            }
+
+            if (m != null)
+            {
+                m.SendMessage("Forgotten Pyramid generation complete.");
+            }
         }
     }
 }

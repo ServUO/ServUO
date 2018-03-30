@@ -58,8 +58,6 @@ namespace Server.Mobiles
 
 		public override void InitOutfit()
 		{
-			base.InitOutfit();
-
 			Item item = (Utility.RandomBool() ? null : new RingmailChest());
 
 			if (item != null && !EquipItem(item))
@@ -68,7 +66,7 @@ namespace Server.Mobiles
 				item = null;
 			}
 
-			switch (Utility.Random(3))
+			switch (Utility.Random(4))
 			{
 				case 0:
 				case 1:
@@ -77,6 +75,9 @@ namespace Server.Mobiles
 				case 2:
 					AddItem(new Bandana(Utility.RandomBrightHue()));
 					break;
+                case 3:
+                    AddItem(new Bascinet());
+                    break;
 			}
 
 			if (item == null)
@@ -84,8 +85,9 @@ namespace Server.Mobiles
 				AddItem(new FullApron(Utility.RandomBrightHue()));
 			}
 
-			AddItem(new Bascinet());
 			AddItem(new SmithHammer());
+
+            base.InitOutfit();
 
 			item = FindItemOnLayer(Layer.Pants);
 
