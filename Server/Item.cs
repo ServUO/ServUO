@@ -2012,12 +2012,15 @@ namespace Server
             get { return false; }
         }
 
-        private static TimeSpan m_DDT = TimeSpan.FromHours(1.0);
+        private static TimeSpan m_DDT = TimeSpan.FromMinutes(Config.Get("General.DefaultItemDecayTime", 60));
 
         public static TimeSpan DefaultDecayTime { get { return m_DDT; } set { m_DDT = value; } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual bool DefaultDecaySetting { get { return true; } }
+
         [CommandProperty(AccessLevel.Decorator)]
-        public virtual TimeSpan DecayTime { get { return m_DDT; } }
+        public virtual TimeSpan DecayTime { get { return TimeSpan.FromMinutes(m_DDT.TotalMinutes * DecayMultiplier); } }
 
         [CommandProperty(AccessLevel.Decorator)]
         public virtual bool Decays
@@ -2025,7 +2028,16 @@ namespace Server
             get
             {
                 // TODO: Make item decay an option on the spawner
-                return (Movable && Visible && !m_HonestyItem/* && Spawner == null*/);
+                return DefaultDecaySetting && Movable && Visible && !m_HonestyItem/* && Spawner == null*/;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TimeSpan TimeToDecay
+        {
+            get
+            {
+                return TimeSpan.FromMinutes((DecayTime - (DateTime.UtcNow - LastMoved)).TotalMinutes);
             }
         }
 
@@ -2546,6 +2558,7 @@ namespace Server
         {
             writer.Write(11); // version
 
+            //version 11
             writer.Write(m_GridLocation);
 
             //version 10

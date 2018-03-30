@@ -201,6 +201,7 @@ namespace Server.Mobiles
             }
 
             IMount mount = dismounted.Mount;
+            Mobile m = null;
 
             if (mount != null)
             {
@@ -208,6 +209,9 @@ namespace Server.Mobiles
 
                 if (message)
                     dismounted.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
+
+                if (mount is Mobile)
+                    m = (Mobile)mount;
             }
             else if (Core.ML && Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted))
             {
@@ -221,6 +225,8 @@ namespace Server.Mobiles
                     dismounted.Freeze(TimeSpan.FromSeconds(1));
                     dismounted.Animate(AnimationType.Land, 0);
                     BuffInfo.RemoveBuff(dismounted, BuffIcon.Fly);
+
+                    m = dismounted;
                 }
             }
             else
@@ -230,7 +236,7 @@ namespace Server.Mobiles
 
             if (delay != TimeSpan.MinValue)
             {
-                SetMountPrevention(dismounted, mount as Mobile, blockmounttype, delay);
+                SetMountPrevention(dismounted, m, blockmounttype, delay);
             }
         }
 
@@ -292,6 +298,11 @@ namespace Server.Mobiles
                 return BlockMountType.None;
             }
 
+            if (Core.TOL && entry.m_Type == BlockMountType.RidingSwipe && entry.m_Expiration > DateTime.UtcNow)
+            {
+                return BlockMountType.DismountRecovery;
+            }
+
             return entry.m_Type;
         }
 
@@ -327,6 +338,10 @@ namespace Server.Mobiles
                             break;
                         }
                     case BlockMountType.RidingSwipe:
+                        {
+                            mob.SendLocalizedMessage(1075636); // You cannot mount.
+                            break;
+                        }
                     case BlockMountType.DismountRecovery:
                         {
                             mob.SendLocalizedMessage(flying ? 1112456 : 1070859); // You cannot mount while recovering from a dismount special maneuver.
@@ -529,19 +544,24 @@ namespace Server.Mobiles
             {
                 if (m_Type == BlockMountType.RidingSwipe)
                 {
-                    if (DateTime.UtcNow < m_Expiration)
+                    if (Core.TOL && DateTime.UtcNow < m_Expiration)
                     {
                         return false;
                     }
-                    else if (m_Mount != null && mount != null && m_Mount == mount)
+                    else if (m_Mount != null && m_Mount != m_Mobile)
                     {
-                        if (mount.Hits >= mount.HitsMax)
+                        if (m_Mount != mount)
+                        {
+                            return true;
+                        }
+
+                        if (mount != null && mount.Hits >= mount.HitsMax)
                         {
                             BaseMount.ExpireMountPrevention(m_Mobile);
                             return true;
                         }
                     }
-                    else if (m_Mobile != null)
+                    else if (m_Mobile != null && m_Mount == m_Mobile)
                     {
                         if (m_Mobile.Hits >= m_Mobile.HitsMax)
                         {
@@ -552,9 +572,14 @@ namespace Server.Mobiles
 
                     return false;
                 }
-                
-                BaseMount.ExpireMountPrevention(m_Mobile);
-                return DateTime.UtcNow >= m_Expiration;
+
+                if (DateTime.UtcNow >= m_Expiration)
+                {
+                    BaseMount.ExpireMountPrevention(m_Mobile);
+                    return true;
+                }
+
+                return false;
             }
         }
     }
