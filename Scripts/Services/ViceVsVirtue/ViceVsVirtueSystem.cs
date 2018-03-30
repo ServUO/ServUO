@@ -504,7 +504,7 @@ namespace Server.Engines.VvV
             if (attacker == null || defender == null)
                 return;
 
-            if (!IsVvV(attacker) && IsVvV(defender))
+            if (!IsVvV(attacker) && IsVvV(defender) && !defender.Aggressed.Any(info => info.Defender == attacker))
             {
                 Guild attackerguild = attacker.Guild as Guild;
                 Guild defenderguild = defender.Guild as Guild;

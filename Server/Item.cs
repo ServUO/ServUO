@@ -2014,6 +2014,9 @@ namespace Server
 
         private static TimeSpan m_DDT = TimeSpan.FromMinutes(Config.Get("General.DefaultItemDecayTime", 60));
 
+        public virtual int DecayMultiplier { get { return 1; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public static TimeSpan DefaultDecayTime { get { return m_DDT; } set { m_DDT = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -2022,7 +2025,6 @@ namespace Server
         [CommandProperty(AccessLevel.Decorator)]
         public virtual TimeSpan DecayTime { get { return TimeSpan.FromMinutes(m_DDT.TotalMinutes * DecayMultiplier); } }
 
-        [CommandProperty(AccessLevel.Decorator)]
         public virtual bool Decays
         {
             get
