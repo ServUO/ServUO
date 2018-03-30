@@ -5621,7 +5621,6 @@ namespace Server.Mobiles
         {
         }
 
-
         public virtual void SetWearable(Item item, int hue = -1, double dropChance = 0.0)
         {
             if (hue > -1)
@@ -5629,21 +5628,13 @@ namespace Server.Mobiles
 
             item.Movable = dropChance > Utility.RandomDouble();
 
-            AddItem(item);
-        }
-
-        public override sealed void AddItem(Item item)
-        {
-            if (item == null || item.Deleted)
-                return;
-
             if (!CheckEquip(item) || !OnEquip(item) || !item.OnEquip(this))
             {
                 PackItem(item);
             }
             else
             {
-                base.AddItem(item);
+                AddItem(item);
             }
         }
 

@@ -228,8 +228,8 @@ namespace Server.Engines.SphynxFortune
                     {
                         writer.Write(s.Mobile);
                         writer.Write(s.Date);
-                        writer.Write(s.Type.ToString());
-                        writer.Write(s.TypeValue.ToString());
+                        writer.Write((int)s.Type);
+                        writer.Write((int)s.TypeValue);
                         writer.Write(s.Value);
                     });
                 });
@@ -242,10 +242,20 @@ namespace Server.Engines.SphynxFortune
                 reader =>
                 {
                     int version = reader.ReadInt();
+                    int count = reader.ReadInt();
 
-                    for (int i = reader.ReadInt(); i > 0; i--)
+                    for (int i = count; i > 0; i--)
                     {
-                        Fountains.Add(new SphynxFortuneArray { Mobile = reader.ReadMobile(), Date = reader.ReadDateTime(), Type = (EnumType)Enum.Parse(typeof(EnumType), reader.ReadString()), TypeValue = (EnumTypeValue)Enum.Parse(typeof(EnumTypeValue), reader.ReadString()), Value = reader.ReadInt() });
+                        Mobile m = reader.ReadMobile();
+                        DateTime dt = reader.ReadDateTime();
+                        EnumType et = (EnumType)reader.ReadInt();
+                        EnumTypeValue etv = (EnumTypeValue)reader.ReadInt();
+                        int value = reader.ReadInt();
+
+                        if (m != null)
+                        {
+                            Fountains.Add(new SphynxFortuneArray { Mobile = m, Date = dt, Type = et, TypeValue = etv, Value = value });
+                        }
                     }
                 });
 

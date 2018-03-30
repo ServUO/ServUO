@@ -10,12 +10,12 @@ namespace Server.Mobiles
         public Thief()
             : base("the thief")
         {
-            this.SetSkill(SkillName.Camping, 55.0, 78.0);
-            this.SetSkill(SkillName.DetectHidden, 65.0, 88.0);
-            this.SetSkill(SkillName.Hiding, 45.0, 68.0);
-            this.SetSkill(SkillName.Archery, 65.0, 88.0);
-            this.SetSkill(SkillName.Tracking, 65.0, 88.0);
-            this.SetSkill(SkillName.Veterinary, 60.0, 83.0);
+            SetSkill(SkillName.Camping, 55.0, 78.0);
+            SetSkill(SkillName.DetectHidden, 65.0, 88.0);
+            SetSkill(SkillName.Hiding, 45.0, 68.0);
+            SetSkill(SkillName.Archery, 65.0, 88.0);
+            SetSkill(SkillName.Tracking, 65.0, 88.0);
+            SetSkill(SkillName.Veterinary, 60.0, 83.0);
         }
 
         public Thief(Serial serial)
@@ -27,22 +27,22 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SBInfos;
+                return m_SBInfos;
             }
         }
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBThief());
+            m_SBInfos.Add(new SBThief());
         }
 
         public override void InitOutfit()
         {
-            base.InitOutfit();
+            AddItem(new Server.Items.Shirt(Utility.RandomNeutralHue()));
+            AddItem(new Server.Items.LongPants(Utility.RandomNeutralHue()));
+            AddItem(new Server.Items.Dagger());
+            AddItem(new Server.Items.ThighBoots(Utility.RandomNeutralHue()));
 
-            this.AddItem(new Server.Items.Shirt(Utility.RandomNeutralHue()));
-            this.AddItem(new Server.Items.LongPants(Utility.RandomNeutralHue()));
-            this.AddItem(new Server.Items.Dagger());
-            this.AddItem(new Server.Items.ThighBoots(Utility.RandomNeutralHue()));
+            base.InitOutfit();
         }
 
         public override void Serialize(GenericWriter writer)

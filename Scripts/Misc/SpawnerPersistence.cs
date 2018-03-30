@@ -19,8 +19,9 @@ namespace Server
         [Flags]
         public enum SpawnerVersion
         {
-            None = 0x00000000,
+            None    = 0x00000000,
             Initial = 0x00000001,
+            Sphinx  = 0x00000002,
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -92,7 +93,7 @@ namespace Server
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)11);
+                    writer.Write((int)12);
 
                     writer.Write((int)VersionFlag);
 
@@ -127,6 +128,13 @@ namespace Server
         {
             switch (_Version)
             {
+                case 11:
+                    if ((VersionFlag & SpawnerVersion.Sphinx) == 0)
+                    {
+                        AddSphinx();
+                        VersionFlag |= SpawnerVersion.Sphinx;
+                    }
+                    goto case 10;
                 case 10:
                     if((VersionFlag & SpawnerVersion.Initial) == 0)
                         VersionFlag |= SpawnerVersion.Initial;
@@ -173,6 +181,14 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Version 11
+        public static void AddSphinx()
+        {
+            Server.Engines.GenerateForgottenPyramid.Generate(null);
+            ToConsole("Generated Fortune Sphinx.");
+        }
+        #endregion
 
         #region Version 9
         public static void ReplaceUnderworldVersion9()
