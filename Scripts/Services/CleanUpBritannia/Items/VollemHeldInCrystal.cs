@@ -58,13 +58,6 @@ namespace Server.Items
         {
         }
 
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1049646); // (summoned)
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -17,6 +17,7 @@ using Server.Engines.CityLoyalty;
 using Server.Spells.SkillMasteries;
 using System.Linq;
 using Server.Misc;
+using Server.Engines.SphynxFortune;
 
 namespace Server
 {
@@ -582,6 +583,9 @@ namespace Server
                 return 0;
 
             int value = 0;
+
+            if (attribute == AosAttribute.Luck || attribute == AosAttribute.RegenMana || attribute == AosAttribute.DefendChance || attribute == AosAttribute.EnhancePotions)
+                value += SphynxFortune.GetAosAttributeBonus(m, attribute);
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
