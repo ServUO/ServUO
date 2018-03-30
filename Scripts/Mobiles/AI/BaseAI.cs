@@ -1747,7 +1747,12 @@ namespace Server.Mobiles
 			m_Mobile.PlaySound(m_Mobile.GetAngerSound());
             Mobile master = m_Mobile.ControlMaster;
 
-			m_Mobile.SetControlMaster(null);
+            if (m_Mobile.DeleteOnRelease)
+            {
+                m_Mobile.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1043255, String.Format("{0}", m_Mobile.Name), master.NetState); // ~1_NAME~ appears to have decided that it is better off without a master!
+            }
+
+            m_Mobile.SetControlMaster(null);
 			m_Mobile.SummonMaster = null;
 
 			m_Mobile.BondingBegin = DateTime.MinValue;
@@ -1763,7 +1768,7 @@ namespace Server.Mobiles
 
 			if (m_Mobile.DeleteOnRelease || m_Mobile.IsDeadPet)
 			{
-				m_Mobile.Delete();
+                Timer.DelayCall(TimeSpan.FromSeconds(2), m_Mobile.Delete);
 			}
 
 			m_Mobile.BeginDeleteTimer();
