@@ -50,6 +50,7 @@ namespace Server.Mobiles
 
         public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool CanAngerOnTame { get { return true; } }
+
         public override int Meat { get { return 4; } }
         public override int Hides { get { return 25; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }

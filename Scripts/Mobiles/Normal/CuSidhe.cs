@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("a cu sidhe corpse")]
     public class CuSidhe : BaseMount
     {
+        public override double HealChance { get { return 1.0; } }
+
         [Constructable]
         public CuSidhe()
             : this("a cu sidhe")
@@ -19,51 +21,53 @@ namespace Server.Mobiles
             double chance = Utility.RandomDouble() * 23301;
 
             if (chance <= 1)
-                this.Hue = 0x489;
+                Hue = 0x489;
             else if (chance < 50)
-                this.Hue = Utility.RandomList(0x657, 0x515, 0x4B1, 0x481, 0x482, 0x455);
+                Hue = Utility.RandomList(0x657, 0x515, 0x4B1, 0x481, 0x482, 0x455);
             else if (chance < 500)
-                this.Hue = Utility.RandomList(0x97A, 0x978, 0x901, 0x8AC, 0x5A7, 0x527);
+                Hue = Utility.RandomList(0x97A, 0x978, 0x901, 0x8AC, 0x5A7, 0x527);
 
-            this.SetStr(1200, 1225);
-            this.SetDex(150, 170);
-            this.SetInt(250, 285);
+            SetStr(1200, 1225);
+            SetDex(150, 170);
+            SetInt(250, 285);
 
-            this.SetHits(1010, 1275);
+            SetHits(1010, 1275);
 
-            this.SetDamage(21, 28);
+            SetDamage(21, 28);
 
-            this.SetDamageType(ResistanceType.Physical, 0);
-            this.SetDamageType(ResistanceType.Cold, 50);
-            this.SetDamageType(ResistanceType.Energy, 50);
+            SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Cold, 50);
+            SetDamageType(ResistanceType.Energy, 50);
 
-            this.SetResistance(ResistanceType.Physical, 50, 65);
-            this.SetResistance(ResistanceType.Fire, 25, 45);
-            this.SetResistance(ResistanceType.Cold, 70, 85);
-            this.SetResistance(ResistanceType.Poison, 30, 50);
-            this.SetResistance(ResistanceType.Energy, 70, 85);
+            SetResistance(ResistanceType.Physical, 50, 65);
+            SetResistance(ResistanceType.Fire, 25, 45);
+            SetResistance(ResistanceType.Cold, 70, 85);
+            SetResistance(ResistanceType.Poison, 30, 50);
+            SetResistance(ResistanceType.Energy, 70, 85);
 
-            this.SetSkill(SkillName.Wrestling, 90.1, 96.8);
-            this.SetSkill(SkillName.Tactics, 90.3, 99.3);
-            this.SetSkill(SkillName.MagicResist, 75.3, 90.0);
-            this.SetSkill(SkillName.Anatomy, 65.5, 69.4);
-            this.SetSkill(SkillName.Healing, 72.2, 98.9);
+            SetSkill(SkillName.Wrestling, 90.1, 96.8);
+            SetSkill(SkillName.Tactics, 90.3, 99.3);
+            SetSkill(SkillName.MagicResist, 75.3, 90.0);
+            SetSkill(SkillName.Anatomy, 65.5, 69.4);
+            SetSkill(SkillName.Healing, 72.2, 98.9);
 
-            this.Fame = 5000;  //Guessing here
-            this.Karma = 5000;  //Guessing here
+            Fame = 5000;  //Guessing here
+            Karma = 5000;  //Guessing here
 
-            this.Tamable = true;
-            this.ControlSlots = 4;
-            this.MinTameSkill = 101.1;
+            Tamable = true;
+            ControlSlots = 4;
+            MinTameSkill = 101.1;
 
             if (Utility.RandomDouble() < 0.2)
-                this.PackItem(new TreasureMap(5, Map.Trammel));
+                PackItem(new TreasureMap(5, Map.Trammel));
 
             //if ( Utility.RandomDouble() < 0.1 )
             //PackItem( new ParrotItem() );
 
-            this.PackGold(500, 800);
+            PackGold(500, 800);
             // TODO 0-2 spellweaving scroll
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public CuSidhe(Serial serial)
@@ -71,13 +75,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanHeal
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override bool CanHealOwner
         {
             get
@@ -122,12 +119,12 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosFilthyRich, 5);
+            AddLoot(LootPack.AosFilthyRich, 5);
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.Race != Race.Elf && from == this.ControlMaster && from.IsPlayer())
+            if (from.Race != Race.Elf && from == ControlMaster && from.IsPlayer())
             {
                 Item pads = from.FindItemOnLayer(Layer.Shoes);
 
@@ -135,17 +132,12 @@ namespace Server.Mobiles
                     from.SendLocalizedMessage(1071981); // Your boots allow you to mount the Cu Sidhe.
                 else
                 {
-                    from.SendLocalizedMessage(1072203); // Only Elves may use this.
+                    from.SendLocalizedMessage(1072203); // Only Elves may use 
                     return;
                 }
             }
 
             base.OnDoubleClick(from);
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.BleedAttack;
         }
 
         public override int GetIdleSound()
@@ -177,7 +169,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -186,8 +178,13 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (version < 1 && this.Name == "a Cu Sidhe")
-                this.Name = "a cu sidhe";
+            if (version < 1 && Name == "a Cu Sidhe")
+                Name = "a cu sidhe";
+
+            if (version == 1)
+            {
+                SetWeaponAbility(WeaponAbility.BleedAttack);
+            }
         }
     }
 }

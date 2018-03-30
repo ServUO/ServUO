@@ -84,7 +84,7 @@ namespace Server.Spells.SkillMasteries
             if (IsInCooldown(Caster, this.GetType()))
                 return false;
             
-            if (Caster.Skills[CastSkill].Value < RequiredSkill)
+            if (Caster.Player && Caster.Skills[CastSkill].Value < RequiredSkill)
                 Caster.SendLocalizedMessage(1115709); // Your skills are not high enough to invoke this mastery ability.
             else if (Caster is PlayerMobile && Caster.Skills.CurrentMastery != CastSkill)
                 Caster.SendLocalizedMessage(1115664); // You are not on the correct path for using this mastery ability.
@@ -136,6 +136,9 @@ namespace Server.Spells.SkillMasteries
 
         public bool CheckWeapon()
         {
+            if (!Caster.Player)
+                return true;
+
             BaseWeapon wep = GetWeapon();
 
             if (CastSkill == SkillName.Poisoning && wep != null && !(wep is Fists))
@@ -698,7 +701,7 @@ namespace Server.Spells.SkillMasteries
             if (spell != null)
                 spell.AbsorbDamage(ref damage);
 
-            CombatTrainingSpell.CheckDamage(damager, victim, ref damage);
+            CombatTrainingSpell.CheckDamage(damager, victim, type, ref damage);
 		}
 
         /// <summary>

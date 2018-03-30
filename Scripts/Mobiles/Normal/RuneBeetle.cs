@@ -52,6 +52,9 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 3;
             MinTameSkill = 93.9;
+
+            SetSpecialAbility(SpecialAbility.RuneCorruption);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public RuneBeetle(Serial serial)
@@ -87,10 +90,6 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.BleedAttack;
-        }
 
         public override int GetAngerSound()
         {
@@ -123,126 +122,10 @@ namespace Server.Mobiles
             AddLoot(LootPack.MedScrolls, 1);
         }
 
-        int phy, fire, cold, poison, energy;
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.05 > Utility.RandomDouble())
-            {
-                /* Rune Corruption
-                * Start cliloc: 1070846 "The creature magically corrupts your armor!"
-                * Effect: All resistances -70 (lowest 0) for 5 seconds
-                * End ASCII: "The corruption of your armor has worn off"
-                */
-                ExpireTimer timer = (ExpireTimer)m_Table[defender];
-
-                if (timer != null)
-                {
-                    timer.DoExpire();
-                    defender.SendLocalizedMessage(1070845); // The creature continues to corrupt your armor!
-                }
-                else
-                    defender.SendLocalizedMessage(1070846); // The creature magically corrupts your armor!
-
-                List<ResistanceMod> mods = new List<ResistanceMod>();
-
-                phy = 0; fire = 0; cold = 0; poison = 0; energy = 0;
-
-                if (Core.ML)
-                {
-                    if (defender.PhysicalResistance > 0)
-                    {
-                        phy = defender.PhysicalResistance / 2;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Physical, -phy));
-                    }
-
-                    if (defender.FireResistance > 0)
-                    {
-                        fire = defender.FireResistance / 2;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Fire, -fire));
-                    }
-
-                    if (defender.ColdResistance > 0)
-                    {
-                        cold = defender.ColdResistance / 2;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Cold, -cold));
-                    }
-
-                    if (defender.PoisonResistance > 0)
-                    {
-                        poison = defender.PoisonResistance / 2;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Poison, -poison));
-                    }
-
-                    if (defender.EnergyResistance > 0)
-                    {
-                        energy = defender.EnergyResistance / 2;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Energy, -energy));
-                    }
-                }
-                else
-                {
-                    if (defender.PhysicalResistance > 0)
-                    {
-                        phy = (defender.PhysicalResistance > 70) ? 70 : defender.PhysicalResistance;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Physical, -phy));
-                    }
-
-                    if (defender.FireResistance > 0)
-                    {
-                        fire = (defender.FireResistance > 70) ? 70 : defender.FireResistance;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Fire, -fire));
-                    }
-
-                    if (defender.ColdResistance > 0)
-                    {
-                        cold = (defender.ColdResistance > 70) ? 70 : defender.ColdResistance;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Cold, -cold));
-                    }
-
-                    if (defender.PoisonResistance > 0)
-                    {
-                        poison = (defender.PoisonResistance > 70) ? 70 : defender.PoisonResistance;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Poison, -poison));
-                    }
-
-                    if (defender.EnergyResistance > 0)
-                    {
-                        energy = (defender.EnergyResistance > 70) ? 70 : defender.EnergyResistance;
-
-                        mods.Add(new ResistanceMod(ResistanceType.Energy, -energy));
-                    }
-                }
-
-                for (int i = 0; i < mods.Count; ++i)
-                    defender.AddResistanceMod(mods[i]);
-
-                defender.FixedEffect(0x37B9, 10, 5);
-
-                timer = new ExpireTimer(defender, mods, TimeSpan.FromSeconds(5.0));
-                timer.Start();
-
-                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RuneBeetleCorruption, 1153796, 1153823, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", phy, cold, poison, energy, fire)));
-
-                m_Table[defender] = timer;
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -262,33 +145,11 @@ namespace Server.Mobiles
                     }
                 }
             }
-        }
 
-        private class ExpireTimer : Timer
-        {
-            private readonly Mobile m_Mobile;
-            private readonly List<ResistanceMod> m_Mods;
-            public ExpireTimer(Mobile m, List<ResistanceMod> mods, TimeSpan delay)
-                : base(delay)
+            if (version == 1)
             {
-                m_Mobile = m;
-                m_Mods = mods;
-                Priority = TimerPriority.TwoFiftyMS;
-            }
-
-            public void DoExpire()
-            {
-                for (int i = 0; i < m_Mods.Count; ++i)
-                    m_Mobile.RemoveResistanceMod(m_Mods[i]);
-
-                Stop();
-                m_Table.Remove(m_Mobile);
-            }
-
-            protected override void OnTick()
-            {
-                m_Mobile.SendMessage("The corruption of your armor has worn off");
-                DoExpire();
+                SetSpecialAbility(SpecialAbility.RuneCorruption);
+                SetWeaponAbility(WeaponAbility.BleedAttack);
             }
         }
     }

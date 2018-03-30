@@ -37,7 +37,7 @@ namespace Server.Spells.SkillMasteries
 		{
 			BaseWeapon wep = GetWeapon();
 			
-			if(wep == null || !(wep is Fists))
+			if(Caster.Player && (wep == null || !(wep is Fists)))
 			{
 				Caster.SendLocalizedMessage(1155979); // You may not wield a weapon and use this ability.
 				return false;
@@ -53,7 +53,15 @@ namespace Server.Spells.SkillMasteries
             if (!HasSpell(Caster, this.GetType()))
             {
                 Caster.PrivateOverheadMessage(MessageType.Regular, 1150, 1155890, Caster.NetState); // *You attempt channel your wrestling mastery into a fit of rage!*
-                Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+
+                if (Caster.Player)
+                {
+                    Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+                }
+                else if(Caster is BaseCreature)
+                {
+                    Caster.PlaySound(((BaseCreature)Caster).GetAngerSound());
+                }
             }
         }
 

@@ -9,33 +9,33 @@ namespace Server.Mobiles
         public PutridUndeadGuardian()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an putrid undead guardian";
-            this.Body = 722; 
+            Name = "an putrid undead guardian";
+            Body = 722; 
 
-            this.SetStr(79);
-            this.SetDex(63);
-            this.SetInt(187);
+            SetStr(79);
+            SetDex(63);
+            SetInt(187);
 
-            this.SetHits(553);
+            SetHits(553);
 
-            this.SetDamage(3, 7);
+            SetDamage(3, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40);
-            this.SetResistance(ResistanceType.Fire, 23);
-            this.SetResistance(ResistanceType.Cold, 57);
-            this.SetResistance(ResistanceType.Poison, 29);
-            this.SetResistance(ResistanceType.Energy, 39);
+            SetResistance(ResistanceType.Physical, 40);
+            SetResistance(ResistanceType.Fire, 23);
+            SetResistance(ResistanceType.Cold, 57);
+            SetResistance(ResistanceType.Poison, 29);
+            SetResistance(ResistanceType.Energy, 39);
 
-            this.SetSkill(SkillName.MagicResist, 62.7);
-            this.SetSkill(SkillName.Tactics, 45.4);
-            this.SetSkill(SkillName.Wrestling, 50.7);
+            SetSkill(SkillName.MagicResist, 62.7);
+            SetSkill(SkillName.Tactics, 45.4);
+            SetSkill(SkillName.Wrestling, 50.7);
 
-            this.Fame = 3000; 
-            this.Karma = -3000;
+            Fame = 3000; 
+            Karma = -3000;
 
-            this.PackNecroReg(10, 15); /// Stratics didn't specify
+            PackNecroReg(10, 15); /// Stratics didn't specify
         }
 
         public PutridUndeadGuardian(Serial serial)
@@ -52,7 +52,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.FilthyRich, 3);
         }
 
         public override int GetIdleSound()

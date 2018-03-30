@@ -47,6 +47,10 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 3;
             MinTameSkill = 102.0;
+
+            SetAreaEffect(AreaEffect.PoisonBreath);
+            SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetWeaponAbility(WeaponAbility.Dismount);
         }
 
         public override int GetIdleSound()
@@ -80,14 +84,9 @@ namespace Server.Mobiles
             SetHits(360, 380);
         }
 
-        public override WeaponAbility GetWeaponAbility()
+        public override void OnAfterTame(Mobile tamer)
         {
-            switch (Utility.Random(2))
-            {
-                default:
-                case 0: return WeaponAbility.MortalStrike;
-                case 1: return WeaponAbility.Dismount;
-            }
+            SetHits(HitsMax / 4);
         }
 
         public override bool CanAngerOnTame { get { return true; } }
@@ -97,14 +96,8 @@ namespace Server.Mobiles
         public override HideType HideType { get { return HideType.Spined; } }
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
 
-        public override bool CanAreaPoison { get { return !Controlled; } }
         public override Poison HitAreaPoison { get { return Poison.Lethal; } }
-        public override int AreaPoisonDamage { get { return 0; } }
-        public override double AreaPosionChance { get { return 1.0; } }
-        public override TimeSpan AreaPoisonDelay { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(20, 40)); } }
-
-        public override bool HasBreath { get { return true; } }
-        public override int BreathPoisonDamage { get { return 100; } }
+        public override int AreaPoisonDamage { get { return 50; } }
 
         public override void GenerateLoot()
         {
@@ -122,13 +115,25 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                if (Controlled)
+                {
+                    SetHits(HitsMax / 4);
+                }
+
+                SetAreaEffect(AreaEffect.PoisonBreath);
+                SetWeaponAbility(WeaponAbility.MortalStrike);
+                SetWeaponAbility(WeaponAbility.Dismount);
+            }
         }
     }
 }

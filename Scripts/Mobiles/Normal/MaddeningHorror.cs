@@ -10,98 +10,47 @@ namespace Server.Mobiles
         public MaddeningHorror()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a maddening horror";
-            this.Body = 721;
+            Name = "a maddening horror";
+            Body = 721;
 
-            this.SetStr(270, 290);
-            this.SetDex(80, 100);
-            this.SetInt(850);
+            SetStr(270, 290);
+            SetDex(80, 100);
+            SetInt(850);
 
-            this.SetHits(660);
+            SetHits(660);
 
-            this.SetDamage(15, 27);
+            SetDamage(15, 27);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Cold, 40);
-            this.SetDamageType(ResistanceType.Energy, 40);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Cold, 40);
+            SetDamageType(ResistanceType.Energy, 40);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 50, 60);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 50, 60);
 
-            this.SetSkill(SkillName.EvalInt, 120.0, 130.0);
-            this.SetSkill(SkillName.Magery, 120.0, 130.0);
-            this.SetSkill(SkillName.Meditation, 100.0, 110.0);
-            this.SetSkill(SkillName.MagicResist, 180.0, 195.0);
-            this.SetSkill(SkillName.Tactics, 95.0, 100.0);
-            this.SetSkill(SkillName.Wrestling, 80.0, 85.0);
-            this.SetSkill(SkillName.Poisoning, 110.0);
-            this.SetSkill(SkillName.DetectHidden, 100.0);
-            this.SetSkill(SkillName.Necromancy, 120.0);
-            this.SetSkill(SkillName.SpiritSpeak, 120.0);
+            SetSkill(SkillName.EvalInt, 120.0, 130.0);
+            SetSkill(SkillName.Magery, 120.0, 130.0);
+            SetSkill(SkillName.Meditation, 100.0, 110.0);
+            SetSkill(SkillName.MagicResist, 180.0, 195.0);
+            SetSkill(SkillName.Tactics, 95.0, 100.0);
+            SetSkill(SkillName.Wrestling, 80.0, 85.0);
+            SetSkill(SkillName.Poisoning, 110.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.Necromancy, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 120.0);
 
-            this.Fame = 23000;
-            this.Karma = -23000;
+            Fame = 23000;
+            Karma = -23000;
+
+            SetSpecialAbility(SpecialAbility.ManaDrain);
         }
 
         public MaddeningHorror(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.25 >= Utility.RandomDouble())
-                this.DrainMana();
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            if (0.25 >= Utility.RandomDouble())
-                this.DrainMana();
-        }
-
-        public void DrainMana()
-        {
-            if (this.Map == null)
-                return;
-
-            ArrayList list = new ArrayList();
-            IPooledEnumerable eable = GetMobilesInRange(8);
-
-            foreach (Mobile m in eable)
-            {
-                if (m == this || !this.CanBeHarmful(m))
-                    continue;
-
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
-                    list.Add(m);
-                else if (m.Player)
-                    list.Add(m);
-            }
-
-            eable.Free();
-
-            foreach (Mobile m in list)
-            {
-                this.DoHarmful(m);
-
-                m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
-                m.PlaySound(0x231);
-
-                m.SendMessage("You feel the mana drain out of you!");
-
-                int toDrain = Utility.RandomMinMax(40, 60);
-
-                this.Mana += toDrain;
-                m.Mana -= toDrain;
-            }
         }
 
         public override int GetIdleSound()

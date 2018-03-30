@@ -193,7 +193,6 @@ namespace Server.Items
 
             if (null != bc && bc.SetControlMaster(from))
             {
-                bc.IsGolem = true;
                 Delete();
 
                 bc.MoveToWorld(from.Location, from.Map);

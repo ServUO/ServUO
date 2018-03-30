@@ -89,7 +89,7 @@ namespace Server.Spells.Chivalry
             return m_Table[m];
         }
 
-        private static bool UnderEffect(Mobile m)
+        public static bool UnderEffect(Mobile m)
         {
             return m_Table.ContainsKey(m);
         }

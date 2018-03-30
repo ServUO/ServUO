@@ -9,6 +9,7 @@ namespace Server.Mobiles
     [CorpseName("a tiger corpse")]
     public class WildTiger : BaseMount
     {
+        public override double HealChance { get { return .167; } }
         public virtual Item GetPelt { get { return new TigerPelt(4); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -58,6 +59,8 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 95.1;
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -82,11 +85,6 @@ namespace Server.Mobiles
         public override int GetDeathSound() { return 0x671; }
 
         public override double WeaponAbilityChance { get { return 0.5; } }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.BleedAttack;
-        }
 
         public override int Meat { get { return 2; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
@@ -117,7 +115,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
 
             writer.Write(CanRide);
         }
@@ -130,6 +128,7 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 2:
                 case 1:
                     CanRide = reader.ReadBool();
                     break;
@@ -139,6 +138,11 @@ namespace Server.Mobiles
 
             if (version == 0 && Rider != null)
                 Rider = null;
+
+            if (version == 1)
+            {
+                SetWeaponAbility(WeaponAbility.BleedAttack);
+            }
         }
     }
 

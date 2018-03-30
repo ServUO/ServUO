@@ -415,11 +415,11 @@ namespace Server.Spells.Necromancy
             Register(caster, summoned);
 
             #region Mondain's Legacy
-            if (creature != null)
+            /*if (creature != null)
             {
                 if (creature.AIObject is NecroMageAI)
                     ((NecroMageAI)creature.AIObject).Animated = summoned;
-            }
+            }*/
             #endregion
         }
 

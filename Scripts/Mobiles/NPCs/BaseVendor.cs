@@ -1349,15 +1349,6 @@ namespace Server.Mobiles
 
         public Dictionary<Mobile, PendingBribe> Bribes { get; set; }
 
-        private void CheckNextMultiplierDecay(bool force = true)
-        {
-            int minDays = Config.Get("Vendors.BribeDecayMinTime", 25);
-            int maxDays = Config.Get("Vendors.BribeDecayMaxTime", 30);
-
-            if (force || (NextMultiplierDecay > DateTime.UtcNow + TimeSpan.FromDays(maxDays)))
-                NextMultiplierDecay = DateTime.UtcNow + TimeSpan.FromDays(Utility.RandomMinMax(minDays, maxDays));
-        }
-
         public void TryBribe(Mobile m)
         {
             if (UnderWatch)
@@ -1365,7 +1356,6 @@ namespace Server.Mobiles
                 if (WatchEnds < DateTime.UtcNow)
                 {
                     WatchEnds = DateTime.MinValue;
-                    RecentBribes = 0;
                 }
                 else
                 {
@@ -1432,7 +1422,7 @@ namespace Server.Mobiles
             }
 
             BribeMultiplier++;
-            CheckNextMultiplierDecay();
+            NextMultiplierDecay = DateTime.UtcNow + TimeSpan.FromDays(Utility.RandomMinMax(25, 30));
         }
 
         #endregion
@@ -2287,7 +2277,7 @@ namespace Server.Mobiles
                         if (BribeMultiplier > 0)
                             BribeMultiplier /= 2;
 
-                        CheckNextMultiplierDecay();
+                        NextMultiplierDecay = DateTime.UtcNow + TimeSpan.FromDays(Utility.RandomMinMax(25, 30));
                     });
             }
 		}
@@ -2308,7 +2298,6 @@ namespace Server.Mobiles
                 case 2:
                     BribeMultiplier = reader.ReadInt();
                     NextMultiplierDecay = reader.ReadDateTime();
-                    CheckNextMultiplierDecay(false);  // Reset NextMultiplierDecay if it is out of range of the config
                     RecentBribes = reader.ReadInt();
                     goto case 1;
 				case 1:

@@ -54,6 +54,8 @@ namespace Server.Mobiles
 
             if (0.33 > Utility.RandomDouble())
                 PackItem(new ExecutionersCap());
+
+            SetSpecialAbility(SpecialAbility.StickySkin);
         }
 
         public override void OnDeath(Container c)
@@ -62,51 +64,6 @@ namespace Server.Mobiles
 
             if (0.05 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
-        }
-
-        public override void OnGotMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (!IsUnderEffects(defender) && 0.25 > Utility.RandomDouble())
-                DoEffects(defender);
-        }
-
-        public static bool IsUnderEffects(Mobile from)
-        {
-            return from != null && Table != null && Table.ContainsKey(from);
-        }
-
-        public static void DoEffects(Mobile from)
-        {
-            if (Table == null)
-                Table = new Dictionary<Mobile, Timer>();
-
-            if (!Table.ContainsKey(from))
-            {
-                Table[from] = Timer.DelayCall(TimeSpan.FromSeconds(5), () =>
-                {
-                    EndEffects(from);
-                });
-
-                from.SendSpeedControl(SpeedControlType.WalkSpeed);
-                from.SendLocalizedMessage(1150886); // Splashes from the creature encrust your weapon and equipment, slowing your movement.
-
-                from.Delta(MobileDelta.WeaponDamage);
-            }
-        }
-
-        public static void EndEffects(Mobile from)
-        {
-            if (IsUnderEffects(from))
-            {
-                Table.Remove(from);
-                from.SendLocalizedMessage(1150887); // You are no longer slowed and encrusted.
-
-                from.SendSpeedControl(SpeedControlType.Disable);
-
-                from.Delta(MobileDelta.WeaponDamage);
-            }
         }
 
         public override void GenerateLoot()
@@ -253,17 +210,13 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            //PackItem(new Potash(Utility.RandomMinMax(1, 5)));
-            //PackItem(new Charcoal(Utility.RandomMinMax(1, 5)));
-            //PackItem(new Saltpeter(Utility.RandomMinMax(1, 5)));
-            //PackItem(new BlackPowder(Utility.RandomMinMax(1, 5)));
             PackGem(1);
+
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
         public override MeatType MeatType { get { return MeatType.Ribs; } }
         public override int Meat { get { return 2; } }
-        public override WeaponAbility GetWeaponAbility() { return WeaponAbility.ArmorIgnore; }
 
         public override void OnDeath(Container c)
         {
@@ -588,6 +541,8 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = -5000;
+
+            SetSpecialAbility(SpecialAbility.SearingWounds);
         }
 
         public override void OnDeath(Container c)
@@ -863,7 +818,7 @@ namespace Server.Mobiles
         public static Dictionary<Mobile, Timer> Table { get; private set; }
 
         [Constructable]
-        public CrazedMage() : base(AIType.AI_Mage, FightMode.Weakest, 10, 1, 0.4, 0.2)
+        public CrazedMage() : base(AIType.AI_Mystic, FightMode.Weakest, 10, 1, 0.4, 0.2)
         {
             Name = NameList.RandomName("male");
             Title = "the crazed";
@@ -1537,6 +1492,9 @@ namespace Server.Mobiles
 
             Fame = 8500;
             Karma = -8500;
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
         public override bool AutoDispel { get { return true; } }
@@ -1545,11 +1503,6 @@ namespace Server.Mobiles
         public override double TreasureMapChance { get { return 1.0; } }
         public override Poison HitPoison { get { return Poison.Lethal; } }
         public override Poison PoisonImmune { get { return Poison.Parasitic; } }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.BleedAttack;
-        }
 
         public override void OnDeath(Container c)
         {

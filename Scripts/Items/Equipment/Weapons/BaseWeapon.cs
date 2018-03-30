@@ -162,12 +162,6 @@ namespace Server.Items
 		private CraftResource m_Resource;
 		private bool m_PlayerConstructed;
 
-		private bool m_Cursed; // Is this weapon cursed via Curse Weapon necromancer spell? Temporary; not serialized.
-
-		#region Mondain's Legacy
-		private bool m_Immolating; // Is this weapon blessed via Immolating Weapon arcanists spell? Temporary; not serialized.
-        #endregion
-
         private bool m_Altered;
 
         private AosAttributes m_AosAttributes;
@@ -335,16 +329,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ExtendedWeaponAttributes ExtendedWeaponAttributes { get { return m_ExtendedWeaponAttributes; } set { } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Cursed { get { return m_Cursed; } set { m_Cursed = value; } }
-
         [CommandProperty(AccessLevel.GameMaster)]
         public ConsecratedWeaponContext ConsecratedContext { get; set; }
-
-		#region Mondain's Legacy
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Immolating { get { return m_Immolating; } set { m_Immolating = value; } }
-		#endregion
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Identified
@@ -1186,7 +1172,7 @@ namespace Server.Items
 					m_AosSkillBonuses.Remove();
 				}
 
-				ImmolatingWeaponSpell.StopImmolating(this);
+				ImmolatingWeaponSpell.StopImmolating(this, (Mobile)parent);
                 Spells.Mysticism.EnchantSpell.OnWeaponRemoved(this, m);
 
 				m.CheckStatTimers();
@@ -1590,7 +1576,7 @@ namespace Server.Items
 				if (attacker is BaseCreature)
 				{
 					BaseCreature bc = (BaseCreature)attacker;
-					WeaponAbility ab = bc.GetWeaponAbility();
+					WeaponAbility ab = bc.TryGetWeaponAbility();
 
 					if (ab != null)
 					{
@@ -1667,14 +1653,14 @@ namespace Server.Items
 			double bushidoNonRacial = defender.Skills[SkillName.Bushido].NonRacialValue;
 			double bushido = defender.Skills[SkillName.Bushido].Value;
 
-			if (shield != null)
+			if (shield != null || !defender.Player)
 			{
 				double chance = (parry - bushidoNonRacial) / 400.0;
 					// As per OSI, no negitive effect from the Racial stuffs, ie, 120 parry and '0' bushido with humans
 
 				if (chance < 0) // chance shouldn't go below 0
 				{
-					chance = 0;
+					chance = defender.Player ? 0 : .1;
 				}
 
                 // Skill Masteries
@@ -1693,7 +1679,7 @@ namespace Server.Items
 				}
 
 				// Low dexterity lowers the chance.
-				if (defender.Dex < 80)
+				if (defender.Player && defender.Dex < 80)
 				{
 					chance = chance * (20 + defender.Dex) / 100;
 				}
@@ -1709,7 +1695,7 @@ namespace Server.Items
                     return false;
                 }
 
-				double divisor = (weapon.Layer == Layer.OneHanded) ? 48000.0 : 41140.0;
+				double divisor = (weapon.Layer == Layer.OneHanded && defender.Player) ? 48000.0 : 41140.0;
 
 				double chance = (parry * bushido) / divisor;
 
@@ -1758,7 +1744,9 @@ namespace Server.Items
 
 			bool blocked = false;
 
-			if (defender.Player || defender.Body.IsHuman)
+			if (defender.Player || defender.Body.IsHuman || (defender is BaseCreature && 
+                                                            ((BaseCreature)defender).Controlled &&
+                                                            defender.Skills[SkillName.Wrestling].Base >= 100))
 			{
 				blocked = CheckParry(defender);
                 BaseWeapon weapon = defender.Weapon as BaseWeapon;
@@ -2133,7 +2121,10 @@ namespace Server.Items
             {
                 GetDamageTypes(attacker, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
 
-                if (!OnslaughtSpell.HasOnslaught(attacker, defender) && ConsecratedContext != null && ConsecratedContext.ConsecrateProcChance >= Utility.Random(100))
+                if (!OnslaughtSpell.HasOnslaught(attacker, defender) && 
+                    ConsecratedContext != null && 
+                    ConsecratedContext.Owner == attacker &&
+                    ConsecratedContext.ConsecrateProcChance >= Utility.Random(100))
                 {
                     phys = damageable.PhysicalResistance;
                     fire = damageable.FireResistance;
@@ -2255,7 +2246,7 @@ namespace Server.Items
 				percentageBonus += (int)(move.GetDamageScalar(attacker, defender) * 100) - 100;
 			}
 
-            if (ConsecratedContext != null)
+            if (ConsecratedContext != null && ConsecratedContext.Owner == attacker)
             {
                 percentageBonus += ConsecratedContext.ConsecrateDamageBonus;
             }
@@ -2461,10 +2452,12 @@ namespace Server.Items
             }
 
 			#region Mondain's Legacy
-			if (m_Immolating)
+            if (ImmolatingWeaponSpell.IsImmolating(attacker, this))
 			{
-				int d = ImmolatingWeaponSpell.GetImmolatingDamage(this);
+                int d = ImmolatingWeaponSpell.GetImmolatingDamage(attacker);
 				d = AOS.Damage(defender, attacker, d, 0, 100, 0, 0, 0);
+
+                ImmolatingWeaponSpell.DoDelayEffect(attacker, defender);
 
 				AttuneWeaponSpell.TryAbsorb(defender, ref d);
 
@@ -2521,11 +2514,6 @@ namespace Server.Items
 				{
 					quiver.AlterBowDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
 				}
-			}
-
-			if (ImmolatingWeaponSpell.IsImmolating(this) && damage > 0)
-			{
-				ImmolatingWeaponSpell.DoEffect(this, defender);
 			}
 
 			int damageGiven = damage;
@@ -2622,7 +2610,7 @@ namespace Server.Items
 
                 int toHealCursedWeaponSpell = 0;
 
-                if (m_Cursed)
+                if (CurseWeaponSpell.IsCursed(attacker, this))
 				{
                     toHealCursedWeaponSpell += (int)(AOS.Scale(damageGiven, 50)); // Additional 50% life leech for cursed weapons (necro spell)
                 }
@@ -5667,7 +5655,7 @@ namespace Server.Items
                 list.Add(1060430, Math.Min(100, (int)fprop).ToString()); // hit stamina leech ~1_val~%
 			}
 
-			if (ImmolatingWeaponSpell.IsImmolating(this))
+			if (ImmolatingWeaponSpell.IsImmolating(RootParent as Mobile, this))
 			{
 				list.Add(1111917); // Immolated
 			}

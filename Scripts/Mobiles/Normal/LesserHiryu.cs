@@ -7,44 +7,46 @@ namespace Server.Mobiles
     [CorpseName("a hiryu corpse")]
     public class LesserHiryu : BaseMount
     {
-        private static readonly Hashtable m_Table = new Hashtable();
         [Constructable]
         public LesserHiryu()
             : base("a lesser hiryu", 243, 0x3E94, AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Hue = GetHue();
+            Hue = GetHue();
 
-            this.SetStr(301, 410);
-            this.SetDex(171, 270);
-            this.SetInt(301, 325);
+            SetStr(301, 410);
+            SetDex(171, 270);
+            SetInt(301, 325);
 
-            this.SetHits(401, 600);
-            this.SetMana(60);
+            SetHits(401, 600);
+            SetMana(60);
 
-            this.SetDamage(18, 23);
+            SetDamage(18, 23);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 45, 70);
-            this.SetResistance(ResistanceType.Fire, 60, 80);
-            this.SetResistance(ResistanceType.Cold, 5, 15);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 45, 70);
+            SetResistance(ResistanceType.Fire, 60, 80);
+            SetResistance(ResistanceType.Cold, 5, 15);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.Anatomy, 75.1, 80.0);
-            this.SetSkill(SkillName.MagicResist, 85.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 100.1, 110.0);
-            this.SetSkill(SkillName.Wrestling, 100.1, 120.0);
+            SetSkill(SkillName.Anatomy, 75.1, 80.0);
+            SetSkill(SkillName.MagicResist, 85.1, 100.0);
+            SetSkill(SkillName.Tactics, 100.1, 110.0);
+            SetSkill(SkillName.Wrestling, 100.1, 120.0);
 
-            this.Fame = 10000;
-            this.Karma = -10000;
+            Fame = 10000;
+            Karma = -10000;
 
-            this.Tamable = true;
-            this.ControlSlots = 3;
-            this.MinTameSkill = 98.7;
+            Tamable = true;
+            ControlSlots = 3;
+            MinTameSkill = 98.7;
 
             if (Utility.RandomDouble() < .33)
-                this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+
+            SetWeaponAbility(WeaponAbility.Dismount);
+            SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
 
         public LesserHiryu(Serial serial)
@@ -94,14 +96,10 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.Dismount;
-        }
 
         public override bool OverrideBondingReqs()
         {
-            if (this.ControlMaster.Skills[SkillName.Bushido].Base >= 90.0)
+            if (ControlMaster.Skills[SkillName.Bushido].Base >= 90.0)
                 return true;
             return false;
         }
@@ -133,12 +131,22 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
-            this.AddLoot(LootPack.Gems, 4);
+            AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.Gems, 4);
         }
 
         public override double GetControlChance(Mobile m, bool useBaseSkill)
         {
+            if (PetTrainingHelper.Enabled)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+                if (profile != null && profile.HasCustomized())
+                {
+                    return base.GetControlChance(m, useBaseSkill);
+                }
+            }
+
             double tamingChance = base.GetControlChance(m, useBaseSkill);
 
             if (tamingChance >= 0.95)
@@ -161,45 +169,10 @@ namespace Server.Mobiles
             return bushidoChance > tamingChance ? bushidoChance : tamingChance;
         }
 
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.1 > Utility.RandomDouble())
-            {
-                /* Grasping Claw
-                * Start cliloc: 1070836
-                * Effect: Physical resistance -15% for 5 seconds
-                * End cliloc: 1070838
-                * Effect: Type: "3" - From: "0x57D4F5B" (player) - To: "0x0" - ItemId: "0x37B9" - ItemIdName: "glow" - FromLocation: "(1149 808, 32)" - ToLocation: "(1149 808, 32)" - Speed: "10" - Duration: "5" - FixedDirection: "True" - Explode: "False"
-                */
-                ExpireTimer timer = (ExpireTimer)m_Table[defender];
-
-                if (timer != null)
-                {
-                    timer.DoExpire();
-                    defender.SendLocalizedMessage(1070837); // The creature lands another blow in your weakened state.
-                }
-                else
-                    defender.SendLocalizedMessage(1070836); // The blow from the creature's claws has made you more susceptible to physical attacks.
-
-                int effect = -(defender.PhysicalResistance * 15 / 100);
-
-                ResistanceMod mod = new ResistanceMod(ResistanceType.Physical, effect);
-
-                defender.FixedEffect(0x37B9, 10, 5);
-                defender.AddResistanceMod(mod);
-
-                timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(5.0));
-                timer.Start();
-                m_Table[defender] = timer;
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write((int)3);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -208,28 +181,33 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             if (version == 0)
-                Timer.DelayCall(TimeSpan.Zero, delegate { this.Hue = GetHue(); });
+                Timer.DelayCall(TimeSpan.Zero, delegate { Hue = GetHue(); });
 
             if (version <= 1)
                 Timer.DelayCall(TimeSpan.Zero, delegate
                 {
-                    if (this.InternalItem != null)
+                    if (InternalItem != null)
                     {
-                        this.InternalItem.Hue = this.Hue;
+                        InternalItem.Hue = Hue;
                     }
                 });
 
             if (version < 2)
             {
-                for (int i = 0; i < this.Skills.Length; ++i)
+                for (int i = 0; i < Skills.Length; ++i)
                 {
-                    this.Skills[i].Cap = Math.Max(100.0, this.Skills[i].Cap * 0.9);
+                    Skills[i].Cap = Math.Max(100.0, Skills[i].Cap * 0.9);
 
-                    if (this.Skills[i].Base > this.Skills[i].Cap)
+                    if (Skills[i].Base > Skills[i].Cap)
                     {
-                        this.Skills[i].Base = this.Skills[i].Cap;
+                        Skills[i].Base = Skills[i].Cap;
                     }
                 }
+            }
+
+            if (version < 3)
+            {
+                SetWeaponAbility(WeaponAbility.Dismount);
             }
         }
 
@@ -260,32 +238,6 @@ namespace Server.Mobiles
                 return 0x8295;
 
             return 0;
-        }
-
-        private class ExpireTimer : Timer
-        {
-            private readonly Mobile m_Mobile;
-            private readonly ResistanceMod m_Mod;
-            public ExpireTimer(Mobile m, ResistanceMod mod, TimeSpan delay)
-                : base(delay)
-            {
-                this.m_Mobile = m;
-                this.m_Mod = mod;
-                this.Priority = TimerPriority.TwoFiftyMS;
-            }
-
-            public void DoExpire()
-            {
-                this.m_Mobile.RemoveResistanceMod(this.m_Mod);
-                this.Stop();
-                m_Table.Remove(this.m_Mobile);
-            }
-
-            protected override void OnTick()
-            {
-                this.m_Mobile.SendLocalizedMessage(1070838); // Your resistance to physical attacks has returned.
-                this.DoExpire();
-            }
         }
     }
 }
