@@ -11204,6 +11204,14 @@ public static void _TraceEnd(int index)
 			}
 		}
 
+        public void RemoveSpawnObject(SpawnObject so)
+        {
+            if (m_SpawnObjects.Contains(so))
+            {
+                m_SpawnObjects.Remove(so);
+            }
+        }
+
 		#endregion
 
 		#region Object Creation
