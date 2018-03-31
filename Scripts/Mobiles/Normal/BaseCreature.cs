@@ -5930,9 +5930,12 @@ namespace Server.Mobiles
         {
             get
             {
+                if (!Controlled)
+                    return true;
+
                 var master = GetMaster();
 
-                return master == null || (master is BaseCreature && master != this && ((BaseCreature)master).IsMonster);
+                return master == null || (master is BaseCreature && !((BaseCreature)master).Controlled);
             }
         }
 
