@@ -19,9 +19,10 @@ namespace Server
         [Flags]
         public enum SpawnerVersion
         {
-            None    = 0x00000000,
-            Initial = 0x00000001,
-            Sphinx  = 0x00000002,
+            None            = 0x00000000,
+            Initial         = 0x00000001,
+            Sphinx          = 0x00000002,
+            IceHoundRemoval = 0x00000004,
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -122,13 +123,21 @@ namespace Server
         }
 
         /// <summary>
-        /// Checks version, and calls code appropriately.  Version 10 implements SpawnerFlag so servers don't miss out and skip versions
+        /// Checks version, and calls code appropriately.  Version 10 implements SpawnerFlag so servers don't miss out and skip versions.
+        /// After this point, there is no need to increase version anymore unless any changes 
         /// </summary>
         public static void CheckVersion()
         {
             switch (_Version)
             {
+                case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.IceHoundRemoval) == 0)
+                    {
+                        RemoveIceHounds();
+                        VersionFlag |= SpawnerVersion.IceHoundRemoval;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.Sphinx) == 0)
                     {
                         AddSphinx();
@@ -181,6 +190,14 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Remove Ice Hounds
+        public static void RemoveIceHounds()
+        {
+            Remove("icehound");
+            ToConsole("Ice Hounds removed from spawners.");
+        }
+        #endregion
 
         #region Version 11
         public static void AddSphinx()
@@ -555,8 +572,6 @@ namespace Server
 
         public static int Remove(XmlSpawner spawner, string toRemove)
         {
-            int count = 0;
-
             List<XmlSpawner.SpawnObject> remove = new List<XmlSpawner.SpawnObject>();
             List<XmlSpawner.SpawnObject> objects = spawner.SpawnObjects.ToList();
 
@@ -574,16 +589,14 @@ namespace Server
                 }
             }
 
-            count = remove.Count;
+            int count = remove.Count;
 
             foreach (var obj in remove)
-                objects.Remove(obj);
-
-            if (count > 0)
-                spawner.SpawnObjects = objects.ToArray();
+            {
+                spawner.RemoveSpawnObject(obj);
+            }
 
             ColUtility.Free(remove);
-
             return count;
         }
 

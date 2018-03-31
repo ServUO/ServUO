@@ -5,7 +5,9 @@ namespace Server.Items
     [Flipable(0x1F03, 0x1F04)]
     public class RobeOfTheEclipse : BaseOuterTorso
 	{
+        public override bool CanBeWornByGargoyles { get { return true; } }
 		public override bool IsArtifact { get { return true; } }
+        
         [Constructable]
         public RobeOfTheEclipse()
             : base(0x1F03, 0x486)

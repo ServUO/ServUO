@@ -5936,6 +5936,17 @@ namespace Server.Mobiles
             }
         }
 
+        public virtual bool IsAggressiveMonster
+        {
+            get
+            {
+                return IsMonster && (m_FightMode == FightMode.Closest ||
+                                     m_FightMode == FightMode.Strongest ||
+                                     m_FightMode == FightMode.Weakest ||
+                                     m_FightMode == FightMode.Good);
+            }
+        }
+
         private class FKEntry
         {
             public Mobile m_Mobile;
