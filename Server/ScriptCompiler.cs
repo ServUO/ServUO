@@ -69,7 +69,7 @@ namespace Server
 
 #if MONO
 			AppendCompilerOption( ref sb, "/d:MONO" );
-            #endif
+#endif
 
 			//These two defines are legacy, ie, depreciated.
 			if (Core.Is64Bit)
@@ -230,12 +230,11 @@ namespace Server
 					parms.WarningLevel = 4;
 				}
 
-#if !MONO
+				if (Core.Unix)
+					parms.CompilerOptions = String.Format( "{0} /nowarn:169,219,414 /recurse:Scripts/*.cs", parms.CompilerOptions );
+				
 				CompilerResults results = provider.CompileAssemblyFromFile(parms, files);
-#else
-				parms.CompilerOptions = String.Format( "{0} /nowarn:169,219,414 /recurse:Scripts/*.cs", parms.CompilerOptions );
-				CompilerResults results = provider.CompileAssemblyFromFile( parms, "" );
-                #endif
+				
 				m_AdditionalReferences.Add(path);
 
 				Display(results);
@@ -255,7 +254,7 @@ namespace Server
 						}
 					}
 				}
-                #endif
+#endif
 
 				if (cache && Path.GetFileName(path) == "Scripts.CS.dll")
 				{
