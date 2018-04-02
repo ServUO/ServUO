@@ -211,6 +211,11 @@ namespace Server.Mobiles
             Fame = 3500;
             Karma = -3500;
             PackGem(1);
+            
+            PackItem(new Saltpeter(1, 5));
+            PackItem(new Potash(1, 5));
+            PackItem(new Charcoal(1, 5));
+            PackItem(new BlackPowder(1, 5));
 
             SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
