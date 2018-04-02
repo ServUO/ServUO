@@ -603,7 +603,7 @@ namespace Server.Items
 
                 try
                 {
-                    bc = (BaseCreature)Activator.CreateInstance(m_SpawnTypes[level][Utility.Random(spawns[level].Length)]);
+                    bc = (BaseCreature)Activator.CreateInstance(spawns[level][Utility.Random(spawns[level].Length)]);
                 }
                 catch
                 {
