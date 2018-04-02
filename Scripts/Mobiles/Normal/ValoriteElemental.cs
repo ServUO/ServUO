@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public ValoriteElemental()
-            : this(2)
+            : this(25)
         {
         }
 

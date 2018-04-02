@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public GoldenElemental()
-            : this(2)
+            : this(25)
         {
         }
 

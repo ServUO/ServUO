@@ -27,6 +27,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+        
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -62,6 +65,9 @@ namespace Server.Items
         public GargishBrightblade(Serial serial) : base(serial)
         {
         }
+        
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public override void Serialize(GenericWriter writer)
         {
