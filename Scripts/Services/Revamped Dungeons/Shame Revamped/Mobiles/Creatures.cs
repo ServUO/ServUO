@@ -212,10 +212,10 @@ namespace Server.Mobiles
             Karma = -3500;
             PackGem(1);
             
-            PackItem(new Saltpeter(1, 5));
-            PackItem(new Potash(1, 5));
-            PackItem(new Charcoal(1, 5));
-            PackItem(new BlackPowder(1, 5));
+            PackItem(new Saltpeter(Utility.RandomMinMax(1, 5)));
+            PackItem(new Potash(Utility.RandomMinMax(1, 5)));
+            PackItem(new Charcoal(Utility.RandomMinMax(1, 5)));
+            PackItem(new BlackPowder(Utility.RandomMinMax(1, 5)));
 
             SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
