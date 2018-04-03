@@ -22,7 +22,7 @@ namespace Server.Mobiles
 		{
 		}
 		
-		public static void CheckThinkTrigger(BaseCreature bc)
+		public static bool CheckThinkTrigger(BaseCreature bc)
 		{
 			var combatant = bc.Combatant;
 			
@@ -43,13 +43,15 @@ namespace Server.Mobiles
 
                     if (effect != null)
                     {
-                        effect.Trigger(bc, (Mobile)combatant);
+                        return effect.Trigger(bc, (Mobile)combatant);
                     }
                 }
 			}
+
+            return false;
 		}
 		
-		public virtual void Trigger(BaseCreature creature, Mobile combatant)
+		public virtual bool Trigger(BaseCreature creature, Mobile combatant)
 		{
             if (CheckMana(creature) && Validate(creature, combatant) && TriggerChance >= Utility.RandomDouble())
 			{
@@ -57,7 +59,10 @@ namespace Server.Mobiles
 
                 DoEffects(creature, combatant);
                 AddToCooldown(creature);
+                return true;
 			}
+
+            return false;
 		}
 		
 		public virtual bool Validate(BaseCreature attacker, Mobile defender)

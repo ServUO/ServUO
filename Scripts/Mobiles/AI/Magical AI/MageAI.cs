@@ -17,11 +17,6 @@ using Server.Targeting;
 using Server.Spells.SkillMasteries;
 using Server.SkillHandlers;
 
-// SmartAI, or now Magery Mastery AI:
-// Casts Combos
-// Poisons if opponent is holding heal spell
-// Hight Mana, 100+, casts Mindblast+ spells
-
 namespace Server.Mobiles
 {
 	public class MageAI : BaseAI
@@ -428,21 +423,29 @@ namespace Server.Mobiles
                 return spell;
             }
 
-			Mobile toDispel = FindDispelTarget(true);
-
 			if (m_Mobile.Poisoned) // Top cast priority is cure
 			{
 				m_Mobile.DebugSay("I am going to cure myself");
 
 				spell = GetCureSpell();
 			}
-			else if (toDispel != null) // Something dispellable is attacking us
+
+            if (spell != null)
+                return spell;
+
+            Mobile toDispel = FindDispelTarget(true);
+            
+            if (toDispel != null) // Something dispellable is attacking us
 			{
 				m_Mobile.DebugSay("I am going to dispel {0}", toDispel);
 
 				spell = DoDispel(toDispel);
 			}
-			else if (c is Mobile && SmartAI && m_Combo != -1) // We are doing a spell combo
+
+            if (spell != null)
+                return spell;
+
+            if (c is Mobile && SmartAI && m_Combo != -1) // We are doing a spell combo
 			{
 				spell = DoCombo((Mobile)c);
 			}
@@ -510,7 +513,7 @@ namespace Server.Mobiles
                 if (CheckCanCastMagery(6) && ScaleByCastSkill(DispelChance) > Utility.RandomDouble())
                     return new DispelSpell(m_Mobile, null);
 
-                return ChooseSpell(toDispel);
+                return null;
             }
 
             Spell spell = CheckCastHealingSpell();
@@ -525,7 +528,7 @@ namespace Server.Mobiles
 		
 		public Mobile FindDispelTarget(bool activeOnly)
         {
-            /*if (m_Mobile.Deleted || m_Mobile.Int < 95 || CanDispel(m_Mobile) || m_Mobile.AutoDispel)
+            if (m_Mobile.Deleted || m_Mobile.Int < 95 || CanDispel(m_Mobile) || m_Mobile.AutoDispel)
                 return null;
 
             if (activeOnly)
@@ -632,7 +635,7 @@ namespace Server.Mobiles
 
                     return active != null ? active : inactive;
                 }
-            }*/
+            }
 
             return null;
         }

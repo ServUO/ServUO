@@ -29,10 +29,10 @@ namespace Server.Mobiles
 		{
 		}
 
-        public static void CheckCombatTrigger(Mobile attacker, Mobile defender, ref int damage, DamageType type)
+        public static bool CheckCombatTrigger(Mobile attacker, Mobile defender, ref int damage, DamageType type)
         {
             if(defender == null)
-                return;
+                return false;
             
             if (attacker is BaseCreature && !((BaseCreature)attacker).Summoned)
             {
@@ -54,9 +54,11 @@ namespace Server.Mobiles
 
                     if (ability != null)
                     {
-                        ability.Trigger(bc, defender, ref damage);
+                       return ability.Trigger(bc, defender, ref damage);
                     }
                 }
+
+                return false;
             }
 
             if (defender is BaseCreature && !((BaseCreature)defender).Summoned)
@@ -80,13 +82,15 @@ namespace Server.Mobiles
                     if (ability != null)
                     {
                         int d = 0;
-                        ability.Trigger(bc, attacker, ref d);
+                        return ability.Trigger(bc, attacker, ref d);
                     }
                 }
             }
+
+            return false;
         }
 		
-		public static void CheckThinkTrigger(BaseCreature bc)
+		public static bool CheckThinkTrigger(BaseCreature bc)
 		{
 			var combatant = bc.Combatant;
             var profile = PetTrainingHelper.GetAbilityProfile(bc);
@@ -125,12 +129,14 @@ namespace Server.Mobiles
                 if (ability != null)
                 {
                     int d = 0;
-                    ability.Trigger(bc, bc, ref d);
+                    return ability.Trigger(bc, bc, ref d);
                 }
             }
+
+            return false;
 		}
 		
-		public virtual void Trigger(BaseCreature creature, Mobile defender, ref int damage)
+		public virtual bool Trigger(BaseCreature creature, Mobile defender, ref int damage)
 		{
             if (CheckMana(creature) && Validate(creature, defender) && TriggerChance >= Utility.RandomDouble())
 			{
@@ -138,7 +144,11 @@ namespace Server.Mobiles
 
 				DoEffects(creature, defender, ref damage);
                 AddToCooldown(creature);
+
+                return true;
 			}
+
+            return false;
 		}
 		
 		public virtual bool Validate(BaseCreature attacker, Mobile defender)
