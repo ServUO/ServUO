@@ -53,41 +53,41 @@ namespace Server
             public SimpleFlameTimer(Mobile from, Mobile target)
                 : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
             {
-                this.m_From = from;
-                this.m_Target = target;
-                this.m_Count = 0;
-                this.Point = this.m_From.Location; 
+                m_From = from;
+                m_Target = target;
+                m_Count = 0;
+                Point = m_From.Location; 
             }
 
             protected override void OnTick()
             {
-                if (this.m_From == null || this.m_From.Deleted)
+                if (m_From == null || m_From.Deleted)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
 
-                if (this.m_Count == 0)
+                if (m_Count == 0)
                 {
                     for (int i = -2; i < 3; i++)
                         for (int j = -2; j < 5; j++)
                             if ((i == -2 || i == 2) || (j == -2 || j == 2))
                                 Effects.SendMovingParticles(
-                                    new Entity(Serial.Zero, new Point3D(this.m_From.X + i, this.m_From.Y + j, this.m_From.Z + 14), this.m_From.Map),
-                                    this.m_Target, 0x46E9, 2, 0, false, false, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                                    new Entity(Serial.Zero, new Point3D(m_From.X + i, m_From.Y + j, m_From.Z + 14), m_From.Map),
+                                    m_Target, 0x46E9, 2, 0, false, false, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
                             else
                                 continue;
                 }
                 else
                 { // It looked like it delt 67 damage, presuming 70% fire res thats about 223 damage delt before resistance.                                          
-                    AOS.Damage(this.m_Target, this.m_From, Utility.RandomMinMax(210, 230), 0, 100, 0, 0, 0); 
+                    AOS.Damage(m_Target, m_From, Utility.RandomMinMax(210, 230), 0, 100, 0, 0, 0); 
 
-                    this.Stop();   
+                    Stop();   
                 }
 
-                this.m_Count++;
+                m_Count++;
 
-                Effects.PlaySound(this.Point, this.m_From.Map, 0x160); 
+                Effects.PlaySound(Point, m_From.Map, 0x160); 
             }
         }
         #endregion
@@ -121,38 +121,38 @@ namespace Server
             public SoulDrainTimer(Mobile from, List<PlayerMobile> list)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
             {
-                this.m_From = from;
+                m_From = from;
                 //m_Damage = damage;
-                this.m_List = list;
-                this.m_Count = 0;
+                m_List = list;
+                m_Count = 0;
             }
 
             protected override void OnTick()
             {
-                if (this.m_From == null || this.m_From.Deleted)
+                if (m_From == null || m_From.Deleted)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
 
-                if (this.m_Count == 0)
-                    for (int i = 0; i < this.m_List.Count; i++)
+                if (m_Count == 0)
+                    for (int i = 0; i < m_List.Count; i++)
                     { 
-                        this.m_List[i].Frozen = true;
-                        this.m_List[i].Kill();
+                        m_List[i].Frozen = true;
+                        m_List[i].Kill();
                     }
-                else if (this.m_Count < 10)
+                else if (m_Count < 10)
                 {
-                    for (int i = 0; i < this.m_List.Count; i++)
+                    for (int i = 0; i < m_List.Count; i++)
                     {
-                        if (this.m_Count == 1)
-                            this.m_List[i].SendMessage("Unnatural forces hold you free from the ground and swirl around you!"); //TODO find cliloc.
+                        if (m_Count == 1)
+                            m_List[i].SendMessage("Unnatural forces hold you free from the ground and swirl around you!"); //TODO find cliloc.
 
                         // Prevent them from resing during this trick.
-                        if (this.m_List[i].Alive)
-                            this.m_List[i].Kill();
+                        if (m_List[i].Alive)
+                            m_List[i].Kill();
 
-                        this.m_List[i].Z++;
+                        m_List[i].Z++;
                         int effects = Utility.RandomMinMax(3, 5) + 1;
                         int x = 0, y = 0;
 
@@ -163,23 +163,23 @@ namespace Server
 
                             //TODO Match the look
                             Effects.SendMovingParticles(
-                                new Entity(Serial.Zero, new Point3D(this.m_List[i].X + x, this.m_List[i].Y + y, this.m_List[i].Z - 5), this.m_List[i].Map),
-                                new Entity(Serial.Zero, new Point3D(this.m_List[i].X + x, this.m_List[i].Y + y, this.m_List[i].Z + 60), this.m_List[i].Map),
+                                new Entity(Serial.Zero, new Point3D(m_List[i].X + x, m_List[i].Y + y, m_List[i].Z - 5), m_List[i].Map),
+                                new Entity(Serial.Zero, new Point3D(m_List[i].X + x, m_List[i].Y + y, m_List[i].Z + 60), m_List[i].Map),
                                 0x378A + Utility.Random(19)/*ItemID*/, 10, 0, false, false, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
                         }
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < this.m_List.Count; i++)
+                    for (int i = 0; i < m_List.Count; i++)
                     {
-                        this.m_List[i].Z -= 0;
-                        this.m_List[i].Frozen = false;
+                        m_List[i].Z -= 0;
+                        m_List[i].Frozen = false;
                     }
-                    this.Stop();
+                    Stop();
                 }
 
-                this.m_Count++;
+                m_Count++;
             }
         }
         #endregion
@@ -206,43 +206,43 @@ namespace Server
             public FlameWaveTimer(Mobile from)
                 : base(TimeSpan.FromMilliseconds(300.0), TimeSpan.FromMilliseconds(300.0))
             {
-                this.m_From = from;
-                this.m_StartingLocation = from.Location;
-                this.m_Map = from.Map;
-                this.m_Count = 0;
-                this.m_Point = new Point3D();
-                this.SetupDamage(from);
+                m_From = from;
+                m_StartingLocation = from.Location;
+                m_Map = from.Map;
+                m_Count = 0;
+                m_Point = new Point3D();
+                SetupDamage(from);
             }
 
             protected override void OnTick()
             {
-                if (this.m_From == null || this.m_From.Deleted)
+                if (m_From == null || m_From.Deleted)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
  
                 double dist = 0.0;
 
-                for (int i = -this.m_Count; i < this.m_Count + 1; i++)
+                for (int i = -m_Count; i < m_Count + 1; i++)
                 {
-                    for (int j = -this.m_Count; j < this.m_Count + 1; j++)
+                    for (int j = -m_Count; j < m_Count + 1; j++)
                     {
-                        this.m_Point.X = this.m_StartingLocation.X + i;
-                        this.m_Point.Y = this.m_StartingLocation.Y + j;
-                        this.m_Point.Z = this.m_Map.GetAverageZ(this.m_Point.X, this.m_Point.Y);
-                        dist = this.GetDist(this.m_StartingLocation, this.m_Point);
-                        if (dist < ((double)this.m_Count + 0.1) && dist > ((double)this.m_Count - 3.1))
+                        m_Point.X = m_StartingLocation.X + i;
+                        m_Point.Y = m_StartingLocation.Y + j;
+                        m_Point.Z = m_Map.GetAverageZ(m_Point.X, m_Point.Y);
+                        dist = GetDist(m_StartingLocation, m_Point);
+                        if (dist < ((double)m_Count + 0.1) && dist > ((double)m_Count - 3.1))
                         {
-                            Effects.SendLocationParticles(EffectItem.Create(this.m_Point, this.m_Map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
+                            Effects.SendLocationParticles(EffectItem.Create(m_Point, m_Map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
                         }
                     }
                 }
 
-                this.m_Count += 3;
+                m_Count += 3;
 
-                if (this.m_Count > 15)
-                    this.Stop();
+                if (m_Count > 15)
+                    Stop();
             }
 
             private void SetupDamage(Mobile from)
@@ -252,7 +252,7 @@ namespace Server
                 {
                     if (CanTarget(from, m, true, false, false))
                     {
-                        Timer.DelayCall(TimeSpan.FromMilliseconds(300 * (this.GetDist(this.m_StartingLocation, m.Location) / 3)), new TimerStateCallback(Hurt), m);
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(300 * (GetDist(m_StartingLocation, m.Location) / 3)), new TimerStateCallback(Hurt), m);
                     }
                 }
 
@@ -263,15 +263,15 @@ namespace Server
             {
                 Mobile m = o as Mobile;
 
-                if (this.m_From == null || m == null || m.Deleted)
+                if (m_From == null || m == null || m.Deleted)
                     return;
 
-                int damage = this.m_From.Hits / 4;
+                int damage = m_From.Hits / 4;
 
                 if (damage > 200)
                     damage = 400;  
 
-                AOS.Damage(m, this.m_From, damage, 0, 100, 0, 0, 0);
+                AOS.Damage(m, m_From, damage, 0, 100, 0, 0, 0);
                 m.SendMessage("You are being burnt alive by the seering heat!");
             }
 
@@ -429,7 +429,7 @@ namespace Server
             if (!CanUse(from))
                 return;
 
-            from.Say("*Shooting Meteor !!*");  
+            from.Say("*Des-ailem Flam*");  
 
             new CrimsonMeteorTimer(from, damage).Start();
         }
@@ -446,52 +446,52 @@ namespace Server
             public CrimsonMeteorTimer(Mobile from, int damage)
                 : base(TimeSpan.FromMilliseconds(300.0), TimeSpan.FromMilliseconds(300.0))
             {
-                this.m_From = from;
-                this.m_Damage = damage;
-                this.m_Count = 0;
-                this.m_MaxCount = 30;
-                this.m_LastTarget = new Point3D(0, 0, 0);
-                this.m_ShowerLocation = new Point3D(from.Location);
+                m_From = from;
+                m_Damage = damage;
+                m_Count = 0;
+                m_MaxCount = 30;
+                m_LastTarget = new Point3D(0, 0, 0);
+                m_ShowerLocation = new Point3D(from.Location);
             }
 
             protected override void OnTick()
             {
-                if (this.m_From == null || this.m_From.Deleted)
+                if (m_From == null || m_From.Deleted)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
 
-                new FireField(this.m_From, 50, this.m_Damage, this.m_Damage, Utility.RandomBool(), this.m_LastTarget, this.m_From.Map);
+                new FireField(m_From, 50, m_Damage, m_Damage, Utility.RandomBool(), m_LastTarget, m_From.Map);
 
                 Point3D point = new Point3D();
                 int tries = 0;
                                 
                 while (tries < 5)
                 {
-                    point.X = this.m_ShowerLocation.X += Utility.RandomMinMax(-5, 5);
-                    point.Y = this.m_ShowerLocation.Y += Utility.RandomMinMax(-5, 5);
-                    point.Z = this.m_From.Map.GetAverageZ(point.X, point.Y);
+                    point.X = m_ShowerLocation.X += Utility.RandomMinMax(-5, 5);
+                    point.Y = m_ShowerLocation.Y += Utility.RandomMinMax(-5, 5);
+                    point.Z = m_From.Map.GetAverageZ(point.X, point.Y);
 
-                    if (this.m_From.CanSee(point))
+                    if (m_From.CanSee(point))
                         break;
 
                     tries++;
                 }
 
                 Effects.SendMovingParticles(
-                    new Entity(Serial.Zero, new Point3D(point.X, point.Y, point.Z + 30), this.m_From.Map),
-                    new Entity(Serial.Zero, point, this.m_From.Map),
+                    new Entity(Serial.Zero, new Point3D(point.X, point.Y, point.Z + 30), m_From.Map),
+                    new Entity(Serial.Zero, point, m_From.Map),
                     0x36D4, 5, 0, false, false, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
 
-                Effects.PlaySound(point, this.m_From.Map, 0x11D);   
+                Effects.PlaySound(point, m_From.Map, 0x11D);   
  
-                this.m_LastTarget = point;
-                this.m_Count++;
+                m_LastTarget = point;
+                m_Count++;
 
-                if (this.m_Count >= this.m_MaxCount)
+                if (m_Count >= m_MaxCount)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
             }
@@ -529,36 +529,36 @@ namespace Server
             public JaggedLineTimer(Mobile from, int range, int speed)
                 : base(TimeSpan.FromMilliseconds(speed), TimeSpan.FromMilliseconds(speed))
             {
-                this.m_From = from;
-                this.m_D = from.Direction;
-                this.m_Point = new Point3D(from.Location);
-                this.m_Map = from.Map;
-                this.m_Count = 0;
-                this.m_MaxCount = range;
+                m_From = from;
+                m_D = from.Direction;
+                m_Point = new Point3D(from.Location);
+                m_Map = from.Map;
+                m_Count = 0;
+                m_MaxCount = range;
             }
 
             protected override void OnTick()
             {
-                if (this.m_From == null || this.m_From.Deleted)
+                if (m_From == null || m_From.Deleted)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
 
-                this.m_Count++;
+                m_Count++;
 
-                if (this.m_Count == 0)
-                    Ability.IncreaseByDirection(ref this.m_Point, this.m_D);
+                if (m_Count == 0)
+                    Ability.IncreaseByDirection(ref m_Point, m_D);
                 else
-                    Ability.IncreaseByDirection(ref this.m_Point, JaggedLine(this.m_D));
+                    Ability.IncreaseByDirection(ref m_Point, JaggedLine(m_D));
 
-                Point3D p = new Point3D(this.m_Point.X, this.m_Point.Y, this.m_Map.GetAverageZ(this.m_Point.X, this.m_Point.Y));
+                Point3D p = new Point3D(m_Point.X, m_Point.Y, m_Map.GetAverageZ(m_Point.X, m_Point.Y));
 
-                if (this.m_Map.CanFit(p, 16, false, false))
+                if (m_Map.CanFit(p, 16, false, false))
                 {
                     bool canplace = true;
 
-                    foreach (Item item in this.m_Map.GetItemsInRange(p, 0))
+                    foreach (Item item in m_Map.GetItemsInRange(p, 0))
                     {
                         if (item != null)
                         {
@@ -572,17 +572,17 @@ namespace Server
 
                     if (canplace)
                     {
-                        new FireField(this.m_From, 30, 25, 35, false, new Point3D(p.X, p.Y, p.Z), this.m_Map).Visible = false;
-                        new FireField(this.m_From, 30, 0, 0, true, new Point3D(p.X, p.Y + 1, p.Z), this.m_Map);
-                        new FireField(this.m_From, 30, 0, 0, false, new Point3D(p.X + 1, p.Y, p.Z), this.m_Map);
+                        new FireField(m_From, 30, 25, 35, false, new Point3D(p.X, p.Y, p.Z), m_Map).Visible = false;
+                        new FireField(m_From, 30, 0, 0, true, new Point3D(p.X, p.Y + 1, p.Z), m_Map);
+                        new FireField(m_From, 30, 0, 0, false, new Point3D(p.X + 1, p.Y, p.Z), m_Map);
                     }
                 }
                 else
-                    this.m_Count = 999;
+                    m_Count = 999;
 
-                if (this.m_Count > this.m_MaxCount)
+                if (m_Count > m_MaxCount)
                 {
-                    this.Stop();
+                    Stop();
                 }
             }
         }
@@ -610,16 +610,16 @@ namespace Server
             public FireField(Mobile owner, int duration, int min, int max, bool south, Point3D point, Map map)
                 : base(GetItemID(south))
             {
-                this.Movable = false;
+                Movable = false;
 
-                this.m_Owner = owner;
-                this.m_MinDamage = min;
-                this.m_MaxDamage = max;
-                this.m_Destroy = DateTime.UtcNow + TimeSpan.FromSeconds((double)duration + 1.5);
-                this.m_MoveToPoint = point;
-                this.m_MoveToMap = map;
-                this.m_List = new List<Mobile>();
-                this.m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), new TimerCallback(OnTick));
+                m_Owner = owner;
+                m_MinDamage = min;
+                m_MaxDamage = max;
+                m_Destroy = DateTime.UtcNow + TimeSpan.FromSeconds((double)duration + 1.5);
+                m_MoveToPoint = point;
+                m_MoveToMap = map;
+                m_List = new List<Mobile>();
+                m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), new TimerCallback(OnTick));
                 Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1.5), new TimerCallback(Move));
             }
 
@@ -633,63 +633,63 @@ namespace Server
 
             public override void OnAfterDelete()
             {
-                if (this.m_Timer != null)
-                    this.m_Timer.Stop();
+                if (m_Timer != null)
+                    m_Timer.Stop();
             }
 
             private void Move()
             {
-                if (!this.Visible)
-                    this.ItemID = 0x36FE;
+                if (!Visible)
+                    ItemID = 0x36FE;
 
-                this.MoveToWorld(this.m_MoveToPoint, this.m_MoveToMap);
+                MoveToWorld(m_MoveToPoint, m_MoveToMap);
             }
 
             private void OnTick()
             {
-                if (DateTime.UtcNow > this.m_Destroy)
-                    this.Delete();
-                else if (this.m_MinDamage != 0)
+                if (DateTime.UtcNow > m_Destroy)
+                    Delete();
+                else if (m_MinDamage != 0)
                 {
                     IPooledEnumerable eable = GetMobilesInRange(0);
                     foreach (Mobile m in eable)
                     {
                         if (m == null)
                             continue;
-                        else if (this.m_Owner != null)
+                        else if (m_Owner != null)
                         {
-                            if (Ability.CanTarget(this.m_Owner, m, true, true, false))
-                                this.m_List.Add(m);
+                            if (Ability.CanTarget(m_Owner, m, true, true, false))
+                                m_List.Add(m);
                         }
                         else
-                            this.m_List.Add(m);
+                            m_List.Add(m);
                     }
 
                     eable.Free();
 
-                    for (int i = 0; i < this.m_List.Count; i++)
+                    for (int i = 0; i < m_List.Count; i++)
                     {
-                        if (this.m_List[i] != null)
-                            this.DealDamage(this.m_List[i]);
+                        if (m_List[i] != null)
+                            DealDamage(m_List[i]);
                     }
 
-                    this.m_List.Clear();
-                    this.m_List = new List<Mobile>();
+                    m_List.Clear();
+                    m_List = new List<Mobile>();
                 }
             }
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (this.m_MinDamage != 0)
-                    this.DealDamage(m);
+                if (m_MinDamage != 0)
+                    DealDamage(m);
 
                 return true;
             }
 
             public void DealDamage(Mobile m)
             {
-                if (m != this.m_Owner)
-                    AOS.Damage(m, (this.m_Owner == null) ? m : this.m_Owner, Utility.RandomMinMax(this.m_MinDamage, this.m_MaxDamage), 0, 100, 0, 0, 0);
+                if (m != m_Owner)
+                    AOS.Damage(m, (m_Owner == null) ? m : m_Owner, Utility.RandomMinMax(m_MinDamage, m_MaxDamage), 0, 100, 0, 0, 0);
             }
 
             public FireField(Serial serial)

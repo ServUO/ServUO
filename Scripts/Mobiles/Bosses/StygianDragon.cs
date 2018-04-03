@@ -7,6 +7,7 @@ namespace Server.Mobiles
     public class StygianDragon : BaseSABosses
     {
         private DateTime m_Delay;
+
         [Constructable]
         public StygianDragon()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.3, 0.5)
@@ -54,92 +55,45 @@ namespace Server.Mobiles
         public StygianDragon(Serial serial)
             : base(serial)
         {
-        }
+        }        
 
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override Type[] UniqueSAList
         {
             get
             {
-                return new Type[] { typeof(BurningAmber), typeof(DraconisWrath), typeof(DragonHideShield), typeof(FallenMysticsSpellbook), typeof(LifeSyphon), typeof(GargishSignOfOrder), typeof(HumanSignOfOrder), typeof(VampiricEssence) };
+                return new Type[]
+                {
+                    typeof(BurningAmber), typeof(DraconisWrath), typeof(DragonHideShield), typeof(FallenMysticsSpellbook),
+                    typeof(LifeSyphon), typeof(GargishSignOfOrder), typeof(HumanSignOfOrder), typeof(VampiricEssence)
+                };
             }
         }
         public override Type[] SharedSAList
         {
             get
             {
-                return new Type[] { typeof(AxesOfFury), typeof(SummonersKilt), typeof(GiantSteps), typeof(StoneDragonsTooth), typeof(TokenOfHolyFavor) };
+                return new Type[]
+                {
+                    typeof(AxesOfFury), typeof(SummonersKilt), typeof(GiantSteps), typeof(StoneDragonsTooth),
+                    typeof(TokenOfHolyFavor)
+                };
             }
         }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
-        public override bool AutoDispel
-        {
-            get
-            {
-                return !Controlled;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 19;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Barbed;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override ScaleType ScaleType
-        {
-            get
-            {
-                return (Body == 12 ? ScaleType.Yellow : ScaleType.Red);
-            }
-        }
+
+        public override bool CausesTrueFear { get { return true; } }
+        public override bool AlwaysMurderer { get { return true; } }
+        public override bool Unprovokable { get { return false; } }
+        public override bool BardImmune { get { return false; } }
+        public override bool HasBreath { get { return true; } } // fire breath enabled
+        public override bool AutoDispel { get { return !Controlled; } }
+        public override int Meat { get { return 19; } }
+        public override int Hides { get { return 30; } }
+        public override HideType HideType { get { return HideType.Barbed; } }
+        public override int Scales { get { return 7; } }
+        public override ScaleType ScaleType { get { return (Body == 12 ? ScaleType.Yellow : ScaleType.Red); } }
+        public override int DragonBlood { get { return 48; } }
+        public override bool CanFlee { get { return false; } }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.AosSuperBoss, 4);
