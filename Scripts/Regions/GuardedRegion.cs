@@ -201,7 +201,7 @@ namespace Server.Regions
 
 			if (!IsDisabled() && aggressor != aggressed && criminal)
 			{
-				CheckGuardCandidate(aggressor, aggressor is BaseCreature && ((BaseCreature)aggressor).IsMonster);
+				CheckGuardCandidate(aggressor, aggressor is BaseCreature && ((BaseCreature)aggressor).IsAggressiveMonster);
 			}
 		}
 
@@ -325,7 +325,7 @@ namespace Server.Regions
 			{
 				if (IsGuardCandidate(m))
 				{
-                    if (m_GuardCandidates.ContainsKey(m) || !AllowReds && m.Murderer && m.Region.IsPartOf(this))
+                    if (m_GuardCandidates.ContainsKey(m) || (!AllowReds && m.Murderer && m.Region.IsPartOf(this)))
                     {
                         GuardTimer timer = null;
                         m_GuardCandidates.TryGetValue(m, out timer);
@@ -339,7 +339,7 @@ namespace Server.Regions
                         MakeGuard(m);
                         m.SendLocalizedMessage(502276); // Guards can no longer be called on you.
                     }
-                    else if (m is BaseCreature && ((BaseCreature)m).IsMonster && m.Region.IsPartOf(this))
+                    else if (m is BaseCreature && ((BaseCreature)m).IsAggressiveMonster && m.Region.IsPartOf(this))
                     {
                         MakeGuard(m);
                     }
@@ -358,7 +358,7 @@ namespace Server.Regions
 				return false;
 			}
 
-			return (!AllowReds && m.Murderer) || m.Criminal || (m is BaseCreature && ((BaseCreature)m).IsMonster);
+			return (!AllowReds && m.Murderer) || m.Criminal || (m is BaseCreature && ((BaseCreature)m).IsAggressiveMonster && ((BaseCreature)m).FightMode == FightMode.Closest);
 		}
 
 		[Usage("CheckGuarded")]

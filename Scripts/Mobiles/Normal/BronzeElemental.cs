@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BronzeElemental()
-            : this(2)
+            : this(25)
         {
         }
 

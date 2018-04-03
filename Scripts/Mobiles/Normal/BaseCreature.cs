@@ -5930,9 +5930,23 @@ namespace Server.Mobiles
         {
             get
             {
+                if (!Controlled)
+                    return true;
+
                 var master = GetMaster();
 
-                return master == null || (master is BaseCreature && master != this && ((BaseCreature)master).IsMonster);
+                return master == null || (master is BaseCreature && !((BaseCreature)master).Controlled);
+            }
+        }
+
+        public virtual bool IsAggressiveMonster
+        {
+            get
+            {
+                return IsMonster && (m_FightMode == FightMode.Closest ||
+                                     m_FightMode == FightMode.Strongest ||
+                                     m_FightMode == FightMode.Weakest ||
+                                     m_FightMode == FightMode.Good);
             }
         }
 
