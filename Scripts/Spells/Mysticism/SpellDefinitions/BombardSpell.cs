@@ -39,6 +39,14 @@ namespace Server.Spells.Mysticism
             }
             else if (CheckHSequence(target))
             {
+                SpellHelper.Turn(Caster, target);
+
+                if (Core.SA && HasDelayContext(target))
+                {
+                    DoHurtFizzle();
+                    return;
+                }
+
                 SpellHelper.CheckReflect((int)Circle, Caster, ref target);
 
                 Caster.MovingEffect(target, 0x1363, 12, 1, false, true, 0, 0);

@@ -142,7 +142,7 @@ namespace Server.Items
             {
                 m.SendLocalizedMessage(1019004); // You are not allowed to travel there.
             }
-            else if (m.Spell != null)
+            else if (m.Spell != null || (Server.Multis.BaseBoat.IsDriving(m) && m.AccessLevel == AccessLevel.Player))
             {
                 m.SendLocalizedMessage(1049616); // You are too busy to do that at the moment.
             }

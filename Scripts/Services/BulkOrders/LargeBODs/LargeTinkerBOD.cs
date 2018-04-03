@@ -42,6 +42,7 @@ namespace Server.Engines.BulkOrders
                     break;
                 case 3:
                     entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeTools);
+                    useMaterials = false;
                     break;
             }
 

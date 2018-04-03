@@ -2502,10 +2502,9 @@ namespace Server.Mobiles
             else if (item.LootType == LootType.Newbied)
                 return 10;
 
-            if ((item is BaseArmor && ((BaseArmor)item).NegativeAttributes.Prized > 0) ||
-                (item is BaseWeapon && ((BaseWeapon)item).NegativeAttributes.Prized > 0) ||
-                (item is BaseJewel && ((BaseJewel)item).NegativeAttributes.Prized > 0) ||
-                (item is BaseClothing && ((BaseClothing)item).NegativeAttributes.Prized > 0))
+            var negAttrs = RunicReforging.GetNegativeAttributes(item);
+
+            if (negAttrs != null && negAttrs.Prized > 0)
                 cost *= 2;
 
             return cost;

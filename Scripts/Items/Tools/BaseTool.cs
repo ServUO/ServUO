@@ -300,13 +300,13 @@ namespace Server.Items
             if (makersMark)
                 Crafter = from;
 
-            if (!craftItem.ForceNonExceptional)
+            /*if (!craftItem.ForceNonExceptional)
             {
                 if (typeRes == null)
                     typeRes = craftItem.Resources.GetAt(0).ItemType;
 
                 Resource = CraftResources.GetFromType(typeRes);
-            }
+            }*/
 
             return quality;
         }

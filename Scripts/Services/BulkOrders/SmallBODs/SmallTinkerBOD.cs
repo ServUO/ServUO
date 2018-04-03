@@ -161,6 +161,10 @@ namespace Server.Engines.BulkOrders
                 if (validEntries.Count > 0)
                 {
                     SmallBulkEntry entry = validEntries[Utility.Random(validEntries.Count)];
+
+                    if (entry.Type.IsSubclassOf(typeof(BaseTool)) && material != BulkMaterialType.None)
+                        material = BulkMaterialType.None;
+
                     return new SmallTinkerBOD(entry, material, amountMax, reqExceptional);
                 }
             }
@@ -191,6 +195,8 @@ namespace Server.Engines.BulkOrders
             new Type[] { typeof(Clock), typeof(ClockRight), typeof(ClockLeft) },
             new Type[] { typeof(GoldRing), typeof(SilverRing) },
             new Type[] { typeof(GoldBracelet), typeof(SilverBracelet) },
+            new Type[] { typeof(GoldBracelet), typeof(SilverBracelet) },
+            new Type[] { typeof(SmithHammer), typeof(SmithyHammer) }
         };
 
         public static bool CheckTinkerType(Type actual, Type lookingfor)
