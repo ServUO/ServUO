@@ -1811,7 +1811,11 @@
     <Compile Include="Misc\UntamedPetsCleaning.cs" />
     <Compile Include="Misc\Waypoints.cs" />
     <Compile Include="Misc\WorldLocationInfo.cs" />
-    <Compile Include="Mobiles\AI\PaladinAI.cs" />
+    <Compile Include="Mobiles\AI\Magical AI\MageAI.cs" />
+    <Compile Include="Mobiles\AI\Magical AI\NecroAI.cs" />
+    <Compile Include="Mobiles\AI\Magical AI\NecromageAI.cs" />
+    <Compile Include="Mobiles\AI\Magical AI\PaladinAI.cs" />
+    <Compile Include="Mobiles\AI\Magical AI\SpellweavingAI.cs" />
     <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
     <Compile Include="Mobiles\Bosses\Barracoon.cs" />
     <Compile Include="Mobiles\Bosses\BaseChampion.cs" />
@@ -8702,50 +8706,11 @@
     <Compile Include="Mobiles\AI\HealerAI.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\AI\MageAI.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Mobiles\AI\MeleeAI.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\AI\MysticAI.cs" />
-    <Compile Include="Mobiles\AI\NecroMageAI.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Mobiles\AI\NinjaAI.cs" />
-    <Compile Include="Mobiles\AI\Omni AI\AITester.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniAI Bushido.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniAI Chivalry.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniAI Core.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniAI Magery.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniAI Mysicism.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniAI Necromancy.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniAI Ninjitsu.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniAI Shared.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniAI Spellweaving.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\Omni AI\OmniIA Bard.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Mobiles\AI\OppositionGroup.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -8762,7 +8727,6 @@
     <Compile Include="Mobiles\AI\SpellbinderAI.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\AI\SpellWeavingAI.cs" />
     <Compile Include="Mobiles\AI\ThiefAI.cs">
       <SubType>Code</SubType>
     </Compile>

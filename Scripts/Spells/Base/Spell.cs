@@ -86,18 +86,15 @@ namespace Server.Spells
 				{
 					oldTimer.Stop();
 					m_Contexts.Remove(d);
-
-                    if (Core.SA && oldTimer is SpellHelper.SpellDamageTimerAOS)
-                    {
-                        var spell = ((SpellHelper.SpellDamageTimerAOS)oldTimer).Spell;
-
-                        if (spell != null)
-                            spell.DoFizzle();
-                    }
 				}
 
 				m_Contexts.Add(d, t);
 			}
+
+            public bool Contains(IDamageable d)
+            {
+                return m_Contexts.ContainsKey(d);
+            }
 
 			public void Remove(IDamageable d)
 			{
@@ -132,6 +129,23 @@ namespace Server.Spells
 
 			contexts.Add(d, t);
 		}
+
+        public bool HasDelayContext(IDamageable d)
+        {
+            if (DelayedDamageStacking)
+            {
+                return false; //Sanity
+            }
+
+            Type t = GetType();
+
+            if (m_ContextTable.ContainsKey(t))
+            {
+                return m_ContextTable[t].Contains(d);
+            }
+
+            return false;
+        }
 
 		public void RemoveDelayedDamageContext(IDamageable d)
 		{
@@ -743,99 +757,103 @@ namespace Server.Spells
 			{
 				m_Caster.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
 			}
-			else if (m_Caster.Mana >= ScaleMana(GetMana()))
-			{
-				#region Stygian Abyss
-				if (m_Caster.Race == Race.Gargoyle && m_Caster.Flying)
-				{
+            /*else if (Core.SA && HasDelayContext())
+            {
+                DoHurtFizzle();
+            }*/
+            else if (m_Caster.Mana >= ScaleMana(GetMana()))
+            {
+                #region Stygian Abyss
+                if (m_Caster.Race == Race.Gargoyle && m_Caster.Flying)
+                {
                     if (BaseMount.OnFlightPath(m_Caster))
-					{
-						if (m_Caster.IsPlayer())
-						{
-							m_Caster.SendLocalizedMessage(1113750); // You may not cast spells while flying over such precarious terrain.
-							return false;
-						}
-						else
-						{
-							m_Caster.SendMessage("Your staff level allows you to cast while flying over precarious terrain.");
-						}
-					}
-				}
-				#endregion
+                    {
+                        if (m_Caster.IsPlayer())
+                        {
+                            m_Caster.SendLocalizedMessage(1113750); // You may not cast spells while flying over such precarious terrain.
+                            return false;
+                        }
+                        else
+                        {
+                            m_Caster.SendMessage("Your staff level allows you to cast while flying over precarious terrain.");
+                        }
+                    }
+                }
+                #endregion
 
-				if (m_Caster.Spell == null && m_Caster.CheckSpellCast(this) && CheckCast() &&
-					m_Caster.Region.OnBeginSpellCast(m_Caster, this))
-				{
-					m_State = SpellState.Casting;
-					m_Caster.Spell = this;
+                if (m_Caster.Spell == null && m_Caster.CheckSpellCast(this) && CheckCast() &&
+                    m_Caster.Region.OnBeginSpellCast(m_Caster, this))
+                {
+                    m_State = SpellState.Casting;
+                    m_Caster.Spell = this;
 
                     Caster.Delta(MobileDelta.Flags);
 
-					if (!(m_Scroll is BaseWand) && RevealOnCast)
-					{
-						m_Caster.RevealingAction();
-					}
+                    if (!(m_Scroll is BaseWand) && RevealOnCast)
+                    {
+                        m_Caster.RevealingAction();
+                    }
 
-					SayMantra();
+                    SayMantra();
 
-					TimeSpan castDelay = GetCastDelay();
+                    TimeSpan castDelay = GetCastDelay();
 
                     if (ShowHandMovement && !(m_Scroll is SpellStone) && (m_Caster.Body.IsHuman || (m_Caster.Player && m_Caster.Body.IsMonster)))
                     {
-						int count = (int)Math.Ceiling(castDelay.TotalSeconds / AnimateDelay.TotalSeconds);
+                        int count = (int)Math.Ceiling(castDelay.TotalSeconds / AnimateDelay.TotalSeconds);
 
-						if (count != 0)
-						{
-							m_AnimTimer = new AnimTimer(this, count);
-							m_AnimTimer.Start();
-						}
+                        if (count != 0)
+                        {
+                            m_AnimTimer = new AnimTimer(this, count);
+                            m_AnimTimer.Start();
+                        }
 
-						if (m_Info.LeftHandEffect > 0)
-						{
-							Caster.FixedParticles(0, 10, 5, m_Info.LeftHandEffect, EffectLayer.LeftHand);
-						}
+                        if (m_Info.LeftHandEffect > 0)
+                        {
+                            Caster.FixedParticles(0, 10, 5, m_Info.LeftHandEffect, EffectLayer.LeftHand);
+                        }
 
-						if (m_Info.RightHandEffect > 0)
-						{
-							Caster.FixedParticles(0, 10, 5, m_Info.RightHandEffect, EffectLayer.RightHand);
-						}
-					}
+                        if (m_Info.RightHandEffect > 0)
+                        {
+                            Caster.FixedParticles(0, 10, 5, m_Info.RightHandEffect, EffectLayer.RightHand);
+                        }
+                    }
 
-					if (ClearHandsOnCast)
-					{
-						m_Caster.ClearHands();
-					}
+                    if (ClearHandsOnCast)
+                    {
+                        m_Caster.ClearHands();
+                    }
 
-					if (Core.ML)
-					{
-						WeaponAbility.ClearCurrentAbility(m_Caster);
-					}
+                    if (Core.ML)
+                    {
+                        WeaponAbility.ClearCurrentAbility(m_Caster);
+                    }
 
-					m_CastTimer = new CastTimer(this, castDelay);
-					//m_CastTimer.Start();
+                    m_CastTimer = new CastTimer(this, castDelay);
+                    //m_CastTimer.Start();
 
-					OnBeginCast();
+                    OnBeginCast();
 
-					if (castDelay > TimeSpan.Zero)
-					{
-						m_CastTimer.Start();
-					}
-					else
-					{
-						m_CastTimer.Tick();
-					}
+                    if (castDelay > TimeSpan.Zero)
+                    {
+                        m_CastTimer.Start();
+                    }
+                    else
+                    {
+                        m_CastTimer.Tick();
+                    }
 
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				m_Caster.LocalOverheadMessage(MessageType.Regular, 0x22, 502625); // Insufficient mana
-			}
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                m_Caster.LocalOverheadMessage(MessageType.Regular, 0x22, 502625); // Insufficient mana
+            }
 
 			return false;
 		}

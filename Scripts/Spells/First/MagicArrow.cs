@@ -53,8 +53,13 @@ namespace Server.Spells.First
             else if (this.CheckHSequence(d))
             {
                 Mobile source = this.Caster;
-
                 SpellHelper.Turn(source, d);
+
+                if (Core.SA && HasDelayContext(d))
+                {
+                    DoHurtFizzle();
+                    return;
+                }
 
                 if (m != null)
                 {

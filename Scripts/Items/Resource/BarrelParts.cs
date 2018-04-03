@@ -164,14 +164,19 @@ namespace Server.Items
         }
     }
 
-    public class BarrelHoops : Item, IQuality
+    public class BarrelHoops : Item, IResource
     {
+        private CraftResource _Resource;
         private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(_Resource); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public bool PlayerConstructed { get { return _Quality > ItemQuality.Normal; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PlayerConstructed { get { return _Resource != CraftResource.None; } }
 
         [Constructable]
         public BarrelHoops()
@@ -193,6 +198,15 @@ namespace Server.Items
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
             return quality;
         }
 
@@ -212,8 +226,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write((int)2);
 
+            writer.Write((int)_Resource);
             writer.Write((int)_Quality);
         }
 
@@ -225,6 +240,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
+                    {
+                        _Resource = (CraftResource)reader.ReadInt();
+                        goto case 1;
+                    }
                 case 1:
                     {
                         _Quality = (ItemQuality)reader.ReadInt();
@@ -235,14 +255,19 @@ namespace Server.Items
         }
     }
 
-    public class BarrelTap : Item, IQuality
+    public class BarrelTap : Item, IResource
     {
+        private CraftResource _Resource;
         private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(_Resource); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public bool PlayerConstructed { get { return _Quality > ItemQuality.Normal; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PlayerConstructed { get { return _Resource != CraftResource.None; } }
 
         [Constructable]
         public BarrelTap()
@@ -264,6 +289,15 @@ namespace Server.Items
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
             return quality;
         }
 
@@ -276,8 +310,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write((int)2);
 
+            writer.Write((int)_Resource);
             writer.Write((int)_Quality);
         }
 
@@ -289,6 +324,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
+                    {
+                        _Resource = (CraftResource)reader.ReadInt();
+                        goto case 1;
+                    }
                 case 1:
                     {
                         _Quality = (ItemQuality)reader.ReadInt();

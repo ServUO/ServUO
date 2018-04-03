@@ -477,7 +477,7 @@ namespace Server.Engines.VvV
             Guild fromGuild = from.Guild as Guild;
             Guild toGuild = to.Guild as Guild;
 
-            if (fromGuild == toGuild && fromGuild != null && toGuild != null && fromGuild.IsAlly(toGuild))
+            if (fromGuild != null && toGuild != null && (fromGuild == toGuild || fromGuild.IsAlly(toGuild)))
             {
                 return false;
             }

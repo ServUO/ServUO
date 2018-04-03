@@ -358,7 +358,7 @@ namespace Server.Regions
 				return false;
 			}
 
-			return (!AllowReds && m.Murderer) || m.Criminal || (m is BaseCreature && ((BaseCreature)m).IsAggressiveMonster && ((BaseCreature)m).FightMode == FightMode.Closest);
+			return (!AllowReds && m.Murderer) || m.Criminal || (m is BaseCreature && ((BaseCreature)m).IsAggressiveMonster);
 		}
 
 		[Usage("CheckGuarded")]

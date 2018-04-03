@@ -502,10 +502,10 @@ namespace Server.Engines.CityLoyalty
 
                     bc.MoveToWorld(p, m.Map);
                     Timer.DelayCall(() => bc.Combatant = m);
-
-                    m.SendLocalizedMessage(1049330, "", 0x22); // You have been ambushed! Fight for your honor!!!
                 }
             }
+
+            m.SendLocalizedMessage(1049330, "", 0x22); // You have been ambushed! Fight for your honor!!!
         }
 
         public override void ProcessKill(BaseCreature victim, Mobile damager, int index)

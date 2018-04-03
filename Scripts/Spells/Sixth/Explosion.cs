@@ -46,6 +46,12 @@ namespace Server.Spells.Sixth
         {
             Mobile defender = m as Mobile;
 
+            if (Core.SA && HasDelayContext(m))
+            {
+                DoHurtFizzle();
+                return;
+            }
+
             if (!this.Caster.CanSee(m))
             {
                 this.Caster.SendLocalizedMessage(500237); // Target can not be seen.

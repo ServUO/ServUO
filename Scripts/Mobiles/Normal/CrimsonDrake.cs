@@ -11,7 +11,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public CrimsonDrake()
-            : this((DrakeType)Utility.Random(4))
+            : this((DrakeType)Utility.Random(5))
         {
         }
 
@@ -45,6 +45,12 @@ namespace Server.Mobiles
                     Hue = 34136;
                     SetDamageType(ResistanceType.Physical, 0);
                     SetDamageType(ResistanceType.Poison, 100);
+                    break;
+                case DrakeType.Energy:
+                    Body = 0x58C;
+                    Hue = 34141;
+                    SetDamageType(ResistanceType.Physical, 0);
+                    SetDamageType(ResistanceType.Energy, 100);
                     break;
             }
 
