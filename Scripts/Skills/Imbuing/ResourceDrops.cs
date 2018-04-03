@@ -110,7 +110,6 @@ namespace Server.Items
             m_IngredientTable.Add(new IngredientDropEntry(typeof(AgapiteElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BronzeElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(CopperElemental), true, .25, typeof(CrystallineBlackrock)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(DullCopperElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(GoldenElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(ShadowIronElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(ValoriteElemental), true, .25, typeof(CrystallineBlackrock)));

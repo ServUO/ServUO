@@ -200,10 +200,10 @@ namespace Server.Engines.SphynxFortune
                 if (DateTime.UtcNow > x.Date + TimeSpan.FromHours(24))
                 {
                     x.Mobile.SendLocalizedMessage(1060859); // The effects of the Sphynx have worn off.
-                    Fountains.RemoveAll(y => y.Mobile == x.Mobile);
                 }
             });
-		}
+            Fountains.RemoveAll(x => DateTime.UtcNow > x.Date + TimeSpan.FromHours(24));
+        }
 
         public static void StartTimer()
         {

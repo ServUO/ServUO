@@ -525,7 +525,7 @@ namespace Server.Mobiles
 		
 		public Mobile FindDispelTarget(bool activeOnly)
         {
-            if (m_Mobile.Deleted || m_Mobile.Int < 95 || CanDispel(m_Mobile) || m_Mobile.AutoDispel)
+            /*if (m_Mobile.Deleted || m_Mobile.Int < 95 || CanDispel(m_Mobile) || m_Mobile.AutoDispel)
                 return null;
 
             if (activeOnly)
@@ -632,7 +632,7 @@ namespace Server.Mobiles
 
                     return active != null ? active : inactive;
                 }
-            }
+            }*/
 
             return null;
         }
