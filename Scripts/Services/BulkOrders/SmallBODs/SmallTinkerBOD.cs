@@ -195,7 +195,6 @@ namespace Server.Engines.BulkOrders
             new Type[] { typeof(Clock), typeof(ClockRight), typeof(ClockLeft) },
             new Type[] { typeof(GoldRing), typeof(SilverRing) },
             new Type[] { typeof(GoldBracelet), typeof(SilverBracelet) },
-            new Type[] { typeof(GoldBracelet), typeof(SilverBracelet) },
             new Type[] { typeof(SmithHammer), typeof(SmithyHammer) }
         };
 
