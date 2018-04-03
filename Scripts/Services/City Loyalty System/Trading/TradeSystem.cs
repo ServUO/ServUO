@@ -27,7 +27,7 @@ namespace Server.Engines.CityLoyalty
 	{
         public static readonly int TurnInGold = Config.Get("CityTrading.TurnInGold", 10000);
         public static readonly int CrateDuration = Config.Get("CityTrading.CrateDuration", 24);
-        public static readonly int AmbushWaitDuration = 1;//Config.Get("CityTrading.AmbushWaitDuration", 5);
+        public static readonly int AmbushWaitDuration = Config.Get("CityTrading.AmbushWaitDuration", 5);
         public static readonly int AmbusherDelete = Config.Get("CityTrading.AmbusherDelete", 10);
 
         public override TextDefinition Name { get { return new TextDefinition("City Trading"); } }
@@ -385,7 +385,7 @@ namespace Server.Engines.CityLoyalty
 
                 if (m.NetState != null && m.Map != null && m.Map != Map.Internal)
                 {
-                    double chance = 1.0;// crate.Entry.LastAmbush == DateTime.MinValue ? 0.25 : .05;
+                    double chance = crate.Entry.LastAmbush == DateTime.MinValue ? 0.25 : .05;
 
                     if (chance > Utility.RandomDouble())
                     {
