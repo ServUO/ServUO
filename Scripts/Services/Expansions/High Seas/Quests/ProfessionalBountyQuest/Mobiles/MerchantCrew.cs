@@ -94,7 +94,6 @@ namespace Server.Mobiles
 
             AddItem(new TricorneHat());
             AddItem(new FancyShirt());
-            AddItem(new ShortPants());
             AddItem(new Boots(Utility.RandomNeutralHue()));
             AddItem(new GoldEarrings());
 

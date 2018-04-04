@@ -89,6 +89,7 @@ namespace Server.Mobiles
         RefuseTrades = 0x40000000,
         DisabledPvpWarning = 0x80000000,
         CanBuyCarpets = 0x100000000,
+        VoidPool = 0x200000000
     }
 
 	public enum NpcGuild
@@ -448,6 +449,13 @@ namespace Server.Mobiles
         {
             get { return GetFlag(PlayerFlag.CanBuyCarpets); }
             set { SetFlag(PlayerFlag.CanBuyCarpets, value); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool VoidPool
+        {
+            get { return GetFlag(PlayerFlag.VoidPool); }
+            set { SetFlag(PlayerFlag.VoidPool, value); }
         }
 
         #region Plant system
@@ -2287,10 +2295,18 @@ namespace Server.Mobiles
                 Region r = Region.Find(Location, Map);
 
                 #region Void Pool
-                var controller = Map == Map.Trammel ? VoidPoolController.InstanceTram : VoidPoolController.InstanceFel;
+                if (VoidPool || Region.IsPartOf<VoidPoolRegion>())
+                {
+                    var controller = Map == Map.Felucca ? VoidPoolController.InstanceFel : VoidPoolController.InstanceTram;
 
-                if (controller != null)
-                    list.Add(new Server.Engines.Points.VoidPoolInfo(this));
+                    if (controller != null)
+                    {
+                        if (!VoidPool)
+                            VoidPool = true;
+
+                        list.Add(new Server.Engines.Points.VoidPoolInfo(this, controller));
+                    }
+                }
                 #endregion
 
                 #region TOL Shadowguard
@@ -2502,10 +2518,9 @@ namespace Server.Mobiles
             else if (item.LootType == LootType.Newbied)
                 return 10;
 
-            if ((item is BaseArmor && ((BaseArmor)item).NegativeAttributes.Prized > 0) ||
-                (item is BaseWeapon && ((BaseWeapon)item).NegativeAttributes.Prized > 0) ||
-                (item is BaseJewel && ((BaseJewel)item).NegativeAttributes.Prized > 0) ||
-                (item is BaseClothing && ((BaseClothing)item).NegativeAttributes.Prized > 0))
+            var negAttrs = RunicReforging.GetNegativeAttributes(item);
+
+            if (negAttrs != null && negAttrs.Prized > 0)
                 cost *= 2;
 
             return cost;

@@ -38,6 +38,14 @@ namespace Server.Spells.Mysticism
             }
             else if (CheckHSequence(target))
             {
+                SpellHelper.Turn(Caster, target);
+
+                if (Core.SA && HasDelayContext(target))
+                {
+                    DoHurtFizzle();
+                    return;
+                }
+
                 SpellHelper.CheckReflect((int)Circle, Caster, ref target);
 
                 double damage = GetNewAosDamage(10, 1, 4, target);

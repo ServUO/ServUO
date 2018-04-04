@@ -37,19 +37,20 @@ namespace Server.Engines.Points
     public class VoidPoolInfo : ContextMenuEntry
     {
         private Mobile m_From;
+        private VoidPoolController m_Controller;
 
-        public VoidPoolInfo(Mobile from)
+        public VoidPoolInfo(Mobile from, VoidPoolController controller)
             : base(1152531, -1) // The Void Pool
         {
             m_From = from;
+            m_Controller = controller;
         }
 
         public override void OnClick()
         {
-            if (m_From is PlayerMobile)
+            if (m_From is PlayerMobile && m_Controller != null)
             {
-                var controller = m_From.Map == Map.Trammel ? VoidPoolController.InstanceTram : VoidPoolController.InstanceFel;
-                m_From.SendGump(new VoidPoolGump(controller, m_From as PlayerMobile));
+                m_From.SendGump(new VoidPoolGump(m_Controller, m_From as PlayerMobile));
             }
         }
     }
