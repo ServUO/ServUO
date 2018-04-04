@@ -133,7 +133,8 @@ namespace Server.Engines.VvV
             Guild g = pm.Guild as Guild;
             VvVPlayerEntry entry = GetEntry(pm, true) as VvVPlayerEntry;
 
-            entry.Active = true;
+            if (!entry.Active)
+                entry.Active = true;
 
             pm.SendLocalizedMessage(1155564); // You have joined Vice vs Virtue!
             pm.SendLocalizedMessage(1063156, g.Name); // The guild information for ~1_val~ has been updated.
@@ -773,7 +774,7 @@ namespace Server.Engines.VvV
             {
                 if (!_Active && value)
                 {
-                    Points = ViceVsVirtueSystem.StartSilver;
+                    Points = 0;
                 }
 
                 _Active = value;
@@ -786,7 +787,8 @@ namespace Server.Engines.VvV
         public VvVPlayerEntry(PlayerMobile pm)
             : base(pm)
         {
-            Active = true;
+            _Active = true;
+            Points = ViceVsVirtueSystem.StartSilver;
         }
 
         public override void Serialize(GenericWriter writer)

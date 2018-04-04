@@ -123,6 +123,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             int oldMaxCount = SpawnPerWave;
 
             Level++;
+            Kills = 0;
 
             int inc = SpawnPerWave - oldMaxCount;
 
@@ -248,6 +249,39 @@ namespace Server.Engines.TreasuresOfKotlCity
                         Spawn = new List<ISpawnable>();
 
                     Spawn.Add(bc);
+                }
+            }
+
+            if (_Active)
+            {
+                StartTimer();
+
+                if (Spawn == null || Spawn.Count == 0)
+                {
+                    if (Spawn == null)
+                        Spawn = new List<ISpawnable>();
+
+                    if (Level >= Levels)
+                    {
+                        EndSimulation();
+                        return;
+                    }
+                    else
+                    {
+                        IncreaseLevel();
+                    }
+                }
+                else
+                {
+                    int toSpawn = Math.Max(0, SpawnPerWave - (Spawn.Count + Kills));
+
+                    if (toSpawn > 0)
+                    {
+                        for (int i = 0; i < toSpawn; i++)
+                        {
+                            Timer.DelayCall(NextSpawnDuration, DoSpawn);
+                        }
+                    }
                 }
             }
 

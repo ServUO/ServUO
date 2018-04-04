@@ -1557,6 +1557,21 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool Trigger(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            if (CheckMana(creature) && Validate(creature, defender) && TriggerChance >= Utility.RandomDouble())
+            {
+                if (creature.CheckHeal())
+                {
+                    creature.Mana -= ManaCost;
+                    AddToCooldown(creature);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public override void DoEffects(BaseCreature creature, Mobile target, ref int damage)
         {
             creature.CheckHeal();
