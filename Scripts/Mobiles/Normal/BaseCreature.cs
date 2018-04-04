@@ -6831,7 +6831,7 @@ namespace Server.Mobiles
 
         public bool IsHealing { get { return (m_HealTimer != null); } }
 
-        public virtual void CheckHeal()
+        public virtual bool CheckHeal()
         {
             long tc = Core.TickCount;
 
@@ -6843,15 +6843,20 @@ namespace Server.Mobiles
                     owner.Map == Map && InRange(owner, HealStartRange) && InLOS(owner) && owner.Hits < HealOwnerTrigger * owner.HitsMax)
                 {
                     HealStart(owner);
-
                     m_NextHealOwnerTime = tc + (int)TimeSpan.FromSeconds(HealOwnerInterval).TotalMilliseconds;
+
+                    return true;
                 }
                 else if (tc >= m_NextHealTime && CanBeBeneficial(this) && (Hits < HealTrigger * HitsMax || Poisoned))
                 {
                     HealStart(this);
                     m_NextHealTime = tc + (int)TimeSpan.FromSeconds(HealInterval).TotalMilliseconds;
+
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public virtual void HealStart(Mobile patient)

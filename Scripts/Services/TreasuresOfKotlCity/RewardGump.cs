@@ -12,6 +12,8 @@ namespace Server.Engines.TreasuresOfKotlCity
 {
     public class KotlCityRewardGump : BaseRewardGump
     {
+        public override int YDist { get { return 15; } }
+
         public KotlCityRewardGump(Mobile owner, PlayerMobile user)
             : base(owner, user, KotlCityRewards.Rewards, 1156988)
         {
