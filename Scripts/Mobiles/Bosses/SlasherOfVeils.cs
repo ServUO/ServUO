@@ -20,7 +20,7 @@ namespace Server.Mobiles
             -1, 0,
             2, 0
         };
-        private DateTime m_NextTerror;
+
         [Constructable]
         public SlasherOfVeils()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -120,13 +120,8 @@ namespace Server.Mobiles
             return 1587;
         }
 
-		public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
+		public override bool AlwaysMurderer { get { return true; } }
+        public override bool CausesTrueFear { get { return true; } }
 
         public override void GenerateLoot()
         {
@@ -190,21 +185,6 @@ namespace Server.Mobiles
             base.OnDamagedBySpell(caster);
         }
 
-        public override void OnMovement(Mobile m, Point3D oldLocation)
-        {
-            base.OnMovement(m, oldLocation);
-
-            if (m_NextTerror < DateTime.UtcNow && m != null && InRange(m.Location, 10) && m.IsPlayer() && m.Alive)
-            {
-                m.Frozen = true;
-                m.SendLocalizedMessage(1080342, Name, 33); // Terror slices into your very being, destroying any chance of resisting ~1_name~ you might have had
-
-                Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerStateCallback(Terrorize), m);
-
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TrueFear, 1153791, 1153827, TimeSpan.FromSeconds(10), m));
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -215,19 +195,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-        }
-
-        private void Terrorize(object o)
-        {
-            if (o is Mobile)
-            {
-                Mobile m = (Mobile)o;
-
-                m.Frozen = false;
-                m.SendLocalizedMessage(1005603); // You can move again!
-
-                m_NextTerror = DateTime.UtcNow + TimeSpan.FromMinutes(1);
-            }
         }
     }
 }
