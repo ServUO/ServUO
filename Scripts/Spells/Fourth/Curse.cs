@@ -97,17 +97,26 @@ namespace Server.Spells.Fourth
             Caster.Target = new InternalTarget(this);
         }
 
-        public static void DoCurse(Mobile caster, Mobile m, bool masscurse)
+        public static bool DoCurse(Mobile caster, Mobile m, bool masscurse)
         {
             if (Mysticism.StoneFormSpell.CheckImmunity(m))
             {
                 caster.SendLocalizedMessage(1080192); // Your target resists your ability reduction magic.
-                return;
+                return true;
             }
 
             int oldStr = SpellHelper.GetCurseOffset(m, StatType.Str);
             int oldDex = SpellHelper.GetCurseOffset(m, StatType.Dex);
             int oldInt = SpellHelper.GetCurseOffset(m, StatType.Int);
+
+            int newStr = SpellHelper.GetOffset(caster, m, StatType.Str, true, true);
+            int newDex = SpellHelper.GetOffset(caster, m, StatType.Dex, true, true);
+            int newInt = SpellHelper.GetOffset(caster, m, StatType.Int, true, true);
+
+            if (-newStr > oldStr && -newDex > oldDex && -newInt > oldInt)
+            {
+                return false;
+            }
 
             SpellHelper.AddStatCurse(caster, m, StatType.Str, false);
             SpellHelper.AddStatCurse(caster, m, StatType.Dex, true);
@@ -137,6 +146,8 @@ namespace Server.Spells.Fourth
 
             m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
             m.PlaySound(0x1E1);
+
+            return true;
         }
 
 		public void Target(Mobile m)
@@ -151,36 +162,18 @@ namespace Server.Spells.Fourth
 
                 SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
-				DoCurse(Caster, m, false);
-
-				HarmfulSpell(m);
+                if (DoCurse(Caster, m, false))
+                {
+                    HarmfulSpell(m);
+                }
+                else
+                {
+                    DoHurtFizzle();
+                }
 			}
 
 			FinishSequence();
         }
-
-        /*public class CurseTimer
-        {
-            public int StrOffset { get; set; }
-            public int DexOffset { get; set; }
-            public int IntOffset { get; set; }
-            public Mobile Owner { get; set; }
-
-            public CurseTimer(Mobile m, TimeSpan duration, int strOffset, int dexOffset, int intOffset)
-                : base(duration)
-            {
-                StrOffset = strOffset;
-                DexOffset = dexOffset;
-                intOffset = intOffset;
-
-                Owner = m;
-            }
-
-            public override void OnTick()
-            {
-                CurseSpell.RemoveEffect(m);
-            }
-        }*/
 
         private class InternalTarget : Target
         {

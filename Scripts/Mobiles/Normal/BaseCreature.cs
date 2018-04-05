@@ -558,9 +558,6 @@ namespace Server.Mobiles
 
         public virtual void InitializeAbilities()
         {
-            if (!PetTrainingHelper.Enabled)
-                return;
-
             switch (AI)
             {
                 case AIType.AI_Mage: SetMagicalAbility(MagicalAbility.Magery); break;
@@ -582,6 +579,9 @@ namespace Server.Mobiles
             {
                 SetSpecialAbility(SpecialAbility.Heal);
             }
+
+            if (PetTrainingHelper.Enabled)
+                return;
 
             if(Skills[SkillName.Focus].Value == 0)
                 SetSkill(SkillName.Focus, 2, 20);
@@ -5194,6 +5194,15 @@ namespace Server.Mobiles
             if (name == SkillName.Poisoning && Skills[name].Base > 0 && !PetTrainingHelper.ValidateTrainingPoint(this, MagicalAbility.Poisoning))
             {
                 SetMagicalAbility(MagicalAbility.Poisoning);
+            }
+
+            if (!Controlled && name == SkillName.Magery && AbilityProfile != null && 
+                !AbilityProfile.HasAbility(MagicalAbility.Magery) && 
+                Skills[SkillName.Magery].Base > 0 && 
+                (AI == AIType.AI_Mage || AI == AIType.AI_Necro || AI == AIType.AI_NecroMage || AI == AIType.AI_Mystic || AI == AIType.AI_Spellweaving))
+
+            {
+                SetMagicalAbility(MagicalAbility.Magery);
             }
         }
 

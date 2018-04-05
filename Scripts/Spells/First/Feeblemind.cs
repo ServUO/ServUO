@@ -74,33 +74,40 @@ namespace Server.Spells.First
                 }
 
                 int oldOffset = SpellHelper.GetCurseOffset(m, StatType.Int);
-				SpellHelper.AddStatCurse(Caster, m, StatType.Int, false);
-                int newOffset = SpellHelper.GetCurseOffset(m, StatType.Int);
+                int newOffset = SpellHelper.GetOffset(Caster, m, StatType.Int, true, true);
 
-				if (m.Spell != null)
-                    m.Spell.OnCasterHurt();
-
-                m.Paralyzed = false;
-
-                m.FixedParticles(0x3779, 10, 15, 5004, EffectLayer.Head);
-                m.PlaySound(0x1E4);
-
-                HarmfulSpell(m);
-
-                if (newOffset < oldOffset)
+                if (-newOffset > oldOffset)
                 {
-                    int percentage = (int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
-                    TimeSpan length = SpellHelper.GetDuration(Caster, m);
+                    DoHurtFizzle();
+                }
+                else
+                {
+                    if (m.Spell != null)
+                        m.Spell.OnCasterHurt();
 
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.FeebleMind, 1075833, length, m, percentage.ToString()));
+                    m.Paralyzed = false;
 
-                    if (m_Table.ContainsKey(m))
-                        m_Table[m].Stop();
+                    m.FixedParticles(0x3779, 10, 15, 5002, EffectLayer.Head);
+                    m.PlaySound(0x1DF);
 
-                    m_Table[m] = Timer.DelayCall(length, () =>
+                    HarmfulSpell(m);
+
+                    if (-newOffset < oldOffset)
                     {
-                        RemoveEffects(m);
-                    });
+                        SpellHelper.AddStatCurse(this.Caster, m, StatType.Int, false, newOffset);
+
+                        int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
+                        TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Clumsy, 1075831, length, m, percentage.ToString()));
+
+                        if (m_Table.ContainsKey(m))
+                            m_Table[m].Stop();
+
+                        m_Table[m] = Timer.DelayCall(length, () =>
+                        {
+                            RemoveEffects(m);
+                        });
+                    }
                 }
             }
 

@@ -123,16 +123,12 @@ namespace Server.Items
 
 			if ( m_CloseTimer != null )
 				m_CloseTimer.Stop();
-				
-			//Roadkill change to leave unlocked planks open
-			//m_CloseTimer = new CloseTimer( this );
-			//m_CloseTimer.Start();			
+					
 			if ( Locked )
 			{
 				m_CloseTimer = new CloseTimer( this );
 				m_CloseTimer.Start();
-			}
-			// end or RK change				
+			}			
 
 			switch ( ItemID )
 			{

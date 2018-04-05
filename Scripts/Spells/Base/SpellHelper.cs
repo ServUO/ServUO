@@ -409,6 +409,11 @@ namespace Server.Spells
             return AddStatCurse(caster, target, type, GetOffset(caster, target, type, true, blockSkill), TimeSpan.Zero);
         }
 
+        public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, bool blockSkill, int offset)
+        {
+            return AddStatCurse(caster, target, type, offset, TimeSpan.Zero);
+        }
+
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, int curse, TimeSpan duration)
         {
             int offset = curse;

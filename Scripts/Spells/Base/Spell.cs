@@ -757,10 +757,6 @@ namespace Server.Spells
 			{
 				m_Caster.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
 			}
-            /*else if (Core.SA && HasDelayContext())
-            {
-                DoHurtFizzle();
-            }*/
             else if (m_Caster.Mana >= ScaleMana(GetMana()))
             {
                 #region Stygian Abyss
@@ -1026,11 +1022,6 @@ namespace Server.Spells
 		public virtual double CastDelayFastScalar { get { return 1; } }
 		public virtual double CastDelaySecondsPerTick { get { return 0.25; } }
 		public virtual TimeSpan CastDelayMinimum { get { return TimeSpan.FromSeconds(0.25); } }
-
-		//public virtual int CastDelayBase{ get{ return 3; } }
-		//public virtual int CastDelayFastScalar{ get{ return 1; } }
-		//public virtual int CastDelayPerSecond{ get{ return 4; } }
-		//public virtual int CastDelayMinimum{ get{ return 1; } }
 
 		public virtual TimeSpan GetCastDelay()
 		{
