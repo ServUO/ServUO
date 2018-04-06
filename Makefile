@@ -9,6 +9,10 @@ PHONY : default build clean run
 
 default: run
 
+debug: 
+	${MCS} -target:library -out:${CURPATH}/Ultima.dll -r:${REFS} -nowarn:${NOWARNS} -d:DEBUG -d:ServUO -d:NEWTIMERS -nologo -debug -unsafe -recurse:${SDKPATH}/*.cs
+	${MCS} -win32icon:${SRVPATH}/servuo.ico -r:${CURPATH}/Ultima.dll,${REFS} -nowarn:${NOWARNS} -target:exe -out:${CURPATH}/ServUO.exe -d:DEBUG -d:ServUO -d:NEWTIMERS -d:MONO -nologo -debug -unsafe -recurse:${SRVPATH}/*.cs
+
 run: build
 	${CURPATH}/ServUO.sh
 
