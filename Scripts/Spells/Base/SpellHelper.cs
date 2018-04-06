@@ -399,6 +399,15 @@ namespace Server.Spells
             return true;
         }
 
+        public static int GetBuffOffset(Mobile m, StatType type)
+        {
+            string name = String.Format("[Magic] {0} Buff", type);
+
+            StatMod mod = m.GetStatMod(name);
+
+            return mod != null ? mod.Offset : 0;
+        }
+
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type)
         {
             return AddStatCurse(caster, target, type, true);

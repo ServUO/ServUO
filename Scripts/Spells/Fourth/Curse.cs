@@ -113,7 +113,8 @@ namespace Server.Spells.Fourth
             int newDex = SpellHelper.GetOffset(caster, m, StatType.Dex, true, true);
             int newInt = SpellHelper.GetOffset(caster, m, StatType.Int, true, true);
 
-            if (-newStr > oldStr && -newDex > oldDex && -newInt > oldInt)
+            if ((-newStr > oldStr && -newDex > oldDex && -newInt > oldInt) || 
+                (newStr == 0 && newDex == 0 && newInt == 0))
             {
                 return false;
             }

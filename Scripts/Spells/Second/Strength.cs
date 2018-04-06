@@ -39,13 +39,23 @@ namespace Server.Spells.Second
             {
                 SpellHelper.Turn(this.Caster, m);
 
-				SpellHelper.AddStatBonus(this.Caster, m, false, StatType.Str);
-				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
-				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Strength, 1075845, length, m, percentage.ToString()));
+                int oldStr = SpellHelper.GetBuffOffset(m, StatType.Str);
+                int newStr = SpellHelper.GetOffset(Caster, m, StatType.Str, false, true);
 
-				m.FixedParticles(0x375A, 10, 15, 5017, EffectLayer.Waist);
-                m.PlaySound(0x1EE);
+                if (newStr < oldStr || newStr == 0)
+                {
+                    DoHurtFizzle();
+                }
+                else
+                {
+                    SpellHelper.AddStatBonus(this.Caster, m, false, StatType.Str);
+                    int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
+                    TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Strength, 1075845, length, m, percentage.ToString()));
+
+                    m.FixedParticles(0x375A, 10, 15, 5017, EffectLayer.Waist);
+                    m.PlaySound(0x1EE);
+                }
             }
 
             this.FinishSequence();
