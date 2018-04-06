@@ -147,7 +147,7 @@ namespace Server
 		public static int ProcessorCount { get; private set; }
 
 		public static bool Unix { get; private set; }
-
+		
 		public static string FindDataFile(string path)
 		{
 			if (DataDirectories.Count == 0)
@@ -514,8 +514,29 @@ namespace Server
 					Is64Bit ? "64-bit " : "");
 				Utility.PopColor();
 			}
+			
+			string dotnet = null;
 
-            string dotnet = null;
+			if (Type.GetType("Mono.Runtime") != null)
+			{	
+				MethodInfo displayName = Type.GetType("Mono.Runtime").GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+				if (displayName != null)
+				{
+					dotnet = displayName.Invoke(null, null).ToString();
+					
+					Utility.PushColor(ConsoleColor.Yellow);
+					Console.WriteLine("Core: Unix environment detected");
+					Utility.PopColor();
+					
+					Unix = true;
+				}
+			}
+			else
+			{
+				m_ConsoleEventHandler = OnConsoleEvent;
+				UnsafeNativeMethods.SetConsoleCtrlHandler(m_ConsoleEventHandler, true);
+			}
+            
 
             #if NETFX_20
                         dotnet = "2.0";
@@ -565,24 +586,8 @@ namespace Server
                 dotnet = "MONO/CSC/Unknown";
             
             Utility.PushColor(ConsoleColor.Green);
-            Console.WriteLine("Core: Compiled for .NET {0}", dotnet);
+            Console.WriteLine("Core: Compiled for " + (Unix ? "MONO " : ".NET ") + "{0}", dotnet);
             Utility.PopColor();
-
-            int platform = (int)Environment.OSVersion.Platform;
-
-			if (platform == 4 || platform == 128)
-			{
-				// MS 4, MONO 128
-				Unix = true;
-				Utility.PushColor(ConsoleColor.Yellow);
-				Console.WriteLine("Core: Unix environment detected");
-				Utility.PopColor();
-			}
-			else
-			{
-				m_ConsoleEventHandler = OnConsoleEvent;
-				UnsafeNativeMethods.SetConsoleCtrlHandler(m_ConsoleEventHandler, true);
-			}
 
 			if (GCSettings.IsServerGC)
 			{
