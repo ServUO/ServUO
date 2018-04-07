@@ -4018,7 +4018,9 @@ namespace Server.Mobiles
             double total = Skills[SkillName.Poisoning].Value;
 
             // natural poisoner retains their poison level. Added spell school is capped at level 2.
-            if (total > 85)
+            if (total >= 100)
+                level = 3;
+            else if (total > 85)
                 level = 2;
             else if (total > 65)
                 level = 1;

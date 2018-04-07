@@ -199,17 +199,6 @@ namespace Server.Spells.SkillMasteries
                     Spell.Reset();
                     Stop();
                 }
-                else
-                {
-                    if (Spell.DefenseModifier != DamageModifier)
-                    {
-                        //int expires = (int)(Expires - DateTime.UtcNow).TotalSeconds;
-                        //BuffInfo.AddBuff(Target, new BuffInfo(BuffIcon.ThrustDebuff, 1155989, 1156234, TimeSpan.FromSeconds(expires), Target, Spell.DefenseModifier.ToString()));
-                        // All damage from your physical attacks have been reduced by ~1_val~%.
-
-                        //DamageModifier = Spell.DefenseModifier;
-                    }
-                }
             }
         }
     }
