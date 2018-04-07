@@ -2425,23 +2425,6 @@ namespace Server.Multis
 
             from.ClearScreen();
             from.SendEverything();
-            /*List<Item> fixtures = foundation.Fixtures;
-
-            for (int i = 0; fixtures != null && i < fixtures.Count; ++i)
-            {
-                Item item = fixtures[i];
-
-                state.Send(item.RemovePacket);
-            }
-
-            if (foundation.Signpost != null)
-                state.Send(foundation.Signpost.RemovePacket);
-
-            if (foundation.SignHanger != null)
-                state.Send(foundation.SignHanger.RemovePacket);
-
-            if (foundation.Sign != null)
-                state.Send(foundation.Sign.RemovePacket);*/
         }
 
         public static void Remove(Mobile from)
@@ -2468,23 +2451,6 @@ namespace Server.Multis
 
             from.ClearScreen();
             from.SendEverything();
-            /*List<Item> fixtures = context.Foundation.Fixtures;
-
-            for (int i = 0; fixtures != null && i < fixtures.Count; ++i)
-            {
-                Item item = fixtures[i];
-
-                item.SendInfoTo(state);
-            }
-
-            if (context.Foundation.Signpost != null)
-                context.Foundation.Signpost.SendInfoTo(state);
-
-            if (context.Foundation.SignHanger != null)
-                context.Foundation.SignHanger.SendInfoTo(state);
-
-            if (context.Foundation.Sign != null)
-                context.Foundation.Sign.SendInfoTo(state);*/
         }
     }
 
