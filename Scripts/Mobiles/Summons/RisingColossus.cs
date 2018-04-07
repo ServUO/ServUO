@@ -41,6 +41,10 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, skillvalue);
             SetSkill(SkillName.Anatomy, skillvalue);
             SetSkill(SkillName.Mysticism, skillvalue);
+            SetSkill(SkillName.EvalInt, skillvalue);
+            SetSkill(SkillName.Focus, skillvalue);
+            SetSkill(SkillName.Meditation, 13.8);
+            SetSkill(SkillName.Parry, 1.1);
 
             VirtualArmor = 58;
             ControlSlots = 5;
