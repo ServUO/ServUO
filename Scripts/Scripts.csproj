@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\ColdWind.cs" />
     <Compile Include="Accounting\AccessRestrictions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1833,6 +1834,7 @@
     <Compile Include="Mobiles\Bosses\Serado.cs" />
     <Compile Include="Mobiles\Bosses\ServantOfSemidar.cs" />
     <Compile Include="Mobiles\Bosses\Silvani.cs" />
+    <Compile Include="Mobiles\Event\BaneDragon.cs" />
     <Compile Include="Mobiles\Event\PumpkinHead.cs" />
     <Compile Include="Mobiles\Event\Wanderer.cs" />
     <Compile Include="Mobiles\Factions\BaseWarHorse.cs" />
@@ -2858,7 +2860,6 @@
     <Compile Include="Quests\StudyOfTheSolenHive\Objectives.cs" />
     <Compile Include="Quests\StudyOfTheSolenHive\StudyOfSolenQuest.cs" />
     <Compile Include="Quests\Mad Scientist\Items\SuteksDirtyGear.cs" />
-    <Compile Include="Items\Quest\FlaskOfOil.cs" />
     <Compile Include="Items\Quest\ModifiedClockworkAssembly.cs" />
     <Compile Include="Items\Quest\SecretWallTeleporters.cs" />
     <Compile Include="Mobiles\NPCs\Vollem.cs" />
