@@ -45,7 +45,9 @@ namespace Server.Mobiles
             Karma = -1500;
 
             VirtualArmor = 19;
+
             SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetWeaponAbility(WeaponAbility.ColdWind);
         }
 
         public Wight(Serial serial)
