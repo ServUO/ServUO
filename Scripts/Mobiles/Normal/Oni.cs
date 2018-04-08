@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("an oni corpse")]
     public class Oni : BaseCreature
     {
-        private DateTime m_NextAbilityTime;
+        //private DateTime m_NextAbilityTime;
 
         [Constructable]
         public Oni()
