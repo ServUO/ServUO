@@ -586,7 +586,7 @@ namespace Server
                 dotnet = "MONO/CSC/Unknown";
             
             Utility.PushColor(ConsoleColor.Green);
-            Console.WriteLine("Core: Compiled for " + (Unix ? "MONO " : ".NET ") + "{0}", dotnet);
+            Console.WriteLine("Core: Compiled for " + ( Unix && !dotnet.Contains("CSC") ? "MONO and running on {0}" : ".NET {0}" ), dotnet);
             Utility.PopColor();
 
 			if (GCSettings.IsServerGC)
