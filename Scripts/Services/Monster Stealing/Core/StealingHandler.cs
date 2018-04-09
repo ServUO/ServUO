@@ -97,7 +97,7 @@ namespace Server.Engines.CreatureStealing
 
                     if (chance >= Utility.Random(100))
                     {
-                        Item item = item = Activator.CreateInstance(SpecialItemList[Utility.Random(SpecialItemList.Length)]) as Item;
+                        Item item = Activator.CreateInstance(SpecialItemList[Utility.Random(SpecialItemList.Length)]) as Item;
 
                         if (item != null)
                         {
