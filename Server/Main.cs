@@ -516,13 +516,14 @@ namespace Server
 			}
 			
 			string dotnet = null;
+			string mono = null;
 
 			if (Type.GetType("Mono.Runtime") != null)
 			{	
 				MethodInfo displayName = Type.GetType("Mono.Runtime").GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
 				if (displayName != null)
 				{
-					dotnet = displayName.Invoke(null, null).ToString();
+					mono = displayName.Invoke(null, null).ToString();
 					
 					Utility.PushColor(ConsoleColor.Yellow);
 					Console.WriteLine("Core: Unix environment detected");
@@ -583,10 +584,10 @@ namespace Server
             #endif
 
             if (String.IsNullOrEmpty(dotnet))
-                dotnet = "MONO/CSC/Unknown";
+                dotnet = "CSC/Unknown";
             
             Utility.PushColor(ConsoleColor.Green);
-            Console.WriteLine("Core: Compiled for " + (Unix ? "MONO " : ".NET ") + "{0}", dotnet);
+            Console.WriteLine("Core: Compiled for " + (dotnet == "MONO/CSC" && Unix ? "MONO and running on " + mono : ".NET " + dotnet));
             Utility.PopColor();
 
 			if (GCSettings.IsServerGC)
