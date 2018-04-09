@@ -41,7 +41,7 @@ namespace Server.Items
 
             foreach (PlayerMobile pm in SeedUsageList.Keys)
             {
-                if ((Nullable<DateTime>)SeedUsageList[pm] != null)
+                if (SeedUsageList[pm] != null)
                 {
                     if (SeedUsageList[pm] < DateTime.Now + Cooldown)
                     {
@@ -82,7 +82,7 @@ namespace Server.Items
             }
             else
             {
-                if ((Nullable<DateTime>)SeedUsageList[by] != null)
+                if (SeedUsageList[by] != null)
                 {
                     by.SendLocalizedMessage(1079263,((int)(((SeedUsageList[by] + Cooldown)-DateTime.Now).TotalSeconds)).ToString()); 
                 }
