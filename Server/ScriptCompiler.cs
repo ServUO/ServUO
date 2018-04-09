@@ -235,14 +235,14 @@ namespace Server
 
 				Display(results);
 
-#if !MONO
-				if (results.Errors.Count > 0)
+				if (results.Errors.Count > 0 && !Core.Unix)
 				{
 					assembly = null;
 					return false;
 				}
-#else
-				if( results.Errors.Count > 0 ) {
+
+				if (results.Errors.Count > 0 && Core.Unix) 
+				{
 					foreach( CompilerError err in results.Errors ) {
 						if ( !err.IsWarning ) {
 							assembly = null;
@@ -250,7 +250,6 @@ namespace Server
 						}
 					}
 				}
-#endif
 
 				if (cache && Path.GetFileName(path) == "Scripts.CS.dll")
 				{
