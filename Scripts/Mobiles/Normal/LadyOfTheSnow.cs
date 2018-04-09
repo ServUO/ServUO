@@ -7,7 +7,6 @@ namespace Server.Mobiles
     [CorpseName("a lady of the snow corpse")]
     public class LadyOfTheSnow : BaseCreature
     {
-        private static readonly Hashtable m_Table = new Hashtable();
         [Constructable]
         public LadyOfTheSnow()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -48,6 +47,8 @@ namespace Server.Mobiles
 
             if (0.25 > Utility.RandomDouble())
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+
+            SetWeaponAbility(WeaponAbility.ColdWind);
         }
 
         public LadyOfTheSnow(Serial serial)
@@ -87,36 +88,6 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
         }
 
-        // TODO: Snowball
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.1 > Utility.RandomDouble())
-            {
-                /* Cold Wind
-                * Graphics: Message - Type: "3" From: "0x57D4F5B" To: "0x0" ItemId: "0x37B9" ItemIdName: "glow" FromLocation: "(928 164, 34)" ToLocation: "(928 164, 34)" Speed: "10" Duration: "5" FixedDirection: "True" Explode: "False"
-                * Start cliloc: 1070832
-                * Damage: 1hp per second for 5 seconds
-                * End cliloc: 1070830
-                * Reset cliloc: 1070831
-                */
-                ExpireTimer timer = (ExpireTimer)m_Table[defender];
-
-                if (timer != null)
-                {
-                    timer.DoExpire();
-                    defender.SendLocalizedMessage(1070831); // The freezing wind continues to blow!
-                }
-                else
-                    defender.SendLocalizedMessage(1070832); // An icy wind surrounds you, freezing your lungs as you breathe!
-
-                timer = new ExpireTimer(defender, this);
-                timer.Start();
-                m_Table[defender] = timer;
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -129,45 +100,6 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-        }
-
-        private class ExpireTimer : Timer
-        {
-            private readonly Mobile m_Mobile;
-            private readonly Mobile m_From;
-            private int m_Count;
-            public ExpireTimer(Mobile m, Mobile from)
-                : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
-            {
-                m_Mobile = m;
-                m_From = from;
-                Priority = TimerPriority.TwoFiftyMS;
-            }
-
-            public void DoExpire()
-            {
-                Stop();
-                m_Table.Remove(m_Mobile);
-            }
-
-            public void DrainLife()
-            {
-                if (m_Mobile.Alive)
-                    m_Mobile.Damage(2, m_From);
-                else
-                    DoExpire();
-            }
-
-            protected override void OnTick()
-            {
-                DrainLife();
-
-                if (++m_Count >= 5)
-                {
-                    DoExpire();
-                    m_Mobile.SendLocalizedMessage(1070830); // The icy wind dissipates.
-                }
-            }
         }
     }
 }
