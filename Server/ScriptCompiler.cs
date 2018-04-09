@@ -67,10 +67,6 @@ namespace Server
 				AppendCompilerOption(ref sb, "/optimize");
 			}
 
-#if MONO
-			AppendCompilerOption( ref sb, "/d:MONO" );
-#endif
-
 			//These two defines are legacy, ie, depreciated.
 			if (Core.Is64Bit)
 			{
