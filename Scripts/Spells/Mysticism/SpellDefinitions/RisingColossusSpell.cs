@@ -55,7 +55,7 @@ namespace Server.Spells.Mysticism
 
                 TimeSpan duration = TimeSpan.FromSeconds(level / 3);
 
-                BaseCreature summon = new RisingColossus(baseskill, boostskill);
+                BaseCreature summon = new RisingColossus(Caster, baseskill, boostskill);
                 BaseCreature.Summon(summon, false, Caster, new Point3D(p), 0x656, duration);
 
                 Effects.SendTargetParticles(summon, 0x3728, 10, 10, 0x13AA, (EffectLayer)255);

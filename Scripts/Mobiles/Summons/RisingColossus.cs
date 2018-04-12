@@ -10,7 +10,8 @@ namespace Server.Mobiles
         public override double DispelFocus { get { return 45.0; } }
 
         [Constructable]
-        public RisingColossus(double baseskill, double boostskill) : base(AIType.AI_Mystic, FightMode.Closest, 10, 1, 0.4, 0.5)
+        public RisingColossus(Mobile m, double baseskill, double boostskill)
+            : base(AIType.AI_Mystic, FightMode.Closest, 10, 1, 0.4, 0.5)
         {
             int level = (int)(baseskill + boostskill);
             int statbonus = (int)((baseskill - 83) / 1.3 + ((boostskill - 30) / 1.3) + 6);
@@ -41,10 +42,10 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, skillvalue);
             SetSkill(SkillName.Anatomy, skillvalue);
             SetSkill(SkillName.Mysticism, skillvalue);
+            SetSkill(SkillName.DetectHidden, 70.0);
             SetSkill(SkillName.EvalInt, skillvalue);
-            SetSkill(SkillName.Focus, skillvalue);
-            SetSkill(SkillName.Meditation, 13.8);
-            SetSkill(SkillName.Parry, 1.1);
+            SetSkill(SkillName.Mysticism, m.Skills[SkillName.Mysticism].Value);
+            SetSkill(SkillName.Focus, 50.0, 55.0);
 
             VirtualArmor = 58;
             ControlSlots = 5;
