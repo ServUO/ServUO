@@ -98,7 +98,7 @@ namespace Server.SkillHandlers
                     if (item.HonestyItem)
                     {
                         if (item.HonestyOwner == null)
-                            Server.Services.Virtues.Honesty.AssignOwner(item);
+                            Server.Services.Virtues.HonestyVirtue.AssignOwner(item);
 
                         string region = item.HonestyRegion == null ? "an unknown place" : item.HonestyRegion;
 
