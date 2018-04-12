@@ -34,10 +34,12 @@ namespace Server.Network
 				for (int i = 0; i < ipep.Length; i++)
 				{
 					Listener l = new Listener(ipep[i]);
-					if (!success && l != null)
+
+					if (!success)
 					{
 						success = true;
 					}
+
 					m_Listeners[i] = l;
 				}
 
@@ -46,6 +48,7 @@ namespace Server.Network
 					Utility.PushColor(ConsoleColor.Yellow);
 					Console.WriteLine("Retrying...");
 					Utility.PopColor();
+
 					Thread.Sleep(10000);
 				}
 			}
@@ -134,51 +137,57 @@ namespace Server.Network
 		private const int BufferSize = 4096;
 		private readonly BufferPool m_Buffers = new BufferPool("Processor", 4, BufferSize);
 
-		private bool HandleSeed(NetState ns, ByteQueue buffer)
+		private static bool HandleSeed(NetState ns, ByteQueue buffer)
 		{
 			if (buffer.GetPacketID() == 0xEF)
 			{
 				// new packet in client	6.0.5.0	replaces the traditional seed method with a	seed packet
 				// 0xEF	= 239 =	multicast IP, so this should never appear in a normal seed.	 So	this is	backwards compatible with older	clients.
 				ns.Seeded = true;
+
 				return true;
 			}
-			else if (buffer.Length >= 4)
+			
+			if (buffer.Length >= 4)
 			{
 				var m_Peek = new byte[4];
 
 				buffer.Dequeue(m_Peek, 0, 4);
 
-				int seed = (m_Peek[0] << 24) | (m_Peek[1] << 16) | (m_Peek[2] << 8) | m_Peek[3];
+				uint seed = (uint)((m_Peek[0] << 24) | (m_Peek[1] << 16) | (m_Peek[2] << 8) | m_Peek[3]);
 
 				if (seed == 0)
 				{
 					Utility.PushColor(ConsoleColor.Green);
 					Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", ns);
 					Utility.PopColor();
+
 					ns.Dispose();
+
 					return false;
 				}
 
-				ns.m_Seed = seed;
+				ns.Seed = seed;
 				ns.Seeded = true;
+
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+
+			return false;
 		}
 
-		private bool CheckEncrypted(NetState ns, int packetID)
+		private static bool CheckEncrypted(NetState ns, int packetID)
 		{
 			if (!ns.SentFirstPacket && packetID != 0xF0 && packetID != 0xF1 && packetID != 0xCF && packetID != 0x80 &&
 				packetID != 0x91 && packetID != 0xA4 && packetID != 0xEF && packetID != 0xE4 && packetID != 0xFF)
 			{
 				Console.WriteLine("Client: {0}: Encrypted client detected, disconnecting", ns);
+				
 				ns.Dispose();
+
 				return true;
 			}
+
 			return false;
 		}
 
@@ -193,12 +202,9 @@ namespace Server.Network
 
 			lock (buffer)
 			{
-				if (!ns.Seeded)
+				if (!ns.Seeded && !HandleSeed(ns, buffer))
 				{
-					if (!HandleSeed(ns, buffer))
-					{
-						return;
-					}
+					return;
 				}
 
 				int length = buffer.Length;
@@ -209,7 +215,7 @@ namespace Server.Network
 
 					if (CheckEncrypted(ns, packetID))
 					{
-						break;
+						return;
 					}
 
 					PacketHandler handler = ns.GetHandler(packetID);
@@ -219,7 +225,7 @@ namespace Server.Network
 						var data = new byte[length];
 						length = buffer.Dequeue(data, 0, length);
 						new PacketReader(data, length, false).Trace(ns);
-						break;
+						return;
 					}
 
 					int packetLength = handler.Length;
@@ -233,87 +239,90 @@ namespace Server.Network
 							if (packetLength < 3)
 							{
 								ns.Dispose();
-								break;
+								return;
 							}
 						}
 						else
 						{
+							return;
+						}
+					}
+
+					if (length < packetLength)
+					{
+						return;
+					}
+
+					if (handler.Ingame)
+					{
+						if (ns.Mobile == null)
+						{
+							Utility.PushColor(ConsoleColor.DarkRed);
+							Console.WriteLine("Client: {0}: Sent ingame packet (0x{1:X2}) before having been attached to a mobile", ns, packetID);
+							Utility.PopColor();
+
+							ns.Dispose();
+							return;
+						}
+
+						if (ns.Mobile.Deleted)
+						{
+							ns.Dispose();
 							break;
 						}
 					}
 
-					if (length >= packetLength)
+					ThrottlePacketCallback throttler = handler.ThrottleCallback;
+
+					if (throttler != null && !throttler(ns))
 					{
-						if (handler.Ingame)
-						{
-							if (ns.Mobile == null)
-							{
-								Utility.PushColor(ConsoleColor.DarkRed);
-								Console.WriteLine(
-									"Client: {0}: Sent ingame packet (0x{1:X2}) before having been attached to a mobile", ns, packetID);
-								Utility.PopColor();
-								ns.Dispose();
-								break;
-							}
-							else if (ns.Mobile.Deleted)
-							{
-								ns.Dispose();
-								break;
-							}
-						}
+						m_Throttled.Enqueue(ns);
+						return;
+					}
 
-						ThrottlePacketCallback throttler = handler.ThrottleCallback;
+					PacketReceiveProfile prof = null;
 
-						if (throttler != null && !throttler(ns))
-						{
-							m_Throttled.Enqueue(ns);
-							return;
-						}
+					if (Core.Profiling)
+					{
+						prof = PacketReceiveProfile.Acquire(packetID);
+					}
 
-						PacketReceiveProfile prof = null;
+					if (prof != null)
+					{
+						prof.Start();
+					}
 
-						if (Core.Profiling)
-						{
-							prof = PacketReceiveProfile.Acquire(packetID);
-						}
+					byte[] packetBuffer;
 
-						if (prof != null)
-						{
-							prof.Start();
-						}
+					if (BufferSize >= packetLength)
+					{
+						packetBuffer = m_Buffers.AcquireBuffer();
+					}
+					else
+					{
+						packetBuffer = new byte[packetLength];
+					}
 
-						byte[] packetBuffer;
+					packetLength = buffer.Dequeue(packetBuffer, 0, packetLength);
 
-						if (BufferSize >= packetLength)
-						{
-							packetBuffer = m_Buffers.AcquireBuffer();
-						}
-						else
-						{
-							packetBuffer = new byte[packetLength];
-						}
-
-						packetLength = buffer.Dequeue(packetBuffer, 0, packetLength);
-
+					if (packetBuffer != null && packetBuffer.Length > 0 && packetLength > 0)
+					{
 						PacketReader r = new PacketReader(packetBuffer, packetLength, handler.Length != 0);
 
 						handler.OnReceive(ns, r);
-						length = buffer.Length;
 
 						if (BufferSize >= packetLength)
 						{
 							m_Buffers.ReleaseBuffer(packetBuffer);
 						}
+					}
 
-						if (prof != null)
-						{
-							prof.Finish(packetLength);
-						}
-					}
-					else
+					if (prof != null)
 					{
-						break;
+						prof.Finish(packetLength);
 					}
+
+					length = buffer.Length;
 				}
 			}
 		}

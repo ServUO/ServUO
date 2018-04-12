@@ -2324,27 +2324,31 @@ namespace Server.Network
 
 		private class LoginTimer : Timer
 		{
-			private readonly NetState m_State;
-			private readonly Mobile m_Mobile;
+			private NetState m_State;
 
-			public LoginTimer(NetState state, Mobile m)
+			public LoginTimer(NetState state)
 				: base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
 			{
 				m_State = state;
-				m_Mobile = m;
 			}
 
 			protected override void OnTick()
 			{
-				if (m_State == null)
+				if (m_State == null || !m_State.Running)
 				{
 					Stop();
+
+					m_State = null;
 				}
-				if (m_State.Version != null)
+				else if (m_State.Version != null)
 				{
-					m_State.BlockAllPackets = false;
-					DoLogin(m_State, m_Mobile);
 					Stop();
+
+					m_State.BlockAllPackets = false;
+
+					DoLogin(m_State);
+
+					m_State = null;
 				}
 			}
 		}
@@ -2443,23 +2447,32 @@ namespace Server.Network
 					}
 
 					NetState.ProcessDisposedQueue();
-
-					state.Send(new ClientVersionReq());
-
-					state.BlockAllPackets = true;
-
+					
 					state.Flags = (ClientFlags)flags;
 
 					state.Mobile = m;
 					m.NetState = state;
 
-					new LoginTimer(state, m).Start();
+					if (state.Version == null)
+					{
+						state.Send(new ClientVersionReq());
+
+						state.BlockAllPackets = true;
+
+						new LoginTimer(state).Start();
+					}
+					else
+					{
+						DoLogin(state);
+					}
 				}
 			}
 		}
 
-		public static void DoLogin(NetState state, Mobile m)
+		public static void DoLogin(NetState state)
 		{
+			var m = state.Mobile;
+
 			state.Send(new LoginConfirm(m));
 
 			if (m.Map != null)
@@ -2469,89 +2482,48 @@ namespace Server.Network
 
 			state.Send(new MapPatches());
 
-			state.Send(SeasonChange.Instantiate(m.GetSeason(), true));
-
 			state.Send(SupportedFeatures.Instantiate(state));
 
 			state.Sequence = 0;
 
+			state.Send(MobileIncoming.Create(state, m, m));
+
 			if (state.NewMobileIncoming)
 			{
 				state.Send(new MobileUpdate(m));
-				state.Send(new MobileUpdate(m));
-
-				m.CheckLightLevels(true);
-
-				state.Send(new MobileUpdate(m));
-
-				state.Send(new MobileIncoming(m, m));
-				//state.Send( new MobileAttributes( m ) );
-				state.Send(new MobileStatus(m, m));
-				state.Send(Network.SetWarMode.Instantiate(m.Warmode));
-
-				m.SendEverything();
-
-				state.Send(SupportedFeatures.Instantiate(state));
-				state.Send(new MobileUpdate(m));
-				//state.Send( new MobileAttributes( m ) );
-				state.Send(new MobileStatus(m, m));
-				state.Send(Network.SetWarMode.Instantiate(m.Warmode));
-				state.Send(new MobileIncoming(m, m));
 			}
 			else if (state.StygianAbyss)
 			{
 				state.Send(new MobileUpdate(m));
-				state.Send(new MobileUpdate(m));
-
-				m.CheckLightLevels(true);
-
-				state.Send(new MobileUpdate(m));
-
-				state.Send(new MobileIncomingSA(m, m));
-				//state.Send( new MobileAttributes( m ) );
-				state.Send(new MobileStatus(m, m));
-				state.Send(Network.SetWarMode.Instantiate(m.Warmode));
-
-				m.SendEverything();
-
-				state.Send(SupportedFeatures.Instantiate(state));
-				state.Send(new MobileUpdate(m));
-				//state.Send( new MobileAttributes( m ) );
-				state.Send(new MobileStatus(m, m));
-				state.Send(Network.SetWarMode.Instantiate(m.Warmode));
-				state.Send(new MobileIncomingSA(m, m));
 			}
 			else
 			{
 				state.Send(new MobileUpdateOld(m));
-				state.Send(new MobileUpdateOld(m));
-
-				m.CheckLightLevels(true);
-
-				state.Send(new MobileUpdateOld(m));
-
-				state.Send(new MobileIncomingOld(m, m));
-				//state.Send( new MobileAttributes( m ) );
-				state.Send(new MobileStatus(m, m));
-				state.Send(Network.SetWarMode.Instantiate(m.Warmode));
-
-				m.SendEverything();
-
-				state.Send(SupportedFeatures.Instantiate(state));
-				state.Send(new MobileUpdateOld(m));
-				//state.Send( new MobileAttributes( m ) );
-				state.Send(new MobileStatus(m, m));
-				state.Send(Network.SetWarMode.Instantiate(m.Warmode));
-				state.Send(new MobileIncomingOld(m, m));
 			}
 
+			m.SendEverything();
+
+			m.CheckLightLevels(true);
+
 			state.Send(LoginComplete.Instance);
-			state.Send(new CurrentTime());
+
+			state.Send(MobileIncoming.Create(state, m, m));
+
+			state.Send(new MobileStatus(m, m));
+
+			state.Send(Network.SetWarMode.Instantiate(m.Warmode));
+
 			state.Send(SeasonChange.Instantiate(m.GetSeason(), true));
+
+			state.Send(new CurrentTime());
+
 			state.Send(new MapChange(m));
 
 			EventSink.InvokeLogin(new LoginEventArgs(m));
 
+			Console.WriteLine("Client: {0}: Entered World ({1})", state, m);
+
+			m.SendEverything();
 			m.ClearFastwalkStack();
 		}
 
@@ -2674,9 +2646,12 @@ namespace Server.Network
 					prof,
 					race);
 
-				state.Send(new ClientVersionReq());
+				if (state.Version == null)
+				{
+					state.Send(new ClientVersionReq());
 
-				state.BlockAllPackets = true;
+					state.BlockAllPackets = true;
+				}
 
 				EventSink.InvokeCharacterCreated(args);
 
@@ -2686,7 +2661,15 @@ namespace Server.Network
 				{
 					state.Mobile = m;
 					m.NetState = state;
-					new LoginTimer(state, m).Start();
+
+					if (state.Version == null)
+					{
+						new LoginTimer(state).Start();
+					}
+					else
+					{
+						DoLogin(state);
+					}
 				}
 				else
 				{
@@ -2804,9 +2787,12 @@ namespace Server.Network
 					prof,
 					race);
 
-				state.Send(new ClientVersionReq());
+				if (state.Version == null)
+				{
+					state.Send(new ClientVersionReq());
 
-				state.BlockAllPackets = true;
+					state.BlockAllPackets = true;
+				}
 
 				EventSink.InvokeCharacterCreated(args);
 
@@ -2816,7 +2802,15 @@ namespace Server.Network
 				{
 					state.Mobile = m;
 					m.NetState = state;
-					new LoginTimer(state, m).Start();
+
+					if (state.Version == null)
+					{
+						new LoginTimer(state).Start();
+					}
+					else
+					{
+						DoLogin(state);
+					}
 				}
 				else
 				{
@@ -2844,14 +2838,14 @@ namespace Server.Network
 
 		private const int m_AuthIDWindowSize = 128;
 
-		private static readonly Dictionary<int, AuthIDPersistence> m_AuthIDWindow =
-			new Dictionary<int, AuthIDPersistence>(m_AuthIDWindowSize);
+		private static readonly Dictionary<uint, AuthIDPersistence> m_AuthIDWindow =
+			new Dictionary<uint, AuthIDPersistence>(m_AuthIDWindowSize);
 
-		private static int GenerateAuthID(NetState state)
+		private static uint GenerateAuthID(NetState state)
 		{
 			if (m_AuthIDWindow.Count == m_AuthIDWindowSize)
 			{
-				int oldestID = 0;
+				uint oldestID = 0;
 				DateTime oldest = DateTime.MaxValue;
 
 				foreach (var kvp in m_AuthIDWindow)
@@ -2866,15 +2860,15 @@ namespace Server.Network
 				m_AuthIDWindow.Remove(oldestID);
 			}
 
-			int authID;
+			uint authID;
 
 			do
 			{
-				authID = Utility.Random(1, int.MaxValue - 1);
+				authID = (uint)(Utility.RandomMinMax(1, uint.MaxValue - 1));
 
 				if (Utility.RandomBool())
 				{
-					authID |= 1 << 31;
+					authID |= 1U << 31;
 				}
 			}
 			while (m_AuthIDWindow.ContainsKey(authID));
@@ -2882,6 +2876,22 @@ namespace Server.Network
 			m_AuthIDWindow[authID] = new AuthIDPersistence(state.Version);
 
 			return authID;
+		}
+
+		public static bool GetAuth(NetState state, out TimeSpan age, out ClientVersion version)
+		{
+			age = TimeSpan.Zero;
+			version = null;
+
+			AuthIDPersistence ap;
+
+			if (m_AuthIDWindow.TryGetValue(state.AuthID, out ap))
+			{
+				age = DateTime.UtcNow - ap.Age;
+				version = ap.Version;
+			}
+
+			return false;
 		}
 
 		public static void GameLogin(NetState state, PacketReader pvSrc)
@@ -2894,7 +2904,7 @@ namespace Server.Network
 
 			state.SentFirstPacket = true;
 
-			int authID = pvSrc.ReadInt32();
+			uint authID = pvSrc.ReadUInt32();
 
 			if (m_AuthIDWindow.ContainsKey(authID))
 			{
@@ -2912,7 +2922,7 @@ namespace Server.Network
 				return;
 			}
 
-			if (state.m_AuthID != 0 && authID != state.m_AuthID)
+			if (state.AuthID != 0 && authID != state.AuthID)
 			{
 				Utility.PushColor(ConsoleColor.DarkRed);
 				Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", state);
@@ -2920,7 +2930,8 @@ namespace Server.Network
 				state.Dispose();
 				return;
 			}
-			else if (state.m_AuthID == 0 && authID != state.m_Seed)
+			
+			if (state.AuthID == 0 && authID != state.Seed)
 			{
 				Utility.PushColor(ConsoleColor.DarkRed);
 				Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", state);
@@ -2972,7 +2983,7 @@ namespace Server.Network
 			{
 				ServerInfo si = info[index];
 
-				state.m_AuthID = PlayServerAck.m_AuthID = GenerateAuthID(state);
+				state.AuthID = PlayServerAck.m_AuthID = GenerateAuthID(state);
 
 				state.SentFirstPacket = false;
 				state.Send(new PlayServerAck(si));
@@ -2981,10 +2992,10 @@ namespace Server.Network
 
 		public static void LoginServerSeed(NetState state, PacketReader pvSrc)
 		{
-			state.m_Seed = pvSrc.ReadInt32();
+			state.Seed = pvSrc.ReadUInt32();
 			state.Seeded = true;
 
-			if (state.m_Seed == 0)
+			if (state.Seed == 0)
 			{
 				Utility.PushColor(ConsoleColor.DarkRed);
 				Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", state);
@@ -3216,11 +3227,14 @@ namespace Server.Network
                     faceID, faceColor
                     );
 
-                state.Send(new ClientVersionReq());
+				if (state.Version == null)
+				{
+					state.Send(new ClientVersionReq());
 
-                state.BlockAllPackets = true;
+					state.BlockAllPackets = true;
+				}
 
-                EventSink.InvokeCharacterCreated(args);
+				EventSink.InvokeCharacterCreated(args);
 
                 Mobile m = args.Mobile;
 
@@ -3228,9 +3242,15 @@ namespace Server.Network
                 {
                     state.Mobile = m;
                     m.NetState = state;
-
-                    state.BlockAllPackets = false;
-                    DoLogin(state, m);
+					
+					if (state.Version == null)
+					{
+						new LoginTimer(state).Start();
+					}
+					else
+					{
+						DoLogin(state);
+					}
                 }
                 else
                 {
