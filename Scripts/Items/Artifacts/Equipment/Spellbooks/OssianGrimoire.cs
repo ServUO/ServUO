@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public OssianGrimoire()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
 
-            this.SkillBonuses.SetValues(0, SkillName.Necromancy, 10.0);
-            this.Attributes.RegenMana = 1;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.IncreasedKarmaLoss = 5;
+            SkillBonuses.SetValues(0, SkillName.Necromancy, 10.0);
+            Attributes.RegenMana = 1;
+            Attributes.CastSpeed = 1;
+            Attributes.IncreasedKarmaLoss = 5;
         }
 
         public OssianGrimoire(Serial serial)
@@ -42,7 +42,7 @@ namespace Server.Items
             int version = reader.ReadEncodedInt();
 
             if (version == 0)
-                this.Attributes.IncreasedKarmaLoss = 5;
+                Attributes.IncreasedKarmaLoss = 5;
         }
     }
 }
