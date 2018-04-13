@@ -5151,7 +5151,7 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class PlayServerAck : Packet
 	{
-		internal static int m_AuthID = -1;
+		internal static uint m_AuthID = 0;
 
 		public PlayServerAck(ServerInfo si)
 			: base(0x8C, 11)
@@ -5277,27 +5277,29 @@ m_Stream.Write( (int) renderMode );
         }
     }
 
-    public abstract class Packet
+	[Flags]
+	public enum PacketState
 	{
-		[Flags]
-		private enum State
-		{
-			Inactive = 0x00,
-			Static = 0x01,
-			Acquired = 0x02,
-			Accessed = 0x04,
-			Buffered = 0x08,
-			Warned = 0x10
-		}
+		Inactive = 0x00,
+		Static = 0x01,
+		Acquired = 0x02,
+		Accessed = 0x04,
+		Buffered = 0x08,
+		Warned = 0x10
+	}
 
+	public abstract class Packet
+	{
 		protected PacketWriter m_Stream;
 		private readonly int m_PacketID;
 		private readonly int m_Length;
-		private State m_State;
+		private PacketState m_State;
 
 		public int PacketID { get { return m_PacketID; } }
 
-        protected Packet(int packetID)
+		public PacketState State { get { return m_State; } }
+
+		protected Packet(int packetID)
         {
             m_PacketID = packetID;
 
@@ -5414,12 +5416,12 @@ m_Stream.Write( (int) renderMode );
 
 		public void SetStatic()
 		{
-			m_State |= State.Static | State.Acquired;
+			m_State |= PacketState.Static | PacketState.Acquired;
 		}
 
 		public void Acquire()
 		{
-			m_State |= State.Acquired;
+			m_State |= PacketState.Acquired;
 		}
 
 		public void OnSend()
@@ -5428,7 +5430,7 @@ m_Stream.Write( (int) renderMode );
 
 			lock (this)
 			{
-				if ((m_State & (State.Acquired | State.Static)) == 0)
+				if ((m_State & (PacketState.Acquired | PacketState.Static)) == 0)
 				{
 					Free();
 				}
@@ -5442,19 +5444,19 @@ m_Stream.Write( (int) renderMode );
 				return;
 			}
 
-			if ((m_State & State.Buffered) != 0)
+			if ((m_State & PacketState.Buffered) != 0)
 			{
 				m_Buffers.ReleaseBuffer(m_CompiledBuffer);
 			}
 
-			m_State &= ~(State.Static | State.Acquired | State.Buffered);
+			m_State &= ~(PacketState.Static | PacketState.Acquired | PacketState.Buffered);
 
 			m_CompiledBuffer = null;
 		}
 
 		public void Release()
 		{
-			if ((m_State & State.Acquired) != 0)
+			if ((m_State & PacketState.Acquired) != 0)
 			{
 				Free();
 			}
@@ -5469,15 +5471,15 @@ m_Stream.Write( (int) renderMode );
 			{
 				if (m_CompiledBuffer == null)
 				{
-					if ((m_State & State.Accessed) == 0)
+					if ((m_State & PacketState.Accessed) == 0)
 					{
-						m_State |= State.Accessed;
+						m_State |= PacketState.Accessed;
 					}
 					else
 					{
-						if ((m_State & State.Warned) == 0)
+						if ((m_State & PacketState.Warned) == 0)
 						{
-							m_State |= State.Warned;
+							m_State |= PacketState.Warned;
 
 							try
 							{
@@ -5557,7 +5559,7 @@ m_Stream.Write( (int) renderMode );
 				{
 					m_CompiledLength = length;
 
-					if (length > BufferSize || (m_State & State.Static) != 0)
+					if (length > BufferSize || (m_State & PacketState.Static) != 0)
 					{
 						m_CompiledBuffer = new byte[length];
 					}
@@ -5565,7 +5567,7 @@ m_Stream.Write( (int) renderMode );
 					{
 						lock (m_Buffers)
 							m_CompiledBuffer = m_Buffers.AcquireBuffer();
-						m_State |= State.Buffered;
+						m_State |= PacketState.Buffered;
 					}
 
 					Buffer.BlockCopy(buffer, 0, m_CompiledBuffer, 0, length);
@@ -5579,7 +5581,7 @@ m_Stream.Write( (int) renderMode );
 				var old = m_CompiledBuffer;
 				m_CompiledLength = length;
 
-				if (length > BufferSize || (m_State & State.Static) != 0)
+				if (length > BufferSize || (m_State & PacketState.Static) != 0)
 				{
 					m_CompiledBuffer = new byte[length];
 				}
@@ -5587,7 +5589,7 @@ m_Stream.Write( (int) renderMode );
 				{
 					lock (m_Buffers)
 						m_CompiledBuffer = m_Buffers.AcquireBuffer();
-					m_State |= State.Buffered;
+					m_State |= PacketState.Buffered;
 				}
 
 				Buffer.BlockCopy(old, 0, m_CompiledBuffer, 0, length);
