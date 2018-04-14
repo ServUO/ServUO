@@ -140,7 +140,7 @@ namespace Server
 
 		public static bool CompileCSScripts(bool debug, bool cache, out Assembly assembly)
 		{
-			Utility.PushColor(ConsoleColor.Green);
+			Utility.PushColor(ConsoleColor.Yellow);
 			Console.Write("Scripts: Compiling C# scripts...");
 			Utility.PopColor();
 			var files = GetScripts("*.cs");
@@ -288,7 +288,9 @@ namespace Server
 
 		public static bool CompileVBScripts(bool debug, bool cache, out Assembly assembly)
 		{
+			Utility.PushColor(ConsoleColor.Yellow);
 			Console.Write("Scripts: Compiling VB.NET scripts...");
+			Utility.PopColor();
 			var files = GetScripts("*.vb");
 
 			if (files.Length == 0)
@@ -444,7 +446,7 @@ namespace Server
 				else
 				{
 					Utility.PushColor(ConsoleColor.Green);
-					Console.WriteLine("Finished with: {0} errors, {1} warnings", errors.Count, warnings.Count);
+					Console.WriteLine("done with: {0} errors, {1} warnings", errors.Count, warnings.Count);
 					Utility.PopColor();
 				}
 
