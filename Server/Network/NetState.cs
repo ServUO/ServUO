@@ -1099,12 +1099,12 @@ namespace Server.Network
 			m_OnSend = null;
 
 			m_Running = false;
-
+			/*
 			m_Trades = null;
 			m_Gumps = null;
 			m_Menus = null;
 			m_HuePickers = null;
-
+			*/
 			lock (m_Disposed)
 				m_Disposed.Enqueue(this);
 
