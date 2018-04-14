@@ -23,7 +23,7 @@ using Server.Regions;
 
 namespace Server.Services.Virtues
 {
-	public static class Honesty
+	public static class HonestyVirtue
 	{
 		public static bool Enabled = Config.Get("Honesty.Enabled", true);
 		public static int MaxGeneration = Config.Get("Honesty.MaxGeneration", 1000);
@@ -38,7 +38,7 @@ namespace Server.Services.Virtues
 
 		private static SpawnArea _FeluccaArea, _TrammelArea;
 
-		static Honesty()
+		static HonestyVirtue()
 		{
 			_Items = new List<Item>(MaxGeneration);
 		}
