@@ -134,29 +134,37 @@ namespace Server.Mobiles
 		#endregion
 
 		#region Stygian Abyss
-		public override void ToggleFlying()
-		{
-			if (Race != Race.Gargoyle)
-				return;
+        public override void ToggleFlying()
+        {
+            if (Race != Race.Gargoyle)
+                return;
+
+            if (Frozen)
+            {
+                SendLocalizedMessage(1060170); // You cannot use this ability while frozen.
+                return;
+            }
 
             if (!Flying)
             {
-                if (Spell == null)
-                {
-                    Spell spell = new FlySpell(this);
+                if (this.Spell is Spell)
+                    ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
 
-                    spell.Cast();
-                }
+                Spell spell = new FlySpell(this);
+                spell.Cast();
             }
             else if (IsValidLandLocation(Location, Map))
             {
+                if (this.Spell is Spell)
+                    ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
+
                 Animate(AnimationType.Land, 0);
                 Flying = false;
                 BuffInfo.RemoveBuff(this, BuffIcon.Fly);
             }
             else
                 LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113081); // You may not land here.
-		}
+        }
 
         public static bool IsValidLandLocation(Point3D p, Map map)
         {
