@@ -446,7 +446,7 @@ namespace Server
 				else
 				{
 					Utility.PushColor(ConsoleColor.Green);
-					Console.WriteLine("done with: {0} errors, {1} warnings", errors.Count, warnings.Count);
+					Console.WriteLine("done ({0} errors, {1} warnings)", errors.Count, warnings.Count);
 					Utility.PopColor();
 				}
 
