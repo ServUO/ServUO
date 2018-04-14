@@ -21,9 +21,9 @@ build: ServUO.sh
 clean:
 	rm -f ServUO.sh
 	rm -f ServUO.exe
-	rm -f ServUO.pdb
+	rm -f ServUO.exe.mdb
 	rm -f Ultima.dll
-	rm -f Ultima.pdb
+	rm -f Ultima.dll.mdb
 	rm -f *.bin
 
 Ultima.dll: Ultima/*.cs
