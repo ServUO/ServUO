@@ -12,9 +12,12 @@ namespace Server.Network
 {
 	public class BufferPool
 	{
-		private static List<BufferPool> m_Pools = new List<BufferPool>();
+		public static List<BufferPool> Pools { get; private set; }
 
-		public static List<BufferPool> Pools { get { return m_Pools; } set { m_Pools = value; } }
+		static BufferPool()
+		{
+			Pools = new List<BufferPool>();
+		}
 
 		private readonly string m_Name;
 
@@ -24,6 +27,15 @@ namespace Server.Network
 		private int m_Misses;
 
 		private readonly Queue<byte[]> m_FreeBuffers;
+
+		public int Count
+		{
+			get
+			{
+				lock (this)
+					return m_FreeBuffers.Count;
+			}
+		}
 
 		public void GetInfo(
 			out string name,
@@ -58,8 +70,8 @@ namespace Server.Network
 				m_FreeBuffers.Enqueue(new byte[bufferSize]);
 			}
 
-			lock (m_Pools)
-				m_Pools.Add(this);
+			lock (Pools)
+				Pools.Add(this);
 		}
 
 		public byte[] AcquireBuffer()
@@ -95,8 +107,8 @@ namespace Server.Network
 
 		public void Free()
 		{
-			lock (m_Pools)
-				m_Pools.Remove(this);
+			lock (Pools)
+				Pools.Remove(this);
 		}
 	}
 }
