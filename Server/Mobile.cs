@@ -5559,80 +5559,7 @@ namespace Server
 
 				Paralyzed = false;
 
-				switch (m_VisibleDamageType)
-				{
-					case VisibleDamageType.Related:
-						{
-							NetState ourState = m_NetState, theirState = (from == null ? null : from.m_NetState);
-
-							if (ourState == null)
-							{
-								Mobile master = GetDamageMaster(from);
-
-								if (master != null)
-								{
-									ourState = master.m_NetState;
-								}
-							}
-
-							if (theirState == null && from != null)
-							{
-								Mobile master = from.GetDamageMaster(this);
-
-								if (master != null)
-								{
-									theirState = master.m_NetState;
-								}
-							}
-
-							if (amount > 0 && (ourState != null || theirState != null))
-							{
-								Packet p = null; // = new DamagePacket( this, amount );
-
-								if (ourState != null)
-								{
-									if (ourState.DamagePacket)
-									{
-										p = Packet.Acquire(new DamagePacket(this, amount));
-									}
-									else
-									{
-										p = Packet.Acquire(new DamagePacketOld(this, amount));
-									}
-
-									ourState.Send(p);
-								}
-
-								if (theirState != null && theirState != ourState)
-								{
-									bool newPacket = theirState.DamagePacket;
-
-									if (newPacket && (p == null || !(p is DamagePacket)))
-									{
-										Packet.Release(p);
-										p = Packet.Acquire(new DamagePacket(this, amount));
-									}
-									else if (!newPacket && (p == null || !(p is DamagePacketOld)))
-									{
-										Packet.Release(p);
-										p = Packet.Acquire(new DamagePacketOld(this, amount));
-									}
-
-									theirState.Send(p);
-								}
-
-								Packet.Release(p);
-							}
-
-							break;
-						}
-					case VisibleDamageType.Everyone:
-						{
-							SendDamageToAll(amount);
-							break;
-						}
-				}
-
+                SendDamagePacket(from, amount);
 				OnDamage(amount, from, newHits < 0);
 
 				IMount m = Mount;
@@ -5658,6 +5585,83 @@ namespace Server
 				}
 			}
 		}
+
+        public virtual void SendDamagePacket(Mobile from, int amount)
+        {
+            switch (m_VisibleDamageType)
+            {
+                case VisibleDamageType.Related:
+                    {
+                        NetState ourState = m_NetState, theirState = (from == null ? null : from.m_NetState);
+
+                        if (ourState == null)
+                        {
+                            Mobile master = GetDamageMaster(from);
+
+                            if (master != null)
+                            {
+                                ourState = master.m_NetState;
+                            }
+                        }
+
+                        if (theirState == null && from != null)
+                        {
+                            Mobile master = from.GetDamageMaster(this);
+
+                            if (master != null)
+                            {
+                                theirState = master.m_NetState;
+                            }
+                        }
+
+                        if (amount > 0 && (ourState != null || theirState != null))
+                        {
+                            Packet p = null; // = new DamagePacket( this, amount );
+
+                            if (ourState != null)
+                            {
+                                if (ourState.DamagePacket)
+                                {
+                                    p = Packet.Acquire(new DamagePacket(this, amount));
+                                }
+                                else
+                                {
+                                    p = Packet.Acquire(new DamagePacketOld(this, amount));
+                                }
+
+                                ourState.Send(p);
+                            }
+
+                            if (theirState != null && theirState != ourState)
+                            {
+                                bool newPacket = theirState.DamagePacket;
+
+                                if (newPacket && (p == null || !(p is DamagePacket)))
+                                {
+                                    Packet.Release(p);
+                                    p = Packet.Acquire(new DamagePacket(this, amount));
+                                }
+                                else if (!newPacket && (p == null || !(p is DamagePacketOld)))
+                                {
+                                    Packet.Release(p);
+                                    p = Packet.Acquire(new DamagePacketOld(this, amount));
+                                }
+
+                                theirState.Send(p);
+                            }
+
+                            Packet.Release(p);
+                        }
+
+                        break;
+                    }
+                case VisibleDamageType.Everyone:
+                    {
+                        SendDamageToAll(amount);
+                        break;
+                    }
+            }
+        }
 
 		public virtual void SendDamageToAll(int amount)
 		{

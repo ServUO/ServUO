@@ -391,9 +391,14 @@ namespace Server.Mobiles
             }
         }
 
-        public static bool IsDisplayCache(Mobile m)
+        public static bool IsDisplayCache(IEntity e)
         {
-            return DisplayCache.Cache != null && DisplayCache.Cache.Mobiles != null && DisplayCache.Cache.Mobiles.Contains(m);
+            if (e is Mobile)
+            {
+                return DisplayCache.Cache.Mobiles != null && DisplayCache.Cache.Mobiles.Contains((Mobile)e);
+            }
+
+            return DisplayCache.Cache.Table != null && DisplayCache.Cache.Table.ContainsValue(e);
         }
 
         private class DisplayCache : Container
@@ -403,6 +408,7 @@ namespace Server.Mobiles
             private List<Mobile> m_Mobiles;
 
             public List<Mobile> Mobiles { get { return m_Mobiles; } }
+            public Dictionary<Type, IEntity> Table { get { return m_Table; } }
 
             public DisplayCache()
                 : base(0)

@@ -115,7 +115,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(3);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -133,6 +133,11 @@ namespace Server.Mobiles
                 SetAreaEffect(AreaEffect.PoisonBreath);
                 SetWeaponAbility(WeaponAbility.MortalStrike);
                 SetWeaponAbility(WeaponAbility.Dismount);
+            }
+
+            if (version < 2)
+            {
+                SetMagicalAbility(MagicalAbility.Poisoning);
             }
         }
     }

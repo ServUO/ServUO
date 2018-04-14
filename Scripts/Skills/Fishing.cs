@@ -258,7 +258,7 @@ namespace Server.Engines.Harvest
             if (FishInfo.IsRareFish(type))
                 return type;
 
-            bool deepWater = Items.SpecialFishingNet.ValidateDeepWater(map, loc.X, loc.Y);
+            bool deepWater = IsDeepWater(loc, map);
             bool junkproof = HasTypeHook(tool, HookType.JunkProof); 
 
             double skillBase = from.Skills[SkillName.Fishing].Base;
@@ -290,6 +290,11 @@ namespace Server.Engines.Harvest
             }
 
             return type;
+        }
+
+        private bool IsDeepWater(Point3D p, Map map)
+        {
+            return Items.SpecialFishingNet.ValidateDeepWater(map, p.X, p.Y) && (map == Map.Trammel || map == Map.Felucca || map == Map.Tokuno);
         }
 
         public override bool CheckResources(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
@@ -1012,7 +1017,7 @@ namespace Server.Engines.Harvest
 
         public override bool CheckHarvestSkill(Map map, Point3D loc, Mobile from, HarvestResource res, HarvestDefinition def)
         {
-            bool deepWater = SpecialFishingNet.ValidateDeepWater(map, loc.X, loc.Y);
+            bool deepWater = IsDeepWater(loc, map);
             double value = from.Skills[SkillName.Fishing].Value;
 
             if (deepWater && value < 75.0) // can't fish here yet

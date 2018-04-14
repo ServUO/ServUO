@@ -35,6 +35,11 @@ namespace Server.Spells.Spellweaving
 
 			if (focus == null || focus.Deleted)
 			{
+                if (Core.TOL && from is BaseCreature && from.Skills[SkillName.Spellweaving].Value > 0)
+                {
+                    return (int)Math.Max(1, Math.Min(6, from.Skills[SkillName.Spellweaving].Value / 20));
+                }
+
 				return 0;
 			}
 

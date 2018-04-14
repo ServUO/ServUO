@@ -4,6 +4,7 @@ using Server.Spells;
 using Server.Network;
 using Server.Mobiles;
 using System.Collections.Generic;
+using System.Linq;
 
 /*Party Hit Points increased by up to 20 + 6(Collection Bonus), Party healed for 9-20 dmg every 4 seconds. 
 (Provocation Based). Party Strength, Dex, Int, Increased by Up to 8.*/
@@ -49,9 +50,8 @@ namespace Server.Spells.SkillMasteries
 			{
                 m_HPBonus = (int)((20 * BaseSkillBonus) + (CollectiveBonus * 6));
                 m_StatBonus = (int)((BaseSkillBonus * 8) + (CollectiveBonus * 6));
-                System.Collections.Generic.List<Mobile> list = GetParty();
 
-                foreach (Mobile m in list)
+                foreach (Mobile m in GetParty())
                 {
                     m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
                     m.SendLocalizedMessage(1115737); // You feel invigorated by the bard's spellsong.
@@ -59,9 +59,6 @@ namespace Server.Spells.SkillMasteries
                     string args = String.Format("{0}\t{1}\t{2}\t{3}", m_StatBonus, m_StatBonus, m_StatBonus, m_StatBonus);
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invigorate, 1115613, 1115730, args.ToString()));
                 }
-
-                list.Clear();
-                list.TrimExcess();
 
 				BeginTimer();
 			}
@@ -88,22 +85,30 @@ namespace Server.Spells.SkillMasteries
 			
 			if(m_NextHeal > DateTime.UtcNow)
                 return false;
-			
-			foreach(Mobile m in GetParty())
-			{
-				if(Caster.InRange(m.Location, PartyRange))
-				{
-					int healRange = (int)((BaseSkillBonus * 12) + (CollectiveBonus * 8));
 
-                    if(m.Hits < m.HitsMax)
-					    m.Heal(Utility.RandomMinMax(healRange - 2, healRange + 2));
+            foreach (Mobile m in GetParty())
+            {
+                if (CheckPartyEffects(m, true))
+                {
+                    int healRange = (int)((BaseSkillBonus * 12) + (CollectiveBonus * 8));
 
-                    Caster.DoBeneficial(m);
+                    if (m.Hits < m.HitsMax)
+                        m.Heal(Utility.RandomMinMax(healRange - 2, healRange + 2));
 
                     m.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
                     m.PlaySound(0x1F2);
-				}
-			}
+
+                    if (m.GetStatMod(StatModName + "str") == null) m.AddStatMod(new StatMod(StatType.Str, StatModName + "str", m_StatBonus, TimeSpan.Zero));
+                    if (m.GetStatMod(StatModName + "dex") == null) m.AddStatMod(new StatMod(StatType.Dex, StatModName + "dex", m_StatBonus, TimeSpan.Zero));
+                    if (m.GetStatMod(StatModName + "int") == null) m.AddStatMod(new StatMod(StatType.Int, StatModName + "int", m_StatBonus, TimeSpan.Zero));
+                }
+                else
+                {
+                    if(m.GetStatMod(StatModName + "str") != null) m.RemoveStatMod(StatModName + "str");
+                    if(m.GetStatMod(StatModName + "dex") != null) m.RemoveStatMod(StatModName + "dex");
+                    if(m.GetStatMod(StatModName + "int") != null) m.RemoveStatMod(StatModName + "int");
+                }
+            }
 
             m_NextHeal = DateTime.UtcNow + TimeSpan.FromSeconds(4);
             return true;
@@ -114,9 +119,8 @@ namespace Server.Spells.SkillMasteries
 		public override void AddStatMods()
 		{
 			int offset = m_StatBonus;
-            System.Collections.Generic.List<Mobile> list = GetParty();
 
-            foreach (Mobile m in list)
+            foreach (Mobile m in GetParty().Where(mob => CheckPartyEffects(mob)))
             {
                 m.AddStatMod(new StatMod(StatType.Str, StatModName + "str", offset, TimeSpan.Zero));
                 m.AddStatMod(new StatMod(StatType.Dex, StatModName + "dex", offset, TimeSpan.Zero));
@@ -124,9 +128,6 @@ namespace Server.Spells.SkillMasteries
 
                 m_Mods.Add(m);
             }
-
-            list.Clear();
-            list.TrimExcess();
 		}
 		
 		public override void RemoveStatMods()

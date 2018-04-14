@@ -125,7 +125,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write((int)3);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -146,10 +146,18 @@ namespace Server.Mobiles
                 }
             }
 
-            if (version == 1)
+            if (version < 3)
             {
-                SetSpecialAbility(SpecialAbility.RuneCorruption);
-                SetWeaponAbility(WeaponAbility.BleedAttack);
+                if (AbilityProfile == null || AbilityProfile.MagicalAbility == MagicalAbility.None)
+                {
+                    SetMagicalAbility(MagicalAbility.Poisoning);
+                }
+
+                if (version == 1)
+                {
+                    SetSpecialAbility(SpecialAbility.RuneCorruption);
+                    SetWeaponAbility(WeaponAbility.BleedAttack);
+                }
             }
         }
     }

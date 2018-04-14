@@ -387,7 +387,7 @@ namespace Server.Mobiles
 
 				if (m.Map != Map.Internal || m.Account != null ||
 					(m is IMount && ((IMount)m).Rider != null) ||
-                    (m is GalleonPilot) ||
+                    (m is GalleonPilot) || m is PetParrot ||
                     (GenericBuyInfo.IsDisplayCache(m)) ||
 					(m is BaseCreature && ((BaseCreature)m).IsStabled))
 					return true;
@@ -399,11 +399,8 @@ namespace Server.Mobiles
 					Item i = (Item)o;
 
 					// note, in order to test for a vendors display container that contains valid internal map items 
-					// we need to see if we have a DisplayCache type container.  Unfortunately, DisplayCache
-					// is a private class declared in GenericBuyInfo and so cannot be tested for here. 
-					// To get around that we just check the declaring type.
 					if (i.Map != Map.Internal || i.Parent != null || i is Fists || i is MountItem || i is EffectItem || i.HeldBy != null ||
-						i is MovingCrate || i is SpawnPersistence || (i.GetType().DeclaringType == typeof(GenericBuyInfo)))
+                        i is MovingCrate || i is SpawnPersistence || GenericBuyInfo.IsDisplayCache(i))
 						return true;
 
                     // boat stuffs
@@ -429,7 +426,7 @@ namespace Server.Mobiles
                         return true;
 
                     if (i is ArisenController)
-                        return true;
+                        return true; 
 				}
 
 			return false;

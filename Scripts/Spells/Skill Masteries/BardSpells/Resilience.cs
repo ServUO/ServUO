@@ -41,9 +41,8 @@ namespace Server.Spells.SkillMasteries
 			else if ( CheckSequence() )
 			{
                 m_PropertyBonus = (int)((BaseSkillBonus * 8) + (CollectiveBonus * 3));
-                System.Collections.Generic.List<Mobile> list = GetParty();
 
-                foreach (Mobile m in list)
+                foreach (Mobile m in GetParty())
                 {
                     m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
                     m.SendLocalizedMessage(1115738); // The bard's spellsong fills you with a feeling of resilience.
@@ -51,9 +50,6 @@ namespace Server.Spells.SkillMasteries
                     string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_PropertyBonus);
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Resilience, 1115614, 1115731, args.ToString()));
                 }
-
-                list.Clear();
-                list.TrimExcess();
 
 				BeginTimer();
 			}

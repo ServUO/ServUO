@@ -639,14 +639,15 @@ namespace Server.Mobiles
             return _SlotLowerables.Any(t => t == GetType());
         }
 
-        public void CalculateSlots()
+        public void CalculateSlots(int slots)
         {
             var def = PetTrainingHelper.GetTrainingDefinition(this);
 
             if (def == null)
             {
-                ControlSlotsMin = ControlSlots;
-                ControlSlotsMax = ControlSlots;
+                ControlSlotsMin = slots;
+                ControlSlotsMax = slots;
+                return;
             }
             else
             {
@@ -3063,7 +3064,7 @@ namespace Server.Mobiles
             {
                 if (Tamable)
                 {
-                    CalculateSlots();
+                    CalculateSlots(m_iControlSlots);
 
                     if (m_iControlSlots < ControlSlotsMin)
                     {
@@ -3866,7 +3867,7 @@ namespace Server.Mobiles
             {
                 if (PetTrainingHelper.Enabled && ControlSlotsMin == 0 && ControlSlotsMax == 0)
                 {
-                    CalculateSlots();
+                    CalculateSlots(value);
                     m_iControlSlots = ControlSlotsMin;
                 }
                 else
