@@ -191,21 +191,19 @@ namespace Server.Misc
 
         public static int StamRegen(Mobile from)
         {
-            int cappedPoints = AosAttributes.GetValue(from, AosAttribute.RegenStam);
+            int points = AosAttributes.GetValue(from, AosAttribute.RegenStam);
 
             if (from is BaseCreature)
                 points += ((BaseCreature)from).DefaultStamRegen;
 
             if (CheckTransform(from, typeof(VampiricEmbraceSpell)))
-                cappedPoints += 15;
+                points += 15;
 
             if (CheckAnimal(from, typeof(Kirin)))
-                cappedPoints += 20;
+                points += 20;
 
             if (Core.ML && from is PlayerMobile)
-                cappedPoints = Math.Min(cappedPoints, 24);
-
-            points += cappedPoints;
+                points = Math.Min(points, 24);
 
             // Skill Masteries - goes after cap
             points += RampageSpell.GetBonus(from, RampageSpell.BonusType.StamRegen);

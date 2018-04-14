@@ -4997,6 +4997,15 @@ namespace Server.Mobiles
 			{
 				return false;
 			}
+            else if (AccessLevel == AccessLevel.Player)
+            {
+                Region r = item.GetRegion();
+
+                if (r is BaseRegion && !((BaseRegion)r).CanSee(this, item))
+                {
+                    return false;
+                }
+            }
 
 			return base.CanSee(item);
 		}
