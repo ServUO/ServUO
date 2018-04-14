@@ -514,7 +514,7 @@ namespace Server
 			else
 			{
 				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("Finished with: 0 errors, 0 warnings");
+				Console.WriteLine("done (0 errors, 0 warnings)");
 				Utility.PopColor();
 			}
 		}
@@ -618,7 +618,7 @@ namespace Server
 			m_Assemblies = assemblies.ToArray();
 
 			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Scripts: Verifying...");
+			Console.Write("Scripts: Verifying...");
 			Utility.PopColor();
 
 			Stopwatch watch = Stopwatch.StartNew();
@@ -629,7 +629,7 @@ namespace Server
 
 			Utility.PushColor(ConsoleColor.Green);
 			Console.WriteLine(
-				"Finished ({0} items, {1} mobiles, {3} customs) ({2:F2} seconds)",
+				"done ({0} items, {1} mobiles, {3} customs) ({2:F2} seconds)",
 				Core.ScriptItems,
 				Core.ScriptMobiles,
 				watch.Elapsed.TotalSeconds,
