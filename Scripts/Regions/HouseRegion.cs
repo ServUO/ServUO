@@ -56,7 +56,7 @@ namespace Server.Regions
          * Items out of line of sight do not load
          * Items under roofs do not load
          */ 
-        public override bool CanSee(Mobile m, IEntity e)
+        /*public override bool CanSee(Mobile m, IEntity e)
         {
             if (e is Mobile || m.Region.IsPartOf(this))
                 return true;
@@ -107,7 +107,7 @@ namespace Server.Regions
             }
 
             return true;
-        }
+        }*/
 
         public override void OnEnter(Mobile m)
         {
