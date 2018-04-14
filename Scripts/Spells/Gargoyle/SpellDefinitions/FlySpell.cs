@@ -16,7 +16,7 @@ namespace Server.Spells
         public override bool ClearHandsOnCast { get { return false; } }
         public override bool RevealOnCast { get { return false; } }
         public override double CastDelayFastScalar { get { return 0; } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
         public override TimeSpan GetCastRecovery() { return TimeSpan.Zero; }
         public override int GetMana() { return 0; }
         public override bool ConsumeReagents() { return true; }

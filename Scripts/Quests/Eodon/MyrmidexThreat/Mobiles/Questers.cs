@@ -242,7 +242,7 @@ namespace Server.Mobiles
 			{
 				public InternalBuyInfo(BaseVendor owner)
 				{  
-					Add( new GenericBuyInfo( "Stasis Chamber Power Core", typeof( StasisChamberPowerCore ), 101250, 500, 40155, 0 ) ); // TODO: Get itemid
+					Add( new GenericBuyInfo( "Stasis Chamber Power Core", typeof( StasisChamberPowerCore ), 101250, 500, 40155, 0 ) );
 				}
 			}
 

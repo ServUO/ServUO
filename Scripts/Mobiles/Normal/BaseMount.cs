@@ -323,28 +323,32 @@ namespace Server.Mobiles
             if (type == BlockMountType.None)
                 return true;
 
-            if (message)
+            if (message && mob.NetState != null)
             {
                 switch (type)
                 {
                     case BlockMountType.Dazed:
                         {
-                            mob.SendLocalizedMessage(flying ? 1112457 : 1040024); // You are still too dazed from being knocked off your mount to ride!
+                            mob.PrivateOverheadMessage(MessageType.Regular, 0x3B2, flying ? 1112457 : 1040024, mob.NetState);
+                            // You are still too dazed from being knocked off your mount to ride!
                             break;
                         }
                     case BlockMountType.BolaRecovery:
                         {
-                            mob.SendLocalizedMessage(flying ? 1112455 : 1062910); // You cannot mount while recovering from a bola throw.
+                            mob.PrivateOverheadMessage(MessageType.Regular, 0x3B2, flying ? 1112455 : 1062910, mob.NetState);
+                            // You cannot mount while recovering from a bola throw.
                             break;
                         }
                     case BlockMountType.RidingSwipe:
                         {
-                            mob.SendLocalizedMessage(1075636); // You cannot mount.
+                            mob.PrivateOverheadMessage(MessageType.Regular, 0x3B2, flying ? 1112454 : 1062934, mob.NetState);
+                            // You must heal your mount before riding it.
                             break;
                         }
                     case BlockMountType.DismountRecovery:
                         {
-                            mob.SendLocalizedMessage(flying ? 1112456 : 1070859); // You cannot mount while recovering from a dismount special maneuver.
+                            mob.PrivateOverheadMessage(MessageType.Regular, 0x3B2, flying ? 1112456 : 1070859, mob.NetState);
+                            // You cannot mount while recovering from a dismount special maneuver.
                             break;
                         }
                 }

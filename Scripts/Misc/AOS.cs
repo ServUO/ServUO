@@ -454,9 +454,9 @@ namespace Server
                 case 13: return Math.Min(4, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
                 case 14: return Math.Min(40, AosAttributes.GetValue(from, AosAttribute.LowerManaCost)) + BaseArmor.GetInherentLowerManaCost(from);
                 
-                case 15: return GetManaRegen(from); // HP   REGEN
-                case 16: return GetStamRegen(from); // Stam REGEN
-                case 17: return GetManaRegen(from); // MANA REGEN
+                case 15: return RegenRates.HitPointRegen(from); // HP   REGEN
+                case 16: return RegenRates.StamRegen(from); // Stam REGEN
+                case 17: return RegenRates.ManaRegen(from); // MANA REGEN
                 case 18: return Math.Min(105, AosAttributes.GetValue(from, AosAttribute.ReflectPhysical)); // reflect phys
                 case 19: return Math.Min(50, AosAttributes.GetValue(from, AosAttribute.EnhancePotions)); // enhance pots
 
@@ -473,57 +473,6 @@ namespace Server
                 case 28: return AosAttributes.GetValue(from, AosAttribute.BonusMana); // mana inc
 				default: return 0;
 			}
-        }
-
-        private static int GetHitsRegen(Mobile m)
-        {
-            int regen = AosAttributes.GetValue(m, AosAttribute.RegenHits);
-
-            if (RegenRates.CheckAnimal(m, typeof(Dog)) || RegenRates.CheckAnimal(m, typeof(Cat)))
-                regen += m.Skills[SkillName.Ninjitsu].Fixed / 30;
-
-            if (RegenRates.CheckTransform(m, typeof(HorrificBeastSpell)))
-                regen += 20;
-
-            regen += RampageSpell.GetBonus(m, RampageSpell.BonusType.HitPointRegen);
-            regen += CombatTrainingSpell.RegenBonus(m);
-            regen += BarrabHemolymphConcentrate.HPRegenBonus(m);
-
-            if (m.Race == Race.Human)
-                regen += 2;
-
-            return Math.Min(18, regen);
-        }
-
-        private static int GetStamRegen(Mobile m)
-        {
-            int regen = AosAttributes.GetValue(m, AosAttribute.RegenStam);
-
-            if (RegenRates.CheckTransform(m, typeof(VampiricEmbraceSpell)))
-                regen += 15;
-
-            if (RegenRates.CheckAnimal(m, typeof(Kirin)))
-                regen += 20;
-
-            regen += RampageSpell.GetBonus(m, RampageSpell.BonusType.StamRegen);
-
-            return regen;
-        }
-
-        private static int GetManaRegen(Mobile m)
-        {
-            int regen = AosAttributes.GetValue(m, AosAttribute.RegenMana);
-
-            if (RegenRates.CheckTransform(m, typeof(VampiricEmbraceSpell)))
-                regen += 3;
-
-            if (RegenRates.CheckTransform(m, typeof(LichFormSpell)))
-                regen += 13;
-
-            if (m.Race == Race.Gargoyle)
-                regen += 2;
-
-            return Math.Min(30, regen);
         }
         #endregion
     }

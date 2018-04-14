@@ -328,7 +328,7 @@ namespace Server.Items
 
             if (amount > 0 && theirState != null)
             {
-                theirState.Send(Packet.Acquire(new DamagePacket(this, amount)));
+                theirState.Send(new DamagePacket(this, amount));
             }
 
 			OnDamage(amount, from, Hits < 0);

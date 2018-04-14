@@ -96,6 +96,11 @@ namespace Server.Spells.Ninjitsu
                 Caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
                 return false;
             }
+            else if (Caster.Flying)
+            {
+                Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
+                return false;
+            }
 
             return base.CheckCast();
         }
