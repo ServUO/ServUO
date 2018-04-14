@@ -233,7 +233,11 @@ namespace Server.Engines.Plants
 		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
 		{
 			base.GetContextMenuEntries( from, list );
-			SetSecureLevelEntry.AddTo( from, this, list );
+
+            if (m_PlantStatus != PlantStatus.DecorativePlant)
+            {
+                SetSecureLevelEntry.AddTo(from, this, list);
+            }
 		}
 
 		public int GetLocalizedPlantStatus()

@@ -877,6 +877,7 @@ namespace Server.Multis
             }
 
             DesignContext.Add(m, this);
+
             m.Send(new BeginHouseCustomization(this));
 
             NetState ns = m.NetState;
@@ -992,9 +993,14 @@ namespace Server.Multis
             base.Deserialize(reader);
         }
 
-        public bool IsHiddenToCustomizer(Item item)
+        public bool IsHiddenToCustomizer(Mobile m, Item item)
         {
-            return (item == m_Signpost || item == m_SignHanger || item == Sign || IsFixture(item));
+            BaseHouse house = BaseHouse.FindHouseAt(item);
+
+            if (item == m_Signpost || item == m_SignHanger || item == Sign || IsFixture(item))
+                return true;
+
+            return !(item is BaseMulti) && item.RootParentEntity != m && house != null && house != this;
         }
 
         public static void Initialize()
@@ -2417,23 +2423,8 @@ namespace Server.Multis
             if (state == null)
                 return;
 
-            List<Item> fixtures = foundation.Fixtures;
-
-            for (int i = 0; fixtures != null && i < fixtures.Count; ++i)
-            {
-                Item item = fixtures[i];
-
-                state.Send(item.RemovePacket);
-            }
-
-            if (foundation.Signpost != null)
-                state.Send(foundation.Signpost.RemovePacket);
-
-            if (foundation.SignHanger != null)
-                state.Send(foundation.SignHanger.RemovePacket);
-
-            if (foundation.Sign != null)
-                state.Send(foundation.Sign.RemovePacket);
+            from.ClearScreen();
+            from.SendEverything();
         }
 
         public static void Remove(Mobile from)
@@ -2458,23 +2449,8 @@ namespace Server.Multis
             if (state == null)
                 return;
 
-            List<Item> fixtures = context.Foundation.Fixtures;
-
-            for (int i = 0; fixtures != null && i < fixtures.Count; ++i)
-            {
-                Item item = fixtures[i];
-
-                item.SendInfoTo(state);
-            }
-
-            if (context.Foundation.Signpost != null)
-                context.Foundation.Signpost.SendInfoTo(state);
-
-            if (context.Foundation.SignHanger != null)
-                context.Foundation.SignHanger.SendInfoTo(state);
-
-            if (context.Foundation.Sign != null)
-                context.Foundation.Sign.SendInfoTo(state);
+            from.ClearScreen();
+            from.SendEverything();
         }
     }
 

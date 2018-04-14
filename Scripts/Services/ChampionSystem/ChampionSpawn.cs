@@ -1542,7 +1542,7 @@ namespace Server.Engines.CannedEvil
 
         public override bool OnMoveInto(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation)
         {
-            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted))
+            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && Map == Map.Felucca)
             {
                 return false;
             }
@@ -1554,7 +1554,7 @@ namespace Server.Engines.CannedEvil
         {
             Mobile m = e.Mobile;
 
-            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player)
+            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player && m.Map == Map.Felucca)
             {
                 if (m.Alive && m.Backpack != null)
                 {
@@ -1592,7 +1592,7 @@ namespace Server.Engines.CannedEvil
         {
             Mobile m = e.Mobile;
 
-            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && m.Region.IsPartOf<ChampionSpawnRegion>())
+            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && m.Region.IsPartOf<ChampionSpawnRegion>() && m.Map == Map.Felucca)
             {
                 Map map = m.Map;
                 Point3D loc = ExorcismSpell.GetNearestShrine(m, ref map);

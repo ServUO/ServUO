@@ -18,13 +18,7 @@ namespace Server.Gumps
         public double Points { get; protected set; }
         public List<CollectionItem> Collection { get; protected set; }
 
-        public virtual int YDist 
-        { 
-            get 
-            {
-                return 10;
-            }
-        }
+        public virtual int YDist  {  get  { return 10; } }
 
         public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = -1.0)
             : base(50, 50)

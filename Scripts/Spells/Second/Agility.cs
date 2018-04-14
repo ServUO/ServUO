@@ -37,15 +37,25 @@ namespace Server.Spells.Second
             }
             else if (this.CheckBSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                int oldDex = SpellHelper.GetBuffOffset(m, StatType.Dex);
+                int newDex = SpellHelper.GetOffset(Caster, m, StatType.Dex, false, true);
 
-				SpellHelper.AddStatBonus(this.Caster, m, false, StatType.Dex);
-				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
-				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Agility, 1075841, length, m, percentage.ToString()));
+                if (newDex < oldDex || newDex == 0)
+                {
+                    DoHurtFizzle();
+                }
+                else
+                {
+                    SpellHelper.Turn(this.Caster, m);
 
-				m.FixedParticles(0x375A, 10, 15, 5010, EffectLayer.Waist);
-                m.PlaySound(0x1e7);
+                    SpellHelper.AddStatBonus(this.Caster, m, false, StatType.Dex);
+                    int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
+                    TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Agility, 1075841, length, m, percentage.ToString()));
+
+                    m.FixedParticles(0x375A, 10, 15, 5010, EffectLayer.Waist);
+                    m.PlaySound(0x1e7);
+                }
             }
 
             this.FinishSequence();

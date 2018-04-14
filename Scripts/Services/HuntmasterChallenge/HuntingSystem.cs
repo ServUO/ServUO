@@ -65,7 +65,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
             m_SeasonBegins = DateTime.Now;
             DateTime ends = DateTime.Now + TimeSpan.FromDays(30);
-            m_SeasonEnds = new DateTime(ends.Year, ends.Month, ends.Day, 8, 0, 0);
+            m_SeasonEnds = new DateTime(ends.Year, ends.Month, 1, 0, 0, 0);
             m_NextHint = DateTime.UtcNow;
             m_NextBonusIndex = DateTime.UtcNow;
 
@@ -264,7 +264,7 @@ namespace Server.Engines.HuntsmasterChallenge
 			
 			m_SeasonBegins = DateTime.Now;
             DateTime ends = DateTime.Now + TimeSpan.FromDays(30);
-			m_SeasonEnds = new DateTime(ends.Year, ends.Month, ends.Day, 8, 0, 0);
+			m_SeasonEnds = new DateTime(ends.Year, ends.Month, 1, 0, 0, 0);
 
             HuntingDisplayTrophy.InvalidateDisplayTrophies();
 		}

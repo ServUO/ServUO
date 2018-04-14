@@ -20,7 +20,7 @@ namespace CustomsFramework
 	public static class OutgoingPacketOverrides
 	{
 		public const int CallPriority = ((byte)'r') << 16 + ((byte)'a') << 8 + ((byte)'d');
-		private static NetStateCreatedCallback _CreatedCallbackSuccessor;
+		
 		private static readonly OutgoingPacketOverrideHandler[] _Handlers;
 		private static readonly OutgoingPacketOverrideHandler[] _ExtendedHandlersLow;
 		private static readonly Dictionary<int, OutgoingPacketOverrideHandler> _ExtendedHandlersHigh;
@@ -35,8 +35,7 @@ namespace CustomsFramework
 		[CallPriority(CallPriority)]
 		public static void Configure()
 		{
-			_CreatedCallbackSuccessor = NetState.CreatedCallback;
-			NetState.CreatedCallback = OnNetStateCreated;
+			NetState.CreatedCallback += OnNetStateCreated;
 		}
 
 		public static void Register(int packetID, bool compressed, OutgoingPacketOverrideHandler handler)
@@ -78,11 +77,6 @@ namespace CustomsFramework
 		private static void OnNetStateCreated(NetState n)
 		{
 			n.PacketEncoder = new PacketOverrideRegistryEncoder(n.PacketEncoder);
-
-			if (_CreatedCallbackSuccessor != null)
-			{
-				_CreatedCallbackSuccessor(n);
-			}
 		}
 
 		private class PacketOverrideRegistryEncoder : IPacketEncoder
@@ -122,12 +116,7 @@ namespace CustomsFramework
 					packetID = packetBuffer[0];
 				}
 
-				OutgoingPacketOverrideHandler handler = GetHandler(packetID);
-
-				if (handler == null)
-				{
-					handler = GetExtendedHandler(packetID);
-				}
+				OutgoingPacketOverrideHandler handler = GetHandler(packetID) ?? GetExtendedHandler(packetID);
 
 				if (handler != null)
 				{

@@ -337,7 +337,7 @@ namespace Server.Misc
                     CheckReduceSkill((PlayerMobile)from, skills, toGain, skill);
                 }
 
-                if (!from.Player || (skills.Total + toGain) <= skills.Cap)
+                if (skills.Total + toGain <= skills.Cap)
                 {
                     skill.BaseFixedPoint += toGain;
 

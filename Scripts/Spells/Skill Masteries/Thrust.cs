@@ -113,14 +113,14 @@ namespace Server.Spells.SkillMasteries
 			if(Target != defender)
 			{
                 Phase = 1;
-                DefenseModifier = GetMasteryLevel() * 6;
+                DefenseModifier = (GetMasteryLevel() * 6);
 
 				Target = defender;     
                 new InternalTimer(this, defender);
 			}
 			else
 			{
-                DefenseModifier += GetMasteryLevel() * 6;
+                DefenseModifier += (GetMasteryLevel() * 6);
                 Phase++;
 			}
 
@@ -152,7 +152,6 @@ namespace Server.Spells.SkillMasteries
 
             if (Caster.Mana < mana)
             {
-                Expire();
                 return false;
             }
 
@@ -163,6 +162,7 @@ namespace Server.Spells.SkillMasteries
 		private void Reset()
 		{
 			DefenseModifier = 0;
+            Target = null;
 
             BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Thrust, 1155989, 1155990, String.Format("{0}\t{1}\t{2}", AttackModifier.ToString(), (GetMasteryLevel() * 6).ToString(), ScaleMana(30).ToString())));
             //Your next physical attack will be increased by +~1_VAL~% damage while reducing your victim's physical attack damage by ~2_VAL~%.<br>Mana Upkeep Cost: ~3_VAL~.
@@ -198,17 +198,6 @@ namespace Server.Spells.SkillMasteries
                 {
                     Spell.Reset();
                     Stop();
-                }
-                else
-                {
-                    if (Spell.DefenseModifier != DamageModifier)
-                    {
-                        int expires = (int)(Expires - DateTime.UtcNow).TotalSeconds;
-                        BuffInfo.AddBuff(Target, new BuffInfo(BuffIcon.ThrustDebuff, 1155989, 1156234, TimeSpan.FromSeconds(expires), Target, Spell.DefenseModifier.ToString()));
-                        // All damage from your physical attacks have been reduced by ~1_val~%.
-
-                        DamageModifier = Spell.DefenseModifier;
-                    }
                 }
             }
         }

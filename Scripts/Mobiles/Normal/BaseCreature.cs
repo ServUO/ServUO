@@ -558,9 +558,6 @@ namespace Server.Mobiles
 
         public virtual void InitializeAbilities()
         {
-            if (!PetTrainingHelper.Enabled)
-                return;
-
             switch (AI)
             {
                 case AIType.AI_Mage: SetMagicalAbility(MagicalAbility.Magery); break;
@@ -582,6 +579,9 @@ namespace Server.Mobiles
             {
                 SetSpecialAbility(SpecialAbility.Heal);
             }
+
+            if (PetTrainingHelper.Enabled)
+                return;
 
             if(Skills[SkillName.Focus].Value == 0)
                 SetSkill(SkillName.Focus, 2, 20);
@@ -4018,7 +4018,9 @@ namespace Server.Mobiles
             double total = Skills[SkillName.Poisoning].Value;
 
             // natural poisoner retains their poison level. Added spell school is capped at level 2.
-            if (total > 85)
+            if (total >= 100)
+                level = 3;
+            else if (total > 85)
                 level = 2;
             else if (total > 65)
                 level = 1;
@@ -5251,6 +5253,15 @@ namespace Server.Mobiles
             if (name == SkillName.Poisoning && Skills[name].Base > 0 && !PetTrainingHelper.ValidateTrainingPoint(this, MagicalAbility.Poisoning))
             {
                 SetMagicalAbility(MagicalAbility.Poisoning);
+            }
+
+            if (!Controlled && name == SkillName.Magery && AbilityProfile != null && 
+                !AbilityProfile.HasAbility(MagicalAbility.Magery) && 
+                Skills[SkillName.Magery].Base > 0 && 
+                (AI == AIType.AI_Mage || AI == AIType.AI_Necro || AI == AIType.AI_NecroMage || AI == AIType.AI_Mystic || AI == AIType.AI_Spellweaving))
+
+            {
+                SetMagicalAbility(MagicalAbility.Magery);
             }
         }
 
@@ -6888,7 +6899,7 @@ namespace Server.Mobiles
 
         public bool IsHealing { get { return (m_HealTimer != null); } }
 
-        public virtual void CheckHeal()
+        public virtual bool CheckHeal()
         {
             long tc = Core.TickCount;
 
@@ -6900,15 +6911,20 @@ namespace Server.Mobiles
                     owner.Map == Map && InRange(owner, HealStartRange) && InLOS(owner) && owner.Hits < HealOwnerTrigger * owner.HitsMax)
                 {
                     HealStart(owner);
-
                     m_NextHealOwnerTime = tc + (int)TimeSpan.FromSeconds(HealOwnerInterval).TotalMilliseconds;
+
+                    return true;
                 }
                 else if (tc >= m_NextHealTime && CanBeBeneficial(this) && (Hits < HealTrigger * HitsMax || Poisoned))
                 {
                     HealStart(this);
                     m_NextHealTime = tc + (int)TimeSpan.FromSeconds(HealInterval).TotalMilliseconds;
+
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public virtual void HealStart(Mobile patient)

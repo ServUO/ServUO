@@ -2292,8 +2292,6 @@ namespace Server.Mobiles
 					list.Add(new CallbackEntry(6157, CancelProtection));
 				}
 
-                Region r = Region.Find(Location, Map);
-
                 #region Void Pool
                 if (VoidPool || Region.IsPartOf<VoidPoolRegion>())
                 {
@@ -4995,7 +4993,7 @@ namespace Server.Mobiles
 
 		public override bool CanSee(Item item)
 		{
-			if (m_DesignContext != null && m_DesignContext.Foundation.IsHiddenToCustomizer(item))
+			if (m_DesignContext != null && m_DesignContext.Foundation.IsHiddenToCustomizer(this, item))
 			{
 				return false;
 			}
