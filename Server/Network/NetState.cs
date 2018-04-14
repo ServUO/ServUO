@@ -1172,9 +1172,15 @@ namespace Server.Network
 						ns.Mobile = null;
 					}
 
-					ns.m_Gumps.Clear();
-					ns.m_Menus.Clear();
-					ns.m_HuePickers.Clear();
+					if (ns.m_Gumps != null)
+						ns.m_Gumps.Clear();
+					
+					if (ns.m_Menus != null)
+						ns.m_Menus.Clear();
+					
+					if (ns.m_HuePickers != null)
+						ns.m_HuePickers.Clear();
+                        
 					ns.Account = null;
 					ns.ServerInfo = null;
 					ns.CityInfo = null;
