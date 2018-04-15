@@ -77,9 +77,7 @@ namespace Server.Spells.SkillMasteries
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.PlayingTheOddsDebuff, 1155913, 1156091, duration, Caster));
                 //Your bow range has been reduced as you play the odds.
 
-                List<Mobile> list = GetParty();
-
-                foreach (Mobile m in list.Where(mob => mob is PlayerMobile))
+                foreach (Mobile m in GetParty().Where(mob => mob is PlayerMobile))
                 {
                     m.PlaySound(0x101);
                     m.FixedEffect(0x13B2, 10, 20, 2728, 5);
@@ -89,8 +87,6 @@ namespace Server.Spells.SkillMasteries
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PlayingTheOdds, 1155913, 1155998, duration, m, args));
                         //~1_NAME~ grants you the following:<br>+~2_VAl~% Hit Chance Increase.<br>+~3_VAL~% Swing Speed Increase.
                 }
-
-                ColUtility.Free(list);
 
                 Caster.SendLocalizedMessage(1156091); // Your bow range has been reduced as you play the odds.
 

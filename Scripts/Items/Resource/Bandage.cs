@@ -13,6 +13,7 @@ using Server.Gumps;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Network;
+using Server.Engines.Despise;
 #endregion
 
 namespace Server.Items
@@ -233,8 +234,13 @@ namespace Server.Items
 			return bc;
 		}
 
-		public static SkillName GetPrimarySkill(Mobile m)
+		public static SkillName GetPrimarySkill(Mobile healer, Mobile m)
 		{
+            if (m is DespiseCreature)
+            {
+                return healer.Skills[SkillName.Healing].Value > healer.Skills[SkillName.Veterinary].Value ? SkillName.Healing : SkillName.Veterinary;
+            }
+
 			if (!m.Player && (m.Body.IsMonster || m.Body.IsAnimal))
 			{
 				return SkillName.Veterinary;
@@ -245,8 +251,13 @@ namespace Server.Items
 			}
 		}
 
-		public static SkillName GetSecondarySkill(Mobile m)
+        public static SkillName GetSecondarySkill(Mobile healer, Mobile m)
 		{
+            if (m is DespiseCreature)
+            {
+                return healer.Skills[SkillName.Healing].Value > healer.Skills[SkillName.Veterinary].Value ? SkillName.Anatomy : SkillName.AnimalLore;
+            }
+
 			if (!m.Player && (m.Body.IsMonster || m.Body.IsAnimal))
 			{
 				return SkillName.AnimalLore;
@@ -303,8 +314,8 @@ namespace Server.Items
             bool playSound = true;
             bool checkSkills = false;
 
-            SkillName primarySkill = GetPrimarySkill(m_Patient);
-            SkillName secondarySkill = GetSecondarySkill(m_Patient);
+            SkillName primarySkill = GetPrimarySkill(m_Healer, m_Patient);
+            SkillName secondarySkill = GetSecondarySkill(m_Healer, m_Patient);
 
             BaseCreature petPatient = m_Patient as BaseCreature;
 
@@ -671,7 +682,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    if (Core.AOS && GetPrimarySkill(patient) == SkillName.Veterinary)
+                    if (Core.AOS && GetPrimarySkill(healer, patient) == SkillName.Veterinary)
                     {
                         seconds = 2.0;
                     }

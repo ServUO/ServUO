@@ -337,9 +337,9 @@ namespace Server.Misc
                     CheckReduceSkill((PlayerMobile)from, skills, toGain, skill);
                 }
 
-                if (skills.Total + toGain <= skills.Cap)
+                if (!from.Player || (skills.Total + toGain <= skills.Cap))
                 {
-                    skill.BaseFixedPoint += toGain;
+                    skill.BaseFixedPoint = Math.Min(skill.CapFixedPoint, skill.BaseFixedPoint + toGain);
 
                     if(from is PlayerMobile)
                         UpdateGGS(from, skill);

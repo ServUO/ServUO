@@ -598,5 +598,10 @@ namespace Server.Regions
         {
             return true;
         }
+
+        public virtual bool CanSee(Mobile m, IEntity e)
+        {
+            return true;
+        }
     }
 }

@@ -76,36 +76,7 @@ namespace Server.Misc
 
         private static TimeSpan Mobile_HitsRegenRate(Mobile from)
         {
-            int points = AosAttributes.GetValue(from, AosAttribute.RegenHits);
-
-            if (from is BaseCreature)
-                points += ((BaseCreature)from).DefaultHitsRegen;
-
-            if (Core.ML && from.Race == Race.Human)	//Is this affected by the cap?
-                points += 2;
-           
-            if (points < 0)
-                points = 0;
-
-            if (Core.ML && from is PlayerMobile)	//does racial bonus go before/after?
-                points = Math.Min(points, 18);
-
-            if (CheckTransform(from, typeof(HorrificBeastSpell)))
-                points += 20;
-
-            if (CheckAnimal(from, typeof(Dog)) || CheckAnimal(from, typeof(Cat)))
-                points += from.Skills[SkillName.Ninjitsu].Fixed / 30;
-
-            // Skill Masteries
-            points += RampageSpell.GetBonus(from, RampageSpell.BonusType.HitPointRegen);
-            points += CombatTrainingSpell.RegenBonus(from);
-            points += BarrabHemolymphConcentrate.HPRegenBonus(from);
-
-            if (Core.AOS)
-                foreach (RegenBonusHandler handler in HitsBonusHandlers)
-                    points += handler(from);
-
-            return TimeSpan.FromSeconds(1.0 / (0.1 * (1 + points)));
+            return TimeSpan.FromSeconds(1.0 / (0.1 * (1 + HitPointRegen(from))));
         }
 
         private static TimeSpan Mobile_StamRegenRate(Mobile from)
@@ -116,32 +87,7 @@ namespace Server.Misc
             CheckBonusSkill(from, from.Stam, from.StamMax, SkillName.Focus);
 
             int points = (int)(from.Skills[SkillName.Focus].Value * 0.1);
-
-            int cappedPoints = AosAttributes.GetValue(from, AosAttribute.RegenStam);
-
-            if (from is BaseCreature)
-                points += ((BaseCreature)from).DefaultStamRegen;
-
-            if (CheckTransform(from, typeof(VampiricEmbraceSpell)))
-                cappedPoints += 15;
-
-            if (CheckAnimal(from, typeof(Kirin)))
-                cappedPoints += 20;
-
-            if (Core.ML && from is PlayerMobile)
-                cappedPoints = Math.Min(cappedPoints, 24);
-
-            points += cappedPoints;
-
-            // Skill Masteries
-            points += RampageSpell.GetBonus(from, RampageSpell.BonusType.StamRegen); // After the cap???
-
-            if (points < -1)
-                points = -1;
-
-            if (Core.AOS)
-                foreach (RegenBonusHandler handler in StamBonusHandlers)
-                    points += handler(from);
+            points += StamRegen(from);
 
             return TimeSpan.FromSeconds(1.0 / (0.1 * (2 + points)));
         }
@@ -172,32 +118,13 @@ namespace Server.Misc
 
                 double totalPoints = focusPoints + medPoints + (from.Meditating ? (medPoints > 13.0 ? 13.0 : medPoints) : 0.0);
 
-                int cappedPoints = AosAttributes.GetValue(from, AosAttribute.RegenMana);
-
-                if (from is BaseCreature)
-                    totalPoints += ((BaseCreature)from).DefaultManaRegen;
-
-                if (CheckTransform(from, typeof(VampiricEmbraceSpell)))
-                    cappedPoints += 3;
-                else if (CheckTransform(from, typeof(LichFormSpell)))
-                    cappedPoints += 13;
-
-                if (Core.ML && from is PlayerMobile)
-                    cappedPoints = Math.Min(cappedPoints, 18);
-
-                totalPoints += cappedPoints;
-
-				if (from is PlayerMobile && ((PlayerMobile)from).Race == Race.Gargoyle)
-					totalPoints += 2;
+                totalPoints += ManaRegen(from);
 
                 if (totalPoints < -1)
                     totalPoints = -1;
 
                 if (Core.ML)
                     totalPoints = Math.Floor(totalPoints);
-
-                foreach (RegenBonusHandler handler in ManaBonusHandlers)
-                    totalPoints += handler(from);
 
                 rate = 1.0 / (0.1 * (2 + totalPoints));
             }
@@ -226,6 +153,93 @@ namespace Server.Misc
             }
 
             return TimeSpan.FromSeconds(rate);
+        }
+
+        public static int HitPointRegen(Mobile from)
+        {
+            int points = AosAttributes.GetValue(from, AosAttribute.RegenHits);
+
+            if (from is BaseCreature)
+                points += ((BaseCreature)from).DefaultHitsRegen;
+
+            if (Core.ML && from is PlayerMobile && from.Race == Race.Human)	//Is this affected by the cap?
+                points += 2;
+
+            if (points < 0)
+                points = 0;
+
+            if (Core.ML && from is PlayerMobile)	//does racial bonus go before/after?
+                points = Math.Min(points, 18);
+
+            if (CheckTransform(from, typeof(HorrificBeastSpell)))
+                points += 20;
+
+            if (CheckAnimal(from, typeof(Dog)) || CheckAnimal(from, typeof(Cat)))
+                points += from.Skills[SkillName.Ninjitsu].Fixed / 30;
+
+            // Skill Masteries - goes after cap
+            points += RampageSpell.GetBonus(from, RampageSpell.BonusType.HitPointRegen);
+            points += CombatTrainingSpell.RegenBonus(from);
+            points += BarrabHemolymphConcentrate.HPRegenBonus(from);
+
+            if (Core.AOS)
+                foreach (RegenBonusHandler handler in HitsBonusHandlers)
+                    points += handler(from);
+
+            return points;
+        }
+
+        public static int StamRegen(Mobile from)
+        {
+            int points = AosAttributes.GetValue(from, AosAttribute.RegenStam);
+
+            if (from is BaseCreature)
+                points += ((BaseCreature)from).DefaultStamRegen;
+
+            if (CheckTransform(from, typeof(VampiricEmbraceSpell)))
+                points += 15;
+
+            if (CheckAnimal(from, typeof(Kirin)))
+                points += 20;
+
+            if (Core.ML && from is PlayerMobile)
+                points = Math.Min(points, 24);
+
+            // Skill Masteries - goes after cap
+            points += RampageSpell.GetBonus(from, RampageSpell.BonusType.StamRegen);
+
+            if (points < -1)
+                points = -1;
+
+            if (Core.AOS)
+                foreach (RegenBonusHandler handler in StamBonusHandlers)
+                    points += handler(from);
+
+            return points;
+        }
+
+        public static int ManaRegen(Mobile from)
+        {
+            int points = AosAttributes.GetValue(from, AosAttribute.RegenMana);
+
+            if (from is BaseCreature)
+                points += ((BaseCreature)from).DefaultManaRegen;
+
+            if (CheckTransform(from, typeof(VampiricEmbraceSpell)))
+                points += 3;
+            else if (CheckTransform(from, typeof(LichFormSpell)))
+                points += 13;
+
+            if (from is PlayerMobile && from.Race == Race.Gargoyle)
+                points += 2;
+
+            if (Core.ML && from is PlayerMobile)
+                points = Math.Min(points, 18);
+
+            foreach (RegenBonusHandler handler in ManaBonusHandlers)
+                points += handler(from);
+
+            return points;
         }
 
         private static double GetArmorMeditationValue(BaseArmor ar)

@@ -3229,6 +3229,11 @@ namespace Server.Multis
 
                 m_Addons[item] = Owner;
             }
+
+            foreach (var item in Region.GetEnumeratedItems().Where(i => i is AddonComponent && ((AddonComponent)i).Addon == null))
+            {
+                item.Delete();
+            }
         }
 
         private void FixLockdowns_Sandbox()

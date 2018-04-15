@@ -40,7 +40,6 @@ namespace Server.Network
 
 	public class NetState : IComparable<NetState>
 	{
-		private Socket m_Socket;
 		private readonly IPAddress m_Address;
 		private ByteQueue m_Buffer;
 		private byte[] m_RecvBuffer;
@@ -53,7 +52,7 @@ namespace Server.Network
 		private List<Gump> m_Gumps;
 		private List<HuePicker> m_HuePickers;
 		private List<IMenu> m_Menus;
-		private List<SecureTrade> m_Trades;
+		private readonly List<SecureTrade> m_Trades;
 		private readonly string m_ToString;
 		private ClientVersion m_Version;
 
@@ -546,7 +545,7 @@ namespace Server.Network
 
 		public NetState(Socket socket, MessagePump messagePump)
 		{
-			m_Socket = socket;
+			Socket = socket;
 			m_Buffer = new ByteQueue();
 
 			m_Running = false;
@@ -566,7 +565,7 @@ namespace Server.Network
 
 			try
 			{
-				m_Address = Utility.Intern(((IPEndPoint)m_Socket.RemoteEndPoint).Address);
+				m_Address = Utility.Intern(((IPEndPoint)Socket.RemoteEndPoint).Address);
 				m_ToString = m_Address.ToString();
 			}
 			catch (Exception ex)
@@ -591,7 +590,7 @@ namespace Server.Network
 
 		public virtual void Send(Packet p)
 		{
-			if (m_Socket == null || BlockAllPackets)
+			if (Socket == null || BlockAllPackets)
 			{
 				p.OnSend();
 				return;
@@ -677,7 +676,7 @@ namespace Server.Network
 
 							try
 							{
-								m_Socket.BeginSend(gram.Buffer, 0, gram.Length, SocketFlags.None, m_OnSend, m_Socket);
+								Socket.BeginSend(gram.Buffer, 0, gram.Length, SocketFlags.None, m_OnSend, Socket);
 							}
 							catch (Exception ex)
 							{
@@ -723,7 +722,7 @@ namespace Server.Network
 
 			m_Running = true;
 
-			if (m_Socket == null || m_Paused)
+			if (Socket == null || m_Paused)
 			{
 				return;
 			}
@@ -749,7 +748,7 @@ namespace Server.Network
 		{
 			m_AsyncState |= AsyncState.Pending;
 
-			m_Socket.BeginReceive(m_RecvBuffer, 0, m_RecvBuffer.Length, SocketFlags.None, m_OnReceive, m_Socket);
+			Socket.BeginReceive(m_RecvBuffer, 0, m_RecvBuffer.Length, SocketFlags.None, m_OnReceive, Socket);
 		}
 
 		private void OnReceive(IAsyncResult asyncResult)
@@ -764,7 +763,10 @@ namespace Server.Network
 				{
 					m_NextCheckActivity = Core.TickCount + 90000;
 
-					var buffer = m_RecvBuffer;
+					byte[] buffer;
+
+					lock (m_AsyncLock)
+						buffer = m_RecvBuffer;
 
 					if (PacketEncryptor != null)
 					{
@@ -888,7 +890,7 @@ namespace Server.Network
 			{
 				lock (ns.m_AsyncLock)
 				{
-					if (ns.m_Socket == null)
+					if (ns.Socket == null)
 					{
 						continue;
 					}
@@ -913,7 +915,7 @@ namespace Server.Network
 
 		public bool Flush()
 		{
-			if (m_Socket == null)
+			if (Socket == null)
 			{
 				return false;
 			}
@@ -942,7 +944,7 @@ namespace Server.Network
 					try
 					{
 						_sending = true;
-						m_Socket.BeginSend(gram.Buffer, 0, gram.Length, SocketFlags.None, m_OnSend, m_Socket);
+						Socket.BeginSend(gram.Buffer, 0, gram.Length, SocketFlags.None, m_OnSend, Socket);
 						return true;
 					}
 					catch (Exception ex)
@@ -991,7 +993,7 @@ namespace Server.Network
 
 		public void CheckAlive(long curTicks)
 		{
-			if (m_Socket == null)
+			if (Socket == null)
 			{
 				return;
 			}
@@ -1049,7 +1051,7 @@ namespace Server.Network
 
 		public virtual void Dispose(bool flush)
 		{
-			if (m_Socket == null || m_Disposing)
+			if (Socket == null || m_Disposing)
 			{
 				return;
 			}
@@ -1060,29 +1062,26 @@ namespace Server.Network
 			{
 				Flush();
 			}
-
-			lock (m_AsyncLock)
+			
+			try
 			{
-				try
-				{
-					m_Socket.Shutdown(SocketShutdown.Both);
-				}
-				catch (SocketException ex)
-				{
-					TraceException(ex);
-				}
-
-				try
-				{
-					m_Socket.Close();
-				}
-				catch (SocketException ex)
-				{
-					TraceException(ex);
-				}
-
-				m_Socket = null;
+				Socket.Shutdown(SocketShutdown.Both);
 			}
+			catch (SocketException ex)
+			{
+				TraceException(ex);
+			}
+
+			try
+			{
+				Socket.Close();
+			}
+			catch (SocketException ex)
+			{
+				TraceException(ex);
+			}
+
+			Socket = null;
 
 			if (m_RecvBuffer != null)
 			{
@@ -1201,16 +1200,7 @@ namespace Server.Network
 
 		public bool Seeded { get; set; }
 
-		public Socket Socket
-		{
-			get
-			{
-				lock (m_AsyncLock)
-				{
-					return m_Socket;
-				}
-			}
-		}
+		public Socket Socket { get; private set; }
 
 		public ByteQueue Buffer { get { return m_Buffer; } }
 

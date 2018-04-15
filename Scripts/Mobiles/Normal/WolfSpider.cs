@@ -120,7 +120,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -132,6 +132,11 @@ namespace Server.Mobiles
             {
                 Hue = 0;
                 Body = 736;
+            }
+
+            if (version == 1 && (AbilityProfile == null || AbilityProfile.MagicalAbility == MagicalAbility.None))
+            {
+                SetMagicalAbility(MagicalAbility.Poisoning);
             }
         }
     }

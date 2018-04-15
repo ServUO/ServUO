@@ -44,9 +44,7 @@ namespace Server.Spells.SkillMasteries
                 m_PropertyBonus = (int)((BaseSkillBonus * 12) + (CollectiveBonus * 3));
                 m_DamageBonus = (int)Math.Min(40, ((BaseSkillBonus * 30) + (CollectiveBonus * 10)));
 
-                System.Collections.Generic.List<Mobile> list = GetParty();
-
-                foreach (Mobile m in list)
+                foreach (Mobile m in GetParty())
                 {
                     m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
                     m.SendLocalizedMessage(1115736); // You feel inspired by the bard's spellsong.
@@ -54,9 +52,6 @@ namespace Server.Spells.SkillMasteries
                     string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_DamageBonus);
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Inspire, 1115683, 1115729, args.ToString()));
                 }
-
-                list.Clear();
-                list.TrimExcess();
 
 				BeginTimer();
 			}
