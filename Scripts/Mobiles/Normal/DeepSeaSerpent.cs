@@ -47,11 +47,6 @@ namespace Server.Mobiles
                 this.PackItem(new SulfurousAsh(4));
             else
                 this.PackItem(new BlackPearl(4));
-
-            this.PackItem(new SpecialFishingNet());
-
-            if (Utility.RandomDouble() < .05)
-                this.PackItem(new MessageInABottle());
         }
 
         public DeepSeaSerpent(Serial serial)
