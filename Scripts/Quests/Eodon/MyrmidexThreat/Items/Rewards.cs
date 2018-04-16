@@ -129,6 +129,7 @@ namespace Server.Items
 		[Constructable]
 		public MoonstoneCrystal() : base(40123)
 		{
+            Weight = 10;
 		}
 		
 		public override void OnDoubleClick(Mobile from)
