@@ -23,6 +23,7 @@ namespace Server
             Initial         = 0x00000001,
             Sphinx          = 0x00000002,
             IceHoundRemoval = 0x00000004,
+            PaladinAndKrakin= 0x00000008,
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -132,6 +133,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.PaladinAndKrakin) == 0)
+                    {
+                        RemovePaladinsAndKrakens();
+                        VersionFlag |= SpawnerVersion.PaladinAndKrakin;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.IceHoundRemoval) == 0)
                     {
                         RemoveIceHounds();
@@ -190,6 +197,15 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Remove Paladins And Krakens
+        public static void RemovePaladinsAndKrakens()
+        {
+            Remove("HirePaladin");
+            Remove("Kraken", sp => !Region.Find(sp.Location, sp.Map).IsPartOf("Shame"));
+            ToConsole("Paladins and Krakens removed from spawners.");
+        }
+        #endregion
 
         #region Remove Ice Hounds
         public static void RemoveIceHounds()
@@ -558,13 +574,16 @@ namespace Server
         /// Removes a SpawnerObject string, either the string or entire line
         /// </summary>
         /// <param name="toRemove">string to remove from line</param>
-        public static void Remove(string toRemove)
+        public static void Remove(string toRemove, Func<XmlSpawner, bool> predicate = null)
         {
             int count = 0;
 
             foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
             {
-                count += Remove(spawner, toRemove);
+                if (predicate == null || predicate(spawner))
+                {
+                    count += Remove(spawner, toRemove);
+                }
             }
 
             ToConsole(String.Format("Spawn Removal: {0} spawn lines removed containing -{1}-.", count.ToString(), toRemove));

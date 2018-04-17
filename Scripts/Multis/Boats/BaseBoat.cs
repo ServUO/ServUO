@@ -173,27 +173,27 @@ namespace Server.Multis
                 if (!m_Decay)
                     return 1043010; // This structure is like new.
 
-                if(m_DecayTime <= DateTime.UtcNow)
+                if (m_DecayTime <= DateTime.UtcNow)
                     return 1043015; // This structure is in danger of collapsing.
 
                 TimeSpan decaySpan = m_DecayTime - DateTime.UtcNow;
 
-                if(decaySpan > TimeSpan.FromDays(6.0))
+                if (decaySpan >= TimeSpan.FromDays(13.0))
                     return 1043010; // This structure is like new.
 
-                if(decaySpan > TimeSpan.FromDays(5.0))
+                if (decaySpan >= TimeSpan.FromDays(10.0))
                     return 1043011; // This structure is slightly worn.
 
-                if(decaySpan > TimeSpan.FromDays(4.0))
+                if (decaySpan >= TimeSpan.FromDays(7.0))
                     return 1043012; // This structure is somewhat worn.
 
-                if(decaySpan > TimeSpan.FromDays(3.0))
+                if (decaySpan >= TimeSpan.FromDays(4.0))
                     return 1043013; // This structure is fairly worn.
 
-                 if(decaySpan > TimeSpan.FromDays(1.5))
-                     return 1043014; // This structure is greatly worn.
+                if (decaySpan >= TimeSpan.FromDays(1.0))
+                    return 1043014; // This structure is greatly worn.
 
-                 return 1043015; // This structure is in danger of collapsing.*/
+                return 1043015; // This structure is in danger of collapsing.*/
             }
         }
 
@@ -212,7 +212,7 @@ namespace Server.Multis
         public virtual bool IsClassicBoat { get { return true; } }
         public virtual double TurnDelay { get { return 0.5; } }
         public virtual bool Scuttled { get { return false; } }
-        public virtual TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(9); } }
+        public virtual TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(13); } }
         public virtual bool CanLinkToLighthouse { get { return true; } }
 
         #region IMount Members

@@ -400,7 +400,7 @@ namespace Server.Mobiles
 
 					// note, in order to test for a vendors display container that contains valid internal map items 
 					if (i.Map != Map.Internal || i.Parent != null || i is Fists || i is MountItem || i is EffectItem || i.HeldBy != null ||
-                        i is MovingCrate || i is SpawnPersistence || GenericBuyInfo.IsDisplayCache(i))
+                        i is MovingCrate || i is SpawnPersistence || GenericBuyInfo.IsDisplayCache(i) || i.GetType().DeclaringType == typeof(GenericBuyInfo))
 						return true;
 
                     // boat stuffs

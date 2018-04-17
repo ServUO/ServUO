@@ -586,7 +586,7 @@ namespace Server.Mobiles
             if(Skills[SkillName.Focus].Value == 0)
                 SetSkill(SkillName.Focus, 2, 20);
 
-            if(Skills[SkillName.DetectHidden].Value == 0)
+            if(Skills[SkillName.DetectHidden].Value == 0 && !(this is BaseVendor))
                 SetSkill(SkillName.DetectHidden, Utility.RandomList(10, 60));
         }
 
