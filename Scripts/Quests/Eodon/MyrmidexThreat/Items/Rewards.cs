@@ -92,6 +92,7 @@ namespace Server.Items
 		{
 			Locations = new Dictionary<int, Point3D>();
 			
+            Locations[1156705] = new Point3D(715, 1866, 40); // Eodon Moongate
 			Locations[1156706] = new Point3D(642, 1721, 40); // Barako Village
             Locations[1156707] = new Point3D(701, 2106, 40); // Jukari Village
 			Locations[1156708] = new Point3D(355, 1873, 0);  // Kurak Village
