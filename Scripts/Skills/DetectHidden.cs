@@ -7,6 +7,7 @@ using Server.Engines.VvV;
 using Server.Items;
 using System.Collections.Generic;
 using System.Linq;
+using Server.Spells;
 
 namespace Server.Items
 {
@@ -64,7 +65,7 @@ namespace Server.SkillHandlers
 
                 BaseHouse house = BaseHouse.FindHouseAt(p, src.Map, 16);
 
-                bool inHouse = (house != null && house.IsFriend(src));
+                bool inHouse = house != null && house.IsFriend(src);
 
                 if (inHouse)
                     range = 22;
@@ -80,10 +81,12 @@ namespace Server.SkillHandlers
                             double ss = srcSkill + Utility.Random(21) - 10;
                             double ts = trg.Skills[SkillName.Hiding].Value + Utility.Random(21) - 10;
                             double shadow = Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(trg);
+                            bool houseCheck = inHouse && house.IsInside(trg);
 
-                            if (src.AccessLevel >= trg.AccessLevel && (ss >= ts || (inHouse && house.IsInside(trg))) && Utility.RandomDouble() > shadow)
+                            if (src.AccessLevel >= trg.AccessLevel && (ss >= ts || houseCheck) && Utility.RandomDouble() > shadow)
                             {
-                                if (trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y))
+                                if ((trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y)) ||
+                                    (!houseCheck && !CanDetect(src, trg)))
                                     continue;
 
                                 trg.RevealingAction();
@@ -139,23 +142,18 @@ namespace Server.SkillHandlers
 
             foreach (Mobile m in eable)
             {
-                if (m == null || m is ShadowKnight)
+                if (m == null || m == src || m is ShadowKnight || !CanDetect(src, m))
                     continue;
 
-                int noto = Notoriety.Compute(src, m);
+                double ts = (m.Skills[SkillName.Hiding].Value + m.Skills[SkillName.Stealth].Value) / 2;
 
-                if (m != src && noto != Notoriety.Innocent && noto != Notoriety.Ally && noto != Notoriety.Invulnerable)
+                if (src.Race == Race.Elf)
+                    ss += 20;
+
+                if (src.AccessLevel >= m.AccessLevel && Utility.Random(1000) < (ss - ts) + 1)
                 {
-                    double ts = (m.Skills[SkillName.Hiding].Value + m.Skills[SkillName.Stealth].Value) / 2;
-
-                    if (src.Race == Race.Elf)
-                        ss += 20;
-
-                    if (src.AccessLevel >= m.AccessLevel && Utility.Random(1000) < (ss - ts) + 1)
-                    {
-                        m.RevealingAction();
-                        m.SendLocalizedMessage(500814); // You have been revealed!
-                    }
+                    m.RevealingAction();
+                    m.SendLocalizedMessage(500814); // You have been revealed!
                 }
             }
 
@@ -172,6 +170,17 @@ namespace Server.SkillHandlers
             }
 
             eable.Free();
+        }
+
+        private static bool CanDetect(Mobile src, Mobile target)
+        {
+            if (src.Blessed || (src is BaseCreature && ((BaseCreature)src).IsInvulnerable))
+                return false;
+
+            if (target.Blessed || (target is BaseCreature && ((BaseCreature)target).IsInvulnerable))
+                return false;
+
+            return src.CanBeHarmful(target) && SpellHelper.ValidIndirectTarget(src, target);
         }
     }
 }
