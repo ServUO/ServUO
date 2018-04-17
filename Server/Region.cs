@@ -468,241 +468,192 @@ namespace Server
 			return false;
 		}
 
+		#region Entity Enumeration
 		public List<Mobile> GetPlayers()
 		{
-			var list = new List<Mobile>();
+			return GetPlayers(null);
+		}
 
-			if (m_Sectors != null)
+		public List<Mobile> GetPlayers(Func<Mobile, bool> predicate)
+		{
+			return GetEnumeratedPlayers(predicate).ToList();
+		}
+
+		public IEnumerable<Mobile> GetEnumeratedPlayers()
+		{
+			return GetEnumeratedPlayers(null);
+		}
+
+		public IEnumerable<Mobile> GetEnumeratedPlayers(Func<Mobile, bool> predicate)
+		{
+			if (Sectors != null)
 			{
-				for (int i = 0; i < m_Sectors.Length; i++)
+				foreach (Sector s in Sectors)
 				{
-					Sector sector = m_Sectors[i];
-
-					foreach (Mobile player in sector.Players)
+					foreach (var o in GetDistinctEnumeration(s.Players, predicate))
 					{
-						if (player.Region.IsPartOf(this))
-						{
-							list.Add(player);
-						}
+						yield return o;
 					}
 				}
 			}
-
-			return list;
 		}
 
 		public int GetPlayerCount()
 		{
-			int count = 0;
+			return GetPlayerCount(null);
+		}
 
-			if (m_Sectors != null)
-			{
-				for (int i = 0; i < m_Sectors.Length; i++)
-				{
-					Sector sector = m_Sectors[i];
-
-					foreach (Mobile player in sector.Players)
-					{
-						if (player.Region.IsPartOf(this))
-						{
-							count++;
-						}
-					}
-				}
-			}
-
-			return count;
+		public int GetPlayerCount(Func<Mobile, bool> predicate)
+		{
+			return GetEnumeratedPlayers(predicate).Count();
 		}
 
 		public List<Mobile> GetMobiles()
 		{
-			var list = new List<Mobile>();
+			return GetMobiles(null);
+		}
 
-			if (m_Sectors != null)
+		public List<Mobile> GetMobiles(Func<Mobile, bool> predicate)
+		{
+			return GetEnumeratedMobiles(predicate).ToList();
+		}
+
+		public IEnumerable<Mobile> GetEnumeratedMobiles()
+		{
+			return GetEnumeratedMobiles(null);
+		}
+
+		public IEnumerable<Mobile> GetEnumeratedMobiles(Func<Mobile, bool> predicate)
+		{
+			if (Sectors != null)
 			{
-				for (int i = 0; i < m_Sectors.Length; i++)
+				foreach (Sector s in Sectors)
 				{
-					Sector sector = m_Sectors[i];
-
-					foreach (Mobile mobile in sector.Mobiles)
+					foreach (var o in GetDistinctEnumeration(s.Mobiles, predicate))
 					{
-						if (mobile.Region.IsPartOf(this))
-						{
-							list.Add(mobile);
-						}
+						yield return o;
 					}
 				}
 			}
-
-			return list;
 		}
 
 		public int GetMobileCount()
 		{
-			int count = 0;
+			return GetMobileCount(null);
+		}
 
-			if (m_Sectors != null)
+		public int GetMobileCount(Func<Mobile, bool> predicate)
+		{
+			return GetEnumeratedMobiles(predicate).Count();
+		}
+
+		public List<Item> GetItems()
+		{
+			return GetItems(null);
+		}
+
+		public List<Item> GetItems(Func<Item, bool> predicate)
+		{
+			return GetEnumeratedItems(predicate).ToList();
+		}
+
+		public IEnumerable<Item> GetEnumeratedItems()
+		{
+			return GetEnumeratedItems(null);
+		}
+
+		public IEnumerable<Item> GetEnumeratedItems(Func<Item, bool> predicate)
+		{
+			if (Sectors != null)
 			{
-				for (int i = 0; i < m_Sectors.Length; i++)
+				foreach (Sector s in Sectors)
 				{
-					Sector sector = m_Sectors[i];
-
-					foreach (Mobile mobile in sector.Mobiles)
+					foreach (var o in GetDistinctEnumeration(s.Items, predicate))
 					{
-						if (mobile.Region.IsPartOf(this))
-						{
-							count++;
-						}
+						yield return o;
 					}
 				}
 			}
-
-			return count;
 		}
 
-        private static readonly object _ItemLock = new object();
-        private static readonly object _MultiLock = new object();
-        private static readonly object _MobileLock = new object();
+		public int GetItemCount()
+		{
+			return GetItemCount(null);
+		}
 
-        public List<Item> GetItems()
-        {
-            if (Sectors == null)
-                return null;
+		public int GetItemCount(Func<Item, bool> predicate)
+		{
+			return GetEnumeratedItems(predicate).Count();
+		}
 
-            List<Item> list = new List<Item>();
+		public List<BaseMulti> GetMultis()
+		{
+			return GetMultis(null);
+		}
 
-            foreach(Sector s in Sectors)
-            {
-                foreach(Item item in s.Items.Where(i => i.GetRegion().IsPartOf(this)))
-                {
-                    list.Add(item);
-                }
-            }
+		public List<BaseMulti> GetMultis(Func<BaseMulti, bool> predicate)
+		{
+			return GetEnumeratedMultis(predicate).ToList();
+		}
 
-            return list;
-        }
+		public IEnumerable<BaseMulti> GetEnumeratedMultis()
+		{
+			return GetEnumeratedMultis(null);
+		}
 
-        public IEnumerable<Item> GetEnumeratedItems()
-        {
-            List<Item> list = GetItems();
-            IEnumerable<Item> e;
+		public IEnumerable<BaseMulti> GetEnumeratedMultis(Func<BaseMulti, bool> predicate)
+		{
+			if (Sectors != null)
+			{
+				foreach (Sector s in Sectors)
+				{
+					foreach (var o in GetDistinctEnumeration(s.Multis, predicate))
+					{
+						yield return o;
+					}
+				}
+			}
+		}
 
-            lock (_ItemLock)
-            {
-                e = list.AsParallel().Where(i => i != null && i.GetRegion().IsPartOf(this));
-            }
+		public int GetMultiCount()
+		{
+			return GetMultiCount(null);
+		}
 
-            foreach (Item item in e)
-            {
-                yield return item;
-            }
+		public int GetMultiCount(Func<BaseMulti, bool> predicate)
+		{
+			return GetEnumeratedMultis(predicate).Count();
+		}
 
-            list.Clear();
-            list.TrimExcess();
-        }
+		private IEnumerable<T> GetDistinctEnumeration<T>(List<T> list, Func<T, bool> predicate)
+			where T : IEntity
+		{
+			return GetEnumeration(list, predicate).Distinct();
+		}
 
-        public int GetItemCount()
-        {
-            if (Sectors == null)
-            {
-                return 0;
-            }
+		private IEnumerable<T> GetEnumeration<T>(List<T> list, Func<T, bool> predicate)
+			where T : IEntity
+		{
+			T e;
 
-            int count = 0;
+			var i = list.Count;
 
-            foreach(Sector s in Sectors)
-            {
-                count += s.Items.Where(i => i.GetRegion().IsPartOf(this)).Count();
-            }
+			while (--i >= 0)
+			{
+				if (i >= list.Count)
+				{
+					continue;
+				}
 
-            return count;
-        }
+				e = list[i];
 
-        public int GetItemCount(Func<Item, bool> predicate)
-        {
-            if (Sectors == null)
-            {
-                return 0;
-            }
-
-            int count = 0;
-
-            foreach(Sector s in Sectors)
-            {
-                count += s.Items.Where(i => i.GetRegion().IsPartOf(this) && (predicate == null || predicate(i))).Count();
-            }
-
-            return count;
-        }
-
-        public List<BaseMulti> GetMultis()
-        {
-            if (Sectors == null)
-            {
-                return null;
-            }
-
-            List<BaseMulti> list = new List<BaseMulti>();
-
-            foreach (Sector s in Sectors)
-            {
-                foreach(BaseMulti multi in s.Multis.Where(m => m.GetRegion().IsPartOf(this)))
-                {
-                    list.Add(multi);
-                }
-            }
-
-            return list;
-        }
-
-        public IEnumerable<BaseMulti> GetEnumeratedMultis()
-        {
-            List<BaseMulti> list = GetMultis();
-            IEnumerable<BaseMulti> e;
-
-            lock (_MultiLock)
-            {
-                e = list.AsParallel().Where(m => m != null && m.GetRegion().IsPartOf(this));
-            }
-
-            foreach (BaseMulti multi in e)
-            {
-                yield return multi;
-            }
-
-            list.Clear();
-            list.TrimExcess();
-        }
-
-        public int GetMultiCount()
-        {
-            int count = 0;
-
-            foreach (Sector s in Sectors)
-            {
-                count += s.Multis.Where(m => m.GetRegion().IsPartOf(this)).Count();
-            }
-
-            return count;
-        }
-
-        public IEnumerable<Mobile> GetEnumeratedMobiles()
-        {
-            List<Mobile> list = GetMobiles();
-            IEnumerable<Mobile> e;
-
-            lock (_MobileLock)
-            {
-                e = list.AsParallel().Where(m => m != null && m.Region.IsPartOf(this));
-            }
-
-            foreach (Mobile m in e)
-            {
-                yield return m;
-            }
-
-            ColUtility.Free(list);
-        }
+				if (e != null && e.Map == Map && Contains(e.Location) && (predicate == null || predicate(e)))
+				{
+					yield return e;
+				}
+			}
+		}
+		#endregion
 
 		int IComparable.CompareTo(object obj)
 		{
