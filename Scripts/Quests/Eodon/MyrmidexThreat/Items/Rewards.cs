@@ -127,7 +127,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1124143; } } // Moonstone Crystal
 		
 		[Constructable]
-		public MoonstoneCrystal() : base(40123)
+		public MoonstoneCrystal() : base(0x9CBB)
 		{
             Weight = 10;
 		}
