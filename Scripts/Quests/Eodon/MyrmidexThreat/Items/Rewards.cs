@@ -92,6 +92,7 @@ namespace Server.Items
 		{
 			Locations = new Dictionary<int, Point3D>();
 			
+            Locations[1156705] = new Point3D(715, 1866, 40); // Eodon Moongate
 			Locations[1156706] = new Point3D(642, 1721, 40); // Barako Village
             Locations[1156707] = new Point3D(701, 2106, 40); // Jukari Village
 			Locations[1156708] = new Point3D(355, 1873, 0);  // Kurak Village
@@ -127,8 +128,9 @@ namespace Server.Items
         public override int LabelNumber { get { return 1124143; } } // Moonstone Crystal
 		
 		[Constructable]
-		public MoonstoneCrystal() : base(40123)
+		public MoonstoneCrystal() : base(0x9CBB)
 		{
+            Weight = 10;
 		}
 		
 		public override void OnDoubleClick(Mobile from)
@@ -196,12 +198,10 @@ namespace Server.Items
 				{
 					User.SendLocalizedMessage( 1019002 ); // You are too far away to use the gate.
 				}
-				/* CEO - 02/20/06 - Removed to allow Reds access to other lands
 				else if ( User.Murderer )
 				{
 					User.SendLocalizedMessage( 1019004 ); // You are not allowed to travel there.
 				}
-				 */
 				else if ( Server.Factions.Sigil.ExistsOn( User ) )
 				{
 					User.SendLocalizedMessage( 1019004 ); // You are not allowed to travel there.
