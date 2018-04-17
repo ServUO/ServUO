@@ -57,24 +57,6 @@ namespace Server.Mobiles
             }                       
         }
 
-        public override void OnDeath(Container c)
-        {
-            if (CheckLocation() && .1 >= Utility.RandomDouble())
-                c.DropItem(new MessageInABottle());
-
-            base.OnDeath(c);
-        }
-
-        private bool CheckLocation()
-        {
-            Region r = this.Region;
-
-            if (r is Server.Regions.DungeonRegion || Server.Spells.SpellHelper.IsFeluccaWind(Map, Location) || Server.Spells.SpellHelper.IsTrammelWind(Map, Location))
-                return false;
-
-            return true;
-        }
-
         public Kraken(Serial serial)
             : base(serial)
         {
