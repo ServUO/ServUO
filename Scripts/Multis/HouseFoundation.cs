@@ -995,12 +995,20 @@ namespace Server.Multis
 
         public bool IsHiddenToCustomizer(Mobile m, Item item)
         {
-            BaseHouse house = BaseHouse.FindHouseAt(item);
+            // Always visible if *this* house, equipped, or contained.
+            if (item == this || item.Parent != null)
+                return false;
 
-            if (item == m_Signpost || item == m_SignHanger || item == Sign || IsFixture(item))
+            // Always hidden if uneditable fixture.
+            if (item == Signpost || item == SignHanger || item == Sign || IsFixture(item))
                 return true;
 
-            return !(item is BaseMulti) && item.RootParentEntity != m && house != null && house != this;
+            // Always hidden if *not* contained within *this* house region.
+            // Note: Will hide other houses and their contents.
+            if (Region != null && !Region.Contains(item.Location))
+                return true;
+
+            return false;
         }
 
         public static void Initialize()
