@@ -38,6 +38,8 @@ namespace Server
             GlobalRadarRange = 37;
 		}
 
+		public static bool Crashed { get { return _Crashed; } }
+
 		private static bool _Crashed;
 		private static Thread _TimerThread;
 		private static string _BaseDirectory;
