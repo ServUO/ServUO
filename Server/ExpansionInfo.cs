@@ -22,7 +22,8 @@ namespace Server
 		ML,
 		SA,
 		HS,
-		TOL
+		TOL,
+		EJ
 	}
 
     public enum ThemePack
@@ -75,6 +76,7 @@ namespace Server
 		Jungle = 0x00100000,
 		Shadowguard = 0x00200000,
 		TOL = 0x00400000,
+		EJ = 0x00800000, // TODO: Verify value
 
 		ExpansionNone = None,
 		ExpansionT2A = T2A,
@@ -86,7 +88,8 @@ namespace Server
 		ExpansionML = ExpansionSE | ML | NinthAge,
 		ExpansionSA = ExpansionML | SA | Gothic | Rustic,
 		ExpansionHS = ExpansionSA | HS,
-		ExpansionTOL = ExpansionHS | TOL | Jungle | Shadowguard
+		ExpansionTOL = ExpansionHS | TOL | Jungle | Shadowguard,
+		ExpansionEJ = ExpansionTOL | EJ
 	}
 
 	[Flags]
@@ -121,7 +124,8 @@ namespace Server
 		ExpansionML = ExpansionSE | ML,
 		ExpansionSA = ExpansionML,
 		ExpansionHS = ExpansionSA,
-		ExpansionTOL = ExpansionHS
+		ExpansionTOL = ExpansionHS,
+		ExpansionEJ = ExpansionTOL
 	}
 
 	[Flags]
@@ -139,13 +143,15 @@ namespace Server
 		Jungle = 0x100000,
 		Shadowguard = 0x200000,
 		TOL = 0x400000,
+		EJ = 0x800000, // TODO: Verify value
 
 		HousingAOS = AOS,
 		HousingSE = HousingAOS | SE,
 		HousingML = HousingSE | ML | Crystal,
 		HousingSA = HousingML | SA | Gothic | Rustic,
 		HousingHS = HousingSA | HS,
-		HousingTOL = HousingHS | TOL | Jungle | Shadowguard
+		HousingTOL = HousingHS | TOL | Jungle | Shadowguard,
+		HousingEJ = HousingTOL | EJ
 	}
 
 	public class ExpansionInfo
@@ -234,7 +240,14 @@ namespace Server
 					new ClientVersion("7.0.45.65"),
 					FeatureFlags.ExpansionTOL,
 					CharacterListFlags.ExpansionTOL,
-					HousingFlags.HousingTOL)
+					HousingFlags.HousingTOL),
+				new ExpansionInfo(
+					11,
+					"Endless Journey",
+					new ClientVersion("7.0.61.0"),
+					FeatureFlags.ExpansionEJ,
+					CharacterListFlags.ExpansionEJ,
+					HousingFlags.HousingEJ)
 			};
 		}
 
@@ -271,6 +284,8 @@ namespace Server
 					return FeatureFlags.ExpansionHS;
 				case Expansion.TOL:
 					return FeatureFlags.ExpansionTOL;
+				case Expansion.EJ:
+					return FeatureFlags.ExpansionEJ;
 			}
 
 			return FeatureFlags.ExpansionNone;
