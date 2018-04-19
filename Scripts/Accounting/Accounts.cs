@@ -29,11 +29,7 @@ namespace Server.Accounting
 
         public static ICollection<IAccount> GetAccounts()
         {
-            #if !MONO
             return m_Accounts.Values;
-            #else
-			return new List<IAccount>( m_Accounts.Values );
-            #endif
         }
 
         public static IAccount GetAccount(string username)
