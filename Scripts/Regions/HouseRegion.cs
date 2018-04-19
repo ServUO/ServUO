@@ -107,7 +107,7 @@ namespace Server.Regions
             }
 
             return true;
-        }*/
+        }
 
         public override void OnEnter(Mobile m)
         {
@@ -121,7 +121,7 @@ namespace Server.Regions
                     item.SendInfoTo(m.NetState);
                 }
             }
-        }
+        }*/
 
         public override bool SendInaccessibleMessage(Item item, Mobile from)
         {

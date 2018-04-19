@@ -857,49 +857,41 @@ namespace Server.Spells
 		public abstract void OnCast();
 
         #region Enhanced Client
-        public void OnCastInstantTarget()
+        public bool OnCastInstantTarget()
         {
+            if (InstantTarget == null)
+                return false;
+
             Type spellType = GetType();
-            MethodInfo spellTargetMethod = null;
 
-            if (spellType != null)
-            {
-                spellTargetMethod = spellType.GetMethods().Where(m => m.Name == "Target" || m.Name == "OnTarget").FirstOrDefault();
-            }
-            else
-            {
-                OnCast();
-                return;
-            }
+            var types = spellType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            ParameterInfo[] spellTargetParams = spellTargetMethod.GetParameters();
-            object[] targetArgs = null;
-
-            if (spellTargetParams != null && spellTargetParams.Length > 0)
+            if (types != null)
             {
-                if (InstantTarget != null && spellTargetParams[0].ParameterType == typeof(IDamageable))
+                Type targetType = types.FirstOrDefault(t => t.IsSubclassOf(typeof(Server.Targeting.Target)));
+
+                if (targetType != null)
                 {
-                    targetArgs = new object[1];
-                    targetArgs[0] = InstantTarget;
-                }
-                else if (InstantTarget is Mobile && spellTargetParams[0].ParameterType == typeof(Mobile))
-                {
-                    targetArgs = new object[1];
-                    targetArgs[0] = InstantTarget as Mobile;
-                }
-                else if (InstantTarget is Mobile && (spellTargetParams[0].ParameterType == typeof(IPoint3D) || spellTargetParams[0].ParameterType == typeof(Point3D)))
-                {
-                    targetArgs = new object[1];
-                    targetArgs[0] = InstantTarget.Location as IPoint3D;
-                }
-                else
-                {
-                    OnCast();
-                    return;
+                    Target t = null;
+
+                    try
+                    {
+                        t = Activator.CreateInstance(targetType, this) as Target;
+                    }
+                    catch
+                    {
+                        LogBadConstructorForInstantTarget();
+                    }
+
+                    if (t != null)
+                    {
+                        t.Invoke(Caster, InstantTarget);
+                        return true;
+                    }
                 }
             }
 
-            spellTargetMethod.Invoke(this, targetArgs);
+            return false;
         }
         #endregion
 
@@ -1354,11 +1346,7 @@ namespace Server.Spells
 
 					Target originalTarget = m_Spell.m_Caster.Target;
 
-                    if (m_Spell.InstantTarget != null)
-                    {
-                        m_Spell.OnCastInstantTarget();
-                    }
-                    else
+                    if (m_Spell.InstantTarget == null || !m_Spell.OnCastInstantTarget())
                     {
                         m_Spell.OnCast();
                     }
@@ -1377,5 +1365,21 @@ namespace Server.Spells
 				OnTick();
 			}
 		}
+
+        public void LogBadConstructorForInstantTarget()
+        {
+            try
+            {
+                using (System.IO.StreamWriter op = new System.IO.StreamWriter("InstantTargetErr.log", true))
+                {
+                    op.WriteLine("# {0}", DateTime.UtcNow);
+                    op.WriteLine("Target with bad contructor args:");
+                    op.WriteLine("Offending Spell: {0}", this.ToString());
+                    op.WriteLine("_____");
+                }
+            }
+            catch
+            { }
+        }
 	}
 }
