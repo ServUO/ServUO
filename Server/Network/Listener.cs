@@ -75,6 +75,9 @@ namespace Server.Network
 			try
 			{
 				s.LingerState.Enabled = false;
+				
+				// Default is 'false' starting Windows Vista and Server 2008. Source: https://msdn.microsoft.com/en-us/library/system.net.sockets.socket.exclusiveaddressuse(v=vs.110).aspx?f=255&MSPPError=-2147217396
+				s.ExclusiveAddressUse = false;
 
 				s.Bind(ipep);
 				s.Listen(8);
