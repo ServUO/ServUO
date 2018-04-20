@@ -690,7 +690,11 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialEarrings.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialLegs.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Luck\LuneRouge.cs" />
-    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Luck\SoleilRouge.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Luck\SoleilRouge.cs" />	
+	<Compile Include="Items\Artifacts\Equipment\Clothing\CloakOfDeath.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\CloakOfLife.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\CloakOfPower.cs" />
+	<Compile Include="Items\Artifacts\Equipment\Clothing\CloakOfSilence.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\TheScholarsHalo.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\JadeArmband.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\MagicalDoor.cs" />
