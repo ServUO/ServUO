@@ -11,7 +11,7 @@ namespace Server.Items
         {
             Weight = 2.0;
 			Hue = 0x2A0;
-			this.SkillBonuses.SetValues(0, SkillName.Stealth, 10);
+			SkillBonuses.SetValues(0, SkillName.Stealth, 10);
         }
 
         public CloakOfSilence(Serial serial)
