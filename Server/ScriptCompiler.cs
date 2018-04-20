@@ -67,10 +67,6 @@ namespace Server
 				AppendCompilerOption(ref sb, "/optimize");
 			}
 
-#if MONO
-			AppendCompilerOption( ref sb, "/d:MONO" );
-#endif
-
 			//These two defines are legacy, ie, depreciated.
 			if (Core.Is64Bit)
 			{
@@ -144,7 +140,7 @@ namespace Server
 
 		public static bool CompileCSScripts(bool debug, bool cache, out Assembly assembly)
 		{
-			Utility.PushColor(ConsoleColor.Green);
+			Utility.PushColor(ConsoleColor.Yellow);
 			Console.Write("Scripts: Compiling C# scripts...");
 			Utility.PopColor();
 			var files = GetScripts("*.cs");
@@ -239,14 +235,14 @@ namespace Server
 
 				Display(results);
 
-#if !MONO
-				if (results.Errors.Count > 0)
+				if (results.Errors.Count > 0 && !Core.Unix)
 				{
 					assembly = null;
 					return false;
 				}
-#else
-				if( results.Errors.Count > 0 ) {
+
+				if (results.Errors.Count > 0 && Core.Unix) 
+				{
 					foreach( CompilerError err in results.Errors ) {
 						if ( !err.IsWarning ) {
 							assembly = null;
@@ -254,7 +250,6 @@ namespace Server
 						}
 					}
 				}
-#endif
 
 				if (cache && Path.GetFileName(path) == "Scripts.CS.dll")
 				{
@@ -293,7 +288,9 @@ namespace Server
 
 		public static bool CompileVBScripts(bool debug, bool cache, out Assembly assembly)
 		{
+			Utility.PushColor(ConsoleColor.Yellow);
 			Console.Write("Scripts: Compiling VB.NET scripts...");
+			Utility.PopColor();
 			var files = GetScripts("*.vb");
 
 			if (files.Length == 0)
@@ -449,7 +446,7 @@ namespace Server
 				else
 				{
 					Utility.PushColor(ConsoleColor.Green);
-					Console.WriteLine("Finished with: {0} errors, {1} warnings", errors.Count, warnings.Count);
+					Console.WriteLine("done ({0} errors, {1} warnings)", errors.Count, warnings.Count);
 					Utility.PopColor();
 				}
 
@@ -517,7 +514,7 @@ namespace Server
 			else
 			{
 				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("Finished with: 0 errors, 0 warnings");
+				Console.WriteLine("done (0 errors, 0 warnings)");
 				Utility.PopColor();
 			}
 		}
@@ -621,7 +618,7 @@ namespace Server
 			m_Assemblies = assemblies.ToArray();
 
 			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Scripts: Verifying...");
+			Console.Write("Scripts: Verifying...");
 			Utility.PopColor();
 
 			Stopwatch watch = Stopwatch.StartNew();
@@ -632,7 +629,7 @@ namespace Server
 
 			Utility.PushColor(ConsoleColor.Green);
 			Console.WriteLine(
-				"Finished ({0} items, {1} mobiles, {3} customs) ({2:F2} seconds)",
+				"done ({0} items, {1} mobiles, {3} customs) ({2:F2} seconds)",
 				Core.ScriptItems,
 				Core.ScriptMobiles,
 				watch.Elapsed.TotalSeconds,

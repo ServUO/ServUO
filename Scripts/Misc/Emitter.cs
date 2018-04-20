@@ -483,15 +483,6 @@ namespace Server
 
         public delegate void Callback();
 
-        #if MONO
-		private static bool GenericComparator( Type type, object obj )
-		{
-			return ( type.IsGenericType )
-				&& ( type.GetGenericTypeDefinition() == typeof( IComparable<> ) )
-				&& ( type.GetGenericArguments()[0].IsAssignableFrom(obj as Type) );
-		}
-        #endif
-
         public bool CompareTo(int sign, Callback argGenerator)
         {
             Type active = this.Active;
@@ -522,16 +513,12 @@ namespace Server
                 * 
                 * Bleh.
                 */
-                #if MONO
-				Type[] ifaces = active.FindInterfaces( GenericComparator, active );
-                #else
                 Type[] ifaces = active.FindInterfaces(delegate(Type type, object obj)
                 {
                     return (type.IsGenericType) &&
                            (type.GetGenericTypeDefinition() == typeof(IComparable<>)) &&
                            (type.GetGenericArguments()[0].IsAssignableFrom(active));
                 }, null);
-                #endif
 
                 if (ifaces.Length > 0)
                 {
