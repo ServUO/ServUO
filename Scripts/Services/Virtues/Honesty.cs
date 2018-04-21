@@ -186,7 +186,7 @@ namespace Server.Services.Virtues
 			if (_FeluccaArea == null)
 			{
 				Utility.PushColor(ConsoleColor.Yellow);
-				Console.Write("[Honesty]: Felucca - Reticulating splines... ");
+				Console.Write("[Honesty]: Felucca - Reticulating splines...");
 				Utility.PopColor();
 
 				sw.Restart();
@@ -198,14 +198,14 @@ namespace Server.Services.Virtues
 				s += sw.Elapsed.TotalSeconds;
 
 				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("done in {0:F2} seconds.", sw.Elapsed.TotalSeconds);
+				Console.WriteLine("done ({0:F2} seconds)", sw.Elapsed.TotalSeconds);
 				Utility.PopColor();
 			}
 
 			if (_TrammelArea == null && TrammelGeneration)
 			{
 				Utility.PushColor(ConsoleColor.Yellow);
-				Console.Write("[Honesty]: Trammel - Reticulating splines... ");
+				Console.Write("[Honesty]: Trammel - Reticulating splines...");
 				Utility.PopColor();
 
 				sw.Restart();
@@ -217,7 +217,7 @@ namespace Server.Services.Virtues
 				s += sw.Elapsed.TotalSeconds;
 
 				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("done in {0:F2} seconds.", sw.Elapsed.TotalSeconds);
+				Console.WriteLine("done ({0:F2} seconds)", sw.Elapsed.TotalSeconds);
 				Utility.PopColor();
 			}
 
@@ -232,7 +232,7 @@ namespace Server.Services.Virtues
 				if (count > 0)
 				{
 					Utility.PushColor(ConsoleColor.Yellow);
-					Console.Write("[Honesty]: Creating {0:#,0} lost items... ", count);
+					Console.Write("[Honesty]: Creating {0:#,0} lost items...", count);
 					Utility.PopColor();
 
 					sw.Restart();
@@ -301,7 +301,7 @@ namespace Server.Services.Virtues
 					s += sw.Elapsed.TotalSeconds;
 
 					Utility.PushColor(ConsoleColor.Green);
-					Console.WriteLine("done in {0:F2} seconds.", sw.Elapsed.TotalSeconds);
+					Console.WriteLine("done ({0:F2} seconds)", sw.Elapsed.TotalSeconds);
 					Utility.PopColor();
 				}
 			}
@@ -313,7 +313,10 @@ namespace Server.Services.Virtues
 			}
 
 			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("[Honesty]: Generation completed in {0:F2} seconds.", s);
+			Console.Write("[Honesty]:");
+			Utility.PopColor();
+			Utility.PushColor(ConsoleColor.Green);
+			Console.WriteLine(" Generation completed in {0:F2} seconds.", s);
 			Utility.PopColor();
 		}
 
