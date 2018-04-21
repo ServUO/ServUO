@@ -180,7 +180,7 @@ namespace Server.SkillHandlers
             if (target.Blessed || (target is BaseCreature && ((BaseCreature)target).IsInvulnerable))
                 return false;
 
-            return src.CanBeHarmful(target) && SpellHelper.ValidIndirectTarget(src, target);
+            return src.CanBeHarmful(target, false) && SpellHelper.ValidIndirectTarget(src, target);
         }
     }
 }
