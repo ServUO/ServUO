@@ -12,7 +12,7 @@ default: run
 debug: 
 	${MCS} -target:library -out:${CURPATH}/Ultima.dll -r:${REFS} -nowarn:${NOWARNS} -d:DEBUG -d:ServUO -d:NEWTIMERS -nologo -debug -unsafe -recurse:${SDKPATH}/*.cs
 	${MCS} -win32icon:${SRVPATH}/servuo.ico -r:${CURPATH}/Ultima.dll,${REFS} -nowarn:${NOWARNS} -target:exe -out:${CURPATH}/ServUO.exe -d:DEBUG -d:ServUO -d:NEWTIMERS -nologo -debug -unsafe -recurse:${SRVPATH}/*.cs
-	sed 's/<!--//g; s/-->//g' ServUO.exe.config
+	sed -i.bak -e 's/<!--//g; s/-->//g' ServUO.exe.config
 
 run: build
 	${CURPATH}/ServUO.sh
@@ -37,4 +37,4 @@ ServUO.sh: ServUO.exe
 	echo "#!/bin/sh" > ${CURPATH}/ServUO.sh
 	echo "mono ${CURPATH}/ServUO.exe" >> ${CURPATH}/ServUO.sh
 	chmod a+x ${CURPATH}/ServUO.sh
-	sed 's/<!--//g; s/-->//g' ServUO.exe.config
+	sed -i.bak -e 's/<!--//g; s/-->//g' ServUO.exe.config
