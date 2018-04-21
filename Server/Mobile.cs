@@ -8788,7 +8788,7 @@ namespace Server
 			get { return m_Warmode; }
 			set
 			{
-				if (m_Deleted)
+                if (m_Deleted || Core.TickCount - NextActionTime >= 0)
 				{
 					return;
 				}
@@ -8825,6 +8825,11 @@ namespace Server
 							SendRemovePacket(false);
 						}
 					}
+
+                    if (Core.SA)
+                    {
+                        NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                    }
 
 					OnWarmodeChanged();
 				}
