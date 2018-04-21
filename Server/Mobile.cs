@@ -2162,6 +2162,11 @@ namespace Server
 		{
 			if (CheckAttack(e))
 			{
+                if (!m_Warmode)
+                {
+                    Warmode = true;
+                }
+
 				Combatant = e;
 			}
 		}
@@ -8788,7 +8793,7 @@ namespace Server
 			get { return m_Warmode; }
 			set
 			{
-                if (m_Deleted || Core.TickCount - NextActionTime >= 0)
+				if (m_Deleted)
 				{
 					return;
 				}

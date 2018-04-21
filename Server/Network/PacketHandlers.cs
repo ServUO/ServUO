@@ -1493,7 +1493,14 @@ namespace Server.Network
 
 		public static void SetWarMode(NetState state, PacketReader pvSrc)
 		{
-			state.Mobile.DelayChangeWarmode(pvSrc.ReadBoolean());
+            if (state.Mobile.IsStaff() || Core.TickCount - state.Mobile.NextActionTime >= 0)
+            {
+                state.Mobile.DelayChangeWarmode(pvSrc.ReadBoolean());
+            }
+            else
+            {
+                state.Mobile.SendActionMessage();
+            }
 		}
 
 		public static void Resynchronize(NetState state, PacketReader pvSrc)
