@@ -182,12 +182,6 @@ namespace Server.Misc
                 if (from.Alive && (gc >= Utility.RandomDouble() || skill.Base < 10.0 || CheckGGS(from, skill)))
                 {
                     Gain(from, skill);
-                    if (from.SkillsTotal >= 4500 || skill.Base >= 80.0)
-                    {
-                        Account acc = from.Account as Account;
-                        if (acc != null)
-                            acc.RemoveYoungStatus(1019036);
-                    }
                 }
             }
 

@@ -16,7 +16,10 @@ namespace Server.Network
         {
             PlayerMobile from = state.Mobile as PlayerMobile;
 
-            if (from != null && from.Backpack != null)
+            if (from == null || from.Backpack == null)
+                return;
+
+            if (from.IsStaff() || Core.TickCount - from.NextActionTime >= 0)
             {
                 BaseWeapon toEquip = from.LastWeapon;
                 BaseWeapon toDisarm = from.FindItemOnLayer(Layer.OneHanded) as BaseWeapon;
@@ -27,12 +30,18 @@ namespace Server.Network
                 if (toDisarm != null)
                 {
                     from.Backpack.DropItem(toDisarm);
+                    from.NextActionTime = Core.TickCount + Mobile.ActionDelay;
                 }
 
                 if (toEquip != toDisarm && toEquip != null && toEquip.Movable && toEquip.IsChildOf(from.Backpack))
                 {
                     from.EquipItem(toEquip);
+                    from.NextActionTime = Core.TickCount + Mobile.ActionDelay;
                 }
+            }
+            else
+            {
+                from.SendActionMessage();
             }
         }
     }
