@@ -256,6 +256,11 @@ namespace Server.Items
         {
         }
 
+        public virtual bool CheckReflect(int circle, Mobile caster)
+        {
+            return false;
+        }
+
         public virtual void OnStatsQuery(Mobile from)
         {
             if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))

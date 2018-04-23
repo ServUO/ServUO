@@ -60,7 +60,7 @@ namespace Server.Spells.SkillMasteries
 
         protected override void OnTarget(object o)
         {
-            Mobile m = o as Mobile;
+            IDamageable m = o as IDamageable;
 
             if (m != null)
             {
@@ -83,16 +83,18 @@ namespace Server.Spells.SkillMasteries
 
                     SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
 
-                    if (!CheckResisted(m) && m.NetState != null)
+                    if (m is Mobile && !CheckResisted((Mobile)m) && ((Mobile)m).NetState != null)
                     {
-                        if (!TransformationSpellHelper.UnderTransformation(m, typeof(AnimalForm)))
-                            m.SendSpeedControl(SpeedControlType.WalkSpeed);
+                        Mobile mob = m as Mobile;
+
+                        if (!TransformationSpellHelper.UnderTransformation(mob, typeof(AnimalForm)))
+                            mob.SendSpeedControl(SpeedControlType.WalkSpeed);
 
                         Server.Timer.DelayCall(TimeSpan.FromSeconds(skill / 60), () =>
                             {
-                                if (!TransformationSpellHelper.UnderTransformation(m, typeof(AnimalForm)) &&
-                                    !TransformationSpellHelper.UnderTransformation(m, typeof(Server.Spells.Spellweaving.ReaperFormSpell)))
-                                    m.SendSpeedControl(SpeedControlType.Disable);
+                                if (!TransformationSpellHelper.UnderTransformation(mob, typeof(AnimalForm)) &&
+                                    !TransformationSpellHelper.UnderTransformation(mob, typeof(Server.Spells.Spellweaving.ReaperFormSpell)))
+                                    mob.SendSpeedControl(SpeedControlType.Disable);
                             });
                     }
                 }

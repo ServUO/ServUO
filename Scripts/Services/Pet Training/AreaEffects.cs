@@ -98,7 +98,7 @@ namespace Server.Mobiles
             foreach (Mobile m in eable)
             {
                 if (m != creature && m.Alive && !m.IsDeadBondedPet &&
-                    m.CanBeHarmful(creature) &&
+                    m.CanBeHarmful(creature, false) &&
                     SpellHelper.ValidIndirectTarget(m, creature) && 
                     (!Core.AOS || creature.InLOS(m)))
                 {
@@ -343,42 +343,48 @@ namespace Server.Mobiles
     {
         public override int ManaCost { get { return 30; } }
 
+        private bool _DoingEffect;
+
         public ExplosiveGoo()
         {
         }
 
         public override void DoEffects(BaseCreature creature, Mobile combatant)
         {
-            int amount = Utility.RandomMinMax(3, 7);
+            if (_DoingEffect)
+                return;
 
-            for (int i = 0; i > amount; i++)
-            {
-                Point3D loc = creature.Location;
-                Map map = creature.Map;
-                Item acid = new Server.Items.ExplosiveGoo();
+            Server.Effects.SendTargetParticles(creature, 0x3709, 10, 15, 2724, 0, 9907, EffectLayer.LeftFoot, 0);
+            creature.PlaySound(0x348);
 
-                bool validLocation = false;
-                for (int j = 0; !validLocation && j < 25; ++j)
+            _DoingEffect = true;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1.0), () =>
                 {
-                    loc = new Point3D(loc.X + Utility.Random(-3, 3), loc.Y + Utility.Random(-3, 3), loc.Z);
-                    loc.Z = map.GetAverageZ(loc.X, loc.Y);
-                    validLocation = map.CanFit(loc, 16, false, false);
-                }
+                    base.DoEffects(creature, combatant);
+                    _DoingEffect = false;
+                });
+        }
 
-                acid.MoveToWorld(loc, map);
-            }
-
-            IPooledEnumerable eable = creature.Map.GetClientsInRange(creature.Location, 15);
-
-            foreach (NetState ns in eable)
+        public override void DoEffect(BaseCreature creature, Mobile defender)
+        {
+            Timer.DelayCall<Mobile>(TimeSpan.FromMilliseconds(Utility.RandomMinMax(10, 1000)), m =>
             {
-                if (ns.Mobile != null)
+                if (m.Alive && !m.Deleted && m.Map != null)
                 {
-                    ns.Mobile.SendLocalizedMessage(1112365); // Flammable goo sprays into the air!
-                }
-            }
+                    Point3D p = m.Location;
+                    for (int x = -1; x <= 1; x++)
+                    {
+                        for (int y = -1; y <= 1; y++)
+                        {
+                            Server.Effects.SendLocationEffect(new Point3D(p.X + x, p.Y + y, p.Z), m.Map, 0x3728, 13, 1921, 3);
+                        }
+                    }
 
-            eable.Free();
+                    AOS.Damage(m, creature, Utility.RandomMinMax(30, 40), 0, 100, 0, 0, 0);
+                    m.SendLocalizedMessage(1112366); // The flammable goo covering you bursts into flame!
+                }
+            }, defender);
         }
     }
 

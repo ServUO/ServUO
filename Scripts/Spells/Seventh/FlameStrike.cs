@@ -48,8 +48,7 @@ namespace Server.Spells.Seventh
                 Mobile source = this.Caster;
                 Mobile mob = m as Mobile;
 
-                if(mob != null)
-                    SpellHelper.CheckReflect((int)this.Circle, ref source, ref mob);
+                SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
 
                 double damage = 0;
 
@@ -84,7 +83,7 @@ namespace Server.Spells.Seventh
 
                 if (damage > 0)
                 {
-                    SpellHelper.Damage(this, mob != null ? mob : m, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, m, damage, 0, 100, 0, 0, 0);
                 }
             }
 

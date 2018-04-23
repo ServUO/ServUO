@@ -29,10 +29,8 @@ namespace Server.Spells.Mysticism
             Caster.Target = new InternalTarget(this, true, TargetFlags.None);
         }
 
-        public void OnTarget(object o)
+        public void OnTarget(IPoint3D p)
         {
-            IPoint3D p = o as IPoint3D;
-
             if (p != null && CheckSequence())
             {
                 SpellHelper.Turn(Caster, p);
@@ -41,15 +39,25 @@ namespace Server.Spells.Mysticism
 
                 if (map != null)
                 {
-                    List<Mobile> targets = new List<Mobile>();
+                    List<IDamageable> targets = new List<IDamageable>();
 
                     Rectangle2D effectArea = new Rectangle2D(p.X - 3, p.Y - 3, 6, 6);
-                    IPooledEnumerable eable = map.GetMobilesInBounds(effectArea);
+                    IPooledEnumerable eable = map.GetObjectsInBounds(effectArea);
 
-                    foreach (Mobile m in eable)
+                    foreach (object o in eable)
                     {
-                        if (Caster != m && Caster.InLOS(m) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
-                            targets.Add(m);
+                        IDamageable id = o as IDamageable;
+
+                        if (id == null || (id is Mobile && (Mobile)id == Caster))
+                            continue;
+
+                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(Caster, id as Mobile)) && Caster.CanBeHarmful(id, false))
+                        {
+                            if (Core.AOS && !Caster.InLOS(id))
+                                continue;
+
+                            targets.Add(id);
+                        }
                     }
                     eable.Free();
 
@@ -78,40 +86,47 @@ namespace Server.Spells.Mysticism
 
                     for (int i = 0; i < targets.Count; ++i)
                     {
-                        Mobile m = targets[i];
+                        IDamageable d = targets[i];
 
-                        m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+                        Server.Effects.SendTargetParticles(d, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
 
                         double damage = (((Caster.Skills[CastSkill].Value + (Caster.Skills[DamageSkill].Value / 2)) * .66) + Utility.RandomMinMax(1, 6));
 
-                        SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 0, 100, 0);
+                        SpellHelper.Damage(this, d, damage, 0, 0, 0, 0, 0, 100, 0);
 
-                        double stamSap = (damage / 3);
-                        double manaSap = (damage / 3);
-                        double mod = m.Skills[SkillName.MagicResist].Value - ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2);
-
-                        if (mod > 0)
+                        if (d is Mobile)
                         {
-                            mod /= 100;
+                            Mobile m = d as Mobile;
 
-                            stamSap *= mod;
-                            manaSap *= mod;
+                            double stamSap = (damage / 3);
+                            double manaSap = (damage / 3);
+                            double mod = m.Skills[SkillName.MagicResist].Value - ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2);
+
+                            if (mod > 0)
+                            {
+                                mod /= 100;
+
+                                stamSap *= mod;
+                                manaSap *= mod;
+                            }
+
+                            m.Stam -= (int)stamSap;
+                            m.Mana -= (int)manaSap;
+
+                            Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                            {
+                                if (m.Alive)
+                                {
+                                    m.Stam += (int)stamSap;
+                                    m.Mana += (int)manaSap;
+                                }
+                            });
                         }
 
-                        m.Stam -= (int)stamSap;
-                        m.Mana -= (int)manaSap;
-
-                        Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
-                        {
-                            if (m.Alive)
-                            {
-                                m.Stam += (int)stamSap;
-                                m.Mana += (int)manaSap;
-                            }
-                        });
-
-                        Effects.SendLocationParticles(EffectItem.Create(m.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
+                        Effects.SendLocationParticles(EffectItem.Create(d.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
                     }
+
+                    ColUtility.Free(targets);
                 }
             }
 
@@ -140,10 +155,10 @@ namespace Server.Spells.Mysticism
 
                 if (!from.CanSee(o))
                     from.SendLocalizedMessage(500237); // Target can not be seen.
-                else
+                else if(o is IPoint3D)
                 {
                     SpellHelper.Turn(from, o);
-                    Owner.OnTarget(o);
+                    Owner.OnTarget((IPoint3D)o);
                 }
             }
 
