@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <clientDirectory>C:\PROGRAM FILES (X86)\ELECTRONIC ARTS\ULTIMA ONLINE CLASSIC</clientDirectory>
+  <prefix>[</prefix>
+  <multiPatch multiIdxTarget="C:\Program Files (x86)\Electronic Arts\Ultima Online Classic\multi.idx" multiMulTarget="C:\PROGRAM FILES (X86)\ELECTRONIC ARTS\ULTIMA ONLINE CLASSIC\MULTI.MUL" />
+  <server id="6b95be09-ef63-4fe3-b539-1b054d376157">
+    <name>newtopia</name>
+    <password>dup08x</password>
+    <ip>127.0.0.1</ip>
+    <port>2594</port>
+    <acct>duponthigh</acct>
+  </server>
+</settings>
