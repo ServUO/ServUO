@@ -1214,6 +1214,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
+            writer.Write((int)1); // version
             writer.Write((int)2); // version
         }
 
