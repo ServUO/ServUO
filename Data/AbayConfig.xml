@@ -1,0 +1,76 @@
+<?xml version='1.0' ?>
+<!--
+	This file enables configuration of the Xanthos Auction System module without code changes
+	You may only change the values between the '>' and '<' characters to set the configuratoin
+	parameters.  The type attribute is ignored and is only provided as a documentary guide to
+	the user. Array element names are also meaningless.  Values may be left empty, with the
+	exception of individual array elements, so that the default value in the code is used.
+	
+	For example: to change the foo configuration from 50 to 100 one would change
+		<foo type="int">50</foo>
+			to
+		<foo type="int">100</foo>
+-->
+<Xanthos>
+	<AuctionSystem version='2.0'>
+		<MessageHue type="int">64</MessageHue>				<!-- The hue used for messages in the system -->
+
+		<!--
+			This is the number of days the system will wait for the buyer or seller to decide on an ambiguous situation.
+			This can occur whether the highest bid didn't match the auction reserve. The owner will have then X days to
+			accept or refuse the auction. Another case is when one or more items is deleted due to a wipe or serialization error.
+			The buyer will have to decide in this case.
+		-->
+		<DaysForConfirmation type="int">5</DaysForConfirmation>
+		
+		<!--
+			This value specifies how higher the reserve can be with respect to the starting bid. This factor should limit
+			any possible abuse of the reserve and prevent players from using very high values to be absolutely sure they will have
+			to sell only if they're happy with the outcome.
+		-->
+		<MaxReserveMultiplier type="double">3.0</MaxReserveMultiplier>
+		
+		<BlackHue type="int">2000</BlackHue>
+		<AllowPetsAuction type="bool">true</AllowPetsAuction>
+		
+		<AuctionAdminAcessLevel type="AccessLevel">Administrator</AuctionAdminAcessLevel>
+
+		<!--
+			If you don't have a valid UO installation on the server, or have trouble with the system
+			specify the location of the cliloc.enu file here:
+		
+			Example:
+		
+			<ClilocLocation type="string">C:\RunUO\Misc\cliloc.enu</ClilocLocation>
+		-->
+		<ClilocLocation type="string"></ClilocLocation>
+
+		<EnableLogging type="bool">true</EnableLogging>
+		
+		<!--
+			When a bid is placed within 5 minutes from the auction's ending, the auction duration will be
+			extended by this value.
+		-->
+		
+		<LateBidExtention type="double">0.0</LateBidExtention>
+		
+		<CostOfAuction type="double">0.0</CostOfAuction>
+		
+		<ForbiddenTypes type="array">						<!-- Not appropriate for auction -->
+			<a type="Type">Server.Items.Gold</a>
+			<a type="Type">Server.Items.BankCheck</a>
+			<a type="Type">Server.Items.DeathRobe</a>
+			<a type="Type">Arya.Auction.AuctionGoldCheck</a>
+			<a type="Type">Arya.Auction.AuctionItemCheck</a>
+		</ForbiddenTypes>
+
+		<!--
+			Savings Account configuration.
+		-->
+
+		<GoldInterestRate type="double">0.04</GoldInterestRate>
+		<TokensInterestRate type="double">0.03</TokensInterestRate>
+		<EnableTokens type="bool">false</EnableTokens>		<!-- Enable Daat99 Tokens? -->
+
+	</AuctionSystem>	
+</Xanthos>
