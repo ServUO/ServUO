@@ -1,0 +1,103 @@
+CliLoc reader tool - developed by Fenn of BES Oasis shard
+======================
+If you choose to use this or develop on this, please leave this file intact.
+
+
+Version: Last Modified Wednesday, February 15, 2012
+========
+
+ChangeLog:
+==========
+
+version 2012-02-15
+	-Added Export button to the CliLocViewer, which exports the currently filtered list to a text file in the RunUO root directory (output.txt).
+
+Version 2008-10-07
+	-Fixed a typo that caused a compile error if you don't have the Universal Storage Keys project installed
+
+Version 2008-10-06
+	-Added gump CliLocViewerGump which lists and filters cliloc strings, along with their corresponding numbers.  This
+	is accessible through the Developer command [clilocviewer
+
+Version 2008-09-11
+	-Switched cliloc data storage object from List<> to Hashtable.  This drastically reduces the time taken finding
+	the string, and will minimize the execution time of intensive, repetitive use.
+
+
+Version 2008-09-08
+	-initial release
+	
+Compatibility:
+--------------
+
+This was developed using a freshly downloaded RunUO 2.0 SVN server, and has also been tested on a RunUO 2.0 RC1 server/
+
+*RunUO 2.0 SVN version 300 (downloaded October 7, 2008)
+*RunUO 2.0 RC1
+
+
+Notes:
+------
+
+This tool requires a copy of a client's cliloc.enu (default language) file.  If you have a client, you can provide this.
+
+If you wish to use another localization file than the .enu file, there are notes on how to do this later.	
+
+This project is more of a stub project, as it was developed for the Universal Storage Keys project.  There may be some use of it for
+other projects, so I am releasing it as a standalone project.
+
+
+Overview:
+---------
+
+The CliLoc reader tool provides a few easy-to-use methods for reading and assembling client localization text strings.  These can be helpful when
+trying to display information like the ObjectPropertyList information given when the client mouses over an item or mobile.  
+
+There is also a gump, "ObjectPropertyListGump" which synthesizes the client's display of the object property list.
+
+
+Installation:
+-------------
+
+To install this package:
+	-drop the script files somewhere in the Scripts folder of your RunUO installation
+	-place a copy of the client's cliloc.enu file somewhere in your RunUO installation
+	
+
+Using Methods:
+--------------
+
+The main class that is useful is the Solaris.ClilocHandler.CliLoc class.  The following briefly describes the accessible methods of interest 
+within this class:
+
+public static string GetName( object o )
+	-returns a string containing the first line in the object property list of specified object "o"
+
+public static List<string> GetPropertiesList( object o )
+	-returns a list of strings containing all the object property list entries of specified object "o"
+
+	
+There are more methods available, but these two are most likely the only you will ever wish to use.  To implement these methods in your code, 
+or to implement any of the other ones found in the CliLoc class, be sure to include a "using" directive like the following:
+
+
+using Solaris.ClilocHandler;
+	
+
+Using Gumps:
+------------
+	
+The ObjectPropertyListGump provides a synthesized version of the client's object property list, like when you mouse over or click an item/mobile.
+To use the gump, follow this example.
+
+
+Mobile mobile;				//the player to receive the gump
+Item item;					//the item to display 
+
+mobile.SendGump( new ObjectPropertyListGump( mobile, item ) );
+
+
+Other Languages:
+----------------
+
+If you wish to use another language, open the file CliLocDAO.cs, and change the filename on line 53 to whichever localization file you wish to use.

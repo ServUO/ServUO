@@ -1,0 +1,724 @@
+using System;
+using Server.Targets;
+using Server.Targeting;
+namespace Server.Items
+{
+	public class EmptyWoodenBowl : Item
+	{
+		[Constructable]
+		public EmptyWoodenBowl() : base( 0x15F8 )
+		{
+			Weight = 1.0;
+		}
+
+		public EmptyWoodenBowl( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class EmptyPewterBowl : Item
+	{
+		[Constructable]
+		public EmptyPewterBowl() : base( 0x15FD )
+		{
+			Weight = 1.0;
+		}
+
+		public EmptyPewterBowl( Serial serial ) : base( serial )
+		{
+		}
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class WoodenBowlOfCarrots : Food
+	{
+		[Constructable]
+		public WoodenBowlOfCarrots() : base( 0x15F9 )
+		{
+			Stackable = false;
+			Weight = 1.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyWoodenBowl() );
+			return true;
+		}
+
+		public WoodenBowlOfCarrots( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class WoodenBowlOfCorn : Food
+	{
+		[Constructable]
+		public WoodenBowlOfCorn() : base( 0x15FA )
+		{
+			Stackable = false;
+			Weight = 1.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyWoodenBowl() );
+			return true;
+		}
+
+		public WoodenBowlOfCorn( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class WoodenBowlOfLettuce : Food
+	{
+		[Constructable]
+		public WoodenBowlOfLettuce() : base( 0x15FB )
+		{
+			Stackable = false;
+			Weight = 1.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyWoodenBowl() );
+			return true;
+		}
+
+		public WoodenBowlOfLettuce( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class WoodenBowlOfPeas : Food
+	{
+		[Constructable]
+		public WoodenBowlOfPeas() : base( 0x15FC )
+		{
+			Stackable = false;
+			Weight = 1.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyWoodenBowl() );
+			return true;
+		}
+
+		public WoodenBowlOfPeas( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class PewterBowlOfCarrots : Food
+	{
+		[Constructable]
+		public PewterBowlOfCarrots() : base( 0x15FE )
+		{
+			Stackable = false;
+			Weight = 1.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyPewterBowl() );
+			return true;
+		}
+
+		public PewterBowlOfCarrots( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class PewterBowlOfCorn : Food
+	{
+		[Constructable]
+		public PewterBowlOfCorn() : base( 0x15FF )
+		{
+			Stackable = false;
+			Weight = 1.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyPewterBowl() );
+			return true;
+		}
+
+		public PewterBowlOfCorn( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class PewterBowlOfLettuce : Food
+	{
+		[Constructable]
+		public PewterBowlOfLettuce() : base( 0x1600 )
+		{
+			Stackable = false;
+			Weight = 1.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyPewterBowl() );
+			return true;
+		}
+
+		public PewterBowlOfLettuce( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class PewterBowlOfPeas : Food
+	{
+		[Constructable]
+		public PewterBowlOfPeas() : base( 0x1601 )
+		{
+			Stackable = false;
+			Weight = 1.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyPewterBowl() );
+			return true;
+		}
+
+		public PewterBowlOfPeas( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class PewterBowlOfPotatos : Food
+	{
+		[Constructable]
+		public PewterBowlOfPotatos() : base( 0x1602 )
+		{
+			Stackable = false;
+			Weight = 1.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyPewterBowl() );
+			return true;
+		}
+
+		public PewterBowlOfPotatos( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	[TypeAlias( "Server.Items.EmptyLargeWoodenBowl" )]
+	public class EmptyWoodenTub : Item
+	{
+		[Constructable]
+		public EmptyWoodenTub() : base( 0x1605 )
+		{
+			Weight = 2.0;
+		}
+
+		public EmptyWoodenTub( Serial serial ) : base( serial )
+		{
+		}
+public override void OnDoubleClick( Mobile from )
+		{
+			if ( !Movable )
+				return;
+
+			from.Target = new InternalTarget( this );
+		}
+
+		private class InternalTarget : Target
+		{
+			private EmptyWoodenTub m_Item;
+
+			public InternalTarget( EmptyWoodenTub item ) : base( 1, false, TargetFlags.None )
+			{
+				m_Item = item;
+			}
+
+			protected override void OnTarget( Mobile from, object targeted )
+			{
+				if ( m_Item.Deleted ) return;
+
+				/*if ( targeted is Carrot )
+				{
+					m_Item.Consume();
+					((Carrot)targeted).Consume();
+					from.SendMessage("You made a bowl of carrot");
+					from.AddToBackpack( new WoodenBowlCarrot() );
+				}
+				else if ( targeted is Lettuce )
+				{
+					m_Item.Consume();
+					((Lettuce)targeted).Consume();
+					from.SendMessage("You made a bowl of lettuce");
+					from.AddToBackpack( new WoodenBowlLettuce() );
+				}
+				else if ( targeted is Corn )
+				{
+					m_Item.Consume();
+					((Corn)targeted).Consume();
+					from.SendMessage("You made a bowl of corn");
+					from.AddToBackpack( new WoodenBowlCorn() );
+				}
+				else if ( targeted is Cabbage )
+				{
+					m_Item.Consume();
+					((Cabbage)targeted).Consume();
+					from.SendMessage("You made a bowl of cabbage");
+					from.AddToBackpack( new WoodenBowlCabbage() );
+				}
+/*				else if ( targeted is SackFlourOpen )
+				{
+					from.SendMessage("You poured all the flour into the bowl");
+					if( m_Item.Parent == null )
+						new BowlFlour( ((SackFlourOpen)targeted).Uses ).MoveToWorld( m_Item.Location, m_Item.Map );
+					else if(((SackFlourOpen)targeted).Parent == null )
+						new BowlFlour( ((SackFlourOpen)targeted).Uses ).MoveToWorld(((Item)targeted).Location, ((Item)targeted).Map);
+					else
+						from.AddToBackpack( new BowlFlour( ((SackFlourOpen)targeted).Uses ) );
+					((Item)targeted).Consume();
+					m_Item.Consume();
+				}
+				else if ( targeted is Food || targeted is BaseReagent || targeted is BasePotion )
+				{
+					FoodMix F = new FoodMix();
+					//Type t = (targeted.GetType());
+					//F.AddFood( new t );
+					if( m_Item.Parent == null )
+						F.MoveToWorld( m_Item.Location, m_Item.Map);
+					else
+						from.AddToBackpack( new FoodMix() );
+					m_Item.Delete();
+					((Item)targeted).Consume();
+					from.SendMessage("You added that into the bowl making a food mix");
+				}
+*/// stew code
+// I still don't understand the "ItemID & 0x3FFF" part. What does it mean?
+				int itemID = 0;
+
+				if ( targeted is Item )
+					itemID = ((Item)targeted).ItemID & 0x3FFF;
+				else if ( targeted is StaticTarget )
+					itemID = ((StaticTarget)targeted).ItemID & 0x3FFF;
+
+				if ( itemID >= 2416 && itemID <= 2419 )
+				{
+					m_Item.Consume();
+					from.SendMessage("You fill your bowl with stew.");
+					from.AddToBackpack( new WoodenBowlOfStew() );
+				}
+
+
+				else
+				{
+					from.SendMessage("You can't use that with the bowl!");
+				}
+			}
+		}
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	[TypeAlias( "Server.Items.EmptyLargePewterBowl" )]
+	public class EmptyPewterTub : Item
+	{
+		[Constructable]
+		public EmptyPewterTub() : base( 0x1603 )
+		{
+			Weight = 2.0;
+		}
+
+		public EmptyPewterTub( Serial serial ) : base( serial )
+		{
+		}
+public override void OnDoubleClick( Mobile from )
+		{
+			if ( !Movable )
+				return;
+
+			from.Target = new InternalTarget( this );
+		}
+
+		private class InternalTarget : Target
+		{
+			private EmptyPewterTub m_Item;
+
+			public InternalTarget( EmptyPewterTub item ) : base( 1, false, TargetFlags.None )
+			{
+				m_Item = item;
+			}
+
+			protected override void OnTarget( Mobile from, object targeted )
+			{
+				if ( m_Item.Deleted ) return;
+
+				/*if ( targeted is Carrot )
+				{
+					m_Item.Consume();
+					((Carrot)targeted).Consume();
+					from.SendMessage("You made a bowl of carrot");
+					from.AddToBackpack( new PewterBowlCarrot() );
+				}
+				else if ( targeted is Lettuce )
+				{
+					m_Item.Consume();
+					((Lettuce)targeted).Consume();
+					from.SendMessage("You made a bowl of lettuce");
+					from.AddToBackpack( new PewterBowlLettuce() );
+				}
+				else if ( targeted is Corn )
+				{
+					m_Item.Consume();
+					((Corn)targeted).Consume();
+					from.SendMessage("You made a bowl of corn");
+					from.AddToBackpack( new PewterBowlCorn() );
+				}
+				else if ( targeted is Cabbage )
+				{
+					m_Item.Consume();
+					((Cabbage)targeted).Consume();
+					from.SendMessage("You made a bowl of cabbage");
+					from.AddToBackpack( new PewterBowlCabbage() );
+				}
+/*				else if ( targeted is SackFlourOpen )
+				{
+					from.SendMessage("You poured all the flour into the bowl");
+					if( m_Item.Parent == null )
+						new BowlFlour( ((SackFlourOpen)targeted).Uses ).MoveToWorld( m_Item.Location, m_Item.Map );
+					else if(((SackFlourOpen)targeted).Parent == null )
+						new BowlFlour( ((SackFlourOpen)targeted).Uses ).MoveToWorld(((Item)targeted).Location, ((Item)targeted).Map);
+					else
+						from.AddToBackpack( new BowlFlour( ((SackFlourOpen)targeted).Uses ) );
+					((Item)targeted).Consume();
+					m_Item.Consume();
+				}
+				else if ( targeted is Food || targeted is BaseReagent || targeted is BasePotion )
+				{
+					FoodMix F = new FoodMix();
+					//Type t = (targeted.GetType());
+					//F.AddFood( new t );
+					if( m_Item.Parent == null )
+						F.MoveToWorld( m_Item.Location, m_Item.Map);
+					else
+						from.AddToBackpack( new FoodMix() );
+					m_Item.Delete();
+					((Item)targeted).Consume();
+					from.SendMessage("You added that into the bowl making a food mix");
+				}
+*/// stew code
+// I still don't understand the "ItemID & 0x3FFF" part. What does it mean?
+				int itemID = 0;
+
+				if ( targeted is Item )
+					itemID = ((Item)targeted).ItemID & 0x3FFF;
+				else if ( targeted is StaticTarget )
+					itemID = ((StaticTarget)targeted).ItemID & 0x3FFF;
+
+				if ( itemID >= 2416 && itemID <= 2419 )
+				{
+					m_Item.Consume();
+					from.SendMessage("You fill your bowl with stew.");
+					from.AddToBackpack( new PewterBowlOfStew() );
+				}
+
+
+				else
+				{
+					from.SendMessage("You can't use that with the bowl!");
+				}
+			}
+		}
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class WoodenBowlOfStew : Food
+	{
+		[Constructable]
+		public WoodenBowlOfStew() : base( 0x1604 )
+		{
+			Stackable = false;
+			Weight = 2.0;
+			FillFactor = 10;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyWoodenTub() );
+			return true;
+		}
+
+		public WoodenBowlOfStew( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+
+	public class WoodenBowlOfTomatoSoup : Food
+	{
+		[Constructable]
+		public WoodenBowlOfTomatoSoup() : base( 0x1606 )
+		{
+			Stackable = false;
+			Weight = 2.0;
+			FillFactor = 2;
+		}
+
+		public override bool Eat( Mobile from )
+		{
+			if ( !base.Eat( from ) )
+				return false;
+
+			from.AddToBackpack( new EmptyWoodenTub() );
+			return true;
+		}
+
+		public WoodenBowlOfTomatoSoup( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+}

@@ -1,0 +1,138 @@
+Group Dungeon System 2.0 Beta
+Created by -The Jedi-
+Edited by Dpayne2841
+
+Changelog
+2.0 Beta
+Modified to work with ServUO.
+
+1.5
+Fixed a dungeon door key exploit.
+Added login checks to the dungeon region to prohibit an exploit.
+-Any player logging into an empty dungeon will be kicked.
+-Any player logging into a full dungeon will be kicked.
+-Any player logging into a dungeon occupied by a party other than his own will be kicked.
+1.4
+Added party functionality.
+-Any player can enter an empty dungeon.
+-If a player tries to enter an occupied dungeon, it makes sure they are in the same group.
+1.3
+Added pet functionality.
+-Pets are teleported along with their owner.
+-Added AllowPets boolean to each dungeon, restricting pet access via the teleporter.
+1.2.2
+Fixed issue of dead players being stranded if all living players leave the dungeon.
+1.2
+Fixed last bugs, polished the code, tested and tested, and repackaged.
+
+
+
+Summary
+
+This system is designed to offer what some call "raid" style, or "instance" dungeons. The basic premise is that by adding a dungeon control stone, you can define the size of, max players allowed in, a location for players corpeses to be moved to after death, global spawner respawn delays, and many more things for a dungeon. It will also begin clean and anew every time a new group enters. And, players have to be grouped to help eachother in the dungeon. This allows you to actually design a dungeon that must be completed like a task by a group of friends in a linear fashion - rewarding them greatly for their overwhelming efforts - and have it not be exploitable or campable. Many people find themselves being able to make them more and more difficult than ever before.
+
+Here's how it works.
+
+   1. Deco and spawn a dungeon (be mindful that the region is simply a square with the stone in the center. Make it so that the region is not accessable unless a teleporter is added somewhere.)
+   2. Add the Dungeon Control Stone ([add GroupDungeonStone - [add groupd) in the very center of the dungeon. (it will be hidden)
+   3. [Props the stone and change the name, size, max players, minimum skills (0 for disabled), maximum skills (66000 for disabled), and entrance locations. Make sure the entrance is NOT inside the dungeon itself. This is where players will be ejected.
+   4. Double click the stone to update the region. The dungeon is now nearly complete. Notice any spawners in the region have had their respawn times reset to the value defined in the files. (the dungeon IS finished, but there is no way to get there!)
+   5. Find a nice spot for a "portal" to your new dungeon. Make sure it is not actually IN the dungeon. Now [add GroupDungeonTeleporter - [add groupd (I like to add maybe "sparklies" above the port as well.) and set its teleport locations as usual to where you like in the dungeon.
+   6. Do now the same thing you just did, but inside the dungeon, and use the GroupDungeonExit teleporter instead. Make sure it is pointing somewhere outside the dungeon. (Note: the exit is not required. Players can recall out or be teleported out automatically.)
+   7. Important: [props the entrance teleporter and set the "Stone" to the dungeon control stone for your new dungeon.
+   8. Optional: Add a DungeonDoor and make a key spawn somewhere that will unlock it! (set the keyvalue porties on both the door and the key to the same number) [add dungeondoor <southcw, southccw, northcw, northccw, eastcw, eastccw, westcw, westccw> With XMLSpawner, just put /ADD/<key/name/Dungeon Key/keyvalue/####> at the end of the beast name, and where #### is a unique number that matches its door.
+   9. When in doubt, you can always double click the stone again to re-update the dungeon. (this will also respawn any and all mobs, so be careful!)
+
+
+And that should do it! Now a group of friends can group up and enter your new dungeon! It won't allow in any more players than you have defined, and when a group all dies, it will move their corpses (blessed by the way) to the "EntrancePoint" location defined on the stone. It also ejects groups that finished the dungeon. Note: I suggest not offering a way to resurrect inside the dungeon. This allows for the ejecting of a group that has wiped.
+
+Much of the power of this system comes in imagination and design. With systems such as XMLSpawner, you can literally design in depth dungeons laced with quests, bosses that have several "phases", all of which designed to be completed by a limited number of players!, and much more! (I like to use mobs with movement speeds that nearly match player speeds, making it so that they can not skip a "pull" I have placed for them. This lends back to the linear design I spoke of.)
+
+Features
+# Dungeon is only accessable via a dungeon portal.
+# For more than one person to enter a dungeon, they must be in a group.
+# The dungeon will reset every time a player enters an empty dungeon. This includes wiping any corpses or trash.
+# The dungeon limits the amount of players, and the minimum and/or maximum skills allowed to enter. It also can restrict pet entry.
+# Everything that dies in the dungeon stays dead, unless it is a specifically planned spawn.
+# A dead player can not exit the instance. He must either wait to be resurrected, or wait for the other players to die.
+# If all players in the instance die, they are telported outside of the instance shortly after. Their corpses are also blessed and teleported as well as any pets they may have alive.
+# If all creatures in the instance die, the players are given 10 minutes to exit the dungeon by any means, or they will be teleported out.
+# This system protects against players logging out and back in in the dungeon.
+# Some doors in the dungeons are locked and require \"single use\" keys that are found somwhere inside and will remain unlocked until the dungeon resets.
+## SOON TO COME: Players will be kicked for going AFK in the dungeon.
+
+
+Installation
+This code requires VERY MINOR distro modification. Due to the fact that logging in does not invoke the OnEnter() method for the dungeon region, in order to determine whether a player has logged into a dungeon, an addition must me made to the OnLogin() method of your playermobile.cs file.
+
+Drag the download into your customs folder first.
+
+Then open your playermobile.cs file, and find the OnLogin() method, like this:
+
+		private static void OnLogin( LoginEventArgs e )
+		{
+			Mobile from = e.Mobile;
+
+And then place the following code immediately after. (It has been marked in a seperate #region)
+
+            /////////////            
+            #region - Party Dungeons System Edits -
+                
+            if (from.AccessLevel == AccessLevel.Player)
+            {
+                Region reg = Region.Find(from.Location, from.Map);
+                if (reg is GroupDungeonRegion)
+                {
+                    GroupDungeonRegion dreg = (GroupDungeonRegion)reg;
+
+                    //dungeon full so kick
+                    if ( dreg.CountPlayers() > dreg.Stone.MaxPlayers)
+                    {
+                        from.SendMessage(34, "{0} is full right now. You are being teleported out.", dreg.Stone.DungeonName);
+                        Timer.DelayCall(TimeSpan.FromSeconds(5), new TimerStateCallback(Server.Regions.GroupDungeonRegion.KickCallBack), new object[] { from, dreg.Stone });
+                    }
+                    //dungeon empty so kick to allow for reset
+                    else if (dreg.CountPlayers() <= 1)
+                    {
+                        from.SendMessage(34, "You have logged into an empty dungeon. You are being teleported out.", dreg.Stone.DungeonName);
+                        Timer.DelayCall(TimeSpan.FromSeconds(5), new TimerStateCallback(Server.Regions.GroupDungeonRegion.KickCallBack), new object[] { from, dreg.Stone });
+                    }
+                    //not in the current party so kick
+                    else
+                    {
+                        ArrayList players = new ArrayList();
+                        bool isinparty = false;
+                        PlayerMobile pm = (PlayerMobile)from;
+                        Server.Engines.PartySystem.Party p = Server.Engines.PartySystem.Party.Get(from);
+                                    
+                        foreach (Mobile mobs in dreg.Stone.GetMobilesInRange(dreg.Stone.Size))
+                        {
+                            if (mobs is PlayerMobile && mobs != pm)
+                                players.Add(mobs); //grab one player inside
+                        }
+                        if (p != null)
+                        {
+                            foreach (Server.Engines.PartySystem.PartyMemberInfo pmem in p.Members) // check to see if anyone iside is in the party
+                            {
+                                foreach (Mobile pmi in players)
+                                {
+                                    if (pmi == pmem.Mobile)  //if the grabbed player inside is in the entering's party
+                                        isinparty = true;
+                                }
+                            }
+                        }
+                        if (!isinparty)
+                        {
+                            from.SendMessage(34, "You must join the party inside to enter. You are being teleported out.");
+                            Timer.DelayCall(TimeSpan.FromSeconds(5), new TimerStateCallback(Server.Regions.GroupDungeonRegion.KickCallBack), new object[] { from, dreg.Stone });
+                        }
+                    }
+                }
+            }
+
+            #endregion 
+            /////////////
+
+
+Thanks,
+-The Jedi-

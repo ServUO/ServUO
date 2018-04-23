@@ -1,0 +1,170 @@
+File: Scripts\Engines\Craft\Core\CraftItem.cs
+
+/*---------------------------------------------------- BaseStoreKey Crafting (1/3) -----------------------------------
+
+This block allows the craft system to check and withdraw resources from any BaseStoreKey or MasterKey objects found within the
+crafter's backpack.  
+
+Location: This block belongs in CraftItem.cs under Scripts\Engines\Craft\Core\. This block needs to be inserted in the main ConsumeRes
+method within the block that reads "if ( ourPack.GetBestGroupAmount( types[i], true, new CheckItemGroup( CheckHueGrouping ) ) < amounts[i] ) {"
+In an unmodified server, this can be found on line 749, so insertion should begin on line 751
+
+
+Installation: drop this block in place, being mindful of the structure around it.
+
+*/
+
+[SEARCH FOR]
+
+			else
+				// ConstumeType.None ( it's basicaly used to know if the crafter has enough resource before starting the process )
+			{
+				index = -1;
+
+				if (IsQuantityType(types))
+				{
+					for (int i = 0; i < types.Length; i++)
+					{
+						if (GetQuantity(ourPack, types[i]) < amounts[i])
+						{
+							index = i;
+							break;
+						}
+					}
+				}
+				else
+				{
+					for (int i = 0; i < types.Length; i++)
+					{
+						if (ourPack.GetBestGroupAmount(types[i], true, CheckHueGrouping) < amounts[i])
+						{
+							index = i;
+							break;
+						}
+					}
+				}
+			}
+			
+[REPLACE WITH]
+            else
+            // ConstumeType.None ( it's basicaly used to know if the crafter has enough resource before starting the process )
+            {
+                index = -1;
+
+                if (IsQuantityType(types))
+                {
+                    for (int i = 0; i < types.Length; i++)
+                    {
+                        if (GetQuantity(ourPack, types[i]) < amounts[i])
+                        {
+                            // UNIVERSAL STORAGE KEYS BEGIN
+                            if (BaseStoreKey.CraftWithdraw(ourPack, types[i], amounts[i]))
+                            {
+                                continue;
+                            }
+                            // UNIVERSAL STORAGE KEYS END
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < types.Length; i++)
+                    {
+                        if (ourPack.GetBestGroupAmount(types[i], true, CheckHueGrouping) < amounts[i])
+                        {
+                            // UNIVERSAL STORAGE KEYS START
+                            //perform a scan and withdraw of the requested resource if it is found.  If not, then let the standard
+                            //operation continue
+                            if (BaseStoreKey.CraftWithdraw(ourPack, types[i], amounts[i]))
+                            {
+                                //this overrides the failure condition and lets the thread continue on with the next type in the
+                                //types list
+                                continue;
+                            }
+                            //otherwise, report not found and abort
+                            // UNIVERSAL STORAGE KEYS END
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+            }
+			
+/*---------------------------------------------------- BaseStoreKey Crafting (2/3) -----------------------------------
+
+This addition is required to properly handle crafting with recall runes.
+
+Location: This block belongs in CraftItem.cs under Scripts\Engines\Craft\Core\. This block needs to be inserted in the main ConsumeRes
+method within the block that starts with "if ( m_NameNumber == 1041267 )"
+In an unmodified server, this can be found on line 689.
+*/
+			
+[SEARCH FOR]
+
+				if ( consumeExtra == null )
+				{
+					message = 1044253; // You don't have the components needed to make that.
+					return false;
+				}
+
+
+
+[REPLACE WITH]
+                // UNIVERSAL STORAGE KEYS BEGIN
+                if (consumeExtra == null)
+                {
+                    //if you can withdraw from keys
+                    if (BaseStoreKey.CraftWithdraw(ourPack, new Type[] { typeof(RecallRune) }, 1))
+                    {
+                        //flag the reference to the newly withdrawn item
+                        consumeExtra = BaseStoreKey.LastWithdrawn;
+                    }
+                    else
+                    {
+                        message = 1044253; // You don't have the components needed to make that.
+                        return false;
+                    }
+                }
+                // UNIVERSAL STORAGE KEYS END
+
+/*---------------------------------------------------- BaseStoreKey Crafting (3/3) -----------------------------------
+This addition is required to properly handle crafting with IHasQuantity items (food, water).
+
+Location: This block belongs in CraftItem.cs under Scripts\Engines\Craft\Core\. This block needs to be inserted in the main ConsumeRes
+method.
+*/
+
+[SEARCH FOR]
+				if (IsQuantityType(types))
+				{
+					for (int i = 0; i < types.Length; i++)
+					{
+						if (GetQuantity(ourPack, types[i]) < amounts[i])
+						{
+							index = i;
+							break;
+						}
+					}
+				}
+				
+[REPLACE WITH]
+                if (IsQuantityType(types))
+                {
+                    for (int i = 0; i < types.Length; i++)
+                    {
+                        if (GetQuantity(ourPack, types[i]) < amounts[i])
+                        {
+                            // UNIVERSAL STORAGE KEYS BEGIN
+                            if (BaseStoreKey.CraftWithdraw(ourPack, types[i], amounts[i]))
+                            {
+                                continue;
+                            }
+                            // UNIVERSAL STORAGE KEYS END
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+				
