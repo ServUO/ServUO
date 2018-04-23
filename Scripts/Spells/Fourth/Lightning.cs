@@ -48,8 +48,7 @@ namespace Server.Spells.Fourth
                 Mobile source = Caster;
                 SpellHelper.Turn(Caster, m.Location, 100);
 
-                if(mob != null)
-                    SpellHelper.CheckReflect((int)Circle, ref source, ref mob);
+                SpellHelper.CheckReflect((int)Circle, ref source, ref m);
 
                 double damage = 0;
 
@@ -75,7 +74,7 @@ namespace Server.Spells.Fourth
 
                 if (damage > 0)
                 {
-                    SpellHelper.Damage(this, mob != null ? mob : m, damage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
                 }
             }
 
