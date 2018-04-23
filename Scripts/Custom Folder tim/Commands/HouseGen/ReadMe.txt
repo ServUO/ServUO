@@ -1,0 +1,1 @@
+In the HouseGenGump file are 3 strings of paths. 2 of the paths are for the included templates, the last is the output folder where the scripts will be generated to. Insure these paths are set up and the folder the path points to exists.

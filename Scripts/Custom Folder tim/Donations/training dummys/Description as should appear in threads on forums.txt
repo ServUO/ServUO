@@ -1,0 +1,70 @@
+title: Set of Training "Dummies"
+
+body of the part to go in the forums
+
+Set of Training "Dummies"
+
+This set of traing dummies, takes the origional one in game, and add a whole new dimension to traing :)
+each sub set includes 3 types, basic, enhanced & advanced (except for normal weapon one, it has 2 and the basic one is the one all ready in game)
+
+besides the weapon ones, these are made to reward the non-afk/non-macro'er out and train faster
+
+they also give other ways that you can set up for training these skills besides just sitting there and using the skill on an item/mobile
+and they can make you laugh at the same time
+
+Now the basics on them:
+
+each sub set has 3 types:
+basic - no extra part in anme - trains up to 25 skill level like the normal training dummies do
+enhanced - will train up to 100 skill
+advanced - will train from 100 up to 160 skill (or cap - which ever is lower)
+all 3 values can be easiely modified in the script or in game indiovidualy by item
+
+the sets are:
+weapons (lust like the current in game training dummy, the basicc one not included since you have) - this one does not use gumps and is not friendlier to non afk'ers
+
+Item ID - made to train up item id of course
+Arms lore
+Animal Lore
+Tactics
+Anatomy
+
+How they work :)
+
+double click like normal
+starts it swinging
+if weapon one, works like normal for its range
+if not weapon one open up the gump for it
+finsihes up :)
+
+the Gump
+It displays a question based on the type of skill being raised
+also displays pictures that go along with the question
+then displays 6 possible answers and a cancel button (note -cancle button still can do a skill check)
+only right clicking will not do a skill check
+
+once a button is pushed, it does a skill check, with possible skill gain
+then depening if right or wrong answer:
+wrong answer - sends the player a message saying basicaly they goofed
+if right answer - does a bonus skill check for an other possible gain and a saying to tell them they where basicaly right
+
+these are all SIMPLE questions & answers, these are ment more for training and to give a person doing it a laugh
+
+all of the sayings are ment to be on the funny side, and can be easiely modified in the scripts to add/remove or change them around
+
+so they can macro it, but only 1 in 6 change of being correct
+so those that sit there and actualy take the time to read it and select the correct answer, get a full double bonus of skill gain
+and once they get going at it, the item wil be waiting on them
+
+side note - the things that is says also if you try to use to fast, while mounted, etc are also ment to be funny
+
+these are great for guild houses, newbie dungeons, or for shards that have skills go beyond the normal 100 for these skills
+
+they can be added to the crafting menu easiely, or added as rare loot on a critter, or being sold by a vendor
+
+they also come in east & south versions :)
+
+The main documentaion for these is in the anatomy ones, with only major changes noted in the other ones where needed - no use in repeating the same wording many many times (just be a lot of copy & pasting or me wearing out my fingers :rolleyes: )
+
+enjoy and have fun with it
+and as always, can modify, mutalate, spindle, delete or what ever you want to these to make them useful for your shard

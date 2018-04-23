@@ -1,0 +1,43 @@
+﻿using System.Collections;
+using Server.Regions;
+using Server.Targeting;
+
+namespace Server.Multis.Deeds
+{
+	public class ~HouseName~Deed : HouseDeed
+	{
+		[Constructable]
+        public ~HouseName~Deed() : base(~MultiID~, new Point3D(~PositionOffset~)){
+			Name = "Deed to a ~HouseNameSpace~";
+		}
+
+		public ~HouseName~Deed(Serial serial) : base(serial){}
+		
+		public override Rectangle2D[] Area
+        {
+            get
+            {
+                return ~HouseName~.AreaArray;
+            }
+        }
+
+		public override BaseHouse GetHouse(Mobile owner)
+        {
+            return new ~HouseName~(owner, ~MultiID~);
+        }
+
+		public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+	}
+}

@@ -1,0 +1,127 @@
+File: Scripts\Engines\Plants\MainPlantGump.cs
+
+/*---------------------------------------------------- BaseStoreKey Plant Care (1/2) -----------------------------------
+
+This block allows the plant care system to check and withdraw water from any BaseStoreKey or MasterKey objects found within the
+user's backpack.  
+
+Location: This block belongs in MainPlantGump.cs under Scripts\Engines\Plants\. This block needs to be inserted in the OnResponse()
+method, first thing in the case 6: switch block.  Make sure it's before the from.Target() line.  On an unmodified server,
+this is around line 285 of MainPlantGump.cs
+
+Installation: drop this block in place, being mindful of the structure around it.
+
+*/
+
+[SEARCH FOR]
+                        if (!foundUsableWater)
+                        {
+                            from.Target = new PlantPourTarget(this.m_Plant);
+                            from.SendLocalizedMessage(1060808, "#" + this.m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
+                        }
+				
+[REPLACE WITH]
+                        if (!foundUsableWater)
+                        {
+                            from.Target = new PlantPourTarget(this.m_Plant);
+                            // UNIVERSAL STORAGE KEYS START
+                            //perform the function to scan for keys, looking for a potion entry of the desired effect(s)
+                            Item keyitem = BaseStoreKey.WithdrawByEntryType(from.Backpack, typeof(Solaris.ItemStore.BeverageEntry), 1, new object[] { BeverageType.Water });
+
+                            //if something was found, return it
+                            if (keyitem != null && keyitem is BaseBeverage)
+                            {
+                                from.Backpack.DropItem(keyitem);
+                                m_Plant.Pour(from, keyitem);
+
+                                //clean up the empty glassware that the keys spit out
+                                keyitem.Delete();
+
+                                //abort the cursor use
+                                from.SendGump(new MainPlantGump(m_Plant));
+                                return;
+                            }
+                            // UNIVERSAL STORAGE KEYS END
+                            from.SendLocalizedMessage(1060808, "#" + this.m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
+                        }
+				
+/*---------------------------------------------------- BaseStoreKey Plant Care (2/2) -----------------------------------
+
+This block allows the plant care system to check and withdraw potions from any BaseStoreKey or MasterKey objects found within the
+user's backpack.  
+
+Location: This block belongs in MainPlantGump.cs under Scripts\Engines\Plants\. This block needs to be inserted in the GetPotion()
+method after the entire foreach( Item item in items ) statement. In an unmodified server, this should be inserted around line 384
+
+Installation: drop this block in place, being mindful of the structure around it
+
+*/
+
+[SEARCH FOR]
+        public static Item GetPotion(Mobile from, PotionEffect[] effects)
+        {
+            if (from.Backpack == null)
+                return null;
+
+            Item[] items = from.Backpack.FindItemsByType(new Type[] { typeof(BasePotion), typeof(PotionKeg) });
+
+            foreach (Item item in items)
+            {
+                if (item is BasePotion)
+                {
+                    BasePotion potion = (BasePotion)item;
+
+                    if (Array.IndexOf(effects, potion.PotionEffect) >= 0)
+                        return potion;
+                }
+                else
+                {
+                    PotionKeg keg = (PotionKeg)item;
+
+                    if (keg.Held > 0 && Array.IndexOf(effects, keg.Type) >= 0)
+                        return keg;
+                }
+            }
+
+            return null;
+        }
+		
+[REPLACE WITH]
+        public static Item GetPotion(Mobile from, PotionEffect[] effects)
+        {
+            if (from.Backpack == null)
+                return null;
+
+            Item[] items = from.Backpack.FindItemsByType(new Type[] { typeof(BasePotion), typeof(PotionKeg) });
+
+            foreach (Item item in items)
+            {
+                // UNIVERSAL STORAGE KEYS START
+                //perform the function to scan for keys, looking for a potion entry of the desired effect(s)
+                Item keyitem = BaseStoreKey.WithdrawByEntryType(from.Backpack, typeof(Solaris.ItemStore.PotionEntry), 1, new object[] { effects });
+
+                //if something was found, return it
+                if (keyitem != null)
+                {
+                    return keyitem;
+                }
+                //otherwise return nothing
+                // UNIVERSAL STORAGE KEYS END
+                if (item is BasePotion)
+                {
+                    BasePotion potion = (BasePotion)item;
+
+                    if (Array.IndexOf(effects, potion.PotionEffect) >= 0)
+                        return potion;
+                }
+                else
+                {
+                    PotionKeg keg = (PotionKeg)item;
+
+                    if (keg.Held > 0 && Array.IndexOf(effects, keg.Type) >= 0)
+                        return keg;
+                }
+            }
+
+            return null;
+        }
