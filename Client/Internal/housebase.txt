@@ -1,0 +1,467 @@
+using System;
+using System.IO;
+using System.Threading;
+using System.Collections;
+using Server;
+using Server.Gumps;
+using Server.Items;
+using Server.Multis;
+using Server.Mobiles;
+using Server.Network;
+using Server.Targeting;
+
+namespace Server.Multis 
+{
+	public class ~CLASSNAME~House : HouseFoundation 
+	{
+		private int m_DefaultPrice = ~COST~;
+
+		private DesignState m_Current; // State which is currently visible.
+		private DesignState m_Design;  // State of current design.
+		private DesignState m_Backup;  // State at last user backup.
+		private Item m_SignHanger;     // Item hanging the sign.
+		private Item m_Signpost;       // Item supporting the hanger.
+		private int m_SignpostGraphic; // ItemID number of the chosen signpost.
+		private int m_LastRevision;    // Latest revision number.
+		private ArrayList m_Fixtures;  // List of fixtures (teleporters and doors) associated with this house.
+		private FoundationType m_Type; // Graphic type of this foundation.
+		private Mobile m_Customizer;   // Who is currently customizing this -or- null if not customizing.
+
+
+		public override int DefaultPrice{ get{ return m_DefaultPrice; } }
+
+		public override bool IsAosRules{ get{ return true; } }
+
+		public override MultiComponentList Components
+		{
+			get
+			{
+				if ( m_Current == null )				
+					SetInitialState();					
+				
+				return m_Current.Components;
+			}
+		}
+
+		public new void SetInitialState()
+		{
+			m_Current = new DesignState( (HouseFoundation) this, BuildHouse() );
+			m_Design = new DesignState( m_Current );
+			m_Backup = new DesignState( m_Current );
+		}
+
+		public MultiComponentList BuildHouse() 
+		{
+				// Copy original foundation layout
+				MultiComponentList mcl = new MultiComponentList( MultiData.GetComponents( 0x13EC ) );
+
+				MultiTileEntry[] list = mcl.List; 
+
+				for ( int i = 1; i < list.Length; ++i ) 
+				{    
+					MultiTileEntry entry = list[i]; 
+					mcl.Remove(entry.m_ItemID, 
+						entry.m_OffsetX, 
+						entry.m_OffsetY, 
+						entry.m_OffsetZ); 
+				} 
+
+				//mcl.Resize( mcl.Width, mcl.Height + 1 );
+				mcl.Resize( ~WIDTH~, ~HEIGHT~);
+
+				/*
+				 * ADDING COMPONENTS 
+				 */
+
+				~COMPONENTS~
+
+				/*
+				* DONE ADDING COMPONENTS 
+				*/
+				
+				return mcl;
+		}
+
+		public ~CLASSNAME~House( Mobile owner, int multiID, int maxLockdowns, int maxSecures ) : base( owner, multiID, maxLockdowns, maxSecures )
+		{
+			m_SignpostGraphic = 9;
+
+			m_Fixtures = new ArrayList();
+
+			int x = Components.Min.X;
+			int y = Components.Height - 1 - Components.Center.Y;
+
+			m_SignHanger = new Static( 0xB98 );
+			m_SignHanger.MoveToWorld( new Point3D( X + x, Y + y, Z + 7 ), Map );
+
+			CheckSignpost();
+
+			SetSign( x, y, 7 );
+
+			BanLocation = new Point3D( x, y, 0 );
+		}
+
+		public ~CLASSNAME~House( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			writer.Write( (int) 0 ); // version
+
+			writer.Write( m_Signpost );
+			writer.Write( (int) m_SignpostGraphic );
+
+			writer.Write( m_SignHanger );
+
+			writer.Write( (int) m_LastRevision );
+			writer.WriteItemList( m_Fixtures, true );
+
+			CurrentState.Serialize( writer );
+			DesignState.Serialize( writer );
+			BackupState.Serialize( writer );
+
+			base.Serialize( writer );
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			int version = reader.ReadInt();
+
+			switch ( version )
+			{
+				case 0:
+				{
+					m_Signpost = reader.ReadItem();
+					m_SignpostGraphic = reader.ReadInt();
+				
+					m_SignHanger = reader.ReadItem();
+
+					m_LastRevision = reader.ReadInt();
+					m_Fixtures = reader.ReadItemList();
+
+					m_Current = new DesignState( this, reader );
+					m_Design = new DesignState( this, reader );
+					m_Backup = new DesignState( this, reader );
+
+					break;
+				}
+			}
+
+			base.Deserialize( reader );
+		}
+	}
+}
+
+namespace Server.Items {
+
+		public class ~CLASSNAME~HousePlacementTool : Item
+		{
+		//type, description, secures, lockdowns, cost, xoffset, yoffset, zoffset, multiId of correct foundation size
+		public static ~CLASSNAME~HousePlacementEntry m_Entry = new ~CLASSNAME~HousePlacementEntry( typeof( ~CLASSNAME~House ), 1060235, ~STORAGE~, ~LOCKDOWNS~, ~COST~, 0, 4, 0, 0x13EC);
+		
+		[Constructable]
+		public ~CLASSNAME~HousePlacementTool() : base( 0x14F6 )
+		{
+			Weight = 3.0;
+			Name = "A House Placement Tool For This Design: ~NAME~";
+			LootType = LootType.Blessed;
+		}
+	
+		public ~CLASSNAME~HousePlacementTool( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+
+			if ( Weight == 0.0 )
+				Weight = 3.0;
+		}
+
+		public override void OnDoubleClick( Mobile from )
+		{
+			if ( IsChildOf( from.Backpack ) )
+				from.Target = new ~CLASSNAME~HousePlacementTarget( m_Entry );
+			else
+				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
+		}
+	}
+
+	public class ~CLASSNAME~HousePlacementTarget : MultiTarget
+	{
+		private ~CLASSNAME~HousePlacementEntry m_Entry;
+		
+		private bool m_Placed;
+
+		public ~CLASSNAME~HousePlacementTarget( ~CLASSNAME~HousePlacementEntry entry ) : base( entry.MultiID, entry.Offset )
+		{
+			Range = 14;
+			m_Entry = entry;
+		}
+		
+		protected override void OnTarget( Mobile from, object o )
+		{
+			if ( !from.CheckAlive() )
+				return;
+
+			IPoint3D ip = o as IPoint3D;
+
+			if ( ip != null )
+			{
+				if ( ip is Item )
+					ip = ((Item)ip).GetWorldTop();
+
+				Point3D p = new Point3D( ip );
+
+				if ( from.AccessLevel >= AccessLevel.GameMaster || Region.Find( new Point3D( p ), from.Map ).AllowHousing( from, p ) )
+					m_Placed = m_Entry.OnPlacement( from, p );
+				else
+					from.SendLocalizedMessage( 501265 ); // Housing can not be created in this area.
+			}
+		}
+	}
+
+	public class ~CLASSNAME~HousePlacementEntry
+	{
+		private Type m_Type;
+		private int m_Description;
+		private int m_Storage;
+		private int m_Lockdowns;
+		private int m_Cost;
+		private int m_MultiID;
+		private Point3D m_Offset;
+
+		public Type Type{ get{ return m_Type; } }
+
+		public int Description{ get{ return m_Description; } }
+		public int Storage{ get{ return m_Storage; } }
+		public int Lockdowns{ get{ return m_Lockdowns; } }
+		public int Cost{ get{ return m_Cost; } }
+
+		public int MultiID{ get{ return m_MultiID; } }
+		public Point3D Offset{ get{ return m_Offset; } }
+
+		public ~CLASSNAME~HousePlacementEntry( Type type, int description, int storage, int lockdowns, int cost, int xOffset, int yOffset, int zOffset, int multiID )
+		{
+			m_Type = type;
+			m_Description = description;
+			m_Storage = storage;
+			m_Lockdowns = lockdowns;
+			m_Cost = cost;
+
+			m_Offset = new Point3D( xOffset, yOffset, zOffset );
+
+			m_MultiID = multiID;
+		}
+
+		public ~CLASSNAME~House ConstructHouse( Mobile from )
+		{
+			try
+			{
+				object[] args;
+
+				args = new object[4]{ from, m_MultiID, m_Storage, m_Lockdowns };
+
+				return Activator.CreateInstance( m_Type, args ) as ~CLASSNAME~House;
+				//return new ~CLASSNAME~House(m_MultiID, from, m_Storage, m_Lockdowns);
+			}
+			catch
+			{
+			}
+
+			return null;
+		}
+
+		public void PlacementWarning_Callback( Mobile from, bool okay, object state )
+		{
+			if ( !from.CheckAlive() )
+				return;
+
+			PreviewHouse prevHouse = (PreviewHouse) state;
+
+			if ( !okay )
+			{
+				prevHouse.Delete();
+				return;
+			}
+
+			if ( prevHouse.Deleted )
+			{
+				/* Too much time has passed and the test house you created has been deleted.
+				 * Please try again!
+				 */
+				from.SendGump( new NoticeGump( 1060637, 30720, 1060647, 32512, 320, 180, null, null ) );
+
+				return;
+			}
+
+			Point3D center = prevHouse.Location;
+			Map map = prevHouse.Map;
+
+			prevHouse.Delete();
+
+			ArrayList toMove;
+			//Point3D center = new Point3D( p.X - m_Offset.X, p.Y - m_Offset.Y, p.Z - m_Offset.Z );
+			HousePlacementResult res = HousePlacement.Check( from, m_MultiID, center, out toMove );
+
+			switch ( res )
+			{
+				case HousePlacementResult.Valid:
+				{
+					if ( from.AccessLevel < AccessLevel.GameMaster && BaseHouse.HasAccountHouse( from ) )
+					{
+						from.SendLocalizedMessage( 501271 ); // You already own a house, you may not place another!
+					}
+					else
+					{
+						~CLASSNAME~House house = ConstructHouse( from );
+
+						if ( house == null )
+							return;
+
+						house.Price = m_Cost;
+
+						if ( Banker.Withdraw( from, m_Cost ) )
+						{
+							from.SendLocalizedMessage( 1060398, m_Cost.ToString() ); // ~1_AMOUNT~ gold has been withdrawn from your bank box.
+						}
+						else
+						{
+							house.RemoveKeys( from );
+							house.Delete();
+							from.SendLocalizedMessage( 1060646 ); // You do not have the funds available in your bank box to purchase this house.  Try placing a smaller house, or adding gold or checks to your bank box.
+							return;
+						}
+
+						house.MoveToWorld( center, from.Map );
+
+						for ( int i = 0; i < toMove.Count; ++i )
+						{
+							object o = toMove[i];
+
+							if ( o is Mobile )
+								((Mobile)o).Location = house.BanLocation;
+							else if ( o is Item )
+								((Item)o).Location = house.BanLocation;
+						}
+					}
+
+					break;
+				}
+				case HousePlacementResult.BadItem:
+				case HousePlacementResult.BadLand:
+				case HousePlacementResult.BadStatic:
+				case HousePlacementResult.NoSurface:
+				{
+					from.SendLocalizedMessage( 1043287 ); // The house could not be created here.  Either something is blocking the house, or the house would not be on valid terrain.
+					break;
+				}
+				case HousePlacementResult.BadRegion:
+				{
+					from.SendLocalizedMessage( 501265 ); // Housing cannot be created in this area.
+					break;
+				}
+			}
+		}
+
+		public bool OnPlacement( Mobile from, Point3D p )
+		{
+			if ( !from.CheckAlive() )
+				return false;
+
+			ArrayList toMove;
+			Point3D center = new Point3D( p.X - m_Offset.X, p.Y - m_Offset.Y, p.Z - m_Offset.Z );
+			HousePlacementResult res = HousePlacement.Check( from, m_MultiID, center, out toMove );
+
+			switch ( res )
+			{
+				case HousePlacementResult.Valid:
+				{
+					if ( from.AccessLevel < AccessLevel.GameMaster && BaseHouse.HasAccountHouse( from ) )
+					{
+						from.SendLocalizedMessage( 501271 ); // You already own a house, you may not place another!
+					}
+					else
+					{
+						from.SendLocalizedMessage( 1011576 ); // This is a valid location.
+
+						PreviewHouse prev = new PreviewHouse( m_MultiID );
+						
+                        MultiComponentList mcl = prev.Components;
+						
+						Point3D banLoc = new Point3D( center.X + mcl.Min.X, center.Y + mcl.Max.Y + 1, center.Z );
+
+						for ( int i = 0; i < mcl.List.Length; ++i )
+						{
+							MultiTileEntry entry = mcl.List[i];
+
+							int itemID = entry.m_ItemID & 0x3FFF;
+
+							if ( itemID >= 0xBA3 && itemID <= 0xC0E )
+							{
+								banLoc = new Point3D( center.X + entry.m_OffsetX, center.Y + entry.m_OffsetY, center.Z );
+								break;
+							}
+						}
+
+						for ( int i = 0; i < toMove.Count; ++i )
+						{
+							object o = toMove[i];
+
+							if ( o is Mobile )
+								((Mobile)o).Location = banLoc;
+							else if ( o is Item )
+								((Item)o).Location = banLoc;
+						}
+
+						prev.MoveToWorld( center, from.Map );
+
+						/* You are about to place a new house.
+						 * Placing this house will condemn any and all of your other houses that you may have.
+						 * All of your houses on all shards will be affected.
+						 * 
+						 * In addition, you will not be able to place another house or have one transferred to you for one (1) real-life week.
+						 * 
+						 * Once you accept these terms, these effects cannot be reversed.
+						 * Re-deeding or transferring your new house will not uncondemn your other house(s) nor will the one week timer be removed.
+						 * 
+						 * If you are absolutely certain you wish to proceed, click the button next to OKAY below.
+						 * If you do not wish to trade for this house, click CANCEL.
+						 */
+						from.SendGump( new WarningGump( 1060635, 30720, 1049583, 32512, 420, 280, new WarningGumpCallback( PlacementWarning_Callback ), prev ) );
+
+						return true;
+					}
+
+					break;
+				}
+				case HousePlacementResult.BadItem:
+				case HousePlacementResult.BadLand:
+				case HousePlacementResult.BadStatic:
+				case HousePlacementResult.NoSurface:
+				{
+					from.SendLocalizedMessage( 1043287 ); // The house could not be created here.  Either something is blocking the house, or the house would not be on valid terrain.
+					break;
+				}
+				case HousePlacementResult.BadRegion:
+				{
+					from.SendLocalizedMessage( 501265 ); // Housing cannot be created in this area.
+					break;
+				}
+			}
+
+			return false;
+		}
+	}
+}
