@@ -577,24 +577,27 @@ namespace Server
         public static void Remove(string toRemove, Func<XmlSpawner, bool> predicate = null)
         {
             int count = 0;
+            int deleted = 0;
 
-            foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
+            var list = new List<XmlSpawner>(World.Items.Values.OfType<XmlSpawner>());
+
+            foreach (var spawner in list)
             {
                 if (predicate == null || predicate(spawner))
                 {
-                    count += Remove(spawner, toRemove);
+                    count += Remove(spawner, toRemove, ref deleted);
                 }
             }
 
-            ToConsole(String.Format("Spawn Removal: {0} spawn lines removed containing -{1}-.", count.ToString(), toRemove));
+            ColUtility.Free(list);
+            ToConsole(String.Format("Spawn Removal: {0} spawn lines removed containing -{1}-. [{2} deleted].", count.ToString(), toRemove, deleted));
         }
 
-        public static int Remove(XmlSpawner spawner, string toRemove)
+        public static int Remove(XmlSpawner spawner, string toRemove, ref int deleted)
         {
             List<XmlSpawner.SpawnObject> remove = new List<XmlSpawner.SpawnObject>();
-            List<XmlSpawner.SpawnObject> objects = spawner.SpawnObjects.ToList();
 
-            foreach (var obj in objects)
+            foreach (var obj in spawner.SpawnObjects)
             {
                 if (obj == null || obj.TypeName == null)
                     continue;
@@ -613,6 +616,12 @@ namespace Server
             foreach (var obj in remove)
             {
                 spawner.RemoveSpawnObject(obj);
+
+                foreach (var e in obj.SpawnedObjects.OfType<IEntity>())
+                {
+                    e.Delete();
+                    deleted++;
+                }
             }
 
             ColUtility.Free(remove);

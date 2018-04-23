@@ -5700,15 +5700,18 @@ namespace Server.Mobiles
 
 		public override void OnSkillChange(SkillName skill, double oldBase)
 		{
-			if (Young && SkillsTotal >= 4500)
+			if (Young)
 			{
-				Account acc = Account as Account;
+                if (SkillsTotal >= 4500 || (!Core.AOS && Skills[skill].Base >= 80.0))
+                {
+                    Account acc = Account as Account;
 
-				if (acc != null)
-				{
-					acc.RemoveYoungStatus(1019036);
-					// You have successfully obtained a respectable skill level, and have outgrown your status as a young player!
-				}
+                    if (acc != null)
+                    {
+                        acc.RemoveYoungStatus(1019036);
+                        // You have successfully obtained a respectable skill level, and have outgrown your status as a young player!
+                    }
+                }
 			}
 
             if (Skills.CurrentMastery == skill && Skills[skill].Value < MasteryInfo.MinSkillRequirement)

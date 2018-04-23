@@ -28,10 +28,8 @@ namespace Server.Spells.Mysticism
             Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
         }
 
-        public void OnTarget(object o)
+        public void OnTarget(IDamageable target)
         {
-            Mobile target = o as Mobile;
-
             if (target == null)
             {
                 return;
@@ -53,7 +51,7 @@ namespace Server.Spells.Mysticism
                 SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 0, 100, 0);
 
                 Caster.MovingParticles(target, 0x36D4, 7, 0, false, true, 0x49A, 0, 0, 9502, 4019, 0x160);
-                target.PlaySound(0x211);
+                Caster.PlaySound(0x211);
             }
 
             FinishSequence();
@@ -81,10 +79,10 @@ namespace Server.Spells.Mysticism
 
                 if (!from.CanSee(o))
                     from.SendLocalizedMessage(500237); // Target can not be seen.
-                else
+                else if (o is IDamageable)
                 {
                     SpellHelper.Turn(from, o);
-                    Owner.OnTarget(o);
+                    Owner.OnTarget((IDamageable)o);
                 }
             }
 

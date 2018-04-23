@@ -112,21 +112,21 @@ namespace Server.Spells.Seventh
 
                         Mobile source = Caster;
 
+                        if (SpellHelper.CheckReflect((int)Circle, ref source, ref id, SpellDamageType) && !Core.AOS)
+                        {
+                            Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
+                                {
+                                    source.MovingParticles(m, 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
+                                });
+                        }
+
                         if (m != null)
                         {
-                            if (SpellHelper.CheckReflect((int)Circle, ref source, ref m, SpellDamageType))
-                            {
-                                Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
-                                    {
-                                        source.MovingParticles(m, 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
-                                    });
-                            }
-
                             damage *= GetDamageScalar(m);
                         }
 
                         Caster.DoHarmful(id);
-                        SpellHelper.Damage(this, m != null ? m : id, damage, 0, 100, 0, 0, 0);
+                        SpellHelper.Damage(this, id, damage, 0, 100, 0, 0, 0);
 
                         Caster.MovingParticles(id, 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
                     }

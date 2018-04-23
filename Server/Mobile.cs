@@ -2162,6 +2162,11 @@ namespace Server
 		{
 			if (CheckAttack(e))
 			{
+                if (!m_Warmode)
+                {
+                    Warmode = true;
+                }
+
 				Combatant = e;
 			}
 		}
@@ -8825,6 +8830,11 @@ namespace Server
 							SendRemovePacket(false);
 						}
 					}
+
+                    if (Core.SA)
+                    {
+                        NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                    }
 
 					OnWarmodeChanged();
 				}

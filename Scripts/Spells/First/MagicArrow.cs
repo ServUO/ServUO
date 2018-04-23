@@ -61,16 +61,13 @@ namespace Server.Spells.First
                     return;
                 }
 
-                if (m != null)
+                if (SpellHelper.CheckReflect((int)this.Circle, ref source, ref d) && !Core.AOS)
                 {
-                    if (SpellHelper.CheckReflect((int)this.Circle, ref source, ref m))
+                    Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                     {
-                        Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
-                        {
-                            source.MovingParticles(m, 0x379F, 7, 0, false, true, 3043, 4043, 0x211);
-                            source.PlaySound(0x20A);
-                        });
-                    }
+                        source.MovingParticles(m, 0x379F, 7, 0, false, true, 3043, 4043, 0x211);
+                        source.PlaySound(0x20A);
+                    });
                 }
 
                 double damage = 0;
@@ -98,7 +95,7 @@ namespace Server.Spells.First
                     this.Caster.MovingParticles(d, 0x36E4, 5, 0, false, false, 3006, 0, 0);
                     this.Caster.PlaySound(0x1E5);
 
-                    SpellHelper.Damage(this, m != null ? m : d, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, d, damage, 0, 100, 0, 0, 0);
                 }
             }
 

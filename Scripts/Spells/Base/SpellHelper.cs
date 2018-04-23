@@ -1151,28 +1151,59 @@ namespace Server.Spells
         //magic reflection
         public static bool CheckReflect(int circle, Mobile caster, ref Mobile target)
         {
+            IDamageable d = target as IDamageable;
+
+            bool reflect = CheckReflect(circle, ref caster, ref d);
+
+            if(d is Mobile)
+                target = (Mobile)d;
+
+            return reflect;
+        }
+
+        public static bool CheckReflect(int circle, ref Mobile caster, ref Mobile target)
+        {
+            IDamageable d = target as IDamageable;
+
+            bool reflect = CheckReflect(circle, ref caster, ref d);
+
+            if(d is Mobile)
+                target = (Mobile)d;
+
+            return reflect;
+        }
+
+        public static bool CheckReflect(int circle, Mobile caster, ref IDamageable target)
+        {
             return CheckReflect(circle, ref caster, ref target);
         }
 
-        public static bool CheckReflect(int circle, ref Mobile caster, ref Mobile target, DamageType type = DamageType.Spell)
+        public static bool CheckReflect(int circle, ref Mobile caster, ref IDamageable damageable, DamageType type = DamageType.Spell)
         {
             bool reflect = false;
+            Mobile target = damageable as Mobile;
 
             if (Core.AOS && type == DamageType.Spell)
             {
-                Clone clone = null;
-
                 if (target != null)
                 {
-                    clone = MirrorImage.GetDeflect(caster, target);
-                }
+                    Clone clone = MirrorImage.GetDeflect(caster, target);
 
-                if (clone != null)
+                    if (clone != null)
+                    {
+                        damageable = clone;
+                        return false;
+                    }
+                }
+                else if (damageable is DamageableItem)
                 {
-                    target = clone;
-                    return false;
+                    ((DamageableItem)damageable).CheckReflect(circle, caster);
+                    return true;
                 }
             }
+
+            if (target == null)
+                return false;
 
             if (target.MagicDamageAbsorb > 0)
             {
