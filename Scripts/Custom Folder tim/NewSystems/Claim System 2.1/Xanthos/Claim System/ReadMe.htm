@@ -1,0 +1,51 @@
+<html>
+<body>
+	<h3>Claim System version 2.1, by Xanthos</h3>
+	<h4>Introduction</h4>
+	<p>The Claim System rewards users for helping keep item count down thereby reducing lag. As corpses are claimed, the player is given the looted items as well as a gold reward based on the fame of the mob. The system also helps make looting corpses and scavenging items from the ground less tedius by automating the tasks. The system can be configured to keep looting of player corpses and competing for loot a social activity by disallowing its use when other players are within a ceratin radius. The system comes with a special gold bag that looted/scavenged gold is placed into with the Auction system and all gold within will be deposited into the account; saving the tedium of dragging piles of gold to the account. The system honors the notoriety system and will not loot high fame mobs for which rights have not been earned. A player is always free to loot by hand those corpses that the system will not loot. The system requires <strong>no</strong> modifications to the standard distro files.</p>
+	<h4>Features</h4>
+	<ul>
+		<li>A [claim command that enables targeted selection of corpses to loot</li>
+		<li>Cursor retargets after each corpse is claimed allowing rapid claiming of multiple corpses</li>
+		<li>A [grab command that enables area wide looting and item scavenging of gold, silver and loot bags, players can keep in their packs, that looted/scavenge gold silver and loot are placed into automatically</li>
+		<li>When possible stackable items are stacked as they are moved to the player's pack or gold bag</li>
+		<li>Corpses of bonded pets cannot be looted/scavenged, preventing a possible exploit</li>
+		<li>Each player can set the types of the items that their loot bag will collect. Using the -t option a gump will be presented allowing them to add or remove item types from the list of those collected.</li>
+	</ul>
+	<p>All configurable options can be managed in an xml file with no changes to code, including:</p>
+	<ul>
+		<li>Grab command enable/disable</li>
+		<li>Claim command enable/disable</li>
+		<li>defualt item classes to be looted/scavenged into the loot bag by the commands</li>
+		<li>The radius that is scavenged by the grab command</li>
+		<li>The proximity to other players (excluding guild mates, allies and party members) at which the commands auto disable</li>
+		<li>Whether player corpses can be looted/scavenged by the commands</li>
+		<li>The magnitude of the reward for each corpse claimed</li>
+		<li>The loot type of the loot, silver and gold bags (blessed or regular)</li>
+		<li>Whether silver in the player's pack is aggregated into the silver bag</li>
+		<li>The minimum reward value for low fame mobs</li>
+	</ul>
+	<p></p>
+	<h4>Commands:</h4>
+	<ul>
+		<li>[Claim</li>
+		<li>[CL</li>
+		<li>[Grab</li>
+		<li>[GR</li>
+	</ul>
+	<h4>Installation</h4>
+	<p>Unzip the Xanthos folder into your customs folder. Copy ClaimConfig.xml to your RunUO\Data folder if you wish to modify configuration parameters.</p>
+	<h4>Requirements</h4>
+	<p>Requires the Xanthos Utilities package.</p>
+	<h4>Caveats</h4>
+	<p>You may use or modify this system in any way you desire, however I ask that you leave the original headers in the source files if you re-write or redistribute the sources in any way.</p>
+	<p>- Xanthos</p>
+	<h3>Changes</h3>
+	<h4>Version 2.0</h4>
+	<ul>
+		<li>Made the system compatible with RunUO 2.0</li>
+		<li>System commands now provide help when -? is used</li>
+		<li>Each Loot Bag can be configured, in-game by players, as to what item types it will collect. This is done with the -t option to either the [Claim or [Grab command.</li>
+	</ul>
+</body>
+</html>

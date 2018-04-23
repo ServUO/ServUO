@@ -1,0 +1,23 @@
+this script was posted by Thistle on runuo
+
+
+
+The following code must be added to the names.xml in the Data folder. (please make sure you back up that file first to prevent *oopsies*)
+
+Code:
+
+	<namelist type="reindeer">
+		Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Donner, Blitzen 
+	</namelist>
+
+Now onto the items themselves ..... they're all blessed so you can either remove the blessed option in the scripts or keep the blessed option on them and use the OnDeath drop method to add them to mobiles loot. (personally, I've become very fond of the OnDeath drop method)
+
+There are 3 sets of "basic" reindeer: SantasReindeer1, SantasReindeer2, and SantasReindeer3.
+
+These were designed to be made with random reindeer names and all of them can be flipped between south facing and east facing.
+
+Then we have "Olive the Other Reindeer". She's the one with the green blinky nose.
+
+For Santa's Sleigh, I modelled it after the Hearth of the Homefire deed so players have the option of choosing either south or east facing sleighs.
+
+Happy Holidays!

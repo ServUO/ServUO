@@ -1,0 +1,65 @@
+﻿using Server.Items;
+using Server.Multis.Deeds;
+
+namespace Server.Multis
+{
+    public class ~HouseName~ : BaseHouse
+    {
+		public static Rectangle2D[] AreaArray = new Rectangle2D[] { ~AreaArray~ };
+		public ~HouseName~(Mobile owner, int id)
+			: base(id, owner, ~MaxLockDown~, ~MaxSecures~)
+		{
+			uint keyValue = this.CreateKeys(owner);
+
+			~DoorSetUp~
+
+			~SignSetUp~
+		}
+
+		public ~HouseName~(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override Rectangle2D[] Area
+		{
+			get
+			{
+				return AreaArray;
+			}
+		}
+
+		public override Point3D BaseBanLocation
+		{
+			get
+			{
+				return new Point3D(~BanPoint~);
+			}
+		}
+
+		public override int DefaultPrice
+		{
+			get
+			{
+				return ~Price~;
+			}
+		}
+		
+		public override HouseDeed GetDeed() 
+		{
+			return new ~HouseName~Deed();
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+			writer.Write((int)0);//version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+			int version = reader.ReadInt();
+		}
+	}
+}
