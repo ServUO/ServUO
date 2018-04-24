@@ -374,10 +374,18 @@ namespace Server.Mobiles
                 case MagicalAbility.Bushido:
                     if (Creature.AI != AIType.AI_Samurai) 
                         Creature.AI = AIType.AI_Samurai;
+                    if (!HasAbility(WeaponAbility.WhirlwindAttack))
+                    {
+                        AddAbility(WeaponAbility.WhirlwindAttack, false);
+                    }
                     break;
                 case MagicalAbility.Ninjitsu:
                     if (Creature.AI != AIType.AI_Ninja) 
                         Creature.AI = AIType.AI_Ninja;
+                    if (!HasAbility(WeaponAbility.FrenziedWhirlwind))
+                    {
+                        AddAbility(WeaponAbility.FrenziedWhirlwind, false);
+                    }
                     break;
                 case MagicalAbility.Discordance:
                     if (Creature.AI != AIType.AI_Melee) 
