@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Server;
 using Server.Multis;
 using Server.ContextMenus;
-
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -142,68 +142,68 @@ namespace Server.Items
 				m_Boat.Refresh();
 		}
 
-		public override bool OnMoveOver( Mobile from )
-		{
-			if ( IsOpen )
-			{
-				if ( (from.Direction & Direction.Running) != 0 || (m_Boat != null && !m_Boat.Contains( from )) )
-					return true;
+        public override bool OnMoveOver(Mobile from)
+        {
+            if (IsOpen)
+            {
+                if ((from.Player && (from.Direction & Direction.Running) != 0) || (m_Boat != null && !m_Boat.Contains(from)))
+                    return true;
 
-				Map map = Map;
+                Map map = Map;
 
-				if ( map == null )
-					return false;
+                if (map == null)
+                    return false;
 
-				int rx = 0, ry = 0;
+                int rx = 0, ry = 0;
 
-				if ( ItemID == 0x3ED4 )
-					rx = 1;
-				else if ( ItemID == 0x3ED5 )
-					rx = -1;
-				else if ( ItemID == 0x3E84 )
-					ry = 1;
-				else if ( ItemID == 0x3E89 )
-					ry = -1;
+                if (ItemID == 0x3ED4)
+                    rx = 1;
+                else if (ItemID == 0x3ED5)
+                    rx = -1;
+                else if (ItemID == 0x3E84)
+                    ry = 1;
+                else if (ItemID == 0x3E89)
+                    ry = -1;
 
-				for ( int i = 1; i <= 6; ++i )
-				{
-					int x = X + (i*rx);
-					int y = Y + (i*ry);
-					int z;
+                for (int i = 1; i <= 6; ++i)
+                {
+                    int x = X + (i * rx);
+                    int y = Y + (i * ry);
+                    int z;
 
-					for ( int j = -8; j <= 8; ++j )
-					{
-						z = from.Z + j;
+                    for (int j = -8; j <= 8; ++j)
+                    {
+                        z = from.Z + j;
 
-						if ( map.CanFit( x, y, z, 16, false, false ) && !Server.Spells.SpellHelper.CheckMulti( new Point3D( x, y, z ), map ) && !Region.Find( new Point3D( x, y, z ), map ).IsPartOf( typeof( Factions.StrongholdRegion ) ) )
-						{
-							if ( i == 1 && j >= -2 && j <= 2 )
-								return true;
+                        if (map.CanFit(x, y, z, 16, false, false) && !Server.Spells.SpellHelper.CheckMulti(new Point3D(x, y, z), map) && !Region.Find(new Point3D(x, y, z), map).IsPartOf(typeof(Factions.StrongholdRegion)))
+                        {
+                            if (i == 1 && j >= -2 && j <= 2)
+                                return true;
 
-							from.Location = new Point3D( x, y, z );
-							return false;
-						}
-					}
+                            from.Location = new Point3D(x, y, z);
+                            return false;
+                        }
+                    }
 
-					z = map.GetAverageZ( x, y );
+                    z = map.GetAverageZ(x, y);
 
-					if ( map.CanFit( x, y, z, 16, false, false ) && !Server.Spells.SpellHelper.CheckMulti( new Point3D( x, y, z ), map ) && !Region.Find( new Point3D( x, y, z ), map ).IsPartOf( typeof( Factions.StrongholdRegion ) ) )
-					{
-						if ( i == 1 )
-							return true;
+                    if (map.CanFit(x, y, z, 16, false, false) && !Server.Spells.SpellHelper.CheckMulti(new Point3D(x, y, z), map) && !Region.Find(new Point3D(x, y, z), map).IsPartOf(typeof(Factions.StrongholdRegion)))
+                    {
+                        if (i == 1)
+                            return true;
 
-						from.Location = new Point3D( x, y, z );
-						return false;
-					}
-				}
+                        from.Location = new Point3D(x, y, z);
+                        return false;
+                    }
+                }
 
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 		public bool CanClose()
 		{
@@ -312,12 +312,19 @@ namespace Server.Items
 					}
 					else if ( !Locked )
 					{
-						from.Location = new Point3D( this.X, this.Y, this.Z + 3 );
+                        Point3D p = new Point3D(this.X, this.Y, this.Z + 3);
+
+                        BaseCreature.TeleportPets(from, p, Map);
+                        from.Location = p;
 					}
 					else if ( from.AccessLevel >= AccessLevel.GameMaster )
 					{
 						from.LocalOverheadMessage( Network.MessageType.Regular, 0x00, 502502 ); // That is locked but your godly powers allow access
-						from.Location = new Point3D( this.X, this.Y, this.Z + 3 );
+
+                        Point3D p = new Point3D(this.X, this.Y, this.Z + 3);
+
+                        BaseCreature.TeleportPets(from, p, Map);
+                        from.Location = p;
 					}
 					else
 					{
