@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Server.Items;
 
-// Special Magical Abilities DON't CANCEL these out:
-// SearingWounds, TailSwipe, DragonBreath, LifeLeech, ViciousBite
-
 namespace Server.Mobiles
 {
     [PropertyObject]
@@ -41,7 +38,7 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseCreature Creature { get; private set; }
-
+        
         public List<object> Advancements { get; private set; }
 
         public AbilityProfile(BaseCreature bc)
@@ -73,6 +70,8 @@ namespace Server.Mobiles
                 {
                     RemoveSpecialMagicalAbility(oldAbility);
                 }
+
+                OnRemoveMagicalAbility(oldAbility, ability);
 
                 MagicalAbility = ability;
             }
@@ -154,6 +153,21 @@ namespace Server.Mobiles
             return true;
         }
 
+        public void RemoveAbility(WeaponAbility ability)
+        {
+            if (WeaponAbilities == null || !WeaponAbilities.Any(a => a == ability))
+                return;
+
+            var list = WeaponAbilities.ToList();
+
+            list.Remove(ability);
+            RemovePetAdvancement(ability);
+
+            WeaponAbilities = list.ToArray();
+
+            ColUtility.Free(list);
+        }
+
         public bool AddAbility(SkillName skill, bool advancement = true)
         {
             OnAddAbility(skill, advancement);
@@ -225,6 +239,14 @@ namespace Server.Mobiles
                 {
                     Advancements.Add(o);
                 }
+            }
+        }
+
+        public void RemovePetAdvancement(object o)
+        {
+            if (Creature.Controlled && Advancements != null && Advancements.Contains(o))
+            {
+                Advancements.Remove(o);
             }
         }
 
@@ -416,6 +438,25 @@ namespace Server.Mobiles
                     if (Creature.AI != AIType.AI_Necro) 
                         Creature.AI = AIType.AI_Necro;
                     break;
+            }
+        }
+
+        public void OnRemoveMagicalAbility(MagicalAbility oldAbility, MagicalAbility newAbility)
+        {
+            if ((oldAbility & MagicalAbility.Bushido) != 0)
+            {
+                if (HasAbility(WeaponAbility.WhirlwindAttack))
+                {
+                    RemoveAbility(WeaponAbility.WhirlwindAttack);
+                }
+            }
+
+            if ((oldAbility & MagicalAbility.Ninjitsu) != 0)
+            {
+                if (HasAbility(WeaponAbility.FrenziedWhirlwind))
+                {
+                    RemoveAbility(WeaponAbility.FrenziedWhirlwind);
+                }
             }
         }
 
