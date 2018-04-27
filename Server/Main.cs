@@ -460,34 +460,27 @@ namespace Server
 				Name = "Timer Thread"
 			};
 
-			Version ver = Assembly.GetName().Version;
+			Version  ver 		= Assembly.GetName().Version;
+			DateTime buildDate 	= new DateTime(2000, 1, 1).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
+			
 
-			// Added to help future code support on forums, as a 'check' people can ask for to it see if they recompiled core or not
-			Utility.PushColor(ConsoleColor.DarkGreen);
-            if(!NoConsole)
-            {
-                Console.WriteLine(new String('-', Console.BufferWidth));
-            }
-            else
-            {
-                Console.WriteLine(new String('-', 10));
-            }
-			Utility.PopColor();
 			Utility.PushColor(ConsoleColor.Cyan);
         #if DEBUG
             Console.WriteLine(
-                "ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Debug",
+                "ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Build on {4} UTC - Debug",
                 ver.Major,
                 ver.Minor,
                 ver.Build,
-                ver.Revision);
+                ver.Revision,
+				buildDate);
         #else
             Console.WriteLine(
-				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Release",
+				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Build on {4} UTC - Release",
 				ver.Major,
 				ver.Minor,
 				ver.Build,
-				ver.Revision);
+				ver.Revision,
+				buildDate);
         #endif
 			Utility.PopColor();
 
@@ -540,11 +533,6 @@ namespace Server
 				UnsafeNativeMethods.SetConsoleCtrlHandler(m_ConsoleEventHandler, true);
 			}
             
-
-            #if NETFX_20
-                        dotnet = "2.0";
-            #endif
-
             #if NETFX_30
                         dotnet = "3.0";
             #endif
