@@ -14,7 +14,7 @@ namespace Server.Mobiles
 			Name = "A Training Evil Grizzle";
 			Body = 259;
 			//BaseSoundID = 362;
-
+            CantWalk = true;
 			SetStr( 46, 70 );
 			SetDex( 31, 50 );
 			SetInt( 26, 40 );

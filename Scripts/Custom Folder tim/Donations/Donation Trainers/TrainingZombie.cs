@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Server.Items;
 using Server.Targeting;
+using Server.Mobiles;
 
 namespace Server.Mobiles
 {
@@ -14,7 +15,8 @@ namespace Server.Mobiles
 			Name = "a Training Zombie";
 			Body = 3;
 			//BaseSoundID = 471;
-
+            CantWalk = true;
+            
 			SetStr( 46, 70 );
 			SetDex( 31, 50 );
 			SetInt( 26, 40 );

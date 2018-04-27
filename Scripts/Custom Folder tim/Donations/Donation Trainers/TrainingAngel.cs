@@ -13,7 +13,7 @@ namespace Server.Mobiles
 		{
 			Name = "A Training Angel";
 			Body = 123;
-			
+            CantWalk = true;
 			//BaseSoundID = 123;
             Direction = Direction.South; 
 			SetStr( 46, 70 );

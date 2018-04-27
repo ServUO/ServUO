@@ -13,8 +13,8 @@ namespace Server.Mobiles
 			Name = "a training drake";
 			Body = Utility.RandomList( 60, 61 );
 			BaseSoundID = 362;
-                        Hue = 2490;
-
+            Hue = 2490;
+            CantWalk = true;
 			SetStr( 1, 2 );
 			SetDex( 10 );
 			SetInt( 1 );
