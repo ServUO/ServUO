@@ -32,14 +32,17 @@ namespace Server.Spells.Mysticism
             Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
         }
 
-        public void OnTarget(IDamageable target)
+        public void OnTarget(IDamageable d)
         {
-            if (target == null)
+            if (d == null)
             {
                 return;
             }
-            else if (CheckHSequence(target))
+            else if (CheckHSequence(d))
             {
+                IDamageable target = d;
+                IDamageable source = Caster;
+
                 SpellHelper.Turn(Caster, target);
 
                 if (Core.SA && HasDelayContext(target))
@@ -48,9 +51,16 @@ namespace Server.Spells.Mysticism
                     return;
                 }
 
-                SpellHelper.CheckReflect((int)Circle, Caster, ref target);
+                if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
+                {
+                    Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
+                    {
+                        source.MovingEffect(target, 0x407A, 8, 1, false, true, 0, 0);
+                        source.PlaySound(0x2EE);
+                    });
+                }
 
-                Caster.MovingEffect(target, 0x407A, 8, 1, false, true, 0, 0);
+                Caster.MovingEffect(d, 0x407A, 8, 1, false, true, 0, 0);
                 Caster.PlaySound(0x2EE);
 
                 Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>

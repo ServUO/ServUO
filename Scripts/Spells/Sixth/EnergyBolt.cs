@@ -37,22 +37,22 @@ namespace Server.Spells.Sixth
 
         public void Target(IDamageable m)
         {
-            Mobile mob = m as Mobile;
-
             if (!Caster.CanSee(m))
             {
                 Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
             else if (CheckHSequence(m))
             {
-                Mobile source = Caster;
+                IDamageable source = Caster;
+                IDamageable target = m;
+
                 SpellHelper.Turn(Caster, m);
 
-                if (SpellHelper.CheckReflect((int)Circle, ref source, ref m) && !Core.AOS)
+                if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                     {
-                        source.MovingParticles(mob, 0x379F, 7, 0, false, true, 3043, 4043, 0x211);
+                        source.MovingParticles(target, 0x379F, 7, 0, false, true, 3043, 4043, 0x211);
                         source.PlaySound(0x20A);
                     });
                 }
@@ -63,8 +63,9 @@ namespace Server.Spells.Sixth
                 {
                     damage = GetNewAosDamage(40, 1, 5, m);
                 }
-                else if (mob != null)
+                else if (m is Mobile)
                 {
+                    Mobile mob = m as Mobile;
                     damage = Utility.Random(24, 18);
 
                     if (CheckResisted(mob))
@@ -85,7 +86,7 @@ namespace Server.Spells.Sixth
                 if (damage > 0)
                 {
                     // Deal the damage
-                    SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 100);
                 }
             }
 

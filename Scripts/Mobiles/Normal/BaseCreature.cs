@@ -1126,7 +1126,7 @@ namespace Server.Mobiles
 
                 if (physDamage == 0 && fireDamage == 0 && coldDamage == 0 && poisDamage == 0 && nrgyDamage == 0)
                 {
-                    target.Damage(BreathComputeDamage(), this); // Unresistable damage even in AOS
+                    AOS.Damage(target, this, BreathComputeDamage(), 0, 0, 0, 0, 0, 0, 100);
                 }
                 else
                 {

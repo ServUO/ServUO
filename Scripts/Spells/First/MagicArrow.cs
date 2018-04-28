@@ -39,21 +39,21 @@ namespace Server.Spells.First
         public override Type[] DelayDamageFamily { get { return new Type[] { typeof(Server.Spells.Mysticism.NetherBoltSpell) }; } }
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IDamageable d)
         {
-            Mobile m = d as Mobile;
-
-            if (!this.Caster.CanSee(d))
+            if (!Caster.CanSee(d))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckHSequence(d))
+            else if (CheckHSequence(d))
             {
-                Mobile source = this.Caster;
-                SpellHelper.Turn(source, d);
+                IDamageable source = Caster;
+                IDamageable target = d;
+
+                SpellHelper.Turn(Caster, d);
 
                 if (Core.SA && HasDelayContext(d))
                 {
@@ -61,12 +61,12 @@ namespace Server.Spells.First
                     return;
                 }
 
-                if (SpellHelper.CheckReflect((int)this.Circle, ref source, ref d) && !Core.AOS)
+                if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                     {
-                        source.MovingParticles(m, 0x379F, 7, 0, false, true, 3043, 4043, 0x211);
-                        source.PlaySound(0x20A);
+                        source.MovingParticles(target, 0x36E4, 5, 0, false, true, 3043, 4043, 0x211);
+                        source.PlaySound(0x1E5);
                     });
                 }
 
@@ -76,30 +76,30 @@ namespace Server.Spells.First
                 {
                     damage = GetNewAosDamage(10, 1, 4, d);
                 }
-                else if (m != null)
+                else if (target is Mobile)
                 {
                     damage = Utility.Random(4, 4);
 
-                    if (this.CheckResisted(m))
+                    if (CheckResisted((Mobile)target))
                     {
                         damage *= 0.75;
 
-                        m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
+                        ((Mobile)target).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 
-                    damage *= this.GetDamageScalar(m);
+                    damage *= GetDamageScalar((Mobile)target);
                 }
 
                 if (damage > 0)
                 {
-                    this.Caster.MovingParticles(d, 0x36E4, 5, 0, false, false, 3006, 0, 0);
-                    this.Caster.PlaySound(0x1E5);
+                    Caster.MovingParticles(d, 0x36E4, 5, 0, false, false, 3006, 0, 0);
+                    Caster.PlaySound(0x1E5);
 
-                    SpellHelper.Damage(this, d, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0);
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTarget : Target
@@ -108,20 +108,20 @@ namespace Server.Spells.First
             public InternalTarget(MagicArrowSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is IDamageable)
                 {
-                    this.m_Owner.Target((IDamageable)o);
+                    m_Owner.Target((IDamageable)o);
                 }
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

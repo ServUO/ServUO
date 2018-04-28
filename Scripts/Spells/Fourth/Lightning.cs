@@ -1,5 +1,6 @@
 using System;
 using Server.Targeting;
+using Server.Mobiles;
 
 namespace Server.Spells.Fourth
 {
@@ -70,7 +71,14 @@ namespace Server.Spells.Fourth
                     damage *= GetDamageScalar(mob);
                 }
 
-                Effects.SendBoltEffect(m, true, 0, false);
+                if (m is Mobile)
+                {
+                    Effects.SendBoltEffect(m, true, 0, false);
+                }
+                else
+                {
+                    Effects.SendBoltEffect(EffectMobile.Create(m.Location, m.Map, EffectMobile.DefaultDuration), true, 0, false);
+                }
 
                 if (damage > 0)
                 {

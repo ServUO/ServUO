@@ -1018,26 +1018,28 @@ namespace Server
             return null;
         }
 
-         public TMob FindMobile<TMob>(Point3D p, int range = 0) where TMob : Mobile
-         {
-             IPooledEnumerable eable = GetMobilesInRange(p, range);
+        public TMob FindMobile<TMob>(Point3D p, int range = 0) where TMob : Mobile
+        {
+            IPooledEnumerable eable = GetMobilesInRange(p, range);
 
-             foreach (Mobile m in eable)
-             {
-                 if (m.GetType() == typeof(TMob))
-                 {
-                     eable.Free();
-                     return m as TMob;
-                 }
-             }
+            foreach (Mobile m in eable)
+            {
+                if (m.GetType() == typeof(TMob))
+                {
+                    eable.Free();
+                    return m as TMob;
+                }
+            }
 
-             eable.Free();
-             return null;
-         }
+            eable.Free();
+            return null;
+        }
+
+
         #endregion
 
-         #region Spawn Position
-         public Point3D GetSpawnPosition(Point3D center, int range)
+        #region Spawn Position
+        public Point3D GetSpawnPosition(Point3D center, int range)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -1054,17 +1056,17 @@ namespace Server
             return center;
         }
 
-         public Point3D GetRandomSpawnPoint(Rectangle2D rec)
-         {
-             if (this == Map.Internal)
-                 return Point3D.Zero;
+        public Point3D GetRandomSpawnPoint(Rectangle2D rec)
+        {
+            if (this == Map.Internal)
+                return Point3D.Zero;
 
-             int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
-             int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
-             int z = GetAverageZ(x, y);
+            int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
+            int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
+            int z = GetAverageZ(x, y);
 
-             return new Point3D(x, y, z);
-         }
+            return new Point3D(x, y, z);
+        }
         #endregion
 
         private class ZComparer : IComparer<Item>

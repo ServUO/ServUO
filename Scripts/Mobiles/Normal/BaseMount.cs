@@ -10,7 +10,9 @@ namespace Server.Mobiles
         Dazed,
         BolaRecovery,
         DismountRecovery,
-        RidingSwipe
+        RidingSwipe,
+        RidingSwipeEthereal,
+        RidingSwipeFlying
     }
 
     public abstract class BaseMount : BaseCreature, IMount
@@ -201,7 +203,6 @@ namespace Server.Mobiles
             }
 
             IMount mount = dismounted.Mount;
-            Mobile m = null;
 
             if (mount != null)
             {
@@ -209,9 +210,6 @@ namespace Server.Mobiles
 
                 if (message)
                     dismounted.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
-
-                if (mount is Mobile)
-                    m = (Mobile)mount;
             }
             else if (Core.ML && Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted))
             {
@@ -225,8 +223,6 @@ namespace Server.Mobiles
                     dismounted.Freeze(TimeSpan.FromSeconds(1));
                     dismounted.Animate(AnimationType.Land, 0);
                     BuffInfo.RemoveBuff(dismounted, BuffIcon.Fly);
-
-                    m = dismounted;
                 }
             }
             else
@@ -236,7 +232,7 @@ namespace Server.Mobiles
 
             if (delay != TimeSpan.MinValue)
             {
-                SetMountPrevention(dismounted, m, blockmounttype, delay);
+                SetMountPrevention(dismounted, mount, blockmounttype, delay);
             }
         }
 
@@ -245,7 +241,7 @@ namespace Server.Mobiles
             SetMountPrevention(mob, null, type, duration);   
         }
 
-        public static void SetMountPrevention(Mobile mob, Mobile mount, BlockMountType type, TimeSpan duration)
+        public static void SetMountPrevention(Mobile mob, IMount mount, BlockMountType type, TimeSpan duration)
         {
             if (mob == null)
                 return;
@@ -298,7 +294,7 @@ namespace Server.Mobiles
                 return BlockMountType.None;
             }
 
-            if (Core.TOL && entry.m_Type == BlockMountType.RidingSwipe && entry.m_Expiration > DateTime.UtcNow)
+            if (Core.TOL && entry.m_Type >= BlockMountType.RidingSwipe && entry.m_Expiration > DateTime.UtcNow)
             {
                 return BlockMountType.DismountRecovery;
             }
@@ -327,6 +323,7 @@ namespace Server.Mobiles
             {
                 switch (type)
                 {
+                    case BlockMountType.RidingSwipeEthereal:
                     case BlockMountType.Dazed:
                         {
                             mob.PrivateOverheadMessage(MessageType.Regular, 0x3B2, flying ? 1112457 : 1040024, mob.NetState);
@@ -341,7 +338,13 @@ namespace Server.Mobiles
                         }
                     case BlockMountType.RidingSwipe:
                         {
-                            mob.PrivateOverheadMessage(MessageType.Regular, 0x3B2, flying ? 1112454 : 1062934, mob.NetState);
+                            mob.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1062934, mob.NetState);
+                            // You must heal your mount before riding it.
+                            break;
+                        }
+                    case BlockMountType.RidingSwipeFlying:
+                        {
+                            mob.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112454, mob.NetState);
                             // You must heal your mount before riding it.
                             break;
                         }
@@ -532,11 +535,11 @@ namespace Server.Mobiles
         private class BlockEntry
         {
             public Mobile m_Mobile;
-            public Mobile m_Mount;
+            public IMount m_Mount;
             public BlockMountType m_Type;
             public DateTime m_Expiration;
 
-            public BlockEntry(Mobile m, Mobile mount, BlockMountType type, DateTime expiration)
+            public BlockEntry(Mobile m, IMount mount, BlockMountType type, DateTime expiration)
             {
                 m_Mobile = m;
                 m_Mount = mount;
@@ -546,31 +549,40 @@ namespace Server.Mobiles
 
             public bool IsExpired(BaseMount mount)
             {
-                if (m_Type == BlockMountType.RidingSwipe)
+                if (m_Type >= BlockMountType.RidingSwipe)
                 {
-                    if (Core.TOL && DateTime.UtcNow < m_Expiration)
+                    if (Core.SA && DateTime.UtcNow < m_Expiration)
                     {
                         return false;
                     }
-                    else if (m_Mount != null && m_Mount != m_Mobile)
+                    else
                     {
-                        if (m_Mount != mount)
+                        switch (m_Type)
                         {
-                            return true;
-                        }
-
-                        if (mount != null && mount.Hits >= mount.HitsMax)
-                        {
-                            BaseMount.ExpireMountPrevention(m_Mobile);
-                            return true;
-                        }
-                    }
-                    else if (m_Mobile != null && m_Mount == m_Mobile)
-                    {
-                        if (m_Mobile.Hits >= m_Mobile.HitsMax)
-                        {
-                            BaseMount.ExpireMountPrevention(m_Mobile);
-                            return true;
+                            default:
+                            case BlockMountType.RidingSwipe:
+                                {
+                                    if ((!Core.SA && m_Mount == null) || m_Mount is Mobile && ((Mobile)m_Mount).Hits >= ((Mobile)m_Mount).HitsMax)
+                                    {
+                                        BaseMount.ExpireMountPrevention(m_Mobile);
+                                        return true;
+                                    }
+                                }
+                                break;
+                            case BlockMountType.RidingSwipeEthereal:
+                                {
+                                    BaseMount.ExpireMountPrevention(m_Mobile);
+                                    return true;
+                                }
+                            case BlockMountType.RidingSwipeFlying:
+                                {
+                                    if (m_Mobile.Hits >= m_Mobile.HitsMax)
+                                    {
+                                        BaseMount.ExpireMountPrevention(m_Mobile);
+                                        return true;
+                                    }
+                                }
+                                break;
                         }
                     }
 

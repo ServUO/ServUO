@@ -66,7 +66,19 @@ namespace Server.Spells.SkillMasteries
             {
                 if (CheckHSequence(m))
                 {
-                    SpellHelper.CheckReflect(0, Caster, ref m);
+                    IDamageable target = m;
+                    IDamageable source = Caster;
+
+                    SpellHelper.Turn(Caster, target);
+
+                    if (SpellHelper.CheckReflect(0, ref source, ref target))
+                    {
+                        Server.Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
+                        {
+                            source.MovingParticles(target, 0x9BB5, 7, 0, false, true, 9502, 4019, 0x160);
+                            source.PlaySound(0x5CE);
+                        });
+                    }
 
                     double skill = (Caster.Skills[CastSkill].Value + GetWeaponSkill() + (GetMasteryLevel() * 40)) / 3;
                     double damage = skill + (double)Caster.Karma / 1000;
@@ -81,11 +93,11 @@ namespace Server.Spells.SkillMasteries
                     Caster.MovingParticles(m, 0x9BB5, 7, 0, false, true, 9502, 4019, 0x160);
                     Caster.PlaySound(0x5CE);
 
-                    SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 100);
 
-                    if (m is Mobile && !CheckResisted((Mobile)m) && ((Mobile)m).NetState != null)
+                    if (target is Mobile && !CheckResisted((Mobile)target) && ((Mobile)target).NetState != null)
                     {
-                        Mobile mob = m as Mobile;
+                        Mobile mob = target as Mobile;
 
                         if (!TransformationSpellHelper.UnderTransformation(mob, typeof(AnimalForm)))
                             mob.SendSpeedControl(SpeedControlType.WalkSpeed);
