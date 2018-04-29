@@ -58,8 +58,22 @@ namespace Server.Items
 
             if (!attacker.Mounted)
             {
+                BlockMountType type = BlockMountType.RidingSwipe;
                 IMount mount = defender.Mount;
-                Server.Items.Dismount.DoDismount(attacker, defender, mount, 10, true);
+
+                if (Core.SA)
+                {
+                    if (defender.Flying)
+                    {
+                        type = BlockMountType.RidingSwipeFlying;
+                    }
+                    else if (mount is EtherealMount)
+                    {
+                        type = BlockMountType.RidingSwipeEthereal;
+                    }
+                }
+
+                Server.Items.Dismount.DoDismount(attacker, defender, mount, 10, type);
 
                 if(mount is Mobile)
                     AOS.Damage((Mobile)mount, attacker, amount, 100, 0, 0, 0, 0);

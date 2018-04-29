@@ -389,6 +389,7 @@ namespace Server.Mobiles
 					(m is IMount && ((IMount)m).Rider != null) ||
                     (m is GalleonPilot) || m is PetParrot ||
                     (GenericBuyInfo.IsDisplayCache(m)) ||
+                    (m is EffectMobile) ||
 					(m is BaseCreature && ((BaseCreature)m).IsStabled))
 					return true;
 

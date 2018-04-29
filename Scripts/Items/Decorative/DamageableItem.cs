@@ -256,7 +256,7 @@ namespace Server.Items
         {
         }
 
-        public virtual bool CheckReflect(int circle, Mobile caster)
+        public virtual bool CheckReflect(int circle, IDamageable caster)
         {
             return false;
         }
@@ -303,15 +303,15 @@ namespace Server.Items
 		{
 		}
 
-		public virtual void Damage(int amount, Mobile from)
-		{
+        public virtual void Damage(int amount, Mobile from, int type)
+        {
             if (!CanDamage && from.Combatant == this)
             {
                 from.Combatant = null;
                 return;
             }
 
-			Hits -= amount;
+            Hits -= amount;
 
             if (amount > 0)
                 RegisterDamage(from, amount);
@@ -319,6 +319,13 @@ namespace Server.Items
             if (HitEffect > 0)
                 Effects.SendLocationEffect(Location, Map, HitEffect, 10, 5);
 
+            SendDamagePacket(from, amount);
+
+            OnDamage(amount, from, Hits < 0);
+        }
+
+        public virtual void SendDamagePacket(Mobile from, int amount)
+        {
             NetState theirState = (from == null ? null : from.NetState);
 
             if (theirState == null && from != null)
@@ -335,9 +342,7 @@ namespace Server.Items
             {
                 theirState.Send(new DamagePacket(this, amount));
             }
-
-			OnDamage(amount, from, Hits < 0);
-		}
+        }
 
         public void RegisterDamage(Mobile m, int damage)
         {
@@ -409,6 +414,177 @@ namespace Server.Items
         public virtual void OnIDChange(int oldID)
         {
         }
+
+        #region Effects/Sounds & Particles
+        public void PlaySound(int soundID)
+        {
+            if (soundID == -1)
+            {
+                return;
+            }
+
+            if (Map != null)
+            {
+                Packet p = Packet.Acquire(new PlaySound(soundID, this));
+
+                var eable = Map.GetClientsInRange(Location);
+
+                foreach (NetState state in eable)
+                {
+                    if (state.Mobile.CanSee(this))
+                    {
+                        state.Send(p);
+                    }
+                }
+
+                Packet.Release(p);
+
+                eable.Free();
+            }
+        }
+
+        public void MovingEffect(
+            IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int hue, int renderMode)
+        {
+            Effects.SendMovingEffect(this, to, itemID, speed, duration, fixedDirection, explodes, hue, renderMode);
+        }
+
+        public void MovingEffect(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes)
+        {
+            Effects.SendMovingEffect(this, to, itemID, speed, duration, fixedDirection, explodes, 0, 0);
+        }
+
+        public void MovingParticles(
+            IEntity to,
+            int itemID,
+            int speed,
+            int duration,
+            bool fixedDirection,
+            bool explodes,
+            int hue,
+            int renderMode,
+            int effect,
+            int explodeEffect,
+            int explodeSound,
+            EffectLayer layer,
+            int unknown)
+        {
+            Effects.SendMovingParticles(
+                this,
+                to,
+                itemID,
+                speed,
+                duration,
+                fixedDirection,
+                explodes,
+                hue,
+                renderMode,
+                effect,
+                explodeEffect,
+                explodeSound,
+                layer,
+                unknown);
+        }
+
+        public void MovingParticles(
+            IEntity to,
+            int itemID,
+            int speed,
+            int duration,
+            bool fixedDirection,
+            bool explodes,
+            int hue,
+            int renderMode,
+            int effect,
+            int explodeEffect,
+            int explodeSound,
+            int unknown)
+        {
+            Effects.SendMovingParticles(
+                this,
+                to,
+                itemID,
+                speed,
+                duration,
+                fixedDirection,
+                explodes,
+                hue,
+                renderMode,
+                effect,
+                explodeEffect,
+                explodeSound,
+                (EffectLayer)255,
+                unknown);
+        }
+
+        public void MovingParticles(
+            IEntity to,
+            int itemID,
+            int speed,
+            int duration,
+            bool fixedDirection,
+            bool explodes,
+            int effect,
+            int explodeEffect,
+            int explodeSound,
+            int unknown)
+        {
+            Effects.SendMovingParticles(
+                this, to, itemID, speed, duration, fixedDirection, explodes, effect, explodeEffect, explodeSound, unknown);
+        }
+
+        public void MovingParticles(
+            IEntity to,
+            int itemID,
+            int speed,
+            int duration,
+            bool fixedDirection,
+            bool explodes,
+            int effect,
+            int explodeEffect,
+            int explodeSound)
+        {
+            Effects.SendMovingParticles(
+                this, to, itemID, speed, duration, fixedDirection, explodes, 0, 0, effect, explodeEffect, explodeSound, 0);
+        }
+
+        public void FixedEffect(int itemID, int speed, int duration, int hue, int renderMode)
+        {
+            Effects.SendTargetEffect(this, itemID, speed, duration, hue, renderMode);
+        }
+
+        public void FixedEffect(int itemID, int speed, int duration)
+        {
+            Effects.SendTargetEffect(this, itemID, speed, duration, 0, 0);
+        }
+
+        public void FixedParticles(
+            int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer, int unknown)
+        {
+            Effects.SendTargetParticles(this, itemID, speed, duration, hue, renderMode, effect, layer, unknown);
+        }
+
+        public void FixedParticles(
+            int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer)
+        {
+            Effects.SendTargetParticles(this, itemID, speed, duration, hue, renderMode, effect, layer, 0);
+        }
+
+        public void FixedParticles(int itemID, int speed, int duration, int effect, EffectLayer layer, int unknown)
+        {
+            Effects.SendTargetParticles(this, itemID, speed, duration, 0, 0, effect, layer, unknown);
+        }
+
+        public void FixedParticles(int itemID, int speed, int duration, int effect, EffectLayer layer)
+        {
+            Effects.SendTargetParticles(this, itemID, speed, duration, 0, 0, effect, layer, 0);
+        }
+
+        public void BoltEffect(int hue)
+        {
+            Effects.SendBoltEffect(this, true, hue);
+        }
+        #endregion
 
 		public DamageableItem(Serial serial)
 			: base(serial)

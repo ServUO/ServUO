@@ -30,7 +30,7 @@ namespace Server.Items
                 defender.PlaySound(0x140);
                 defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);
 
-                Server.Items.Dismount.DoDismount(attacker, defender, mount, 10, false);
+                Server.Items.Dismount.DoDismount(attacker, defender, mount, 10);
             }
             else
             {

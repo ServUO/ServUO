@@ -117,7 +117,26 @@ namespace Server
         int PoisonResistance { get; }
         int EnergyResistance { get; }
 
+        void PlaySound(int soundID);
+
         void OnStatsQuery(Mobile from);
-        void Damage(int amount, Mobile from);
+        void Damage(int amount, Mobile from, int type);
+
+        void MovingEffect(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int hue, int renderMode);
+        void MovingEffect(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes);
+
+        void MovingParticles(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int hue, int renderMode, int effect, int explodeEffect, int explodeSound, EffectLayer layer, int unknown);
+        void MovingParticles(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int hue, int renderMode, int effect, int explodeEffect, int explodeSound, int unknown);
+        void MovingParticles(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int effect, int explodeEffect, int explodeSound, int unknown);
+        void MovingParticles(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int effect, int explodeEffect, int explodeSound);
+
+        void FixedEffect(int itemID, int speed, int duration, int hue, int renderMode);
+        void FixedEffect(int itemID, int speed, int duration);
+
+        void FixedParticles(int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer, int unknown);
+        void FixedParticles(int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer);
+        void FixedParticles(int itemID, int speed, int duration, int effect, EffectLayer layer, int unknown);
+        void FixedParticles(int itemID, int speed, int duration, int effect, EffectLayer layer);
+        void BoltEffect(int hue);
     }
 }

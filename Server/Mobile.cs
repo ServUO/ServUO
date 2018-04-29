@@ -5510,6 +5510,10 @@ namespace Server
 		public virtual void OnDamage(int amount, Mobile from, bool willKill)
 		{ }
 
+        public virtual void Damage(int amount, Mobile from, int type)
+        {
+        }
+
 		public virtual void Damage(int amount)
 		{
 			Damage(amount, null);
