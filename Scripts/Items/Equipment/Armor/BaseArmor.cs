@@ -264,7 +264,7 @@ namespace Server.Items
         {
             get
             {
-                return !IsImbued && NegativeAttributes.Antique < 3;
+                return !IsImbued && NegativeAttributes.Antique < 4;
             }
         }
 

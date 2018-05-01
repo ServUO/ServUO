@@ -275,7 +275,7 @@ namespace Server.Items
         }
 
         public virtual bool CanRepair { get { return true; } }
-        public virtual bool CanFortify { get { return NegativeAttributes.Antique < 3; } }
+        public virtual bool CanFortify { get { return NegativeAttributes.Antique < 4; } }
 
         #region Slayer
         private TalismanSlayerName m_Slayer;
