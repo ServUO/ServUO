@@ -45,7 +45,7 @@ namespace Server.Spells.Bushido
 
             foreach (Mobile m in eable)
             {
-                if (m == defender || 
+                if (m == defender || m == attacker ||
                     !Server.Spells.SpellHelper.ValidIndirectTarget(attacker, defender) ||
                     !m.CanBeHarmful(attacker, false) || 
                     !attacker.InLOS(m))

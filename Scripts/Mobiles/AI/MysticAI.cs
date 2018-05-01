@@ -90,7 +90,12 @@ namespace Server.Mobiles
 
 			return null;
 		}
-		
+
+        public override Spell GetRandomBuffSpell()
+        {
+            return null;
+        }
+
 		protected override bool ProcessTarget()
 		{
 			Target t = m_Mobile.Target;
