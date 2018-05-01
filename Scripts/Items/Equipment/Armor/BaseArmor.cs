@@ -2730,6 +2730,10 @@ namespace Server.Items
                 list.Add(1154937); // VvV Item
         }
 
+        public virtual void AddDamageTypeProperty(ObjectPropertyList list)
+        {
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -2783,6 +2787,8 @@ namespace Server.Items
                 }
             }
             #endregion
+
+            AddDamageTypeProperty(list);
 
             if (RequiredRace == Race.Elf)
                 list.Add(1075086); // Elves Only

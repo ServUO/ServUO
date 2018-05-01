@@ -93,12 +93,10 @@ namespace Server.Mobiles
                     toAffect.Add(m);
                 }
             }
-            if (creature.Controlled) Console.WriteLine("2");
             eable.Free();
 
             foreach (var m in toAffect)
             {
-                if (creature.Controlled) Console.WriteLine("3");
                 DoEffect(creature, m);
             }
 

@@ -6,8 +6,13 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
+    public interface IRangeDamage
+    {
+        void AlterRangedDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct);
+    }
+
     [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor), true)]
-    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted
+    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted, IRangeDamage
     {
         private bool _VvVItem;
         private Mobile _Owner;
@@ -259,14 +264,32 @@ namespace Server.Items
 
         public override void OnAfterDuped(Item newItem)
         {
-            BaseQuiver quiver = newItem as BaseQuiver;
+            var quiver = newItem as BaseQuiver;
 
-            if (quiver == null)
-                return;
+            if (quiver != null)
+            {
+                quiver.m_Attributes = new AosAttributes(newItem, m_Attributes);
+                quiver.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
+                quiver.m_Resistances = new AosElementAttributes(newItem, m_Resistances);
+            }
 
-            quiver.m_Attributes = new AosAttributes(newItem, m_Attributes);
-            quiver.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
-            quiver.m_Resistances = new AosElementAttributes(newItem, m_Resistances);
+            var wing = newItem as GargishLeatherWingArmor;
+
+            if (wing != null)
+            {
+                int phys, fire, cold, pois, nrgy, chaos, direct;
+                phys = fire = cold = pois = nrgy = chaos = direct = 0;
+
+                AlterRangedDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
+
+                wing.AosElementDamages.Physical = phys;
+                wing.AosElementDamages.Fire = fire;
+                wing.AosElementDamages.Cold = cold;
+                wing.AosElementDamages.Poison = pois;
+                wing.AosElementDamages.Energy = nrgy;
+                wing.AosElementDamages.Chaos = chaos;
+                wing.AosElementDamages.Direct = direct;
+            }
         }
 
         public override void UpdateTotal(Item sender, TotalType type, int delta)
@@ -531,7 +554,7 @@ namespace Server.Items
             int phys, fire, cold, pois, nrgy, chaos, direct;
             phys = fire = cold = pois = nrgy = chaos = direct = 0;
 
-            AlterBowDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
+            AlterRangedDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
 
             if (phys != 0)
                 list.Add(1060403, phys.ToString()); // physical damage ~1_val~%
@@ -933,6 +956,11 @@ namespace Server.Items
 
         public virtual void AlterBowDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct)
         {
+        }
+
+        public virtual void AlterRangedDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct)
+        {
+            AlterBowDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
         }
 
         public void InvalidateWeight()

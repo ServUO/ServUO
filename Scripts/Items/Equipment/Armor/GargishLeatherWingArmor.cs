@@ -4,8 +4,13 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [FlipableAttribute(0x457E, 0x457F)]
-    public class GargishLeatherWingArmor : BaseArmor
+    public class GargishLeatherWingArmor : BaseArmor, IRangeDamage
     {
+        private AosElementAttributes m_AosElementDamages;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public AosElementAttributes AosElementDamages { get { return m_AosElementDamages; } set { } }
+
         [Constructable]
         public GargishLeatherWingArmor()
             : base(0x457E)
@@ -13,6 +18,7 @@ namespace Server.Items
             Weight = 2.0;
             Layer = Layer.Cloak;
 
+            m_AosElementDamages = new AosElementAttributes(this);
         }
 
         public GargishLeatherWingArmor(Serial serial)
@@ -60,16 +66,88 @@ namespace Server.Items
             return quality;
         }
 
+        public virtual void AlterRangedDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct)
+        {
+            fire = m_AosElementDamages.Fire;
+            cold = m_AosElementDamages.Cold;
+            pois = m_AosElementDamages.Poison;
+            nrgy = m_AosElementDamages.Energy;
+            chaos = m_AosElementDamages.Chaos;
+            direct = m_AosElementDamages.Direct;
+
+            phys = 100 - fire - cold - pois - nrgy - chaos - direct;
+        }
+
+        public override void AddDamageTypeProperty(ObjectPropertyList list)
+        {
+            int phys, fire, cold, pois, nrgy, chaos, direct;
+            phys = fire = cold = pois = nrgy = chaos = direct = 0;
+
+            AlterRangedDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
+
+            if (phys != 0 && phys != 100)
+                list.Add(1060403, phys.ToString()); // physical damage ~1_val~%
+
+            if (fire != 0)
+                list.Add(1060405, fire.ToString()); // fire damage ~1_val~%
+
+            if (cold != 0)
+                list.Add(1060404, cold.ToString()); // cold damage ~1_val~%
+
+            if (pois != 0)
+                list.Add(1060406, pois.ToString()); // poison damage ~1_val~%
+
+            if (nrgy != 0)
+                list.Add(1060407, nrgy.ToString()); // energy damage ~1_val
+
+            if (chaos != 0)
+                list.Add(1072846, chaos.ToString()); // chaos damage ~1_val~%
+
+            if (direct != 0)
+                list.Add(1079978, direct.ToString()); // Direct Damage: ~1_PERCENT~%
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            if (m_AosElementDamages.IsEmpty)
+            {
+                writer.Write(0);
+            }
+            else
+            {
+                writer.Write(1);
+                m_AosElementDamages.Serialize(writer);
+            }
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    {
+                        if (reader.ReadInt() == 1)
+                        {
+                            m_AosElementDamages = new AosElementAttributes(this, reader);
+                        }
+                        else
+                        {
+                            m_AosElementDamages = new AosElementAttributes(this);
+                        }
+                    }
+                    break;
+                case 0:
+                    {
+                        m_AosElementDamages = new AosElementAttributes(this);
+                    }
+                    break;
+            }
         }
     }
 }

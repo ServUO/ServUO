@@ -264,10 +264,10 @@ namespace Server.Engines.Craft
                 }
                 else if (origItem is BaseQuiver && newitem is BaseArmor)
                 {
-                    //BaseQuiver oldquiver = (BaseQuiver)origItem;
-                    BaseArmor newarmor = (BaseArmor)newitem;
+                    /*BaseQuiver oldquiver = (BaseQuiver)origItem;
+                    BaseArmor newarmor = (BaseArmor)newitem;*/
 
-                    newarmor.Altered = true;
+                    ((BaseArmor)newitem).Altered = true;
                 }
                 else
                 {
@@ -286,8 +286,8 @@ namespace Server.Engines.Craft
 
                 newitem.Hue = origItem.Hue;
                 newitem.LootType = origItem.LootType;
+                newitem.Insured = origItem.Insured;
 
-                origItem.Delete();
                 origItem.OnAfterDuped(newitem);
                 newitem.Parent = null;
 
@@ -306,6 +306,8 @@ namespace Server.Engines.Craft
 
                 if (m_Contract != null)
                     m_Contract.Delete();
+
+                origItem.Delete();
 
                 number = 1094727; // You have altered the item.
             }
