@@ -33,13 +33,6 @@ namespace Server.Spells.Mysticism
             max = avg + ChanceOffset;
         }
 
-        public override bool CheckFizzle()
-        {
-            double minSkill, maxSkill;
-            GetCastSkills(out minSkill, out maxSkill);
-            return Caster.CheckSkill(CastSkill, minSkill, maxSkill);
-        }
-
         public override SkillName CastSkill { get { return SkillName.Mysticism; } }
 
         public override SkillName DamageSkill

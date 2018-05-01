@@ -14,7 +14,6 @@ namespace Server.Mobiles
 		public virtual int MaxRange { get { return 3; } }
 		public virtual double TriggerChance { get { return 1.0; } }
 		public virtual TimeSpan CooldownDuration { get { return TimeSpan.FromSeconds(30); } }
-        public virtual MagicalAbility RequiredSchool { get { return MagicalAbility.None; } }
 
         public virtual int EffectRange { get { return 5; } }
 		
@@ -25,7 +24,7 @@ namespace Server.Mobiles
 		public static bool CheckThinkTrigger(BaseCreature bc)
 		{
 			var combatant = bc.Combatant;
-			
+
 			if(combatant is Mobile)
 			{
                 var profile = PetTrainingHelper.GetAbilityProfile(bc);
@@ -47,7 +46,6 @@ namespace Server.Mobiles
                     }
                 }
 			}
-
             return false;
 		}
 		
@@ -67,16 +65,6 @@ namespace Server.Mobiles
 		
 		public virtual bool Validate(BaseCreature attacker, Mobile defender)
 		{
-            if (RequiredSchool != MagicalAbility.None)
-            {
-                var profile = PetTrainingHelper.GetAbilityProfile(attacker);
-
-                if (profile == null || !profile.HasAbility(RequiredSchool))
-                {
-                    return false;
-                }
-            }
-
 			return defender != null && defender.Alive && !defender.Deleted && !defender.IsDeadBondedPet &&
 					attacker.Alive && !attacker.IsDeadBondedPet && defender.InRange(attacker.Location, MaxRange) && 
 					defender.Map == attacker.Map && attacker.InLOS(defender) && !attacker.BardPacified;
@@ -99,13 +87,12 @@ namespace Server.Mobiles
             {
                 if (m != creature && m.Alive && !m.IsDeadBondedPet &&
                     m.CanBeHarmful(creature, false) &&
-                    SpellHelper.ValidIndirectTarget(m, creature) && 
-                    (!Core.AOS || creature.InLOS(m)))
+                    SpellHelper.ValidIndirectTarget(creature, m) && 
+                    creature.InLOS(m))
                 {
                     toAffect.Add(m);
                 }
             }
-
             eable.Free();
 
             foreach (var m in toAffect)
@@ -403,7 +390,6 @@ namespace Server.Mobiles
     {
         public override double TriggerChance { get { return 0.4; } }
         public override int EffectRange { get { return 10; } }
-        public override MagicalAbility RequiredSchool { get { return MagicalAbility.Poisoning; } }
         public override int ManaCost { get { return 50; } }
 
         public PoisonBreath()
