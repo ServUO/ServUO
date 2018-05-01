@@ -332,7 +332,7 @@ namespace Server.Engines.Craft
             if (item is BaseJewel && ((BaseJewel)item).ArtifactRarity > 0)
                 return true;
 
-            return item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552;
+            return (item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552) || (item.LabelNumber >= 1073111 && item.LabelNumber <= 1075040);
         }
 
         private static bool IsAlterable(Item item)

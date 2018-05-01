@@ -271,6 +271,8 @@ namespace Server.Items
                 quiver.m_Attributes = new AosAttributes(newItem, m_Attributes);
                 quiver.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
                 quiver.m_Resistances = new AosElementAttributes(newItem, m_Resistances);
+                quiver.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
+                quiver.m_SetSkillBonuses = new AosSkillBonuses(newItem, m_SetSkillBonuses);
             }
 
             var wing = newItem as GargishLeatherWingArmor;
