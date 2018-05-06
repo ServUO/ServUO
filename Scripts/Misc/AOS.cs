@@ -549,14 +549,14 @@ namespace Server
                 if (attrs != null)
                     value += attrs[attribute];
 
-                if (attribute == AosAttribute.Luck)
+                /*&if (attribute == AosAttribute.Luck)
                 {
                     if (obj is BaseWeapon)
                         value += ((BaseWeapon)obj).GetLuckBonus();
 
                     if (obj is BaseArmor)
                         value += ((BaseArmor)obj).GetLuckBonus();
-                }
+                }*/
 
                 if (obj is ISetItem)
                 {
