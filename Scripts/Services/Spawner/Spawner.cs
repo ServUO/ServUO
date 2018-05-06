@@ -706,7 +706,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)5); // version
+            writer.Write((int)6); // version
+            writer.Write(m_SpawnRange);
+
             writer.Write(m_WalkingRange);
 
             writer.Write(m_WayPoint);
@@ -728,21 +730,6 @@ namespace Server.Mobiles
             {
                 m_SpawnObjects[i].Serialize(writer);
             }
-
-            /*writer.Write(m_Spawned.Count);
-            foreach(var kvp in m_Spawned)
-            {
-                ISpawnable e = kvp.Key;
-
-                if (e is Item)
-                    writer.Write((Item)e);
-                else if (e is Mobile)
-                    writer.Write((Mobile)e);
-                else
-                    writer.Write(Serial.MinusOne);
-
-                
-            }*/
         }
 
         public override void Deserialize(GenericReader reader)
@@ -753,6 +740,12 @@ namespace Server.Mobiles
 
             switch ( version )
             {
+                case 6:
+                    {
+                        m_SpawnRange = reader.ReadInt();
+
+                        goto case 5;
+                    }
                 case 5:
                 case 4:
                     {
