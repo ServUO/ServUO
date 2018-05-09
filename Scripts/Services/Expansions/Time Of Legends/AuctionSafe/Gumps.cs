@@ -350,7 +350,7 @@ namespace Server.Engines.Auction
 
                     if (Auction.CheckModifyAuction(User) && platAmnt >= 0 && goldAmnt >= 0)
                     {
-                        if (platAmnt > long.MaxValue)
+                        if (platAmnt > UInt32.MaxValue)
                         {
                             User.SendMessage("Who in Sosaria has that much gold? Try a lower amount.");
                             break;
@@ -358,7 +358,7 @@ namespace Server.Engines.Auction
 
                         _TempBid += platAmnt * Account.CurrencyThreshold;
 
-                        if (goldAmnt > long.MaxValue)
+                        if (goldAmnt > UInt32.MaxValue)
                         {
                             User.SendMessage("That bid is too high. Try converting some of your gold bid into a plat bid.");
                             return;
@@ -393,7 +393,7 @@ namespace Server.Engines.Auction
 
                     if (Auction.CheckModifyAuction(User) && platAmnt2 >= 0 && goldAmnt2 >= 0)
                     {
-                        if (platAmnt2 > long.MaxValue)
+                        if (platAmnt2 > UInt32.MaxValue)
                         {
                             User.SendMessage("Who in Sosaria has that much gold? Try a lower amount.");
                             return;
@@ -401,7 +401,7 @@ namespace Server.Engines.Auction
 
                         _TempBuyout += platAmnt2 * Account.CurrencyThreshold;
 
-                        if (goldAmnt2 > long.MaxValue)
+                        if (goldAmnt2 > UInt32.MaxValue)
                         {
                             User.SendMessage("That bid is too high. Try converting some of your gold bid into a plat bid.");
                             return;
@@ -555,14 +555,12 @@ namespace Server.Engines.Auction
 
                     long val = Utility.ToInt64(plat);
 
-                    if (val > long.MaxValue) val = long.MaxValue;
                     if (val < 0) val = 0;
 
                     TempBid += val * Account.CurrencyThreshold;
 
                     val = Utility.ToInt64(gold);
 
-                    if (val > long.MaxValue) val = long.MaxValue;
                     if (val < 0) val = 0;
 
                     TempBid += val;

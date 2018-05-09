@@ -174,7 +174,7 @@ namespace Server.Mobiles
                             if (d == Direction.Up)
                                 d = Direction.North;
                             else
-                                d = d++;
+                                d = ++d;
 
                             Movement.Movement.Offset(d, ref x, ref y);
                         }

@@ -143,16 +143,13 @@ namespace Server.Items
                 Effects.SendLocationEffect(location, this.Map, 0x3709, 10, 10, 0x356, 0);
                 Effects.PlaySound(location, this.Map, 0x32E);
 
-                if (this.Items.Count > 0)
+                for (int i = this.Items.Count - 1; i >= 0; --i)
                 {
-                    for (int i = this.Items.Count - 1; i >= 0; --i)
-                    {
-                        if (i >= this.Items.Count)
-                            continue;
+                    if (i >= this.Items.Count)
+                        continue;
 
-                        this.Items[i].Delete();
-                    }
-                }
+                    this.Items[i].Delete();
+                }              
             }
 
             if (this.m_Timer != null)

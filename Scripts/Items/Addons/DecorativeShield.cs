@@ -274,7 +274,7 @@ namespace Server.Items
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Shield == null | this.m_Shield.Deleted)
+                if (this.m_Shield == null || this.m_Shield.Deleted)
                     return;		
 				
                 Mobile m = sender.Mobile;	

@@ -421,7 +421,7 @@ namespace Server.Engines.Harvest
                 {
                     int size = Utility.RandomMinMax(1, 5);
 
-                    if (luck / 2500 > Utility.RandomDouble())
+                    if (luck / 2500.0 > Utility.RandomDouble())
                         size++;
 
                     NiterDeposit niter = new NiterDeposit(size);

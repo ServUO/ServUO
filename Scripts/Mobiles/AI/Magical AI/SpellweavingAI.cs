@@ -50,9 +50,9 @@ namespace Server.Mobiles
 
                 if (mana >= 50)
                     select = 4;
-                else if (mana >= 50)
-                    select = 3;
                 else if (mana >= 40)
+                    select = 3;
+                else if (mana >= 30)
                     select = 2;
 
                 switch (Utility.Random(select))
