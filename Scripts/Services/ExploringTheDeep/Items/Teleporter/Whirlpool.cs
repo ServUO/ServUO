@@ -172,7 +172,7 @@ namespace Server.Items
                 return;
             }
 
-            if (!(mobile.Alive) !(mobile.IsPlayer()))
+            if (!mobile.Alive || !mobile.IsPlayer())
                 return;
 
             else if (m_Active && CanTeleport(from))
