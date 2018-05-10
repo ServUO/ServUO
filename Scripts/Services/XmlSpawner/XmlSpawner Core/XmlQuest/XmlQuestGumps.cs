@@ -569,126 +569,129 @@ namespace Server.Gumps
 				{
 					m_gumpcallback( from, m_invoker, String.Empty);
 
-				} else
-
-				switch(m_gumptype)
-				{
-					case 0:	// simple acknowledgement gump
-						m_gumpcallback( from, m_invoker, "done");
-						break;
-					case 1:				// yes/no gump
-						if(info.Switches != null && info.Switches.Length > 0)
-						{
-							if ( info.Switches[0] == 1 )
-							{
-								m_gumpcallback( from, m_invoker, "yes");
-							} 
-							else
-							{
-								m_gumpcallback( from, m_invoker, "no");
-							}
-						}
-						break;
-					case 2: // text entry gump
-						TextRelay entry = info.GetTextEntry( 99 );
-						if ( entry != null && entry.Text.Length > 0 )
-						{
-							// return the response string
-							m_gumpcallback( from, m_invoker, entry.Text);
-						}
-						break;
-					case 3: // accept/decline gump
-						if(info.Switches != null && info.Switches.Length > 0)
-						{
-							if ( info.Switches[0] == 1 )
-							{
-								from.SendLocalizedMessage( 1049019 ); // You have accepted the Quest.
-
-								m_gumpcallback( from, m_invoker, "accept");
-							} 
-							else
-							{
-								from.SendLocalizedMessage( 1049018 ); // You have declined the Quest.
-
-								m_gumpcallback( from, m_invoker, "decline");
-
-							}
-						}
-						break;
-					case 4: // multiple option gump
-						if(info.Switches != null && info.Switches.Length > 0)
-						{
-							int select = info.Switches[0];
-
-							if(select >= 0 && select < gumpSelections.Count)
-							{
-								// return the response string for that selection
-								m_gumpcallback( from, m_invoker, gumpSelections[select].Response);
-							}
-						}
-						break;
-					case 5:
-
-						string buttonresponse = String.Empty;
-						string radioresponse = String.Empty;
-						string textresponse = String.Empty;
-
-						if(info.ButtonID >= 1000)
-						{
-							int select = info.ButtonID - 1000;
-							// get the gump response associated with the button
-							if(select >= 0 && select < gumpSelections.Count)
-							{
-								// return the response string for that selection
-								buttonresponse = gumpSelections[select].Response;
-							}
-						}
-
-						if(info.Switches != null && info.Switches.Length > 0)
-						{
-							int radiostate = info.Switches[0];
-
-							if(radiostate >= 0 && radiostate < gumpSelections.Count)
-							{
-								radioresponse = gumpSelections[radiostate].Response;
-							}
-						}
-
-						// check for any textentries
-						for(int j=0;j<gumpSelections.Count;j++)
-						{
-							if(gumpSelections[j].GumpItemType == 1)
-							{
-								try
-								{
-									TextRelay te = info.GetTextEntry( j );
-									if ( te != null && te.Text.Length > 0 )
-									{
-										textresponse += te.Text + " ";
-									}
-								}
-								catch {}
-							}
-						}
-
-						// build the composite reponse string
-						string responsestring = null;
-						if(buttonresponse != null && buttonresponse.Length > 0)
-						{
-							responsestring = buttonresponse;
-						}
-						if(radioresponse != null && radioresponse.Length > 0)
-						{
-							responsestring += " " + radioresponse;
-						}
-						if(textresponse != null && textresponse.Length > 0)
-						{
-							responsestring += " " + textresponse;
-						}
-
-						m_gumpcallback( from, m_invoker, responsestring);
-						break;
 				}
+                else
+                {
+                    switch (m_gumptype)
+                    {
+                        case 0: // simple acknowledgement gump
+                            m_gumpcallback(from, m_invoker, "done");
+                            break;
+                        case 1:             // yes/no gump
+                            if (info.Switches != null && info.Switches.Length > 0)
+                            {
+                                if (info.Switches[0] == 1)
+                                {
+                                    m_gumpcallback(from, m_invoker, "yes");
+                                }
+                                else
+                                {
+                                    m_gumpcallback(from, m_invoker, "no");
+                                }
+                            }
+                            break;
+                        case 2: // text entry gump
+                            TextRelay entry = info.GetTextEntry(99);
+                            if (entry != null && entry.Text.Length > 0)
+                            {
+                                // return the response string
+                                m_gumpcallback(from, m_invoker, entry.Text);
+                            }
+                            break;
+                        case 3: // accept/decline gump
+                            if (info.Switches != null && info.Switches.Length > 0)
+                            {
+                                if (info.Switches[0] == 1)
+                                {
+                                    from.SendLocalizedMessage(1049019); // You have accepted the Quest.
+
+                                    m_gumpcallback(from, m_invoker, "accept");
+                                }
+                                else
+                                {
+                                    from.SendLocalizedMessage(1049018); // You have declined the Quest.
+
+                                    m_gumpcallback(from, m_invoker, "decline");
+
+                                }
+                            }
+                            break;
+                        case 4: // multiple option gump
+                            if (info.Switches != null && info.Switches.Length > 0)
+                            {
+                                int select = info.Switches[0];
+
+                                if (select >= 0 && select < gumpSelections.Count)
+                                {
+                                    // return the response string for that selection
+                                    m_gumpcallback(from, m_invoker, gumpSelections[select].Response);
+                                }
+                            }
+                            break;
+                        case 5:
+
+                            string buttonresponse = String.Empty;
+                            string radioresponse = String.Empty;
+                            string textresponse = String.Empty;
+
+                            if (info.ButtonID >= 1000)
+                            {
+                                int select = info.ButtonID - 1000;
+                                // get the gump response associated with the button
+                                if (select >= 0 && select < gumpSelections.Count)
+                                {
+                                    // return the response string for that selection
+                                    buttonresponse = gumpSelections[select].Response;
+                                }
+                            }
+
+                            if (info.Switches != null && info.Switches.Length > 0)
+                            {
+                                int radiostate = info.Switches[0];
+
+                                if (radiostate >= 0 && radiostate < gumpSelections.Count)
+                                {
+                                    radioresponse = gumpSelections[radiostate].Response;
+                                }
+                            }
+
+                            // check for any textentries
+                            for (int j = 0; j < gumpSelections.Count; j++)
+                            {
+                                if (gumpSelections[j].GumpItemType == 1)
+                                {
+                                    try
+                                    {
+                                        TextRelay te = info.GetTextEntry(j);
+                                        if (te != null && te.Text.Length > 0)
+                                        {
+                                            textresponse += te.Text + " ";
+                                        }
+                                    }
+                                    catch { }
+                                }
+                            }
+
+                            // build the composite reponse string
+                            string responsestring = null;
+                            if (buttonresponse != null && buttonresponse.Length > 0)
+                            {
+                                responsestring = buttonresponse;
+                            }
+                            if (radioresponse != null && radioresponse.Length > 0)
+                            {
+                                responsestring += " " + radioresponse;
+                            }
+                            if (textresponse != null && textresponse.Length > 0)
+                            {
+                                responsestring += " " + textresponse;
+                            }
+
+                            m_gumpcallback(from, m_invoker, responsestring);
+                            break;
+                    }
+                }
+				
 			}
 			// get rid of any temporary gump keyword tokens
 			if(m_invoker is XmlSpawner)

@@ -27,8 +27,8 @@ namespace Server.Engines.Chat
                 return;
             }
 
-            pvSrc.Seek(2, SeekOrigin.Begin);
-            /*string chatName = */pvSrc.ReadUnicodeStringSafe((0x40 - 2) >> 1).Trim();
+            //pvSrc.Seek(2, SeekOrigin.Begin);
+            ///*string chatName = */pvSrc.ReadUnicodeStringSafe((0x40 - 2) >> 1).Trim();
 
             var chatName = from.Name;
 

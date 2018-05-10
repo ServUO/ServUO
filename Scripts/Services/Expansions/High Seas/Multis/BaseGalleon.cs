@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Mobiles;
 using Server.Items;
@@ -364,7 +364,7 @@ namespace Server.Multis
             if (c != null)
                 c.AddItem(newRune);
             else
-                c.MoveToWorld(from.Location, from.Map);
+                newRune.MoveToWorld(from.Location, from.Map);
 
             rune.Delete();
             return true;

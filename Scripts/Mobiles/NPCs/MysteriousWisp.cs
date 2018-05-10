@@ -497,7 +497,7 @@ namespace Server.Mobiles
                 {
                     Item item = m_Items[idx];
 
-                    if (m_Wisp.Backpack.Items.Contains(item) && !item.Deleted && item != null)
+                    if (item != null && m_Wisp.Backpack.Items.Contains(item) && !item.Deleted)
                     {
                         from.SendGump(new InternalGump2(m_Wisp, item));
                     }

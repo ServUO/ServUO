@@ -242,7 +242,7 @@ namespace Server.Items
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Brazier == null | this.m_Brazier.Deleted)
+                if (this.m_Brazier == null || this.m_Brazier.Deleted)
                     return;
 
                 Mobile m = sender.Mobile;

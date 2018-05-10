@@ -824,7 +824,7 @@ namespace Server.Mobiles
             int SkillId = e.SkillID;
             IEntity target = e.Target;
 
-            if (from == null || target == null || target == null)
+            if (from == null || target == null)
                 return;
 
             from.TargetLocked = true;

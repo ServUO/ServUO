@@ -81,14 +81,14 @@ namespace Server.Items
 
                 if (targeted is ILockpickable)
                 {
-                    Item item = (Item)targeted;
+                    ILockpickable item = (ILockpickable)targeted;
                     from.Direction = from.GetDirectionTo(item);
 
-                    if (((ILockpickable)targeted).Locked)
+                    if (item.Locked)
                     {
                         from.PlaySound(0x241);
 
-                        new InternalTimer(from, (ILockpickable)targeted, this.m_Item).Start();
+                        new InternalTimer(from, item, this.m_Item).Start();
                     }
                     else
                     {

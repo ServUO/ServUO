@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 using Server.Network;
 using System;
 
@@ -391,7 +391,7 @@ namespace Server.Items
             Item g = n_SourceItem;
 
             // Explosion
-            if (g.Deleted || g == null)
+            if (g == null || g.Deleted)
                 return;
 
             Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36BD, 9, 10, 5044);
@@ -496,7 +496,7 @@ namespace Server.Items
             Item g = n_SourceItem;
 
             //Poisonous Vapor
-            if (g.Deleted || g == null)
+            if (g == null || g.Deleted)
                 return;
 
             Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5040);
@@ -506,7 +506,7 @@ namespace Server.Items
 
         public virtual void DoDamage(Item g, int mindmg, int maxdmg)
         {
-            if (g.Deleted || g == null)
+            if (g == null || g.Deleted)
                 return;
 
             IPooledEnumerable eable = g.GetMobilesInRange(4);

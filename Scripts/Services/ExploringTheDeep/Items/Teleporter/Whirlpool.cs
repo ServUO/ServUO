@@ -163,13 +163,16 @@ namespace Server.Items
             }
             PlayerMobile mobile = from as PlayerMobile;
 
+            if (mobile == null)
+                return;
+
             if (mobile.IsStaff())
             {
                 StartTeleport(mobile);
                 return;
             }
 
-            if (!(mobile.Alive) || !(mobile is PlayerMobile) || !(mobile.IsPlayer()) || mobile == null)
+            if (!(mobile.Alive) !(mobile.IsPlayer()))
                 return;
 
             else if (m_Active && CanTeleport(from))
