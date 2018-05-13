@@ -70,7 +70,7 @@ namespace Server.Spells.SkillMasteries
         {
             BaseWeapon wep = defender.Weapon as BaseWeapon;
 
-            if (wep != null && !(wep is Fists))
+            if (wep == null || !(wep is Fists))
             {
                 defender.SendLocalizedMessage(1155979); // You may not wield a weapon and use this ability.
                 Expire(defender);
