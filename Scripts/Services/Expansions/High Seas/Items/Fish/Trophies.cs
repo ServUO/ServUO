@@ -300,6 +300,14 @@ namespace Server.Items
             }
         }
 
+        public override void OnChop(Mobile from)
+        {
+            if (Components.Count > 0)
+            {
+                OnComponentUsed(Components[0], from);
+            }
+        }
+
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
             if (m_TypeName == null)
