@@ -186,7 +186,7 @@ namespace Server.Items
             }
         }
 
-        /*public override int GetLuckBonus()
+        public override int GetLuckBonus()
         {
             if (CraftResources.GetType(Resource) != CraftResourceType.Wood)
             {
@@ -201,7 +201,7 @@ namespace Server.Items
 
                 return attrInfo.ShieldLuck;
             }
-        }*/
+        }
 
         public override void DistributeExceptionalBonuses(Mobile from, int amount)
         {
@@ -219,7 +219,6 @@ namespace Server.Items
                 {
                     Attributes.SpellChanneling += attrInfo.ShieldSpellChanneling;
                     ArmorAttributes.LowerStatReq += attrInfo.ShieldLowerRequirements;
-                    Attributes.Luck += attrInfo.ShieldLuck;
                     Attributes.RegenHits += attrInfo.ShieldRegenHits;
                 }
                 else
