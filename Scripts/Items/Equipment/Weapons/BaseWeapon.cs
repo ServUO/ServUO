@@ -5233,7 +5233,7 @@ namespace Server.Items
             }
         }
 
-		/*public virtual int GetLuckBonus()
+		public virtual int GetLuckBonus()
 		{
 			#region Mondain's Legacy
 			if (m_Resource == CraftResource.Heartwood)
@@ -5257,7 +5257,7 @@ namespace Server.Items
 			}
 
 			return attrInfo.WeaponLuck;
-		}*/
+		}
 
         public override void AddWeightProperty(ObjectPropertyList list)
         {
@@ -5700,7 +5700,7 @@ namespace Server.Items
 				list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
 			}
 
-			if ((prop = (/*GetLuckBonus() + */m_AosAttributes.Luck)) != 0)
+			if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
 			{
 				list.Add(1060436, prop.ToString()); // luck ~1_val~
 			}
