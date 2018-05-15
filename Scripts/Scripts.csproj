@@ -3453,12 +3453,6 @@
     <Compile Include="Services\MaginciaBazaar\VendorTile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Addons\MailboxEastAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Addons\MailboxSouthAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Addons\MediumStoneTableEastAddon.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -2198,7 +2198,7 @@ namespace Server
 					++m_ChangingCombatant;
 					m_Combatant = value;
 
-					if ((m_Combatant != null && !CanBeHarmful(m_Combatant, false)) || !Region.OnCombatantChange(this, old, m_Combatant))
+					if (!Region.OnCombatantChange(this, old, m_Combatant) || (m_Combatant != null && !CanBeHarmful(m_Combatant, false)))
 					{
 						m_Combatant = old;
 						--m_ChangingCombatant;

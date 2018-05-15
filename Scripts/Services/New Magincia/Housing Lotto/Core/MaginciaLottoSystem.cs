@@ -391,7 +391,7 @@ namespace Server.Engines.NewMagincia
 
             if (Sextant.Format(p, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
             {
-                return String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                return String.Format("{0}Â° {1}'{2}, {3}Â° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
             }
 
             return p.ToString();
@@ -615,7 +615,7 @@ namespace Server.Engines.NewMagincia
                 if (plotTram == null && !m_FreeHousingZones[Map.Trammel].Contains(rec))
                 {
                     Console.WriteLine("Adding {0} to Magincia Free Housing Zone.[{1}]", rec, "Plot non-existent");
-                    m_FreeHousingZones[Map.Trammel].Add(plotTram.Bounds);
+                    m_FreeHousingZones[Map.Trammel].Add(rec);
                 }
                 else if (plotTram != null && plotTram.Stone == null && (plotTram.Writ == null || plotTram.Writ.Expired))
                 {

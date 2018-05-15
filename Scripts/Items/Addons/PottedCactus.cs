@@ -186,7 +186,7 @@ namespace Server.Items
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Cactus == null | this.m_Cactus.Deleted)
+                if (this.m_Cactus == null || this.m_Cactus.Deleted)
                     return;		
 				
                 Mobile m = sender.Mobile;	

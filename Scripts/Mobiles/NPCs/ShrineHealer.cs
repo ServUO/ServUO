@@ -25,9 +25,7 @@ namespace Server.Mobiles
 
             if (from is PlayerMobile)
             {
-                if(from is PlayerMobile)
-                    list.Add(new LockKarmaEntry((PlayerMobile)from));
-
+                list.Add(new LockKarmaEntry((PlayerMobile)from));
                 list.Add(new ResurrectEntry(from, this));
                 list.Add(new TitheEntry(from));
             }

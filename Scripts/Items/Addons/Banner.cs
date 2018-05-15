@@ -251,7 +251,7 @@ namespace Server.Items
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Banner == null | this.m_Banner.Deleted)
+                if (this.m_Banner == null || this.m_Banner.Deleted)
                     return;		
 				
                 Mobile m = sender.Mobile;	

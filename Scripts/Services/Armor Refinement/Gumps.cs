@@ -225,7 +225,7 @@ namespace Server.Gumps
                     return armor is DecorativePlateKabuto || armor is HeavyPlateJingasa || armor is LightPlateJingasa || armor is PlateBattleKabuto || armor is PlateDo || armor is PlateHaidate || armor is PlateHatsuburi || armor is PlateHiroSode
                             || armor is PlateMempo || armor is PlateSuneate || armor is SmallPlateJingasa || armor is StandardPlateKabuto;
                 case RefinementSubCraftType.GargishPlatemail:
-                    return armor is GargishPlateArms || armor is GargishPlateChest || armor is GargishPlateKilt || armor is GargishPlateLegs || armor is FemaleGargishPlateArms || armor is FemaleGargishPlateArms || armor is FemaleGargishPlateArms || armor is FemaleGargishPlateArms;
+                    return armor is GargishPlateArms || armor is GargishPlateChest || armor is GargishPlateKilt || armor is GargishPlateLegs || armor is FemaleGargishPlateArms || armor is FemaleGargishPlateLegs || armor is FemaleGargishPlateChest || armor is FemaleGargishPlateKilt;
                 case RefinementSubCraftType.Dragon:
                     return armor is DragonArms || armor is DragonChest || armor is DragonGloves || armor is DragonHelm || armor is DragonLegs;
                 case RefinementSubCraftType.Woodland:

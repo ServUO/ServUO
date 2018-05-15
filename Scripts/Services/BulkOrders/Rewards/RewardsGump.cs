@@ -45,7 +45,7 @@ namespace Server.Engines.BulkOrders
         {
             BODCollectionItem item = citem as BODCollectionItem;
 
-            if (GetPoints(User) >= item.Points && item != null && item.Constructor != null)
+            if (item != null && GetPoints(User) >= item.Points && item.Constructor != null)
             {
                 Item i = item.Constructor(item.RewardType);
 

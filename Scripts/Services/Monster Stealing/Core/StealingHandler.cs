@@ -166,9 +166,9 @@ namespace Server.Engines.CreatureStealing
 
             if (level >= 40)
                 chance += 5;
-            else if (level >= 40)
+             else if (level >= 35) 
                 chance += 3;
-            else if (level >= 35)
+            else if (level >= 30)
                 chance += 2;
             else if (level >= 25)
                 chance += 1;

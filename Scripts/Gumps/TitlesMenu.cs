@@ -1132,10 +1132,7 @@ namespace Server.Gumps
         {
             IEnumerable<int> list = User.RewardTitles.OfType<int>().Where(i => IsCityTitle(i));
 
-            if (list != null)
-                return list.ToList();
-
-            return null;
+            return list.ToList();
         }
 
         public void Refresh(bool recompile = true)
