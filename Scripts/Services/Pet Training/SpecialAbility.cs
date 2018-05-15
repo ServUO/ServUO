@@ -663,7 +663,7 @@ namespace Server.Mobiles
 
             ResistanceMod mod = new ResistanceMod(ResistanceType.Physical, effect);
 
-            defender.FixedEffect(0x37B9, 10, 5);
+            defender.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
             defender.AddResistanceMod(mod);
 
             timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(5.0));
@@ -820,7 +820,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m == creature || !creature.CanBeHarmful(m))
+                if (m == creature || !creature.CanBeHarmful(m, false))
                     continue;
 
                 if (m is BaseCreature && !((BaseCreature)m).IsMonster)
@@ -833,7 +833,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in list)
             {
-                creature.DoHarmful(m);
+                creature.DoHarmful(m, false);
 
                 m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
                 m.PlaySound(0x231);
@@ -1066,7 +1066,7 @@ namespace Server.Mobiles
 			foreach(Mobile m in eable)
 			{
                 if (creature != m &&
-                    creature.CanBeHarmful(m) && 
+                    creature.CanBeHarmful(m, false) && 
                     Server.Spells.SpellHelper.ValidIndirectTarget(creature, m) && 
                     creature.InLOS(m))
 				{

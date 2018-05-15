@@ -110,30 +110,30 @@ namespace Server.Spells.Seventh
                             m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                         }
 
-                        Mobile source = Caster;
+                        IDamageable source = Caster;
+                        IDamageable target = id;
+
+                        if (SpellHelper.CheckReflect((int)Circle, ref source, ref target, SpellDamageType))
+                        {
+                            Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
+                                {
+                                    source.MovingParticles(target, 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
+                                });
+                        }
 
                         if (m != null)
                         {
-                            if (SpellHelper.CheckReflect((int)Circle, ref source, ref m, SpellDamageType))
-                            {
-                                Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
-                                    {
-                                        source.MovingParticles(m, 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
-                                    });
-                            }
-
                             damage *= GetDamageScalar(m);
                         }
 
                         Caster.DoHarmful(id);
-                        SpellHelper.Damage(this, m != null ? m : id, damage, 0, 100, 0, 0, 0);
+                        SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0);
 
                         Caster.MovingParticles(id, 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
                     }
                 }
 
-                targets.Clear();
-                targets.TrimExcess();
+                ColUtility.Free(targets);
             }
 
             FinishSequence();

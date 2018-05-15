@@ -109,17 +109,17 @@ namespace Server.Spells.Seventh
                         }
 
                         Mobile source = Caster;
+                        SpellHelper.CheckReflect((int)Circle, ref source, ref id, SpellDamageType);
 
                         if (m != null)
                         {
-                            SpellHelper.CheckReflect((int)Circle, ref source, ref m, SpellDamageType);
                             damage *= GetDamageScalar(m);
                         }
 
                         Effects.SendBoltEffect(id, true, 0, false);
 
-                        Caster.DoHarmful(m != null ? m : id);
-                        SpellHelper.Damage(this, m != null ? m : id, damage, 0, 0, 0, 0, 100);
+                        Caster.DoHarmful(id);
+                        SpellHelper.Damage(this, id, damage, 0, 0, 0, 0, 100);
                     }
                 }
                 else

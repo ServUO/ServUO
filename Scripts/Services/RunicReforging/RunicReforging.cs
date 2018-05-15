@@ -356,7 +356,6 @@ namespace Server.Items
                             return false;
 
                         if (index == 12 && tool.Resource == CraftResource.Copper && (options & ReforgingOption.Structural) != 0 &&
-                                                                                    (options & ReforgingOption.Fundamental) != 0 &&
                                                                                     (options & ReforgingOption.Fundamental) != 0)
                             return false;
 

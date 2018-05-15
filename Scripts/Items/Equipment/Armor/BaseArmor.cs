@@ -264,7 +264,7 @@ namespace Server.Items
         {
             get
             {
-                return !IsImbued && NegativeAttributes.Antique < 3;
+                return !IsImbued && NegativeAttributes.Antique < 4;
             }
         }
 
@@ -2712,7 +2712,7 @@ namespace Server.Items
             return (m_AosAttributes.SpellChanneling != 0 || Enhancement.GetValue(from, AosAttribute.SpellChanneling) != 0);
         }
 
-        public virtual int GetLuckBonus()
+        /*public virtual int GetLuckBonus()
         {
             CraftAttributeInfo attrInfo = GetResourceAttrs(Resource);
 
@@ -2720,7 +2720,7 @@ namespace Server.Items
                 return 0;
 
             return attrInfo.ArmorLuck;
-        }
+        }*/
 
         public override void AddWeightProperty(ObjectPropertyList list)
         {
@@ -2728,6 +2728,10 @@ namespace Server.Items
 
             if (IsVvVItem)
                 list.Add(1154937); // VvV Item
+        }
+
+        public virtual void AddDamageTypeProperty(ObjectPropertyList list)
+        {
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -2784,6 +2788,8 @@ namespace Server.Items
             }
             #endregion
 
+            AddDamageTypeProperty(list);
+
             if (RequiredRace == Race.Elf)
                 list.Add(1075086); // Elves Only
             else if (RequiredRace == Race.Gargoyle)
@@ -2839,7 +2845,7 @@ namespace Server.Items
             if ((prop = GetLowerStatReq()) != 0)
                 list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
 
-            if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
+            if ((prop = (/*GetLuckBonus() + */m_AosAttributes.Luck)) != 0)
                 list.Add(1060436, prop.ToString()); // luck ~1_val~
 
             if ((prop = m_AosArmorAttributes.MageArmor) != 0)

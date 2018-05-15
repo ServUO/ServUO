@@ -346,8 +346,7 @@ namespace Server.Items
             // start decay timer
             if (m_DailyDecay > 0)
             {
-                DateTime today = DateTime.Today;
-                today.AddDays(1);
+                DateTime today = DateTime.Today.AddDays(1);
 				
                 new CollectionDecayTimer(this, today - DateTime.UtcNow);
             }

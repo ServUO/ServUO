@@ -1151,28 +1151,91 @@ namespace Server.Spells
         //magic reflection
         public static bool CheckReflect(int circle, Mobile caster, ref Mobile target)
         {
-            return CheckReflect(circle, ref caster, ref target);
+            IDamageable c = caster as IDamageable;
+            IDamageable t = target as IDamageable;
+
+            bool reflect = CheckReflect(circle, ref c, ref t);
+
+            if (c is Mobile)
+                caster = (Mobile)c;
+
+            if (t is Mobile)
+                target = (Mobile)t;
+
+            return reflect;
         }
 
-        public static bool CheckReflect(int circle, ref Mobile caster, ref Mobile target, DamageType type = DamageType.Spell)
+        public static bool CheckReflect(int circle, IDamageable caster, ref Mobile target)
+        {
+            IDamageable t = target as IDamageable;
+
+            bool reflect = CheckReflect(circle, ref caster, ref t);
+
+            if (t is Mobile)
+                caster = (Mobile)t;
+
+            return reflect;
+        }
+
+        public static bool CheckReflect(int circle, Mobile caster, ref IDamageable target)
+        {
+            IDamageable c = caster as IDamageable;
+
+            bool reflect = CheckReflect(circle, ref c, ref target);
+
+            if (c is Mobile)
+                caster = (Mobile)c;
+
+            return reflect;
+        }
+
+        public static bool CheckReflect(int circle, ref Mobile caster, ref IDamageable target, DamageType type = DamageType.Spell)
+        {
+            IDamageable c = caster as IDamageable;
+
+            bool reflect = CheckReflect(circle, ref c, ref target);
+
+            if (c is Mobile)
+                caster = (Mobile)c;
+
+            return reflect;
+        }
+
+        public static bool CheckReflect(int circle, ref Mobile caster, ref Mobile target)
+        {
+            return CheckReflect(circle, caster, ref target);
+        }
+
+        public static bool CheckReflect(int circle, ref IDamageable source, ref IDamageable defender, DamageType type = DamageType.Spell)
         {
             bool reflect = false;
+            Mobile target = defender as Mobile;
 
-            if (Core.AOS && type == DamageType.Spell)
+            if (Core.AOS && type >= DamageType.Spell)
             {
-                Clone clone = null;
-
-                if (target != null)
+                if (target != null && defender is Mobile)
                 {
-                    clone = MirrorImage.GetDeflect(caster, target);
+                    Clone clone = MirrorImage.GetDeflect(target, (Mobile)defender);
+
+                    if (clone != null)
+                    {
+                        defender = clone;
+                        return false;
+                    }
                 }
-
-                if (clone != null)
+                else if (defender is DamageableItem && ((DamageableItem)defender).CheckReflect(circle, source))
                 {
-                    target = clone;
-                    return false;
+                    IDamageable temp = source;
+                    source = defender;
+                    defender = temp;
+                    return true;
                 }
             }
+
+            Mobile caster = source as Mobile;
+
+            if (target == null || caster == null)
+                return false;
 
             if (target.MagicDamageAbsorb > 0)
             {
@@ -1198,7 +1261,7 @@ namespace Server.Spells
                     target.FixedEffect(0x37B9, 10, 5);
 
                     Mobile temp = caster;
-                    caster = target;
+                    source = target;
                     target = temp;
                 }
             }
@@ -1213,7 +1276,7 @@ namespace Server.Spells
                     target.FixedEffect(0x37B9, 10, 5);
 
                     Mobile temp = caster;
-                    caster = target;
+                    source = target;
                     target = temp;
                 }
             }

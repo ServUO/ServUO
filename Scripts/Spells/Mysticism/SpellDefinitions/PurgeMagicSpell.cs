@@ -52,7 +52,7 @@ namespace Server.Spells.Mysticism
             Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
         }
 
-        public void OnTarget(Object o)
+        public void OnTarget(object o)
         {
             Mobile target = o as Mobile;
 

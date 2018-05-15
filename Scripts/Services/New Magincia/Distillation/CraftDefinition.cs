@@ -57,8 +57,6 @@ namespace Server.Engines.Distillation
 				}
 				else if (type == typeof(Dates))
 					m_Labels[i] = 1025927;
-				else if (type == typeof(PewterBowlOfCorn))
-					m_Labels[i] = 1025631;
 				else
 				{
 					Item item = Loot.Construct(type);

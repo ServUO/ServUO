@@ -41,6 +41,8 @@ namespace Server.Engines.CleanUpBritannia
             {
                 ((ScrollofAlacrity)item).Skill = PowerScroll.Skills[Utility.Random(PowerScroll.Skills.Count)];
             }
+
+            item.InvalidateProperties();
         }
     }
 }

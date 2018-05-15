@@ -227,7 +227,8 @@ namespace Server.Mobiles
                     spell = GetCureSpell();
                 }
 
-                if (spell == null && !m_Mobile.InRange(c.Location, 3) && 
+                if (SmartAI &&  spell == null && 
+                                !m_Mobile.InRange(c.Location, 3) && 
                                 UsesMagery && c is Mobile && 
                                 !m_Mobile.DisallowAllMoves && 
                                 CheckCanCastMagery(3) &&

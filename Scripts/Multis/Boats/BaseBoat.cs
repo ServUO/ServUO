@@ -295,7 +295,7 @@ namespace Server.Multis
 
             if (m_TillerMan != null)
             {
-                if (m_TillerMan is Item)
+                if (m_TillerMan is TillerMan)
                 {
                     TillerMan tillerman = (TillerMan)m_TillerMan;
                     tillerman.Location = new Point3D(X + (xOffset * TillerManDistance) + (m_Facing == Direction.North ? 1 : 0), Y + (yOffset * TillerManDistance), tillerman.Z);
@@ -607,7 +607,9 @@ namespace Server.Multis
 
         public virtual bool IsOwner(Mobile from)
         {
-            if (from.AccessLevel > AccessLevel.Player || (from != null && from == m_Owner))
+            if (from == null)
+                return false;
+            if (from.AccessLevel > AccessLevel.Player || from == m_Owner)
                 return true;
 
             if (m_Owner == null)
@@ -746,7 +748,7 @@ namespace Server.Multis
             if (from.AccessLevel < AccessLevel.GameMaster && from != m_Owner)
             {
                 if (m_TillerMan != null)
-                    TillerManSay(Utility.Random(1042876, 4)); // Arr, don't do that! | Arr, leave me alone! | Arr, watch what thour'rt doing, matey! | Arr! Do that again and I’ll throw ye overhead!
+                    TillerManSay(Utility.Random(1042876, 4)); // Arr, don't do that! | Arr, leave me alone! | Arr, watch what thour'rt doing, matey! | Arr! Do that again and Iâ€™ll throw ye overhead!
 
                 return;
             }

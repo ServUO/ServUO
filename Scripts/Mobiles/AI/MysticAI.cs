@@ -90,12 +90,50 @@ namespace Server.Mobiles
 
 			return null;
 		}
-		
+
+        public override Spell GetRandomBuffSpell()
+        {
+            return null;
+        }
+
+        public override Spell RandomCombatSpell()
+        {
+            Spell spell = CheckCastHealingSpell();
+
+            if (spell != null)
+                return spell;
+
+            switch (Utility.Random(6))
+            {
+                case 0:	// Curse
+                    {
+                        m_Mobile.DebugSay("Cursing Thou!");
+                        spell = GetRandomCurseSpell();
+                        break;
+                    }
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:	// damage
+                    {
+                        m_Mobile.DebugSay("Just doing damage");
+                        spell = GetRandomDamageSpell();
+                    }
+                    break;
+            }
+            if (m_Mobile.Controlled) m_Mobile.Say("Casting: {0}", spell.GetType().Name);
+            return spell;
+        }
+
 		protected override bool ProcessTarget()
 		{
-			Target t = m_Mobile.Target;
+            Target t = m_Mobile.Target;
 
-            if (t is HailStormSpell.InternalTarget)
+            if (t == null)
+                return false;
+
+            if (t is HailStormSpell.InternalTarget || t is NetherCycloneSpell.InternalTarget)
             {
                 if (m_Mobile.Combatant != null && m_Mobile.InRange(m_Mobile.Combatant.Location, 8))
 				{

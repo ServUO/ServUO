@@ -2162,6 +2162,11 @@ namespace Server
 		{
 			if (CheckAttack(e))
 			{
+                if (!m_Warmode)
+                {
+                    Warmode = true;
+                }
+
 				Combatant = e;
 			}
 		}
@@ -2193,7 +2198,7 @@ namespace Server
 					++m_ChangingCombatant;
 					m_Combatant = value;
 
-					if ((m_Combatant != null && !CanBeHarmful(m_Combatant, false)) || !Region.OnCombatantChange(this, old, m_Combatant))
+					if (!Region.OnCombatantChange(this, old, m_Combatant) || (m_Combatant != null && !CanBeHarmful(m_Combatant, false)))
 					{
 						m_Combatant = old;
 						--m_ChangingCombatant;
@@ -5504,6 +5509,10 @@ namespace Server
 		/// </summary>
 		public virtual void OnDamage(int amount, Mobile from, bool willKill)
 		{ }
+
+        public virtual void Damage(int amount, Mobile from, int type)
+        {
+        }
 
 		public virtual void Damage(int amount)
 		{
@@ -8825,6 +8834,11 @@ namespace Server
 							SendRemovePacket(false);
 						}
 					}
+
+                    if (Core.SA)
+                    {
+                        NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                    }
 
 					OnWarmodeChanged();
 				}

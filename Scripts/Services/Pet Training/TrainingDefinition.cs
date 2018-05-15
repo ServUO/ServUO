@@ -28,7 +28,7 @@ namespace Server.Mobiles
             int controlmax)
         {
             CreatureType = type;
-            Class = Class;
+            Class = classificaion;
             MagicalAbilities = magicalAbility;
             SpecialAbilities = specialAbility;
             WeaponAbilities = weaponAbility;

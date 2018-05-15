@@ -45,7 +45,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.DetectHidden, 70.0);
             SetSkill(SkillName.EvalInt, skillvalue);
             SetSkill(SkillName.Mysticism, m.Skills[SkillName.Mysticism].Value);
-            SetSkill(SkillName.Focus, 50.0, 55.0);
+            SetSkill(SkillName.Focus, m.Skills[SkillName.Focus].Value);
 
             VirtualArmor = 58;
             ControlSlots = 5;

@@ -74,7 +74,7 @@ namespace Server.Items
 
             int delay = Core.TOL && attacker.Weapon is BaseRanged ? 8 : 10;
 
-            DoDismount(attacker, defender, mount, delay, false);
+            DoDismount(attacker, defender, mount, delay);
 
             if (!attacker.Mounted)
             {
@@ -82,7 +82,7 @@ namespace Server.Items
             }
         }
 
-        public static void DoDismount(Mobile attacker, Mobile defender, IMount mount, int delay, bool ridingSwipe)
+        public static void DoDismount(Mobile attacker, Mobile defender, IMount mount, int delay, BlockMountType type = BlockMountType.Dazed)
         {
             attacker.SendLocalizedMessage(1060082); // The force of your attack has dislodged them from their mount!
 
@@ -101,7 +101,7 @@ namespace Server.Items
                     defender.SendLocalizedMessage(1060083); // You fall off of your mount and take damage!
                 }
 
-                ((PlayerMobile)defender).SetMountBlock(ridingSwipe ? BlockMountType.RidingSwipe : BlockMountType.Dazed, TimeSpan.FromSeconds(delay), true);
+                ((PlayerMobile)defender).SetMountBlock(type, TimeSpan.FromSeconds(delay), true);
             }
             else if (mount != null)
             {

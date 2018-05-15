@@ -240,7 +240,7 @@ namespace Server.Items
 		public virtual int InitMinHits { get { return 0; } }
 		public virtual int InitMaxHits { get { return 0; } }
 
-        public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 3; } }
+        public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 4; } }
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
 		public virtual bool CanAlter { get { return true; } }
 
@@ -2508,11 +2508,11 @@ namespace Server.Items
 
 			if (Core.ML && ranged)
 			{
-				BaseQuiver quiver = attacker.FindItemOnLayer(Layer.Cloak) as BaseQuiver;
+                IRangeDamage rangeDamage = attacker.FindItemOnLayer(Layer.Cloak) as IRangeDamage;
 
-				if (quiver != null)
+                if (rangeDamage != null)
 				{
-					quiver.AlterBowDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
+                    rangeDamage.AlterRangedDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
 				}
 			}
 
@@ -5233,7 +5233,7 @@ namespace Server.Items
             }
         }
 
-		public virtual int GetLuckBonus()
+		/*public virtual int GetLuckBonus()
 		{
 			#region Mondain's Legacy
 			if (m_Resource == CraftResource.Heartwood)
@@ -5257,7 +5257,7 @@ namespace Server.Items
 			}
 
 			return attrInfo.WeaponLuck;
-		}
+		}*/
 
         public override void AddWeightProperty(ObjectPropertyList list)
         {
@@ -5700,7 +5700,7 @@ namespace Server.Items
 				list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
 			}
 
-			if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
+			if ((prop = (/*GetLuckBonus() + */m_AosAttributes.Luck)) != 0)
 			{
 				list.Add(1060436, prop.ToString()); // luck ~1_val~
 			}

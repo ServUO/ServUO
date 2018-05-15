@@ -201,7 +201,7 @@ namespace Server
             // object being damaged is not a mobile, so we will end here
             if (m == null)
             {
-                damageable.Damage(totalDamage, from);
+                damageable.Damage(totalDamage, from, (int)type);
                 return totalDamage;
             }
 
@@ -241,7 +241,7 @@ namespace Server
                         from.Damage(originalDamage, m);
                     }
                 }
-                else if (!ignoreArmor)
+                else if (!ignoreArmor && from != m)
                 {
                     int reflectPhys = Math.Min(105, AosAttributes.GetValue(m, AosAttribute.ReflectPhysical));
 
@@ -549,14 +549,14 @@ namespace Server
                 if (attrs != null)
                     value += attrs[attribute];
 
-                if (attribute == AosAttribute.Luck)
+                /*&if (attribute == AosAttribute.Luck)
                 {
                     if (obj is BaseWeapon)
                         value += ((BaseWeapon)obj).GetLuckBonus();
 
                     if (obj is BaseArmor)
                         value += ((BaseArmor)obj).GetLuckBonus();
-                }
+                }*/
 
                 if (obj is ISetItem)
                 {

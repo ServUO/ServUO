@@ -193,8 +193,7 @@ namespace Server.Items
 
                             if (origMaxHP > 0)
                             {
-                                //int initMaxHP = Core.AOS ? 255 : wearable.InitMaxHits;
-                                int initMaxHP = antique <= 0 ? 255 : antique == 1 ? 200 : 150;
+                                int initMaxHP = antique <= 0 ? 255 : antique == 1 ? 250 : antique == 2 ? 200 : 150;
 
                                 wearable.UnscaleDurability();
 
@@ -202,19 +201,19 @@ namespace Server.Items
                                 {
                                     if (antique > 0)
                                     {
-                                        if (item is BaseWeapon) ((BaseWeapon)item).NegativeAttributes.Antique++;
-                                        if (item is BaseArmor) ((BaseArmor)item).NegativeAttributes.Antique++;
-                                        if (item is BaseJewel) ((BaseJewel)item).NegativeAttributes.Antique++;
-                                        if (item is BaseClothing) ((BaseClothing)item).NegativeAttributes.Antique++;
+                                        wearable.MaxHitPoints = initMaxHP;
+                                        wearable.HitPoints += initMaxHP;
                                     }
+                                    else
+                                    {
+                                        int bonus = initMaxHP - wearable.MaxHitPoints;
 
-                                    int bonus = initMaxHP - wearable.MaxHitPoints;
+                                        if (bonus > 10)
+                                            bonus = 10;
 
-                                    if (bonus > 10)
-                                        bonus = 10;
-
-                                    wearable.MaxHitPoints += bonus;
-                                    wearable.HitPoints += bonus;
+                                        wearable.MaxHitPoints += bonus;
+                                        wearable.HitPoints += bonus;
+                                    }
 
                                     wearable.ScaleDurability();
 
@@ -234,6 +233,14 @@ namespace Server.Items
                                         {
                                             from.SendLocalizedMessage(1049086); // You have used up your powder of fortifying.
                                             m_Powder.Delete();
+                                        }
+
+                                        if (antique > 0)
+                                        {
+                                            if (item is BaseWeapon) ((BaseWeapon)item).NegativeAttributes.Antique++;
+                                            if (item is BaseArmor) ((BaseArmor)item).NegativeAttributes.Antique++;
+                                            if (item is BaseJewel) ((BaseJewel)item).NegativeAttributes.Antique++;
+                                            if (item is BaseClothing) ((BaseClothing)item).NegativeAttributes.Antique++;
                                         }
                                     }
                                     else

@@ -1,5 +1,6 @@
 using System;
 using Server.Targeting;
+using Server.Mobiles;
 
 namespace Server.Spells.Fourth
 {
@@ -48,8 +49,7 @@ namespace Server.Spells.Fourth
                 Mobile source = Caster;
                 SpellHelper.Turn(Caster, m.Location, 100);
 
-                if(mob != null)
-                    SpellHelper.CheckReflect((int)Circle, ref source, ref mob);
+                SpellHelper.CheckReflect((int)Circle, ref source, ref m);
 
                 double damage = 0;
 
@@ -71,11 +71,18 @@ namespace Server.Spells.Fourth
                     damage *= GetDamageScalar(mob);
                 }
 
-                Effects.SendBoltEffect(m, true, 0, false);
+                if (m is Mobile)
+                {
+                    Effects.SendBoltEffect(m, true, 0, false);
+                }
+                else
+                {
+                    Effects.SendBoltEffect(EffectMobile.Create(m.Location, m.Map, EffectMobile.DefaultDuration), true, 0, false);
+                }
 
                 if (damage > 0)
                 {
-                    SpellHelper.Damage(this, mob != null ? mob : m, damage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
                 }
             }
 

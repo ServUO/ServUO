@@ -47,16 +47,27 @@ namespace Server.Spells.Mysticism
                 if (map == null)
                     return;
 
-                IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 2);
+                IPooledEnumerable eable = map.GetObjectsInRange(new Point3D(p), 2);
                 Rectangle2D effectArea = new Rectangle2D(p.X - 3, p.Y - 3, 6, 6);
 
-                List<Mobile> toEffect = new List<Mobile>();
+                List<IDamageable> toEffect = new List<IDamageable>();
 
-                foreach (Mobile m in eable)
+                foreach (object o in eable)
                 {
-                    if (Caster != m && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
-                        toEffect.Add(m);
+                    IDamageable id = o as IDamageable;
+
+                    if (id == null || (id is Mobile && (Mobile)id == Caster))
+                        continue;
+
+                    if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(Caster, id as Mobile)) && Caster.CanBeHarmful(id, false))
+                    {
+                        if (Core.AOS && !Caster.InLOS(id))
+                            continue;
+
+                        toEffect.Add(id);
+                    }
                 }
+
                 eable.Free();
 
                 Effects.PlaySound(p, map, 0x64F);
@@ -82,21 +93,23 @@ namespace Server.Spells.Mysticism
                     }
                 }
 
-                foreach (Mobile m in toEffect)
+                foreach (var id in toEffect)
                 {
-                    if (m.Deleted || !m.Alive)
+                    if (id.Deleted)
                         continue;
 
-                    int damage = GetNewAosDamage(51, 1, 5, m is PlayerMobile, m);
+                    int damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
 
                     if (toEffect.Count > 2)
                         damage = (damage * 2) / toEffect.Count;
 
-                    Caster.DoHarmful(m);
-                    SpellHelper.Damage(this, m, damage, 0, 0, 100, 0, 0);
+                    Caster.DoHarmful(id);
+                    SpellHelper.Damage(this, id, damage, 0, 0, 100, 0, 0);
 
-                    m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+                    Server.Effects.SendTargetParticles(id, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
                 }
+
+                ColUtility.Free(toEffect);
             }
 
             FinishSequence();

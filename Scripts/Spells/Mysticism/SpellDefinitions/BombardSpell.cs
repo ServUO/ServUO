@@ -29,16 +29,17 @@ namespace Server.Spells.Mysticism
             Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
         }
 
-        public void OnTarget(object o)
+        public void OnTarget(IDamageable d)
         {
-            Mobile target = o as Mobile;
-
-            if (target == null)
+            if (d == null)
             {
                 return;
             }
-            else if (CheckHSequence(target))
+            else if (CheckHSequence(d))
             {
+                IDamageable target = d;
+                IDamageable source = Caster;
+
                 SpellHelper.Turn(Caster, target);
 
                 if (Core.SA && HasDelayContext(target))
@@ -47,20 +48,30 @@ namespace Server.Spells.Mysticism
                     return;
                 }
 
-                SpellHelper.CheckReflect((int)Circle, Caster, ref target);
+                if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
+                {
+                    Server.Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
+                    {
+                        source.MovingEffect(target, 0x1363, 12, 1, false, true, 0, 0);
+                        source.PlaySound(0x64B);
+                    });
+                }
 
-                Caster.MovingEffect(target, 0x1363, 12, 1, false, true, 0, 0);
+                Caster.MovingEffect(d, 0x1363, 12, 1, false, true, 0, 0);
                 Caster.PlaySound(0x64B);
 
                 SpellHelper.Damage(this, target, (int)GetNewAosDamage(40, 1, 5, target), 100, 0, 0, 0, 0);
 
-                Timer.DelayCall(TimeSpan.FromMilliseconds(1200), () =>
+                if (target is Mobile)
                 {
-                    if (!CheckResisted(target))
+                    Timer.DelayCall(TimeSpan.FromMilliseconds(1200), () =>
                     {
-                        target.Paralyze(TimeSpan.FromSeconds(3));
-                    }
-                });
+                        if (!CheckResisted((Mobile)target))
+                        {
+                            ((Mobile)target).Paralyze(TimeSpan.FromSeconds(3));
+                        }
+                    });
+                }
             }
 
             FinishSequence();
@@ -88,10 +99,10 @@ namespace Server.Spells.Mysticism
 
                 if (!from.CanSee(o))
                     from.SendLocalizedMessage(500237); // Target can not be seen.
-                else
+                else if (o is IDamageable)
                 {
                     SpellHelper.Turn(from, o);
-                    Owner.OnTarget(o);
+                    Owner.OnTarget((IDamageable)o);
                 }
             }
 
