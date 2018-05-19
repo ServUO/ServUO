@@ -1246,11 +1246,6 @@ namespace Server.Items
             if (!craftItem.ForceNonExceptional)
                 Resource = CraftResources.GetFromType(resourceType);
 
-            CraftContext context = craftSystem.GetContext(from);
-
-            if (context != null && context.DoNotColor)
-                Hue = 0;
-
             if (1 < craftItem.Resources.Count)
             {
                 resourceType = craftItem.Resources.GetAt(1).ItemType;
