@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Server;
 using Server.Gumps;
 using Server.Mobiles;
@@ -81,17 +82,11 @@ namespace Server.Items
         }
 
         private List<Mobile> m_Fighters;
-        private Dictionary<Mobile, List<Mobile>> m_Pets;
         private List<Item> m_MasterKeys;
 
         public List<Mobile> Fighters
         {
             get { return m_Fighters; }
-        }
-
-        public Dictionary<Mobile, List<Mobile>> Pets
-        {
-            get { return m_Pets; }
         }
 
         public List<Item> MasterKeys
@@ -127,7 +122,7 @@ namespace Server.Items
             Movable = false;
 
             m_Fighters = new List<Mobile>();
-            m_Pets = new Dictionary<Mobile, List<Mobile>>();
+            //m_Pets = new Dictionary<Mobile, List<Mobile>>();
             m_MasterKeys = new List<Item>();
             m_IsAvailable = true;
         }
@@ -200,7 +195,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write((int)4); // version
+
+            // version 4 remove pet table
 
             // version 3
             writer.Write(m_IsAvailable);
@@ -224,16 +221,6 @@ namespace Server.Items
 
             // serialize fighters							
             writer.WriteMobileList(m_Fighters);
-
-            // serialize pets
-            writer.Write((int)m_Pets.Count);
-
-            foreach (KeyValuePair<Mobile, List<Mobile>> pair in m_Pets)
-            {
-                writer.Write((Mobile)pair.Key);
-
-                writer.WriteMobileList(pair.Value);
-            }
         }
 
         public override void Deserialize(GenericReader reader)
@@ -244,6 +231,7 @@ namespace Server.Items
 
             switch (version)
             {
+                case 4:
                 case 3:
                     m_IsAvailable = reader.ReadBool();
                     goto case 2;
@@ -262,12 +250,17 @@ namespace Server.Items
 
                     m_MasterKeys = reader.ReadStrongItemList();
                     m_Fighters = reader.ReadStrongMobileList();
-                    m_Pets = new Dictionary<Mobile, List<Mobile>>();
 
-                    int count = reader.ReadInt();
+                    if (version < 4)
+                    {
+                        int count = reader.ReadInt();
 
-                    for (int i = 0; i < count; i++)
-                        m_Pets.Add(reader.ReadMobile(), reader.ReadStrongMobileList());
+                        for (int i = 0; i < count; i++)
+                        {
+                            reader.ReadMobile();
+                            reader.ReadStrongMobileList();
+                        }
+                    }
 
                     if (version < 2)
                         reader.ReadBool();
@@ -335,33 +328,6 @@ namespace Server.Items
         {
             if(!m_Fighters.Contains(fighter))
                 m_Fighters.Add(fighter);
-
-            IPooledEnumerable eable = fighter.GetMobilesInRange(5);
-            foreach (Mobile m in eable)
-            {
-                if (m is BaseCreature)
-                {
-                    BaseCreature pet = (BaseCreature)m;
-
-                    if (pet.Controlled && pet.ControlMaster == fighter)
-                    {
-                        if (!m_Pets.ContainsKey(fighter))
-                            m_Pets.Add(fighter, new List<Mobile>());
-
-                        m_Pets[fighter].Add(pet);
-                    }
-                }
-            }
-            eable.Free();
-
-            if (fighter.Mounted)
-            {
-                if (!m_Pets.ContainsKey(fighter))
-                    m_Pets.Add(fighter, new List<Mobile>());
-
-                if (fighter.Mount is Mobile)
-                    m_Pets[fighter].Add((Mobile)fighter.Mount);
-            }
         }
 
         public virtual void SendConfirmations(Mobile from)
@@ -449,18 +415,17 @@ namespace Server.Items
             if (CanEnter(fighter))
             {
                 // teleport party member's pets
-                if (m_Pets.ContainsKey(fighter))
+                if (fighter is PlayerMobile)
                 {
-                    for (int i = 0; i < m_Pets[fighter].Count; i++)
+                    foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet.Alive && 
+                                                                                                                 pet.InRange(fighter.Location, 5) && 
+                                                                                                                 !(pet is BaseMount && 
+                                                                                                                 ((BaseMount)pet).Rider != null) && 
+                                                                                                                 CanEnter(pet)))
                     {
-                        BaseCreature pet = m_Pets[fighter][i] as BaseCreature;
-
-                        if (pet != null && pet.Alive && pet.InRange(fighter.Location, 5) && !(pet is BaseMount && ((BaseMount)pet).Rider != null) && CanEnter(pet))
-                        {
-                            pet.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
-                            pet.PlaySound(0x1FE);
-                            pet.MoveToWorld(m_TeleportDest, Map);
-                        }
+                        pet.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+                        pet.PlaySound(0x1FE);
+                        pet.MoveToWorld(m_TeleportDest, Map);
                     }
                 }
 
@@ -512,9 +477,6 @@ namespace Server.Items
             if (m_Fighters != null)
                 m_Fighters.Clear();
 
-            if (m_Pets != null)
-                m_Pets.Clear();
-
             // delete any remaining helpers
             CleanupHelpers();
 
@@ -545,45 +507,40 @@ namespace Server.Items
             }
 
             // teleport his pets
-            if (m_Pets.ContainsKey(fighter))
+            if (fighter is PlayerMobile)
             {
-                for (int i = 0; i < m_Pets[fighter].Count; i++)
+                foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => (pet.Alive || pet.IsBonded) &&
+                                                                                                             pet.Map != Map.Internal &&
+                                                                                                             MobileIsInBossArea(pet)))
                 {
-                    BaseCreature pet = m_Pets[fighter][i] as BaseCreature;
-
-                    if (pet != null && (pet.Alive || pet.IsBonded) && pet.Map != Map.Internal && MobileIsInBossArea(pet))
+                    if (pet is BaseMount)
                     {
-                        if (pet is BaseMount)
+                        BaseMount mount = (BaseMount)pet;
+
+                        if (mount.Rider != null && mount.Rider != fighter)
                         {
-                            BaseMount mount = (BaseMount)pet;
+                            mount.Rider.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+                            mount.Rider.PlaySound(0x1FE);
 
-                            if (mount.Rider != null && mount.Rider != fighter)
-                            {
-                                mount.Rider.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
-                                mount.Rider.PlaySound(0x1FE);
+                            if (this is CitadelAltar)
+                                mount.Rider.MoveToWorld(m_ExitDest, Map.Tokuno);
+                            else
+                                mount.Rider.MoveToWorld(m_ExitDest, Map);
 
-                                if (this is CitadelAltar)
-                                    mount.Rider.MoveToWorld(m_ExitDest, Map.Tokuno);
-                                else
-                                    mount.Rider.MoveToWorld(m_ExitDest, Map);
-
-                                continue;
-                            }
-                            else if (mount.Rider != null)
-                                continue;
+                            continue;
                         }
-
-                        pet.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
-                        pet.PlaySound(0x1FE);
-
-                        if (this is CitadelAltar)
-                            pet.MoveToWorld(m_ExitDest, Map.Tokuno);
-                        else
-                            pet.MoveToWorld(m_ExitDest, Map);
+                        else if (mount.Rider != null)
+                            continue;
                     }
-                }
 
-                m_Pets.Remove(fighter);
+                    pet.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+                    pet.PlaySound(0x1FE);
+
+                    if (this is CitadelAltar)
+                        pet.MoveToWorld(m_ExitDest, Map.Tokuno);
+                    else
+                        pet.MoveToWorld(m_ExitDest, Map);
+                }
             }
 
             m_Fighters.Remove(fighter);

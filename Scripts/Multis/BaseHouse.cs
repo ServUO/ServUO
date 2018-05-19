@@ -919,7 +919,17 @@ namespace Server.Multis
 
                             if (item is IAddon)
                             {
-                                Item deed = ((IAddon)item).Deed;
+                                Item deed;
+
+                                if (item is FishTrophy)
+                                {
+                                    deed = ((FishTrophy)item).TrophyDeed;
+                                }
+                                else
+                                {
+                                    deed = ((IAddon)item).Deed;
+                                }
+
                                 bool retainDeedHue = false;	//if the items aren't hued but the deed itself is
                                 int hue = 0;
 

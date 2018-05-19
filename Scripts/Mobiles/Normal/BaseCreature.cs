@@ -5230,6 +5230,22 @@ namespace Server.Mobiles
 
                 Skills[name].Cap = Skills[name].Base;
             }
+
+            if (name == SkillName.Poisoning && Skills[name].Base > 0 && 
+                !Controlled &&
+                !AbilityProfile.HasAbility(MagicalAbility.Poisoning))
+            {
+                SetMagicalAbility(MagicalAbility.Poisoning);
+            }
+
+            if (!Controlled && name == SkillName.Magery && AbilityProfile != null && 
+                !AbilityProfile.HasAbility(MagicalAbility.Magery) && 
+                Skills[SkillName.Magery].Base > 0 && 
+                (AI == AIType.AI_Mage || AI == AIType.AI_Necro || AI == AIType.AI_NecroMage || AI == AIType.AI_Mystic || AI == AIType.AI_Spellweaving))
+
+            {
+                SetMagicalAbility(MagicalAbility.Magery);
+            }
         }
 
         public void SetSkill(SkillName name, double min, double max)
@@ -5253,7 +5269,7 @@ namespace Server.Mobiles
 
             if (name == SkillName.Poisoning && Skills[name].Base > 0 && 
                 !Controlled &&
-                !PetTrainingHelper.ValidateTrainingPoint(this, MagicalAbility.Poisoning))
+                !AbilityProfile.HasAbility(MagicalAbility.Poisoning))
             {
                 SetMagicalAbility(MagicalAbility.Poisoning);
             }

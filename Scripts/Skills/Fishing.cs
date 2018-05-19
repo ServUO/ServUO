@@ -466,14 +466,23 @@ namespace Server.Engines.Harvest
                         }
 
                         LockableContainer chest;
-						
-                        if (Utility.RandomBool())
-                            chest = new MetalGoldenChest();
+
+                        if (0.01 > Utility.RandomDouble())
+                        {
+                            chest = new ShipsStrongbox(sos.Level);
+                        }
                         else
-                            chest = new WoodenChest();
+                        {
+                            if (Utility.RandomBool())
+                                chest = new MetalGoldenChest();
+                            else
+                                chest = new WoodenChest();
+                        }
 
                         if (sos.IsAncient)
+                        {
                             chest.Hue = 0x481;
+                        }
 
                         TreasureMapChest.Fill(chest, from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true, from.Map);
                         sos.OnSOSComplete(chest);

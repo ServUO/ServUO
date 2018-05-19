@@ -2184,12 +2184,7 @@ namespace Server.Multis
 
         public int PlayerCount()
         {
-            int count = 0;
-
-            foreach (var m in GetMobilesOnBoard())
-                count++;
-
-            return count;
+            return GetMobilesOnBoard().Where(m => m is PlayerMobile).Count();
         }
 
         public void TillerManSay(object message)
