@@ -5233,13 +5233,13 @@ namespace Server.Mobiles
 
             if (name == SkillName.Poisoning && Skills[name].Base > 0 && 
                 !Controlled &&
-                !AbilityProfile.HasAbility(MagicalAbility.Poisoning))
+                (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Poisoning)))
             {
                 SetMagicalAbility(MagicalAbility.Poisoning);
             }
 
-            if (!Controlled && name == SkillName.Magery && AbilityProfile != null && 
-                !AbilityProfile.HasAbility(MagicalAbility.Magery) && 
+            if (!Controlled && name == SkillName.Magery && 
+                (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Magery)) && 
                 Skills[SkillName.Magery].Base > 0 && 
                 (AI == AIType.AI_Mage || AI == AIType.AI_Necro || AI == AIType.AI_NecroMage || AI == AIType.AI_Mystic || AI == AIType.AI_Spellweaving))
 
@@ -5269,13 +5269,13 @@ namespace Server.Mobiles
 
             if (name == SkillName.Poisoning && Skills[name].Base > 0 && 
                 !Controlled &&
-                !AbilityProfile.HasAbility(MagicalAbility.Poisoning))
+                (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Poisoning)))
             {
                 SetMagicalAbility(MagicalAbility.Poisoning);
             }
 
-            if (!Controlled && name == SkillName.Magery && AbilityProfile != null && 
-                !AbilityProfile.HasAbility(MagicalAbility.Magery) && 
+            if (!Controlled && name == SkillName.Magery && AbilityProfile != null &&
+                (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Magery)) && 
                 Skills[SkillName.Magery].Base > 0 && 
                 (AI == AIType.AI_Mage || AI == AIType.AI_Necro || AI == AIType.AI_NecroMage || AI == AIType.AI_Mystic || AI == AIType.AI_Spellweaving))
 
