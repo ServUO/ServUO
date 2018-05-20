@@ -10,7 +10,7 @@ namespace Server.Items
         {
             get
             {
-                if (this.IsAncient)
+                if (IsAncient)
                     return 1063450; // an ancient SOS
 
                 return 1041081; // a waterstained SOS
@@ -27,7 +27,7 @@ namespace Server.Items
         {
             get
             {
-                return (this.m_Level >= 4);
+                return (m_Level >= 4);
             }
         }
 
@@ -36,13 +36,13 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = Math.Max(1, Math.Min(value, 4));
-                this.UpdateHue();
-                this.InvalidateProperties();
+                m_Level = Math.Max(1, Math.Min(value, 4));
+                UpdateHue();
+                InvalidateProperties();
             }
         }
 
@@ -51,11 +51,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TargetMap;
+                return m_TargetMap;
             }
             set
             {
-                this.m_TargetMap = value;
+                m_TargetMap = value;
             }
         }
 
@@ -64,11 +64,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TargetLocation;
+                return m_TargetLocation;
             }
             set
             {
-                this.m_TargetLocation = value;
+                m_TargetLocation = value;
             }
         }
 
@@ -77,20 +77,20 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MessageIndex;
+                return m_MessageIndex;
             }
             set
             {
-                this.m_MessageIndex = value;
+                m_MessageIndex = value;
             }
         }
 
         public void UpdateHue()
         {
-            if (this.IsAncient)
-                this.Hue = 0x481;
+            if (IsAncient)
+                Hue = 0x481;
             else
-                this.Hue = 0;
+                Hue = 0;
         }
 
         [Constructable]
@@ -109,14 +109,14 @@ namespace Server.Items
         public SOS(Map map, int level)
             : base(0x14EE)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
 
-            this.m_Level = level;
-            this.m_MessageIndex = Utility.Random(MessageEntry.Entries.Length);
-            this.m_TargetMap = map;
-            this.m_TargetLocation = FindLocation(this.m_TargetMap);
+            m_Level = level;
+            m_MessageIndex = Utility.Random(MessageEntry.Entries.Length);
+            m_TargetMap = map;
+            m_TargetLocation = FindLocation(m_TargetMap);
 
-            this.UpdateHue();
+            UpdateHue();
         }
 
         public SOS(Serial serial)
@@ -130,11 +130,11 @@ namespace Server.Items
 
             writer.Write((int)4); // version
 
-            writer.Write(this.m_Level);
+            writer.Write(m_Level);
 
-            writer.Write(this.m_TargetMap);
-            writer.Write(this.m_TargetLocation);
-            writer.Write(this.m_MessageIndex);
+            writer.Write(m_TargetMap);
+            writer.Write(m_TargetLocation);
+            writer.Write(m_MessageIndex);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -149,54 +149,54 @@ namespace Server.Items
                 case 3:
                 case 2:
                     {
-                        this.m_Level = reader.ReadInt();
+                        m_Level = reader.ReadInt();
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_TargetMap = reader.ReadMap();
-                        this.m_TargetLocation = reader.ReadPoint3D();
-                        this.m_MessageIndex = reader.ReadInt();
+                        m_TargetMap = reader.ReadMap();
+                        m_TargetLocation = reader.ReadPoint3D();
+                        m_MessageIndex = reader.ReadInt();
 
                         break;
                     }
                 case 0:
                     {
-                        this.m_TargetMap = this.Map;
+                        m_TargetMap = Map;
 
-                        if (this.m_TargetMap == null || this.m_TargetMap == Map.Internal)
-                            this.m_TargetMap = Map.Trammel;
+                        if (m_TargetMap == null || m_TargetMap == Map.Internal)
+                            m_TargetMap = Map.Trammel;
 
-                        this.m_TargetLocation = FindLocation(this.m_TargetMap);
-                        this.m_MessageIndex = Utility.Random(MessageEntry.Entries.Length);
+                        m_TargetLocation = FindLocation(m_TargetMap);
+                        m_MessageIndex = Utility.Random(MessageEntry.Entries.Length);
 
                         break;
                     }
             }
 
             if (version < 2)
-                this.m_Level = MessageInABottle.GetRandomLevel();
+                m_Level = MessageInABottle.GetRandomLevel();
 
             if (version < 3)
-                this.UpdateHue();
+                UpdateHue();
 
-            if (version < 4 && this.m_TargetMap == Map.Tokuno)
-                this.m_TargetMap = Map.Trammel;
+            if (version < 4 && m_TargetMap == Map.Tokuno)
+                m_TargetMap = Map.Trammel;
         }
 		
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 MessageEntry entry;
 
-                if (this.m_MessageIndex >= 0 && this.m_MessageIndex < MessageEntry.Entries.Length)
-                    entry = MessageEntry.Entries[this.m_MessageIndex];
+                if (m_MessageIndex >= 0 && m_MessageIndex < MessageEntry.Entries.Length)
+                    entry = MessageEntry.Entries[m_MessageIndex];
                 else
-                    entry = MessageEntry.Entries[this.m_MessageIndex = Utility.Random(MessageEntry.Entries.Length)];
+                    entry = MessageEntry.Entries[m_MessageIndex = Utility.Random(MessageEntry.Entries.Length)];
 
                 //from.CloseGump( typeof( MessageGump ) );
-                from.SendGump(new MessageGump(entry, this.m_TargetMap, this.m_TargetLocation));
+                from.SendGump(new MessageGump(entry, m_TargetMap, m_TargetLocation));
             }
             else
             {
@@ -317,20 +317,20 @@ namespace Server.Items
                 else
                     fmt = "?????";
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 40, 350, 300, 2520);
+                AddBackground(0, 40, 350, 300, 2520);
 
-                this.AddHtmlLocalized(30, 80, 285, 160, 1018326, true, true); /* This is a message hastily scribbled by a passenger aboard a sinking ship.
+                AddHtmlLocalized(30, 80, 285, 160, 1018326, true, true); /* This is a message hastily scribbled by a passenger aboard a sinking ship.
                 * While it is probably too late to save the passengers and crew,
                 * perhaps some treasure went down with the ship!
                 * The message gives the ship's last known sextant co-ordinates.
                 */
 
-                this.AddHtml(35, 240, 230, 20, fmt, false, false);
+                AddHtml(35, 240, 230, 20, fmt, false, false);
 
-                this.AddButton(35, 265, 4005, 4007, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(70, 265, 100, 20, 1011036, false, false); // OKAY
+                AddButton(35, 265, 4005, 4007, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(70, 265, 100, 20, 1011036, false, false); // OKAY
             }
         }
         #endif
@@ -347,29 +347,29 @@ namespace Server.Items
             {
                 get
                 {
-                    return this.m_Width;
+                    return m_Width;
                 }
             }
             public int Height
             {
                 get
                 {
-                    return this.m_Height;
+                    return m_Height;
                 }
             }
             public string Message
             {
                 get
                 {
-                    return this.m_Message;
+                    return m_Message;
                 }
             }
 
             public MessageEntry(int width, int height, string message)
             {
-                this.m_Width = width;
-                this.m_Height = height;
-                this.m_Message = message;
+                m_Width = width;
+                m_Height = height;
+                m_Message = message;
             }
 
             private static readonly MessageEntry[] m_Entries = new MessageEntry[]

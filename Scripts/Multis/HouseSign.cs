@@ -13,9 +13,9 @@ namespace Server.Multis
         public HouseSign(BaseHouse owner)
             : base(0xBD2)
         {
-            this.m_Owner = owner;
-            this.m_OrgOwner = this.m_Owner.Owner;
-            this.Movable = false;
+            m_Owner = owner;
+            m_OrgOwner = m_Owner.Owner;
+            Movable = false;
         }
 
         public HouseSign(Serial serial)
@@ -25,17 +25,17 @@ namespace Server.Multis
 
         public string GetName()
         {
-            if (this.Name == null)
+            if (Name == null)
                 return "An Unnamed House";
 
-            return this.Name;
+            return Name;
         }
 
         public BaseHouse Owner
         {
             get
             {
-                return this.m_Owner;
+                return m_Owner;
             }
         }
 
@@ -44,12 +44,12 @@ namespace Server.Multis
         {
             get
             {
-                return (this.m_Owner != null && this.m_Owner.RestrictDecay);
+                return (m_Owner != null && m_Owner.RestrictDecay);
             }
             set
             {
-                if (this.m_Owner != null)
-                    this.m_Owner.RestrictDecay = value;
+                if (m_Owner != null)
+                    m_Owner.RestrictDecay = value;
             }
         }
 
@@ -58,7 +58,7 @@ namespace Server.Multis
         {
             get
             {
-                return this.m_OrgOwner;
+                return m_OrgOwner;
             }
         }
 
@@ -66,8 +66,8 @@ namespace Server.Multis
         {
             base.OnAfterDelete();
 
-            if (this.m_Owner != null && !this.m_Owner.Deleted)
-                this.m_Owner.Delete();
+            if (m_Owner != null && !m_Owner.Deleted)
+                m_Owner.Delete();
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
@@ -89,7 +89,7 @@ namespace Server.Multis
         {
             get
             {
-                return this.m_GettingProperties;
+                return m_GettingProperties;
             }
         }
 
@@ -97,16 +97,16 @@ namespace Server.Multis
         {
             base.GetProperties(list);
 
-            list.Add(1061639, Utility.FixHtml(this.GetName())); // Name: ~1_NAME~
-            list.Add(1061640, (this.m_Owner == null || this.m_Owner.Owner == null) ? "nobody" : this.m_Owner.Owner.Name); // Owner: ~1_OWNER~
+            list.Add(1061639, Utility.FixHtml(GetName())); // Name: ~1_NAME~
+            list.Add(1061640, (m_Owner == null || m_Owner.Owner == null) ? "nobody" : m_Owner.Owner.Name); // Owner: ~1_OWNER~
 
-            if (this.m_Owner != null)
+            if (m_Owner != null)
             {
-                list.Add(this.m_Owner.Public ? 1061641 : 1061642); // This House is Open to the Public : This is a Private Home
+                list.Add(m_Owner.Public ? 1061641 : 1061642); // This House is Open to the Public : This is a Private Home
 
-                this.m_GettingProperties = true;
-                DecayLevel level = this.m_Owner.DecayLevel;
-                this.m_GettingProperties = false;
+                m_GettingProperties = true;
+                DecayLevel level = m_Owner.DecayLevel;
+                m_GettingProperties = false;
 
                 if (level == DecayLevel.DemolitionPending)
                 {
@@ -124,11 +124,11 @@ namespace Server.Multis
 
         public override void OnSingleClick(Mobile from)
         {
-            if (this.m_Owner != null && BaseHouse.DecayEnabled && this.m_Owner.DecayPeriod != TimeSpan.Zero)
+            if (m_Owner != null && BaseHouse.DecayEnabled && m_Owner.DecayPeriod != TimeSpan.Zero)
             {
                 string message;
 
-                switch ( this.m_Owner.DecayLevel )
+                switch ( m_Owner.DecayLevel )
                 {
                     case DecayLevel.Ageless:
                         message = "ageless";
@@ -153,7 +153,7 @@ namespace Server.Multis
                         break;
                 }
 
-                this.LabelTo(from, "This house is {0}.", message);
+                LabelTo(from, "This house is {0}.", message);
             }
 
             base.OnSingleClick(from);
@@ -161,59 +161,63 @@ namespace Server.Multis
 
         public void ShowSign(Mobile m)
         {
-            if (this.m_Owner != null)
+            if (m_Owner != null && m.AccessLevel == AccessLevel.Player)
             {
-                if (this.m_Owner.IsFriend(m) && m.AccessLevel < AccessLevel.GameMaster)
+                if ((Core.ML && m_Owner.IsFriend(m)) || !Core.ML)
                 {
-                    #region Mondain's Legacy
-                    if ((Core.ML && this.m_Owner.IsOwner(m)) || !Core.ML)
-                        this.m_Owner.RefreshDecay();
-                    #endregion
-                    if (!Core.AOS)
-                        m.SendLocalizedMessage(501293); // Welcome back to the house, friend!
+                    m_Owner.RefreshDecay();
                 }
 
-                if (this.m_Owner.IsAosRules)
-                    m.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Information, m, this.m_Owner));
-                else
-                    m.SendGump(new HouseGump(m, this.m_Owner));
+                if (!Core.AOS && m_Owner.IsFriend(m))
+                {
+                    m.SendLocalizedMessage(501293); // Welcome back to the house, friend!
+                }
+            }
+
+            if (m_Owner.IsAosRules)
+            {
+                m.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Information, m, m_Owner));
+            }
+            else
+            {
+                m.SendGump(new HouseGump(m, m_Owner));
             }
         }
 
         public void ClaimGump_Callback(Mobile from, bool okay, object state)
         {
-            if (okay && this.m_Owner != null && this.m_Owner.Owner == null && this.m_Owner.DecayLevel != DecayLevel.DemolitionPending)
+            if (okay && m_Owner != null && m_Owner.Owner == null && m_Owner.DecayLevel != DecayLevel.DemolitionPending)
             {
                 bool canClaim = false;
 
-                if (this.m_Owner.CoOwners == null || this.m_Owner.CoOwners.Count == 0)
-                    canClaim = this.m_Owner.IsFriend(from);
+                if (m_Owner.CoOwners == null || m_Owner.CoOwners.Count == 0)
+                    canClaim = m_Owner.IsFriend(from);
                 else
-                    canClaim = this.m_Owner.IsCoOwner(from);
+                    canClaim = m_Owner.IsCoOwner(from);
 
                 if (canClaim && !BaseHouse.AtAccountHouseLimit(from))
                 {
-                    this.m_Owner.Owner = from;
-                    this.m_Owner.LastTraded = DateTime.UtcNow;
+                    m_Owner.Owner = from;
+                    m_Owner.LastTraded = DateTime.UtcNow;
                 }
             }
 
-            this.ShowSign(from);
+            ShowSign(from);
         }
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (this.m_Owner == null)
+            if (m_Owner == null)
                 return;
 
-            if (m.AccessLevel < AccessLevel.GameMaster && this.m_Owner.Owner == null && this.m_Owner.DecayLevel != DecayLevel.DemolitionPending)
+            if (m.AccessLevel < AccessLevel.GameMaster && m_Owner.Owner == null && m_Owner.DecayLevel != DecayLevel.DemolitionPending)
             {
                 bool canClaim = false;
 
-                if (this.m_Owner.CoOwners == null || this.m_Owner.CoOwners.Count == 0)
-                    canClaim = this.m_Owner.IsFriend(m);
+                if (m_Owner.CoOwners == null || m_Owner.CoOwners.Count == 0)
+                    canClaim = m_Owner.IsFriend(m);
                 else
-                    canClaim = this.m_Owner.IsCoOwner(m);
+                    canClaim = m_Owner.IsCoOwner(m);
 
                 if (canClaim && !BaseHouse.AtAccountHouseLimit(m))
                 {
@@ -229,19 +233,19 @@ namespace Server.Multis
                 }
             }
 
-            this.ShowSign(m);
+            ShowSign(m);
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
 
-            if (BaseHouse.NewVendorSystem && from.Alive && this.Owner != null && this.Owner.IsAosRules)
+            if (BaseHouse.NewVendorSystem && from.Alive && Owner != null && Owner.IsAosRules)
             {
-                if (this.Owner.AreThereAvailableVendorsFor(from))
+                if (Owner.AreThereAvailableVendorsFor(from))
                     list.Add(new VendorsEntry(this));
 
-                if (this.Owner.VendorInventories.Count > 0)
+                if (Owner.VendorInventories.Count > 0)
                     list.Add(new ReclaimVendorInventoryEntry(this));
             }
         }
@@ -253,23 +257,23 @@ namespace Server.Multis
             public VendorsEntry(HouseSign sign)
                 : base(6211)
             {
-                this.m_Sign = sign;
+                m_Sign = sign;
             }
 
             public override void OnClick()
             {
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
-                if (!from.CheckAlive() || this.m_Sign.Deleted || this.m_Sign.Owner == null || !this.m_Sign.Owner.AreThereAvailableVendorsFor(from))
+                if (!from.CheckAlive() || m_Sign.Deleted || m_Sign.Owner == null || !m_Sign.Owner.AreThereAvailableVendorsFor(from))
                     return;
 
-                if (from.Map != this.m_Sign.Map || !from.InRange(this.m_Sign, 5))
+                if (from.Map != m_Sign.Map || !from.InRange(m_Sign, 5))
                 {
                     from.SendLocalizedMessage(1062429); // You must be within five paces of the house sign to use this option.
                 }
                 else
                 {
-                    from.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Vendors, from, this.m_Sign.Owner));
+                    from.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Vendors, from, m_Sign.Owner));
                 }
             }
         }
@@ -281,24 +285,24 @@ namespace Server.Multis
             public ReclaimVendorInventoryEntry(HouseSign sign)
                 : base(6213)
             {
-                this.m_Sign = sign;
+                m_Sign = sign;
             }
 
             public override void OnClick()
             {
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
-                if (this.m_Sign.Deleted || this.m_Sign.Owner == null || this.m_Sign.Owner.VendorInventories.Count == 0 || !from.CheckAlive())
+                if (m_Sign.Deleted || m_Sign.Owner == null || m_Sign.Owner.VendorInventories.Count == 0 || !from.CheckAlive())
                     return;
 
-                if (from.Map != this.m_Sign.Map || !from.InRange(this.m_Sign, 5))
+                if (from.Map != m_Sign.Map || !from.InRange(m_Sign, 5))
                 {
                     from.SendLocalizedMessage(1062429); // You must be within five paces of the house sign to use this option.
                 }
                 else
                 {
                     from.CloseGump(typeof(VendorInventoryGump));
-                    from.SendGump(new VendorInventoryGump(this.m_Sign.Owner, from));
+                    from.SendGump(new VendorInventoryGump(m_Sign.Owner, from));
                 }
             }
         }
@@ -309,8 +313,8 @@ namespace Server.Multis
 
             writer.Write((int)0); // version
 
-            writer.Write(this.m_Owner);
-            writer.Write(this.m_OrgOwner);
+            writer.Write(m_Owner);
+            writer.Write(m_OrgOwner);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -323,15 +327,15 @@ namespace Server.Multis
             {
                 case 0:
                     {
-                        this.m_Owner = reader.ReadItem() as BaseHouse;
-                        this.m_OrgOwner = reader.ReadMobile();
+                        m_Owner = reader.ReadItem() as BaseHouse;
+                        m_OrgOwner = reader.ReadMobile();
 
                         break;
                     }
             }
 
-            if (this.Name == "a house sign")
-                this.Name = null;
+            if (Name == "a house sign")
+                Name = null;
         }
     }
 }

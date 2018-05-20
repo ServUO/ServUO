@@ -66,6 +66,19 @@ namespace Server.Items
             }
         }
 
+        public override bool WillStack(Mobile from, Item dropped)
+        {
+            return dropped is IPlantHue && ((IPlantHue)dropped).PlantHue == m_PlantHue && base.WillStack(from, dropped);
+        }
+
+        public override void OnAfterDuped(Item newItem)
+        {
+            if (newItem is IPlantHue)
+                ((IPlantHue)newItem).PlantHue = this.PlantHue;
+
+            base.OnAfterDuped(newItem);
+        }
+
         public DryReeds(Serial serial)
             : base(serial)
         {
@@ -149,6 +162,19 @@ namespace Server.Items
                 cliloc = info.IsBright() ? 1112288 : 1112289;
                 list.Add(cliloc, String.Format("#{0}", info.Name));
             }
+        }
+
+        public override bool WillStack(Mobile from, Item dropped)
+        {
+            return dropped is IPlantHue && ((IPlantHue)dropped).PlantHue == m_PlantHue && base.WillStack(from, dropped);
+        }
+
+        public override void OnAfterDuped(Item newItem)
+        {
+            if (newItem is IPlantHue)
+                ((IPlantHue)newItem).PlantHue = this.PlantHue;
+
+            base.OnAfterDuped(newItem);
         }
 
         public SoftenedReeds(Serial serial)

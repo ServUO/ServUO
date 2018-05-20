@@ -92,6 +92,11 @@ namespace Server.Spells.SkillMasteries
                                 }
                             }
 
+                            if (bc is SkeletalDragon)
+                            {
+                                Server.Engines.Quests.Doom.BellOfTheDead.TryRemoveDragon((SkeletalDragon)bc);
+                            }
+
                             Caster.PlaySound(0x5C4);
                             Caster.SendLocalizedMessage(1156013); // You command the undead to follow and protect you.
                         }

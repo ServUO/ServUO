@@ -3048,11 +3048,6 @@ namespace Server.Items
 
             PlayerConstructed = true;
 
-            CraftContext context = craftSystem.GetContext(from);
-
-            if (context != null && context.DoNotColor)
-                Hue = 0;
-
             if (Quality == ItemQuality.Exceptional && !craftItem.ForceNonExceptional)
             {
                 DistributeExceptionalBonuses(from, (tool is BaseRunicTool ? 6 : Core.SE ? 15 : 14)); // Not sure since when, but right now 15 points are added, not 14.

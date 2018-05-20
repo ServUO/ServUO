@@ -39,7 +39,7 @@ namespace Server.Engines.CleanUpBritannia
         {
             if (item is ScrollofAlacrity)
             {
-                ((ScrollofAlacrity)item).Skill = PowerScroll.Skills[Utility.Random(PowerScroll.Skills.Count)];
+                ((ScrollofAlacrity)item).Skill = (SkillName)Utility.Random(SkillInfo.Table.Length);
             }
 
             item.InvalidateProperties();
