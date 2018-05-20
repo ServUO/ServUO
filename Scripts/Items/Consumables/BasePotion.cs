@@ -31,11 +31,11 @@ namespace Server.Items
         MaskOfDeath,		// Mask of Death is not available in OSI but does exist in cliloc files
         MaskOfDeathGreater,	// included in enumeration for compatability if later enabled by OSI
         ConfusionBlast,
-        ConfusionBlastGreater,
-        Invisibility,
+        ConfusionBlastGreater,     
         Parasitic,
         Darkglow,
-		ExplodingTarPotion,
+        Invisibility,
+        ExplodingTarPotion,
         #region TOL Publish 93
         Barrab,
         Jukari,
