@@ -6124,11 +6124,6 @@ namespace Server.Items
 
 				CraftContext context = craftSystem.GetContext(from);
 
-				if (context != null && context.DoNotColor)
-				{
-					Hue = 0;
-				}
-
 				if (Quality == ItemQuality.Exceptional)
 				{
 					Attributes.WeaponDamage += 35;
@@ -6159,13 +6154,6 @@ namespace Server.Items
 					if (thisResource == ((BaseRunicTool)tool).Resource)
 					{
 						Resource = thisResource;
-
-						CraftContext context = craftSystem.GetContext(from);
-
-						if (context != null && context.DoNotColor)
-						{
-							Hue = 0;
-						}
 
 						switch (thisResource)
 						{
