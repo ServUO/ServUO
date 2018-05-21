@@ -240,7 +240,7 @@ namespace Server.Network
 
 		public bool IsUOTDClient { get { return ((Flags & ClientFlags.UOTD) != 0 || (m_Version != null && m_Version.Type == ClientType.UOTD)); } }
 		public bool IsSAClient { get { return (m_Version != null && m_Version.Type == ClientType.SA); } }
-        public bool IsEnhancedClient { get { return m_Version != null && m_Version.Major >= 67; } }
+        public bool IsEnhancedClient { get { return IsUOTDClient || (m_Version != null && m_Version.Major >= 67); } }
 
         public List<SecureTrade> Trades { get { return m_Trades; } }
 
