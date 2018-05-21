@@ -5274,7 +5274,7 @@ namespace Server.Mobiles
                 SetMagicalAbility(MagicalAbility.Poisoning);
             }
 
-            if (!Controlled && name == SkillName.Magery && AbilityProfile != null &&
+            if (!Controlled && name == SkillName.Magery &&
                 (AbilityProfile == null || !AbilityProfile.HasAbility(MagicalAbility.Magery)) && 
                 Skills[SkillName.Magery].Base > 0 && 
                 (AI == AIType.AI_Mage || AI == AIType.AI_Necro || AI == AIType.AI_NecroMage || AI == AIType.AI_Mystic || AI == AIType.AI_Spellweaving))

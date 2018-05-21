@@ -1932,6 +1932,7 @@
     <Compile Include="Mobiles\Normal\BlackSolenWarrior.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenWorker.cs" />
     <Compile Include="Mobiles\Normal\BloodElemental.cs" />
+    <Compile Include="Mobiles\Normal\Grubber.cs" />
     <Compile Include="Mobiles\Normal\Lifestealer.cs" />
     <Compile Include="Mobiles\Normal\DragonWolf.cs" />
     <Compile Include="Mobiles\Normal\DreadWarhorse.cs" />
