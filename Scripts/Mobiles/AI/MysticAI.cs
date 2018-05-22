@@ -93,6 +93,11 @@ namespace Server.Mobiles
 
         public override Spell GetRandomBuffSpell()
         {
+            if (UsesMagery)
+            {
+                return base.GetRandomBuffSpell();
+            }
+
             return null;
         }
 
