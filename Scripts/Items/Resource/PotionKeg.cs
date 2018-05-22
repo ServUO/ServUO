@@ -52,7 +52,18 @@ namespace Server.Items
         { 
             get
             {
-                if (m_Held > 0 && (int)m_Type >= (int)PotionEffect.Conflagration)
+
+                if (this.m_Held > 0
+                    && (int)this.m_Type >= (int)PotionEffect.Parasitic
+                    && (int)this.m_Type <= (int)PotionEffect.Invisibility)
+                {
+                    return 1080043 + (int)this.m_Type;
+                }
+
+                if (this.m_Held > 0
+                    && (int)this.m_Type >= (int)PotionEffect.Conflagration
+                    && (int)this.m_Type <= (int)PotionEffect.ConfusionBlastGreater)
+
                 {
                     return 1072658 + (int)m_Type - (int)PotionEffect.Conflagration;
                 }
@@ -223,12 +234,9 @@ namespace Server.Items
                 BasePotion pot = (BasePotion)item;
                 int toHold = Math.Min(100 - m_Held, pot.Amount);
 
-                if (pot.PotionEffect == PotionEffect.Darkglow || pot.PotionEffect == PotionEffect.Parasitic)
-                {
-                    from.SendLocalizedMessage(502232); // The keg is not designed to hold that type of object.
-                    return false;
-                }
-                else if (toHold <= 0)
+
+       
+             if (toHold <= 0)
                 {
                     from.SendLocalizedMessage(502233); // The keg will not hold any more!
                     return false;
@@ -371,8 +379,15 @@ namespace Server.Items
                 case PotionEffect.ConfusionBlastGreater:
                     return new GreaterConfusionBlastPotion();
 
+                case PotionEffect.Parasitic:
+                    return new ParasiticPotion();
+
+                case PotionEffect.Darkglow:
+                    return new DarkglowPotion();
                 case PotionEffect.Invisibility:
                     return new InvisibilityPotion();
+
+
             }
         }
     }
