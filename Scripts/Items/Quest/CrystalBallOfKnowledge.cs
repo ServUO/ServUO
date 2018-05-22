@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Server;
 using Server.Gumps;
 using Server.Network;
@@ -7,22 +9,10 @@ namespace Server.Items
 {
     public class CrystalBallOfKnowledge : Item
     {
-        public static void Initialize()
+        private static SkillName[] _ExcludedSkills =
         {
-            Array.Sort(m_AllowedSkills);
-        }
-
-        private static SkillName[] m_AllowedSkills = new SkillName[]
-            {
-                SkillName.Swords,       SkillName.Fencing,
-                SkillName.Macing,       SkillName.Archery,
-                SkillName.Throwing,     SkillName.Tactics,
-                SkillName.Parry,        SkillName.Wrestling,
-                SkillName.Magery,       SkillName.Necromancy,
-                SkillName.Chivalry,     SkillName.Bushido,
-                SkillName.Ninjitsu,     SkillName.Spellweaving,
-                SkillName.Mysticism,    SkillName.MagicResist
-            };
+            SkillName.Meditation, SkillName.Focus
+        };
 
         public override int LabelNumber { get { return 1112568; } } // Crystal Ball of Knowledge
 
@@ -46,9 +36,9 @@ namespace Server.Items
         public CrystalBallOfKnowledge()
             : base(0xE2E)
         {
-            this.Weight = 10.0;
-            this.Light = LightType.Circle150;
-            this.LootType = LootType.Blessed;
+            Weight = 10.0;
+            Light = LightType.Circle150;
+            LootType = LootType.Blessed;
         }
 
         public CrystalBallOfKnowledge(Serial serial)
@@ -76,7 +66,7 @@ namespace Server.Items
 
         public static bool IsAllowed(SkillName skill)
         {
-            return Array.BinarySearch(m_AllowedSkills, skill) >= 0;
+            return !_ExcludedSkills.Any(sk => sk == skill);
         }
 
         public static bool HasActiveBall(Mobile from)
@@ -93,31 +83,44 @@ namespace Server.Items
             return false;
         }
 
+        public static void TellSkillDifficultyActive(Mobile from, SkillName skill, double chance)
+        {
+            if (HasActiveBall(from))
+            {
+                GiveSkillDifficulty(from, skill, chance);
+            }
+        }
+
         public static void TellSkillDifficulty(Mobile from, SkillName skill, double chance)
         {
             if (HasActiveBall(from) && IsAllowed(skill))
             {
-                Utility.FixMinMax(ref chance, 0.0, 1.0);
-
-                int number;
-
-                if (chance == 0.0)
-                    number = 1078457; // ~1_skillname~ Difficulty: Too Challenging
-                else if (chance <= 0.1)
-                    number = 1078458; // ~1_skillname~ Difficulty: Very Challenging
-                else if (chance <= 0.25)
-                    number = 1078459; // ~1_skillname~ Difficulty: Challenging
-                else if (chance <= 0.75)
-                    number = 1078460; // ~1_skillname~ Difficulty: Optimal
-                else if (chance <= 0.9)
-                    number = 1078461; // ~1_skillname~ Difficulty: Easy
-                else if (chance <= 1.0)
-                    number = 1078462; // ~1_skillname~ Difficulty: Very Easy
-                else
-                    number = 1078463; // ~1_skillname~ Difficulty: Too Easy
-
-                from.SendLocalizedMessage(number, SkillInfo.Table[(int)skill].Name);
+                GiveSkillDifficulty(from, skill, chance);
             }
+        }
+
+        public static void GiveSkillDifficulty(Mobile from, SkillName skill, double chance)
+        {
+            Utility.FixMinMax(ref chance, 0.0, 1.0);
+
+            int number;
+
+            if (chance == 0.0)
+                number = 1078457; // ~1_skillname~ Difficulty: Too Challenging
+            else if (chance <= 0.1)
+                number = 1078458; // ~1_skillname~ Difficulty: Very Challenging
+            else if (chance <= 0.25)
+                number = 1078459; // ~1_skillname~ Difficulty: Challenging
+            else if (chance <= 0.75)
+                number = 1078460; // ~1_skillname~ Difficulty: Optimal
+            else if (chance <= 0.9)
+                number = 1078461; // ~1_skillname~ Difficulty: Easy
+            else if (chance <= 1.0)
+                number = 1078462; // ~1_skillname~ Difficulty: Very Easy
+            else
+                number = 1078463; // ~1_skillname~ Difficulty: Too Easy
+
+            from.SendLocalizedMessage(number, SkillInfo.Table[(int)skill].Name);
         }
 
         public override void GetProperties(ObjectPropertyList list)

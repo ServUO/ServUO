@@ -74,6 +74,9 @@ namespace Server.Spells.Bushido
 
                 weapon.OnSwing(attacker, target, damageBonus);
 
+                if (defender.Alive)
+                    attacker.Combatant = defender;
+
                 this.CheckGain(attacker);
             }
             else
