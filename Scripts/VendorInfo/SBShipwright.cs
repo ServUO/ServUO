@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Items;
 using Server.Multis;
 
 namespace Server.Mobiles
@@ -41,6 +42,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo("1116740", typeof(TokunoGalleonDeed), 150002, 20, 0x14F2, 0));
                 Add(new GenericBuyInfo("1116739", typeof(GargishGalleonDeed), 200002, 20, 0x14F2, 0));
                 Add(new GenericBuyInfo("1116491", typeof(RowBoatDeed), 6252, 20, 0x14F2, 0));
+                Add(new GenericBuyInfo(typeof(Spyglass), 3, 20, 0x14F5, 0));
             }
         }
 
@@ -49,6 +51,7 @@ namespace Server.Mobiles
             public InternalSellInfo()
             {
                 //You technically CAN sell them back, *BUT* the vendors do not carry enough money to buy with
+                Add(typeof(Spyglass), 1);
             }
         }
     }

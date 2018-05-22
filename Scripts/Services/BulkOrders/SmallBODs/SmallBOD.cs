@@ -324,7 +324,7 @@ namespace Server.Engines.BulkOrders
                     if (o is IResource)
                         material = GetMaterial(((IResource)o).Resource);
 
-                    if (material != m_Material)
+                    if (material != m_Material && m_Material != BulkMaterialType.None)
                     {
                         from.SendLocalizedMessage(1157310); // The item is not made from the requested resource.
                     }

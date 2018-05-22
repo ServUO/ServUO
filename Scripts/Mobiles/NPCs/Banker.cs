@@ -51,7 +51,7 @@ namespace Server.Mobiles
                 }
             }
 
-            Container bank = m.FindBankNoCreate();
+			Container bank = m.Player ? m.BankBox : m.FindBankNoCreate();
 
             if (bank != null)
             {
@@ -81,7 +81,7 @@ namespace Server.Mobiles
                 }
             }
 
-            Container bank = m.FindBankNoCreate();
+			Container bank = m.Player ? m.BankBox : m.FindBankNoCreate();
 
             if (bank != null)
             {
@@ -162,7 +162,7 @@ namespace Server.Mobiles
                 return true;
             }
 
-            var box = from.FindBankNoCreate();
+			var box = from.Player ? from.BankBox : from.FindBankNoCreate();
 
             if (box == null)
             {
@@ -217,7 +217,7 @@ namespace Server.Mobiles
                 return amount;
             }
 
-            var box = from.FindBankNoCreate();
+			var box = from.Player ? from.BankBox : from.FindBankNoCreate();
 
             if (box == null)
             {
@@ -353,7 +353,7 @@ namespace Server.Mobiles
 									}
 									else if (amount > 0)
 									{
-										var box = e.Mobile.FindBankNoCreate();
+										var box = e.Mobile.Player ? e.Mobile.BankBox : e.Mobile.FindBankNoCreate();
 
 										if (box == null || !Withdraw(e.Mobile, amount))
 										{

@@ -238,7 +238,7 @@ namespace Server.Engines.BulkOrders
                     {
                         from.SendLocalizedMessage(1045161); // Both orders must be of exceptional quality.
                     }
-                    else if (small.Material != this.m_Material)
+                    else if (small.Material != this.m_Material && this.m_Material != BulkMaterialType.None)
                     {
                         from.SendLocalizedMessage(1157311); // Both orders must use the same resource type.
                     }
