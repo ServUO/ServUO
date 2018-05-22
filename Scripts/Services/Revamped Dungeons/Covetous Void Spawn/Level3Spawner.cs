@@ -39,7 +39,6 @@ namespace Server.Engines.VoidPool
                     {
                         if (Spawns != null)
                         {
-                            Spawns = null;
                             Deactivate(false);
                         }
 
@@ -182,19 +181,24 @@ namespace Server.Engines.VoidPool
                 Active = false;
             }
 
-            foreach (var entry in Spawns)
+            if (Spawns != null)
             {
-                var list = new List<BaseCreature>();
-
-                foreach (var bc in entry.Spawn)
+                foreach (var entry in Spawns)
                 {
-                    list.Add(bc);
+                    var list = new List<BaseCreature>();
+
+                    foreach (var bc in entry.Spawn)
+                    {
+                        list.Add(bc);
+                    }
+
+                    foreach (var creature in list)
+                        creature.Delete();
+
+                    ColUtility.Free(list);
                 }
 
-                foreach (var creature in list)
-                    creature.Delete();
-
-                ColUtility.Free(list);
+                Spawns.Clear();
             }
         }
 
@@ -231,10 +235,14 @@ namespace Server.Engines.VoidPool
 
             writer.Write(_Active);
 
-            writer.Write(Spawns.Count);
-            for (int i = 0; i < Spawns.Count; i++)
+            writer.Write(Spawns == null ? 0 : Spawns.Count);
+
+            if (Spawns != null)
             {
-                Spawns[i].Serialize(writer);
+                for (int i = 0; i < Spawns.Count; i++)
+                {
+                    Spawns[i].Serialize(writer);
+                }
             }
         }
 
