@@ -1773,7 +1773,7 @@ namespace Server.Items
 							defender.FixedParticles(0x3779, 1, 15, 0x158B, 0x0, 0x3, EffectLayer.Waist);
 							weapon.OnSwing(defender, attacker);
 
-                            if (defender.Combatant != combatant && combatant.Alive)
+                            if (combatant != null && defender.Combatant != combatant && combatant.Alive)
                                 defender.Combatant = combatant;
 						}
 
