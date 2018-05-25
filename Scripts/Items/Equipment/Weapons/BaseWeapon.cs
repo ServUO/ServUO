@@ -1834,6 +1834,10 @@ namespace Server.Items
 				if (toHit != null)
 				{
                     toHit.OnHit(this, damage); // call OnHit to lose durability
+
+                    if (attacker is VeriteElemental || attacker is ValoriteElemental)
+                        VeriteElemental.OnHit(defender, (Item)toHit, damage);
+
                     damage -= XmlAttach.OnArmorHit(attacker, defender, (Item)toHit, this, originalDamage);
 				}
 			}
@@ -2415,16 +2419,6 @@ namespace Server.Items
 
 			damage = AOS.Scale(damage, 100 + percentageBonus);
 			#endregion
-
-			if (attacker is BaseCreature)
-			{
-				((BaseCreature)attacker).AlterMeleeDamageTo(defender, ref damage);
-			}
-
-			if (defender is BaseCreature)
-			{
-				((BaseCreature)defender).AlterMeleeDamageFrom(attacker, ref damage);
-			}
 
             damage = AbsorbDamage(attacker, defender, damage);
 

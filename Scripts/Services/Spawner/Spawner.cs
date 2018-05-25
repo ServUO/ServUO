@@ -138,10 +138,38 @@ namespace Server.Mobiles
         public int Team { get { return m_Team;  } set { m_Team = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.Spawner)]
-        public TimeSpan MinDelay { get { return m_MinDelay; } set { m_MinDelay = value; InvalidateProperties(); } }
+        public TimeSpan MinDelay 
+        { 
+            get { return m_MinDelay; } 
+            set 
+            {
+                var old = m_MinDelay;
+
+                m_MinDelay = value;
+                
+                if(old != m_MinDelay && m_Running)
+                    DoTimer(); 
+                
+                InvalidateProperties();
+            } 
+        }
 
         [CommandProperty(AccessLevel.Spawner)]
-        public TimeSpan MaxDelay { get { return m_MaxDelay; } set { m_MaxDelay = value; InvalidateProperties(); } }
+        public TimeSpan MaxDelay
+        { 
+            get { return m_MaxDelay; } 
+            set 
+            {
+                var old = m_MaxDelay;
+
+                m_MaxDelay = value;
+
+                if (old != m_MaxDelay && m_Running)
+                    DoTimer(); 
+                
+                InvalidateProperties();
+            }
+        }
 
         public DateTime End { get { return m_End; } set { m_End = value; } }
 
@@ -581,7 +609,10 @@ namespace Server.Mobiles
             m_End = DateTime.UtcNow + delay;
 
             if (m_Timer != null)
+            {
                 m_Timer.Stop();
+                m_Timer = null;
+            }
 
             m_Timer = new InternalTimer(this, delay);
             m_Timer.Start();
@@ -1052,9 +1083,8 @@ namespace Server.Mobiles
 
             protected override void OnTick()
             {
-                if (m_Spawner != null)
-                    if (!m_Spawner.Deleted)
-                        m_Spawner.OnTick();
+                if (m_Spawner != null && !m_Spawner.Deleted)
+                    m_Spawner.OnTick();
             }
         }
 

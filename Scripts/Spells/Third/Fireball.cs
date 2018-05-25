@@ -44,7 +44,7 @@ namespace Server.Spells.Third
             {
                 IDamageable source = Caster;
                 IDamageable target = m;
-
+                Console.WriteLine("source: {0}; target: {1}", source, target);
                 SpellHelper.Turn(Caster, m);
 
                 if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
@@ -80,7 +80,7 @@ namespace Server.Spells.Third
                 {
                     Caster.MovingParticles(m, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
                     Caster.PlaySound(Core.AOS ? 0x15E : 0x44B);
-
+                    Console.WriteLine("source: {0}; target: {1}", source, target);
                     SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0);
                 }
             }
