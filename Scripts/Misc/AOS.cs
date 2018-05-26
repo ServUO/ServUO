@@ -365,6 +365,16 @@ namespace Server
             if (from != null)
                 DoLeech(totalDamage, from, m);
 
+            if (from is BaseCreature && type <= DamageType.Ranged)
+            {
+                ((BaseCreature)from).AlterMeleeDamageTo(m, ref totalDamage);
+            }
+
+            if (m is BaseCreature && type <= DamageType.Ranged)
+            {
+                ((BaseCreature)m).AlterMeleeDamageFrom(from, ref totalDamage);
+            }
+
             m.Damage(totalDamage, from, true, false);
             SpiritSpeak.CheckDisrupt(m);
 

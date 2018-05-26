@@ -17,41 +17,43 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             // TODO: Gas attack
-            this.Name = "a valorite elemental";
-            this.Body = 112;
-            this.BaseSoundID = 268;
+            Name = "a valorite elemental";
+            Body = 112;
+            BaseSoundID = 268;
 
-            this.SetStr(226, 255);
-            this.SetDex(126, 145);
-            this.SetInt(71, 92);
+            SetStr(226, 255);
+            SetDex(126, 145);
+            SetInt(71, 92);
 
-            this.SetHits(136, 153);
+            SetHits(136, 153);
 
-            this.SetDamage(28);
+            SetDamage(28);
 
-            this.SetDamageType(ResistanceType.Physical, 25);
-            this.SetDamageType(ResistanceType.Fire, 25);
-            this.SetDamageType(ResistanceType.Cold, 25);
-            this.SetDamageType(ResistanceType.Energy, 25);
+            SetDamageType(ResistanceType.Physical, 25);
+            SetDamageType(ResistanceType.Fire, 25);
+            SetDamageType(ResistanceType.Cold, 25);
+            SetDamageType(ResistanceType.Energy, 25);
 
-            this.SetResistance(ResistanceType.Physical, 65, 75);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 50, 60);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 50, 60);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.MagicResist, 50.1, 95.0);
-            this.SetSkill(SkillName.Tactics, 60.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 100.0);
+            SetSkill(SkillName.MagicResist, 50.1, 95.0);
+            SetSkill(SkillName.Tactics, 60.1, 100.0);
+            SetSkill(SkillName.Wrestling, 60.1, 100.0);
 
-            this.Fame = 3500;
-            this.Karma = -3500;
+            Fame = 3500;
+            Karma = -3500;
 
-            this.VirtualArmor = 38;
+            VirtualArmor = 38;
 
             Item ore = new ValoriteOre(oreAmount);
             ore.ItemID = 0x19B9;
-            this.PackItem(ore);
+            PackItem(ore);
+
+            SetAreaEffect(AreaEffect.PoisonBreath);
         }
 
         public ValoriteElemental(Serial serial)
@@ -80,10 +82,21 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+
+        public override Poison HitAreaPoison
+        {
+            get
+            {
+                return Poison.Greater;
+            }
+        }
+
+        public override int AreaPoisonDamage { get { return 50; } }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Gems, 4);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Gems, 4);
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
@@ -95,6 +108,46 @@ namespace Server.Mobiles
                 if (bc.Controlled || bc.BardTarget == this)
                     damage = 0; // Immune to pets and provoked creatures
             }
+            else
+            {
+                AOS.Damage(from, this, damage / 2, 0, 0, 0, 0, 0, 0, 100);
+            }
+
+            base.AlterMeleeDamageFrom(from, ref damage);
+        }
+
+        public override bool OnBeforeDeath()
+        {
+            if (Map == null)
+                return base.OnBeforeDeath();
+
+            FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
+
+            IPooledEnumerable eable = Map.GetMobilesInRange(Location, 4);
+            var list = new System.Collections.Generic.List<Mobile>();
+
+            foreach (Mobile m in eable)
+            {
+                if (m != this && m.Alive && m.AccessLevel == AccessLevel.Player &&
+                    (m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)))
+                {
+                    list.Add(m);
+                }
+            }
+
+            foreach (var m in list)
+            {
+                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(.5), mob =>
+                {
+                    mob.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
+                    mob.PlaySound(0x307);
+                    AOS.Damage(mob, this, Utility.RandomMinMax(25, 50), 50, 50, 0, 0, 0);
+                }, m);
+            }
+
+            ColUtility.Free(list);
+
+            return base.OnBeforeDeath();
         }
 
         public override void CheckReflect(Mobile caster, ref bool reflect)

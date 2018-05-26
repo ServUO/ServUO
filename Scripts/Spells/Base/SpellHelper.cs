@@ -1275,9 +1275,9 @@ namespace Server.Spells
                 {
                     target.FixedEffect(0x37B9, 10, 5);
 
-                    Mobile temp = caster;
-                    source = target;
-                    target = temp;
+                    IDamageable temp = source;
+                    source = defender;
+                    defender = temp;
                 }
             }
 
