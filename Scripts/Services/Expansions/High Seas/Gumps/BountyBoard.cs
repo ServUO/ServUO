@@ -5,6 +5,7 @@ using Server.Gumps;
 using System.Collections.Generic;
 using Server.Network;
 using Server.Engines.Quests;
+using Server.Engines.VendorSearching;
 
 namespace Server.Items
 {
@@ -19,7 +20,7 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.HasGump(typeof(BountyBoardGump)))
-                from.SendGump(new BountyBoardGump());
+                BaseGump.SendGump(new BountyBoardGump(from));
         }
 
         public ProfessionalBountyBoard(Serial serial) : base(serial) { }
@@ -37,30 +38,36 @@ namespace Server.Items
         }
     }
 
-    public class BountyBoardGump : Gump
+    public class BountyBoardGump : BaseGump
     {
-        public BountyBoardGump() : this(0) { }
+        public int Index { get; set; }
 
-        public BountyBoardGump(int index) : base(20, 20)
+        private int darkHue = 19686;
+        private int lightHue = 19884;
+
+        public BountyBoardGump(Mobile from, int index = 0)
+            : base(from as PlayerMobile, 20, 20)
         {
-            int darkHue = 19686;
-            int lightHue = 19884;
+            Index = index;
+        }
 
+        public override void AddGumpLayout()
+        {
             AddAlphaRegion(50, 50, 50, 50);
             AddImage(0, 0, 5400);
 
-            AddHtmlLocalized(172, 37, 200, 16, 1116689, darkHue, false, false);   // WANTED FOR PIRACY
-            AddHtmlLocalized(166, 320, 200, 16, 1116703, darkHue, false, false);  // WANTED DEAD OR ALIVE
+            AddHtmlLocalized(150, 37, 190, 16, CenterLoc, "#1116689", darkHue, false, false);   // WANTED FOR PIRACY
+            AddHtmlLocalized(150, 320, 190, 16, CenterLoc, "#1116703", darkHue, false, false);  // WANTED DEAD OR ALIVE
 
             AddHtmlLocalized(180, 135, 200, 16, 1116704, lightHue, false, false); //Notice to all sailors
             AddHtmlLocalized(130, 150, 300, 16, 1116705, lightHue, false, false); //There be a bounty on these lowlifes!
             AddHtmlLocalized(150, 170, 300, 16, 1116706, lightHue, false, false); //See officers fer information.
             AddHtmlLocalized(195, 190, 300, 16, 1116707, lightHue, false, false); //********
 
-            if (index < 0) 
-                index = 0;
-            if(index >= BountyQuestSpawner.Bounties.Count)
-                index = BountyQuestSpawner.Bounties.Count - 1;
+            if (Index < 0)
+                Index = 0;
+            if (Index >= BountyQuestSpawner.Bounties.Count)
+                Index = BountyQuestSpawner.Bounties.Count - 1;
 
             List<Mobile> mobs = new List<Mobile>(BountyQuestSpawner.Bounties.Keys);
 
@@ -69,11 +76,10 @@ namespace Server.Items
 
             int y = 210;
             int idx = 0;
-            int reward = 1116696; //Reward: ~1_val~
-            int cliloc = 1116690; //~1_val~ ~2_val~ ~3_val~
-            for (int i = index; i < mobs.Count; i++)
+
+            for (int i = Index; i < mobs.Count; i++)
             {
-                if(idx++ > 4)
+                if (idx++ > 4)
                     break;
 
                 Mobile mob = mobs[i];
@@ -87,39 +93,47 @@ namespace Server.Items
 
                 string args;
 
-                if (capt.PirateName > 0)
-                    args = String.Format("#{0}\t#{1}\t#{2}", capt.Adjective, capt.Noun, capt.PirateName);
+                if (User.NetState != null && User.NetState.IsEnhancedClient && VendorSearch.StringList != null)
+                {
+                    var strList = VendorSearch.StringList;
+
+                    args = String.Format("{0} {1} {2}", strList.GetString(capt.Adjective), strList.GetString(capt.Noun), capt.PirateName > 0 ? strList.GetString(capt.PirateName) : capt.Name);
+
+                    AddHtml(110, y, 400, 16, Color(C16232(lightHue), args), false, false);
+                }
                 else
-                    args = String.Format("#{0}\t#{1}\t{2}", capt.Adjective, capt.Noun, capt.Name);
+                {
+                    if (capt.PirateName > 0)
+                        args = String.Format("#{0}\t#{1}\t#{2}", capt.Adjective, capt.Noun, capt.PirateName);
+                    else
+                        args = String.Format("#{0}\t#{1}\t{2}", capt.Adjective, capt.Noun, capt.Name);
 
-                AddHtmlLocalized(110, y, 160, 16, cliloc, args, lightHue, false, false);
-                AddHtmlLocalized(280, y, 125, 16, reward, toReward.ToString(), lightHue, false, false);
+                    AddHtmlLocalized(110, y, 400, 16, 1116690 + idx, args, lightHue, false, false); // ~1_val~ ~2_val~ ~3_val~
+                }
 
-                reward++;
-                cliloc++;
+                AddHtmlLocalized(280, y, 125, 16, 1116696 + (idx - 1), toReward.ToString(), lightHue, false, false); // Reward: ~1_val~
+
                 y += 16;
             }
 
-            AddButton(362, 115, 2084, 2084, 1 + index, GumpButtonType.Reply, 0);
-            AddButton(362, 342, 2085, 2085, 500 + index, GumpButtonType.Reply, 0);
+            AddButton(362, 115, 2084, 2084, 1 + Index, GumpButtonType.Reply, 0);
+            AddButton(362, 342, 2085, 2085, 500 + Index, GumpButtonType.Reply, 0);
         }
 
-        public override void OnResponse(NetState sender, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            Mobile from = sender.Mobile;
-
             if (info.ButtonID == 0)
                 return;
 
             if (info.ButtonID < 500)
             {
-                int idx = info.ButtonID - 1;
-                from.SendGump(new BountyBoardGump(idx - 1));
+                Index--;
+                Refresh();
             }
             else
             {
-                int idx = info.ButtonID - 500;
-                from.SendGump(new BountyBoardGump(idx + 1));
+                Index++;
+                Refresh();
             }
         }
     }
