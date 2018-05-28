@@ -108,7 +108,7 @@ namespace Server.Items
                     else
                         args = String.Format("#{0}\t#{1}\t{2}", capt.Adjective, capt.Noun, capt.Name);
 
-                    AddHtmlLocalized(110, y, 400, 16, 1116690 + idx, args, lightHue, false, false); // ~1_val~ ~2_val~ ~3_val~
+                    AddHtmlLocalized(110, y, 400, 16, 1116690 + (idx - 1), args, lightHue, false, false); // ~1_val~ ~2_val~ ~3_val~
                 }
 
                 AddHtmlLocalized(280, y, 125, 16, 1116696 + (idx - 1), toReward.ToString(), lightHue, false, false); // Reward: ~1_val~
