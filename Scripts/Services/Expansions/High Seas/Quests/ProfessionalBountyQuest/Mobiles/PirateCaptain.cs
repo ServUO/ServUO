@@ -65,8 +65,6 @@ namespace Server.Mobiles
 
             Body = Female ? 0x191 : 0x190;
 
-            AddItem(new ShortPants(Utility.RandomNeutralHue()));
-
             SetStr(500, 750);
             SetDex(125, 175);
             SetInt(61, 75);
