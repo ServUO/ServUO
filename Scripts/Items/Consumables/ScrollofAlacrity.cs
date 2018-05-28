@@ -153,6 +153,11 @@ namespace Server.Items
             return true;
         }
 
+        public static ScrollofAlacrity CreateRandom()
+        {
+            return new ScrollofAlacrity((SkillName)SkillInfo.Table[Utility.Random(SkillInfo.Table.Length)].SkillID);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

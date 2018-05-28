@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 using Server.Commands;
 using Server.Items;
 using CPA = Server.CommandPropertyAttribute;
-using System.Linq;
+using Server.Gumps;
 
 namespace Server.Mobiles
 {
@@ -225,11 +226,19 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.AccessLevel < AccessLevel.Spawner)
+            if (!from.Player || from.AccessLevel < AccessLevel.Spawner)
                 return;
 
-            SpawnerGump g = new SpawnerGump(this);
-            from.SendGump(g);
+            SpawnerGump gump = BaseGump.GetGump<SpawnerGump>((PlayerMobile)from, g => g.Spawner == this);
+
+            if (gump != null)
+            {
+                gump.Refresh();
+            }
+            else
+            {
+                BaseGump.SendGump(new SpawnerGump(from, this));
+            }
         }
 
         public override void GetProperties(ObjectPropertyList list)

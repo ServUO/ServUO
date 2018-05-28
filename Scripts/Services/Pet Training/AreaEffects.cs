@@ -86,7 +86,7 @@ namespace Server.Mobiles
             foreach (Mobile m in eable)
             {
                 if (m != creature && m.Alive && !m.IsDeadBondedPet &&
-                    m.CanBeHarmful(creature, false) &&
+                    creature.CanBeHarmful(m, false) &&
                     SpellHelper.ValidIndirectTarget(creature, m) && 
                     creature.InLOS(m))
                 {

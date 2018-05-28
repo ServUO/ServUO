@@ -124,8 +124,8 @@ namespace Server.Items
                 AddTextEntry(13, 127, 75, 20, 0, 3, Int > 0 ? Int.ToString() : "");
 
                 AddHtmlLocalized(98, 85, 100, 20, 3000111, White, false, false); // Strength
-                AddHtmlLocalized(98, 106, 100, 20, 3000112, White, false, false); // Dexterity
-                AddHtmlLocalized(98, 127, 100, 20, 3000113, White, false, false); // Intelligence
+                AddHtmlLocalized(98, 106, 100, 20, 3000113, White, false, false); // Dexterity
+                AddHtmlLocalized(98, 127, 100, 20, 3000112, White, false, false); // Intelligence
 
                 AddHtmlLocalized(0, 170, Width / 3, 20, 1152356, Yellow, false, false); // <CENTER>Selected Skills</CENTER>
 

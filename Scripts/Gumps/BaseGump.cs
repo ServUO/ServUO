@@ -218,7 +218,26 @@ namespace Server.Gumps
             AddItemProperty(mob.Serial);
         }
 
-        public static List<T> GetGumps<T>(PlayerMobile pm) where T : BaseGump
+        public static T GetGump<T>(PlayerMobile pm, Func<T, bool> predicate) where T : Gump
+        {
+            return EnumerateGumps<T>(pm).FirstOrDefault(x => predicate == null || predicate(x));
+        }
+
+        public static IEnumerable<T> EnumerateGumps<T>(PlayerMobile pm, Func<T, bool> predicate = null) where T : Gump
+        {
+            var ns = pm.NetState;
+
+            if (ns == null)
+                yield break;
+
+            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => g.GetType() == typeof(T) && 
+                (predicate == null || predicate(g as T))))
+            {
+                yield return gump as T;
+            }
+        }
+
+        public static List<T> GetGumps<T>(PlayerMobile pm) where T : Gump
         {
             var ns = pm.NetState;
             List<T> list = new List<T>();
