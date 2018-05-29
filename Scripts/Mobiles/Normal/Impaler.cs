@@ -30,12 +30,13 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Poison, 60);
             SetResistance(ResistanceType.Energy, 100);
 
-            SetSkill(SkillName.DetectHidden, 80.0);
-            SetSkill(SkillName.Meditation, 120.0);
-            SetSkill(SkillName.Poisoning, 160.0);
-            SetSkill(SkillName.MagicResist, 100.0);
+            SetSkill(SkillName.Wrestling, 80.0, 120.0);
             SetSkill(SkillName.Tactics, 100.0);
-            SetSkill(SkillName.Wrestling, 80.0);
+            SetSkill(SkillName.MagicResist, 100.0);
+            SetSkill(SkillName.Poisoning, 160.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.Necromancy, 110.0, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 100.0, 110.0);
 
             Fame = 24000;
             Karma = -24000;
@@ -44,6 +45,7 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
             SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
         public Impaler(Serial serial)
