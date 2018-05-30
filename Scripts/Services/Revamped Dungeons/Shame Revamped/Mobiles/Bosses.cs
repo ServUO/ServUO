@@ -41,6 +41,8 @@ namespace Server.Mobiles
 
                 if (from == Altar.Summoner || (Altar.DeadLine > DateTime.UtcNow && Altar.DeadLine - DateTime.UtcNow < TimeSpan.FromMinutes(10)))
                     good = true;
+                else if (from is BaseCreature && ((BaseCreature)from).GetMaster() == Altar.Summoner)
+                    good = true;
                 else if (ShameAltar.AllowParties)
                 {
                     Server.Engines.PartySystem.Party p = Server.Engines.PartySystem.Party.Get(from);
