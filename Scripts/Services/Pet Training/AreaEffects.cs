@@ -85,10 +85,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m != creature && m.Alive && !m.IsDeadBondedPet &&
-                    creature.CanBeHarmful(m, false) &&
-                    SpellHelper.ValidIndirectTarget(creature, m) && 
-                    creature.InLOS(m))
+                if (ValidTarget(creature, m))
                 {
                     toAffect.Add(m);
                 }
@@ -114,6 +111,14 @@ namespace Server.Mobiles
 
         public virtual void OnAfterEffects(BaseCreature creature, Mobile defender)
         {
+        }
+
+        public static bool ValidTarget(Mobile from, Mobile to)
+        {
+            return to != from && to.Alive && !to.IsDeadBondedPet &&
+                    from.CanBeHarmful(to, false) &&
+                    SpellHelper.ValidIndirectTarget(from, to) &&
+                    from.InLOS(to);
         }
 
 		public List<Mobile> _Cooldown;
