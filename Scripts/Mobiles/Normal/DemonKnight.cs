@@ -77,22 +77,21 @@ namespace Server.Mobiles
             SetDamageType(ResistanceType.Poison, 20);
             SetDamageType(ResistanceType.Energy, 20);
 
-            SetResistance(ResistanceType.Physical, 30);
-            SetResistance(ResistanceType.Fire, 30);
-            SetResistance(ResistanceType.Cold, 30);
-            SetResistance(ResistanceType.Poison, 30);
-            SetResistance(ResistanceType.Energy, 30);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 70, 80);
+            SetResistance(ResistanceType.Poison, 70, 80);
+            SetResistance(ResistanceType.Energy, 70, 80);
 
-            SetSkill(SkillName.Necromancy, 120, 120.0);
-            SetSkill(SkillName.SpiritSpeak, 120.0, 120.0);
-
-            SetSkill(SkillName.DetectHidden, 80.0);
-            SetSkill(SkillName.EvalInt, 100.0);
-            SetSkill(SkillName.Magery, 100.0);
-            SetSkill(SkillName.Meditation, 120.0);
-            SetSkill(SkillName.MagicResist, 150.0);
-            SetSkill(SkillName.Tactics, 100.0);
             SetSkill(SkillName.Wrestling, 120.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.MagicResist, 150.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.EvalInt, 100.0);
+            SetSkill(SkillName.Meditation, 120.0);
+            SetSkill(SkillName.Necromancy, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 120.0);
 
             Fame = 28000;
             Karma = -28000;
@@ -101,7 +100,6 @@ namespace Server.Mobiles
 
             m_NextArea = DateTime.UtcNow;
 
-            SetWeaponAbility(WeaponAbility.DualWield);
             SetWeaponAbility(WeaponAbility.CrushingBlow);
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
