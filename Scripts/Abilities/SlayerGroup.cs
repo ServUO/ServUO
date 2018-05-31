@@ -209,7 +209,10 @@ namespace Server.Items
                     typeof(Tempest), typeof(UnboundEnergyVortex),
                     typeof(ChaosVortex), typeof(WindElemental),
                     typeof(FlameElemental), typeof(QuartzElemental),
-                    typeof(VoidManifestation), typeof(DemonKnight)
+                    typeof(VoidManifestation), typeof(DemonKnight),
+                    typeof(CovetousEarthElemental), typeof(VenomElemental),
+                    typeof(SearingElemental), typeof(VortexElemental),
+                    typeof(CovetousWaterElemental)
                 );
 
             elemental.Entries = new SlayerEntry[]
@@ -320,7 +323,7 @@ namespace Server.Items
                         typeof(UsagralemBallem), typeof(EffetePutridGargoyle),
                         typeof(EffeteUndeadGargoyle), typeof(PitFiend),
                         typeof(ArchDaemon), typeof(AbyssalAbomination),
-                        typeof(Virtuebane)
+                        typeof(Virtuebane), typeof(LesserOni)
                     );
 
                 abyss.Entries = new SlayerEntry[]
