@@ -12,27 +12,28 @@ namespace Server.Items
         public StinkingCauldron()
             : base(0x142A)
         {
-            this.Movable = false;
-            this.Hue = 363;
-            this.Weight = 0.0;
+            Movable = false;
+            Hue = 363;
+            Weight = 0.0;
             Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(GooeyMaggotsSpawn));
         }
 
         private void GooeyMaggotsSpawn()
         {
-            int amount = Utility.RandomMinMax(1, 2);
-            BaseCreature creature;
-            Map map = this.Map;
-
-            for (int i = 0; i < amount; ++i)
+            if (Map != Map.Internal)
             {
-                creature = new GooeyMaggots();
+                int amount = Utility.RandomMinMax(1, 2);
 
-                creature.GetSpawnPosition(2);
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);                
+                for (int i = 0; i < amount; ++i)
+                {
+                    BaseCreature creature = new GooeyMaggots();
+
+                    creature.GetSpawnPosition(2);
+                    Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
+                }
             }
 
-            this.Delete();
+            Delete();
         }
 
         public StinkingCauldron(Serial serial)

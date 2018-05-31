@@ -20,9 +20,9 @@ namespace Server.Mobiles
 
             SetStr(250);
             SetDex(100);
-            SetInt(100);
+            SetInt(100, 120);
 
-            SetHits(2000);
+            SetHits(5000);
 
             SetDamage(20, 30);
 
@@ -35,14 +35,18 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Poison, 75);
             SetResistance(ResistanceType.Energy, 55);
 
-            SetSkill(SkillName.Chivalry, 120.0);
-            SetSkill(SkillName.DetectHidden, 80.0);
-            SetSkill(SkillName.EvalInt, 100.0);
-            SetSkill(SkillName.Magery, 100.0);
-            SetSkill(SkillName.Meditation, 100.0);
-            SetSkill(SkillName.MagicResist, 120.0);
-            SetSkill(SkillName.Tactics, 100.0);
             SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.MagicResist, 120.0);
+            SetSkill(SkillName.Poisoning, 75.0, 85.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.Hiding, 100.0);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.EvalInt, 100.0);
+            SetSkill(SkillName.Meditation, 100.0);
+            SetSkill(SkillName.Necromancy, 110.0);
+            SetSkill(SkillName.SpiritSpeak, 110.0);
+            SetSkill(SkillName.Focus, 120.0);
 
             Fame = 25000;
             Karma = -25000;

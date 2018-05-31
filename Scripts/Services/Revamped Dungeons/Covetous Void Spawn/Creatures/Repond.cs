@@ -153,7 +153,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public TitanRockHunter() : base(AIType.AI_Mage)
 		{
-			Name = "a titan rock hunter";
+			Name = "a titan rockhurler";
 			Body = 76;
             BaseSoundID = 609;
 		}
@@ -161,7 +161,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public TitanRockHunter(int level, bool voidSpawn) : base(AIType.AI_Mage, level, voidSpawn)
 		{
-			Name = "a titan rock hunter";
+			Name = "a titan rockhurler";
 			Body = 76;
             BaseSoundID = 609;
 		}

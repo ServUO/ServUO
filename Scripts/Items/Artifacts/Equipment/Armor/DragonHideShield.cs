@@ -8,20 +8,19 @@ namespace Server.Items
         [Constructable]
         public DragonHideShield()
             : base()
-        {
-			this.Name = "Dragon Hide Shield";
-			
-			this.Hue = 44;
-		
-            this.AbsorptionAttributes.EaterFire = 20;
-            this.Attributes.RegenHits = 2;
-            this.Attributes.DefendChance = 10;
+        {		
+			Hue = 44;	
+            AbsorptionAttributes.EaterFire = 20;
+            Attributes.RegenHits = 2;
+            Attributes.DefendChance = 10;
         }
 
         public DragonHideShield(Serial serial)
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get{return 1113532;} }// Dragon Hide Shield
 
         public override int BasePhysicalResistance
         {
@@ -73,21 +72,6 @@ namespace Server.Items
             }
         }
 		
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }		
-	
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

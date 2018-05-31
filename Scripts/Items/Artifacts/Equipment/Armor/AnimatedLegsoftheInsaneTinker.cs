@@ -9,18 +9,20 @@ namespace Server.Items
         public AnimatedLegsoftheInsaneTinker()
             : base()
         {
-            this.Name = ("Animated Legs of the Insane Tinker");
-            this.Hue = 2310;
-            this.Attributes.BonusDex = 5;
-            this.Attributes.RegenStam = 2;
-            this.Attributes.WeaponDamage = 10;
-            this.Attributes.WeaponSpeed = 10;
+            Hue = 2310;
+            Attributes.BonusDex = 5;
+            Attributes.RegenStam = 2;
+            Attributes.WeaponDamage = 10;
+            Attributes.WeaponSpeed = 10;
+            ArmorAttributes.LowerStatReq = 50;
         }
 
         public AnimatedLegsoftheInsaneTinker(Serial serial)
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get{return 1113760;} }// Animated Legs of the Insane Tinker
 
         public override int BasePhysicalResistance
         {
@@ -69,20 +71,6 @@ namespace Server.Items
             get
             {
                 return 255;
-            }
-        }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 45;
-            }
-        }
-        public override int OldStrReq
-        {
-            get
-            {
-                return 45;
             }
         }
         public override void Deserialize(GenericReader reader)

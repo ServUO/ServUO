@@ -161,12 +161,12 @@ namespace Server.Mobiles
 
             var shroud = new Server.Items.Robe();
             shroud.ItemID = 0x2683;
-            shroud.Hue = 0x455;
+            shroud.Hue = 0x4001;
             shroud.Movable = false;
             SetWearable(shroud);
 
             var boots = new Server.Items.Boots();
-            boots.Hue = 1;
+            boots.Hue = 0x4001;
             boots.Movable = false;
             SetWearable(boots);
 		}
