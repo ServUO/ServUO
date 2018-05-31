@@ -77,7 +77,9 @@ namespace Server.Items
                     typeof(GrayGoblinMage), typeof(GrayGoblinKeeper),
                     typeof(GrayGoblin), typeof(GreenGoblinAlchemistRenowned),
                     typeof(GrayGoblinMageRenowned), typeof(CorgulTheSoulBinder),
-                    typeof(PirateCrew)
+                    typeof(PirateCrew), typeof(LizardmanWitchdoctor),
+                    typeof(OrcFootSoldier), typeof(RatmanAssassin),
+                    typeof(OgreBoneCrusher), typeof(TitanRockHunter)
                 );
 
             humanoid.Entries = new SlayerEntry[]
@@ -87,7 +89,7 @@ namespace Server.Items
                         SlayerName.OgreTrashing,
 
                         typeof(Ogre),               typeof(OgreLord),
-                        typeof(ArcticOgreLord)
+                        typeof(ArcticOgreLord),     typeof(OgreBoneCrusher)
                     ),
 
                 new SlayerEntry
@@ -97,7 +99,8 @@ namespace Server.Items
                         typeof(Orc),            typeof(OrcBomber),
                         typeof(OrcBrute),       typeof(OrcCaptain),
                         typeof(OrcChopper),     typeof(OrcScout),
-                        typeof(OrcishLord),     typeof(OrcishMage)
+                        typeof(OrcishLord),     typeof(OrcishMage),
+                        typeof(OrcFootSoldier)
                     ),
 
                 new SlayerEntry
@@ -139,7 +142,9 @@ namespace Server.Items
                     typeof(EffeteUndeadGargoyle), typeof(UndeadGargoyle),
                     typeof(UndeadGuardian), typeof(PutridUndeadGargoyle),
                     typeof(PutridUndeadGuardian), typeof(Juonar),
-                    typeof(Spellbinder)
+                    typeof(Spellbinder), typeof(AngeredSpirit),
+                    typeof(BoneSwordSlinger), typeof(CovetousRevenant),
+                    typeof(DiseasedLich), typeof(VileCadaver)
                 );
 
             undead.Entries = new SlayerEntry[0];
@@ -204,7 +209,10 @@ namespace Server.Items
                     typeof(Tempest), typeof(UnboundEnergyVortex),
                     typeof(ChaosVortex), typeof(WindElemental),
                     typeof(FlameElemental), typeof(QuartzElemental),
-                    typeof(VoidManifestation), typeof(DemonKnight)
+                    typeof(VoidManifestation), typeof(DemonKnight),
+                    typeof(CovetousEarthElemental), typeof(VenomElemental),
+                    typeof(SearingElemental), typeof(VortexElemental),
+                    typeof(CovetousWaterElemental)
                 );
 
             elemental.Entries = new SlayerEntry[]
@@ -225,14 +233,16 @@ namespace Server.Items
                             typeof(EarthElemental),     typeof(SummonedEarthElemental),
                             typeof(GoldenElemental),    typeof(ShadowIronElemental),
                             typeof(ValoriteElemental),  typeof(VeriteElemental),
-                            typeof(QuartzElemental),    typeof(DemonKnight)
+                            typeof(QuartzElemental),    typeof(DemonKnight),
+                            typeof(CovetousEarthElemental)
                         ),
 
                     new SlayerEntry
                         (
                             SlayerName.ElementalHealth,
 
-                            typeof(PoisonElemental),    typeof(DemonKnight)
+                            typeof(PoisonElemental),    typeof(DemonKnight),
+                            typeof(VenomElemental)
                         ),
 
                     new SlayerEntry
@@ -241,7 +251,7 @@ namespace Server.Items
 
                             typeof(FireElemental),          typeof(FireElementalRenowned),
                             typeof(SummonedFireElemental),  typeof(FlameElemental),
-                            typeof(DemonKnight)
+                            typeof(DemonKnight),            typeof(SearingElemental)
                         ),
 
                     new SlayerEntry
@@ -260,7 +270,7 @@ namespace Server.Items
                             typeof(Flurry),         typeof(Mistral),
                             typeof(Tempest),        typeof(UnboundEnergyVortex),
                             typeof(ChaosVortex),    typeof(WindElemental),
-                            typeof(DemonKnight)
+                            typeof(DemonKnight),    typeof(VortexElemental)
                         ),
 
                     new SlayerEntry
@@ -268,7 +278,7 @@ namespace Server.Items
                             SlayerName.WaterDissipation,
 
                             typeof(WaterElemental),     typeof(SummonedWaterElemental),
-                            typeof(DemonKnight)
+                            typeof(DemonKnight),        typeof(CovetousWaterElemental)
                         )
                 };
 
@@ -313,7 +323,7 @@ namespace Server.Items
                         typeof(UsagralemBallem), typeof(EffetePutridGargoyle),
                         typeof(EffeteUndeadGargoyle), typeof(PitFiend),
                         typeof(ArchDaemon), typeof(AbyssalAbomination),
-                        typeof(Virtuebane)
+                        typeof(Virtuebane), typeof(LesserOni)
                     );
 
                 abyss.Entries = new SlayerEntry[]
@@ -327,7 +337,9 @@ namespace Server.Items
                             typeof(Gargoyle),               typeof(GargoyleDestroyer),
                             typeof(GargoyleEnforcer),       typeof(StoneGargoyle),
                             typeof(GargoyleShade),          typeof(EffetePutridGargoyle),
-                            typeof(EffeteUndeadGargoyle)
+                            typeof(EffeteUndeadGargoyle),   typeof(DaemonMongbat),
+                            typeof(CovetousDoppleganger),   typeof(CovetousFireDaemon),
+                            typeof(GargoyleAssassin),       typeof(LesserOni)
                         ),
                 };
             }
