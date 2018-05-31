@@ -7,11 +7,6 @@ namespace Server.Mobiles
     [CorpseName("a boura corpse")]
     public class HighPlainsBoura : BaseCreature, ICarvable
     {
-        public static Type[] VArtifacts =
-        {
-            typeof (BouraTailShield)
-        };
-
         private bool GatheredFur { get; set; }
 
         [Constructable]
@@ -143,29 +138,14 @@ namespace Server.Mobiles
             base.OnDeath(c);
 
             if (!Controlled)
-            c.DropItem(new BouraSkin());
-
-            if (!Controlled && c != null && !c.Deleted && c is Corpse)
             {
-                var corpse = (Corpse) c;
+                c.DropItem(new BouraSkin());
 
-                if (Utility.RandomDouble() < 0.01 && corpse.Killer != null && !corpse.Killer.Deleted)
+                if (Utility.RandomDouble() <= 0.01)
                 {
-                    GiveVArtifactTo(corpse.Killer);
+                    c.DropItem(new BouraTailShield());
                 }
             }
-        }
-
-        public static void GiveVArtifactTo(Mobile m)
-        {
-            var item = (Item) Activator.CreateInstance(VArtifacts[Utility.Random(VArtifacts.Length)]);
-			m.PlaySound(0x5B4);
-
-            if (m.AddToBackpack(item))
-                m.SendLocalizedMessage(1062317);
-                    // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-            else
-                m.SendMessage("As your backpack is full, your reward has been placed at your feet.");
         }
 
         public override void Serialize(GenericWriter writer)

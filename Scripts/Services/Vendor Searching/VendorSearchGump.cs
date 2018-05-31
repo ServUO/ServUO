@@ -376,6 +376,10 @@ namespace Server.Engines.VendorSearching
                 VendorItem item = Items[i];
                 Rectangle2D bounds = ItemBounds.Table[item.Item.ItemID];
                 int y = 100 + (index * 75);
+                Map map = item.Item.Map;
+
+                if (map == null && item.Item.RootParentEntity is Mobile)
+                    map = ((Mobile)item.Item.RootParentEntity).Map;
 
                 AddImage(50, y, 2328);
                 AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
@@ -392,7 +396,10 @@ namespace Server.Engines.VendorSearching
                 AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
 
                 AddHtml(200, y + 5, 88, 20, String.Format("<basefont color=#F5DEB3>{0}", item.Price == -1 ? "0" : item.FormattedPrice), false, false);
-                AddHtml(290, y + 5, 70, 20, String.Format("<basefont color=#F5DEB3>{0}", item.Item.Map.ToString()), false, false);
+                
+                if(map != null)
+                    AddHtml(290, y + 5, 70, 20, String.Format("<basefont color=#F5DEB3>{0}", map.ToString()), false, false);
+
                 AddButton(370, y + 5, 30533, 30533, 100 + i, GumpButtonType.Reply, 0);
 
                 index++;
