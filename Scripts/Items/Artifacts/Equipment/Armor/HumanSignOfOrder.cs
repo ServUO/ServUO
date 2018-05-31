@@ -9,19 +9,19 @@ namespace Server.Items
         public HumanSignOfOrder()
             : base()
         {
-            this.Name = "Sign of Order";
-
-            this.SkillBonuses.SetValues(0, SkillName.Chivalry, 10.0);
-            this.Attributes.AttackChance = 5;
-            this.Attributes.DefendChance = 10;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.CastRecovery = 1;
+            SkillBonuses.SetValues(0, SkillName.Chivalry, 10.0);
+            Attributes.AttackChance = 5;
+            Attributes.DefendChance = 10;
+            Attributes.CastSpeed = 1;
+            Attributes.CastRecovery = 1;
         }
 
         public HumanSignOfOrder(Serial serial)
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get{return 1113534;} }// Sign of Order
 
         public override int BasePhysicalResistance
         {

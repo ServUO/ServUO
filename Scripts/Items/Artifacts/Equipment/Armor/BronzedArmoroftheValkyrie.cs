@@ -8,20 +8,21 @@ namespace Server.Items
         [Constructable]
         public BronzedArmorValkyrie()
         {
-            this.Attributes.BonusHits = 5;
-			this.Attributes.BonusStr = 5;
-			this.Attributes.BonusDex = 5;
-			this.Attributes.BonusStam = 5;
-			this.Attributes.RegenStam = 3;
-			this.Attributes.LowerManaCost = 10;
-			this.Hue = 1863; // Hue not exact
-			this.Name = ("Bronzed Armor of the Valkyrie");
+            Attributes.BonusHits = 5;
+			Attributes.BonusStr = 5;
+			Attributes.BonusDex = 5;
+			Attributes.BonusStam = 5;
+			Attributes.RegenStam = 3;
+			Attributes.LowerManaCost = 10;
+			Hue = 1863; // Hue not exact
         }
 
         public BronzedArmorValkyrie(Serial serial)
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get{return 1149957;} }// Bronzed Armor of the Valkyrie
 
  public override int BasePhysicalResistance
         {
