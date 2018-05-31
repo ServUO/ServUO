@@ -320,14 +320,14 @@ namespace Server.Multis
             if (Core.ML)
                 new TempNoHousingRegion(this, null);
 
-            Rectangle3D[] recs = m_Region.Area;
-            Map map = Map;
-
             KillVendors();
             Delete();
 
             if (Core.SA)
             {
+                Rectangle3D[] recs = m_Region.Area;
+                Map map = Map;
+
                 Timer.DelayCall(() => OnAfterDecay(recs, map));
             }
         }

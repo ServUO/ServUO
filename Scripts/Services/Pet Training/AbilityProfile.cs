@@ -390,11 +390,11 @@ namespace Server.Mobiles
                     Creature.Mastery = SkillName.Wrestling;
                     break;
                 case MagicalAbility.Poisoning:
-                    if(Creature.AI != AIType.AI_Melee) 
+                    if(Creature.Controlled && Creature.AI != AIType.AI_Melee) 
                         Creature.AI = AIType.AI_Melee;
                     break;
                 case MagicalAbility.Bushido:
-                    if (Creature.AI != AIType.AI_Samurai) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Samurai) 
                         Creature.AI = AIType.AI_Samurai;
                     if (!HasAbility(WeaponAbility.WhirlwindAttack))
                     {
@@ -402,7 +402,7 @@ namespace Server.Mobiles
                     }
                     break;
                 case MagicalAbility.Ninjitsu:
-                    if (Creature.AI != AIType.AI_Ninja) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Ninja) 
                         Creature.AI = AIType.AI_Ninja;
                     if (!HasAbility(WeaponAbility.FrenziedWhirlwind))
                     {
@@ -410,32 +410,32 @@ namespace Server.Mobiles
                     }
                     break;
                 case MagicalAbility.Discordance:
-                    if (Creature.AI != AIType.AI_Melee) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Melee) 
                         Creature.AI = AIType.AI_Melee;
                     break;
                 case MagicalAbility.Magery:
                 case MagicalAbility.MageryMastery:
-                    if (Creature.AI != AIType.AI_Mage) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Mage) 
                         Creature.AI = AIType.AI_Mage;
                     break;
                 case MagicalAbility.Mysticism:
-                    if (Creature.AI != AIType.AI_Mystic) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Mystic) 
                         Creature.AI = AIType.AI_Mystic;
                     break;
                 case MagicalAbility.Spellweaving:
-                    if (Creature.AI != AIType.AI_Spellweaving) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Spellweaving) 
                         Creature.AI = AIType.AI_Spellweaving;
                     break;
                 case MagicalAbility.Chivalry:
-                    if (Creature.AI != AIType.AI_Paladin)
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Paladin)
                         Creature.AI = AIType.AI_Paladin;
                     break;
                 case MagicalAbility.Necromage:
-                    if (Creature.AI != AIType.AI_NecroMage) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_NecroMage) 
                         Creature.AI = AIType.AI_NecroMage;
                     break;
                 case MagicalAbility.Necromancy:
-                    if (Creature.AI != AIType.AI_Necro) 
+                    if (Creature.Controlled && Creature.AI != AIType.AI_Necro) 
                         Creature.AI = AIType.AI_Necro;
                     break;
             }
