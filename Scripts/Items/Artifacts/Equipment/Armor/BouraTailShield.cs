@@ -7,8 +7,7 @@ namespace Server.Items
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public BouraTailShield()
-        {
-            Name = ("Boura Tail Shield");         
+        {    
             Hue = 554;
             Attributes.ReflectPhysical = 10;
             ArmorAttributes.ReactiveParalyze = 1;
@@ -18,6 +17,8 @@ namespace Server.Items
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get{return 1112361;} }// boura tail shield
 
         public override int BasePhysicalResistance
         {
