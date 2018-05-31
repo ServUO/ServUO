@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public BouraTailShield()
         {
-            this.Name = ("Boura Tail Shield");
-            this.ItemID = 0x1B78;
-            this.Hue = 554;
-            this.Attributes.ReflectPhysical = 10;
-            this.ArmorAttributes.ReactiveParalyze = 1;
+            Name = ("Boura Tail Shield");         
+            Hue = 554;
+            Attributes.ReflectPhysical = 10;
+            ArmorAttributes.ReactiveParalyze = 1;
         }
 
         public BouraTailShield(Serial serial)
