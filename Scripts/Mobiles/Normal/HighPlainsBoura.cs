@@ -141,7 +141,7 @@ namespace Server.Mobiles
             {
                 c.DropItem(new BouraSkin());
 
-                if (Utility.RandomDouble() <= 0.001)
+                if (Utility.RandomDouble() <= 0.005)
                 {
                     c.DropItem(new BouraTailShield());
                 }
