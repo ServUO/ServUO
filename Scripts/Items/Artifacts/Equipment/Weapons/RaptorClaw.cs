@@ -9,55 +9,21 @@ namespace Server.Items
         public RaptorClaw()
         {
             this.Name = ("Raptor Claw");
-
-			this.Weight = 4.0;
-            this.Hue = 53;
-            this.Slayer = SlayerName.Silver;
-			this.Attributes = new AosAttributes(this);
-            this.Attributes.AttackChance = 12;			
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 35;
-			this.WeaponAttributes = new AosWeaponAttributes(this);
-            this.WeaponAttributes.HitLeechStam = 40;
-			this.StrRequirement = 25;
+			Weight = 4.0;
+            Hue = 53;
+            Slayer = SlayerName.Silver;
+            Attributes.AttackChance = 12;			
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 35;
+            WeaponAttributes.HitLeechStam = 40;
         }
-
-		public override int AosMinDamage
-		{
-			get
-			{
-				return 8;
-			}
-		}
-
-		public override int AosMaxDamage
-		{
-			get
-			{
-				return 12;
-			}
-		}
-
-		public override int MaxThrowRange
-		{
-			get
-			{
-				return 7;
-			}
-		}
-
-		public override float MlSpeed
-		{
-			get
-			{
-				return 2;
-			}
-		}
 
         public RaptorClaw(Serial serial)
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get{return 1112394;} }// Raptor Claw
 
         public override int InitMinHits
         {
@@ -73,20 +39,7 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
