@@ -177,28 +177,10 @@ namespace Server.Mobiles
 			{
 				c.DropItem(new AncientPotteryFragments());
 			}
-
-			if (!Controlled && c != null && !c.Deleted && c is Corpse)
+            
+            if (!Controlled && Utility.RandomDouble() <= 0.001)
 			{
-				var corpse = (Corpse)c;
-				if (Utility.RandomDouble() < 0.01 && corpse.Killer != null && !corpse.Killer.Deleted)
-				{
-					GiveVArtifactTo(corpse.Killer);
-				}
-			}
-		}
-
-		public static void GiveVArtifactTo(Mobile m)
-		{
-            var item = new RaptorClaw();
-			m.PlaySound(0x5B4);
-
-			if (m.AddToBackpack(item))
-				m.SendLocalizedMessage(1062317);
-			// For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-			else
-				m.SendMessage("As your backpack is full, your reward has been placed at your feet.");
-			{
+				c.DropItem(new RaptorClaw());
 			}
 		}
 
