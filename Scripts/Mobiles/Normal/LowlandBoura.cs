@@ -7,11 +7,6 @@ namespace Server.Mobiles
     [CorpseName("a boura corpse")]
     public class LowlandBoura : BaseCreature, ICarvable
     {
-        public static Type[] VArtifacts =
-        {
-            typeof (BouraTailShield)
-        };
-
         private bool GatheredFur { get; set; }
 
         [Constructable]

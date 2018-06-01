@@ -8,31 +8,23 @@ namespace Server.Items
         [Constructable]
         public AbyssalBlade()
         {
-            this.Name = ("Abyssal Blade");
+            Name = ("Abyssal Blade");
 
-            this.Hue = 2404;
-            this.WeaponAttributes.HitManaDrain = 50;
-            this.WeaponAttributes.HitFatigue = 50;
-            this.WeaponAttributes.HitLeechHits = 60;
-            this.WeaponAttributes.HitLeechStam = 60;
-            this.WeaponAttributes.HitLeechMana = 60;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 60;
-            this.AosElementDamages.Chaos = 100;
+            Hue = 2404;
+            WeaponAttributes.HitManaDrain = 50;
+            WeaponAttributes.HitFatigue = 50;
+            WeaponAttributes.HitLeechHits = 60;
+            WeaponAttributes.HitLeechStam = 60;
+            WeaponAttributes.HitLeechMana = 60;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 60;
+            AosElementDamages.Chaos = 100;
         }
 
         public AbyssalBlade(Serial serial)
             : base(serial)
         {
         }
-		
-		 public override float MlSpeed
-        {
-            get
-            {
-                return 3.75f;
-            }
-        }		
 
         public override int InitMinHits
         {
@@ -48,20 +40,7 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

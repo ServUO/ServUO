@@ -8,15 +8,14 @@ namespace Server.Items
         [Constructable]
         public DeathsHead() 
         {
-            this.Name = ("Death's Head");
+            Name = ("Death's Head");
 		
-            this.Hue = 1154;	
-		
-            this.WeaponAttributes.HitFatigue = 10;
-            this.WeaponAttributes.HitLightning = 45;	
-            this.WeaponAttributes.HitLowerDefend = 30;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 45;
+            Hue = 1154;	
+            WeaponAttributes.HitFatigue = 10;
+            WeaponAttributes.HitLightning = 45;	
+            WeaponAttributes.HitLowerDefend = 30;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 45;
         }
 
         public DeathsHead(Serial serial)
@@ -38,20 +37,7 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

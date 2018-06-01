@@ -8,8 +8,8 @@ namespace Server.Items
         public Boomerang()
             : base(0x8FF)
         {
-            this.Weight = 6.0;
-            this.Layer = Layer.OneHanded;
+            Weight = 4.0;
+            Layer = Layer.OneHanded;
         }
 
         public Boomerang(Serial serial)
