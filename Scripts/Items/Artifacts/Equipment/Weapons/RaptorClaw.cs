@@ -8,8 +8,6 @@ namespace Server.Items
         [Constructable]
         public RaptorClaw()
         {
-            this.Name = ("Raptor Claw");
-			Weight = 4.0;
             Hue = 53;
             Slayer = SlayerName.Silver;
             Attributes.AttackChance = 12;			
