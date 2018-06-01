@@ -39,7 +39,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 65.1;
-
             SetWeaponAbility(WeaponAbility.BleedAttack);
             SetSpecialAbility(SpecialAbility.GraspingClaw);
             SetSpecialAbility(SpecialAbility.TailSwipe);
@@ -51,7 +50,6 @@ namespace Server.Mobiles
         }
 
         public override int DragonBlood { get { return 6; } }
-
         public override bool HasBreath
         {
             get { return true; }
@@ -82,7 +80,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
             
-            if (!Controlled && Utility.RandomDouble() <= 0.001)
+            if (!Controlled && Utility.RandomDouble() <= 0.005)
             {
                 c.DropItem(new StoneSlithClaw());
             }
