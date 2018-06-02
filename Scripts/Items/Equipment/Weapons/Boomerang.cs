@@ -17,13 +17,8 @@ namespace Server.Items
         {
         }
 
-        public override int MinThrowRange
-        {
-            get
-            {
-                return 2;
-            }
-        }// MaxRange 6
+        public override int MinThrowRange { get { return 4; } }
+
         public override WeaponAbility PrimaryAbility
         {
             get

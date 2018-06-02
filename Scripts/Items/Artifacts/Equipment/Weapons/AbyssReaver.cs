@@ -5,41 +5,27 @@ namespace Server.Items
     public class AbyssReaver : BaseThrown
 	{
 		public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1112694; } } // Abyss Reaver
+
         [Constructable]
         public AbyssReaver()
             : base(0x901)
         {
-            this.Weight = 6.0;
-            this.Layer = Layer.OneHanded;
-            this.Hue = 1195;
+            Weight = 6.0;
+            Layer = Layer.OneHanded;
 
-            this.SkillBonuses.SetValues(0, SkillName.Throwing, 10.0);
-            //this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 35;
-
-            this.Slayer = SlayerName.DaemonDismissal;
+            SkillBonuses.SetValues(0, SkillName.Throwing, 10);
+            Attributes.WeaponDamage = 35;
+            Slayer = SlayerName.DaemonDismissal;
         }
 
         public AbyssReaver(Serial serial)
             : base(serial)
         {
-        }
+        }        
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112694;
-            }
-        }// Abyss Reaver
-        public override int MinThrowRange
-        {
-            get
-            {
-                return 4;
-            }
-        }// MaxRange 8
+        public override int MinThrowRange { get { return 6; } }
+
         public override WeaponAbility PrimaryAbility
         {
             get
@@ -54,11 +40,7 @@ namespace Server.Items
                 return WeaponAbility.MovingShot;
             }
         }
-        /*
-        Boomerang 0x8FF: MysticArc, ConcussionBlow
-        Cyclone 2305/0x901: MovingShot, InfusedThrow
-        Soul Glaive 2314/0x090A: ArmorIgnore, MortalStrike
-        */
+
         public override int AosStrengthReq
         {
             get
@@ -91,7 +73,7 @@ namespace Server.Items
         {
             get
             {
-                return 3.00f;
+                return 3.25f;
             }
         }
         public override int OldStrengthReq
@@ -126,14 +108,14 @@ namespace Server.Items
         {
             get
             {
-                return 255;
+                return 35;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return 255;
+                return 70;
             }
         }
         public override Race RequiredRace
@@ -163,8 +145,8 @@ namespace Server.Items
 
             if (version == 0)
             {
-                this.Attributes.AttackChance = 0;
-                this.Attributes.WeaponSpeed = 0;
+                Attributes.AttackChance = 0;
+                Attributes.WeaponSpeed = 0;
             }
         }
     }
