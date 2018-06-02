@@ -7,16 +7,11 @@ using Server.Spells.Sixth;
 
 namespace Server.Regions
 {
-    public class MondainRegion : BaseRegion
+    public class MondainRegion : DungeonRegion
     {
         public MondainRegion(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
         { 
-        }
-
-        public override bool AllowHousing(Mobile from, Point3D p)
-        {
-            return false;
         }
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
