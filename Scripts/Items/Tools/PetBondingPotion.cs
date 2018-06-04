@@ -76,7 +76,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1152924); // That is not a valid pet.
                 }
-				else if (target is BaseTalismanSummon)
+			    else if (target is BaseTalismanSummon)
                 {
                     from.SendLocalizedMessage(1152924); // That is not a valid pet.
                 }
