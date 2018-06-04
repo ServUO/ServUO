@@ -33,9 +33,9 @@ namespace Server.Items
         public DarkenedSky()
             : base()
         {
-            this.WeaponAttributes.HitLightning = 60;
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 50;
+            WeaponAttributes.HitLightning = 60;
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 50;
         }
 
         public DarkenedSky(Serial serial)
@@ -92,7 +92,7 @@ namespace Server.Items
         public KasaOfTheRajin()
             : base()
         {
-            this.Attributes.SpellDamage = 12;
+            Attributes.SpellDamage = 12;
         }
 
         public KasaOfTheRajin(Serial serial)
@@ -171,12 +171,12 @@ namespace Server.Items
 
             if (version <= 1)
             {
-                this.MaxHitPoints = 255;
-                this.HitPoints = 255;
+                MaxHitPoints = 255;
+                HitPoints = 255;
             }
 
             if (version == 0)
-                this.LootType = LootType.Regular;
+                LootType = LootType.Regular;
         }
     }
 
@@ -187,11 +187,11 @@ namespace Server.Items
         public RuneBeetleCarapace()
             : base()
         {
-            this.Attributes.BonusMana = 10;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.LowerManaCost = 15;
-            this.ArmorAttributes.LowerStatReq = 100;
-            this.ArmorAttributes.MageArmor = 1;
+            Attributes.BonusMana = 10;
+            Attributes.RegenMana = 3;
+            Attributes.LowerManaCost = 15;
+            ArmorAttributes.LowerStatReq = 100;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public RuneBeetleCarapace(Serial serial)
@@ -256,9 +256,9 @@ namespace Server.Items
         public Stormgrip()
             : base()
         {
-            this.Attributes.BonusInt = 8;
-            this.Attributes.Luck = 125;
-            this.Attributes.WeaponDamage = 25;
+            Attributes.BonusInt = 8;
+            Attributes.Luck = 125;
+            Attributes.WeaponDamage = 25;
         }
 
         public Stormgrip(Serial serial)
@@ -330,9 +330,9 @@ namespace Server.Items
         public SwordOfTheStampede()
             : base()
         {
-            this.WeaponAttributes.HitHarm = 100;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponDamage = 60;
+            WeaponAttributes.HitHarm = 100;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponDamage = 60;
         }
 
         public SwordOfTheStampede(Serial serial)
@@ -389,10 +389,10 @@ namespace Server.Items
         public SwordsOfProsperity()
             : base()
         {
-            this.WeaponAttributes.MageWeapon = 30;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.Luck = 200;
+            WeaponAttributes.MageWeapon = 30;
+            Attributes.SpellChanneling = 1;
+            Attributes.CastSpeed = 1;
+            Attributes.Luck = 200;
         }
 
         public SwordsOfProsperity(Serial serial)
@@ -449,13 +449,13 @@ namespace Server.Items
         public TheHorselord()
             : base()
         {
-            this.Attributes.BonusDex = 5;
-            this.Attributes.RegenMana = 1;
-            this.Attributes.Luck = 125;
-            this.Attributes.WeaponDamage = 50;
+            Attributes.BonusDex = 5;
+            Attributes.RegenMana = 1;
+            Attributes.Luck = 125;
+            Attributes.WeaponDamage = 50;
 
-            this.Slayer = SlayerName.ElementalBan;
-            this.Slayer2 = SlayerName.ReptilianDeath;
+            Slayer = SlayerName.ElementalBan;
+            Slayer2 = SlayerName.ReptilianDeath;
         }
 
         public TheHorselord(Serial serial)
@@ -506,15 +506,15 @@ namespace Server.Items
         public TomeOfLostKnowledge()
             : base()
         {
-            this.LootType = LootType.Regular;
-            this.Hue = 0x530;
+            LootType = LootType.Regular;
+            Hue = 0x530;
 
-            this.SkillBonuses.SetValues(0, SkillName.Magery, 15.0);
-            this.Attributes.BonusInt = 8;
-            this.Attributes.LowerManaCost = 15;
-            this.Attributes.SpellDamage = 15;
+            SkillBonuses.SetValues(0, SkillName.Magery, 15.0);
+            Attributes.BonusInt = 8;
+            Attributes.LowerManaCost = 15;
+            Attributes.SpellDamage = 15;
 	    
-	    this.LootType = LootType.Blessed;
+	    LootType = LootType.Blessed;
         }
 
         public TomeOfLostKnowledge(Serial serial)
@@ -551,11 +551,11 @@ namespace Server.Items
         public WindsEdge()
             : base()
         {
-            this.WeaponAttributes.HitLeechMana = 40;
+            WeaponAttributes.HitLeechMana = 40;
 
-            this.Attributes.WeaponDamage = 50;
-            this.Attributes.WeaponSpeed = 50;
-            this.Attributes.DefendChance = 10;
+            Attributes.WeaponDamage = 50;
+            Attributes.WeaponSpeed = 50;
+            Attributes.DefendChance = 10;
         }
 
         public WindsEdge(Serial serial)
@@ -649,8 +649,8 @@ namespace Server.Items
         public PigmentsOfTokuno(PigmentType type, int uses)
             : base(uses)
         {
-            this.Weight = 1.0;
-            this.Type = type;
+            Weight = 1.0;
+            Type = type;
         }
 
         public PigmentsOfTokuno(Serial serial)
@@ -663,23 +663,23 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
+                m_Type = value;
 				
-                int v = (int)this.m_Type;
+                int v = (int)m_Type;
 
                 if (v >= 0 && v < m_Table.Length)
                 {
-                    this.Hue = m_Table[v][0];
-                    this.Label = m_Table[v][1];
+                    Hue = m_Table[v][0];
+                    Label = m_Table[v][1];
                 }
                 else
                 {
-                    this.Hue = 0;
-                    this.Label = -1;
+                    Hue = 0;
+                    Label = -1;
                 }
             }
         }
@@ -706,19 +706,19 @@ namespace Server.Items
 
             writer.Write((int)1);
 
-            writer.WriteEncodedInt((int)this.m_Type);
+            writer.WriteEncodedInt((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BasePigmentsOfTokuno insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BasePigmentsOfTokuno insertion
 			
             switch ( version )
             {
                 case 1:
-                    this.Type = (PigmentType)reader.ReadEncodedInt();
+                    Type = (PigmentType)reader.ReadEncodedInt();
                     break;
                 case 0:
                     break;

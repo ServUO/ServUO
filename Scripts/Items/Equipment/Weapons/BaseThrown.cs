@@ -151,13 +151,21 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+                InheritsItem = true;
         }
+
+        #region Old Item Serialization Vars
+        /* DO NOT USE! Only used in serialization of abyss reaver that originally derived from Item */
+        public bool InheritsItem { get; protected set; }
+        #endregion
     }
 }
