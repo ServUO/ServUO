@@ -9,17 +9,16 @@ namespace Server.Items
         [Constructable]
         public AxeOfAbandon() 
         {
-            this.Name = ("Axe Of Abandon");
+            Name = ("Axe Of Abandon");
 		
-            this.Hue = 556;	
-		
-            this.WeaponAttributes.HitLowerDefend = 40;
-            this.WeaponAttributes.BattleLust = 1;		
-            this.Attributes.AttackChance = 15;
-            this.Attributes.DefendChance = 10;	
-            this.Attributes.CastSpeed = 1;	
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 50;		
+            Hue = 556;		
+            WeaponAttributes.HitLowerDefend = 40;
+            WeaponAttributes.BattleLust = 1;		
+            Attributes.AttackChance = 15;
+            Attributes.DefendChance = 10;	
+            Attributes.CastSpeed = 1;	
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 50;		
         }
 
         public AxeOfAbandon(Serial serial)
@@ -31,14 +30,14 @@ namespace Server.Items
         {
             get
             {
-                return 31;
+                return 255;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return 70;
+                return 255;
             }
         }
         public override void Serialize(GenericWriter writer)

@@ -6,11 +6,6 @@ namespace Server.Mobiles
     [CorpseName("a slith corpse")]
     public class StoneSlith : BaseCreature
     {
-        public static Type[] VArtifacts =
-        {
-            typeof (StoneSlithClaw)
-        };
-
         [Constructable]
         public StoneSlith()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -44,7 +39,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 65.1;
-
             SetWeaponAbility(WeaponAbility.BleedAttack);
             SetSpecialAbility(SpecialAbility.GraspingClaw);
             SetSpecialAbility(SpecialAbility.TailSwipe);
@@ -56,7 +50,6 @@ namespace Server.Mobiles
         }
 
         public override int DragonBlood { get { return 6; } }
-
         public override bool HasBreath
         {
             get { return true; }
@@ -86,6 +79,11 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
+            
+            if (!Controlled && Utility.RandomDouble() <= 0.005)
+            {
+                c.DropItem(new StoneSlithClaw());
+            }
 
             if (!Controlled && Utility.RandomDouble() < 0.05)
             {
@@ -103,31 +101,8 @@ namespace Server.Mobiles
                         c.DropItem(new TatteredAncientScroll());
                         break;
                 }
-            }
-
-            if (!Controlled && c != null && !c.Deleted && c is Corpse)
-            {
-                var corpse = (Corpse) c;
-                if (Utility.RandomDouble() < 0.01 && corpse.Killer != null && !corpse.Killer.Deleted)
-                {
-                    GiveVArtifactTo(corpse.Killer);
-                }
-            }
-        }
-
-        public static void GiveVArtifactTo(Mobile m)
-        {
-            var item = (Item) Activator.CreateInstance(VArtifacts[Utility.Random(VArtifacts.Length)]);
-			m.PlaySound(0x5B4);
-
-            if (m.AddToBackpack(item))
-                m.SendLocalizedMessage(1062317);
-                    // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-            else
-                m.SendMessage("As your backpack is full, your reward has been placed at your feet.");
-            {
-            }
-        }
+            }        
+        }     
 
         public override void Serialize(GenericWriter writer)
         {

@@ -8,17 +8,16 @@ namespace Server.Items
         [Constructable]
         public BansheesCall() 
         {
-            this.Name = ("Banshee's Call");
+            Name = ("Banshee's Call");
 		
-            this.Hue = 1266;
-			
-            this.WeaponAttributes.HitHarm = 40;
-            this.Attributes.BonusStr = 5;
-            this.WeaponAttributes.HitLeechHits = 45;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 50;
-            this.Velocity = 35;		
-            this.AosElementDamages.Cold = 100;
+            Hue = 1266;		
+            WeaponAttributes.HitHarm = 40;
+            Attributes.BonusStr = 5;
+            WeaponAttributes.HitLeechHits = 45;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 50;
+            Velocity = 35;		
+            AosElementDamages.Cold = 100;
         }
 
         public BansheesCall(Serial serial)
@@ -26,13 +25,6 @@ namespace Server.Items
         {
         }
 
-        public override int MinThrowRange
-        {
-            get
-            {
-                return 4;
-            }
-        }// MaxRange 8
         public override int InitMinHits
         {
             get
@@ -47,20 +39,7 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
+       
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

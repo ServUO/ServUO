@@ -8,17 +8,16 @@ namespace Server.Items
         [Constructable]
         public AxesOfFury() 
         {
-            this.Name = ("Axes Of Fury");
+            Name = ("Axes Of Fury");
 		
-            this.Hue = 33;	
-			
-            this.WeaponAttributes.HitFireball = 45;
-            this.WeaponAttributes.HitLowerDefend = 40;			
-            this.Attributes.BonusDex = 5;			
-            this.Attributes.DefendChance = -15;			
-            this.Attributes.AttackChance = 20;	
-            this.Attributes.WeaponDamage = 45;
-            this.Attributes.WeaponSpeed = 30;	
+            Hue = 33;			
+            WeaponAttributes.HitFireball = 45;
+            WeaponAttributes.HitLowerDefend = 40;			
+            Attributes.BonusDex = 5;			
+            Attributes.DefendChance = -15;			
+            Attributes.AttackChance = 20;	
+            Attributes.WeaponDamage = 45;
+            Attributes.WeaponSpeed = 30;	
         }
 
         public AxesOfFury(Serial serial)
@@ -40,20 +39,7 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+       
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
