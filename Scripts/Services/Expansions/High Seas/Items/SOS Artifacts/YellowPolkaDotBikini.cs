@@ -10,7 +10,7 @@ namespace Server.Items
 		[Constructable]
 		public YellowPolkaDotBikini() 
 		{
-			Hue = 254;
+            Hue = 1169;
 		}
 
         public override void AddNameProperties(ObjectPropertyList list)
@@ -27,13 +27,16 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{	
 			base.Serialize(writer);
-            writer.Write((int)0);	
+            writer.Write((int)1);	
 		}
 	
 		public override void Deserialize(GenericReader reader)
 		{
 		 	base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+            if (version == 0)
+                Hue = 1169;
 		}
 	}
 }

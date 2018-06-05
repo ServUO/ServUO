@@ -225,14 +225,16 @@ namespace Server.Spells.SkillMasteries
                             if (((BaseCreature)defender).GetMaster() is PlayerMobile)
                             {
                                 var pm = ((BaseCreature)defender).GetMaster() as PlayerMobile;
-
                                 var list = pm.AllFollowers.Where(m => (m == defender || m.InRange(defender.Location, 3)) && m.CanBeHarmful(attacker)).ToList();
 
-                                damage = damage / list.Count;
-
-                                foreach (var m in list.Where(mob => mob != defender))
+                                if (list.Count > 0)
                                 {
-                                    m.Damage(damage, attacker, true, false);
+                                    damage = damage / list.Count;
+
+                                    foreach (var m in list.Where(mob => mob != defender))
+                                    {
+                                        m.Damage(damage, attacker, true, false);
+                                    }
                                 }
 
                                 ColUtility.Free(list);
