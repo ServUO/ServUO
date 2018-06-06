@@ -5,29 +5,21 @@ namespace Server.Items
     public class AbyssReaver : Cyclone
 	{
 		public override bool IsArtifact { get { return true; } }
+    public override int LabelNumber { get { return 1112694; } } // Abyss Reaver
 
         [Constructable]
         public AbyssReaver()
             : base(0x901)
         {
-            Weight = 6.0;
-            Layer = Layer.OneHanded;
-            Hue = 1195;
-
-            SkillBonuses.SetValues(0, SkillName.Throwing, 10.0);
-            //Attributes.AttackChance = 15;
-            Attributes.WeaponSpeed = 30;
-            Attributes.WeaponDamage = 35;
-
-            Slayer = SlayerName.DaemonDismissal;
+            SkillBonuses.SetValues(0, SkillName.Throwing, Utility.RandomMinMax(5, 10));
+            Attributes.WeaponDamage = Utility.RandomMinMax(25, 35);
+            Slayer = SlayerName.Exorcism;
         }
 
         public AbyssReaver(Serial serial)
             : base(serial)
         {
         }
-
-        public override int LabelNumber { get { return 1112694; } } // Abyss Reaver
         
         public override void Serialize(GenericWriter writer)
         {
