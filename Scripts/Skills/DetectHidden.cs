@@ -174,13 +174,13 @@ namespace Server.SkillHandlers
 
         private static bool CanDetect(Mobile src, Mobile target)
         {
-            if (src.Blessed || (src is BaseCreature && ((BaseCreature)src).IsInvulnerable))
+            if (src.Map == null || src.Blessed || (src is BaseCreature && ((BaseCreature)src).IsInvulnerable))
                 return false;
 
             if (target.Blessed || (target is BaseCreature && ((BaseCreature)target).IsInvulnerable))
                 return false;
 
-            return src.CanBeHarmful(target, false) && SpellHelper.ValidIndirectTarget(src, target);
+            return src.CanBeHarmful(target, false) && (src.Map.Rules != MapRules.FeluccaRules || SpellHelper.ValidIndirectTarget(src, target));
         }
     }
 }

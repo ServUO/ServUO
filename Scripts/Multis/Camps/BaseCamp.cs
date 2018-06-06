@@ -116,21 +116,51 @@ namespace Server.Multis
 
         public virtual void AddItem(Item item, int xOffset, int yOffset, int zOffset)
         {
+            if (Map == null)
+                return;
+
             m_Items.Add(item);
 
-            int zavg = Map.GetAverageZ(X + xOffset, Y + yOffset);
+            int zavg = this.Map.GetAverageZ(X + xOffset, Y + yOffset);
+
+            if (!Map.CanFit(X + xOffset, Y + yOffset, zavg, item.ItemData.Height))
+            {
+                for (int z = 1; z <= 39; z++)
+                {
+                    if (Map.CanFit(X + xOffset, Y + yOffset, zavg + z, item.ItemData.Height))
+                    {
+                        zavg += z;
+                        break;
+                    }
+                }
+            }
+
             item.MoveToWorld(new Point3D(X + xOffset, Y + yOffset, zavg + zOffset), Map);
         }
 
         public virtual void AddMobile(Mobile m, int xOffset, int yOffset, int zOffset)
         {
+            if (Map == null)
+                return;
+
             if(!m_Mobiles.Contains(m))
                 m_Mobiles.Add(m);
 
             int zavg = Map.GetAverageZ(X + xOffset, Y + yOffset);
-            Point3D loc = new Point3D(X + xOffset, Y + yOffset, zavg + zOffset);
 
-            m.MoveToWorld(loc, Map);
+            if (!Map.CanSpawnMobile(X + xOffset, Y + yOffset, zavg))
+            {
+                for (int z = 1; z <= 39; z++)
+                {
+                    if (Map.CanSpawnMobile(X + xOffset, Y + yOffset, zavg + z))
+                    {
+                        zavg += z;
+                        break;
+                    }
+                }
+            }
+
+            m.MoveToWorld(new Point3D(X + xOffset, Y + yOffset, zavg + zOffset), Map);
             SetCreature(m as BaseCreature);
         }
 

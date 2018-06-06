@@ -66,7 +66,7 @@ namespace Server.Items
 			new TrophyInfo( typeof( Troll ),		  0x1E66,		1041092, 1041106 ),
             new TrophyInfo( typeof( RedHerring ),     0x1E62,		1113567, 1113569 ),
             new TrophyInfo( typeof( MudPuppy ),		  0x1E62,		1113568, 1113570 ),
-            //HighSeas - not yet :)
+
             new TrophyInfo( typeof( AutumnDragonfish),     0,       1116124, 1116185 ),
             new TrophyInfo( typeof( BullFish ),            1,       1116129, 1116190 ),
             new TrophyInfo( typeof( FireFish ),            2,       1116127, 1116188 ),

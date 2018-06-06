@@ -8,17 +8,15 @@ namespace Server.Items
         [Constructable]
         public BladeOfBattle() 
         {
-            this.Name = ("Blade Of Battle");
+            Name = ("Blade Of Battle");
 		
-            this.Hue = 2045;	
-		
-            this.WeaponAttributes.HitLowerDefend = 40;
-            this.WeaponAttributes.BattleLust = 1;
-            this.Attributes.AttackChance = 15;
-            this.Attributes.DefendChance = 10;
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 50;
-			this.StrRequirement = 10;
+            Hue = 2045;		
+            WeaponAttributes.HitLowerDefend = 40;
+            WeaponAttributes.BattleLust = 1;
+            Attributes.AttackChance = 15;
+            Attributes.DefendChance = 10;
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 50;
         }
 
         public BladeOfBattle(Serial serial)
@@ -39,37 +37,8 @@ namespace Server.Items
             {
                 return 255;
             }
-        }
-		
-        public override int AosMinDamage
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int AosMaxDamage
-        {
-            get
-            {
-                return 13;
-            }
-        }		
-		
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
+        }    		
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

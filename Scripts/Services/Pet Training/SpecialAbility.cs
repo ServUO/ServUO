@@ -820,12 +820,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m == creature || !creature.CanBeHarmful(m, false))
-                    continue;
-
-                if (m is BaseCreature && !((BaseCreature)m).IsMonster)
-                    list.Add(m);
-                else if (m.Player)
+                if (AreaEffect.ValidTarget(creature, m))
                     list.Add(m);
             }
 
@@ -1065,13 +1060,8 @@ namespace Server.Mobiles
 			
 			foreach(Mobile m in eable)
 			{
-                if (creature != m &&
-                    creature.CanBeHarmful(m, false) && 
-                    Server.Spells.SpellHelper.ValidIndirectTarget(creature, m) && 
-                    creature.InLOS(m))
-				{
-					list.Add(m);
-				}
+                if (AreaEffect.ValidTarget(creature, m))
+                    list.Add(m);
 			}
 			
 			eable.Free();

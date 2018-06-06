@@ -93,6 +93,11 @@ namespace Server.Mobiles
 
         public override Spell GetRandomBuffSpell()
         {
+            if (UsesMagery)
+            {
+                return base.GetRandomBuffSpell();
+            }
+
             return null;
         }
 
@@ -122,7 +127,7 @@ namespace Server.Mobiles
                     }
                     break;
             }
-            if (m_Mobile.Controlled) m_Mobile.Say("Casting: {0}", spell.GetType().Name);
+
             return spell;
         }
 

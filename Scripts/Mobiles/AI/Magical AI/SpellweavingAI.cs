@@ -36,6 +36,16 @@ namespace Server.Mobiles
 
             return null;
 		}
+
+        public override Spell GetRandomCurseSpell()
+        {
+            if (UsesMagery)
+            {
+                return base.GetRandomCurseSpell();
+            }
+
+            return null;
+        }
 		
 		public override Spell GetRandomDamageSpell()
 		{
@@ -69,11 +79,27 @@ namespace Server.Mobiles
 		
 		public override Spell GetHealSpell()
 		{
-            if(m_Mobile.Mana >= 24)
-			    return new GiftOfRenewalSpell(m_Mobile, null);
+            if (UsesMagery && 0.5 > Utility.RandomDouble())
+            {
+                return base.GetHealSpell();
+            }
+            else if (m_Mobile.Mana >= 24)
+            {
+                return new GiftOfRenewalSpell(m_Mobile, null);
+            }
 
             return null;
 		}
+
+        public override Spell GetCureSpell()
+        {
+            if (UsesMagery)
+            {
+                return base.GetCureSpell();
+            }
+
+            return null;
+        }
 		
 		protected override bool ProcessTarget()
 		{

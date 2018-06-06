@@ -1768,8 +1768,13 @@ namespace Server.Items
 					{
 						if (weapon != null)
 						{
+                            var combatant = defender.Combatant;
+
 							defender.FixedParticles(0x3779, 1, 15, 0x158B, 0x0, 0x3, EffectLayer.Waist);
 							weapon.OnSwing(defender, attacker);
+
+                            if (combatant != null && defender.Combatant != combatant && combatant.Alive)
+                                defender.Combatant = combatant;
 						}
 
 						CounterAttack.StopCountering(defender);
@@ -1829,6 +1834,10 @@ namespace Server.Items
 				if (toHit != null)
 				{
                     toHit.OnHit(this, damage); // call OnHit to lose durability
+
+                    if (attacker is VeriteElemental || attacker is ValoriteElemental)
+                        VeriteElemental.OnHit(defender, (Item)toHit, damage);
+
                     damage -= XmlAttach.OnArmorHit(attacker, defender, (Item)toHit, this, originalDamage);
 				}
 			}
@@ -2410,16 +2419,6 @@ namespace Server.Items
 
 			damage = AOS.Scale(damage, 100 + percentageBonus);
 			#endregion
-
-			if (attacker is BaseCreature)
-			{
-				((BaseCreature)attacker).AlterMeleeDamageTo(defender, ref damage);
-			}
-
-			if (defender is BaseCreature)
-			{
-				((BaseCreature)defender).AlterMeleeDamageFrom(attacker, ref damage);
-			}
 
             damage = AbsorbDamage(attacker, defender, damage);
 
@@ -5233,7 +5232,7 @@ namespace Server.Items
             }
         }
 
-		/*public virtual int GetLuckBonus()
+		public virtual int GetLuckBonus()
 		{
 			#region Mondain's Legacy
 			if (m_Resource == CraftResource.Heartwood)
@@ -5257,7 +5256,7 @@ namespace Server.Items
 			}
 
 			return attrInfo.WeaponLuck;
-		}*/
+		}
 
         public override void AddWeightProperty(ObjectPropertyList list)
         {
@@ -5700,7 +5699,7 @@ namespace Server.Items
 				list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
 			}
 
-			if ((prop = (/*GetLuckBonus() + */m_AosAttributes.Luck)) != 0)
+			if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
 			{
 				list.Add(1060436, prop.ToString()); // luck ~1_val~
 			}
@@ -5945,7 +5944,10 @@ namespace Server.Items
 					case SkillName.Archery:
 						list.Add(1061175);
 						break; // skill required: archery
-				}
+                    case SkillName.Throwing:
+                        list.Add(1112075); // skill required: throwing
+                        break;
+                }
 			}
 
 			XmlAttach.AddAttachmentProperties(this, list);
@@ -6124,11 +6126,6 @@ namespace Server.Items
 
 				CraftContext context = craftSystem.GetContext(from);
 
-				if (context != null && context.DoNotColor)
-				{
-					Hue = 0;
-				}
-
 				if (Quality == ItemQuality.Exceptional)
 				{
 					Attributes.WeaponDamage += 35;
@@ -6159,13 +6156,6 @@ namespace Server.Items
 					if (thisResource == ((BaseRunicTool)tool).Resource)
 					{
 						Resource = thisResource;
-
-						CraftContext context = craftSystem.GetContext(from);
-
-						if (context != null && context.DoNotColor)
-						{
-							Hue = 0;
-						}
 
 						switch (thisResource)
 						{

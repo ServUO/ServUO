@@ -13,39 +13,39 @@ namespace Server.Mobiles
         public DiabolicalSeaweed()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.0, 0.0)
         {
-            this.Name = "Diabolical Seaweed";
-            this.Body = 129;
-            this.Hue = 1914;
+            Name = "Diabolical Seaweed";
+            Body = 129;
+            Hue = 1914;
 
-            this.SetStr(452, 485);
-            this.SetDex(401, 420);
-            this.SetInt(126, 140);
+            SetStr(452, 485);
+            SetDex(401, 420);
+            SetInt(126, 140);
 
-            this.SetHits(501, 532);
+            SetHits(501, 532);
 
-            this.SetDamage(10, 23);
+            SetDamage(10, 23);
 
-            this.SetDamageType(ResistanceType.Physical, 60);
-            this.SetDamageType(ResistanceType.Poison, 40);
+            SetDamageType(ResistanceType.Physical, 60);
+            SetDamageType(ResistanceType.Poison, 40);
 
-            this.SetResistance(ResistanceType.Physical, 35, 40);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 10, 20);
-            this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 35, 40);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 10, 20);
+            SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.MagicResist, 50.1, 54.7);
-            this.SetSkill(SkillName.Tactics, 100.3, 114.8);
-            this.SetSkill(SkillName.Wrestling, 45.1, 59.5);
+            SetSkill(SkillName.MagicResist, 50.1, 54.7);
+            SetSkill(SkillName.Tactics, 100.3, 114.8);
+            SetSkill(SkillName.Wrestling, 45.1, 59.5);
 
-            this.Fame = 3000;
-            this.Karma = -3000;
-            this.CantWalk = true;
+            Fame = 3000;
+            Karma = -3000;
+            CantWalk = true;
 
-            this.VirtualArmor = 60;
+            VirtualArmor = 60;
 
-            this.m_Timer = new PullTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new PullTimer(this);
+            m_Timer.Start();
 
             switch (Utility.Random(8))
             {
@@ -69,10 +69,10 @@ namespace Server.Mobiles
 
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
 
             base.OnAfterDelete();
         }
@@ -85,22 +85,22 @@ namespace Server.Mobiles
             public PullTimer(DiabolicalSeaweed owner)
                 : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {
-                this.m_Owner = owner;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Owner = owner;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                if (this.m_Owner.Deleted)
+                if (m_Owner.Deleted)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
 
                 IPooledEnumerable eable = m_Owner.GetMobilesInRange(9);
                 foreach (Mobile m in eable)
                 {
-                    if (m == null || m is DiabolicalSeaweed || !this.m_Owner.CanBeHarmful(m) || m.AccessLevel == AccessLevel.Player)
+                    if (m == null || m is DiabolicalSeaweed || !m_Owner.CanBeHarmful(m) || m.AccessLevel == AccessLevel.Player)
                         continue;
 
                     int offsetX = Math.Abs(m.Location.X - m_Owner.Location.X);
@@ -126,16 +126,16 @@ namespace Server.Mobiles
 
                 foreach (Mobile m in m_ToDrain)
                 {
-                    this.m_Owner.DoHarmful(m);
+                    m_Owner.DoHarmful(m);
 
                     //m.FixedParticles( 0x376A, 10, 15, 5052, EffectLayer.Waist );
                     //m.PlaySound(0x1F1);
                     int drain = Utility.RandomMinMax(1, 10);
-                    int ownerlocX = this.m_Owner.Location.X + Utility.RandomMinMax(-1, 1);
-                    int ownerlocY = this.m_Owner.Location.Y + Utility.RandomMinMax(-1, 1);
-                    int ownerlocZ = this.m_Owner.Location.Z;
-                    m.MoveToWorld(new Point3D(ownerlocX, ownerlocY, ownerlocZ), this.m_Owner.Map);
-                    m.Damage(drain, this.m_Owner);
+                    int ownerlocX = m_Owner.Location.X + Utility.RandomMinMax(-1, 1);
+                    int ownerlocY = m_Owner.Location.Y + Utility.RandomMinMax(-1, 1);
+                    int ownerlocZ = m_Owner.Location.Z;
+                    m.MoveToWorld(new Point3D(ownerlocX, ownerlocY, ownerlocZ), m_Owner.Map);
+                    m.Damage(drain, m_Owner);
                 }
 
                 m_ToDrain.Clear();
@@ -158,7 +158,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -175,8 +175,8 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            this.m_Timer = new PullTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new PullTimer(this);
+            m_Timer.Start();
 
         }
     }

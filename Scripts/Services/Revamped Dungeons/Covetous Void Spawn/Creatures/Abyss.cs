@@ -50,7 +50,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage)
         {
             Name = "a gargoyle assassin";
-            Body = 0x2F1;
+            Body = 0x4;
             BaseSoundID = 0x174;
         }
 
@@ -59,7 +59,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, level, voidSpawn)
         {
             Name = "a gargoyle assassin";
-            Body = 0x2F1;
+            Body = 0x4;
             BaseSoundID = 0x174;
         }
 

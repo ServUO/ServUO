@@ -165,7 +165,7 @@ namespace Server
                 typeof(Barracoon), typeof(Neira),
                 typeof(Rikktor), typeof(EnergyVortex),
                 typeof(EliteNinja), typeof(Pixie), typeof(SilverSerpent),
-                typeof(VorpalBunny), typeof(FleshRenderer), typeof(KhaldunRevenant),
+                typeof(FleshRenderer), typeof(KhaldunRevenant),
                 typeof(FactionDragoon), typeof(FactionKnight), typeof(FactionPaladin),
                 typeof(FactionHenchman), typeof(FactionMercenary), typeof(FactionNecromancer),
                 typeof(FactionSorceress), typeof(FactionWizard), typeof(FactionBerserker),

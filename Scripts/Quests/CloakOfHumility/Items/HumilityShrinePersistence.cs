@@ -101,22 +101,22 @@ namespace Server.Engines.Quests
             next.RangeHome = 40;
 
             next = new Jason();
-            next.MoveToWorld(new Point3D(610, 2197, 0), Map.Trammel);
+            next.MoveToWorld(new Point3D(610, 2197, 0), Siege.SiegeShard ? Map.Felucca : Map.Trammel);
             next.Home = next.Location;
             next.RangeHome = 40;
 
             next = new Kevin();
-            next.MoveToWorld(new Point3D(2464, 439, 15), Map.Trammel);
+            next.MoveToWorld(new Point3D(2464, 439, 15), Siege.SiegeShard ? Map.Felucca : Map.Trammel);
             next.Home = next.Location;
             next.RangeHome = 40;
 
             next = new Maribel();
-            next.MoveToWorld(new Point3D(1443, 1701, 0), Map.Trammel);
+            next.MoveToWorld(new Point3D(1443, 1701, 0), Siege.SiegeShard ? Map.Felucca : Map.Trammel);
             next.Home = next.Location;
             next.RangeHome = 40;
 
             next = new Nelson();
-            next.MoveToWorld(new Point3D(3441, 2623, 36), Map.Trammel);
+            next.MoveToWorld(new Point3D(3441, 2623, 36), Siege.SiegeShard ? Map.Felucca : Map.Trammel);
             next.Home = next.Location;
             next.RangeHome = 40;
 

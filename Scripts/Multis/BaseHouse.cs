@@ -320,8 +320,57 @@ namespace Server.Multis
             if (Core.ML)
                 new TempNoHousingRegion(this, null);
 
+            if (Core.SA)
+            {
+                Rectangle3D[] recs = m_Region.Area;
+                Map map = Map;
+
+                Timer.DelayCall(TimeSpan.FromMilliseconds(250), () => OnAfterDecay(recs, map));
+            }
+
             KillVendors();
             Delete();
+        }
+
+        public virtual void OnAfterDecay(Rectangle3D[] recs, Map map)
+        {
+            if (map != null && recs.Length > 0)
+            {
+                int count = Utility.RandomMinMax(1, 4);
+
+                for (int i = 0; i < count; i++)
+                {
+                    var rec3D = recs[Utility.Random(recs.Length)];
+                    var rec2D = new Rectangle2D(rec3D.Start, rec3D.End);
+
+                    IPooledEnumerable eable = map.GetItemsInBounds(rec2D);
+                    var list = new List<Item>();
+
+                    foreach (Item item in eable)
+                    {
+                        if (item.RootParent == null && item.Movable && item.LootType != LootType.Blessed)
+                        {
+                            list.Add(item);
+                        }
+                    }
+
+                    if (list.Count > 0)
+                    {
+                        Item item = list[Utility.Random(list.Count)];
+
+                        if (item != null)
+                        {
+                            var grubber = new Grubber();
+                            grubber.MoveToWorld(item.Location, item.Map);
+
+                            grubber.PackItem(item);
+                        }
+                    }
+
+                    eable.Free();
+                    ColUtility.Free(list);
+                }
+            }
         }
 
         public virtual TimeSpan RestrictedPlacingTime
@@ -919,7 +968,17 @@ namespace Server.Multis
 
                             if (item is IAddon)
                             {
-                                Item deed = ((IAddon)item).Deed;
+                                Item deed;
+
+                                if (item is FishTrophy)
+                                {
+                                    deed = ((FishTrophy)item).TrophyDeed;
+                                }
+                                else
+                                {
+                                    deed = ((IAddon)item).Deed;
+                                }
+
                                 bool retainDeedHue = false;	//if the items aren't hued but the deed itself is
                                 int hue = 0;
 

@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public VorpalBunny()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.06, 0.1)
         {
             Name = "a vorpal bunny";
             Body = 205;
@@ -76,6 +76,20 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Rich, 2);
+        }
+
+        public override IDamageable Combatant
+        {
+            get { return base.Combatant; }
+            set
+            {
+                base.Combatant = value;
+
+                if (0.10 > Utility.RandomDouble())
+                    StopFlee();
+                else if (!CheckFlee())
+                    BeginFlee(TimeSpan.FromSeconds(10));
+            }
         }
 
         public virtual void DelayBeginTunnel()

@@ -107,11 +107,19 @@ namespace Server.Regions
             }
 
             return true;
-        }
+        }*/
 
         public override void OnEnter(Mobile m)
         {
-            if (m.NetState == null)
+            if (m.AccessLevel == AccessLevel.Player && m_House != null && m_House.IsFriend(m))
+            {
+                if (Core.AOS && m_House is HouseFoundation)
+                {
+                    m_House.RefreshDecay();
+                }
+            }
+
+            /*if (m.NetState == null)
                 return;
 
             foreach (var item in GetEnumeratedItems())
@@ -120,8 +128,8 @@ namespace Server.Regions
                 {
                     item.SendInfoTo(m.NetState);
                 }
-            }
-        }*/
+            }*/
+        }
 
         public override bool SendInaccessibleMessage(Item item, Mobile from)
         {

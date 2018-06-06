@@ -114,6 +114,23 @@ namespace Server.Items
             }
         }
 
+        public virtual void DropItemStack(Item dropped)
+        {
+            List<Item> list = Items;
+
+            ItemFlags.SetTaken(dropped, true);
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                Item item = list[i];
+
+                if (!(item is Container) && item.StackWith(null, dropped, false))
+                    return;
+            }
+
+            DropItem(dropped);
+        }
+
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
             if (!CheckHold(from, dropped, sendFullMessage, !CheckStack(from, dropped)))

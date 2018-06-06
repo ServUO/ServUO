@@ -561,23 +561,23 @@ namespace Server.Items
         public void FixedParticles(
             int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer, int unknown)
         {
-            Effects.SendTargetParticles(this, itemID, speed, duration, hue, renderMode, effect, layer, unknown);
+            Effects.SendLocationParticles(this, itemID, speed, duration, hue, renderMode, effect, unknown);
         }
 
         public void FixedParticles(
             int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer)
         {
-            Effects.SendTargetParticles(this, itemID, speed, duration, hue, renderMode, effect, layer, 0);
+            Effects.SendLocationParticles(this, itemID, speed, duration, hue, renderMode, effect, 0);
         }
 
         public void FixedParticles(int itemID, int speed, int duration, int effect, EffectLayer layer, int unknown)
         {
-            Effects.SendTargetParticles(this, itemID, speed, duration, 0, 0, effect, layer, unknown);
+            Effects.SendLocationParticles(this, itemID, speed, duration, 0, 0, effect, unknown);
         }
 
         public void FixedParticles(int itemID, int speed, int duration, int effect, EffectLayer layer)
         {
-            Effects.SendTargetParticles(this, itemID, speed, duration, 0, 0, effect, layer, 0);
+            Effects.SendLocationParticles(this, itemID, speed, duration, 0, 0, effect, 0);
         }
 
         public void BoltEffect(int hue)

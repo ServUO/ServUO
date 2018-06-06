@@ -410,12 +410,12 @@ namespace Server.Engines.Craft
             #region Mondain's Legacy
             if (Core.ML)
             {
-                index = AddCraft(typeof(ArcaneBookshelfSouthDeed), 1044292, 1072871, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
+                index = AddCraft(typeof(ArcaneBookShelfDeedSouth), 1044292, 1072871, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
                 AddRecipe(index, (int)CarpRecipes.ArcaneBookshelfSouth);
                 ForceNonExceptional(index);
                 SetNeededExpansion(index, Expansion.ML);
 
-                index = AddCraft(typeof(ArcaneBookshelfEastDeed), 1044292, 1073371, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
+                index = AddCraft(typeof(ArcaneBookShelfDeedEast), 1044292, 1073371, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
                 AddRecipe(index, (int)CarpRecipes.ArcaneBookshelfEast);
                 ForceNonExceptional(index);
                 SetNeededExpansion(index, Expansion.ML);
@@ -438,12 +438,12 @@ namespace Server.Engines.Craft
                 ForceNonExceptional(index);
                 SetNeededExpansion(index, Expansion.ML);
 
-                index = AddCraft(typeof(ElvenDresserSouthDeed), 1044292, 1072864, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
+                index = AddCraft(typeof(ElvenDresserDeedSouth), 1044292, 1072864, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
                 AddRecipe(index, (int)CarpRecipes.ElvenDresserSouth);
                 ForceNonExceptional(index);
                 SetNeededExpansion(index, Expansion.ML);
 
-                index = AddCraft(typeof(ElvenDresserEastDeed), 1044292, 1073388, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
+                index = AddCraft(typeof(ElvenDresserDeedEast), 1044292, 1073388, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
                 AddRecipe(index, (int)CarpRecipes.ElvenDresserEast);
                 ForceNonExceptional(index);
                 SetNeededExpansion(index, Expansion.ML);

@@ -115,18 +115,6 @@ namespace Server.Mobiles
             AddLoot(LootPack.Potions, 1);
         }
 
-        public override void AlterMeleeDamageTo(Mobile to, ref int damage)
-        {
-            if (Utility.RandomBool() && (Mana > 14) && to != null)
-            {
-                damage = (damage + (damage / 2));
-                to.SendLocalizedMessage(1060091); // You take extra damage from the crushing attack!
-                to.PlaySound(0x1E1);
-                to.FixedParticles(0x377A, 1, 32, 0x26da, 0, 0, 0);
-                Mana -= 15;
-            }
-        }
-
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             Mobile combatant = Combatant as Mobile;

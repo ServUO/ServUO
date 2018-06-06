@@ -9,23 +9,9 @@ namespace Server.Engines.Quests
         public IntoTheVoidQuest()
             : base()
         {
-            switch (Utility.Random(4))
-            {
-                case 0:
-                    this.AddObjective(new SlayObjective(typeof(Anzuanord),"Anzuanord" , 10));
-                    break;
-                case 1:
-                    this.AddObjective(new SlayObjective(typeof(Vasanord), "Vasanord", 10));
-                    break;
-                case 2:
-                    this.AddObjective(new SlayObjective(typeof(UsagralemBallem), "Usagralem Ballem ", 10));
-                    break;
-                case 3:
-                    this.AddObjective(new SlayObjective(typeof(Anlorzen), "Anlorzen", 10));
-                    break;
-            }
+            AddObjective(new SlayObjective(typeof(BaseVoidCreature), "Void Daemons", 10));
 
-            this.AddReward(new BaseReward(typeof(AbyssReaver), 1112694));/////Abyss Reaver
+            AddReward(new BaseReward(typeof(AbyssReaver), 1112694)); // Abyss Reaver
         }
 
         public override bool DoneOnce
@@ -100,6 +86,11 @@ namespace Server.Engines.Quests
         public Agralem(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void Advertise()
+        {
+            Say(1112688); // Daemons from the void! They must be vanquished!
         }
 
         public override Type[] Quests

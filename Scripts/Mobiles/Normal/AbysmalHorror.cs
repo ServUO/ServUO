@@ -31,12 +31,17 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Poison, 60, 65);
             SetResistance(ResistanceType.Energy, 77, 80);
 
-            SetSkill(SkillName.EvalInt, 200.0);
-            SetSkill(SkillName.Magery, 112.6, 117.5);
-            SetSkill(SkillName.Meditation, 200.0);
-            SetSkill(SkillName.MagicResist, 117.6, 120.0);
-            SetSkill(SkillName.Tactics, 100.0);
             SetSkill(SkillName.Wrestling, 84.1, 88.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.MagicResist, 117.6, 120.0);
+            SetSkill(SkillName.Poisoning, 70.0, 80.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.Magery, 112.6, 117.5);
+            SetSkill(SkillName.EvalInt, 200.0);
+            SetSkill(SkillName.Meditation, 200.0);
+            SetSkill(SkillName.Necromancy, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 120.0);
+            SetSkill(SkillName.Focus, 10.0, 20.0);
 
             Fame = 26000;
             Karma = -26000;
@@ -45,6 +50,8 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.MortalStrike);
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+            SetWeaponAbility(WeaponAbility.Block);
+            //Arcane Pyromancy
         }
 
         public AbysmalHorror(Serial serial)

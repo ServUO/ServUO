@@ -10,7 +10,7 @@ namespace Server.Items
         public PotionKeg()
             : base(0x1940)
         {
-            this.UpdateWeight();
+            UpdateWeight();
         }
 
         public PotionKeg(Serial serial)
@@ -23,15 +23,15 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Held;
+                return m_Held;
             }
             set
             {
-                if (this.m_Held != value)
+                if (m_Held != value)
                 {
-                    this.m_Held = value;
-                    this.UpdateWeight();
-                    this.InvalidateProperties();
+                    m_Held = value;
+                    UpdateWeight();
+                    InvalidateProperties();
                 }
             }
         }
@@ -40,24 +40,24 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
         public override int LabelNumber
         { 
             get
             {
-                if (this.m_Held > 0 && (int)this.m_Type >= (int)PotionEffect.Conflagration)
+                if (m_Held > 0 && (int)m_Type >= (int)PotionEffect.Conflagration)
                 {
-                    return 1072658 + (int)this.m_Type - (int)PotionEffect.Conflagration;
+                    return 1072658 + (int)m_Type - (int)PotionEffect.Conflagration;
                 }
 
-                return (this.m_Held > 0 ? 1041620 + (int)this.m_Type : 1041641); 
+                return (m_Held > 0 ? 1041620 + (int)m_Type : 1041641); 
             }
         }
         public static void Initialize()
@@ -67,9 +67,9 @@ namespace Server.Items
 
         public virtual void UpdateWeight()
         {
-            int held = Math.Max(0, Math.Min(this.m_Held, 100));
+            int held = Math.Max(0, Math.Min(m_Held, 100));
 
-            this.Weight = 20 + ((held * 80) / 100);
+            Weight = 20 + ((held * 80) / 100);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -78,8 +78,8 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write((int)this.m_Type);
-            writer.Write((int)this.m_Held);
+            writer.Write((int)m_Type);
+            writer.Write((int)m_Held);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -93,8 +93,8 @@ namespace Server.Items
                 case 1:
                 case 0:
                     {
-                        this.m_Type = (PotionEffect)reader.ReadInt();
-                        this.m_Held = reader.ReadInt();
+                        m_Type = (PotionEffect)reader.ReadInt();
+                        m_Held = reader.ReadInt();
 
                         break;
                     }
@@ -110,27 +110,27 @@ namespace Server.Items
 
             int number;
 
-            if (this.m_Held <= 0)
+            if (m_Held <= 0)
                 number = 502246; // The keg is empty.
-            else if (this.m_Held < 5)
+            else if (m_Held < 5)
                 number = 502248; // The keg is nearly empty.
-            else if (this.m_Held < 20)
+            else if (m_Held < 20)
                 number = 502249; // The keg is not very full.
-            else if (this.m_Held < 30)
+            else if (m_Held < 30)
                 number = 502250; // The keg is about one quarter full.
-            else if (this.m_Held < 40)
+            else if (m_Held < 40)
                 number = 502251; // The keg is about one third full.
-            else if (this.m_Held < 47)
+            else if (m_Held < 47)
                 number = 502252; // The keg is almost half full.
-            else if (this.m_Held < 54)
+            else if (m_Held < 54)
                 number = 502254; // The keg is approximately half full.
-            else if (this.m_Held < 70)
+            else if (m_Held < 70)
                 number = 502253; // The keg is more than half full.
-            else if (this.m_Held < 80)
+            else if (m_Held < 80)
                 number = 502255; // The keg is about three quarters full.
-            else if (this.m_Held < 96)
+            else if (m_Held < 96)
                 number = 502256; // The keg is very full.
-            else if (this.m_Held < 100)
+            else if (m_Held < 100)
                 number = 502257; // The liquid is almost to the top of the keg.
             else
                 number = 502258; // The keg is completely full.
@@ -144,39 +144,39 @@ namespace Server.Items
 
             int number;
 
-            if (this.m_Held <= 0)
+            if (m_Held <= 0)
                 number = 502246; // The keg is empty.
-            else if (this.m_Held < 5)
+            else if (m_Held < 5)
                 number = 502248; // The keg is nearly empty.
-            else if (this.m_Held < 20)
+            else if (m_Held < 20)
                 number = 502249; // The keg is not very full.
-            else if (this.m_Held < 30)
+            else if (m_Held < 30)
                 number = 502250; // The keg is about one quarter full.
-            else if (this.m_Held < 40)
+            else if (m_Held < 40)
                 number = 502251; // The keg is about one third full.
-            else if (this.m_Held < 47)
+            else if (m_Held < 47)
                 number = 502252; // The keg is almost half full.
-            else if (this.m_Held < 54)
+            else if (m_Held < 54)
                 number = 502254; // The keg is approximately half full.
-            else if (this.m_Held < 70)
+            else if (m_Held < 70)
                 number = 502253; // The keg is more than half full.
-            else if (this.m_Held < 80)
+            else if (m_Held < 80)
                 number = 502255; // The keg is about three quarters full.
-            else if (this.m_Held < 96)
+            else if (m_Held < 96)
                 number = 502256; // The keg is very full.
-            else if (this.m_Held < 100)
+            else if (m_Held < 100)
                 number = 502257; // The liquid is almost to the top of the keg.
             else
                 number = 502258; // The keg is completely full.
 
-            this.LabelTo(from, number);
+            LabelTo(from, number);
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 2))
+            if (from.InRange(GetWorldLocation(), 2))
             {
-                if (this.m_Held > 0)
+                if (m_Held > 0)
                 {
                     Container pack = from.Backpack;
 
@@ -184,14 +184,14 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(502242); // You pour some of the keg's contents into an empty bottle...
 
-                        BasePotion pot = this.FillBottle();
+                        BasePotion pot = FillBottle();
 
                         if (pack.TryDropItem(from, pot, false))
                         {
                             from.SendLocalizedMessage(502243); // ...and place it into your backpack.
                             from.PlaySound(0x240);
 
-                            if (--this.Held == 0)
+                            if (--Held == 0)
                                 from.SendLocalizedMessage(502245); // The keg is now empty.
                         }
                         else
@@ -221,9 +221,9 @@ namespace Server.Items
             if (item is BasePotion)
             {
                 BasePotion pot = (BasePotion)item;
-                int toHold = Math.Min(100 - this.m_Held, pot.Amount);
+                int toHold = Math.Min(100 - m_Held, pot.Amount);
 
-                if (pot.PotionEffect == PotionEffect.Darkglow || pot.PotionEffect == PotionEffect.Invisibility || pot.PotionEffect == PotionEffect.Parasitic)
+                if (pot.PotionEffect == PotionEffect.Darkglow || pot.PotionEffect == PotionEffect.Parasitic)
                 {
                     from.SendLocalizedMessage(502232); // The keg is not designed to hold that type of object.
                     return false;
@@ -233,12 +233,12 @@ namespace Server.Items
                     from.SendLocalizedMessage(502233); // The keg will not hold any more!
                     return false;
                 }
-                else if (this.m_Held == 0)
+                else if (m_Held == 0)
                 {
-                    if (this.GiveBottle(from, toHold))
+                    if (GiveBottle(from, toHold))
                     {
-                        this.m_Type = pot.PotionEffect;
-                        this.Held = toHold;
+                        m_Type = pot.PotionEffect;
+                        Held = toHold;
 
                         from.PlaySound(0x240);
 
@@ -257,16 +257,16 @@ namespace Server.Items
                         return false;
                     }
                 }
-                else if (pot.PotionEffect != this.m_Type)
+                else if (pot.PotionEffect != m_Type)
                 {
                     from.SendLocalizedMessage(502236); // You decide that it would be a bad idea to mix different types of potions.
                     return false;
                 }
                 else
                 {
-                    if (this.GiveBottle(from, toHold))
+                    if (GiveBottle(from, toHold))
                     {
-                        this.Held += toHold;
+                        Held += toHold;
 
                         from.PlaySound(0x240);
 
@@ -310,7 +310,7 @@ namespace Server.Items
 
         public BasePotion FillBottle()
         {
-            switch ( this.m_Type )
+            switch ( m_Type )
             {
                 default:
                 case PotionEffect.Nightsight:
@@ -370,6 +370,9 @@ namespace Server.Items
                     return new ConfusionBlastPotion();
                 case PotionEffect.ConfusionBlastGreater:
                     return new GreaterConfusionBlastPotion();
+
+                case PotionEffect.Invisibility:
+                    return new InvisibilityPotion();
             }
         }
     }
