@@ -322,7 +322,7 @@ namespace Server.Mobiles
                 AddHtmlLocalized(47, 216, 160, 18, 1115783, 0xC8, false, false); // Pet Slots
                 AddHtml(53, 236, 80, 18, FormatPetSlots(Creature.ControlSlots, Creature.ControlSlotsMax), false, false);
 
-                AddHtmlLocalized(158, 236, 115, 18, 1157600, Creature.MinTameSkill.ToString(), _Label, false, false);
+                AddHtmlLocalized(158, 236, 115, 18, 1157600, Creature.CurrentTameSkill.ToString("0.0"), _Label, false, false);
                 AddTooltip(1157586);
             }
 

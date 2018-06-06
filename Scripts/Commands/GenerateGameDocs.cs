@@ -112,7 +112,7 @@ namespace Server.Commands
 			csv.AddValue("Cold Damage", creature.ColdDamage);
 			csv.AddValue("Poison Damage", creature.PoisonDamage);
 			csv.AddValue("Energy Damage", creature.EnergyDamage);
-			csv.AddValue("Taming Difficulty", creature.MinTameSkill);
+			csv.AddValue("Taming Difficulty", creature.CurrentTameSkill);
 			csv.AddValue("Barding Difficulty", flute.GetDifficultyFor(creature));
 			csv.AddValue("TMap Level", creature.TreasureMapLevel);
 			csv.AddValue("Wrestling Skill", creature.Skills.Wrestling.Base);

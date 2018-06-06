@@ -233,6 +233,7 @@ namespace Server.Mobiles
         private int m_Loyalty;
 
         private double m_dMinTameSkill;
+        private double m_CurrentTameSkill;
         private bool m_bTamable;
 
         private bool m_bSummoned;
@@ -561,7 +562,7 @@ namespace Server.Mobiles
             switch (AI)
             {
                 case AIType.AI_Mage: SetMagicalAbility(MagicalAbility.Magery); break;
-                case AIType.AI_NecroMage: SetMagicalAbility(MagicalAbility.Necromage); break;
+                case AIType.AI_NecroMage: SetMagicalAbility(!Controlled ? MagicalAbility.Necromancy : MagicalAbility.Necromage); break;
                 case AIType.AI_Necro: SetMagicalAbility(MagicalAbility.Necromancy); break;
                 case AIType.AI_Spellweaving: SetMagicalAbility(MagicalAbility.Spellweaving); break;
                 case AIType.AI_Mystic: SetMagicalAbility(MagicalAbility.Mysticism); break;
@@ -667,6 +668,26 @@ namespace Server.Mobiles
 
             ColUtility.Free(_InitAverage);
             _InitAverage = null;
+        }
+
+        public void AdjustTameRequirements()
+        {
+            if (MinTameSkill < 108 && ControlSlots > ControlSlotsMin)
+            {
+                double minSkill = Math.Ceiling(MinTameSkill);
+
+                if (MinTameSkill < 0)
+                {
+                    CurrentTameSkill = Math.Ceiling(Math.Min(108.0, Math.Max(0, CurrentTameSkill) + (Math.Abs(minSkill) * .7)));
+                }
+                else
+                {
+                    double level = ControlSlots - ControlSlotsMin;
+                    double levelFactor = (double)(1 + (ControlSlotsMax - ControlSlotsMin)) / minSkill;
+
+                    CurrentTameSkill = Math.Ceiling(Math.Min(108.0, minSkill + (minSkill * ((levelFactor * 7) * level))));
+                }
+            }
         }
         #endregion
 
@@ -1751,12 +1772,12 @@ namespace Server.Mobiles
 
         public virtual double GetControlChance(Mobile m, bool useBaseSkill)
         {
-            if (m_dMinTameSkill <= 29.1 || m_bSummoned || m.AccessLevel >= AccessLevel.GameMaster)
+            if (m_CurrentTameSkill <= 29.1 || m_bSummoned || m.AccessLevel >= AccessLevel.GameMaster)
             {
                 return 1.0;
             }
 
-            double dMinTameSkill = m_dMinTameSkill;
+            double dMinTameSkill = m_CurrentTameSkill;
 
             if (dMinTameSkill > -24.9 && AnimalTaming.CheckMastery(m, this))
             {
@@ -3319,8 +3340,8 @@ namespace Server.Mobiles
 
                             if (master != null && master == from) //So friends can't start the bonding process
                             {
-                                if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill ||
-                                    OverrideBondingReqs() || (Core.ML && master.Skills[SkillName.AnimalTaming].Value >= m_dMinTameSkill))
+                                if (m_CurrentTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_CurrentTameSkill ||
+                                    OverrideBondingReqs() || (Core.ML && master.Skills[SkillName.AnimalTaming].Value >= m_CurrentTameSkill))
                                 {
                                     if (BondingBegin == DateTime.MinValue)
                                     {
@@ -3834,7 +3855,25 @@ namespace Server.Mobiles
         public DateTime BardEndTime { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double MinTameSkill { get { return m_dMinTameSkill; } set { m_dMinTameSkill = value; } }
+        public double MinTameSkill 
+        {
+            get { return m_dMinTameSkill; }
+            set
+            {
+                double skill = m_dMinTameSkill;
+
+                m_dMinTameSkill = value;
+
+                if (skill != m_dMinTameSkill)
+                {
+                    m_CurrentTameSkill = value;
+                    AdjustTameRequirements();
+                }
+            } 
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double CurrentTameSkill { get { return m_CurrentTameSkill; } set { m_CurrentTameSkill = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Tamable { get { return m_bTamable && !m_Paragon; } set { m_bTamable = value; } }

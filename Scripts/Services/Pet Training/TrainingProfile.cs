@@ -169,6 +169,8 @@ namespace Server.Mobiles
                 pm.SendLocalizedMessage(1157537); // Your pet's control slot have been updated.
 
                 HasIncreasedControlSlot = true;
+
+                Creature.AdjustTameRequirements();
             }
 
             TrainingPoints -= points;
