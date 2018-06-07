@@ -64,7 +64,7 @@ namespace Server.Items
             m_IngredientTable.Add(new IngredientDropEntry(typeof(HighPlainsBoura), true, 1.0, typeof(BouraPelt)));
 
             //Silver snake skin
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(SilverSerpent), true, "TerMur", .05, typeof(SilverSnakeSkin)));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(SilverSerpent), true, "TerMur", .10, typeof(SilverSnakeSkin)));
 
             //Void Orb/Vial of Vitriol
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseVoidCreature), true, .05, typeof(VoidOrb)));
