@@ -47,7 +47,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Meditation, 20.0, 30.0);
             SetSkill(SkillName.Necromancy, 120.0);
             SetSkill(SkillName.SpiritSpeak, 120.0);
-            SetSkill(SkillName.Meditation, 30.0, 40.0);
+            SetSkill(SkillName.Focus, 30.0, 40.0);
 
             // TO-DO add Detect Hidden 40 - 50
             PackNecroReg(12, 24); /// Stratics didn't specify
