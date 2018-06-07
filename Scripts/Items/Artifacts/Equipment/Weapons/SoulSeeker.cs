@@ -11,8 +11,8 @@ namespace Server.Items
             this.Hue = 0x38C;
 
             this.WeaponAttributes.HitLeechStam = 40;
-            this.WeaponAttributes.HitLeechMana = 40;
-            this.WeaponAttributes.HitLeechHits = 40;
+            this.WeaponAttributes.HitLeechMana = 30;
+            this.WeaponAttributes.HitLeechHits = 30;
             this.Attributes.WeaponSpeed = 60;
             this.Slayer = SlayerName.Repond;
         }
