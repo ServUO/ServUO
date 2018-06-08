@@ -10,28 +10,14 @@ namespace Server.Items
         public CitadelTele()
             : base(0xE3F)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public CitadelTele(Serial serial)
             : base(serial)
         {
         }
-
-        public override bool Decays
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override TimeSpan DecayTime
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(5);
-            }
-        }
+        
         public override void OnDoubleClick(Mobile from)
         {
             if (from.NetState == null || !from.NetState.SupportsExpansion(Expansion.ML))
@@ -50,6 +36,7 @@ namespace Server.Items
                 PlayerMobile player = (PlayerMobile)from;
 				
                 if (QuestHelper.GetQuest(player, typeof(BlackOrderBadgesQuest)) != null || QuestHelper.GetQuest(player, typeof(EvidenceQuest)) != null)
+                    BaseCreature.TeleportPets(player, new Point3D(107, 1883, 0), Map.Malas);
                     player.MoveToWorld(new Point3D(107, 1883, 0), Map.Malas);
                 else
                     player.SendLocalizedMessage(1074278); // You realize that your eyes are playing tricks on you. That crate isn't really shimmering.
