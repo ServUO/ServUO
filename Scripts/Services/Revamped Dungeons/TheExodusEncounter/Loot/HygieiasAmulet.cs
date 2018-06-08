@@ -11,7 +11,7 @@ namespace Server.Items
         [Constructable]
         public HygieiasAmulet()
         {
-            this.SkillBonuses.SetValues(0, SkillName.Alchemy, 10);
+            SkillBonuses.SetValues(0, SkillName.Alchemy, 10);
         }        
 
         public HygieiasAmulet(Serial serial)  : base(serial)
