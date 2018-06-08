@@ -9,12 +9,11 @@ namespace Server.Items
         [Constructable]
         public GargishClockworkLeggings()
         {
-            this.Hue = 0xA91;
-            this.Attributes.RegenStam = 5;
-            this.Attributes.DefendChance = 25;
-            this.Attributes.BonusDex = 5;
-            this.StrRequirement = 90;
-            this.Weight = 7;
+            Hue = 0xA91;
+            Attributes.RegenStam = 5;
+            Attributes.DefendChance = 25;
+            Attributes.BonusDex = 5;
+            StrRequirement = 90;
         }
         
         public GargishClockworkLeggings(Serial serial)  : base(serial)
@@ -30,8 +29,6 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 5; } }
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
-
-        public override bool CanFortify { get { return false; } }
 
         public override void Serialize(GenericWriter writer)
         {
