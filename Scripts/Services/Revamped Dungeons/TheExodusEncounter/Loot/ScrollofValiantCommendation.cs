@@ -14,7 +14,7 @@ namespace Server.Items
         [Constructable]
         public ScrollofValiantCommendation() : base(0x46AE)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
         public ScrollofValiantCommendation(Serial serial) : base(serial)
