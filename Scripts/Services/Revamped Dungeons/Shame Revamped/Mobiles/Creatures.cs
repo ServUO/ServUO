@@ -372,7 +372,7 @@ namespace Server.Mobiles
 
         public GreaterEarthElemental(Serial serial)
             : base(serial)
-        {
+        { 
         }
 
         public override void Serialize(GenericWriter writer)
@@ -1316,7 +1316,7 @@ namespace Server.Mobiles
         public UnboundEnergyVortex() : base(AIType.AI_Melee, FightMode.Weakest, 10, 1, 0.4, 0.2)
         {
             Name = "an unbound energy vortex";
-            Body = 20;
+            Body = 13;
 
             SetStr(450);
             SetDex(200);
