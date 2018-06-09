@@ -687,6 +687,9 @@ namespace Server.Mobiles
 
                     CurrentTameSkill = Math.Ceiling(Math.Min(108.0, minSkill + (minSkill * ((levelFactor * 7) * level))));
                 }
+
+                if (CurrentTameSkill < MinTameSkill)
+                    CurrentTameSkill = MinTameSkill;
             }
         }
         #endregion
@@ -2619,7 +2622,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(24); // version
+            writer.Write(25); // version
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
@@ -2778,6 +2781,9 @@ namespace Server.Mobiles
             {
                 writer.Write(0);
             }
+
+            // Version 25 Current Tame Skill
+            writer.Write(m_CurrentTameSkill);
         }
 
         private static readonly double[] m_StandardActiveSpeeds = new[] { 0.175, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8 };
@@ -3096,6 +3102,15 @@ namespace Server.Mobiles
                 }
 
                 InitializeAbilities();
+            }
+
+            if (version >= 25)
+            {
+                CurrentTameSkill = reader.ReadDouble();
+            }
+            else
+            {
+                AdjustTameRequirements();
             }
 
             if (version <= 14 && m_Paragon && Hue == 0x31)
