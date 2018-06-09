@@ -672,7 +672,12 @@ namespace Server.Mobiles
 
         public void AdjustTameRequirements()
         {
-            if (MinTameSkill < 108 && ControlSlots > ControlSlotsMin)
+            // Currently, with increased control slots, taming skill does not seem to pass 108.0
+            if(ControlSlots <=ControlSlotsMin)
+            {
+                CurrentTameSkill = MinTameSkill;
+            }
+            else if (MinTameSkill < 108)
             {
                 double minSkill = Math.Ceiling(MinTameSkill);
 
@@ -3132,6 +3137,11 @@ namespace Server.Mobiles
             if (IsAnimatedDead)
             {
                 AnimateDeadSpell.Register(m_SummonMaster, this);
+            }
+
+            if (Tamable && CurrentTameSkill == 0)
+            {
+                AdjustTameRequirements();
             }
         }
 
