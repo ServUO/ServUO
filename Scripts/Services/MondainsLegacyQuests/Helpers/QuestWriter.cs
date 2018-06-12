@@ -48,6 +48,8 @@ namespace Server.Engines.Quests
 					Console.WriteLine("Quest Save Failure: {0}", Utility.FormatDelegate(serializer));
 					Console.WriteLine(e);
 
+					writer.Write(0L);
+
 					return false;
 				}
 				finally
@@ -61,7 +63,7 @@ namespace Server.Engines.Quests
 
 				while (s.Position < s.Length)
 				{
-					writer.Write(s.ReadByte());
+					writer.Write((byte)s.ReadByte());
 				}
 			}
 
