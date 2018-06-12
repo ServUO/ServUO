@@ -53,7 +53,6 @@ namespace Server.Engines.Quests
 				finally
 				{
 					w.Flush();
-					w.Close();
 				}
 
 				writer.Write(s.Length);
