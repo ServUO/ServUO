@@ -285,7 +285,7 @@ namespace Server.Items
     }
 
     [TypeAlias("Server.Items.EnchantEssence")]
-    public class EnchantedEssence : Item
+    public class EnchantedEssence : Item, ICommodity
     {
         [Constructable]
         public EnchantedEssence()
@@ -313,6 +313,20 @@ namespace Server.Items
                 return 1031698;
             }
         }// Enchaned Essence
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -503,7 +517,7 @@ namespace Server.Items
         }
     }
 
-    public class MagicalResidue : Item
+    public class MagicalResidue : Item, ICommodity
     {
         [Constructable]
         public MagicalResidue()
@@ -531,6 +545,20 @@ namespace Server.Items
                 return 1031697;
             }
         }// Magical Residue
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
