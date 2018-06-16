@@ -14,9 +14,9 @@ namespace Server.Items
         public EssencePersistence(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Hue = 37;
+            Stackable = true;
+            Amount = amount;
+            Hue = 37;
         }
 
         public EssencePersistence(Serial serial)
