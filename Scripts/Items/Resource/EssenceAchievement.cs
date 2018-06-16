@@ -14,9 +14,9 @@ namespace Server.Items
         public EssenceAchievement(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-			this.Hue = 1724;
+            Stackable = true;
+            Amount = amount;
+			Hue = 1724;
         }
 
         public EssenceAchievement(Serial serial)
