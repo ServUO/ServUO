@@ -14,9 +14,9 @@ namespace Server.Items
         public EssenceOrder(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-			this.Hue = 1153;
+            Stackable = true;
+            Amount = amount;
+			Hue = 1153;
         }
 
         public EssenceOrder(Serial serial)
