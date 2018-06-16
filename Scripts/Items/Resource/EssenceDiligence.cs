@@ -14,9 +14,9 @@ namespace Server.Items
         public EssenceDiligence(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-			this.Hue = 1166;
+            Stackable = true;
+            Amount = amount;
+			Hue = 1166;
         }
 
         public EssenceDiligence(Serial serial)
