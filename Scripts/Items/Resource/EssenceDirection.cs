@@ -14,9 +14,9 @@ namespace Server.Items
         public EssenceDirection(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-			this.Hue = 1156;
+            Stackable = true;
+            Amount = amount;
+			Hue = 1156;
         }
 
         public EssenceDirection(Serial serial)
