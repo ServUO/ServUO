@@ -14,9 +14,9 @@ namespace Server.Items
         public EssencePrecision(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-			this.Hue = 1158;
+            Stackable = true;
+            Amount = amount;
+			Hue = 1158;
         }
 
         public EssencePrecision(Serial serial)
