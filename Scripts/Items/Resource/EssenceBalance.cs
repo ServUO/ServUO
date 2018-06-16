@@ -14,9 +14,9 @@ namespace Server.Items
         public EssenceBalance(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-			this.Hue = 1268;
+            Stackable = true;
+            Amount = amount;
+			Hue = 1268;
         }
 
         public EssenceBalance(Serial serial)
