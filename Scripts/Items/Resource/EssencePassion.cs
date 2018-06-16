@@ -14,9 +14,9 @@ namespace Server.Items
         public EssencePassion(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Hue = 1161;
+            Stackable = true;
+            Amount = amount;
+            Hue = 1161;
         }
 
         public EssencePassion(Serial serial)
