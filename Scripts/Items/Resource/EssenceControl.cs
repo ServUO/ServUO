@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class EssenceControl : Item
+    public class EssenceControl : Item, ICommodity
     {
         [Constructable]
         public EssenceControl()
@@ -31,6 +31,20 @@ namespace Server.Items
                 return 1113340;
             }
         }// essence of control
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

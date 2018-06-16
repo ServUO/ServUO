@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class EssencePersistence : Item
+    public class EssencePersistence : Item, ICommodity
     {
         [Constructable]
         public EssencePersistence()
@@ -31,6 +31,20 @@ namespace Server.Items
                 return 1113343;
             }
         }// essence of persistence
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

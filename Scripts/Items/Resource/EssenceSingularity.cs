@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class EssenceSingularity : Item
+    public class EssenceSingularity : Item, ICommodity
     {
         [Constructable]
         public EssenceSingularity()
@@ -31,6 +31,20 @@ namespace Server.Items
                 return 1113341;
             }
         }// essence of singularity
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

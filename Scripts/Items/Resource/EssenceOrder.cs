@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class EssenceOrder : Item
+    public class EssenceOrder : Item, ICommodity
     {
         [Constructable]
         public EssenceOrder()
@@ -31,6 +31,20 @@ namespace Server.Items
                 return 1113342;
             }
         }// essence of order
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

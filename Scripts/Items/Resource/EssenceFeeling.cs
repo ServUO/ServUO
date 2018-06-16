@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class EssenceFeeling : Item
+    public class EssenceFeeling : Item, ICommodity
     {
         [Constructable]
         public EssenceFeeling()
@@ -31,6 +31,20 @@ namespace Server.Items
                 return 1113339;
             }
         }// essence of feeling
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
