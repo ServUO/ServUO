@@ -613,7 +613,7 @@ namespace Server.Items
         }
     }
 
-    public class RelicFragment : Item
+    public class RelicFragment : Item, ICommodity
     {
         [Constructable]
         public RelicFragment()
@@ -641,6 +641,20 @@ namespace Server.Items
                 return 1031699;
             }
         }// Relic Fragment
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
