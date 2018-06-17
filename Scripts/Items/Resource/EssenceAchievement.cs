@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class EssenceAchievement : Item
+    public class EssenceAchievement : Item, ICommodity
     {
         [Constructable]
         public EssenceAchievement()
@@ -14,9 +14,9 @@ namespace Server.Items
         public EssenceAchievement(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-			this.Hue = 1724;
+            Stackable = true;
+            Amount = amount;
+			Hue = 1724;
         }
 
         public EssenceAchievement(Serial serial)
@@ -31,6 +31,20 @@ namespace Server.Items
                 return 1113325;
             }
         }// essence of achievement
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

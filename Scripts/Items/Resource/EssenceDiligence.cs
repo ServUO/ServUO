@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class EssenceDiligence : Item
+    public class EssenceDiligence : Item, ICommodity
     {
         [Constructable]
         public EssenceDiligence()
@@ -14,9 +14,9 @@ namespace Server.Items
         public EssenceDiligence(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-			this.Hue = 1166;
+            Stackable = true;
+            Amount = amount;
+			Hue = 1166;
         }
 
         public EssenceDiligence(Serial serial)
@@ -31,6 +31,20 @@ namespace Server.Items
                 return 1113338;
             }
         }// essence of diligence
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
