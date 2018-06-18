@@ -29,7 +29,7 @@ namespace Server.Gumps
 
             if (m != null)
             {
-                if ((from.Followers + m.ControlSlots) <= from.FollowersMax)
+                if ((from.Followers + m.ControlSlots) >= from.FollowersMax)
                 {
                     m.Delete();
                     from.SendLocalizedMessage(1114321); // You have too many followers to control that pet.
