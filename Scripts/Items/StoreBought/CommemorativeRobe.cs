@@ -11,6 +11,7 @@ namespace Server.Items
         public CommemorativeRobe()
             : base(0x4B9D)
         {
+            LootType = LootType.Blessed;
         }
 
         public CommemorativeRobe(Serial serial)
