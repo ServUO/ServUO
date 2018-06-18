@@ -21,7 +21,7 @@ namespace Server.Mobiles
 
             Body = 722;
 
-            SetStr(1000, 1200);
+            SetStr(1000);
             SetDex(1200);
             SetInt(1200);
 
@@ -29,8 +29,9 @@ namespace Server.Mobiles
 
             SetDamage(15, 27);
 
-            SetDamageType(ResistanceType.Physical, 40);
-            SetDamageType(ResistanceType.Cold, 60);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Cold, 40);
+            SetDamageType(ResistanceType.Energy, 40);
 
             SetResistance(ResistanceType.Physical, 34, 46);
             SetResistance(ResistanceType.Fire, 0);
@@ -38,15 +39,17 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Poison, 100);
             SetResistance(ResistanceType.Energy, 31, 49);
 
+            SetSkill(SkillName.Wrestling, 68.8, 85.0);
+            SetSkill(SkillName.Tactics, 56.1, 90.0);
             SetSkill(SkillName.MagicResist, 87.7, 93.5);
-            SetSkill(SkillName.Tactics, 56.1, 65.0);
-            SetSkill(SkillName.Wrestling, 68.8, 76.2);
-            SetSkill(SkillName.EvalInt, 120.0);
-            SetSkill(SkillName.Magery, 120.0);
-            SetSkill(SkillName.Meditation, 120.0);
+
+            SetSkill(SkillName.EvalInt, 90.0, 100.0);
+            SetSkill(SkillName.Meditation, 20.0, 30.0);
             SetSkill(SkillName.Necromancy, 120.0);
             SetSkill(SkillName.SpiritSpeak, 120.0);
+            SetSkill(SkillName.Focus, 30.0, 40.0);
 
+            // TO-DO add Detect Hidden 40 - 50
             PackNecroReg(12, 24); /// Stratics didn't specify
 
             Fame = 15000;

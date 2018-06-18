@@ -11,7 +11,6 @@ namespace Server.Items
         [Constructable]
         public GargishAsclepius()
         { 
-            this.StrRequirement = 20;
         }
 
         public override bool CanFortify { get { return false; } }
@@ -19,9 +18,7 @@ namespace Server.Items
         public GargishAsclepius(Serial serial) : base(serial)
         {
         }
-
-        public override int AosMinDamage { get { return 15; } }
-        public override int AosMaxDamage { get { return 17; } }
+        
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
 
