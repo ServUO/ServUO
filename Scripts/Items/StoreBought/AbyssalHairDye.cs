@@ -11,6 +11,7 @@ namespace Server.Items
             : base(0xEFE)
         {
             Hue = 2075;
+            LootType = LootType.Blessed;
         }
 
         public AbyssalHairDye(Serial serial)
