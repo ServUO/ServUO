@@ -15,6 +15,7 @@ namespace Server.Items
         public NameChangeToken()
             : base(0x2AAA)
         {
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)
