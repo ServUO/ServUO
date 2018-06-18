@@ -18,9 +18,9 @@ namespace Server.Engines.UOStore
 
     public static class Configuration
     {
-        public static string CurrencyName = "Gold";                         // What do you want to call your currency?
+        public static string CurrencyName = "Sovreigns";                    // What do you want to call your currency?
         public static string CurrencyInfoWebsite = "";                      // Website address for your currency information. Default is https://uo.com/ultima-store/
-        public static double PointMultiplier = 25.0;                        // Multiplier for store item cost. The EA costs act as a 'base cost' where you can increase to  your choosing. 10.0 is the same as BaseCost * 10
+        public static double PointMultiplier = 1.0;                        // Multiplier for store item cost. The EA costs act as a 'base cost' where you can increase to  your choosing. 10.0 is the same as BaseCost * 10
         public static CurrencyType CurrencyType = CurrencyType.None;        // See enum CurrencyType. Gold - PointsSystem is autmoatically handled, where custom you will have to implement your self. See ReadMe.
 
         public static PointsType PointsSystemCurrency = PointsType.None;    // If PointsSystem is chosen, this is the PointsSystem enabled for store use. See PointsSystem.cs for all of the systems you can use!
