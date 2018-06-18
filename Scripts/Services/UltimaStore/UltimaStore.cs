@@ -724,7 +724,7 @@ namespace Server.Engines.UOStore
                         else
                         {
                             remove.Add(entry.Key);
-                            subtotal += entry.Key.Cost;
+                            subtotal += (int)entry.Key.Cost;
                         }
                     }
                 }
