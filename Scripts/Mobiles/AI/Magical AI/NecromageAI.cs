@@ -91,9 +91,9 @@ namespace Server.Mobiles
 
             return null;
         }
-		
-		public override Spell GetRandomBuffSpell()
-		{
+
+        public override Spell GetRandomBuffSpell()
+        {
             if (0.5 > Utility.RandomDouble())
             {
                 return base.GetRandomBuffSpell();
@@ -109,11 +109,11 @@ namespace Server.Mobiles
                     return GetRandomSummonSpell();
                 }
             }
-		}
+        }
 
         public override Spell GetRandomSummonSpell()
 		{
-			if(m_Mobile.Mana >= 23)
+			if(!m_Mobile.Controlled && m_Mobile.Mana >= 23)
 			{
                 return new AnimateDeadSpell(m_Mobile, null);
 			}

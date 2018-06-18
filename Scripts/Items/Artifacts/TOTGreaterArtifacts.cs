@@ -608,6 +608,8 @@ namespace Server.Items
     public class PigmentsOfTokuno : BasePigmentsOfTokuno
     {
 		public override bool IsArtifact { get { return true; } }
+
+        public static int[][] Table { get { return m_Table; } }
         private static readonly int[][] m_Table = new int[][]
         {
             // Hue, Label

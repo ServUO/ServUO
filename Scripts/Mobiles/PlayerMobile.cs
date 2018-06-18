@@ -1692,6 +1692,12 @@ namespace Server.Mobiles
 			}
 		}
 
+        public override void OnSubItemRemoved(Item item)
+        {
+            if (Server.Engines.UOStore.UltimaStore.HasPendingItem(this))
+                Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1.5), Server.Engines.UOStore.UltimaStore.CheckPendingItem, this);
+        }
+
         public override void AggressiveAction(Mobile aggressor, bool criminal)
         {
             base.AggressiveAction(aggressor, criminal);

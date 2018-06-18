@@ -14,7 +14,7 @@ namespace Server.Items
         public EnhancedBandage(int amount)
             : base(amount)
         {
-            this.Hue = 0x8A5;
+            Hue = 0x8A5;
         }
 
         public EnhancedBandage(Serial serial)
@@ -78,9 +78,9 @@ namespace Server.Items
         public FountainOfLife(int charges)
             : base(0x2AC0)
         {
-            this.m_Charges = charges;
+            m_Charges = charges;
 
-            this.m_Timer = Timer.DelayCall(this.RechargeTime, this.RechargeTime, new TimerCallback(Recharge));
+            m_Timer = Timer.DelayCall(RechargeTime, RechargeTime, new TimerCallback(Recharge));
         }
 
         public FountainOfLife(Serial serial)
@@ -92,7 +92,7 @@ namespace Server.Items
         {
             get
             {
-                return new FountainOfLifeDeed(this.m_Charges);
+                return new FountainOfLifeDeed(m_Charges);
             }
         }
         public virtual TimeSpan RechargeTime
@@ -135,12 +135,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Charges;
+                return m_Charges;
             }
             set
             {
-                this.m_Charges = Math.Min(value, 10);
-                this.InvalidateProperties();
+                m_Charges = Math.Min(value, 10);
+                InvalidateProperties();
             }
         }
         public override bool OnDragLift(Mobile from)
@@ -155,7 +155,7 @@ namespace Server.Items
                 bool allow = base.OnDragDrop(from, dropped);
 
                 if (allow)
-                    this.Enhance(from);
+                    Enhance(from);
 
                 return allow;
             }
@@ -173,7 +173,7 @@ namespace Server.Items
                 bool allow = base.OnDragDropInto(from, item, p);
 
                 if (allow)
-                    this.Enhance(from);
+                    Enhance(from);
 
                 return allow;
             }
@@ -188,13 +188,13 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            list.Add(1075217, this.m_Charges.ToString()); // ~1_val~ charges remaining
+            list.Add(1075217, m_Charges.ToString()); // ~1_val~ charges remaining
         }
 
         public override void OnDelete()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
             base.OnDelete();
         }
@@ -205,8 +205,8 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); //version
 
-            writer.Write(this.m_Charges);
-            writer.Write((DateTime)this.m_Timer.Next);
+            writer.Write(m_Charges);
+            writer.Write((DateTime)m_Timer.Next);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -215,21 +215,21 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Charges = reader.ReadInt();
+            m_Charges = reader.ReadInt();
 
             DateTime next = reader.ReadDateTime();
 
             if (next < DateTime.UtcNow)
-                this.m_Timer = Timer.DelayCall(TimeSpan.Zero, this.RechargeTime, new TimerCallback(Recharge));
+                m_Timer = Timer.DelayCall(TimeSpan.Zero, RechargeTime, new TimerCallback(Recharge));
             else
-                this.m_Timer = Timer.DelayCall(next - DateTime.UtcNow, this.RechargeTime, new TimerCallback(Recharge));
+                m_Timer = Timer.DelayCall(next - DateTime.UtcNow, RechargeTime, new TimerCallback(Recharge));
         }
 
         public void Recharge()
         {
-            this.m_Charges = 10;
+            m_Charges = 10;
 
-            this.Enhance(null);
+            Enhance(null);
         }
 
         public void Enhance(Mobile from)
@@ -245,42 +245,42 @@ namespace Server.Items
 				}
 			}
 
-            for (int i = this.Items.Count - 1; i >= 0 && this.m_Charges > 0; --i)
+            for (int i = Items.Count - 1; i >= 0 && m_Charges > 0; --i)
             {
-                if (this.Items[i] is EnhancedBandage)
+                if (Items[i] is EnhancedBandage)
                     continue;
 
-                Bandage bandage = this.Items[i] as Bandage;
+                Bandage bandage = Items[i] as Bandage;
 
                 if (bandage != null)
                 {
                     Item enhanced;
 
-                    if (bandage.Amount > this.m_Charges)
+                    if (bandage.Amount > m_Charges)
                     {
-                        bandage.Amount -= this.m_Charges;
-                        enhanced = new EnhancedBandage(this.m_Charges);
-                        this.m_Charges = 0;
+                        bandage.Amount -= m_Charges;
+                        enhanced = new EnhancedBandage(m_Charges);
+                        m_Charges = 0;
                     }
                     else
                     {
                         enhanced = new EnhancedBandage(bandage.Amount);
-                        this.m_Charges -= bandage.Amount;
+                        m_Charges -= bandage.Amount;
                         bandage.Delete();
                     }
 
 					// try stacking first
-					if (from == null || !this.TryDropItem(from, enhanced, false))
+					if (from == null || !TryDropItem(from, enhanced, false))
 					{
 						if (existing != null)
 							existing.StackWith(from, enhanced);
 						else
-							this.DropItem(enhanced);
+							DropItem(enhanced);
 					}
                 }
             }
 
-            this.InvalidateProperties();
+            InvalidateProperties();
         }
     }
 
@@ -297,8 +297,8 @@ namespace Server.Items
         public FountainOfLifeDeed(int charges)
             : base()
         {
-            this.LootType = LootType.Blessed;
-            this.m_Charges = charges;
+            LootType = LootType.Blessed;
+            m_Charges = charges;
         }
 
         public FountainOfLifeDeed(Serial serial)
@@ -317,7 +317,7 @@ namespace Server.Items
         {
             get
             {
-                return new FountainOfLife(this.m_Charges);
+                return new FountainOfLife(m_Charges);
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -325,12 +325,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Charges;
+                return m_Charges;
             }
             set
             {
-                this.m_Charges = Math.Min(value, 10);
-                this.InvalidateProperties();
+                m_Charges = Math.Min(value, 10);
+                InvalidateProperties();
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -339,7 +339,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); //version
 
-            writer.Write(this.m_Charges);
+            writer.Write(m_Charges);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -348,7 +348,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Charges = reader.ReadInt();
+            m_Charges = reader.ReadInt();
         }
     }
 }

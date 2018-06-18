@@ -3,9 +3,11 @@ using Server.Gumps;
 
 namespace Server.Mobiles
 {
-    public class LasherStatue : Item
+    public class LasherStatue : Item, IMountStatuette
     {
         public override int LabelNumber { get { return 1157214; } } // Lasher
+
+        public Type MountType { get { return typeof(Lasher); } }
 
         [Constructable]
         public LasherStatue() 

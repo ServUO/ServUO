@@ -712,6 +712,7 @@
     <Compile Include="Items\Consumables\DeliciouslyTastyTreat.cs" />
     <Compile Include="Items\Consumables\IrresistiblyTastyTreat.cs" />
     <Compile Include="Items\Consumables\SkinTingeingTincture.cs" />
+    <Compile Include="Items\Consumables\SoulstonePromotionalTokens.cs" />
     <Compile Include="Items\Consumables\TastyTreat.cs" />
     <Compile Include="Items\Containers\ShipsStrongbox.cs" />
     <Compile Include="Items\Decorative\AllegiancePouch.cs" />
@@ -948,12 +949,39 @@
     <Compile Include="Items\Resource\OilFlask.cs" />
     <Compile Include="Items\Resource\SmallFish.cs" />
     <Compile Include="Items\Resource\WorkableGlass.cs" />
+    <Compile Include="Items\StoreBought\AbyssalHairDye.cs" />
+    <Compile Include="Items\StoreBought\AncestralGravestone.cs" />
+    <Compile Include="Items\StoreBought\ArmorEngravingToolToken.cs" />
+    <Compile Include="Items\StoreBought\BulkOrderBookCover.cs" />
+    <Compile Include="Items\StoreBought\CharacterReincarnationToken.cs" />
+    <Compile Include="Items\StoreBought\CommemorativeRobe.cs" />
+    <Compile Include="Items\StoreBought\DecorativeBlackWidow.cs" />
+    <Compile Include="Items\StoreBought\FallenLog.cs" />
+    <Compile Include="Items\StoreBought\FreshGreenLadyBug.cs" />
+    <Compile Include="Items\StoreBought\GenderChangeToken.cs" />
+    <Compile Include="Items\StoreBought\GreenGoblinStatuette.cs" />
+    <Compile Include="Items\StoreBought\GreyGoblinStatuette.cs" />
+    <Compile Include="Items\StoreBought\HaochisPigments.cs" />
+    <Compile Include="Items\StoreBought\HildebrandtDragonRug.cs" />
+    <Compile Include="Items\StoreBought\HoodedBritanniaRobe.cs" />
+    <Compile Include="Items\StoreBought\LargeGlowingLadyBug.cs" />
+    <Compile Include="Items\StoreBought\LargeRaisedGarden.cs" />
+    <Compile Include="Items\StoreBought\MapleTree.cs" />
     <Compile Include="Items\StoreBought\MerchantsTrinket.cs" />
     <Compile Include="Items\StoreBought\MythicalCharacterToken.cs" />
+    <Compile Include="Items\StoreBought\NameChangeToken.cs" />
+    <Compile Include="Items\StoreBought\NaturalHairDyes.cs" />
     <Compile Include="Items\StoreBought\PetBrandingIron.cs" />
+    <Compile Include="Items\StoreBought\RaceChangeToken.cs" />
     <Compile Include="Items\StoreBought\SmugglersEdge.cs" />
+    <Compile Include="Items\StoreBought\SnowTree.cs" />
     <Compile Include="Items\StoreBought\StableSlotIncreaseToken.cs" />
     <Compile Include="Items\StoreBought\UndertakersStaff.cs" />
+    <Compile Include="Items\StoreBought\VirtueShield.cs" />
+    <Compile Include="Items\StoreBought\WillowTree.cs" />
+    <Compile Include="Items\StoreBought\WoodenBookcase.cs" />
+    <Compile Include="Items\StoreBought\WoodworkersBench.cs" />
+    <Compile Include="Items\StoreBought\WorldTreeRug.cs" />
     <Compile Include="Items\Tools\BaseHarvestTool.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9985,6 +10013,11 @@
     <Compile Include="Services\TreasuresOfKotlCity\RewardGump.cs" />
     <Compile Include="Services\TreasuresOfKotlCity\Rewards.cs" />
     <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokunoPersistence.cs" />
+    <Compile Include="Services\UltimaStore\PlayerProfile.cs" />
+    <Compile Include="Services\UltimaStore\StoreEntry.cs" />
+    <Compile Include="Services\UltimaStore\SystemConfig.cs" />
+    <Compile Include="Services\UltimaStore\UltimaStore.cs" />
+    <Compile Include="Services\UltimaStore\UltimaStoreGump.cs" />
     <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysController.cs" />
     <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysPillar.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearch.cs" />
@@ -12443,6 +12476,7 @@
     <Content Include="Services\Revamped Dungeons\DespiseRevamped\Read Me.txt" />
     <Content Include="Services\Revamped Dungeons\Shame Revamped\Read Me.txt" />
     <Content Include="Services\RunicReforging\ReadMe.txt" />
+    <Content Include="Services\UltimaStore\ReadMe.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\SpawnerConfigs\xmlspawner.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest1.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest2.xml" />

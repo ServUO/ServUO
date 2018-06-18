@@ -4,7 +4,12 @@ using Server.Network;
 
 namespace Server.Items
 {
-	public abstract class PromotionalToken : Item
+    public interface IPromotionalToken
+    {
+        TextDefinition ItemName { get; }
+    }
+
+	public abstract class PromotionalToken : Item, IPromotionalToken
 	{
 		public PromotionalToken()
 			: base(0x2AAA)
@@ -22,6 +27,9 @@ namespace Server.Items
 		public abstract TextDefinition ItemName { get; }
 		public abstract TextDefinition ItemReceiveMessage { get; }
 		public abstract TextDefinition ItemGumpName { get; }
+
+        public virtual bool PlaceInBank { get { return true; } }
+
 		public override int LabelNumber
 		{
 			get
@@ -113,7 +121,11 @@ namespace Server.Items
 
 					if (i != null)
 					{
-						from.BankBox.AddItem(i);
+                        if (m_Token.PlaceInBank || from.Backpack == null || !from.Backpack.TryDropItem(from, i, false))
+                        {
+                            from.BankBox.AddItem(i);
+                        }
+
 						TextDefinition.SendMessageTo(from, m_Token.ItemReceiveMessage);
 						m_Token.Delete();
 					}
@@ -121,122 +133,4 @@ namespace Server.Items
 			}
 		}
 	}
-
-	public class SoulstoneFragmentToken : PromotionalToken
-	{
-		[Constructable]
-		public SoulstoneFragmentToken()
-			: base()
-		{
-		}
-
-		public SoulstoneFragmentToken(Serial serial)
-			: base(serial)
-		{
-		}
-
-		public override TextDefinition ItemGumpName
-		{
-			get
-			{
-				return 1070999;
-			}
-		}// <center>Soulstone Fragment</center>
-		public override TextDefinition ItemName
-		{
-			get
-			{
-				return 1071000;
-			}
-		}//soulstone fragment
-		public override TextDefinition ItemReceiveMessage
-		{
-			get
-			{
-				return 1070976;
-			}
-		}// A soulstone fragment has been created in your bank box.
-		public override Item CreateItemFor(Mobile from)
-		{
-			if (from != null && from.Account != null)
-
-				return new SoulstoneFragment(from.Account.ToString());
-			else
-				return null;
-		}
-
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-
-			writer.Write((int)0);
-		}
-
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-
-			int version = reader.ReadInt();
-		}
-	}
-
-	public class SoulstoneToken : PromotionalToken
-	{
-		[Constructable]
-		public SoulstoneToken()
-			: base()
-		{
-		}
-
-		public SoulstoneToken(Serial serial)
-			: base(serial)
-		{
-		}
-
-		public override TextDefinition ItemGumpName
-		{
-			get
-			{
-				return 1030903;
-			}
-		}// <center>Soulstone</center>
-		public override TextDefinition ItemName
-		{
-			get
-			{
-				return 1030899;
-			}
-		}//soulstone
-		public override TextDefinition ItemReceiveMessage
-		{
-			get
-			{
-				return 1070743;
-			}
-		}// A soulstone has been created in your bank box.
-		public override Item CreateItemFor(Mobile from)
-		{
-			if (from != null && from.Account != null)
-			{
-				return new SoulStone(from.Account.ToString()) { LastUserName = @from.RawName };
-			}
-			else
-				return null;
-		}
-
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-
-			writer.Write((int)0);
-		}
-
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-
-			int version = reader.ReadInt();
-		}
-	}
-
 }

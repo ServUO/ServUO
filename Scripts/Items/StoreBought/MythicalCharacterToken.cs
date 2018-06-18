@@ -6,9 +6,10 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class MythicCharacterToken : Item
+    public class MythicCharacterToken : Item, IPromotionalToken
     {
-        public override int LabelNumber { get { return 1152353; } } // Mythic Character Token
+        public override int LabelNumber { get { return 1070997; } } // a promotional token
+        public TextDefinition ItemName { get { return 1152353; } } // Mythic Character Token
 
         [Constructable]
         public MythicCharacterToken()
@@ -32,6 +33,13 @@ namespace Server.Items
                     BaseGump.SendGump(new InternalGump((PlayerMobile)m, this));
                 }
             }
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1070998, ItemName.ToString()); // Use this to redeem<br>Your ~1_PROMO~
         }
 
         public MythicCharacterToken(Serial serial)
