@@ -14,6 +14,7 @@ namespace Server.Items
         public GenderChangeToken()
             : base(0x2AAA)
         {
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)
