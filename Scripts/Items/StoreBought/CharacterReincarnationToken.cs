@@ -15,6 +15,7 @@ namespace Server.Items
         [Constructable]
         public CharacterReincarnationToken()
         {
+            LootType = LootType.Blessed;
         }
 
         public override Item CreateItemFor(Mobile from)
