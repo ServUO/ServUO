@@ -13,6 +13,7 @@ namespace Server.Mobiles
         public LasherStatue() 
             : base(0x9E35)
         {
+            LootType = LootType.Blessed;
         }
         public LasherStatue(Serial serial)
             : base(serial)
