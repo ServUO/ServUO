@@ -965,7 +965,6 @@
     <Compile Include="Items\StoreBought\HildebrandtDragonRug.cs" />
     <Compile Include="Items\StoreBought\HoodedBritanniaRobe.cs" />
     <Compile Include="Items\StoreBought\LargeGlowingLadyBug.cs" />
-    <Compile Include="Items\StoreBought\LargeRaisedGarden.cs" />
     <Compile Include="Items\StoreBought\MapleTree.cs" />
     <Compile Include="Items\StoreBought\MerchantsTrinket.cs" />
     <Compile Include="Items\StoreBought\MythicalCharacterToken.cs" />
