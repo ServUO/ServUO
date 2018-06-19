@@ -84,7 +84,7 @@ namespace Server.Items
 
         public override void OnResponse(RelayInfo info)
         {
-            if (info.ButtonID == 1)
+            if (info.ButtonID == 1 && Token.IsChildOf(User.Backpack))
             {
                 if (User.Female)
                 {
