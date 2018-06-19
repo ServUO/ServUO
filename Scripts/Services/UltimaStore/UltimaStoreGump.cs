@@ -499,7 +499,7 @@ namespace Server.Engines.UOStore
             AddHtmlLocalized(30, 100, 200, 20, 1114514, "#1150152", 0x7FFF, false, false); // Quantity to Buy:
 
             AddBackground(233, 100, 50, 20, 0x2486);
-            AddTextEntry(238, 100, 50, 20, 0, 0, Current > 0 ? Current.ToString() : "");
+            AddTextEntry(238, 100, 50, 20, 0, 0, Current > 0 ? Current.ToString() : "", 2);
 
             AddButton(45, 150, 0x9C53, 0x9C5D, 195, GumpButtonType.Reply, 0);
             AddHtmlLocalized(45, 153, 126, 25, 1114513, "#1156596", 0x7FFF, false, false); // Okay
@@ -520,13 +520,14 @@ namespace Server.Engines.UOStore
 
                     if (amount > 0)
                     {
-                        if (amount < 125)
+                        if (amount <= 10)
                         {
                             UltimaStore.GetProfile(User).SetCartAmount(Entry, amount);
                         }
                         else
                         {
-                            User.SendLocalizedMessage(1156836); // You can't exceed 125 items per purchase. 
+                            User.SendLocalizedMessage(1150315); // That text is unacceptable.
+                            //User.SendLocalizedMessage(1156836); // You can't exceed 125 items per purchase. 
                         }
 
                         Gump.Refresh();

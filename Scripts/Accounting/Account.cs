@@ -313,6 +313,7 @@ namespace Server.Accounting
 			LastLogin = Utility.GetXMLDateTime(Utility.GetText(node["lastLogin"], null), DateTime.UtcNow);
 
 			TotalCurrency = Utility.GetXMLDouble(Utility.GetText(node["totalCurrency"], "0"), 0);
+            Sovereigns = Utility.GetXMLInt32(Utility.GetText(node["sovereigns"], "0"), 0);
 
 			m_Mobiles = LoadMobiles(node);
 			m_Comments = LoadComments(node);
@@ -1454,6 +1455,10 @@ namespace Server.Accounting
 			xml.WriteString(XmlConvert.ToString(TotalCurrency));
 			xml.WriteEndElement();
 
+            xml.WriteStartElement("sovereigns");
+            xml.WriteString(XmlConvert.ToString(Sovereigns));
+            xml.WriteEndElement();
+
             if (SecureAccounts != null)
             {
                 xml.WriteStartElement("SecureAccounts");
@@ -1881,6 +1886,46 @@ namespace Server.Accounting
             return false;
         }
         #endregion
-		#endregion
-	}
+        #endregion
+
+        #region Sovereigns
+        /// <summary>
+        ///     Sovereigns which can be used at the shard owners disposal. On EA, they are used for curerncy with the Ultima Store
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator, true)]
+        public int Sovereigns { get; private set; }
+
+        public void SetSovereigns(int amount)
+        {
+            Sovereigns = amount;
+        }
+
+        public bool DepositSovereigns(int amount)
+        {
+            if (amount <= 0)
+            {
+                return false;
+            }
+
+            Sovereigns += amount;
+            return true;
+        }
+
+        public bool WithdrawSovereigns(int amount)
+        {
+            if (amount <= 0)
+            {
+                return true;
+            }
+
+            if (amount > Sovereigns)
+            {
+                return false;
+            }
+
+            Sovereigns -= amount;
+            return true;
+        }
+        #endregion
+    }
 }

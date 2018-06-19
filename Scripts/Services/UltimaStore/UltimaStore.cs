@@ -59,7 +59,7 @@ namespace Server.Engines.UOStore
                 canUse = false;
             }
             
-            if (m.AccessLevel == AccessLevel.Player && !VendorSearch.CanSearch(m))
+            if (m.AccessLevel == AccessLevel.Player && !CanSearch(m))
             {
                 m.SendLocalizedMessage(1156586);
                 canUse = false;
@@ -71,6 +71,11 @@ namespace Server.Engines.UOStore
             {
                 BaseGump.SendGump(new UltimaStoreGump((PlayerMobile)m));
             }
+        }
+
+        public static bool CanSearch(Mobile m)
+        {
+            return m.Region.GetLogoutDelay(m) == TimeSpan.Zero;
         }
 
         public static List<StoreEntry> Entries { get; private set; }
@@ -161,7 +166,7 @@ namespace Server.Engines.UOStore
             Register(new StoreEntry(typeof(PigmentsOfTokuno), new TextDefinition[] { 1070933, 1079587 }, 1156906, 0, 0x9CA9, 0, 400, cat, ConstructPigments)); // Deep Rose
             Register(new StoreEntry(typeof(PigmentsOfTokuno), new TextDefinition[] { 1070933, 1070990 }, 1156906, 0, 0x9CAA, 0, 400, cat, ConstructPigments)); // Luna White
 
-            Register(new StoreEntry(typeof(CommemorativeRobe), 1157009, 1156908, 0, 0x4B9D, 0, 500, cat));
+            Register(new StoreEntry(typeof(CommemorativeRobe), 1157009, 1156908, 0x4B9D, 0, 0, 500, cat));
 
             Register(new StoreEntry(typeof(PigmentsOfTokuno), new TextDefinition[] { 1070933, 1070992 }, 1156906, 0, 0x9CAF, 0, 400, cat, ConstructPigments)); // Shadow Dancer Black
             Register(new StoreEntry(typeof(PigmentsOfTokuno), new TextDefinition[] { 1070933, 1070989 }, 1156906, 0, 0x9CAE, 0, 400, cat, ConstructPigments)); // Invulnerability Blue
@@ -285,7 +290,7 @@ namespace Server.Engines.UOStore
             Register(new StoreEntry(typeof(AppleTrunkDeed), 1076785, 1156927, 0xD98, 0, 0, 100, cat));
             Register(new StoreEntry(typeof(TableWithPurpleClothDeed), new TextDefinition[] { 1157011, 1157013 }, 1156929, 0x118B, 0, 0, 100, cat));
             Register(new StoreEntry(typeof(WoodenCoffinDeed), 1076274, 1156928 , 0, 0x9C92, 0, 100, cat));
-            Register(new StoreEntry(typeof(LargeRaisedGardenDeed), new TextDefinition[] { 1150359, 1156688 }, 1156680, 0, 0x9C8B, 0, 2000, cat, ConstructRaisedGarden));
+            Register(new StoreEntry(typeof(RaisedGardenDeed), new TextDefinition[] { 1150359, 1156688 }, 1156680, 0, 0x9C8B, 0, 2000, cat, ConstructRaisedGarden));
             Register(new StoreEntry(typeof(HouseTeleporterTileBag), new TextDefinition[] { 1156683, 1156826 }, 1156668, 0x40B9, 0, 1201, 1000, cat));
             Register(new StoreEntry(typeof(WoodworkersBenchDeed), 1026641, 1156658, 0x14F0, 0, 0, 600, cat));
             Register(new StoreEntry(typeof(LargeGlowingLadyBug), 1026641, 1156670, 0x2CFD, 0, 0, 200, cat));
@@ -419,9 +424,9 @@ namespace Server.Engines.UOStore
         {
             var bag = new Bag();
 
-            bag.DropItem(new LargeRaisedGardenDeed());
-            bag.DropItem(new LargeRaisedGardenDeed());
-            bag.DropItem(new LargeRaisedGardenDeed());
+            bag.DropItem(new RaisedGardenDeed());
+            bag.DropItem(new RaisedGardenDeed());
+            bag.DropItem(new RaisedGardenDeed());
 
             return bag;
         }
@@ -663,6 +668,12 @@ namespace Server.Engines.UOStore
             {
                 case CurrencyType.None:
                     return 0;
+                case CurrencyType.Sovereigns:
+                    if (m is PlayerMobile)
+                    {
+                        return ((PlayerMobile)m).AccountSovereigns;
+                    }
+                    return 0;
                 case CurrencyType.Gold:
                     return Banker.GetBalance(m);
                 case CurrencyType.PointsSystem:
@@ -756,6 +767,12 @@ namespace Server.Engines.UOStore
             switch (Configuration.CurrencyType)
             {
                 case CurrencyType.None:
+                    break;
+                case CurrencyType.Sovereigns:
+                    if (m is PlayerMobile)
+                    {
+                        ((PlayerMobile)m).WithdrawSovereigns(amount);
+                    }
                     break;
                 case CurrencyType.Gold:
                     Banker.Withdraw(m, amount, true);
@@ -897,6 +914,7 @@ namespace Server.Engines.UOStore
         public UltimaStoreContainer()
             : base(0x09AB)
         {
+            Movable = false;
         }
 
         public void AddDisplayItem(Item item)
@@ -974,33 +992,5 @@ namespace Server.Engines.UOStore
                 }
             }
         }
-
-        /*private class EntrySorter : IComparer<StoreEntry>
-        {
-            public SortBy SortBy { get; private set; }
-
-            public EntrySorter(StatSortType st)
-            {
-                SortBy = st;
-            }
-
-            public int Compare(StoreEntry x, StoreEntry y)
-            {
-                switch (m_SortBy)
-                {
-                    case StatSortType.Name:
-                        return x.PlayerName.CompareTo(y.PlayerName);
-                    case StatSortType.PriceLower:
-                        return x.GuildName.CompareTo(y.GuildName);
-                    case StatSortType.PriceHigher:
-                        return x.Kills.CompareTo(y.Kills);
-                    case StatSortType.Newest:
-                        return x.Points.CompareTo(y.Points);
-                    case StatSortType.Oldest:
-                        return x.Rank.CompareTo(y.Rank);
-                }
-                return 0;
-            }
-        }*/
     }
 }
