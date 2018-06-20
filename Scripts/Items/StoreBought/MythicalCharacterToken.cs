@@ -11,6 +11,8 @@ namespace Server.Items
         public override int LabelNumber { get { return 1070997; } } // a promotional token
         public TextDefinition ItemName { get { return 1152353; } } // Mythic Character Token
 
+        public Type GumpType { get { return typeof(MythicCharacterToken.InternalGump); } }
+
         [Constructable]
         public MythicCharacterToken()
             : base(0x2AAA)

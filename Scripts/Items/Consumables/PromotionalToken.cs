@@ -7,6 +7,7 @@ namespace Server.Items
     public interface IPromotionalToken
     {
         TextDefinition ItemName { get; }
+        Type GumpType { get; }
     }
 
 	public abstract class PromotionalToken : Item, IPromotionalToken
@@ -28,6 +29,7 @@ namespace Server.Items
 		public abstract TextDefinition ItemReceiveMessage { get; }
 		public abstract TextDefinition ItemGumpName { get; }
 
+        public Type GumpType { get { return typeof(PromotionalTokenGump); } }
         public virtual bool PlaceInBank { get { return true; } }
 
 		public override int LabelNumber

@@ -3196,6 +3196,19 @@ namespace Server.Mobiles
 			return true;
 		}
 
+        public override bool OnDragLift(Item item)
+        {
+            if (item is IPromotionalToken && ((IPromotionalToken)item).GumpType != null)
+            {
+                Type t = ((IPromotionalToken)item).GumpType;
+
+                if (HasGump(t))
+                    CloseGump(t);
+            }
+
+            return base.OnDragLift(item);
+        }
+
 		public override bool CheckTrade(
 			Mobile to, Item item, SecureTradeContainer cont, bool message, bool checkItems, int plusItems, int plusWeight)
 		{

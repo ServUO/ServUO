@@ -10,6 +10,8 @@ namespace Server.Items
         public override int LabelNumber { get { return 1070997; } } // a promotional token
         public TextDefinition ItemName { get { return 1075252; } } // gender change
 
+        public Type GumpType { get { return typeof(GenderChangeConfirmGump); } }
+
         [Constructable]
         public GenderChangeToken()
             : base(0x2AAA)

@@ -13,6 +13,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1070997; } } // a promotional token
         public TextDefinition ItemName { get { return 1113656; } } // race change
 
+        public Type GumpType { get { return typeof(RaceChangeConfirmGump); } }
         [Constructable]
         public RaceChangeToken()
             : base(0x2AAA)

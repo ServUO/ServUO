@@ -11,6 +11,8 @@ namespace Server.Items
         public override int LabelNumber { get { return 1070997; } } // a promotional token
         public TextDefinition ItemName { get { return 1075247; } } // name change
 
+        public Type GumpType { get { return typeof(NameChangeConfirmGump); } }
+
         [Constructable]
         public NameChangeToken()
             : base(0x2AAA)
@@ -58,20 +60,12 @@ namespace Server.Items
 
     public class NameChangeConfirmGump : BaseGump
     {
-        public enum GumpMode
-        {
-            Confirm,
-            Select
-        }
-
         public NameChangeToken Token { get; private set; }
-        public GumpMode Mode { get; private set; }
 
-        public NameChangeConfirmGump(PlayerMobile pm, NameChangeToken token, GumpMode mode = GumpMode.Confirm)
+        public NameChangeConfirmGump(PlayerMobile pm, NameChangeToken token)
             : base(pm, 100, 100)
         {
             Token = token;
-            Mode = mode;
         }
 
         public override void AddGumpLayout()
