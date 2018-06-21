@@ -42,7 +42,7 @@ namespace Server.Mobiles
             MinTameSkill = 47.1;
 
             Fame = 5000;
-            Karma = 5000; //Lose Karma for killing
+            Karma = -5000; 
 
             VirtualArmor = 16;
 
