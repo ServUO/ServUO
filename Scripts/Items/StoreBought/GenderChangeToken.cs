@@ -27,9 +27,84 @@ namespace Server.Items
             }
             else if (from is PlayerMobile)
             {
+                _HairID = 0;
+                _BeardID = 0;
+
                 from.CloseGump(typeof(GenderChangeConfirmGump));
                 BaseGump.SendGump(new GenderChangeConfirmGump((PlayerMobile)from, this));
             }
+        }
+
+        private int _HairID;
+        private int _BeardID;
+
+        public void OnChangeHairstyle(Mobile from, bool facialHair, int itemID)
+        {
+            if (!IsChildOf(from.Backpack))
+                return;
+
+            if (facialHair)
+            {
+                _BeardID = itemID;
+            }
+            else
+            {
+                _HairID = itemID;
+            }
+
+            if (!from.Female || from.Race == Race.Elf || facialHair)
+            {
+                EndGenderChange(from);
+            }
+            else
+            {
+                from.SendGump(new ChangeHairstyleGump(!from.Female, from, null, 0, true, from.Race == Race.Gargoyle ? ChangeHairstyleEntry.BeardEntriesGargoyle : ChangeHairstyleEntry.BeardEntries, this));
+            }
+        }
+
+        public void OnFailedHairstyle(Mobile from, bool facialHair)
+        {
+            if (!IsChildOf(from.Backpack))
+                return;
+
+            if (facialHair)
+            {
+                EndGenderChange(from);
+            }
+            else
+            {
+                if (from.Female && from.Race != Race.Elf)
+                {
+                    from.SendGump(new ChangeHairstyleGump(!from.Female, from, null, 0, true, from.Race == Race.Gargoyle ? ChangeHairstyleEntry.BeardEntriesGargoyle : ChangeHairstyleEntry.BeardEntries, this));
+                }
+                else
+                {
+                    EndGenderChange(from);
+                }
+            }
+        }
+
+        private void EndGenderChange(Mobile from)
+        {
+            if (from.Female)
+            {
+                from.Body = from.Race.MaleBody;
+                from.Female = false;
+            }
+            else
+            {
+                from.Body = from.Race.FemaleBody;
+                from.Female = true;
+            }
+
+            if ((from.Female || from.Race == Race.Elf) && _BeardID != 0)
+                _BeardID = 0;
+
+            from.FacialHairItemID = _BeardID;
+            from.HairItemID = _HairID;
+
+            from.SendMessage("You are now a {0}.", from.Female ? "woman" : "man"); // TODO: Message?
+            Delete();
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -88,46 +163,20 @@ namespace Server.Items
         {
             if (info.ButtonID == 1 && Token.IsChildOf(User.Backpack))
             {
-                if (User.Female)
-                {
-                    User.Body = User.Race.MaleBody;
-                    User.Female = false;
-                }
-                else
-                {
-                    User.Body = User.Race.FemaleBody;
-                    User.Female = true;
-
-                    User.FacialHairItemID = 0;
-                }
-
-                ChangeHairstyleEntry[] entries = null;
-
-                if (User.Race == Race.Human)
-                    entries = ChangeHairstyleEntry.HairEntries;
-                else if (User.Race == Race.Elf)
-                    entries = ChangeHairstyleEntry.HairEntriesElf;
-                else if (User.Race == Race.Gargoyle)
-                    entries = ChangeHairstyleEntry.HairEntriesGargoyle;
-
-                if (entries != null)
-                {
-                    if (!User.Female && User.Race != Race.Elf)
-                    {
-                        User.SendGump(new ChangeHairstyleGump(User, null, 0, false, entries, m =>
-                            {
-                                m.SendGump(new ChangeHairstyleGump(User, null, 0, true, m.Race == Race.Gargoyle ? ChangeHairstyleEntry.BeardEntriesGargoyle : ChangeHairstyleEntry.BeardEntries));
-                            }));
-                    }
-                    else
-                    {
-                        User.SendGump(new ChangeHairstyleGump(User, null, 0, false, entries));
-                    }
-                }
-
-                User.SendMessage("You are now a {0}.", User.Female ? "woman" : "man"); // TODO: Message?
-                Token.Delete();
+                User.SendGump(new ChangeHairstyleGump(!User.Female, User, null, 0, false, GetHairstyleEntries(User), Token));
             }
+        }
+
+        public static ChangeHairstyleEntry[] GetHairstyleEntries(Mobile m)
+        {
+            ChangeHairstyleEntry[] entries = ChangeHairstyleEntry.HairEntries;
+
+            if (m.Race == Race.Elf)
+                entries = ChangeHairstyleEntry.HairEntriesElf;
+            else if (m.Race == Race.Gargoyle)
+                entries = ChangeHairstyleEntry.HairEntriesGargoyle;
+
+            return entries;
         }
     }
 }

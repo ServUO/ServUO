@@ -593,14 +593,20 @@ namespace Server.Mobiles
 		private readonly bool m_FacialHair;
 		private readonly ChangeHairstyleEntry[] m_Entries;
 
-        public Action<Mobile> ResponseHandler { get; private set; }
+        public bool m_Female;
+        public GenderChangeToken m_Token;
 
         public ChangeHairstyleGump(Mobile from, Mobile vendor, int price, bool facialHair, ChangeHairstyleEntry[] entries)
             : this(from, vendor, price, facialHair, entries, null)
         {
         }
 
-		public ChangeHairstyleGump(Mobile from, Mobile vendor, int price, bool facialHair, ChangeHairstyleEntry[] entries, Action<Mobile> gumpResponse)
+        public ChangeHairstyleGump(Mobile from, Mobile vendor, int price, bool facialHair, ChangeHairstyleEntry[] entries, GenderChangeToken token)
+            : this(from.Female, from, vendor, price, facialHair, entries, token)
+        {
+        }
+
+		public ChangeHairstyleGump(bool female, Mobile from, Mobile vendor, int price, bool facialHair, ChangeHairstyleEntry[] entries, GenderChangeToken token)
 			: base(50, 50)
 		{
 			m_From = from;
@@ -608,8 +614,9 @@ namespace Server.Mobiles
 			m_Price = price;
 			m_FacialHair = facialHair;
 			m_Entries = entries;
+            m_Female = female;
 
-            ResponseHandler = gumpResponse;
+            m_Token = token;
 
 			from.CloseGump(typeof(HairstylistBuyGump));
 			from.CloseGump(typeof(ChangeHairHueGump));
@@ -619,8 +626,6 @@ namespace Server.Mobiles
 			int tableHeight = ((entries.Length + tableWidth - (m_FacialHair ? 1 : 2)) / tableWidth);
 			int offsetWidth = 123;
 			int offsetHeight = (m_FacialHair ? 70 : 65);
-
-            bool female = from.Female;
 
 			AddPage(0);
 
@@ -674,112 +679,121 @@ namespace Server.Mobiles
 
 		public override void OnResponse(NetState sender, RelayInfo info)
 		{
-			if (m_FacialHair && (m_From.Female || m_From.Body.IsFemale))
-			{
-				return;
-			}
+            if (!m_FacialHair || !m_Female)
+            {
+                if (info.ButtonID == 1)
+                {
+                    var switches = info.Switches;
 
-            if (ResponseHandler != null)
-                ResponseHandler(m_From);
+                    if (switches.Length > 0)
+                    {
+                        int index = switches[0];
+                        bool female = m_Female;
 
-			if (info.ButtonID == 1)
-			{
-				var switches = info.Switches;
+                        if (index >= 0 && index < m_Entries.Length)
+                        {
+                            ChangeHairstyleEntry entry = m_Entries[index];
 
-				if (switches.Length > 0)
-				{
-					int index = switches[0];
-                    bool female = m_From.Female;
+                            if (m_From is PlayerMobile)
+                            {
+                                ((PlayerMobile)m_From).SetHairMods(-1, -1);
+                            }
 
-					if (index >= 0 && index < m_Entries.Length)
-					{
-						ChangeHairstyleEntry entry = m_Entries[index];
+                            int hairID = m_From.HairItemID;
+                            int facialHairID = m_From.FacialHairItemID;
+                            int itemID = female ? entry.ItemID_Female : entry.ItemID_Male;
 
-						if (m_From is PlayerMobile)
-						{
-							((PlayerMobile)m_From).SetHairMods(-1, -1);
-						}
+                            if (itemID == 0)
+                            {
+                                bool invalid = m_FacialHair ? (facialHairID == 0) : (hairID == 0);
 
-						int hairID = m_From.HairItemID;
-						int facialHairID = m_From.FacialHairItemID;
-                        int itemID = female ? entry.ItemID_Female : entry.ItemID_Male;
-
-						if (itemID == 0)
-						{
-							if (m_FacialHair ? (facialHairID == 0) : (hairID == 0))
-							{
-								return;
-							}
-
-							if (Banker.Withdraw(m_From, m_Price, true))
-							{
-								if (m_FacialHair)
-								{
-									m_From.FacialHairItemID = 0;
-								}
-								else
-								{
-									m_From.HairItemID = 0;
-								}
-							}
-							else
-							{
-                                if (m_Vendor != null)
+                                if (!invalid)
                                 {
-                                    m_Vendor.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1042293, m_From.NetState);
-                                    // You cannot afford my services for that style.
-                                }
-                                else
-                                {
-                                    m_From.SendLocalizedMessage(1042293);
-                                }
-							}
-						}
-						else
-						{
-							if (m_FacialHair)
-							{
-								if (facialHairID > 0 && facialHairID == itemID)
-								{
-									return;
-								}
-							}
-							else
-							{
-								if (hairID > 0 && hairID == itemID)
-								{
-									return;
-								}
-							}
+                                    if (m_Token != null)
+                                    {
+                                        m_Token.OnChangeHairstyle(m_From, m_FacialHair, 0);
+                                        return;
+                                    }
 
-							if (m_Price <= 0 || Banker.Withdraw(m_From, m_Price))
-							{
-								if (m_FacialHair)
-								{
-									m_From.FacialHairItemID = itemID;
-								}
-								else
-								{
-									m_From.HairItemID = itemID;
-								}
-							}
-							else
-							{
-                                if (m_Vendor != null)
-                                {
-                                    m_Vendor.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1042293, m_From.NetState);
-                                    // You cannot afford my services for that style.
+                                    if (Banker.Withdraw(m_From, m_Price, true))
+                                    {
+                                        if (m_FacialHair)
+                                        {
+                                            m_From.FacialHairItemID = 0;
+                                        }
+                                        else
+                                        {
+                                            m_From.HairItemID = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (m_Vendor != null)
+                                        {
+                                            m_Vendor.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1042293, m_From.NetState);
+                                            // You cannot afford my services for that style.
+                                        }
+                                        else
+                                        {
+                                            m_From.SendLocalizedMessage(1042293);
+                                        }
+                                    }
                                 }
-                                else
+                            }
+                            else
+                            {
+                                bool invalid = m_FacialHair ? facialHairID > 0 && facialHairID == itemID : hairID > 0 && hairID == itemID;
+
+                                if (!invalid)
                                 {
-                                    m_From.SendLocalizedMessage(1042293);
+                                    if (m_Price <= 0 || Banker.Withdraw(m_From, m_Price))
+                                    {
+                                        if (m_Token != null)
+                                        {
+                                            m_Token.OnChangeHairstyle(m_From, m_FacialHair, itemID);
+                                            return;
+                                        }
+
+                                        if (m_FacialHair)
+                                        {
+                                            m_From.FacialHairItemID = itemID;
+                                        }
+                                        else
+                                        {
+                                            m_From.HairItemID = itemID;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (m_Vendor != null)
+                                        {
+                                            m_Vendor.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1042293, m_From.NetState);
+                                            // You cannot afford my services for that style.
+                                        }
+                                        else
+                                        {
+                                            m_From.SendLocalizedMessage(1042293);
+                                        }
+                                    }
                                 }
-							}
-						}
-					}
-				}
-				else
-				{
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (m_Vendor != null)
+                        {
+                            // You decide not to change your hairstyle.
+                            m_Vendor.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1013009, m_From.NetState);
+                        }
+                        else
+                        {
+                            m_From.SendLocalizedMessage(1013009); // You decide not to change your hairstyle. 
+                        }
+                    }
+                }
+                else
+                {
                     if (m_Vendor != null)
                     {
                         // You decide not to change your hairstyle.
@@ -789,20 +803,11 @@ namespace Server.Mobiles
                     {
                         m_From.SendLocalizedMessage(1013009); // You decide not to change your hairstyle. 
                     }
-				}
-			}
-			else
-			{
-                if (m_Vendor != null)
-                {
-                    // You decide not to change your hairstyle.
-                    m_Vendor.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1013009, m_From.NetState);
                 }
-                else
-                {
-                    m_From.SendLocalizedMessage(1013009); // You decide not to change your hairstyle. 
-                }
-			}
+            }
+
+            if (m_Token != null)
+                m_Token.OnFailedHairstyle(m_From, m_FacialHair);
 		}
 	}
 }
