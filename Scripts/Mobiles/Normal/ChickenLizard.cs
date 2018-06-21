@@ -15,31 +15,31 @@ namespace Server.Mobiles
         public ChickenLizard()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a chicken lizard";
-            this.Body = 716;
+            Name = "a chicken lizard";
+            Body = 716;
 
-            this.SetStr(74, 95);
-            this.SetDex(78, 95);
-            this.SetInt(6, 10);
+            SetStr(74, 95);
+            SetDex(78, 95);
+            SetInt(6, 10);
 
-            this.SetHits(74, 95);
-			this.SetMana(6, 10);
-			this.SetStam(78, 95);
+            SetHits(74, 95);
+			SetMana(6, 10);
+			SetStam(78, 95);
 
-            this.SetDamage(2, 5);
+            SetDamage(2, 5);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 15, 20);
-            this.SetResistance(ResistanceType.Fire, 5, 15);
+            SetResistance(ResistanceType.Physical, 15, 20);
+            SetResistance(ResistanceType.Fire, 5, 15);
 
-            this.SetSkill(SkillName.MagicResist, 25.1, 29.6);
-            this.SetSkill(SkillName.Tactics, 30.1, 44.9);
-            this.SetSkill(SkillName.Wrestling, 26.2, 38.2);
+            SetSkill(SkillName.MagicResist, 25.1, 29.6);
+            SetSkill(SkillName.Tactics, 30.1, 44.9);
+            SetSkill(SkillName.Wrestling, 26.2, 38.2);
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 0.0;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 0.0;
 
             if (0.05 > Utility.RandomDouble())
                 PackItem(new ChickenLizardEgg());

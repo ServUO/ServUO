@@ -8,11 +8,11 @@ namespace Server.Items
         public LampPost2()
             : base(0xB23)
         {
-            this.Movable = false;
-            this.Duration = TimeSpan.Zero; // Never burnt out
-            this.Burning = false;
-            this.Light = LightType.Circle300;
-            this.Weight = 40.0;
+            Movable = false;
+            Duration = TimeSpan.Zero; // Never burnt out
+            Burning = false;
+            Light = LightType.Circle300;
+            Weight = 40.0;
         }
 
         public LampPost2(Serial serial)

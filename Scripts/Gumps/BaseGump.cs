@@ -86,6 +86,12 @@ namespace Server.Gumps
 
             Children = null;
             Parent = null;
+
+            OnDispose();
+        }
+
+        public virtual void OnDispose()
+        {
         }
 
         public abstract void AddGumpLayout();

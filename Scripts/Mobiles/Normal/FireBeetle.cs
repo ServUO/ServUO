@@ -11,38 +11,38 @@ namespace Server.Mobiles
         public FireBeetle()
             : base("a fire beetle", 0xA9, 0x3E95, AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.SetStr(300);
-            this.SetDex(100);
-            this.SetInt(500);
+            SetStr(300);
+            SetDex(100);
+            SetInt(500);
 
-            this.SetHits(200);
+            SetHits(200);
 
-            this.SetDamage(7, 20);
+            SetDamage(7, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 0);
-            this.SetDamageType(ResistanceType.Fire, 100);
+            SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Fire, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40);
-            this.SetResistance(ResistanceType.Fire, 70, 75);
-            this.SetResistance(ResistanceType.Cold, 10);
-            this.SetResistance(ResistanceType.Poison, 30);
-            this.SetResistance(ResistanceType.Energy, 30);
+            SetResistance(ResistanceType.Physical, 40);
+            SetResistance(ResistanceType.Fire, 70, 75);
+            SetResistance(ResistanceType.Cold, 10);
+            SetResistance(ResistanceType.Poison, 30);
+            SetResistance(ResistanceType.Energy, 30);
 
-            this.SetSkill(SkillName.MagicResist, 90.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.MagicResist, 90.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0);
 
-            this.Fame = 4000;
-            this.Karma = -4000;
+            Fame = 4000;
+            Karma = -4000;
 
-            this.Tamable = true;
-            this.ControlSlots = 3;
-            this.MinTameSkill = 93.9;
+            Tamable = true;
+            ControlSlots = 3;
+            MinTameSkill = 93.9;
 
-            this.PackItem(new SulfurousAsh(Utility.RandomMinMax(16, 25)));
-            this.PackItem(new IronIngot(2));
+            PackItem(new SulfurousAsh(Utility.RandomMinMax(16, 25)));
+            PackItem(new IronIngot(2));
 
-            this.Hue = 0x489;
+            Hue = 0x489;
         }
 
         public FireBeetle(Serial serial)
@@ -61,7 +61,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return true;
+                return !PetTrainingHelper.Enabled;
             }
         }
         public virtual double BoostedSpeed
@@ -94,14 +94,14 @@ namespace Server.Mobiles
         }
         public override void OnHarmfulSpell(Mobile from)
         {
-            if (!this.Controlled && this.ControlMaster == null)
-                this.CurrentSpeed = this.BoostedSpeed;
+            if (!Controlled && ControlMaster == null)
+                CurrentSpeed = BoostedSpeed;
         }
 
         public override void OnCombatantChange()
         {
-            if (this.Combatant == null && !this.Controlled && this.ControlMaster == null)
-                this.CurrentSpeed = this.PassiveSpeed;
+            if (Combatant == null && !Controlled && ControlMaster == null)
+                CurrentSpeed = PassiveSpeed;
         }
 
         public override bool OverrideBondingReqs()
@@ -136,6 +136,16 @@ namespace Server.Mobiles
 
         public override double GetControlChance(Mobile m, bool useBaseSkill)
         {
+            if (PetTrainingHelper.Enabled)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+                if (profile != null && profile.HasCustomized())
+                {
+                    return base.GetControlChance(m, useBaseSkill);
+                }
+            }
+
             return 1.0;
         }
 
@@ -153,7 +163,7 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             if (version == 0)
-                this.Hue = 0x489;
+                Hue = 0x489;
         }
     }
 }

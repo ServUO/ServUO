@@ -266,6 +266,12 @@ namespace Server.Multis
         public override int LabelNumber { get { return 1113917; } }
 
         [Constructable]
+        public HouseTeleporterTileBag()
+            : this(false)
+        {
+        }
+
+        [Constructable]
         public HouseTeleporterTileBag(bool reward)
         {
             Hue = 1336;

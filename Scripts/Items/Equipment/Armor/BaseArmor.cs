@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection
+    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection, IEngravable
     {
         #region Factions
         private FactionItem m_FactionState;
@@ -33,6 +33,13 @@ namespace Server.Items
                 LootType = (m_FactionState == null ? LootType.Regular : LootType.Blessed);
             }
         }
+        #endregion
+
+        #region IEngravable
+        private string _EngravedText;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string EngravedText { get { return _EngravedText; } set { _EngravedText = value; InvalidateProperties(); } }
         #endregion
 
         private bool _VvVItem;
@@ -1581,7 +1588,8 @@ namespace Server.Items
             //TimesImbued = 0x04000000,
             NegativeAttributes  = 0x08000000,
             Altered = 0x10000000, 
-            TalismanProtection = 0x20000000
+            TalismanProtection = 0x20000000,
+            EngravedText = 0x40000000
         }
 
         #region Mondain's Legacy Sets
@@ -1712,6 +1720,7 @@ namespace Server.Items
             // Version 7
             SaveFlag flags = SaveFlag.None;
 
+            SetSaveFlag(ref flags, SaveFlag.EngravedText, !String.IsNullOrEmpty(_EngravedText));
             SetSaveFlag(ref flags, SaveFlag.TalismanProtection, !m_TalismanProtection.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.NegativeAttributes, !m_NegativeAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Attributes, !m_AosAttributes.IsEmpty);
@@ -1744,6 +1753,9 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
+
+            if (GetSaveFlag(flags, SaveFlag.EngravedText))
+                writer.Write(_EngravedText);
 
             if (GetSaveFlag(flags, SaveFlag.TalismanProtection))
                 m_TalismanProtection.Serialize(writer);
@@ -1939,6 +1951,9 @@ namespace Server.Items
                 case 5:
                     {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.EngravedText))
+                            _EngravedText = reader.ReadString();
 
                         if (GetSaveFlag(flags, SaveFlag.TalismanProtection))
                             m_TalismanProtection = new TalismanAttribute(reader);
@@ -2603,78 +2618,30 @@ namespace Server.Items
 
             switch ( m_Resource )
             {
-                case CraftResource.DullCopper:
-                    oreType = 1053108;
-                    break; // dull copper
-                case CraftResource.ShadowIron:
-                    oreType = 1053107;
-                    break; // shadow iron
-                case CraftResource.Copper:
-                    oreType = 1053106;
-                    break; // copper
-                case CraftResource.Bronze:
-                    oreType = 1053105;
-                    break; // bronze
-                case CraftResource.Gold:
-                    oreType = 1053104;
-                    break; // golden
-                case CraftResource.Agapite:
-                    oreType = 1053103;
-                    break; // agapite
-                case CraftResource.Verite:
-                    oreType = 1053102;
-                    break; // verite
-                case CraftResource.Valorite:
-                    oreType = 1053101;
-                    break; // valorite
-                case CraftResource.SpinedLeather:
-                    oreType = 1061118;
-                    break; // spined
-                case CraftResource.HornedLeather:
-                    oreType = 1061117;
-                    break; // horned
-                case CraftResource.BarbedLeather:
-                    oreType = 1061116;
-                    break; // barbed
-                case CraftResource.RedScales:
-                    oreType = 1060814;
-                    break; // red
-                case CraftResource.YellowScales:
-                    oreType = 1060818;
-                    break; // yellow
-                case CraftResource.BlackScales:
-                    oreType = 1060820;
-                    break; // black
-                case CraftResource.GreenScales:
-                    oreType = 1060819;
-                    break; // green
-                case CraftResource.WhiteScales:
-                    oreType = 1060821;
-                    break; // white
-                case CraftResource.BlueScales:
-                    oreType = 1060815;
-                    break; // blue
-                case CraftResource.OakWood:
-                    oreType = 1072533; 
-                    break; // oak
-                case CraftResource.AshWood:
-                    oreType = 1072534;
-                    break; // ash
-                case CraftResource.YewWood:
-                    oreType = 1072535;
-                    break; // yew
-                case CraftResource.Heartwood:
-                    oreType = 1072536;
-                    break; // heartwood
-                case CraftResource.Bloodwood:
-                    oreType = 1072538;
-                    break; // bloodwood
-                case CraftResource.Frostwood:
-                    oreType = 1072539;
-                    break; // frostwood
-                default:
-                    oreType = 0;
-                    break;
+                case CraftResource.DullCopper: oreType = 1053108; break; // dull copper
+                case CraftResource.ShadowIron: oreType = 1053107; break; // shadow iron
+                case CraftResource.Copper: oreType = 1053106; break; // copper
+                case CraftResource.Bronze: oreType = 1053105; break; // bronze
+                case CraftResource.Gold: oreType = 1053104; break; // golden
+                case CraftResource.Agapite: oreType = 1053103; break; // agapite
+                case CraftResource.Verite: oreType = 1053102; break; // verite
+                case CraftResource.Valorite: oreType = 1053101; break; // valorite
+                case CraftResource.SpinedLeather: oreType = 1061118; break; // spined
+                case CraftResource.HornedLeather: oreType = 1061117; break; // horned
+                case CraftResource.BarbedLeather: oreType = 1061116; break; // barbed
+                case CraftResource.RedScales: oreType = 1060814; break; // red
+                case CraftResource.YellowScales: oreType = 1060818; break; // yellow
+                case CraftResource.BlackScales: oreType = 1060820; break; // black
+                case CraftResource.GreenScales: oreType = 1060819; break; // green
+                case CraftResource.WhiteScales: oreType = 1060821; break; // white
+                case CraftResource.BlueScales: oreType = 1060815; break; // blue
+                case CraftResource.OakWood: oreType = 1072533;  break; // oak
+                case CraftResource.AshWood: oreType = 1072534; break; // ash
+                case CraftResource.YewWood: oreType = 1072535; break; // yew
+                case CraftResource.Heartwood: oreType = 1072536; break; // heartwood
+                case CraftResource.Bloodwood: oreType = 1072538; break; // bloodwood
+                case CraftResource.Frostwood: oreType = 1072539; break; // frostwood
+                default: oreType = 0; break;
             }
 
             if (m_ReforgedPrefix != ReforgedPrefix.None || m_ReforgedSuffix != ReforgedSuffix.None)
@@ -2701,6 +2668,11 @@ namespace Server.Items
                     list.Add(LabelNumber);
                 else
                     list.Add(Name);
+            }
+
+            if (!String.IsNullOrEmpty(_EngravedText))
+            {
+                list.Add(1062613, Utility.FixHtml(_EngravedText));
             }
         }
 

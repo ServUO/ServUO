@@ -8221,7 +8221,7 @@ namespace Server.Mobiles
                     }
                 });
 
-            foreach (BaseCreature c in toRelease)
+            foreach (BaseCreature c in toRelease.Where(c => c != null))
             {
                 if (c.IsDeadBondedPet)
                 {
@@ -8247,6 +8247,9 @@ namespace Server.Mobiles
             {
                 c.Delete();
             }
+
+            ColUtility.Free(toRelease);
+            ColUtility.Free(toRemove);
         }
     }
 

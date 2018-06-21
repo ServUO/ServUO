@@ -68,7 +68,9 @@ namespace Server.Items
         TRex,
         Zipactriotal,
         MyrmidexQueen,
-        Virtuebane
+        Virtuebane,
+        GreyGoblin,
+        GreenGoblin
     }
 
     public class MonsterStatuetteInfo
@@ -138,6 +140,8 @@ namespace Server.Items
             /* Zipactriotl */       new MonsterStatuetteInfo(1157079, 0x9DE4, 609),
             /* Myrmidex Queen */    new MonsterStatuetteInfo(1157080, 0x9DB6, 959),
             /* Virtuebane */        new MonsterStatuetteInfo(1153592, 0x4C06, 357),
+            /* Grey Goblin */       new MonsterStatuetteInfo(1125135, 0xA095, 0x45A),
+            /* Green Goblin */      new MonsterStatuetteInfo(1125133, 0xA097, 0x45A)
         };
 
         private readonly int m_LabelNumber;

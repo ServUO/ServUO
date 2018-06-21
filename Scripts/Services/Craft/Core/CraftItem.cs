@@ -1239,6 +1239,11 @@ namespace Server.Engines.Craft
                 bonus += apron.Bonus / 100.0;
             }
 
+            if (WoodworkersBench.HasBonus(from, system.MainSkill))
+            {
+                bonus += .3;
+            }
+
 			switch (system.ECA)
 			{
 				default:
@@ -1349,6 +1354,11 @@ namespace Server.Engines.Craft
 					chance += talisman.SuccessBonus / 100.0;
 				}
 			}
+
+            if (WoodworkersBench.HasBonus(from, craftSystem.MainSkill))
+            {
+                chance += .5;
+            }
 
 			if (allRequiredSkills && valMainSkill == maxMainSkill)
 			{

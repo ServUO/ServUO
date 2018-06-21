@@ -1153,4 +1153,39 @@ namespace Server.Items
             }
         }
     }
+
+    public class VioletSoulstone : SoulStone
+    {
+        [Constructable]
+        public VioletSoulstone()
+            : this(null)
+        {
+        }
+
+        [Constructable]
+        public VioletSoulstone(string account)
+            : base(account)
+        {
+            Hue = 2598;
+        }
+
+        public VioletSoulstone(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }

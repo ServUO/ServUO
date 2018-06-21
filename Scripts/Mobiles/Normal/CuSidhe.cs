@@ -100,7 +100,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return true;
+                return !Core.TOL;
             }
         }
         public override int Hides

@@ -74,7 +74,7 @@ namespace Server.Spells.First
                 }
 
                 int oldOffset = SpellHelper.GetCurseOffset(m, StatType.Dex);
-                int newOffset = SpellHelper.GetOffset(Caster, m, StatType.Dex, true, true);
+                int newOffset = SpellHelper.GetOffset(Caster, m, StatType.Dex, true, false);
 
                 if (-newOffset > oldOffset || newOffset == 0)
                 {

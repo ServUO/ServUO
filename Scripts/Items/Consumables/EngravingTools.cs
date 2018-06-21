@@ -560,4 +560,38 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+    public class ArmorEngravingTool : BaseEngravingTool
+    {
+        [Constructable]
+        public ArmorEngravingTool()
+            : base(0x32F8, 30)
+        {
+            Hue = 0x490;
+        }
+
+        public ArmorEngravingTool(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override int LabelNumber { get { return 1080547; } }// Armor Engraving Tool
+        public override int GumpTitle { get { return 1071163; } } // <center>Armor Engraving Tool</center>
+
+        public override Type[] Engraves { get { return new Type[] { typeof(BaseArmor) }; } }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }

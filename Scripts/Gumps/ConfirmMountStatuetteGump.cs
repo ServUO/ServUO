@@ -22,20 +22,34 @@ namespace Server.Gumps
 
             BaseMount m = null;
 
-            if (m_Item is WindrunnerStatue)
+            if (m_Item is IMountStatuette)
             {
-                m = new Windrunner();
+                m = Activator.CreateInstance(((IMountStatuette)m_Item).MountType) as BaseMount;
             }
 
-            if (m_Item is LasherStatue)
+            if (m != null)
             {
-                m = new Lasher();
+                if ((from.Followers + m.ControlSlots) >= from.FollowersMax)
+                {
+                    m.Delete();
+                    from.SendLocalizedMessage(1114321); // You have too many followers to control that pet.
+                }
+                else
+                {
+                    m.SetControlMaster(from);
+                    m.IsBonded = true;
+                    m.MoveToWorld(from.Location, from.Map);
+                    m_Item.Delete();
+                }
             }
-
-            m.SetControlMaster(from);
-            m.IsBonded = true;
-            m.MoveToWorld(from.Location, from.Map);
-            m_Item.Delete();
         }
+    }
+}
+
+namespace Server.Mobiles
+{
+    public interface IMountStatuette
+    {
+        Type MountType { get; }
     }
 }

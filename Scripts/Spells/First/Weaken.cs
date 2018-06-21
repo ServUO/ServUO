@@ -75,7 +75,7 @@ namespace Server.Spells.First
                 }
 
                 int oldOffset = SpellHelper.GetCurseOffset(m, StatType.Str);
-                int newOffset = SpellHelper.GetOffset(Caster, m, StatType.Str, true, true);
+                int newOffset = SpellHelper.GetOffset(Caster, m, StatType.Str, true, false);
 
                 if (-newOffset > oldOffset || newOffset == 0)
                 {
@@ -99,7 +99,7 @@ namespace Server.Spells.First
 
                         int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
                         TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Clumsy, 1075831, length, m, percentage.ToString()));
+                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Weaken, 1075831, length, m, percentage.ToString()));
 
                         if (m_Table.ContainsKey(m))
                             m_Table[m].Stop();
