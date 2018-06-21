@@ -489,7 +489,8 @@ namespace Server.Spells
             {
                 if (!blockSkill)
                 {
-                    caster.CheckSkill(SkillName.EvalInt, 0.0, 120.0);
+                    //caster.CheckSkill(SkillName.EvalInt, 0.0, 120.0);
+                    // This is handled in Spell.cs
 
                     if (curse)
                         target.CheckSkill(SkillName.MagicResist, 0.0, 120.0);

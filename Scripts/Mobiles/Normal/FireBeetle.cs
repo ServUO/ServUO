@@ -61,7 +61,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return true;
+                return !PetTrainingHelper.Enabled;
             }
         }
         public virtual double BoostedSpeed
