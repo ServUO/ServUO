@@ -4876,11 +4876,13 @@ namespace Server.Multis
             Item = item;
             Mobile = m;
             House = house;
+
+            Enabled = Mobile.Alive;
         }
 
         public override void OnClick()
         {
-            if (BaseHouse.FindHouseAt(Mobile) == House && House.IsOwner(Mobile))
+            if (Mobile.Alive && BaseHouse.FindHouseAt(Mobile) == House && House.IsOwner(Mobile))
             {
                 if (Mobile.Backpack == null || !Mobile.Backpack.CheckHold(Mobile, Item, false))
                 {

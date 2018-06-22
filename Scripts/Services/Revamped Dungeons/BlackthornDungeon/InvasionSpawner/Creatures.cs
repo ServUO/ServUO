@@ -560,6 +560,40 @@ namespace Server.Engines.Blackthorn
             Karma = -48000;  
         }
 
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            var rights = GetLootingRights();
+            rights.Sort();
+
+            List<Mobile> list = rights.Select(x => x.m_Mobile).Where(m => m.InRange(c.Location, 20)).ToList();
+
+            if(list.Count > 0)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    Mobile drop;
+                    Item item = InvasionController.CreateItem(list[0]);
+
+                    if (list.Count == 1 || i >= list.Count)
+                        drop = list[0];
+                    else
+                        drop = list[i];
+
+                    drop.SendLocalizedMessage(1154530); // You notice the crest of Minax on your fallen foe's equipment and decide it may be of some value...
+
+                    if (drop.Backpack == null || !drop.Backpack.TryDropItem(drop, item, false))
+                    {
+                        drop.BankBox.DropItem(item);
+                        drop.SendLocalizedMessage(1079730); // // The item has been placed into your bank box.
+                    }
+                }
+            }
+
+            ColUtility.Free(list);
+        }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 2);

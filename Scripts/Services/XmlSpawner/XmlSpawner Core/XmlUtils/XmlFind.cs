@@ -20,6 +20,7 @@ using System.Text;
 using Server.Accounting;
 using System.Threading;
 using Server.Engines.XmlSpawner2;
+using System.Linq;
 
 /*
 ** XmlFind
@@ -390,9 +391,9 @@ namespace Server.Mobiles
                     (m is GalleonPilot) || m is PetParrot ||
                     (GenericBuyInfo.IsDisplayCache(m)) ||
                     (m is EffectMobile) ||
-					(m is BaseCreature && ((BaseCreature)m).IsStabled))
+					(m is BaseCreature && ((BaseCreature)m).IsStabled) ||
+                    (m is PlayerVendor && BaseHouse.AllHouses.Any(x => x.InternalizedVendors.Contains(m))))
 					return true;
-
 			}
 			else
 				if (o is Item)

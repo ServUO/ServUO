@@ -374,12 +374,13 @@ namespace Server.Engines.Blackthorn
                 {
                     foreach (Mobile damager in rights.Where(mob => mob.InRange(Beacon.Location, 12)))
                     {
-                        Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(damager), LootPackEntry.IsMondain(damager), LootPackEntry.IsStygian(damager));
+                        if (0.15 < Utility.RandomDouble())
+                            continue;
 
+                        Item i = CreateItem(damager);
+                        
                         if (i != null)
                         {
-                            RunicReforging.GenerateRandomItem(i, damager, Utility.RandomMinMax(700, 800), damager is PlayerMobile ? ((PlayerMobile)damager).RealLuck : damager.Luck, ReforgedPrefix.None, ReforgedSuffix.Minax);
-
                             damager.PlaySound(0x5B4);
                             damager.SendLocalizedMessage(1154554); // You recover an artifact bearing the crest of Minax from the rubble.
 
@@ -397,6 +398,18 @@ namespace Server.Engines.Blackthorn
                     }
                 }
             }
+        }
+
+        public static Item CreateItem(Mobile damager)
+        {
+            Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(damager), LootPackEntry.IsMondain(damager), LootPackEntry.IsStygian(damager));
+
+            if (i != null)
+            {
+                RunicReforging.GenerateRandomItem(i, damager, Utility.RandomMinMax(700, 800), damager is PlayerMobile ? ((PlayerMobile)damager).RealLuck : 0, ReforgedPrefix.None, ReforgedSuffix.Minax);
+            }
+
+            return i;
         }
 
         public void Cleanup()
