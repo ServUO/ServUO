@@ -12,10 +12,7 @@ namespace Server.Items
         public bool m_Transformed;
         private int m_Body = 0;
         private int m_Hue = -1;
-        private int m_SaveNameHue = -1;
-        private bool m_SaveDisplayGuildTitle = true;
         private int m_SaveHueMod = -1;
-        private Mobile m_Wearer;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Transformed
@@ -56,17 +53,12 @@ namespace Server.Items
 
         private void EnMask(Mobile from)
         {
-            m_Wearer = from;
             from.SendMessage("You put on your spooky costume!");
 
-            m_SaveNameHue = from.NameHue;
-            m_SaveDisplayGuildTitle = from.DisplayGuildTitle;
             m_SaveHueMod = from.HueMod;
             from.BodyMod = m_Body;
-            from.NameHue = 39;
             from.HueMod = m_Hue;
-            from.DisplayGuildTitle = false;
-            this.Transformed = true;
+            Transformed = true;
         }
 
         private void DeMask(Mobile from)
@@ -74,10 +66,8 @@ namespace Server.Items
             from.SendMessage("You decide to quit being so spooky.");
 
             from.BodyMod = 0;
-            from.NameHue = m_SaveNameHue;
             from.HueMod = m_SaveHueMod;
-            from.DisplayGuildTitle = m_SaveDisplayGuildTitle;
-            this.Transformed = false;
+            Transformed = false;
         }
 
         public virtual bool Dye(Mobile from, DyeTub sender)
@@ -90,12 +80,6 @@ namespace Server.Items
 
             Hue = sender.DyedHue;
             return true;
-        }
-
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile) m_Wearer = (Mobile)parent;
-            base.OnAdded(parent);
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -126,40 +110,14 @@ namespace Server.Items
             }
         }
 
-        public override void OnRemoved(Object o)
-        {
-
-            if (Transformed) DeMask(m_Wearer);
-            m_Wearer = null;
-
-            if (o is Mobile && ((Mobile)o).Murderer)
-            {
-                ((Mobile)o).Criminal = true;
-            }
-
-            if (o is Mobile && ((Mobile)o).GuildTitle != null)
-            {
-                ((Mobile)o).DisplayGuildTitle = m_SaveDisplayGuildTitle;
-            }
-
-            base.OnRemoved(o);
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write((int)2);
             writer.Write((int)m_Body);
             writer.Write((int)m_Hue);
-            writer.Write((int)m_SaveNameHue);
-            writer.Write((bool)m_SaveDisplayGuildTitle);
             writer.Write((int)m_SaveHueMod);
-
-            if (m_Wearer == null)
-                writer.Write((int)Serial.MinusOne.Value);
-            else
-                writer.Write((int)m_Wearer.Serial.Value);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -168,22 +126,23 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 1)
+            switch (version)
             {
-                m_Body = reader.ReadInt();
-                m_Hue = reader.ReadInt();
-                m_SaveNameHue = reader.ReadInt();
-                m_SaveDisplayGuildTitle = reader.ReadBool();
-                m_SaveHueMod = reader.ReadInt();
-                Serial WearerSerial = reader.ReadInt();
+                case 2:
+                    m_Body = reader.ReadInt();
+                    m_Hue = reader.ReadInt();
+                    m_SaveHueMod = reader.ReadInt();
+                    break;
+                case 1:
+                    m_Body = reader.ReadInt();
+                    m_Hue = reader.ReadInt();
+                    reader.ReadInt();
+                    reader.ReadBool();
 
-                if (WearerSerial.IsMobile)
-                    m_Wearer = World.FindMobile(WearerSerial);
-
-                else
-                    m_Wearer = null;
+                    m_SaveHueMod = reader.ReadInt();
+                    reader.ReadInt();
+                    break;
             }
-
         }
     }
 }

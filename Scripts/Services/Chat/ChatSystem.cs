@@ -33,7 +33,7 @@ namespace Server.Engines.Chat
             var chatName = from.Name;
 
             SendCommandTo(from, ChatCommand.OpenChatWindow, chatName);
-            ChatUser.AddChatUser(from);
+            Channel.Default.AddUser(ChatUser.AddChatUser(from));
         }
 
         public static void ChatAction(NetState state, PacketReader pvSrc)

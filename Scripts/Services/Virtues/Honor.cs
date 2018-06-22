@@ -160,7 +160,7 @@ namespace Server
             source.Direction = source.GetDirectionTo(target);
             source.SendLocalizedMessage(1115884); // You Started Honorable Combat!
 
-            if (!source.Mounted)
+            if (!source.Mounted && !source.IsBodyMod)
                 source.Animate(32, 5, 1, true, true, 0);
 
             BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Honored, 1075649, 1153815, String.Format("{0}", target.Name)));
