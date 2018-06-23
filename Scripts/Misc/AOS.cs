@@ -359,12 +359,6 @@ namespace Server
             if (keepAlive && totalDamage > m.Hits)
                 totalDamage = m.Hits;
 
-            if (totalDamage <= 0)
-                return 0;
-
-            if (from != null)
-                DoLeech(totalDamage, from, m);
-
             if (from is BaseCreature && type <= DamageType.Ranged)
             {
                 ((BaseCreature)from).AlterMeleeDamageTo(m, ref totalDamage);
@@ -373,6 +367,21 @@ namespace Server
             if (m is BaseCreature && type <= DamageType.Ranged)
             {
                 ((BaseCreature)m).AlterMeleeDamageFrom(from, ref totalDamage);
+            }
+
+            if (m is BaseCreature)
+            {
+                ((BaseCreature)m).OnBeforeDamage(from, ref totalDamage, type);
+            }
+
+            if (totalDamage <= 0)
+            {
+                return 0;
+            }
+
+            if (from != null)
+            {
+                DoLeech(totalDamage, from, m);
             }
 
             m.Damage(totalDamage, from, true, false);

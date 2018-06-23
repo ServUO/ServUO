@@ -13,6 +13,7 @@ namespace Server.Engines.Chat
 
         public static void Initialize()
         {
+            Console.WriteLine(DefaultChannel);
             PacketHandlers.Register(0xB5, 0x40, true, OpenChatWindowRequest);
             PacketHandlers.Register(0xB3, 0, true, ChatAction);
         }
@@ -33,7 +34,7 @@ namespace Server.Engines.Chat
             var chatName = from.Name;
 
             SendCommandTo(from, ChatCommand.OpenChatWindow, chatName);
-            Channel.Default.AddUser(ChatUser.AddChatUser(from));
+            ChatUser.AddChatUser(from);
         }
 
         public static void ChatAction(NetState state, PacketReader pvSrc)

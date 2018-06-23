@@ -2238,6 +2238,14 @@ namespace Server.Mobiles
             }
         }
 
+        public virtual void OnBeforeDamage(Mobile from, ref int totalDamage, DamageType type)
+        {
+            if (type >= DamageType.Spell && RecentSetControl)
+            {
+                totalDamage = 0;
+            }
+        }
+
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             if (BardPacified && (HitsMax - Hits) * 0.001 > Utility.RandomDouble())
@@ -4571,7 +4579,7 @@ namespace Server.Mobiles
         {
             base.AggressiveAction(aggressor, criminal);
 
-            if (ControlMaster != null)
+            if (ControlMaster != null && ControlMaster != aggressor)
             {
                 if (NotorietyHandlers.CheckAggressor(Aggressors, aggressor))
                 {
@@ -4762,6 +4770,11 @@ namespace Server.Mobiles
 
         public override void DoHarmful(IDamageable damageable, bool indirect)
         {
+            if (RecentSetControl && GetMaster() == damageable as Mobile)
+            {
+                return;
+            }
+
             base.DoHarmful(damageable, indirect);
 
             Mobile target = damageable as Mobile;
@@ -6680,6 +6693,11 @@ namespace Server.Mobiles
         {
             Mobile target = damageable as Mobile;
 
+            if (RecentSetControl && GetMaster() == target)
+            {
+                return false;
+            }
+
             if (target is BaseFactionGuard)
             {
                 return false;
@@ -6725,6 +6743,7 @@ namespace Server.Mobiles
             else
             {
                 ISpawner se = Spawner;
+
                 if (se != null && se.UnlinkOnTaming)
                 {
                     Spawner.Remove(this);
@@ -6753,6 +6772,20 @@ namespace Server.Mobiles
                     m_DeleteTimer = null;
                 }
 
+                RemoveAggressed(m);
+                RemoveAggressor(m);
+                m.RemoveAggressed(this);
+                m.RemoveAggressor(this);
+
+                if (Combatant != null)
+                    Combatant = null;
+
+                if (m.Combatant == this)
+                    m.Combatant = null;
+
+                RecentSetControl = true;
+                Timer.DelayCall(TimeSpan.FromSeconds(3), () => RecentSetControl = false);
+
                 Delta(MobileDelta.Noto);
             }
 
@@ -6760,6 +6793,8 @@ namespace Server.Mobiles
 
             return true;
         }
+
+        public bool RecentSetControl { get; set; }
 
         public virtual void OnAfterTame(Mobile tamer)
         {

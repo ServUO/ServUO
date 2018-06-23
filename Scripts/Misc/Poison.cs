@@ -235,7 +235,16 @@ namespace Server
                 }
 
                 if (m_From != null)
-                    m_From.DoHarmful(m_Mobile, true);
+                {
+                    if (m_From is BaseCreature && ((BaseCreature)m_From).RecentSetControl && ((BaseCreature)m_From).GetMaster() == m_Mobile)
+                    {
+                        m_From = null;
+                    }
+                    else
+                    {
+                        m_From.DoHarmful(m_Mobile, true);
+                    }
+                }
 
                 IHonorTarget honorTarget = m_Mobile as IHonorTarget;
                 if (honorTarget != null && honorTarget.ReceivedHonorContext != null)
