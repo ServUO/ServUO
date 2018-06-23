@@ -1751,7 +1751,7 @@ namespace Server.Mobiles
         {
             base.AggressiveAction(aggressor, criminal);
 
-            if (aggressor is BaseCreature && ((BaseCreature)aggressor).ControlMaster != null)
+            if (aggressor is BaseCreature && ((BaseCreature)aggressor).ControlMaster != null && ((BaseCreature)aggressor).ControlMaster != this)
             {
                 Mobile aggressiveMaster = ((BaseCreature)aggressor).ControlMaster;
 

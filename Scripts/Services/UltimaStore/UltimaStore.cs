@@ -114,7 +114,7 @@ namespace Server.Engines.UOStore
             cat = StoreCategory.Character;
             //Register(new StoreEntry(typeof(DeluxeStarterPackToken), 1158368, 1158369, 0, 0x9CCB, 0, 2000, cat));
             Register(new StoreEntry(typeof(GreenGoblinStatuette), 1125133, 1158015, 0xA095, 0, 0, 600, cat));
-            Register(new StoreEntry(typeof(GreyGoblinStatuette), 1125135, 1157604, 0xA097, 0, 0, 600, cat));
+            Register(new StoreEntry(typeof(GreyGoblinStatuette), 1125135, 1158015, 0xA097, 0, 0, 600, cat));
             Register(new StoreEntry(typeof(StableSlotIncreaseToken), 1157608, 1157609, 0x2AAA, 0, 0, 500, cat));
             Register(new StoreEntry(typeof(MythicCharacterToken), new TextDefinition[] { 1156614, 1156615 }, 1156679, 0x2AAA, 0, 0, 2500, cat));
             Register(new StoreEntry(typeof(CharacterReincarnationToken), new TextDefinition[] { 1156612, 1156615 }, 1156677, 0x2AAA, 0, 0, 2000, cat));
@@ -199,11 +199,11 @@ namespace Server.Engines.UOStore
             Register(new StoreEntry(typeof(DupresShield), 1075196, 1156963, 0x2B01, 0, 0, 100, cat));
             Register(new StoreEntry(typeof(OssianGrimoire), 1078148, 1156965, 0x2253, 0, 0, 100, cat));
             Register(new StoreEntry(typeof(SquirrelFormTalisman), new TextDefinition[] { 1157010, 1031671 }, 1156966, 0x2F59, 0, 0, 100, cat));
-            Register(new StoreEntry(typeof(EarringsOfProtection), new TextDefinition[] { 1156821, 1156822 }, 1071091, 0, 0x9C66, 0, 200, cat)); // Physcial
-            Register(new StoreEntry(typeof(EarringsOfProtection), 1071092, 1071091, 0, 0x9C66, 0, 200, cat)); // Fire
-            Register(new StoreEntry(typeof(EarringsOfProtection), 1071093, 1071091, 0, 0x9C66,  0, 200, cat)); // Cold
-            Register(new StoreEntry(typeof(EarringsOfProtection), 1071094, 1071091, 0, 0x9C66, 0, 200, cat)); // Poison
-            Register(new StoreEntry(typeof(EarringsOfProtection), 1071095, 1156659, 0, 0x9C66, 0, 200, cat)); // Energy
+            Register(new StoreEntry(typeof(EarringsOfProtection), new TextDefinition[] { 1156821, 1156822 }, 1156659, 0, 0x9C66, 0, 200, cat, ConstructEarrings)); // Physcial
+            Register(new StoreEntry(typeof(EarringsOfProtection), 1071092, 1156659, 0, 0x9C66, 0, 200, cat, ConstructEarrings)); // Fire
+            Register(new StoreEntry(typeof(EarringsOfProtection), 1071093, 1156659, 0, 0x9C66, 0, 200, cat, ConstructEarrings)); // Cold
+            Register(new StoreEntry(typeof(EarringsOfProtection), 1071094, 1156659, 0, 0x9C66, 0, 200, cat, ConstructEarrings)); // Poison
+            Register(new StoreEntry(typeof(EarringsOfProtection), 1071095, 1156659, 0, 0x9C66, 0, 200, cat, ConstructEarrings)); // Energy
             Register(new StoreEntry(typeof(HoodedShroudOfShadows), 1079727, 1156659, 0x2684, 0, 0x455, 1000, cat));
 
             // decorations
@@ -292,8 +292,8 @@ namespace Server.Engines.UOStore
             Register(new StoreEntry(typeof(WoodenCoffinDeed), 1076274, 1156928 , 0, 0x9C92, 0, 100, cat));
             Register(new StoreEntry(typeof(RaisedGardenDeed), new TextDefinition[] { 1150359, 1156688 }, 1156680, 0, 0x9C8B, 0, 2000, cat, ConstructRaisedGarden));
             Register(new StoreEntry(typeof(HouseTeleporterTileBag), new TextDefinition[] { 1156683, 1156826 }, 1156668, 0x40B9, 0, 1201, 1000, cat));
-            Register(new StoreEntry(typeof(WoodworkersBenchDeed), 1026641, 1156658, 0x14F0, 0, 0, 600, cat));
-            Register(new StoreEntry(typeof(LargeGlowingLadyBug), 1026641, 1156670, 0x2CFD, 0, 0, 200, cat));
+            Register(new StoreEntry(typeof(WoodworkersBenchDeed), 1026641, 1156670, 0x14F0, 0, 0, 600, cat));
+            Register(new StoreEntry(typeof(LargeGlowingLadyBug), 1026641, 1156660, 0x2CFD, 0, 0, 200, cat));
             Register(new StoreEntry(typeof(FreshGreenLadyBug), 1071401, 1156661, 0x2D01, 0, 0, 200, cat));
             Register(new StoreEntry(typeof(WillowTreeDeed), 1071105, 1156658, 0x224A, 0, 0, 200, cat));
 
@@ -388,9 +388,19 @@ namespace Server.Engines.UOStore
             return null;
         }
 
-        public static Item ConstructEarringsOfProtection(Mobile m, StoreEntry entry)
+        public static Item ConstructEarrings(Mobile m, StoreEntry entry)
         {
-            return new EarringsOfProtection((AosElementAttribute)entry.Name[0].Number - 1071091);
+            AosElementAttribute ele = AosElementAttribute.Physcial;
+
+            switch (entry.Name[0].Number)
+            {
+                case 1071092: ele = AosElementAttribute.Fire; break;
+                case 1071093: ele = AosElementAttribute.Cold; break;
+                case 1071094: ele = AosElementAttribute.Poison; break;
+                case 1071095: ele = AosElementAttribute.Energy; break;
+            }
+
+            return new EarringsOfProtection(ele);
         }
 
         public static Item ConstructRobe(Mobile m, StoreEntry entry)

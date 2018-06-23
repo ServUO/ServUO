@@ -6,6 +6,7 @@ using Server;
 using Server.Mobiles;
 using Server.Items;
 using Server.Gumps;
+using Server.Network;
 
 namespace Server.Engines.UOStore
 {
@@ -70,6 +71,7 @@ namespace Server.Engines.UOStore
 
             pm.Frozen = true;
             pm.Hidden = true;
+            pm.Squelched = true;
         }
 
         public override void OnDispose()
@@ -282,10 +284,17 @@ namespace Server.Engines.UOStore
                 return;
 
             pm.Frozen = false;
+            pm.Squelched = false;
             pm.SendLocalizedMessage(501235, "", 0x35); // Help request aborted.
 
             if (pm.AccessLevel == AccessLevel.Player)
                 pm.Hidden = false;
+        }
+
+        public override void OnServerClose(NetState owner)
+        {
+            if (owner.Mobile is PlayerMobile)
+                ReleaseHidden((PlayerMobile)owner.Mobile);
         }
 
         public override void OnResponse(RelayInfo info)
@@ -508,6 +517,12 @@ namespace Server.Engines.UOStore
             AddHtmlLocalized(240, 153, 126, 25, 1114513, "#1006045", 0x7FFF, false, false); // Cancel
         }
 
+        public override void OnServerClose(NetState owner)
+        {
+            if (owner.Mobile is PlayerMobile)
+                UltimaStoreGump.ReleaseHidden(User);
+        }
+
         public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 195)
@@ -548,6 +563,7 @@ namespace Server.Engines.UOStore
         public ConfirmPurchaseGump(PlayerMobile pm)
             : base(pm, 150, 150)
         {
+            pm.CloseGump(typeof(ConfirmPurchaseGump));
         }
 
         public override void AddGumpLayout()
@@ -562,6 +578,12 @@ namespace Server.Engines.UOStore
 
             AddButton(240, 150, 0x9C53, 0x9C5D, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(240, 153, 126, 25, 1114513, "#1006045", 0x7FFF, false, false); // Cancel
+        }
+
+        public override void OnServerClose(NetState owner)
+        {
+            if (owner.Mobile is PlayerMobile)
+                UltimaStoreGump.ReleaseHidden(User);
         }
 
         public override void OnResponse(RelayInfo info)
@@ -580,6 +602,7 @@ namespace Server.Engines.UOStore
         public NoFundsGump(PlayerMobile pm)
             : base(pm, 150, 150)
         {
+            pm.CloseGump(typeof(NoFundsGump));
         }
 
         public override void AddGumpLayout()
@@ -594,6 +617,12 @@ namespace Server.Engines.UOStore
 
             AddButton(240, 150, 0x9C53, 0x9C5D, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(240, 153, 126, 25, 1114513, "#1006045", 0x7FFF, false, false); // Cancel
+        }
+
+        public override void OnServerClose(NetState owner)
+        {
+            if (owner.Mobile is PlayerMobile)
+                UltimaStoreGump.ReleaseHidden(User);
         }
 
         public override void OnResponse(RelayInfo info)
@@ -622,6 +651,8 @@ namespace Server.Engines.UOStore
             : base(pm, 10, 10)
         {
             Gump = gump;
+
+            pm.CloseGump(typeof(PromoCodeGump));
         }
 
         public override void AddGumpLayout()
@@ -639,6 +670,12 @@ namespace Server.Engines.UOStore
 
             AddButton(234, 260, 0x9C53, 0x9C5D, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(234, 262, 126, 25, 1114513, "#1006045", 0x7FFF, false, false);
+        }
+
+        public override void OnServerClose(NetState owner)
+        {
+            if (owner.Mobile is PlayerMobile)
+                UltimaStoreGump.ReleaseHidden(User);
         }
 
         public override void OnResponse(RelayInfo info)
