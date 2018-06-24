@@ -10027,6 +10027,7 @@
     <Compile Include="Services\VeteranRewards\CrystalPortals\CrystalPortal.cs" />
     <Compile Include="Services\VeteranRewards\CrystalPortals\CrystalPortalGump.cs" />
     <Compile Include="Services\VeteranRewards\DaviesLocker.cs" />
+    <Compile Include="Services\VeteranRewards\StatRewardGump.cs" />
     <Compile Include="Services\ViceVsVirtue\CityInfo.cs" />
     <Compile Include="Services\ViceVsVirtue\GuildStats.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\BattleStatsGump.cs" />
