@@ -1084,7 +1084,7 @@ namespace Server.Mobiles
             {
                 var profile = PetTrainingHelper.GetAbilityProfile(creature);
 
-                if (profile.HasAbility(MagicalAbility.Poisoning))
+                if ((profile != null && profile.HasAbility(MagicalAbility.Poisoning)) || 0.2 > Utility.RandomDouble())
                     creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);
             }
 

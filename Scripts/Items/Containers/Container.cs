@@ -91,21 +91,6 @@ namespace Server.Items
                     {
                         list.Add(new ReleaseEntry(from, item, house));
                     }
-
-                    if (!(item is BaseContainer))
-                    {
-                        var myInfo = house.GetSecureInfoFor(from, this);
-
-                        if (myInfo != null)
-                        {
-                            if (house.Secures.FirstOrDefault(i => i.Item == item) == null)
-                            {
-                                house.Secures.Add(new SecureInfo(item, SecureLevel.Owner, from, true));
-                            }
-
-                            SetSecureLevelEntry.AddTo(from, item, list);
-                        }
-                    }
                 }
             }
             else

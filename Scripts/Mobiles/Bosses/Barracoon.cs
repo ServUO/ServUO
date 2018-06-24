@@ -172,6 +172,9 @@ namespace Server.Mobiles
                 return false;
             }
         }
+
+        public override bool ForceStayHome { get { return true; } }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
