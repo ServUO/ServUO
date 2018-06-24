@@ -147,7 +147,7 @@ namespace Server
                 typeof(FireAnt), typeof(KepetchAmbusher), typeof(LavaElemental),
                 typeof(MaddeningHorror), typeof(Wight), typeof(WolfSpider),
                 typeof(UndeadGargoyle), typeof(SlasherOfVeils), typeof(SavagePackWolf),
-                typeof(DemonicJailor),
+                typeof(DemonicJailor), typeof(SilverSerpent),
                 #region ML named mobs - before Paragon speedboost
                 typeof(LadyJennifyr), typeof(LadyMarai), typeof(MasterJonath),
                 typeof(MasterMikael), typeof(MasterTheophilus), typeof(RedDeath),
@@ -164,7 +164,7 @@ namespace Server
             {
                 typeof(Barracoon), typeof(Neira),
                 typeof(Rikktor), typeof(EnergyVortex),
-                typeof(EliteNinja), typeof(Pixie), typeof(SilverSerpent),
+                typeof(EliteNinja), typeof(Pixie),
                 typeof(FleshRenderer), typeof(KhaldunRevenant),
                 typeof(FactionDragoon), typeof(FactionKnight), typeof(FactionPaladin),
                 typeof(FactionHenchman), typeof(FactionMercenary), typeof(FactionNecromancer),

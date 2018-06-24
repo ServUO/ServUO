@@ -496,6 +496,11 @@ namespace Server.Multis
 
         public virtual int GetAosCurSecures(out int fromSecures, out int fromVendors, out int fromLockdowns, out int fromMovingCrate)
         {
+            /* Secured container, container counts as fromLockdowns, items count as fromSecures
+             * Locked Down Container, container and items count as fromLockdowns
+             * 
+             */
+
             fromSecures = 0;
             fromVendors = 0;
             fromLockdowns = 0;
@@ -509,13 +514,13 @@ namespace Server.Multis
                 {
                     SecureInfo si = (SecureInfo)list[i];
 
-                    if (!CheckStorage(si.Item))
+                    if (!CheckStorage(si.Item) && !m_LockDowns.ContainsKey(si.Item))
                     {
                         fromSecures += si.Item.TotalItems;
                     }
                 }
 
-                fromLockdowns += list.Count;
+                fromLockdowns += list.Where(x => !m_LockDowns.ContainsKey(x.Item)).Count();
             }
 
             fromLockdowns += GetLockdowns();
@@ -1127,7 +1132,7 @@ namespace Server.Multis
             v += GetLockdowns();
 
             if (m_Secures != null)
-                v += m_Secures.Count;
+                v += m_Secures.Where(x => !m_LockDowns.ContainsKey(x.Item)).Count();
 
             if (!NewVendorSystem)
                 v += PlayerVendors.Count * 10;

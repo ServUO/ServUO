@@ -64,6 +64,8 @@ namespace Server.Mobiles
 
 	public abstract class BaseAI
 	{
+        public const double FollowSpeed = 0.2;
+
 		public Timer m_Timer;
 		protected ActionType m_Action;
 		private long m_NextStopGuard;
@@ -924,9 +926,8 @@ namespace Server.Mobiles
 					m_Mobile.Warmode = true;
 					m_Mobile.FocusMob = null;
 					m_Mobile.Combatant = null;
-					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_NextStopGuard = Core.TickCount + 10000;
-					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                    m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					break;
 				case ActionType.Flee:
 					m_Mobile.Warmode = true;
@@ -1221,7 +1222,7 @@ namespace Server.Mobiles
 					break;
 				case OrderType.Come:
 					m_Mobile.ControlMaster.RevealingAction();
-					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                    m_Mobile.CurrentSpeed = FollowSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
@@ -1239,7 +1240,7 @@ namespace Server.Mobiles
 					break;
 				case OrderType.Guard:
 					m_Mobile.ControlMaster.RevealingAction();
-					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                    m_Mobile.CurrentSpeed = FollowSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = true;
 					m_Mobile.Combatant = null;
@@ -1286,7 +1287,7 @@ namespace Server.Mobiles
 					break;
 				case OrderType.Follow:
 					m_Mobile.ControlMaster.RevealingAction();
-					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                    m_Mobile.CurrentSpeed = FollowSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 
 					m_Mobile.Warmode = false;
@@ -1471,7 +1472,7 @@ namespace Server.Mobiles
 							m_Mobile.Warmode = false;
 							if (Core.AOS)
 							{
-                                m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                                m_Mobile.CurrentSpeed = FollowSpeed;
 							}
 						}
 					}
@@ -1653,7 +1654,7 @@ namespace Server.Mobiles
 				m_Mobile.Warmode = false;
 				if (Core.AOS)
 				{
-                    m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
+                    m_Mobile.CurrentSpeed = FollowSpeed;
 				}
 
 				WalkMobileRange(controlMaster, 1, false, 0, 1);
@@ -2627,6 +2628,16 @@ namespace Server.Mobiles
 			{
 				return false;
 			}
+
+            if (!m_Mobile.Controlled && m_Mobile.ForceStayHome)
+            {
+                int rangeHome = Math.Min(10, m_Mobile.RangeHome);
+
+                if (!Utility.InRange(new Point3D(p), m_Mobile.Home, rangeHome) || 0.025 < Utility.RandomDouble())
+                {
+                    return false;
+                }
+            }
 
 			if (m_Mobile.InRange(p, range))
 			{

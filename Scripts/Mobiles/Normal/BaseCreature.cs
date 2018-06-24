@@ -295,6 +295,8 @@ namespace Server.Mobiles
 
         public virtual InhumanSpeech SpeechType { get { return null; } }
 
+        public virtual bool ForceStayHome { get { return false; } }
+
         public int FollowRange { get; set; }
 
         public virtual bool CanBeParagon { get { return true; } }
