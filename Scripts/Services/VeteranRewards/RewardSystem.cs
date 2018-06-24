@@ -660,10 +660,9 @@ namespace Server.Engines.VeteranRewards
             {
                 e.Mobile.SkillsCap = SkillCap + SkillCapBonus;
             }
-            Console.WriteLine("1");
+
             if (Core.ML && e.Mobile is PlayerMobile && !((PlayerMobile)e.Mobile).HasStatReward && HasHalfLevel(e.Mobile))
             {
-                Console.WriteLine("2");
                 Server.Gumps.BaseGump.SendGump(new StatRewardGump((PlayerMobile)e.Mobile));
             }
 
