@@ -390,7 +390,7 @@ namespace Server.Engines.UOStore
 
         public static Item ConstructEarrings(Mobile m, StoreEntry entry)
         {
-            AosElementAttribute ele = AosElementAttribute.Physcial;
+            AosElementAttribute ele = AosElementAttribute.Physical;
 
             switch (entry.Name[0].Number)
             {
