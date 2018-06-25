@@ -38,6 +38,7 @@ namespace Server.Network
 
 	public delegate void NetStateCreatedCallback(NetState ns);
 
+	[PropertyObject]
 	public class NetState : IComparable<NetState>
 	{
 		private readonly IPAddress m_Address;
@@ -58,13 +59,19 @@ namespace Server.Network
 
 		private readonly DateTime m_ConnectedOn;
 
+		[CommandProperty(AccessLevel.Administrator, true)]
         public DateTime ConnectedOn { get { return m_ConnectedOn; } }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public TimeSpan ConnectedFor { get { return (DateTime.UtcNow - m_ConnectedOn); } }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public uint AuthID { get; set; }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public uint Seed { get; set; }
 
+		[CommandProperty(AccessLevel.Administrator)]
 		public IPAddress Address { get { return m_Address; } }
 
 		private static bool m_Paused;
@@ -84,13 +91,19 @@ namespace Server.Network
 
 		public static event NetStateCreatedCallback CreatedCallback;
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool SentFirstPacket { get; set; }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool BlockAllPackets { get; set; }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool? Encrypted { get; set; }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public ClientFlags Flags { get; set; }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public ClientVersion Version
 		{
 			get { return m_Version; }
@@ -221,25 +234,61 @@ namespace Server.Network
 			Version70610 = Version70500 | EndlessJourney
 		}
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool NewSpellbook { get { return ((_ProtocolChanges & ProtocolChanges.NewSpellbook) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool DamagePacket { get { return ((_ProtocolChanges & ProtocolChanges.DamagePacket) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool Unpack { get { return ((_ProtocolChanges & ProtocolChanges.Unpack) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool BuffIcon { get { return ((_ProtocolChanges & ProtocolChanges.BuffIcon) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool NewHaven { get { return ((_ProtocolChanges & ProtocolChanges.NewHaven) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool ContainerGridLines { get { return ((_ProtocolChanges & ProtocolChanges.ContainerGridLines) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool ExtendedSupportedFeatures { get { return ((_ProtocolChanges & ProtocolChanges.ExtendedSupportedFeatures) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool StygianAbyss { get { return ((_ProtocolChanges & ProtocolChanges.StygianAbyss) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool HighSeas { get { return ((_ProtocolChanges & ProtocolChanges.HighSeas) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool NewCharacterList { get { return ((_ProtocolChanges & ProtocolChanges.NewCharacterList) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool NewCharacterCreation { get { return ((_ProtocolChanges & ProtocolChanges.NewCharacterCreation) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool ExtendedStatus { get { return ((_ProtocolChanges & ProtocolChanges.ExtendedStatus) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool NewMobileIncoming { get { return ((_ProtocolChanges & ProtocolChanges.NewMobileIncoming) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool NewSecureTrading { get { return ((_ProtocolChanges & ProtocolChanges.NewSecureTrading) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool UltimaStore { get { return ((_ProtocolChanges & ProtocolChanges.UltimaStore) != 0); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool EndlessJourney { get { return ((_ProtocolChanges & ProtocolChanges.EndlessJourney) != 0); } }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool IsUOTDClient { get { return ((Flags & ClientFlags.UOTD) != 0 || (m_Version != null && m_Version.Type == ClientType.UOTD)); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool IsSAClient { get { return (m_Version != null && m_Version.Type == ClientType.SA); } }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
         public bool IsEnhancedClient { get { return IsUOTDClient || (m_Version != null && m_Version.Major >= 67); } }
 
         public List<SecureTrade> Trades { get { return m_Trades; } }
@@ -350,9 +399,11 @@ namespace Server.Network
 
 			return newTrade.From.Container;
 		}
-
+		
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool CompressionEnabled { get; set; }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public int Sequence { get; set; }
 
 		public List<Gump> Gumps { get { return m_Gumps; } }
@@ -364,7 +415,8 @@ namespace Server.Network
 		public static int GumpCap { get { return m_GumpCap; } set { m_GumpCap = value; } }
 		public static int HuePickerCap { get { return m_HuePickerCap; } set { m_HuePickerCap = value; } }
 		public static int MenuCap { get { return m_MenuCap; } set { m_MenuCap = value; } }
-
+		
+		[CommandProperty(AccessLevel.Administrator, true)]
         public int UpdateRange { get; set; }
 
 		public void WriteConsole(string text)
@@ -517,10 +569,12 @@ namespace Server.Network
 
 		public CityInfo[] CityInfo { get; set; }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public Mobile Mobile { get; set; }
 
 		public ServerInfo[] ServerInfo { get; set; }
-
+		
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public IAccount Account { get; set; }
 
 		public override string ToString()
@@ -1042,6 +1096,7 @@ namespace Server.Network
 
 		private bool m_Disposing;
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool IsDisposing { get { return m_Disposing; } }
 
 		public void Dispose()
@@ -1196,8 +1251,10 @@ namespace Server.Network
 			}
 		}
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool Running { get { return m_Running; } }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool Seeded { get; set; }
 
 		public Socket Socket { get; private set; }
@@ -1222,6 +1279,7 @@ namespace Server.Network
 			}
 		}
 
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public Expansion Expansion { get { return (Expansion)ExpansionInfo.ID; } }
 
 		public bool SupportsExpansion(ExpansionInfo info, bool checkCoreExpansion)
