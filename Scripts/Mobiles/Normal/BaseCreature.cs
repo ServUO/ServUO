@@ -6637,6 +6637,23 @@ namespace Server.Mobiles
                     }
                 }
 
+                var e = new CreatureDeathEventArgs(this, LastKiller, c);
+
+                EventSink.InvokeCreatureDeath(e);
+
+                if (e.ClearCorpse)
+                {
+                    var i = c.Items.Count;
+
+                    while (--i >= 0)
+                    {
+                        if (i < c.Items.Count)
+                        {
+                            c.Items[i].Delete();
+                        }
+                    }
+                }
+
                 base.OnDeath(c);
 
                 if (DeleteCorpseOnDeath)
