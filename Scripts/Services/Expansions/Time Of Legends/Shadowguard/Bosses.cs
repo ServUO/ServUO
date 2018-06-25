@@ -60,10 +60,6 @@ namespace Server.Engines.Shadowguard
             {
                 this.AddLoot(LootPack.SuperBoss, 7);
             }
-            else
-            {
-                return;
-            }
         }
 		
 		public ShadowguardBoss(Serial serial) : base(serial)
