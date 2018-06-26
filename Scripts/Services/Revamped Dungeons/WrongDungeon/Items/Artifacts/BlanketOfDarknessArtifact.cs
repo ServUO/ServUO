@@ -9,7 +9,6 @@ namespace Server.Items
     public class BlanketOfDarkness : Item
     {
         public override bool IsArtifact { get { return true; } }
-        public override int ArtifactRarity { get { return 8; } }
         public override int LabelNumber { get { return 1152304; } } // Blanket Of Darkness	
 
         [Constructable]
