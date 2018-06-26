@@ -188,31 +188,31 @@ namespace Server.Mobiles
             AddHtmlLocalized(47, 74, 160, 18, 3001030, 0xC8, false, false); // Combat Ratings
 
             AddHtmlLocalized(53, 92, 160, 18, 1044103, _Label, false, false); // Wrestling
-            AddHtml(180, 92, 75, 18, FormatSkill(Creature, SkillName.Wrestling), false, false);
+            AddHtml(180, 92, 100, 18, FormatSkill(Creature, SkillName.Wrestling), false, false);
 
             AddHtmlLocalized(53, 110, 160, 18, 1044087, _Label, false, false); // Tactics
-            AddHtml(180, 110, 75, 18, FormatSkill(Creature, SkillName.Tactics), false, false);
+            AddHtml(180, 110, 100, 18, FormatSkill(Creature, SkillName.Tactics), false, false);
 
             AddHtmlLocalized(53, 128, 160, 18, 1044086, _Label, false, false); // Magic Resistance
-            AddHtml(180, 128, 75, 18, FormatSkill(Creature, SkillName.MagicResist), false, false);
+            AddHtml(180, 128, 100, 18, FormatSkill(Creature, SkillName.MagicResist), false, false);
 
             AddHtmlLocalized(53, 146, 160, 18, 1044061, _Label, false, false); // Anatomy
-            AddHtml(180, 146, 75, 18, FormatSkill(Creature, SkillName.Anatomy), false, false);
+            AddHtml(180, 146, 100, 18, FormatSkill(Creature, SkillName.Anatomy), false, false);
 
             AddHtmlLocalized(53, 164, 160, 18, 1002082, _Label, false, false); // Healing
-            AddHtml(180, 164, 75, 18, FormatSkill(Creature, SkillName.Healing), false, false);
+            AddHtml(180, 164, 100, 18, FormatSkill(Creature, SkillName.Healing), false, false);
 
             AddHtmlLocalized(53, 182, 160, 18, 1002122, _Label, false, false); // Poisoning
-            AddHtml(180, 182, 75, 18, FormatSkill(Creature, SkillName.Poisoning), false, false);
+            AddHtml(180, 182, 100, 18, FormatSkill(Creature, SkillName.Poisoning), false, false);
 
             AddHtmlLocalized(53, 200, 160, 18, 1044074, _Label, false, false); // Detect Hidden
-            AddHtml(180, 200, 75, 18, FormatSkill(Creature, SkillName.DetectHidden), false, false);
+            AddHtml(180, 200, 100, 18, FormatSkill(Creature, SkillName.DetectHidden), false, false);
 
             AddHtmlLocalized(53, 218, 160, 18, 1002088, _Label, false, false); // Hiding
-            AddHtml(180, 218, 75, 18, FormatSkill(Creature, SkillName.Hiding), false, false);
+            AddHtml(180, 218, 100, 18, FormatSkill(Creature, SkillName.Hiding), false, false);
 
             AddHtmlLocalized(53, 236, 160, 18, 1002118, _Label, false, false); // Parrying
-            AddHtml(180, 236, 75, 18, FormatSkill(Creature, SkillName.Parry), false, false);
+            AddHtml(180, 236, 100, 18, FormatSkill(Creature, SkillName.Parry), false, false);
 
             AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 6);
             AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, 4);
@@ -224,31 +224,31 @@ namespace Server.Mobiles
             AddHtmlLocalized(47, 74, 160, 18, 3001032, 0xC8, false, false); // Lore & Knowledge
 
             AddHtmlLocalized(53, 92, 160, 18, 1044085, _Label, false, false); // Magery
-            AddHtml(180, 92, 75, 18, FormatSkill(Creature, SkillName.Magery), false, false);
+            AddHtml(180, 92, 100, 18, FormatSkill(Creature, SkillName.Magery), false, false);
 
             AddHtmlLocalized(53, 110, 160, 18, 1044076, _Label, false, false); // Eval Int
-            AddHtml(180, 110, 75, 18, FormatSkill(Creature, SkillName.EvalInt), false, false);
+            AddHtml(180, 110, 100, 18, FormatSkill(Creature, SkillName.EvalInt), false, false);
 
             AddHtmlLocalized(53, 128, 160, 18, 1044106, _Label, false, false); // Meditation
-            AddHtml(180, 128, 75, 18, FormatSkill(Creature, SkillName.Meditation), false, false);
+            AddHtml(180, 128, 100, 18, FormatSkill(Creature, SkillName.Meditation), false, false);
 
             AddHtmlLocalized(53, 146, 160, 18, 1044109, _Label, false, false); // Necromancy
-            AddHtml(180, 146, 75, 18, FormatSkill(Creature, SkillName.Necromancy), false, false);
+            AddHtml(180, 146, 100, 18, FormatSkill(Creature, SkillName.Necromancy), false, false);
 
             AddHtmlLocalized(53, 164, 160, 18, 1002140, _Label, false, false); // Spirit Speak
-            AddHtml(180, 164, 75, 18, FormatSkill(Creature, SkillName.SpiritSpeak), false, false);
+            AddHtml(180, 164, 100, 18, FormatSkill(Creature, SkillName.SpiritSpeak), false, false);
 
             AddHtmlLocalized(53, 182, 160, 18, 1044115, _Label, false, false); // Mysticism
-            AddHtml(180, 182, 75, 18, FormatSkill(Creature, SkillName.Mysticism), false, false);
+            AddHtml(180, 182, 100, 18, FormatSkill(Creature, SkillName.Mysticism), false, false);
 
             AddHtmlLocalized(53, 200, 160, 18, 1044110, _Label, false, false); // Focus
-            AddHtml(180, 200, 75, 18, FormatSkill(Creature, SkillName.Focus), false, false);
+            AddHtml(180, 200, 100, 18, FormatSkill(Creature, SkillName.Focus), false, false);
 
             AddHtmlLocalized(53, 218, 160, 18, 1044114, _Label, false, false); // Spellweaving
-            AddHtml(180, 218, 75, 18, FormatSkill(Creature, SkillName.Spellweaving), false, false);
+            AddHtml(180, 218, 100, 18, FormatSkill(Creature, SkillName.Spellweaving), false, false);
 
             AddHtmlLocalized(53, 236, 160, 18, 1044075, _Label, false, false); // Discordance
-            AddHtml(180, 236, 75, 18, FormatSkill(Creature, SkillName.Discordance), false, false);
+            AddHtml(180, 236, 100, 18, FormatSkill(Creature, SkillName.Discordance), false, false);
 
             AddButton(240, 328, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 7);
             AddButton(217, 328, 0x15E3, 0x15E7, 0, GumpButtonType.Page, 5);
@@ -260,13 +260,13 @@ namespace Server.Mobiles
             AddHtmlLocalized(47, 74, 160, 18, 3001032, 0xC8, false, false); // Lore & Knowledge
 
             AddHtmlLocalized(53, 92, 160, 18, 1044112, _Label, false, false); // Bushido
-            AddHtml(180, 92, 75, 18, FormatSkill(Creature, SkillName.Bushido), false, false);
+            AddHtml(180, 92, 100, 18, FormatSkill(Creature, SkillName.Bushido), false, false);
 
             AddHtmlLocalized(53, 110, 160, 18, 1044113, _Label, false, false); // Ninjitsu
-            AddHtml(180, 110, 75, 18, FormatSkill(Creature, SkillName.Ninjitsu), false, false);
+            AddHtml(180, 110, 100, 18, FormatSkill(Creature, SkillName.Ninjitsu), false, false);
 
             AddHtmlLocalized(53, 128, 160, 18, 1044111, _Label, false, false); // Chivalry
-            AddHtml(180, 128, 75, 18, FormatSkill(Creature, SkillName.Chivalry), false, false);
+            AddHtml(180, 128, 100, 18, FormatSkill(Creature, SkillName.Chivalry), false, false);
 
             AddImage(28, 146, 0x826);
 
@@ -508,7 +508,10 @@ namespace Server.Mobiles
 
         private static string FormatSkill(BaseCreature c, SkillName name)
         {
-            return AnimalLoreGump.FormatSkill(c, name);
+            if (c.Skills[name].Base < 10.0)
+                return "<div align=right>---</div>";
+
+            return String.Format("<div align=right>{0:F1}/{1}</div>", c.Skills[name].Value, c.Skills[name].Cap);
         }
 
         private static string FormatAttributes(int cur, int max)

@@ -14,11 +14,13 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextResourceCount { get; set; }
 
+        public override bool ForceShowProperties { get { return true; } }
+
         [Constructable]
         public SheepStatue(int itemID)
             : base()
         {
-            AddComponent(new AddonComponent(itemID), 0, 0, 0);
+            AddComponent(new InternalAddonComponent(itemID), 0, 0, 0);
             NextResourceCount = DateTime.UtcNow + TimeSpan.FromDays(1);
         }
 
@@ -137,6 +139,43 @@ namespace Server.Items
             }
             else
                 from.SendLocalizedMessage(1061637); // You are not allowed to access 
+        }
+
+        private class InternalAddonComponent : AddonComponent
+        {
+            public InternalAddonComponent(int id)
+                :base(id)
+            {
+            }
+
+            public override void GetProperties(ObjectPropertyList list)
+            {
+                base.GetProperties(list);
+
+                if (Addon is SheepStatue)
+                {
+                    list.Add(1151834, ((SheepStatue)Addon).ResourceCount.ToString()); // Resources: ~1_val~
+                }
+            }
+
+            public InternalAddonComponent(Serial serial)
+                : base(serial)
+            {
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                base.Serialize(writer);
+
+                writer.WriteEncodedInt(0); // version
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                base.Deserialize(reader);
+
+                int version = reader.ReadEncodedInt();
+            }
         }
 
         public override void Serialize(GenericWriter writer)

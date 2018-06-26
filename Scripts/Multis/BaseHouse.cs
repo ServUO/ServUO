@@ -497,9 +497,7 @@ namespace Server.Multis
         public virtual int GetAosCurSecures(out int fromSecures, out int fromVendors, out int fromLockdowns, out int fromMovingCrate)
         {
             /* Secured container, container counts as fromLockdowns, items count as fromSecures
-             * Locked Down Container, container and items count as fromLockdowns
-             * 
-             */
+             * Locked Down Container, container and items count as fromLockdowns */
 
             fromSecures = 0;
             fromVendors = 0;

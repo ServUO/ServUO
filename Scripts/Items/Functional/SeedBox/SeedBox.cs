@@ -14,8 +14,8 @@ namespace Server.Engines.Plants
     [FlipableAttribute(19288, 19290)]
     public class SeedBox : Container, IRewardItem, ISecurable
     {
-        public static readonly int MaxSeeds = 500;
-        public static readonly int MaxUnique = 200;
+        public static readonly int MaxSeeds = 5000;
+        public static readonly int MaxUnique = 300;
 
         public override int DefaultMaxItems { get { return MaxUnique; } }
         public override bool DisplaysContent { get { return false; } }
@@ -48,13 +48,14 @@ namespace Server.Engines.Plants
             get { return Entries == null ? 0 : Entries.Where(e => e != null && e.Seed != null && e.Seed.Amount > 0).Count(); }
         }
 
+        public override double DefaultWeight { get { return 10.0; } }
+
         [Constructable]
         public SeedBox() : base(19288)
         {
             Entries = new List<SeedEntry>();
 
             LootType = LootType.Blessed;
-            Weight = 10.0;
 
             Level = SecureLevel.Owner;
         }
