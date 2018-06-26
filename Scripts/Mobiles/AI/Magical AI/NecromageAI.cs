@@ -82,7 +82,15 @@ namespace Server.Mobiles
 
                 switch (Utility.Random(select))
                 {
-                    case 0: return new CorpseSkinSpell(m_Mobile, null);
+                    case 0:
+                        Spell spell;
+
+                        if (CheckCastCorpseSkin(m_Mobile))
+                            spell = new CorpseSkinSpell(m_Mobile, null);
+                        else
+                            spell = new EvilOmenSpell(m_Mobile, null);
+
+                        return spell;
                     case 1: return new EvilOmenSpell(m_Mobile, null);
                     case 2: return new BloodOathSpell(m_Mobile, null);
                     case 3: return new MindRotSpell(m_Mobile, null);
@@ -180,6 +188,11 @@ namespace Server.Mobiles
             }
 
             return true;
+        }
+
+        public static bool CheckCastCorpseSkin(BaseCreature bc)
+        {
+            return bc.ColdDamage != 100 && bc.PhysicalDamage != 100;
         }
     }
 }

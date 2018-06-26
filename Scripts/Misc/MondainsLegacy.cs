@@ -216,6 +216,8 @@ namespace Server
         }
         public static void Initialize()
         {
+            EventSink.OnKilledBy += OnKilledBy;
+
 			CommandSystem.Register("DecorateML", AccessLevel.Administrator, new CommandEventHandler(DecorateML_OnCommand));
 			CommandSystem.Register("DecorateMLDelete", AccessLevel.Administrator, new CommandEventHandler(DecorateMLDelete_OnCommand));
 			CommandSystem.Register("SettingsML", AccessLevel.Administrator, new CommandEventHandler(SettingsML_OnCommand));
@@ -367,9 +369,20 @@ namespace Server
             }
         }
 
+        public static void OnKilledBy(OnKilledByEventArgs e)
+        {
+            BaseCreature killed = e.Killed as BaseCreature;
+            Mobile killer = e.KilledBy;
+
+            if (killed != null && killed.GivesMLMinorArtifact && CheckArtifactChance(killer, killed))
+            {
+                MondainsLegacy.GiveArtifactTo(killer);
+            }
+        }
+
         public static bool CheckArtifactChance(Mobile m, BaseCreature bc)
         {
-            if (!Core.ML || bc is BasePeerless) // Peerless drops to the corpse, this will handled elsewhere
+            if (!Core.ML || bc is BasePeerless) // Peerless drops to the corpse, this is handled elsewhere
                 return false;
 
             return Paragon.CheckArtifactChance(m, bc);

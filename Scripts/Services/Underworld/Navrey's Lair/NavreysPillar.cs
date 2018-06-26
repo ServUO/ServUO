@@ -64,9 +64,9 @@ namespace Server.Items
         public NavreysPillar(NavreysController controller, PillarType type)
             : base(0x3BF)
         {
-            this.m_Controller = controller;
-            this.m_Type = type;
-            this.Movable = false;
+            m_Controller = controller;
+            m_Type = type;
+            Movable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -100,7 +100,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            m_State = (NavreysPillarState)reader.ReadInt();
+            State = (NavreysPillarState)reader.ReadInt();
             m_Controller = (NavreysController)reader.ReadItem();
             m_Type = (PillarType)reader.ReadInt();
         }

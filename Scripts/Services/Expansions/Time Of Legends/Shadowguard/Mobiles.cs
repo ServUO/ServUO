@@ -124,6 +124,9 @@ namespace Server.Engines.Shadowguard
 
     public class VileWaterElemental : WaterElemental
     {
+        public override bool CanMoveOverObstacles { get { return false; } }
+
+        [Constructable]
         public VileWaterElemental()
         {
             Name = "a vile water elemental";
