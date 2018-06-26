@@ -9,14 +9,15 @@ namespace Server.Items
     public class BlanketOfDarkness : Item
     {
         public override bool IsArtifact { get { return true; } }
+        public override int ArtifactRarity { get { return 8; } }
         public override int LabelNumber { get { return 1152304; } } // Blanket Of Darkness	
 
         [Constructable]
         public BlanketOfDarkness()
             : base(0xA57)
         {
-            this.Hue = 2076;
-            this.Weight = 10.0;
+            Hue = 2076;
+            Weight = 10.0;
         }
 
         public BlanketOfDarkness(Serial serial)
