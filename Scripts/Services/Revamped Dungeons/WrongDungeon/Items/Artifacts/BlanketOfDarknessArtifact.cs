@@ -25,8 +25,6 @@ namespace Server.Items
         {
         }
 
-        public virtual int ArtifactRarity { get { return 8; } }
-
         public override void OnDoubleClick(Mobile from)
         {
             if (this.Parent != null || !this.VerifyMove(from))
