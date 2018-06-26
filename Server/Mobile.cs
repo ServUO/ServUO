@@ -4251,7 +4251,7 @@ namespace Server
 				Stam = 0;
 				Mana = 0;
 
-				EventSink.InvokePlayerDeath(new PlayerDeathEventArgs(this));
+				EventSink.InvokePlayerDeath(new PlayerDeathEventArgs(this, LastKiller, c));
 
 				ProcessDeltaQueue();
 
@@ -8924,7 +8924,7 @@ namespace Server
 		public virtual void OnNetStateChanged()
 		{ }
 
-		[CommandProperty(AccessLevel.GameMaster, AccessLevel.Owner)]
+		[CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
 		public NetState NetState
 		{
 			get

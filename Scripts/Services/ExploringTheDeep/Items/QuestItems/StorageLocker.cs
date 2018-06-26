@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using System;
 using System.Collections.Generic;
 
@@ -57,6 +57,8 @@ namespace Server.Items
                 return this.m_RestartTime;
             }
         }
+
+        public override bool IsDecoContainer { get { return false; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Parts Type

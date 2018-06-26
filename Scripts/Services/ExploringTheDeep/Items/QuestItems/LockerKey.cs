@@ -1,4 +1,4 @@
-﻿using Server.Network;
+using Server.Network;
 using Server.Targeting;
 using System;
 
@@ -75,13 +75,13 @@ namespace Server.Items
                         sl.Locked = false;
 
                         if (sl.Type == Parts.Flywheel)
-                            sl.AddItem(new FlyWheel());
+                            sl.DropItem(new FlyWheel());
                         else if (sl.Type == Parts.BearingAssembly)
-                            sl.AddItem(new BearingAssembly());
+                            sl.DropItem(new BearingAssembly());
                         else if (sl.Type == Parts.PowerCore)
-                            sl.AddItem(new PowerCore());
+                            sl.DropItem(new PowerCore());
                         else if (sl.Type == Parts.WireSpool)
-                            sl.AddItem(new WireSpool());
+                            sl.DropItem(new WireSpool());
 
                         sl.BeginRestart(TimeSpan.FromMinutes(10.0));
 
