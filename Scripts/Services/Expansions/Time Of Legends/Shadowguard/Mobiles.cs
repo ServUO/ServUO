@@ -169,6 +169,8 @@ namespace Server.Engines.Shadowguard
 
     public class HurricaneElemental : VileWaterElemental
     {
+        public override bool CanMoveOverObstacles { get { return false; } }
+
         [Constructable]
         public HurricaneElemental()
         {
