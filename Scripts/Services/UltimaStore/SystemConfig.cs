@@ -48,7 +48,7 @@ namespace Server.Engines.UOStore
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        public static void DeductCustomCurrecy(Mobile m)
+        public static void DeductCustomCurrecy(Mobile m, int amount)
         {
             // Comment out the next line, and put in your accessor to remove currency for the purchase
             Utility.WriteConsoleColor(ConsoleColor.Red, "[Ultima Store]: No custom currency deduction method has been implemented.");
