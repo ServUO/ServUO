@@ -210,7 +210,7 @@ namespace Server.Mobiles
                 SetWeaponAbility(WeaponAbility.Dismount);
             }
 
-            if (version < 3 && Controlled && RawStr >= 301)
+            if (version < 3 && Controlled && RawStr >= 301 && ControlSlots == ControlSlotsMin)
             {
                 Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
             }

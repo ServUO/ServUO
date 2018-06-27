@@ -162,7 +162,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (version < 2 && Controlled && RawStr >= 300)
+            if (version < 2 && Controlled && RawStr >= 300 && ControlSlots == ControlSlotsMin)
             {
                 Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
             }
