@@ -212,7 +212,7 @@ namespace Server.Mobiles
 
             if (version < 3 && Controlled && RawStr >= 301)
             {
-                AnimalTraining.ScaleStats(this, 0.5);
+                Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
             }
         }
 
