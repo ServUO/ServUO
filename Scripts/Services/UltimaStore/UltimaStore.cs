@@ -795,7 +795,7 @@ namespace Server.Engines.UOStore
                     }
                     break;
                 case CurrencyType.Custom:
-                    Configuration.DeductCustomCurrecy(m);
+                    Configuration.DeductCustomCurrecy(m, amount);
                     break;
             }
         }

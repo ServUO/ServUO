@@ -58,6 +58,12 @@ namespace Server.Items
             }
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+            list.Add(1061078, "8"); // artifact rarity ~1_val~
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
