@@ -41,34 +41,34 @@ namespace Server.Mobiles
         public Beetle(string name)
             : base(name, 0x317, 0x3EBC, AIType.AI_Melee, FightMode.Closest, 10, 1, 0.25, 0.5)
         {
-            this.SetStr(300);
-            this.SetDex(100);
-            this.SetInt(500);
+            SetStr(300);
+            SetDex(100);
+            SetInt(500);
 
-            this.SetHits(200);
+            SetHits(200);
 
-            this.SetDamage(7, 20);
+            SetDamage(7, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 30, 40);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 20, 30);
+            SetResistance(ResistanceType.Physical, 30, 40);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.MagicResist, 80.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.MagicResist, 80.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0);
 
-            this.Fame = 4000;
-            this.Karma = -4000;
+            Fame = 4000;
+            Karma = -4000;
 
-            this.Tamable = true;
-            this.ControlSlots = 3;
-            this.MinTameSkill = 29.1;
+            Tamable = true;
+            ControlSlots = 3;
+            MinTameSkill = 29.1;
 
-            Container pack = this.Backpack;
+            Container pack = Backpack;
 
             if (pack != null)
                 pack.Delete();
@@ -76,7 +76,7 @@ namespace Server.Mobiles
             pack = new StrongBackpack();
             pack.Movable = false;
 
-            this.AddItem(pack);
+            AddItem(pack);
         }
 
         public override int GetAngerSound()
@@ -119,14 +119,14 @@ namespace Server.Mobiles
 
         public override void OnHarmfulSpell(Mobile from)
         {
-            if (!this.Controlled && this.ControlMaster == null)
-                this.CurrentSpeed = this.BoostedSpeed;
+            if (!Controlled && ControlMaster == null)
+                CurrentSpeed = BoostedSpeed;
         }
 
         public override void OnCombatantChange()
         {
-            if (this.Combatant == null && !this.Controlled && this.ControlMaster == null)
-                this.CurrentSpeed = this.PassiveSpeed;
+            if (Combatant == null && !Controlled && ControlMaster == null)
+                CurrentSpeed = PassiveSpeed;
         }
 
         #region Pack Animal Methods
@@ -155,12 +155,12 @@ namespace Server.Mobiles
 
         public override bool OnDragDrop(Mobile from, Item item)
         {
-            if (this.CheckFeed(from, item))
+            if (CheckFeed(from, item))
                 return true;
 
             if (PackAnimal.CheckAccess(this, from))
             {
-                this.AddToBackpack(item);
+                AddToBackpack(item);
                 return true;
             }
 

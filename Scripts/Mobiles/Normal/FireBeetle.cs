@@ -61,7 +61,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return !PetTrainingHelper.Enabled;
+                return true;
             }
         }
         public virtual double BoostedSpeed
@@ -153,7 +153,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -161,6 +161,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version < 2 && Controlled && RawStr >= 300)
+            {
+                AnimalTraining.ScaleStats(this, 0.5);
+            }
 
             if (version == 0)
                 Hue = 0x489;
