@@ -58,7 +58,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return !PetTrainingHelper.Enabled;
+                return true;
             }
         }
         public override int TreasureMapLevel
@@ -208,6 +208,11 @@ namespace Server.Mobiles
             if (version < 3)
             {
                 SetWeaponAbility(WeaponAbility.Dismount);
+            }
+
+            if (version < 3 && Controlled && RawStr >= 301)
+            {
+                AnimalTraining.ScaleStats(this, 0.5);
             }
         }
 
