@@ -15,16 +15,14 @@ namespace Server.Items
         public BlanketOfDarkness()
             : base(0xA57)
         {
-            this.Hue = 2076;
-            this.Weight = 10.0;
+            Hue = 2076;
+            Weight = 10.0;
         }
 
         public BlanketOfDarkness(Serial serial)
             : base(serial)
         {
         }
-
-        public virtual int ArtifactRarity { get { return 8; } }
 
         public override void OnDoubleClick(Mobile from)
         {
