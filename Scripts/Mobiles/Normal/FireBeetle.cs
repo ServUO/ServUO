@@ -164,7 +164,7 @@ namespace Server.Mobiles
 
             if (version < 2 && Controlled && RawStr >= 300)
             {
-                AnimalTraining.ScaleStats(this, 0.5);
+                Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
             }
 
             if (version == 0)

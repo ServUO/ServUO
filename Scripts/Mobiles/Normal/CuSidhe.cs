@@ -180,7 +180,7 @@ namespace Server.Mobiles
 
             if (version < 2 && Controlled && RawStr >= 1200)
             {
-                AnimalTraining.ScaleStats(this, 0.5);
+                Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
             }
 
             if (version < 1 && Name == "a Cu Sidhe")
