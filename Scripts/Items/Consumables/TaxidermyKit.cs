@@ -174,10 +174,12 @@ namespace Server.Items
 
                         if (info != null)
                         {
+                            string name = lic.KillEntry.Owner != null ? lic.KillEntry.Owner.Name : from.Name;
+
                             if(info.Complex)
-                                from.AddToBackpack(new HuntTrophyAddonDeed(from.Name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species));
+                                from.AddToBackpack(new HuntTrophyAddonDeed(name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species));
                             else
-                                from.AddToBackpack(new HuntTrophyDeed(from.Name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species, info.FlippedIDs));
+                                from.AddToBackpack(new HuntTrophyDeed(name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species, info.FlippedIDs));
                             
                             lic.ProducedTrophy = true;
                             m_Kit.Delete();

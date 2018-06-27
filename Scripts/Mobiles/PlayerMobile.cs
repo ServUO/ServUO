@@ -286,6 +286,55 @@ namespace Server.Mobiles
             {
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int AccountSovereigns
+        {
+            get
+            {
+                var acct = Account as Account;
+
+                if (acct != null)
+                {
+                    return acct.Sovereigns;
+                }
+
+                return 0;
+            }
+            set
+            {
+                var acct = Account as Account;
+
+                if (acct != null)
+                {
+                    acct.SetSovereigns(value);
+                }
+            }
+        }
+
+        public bool DepositSovereigns(int amount)
+        {
+            var acct = Account as Account;
+
+            if (acct != null)
+            {
+                return acct.DepositSovereigns(amount);
+            }
+
+            return false;
+        }
+
+        public bool WithdrawSovereigns(int amount)
+        {
+            var acct = Account as Account;
+
+            if (acct != null)
+            {
+                return acct.WithdrawSovereigns(amount);
+            }
+
+            return false;
+        }
         #endregion
 
         #region Getters & Setters
@@ -1692,11 +1741,17 @@ namespace Server.Mobiles
 			}
 		}
 
+        public override void OnSubItemRemoved(Item item)
+        {
+            if (Server.Engines.UOStore.UltimaStore.HasPendingItem(this))
+                Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1.5), Server.Engines.UOStore.UltimaStore.CheckPendingItem, this);
+        }
+
         public override void AggressiveAction(Mobile aggressor, bool criminal)
         {
             base.AggressiveAction(aggressor, criminal);
 
-            if (aggressor is BaseCreature && ((BaseCreature)aggressor).ControlMaster != null)
+            if (aggressor is BaseCreature && ((BaseCreature)aggressor).ControlMaster != null && ((BaseCreature)aggressor).ControlMaster != this)
             {
                 Mobile aggressiveMaster = ((BaseCreature)aggressor).ControlMaster;
 
@@ -3140,6 +3195,19 @@ namespace Server.Mobiles
 
 			return true;
 		}
+
+        public override bool OnDragLift(Item item)
+        {
+            if (item is IPromotionalToken && ((IPromotionalToken)item).GumpType != null)
+            {
+                Type t = ((IPromotionalToken)item).GumpType;
+
+                if (HasGump(t))
+                    CloseGump(t);
+            }
+
+            return base.OnDragLift(item);
+        }
 
 		public override bool CheckTrade(
 			Mobile to, Item item, SecureTradeContainer cont, bool message, bool checkItems, int plusItems, int plusWeight)

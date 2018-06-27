@@ -63,6 +63,7 @@ namespace Server.Multis
             UsesCharges = !vetReward;
             Movable = true;
             Weight = 2.0;
+            LootType = LootType.Blessed;
 
             if (vetReward)
             {
@@ -263,6 +264,12 @@ namespace Server.Multis
     public class HouseTeleporterTileBag : Bag
     {
         public override int LabelNumber { get { return 1113917; } }
+
+        [Constructable]
+        public HouseTeleporterTileBag()
+            : this(false)
+        {
+        }
 
         [Constructable]
         public HouseTeleporterTileBag(bool reward)

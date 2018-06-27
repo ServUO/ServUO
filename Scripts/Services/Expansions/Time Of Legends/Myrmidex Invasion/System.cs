@@ -49,9 +49,10 @@ namespace Server.Engines.MyrmidexInvasion
             return (IsAlliedWithMyrmidex(a) && IsAlliedWithMyrmidex(b)) || (IsAlliedWithEodonTribes(a) && IsAlliedWithEodonTribes(b));
         }
 
-        public static bool IsEnemies(Mobile a, Mobile b)
+        public static bool AreEnemies(Mobile a, Mobile b)
         {
-            if ((IsAlliedWithEodonTribes(a) && !IsAlliedWithMyrmidex(b)) || IsAlliedWithEodonTribes(b) && !IsAlliedWithMyrmidex(a))
+            if ((IsAlliedWithEodonTribes(a) && !IsAlliedWithMyrmidex(b)) || (IsAlliedWithEodonTribes(b) && !IsAlliedWithMyrmidex(a)) ||
+                (IsAlliedWithMyrmidex(a) && !IsAlliedWithEodonTribes(b)))
                 return false;
 
             return !IsAlliedWith(a, b);

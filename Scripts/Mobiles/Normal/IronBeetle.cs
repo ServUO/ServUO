@@ -78,7 +78,21 @@ namespace Server.Mobiles
         public override bool StatLossAfterTame { get { return true; } }
 
         public override bool OverrideBondingReqs() { return true; }
-        public override double GetControlChance(Mobile m, bool useBaseSkill) { return 1.0; }
+
+        public override double GetControlChance(Mobile m, bool useBaseSkill) 
+        {
+            if (PetTrainingHelper.Enabled)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+                if (profile != null && profile.HasCustomized())
+                {
+                    return base.GetControlChance(m, useBaseSkill);
+                }
+            }
+
+            return 1.0; 
+        }
 
         public override int GetAngerSound() { return 0x21D; }
         public override int GetIdleSound() { return 0x21D; }

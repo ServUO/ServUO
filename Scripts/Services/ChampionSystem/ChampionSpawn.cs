@@ -762,7 +762,12 @@ namespace Server.Engines.CannedEvil
             }
 
             if (m_Champion != null)
-                m_Champion.MoveToWorld(new Point3D(X, Y, Z - 15), Map);
+            {
+                Point3D p = new Point3D(X, Y, Z - 15);
+
+                m_Champion.MoveToWorld(p, Map);
+                ((BaseCreature)m_Champion).Home = p;
+            }
         }
 
         public void Respawn()

@@ -166,14 +166,10 @@ namespace Server.Engines.VendorSearching
 						return false;
 					}
 				}
-				else if(o is SlayerName && (!(item is ISlayer) || ((((ISlayer)item).Slayer != (SlayerName)o && ((ISlayer)item).Slayer2 != (SlayerName)o))))
-				{
-					return false;
-				}
-                else if (o is TalismanSlayerName && (!(item is BaseTalisman) || ((BaseTalisman)item).Slayer != (TalismanSlayerName)o))
-				{
-					return false;
-				}
+                else if (!CheckSlayer(item, o))
+                {
+                    return false;
+                }
                 else if (o is AosElementAttribute)
                 {
                     if (item is BaseWeapon)
@@ -254,8 +250,6 @@ namespace Server.Engines.VendorSearching
                     {
                         return false;
                     }
-
-
                 }
                 else if (o is Misc)
                 {
@@ -283,7 +277,7 @@ namespace Server.Engines.VendorSearching
                                 return false;
                             break;
                         case Misc.PromotionalToken:
-                            if(!(item is PromotionalToken))
+                            if (!(item is PromotionalToken))
                                 return false;
                             break;
                         case Misc.Cursed:
@@ -367,6 +361,33 @@ namespace Server.Engines.VendorSearching
 
             return true;
 		}
+
+        private static bool CheckSlayer(Item item, object o)
+        {
+            if (o is TalismanSlayerName && (TalismanSlayerName)o == TalismanSlayerName.Undead)
+            {
+                if (!(item is ISlayer) || ((((ISlayer)item).Slayer != SlayerName.Silver && ((ISlayer)item).Slayer2 != SlayerName.Silver)))
+                {
+                    if (!(item is BaseTalisman) || ((BaseTalisman)item).Slayer != TalismanSlayerName.Undead)
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                if (o is SlayerName && (!(item is ISlayer) || ((((ISlayer)item).Slayer != (SlayerName)o && ((ISlayer)item).Slayer2 != (SlayerName)o))))
+                {
+                    return false;
+                }
+                else if (o is TalismanSlayerName && (!(item is BaseTalisman) || ((BaseTalisman)item).Slayer != (TalismanSlayerName)o))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         private static bool CheckCanRepair(Item item)
         {
@@ -912,12 +933,19 @@ namespace Server.Engines.VendorSearching
             }
             else if (d == null)
             {
-                Details.Add(new SearchDetail(o, name, value, cat));
+                d = new SearchDetail(o, name, value, cat);
+
+                Details.Add(d);
             }
             else if (d.Value != value)
             {
                 d.Value = value;
             }
+
+            /*if (d.Attribute is TalismanSlayerName && (TalismanSlayerName)d.Attribute == TalismanSlayerName.Undead)
+            {
+                TryAddDetails(SlayerName.Silver, name, value, cat);
+            }*/
         }
 
         public bool IsEmpty

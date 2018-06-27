@@ -38,6 +38,8 @@ namespace Server.Items
 
         public static void Initialize()
         {
+            EventSink.CreatureDeath += OnCreatureDeath;
+
             m_IngredientTable = new List<IngredientDropEntry>();
             //Bottle of Ichor/Spider Carapace
             m_IngredientTable.Add(new IngredientDropEntry(typeof(TrapdoorSpider), true, .05, typeof(SpiderCarapace)));
@@ -64,7 +66,7 @@ namespace Server.Items
             m_IngredientTable.Add(new IngredientDropEntry(typeof(HighPlainsBoura), true, 1.0, typeof(BouraPelt)));
 
             //Silver snake skin
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(SilverSerpent), true, "TerMur", .05, typeof(SilverSnakeSkin)));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(SilverSerpent), true, "TerMur", .10, typeof(SilverSnakeSkin)));
 
             //Void Orb/Vial of Vitriol
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseVoidCreature), true, .05, typeof(VoidOrb)));
@@ -131,6 +133,22 @@ namespace Server.Items
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Lands of the Lich", .05, typeof(EssenceDirection)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Secret Garden", .05, typeof(EssenceFeeling)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Skeletal Dragon", .05, typeof(EssencePersistence)));
+        }
+
+        public static void OnCreatureDeath(CreatureDeathEventArgs e)
+        {
+            BaseCreature bc = e.Creature as BaseCreature;
+            Container c = e.Corpse;
+
+            if (bc != null && c != null && !c.Deleted && !bc.Controlled && !bc.Summoned)
+            {
+                CheckDrop(bc, c);
+            }
+
+            if (e.Killer is BaseVoidCreature)
+            {
+                ((BaseVoidCreature)e.Killer).Mutate(VoidEvolution.Killing);
+            }
         }
 
         public static void CheckDrop(BaseCreature bc, Container c)

@@ -233,6 +233,7 @@ namespace Server.Mobiles
         private int m_Loyalty;
 
         private double m_dMinTameSkill;
+        private double m_CurrentTameSkill;
         private bool m_bTamable;
 
         private bool m_bSummoned;
@@ -293,6 +294,8 @@ namespace Server.Mobiles
         #endregion
 
         public virtual InhumanSpeech SpeechType { get { return null; } }
+
+        public virtual bool ForceStayHome { get { return false; } }
 
         public int FollowRange { get; set; }
 
@@ -561,7 +564,7 @@ namespace Server.Mobiles
             switch (AI)
             {
                 case AIType.AI_Mage: SetMagicalAbility(MagicalAbility.Magery); break;
-                case AIType.AI_NecroMage: SetMagicalAbility(MagicalAbility.Necromage); break;
+                case AIType.AI_NecroMage: SetMagicalAbility(!Controlled ? MagicalAbility.Necromancy : MagicalAbility.Necromage); break;
                 case AIType.AI_Necro: SetMagicalAbility(MagicalAbility.Necromancy); break;
                 case AIType.AI_Spellweaving: SetMagicalAbility(MagicalAbility.Spellweaving); break;
                 case AIType.AI_Mystic: SetMagicalAbility(MagicalAbility.Mysticism); break;
@@ -667,6 +670,34 @@ namespace Server.Mobiles
 
             ColUtility.Free(_InitAverage);
             _InitAverage = null;
+        }
+
+        public void AdjustTameRequirements()
+        {
+            // Currently, with increased control slots, taming skill does not seem to pass 108.0
+            if(ControlSlots <=ControlSlotsMin)
+            {
+                CurrentTameSkill = MinTameSkill;
+            }
+            else if (MinTameSkill < 108)
+            {
+                double minSkill = Math.Ceiling(MinTameSkill);
+
+                if (MinTameSkill < 0)
+                {
+                    CurrentTameSkill = Math.Ceiling(Math.Min(108.0, Math.Max(0, CurrentTameSkill) + (Math.Abs(minSkill) * .7)));
+                }
+                else
+                {
+                    double level = ControlSlots - ControlSlotsMin;
+                    double levelFactor = (double)(1 + (ControlSlotsMax - ControlSlotsMin)) / minSkill;
+
+                    CurrentTameSkill = Math.Ceiling(Math.Min(108.0, minSkill + (minSkill * ((levelFactor * 7) * level))));
+                }
+
+                if (CurrentTameSkill < MinTameSkill)
+                    CurrentTameSkill = MinTameSkill;
+            }
         }
         #endregion
 
@@ -1751,12 +1782,12 @@ namespace Server.Mobiles
 
         public virtual double GetControlChance(Mobile m, bool useBaseSkill)
         {
-            if (m_dMinTameSkill <= 29.1 || m_bSummoned || m.AccessLevel >= AccessLevel.GameMaster)
+            if (m_CurrentTameSkill <= 29.1 || m_bSummoned || m.AccessLevel >= AccessLevel.GameMaster)
             {
                 return 1.0;
             }
 
-            double dMinTameSkill = m_dMinTameSkill;
+            double dMinTameSkill = m_CurrentTameSkill;
 
             if (dMinTameSkill > -24.9 && AnimalTaming.CheckMastery(m, this))
             {
@@ -2209,6 +2240,14 @@ namespace Server.Mobiles
             }
         }
 
+        public virtual void OnBeforeDamage(Mobile from, ref int totalDamage, DamageType type)
+        {
+            if (type >= DamageType.Spell && RecentSetControl)
+            {
+                totalDamage = 0;
+            }
+        }
+
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             if (BardPacified && (HitsMax - Hits) * 0.001 > Utility.RandomDouble())
@@ -2598,7 +2637,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(24); // version
+            writer.Write(25); // version
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
@@ -2757,6 +2796,9 @@ namespace Server.Mobiles
             {
                 writer.Write(0);
             }
+
+            // Version 25 Current Tame Skill
+            writer.Write(m_CurrentTameSkill);
         }
 
         private static readonly double[] m_StandardActiveSpeeds = new[] { 0.175, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8 };
@@ -3077,6 +3119,15 @@ namespace Server.Mobiles
                 InitializeAbilities();
             }
 
+            if (version >= 25)
+            {
+                CurrentTameSkill = reader.ReadDouble();
+            }
+            else
+            {
+                AdjustTameRequirements();
+            }
+
             if (version <= 14 && m_Paragon && Hue == 0x31)
             {
                 Hue = Paragon.Hue; //Paragon hue fixed, should now be 0x501.
@@ -3096,6 +3147,11 @@ namespace Server.Mobiles
             if (IsAnimatedDead)
             {
                 AnimateDeadSpell.Register(m_SummonMaster, this);
+            }
+
+            if (Tamable && CurrentTameSkill == 0)
+            {
+                AdjustTameRequirements();
             }
         }
 
@@ -3319,8 +3375,8 @@ namespace Server.Mobiles
 
                             if (master != null && master == from) //So friends can't start the bonding process
                             {
-                                if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill ||
-                                    OverrideBondingReqs() || (Core.ML && master.Skills[SkillName.AnimalTaming].Value >= m_dMinTameSkill))
+                                if (m_CurrentTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_CurrentTameSkill ||
+                                    OverrideBondingReqs() || (Core.ML && master.Skills[SkillName.AnimalTaming].Value >= m_CurrentTameSkill))
                                 {
                                     if (BondingBegin == DateTime.MinValue)
                                     {
@@ -3834,7 +3890,25 @@ namespace Server.Mobiles
         public DateTime BardEndTime { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double MinTameSkill { get { return m_dMinTameSkill; } set { m_dMinTameSkill = value; } }
+        public double MinTameSkill 
+        {
+            get { return m_dMinTameSkill; }
+            set
+            {
+                double skill = m_dMinTameSkill;
+
+                m_dMinTameSkill = value;
+
+                if (skill != m_dMinTameSkill)
+                {
+                    m_CurrentTameSkill = value;
+                    AdjustTameRequirements();
+                }
+            } 
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double CurrentTameSkill { get { return m_CurrentTameSkill; } set { m_CurrentTameSkill = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Tamable { get { return m_bTamable && !m_Paragon; } set { m_bTamable = value; } }
@@ -4507,7 +4581,7 @@ namespace Server.Mobiles
         {
             base.AggressiveAction(aggressor, criminal);
 
-            if (ControlMaster != null)
+            if (ControlMaster != null && ControlMaster != aggressor)
             {
                 if (NotorietyHandlers.CheckAggressor(Aggressors, aggressor))
                 {
@@ -4698,6 +4772,11 @@ namespace Server.Mobiles
 
         public override void DoHarmful(IDamageable damageable, bool indirect)
         {
+            if (RecentSetControl && GetMaster() == damageable as Mobile)
+            {
+                return;
+            }
+
             base.DoHarmful(damageable, indirect);
 
             Mobile target = damageable as Mobile;
@@ -6217,98 +6296,6 @@ namespace Server.Mobiles
         public virtual bool GivesMLMinorArtifact { get { return false; } }
         #endregion
 
-        #region Special Drops
-        private static readonly Type[] m_Artifacts = new[]
-        {
-            typeof(AegisOfGrace), typeof(BladeDance), typeof(Bonesmasher), typeof(FeyLeggings), typeof(FleshRipper),
-            typeof(HelmOfSwiftness), typeof(PadsOfTheCuSidhe), typeof(RaedsGlory), typeof(RighteousAnger),
-            typeof(RobeOfTheEclipse), typeof(RobeOfTheEquinox), typeof(SoulSeeker), typeof(TalonBite), typeof(BloodwoodSpirit),
-            typeof(TotemOfVoid), typeof(QuiverOfRage), typeof(QuiverOfElements), typeof(BrightsightLenses), typeof(Boomstick),
-            typeof(WildfireBow), typeof(Windsong)
-        };
-
-        public static void GiveMinorArtifact(Mobile m)
-        {
-            Item item = Activator.CreateInstance(m_Artifacts[Utility.Random(m_Artifacts.Length)]) as Item;
-            m.PlaySound(0x5B4);
-
-            if (item == null)
-            {
-                return;
-            }
-
-            if (m.AddToBackpack(item))
-            {
-                m.SendLocalizedMessage(1062317);
-                // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-                m.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
-            }
-            else if (m.BankBox != null && m.BankBox.TryDropItem(m, item, false))
-            {
-                m.SendLocalizedMessage(1062317);
-                // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-                m.SendLocalizedMessage(1072224); // An item has been placed in your bank box.
-            }
-            else
-            {
-                item.MoveToWorld(m.Location, m.Map);
-                m.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
-            }
-        }
-
-        public static void CheckRecipeDrop(BaseCreature bc, Container c)
-        {
-            if (SpellHelper.IsEodon(c.Map, c.Location))
-            {
-                double chance = (double)bc.Fame / 1000000;
-                int luck = 0;
-
-                if (bc.LastKiller != null)
-                {
-                    luck = bc.LastKiller is PlayerMobile ? ((PlayerMobile)bc.LastKiller).RealLuck : bc.LastKiller.Luck;
-                }
-
-                if (luck > 0)
-                    chance += (double)luck / 152000;
-
-                if (chance > Utility.RandomDouble())
-                {
-                    if (0.33 > Utility.RandomDouble())
-                    {
-                        Item item = Server.Loot.Construct(_ArmorDropTypes[Utility.Random(_ArmorDropTypes.Length)]);
-
-                        if (item != null)
-                            c.DropItem(item);
-                    }
-                    else
-                    {
-                        Item scroll = new RecipeScroll(_RecipeTypes[Utility.Random(_RecipeTypes.Length)]);
-
-                        if (scroll != null)
-                            c.DropItem(scroll);
-                    }
-                }
-            }
-        }
-
-        public static Type[] ArmorDropTypes { get { return _ArmorDropTypes; } }
-        private static Type[] _ArmorDropTypes =
-        {
-            typeof(AloronsBustier), typeof(AloronsGorget), typeof(AloronsHelm), typeof(AloronsLegs), typeof(AloronsLongSkirt), typeof(AloronsSkirt), typeof(AloronsTunic),
-            typeof(DardensBustier), typeof(DardensHelm), typeof(DardensLegs), typeof(DardensSleeves), typeof(DardensTunic)
-        };
-
-        public static int[] RecipeTypes { get { return _RecipeTypes; } }
-        private static int[] _RecipeTypes =
-        {
-            560, 561, 562, 563, 564, 565, 566,
-            570, 571, 572, 573, 574, 575, 576, 577,
-            580, 581, 582, 583, 584
-            //602, 603, 604,  // nutcrackers
-            //800             // runic atlas
-        };
-        #endregion
-
         public virtual void OnRelease(Mobile from)
         {
             if (m_Allured)
@@ -6330,16 +6317,6 @@ namespace Server.Mobiles
             {
                 XmlParagon.GiveArtifactTo(mob, this);
             }
-
-            #region Mondain's Legacy
-            if (GivesMLMinorArtifact)
-            {
-                if (MondainsLegacy.CheckArtifactChance(mob, this))
-                {
-                    MondainsLegacy.GiveArtifactTo(mob);
-                }
-            }
-            #endregion
 
             EventSink.InvokeOnKilledBy(new OnKilledByEventArgs(this, mob));
         }
@@ -6548,13 +6525,27 @@ namespace Server.Mobiles
                         }
                     }
 
-                    // Eodon Recipe/Armor set drops
-                    CheckRecipeDrop(this, c);
-
                     for (int i = 0; i < titles.Count; ++i)
                     {
                         Titles.AwardFame(titles[i], fame[i], true);
                         Titles.AwardKarma(titles[i], karma[i], true);
+                    }
+                }
+
+                var e = new CreatureDeathEventArgs(this, LastKiller, c);
+
+                EventSink.InvokeCreatureDeath(e);
+
+                if (e.ClearCorpse)
+                {
+                    var i = c.Items.Count;
+
+                    while (--i >= 0)
+                    {
+                        if (i < c.Items.Count)
+                        {
+                            c.Items[i].Delete();
+                        }
                     }
                 }
 
@@ -6565,14 +6556,6 @@ namespace Server.Mobiles
                     c.Delete();
                 }
             }
-
-            #region SA
-            if(!c.Deleted && !Controlled && !Summoned)
-                IngredientDropEntry.CheckDrop(this, c);
-
-            if (LastKiller is BaseVoidCreature)
-                ((BaseVoidCreature)LastKiller).Mutate(VoidEvolution.Killing);
-            #endregion
         }
 
         /* To save on cpu usage, RunUO creatures only reacquire creatures under the following circumstances:
@@ -6615,6 +6598,11 @@ namespace Server.Mobiles
         public override bool CanBeHarmful(IDamageable damageable, bool message, bool ignoreOurBlessedness)
         {
             Mobile target = damageable as Mobile;
+
+            if (RecentSetControl && GetMaster() == target)
+            {
+                return false;
+            }
 
             if (target is BaseFactionGuard)
             {
@@ -6661,6 +6649,7 @@ namespace Server.Mobiles
             else
             {
                 ISpawner se = Spawner;
+
                 if (se != null && se.UnlinkOnTaming)
                 {
                     Spawner.Remove(this);
@@ -6689,6 +6678,20 @@ namespace Server.Mobiles
                     m_DeleteTimer = null;
                 }
 
+                RemoveAggressed(m);
+                RemoveAggressor(m);
+                m.RemoveAggressed(this);
+                m.RemoveAggressor(this);
+
+                if (Combatant != null)
+                    Combatant = null;
+
+                if (m.Combatant == this)
+                    m.Combatant = null;
+
+                RecentSetControl = true;
+                Timer.DelayCall(TimeSpan.FromSeconds(3), () => RecentSetControl = false);
+
                 Delta(MobileDelta.Noto);
             }
 
@@ -6696,6 +6699,8 @@ namespace Server.Mobiles
 
             return true;
         }
+
+        public bool RecentSetControl { get; set; }
 
         public virtual void OnAfterTame(Mobile tamer)
         {
@@ -8157,7 +8162,7 @@ namespace Server.Mobiles
                     }
                 });
 
-            foreach (BaseCreature c in toRelease)
+            foreach (BaseCreature c in toRelease.Where(c => c != null))
             {
                 if (c.IsDeadBondedPet)
                 {
@@ -8183,6 +8188,9 @@ namespace Server.Mobiles
             {
                 c.Delete();
             }
+
+            ColUtility.Free(toRelease);
+            ColUtility.Free(toRemove);
         }
     }
 

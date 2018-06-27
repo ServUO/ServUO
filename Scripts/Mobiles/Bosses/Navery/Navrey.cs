@@ -93,15 +93,22 @@ namespace Server.Mobiles
 
         public static void DistributeArtifact(Mobile to, Item artifact)
         {
-            if (to == null || artifact == null)
+            if (artifact == null)
                 return;
 
-            Container pack = to.Backpack;
+            if (to != null)
+            {
+                Container pack = to.Backpack;
 
-            if (pack == null || !pack.TryDropItem(to, artifact, false))
-                to.BankBox.DropItem(artifact);
+                if (pack == null || !pack.TryDropItem(to, artifact, false))
+                    to.BankBox.DropItem(artifact);
 
-            to.SendLocalizedMessage(502088); // A special gift has been placed in your backpack.
+                to.SendLocalizedMessage(502088); // A special gift has been placed in your backpack.
+            }
+            else
+            {
+                artifact.Delete();
+            }
         }
 
         public override void GenerateLoot()

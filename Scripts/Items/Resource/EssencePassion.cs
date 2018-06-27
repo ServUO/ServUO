@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class EssencePassion : Item
+    public class EssencePassion : Item, ICommodity
     {
         [Constructable]
         public EssencePassion()
@@ -14,9 +14,9 @@ namespace Server.Items
         public EssencePassion(int amount)
             : base(0x571C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Hue = 1161;
+            Stackable = true;
+            Amount = amount;
+            Hue = 1161;
         }
 
         public EssencePassion(Serial serial)
@@ -31,6 +31,20 @@ namespace Server.Items
                 return 1113326;
             }
         }// essence of passion
+		int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

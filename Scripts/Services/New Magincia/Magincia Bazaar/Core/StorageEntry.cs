@@ -48,7 +48,14 @@ namespace Server.Engines.NewMagincia
             m_Expires = DateTime.UtcNow + TimeSpan.FromDays(7);
 
             foreach (PetBrokerEntry entry in list)
+            {
+                if (entry.Pet.Map != Map.Internal || !entry.Pet.IsStabled)
+                {
+                    entry.Internalize();
+                }
+
                 m_Creatures.Add(entry.Pet);
+            }
         }
 
         public void RemoveCommodity(Type type, int amount)

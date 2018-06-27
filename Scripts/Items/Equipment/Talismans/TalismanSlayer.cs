@@ -129,7 +129,8 @@ namespace Server.Items
                     typeof(GreyWolf),       typeof(TsukiWolf),
                     typeof(Dog),            typeof(HellHound),
                     typeof(IceHound),       typeof(WhiteWolf),
-                    typeof(BakeKitsune),    typeof(ClanSSW)
+                    typeof(BakeKitsune),    typeof(ClanSSW),
+                    typeof(CuSidhe)
                 };
 
             m_Table[TalismanSlayerName.Goblin] = new Type[]

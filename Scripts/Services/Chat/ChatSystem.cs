@@ -9,7 +9,7 @@ namespace Server.Engines.Chat
     {
         public static readonly bool Enabled = Config.Get("Chat.Enabled", true);
         public static readonly bool AllowCreateChannels = Config.Get("Chat.AllowCreateChannels", true);
-        public static readonly string DefaultChannel = Config.Get("Chat.DefaultChannel", "Help");
+        public static readonly string DefaultChannel = "Help";
 
         public static void Initialize()
         {

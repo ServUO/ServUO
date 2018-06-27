@@ -49,15 +49,23 @@ namespace Server.Mobiles
 				select = 4;
 			else if (mana >= 11)
 				select = 3;
-			
-			switch (Utility.Random(select))
-			{
+
+            switch (Utility.Random(select))
+            {
                 case 0: return new CurseWeaponSpell(m_Mobile, null);
-				case 1: return new CorpseSkinSpell(m_Mobile, null);
-				case 2: return new EvilOmenSpell(m_Mobile, null);
-				case 3: return new BloodOathSpell(m_Mobile, null);
-				case 4: return new MindRotSpell(m_Mobile, null);
-			}
+                case 1:
+                    Spell spell;
+
+                    if (NecroMageAI.CheckCastCorpseSkin(m_Mobile))
+                        spell = new CorpseSkinSpell(m_Mobile, null);
+                    else
+                        spell = new CurseWeaponSpell(m_Mobile, null);
+
+                    return spell;
+                case 2: return new EvilOmenSpell(m_Mobile, null);
+                case 3: return new BloodOathSpell(m_Mobile, null);
+                case 4: return new MindRotSpell(m_Mobile, null);
+            }
 
             return null;
 		}

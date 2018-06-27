@@ -169,7 +169,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -177,6 +177,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version < 2 && Controlled && RawStr >= 1200)
+            {
+                Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
+            }
 
             if (version < 1 && Name == "a Cu Sidhe")
                 Name = "a cu sidhe";

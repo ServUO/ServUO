@@ -15,35 +15,35 @@ namespace Server.Mobiles
         public Ridgeback(string name)
             : base(name, 187, 0x3EBA, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.BaseSoundID = 0x3F3;
+            BaseSoundID = 0x3F3;
 
-            this.SetStr(58, 100);
-            this.SetDex(56, 75);
-            this.SetInt(16, 30);
+            SetStr(58, 100);
+            SetDex(56, 75);
+            SetInt(16, 30);
 
-            this.SetHits(41, 54);
-            this.SetMana(0);
+            SetHits(41, 54);
+            SetMana(0);
 
-            this.SetDamage(3, 5);
+            SetDamage(3, 5);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 15, 25);
-            this.SetResistance(ResistanceType.Fire, 5, 10);
-            this.SetResistance(ResistanceType.Cold, 5, 10);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
-            this.SetResistance(ResistanceType.Energy, 5, 10);
+            SetResistance(ResistanceType.Physical, 15, 25);
+            SetResistance(ResistanceType.Fire, 5, 10);
+            SetResistance(ResistanceType.Cold, 5, 10);
+            SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Energy, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 25.3, 40.0);
-            this.SetSkill(SkillName.Tactics, 29.3, 44.0);
-            this.SetSkill(SkillName.Wrestling, 35.1, 45.0);
+            SetSkill(SkillName.MagicResist, 25.3, 40.0);
+            SetSkill(SkillName.Tactics, 29.3, 44.0);
+            SetSkill(SkillName.Wrestling, 35.1, 45.0);
 
-            this.Fame = 300;
-            this.Karma = 0;
+            Fame = 300;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 83.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 83.1;
         }
 
         public Ridgeback(Serial serial)
@@ -86,6 +86,16 @@ namespace Server.Mobiles
 
         public override double GetControlChance(Mobile m, bool useBaseSkill)
         {
+            if (PetTrainingHelper.Enabled)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+                if (profile != null && profile.HasCustomized())
+                {
+                    return base.GetControlChance(m, useBaseSkill);
+                }
+            }
+
             return 1.0;
         }
 

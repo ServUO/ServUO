@@ -57,13 +57,16 @@ namespace Server.Items
 
                 RunicAtlasGump g = from.FindGump(typeof(RunicAtlasGump)) as RunicAtlasGump;
 
-                if (g != null)
+                if (g != null && g.Atlas == this)
                 {
                     g.Page = newPage;
                     g.Refresh();
                 }
                 else
                 {
+                    if (g != null)
+                        from.CloseGump(typeof(RunicAtlasGump));
+
                     g = new RunicAtlasGump((PlayerMobile)from, this);
                     g.Page = newPage;
                     from.SendGump(g);

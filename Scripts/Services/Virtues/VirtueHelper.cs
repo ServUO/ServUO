@@ -70,6 +70,9 @@ namespace Server
             if (current >= maxAmount)
                 return false;
 
+            if (from.FindItemOnLayer(Layer.TwoHanded) is Server.Items.VirtueShield)
+                amount = amount + (int)((double)amount * 1.5);
+
             if ((current + amount) >= maxAmount)
                 amount = maxAmount - current;
 

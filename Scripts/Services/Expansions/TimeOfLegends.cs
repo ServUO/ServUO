@@ -7,6 +7,7 @@ using Server.Engines.Quests;
 using Server.Engines.CannedEvil;
 using Server.Engines.Shadowguard;
 using Server.Gumps;
+using Server.Spells;
 
 namespace Server
 {
@@ -18,6 +19,8 @@ namespace Server
 
             if (DateTime.UtcNow < _EndCurrencyWarning)
                 EventSink.Login += new LoginEventHandler(OnLogin);
+
+            EventSink.CreatureDeath += CheckRecipeDrop;
         }
 
         private  static readonly DateTime _EndCurrencyWarning = new DateTime(2017, 3, 1, 1, 1, 1);
@@ -104,5 +107,59 @@ namespace Server
                             e.Mobile.SendGump(new NewCurrencyHelpGump());
                     });
         }
+
+        public static void CheckRecipeDrop(CreatureDeathEventArgs e)
+        {
+            BaseCreature bc = e.Creature as BaseCreature;
+            var c = e.Corpse;
+            var killer = e.Killer;
+
+            if (SpellHelper.IsEodon(c.Map, c.Location))
+            {
+                double chance = (double)bc.Fame / 1000000;
+                int luck = 0;
+
+                if (killer != null)
+                {
+                    luck = Math.Min(1800, killer is PlayerMobile ? ((PlayerMobile)killer).RealLuck : killer.Luck);
+                }
+
+                if (luck > 0)
+                    chance += (double)luck / 152000;
+
+                if (chance > Utility.RandomDouble())
+                {
+                    if (0.33 > Utility.RandomDouble())
+                    {
+                        Item item = Server.Loot.Construct(_ArmorDropTypes[Utility.Random(_ArmorDropTypes.Length)]);
+
+                        if (item != null)
+                            c.DropItem(item);
+                    }
+                    else
+                    {
+                        Item scroll = new RecipeScroll(_RecipeTypes[Utility.Random(_RecipeTypes.Length)]);
+
+                        if (scroll != null)
+                            c.DropItem(scroll);
+                    }
+                }
+            }
+        }
+
+        public static Type[] ArmorDropTypes { get { return _ArmorDropTypes; } }
+        private static Type[] _ArmorDropTypes =
+        {
+            typeof(AloronsBustier), typeof(AloronsGorget), typeof(AloronsHelm), typeof(AloronsLegs), typeof(AloronsLongSkirt), typeof(AloronsSkirt), typeof(AloronsTunic),
+            typeof(DardensBustier), typeof(DardensHelm), typeof(DardensLegs), typeof(DardensSleeves), typeof(DardensTunic)
+        };
+
+        public static int[] RecipeTypes { get { return _RecipeTypes; } }
+        private static int[] _RecipeTypes =
+        {
+            560, 561, 562, 563, 564, 565, 566,
+            570, 571, 572, 573, 574, 575, 576, 577,
+            580, 581, 582, 583, 584
+        };
 	}
 }

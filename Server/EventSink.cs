@@ -14,6 +14,7 @@ using System.Reflection;
 using Server.Accounting;
 using Server.Commands;
 using Server.Guilds;
+using Server.Items;
 using Server.Network;
 #endregion
 
@@ -60,6 +61,8 @@ namespace Server
 	public delegate void RenameRequestEventHandler(RenameRequestEventArgs e);
 
 	public delegate void PlayerDeathEventHandler(PlayerDeathEventArgs e);
+
+	public delegate void CreatureDeathEventHandler(CreatureDeathEventArgs e);
 
 	public delegate void VirtueGumpRequestEventHandler(VirtueGumpRequestEventArgs e);
 
@@ -422,13 +425,39 @@ namespace Server
 
 	public class PlayerDeathEventArgs : EventArgs
 	{
-		private readonly Mobile m_Mobile;
-
-		public Mobile Mobile { get { return m_Mobile; } }
+		public Mobile Mobile { get; private set; }
+		public Mobile Killer { get; private set; }
+		public Container Corpse { get; private set; }
 
 		public PlayerDeathEventArgs(Mobile mobile)
+			: this(mobile, mobile.LastKiller, mobile.Corpse)
+		{ }
+
+		public PlayerDeathEventArgs(Mobile mobile, Mobile killer, Container corpse)
 		{
-			m_Mobile = mobile;
+			Mobile = mobile;
+			Killer = killer;
+			Corpse = corpse;
+		}
+	}
+
+	public class CreatureDeathEventArgs : EventArgs
+	{
+		public Mobile Creature { get; private set; }
+		public Mobile Killer { get; private set; }
+		public Container Corpse { get; private set; }
+
+		public bool ClearCorpse { get; set; }
+
+		public CreatureDeathEventArgs(Mobile creature)
+			: this(creature, creature.LastKiller, creature.Corpse)
+		{ }
+
+		public CreatureDeathEventArgs(Mobile creature, Mobile killer, Container corpse)
+		{
+			Creature = creature;
+			Killer = killer;
+			Corpse = corpse;
 		}
 	}
 
@@ -1242,6 +1271,7 @@ namespace Server
 		public static event DisconnectedEventHandler Disconnected;
 		public static event RenameRequestEventHandler RenameRequest;
 		public static event PlayerDeathEventHandler PlayerDeath;
+		public static event CreatureDeathEventHandler CreatureDeath;
 		public static event VirtueGumpRequestEventHandler VirtueGumpRequest;
 		public static event VirtueItemRequestEventHandler VirtueItemRequest;
 		public static event VirtueMacroRequestEventHandler VirtueMacroRequest;
@@ -1445,6 +1475,14 @@ namespace Server
 			if (PlayerDeath != null)
 			{
 				PlayerDeath(e);
+			}
+		}
+
+		public static void InvokeCreatureDeath(CreatureDeathEventArgs e)
+		{
+			if (CreatureDeath != null)
+			{
+				CreatureDeath(e);
 			}
 		}
 
@@ -1823,6 +1861,7 @@ namespace Server
 			Disconnected = null;
 			RenameRequest = null;
 			PlayerDeath = null;
+			CreatureDeath = null;
 			VirtueGumpRequest = null;
 			VirtueItemRequest = null;
 			VirtueMacroRequest = null;

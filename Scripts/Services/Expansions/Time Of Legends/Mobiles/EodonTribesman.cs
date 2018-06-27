@@ -193,7 +193,7 @@ namespace Server.Mobiles
             bool valid = this.Aggressors.FirstOrDefault(a => a.Attacker == m) != null;
 
             if (!valid && MyrmidexInvasionSystem.Active)
-                valid = MyrmidexInvasionSystem.IsEnemies(this, m);
+                valid = MyrmidexInvasionSystem.AreEnemies(this, m);
 
             return valid;
         }

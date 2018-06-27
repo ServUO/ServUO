@@ -2581,6 +2581,11 @@
     <region priority="50" name="Ninja cave">
       <rect x="360" y="960" width="100" height="215" />
     </region>
+	<region type="NoHousingRegion" priority="50" name="Isle of the Divide">
+      <rect x="1533" y="849" width="295" height="195" />
+      <go x="1731" y="982" z="-80" />
+      <smartNoHousing active="true" />
+    </region>
   </Facet>
   <Facet name="Tokuno">
     <region type="GuardedRegion" priority="50" name="Moongates">

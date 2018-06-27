@@ -209,6 +209,11 @@ namespace Server.Mobiles
             {
                 SetWeaponAbility(WeaponAbility.Dismount);
             }
+
+            if (version < 3 && Controlled && RawStr >= 301)
+            {
+                Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
+            }
         }
 
         private static int GetHue()

@@ -7,15 +7,24 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public class StableSlotIncreaseToken : Item, IAccountRestricted
+    public class StableSlotIncreaseToken : Item, IAccountRestricted, IPromotionalToken
     {
         public const int SlotIncrease = 3;
         public const int MaxPerChar = 21;
 
-        public override int LabelNumber { get { return 1070997; } }// A promotional token
+        public override int LabelNumber { get { return 1070997; } } // A promotional token
+        public TextDefinition ItemName { get { return 1157618; } } // your Stable Slot Increase (Account-Bound)
+
+        public Type GumpType { get { return typeof(StableSlotIncreaseToken.InternalGump); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Account { get; set; }
+
+        [Constructable]
+        public StableSlotIncreaseToken()
+            : this(null)
+        {
+        }
 
         [Constructable]
         public StableSlotIncreaseToken(string account)
@@ -32,7 +41,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1070998, "#1157618"); // Use this to redeem<br>your Stable Slot Increase (Account-Bound)
+            list.Add(1070998, ItemName.ToString()); // Use this to redeem<br>your Stable Slot Increase (Account-Bound)
         }
 
         public override void OnDoubleClick(Mobile m)
