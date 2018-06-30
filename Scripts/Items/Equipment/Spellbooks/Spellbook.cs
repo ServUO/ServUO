@@ -7,7 +7,7 @@
 #region References
 using System;
 using System.Collections.Generic;
-
+ 
 using Server.Commands;
 using Server.Engines.Craft;
 using Server.Ethics;
@@ -978,15 +978,15 @@ namespace Server.Items
 			{
 				list.Add(1060408, prop.ToString()); // defense chance increase ~1_val~%
 			}
-			
-			if ((prop = m_AosAttributes.CastSpeed) != 0)
-			{
-				list.Add(1060413, prop.ToString()); // faster casting ~1_val~
-			}
 
 			if ((prop = m_AosAttributes.CastRecovery) != 0)
 			{
 				list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~
+			}
+            
+            if ((prop = m_AosAttributes.CastSpeed) != 0)
+			{
+				list.Add(1060413, prop.ToString()); // faster casting ~1_val~
 			}
 			
 			if ((prop = m_AosAttributes.SpellDamage) != 0)
