@@ -179,7 +179,7 @@ namespace Server.Items
 
             AddImage(-39, -23, 50702, Dye.Hue - 1);
 
-            AddHtmlLocalized(110, 25, 205, 80, 1074396, C32216(0x0000FF), false, false); // This special hair dye is made of a unique mixture of leaves, permanently changing one's hair color until another dye is used.
+            AddHtmlLocalized(110, 25, 205, 80, 1074396, C32216(0x0080FF), false, false); // This special hair dye is made of a unique mixture of leaves, permanently changing one's hair color until another dye is used.
             AddHtmlLocalized(120, 155, 160, 20, 1074395, C32216(0x00FFFF), false, false); // <div align=right>Use Permanent Hair Dye</div>
 
             AddButton(290, 157, 0x7538, 0x7539, 1, GumpButtonType.Reply, 0);
@@ -191,11 +191,18 @@ namespace Server.Items
             {
                 if (!Dye.Deleted && Dye.IsChildOf(User.Backpack))
                 {
-                    User.HairHue = Hue;
+					if (User.HairItemID !=0)
+					{
+						User.HairHue = Hue;
 
-                    User.SendLocalizedMessage(501199);  // You dye your hair
-                    Dye.Delete();
-                    User.PlaySound(0x4E);
+						User.SendLocalizedMessage(501199);  // You dye your hair
+						Dye.Delete();
+						User.PlaySound(0x4E);
+					}
+					else
+					{
+						User.SendLocalizedMessage(502623); // You have no hair to dye and you cannot use this.
+					}
                 }
                 else
                 {
