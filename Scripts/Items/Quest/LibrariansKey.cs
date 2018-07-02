@@ -8,7 +8,8 @@ namespace Server.Items
         public LibrariansKey()
             : base(0xFF3)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public LibrariansKey(Serial serial)
