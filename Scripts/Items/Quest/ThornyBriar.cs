@@ -8,8 +8,9 @@ namespace Server.Items
         public ThornyBriar()
             : base(Utility.RandomList(0x3020, 0x3021, 0x3022, 0x3023, 0x3024))
         {
-            this.Weight = 1;
-            this.Hue = 0x214;
+            Weight = 1;
+            Hue = 0x214;
+            LootType = LootType.Blessed;
         }
 
         public ThornyBriar(Serial serial)
