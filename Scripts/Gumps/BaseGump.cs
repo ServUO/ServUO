@@ -202,7 +202,7 @@ namespace Server.Gumps
             if (User.NetState != null)
             {
                 ObjectPropertyList opl = item.PropertyList;
-                item.GetProperties(opl);
+                //item.GetProperties(opl);
 
                 User.Send(opl);
             }
@@ -220,7 +220,7 @@ namespace Server.Gumps
             if (User.NetState != null)
             {
                 ObjectPropertyList opl = mob.PropertyList;
-                mob.GetProperties(opl);
+                //mob.GetProperties(opl);
 
                 User.Send(opl);
             }
