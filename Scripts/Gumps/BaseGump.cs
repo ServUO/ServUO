@@ -188,6 +188,10 @@ namespace Server.Gumps
             User.CloseGump(this.GetType());
         }
 
+        #region OPL Display
+        private static readonly System.Reflection.MethodInfo _AddItemPropertyImpl = typeof(Gump).GetMethod(
+            "AddItemProperty", new[] { typeof(int) });
+
         public new void AddItemProperty(Item item)
         {
             if (item == null || item.Deleted)
@@ -203,7 +207,7 @@ namespace Server.Gumps
                 User.Send(opl);
             }
 
-            AddItemProperty(item.Serial);
+            AddProperties(item.Serial);
         }
 
         public void AddItemProperty(Mobile mob)
@@ -221,8 +225,30 @@ namespace Server.Gumps
                 User.Send(opl);
             }
 
-            AddItemProperty(mob.Serial);
+            AddProperties(mob.Serial);
         }
+
+        public void AddProperties(Serial serial)
+        {
+            if (!serial.IsValid)
+            {
+                return;
+            }
+
+            if (_AddItemPropertyImpl != null)
+            {
+                try
+                {
+                    _AddItemPropertyImpl.Invoke(this, new object[] { serial.Value });
+                    return;
+                }
+                catch
+                { }
+            }
+
+            Add(new GumpOPL(serial));
+        }
+        #endregion
 
         public static T GetGump<T>(PlayerMobile pm, Func<T, bool> predicate) where T : Gump
         {
@@ -375,5 +401,30 @@ namespace Server.Gumps
             AddHtmlLocalized(x, y, length, height, 1114514, String.Format("#{0}", localization), hue, background, scrollbar);
         }
         #endregion
+    }
+
+    public class GumpOPL : GumpEntry
+    {
+        private int m_Serial;
+
+        public GumpOPL(int serial)
+        {
+            m_Serial = serial;
+        }
+
+        public int Serial { get { return m_Serial; } set { Delta(ref m_Serial, value); } }
+
+        public override string Compile()
+        {
+            return String.Format("{{ itemproperty {0} }}", m_Serial);
+        }
+
+        private static readonly byte[] m_LayoutName = Gump.StringToBuffer("itemproperty");
+
+        public override void AppendTo(IGumpWriter disp)
+        {
+            disp.AppendLayout(m_LayoutName);
+            disp.AppendLayout(m_Serial);
+        }
     }
 }
