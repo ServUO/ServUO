@@ -8,8 +8,9 @@ namespace Server.Items
         public SerpentFangKey()
             : base(0x1012)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x9A; // TODO check
+            Weight = 1.0;
+            Hue = 0x9A; // TODO check
+            LootType = LootType.Blessed;
         }
 
         public SerpentFangKey(Serial serial)

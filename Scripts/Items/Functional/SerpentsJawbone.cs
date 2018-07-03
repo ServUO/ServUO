@@ -61,6 +61,8 @@ namespace Server.Items
 		public SerpentsJawbone() : base(0x9F74)
 		{
 		}
+        
+        public override bool ForceShowProperties{ get{ return true; } }
 		
 		public override void OnDoubleClick(Mobile from)
 		{

@@ -8,8 +8,9 @@ namespace Server.Items
         public TigerClawKey()
             : base(0x1012)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x5D; // TODO check
+            Weight = 1.0;
+            Hue = 0x5D; // TODO check
+            LootType = LootType.Blessed;
         }
 
         public TigerClawKey(Serial serial)
