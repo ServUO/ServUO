@@ -82,6 +82,7 @@ namespace Server.Engines.UOStore
 
         public override void AddGumpLayout()
         {
+            AddPage(0);
             AddImage(0, 0, 0x9C49);
 
             AddButton(36, 97, Category == StoreCategory.Featured ? 0x9C5F : 0x9C55, 0x9C5F, 100, GumpButtonType.Reply, 0);
