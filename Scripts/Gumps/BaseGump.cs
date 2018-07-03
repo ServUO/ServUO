@@ -256,6 +256,20 @@ namespace Server.Gumps
             }
         }
 
+        public new void AddItemProperty(Item item)
+        {
+            item.SendPropertiesTo(User);
+
+            base.AddItemProperty(item);
+        }
+
+        public void AddMobileProperty(Mobile mob)
+        {
+            mob.SendPropertiesTo(User);
+
+            base.AddItemProperty(mob.Serial.Value);
+        }
+
         #region Formatting
         public static int C16232(int c16)
         {
