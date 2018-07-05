@@ -84,29 +84,54 @@ namespace Server.Engines.UOStore
         {
             AddImage(0, 0, 0x9C49);
 
+            AddECHandleInput();
+
             AddButton(36, 97, Category == StoreCategory.Featured ? 0x9C5F : 0x9C55, 0x9C5F, 100, GumpButtonType.Reply, 0);
             AddHtmlLocalized(36, 100, 125, 25, 1114513, "#1156587", 0x7FFF, false, false); // Featured
+
+            AddECHandleInput();
+            AddECHandleInput();
 
             AddButton(36, 126, Category == StoreCategory.Character ? 0x9C5F : 0x9C55, 0x9C5F, 101, GumpButtonType.Reply, 0);
             AddHtmlLocalized(36, 129, 125, 25, 1114513, "#1156588", 0x7FFF, false, false); // Character
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(36, 155, Category == StoreCategory.Equipment ? 0x9C5F : 0x9C55, 0x9C5F, 102, GumpButtonType.Reply, 0);
             AddHtmlLocalized(36, 158, 125, 25, 1114513, "#1078237", 0x7FFF, false, false); // Equipment
+
+            AddECHandleInput();
+            AddECHandleInput();
 
             AddButton(36, 184, Category == StoreCategory.Decorations ? 0x9C5F : 0x9C55, 0x9C5F, 103, GumpButtonType.Reply, 0);
             AddHtmlLocalized(36, 187, 125, 25, 1114513, "#1044501", 0x7FFF, false, false); // Decorations
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(36, 213, Category == StoreCategory.Mounts ? 0x9C5F : 0x9C55, 0x9C5F, 104, GumpButtonType.Reply, 0);
             AddHtmlLocalized(36, 216, 125, 25, 1114513, "#1154981", 0x7FFF, false, false); // Mounts
+
+            AddECHandleInput();
+            AddECHandleInput();
 
             AddButton(36, 242, Category == StoreCategory.Misc ? 0x9C5F : 0x9C55, 0x9C5F, 105, GumpButtonType.Reply, 0);
             AddHtmlLocalized(36, 245, 125, 25, 1114513, "#1011173", 0x7FFF, false, false); // Miscellaneous
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(36, 271, 0x9C55, 0x9C5F, 106, GumpButtonType.Reply, 0);
             AddHtmlLocalized(36, 274, 125, 25, 1114513, "#1156589", 0x7FFF, false, false); // Promotional Code
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(36, 300, 0x9C55, 0x9C5F, 107, GumpButtonType.Reply, 0);
             AddHtmlLocalized(36, 303, 125, 25, 1114513, "#1156875", 0x7FFF, false, false); // FAQ
+
+            AddECHandleInput();
 
             AddImage(36, 331, 0x9C4A);
 
@@ -129,13 +154,22 @@ namespace Server.Engines.UOStore
             AddButton(43, 464, SortBy == SortBy.Oldest ? 0x9C4F : 0x9C4E, SortBy == SortBy.Oldest ? 0x9C4F : 0x9C4E, 112, GumpButtonType.Reply, 0);
             AddHtmlLocalized(68, 464, 88, 25, 1156591, 0x6B55, false, false); // Oldest
 
+            AddECHandleInput();
+
             AddButton(598, 36, Category == StoreCategory.Cart ? 0x9C5E : 0x9C54, 0x9C5E, 113, GumpButtonType.Reply, 0);
             AddHtmlLocalized(628, 39, 123, 25, 1156593, String.Format("{0}\t{1}", UltimaStore.CartCount(User).ToString(), UltimaStore.MaxCart.ToString()), 0x7FFF, false, false);
 
+            AddECHandleInput();
+
             AddBackground(167, 516, 114, 22, 0x2486);
             AddTextEntry(167, 516, 114, 20, 0, 0, "");
+
+            AddECHandleInput();
+
             AddButton(286, 516, 0x9C52, 0x9C5C, 114, GumpButtonType.Reply, 0);
             AddHtmlLocalized(286, 519, 64, 22, 1114513, "#1154641", 0x7FFF, false, false); // Search
+
+            AddECHandleInput();
 
             AddImage(36, 74, 0x9C56);
             AddLabelCropped(59, 74, 100, 14, 0x1C7, ((int)UltimaStore.GetCurrency(User)).ToString("N0"));
