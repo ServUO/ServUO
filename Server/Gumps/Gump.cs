@@ -200,7 +200,7 @@ namespace Server.Gumps
 			Add(new GumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
 		}
 
-        public void AddHtmlLocalized(
+		public void AddHtmlLocalized(
 			int x,
 			int y,
 			int width,
@@ -348,12 +348,7 @@ namespace Server.Gumps
 			Add(new GumpItemProperty(serial));
 		}
 
-        public void AddECHandleInput()
-        {
-            Add(new ECHandleInput());
-        }
-
-        public void Add(GumpEntry g)
+		public void Add(GumpEntry g)
 		{
 			if (g.Parent != this)
 			{
