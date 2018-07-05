@@ -8,8 +8,9 @@ namespace Server.Items
         public LissithsSilk()
             : base(0x2001)
         {
-            this.Weight = 1;
-            this.Hue = 0x4FB; // TODO check
+            Weight = 1;
+            Hue = 0x4FB; // TODO check
+            LootType = LootType.Blessed;
         }
 
         public LissithsSilk(Serial serial)

@@ -204,7 +204,7 @@ namespace Server.Engines.UOStore
             Register(new StoreEntry(typeof(EarringsOfProtection), 1071093, 1156659, 0, 0x9C66, 0, 200, cat, ConstructEarrings)); // Cold
             Register(new StoreEntry(typeof(EarringsOfProtection), 1071094, 1156659, 0, 0x9C66, 0, 200, cat, ConstructEarrings)); // Poison
             Register(new StoreEntry(typeof(EarringsOfProtection), 1071095, 1156659, 0, 0x9C66, 0, 200, cat, ConstructEarrings)); // Energy
-            Register(new StoreEntry(typeof(HoodedShroudOfShadows), 1079727, 1156659, 0x2684, 0, 0x455, 1000, cat));
+            Register(new StoreEntry(typeof(HoodedShroudOfShadows), 1079727, 1156643, 0x2684, 0, 0x455, 1000, cat));
 
             // decorations
             cat = StoreCategory.Decorations;
@@ -327,8 +327,8 @@ namespace Server.Engines.UOStore
 
             Register(new StoreEntry(typeof(BritannianShipDeed), 1150100, 1156673, 0, 0x9C6A, 0, 1200, cat));
 
-            Register(new StoreEntry(typeof(SoulstoneToken), 1078835, 1156669, 0x2ADC, 0, 0, 1000, cat, ConstructSoulstone));
-            Register(new StoreEntry(typeof(SoulstoneToken), 1078834, 1156669, 0x2A93, 0, 0, 1000, cat, ConstructSoulstone));
+            Register(new StoreEntry(typeof(SoulstoneToken), 1078835, 1158405, 0x2ADC, 0, 0, 1000, cat, ConstructSoulstone));
+            Register(new StoreEntry(typeof(SoulstoneToken), 1078834, 1158405, 0x2A93, 0, 0, 1000, cat, ConstructSoulstone));
 
             Register(new StoreEntry(typeof(MerchantsTrinket), new TextDefinition[] { 1156827, 1156681 }, 1156666, 0, 0x9C67, 0, 300, cat, ConstructMerchantsTrinket));
             Register(new StoreEntry(typeof(MerchantsTrinket), new TextDefinition[] { 1156828, 1156682 }, 1156667, 0, 0x9C67, 0, 500, cat, ConstructMerchantsTrinket));
@@ -936,6 +936,8 @@ namespace Server.Engines.UOStore
                 _DisplayItems = new List<Item>();
 
             _DisplayItems.Add(item);
+
+            DropItem(item);
         }
 
         public Item FindDisplayItem(Type t)

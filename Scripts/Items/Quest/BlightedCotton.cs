@@ -8,8 +8,9 @@ namespace Server.Items
         public BlightedCotton()
             : base(0x2DB)
         {
-            this.Weight = 1;
-            this.Hue = 0x35; // TODO check
+            Weight = 1;
+            Hue = 0x35; // TODO check
+            LootType = LootType.Blessed;
         }
 
         public BlightedCotton(Serial serial)

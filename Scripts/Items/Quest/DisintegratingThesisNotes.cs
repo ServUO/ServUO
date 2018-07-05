@@ -8,7 +8,8 @@ namespace Server.Items
         public DisintegratingThesisNotes()
             : base(0xE36)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public DisintegratingThesisNotes(Serial serial)

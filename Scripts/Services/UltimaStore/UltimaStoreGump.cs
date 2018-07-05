@@ -82,6 +82,7 @@ namespace Server.Engines.UOStore
 
         public override void AddGumpLayout()
         {
+            AddPage(0);
             AddImage(0, 0, 0x9C49);
 
             AddECHandleInput();
