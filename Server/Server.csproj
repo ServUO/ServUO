@@ -169,6 +169,7 @@
     <Compile Include="Gumps\GumpCheck.cs" />
     <Compile Include="Gumps\GumpEntry.cs" />
     <Compile Include="Gumps\GumpGroup.cs" />
+    <Compile Include="Gumps\ECHandleInput.cs" />
     <Compile Include="Gumps\GumpHtml.cs" />
     <Compile Include="Gumps\GumpHtmlLocalized.cs" />
     <Compile Include="Gumps\GumpImage.cs" />
