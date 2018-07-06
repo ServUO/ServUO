@@ -128,7 +128,9 @@ namespace Server
 
 	public delegate void CraftSuccessEventHandler(CraftSuccessEventArgs e);
 
-	public delegate void ItemCreatedEventHandler(ItemCreatedEventArgs e);
+    public delegate void SkillGainEventHandler(SkillGainEventArgs e);
+
+    public delegate void ItemCreatedEventHandler(ItemCreatedEventArgs e);
 
 	public delegate void ItemDeletedEventHandler(ItemDeletedEventArgs e);
 
@@ -1106,7 +1108,23 @@ namespace Server
 		}
 	}
 
-	public class ItemCreatedEventArgs : EventArgs
+    public class SkillGainEventArgs : EventArgs
+    {
+        public int Gained { get; private set; }
+
+        public Mobile From { get; private set; }
+        public Skill Skill { get; private set; }
+
+
+        public SkillGainEventArgs(Mobile from, Skill skill, int toGain)
+        {
+            From = from;
+            Skill = skill;
+            Gained = toGain;
+        }
+    }
+
+    public class ItemCreatedEventArgs : EventArgs
 	{
 		public Item Item { get; set; }
 
@@ -1306,7 +1324,9 @@ namespace Server
 		public static event ResourceHarvestSuccessEventHandler ResourceHarvestSuccess;
 		public static event CraftSuccessEventHandler CraftSuccess;
 
-		public static event ItemCreatedEventHandler ItemCreated;
+        public static event SkillGainEventHandler SkillGain;
+
+        public static event ItemCreatedEventHandler ItemCreated;
 		public static event ItemDeletedEventHandler ItemDeleted;
 		public static event MobileCreatedEventHandler MobileCreated;
 		public static event MobileDeletedEventHandler MobileDeleted;
@@ -1750,7 +1770,12 @@ namespace Server
 			}
 		}
 
-		public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
+        public static void InvokeSkillGain(SkillGainEventArgs e)
+        {
+            SkillGain?.Invoke(e);
+        }
+
+        public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
 		{
 			if (CraftSuccess != null)
 			{
