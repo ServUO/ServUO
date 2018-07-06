@@ -348,7 +348,12 @@ namespace Server.Gumps
 			Add(new GumpItemProperty(serial));
 		}
 
-		public void Add(GumpEntry g)
+        public void AddECHandleInput()
+        {
+            Add(new ECHandleInput());
+        }
+
+        public void Add(GumpEntry g)
 		{
 			if (g.Parent != this)
 			{
