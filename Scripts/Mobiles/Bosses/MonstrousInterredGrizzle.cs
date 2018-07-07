@@ -249,6 +249,8 @@ namespace Server.Mobiles
 
         public virtual void CacophonicAttack(Mobile to)
         {
+            if(to == null) return;
+            
             if (m_Table == null)
                 m_Table = new Hashtable();
 		
