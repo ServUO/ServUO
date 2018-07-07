@@ -60,7 +60,10 @@ namespace Server
 		public static string GetCompilerOptions(bool debug)
 		{
 			StringBuilder sb = null;
+
 			AppendCompilerOption(ref sb, "/d:ServUO");
+
+			AppendCompilerOption(ref sb, "/unsafe");
 
 			if (!debug)
 			{
