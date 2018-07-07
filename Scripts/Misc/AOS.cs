@@ -667,7 +667,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.CastSpeed)
             {
-                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || AuraOfNausea.UnderNausea(m))
+                if (HowlOfCacophony.IsUnderEffects(m) || AuraOfNausea.UnderNausea(m))
                     value -= 5;
 
                 if (EssenceOfWindSpell.IsDebuffed(m))
@@ -688,7 +688,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.CastRecovery)
             {
-                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m))
+                if (HowlOfCacophony.IsUnderEffects(m))
                     value -= 5;
 
                 value -= ThunderstormSpell.GetCastRecoveryMalus(m);
@@ -700,7 +700,7 @@ namespace Server
             }
             else if (attribute == AosAttribute.WeaponSpeed)
             {
-                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || AuraOfNausea.UnderNausea(m))
+                if (HowlOfCacophony.IsUnderEffects(m) || AuraOfNausea.UnderNausea(m))
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
@@ -737,9 +737,6 @@ namespace Server
                 if (StickySkin.IsUnderEffects(m))
                     value -= 30;
                 #endregion
-
-                if (StickySkin.IsUnderEffects(m))
-                    value -= 60;
             }
             else if (attribute == AosAttribute.AttackChance)
             {

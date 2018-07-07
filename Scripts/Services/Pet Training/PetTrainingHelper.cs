@@ -416,7 +416,8 @@ namespace Server.Mobiles
                 SpecialAbility.ViciousBite,
                 SpecialAbility.FlurryForce,
                 SpecialAbility.Rage,
-                SpecialAbility.Heal
+                SpecialAbility.Heal,
+                SpecialAbility.HowlOfCacophony,
             };
 
             SpecialAbilityNone = new SpecialAbility[] { };
@@ -1436,6 +1437,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157418, 1157419 }, // Flurry Force
             new TextDefinition[] { 1150005, 0       }, // Rage
             new TextDefinition[] { 1151311, 0       }, // Heal
+            new TextDefinition[] { 1153793, 0       }, // Howl of Cacophony
         };
 
         public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }
