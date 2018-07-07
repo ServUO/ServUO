@@ -19,6 +19,7 @@ namespace Server.Mobiles
             Name = "Ilhenir";
             Title = "the Stained";
             Body = 0x103;
+            Hue = 1164;
 
             BaseSoundID = 589;
 
@@ -49,8 +50,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 119.9);
             SetSkill(SkillName.Wrestling, 119.9);
 
-            Fame = 50000;
-            Karma = -50000;
+            Fame = 24000;
+            Karma = -24000;
 
             VirtualArmor = 44;
 
@@ -64,6 +65,8 @@ namespace Server.Mobiles
                 PackResources(8);
                 PackTalismans(5);
             }
+
+            AddItem(new Gold(2000, 2500));
         }
 
         public Ilhenir(Serial serial)
@@ -116,35 +119,11 @@ namespace Server.Mobiles
                 };
             }
         }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Uncalmable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        //public override bool GivesMLMinorArtifact { get { return true; } } // TODO: Needs verification
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool Unprovokable { get { return true; } }
+        public override bool Uncalmable { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override int TreasureMapLevel { get { return 5; } }
+        public override bool HasBreath { get { return true; } }
 
         public virtual void PackResources(int amount)
         {
@@ -172,12 +151,6 @@ namespace Server.Mobiles
                 }
         }
 
-        public virtual void PackItems(Item item, int amount)
-        {
-            for (int i = 0; i < amount; i++)
-                PackItem(item);
-        }
-
         public virtual void PackTalismans(int amount)
         {
             int count = Utility.Random(amount);
@@ -188,7 +161,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 8);
+            AddLoot(LootPack.UltraRich, 4);
+            AddLoot(LootPack.FilthyRich);
         }
 
         public override void OnDeath(Container c)
@@ -199,27 +173,11 @@ namespace Server.Mobiles
             {
                 c.DropItem(new GrizzledBones());
 
-                // TODO: Parrots
-                /*if ( Utility.RandomDouble() < 0.6 )
-                c.DropItem( new ParrotItem() ); */
-
                 if (Utility.RandomDouble() < 0.05)
                     c.DropItem(new GrizzledMareStatuette());
 
                 if (Utility.RandomDouble() < 0.025)
                     c.DropItem(new CrimsonCincture());
-                // TODO: Armor sets
-                /*if ( Utility.RandomDouble() < 0.05 )
-                {
-                switch ( Utility.Random(5) )
-                {
-                case 0: c.DropItem( new GrizzleGauntlets() ); break;
-                case 1: c.DropItem( new GrizzleGreaves() ); break;
-                case 2: c.DropItem( new GrizzleHelm() ); break;
-                case 3: c.DropItem( new GrizzleTunic() ); break;
-                case 4: c.DropItem( new GrizzleVambraces() ); break;
-                }
-                }*/
             }
         }
 
@@ -259,14 +217,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
@@ -307,11 +263,6 @@ namespace Server.Mobiles
                     ((PlayerMobile)Combatant).SendLocalizedMessage(1072072); // A poisonous gas seeps out of your enemy's skin!
             }
         }
-
-        private int RandomPoint(int mid)
-        {
-            return (mid + Utility.RandomMinMax(-2, 2));
-        }
     }
 
     public class StainedOoze : Item
@@ -319,6 +270,7 @@ namespace Server.Mobiles
         private bool m_Corrosive;
         private Timer m_Timer;
         private int m_Ticks;
+
         [Constructable]
         public StainedOoze()
             : this(false)
@@ -394,7 +346,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
             writer.Write(m_Corrosive);
@@ -403,7 +354,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             m_Corrosive = reader.ReadBool();
