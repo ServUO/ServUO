@@ -200,7 +200,7 @@ namespace Server.Gumps
 			Add(new GumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
 		}
 
-        public void AddHtmlLocalized(
+		public void AddHtmlLocalized(
 			int x,
 			int y,
 			int width,

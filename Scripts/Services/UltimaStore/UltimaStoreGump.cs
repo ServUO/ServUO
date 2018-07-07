@@ -12,9 +12,9 @@ namespace Server.Engines.UOStore
 {
     public class UltimaStoreGump : BaseGump
     {
-        public StoreCategory Category 
-        { 
-            get 
+        public StoreCategory Category
+        {
+            get
             {
                 var profile = UltimaStore.GetProfile(User, false);
 
@@ -24,10 +24,10 @@ namespace Server.Engines.UOStore
                 }
 
                 return PlayerProfile.DefaultCategory;
-            } 
+            }
         }
 
-        public SortBy SortBy 
+        public SortBy SortBy
         {
             get
             {
@@ -39,7 +39,7 @@ namespace Server.Engines.UOStore
                 }
 
                 return PlayerProfile.DefaultSortBy;
-            } 
+            }
         }
 
         public Dictionary<StoreEntry, int> Cart
@@ -158,12 +158,12 @@ namespace Server.Engines.UOStore
             AddECHandleInput();
 
             AddButton(598, 36, Category == StoreCategory.Cart ? 0x9C5E : 0x9C54, 0x9C5E, 113, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(628, 39, 123, 25, 1156593, String.Format("{0}\t{1}", UltimaStore.CartCount(User).ToString(), UltimaStore.MaxCart.ToString()), 0x7FFF, false, false);
+            AddHtmlLocalized(628, 39, 123, 25, 1156593, String.Format("@{0}@{1}", UltimaStore.CartCount(User).ToString(), UltimaStore.MaxCart.ToString()), 0x7FFF, false, false);
 
             AddECHandleInput();
 
             AddBackground(167, 516, 114, 22, 0x2486);
-            AddTextEntry(167, 516, 114, 20, 0, 0, "");
+            AddTextEntry(169, 518, 110, 18, 0, 16, "", 169);
 
             AddECHandleInput();
 
@@ -175,6 +175,8 @@ namespace Server.Engines.UOStore
             AddImage(36, 74, 0x9C56);
             AddLabelCropped(59, 74, 100, 14, 0x1C7, ((int)UltimaStore.GetCurrency(User)).ToString("N0"));
 
+            AddECHandleInput();
+
             if (!Search && Category == StoreCategory.Cart)
             {
                 var profile = UltimaStore.GetProfile(User);
@@ -182,7 +184,7 @@ namespace Server.Engines.UOStore
                 AddImage(167, 74, 0x9C4C);
                 double total = 0;
 
-                if(profile != null && profile.Cart != null && profile.Cart.Count > 0)
+                if (profile != null && profile.Cart != null && profile.Cart.Count > 0)
                 {
                     int i = 0;
                     foreach (var kvp in profile.Cart)
@@ -214,6 +216,9 @@ namespace Server.Engines.UOStore
                 AddHtmlLocalized(508, 482, 125, 25, 1156594, 0x6B55, false, false); // Subtotal:
                 AddImage(588, 482, 0x9C56);
                 AddLabelCropped(611, 480, 100, 14, 0x1C7, UltimaStore.GetSubTotal(Cart).ToString("N0"));
+
+                AddECHandleInput();
+                AddECHandleInput();
 
                 AddButton(653, 516, 0x9C52, 0x9C52, 115, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(653, 519, 64, 22, 1114513, "#1062219", 0x7FFF, false, false); // Buy
@@ -283,6 +288,9 @@ namespace Server.Engines.UOStore
 
                     AddImage(x + 60, y + 192, 0x9C56);
                     AddLabelCropped(x + 80, y + 190, 143, 25, 0x9C2, entry.Cost.ToString("N0"));
+
+                    AddECHandleInput();
+                    AddECHandleInput();
 
                     pageIndex++;
                     listIndex++;
@@ -431,6 +439,17 @@ namespace Server.Engines.UOStore
             }
             else if (id == 115) // Buy
             {
+                if (UltimaStore.CartCount(User) == 0)
+                {
+                    if (profile != null)
+                    {
+                        profile.Category = StoreCategory.Cart;
+                    }
+
+                    Refresh();
+                    return;
+                }
+
                 int total = UltimaStore.GetSubTotal(Cart);
 
                 if (total <= UltimaStore.GetCurrency(User, true))
@@ -545,11 +564,18 @@ namespace Server.Engines.UOStore
             AddBackground(233, 100, 50, 20, 0x2486);
             AddTextEntry(238, 100, 50, 20, 0, 0, Current > 0 ? Current.ToString() : "", 2);
 
+            AddECHandleInput();
+
             AddButton(45, 150, 0x9C53, 0x9C5D, 195, GumpButtonType.Reply, 0);
             AddHtmlLocalized(45, 153, 126, 25, 1114513, "#1156596", 0x7FFF, false, false); // Okay
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(240, 150, 0x9C53, 0x9C5D, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(240, 153, 126, 25, 1114513, "#1006045", 0x7FFF, false, false); // Cancel
+
+            AddECHandleInput();
         }
 
         public override void OnServerClose(NetState owner)
@@ -603,16 +629,25 @@ namespace Server.Engines.UOStore
 
         public override void AddGumpLayout()
         {
+            AddPage(0);
+
             AddBackground(0, 0, 410, 200, 0x9C40);
             AddHtmlLocalized(10, 10, 400, 20, 1114513, "#1156750", 0x7FFF, false, false); // Purchase Confirmation
 
             AddHtmlLocalized(30, 60, 350, 60, 1156749, 0x7FFF, false, false); // Are you sure you want to complete this purchase?
 
+            AddECHandleInput();
+
             AddButton(45, 150, 0x9C53, 0x9C5D, 195, GumpButtonType.Reply, 0);
             AddHtmlLocalized(45, 153, 126, 25, 1114513, "#1156596", 0x7FFF, false, false); // Okay
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(240, 150, 0x9C53, 0x9C5D, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(240, 153, 126, 25, 1114513, "#1006045", 0x7FFF, false, false); // Cancel
+
+            AddECHandleInput();
         }
 
         public override void OnServerClose(NetState owner)
@@ -642,16 +677,25 @@ namespace Server.Engines.UOStore
 
         public override void AddGumpLayout()
         {
+            AddPage(0);
+
             AddBackground(0, 0, 410, 200, 0x9C40);
             AddHtmlLocalized(10, 10, 400, 20, 1114513, "#1156747", 0x7FFF, false, false); // Insufficient Funds
 
-            AddHtml(30, 60, 350, 60, Color("red", String.Format("This transaction cannot be completed due to insufficient funds available. Visit your shards website for more information on how to obtain {0}.", Configuration.CurrencyName)), false, false);
+            AddHtml(30, 60, 350, 60, Color("#da0000", String.Format("This transaction cannot be completed due to insufficient funds available. Visit your shards website for more information on how to obtain {0}.", Configuration.CurrencyName)), false, false);
+
+            AddECHandleInput();
 
             AddButton(45, 150, 0x9C53, 0x9C5D, 195, GumpButtonType.Reply, 0);
             AddHtml(45, 153, 126, 25, ColorAndCenter("#FFFFFF", "Information"), false, false); // Information
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(240, 150, 0x9C53, 0x9C5D, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(240, 153, 126, 25, 1114513, "#1006045", 0x7FFF, false, false); // Cancel
+
+            AddECHandleInput();
         }
 
         public override void OnServerClose(NetState owner)
@@ -692,10 +736,14 @@ namespace Server.Engines.UOStore
 
         public override void AddGumpLayout()
         {
+            AddPage(0);
+
             AddBackground(0, 0, 400, 340, 0x9C40);
 
             AddHtmlLocalized(0, 10, 400, 20, 1114513, "#1062516", 0x7FFF, false, false); // Enter Promotional Code
             AddHtmlLocalized(20, 60, 355, 160, 1062869, C32216(0xFFFF00), false, true); // Enter your promotional code EXACTLY as it was given to you (including dashes). Enter no other text in the box aside from your promotional code.
+
+            AddECHandleInput();
 
             AddBackground(80, 220, 240, 22, 0x2486);
             AddTextEntry(81, 220, 239, 20, 0, 0, "");
@@ -703,8 +751,13 @@ namespace Server.Engines.UOStore
             AddButton(40, 260, 0x9C53, 0x9C5D, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(40, 262, 125, 25, 1114513, "#1156596", 0x7FFF, false, false);
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(234, 260, 0x9C53, 0x9C5D, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(234, 262, 126, 25, 1114513, "#1006045", 0x7FFF, false, false);
+
+            AddECHandleInput();
         }
 
         public override void OnServerClose(NetState owner)
