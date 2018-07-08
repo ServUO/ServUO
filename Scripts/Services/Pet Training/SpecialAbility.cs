@@ -1550,11 +1550,13 @@ namespace Server.Mobiles
         {
             if (!_Table.ContainsKey(attacker) && creature.InRange(attacker, 1) && 0.25 > Utility.RandomDouble() && !FountainOfFortune.UnderProtection(attacker))
             {
-                // The creature's attack weakens you. You have become anemic.
-                attacker.SendLocalizedMessage(1111669, "", 0x25);
+                attacker.SendLocalizedMessage(1111669); // The creature's attack weakens you. You have become anemic.
+
+                Effects.SendPacket(attacker, attacker.Map, new GraphicalEffect(EffectType.FixedFrom, attacker.Serial, Serial.Zero, 0x375A, attacker.Location, attacker.Location, 9, 20, true, false));
+                Effects.SendTargetParticles(attacker, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
+                Effects.SendLocationParticles(attacker, 0x11A6, 9, 32, 0x253A);
 
                 attacker.PlaySound(0x1ED);
-                Effects.SendTargetParticles(attacker, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
 
                 ExpireTimer timer = new ExpireTimer(attacker);
                 timer.Start();
