@@ -451,8 +451,19 @@ namespace Server.Mobiles
             }
         }
 
+        public static SpecialAbility BloodDisease
+        {
+            get
+            {
+                if (_Abilities[23] == null)
+                    _Abilities[23] = new BloodDisease();
+
+                return _Abilities[23];
+            }
+        }
+
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static SpecialAbility[] _Abilities = new SpecialAbility[23];
+        private static SpecialAbility[] _Abilities = new SpecialAbility[24];
     }
 	
 	public class AngryFire : SpecialAbility
@@ -1604,6 +1615,78 @@ namespace Server.Mobiles
                 {
                     m_Victim.Stam -= m_Victim.Stam < 2 ? 0 : Utility.RandomMinMax(2, 5);
                 }
+            }
+        }
+    }
+
+    public class BloodDisease : SpecialAbility
+    {
+        public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override bool TriggerOnGotMeleeDamage { get { return true; } }
+        public override int ManaCost { get { return 0; } }
+
+        private static Dictionary<Mobile, ExpireTimer> _Table;
+
+        public BloodDisease()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, ExpireTimer>();
+
+            if (!_Table.ContainsKey(defender) && creature.InRange(defender, 1) && 0.25 > Utility.RandomDouble() && !FountainOfFortune.UnderProtection(defender))
+            {
+                // The rotworm has infected you with blood disease!!
+                defender.SendLocalizedMessage(1111672, "", 0x25);
+
+                defender.PlaySound(0x213);
+                Effects.SendTargetParticles(defender, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
+
+                ExpireTimer timer = new ExpireTimer(defender);
+                timer.Start();
+
+                // TODO: 2nd cliloc
+                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RotwormBloodDisease, 1153798, 1153798));
+
+                _Table.Add(defender, timer);
+            }
+        }
+
+        private class ExpireTimer : Timer
+        {
+            private const int MaxCount = 8;
+
+            private int m_Count;
+            private Mobile m_Victim;
+
+            public ExpireTimer(Mobile m)
+                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
+            {
+                m_Victim = m;
+            }
+
+            protected override void OnTick()
+            {
+                if (m_Count == MaxCount || m_Victim.Deleted || !m_Victim.Alive || m_Victim.IsDeadBondedPet)
+                {
+                    // You no longer feel sick.
+                    m_Victim.SendLocalizedMessage(1111673);
+
+                    _Table.Remove(m_Victim);
+
+                    BuffInfo.RemoveBuff(m_Victim, BuffIcon.RotwormBloodDisease);
+
+                    Stop();
+                }
+                else if (m_Count > 0)
+                {
+                    AOS.Damage(m_Victim, Utility.RandomMinMax(10, 20), 0, 0, 0, 100, 0);
+                    m_Victim.Combatant = null;
+                }
+
+                m_Count++;
             }
         }
     }
