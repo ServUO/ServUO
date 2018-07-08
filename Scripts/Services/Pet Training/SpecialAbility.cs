@@ -440,8 +440,19 @@ namespace Server.Mobiles
             }
         }
 
+        public static SpecialAbility Anemia
+        {
+            get
+            {
+                if (_Abilities[22] == null)
+                    _Abilities[22] = new Anemia();
+
+                return _Abilities[22];
+            }
+        }
+
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static SpecialAbility[] _Abilities = new SpecialAbility[22];
+        private static SpecialAbility[] _Abilities = new SpecialAbility[23];
     }
 	
 	public class AngryFire : SpecialAbility
@@ -1502,6 +1513,97 @@ namespace Server.Mobiles
                 Timer.DelayCall(TimeSpan.FromSeconds(0.5), () => web.MoveToWorld(m.Location, m.Map));
             }
         }        
+    }
+
+    public class Anemia : SpecialAbility
+    {
+        public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override bool TriggerOnGotMeleeDamage { get { return true; } }
+        public override int ManaCost { get { return 0; } }
+
+        private static Dictionary<Mobile, ExpireTimer> _Table;
+
+        public Anemia()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, ExpireTimer>();
+
+            if (_Table.ContainsKey(defender))
+            {
+                defender.PublicOverheadMessage(MessageType.Regular, 0x25, 1111668); // * The creature is repulsed by your diseased blood. *
+            }
+            else
+            {
+                defender.PublicOverheadMessage(MessageType.Regular, 0x25, 1111698); // *The creature drains some of your blood to replenish its health.*
+
+                creature.Hits = Math.Min(creature.HitsMax, creature.Hits + Utility.RandomMinMax(50, 70));
+            }
+
+            TryInfect(creature, defender);
+        }
+
+        private void TryInfect(BaseCreature creature, Mobile attacker)
+        {
+            if (!_Table.ContainsKey(attacker) && creature.InRange(attacker, 1) && 0.25 > Utility.RandomDouble() && !FountainOfFortune.UnderProtection(attacker))
+            {
+                // The creature's attack weakens you. You have become anemic.
+                attacker.SendLocalizedMessage(1111669, "", 0x25);
+
+                attacker.PlaySound(0x1ED);
+                Effects.SendTargetParticles(attacker, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
+
+                ExpireTimer timer = new ExpireTimer(attacker);
+                timer.Start();
+
+                int str = attacker.RawStr / 3;
+                int dex = attacker.RawDex / 3;
+                int Int = attacker.RawInt / 3;
+
+                attacker.AddStatMod(new StatMod(StatType.Str, "BloodWorm_Str", str, TimeSpan.FromSeconds(60)));
+                attacker.AddStatMod(new StatMod(StatType.Dex, "BloodWorm_Dex", dex, TimeSpan.FromSeconds(60)));
+                attacker.AddStatMod(new StatMod(StatType.Int, "BloodWorm_Int", Int, TimeSpan.FromSeconds(60)));
+
+                // -~1_STR~ strength.<br>-~2_INT~ intelligence.<br>-~3_DEX~ dexterity.<br> Drains all stamina.
+                BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.BloodwormAnemia, 1153797, 1153824, String.Format("{0}\t{1}\t{2}", str, dex, Int)));
+
+                _Table.Add(attacker, timer);
+            }
+        }
+
+        private class ExpireTimer : Timer
+        {
+            private DateTime _Expires;
+            private Mobile m_Victim;
+
+            public ExpireTimer(Mobile m)
+                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
+            {
+                m_Victim = m;
+                _Expires = DateTime.UtcNow + TimeSpan.FromMinutes(1);
+            }
+
+            protected override void OnTick()
+            {
+                if (_Expires < DateTime.UtcNow || m_Victim.Deleted || !m_Victim.Alive || m_Victim.IsDeadBondedPet)
+                {                    
+                    m_Victim.SendLocalizedMessage(1111670); // You recover from your anemia.
+
+                    _Table.Remove(m_Victim);
+
+                    BuffInfo.RemoveBuff(m_Victim, BuffIcon.BloodwormAnemia);
+
+                    Stop();
+                }
+                else
+                {
+                    m_Victim.Stam -= m_Victim.Stam < 2 ? 0 : Utility.RandomMinMax(2, 5);
+                }
+            }
+        }
     }
 
     public class StickySkin : SpecialAbility

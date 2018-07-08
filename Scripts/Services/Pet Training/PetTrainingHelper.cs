@@ -1440,6 +1440,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1151311, 0       }, // Heal
             new TextDefinition[] { 1153793, 0       }, // Howl of Cacophony
             new TextDefinition[] { 1153789, 0       }, // Webbing
+            new TextDefinition[] { 1153797, 0       }, // Anemia
         };
 
         public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }
