@@ -419,6 +419,8 @@ namespace Server.Mobiles
                 SpecialAbility.Heal,
                 SpecialAbility.HowlOfCacophony,
                 SpecialAbility.Webbing,
+                SpecialAbility.Anemia,
+                SpecialAbility.BloodDisease,
             };
 
             SpecialAbilityNone = new SpecialAbility[] { };
