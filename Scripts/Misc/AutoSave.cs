@@ -156,9 +156,15 @@ namespace Server.Misc
             string saves = Path.Combine(Core.BaseDirectory, "Saves");
 
             if (Directory.Exists(saves))
+            {
+#if MONO
                 DirectoryCopy(saves, FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp()), true);
+#else
+                Directory.Move(saves, FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp()));
+#endif
+            }
         }
-
+#if MONO
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
             {
                 // Get the subdirectories for the specified directory.
@@ -196,7 +202,7 @@ namespace Server.Misc
                     }
                 }
             }
-
+#endif
         private static DirectoryInfo Match(string[] paths, string match)
         {
             for (int i = 0; i < paths.Length; ++i)
