@@ -418,6 +418,7 @@ namespace Server.Mobiles
                 SpecialAbility.Rage,
                 SpecialAbility.Heal,
                 SpecialAbility.HowlOfCacophony,
+                SpecialAbility.Webbing,
             };
 
             SpecialAbilityNone = new SpecialAbility[] { };
@@ -1438,6 +1439,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1150005, 0       }, // Rage
             new TextDefinition[] { 1151311, 0       }, // Heal
             new TextDefinition[] { 1153793, 0       }, // Howl of Cacophony
+            new TextDefinition[] { 1153789, 0       }, // Webbing
         };
 
         public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }

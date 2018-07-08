@@ -429,8 +429,19 @@ namespace Server.Mobiles
             }
         }
 
+        public static SpecialAbility Webbing
+        {
+            get
+            {
+                if (_Abilities[21] == null)
+                    _Abilities[21] = new Webbing();
+
+                return _Abilities[21];
+            }
+        }
+
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static SpecialAbility[] _Abilities = new SpecialAbility[21];
+        private static SpecialAbility[] _Abilities = new SpecialAbility[22];
     }
 	
 	public class AngryFire : SpecialAbility
@@ -1452,8 +1463,48 @@ namespace Server.Mobiles
             }
         }
 	}
-	
-	public class StickySkin : SpecialAbility
+
+    public class Webbing : SpecialAbility
+    {
+        public override int ManaCost { get { return 5; } }
+        public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override bool TriggerOnGotMeleeDamage { get { return true; } }
+
+        public Webbing()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            if (creature.Map == null)
+                return;
+
+            List<Mobile> list = new List<Mobile>();
+            IPooledEnumerable eable = creature.GetMobilesInRange(12);
+
+            foreach (Mobile m in eable)
+            {
+                if (AreaEffect.ValidTarget(creature, m))
+                    list.Add(m);
+            }
+
+            eable.Free();
+
+            if (list.Count > 0)
+            {
+                Mobile m = list[Utility.Random(list.Count)];
+
+                creature.DoHarmful(m, false);
+                creature.Direction = creature.GetDirectionTo(m);
+
+                SpiderWebbing web = new SpiderWebbing(m);               
+                Effects.SendMovingParticles(creature, m, web.ItemID, 12, 0, false, false, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                Timer.DelayCall(TimeSpan.FromSeconds(0.5), () => web.MoveToWorld(m.Location, m.Map));
+            }
+        }        
+    }
+
+    public class StickySkin : SpecialAbility
 	{
 		public override int ManaCost { get { return 5;  } }
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
