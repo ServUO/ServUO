@@ -17,13 +17,15 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
+        public override int LabelNumber { get {return 1074440;} } // Disintegrating Thesis Notes
+        
+        public override DeathMoveResult OnInventoryDeath(Mobile parent)
         {
-            get
-            {
-                return 1074440;
-            }
-        }// Disintegrating Thesis Notes
+            if (!parent.Player && !parent.IsDeadBondedPet)
+               return DeathMoveResult.MoveToCorpse;
+
+            return base.OnInventoryDeath(parent);
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
