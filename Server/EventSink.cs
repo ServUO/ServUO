@@ -1772,7 +1772,10 @@ namespace Server
 
         public static void InvokeSkillGain(SkillGainEventArgs e)
         {
-            SkillGain?.Invoke(e);
+            if(SkillGain != null)
+            {
+                SkillGain(e);
+            }
         }
 
         public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
