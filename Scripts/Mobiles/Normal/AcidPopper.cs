@@ -1,10 +1,13 @@
 using System;
-using System.Collections.Generic;
+using Server.Network;
+using Server.Targeting;
 
 namespace Server.Items
 {
     public class AcidPopper : Item
     {
+        public override int LabelNumber { get { return 1095058; } } // Acid Popper
+
         [Constructable]
         public AcidPopper()
             : this(1)
@@ -13,11 +16,11 @@ namespace Server.Items
 
         [Constructable]
         public AcidPopper(int amount)
-            : base(0x44c1)
+            : base(0x2808)
         {
-            this.Hue = 68;
-            this.Stackable = true;
-            this.Amount = amount;
+            Hue = 0x3F;
+            Stackable = true;
+            Amount = amount;
         }
 
         public AcidPopper(Serial serial)
@@ -25,49 +28,41 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095058;
-            }
-        }// Acid Popper
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
+                from.SendLocalizedMessage(1042664); // You must have the object in your backpack to use it.
+            else
+                from.BeginTarget(1, false, TargetFlags.None, new TargetCallback(BurnWeb_Callback));
+        }
+
+        private void BurnWeb_Callback(Mobile from, object targeted)
+        {
+            SpiderWebbing web = targeted as SpiderWebbing;
+
+            if (web != null)
             {
-                from.SendLocalizedMessage(1060640);   // The item must be in your backpack to use it.
-                return;
+                from.SendLocalizedMessage(1113240); // The acid popper bursts and burns away the webbing.
+
+                Effects.SendPacket(from.Location, from.Map, new TargetParticleEffect(this, 0x374A, 1, 10, 0x557, 0, 0x139D, 3, 0));
+
+                from.PlaySound(0x3E);
+                from.PlaySound(0x22F);
+
+                web.Delete();
+                Consume();
             }
-
-            List<NavreyParalyzingWeb> list = new List<NavreyParalyzingWeb>();
-            foreach (Item item in this.Map.GetItemsInRange(this.GetWorldLocation(), 0))
-            {
-                if (item is NavreyParalyzingWeb)
-                    list.Add((NavreyParalyzingWeb)item);
-            }
-
-            if (0 == list.Count)
-                return;
-
-            this.Consume();
-            from.SendLocalizedMessage(1113240);   // The acid popper bursts and burns away the webbing.
-
-            foreach (Item item in list)
-                item.Delete();
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

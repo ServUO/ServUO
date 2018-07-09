@@ -1859,7 +1859,7 @@
     <Compile Include="Mobiles\Bosses\Mephitis.cs" />
     <Compile Include="Mobiles\Bosses\Navery\EyeOfNavrey.cs" />
     <Compile Include="Mobiles\Bosses\Navery\Navrey.cs" />
-    <Compile Include="Mobiles\Bosses\Navery\NavreyParalyzingWeb.cs" />
+    <Compile Include="Items\Functional\SpiderWebbing.cs" />
     <Compile Include="Mobiles\Bosses\Neira.cs" />
     <Compile Include="Mobiles\Bosses\PrimevalLich.cs" />
     <Compile Include="Mobiles\Bosses\Rikktor.cs" />
@@ -1965,6 +1965,7 @@
     <Compile Include="Mobiles\Normal\DreadWarhorse.cs" />
     <Compile Include="Mobiles\Normal\FrostDrake.cs" />
     <Compile Include="Mobiles\Normal\Lasher.cs" />
+    <Compile Include="Mobiles\Normal\GiantTurkey.cs" />
     <Compile Include="Mobiles\Normal\Windrunner.cs" />
     <Compile Include="Mobiles\Normal\StygianDrake.cs" />
     <Compile Include="Mobiles\Normal\CrimsonDrake.cs" />

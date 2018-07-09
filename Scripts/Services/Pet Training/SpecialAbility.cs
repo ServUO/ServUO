@@ -3,6 +3,7 @@ using Server;
 using System.Collections.Generic;
 using System.Linq;
 using Server.Items;
+using Server.Network;
 
 namespace Server.Mobiles
 {
@@ -417,8 +418,52 @@ namespace Server.Mobiles
             }
         }
 
+        public static SpecialAbility HowlOfCacophony
+        {
+            get
+            {
+                if (_Abilities[20] == null)
+                    _Abilities[20] = new HowlOfCacophony();
+
+                return _Abilities[20];
+            }
+        }
+
+        public static SpecialAbility Webbing
+        {
+            get
+            {
+                if (_Abilities[21] == null)
+                    _Abilities[21] = new Webbing();
+
+                return _Abilities[21];
+            }
+        }
+
+        public static SpecialAbility Anemia
+        {
+            get
+            {
+                if (_Abilities[22] == null)
+                    _Abilities[22] = new Anemia();
+
+                return _Abilities[22];
+            }
+        }
+
+        public static SpecialAbility BloodDisease
+        {
+            get
+            {
+                if (_Abilities[23] == null)
+                    _Abilities[23] = new BloodDisease();
+
+                return _Abilities[23];
+            }
+        }
+
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static SpecialAbility[] _Abilities = new SpecialAbility[20];
+        private static SpecialAbility[] _Abilities = new SpecialAbility[24];
     }
 	
 	public class AngryFire : SpecialAbility
@@ -630,8 +675,65 @@ namespace Server.Mobiles
             }
         }
 	}
-	
-	public class GraspingClaw : SpecialAbility
+
+    public class HowlOfCacophony : SpecialAbility
+    {
+        private static Dictionary<Mobile, InternalTimer> _Table;
+        public override int ManaCost { get { return 25; } }
+        public override bool TriggerOnDoMeleeDamage { get { return true; } }
+
+        public HowlOfCacophony()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            if (_Table != null && _Table.ContainsKey(defender))
+            {
+                return;
+            }
+
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, InternalTimer>();
+
+            _Table[defender] = new InternalTimer(defender);
+
+            defender.SendSpeedControl(SpeedControlType.WalkSpeed);
+            defender.SendLocalizedMessage(1072069); // // A cacophonic sound lambastes you, suppressing your ability to move.
+            defender.PlaySound(0x584);
+
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.HowlOfCacophony, 1153793, 1153820, TimeSpan.FromSeconds(30), defender, "60\t5\t5"));
+        }
+
+        public static bool IsUnderEffects(Mobile m)
+        {
+            return _Table != null && _Table.ContainsKey(m);
+        }
+
+        private class InternalTimer : Timer
+        {
+            public Mobile Defender { get; set; }
+
+            public InternalTimer(Mobile defender)
+                : base(TimeSpan.FromSeconds(30))
+            {
+                Defender = defender;
+            }
+
+            protected override void OnTick()
+            {
+                if (_Table != null && _Table.ContainsKey(Defender))
+                {
+                    _Table.Remove(Defender);
+
+                    BuffInfo.RemoveBuff(Defender, BuffIcon.HowlOfCacophony);
+                    Defender.SendSpeedControl(SpeedControlType.Disable);                    
+                }
+            }
+        }
+    }
+
+    public class GraspingClaw : SpecialAbility
 	{
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
 
@@ -1383,8 +1485,213 @@ namespace Server.Mobiles
             }
         }
 	}
-	
-	public class StickySkin : SpecialAbility
+
+    public class Webbing : SpecialAbility
+    {
+        public override int ManaCost { get { return 5; } }
+        public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override bool TriggerOnGotMeleeDamage { get { return true; } }
+
+        public Webbing()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            if (creature.Map == null)
+                return;
+
+            List<Mobile> list = new List<Mobile>();
+            IPooledEnumerable eable = creature.GetMobilesInRange(12);
+
+            foreach (Mobile m in eable)
+            {
+                if (AreaEffect.ValidTarget(creature, m))
+                    list.Add(m);
+            }
+
+            eable.Free();
+
+            if (list.Count > 0)
+            {
+                Mobile m = list[Utility.Random(list.Count)];
+
+                creature.DoHarmful(m, false);
+                creature.Direction = creature.GetDirectionTo(m);
+
+                SpiderWebbing web = new SpiderWebbing(m);               
+                Effects.SendMovingParticles(creature, m, web.ItemID, 12, 0, false, false, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                Timer.DelayCall(TimeSpan.FromSeconds(0.5), () => web.MoveToWorld(m.Location, m.Map));
+            }
+        }        
+    }
+
+    public class Anemia : SpecialAbility
+    {
+        public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override bool TriggerOnGotMeleeDamage { get { return true; } }
+        public override int ManaCost { get { return 0; } }
+
+        private static Dictionary<Mobile, ExpireTimer> _Table;
+
+        public Anemia()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, ExpireTimer>();
+
+            if (_Table.ContainsKey(defender))
+            {
+                defender.PublicOverheadMessage(MessageType.Regular, 0x25, 1111668); // * The creature is repulsed by your diseased blood. *
+            }
+            else
+            {
+                defender.PublicOverheadMessage(MessageType.Regular, 0x25, 1111698); // *The creature drains some of your blood to replenish its health.*
+
+                creature.Hits = Math.Min(creature.HitsMax, creature.Hits + Utility.RandomMinMax(50, 70));
+            }
+
+            TryInfect(creature, defender);
+        }
+
+        private void TryInfect(BaseCreature creature, Mobile attacker)
+        {
+            if (!_Table.ContainsKey(attacker) && creature.InRange(attacker, 1) && 0.25 > Utility.RandomDouble() && !FountainOfFortune.UnderProtection(attacker))
+            {
+                attacker.SendLocalizedMessage(1111669); // The creature's attack weakens you. You have become anemic.
+
+                Effects.SendPacket(attacker, attacker.Map, new GraphicalEffect(EffectType.FixedFrom, attacker.Serial, Serial.Zero, 0x375A, attacker.Location, attacker.Location, 9, 20, true, false));
+                Effects.SendTargetParticles(attacker, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
+                Effects.SendLocationParticles(attacker, 0x11A6, 9, 32, 0x253A);
+
+                attacker.PlaySound(0x1ED);
+
+                ExpireTimer timer = new ExpireTimer(attacker);
+                timer.Start();
+
+                int str = attacker.RawStr / 3;
+                int dex = attacker.RawDex / 3;
+                int Int = attacker.RawInt / 3;
+
+                attacker.AddStatMod(new StatMod(StatType.Str, "BloodWorm_Str", str, TimeSpan.FromSeconds(60)));
+                attacker.AddStatMod(new StatMod(StatType.Dex, "BloodWorm_Dex", dex, TimeSpan.FromSeconds(60)));
+                attacker.AddStatMod(new StatMod(StatType.Int, "BloodWorm_Int", Int, TimeSpan.FromSeconds(60)));
+
+                // -~1_STR~ strength.<br>-~2_INT~ intelligence.<br>-~3_DEX~ dexterity.<br> Drains all stamina.
+                BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.BloodwormAnemia, 1153797, 1153824, String.Format("{0}\t{1}\t{2}", str, dex, Int)));
+
+                _Table.Add(attacker, timer);
+            }
+        }
+
+        private class ExpireTimer : Timer
+        {
+            private DateTime _Expires;
+            private Mobile m_Victim;
+
+            public ExpireTimer(Mobile m)
+                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
+            {
+                m_Victim = m;
+                _Expires = DateTime.UtcNow + TimeSpan.FromMinutes(1);
+            }
+
+            protected override void OnTick()
+            {
+                if (_Expires < DateTime.UtcNow || m_Victim.Deleted || !m_Victim.Alive || m_Victim.IsDeadBondedPet)
+                {                    
+                    m_Victim.SendLocalizedMessage(1111670); // You recover from your anemia.
+
+                    _Table.Remove(m_Victim);
+
+                    BuffInfo.RemoveBuff(m_Victim, BuffIcon.BloodwormAnemia);
+
+                    Stop();
+                }
+                else
+                {
+                    m_Victim.Stam -= m_Victim.Stam < 2 ? 0 : Utility.RandomMinMax(2, 5);
+                }
+            }
+        }
+    }
+
+    public class BloodDisease : SpecialAbility
+    {
+        public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override bool TriggerOnGotMeleeDamage { get { return true; } }
+        public override int ManaCost { get { return 0; } }
+
+        private static Dictionary<Mobile, ExpireTimer> _Table;
+
+        public BloodDisease()
+        {
+        }
+
+        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
+        {
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, ExpireTimer>();
+
+            if (!_Table.ContainsKey(defender) && creature.InRange(defender, 1) && 0.25 > Utility.RandomDouble() && !FountainOfFortune.UnderProtection(defender))
+            {
+                // The rotworm has infected you with blood disease!!
+                defender.SendLocalizedMessage(1111672, "", 0x25);
+
+                defender.PlaySound(0x213);
+                Effects.SendTargetParticles(defender, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
+
+                ExpireTimer timer = new ExpireTimer(defender);
+                timer.Start();
+
+                // TODO: 2nd cliloc
+                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RotwormBloodDisease, 1153798, 1153798));
+
+                _Table.Add(defender, timer);
+            }
+        }
+
+        private class ExpireTimer : Timer
+        {
+            private const int MaxCount = 8;
+
+            private int m_Count;
+            private Mobile m_Victim;
+
+            public ExpireTimer(Mobile m)
+                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
+            {
+                m_Victim = m;
+            }
+
+            protected override void OnTick()
+            {
+                if (m_Count == MaxCount || m_Victim.Deleted || !m_Victim.Alive || m_Victim.IsDeadBondedPet)
+                {
+                    // You no longer feel sick.
+                    m_Victim.SendLocalizedMessage(1111673);
+
+                    _Table.Remove(m_Victim);
+
+                    BuffInfo.RemoveBuff(m_Victim, BuffIcon.RotwormBloodDisease);
+
+                    Stop();
+                }
+                else if (m_Count > 0)
+                {
+                    AOS.Damage(m_Victim, Utility.RandomMinMax(10, 20), 0, 0, 0, 100, 0);
+                    m_Victim.Combatant = null;
+                }
+
+                m_Count++;
+            }
+        }
+    }
+
+    public class StickySkin : SpecialAbility
 	{
 		public override int ManaCost { get { return 5;  } }
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
