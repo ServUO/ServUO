@@ -157,14 +157,14 @@ namespace Server.Misc
 
             if (Directory.Exists(saves))
             {
-#if MONO
+#if __MonoCS__
                 DirectoryCopy(saves, FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp()), true);
 #else
                 Directory.Move(saves, FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp()));
 #endif
             }
         }
-#if MONO
+#if __MonoCS__
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
             {
                 // Get the subdirectories for the specified directory.
