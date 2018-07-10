@@ -4,6 +4,7 @@ using Server.Mobiles;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Gumps;
+using Server.Engines.Quests;
 
 namespace Server.Engines.HuntsmasterChallenge
 {
@@ -214,6 +215,16 @@ namespace Server.Engines.HuntsmasterChallenge
 					permit.HasSubmitted = true;
 
                     CheckKill(info.HuntType, permit.KillEntry);
+
+                    if (from is PlayerMobile)
+                    {
+                        BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(HuntmastersChallengeQuest));
+
+                        if (quest != null && quest is HuntmastersChallengeQuest)
+                        {
+                            ((HuntmastersChallengeQuest)quest).CompleteChallenge();
+                        }
+                    }
 				}
 			}
 		}

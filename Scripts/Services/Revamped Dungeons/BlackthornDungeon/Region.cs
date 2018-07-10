@@ -133,6 +133,11 @@ namespace Server.Engines.Blackthorn
         {
             base.OnLocationChanged(m, oldLocation);
 
+            if (m is PlayerMobile && m.X <= 1525 && m.X >= 1520 && m.Y <= 1485 && oldLocation.Y > 1485)
+            {
+                Server.Engines.Quests.AVisitToCastleBlackthornQuest.CheckLocation((PlayerMobile)m, oldLocation);
+            }
+
             if (m.AccessLevel > AccessLevel.Player)
                 return;
 

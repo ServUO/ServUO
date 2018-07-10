@@ -6,46 +6,47 @@ namespace Server.Engines.Quests
     {
         private Type m_QuestType;
         private DateTime m_RestartTime;
+
         public QuestRestartInfo(Type questType, TimeSpan restartDelay)
         {
-            this.m_QuestType = questType;
-            this.Reset(restartDelay);
+            m_QuestType = questType;
+            Reset(restartDelay);
         }
 
         public QuestRestartInfo(Type questType, DateTime restartTime)
         {
-            this.m_QuestType = questType;
-            this.m_RestartTime = restartTime;
+            m_QuestType = questType;
+            m_RestartTime = restartTime;
         }
 
         public Type QuestType
         {
             get
             {
-                return this.m_QuestType;
+                return m_QuestType;
             }
             set
             {
-                this.m_QuestType = value;
+                m_QuestType = value;
             }
         }
         public DateTime RestartTime
         {
             get
             {
-                return this.m_RestartTime;
+                return m_RestartTime;
             }
             set
             {
-                this.m_RestartTime = value;
+                m_RestartTime = value;
             }
         }
         public void Reset(TimeSpan restartDelay)
         {
             if (restartDelay < TimeSpan.MaxValue)
-                this.m_RestartTime = DateTime.UtcNow + restartDelay;
+                m_RestartTime = DateTime.UtcNow + restartDelay;
             else
-                this.m_RestartTime = DateTime.MaxValue;
+                m_RestartTime = DateTime.MaxValue;
         }
     }
 }

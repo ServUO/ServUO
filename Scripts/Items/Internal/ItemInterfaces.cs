@@ -1,4 +1,5 @@
 using System;
+using Server.Mobiles;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -33,5 +34,10 @@ namespace Server.Items
     public interface IResource : IQuality
     {
         CraftResource Resource { get; set; }
+    }
+
+    public interface IConditionalVisibility
+    {
+        bool CanBeSeenBy(PlayerMobile m);
     }
 }

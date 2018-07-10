@@ -63,9 +63,13 @@ namespace Server.Engines.Despise
 			if(m is DespiseBoss)
 			{
 				DespiseController controller = DespiseController.Instance;
-				
-				if(controller != null && controller.Boss == m)
-					controller.OnBossSlain();
+
+                if (controller != null && controller.Boss == m)
+                {
+                    Server.Engines.Quests.WhisperingWithWispsQuest.OnBossSlain((DespiseBoss)m);
+
+                    controller.OnBossSlain();
+                }
 			}
 			else if(m is PlayerMobile && m_LowerLevel)
 			{

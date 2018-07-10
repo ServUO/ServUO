@@ -29,8 +29,8 @@ namespace Server.Items
         public Lockpick(int amount)
             : base(0x14FC)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Lockpick(Serial serial)
@@ -51,8 +51,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 0.1)
-                this.Weight = -1;
+            if (version == 0 && Weight == 0.1)
+                Weight = -1;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -65,134 +65,128 @@ namespace Server.Items
         {
         }
 
+        protected virtual void BeginLockpick(Mobile from, ILockpickable item)
+        {
+            from.Direction = from.GetDirectionTo(item);
+
+            if (item.Locked)
+            {
+                from.PlaySound(0x241);
+
+                Timer.DelayCall(TimeSpan.FromMilliseconds(200.0), EndLockpick, new object[] { item, from });
+                //new InternalTimer(from, item, m_Item).Start();
+            }
+            else
+            {
+                // The door is not locked
+                from.SendLocalizedMessage(502069); // This does not appear to be locked
+            }
+        }
+
+        protected virtual void BrokeLockPickTest(Mobile from)
+        {
+            // When failed, a 25% chance to break the lockpick
+            if (!IsSkeletonKey && Utility.Random(4) == 0)
+            {
+                // You broke the lockpick.
+                SendLocalizedMessageTo(from, 502074);
+
+                from.PlaySound(0x3A4);
+                Consume();
+            }
+        }
+
+        protected virtual void EndLockpick(object state)
+        {
+            object[] objs = (object[])state;
+            ILockpickable lockpickable = objs[0] as ILockpickable;
+            Mobile from = objs[1] as Mobile;
+
+            Item item = (Item)lockpickable;
+
+            if (!from.InRange(item.GetWorldLocation(), 1))
+                return;
+
+            if (lockpickable.LockLevel == 0 || lockpickable.LockLevel == -255)
+            {
+                // LockLevel of 0 means that the door can't be picklocked
+                // LockLevel of -255 means it's magic locked
+                item.SendLocalizedMessageTo(from, 502073); // This lock cannot be picked by normal means
+                return;
+            }
+
+            if (from.Skills[SkillName.Lockpicking].Value < lockpickable.RequiredSkill - SkillBonus)
+            {
+                /*
+                // Do some training to gain skills
+                from.CheckSkill( SkillName.Lockpicking, 0, lockpickable.LockLevel );*/
+                // The LockLevel is higher thant the LockPicking of the player
+                item.SendLocalizedMessageTo(from, 502072); // You don't see how that lock can be manipulated.
+                return;
+            }
+
+            int maxlevel = lockpickable.MaxLockLevel;
+            int minLevel = lockpickable.LockLevel;
+
+            if (lockpickable is Skeletonkey)
+            {
+                minLevel -= SkillBonus;
+                maxlevel -= SkillBonus; //regulars subtract the bonus from the max level
+            }
+
+            if (this is MasterSkeletonKey || from.CheckTargetSkill(SkillName.Lockpicking, lockpickable, minLevel, maxlevel))
+            {
+                // Success! Pick the lock!
+                OnUse();
+
+                item.SendLocalizedMessageTo(from, 502076); // The lock quickly yields to your skill.
+                from.PlaySound(0x4A);
+                lockpickable.LockPick(from);
+            }
+            else
+            {
+                // The player failed to pick the lock
+                BrokeLockPickTest(from);
+                item.SendLocalizedMessageTo(from, 502075); // You are unable to pick the lock.
+
+                if (item is TreasureMapChest && ((Container)item).Items.Count > 0 && 0.25 > Utility.RandomDouble())
+                {
+                    Container cont = (Container)item;
+
+                    Item toBreak = cont.Items[Utility.Random(cont.Items.Count)];
+
+                    if (!(toBreak is Container))
+                    {
+                        toBreak.Delete();
+                        Effects.PlaySound(item.Location, item.Map, 0x1DE);
+                        from.SendMessage(0x20, "The sound of gas escaping is heard from the chest.");
+                    }
+                }
+            }
+        }
+
         private class InternalTarget : Target
         {
-            private readonly Lockpick m_Item;
+            private Lockpick m_Item;
+
             public InternalTarget(Lockpick item)
                 : base(1, false, TargetFlags.None)
             {
-                this.m_Item = item;
+                m_Item = item;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Item.Deleted)
+                if (m_Item.Deleted)
                     return;
 
                 if (targeted is ILockpickable)
                 {
-                    ILockpickable item = (ILockpickable)targeted;
-                    from.Direction = from.GetDirectionTo(item);
-
-                    if (item.Locked)
-                    {
-                        from.PlaySound(0x241);
-
-                        new InternalTimer(from, item, this.m_Item).Start();
-                    }
-                    else
-                    {
-                        // The door is not locked
-                        from.SendLocalizedMessage(502069); // This does not appear to be locked
-                    }
+                    m_Item.BeginLockpick(from, (ILockpickable)targeted);
                 }
                 else
                 {
                     from.SendLocalizedMessage(501666); // You can't unlock that!
-                }
-            }
-
-            private class InternalTimer : Timer
-            {
-                private readonly Mobile m_From;
-                private readonly ILockpickable m_Item;
-                private readonly Lockpick m_Lockpick;
-                public InternalTimer(Mobile from, ILockpickable item, Lockpick lockpick)
-                    : base(TimeSpan.FromMilliseconds(200.0))
-                {
-                    this.m_From = from;
-                    this.m_Item = item;
-                    this.m_Lockpick = lockpick;
-                }
-
-                protected void BrokeLockPickTest()
-                {
-                    // When failed, a 25% chance to break the lockpick
-                    if (Utility.Random(4) == 0)
-                    {
-                        Item item = (Item)this.m_Item;
-
-                        // You broke the lockpick.
-                        item.SendLocalizedMessageTo(this.m_From, 502074);
-
-                        this.m_From.PlaySound(0x3A4);
-
-                        if (!m_Lockpick.IsSkeletonKey)
-                            this.m_Lockpick.Consume();
-                    }
-                }
-
-                protected override void OnTick()
-                {
-                    Item item = (Item)this.m_Item;
-
-                    if (!this.m_From.InRange(item.GetWorldLocation(), 1))
-                        return;
-
-                    if (this.m_Item.LockLevel == 0 || this.m_Item.LockLevel == -255)
-                    {
-                        // LockLevel of 0 means that the door can't be picklocked
-                        // LockLevel of -255 means it's magic locked
-                        item.SendLocalizedMessageTo(this.m_From, 502073); // This lock cannot be picked by normal means
-                        return;
-                    }
-
-                    if (m_From.Skills[SkillName.Lockpicking].Value < m_Item.RequiredSkill - m_Lockpick.SkillBonus)
-                    {
-                        /*
-                        // Do some training to gain skills
-                        m_From.CheckSkill( SkillName.Lockpicking, 0, m_Item.LockLevel );*/
-                        // The LockLevel is higher thant the LockPicking of the player
-                        item.SendLocalizedMessageTo(this.m_From, 502072); // You don't see how that lock can be manipulated.
-                        return;
-                    }
-
-                    int maxlevel = m_Item.MaxLockLevel;
-                    int minLevel = m_Item.LockLevel;
-
-                    if (m_Item is Skeletonkey)
-                    {
-                        minLevel -= m_Lockpick.SkillBonus;
-                        maxlevel -= m_Lockpick.SkillBonus; //regulars subtract the bonus from the max level
-                    }
-
-                    if (m_Lockpick is MasterSkeletonKey || m_From.CheckTargetSkill(SkillName.Lockpicking, m_Item, minLevel, maxlevel))
-                    {
-                        // Success! Pick the lock!
-                        item.SendLocalizedMessageTo(this.m_From, 502076); // The lock quickly yields to your skill.
-                        this.m_From.PlaySound(0x4A);
-                        this.m_Item.LockPick(this.m_From);
-                    }
-                    else
-                    {
-                        // The player failed to pick the lock
-                        this.BrokeLockPickTest();
-                        item.SendLocalizedMessageTo(this.m_From, 502075); // You are unable to pick the lock.
-
-                        if (item is TreasureMapChest && ((Container)item).Items.Count > 0 && 0.25 > Utility.RandomDouble())
-                        {
-                            Container cont = (Container)item;
-
-                            Item toBreak = cont.Items[Utility.Random(cont.Items.Count)];
-
-                            if (!(toBreak is Container))
-                            {
-                                toBreak.Delete();
-                                Effects.PlaySound(item.Location, item.Map, 0x1DE);
-                                m_From.SendMessage(0x20, "The sound of gas escaping is heard from the chest.");
-                            }
-                        }
-                    }
                 }
             }
         }
