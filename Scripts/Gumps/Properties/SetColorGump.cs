@@ -82,16 +82,9 @@ namespace Server.Gumps
 
 			var name = m_OldColor.IsNamedColor ? m_OldColor.Name : m_OldColor.IsEmpty ? "Empty" : "";
 
-			var rgb = m_OldColor.ToArgb().ToString("X6");
-
-			if (rgb.Length > 6)
-			{
-				rgb = rgb.Substring(rgb.Length - 6);
-			}
-
-			rgb = "#" + rgb;
-
-			string val = String.Format("{0} ({1}) ({2},{3},{4})", name, rgb, m_OldColor.R, m_OldColor.G, m_OldColor.B);
+			var rgb = "#" + (m_OldColor.ToArgb() & 0x00FFFFFF).ToString("X6");
+			
+			var val = String.Format("{0} ({1}) ({2},{3},{4})", name, rgb, m_OldColor.R, m_OldColor.G, m_OldColor.B);
 
 			AddRect(0, prop.Name, 0, -1);
 			AddRect(1, val, 0, -1);
@@ -184,7 +177,7 @@ namespace Server.Gumps
 					break;
 				case 3: // Hex
 				{
-					var toapply = hex != string.Empty ? hex : String.Format("#{0:X6}", m_OldColor.ToArgb());
+					var toapply = hex != string.Empty ? hex : String.Format("#{0:X6}", m_OldColor.ToArgb() & 0x00FFFFFF);
 					
 					int val;
 

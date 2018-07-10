@@ -296,7 +296,7 @@ namespace Server.Gumps
 					return c.Name;
 				}
 
-				return String.Format("#{0:X6}", c.ToArgb());
+				return String.Format("#{0:X6}", c.ToArgb() & 0x00FFFFFF);
 			}
 
 			if (o is TextDefinition)
@@ -697,7 +697,7 @@ namespace Server.Gumps
 					return c.Name;
 				}
 
-				return String.Format("#{0:X6}", c.ToArgb());
+				return String.Format("#{0:X6}", c.ToArgb() & 0x00FFFFFF);
 			}
 
 			return o.ToString();

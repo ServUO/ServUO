@@ -2957,7 +2957,7 @@ m_Stream.Write( (int) renderMode );
             PacketWriter.ReleaseInstance(m_Strings);
 		}
 
-		private const int GumpBufferSize = 0x5000;
+		private const int GumpBufferSize = 0x10000;
 		private static readonly BufferPool m_PackBuffers = new BufferPool("Gump", 4, GumpBufferSize);
 
 		private void WritePacked(PacketWriter src)

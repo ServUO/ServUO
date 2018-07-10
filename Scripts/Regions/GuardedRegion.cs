@@ -352,7 +352,7 @@ namespace Server.Regions
 
 		public bool IsGuardCandidate(Mobile m)
 		{
-			if (m is BaseGuard || !m.Alive || m.IsStaff() || m.Blessed || (m is BaseCreature && ((BaseCreature)m).IsInvulnerable) ||
+			if (m is BaseGuard || m.GuardImmune || !m.Alive || m.IsStaff() || m.Blessed || (m is BaseCreature && ((BaseCreature)m).IsInvulnerable) ||
 				IsDisabled())
 			{
 				return false;
