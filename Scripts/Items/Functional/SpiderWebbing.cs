@@ -27,12 +27,11 @@ namespace Server.Items
         }
 
         public void BeginWebbing(Mobile m)
-        {
-            m_WebVictims.Add(m);
-            m.Frozen = true;
-            m.Hidden = true;
-            
+        {            
+            m.RevealingAction();
+            m.Frozen = true;            
             m.SendLocalizedMessage(1113247); // You are wrapped in spider webbing and cannot move!
+            m_WebVictims.Add(m);
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Webbing, 1153789, 1153825));
         }
 
@@ -44,9 +43,9 @@ namespace Server.Items
         public static void RemoveEffects(Mobile m)
         {
             m.Frozen = false;
+            m.SendLocalizedMessage(1113248); // You escape the spider's web!           
+            BuffInfo.RemoveBuff(m, BuffIcon.Webbing);
             m_WebVictims.Remove(m);
-            BuffInfo.RemoveBuff(m, BuffIcon.Webbing);                
-            m.SendLocalizedMessage(1113248); // You escape the spider's web!
         }
 
         public override bool BlocksFit { get { return true; } }
