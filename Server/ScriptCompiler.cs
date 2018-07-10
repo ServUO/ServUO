@@ -60,7 +60,10 @@ namespace Server
 		public static string GetCompilerOptions(bool debug)
 		{
 			StringBuilder sb = null;
+
 			AppendCompilerOption(ref sb, "/d:ServUO");
+
+			AppendCompilerOption(ref sb, "/unsafe");
 
 			if (!debug)
 			{
@@ -227,8 +230,11 @@ namespace Server
 				}
 
 				if (Core.Unix)
+                {
 					parms.CompilerOptions = String.Format( "{0} /nowarn:169,219,414 /recurse:Scripts/*.cs", parms.CompilerOptions );
-				
+                    files = new string[0];
+                }
+                
 				CompilerResults results = provider.CompileAssemblyFromFile(parms, files);
 				
 				m_AdditionalReferences.Add(path);

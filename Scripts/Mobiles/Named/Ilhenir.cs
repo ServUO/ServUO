@@ -10,60 +10,63 @@ namespace Server.Mobiles
     [CorpseName("a corpse of Ilhenir")]
     public class Ilhenir : BaseChampion
     {
-        private static Hashtable m_Table;
         private readonly DateTime m_NextDrop = DateTime.UtcNow;
+
         [Constructable]
         public Ilhenir()
             : base(AIType.AI_Mage)
         {
-            this.Name = "Ilhenir";
-            this.Title = "the Stained";
-            this.Body = 0x103;
+            Name = "Ilhenir";
+            Title = "the Stained";
+            Body = 0x103;
+            Hue = 1164;
 
-            this.BaseSoundID = 589;
+            BaseSoundID = 589;
 
-            this.SetStr(1105, 1350);
-            this.SetDex(82, 160);
-            this.SetInt(505, 750);
+            SetStr(1105, 1350);
+            SetDex(82, 160);
+            SetInt(505, 750);
 
-            this.SetHits(9000);
+            SetHits(9000);
 
-            this.SetDamage(21, 28);
+            SetDamage(21, 28);
 
-            this.SetDamageType(ResistanceType.Physical, 60);
-            this.SetDamageType(ResistanceType.Fire, 20);
-            this.SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Physical, 60);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Poison, 20);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 55, 65);
-            this.SetResistance(ResistanceType.Poison, 70, 90);
-            this.SetResistance(ResistanceType.Energy, 65, 75);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 55, 65);
+            SetResistance(ResistanceType.Poison, 70, 90);
+            SetResistance(ResistanceType.Energy, 65, 75);
 
-            this.SetSkill(SkillName.EvalInt, 100);
-            this.SetSkill(SkillName.Magery, 100);
-            this.SetSkill(SkillName.Meditation, 0);
-            this.SetSkill(SkillName.Poisoning, 5.4);
-            this.SetSkill(SkillName.Anatomy, 117.5);
-            this.SetSkill(SkillName.MagicResist, 120.0);
-            this.SetSkill(SkillName.Tactics, 119.9);
-            this.SetSkill(SkillName.Wrestling, 119.9);
+            SetSkill(SkillName.EvalInt, 100);
+            SetSkill(SkillName.Magery, 100);
+            SetSkill(SkillName.Meditation, 0);
+            SetSkill(SkillName.Poisoning, 5.4);
+            SetSkill(SkillName.Anatomy, 117.5);
+            SetSkill(SkillName.MagicResist, 120.0);
+            SetSkill(SkillName.Tactics, 119.9);
+            SetSkill(SkillName.Wrestling, 119.9);
 
-            this.Fame = 50000;
-            this.Karma = -50000;
+            Fame = 24000;
+            Karma = -24000;
 
-            this.VirtualArmor = 44;
+            VirtualArmor = 44;
 
             for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
             if (Core.ML)
             {
-                this.PackResources(8);
-                this.PackTalismans(5);
+                PackResources(8);
+                PackTalismans(5);
             }
+
+            AddItem(new Gold(2000, 2500));
         }
 
         public Ilhenir(Serial serial)
@@ -116,42 +119,11 @@ namespace Server.Mobiles
                 };
             }
         }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Uncalmable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        //public override bool GivesMLMinorArtifact { get { return true; } } // TODO: Needs verification
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public static bool UnderCacophonicAttack(Mobile from)
-        {
-            if (m_Table == null)
-                m_Table = new Hashtable();
-
-            return m_Table[from] != null;
-        }
+        public override bool Unprovokable { get { return true; } }
+        public override bool Uncalmable { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override int TreasureMapLevel { get { return 5; } }
+        public override bool HasBreath { get { return true; } }
 
         public virtual void PackResources(int amount)
         {
@@ -159,30 +131,24 @@ namespace Server.Mobiles
                 switch( Utility.Random(6) )
                 {
                     case 0:
-                        this.PackItem(new Blight());
+                        PackItem(new Blight());
                         break;
                     case 1:
-                        this.PackItem(new Scourge());
+                        PackItem(new Scourge());
                         break;
                     case 2:
-                        this.PackItem(new Taint());
+                        PackItem(new Taint());
                         break;
                     case 3:
-                        this.PackItem(new Putrefication());
+                        PackItem(new Putrefication());
                         break;
                     case 4:
-                        this.PackItem(new Corruption());
+                        PackItem(new Corruption());
                         break;
                     case 5:
-                        this.PackItem(new Muculent());
+                        PackItem(new Muculent());
                         break;
                 }
-        }
-
-        public virtual void PackItems(Item item, int amount)
-        {
-            for (int i = 0; i < amount; i++)
-                this.PackItem(item);
         }
 
         public virtual void PackTalismans(int amount)
@@ -190,12 +156,13 @@ namespace Server.Mobiles
             int count = Utility.Random(amount);
 
             for (int i = 0; i < count; i++)
-                this.PackItem(new RandomTalisman());
+                PackItem(new RandomTalisman());
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 8);
+            AddLoot(LootPack.UltraRich, 4);
+            AddLoot(LootPack.FilthyRich);
         }
 
         public override void OnDeath(Container c)
@@ -206,42 +173,18 @@ namespace Server.Mobiles
             {
                 c.DropItem(new GrizzledBones());
 
-                // TODO: Parrots
-                /*if ( Utility.RandomDouble() < 0.6 )
-                c.DropItem( new ParrotItem() ); */
-
                 if (Utility.RandomDouble() < 0.05)
                     c.DropItem(new GrizzledMareStatuette());
 
                 if (Utility.RandomDouble() < 0.025)
                     c.DropItem(new CrimsonCincture());
-                // TODO: Armor sets
-                /*if ( Utility.RandomDouble() < 0.05 )
-                {
-                switch ( Utility.Random(5) )
-                {
-                case 0: c.DropItem( new GrizzleGauntlets() ); break;
-                case 1: c.DropItem( new GrizzleGreaves() ); break;
-                case 2: c.DropItem( new GrizzleHelm() ); break;
-                case 3: c.DropItem( new GrizzleTunic() ); break;
-                case 4: c.DropItem( new GrizzleVambraces() ); break;
-                }
-                }*/
             }
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (Utility.RandomDouble() < 0.25)
-                this.CacophonicAttack(defender);
         }
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             if (Utility.RandomDouble() < 0.1)
-                this.DropOoze();
+                DropOoze();
 
             base.OnDamage(amount, from, willKill);
         }
@@ -274,40 +217,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-        }
-
-        public virtual void CacophonicAttack(Mobile to)
-        {
-            if (m_Table == null)
-                m_Table = new Hashtable();
-
-            if (to.Alive && to.Player && m_Table[to] == null)
-            {
-                to.SendSpeedControl(SpeedControlType.WalkSpeed);
-                to.SendLocalizedMessage(1072069); // A cacophonic sound lambastes you, suppressing your ability to move.
-                to.PlaySound(0x584);
-
-                m_Table[to] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerStateCallback(EndCacophonic_Callback), to);
-            }
-        }
-
-        public virtual void CacophonicEnd(Mobile from)
-        {
-            if (m_Table == null)
-                m_Table = new Hashtable();
-
-            m_Table[from] = null;
-
-            from.SendSpeedControl(SpeedControlType.Disable);
         }
 
         public virtual void DropOoze()
@@ -318,14 +234,14 @@ namespace Server.Mobiles
             for (int i = 0; i < amount; i++)
             {
                 Item ooze = new StainedOoze(corrosive);
-                Point3D p = new Point3D(this.Location);
+                Point3D p = new Point3D(Location);
 
                 for (int j = 0; j < 5; j++)
                 {
-                    p = this.GetSpawnPosition(2);
+                    p = GetSpawnPosition(2);
                     bool found = false;
 
-                    foreach (Item item in this.Map.GetItemsInRange(p, 0))
+                    foreach (Item item in Map.GetItemsInRange(p, 0))
                         if (item is StainedOoze)
                         {
                             found = true;
@@ -336,27 +252,16 @@ namespace Server.Mobiles
                         break;
                 }
 
-                ooze.MoveToWorld(p, this.Map);
+                ooze.MoveToWorld(p, Map);
             }
 
-            if (this.Combatant is PlayerMobile)
+            if (Combatant is PlayerMobile)
             {
                 if (corrosive)
                     ((PlayerMobile)Combatant).SendLocalizedMessage(1072071); // A corrosive gas seeps out of your enemy's skin!
                 else
                     ((PlayerMobile)Combatant).SendLocalizedMessage(1072072); // A poisonous gas seeps out of your enemy's skin!
             }
-        }
-
-        private void EndCacophonic_Callback(object state)
-        {
-            if (state is Mobile)
-                this.CacophonicEnd((Mobile)state);
-        }
-
-        private int RandomPoint(int mid)
-        {
-            return (mid + Utility.RandomMinMax(-2, 2));
         }
     }
 
@@ -365,6 +270,7 @@ namespace Server.Mobiles
         private bool m_Corrosive;
         private Timer m_Timer;
         private int m_Ticks;
+
         [Constructable]
         public StainedOoze()
             : this(false)
@@ -375,12 +281,12 @@ namespace Server.Mobiles
         public StainedOoze(bool corrosive)
             : base(0x122A)
         {
-            this.Movable = false;
-            this.Hue = 0x95;
+            Movable = false;
+            Hue = 0x95;
 
-            this.m_Corrosive = corrosive;
-            this.m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), OnTick);
-            this.m_Ticks = 0;
+            m_Corrosive = corrosive;
+            m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), OnTick);
+            m_Ticks = 0;
         }
 
         public StainedOoze(Serial serial)
@@ -393,25 +299,25 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Corrosive;
+                return m_Corrosive;
             }
             set
             {
-                this.m_Corrosive = value;
+                m_Corrosive = value;
             }
         }
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null)
+            if (m_Timer != null)
             {
-                this.m_Timer.Stop();
-                this.m_Timer = null;
+                m_Timer.Stop();
+                m_Timer = null;
             }
         }
 
         public void Damage(Mobile m)
         {
-            if (this.m_Corrosive)
+            if (m_Corrosive)
             {
                 List<Item> items = m.Items;
                 bool damaged = false;
@@ -440,22 +346,20 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
-            writer.Write(this.m_Corrosive);
+            writer.Write(m_Corrosive);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            this.m_Corrosive = reader.ReadBool();
+            m_Corrosive = reader.ReadBool();
 
-            this.m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), OnTick);
-            this.m_Ticks = (this.ItemID == 0x122A) ? 0 : 30;
+            m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), OnTick);
+            m_Ticks = (ItemID == 0x122A) ? 0 : 30;
         }
 
         private void OnTick()
@@ -484,14 +388,14 @@ namespace Server.Mobiles
             eable.Free();
 
             for (int i = 0; i < toDamage.Count; ++i)
-                this.Damage(toDamage[i]);
+                Damage(toDamage[i]);
 
-            ++this.m_Ticks;
+            ++m_Ticks;
 
-            if (this.m_Ticks >= 35)
-                this.Delete();
-            else if (this.m_Ticks == 30)
-                this.ItemID = 0x122B;
+            if (m_Ticks >= 35)
+                Delete();
+            else if (m_Ticks == 30)
+                ItemID = 0x122B;
         }
     }
 }
