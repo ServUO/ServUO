@@ -17,7 +17,6 @@ namespace Server.Engines.Quests
 
         public override QuestChain ChainID{get {return QuestChain.AnimalTraining; } }
         public override Type NextQuest { get { return typeof(UsingAnimalLoreQuest); } }
-        //public override bool DoneOnce { get{ return true; } }
 
         /* Discovering Animal Training */
         public override object Title { get { return 1157527; } }
@@ -37,28 +36,7 @@ namespace Server.Engines.Quests
         public override object Complete { get { return 1157532; } }
 
         public override int AcceptSound { get { return 0x2E8; } }
-
-        public override void OnCompleted()
-        {
-            Owner.SendLocalizedMessage(1157539, null, 0x23); // You've completed an Animal Training quest! Visit an Animal Trainer to continue!				
-            Owner.PlaySound(CompleteSound);
-        }
-
-        public override bool RenderObjective(MondainQuestGump g, bool offer)
-        {
-            if (offer)
-                g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
-            else
-                g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
-
-            g.AddHtmlObject(160, 70, 200, 40, Title, BaseQuestGump.DarkGreen, false, false);
-            g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
-
-            g.AddHtmlLocalized(98, 156, 312, 16, 1072208, 0x2710, false, false); // All of the following	
-
-            g.AddHtmlLocalized(98, 172, 312, 16, 1157529, BaseQuestGump.LightGreen, false, false); // Tame a creature.
-            return true;
-        }
+        public override int CompleteMessage { get { return 1157539; } } // // You've completed an Animal Training quest! Visit an Animal Trainer to continue!				
 
         public static void CheckTame(PlayerMobile pm)
         {
@@ -90,6 +68,8 @@ namespace Server.Engines.Quests
 
         public class InternalObjective : BaseObjective
         {
+            public override object ObjectiveDescription { get { return 1157529; } } // Tame a Creature
+
             public InternalObjective()
                 : base(1)
             {
@@ -116,7 +96,7 @@ namespace Server.Engines.Quests
         public UsingAnimalLoreQuest()
             : base()
         {
-            AddObjective(new TamingPetQuest.InternalObjective());
+            AddObjective(new InternalObjective());
 
             AddReward(new BaseReward(1157538)); // A step closer to mastering Animal Training.
         }
@@ -151,23 +131,6 @@ namespace Server.Engines.Quests
             Owner.PlaySound(CompleteSound);
         }
 
-        public override bool RenderObjective(MondainQuestGump g, bool offer)
-        {
-            if (offer)
-                g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
-            else
-                g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
-
-            g.AddHtmlObject(160, 70, 200, 40, Title, BaseQuestGump.DarkGreen, false, false);
-            g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
-
-            g.AddHtmlLocalized(98, 156, 312, 16, 1072208, 0x2710, false, false); // All of the following	
-
-            /*Use the Animal Lore Skill on your pet and select "Begin Animal Training."<br><br> */
-            g.AddHtmlLocalized(98, 172, 312, 50, 1157534, BaseQuestGump.LightGreen, false, false);
-            return true;
-        }
-
         public static void CheckComplete(PlayerMobile pm)
         {
             if (pm == null)
@@ -179,6 +142,31 @@ namespace Server.Engines.Quests
             {
                 quest.Objectives[0].CurProgress++;
                 quest.OnCompleted();
+            }
+        }
+
+        public class InternalObjective : BaseObjective
+        {
+            public override object ObjectiveDescription { get { return 1157534; } }
+            /*Use the Animal Lore Skill on your pet and select "Begin Animal Training."<br><br> */
+
+            public InternalObjective()
+                : base(1)
+            {
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                base.Serialize(writer);
+
+                writer.Write((int)0); // version
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                base.Deserialize(reader);
+
+                int version = reader.ReadInt();
             }
         }
 
@@ -202,7 +190,7 @@ namespace Server.Engines.Quests
         public LeadingIntoBattleQuest()
             : base()
         {
-            AddObjective(new TamingPetQuest.InternalObjective());
+            AddObjective(new InternalObjective());
 
             AddReward(new BaseReward(1157538)); // A step closer to mastering Animal Training.
         }
@@ -239,23 +227,6 @@ namespace Server.Engines.Quests
             Owner.PlaySound(CompleteSound);
         }
 
-        public override bool RenderObjective(MondainQuestGump g, bool offer)
-        {
-            if (offer)
-                g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
-            else
-                g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
-
-            g.AddHtmlObject(160, 70, 200, 40, Title, BaseQuestGump.DarkGreen, false, false);
-            g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
-
-            g.AddHtmlLocalized(98, 156, 312, 16, 1072208, 0x2710, false, false); // All of the following	
-
-            /*Lead your pet into the wild and battle it against other creatures until the "Pet Training Progress" bar is full.*/
-            g.AddHtmlLocalized(98, 172, 312, 50, 1157541, BaseQuestGump.LightGreen, false, false);
-            return true;
-        }
-
         public static void CheckComplete(PlayerMobile pm)
         {
             if (pm == null)
@@ -267,6 +238,31 @@ namespace Server.Engines.Quests
             {
                 quest.Objectives[0].CurProgress++;
                 quest.OnCompleted();
+            }
+        }
+
+        public class InternalObjective : BaseObjective
+        {
+            public override object ObjectiveDescription { get { return 1157541; } }
+            /*Lead your pet into the wild and battle it against other creatures until the "Pet Training Progress" bar is full.*/
+
+            public InternalObjective()
+                : base(1)
+            {
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                base.Serialize(writer);
+
+                writer.Write((int)0); // version
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                base.Deserialize(reader);
+
+                int version = reader.ReadInt();
             }
         }
 
@@ -290,14 +286,14 @@ namespace Server.Engines.Quests
         public TeachingSomethingNewQuest()
             : base()
         {
-            AddObjective(new TamingPetQuest.InternalObjective());
+            AddObjective(new InternalObjective());
 
             AddReward(new BaseReward(1157538)); // A step closer to mastering Animal Training.
         }
 
         public override QuestChain ChainID { get { return QuestChain.AnimalTraining; } }
         public override Type NextQuest { get { return null; } }
-        //public override bool DoneOnce { get { return true; } }
+        public override bool DoneOnce { get { return true; } }
 
         /* Discovering Animal Training */
         public override object Title { get { return 1157527; } }
@@ -358,23 +354,31 @@ namespace Server.Engines.Quests
             Owner.AddToBackpack(new EthologistTitleDeed());
         }
 
-        public override bool RenderObjective(MondainQuestGump g, bool offer)
+        public class InternalObjective : BaseObjective
         {
-            if (offer)
-                g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
-            else
-                g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
-
-            g.AddHtmlObject(160, 70, 200, 40, Title, BaseQuestGump.DarkGreen, false, false);
-            g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
-
-            g.AddHtmlLocalized(98, 156, 312, 16, 1072208, 0x2710, false, false); // All of the following	
-
+            public override object ObjectiveDescription { get { return 1157546; } }
             /*Use the Animal Lore skill on your pet and select "Pet Training Options" to mix and match which properties 
-             * you will train your pet.  When you are satisfied with the property you have chosen select "Train Pet" 
-             * and confirm the training!.*/
-            g.AddHtmlLocalized(98, 172, 312, 50, 1157546, BaseQuestGump.LightGreen, false, false);
-            return true;
+            * you will train your pet.  When you are satisfied with the property you have chosen select "Train Pet" 
+            * and confirm the training!.*/
+
+            public InternalObjective()
+                : base(1)
+            {
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                base.Serialize(writer);
+
+                writer.Write((int)0); // version
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                base.Deserialize(reader);
+
+                int version = reader.ReadInt();
+            }
         }
 
         public override void Serialize(GenericWriter writer)

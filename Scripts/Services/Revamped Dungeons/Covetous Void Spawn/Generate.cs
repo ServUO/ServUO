@@ -363,6 +363,9 @@ namespace Server.Engines.VoidPool
 
         public static void ConvertRegionSpawners(Region r)
         {
+            if (r == null)
+                return;
+
             List<XmlSpawner> list = new List<XmlSpawner>();
 
             foreach (Sector s in r.Sectors)

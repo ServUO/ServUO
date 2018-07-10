@@ -89,7 +89,13 @@ namespace Server.Mobiles
         RefuseTrades = 0x40000000,
         DisabledPvpWarning = 0x80000000,
         CanBuyCarpets = 0x100000000,
-        VoidPool = 0x200000000
+        VoidPool = 0x200000000,
+    }
+
+    [Flags]
+    public enum ExtendedPlayerFlag
+    {
+        HideTownCrierGreetingGump = 0x00000001
     }
 
 	public enum NpcGuild
@@ -196,6 +202,7 @@ namespace Server.Mobiles
 		private DateTime m_NpcGuildJoinTime;
 		private TimeSpan m_NpcGuildGameTime;
 		private PlayerFlag m_Flags;
+        private ExtendedPlayerFlag m_ExtendedFlags;
 		private int m_Profession;
 
 		private int m_NonAutoreinsuredItems;
@@ -427,6 +434,7 @@ namespace Server.Mobiles
 
 		#region PlayerFlags
 		public PlayerFlag Flags { get { return m_Flags; } set { m_Flags = value; } }
+        public ExtendedPlayerFlag ExtendedFlags { get { return m_ExtendedFlags; } set { m_ExtendedFlags = value; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool PagingSquelched { get { return GetFlag(PlayerFlag.PagingSquelched); } set { SetFlag(PlayerFlag.PagingSquelched, value); } }
@@ -513,6 +521,13 @@ namespace Server.Mobiles
         {
             get { return GetFlag(PlayerFlag.VoidPool); }
             set { SetFlag(PlayerFlag.VoidPool, value); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool HideTownCrierGreetingGump
+        {
+            get { return GetFlag(ExtendedPlayerFlag.HideTownCrierGreetingGump); }
+            set { SetFlag(ExtendedPlayerFlag.HideTownCrierGreetingGump, value); }
         }
 
         #region Plant system
@@ -811,6 +826,23 @@ namespace Server.Mobiles
 				m_Flags &= ~flag;
 			}
 		}
+
+        public bool GetFlag(ExtendedPlayerFlag flag)
+        {
+            return ((m_ExtendedFlags & flag) != 0);
+        }
+
+        public void SetFlag(ExtendedPlayerFlag flag, bool value)
+        {
+            if (value)
+            {
+                m_ExtendedFlags |= flag;
+            }
+            else
+            {
+                m_ExtendedFlags &= ~flag;
+            }
+        }
 
 		public DesignContext DesignContext { get { return m_DesignContext; } set { m_DesignContext = value; } }
 
@@ -4398,6 +4430,9 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 37:
+                    m_ExtendedFlags = (ExtendedPlayerFlag)reader.ReadInt();
+				    goto case 36;
                 case 36: // Reward Stable Slots
                     RewardStableSlots = reader.ReadInt();
                     goto case 35;
@@ -4826,7 +4861,9 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(36); // version
+			writer.Write(37); // version
+
+            writer.Write((int)m_ExtendedFlags);
 
             writer.Write(RewardStableSlots);
 
@@ -5054,6 +5091,9 @@ namespace Server.Mobiles
 
 		public override bool CanSee(Mobile m)
 		{
+            if (m is IConditionalVisibility && !((IConditionalVisibility)m).CanBeSeenBy(this))
+                return false;
+
 			if (m is CharacterStatue)
 			{
 				((CharacterStatue)m).OnRequestedAnimation(this);
@@ -5069,6 +5109,9 @@ namespace Server.Mobiles
 
 		public override bool CanSee(Item item)
 		{
+            if (item is IConditionalVisibility && !((IConditionalVisibility)item).CanBeSeenBy(this))
+                return false;
+
 			if (m_DesignContext != null && m_DesignContext.Foundation.IsHiddenToCustomizer(this, item))
 			{
 				return false;
