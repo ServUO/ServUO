@@ -52,8 +52,6 @@ namespace Server.Items
 
         public override void OnDelete()
         {
-            base.OnDelete();
-
             if (m_Timer != null)
                 m_Timer.Stop();
 
@@ -61,6 +59,8 @@ namespace Server.Items
             {
                 RemoveEffects(x);
             });
+
+            base.OnDelete();
         }
 
         public override void Serialize(GenericWriter writer)
