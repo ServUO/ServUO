@@ -23,10 +23,11 @@ namespace Server.Engines.Quests
         /* Visit Castle Blackthorn in Northern Britain. */
         public override object Uncomplete { get { return 1158199; } }
 
-        /* You have braved the wilds of Britannia and slayed a mighty beast! You have meticulously documented your kill 
-         * and submitted it to the Ranger's Guild for evaluation. If luck was on your side you may indeed have 
-         * the largest quarry for the month...or maybe not. Alas, your bravery has earned you the well deserved title
-         * of Hunter! May you go fearlessly into the wilderness in search of your next big kill! Well done! */
+        /* As you cross the bridge Blackthorn's massive castle towers up from the terrain it sits atop.  The jet-black stone of her walls
+         * are foreboding, yet invite your curiosity. Your eyes scan the courtyard and fixate on an incredibly handsome man. You've never 
+         * seen such beauty and style! Their exquisitely apportioned jester suit perfectly toes the line between comedic expression and 
+         * fashion. His hat is masterfully crafted with golden bells matching radiant jewelry that jingles as he swigs from a bottle. 
+         * You decide to follow the jester, who is no doubt headed for the castle bar. */
         public override object Complete { get { return 1158203; } }
 
         public override int CompleteMessage { get { return 1156585; } } // You've completed a quest!
