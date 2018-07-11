@@ -151,7 +151,12 @@ namespace Server.Mobiles
 
         public override double TransformMoveDelay(double delay)
         {
-            return (double)Utility.RandomMinMax(30, 120);
+            if (m_Mobile is BaseVendor)
+            {
+                return ((BaseVendor)m_Mobile).GetMoveDelay;
+            }
+
+            return base.TransformMoveDelay(delay);
         }
     }
 }

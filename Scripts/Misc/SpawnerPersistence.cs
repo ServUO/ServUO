@@ -12,6 +12,15 @@ using Server.Commands;
 using Server.Gumps;
 using Server.Multis;
 
+/* This script has a purpose, and please adhere to the advice before adding versions.
+ * This is used for modifying, removing, adding existing spawners, etc for existing shards,
+ * used for modifying, removing, adding existing spawners, etc for existing shards.
+ * As this is a collaborative effort for ServUO, it's important that any modifications to 
+ * existing shards be handled for new shareds.  For example, if your swapping out some spawners,
+ * common practice will be to edit the spawner files for fresh-loaded servers. Please refer to
+ * ServUO.com community with any questions or concerns.
+ */
+
 namespace Server
 {
     public class SpawnerPersistence
@@ -24,6 +33,7 @@ namespace Server
             Sphinx          = 0x00000002,
             IceHoundRemoval = 0x00000004,
             PaladinAndKrakin= 0x00000008,
+            TrinsicPaladins = 0x00000010,
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -49,6 +59,17 @@ namespace Server
             if (!_FirstRun)
             {
                 CheckVersion();
+            }
+            else if (_Version == 0) // new server, no need to run the new stuff.
+            {
+                // This way, fresh servers won't duplicate any spawners that should have already been adjusted for a fresh server
+                foreach (int i in Enum.GetValues(typeof(SpawnerVersion)))
+                {
+                    if (i == 0x00000000)
+                        continue;
+
+                    VersionFlag |= (SpawnerVersion)i;
+                }
             }
 
             #region Commands
@@ -133,6 +154,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.TrinsicPaladins) == 0)
+                    {
+                        SpawnTrinsicPaladins();
+                        VersionFlag |= SpawnerVersion.TrinsicPaladins;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.PaladinAndKrakin) == 0)
                     {
                         RemovePaladinsAndKrakens();
@@ -197,6 +224,14 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Trinny Paladins
+        public static void SpawnTrinsicPaladins()
+        {
+            LoadFromXmlSpawner("Spawns/trammel.xml", Map.Trammel, "TrinsicPaladinSpawner");
+            LoadFromXmlSpawner("Spawns/felucca.xml", Map.Felucca, "TrinsicPaladinSpawner");
+        }
+        #endregion
 
         #region Remove Paladins And Krakens
         public static void RemovePaladinsAndKrakens()
@@ -1206,5 +1241,87 @@ namespace Server
             }
         }
         #endregion
+
+        public static void RemoveSpawnsFromXmlFile(string directory, string filename)
+        {
+            if (System.IO.Directory.Exists(directory) == true)
+            {
+                List<string> files = null;
+
+                try
+                {
+                    files = new List<string>(Directory.GetFiles(directory, filename + ".xml"));
+                }
+                catch { }
+
+                ToConsole(String.Format("Found {0} Xmlspawner files for removal.", files == null ? "0" : files.Count.ToString()), files != null && files.Count > 0 ? ConsoleColor.Green : ConsoleColor.Red);
+                ToConsole("Deleting spawners...", ConsoleColor.Cyan);
+
+                if (files != null && files.Count > 0)
+                {
+                    int deletedxml = 0;
+
+                    foreach (string file in files)
+                    {
+                        FileStream fs = null;
+
+                        try
+                        {
+                            fs = File.Open(file, FileMode.Open, FileAccess.Read);
+                        }
+                        catch { }
+
+                        if (fs == null)
+                        {
+                            ToConsole(String.Format("Unable to open {0} for loading", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        DataSet ds = new DataSet("Spawns");
+
+                        try
+                        {
+                            ds.ReadXml(fs);
+                        }
+                        catch
+                        {
+                            fs.Close();
+                            ToConsole(String.Format("Error reading xml file {0}", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        if (ds.Tables != null && ds.Tables.Count > 0)
+                        {
+                            if (ds.Tables["Points"] != null && ds.Tables["Points"].Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in ds.Tables["Points"].Rows)
+                                {
+                                    string id = null;
+
+                                    try
+                                    {
+                                        id = (string)dr["UniqueId"];
+                                    }
+                                    catch { }
+
+                                    if (DeleteSpawner(id))
+                                    {
+                                        deletedxml++;
+                                    }
+                                }
+                            }
+                        }
+
+                        fs.Close();
+                    }
+
+                    ToConsole(String.Format("Deleted {0} XmlSpawners from {1}/{2}.xml.", deletedxml, directory, filename), ConsoleColor.Cyan);
+                }
+                else
+                {
+                    ToConsole(String.Format("File Not Found: {0}", filename), ConsoleColor.Red);
+                }
+            }
+        }
     }
 }

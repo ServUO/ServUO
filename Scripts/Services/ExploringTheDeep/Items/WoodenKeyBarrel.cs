@@ -13,18 +13,19 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public StorageLocker StorageLocker
         {
-            get { return this.m_StorageLocker; }
-            set { this.m_StorageLocker = value; }
+            get { return m_StorageLocker; }
+            set { m_StorageLocker = value; }
         }
 
         [Constructable]
         public WoodenKeyBarrel(Parts key)
             : base(0x0FAE, 0x0FAE)
         {
+            Name = "barrel";
             m_key = key;
-            this.Level = ItemLevel.VeryEasy;
-            this.Movable = false;
-            this.HitsMax = 60;
+            Level = ItemLevel.VeryEasy;
+            Movable = false;
+            HitsMax = 60;
         }
 
         public WoodenKeyBarrel(Serial serial)
@@ -63,32 +64,32 @@ namespace Server.Items
                             {
                                 case 0:
                                     {
-                                        (new SeaSnake()).MoveToWorld(new Point3D(this.Location), this.Map);
+                                        (new SeaSnake()).MoveToWorld(new Point3D(Location), Map);
                                         break;
                                     }
                                 case 1:
                                     {
-                                        (new ShipRat()).MoveToWorld(new Point3D(this.Location), this.Map);
+                                        (new ShipRat()).MoveToWorld(new Point3D(Location), Map);
                                         break;
                                     }
                                 case 2:
                                     {
-                                        (new ShipBat()).MoveToWorld(new Point3D(this.Location), this.Map);
+                                        (new ShipBat()).MoveToWorld(new Point3D(Location), Map);
                                         break;
                                     }
                                 case 3:
                                     {
-                                        (new ShipBat()).MoveToWorld(new Point3D(this.Location), this.Map);
+                                        (new ShipBat()).MoveToWorld(new Point3D(Location), Map);
                                         break;
                                     }
                                 case 4:
                                     {
-                                        (new ShipRat()).MoveToWorld(new Point3D(this.Location), this.Map);
+                                        (new ShipRat()).MoveToWorld(new Point3D(Location), Map);
                                         break;
                                     }
                                 case 5:
                                     {
-                                        (new SeaSnake()).MoveToWorld(new Point3D(this.Location), this.Map);
+                                        (new SeaSnake()).MoveToWorld(new Point3D(Location), Map);
                                         break;
                                     }
                                 default: break;
@@ -98,13 +99,13 @@ namespace Server.Items
                 }
 
                 if (Utility.RandomDouble() < 0.05)
-                    (new BarrelHoops()).MoveToWorld(new Point3D(this.Location), this.Map);
+                    (new BarrelHoops()).MoveToWorld(new Point3D(Location), Map);
                 if (Utility.RandomDouble() < 0.05)
-                    (new BarrelStaves()).MoveToWorld(new Point3D(this.Location), this.Map);
+                    (new BarrelStaves()).MoveToWorld(new Point3D(Location), Map);
                 if (Utility.RandomDouble() < 0.05)
-                    (new BarrelLid()).MoveToWorld(new Point3D(this.Location), this.Map);
+                    (new BarrelLid()).MoveToWorld(new Point3D(Location), Map);
                 if (Utility.RandomDouble() < 0.05)
-                    (new CopperWire()).MoveToWorld(new Point3D(this.Location), this.Map);
+                    (new CopperWire()).MoveToWorld(new Point3D(Location), Map);
             }
 
             return true;
@@ -115,8 +116,8 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write((int)1); //version
 
-            writer.Write((int)this.m_key);
-            writer.Write(this.m_StorageLocker);
+            writer.Write((int)m_key);
+            writer.Write(m_StorageLocker);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -128,8 +129,8 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_key = (Parts)reader.ReadInt();
-                        this.m_StorageLocker = (StorageLocker)reader.ReadItem();
+                        m_key = (Parts)reader.ReadInt();
+                        m_StorageLocker = (StorageLocker)reader.ReadItem();
 
                         break;
                     }
@@ -145,18 +146,20 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public StorageLocker StorageLocker
         {
-            get { return this.m_StorageLocker; }
-            set { this.m_StorageLocker = value; }
+            get { return m_StorageLocker; }
+            set { m_StorageLocker = value; }
         }
 
         [Constructable]
         public WoodenToMetalBarrel(StorageLocker item)
             : base(0x0FAE, 0x0FAE)
         {
-            this.Level = ItemLevel.VeryEasy;
-            this.Movable = false;
-            this.HitsMax = 60;
-            this.m_StorageLocker = item;
+            Name = "barrel";
+
+            Level = ItemLevel.VeryEasy;
+            Movable = false;
+            HitsMax = 60;
+            m_StorageLocker = item;
         }
 
         public WoodenToMetalBarrel(Serial serial)
@@ -169,7 +172,7 @@ namespace Server.Items
             Item barrel = new MetalBarrel();
 
             m_StorageLocker.Barrels.Add(barrel);
-            barrel.MoveToWorld(new Point3D(this.Location), this.Map);
+            barrel.MoveToWorld(new Point3D(Location), Map);
 
             return true;
         }
@@ -179,7 +182,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write((int)1); //version
 
-            writer.Write(this.m_StorageLocker);
+            writer.Write(m_StorageLocker);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -191,7 +194,7 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_StorageLocker = (StorageLocker)reader.ReadItem();
+                        m_StorageLocker = (StorageLocker)reader.ReadItem();
 
                         break;
                     }
@@ -207,8 +210,8 @@ namespace Server.Items
         public MetalBarrel()
             : base(0x0FAE)
         {
-            this.Movable = false;
-            this.Hue = 2301;
+            Movable = false;
+            Hue = 2301;
         }
 
         public MetalBarrel(Serial serial)
@@ -235,7 +238,7 @@ namespace Server.Items
         public WoodKeyDebris()
             : base(0x0C2F)
         {
-            this.Movable = false;
+            Movable = false;
             new InternalTimer(this).Start();
         }
 
@@ -255,7 +258,7 @@ namespace Server.Items
             protected override void OnTick()
             {
                 m_Item.Delete();
-                this.Stop();
+                Stop();
             }
         }
 

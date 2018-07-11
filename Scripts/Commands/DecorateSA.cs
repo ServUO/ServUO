@@ -16,6 +16,10 @@ namespace Server
 		private static void DecorateSADelete_OnCommand(CommandEventArgs e)
 		{
 			WeakEntityCollection.Delete("sa");
+
+            Server.Engines.ExploringTheDeep.GenerateExploringTheDeep.Delete(e);
+
+            SpawnerPersistence.RemoveSpawnsFromXmlFile("Spawns", "GravewaterLake");
 		}
 
         [Usage("DecorateSA")]
@@ -34,6 +38,9 @@ namespace Server
             CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "GenSutek");
 
             GenerateUnderworldRooms.Generate();
+
+            Server.Engines.ResortAndCasino.FireCasinoGenerator.Generate(e);
+            Server.Engines.ExploringTheDeep.GenerateExploringTheDeep.Generate(e);
 
             e.Mobile.SendMessage("Stygian Abyss world generation complete.");
         }
