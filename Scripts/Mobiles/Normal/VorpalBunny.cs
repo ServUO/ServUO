@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public VorpalBunny()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.06, 0.1)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.06, 0.1)
         {
             Name = "a vorpal bunny";
             Body = 205;

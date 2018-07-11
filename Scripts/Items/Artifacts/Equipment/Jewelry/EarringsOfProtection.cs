@@ -9,11 +9,11 @@ namespace Server.Items
         public EarringBoxSet()
             : base()
         {
-            this.DropItem(new EarringsOfProtection(AosElementAttribute.Physical));
-            this.DropItem(new EarringsOfProtection(AosElementAttribute.Fire));
-            this.DropItem(new EarringsOfProtection(AosElementAttribute.Cold));
-            this.DropItem(new EarringsOfProtection(AosElementAttribute.Poison));
-            this.DropItem(new EarringsOfProtection(AosElementAttribute.Energy));
+            DropItem(new EarringsOfProtection(AosElementAttribute.Physical));
+            DropItem(new EarringsOfProtection(AosElementAttribute.Fire));
+            DropItem(new EarringsOfProtection(AosElementAttribute.Cold));
+            DropItem(new EarringsOfProtection(AosElementAttribute.Poison));
+            DropItem(new EarringsOfProtection(AosElementAttribute.Energy));
         }
 
         public EarringBoxSet(Serial serial)
@@ -49,10 +49,12 @@ namespace Server.Items
         public EarringsOfProtection(AosElementAttribute element)
             : base(0x1087, Layer.Earrings)
         {
-            this.Resistances[((AosElementAttribute)element)] = 2;
+            Resistances[((AosElementAttribute)element)] = 2;
 
-            this.m_Attribute = element;
-            this.LootType = LootType.Blessed;
+            m_Attribute = element;
+            LootType = LootType.Blessed;
+
+            Hue = GetItemData(m_Attribute, false);
         }
 
         public EarringsOfProtection(Serial serial)
@@ -65,21 +67,21 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Attribute;
+                return m_Attribute;
             }
         }
         public override int LabelNumber
         {
             get
             {
-                return GetItemData(this.m_Attribute, true);
+                return GetItemData(m_Attribute, true);
             }
         }
         public override int Hue
         {
             get
             {
-                return GetItemData(this.m_Attribute, false);
+                return GetItemData(m_Attribute, false);
             }
         }
         public static AosElementAttribute RandomType()
@@ -129,7 +131,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.Write((int)0); // version
-            writer.Write((int)this.m_Attribute);
+            writer.Write((int)m_Attribute);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -137,7 +139,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            this.m_Attribute = (AosElementAttribute)reader.ReadInt();
+            m_Attribute = (AosElementAttribute)reader.ReadInt();
         }
     }
 }
