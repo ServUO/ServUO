@@ -2175,6 +2175,9 @@ namespace Server
 		{
 			return (Utility.InUpdateRange(this, e.Location) && CanSee(e) && InLOS(e));
 		}
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool GuardImmune { get; set; }
 
 		/// <summary>
 		///     Overridable. Gets or sets which Mobile that this Mobile is currently engaged in combat with.
@@ -5800,7 +5803,13 @@ namespace Server
 
 			switch (version)
 			{
-                case 34:
+				case 35:
+					{
+						GuardImmune = reader.ReadBool();
+
+						goto case 34;
+					}
+				case 34:
                     {
 						m_StrCap = reader.ReadInt();
 						m_DexCap = reader.ReadInt();
@@ -6339,7 +6348,9 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(34); // version
+			writer.Write(35); // version
+
+			writer.Write(GuardImmune);
 
 			writer.Write(m_StrCap);
 			writer.Write(m_DexCap);

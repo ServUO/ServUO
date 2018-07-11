@@ -1424,17 +1424,24 @@ namespace Server
 
         public static void WriteConsoleColor(ConsoleColor color, string str)
         {
-            PushColor(color);
-            Console.WriteLine(str);
-            PopColor();
-        }
+			lock (((ICollection)m_ConsoleColors).SyncRoot)
+			{
+				PushColor(color);
+				Console.WriteLine(str);
+				PopColor();
+			}
+		}
 
 		public static void PushColor(ConsoleColor color)
 		{
 			try
 			{
-				m_ConsoleColors.Push(Console.ForegroundColor);
-				Console.ForegroundColor = color;
+				lock (((ICollection)m_ConsoleColors).SyncRoot)
+				{
+					m_ConsoleColors.Push(Console.ForegroundColor);
+
+					Console.ForegroundColor = color;
+				}
 			}
 			catch
 			{ }
@@ -1444,7 +1451,10 @@ namespace Server
 		{
 			try
 			{
-				Console.ForegroundColor = m_ConsoleColors.Pop();
+				lock (((ICollection)m_ConsoleColors).SyncRoot)
+				{
+					Console.ForegroundColor = m_ConsoleColors.Pop();
+				}
 			}
 			catch
 			{ }
