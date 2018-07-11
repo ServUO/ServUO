@@ -38,7 +38,6 @@ namespace Server.Items
         public BaseCostume()
             : base(0x19BC)
         {
-            //Name = "Generic Costume";
             Resource = CraftResource.None;
             Attributes.SpellChanneling = 1;
             Layer = Layer.FirstValid;
@@ -51,22 +50,32 @@ namespace Server.Items
 
         }
 
-        private void EnMask(Mobile from)
+        private bool EnMask(Mobile from)
         {
-            from.SendMessage("You put on your spooky costume!");
+            if (from.Mounted || from.Flying) // You cannot use this while mounted or flying. 
+            {
+                from.SendLocalizedMessage(1010097);
+            }
+            else if (from.IsBodyMod || from.HueMod > -1)
+            {
+                from.SendLocalizedMessage(1158010); // You cannot use that item in this form.
+            }
+            else
+            {
+                from.BodyMod = m_Body;
+                from.HueMod = m_Hue;
+                Transformed = true;
 
-            m_SaveHueMod = from.HueMod;
-            from.BodyMod = m_Body;
-            from.HueMod = m_Hue;
-            Transformed = true;
+                return true;
+            }
+
+            return false;
         }
 
         private void DeMask(Mobile from)
         {
-            from.SendMessage("You decide to quit being so spooky.");
-
             from.BodyMod = 0;
-            from.HueMod = m_SaveHueMod;
+            from.HueMod = -1;
             Transformed = false;
         }
 
@@ -82,31 +91,38 @@ namespace Server.Items
             return true;
         }
 
-        public override void OnDoubleClick(Mobile from)
+        public override bool OnEquip(Mobile from)
         {
-
-            if (Parent != from)
+            if (!Transformed)
             {
-                from.SendMessage("The costume must be equiped to be used.");
+                if (EnMask(from))
+                    return true;
+
+                return false;
             }
 
-            else if (from.Mounted == true)
+            return base.OnEquip(from);
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile && Transformed)
             {
-                from.SendMessage("You cannot be mounted while wearing your costume!");
+                DeMask((Mobile)parent);
             }
 
-            else if (from.BodyMod != 0 && !Transformed)
-            {
-                from.SendMessage("You are already costumed!");
-            }
+            base.OnRemoved(parent);
+        }
 
-            else if (Transformed == false)
+        public static void OnDamaged(Mobile m)
+        {
+            BaseCostume costume = m.FindItemOnLayer(Layer.FirstValid) as BaseCostume;
+
+            if (costume != null)
             {
-                EnMask(from);
-            }
-            else
-            {
-                DeMask(from);
+                m.AddToBackpack(costume);
             }
         }
 
@@ -114,10 +130,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2);
+            writer.Write((int)3);
             writer.Write((int)m_Body);
             writer.Write((int)m_Hue);
-            writer.Write((int)m_SaveHueMod);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -128,10 +143,14 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    m_Body = reader.ReadInt();
+                    m_Hue = reader.ReadInt();
+                    break;
                 case 2:
                     m_Body = reader.ReadInt();
                     m_Hue = reader.ReadInt();
-                    m_SaveHueMod = reader.ReadInt();
+                    reader.ReadInt();
                     break;
                 case 1:
                     m_Body = reader.ReadInt();
@@ -142,6 +161,11 @@ namespace Server.Items
                     m_SaveHueMod = reader.ReadInt();
                     reader.ReadInt();
                     break;
+            }
+
+            if (RootParent is Mobile && ((Mobile)RootParent).Items.Contains(this))
+            {
+                EnMask((Mobile)RootParent);
             }
         }
     }

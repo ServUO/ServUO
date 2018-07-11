@@ -183,7 +183,27 @@ namespace Server.Items
 			return true;
 		}
 
-		private void AssignInstancedLoot()
+        public override void AddItem(Item item)
+        {
+            base.AddItem(item);
+
+            if (InstancedCorpse)
+            {
+                AssignInstancedLoot(item);
+            }
+        }
+
+        private void AssignInstancedLoot()
+        {
+            AssignInstancedLoot(this.Items);
+        }
+
+        public void AssignInstancedLoot(Item item)
+        {
+            AssignInstancedLoot(new Item[] { item });
+        }
+
+        private void AssignInstancedLoot(IEnumerable<Item> items)
 		{
 			if (m_Aggressors.Count == 0 || Items.Count == 0)
 			{
@@ -198,10 +218,8 @@ namespace Server.Items
 			var m_Stackables = new List<Item>();
 			var m_Unstackables = new List<Item>();
 
-			for (int i = 0; i < Items.Count; i++)
+            foreach (var item in items)
 			{
-				Item item = Items[i];
-
 				if (item.LootType != LootType.Cursed) //Don't have curesd items take up someone's item spot.. (?)
 				{
 					if (item.Stackable)
