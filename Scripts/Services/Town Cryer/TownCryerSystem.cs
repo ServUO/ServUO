@@ -216,7 +216,7 @@ namespace Server.Services.TownCryer
 
                 Guild g = pm.Guild as Guild;
 
-                if (pm.GuildRank != null && pm.GuildRank.Rank >= 3 && g.Leader == pm && (pm.AccessLevel > AccessLevel.Player || g.Members.Count >= MinGuildMemberCount))
+                if (g != null && pm.GuildRank != null && pm.GuildRank.Rank >= 3 && g.Leader == pm && (pm.AccessLevel > AccessLevel.Player || g.Members.Count >= MinGuildMemberCount))
                 {
                     list.Add(new UpdateGuildEntry(from, tc));
                 }

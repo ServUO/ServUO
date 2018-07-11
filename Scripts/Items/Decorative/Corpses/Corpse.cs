@@ -126,6 +126,7 @@ namespace Server.Items
 		}
 
 		private Dictionary<Item, InstancedItemInfo> m_InstancedItems;
+        public bool HasAssignedInstancedLoot { get; private set; }
 
 		private class InstancedItemInfo
 		{
@@ -187,7 +188,7 @@ namespace Server.Items
         {
             base.AddItem(item);
 
-            if (InstancedCorpse)
+            if (InstancedCorpse && HasAssignedInstancedLoot)
             {
                 AssignInstancedLoot(item);
             }
@@ -260,13 +261,19 @@ namespace Server.Items
 						Item splitItem = Mobile.LiftItemDupe(item, item.Amount - amountPerAttacker);
 							//LiftItemDupe automagically adds it as a child item to the corpse
 
-						m_InstancedItems.Add(splitItem, new InstancedItemInfo(splitItem, attackers[j]));
+                        if (!m_InstancedItems.ContainsKey(splitItem))
+                        {
+                            m_InstancedItems.Add(splitItem, new InstancedItemInfo(splitItem, attackers[j]));
+                        }
 						//What happens to the remaining portion?  TEMP FOR NOW UNTIL OSI VERIFICATION:  Treat as Single Item.
 					}
 
 					if (remainder == 0)
 					{
-						m_InstancedItems.Add(item, new InstancedItemInfo(item, attackers[attackers.Count - 1]));
+                        if (!m_InstancedItems.ContainsKey(item))
+                        {
+                            m_InstancedItems.Add(item, new InstancedItemInfo(item, attackers[attackers.Count - 1]));
+                        }
 						//Add in the original item (which has an equal amount as the others) to the instance for the last attacker, cause it wasn't added above.
 					}
 					else
@@ -286,7 +293,10 @@ namespace Server.Items
 				Mobile m = attackers[i % attackers.Count];
 				Item item = m_Unstackables[i];
 
-				m_InstancedItems.Add(item, new InstancedItemInfo(item, m));
+                if (!m_InstancedItems.ContainsKey(item))
+                {
+                    m_InstancedItems.Add(item, new InstancedItemInfo(item, m));
+                }
 			}
 		}
 
@@ -301,7 +311,10 @@ namespace Server.Items
 					m_InstancedItems = new Dictionary<Item, InstancedItemInfo>();
 				}
 
-				m_InstancedItems.Add(carved, new InstancedItemInfo(carved, carver));
+                if (!m_InstancedItems.ContainsKey(carved))
+                {
+                    m_InstancedItems.Add(carved, new InstancedItemInfo(carved, carver));
+                }
 			}
 		}
 
@@ -518,6 +531,7 @@ namespace Server.Items
 				if (!owner.Player)
 				{
 					c.AssignInstancedLoot();
+                    c.HasAssignedInstancedLoot = true;
 				}
 				else if (Core.AOS)
 				{

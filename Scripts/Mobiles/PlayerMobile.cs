@@ -1273,6 +1273,8 @@ namespace Server.Mobiles
 			{
 				((PlayerMobile)from).ClaimAutoStabledPets();
                 ((PlayerMobile)from).ValidateEquipment();
+
+                ReportMurdererGump.CheckMurderer(from);
 			}
 
             else if (Siege.SiegeShard && from.Map == Map.Trammel && from.AccessLevel == AccessLevel.Player)
