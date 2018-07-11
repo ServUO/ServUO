@@ -10,7 +10,10 @@ namespace Server.Engines.TombOfKings
         {
             foreach (Point3D loc in m_LeverLocations)
             {
-                m_Levers.Add(new ChamberLever(loc));
+                var item = new ChamberLever(loc);
+                WeakEntityCollection.Add("sa", item);
+
+                m_Levers.Add(item);
             }
         }
 

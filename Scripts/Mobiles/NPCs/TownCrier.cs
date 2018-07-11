@@ -687,6 +687,11 @@ namespace Server.Mobiles
 
                     PublicOverheadMessage(MessageType.Regular, 0x3B2, 502978); // Some of the latest news!
                 }
+
+                if (e.Mobile is PlayerMobile && TownCryerSystem.Enabled)
+                {
+                    BaseGump.SendGump(new TownCryerGump((PlayerMobile)e.Mobile, this));
+                }
             }
         }
 

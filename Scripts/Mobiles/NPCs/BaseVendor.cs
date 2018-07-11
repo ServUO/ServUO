@@ -76,6 +76,7 @@ namespace Server.Mobiles
 		public override bool IsInvulnerable { get { return true; } }
 
 		public virtual DateTime NextTrickOrTreat { get; set; }
+        public virtual double GetMoveDelay { get { return (double)Utility.RandomMinMax(30, 120); } }
 
 		public override bool ShowFameTitle { get { return false; } }
 
