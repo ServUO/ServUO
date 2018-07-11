@@ -167,6 +167,14 @@ namespace Server.Items
             }
         }
 
+        public virtual void InvalidateAddonPropreties()
+        {
+            InvalidateProperties();
+
+            foreach (var component in Components)
+                component.InvalidateProperties();
+        }
+
         public BaseAddon(Serial serial)
             : base(serial)
         {

@@ -28,7 +28,7 @@ namespace Server.Engines.Quests
 
         public static BaseQuest RandomQuest(PlayerMobile from, Type[] quests, object quester)
         {
-            return RandomQuest(from, quests, quester, quests.Length == 1);
+            return RandomQuest(from, quests, quester, quests != null && quests.Length == 1);
         }
 
         public static BaseQuest RandomQuest(PlayerMobile from, Type[] quests, object quester, bool message)

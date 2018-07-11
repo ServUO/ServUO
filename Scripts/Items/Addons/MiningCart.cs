@@ -69,6 +69,7 @@ namespace Server.Items
             set
             {
                 m_Gems = value;
+                InvalidateAddonPropreties();
             }
         }
 
@@ -84,10 +85,12 @@ namespace Server.Items
             set
             {
                 m_Ore = value;
+                InvalidateAddonPropreties();
             }
         }
 
-        private Timer m_Timer;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextResourceCount { get; set; }
 
         [Constructable]
         public MiningCart(MiningCartType type)
@@ -139,7 +142,7 @@ namespace Server.Items
                     break;
             }
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromDays(1), TimeSpan.FromDays(1), new TimerCallback(GiveResources));
+            NextResourceCount = DateTime.UtcNow + TimeSpan.FromDays(1);
         }
 
         public MiningCart(Serial serial)
@@ -159,6 +162,26 @@ namespace Server.Items
                 case MiningCartType.GemEast:
                     m_Gems = Math.Min(50, m_Gems + 5);
                     break;
+            }
+        }
+
+        private void TryGiveResourceCount()
+        {
+            if (NextResourceCount < DateTime.UtcNow)
+            {
+                switch (m_CartType)
+                {
+                    case MiningCartType.OreSouth:
+                    case MiningCartType.OreEast:
+                        m_Ore = Math.Min(100, m_Ore + 10);
+                        break;
+                    case MiningCartType.GemSouth:
+                    case MiningCartType.GemEast:
+                        m_Gems = Math.Min(50, m_Gems + 5);
+                        break;
+                }
+
+                NextResourceCount = DateTime.UtcNow + TimeSpan.FromDays(1);
             }
         }
 
@@ -377,6 +400,8 @@ namespace Server.Items
 
             writer.WriteEncodedInt(1); // version
 
+            TryGiveResourceCount();
+
             #region version 1
             writer.Write((int)m_CartType);
             #endregion
@@ -384,11 +409,7 @@ namespace Server.Items
             writer.Write((bool)m_IsRewardItem);
             writer.Write((int)m_Gems);
             writer.Write((int)m_Ore);
-
-            if (m_Timer != null)
-                writer.Write((DateTime)m_Timer.Next);
-            else
-                writer.Write((DateTime)DateTime.UtcNow + TimeSpan.FromDays(1));
+            writer.Write(NextResourceCount);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -407,12 +428,7 @@ namespace Server.Items
                     m_Gems = reader.ReadInt();
                     m_Ore = reader.ReadInt();
 
-                    DateTime next = reader.ReadDateTime();
-
-                    if (next < DateTime.UtcNow)
-                        next = DateTime.UtcNow;
-
-                    m_Timer = Timer.DelayCall(next - DateTime.UtcNow, TimeSpan.FromDays(1), new TimerCallback(GiveResources));
+                    NextResourceCount = reader.ReadDateTime();
                     break;
             }
         }
@@ -471,6 +487,7 @@ namespace Server.Items
             set
             {
                 m_Gems = value;
+                InvalidateProperties();
             }
         }
 
@@ -486,6 +503,7 @@ namespace Server.Items
             set
             {
                 m_Ore = value;
+                InvalidateProperties();
             }
         }
 

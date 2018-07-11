@@ -5,6 +5,9 @@ namespace Server.Items
 {
     public class GreenGoblinStatuette : MonsterStatuette
     {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile User { get; set; }
+
         [Constructable]
         public GreenGoblinStatuette()
             : base(MonsterStatuetteType.GreenGoblin)
@@ -17,9 +20,7 @@ namespace Server.Items
             {
                 if (TurnedOn)
                 {
-                    TurnedOn = false;
-
-                    from.BodyMod = 0;
+                    TurnOff();
                 }
                 else
                 {
@@ -37,15 +38,68 @@ namespace Server.Items
                     }
                     else
                     {
-                        TurnedOn = true;
-
-                        from.BodyMod = 723;
-                        from.HueMod = 0;
-
-                        from.FixedParticles(0x3728, 1, 13, 5042, EffectLayer.Waist);
+                        TurnOn(from);
                     }
                 }
             }
+        }
+
+        public void TurnOn(Mobile from)
+        {
+            User = from;
+            TurnedOn = true;
+
+            from.BodyMod = 723;
+            from.HueMod = 0;
+
+            ItemID = 0xA098;
+
+            from.FixedParticles(0x3728, 1, 13, 5042, EffectLayer.Waist);
+        }
+
+        public void TurnOff()
+        {
+            TurnedOn = false;
+
+            if (User != null)
+            {
+                User.BodyMod = 0;
+                User.HueMod = -1;
+            }
+
+            ItemID = 0xA097;
+
+            User = null;
+        }
+
+        public override bool OnDragLift(Mobile from)
+        {
+            if (TurnedOn)
+            {
+                TurnOff();
+            }
+
+            return base.OnDragLift(from);
+        }
+
+        public override void OnDelete()
+        {
+            if (TurnedOn)
+            {
+                TurnOff();
+            }
+
+            base.OnDelete();
+        }
+
+        public override void OnItemRemoved(Item item)
+        {
+            if (TurnedOn)
+            {
+                TurnOff();
+            }
+
+            base.OnItemRemoved(item);
         }
 
         public GreenGoblinStatuette(Serial serial)
@@ -57,7 +111,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
+            writer.Write(User);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -65,6 +120,18 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            switch(version)
+            {
+                case 1:
+                    User = reader.ReadMobile();
+                    break;
+            }
+
+            if(User != null)
+            {
+                TurnOn(User);
+            }
         }
     }
 }
