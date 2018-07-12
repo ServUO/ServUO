@@ -1234,6 +1234,12 @@ namespace Server
         }
         #endregion
 
+        /// <summary>
+        /// Deletes all spawners from a specific file. This can be used to delete spawners from a specific system where the spawner wasn't 
+        /// Generated from the Spawn Folder.
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="filename"></param>
         public static void RemoveSpawnsFromXmlFile(string directory, string filename)
         {
             if (System.IO.Directory.Exists(directory) == true)
@@ -1316,6 +1322,11 @@ namespace Server
             }
         }
 
+
+        /// <summary>
+        /// Used in place of XmlSpawner wipe all spawners. This iterates through the Spawn Folder and deletes those spawners only.
+        /// This will keep spawners for seprate systems in place. This is called in DeleteWorld gump.
+        /// </summary>
         public static void WipeSpawnersFromFile()
         {
             string filename = "Spawns";

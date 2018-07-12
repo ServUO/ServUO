@@ -77,13 +77,6 @@ namespace Server.Items
                 return GetItemData(m_Attribute, true);
             }
         }
-        public override int Hue
-        {
-            get
-            {
-                return GetItemData(m_Attribute, false);
-            }
-        }
         public static AosElementAttribute RandomType()
         {
             return GetTypes(Utility.Random(5));

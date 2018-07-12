@@ -34,7 +34,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(GetWorldLocation(), 2))
+            BaseHouse house = BaseHouse.FindHouseAt(this);
+
+            if (m is PlayerMobile && m.InRange(GetWorldLocation(), 2) && (house == null || house.HasSecureAccess(m, Level)))
             {
                 BaseGump.SendGump(new SpecialScrollBookGump((PlayerMobile)m, this));
             }
@@ -81,7 +83,7 @@ namespace Server.Items
                     DropItem(dropped);
                     m.SendLocalizedMessage(DropMessage);
 
-                    dropped.Movable = false;
+                    house.LockDown(m, dropped, false);
 
                     m.CloseGump(typeof(SpecialScrollBookGump));
 
@@ -110,9 +112,15 @@ namespace Server.Items
                     {
                         house.Release(m, scroll);
                     }
-                    else
+
+                    if (!scroll.Movable)
                     {
                         scroll.Movable = true;
+                    }
+
+                    if (scroll.IsLockedDown)
+                    {
+                        scroll.IsLockedDown = false;
                     }
 
                     m.SendLocalizedMessage(RemoveMessage);
