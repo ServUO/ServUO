@@ -1,5 +1,3 @@
-using System;
-using Server;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -18,16 +16,17 @@ namespace Server.Mobiles
             HairItemID = 0;
             FacialHairItemID = 0;
 
-            this.Items.ForEach(i =>
-                {
-                    if (i is BaseClothing)
-                        i.Delete();
-                });
+			var i = Items.Count;
+
+			while (--i >= 0)
+			{
+				if (i < Items.Count && Items[i] is BaseClothing)
+					Items[i].Delete();
+			}
 
 			SetWearable( new TribalMask(), 2500 );
             SetWearable( new BoneArms() );
             SetWearable( new BoneLegs() );
-
 		}
 
 		public WanderingShaman( Serial serial ) : base( serial )
@@ -38,21 +37,26 @@ namespace Server.Mobiles
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.Write( 1 ); // version
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
-			int version = reader.ReadInt();
+			var v = reader.ReadInt();
 
-            Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
-            {
-                Item robe = FindItemOnLayer(Layer.OuterTorso);
-                if (robe != null && robe is Robe)
-                    robe.Delete();
-            });
+			if (v > 0)
+			{
+				return;
+			}
+
+			var robe = FindItemOnLayer(Layer.OuterTorso) as Robe;
+
+			if (robe != null)
+			{
+				Timer.DelayCall(robe.Delete);
+			}
 		}
 	}
 }
