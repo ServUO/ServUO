@@ -402,6 +402,8 @@ namespace Server
             Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
             #endregion
 
+            BaseCostume.OnDamaged(m);
+
             return totalDamage;
         }
 

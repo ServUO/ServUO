@@ -51,7 +51,7 @@ namespace Server.Items
             set
             {
                 m_IsRewardItem = value;
-                InvalidateProperties();
+                InvalidateAddonPropreties();
             }
         }
 
@@ -74,7 +74,7 @@ namespace Server.Items
                         Components[0].ItemID = 0x4A94;
                 }
 
-                InvalidateProperties();
+                InvalidateAddonPropreties();
             }
         }
 

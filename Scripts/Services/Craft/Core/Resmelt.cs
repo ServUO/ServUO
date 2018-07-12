@@ -39,13 +39,13 @@ namespace Server.Engines.Craft
             public InternalTarget(CraftSystem craftSystem, ITool tool)
                 : base(2, false, TargetFlags.None)
             {
-                this.m_CraftSystem = craftSystem;
-                this.m_Tool = tool;
+                m_CraftSystem = craftSystem;
+                m_Tool = tool;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                int num = this.m_CraftSystem.CanCraft(from, this.m_Tool, null);
+                int num = m_CraftSystem.CanCraft(from, m_Tool, null);
 
                 if (num > 0)
                 {
@@ -61,7 +61,7 @@ namespace Server.Engines.Craft
                             num = 1044265; // You must be near a forge.
                     }
 					
-                    from.SendGump(new CraftGump(from, this.m_CraftSystem, this.m_Tool, num));
+                    from.SendGump(new CraftGump(from, m_CraftSystem, m_Tool, num));
                 }
                 else
                 {
@@ -71,17 +71,17 @@ namespace Server.Engines.Craft
 
                     if (targeted is BaseArmor)
                     {
-                        result = this.Resmelt(from, (BaseArmor)targeted, ((BaseArmor)targeted).Resource);
+                        result = Resmelt(from, (BaseArmor)targeted, ((BaseArmor)targeted).Resource);
                         isStoreBought = !((BaseArmor)targeted).PlayerConstructed;
                     }
                     else if (targeted is BaseWeapon)
                     {
-                        result = this.Resmelt(from, (BaseWeapon)targeted, ((BaseWeapon)targeted).Resource);
+                        result = Resmelt(from, (BaseWeapon)targeted, ((BaseWeapon)targeted).Resource);
                         isStoreBought = !((BaseWeapon)targeted).PlayerConstructed;
                     }
                     else if (targeted is DragonBardingDeed)
                     {
-                        result = this.Resmelt(from, (DragonBardingDeed)targeted, ((DragonBardingDeed)targeted).Resource);
+                        result = Resmelt(from, (DragonBardingDeed)targeted, ((DragonBardingDeed)targeted).Resource);
                         isStoreBought = false;
                     }
 
@@ -99,7 +99,7 @@ namespace Server.Engines.Craft
                             break; // You melt the item down into ingots.
                     }
 					
-                    from.SendGump(new CraftGump(from, this.m_CraftSystem, this.m_Tool, message));
+                    from.SendGump(new CraftGump(from, m_CraftSystem, m_Tool, message));
                 }
             }
 
@@ -118,7 +118,7 @@ namespace Server.Engines.Craft
                     if (info == null || info.ResourceTypes.Length == 0)
                         return SmeltResult.Invalid;
 
-                    CraftItem craftItem = this.m_CraftSystem.CraftItems.SearchFor(item.GetType());
+                    CraftItem craftItem = m_CraftSystem.CraftItems.SearchFor(item.GetType());
 
                     if (craftItem == null || craftItem.Resources.Count == 0)
                         return SmeltResult.Invalid;
@@ -158,14 +158,16 @@ namespace Server.Engines.Craft
                             break;
                     }
 
-                    if (difficulty > from.Skills[SkillName.Mining].Value)
+                    double skill = Math.Max(from.Skills[SkillName.Mining].Value, from.Skills[SkillName.Blacksmith].Value);
+
+                    if (difficulty > skill)
                         return SmeltResult.NoSkill;
 
                     Type resourceType = info.ResourceTypes[0];
                     Item ingot = (Item)Activator.CreateInstance(resourceType);
 
                     if (item is DragonBardingDeed || (item is BaseArmor && ((BaseArmor)item).PlayerConstructed) || (item is BaseWeapon && ((BaseWeapon)item).PlayerConstructed) || (item is BaseClothing && ((BaseClothing)item).PlayerConstructed))
-                        ingot.Amount = craftResource.Amount / 2;
+                        ingot.Amount = (int)((double)craftResource.Amount * .66);
                     else
                         ingot.Amount = 1;
 

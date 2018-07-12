@@ -136,7 +136,7 @@ namespace Server.Mobiles
 
         public override void OnDamagedBySpell(Mobile caster)
         {
-            if (caster == this)
+            if (caster == this || Controlled || Summoned)
                 return;
 
             SpawnOrcLord(caster);

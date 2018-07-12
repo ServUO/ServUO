@@ -115,6 +115,12 @@ namespace Server.Engines.Quests
                 return CurProgress == -1;
             }
         }
+
+        public virtual object ObjectiveDescription
+        {
+            get { return null; }
+        }
+
         public virtual void Complete()
         {
             CurProgress = MaxProgress;

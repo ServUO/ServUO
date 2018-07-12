@@ -925,6 +925,7 @@ namespace Server.Engines.UOStore
             : base(0x09AB)
         {
             Movable = false;
+            Visible = false;
         }
 
         public void AddDisplayItem(Item item)

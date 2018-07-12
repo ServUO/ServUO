@@ -236,8 +236,15 @@ using Server.Engines.VoidPool;
             {
                 if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && m.CanBeHarmful(Owner, false))
                 {
-                    m.SendLocalizedMessage(1153114, m.Mana.ToString()); // Cora drains ~1_VAL~ points of your mana!
-                    m.Mana = 0;
+                    if (Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects((PlayerMobile)m, true))
+                    {
+                        m.SayTo(m, 1158288, 1154); // *You resist Cora's attack!*
+                    }
+                    else
+                    {
+                        m.SendLocalizedMessage(1153114, m.Mana.ToString()); // Cora drains ~1_VAL~ points of your mana!
+                        m.Mana = 0;
+                    }
                 }
 
                 return true;

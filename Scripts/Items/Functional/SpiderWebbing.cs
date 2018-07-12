@@ -53,12 +53,20 @@ namespace Server.Items
         public override void OnDelete()
         {
             if (m_Timer != null)
-                m_Timer.Stop();
-
-            m_WebVictims.ForEach(x =>
             {
-                RemoveEffects(x);
-            });
+                m_Timer.Stop();
+                m_Timer = null;
+            }
+
+            var list = new List<Mobile>(m_WebVictims);
+
+            foreach (var m in list)
+            {
+                RemoveEffects(m);
+            }
+
+            ColUtility.Free(list);
+            ColUtility.Free(m_WebVictims);
 
             base.OnDelete();
         }
@@ -67,34 +75,19 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0); // version
-
-            writer.Write(m_WebVictims.Count);
-
-            foreach (Mobile m in m_WebVictims)
-                writer.Write(m);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            int c = reader.ReadInt();
-            for (int i = 0; i < c; i++)
-            {
-                Mobile m = reader.ReadMobile();
-
-                if (m != null && m.Frozen)
-                    m.Frozen = false;
-            }
 
             Delete();
         }
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m is Navrey || m is Mephitis)
+            if (m is BaseCreature && ((BaseCreature)m).IsMonster)
                 return true;
 
             if (m.AccessLevel == AccessLevel.Player && m.Alive)

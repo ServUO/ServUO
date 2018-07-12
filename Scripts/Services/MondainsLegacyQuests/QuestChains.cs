@@ -39,7 +39,9 @@ namespace Server.Engines.Quests
 		MyrmidexAlliance = 23,
 		EodonianAlliance = 24,
 		FlintTheQuartermaster = 25,
-		AnimalTraining = 26
+		AnimalTraining = 26,
+        PaladinsOfTrinsic = 27,
+        RightingWrong = 28
 	}
 
 	public class BaseChain

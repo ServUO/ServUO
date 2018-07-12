@@ -64,6 +64,8 @@ namespace Server.Items
         private Timer m_Timer;
         private Mobile m_Owner;
         private bool m_Temporary;
+        private bool m_FirstOpenedByOwner;
+        private TreasureMap m_TreasureMap;
         private List<Mobile> m_Guardians;
         private List<Item> m_Lifted = new List<Item>();
 
@@ -152,6 +154,30 @@ namespace Server.Items
             set
             {
                 m_Temporary = value;
+            }
+        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool FirstOpenedByOwner
+        {
+            get
+            {
+                return m_FirstOpenedByOwner;
+            }
+            set
+            {
+                m_FirstOpenedByOwner = value;
+            }
+        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TreasureMap TreasureMap
+        {
+            get
+            {
+                return m_TreasureMap;
+            }
+            set
+            {
+                m_TreasureMap = value;
             }
         }
         public List<Mobile> Guardians
@@ -578,7 +604,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
+
+            writer.Write(m_FirstOpenedByOwner);
+            writer.Write(m_TreasureMap);
 
             writer.Write(m_Guardians, true);
             writer.Write((bool)m_Temporary);
@@ -598,6 +627,10 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    m_FirstOpenedByOwner = reader.ReadBool();
+                    m_TreasureMap = reader.ReadItem() as TreasureMap;
+                    goto case 2;
                 case 2:
                     {
                         m_Guardians = reader.ReadStrongMobileList();
@@ -674,6 +707,17 @@ namespace Server.Items
                 }
 
                 grubber.PackItem(item);
+            }
+        }
+
+        public override void DisplayTo(Mobile to)
+        {
+            base.DisplayTo(to);
+
+            if (!m_FirstOpenedByOwner && to == m_Owner)
+            {
+                m_TreasureMap.OnChestOpened((PlayerMobile)to, this);
+                m_FirstOpenedByOwner = true;
             }
         }
 

@@ -8,16 +8,20 @@ namespace Server.Items
 {
     public class TreeStump : BaseAddon, IRewardItem
     {
+        public override bool ForceShowProperties { get { return true; } }
+
         private bool m_IsRewardItem;
         private int m_Logs;
-        private Timer m_Timer;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextResourceCount { get; set; }
+
         [Constructable]
         public TreeStump(int itemID)
             : base()
         {
-            this.AddComponent(new AddonComponent(itemID), 0, 0, 0);
-
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromDays(1), TimeSpan.FromDays(1), new TimerCallback(GiveLogs));
+            AddComponent(new InternalAddonComponent(itemID), 0, 0, 0);
+            NextResourceCount = DateTime.UtcNow + TimeSpan.FromDays(1);
         }
 
         public TreeStump(Serial serial)
@@ -30,8 +34,8 @@ namespace Server.Items
             get
             {
                 TreeStumpDeed deed = new TreeStumpDeed();
-                deed.IsRewardItem = this.m_IsRewardItem;
-                deed.Logs = this.m_Logs;
+                deed.IsRewardItem = m_IsRewardItem;
+                deed.Logs = m_Logs;
 
                 return deed;
             }
@@ -41,12 +45,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateAddonPropreties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -54,12 +58,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Logs;
+                return m_Logs;
             }
             set
             {
-                this.m_Logs = value;
-                this.InvalidateProperties();
+                m_Logs = value;
+                InvalidateAddonPropreties();
             }
         }
         public override void OnComponentUsed(AddonComponent c, Mobile from)
@@ -85,13 +89,13 @@ namespace Server.Items
             *
             */
 
-            if (!from.InRange(this.GetWorldLocation(), 2) || !from.InLOS(this) || !((from.Z - this.Z) > -3 && (from.Z - this.Z) < 3))
+            if (!from.InRange(GetWorldLocation(), 2) || !from.InLOS(this) || !((from.Z - Z) > -3 && (from.Z - Z) < 3))
             {
                 from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             }
             else if (house != null && house.HasSecureAccess(from, SecureLevel.Friends))
             {
-                if (this.m_Logs > 0)
+                if (m_Logs > 0)
                 {
                     Item logs = null;
 
@@ -120,7 +124,7 @@ namespace Server.Items
                             break;
                     }
 
-                    int amount = Math.Min(10, this.m_Logs);
+                    int amount = Math.Min(10, m_Logs);
                     logs.Amount = amount;
 
                     if (!from.PlaceInBackpack(logs))
@@ -130,15 +134,52 @@ namespace Server.Items
                     }
                     else
                     {
-                        this.m_Logs -= amount;
-                        this.PublicOverheadMessage(MessageType.Regular, 0, 1094719, this.m_Logs.ToString()); // Logs: ~1_COUNT~
+                        m_Logs -= amount;
+                        PublicOverheadMessage(MessageType.Regular, 0, 1094719, m_Logs.ToString()); // Logs: ~1_COUNT~
                     }
                 }
                 else
                     from.SendLocalizedMessage(1094720); // There are no more logs available.
             }
             else
-                from.SendLocalizedMessage(1061637); // You are not allowed to access this.
+                from.SendLocalizedMessage(1061637); // You are not allowed to access 
+        }
+
+        private class InternalAddonComponent : AddonComponent
+        {
+            public InternalAddonComponent(int id)
+                : base(id)
+            {
+            }
+
+            public override void GetProperties(ObjectPropertyList list)
+            {
+                base.GetProperties(list);
+
+                if (Addon is TreeStump)
+                {
+                    list.Add(1094719, ((TreeStump)Addon).Logs.ToString()); // Logs: ~1_COUNT~
+                }
+            }
+
+            public InternalAddonComponent(Serial serial)
+                : base(serial)
+            {
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                base.Serialize(writer);
+
+                writer.WriteEncodedInt(0); // version
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                base.Deserialize(reader);
+
+                int version = reader.ReadEncodedInt();
+            }
         }
 
         public override void Serialize(GenericWriter writer)
@@ -147,13 +188,11 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_IsRewardItem);
-            writer.Write((int)this.m_Logs);
+            TryGiveResourceCount();
 
-            if (this.m_Timer != null)
-                writer.Write((DateTime)this.m_Timer.Next);
-            else
-                writer.Write((DateTime)DateTime.UtcNow + TimeSpan.FromDays(1));
+            writer.Write((bool)m_IsRewardItem);
+            writer.Write((int)m_Logs);
+            writer.Write(NextResourceCount);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -162,20 +201,18 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_IsRewardItem = reader.ReadBool();
-            this.m_Logs = reader.ReadInt();
-
-            DateTime next = reader.ReadDateTime();
-
-            if (next < DateTime.UtcNow)
-                next = DateTime.UtcNow;
-
-            this.m_Timer = Timer.DelayCall(next - DateTime.UtcNow, TimeSpan.FromDays(1), new TimerCallback(GiveLogs));
+            m_IsRewardItem = reader.ReadBool();
+            m_Logs = reader.ReadInt();
+            NextResourceCount = reader.ReadDateTime();
         }
 
-        private void GiveLogs()
+        private void TryGiveResourceCount()
         {
-            this.m_Logs = Math.Min(100, this.m_Logs + 10);
+            if (NextResourceCount < DateTime.UtcNow)
+            {
+                Logs = Math.Min(100, m_Logs + 10);
+                NextResourceCount = DateTime.UtcNow + TimeSpan.FromDays(1);
+            }
         }
     }
 
@@ -184,11 +221,12 @@ namespace Server.Items
         private int m_ItemID;
         private bool m_IsRewardItem;
         private int m_Logs;
+
         [Constructable]
         public TreeStumpDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public TreeStumpDeed(Serial serial)
@@ -207,9 +245,9 @@ namespace Server.Items
         {
             get
             {
-                TreeStump addon = new TreeStump(this.m_ItemID);
-                addon.IsRewardItem = this.m_IsRewardItem;
-                addon.Logs = this.m_Logs;
+                TreeStump addon = new TreeStump(m_ItemID);
+                addon.IsRewardItem = m_IsRewardItem;
+                addon.Logs = m_Logs;
 
                 return addon;
             }
@@ -219,12 +257,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -232,28 +270,28 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Logs;
+                return m_Logs;
             }
             set
             {
-                this.m_Logs = value;
-                this.InvalidateProperties();
+                m_Logs = value;
+                InvalidateProperties();
             }
         }
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1076223); // 7th Year Veteran Reward
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
+            if (m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
 
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(RewardOptionGump));
                 from.SendGump(new RewardOptionGump(this));
@@ -268,8 +306,8 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_IsRewardItem);
-            writer.Write((int)this.m_Logs);
+            writer.Write((bool)m_IsRewardItem);
+            writer.Write((int)m_Logs);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -278,8 +316,8 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_IsRewardItem = reader.ReadBool();
-            this.m_Logs = reader.ReadInt();
+            m_IsRewardItem = reader.ReadBool();
+            m_Logs = reader.ReadInt();
         }
 
         public void GetOptions(RewardOptionList list)
@@ -295,20 +333,20 @@ namespace Server.Items
             switch ( option )
             {
                 case 1:
-                    this.m_ItemID = 0xE56;
+                    m_ItemID = 0xE56;
                     break;
                 case 2:
-                    this.m_ItemID = 0xE58;
+                    m_ItemID = 0xE58;
                     break;
                 case 3:
-                    this.m_ItemID = 0xE57;
+                    m_ItemID = 0xE57;
                     break;
                 case 4:
-                    this.m_ItemID = 0xE59;
+                    m_ItemID = 0xE59;
                     break;
             }
 
-            if (!this.Deleted)
+            if (!Deleted)
                 base.OnDoubleClick(from);
         }
     }

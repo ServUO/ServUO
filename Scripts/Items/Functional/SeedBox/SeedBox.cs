@@ -60,6 +60,11 @@ namespace Server.Engines.Plants
             Level = SecureLevel.Owner;
         }
 
+        public override int GetTotal(TotalType type)
+        {
+            return 0;
+        }
+
         public override void OnDoubleClick(Mobile m)
         {
             if (IsChildOf(m.Backpack) || (CheckAccessible(m) && m.InRange(this.GetWorldLocation(), 3)))

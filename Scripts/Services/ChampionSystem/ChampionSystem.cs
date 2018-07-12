@@ -41,6 +41,9 @@ namespace Server.Engines.CannedEvil
 		public static int HarrowerGoldShowerMaxAmount { get { return m_HarrowerGoldMaxAmount; } }
 		public static int PowerScrollAmount { get { return m_PowerScrollAmount; } }
 		public static int StatScrollAmount { get { return m_StatScrollAmount; } }
+
+        public static List<ChampionSpawn> AllSpawns { get { return m_AllSpawns; } }
+
 		public static int RankForLevel(int l)
 		{
 			if (l < 0)
@@ -128,81 +131,117 @@ namespace Server.Engines.CannedEvil
 
 					if(version == 0)
 					{
-						m_ForceGenerate = true;
+						//m_ForceGenerate = true;
 					}
 				});
 		}
 
 		public static void Initialize()
-		{
+        {
+            CommandSystem.Register("GenChampSpawns", AccessLevel.GameMaster, GenSpawns_OnCommand);
+            CommandSystem.Register("DelChampSpawns", AccessLevel.GameMaster, DelSpawns_OnCommand);
+
 			CommandSystem.Register("ChampionInfo", AccessLevel.GameMaster, new CommandEventHandler(ChampionInfo_OnCommand));
 
 			if (!m_Enabled || m_ForceGenerate)
 			{
-				foreach (ChampionSpawn s in m_AllSpawns.Where(sp => sp != null && !sp.Deleted))
-				{
-					s.Delete();
-				}
 				m_Initialized = false;
+
+                if (m_Enabled)
+                {
+                    LoadSpawns();
+                }
+                else
+                {
+                    RemoveSpawns();
+                }
 			}
 
-			if (!m_Enabled)
-				return;
-
-			m_Timer = new InternalTimer();
-
-			if (m_Initialized)
-				return;
-
-			m_AllSpawns.Clear();
-
-			Utility.PushColor(ConsoleColor.White);
-			Console.WriteLine("Generating Champion Spawns");
-			Utility.PopColor();
-
-			ChampionSpawn spawn;
-
-			XmlDocument doc = new XmlDocument();
-			doc.Load(m_ConfigPath);
-			foreach (XmlNode node in doc.GetElementsByTagName("championSystem")[0].ChildNodes)
-			{
-				if (node.Name.Equals("spawn"))
-				{
-					spawn = new ChampionSpawn();
-					spawn.SpawnName = GetAttr(node, "name", "Unamed Spawner");
-					string value = GetAttr(node, "type", null);
-					if(value == null)
-						spawn.RandomizeType = true;
-					else
-						spawn.Type = (ChampionSpawnType)Enum.Parse(typeof(ChampionSpawnType), value);
-					value = GetAttr(node, "spawnMod", "1.0");
-					spawn.SpawnMod = XmlConvert.ToDouble(value);
-					value = GetAttr(node, "killsMod", "1.0");
-					spawn.KillsMod = XmlConvert.ToDouble(value);
-					foreach(XmlNode child in node.ChildNodes)
-					{
-						if (child.Name.Equals("location"))
-						{
-							int x = XmlConvert.ToInt32(GetAttr(child, "x", "0"));
-							int y = XmlConvert.ToInt32(GetAttr(child, "y", "0"));
-							int z = XmlConvert.ToInt32(GetAttr(child, "z", "0"));
-							int r = XmlConvert.ToInt32(GetAttr(child, "radius", "0"));
-							string mapName = GetAttr(child, "map", "Felucca");
-							Map map = Map.Parse(mapName);
-
-							spawn.SpawnRadius = r;
-							spawn.MoveToWorld(new Point3D(x, y, z), map);
-						}
-					}
-					spawn.GroupName = GetAttr(node, "group", null);
-					m_AllSpawns.Add(spawn);
-				}
-			}
-
-			Rotate();
-
-			m_Initialized = true;
+            if (m_Enabled)
+            {
+                m_Timer = new InternalTimer();
+            }
 		}
+
+        public static void GenSpawns_OnCommand(CommandEventArgs e)
+        {
+            LoadSpawns();
+            e.Mobile.SendMessage("Champ Spawns Generated!");
+        }
+
+        public static void DelSpawns_OnCommand(CommandEventArgs e)
+        {
+            RemoveSpawns();
+            e.Mobile.SendMessage("Champ Spawns Removed!");
+        }
+
+        public static void LoadSpawns()
+        {
+            if (m_Initialized)
+                return;
+
+            RemoveSpawns();
+
+            Utility.PushColor(ConsoleColor.White);
+            Console.WriteLine("Generating Champion Spawns");
+            Utility.PopColor();
+
+            ChampionSpawn spawn;
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(m_ConfigPath);
+            foreach (XmlNode node in doc.GetElementsByTagName("championSystem")[0].ChildNodes)
+            {
+                if (node.Name.Equals("spawn"))
+                {
+                    spawn = new ChampionSpawn();
+                    spawn.SpawnName = GetAttr(node, "name", "Unamed Spawner");
+                    string value = GetAttr(node, "type", null);
+                    if (value == null)
+                        spawn.RandomizeType = true;
+                    else
+                        spawn.Type = (ChampionSpawnType)Enum.Parse(typeof(ChampionSpawnType), value);
+                    value = GetAttr(node, "spawnMod", "1.0");
+                    spawn.SpawnMod = XmlConvert.ToDouble(value);
+                    value = GetAttr(node, "killsMod", "1.0");
+                    spawn.KillsMod = XmlConvert.ToDouble(value);
+                    foreach (XmlNode child in node.ChildNodes)
+                    {
+                        if (child.Name.Equals("location"))
+                        {
+                            int x = XmlConvert.ToInt32(GetAttr(child, "x", "0"));
+                            int y = XmlConvert.ToInt32(GetAttr(child, "y", "0"));
+                            int z = XmlConvert.ToInt32(GetAttr(child, "z", "0"));
+                            int r = XmlConvert.ToInt32(GetAttr(child, "radius", "0"));
+                            string mapName = GetAttr(child, "map", "Felucca");
+                            Map map = Map.Parse(mapName);
+
+                            spawn.SpawnRadius = r;
+                            spawn.MoveToWorld(new Point3D(x, y, z), map);
+                        }
+                    }
+                    spawn.GroupName = GetAttr(node, "group", null);
+                    m_AllSpawns.Add(spawn);
+                }
+            }
+
+            Rotate();
+
+            m_Initialized = true;
+        }
+
+        public static void RemoveSpawns()
+        {
+            if (m_AllSpawns != null && m_AllSpawns.Count > 0)
+            {
+                foreach (ChampionSpawn s in m_AllSpawns.Where(sp => sp != null && !sp.Deleted))
+                {
+                    s.Delete();
+                }
+
+                m_AllSpawns.Clear();
+            }
+        }
 
 		private static string GetAttr(XmlNode node, string name, string def)
 		{

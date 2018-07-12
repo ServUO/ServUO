@@ -1116,6 +1116,13 @@ namespace Server.Gumps
                     case 1155727: return 1155728; // This title is obtained from the Huntmaster's Challenge at the Ranger's Guild in Skara Brae.
                     case 1156318: return 1156319; // This is a reward title given for completing Shadowguard.
                     case 1157594: return 1157595; // This title is obtained by completing the "Discovering Animal Training" quest.
+                    case 1158140: return 1158141; // This title is obtained by completing the Huntmaster's Challenge Quest.
+                    case 1158090: return 1158087; // This title is obtained by completing the Paladins of Trinsic Quest.
+                    case 1158161: return 1158162; // This title is obtained by completing the Righting Wrong Quest.	
+                    case 1158389: return 1158248; // This title is obtained by completing the Treasure Chase Quest.
+                    case 1158278: return 1158279; // This title is obtained by completing the "A Forced Sacrifice" quest.
+                    case 1158303: return 1158324; // This title is obtained by completing the "Whispering with Wisps" quest.
+                    case 1154505: return 1154506; // This is a reward title given for completing the Exploring the Deep Quest.
                 }
             }
 

@@ -2,6 +2,7 @@ using System;
 using Server.Mobiles;
 using Server.Spells;
 using System.Linq;
+using Server.Engines.Quests;
 
 namespace Server.Items
 {
@@ -27,16 +28,16 @@ namespace Server.Items
         public Whirlpool(Point3D pointDest, Map mapDest, bool creatures)
             : base(0x3789)
         {
-            this.Movable = false;
-            this.Hue = 2592;
+            Movable = false;
+            Hue = 2592;
 
-            this.m_Active = true;
-            this.m_PointDest = pointDest;
-            this.m_MapDest = mapDest;
-            this.m_Creatures = creatures;
+            m_Active = true;
+            m_PointDest = pointDest;
+            m_MapDest = mapDest;
+            m_Creatures = creatures;
 
-            this.m_CombatCheck = false;
-            this.m_CriminalCheck = false;
+            m_CombatCheck = false;
+            m_CriminalCheck = false;
         }
 
         public Whirlpool(Serial serial)
@@ -248,7 +249,17 @@ namespace Server.Items
             BaseCreature.TeleportPets(m, p, map);
 
             if (m is PlayerMobile)
-                ((PlayerMobile)m).AddRewardTitle(1154505); // Salvager of the Deep
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(1.0), () =>
+                    {
+                        var spell = QuestHelper.GetQuest<ExploringTheDeepQuest>((PlayerMobile)m);
+
+                        if (spell != null)
+                        {
+                            spell.CompleteQuest();
+                        }
+                    });
+            }
 
             bool sendEffect = (!m.Hidden || m.IsPlayer());
 

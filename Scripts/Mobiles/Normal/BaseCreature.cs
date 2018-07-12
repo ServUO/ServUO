@@ -2444,69 +2444,79 @@ namespace Server.Mobiles
 
                 if (feathers != 0)
                 {
-                    corpse.AddCarvedItem(new Feather(feathers), from);
-                    from.SendLocalizedMessage(500479); // You pluck the bird. The feathers are now on the corpse.
+                    Item feather = new Feather(feathers);
+
+                    if (!Core.AOS || !special || !from.AddToBackpack(feather))
+                    {
+                        corpse.AddCarvedItem(feather, from);
+                        from.SendLocalizedMessage(500479); // You pluck the bird. The feathers are now on the corpse.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1114097); // You pluck the bird and place the feathers in your backpack.
+                    }
                 }
 
                 if (wool != 0)
                 {
-                    corpse.AddCarvedItem(new TaintedWool(wool), from);
-                    from.SendLocalizedMessage(500483); // You shear it, and the wool is now on the corpse.
+                    Item w = new TaintedWool(wool);
+
+                    if (!Core.AOS || !special || !from.AddToBackpack(w))
+                    {
+                        corpse.AddCarvedItem(w, from);
+                        from.SendLocalizedMessage(500483); // You shear it, and the wool is now on the corpse.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1114099); // You shear the creature and put the resources in your backpack.
+                    }
                 }
 
                 if (meat != 0)
                 {
-                    if (MeatType == MeatType.Ribs)
-                        corpse.AddCarvedItem(new RawRibs(meat), from);
-                    else if (MeatType == MeatType.Bird)
-                        corpse.AddCarvedItem(new RawBird(meat), from);
-                    else if (MeatType == MeatType.LambLeg)
-                        corpse.AddCarvedItem(new RawLambLeg(meat), from);
-                    else if (MeatType == MeatType.Rotworm)
-                        corpse.AddCarvedItem(new RawRotwormMeat(meat), from);
+                    Item m = null;
 
-                    from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
+                    switch (MeatType)
+                    {
+                        default:
+                        case MeatType.Ribs: m = new RawRibs(meat); break;
+                        case MeatType.Bird: m = new RawBird(meat); break;
+                        case MeatType.LambLeg: m = new RawLambLeg(meat); break;
+                        case MeatType.Rotworm: m = new RawRotwormMeat(meat); break;
+                    }
+
+                    if (!Core.AOS || !special || !from.AddToBackpack(m))
+                    {
+                        corpse.AddCarvedItem(m, from);
+                        from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1114101); // You carve some meat and put it in your backpack.
+                    }
                 }
 
                 if (hides != 0)
                 {
-                    if (Core.AOS && special)
+                    Item leather = null;
+
+                    switch (HideType)
                     {
-                        Item leather = null;
+                        default:
+                        case HideType.Regular: leather = new Leather(hides); break;
+                        case HideType.Spined: leather = new SpinedLeather(hides); break;
+                        case HideType.Horned: leather = new HornedLeather(hides); break;
+                        case HideType.Barbed: leather = new BarbedLeather(hides); break;
+                    }
 
-                        switch (HideType)
-                        {
-                            case HideType.Regular: leather = new Leather(hides); break;
-                            case HideType.Spined: leather = new SpinedLeather(hides); break;
-                            case HideType.Horned: leather = new HornedLeather(hides); break;
-                            case HideType.Barbed: leather = new BarbedLeather(hides); break;
-                        }
-
-                        if (leather != null)
-                        {
-                            if (!from.PlaceInBackpack(leather))
-                            {
-                                corpse.AddCarvedItem(leather, from);
-                                from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
-                            }
-                            else
-                            {
-                                from.SendLocalizedMessage(1073555); // You skin it and place the cut-up hides in your backpack.
-                            }
-                        }
+                    if (!Core.AOS || !special || !from.AddToBackpack(leather))
+                    {
+                        corpse.AddCarvedItem(leather, from);
+                        from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
                     }
                     else
                     {
-                        if (HideType == HideType.Regular)
-                            corpse.AddCarvedItem(new Hides(hides), from);
-                        else if (HideType == HideType.Spined)
-                            corpse.AddCarvedItem(new SpinedHides(hides), from);
-                        else if (HideType == HideType.Horned)
-                            corpse.AddCarvedItem(new HornedHides(hides), from);
-                        else if (HideType == HideType.Barbed)
-                            corpse.AddCarvedItem(new BarbedHides(hides), from);
-
-                        from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
+                        from.SendLocalizedMessage(1073555); // You skin it and place the cut-up hides in your backpack.
                     }
                 }
 
@@ -2517,6 +2527,7 @@ namespace Server.Mobiles
 
                     switch (sc)
                     {
+                        default:
                         case ScaleType.Red: list.Add(new RedScales(scales)); break;
                         case ScaleType.Yellow: list.Add(new YellowScales(scales)); break;
                         case ScaleType.Black: list.Add(new BlackScales(scales)); break;
@@ -2534,21 +2545,58 @@ namespace Server.Mobiles
                                 break;
                             }
                     }
-                    
-                    foreach (Item s in list)
+
+                    if (Core.AOS && special)
                     {
-                        corpse.AddCarvedItem(s, from);
+                        bool allPack = true;
+                        bool anyPack = false;
+
+                        foreach (Item s in list)
+                        {
+                            //corpse.AddCarvedItem(s, from);
+                            if (!from.PlaceInBackpack(s))
+                            {
+                                corpse.AddCarvedItem(s, from);
+                                allPack = false;
+                            }
+                            else if (!anyPack)
+                            {
+                                anyPack = true;
+                            }
+                        }
+
+                        if (anyPack)
+                            from.SendLocalizedMessage(1114098); // You cut away some scales and put them in your backpack.
+
+                        if(!allPack)
+                            from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
+                    }
+                    else
+                    {
+                        foreach (Item s in list)
+                        {
+                            corpse.AddCarvedItem(s, from);
+                        }
+
+                        from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
                     }
 
-                    list.Clear();
-
-                    from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
+                    ColUtility.Free(list);
                 }
 
                 if (dragonblood != 0)
                 {
-                    corpse.AddCarvedItem(new DragonBlood(dragonblood), from);
-                    from.SendLocalizedMessage(1094946); // Some blood is left on the corpse.
+                    Item dblood = new DragonBlood(dragonblood);
+
+                    if (!Core.AOS || !special || !from.AddToBackpack(dblood))
+                    {
+                        corpse.AddCarvedItem(dblood, from);
+                        from.SendLocalizedMessage(1094946); // Some blood is left on the corpse.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1114100); // You take some blood off the corpse and put it in your backpack.
+                    }
                 }
 
                 corpse.Carved = true;
@@ -4089,17 +4137,19 @@ namespace Server.Mobiles
             if (profile == null || !profile.HasAbility(MagicalAbility.Poisoning) || current >= 4)
                 return HitPoison;
 
-            int level = 0;
+            int level = 1;
             double total = Skills[SkillName.Poisoning].Value;
 
             // natural poisoner retains their poison level. Added spell school is capped at level 2.
             if (total >= 100)
-                level = 3;
+                level = 4;
             else if (total > 85)
-                level = 2;
+                level = 3;
             else if (total > 65)
+                level = 2;
+            else if (total > 35)
                 level = 1;
-
+                
             return Poison.GetPoison(Math.Max(current, level));
         }
 

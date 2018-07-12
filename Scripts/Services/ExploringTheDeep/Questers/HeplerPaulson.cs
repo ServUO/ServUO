@@ -11,28 +11,32 @@ namespace Server.Mobiles
     public class HeplerPaulson : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return this.m_SBInfos; } }
+        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBHepler());
+            m_SBInfos.Add(new SBHepler());
         }        
 
         [Constructable]
         public HeplerPaulson()
             : base("The Salvage Master")
         {
-            this.Name = "Hepler Paulson";
-            this.Race = Race.Human;
-            this.CantWalk = true;
-            this.Hue = Utility.RandomSkinHue();
-            this.Blessed = true;
+            Name = "Hepler Paulson";
+            Race = Race.Human;
+            CantWalk = true;
+            Hue = Utility.RandomSkinHue();
+            Blessed = true;
 
+            Utility.AssignRandomHair(this);
+        }
+
+        public override void InitOutfit()
+        {
             AddItem(new Backpack());
             AddItem(new Shoes(0x737));
             AddItem(new LongPants(0x1BB));
             AddItem(new FancyShirt(0x535));
-            Utility.AssignRandomHair(this);
         }
 
         public HeplerPaulson(Serial serial) : base(serial)
@@ -127,7 +131,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 501550); // I am not interested in this.
+                    PublicOverheadMessage(MessageType.Regular, 0x3B2, 501550); // I am not interested in 
                 }
             }
             return false;
@@ -148,31 +152,31 @@ namespace Server.Mobiles
 
         public HeplerPaulsonGump(Mobile owner) : base(50, 50)
         {
-            this.Closable = false;
-            this.Disposable = true;
-            this.Dragable = true;
-            this.Resizable = false;
+            Closable = false;
+            Disposable = true;
+            Dragable = true;
+            Resizable = false;
 
             AddPage(0);
-            this.AddImageTiled(50, 20, 400, 460, 0x1404);
-            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
-            this.AddImageTiled(34, 140, 17, 339, 0x242F);
-            this.AddImage(48, 135, 0x28AB);
-            this.AddImage(-16, 285, 0x28A2);
-            this.AddImage(0, 10, 0x28B5);
-            this.AddImage(25, 0, 0x28B4);
-            this.AddImageTiled(83, 15, 350, 15, 0x280A);
-            this.AddImage(34, 479, 0x2842);
-            this.AddImage(442, 479, 0x2840);
-            this.AddImageTiled(51, 479, 392, 17, 0x2775);
-            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
-            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
-            this.AddImage(370, 50, 0x589);
+            AddImageTiled(50, 20, 400, 460, 0x1404);
+            AddImageTiled(50, 29, 30, 450, 0x28DC);
+            AddImageTiled(34, 140, 17, 339, 0x242F);
+            AddImage(48, 135, 0x28AB);
+            AddImage(-16, 285, 0x28A2);
+            AddImage(0, 10, 0x28B5);
+            AddImage(25, 0, 0x28B4);
+            AddImageTiled(83, 15, 350, 15, 0x280A);
+            AddImage(34, 479, 0x2842);
+            AddImage(442, 479, 0x2840);
+            AddImageTiled(51, 479, 392, 17, 0x2775);
+            AddImageTiled(415, 29, 44, 450, 0xA2D);
+            AddImageTiled(415, 29, 30, 450, 0x28DC);
+            AddImage(370, 50, 0x589);
 
-            this.AddImage(379, 60, 0x15A9);
-            this.AddImage(425, 0, 0x28C9);
-            this.AddImage(90, 33, 0x232D);
-            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+            AddImage(379, 60, 0x15A9);
+            AddImage(425, 0, 0x28C9);
+            AddImage(90, 33, 0x232D);
+            AddImageTiled(130, 65, 175, 1, 0x238D);
 
             AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
@@ -188,7 +192,7 @@ namespace Server.Mobiles
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(2);
-            AddHtmlLocalized(107, 140, 300, 150, 1154281, 0x7FFF, false, true); // Almost uncanny how many wrecks now dot the seascape, none can say for sure why there are so many as of late...sure a drunk skipper here or there will bring a ship down quick...but this...well why question good fortune I always say!
+            AddHtmlLocalized(107, 140, 300, 150, 1154281, 0x7FFF, false, true); // Almost uncanny how many wrecks now dot the seascape, none can say for sure why there are so many as of late...sure a drunk skipper here or there will bring a ship down quick...but ..well why question good fortune I always say!
 
             AddHtmlLocalized(145, 300, 250, 24, 1154282, 0x7FFF, false, false); // How do I use salvage gear?
             AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 4);
@@ -209,7 +213,7 @@ namespace Server.Mobiles
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(5);
-            AddHtmlLocalized(107, 140, 300, 150, 1154281, 0x7FFF, false, true); // Almost uncanny how many wrecks now dot the seascape, none can say for sure why there are so many as of late...sure a drunk skipper here or there will bring a ship down quick...but this...well why question good fortune I always say!
+            AddHtmlLocalized(107, 140, 300, 150, 1154281, 0x7FFF, false, true); // Almost uncanny how many wrecks now dot the seascape, none can say for sure why there are so many as of late...sure a drunk skipper here or there will bring a ship down quick...but ..well why question good fortune I always say!
 
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
@@ -243,31 +247,31 @@ namespace Server.Mobiles
 
         public HeplerPaulsonCompleteGump(Mobile owner) : base(50, 50)
         {
-            this.Closable = false;
-            this.Disposable = true;
-            this.Dragable = true;
-            this.Resizable = false;
+            Closable = false;
+            Disposable = true;
+            Dragable = true;
+            Resizable = false;
 
             AddPage(0);
-            this.AddImageTiled(50, 20, 400, 460, 0x1404);
-            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
-            this.AddImageTiled(34, 140, 17, 339, 0x242F);
-            this.AddImage(48, 135, 0x28AB);
-            this.AddImage(-16, 285, 0x28A2);
-            this.AddImage(0, 10, 0x28B5);
-            this.AddImage(25, 0, 0x28B4);
-            this.AddImageTiled(83, 15, 350, 15, 0x280A);
-            this.AddImage(34, 479, 0x2842);
-            this.AddImage(442, 479, 0x2840);
-            this.AddImageTiled(51, 479, 392, 17, 0x2775);
-            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
-            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
-            this.AddImage(370, 50, 0x589);
+            AddImageTiled(50, 20, 400, 460, 0x1404);
+            AddImageTiled(50, 29, 30, 450, 0x28DC);
+            AddImageTiled(34, 140, 17, 339, 0x242F);
+            AddImage(48, 135, 0x28AB);
+            AddImage(-16, 285, 0x28A2);
+            AddImage(0, 10, 0x28B5);
+            AddImage(25, 0, 0x28B4);
+            AddImageTiled(83, 15, 350, 15, 0x280A);
+            AddImage(34, 479, 0x2842);
+            AddImage(442, 479, 0x2840);
+            AddImageTiled(51, 479, 392, 17, 0x2775);
+            AddImageTiled(415, 29, 44, 450, 0xA2D);
+            AddImageTiled(415, 29, 30, 450, 0x28DC);
+            AddImage(370, 50, 0x589);
 
-            this.AddImage(379, 60, 0x15A9);
-            this.AddImage(425, 0, 0x28C9);
-            this.AddImage(90, 33, 0x232D);
-            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+            AddImage(379, 60, 0x15A9);
+            AddImage(425, 0, 0x28C9);
+            AddImage(90, 33, 0x232D);
+            AddImageTiled(130, 65, 175, 1, 0x238D);
 
             AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
@@ -314,31 +318,31 @@ namespace Server.Mobiles
 
         public HeplerPaulsonCollectCompleteGump(Mobile owner) : base(50, 50)
         {
-            this.Closable = false;
-            this.Disposable = true;
-            this.Dragable = true;
-            this.Resizable = false;
+            Closable = false;
+            Disposable = true;
+            Dragable = true;
+            Resizable = false;
 
             AddPage(0);
-            this.AddImageTiled(50, 20, 400, 460, 0x1404);
-            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
-            this.AddImageTiled(34, 140, 17, 339, 0x242F);
-            this.AddImage(48, 135, 0x28AB);
-            this.AddImage(-16, 285, 0x28A2);
-            this.AddImage(0, 10, 0x28B5);
-            this.AddImage(25, 0, 0x28B4);
-            this.AddImageTiled(83, 15, 350, 15, 0x280A);
-            this.AddImage(34, 479, 0x2842);
-            this.AddImage(442, 479, 0x2840);
-            this.AddImageTiled(51, 479, 392, 17, 0x2775);
-            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
-            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
-            this.AddImage(370, 50, 0x589);
+            AddImageTiled(50, 20, 400, 460, 0x1404);
+            AddImageTiled(50, 29, 30, 450, 0x28DC);
+            AddImageTiled(34, 140, 17, 339, 0x242F);
+            AddImage(48, 135, 0x28AB);
+            AddImage(-16, 285, 0x28A2);
+            AddImage(0, 10, 0x28B5);
+            AddImage(25, 0, 0x28B4);
+            AddImageTiled(83, 15, 350, 15, 0x280A);
+            AddImage(34, 479, 0x2842);
+            AddImage(442, 479, 0x2840);
+            AddImageTiled(51, 479, 392, 17, 0x2775);
+            AddImageTiled(415, 29, 44, 450, 0xA2D);
+            AddImageTiled(415, 29, 30, 450, 0x28DC);
+            AddImage(370, 50, 0x589);
 
-            this.AddImage(379, 60, 0x15A9);
-            this.AddImage(425, 0, 0x28C9);
-            this.AddImage(90, 33, 0x232D);
-            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+            AddImage(379, 60, 0x15A9);
+            AddImage(425, 0, 0x28C9);
+            AddImage(90, 33, 0x232D);
+            AddImageTiled(130, 65, 175, 1, 0x238D);
 
             AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
