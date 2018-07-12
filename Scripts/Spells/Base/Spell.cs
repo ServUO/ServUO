@@ -510,30 +510,34 @@ namespace Server.Spells
 			Spellbook atkBook = Spellbook.FindEquippedSpellbook(m_Caster);
 
 			double scalar = 1.0;
-			if (atkBook != null)
-			{
-				SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(atkBook.Slayer);
-				SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkBook.Slayer2);
+            if (atkBook != null)
+            {
+                SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(atkBook.Slayer);
+                SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkBook.Slayer2);
 
-				if (atkSlayer != null && atkSlayer.Slays(defender) || atkSlayer2 != null && atkSlayer2.Slays(defender))
-				{
-					defender.FixedEffect(0x37B9, 10, 5); //TODO: Confirm this displays on OSIs
-					scalar = 2.0;
-				}
+                if (atkSlayer != null && atkSlayer.Slays(defender) || atkSlayer2 != null && atkSlayer2.Slays(defender))
+                {
+                    defender.FixedEffect(0x37B9, 10, 5);
 
-				TransformContext context = TransformationSpellHelper.GetContext(defender);
+                    bool isSuper = false;
 
-				if ((atkBook.Slayer == SlayerName.Silver || atkBook.Slayer2 == SlayerName.Silver) && context != null &&
-					context.Type != typeof(HorrificBeastSpell))
-				{
-					scalar += .25; // Every necromancer transformation other than horrific beast take an additional 25% damage
-				}
+                    if (atkSlayer != null && atkSlayer == atkSlayer.Group.Super)
+                        isSuper = true;
+                    else if (atkSlayer2 != null && atkSlayer2 == atkSlayer2.Group.Super)
+                        isSuper = true;
 
-				if (scalar != 1.0)
-				{
-					return scalar;
-				}
-			}
+                    scalar = isSuper ? 2.0 : 3.0;
+                }
+
+
+                TransformContext context = TransformationSpellHelper.GetContext(defender);
+
+                if ((atkBook.Slayer == SlayerName.Silver || atkBook.Slayer2 == SlayerName.Silver) && context != null && context.Type != typeof(HorrificBeastSpell))
+                    scalar += .25; // Every necromancer transformation other than horrific beast take an additional 25% damage
+
+                if (scalar != 1.0)
+                    return scalar;
+            }
 
 			ISlayer defISlayer = Spellbook.FindEquippedSpellbook(defender);
 

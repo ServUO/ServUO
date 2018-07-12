@@ -729,7 +729,7 @@ namespace Server.Engines.Craft
                     AddRecipe(index, (int)SmithRecipes.TwinklingScimitar);
                     SetNeededExpansion(index, Expansion.ML);
 
-                    index = AddCraft(typeof(BoneMachete), 1011081, 1020526, 75.0, 125.0, typeof(IronIngot), 1044036, 20, 1044037);
+                    index = AddCraft(typeof(BoneMachete), 1011081, 1020526, 45.0, 95.0, typeof(IronIngot), 1044036, 20, 1044037);
                     AddRes(index, typeof(Bone), 1049064, 6, 1049063);
                     AddRecipe(index, (int)SmithRecipes.BoneMachete);
                     SetNeededExpansion(index, Expansion.ML);
