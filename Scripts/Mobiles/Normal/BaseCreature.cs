@@ -4137,17 +4137,19 @@ namespace Server.Mobiles
             if (profile == null || !profile.HasAbility(MagicalAbility.Poisoning) || current >= 4)
                 return HitPoison;
 
-            int level = 0;
+            int level = 1;
             double total = Skills[SkillName.Poisoning].Value;
 
             // natural poisoner retains their poison level. Added spell school is capped at level 2.
             if (total >= 100)
-                level = 3;
+                level = 4;
             else if (total > 85)
-                level = 2;
+                level = 3;
             else if (total > 65)
+                level = 2;
+            else if (total > 35)
                 level = 1;
-
+                
             return Poison.GetPoison(Math.Max(current, level));
         }
 
