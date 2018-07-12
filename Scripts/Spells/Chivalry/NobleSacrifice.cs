@@ -61,24 +61,24 @@ namespace Server.Spells.Chivalry
         }
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
                 List<Mobile> targets = new List<Mobile>();
-                IPooledEnumerable eable = Caster.GetMobilesInRange(3);
+                IPooledEnumerable eable = Caster.GetMobilesInRange(6);
 
-                foreach (Mobile m in eable) // TODO: Validate range
+                foreach (Mobile m in eable)
                 {
-                    if (m is BaseCreature && ((BaseCreature)m).IsAnimatedDead)
+                    if (m is BaseCreature || (m.Player && (m.Criminal || m.Murderer)))
                         continue;
 
-                    if (this.Caster != m && m.InLOS(this.Caster) && this.Caster.CanBeBeneficial(m, false, true) && !(m is Golem))
+                    if (Caster != m && m.InLOS(Caster) && Caster.CanBeBeneficial(m, false, true) && !(m is IRepairableMobile))
                         targets.Add(m);
                 }
                 eable.Free();
 
-                this.Caster.PlaySound(0x244);
-                this.Caster.FixedParticles(0x3709, 1, 30, 9965, 5, 7, EffectLayer.Waist);
-                this.Caster.FixedParticles(0x376A, 1, 30, 9502, 5, 3, EffectLayer.Waist);
+                Caster.PlaySound(0x244);
+                Caster.FixedParticles(0x3709, 1, 30, 9965, 5, 7, EffectLayer.Waist);
+                Caster.FixedParticles(0x376A, 1, 30, 9502, 5, 3, EffectLayer.Waist);
 
                 /* Attempts to Resurrect, Cure and Heal all targets in a radius around the caster.
                 * If any target is successfully assisted, the Paladin's current
@@ -89,7 +89,7 @@ namespace Server.Spells.Chivalry
                 bool sacrifice = false;
 
                 // TODO: Is there really a resurrection chance?
-                double resChance = 0.1 + (0.9 * ((double)this.Caster.Karma / 10000));
+                double resChance = 0.1 + (0.9 * ((double)Caster.Karma / 10000));
 
                 for (int i = 0; i < targets.Count; ++i)
                 {
@@ -99,13 +99,13 @@ namespace Server.Spells.Chivalry
                     {
                         if (m.Region != null && m.Region.IsPartOf("Khaldun"))
                         {
-                            this.Caster.SendLocalizedMessage(1010395); // The veil of death in this area is too strong and resists thy efforts to restore life.
+                            Caster.SendLocalizedMessage(1010395); // The veil of death in this area is too strong and resists thy efforts to restore life.
                         }
                         else if (resChance > Utility.RandomDouble())
                         {
                             m.FixedParticles(0x375A, 1, 15, 5005, 5, 3, EffectLayer.Head);
                             m.CloseGump(typeof(ResurrectGump));
-                            m.SendGump(new ResurrectGump(m, this.Caster));
+                            m.SendGump(new ResurrectGump(m, Caster));
                             sacrifice = true;
                         }
                     }
@@ -113,12 +113,12 @@ namespace Server.Spells.Chivalry
                     {
                         bool sendEffect = false;
 
-                        if (m.Poisoned && m.CurePoison(this.Caster))
+                        if (m.Poisoned && m.CurePoison(Caster))
                         {
-                            this.Caster.DoBeneficial(m);
+                            Caster.DoBeneficial(m);
 
-                            if (this.Caster != m)
-                                this.Caster.SendLocalizedMessage(1010058); // You have cured the target of all poisons!
+                            if (Caster != m)
+                                Caster.SendLocalizedMessage(1010058); // You have cured the target of all poisons!
 
                             m.SendLocalizedMessage(1010059); // You have been cured of all poisons.
                             sendEffect = true;
@@ -127,7 +127,7 @@ namespace Server.Spells.Chivalry
 
                         if (m.Hits < m.HitsMax)
                         {
-                            int toHeal = this.ComputePowerValue(10) + Utility.RandomMinMax(0, 2);
+                            int toHeal = ComputePowerValue(10) + Utility.RandomMinMax(0, 2);
 
                             // TODO: Should caps be applied?
                             if (toHeal < 8)
@@ -135,8 +135,8 @@ namespace Server.Spells.Chivalry
                             else if (toHeal > 24)
                                 toHeal = 24;
 
-                            this.Caster.DoBeneficial(m);
-                            m.Heal(toHeal, this.Caster);
+                            Caster.DoBeneficial(m);
+                            m.Heal(toHeal, Caster);
                             sendEffect = true;
                         }
 
@@ -176,14 +176,14 @@ namespace Server.Spells.Chivalry
 
                 if (sacrifice)
                 {
-                    this.Caster.PlaySound(this.Caster.Body.IsFemale ? 0x150 : 0x423);
-                    this.Caster.Hits = 1;
-                    this.Caster.Stam = 1;
-                    this.Caster.Mana = 1;
+                    Caster.PlaySound(Caster.Body.IsFemale ? 0x150 : 0x423);
+                    Caster.Hits = 1;
+                    Caster.Stam = 1;
+                    Caster.Mana = 1;
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
     }
 }

@@ -70,7 +70,7 @@ namespace Server.Commands
 			new CommandEntry("Decorations",         "Decorate",         "DecorateDelete",		Category.Decoration,      Expansion.None,   113),
 			new CommandEntry("ML Decorations",      "DecorateML",		"DecorateMLDelete",		Category.Decoration,      Expansion.ML,     114),
 			new CommandEntry("SA Decorations",      "DecorateSA",		"DecorateSADelete",		Category.Decoration,      Expansion.SA,     115),
-			new CommandEntry("Spawners",		    "XmlLoad Spawns",	"XmlSpawnerWipeAll",	Category.Spawn,           Expansion.None,   116),
+			new CommandEntry("Spawners",		    "XmlLoad Spawns",	"WipeAllXmlSpawners",	Category.Spawn,           Expansion.None,   116),
             new CommandEntry("New Despise",         "SetupDespise",     "DeleteDespise",        Category.RevampedDungeon, Expansion.SA,     117),
             new CommandEntry("New Covetous",        "SetupNewCovetous", "DeleteCovetous",       Category.RevampedDungeon, Expansion.SA,     118),
             new CommandEntry("New Shame",           "GenerateNewShame", "DeleteShame",          Category.RevampedDungeon, Expansion.SA,     119),
