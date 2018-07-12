@@ -163,8 +163,6 @@ namespace Server.Engines.Blackthorn
 
             if (m is BaseCreature && ((BaseCreature)m).Controlled)
                 TryAutoStable((BaseCreature)m);
-
-            base.OnLocationChanged(m, oldLocation);
         }
 
         public void TryAutoStable(BaseCreature pet)

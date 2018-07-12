@@ -473,7 +473,7 @@ namespace Server.Engines.Craft
             
             if (Core.SA)
             {
-                index = AddCraft(typeof(GorgonLense), 1044050, 1112625, 90.0, 120.0, typeof(RedScales), 1112626, 2, 1053097);
+                index = AddCraft(typeof(GorgonLense), 1044050, 1112625, 90.0, 120.0, typeof(MedusaDarkScales), 1112626, 2, 1053097);
                 AddRes(index, typeof(CrystalDust), 1112328, 3, 1044253);
                 ForceNonExceptional(index);
                 SetItemHue(index, 1266);

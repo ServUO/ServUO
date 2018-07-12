@@ -82,7 +82,7 @@ namespace Server.Mobiles
         {
             IWearableDurability dur = item as IWearableDurability;
 
-            if (dur == null || item.LootType == LootType.Blessed || item.Insured)
+            if (dur == null || dur.MaxHitPoints == 0 || item.LootType == LootType.Blessed || item.Insured)
             {
                 return;
             }
@@ -94,14 +94,15 @@ namespace Server.Mobiles
             {
                 dur.HitPoints = Math.Max(0, dur.HitPoints - damage);
             }
-            else if (dur.MaxHitPoints > 0)
+            else
             {
                 defender.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
                 dur.MaxHitPoints = Math.Max(0, dur.MaxHitPoints - damage);
-            }
-            else
-            {
-                item.Delete();
+
+                if (!item.Deleted && dur.MaxHitPoints == 0)
+                {
+                    item.Delete();
+                }
             }
         }
 
