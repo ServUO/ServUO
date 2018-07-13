@@ -1755,6 +1755,8 @@ namespace Server.Multis
             if (m_LockDowns == null)
                 return;
 
+            checkContains = true; // We need to check or server will crash!
+
             #region Mondain's Legacy
             if (i is BaseAddonContainer)
                 i.Movable = false;
@@ -1811,7 +1813,7 @@ namespace Server.Multis
             if (!locked)
                 i.SetLastMoved();
 
-            if ((i is Container) && (!locked || !(i is BaseBoard || i is Aquarium || i is FishBowl)))
+            if ((i is Container) && (!locked || !(i is BaseBoard || i is Aquarium || i is FishBowl || i is BaseSpecialScrollBook)))
             {
                 foreach (Item c in i.Items)
                     SetLockdown(m, c, locked, checkContains);
@@ -2158,7 +2160,7 @@ namespace Server.Multis
             if(IsOwner(m))
                 return true;
 
-            if(item is BaseContainer || item.Parent is BaseContainer)
+            if(item is Container || item.Parent is Container)
             {
                 Item check = item.Parent is BaseContainer ? (Item)item.Parent : item;
 
