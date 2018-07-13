@@ -117,6 +117,22 @@ namespace Server.Items
                 return 35;
             }
         }
+
+        public override int InitMinHits
+        {
+            get
+            {
+                return 31;
+            }
+        }
+        public override int InitMaxHits
+        {
+            get
+            {
+                return 60;
+            }
+        }
+
         public override WeaponAnimation DefAnimation
         {
             get

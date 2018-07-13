@@ -83,8 +83,7 @@ namespace Server.Items
                     DropItem(dropped);
                     m.SendLocalizedMessage(DropMessage);
 
-                    house.LockDown(m, dropped, false);
-
+                    dropped.Movable = false;
                     m.CloseGump(typeof(SpecialScrollBookGump));
 
                     return true;
@@ -110,7 +109,7 @@ namespace Server.Items
 
                     if (house != null && house.LockDowns.ContainsKey(scroll))
                     {
-                        house.Release(m, scroll);
+                        house.LockDowns.Remove(scroll);
                     }
 
                     if (!scroll.Movable)
@@ -137,7 +136,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -146,12 +145,22 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if(version < 1)
+            if(version < 2)
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
                     {
+                        BaseHouse house = BaseHouse.FindHouseAt(this);
+
                         foreach (var item in Items)
+                        {
+                            if (house != null && house.LockDowns.ContainsKey(item))
+                            {
+                                house.LockDowns.Remove(item);
+                            }
+
+                            item.IsLockedDown = false;
                             item.Movable = false;
+                        }
                     });
             }
         }

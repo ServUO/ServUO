@@ -21,6 +21,7 @@ namespace Server.Services.TownCryer
         public static readonly int MaxEMEntries = 15;
         public static readonly int MinGuildMemberCount = 20;
 
+        public static AccessLevel EMAccess = AccessLevel.Counselor;
         public static readonly string EMEventsPage = "https://uo.com/live-events/";
 
         public static List<TextDefinition> GreetingsEntries { get; private set; }
@@ -115,8 +116,11 @@ namespace Server.Services.TownCryer
                             if (m is TownCrier)
                             {
                                 BaseGump.SendGump(new TownCryerGreetingsGump(player, (TownCrier)m));
+                                break;
                             }
                         }
+
+                        eable.Free();
                     }, (PlayerMobile)e.Mobile);
             }
         }
@@ -205,7 +209,7 @@ namespace Server.Services.TownCryer
             {
                 var pm = from as PlayerMobile;
 
-                if (pm.AccessLevel > AccessLevel.Counselor)
+                if (pm.AccessLevel >= EMAccess)
                 {
                     list.Add(new UpdateEMEntry(tc));
                 }

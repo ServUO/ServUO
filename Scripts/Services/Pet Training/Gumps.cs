@@ -660,10 +660,15 @@ namespace Server.Mobiles
             AddHtmlLocalized(0, 12, 454, 16, CenterLoc, String.Format("#{0}", _Title.ToString()), 0xF424E5, false, false);
             AddHtmlLocalized(55, 65, 344, 80, _Body, C32216(0x8B0000), false, false);
 
-            AddButton(70, 150, 0x9CC8, 0x9CC7, 1, GumpButtonType.Reply, 0);
-            AddButton(235, 150, 0x9CC8, 0x9CC7, 2, GumpButtonType.Reply, 0);
+            AddECHandleInput();
 
+            AddButton(70, 150, 0x9CC8, 0x9CC7, 1, GumpButtonType.Reply, 0);
             AddHtml(70, 153, 126, 16, Center("Yes"), false, false);
+
+            AddECHandleInput();
+            AddECHandleInput();
+
+            AddButton(235, 150, 0x9CC8, 0x9CC7, 2, GumpButtonType.Reply, 0);
             AddHtml(235, 153, 126, 16, Center("Cancel"), false, false);
         }
 
@@ -733,11 +738,19 @@ namespace Server.Mobiles
             AddHtmlLocalized(35, 63, 220, 20, 1044010, 0, false, false); // <CENTER>CATEGORIES</CENTER>
             AddHtmlLocalized(265, 63, 270, 20, 1044011, 0, false, false); // <CENTER>SELECTIONS</CENTER>
 
+            AddECHandleInput();
+
             AddButton(35, 490, 0x9CC8, 0x9CC7, 0, GumpButtonType.Reply, 0);
             AddHtml(35, 493, 126, 20, Center("CANCEL"), false, false);
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(220, 490, 0x9CC8, 0x9CC7, 1, GumpButtonType.Reply, 0);
             AddHtml(220, 493, 126, 20, Center("PLAN"), false, false);
+
+            AddECHandleInput();
+            AddECHandleInput();
 
             AddButton(410, 490, 0x9CC8, 0x9CC7, 2, GumpButtonType.Reply, 0);
             AddHtml(410, 493, 126, 20, Center("INFO"), false, false);
