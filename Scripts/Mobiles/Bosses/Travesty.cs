@@ -7,6 +7,16 @@ namespace Server.Mobiles
     [CorpseName("a travesty's corpse")]
     public class Travesty : BasePeerless
     {
+        public override WeaponAbility GetWeaponAbility()
+        {
+            if (Weapon == null)
+                return null;
+
+            BaseWeapon weapon = Weapon as BaseWeapon;
+
+            return Utility.RandomBool() ? weapon.PrimaryAbility : weapon.SecondaryAbility;
+        }
+
         private DateTime m_NextBodyChange;
         private bool m_SpawnedHelpers;
         private Timer m_Timer;
