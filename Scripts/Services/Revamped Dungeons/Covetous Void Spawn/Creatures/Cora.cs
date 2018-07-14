@@ -234,9 +234,9 @@ using Server.Engines.VoidPool;
 
             public override bool OnMoveOver(Mobile m)
             {
-                if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && m.CanBeHarmful(Owner, false))
+                if ((m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)) && m.CanBeHarmful(Owner, false))
                 {
-                    if (Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects((PlayerMobile)m, true))
+                    if (m is PlayerMobile && Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects((PlayerMobile)m, true))
                     {
                         m.SayTo(m, 1158288, 1154); // *You resist Cora's attack!*
                     }
