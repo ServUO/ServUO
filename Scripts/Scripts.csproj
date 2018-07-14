@@ -1954,6 +1954,9 @@
     <Compile Include="Mobiles\Normal\Betrayer.cs" />
     <Compile Include="Mobiles\Normal\Bird.cs" />
     <Compile Include="Mobiles\Normal\BlackBear.cs" />
+    <Compile Include="Mobiles\Normal\BlackOrderAssassin.cs" />
+    <Compile Include="Mobiles\Normal\BlackOrderMage.cs" />
+    <Compile Include="Mobiles\Normal\BlackOrderThief.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenInfiltratorQueen.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenInfiltratorWarrior.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenQueen.cs" />
