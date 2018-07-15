@@ -10,7 +10,7 @@ namespace Server.Items
         public Throne()
             : base(0xB33)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Throne(Serial serial)
@@ -31,8 +31,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 6.0)
-                this.Weight = 1.0;
+            if (Weight == 6.0)
+                Weight = 1.0;
         }
     }
 
@@ -44,13 +44,15 @@ namespace Server.Items
         public WoodenThrone()
             : base(0xB2E)
         {
-            this.Weight = 15.0;
+            Weight = 15.0;
         }
 
         public WoodenThrone(Serial serial)
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get { return 1015082; } } // Wooden Throne
 
         public override void Serialize(GenericWriter writer)
         {
@@ -65,8 +67,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 6.0)
-                this.Weight = 15.0;
+            if (Weight == 6.0)
+                Weight = 15.0;
         }
     }
 }
