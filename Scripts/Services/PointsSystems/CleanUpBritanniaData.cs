@@ -767,7 +767,7 @@ namespace Server.Engines.Points
                 PointsExchange[a.Username] = 0;
                 AwardPoints(m, points, false, false);
 
-                m.SendLocalizedMessage(1158460, String.Format("{0}\t{1}", points.ToString("N0"), ((int)GetPoints(m)).ToString("N0"))); // You have deposited ~1_VALUE~ Cleanup Britannia Points.  You now have ~2_VALUE~ points.
+                m.SendLocalizedMessage(1158453, String.Format("{0}\t{1}", points.ToString("N0"), ((int)GetPoints(m)).ToString("N0"))); // You have withdrawn ~1_VALUE~ Cleanup Britannia Points.  You now have ~2_VALUE~ points.
                 return true;
             }
 
