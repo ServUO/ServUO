@@ -299,7 +299,7 @@ namespace Server.Engines.UOStore
 
             Register(new StoreEntry(typeof(FallenLogDeed), 1071088, 1156649, 0, 0x9C88, 0, 200, cat));
             Register(new StoreEntry(typeof(LampPost2), 1071089, 1156650, 0xB22, 0, 0, 200, cat, ConstructLampPost));
-            Register(new StoreEntry(typeof(HitchingPost), 1071090, 1156651, 0x14E7, 0, 0, 200, cat));
+            Register(new StoreEntry(typeof(HitchingPost), 1071090, 1156651, 0x14E7, 0, 0, 200, cat, ConstructHitchingPost));
             Register(new StoreEntry(typeof(AncestralGravestone), 1071096, 1156653, 0x1174, 0, 0, 200, cat));
             Register(new StoreEntry(typeof(WoodenBookcase), 1071102, 1156655, 0x0A9D, 0, 0, 200, cat));
             Register(new StoreEntry(typeof(SnowTreeDeed), 1071103, 1156656, 0, 0x9C8A, 0, 200, cat));
@@ -492,6 +492,11 @@ namespace Server.Engines.UOStore
         public static Item ConstructBOBCoverTwo(Mobile m, StoreEntry entry)
         {
             return new BagOfBulkOrderCovers(1, 11);
+        }
+
+        public static Item ConstructHitchingPost(Mobile m, StoreEntry entry)
+        {
+            return new HitchingPost(false);
         }
         #endregion
 

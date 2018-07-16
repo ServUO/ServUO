@@ -24,6 +24,7 @@ namespace Server.Mobiles
         public override void AddGumpLayout()
         {
             var profile = PetTrainingHelper.GetAbilityProfile(Creature);
+            var trainProfile = PetTrainingHelper.GetTrainingProfile(Creature, true);
 
             AddPage(0);
             AddBackground(0, 24, 310, 325, 0x24A4);
@@ -34,11 +35,10 @@ namespace Server.Mobiles
             AddImage(40, 62, 0x82B);
             AddImage(40, 258, 0x82B);
 
-            if (Creature.Controlled && Creature.ControlMaster == User)
+            if (Creature.Controlled && Creature.ControlMaster == User && PetTrainingHelper.CanControl(User, Creature, trainProfile))
             {
                 AddImage(28, 272, 0x826);
 
-                var trainProfile = PetTrainingHelper.GetTrainingProfile(Creature, true);
                 var def = PetTrainingHelper.GetTrainingDefinition(Creature);
 
                 if (trainProfile.HasBegunTraining && def != null && def.Class != Class.Untrainable)
@@ -69,6 +69,7 @@ namespace Server.Mobiles
                 }
                 else if (Creature.ControlSlots < Creature.ControlSlotsMax)
                 {
+
                     AddHtmlLocalized(47, 270, 160, 18, 1157487, 0xC8, false, false); // Begin Animal Training
                     AddButton(53, 288, 0x837, 0x838, 4, GumpButtonType.Reply, 0);
                 }
@@ -1601,7 +1602,7 @@ namespace Server.Mobiles
                     {
                         User.SendLocalizedMessage(1157501); // Your pet looks to have already completed that training. 
                     }
-                    else
+                    else if (PetTrainingHelper.CanControl(User, Creature, profile))
                     {
                         BaseGump.SendGump(new PetTrainingConfirmGump(User, 1157502, TrainingPoint.TrainPoint is MagicalAbility ? 1157566 : 1157503, () =>
                             {

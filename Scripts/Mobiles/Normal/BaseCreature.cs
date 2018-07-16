@@ -613,6 +613,31 @@ namespace Server.Mobiles
             PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability, false);
         }
 
+        public void RemoveMagicalAbility(MagicalAbility ability)
+        {
+            PetTrainingHelper.GetAbilityProfile(this, true).RemoveAbility(ability);
+        }
+
+        public void RemoveSpecialAbility(SpecialAbility ability)
+        {
+            PetTrainingHelper.GetAbilityProfile(this, true).RemoveAbility(ability);
+        }
+
+        public void RemoveAreaEffect(AreaEffect ability)
+        {
+            PetTrainingHelper.GetAbilityProfile(this, true).RemoveAbility(ability);
+        }
+
+        public void RemoveWeaponAbility(WeaponAbility ability)
+        {
+            PetTrainingHelper.GetAbilityProfile(this, true).RemoveAbility(ability);
+        }
+
+        public bool HasAbility(object o)
+        {
+            return PetTrainingHelper.GetAbilityProfile(this, true).HasAbility(o);
+        }
+
         public virtual double AverageThreshold { get { return 0.33; } }
 
         public List<double> _InitAverage;
@@ -674,30 +699,37 @@ namespace Server.Mobiles
 
         public void AdjustTameRequirements()
         {
-            // Currently, with increased control slots, taming skill does not seem to pass 108.0
-            if(ControlSlots <=ControlSlotsMin)
-            {
-                CurrentTameSkill = MinTameSkill;
-            }
-            else if (MinTameSkill < 108)
-            {
-                double minSkill = Math.Ceiling(MinTameSkill);
+            CurrentTameSkill = CalculateCurrentTameSkill(ControlSlots);
+        }
 
+        public double CalculateCurrentTameSkill(int currentControlSlots)
+        {
+            double minSkill = Math.Ceiling(MinTameSkill);
+            double current = 0;
+
+            if (currentControlSlots <= ControlSlotsMin)
+            {
+                current = MinTameSkill;
+            }
+            else if (MinTameSkill < 108) // Currently, with increased control slots, taming skill does not seem to pass 108.0
+            {
                 if (MinTameSkill < 0)
                 {
-                    CurrentTameSkill = Math.Ceiling(Math.Min(108.0, Math.Max(0, CurrentTameSkill) + (Math.Abs(minSkill) * .7)));
+                    current = Math.Ceiling(Math.Min(108.0, Math.Max(0, CurrentTameSkill) + (Math.Abs(minSkill) * .7)));
                 }
                 else
                 {
-                    double level = ControlSlots - ControlSlotsMin;
+                    double level = currentControlSlots - ControlSlotsMin;
                     double levelFactor = (double)(1 + (ControlSlotsMax - ControlSlotsMin)) / minSkill;
 
-                    CurrentTameSkill = Math.Ceiling(Math.Min(108.0, minSkill + (minSkill * ((levelFactor * 7) * level))));
+                    current = Math.Ceiling(Math.Min(108.0, minSkill + (minSkill * ((levelFactor * 7) * level))));
                 }
-
-                if (CurrentTameSkill < MinTameSkill)
-                    CurrentTameSkill = MinTameSkill;
             }
+
+            if (current < MinTameSkill)
+                current = MinTameSkill;
+
+            return current;
         }
         #endregion
 
@@ -8226,8 +8258,12 @@ namespace Server.Mobiles
                 c.BondingBegin = DateTime.MinValue;
                 c.OwnerAbandonTime = DateTime.MinValue;
                 c.ControlTarget = null;
-                //c.ControlOrder = OrderType.Release;
-                c.AIObject.DoOrderRelease();
+
+                if (c.AIObject != null)
+                {
+                    c.AIObject.DoOrderRelease();
+                }
+
                 // this will prevent no release of creatures left alone with AI disabled (and consequent bug of Followers)
                 c.DropBackpack();
                 c.RemoveOnSave = true;

@@ -9,23 +9,16 @@ using Server.ContextMenus;
 
 namespace Server.Items
 {
-	public class CityMessageBoard : Item
+    public class CityMessageBoard : BasePlayerBB
 	{
         public City City { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
 
-        public override string DefaultName
-        {
-            get
-            {
-                if (CitySystem != null)
-                    return String.Format("{0} Message Board", CitySystem.Definition.Name);
-
-                return "Message Board";
-            }
-        }
+        public override int LabelNumber { get { return 1027774; } } // bulletin board
+        public override bool Public { get { return true; } }
+        public override bool ForceShowProperties { get { return true; } }
 
         [Constructable]
         public CityMessageBoard(City city, int id) : base(id)
@@ -34,21 +27,36 @@ namespace Server.Items
             City = city;
         }
 
+        public override bool CanPostGreeting(Server.Multis.BaseHouse house, Mobile m)
+        {
+            var sys = CitySystem;
+
+            return sys != null && (m.AccessLevel >= AccessLevel.GameMaster || sys.Governor == m);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (!CityLoyaltySystem.Enabled || CitySystem == null)
                 return;
 
-            if (from.InRange(this.Location, 3))
+            if (CitySystem.IsCitizen(from, true))
             {
-                from.CloseGump(typeof(CityMessageGump));
-                from.SendGump(new CityMessageBoardGump());
+                if (from.InRange(this.Location, 3))
+                {
+                    from.SendGump(new PlayerBBGump(from, null, this, 0));
+                }
+                else
+                {
+                    from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1019045, from.NetState);
+                }
             }
             else
-                from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1019045, from.NetState);
+            {
+                from.SendLocalizedMessage(1154275); // Only Citizens of this City may use this. 
+            }
         }
 
-        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        /*public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
 
@@ -149,7 +157,7 @@ namespace Server.Items
                         });
                 }
             }));
-        }
+        }*/
 
         public CityMessageBoard(Serial serial)
             : base(serial)
@@ -170,6 +178,7 @@ namespace Server.Items
 			int version = reader.ReadInt();
 
             City = (City)reader.ReadInt();
+            CitySystem.Board = this;
 		}
 	}
 }

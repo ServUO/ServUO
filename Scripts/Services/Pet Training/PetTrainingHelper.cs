@@ -939,7 +939,17 @@ namespace Server.Mobiles
         #endregion
 
         #region Training Helpers
+        public static bool CanControl(Mobile m, BaseCreature bc, TrainingProfile trainProfile)
+        {
+            double skill = m.Skills[SkillName.AnimalTaming].Base; // TODO: Base?
 
+            if (trainProfile.HasIncreasedControlSlot)
+            {
+                return skill >= bc.CalculateCurrentTameSkill(bc.ControlSlots);
+            }
+
+            return skill >= bc.CalculateCurrentTameSkill(bc.ControlSlots + 1);
+        }
         public static int GetTrainingCapTotal(PetStat stat)
         {
             switch (stat)
@@ -1346,7 +1356,7 @@ namespace Server.Mobiles
             {
                 var profile = GetAbilityProfile(bc);
 
-                if (profile != null && profile.TokunoTame)
+                if (profile != null/* && profile.TokunoTame*/)
                 {
                     bc.CheckSkill(skill, 0.0, bc.Skills[skill].Cap);
                 }

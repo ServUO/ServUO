@@ -69,6 +69,11 @@ namespace Server.Mobiles
 
             return null;
 		}
+
+        public override Spell GetCureSpell()
+        {
+            return null;
+        }
 		
 		public override Spell GetRandomBuffSpell()
 		{

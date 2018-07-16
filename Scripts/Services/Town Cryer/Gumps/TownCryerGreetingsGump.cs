@@ -47,7 +47,7 @@ namespace Server.Services.TownCryer
             AddHtml(395, 570, 35, 20, Center(String.Format("{0}/{1}", (Page + 1).ToString(), (Pages + 1).ToString())), false, false);
 
             AddButton(525, 625, 0x5FF, 0x600, 5, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(550, 625, 200, 20, 1158386, false, false); // Close and do not show this version again
+            AddHtmlLocalized(550, 625, 300, 20, 1158386, false, false); // Close and do not show this version again
         }
 
         public override void OnResponse(RelayInfo info)
