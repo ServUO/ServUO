@@ -156,8 +156,52 @@ namespace Server.Misc
             string saves = Path.Combine(Core.BaseDirectory, "Saves");
 
             if (Directory.Exists(saves))
-                Directory.Move(saves, FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp()));
+            {
+                Type t = Type.GetType ("Mono.Runtime");
+                if (t != null)
+                    DirectoryCopy(saves, FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp()), true);
+                else
+                    Directory.Move(saves, FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp()));
+            }
         }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+            {
+                // Get the subdirectories for the specified directory.
+                DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+                if (!dir.Exists)
+                {
+                    throw new DirectoryNotFoundException(
+                        "Source directory does not exist or could not be found: "
+                        + sourceDirName);
+                }
+
+                DirectoryInfo[] dirs = dir.GetDirectories();
+                // If the destination directory doesn't exist, create it.
+                if (!Directory.Exists(destDirName))
+                {
+                    Directory.CreateDirectory(destDirName);
+                }
+
+                // Get the files in the directory and copy them to the new location.
+                FileInfo[] files = dir.GetFiles();
+                foreach (FileInfo file in files)
+                {
+                    string temppath = Path.Combine(destDirName, file.Name);
+                    file.CopyTo(temppath, false);
+                }
+
+                // If copying subdirectories, copy them and their contents to new location.
+                if (copySubDirs)
+                {
+                    foreach (DirectoryInfo subdir in dirs)
+                    {
+                        string temppath = Path.Combine(destDirName, subdir.Name);
+                        DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                    }
+                }
+            }
 
         private static DirectoryInfo Match(string[] paths, string match)
         {
