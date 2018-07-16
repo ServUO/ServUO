@@ -174,5 +174,23 @@ namespace Server.Engines.Points
 			Entries[typeof(AWorthyPropositionQuest)]			= new Tuple<double, double>(50, 5.0);
 			Entries[typeof(UnusualGoods)]     					= new Tuple<double, double>(75, 7.5);
 		}
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            if (this.Version >= 2)
+            {
+                int version = reader.ReadInt();
+
+                // all deserialize code in here
+            }
+        }
 	}
 }

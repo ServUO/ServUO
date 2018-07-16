@@ -32,6 +32,24 @@ namespace Server.Engines.Points
 		{
 			return new TextDefinition(1152531); // The Void Pool
 		}
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            if (this.Version >= 2)
+            {
+                int version = reader.ReadInt();
+
+                // all deserialize code in here
+            }
+        }
 	}
 
     public class VoidPoolInfo : ContextMenuEntry

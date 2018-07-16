@@ -5,6 +5,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Engines.Quests.Doom;
+using Server.Accounting;
 
 namespace Server.Engines.Points
 {
@@ -695,6 +696,118 @@ namespace Server.Engines.Points
 
             //Treasure Hunting
             Entries[typeof(Lockpick)] = 0.10;
+        }
+
+        #region Points Exchange
+
+        public Dictionary<string, double> PointsExchange { get; private set; }
+
+        public double GetPointsFromExchange(Mobile m)
+        {
+            Account a = m.Account as Account;
+
+            if (a != null && !PointsExchange.ContainsKey(a.Username))
+            {
+                PointsExchange[a.Username] = 0.0;
+            }
+
+            return a == null ? 0.0 : PointsExchange[a.Username];
+        }
+
+        public bool AddPointsToExchange(Mobile m)
+        {
+            Account a = m.Account as Account;
+
+            if (a == null)
+            {
+                return false;
+            }
+
+            double points = GetPoints(m);
+
+            if (points <= 0)
+            {
+                m.SendLocalizedMessage(1158451); // This account has no points to deposit.
+            }
+            else if (DeductPoints(m, points))
+            {
+                if (!PointsExchange.ContainsKey(a.Username))
+                {
+                    PointsExchange[a.Username] = points;
+                }
+                else
+                {
+                    PointsExchange[a.Username] += points;
+                }
+
+                m.SendLocalizedMessage(1158452, points.ToString("N0")); // You have deposited ~1_VALUE~ Cleanup Britannia Points.
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool RemovePointsFromExchange(Mobile m)
+        {
+            Account a = m.Account as Account;
+
+            if (a == null)
+            {
+                return false;
+            }
+
+            double points = GetPointsFromExchange(m);
+
+            if (points <= 0)
+            {
+                m.SendLocalizedMessage(1158457); // This account has no points to withdraw.
+            }
+            else if (PointsExchange.ContainsKey(a.Username))
+            {
+                PointsExchange[a.Username] = 0;
+                AwardPoints(m, points, false, false);
+
+                m.SendLocalizedMessage(1158460, String.Format("{0}\t{1}", points.ToString("N0"), ((int)GetPoints(m)).ToString("N0"))); // You have deposited ~1_VALUE~ Cleanup Britannia Points.  You now have ~2_VALUE~ points.
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+
+            writer.Write(PointsExchange.Count);
+            foreach (var kvp in PointsExchange)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value);
+            }
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            PointsExchange = new Dictionary<string, double>();
+
+            if (this.Version >= 2)
+            {
+                int version = reader.ReadInt();
+
+                int count = reader.ReadInt();
+
+                for (int i = 0; i < count; i++)
+                {
+                    string accountName = reader.ReadString();
+                    double points = reader.ReadDouble();
+
+                    PointsExchange[accountName] = points;
+                }
+            }
         }
     }
 

@@ -222,10 +222,12 @@ namespace Server.Engines.Points
         {
             return new PointsEntry(pm);
         }
+        
+        public int Version { get; set; }
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write((int)1);
+            writer.Write((int)2);
 
             writer.Write(PlayerTable.Count);
 
@@ -238,19 +240,20 @@ namespace Server.Engines.Points
 
         public virtual void Deserialize(GenericReader reader)
         {
-            int version = reader.ReadInt();
+            Version = reader.ReadInt();
 
-            switch (version)
+            switch (Version)
             {
-                case 0:
+                case 2: // added serialize/deserialize in all base classes. Poor implementation on my part, should have had from the get-go
                 case 1:
+                case 0:
                     int count = reader.ReadInt();
                     for (int i = 0; i < count; i++)
                     {
                         PlayerMobile player = reader.ReadMobile() as PlayerMobile;
                         PointsEntry entry = GetSystemEntry(player);
-                        
-                        if (version > 0)
+
+                        if (Version > 0)
                             entry.Deserialize(reader);
                         else
                             entry.Points = reader.ReadDouble();

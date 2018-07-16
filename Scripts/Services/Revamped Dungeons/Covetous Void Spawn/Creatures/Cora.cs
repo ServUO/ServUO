@@ -302,6 +302,37 @@ using Server.Engines.VoidPool;
             }
         }
 
+        public override void OnKilledBy(Mobile mob)
+        {
+            if (Siege.SiegeShard && mob is PlayerMobile)
+            {
+                int chance = Server.Engines.Despise.DespiseBoss.ArtifactChance + (int)Math.Min(10, ((PlayerMobile)mob).Luck / 180);
+
+                if (chance >= Utility.Random(100))
+                {
+                    Type t = Server.Engines.Despise.DespiseBoss.Artifacts[Utility.Random(Server.Engines.Despise.DespiseBoss.Artifacts.Length)];
+
+                    if (t != null)
+                    {
+                        Item arty = Loot.Construct(t);
+
+                        if (arty != null)
+                        {
+                            Container pack = mob.Backpack;
+
+                            if (pack == null || !pack.TryDropItem(mob, arty, false))
+                            {
+                                mob.BankBox.DropItem(arty);
+                                mob.SendMessage("An artifact has been placed in your bankbox!");
+                            }
+                            else
+                                mob.SendLocalizedMessage(1153440); // An artifact has been placed in your backpack!
+                        }
+                    }
+                }
+            }
+        }
+
         public CoraTheSorceress(Serial serial)
             : base(serial)
 		{

@@ -8,7 +8,7 @@ namespace Server.Engines.Despise
 {
 	public class DespiseBoss : BaseCreature
 	{
-		private readonly int ArtifactChance = 5;
+		public static readonly int ArtifactChance = 5;
 		
 		public virtual BaseCreature SummonWisp { get { return null; } }
         public virtual double WispScalar { get { return 0.33; } }
@@ -126,7 +126,8 @@ namespace Server.Engines.Despise
             if (m_Wisp != null && m_Wisp.Alive)
                 m_Wisp.Kill();
         }
-		
+
+        public static Type[] Artifacts { get { return m_Artifacts; } }
 		private static Type[] m_Artifacts = new Type[]
 		{
 			typeof(CompassionsEye),

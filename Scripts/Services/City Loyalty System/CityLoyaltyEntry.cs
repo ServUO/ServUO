@@ -33,6 +33,9 @@ namespace Server.Engines.CityLoyalty
         public string CustomTitle { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public bool ShowGainMessage { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public LoyaltyRating LoyaltyRating
         {
             get
@@ -80,6 +83,7 @@ namespace Server.Engines.CityLoyalty
 		public CityLoyaltyEntry(PlayerMobile pm, City city) : base(pm)
 		{
             City = city;
+            ShowGainMessage = true;
 		}
 		
 		public void DeclareCitizenship()
@@ -122,8 +126,10 @@ namespace Server.Engines.CityLoyalty
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
-			
+			writer.Write(1);
+
+            writer.Write(ShowGainMessage);
+
 			writer.Write(Love);
 			writer.Write(Hate);
 			writer.Write(Neutrality);
@@ -140,18 +146,32 @@ namespace Server.Engines.CityLoyalty
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
-			
-			Love = reader.ReadInt();
-			Hate = reader.ReadInt();
-			Neutrality = reader.ReadInt();
 
-			Titles = (CityTitle)reader.ReadInt();
-            TradeDealExpires = reader.ReadDateTime();
-            _Utilizing = reader.ReadBool();
-            CustomTitle = reader.ReadString();
+            switch (version)
+            {
+                case 1:
+                    ShowGainMessage = reader.ReadBool();
+                    goto case 0;
+                case 0:
 
-            CheckTradeDeal();
-			IsCitizen = reader.ReadBool();
+                    if (version == 0)
+                    {
+                        ShowGainMessage = true;
+                    }
+
+                    Love = reader.ReadInt();
+                    Hate = reader.ReadInt();
+                    Neutrality = reader.ReadInt();
+
+                    Titles = (CityTitle)reader.ReadInt();
+                    TradeDealExpires = reader.ReadDateTime();
+                    _Utilizing = reader.ReadBool();
+                    CustomTitle = reader.ReadString();
+
+                    CheckTradeDeal();
+                    IsCitizen = reader.ReadBool();
+                    break;
+            }
 		}
 	}
 }
