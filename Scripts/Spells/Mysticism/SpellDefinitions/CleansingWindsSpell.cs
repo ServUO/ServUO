@@ -31,7 +31,7 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new InternalTarget(this, TargetFlags.Beneficial);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void OnTarget(object o)
@@ -225,13 +225,13 @@ namespace Server.Spells.Mysticism
         {
             public CleansingWindsSpell Owner { get; set; }
 
-            public InternalTarget(CleansingWindsSpell owner, TargetFlags flags)
-                : this(owner, false, flags)
+            public InternalTarget(CleansingWindsSpell owner)
+                : this(owner, false)
             {
             }
 
-            public InternalTarget(CleansingWindsSpell owner, bool allowland, TargetFlags flags)
-                : base(12, allowland, flags)
+            public InternalTarget(CleansingWindsSpell owner, bool allowland)
+                : base(12, allowland, TargetFlags.Beneficial)
             {
                 Owner = owner;
             }

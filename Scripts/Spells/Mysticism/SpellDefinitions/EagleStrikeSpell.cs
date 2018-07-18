@@ -29,7 +29,7 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void OnTarget(IDamageable d)
@@ -78,13 +78,13 @@ namespace Server.Spells.Mysticism
         {
             public EagleStrikeSpell Owner { get; set; }
 
-            public InternalTarget(EagleStrikeSpell owner, TargetFlags flags)
-                : this(owner, false, flags)
+            public InternalTarget(EagleStrikeSpell owner)
+                : this(owner, false)
             {
             }
 
-            public InternalTarget(EagleStrikeSpell owner, bool allowland, TargetFlags flags)
-                : base(12, allowland, flags)
+            public InternalTarget(EagleStrikeSpell owner, bool allowland)
+                : base(12, allowland, TargetFlags.Harmful)
             {
                 Owner = owner;
             }
