@@ -145,24 +145,13 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if(version < 2)
+            Timer.DelayCall(() =>
             {
-                Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
-                    {
-                        BaseHouse house = BaseHouse.FindHouseAt(this);
-
-                        foreach (var item in Items)
-                        {
-                            if (house != null && house.LockDowns.ContainsKey(item))
-                            {
-                                house.LockDowns.Remove(item);
-                            }
-
-                            item.IsLockedDown = false;
-                            item.Movable = false;
-                        }
-                    });
-            }
+                foreach (var item in Items.Where(i => !i.Movable))
+                {
+                    item.Movable = false;
+                }
+            });
         }
 
         public virtual Dictionary<SkillCat, List<SkillName>> SkillInfo { get { return null; } }

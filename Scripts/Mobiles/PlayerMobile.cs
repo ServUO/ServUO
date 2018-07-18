@@ -95,7 +95,8 @@ namespace Server.Mobiles
     [Flags]
     public enum ExtendedPlayerFlag
     {
-        HideTownCrierGreetingGump = 0x00000001
+        HideTownCrierGreetingGump   = 0x00000001,
+        ToggleStoneOnly             = 0x00000002
     }
 
 	public enum NpcGuild
@@ -528,6 +529,13 @@ namespace Server.Mobiles
         {
             get { return GetFlag(ExtendedPlayerFlag.HideTownCrierGreetingGump); }
             set { SetFlag(ExtendedPlayerFlag.HideTownCrierGreetingGump, value); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ToggleStoneOnly
+        {
+            get { return GetFlag(ExtendedPlayerFlag.ToggleStoneOnly); }
+            set { SetFlag(ExtendedPlayerFlag.ToggleStoneOnly, value); }
         }
 
         #region Plant system

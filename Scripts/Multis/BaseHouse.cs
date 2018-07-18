@@ -475,23 +475,27 @@ namespace Server.Multis
 
         private Type[] _NoItemCountTable = new Type[]
         {
-            typeof(Engines.Plants.SeedBox),       typeof(GardenShedAddon),
-            typeof(GardenShedBarrel)
+            typeof(Server.Engines.Plants.SeedBox),  typeof(GardenShedAddon),
+            typeof(GardenShedBarrel),               typeof(BaseSpecialScrollBook),    
+        };
+
+        private Type[] _NoDecayItems = new Type[]
+        {
+            typeof(BaseBoard),                      typeof(Aquarium),
+            typeof(FishBowl),                       typeof(BaseSpecialScrollBook),
+            typeof(Server.Engines.Plants.SeedBox)
         };
 
         // Not Included Storage
         public virtual bool CheckStorage(Item item)
         {
-            Type type = item.GetType();
+            return _NoItemCountTable.Any(x => item.GetType() == x);
+        }
 
-            bool contains = false;
-
-            for (int i = 0; !contains && i < _NoItemCountTable.Length; ++i)
-            {
-                contains = (type == _NoItemCountTable[i]);
-            }
-
-            return contains;
+        // Contents will not decay
+        public virtual bool CheckContentsDecay(Item item)
+        {
+            return _NoDecayItems.Any(x => item.GetType() == x);
         }
 
         public virtual int GetAosCurSecures(out int fromSecures, out int fromVendors, out int fromLockdowns, out int fromMovingCrate)
@@ -1752,7 +1756,7 @@ namespace Server.Multis
 
         private void SetLockdown(Mobile m, Item i, bool locked, bool checkContains)
         {
-            if (m_LockDowns == null)
+            if (m_LockDowns == null || (locked && m_LockDowns.ContainsKey(i)) || (!locked && !m_LockDowns.ContainsKey(i)))
                 return;
 
             checkContains = true; // We need to check or server will crash!
@@ -1813,7 +1817,7 @@ namespace Server.Multis
             if (!locked)
                 i.SetLastMoved();
 
-            if ((i is Container) && (!locked || !(i is BaseBoard || i is Aquarium || i is FishBowl || i is BaseSpecialScrollBook)))
+            if (i is Container && !CheckContentsDecay(i))
             {
                 foreach (Item c in i.Items)
                     SetLockdown(m, c, locked, checkContains);
@@ -2935,7 +2939,7 @@ namespace Server.Multis
             {
                 Item item = kvp.Key;
 
-                if (item is Container && !(item is BaseBoard || item is Aquarium || item is FishBowl))
+                if (item is Container && !CheckContentsDecay(item))
                 {
                     Container cont = (Container)item;
                     List<Item> children = cont.Items;
@@ -3570,12 +3574,6 @@ namespace Server.Multis
                 foreach(KeyValuePair<Item, Mobile> kvp in m_LockDowns)
                 {
                     Item item = kvp.Key;
-
-                    if (item is Server.Engines.Plants.Seed && item.Parent is Server.Engines.Plants.SeedBox)
-                        continue;
-
-                    if (item is SpecialScroll && item.Parent is BaseSpecialScrollBook)
-                        continue;
 
                     if (!(item is Container))
                         count += item.TotalItems;

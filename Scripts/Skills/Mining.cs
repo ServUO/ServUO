@@ -226,8 +226,13 @@ namespace Server.Engines.Harvest
 
                 double chance = tool is RockHammer ? 0.50 : 0.15;
 
-                if (pm != null && pm.StoneMining && pm.ToggleMiningStone && from.Skills[SkillName.Mining].Base >= 100.0 && chance > Utility.RandomDouble())
+                if (pm != null && pm.StoneMining && (pm.ToggleMiningStone || pm.ToggleStoneOnly) && from.Skills[SkillName.Mining].Base >= 100.0 && chance > Utility.RandomDouble())
                     return resource.Types[1];
+
+                if (pm != null && pm.ToggleStoneOnly)
+                {
+                    return null;
+                }
 
                 return resource.Types[0];
             }
