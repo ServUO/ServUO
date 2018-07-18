@@ -256,8 +256,8 @@ namespace Server.Mobiles
                 miningEntry.Color = 0x421F;
                 list.Add(miningEntry);
 
-                list.Add(new BaseHarvestTool.ToggleMiningStoneEntry(pm, false, false, 6176));
-                list.Add(new BaseHarvestTool.ToggleMiningStoneEntry(pm, true, false, 6177));
+                list.Add(new BaseHarvestTool.ToggleMiningStoneEntry(pm, MiningType.OreOnly, 6176));         // Set To Ore
+                list.Add(new BaseHarvestTool.ToggleMiningStoneEntry(pm, MiningType.OreAndStone, 6177));     // Set To Ore and Stone
             }
         }
         #endregion        

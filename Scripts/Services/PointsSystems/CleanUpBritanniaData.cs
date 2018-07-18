@@ -22,6 +22,7 @@ namespace Server.Engines.Points
         public CleanUpBritanniaData()
         {
             InitializeEntries();
+            PointsExchange = new Dictionary<string, double>();
         }
 
         public static double GetPoints(Item item)
@@ -791,8 +792,6 @@ namespace Server.Engines.Points
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            PointsExchange = new Dictionary<string, double>();
 
             if (this.Version >= 2)
             {
