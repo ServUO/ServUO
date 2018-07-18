@@ -2957,7 +2957,6 @@ namespace Server.Multis
                     for (int j = 0; j < children.Count; ++j)
                     {
                         Item child = children[j];
-                        Console.WriteLine("Checking Decay: {0}", child);
 
                         if (child.Decays && !child.IsLockedDown && !child.IsSecure && (child.LastMoved + child.DecayTime) <= DateTime.UtcNow)
                             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(child.Delete));
