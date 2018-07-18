@@ -338,13 +338,13 @@ namespace Server.Mobiles
 
         public static void SpawnNinjaGroup(Point3D _location)
         {
-            BaseCreature ninja = new BlackOrderAssassin();
+            BaseCreature ninja = new DragonsFlameMage();
             ninja.MoveToWorld(_location, Map.Malas);
 
-            ninja = new BlackOrderThief();
+            ninja = new SerpentsFangAssassin();
             ninja.MoveToWorld(_location, Map.Malas);
 
-            ninja = new BlackOrderMage();
+            ninja = new TigersClawThief();
             ninja.MoveToWorld(_location, Map.Malas);
         }
 
