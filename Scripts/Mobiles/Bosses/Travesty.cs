@@ -127,7 +127,7 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.025)
             {
-                switch (Utility.Random(7))
+                switch (Utility.Random(4))
                 {
                     case 0:
                         c.DropItem(new AssassinLegs());
@@ -140,15 +140,6 @@ namespace Server.Mobiles
                         break;
                     case 3:
                         c.DropItem(new MalekisHonor());
-                        break;
-                    case 4:
-                        c.DropItem(new JusticeBreastplate());
-                        break;
-                    case 5:
-                        c.DropItem(new CompassionArms());
-                        break;
-                    case 6:
-                        c.DropItem(new ValorGauntlets());
                         break;
                 }
             }
