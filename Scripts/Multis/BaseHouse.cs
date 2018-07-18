@@ -487,15 +487,25 @@ namespace Server.Multis
         };
 
         // Not Included Storage
-        public virtual bool CheckStorage(Item item)
+        public virtual bool CheckCounts(Item item)
         {
-            return _NoItemCountTable.Any(x => item.GetType() == x);
+            if (_NoItemCountTable.Any(x => item.GetType() == x || item.GetType().IsSubclassOf(x)))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         // Contents will not decay
         public virtual bool CheckContentsDecay(Item item)
         {
-            return _NoDecayItems.Any(x => item.GetType() == x);
+            if (_NoDecayItems.Any(x => item.GetType() == x ||item.GetType().IsSubclassOf(x)))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public virtual int GetAosCurSecures(out int fromSecures, out int fromVendors, out int fromLockdowns, out int fromMovingCrate)
@@ -516,7 +526,7 @@ namespace Server.Multis
                 {
                     SecureInfo si = (SecureInfo)list[i];
 
-                    if (!CheckStorage(si.Item) && !m_LockDowns.ContainsKey(si.Item))
+                    if (CheckCounts(si.Item) && !m_LockDowns.ContainsKey(si.Item))
                     {
                         fromSecures += si.Item.TotalItems;
                     }
@@ -1817,7 +1827,7 @@ namespace Server.Multis
             if (!locked)
                 i.SetLastMoved();
 
-            if (i is Container && !CheckContentsDecay(i))
+            if (i is Container && CheckContentsDecay(i))
             {
                 foreach (Item c in i.Items)
                     SetLockdown(m, c, locked, checkContains);
@@ -2939,7 +2949,7 @@ namespace Server.Multis
             {
                 Item item = kvp.Key;
 
-                if (item is Container && !CheckContentsDecay(item))
+                if (item is Container && CheckContentsDecay(item))
                 {
                     Container cont = (Container)item;
                     List<Item> children = cont.Items;
@@ -2947,6 +2957,7 @@ namespace Server.Multis
                     for (int j = 0; j < children.Count; ++j)
                     {
                         Item child = children[j];
+                        Console.WriteLine("Checking Decay: {0}", child);
 
                         if (child.Decays && !child.IsLockedDown && !child.IsSecure && (child.LastMoved + child.DecayTime) <= DateTime.UtcNow)
                             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(child.Delete));
