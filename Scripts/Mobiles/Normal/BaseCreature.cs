@@ -1943,24 +1943,24 @@ namespace Server.Mobiles
             }
         }
 
-        public override void Damage(int amount, Mobile from)
+        public override int Damage(int amount, Mobile from)
         {
-            Damage(amount, from, false, false);
+            return Damage(amount, from, false, false);
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount)
+        public override int Damage(int amount, Mobile from, bool informMount)
         {
-            Damage(amount, from, informMount, false);
+            return Damage(amount, from, informMount, false);
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
             int oldHits = Hits;
 
             if (Core.AOS && Controlled && from is BaseCreature && !((BaseCreature)from).Controlled && !((BaseCreature)from).Summoned)
                 amount = (int)(amount * ((BaseCreature)from).BonusPetDamageScalar);
 
-            base.Damage(amount, from, informMount, checkDisrupt);
+            amount = base.Damage(amount, from, informMount, checkDisrupt);
 
             if (SubdueBeforeTame && !Controlled)
             {
@@ -1969,6 +1969,8 @@ namespace Server.Mobiles
                     PublicOverheadMessage(MessageType.Regular, 0x3B2, false, "* The creature has been beaten into subjugation! *");
                 }
             }
+
+            return amount;
         }
 
         public virtual bool DeleteCorpseOnDeath { get { return !Core.AOS && m_bSummoned; } }

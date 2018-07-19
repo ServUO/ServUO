@@ -211,9 +211,9 @@ namespace Server
             }
 
             // object being damaged is not a mobile, so we will end here
-            if (damageable is DamageableItem)
+            if (damageable is Item)
             {
-                return ((DamageableItem)damageable).Damage(totalDamage, from, (int)type);
+                return damageable.Damage(totalDamage, from);
             }
 
             #region Evil Omen, Blood Oath and reflect physical
@@ -395,7 +395,7 @@ namespace Server
                 DoLeech(totalDamage, from, m);
             }
 
-            m.Damage(totalDamage, from, true, false);
+            totalDamage = m.Damage(totalDamage, from, true, false);
 
             SpiritSpeak.CheckDisrupt(m);
 

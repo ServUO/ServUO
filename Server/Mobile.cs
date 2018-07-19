@@ -5589,36 +5589,36 @@ namespace Server
 		public virtual void OnDamage(int amount, Mobile from, bool willKill)
 		{ }
 		
-		public virtual void Damage(int amount)
-		{
-			Damage(amount, null);
-		}
-
 		public virtual bool CanBeDamaged()
 		{
 			return !m_Blessed;
 		}
 
-		public virtual void Damage(int amount, Mobile from)
+		public virtual int Damage(int amount)
 		{
-			Damage(amount, from, true);
+			return Damage(amount, null);
 		}
 
-        public virtual void Damage(int amount, Mobile from, bool informMount)
+		public virtual int Damage(int amount, Mobile from)
+		{
+			return Damage(amount, from, true);
+		}
+
+        public virtual int Damage(int amount, Mobile from, bool informMount)
         {
-            Damage(amount, from, informMount, true);
+            return Damage(amount, from, informMount, true);
         }
 
-		public virtual void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+		public virtual int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
 		{
 			if (!CanBeDamaged() || m_Deleted)
 			{
-				return;
+				return 0;
 			}
 
 			if (!Region.OnDamage(this, ref amount))
 			{
-				return;
+				return 0;
 			}
 
 			if (amount > 0)
@@ -5666,6 +5666,8 @@ namespace Server
 					Hits = newHits;
 				}
 			}
+
+			return amount;
 		}
 
         public virtual void SendDamagePacket(Mobile from, int amount)
@@ -5795,26 +5797,26 @@ namespace Server
 			eable.Free();
 		}
 
-		public void Heal(int amount)
+		public virtual int Heal(int amount)
 		{
-			Heal(amount, this, true);
+			return Heal(amount, this, true);
 		}
 
-		public void Heal(int amount, Mobile from)
+		public virtual int Heal(int amount, Mobile from)
 		{
-			Heal(amount, from, true);
+			return Heal(amount, from, true);
 		}
 
-		public void Heal(int amount, Mobile from, bool message)
+		public virtual int Heal(int amount, Mobile from, bool message)
 		{
 			if (!Alive || IsDeadBondedPet)
 			{
-				return;
+				return 0;
 			}
 
 			if (!Region.OnHeal(this, ref amount))
 			{
-				return;
+				return 0;
 			}
 
 			OnHeal(ref amount, from);
@@ -5842,6 +5844,8 @@ namespace Server
 						amount.ToString(),
 						""));
 			}
+
+			return amount;
 		}
 
 		public virtual void OnHeal(ref int amount, Mobile from)

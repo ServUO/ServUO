@@ -116,6 +116,8 @@ namespace Server
         int PoisonResistance { get; }
         int EnergyResistance { get; }
 
+		int Damage(int amount, Mobile attacker);
+
         void PlaySound(int soundID);
 		
         void MovingEffect(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int hue, int renderMode);

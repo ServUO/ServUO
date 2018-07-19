@@ -28,18 +28,19 @@ namespace Server.Mobiles
             Altar = null;
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkfizzle)
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkfizzle)
         {
             if (from == null)
-                return;
+                return 0;
 
             if (Altar == null || Altar.Summoner == null)
-                base.Damage(amount, from, informMount, checkfizzle);
+                amount = base.Damage(amount, from, informMount, checkfizzle);
             else
             {
                 bool good = false;
 
-                if (from == Altar.Summoner || (Altar.DeadLine > DateTime.UtcNow && Altar.DeadLine - DateTime.UtcNow < TimeSpan.FromMinutes(10)))
+                if (from == Altar.Summoner || (Altar.DeadLine > DateTime.UtcNow &&
+                                               Altar.DeadLine - DateTime.UtcNow < TimeSpan.FromMinutes(10)))
                     good = true;
                 else if (from is BaseCreature && ((BaseCreature)from).GetMaster() == Altar.Summoner)
                     good = true;
@@ -58,10 +59,15 @@ namespace Server.Mobiles
                 }
 
                 if (good)
-                    base.Damage(amount, from, informMount, checkfizzle);
-                else if (from != null)
+                    amount = base.Damage(amount, from, informMount, checkfizzle);
+                else
+                {
+                    amount = 0;
                     from.SendLocalizedMessage(1151633); // You did not summon this champion, so you may not attack it at this time.
+                }
             }
+
+            return amount;
         }
 
         public override bool AutoDispel { get { return true; } }

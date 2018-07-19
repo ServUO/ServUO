@@ -4035,9 +4035,14 @@ namespace Server.Multis
 
         public static bool AtAccountHouseLimit(Mobile m)
         {
-            var max = m_AccountHouseLimit;
+            return GetAccountHouseCount(m) >= GetAccountHouseLimit(m);
+        }
 
-            return GetAccountHouseCount(m) >= max;
+        public static int GetAccountHouseLimit(Mobile m)
+        {
+            var max = m_AccountHouseLimit;
+            
+            return max;
         }
 
         public static bool CheckAccountHouseLimit(Mobile m, bool message = true)
