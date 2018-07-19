@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - EventLog.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Diagnostics;

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Movement.cs
-// **********
-#endregion
-
 namespace Server.Movement
 {
 	public static class Movement

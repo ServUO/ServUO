@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - WeakEntityCollection.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 using System.Collections.Generic;
 using System.IO;

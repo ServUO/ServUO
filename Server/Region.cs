@@ -1,19 +1,13 @@
-#region Header
-// **********
-// ServUO - Region.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using System.Linq;
+using System.Xml;
 
+using Server.Items;
 using Server.Network;
 using Server.Targeting;
-using Server.Items;
 #endregion
 
 namespace Server
@@ -126,6 +120,7 @@ namespace Server
 		TheVesperMist
 	}
 
+	[PropertyObject]
 	public class Region : IComparable
 	{
 		private static readonly List<Region> m_Regions = new List<Region>();
@@ -199,21 +194,45 @@ namespace Server
 
 		private Point3D m_GoLocation;
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public string Name { get { return m_Name; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public Map Map { get { return m_Map; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public Region Parent { get { return m_Parent; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public List<Region> Children { get { return m_Children; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public Rectangle3D[] Area { get { return m_Area; } }
+
 		public Sector[] Sectors { get { return m_Sectors; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Dynamic { get { return m_Dynamic; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public int Priority { get { return m_Priority; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public int ChildLevel { get { return m_ChildLevel; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Registered { get { return m_Registered; } }
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public Point3D GoLocation { get { return m_GoLocation; } set { m_GoLocation = value; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public MusicName Music { get; set; }
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public bool IsDefault { get { return m_Map.DefaultRegion == this; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public virtual MusicName DefaultMusic { get { return m_Parent != null ? m_Parent.Music : MusicName.Invalid; } }
 
 		public Region(string name, Map map, int priority, params Rectangle2D[] area)
@@ -993,22 +1012,22 @@ namespace Server
 				m_Parent.OnDeath(m);
 			}
 		}
-
-		public virtual bool OnDamage(Mobile m, ref int Damage)
+		
+		public virtual bool OnDamage(Mobile m, ref int damage)
 		{
 			if (m_Parent != null)
 			{
-				return m_Parent.OnDamage(m, ref Damage);
+				return m_Parent.OnDamage(m, ref damage);
 			}
 
 			return true;
 		}
-
-		public virtual bool OnHeal(Mobile m, ref int Heal)
+		
+		public virtual bool OnHeal(Mobile m, ref int heal)
 		{
 			if (m_Parent != null)
 			{
-				return m_Parent.OnHeal(m, ref Heal);
+				return m_Parent.OnHeal(m, ref heal);
 			}
 
 			return true;

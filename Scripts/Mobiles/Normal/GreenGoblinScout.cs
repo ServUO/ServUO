@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - GreenGoblinScout.cs
-// **********
-#endregion
-
 #region References
 using Server.Targeting;
 using Server.Items;

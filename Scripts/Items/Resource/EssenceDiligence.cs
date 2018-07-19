@@ -31,7 +31,7 @@ namespace Server.Items
                 return 1113338;
             }
         }// essence of diligence
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {

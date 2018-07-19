@@ -20,8 +20,10 @@ namespace Server.Accounting
             PacketHandlers.RegisterThrottler(0xCF, new ThrottlePacketCallback(Throttle_Callback));
         }
 
-        public static bool Throttle_Callback(NetState ns)
+        public static bool Throttle_Callback(NetState ns, out bool drop)
         {
+            drop = false;
+
             InvalidAccountAccessLog accessLog = FindAccessLog(ns);
 
             if (accessLog == null)

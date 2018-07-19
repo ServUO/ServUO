@@ -7,7 +7,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1116319; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Random.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.IO;

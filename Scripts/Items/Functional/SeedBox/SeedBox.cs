@@ -382,12 +382,12 @@ namespace Server.Engines.Plants
             if (v == 0)
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                {
+                    foreach (var item in Items)
                     {
-                        foreach (var item in Items)
-                        {
-                            item.Movable = false;
-                        }
-                    });
+                        item.Movable = false;
+                    }
+                });
             }
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckEntries);

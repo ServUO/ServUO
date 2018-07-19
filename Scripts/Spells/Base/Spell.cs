@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Spell.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -38,7 +32,10 @@ namespace Server.Spells
 		private long m_StartCastTime;
         private IDamageable m_InstantTarget;
 
+		public int ID { get { return SpellRegistry.GetRegistryNumber(this); } }
+
 		public SpellState State { get { return m_State; } set { m_State = value; } }
+
 		public Mobile Caster { get { return m_Caster; } }
 		public SpellInfo Info { get { return m_Info; } }
 		public string Name { get { return m_Info.Name; } }
@@ -46,6 +43,7 @@ namespace Server.Spells
 		public Type[] Reagents { get { return m_Info.Reagents; } }
 		public Item Scroll { get { return m_Scroll; } }
 		public long StartCastTime { get { return m_StartCastTime; } }
+
         public IDamageable InstantTarget { get { return m_InstantTarget; } set { m_InstantTarget = value; } }
 
         private static readonly TimeSpan NextSpellDelay = TimeSpan.FromSeconds(0.75);

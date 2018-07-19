@@ -94,6 +94,8 @@ namespace Server.Items
             }
         }
 
+        public virtual bool BreakOnDepletion { get { return true; } }
+
         public abstract HarvestSystem HarvestSystem { get; }
 
         public BaseHarvestTool(int itemID)
@@ -300,7 +302,6 @@ namespace Server.Items
         }
 
         #region ICraftable Members
-
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;

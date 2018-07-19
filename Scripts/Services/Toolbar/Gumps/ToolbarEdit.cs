@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - ToolbarEdit.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 using System.Collections.Generic;
 using System.Linq;

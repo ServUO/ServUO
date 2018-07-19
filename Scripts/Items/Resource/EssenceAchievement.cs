@@ -31,7 +31,7 @@ namespace Server.Items
                 return 1113325;
             }
         }// essence of achievement
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {

@@ -15,6 +15,7 @@ using Server.Regions;
 using Server.Spells;
 using Server.Commands;
 using Server.Commands.Generic;
+using Server.Services.Virtues;
 
 namespace Server.Engines.XmlSpawner2
 {

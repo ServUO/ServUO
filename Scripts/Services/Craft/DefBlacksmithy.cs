@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - DefBlacksmithy.cs
-// **********
-#endregion
-
 #region References
 using System;
 

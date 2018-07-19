@@ -7,6 +7,7 @@ using Server.Network;
 using Server.ContextMenus;
 using EDI = Server.Mobiles.EscortDestinationInfo;
 using Server.Engines.XmlSpawner2;
+using Server.Services.Virtues;
 
 namespace Server.Mobiles
 {

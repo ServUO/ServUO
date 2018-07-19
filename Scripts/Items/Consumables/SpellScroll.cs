@@ -38,7 +38,7 @@ namespace Server.Items
                 return this.m_SpellID;
             }
         }
-        int ICommodity.DescriptionNumber
+        TextDefinition ICommodity.Description
         {
             get
             {

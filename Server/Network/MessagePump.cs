@@ -1,12 +1,7 @@
-#region Header
-// **********
-// ServUO - MessagePump.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 
 using Server.Diagnostics;
@@ -16,16 +11,17 @@ namespace Server.Network
 {
 	public class MessagePump
 	{
-		private Listener[] m_Listeners;
 		private Queue<NetState> m_Queue;
 		private Queue<NetState> m_WorkingQueue;
 		private readonly Queue<NetState> m_Throttled;
 
+		public Listener[] Listeners { get; set; }
+		
 		public MessagePump()
 		{
 			var ipep = Listener.EndPoints;
 
-			m_Listeners = new Listener[ipep.Length];
+			Listeners = new Listener[ipep.Length];
 
 			bool success = false;
 
@@ -33,14 +29,9 @@ namespace Server.Network
 			{
 				for (int i = 0; i < ipep.Length; i++)
 				{
-					Listener l = new Listener(ipep[i]);
+					Listeners[i] = new Listener(ipep[i]);
 
-					if (!success)
-					{
-						success = true;
-					}
-
-					m_Listeners[i] = l;
+					success = true;
 				}
 
 				if (!success)
@@ -59,31 +50,30 @@ namespace Server.Network
 			m_Throttled = new Queue<NetState>();
 		}
 
-		public Listener[] Listeners { get { return m_Listeners; } set { m_Listeners = value; } }
-
 		public void AddListener(Listener l)
 		{
-			var old = m_Listeners;
+			var old = Listeners;
 
-			m_Listeners = new Listener[old.Length + 1];
+			Listeners = new Listener[old.Length + 1];
 
 			for (int i = 0; i < old.Length; ++i)
 			{
-				m_Listeners[i] = old[i];
+				Listeners[i] = old[i];
 			}
 
-			m_Listeners[old.Length] = l;
+			Listeners[old.Length] = l;
 		}
 
 		private void CheckListener()
 		{
-			for (int j = 0; j < m_Listeners.Length; ++j)
+			foreach (Listener l in Listeners)
 			{
-				var accepted = m_Listeners[j].Slice();
+				var accepted = l.Slice();
 
-				for (int i = 0; i < accepted.Length; ++i)
+				foreach (Socket s in accepted)
 				{
-					NetState ns = new NetState(accepted[i], this);
+					NetState ns = new NetState(s, this);
+
 					ns.Start();
 
 					if (ns.Running)
@@ -137,14 +127,13 @@ namespace Server.Network
 		private const int BufferSize = 4096;
 		private readonly BufferPool m_Buffers = new BufferPool("Processor", 4, BufferSize);
 
-		private static bool HandleSeed(NetState ns, ByteQueue buffer)
+		public static bool HandleSeed(NetState ns, ByteQueue buffer)
 		{
 			if (buffer.GetPacketID() == 0xEF)
 			{
 				// new packet in client	6.0.5.0	replaces the traditional seed method with a	seed packet
 				// 0xEF	= 239 =	multicast IP, so this should never appear in a normal seed.	 So	this is	backwards compatible with older	clients.
 				ns.Seeded = true;
-
 				return true;
 			}
 			
@@ -158,8 +147,8 @@ namespace Server.Network
 
 				if (seed == 0)
 				{
-					Utility.PushColor(ConsoleColor.Green);
-					Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", ns);
+					Utility.PushColor(ConsoleColor.Red);
+					Console.WriteLine("Login: {0}: Invalid Client", ns);
 					Utility.PopColor();
 
 					ns.Dispose();
@@ -176,12 +165,14 @@ namespace Server.Network
 			return false;
 		}
 
-		private static bool CheckEncrypted(NetState ns, int packetID)
+		public static bool CheckEncrypted(NetState ns, int packetID)
 		{
 			if (!ns.SentFirstPacket && packetID != 0xF0 && packetID != 0xF1 && packetID != 0xCF && packetID != 0x80 &&
 				packetID != 0x91 && packetID != 0xA4 && packetID != 0xEF && packetID != 0xE4 && packetID != 0xFF)
 			{
-				Console.WriteLine("Client: {0}: Encrypted client detected, disconnecting", ns);
+				Utility.PushColor(ConsoleColor.Red);
+				Console.WriteLine("Client: {0}: Encrypted Client Unsupported", ns);
+				Utility.PopColor();
 				
 				ns.Dispose();
 
@@ -257,8 +248,8 @@ namespace Server.Network
 					{
 						if (ns.Mobile == null)
 						{
-							Utility.PushColor(ConsoleColor.DarkRed);
-							Console.WriteLine("Client: {0}: Sent ingame packet (0x{1:X2}) before having been attached to a mobile", ns, packetID);
+							Utility.PushColor(ConsoleColor.Red);
+							Console.WriteLine("Client: {0}: Packet (0x{1:X2}) Requires State Mobile", ns, packetID);
 							Utility.PopColor();
 
 							ns.Dispose();
@@ -267,17 +258,30 @@ namespace Server.Network
 
 						if (ns.Mobile.Deleted)
 						{
+							Utility.PushColor(ConsoleColor.Red);
+							Console.WriteLine("Client: {0}: Packet (0x{1:X2}) Ivalid State Mobile", ns, packetID);
+							Utility.PopColor();
+
 							ns.Dispose();
-							break;
+							return;
 						}
 					}
 
 					ThrottlePacketCallback throttler = handler.ThrottleCallback;
 
-					if (throttler != null && !throttler(ns))
+					if (throttler != null)
 					{
-						m_Throttled.Enqueue(ns);
-						return;
+						bool drop;
+
+						if (!throttler(ns, out drop))
+						{
+							if (!drop)
+							{
+								m_Throttled.Enqueue(ns);
+							}
+
+							return;
+						}
 					}
 
 					PacketReceiveProfile prof = null;

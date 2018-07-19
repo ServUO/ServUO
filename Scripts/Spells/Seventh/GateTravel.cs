@@ -116,25 +116,25 @@ namespace Server.Spells.Seventh
             else if (this.CheckSequence())
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
-                    {
-                        Caster.SendLocalizedMessage(501024); // You open a magical gate to another location
+                {
+                    Caster.SendLocalizedMessage(501024); // You open a magical gate to another location
 
-                        Effects.PlaySound(this.Caster.Location, this.Caster.Map, 0x20E);
+                    Effects.PlaySound(this.Caster.Location, this.Caster.Map, 0x20E);
 
-                        InternalItem firstGate = new InternalItem(loc, map);
-                        firstGate.MoveToWorld(this.Caster.Location, this.Caster.Map);
+                    InternalItem firstGate = new InternalItem(loc, map);
+                    firstGate.MoveToWorld(this.Caster.Location, this.Caster.Map);
 
-                        Effects.PlaySound(loc, map, 0x20E);
+                    Effects.PlaySound(loc, map, 0x20E);
 
-                        InternalItem secondGate = new InternalItem(this.Caster.Location, this.Caster.Map);
-                        secondGate.MoveToWorld(loc, map);
+                    InternalItem secondGate = new InternalItem(this.Caster.Location, this.Caster.Map);
+                    secondGate.MoveToWorld(loc, map);
 
-                        firstGate.LinkedGate = secondGate;
-                        secondGate.LinkedGate = firstGate;
+                    firstGate.LinkedGate = secondGate;
+                    secondGate.LinkedGate = firstGate;
 
-                        firstGate.BoatGate = BaseBoat.FindBoatAt(firstGate, firstGate.Map) != null;
-                        secondGate.BoatGate = BaseBoat.FindBoatAt(secondGate, secondGate.Map) != null;
-                    });
+                    firstGate.BoatGate = BaseBoat.FindBoatAt(firstGate, firstGate.Map) != null;
+                    secondGate.BoatGate = BaseBoat.FindBoatAt(secondGate, secondGate.Map) != null;
+                });
             }
 
             this.FinishSequence();

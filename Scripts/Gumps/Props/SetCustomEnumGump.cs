@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - SetCustomEnumGump.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -22,7 +16,13 @@ namespace Server.Gumps
 		private readonly string[] _Names;
 
 		public SetCustomEnumGump(
-			PropertyInfo prop, Mobile mobile, object o, Stack stack, int propspage, ArrayList list, string[] names)
+			PropertyInfo prop,
+			Mobile mobile,
+			object o,
+			Stack stack,
+			int propspage,
+			ArrayList list,
+			string[] names)
 			: base(prop, mobile, o, stack, propspage, list, names, null)
 		{
 			_Names = names;
@@ -30,20 +30,26 @@ namespace Server.Gumps
 
 		public override void OnResponse(NetState sender, RelayInfo relayInfo)
 		{
-			int index = relayInfo.ButtonID - 1;
+			var index = relayInfo.ButtonID - 1;
 
 			if (index >= 0 && index < _Names.Length)
 			{
 				try
 				{
-					MethodInfo info = m_Property.PropertyType.GetMethod("Parse", new[] {typeof(string)});
+					var info = m_Property.PropertyType.GetMethod("Parse", new[] {typeof(string)});
 
-					string result = "";
+					var result = "";
 
 					if (info != null)
 					{
 						result = Properties.SetDirect(
-							m_Mobile, m_Object, m_Object, m_Property, m_Property.Name, info.Invoke(null, new object[] {_Names[index]}), true);
+							m_Mobile,
+							m_Object,
+							m_Object,
+							m_Property,
+							m_Property.Name,
+							info.Invoke(null, new object[] {_Names[index]}),
+							true);
 					}
 					else if (m_Property.PropertyType == typeof(Enum) || m_Property.PropertyType.IsSubclassOf(typeof(Enum)))
 					{
@@ -58,7 +64,7 @@ namespace Server.Gumps
 					}
 					else if (typeofIDynamicEnum.IsAssignableFrom(m_Property.PropertyType))
 					{
-						IDynamicEnum ienum = (IDynamicEnum)m_Property.GetValue(m_Object, null);
+						var ienum = (IDynamicEnum)m_Property.GetValue(m_Object, null);
 
 						if (ienum != null)
 						{

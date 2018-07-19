@@ -114,7 +114,7 @@ namespace Server.Commands
 
                             PackItem(new GMHidingStone());
                             PackItem(new GMEthereal());
-                            PackItem(new StaffOrb(from));
+                            PackItem(new StaffOrb());
 
                             PackItem(new Spellbook((ulong)18446744073709551615));
                             PackItem(new NecromancerSpellbook((ulong)0xffff));

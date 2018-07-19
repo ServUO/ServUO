@@ -78,12 +78,17 @@ namespace Server.Gumps
 			AddPage(0);
 
 			AddBackground(0, 0, BackWidth, BackHeight, BackGumpID);
-			AddImageTiled(BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), TotalHeight, OffsetGumpID);
+			AddImageTiled(
+				BorderSize,
+				BorderSize,
+				TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0),
+				TotalHeight,
+				OffsetGumpID);
 
 			var name = m_OldColor.IsNamedColor ? m_OldColor.Name : m_OldColor.IsEmpty ? "Empty" : "";
 
 			var rgb = "#" + (m_OldColor.ToArgb() & 0x00FFFFFF).ToString("X6");
-			
+
 			var val = String.Format("{0} ({1}) ({2},{3},{4})", name, rgb, m_OldColor.R, m_OldColor.G, m_OldColor.B);
 
 			AddRect(0, prop.Name, 0, -1);
@@ -150,7 +155,13 @@ namespace Server.Gumps
 			{
 				case 1: // Name
 				{
-					var toapply = name != string.Empty ? name : m_OldColor.IsNamedColor ? m_OldColor.Name : m_OldColor.IsEmpty ? "Empty" : "";
+					var toapply = name != string.Empty
+						? name
+						: m_OldColor.IsNamedColor
+							? m_OldColor.Name
+							: m_OldColor.IsEmpty
+								? "Empty"
+								: "";
 
 					toSet = Color.FromName(toapply);
 
@@ -178,7 +189,7 @@ namespace Server.Gumps
 				case 3: // Hex
 				{
 					var toapply = hex != string.Empty ? hex : String.Format("#{0:X6}", m_OldColor.ToArgb() & 0x00FFFFFF);
-					
+
 					int val;
 
 					if (Int32.TryParse(toapply.TrimStart('#'), NumberStyles.HexNumber, CultureInfo.CurrentCulture, out val))

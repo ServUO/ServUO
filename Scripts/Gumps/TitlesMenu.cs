@@ -639,13 +639,12 @@ namespace Server.Gumps
 
                     AddHtmlLocalized(225, 220, 160, 16, 1115029, 0xFFFF, false, false); // Subtitle
 
-                    string cust = null;
+                    string cust;
+
                     if (title == 1154017 && CityLoyaltySystem.HasCustomTitle(User, out cust))
-                    {
-                        AddHtmlLocalized(275, 240, 245, 16, 1154017, cust, 0xFFFF, false, false);
-                    }
-                    else
-                        AddHtmlLocalized(275, 240, 160, 32, (int)title, 0xFFFF, false, false);
+                        AddHtmlLocalized(275, 240, 245, 16, title, cust, 0xFFFF, false, false);
+                    else if(title != 1154017)
+                        AddHtmlLocalized(275, 240, 160, 32, title, 0xFFFF, false, false);
 
                     AddHtmlLocalized(225, 275, 200, 16, 1115035, 0xFFFF, false, false); // Do you wish to apply this title?
 

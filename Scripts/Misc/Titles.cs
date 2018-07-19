@@ -384,6 +384,7 @@ namespace Server.Misc
         private static int GetTableIndex(Skill skill)
         {
             int fp = skill == null ? 300 : skill.BaseFixedPoint;
+
             fp = Math.Min(fp, 1200);
 
             return (fp - 300) / 100;

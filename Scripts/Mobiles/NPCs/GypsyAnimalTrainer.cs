@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - GypsyAnimalTrainer.cs
-// **********
-#endregion
-
 namespace Server.Mobiles
 {
 	public class GypsyAnimalTrainer : AnimalTrainer

@@ -31,7 +31,7 @@ namespace Server.Items
                 return 1113326;
             }
         }// essence of passion
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {

@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - HelpPersistence.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 
 using System.IO;
 

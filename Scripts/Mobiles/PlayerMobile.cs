@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - PlayerMobile.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -42,12 +36,16 @@ using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 using System.Linq;
-using Server.Engines.VoidPool;
+
+using Server.Engines.CityLoyalty;
+using Server.Services.Virtues;
 using Server.Spells.SkillMasteries;
+using Server.Engines.SphynxFortune;
+using Server.Engines.VoidPool;
 using Server.Engines.VvV;
 
+
 using RankDefinition = Server.Guilds.RankDefinition;
-using Server.Engines.SphynxFortune;
 #endregion
 
 namespace Server.Mobiles
@@ -123,8 +121,15 @@ namespace Server.Mobiles
 	}
 	#endregion
 
-	public class PlayerMobile : Mobile, IHonorTarget
+	public partial class PlayerMobile : Mobile, IHonorTarget
 	{
+		public static List<PlayerMobile> Instances { get; private set; }
+
+		static PlayerMobile()
+		{
+			Instances = new List<PlayerMobile>(0x1000);
+		}
+
 		#region Mount Blocking
 		public void SetMountBlock(BlockMountType type, TimeSpan duration, bool dismount)
 		{
@@ -359,10 +364,12 @@ namespace Server.Mobiles
 				{
 					m_AllFollowers = new List<Mobile>();
 				}
+
 				return m_AllFollowers;
 			}
 		}
 
+		[CommandProperty(AccessLevel.GameMaster, true)]
 		public RankDefinition GuildRank
 		{
 			get
@@ -732,7 +739,7 @@ namespace Server.Mobiles
 
 			BounceInfo bi = item.GetBounce();
 
-			if (bi != null && (!Core.SA || AccessLevel >= AccessLevel.Counselor))
+			if (bi != null && (!Core.SA || AccessLevel > AccessLevel.Counselor))
 			{
 				Type type = item.GetType();
 
@@ -1276,7 +1283,6 @@ namespace Server.Mobiles
 
                 ReportMurdererGump.CheckMurderer(from);
 			}
-
             else if (Siege.SiegeShard && from.Map == Map.Trammel && from.AccessLevel == AccessLevel.Player)
             {
                 from.Map = Map.Felucca;
@@ -1291,14 +1297,14 @@ namespace Server.Mobiles
 
             if (from.NetState != null && from.NetState.IsEnhancedClient && from.Mount is EtherealMount)
             {
-                Timer.DelayCall<EtherealMount>(TimeSpan.FromSeconds(1), mount =>
+                Timer.DelayCall(TimeSpan.FromSeconds(1), mount =>
+                {
+                    if (mount.IsChildOf(from.Backpack))
                     {
-                        if (mount.IsChildOf(from.Backpack))
-                        {
-                            mount.Rider = from;
-                        }
-                    }, 
-                    (EtherealMount)from.Mount);
+                        mount.Rider = from;
+                    }
+                }, 
+                (EtherealMount)from.Mount);
             }
         }
 
@@ -2369,7 +2375,6 @@ namespace Server.Mobiles
 
                 if (house != null)
                 {
-
                     if (Alive && house.InternalizedVendors.Count > 0 && house.IsOwner(this))
                     {
                         list.Add(new CallbackEntry(6204, GetVendor));
@@ -2601,7 +2606,7 @@ namespace Server.Mobiles
 
         public static int GetInsuranceCost(Item item)
         {
-            var imbueWeight = SkillHandlers.Imbuing.GetTotalWeight(item);
+            var imbueWeight = Imbuing.GetTotalWeight(item);
             int cost = 600; // this handles old items, set items, etc
 
             if (item.GetType().IsAssignableFrom(typeof(Factions.FactionItem)))
@@ -2665,9 +2670,9 @@ namespace Server.Mobiles
                 _BlessedItem = null;
 
             BeginTarget(2, false, TargetFlags.None, (from, targeted) =>
-                {
-                    Siege.TryBlessItem(this, targeted);
-                });
+            {
+                Siege.TryBlessItem(this, targeted);
+            });
         }
 
         public override bool Drop(Point3D loc)
@@ -3080,6 +3085,18 @@ namespace Server.Mobiles
 			}
 		}
 
+		public override void OnAosSingleClick(Mobile from)
+		{
+			if (ViewOPL)
+			{
+				base.OnAosSingleClick(from);
+			}
+			else if (from.Region.OnSingleClick(from, this))
+			{
+				OnSingleClick(from);
+			}
+		}
+
 		public override void DisruptiveAction()
 		{
 			if (Meditating)
@@ -3248,7 +3265,12 @@ namespace Server.Mobiles
 		{
 			int msgNum = 0;
 
-			if (cont == null)
+			if (_BlessedItem != null && _BlessedItem == item)
+			{
+				msgNum = 1075282; // You cannot trade a blessed item.
+			}
+
+			if (msgNum == 0 && cont == null)
 			{
 				if (to.Holding != null)
 				{
@@ -3318,7 +3340,7 @@ namespace Server.Mobiles
 
 		private static int CheckContentForTrade(Item item)
 		{
-			if (item is TrapableContainer && ((TrapableContainer)item).TrapType != Server.Items.TrapType.None)
+			if (item is TrapableContainer && ((TrapableContainer)item).TrapType != TrapType.None)
 			{
 				return 1004044; // You may not trade trapped items.
 			}
@@ -3434,10 +3456,8 @@ namespace Server.Mobiles
 			{
 				return true;
 			}
-			else
-			{
-				return base.CheckShove(shoved);
-			}
+
+			return base.CheckShove(shoved);
 		}
 
 		protected override void OnMapChange(Map oldMap)
@@ -3641,7 +3661,7 @@ namespace Server.Mobiles
 		{
 			if (!item.Deleted && (item.LootType == LootType.Blessed || item.Insured))
 			{
-				if (Backpack != item.ParentEntity)
+				if (Backpack != item.Parent)
 				{
 					return true;
 				}
@@ -3725,6 +3745,7 @@ namespace Server.Mobiles
             {
                 m_ReceivedHonorContext.OnTargetKilled();
             }
+
             if (m_SentHonorContext != null)
             {
                 m_SentHonorContext.OnSourceKilled();
@@ -3742,7 +3763,8 @@ namespace Server.Mobiles
 
 		private bool CheckInsuranceOnDeath(Item item)
 		{
-            if (Young) { return false; }
+            if (Young)
+				return false;
 
 			if (InsuranceEnabled && item.Insured)
 			{
@@ -3753,6 +3775,7 @@ namespace Server.Mobiles
 				}
 
                 int insuredAmount = GetInsuranceCost(item);
+
 				if (AutoRenewInsurance)
 				{
 					int cost = (m_InsuranceAward == null ? insuredAmount : insuredAmount / 2);
@@ -3901,8 +3924,10 @@ namespace Server.Mobiles
             {
                 // This scales 700.0 skill points to 1000 valor points
                 int pointsToGain = (int)(SkillsTotal / 7);
+
                 // This scales 700.0 skill points to 7 minutes wait
                 int minutesToWait = Math.Max(1, (int)(SkillsTotal / 1000));
+
                 bool gainedPath = false;
 
                 if (VirtueHelper.Award(m, VirtueName.Justice, pointsToGain, ref gainedPath))
@@ -4119,6 +4144,8 @@ namespace Server.Mobiles
 
 		public PlayerMobile()
 		{
+			Instances.Add(this);
+
 			m_AutoStabled = new List<Mobile>();
 
 			#region Mondain's Legacy
@@ -4319,8 +4346,11 @@ namespace Server.Mobiles
 		public PlayerMobile(Serial s)
 			: base(s)
 		{
+			Instances.Add(this);
+
 			m_VisList = new List<Mobile>();
 			m_AntiMacroTable = new Hashtable();
+
 			InvalidateMyRunUO();
 		}
 
@@ -4330,7 +4360,8 @@ namespace Server.Mobiles
 
         public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck) + TenthAnniversarySculpture.GetLuckBonus(this); } }
 
-        public int RealLuck { 
+        public int RealLuck
+		{ 
             get
             {
                 int facetBonus = !Siege.SiegeShard && this.Map == Map.Felucca ? RandomItemGenerator.FeluccaLuckBonus : 250;
@@ -4428,6 +4459,7 @@ namespace Server.Mobiles
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
+
 			int version = reader.ReadInt();
 
 			switch (version)
@@ -4435,7 +4467,7 @@ namespace Server.Mobiles
                 case 37:
                     m_ExtendedFlags = (ExtendedPlayerFlag)reader.ReadInt();
 				    goto case 36;
-                case 36: // Reward Stable Slots
+                case 36:
                     RewardStableSlots = reader.ReadInt();
                     goto case 35;
                 case 35: // Siege Blessed Item
@@ -4836,6 +4868,19 @@ namespace Server.Mobiles
 			{
 				AddBuff(new BuffInfo(BuffIcon.HidingAndOrStealth, 1075655));
 			}
+
+			if (_BlessedItem != null)
+			{
+				Timer.DelayCall(
+				b =>
+				{
+					if (_BlessedItem == b && b.RootParent != this)
+					{
+						_BlessedItem = null;
+					}
+				},
+				_BlessedItem);
+			}
 		}
 
 		public override void Serialize(GenericWriter writer)
@@ -4868,6 +4913,11 @@ namespace Server.Mobiles
             writer.Write((int)m_ExtendedFlags);
 
             writer.Write(RewardStableSlots);
+			
+			if (_BlessedItem != null && _BlessedItem.RootParent != this)
+			{
+				_BlessedItem = null;
+			}
 
             writer.Write(_BlessedItem);
 
@@ -5135,6 +5185,8 @@ namespace Server.Mobiles
 		{
 			base.OnAfterDelete();
 
+			Instances.Remove(this);
+
 			Faction faction = Faction.Find(this);
 
 			if (faction != null)
@@ -5186,6 +5238,7 @@ namespace Server.Mobiles
 					if (m_RewardTitles[m_SelectedTitle] is int)
 					{
                         string cust = null;
+
                         if ((int)m_RewardTitles[m_SelectedTitle] == 1154017 && Server.Engines.CityLoyalty.CityLoyaltySystem.HasCustomTitle(this, out cust))
                         {
                             list.Add(1154017, cust); // ~1_TITLE~ of ~2_CITY~
@@ -5246,53 +5299,6 @@ namespace Server.Mobiles
 						list.Add(501129); // guarded
 						break;
 					}
-				}
-			}
-
-			if (AccessLevel > AccessLevel.Player)
-			{
-				string color = "";
-				switch (AccessLevel)
-				{
-					case AccessLevel.VIP:
-						color = "#1EFF00";
-						break;
-					case AccessLevel.Counselor:
-						color = "#00BFFF";
-						break; //Deep Sky Blue
-					case AccessLevel.Decorator:
-						color = "#FF8000";
-						break;
-					case AccessLevel.Spawner:
-						color = "#E6CC80";
-						break;
-					case AccessLevel.GameMaster:
-						color = "#FF0000";
-						break; //Red
-					case AccessLevel.Seer:
-						color = "#00FF00";
-						break; //Green
-					case AccessLevel.Administrator:
-						color = "#0070FF";
-						break;
-					case AccessLevel.Developer:
-						color = "#A335EE";
-						break;
-					case AccessLevel.CoOwner:
-						color = "#FFD700";
-						break;
-					case AccessLevel.Owner:
-						color = "#FFD700";
-						break;
-				}
-				if (IsStaff())
-				{
-					list.Add(
-						1060658, "{0}\t{1}", "Staff", String.Format("<BASEFONT COLOR={0}>{1}", color, GetAccessLevelName(AccessLevel)));
-				}
-				else
-				{
-					list.Add(1060658, "VIP");
 				}
 			}
 
@@ -5513,6 +5519,7 @@ namespace Server.Mobiles
 
                 return true;
             }
+
             return false;
         }
 
@@ -5555,7 +5562,9 @@ namespace Server.Mobiles
 			if (num == -1)
 			{
 				m_SelectedTitle = num;
-                if (!silent) SendLocalizedMessage(1074010); // You elect to hide your Reward Title.
+
+                if (!silent) 
+					SendLocalizedMessage(1074010); // You elect to hide your Reward Title.
 			}
             else if (num < m_RewardTitles.Count && num >= -1)
             {
@@ -5592,7 +5601,7 @@ namespace Server.Mobiles
 			if (title != null && !m_RewardTitles.Contains(title))
 			{
 				m_RewardTitles.Add(title);
-				//m_SelectedTitle = m_RewardTitles.Count - 1;
+
 				InvalidateProperties();
 				return true;
 			}
@@ -5657,104 +5666,53 @@ namespace Server.Mobiles
             set { m_ShowGuildAbbreviation = value; InvalidateProperties(); }
         }
 
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            if (!Core.SA)
-            {
-                base.AddNameProperties(list);
+		public override void AddNameProperties(ObjectPropertyList list)
+		{
+			base.AddNameProperties(list);
+			
+			var a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
+			var t = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "XmlPointsTitle");
 
-                XmlPoints a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
+			if ((t == null || t.Data != "True") && a != null)
+			{
+				list.Add(1070722, "Kills {0:#,0} / Deaths {1:#,0} : Rank {2:#,0}", a.Kills, a.Deaths, a.Rank);
+			}
+		}
 
-                XmlData XmlPointsTitle = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "XmlPointsTitle");
+		protected override void AlterName(ref string prefix, ref string name, ref string suffix)
+		{
+			base.AlterName(ref prefix, ref name, ref suffix);
 
-                if ((XmlPointsTitle != null && XmlPointsTitle.Data == "True") || a == null)
-                {
-                    return;
-                }
-                else if (IsPlayer())
-                {
-                    list.Add(1070722, "Kills {0} / Deaths {1} : Rank={2}", a.Kills, a.Deaths, a.Rank);
-                }
+			if (!CityLoyaltySystem.ApplyCityTitle(this, ref prefix, ref name, ref suffix))
+			{
+				if (!String.IsNullOrWhiteSpace(m_OverheadTitle))
+				{
+					if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith(" "))
+					{
+						suffix += " ";
+					}
 
-                return;
-            }
+					var loc = Utility.ToInt32(m_OverheadTitle.TrimStart('#'));
 
-            string name = Name;
+					if (loc > 0)
+					{
+						suffix += "#";
+					}
 
-            if (name == null)
-            {
-                name = String.Empty;
-            }
+					suffix += m_OverheadTitle;
+				}
+			}
 
-            string prefix = "";
-
-            if (ShowFameTitle && Fame >= 10000)
-            {
-                prefix = Female ? "Lady" : "Lord";
-            }
-
-            string suffix = "";
-
-            if (PropertyTitle && Title != null && Title.Length > 0)
-            {
-                suffix = Title;
-            }
-
-            BaseGuild guild = Guild;
-            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && Map == Faction.Facet;
-
-            if (!vvv && m_OverheadTitle != null)
-            {
-                int loc = Utility.ToInt32(m_OverheadTitle);
-
-                if (loc > 0)
-                {
-                    if(Server.Engines.CityLoyalty.CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
-                        return;
-                }
-                else if (suffix.Length > 0)
-                    suffix = String.Format("{0} {1}", suffix, m_OverheadTitle);
-                else
-                    suffix = String.Format("{0}", m_OverheadTitle);
-            }
-            else if (vvv || (guild != null && m_ShowGuildAbbreviation))
-            {
-                if (vvv)
-                {
-                    if (guild != null && m_ShowGuildAbbreviation)
-                        suffix = String.Format("[{0}][VvV]", Utility.FixHtml(guild.Abbreviation));
-                    else
-                        suffix = "[VvV]";
-                }
-                else if (suffix.Length > 0)
-                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
-                else
-                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
-            }
-
-            suffix = ApplyNameSuffix(suffix);
-
-            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
-
-            if (guild != null && DisplayGuildTitle)
-            {
-                string title = GuildTitle;
-
-                if (title == null)
-                {
-                    title = "";
-                }
-                else
-                {
-                    title = title.Trim();
-                }
-
-                if (title.Length > 0)
-                {
-                    list.Add("{0}, {1}", Utility.FixHtml(title), Utility.FixHtml(guild.Name));
-                }
-            }
-        }
+			if (Map == Faction.Facet && ViceVsVirtueSystem.IsVvV(this, false, true))
+			{
+				if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith("]") && !suffix.EndsWith(" "))
+				{
+					suffix += " ";
+				}
+				
+				suffix += "[VvV]";
+			}
+		}
         #endregion
 
 		#region MyRunUO Invalidation
@@ -5861,6 +5819,8 @@ namespace Server.Mobiles
 
 		public override void OnDelete()
 		{
+			Instances.Remove(this);
+
 			if (m_ReceivedHonorContext != null)
 			{
 				m_ReceivedHonorContext.Cancel();
@@ -5914,8 +5874,10 @@ namespace Server.Mobiles
 			return (running ? RunFoot : WalkFoot);
 		}
 
-		public static bool MovementThrottle_Callback(NetState ns)
+		public static bool MovementThrottle_Callback(NetState ns, out bool drop)
 		{
+			drop = false;
+
 			PlayerMobile pm = ns.Mobile as PlayerMobile;
 
 			if (pm == null || !pm.UsesFastwalkPrevention)

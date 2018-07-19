@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - GuardedRegion.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -18,8 +12,11 @@ namespace Server.Regions
 	public class GuardedRegion : BaseRegion
 	{
 		private static readonly object[] m_GuardParams = new object[1];
-		private readonly Type m_GuardType;
+
 		private readonly Dictionary<Mobile, GuardTimer> m_GuardCandidates = new Dictionary<Mobile, GuardTimer>();
+
+		private readonly Type m_GuardType;
+
 		private bool m_Disabled;
 
 		public GuardedRegion(string name, Map map, int priority, params Rectangle3D[] area)
@@ -59,7 +56,10 @@ namespace Server.Regions
 			}
 		}
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Disabled { get { return m_Disabled; } set { m_Disabled = value; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public virtual bool AllowReds { get { return Core.AOS; } }
 
 		public virtual Type DefaultGuardType
@@ -343,6 +343,7 @@ namespace Server.Regions
                     {
                         MakeGuard(m);
                     }
+
 					break;
 				}
 			}

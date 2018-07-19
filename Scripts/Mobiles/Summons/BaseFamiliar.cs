@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BaseFamiliar.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 using System;

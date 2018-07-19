@@ -197,6 +197,11 @@ namespace Server.Items
             }
         }
 
+        void IChopable.OnChop(Mobile user)
+        {
+            OnDoubleClick(user);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.InRange(this.GetWorldLocation(), 1))

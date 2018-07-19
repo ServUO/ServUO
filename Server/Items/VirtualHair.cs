@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - VirtualHair.cs
-// **********
-#endregion
-
 #region References
 using Server.Network;
 #endregion

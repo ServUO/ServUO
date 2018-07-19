@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Container.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -35,7 +29,9 @@ namespace Server.Items
             }
 
             if (item.GridLocation != pos)
+			{
                 item.GridLocation = pos;
+			}
 
             _Positions[pos] = item;
         }
@@ -83,6 +79,7 @@ namespace Server.Items
 
             return 0;
         }
+
         #endregion
 
         private static ContainerSnoopHandler m_SnoopHandler;
@@ -273,7 +270,7 @@ namespace Server.Items
                 }
             }
 
-            object parent = Parent;
+			var parent = Parent;
 
             while (parent != null)
             {
@@ -1505,11 +1502,6 @@ namespace Server.Items
             GridPositions = 0x00000010
         }
 
-        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
-        {
-            base.GetContextMenuEntries(from, list);
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -1528,6 +1520,7 @@ namespace Server.Items
             if (GetSaveFlag(flags, SaveFlag.GridPositions))
             {
                 writer.Write(_Positions.Count);
+
                 foreach (var kvp in _Positions)
                 {
                     writer.Write(kvp.Key);
@@ -1754,7 +1747,7 @@ namespace Server.Items
 
         public virtual bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            if (!CheckHold(from, dropped, sendFullMessage, !CheckStack(from, dropped)))
+			if (!CheckStack(from, dropped) && !CheckHold(from, dropped, sendFullMessage, true))
             {
                 return false;
             }
@@ -1878,7 +1871,7 @@ namespace Server.Items
                 return false;
             }
 
-            object root = RootParent;
+			var root = RootParent;
 
             if (root == null || root is Item || root == from || from.IsStaff())
             {
@@ -1898,9 +1891,7 @@ namespace Server.Items
             }
         }
 
-        private List<Mobile> m_Openers;
-
-        public List<Mobile> Openers { get { return m_Openers; } set { m_Openers = value; } }
+		public List<Mobile> Openers { get; set; }
 
         public virtual bool IsPublicContainer { get { return false; } }
 
@@ -1908,12 +1899,12 @@ namespace Server.Items
         {
             base.OnDelete();
 
-            m_Openers = null;
+			Openers = null;
         }
 
         public virtual void DisplayTo(Mobile to)
         {
-            ProcessOpeners(to);
+			ProcessOpeners(to);
 
             NetState ns = to.NetState;
 
@@ -1940,13 +1931,13 @@ namespace Server.Items
                 to.Send(new ContainerContent(to, this));
             }
 
-            if (ObjectPropertyList.Enabled)
+			if (to.ViewOPL)
             {
                 var items = Items;
 
-                for (int i = 0; i < items.Count; ++i)
+				foreach (var o in items)
                 {
-                    to.Send(items[i].OPLPacket);
+					to.Send(o.OPLPacket);
                 }
             }
         }
@@ -1957,14 +1948,14 @@ namespace Server.Items
             {
                 bool contains = false;
 
-                if (m_Openers != null)
+				if (Openers != null)
                 {
                     Point3D worldLoc = GetWorldLocation();
                     Map map = Map;
 
-                    for (int i = 0; i < m_Openers.Count; ++i)
+					for (int i = 0; i < Openers.Count; ++i)
                     {
-                        Mobile mob = m_Openers[i];
+						Mobile mob = Openers[i];
 
                         if (mob == opener)
                         {
@@ -1976,7 +1967,7 @@ namespace Server.Items
 
                             if (mob.Map != map || !mob.InRange(worldLoc, range))
                             {
-                                m_Openers.RemoveAt(i--);
+								Openers.RemoveAt(i--);
                             }
                         }
                     }
@@ -1984,16 +1975,16 @@ namespace Server.Items
 
                 if (!contains)
                 {
-                    if (m_Openers == null)
+					if (Openers == null)
                     {
-                        m_Openers = new List<Mobile>();
+						Openers = new List<Mobile>();
                     }
 
-                    m_Openers.Add(opener);
+					Openers.Add(opener);
                 }
-                else if (m_Openers != null && m_Openers.Count == 0)
+				else if (Openers != null && Openers.Count == 0)
                 {
-                    m_Openers = null;
+					Openers = null;
                 }
             }
         }

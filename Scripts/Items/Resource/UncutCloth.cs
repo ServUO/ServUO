@@ -32,7 +32,7 @@ namespace Server.Items
                 return 0.1;
             }
         }
-        int ICommodity.DescriptionNumber
+        TextDefinition ICommodity.Description
         {
             get
             {

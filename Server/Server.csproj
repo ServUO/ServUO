@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NEWTIMERS, ServUO</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NEWTIMERS;ServUO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -35,7 +35,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
-    <DefineConstants>TRACE;NEWTIMERS, ServUO</DefineConstants>
+    <DefineConstants>TRACE;NEWTIMERS;ServUO</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
@@ -202,7 +202,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ultima\Ultima.csproj">

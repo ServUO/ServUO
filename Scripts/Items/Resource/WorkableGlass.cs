@@ -5,7 +5,7 @@ namespace Server.Items
 {
 	public class WorkableGlass : Item, ICommodity
 	{
-		int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+		TextDefinition ICommodity.Description { get { return LabelNumber; } }
 		bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber { get { return 1154170; } } // workable glass

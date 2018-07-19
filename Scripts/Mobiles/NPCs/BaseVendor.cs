@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BaseVendor.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -19,6 +13,7 @@ using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
 using Server.Regions;
+using Server.Services.Virtues;
 using Server.Targeting;
 #endregion
 
@@ -408,8 +403,9 @@ namespace Server.Mobiles
 
 			SpeechHue = Utility.RandomDyedHue();
 			Hue = Utility.RandomSkinHue();
+			Female = GetGender();
 
-			if (Female = GetGender())
+			if (Female)
 			{
 				Body = 0x191;
 				Name = NameList.RandomName("female");
@@ -540,13 +536,13 @@ namespace Server.Mobiles
 		#region SA Change
         public virtual bool CheckTerMur()
         {
-            Map map = this.Map;
+            Map map = Map;
 
-            if (map != Map.TerMur || Server.Spells.SpellHelper.IsEodon(map, this.Location))
+            if (map != Map.TerMur || Server.Spells.SpellHelper.IsEodon(map, Location))
                 return false;
 
-            if (this.Body != 0x29A || this.Body != 0x29B)
-                this.TurnToGargRace();
+            if (Body != 0x29A || Body != 0x29B)
+                TurnToGargRace();
 
             return true;
         }
@@ -1013,10 +1009,6 @@ namespace Server.Mobiles
 				}
 			}
 
-			//one (not all) of the packets uses a byte to describe number of items in the list.  Osi = dumb.
-			//if ( list.Count > 255 )
-			//	Console.WriteLine( "Vendor Warning: Vendor {0} has more than 255 buy items, may cause client errors!", this );
-
 			if (list.Count > 0)
 			{
 				list.Sort(new BuyItemStateComparer());
@@ -1060,7 +1052,7 @@ namespace Server.Mobiles
 					}
 				}
 
-                this.SayTo(from, 500186, 0x3B2); // Greetings.  Have a look around.
+                SayTo(from, 500186, 0x3B2); // Greetings.  Have a look around.
 			}
 		}
 
@@ -1180,18 +1172,18 @@ namespace Server.Mobiles
 				
                 if (Core.ML && pm != null && pm.NextBODTurnInTime > DateTime.UtcNow)
 				{
-                    this.SayTo(from, 1079976, 0x3B2); // You'll have to wait a few seconds while I inspect the last order.
+                    SayTo(from, 1079976, 0x3B2); // You'll have to wait a few seconds while I inspect the last order.
 					return false;
 				}
 				else if (!IsValidBulkOrder(dropped) || !SupportsBulkOrders(from))
 				{
-                    this.SayTo(from, 1045130, 0x3B2); // That order is for some other shopkeeper.
+                    SayTo(from, 1045130, 0x3B2); // That order is for some other shopkeeper.
 					return false;
 				}
 				else if ((dropped is SmallBOD && !((SmallBOD)dropped).Complete) ||
 						 (dropped is LargeBOD && !((LargeBOD)dropped).Complete))
 				{
-                    this.SayTo(from, 1045131, 0x3B2); // You have not completed the order yet.
+                    SayTo(from, 1045131, 0x3B2); // You have not completed the order yet.
 					return false;
 				}
 
@@ -1211,7 +1203,7 @@ namespace Server.Mobiles
 
                 if (BulkOrderSystem.NewSystemEnabled && from is PlayerMobile)
                 {
-                    this.SayTo(from, 1157204, from.Name, 0x3B2); // Ho! Ho! Thank ye ~1_PLAYER~ for giving me a Bulk Order Deed!
+                    SayTo(from, 1157204, from.Name, 0x3B2); // Ho! Ho! Thank ye ~1_PLAYER~ for giving me a Bulk Order Deed!
 
                     BODContext context = BulkOrderSystem.GetContext(from); 
 
@@ -1246,7 +1238,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    this.SayTo(from, 1045132, 0x3B2); // Thank you so much!  Here is a reward for your effort.
+                    SayTo(from, 1045132, 0x3B2); // Thank you so much!  Here is a reward for your effort.
 
                     if (reward != null)
                     {
@@ -1370,48 +1362,48 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    this.SayTo(m, 1152293, 0x3B2); // My business is being watched by the Guild, so I can't be messing with bulk orders right now. Come back when there's less heat on me!
+                    SayTo(m, 1152293, 0x3B2); // My business is being watched by the Guild, so I can't be messing with bulk orders right now. Come back when there's less heat on me!
                     return;
                 }
             }
 
-            this.SayTo(m, 1152295, 0x3B2); // So you want to do a little business under the table?
+            SayTo(m, 1152295, 0x3B2); // So you want to do a little business under the table?
             m.SendLocalizedMessage(1152296); // Target a bulk order deed to show to the shopkeeper.
 
             m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+            {
+                IBOD bod = targeted as IBOD;
+
+                if (bod is Item && ((Item)bod).IsChildOf(from.Backpack))
                 {
-                    IBOD bod = targeted as IBOD;
-
-                    if (bod is Item && ((Item)bod).IsChildOf(from.Backpack))
+                    if (BulkOrderSystem.CanExchangeBOD(from, this, bod, -1))
                     {
-                        if (BulkOrderSystem.CanExchangeBOD(from, this, bod, -1))
+                        int amount = BulkOrderSystem.GetBribe(bod);
+                        amount *= BribeMultiplier;
+
+                        if (Bribes == null)
+                            Bribes = new Dictionary<Mobile, PendingBribe>();
+
+                        // Per EA, new bribe replaced old pending bribe
+                        if (!Bribes.ContainsKey(m))
                         {
-                            int amount = BulkOrderSystem.GetBribe(bod);
-                            amount *= BribeMultiplier;
-
-                            if (Bribes == null)
-                                Bribes = new Dictionary<Mobile, PendingBribe>();
-
-                            // Per EA, new bribe replaced old pending bribe
-                            if (!Bribes.ContainsKey(m))
-                            {
-                                Bribes[m] = new PendingBribe(bod, amount);
-                            }
-                            else
-                            {
-                                Bribes[m].BOD = bod;
-                                Bribes[m].Amount = amount;
-                            }
-
-                            this.SayTo(from, 1152292, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")), 0x3B2);
-                            // If you help me out, I'll help you out. I can replace that bulk order with a better one, but it's gonna cost you ~1_amt~ gold coin. Payment is due immediately. Just hand me the order and I'll pull the old switcheroo.
+                            Bribes[m] = new PendingBribe(bod, amount);
                         }
+                        else
+                        {
+                            Bribes[m].BOD = bod;
+                            Bribes[m].Amount = amount;
+                        }
+
+                        SayTo(from, 1152292, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")), 0x3B2);
+                        // If you help me out, I'll help you out. I can replace that bulk order with a better one, but it's gonna cost you ~1_amt~ gold coin. Payment is due immediately. Just hand me the order and I'll pull the old switcheroo.
                     }
-                    else if (bod == null)
-                    {
-                        this.SayTo(from, 1152297, 0x3B2); // That is not a bulk order deed.
-                    }
-                });
+                }
+                else if (bod == null)
+                {
+                    SayTo(from, 1152297, 0x3B2); // That is not a bulk order deed.
+                }
+            });
         }
 
         public void DoBribe(Mobile m, IBOD bod)
@@ -1425,7 +1417,7 @@ namespace Server.Mobiles
                 WatchEnds = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(120, 180));
             }
 
-            this.SayTo(m, 1152303, 0x3B2); // You'll find this one much more to your liking. It's been a pleasure, and I look forward to you greasing my palm again very soon.
+            SayTo(m, 1152303, 0x3B2); // You'll find this one much more to your liking. It's been a pleasure, and I look forward to you greasing my palm again very soon.
 
             if (Bribes.ContainsKey(m))
             {
@@ -1701,11 +1693,11 @@ namespace Server.Mobiles
 
 			if (fullPurchase && validBuy.Count == 0)
 			{
-                this.SayTo(buyer, 500190, 0x3B2); // Thou hast bought nothing!
+                SayTo(buyer, 500190, 0x3B2); // Thou hast bought nothing!
 			}
 			else if (validBuy.Count == 0)
 			{
-				this.SayTo(buyer, 500187, 0x3B2); // Your order cannot be fulfilled, please try again.
+				SayTo(buyer, 500187, 0x3B2); // Your order cannot be fulfilled, please try again.
 			}
 
 			if (validBuy.Count == 0)
@@ -1714,8 +1706,9 @@ namespace Server.Mobiles
 			}
 
 			bought = buyer.AccessLevel >= AccessLevel.GameMaster;
-			var discount = 0.0;
 			cont = buyer.Backpack;
+
+			var discount = 0.0;
 
 			if (Core.SA && HasHonestyDiscount)
 			{
@@ -1734,6 +1727,7 @@ namespace Server.Mobiles
 						discountPc = 0;
 						break;
 				}
+
 				discount = totalCost - (totalCost * (1.0 - discountPc));
 				totalCost -= discount;
 			}
@@ -1778,7 +1772,7 @@ namespace Server.Mobiles
 			{
 				// ? Begging thy pardon, but thy bank account lacks these funds. 
 				// : Begging thy pardon, but thou casnt afford that.
-                this.SayTo(buyer, totalCost >= 2000 ? 500191 : 500192, 0x3B2);
+                SayTo(buyer, totalCost >= 2000 ? 500191 : 500192, 0x3B2);
 
 				return false;
 			}
@@ -1872,14 +1866,14 @@ namespace Server.Mobiles
 
 			if (discount > 0)
 			{
-                this.SayTo(buyer, 1151517, discount.ToString(), 0x3B2);
+                SayTo(buyer, 1151517, discount.ToString(), 0x3B2);
 			}
 
 			if (fullPurchase)
 			{
 				if (buyer.AccessLevel >= AccessLevel.GameMaster)
 				{
-                    this.SayTo(
+                    SayTo(
                         buyer,
                         0x3B2,
                         "I would not presume to charge thee anything.  Here are the goods you requested.", 
@@ -1888,7 +1882,7 @@ namespace Server.Mobiles
 				}
 				else if (fromBank)
 				{
-					this.SayTo(
+					SayTo(
 						buyer,
                         0x3B2,
 						"The total of thy purchase is {0} gold, which has been withdrawn from your bank account.  My thanks for the patronage.",
@@ -1897,14 +1891,14 @@ namespace Server.Mobiles
 				}
 				else
 				{
-                    this.SayTo(buyer, String.Format("The total of thy purchase is {0} gold.  My thanks for the patronage.", totalCost), 0x3B2, true);
+                    SayTo(buyer, String.Format("The total of thy purchase is {0} gold.  My thanks for the patronage.", totalCost), 0x3B2, true);
 				}
 			}
 			else
 			{
 				if (buyer.AccessLevel >= AccessLevel.GameMaster)
 				{
-					this.SayTo(
+					SayTo(
 						buyer,
                         0x3B2,
 						"I would not presume to charge thee anything.  Unfortunately, I could not sell you all the goods you requested.",
@@ -1913,7 +1907,7 @@ namespace Server.Mobiles
 				}
 				else if (fromBank)
 				{
-                    this.SayTo(
+                    SayTo(
                         buyer,
                         0x3B2,
                         "The total of thy purchase is {0} gold, which has been withdrawn from your bank account.  My thanks for the patronage.  Unfortunately, I could not sell you all the goods you requested.", 
@@ -1922,7 +1916,7 @@ namespace Server.Mobiles
 				}
 				else
 				{
-					this.SayTo(
+					SayTo(
 						buyer,
                         0x3B2,
 						"The total of thy purchase is {0} gold.  My thanks for the patronage.  Unfortunately, I could not sell you all the goods you requested.",
@@ -2101,7 +2095,7 @@ namespace Server.Mobiles
 
 			if (Sold > MaxSell)
 			{
-                this.SayTo(seller, "You may only sell {0} items at a time!", MaxSell, 0x3B2, true);
+                SayTo(seller, "You may only sell {0} items at a time!", MaxSell, 0x3B2, true);
 				return false;
 			}
 			else if (Sold == 0)
@@ -2284,12 +2278,12 @@ namespace Server.Mobiles
             if (NextMultiplierDecay != DateTime.MinValue && NextMultiplierDecay < DateTime.UtcNow)
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
-                    {
-                        if (BribeMultiplier > 0)
-                            BribeMultiplier /= 2;
+                {
+                    if (BribeMultiplier > 0)
+                        BribeMultiplier /= 2;
 
-                        CheckNextMultiplierDecay();
-                    });
+                    CheckNextMultiplierDecay();
+                });
             }
 		}
 
@@ -2309,7 +2303,7 @@ namespace Server.Mobiles
                 case 2:
                     BribeMultiplier = reader.ReadInt();
                     NextMultiplierDecay = reader.ReadDateTime();
-                    CheckNextMultiplierDecay(false);  // Reset NextMultiplierDecay if it is out of range of the config
+                    CheckNextMultiplierDecay(false); // Reset NextMultiplierDecay if it is out of range of the config
                     RecentBribes = reader.ReadInt();
                     goto case 1;
 				case 1:

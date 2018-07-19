@@ -34,11 +34,6 @@ namespace Server.Misc
             {
                 Server.Engines.Help.PageQueue.Pages_OnCalled(m);
             }
-
-            if (args.Mobile.NetState == null)
-            {
-                return;
-            }
         }
     }
 }

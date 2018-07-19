@@ -1,8 +1,11 @@
+#region References
 using System;
 using System.IO;
-using System.Linq;
 
 using Microsoft.Win32;
+
+using Ultima;
+#endregion
 
 namespace Server.Misc
 {
@@ -15,6 +18,30 @@ namespace Server.Misc
         *  private static string CustomPath = @"C:\Program Files\Ultima Online";
         */
         private static readonly string CustomPath = Config.Get(@"DataPath.CustomPath", null);
+
+		static DataPath()
+		{
+			string path;
+
+			if (CustomPath != null)
+			{
+				path = CustomPath;
+			}
+			else if (!Core.Unix)
+			{
+				path = Files.LoadDirectory();
+			}
+			else
+			{
+				path = null;
+			}
+
+			if (!String.IsNullOrWhiteSpace(path))
+			{
+				Core.DataDirectories.Add(path);
+			}
+		}
+
         /* The following is a list of files which a required for proper execution:
         * 
         * Multi.idx
@@ -32,27 +59,31 @@ namespace Server.Misc
         */
         public static void Configure()
         {
-        	if (CustomPath != null) 
-                	Core.DataDirectories.Add(CustomPath);
-		else
-            	{
-			if(Ultima.Files.LoadDirectory() != null && !Core.Unix)
-			{	
-				Core.DataDirectories.Add(Ultima.Files.LoadDirectory());
+        	if (CustomPath != null)
+			{
+                Core.DataDirectories.Add(CustomPath);
 			}
-		}	
+			else if(Files.LoadDirectory() != null && !Core.Unix)
+			{	
+				Core.DataDirectories.Add(Files.LoadDirectory());
+			}
 
-		if (Core.DataDirectories.Count == 0 && !Core.Service)
-		{
-		Console.WriteLine("Enter the Ultima Online directory:");
-                Console.Write("> ");
-
-                Core.DataDirectories.Add(Console.ReadLine());
-	}
-	Ultima.Files.SetMulPath(Core.DataDirectories[0]);
-	Utility.PushColor(ConsoleColor.DarkYellow);
-	Console.WriteLine("DataPath: " + Core.DataDirectories[0]);
-	Utility.PopColor();
+			if (Core.DataDirectories.Count == 0 && !Core.Service)
+			{
+				Console.WriteLine("Enter the Ultima Online directory:");
+	            Console.Write("> ");
+	
+	            Core.DataDirectories.Add(Console.ReadLine());
+			}
+	
+			foreach (var path in Core.DataDirectories)
+			{
+				Files.SetMulPath(path);
+			}
+		
+			Utility.PushColor(ConsoleColor.DarkYellow);
+			Console.WriteLine("DataPath: " + Core.DataDirectories[0]);
+			Utility.PopColor();
         }
 
         private static string GetPath(string subName, string keyName)
@@ -66,12 +97,12 @@ namespace Server.Misc
                 else
                     keyString = @"SOFTWARE\{0}";
 
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(String.Format(keyString, subName)))
+                using (var key = Registry.LocalMachine.OpenSubKey(String.Format(keyString, subName)))
                 {
                     if (key == null)
                         return null;
 
-                    string v = key.GetValue(keyName) as string;
+                    var v = key.GetValue(keyName) as string;
 
                     if (String.IsNullOrEmpty(v))
                         return null;

@@ -248,16 +248,21 @@ namespace Server.Gumps
             switch ( m.AccessLevel )
             {
                 case AccessLevel.Owner:
+                case AccessLevel.CoOwner:
                 case AccessLevel.Developer:
-                case AccessLevel.Administrator: return EC ? 0x51D : 0x516;
-                case AccessLevel.Seer: return EC ? 0x142 : 0x144;
-                case AccessLevel.GameMaster: return EC ? 0x11 : 0x21;
-                case AccessLevel.Decorator: return 0x2;
+                case AccessLevel.Administrator: 
+					return EC ? 0x51D : 0x516;
+                case AccessLevel.Seer: 
+					return EC ? 0x142 : 0x144;
+                case AccessLevel.GameMaster: 
+					return EC ? 0x11 : 0x21;
+                case AccessLevel.Decorator: 
+					return 0x2;
                 case AccessLevel.VIP:
                 case AccessLevel.Player:
                 default:
                     {
-                        if (m.Kills >= 5)
+                        if (m.Murderer)
                             return EC ? 0x20 : 0x21;
                         else if (m.Criminal)
                             return EC ? 0x3AE : 0x3B1;

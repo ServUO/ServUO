@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Server.Services.Virtues;
+
 namespace Server.Spells.Spellweaving
 {
     public class AttuneWeaponSpell : ArcanistSpell

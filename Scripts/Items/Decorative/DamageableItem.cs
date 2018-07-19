@@ -303,12 +303,12 @@ namespace Server.Items
 		{
 		}
 
-        public virtual void Damage(int amount, Mobile from, int type)
+        public virtual int Damage(int amount, Mobile from, int type)
         {
             if (!CanDamage && from.Combatant == this)
             {
                 from.Combatant = null;
-                return;
+                return 0;
             }
 
             Hits -= amount;
@@ -322,6 +322,8 @@ namespace Server.Items
             SendDamagePacket(from, amount);
 
             OnDamage(amount, from, Hits < 0);
+
+			return amount;
         }
 
         public virtual void SendDamagePacket(Mobile from, int amount)

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Barkeeper.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 

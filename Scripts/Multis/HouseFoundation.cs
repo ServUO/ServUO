@@ -2095,6 +2095,7 @@ namespace Server.Multis
 
             switch( version )
             {
+                case 1:
                 case 0:
                     {
                         m_Components = new MultiComponentList(reader);
@@ -2109,7 +2110,11 @@ namespace Server.Multis
                             m_Fixtures[i].m_OffsetX = reader.ReadShort();
                             m_Fixtures[i].m_OffsetY = reader.ReadShort();
                             m_Fixtures[i].m_OffsetZ = reader.ReadShort();
-                            m_Fixtures[i].m_Flags = reader.ReadInt();
+
+                            if (version > 0)
+                                m_Fixtures[i].m_Flags = (TileFlag)reader.ReadULong();
+                            else
+                                m_Fixtures[i].m_Flags = (TileFlag)reader.ReadInt();
                         }
 
                         m_Revision = reader.ReadInt();
@@ -2121,7 +2126,7 @@ namespace Server.Multis
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 
             m_Components.Serialize(writer);
 
@@ -2135,7 +2140,8 @@ namespace Server.Multis
                 writer.Write((short)ent.m_OffsetX);
                 writer.Write((short)ent.m_OffsetY);
                 writer.Write((short)ent.m_OffsetZ);
-                writer.Write((int)ent.m_Flags);
+
+                writer.Write((ulong)ent.m_Flags);
             }
 
             writer.Write((int)m_Revision);
