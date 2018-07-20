@@ -88,6 +88,17 @@ namespace Server.Mobiles
                 return OppositionGroup.FeyAndUndead;
             }
         }
+        
+        public override bool IsEnemy(Mobile m)
+        {
+            if(Region.IsPartOf("Haven Island"))
+            {
+                return false;
+            }
+            
+            return base.IsEnemy(m);
+        }
+        
        public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Poor);
