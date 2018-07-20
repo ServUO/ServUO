@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server.Engines.Craft;
 using Server.Items;
+using System.Linq;
 
 namespace Server.Engines.BulkOrders
 {
@@ -48,28 +49,33 @@ namespace Server.Engines.BulkOrders
 
                 SmallBulkEntry entry = entries[Utility.Random(entries.Length)];
 
-                this.Hue = 1109;
-                this.AmountMax = amountMax;
-                this.Type = entry.Type;
-                this.Number = entry.Number;
-                this.Graphic = entry.Graphic;
-                this.RequireExceptional = reqExceptional;
-                this.Material = material;
-                this.GraphicHue = entry.Hue;
+                if (IsTool(entry.Type) && material != BulkMaterialType.None)
+                {
+                    material = BulkMaterialType.None;
+                }
+
+                Hue = 1109;
+                AmountMax = amountMax;
+                Type = entry.Type;
+                Number = entry.Number;
+                Graphic = entry.Graphic;
+                RequireExceptional = reqExceptional;
+                Material = material;
+                GraphicHue = entry.Hue;
             }
         }
 
         public SmallTinkerBOD(int amountCur, int amountMax, Type type, int number, int graphic, bool reqExceptional, BulkMaterialType mat, int hue)
         {
-            this.Hue = 1109;
-            this.AmountMax = amountMax;
-            this.AmountCur = amountCur;
-            this.Type = type;
-            this.Number = number;
-            this.Graphic = graphic;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
-            this.GraphicHue = hue;
+            Hue = 1109;
+            AmountMax = amountMax;
+            AmountCur = amountCur;
+            Type = type;
+            Number = number;
+            Graphic = graphic;
+            RequireExceptional = reqExceptional;
+            Material = mat;
+            GraphicHue = hue;
         }
 
         public SmallTinkerBOD(Serial serial)
@@ -79,13 +85,13 @@ namespace Server.Engines.BulkOrders
 
         private SmallTinkerBOD(SmallBulkEntry entry, BulkMaterialType material, int amountMax, bool reqExceptional)
         {
-            this.Hue = 1109;
-            this.AmountMax = amountMax;
-            this.Type = entry.Type;
-            this.Number = entry.Number;
-            this.Graphic = entry.Graphic;
-            this.RequireExceptional = reqExceptional;
-            this.Material = material;
+            Hue = 1109;
+            AmountMax = amountMax;
+            Type = entry.Type;
+            Number = entry.Number;
+            Graphic = entry.Graphic;
+            RequireExceptional = reqExceptional;
+            Material = material;
         }
 
         public static SmallTinkerBOD CreateRandomFor(Mobile m)
@@ -162,7 +168,7 @@ namespace Server.Engines.BulkOrders
                 {
                     SmallBulkEntry entry = validEntries[Utility.Random(validEntries.Count)];
 
-                    if (entry.Type.IsSubclassOf(typeof(BaseTool)) && material != BulkMaterialType.None)
+                    if (IsTool(entry.Type) && material != BulkMaterialType.None)
                         material = BulkMaterialType.None;
 
                     return new SmallTinkerBOD(entry, material, amountMax, reqExceptional);
@@ -172,13 +178,24 @@ namespace Server.Engines.BulkOrders
             return null;
         }
 
+        private static bool IsTool(Type t)
+        {
+            return _Tools.Any(x => x == t);
+        }
+
+        private static Type[] _Tools =
+        {
+            typeof(MortarPestle), typeof(SmithHammer), typeof(SmithyHammer), typeof(Skillet),
+            typeof(SewingKit), typeof(FletcherTools), typeof(SledgeHammer), typeof(Clippers)
+        };
+
         public override bool CheckType(Type itemType)
         {
             bool check = base.CheckType(itemType);
 
             if (!check)
             {
-                check = CheckTinkerType(itemType, this.Type);
+                check = CheckTinkerType(itemType, Type);
             }
 
             return check;
@@ -278,7 +295,7 @@ namespace Server.Engines.BulkOrders
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -286,6 +303,11 @@ namespace Server.Engines.BulkOrders
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0 && IsTool(Type) && Material != BulkMaterialType.None)
+            {
+                Material = BulkMaterialType.None;
+            }
         }
     }
 }
