@@ -56,20 +56,20 @@ namespace Server.Engines.BulkOrders
             else
                 material = BulkMaterialType.None;
 
-            this.Hue = 1109;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
-            this.RequireExceptional = reqExceptional;
-            this.Material = material;
+            Hue = 1109;
+            AmountMax = amountMax;
+            Entries = entries;
+            RequireExceptional = reqExceptional;
+            Material = material;
         }
 
         public LargeTinkerBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
         {
-            this.Hue = 1109;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
+            Hue = 1109;
+            AmountMax = amountMax;
+            Entries = entries;
+            RequireExceptional = reqExceptional;
+            Material = mat;
         }
 
         public LargeTinkerBOD(Serial serial)
