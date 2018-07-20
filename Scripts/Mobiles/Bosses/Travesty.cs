@@ -76,6 +76,11 @@ namespace Server.Mobiles
             SetSkill(SkillName.Ninjitsu, 100.0, 120.0);
             SetSkill(SkillName.Chivalry, 100.0, 120.0);
 
+            SetSkill(SkillName.Musicianship, 100.0, 120.0);
+            SetSkill(SkillName.Discordance, 100.0, 120.0);
+            SetSkill(SkillName.Provocation, 100.0, 120.0);
+            SetSkill(SkillName.Peacemaking, 100.0, 120.0);
+
             Fame = 30000;
             Karma = -30000;
 
@@ -211,13 +216,12 @@ namespace Server.Mobiles
 
             eable.Free();
 
-            if (list.Count <= 0 && IsBodyMod)
+            if (list.Count == 0 || IsBodyMod)
             {
-                RestoreBody();
                 return;
             }
 
-            Mobile attacker = (Mobile)list[Utility.Random(list.Count - 1)];
+            Mobile attacker = list[Utility.Random(list.Count)];
 
             BodyMod = attacker.Body;
             HueMod = attacker.Hue;
@@ -245,7 +249,17 @@ namespace Server.Mobiles
                     {
                         if (item is BaseRanged)
                         {
-                            ranged = item.GetType();
+                            Item i = FindItemOnLayer(Layer.TwoHanded);
+
+                            if (i != null)
+                                i.Delete();
+
+                            i = FindItemOnLayer(Layer.OneHanded);
+
+                            if (i != null)
+                                i.Delete();
+
+                            AddItem(Loot.Construct(item.GetType()));
                         }
                         else
                         {
