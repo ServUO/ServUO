@@ -141,7 +141,7 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.025)
             {
-                switch (Utility.Random(7))
+                switch (Utility.Random(4))
                 {
                     case 0:
                         c.DropItem(new AssassinLegs());
@@ -154,15 +154,6 @@ namespace Server.Mobiles
                         break;
                     case 3:
                         c.DropItem(new MalekisHonor());
-                        break;
-                    case 4:
-                        c.DropItem(new JusticeBreastplate());
-                        break;
-                    case 5:
-                        c.DropItem(new CompassionArms());
-                        break;
-                    case 6:
-                        c.DropItem(new ValorGauntlets());
                         break;
                 }
             }
@@ -409,13 +400,13 @@ namespace Server.Mobiles
 
         public static void SpawnNinjaGroup(Point3D _location)
         {
-            BaseCreature ninja = new BlackOrderAssassin();
+            BaseCreature ninja = new DragonsFlameMage();
             ninja.MoveToWorld(_location, Map.Malas);
 
-            ninja = new BlackOrderThief();
+            ninja = new SerpentsFangAssassin();
             ninja.MoveToWorld(_location, Map.Malas);
 
-            ninja = new BlackOrderMage();
+            ninja = new TigersClawThief();
             ninja.MoveToWorld(_location, Map.Malas);
         }
 
