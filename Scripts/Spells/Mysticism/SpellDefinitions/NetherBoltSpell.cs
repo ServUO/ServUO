@@ -25,7 +25,7 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void OnTarget(IDamageable d)
@@ -71,13 +71,13 @@ namespace Server.Spells.Mysticism
         {
             public NetherBoltSpell Owner { get; set; }
 
-            public InternalTarget(NetherBoltSpell owner, TargetFlags flags)
-                : this(owner, false, flags)
+            public InternalTarget(NetherBoltSpell owner)
+                : this(owner, false)
             {
             }
 
-            public InternalTarget(NetherBoltSpell owner, bool allowland, TargetFlags flags)
-                : base(12, allowland, flags)
+            public InternalTarget(NetherBoltSpell owner, bool allowland)
+                : base(12, allowland, TargetFlags.Harmful)
             {
                 Owner = owner;
             }

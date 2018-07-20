@@ -7,6 +7,7 @@ using System.Linq;
 using System.Globalization;
 using Server.Network;
 using Server.Commands;
+using Server.Items;
 
 namespace Server.Engines.CityLoyalty
 {
@@ -96,6 +97,8 @@ namespace Server.Engines.CityLoyalty
         public static readonly int MaxBallotBoxes = Config.Get("CityLoyalty.MaxBallotBoxes", 10);
         public static readonly int AnnouncementPeriod = Config.Get("CityLoyalty.AnnouncementPeriod", 48);
 
+        public static readonly TimeSpan LoveAtrophyDuration = TimeSpan.FromHours(40);
+
         public override TextDefinition Name { get { return new TextDefinition(String.Format("{0}", this.City.ToString())); } }
         public override bool AutoAdd { get { return false; } }
         public override double MaxPoints { get { return double.MaxValue; } }
@@ -145,6 +148,9 @@ namespace Server.Engines.CityLoyalty
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityStone Stone { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CityMessageBoard Board { get; set; }
 
         private Mobile _Governor;
         private Mobile _GovernorElect;
@@ -306,7 +312,11 @@ namespace Server.Engines.CityLoyalty
 			}
 
             entry.Hate += (int)hate;
-            from.SendLocalizedMessage(1152321, Definition.Name); // Your deeds in the city of ~1_name~ are worthy of censure.
+
+            if (entry.ShowGainMessage)
+            {
+                from.SendLocalizedMessage(1152321, Definition.Name); // Your deeds in the city of ~1_name~ are worthy of censure.
+            }
 
             if (from == Governor && entry.LoyaltyRating < LoyaltyRating.Unknown)
                 Governor = null;
@@ -338,8 +348,10 @@ namespace Server.Engines.CityLoyalty
 				}
 			}
 
-            if(message)
+            if (message && entry.ShowGainMessage)
+            {
                 from.SendLocalizedMessage(1152320, Definition.Name); // Your deeds in the city of ~1_name~ are worthy of praise.
+            }
 
 			entry.Love += (int)love;
 		}
@@ -611,7 +623,7 @@ namespace Server.Engines.CityLoyalty
             EventSink.Login += OnLogin;
             Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), OnTick);
 
-            CommandSystem.Register("ElectionStartTime", AccessLevel.Administrator, e => e.Mobile.SendGump(new ElectionStartTimeGump(e.Mobile as PlayerMobile)));
+            CommandSystem.Register("ElectionStartTime", AccessLevel.Administrator, e => Server.Gumps.BaseGump.SendGump(new ElectionStartTimeGump(e.Mobile as PlayerMobile)));
             CommandSystem.Register("RemoveWait", AccessLevel.Administrator, e =>
                 {
                     foreach (var city in Cities)
@@ -622,8 +634,11 @@ namespace Server.Engines.CityLoyalty
 
             CommandSystem.Register("SystemInfo", AccessLevel.Administrator, e => 
             {
-                e.Mobile.CloseGump(typeof(SystemInfoGump));
-                e.Mobile.SendGump(new SystemInfoGump());
+                if (e.Mobile is PlayerMobile)
+                {
+                    e.Mobile.CloseGump(typeof(SystemInfoGump));
+                    Server.Gumps.BaseGump.SendGump(new SystemInfoGump((PlayerMobile)e.Mobile));
+                }
             });
         }
 
@@ -657,12 +672,31 @@ namespace Server.Engines.CityLoyalty
 
             CityLoyaltySystem sys = GetCitizenship(pm);
 
-            if (sys != null && sys.ActiveTradeDeal != TradeDeal.None)
+            if (sys != null)
             {
-                CityLoyaltyEntry entry = sys.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
+                if (sys.ActiveTradeDeal != TradeDeal.None)
+                {
+                    CityLoyaltyEntry entry = sys.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-                if(entry != null && entry.UtilizingTradeDeal)
-                    BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.CityTradeDeal, 1154168, 1154169, new TextDefinition((int)sys.ActiveTradeDeal), true));
+                    if (entry != null && entry.UtilizingTradeDeal)
+                        BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.CityTradeDeal, 1154168, 1154169, new TextDefinition((int)sys.ActiveTradeDeal), true));
+                }
+
+                int message;
+
+                if (pm.LastOnline + LoveAtrophyDuration > DateTime.UtcNow)
+                {
+                    message = 1152913; // The moons of Trammel and Felucca align to preserve your virtue status and city loyalty.
+                }
+                else
+                {
+                    message = 1152912; // The moons of Trammel and Felucca fail to preserve your virtue status and city loyalty.
+                }
+
+                Timer.DelayCall(TimeSpan.FromSeconds(.7), () =>
+                {
+                    pm.SendLocalizedMessage(message);
+                });
             }
         }
 
@@ -743,14 +777,14 @@ namespace Server.Engines.CityLoyalty
                     {
                         CityLoyaltyEntry entry = t as CityLoyaltyEntry;
 
-                        if (entry != null)
+                        if (entry != null && entry.Player != null)
                         {
                             PlayerMobile owner = entry.Player;
 
                             entry.Neutrality -= entry.Neutrality / 50;
                             entry.Hate -= entry.Hate / 50;
 
-                            if (owner != null && owner.LastOnline + TimeSpan.FromHours(40) < DateTime.UtcNow)
+                            if (owner.LastOnline + LoveAtrophyDuration < DateTime.UtcNow)
                                 entry.Love -= entry.Love / 75;
                         }
                     });
@@ -1105,7 +1139,7 @@ namespace Server.Engines.CityLoyalty
             writer.Write((int)City);
 
 			base.Serialize(writer);
-			writer.Write(1);
+			writer.Write(2);
 
             writer.Write(CitizenWait.Count);
             foreach (var kvp in CitizenWait)
@@ -1146,6 +1180,7 @@ namespace Server.Engines.CityLoyalty
 
             switch (version)
             {
+                case 2:
                 case 1:
                     {
                         int count = reader.ReadInt();
@@ -1195,6 +1230,29 @@ namespace Server.Engines.CityLoyalty
                         CitizenWait[m] = dt;
                 }
             }
+
+            // City Bulletin Board Location
+            if (version == 1)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                    {
+                        Board = new CityMessageBoard(City, 0xA0C5);
+                        Board.MoveToWorld(Definition.BoardLocation, Map.Trammel);
+                        Console.WriteLine("City Message Board for {0} Converted!", City.ToString());
+                        /*if (Board != null)
+                        {
+                            //Board.ItemID = 0xA0C5;
+                            //board.MoveToWorld(Definition.BoardLocation, Map.Trammel);
+
+
+                            Console.WriteLine("City Message Board for {0} Converted!", City.ToString());
+                        }
+                        else
+                        {
+                            Console.WriteLine("City Message Board for {0} not found!", City.ToString());
+                        }*/
+                    });
+            }
 		}
 	}
 	
@@ -1210,7 +1268,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(4416, 1044, -2),
                              new Point3D(4480, 1172, 0),
                              new Point3D(4551, 1051, 0),
-                             new Point3D(4474, 1176, 0),
+                             new Point3D(4478, 1170, 0),
 							 "Moonglow",
 							 1114143,
 							 1154524
@@ -1230,7 +1288,7 @@ namespace Server.Engines.CityLoyalty
                              new Point3D(1436, 1760, -2),
                              new Point3D(1446, 1694, 0),
                              new Point3D(1417, 1715, 20),
-                             new Point3D(1437, 1693, 0),
+                             new Point3D(1481, 1718, 0),
 							 "Britain",
 							 1114148,
 							 1154521
@@ -1250,7 +1308,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(1377, 3879, 0),
                              new Point3D(1336, 3770, 0),
                              new Point3D(1379, 3797, 0),
-                             new Point3D(1326, 3776, 0),
+                             new Point3D(1333, 3776, 0),
 							 "Jhelom",
 							 1114146,
 							 1154522
@@ -1270,7 +1328,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(621, 1043, 0),
                              new Point3D(631, 863, 0),
                              new Point3D(385, 914, 0),
-                             new Point3D(633, 856, 0),
+                             new Point3D(626, 863, 0),
 							 "Yew",
 							 1114138,
 							 1154529
@@ -1290,7 +1348,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(2499, 398, 15),
                              new Point3D(2514, 559, 0),
                              new Point3D(2424, 533, 0),
-                             new Point3D(2508, 560, 0),
+                             new Point3D(2522, 558, 0),
 							 "Minoc",
 							 1114139,
 							 1154523
@@ -1310,7 +1368,7 @@ namespace Server.Engines.CityLoyalty
                              new Point3D(2061, 2855, -2), 
                              new Point3D(1907, 2683, 0),
                              new Point3D(1851, 2772, 0),
-                             new Point3D(1904, 2690, 7),
+                             new Point3D(1907, 2679, 0),
 							 "Trinsic",
 							 1114142,
 							 1154527
@@ -1331,7 +1389,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(645, 2228, -2),
                              new Point3D(586, 2153, 0),
                              new Point3D(571, 2210, 0),
-                             new Point3D(590, 2152, 0),
+                             new Point3D(580, 2155, 0),
 							 "Skara Brae",
 							 1114145,
 							 1154526
@@ -1352,7 +1410,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(3677, 2254, 20),
                              new Point3D(3796, 2247, 20),
                              new Point3D(3680, 2269, 26),
-                             new Point3D(3781, 2256, 20),
+                             new Point3D(3795, 2259, 20),
 							 "Magincia",
 							 1114141,
 							 1154525
@@ -1373,7 +1431,7 @@ namespace Server.Engines.CityLoyalty
 							 new Point3D(3004, 834, 0),
                              new Point3D(2891, 682, 0),
                              new Point3D(3004, 822, 0),
-                             new Point3D(2894, 680, 0),
+                             new Point3D(2899, 685, 0),
 							 "Vesper",
 							 1114140,
 							 1154528

@@ -20,6 +20,7 @@ namespace Server
 			AccountGold.ConvertOnBank = true;
 			AccountGold.ConvertOnTrade = false;
 			VirtualCheck.UseEditGump = true;
+            Server.Services.TownCryer.TownCryerSystem.Enabled = Core.TOL;
 
 			ObjectPropertyList.Enabled = Core.AOS;
 

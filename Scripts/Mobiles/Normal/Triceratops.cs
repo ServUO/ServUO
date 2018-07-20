@@ -46,25 +46,6 @@ namespace Server.Mobiles
             SetMagicalAbility(MagicalAbility.Piercing);
         }
 
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            Paralyze(defender);
-        }
-
-        #region Paralyze
-        private void Paralyze(Mobile defender)
-        {
-            defender.Paralyze(TimeSpan.FromSeconds(Utility.Random(3)));
-
-            defender.FixedEffect(0x376A, 6, 1);
-            defender.PlaySound(0x204);
-
-            defender.SendLocalizedMessage(1060164); // The attack has temporarily paralyzed you!
-        }
-        #endregion
-
         public override int GetIdleSound() { return 0x673; }
         public override int GetAngerSound() { return 0x670; }
         public override int GetHurtSound() { return 0x672; }

@@ -718,6 +718,7 @@ namespace Server.Mobiles
                 : base(TimeSpan.FromSeconds(30))
             {
                 Defender = defender;
+                Start();
             }
 
             protected override void OnTick()
@@ -729,6 +730,8 @@ namespace Server.Mobiles
                     BuffInfo.RemoveBuff(Defender, BuffIcon.HowlOfCacophony);
                     Defender.SendSpeedControl(SpeedControlType.Disable);                    
                 }
+
+                Stop();
             }
         }
     }
@@ -1086,6 +1089,7 @@ namespace Server.Mobiles
 				: base(TimeSpan.FromSeconds(10))
 			{
 				Defender = defender;
+                Start();
 			}
 			
 			protected override void OnTick()
@@ -1094,6 +1098,8 @@ namespace Server.Mobiles
 				{
 					_Table.Remove(Defender);
 				}
+
+                Stop();
 			}
 		}
 	}

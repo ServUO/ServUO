@@ -403,7 +403,7 @@ namespace Server.Engines.Quests
             if (from == null)
                 return 0;
 
-            double skill = from.Skills[SkillName.Fishing].Value;
+            double skill = from.Skills[SkillName.Fishing].Base;
 
             if (skill < 80.0)
                 return 11;

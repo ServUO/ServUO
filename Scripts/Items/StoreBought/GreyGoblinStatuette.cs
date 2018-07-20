@@ -102,6 +102,16 @@ namespace Server.Items
             base.OnItemRemoved(item);
         }
 
+        public override void OnRemoved(object parent)
+        {
+            if (TurnedOn)
+            {
+                TurnOff();
+            }
+
+            base.OnRemoved(parent);
+        }
+
         public GreyGoblinStatuette(Serial serial)
             : base(serial)
         {

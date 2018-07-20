@@ -223,7 +223,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            writer.Write(_UsesRemaining);
+            writer.Write((int)_CoverType);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -231,6 +234,17 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    _UsesRemaining = reader.ReadInt();
+                    _CoverType = (CoverType)reader.ReadInt();
+                    break;
+                case 0:
+                    _UsesRemaining = 30;
+                    break;
+            }
         }
     }
 

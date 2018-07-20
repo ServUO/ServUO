@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -6,46 +7,80 @@ namespace Server.Mobiles
     [CorpseName("a travesty's corpse")]
     public class Travesty : BasePeerless
     {
+        public override WeaponAbility GetWeaponAbility()
+        {
+            if (Weapon == null)
+                return null;
+
+            BaseWeapon weapon = Weapon as BaseWeapon;
+
+            return Utility.RandomBool() ? weapon.PrimaryAbility : weapon.SecondaryAbility;
+        }
+
+        private DateTime m_NextBodyChange;
+        private bool m_SpawnedHelpers;
+        private Timer m_Timer;
+
         [Constructable]
         public Travesty()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Travesty";
-            this.Body = 0x108;
+            Name = "Travesty";
+            Body = 0x108;
 
-            this.SetStr(909, 949);
-            this.SetDex(901, 948);
-            this.SetInt(903, 947);
+            BaseSoundID = 0x46E;
 
-            this.SetHits(35000);
+            SetStr(900, 950);
+            SetDex(900, 950);
+            SetInt(900, 950);
 
-            this.SetDamage(25, 30);
-			
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetHits(35000);
 
-            this.SetResistance(ResistanceType.Physical, 52, 67);
-            this.SetResistance(ResistanceType.Fire, 51, 68);
-            this.SetResistance(ResistanceType.Cold, 51, 69);
-            this.SetResistance(ResistanceType.Poison, 51, 70);
-            this.SetResistance(ResistanceType.Energy, 50, 68);
+            SetDamage(11, 18);
 
-            this.SetSkill(SkillName.Wrestling, 100.1, 119.7);
-            this.SetSkill(SkillName.Tactics, 102.3, 118.5);
-            this.SetSkill(SkillName.MagicResist, 101.2, 119.6);
-            this.SetSkill(SkillName.Anatomy, 100.1, 117.5);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.Fame = 8000;
-            this.Karma = -8000;
+            SetResistance(ResistanceType.Physical, 50, 70);
+            SetResistance(ResistanceType.Fire, 50, 70);
+            SetResistance(ResistanceType.Cold, 50, 70);
+            SetResistance(ResistanceType.Poison, 50, 70);
+            SetResistance(ResistanceType.Energy, 50, 70);
 
-            this.VirtualArmor = 50;
-            this.PackTalismans(5);
-            this.PackResources(8);
+            SetSkill(SkillName.Wrestling, 300.0, 320.0);
+            SetSkill(SkillName.Tactics, 100.0, 120.0);
+            SetSkill(SkillName.MagicResist, 100.0, 120.0);
+            SetSkill(SkillName.Anatomy, 100.0, 120.0);
+            SetSkill(SkillName.Healing, 100.0, 120.0);
+            SetSkill(SkillName.Poisoning, 100.0, 120.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.Hiding, 100.0);
+            SetSkill(SkillName.Parry, 100.0, 110.0);
+            SetSkill(SkillName.Magery, 100.0, 120.0);
+            SetSkill(SkillName.EvalInt, 100.0, 120.0);
+            SetSkill(SkillName.Meditation, 100.0, 120.0);
+            SetSkill(SkillName.Necromancy, 100.0, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 100.0, 120.0);
+            SetSkill(SkillName.Focus, 100.0, 120.0);
+            SetSkill(SkillName.Spellweaving, 100.0, 120.0);
+            SetSkill(SkillName.Discordance, 100.0, 120.0);
+            SetSkill(SkillName.Bushido, 100.0, 120.0);
+            SetSkill(SkillName.Ninjitsu, 100.0, 120.0);
+            SetSkill(SkillName.Chivalry, 100.0, 120.0);
+
+            Fame = 30000;
+            Karma = -30000;
+
+            VirtualArmor = 50;
+            PackTalismans(5);
+            PackResources(8);
 
             for (int i = 0; i < Utility.RandomMinMax(1, 6); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
+
+        public override bool ShowFameTitle { get { return false; } }
 
         public Travesty(Serial serial)
             : base(serial)
@@ -55,11 +90,11 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-			
+
             c.DropItem(new EyeOfTheTravesty());
             c.DropItem(new OrdersFromMinax());
 
-            switch ( Utility.Random(3) )
+            switch (Utility.Random(3))
             {
                 case 0:
                     c.DropItem(new TravestysSushiPreparations());
@@ -92,7 +127,7 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.025)
             {
-                switch (Utility.Random(7))
+                switch (Utility.Random(4))
                 {
                     case 0:
                         c.DropItem(new AssassinLegs());
@@ -106,238 +141,215 @@ namespace Server.Mobiles
                     case 3:
                         c.DropItem(new MalekisHonor());
                         break;
-                    case 4:
-                        c.DropItem(new JusticeBreastplate());
-                        break;
-                    case 5:
-                        c.DropItem(new CompassionArms());
-                        break;
-                    case 6:
-                        c.DropItem(new ValorGauntlets());
-                        break;
                 }
             }
         }
 
-        public override bool CanRummageCorpses
+        public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            get
+            if (Utility.RandomBool() && from != null)
             {
-                return true;
+                Clone clone = new Clone(this);
+                clone.MoveToWorld(Location, Map);
+
+                FixedParticles(0x376A, 1, 14, 0x13B5, 0, 0, EffectLayer.Waist);
+                PlaySound(0x511);
+
+                from.Combatant = clone;
+
+                from.SendLocalizedMessage(1063141); // Your attack has been diverted to a nearby mirror image of your target!
             }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override bool CanAnimateDead
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override BaseCreature Animates
-        {
-            get
-            {
-                return new LichLord();
-            }
-        }
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
+
+            if (0.25 > Utility.RandomDouble() && DateTime.UtcNow > m_NextBodyChange)
+                ChangeBody();
+
+            base.OnDamage(amount, from, willKill);
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosSuperBoss, 8);
+            AddLoot(LootPack.AosSuperBoss, 8);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
-        private bool m_SpawnedHelpers;
-        private Timer m_Timer;
-        private string m_Name;
-        private int m_Hue;
-
-        public override void OnThink()
+        public void ChangeBody()
         {
-            base.OnThink();
+            List<Mobile> list = new List<Mobile>();
 
-            if (this.Combatant == null)
-                return;
+            IPooledEnumerable eable = Map.GetMobilesInRange(Location, 5);
 
-            if (this.Combatant is Mobile && this.Name != this.Combatant.Name)
-                this.Morph((Mobile)Combatant);
-        }
-
-        public virtual void Morph(Mobile combatant)
-        {
-            this.m_Name = this.Name;
-            this.m_Hue = this.Hue;
-
-            this.Body = combatant.Body;
-            this.Hue = combatant.Hue;
-            this.Name = combatant.Name;
-            this.Female = combatant.Female;
-            this.Title = combatant.Title;
-
-            foreach (Item item in combatant.Items)
+            foreach (Mobile m in eable)
             {
-                if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount && item.Layer != Layer.Bank)
-                    if (this.FindItemOnLayer(item.Layer) == null)
-                        this.AddItem(new ClonedItem(item));
+                if (m.Player && m.AccessLevel == AccessLevel.Player && m.Alive)
+                    list.Add(m);
             }
 
-            this.PlaySound(0x511);
-            this.FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
+            eable.Free();
 
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (list.Count <= 0)
+            {
+                if (Body != 0x108)
+                    RestoreBody();
 
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), new TimerCallback(EndMorph));
+                return;
+            }
+
+            Mobile attacker = (Mobile)list[Utility.Random(list.Count - 1)];
+
+            Body = attacker.Body;
+            Hue = attacker.Hue;
+            Name = attacker.Name;
+            Female = attacker.Female;
+            Title = "(Travesty)";
+            HairItemID = attacker.HairItemID;
+            HairHue = attacker.HairHue;
+            FacialHairItemID = attacker.FacialHairItemID;
+            FacialHairHue = attacker.FacialHairHue;
+
+            foreach (Item item in attacker.Items)
+            {
+                if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount && item.Layer != Layer.Bank)
+                {
+                    if (FindItemOnLayer(item.Layer) == null)
+                    {
+                        AddItem(new ClonedItem(item));
+                    }
+                }
+            }
+
+            if (attacker.Skills[SkillName.Swords].Value >= 50.0 || attacker.Skills[SkillName.Fencing].Value >= 50.0 || attacker.Skills[SkillName.Macing].Value >= 50.0)
+                ChangeAIType(AIType.AI_Melee);
+
+            if (attacker.Skills[SkillName.Archery].Value >= 50.0)
+                ChangeAIType(AIType.AI_Archer);
+
+            if (attacker.Skills[SkillName.Spellweaving].Value >= 50.0)
+                ChangeAIType(AIType.AI_Spellweaving);
+
+            if (attacker.Skills[SkillName.Magery].Value >= 50.0)
+                ChangeAIType(AIType.AI_Mage);
+
+            if (attacker.Skills[SkillName.Necromancy].Value >= 50.0)
+                ChangeAIType(AIType.AI_Necro);
+
+            if (attacker.Skills[SkillName.Necromancy].Value >= 50.0 && attacker.Skills[SkillName.Magery].Value >= 50.0)
+                ChangeAIType(AIType.AI_NecroMage);
+
+            PlaySound(0x511);
+            FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
+
+            m_NextBodyChange = DateTime.UtcNow + TimeSpan.FromSeconds(10.0);
+
+            if (m_Timer != null)
+                m_Timer.Stop();
+
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), new TimerCallback(RestoreBody));
         }
 
         public void DeleteItems()
         {
-            for (int i = this.Items.Count - 1; i >= 0; i --)
-                if (this.Items[i] is ClonedItem)
-                    this.Items[i].Delete();
+            for (int i = Items.Count - 1; i >= 0; i--)
+                if (Items[i] is ClonedItem)
+                    Items[i].Delete();
 
-            if (this.Backpack != null)
+            if (Backpack != null)
             {
-                for (int i = this.Backpack.Items.Count - 1; i >= 0; i --)
-                    if (this.Backpack.Items[i] is ClonedItem)
-                        this.Backpack.Items[i].Delete();
+                for (int i = Backpack.Items.Count - 1; i >= 0; i--)
+                    if (Backpack.Items[i] is ClonedItem)
+                        Backpack.Items[i].Delete();
             }
         }
 
-        public virtual void EndMorph()
+        public virtual void RestoreBody()
         {
-            if (this.Combatant != null && this.Name == this.Combatant.Name)
-                return;
+            Name = "Travesty";
+            Title = null;
+            Body = 264;
+            Hue = 0;
 
-            this.DeleteItems();
+            DeleteItems();
 
-            if (this.m_Timer != null)
+            ChangeAIType(AIType.AI_Melee);
+
+            if (m_Timer != null)
             {
-                this.m_Timer.Stop();		
-                this.m_Timer = null;	
+                m_Timer.Stop();
+                m_Timer = null;
             }
-
-            if (this.Combatant is Mobile)
-            {
-                this.Morph((Mobile)Combatant);
-                return;
-            }
-
-            this.Body = 264;
-            this.Title = null;
-            this.Name = this.m_Name;
-            this.Hue = this.m_Hue;
-
-            this.PlaySound(0x511);
-            this.FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
         }
 
         public override bool OnBeforeDeath()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
             return base.OnBeforeDeath();
         }
 
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
             base.OnAfterDelete();
         }
 
         #region Spawn Helpers
-        public override bool CanSpawnHelpers
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int MaxHelpersWaves
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool CanSpawnHelpers { get { return true; } }
+        public override int MaxHelpersWaves { get { return 1; } }
 
         public override bool CanSpawnWave()
         {
-            if (this.Hits > 1100)
-                this.m_SpawnedHelpers = false;
+            if (Hits > 2000)
+                m_SpawnedHelpers = false;
 
-            return !this.m_SpawnedHelpers && this.Hits < 1000;
+            return !m_SpawnedHelpers && Hits < 2000;
         }
 
         public override void SpawnHelpers()
         {
-            this.m_SpawnedHelpers = true;
+            m_SpawnedHelpers = true;
 
-            for (int i = 0; i < 10; i++)
-            {
-                switch ( Utility.Random(3) )
-                {
-                    case 0:
-                        this.SpawnHelper(new DragonsFlameMage(), 25);
-                        break;
-                    case 1:
-                        this.SpawnHelper(new SerpentsFangAssassin(), 25);
-                        break;
-                    case 2:
-                        this.SpawnHelper(new TigersClawThief(), 25);
-                        break;
-                }
-            }
+            SpawnNinjaGroup(new Point3D(80, 1964, 0));
+            SpawnNinjaGroup(new Point3D(80, 1949, 0));
+            SpawnNinjaGroup(new Point3D(92, 1948, 0));
+            SpawnNinjaGroup(new Point3D(92, 1962, 0));
+        }
+
+        public static void SpawnNinjaGroup(Point3D _location)
+        {
+            BaseCreature ninja = new DragonsFlameMage();
+            ninja.MoveToWorld(_location, Map.Malas);
+
+            ninja = new SerpentsFangAssassin();
+            ninja.MoveToWorld(_location, Map.Malas);
+
+            ninja = new TigersClawThief();
+            ninja.MoveToWorld(_location, Map.Malas);
         }
 
         #endregion
 
         private class ClonedItem : Item
-        { 
+        {
             public ClonedItem(Item oItem)
                 : base(oItem.ItemID)
             {
-                this.Name = oItem.Name;
-                this.Weight = oItem.Weight;
-                this.Hue = oItem.Hue;
-                this.Layer = oItem.Layer;
+                Name = oItem.Name;
+                Weight = oItem.Weight;
+                Hue = oItem.Hue;
+                Layer = oItem.Layer;
             }
 
             public override DeathMoveResult OnParentDeath(Mobile parent)
@@ -347,7 +359,7 @@ namespace Server.Mobiles
 
             public override DeathMoveResult OnInventoryDeath(Mobile parent)
             {
-                this.Delete();
+                Delete();
                 return base.OnInventoryDeath(parent);
             }
 
@@ -359,14 +371,12 @@ namespace Server.Mobiles
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write((int)0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
                 int version = reader.ReadInt();
             }
         }

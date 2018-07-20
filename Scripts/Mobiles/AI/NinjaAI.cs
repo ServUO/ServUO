@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using Server.Items;
 using Server.Spells;
+using Server.Spells.Ninjitsu;
 #endregion
 
 namespace Server.Mobiles
@@ -152,16 +153,23 @@ namespace Server.Mobiles
 
 			if (special == null && m_NextCastTime < DateTime.UtcNow && 0.05 > Utility.RandomDouble())
 			{
-				if (m_Mobile.Hidden)
-					special = GetHiddenSpecialMove();
-				else
-					special = GetSpecialMove();
+                if (0.05 > Utility.RandomDouble())
+                {
+                    new MirrorImage(m_Mobile, null).Cast();
+                }
+                else
+                {
+                    if (m_Mobile.Hidden)
+                        special = GetHiddenSpecialMove();
+                    else
+                        special = GetSpecialMove();
 
-				if (special != null)
-				{
-					SpecialMove.SetCurrentMove(m_Mobile, special);
-					m_NextCastTime = DateTime.UtcNow + GetCastDelay();
-				}
+                    if (special != null)
+                    {
+                        SpecialMove.SetCurrentMove(m_Mobile, special);
+                        m_NextCastTime = DateTime.UtcNow + GetCastDelay();
+                    }
+                }
 			}
 
 			if (m_NextRanged < DateTime.UtcNow && 0.08 > Utility.RandomDouble())

@@ -90,7 +90,7 @@ namespace Server.Engines.CityLoyalty
                     itemdonation = new CityItemDonation(sys.City, minister);
                     petdonation = new CityPetDonation(sys.City, minister);
                     box = new BoxOfRopes(sys.City);
-                    board = new CityMessageBoard(sys.City, sys.City == City.Trinsic ? 7775 : 7774);
+                    board = new CityMessageBoard(sys.City, 0xA0C5);
 
                     if (!HasType(sys, minister.GetType()))
                     {
@@ -139,8 +139,11 @@ namespace Server.Engines.CityLoyalty
                     else
                         box.Delete();
 
-                    if(!HasType(sys, board.GetType()))
+                    if (!HasType(sys, board.GetType()))
+                    {
                         board.MoveToWorld(sys.Definition.BoardLocation, Map.Trammel);
+                        sys.Board = board;
+                    }
                     else
                         board.Delete();
                     

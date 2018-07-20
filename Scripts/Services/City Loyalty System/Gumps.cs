@@ -11,20 +11,18 @@ using Server.Items;
 
 namespace Server.Engines.CityLoyalty
 {
-    public class BaseCityGump : Gump
+    public class BaseCityGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
         public CityLoyaltySystem Citizenship { get; set; }
 
-        public BaseCityGump(PlayerMobile pm) : base(120, 120)
+        public BaseCityGump(PlayerMobile pm) : base(pm, 120, 120)
         {
-            User = pm;
             Citizenship = CityLoyaltySystem.GetCitizenship(User, false);
 
             pm.CloseGump(typeof(BaseCityGump));
         }
 
-        public virtual void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             AddHtmlLocalized(0, 7, 345, 20, 1154645, "#1152190", 0, false, false); // City Loyalty
 
@@ -36,14 +34,41 @@ namespace Server.Engines.CityLoyalty
             AddImage(20, 317, 8001);
             AddImage(20, 387, 8003);
 
-            AddHtmlLocalized(65, 395, 200, 16, 1152189, false, false);
+            AddHtmlLocalized(65, 395, 200, 16, 1152189, false, false); // Loyalty Ratings
             AddButton(50, 400, 2103, 2104, 500, GumpButtonType.Reply, 0);
+
+            AddHtmlLocalized(175, 395, 200, 16, 1157159, false, false); // Toggle Gain Message
+            AddButton(160, 400, 2103, 2104, 501, GumpButtonType.Reply, 0);
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 500)
                 User.SendGump(new LoyaltyRatingGump(User));
+
+            if (info.ButtonID == 501)
+            {
+                if (Citizenship != null)
+                {
+                    CityLoyaltyEntry entry = Citizenship.GetPlayerEntry<CityLoyaltyEntry>(User);
+
+                    if (entry != null)
+                    {
+                        if (entry.ShowGainMessage)
+                        {
+                            entry.ShowGainMessage = false;
+                            User.SendLocalizedMessage(1157160); //You will no longer receive City Loyalty gain messages.
+                        }
+                        else
+                        {
+                            entry.ShowGainMessage = true;
+                            User.SendLocalizedMessage(1157161); //You will now receive City Loyalty gain messages.
+                        }
+                    }
+                }
+
+                Refresh();
+            }
         }
     }
 
@@ -51,7 +76,6 @@ namespace Server.Engines.CityLoyalty
 	{
 		public CityLoyaltyGump(PlayerMobile pm) : base(pm)
 		{
-            AddGumpLayout();
 		}
 		
 		public override void AddGumpLayout()
@@ -114,9 +138,9 @@ namespace Server.Engines.CityLoyalty
             }
 		}
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            base.OnResponse(state, info);
+            base.OnResponse(info);
 
             if (!CityLoyaltySystem.IsSetup())
                 return;
@@ -125,10 +149,10 @@ namespace Server.Engines.CityLoyalty
             {
                 case 0: break;
                 case 1:
-                    User.SendGump(new CityTitlesGump(User));
+                    BaseGump.SendGump(new CityTitlesGump(User));
                     break;
                 case 2:
-                    User.SendGump(new RenounceCitizenshipGump(User));
+                    BaseGump.SendGump(new RenounceCitizenshipGump(User));
                     break;
                 case 3:
                 default:
@@ -136,7 +160,7 @@ namespace Server.Engines.CityLoyalty
                     if (id >= 0 && id < CityLoyaltySystem.Cities.Count)
                     {
                         if(Citizenship == null)
-                            User.SendGump(new DeclareCitizenshipGump(CityLoyaltySystem.Cities[id], User));
+                            BaseGump.SendGump(new DeclareCitizenshipGump(CityLoyaltySystem.Cities[id], User));
                     }
                     break;
             }
@@ -150,7 +174,6 @@ namespace Server.Engines.CityLoyalty
         public DeclareCitizenshipGump(CityLoyaltySystem toDeclare, PlayerMobile pm) : base(pm)
         {
             City = toDeclare;
-            AddGumpLayout();
         }
 
         public override void AddGumpLayout()
@@ -176,9 +199,9 @@ namespace Server.Engines.CityLoyalty
             AddButton(100, 305, 2103, 2104, 2, GumpButtonType.Reply, 0);
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            base.OnResponse(state, info);
+            base.OnResponse(info);
 
             if(info.ButtonID == 1 && City != null)
             {
@@ -188,7 +211,7 @@ namespace Server.Engines.CityLoyalty
                 }
             }
             else if (info.ButtonID == 2)
-                User.SendGump(new CityLoyaltyGump(User));
+                BaseGump.SendGump(new CityLoyaltyGump(User));
         }
     }
 
@@ -197,7 +220,6 @@ namespace Server.Engines.CityLoyalty
         public RenounceCitizenshipGump(PlayerMobile pm)
             : base(pm)
         {
-            AddGumpLayout();
         }
 
         public override void AddGumpLayout()
@@ -222,9 +244,9 @@ namespace Server.Engines.CityLoyalty
             AddButton(100, 305, 2103, 2104, 2, GumpButtonType.Reply, 0);
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            base.OnResponse(state, info);
+            base.OnResponse(info);
 
             if (info.ButtonID == 1 && Citizenship != null)
             {
@@ -235,7 +257,7 @@ namespace Server.Engines.CityLoyalty
                 }
             }
             else if (info.ButtonID == 2)
-                User.SendGump(new CityLoyaltyGump(User));
+                BaseGump.SendGump(new CityLoyaltyGump(User));
         }
     }
 
@@ -243,7 +265,6 @@ namespace Server.Engines.CityLoyalty
 	{
 		public CityTitlesGump(PlayerMobile pm) : base(pm)
 		{
-            AddGumpLayout();
 		}
 		
 		public override void AddGumpLayout()
@@ -292,16 +313,16 @@ namespace Server.Engines.CityLoyalty
             /*Click the gem next to an available title for more information about obtaining that title.*/
 		}
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            base.OnResponse(state, info);
+            base.OnResponse(info);
 
             if (info.ButtonID > 0 && info.ButtonID < 500)
             {
                 CityTitle t = (CityTitle)info.ButtonID - 1;
 
                 if (!Citizenship.HasTitle(User, t))
-                    User.SendGump(new CityTitlesInfoGump(User, t));
+                    BaseGump.SendGump(new CityTitlesInfoGump(User, t));
             }
         }
 	}
@@ -313,7 +334,6 @@ namespace Server.Engines.CityLoyalty
 		public CityTitlesInfoGump(PlayerMobile pm, CityTitle title) : base(pm)
 		{
 			Title = title;
-            AddGumpLayout();
 		}
 		
 		public override void AddGumpLayout()
@@ -352,9 +372,9 @@ namespace Server.Engines.CityLoyalty
             AddButton(40, 370, 2103, 2104, 2, GumpButtonType.Reply, 0);
 		}
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            base.OnResponse(state, info);
+            base.OnResponse(info);
 
             if (info.ButtonID == 1)
             {
@@ -368,28 +388,24 @@ namespace Server.Engines.CityLoyalty
             }
             else if (info.ButtonID == 2)
             {
-                User.SendGump(new CityTitlesGump(User));
+                BaseGump.SendGump(new CityTitlesGump(User));
             }
         }
 	}
 
-    public class CityStoneGump : Gump
+    public class CityStoneGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
         public CityLoyaltySystem City { get; set; }
 
         public CityStoneGump(PlayerMobile pm, CityLoyaltySystem city)
-            : base(50, 50)
+            : base(pm, 50, 50)
         {
-            User = pm;
             City = city;
 
             pm.CloseGump(typeof(CityStoneGump));
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             if (City.Election == null || !City.Election.Ongoing)
             {
@@ -425,35 +441,31 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             switch (info.ButtonID)
             {
                 case 0: break;
                 case 1: City.Election.TryNominate(User); break;
-                case 2: User.SendGump(new NomineesGump(User, City)); break;
-                case 3: User.SendGump(new CandidatesGump(User, City)); break;
+                case 2: BaseGump.SendGump(new NomineesGump(User, City)); break;
+                case 3: BaseGump.SendGump(new CandidatesGump(User, City)); break;
             }
         }
     }
 
-    public class NomineesGump : Gump
+    public class NomineesGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
         public CityLoyaltySystem City { get; set; }
 
         public NomineesGump(PlayerMobile pm, CityLoyaltySystem city)
-            : base(50, 50)
+            : base(pm, 50, 50)
         {
-            User = pm;
             City = city;
 
             pm.CloseGump(typeof(NomineesGump));
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             AddBackground(0, 0, 600, 400, 5054);
             AddHtmlLocalized(10, 12, 200, 20, 1153906, 0xFFFF, false, false); // Current Nominees
@@ -505,10 +517,10 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 1)
-                User.SendGump(new CityStoneGump(User, City));
+                BaseGump.SendGump(new CityStoneGump(User, City));
             else if (info.ButtonID == 2)
                 City.Election.TryWithdraw(User);
             else if (info.ButtonID >= 100)
@@ -528,25 +540,21 @@ namespace Server.Engines.CityLoyalty
         }
     }
 
-    public class CandidatesGump : Gump
+    public class CandidatesGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
         public CityLoyaltySystem City { get; set; }
 
         List<BallotEntry> Candidates { get; set; }
 
         public CandidatesGump(PlayerMobile pm, CityLoyaltySystem city)
-            : base(50, 50)
+            : base(pm, 50, 50)
         {
-            User = pm;
             City = city;
 
             pm.CloseGump(typeof(CandidatesGump));
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             AddBackground(0, 0, 600, 400, 5054);
             AddHtmlLocalized(10, 12, 200, 20, 1153914, 0xFFFF, false, false); // Candidate List
@@ -603,10 +611,10 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 1)
-                User.SendGump(new CityStoneGump(User, City));
+                BaseGump.SendGump(new CityStoneGump(User, City));
             else if (info.ButtonID == 2)
                 City.Election.TryWithdraw(User);
             else if (info.ButtonID >= 100)
@@ -626,21 +634,17 @@ namespace Server.Engines.CityLoyalty
         }
     }
 
-    public class ChooseTradeDealGump : Gump
+    public class ChooseTradeDealGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
         public CityLoyaltySystem City { get; set; }
 
         public ChooseTradeDealGump(PlayerMobile pm, CityLoyaltySystem city)
-            : base(75, 75)
+            : base(pm, 75, 75)
         {
-            User = pm;
             City = city;
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             AddImage(0, 0, 8000);
             AddImage(20, 37, 8001);
@@ -668,10 +672,8 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            base.OnResponse(state, info);
-
             if (info.ButtonID == 0)
                 return;
 
@@ -681,11 +683,11 @@ namespace Server.Engines.CityLoyalty
             {
                 if (City.Treasury < CityLoyaltySystem.TradeDealCost)
                 {
-                    City.HeraldMessage(state.Mobile, 1154057); // Begging thy pardon but the City Treasury doth nay have the funds available to make such a deal!
+                    City.HeraldMessage(User, 1154057); // Begging thy pardon but the City Treasury doth nay have the funds available to make such a deal!
                 }
                 else if (User.AccessLevel == AccessLevel.Player && City.TradeDealStart != DateTime.MinValue && City.TradeDealStart + TimeSpan.FromDays(CityLoyaltySystem.TradeDealCooldown) > DateTime.UtcNow)
                 {
-                    City.HeraldMessage(state.Mobile, 1154056); // You may only make a trade deal once per real world week!
+                    City.HeraldMessage(User, 1154056); // You may only make a trade deal once per real world week!
                 }
                 else
                 {
@@ -711,25 +713,21 @@ namespace Server.Engines.CityLoyalty
         };
     }
 
-    public class PlayerTitleGump : Gump
+    public class PlayerTitleGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
         public PlayerMobile Citizen { get; set; }
         public CityLoyaltySystem City { get; set; }
 
         public PlayerTitleGump(PlayerMobile pm, PlayerMobile citizen, CityLoyaltySystem sys)
-            : base(50, 50)
+            : base(pm, 50, 50)
         {
-            User = pm;
             Citizen = citizen;
             City = sys;
 
             pm.CloseGump(typeof(PlayerTitleGump));
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             AddBackground(0, 0, 400, 400, 5054);
             AddHtmlLocalized(0, 15, 400, 20, 1154015, false, false); // <CENTER>City Title</CENTER>
@@ -741,7 +739,7 @@ namespace Server.Engines.CityLoyalty
             AddButton(15, 145, 4023, 4024, 1, GumpButtonType.Reply, 0); 
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             TextRelay relay = info.GetTextEntry(1);
             CityLoyaltyEntry entry = City.GetPlayerEntry<CityLoyaltyEntry>(Citizen);
@@ -790,22 +788,18 @@ namespace Server.Engines.CityLoyalty
         }
     }
 
-    public class AcceptOfficeGump : Gump
+    public class AcceptOfficeGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
         public CityLoyaltySystem City { get; set; }
 
-        public AcceptOfficeGump(PlayerMobile pm, CityLoyaltySystem city) : base(50, 50)
+        public AcceptOfficeGump(PlayerMobile pm, CityLoyaltySystem city) : base(pm, 50, 50)
         {
-            User = pm;
             City = city;
 
             pm.CloseGump(typeof(AcceptOfficeGump));
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             AddBackground(0, 0, 600, 600, 9380);
 
@@ -827,9 +821,9 @@ namespace Server.Engines.CityLoyalty
             AddHtmlLocalized(450, 548, 150, 20, 1115372, false, false); // Decline
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            PlayerMobile pm = state.Mobile as PlayerMobile;
+            PlayerMobile pm = User as PlayerMobile;
 
             if (pm == null)
                 return;
@@ -850,16 +844,15 @@ namespace Server.Engines.CityLoyalty
         }
     }
 
-    public class ElectionStartTimeGump : Gump
+    public class ElectionStartTimeGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
-
-        public ElectionStartTimeGump(PlayerMobile pm) : base(50, 50)
+        public ElectionStartTimeGump(PlayerMobile pm) : base(pm, 50, 50)
         {
-            User = pm;
-
             pm.CloseGump(typeof(ElectionStartTimeGump));
+        }
 
+        public override void AddGumpLayout()
+        {
             AddBackground(0, 0, 400, 400, 5054);
             AddHtml(0, 15, 400, 20, "<center>Election Start Times</center>", false, false);
 
@@ -898,7 +891,7 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID < 1 || (CityLoyaltySystem.Britain.Election != null && CityLoyaltySystem.Britain.Election.Ongoing))
                 return;
@@ -910,7 +903,7 @@ namespace Server.Engines.CityLoyalty
                     sys.Election.GetDefaultStartTimes();
                 }
 
-                state.Mobile.SendMessage("Election start times reset to default.");
+                User.SendMessage("Election start times reset to default.");
                 return;
             }
 
@@ -955,7 +948,7 @@ namespace Server.Engines.CityLoyalty
 
             if (times.Count > 0)
             {
-                DateTime[] starttimes = CityElection.ValidateStartTimes(state.Mobile, times.ToArray());
+                DateTime[] starttimes = CityElection.ValidateStartTimes(User, times.ToArray());
 
                 if (starttimes != null)
                 {
@@ -964,7 +957,7 @@ namespace Server.Engines.CityLoyalty
                         sys.Election.StartTimes = starttimes;
                     }
 
-                    state.Mobile.SendMessage("Election start times reset.");
+                    User.SendMessage("Election start times reset.");
                 }
             }
         }
@@ -974,15 +967,18 @@ namespace Server.Engines.CityLoyalty
     /// I cannot find ANYWHERE what "Open Inventory" context menu entry does on EA.
     /// Its apparent it is a Governor only function, however no docs can be found on it.
     /// </summary>
-    public class OpenInventoryGump : Gump
+    public class OpenInventoryGump : BaseGump
     {
         public CityLoyaltySystem City { get; set; }
 
-        public OpenInventoryGump(CityLoyaltySystem city)
-            : base(50, 50)
+        public OpenInventoryGump(PlayerMobile pm, CityLoyaltySystem city)
+            : base(pm, 50, 50)
         {
             City = city;
+        }
 
+        public override void AddGumpLayout()
+        {
             if (City == null || City.Stone == null || City.Stone.Boxes == null)
                 return;
 
@@ -994,10 +990,10 @@ namespace Server.Engines.CityLoyalty
             AddLabel(200, 40, 0, "Remove");
 
             City.Stone.Boxes.ForEach(b =>
-                {
-                    if (b.Deleted)
-                        City.Stone.Boxes.Remove(b);
-                });
+            {
+                if (b.Deleted)
+                    City.Stone.Boxes.Remove(b);
+            });
 
             for (int i = 0; i < City.Stone.Boxes.Count; i++)
             {
@@ -1009,9 +1005,9 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            Mobile m = state.Mobile;
+            Mobile m = User;
 
             if (info.ButtonID == 0)
                 return;
@@ -1047,19 +1043,23 @@ namespace Server.Engines.CityLoyalty
                             }
 
                             m.CloseGump(typeof(OpenInventoryGump));
-                            m.SendGump(new OpenInventoryGump(City));
+                            BaseGump.SendGump(new OpenInventoryGump(User, City));
                         }, box, true));
                 }
             }
         }
     }
 
-    public class CityMessageBoardGump : Gump
+    public class CityMessageBoardGump : BaseGump
     {
         private int _Red = 0x8B0000;
 
-        public CityMessageBoardGump()
-            : base(100, 100)
+        public CityMessageBoardGump(PlayerMobile pm)
+            : base(pm, 100, 100)
+        {
+        }
+
+        public override void AddGumpLayout()
         {
             AddBackground(0, 0, 554, 350, 9380);
 
@@ -1075,7 +1075,7 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 0)
                 return;
@@ -1083,34 +1083,41 @@ namespace Server.Engines.CityLoyalty
             int id = info.ButtonID - 100;
 
             if(id >= 0 && id < CityLoyaltySystem.Cities.Count)
-                state.Mobile.SendGump(new CityMessageGump(state.Mobile, CityLoyaltySystem.Cities[id]));
+                BaseGump.SendGump(new CityMessageGump(User, CityLoyaltySystem.Cities[id]));
         }
     }
 
-    public class CityMessageGump : Gump
+    public class CityMessageGump : BaseGump
     {
         public CityLoyaltySystem City { get; set; }
 
-        public CityMessageGump(Mobile m, CityLoyaltySystem city)
-            : base(100, 100)
+        public CityMessageGump(PlayerMobile m, CityLoyaltySystem city)
+            : base(m, 100, 100)
         {
             City = city;
+        }
 
+        public override void AddGumpLayout()
+        {
             AddBackground(0, 0, 554, 350, 9380);
             AddHtmlLocalized(25, 55, 500, 20, 1154915, City.Definition.Name, 0, false, false); // The Latest News from the City of ~1_CITY~
 
-            if(City.PostedOn != DateTime.MinValue)
+            if (City.PostedOn != DateTime.MinValue)
                 AddHtmlLocalized(25, 85, 500, 20, 1154916, String.Format("{0}\t{1}", City.Governor != null ? City.Governor.Name : "somebody", City.PostedOn.ToShortDateString()), 0, false, false); // Posted by ~1_NAME~ on ~2_date~
-            
-            AddHtml(25, 115, 500, 20, city.Headline, false, false);
-            AddHtml(25, 195, 500, 150, city.Body, false, false);
+
+            AddHtml(25, 115, 500, 20, City.Headline, false, false);
+            AddHtml(25, 195, 500, 150, City.Body, false, false);
         }
     }
 
-    public class SystemInfoGump : Gump
+    public class SystemInfoGump : BaseGump
     {
-        public SystemInfoGump()
-            : base(50, 50)
+        public SystemInfoGump(PlayerMobile pm)
+            : base(pm, 50, 50)
+        {
+        }
+
+        public override void AddGumpLayout()
         {
             AddBackground(0, 0, 400, (CityLoyaltySystem.Cities.Count * 25) + 100, 5054);
 
@@ -1132,7 +1139,7 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 0)
                 return;
@@ -1141,25 +1148,28 @@ namespace Server.Engines.CityLoyalty
 
             if (id >= 0 && id < CityLoyaltySystem.Cities.Count)
             {
-                state.Mobile.SendGump(new CityInfoGump(CityLoyaltySystem.Cities[id]));
+                BaseGump.SendGump(new CityInfoGump(User, CityLoyaltySystem.Cities[id]));
             }
         }
     }
 
-    public class CityInfoGump : Gump
+    public class CityInfoGump : BaseGump
     {
         public CityLoyaltySystem City { get; set; }
 
-        public CityInfoGump(CityLoyaltySystem city)
-            : base(50, 50)
+        public CityInfoGump(PlayerMobile pm, CityLoyaltySystem city)
+            : base(pm, 50, 50)
         {
             City = city;
+        }
 
+        public override void AddGumpLayout()
+        {
             int page = 0;
             AddPage(page);
 
             AddBackground(0, 0, 500, 400, 5054);
-            AddHtml(0, 15, 400, 20, String.Format("<center>City Info - {0}</center>", city.Definition.Name), false, false);
+            AddHtml(0, 15, 400, 20, String.Format("<center>City Info - {0}</center>", City.Definition.Name), false, false);
 
             AddLabel(10, 35, 0, "Player");
             AddLabel(150, 35, 0, "Love");
@@ -1174,9 +1184,9 @@ namespace Server.Engines.CityLoyalty
             AddButton(10, 370, 4014, 4016, 1, GumpButtonType.Reply, 0);
             AddLabel(45, 370, 0, "BACK");
 
-            for (int i = 0; i < city.PlayerTable.Count; i++)
+            for (int i = 0; i < City.PlayerTable.Count; i++)
             {
-                CityLoyaltyEntry entry = city.PlayerTable[i] as CityLoyaltyEntry;
+                CityLoyaltyEntry entry = City.PlayerTable[i] as CityLoyaltyEntry;
 
                 if (entry == null)
                     continue;
@@ -1188,7 +1198,7 @@ namespace Server.Engines.CityLoyalty
                 AddHtml(300, 60 + (pageIndex * 25), 150, 20, String.IsNullOrEmpty(entry.CustomTitle) ? "" : entry.CustomTitle, false, false);
                 AddButton(450, 60 + (pageIndex * 25), 4005, 4007, i + 100, GumpButtonType.Reply, 0);
 
-                if (pageIndex >= 11 && i < city.PlayerTable.Count - 1)
+                if (pageIndex >= 11 && i < City.PlayerTable.Count - 1)
                 {
                     pageIndex = 0;
 
@@ -1204,14 +1214,14 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 0)
                 return;
 
             if (info.ButtonID == 1)
             {
-                state.Mobile.SendGump(new SystemInfoGump());
+                BaseGump.SendGump(new SystemInfoGump(User));
                 return;
             }
 
@@ -1219,8 +1229,8 @@ namespace Server.Engines.CityLoyalty
 
             if (id >= 0 && id < City.PlayerTable.Count)
             {
-                state.Mobile.SendGump(new CityInfoGump(City));
-                state.Mobile.SendGump(new PropertiesGump(state.Mobile, City.PlayerTable[id]));
+                Refresh();
+                User.SendGump(new PropertiesGump(User, City.PlayerTable[id]));
             }
         }
     }

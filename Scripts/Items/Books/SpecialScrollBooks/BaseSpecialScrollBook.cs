@@ -98,8 +98,7 @@ namespace Server.Items
 
                     m.SendLocalizedMessage(DropMessage);
 
-                    house.LockDown(m, dropped, false);
-
+                    dropped.Movable = false;
                     m.CloseGump(typeof(SpecialScrollBookGump));
 
                     return true;
@@ -125,7 +124,7 @@ namespace Server.Items
 
                     if (house != null && house.LockDowns.ContainsKey(scroll))
                     {
-                        house.Release(m, scroll);
+                        house.LockDowns.Remove(scroll);
                     }
 
                     if (!scroll.Movable)
@@ -170,14 +169,12 @@ namespace Server.Items
                 _Capacity = reader.ReadInt();
             }
 
-            if (version < 1)
-            {
-                Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+            Timer.DelayCall(
+                () =>
                 {
-                    foreach (var item in Items)
+                    foreach (var item in Items.Where(i => i.Movable))
                         item.Movable = false;
                 });
-            }
         }
 
         public virtual Dictionary<SkillCat, List<SkillName>> SkillInfo { get { return null; } }

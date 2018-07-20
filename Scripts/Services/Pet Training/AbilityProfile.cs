@@ -153,6 +153,30 @@ namespace Server.Mobiles
             return true;
         }
 
+        public void RemoveAbility(MagicalAbility ability)
+        {
+            if ((MagicalAbility & ability) != 0)
+            {
+                MagicalAbility ^= ability;
+                RemovePetAdvancement(ability);
+            }
+        }
+
+        public void RemoveAbility(SpecialAbility ability)
+        {
+            if (SpecialAbilities == null || !SpecialAbilities.Any(a => a == ability))
+                return;
+
+            var list = SpecialAbilities.ToList();
+
+            list.Remove(ability);
+            RemovePetAdvancement(ability);
+
+            SpecialAbilities = list.ToArray();
+
+            ColUtility.Free(list);
+        }
+
         public void RemoveAbility(WeaponAbility ability)
         {
             if (WeaponAbilities == null || !WeaponAbilities.Any(a => a == ability))
@@ -164,6 +188,21 @@ namespace Server.Mobiles
             RemovePetAdvancement(ability);
 
             WeaponAbilities = list.ToArray();
+
+            ColUtility.Free(list);
+        }
+
+        public void RemoveAbility(AreaEffect ability)
+        {
+            if (AreaEffects == null || !AreaEffects.Any(a => a == ability))
+                return;
+
+            var list = AreaEffects.ToList();
+
+            list.Remove(ability);
+            RemovePetAdvancement(ability);
+
+            AreaEffects = list.ToArray();
 
             ColUtility.Free(list);
         }

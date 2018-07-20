@@ -1830,7 +1830,7 @@ namespace Server.Items
 				{
                     toHit.OnHit(this, damage); // call OnHit to lose durability
 
-                    if (attacker is VeriteElemental || attacker is ValoriteElemental)
+                    if (toHit is Item && !((Item)toHit).Deleted && (attacker is VeriteElemental || attacker is ValoriteElemental))
                         VeriteElemental.OnHit(defender, (Item)toHit, damage);
 
                     damage -= XmlAttach.OnArmorHit(attacker, defender, (Item)toHit, this, originalDamage);

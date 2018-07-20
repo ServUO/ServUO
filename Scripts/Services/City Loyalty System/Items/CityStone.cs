@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Server.ContextMenus;
 using Server.Targeting;
+using Server.Gumps;
 
 namespace Server.Engines.CityLoyalty
 {
@@ -28,8 +29,8 @@ namespace Server.Engines.CityLoyalty
         {
             if (CityLoyaltySystem.Enabled && CityLoyaltySystem.IsSetup() && from is PlayerMobile && from.InRange(from.Location, 3))
             {
-                if (City != null && City.IsCitizen(from))
-                    from.SendGump(new CityStoneGump(from as PlayerMobile, City));
+                if (from is PlayerMobile && City != null && City.IsCitizen(from))
+                    BaseGump.SendGump(new CityStoneGump(from as PlayerMobile, City));
                 else
                     from.SendLocalizedMessage(1153888); // Only Citizens of this City may use the Election Stone. 
             }
@@ -99,7 +100,7 @@ namespace Server.Engines.CityLoyalty
                                 {
                                     if (City.IsCitizen(pm))
                                     {
-                                        mob.SendGump(new PlayerTitleGump(mob as PlayerMobile, pm, City));
+                                        BaseGump.SendGump(new PlayerTitleGump(mob as PlayerMobile, pm, City));
                                     }
                                     else
                                         mob.SendLocalizedMessage(1154029); // You may only bestow a title on citizens of this city!
@@ -114,15 +115,15 @@ namespace Server.Engines.CityLoyalty
             {
                 if (City.IsGovernor(m))
                 {
-                    m.SendGump(new ChooseTradeDealGump(m as PlayerMobile, City));
+                    BaseGump.SendGump(new ChooseTradeDealGump(m as PlayerMobile, City));
                 }
             }, enabled: City.IsGovernor(from)));
 
             list.Add(new SimpleContextMenuEntry(from, 1154277, m => // Open Inventory WTF is this?
             {
-                if (City.IsGovernor(m))
+                if (m is PlayerMobile && City.IsGovernor(m))
                 {
-                    m.SendGump(new OpenInventoryGump(City));
+                    BaseGump.SendGump(new OpenInventoryGump((PlayerMobile)m, City));
                 }
             }, enabled: City.IsGovernor(from)));
 
@@ -187,9 +188,9 @@ namespace Server.Engines.CityLoyalty
 
             list.Add(new SimpleContextMenuEntry(from, 1154068, m => // Accept Office
             {
-                if (m == City.GovernorElect && City.Governor == null)
+                if (m is PlayerMobile && m == City.GovernorElect && City.Governor == null)
                 {
-                    m.SendGump(new AcceptOfficeGump(m as PlayerMobile, City));
+                    BaseGump.SendGump(new AcceptOfficeGump(m as PlayerMobile, City));
                 }
             }, enabled: City.GovernorElect == from && City.Governor == null && City.GetLoyaltyRating(from) >= LoyaltyRating.Unknown));
         }

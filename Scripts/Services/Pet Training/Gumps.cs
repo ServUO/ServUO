@@ -24,6 +24,7 @@ namespace Server.Mobiles
         public override void AddGumpLayout()
         {
             var profile = PetTrainingHelper.GetAbilityProfile(Creature);
+            var trainProfile = PetTrainingHelper.GetTrainingProfile(Creature, true);
 
             AddPage(0);
             AddBackground(0, 24, 310, 325, 0x24A4);
@@ -34,11 +35,10 @@ namespace Server.Mobiles
             AddImage(40, 62, 0x82B);
             AddImage(40, 258, 0x82B);
 
-            if (Creature.Controlled && Creature.ControlMaster == User)
+            if (Creature.Controlled && Creature.ControlMaster == User && PetTrainingHelper.CanControl(User, Creature, trainProfile))
             {
                 AddImage(28, 272, 0x826);
 
-                var trainProfile = PetTrainingHelper.GetTrainingProfile(Creature, true);
                 var def = PetTrainingHelper.GetTrainingDefinition(Creature);
 
                 if (trainProfile.HasBegunTraining && def != null && def.Class != Class.Untrainable)
@@ -69,6 +69,7 @@ namespace Server.Mobiles
                 }
                 else if (Creature.ControlSlots < Creature.ControlSlotsMax)
                 {
+
                     AddHtmlLocalized(47, 270, 160, 18, 1157487, 0xC8, false, false); // Begin Animal Training
                     AddButton(53, 288, 0x837, 0x838, 4, GumpButtonType.Reply, 0);
                 }
@@ -660,10 +661,15 @@ namespace Server.Mobiles
             AddHtmlLocalized(0, 12, 454, 16, CenterLoc, String.Format("#{0}", _Title.ToString()), 0xF424E5, false, false);
             AddHtmlLocalized(55, 65, 344, 80, _Body, C32216(0x8B0000), false, false);
 
-            AddButton(70, 150, 0x9CC8, 0x9CC7, 1, GumpButtonType.Reply, 0);
-            AddButton(235, 150, 0x9CC8, 0x9CC7, 2, GumpButtonType.Reply, 0);
+            AddECHandleInput();
 
+            AddButton(70, 150, 0x9CC8, 0x9CC7, 1, GumpButtonType.Reply, 0);
             AddHtml(70, 153, 126, 16, Center("Yes"), false, false);
+
+            AddECHandleInput();
+            AddECHandleInput();
+
+            AddButton(235, 150, 0x9CC8, 0x9CC7, 2, GumpButtonType.Reply, 0);
             AddHtml(235, 153, 126, 16, Center("Cancel"), false, false);
         }
 
@@ -733,11 +739,19 @@ namespace Server.Mobiles
             AddHtmlLocalized(35, 63, 220, 20, 1044010, 0, false, false); // <CENTER>CATEGORIES</CENTER>
             AddHtmlLocalized(265, 63, 270, 20, 1044011, 0, false, false); // <CENTER>SELECTIONS</CENTER>
 
+            AddECHandleInput();
+
             AddButton(35, 490, 0x9CC8, 0x9CC7, 0, GumpButtonType.Reply, 0);
             AddHtml(35, 493, 126, 20, Center("CANCEL"), false, false);
 
+            AddECHandleInput();
+            AddECHandleInput();
+
             AddButton(220, 490, 0x9CC8, 0x9CC7, 1, GumpButtonType.Reply, 0);
             AddHtml(220, 493, 126, 20, Center("PLAN"), false, false);
+
+            AddECHandleInput();
+            AddECHandleInput();
 
             AddButton(410, 490, 0x9CC8, 0x9CC7, 2, GumpButtonType.Reply, 0);
             AddHtml(410, 493, 126, 20, Center("INFO"), false, false);
@@ -1588,7 +1602,7 @@ namespace Server.Mobiles
                     {
                         User.SendLocalizedMessage(1157501); // Your pet looks to have already completed that training. 
                     }
-                    else
+                    else if (PetTrainingHelper.CanControl(User, Creature, profile))
                     {
                         BaseGump.SendGump(new PetTrainingConfirmGump(User, 1157502, TrainingPoint.TrainPoint is MagicalAbility ? 1157566 : 1157503, () =>
                             {

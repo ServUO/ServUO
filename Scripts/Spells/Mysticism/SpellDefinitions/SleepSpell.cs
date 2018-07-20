@@ -25,7 +25,7 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new InternalTarget(this, TargetFlags.Harmful);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void OnTarget(object o)
@@ -156,13 +156,13 @@ namespace Server.Spells.Mysticism
         {
             public SleepSpell Owner { get; set; }
 
-            public InternalTarget(SleepSpell owner, TargetFlags flags)
-                : this(owner, false, flags)
+            public InternalTarget(SleepSpell owner)
+                : this(owner, false)
             {
             }
 
-            public InternalTarget(SleepSpell owner, bool allowland, TargetFlags flags)
-                : base(12, allowland, flags)
+            public InternalTarget(SleepSpell owner, bool allowland)
+                : base(12, allowland, TargetFlags.Harmful)
             {
                 Owner = owner;
             }

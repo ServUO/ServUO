@@ -10,9 +10,9 @@ namespace Server.Items
         public HitchingRope()
             : base(0x14F8)
         {
-            this.Hue = 0x41F; // guessed
+            Hue = 0x41F; // guessed
 
-            this.Weight = 5;
+            Weight = 5;
         }
 
         public HitchingRope(Serial serial)
@@ -29,7 +29,7 @@ namespace Server.Items
         }//  hitching rope
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 2))
+            if (IsChildOf(from.Backpack) || (from.InRange(GetWorldLocation(), 2) && Movable))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1071159); // Select the hitching post you want to supply hitching rope.
                 from.Target = new InternalTarget(this);
@@ -60,15 +60,15 @@ namespace Server.Items
             public InternalTarget(HitchingRope rope)
                 : base(-1, false, TargetFlags.None)
             {
-                this.m_Rope = rope;
+                m_Rope = rope;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Rope.Deleted)
+                if (m_Rope.Deleted)
                     return;
 
-                if (!from.InRange(this.m_Rope.GetWorldLocation(), 2))
+                if (!from.InRange(m_Rope.GetWorldLocation(), 2))
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 }
@@ -80,15 +80,15 @@ namespace Server.Items
                     {
                         from.SendMessage("Hitching Rope cannot be applied at this time.", 0x59);
                     }
-                    else if (postItem.Charges <= 0 && postItem.UsesRemaining <= 0)
+                    else if (postItem.Replica && postItem.Charges <= 0 && postItem.UsesRemaining == 0)
                     {
                         from.SendLocalizedMessage(1071157); // This hitching post is damaged. You can't use it any longer.
                     }
                     else
                     {
                         postItem.Charges -= 1;
-                        postItem.UsesRemaining += 15;
-                        this.m_Rope.Delete();
+                        postItem.UsesRemaining += postItem.Replica ? 15 : 30;
+                        m_Rope.Delete();
 
                         if (postItem is Item)
                         {

@@ -199,7 +199,7 @@ namespace Server.Items
         {
             cont.Movable = false;
             cont.Locked = true;
-            int numberItems;
+            int count;
 
             if (level == 0)
             {
@@ -244,49 +244,70 @@ namespace Server.Items
                 cont.LockLevel = cont.RequiredSkill - 10;
                 cont.MaxLockLevel = cont.RequiredSkill + 40;
 
-                cont.DropItem(new Gold(level * 5000));
+                #region gold
+                cont.DropItem(new Gold(isSos ? level * 10000 : level * 5000));
+                #endregion
 
-                for (int i = 0; i < level * 5; ++i)
+                #region Scrolls
+                if (isSos)
+                {
+                    switch(level)
+                    {
+                        default: count = 20; break;
+                        case 0:
+                        case 1: count = Utility.RandomMinMax(2, 5); break;
+                        case 2: count = Utility.RandomMinMax(10, 15); break;
+                    }
+                }
+                else
+                {
+                    count = level * 5;
+                }
+
+                for (int i = 0; i < count; ++i)
                     cont.DropItem(Loot.RandomScroll(0, 63, SpellbookType.Regular));
+                #endregion
 
-				double propsScale = 1.0;
+                #region Magical Items
+                double propsScale = 1.0;
+
                 if (Core.SE)
                 {
                     switch (level)
                     {
                         case 1:
-                            numberItems = 32;
+                            count = isSos ? Utility.RandomMinMax(2, 6) : 32;
 							propsScale = 0.5625;
                             break;
                         case 2:
-                            numberItems = 40;
+                            count = isSos ? Utility.RandomMinMax(10, 15) : 40;
 							propsScale = 0.6875;
                             break;
                         case 3:
-                            numberItems = 48;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 48;
 							propsScale = 0.875;
                             break;
                         case 4:
-                            numberItems = 56;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 56;
                             break;
                         case 5:
-                            numberItems = 64;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 64;
                             break;
                         case 6:
-                            numberItems = 72;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 72;
                             break;
                         case 7:
-                            numberItems = 80;
+                            count = isSos ? Utility.RandomMinMax(15, 20) : 80;
                             break;
                         default:
-                            numberItems = 0;
+                            count = 0;
                             break;
                     }
                 }
                 else
-                    numberItems = level * 6;
+                    count = level * 6;
 
-                for (int i = 0; i < numberItems; ++i)
+                for (int i = 0; i < count; ++i)
                 {
                     Item item;
 
@@ -376,32 +397,43 @@ namespace Server.Items
                     }
                 }
             }
+            #endregion
 
-            int reagents;
-            if (level == 0)
-                reagents = 12;
-            else
-                reagents = level + 1;
-
-            for (int i = 0; i < reagents; i++)
+            #region Reagents
+            if (isSos)
             {
-                Item item = Loot.RandomPossibleReagent();
-                item.Amount = Utility.RandomMinMax(40, 60);
-                cont.DropItem(item);
+                switch (level)
+                {
+                    default: count = Utility.RandomMinMax(45, 60); break;
+                    case 0:
+                    case 1: count = Utility.RandomMinMax(15, 20); break;
+                    case 2: count = Utility.RandomMinMax(25, 40); break;
+                }
+            }
+            else
+            {
+                count = level == 0 ? 12 : Utility.RandomMinMax(40, 60) * (level + 1);
             }
 
-            int gems;
-            if (level == 0)
-                gems = 2;
-            else
-                gems = (level * 3) + 1;
-
-            for (int i = 0; i < gems; i++)
+            for (int i = 0; i < count; i++)
             {
-                Item item = Loot.RandomGem();
-                cont.DropItem(item);
+                cont.DropItemStack(Loot.RandomPossibleReagent());
             }
+            #endregion
 
+            #region Gems
+            if (level == 0)
+                count = 2;
+            else
+                count = (level * 3) + 1;
+
+            for (int i = 0; i < count; i++)
+            {
+                cont.DropItem(Loot.RandomGem());
+            }
+            #endregion
+
+            #region Imbuing Ingreds
             if (level > 1)
             {
                 Item item = Loot.Construct(m_ImbuingIngreds[Utility.Random(m_ImbuingIngreds.Length)]);
@@ -409,6 +441,7 @@ namespace Server.Items
                 item.Amount = level;
                 cont.DropItem(item);
             }
+            #endregion
 
             Item arty = null;
             Item special = null;
