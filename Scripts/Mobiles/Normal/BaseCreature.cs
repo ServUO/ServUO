@@ -1658,7 +1658,7 @@ namespace Server.Mobiles
 
             // Are we a non-aggressive FightMode or are they an uncontrolled Summon?
             if (FightMode == FightMode.Aggressor || FightMode == FightMode.Evil || FightMode == FightMode.Good ||
-                (c != null && c.m_bSummoned && !c.m_bControlled && c.SummonMaster != null))
+                (c != null && c.m_bSummoned && !c.m_bControlled && c.SummonMaster != null) || Region.IsPartOf("Haven Island"))
             {
                 // Faction Opposed Players/Pets are my enemies
                 if (GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy)
