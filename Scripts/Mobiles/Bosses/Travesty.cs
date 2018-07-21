@@ -18,12 +18,21 @@ namespace Server.Mobiles
         }
 
         private DateTime m_NextBodyChange;
+        private DateTime m_NextMirrorImage;
         private bool m_SpawnedHelpers;
         private Timer m_Timer;
 
+        private bool _CanDiscord;
+        private bool _CanPeace;
+        private bool _CanProvoke;
+
+        public override bool CanDiscord { get { return _CanDiscord; } }
+        public override bool CanPeace { get { return _CanPeace; } }
+        public override bool CanProvoke { get { return _CanProvoke; } }
+
         [Constructable]
         public Travesty()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "Travesty";
             Body = 0x108;
@@ -66,6 +75,11 @@ namespace Server.Mobiles
             SetSkill(SkillName.Bushido, 100.0, 120.0);
             SetSkill(SkillName.Ninjitsu, 100.0, 120.0);
             SetSkill(SkillName.Chivalry, 100.0, 120.0);
+
+            SetSkill(SkillName.Musicianship, 100.0, 120.0);
+            SetSkill(SkillName.Discordance, 100.0, 120.0);
+            SetSkill(SkillName.Provocation, 100.0, 120.0);
+            SetSkill(SkillName.Peacemaking, 100.0, 120.0);
 
             Fame = 30000;
             Karma = -30000;
@@ -147,21 +161,17 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            if (Utility.RandomBool() && from != null)
+            if (0.1 > Utility.RandomDouble() && m_NextMirrorImage < DateTime.UtcNow)
             {
-                Clone clone = new Clone(this);
-                clone.MoveToWorld(Location, Map);
+                new Server.Spells.Ninjitsu.MirrorImage(this, null).Cast();
 
-                FixedParticles(0x376A, 1, 14, 0x13B5, 0, 0, EffectLayer.Waist);
-                PlaySound(0x511);
-
-                from.Combatant = clone;
-
-                from.SendLocalizedMessage(1063141); // Your attack has been diverted to a nearby mirror image of your target!
+                m_NextMirrorImage = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 45));
             }
 
             if (0.25 > Utility.RandomDouble() && DateTime.UtcNow > m_NextBodyChange)
+            {
                 ChangeBody();
+            }
 
             base.OnDamage(amount, from, willKill);
         }
@@ -197,19 +207,16 @@ namespace Server.Mobiles
 
             eable.Free();
 
-            if (list.Count <= 0)
+            if (list.Count == 0 || IsBodyMod)
             {
-                if (Body != 0x108)
-                    RestoreBody();
-
                 return;
             }
 
-            Mobile attacker = (Mobile)list[Utility.Random(list.Count - 1)];
+            Mobile attacker = list[Utility.Random(list.Count)];
 
-            Body = attacker.Body;
-            Hue = attacker.Hue;
-            Name = attacker.Name;
+            BodyMod = attacker.Body;
+            HueMod = attacker.Hue;
+            NameMod = attacker.Name;
             Female = attacker.Female;
             Title = "(Travesty)";
             HairItemID = attacker.HairItemID;
@@ -219,11 +226,34 @@ namespace Server.Mobiles
 
             foreach (Item item in attacker.Items)
             {
-                if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount && item.Layer != Layer.Bank)
+                if (item.Layer < Layer.Mount &&
+                    item.Layer != Layer.Backpack &&
+                    item.Layer != Layer.Mount &&
+                    item.Layer != Layer.Bank &&
+                    item.Layer != Layer.Hair &&
+                    item.Layer != Layer.Face &&
+                    item.Layer != Layer.FacialHair)
                 {
                     if (FindItemOnLayer(item.Layer) == null)
                     {
-                        AddItem(new ClonedItem(item));
+                        if (item is BaseRanged)
+                        {
+                            Item i = FindItemOnLayer(Layer.TwoHanded);
+
+                            if (i != null)
+                                i.Delete();
+
+                            i = FindItemOnLayer(Layer.OneHanded);
+
+                            if (i != null)
+                                i.Delete();
+
+                            AddItem(Loot.Construct(item.GetType()));
+                        }
+                        else
+                        {
+                            AddItem(new ClonedItem(item));
+                        }
                     }
                 }
             }
@@ -237,11 +267,20 @@ namespace Server.Mobiles
             if (attacker.Skills[SkillName.Spellweaving].Value >= 50.0)
                 ChangeAIType(AIType.AI_Spellweaving);
 
+            if (attacker.Skills[SkillName.Mysticism].Value >= 50.0)
+                ChangeAIType(AIType.AI_Mystic);
+
             if (attacker.Skills[SkillName.Magery].Value >= 50.0)
                 ChangeAIType(AIType.AI_Mage);
 
             if (attacker.Skills[SkillName.Necromancy].Value >= 50.0)
                 ChangeAIType(AIType.AI_Necro);
+
+            if (attacker.Skills[SkillName.Ninjitsu].Value >= 50.0)
+                ChangeAIType(AIType.AI_Ninja);
+
+            if (attacker.Skills[SkillName.Bushido].Value >= 50.0)
+                ChangeAIType(AIType.AI_Samurai);
 
             if (attacker.Skills[SkillName.Necromancy].Value >= 50.0 && attacker.Skills[SkillName.Magery].Value >= 50.0)
                 ChangeAIType(AIType.AI_NecroMage);
@@ -250,6 +289,26 @@ namespace Server.Mobiles
             FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
 
             m_NextBodyChange = DateTime.UtcNow + TimeSpan.FromSeconds(10.0);
+
+            if (attacker.Skills[SkillName.Healing].Base > 20)
+            {
+                SetSpecialAbility(SpecialAbility.Heal);
+            }
+
+            if (attacker.Skills[SkillName.Discordance].Base > 50)
+            {
+                _CanDiscord = true;
+            }
+
+            if (attacker.Skills[SkillName.Peacemaking].Base > 50)
+            {
+                _CanPeace = true;
+            }
+
+            if (attacker.Skills[SkillName.Provocation].Base > 50)
+            {
+                _CanProvoke = true;
+            }
 
             if (m_Timer != null)
                 m_Timer.Stop();
@@ -273,14 +332,24 @@ namespace Server.Mobiles
 
         public virtual void RestoreBody()
         {
-            Name = "Travesty";
+            BodyMod = 0;
+            HueMod = -1;
+            NameMod = null;
+            Female = false;
             Title = null;
-            Body = 264;
-            Hue = 0;
+
+            _CanDiscord = false;
+            _CanPeace = false;
+            _CanProvoke = false;
+
+            if (HasAbility(SpecialAbility.Heal))
+            {
+                RemoveSpecialAbility(SpecialAbility.Heal);
+            }
 
             DeleteItems();
 
-            ChangeAIType(AIType.AI_Melee);
+            ChangeAIType(AIType.AI_Mage);
 
             if (m_Timer != null)
             {

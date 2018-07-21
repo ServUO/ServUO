@@ -13206,6 +13206,7 @@
     <Compile Include="Services\Expansions\Time Of Legends\Items\CardOfSemidar.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Expansions\Time Of Legends\Items\ClimbingVine.cs" />
     <Compile Include="Services\Expansions\Time Of Legends\Items\EodonRewardTitleScroll.cs">
       <SubType>Code</SubType>
     </Compile>

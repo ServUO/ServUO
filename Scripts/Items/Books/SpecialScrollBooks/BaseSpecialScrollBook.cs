@@ -32,6 +32,7 @@ namespace Server.Items
         public SecureLevel Level { get; set; }
 
         public override bool DisplaysContent { get { return false; } }
+        public override double DefaultWeight { get { return 1.0; } }
 
         public abstract Type ScrollType { get; }
 
@@ -44,6 +45,11 @@ namespace Server.Items
             : base(id)
         {
             LootType = LootType.Blessed;
+        }
+
+        public override int GetTotal(TotalType type)
+        {
+            return 0;
         }
 
         public override void OnDoubleClick(Mobile m)

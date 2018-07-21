@@ -168,10 +168,9 @@ namespace Server.Engines.BulkOrders
 
             if (context != null && context.Entries.ContainsKey(type))
             {
-                DateTime last = context.Entries[type].LastBulkOrder;
-
                 if (context.Entries[type].CachedDeeds == 0)
                 {
+                    DateTime last = context.Entries[type].LastBulkOrder;
                     int tocache = 0;
 
                     if (last + TimeSpan.FromHours(Delay) < DateTime.UtcNow)
@@ -189,11 +188,16 @@ namespace Server.Engines.BulkOrders
 
                 if (context.Entries[type].CachedDeeds > 0)
                 {
-                    if (context.Entries[type].CachedDeeds == MaxCachedDeeds)
-                        context.Entries[type].LastBulkOrder = DateTime.UtcNow - TimeSpan.FromHours(Delay * (MaxCachedDeeds));
+                    if (context.Entries[type].CachedDeeds >= MaxCachedDeeds)
+                        context.Entries[type].LastBulkOrder = DateTime.UtcNow - TimeSpan.FromHours(Delay * MaxCachedDeeds);
 
                     context.Entries[type].LastBulkOrder += TimeSpan.FromHours(Delay);
                     context.Entries[type].CachedDeeds--;
+
+                    if (context.Entries[type].CachedDeeds == 0 && context.Entries[type].LastBulkOrder < DateTime.UtcNow - TimeSpan.FromHours(Delay))
+                    {
+                        context.Entries[type].LastBulkOrder = DateTime.UtcNow;
+                    }
 
                     return true;
                 }
@@ -777,7 +781,17 @@ namespace Server.Engines.BulkOrders
 
     public class BODEntry
     {
-        public int CachedDeeds { get; set; }
+        private int _CachedDeeds;
+
+        public int CachedDeeds
+        {
+            get { return _CachedDeeds; }
+            set
+            {
+                _CachedDeeds = Math.Min(BulkOrderSystem.MaxCachedDeeds, value);
+            }
+        }
+
         public DateTime LastBulkOrder { get; set; }
         public double BankedPoints { get; set; }
         public int PendingRewardPoints { get; set; }
@@ -808,7 +822,7 @@ namespace Server.Engines.BulkOrders
 
             if (reader.ReadInt() == 0)
             {
-                CachedDeeds = reader.ReadInt();
+                _CachedDeeds = reader.ReadInt();
                 LastBulkOrder = reader.ReadDateTime();
                 BankedPoints = reader.ReadDouble();
                 PendingRewardPoints = reader.ReadInt();
@@ -826,7 +840,7 @@ namespace Server.Engines.BulkOrders
             if (BulkOrderSystem.NewSystemEnabled)
             {
                 writer.Write(0);
-                writer.Write(CachedDeeds);
+                writer.Write(_CachedDeeds);
                 writer.Write(LastBulkOrder);
                 writer.Write(BankedPoints);
                 writer.Write(PendingRewardPoints);

@@ -384,7 +384,7 @@ namespace Server.Engines.Quests
                                         }
                                     }
 
-									spawn.OnBeforeSpawn(loc, Map.TerMur);
+									spawn.OnBeforeSpawn(p, Map.TerMur);
                                     spawn.MoveToWorld(p, Map.TerMur);
 									spawn.OnAfterSpawn();
 

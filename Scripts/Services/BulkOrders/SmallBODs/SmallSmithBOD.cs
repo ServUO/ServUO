@@ -48,28 +48,28 @@ namespace Server.Engines.BulkOrders
 
                 SmallBulkEntry entry = entries[Utility.Random(entries.Length)];
 
-                this.Hue = hue;
-                this.AmountMax = amountMax;
-                this.Type = entry.Type;
-                this.Number = entry.Number;
-                this.Graphic = entry.Graphic;
-                this.RequireExceptional = reqExceptional;
-                this.Material = material;
-                this.GraphicHue = entry.Hue;
+                Hue = hue;
+                AmountMax = amountMax;
+                Type = entry.Type;
+                Number = entry.Number;
+                Graphic = entry.Graphic;
+                RequireExceptional = reqExceptional;
+                Material = material;
+                GraphicHue = entry.Hue;
             }
         }
 
         public SmallSmithBOD(int amountCur, int amountMax, Type type, int number, int graphic, bool reqExceptional, BulkMaterialType mat, int hue)
         {
-            this.Hue = 0x44E;
-            this.AmountMax = amountMax;
-            this.AmountCur = amountCur;
-            this.Type = type;
-            this.Number = number;
-            this.Graphic = graphic;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
-            this.GraphicHue = hue;
+            Hue = 0x44E;
+            AmountMax = amountMax;
+            AmountCur = amountCur;
+            Type = type;
+            Number = number;
+            Graphic = graphic;
+            RequireExceptional = reqExceptional;
+            Material = mat;
+            GraphicHue = hue;
         }
 
         public SmallSmithBOD(Serial serial)
@@ -79,13 +79,13 @@ namespace Server.Engines.BulkOrders
 
         private SmallSmithBOD(SmallBulkEntry entry, BulkMaterialType material, int amountMax, bool reqExceptional)
         {
-            this.Hue = 0x44E;
-            this.AmountMax = amountMax;
-            this.Type = entry.Type;
-            this.Number = entry.Number;
-            this.Graphic = entry.Graphic;
-            this.RequireExceptional = reqExceptional;
-            this.Material = material;
+            Hue = 0x44E;
+            AmountMax = amountMax;
+            Type = entry.Type;
+            Number = entry.Number;
+            Graphic = entry.Graphic;
+            RequireExceptional = reqExceptional;
+            Material = material;
         }
 
         public static SmallSmithBOD CreateRandomFor(Mobile m)

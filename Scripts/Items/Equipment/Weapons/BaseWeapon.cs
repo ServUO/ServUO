@@ -2161,9 +2161,9 @@ namespace Server.Items
             }
 
             double chance = NegativeAttributes.Antique > 0 ? 5 : 0;
-            bool acidicTarget = MaxRange <= 1 && !(this is Fists) && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
+            bool acidicTarget = MaxRange <= 1 && m_AosAttributes.SpellChanneling > 0 && !(this is Fists) && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
 
-            if ((m_AosAttributes.SpellChanneling == 0 || MaxRange > 1) &&
+            if ((MaxRange > 1) &&
                 (acidicTarget || (defender != null && splintering) || Utility.Random(40) <= chance))    // Stratics says 50% chance, seems more like 4%..
             {
                 if (MaxRange <= 1 && acidicTarget)
