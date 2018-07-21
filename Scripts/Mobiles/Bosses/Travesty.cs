@@ -224,8 +224,6 @@ namespace Server.Mobiles
             FacialHairItemID = attacker.FacialHairItemID;
             FacialHairHue = attacker.FacialHairHue;
 
-            Type ranged = null;
-
             foreach (Item item in attacker.Items)
             {
                 if (item.Layer < Layer.Mount &&
