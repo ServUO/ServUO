@@ -73,6 +73,16 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Meager);
         }
+        
+        public override bool IsEnemy(Mobile m)
+        {
+            if(Region.IsPartOf("Haven Island"))
+            {
+                return false;
+            }
+            
+            return base.IsEnemy(m);
+        }
 
         public override void Serialize(GenericWriter writer)
         {
