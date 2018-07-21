@@ -384,7 +384,10 @@ namespace Server.Engines.Quests
                                         }
                                     }
 
+									spawn.OnBeforeSpawn(loc, Map.TerMur);
                                     spawn.MoveToWorld(p, Map.TerMur);
+									spawn.OnAfterSpawn();
+
                                     spawn.Combatant = m;
 
                                     m.SendLocalizedMessage(1156508);  // Uh oh...that doesn't look like a lava rock!

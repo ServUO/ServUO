@@ -165,6 +165,9 @@ namespace Server.Items
         private static Point2D[] m_Locations;
         private static Point2D[] m_HavenLocations;
 
+        public static Point2D[] Locations { get { return m_Locations; } }
+        public static Point2D[] HavenLocations { get { return m_Locations; } }
+
         private int m_Level;
         private bool m_Completed;
         private Mobile m_CompletedBy;

@@ -99,6 +99,7 @@ namespace Server.Items
                     m.SendLocalizedMessage(DropMessage);
 
                     dropped.Movable = false;
+
                     m.CloseGump(typeof(SpecialScrollBookGump));
 
                     return true;

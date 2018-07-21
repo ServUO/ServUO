@@ -50,12 +50,12 @@ namespace Server.Services.TownCryer
                 EventSink.Login += OnLogin;
 
                 GreetingsEntries.Add(1158388);
-                /*Greetings, Avatar!<br><br>Welcome to Britannia! Whether these are your first steps or you are a 
-                         * seasoned veteran King Blackthorn welcomes you! The realm is bustling with opportunities for adventure!
-                         * TownCryers can be visited at all banks and points of interest to learn about the latest goings on in 
-                         * the realm. Many guilds are actively recruiting members, so be sure to check the Town Cryer guild 
-                         * section for the latest recruitment events. <br><br>We wish you the best of luck in your
-                         * <A HREF="https://uo.com/endless-journey/">Endless Journey</A>*/
+                /* Greetings, Avatar!<br><br>Welcome to Britannia! Whether these are your first steps or you are a 
+                 * seasoned veteran King Blackthorn welcomes you! The realm is bustling with opportunities for adventure!
+                 * TownCryers can be visited at all banks and points of interest to learn about the latest goings on in 
+                 * the realm. Many guilds are actively recruiting members, so be sure to check the Town Cryer guild 
+                 * section for the latest recruitment events. <br><br>We wish you the best of luck in your
+                 * <A HREF="https://uo.com/endless-journey/">Endless Journey</A>*/
 
                 NewsEntries.Add(new TownCryerNewsEntry(1158083, 1158085, 0x617, typeof(TamingPetQuest), "https://uo.com/wiki/ultima-online-wiki/skills/animal-taming/animal-training/")); // Animal Training
                 NewsEntries.Add(new TownCryerNewsEntry(1158086, 1158088, 0x61D, typeof(ExploringTheDeepQuest), null));
@@ -107,21 +107,21 @@ namespace Server.Services.TownCryer
         {
             if (Enabled && e.Mobile is PlayerMobile && !((PlayerMobile)e.Mobile).HideTownCrierGreetingGump)
             {
-                Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1), player =>
+                Timer.DelayCall(TimeSpan.FromSeconds(1), player =>
+                {
+                    IPooledEnumerable eable = player.Map.GetMobilesInRange(player.Location, 25);
+
+                    foreach (Mobile m in eable)
                     {
-                        IPooledEnumerable eable = player.Map.GetMobilesInRange(player.Location, 25);
-
-                        foreach (Mobile m in eable)
+                        if (m is TownCrier)
                         {
-                            if (m is TownCrier)
-                            {
-                                BaseGump.SendGump(new TownCryerGreetingsGump(player, (TownCrier)m));
-                                break;
-                            }
+                            BaseGump.SendGump(new TownCryerGreetingsGump(player, (TownCrier)m));
+                            break;
                         }
+                    }
 
-                        eable.Free();
-                    }, (PlayerMobile)e.Mobile);
+                    eable.Free();
+                }, (PlayerMobile)e.Mobile);
             }
         }
 

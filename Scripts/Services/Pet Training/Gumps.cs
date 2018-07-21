@@ -69,7 +69,6 @@ namespace Server.Mobiles
                 }
                 else if (Creature.ControlSlots < Creature.ControlSlotsMax)
                 {
-
                     AddHtmlLocalized(47, 270, 160, 18, 1157487, 0xC8, false, false); // Begin Animal Training
                     AddButton(53, 288, 0x837, 0x838, 4, GumpButtonType.Reply, 0);
                 }
@@ -671,6 +670,8 @@ namespace Server.Mobiles
 
             AddButton(235, 150, 0x9CC8, 0x9CC7, 2, GumpButtonType.Reply, 0);
             AddHtml(235, 153, 126, 16, Center("Cancel"), false, false);
+
+            AddECHandleInput();
         }
 
         public override void OnResponse(RelayInfo info)

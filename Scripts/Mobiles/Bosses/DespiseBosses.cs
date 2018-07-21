@@ -130,6 +130,7 @@ namespace Server.Engines.Despise
         }
 
         public static Type[] Artifacts { get { return m_Artifacts; } }
+
 		private static Type[] m_Artifacts = new Type[]
 		{
 			typeof(CompassionsEye),

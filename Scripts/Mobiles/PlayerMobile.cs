@@ -2,16 +2,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using Server.Accounting;
 using Server.ContextMenus;
 using Server.Engines.BulkOrders;
 using Server.Engines.CannedEvil;
+using Server.Engines.CityLoyalty;
 using Server.Engines.Craft;
 using Server.Engines.Help;
 using Server.Engines.MyRunUO;
 using Server.Engines.PartySystem;
 using Server.Engines.Quests;
+using Server.Engines.VoidPool;
+using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
 using Server.Ethics;
 using Server.Factions;
@@ -23,6 +27,7 @@ using Server.Movement;
 using Server.Multis;
 using Server.Network;
 using Server.Regions;
+using Server.Services.Virtues;
 using Server.SkillHandlers;
 using Server.Spells;
 using Server.Spells.Bushido;
@@ -33,17 +38,10 @@ using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
 using Server.Spells.Seventh;
 using Server.Spells.Sixth;
-using Server.Spells.Spellweaving;
-using Server.Targeting;
-using System.Linq;
-
-using Server.Engines.CityLoyalty;
-using Server.Services.Virtues;
 using Server.Spells.SkillMasteries;
+using Server.Spells.Spellweaving;
 using Server.Engines.SphynxFortune;
-using Server.Engines.VoidPool;
-using Server.Engines.VvV;
-
+using Server.Targeting;
 
 using RankDefinition = Server.Guilds.RankDefinition;
 #endregion

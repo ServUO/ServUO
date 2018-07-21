@@ -1,6 +1,7 @@
 #region References
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Server.ContextMenus;
@@ -8,6 +9,7 @@ using Server.Engines.PartySystem;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Doom;
 using Server.Engines.Quests.Haven;
+using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
 using Server.Ethics;
 using Server.Factions;
@@ -15,19 +17,17 @@ using Server.Items;
 using Server.Misc;
 using Server.Multis;
 using Server.Network;
+using Server.Prompts;
 using Server.Regions;
+using Server.Services.Virtues;
 using Server.SkillHandlers;
 using Server.Spells;
 using Server.Spells.Bushido;
 using Server.Spells.Necromancy;
 using Server.Spells.Sixth;
+using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
-using System.Linq;
-using Server.Spells.SkillMasteries;
-using Server.Prompts;
-using Server.Services.Virtues;
-using Server.Engines.VvV;
 #endregion
 
 namespace Server.Mobiles
