@@ -3269,6 +3269,7 @@
     <Compile Include="Services\Expansions\Time Of Legends\AuctionSafe\BidHistory.cs" />
     <Compile Include="Services\Expansions\Time Of Legends\AuctionSafe\Gumps.cs" />
     <Compile Include="Services\Expansions\Time Of Legends\Items\CardOfSemidar.cs" />
+    <Compile Include="Services\Expansions\Time Of Legends\Items\ClimbingVine.cs" />
     <Compile Include="Services\Expansions\Time Of Legends\Items\EodonRewardTitleScroll.cs" />
     <Compile Include="Services\Expansions\Time Of Legends\Items\Resources.cs" />
     <Compile Include="Services\Expansions\Time Of Legends\Mobiles\Allosaurus.cs" />
