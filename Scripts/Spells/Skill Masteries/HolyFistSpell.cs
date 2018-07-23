@@ -93,6 +93,16 @@ namespace Server.Spells.SkillMasteries
                     Caster.MovingParticles(m, 0x9BB5, 7, 0, false, true, 9502, 4019, 0x160);
                     Caster.PlaySound(0x5CE);
 
+                    if (m is Mobile)
+                    {
+                        damage *= GetDamageScalar((Mobile)m);
+                    }
+
+                    int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is Mobile ? Caster.Player && ((Mobile)m).Player : false);
+
+                    damage *= (100 + sdiBonus);
+                    damage /= 100;
+
                     SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 100);
 
                     if (target is Mobile && !CheckResisted((Mobile)target) && ((Mobile)target).NetState != null)
