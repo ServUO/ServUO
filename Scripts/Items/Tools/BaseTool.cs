@@ -15,7 +15,7 @@ namespace Server.Items
         bool CheckAccessible(Mobile from, ref int num);
     }
 
-    public abstract class BaseTool : Item, ITool
+    public abstract class BaseTool : Item, ITool, IResource
     {
         private Mobile m_Crafter;
         private ItemQuality m_Quality;

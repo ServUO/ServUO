@@ -180,13 +180,12 @@ namespace Server.Engines.BulkOrders
 
         private static bool IsTool(Type t)
         {
-            return _Tools.Any(x => x == t);
+            return _Tools.Any(x => x == t || t.IsSubclassOf(x));
         }
 
         private static Type[] _Tools =
         {
-            typeof(MortarPestle), typeof(SmithHammer), typeof(SmithyHammer), typeof(Skillet),
-            typeof(SewingKit), typeof(FletcherTools), typeof(SledgeHammer), typeof(Clippers)
+            typeof(BaseTool), typeof(SmithyHammer)
         };
 
         public override bool CheckType(Type itemType)

@@ -83,10 +83,14 @@ namespace Server.Spells.SkillMasteries
     public class SummonedReaper : BaseCreature
     {
         private DateTime _StartTime;
+        private int m_DispelDifficulty;
+
+        public override double DispelDifficulty { get { return m_DispelDifficulty; } }
+        public override double DispelFocus { get { return 45.0; } }
 
         [Constructable]
         public SummonedReaper(Mobile caster, SummonReaperSpell spell)
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a reaper";
             Body = 47;
@@ -133,6 +137,7 @@ namespace Server.Spells.SkillMasteries
                     }
                 });
 
+            m_DispelDifficulty = 91 + (int)((caster.Skills[SkillName.Spellweaving].Base * 83) / 5.2);
             _StartTime = DateTime.UtcNow + TimeSpan.FromSeconds(3);
 
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
