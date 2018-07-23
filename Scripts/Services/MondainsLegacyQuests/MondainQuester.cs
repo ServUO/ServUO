@@ -142,8 +142,8 @@ namespace Server.Engines.Quests
         }
 
         public virtual void OnOfferFailed()
-        { 
-            Say(1075575); // I'm sorry, but I don't have anything else for you right now. Could you check back with me in a few minutes?
+        {
+            Say(1080107); // I'm sorry, I have nothing for you at this time.
         }
 
         public virtual void Advertise()

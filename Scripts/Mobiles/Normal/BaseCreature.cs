@@ -6804,7 +6804,7 @@ namespace Server.Mobiles
             }
         }
 
-        public double GetDispelDifficulty()
+        public virtual double GetDispelDifficulty()
         {
             double dif = DispelDifficulty;
             if (SummonMaster != null)
