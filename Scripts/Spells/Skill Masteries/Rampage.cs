@@ -24,7 +24,6 @@ namespace Server.Spells.SkillMasteries
  
         public override int RequiredMana { get { return 20; } }
         public override int DamageThreshold { get { return 1; } }
-        public override bool DamageCanDisrupt { get { return true; } }
 
         public override SkillName CastSkill { get { return SkillName.Wrestling; } }
  

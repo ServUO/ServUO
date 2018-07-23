@@ -30,7 +30,7 @@ namespace Server.Services.TownCryer
             }
             else
             {
-                AddHtml(58, 213, 397, 271, Entry.Body.String, false, true);
+                AddHtml(58, 213, 397, 271, Color("#080808", Entry.Body.String), false, true);
             }
 
             AddHtmlLocalized(0, 150, 854, 20, CenterLoc, Entry.Title.ToString(), 0, false, false);

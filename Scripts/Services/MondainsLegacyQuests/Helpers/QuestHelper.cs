@@ -50,9 +50,16 @@ namespace Server.Engines.Quests
                     {
                         return quest;
                     }
-                    else if (quest.StartingMobile != null && !quest.DoneOnce && message)
+                    else if (quester is Mobile && message)
                     {
-                        quest.StartingMobile.OnOfferFailed();
+                        if (quester is MondainQuester)
+                        {
+                            ((MondainQuester)quester).OnOfferFailed();
+                        }
+                        else if (quester is Mobile)
+                        {
+                            ((Mobile)quester).Say(1080107); // I'm sorry, I have nothing for you at this time.
+                        }
                     }
                 }
 				
