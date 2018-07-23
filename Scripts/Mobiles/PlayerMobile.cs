@@ -13,7 +13,9 @@ using Server.Engines.Craft;
 using Server.Engines.Help;
 using Server.Engines.MyRunUO;
 using Server.Engines.PartySystem;
+using Server.Engines.Points;
 using Server.Engines.Quests;
+using Server.Engines.Shadowguard;
 using Server.Engines.VoidPool;
 using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
@@ -41,6 +43,7 @@ using Server.Spells.Sixth;
 using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
 using Server.Engines.SphynxFortune;
+using Server.Engines.VendorSearching;
 using Server.Targeting;
 
 using RankDefinition = Server.Guilds.RankDefinition;
@@ -2310,24 +2313,28 @@ namespace Server.Mobiles
 			{
                 if (Core.HS && Alive)
                 {
-                    list.Add(new Server.Engines.VendorSearching.SearchVendors(this));
+                    list.Add(new SearchVendors(this));
                 }
 
                 BaseHouse house = BaseHouse.FindHouseAt(this);
 
                 if (house != null)
                 {
-                    if (house.IsCoOwner(this))
-                        list.Add(new CallbackEntry(6205, ReleaseCoOwnership));
-                }
+					if (house.IsCoOwner(this))
+					{
+						list.Add(new CallbackEntry(6205, ReleaseCoOwnership));
+					}
+				}
 
                 if (Core.SA)
                 {
                     list.Add(new TitlesMenuEntry(this));
 
-                    if (Alive)
-                        QuestHelper.GetContextMenuEntries(list);
-                }
+					if (Alive)
+					{
+						QuestHelper.GetContextMenuEntries(list);
+					}
+				}
                 else if (Core.ML)
                 {
                     #region Mondains Legacy
@@ -2335,9 +2342,11 @@ namespace Server.Mobiles
                     {
                         QuestHelper.GetContextMenuEntries(list);
 
-                        if (m_RewardTitles.Count > 0)
-                            list.Add(new CallbackEntry(6229, new ContextCallback(ShowChangeTitle)));
-                    }
+						if (m_RewardTitles.Count > 0)
+						{
+							list.Add(new CallbackEntry(6229, ShowChangeTitle));
+						}
+					}
                     #endregion
                 }
 
@@ -2348,7 +2357,7 @@ namespace Server.Mobiles
 
 			    if (Alive && Core.SA)
 			    {
-                    list.Add(new Server.Engines.Points.LoyaltyRating(this));
+                    list.Add(new Engines.Points.LoyaltyRating(this));
 			    }
 
                 if (Backpack != null && CanSee(Backpack) && Alive)
@@ -2356,30 +2365,29 @@ namespace Server.Mobiles
                     list.Add(new OpenBackpackEntry(this));
                 }
 
-                if (Alive && InsuranceEnabled)
-                {
-                    list.Add(new CallbackEntry(6201, ToggleItemInsurance));
+				if (Alive && InsuranceEnabled)
+				{
+					list.Add(new CallbackEntry(6201, ToggleItemInsurance));
 
-                    if (Core.SA)
-                        list.Add(new CallbackEntry(1114299, new ContextCallback(OpenItemInsuranceMenu)));
-                    else
-                    {
-                        if (AutoRenewInsurance)
-                        {
-                            list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
-                        }
-                        else
-                        {
-                            list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
-                        }
-                    }
-                }
-                else if(Siege.SiegeShard)
-                {
-                    list.Add(new CallbackEntry(3006168, SiegeBlessItem));
-                }
+					if (Core.SA)
+					{
+						list.Add(new CallbackEntry(1114299, OpenItemInsuranceMenu));
+					}
+					else if (AutoRenewInsurance)
+					{
+						list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
+					}
+					else
+					{
+						list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
+					}
+				}
+				else if (Siege.SiegeShard)
+				{
+					list.Add(new CallbackEntry(3006168, SiegeBlessItem));
+				}
 
-                if (house != null)
+				if (house != null)
                 {
                     if (Alive && house.InternalizedVendors.Count > 0 && house.IsOwner(this))
                     {
@@ -2392,8 +2400,10 @@ namespace Server.Mobiles
                     }
                 }
 
-                if (Core.HS)
-                    list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, new ContextCallback(ToggleTrades))); // Allow Trades / Refuse Trades				
+				if (Core.HS)
+				{
+					list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, ToggleTrades)); // Allow Trades / Refuse Trades				
+				}
 
 				if (m_JusticeProtectors.Count > 0)
 				{
@@ -2407,30 +2417,38 @@ namespace Server.Mobiles
 
                     if (controller != null)
                     {
-                        if (!VoidPool)
-                            VoidPool = true;
+						if (!VoidPool)
+						{
+							VoidPool = true;
+						}
 
-                        list.Add(new Server.Engines.Points.VoidPoolInfo(this, controller));
+						list.Add(new VoidPoolInfo(this, controller));
                     }
                 }
                 #endregion
 
                 #region TOL Shadowguard
-                if (Server.Engines.Shadowguard.ShadowguardController.GetInstance(Location, Map) != null)
-                    list.Add(new Server.Engines.Shadowguard.ExitEntry(this));
-                #endregion
+				{
+					if (ShadowguardController.GetInstance(Location, Map) != null)
+					{
+						list.Add(new ExitEntry(this));
+					}
+				}
+				#endregion
 
                 if (!Core.SA && Alive)
 				{
 					list.Add(new CallbackEntry(6210, ToggleChampionTitleDisplay));
 				}
 
-                if (DisabledPvpWarning)
-                    list.Add(new CallbackEntry(1113797, new ContextCallback(EnablePvpWarning)));
-            }
+				if (DisabledPvpWarning)
+				{
+					list.Add(new CallbackEntry(1113797, EnablePvpWarning));
+				}
+			}
 			else
 			{
-				if (Alive && Core.Expansion >= Expansion.AOS)
+				if (Alive && Core.AOS)
 				{
 					Party theirParty = from.Party as Party;
 					Party ourParty = Party as Party;
@@ -2461,7 +2479,7 @@ namespace Server.Mobiles
 
 				if (curhouse != null)
 				{
-					if (Alive && Core.Expansion >= Expansion.AOS && curhouse.IsAosRules && curhouse.IsFriend(from))
+					if (Alive && Core.AOS && curhouse.IsAosRules && curhouse.IsFriend(from))
 					{
 						list.Add(new EjectPlayerEntry(from, this));
 					}
