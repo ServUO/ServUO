@@ -7,6 +7,7 @@
 #region References
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Server.ContextMenus;
 using Server.Engines.PartySystem;
@@ -1033,10 +1034,10 @@ namespace Server.Items
 				m_Looters.Add(from);
 			}
 
-			if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
-			{
-				m_InstancedItems.Remove(item);
-			}
+			//if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
+			//{
+			//	m_InstancedItems.Remove(item);
+			//}
 		}
 
 		public override void OnItemLifted(Mobile from, Item item)
@@ -1058,10 +1059,10 @@ namespace Server.Items
 				m_Looters.Add(from);
 			}
 
-			if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
-			{
-				m_InstancedItems.Remove(item);
-			}
+			//if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
+			//{
+			//	m_InstancedItems.Remove(item);
+			//}
 		}
 
 		private class OpenCorpseEntry : ContextMenuEntry
