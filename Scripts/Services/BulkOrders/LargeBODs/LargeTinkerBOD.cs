@@ -1,11 +1,30 @@
 using System;
 using System.Collections.Generic;
+using Server.Items;
 
 namespace Server.Engines.BulkOrders
 {
     public class LargeTinkerBOD : LargeBOD
     {
         public override BODType BODType { get { return BODType.Tinkering; } }
+
+        private GemType _GemType;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public GemType GemType
+        {
+            get { return _GemType; }
+            set
+            {
+                if (Entries.Length > 0 && Entries[0].Details != null && Entries[0].Details.Type != null && Entries[0].Details.Type.IsSubclassOf(typeof(BaseJewel)))
+                {
+                    _GemType = value;
+                    AssignGemNumbers();
+
+                    InvalidateProperties();
+                }
+            }
+        }
 
         public static double[] m_BlackTinkerMaterialChances = new double[]
         {
@@ -25,6 +44,7 @@ namespace Server.Engines.BulkOrders
         {
             LargeBulkEntry[] entries;
             bool useMaterials = true;
+            bool jewelry = false;
 			
             int rand = Utility.Random(4);
 
@@ -36,6 +56,8 @@ namespace Server.Engines.BulkOrders
                     break;
                 case 1:
                     entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeJewelry);
+                    useMaterials = false;
+                    jewelry = true;
                     break;
                 case 2:
                     entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeKeyGlobe);
@@ -61,15 +83,31 @@ namespace Server.Engines.BulkOrders
             Entries = entries;
             RequireExceptional = reqExceptional;
             Material = material;
+
+            if (jewelry)
+            {
+                AssignGemType();
+            }
         }
 
-        public LargeTinkerBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
+        public LargeTinkerBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries, GemType gemType)
         {
             Hue = 1109;
             AmountMax = amountMax;
             Entries = entries;
             RequireExceptional = reqExceptional;
             Material = mat;
+            _GemType = gemType;
+        }
+
+        public override bool CheckType(SmallBOD small, Type type)
+        {
+            if (_GemType != GemType.None && (!(small is SmallTinkerBOD) || ((SmallTinkerBOD)small).GemType != _GemType))
+            {
+                return false;
+            }
+
+            return base.CheckType(small, type);
         }
 
         public LargeTinkerBOD(Serial serial)
@@ -122,11 +160,47 @@ namespace Server.Engines.BulkOrders
             return list;
         }
 
+        public void AssignGemType()
+        {
+            _GemType = (GemType)Utility.RandomMinMax(1, 9);
+            AssignGemNumbers();
+        }
+
+        public void AssignGemNumbers()
+        {
+            foreach (var entry in Entries)
+            {
+                Type jewelType = entry.Details.Type;
+
+                int offset = (int)GemType - 1;
+                int loc = 0;
+
+                if (jewelType == typeof(GoldRing) || jewelType == typeof(SilverRing))
+                {
+                    loc = 1044176;
+                }
+                else if (jewelType == typeof(GoldBracelet) || jewelType == typeof(SilverBracelet))
+                {
+                    loc = 1044221;
+                }
+                else
+                {
+                    loc = 1044203;
+                }
+
+                entry.Details.Number = loc + offset;
+            }
+
+            //this.Number = loc + (int)gemType - 1;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+
+            writer.Write((int)_GemType);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -134,6 +208,28 @@ namespace Server.Engines.BulkOrders
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    _GemType = (GemType)reader.ReadInt();
+                    break;
+            }
+
+            if (version < 1 && Entries != null && Entries.Length > 0 && Entries[0].Details != null)
+            {
+                Type t = Entries[0].Details.Type;
+
+                if (SmallTinkerBOD.CannotAssignMaterial(t) && Material != BulkMaterialType.None)
+                {
+                    Material = BulkMaterialType.None;
+                }
+
+                if (t.IsSubclassOf(typeof(BaseJewel)))
+                {
+                    AssignGemType();
+                }
+            }
         }
     }
 }
