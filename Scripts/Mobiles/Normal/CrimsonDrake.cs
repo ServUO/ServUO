@@ -3,7 +3,7 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a crimson drake corpse")]
-    public class CrimsonDrake : BaseCreature, IDrake
+    public class CrimsonDrake : BaseCreature
     {
         private DrakeType m_Type;
 
@@ -93,6 +93,26 @@ namespace Server.Mobiles
         public CrimsonDrake(Serial serial)
             : base(serial)
         {
+        }
+
+        public static TrainingDefinition _PoisonDrakeDefinition;
+
+        public override TrainingDefinition TrainingDefinition
+        {
+            get
+            {
+                if (m_Type == DrakeType.Poison)
+                {
+                    if (_PoisonDrakeDefinition == null)
+                    {
+                        _PoisonDrakeDefinition = new TrainingDefinition(GetType(), Class.None, MagicalAbility.Dragon2, PetTrainingHelper.SpecialAbilityNone, PetTrainingHelper.WepAbility2, PetTrainingHelper.AreaEffectArea2, 2, 5);
+                    }
+
+                    return _PoisonDrakeDefinition;
+                }
+
+                return base.TrainingDefinition;
+            }
         }
 
         public override bool ReacquireOnMovement { get { return !Controlled; } }
