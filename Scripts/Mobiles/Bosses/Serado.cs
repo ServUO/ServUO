@@ -47,6 +47,7 @@ namespace Server.Mobiles
             PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
             SetWeaponAbility(WeaponAbility.DoubleStrike);
+            SetAreaEffect(AreaEffect.PoisonBreath);
         }
 
         public Serado(Serial serial)
