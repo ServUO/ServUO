@@ -190,7 +190,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -198,6 +198,13 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version < 1 && ControlSlots == 3)
+            {
+                MinTameSkill = 98.7;
+                ControlSlotsMin = 1;
+                ControlSlots = 1;
+            }
         }
     }
 }
