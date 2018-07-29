@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Server.Mobiles;
 
@@ -62,16 +63,16 @@ namespace Server.Items
             Donations.Add(new CollectionItem(typeof(WhiteWolf), 0x25D2, 1073118, 0x0, 30.0));
             Donations.Add(new CollectionItem(typeof(Slime), 0x20E8, 1073117, 0x0, 45.0));
             Donations.Add(new CollectionItem(typeof(PolarBear), 0x20E1, 1073120, 0x0, 45.0));
-            Donations.Add(new CollectionItem(typeof(Unicorn), 0x25CE, 1074821, 0x0, 250.0));
+            //Donations.Add(new CollectionItem(typeof(Unicorn), 0x25CE, 1074821, 0x0, 250.0));
             Donations.Add(new CollectionItem(typeof(Kirin), 0x25A0, 1074821, 0x0, 250.0));
-            Donations.Add(new CollectionItem(typeof(Nightmare), 0x259C, 1074821, 0x0, 250.0));
+            //Donations.Add(new CollectionItem(typeof(Nightmare), 0x259C, 1074821, 0x0, 250.0));
             Donations.Add(new CollectionItem(typeof(FireSteed), 0x21F1, 1074821, 0x0, 250.0));
             Donations.Add(new CollectionItem(typeof(SwampDragon), 0x2619, 1074821, 0x0, 250.0));
-            Donations.Add(new CollectionItem(typeof(RuneBeetle), 0x276F, 1074820, 0x0, 300.0));
+            //Donations.Add(new CollectionItem(typeof(RuneBeetle), 0x276F, 1074820, 0x0, 300.0));
             Donations.Add(new CollectionItem(typeof(FireBeetle), 0x260F, 1074820, 0x489, 300.0));
-            Donations.Add(new CollectionItem(typeof(Beetle), 0x260F, 1074820, 0x0, 300.0));
+            //Donations.Add(new CollectionItem(typeof(Beetle), 0x260F, 1074820, 0x0, 300.0));
             Donations.Add(new CollectionItem(typeof(Drake), 0x20D6, 1073119, 0x0, 400.0));
-            Donations.Add(new CollectionItem(typeof(Dragon), 0x20D6, 1073119, 0x0, 400.0));
+            //Donations.Add(new CollectionItem(typeof(Dragon), 0x20D6, 1073119, 0x0, 400.0));
             Donations.Add(new CollectionItem(typeof(Reptalon), 0x2D95, 1073121, 0x0, 550.0));
 			
             int[] hues = new int[] 
@@ -139,6 +140,33 @@ namespace Server.Items
             Rewards.Add(new CollectionTitle(1073205, 1073630, 800000.0)); // Eminent Britannia Zoo Contribuer
             Rewards.Add(new CollectionTitle(1073206, 1073631, 800000.0)); // Royal Subject of the Britannia Zoo
         }
+
+        public static bool HasGroup(Type type, Type colType)
+        {
+            foreach (var typeList in _PetGroups)
+            {
+                if (typeList.Any(x => type == x) && typeList.Any(x => colType == x))
+                {
+                    return true;
+                }
+                /*foreach (var t in typeList.Where(t => t == type))
+                {
+                    if (t == colType)
+                    {
+                        return true;
+                    }
+                }*/
+            }
+
+            return false;
+        }
+
+        private static Type[][] _PetGroups =
+        {
+            new Type[] { typeof(Dragon), typeof(Drake) },
+            new Type[] { typeof(Kirin), typeof(Nightmare), typeof(Unicorn) },
+            new Type[] { typeof(FireBeetle), typeof(Beetle), typeof(RuneBeetle) },
+        };
 
         public override void IncreaseTier()
         { 

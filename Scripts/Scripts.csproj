@@ -1847,9 +1847,12 @@
     <Compile Include="Misc\Waypoints.cs" />
     <Compile Include="Misc\WorldLocationInfo.cs" />
     <Compile Include="Mobiles\AI\Magical AI\MageAI.cs" />
+    <Compile Include="Mobiles\AI\Magical AI\MysticAI.cs" />
     <Compile Include="Mobiles\AI\Magical AI\NecroAI.cs" />
     <Compile Include="Mobiles\AI\Magical AI\NecromageAI.cs" />
+    <Compile Include="Mobiles\AI\Magical AI\NinjaAI.cs" />
     <Compile Include="Mobiles\AI\Magical AI\PaladinAI.cs" />
+    <Compile Include="Mobiles\AI\Magical AI\SamuraiAI.cs" />
     <Compile Include="Mobiles\AI\Magical AI\SpellweavingAI.cs" />
     <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
     <Compile Include="Mobiles\Bosses\Barracoon.cs" />
@@ -8747,8 +8750,6 @@
     <Compile Include="Mobiles\AI\MeleeAI.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\AI\MysticAI.cs" />
-    <Compile Include="Mobiles\AI\NinjaAI.cs" />
     <Compile Include="Mobiles\AI\OppositionGroup.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -8758,7 +8759,6 @@
     <Compile Include="Mobiles\AI\PredatorAI.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\AI\SamuraiAI.cs" />
     <Compile Include="Mobiles\AI\SpeedInfo.cs">
       <SubType>Code</SubType>
     </Compile>
