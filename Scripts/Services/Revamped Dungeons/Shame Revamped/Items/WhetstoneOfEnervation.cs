@@ -20,7 +20,7 @@ namespace Server.Items
             this.Hue = 1458;
             this.Weight = 1;
 
-            Stackable = true;
+            Stackable = false;
             Amount = amount;
         }
 

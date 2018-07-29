@@ -14,6 +14,7 @@ namespace Server.Mobiles
         public ShameGuardian(AIType type)
             : base(type, FightMode.Aggressor, 10, 1, .4, .2)
         {
+			Title = "the guardian";
         }
 
         public override void OnDeath(Container c)
@@ -86,14 +87,14 @@ namespace Server.Mobiles
         }
     }
 
-    [CorpseName("an quartz elemental corpse")]
+    [CorpseName("a quartz elemental corpse")]
     public class QuartzElemental : ShameGuardian
     {
         [Constructable]
         public QuartzElemental()
             : base(AIType.AI_Melee)
         {
-            Name = "an quartz elemental";
+            Name = "a quartz elemental";
             Body = 14;
             BaseSoundID = 268;
             Hue = 2575;
@@ -154,14 +155,14 @@ namespace Server.Mobiles
         }
     }
 
-    [CorpseName("an flame elemental corpse")]
+    [CorpseName("a flame elemental corpse")]
     public class FlameElemental : ShameGuardian
     {
         [Constructable]
         public FlameElemental()
             : base(AIType.AI_Mage)
         {
-            Name = "an flame elemental";
+            Name = "a flame elemental";
             Body = 15;
             BaseSoundID = 838;
             Hue = 1161;
@@ -236,14 +237,14 @@ namespace Server.Mobiles
         }
     }
 
-    [CorpseName("an wind elemental corpse")]
+    [CorpseName("a wind elemental corpse")]
     public class WindElemental : ShameGuardian
     {
         [Constructable]
         public WindElemental()
             : base(AIType.AI_Mage)
         {
-            Name = "an wind elemental";
+            Name = "a wind elemental";
             Body = 13;
             BaseSoundID = 655;
             Hue = 33765;

@@ -68,7 +68,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //this.AddLoot(LootPack.Random(230, 400, 2, 300, 550));
             this.AddLoot(LootPack.Rich, 1);
         }
 
@@ -141,7 +140,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //this.AddLoot(LootPack.Random(400, 500, 5, 300, 600));
             this.AddLoot(LootPack.FilthyRich, 2);
         }
 
@@ -236,7 +234,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(295, 500, 3, 300, 600));
             this.AddLoot(LootPack.Rich, 2);
         }
 
@@ -305,7 +302,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(295, 500, 3, 400, 650));
             this.AddLoot(LootPack.Rich, 2);
         }
 
@@ -364,7 +360,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(295, 500, 2, 400, 650));
             this.AddLoot(LootPack.Rich, 1);
         }
 
@@ -432,7 +427,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(295, 500, 3, 400, 650));
             this.AddLoot(LootPack.Rich, 2);
         }
 
@@ -495,7 +489,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(295, 500, 3, 400, 650));
             this.AddLoot(LootPack.Rich, 2);
         }
 
@@ -560,13 +553,166 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            // AddLoot(LootPack.Random(400, 500, 3, 400, 650));
             this.AddLoot(LootPack.Rich, 2);
         }
 
         public override bool HasBreath { get { return true; } }
 
         public MoltenEarthElemental(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+	
+	[CorpseName("a flame elemental corpse")]
+    public class LesserFlameElemental : BaseCreature
+    {
+        [Constructable]
+        public LesserFlameElemental()
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.4, 0.2)
+        {
+            Name = "a flame elemental";
+            Body = 15;
+            BaseSoundID = 838;
+            Hue = 1161;
+
+            SetStr(420, 460);
+            SetDex(160, 210);
+            SetInt(120, 190);
+
+            SetHits(700, 800);
+            SetMana(1000, 1200);
+
+            SetDamage(13, 15);
+
+            SetDamageType(ResistanceType.Physical, 25);
+            SetDamageType(ResistanceType.Fire, 75);
+
+            SetResistance(ResistanceType.Physical, 40, 60);
+            SetResistance(ResistanceType.Fire, 100);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 60, 70);
+            SetResistance(ResistanceType.Energy, 60, 70);
+
+            SetSkill(SkillName.MagicResist, 90, 140);
+            SetSkill(SkillName.Tactics, 90, 130.0);
+            SetSkill(SkillName.Wrestling, 90, 120);
+            SetSkill(SkillName.Magery, 100, 145);
+            SetSkill(SkillName.EvalInt, 90, 140);
+            SetSkill(SkillName.Meditation, 80, 120);
+            SetSkill(SkillName.Parry, 100, 120);
+
+            Fame = 3500;
+            Karma = -3500;
+
+            PackItem(new SulfurousAsh(5));
+        }
+
+        public override bool HasBreath { get { return true; } } // fire breath enabled
+        public override bool HasAura { get { return true; } }
+        public override int AuraRange { get { return 5; } }
+        public override int AuraBaseDamage { get { return 7; } }
+        public override int AuraFireDamage { get { return 100; } }
+        public override int AuraEnergyDamage { get { return 100; } }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
+                c.DropItem(new ShameCrystal());
+        }
+
+        public override void GenerateLoot()
+        {
+            this.AddLoot(LootPack.Rich, 2);
+        }
+
+        public LesserFlameElemental(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+	
+	[CorpseName("a wind elemental corpse")]
+    public class LesserWindElemental : BaseCreature
+    {
+        [Constructable]
+        public LesserWindElemental()
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.4, 0.2)
+        {
+            Name = "a wind elemental";
+            Body = 13;
+            BaseSoundID = 655;
+            Hue = 33765;
+
+            SetStr(370, 460);
+            SetDex(160, 250);
+            SetInt(150, 220);
+
+            SetHits(2500, 2600);
+            SetMana(1000, 1300);
+
+            SetDamage(15, 17);
+
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Cold, 40);
+            SetDamageType(ResistanceType.Energy, 40);
+
+            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Fire, 55, 65);
+            SetResistance(ResistanceType.Cold, 55, 65);
+            SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Energy, 60, 75);
+
+            SetSkill(SkillName.MagicResist, 60, 80);
+            SetSkill(SkillName.Tactics, 60, 80.0);
+            SetSkill(SkillName.Wrestling, 60, 80);
+            SetSkill(SkillName.Magery, 60, 80);
+            SetSkill(SkillName.EvalInt, 60, 80);
+
+            Fame = 3500;
+            Karma = -3500;
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
+                c.DropItem(new ShameCrystal());
+        }
+
+        public override void GenerateLoot()
+        {
+            this.AddLoot(LootPack.Rich, 2);
+        }
+
+        public LesserWindElemental(Serial serial)
             : base(serial)
         {
         }
@@ -635,17 +781,16 @@ namespace Server.Mobiles
             base.AlterMeleeDamageFrom(from, ref damage);
         }
 
-        /*public override void OnDeath(Container c)
+        public override void OnDeath(Container c)
         {
             base.OnDeath(c);
 			
-            if(0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
+            if(0.15 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
-        }*/
+        }
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(600, 1000, 4, 300, 700));
             this.AddLoot(LootPack.Rich, 3);
         }
 
@@ -794,7 +939,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(800, 1000, 7, 400, 750));
             AddLoot(LootPack.UltraRich, 2);
             AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(5, 20));
         }
@@ -941,7 +1085,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(600, 1000, 5, 400, 750));
             this.AddLoot(LootPack.FilthyRich, 2);
         }
 
@@ -1078,7 +1221,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(400, 800, 3, 400, 750));
             this.AddLoot(LootPack.Rich, 2);
         }
 
@@ -1141,7 +1283,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(400, 800, 3, 400, 750));
             this.AddLoot(LootPack.Rich, 2);
         }
 
@@ -1287,7 +1428,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(600, 1000, 5, 400, 750));
             this.AddLoot(LootPack.FilthyRich, 2);
         }
 
@@ -1431,7 +1571,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(600, 1000, 8, 500, 750));
             this.AddLoot(LootPack.UltraRich, 2);
         }
 
@@ -1519,7 +1658,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(600, 1000, 5, 400, 750));
             this.AddLoot(LootPack.FilthyRich, 2);
             this.AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(1, 8));
         }
@@ -1577,7 +1715,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(175, 225, 2, 300, 600));
             this.AddLoot(LootPack.Rich, 1);
         }
 
@@ -1643,7 +1780,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(550, 650, 5, 400, 750));
             this.AddLoot(LootPack.UltraRich, 1);
             this.AddLoot(LootPack.FilthyRich, 1);
         }
@@ -1707,7 +1843,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(550, 650, 5, 400, 750));
             this.AddLoot(LootPack.UltraRich, 1);
             this.AddLoot(LootPack.FilthyRich, 1);
         }
@@ -1772,7 +1907,6 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.Random(295, 500, 2, 400, 650));
             this.AddLoot(LootPack.Rich, 1);
         }
 
