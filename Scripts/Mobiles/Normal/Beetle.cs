@@ -199,11 +199,16 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (version < 1 && ControlSlots == 3)
+            if (version < 1 && PetTrainingHelper.Enabled && ControlSlots <= 3)
             {
-                MinTameSkill = 98.7;
-                ControlSlotsMin = 1;
-                ControlSlots = 1;
+                var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+                if (profile == null || !profile.HasCustomized())
+                {
+                    MinTameSkill = 98.7;
+                    ControlSlotsMin = 1;
+                    ControlSlots = 1;
+                }
             }
         }
     }

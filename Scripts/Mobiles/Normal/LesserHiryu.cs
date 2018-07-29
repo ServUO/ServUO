@@ -215,11 +215,16 @@ namespace Server.Mobiles
                 Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
             }
 
-            if (version < 4 && ControlSlots == 3)
+            if (version < 4 && PetTrainingHelper.Enabled && ControlSlots <= 3)
             {
-                MinTameSkill = 98.7;
-                ControlSlotsMin = 1;
-                ControlSlots = 1;
+                var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+                if (profile == null || !profile.HasCustomized())
+                {
+                    MinTameSkill = 98.7;
+                    ControlSlotsMin = 1;
+                    ControlSlots = 1;
+                }
             }
         }
 

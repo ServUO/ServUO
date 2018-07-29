@@ -296,14 +296,16 @@ namespace Server.Items
 		
         public virtual void DonatePet(PlayerMobile player, BaseCreature pet)
         {
-            for (int i = 0; i < m_Donations.Count; i ++)
-                if (m_Donations[i].Type == pet.GetType())
+            for (int i = 0; i < m_Donations.Count; i++)
+            {
+                if (m_Donations[i].Type == pet.GetType() || MoonglowDonationBox.HasGroup(pet.GetType(), m_Donations[i].Type))
                 {
                     pet.Delete();
                     Donate(player, m_Donations[i], 1);
                     return;
                 }
-				
+            }
+	
             player.SendLocalizedMessage(1073113); // This Collection is not accepting that type of creature.
         }
 
