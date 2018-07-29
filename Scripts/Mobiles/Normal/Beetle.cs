@@ -186,6 +186,11 @@ namespace Server.Mobiles
 
         #endregion
 
+        public override void OnAfterTame(Mobile tamer)
+        {
+            SetInt(500);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -208,6 +213,11 @@ namespace Server.Mobiles
                     MinTameSkill = 98.7;
                     ControlSlotsMin = 1;
                     ControlSlots = 1;
+                }
+
+                if ((ControlMaster != null || IsStabled) && Int < 500)
+                {
+                    SetInt(500);
                 }
             }
         }
