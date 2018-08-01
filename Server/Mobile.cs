@@ -1232,6 +1232,21 @@ namespace Server
 
 			GetName(out prefix, out name, out suffix);
 
+			if (String.IsNullOrEmpty(prefix))
+			{
+				prefix = " ";
+			}
+
+			if (String.IsNullOrEmpty(name))
+			{
+				name = " ";
+			}
+
+			if (String.IsNullOrEmpty(suffix))
+			{
+				suffix = " ";
+			}
+
 			list.Add(1050045, "{0}\t{1}\t{2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
 
 			AddGuildProperties(list);
