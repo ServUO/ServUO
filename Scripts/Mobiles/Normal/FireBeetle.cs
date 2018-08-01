@@ -149,11 +149,16 @@ namespace Server.Mobiles
             return 1.0;
         }
 
+        public override void OnAfterTame(Mobile tamer)
+        {
+            SetInt(500);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -165,6 +170,26 @@ namespace Server.Mobiles
             if (version < 2 && Controlled && RawStr >= 300 && ControlSlots == ControlSlotsMin)
             {
                 Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
+            }
+
+            if (PetTrainingHelper.Enabled && version == 2)
+            {
+                if (version < 1 && PetTrainingHelper.Enabled && ControlSlots <= 3)
+                {
+                    var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+                    if (profile == null || !profile.HasCustomized())
+                    {
+                        MinTameSkill = 98.7;
+                        ControlSlotsMin = 1;
+                        ControlSlots = 1;
+                    }
+
+                    if ((ControlMaster != null || IsStabled) && Int < 500)
+                    {
+                        SetInt(500);
+                    }
+                }
             }
 
             if (version == 0)
