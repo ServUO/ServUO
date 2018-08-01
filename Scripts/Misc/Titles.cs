@@ -238,6 +238,7 @@ namespace Server.Misc
                 {
                     if (((PlayerMobile)beheld).CurrentChampTitle != null)
                         title.AppendFormat(((PlayerMobile)beheld).CurrentChampTitle);
+                    else if (beheld is BaseVendor) title.AppendFormat(" {0}", customTitle);
                 }
 				else if (info.Harrower > 0)
                     title.AppendFormat(": {0} of Evil", HarrowerTitles[Math.Min(HarrowerTitles.Length, info.Harrower) - 1]);
