@@ -376,7 +376,7 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(LeatherContainerEngraver), 1015283, 1072152, 75.0, 100.0, typeof(Bone), 1049064, 1, 1049063);
                 AddRes(index, typeof(Leather), 1044462, 6, 1044463);
                 AddRes(index, typeof(SpoolOfThread), 1073462, 2, 1073463);
-                AddRes(index, typeof(Dyes), 1024009, 6, 1044253);
+                AddRes(index, typeof(Dyes), 1024009, 1, 1044253);
                 #endregion
             }
 
