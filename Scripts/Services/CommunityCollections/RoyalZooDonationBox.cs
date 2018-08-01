@@ -149,13 +149,6 @@ namespace Server.Items
                 {
                     return true;
                 }
-                /*foreach (var t in typeList.Where(t => t == type))
-                {
-                    if (t == colType)
-                    {
-                        return true;
-                    }
-                }*/
             }
 
             return false;
