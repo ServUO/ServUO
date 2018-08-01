@@ -499,41 +499,19 @@
     <Compile Include="Gumps\PolymorphGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\Properties\PropsConfig.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\PropsGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\SetBodyGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\SetColorGump.cs" />
-    <Compile Include="Gumps\Properties\SetCustomEnumGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\SetDateTimeGump.cs" />
-    <Compile Include="Gumps\Properties\SetGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\SetListOptionGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\SetObjectGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\SetObjectTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\SetPoint2DGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\SetPoint3DGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Properties\SetTimeSpanGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Gumps\Props\PropsConfig.cs" />
+    <Compile Include="Gumps\Props\PropsGump.cs" />
+    <Compile Include="Gumps\Props\SetBodyGump.cs" />
+    <Compile Include="Gumps\Props\SetColorGump.cs" />
+    <Compile Include="Gumps\Props\SetCustomEnumGump.cs" />
+    <Compile Include="Gumps\Props\SetDateTimeGump.cs" />
+    <Compile Include="Gumps\Props\SetGump.cs" />
+    <Compile Include="Gumps\Props\SetListOptionGump.cs" />
+    <Compile Include="Gumps\Props\SetObjectGump.cs" />
+    <Compile Include="Gumps\Props\SetObjectTarget.cs" />
+    <Compile Include="Gumps\Props\SetPoint2DGump.cs" />
+    <Compile Include="Gumps\Props\SetPoint3DGump.cs" />
+    <Compile Include="Gumps\Props\SetTimeSpanGump.cs" />
     <Compile Include="Gumps\ReclaimVendorGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1852,6 +1830,7 @@
     <Compile Include="Mobiles\AI\Magical AI\NinjaAI.cs" />
     <Compile Include="Mobiles\AI\Magical AI\PaladinAI.cs" />
     <Compile Include="Mobiles\AI\Magical AI\SamuraiAI.cs" />
+    <Compile Include="Mobiles\AI\Magical AI\SpellbinderAI.cs" />
     <Compile Include="Mobiles\AI\Magical AI\SpellweavingAI.cs" />
     <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
     <Compile Include="Mobiles\Bosses\Barracoon.cs" />
@@ -8759,9 +8738,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\AI\SpeedInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\AI\SpellbinderAI.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\AI\ThiefAI.cs">
