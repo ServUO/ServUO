@@ -2163,7 +2163,7 @@ namespace Server.Items
             double chance = NegativeAttributes.Antique > 0 ? 5 : 0;
             bool acidicTarget = MaxRange <= 1 && m_AosAttributes.SpellChanneling > 0 && !(this is Fists) && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
 
-            if (acidicTarget || (defender != null && splintering) || Utility.Random(40) <= chance)   // Stratics says 50% chance, seems more like 4%..
+            if (acidicTarget || (defender != null && splintering) || Utility.Random(40) <= chance)
             {
                 if (MaxRange <= 1 && acidicTarget)
                 {

@@ -75,6 +75,7 @@ namespace Server.Items
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
+
             SetSecureLevelEntry.AddTo(from, this, list);
         }
 

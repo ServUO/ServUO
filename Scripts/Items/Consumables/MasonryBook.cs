@@ -42,11 +42,16 @@ namespace Server.Items
         {
             PlayerMobile pm = from as PlayerMobile;
 
-            if (!this.IsChildOf(from.Backpack))
+            if (pm == null)
             {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                return;
             }
-            else if (pm == null || from.Skills[SkillName.Carpentry].Base < 100.0)
+
+            if (!IsChildOf(pm.Backpack))
+            {
+                pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+            else if (pm.Skills[SkillName.Carpentry].Base < 100.0)
             {
                 pm.SendMessage("Only a Grandmaster Carpenter can learn from this book.");
             }
@@ -58,7 +63,8 @@ namespace Server.Items
             {
                 pm.Masonry = true;
                 pm.SendMessage("You have learned to make items from stone. You will need miners to gather stones for you to make these items.");
-                this.Delete();
+                
+				Delete();
             }
         }
     }

@@ -20,8 +20,9 @@ namespace Server.Items
             this.Hue = 1458;
             this.Weight = 1;
 
-            Stackable = false;
+            Stackable = true;
             Amount = amount;
+            Stackable = false;
         }
 
         public override void OnDoubleClick(Mobile from)

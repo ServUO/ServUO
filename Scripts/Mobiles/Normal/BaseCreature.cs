@@ -4095,9 +4095,10 @@ namespace Server.Mobiles
                 if (PetTrainingHelper.Enabled && ControlSlotsMin == 0 && ControlSlotsMax == 0)
                 {
                     m_iControlSlots = value;
+
                     CalculateSlots(value);
 
-                    if (m_iControlSlots != ControlSlotsMin)
+                    if (m_iControlSlots < ControlSlotsMin)
                     {
                         m_iControlSlots = ControlSlotsMin;
                     }
