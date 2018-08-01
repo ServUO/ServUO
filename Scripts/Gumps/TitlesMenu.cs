@@ -992,7 +992,6 @@ namespace Server.Gumps
                 case TitleType.OverheadName:
                     User.OverheadTitle = null;
                     User.DisplayGuildTitle = false;
-                    User.DisplayGuildTitle = false;
                     break;
                 case TitleType.SubTitles:
                     User.SubtitleSkillTitle = null;
