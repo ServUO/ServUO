@@ -390,12 +390,6 @@ namespace Server.Engines.Craft
             craftItem.NeedMill = needMill;
         }
 
-        public void SetNeededExpansion(int index, Expansion expansion)
-        {
-            CraftItem craftItem = m_CraftItems.GetAt(index);
-            craftItem.RequiredExpansion = expansion;
-        }
-
         public void SetNeededThemePack(int index, ThemePack pack)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
