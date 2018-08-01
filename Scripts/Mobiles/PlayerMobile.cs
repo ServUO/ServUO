@@ -4505,7 +4505,7 @@ namespace Server.Mobiles
                 case 32:
                 case 31:
                     {
-                        m_ShowGuildAbbreviation = version > 31 ? reader.ReadBool() : false;
+                        DisplayGuildTitle = version > 31 && reader.ReadBool();
                         m_FameKarmaTitle = reader.ReadString();
                         m_PaperdollSkillTitle = reader.ReadString();
                         m_OverheadTitle = reader.ReadString();
@@ -4946,7 +4946,7 @@ namespace Server.Mobiles
             writer.Write((int)m_ExploringTheDeepQuest);
 
             // Version 31/32 Titles
-            writer.Write(m_ShowGuildAbbreviation);
+            writer.Write(DisplayGuildTitle);
             writer.Write(m_FameKarmaTitle);
             writer.Write(m_PaperdollSkillTitle);
             writer.Write(m_OverheadTitle);
@@ -5644,7 +5644,6 @@ namespace Server.Mobiles
         private string m_CurrentChampTitle;
         private string m_OverheadTitle;
         private int m_CurrentVeteranTitle;
-        private bool m_ShowGuildAbbreviation;
 
         public string FameKarmaTitle
         {
@@ -5680,12 +5679,6 @@ namespace Server.Mobiles
         {
             get { return m_CurrentVeteranTitle; }
             set { m_CurrentVeteranTitle = value; InvalidateProperties(); }
-        }
-
-        public bool ShowGuildAbbreviation
-        {
-            get { return m_ShowGuildAbbreviation; }
-            set { m_ShowGuildAbbreviation = value; InvalidateProperties(); }
         }
 
 		public override void AddNameProperties(ObjectPropertyList list)
