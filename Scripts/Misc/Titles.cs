@@ -238,7 +238,6 @@ namespace Server.Misc
                 {
                     if (((PlayerMobile)beheld).CurrentChampTitle != null)
                         title.AppendFormat(((PlayerMobile)beheld).CurrentChampTitle);
-                    else if (beheld is BaseVendor) title.AppendFormat(" {0}", customTitle);
                 }
 				else if (info.Harrower > 0)
                     title.AppendFormat(": {0} of Evil", HarrowerTitles[Math.Min(HarrowerTitles.Length, info.Harrower) - 1]);
@@ -276,6 +275,7 @@ namespace Server.Misc
             {
                 if (beheld is PlayerMobile && ((PlayerMobile)beheld).PaperdollSkillTitle != null)
                     title.Append(", ").Append(((PlayerMobile)beheld).PaperdollSkillTitle);
+                else if (beheld is BaseVendor) title.AppendFormat(" {0}", customTitle);
             }
             else if (customTitle != null && (customTitle = customTitle.Trim()).Length > 0)
             {
