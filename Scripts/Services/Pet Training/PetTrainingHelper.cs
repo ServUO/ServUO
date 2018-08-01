@@ -124,13 +124,18 @@ namespace Server.Mobiles
             if (bc == null)
                 return null;
 
-            TrainingDefinition def = Definitions.FirstOrDefault(d => d.CreatureType == bc.GetType());
+            // First, see if the creature has its own
+            TrainingDefinition def = bc.TrainingDefinition;
 
-            if (bc is IDrake && ((IDrake)bc).DrakeType == DrakeType.Poison)
+            if (def != null)
             {
-                return new TrainingDefinition(bc.GetType(), def.Class, def.MagicalAbilities, def.SpecialAbilities, def.WeaponAbilities, AreaEffectArea2, 2, 5);
+                return def;
             }
-            else if (bc is VvVMount)
+
+            // Next, we see if there is a pre-defined def
+            def = Definitions.FirstOrDefault(d => d.CreatureType == bc.GetType());
+
+            if (bc is VvVMount)
             {
                 if (bc.Body == 0xDA)
                 {
@@ -142,9 +147,13 @@ namespace Server.Mobiles
                 }
             }
 
+            // Last, we give it a default that cannot be trained
             if (def == null && bc.Tamable)
             {
-                def = new TrainingDefinition(bc.GetType(), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, bc.ControlSlotsMin, bc.ControlSlotsMax);
+                int slotsMin = bc.ControlSlotsMin == 0 ? bc.ControlSlots : bc.ControlSlotsMin;
+                int slotsMax = bc.ControlSlotsMax == 0 ? bc.ControlSlots : bc.ControlSlotsMax;
+
+                def = new TrainingDefinition(bc.GetType(), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, slotsMin, slotsMax);
             }
 
             return def;

@@ -20,7 +20,7 @@ namespace Server.Items
             this.Hue = 1458;
             this.Weight = 1;
 
-            Stackable = true;
+            Stackable = false;
             Amount = amount;
         }
 
@@ -38,7 +38,7 @@ namespace Server.Items
 
                             if(!wep.IsChildOf(m.Backpack))
                                 m.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
-                            else if (wep.TimesImbued > 0)
+                            else if (wep.TimesImbued > 0 || wep.Quality != ItemQuality.Exceptional)
                                 m.SendLocalizedMessage(1046439); // Invalid target.
                             else if (wep.Attributes.WeaponDamage > 0)
                             {

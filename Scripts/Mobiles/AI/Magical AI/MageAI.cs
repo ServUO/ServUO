@@ -1090,7 +1090,7 @@ namespace Server.Mobiles
 			if (!BlessSpell.IsBlessed(m_Mobile) && CheckCanCastMagery(3))
 				return new BlessSpell(m_Mobile, null);
 
-			if (CheckCanCastMagery(6))
+			if (!m_Mobile.Controlled && CheckCanCastMagery(6))
 				return new InvisibilitySpell(m_Mobile, null);
 
 			return null;

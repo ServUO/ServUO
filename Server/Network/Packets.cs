@@ -750,12 +750,12 @@ namespace Server.Network
         MountSpeed,
         WalkSpeed,
         WalkSpeedFast,
-        NoMove
+        TeleportSpeed
     }
 
 	public sealed class SpeedControl : Packet
 	{
-        public static readonly Packet NoMove = SetStatic(new SpeedControl(SpeedControlType.NoMove));
+        public static readonly Packet TeleportSpeed = SetStatic(new SpeedControl(SpeedControlType.TeleportSpeed));
         public static readonly Packet WalkSpeedFast = SetStatic(new SpeedControl(SpeedControlType.WalkSpeedFast));
         public static readonly Packet WalkSpeed = SetStatic(new SpeedControl(SpeedControlType.WalkSpeed));
         public static readonly Packet MountSpeed = SetStatic(new SpeedControl(SpeedControlType.MountSpeed));

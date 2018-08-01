@@ -225,7 +225,7 @@ namespace Server.Items
 			var m_Stackables = new List<Item>();
 			var m_Unstackables = new List<Item>();
 
-            foreach (var item in items)
+            foreach (var item in items.Where(i => !m_InstancedItems.ContainsKey(i)))
 			{
 				if (item.LootType != LootType.Cursed) //Don't have curesd items take up someone's item spot.. (?)
 				{
@@ -1055,10 +1055,10 @@ namespace Server.Items
 				m_Looters.Add(from);
 			}
 
-			if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
-			{
-				m_InstancedItems.Remove(item);
-			}
+			//if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
+			//{
+			//	m_InstancedItems.Remove(item);
+			//}
 		}
 
 		public override void OnItemLifted(Mobile from, Item item)
@@ -1080,10 +1080,10 @@ namespace Server.Items
 				m_Looters.Add(from);
 			}
 
-			if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
-			{
-				m_InstancedItems.Remove(item);
-			}
+			//if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
+			//{
+			//	m_InstancedItems.Remove(item);
+			//}
 		}
 
 		private class OpenCorpseEntry : ContextMenuEntry

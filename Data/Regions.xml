@@ -2405,10 +2405,14 @@
     </region>
   </Facet>
   <Facet name="Malas">
-    <region type="Underwater" priority="50" name="Gravewater Lake">
+    <region type="Underwater" priority="50" name="Gravewater Lake [Underwater]">
       <rect x="1698" y="1567" width="5" height="60" />
       <rect x="1687" y="1627" width="26" height="26" />
     </region>
+	<region priority="50" name="Gravewater Lake">
+			<rect x="1440" y="1527" width="423" height="219" />
+			<rect x="1381" y="1565" width="215" height="224" />
+	</region>
     <region type="MondainRegion" priority="50" name="Gravewater Dock">
       <rect x="1692" y="1551" width="16" height="16" />
     </region>

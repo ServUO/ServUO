@@ -87,7 +87,18 @@ namespace Server.Items
 		}
 
 		public virtual void OnGateUsed(Mobile m)
-		{ }
+		{
+			if (TargetMap == null || TargetMap == Map.Internal)
+				return;
+
+			if (TeleportPets)
+				BaseCreature.TeleportPets(m, Target, TargetMap);
+
+			m.MoveToWorld(Target, TargetMap);
+
+			if (m.IsPlayer() || !m.Hidden)
+				m.PlaySound(0x1FE);
+		}
 
 		public virtual void UseGate(Mobile m)
 		{
@@ -101,14 +112,14 @@ namespace Server.Items
 			{
 				m.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
 			}
-			else if ((m.Murderer && TargetMap != Map.Felucca) ||
+			else if ((m.Murderer && TargetMap != Map.Felucca && !Siege.SiegeShard) ||
 					 (TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) ||
 					 (TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0) ||
 					 (TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0))
 			{
 				m.SendLocalizedMessage(1019004); // You are not allowed to travel there.
 			}
-			else if (m.Spell != null || (BaseBoat.IsDriving(m) && m.AccessLevel == AccessLevel.Player))
+			else if (m.Spell != null || BaseBoat.IsDriving(m))
 			{
 				m.SendLocalizedMessage(1049616); // You are too busy to do that at the moment.
 			}
@@ -118,14 +129,6 @@ namespace Server.Items
 			}
 			else if (TargetMap != null && TargetMap != Map.Internal)
 			{
-				if (TeleportPets)
-					BaseCreature.TeleportPets(m, Target, TargetMap);
-
-				m.MoveToWorld(Target, TargetMap);
-
-				if (m.IsPlayer() || !m.Hidden)
-					m.PlaySound(0x1FE);
-
 				OnGateUsed(m);
 			}
 			else

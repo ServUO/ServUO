@@ -8,17 +8,17 @@ namespace Server.Engines.BulkOrders
     public class SmallBulkEntry
     {
         private static Hashtable m_Cache;
-        private readonly Type m_Type;
-        private readonly int m_Number;
-        private readonly int m_Graphic;
-        private readonly int m_Hue;
+        private Type m_Type;
+        private int m_Number;
+        private int m_Graphic;
+        private int m_Hue;
 
         public SmallBulkEntry(Type type, int number, int graphic, int hue)
         {
-            this.m_Type = type;
-            this.m_Number = number;
-            this.m_Graphic = graphic;
-            this.m_Hue = hue;
+            m_Type = type;
+            m_Number = number;
+            m_Graphic = graphic;
+            m_Hue = hue;
         }
 
         public static SmallBulkEntry[] BlacksmithWeapons
@@ -118,28 +118,32 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
         }
         public int Number
         {
             get
             {
-                return this.m_Number;
+                return m_Number;
+            }
+            set
+            {
+                m_Number = value;
             }
         }
         public int Graphic
         {
             get
             {
-                return this.m_Graphic;
+                return m_Graphic;
             }
         }
         public int Hue
         {
             get
             {
-                return this.m_Hue;
+                return m_Hue;
             }
         }
         public static SmallBulkEntry[] GetEntries(string type, string name)

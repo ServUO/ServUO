@@ -226,7 +226,7 @@ namespace Server.Engines.BulkOrders
 
                     for (int i = 0; entry == null && i < m_Entries.Length; ++i)
                     {
-                        if (small.CheckType(m_Entries[i].Details.Type))
+                        if (CheckType(small, m_Entries[i].Details.Type))
                             entry = m_Entries[i];
                     }
 
@@ -276,6 +276,11 @@ namespace Server.Engines.BulkOrders
             {
                 from.SendLocalizedMessage(1045158); // You must have the item in your backpack to target it.
             }
+        }
+
+        public virtual bool CheckType(SmallBOD small, Type type)
+        {
+            return small.CheckType(type);
         }
 
         public override void Serialize(GenericWriter writer)

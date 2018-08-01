@@ -147,8 +147,8 @@ namespace Server.Regions
                 return;
 
             foreach (var player in r.GetEnumeratedMobiles().Where(p => p is PlayerMobile && 
-                                                                       p.Alive &&
-                                                                       QuestHelper.GetQuest((PlayerMobile)p, typeof(ProfessionalBountyQuest)) != null))
+                                                                       p.Alive /*&&
+                                                                       QuestHelper.GetQuest((PlayerMobile)p, typeof(ProfessionalBountyQuest)) != null*/))
             {
                     IPooledEnumerable eable = player.GetMobilesInRange(4);
 

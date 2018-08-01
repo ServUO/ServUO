@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 
 namespace Server.Engines.BulkOrders
 {
@@ -13,22 +14,28 @@ namespace Server.Engines.BulkOrders
         private readonly int m_Number;
         private readonly int m_Graphic;
         private readonly int m_Hue;
+        private readonly GemType m_GemType;
 
         private int m_Price;
 
         public BOBSmallEntry(SmallBOD bod)
         {
-            this.m_ItemType = bod.Type;
-            this.m_RequireExceptional = bod.RequireExceptional;
+            m_ItemType = bod.Type;
+            m_RequireExceptional = bod.RequireExceptional;
 
             m_DeedType = bod.BODType;
 
-            this.m_Material = bod.Material;
-            this.m_AmountCur = bod.AmountCur;
-            this.m_AmountMax = bod.AmountMax;
-            this.m_Number = bod.Number;
-            this.m_Graphic = bod.Graphic;
-            this.m_Hue = bod.GraphicHue;
+            m_Material = bod.Material;
+            m_AmountCur = bod.AmountCur;
+            m_AmountMax = bod.AmountMax;
+            m_Number = bod.Number;
+            m_Graphic = bod.Graphic;
+            m_Hue = bod.GraphicHue;
+
+            if (bod is SmallTinkerBOD)
+            {
+                m_GemType = ((SmallTinkerBOD)bod).GemType;
+            }
         }
 
         public BOBSmallEntry(GenericReader reader)
@@ -37,6 +44,11 @@ namespace Server.Engines.BulkOrders
 
             switch ( version )
             {
+                case 2:
+                    {
+                        m_GemType = (GemType)reader.ReadInt();
+                        goto case 1;
+                    }
                 case 1:
                     {
                         m_Hue = reader.ReadInt();
@@ -47,18 +59,18 @@ namespace Server.Engines.BulkOrders
                         string type = reader.ReadString();
 
                         if (type != null)
-                            this.m_ItemType = ScriptCompiler.FindTypeByFullName(type);
+                            m_ItemType = ScriptCompiler.FindTypeByFullName(type);
 
-                        this.m_RequireExceptional = reader.ReadBool();
+                        m_RequireExceptional = reader.ReadBool();
 
-                        this.m_DeedType = (BODType)reader.ReadEncodedInt();
+                        m_DeedType = (BODType)reader.ReadEncodedInt();
 
-                        this.m_Material = (BulkMaterialType)reader.ReadEncodedInt();
-                        this.m_AmountCur = reader.ReadEncodedInt();
-                        this.m_AmountMax = reader.ReadEncodedInt();
-                        this.m_Number = reader.ReadEncodedInt();
-                        this.m_Graphic = reader.ReadEncodedInt();
-                        this.m_Price = reader.ReadEncodedInt();
+                        m_Material = (BulkMaterialType)reader.ReadEncodedInt();
+                        m_AmountCur = reader.ReadEncodedInt();
+                        m_AmountMax = reader.ReadEncodedInt();
+                        m_Number = reader.ReadEncodedInt();
+                        m_Graphic = reader.ReadEncodedInt();
+                        m_Price = reader.ReadEncodedInt();
 
                         break;
                     }
@@ -69,74 +81,81 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_ItemType;
+                return m_ItemType;
             }
         }
         public bool RequireExceptional
         {
             get
             {
-                return this.m_RequireExceptional;
+                return m_RequireExceptional;
             }
         }
         public BODType DeedType
         {
             get
             {
-                return this.m_DeedType;
+                return m_DeedType;
             }
         }
         public BulkMaterialType Material
         {
             get
             {
-                return this.m_Material;
+                return m_Material;
             }
         }
         public int AmountCur
         {
             get
             {
-                return this.m_AmountCur;
+                return m_AmountCur;
             }
         }
         public int AmountMax
         {
             get
             {
-                return this.m_AmountMax;
+                return m_AmountMax;
             }
         }
         public int Number
         {
             get
             {
-                return this.m_Number;
+                return m_Number;
             }
         }
         public int Graphic
         {
             get
             {
-                return this.m_Graphic;
+                return m_Graphic;
             }
         }
         public int Hue
         {
             get
             {
-                return this.m_Hue;
+                return m_Hue;
+            }
+        }
+        public GemType GemType
+        {
+            get
+            {
+                return m_GemType;
             }
         }
         public int Price
         {
             get
             {
-                return this.m_Price;
+                return m_Price;
             }
             set
             {
-                this.m_Price = value;
+                m_Price = value;
             }
         }
         public Item Reconstruct()
@@ -145,14 +164,14 @@ namespace Server.Engines.BulkOrders
 
             switch (m_DeedType)
             {
-                case BODType.Smith: bod = new SmallSmithBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
-                case BODType.Tailor: bod = new SmallTailorBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
-                case BODType.Inscription: bod = new SmallInscriptionBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
-                case BODType.Alchemy: bod = new SmallAlchemyBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
-                case BODType.Carpentry: bod = new SmallCarpentryBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
-                case BODType.Fletching: bod = new SmallFletchingBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
-                case BODType.Tinkering: bod = new SmallTinkerBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
-                case BODType.Cooking: bod = new SmallCookingBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material, this.m_Hue); break;
+                case BODType.Smith: bod = new SmallSmithBOD(m_AmountCur, m_AmountMax, m_ItemType, m_Number, m_Graphic, m_RequireExceptional, m_Material, m_Hue); break;
+                case BODType.Tailor: bod = new SmallTailorBOD(m_AmountCur, m_AmountMax, m_ItemType, m_Number, m_Graphic, m_RequireExceptional, m_Material, m_Hue); break;
+                case BODType.Inscription: bod = new SmallInscriptionBOD(m_AmountCur, m_AmountMax, m_ItemType, m_Number, m_Graphic, m_RequireExceptional, m_Material, m_Hue); break;
+                case BODType.Alchemy: bod = new SmallAlchemyBOD(m_AmountCur, m_AmountMax, m_ItemType, m_Number, m_Graphic, m_RequireExceptional, m_Material, m_Hue); break;
+                case BODType.Carpentry: bod = new SmallCarpentryBOD(m_AmountCur, m_AmountMax, m_ItemType, m_Number, m_Graphic, m_RequireExceptional, m_Material, m_Hue); break;
+                case BODType.Fletching: bod = new SmallFletchingBOD(m_AmountCur, m_AmountMax, m_ItemType, m_Number, m_Graphic, m_RequireExceptional, m_Material, m_Hue); break;
+                case BODType.Tinkering: bod = new SmallTinkerBOD(m_AmountCur, m_AmountMax, m_ItemType, m_Number, m_Graphic, m_RequireExceptional, m_Material, m_Hue, m_GemType); break;
+                case BODType.Cooking: bod = new SmallCookingBOD(m_AmountCur, m_AmountMax, m_ItemType, m_Number, m_Graphic, m_RequireExceptional, m_Material, m_Hue); break;
             }
 
             return bod;
@@ -160,21 +179,23 @@ namespace Server.Engines.BulkOrders
 
         public void Serialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt(1); // version
+            writer.WriteEncodedInt(2); // version
+
+            writer.Write((int)m_GemType);
 
             writer.Write(m_Hue);
 
-            writer.Write(this.m_ItemType == null ? null : this.m_ItemType.FullName);
+            writer.Write(m_ItemType == null ? null : m_ItemType.FullName);
 
-            writer.Write((bool)this.m_RequireExceptional);
+            writer.Write((bool)m_RequireExceptional);
 
-            writer.WriteEncodedInt((int)this.m_DeedType);
-            writer.WriteEncodedInt((int)this.m_Material);
-            writer.WriteEncodedInt((int)this.m_AmountCur);
-            writer.WriteEncodedInt((int)this.m_AmountMax);
-            writer.WriteEncodedInt((int)this.m_Number);
-            writer.WriteEncodedInt((int)this.m_Graphic);
-            writer.WriteEncodedInt((int)this.m_Price);
+            writer.WriteEncodedInt((int)m_DeedType);
+            writer.WriteEncodedInt((int)m_Material);
+            writer.WriteEncodedInt((int)m_AmountCur);
+            writer.WriteEncodedInt((int)m_AmountMax);
+            writer.WriteEncodedInt((int)m_Number);
+            writer.WriteEncodedInt((int)m_Graphic);
+            writer.WriteEncodedInt((int)m_Price);
         }
     }
 }

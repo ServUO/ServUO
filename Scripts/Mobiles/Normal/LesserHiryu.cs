@@ -172,7 +172,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)3);
+            writer.Write((int)4);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -213,6 +213,18 @@ namespace Server.Mobiles
             if (version < 3 && Controlled && RawStr >= 301 && ControlSlots == ControlSlotsMin)
             {
                 Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
+            }
+
+            if (version < 4 && PetTrainingHelper.Enabled && ControlSlots <= 3)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+                if (profile == null || !profile.HasCustomized())
+                {
+                    MinTameSkill = 98.7;
+                    ControlSlotsMin = 1;
+                    ControlSlots = 1;
+                }
             }
         }
 

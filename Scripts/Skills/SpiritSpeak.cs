@@ -88,7 +88,7 @@ namespace Server.SkillHandlers
         {
             if (_Table == null || !_Table.ContainsKey(m))
             {
-                m.SendSpeedControl(SpeedControlType.NoMove);
+                m.Freeze(TimeSpan.FromSeconds(1));
 
                 m.Animate(AnimationType.Spell, 1);
                 m.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1062074, "", false); // Anh Mi Sah Ko

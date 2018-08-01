@@ -54,7 +54,13 @@ namespace Server.Items
             {
                 if (m_Held > 0 && (int)m_Type >= (int)PotionEffect.Conflagration)
                 {
-                    return 1072658 + (int)m_Type - (int)PotionEffect.Conflagration;
+                    switch (m_Type)
+                    {
+                        case PotionEffect.Parasitic: return 1080069;
+                        case PotionEffect.Darkglow: return 1080070;
+                        case PotionEffect.Invisibility: return 1080071;
+                        case PotionEffect.Conflagration: return 1072658 + (int)m_Type - (int)PotionEffect.Conflagration;
+                    }
                 }
 
                 return (m_Held > 0 ? 1041620 + (int)m_Type : 1041641); 

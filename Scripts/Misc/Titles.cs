@@ -275,6 +275,7 @@ namespace Server.Misc
             {
                 if (beheld is PlayerMobile && ((PlayerMobile)beheld).PaperdollSkillTitle != null)
                     title.Append(", ").Append(((PlayerMobile)beheld).PaperdollSkillTitle);
+                else if (beheld is BaseVendor) title.AppendFormat(" {0}", customTitle);
             }
             else if (customTitle != null && (customTitle = customTitle.Trim()).Length > 0)
             {
