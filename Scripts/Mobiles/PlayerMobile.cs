@@ -2428,11 +2428,9 @@ namespace Server.Mobiles
                 #endregion
 
                 #region TOL Shadowguard
+				if (ShadowguardController.GetInstance(Location, Map) != null)
 				{
-					if (ShadowguardController.GetInstance(Location, Map) != null)
-					{
-						list.Add(new ExitEntry(this));
-					}
+					list.Add(new ExitEntry(this));
 				}
 				#endregion
 

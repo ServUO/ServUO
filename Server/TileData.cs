@@ -169,14 +169,12 @@ namespace Server
 		private static readonly ItemData[] m_ItemData;
 
 		public static LandData[] LandTable { get { return m_LandData; } }
-
 		public static ItemData[] ItemTable { get { return m_ItemData; } }
 
 		private static readonly int m_MaxLandValue;
 		private static readonly int m_MaxItemValue;
 
 		public static int MaxLandValue { get { return m_MaxLandValue; } }
-
 		public static int MaxItemValue { get { return m_MaxItemValue; } }
 
 		private static readonly byte[] m_StringBuffer = new byte[20];

@@ -120,7 +120,7 @@ namespace Server
 		public ushort m_ItemID;
 		public short m_OffsetX, m_OffsetY, m_OffsetZ;
 		public TileFlag m_Flags;
-
+		
         public MultiTileEntry(ushort itemID, short xOffset, short yOffset, short zOffset, TileFlag flags)
 		{
 			m_ItemID = itemID;
@@ -516,7 +516,7 @@ namespace Server
 					allTiles[i].m_OffsetY = reader.ReadShort();
 					allTiles[i].m_OffsetZ = reader.ReadShort();
 
-                    allTiles[i].m_Flags = (TileFlag)reader.ReadInt();
+                    allTiles[i].m_Flags = (TileFlag)reader.ReadUInt();
 				}
 			}
 			else
@@ -531,7 +531,7 @@ namespace Server
 					if (version > 1)
 						allTiles[i].m_Flags = (TileFlag)reader.ReadULong();
 					else
-						allTiles[i].m_Flags = (TileFlag)reader.ReadInt();
+						allTiles[i].m_Flags = (TileFlag)reader.ReadUInt();
 				}
 			}
 
@@ -584,7 +584,7 @@ namespace Server
 				if (PostHSFormat)
 					allTiles[i].m_Flags = (TileFlag)reader.ReadUInt64();
 				else
-					allTiles[i].m_Flags = (TileFlag)reader.ReadInt32();
+					allTiles[i].m_Flags = (TileFlag)reader.ReadUInt32();
 				
 				MultiTileEntry e = allTiles[i];
 

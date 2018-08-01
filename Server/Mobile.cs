@@ -1195,7 +1195,35 @@ namespace Server
 
 			AlterName(ref prefix, ref name, ref suffix);
 
-			return String.Concat(prefix, name.Length > 0 ? " " : "", name, suffix.Length > 0 ? " " : "", suffix);
+			if (String.IsNullOrWhiteSpace(name))
+			{
+				name = " ";
+			}
+
+			var cli = suffix.IndexOf('#');
+
+			if (cli > 0 && Char.IsNumber(suffix, cli + 1))
+			{
+				if (!name.EndsWith(" ") && !suffix.StartsWith(" "))
+				{
+					name += " ";
+				}
+
+				name += suffix.Substring(0, cli);
+				suffix = suffix.Substring(cli);
+			}
+
+			if (!String.IsNullOrWhiteSpace(prefix) && !name.StartsWith(" "))
+			{
+				name = String.Concat(" ", name);
+			}
+
+			if (!String.IsNullOrWhiteSpace(suffix) && !name.EndsWith(" "))
+			{
+				name = String.Concat(name, " ");
+			}
+
+			return String.Concat(prefix, name, suffix);
 		}
 
 		public virtual void AddNameProperties(ObjectPropertyList list)
@@ -1204,7 +1232,7 @@ namespace Server
 
 			GetName(out prefix, out name, out suffix);
 
-			list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
+			list.Add(1050045, "{0}\t{1}\t{2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
 
 			AddGuildProperties(list);
 		}

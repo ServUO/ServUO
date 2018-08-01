@@ -4357,7 +4357,7 @@ namespace Server.Items
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
 
-                        if (version == 17 && reader.ReadBool())
+                        if (version < 18 && reader.ReadBool())
                         {
                             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                             {

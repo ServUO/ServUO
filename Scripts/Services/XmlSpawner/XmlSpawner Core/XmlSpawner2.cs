@@ -1009,6 +1009,7 @@ namespace Server.Mobiles
 			}
 		}
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public Region SpawnRegion
 		{
 			get { return m_Region; }

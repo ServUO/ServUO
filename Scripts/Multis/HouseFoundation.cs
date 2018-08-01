@@ -2114,7 +2114,7 @@ namespace Server.Multis
                             if (version > 0)
                                 m_Fixtures[i].m_Flags = (TileFlag)reader.ReadULong();
                             else
-                                m_Fixtures[i].m_Flags = (TileFlag)reader.ReadInt();
+                                m_Fixtures[i].m_Flags = (TileFlag)reader.ReadUInt();
                         }
 
                         m_Revision = reader.ReadInt();

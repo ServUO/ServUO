@@ -417,7 +417,7 @@ namespace Server.Items
 
             for (int i = 0; i < count; i++)
             {
-                cont.DropItemStack(Loot.RandomPossibleReagent());
+                cont.DropItemStacked(Loot.RandomPossibleReagent());
             }
             #endregion
 

@@ -83,14 +83,10 @@ namespace Server.Items
             if (IsLockedDown)
             {
                 BaseHouse house = BaseHouse.FindHouseAt(this);
-                bool owner = house.IsOwner(from);
 
-                if (house != null)
+                if (house != null && house.IsOwner(from) && house.IsLockedDown(this) && house.IsLockedDown(item))
                 {
-                    if (owner && house != null && house.IsLockedDown(this) && house.IsLockedDown(item))
-                    {
-                        list.Add(new ReleaseEntry(from, item, house));
-                    }
+                    list.Add(new ReleaseEntry(from, item, house));
                 }
             }
             else
@@ -99,7 +95,7 @@ namespace Server.Items
             }
         }
 
-        public virtual void DropItemStack(Item dropped)
+        public virtual void DropItemStacked(Item dropped)
         {
             List<Item> list = Items;
 

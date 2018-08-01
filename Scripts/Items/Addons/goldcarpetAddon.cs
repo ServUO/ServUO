@@ -5,7 +5,8 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class goldcarpetAddon : BaseAddon
+	[TypeAlias("Server.Items.goldcarpetAddon")]
+	public class GoldCarpetAddon : BaseAddon
 	{
 		public override BaseAddonDeed Deed
 		{
@@ -16,7 +17,7 @@ namespace Server.Items
 		}
 
 		[ Constructable ]
-		public goldcarpetAddon()
+		public GoldCarpetAddon()
 		{
 			AddonComponent ac = null;
 			ac = new AddonComponent( 2779 );
@@ -72,7 +73,7 @@ namespace Server.Items
 
 		}
 
-		public goldcarpetAddon( Serial serial ) : base( serial )
+		public GoldCarpetAddon( Serial serial ) : base( serial )
 		{
 		}
 
@@ -95,7 +96,7 @@ namespace Server.Items
 		{
 			get
 			{
-				return new goldcarpetAddon();
+				return new GoldCarpetAddon();
 			}
 		}
 
