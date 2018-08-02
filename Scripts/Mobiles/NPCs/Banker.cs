@@ -479,7 +479,7 @@ namespace Server.Mobiles
         {
             if (from.Alive)
             {
-                list.Add(new OpenBankEntry(from, this));
+                list.Add(new OpenBankEntry(this));
             }
 
             base.AddCustomContextEntries(from, list);
