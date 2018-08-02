@@ -158,7 +158,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(2); // version
+            writer.Write(3); // version
 
             writer.Write((int)Level);
             writer.Write(_Capacity);
@@ -170,7 +170,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version > 1)
+            if (version > 2)
             {
                 Level = (SecureLevel)reader.ReadInt();
                 _Capacity = reader.ReadInt();
