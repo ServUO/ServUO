@@ -940,6 +940,8 @@ namespace Server.Items
 		public virtual bool CanBeWornByGargoyles { get { return false; } }
 		#endregion
 
+
+
 		public override bool CanEquip(Mobile from)
 		{
 			if (!Ethic.CheckEquip(from, this))
@@ -975,27 +977,22 @@ namespace Server.Items
 
             bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
 
-			#region Stygian Abyss
 			if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles && from.IsPlayer())
 			{
-				from.SendLocalizedMessage(1111708); // Gargoyles can't wear 
-				return false;
+                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111708); // Gargoyles can't wear this.
+                return false;
 			}
-			#endregion
 
 			if (RequiredRace != null && from.Race != RequiredRace && !morph)
 			{
 				if (RequiredRace == Race.Elf)
 				{
-					from.SendLocalizedMessage(1072203); // Only Elves may use 
-				}
-					#region SA
+					from.SendLocalizedMessage(1072203); // Only Elves may use this.
+                }
 				else if (RequiredRace == Race.Gargoyle)
 				{
-					from.SendLocalizedMessage(1111707); // Only gargoyles can wear 
-				}
-					#endregion
-
+                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111707); // Only gargoyles can wear this.
+                }
 				else
 				{
 					from.SendMessage("Only {0} may use ", RequiredRace.PluralName);
