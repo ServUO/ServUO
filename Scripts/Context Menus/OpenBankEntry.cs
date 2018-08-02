@@ -1,31 +1,35 @@
 using System;
 
+using Server.Gumps;
+using Server.Mobiles;
+
 namespace Server.ContextMenus
 {
     public class OpenBankEntry : ContextMenuEntry
     {
         private readonly Mobile m_Banker;
-        public OpenBankEntry(Mobile from, Mobile banker)
+
+        public OpenBankEntry(Mobile banker)
             : base(6105, 12)
         {
-            this.m_Banker = banker;
+            m_Banker = banker;
         }
 
         public override void OnClick()
         {
-            if (!this.Owner.From.CheckAlive())
+            if (!Owner.From.CheckAlive())
                 return;
 
-            if (this.Owner.From.Criminal)
+            if (Owner.From.Criminal)
             {
-                this.m_Banker.Say(500378); // Thou art a criminal and cannot access thy bank box.
+                m_Banker.Say(500378); // Thou art a criminal and cannot access thy bank box.
             }
             else
             {
-                this.Owner.From.BankBox.Open();
+                Owner.From.BankBox.Open();
 
-                if (Core.TOL && Owner.From is Server.Mobiles.PlayerMobile)
-                    Owner.From.SendGump(new Server.Gumps.BankerGump((Server.Mobiles.PlayerMobile)Owner.From));
+                if (Core.TOL && Owner.From is PlayerMobile)
+                    Owner.From.SendGump(new BankerGump((PlayerMobile)Owner.From));
             }
         }
     }

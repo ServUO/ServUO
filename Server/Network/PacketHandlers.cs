@@ -2195,15 +2195,19 @@ namespace Server.Network
 	
 								if (range == -1)
 								{
-									range = 18;
+									if (user.NetState != null && user.NetState.UpdateRange > 0)
+									{
+										range = user.NetState.UpdateRange;
+									}
+									else
+									{
+										range = Core.GlobalUpdateRange;
+									}
 								}
 
 								if (e.Enabled && user.InRange(p, range))
 	                            {
-	                                if (state.IsEnhancedClient)
-	                                    Timer.DelayCall(TimeSpan.FromMilliseconds(100), e.OnClick);
-	                                else
-	                                    e.OnClick();
+									e.OnClick();
 	                            }
 							}
 						}
