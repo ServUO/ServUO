@@ -935,8 +935,6 @@ namespace Server.Items
 		public virtual bool CanBeWornByGargoyles { get { return false; } }
 		#endregion
 
-
-
 		public override bool CanEquip(Mobile from)
 		{
 			if (!Ethic.CheckEquip(from, this))
