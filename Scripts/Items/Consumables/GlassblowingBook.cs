@@ -40,11 +40,16 @@ namespace Server.Items
         {
             PlayerMobile pm = from as PlayerMobile;
 
-            if (!IsChildOf(from.Backpack))
+            if (pm == null)
             {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                return;
             }
-            else if (pm == null || from.Skills[SkillName.Alchemy].Base < 100.0)
+
+            if (!IsChildOf(pm.Backpack))
+            {
+                pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+            else if (pm.Skills[SkillName.Alchemy].Base < 100.0)
             {
                 pm.SendLocalizedMessage(1080042); // Only a Grandmaster Alchemist can learn from this book.
             }
@@ -56,6 +61,7 @@ namespace Server.Items
             {
                 pm.Glassblowing = true;
                 pm.SendLocalizedMessage(1080065); // You have learned to make items from glass.  You will need to find miners to mine fine sand for you to make these items.
+
                 Delete();
             }
         }

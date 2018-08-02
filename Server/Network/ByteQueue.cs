@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - ByteQueue.cs
-// **********
-#endregion
-
 #region References
 using System;
 #endregion

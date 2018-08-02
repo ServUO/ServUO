@@ -7,7 +7,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1116159; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]
@@ -43,7 +43,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1116160; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]

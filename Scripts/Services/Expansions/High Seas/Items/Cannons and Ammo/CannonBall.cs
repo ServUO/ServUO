@@ -8,7 +8,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1116266; } }
         public override double DefaultWeight { get { return 1.0; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         public AmmoType AmmoType { get { return AmmoType.Cannonball; } }
@@ -51,7 +51,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1116267; } }
         public override double DefaultWeight { get { return 1.0; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         public AmmoType AmmoType { get { return AmmoType.Cannonball; } }
@@ -91,7 +91,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1116759; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]
@@ -123,7 +123,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1116267; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]
@@ -157,7 +157,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1116759; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]
@@ -191,7 +191,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1116267; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]

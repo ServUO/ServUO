@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - DisguisePersistence.cs
-// **********
-#endregion
-
 #region References
 using System.IO;
 using System.Linq;

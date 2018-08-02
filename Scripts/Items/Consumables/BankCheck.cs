@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BankCheck.cs
-// **********
-#endregion
-
 #region References
 using System;
 

@@ -42,13 +42,18 @@ namespace Server.Items
         {
             PlayerMobile pm = from as PlayerMobile;
 
-            if (!this.IsChildOf(from.Backpack))
+            if (pm == null)
             {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                return;
             }
-            else if (pm == null || from.Skills[SkillName.Mining].Base < 100.0)
+
+            if (!IsChildOf(pm.Backpack))
             {
-                from.SendMessage("Only a Grandmaster Miner can learn from this book.");
+                pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+            else if (pm.Skills[SkillName.Mining].Base < 100.0)
+            {
+                pm.SendMessage("Only a Grandmaster Miner can learn from this book.");
             }
             else if (pm.StoneMining)
             {
@@ -58,7 +63,8 @@ namespace Server.Items
             {
                 pm.StoneMining = true;
                 pm.SendMessage("You have learned to mine for stones. Target mountains when mining to find stones.");
-                this.Delete();
+
+                Delete();
             }
         }
     }

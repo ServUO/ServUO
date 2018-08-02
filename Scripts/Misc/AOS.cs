@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using Server.Engines.SphynxFortune;
 using Server.Engines.XmlSpawner2;
 using Server.Items;
+using Server.Misc;
 using Server.Mobiles;
 using Server.Spells;
 using Server.Spells.Second;
@@ -14,10 +18,8 @@ using Server.Spells.Necromancy;
 using Server.Spells.Spellweaving;
 using Server.SkillHandlers;
 using Server.Engines.CityLoyalty;
+using Server.Services.Virtues;
 using Server.Spells.SkillMasteries;
-using System.Linq;
-using Server.Misc;
-using Server.Engines.SphynxFortune;
 
 namespace Server
 {
@@ -137,11 +139,21 @@ namespace Server
             {
                 switch (Utility.Random(5))
                 {
-                    case 0: phys += chaos; break;
-                    case 1: fire += chaos; break;
-                    case 2: cold += chaos; break;
-                    case 3: pois += chaos; break;
-                    case 4: nrgy += chaos; break;
+                    case 0:
+                        phys += chaos;
+                        break;
+                    case 1:
+                        fire += chaos;
+                        break;
+                    case 2:
+                        cold += chaos;
+                        break;
+                    case 3:
+                        pois += chaos;
+                        break;
+                    case 4:
+                        nrgy += chaos;
+                        break;
                 }
             }
 
@@ -199,10 +211,9 @@ namespace Server
             }
 
             // object being damaged is not a mobile, so we will end here
-            if (m == null)
+            if (damageable is Item)
             {
-                damageable.Damage(totalDamage, from, (int)type);
-                return totalDamage;
+                return damageable.Damage(totalDamage, from);
             }
 
             #region Evil Omen, Blood Oath and reflect physical
@@ -384,7 +395,8 @@ namespace Server
                 DoLeech(totalDamage, from, m);
             }
 
-            m.Damage(totalDamage, from, true, false);
+            totalDamage = m.Damage(totalDamage, from, true, false);
+
             SpiritSpeak.CheckDisrupt(m);
 
             #region Stygian Abyss
@@ -532,26 +544,44 @@ namespace Server
 
     public sealed class AosAttributes : BaseAttributes
     {
-        public AosAttributes(Item owner)
-            : base(owner)
+        public static bool IsValid(AosAttribute attribute)
         {
+            if (!Core.AOS)
+            {
+                return false;
+            }
+
+            if (!Core.ML && attribute == AosAttribute.IncreasedKarmaLoss)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public AosAttributes(Item owner, AosAttributes other)
-            : base(owner, other)
+        public static int[] GetValues(Mobile m, params AosAttribute[] attributes)
         {
+            return EnumerateValues(m, attributes).ToArray();
         }
 
-        public AosAttributes(Item owner, GenericReader reader)
-            : base(owner, reader)
+        public static int[] GetValues(Mobile m, IEnumerable<AosAttribute> attributes)
         {
+            return EnumerateValues(m, attributes).ToArray();
+        }
+
+        public static IEnumerable<int> EnumerateValues(Mobile m, IEnumerable<AosAttribute> attributes)
+        {
+            return attributes.Select(a => GetValue(m, a));
         }
 
         public static int GetValue(Mobile m, AosAttribute attribute)
         {
-            if (!Core.AOS)
+            if (World.Loading || !IsValid(attribute))
+            {
                 return 0;
+            }
 
+            List<Item> items = m.Items;
             int value = 0;
 
             if (attribute == AosAttribute.Luck || attribute == AosAttribute.RegenMana || attribute == AosAttribute.DefendChance || attribute == AosAttribute.EnhancePotions)
@@ -561,9 +591,9 @@ namespace Server
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < m.Items.Count; ++i)
+            for (int i = 0; i < items.Count; ++i)
             {
-                Item obj = m.Items[i];
+                Item obj = items[i];
 
                 AosAttributes attrs = RunicReforging.GetAosAttributes(obj);
 
@@ -879,6 +909,22 @@ namespace Server
 
             return value;
         }
+
+        public AosAttributes(Item owner)
+            : base(owner)
+        {
+        }
+
+        public AosAttributes(Item owner, AosAttributes other)
+            : base(owner, other)
+        {
+        }
+
+        public AosAttributes(Item owner, GenericReader reader)
+            : base(owner, reader)
+        {
+        }
+
 
         public int this[AosAttribute attribute]
         {
@@ -1336,6 +1382,61 @@ namespace Server
 
     public sealed class AosWeaponAttributes : BaseAttributes
     {
+        public static bool IsValid(AosWeaponAttribute attribute)
+        {
+            if (!Core.AOS)
+            {
+                return false;
+            }
+
+            if (!Core.SA && attribute >= AosWeaponAttribute.BloodDrinker)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static int[] GetValues(Mobile m, params AosWeaponAttribute[] attributes)
+        {
+            return EnumerateValues(m, attributes).ToArray();
+        }
+
+        public static int[] GetValues(Mobile m, IEnumerable<AosWeaponAttribute> attributes)
+        {
+            return EnumerateValues(m, attributes).ToArray();
+        }
+
+        public static IEnumerable<int> EnumerateValues(Mobile m, IEnumerable<AosWeaponAttribute> attributes)
+        {
+            return attributes.Select(a => GetValue(m, a));
+        }
+
+        public static int GetValue(Mobile m, AosWeaponAttribute attribute)
+        {
+            if (World.Loading || !IsValid(attribute))
+            {
+                return 0;
+            }
+
+            List<Item> items = m.Items;
+            int value = 0;
+
+            #region Enhancement
+            value += Enhancement.GetValue(m, attribute);
+            #endregion
+
+            for (int i = 0; i < items.Count; ++i)
+            {
+                AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(items[i]);
+
+                if (attrs != null)
+                    value += attrs[attribute];
+            }
+
+            return value;
+        }
+
         public AosWeaponAttributes(Item owner)
             : base(owner)
         {
@@ -1349,28 +1450,6 @@ namespace Server
         public AosWeaponAttributes(Item owner, GenericReader reader)
             : base(owner, reader)
         {
-        }
-
-        public static int GetValue(Mobile m, AosWeaponAttribute attribute)
-        {
-            if (!Core.AOS)
-                return 0;
-
-            int value = 0;
-
-            #region Enhancement
-            value += Enhancement.GetValue(m, attribute);
-            #endregion
-
-            for (int i = 0; i < m.Items.Count; i++)
-            {
-                AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(m.Items[i]);
-
-                if (attrs != null)
-                    value += attrs[attribute];
-            }
-
-            return value;
         }
 
         public int this[AosWeaponAttribute attribute]
@@ -1890,15 +1969,16 @@ namespace Server
             if (!Core.AOS)
                 return 0;
 
+            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < m.Items.Count; ++i)
+            for (int i = 0; i < items.Count; ++i)
             {
-                Item obj = m.Items[i];
+                Item obj = items[i];
 
                 if (obj is BaseWeapon)
                 {
@@ -2023,6 +2103,57 @@ namespace Server
 
     public sealed class AosArmorAttributes : BaseAttributes
     {
+        public static bool IsValid(AosArmorAttribute attribute)
+        {
+            if (!Core.AOS)
+            {
+                return false;
+            }
+
+            if (!Core.SA && attribute >= AosArmorAttribute.ReactiveParalyze)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static int[] GetValues(Mobile m, params AosArmorAttribute[] attributes)
+        {
+            return EnumerateValues(m, attributes).ToArray();
+        }
+
+        public static int[] GetValues(Mobile m, IEnumerable<AosArmorAttribute> attributes)
+        {
+            return EnumerateValues(m, attributes).ToArray();
+        }
+
+        public static IEnumerable<int> EnumerateValues(Mobile m, IEnumerable<AosArmorAttribute> attributes)
+        {
+            return attributes.Select(a => GetValue(m, a));
+        }
+
+        public static int GetValue(Mobile m, AosArmorAttribute attribute)
+        {
+            if (World.Loading || !IsValid(attribute))
+            {
+                return 0;
+            }
+
+            List<Item> items = m.Items;
+            int value = 0;
+
+            for (int i = 0; i < items.Count; ++i)
+            {
+                AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(items[i]);
+
+                if (attrs != null)
+                    value += attrs[attribute];
+            }
+
+            return value;
+        }
+
         public AosArmorAttributes(Item owner)
             : base(owner)
         {
@@ -2036,24 +2167,6 @@ namespace Server
         public AosArmorAttributes(Item owner, AosArmorAttributes other)
             : base(owner, other)
         {
-        }
-
-        public static int GetValue(Mobile m, AosArmorAttribute attribute)
-        {
-            if (!Core.AOS)
-                return 0;
-
-            int value = 0;
-
-            for (int i = 0; i < m.Items.Count; ++i)
-            {
-                AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(m.Items[i]);
-
-                if (attrs != null)
-                    value += attrs[attribute];
-            }
-
-            return value;
         }
 
         public int this[AosArmorAttribute attribute]
@@ -2553,6 +2666,58 @@ namespace Server
 
     public sealed class SAAbsorptionAttributes : BaseAttributes
     {
+        public static bool IsValid(SAAbsorptionAttribute attribute)
+        {
+            if (!Core.SA)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static int[] GetValues(Mobile m, params SAAbsorptionAttribute[] attributes)
+        {
+            return EnumerateValues(m, attributes).ToArray();
+        }
+
+        public static int[] GetValues(Mobile m, IEnumerable<SAAbsorptionAttribute> attributes)
+        {
+            return EnumerateValues(m, attributes).ToArray();
+        }
+
+        public static IEnumerable<int> EnumerateValues(Mobile m, IEnumerable<SAAbsorptionAttribute> attributes)
+        {
+            return attributes.Select(a => GetValue(m, a));
+        }
+
+        public static int GetValue(Mobile m, SAAbsorptionAttribute attribute)
+        {
+            if (World.Loading || !IsValid(attribute))
+            {
+                return 0;
+            }
+
+            List<Item> items = m.Items;
+            int value = 0;
+
+            #region Enhancement
+            value += Enhancement.GetValue(m, attribute);
+            #endregion
+
+            for (int i = 0; i < items.Count; ++i)
+            {
+                SAAbsorptionAttributes attrs = RunicReforging.GetSAAbsorptionAttributes(m.Items[i]);
+
+                if (attrs != null)
+                    value += attrs[attribute];
+            }
+
+            value += SkillMasterySpell.GetAttributeBonus(m, attribute);
+
+            return value;
+        }
+
         public SAAbsorptionAttributes(Item owner)
             : base(owner)
         {
@@ -2566,30 +2731,6 @@ namespace Server
         public SAAbsorptionAttributes(Item owner, GenericReader reader)
             : base(owner, reader)
         {
-        }
-
-        public static int GetValue(Mobile m, SAAbsorptionAttribute attribute)
-        {
-            if (!Core.AOS)
-                return 0;
-
-            int value = 0;
-
-            #region Enhancement
-            value += Enhancement.GetValue(m, attribute);
-            #endregion
-
-            for (int i = 0; i < m.Items.Count; ++i)
-            {
-                SAAbsorptionAttributes attrs = RunicReforging.GetSAAbsorptionAttributes(m.Items[i]);
-
-                if (attrs != null)
-                    value += attrs[attribute];
-            }
-
-            value += SkillMasterySpell.GetAttributeBonus(m, attribute);
-
-            return value;
         }
 
         public int this[SAAbsorptionAttribute attribute]

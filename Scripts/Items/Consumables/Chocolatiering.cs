@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Chocolatiering.cs
-// **********
-#endregion
-
 using System;
 using Server.Engines.Craft;
 

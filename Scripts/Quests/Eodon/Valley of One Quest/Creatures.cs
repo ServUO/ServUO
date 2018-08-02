@@ -612,7 +612,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkfizzle)
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkfizzle)
         {
             if(from is BaseCreature)
                 from = ((BaseCreature)from).GetMaster();
@@ -620,10 +620,10 @@ namespace Server.Mobiles
             if (from is PlayerMobile)
             {
                 PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x35, 1156500, from.NetState); // *The cub looks at you playfully. Your attack fails as you are overwhelmed by its cuteness*
-                return;
+                return 0;
             }
 
-            base.Damage(amount, from, informMount, checkfizzle);
+            return base.Damage(amount, from, informMount, checkfizzle);
         }
 
         public override int Meat { get { return 1; } }

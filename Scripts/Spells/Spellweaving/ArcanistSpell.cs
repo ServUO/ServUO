@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - ArcanistSpell.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Globalization;

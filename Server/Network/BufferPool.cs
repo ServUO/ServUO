@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BufferPool.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 #endregion

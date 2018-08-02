@@ -162,7 +162,7 @@ namespace Server.Mobiles
                 });
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
             if (_Tunneling && !Hidden && 0.25 > Utility.RandomDouble())
             {
@@ -176,7 +176,7 @@ namespace Server.Mobiles
                 _StartTunnelMap = null;
             }
 
-            base.Damage(amount, from, informMount, checkDisrupt);
+            return base.Damage(amount, from, informMount, checkDisrupt);
         }
 
         public AntLion(Serial serial)

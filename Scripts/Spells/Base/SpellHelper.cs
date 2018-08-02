@@ -7,6 +7,7 @@ using Server.Misc;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Regions;
+using Server.Services.Virtues;
 using Server.Spells.Fifth;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
@@ -1432,7 +1433,7 @@ namespace Server.Spells
 
                 int realAmount = Math.Min(amount, target.HitsMax - target.Hits);
 
-                if (realAmount > 0 && target != from && from is PlayerMobile && target is PlayerMobile)
+                if (realAmount > 0 && target != from)
                     SpiritualityVirtue.OnHeal(from, realAmount);
             }
 

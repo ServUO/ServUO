@@ -34,7 +34,7 @@ namespace Server.Items
             }
         }// abyssal cloth
 		
-        int ICommodity.DescriptionNumber
+        TextDefinition ICommodity.Description
         {
             get
             {

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - World.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -111,6 +105,25 @@ namespace Server
 
 		public static void Broadcast(int hue, bool ascii, string text)
 		{
+			Broadcast(hue, ascii, AccessLevel.Player, text);
+		}
+
+		public static void Broadcast(int hue, bool ascii, AccessLevel access, string text)
+		{
+			var e = new WorldBroadcastEventArgs(hue, ascii, access, text);
+
+			EventSink.InvokeWorldBroadcast(e);
+
+			hue = e.Hue;
+			ascii = e.Ascii;
+			text = e.Text;
+			access = e.Access;
+
+			if (String.IsNullOrWhiteSpace(text))
+			{
+				return;
+			}
+
 			Packet p;
 
 			if (ascii)
@@ -126,11 +139,11 @@ namespace Server
 
 			p.Acquire();
 
-			for (int i = 0; i < list.Count; ++i)
+			foreach (NetState s in list)
 			{
-				if (list[i].Mobile != null)
+				if (s.Mobile != null && s.Mobile.AccessLevel >= access)
 				{
-					list[i].Send(p);
+					s.Send(p);
 				}
 			}
 
@@ -141,7 +154,12 @@ namespace Server
 
 		public static void Broadcast(int hue, bool ascii, string format, params object[] args)
 		{
-			Broadcast(hue, ascii, String.Format(format, args));
+			Broadcast(hue, ascii, AccessLevel.Player, format, args);
+		}
+
+		public static void Broadcast(int hue, bool ascii, AccessLevel access, string format, params object[] args)
+		{
+			Broadcast(hue, ascii, access, String.Format(format, args));
 		}
 
 		private interface IEntityEntry
@@ -338,7 +356,7 @@ namespace Server
 			m_LoadingType = null;
 
 			Utility.PushColor(ConsoleColor.Yellow);
-			Console.Write("World: Loading...");
+			Console.WriteLine("World: Loading...");
 			Utility.PopColor();
 
 			Stopwatch watch = Stopwatch.StartNew();
@@ -890,7 +908,7 @@ namespace Server
 
 			Utility.PushColor(ConsoleColor.Green);
 			Console.WriteLine(
-				"done ({1} items, {2} mobiles, {3} customs) ({0:F2} seconds)",
+				"...done ({1} items, {2} mobiles, {3} customs) ({0:F2} seconds)",
 				watch.Elapsed.TotalSeconds,
 				m_Items.Count,
 				m_Mobiles.Count,
@@ -1087,7 +1105,8 @@ namespace Server
 			{
 				return;
 			}
-            //EventSink.InvokeBeforeWorldSave(new BeforeWorldSaveEventArgs());
+            
+			EventSink.InvokeBeforeWorldSave(new BeforeWorldSaveEventArgs());
 
             ++m_Saves;
 
@@ -1102,7 +1121,7 @@ namespace Server
 
 			if (message)
 			{
-				Broadcast(0x35, true, "The world is saving, please wait.");
+				Broadcast(0x35, true, AccessLevel.Counselor, "The world is saving, please wait.");
 			}
 
 			SaveStrategy strategy = SaveStrategy.Acquire();
@@ -1167,10 +1186,11 @@ namespace Server
 
 			if (message)
 			{
-				Broadcast(0x35, true, "World save complete. The entire process took {0:F1} seconds.", watch.Elapsed.TotalSeconds);
+				Broadcast(0x35, true, AccessLevel.Counselor, "World save complete. The entire process took {0:F1} seconds.", watch.Elapsed.TotalSeconds);
 			}
 
 			NetState.Resume();
+
             EventSink.InvokeAfterWorldSave(new AfterWorldSaveEventArgs());
         }
 

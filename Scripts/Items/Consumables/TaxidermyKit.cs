@@ -449,6 +449,11 @@ namespace Server.Items
 			get{ return new TrophyDeed( m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight ); }
 		}
 
+		void IChopable.OnChop(Mobile user)
+		{
+			OnDoubleClick(user);
+		}
+
 		public override void OnDoubleClick( Mobile from )
 		{
 			BaseHouse house = BaseHouse.FindHouseAt( this );

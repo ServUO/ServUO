@@ -244,7 +244,7 @@ namespace Server.Items
                 cont.LockLevel = cont.RequiredSkill - 10;
                 cont.MaxLockLevel = cont.RequiredSkill + 40;
 
-                #region gold
+                #region Gold
                 cont.DropItem(new Gold(isSos ? level * 10000 : level * 5000));
                 #endregion
 
@@ -417,7 +417,7 @@ namespace Server.Items
 
             for (int i = 0; i < count; i++)
             {
-                cont.DropItemStack(Loot.RandomPossibleReagent());
+                cont.DropItemStacked(Loot.RandomPossibleReagent());
             }
             #endregion
 

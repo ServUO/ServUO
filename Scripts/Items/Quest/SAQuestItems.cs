@@ -313,7 +313,7 @@ namespace Server.Items
                 return 1031698;
             }
         }// Enchaned Essence
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {
@@ -545,7 +545,7 @@ namespace Server.Items
                 return 1031697;
             }
         }// Magical Residue
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {
@@ -641,7 +641,7 @@ namespace Server.Items
                 return 1031699;
             }
         }// Relic Fragment
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {

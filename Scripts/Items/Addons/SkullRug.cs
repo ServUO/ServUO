@@ -24,7 +24,7 @@ namespace Server.Items
             set
             {
                 m_IsRewardItem = value;
-                InvalidateAddonPropreties();
+                UpdateProperties();
             }
         }
 
@@ -38,7 +38,7 @@ namespace Server.Items
             set
             {
                 m_ResourceCount = value;
-                InvalidateAddonPropreties();
+                UpdateProperties();
             }
         }
 

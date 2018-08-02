@@ -1,59 +1,58 @@
+#region References
 using System;
+
 using Server.Commands;
+using Server.Items;
 using Server.Network;
+#endregion
 
 namespace Server
 {
-    public class LightCycle
+	public static class LightCycle
     {
         public const int DayLevel = 0;
         public const int NightLevel = 12;
         public const int DungeonLevel = 26;
         public const int JailLevel = 9;
-        private static int m_LevelOverride = int.MinValue;
+
+		private static int _LevelOverride = Int32.MinValue;
+
         public static int LevelOverride
         {
-            get
-            {
-                return m_LevelOverride;
-            }
+			get { return _LevelOverride; }
             set
             {
-                m_LevelOverride = value;
+				_LevelOverride = value;
 
-                for (int i = 0; i < NetState.Instances.Count; ++i)
-                {
-                    NetState ns = NetState.Instances[i];
-                    Mobile m = ns.Mobile;
-
-                    if (m != null)
-                        m.CheckLightLevels(false);
-                }
+				CheckLightLevels();
             }
         }
+
         public static void Initialize()
         {
-            new LightCycleTimer().Start();
-            EventSink.Login += new LoginEventHandler(OnLogin);
+			new LightCycleTimer(Clock.SecondsPerUOMinute).Start();
 
-            CommandSystem.Register("GlobalLight", AccessLevel.GameMaster, new CommandEventHandler(Light_OnCommand));
+			EventSink.Login += OnLogin;
+
+			CommandSystem.Register("GlobalLight", AccessLevel.GameMaster, Light_OnCommand);
         }
 
         public static void OnLogin(LoginEventArgs args)
         {
-            Mobile m = args.Mobile;
+			var m = args.Mobile;
 
-            m.CheckLightLevels(true);
+			if (m != null)
+            	m.CheckLightLevels(true);
         }
 
         public static int ComputeLevelFor(Mobile from)
         {
-            if (m_LevelOverride > int.MinValue)
-                return m_LevelOverride;
+			if (_LevelOverride > int.MinValue)
+				return _LevelOverride;
 
             int hours, minutes;
 
-            Server.Items.Clock.GetTime(from.Map, from.X, from.Y, out hours, out minutes);
+			Clock.GetTime(from.Map, from.X, from.Y, out hours, out minutes);
 
             /* OSI times:
             * 
@@ -83,6 +82,27 @@ namespace Server
             return NightLevel; // should never be
         }
 
+		public static void CheckLightLevels()
+		{
+			var i = NetState.Instances.Count;
+
+			while (--i >= 0)
+			{
+				if (i >= NetState.Instances.Count)
+					continue;
+
+				var ns = NetState.Instances[i];
+
+				if (ns == null)
+					continue;
+
+				var m = ns.Mobile;
+
+				if (m != null)
+					m.CheckLightLevels(false);
+			}
+		}
+
         [Usage("GlobalLight <value>")]
         [Description("Sets the current global light level.")]
         private static void Light_OnCommand(CommandEventArgs e)
@@ -90,7 +110,7 @@ namespace Server
             if (e.Length >= 1)
             {
                 LevelOverride = e.GetInt32(0);
-                e.Mobile.SendMessage("Global light level override has been changed to {0}.", m_LevelOverride);
+				e.Mobile.SendMessage("Global light level override has been changed to {0}.", _LevelOverride);
             }
             else
             {
@@ -102,39 +122,35 @@ namespace Server
         public class NightSightTimer : Timer
         {
             private readonly Mobile m_Owner;
+
             public NightSightTimer(Mobile owner)
                 : base(TimeSpan.FromMinutes(Utility.Random(15, 25)))
             {
-                this.m_Owner = owner;
-                this.Priority = TimerPriority.OneMinute;
+				m_Owner = owner;
+
+				Priority = TimerPriority.OneMinute;
             }
 
             protected override void OnTick()
             {
-                this.m_Owner.EndAction(typeof(LightCycle));
-                this.m_Owner.LightLevel = 0;
-                BuffInfo.RemoveBuff(this.m_Owner, BuffIcon.NightSight);
+				m_Owner.EndAction(typeof(LightCycle));
+				m_Owner.LightLevel = 0;
+
+				BuffInfo.RemoveBuff(m_Owner, BuffIcon.NightSight);
             }
         }
 
         private class LightCycleTimer : Timer
         {
-            public LightCycleTimer()
-                : base(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(5.0))
+			public LightCycleTimer(double interval)
+				: base(TimeSpan.Zero, TimeSpan.FromSeconds(interval))
             {
-                this.Priority = TimerPriority.FiveSeconds;
+				Priority = TimerPriority.OneSecond;
             }
 
             protected override void OnTick()
             {
-                for (int i = 0; i < NetState.Instances.Count; ++i)
-                {
-                    NetState ns = NetState.Instances[i];
-                    Mobile m = ns.Mobile;
-
-                    if (m != null)
-                        m.CheckLightLevels(false);
-                }
+				CheckLightLevels();
             }
         }
     }

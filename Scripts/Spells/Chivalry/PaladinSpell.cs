@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - PaladinSpell.cs
-// **********
-#endregion
-
 #region References
 using System;
 

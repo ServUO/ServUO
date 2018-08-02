@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - NativeReader.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Runtime.InteropServices;

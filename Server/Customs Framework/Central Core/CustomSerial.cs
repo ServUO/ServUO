@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - CustomSerial.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 
 using Server;

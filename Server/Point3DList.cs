@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Point3DList.cs
-// **********
-#endregion
-
 namespace Server
 {
 	public class Point3DList

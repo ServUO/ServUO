@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - SetListOptionGump.cs
-// **********
-#endregion
-
 #region References
 using System.Collections;
 using System.Reflection;
@@ -81,32 +75,36 @@ namespace Server.Gumps
 
 			m_Values = values;
 
-			int pages = (names.Length + EntryCount - 1) / EntryCount;
-			int index = 0;
+			var pages = (names.Length + EntryCount - 1) / EntryCount;
+			var index = 0;
 
-			for (int page = 1; page <= pages; ++page)
+			for (var page = 1; page <= pages; ++page)
 			{
 				AddPage(page);
 
-				int start = (page - 1) * EntryCount;
-				int count = names.Length - start;
+				var start = (page - 1) * EntryCount;
+				var count = names.Length - start;
 
 				if (count > EntryCount)
 				{
 					count = EntryCount;
 				}
 
-				int totalHeight = OffsetSize + ((count + 2) * (EntryHeight + OffsetSize));
-				int backHeight = BorderSize + totalHeight + BorderSize;
+				var totalHeight = OffsetSize + ((count + 2) * (EntryHeight + OffsetSize));
+				var backHeight = BorderSize + totalHeight + BorderSize;
 
 				AddBackground(0, 0, BackWidth, backHeight, BackGumpID);
 				AddImageTiled(
-					BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), totalHeight, OffsetGumpID);
+					BorderSize,
+					BorderSize,
+					TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0),
+					totalHeight,
+					OffsetGumpID);
 
-				int x = BorderSize + OffsetSize;
-				int y = BorderSize + OffsetSize;
+				var x = BorderSize + OffsetSize;
+				var y = BorderSize + OffsetSize;
 
-				int emptyWidth = TotalWidth - PrevWidth - NextWidth - (OffsetSize * 4) - (OldStyle ? SetWidth + OffsetSize : 0);
+				var emptyWidth = TotalWidth - PrevWidth - NextWidth - (OffsetSize * 4) - (OldStyle ? SetWidth + OffsetSize : 0);
 
 				AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
 
@@ -125,7 +123,11 @@ namespace Server.Gumps
 				if (!OldStyle)
 				{
 					AddImageTiled(
-						x - (OldStyle ? OffsetSize : 0), y, emptyWidth + (OldStyle ? OffsetSize * 2 : 0), EntryHeight, HeaderGumpID);
+						x - (OldStyle ? OffsetSize : 0),
+						y,
+						emptyWidth + (OldStyle ? OffsetSize * 2 : 0),
+						EntryHeight,
+						HeaderGumpID);
 				}
 
 				x += emptyWidth + OffsetSize;
@@ -147,7 +149,7 @@ namespace Server.Gumps
 
 				AddRect(0, prop.Name, 0);
 
-				for (int i = 0; i < count; ++i)
+				for (var i = 0; i < count; ++i)
 				{
 					AddRect(i + 1, names[index], ++index);
 				}
@@ -156,15 +158,15 @@ namespace Server.Gumps
 
 		public override void OnResponse(NetState sender, RelayInfo info)
 		{
-			int index = info.ButtonID - 1;
+			var index = info.ButtonID - 1;
 
 			if (index >= 0 && index < m_Values.Length)
 			{
 				try
 				{
-					object toSet = m_Values[index];
+					var toSet = m_Values[index];
 
-					string result = Properties.SetDirect(m_Mobile, m_Object, m_Object, m_Property, m_Property.Name, toSet, true);
+					var result = Properties.SetDirect(m_Mobile, m_Object, m_Object, m_Property, m_Property.Name, toSet, true);
 
 					m_Mobile.SendMessage(result);
 
@@ -184,8 +186,8 @@ namespace Server.Gumps
 
 		private void AddRect(int index, string str, int button)
 		{
-			int x = BorderSize + OffsetSize;
-			int y = BorderSize + OffsetSize + ((index + 1) * (EntryHeight + OffsetSize));
+			var x = BorderSize + OffsetSize;
+			var y = BorderSize + OffsetSize + ((index + 1) * (EntryHeight + OffsetSize));
 
 			AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
 			AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, str);

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - TimerProfile.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 using System.IO;

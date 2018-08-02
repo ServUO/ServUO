@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Map.cs
-// **********
-#endregion
-
 #region Map Updates
 /*
  * Name: Map Updates
@@ -372,7 +366,7 @@ namespace Server
 
 	[Parsable]
 	//[CustomEnum( new string[]{ "Felucca", "Trammel", "Ilshenar", "Malas", "Internal" } )]
-	public sealed class Map : IComparable, IComparable<Map>
+	public class Map : IComparable, IComparable<Map>
 	{
 		#region Compile-Time -> Run-Time Support
 #if Map_NewEnumerables || Map_AllUpdates

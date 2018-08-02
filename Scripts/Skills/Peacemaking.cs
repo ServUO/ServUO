@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Peacemaking.cs
-// **********
-#endregion
-
 #region References
 using System;
 using Server.Engines.XmlSpawner2;

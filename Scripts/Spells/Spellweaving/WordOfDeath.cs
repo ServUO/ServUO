@@ -72,6 +72,7 @@ namespace Server.Spells.Spellweaving
                 }
 
                 int damageBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, Caster.Player && m.Player);
+
                 damage *= damageBonus + 100;
                 damage /= 100;
 

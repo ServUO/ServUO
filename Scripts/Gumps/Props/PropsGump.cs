@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - PropsGump.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -56,18 +50,14 @@ namespace Server.Gumps
 		public static object[] m_BoolValues = {true, false};
 
 		public static string[] m_PoisonNames =
-		{
-			"None", "Lesser", "Regular", "Greater", "Deadly", "Lethal", "Darkglow",
-			"Parasitic"
-		};
+			{"None", "Lesser", "Regular", "Greater", "Deadly", "Lethal", "Darkglow", "Parasitic"};
 
 		public static object[] m_PoisonValues =
 		{
-			null, Poison.Lesser, Poison.Regular, Poison.Greater, Poison.Deadly,
-			Poison.Lethal, Poison.DarkGlow, Poison.Parasitic
+			null, Poison.Lesser, Poison.Regular, Poison.Greater, Poison.Deadly, Poison.Lethal, Poison.DarkGlow, Poison.Parasitic
 		};
 
-        private static readonly bool PrevLabel = OldStyle;
+		private static readonly bool PrevLabel = OldStyle;
 		private static readonly bool NextLabel = OldStyle;
 		private static readonly bool TypeLabel = !OldStyle;
 
@@ -83,8 +73,8 @@ namespace Server.Gumps
 
 		private static readonly int TypeWidth = NameWidth + OffsetSize + ValueWidth;
 
-		private static readonly int TotalWidth = OffsetSize + NameWidth + OffsetSize + ValueWidth + OffsetSize + SetWidth +
-												 OffsetSize;
+		private static readonly int TotalWidth =
+			OffsetSize + NameWidth + OffsetSize + ValueWidth + OffsetSize + SetWidth + OffsetSize;
 
 		private static readonly int TotalHeight = OffsetSize + ((EntryHeight + OffsetSize) * (EntryCount + 1));
 
@@ -104,7 +94,7 @@ namespace Server.Gumps
 		private static readonly Type _TypeOfString = typeof(String);
 		private static readonly Type _TypeOfText = typeof(TextDefinition);
 		private static readonly Type _TypeOfPoison = typeof(Poison);
-        private static readonly Type _TypeOfMap = typeof(Map);
+		private static readonly Type _TypeOfMap = typeof(Map);
 		private static readonly Type _TypeOfSkills = typeof(Skills);
 		private static readonly Type _TypeOfPropertyObject = typeof(PropertyObjectAttribute);
 		private static readonly Type _TypeOfNoSort = typeof(NoSortAttribute);
@@ -117,8 +107,8 @@ namespace Server.Gumps
 
 		private static readonly Type[] _TypeOfNumeric =
 		{
-			typeof(Byte), typeof(Int16), typeof(Int32), typeof(Int64),
-			typeof(SByte), typeof(UInt16), typeof(UInt32), typeof(UInt64)
+			typeof(Byte), typeof(Int16), typeof(Int32), typeof(Int64), typeof(SByte), typeof(UInt16), typeof(UInt32),
+			typeof(UInt64)
 		};
 
 		private readonly Mobile m_Mobile;
@@ -449,7 +439,7 @@ namespace Server.Gumps
 
 						var type = prop.PropertyType;
 
-                        if (IsType(type, _TypeOfMobile) || IsType(type, _TypeOfItem) || type.IsAssignableFrom(typeof(IDamageable)))
+						if (IsType(type, _TypeOfMobile) || IsType(type, _TypeOfItem) || type.IsAssignableFrom(typeof(IDamageable)))
 						{
 							from.SendGump(new SetObjectGump(prop, from, m_Object, m_Stack, type, m_Page, m_List));
 						}
@@ -730,7 +720,12 @@ namespace Server.Gumps
 			AddPage(0);
 
 			AddBackground(0, 0, BackWidth, BorderSize + totalHeight + BorderSize, BackGumpID);
-			AddImageTiled(BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), totalHeight, OffsetGumpID);
+			AddImageTiled(
+				BorderSize,
+				BorderSize,
+				TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0),
+				totalHeight,
+				OffsetGumpID);
 
 			var x = BorderSize + OffsetSize;
 			var y = BorderSize + OffsetSize;
@@ -872,9 +867,7 @@ namespace Server.Gumps
 
 				if (i != 0)
 				{
-					list.Add(
-						new
-						{ });
+					list.Add(new { });
 				}
 
 				list.Add(de.Key);

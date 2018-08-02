@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Target.cs
-// **********
-#endregion
-
 #region References
 using System;
 

@@ -153,23 +153,24 @@ namespace Server.Engines.CityLoyalty
                     ShowGainMessage = reader.ReadBool();
                     goto case 0;
                 case 0:
-
-                    if (version == 0)
-                    {
-                        ShowGainMessage = true;
-                    }
-
-                    Love = reader.ReadInt();
-                    Hate = reader.ReadInt();
-                    Neutrality = reader.ReadInt();
-
-                    Titles = (CityTitle)reader.ReadInt();
-                    TradeDealExpires = reader.ReadDateTime();
-                    _Utilizing = reader.ReadBool();
-                    CustomTitle = reader.ReadString();
-
-                    CheckTradeDeal();
-                    IsCitizen = reader.ReadBool();
+					{
+		                if (version == 0)
+		                {
+		                    ShowGainMessage = true;
+		                }
+		
+		                Love = reader.ReadInt();
+		                Hate = reader.ReadInt();
+		                Neutrality = reader.ReadInt();
+		
+		                Titles = (CityTitle)reader.ReadInt();
+		                TradeDealExpires = reader.ReadDateTime();
+		                _Utilizing = reader.ReadBool();
+		                CustomTitle = reader.ReadString();
+		
+		                CheckTradeDeal();
+		                IsCitizen = reader.ReadBool();
+					}
                     break;
             }
 		}

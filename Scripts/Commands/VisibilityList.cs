@@ -125,7 +125,7 @@ namespace Server.Commands
                                     else
                                         ns.Send(new MobileIncomingOld(targ, from));
 
-                                    if (ObjectPropertyList.Enabled)
+                                    if (targ.ViewOPL)
                                     {
                                         ns.Send(from.OPLPacket);
 

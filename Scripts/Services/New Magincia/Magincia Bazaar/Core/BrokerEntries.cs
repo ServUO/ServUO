@@ -71,7 +71,7 @@ namespace Server.Engines.NewMagincia
             m_Stock = amount;
 			
 			if(item is ICommodity)
-				m_Label = ((ICommodity)item).DescriptionNumber;
+				m_Label = ((ICommodity)item).Description;
 			else
 				m_Label = item.LabelNumber;
 		}

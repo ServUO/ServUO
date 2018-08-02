@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - ClientVersion.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;

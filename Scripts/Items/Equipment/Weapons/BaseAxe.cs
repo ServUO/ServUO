@@ -29,6 +29,7 @@ namespace Server.Items
                 return 0x232;
             }
         }
+
         public override int DefMissSound
         {
             get
@@ -36,6 +37,7 @@ namespace Server.Items
                 return 0x23A;
             }
         }
+
         public override SkillName DefSkill
         {
             get
@@ -43,6 +45,7 @@ namespace Server.Items
                 return SkillName.Swords;
             }
         }
+
         public override WeaponType DefType
         {
             get
@@ -50,6 +53,7 @@ namespace Server.Items
                 return WeaponType.Axe;
             }
         }
+
         public override WeaponAnimation DefAnimation
         {
             get
@@ -57,6 +61,7 @@ namespace Server.Items
                 return WeaponAnimation.Slash2H;
             }
         }
+
         public virtual HarvestSystem HarvestSystem
         {
             get
@@ -93,8 +98,10 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (HarvestSystem != null)
-                BaseHarvestTool.AddContextMenuEntries(from, this, list, HarvestSystem);
+            if (HarvestSystem == null)
+            	return;
+
+            BaseHarvestTool.AddContextMenuEntries(from, this, list, HarvestSystem);
         }
 
         public override void Serialize(GenericWriter writer)

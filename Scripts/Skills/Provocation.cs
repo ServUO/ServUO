@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Provocation.cs
-// **********
-#endregion
-
 #region References
 using System;
 

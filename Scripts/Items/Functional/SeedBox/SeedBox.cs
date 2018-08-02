@@ -379,12 +379,11 @@ namespace Server.Engines.Plants
                 }
             }
 
-            Timer.DelayCall(() =>
+            Timer.DelayCall(
+                () =>
                 {
-                    foreach (var item in Items.Where(i => !i.Movable))
-                    {
+                    foreach (var item in Items.Where(i => i.Movable))
                         item.Movable = false;
-                    }
                 });
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckEntries);

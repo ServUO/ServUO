@@ -13,7 +13,9 @@ namespace Server.Regions
     {
         public static readonly int HousePriority = Region.DefaultPriority + 1;
         public static TimeSpan CombatHeatDelay = TimeSpan.FromSeconds(30.0);
+
         private readonly BaseHouse m_House;
+
         private bool m_Recursion;
 
         public HouseRegion(BaseHouse house)
@@ -26,6 +28,7 @@ namespace Server.Regions
             GoLocation = new Point3D(house.X + ban.X, house.Y + ban.Y, house.Z + ban.Z);
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public BaseHouse House
         {
             get
@@ -33,6 +36,7 @@ namespace Server.Regions
                 return m_House;
             }
         }
+
         public static void Initialize()
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
@@ -51,64 +55,6 @@ namespace Server.Regions
             return false;
         }
 
-        /* Per EA, and this is not exact. This will help reduce lag on populated  servers in areas such as Luna
-         * Items on the border tiles and stairs load
-         * Items out of line of sight do not load
-         * Items under roofs do not load
-         */ 
-        /*public override bool CanSee(Mobile m, IEntity e)
-        {
-            if (e is Mobile || m.Region.IsPartOf(this))
-                return true;
-
-            if (e is Item)
-            {
-                Item item = (Item)e;
-
-                if (item.ParentEntity is Mobile)
-                    return true;
-
-                if (item is BaseMulti || item is HouseSign || item is Static || item is BaseDoor || item is HouseTeleporter || item is CraftableHouseItem)
-                    return true;
-
-                var areas = House.Area;
-
-                if (areas != null)
-                {
-                    int x = House.X;
-                    int y = House.Y;
-
-                    foreach (var area in areas)
-                    {
-                        if (item.X == x + (area.Width / 2) || item.X == x - (area.Width / 2) ||
-                            item.Y == y + (area.Height / 2) + 1 || item.Y == y + (area.Height / 2) || item.Y == y - (area.Height / 2))
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                if (!m.Map.LineOfSight(new Point3D(m.X, m.Y, m.Z + 14), item.Location))
-                    return false;
-
-                ItemData itemData = item.ItemData;
-                StaticTile[] tiles = Map.Tiles.GetStaticTiles(item.X, item.Y, true);
-
-                foreach (var tile in tiles)
-                {
-                    ItemData tileData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
-                    bool surfaceOrRoof = tileData.Surface || (tileData.Flags & TileFlag.Roof) != 0;
-
-                    if (tile.Z + tileData.CalcHeight > item.Z + itemData.CalcHeight && surfaceOrRoof)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }*/
-
         public override void OnEnter(Mobile m)
         {
             if (m.AccessLevel == AccessLevel.Player && m_House != null && m_House.IsFriend(m))
@@ -118,17 +64,6 @@ namespace Server.Regions
                     m_House.RefreshDecay();
                 }
             }
-
-            /*if (m.NetState == null)
-                return;
-
-            foreach (var item in GetEnumeratedItems())
-            {
-                if (m.CanSee(item) && m.InUpdateRange(item.GetWorldLocation()))
-                {
-                    item.SendInfoTo(m.NetState);
-                }
-            }*/
         }
 
         public override bool SendInaccessibleMessage(Item item, Mobile from)

@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - Place.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using CustomsFramework;
 #endregion
 

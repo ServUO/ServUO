@@ -178,6 +178,7 @@ namespace Server.Engines.Points
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write(0);
         }
 
@@ -185,7 +186,7 @@ namespace Server.Engines.Points
         {
             base.Deserialize(reader);
 
-            if (this.Version >= 2)
+            if (Version >= 2)
             {
                 int version = reader.ReadInt();
 

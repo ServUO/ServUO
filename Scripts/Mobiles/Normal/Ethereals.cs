@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Ethereals.cs
-// **********
-#endregion
-
 #region References
 using System;
 

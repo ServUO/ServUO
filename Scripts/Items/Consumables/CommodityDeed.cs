@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public interface ICommodity /* added IsDeedable prop so expansion-based deedables can determine true/false */
     {
-        int DescriptionNumber { get; }
+        TextDefinition Description { get; }
         bool IsDeedable { get; }
     }
 
@@ -197,15 +197,20 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_Commodity != null)
+            if (m_Commodity != null)
             {
                 string args;
 
-                if (this.m_Commodity.Name == null)
-                    args = String.Format("#{0}\t{1}", (this.m_Commodity is ICommodity) ? ((ICommodity)this.m_Commodity).DescriptionNumber : this.m_Commodity.LabelNumber, this.m_Commodity.Amount);
+                if (m_Commodity.Name == null)
+                {
+                    if (m_Commodity is ICommodity)
+                        args = String.Format("{0}\t{1}", ((ICommodity)m_Commodity).Description, m_Commodity.Amount);
+                    else
+                        args = String.Format("#{0}\t{1}", m_Commodity.LabelNumber, m_Commodity.Amount);
+                }
                 else
                     args = String.Format("{0}\t{1}", this.m_Commodity.Name, this.m_Commodity.Amount);
-
+                
                 list.Add(1060658, args); // ~1_val~: ~2_val~
             }
             else
@@ -218,16 +223,21 @@ namespace Server.Items
         {
             base.OnSingleClick(from);
 
-            if (this.m_Commodity != null)
+            if (m_Commodity != null)
             {
                 string args;
 
-                if (this.m_Commodity.Name == null)
-                    args = String.Format("#{0}\t{1}", (this.m_Commodity is ICommodity) ? ((ICommodity)this.m_Commodity).DescriptionNumber : this.m_Commodity.LabelNumber, this.m_Commodity.Amount);
+                if (m_Commodity.Name == null)
+                {
+                    if (m_Commodity is ICommodity)
+                        args = String.Format("{0}\t{1}", ((ICommodity)m_Commodity).Description, m_Commodity.Amount);
+                    else
+                        args = String.Format("#{0}\t{1}", m_Commodity.LabelNumber, m_Commodity.Amount);
+                }
                 else
-                    args = String.Format("{0}\t{1}", this.m_Commodity.Name, this.m_Commodity.Amount);
+                    args = String.Format("{0}\t{1}", m_Commodity.Name, m_Commodity.Amount);
 
-                this.LabelTo(from, 1060658, args); // ~1_val~: ~2_val~
+                LabelTo(from, 1060658, args); // ~1_val~: ~2_val~
             }
         }
 

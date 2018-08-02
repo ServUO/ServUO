@@ -1,5 +1,5 @@
 using System;
-using Server;
+
 using Server.Gumps;
 using Server.Mobiles;
 using Server.ContextMenus;
@@ -14,6 +14,20 @@ namespace Server.Items
     {
         public const int MaxScrolls = 300;
 
+        private int _Capacity;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Capacity
+        {
+            get { return _Capacity <= 0 ? MaxScrolls : _Capacity; }
+            set
+            {
+                _Capacity = value;
+
+                InvalidateProperties();
+            }
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
 
@@ -27,7 +41,7 @@ namespace Server.Items
         public abstract int RemoveMessage { get; }
         public abstract int GumpTitle { get; }
 
-        public BaseSpecialScrollBook(int id) 
+        public BaseSpecialScrollBook(int id)
             : base(id)
         {
             LootType = LootType.Blessed;
@@ -52,17 +66,17 @@ namespace Server.Items
             }
         }
 
-
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            list.Add(1151797, String.Format("{0}\t{1}", Items.Count, MaxScrolls.ToString())); // Scrolls in book: ~1_val~/~2_val~
+            list.Add(1151797, String.Format("{0}\t{1}", Items.Count, Capacity)); // Scrolls in book: ~1_val~/~2_val~
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
+
             SetSecureLevelEntry.AddTo(from, this, list);
         }
 
@@ -84,12 +98,14 @@ namespace Server.Items
                 {
                     m.SendLocalizedMessage(1155693); // This item is impermissible and can not be added to the book.
                 }
-                else if (Items.Count < MaxScrolls) // TODO: Message for overfilled?
+                else if (Items.Count < Capacity) // TODO: Message for overfilled?
                 {
                     DropItem(dropped);
+
                     m.SendLocalizedMessage(DropMessage);
 
                     dropped.Movable = false;
+
                     m.CloseGump(typeof(SpecialScrollBookGump));
 
                     return true;
@@ -142,7 +158,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(3); // version
+
+            writer.Write((int)Level);
+            writer.Write(_Capacity);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -151,13 +170,18 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            Timer.DelayCall(() =>
+            if (version > 2)
             {
-                foreach (var item in Items.Where(i => !i.Movable))
+                Level = (SecureLevel)reader.ReadInt();
+                _Capacity = reader.ReadInt();
+            }
+
+            Timer.DelayCall(
+                () =>
                 {
-                    item.Movable = false;
-                }
-            });
+                    foreach (var item in Items.Where(i => i.Movable))
+                        item.Movable = false;
+                });
         }
 
         public virtual Dictionary<SkillCat, List<SkillName>> SkillInfo { get { return null; } }
@@ -168,14 +192,22 @@ namespace Server.Items
             switch (category)
             {
                 default:
-                case SkillCat.None: return 0;
-                case SkillCat.Miscellaneous: return 1078596;
-                case SkillCat.Combat: return 1078592;
-                case SkillCat.TradeSkills: return 1078591;
-                case SkillCat.Magic: return 1078593;
-                case SkillCat.Wilderness: return 1078595;
-                case SkillCat.Thievery: return 1078594;
-                case SkillCat.Bard: return 1078590;
+                    //case SkillCat.None:
+                    return 0;
+                case SkillCat.Miscellaneous:
+                    return 1078596;
+                case SkillCat.Combat:
+                    return 1078592;
+                case SkillCat.TradeSkills:
+                    return 1078591;
+                case SkillCat.Magic:
+                    return 1078593;
+                case SkillCat.Wilderness:
+                    return 1078595;
+                case SkillCat.Thievery:
+                    return 1078594;
+                case SkillCat.Bard:
+                    return 1078590;
             }
         }
     }

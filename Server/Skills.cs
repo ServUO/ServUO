@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Skills.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -452,6 +446,8 @@ namespace Server
 						value = Cap;
 					}
 				}
+
+				m_Owner.Owner.MutateSkill((SkillName)m_Info.SkillID, ref value);
 
 				return value;
 			}
@@ -1080,6 +1076,9 @@ namespace Server
 			if (ns != null)
 			{
 				ns.Send(new SkillChange(skill));
+
+				m_Owner.Delta(MobileDelta.Skills);
+				m_Owner.ProcessDelta();
 			}
 		}
 

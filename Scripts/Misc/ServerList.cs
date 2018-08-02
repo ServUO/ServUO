@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - ServerList.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.IO;

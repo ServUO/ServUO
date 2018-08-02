@@ -247,25 +247,28 @@ namespace Server.Engines.Points
                 case 2: // added serialize/deserialize in all base classes. Poor implementation on my part, should have had from the get-go
                 case 1:
                 case 0:
-                    int count = reader.ReadInt();
-                    for (int i = 0; i < count; i++)
-                    {
-                        PlayerMobile player = reader.ReadMobile() as PlayerMobile;
-                        PointsEntry entry = GetSystemEntry(player);
+					{
+	                    int count = reader.ReadInt();
 
-                        if (Version > 0)
-                            entry.Deserialize(reader);
-                        else
-                            entry.Points = reader.ReadDouble();
-
-                        if (player != null)
-                        {
-                            if (!PlayerTable.Contains(entry))
-                            {
-                                PlayerTable.Add(entry);
-                            }
-                        }
-                    }
+	                    for (int i = 0; i < count; i++)
+	                    {
+	                        PlayerMobile player = reader.ReadMobile() as PlayerMobile;
+	                        PointsEntry entry = GetSystemEntry(player);
+	
+	                        if (Version > 0)
+	                            entry.Deserialize(reader);
+	                        else
+	                            entry.Points = reader.ReadDouble();
+	
+	                        if (player != null)
+	                        {
+	                            if (!PlayerTable.Contains(entry))
+	                            {
+	                                PlayerTable.Add(entry);
+	                            }
+	                        }
+	                    }
+					}
                     break;
             }
         }

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - IAccount.cs
-// **********
-#endregion
-
 #region References
 using System;
 #endregion
@@ -35,6 +29,56 @@ namespace Server.Accounting
 		/// when they are added to a secure trade container.
 		/// </summary>
 		public static bool ConvertOnTrade = false;
+
+		public static double GetGoldTotal(Mobile m)
+		{
+			if (m == null)
+			{
+				return 0;
+			}
+
+			return GetGoldTotal(m.Account);
+		}
+
+		public static double GetGoldTotal(IGoldAccount a)
+		{
+			if (a == null)
+			{
+				return 0;
+			}
+
+			int gold;
+			double totalGold;
+
+			a.GetGoldBalance(out gold, out totalGold);
+
+			return totalGold;
+		}
+
+		public static double GetPlatTotal(Mobile m)
+		{
+			if (m == null)
+			{
+				return 0;
+			}
+
+			return GetPlatTotal(m.Account);
+		}
+
+		public static double GetPlatTotal(IGoldAccount a)
+		{
+			if (a == null)
+			{
+				return 0;
+			}
+
+			int plat;
+			double totalPlat;
+
+			a.GetPlatBalance(out plat, out totalPlat);
+
+			return totalPlat;
+		}
 	}
 
 	public interface IGoldAccount
@@ -188,6 +232,9 @@ namespace Server.Accounting
 		/// <param name="plat">Platinum value, Gold exclusive</param>
 		/// <param name="totalPlat">Platinum value, Gold inclusive</param>
 		void GetBalance(out long gold, out double totalGold, out long plat, out double totalPlat);
+
+		bool HasGoldBalance(double amount);
+		bool HasPlatBalance(double amount);
 	}
 
 	public interface IAccount : IGoldAccount, IComparable<IAccount>
@@ -210,9 +257,28 @@ namespace Server.Accounting
 		[CommandProperty(AccessLevel.Administrator)]
 		int Count { get; }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
+		DateTime Created { get; set; }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		DateTime LastLogin { get; set; }
+
+		[CommandProperty(AccessLevel.Administrator)]
+		TimeSpan Age { get; }
+
+		[CommandProperty(AccessLevel.Administrator)]
+		TimeSpan TotalGameTime { get; }
+
+		[CommandProperty(AccessLevel.Administrator)]
+		bool Banned { get; set; }
+
+		[CommandProperty(AccessLevel.Administrator)]
+		bool Young { get; set; }
+		
 		Mobile this[int index] { get; set; }
 
 		void Delete();
+
 		void SetPassword(string password);
 		bool CheckPassword(string password);
 	}

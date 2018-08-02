@@ -77,7 +77,12 @@ namespace Server.Gumps
 			AddPage(0);
 
 			AddBackground(0, 0, BackWidth, BackHeight, BackGumpID);
-			AddImageTiled(BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), TotalHeight, OffsetGumpID);
+			AddImageTiled(
+				BorderSize,
+				BorderSize,
+				TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0),
+				TotalHeight,
+				OffsetGumpID);
 
 			AddRect(0, prop.Name, 0, -1);
 			AddRect(1, String.Format("{0:u}", m_OldDT), 0, -1);
@@ -132,7 +137,7 @@ namespace Server.Gumps
 			}
 
 			var month = "";
-			
+
 			if (info.ButtonID == 2 || info.ButtonID == 3 || info.ButtonID == 6)
 			{
 				month = info.GetTextEntry(1).Text;
@@ -215,7 +220,11 @@ namespace Server.Gumps
 			{
 				try
 				{
-					CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, toSet.ToString(CultureInfo.InvariantCulture));
+					CommandLogging.LogChangeProperty(
+						m_Mobile,
+						m_Object,
+						m_Property.Name,
+						toSet.ToString(CultureInfo.InvariantCulture));
 					m_Property.SetValue(m_Object, toSet, null);
 					PropertiesGump.OnValueChanged(m_Object, m_Property, m_Stack);
 				}

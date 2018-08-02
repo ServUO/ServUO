@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - MiscSAResources.cs
-// **********
-#endregion
-
 #region References
 using Server.Engines.Plants;
 using Server.Engines.Craft;

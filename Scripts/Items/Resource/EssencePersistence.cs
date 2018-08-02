@@ -31,7 +31,7 @@ namespace Server.Items
                 return 1113343;
             }
         }// essence of persistence
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {

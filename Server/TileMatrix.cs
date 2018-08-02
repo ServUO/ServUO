@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - TileMatrix.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -460,6 +454,7 @@ namespace Server
 						while (pCur < pEnd)
 						{
 							lists[pCur->m_X & 0x7][pCur->m_Y & 0x7].Add(pCur->m_ID, pCur->m_Z);
+
 							pCur = pCur + 1;
 						}
 

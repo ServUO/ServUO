@@ -50,7 +50,7 @@ namespace Server.Items
             set
             {
                 m_IsRewardItem = value;
-                InvalidateAddonPropreties();
+                UpdateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -63,7 +63,7 @@ namespace Server.Items
             set
             {
                 m_Logs = value;
-                InvalidateAddonPropreties();
+                UpdateProperties();
             }
         }
         public override void OnComponentUsed(AddonComponent c, Mobile from)
