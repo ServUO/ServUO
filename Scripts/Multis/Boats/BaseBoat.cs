@@ -2163,7 +2163,7 @@ namespace Server.Multis
 
             foreach (IEntity ent in eable)
             {
-                if (Contains(ent))
+                if (Contains(ent) && CheckOnBoard(ent))
                 {
                     yield return ent;
                 }
@@ -2185,6 +2185,14 @@ namespace Server.Multis
         public int PlayerCount()
         {
             return GetMobilesOnBoard().Where(m => m is PlayerMobile).Count();
+        }
+
+        protected virtual bool CheckOnBoard(IEntity e)
+        {
+            if (e is Item && ((Item)e).IsVirtualItem)
+                return false;
+
+            return true;
         }
 
         public void TillerManSay(object message)
