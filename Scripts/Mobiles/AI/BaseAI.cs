@@ -182,7 +182,14 @@ namespace Server.Mobiles
 							}
 							else
 							{
-								m_AI.BeginPickTarget(m_From, m_Order);
+                                if (m_From.NetState != null && m_From.NetState.IsEnhancedClient)
+                                {
+                                    m_AI.BeginPickTargetDelayed(m_From, m_Order);
+                                }
+                                else
+                                {
+                                    m_AI.BeginPickTarget(m_From, m_Order);
+                                }
 							}
 
 							break;
@@ -253,6 +260,11 @@ namespace Server.Mobiles
 				}
 			}
 		}
+
+        public virtual void BeginPickTargetDelayed(Mobile from, OrderType order)
+        {
+            Timer.DelayCall(TimeSpan.FromMilliseconds(100), () => BeginPickTarget(from, order));
+        }
 
 		public virtual void BeginPickTarget(Mobile from, OrderType order)
 		{
