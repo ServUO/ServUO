@@ -3225,6 +3225,7 @@
     <Compile Include="Services\Expansions\High Seas\Quests\ProfessionalBountyQuest\Mobiles\MerchantCrew.cs" />
     <Compile Include="Services\Expansions\High Seas\Quests\ProfessionalBountyQuest\Mobiles\PirateCaptain.cs" />
     <Compile Include="Services\Expansions\High Seas\Quests\ProfessionalBountyQuest\Mobiles\PirateCrew.cs" />
+    <Compile Include="Services\Expansions\High Seas\Quests\ProfessionalBountyQuest\Mobiles\SeaMarketOfficer.cs" />
     <Compile Include="Services\Expansions\High Seas\Quests\ProfessionalBountyQuest\ProfessionalBountyQuest.cs" />
     <Compile Include="Services\Expansions\High Seas\Quests\ProfessionFishQuest\Books\RareBook1.cs" />
     <Compile Include="Services\Expansions\High Seas\Quests\ProfessionFishQuest\Books\RareBook2.cs" />
