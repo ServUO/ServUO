@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Server;
-using Server.Mobiles;
 using Server.Items;
 
 namespace Server.Engines.UOStore
@@ -15,18 +11,17 @@ namespace Server.Engines.UOStore
         public int GumpID { get; private set; }
         public int ItemID { get; private set; }
         public int Hue { get; private set; }
-        public double Price { get; private set; }
+        public int Price { get; private set; }
         public StoreCategory Category { get; private set; }
         public Func<Mobile, StoreEntry, Item> Constructor { get; private set; }
 
-        public double Cost { get { return Price * Configuration.PointMultiplier; } }
+        public int Cost { get { return (int)Math.Ceiling(Price * Configuration.CostMultiplier); } }
 
-        public StoreEntry(Type itemType, TextDefinition name, int tooltip, int itemID, int gumpID, int hue, double cost, StoreCategory cat, Func<Mobile, StoreEntry, Item> constructor = null)
-            : this(itemType, new TextDefinition[] { name }, tooltip, itemID, gumpID, hue, cost, cat, constructor)
-        {
-        }
+        public StoreEntry(Type itemType, TextDefinition name, int tooltip, int itemID, int gumpID, int hue, int cost, StoreCategory cat, Func<Mobile, StoreEntry, Item> constructor = null)
+            : this(itemType, new[] { name }, tooltip, itemID, gumpID, hue, cost, cat, constructor)
+        { }
 
-        public StoreEntry(Type itemType, TextDefinition[] name, int tooltip, int itemID, int gumpID, int hue, double cost, StoreCategory cat, Func<Mobile, StoreEntry, Item> constructor = null)
+        public StoreEntry(Type itemType, TextDefinition[] name, int tooltip, int itemID, int gumpID, int hue, int cost, StoreCategory cat, Func<Mobile, StoreEntry, Item> constructor = null)
         {
             ItemType = itemType;
             Name = name;
@@ -62,36 +57,39 @@ namespace Server.Engines.UOStore
                 if (m.Backpack == null || !m.Alive || !m.Backpack.TryDropItem(m, item, false))
                 {
                     UltimaStore.AddPendingItem(m, item);
-                    m.SendLocalizedMessage(m.Alive ? 1156846 : 1156848);
+
                     // Your purchased will be delivered to you once you free up room in your backpack.
                     // Your purchased item will be delivered to you once you are resurrected.
+                    m.SendLocalizedMessage(m.Alive ? 1156846 : 1156848);
+                }
+                else if (item is IPromotionalToken && ((IPromotionalToken)item).ItemName != null)
+                {
+                    // A token has been placed in your backpack. Double-click it to redeem your ~1_PROMO~.
+                    m.SendLocalizedMessage(1075248, ((IPromotionalToken)item).ItemName.ToString());
+                }
+                else if (item.LabelNumber > 0 || item.Name != null)
+                {
+                    var name = item.LabelNumber > 0 ? ("#" + item.LabelNumber) : item.Name;
+
+                    // Your purchase of ~1_ITEM~ has been placed in your backpack.
+                    m.SendLocalizedMessage(1156844, name);
                 }
                 else
                 {
-                    if (item is IPromotionalToken && ((IPromotionalToken)item).ItemName != null)
-                    {
-                        m.SendLocalizedMessage(1075248, ((IPromotionalToken)item).ItemName.ToString()); // A token has been placed in your backpack. Double-click it to redeem your ~1_PROMO~.
-                    }
-                    else if (item.LabelNumber > 0 || item.Name != null)
-                    {
-                        m.SendLocalizedMessage(1156844, item.LabelNumber > 0 ? String.Format("#{0}", item.LabelNumber) : item.Name); // Your purchase of ~1_ITEM~ has been placed in your backpack.
-                    }
-                    else
-                    {
-                        m.SendLocalizedMessage(1156843); // Your purchased item has been placed in your backpack.
-                    }
+                    // Your purchased item has been placed in your backpack.
+                    m.SendLocalizedMessage(1156843);
                 }
 
                 if (test)
+                {
                     item.Delete();
+                }
 
                 return true;
             }
-            else
-            {
-                Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("[Ultima Store Warning]: {0} failed to construct.", ItemType.Name));
-            }
 
+            Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("[Ultima Store Warning]: {0} failed to construct.", ItemType.Name));
+            
             return false;
         }
     }

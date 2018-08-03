@@ -464,7 +464,7 @@ namespace Server.Engines.XmlSpawner2
 					} 
 					else
 					{
-						writer.Write((string)null);
+						writer.Write(default(string));
 					}
 				}
 			}

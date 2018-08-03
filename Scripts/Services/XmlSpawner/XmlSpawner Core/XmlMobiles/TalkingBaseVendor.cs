@@ -32,7 +32,7 @@ namespace Server.Mobiles
 		public TalkingBaseVendor( string title ) : base( title )
 		{
 			// add the XmlDialog attachment
-			m_DialogAttachment = new XmlDialog((string)null);
+			m_DialogAttachment = new XmlDialog(default(string));
 			XmlAttach.AttachTo(this, m_DialogAttachment);
 
 		}
@@ -795,7 +795,7 @@ namespace Server.Mobiles
 			if(version < 5)
 			{
 				// have to add the XmlDialog attachment
-				m_DialogAttachment = new XmlDialog((string)null);
+				m_DialogAttachment = new XmlDialog(default(string));
 				XmlAttach.AttachTo(this, m_DialogAttachment);
 			}
 
