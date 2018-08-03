@@ -243,7 +243,14 @@ namespace Server.Mobiles
 
                 if (m_Vendor.SupportsBulkOrders(m_From) && m_From is PlayerMobile)
                 {
-                    m_Vendor.TryBribe(m_From);
+                    if (m_From.NetState != null && m_From.NetState.IsEnhancedClient)
+                    {
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(100), m_Vendor.TryBribe, m_From);
+                    }
+                    else
+                    {
+                        m_Vendor.TryBribe(m_From);
+                    }
                 }
             }
         }

@@ -78,6 +78,8 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool IsVirtualItem { get { return true; } }
+
         public bool IsFull { get { return (SpawnCount >= m_MaxCount); } }
         public bool IsEmpty { get { return (SpawnCount == 0); } }
 
