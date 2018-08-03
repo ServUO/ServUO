@@ -957,9 +957,9 @@ namespace Ultima
 			{
 				return;
 			}
-			var bmp = new Bitmap(width, height, PixelFormat.Format16bppArgb1555);
+			var bmp = new Bitmap(width, height, Settings.PixelFormat);
 			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+				new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
 			var line = (ushort*)bd.Scan0;
 			int delta = bd.Stride >> 1;
 

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Insensitive.cs
-// **********
-#endregion
-
 #region References
 using System.Collections;
 #endregion

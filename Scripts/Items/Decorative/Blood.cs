@@ -1,20 +1,29 @@
+#region References
 using System;
+#endregion
 
 namespace Server.Items
 {
     public class Blood : Item
     {
+        public static int[] BloodIDs = { 0x1645, 0x122A, 0x122B, 0x122C, 0x122D, 0x122E, 0x122F };
+
+        public static int RandomID { get { return Utility.RandomList(BloodIDs); } }
+
+        public static TimeSpan Decay = TimeSpan.FromSeconds(3.0);
+
+        public override TimeSpan DecayTime { get { return Decay; } }
+
         [Constructable]
         public Blood()
-            : this(Utility.RandomList(0x1645, 0x122A, 0x122B, 0x122C, 0x122D, 0x122E, 0x122F))
-        {
-        }
+            : this(RandomID)
+        { }
 
         [Constructable]
         public Blood(int itemID)
             : base(itemID)
         {
-            this.Movable = false;
+            Movable = false;
 
             new InternalTimer(this).Start();
         }
@@ -29,30 +38,31 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private class InternalTimer : Timer
         {
-            private readonly Item m_Blood;
-            public InternalTimer(Item blood)
-                : base(TimeSpan.FromSeconds(5.0))
-            {
-                this.Priority = TimerPriority.OneSecond;
+            private readonly Blood m_Blood;
 
-                this.m_Blood = blood;
+            public InternalTimer(Blood blood)
+                : base(blood.DecayTime)
+            {
+                Priority = TimerPriority.OneSecond;
+
+                m_Blood = blood;
             }
 
             protected override void OnTick()
             {
-                this.m_Blood.Delete();
+                m_Blood.Delete();
             }
         }
     }

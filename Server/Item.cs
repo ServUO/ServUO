@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Item.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -257,282 +251,282 @@ namespace Server
         /// <summary>
         ///     Window shape, arched, ray shining east.
         /// </summary>
-        ArchedWindowEast,
+        ArchedWindowEast = 0,
 
         /// <summary>
         ///     Medium circular shape.
         /// </summary>
-        Circle225,
+        Circle225 = 1,
 
         /// <summary>
         ///     Small circular shape.
         /// </summary>
-        Circle150,
+        Circle150 = 2,
 
         /// <summary>
         ///     Door shape, shining south.
         /// </summary>
-        DoorSouth,
+        DoorSouth = 3,
 
         /// <summary>
         ///     Door shape, shining east.
         /// </summary>
-        DoorEast,
+        DoorEast = 4,
 
         /// <summary>
         ///     Large semicircular shape (180 degrees), north wall.
         /// </summary>
-        NorthBig,
+        NorthBig = 5,
 
         /// <summary>
         ///     Large pie shape (90 degrees), north-east corner.
         /// </summary>
-        NorthEastBig,
+        NorthEastBig = 6,
 
         /// <summary>
         ///     Large semicircular shape (180 degrees), east wall.
         /// </summary>
-        EastBig,
+        EastBig = 7,
 
         /// <summary>
         ///     Large semicircular shape (180 degrees), west wall.
         /// </summary>
-        WestBig,
+        WestBig = 8,
 
         /// <summary>
         ///     Large pie shape (90 degrees), south-west corner.
         /// </summary>
-        SouthWestBig,
+        SouthWestBig = 9,
 
         /// <summary>
         ///     Large semicircular shape (180 degrees), south wall.
         /// </summary>
-        SouthBig,
+        SouthBig = 10,
 
         /// <summary>
         ///     Medium semicircular shape (180 degrees), north wall.
         /// </summary>
-        NorthSmall,
+        NorthSmall = 11,
 
         /// <summary>
         ///     Medium pie shape (90 degrees), north-east corner.
         /// </summary>
-        NorthEastSmall,
+        NorthEastSmall = 12,
 
         /// <summary>
         ///     Medium semicircular shape (180 degrees), east wall.
         /// </summary>
-        EastSmall,
+        EastSmall = 13,
 
         /// <summary>
         ///     Medium semicircular shape (180 degrees), west wall.
         /// </summary>
-        WestSmall,
+        WestSmall = 14,
 
         /// <summary>
         ///     Medium semicircular shape (180 degrees), south wall.
         /// </summary>
-        SouthSmall,
+        SouthSmall = 15,
 
         /// <summary>
         ///     Shaped like a wall decoration, north wall.
         /// </summary>
-        DecorationNorth,
+        DecorationNorth = 16,
 
         /// <summary>
         ///     Shaped like a wall decoration, north-east corner.
         /// </summary>
-        DecorationNorthEast,
+        DecorationNorthEast = 17,
 
         /// <summary>
         ///     Small semicircular shape (180 degrees), east wall.
         /// </summary>
-        EastTiny,
+        EastTiny = 18,
 
         /// <summary>
         ///     Shaped like a wall decoration, west wall.
         /// </summary>
-        DecorationWest,
+        DecorationWest = 19,
 
         /// <summary>
         ///     Shaped like a wall decoration, south-west corner.
         /// </summary>
-        DecorationSouthWest,
+        DecorationSouthWest = 20,
 
         /// <summary>
         ///     Small semicircular shape (180 degrees), south wall.
         /// </summary>
-        SouthTiny,
+        SouthTiny = 21,
 
         /// <summary>
         ///     Window shape, rectangular, no ray, shining south.
         /// </summary>
-        RectWindowSouthNoRay,
+        RectWindowSouthNoRay = 22,
 
         /// <summary>
         ///     Window shape, rectangular, no ray, shining east.
         /// </summary>
-        RectWindowEastNoRay,
+        RectWindowEastNoRay = 23,
 
         /// <summary>
         ///     Window shape, rectangular, ray shining south.
         /// </summary>
-        RectWindowSouth,
+        RectWindowSouth = 24,
 
         /// <summary>
         ///     Window shape, rectangular, ray shining east.
         /// </summary>
-        RectWindowEast,
+        RectWindowEast = 25,
 
         /// <summary>
         ///     Window shape, arched, no ray, shining south.
         /// </summary>
-        ArchedWindowSouthNoRay,
+        ArchedWindowSouthNoRay = 26,
 
         /// <summary>
         ///     Window shape, arched, no ray, shining east.
         /// </summary>
-        ArchedWindowEastNoRay,
+        ArchedWindowEastNoRay = 27,
 
         /// <summary>
         ///     Window shape, arched, ray shining south.
         /// </summary>
-        ArchedWindowSouth,
+        ArchedWindowSouth = 28,
 
         /// <summary>
         ///     Large circular shape.
         /// </summary>
-        Circle300,
+        Circle300 = 29,
 
         /// <summary>
         ///     Large pie shape (90 degrees), north-west corner.
         /// </summary>
-        NorthWestBig,
+        NorthWestBig = 30,
 
         /// <summary>
         ///     Negative light. Medium pie shape (90 degrees), south-east corner.
         /// </summary>
-        DarkSouthEast,
+        DarkSouthEast = 31,
 
         /// <summary>
         ///     Negative light. Medium semicircular shape (180 degrees), south wall.
         /// </summary>
-        DarkSouth,
+        DarkSouth = 32,
 
         /// <summary>
         ///     Negative light. Medium pie shape (90 degrees), north-west corner.
         /// </summary>
-        DarkNorthWest,
+        DarkNorthWest = 33,
 
         /// <summary>
         ///     Negative light. Medium pie shape (90 degrees), south-east corner. Equivalent to <c>LightType.SouthEast</c>.
         /// </summary>
-        DarkSouthEast2,
+        DarkSouthEast2 = 34,
 
         /// <summary>
         ///     Negative light. Medium circular shape (180 degrees), east wall.
         /// </summary>
-        DarkEast,
+        DarkEast = 35,
 
         /// <summary>
         ///     Negative light. Large circular shape.
         /// </summary>
-        DarkCircle300,
+        DarkCircle300 = 36,
 
         /// <summary>
         ///     Opened door shape, shining south.
         /// </summary>
-        DoorOpenSouth,
+        DoorOpenSouth = 37,
 
         /// <summary>
         ///     Opened door shape, shining east.
         /// </summary>
-        DoorOpenEast,
+        DoorOpenEast = 38,
 
         /// <summary>
         ///     Window shape, square, ray shining east.
         /// </summary>
-        SquareWindowEast,
+        SquareWindowEast = 39,
 
         /// <summary>
         ///     Window shape, square, no ray, shining east.
         /// </summary>
-        SquareWindowEastNoRay,
+        SquareWindowEastNoRay = 40,
 
         /// <summary>
         ///     Window shape, square, ray shining south.
         /// </summary>
-        SquareWindowSouth,
+        SquareWindowSouth = 41,
 
         /// <summary>
         ///     Window shape, square, no ray, shining south.
         /// </summary>
-        SquareWindowSouthNoRay,
+        SquareWindowSouthNoRay = 42,
 
         /// <summary>
         ///     Empty.
         /// </summary>
-        Empty,
+        Empty = 43,
 
         /// <summary>
         ///     Window shape, skinny, no ray, shining south.
         /// </summary>
-        SkinnyWindowSouthNoRay,
+        SkinnyWindowSouthNoRay = 44,
 
         /// <summary>
         ///     Window shape, skinny, ray shining east.
         /// </summary>
-        SkinnyWindowEast,
+        SkinnyWindowEast = 45,
 
         /// <summary>
         ///     Window shape, skinny, no ray, shining east.
         /// </summary>
-        SkinnyWindowEastNoRay,
+        SkinnyWindowEastNoRay = 46,
 
         /// <summary>
         ///     Shaped like a hole, shining south.
         /// </summary>
-        HoleSouth,
+        HoleSouth = 47,
 
         /// <summary>
         ///     Shaped like a hole, shining south.
         /// </summary>
-        HoleEast,
+        HoleEast = 48,
 
         /// <summary>
         ///     Large circular shape with a moongate graphic embeded.
         /// </summary>
-        Moongate,
+        Moongate = 49,
 
         /// <summary>
         ///     Unknown usage. Many rows of slightly angled lines.
         /// </summary>
-        Strips,
+        Strips = 50,
 
         /// <summary>
         ///     Shaped like a small hole, shining south.
         /// </summary>
-        SmallHoleSouth,
+        SmallHoleSouth = 51,
 
         /// <summary>
         ///     Shaped like a small hole, shining east.
         /// </summary>
-        SmallHoleEast,
+        SmallHoleEast = 52,
 
         /// <summary>
         ///     Large semicircular shape (180 degrees), north wall. Identical graphic as <c>LightType.NorthBig</c>, but slightly different positioning.
         /// </summary>
-        NorthBig2,
+        NorthBig2 = 53,
 
         /// <summary>
         ///     Large semicircular shape (180 degrees), west wall. Identical graphic as <c>LightType.WestBig</c>, but slightly different positioning.
         /// </summary>
-        WestBig2,
+        WestBig2 = 54,
 
         /// <summary>
         ///     Large pie shape (90 degrees), north-west corner. Equivalent to <c>LightType.NorthWestBig</c>.
         /// </summary>
-        NorthWestBig2
+        NorthWestBig2 = 55
     }
 
     /// <summary>
@@ -566,7 +560,7 @@ namespace Server
         public Map m_Map;
         public Point3D m_Location, m_WorldLoc;
         public object m_Parent;
-        public IEntity m_ParentStack;
+        public object m_ParentStack;
         public byte m_GridLocation;
         public Mobile m_Mobile;
 
@@ -581,7 +575,7 @@ namespace Server
             m_Mobile = from;
         }
 
-        private BounceInfo(Map map, Point3D loc, Point3D worldLoc, object parent)
+        private BounceInfo(Map map, Point3D loc, Point3D worldLoc, IEntity parent)
         {
             m_Map = map;
             m_Location = loc;
@@ -598,7 +592,7 @@ namespace Server
                 Point3D loc = reader.ReadPoint3D();
                 Point3D worldLoc = reader.ReadPoint3D();
 
-                object parent;
+                IEntity parent;
 
                 Serial serial = reader.ReadInt();
 
@@ -766,6 +760,7 @@ namespace Server
         private LootType m_LootType;
         private DateTime m_LastMovedTime;
         private Direction m_Direction;
+        private LightType m_Light;
         private bool m_HonestyItem;
         private string m_HonestyRegion;
         private Mobile m_HonestyOwner;
@@ -1028,7 +1023,7 @@ namespace Server
         {
             if (this is Container)
             {
-                return (this as Container).m_Items;
+                return ((Container)this).m_Items;
             }
 
             CompactInfo info = LookupCompactInfo();
@@ -1045,7 +1040,7 @@ namespace Server
         {
             if (this is Container)
             {
-                Container cont = this as Container;
+                Container cont = (Container)this;
 
                 if (cont.m_Items == null)
                 {
@@ -1235,13 +1230,14 @@ namespace Server
         }
 
         /// <summary>
-        ///     Overridable. Adds the name of this item to the given <see cref="ObjectPropertyList" />. This method should be overriden if the item requires a complex naming format.
+        ///     Overridable. Adds the name of this item to the given <see cref="ObjectPropertyList" />. This method should be
+        ///     overriden if the item requires a complex naming format.
         /// </summary>
         public virtual void AddNameProperty(ObjectPropertyList list)
         {
-            string name = Name;
+            string name = Name ?? String.Empty;
 
-            if (name == null)
+            if (String.IsNullOrWhiteSpace(name))
             {
                 if (m_Amount <= 1)
                 {
@@ -1388,6 +1384,11 @@ namespace Server
                 AddLockedDownProperty(list);
             }
 
+            if (HonestyItem)
+            {
+                AddHonestyProperty(list);
+            }
+
             Mobile blessedFor = BlessedFor;
 
             if (blessedFor != null && !blessedFor.Deleted)
@@ -1473,6 +1474,11 @@ namespace Server
         public virtual void GetProperties(ObjectPropertyList list)
         {
             AddNameProperties(list);
+
+            if (Spawner != null)
+            {
+                Spawner.GetSpawnProperties(this, list);
+            }
         }
 
         /// <summary>
@@ -1540,13 +1546,13 @@ namespace Server
 
             if (bounce != null)
             {
-                IEntity stack = bounce.m_ParentStack;
+                var stack = bounce.m_ParentStack;
 
-                if (stack != null)
+                if (stack is Item)
                 {
                     var s = (Item)stack;
 
-                    if (s != null && !(s).Deleted)
+                    if (!s.Deleted)
                     {
                         if (s.IsAccessibleTo(from))
                         {
@@ -1555,12 +1561,13 @@ namespace Server
                     }
                 }
 
-                object parent = bounce.m_Parent;
+                var parent = bounce.m_Parent;
 
                 if (parent is Item && !((Item)parent).Deleted)
                 {
                     Item p = (Item)parent;
-                    object root = p.RootParent;
+                    var root = p.RootParent;
+
                     if (p.IsAccessibleTo(from) && (!(root is Mobile) || ((Mobile)root).CheckNonlocalDrop(from, this, p)))
                     {
                         Location = bounce.m_Location;
@@ -1619,7 +1626,41 @@ namespace Server
 
         public virtual bool CanEquip(Mobile m)
         {
-            return (m_Layer != Layer.Invalid && m.FindItemOnLayer(m_Layer) == null);
+            return m_Layer != Layer.Invalid && m.FindItemOnLayer(m_Layer) == null && CheckEquip(m, true);
+        }
+
+        public virtual bool CheckEquip(Mobile m, bool message)
+        {
+            if (m == null || m.Deleted)
+            {
+                return false;
+            }
+
+            if (this == m.Mount || this == m.Backpack || this == m.FindBankNoCreate())
+            {
+                return true;
+            }
+
+            var e = new CheckEquipItemEventArgs(m, this, message);
+
+            EventSink.InvokeCheckEquipItem(e);
+
+            if (e.Item != this || e.Item.Deleted || e.Block)
+            {
+                return false;
+            }
+
+            if (m.AccessLevel < AccessLevel.GameMaster && BlessedFor != null && BlessedFor != m)
+            {
+                if (message)
+                {
+                    m.SendMessage("You do not own that item.");
+                }
+
+                return false;
+            }
+
+            return true;
         }
 
         public virtual void GetChildContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)
@@ -1649,12 +1690,25 @@ namespace Server
             {
                 from.Region.GetContextMenuEntries(from, list, this);
             }
+
+            if (Spawner != null)
+            {
+                Spawner.GetSpawnContextEntries(this, from, list);
+            }
+        }
+
+        public virtual bool DisplayContextMenu(Mobile from)
+        {
+            return ContextMenu.Display(from, this);
         }
 
         public virtual bool VerifyMove(Mobile from)
         {
             return Movable;
         }
+
+        public virtual void OnParentKill(Mobile target, Container corpse)
+        { }
 
         public virtual DeathMoveResult OnParentDeath(Mobile parent)
         {
@@ -1952,9 +2006,11 @@ namespace Server
                 HonestyItem = false;
                 m_HonestyTimer.Stop();
 
-                if (RootParentEntity is Mobile && ((Mobile)RootParentEntity).NetState != null)
+				var parent = RootParent as Mobile;
+
+                if (parent != null && parent.NetState != null)
                 {
-                    ((Mobile)RootParentEntity).SendLocalizedMessage(1151519); // You claim the item as your own.  Finders keepers, losers weepers!
+                    parent.SendLocalizedMessage(1151519); // You claim the item as your own.  Finders keepers, losers weepers!
                 }
             }
         }
@@ -2014,10 +2070,10 @@ namespace Server
 
         private static TimeSpan m_DDT = TimeSpan.FromMinutes(Config.Get("General.DefaultItemDecayTime", 60));
 
-        public virtual int DecayMultiplier { get { return 1; } }
+        public static TimeSpan DefaultDecayTime { get { return m_DDT; } set { m_DDT = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public static TimeSpan DefaultDecayTime { get { return m_DDT; } set { m_DDT = value; } }
+        public virtual int DecayMultiplier { get { return 1; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual bool DefaultDecaySetting { get { return true; } }
@@ -2025,6 +2081,7 @@ namespace Server
         [CommandProperty(AccessLevel.Decorator)]
         public virtual TimeSpan DecayTime { get { return TimeSpan.FromMinutes(m_DDT.TotalMinutes * DecayMultiplier); } }
 
+        [CommandProperty(AccessLevel.Decorator)]
         public virtual bool Decays
         {
             get
@@ -2054,6 +2111,10 @@ namespace Server
         }
 
         public DateTime LastMoved { get { return m_LastMovedTime; } set { m_LastMovedTime = value; } }
+
+        public virtual bool StackIgnoreItemID { get { return false; } }
+        public virtual bool StackIgnoreHue { get { return false; } }
+        public virtual bool StackIgnoreName { get { return false; } }
 
         public bool StackWith(Mobile from, Item dropped)
         {
@@ -2090,11 +2151,44 @@ namespace Server
             return false;
         }
 
-        public virtual bool WillStack(Mobile from, Item dropped)
+        public virtual bool WillStack(Mobile from, Item item)
         {
-            return dropped.Stackable && Stackable && dropped.GetType() == GetType() && dropped.ItemID == ItemID &&
-                dropped.Hue == Hue && dropped.Name == Name && dropped.Amount + Amount <= 60000 && dropped != this &&
-                !dropped.Nontransferable && !Nontransferable;
+            if (item == this || item.GetType() != GetType())
+            {
+                return false;
+            }
+
+            if (!item.Stackable || !Stackable)
+            {
+                return false;
+            }
+
+            if (item.Nontransferable || Nontransferable)
+        {
+                return false;
+            }
+
+            if ((!item.StackIgnoreItemID || !StackIgnoreItemID) && item.ItemID != ItemID)
+            {
+                return false;
+            }
+
+            if ((!item.StackIgnoreHue || !StackIgnoreHue) && item.Hue != Hue)
+            {
+                return false;
+            }
+
+            if ((!item.StackIgnoreName || !StackIgnoreName) && item.Name != Name)
+            {
+                return false;
+            }
+
+            if (item.Amount + Amount > 60000)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public virtual bool OnDragDrop(Mobile from, Item dropped)
@@ -2374,7 +2468,7 @@ namespace Server
                     SetFlag(ImplFlag.Visible, value);
                     ReleaseWorldPackets();
 
-                    if (m_Map != null)
+                    if (m_Map != null && m_Map != Map.Internal)
                     {
                         Point3D worldLoc = GetWorldLocation();
 
@@ -2536,7 +2630,8 @@ namespace Server
             HeldBy = 0x00800000,
             IntWeight = 0x01000000,
             SavedFlags = 0x02000000,
-            NullWeight = 0x04000000
+            NullWeight = 0x04000000,
+            Light = 0x08000000
         }
 
         private static void SetSaveFlag(ref SaveFlag flags, SaveFlag toSet, bool setIf)
@@ -2558,19 +2653,22 @@ namespace Server
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write(11); // version
+            writer.Write(13); // version
 
-            //version 11
+			// 13: Merge sync
+            // 12: Light no longer backed by Direction
+
+            // 11
             writer.Write(m_GridLocation);
 
-            //version 10
+            // 10
             writer.Write(m_HonestyPickup);
             writer.Write(m_HonestyTimerTicking);
             writer.Write(m_HonestyOwner);
             writer.Write(m_HonestyRegion);
             writer.Write(m_HonestyItem);
 
-            //version 9
+            // 9
             SaveFlag flags = SaveFlag.None;
 
             int x = m_Location.m_X, y = m_Location.m_Y, z = m_Location.m_Z;
@@ -2603,63 +2701,79 @@ namespace Server
                 }
             }
 
-            CompactInfo info = LookupCompactInfo();
+            var info = LookupCompactInfo();
             var items = LookupItems();
 
             if (m_Direction != Direction.North)
             {
                 flags |= SaveFlag.Direction;
             }
+
+            if (m_Light != 0)
+            {
+                flags |= SaveFlag.Light;
+            }
+
             if (info != null && info.m_Bounce != null)
             {
                 flags |= SaveFlag.Bounce;
             }
+
             if (m_LootType != LootType.Regular)
             {
                 flags |= SaveFlag.LootType;
             }
+
             if (m_ItemID != 0)
             {
                 flags |= SaveFlag.ItemID;
             }
+
             if (m_Hue != 0)
             {
                 flags |= SaveFlag.Hue;
             }
+
             if (m_Amount != 1)
             {
                 flags |= SaveFlag.Amount;
             }
+
             if (m_Layer != Layer.Invalid)
             {
                 flags |= SaveFlag.Layer;
             }
+
             if (info != null && info.m_Name != null)
             {
                 flags |= SaveFlag.Name;
             }
+
             if (m_Parent != null)
             {
                 flags |= SaveFlag.Parent;
             }
+
             if (items != null && items.Count > 0)
             {
                 flags |= SaveFlag.Items;
             }
+
             if (m_Map != Map.Internal)
             {
                 flags |= SaveFlag.Map;
             }
-            //if ( m_InsuredFor != null && !m_InsuredFor.Deleted )
-            //flags |= SaveFlag.InsuredFor;
+
             if (info != null && info.m_BlessedFor != null && !info.m_BlessedFor.Deleted)
             {
                 flags |= SaveFlag.BlessedFor;
             }
+
             if (info != null && info.m_HeldBy != null && !info.m_HeldBy.Deleted)
             {
                 flags |= SaveFlag.HeldBy;
             }
+
             if (info != null && info.m_SavedFlags != 0)
             {
                 flags |= SaveFlag.SavedFlags;
@@ -2669,28 +2783,24 @@ namespace Server
             {
                 flags |= SaveFlag.NullWeight;
             }
-            else
+            else if (info.m_Weight == 0.0)
             {
-                if (info.m_Weight == 0.0)
+                flags |= SaveFlag.WeightIs0;
+            }
+            else if (info.m_Weight != 1.0)
+            {
+                if (info.m_Weight == (int)info.m_Weight)
                 {
-                    flags |= SaveFlag.WeightIs0;
+                    flags |= SaveFlag.IntWeight;
                 }
-                else if (info.m_Weight != 1.0)
+                else
                 {
-                    if (info.m_Weight == (int)info.m_Weight)
-                    {
-                        flags |= SaveFlag.IntWeight;
-                    }
-                    else
-                    {
-                        flags |= SaveFlag.WeightNot1or0;
-                    }
+                    flags |= SaveFlag.WeightNot1or0;
                 }
             }
 
-            ImplFlag implFlags = (m_Flags &
-                                  (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured | ImplFlag.PayedInsurance |
-                                   ImplFlag.QuestItem));
+            var implFlags = (m_Flags & (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured |
+                                        ImplFlag.PayedInsurance | ImplFlag.QuestItem));
 
             if (implFlags != (ImplFlag.Visible | ImplFlag.Movable))
             {
@@ -2740,8 +2850,14 @@ namespace Server
                 writer.Write((byte)m_Direction);
             }
 
+            if (GetSaveFlag(flags, SaveFlag.Light))
+            {
+                writer.Write((byte)m_Light);
+            }
+
             if (GetSaveFlag(flags, SaveFlag.Bounce))
             {
+                // ReSharper disable once PossibleNullReferenceException
                 BounceInfo.Serialize(info.m_Bounce, writer);
             }
 
@@ -2959,7 +3075,13 @@ namespace Server
             {
                 SetTempFlag(m_SecureFlag, value);
                 InvalidateProperties();
+
+                OnSecureChange();
             }
+        }
+
+        public virtual void OnSecureChange()
+        {
         }
 
         public bool GetTempFlag(int flag)
@@ -3032,6 +3154,8 @@ namespace Server
 
             switch (version)
             {
+				case 13:
+                case 12:
                 case 11:
                     m_GridLocation = reader.ReadByte();
                     goto case 10;
@@ -3076,6 +3200,15 @@ namespace Server
                         if (GetSaveFlag(flags, SaveFlag.Direction))
                         {
                             m_Direction = (Direction)reader.ReadByte();
+                        }
+
+                        if (GetSaveFlag(flags, SaveFlag.Light))
+                        {
+                            m_Light = (LightType)reader.ReadByte();
+                        }
+                        else if(version < 12)
+                        {
+                            m_Light = (LightType)m_Direction;
                         }
 
                         if (GetSaveFlag(flags, SaveFlag.Bounce))
@@ -3567,6 +3700,8 @@ namespace Server
             }
 
             VerifyCompactInfo();
+
+            UpdateLight();
         }
 
         private void FixHolding_Sandbox()
@@ -3600,7 +3735,7 @@ namespace Server
 
         public void SendInfoTo(NetState state)
         {
-            SendInfoTo(state, ObjectPropertyList.Enabled);
+            SendInfoTo(state, state.Mobile != null && state.Mobile.ViewOPL);
         }
 
         public virtual void SendInfoTo(NetState state, bool sendOplPacket)
@@ -3807,11 +3942,12 @@ namespace Server
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public object RootParent
         {
             get
             {
-                object p = m_Parent;
+                var p = m_Parent;
 
                 while (p is Item)
                 {
@@ -3833,7 +3969,7 @@ namespace Server
 
         public bool ParentsContain<T>() where T : Item
         {
-            object p = m_Parent;
+            var p = m_Parent;
 
             while (p is Item)
             {
@@ -3933,24 +4069,7 @@ namespace Server
             {
                 SetFlag(ImplFlag.InQueue, true);
 
-                if (_processing)
-                {
-                    try
-                    {
-                        using (StreamWriter op = new StreamWriter("delta-recursion.log", true))
-                        {
-                            op.WriteLine("# {0}", DateTime.UtcNow);
-                            op.WriteLine(new StackTrace());
-                            op.WriteLine();
-                        }
-                    }
-                    catch
-                    { }
-                }
-                else
-                {
-                    m_DeltaQueue.Add(this);
-                }
+                m_DeltaQueue.Add(this);
             }
 
             Core.Set();
@@ -3964,24 +4083,7 @@ namespace Server
             {
                 SetFlag(ImplFlag.InQueue, false);
 
-                if (_processing)
-                {
-                    try
-                    {
-                        using (StreamWriter op = new StreamWriter("delta-recursion.log", true))
-                        {
-                            op.WriteLine("# {0}", DateTime.UtcNow);
-                            op.WriteLine(new StackTrace());
-                            op.WriteLine();
-                        }
-                    }
-                    catch
-                    { }
-                }
-                else
-                {
-                    m_DeltaQueue.Remove(this);
-                }
+                m_DeltaQueue.Remove(this);
             }
         }
 
@@ -4030,7 +4132,7 @@ namespace Server
                                         ns.Send(new ContainerContentUpdate(this));
                                     }
 
-                                    if (ObjectPropertyList.Enabled)
+                                    if (rootParent.ViewOPL)
                                     {
                                         ns.Send(OPLPacket);
                                     }
@@ -4077,7 +4179,7 @@ namespace Server
                                                 ns.Send(new ContainerContentUpdate(this));
                                             }
 
-                                            if (ObjectPropertyList.Enabled)
+                                            if (tradeRecip.ViewOPL)
                                             {
                                                 ns.Send(OPLPacket);
                                             }
@@ -4112,7 +4214,7 @@ namespace Server
 
                                         NetState ns = mob.NetState;
 
-                                        if (ns != null)
+                                        if (ns != null && ns.Seeded)
                                         {
                                             if (mob.CanSee(this))
                                             {
@@ -4125,7 +4227,7 @@ namespace Server
                                                     ns.Send(new ContainerContentUpdate(this));
                                                 }
 
-                                                if (ObjectPropertyList.Enabled)
+                                                if (mob.ViewOPL)
                                                 {
                                                     ns.Send(OPLPacket);
                                                 }
@@ -4159,7 +4261,7 @@ namespace Server
                         {
                             if (m_Parent == null)
                             {
-                                SendInfoTo(state, ObjectPropertyList.Enabled);
+                                SendInfoTo(state);
                             }
                             else
                             {
@@ -4189,7 +4291,7 @@ namespace Server
                                     state.Send(p);
                                 }
 
-                                if (ObjectPropertyList.Enabled)
+                                if (m.ViewOPL)
                                 {
                                     state.Send(OPLPacket);
                                 }
@@ -4230,7 +4332,7 @@ namespace Server
 
                                 state.Send(p);
 
-                                if (ObjectPropertyList.Enabled)
+                                if (m.ViewOPL)
                                 {
                                     state.Send(OPLPacket);
                                 }
@@ -4264,27 +4366,29 @@ namespace Server
             }
         }
 
-        private static bool _processing;
+        private static bool _Processing;
 
         public static void ProcessDeltaQueue()
         {
-            _processing = true;
-
-            if (m_DeltaQueue.Count >= 512)
+            if (_Processing)
             {
-                Parallel.ForEach(m_DeltaQueue, i => i.ProcessDelta());
+                return;
             }
-            else
+
+            _Processing = true;
+
+            var i = m_DeltaQueue.Count;
+
+            while (--i >= 0)
             {
-                for (int i = 0; i < m_DeltaQueue.Count; i++)
+                if (i < m_DeltaQueue.Count)
                 {
                     m_DeltaQueue[i].ProcessDelta();
+                    m_DeltaQueue.RemoveAt(i);
                 }
             }
 
-            m_DeltaQueue.Clear();
-
-            _processing = false;
+            _Processing = false;
         }
 
         public virtual void OnDelete()
@@ -4633,29 +4737,40 @@ namespace Server
         public Serial Serial { get { return m_Serial; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public IEntity ParentEntity
-        {
-            get
-            {
-                IEntity p = Parent as IEntity;
-
-                return p;
-            }
-        }
+        public IEntity ParentEntity { get { return Parent as IEntity; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public IEntity RootParentEntity
-        {
-            get
-            {
-                IEntity p = RootParent as IEntity;
-
-                return p;
-            }
-        }
+        public IEntity RootParentEntity { get { return RootParent as IEntity; } }
 
         #region Location Location Location!
         public virtual void OnLocationChange(Point3D oldLocation)
+        { 
+            var items = Items;
+
+            if (items == null)
+            {
+                return;
+            }
+
+            var i = items.Count;
+
+            while (--i >= 0)
+            {
+                if (i >= items.Count)
+                {
+                    continue;
+                }
+
+                var o = items[i];
+
+                if (o != null)
+                {
+                    o.OnParentLocationChange(oldLocation);
+                }
+            }
+		}
+
+        public virtual void OnParentLocationChange(Point3D oldLocation)
         { }
 
         [CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
@@ -4765,11 +4880,14 @@ namespace Server
                     int oldPileWeight = PileWeight;
 
                     m_ItemID = value;
+                    
                     ReleaseWorldPackets();
 
                     int newPileWeight = PileWeight;
 
                     UpdateTotal(this, TotalType.Weight, newPileWeight - oldPileWeight);
+
+                    UpdateLight();
 
                     InvalidateProperties();
                     Delta(ItemDelta.Update);
@@ -4811,6 +4929,7 @@ namespace Server
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public virtual object Parent
         {
             get { return m_Parent; }
@@ -4821,20 +4940,40 @@ namespace Server
                     return;
                 }
 
-                object oldParent = m_Parent;
+                var oldParent = m_Parent;
 
                 m_Parent = value;
 
-                if (m_Map != null)
+                OnParentChanged(oldParent);
+            }
+        }
+
+        protected virtual void OnParentChanged(object oldParent)
+        {
+            if (m_Map != null)
+            {
+                if (oldParent != null && m_Parent == null)
                 {
-                    if (oldParent != null && m_Parent == null)
-                    {
-                        m_Map.OnEnter(this);
-                    }
-                    else if (m_Parent != null)
-                    {
-                        m_Map.OnLeave(this);
-                    }
+                    m_Map.OnEnter(this);
+                }
+                else if (oldParent == null && m_Parent != null)
+                {
+                    m_Map.OnLeave(this);
+                }
+            }
+
+            if (!World.Loading)
+            {
+                if (oldParent is Item)
+                {
+                    oldParent = ((Item)oldParent).RootParent;
+                }
+
+                var root = RootParent as Mobile;
+
+                if (root != null && oldParent != root)
+                {
+                    root.Obtained(this);
                 }
             }
         }
@@ -4842,12 +4981,12 @@ namespace Server
         [CommandProperty(AccessLevel.Decorator)]
         public LightType Light
         {
-            get { return (LightType)m_Direction; }
+            get { return m_Light; }
             set
             {
-                if ((LightType)m_Direction != value)
+                if (m_Light != value)
                 {
-                    m_Direction = (Direction)value;
+                    m_Light = value;
                     ReleaseWorldPackets();
 
                     Delta(ItemDelta.Update);
@@ -5014,7 +5153,7 @@ namespace Server
                 return false;
             }
 
-            object root = target.RootParent;
+            var root = target.RootParent;
 
             if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(target.GetWorldLocation(), 2))
             {
@@ -5410,7 +5549,7 @@ namespace Server
 
         public Point3D GetWorldLocation()
         {
-            object root = RootParent;
+            var root = RootParent;
 
             if (root == null)
             {
@@ -5428,7 +5567,7 @@ namespace Server
 
         public Point3D GetSurfaceTop()
         {
-            object root = RootParent;
+            var root = RootParentEntity;
 
             if (root == null)
             {
@@ -5436,13 +5575,13 @@ namespace Server
             }
             else
             {
-                return ((IEntity)root).Location;
+                return root.Location;
             }
         }
 
         public Point3D GetWorldTop()
         {
-            object root = RootParent;
+            var root = RootParentEntity;
 
             if (root == null)
             {
@@ -5450,7 +5589,7 @@ namespace Server
             }
             else
             {
-                return ((IEntity)root).Location;
+                return root.Location;
             }
         }
 
@@ -5651,6 +5790,44 @@ namespace Server
             return true;
         }
 
+        public virtual void OnStatsQuery(Mobile m)
+        {
+            if (m == null || m.Deleted || m.Map != Map || m.NetState == null)
+            {
+                return;
+            }
+
+            if (Utility.InUpdateRange(m, this) && m.CanSee(this))
+            {
+                SendStatusTo(m.NetState);
+            }
+        }
+
+        public virtual void SendStatusTo(NetState state)
+        {
+            var p = GetStatusPacketFor(state);
+
+            if (p != null)
+            {
+                state.Send(p);
+            }
+        }
+
+        public virtual Packet GetStatusPacketFor(NetState state)
+        {
+            if (this is IDamageable && state != null && state.Mobile != null && state.HighSeas)
+            {
+                return new MobileStatusCompact(CanBeRenamedBy(state.Mobile), (IDamageable)this);
+            }
+
+            return null;
+        }
+
+        public virtual bool CanBeRenamedBy(Mobile m)
+        {
+            return m != null && m.AccessLevel >= AccessLevel.GameMaster;
+        }
+
         public virtual bool IsAccessibleTo(Mobile check)
         {
             if (m_Parent is Item)
@@ -5661,13 +5838,6 @@ namespace Server
             Region reg = Region.Find(GetWorldLocation(), m_Map);
 
             return reg.CheckAccessibility(this, check);
-
-            /*SecureTradeContainer cont = GetSecureTradeCont();
-
-            if ( cont != null && !cont.IsChildOf( check ) )
-            return false;
-
-            return true;*/
         }
 
         public bool IsChildOf(object o)
@@ -5677,7 +5847,7 @@ namespace Server
 
         public bool IsChildOf(object o, bool allowNull)
         {
-            object p = m_Parent;
+            var p = m_Parent;
 
             if ((p == null || o == null) && !allowNull)
             {
@@ -5871,7 +6041,7 @@ namespace Server
 
             int ourHue = Hue;
             Map thisMap = Map;
-            object thisParent = m_Parent;
+            var thisParent = m_Parent;
             Point3D worldLoc = GetWorldLocation();
             LootType type = LootType;
 
@@ -5984,9 +6154,9 @@ namespace Server
             }
         }
 
-        public virtual bool CheckBlessed(object obj)
+        public virtual bool CheckBlessed(object o)
         {
-            return CheckBlessed(obj as Mobile);
+            return CheckBlessed(o as Mobile);
         }
 
         public virtual bool CheckBlessed(Mobile m)
@@ -6029,12 +6199,14 @@ namespace Server
         public Item()
         {
             m_Serial = Serial.NewItem;
+            m_Map = Map.Internal;
+            
+            m_Light = LightType.Empty;
 
-            //m_Items = new ArrayList( 1 );
+            m_Amount = 1;
+
             Visible = true;
             Movable = true;
-            Amount = 1;
-            m_Map = Map.Internal;
 
             SetLastMoved();
 
@@ -6057,6 +6229,8 @@ namespace Server
             : this()
         {
             m_ItemID = itemID;
+
+            UpdateLight();
         }
 
         public Item(Serial serial)
@@ -6070,6 +6244,26 @@ namespace Server
             {
                 World.m_ItemTypes.Add(ourType);
                 m_TypeRef = World.m_ItemTypes.Count - 1;
+            }
+        }
+
+        public virtual void UpdateLight()
+        {
+            var data = ItemData;
+
+            if (!data.Flags.HasFlag(TileFlag.LightSource))
+            {
+                return;
+            }
+
+            if (m_Light == LightType.Empty)
+            {
+                var light = data.Quality;
+
+                if (light >= 0 && light <= 255)
+                {
+                    m_Light = (LightType)light;
+                }
             }
         }
 

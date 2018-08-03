@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - KeywordList.cs
-// **********
-#endregion
-
 namespace Server
 {
 	public class KeywordList

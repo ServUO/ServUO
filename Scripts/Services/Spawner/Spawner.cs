@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Linq;
 using Server.Commands;
+using Server.ContextMenus;
 using Server.Items;
 using CPA = Server.CommandPropertyAttribute;
 using Server.Gumps;
@@ -956,6 +957,12 @@ namespace Server.Mobiles
                 }
             }
         }
+
+        public virtual void GetSpawnProperties(ISpawnable spawn, ObjectPropertyList list)
+        { }
+
+        public virtual void GetSpawnContextEntries(ISpawnable spawn, Mobile user, List<ContextMenuEntry> list)
+        { }
 
         void ISpawner.Remove(ISpawnable spawn)
         {

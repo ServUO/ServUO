@@ -32,7 +32,7 @@ namespace Server.Items
             set
             {
                 m_IsRewardItem = value;
-                InvalidateAddonPropreties();
+                UpdateProperties();
             }
         }
 
@@ -46,7 +46,7 @@ namespace Server.Items
             set
             {
                 m_ResourceCount = value;
-                InvalidateAddonPropreties();
+                UpdateProperties();
             }
         }
 
@@ -221,7 +221,7 @@ namespace Server.Items
                 ResourceCount = Math.Min(10, m_ResourceCount + 1);
                 NextResourceCount = DateTime.UtcNow + TimeSpan.FromDays(7);
 
-                InvalidateAddonPropreties();
+                UpdateProperties();
             }
         }
 

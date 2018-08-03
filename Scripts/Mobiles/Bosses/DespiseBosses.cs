@@ -32,10 +32,12 @@ namespace Server.Engines.Despise
             AddItem(item);
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
 		{
             if (from is DespiseCreature)
-                base.Damage(amount, from, informMount, checkDisrupt);
+                return base.Damage(amount, from, informMount, checkDisrupt);
+
+			return 0;
 		}
 		
 		public override void OnKilledBy( Mobile mob )
@@ -128,6 +130,7 @@ namespace Server.Engines.Despise
         }
 
         public static Type[] Artifacts { get { return m_Artifacts; } }
+
 		private static Type[] m_Artifacts = new Type[]
 		{
 			typeof(CompassionsEye),

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - QuestArrow.cs
-// **********
-#endregion
-
 #region References
 using Server.Network;
 #endregion

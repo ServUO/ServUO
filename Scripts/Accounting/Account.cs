@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Account.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -165,7 +159,6 @@ namespace Server.Accounting
 			e.Mobile.SendMessage("Operation complete: {0:#,0} of {1:#,0} Gold has been converted in total.", converted, found);
 		}
 
-		private readonly DateTime m_Created;
 		private readonly Mobile[] m_Mobiles;
 
 		private AccessLevel m_AccessLevel;
@@ -182,7 +175,7 @@ namespace Server.Accounting
 
 			m_AccessLevel = AccessLevel.Player;
 
-			m_Created = LastLogin = DateTime.UtcNow;
+			Created = LastLogin = DateTime.UtcNow;
 			m_TotalGameTime = TimeSpan.Zero;
 
 			m_Mobiles = new Mobile[7];
@@ -258,7 +251,7 @@ namespace Server.Accounting
                 {
                     if (SHA1Password != null)
                     {
-                    _SHA1Password = SHA1Password;
+                    	_SHA1Password = SHA1Password;
                     }
                     else if (plainPassword != null)
                     {
@@ -309,7 +302,7 @@ namespace Server.Accounting
 			Enum.TryParse(Utility.GetText(node["accessLevel"], "Player"), true, out m_AccessLevel);
 
 			Flags = Utility.GetXMLInt32(Utility.GetText(node["flags"], "0"), 0);
-			m_Created = Utility.GetXMLDateTime(Utility.GetText(node["created"], null), DateTime.UtcNow);
+			Created = Utility.GetXMLDateTime(Utility.GetText(node["created"], null), DateTime.UtcNow);
 			LastLogin = Utility.GetXMLDateTime(Utility.GetText(node["lastLogin"], null), DateTime.UtcNow);
 
 			TotalCurrency = Utility.GetXMLDouble(Utility.GetText(node["totalCurrency"], "0"), 0);
@@ -495,8 +488,11 @@ namespace Server.Accounting
 		/// <summary>
 		///     The date and time of when this account was created.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public DateTime Created { get; set; }
+
 		[CommandProperty(AccessLevel.Administrator)]
-		public DateTime Created { get { return m_Created; } }
+		public TimeSpan Age { get { return DateTime.UtcNow - Created; } }
 
 		/// <summary>
 		///     Gets or sets the date and time when this account was last accessed.
@@ -661,6 +657,8 @@ namespace Server.Accounting
 					h.Delete();
 				}
 
+				ColUtility.Free(list);
+
 				m.Delete();
 
 				m.Account = null;
@@ -813,6 +811,7 @@ namespace Server.Accounting
 
 			return BitConverter.ToString(hashed);
 		}
+
         public static string HashSHA512(string phrase)
         {
             if (m_SHA512HashProvider == null)
@@ -1369,7 +1368,7 @@ namespace Server.Accounting
 			}
 
 			xml.WriteStartElement("created");
-			xml.WriteString(XmlConvert.ToString(m_Created, XmlDateTimeSerializationMode.Utc));
+			xml.WriteString(XmlConvert.ToString(Created, XmlDateTimeSerializationMode.Utc));
 			xml.WriteEndElement();
 
 			xml.WriteStartElement("lastLogin");
@@ -1813,6 +1812,27 @@ namespace Server.Accounting
 			GetPlatBalance(out plat, out totalPlat);
 		}
 
+		public bool HasGoldBalance(double amount)
+		{
+			long gold;
+			double totalGold;
+
+			GetGoldBalance(out gold, out totalGold);
+
+			return amount <= totalGold;
+		}
+
+		public bool HasPlatBalance(double amount)
+		{
+			long plat;
+			double totalPlat;
+
+			GetPlatBalance(out plat, out totalPlat);
+
+			return amount <= totalPlat;
+		}
+		#endregion
+
         #region Secure Account
         public Dictionary<Mobile, int> SecureAccounts;
 
@@ -1820,7 +1840,7 @@ namespace Server.Accounting
 
         public int GetSecureAccountAmount(Mobile m)
         {
-            for(int i = 0; i < this.Length; i++)
+            for(int i = 0; i < Length; i++)
             {
                 Mobile mob = m_Mobiles[i];
 
@@ -1839,7 +1859,7 @@ namespace Server.Accounting
 
         public bool DepositToSecure(Mobile m, int amount)
         {
-            for (int i = 0; i < this.Length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 Mobile mob = m_Mobiles[i];
 
@@ -1865,7 +1885,7 @@ namespace Server.Accounting
 
         public bool WithdrawFromSecure(Mobile m, int amount)
         {
-            for (int i = 0; i < this.Length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 Mobile mob = m_Mobiles[i];
 
@@ -1885,7 +1905,6 @@ namespace Server.Accounting
 
             return false;
         }
-        #endregion
         #endregion
 
         #region Sovereigns

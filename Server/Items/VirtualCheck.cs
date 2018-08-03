@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - VirtualCheck.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Drawing;

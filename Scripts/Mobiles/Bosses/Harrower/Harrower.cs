@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Engines.CannedEvil;
+using Server.Services.Virtues;
 
 namespace Server.Mobiles
 {

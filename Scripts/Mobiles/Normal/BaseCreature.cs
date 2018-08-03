@@ -1,12 +1,7 @@
-#region Header
-// **********
-// ServUO - BaseCreature.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Server.ContextMenus;
@@ -14,6 +9,7 @@ using Server.Engines.PartySystem;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Doom;
 using Server.Engines.Quests.Haven;
+using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
 using Server.Ethics;
 using Server.Factions;
@@ -21,23 +17,21 @@ using Server.Items;
 using Server.Misc;
 using Server.Multis;
 using Server.Network;
+using Server.Prompts;
 using Server.Regions;
+using Server.Services.Virtues;
 using Server.SkillHandlers;
 using Server.Spells;
 using Server.Spells.Bushido;
 using Server.Spells.Necromancy;
 using Server.Spells.Sixth;
+using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
-using System.Linq;
-using Server.Spells.SkillMasteries;
-using Server.Prompts;
-using Server.Engines.VvV;
 #endregion
 
 namespace Server.Mobiles
 {
-
     #region Enums
     /// <summary>
     ///     Summary description for MobileAI.
@@ -198,6 +192,39 @@ namespace Server.Mobiles
     public class BaseCreature : Mobile, IHonorTarget, IEngravable
     {
         public const int MaxLoyalty = 100;
+
+        private bool _LockDirection;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool LockDirection
+        {
+            get
+            {
+                if (AIObject == null)
+                {
+                    return _LockDirection;
+                }
+
+                return AIObject.DirectionLocked = _LockDirection;
+            }
+            set
+            {
+                _LockDirection = value;
+
+                if (AIObject != null)
+                {
+                    AIObject.DirectionLocked = value;
+                }
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool CanMove { get; set; }
+
+        public virtual bool CanCallGuards
+        {
+            get { return !Deleted && Alive && !AlwaysMurderer && Kills < 5 && (Player || Body.IsHuman); }
+        }
 
         #region Var declarations
         private BaseAI m_AI; // THE AI
@@ -932,12 +959,20 @@ namespace Server.Mobiles
             get { return m_IsChampionSpawn; }
             set
             {
-                if (!m_IsChampionSpawn && value)
-                    SetToChampionSpawn();
+				if (m_IsChampionSpawn != value)
+				{
+	                if (!m_IsChampionSpawn && value)
+	                    SetToChampionSpawn();
+	
+	                m_IsChampionSpawn = value;
 
-                m_IsChampionSpawn = value;
+                    OnChampionSpawnChange();
+				}
             }
         }
+
+        protected virtual void OnChampionSpawnChange()
+        { }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile InitialFocus
@@ -1287,6 +1322,7 @@ namespace Server.Mobiles
             List<Mobile> list = new List<Mobile>();
 
             IPooledEnumerable eable = GetMobilesInRange(2);
+
             foreach (Mobile m in eable)
             {
                 if (m == this || !CanBeHarmful(m))
@@ -1684,6 +1720,7 @@ namespace Server.Mobiles
                     {
                         return (c.GetMaster().Karma < 0);
                     }
+
                     return (m.Karma < 0);
                 }
 
@@ -1694,6 +1731,7 @@ namespace Server.Mobiles
                     {
                         return (c.GetMaster().Karma > 0);
                     }
+
                     return (m.Karma > 0);
                 }
 
@@ -1745,13 +1783,7 @@ namespace Server.Mobiles
 			{
 				return true;
 			}
-/*
-			// Creatures attacking me are my enemies
-			if (c.Combatant == this)
-			{
-				return true;
-			}
-*/
+
 			// If I'm summoned/controlled and they aren't summoned/controlled, they are my enemy
 			// If I'm not summoned/controlled and they are summoned/controlled, they are my enemy
             // Summoned creatures must have masters to count as summoned here
@@ -1948,24 +1980,24 @@ namespace Server.Mobiles
             }
         }
 
-        public override void Damage(int amount, Mobile from)
+        public override int Damage(int amount, Mobile from)
         {
-            Damage(amount, from, false, false);
+            return Damage(amount, from, false, false);
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount)
+        public override int Damage(int amount, Mobile from, bool informMount)
         {
-            Damage(amount, from, informMount, false);
+            return Damage(amount, from, informMount, false);
         }
 
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
             int oldHits = Hits;
 
             if (Core.AOS && Controlled && from is BaseCreature && !((BaseCreature)from).Controlled && !((BaseCreature)from).Summoned)
                 amount = (int)(amount * ((BaseCreature)from).BonusPetDamageScalar);
 
-            base.Damage(amount, from, informMount, checkDisrupt);
+            amount = base.Damage(amount, from, informMount, checkDisrupt);
 
             if (SubdueBeforeTame && !Controlled)
             {
@@ -1974,6 +2006,8 @@ namespace Server.Mobiles
                     PublicOverheadMessage(MessageType.Regular, 0x3B2, false, "* The creature has been beaten into subjugation! *");
                 }
             }
+
+            return amount;
         }
 
         public virtual bool DeleteCorpseOnDeath { get { return !Core.AOS && m_bSummoned; } }
@@ -2651,6 +2685,13 @@ namespace Server.Mobiles
         public BaseCreature(
             AIType ai, FightMode mode, int iRangePerception, int iRangeFight, double dActiveSpeed, double dPassiveSpeed)
         {
+            PhysicalDamage = 100;
+
+            CanMove = true;
+
+            ApproachWait = false;
+            ApproachRange = 10;
+
             if (iRangePerception == OldRangePerception)
             {
                 iRangePerception = DefaultRangePerception;
@@ -2706,7 +2747,7 @@ namespace Server.Mobiles
 
             InitializeAbilities();
 
-            Timer.DelayCall(() =>GenerateLoot(true));
+            Timer.DelayCall(GenerateLoot, true);
         }
 
         public BaseCreature(Serial serial)
@@ -2722,7 +2763,12 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(25); // version
+            writer.Write(26); // version
+
+            writer.Write(CanMove);
+            writer.Write(_LockDirection);
+            writer.Write(ApproachWait);
+            writer.Write(ApproachRange);
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
@@ -2746,12 +2792,14 @@ namespace Server.Mobiles
             int i = 0;
 
             writer.Write(m_arSpellAttack.Count);
+
             for (i = 0; i < m_arSpellAttack.Count; i++)
             {
                 writer.Write(m_arSpellAttack[i].ToString());
             }
 
             writer.Write(m_arSpellDefense.Count);
+
             for (i = 0; i < m_arSpellDefense.Count; i++)
             {
                 writer.Write(m_arSpellDefense[i].ToString());
@@ -2766,8 +2814,7 @@ namespace Server.Mobiles
             writer.Write(m_ControlDest);
             writer.Write((int)m_ControlOrder);
             writer.Write(m_dMinTameSkill);
-            // Removed in version 9
-            //writer.Write( (double) m_dMaxTameSkill );
+
             writer.Write(m_bTamable);
             writer.Write(m_bSummoned);
 
@@ -2895,6 +2942,19 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 26:
+                {
+                    CanMove = reader.ReadBool();
+                    _LockDirection = reader.ReadBool();
+
+                    ApproachWait = reader.ReadBool();
+                    ApproachRange = reader.ReadInt();
+                }
+                    break;
+            }
 
             m_CurrentAI = (AIType)reader.ReadInt();
             m_DefaultAI = (AIType)reader.ReadInt();
@@ -3158,6 +3218,14 @@ namespace Server.Mobiles
             if (version <= 20)
             {
                 reader.ReadInt();
+            }
+
+            if (version < 26)
+            {
+                CanMove = true;
+
+                ApproachWait = false;
+                ApproachRange = 10;
             }
 
             if (version >= 22)
@@ -4027,9 +4095,10 @@ namespace Server.Mobiles
                 if (PetTrainingHelper.Enabled && ControlSlotsMin == 0 && ControlSlotsMax == 0)
                 {
                     m_iControlSlots = value;
+
                     CalculateSlots(value);
 
-                    if (m_iControlSlots != ControlSlotsMin)
+                    if (m_iControlSlots < ControlSlotsMin)
                     {
                         m_iControlSlots = ControlSlotsMin;
                     }
@@ -4316,6 +4385,7 @@ namespace Server.Mobiles
             int iCount = 0;
 
             IPooledEnumerable eable = GetMobilesInRange(iRange);
+
             foreach (Mobile m in eable)
             {
                 if (m is BaseCreature)
@@ -4993,11 +5063,10 @@ namespace Server.Mobiles
                             break;
                     }
                 }
-
-
             }
 
             PlaySound(GetIdleSound());
+
             return true; // entered idle state
         }
 
@@ -5378,6 +5447,7 @@ namespace Server.Mobiles
         public void SetResistance(ResistanceType type, int min, int max)
         {
             int val = min == max ? min : Utility.RandomMinMax(min, max);
+
             SetAverage(min, max, val);
 
             switch (type)
@@ -6071,7 +6141,7 @@ namespace Server.Mobiles
                     {
                         XmlParagon.AddChest(this, treasureLevel);
                     }
-                    else if (/*(Map == Map.Felucca || Map == Map.Trammel) &&*/TreasureMapChance >= Utility.RandomDouble())
+                    else if (TreasureMapChance >= Utility.RandomDouble())
                     {
                         Map map = Map;
 
@@ -6492,6 +6562,8 @@ namespace Server.Mobiles
             }
             else
             {
+                LootingRights = null;
+
                 if (!Summoned && !m_NoKillAwards)
                 {
                     int totalFame = Fame / 100;
@@ -6568,7 +6640,6 @@ namespace Server.Mobiles
                                 fame.Add(totalFame);
                                 karma.Add(totalKarma);
                             }
-
                         }
 
                         if (HumilityVirtue.IsInHunt(ds.m_Mobile) && Karma < 0)
@@ -6668,8 +6739,15 @@ namespace Server.Mobiles
 
         public virtual TimeSpan ReacquireDelay { get { return TimeSpan.FromSeconds(10.0); } }
         public virtual bool ReacquireOnMovement { get { return false; } }
-        public virtual bool AcquireOnApproach { get { return m_Paragon; } }
-        public virtual int AcquireOnApproachRange { get { return 10; } }
+
+        public virtual bool AcquireOnApproach { get { return m_Paragon || ApproachWait; } }
+        public virtual int AcquireOnApproachRange { get { return ApproachRange; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ApproachWait { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ApproachRange { get; set; }
 
         public override void OnDelete()
         {
@@ -7395,6 +7473,7 @@ namespace Server.Mobiles
         public virtual bool DoPeace()
         {
             Mobile target = GetBardTarget();
+
             if (target == null || !target.InLOS(this) || !InRange(target.Location, BaseInstrument.GetBardRange(this, SkillName.Peacemaking)) || CheckInstrument() == null)
                 return false;
 
@@ -7630,6 +7709,7 @@ namespace Server.Mobiles
             }
 
             eable.Free();
+
             Mobile mob = null;
 
             if (list.Count > 0)
@@ -7970,6 +8050,7 @@ namespace Server.Mobiles
             var move = new List<Mobile>();
 
             IPooledEnumerable eable = master.GetMobilesInRange(3);
+
             foreach (Mobile m in eable)
             {
                 if (m is BaseCreature)

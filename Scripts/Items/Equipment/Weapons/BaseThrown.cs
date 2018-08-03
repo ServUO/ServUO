@@ -8,6 +8,7 @@ namespace Server.Items
         private Mobile m_Thrower;
         private Mobile m_Target;
         private Point3D m_KillSave;
+
         public BaseThrown(int itemID)
             : base(itemID)
         {
@@ -33,6 +34,7 @@ namespace Server.Items
                 int baseRange = MaxThrowRange;
 
                 var attacker = Parent as Mobile;
+
                 if (attacker != null)
                 {
                     /*
@@ -54,6 +56,7 @@ namespace Server.Items
                 }
             }
         }
+
         public override int EffectID
         {
             get
@@ -61,6 +64,7 @@ namespace Server.Items
                 return ItemID;
             }
         }
+
         public override Type AmmoType
         {
             get
@@ -68,6 +72,7 @@ namespace Server.Items
                 return null;
             }
         }
+
         public override Item Ammo
         {
             get
@@ -75,6 +80,7 @@ namespace Server.Items
                 return null;
             }
         }
+
         public override int DefHitSound
         {
             get
@@ -82,6 +88,7 @@ namespace Server.Items
                 return 0x5D3;
             }
         }
+
         public override int DefMissSound
         {
             get
@@ -89,6 +96,7 @@ namespace Server.Items
                 return 0x5D4;
             }
         }
+
         public override SkillName DefSkill
         {
             get
@@ -96,7 +104,7 @@ namespace Server.Items
                 return SkillName.Throwing;
             }
         }
-        //public override WeaponType DefType{ get{ return WeaponType.Ranged; } }
+
         public override WeaponAnimation DefAnimation
         {
             get
@@ -104,6 +112,7 @@ namespace Server.Items
                 return WeaponAnimation.Throwing;
             }
         }
+
         public override SkillName AccuracySkill
         {
             get
@@ -111,6 +120,7 @@ namespace Server.Items
                 return SkillName.Throwing;
             }
         }
+
         public override TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
         {
             TimeSpan ts = base.OnSwing(attacker, damageable);
@@ -165,12 +175,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
 
             if (version == 0)

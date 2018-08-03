@@ -9,6 +9,7 @@ namespace Server.Gumps
         private readonly WarningGumpCallback m_Callback;
         private readonly object m_State;
         private readonly bool m_CancelButton;
+
         public WarningGump(TextDefinition header, int headerColor, TextDefinition content, int contentColor, int width, int height, WarningGumpCallback callback, object state)
             : this(header, headerColor, content, contentColor, width, height, callback, state, true)
         {

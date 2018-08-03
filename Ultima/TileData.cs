@@ -633,7 +633,7 @@ namespace Ultima
 	///     <seealso cref="LandData" />
 	/// </summary>
 	[Flags]
-	public enum TileFlag
+	public enum TileFlag : ulong
 	{
 		/// <summary>
 		///     Nothing is flagged.
@@ -798,7 +798,7 @@ namespace Ultima
 		/// <summary>
 		///     Not yet documented.
 		/// </summary>
-		StairRight = unchecked((int)0x80000000)
+		StairRight = 0x80000000
 	}
 
 	/// <summary>
@@ -806,7 +806,7 @@ namespace Ultima
 	///     <seealso cref="LandData" />
 	///     <seealso cref="ItemData" />
 	/// </summary>
-	public sealed class TileData
+	public static class TileData
 	{
 		private static LandData[] m_LandData;
 		private static ItemData[] m_ItemData;
@@ -850,9 +850,6 @@ namespace Ultima
 
 			return Encoding.Default.GetString(m_StringBuffer, 0, count);
 		}
-
-		private TileData()
-		{ }
 
 		private static int[] landheader;
 		private static int[] itemheader;

@@ -1,10 +1,6 @@
-#region Header
-// **********
-// ServUO - ContextMenuEntry.cs
-// **********
-#endregion
-
 #region References
+using System;
+
 using Server.Network;
 #endregion
 
@@ -14,8 +10,10 @@ namespace Server.ContextMenus
 	///     Represents a single entry of a <see cref="ContextMenu">context menu</see>.
 	///     <seealso cref="ContextMenu" />
 	/// </summary>
-	public class ContextMenuEntry
+	public class ContextMenuEntry : IDisposable
 	{
+		public bool IsDisposed { get; private set; }
+
 		/// <summary>
 		///     Gets or sets additional <see cref="CMEFlags">flags</see> used in client communication.
 		/// </summary>
@@ -95,10 +93,43 @@ namespace Server.ContextMenus
 			Color = 0xFFFF;
 		}
 
+		~ContextMenuEntry()
+		{
+			Dispose();
+		}
+
 		/// <summary>
 		///     Overridable. Virtual event invoked when the entry is clicked.
 		/// </summary>
 		public virtual void OnClick()
+		{ }
+
+		public void Dispose()
+		{
+			if (IsDisposed)
+			{
+				return;
+			}
+
+			IsDisposed = true;
+
+			OnDispose();
+
+			if (Owner != null && Owner.Entries != null)
+			{
+				for (var i = 0; i < Owner.Entries.Length; i++)
+				{
+					if (Owner.Entries[i] == this)
+					{
+						Owner.Entries[i] = null;
+					}
+				}
+			}
+
+			Owner = null;
+		}
+
+		protected virtual void OnDispose()
 		{ }
 	}
 }

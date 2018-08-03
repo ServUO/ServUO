@@ -20,6 +20,7 @@ namespace Server.Regions
         private static readonly List<Rectangle3D> m_RectBuffer2 = new List<Rectangle3D>();
         private static readonly List<Int32> m_SpawnBuffer1 = new List<Int32>();
         private static readonly List<Item> m_SpawnBuffer2 = new List<Item>();
+
         private string m_RuneName;
         private bool m_NoLogoutDelay;
         private SpawnEntry[] m_Spawns;
@@ -28,6 +29,7 @@ namespace Server.Regions
         private Rectangle3D[] m_Rectangles;
         private int[] m_RectangleWeights;
         private int m_TotalWeight;
+
         public BaseRegion(string name, Map map, int priority, params Rectangle2D[] area)
             : base(name, map, priority, area)
         {
@@ -114,6 +116,7 @@ namespace Server.Regions
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public virtual bool YoungProtected
         {
             get
@@ -121,6 +124,8 @@ namespace Server.Regions
                 return true;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public string RuneName
         {
             get
@@ -132,6 +137,8 @@ namespace Server.Regions
                 this.m_RuneName = value;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool NoLogoutDelay
         {
             get
@@ -143,6 +150,8 @@ namespace Server.Regions
                 this.m_NoLogoutDelay = value;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public SpawnEntry[] Spawns
         {
             get
@@ -160,6 +169,8 @@ namespace Server.Regions
                 this.m_Spawns = value;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public SpawnZLevel SpawnZLevel
         {
             get
@@ -171,6 +182,8 @@ namespace Server.Regions
                 this.m_SpawnZLevel = value;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool ExcludeFromParentSpawns
         {
             get
@@ -182,6 +195,7 @@ namespace Server.Regions
                 this.m_ExcludeFromParentSpawns = value;
             }
         }
+
         public static void Configure()
         {
             Region.DefaultRegionType = typeof(BaseRegion);

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - OrcScout.cs
-// **********
-#endregion
-
 #region References
 using Server.Items;
 using Server.Misc;

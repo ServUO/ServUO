@@ -2,6 +2,8 @@ using System;
 using Server;
 using Server.Mobiles;
 using System.Collections.Generic;
+
+using Server.ContextMenus;
 using Server.Items;
 
 namespace Server.Engines.TreasuresOfKotlCity
@@ -93,6 +95,12 @@ namespace Server.Engines.TreasuresOfKotlCity
                 Timer = null;
             }
         }
+
+        public virtual void GetSpawnProperties(ISpawnable spawn, ObjectPropertyList list)
+        { }
+
+        public virtual void GetSpawnContextEntries(ISpawnable spawn, Mobile user, List<ContextMenuEntry> list)
+        { }
 
         public void Remove(ISpawnable spawn)
         {
@@ -186,15 +194,18 @@ namespace Server.Engines.TreasuresOfKotlCity
             if (bc != null)
             {
                 bc.Spawner = this;
+
+                bc.Home = HomeLocation;
+                bc.RangeHome = HomeRange;
+
+				bc.OnBeforeSpawn(loc, Map.TerMur);
                 bc.MoveToWorld(loc, Map.TerMur);
+				bc.OnAfterSpawn();
 
                 if (Spawn == null)
                     Spawn = new List<ISpawnable>();
 
                 Spawn.Add(bc);
-
-                bc.Home = HomeLocation;
-                bc.RangeHome = HomeRange;
             }
         }
 

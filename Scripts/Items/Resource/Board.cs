@@ -14,7 +14,7 @@ namespace Server.Items
 			set { m_Resource = value; InvalidateProperties(); }
 		}
 
-		int ICommodity.DescriptionNumber 
+		TextDefinition ICommodity.Description 
 		{ 
 			get
 			{

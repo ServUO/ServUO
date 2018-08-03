@@ -15,6 +15,7 @@ namespace Server.Mobiles
     public class PlatinumDrake : BaseCreature
     {
         private DrakeType m_Type;
+
         public DrakeType DrakeType { get { return m_Type; } }
 
         [Constructable]

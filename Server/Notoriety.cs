@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Notoriety.cs
-// **********
-#endregion
-
 namespace Server
 {
 	public delegate int NotorietyHandler(Mobile source, IDamageable target);
@@ -18,11 +12,9 @@ namespace Server
 		public const int Murderer = 6;
 		public const int Invulnerable = 7;
 
-		private static NotorietyHandler m_Handler;
+		public static NotorietyHandler Handler { get; set; }
 
-		public static NotorietyHandler Handler { get { return m_Handler; } set { m_Handler = value; } }
-
-		private static int[] m_Hues = new[] {0x000, 0x059, 0x03F, 0x3B2, 0x3B2, 0x090, 0x022, 0x035};
+		private static int[] m_Hues = {0x000, 0x059, 0x03F, 0x3B2, 0x3B2, 0x090, 0x022, 0x035};
 
 		public static int[] Hues { get { return m_Hues; } set { m_Hues = value; } }
 
@@ -36,9 +28,9 @@ namespace Server
 			return m_Hues[noto];
 		}
 
-        public static int Compute(Mobile source, IDamageable target)
+		public static int Compute(Mobile source, IDamageable target)
 		{
-			return m_Handler == null ? CanBeAttacked : m_Handler(source, target);
+			return Handler == null ? CanBeAttacked : Handler(source, target);
 		}
 	}
 }

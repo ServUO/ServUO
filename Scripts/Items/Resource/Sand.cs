@@ -32,7 +32,7 @@ namespace Server.Items
                 return 1044626;
             }
         }// sand
-        int ICommodity.DescriptionNumber
+        TextDefinition ICommodity.Description
         {
             get
             {

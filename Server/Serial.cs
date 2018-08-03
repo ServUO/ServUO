@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Serial.cs
-// **********
-#endregion
-
 #region References
 using System;
 #endregion

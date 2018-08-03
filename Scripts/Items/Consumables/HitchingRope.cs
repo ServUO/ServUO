@@ -88,6 +88,7 @@ namespace Server.Items
                     {
                         postItem.Charges -= 1;
                         postItem.UsesRemaining += postItem.Replica ? 15 : 30;
+
                         m_Rope.Delete();
 
                         if (postItem is Item)

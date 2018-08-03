@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Utility.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -801,55 +795,6 @@ namespace Server
 			}
 		}
 
-		/* Should probably be rewritten to use an ITile interface
-
-        public static bool CanMobileFit( int z, StaticTile[] tiles )
-        {
-        int checkHeight = 15;
-        int checkZ = z;
-
-        for ( int i = 0; i < tiles.Length; ++i )
-        {
-        StaticTile tile = tiles[i];
-
-        if ( ((checkZ + checkHeight) > tile.Z && checkZ < (tile.Z + tile.Height))*/
-		/* || (tile.Z < (checkZ + checkHeight) && (tile.Z + tile.Height) > checkZ)*/ /* )
-        {
-        return false;
-        }
-        else if ( checkHeight == 0 && tile.Height == 0 && checkZ == tile.Z )
-        {
-        return false;
-        }
-        }
-
-        return true;
-        }
-
-        public static bool IsInContact( StaticTile check, StaticTile[] tiles )
-        {
-        int checkHeight = check.Height;
-        int checkZ = check.Z;
-
-        for ( int i = 0; i < tiles.Length; ++i )
-        {
-        StaticTile tile = tiles[i];
-
-        if ( ((checkZ + checkHeight) > tile.Z && checkZ < (tile.Z + tile.Height))*/
-		/* || (tile.Z < (checkZ + checkHeight) && (tile.Z + tile.Height) > checkZ)*/ /* )
-        {
-        return true;
-        }
-        else if ( checkHeight == 0 && tile.Height == 0 && checkZ == tile.Z )
-        {
-        return true;
-        }
-        }
-
-        return false;
-        }
-        */
-
 		public static object GetArrayCap(Array array, int index)
 		{
 			return GetArrayCap(array, index, null);
@@ -928,7 +873,7 @@ namespace Server
 		{
 			if (min > max)
 			{
-				double copy = min;
+				var copy = min;
 				min = max;
 				max = copy;
 			}

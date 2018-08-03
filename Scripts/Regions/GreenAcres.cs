@@ -18,8 +18,8 @@ namespace Server.Regions
         {
             if (from.IsPlayer())
                 return false;
-            else
-                return base.AllowHousing(from, p);
+            
+            return base.AllowHousing(from, p);
         }
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
@@ -29,10 +29,8 @@ namespace Server.Regions
                 m.SendMessage("You cannot cast that spell here.");
                 return false;
             }
-            else
-            {
-                return base.OnBeginSpellCast(m, s);
-            }
+
+            return base.OnBeginSpellCast(m, s);
         }
     }
 }

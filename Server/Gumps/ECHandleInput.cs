@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - ECHandleInput.cs
-// **********
-#endregion
-
 using System;
 using Server.Network;
 

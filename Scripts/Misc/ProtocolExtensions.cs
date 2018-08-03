@@ -71,7 +71,7 @@ namespace Server.Misc
             {
                 if (ph.Ingame && state.Mobile == null)
                 {
-                    Utility.PushColor(ConsoleColor.DarkRed);
+                    Utility.PushColor(ConsoleColor.Red);
                     Console.WriteLine("Client: {0}: Sent ingame packet (0xF0x{1:X2}) before having been attached to a mobile", state, packetID);
                     Utility.PopColor();
                     state.Dispose();

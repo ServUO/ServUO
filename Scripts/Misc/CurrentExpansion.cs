@@ -1,14 +1,9 @@
-#region Header
-// **********
-// ServUO - CurrentExpansion.cs
-// **********
-#endregion
-
 #region References
 using System;
 
 using Server.Accounting;
 using Server.Network;
+using Server.Services.TownCryer;
 #endregion
 
 namespace Server
@@ -26,7 +21,8 @@ namespace Server
 			AccountGold.ConvertOnBank = true;
 			AccountGold.ConvertOnTrade = false;
 			VirtualCheck.UseEditGump = true;
-            Server.Services.TownCryer.TownCryerSystem.Enabled = Core.TOL;
+            
+			TownCryerSystem.Enabled = Core.TOL;
 
 			ObjectPropertyList.Enabled = Core.AOS;
 

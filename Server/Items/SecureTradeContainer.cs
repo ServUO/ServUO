@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - SecureTradeContainer.cs
-// **********
-#endregion
-
 #region References
 using Server.Accounting;
 using Server.Network;

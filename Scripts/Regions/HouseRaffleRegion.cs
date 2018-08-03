@@ -9,21 +9,25 @@ namespace Server.Regions
     public class HouseRaffleRegion : BaseRegion
     {
         private readonly HouseRaffleStone m_Stone;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public HouseRaffleStone Stone { get { return m_Stone; } }
+
         public HouseRaffleRegion(HouseRaffleStone stone)
             : base(null, stone.PlotFacet, Region.DefaultPriority, stone.PlotBounds)
         {
-            this.m_Stone = stone;
+            m_Stone = stone;
         }
 
         public override bool AllowHousing(Mobile from, Point3D p)
         {
-            if (this.m_Stone == null)
+            if (Stone == null)
                 return false;
 
-            if (this.m_Stone.IsExpired)
+            if (Stone.IsExpired)
                 return true;
 
-            if (this.m_Stone.Deed == null)
+            if (Stone.Deed == null)
                 return false;
 
             Container pack = from.Backpack;
@@ -56,7 +60,7 @@ namespace Server.Regions
 
             for (int i = 0; i < deeds.Count; ++i)
             {
-                if (deeds[i] == this.m_Stone.Deed)
+                if (deeds[i] == Stone.Deed)
                     return true;
             }
 

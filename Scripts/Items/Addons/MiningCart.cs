@@ -69,7 +69,7 @@ namespace Server.Items
             set
             {
                 m_Gems = value;
-                InvalidateAddonPropreties();
+                UpdateProperties();
             }
         }
 
@@ -85,7 +85,7 @@ namespace Server.Items
             set
             {
                 m_Ore = value;
-                InvalidateAddonPropreties();
+                UpdateProperties();
             }
         }
 

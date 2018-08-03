@@ -632,9 +632,9 @@ namespace Server.Items
                 SetInstrument(from, this);
 
                 Timer.DelayCall(TimeSpan.FromMilliseconds(1000), () =>
-                    {
-                        from.EndAction(typeof(BaseInstrument));
-                    });
+                {
+                    from.EndAction(typeof(BaseInstrument));
+                });
 
                 if (CheckMusicianship(from))
                     PlayInstrumentWell(from);

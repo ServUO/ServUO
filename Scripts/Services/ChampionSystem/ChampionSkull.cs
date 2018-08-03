@@ -6,6 +6,7 @@ namespace Server.Items
     public class ChampionSkull : Item
     {
         private ChampionSkullType m_Type;
+		
         [Constructable]
         public ChampionSkull(ChampionSkullType type)
             : base(0x1AE1)
@@ -58,7 +59,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)0); // version
 
             writer.Write((int)this.m_Type);
         }
@@ -69,25 +70,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch (version)
-            {
-                case 1:
-                case 0:
-                    {
-                        this.m_Type = (ChampionSkullType)reader.ReadInt();
-
-                        break;
-                    }
-            }
-
-            if (version == 0)
-            {
-                if (this.LootType != LootType.Cursed)
-                    this.LootType = LootType.Cursed;
-
-                if (this.Insured)
-                    this.Insured = false;
-            }
+            m_Type = (ChampionSkullType)reader.ReadInt();
         }
     }
 }

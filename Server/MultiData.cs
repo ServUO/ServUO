@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - MultiData.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.IO;
@@ -15,8 +9,6 @@ namespace Server
 	{
 		private static readonly MultiComponentList[] m_Components;
 
-		private static readonly FileStream m_Index;
-		private static readonly FileStream m_Stream;
 		private static readonly BinaryReader m_IndexReader;
 		private static readonly BinaryReader m_StreamReader;
 
@@ -24,9 +16,7 @@ namespace Server
 		{
 			MultiComponentList mcl;
 
-			#region Stygian Abyss
 			multiID &= 0x3FFF; // The value of the actual multi is shifted by 0x4000, so this is left alone.
-			#endregion
 
 			if (multiID >= 0 && multiID < m_Components.Length)
 			{
@@ -76,13 +66,13 @@ namespace Server
 
 			if (File.Exists(idxPath) && File.Exists(mulPath))
 			{
-				m_Index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-				m_IndexReader = new BinaryReader(m_Index);
+				var idx = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+				m_IndexReader = new BinaryReader(idx);
 
-				m_Stream = new FileStream(mulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-				m_StreamReader = new BinaryReader(m_Stream);
+				var stream = new FileStream(mulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+				m_StreamReader = new BinaryReader(stream);
 
-				m_Components = new MultiComponentList[(int)(m_Index.Length / 12)];
+				m_Components = new MultiComponentList[(int)(idx.Length / 12)];
 
 				string vdPath = Core.FindDataFile("verdata.mul");
 
@@ -100,7 +90,7 @@ namespace Server
 							int index = bin.ReadInt32();
 							int lookup = bin.ReadInt32();
 							int length = bin.ReadInt32();
-							int extra = bin.ReadInt32();
+							/*int extra = */bin.ReadInt32();
 
 							if (file == 14 && index >= 0 && index < m_Components.Length && lookup >= 0 && length > 0)
 							{
@@ -129,9 +119,9 @@ namespace Server
 	{
 		public ushort m_ItemID;
 		public short m_OffsetX, m_OffsetY, m_OffsetZ;
-		public int m_Flags;
-
-		public MultiTileEntry(ushort itemID, short xOffset, short yOffset, short zOffset, int flags)
+		public TileFlag m_Flags;
+		
+        public MultiTileEntry(ushort itemID, short xOffset, short yOffset, short zOffset, TileFlag flags)
 		{
 			m_ItemID = itemID;
 			m_OffsetX = xOffset;
@@ -143,9 +133,7 @@ namespace Server
 
 	public sealed class MultiComponentList
 	{
-		public static bool PostHSFormat { get { return _PostHSFormat; } set { _PostHSFormat = value; } }
-
-		private static bool _PostHSFormat;
+		public static bool PostHSFormat { get; set; }
 
 		private Point2D m_Min, m_Max, m_Center;
 		private int m_Width, m_Height;
@@ -167,10 +155,8 @@ namespace Server
 
 		public void Add(int itemID, int x, int y, int z)
 		{
-			#region Stygian Abyss
 			itemID &= TileData.MaxItemValue;
 			itemID |= 0x10000;
-			#endregion
 
 			int vx = x + m_Center.m_X;
 			int vy = y + m_Center.m_Y;
@@ -216,7 +202,7 @@ namespace Server
 					newList[i] = oldList[i];
 				}
 
-				newList[oldList.Length] = new MultiTileEntry((ushort)itemID, (short)x, (short)y, (short)z, 1);
+                newList[oldList.Length] = new MultiTileEntry((ushort)itemID, (short)x, (short)y, (short)z, TileFlag.Background);
 
 				m_List = newList;
 
@@ -410,10 +396,8 @@ namespace Server
 				{
 					var tiles = newTiles[x][y];
 
-					for (int i = 0; i < tiles.Length; ++i)
+                    foreach (StaticTile tile in tiles)
 					{
-						StaticTile tile = tiles[i];
-
 						int vx = x - m_Center.X;
 						int vy = y - m_Center.Y;
 
@@ -437,7 +421,7 @@ namespace Server
 							m_Max.m_Y = vy;
 						}
 
-						m_List[index++] = new MultiTileEntry((ushort)tile.ID, (short)vx, (short)vy, (short)tile.Z, 1);
+                        m_List[index++] = new MultiTileEntry((ushort)tile.ID, (short)vx, (short)vy, (short)tile.Z, TileFlag.Background);
 					}
 				}
 			}
@@ -480,7 +464,7 @@ namespace Server
 
 		public void Serialize(GenericWriter writer)
 		{
-			writer.Write(1); // version;
+			writer.Write(2); // version;
 
 			writer.Write(m_Min);
 			writer.Write(m_Max);
@@ -491,15 +475,14 @@ namespace Server
 
 			writer.Write(m_List.Length);
 
-			for (int i = 0; i < m_List.Length; ++i)
+			foreach (MultiTileEntry ent in m_List)
 			{
-				MultiTileEntry ent = m_List[i];
-
 				writer.Write(ent.m_ItemID);
 				writer.Write(ent.m_OffsetX);
 				writer.Write(ent.m_OffsetY);
 				writer.Write(ent.m_OffsetZ);
-				writer.Write(ent.m_Flags);
+
+                writer.Write((ulong)ent.m_Flags);
 			}
 		}
 
@@ -522,6 +505,7 @@ namespace Server
 				for (int i = 0; i < length; ++i)
 				{
 					int id = reader.ReadShort();
+                    
 					if (id >= 0x4000)
 					{
 						id -= 0x4000;
@@ -531,7 +515,8 @@ namespace Server
 					allTiles[i].m_OffsetX = reader.ReadShort();
 					allTiles[i].m_OffsetY = reader.ReadShort();
 					allTiles[i].m_OffsetZ = reader.ReadShort();
-					allTiles[i].m_Flags = reader.ReadInt();
+
+                    allTiles[i].m_Flags = (TileFlag)reader.ReadUInt();
 				}
 			}
 			else
@@ -542,7 +527,11 @@ namespace Server
 					allTiles[i].m_OffsetX = reader.ReadShort();
 					allTiles[i].m_OffsetY = reader.ReadShort();
 					allTiles[i].m_OffsetZ = reader.ReadShort();
-					allTiles[i].m_Flags = reader.ReadInt();
+
+					if (version > 1)
+						allTiles[i].m_Flags = (TileFlag)reader.ReadULong();
+					else
+						allTiles[i].m_Flags = (TileFlag)reader.ReadUInt();
 				}
 			}
 
@@ -566,12 +555,9 @@ namespace Server
 				{
 					int xOffset = allTiles[i].m_OffsetX + m_Center.m_X;
 					int yOffset = allTiles[i].m_OffsetY + m_Center.m_Y;
+                    int itemID = ((allTiles[i].m_ItemID & TileData.MaxItemValue) | 0x10000);
 
-					#region Stygian Abyss
-					//tiles[xOffset][yOffset].Add( (ushort)allTiles[i].m_ItemID, (sbyte)allTiles[i].m_OffsetZ );
-					tiles[xOffset][yOffset].Add(
-						(ushort)((allTiles[i].m_ItemID & TileData.MaxItemValue) | 0x10000), (sbyte)allTiles[i].m_OffsetZ);
-					#endregion
+                    tiles[xOffset][yOffset].Add((ushort)itemID, (sbyte)allTiles[i].m_OffsetZ);
 				}
 			}
 
@@ -594,13 +580,12 @@ namespace Server
 				allTiles[i].m_OffsetX = reader.ReadInt16();
 				allTiles[i].m_OffsetY = reader.ReadInt16();
 				allTiles[i].m_OffsetZ = reader.ReadInt16();
-				allTiles[i].m_Flags = reader.ReadInt32();
 
-				if (_PostHSFormat)
-				{
-					reader.ReadInt32(); // ??
-				}
-
+				if (PostHSFormat)
+					allTiles[i].m_Flags = (TileFlag)reader.ReadUInt64();
+				else
+					allTiles[i].m_Flags = (TileFlag)reader.ReadUInt32();
+				
 				MultiTileEntry e = allTiles[i];
 
 				if (i == 0 || e.m_Flags != 0)
@@ -651,12 +636,9 @@ namespace Server
 				{
 					int xOffset = allTiles[i].m_OffsetX + m_Center.m_X;
 					int yOffset = allTiles[i].m_OffsetY + m_Center.m_Y;
+                    int itemID = ((allTiles[i].m_ItemID & TileData.MaxItemValue) | 0x10000);
 
-					#region Stygian Abyss
-					//tiles[xOffset][yOffset].Add( (ushort)allTiles[i].m_ItemID, (sbyte)allTiles[i].m_OffsetZ );
-					tiles[xOffset][yOffset].Add(
-						(ushort)((allTiles[i].m_ItemID & TileData.MaxItemValue) | 0x10000), (sbyte)allTiles[i].m_OffsetZ);
-					#endregion
+                    tiles[xOffset][yOffset].Add((ushort)itemID, (sbyte)allTiles[i].m_OffsetZ);
 				}
 			}
 

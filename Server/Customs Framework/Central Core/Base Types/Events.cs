@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - Events.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 #endregion
 

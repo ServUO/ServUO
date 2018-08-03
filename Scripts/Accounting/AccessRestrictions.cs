@@ -20,7 +20,7 @@ namespace Server
 
                 if (Firewall.IsBlocked(ip))
                 {
-                    Utility.PushColor(ConsoleColor.DarkRed);
+                    Utility.PushColor(ConsoleColor.Red);
                     Console.WriteLine("Client: {0}: Firewall blocked connection attempt.", ip);
                     Utility.PopColor();
                     e.AllowConnection = false;
@@ -28,7 +28,7 @@ namespace Server
                 }
                 else if (IPLimiter.SocketBlock && !IPLimiter.Verify(ip))
                 {
-                    Utility.PushColor(ConsoleColor.DarkRed);
+                    Utility.PushColor(ConsoleColor.Red);
                     Console.WriteLine("Client: {0}: Past IP limit threshold", ip);
                     Utility.PopColor();
 

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - WarriorGuard.cs
-// **********
-#endregion
-
 #region References
 using System;
 

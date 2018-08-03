@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Accounting;
 using Server.ContextMenus;
 using Server.Guilds;
@@ -13,13 +15,13 @@ using Server.Network;
 using Server.Regions;
 using Server.Targeting;
 using Server.Engines.Auction;
-using System.Linq;
 
 namespace Server.Multis
 {
     public abstract class BaseHouse : BaseMulti
     {
 		private static int m_AccountHouseLimit = Config.Get("Housing.AccountHouseLimit", 1);
+
         public static int AccountHouseLimit { get { return m_AccountHouseLimit; } }
 
         public static bool NewVendorSystem
@@ -158,15 +160,7 @@ namespace Server.Multis
                 if (acct.Inactive)
                     return DecayType.Condemned;
 
-                List<BaseHouse> allHouses = new List<BaseHouse>();
-
-                for (int i = 0; i < acct.Length; ++i)
-                {
-                    Mobile mob = acct[i];
-
-                    if (mob != null)
-                        allHouses.AddRange(GetHouses(mob));
-                }
+                List<BaseHouse> allHouses = GetHouses(m_Owner);
 
                 BaseHouse newest = null;
 
@@ -177,6 +171,8 @@ namespace Server.Multis
                     if (newest == null || IsNewer(check, newest))
                         newest = check;
                 }
+
+                ColUtility.Free(allHouses);
 
                 if (this == newest)
                     return DecayType.AutoRefresh;
@@ -343,7 +339,7 @@ namespace Server.Multis
                     var rec3D = recs[Utility.Random(recs.Length)];
                     var rec2D = new Rectangle2D(rec3D.Start, rec3D.End);
 
-                    IPooledEnumerable eable = map.GetItemsInBounds(rec2D);
+                    var eable = map.GetItemsInBounds(rec2D);
                     var list = new List<Item>();
 
                     foreach (Item item in eable)
@@ -1759,24 +1755,21 @@ namespace Server.Multis
             m_Sign.MoveToWorld(new Point3D(X + xoff, Y + yoff, Z + zoff), Map);
         }
 
-        private void SetLockdown(Mobile m, Item i, bool locked)
+        public void SetLockdown(Item i, bool locked)
         {
-            SetLockdown(m, i, locked, false);
+            SetLockdown(null, i, locked);
         }
 
-        private void SetLockdown(Mobile m, Item i, bool locked, bool checkContains)
+        public void SetLockdown(Mobile m, Item i, bool locked)
         {
             if (m_LockDowns == null || (locked && m_LockDowns.ContainsKey(i)) || (!locked && !m_LockDowns.ContainsKey(i)))
                 return;
 
-            checkContains = true; // We need to check or server will crash!
-
-            #region Mondain's Legacy
             if (i is BaseAddonContainer)
                 i.Movable = false;
-            #endregion
+            else
+            	i.Movable = !locked;
 
-            i.Movable = !locked;
             i.IsLockedDown = locked;
 
             if (i is BaseContainer)
@@ -1809,8 +1802,7 @@ namespace Server.Multis
                 }
                 else
                 {
-                    if (!checkContains || !m_LockDowns.ContainsKey(i))
-                        m_LockDowns.Add(i, m);
+                    m_LockDowns[i] = m;
                 }
             }
             else
@@ -1830,7 +1822,7 @@ namespace Server.Multis
             if (i is Container && CheckContentsDecay(i))
             {
                 foreach (Item c in i.Items)
-                    SetLockdown(m, c, locked, checkContains);
+                    SetLockdown(m, c, locked);
             }
         }
 
@@ -1940,7 +1932,7 @@ namespace Server.Multis
                 bool valid = m_House != null && Sextant.Format(m_House.Location, m_House.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth);
 
                 if (valid)
-                    location = String.Format("{0}Â° {1}'{2}, {3}Â° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                    location = String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
                 else
                     location = "unknown";
 
@@ -2425,15 +2417,14 @@ namespace Server.Multis
                     item.IsLockedDown = false;
                     item.IsSecure = false;
 
-                    #region Mondain's Legacy
                     if (item is BaseAddonContainer)
                         item.Movable = false;
                     else
-                    #endregion
                         item.Movable = true;
 
                     item.SetLastMoved();
                     item.PublicOverheadMessage(Server.Network.MessageType.Label, 0x3B2, 501656);//[no longer secure]
+
                     m_Secures.Remove(info);
 
                     return true;
@@ -2447,6 +2438,7 @@ namespace Server.Multis
             }
 
             m.SendLocalizedMessage(501717); //This isn't secure...
+
             return false;
         }
 
@@ -3325,7 +3317,7 @@ namespace Server.Multis
             }
 
             foreach (KeyValuePair<Item, Mobile> kvp in lockDowns)
-                SetLockdown(kvp.Value, kvp.Key, true, true);
+                SetLockdown(kvp.Value, kvp.Key, true);
         }
 
         public static void HandleDeletion(Mobile mob)
@@ -3352,24 +3344,14 @@ namespace Server.Multis
 
                 if (trans == null)
                     canClaim = (house.CoOwners.Count > 0);
-                /*{
-                for ( int j = 0; j < house.CoOwners.Count; ++j )
-                {
-                Mobile check = house.CoOwners[j] as Mobile;
-
-                if ( check != null && !check.Deleted && !AtAccountHouseLimit( check ) )
-                {
-                canClaim = true;
-                break;
-                }
-                }
-                }*/
 
                 if (trans == null && !canClaim)
                     Timer.DelayCall(TimeSpan.Zero, new TimerCallback(house.Delete));
                 else
                     house.Owner = trans;
             }
+
+            ColUtility.Free(houses);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -4055,7 +4037,14 @@ namespace Server.Multis
 
         public static bool AtAccountHouseLimit(Mobile m)
         {
-            return GetAccountHouseCount(m) >= m_AccountHouseLimit;
+            return GetAccountHouseCount(m) >= GetAccountHouseLimit(m);
+        }
+
+        public static int GetAccountHouseLimit(Mobile m)
+        {
+            var max = m_AccountHouseLimit;
+            
+            return max;
         }
 
         public static bool CheckAccountHouseLimit(Mobile m, bool message = true)

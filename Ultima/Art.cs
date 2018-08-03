@@ -390,7 +390,7 @@ namespace Ultima
 			}
 
 			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
 
 			int delta = (bd.Stride >> 1) - bd.Width;
 			int lineDelta = bd.Stride >> 1;
@@ -484,9 +484,9 @@ namespace Ultima
 					lookups[i] = (start + (bindata[count++]));
 				}
 
-				bmp = new Bitmap(width, height, PixelFormat.Format16bppArgb1555);
+				bmp = new Bitmap(width, height, Settings.PixelFormat);
 				BitmapData bd = bmp.LockBits(
-					new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+					new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
 
 				var line = (ushort*)bd.Scan0;
 				int delta = bd.Stride >> 1;
@@ -525,8 +525,8 @@ namespace Ultima
 
 		private static unsafe Bitmap LoadLand(Stream stream, int length)
 		{
-			var bmp = new Bitmap(44, 44, PixelFormat.Format16bppArgb1555);
-			BitmapData bd = bmp.LockBits(new Rectangle(0, 0, 44, 44), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+			var bmp = new Bitmap(44, 44, Settings.PixelFormat);
+			BitmapData bd = bmp.LockBits(new Rectangle(0, 0, 44, 44), ImageLockMode.WriteOnly, Settings.PixelFormat);
 			if (m_StreamBuffer == null || m_StreamBuffer.Length < length)
 			{
 				m_StreamBuffer = new byte[length];
@@ -631,7 +631,7 @@ namespace Ultima
 							}
 							//land
 							BitmapData bd = bmp.LockBits(
-								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
 							var line = (ushort*)bd.Scan0;
 							int delta = bd.Stride >> 1;
 							binidx.Write((int)binmul.BaseStream.Position); //lookup
@@ -694,7 +694,7 @@ namespace Ultima
 
 							// art
 							BitmapData bd = bmp.LockBits(
-								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
 							var line = (ushort*)bd.Scan0;
 							int delta = bd.Stride >> 1;
 							binidx.Write((int)binmul.BaseStream.Position); //lookup

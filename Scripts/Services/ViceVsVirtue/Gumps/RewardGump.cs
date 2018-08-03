@@ -49,16 +49,16 @@ namespace Server.Engines.VvV
             }
             else if (citem.Type == typeof(VvVTrapKit))
             {
-                TrapType type;
+                VvVTrapType type;
 
                 switch (index - 11)
                 {
                     default:
-                    case 0: type = TrapType.Poison; break;
-                    case 1: type = TrapType.Cold; break;
-                    case 2: type = TrapType.Energy; break;
-                    case 3: type = TrapType.Blade; break;
-                    case 4: type = TrapType.Explosion; break;
+                    case 0: type = VvVTrapType.Poison; break;
+                    case 1: type = VvVTrapType.Cold; break;
+                    case 2: type = VvVTrapType.Energy; break;
+                    case 3: type = VvVTrapType.Blade; break;
+                    case 4: type = VvVTrapType.Explosion; break;
                 }
 
                 item = new VvVTrapKit(type);

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Begging.cs
-// **********
-#endregion
-
 #region References
 using System;
 

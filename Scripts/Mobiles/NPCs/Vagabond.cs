@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Vagabond.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 

@@ -7,6 +7,8 @@ namespace Server.Mobiles
     {
         public BaseGuard(Mobile target)
         {
+            GuardImmune = true;
+
             if (target != null)
             {
                 Location = target.Location;

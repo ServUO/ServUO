@@ -8,7 +8,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1116030; } }
         public override double DefaultWeight { get { return 3.5; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         public AmmoType AmmoType { get { return AmmoType.Grapeshot; } }
@@ -45,7 +45,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1116166; } }
         public override double DefaultWeight { get { return 7.0; } }
 
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         public AmmoType AmmoType { get { return AmmoType.Grapeshot; } }

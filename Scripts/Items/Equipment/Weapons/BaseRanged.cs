@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BaseRanged.cs
-// **********
-#endregion
-
 #region References
 using System;
 

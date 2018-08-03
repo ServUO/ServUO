@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BaseReward.cs
-// **********
-#endregion
-
 #region References
 using System;
 

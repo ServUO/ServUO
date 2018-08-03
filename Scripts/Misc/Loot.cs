@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Loot.cs
-// **********
-#endregion
-
 #region References
 using System;
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Mobiles;
+using Server.Services.Virtues;
 
 namespace Server.Engines.Quests
 {

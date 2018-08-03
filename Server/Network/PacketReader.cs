@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - PacketReader.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.IO;

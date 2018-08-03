@@ -31,7 +31,7 @@ namespace Server.Items
                 return 1113328;
             }
         }// essence of direction
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {

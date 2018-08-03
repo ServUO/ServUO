@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Items;
+using Server.Services.Virtues;
+
 using EDI = Server.Mobiles.EscortDestinationInfo;
 
 namespace Server.Mobiles

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - ConsoleCommands.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Linq;
@@ -25,6 +19,11 @@ namespace Server.Misc
 
 		public static void Initialize()
 		{
+			if(Console.Out == null || Console.In == null || Console.Error == null)
+			{
+				return;
+			}
+
 			EventSink.ServerStarted += () =>
 			{
 				ThreadPool.QueueUserWorkItem(ConsoleListen);

@@ -78,6 +78,11 @@ namespace Server.Items
                 list.Add(1076220); // 4th Year Veteran Reward
         }
 
+        void IChopable.OnChop(Mobile user)
+        {
+            OnDoubleClick(user);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.InRange(this.Location, 3))

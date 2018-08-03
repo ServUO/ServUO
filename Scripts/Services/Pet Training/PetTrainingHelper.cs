@@ -959,6 +959,7 @@ namespace Server.Mobiles
 
             return skill >= bc.CalculateCurrentTameSkill(bc.ControlSlots + 1);
         }
+
         public static int GetTrainingCapTotal(PetStat stat)
         {
             switch (stat)

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - GypsyMaiden.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 

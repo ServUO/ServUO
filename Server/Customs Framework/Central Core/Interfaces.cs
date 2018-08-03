@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - Interfaces.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 #endregion
 
