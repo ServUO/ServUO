@@ -1134,10 +1134,13 @@ namespace Server.Items
                         #region Stygian Abyss
                         m_GorgonLenseCharges = reader.ReadInt();
                         m_GorgonLenseType = (LenseType)reader.ReadInt();
+                        #endregion
+
                         goto case 4;
                     }
                 case 4:
                     {
+                        #region Stygian Abyss
                         m_TimesImbued = reader.ReadEncodedInt();
                        
                         m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);

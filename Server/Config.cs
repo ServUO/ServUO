@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 #endregion
@@ -148,24 +149,24 @@ namespace Server
 					Console.WriteLine(e.Message);
 					Utility.PopColor();
 
-					string key;
+					ConsoleKey key;
 
                     do
                     {
                         Console.WriteLine("Ignore this warning? (y/n)");
-                        key = Console.ReadLine().ToUpper();
-                    }
-                    while (!key.Equals("Y") && !key.Equals("N"));
-                    
-					if (!key.Equals("Y"))
-					{
-						
-							Console.WriteLine("Press any key to exit...");
-							Console.ReadKey();
 
-							Core.Kill(false);
-						
-							return;
+						key = Console.ReadKey(true).Key;
+                    }
+					while (key != ConsoleKey.Y && key != ConsoleKey.N);
+                    
+					if (key != ConsoleKey.Y)
+					{
+						Console.WriteLine("Press any key to exit...");
+						Console.ReadKey();
+
+						Core.Kill(false);
+					
+						return;
 					}
 				}
 			}
@@ -719,6 +720,22 @@ namespace Server
 			return defaultValue;
 		}
 
+		public static Type Get(string key, Type defaultValue)
+		{
+			var value = InternalGet(key);
+
+			var t = FindType(value);
+
+			if (t != null)
+			{
+				return t;
+			}
+
+			Warn<Type>(key);
+
+			return defaultValue;
+		}
+
 		public static T GetEnum<T>(string key, T defaultValue) where T : struct, IConvertible
 		{
 			if (!typeof(T).IsEnum)
@@ -745,6 +762,71 @@ namespace Server
 			Warn<T>(key);
 
 			return defaultValue;
+		}
+
+		public static T GetDelegate<T>(string key, T defaultValue)
+		{
+			if (!typeof(MulticastDelegate).IsAssignableFrom(typeof(T).BaseType))
+			{
+				throw new ArgumentException("T must be a delegate type");
+			}
+
+			var value = InternalGet(key);
+
+			if (value == null)
+			{
+				return defaultValue;
+			}
+
+			value = value.Trim();
+
+			var i = value.LastIndexOf('.');
+
+			if (i <= 0)
+			{
+				Warn<T>(key);
+
+				return defaultValue;
+			}
+
+			try
+			{
+				var method = value.Substring(i + 1);
+				var target = FindType(value.Remove(i));
+
+				if (target != null)
+				{
+					var info = target.GetMethod(method, (BindingFlags)0x38);
+	
+					if (info != null)
+					{
+						return (T)(object)Delegate.CreateDelegate(typeof(T), info);
+					}
+				}
+			}
+			catch
+			{ }
+
+			Warn<T>(key);
+
+			return defaultValue;
+		}
+
+		private static Type FindType(string value)
+		{
+			var type = Type.GetType(value, false);
+
+			if (type != null)
+			{
+				return type;
+			}
+
+			if (value.IndexOf('.') < 0)
+			{
+				return ScriptCompiler.FindTypeByName(value);
+			}
+
+			return ScriptCompiler.FindTypeByFullName(value);
 		}
 	}
 }

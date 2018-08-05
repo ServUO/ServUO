@@ -767,7 +767,7 @@ namespace Server.Mobiles
 			double dPassiveSpeed): base( ai, mode, iRangePerception, iRangeFight, dActiveSpeed, dPassiveSpeed )
 		{
 			// add the XmlDialog attachment
-			m_DialogAttachment = new XmlDialog((string)null);
+			m_DialogAttachment = new XmlDialog(default(string));
 			XmlAttach.AttachTo(this, m_DialogAttachment);
 
 		}
@@ -820,7 +820,7 @@ namespace Server.Mobiles
 			if(version < 5)
 			{
 				// have to add the XmlDialog attachment
-				m_DialogAttachment = new XmlDialog((string)null);
+				m_DialogAttachment = new XmlDialog(default(string));
 				XmlAttach.AttachTo(this, m_DialogAttachment);
 			}
 

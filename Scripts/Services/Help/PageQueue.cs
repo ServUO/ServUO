@@ -42,8 +42,8 @@ namespace Server.Engines.Help
 		private  Map m_PageMap;
 		private  List<SpeechLogEntry> m_SpeechLog;
 		
-        public static readonly string SupportEmail = Config.Get("General.SupportEmail", null);
-        public static readonly string SupportWebsite = Config.Get("General.SupportWebsite", null);
+		public static readonly string SupportEmail = Config.Get("General.SupportEmail", default(string));
+		public static readonly string SupportWebsite = Config.Get("General.SupportWebsite", default(string));
 
 		private readonly PageInfo m_PageInfo;
 

@@ -20,19 +20,21 @@ namespace Server.Misc
         * Example:
         *  public static readonly string SpeechLogPageAddresses = "first@email.here,second@email.here,third@email.here";
         */
-        public static readonly string EmailServer = Config.Get("Email.EmailServer", null);
+        public static readonly string EmailServer = Config.Get("Email.EmailServer", default(string));
         public static readonly int EmailPort = Config.Get("Email.EmailPort", 25);
         public static readonly bool EmailSsl = Config.Get("Email.EmailSsl", false);
 
-        public static readonly string FromAddress = Config.Get("Email.FromAddress", null);
-        public static readonly string CrashAddresses = Config.Get("Email.CrashAddresses", null);
-        public static readonly string SpeechLogPageAddresses = Config.Get("Email.SpeechLogPageAddresses", null);
+        public static readonly string FromAddress = Config.Get("Email.FromAddress", default(string));
+        public static readonly string CrashAddresses = Config.Get("Email.CrashAddresses", default(string));
+        public static readonly string SpeechLogPageAddresses = Config.Get("Email.SpeechLogPageAddresses", default(string));
 
-        public static readonly string EmailUsername = Config.Get("Email.EmailUsername", null);
-        public static readonly string EmailPassword = Config.Get("Email.EmailPassword", null);
+        public static readonly string EmailUsername = Config.Get("Email.EmailUsername", default(string));
+        public static readonly string EmailPassword = Config.Get("Email.EmailPassword", default(string));
 
         private static readonly Regex _pattern = new Regex(@"^[a-z0-9.+_-]+@([a-z0-9-]+\.)+[a-z]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static SmtpClient _Client;
+
         public static bool IsValid(string address)
         {
             if (address == null || address.Length > 320)
