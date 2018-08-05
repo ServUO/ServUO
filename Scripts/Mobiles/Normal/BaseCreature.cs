@@ -4098,7 +4098,7 @@ namespace Server.Mobiles
 
                     CalculateSlots(value);
 
-                    if (m_iControlSlots < ControlSlotsMin)
+                    if (m_iControlSlots != ControlSlotsMin)
                     {
                         m_iControlSlots = ControlSlotsMin;
                     }
