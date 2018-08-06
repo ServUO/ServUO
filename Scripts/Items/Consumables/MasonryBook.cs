@@ -5,37 +5,18 @@ namespace Server.Items
 {
     public class MasonryBook : Item
     {
+        public override int LabelNumber { get { return 1153527; } } // Making valuables with Stonecrafting
+
         [Constructable]
         public MasonryBook()
             : base(0xFBE)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public MasonryBook(Serial serial)
             : base(serial)
         {
-        }
-
-        public override string DefaultName
-        {
-            get
-            {
-                return "Making Valuables With Stonecrafting";
-            }
-        }
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -53,19 +34,31 @@ namespace Server.Items
             }
             else if (pm.Skills[SkillName.Carpentry].Base < 100.0)
             {
-                pm.SendMessage("Only a Grandmaster Carpenter can learn from this book.");
+                pm.SendLocalizedMessage(1080043); // Only a Grandmaster Carpenter can learn from this book.
             }
             else if (pm.Masonry)
             {
-                pm.SendMessage("You have already learned this information.");
+                pm.SendLocalizedMessage(1080066); // You have already learned this information.
             }
             else
             {
                 pm.Masonry = true;
-                pm.SendMessage("You have learned to make items from stone. You will need miners to gather stones for you to make these items.");
-                
-				Delete();
+                pm.SendLocalizedMessage(1080044); // You have learned to make items from stone. You will need miners to gather stones for you to make these items.
+
+                Delete();
             }
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
         }
     }
 }
