@@ -54,7 +54,7 @@ namespace Server.SkillHandlers
                     p = ((Item)targ).Location;
                 else if (targ is IPoint3D)
                     p = new Point3D((IPoint3D)targ);
-                else 
+                else
                     p = src.Location;
 
                 double srcSkill = src.Skills[SkillName.DetectHidden].Value;
@@ -85,7 +85,7 @@ namespace Server.SkillHandlers
 
                             if (src.AccessLevel >= trg.AccessLevel && (ss >= ts || houseCheck) && Utility.RandomDouble() > shadow)
                             {
-                                if ((trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y)) ||
+                               if ((trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y)) ||
                                     (!houseCheck && !CanDetect(src, trg)))
                                     continue;
 
@@ -127,8 +127,8 @@ namespace Server.SkillHandlers
 
         public static void DoPassiveDetect(Mobile src)
         {
-			if (src == null || src.Map == null || src.Location == Point3D.Zero || src.IsStaff())
-				return;
+            if (src == null || src.Map == null || src.Location == Point3D.Zero || src.IsStaff())
+                return;
 
             double ss = src.Skills[SkillName.DetectHidden].Value;
 
@@ -137,8 +137,8 @@ namespace Server.SkillHandlers
 
             IPooledEnumerable eable = src.Map.GetMobilesInRange(src.Location, 4);
 
-			if (eable == null)
-				return;
+            if (eable == null)
+                return;
 
             foreach (Mobile m in eable)
             {
@@ -180,7 +180,7 @@ namespace Server.SkillHandlers
             if (target.Blessed || (target is BaseCreature && ((BaseCreature)target).IsInvulnerable))
                 return false;
 
-            return src.CanBeHarmful(target, false) && (src.Map.Rules != MapRules.FeluccaRules || SpellHelper.ValidIndirectTarget(src, target));
+            return src.CanBeHarmful(target, false) && (src.Map.Rules == MapRules.FeluccaRules || Server.Spells.SpellHelper.ValidIndirectTarget(target, src));
         }
     }
 }
