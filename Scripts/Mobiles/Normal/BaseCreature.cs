@@ -7731,7 +7731,6 @@ namespace Server.Mobiles
         public virtual int FindPlayerDelayHigh { get { return 10; } }
         public virtual int FindPlayerDelayLow { get { return 9; } }
 
-        // This does NOT actually use the skill. Just uses the skill values for a distinct ability.
         public virtual void TryFindPlayer()
         {
             if (Deleted || Map == null)
