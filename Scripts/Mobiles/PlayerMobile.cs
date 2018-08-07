@@ -6793,33 +6793,18 @@ namespace Server.Mobiles
 				{
 					BaseCreature pet = AllFollowers[i] as BaseCreature;
 
-					if (pet == null || pet.ControlMaster == null || pet.Allured)
-					{
-						continue;
-					}
+                    if (pet == null)
+                    {
+                        continue;
+                    }
 
-					if (pet.Summoned)
-					{
-						if (pet.Map != Map)
-						{
-							pet.PlaySound(pet.GetAngerSound());
-							Timer.DelayCall(TimeSpan.Zero, pet.Delete);
-						}
-						continue;
-					}
+                    if (pet.Summoned && pet.Map != Map)
+                    {
+                        pet.PlaySound(pet.GetAngerSound());
+                        Timer.DelayCall(TimeSpan.Zero, pet.Delete);
+                    }
 
-					if (pet is IMount && ((IMount)pet).Rider != null)
-					{
-						continue;
-					}
-
-					if ((pet is PackLlama || pet is PackHorse || pet is Beetle) &&
-						(pet.Backpack != null && pet.Backpack.Items.Count > 0))
-					{
-						continue;
-					}
-
-					if (pet is BaseEscortable)
+					if (!pet.CanAutoStable)
 					{
 						continue;
 					}

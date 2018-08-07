@@ -1590,7 +1590,7 @@ namespace Server.Mobiles
 
 				NextCastTime = DateTime.UtcNow + GetDelay(spell);
 			}
-			else if (m_Mobile.Skills[SkillName.DetectHidden].Value > 0)
+            else if (m_Mobile.CanDetectHidden)
 			{
 				DetectHidden.OnUse(m_Mobile);
 

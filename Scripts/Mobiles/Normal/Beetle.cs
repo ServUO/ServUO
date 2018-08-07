@@ -112,6 +112,8 @@ namespace Server.Mobiles
             }
         }
 
+        public override bool CanAutoStable { get { return (Backpack == null || Backpack.Items.Count == 0) && base.CanAutoStable; } }
+
         public Beetle(Serial serial)
             : base(serial)
         {
