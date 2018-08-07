@@ -174,13 +174,22 @@ namespace Server.SkillHandlers
 
         private static bool CanDetect(Mobile src, Mobile target)
         {
-            if (src.Map == null || src.Blessed || (src is BaseCreature && ((BaseCreature)src).IsInvulnerable))
+            if (src.Map == null || target.Map == null || !src.CanBeHarmful(target, false))
+                return false;
+
+            // No invulnerable NPC's
+            if (src.Blessed || (src is BaseCreature && ((BaseCreature)src).IsInvulnerable))
                 return false;
 
             if (target.Blessed || (target is BaseCreature && ((BaseCreature)target).IsInvulnerable))
                 return false;
 
-            return src.CanBeHarmful(target, false) && (src.Map.Rules == MapRules.FeluccaRules || Server.Spells.SpellHelper.ValidIndirectTarget(target, src));
+            // Checked aggressed/aggressors
+            if (src.Aggressed.Any(x => x.Defender == target) || src.Aggressors.Any(x => x.Attacker == target))
+                return true;
+
+            // Follow the same rules as indirect spells such as wither
+            return /*src.Map.Rules == MapRules.FeluccaRules ||*/Server.Spells.SpellHelper.ValidIndirectTarget(target, src);
         }
     }
 }

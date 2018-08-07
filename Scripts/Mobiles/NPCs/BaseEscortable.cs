@@ -23,6 +23,7 @@ namespace Server.Mobiles
             "Cove", "Serpent's Hold", "Jhelom", //ML List
             "Nujel'm"
         };
+
         private static readonly Hashtable m_EscortTable = new Hashtable();
         private static readonly TimeSpan m_EscortDelay = TimeSpan.FromMinutes(5.0);
         private EDI m_Destination;
@@ -30,6 +31,7 @@ namespace Server.Mobiles
         private DateTime m_DeleteTime;
         private Timer m_DeleteTimer;
         private DateTime m_LastSeenEscorter;
+
         [Constructable]
         public BaseEscortable()
             : base(AIType.AI_Melee, FightMode.Aggressor, 22, 1, 0.2, 1.0)
@@ -52,6 +54,7 @@ namespace Server.Mobiles
         }
 
         public override bool UseSmartAI { get { return true; } }
+        public override bool CanAutoStable { get { return false; } }
 
         public override bool Commandable
         {

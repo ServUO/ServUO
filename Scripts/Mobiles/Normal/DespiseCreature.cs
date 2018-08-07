@@ -130,6 +130,7 @@ namespace Server.Engines.Despise
         public override bool ForceNotoriety { get { return true; } }
         public override bool IsBondable { get { return false; } }
         public override bool GivesFameAndKarmaAward { get { return false; } }
+        public override bool CanAutoStable { get { return false; } }
 
         public override TimeSpan ReacquireDelay
         { 
