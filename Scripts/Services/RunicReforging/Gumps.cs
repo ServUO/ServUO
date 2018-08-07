@@ -298,7 +298,7 @@ namespace Server.Gumps
 
                             if ((m_Options & ReforgingOption.GrandArtifice) != 0)
                             {
-                                if (0.8 > Utility.RandomDouble())
+                                if (0.2 > Utility.RandomDouble())
                                     maxprops++;
 
                                 // choosing name 1
