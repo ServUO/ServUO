@@ -876,7 +876,6 @@ namespace Server.Mobiles
 
             #region Enchanced Client
             EventSink.TargetedSkill += Targeted_Skill;
-            EventSink.TargetedItemUse += Targeted_Item;
             EventSink.EquipMacro += EquipMacro;
             EventSink.UnequipMacro += UnequipMacro;
             #endregion
@@ -888,33 +887,6 @@ namespace Server.Mobiles
 		}
 
         #region Enhanced Client
-        private static void Targeted_Item(TargetedItemUseEventArgs e)
-        {
-            Mobile from = e.Mobile;
-            Item item = World.FindItem(e.Source.Serial);
-            IEntity target = e.Target;
-
-            if (from == null || item == null || target == null)
-                return;
-
-            if (item is Bandage && target is Mobile)
-            {
-                Bandage.BandageTargetRequest((Bandage)item, from, (Mobile)target);
-            }
-            else if (from.InRange(item.GetWorldLocation(), Core.AOS ? 2 : 1))
-            {
-                from.TargetLocked = true;
-                from.Use(item);
-
-                if (from.Target != null)
-                {
-                    from.Target.Invoke(from, target);
-                }
-
-                from.TargetLocked = false;
-            }
-        }
-
         private static void Targeted_Skill(TargetedSkillEventArgs e)
         {
             Mobile from = e.Mobile;
