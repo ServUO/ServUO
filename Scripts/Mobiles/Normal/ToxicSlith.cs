@@ -32,10 +32,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 95.4, 98.3);
             SetSkill(SkillName.Tactics, 85.5, 90.9);
             SetSkill(SkillName.Wrestling, 90.4, 95.1);
-
-            Tamable = false;
-            ControlSlots = 1;
-            MinTameSkill = 80.7;
+            SetSkill(SkillName.Poisoning, 90.0, 110.0);
         }
 
         public override int DragonBlood { get { return 6; } }

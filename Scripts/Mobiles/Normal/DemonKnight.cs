@@ -173,7 +173,7 @@ namespace Server.Mobiles
             if (!Core.AOS)
                 return;
 
-            if ( pm == null || bc == null || bc.NoKillAwards/*|| !CheckLocation(bc) || !CheckLocation(pm)*/)
+            if ( pm == null || bc == null || bc.NoKillAwards || !pm.Alive/*|| !CheckLocation(bc) || !CheckLocation(pm)*/)
                 return;
 
             //Make sure its a boss we killed!!

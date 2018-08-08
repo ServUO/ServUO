@@ -29,7 +29,7 @@ namespace Server.Engines.Points
 
         public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
         {
-            if (victim.Controlled || victim.Summoned)
+            if (victim.Controlled || victim.Summoned || !damager.Alive || damager.Deleted)
                 return;
         
             Region r = victim.Region;

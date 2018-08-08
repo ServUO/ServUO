@@ -150,7 +150,7 @@ namespace Server.Misc
             PlayerMobile pm = killer as PlayerMobile;
             BaseCreature bc = victim as BaseCreature;
 
-            if (DropEra == TreasuresOfTokunoEra.None || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18))
+            if (DropEra == TreasuresOfTokunoEra.None || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18) || !pm.Alive)
                 return;
 
             if (bc.Controlled || bc.Owners.Count > 0 || bc.Fame <= 0)

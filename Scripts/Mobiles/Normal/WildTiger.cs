@@ -61,6 +61,7 @@ namespace Server.Mobiles
             MinTameSkill = 95.1;
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
 
         public override void OnDoubleClick(Mobile from)
