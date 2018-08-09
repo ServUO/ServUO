@@ -354,6 +354,11 @@ namespace Server.Items
 
 				list.Add( 1070858, m_AnimalWeight.ToString() ); // ~1_weight~ stones
 			}
+
+            if (DateCaught != DateTime.MinValue)
+            {
+                list.Add(String.Format("[{0}]", DateCaught.ToShortDateString()));
+            }
 		}
 
 		public override void OnAosSingleClick( Mobile from )
