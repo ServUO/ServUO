@@ -78,6 +78,8 @@ namespace Server.Mobiles
 
             CantWalk = false;
             Hidden = false;
+
+            base.OnAfterTame(tamer);
         }
 
         private class HideTimer : Timer
