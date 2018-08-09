@@ -1908,7 +1908,12 @@ namespace Server.Items
 
                 ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, luckchance);
 
-                int addonbudget = TryApplyRandomDisadvantage(item);
+                int addonbudget = 0;
+
+                if (!artifact)
+                {
+                    addonbudget = TryApplyRandomDisadvantage(item);
+                }
 
                 if (addonbudget > 0)
                 {
