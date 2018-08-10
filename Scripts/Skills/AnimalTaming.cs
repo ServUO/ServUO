@@ -426,11 +426,6 @@ namespace Server.SkillHandlers
 								{
 									ScaleSkills(m_Creature, 0.90); // 90% of original skills
 								}
-
-								if (m_Creature.StatLossAfterTame)
-								{
-									ScaleStats(m_Creature, 0.50);
-								}
 							}
 
 							if (alreadyOwned)

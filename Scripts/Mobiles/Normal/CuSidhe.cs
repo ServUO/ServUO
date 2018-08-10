@@ -122,6 +122,25 @@ namespace Server.Mobiles
             AddLoot(LootPack.AosFilthyRich, 5);
         }
 
+        public override void OnAfterTame(Mobile tamer)
+        {
+            if (PetTrainingHelper.Enabled)
+            {
+                RawStr = (int)Math.Max(1, RawStr * 0.5);
+                RawDex = (int)Math.Max(1, RawDex * 0.5);
+
+                HitsMaxSeed = RawStr;
+                Hits = RawStr;
+
+                StamMaxSeed = RawDex;
+                Stam = RawDex;
+            }
+            else
+            {
+                base.OnAfterTame(tamer);
+            }
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.Race != Race.Elf && from == ControlMaster && from.IsPlayer())

@@ -203,17 +203,12 @@ namespace Server.Mobiles
                     if (ran >= m_RewardTable.Length)
                     {
                         i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
-                        RunicReforging.GenerateRandomArtifactItem(i, luck, Utility.RandomMinMax(1000, 1200));
+                        RunicReforging.GenerateRandomArtifactItem(i, luck, Utility.RandomMinMax(800, 1200));
                         NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(i);
 
                         if (attrs != null)
                         {
                             attrs.Prized = 1;
-                            attrs.Brittle = 0;
-                            attrs.Massive = 0;
-                            attrs.Unwieldly = 0;
-                            attrs.Antique = 0;
-                            attrs.NoRepair = 0;
                         }
                     }
                     else

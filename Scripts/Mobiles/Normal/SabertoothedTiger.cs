@@ -59,19 +59,26 @@ namespace Server.Mobiles
         public override HideType HideType { get { return HideType.Regular; } }
         public override int Meat { get { return 3; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-
+        public override bool StatLossAfterTame { get { return true; } }
         public override bool CanAngerOnTame { get { return true; } }
 
-        public override void OnAfterTame(Mobile master)
+        public override void OnAfterTame(Mobile tamer)
         {
-            int intel = RawInt;
-            int mana = ManaMax;
+            if (PetTrainingHelper.Enabled)
+            {
+                RawStr = (int)Math.Max(1, RawStr * 0.5);
+                RawDex = (int)Math.Max(1, RawDex * 0.5);
 
-            // UO Stratics say they keep their intelligence. Crappy but hey!
-            Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
+                HitsMaxSeed = RawStr;
+                Hits = RawStr;
 
-            SetInt(intel);
-            SetMana(mana);
+                StamMaxSeed = RawDex;
+                Stam = RawDex;
+            }
+            else
+            {
+                base.OnAfterTame(tamer);
+            }
         }
 
         public override void GenerateLoot()

@@ -1719,11 +1719,6 @@ namespace Server.Mobiles
                                     AnimalTaming.ScaleSkills(bc, 0.90);
                                 }
 
-                                if (bc.StatLossAfterTame)
-                                {
-                                    AnimalTaming.ScaleStats(bc, 0.50);
-                                }
-
                                 Timer.DelayCall(TimeSpan.FromSeconds(.25), () =>
                                 {
                                     bc.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 502799, m.NetState);

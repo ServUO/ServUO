@@ -78,6 +78,9 @@ namespace Server.Mobiles
                 return FoodType.Meat;
             }
         }
+
+        public override bool StatLossAfterTame { get { return true; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
