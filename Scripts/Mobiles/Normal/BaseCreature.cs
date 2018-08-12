@@ -1063,10 +1063,22 @@ namespace Server.Mobiles
         public virtual bool FreezeOnCast { get { return ShowSpellMantra; } }
         public virtual bool CanFly { get { return false; } }
 
-        public virtual bool CanAutoStable { get { return ControlMaster is PlayerMobile && 
-                                                        !Allured && 
-                                                        !Summoned &&
-                                                        (!(this is IMount) || ((IMount)this).Rider == null); } }
+        public virtual bool CanAutoStable
+		{ 
+			get 
+			{
+				if(!(ControlMaster is PlayerMobile))
+					return false;
+
+				if(Allured || Summoned)
+					return false;
+
+				if(this is IMount && ((IMount)this).Rider != null)
+					return false;
+
+				return true;
+			}
+		}
 
         #region High Seas
         public virtual bool TaintedLifeAura { get { return false; } }
@@ -7728,7 +7740,7 @@ namespace Server.Mobiles
         #region Detect Hidden
         private long _NextDetect;
 
-        public virtual bool CanDetectHidden { get { return Controlled && Skills[SkillName.DetectHidden].Value > 0; } }
+        public virtual bool CanDetectHidden { get { return Controlled && Skills.DetectHidden.Value > 0; } }
 
         public virtual int FindPlayerDelayBase { get { return (15000 / Int); } }
         public virtual int FindPlayerDelayMax { get { return 60; } }

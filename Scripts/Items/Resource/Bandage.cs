@@ -85,10 +85,11 @@ namespace Server.Items
 
         public static void BandageTargetRequest(BandageTargetRequestEventArgs e)
 		{
-            Mobile from = e.Mobile;
-            Bandage bandage = e.Bandage as Bandage;
-            Mobile target = e.Target;
+			BandageTargetRequest(e.Bandage as Bandage, e.Mobile, e.Target);
+		}
 
+        public static void BandageTargetRequest(Bandage bandage, Mobile from, Mobile target)
+		{
             if (bandage == null || bandage.Deleted)
                 return;
 
@@ -104,6 +105,7 @@ namespace Server.Items
 
 				from.RevealingAction();
 				from.SendLocalizedMessage(500948); // Who will you use the bandages on?
+
                 new InternalTarget(bandage).Invoke(from, target);
 			}
 			else

@@ -32,7 +32,7 @@ namespace Server.Items
             {
                 pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (pm.Skills[SkillName.Carpentry].Base < 100.0)
+            else if (pm.Skills.Carpentry.Base < 100.0)
             {
                 pm.SendLocalizedMessage(1080043); // Only a Grandmaster Carpenter can learn from this book.
             }
@@ -52,12 +52,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }

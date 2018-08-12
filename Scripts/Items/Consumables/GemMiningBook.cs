@@ -32,9 +32,9 @@ namespace Server.Items
             {
                 pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (pm.Skills[SkillName.Mining].Base < 100.0)
+            else if (pm.Skills.Mining.Base < 100.0)
             {
-                from.SendLocalizedMessage(1080041); // Only a Grandmaster Miner can learn from this book.
+                pm.SendLocalizedMessage(1080041); // Only a Grandmaster Miner can learn from this book.
             }
             else if (pm.GemMining)
             {
@@ -52,12 +52,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }
