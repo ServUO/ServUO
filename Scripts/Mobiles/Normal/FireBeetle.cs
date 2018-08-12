@@ -151,7 +151,12 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
-            SetInt(500);
+            base.OnAfterTame(tamer);
+
+            if (PetTrainingHelper.Enabled)
+            {
+                SetInt(500);
+            }
         }
 
         public override void Serialize(GenericWriter writer)

@@ -6895,6 +6895,10 @@ namespace Server.Mobiles
 
         public virtual void OnAfterTame(Mobile tamer)
         {
+            if (StatLossAfterTame)
+            {
+                AnimalTaming.ScaleStats(this, 0.5);
+            }
         }
 
         public override void OnRegionChange(Region Old, Region New)
