@@ -515,6 +515,10 @@ namespace Server
 		public Mobile Killer { get; private set; }
 		public Container Corpse { get; private set; }
 
+		public List<Item> ForcedLoot { get; private set; }
+
+		public bool PreventDefault { get; set; }
+		public bool PreventDelete { get; set; }
 		public bool ClearCorpse { get; set; }
 
 		public CreatureDeathEventArgs(Mobile creature)
@@ -526,6 +530,21 @@ namespace Server
 			Creature = creature;
 			Killer = killer;
 			Corpse = corpse;
+
+			ForcedLoot = new List<Item>();
+		}
+
+		public void ClearLoot(bool free)
+		{
+			if (free)
+			{
+				ForcedLoot.Clear();
+				ForcedLoot.TrimExcess();
+			}
+			else
+			{
+				ForcedLoot = new List<Item>();
+			}
 		}
 	}
 

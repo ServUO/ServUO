@@ -6720,22 +6720,79 @@ namespace Server.Mobiles
 
                 EventSink.InvokeCreatureDeath(e);
 
-                if (e.ClearCorpse)
+                if (!c.Deleted)
                 {
-                    var i = c.Items.Count;
+                    int i;
+
+                    if (e.ClearCorpse)
+                    {
+                        i = c.Items.Count;
+
+                        while (--i >= 0)
+                        {
+                            if (i >= c.Items.Count)
+                            {
+                                continue;
+                            }
+
+                            var o = c.Items[i];
+
+                            if (o != null && !o.Deleted)
+                            {
+                                o.Delete();
+                            }
+                        }
+                    }
+
+                    i = e.ForcedLoot.Count;
 
                     while (--i >= 0)
                     {
-                        if (i < c.Items.Count)
+                        if (i >= e.ForcedLoot.Count)
                         {
-                            c.Items[i].Delete();
+                            continue;
+                        }
+
+                        var o = e.ForcedLoot[i];
+
+                        if (o != null && !o.Deleted)
+                        {
+                            c.DropItem(o);
                         }
                     }
+
+                    e.ClearLoot(false);
+                }
+                else
+                {
+                    var i = e.ForcedLoot.Count;
+
+                    while (--i >= 0)
+                    {
+                        if (i >= e.ForcedLoot.Count)
+                        {
+                            continue;
+                        }
+
+                        var o = e.ForcedLoot[i];
+
+                        if (o != null && !o.Deleted)
+                        {
+                            o.Delete();
+                        }
+                    }
+
+                    e.ClearLoot(true);
                 }
 
                 base.OnDeath(c);
 
-                if (DeleteCorpseOnDeath)
+                if (e.PreventDefault)
+                {
+                    return;
+                }
+
+                if (DeleteCorpseOnDeath && !e.PreventDelete)
                 {
                     c.Delete();
                 }
