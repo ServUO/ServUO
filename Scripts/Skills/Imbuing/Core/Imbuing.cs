@@ -216,9 +216,9 @@ namespace Server.SkillHandlers
             return false;
         }
 
-        private static Type[] _SpecialImbuable =
+         private static Type[] _SpecialImbuable =
         {
-            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings), typeof(OrcishKinMask), typeof(SavageMask)
+            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings), typeof(OrcishKinMask), typeof(SavageMask), typeof(VirtuososArmbands), typeof(VirtuososCap), typeof(VirtuososCollar), typeof(VirtuososEarpieces), typeof(VirtuososKidGloves), typeof(VirtuososKilt), typeof(VirtuososNecklace), typeof(VirtuososTunic), typeof(BestialArms), typeof(BestialEarrings), typeof(BestialGloves), typeof(BestialGorget), typeof(BestialHelm), typeof(BestialKilt), typeof(BestialLegs), typeof(BestialNecklace),  typeof(FishermansHat), typeof(FishermansTrousers), typeof(FishermansVest), typeof(FishermansEelskinGloves), typeof(FishermansChestguard), typeof(FishermansKilt), typeof(FishermansArms), typeof (FishermansEarrings)
         };
 
         private static Type[] _NonCraftables =
