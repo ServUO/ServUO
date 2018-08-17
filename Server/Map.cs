@@ -95,7 +95,7 @@
  * Map property from the Gump; The list of names may not be what you expect,
  * in which case, enabling this update will fix it.
  */
-//#define Map_InternalProtection
+#define Map_InternalProtection
 #endregion
 
 #region References
@@ -1607,7 +1607,7 @@ namespace Server
 			GetSector(m).OnClientChange(oldState, newState);
 		}
 
-		public void OnEnter(Mobile m)
+		public virtual void OnEnter(Mobile m)
 		{
 			if (this == Internal)
 			{
@@ -1619,7 +1619,7 @@ namespace Server
 			sector.OnEnter(m);
 		}
 
-		public void OnEnter(Item item)
+		public virtual void OnEnter(Item item)
 		{
 			if (this == Internal)
 			{
@@ -1640,7 +1640,7 @@ namespace Server
 			}
 		}
 
-		public void OnLeave(Mobile m)
+		public virtual void OnLeave(Mobile m)
 		{
 			if (this == Internal)
 			{
@@ -1652,7 +1652,7 @@ namespace Server
 			sector.OnLeave(m);
 		}
 
-		public void OnLeave(Item item)
+		public virtual void OnLeave(Item item)
 		{
 			if (this == Internal)
 			{
@@ -1715,7 +1715,7 @@ namespace Server
 			return GetSector(Bound(new Point2D(loc.m_X + mcl.Max.m_X, loc.m_Y + mcl.Max.m_Y)));
 		}
 
-		public void OnMove(Point3D oldLocation, Mobile m)
+		public virtual void OnMove(Point3D oldLocation, Mobile m)
 		{
 			if (this == Internal)
 			{
@@ -1732,7 +1732,7 @@ namespace Server
 			}
 		}
 
-		public void OnMove(Point3D oldLocation, Item item)
+		public virtual void OnMove(Point3D oldLocation, Item item)
 		{
 			if (this == Internal)
 			{

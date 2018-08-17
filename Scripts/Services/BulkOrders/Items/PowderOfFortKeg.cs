@@ -16,7 +16,7 @@ namespace Server.Items
 
         [Constructable]
         public PowderOfFortKeg()
-            : this(250)
+            : this(0)
         {
         }
 
