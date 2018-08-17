@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Mobiles;
+using Server.Services.Virtues;
 
 namespace Server.Engines.Quests
 {
@@ -59,6 +60,10 @@ namespace Server.Engines.Quests
                 return null;
             }
         }
+
+        public override bool CanAutoStable { get { return false; } }
+        public override bool CanDetectHidden { get { return false; } }
+
         public BaseQuest Quest
         {
             get

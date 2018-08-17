@@ -10,49 +10,49 @@ namespace Server.Mobiles
         public DragonsFlameMage()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Black Order Mage";
-            this.Title = "of the Dragon's Flame Sect";
-            this.Female = Utility.RandomBool();
-            this.Race = Race.Human;
-            this.Hue = this.Race.RandomSkinHue();
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
-            this.Race.RandomFacialHair(this);
+            Name = "Black Order Mage";
+            Title = "of the Dragon's Flame Sect";
+            Female = Utility.RandomBool();
+            Race = Race.Human;
+            Hue = Race.RandomSkinHue();
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
+            Race.RandomFacialHair(this);
 
-            this.AddItem(new NinjaTabi());
-            this.AddItem(new FancyShirt(0x51D));
-            this.AddItem(new Hakama(0x51D));
-            this.AddItem(new Kasa(0x51D));
+            AddItem(new NinjaTabi());
+            AddItem(new FancyShirt(0x51D));
+            AddItem(new Hakama(0x51D));
+            AddItem(new Kasa(0x51D));
 
-            this.SetStr(340, 360);
-            this.SetDex(200, 215);
-            this.SetInt(400, 415);
+            SetStr(340, 360);
+            SetDex(200, 215);
+            SetInt(400, 415);
 
-            this.SetHits(600, 615);
+            SetHits(600, 615);
 
-            this.SetDamage(13, 15);
+            SetDamage(13, 15);
 
-            this.SetDamageType(ResistanceType.Physical, 10);
-            this.SetDamageType(ResistanceType.Fire, 20);
-            this.SetDamageType(ResistanceType.Cold, 20);
-            this.SetDamageType(ResistanceType.Energy, 50);
+            SetDamageType(ResistanceType.Physical, 10);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Cold, 20);
+            SetDamageType(ResistanceType.Energy, 50);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 30, 50);
-            this.SetResistance(ResistanceType.Cold, 55, 60);
-            this.SetResistance(ResistanceType.Poison, 50, 60);
-            this.SetResistance(ResistanceType.Energy, 60, 70);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 30, 50);
+            SetResistance(ResistanceType.Cold, 55, 60);
+            SetResistance(ResistanceType.Poison, 50, 60);
+            SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetSkill(SkillName.EvalInt, 70.1, 80.0);
-            this.SetSkill(SkillName.Magery, 90.1, 100.0);
-            this.SetSkill(SkillName.MagicResist, 85.1, 95.0);
-            this.SetSkill(SkillName.Tactics, 70.1, 80.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 80.0);
+            SetSkill(SkillName.EvalInt, 70.1, 80.0);
+            SetSkill(SkillName.Magery, 90.1, 100.0);
+            SetSkill(SkillName.MagicResist, 85.1, 95.0);
+            SetSkill(SkillName.Tactics, 70.1, 80.0);
+            SetSkill(SkillName.Wrestling, 60.1, 80.0);
 
-            this.Fame = 13000;
-            this.Karma = -13000;
+            Fame = 13000;
+            Karma = -13000;
 
-            this.VirtualArmor = 58;
+            VirtualArmor = 58;
         }
 
         public DragonsFlameMage(Serial serial)
@@ -60,23 +60,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AlwaysMurderer { get { return true; } }
+        public override bool ShowFameTitle { get { return false; } }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosFilthyRich, 4);
+            AddLoot(LootPack.AosFilthyRich, 4);
         }
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
@@ -102,14 +91,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

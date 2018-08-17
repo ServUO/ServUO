@@ -15,6 +15,8 @@ namespace Server.Mobiles
 
         public override bool OwnerCanRename { get { return false; } }
         public override bool IsBondable { get { return false; } }
+        public override bool CanAutoStable { get { return false; } }
+        public override bool CanDetectHidden { get { return false; } }
 
         public BaseHire(AIType AI)
             : base(AI, FightMode.Aggressor, 10, 1, 0.1, 4.0)

@@ -69,13 +69,12 @@ namespace Server.Spells.Spellweaving
                     int minDamage = (int)this.Caster.Skills.Spellweaving.Value / 5;
                     int maxDamage = (int)this.Caster.Skills.Spellweaving.Value / 3;
                     damage = Utility.RandomMinMax(minDamage, maxDamage);
-                    int damageBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
-					
-                    if (m.Player && damageBonus > 15)
-                        damageBonus = 15;
-                    damage *= damageBonus + 100;
-                    damage /= 100;
                 }
+
+                int damageBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, Caster.Player && m.Player);
+
+                damage *= damageBonus + 100;
+                damage /= 100;
 
                 int[] types = new int[4];
                 types[Utility.Random(types.Length)] = 100;

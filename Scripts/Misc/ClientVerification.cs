@@ -145,7 +145,7 @@ namespace Server.Misc
                 {
                     if (state.Socket != null)
                     {
-                        Utility.PushColor(ConsoleColor.DarkRed);
+                        Utility.PushColor(ConsoleColor.Red);
                         Console.WriteLine("Client: {0}: Disconnecting, bad version", state);
                         Utility.PopColor();
                         state.Dispose();

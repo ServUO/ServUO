@@ -1,13 +1,8 @@
-#region Header
-// **********
-// ServUO - Mobile.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -427,6 +422,8 @@ namespace Server
 		HealthbarYellow = 0x00800000,
 		HealthbarPoison = 0x01000000,
         Face = 0x08000000,
+		Skills = 0x10000000,
+
         Attributes = 0x0000001C
 	}
 
@@ -741,7 +738,7 @@ namespace Server
 		private string m_GuildTitle;
 		private bool m_Criminal;
 		private string m_Name;
-		private int m_Kills, m_ShortTermMurders;
+		private int m_Deaths, m_Kills, m_ShortTermMurders;
 		private int m_SpeechHue, m_EmoteHue, m_WhisperHue, m_YellHue;
 		private string m_Language;
 		private NetState m_NetState;
@@ -825,6 +822,8 @@ namespace Server
 		private const int WarmodeCatchCount = 4;
 		// Allow four warmode changes in 0.5 seconds, any more will be delay for two seconds
 
+		public virtual bool ViewOPL { get { return ObjectPropertyList.Enabled; } }
+
 		[CommandProperty(AccessLevel.Decorator)]
 		public Race Race
 		{
@@ -869,6 +868,9 @@ namespace Server
         {
             return RacialSkillBonus;
         }
+
+		public virtual void MutateSkill(SkillName skill, ref double value)
+		{ }
 
 		private List<ResistanceMod> m_ResistMods;
 
@@ -945,6 +947,7 @@ namespace Server
 			if (delta)
 			{
 				Delta(MobileDelta.Resistances);
+				ProcessDelta();
 			}
 		}
 
@@ -1135,83 +1138,169 @@ namespace Server
 			return suffix;
 		}
 
-		public virtual void AddNameProperties(ObjectPropertyList list)
+		protected virtual void AlterName(ref string prefix, ref string name, ref string suffix)
+		{ }
+
+		public virtual string GetName(out string prefix, out string name, out string suffix)
 		{
-			string name = Name;
-
-			if (name == null)
+			prefix = String.Empty;
+			name = Name ?? String.Empty;
+			suffix = String.Empty;
+			
+			if (AccessLevel > AccessLevel.Player)
 			{
-				name = String.Empty;
+				if (!String.IsNullOrWhiteSpace(prefix) && !prefix.StartsWith(" "))
+				{
+					prefix = " " + prefix;
+				}
+
+				prefix = GetAccessLevelShortName(AccessLevel) + prefix;
 			}
 
-			string prefix = "";
-
-			if (ShowFameTitle && (m_Player || m_Body.IsHuman) && m_Fame >= 10000)
+			if (ShowFameTitle && m_Fame >= 10000 && (m_Player || m_Body.IsHuman))
 			{
-				prefix = m_Female ? "Lady" : "Lord";
+				if (!String.IsNullOrWhiteSpace(prefix) && !prefix.EndsWith(" "))
+				{
+					prefix += " ";
+				}
+
+				prefix += Female ? "Lady" : "Lord";
 			}
-
-			string suffix = "";
-
-			if (PropertyTitle && Title != null && Title.Length > 0)
+			
+			if (PropertyTitle && !String.IsNullOrWhiteSpace(Title))
 			{
-				suffix = Title;
+				if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith(" "))
+				{
+					suffix += " ";
+				}
+
+				suffix += Title;
 			}
+			
+			if (m_Guild != null && (m_DisplayGuildTitle || !m_Player))
+			{
+				if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith("]") && !suffix.EndsWith(" "))
+				{
+					suffix += " ";
+				}
 
-			BaseGuild guild = m_Guild;
-
-            if (guild != null && m_Player && m_DisplayGuildTitle)
-            {
-                if (suffix.Length > 0)
-                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
-                else
-                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+				suffix += String.Format("[{0}]", Utility.FixHtml(m_Guild.Abbreviation));
             }
 
 			suffix = ApplyNameSuffix(suffix);
 
-			list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
+			prefix = prefix.Trim();
+			name = name.Trim();
+			suffix = suffix.Trim();
 
-			if (guild != null && (m_DisplayGuildTitle || (m_Player && guild.Type != GuildType.Regular)))
+			AlterName(ref prefix, ref name, ref suffix);
+
+			if (String.IsNullOrWhiteSpace(name))
+			{
+				name = " ";
+			}
+
+			var cli = suffix.IndexOf('#');
+
+			if (cli > 0 && Char.IsNumber(suffix, cli + 1))
+			{
+				if (!name.EndsWith(" ") && !suffix.StartsWith(" "))
+				{
+					name += " ";
+				}
+
+				name += suffix.Substring(0, cli);
+				suffix = suffix.Substring(cli);
+			}
+
+			if (!String.IsNullOrWhiteSpace(prefix) && !name.StartsWith(" "))
+			{
+				name = String.Concat(" ", name);
+			}
+
+			if (!String.IsNullOrWhiteSpace(suffix) && !name.EndsWith(" "))
+			{
+				name = String.Concat(name, " ");
+			}
+
+			return String.Concat(prefix, name, suffix);
+		}
+
+		public virtual void AddNameProperties(ObjectPropertyList list)
+		{
+			string prefix, name, suffix;
+
+			GetName(out prefix, out name, out suffix);
+
+			if (String.IsNullOrEmpty(prefix))
+			{
+				prefix = " ";
+			}
+
+			if (String.IsNullOrEmpty(name))
+			{
+				name = " ";
+			}
+
+			if (String.IsNullOrEmpty(suffix))
+			{
+				suffix = " ";
+			}
+
+			list.Add(1050045, "{0}\t{1}\t{2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
+
+			AddGuildProperties(list);
+		}
+
+		public virtual void AddGuildProperties(ObjectPropertyList list)
+		{
+			if (m_Guild == null)
+			{
+				return;
+			}
+
+			var text = String.Empty;
+
+			if (m_DisplayGuildTitle || !m_Player || m_Guild.Type != GuildType.Regular)
 			{
 				string type;
 
-				if (guild.Type >= 0 && (int)guild.Type < m_GuildTypes.Length)
+				if (m_Guild.Type >= 0 && (int)m_Guild.Type < m_GuildTypes.Length)
 				{
-					type = m_GuildTypes[(int)guild.Type];
+					type = m_GuildTypes[(int)m_Guild.Type];
 				}
 				else
 				{
 					type = "";
 				}
 
-				string title = GuildTitle;
-
-				if (title == null)
-				{
-					title = "";
-				}
-				else
-				{
-					title = title.Trim();
-				}
+				var title = Utility.FixHtml(GuildTitle ?? String.Empty);
 
 				if (NewGuildDisplay && title.Length > 0)
 				{
-					list.Add("{0}, {1}", Utility.FixHtml(title), Utility.FixHtml(guild.Name));
+					text = String.Format("{0}, {1}", title, Utility.FixHtml(m_Guild.Name));
+				}
+				else if (title.Length > 0)
+				{
+					text = String.Format("{0}, {1} Guild{2}", title, Utility.FixHtml(m_Guild.Name), type);
 				}
 				else
 				{
-					if (title.Length > 0)
-					{
-						list.Add("{0}, {1} Guild{2}", Utility.FixHtml(title), Utility.FixHtml(guild.Name), type);
-					}
-					else
-					{
-						list.Add(Utility.FixHtml(guild.Name));
-					}
+					text = Utility.FixHtml(m_Guild.Name);
 				}
 			}
+
+			if (!String.IsNullOrWhiteSpace(text))
+			{
+				list.Add(text);
+			}
+		}
+
+		public virtual string FormatProperty(double value, string format = "#,0.##")
+		{
+			return value == 0 || String.IsNullOrWhiteSpace(format)
+				? value.ToString(CultureInfo.InvariantCulture)
+				: value.ToString(format);
 		}
 
 		public virtual bool NewGuildDisplay { get { return false; } }
@@ -1219,6 +1308,11 @@ namespace Server
 		public virtual void GetProperties(ObjectPropertyList list)
 		{
 			AddNameProperties(list);
+
+			if (Spawner != null)
+			{
+				Spawner.GetSpawnProperties(this, list);
+			}
 		}
 
 		public virtual void GetChildProperties(ObjectPropertyList list, Item item)
@@ -1617,6 +1711,27 @@ namespace Server
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public int BAC { get { return m_BAC; } set { m_BAC = value; } }
+
+		public virtual int DefaultBloodHue { get { return 0; } }
+
+		public virtual bool HasBlood { get { return Alive && BloodHue >= 0 && !Body.IsGhost && !Body.IsEquipment; } }
+
+		private int m_BloodHue = -1;
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public virtual int BloodHue
+		{
+			get
+			{
+				if (m_BloodHue < 0)
+				{
+					return DefaultBloodHue;
+				}
+
+				return m_BloodHue;
+			}
+			set { m_BloodHue = value; }
+		}
 
 		private long m_LastMoveTime;
 
@@ -2175,6 +2290,9 @@ namespace Server
 		{
 			return (Utility.InUpdateRange(this, e.Location) && CanSee(e) && InLOS(e));
 		}
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool GuardImmune { get; set; }
 
 		/// <summary>
 		///     Overridable. Gets or sets which Mobile that this Mobile is currently engaged in combat with.
@@ -2317,7 +2435,7 @@ namespace Server
 
             bool addAggressor = true;
 
-            List<AggressorInfo> list = m_Aggressors;
+			var list = m_Aggressors;
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -2383,9 +2501,9 @@ namespace Server
 
             if (addAggressor)
             {
-                m_Aggressors.Add(AggressorInfo.Create(aggressor, this, criminal)); // new AggressorInfo( aggressor, this, criminal, true ) );
+                m_Aggressors.Add(AggressorInfo.Create(aggressor, this, criminal));
 
-                if (this.CanSee(aggressor) && m_NetState != null)
+                if (CanSee(aggressor) && m_NetState != null)
                 {
                     m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
                 }
@@ -2398,9 +2516,9 @@ namespace Server
 
             if (addAggressed)
             {
-                aggressor.m_Aggressed.Add(AggressorInfo.Create(aggressor, this, criminal)); // new AggressorInfo( aggressor, this, criminal, false ) );
+                aggressor.m_Aggressed.Add(AggressorInfo.Create(aggressor, this, criminal));
 
-                if (this.CanSee(aggressor) && m_NetState != null)
+                if (CanSee(aggressor) && m_NetState != null)
                 {
                     m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
                 }
@@ -3560,17 +3678,7 @@ namespace Server
 		public virtual void OnMovement(Mobile m, Point3D oldLocation)
 		{ }
 
-		public ISpell Spell
-		{
-			get { return m_Spell; }
-			set
-			{
-				//if( m_Spell != null && value != null )
-				//	Console.WriteLine("Warning: Spell has been overwritten");
-
-				m_Spell = value;
-			}
-		}
+		public ISpell Spell { get { return m_Spell; } set { m_Spell = value; } }
 
 		[CommandProperty(AccessLevel.Administrator)]
 		public bool AutoPageNotify { get { return m_AutoPageNotify; } set { m_AutoPageNotify = value; } }
@@ -3695,7 +3803,7 @@ namespace Server
 
 					Item item = m_Items[i];
 
-					if (item.ItemID == 0x204E)
+					if (item.ItemID == 8270)
 					{
 						item.Delete();
 					}
@@ -4147,14 +4255,6 @@ namespace Server
 
 			Container c = (m_CreateCorpse == null ? null : m_CreateCorpse(this, hair, facialhair, content, equip));
 
-			/*m_Corpse = c;
-
-			for ( int i = 0; c != null && i < content.Count; ++i )
-			c.DropItem( (Item)content[i] );
-
-			if ( c != null )
-			c.MoveToWorld( this.Location, this.Map );*/
-
 			if (m_Map != null)
 			{
 				Packet animPacket = null;
@@ -4211,6 +4311,28 @@ namespace Server
 		/// </summary>
 		public virtual void OnDeath(Container c)
 		{
+			if (LastKiller != null)
+			{
+				var items = LastKiller.Items;
+
+				var i = items.Count;
+
+				while (--i >= 0)
+				{
+					if (i >= items.Count)
+					{
+						continue;
+					}
+
+					var o = items[i];
+
+					if (o != null)
+					{
+						o.OnParentKill(this, c);
+					}
+				}
+			}
+
 			int sound = GetDeathSound();
 
 			if (sound >= 0)
@@ -4373,7 +4495,7 @@ namespace Server
 				return;
 			}
 
-			object root = item.RootParent;
+			var root = item.RootParent;
 			bool okay = false;
 
 			if (!Utility.InUpdateRange(this, item.GetWorldLocation()))
@@ -4679,7 +4801,7 @@ namespace Server
 					item.SendInfoTo(state);
 				}
 
-				if (ObjectPropertyList.Enabled && item.Parent != null)
+				if (ViewOPL && item.Parent != null)
 				{
 					state.Send(item.OPLPacket);
 				}
@@ -5509,41 +5631,37 @@ namespace Server
 		/// </summary>
 		public virtual void OnDamage(int amount, Mobile from, bool willKill)
 		{ }
-
-        public virtual void Damage(int amount, Mobile from, int type)
-        {
-        }
-
-		public virtual void Damage(int amount)
-		{
-			Damage(amount, null);
-		}
-
+		
 		public virtual bool CanBeDamaged()
 		{
 			return !m_Blessed;
 		}
 
-		public virtual void Damage(int amount, Mobile from)
+		public virtual int Damage(int amount)
 		{
-			Damage(amount, from, true);
+			return Damage(amount, null);
 		}
 
-        public virtual void Damage(int amount, Mobile from, bool informMount)
+		public virtual int Damage(int amount, Mobile from)
+		{
+			return Damage(amount, from, true);
+		}
+
+        public virtual int Damage(int amount, Mobile from, bool informMount)
         {
-            Damage(amount, from, informMount, true);
+            return Damage(amount, from, informMount, true);
         }
 
-		public virtual void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+		public virtual int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
 		{
 			if (!CanBeDamaged() || m_Deleted)
 			{
-				return;
+				return 0;
 			}
 
 			if (!Region.OnDamage(this, ref amount))
 			{
-				return;
+				return 0;
 			}
 
 			if (amount > 0)
@@ -5555,9 +5673,6 @@ namespace Server
 				{
 					m_Spell.OnCasterHurt();
 				}
-
-				//if ( m_Spell != null && m_Spell.State == SpellState.Casting )
-				//	m_Spell.Disturb( DisturbType.Hurt, false, true );
 
 				if (from != null)
 				{
@@ -5572,6 +5687,7 @@ namespace Server
 				OnDamage(amount, from, newHits < 0);
 
 				IMount m = Mount;
+
 				if (m != null && informMount)
 				{
 					m.OnRiderDamaged(amount, from, newHits < 0);
@@ -5593,6 +5709,8 @@ namespace Server
 					Hits = newHits;
 				}
 			}
+
+			return amount;
 		}
 
         public virtual void SendDamagePacket(Mobile from, int amount)
@@ -5722,26 +5840,26 @@ namespace Server
 			eable.Free();
 		}
 
-		public void Heal(int amount)
+		public virtual int Heal(int amount)
 		{
-			Heal(amount, this, true);
+			return Heal(amount, this, true);
 		}
 
-		public void Heal(int amount, Mobile from)
+		public virtual int Heal(int amount, Mobile from)
 		{
-			Heal(amount, from, true);
+			return Heal(amount, from, true);
 		}
 
-		public void Heal(int amount, Mobile from, bool message)
+		public virtual int Heal(int amount, Mobile from, bool message)
 		{
 			if (!Alive || IsDeadBondedPet)
 			{
-				return;
+				return 0;
 			}
 
 			if (!Region.OnHeal(this, ref amount))
 			{
-				return;
+				return 0;
 			}
 
 			OnHeal(ref amount, from);
@@ -5769,6 +5887,8 @@ namespace Server
 						amount.ToString(),
 						""));
 			}
+
+			return amount;
 		}
 
 		public virtual void OnHeal(ref int amount, Mobile from)
@@ -5800,7 +5920,16 @@ namespace Server
 
 			switch (version)
 			{
-                case 34:
+				case 36:
+				{
+					m_BloodHue = reader.ReadInt();
+					m_Deaths = reader.ReadInt();
+				}
+					goto case 35;
+				case 35:
+					GuardImmune = reader.ReadBool();
+					goto case 34;
+				case 34:
                     {
 						m_StrCap = reader.ReadInt();
 						m_DexCap = reader.ReadInt();
@@ -6339,8 +6468,16 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(34); // version
+			writer.Write(36); // version
 
+			// 36
+			writer.Write(m_BloodHue);
+			writer.Write(m_Deaths);
+
+			// 35
+			writer.Write(GuardImmune);
+
+			// 34
 			writer.Write(m_StrCap);
 			writer.Write(m_DexCap);
 			writer.Write(m_IntCap);
@@ -6582,15 +6719,30 @@ namespace Server
 			}
 		}
 
-		private static readonly string[] m_AccessLevelNames = new[]
+		private static readonly string[] m_AccessLevelNames =
 		{
-			"Player", "VIP Player", "Counselor", "Decorator", "Spawner", "Game Master", "Seer", "Administrator", "Developer",
-			"Co-Owner", "Owner"
+			"Player", "VIP", "Counselor", //
+			"Decorator", "Spawner", "Game Master", //
+			"Seer", "Administrator", "Developer", //
+			"Owner", "Owner"
 		};
 
 		public static string GetAccessLevelName(AccessLevel level)
 		{
 			return m_AccessLevelNames[(int)level];
+		}
+
+		private static readonly string[] m_AccessLevelShortNames =
+		{
+			"Player", "VIP", "Counselor", //
+			"Decorator", "Spawner", "GM", //
+			"Seer", "Admin", "Dev", //
+			"Owner", "Owner"
+		};
+
+		public static string GetAccessLevelShortName(AccessLevel level)
+		{
+			return m_AccessLevelShortNames[(int)level];
 		}
 
 		public virtual bool CanPaperdollBeOpenedBy(Mobile from)
@@ -6612,6 +6764,21 @@ namespace Server
 			{
 				list.Add(new PaperdollEntry(this));
 			}
+
+			if (from == this && Backpack != null && CanSee(Backpack) && CheckAlive(false))
+			{
+				list.Add(new OpenBackpackEntry(this));
+			}
+
+			if (Spawner != null)
+			{
+				Spawner.GetSpawnContextEntries(this, from, list);
+			}
+		}
+
+		public virtual bool DisplayContextMenu(Mobile from)
+		{
+			return ContextMenu.Display(from, this);
 		}
 
 		public void Internalize()
@@ -6671,6 +6838,14 @@ namespace Server
 
 		public virtual int MaxWeight { get { return int.MaxValue; } }
 
+		public virtual void Obtained(Item item)
+		{
+			if (item != m_Backpack && item != m_BankBox)
+			{
+				EventSink.InvokeOnItemObtained(new OnItemObtainedEventArgs(this, item));
+			}
+		}
+
 		public void AddItem(Item item)
 		{
 			if (item == null || item.Deleted)
@@ -6710,9 +6885,9 @@ namespace Server
                         op.WriteLine();
                     }
 
-                    Utility.WriteConsoleColor(ConsoleColor.DarkRed, String.Format("Offending Mobile: {0}[{1}]", GetType().ToString(), this));
-                    Utility.WriteConsoleColor(ConsoleColor.DarkRed, String.Format("Offending Item: {0}", item.GetType().ToString()));
-                    Utility.WriteConsoleColor(ConsoleColor.DarkRed, String.Format("Layer: {0}", item.Layer.ToString()));
+                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Mobile: {0}[{1}]", GetType().ToString(), this));
+                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Item: {0}", item.GetType().ToString()));
+                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Layer: {0}", item.Layer.ToString()));
                 }
                 catch
                 { }
@@ -7581,7 +7756,7 @@ namespace Server
 								ns.Send(new BondedStatus(0, m.m_Serial, 1));
 							}
 
-							if (ObjectPropertyList.Enabled)
+							if (ViewOPL)
 							{
 								ns.Send(m.OPLPacket);
 							}
@@ -7729,9 +7904,20 @@ namespace Server
 
 			if (newRegion != oldRegion)
 			{
+				if (oldRegion != null)
+				{
+					oldRegion.OnExit(this);
+				}
+				
 				m_Region = newRegion;
 
+				if (newRegion != null)
+				{
+					newRegion.OnEnter(this);
+				}
+
 				Region.OnRegionChange(this, oldRegion, newRegion);
+
 				OnRegionChange(oldRegion, newRegion);
 			}
 		}
@@ -7995,6 +8181,7 @@ namespace Server
 					m_StatMods.RemoveAt(i);
 					CheckStatTimers();
 					Delta(MobileDelta.Stat | GetStatDelta(check.Type));
+					ProcessDelta();
 					return true;
 				}
 			}
@@ -8901,12 +9088,9 @@ namespace Server
 							state.Send(new BondedStatus(0, m_Serial, 1));
 						}
 
-						if (ObjectPropertyList.Enabled)
+						if (state.Mobile.ViewOPL)
 						{
 							state.Send(OPLPacket);
-
-							//foreach ( Item item in m_Items )
-							//	state.Send( item.OPLPacket );
 						}
 					}
 				}
@@ -9624,6 +9808,27 @@ namespace Server
 			//198,		// ML Dragon
 		};
 
+		[Body, CommandProperty(AccessLevel.GameMaster)]
+		public Body RawBody
+		{
+			get { return m_Body; }
+			set
+			{
+				if (m_Body != value)
+				{
+					m_Body = SafeBody(value);
+
+					if (!IsBodyMod)
+					{
+						Delta(MobileDelta.Body);
+						InvalidateProperties();
+
+						CheckStatTimers();
+					}
+				}
+			}
+		}
+
 		[Body, CommandProperty(AccessLevel.Decorator)]
 		public Body Body
 		{
@@ -9933,7 +10138,7 @@ namespace Server
 				m_Location = newLocation;
 				UpdateRegion();
 
-				if (AccessLevel == AccessLevel.Player)
+				if (AccessLevel <= AccessLevel.Counselor)
 				{
 					BankBox box = FindBankNoCreate();
 
@@ -10048,7 +10253,7 @@ namespace Server
 										m.m_NetState.Send(new BondedStatus(0, m_Serial, 1));
 									}
 
-									if (ObjectPropertyList.Enabled)
+									if (m.ViewOPL)
 									{
 										m.m_NetState.Send(OPLPacket);
 									}
@@ -10083,7 +10288,7 @@ namespace Server
 										ourState.Send(new BondedStatus(0, m.m_Serial, 1));
 									}
 
-									if (ObjectPropertyList.Enabled)
+									if (ViewOPL)
 									{
 										ourState.Send(m.OPLPacket);
 									}
@@ -10127,7 +10332,7 @@ namespace Server
 									ns.Send(new BondedStatus(0, m_Serial, 1));
 								}
 
-								if (ObjectPropertyList.Enabled)
+								if (ns.Mobile.ViewOPL)
 								{
 									ns.Send(OPLPacket);
 								}
@@ -10191,9 +10396,6 @@ namespace Server
 			}
 		}
 
-		//		[CommandProperty( AccessLevel.GameMaster )]
-		//		public int HairSerial { get { return HairInfo.FakeSerial( this ); } }
-
 		[CommandProperty(AccessLevel.Decorator)]
 		public int FacialHairItemID
 		{
@@ -10224,9 +10426,6 @@ namespace Server
 				Delta(MobileDelta.FacialHair);
 			}
 		}
-
-		//		[CommandProperty( AccessLevel.GameMaster )]
-		//		public int FacialHairSerial { get { return FacialHairInfo.FakeSerial( this ); } }
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public int HairHue
@@ -10625,12 +10824,9 @@ namespace Server
 							state.Send(new BondedStatus(0, m_Serial, 1));
 						}
 
-						if (ObjectPropertyList.Enabled)
+						if (state.Mobile.ViewOPL)
 						{
 							state.Send(OPLPacket);
-
-							//foreach ( Item item in m_Items )
-							//	state.Send( item.OPLPacket );
 						}
 					}
 				}
@@ -11029,8 +11225,7 @@ namespace Server
 			m_CreationTime = DateTime.UtcNow;
 		}
 
-		private static readonly Queue<Mobile> m_DeltaQueue = new Queue<Mobile>();
-		private static readonly Queue<Mobile> m_DeltaQueueR = new Queue<Mobile>();
+		private static readonly List<Mobile> m_DeltaQueue = new List<Mobile>();
 
 		private bool m_InDeltaQueue;
 		private MobileDelta m_DeltaFlags;
@@ -11048,29 +11243,7 @@ namespace Server
 			{
 				m_InDeltaQueue = true;
 
-				if (_processing)
-				{
-					lock (m_DeltaQueueR)
-					{
-						m_DeltaQueueR.Enqueue(this);
-
-						try
-						{
-							using (StreamWriter op = new StreamWriter("delta-recursion.log", true))
-							{
-								op.WriteLine("# {0}", DateTime.UtcNow);
-								op.WriteLine(new StackTrace());
-								op.WriteLine();
-							}
-						}
-						catch
-						{ }
-					}
-				}
-				else
-				{
-					m_DeltaQueue.Enqueue(this);
-				}
+				m_DeltaQueue.Add(this);
 			}
 
 			Core.Set();
@@ -11640,32 +11813,50 @@ namespace Server
 			}
 		}
 
-		private static bool _processing;
+		private static bool _Processing;
 
 		public static void ProcessDeltaQueue()
 		{
-			_processing = true;
-
-			if (m_DeltaQueue.Count >= 512)
+			if (_Processing)
 			{
-				Parallel.ForEach(m_DeltaQueue, m => m.ProcessDelta());
-				m_DeltaQueue.Clear();
+				return;
 			}
-			else
+
+			_Processing = true;
+
+			var i = m_DeltaQueue.Count;
+
+			while (--i >= 0)
 			{
-				while (m_DeltaQueue.Count > 0)
+				if (i < m_DeltaQueue.Count)
 				{
-					m_DeltaQueue.Dequeue().ProcessDelta();
+					m_DeltaQueue[i].ProcessDelta();
+					m_DeltaQueue.RemoveAt(i);
 				}
 			}
 
-			_processing = false;
+			_Processing = false;
+		}
 
-			while (m_DeltaQueueR.Count > 0)
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
+		public int Deaths
+		{
+			get { return m_Deaths; }
+			set
 			{
-				m_DeltaQueueR.Dequeue().ProcessDelta();
+				if (m_Deaths != value)
+				{
+					int oldValue = m_Deaths;
+
+					m_Deaths = Math.Max(0, value);
+
+					OnDeathsChange(oldValue);
+				}
 			}
 		}
+
+		public virtual void OnDeathsChange(int oldValue)
+		{ }
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public int Kills
@@ -12104,6 +12295,8 @@ namespace Server
 		}
 
 		#region Send[ASCII]Message
+		public event Action<int, string, bool> OnSendMessage;
+
 		public void SendMessage(string text)
 		{
 			SendMessage(0x3B2, text);
@@ -12116,6 +12309,11 @@ namespace Server
 
 		public void SendMessage(int hue, string text)
 		{
+			if (OnSendMessage != null)
+			{
+				OnSendMessage(hue, text, false);
+			}
+
 			NetState ns = m_NetState;
 
 			if (ns != null)
@@ -12141,6 +12339,11 @@ namespace Server
 
 		public void SendAsciiMessage(int hue, string text)
 		{
+			if (OnSendMessage != null)
+			{
+				OnSendMessage(hue, text, true);
+			}
+
 			NetState ns = m_NetState;
 
 			if (ns != null)
@@ -12684,6 +12887,9 @@ namespace Server
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int RawStatTotal { get { return RawStr + RawDex + RawInt; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int StatTotal { get { return Str + Dex + Int; } }
 
 		public long NextSpellTime { get; set; }
 

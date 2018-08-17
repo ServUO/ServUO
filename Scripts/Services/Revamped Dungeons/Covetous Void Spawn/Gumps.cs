@@ -224,7 +224,7 @@ namespace Server.Engines.VoidPool
         {
             Item item;
 
-            if (index >= 0 && index < 23)
+            if (index >= 0 && index <= 23)
             {
                 item = Activator.CreateInstance(citem.Type, (CraftResource)citem.Hue) as Item;
             }

@@ -63,6 +63,14 @@ namespace Server.Engines.Quests
                 return 0x5B6;
             }
         }
+
+        public virtual int CompleteMessage
+        {
+            get
+            {
+                return 1072273; // You've completed a quest!  Don't forget to collect your reward.
+            }
+        }
 		
         #region Quest Chain
         public virtual QuestChain ChainID
@@ -393,7 +401,7 @@ namespace Server.Engines.Quests
 		
         public virtual void OnCompleted()
         { 
-            m_Owner.SendLocalizedMessage(1072273, null, 0x23); // You've completed a quest!  Don't forget to collect your reward.							
+            m_Owner.SendLocalizedMessage(CompleteMessage, null, 0x23); // You've completed a quest!  Don't forget to collect your reward.							
             m_Owner.PlaySound(CompleteSound);
         }
 		

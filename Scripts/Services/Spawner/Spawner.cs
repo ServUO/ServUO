@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Linq;
 using Server.Commands;
+using Server.ContextMenus;
 using Server.Items;
 using CPA = Server.CommandPropertyAttribute;
 using Server.Gumps;
@@ -76,6 +77,8 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+
+        public override bool IsVirtualItem { get { return true; } }
 
         public bool IsFull { get { return (SpawnCount >= m_MaxCount); } }
         public bool IsEmpty { get { return (SpawnCount == 0); } }
@@ -213,6 +216,9 @@ namespace Server.Mobiles
                 return count;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool GuardImmune { get; set; }
 
         public override void OnAfterDuped(Item newItem)
         {
@@ -485,8 +491,6 @@ namespace Server.Mobiles
 
             spawned.OnBeforeSpawn(loc, map);
 
-            InvalidateProperties();
-
             spawned.MoveToWorld(loc, map);
 
             if (spawned is BaseCreature)
@@ -505,6 +509,17 @@ namespace Server.Mobiles
 
                 bc.Home = HomeLocation;
             }
+
+            if (spawned is Mobile)
+            {
+                Mobile m = (Mobile)spawned;
+
+                m.GuardImmune = GuardImmune;
+            }
+
+            spawned.OnAfterSpawn();
+
+            InvalidateProperties();
         }
 
         public Point3D GetSpawnPosition()
@@ -746,7 +761,10 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)6); // version
+            writer.Write((int)7); // version
+
+            writer.Write(GuardImmune);
+
             writer.Write(m_SpawnRange);
 
             writer.Write(m_WalkingRange);
@@ -780,6 +798,12 @@ namespace Server.Mobiles
 
             switch ( version )
             {
+                case 7:
+                    {
+                        GuardImmune = reader.ReadBool();
+
+                        goto case 6;
+                    }
                 case 6:
                     {
                         m_SpawnRange = reader.ReadInt();
@@ -935,6 +959,12 @@ namespace Server.Mobiles
                 }
             }
         }
+
+        public virtual void GetSpawnProperties(ISpawnable spawn, ObjectPropertyList list)
+        { }
+
+        public virtual void GetSpawnContextEntries(ISpawnable spawn, Mobile user, List<ContextMenuEntry> list)
+        { }
 
         void ISpawner.Remove(ISpawnable spawn)
         {

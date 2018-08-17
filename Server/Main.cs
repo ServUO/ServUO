@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Main.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -37,6 +31,8 @@ namespace Server
 			GlobalUpdateRange = 18;
             GlobalRadarRange = 37;
 		}
+
+		public static Action<CrashedEventArgs> CrashedHandler { get; set; }
 
 		public static bool Crashed { get { return _Crashed; } }
 
@@ -233,16 +229,26 @@ namespace Server
 
 				bool close = false;
 
+				CrashedEventArgs args = new CrashedEventArgs(e.ExceptionObject as Exception);
+
 				try
 				{
-					CrashedEventArgs args = new CrashedEventArgs(e.ExceptionObject as Exception);
-
 					EventSink.InvokeCrashed(args);
-
 					close = args.Close;
 				}
 				catch
 				{ }
+
+				if (CrashedHandler != null)
+				{
+					try
+					{
+						CrashedHandler(args);
+						close = args.Close;
+					}
+					catch
+					{ }
+				}
 
 				if (!close && !Service)
 				{
@@ -360,6 +366,10 @@ namespace Server
 
 		public static void Main(string[] args)
 		{
+#if DEBUG
+			Debug = true;
+#endif
+
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 
@@ -460,10 +470,9 @@ namespace Server
 				Name = "Timer Thread"
 			};
 
-			Version  ver 		= Assembly.GetName().Version;
-			DateTime buildDate 	= new DateTime(2000, 1, 1).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
+			Version ver = Assembly.GetName().Version;
+			var buildDate = new DateTime(2000, 1, 1).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
 			
-
 			Utility.PushColor(ConsoleColor.Cyan);
         #if DEBUG
             Console.WriteLine(
@@ -516,6 +525,7 @@ namespace Server
 			if (Type.GetType("Mono.Runtime") != null)
 			{	
 				MethodInfo displayName = Type.GetType("Mono.Runtime").GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+
 				if (displayName != null)
 				{
 					dotnet = displayName.Invoke(null, null).ToString();
@@ -917,7 +927,7 @@ namespace Server
 					new StreamWriter(
 						new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
 			{
-				writer.WriteLine(">>>Logging started on {0}.", DateTime.UtcNow.ToString("f"));
+				writer.WriteLine(">>>Logging started on {0:f}.", DateTime.Now);
 				//f = Tuesday, April 10, 2001 3:51 PM 
 			}
 

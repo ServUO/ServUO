@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Engines.CannedEvil;
+using Server.Services.Virtues;
 
 namespace Server.Mobiles
 {
@@ -40,7 +41,9 @@ namespace Server.Mobiles
             Math.Cos(280.0 / 180.0 * Math.PI), Math.Sin(280.0 / 180.0 * Math.PI),
             Math.Cos(320.0 / 180.0 * Math.PI), Math.Sin(320.0 / 180.0 * Math.PI),
         };
+
         private bool m_TrueForm;
+        private bool m_IsSpawned;
         private Item m_GateItem;
         private List<HarrowerTentacles> m_Tentacles;
 
@@ -49,8 +52,6 @@ namespace Server.Mobiles
         public Harrower()
             : base(AIType.AI_NecroMage, FightMode.Closest, 18, 1, 0.2, 0.4)
         {
-            m_Instances.Add(this);
-
             Name = "the harrower";
             BodyValue = 146;
 
@@ -85,7 +86,6 @@ namespace Server.Mobiles
         public Harrower(Serial serial)
             : base(serial)
         {
-            m_Instances.Add(this);
         }
 
         public static ArrayList Instances
@@ -178,6 +178,9 @@ namespace Server.Mobiles
             SpawnEntry entry = m_Entries[Utility.Random(m_Entries.Length)];
 
             Harrower harrower = new Harrower();
+            harrower.m_IsSpawned = true;
+
+            m_Instances.Add(harrower);
 
             harrower.MoveToWorld(entry.m_Location, Map.Felucca);
 
@@ -266,8 +269,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 
+            writer.Write(m_IsSpawned);
             writer.Write(m_TrueForm);
             writer.Write(m_GateItem);
             writer.WriteMobileList<HarrowerTentacles>(m_Tentacles);
@@ -281,6 +285,11 @@ namespace Server.Mobiles
 
             switch ( version )
             {
+                case 1:
+                    {
+                        m_IsSpawned = reader.ReadBool();
+                        goto case 0;
+                    }
                 case 0:
                     {
                         m_TrueForm = reader.ReadBool();
@@ -290,6 +299,9 @@ namespace Server.Mobiles
                         break;
                     }
             }
+
+            if (m_IsSpawned)
+                m_Instances.Add(this);
         }
 
         public void GivePowerScrolls()

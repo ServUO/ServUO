@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - PingListener.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 using System.Net;
 using System.Net.Sockets;

@@ -92,7 +92,7 @@ namespace Server.Spells.SkillMasteries
 
                                 if (canFit)
                                 {
-                                    Item item = new InternalItem(Caster, 0x37CC, loc, Caster.Map, duration);
+                                    Item item = new InternalItem(Caster, this, 0x37CC, loc, Caster.Map, duration);
                                     item.ProcessDelta();
                                     Effects.SendLocationParticles(EffectItem.Create(loc, Caster.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5048);
                                 }
@@ -112,14 +112,16 @@ namespace Server.Spells.SkillMasteries
             public Mobile Caster { get; set; }
             public Timer Timer { get; set; }
             public DateTime Expires { get; set; }
+            public NetherBlastSpell Owner { get; set; }
 
-            public InternalItem(Mobile caster, int itemID, Point3D loc, Map map, TimeSpan duration)
+            public InternalItem(Mobile caster, NetherBlastSpell owner, int itemID, Point3D loc, Map map, TimeSpan duration)
                 : base(itemID)
             {
                 Visible = false;
                 Movable = false;
                 Light = LightType.Circle300;
 
+                Owner = owner;
                 Expires = DateTime.UtcNow + duration;
                 MoveToWorld(loc, map);
 
@@ -145,14 +147,21 @@ namespace Server.Spells.SkillMasteries
                 if (this.Deleted)
                     return;
 
-                IPooledEnumerable eable = GetMobilesInRange(0);
+                IPooledEnumerable eable = GetMobilesInRange(1);
+                var affect = new List<Mobile>();
 
                 foreach(Mobile m in eable)
                 {
-                    if ((m.Z + 16) > this.Z && (this.Z + 12) > m.Z && m != Caster && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
-                        OnMoveOver(m);
+                    if (!affect.Contains(m) && (m.Z + 16) > this.Z && (this.Z + 12) > m.Z && m != Caster && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
+                        affect.Add(m);
                 }
 
+                foreach (var m in affect)
+                {
+                    DoDamage(m);
+                }
+
+                ColUtility.Free(affect);
                 eable.Free();
             }
 
@@ -188,7 +197,7 @@ namespace Server.Spells.SkillMasteries
                 Delete();
             }
 
-            public override bool OnMoveOver(Mobile m)
+            public bool DoDamage(Mobile m)
             {
                 if (Visible && Caster != null && (!Core.AOS || m != Caster) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
                 {
@@ -201,8 +210,24 @@ namespace Server.Spells.SkillMasteries
                     skill /= m.Player ? 3.5 : 2;
 
                     int damage = (int)skill + Utility.RandomMinMax(-3, 3);
+                    damage *= (int)Owner.GetDamageScalar(m);
+
+                    int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, Owner.CastSkill, Caster.Player && m.Player);
+
+                    damage *= (100 + sdiBonus);
+                    damage /= 100;
 
                     AOS.Damage(m, Caster, damage, 0, 0, 0, 0, 0, 100, 0, DamageType.SpellAOE);
+
+                    m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+
+                    int manaRip = Math.Max(m.Mana, damage / 4);
+
+                    if (manaRip > 0)
+                    {
+                        m.Mana -= manaRip;
+                        Caster.Mana += manaRip;
+                    }
                 }
 
                 return true;

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - StaticTarget.cs
-// **********
-#endregion
-
 namespace Server.Targeting
 {
 	public class StaticTarget : IPoint3D

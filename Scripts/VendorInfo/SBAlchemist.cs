@@ -64,14 +64,11 @@ namespace Server.Mobiles
                 {
                     Add(new GenericBuyInfo(typeof(HairDye), 37, 10, 0xEFF, 0));
                 }
-                else
+                else if (m is Zosilem)
                 {
-                    if (m is Zosilem)
-                    {
-                        Add(new GenericBuyInfo(typeof(GlassblowingBook), 10637, 30, 0xFF4, 0));
-                        Add(new GenericBuyInfo(typeof(SandMiningBook), 10637, 30, 0xFF4, 0));
-                        Add(new GenericBuyInfo(typeof(Blowpipe), 21, 100, 0xE8A, 0x3B9));
-                    }
+                    Add(new GenericBuyInfo(typeof(GlassblowingBook), 10637, 30, 0xFF4, 0));
+                    Add(new GenericBuyInfo(typeof(SandMiningBook), 10637, 30, 0xFF4, 0));
+                    Add(new GenericBuyInfo(typeof(Blowpipe), 21, 100, 0xE8A, 0x3B9));
                 }
             }
         }

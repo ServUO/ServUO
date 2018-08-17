@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - DawnsMusicBoxGump.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using Server.Items;
 using Server.Network;
 #endregion

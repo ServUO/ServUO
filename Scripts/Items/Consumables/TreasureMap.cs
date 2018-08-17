@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - TreasureMap.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -170,6 +164,9 @@ namespace Server.Items
 
         private static Point2D[] m_Locations;
         private static Point2D[] m_HavenLocations;
+
+        public static Point2D[] Locations { get { return m_Locations; } }
+        public static Point2D[] HavenLocations { get { return m_Locations; } }
 
         private int m_Level;
         private bool m_Completed;
@@ -539,7 +536,11 @@ namespace Server.Items
             }
         }
 
-        public virtual void OnMapComplete(TreasureMapChest chest)
+        public virtual void OnMapComplete(Mobile from, TreasureMapChest chest)
+        {
+        }
+
+        public virtual void OnChestOpened(Mobile from, TreasureMapChest chest)
         {
         }
 
@@ -698,7 +699,7 @@ namespace Server.Items
             return false;
         }
 
-        public void OnBeginDig(Mobile from)
+        public virtual void OnBeginDig(Mobile from)
         {
             if (m_Completed)
             {
@@ -751,7 +752,7 @@ namespace Server.Items
             }
         }
 
-        public void Decode(Mobile from)
+        public virtual void Decode(Mobile from)
         {
             if (m_Completed || m_Decoder != null)
             {
@@ -1077,12 +1078,12 @@ namespace Server.Items
             }
         }
 
-        private bool HasRequiredSkill(Mobile from)
+        protected virtual bool HasRequiredSkill(Mobile from)
         {
             return (from.Skills[SkillName.Cartography].Value >= GetMinSkillLevel());
         }
 
-        private class DigTarget : Target
+        protected class DigTarget : Target
         {
             private readonly TreasureMap m_Map;
 
@@ -1362,10 +1363,11 @@ namespace Server.Items
                     m_From.EndAction(typeof(TreasureMap));
 
                     m_Chest.Temporary = false;
+                    m_Chest.TreasureMap = m_TreasureMap;
                     m_TreasureMap.Completed = true;
                     m_TreasureMap.CompletedBy = m_From;
 
-                    m_TreasureMap.OnMapComplete(m_Chest);
+                    m_TreasureMap.OnMapComplete(m_From, m_Chest);
 
                     int spawns;
                     switch (m_TreasureMap.Level)

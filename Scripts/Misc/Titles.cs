@@ -275,6 +275,8 @@ namespace Server.Misc
             {
                 if (beheld is PlayerMobile && ((PlayerMobile)beheld).PaperdollSkillTitle != null)
                     title.Append(", ").Append(((PlayerMobile)beheld).PaperdollSkillTitle);
+                else if (beheld is BaseVendor) 
+					title.AppendFormat(" {0}", customTitle);
             }
             else if (customTitle != null && (customTitle = customTitle.Trim()).Length > 0)
             {
@@ -384,6 +386,7 @@ namespace Server.Misc
         private static int GetTableIndex(Skill skill)
         {
             int fp = skill == null ? 300 : skill.BaseFixedPoint;
+
             fp = Math.Min(fp, 1200);
 
             return (fp - 300) / 100;

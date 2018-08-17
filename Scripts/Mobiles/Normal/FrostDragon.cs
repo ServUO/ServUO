@@ -61,6 +61,8 @@ namespace Server.Mobiles
         public override void OnAfterTame(Mobile tamer)
         {
             Title = null;
+
+            base.OnAfterTame(tamer);
         }
 
         public override bool CanAngerOnTame { get { return true; } }

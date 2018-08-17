@@ -128,6 +128,11 @@ namespace Server.Items
                 list.Add(1155710, m_Measurement.ToString());	// Wingspan: ~1_VAL~
 		}
 
+        void IChopable.OnChop(Mobile user)
+        {
+            OnDoubleClick(user);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             BaseHouse house = BaseHouse.FindHouseAt(this);

@@ -1850,6 +1850,7 @@ namespace Server.Items
                     {
                         if (version == 13)
                             reader.ReadBool();
+
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
                         goto case 11;
@@ -1874,6 +1875,7 @@ namespace Server.Items
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
+
                         if (version == 13 && reader.ReadBool())
                         {
                             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
@@ -2382,15 +2384,15 @@ namespace Server.Items
 
                 if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles)
                 {
-                    from.SendLocalizedMessage(1111708); // Gargoyles can't wear 
+                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111708); // Gargoyles can't wear this.
                     return false;
                 }
                 if (RequiredRace != null && from.Race != RequiredRace && !morph)
                 {
                     if (RequiredRace == Race.Elf)
-                        from.SendLocalizedMessage(1072203); // Only Elves may use 
+                        from.SendLocalizedMessage(1072203); // Only Elves may use this.
                     else if (RequiredRace == Race.Gargoyle)
-                        from.SendLocalizedMessage(1111707); // Only gargoyles can wear 
+                        from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111707); // Only gargoyles can wear this.
                     else
                         from.SendMessage("Only {0} may use this.", RequiredRace.PluralName);
 
@@ -2399,7 +2401,7 @@ namespace Server.Items
                 else if (!AllowMaleWearer && !from.Female)
                 {
                     if (AllowFemaleWearer)
-                        from.SendLocalizedMessage(1010388); // Only females can wear 
+                        from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1010388); // Only females can wear this.
                     else
                         from.SendMessage("You may not wear this.");
 
@@ -2408,7 +2410,7 @@ namespace Server.Items
                 else if (!AllowFemaleWearer && from.Female)
                 {
                     if (AllowMaleWearer)
-                        from.SendLocalizedMessage(1063343); // Only males can wear 
+                        from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1063343); // Only males can wear this.
                     else
                         from.SendMessage("You may not wear this.");
 
@@ -2529,6 +2531,7 @@ namespace Server.Items
             int Absorbed = (int)(HalfAr + HalfAr * Utility.RandomDouble());
 
             damageTaken -= Absorbed;
+
             if (damageTaken < 0) 
                 damageTaken = 0;
 
@@ -2780,92 +2783,14 @@ namespace Server.Items
 
             if (m_TalismanProtection != null && !m_TalismanProtection.IsEmpty && m_TalismanProtection.Amount > 0)
                 list.Add(1072387, "{0}\t{1}", m_TalismanProtection.Name != null ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
-
-            if ((prop = m_AosAttributes.WeaponDamage) != 0)
-                list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
-
-            if ((prop = m_AosAttributes.DefendChance) != 0)
-                list.Add(1060408, prop.ToString()); // defense chance increase ~1_val~%
-
-            if ((prop = m_AosAttributes.BonusDex) != 0)
-                list.Add(1060409, prop.ToString()); // dexterity bonus ~1_val~
-
-            if ((prop = m_AosAttributes.EnhancePotions) != 0)
-                list.Add(1060411, prop.ToString()); // enhance potions ~1_val~%
-
-            if ((prop = m_AosAttributes.CastRecovery) != 0)
-                list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~
-
-            if ((prop = m_AosAttributes.CastSpeed) != 0)
-                list.Add(1060413, prop.ToString()); // faster casting ~1_val~
-
-            if ((prop = m_AosAttributes.AttackChance) != 0)
-                list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
-
-            if ((prop = m_AosAttributes.BonusHits) != 0)
-                list.Add(1060431, prop.ToString()); // hit point increase ~1_val~
-
-            if ((prop = m_AosAttributes.BonusInt) != 0)
-                list.Add(1060432, prop.ToString()); // intelligence bonus ~1_val~
-
-            if ((prop = m_AosAttributes.LowerManaCost) != 0)
-                list.Add(1060433, prop.ToString()); // lower mana cost ~1_val~%
-
-            if ((prop = m_AosAttributes.LowerRegCost) != 0)
-                list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%
-
-            if ((prop = GetLowerStatReq()) != 0)
-                list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
-
-            if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
-                list.Add(1060436, prop.ToString()); // luck ~1_val~
-
-            if ((prop = m_AosArmorAttributes.MageArmor) != 0)
-                list.Add(1060437); // mage armor
-
-            if ((prop = m_AosAttributes.BonusMana) != 0)
-                list.Add(1060439, prop.ToString()); // mana increase ~1_val~
-
-            if ((prop = m_AosAttributes.RegenMana) != 0)
-                list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
-
-            if ((prop = m_AosAttributes.NightSight) != 0)
-                list.Add(1060441); // night sight
-
-            if ((prop = m_AosAttributes.ReflectPhysical) != 0)
-                list.Add(1060442, prop.ToString()); // reflect physical damage ~1_val~%
-
-            if ((prop = m_AosAttributes.RegenStam) != 0)
-                list.Add(1060443, prop.ToString()); // stamina regeneration ~1_val~
-
-            if ((prop = m_AosAttributes.RegenHits) != 0)
-                list.Add(1060444, prop.ToString()); // hit point regeneration ~1_val~
-
-            if ((prop = m_AosArmorAttributes.SelfRepair) != 0)
-                list.Add(1060450, prop.ToString()); // self repair ~1_val~
-
-            if ((prop = m_AosAttributes.SpellChanneling) != 0)
-                list.Add(1060482); // spell channeling
-
-            if ((prop = m_AosAttributes.SpellDamage) != 0)
-                list.Add(1060483, prop.ToString()); // spell damage increase ~1_val~%
-
-            if ((prop = m_AosAttributes.BonusStam) != 0)
-                list.Add(1060484, prop.ToString()); // stamina increase ~1_val~
-
-            if ((prop = m_AosAttributes.BonusStr) != 0)
-                list.Add(1060485, prop.ToString()); // strength bonus ~1_val~
-
-            if ((prop = m_AosAttributes.WeaponSpeed) != 0)
-                list.Add(1060486, prop.ToString()); // swing speed increase ~1_val~%
-
-            if (Core.ML && (prop = m_AosAttributes.IncreasedKarmaLoss) != 0)
-                list.Add(1075210, prop.ToString()); // Increased Karma Loss ~1val~%
-
-            if ((prop = m_AosArmorAttributes.SoulCharge) != 0)
+			
+			if ((prop = m_AosArmorAttributes.SoulCharge) != 0)
                 list.Add(1113630, prop.ToString()); // Soul Charge ~1_val~%
-
-            if ((prop = m_SAAbsorptionAttributes.EaterFire) != 0)
+			
+			if((prop = m_AosArmorAttributes.ReactiveParalyze) != 0)
+                list.Add(1112364); // reactive paralyze
+			
+			if ((prop = m_SAAbsorptionAttributes.EaterFire) != 0)
                 list.Add(1113593, prop.ToString()); // Fire Eater ~1_Val~%
 
             if ((prop = m_SAAbsorptionAttributes.EaterCold) != 0)
@@ -2882,8 +2807,8 @@ namespace Server.Items
 
             if ((prop = m_SAAbsorptionAttributes.EaterDamage) != 0)
                 list.Add(1113598, prop.ToString()); // Damage Eater ~1_Val~%
-
-            if ((prop = m_SAAbsorptionAttributes.ResonanceFire) != 0)
+			
+			if ((prop = m_SAAbsorptionAttributes.ResonanceFire) != 0)
                 list.Add(1113691, prop.ToString()); // Fire Resonance ~1_val~%
 
             if ((prop = m_SAAbsorptionAttributes.ResonanceCold) != 0)
@@ -2897,17 +2822,95 @@ namespace Server.Items
 
             if ((prop = m_SAAbsorptionAttributes.ResonanceKinetic) != 0)
                 list.Add(1113695, prop.ToString()); // Kinetic Resonance ~1_val~%
-
-            if((prop = m_AosArmorAttributes.ReactiveParalyze) != 0)
-                list.Add(1112364); // reactive paralyze
-
-            if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
+			
+			if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
                 list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
+			
+			if ((prop = m_AosAttributes.SpellChanneling) != 0)
+                list.Add(1060482); // spell channeling
+			
+			if ((prop = m_AosArmorAttributes.SelfRepair) != 0)
+                list.Add(1060450, prop.ToString()); // self repair ~1_val~
+			
+			if ((prop = m_AosAttributes.NightSight) != 0)
+                list.Add(1060441); // night sight
+			
+			if ((prop = m_AosAttributes.BonusStr) != 0)
+                list.Add(1060485, prop.ToString()); // strength bonus ~1_val~
+			
+			if ((prop = m_AosAttributes.BonusDex) != 0)
+                list.Add(1060409, prop.ToString()); // dexterity bonus ~1_val~
+
+            if ((prop = m_AosAttributes.BonusInt) != 0)
+                list.Add(1060432, prop.ToString()); // intelligence bonus ~1_val~
+			
+			if ((prop = m_AosAttributes.BonusHits) != 0)
+                list.Add(1060431, prop.ToString()); // hit point increase ~1_val~
+			
+			if ((prop = m_AosAttributes.BonusStam) != 0)
+                list.Add(1060484, prop.ToString()); // stamina increase ~1_val~
+			
+			if ((prop = m_AosAttributes.BonusMana) != 0)
+                list.Add(1060439, prop.ToString()); // mana increase ~1_val~
+			
+			if ((prop = m_AosAttributes.RegenHits) != 0)
+                list.Add(1060444, prop.ToString()); // hit point regeneration ~1_val~
+			
+			if ((prop = m_AosAttributes.RegenStam) != 0)
+                list.Add(1060443, prop.ToString()); // stamina regeneration ~1_val~
+
+            if ((prop = m_AosAttributes.RegenMana) != 0)
+                list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
+
+            if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
+                list.Add(1060436, prop.ToString()); // luck ~1_val~
+			
+			if ((prop = m_AosAttributes.EnhancePotions) != 0)
+                list.Add(1060411, prop.ToString()); // enhance potions ~1_val~%
+
+            if ((prop = m_AosAttributes.ReflectPhysical) != 0)
+                list.Add(1060442, prop.ToString()); // reflect physical damage ~1_val~%
 
             if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
                 list.Add(1153098, ((SurgeShield)this).Charges.ToString());
+			
+			if ((prop = m_AosAttributes.AttackChance) != 0)
+                list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
+			
+			if ((prop = m_AosAttributes.WeaponSpeed) != 0)
+                list.Add(1060486, prop.ToString()); // swing speed increase ~1_val~%
+			
+			if ((prop = m_AosAttributes.WeaponDamage) != 0)
+                list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
+
+            if ((prop = m_AosAttributes.DefendChance) != 0)
+                list.Add(1060408, prop.ToString()); // defense chance increase ~1_val~%
+			
+			if ((prop = m_AosAttributes.CastRecovery) != 0)
+                list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~
+			
+			if ((prop = m_AosAttributes.CastSpeed) != 0)
+                list.Add(1060413, prop.ToString()); // faster casting ~1_val~
+			
+			if ((prop = m_AosAttributes.SpellDamage) != 0)
+                list.Add(1060483, prop.ToString()); // spell damage increase ~1_val~%
+			
+			if ((prop = m_AosAttributes.LowerManaCost) != 0)
+                list.Add(1060433, prop.ToString()); // lower mana cost ~1_val~%
+
+            if ((prop = m_AosAttributes.LowerRegCost) != 0)
+                list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%
+			
+			if (Core.ML && (prop = m_AosAttributes.IncreasedKarmaLoss) != 0)
+                list.Add(1075210, prop.ToString()); // Increased Karma Loss ~1val~%
 
             AddResistanceProperties(list);
+			
+			if ((prop = m_AosArmorAttributes.MageArmor) != 0)
+                list.Add(1060437); // mage armor
+			
+			if ((prop = GetLowerStatReq()) != 0)
+                list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
             
             if ((prop = ComputeStatReq(StatType.Str)) > 0)
                 list.Add(1061170, prop.ToString()); // strength requirement ~1_val~
@@ -3423,9 +3426,9 @@ namespace Server.Items
                 if (m_SetEnergyBonus != 0)
                     list.Add(1072386, m_SetEnergyBonus.ToString()); // energy resist +~1_val~%		
             }
-            else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParentEntity is Mobile)
+            else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParent is Mobile)
             {
-                Mobile m = (Mobile)RootParentEntity;
+                Mobile m = (Mobile)RootParent;
 
                 if (m_SetPhysicalBonus != 0)
                     list.Add(1080361, SetHelper.GetSetTotalResist(m, ResistanceType.Physical).ToString()); // physical resist ~1_val~% (total)

@@ -1,6 +1,7 @@
 using System;
 using Server.Items;
 using Server.Mobiles;
+using Server.Services.Virtues;
 
 namespace Server.Engines.Quests.Hag
 {

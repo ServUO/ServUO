@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - CustomHairstylist.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -757,6 +751,11 @@ namespace Server.Mobiles
                                         if (m_FacialHair)
                                         {
                                             m_From.FacialHairItemID = itemID;
+
+                                            if (itemID != 0)
+                                            {
+                                                m_From.FacialHairHue = m_From.HairHue;
+                                            }
                                         }
                                         else
                                         {

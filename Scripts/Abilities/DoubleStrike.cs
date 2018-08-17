@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - DoubleStrike.cs
-// **********
-#endregion
-
 namespace Server.Items
 {
 	/// <summary>

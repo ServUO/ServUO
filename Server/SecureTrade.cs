@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - SecureTrade.cs
-// **********
-#endregion
-
 #region References
 using System;
 

@@ -31,7 +31,7 @@ namespace Server.Items
                 return 1113324;
             }
         }// essence of balance
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {

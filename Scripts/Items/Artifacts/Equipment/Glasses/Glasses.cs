@@ -7,7 +7,9 @@ namespace Server.Items
     public class Glasses : BaseArmor, IRepairable
 	{
         public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
+
 		public override bool IsArtifact { get { return true; } }
+
         private AosWeaponAttributes m_AosWeaponAttributes;
 
         [Constructable]
@@ -145,6 +147,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);			
+			
             writer.Write((int)0); // version			
 			
             SaveFlag flags = SaveFlag.None;
@@ -160,6 +163,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);			
+			
             int version = reader.ReadInt();
 			
             SaveFlag flags = (SaveFlag)reader.ReadInt();

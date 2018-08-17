@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - VirtueInfo.cs
-// **********
-#endregion
-
 namespace Server
 {
 	[PropertyObject]

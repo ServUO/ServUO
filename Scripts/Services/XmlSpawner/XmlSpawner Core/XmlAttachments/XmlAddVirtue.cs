@@ -5,6 +5,8 @@ using Server.Network;
 using Server.Mobiles;
 using System.Collections;
 
+using Server.Services.Virtues;
+
 namespace Server.Engines.XmlSpawner2
 {
     public class XmlAddVirtue : XmlAttachment

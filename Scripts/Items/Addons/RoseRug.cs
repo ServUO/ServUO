@@ -17,7 +17,10 @@ namespace Server.Items
     [TypeAlias("Server.Items.RoseRugEastAddon", "Server.Items.RoseRugSouthAddon")]
     public class RoseRugAddon : BaseAddon, IRewardItem
     {
+        public override bool ForceShowProperties { get { return true; } }
+
         private bool m_IsRewardItem;
+        private int m_ResourceCount;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
@@ -29,9 +32,26 @@ namespace Server.Items
             set
             {
                 m_IsRewardItem = value;
-                InvalidateProperties();
+                UpdateProperties();
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ResourceCount
+        {
+            get
+            {
+                return m_ResourceCount;
+            }
+            set
+            {
+                m_ResourceCount = value;
+                UpdateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextResourceCount { get; set; }
 
         private static int[,] _EastLarge =
         {
@@ -83,14 +103,13 @@ namespace Server.Items
         {
             get
             {
-                RoseRugAddonDeed deed = new RoseRugAddonDeed(RugType, m_NextUse);
+                RoseRugAddonDeed deed = new RoseRugAddonDeed(RugType, m_ResourceCount, NextResourceCount);
                 deed.IsRewardItem = m_IsRewardItem;
 
                 return deed;
             }
         }
 
-        private DateTime m_NextUse;
         public RugType RugType { get; set; }
 
         [Constructable]
@@ -100,15 +119,16 @@ namespace Server.Items
         }
 
         [Constructable]
-        public RoseRugAddon(RugType type) : this(type, DateTime.UtcNow)
+        public RoseRugAddon(RugType type) : this(type, 0, DateTime.UtcNow)
         {
         }
 
         [Constructable]
-        public RoseRugAddon(RugType type, DateTime nextuse)
+        public RoseRugAddon(RugType type, int resCount, DateTime nextuse)
         {
-            m_NextUse = nextuse;
+            NextResourceCount = nextuse;
             RugType = type;
+            ResourceCount = resCount;
 
             int[,] list;
 
@@ -122,7 +142,7 @@ namespace Server.Items
             }
 
             for (int i = 0; i < list.Length / 4; i++)
-                AddComponent(new AddonComponent(list[i, 0]), list[i, 1], list[i, 2], list[i, 3]);
+                AddComponent(new InternalAddonComponent(list[i, 0]), list[i, 1], list[i, 2], list[i, 3]);
         }
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
@@ -131,7 +151,7 @@ namespace Server.Items
 
             if (house != null && (house.IsOwner(from) || (house.LockDowns.ContainsKey(this) && house.LockDowns[this] == from)))
             {
-                if (m_NextUse < DateTime.UtcNow)
+                if (m_ResourceCount > 0)
                 {
                     Container cont = from.Backpack;
 
@@ -145,12 +165,63 @@ namespace Server.Items
                     else
                         from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
 
-                    m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
+                    ResourceCount--;
+                    NextResourceCount = DateTime.UtcNow + TimeSpan.FromDays(7);
                 }
             }
             else
             {
                 from.SendLocalizedMessage(502092); // You must be in your house to do 
+            }
+        }
+
+        private class InternalAddonComponent : AddonComponent
+        {
+            public override int LabelNumber { get { return 1150121; } } // Rose Rug
+
+            public InternalAddonComponent(int id)
+                : base(id)
+            {
+            }
+
+            public override void GetProperties(ObjectPropertyList list)
+            {
+                base.GetProperties(list);
+
+                if (Addon is RoseRugAddon)
+                {
+                    list.Add(1150103, ((RoseRugAddon)Addon).ResourceCount.ToString()); // Messages in Bottles: ~1_val~
+                }
+            }
+
+            public InternalAddonComponent(Serial serial)
+                : base(serial)
+            {
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                base.Serialize(writer);
+
+                writer.WriteEncodedInt(0); // version
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                base.Deserialize(reader);
+
+                int version = reader.ReadEncodedInt();
+            }
+        }
+
+        private void TryGiveResourceCount()
+        {
+            if (NextResourceCount < DateTime.UtcNow)
+            {
+                ResourceCount = Math.Min(10, m_ResourceCount + 1);
+                NextResourceCount = DateTime.UtcNow + TimeSpan.FromDays(7);
+
+                UpdateProperties();
             }
         }
 
@@ -163,10 +234,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(2); // Version
+            writer.Write(3); // Version
+
+            TryGiveResourceCount();
+
+            writer.Write(m_ResourceCount);
 
             writer.Write((bool)m_IsRewardItem);
-            writer.Write(m_NextUse);
+            writer.Write(NextResourceCount);
             writer.Write((int)RugType);
         }
 
@@ -177,17 +252,20 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    m_ResourceCount = reader.ReadInt();
+                    goto case 2;
                 case 2:
                     m_IsRewardItem = reader.ReadBool();
-                    m_NextUse = reader.ReadDateTime();
+                    NextResourceCount = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
                     break;
                 case 1:
-                    m_NextUse = reader.ReadDateTime();
+                    NextResourceCount = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
                     break;
                 case 0:
-                    m_NextUse = reader.ReadDateTime();
+                    NextResourceCount = reader.ReadDateTime();
                     break;
             }
         }
@@ -200,7 +278,7 @@ namespace Server.Items
         {
             get
             {
-                RoseRugAddon addon = new RoseRugAddon(RugType, m_NextUse);
+                RoseRugAddon addon = new RoseRugAddon(RugType, m_ResourceCount, NextResourceCount);
                 addon.IsRewardItem = m_IsRewardItem;
 
                 return addon;
@@ -220,7 +298,8 @@ namespace Server.Items
             }
         }
 
-        private DateTime m_NextUse;
+        private DateTime NextResourceCount;
+        private int m_ResourceCount;
         private bool m_IsRewardItem;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -238,12 +317,21 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public RugType RugType { get; set; }
-
-        [Constructable]
-        public RoseRugAddonDeed(RugType type) : this(type, DateTime.UtcNow)
+        public int ResourceCount
         {
+            get
+            {
+                return m_ResourceCount;
+            }
+            set
+            {
+                m_ResourceCount = value;
+                InvalidateProperties();
+            }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public RugType RugType { get; set; }
 
         [Constructable]
         public RoseRugAddonDeed()
@@ -252,10 +340,18 @@ namespace Server.Items
         }
 
         [Constructable]
-        public RoseRugAddonDeed(RugType type, DateTime nextuse)
+        public RoseRugAddonDeed(RugType type)
+            : this(type, 0, DateTime.UtcNow)
+        {
+        }
+
+        [Constructable]
+        public RoseRugAddonDeed(RugType type, int resCount, DateTime nextuse)
         {
             RugType = type;
-            m_NextUse = nextuse;
+            NextResourceCount = nextuse;
+            ResourceCount = resCount;
+
             LootType = LootType.Blessed;
         }
 
@@ -302,10 +398,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(2); // Version
+            writer.Write(3); // Version
+
+            writer.Write(m_ResourceCount);
 
             writer.Write((bool)m_IsRewardItem);
-            writer.Write(m_NextUse);
+            writer.Write(NextResourceCount);
             writer.Write((int)RugType);
         }
 
@@ -316,17 +414,20 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    m_ResourceCount = reader.ReadInt();
+                    goto case 2;
                 case 2:
                     m_IsRewardItem = reader.ReadBool();
-                    m_NextUse = reader.ReadDateTime();
+                    NextResourceCount = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
                     break;
                 case 1:
-                    m_NextUse = reader.ReadDateTime();
+                    NextResourceCount = reader.ReadDateTime();
                     RugType = (RugType)reader.ReadInt();
                     break;
                 case 0:
-                    m_NextUse = reader.ReadDateTime();
+                    NextResourceCount = reader.ReadDateTime();
                     break;
             }
         }

@@ -135,7 +135,7 @@ namespace Server.Mobiles
             set { m_TotalSold = value; }
         }
 
-        public bool Stackable
+        public virtual bool Stackable
         {
             get { return m_Stackable; }
             set { m_Stackable = value; }
@@ -313,7 +313,7 @@ namespace Server.Mobiles
         }
 
         //Attempt to restock with item, (return true if restock sucessful)
-        public bool Restock(Item item, int amount)
+        public virtual bool Restock(Item item, int amount)
         {
             if (item == null || item.GetType() != m_Type)
             {
@@ -323,7 +323,7 @@ namespace Server.Mobiles
             return EconomyItem;
         }
 
-        public void OnRestock()
+        public virtual void OnRestock()
         {
             if (m_Amount <= 0)
             {

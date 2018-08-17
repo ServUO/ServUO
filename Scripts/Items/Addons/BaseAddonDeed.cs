@@ -25,6 +25,7 @@ namespace Server.Items
         }
 
         public abstract BaseAddon Addon { get; }
+
         public virtual bool UseCraftResource { get { return true; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -103,6 +104,14 @@ namespace Server.Items
                 resourceType = craftItem.Resources.GetAt(0).ItemType;
 
             Resource = CraftResources.GetFromType(resourceType);
+
+            CraftContext context = craftSystem.GetContext(from);
+
+			if (context != null && context.DoNotColor)
+				this.Hue = 0;
+			else
+				this.Hue = resHue;
+
             return quality;
         }
 

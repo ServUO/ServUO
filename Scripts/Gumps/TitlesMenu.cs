@@ -593,7 +593,7 @@ namespace Server.Gumps
                             Refresh(false);
 
                             User.OverheadTitle = null;
-                            User.ShowGuildAbbreviation = true;
+                            User.DisplayGuildTitle = true;
                         });
                 }
             }
@@ -639,13 +639,12 @@ namespace Server.Gumps
 
                     AddHtmlLocalized(225, 220, 160, 16, 1115029, 0xFFFF, false, false); // Subtitle
 
-                    string cust = null;
+                    string cust;
+
                     if (title == 1154017 && CityLoyaltySystem.HasCustomTitle(User, out cust))
-                    {
-                        AddHtmlLocalized(275, 240, 245, 16, 1154017, cust, 0xFFFF, false, false);
-                    }
-                    else
-                        AddHtmlLocalized(275, 240, 160, 32, (int)title, 0xFFFF, false, false);
+                        AddHtmlLocalized(275, 240, 245, 16, title, cust, 0xFFFF, false, false);
+                    else if(title != 1154017)
+                        AddHtmlLocalized(275, 240, 160, 32, title, 0xFFFF, false, false);
 
                     AddHtmlLocalized(225, 275, 200, 16, 1115035, 0xFFFF, false, false); // Do you wish to apply this title?
 
@@ -974,7 +973,7 @@ namespace Server.Gumps
                 case TitleType.PaperdollSuffix:
                     return User.PaperdollSkillTitle != null || User.CurrentChampTitle != null;
                 case TitleType.OverheadName:
-                    return User.OverheadTitle != null || User.ShowGuildAbbreviation;
+                    return User.OverheadTitle != null || User.DisplayGuildTitle;
                 case TitleType.SubTitles:
                     return User.SubtitleSkillTitle != null || User.SelectedTitle > -1 || User.CurrentVeteranTitle > 0 || User.DisplayGuildTitle;
             }
@@ -993,7 +992,6 @@ namespace Server.Gumps
                 case TitleType.OverheadName:
                     User.OverheadTitle = null;
                     User.DisplayGuildTitle = false;
-                    User.ShowGuildAbbreviation = false;
                     break;
                 case TitleType.SubTitles:
                     User.SubtitleSkillTitle = null;
@@ -1116,6 +1114,13 @@ namespace Server.Gumps
                     case 1155727: return 1155728; // This title is obtained from the Huntmaster's Challenge at the Ranger's Guild in Skara Brae.
                     case 1156318: return 1156319; // This is a reward title given for completing Shadowguard.
                     case 1157594: return 1157595; // This title is obtained by completing the "Discovering Animal Training" quest.
+                    case 1158140: return 1158141; // This title is obtained by completing the Huntmaster's Challenge Quest.
+                    case 1158090: return 1158087; // This title is obtained by completing the Paladins of Trinsic Quest.
+                    case 1158161: return 1158162; // This title is obtained by completing the Righting Wrong Quest.	
+                    case 1158389: return 1158248; // This title is obtained by completing the Treasure Chase Quest.
+                    case 1158278: return 1158279; // This title is obtained by completing the "A Forced Sacrifice" quest.
+                    case 1158303: return 1158324; // This title is obtained by completing the "Whispering with Wisps" quest.
+                    case 1154505: return 1154506; // This is a reward title given for completing the Exploring the Deep Quest.
                 }
             }
 

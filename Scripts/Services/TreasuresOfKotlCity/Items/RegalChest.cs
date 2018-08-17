@@ -7,6 +7,8 @@ namespace Server.Engines.TreasuresOfKotlCity
 {
     public class KotlRegalChest : LockableContainer, IRevealableItem
     {
+        private Timer m_Timer;
+    
         [Constructable]
         public KotlRegalChest()
             : base(0x4D0C)
@@ -28,10 +30,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public virtual void Fill()
         {
-            Visible = false;
-            Locked = true;
-            TrapType = TrapType.MagicTrap;
-            TrapPower = 100;
+            Reset();
 
             List<Item> contains = new List<Item>(this.Items);
 
@@ -98,6 +97,21 @@ namespace Server.Engines.TreasuresOfKotlCity
                 DropItem(item);
             }
         }
+        
+        public void Reset()
+        {
+            EndTimer();
+        
+            Visible = false;
+            Locked = true;
+            
+            RequiredSkill = 90;
+            LockLevel =  RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = RequiredSkill;
+            
+            TrapType = TrapType.MagicTrap;
+            TrapPower = 100;
+        }
 
         public virtual bool CheckReveal(Mobile m)
         {
@@ -124,7 +138,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public override void LockPick(Mobile from)
         {
-            Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(4, 6)), Fill);
+            TryDelayedLock();
 
             base.LockPick(from);
         }
@@ -133,11 +147,32 @@ namespace Server.Engines.TreasuresOfKotlCity
             : base(serial)
         {
         }
+        
+        public void TryDelayedLock()
+        {
+            if(Locked || (m_Timer != null && m_Timer.Running))
+                return;
+            
+            EndTimer();
+            
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(10, 15)), Fill);
+        }
+        
+        public void EndTimer()
+        {
+            if(m_Timer != null)
+            {
+                m_Timer.Stop();
+                m_Timer = null;
+            }
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write(0); // Version
+            
+            TryDelayedLock();
         }
 
         public override void Deserialize(GenericReader reader)
@@ -145,8 +180,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if(!Locked)
-                Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(4, 6)), Fill);
+            TryDelayedLock();
         }
     }
 }

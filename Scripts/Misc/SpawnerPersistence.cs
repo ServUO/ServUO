@@ -12,6 +12,15 @@ using Server.Commands;
 using Server.Gumps;
 using Server.Multis;
 
+/* This script has a purpose, and please adhere to the advice before adding versions.
+ * This is used for modifying, removing, adding existing spawners, etc for existing shards,
+ * used for modifying, removing, adding existing spawners, etc for existing shards.
+ * As this is a collaborative effort for ServUO, it's important that any modifications to 
+ * existing shards be handled for new shareds.  For example, if your swapping out some spawners,
+ * common practice will be to edit the spawner files for fresh-loaded servers. Please refer to
+ * ServUO.com community with any questions or concerns.
+ */
+
 namespace Server
 {
     public class SpawnerPersistence
@@ -24,6 +33,7 @@ namespace Server
             Sphinx          = 0x00000002,
             IceHoundRemoval = 0x00000004,
             PaladinAndKrakin= 0x00000008,
+            TrinsicPaladins = 0x00000010,
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -49,6 +59,17 @@ namespace Server
             if (!_FirstRun)
             {
                 CheckVersion();
+            }
+            else if (_Version == 0) // new server, no need to run the new stuff.
+            {
+                // This way, fresh servers won't duplicate any spawners that should have already been adjusted for a fresh server
+                foreach (int i in Enum.GetValues(typeof(SpawnerVersion)))
+                {
+                    if (i == 0x00000000)
+                        continue;
+
+                    VersionFlag |= (SpawnerVersion)i;
+                }
             }
 
             #region Commands
@@ -85,6 +106,11 @@ namespace Server
                             Timer.DelayCall(() => RevertToXmlSpawners(e.Mobile));
                         }
                     }, null, true));
+                });
+
+            CommandSystem.Register("WipeAllXmlSpawners", AccessLevel.Administrator, e =>
+                {
+                    WipeSpawnersFromFile();
                 });
             #endregion
         }
@@ -133,6 +159,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.TrinsicPaladins) == 0)
+                    {
+                        SpawnTrinsicPaladins();
+                        VersionFlag |= SpawnerVersion.TrinsicPaladins;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.PaladinAndKrakin) == 0)
                     {
                         RemovePaladinsAndKrakens();
@@ -197,6 +229,14 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Trinny Paladins
+        public static void SpawnTrinsicPaladins()
+        {
+            LoadFromXmlSpawner("Spawns/trammel.xml", Map.Trammel, "TrinsicPaladinSpawner");
+            LoadFromXmlSpawner("Spawns/felucca.xml", Map.Felucca, "TrinsicPaladinSpawner");
+        }
+        #endregion
 
         #region Remove Paladins And Krakens
         public static void RemovePaladinsAndKrakens()
@@ -1117,14 +1157,107 @@ namespace Server
                     }
                 }
 
-                ToConsole(String.Format("Found {0} Xmlspawner files for conversion.", files.Count), files != null && files.Count > 0 ? ConsoleColor.Green : ConsoleColor.Red);
+                ToConsole(String.Format("Found {0} Xmlspawner files for removal.", files == null ? 0 : files.Count), files != null && files.Count > 0 ? ConsoleColor.Green : ConsoleColor.Red);
                 ToConsole("Deleting spawners...", ConsoleColor.Cyan);
                 long start = Core.TickCount;
 
                 if (files != null && files.Count > 0)
                 {
                     int deletedxml = 0;
-                    int deletedreg = 0;
+                    int nospawner = 0;
+
+                    foreach (string file in files)
+                    {
+                        FileStream fs = null;
+
+                        try
+                        {
+                            fs = File.Open(file, FileMode.Open, FileAccess.Read);
+                        }
+                        catch { }
+
+                        if (fs == null)
+                        {
+                            ToConsole(String.Format("Unable to open {0} for loading", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        DataSet ds = new DataSet("Spawns");
+
+                        try
+                        {
+                            ds.ReadXml(fs);
+                        }
+                        catch
+                        {
+                            fs.Close();
+                            ToConsole(String.Format("Error reading xml file {0}", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        if (ds.Tables != null && ds.Tables.Count > 0)
+                        {
+                            if (ds.Tables["Points"] != null && ds.Tables["Points"].Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in ds.Tables["Points"].Rows)
+                                {
+                                    string id = null;
+
+                                    try
+                                    {
+                                        id = (string)dr["UniqueId"];
+                                    }
+                                    catch { }
+
+                                    if (DeleteSpawner(id))
+                                    {
+                                        deletedxml++;
+                                    }
+                                    else
+                                    {
+                                        nospawner++;
+                                    }
+                                }
+                            }
+                        }
+
+                        fs.Close();
+                    }
+
+                    ToConsole(String.Format("Deleted {0} XmlSpawners [{2} no id] in {3} seconds.", deletedxml, nospawner, ((Core.TickCount - start) / 1000).ToString()), ConsoleColor.Cyan);
+                }
+                else
+                {
+                    ToConsole(String.Format("Directory Not Found: {0}", filename), ConsoleColor.Red);
+                }
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Deletes all spawners from a specific file. This can be used to delete spawners from a specific system where the spawner wasn't 
+        /// Generated from the Spawn Folder.
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="filename"></param>
+        public static void RemoveSpawnsFromXmlFile(string directory, string filename)
+        {
+            if (System.IO.Directory.Exists(directory) == true)
+            {
+                List<string> files = null;
+
+                try
+                {
+                    files = new List<string>(Directory.GetFiles(directory, filename + ".xml"));
+                }
+                catch { }
+
+                ToConsole(String.Format("Found {0} Xmlspawner files for removal.", files == null ? "0" : files.Count.ToString()), files != null && files.Count > 0 ? ConsoleColor.Green : ConsoleColor.Red);
+                ToConsole("Deleting spawners...", ConsoleColor.Cyan);
+
+                if (files != null && files.Count > 0)
+                {
+                    int deletedxml = 0;
 
                     foreach (string file in files)
                     {
@@ -1180,24 +1313,150 @@ namespace Server
                         fs.Close();
                     }
 
-                    List<Spawner> list = new List<Spawner>(World.Items.Values.OfType<Spawner>());
+                    ToConsole(String.Format("Deleted {0} XmlSpawners from {1}/{2}.xml.", deletedxml, directory, filename), ConsoleColor.Cyan);
+                }
+                else
+                {
+                    ToConsole(String.Format("File Not Found: {0}", filename), ConsoleColor.Red);
+                }
+            }
+        }
 
-                    foreach (var item in list)
+
+        /// <summary>
+        /// Used in place of XmlSpawner wipe all spawners. This iterates through the Spawn Folder and deletes those spawners only.
+        /// This will keep spawners for seprate systems in place. This is called in DeleteWorld gump.
+        /// </summary>
+        public static void WipeSpawnersFromFile()
+        {
+            string filename = "Spawns";
+
+            if (System.IO.Directory.Exists(filename) == true)
+            {
+                List<string> files = null;
+                string[] dirs = null;
+
+                try
+                {
+                    files = new List<string>(Directory.GetFiles(filename, "*.xml"));
+                    dirs = Directory.GetDirectories(filename);
+                }
+                catch { }
+
+                if (dirs != null && dirs.Length > 0)
+                {
+                    foreach (var dir in dirs)
                     {
-                        item.Delete();
-                        deletedreg++;
+                        try
+                        {
+                            string[] dirFiles = Directory.GetFiles(dir, "*.xml");
+                            files.AddRange(dirFiles);
+                        }
+                        catch { }
+                    }
+                }
+
+                ToConsole(String.Format("Found {0} Xmlspawner files for conversion.", files.Count), files != null && files.Count > 0 ? ConsoleColor.Green : ConsoleColor.Red);
+                ToConsole("Deleting spawners...", ConsoleColor.Cyan);
+                long start = Core.TickCount;
+
+                if (files != null && files.Count > 0)
+                {
+                    int deletedxml = 0;
+                    int nodelelete = 0;
+
+                    foreach (string file in files)
+                    {
+                        FileStream fs = null;
+
+                        try
+                        {
+                            fs = File.Open(file, FileMode.Open, FileAccess.Read);
+                        }
+                        catch { }
+
+                        if (fs == null)
+                        {
+                            ToConsole(String.Format("Unable to open {0} for loading", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        DataSet ds = new DataSet("Spawns");
+
+                        try
+                        {
+                            ds.ReadXml(fs);
+                        }
+                        catch
+                        {
+                            fs.Close();
+                            ToConsole(String.Format("Error reading xml file {0}", filename), ConsoleColor.Red);
+                            continue;
+                        }
+
+                        if (ds.Tables != null && ds.Tables.Count > 0)
+                        {
+                            if (ds.Tables["Points"] != null && ds.Tables["Points"].Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in ds.Tables["Points"].Rows)
+                                {
+                                    string id = null;
+
+                                    try
+                                    {
+                                        id = (string)dr["UniqueId"];
+                                    }
+                                    catch { }
+
+                                    if (DeleteSpawner(id))
+                                    {
+                                        deletedxml++;
+                                    }
+                                    else
+                                    {
+                                        bool deleted = false;
+
+                                        try
+                                        {
+                                            Point3D loc = new Point3D(int.Parse((string)dr["CentreX"]), int.Parse((string)dr["CentreY"]), int.Parse((string)dr["CentreZ"]));
+                                            Map spawnMap = Map.Parse((string)dr["Map"]);
+                                            string name = (string)dr["Name"];
+
+                                            if (spawnMap != null)
+                                            {
+                                                IPooledEnumerable eable = spawnMap.GetItemsInRange(loc, 0);
+
+                                                foreach (Item item in eable)
+                                                {
+                                                    if (item is XmlSpawner && item.Name == name)
+                                                    {
+                                                        item.Delete();
+                                                        deletedxml++;
+                                                        deleted = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                eable.Free();
+                                            }
+                                        }
+                                        catch { }
+
+                                        if (!deleted)
+                                        {
+                                            nodelelete++;
+
+                                            ToConsole(String.Format("Failed to Delete: {0} in {1}", (string)dr["Name"], file));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        fs.Close();
                     }
 
-                    ColUtility.Free(list);
-
-                    ToConsole(String.Format("Deleted {0} XmlSpawners and {1} Spawners in {2} seconds.", deletedxml, deletedreg, ((Core.TickCount - start) / 1000).ToString()), ConsoleColor.Cyan);
-
-                    ToConsole("Reproducing Spawners...", ConsoleColor.Green);
-
-                    CommandSystem.Handle(from, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns");
-                    _SpawnsConverted = false;
-
-                    ToConsole(String.Format("Complete. Total Seconds: {0}.", ((Core.TickCount - start) / 1000).ToString()), ConsoleColor.Green);
+                    ToConsole(String.Format("Deleted {0} XmlSpawners [{1} failed] in {2} seconds.", deletedxml, nodelelete, ((Core.TickCount - start) / 1000).ToString()), ConsoleColor.Cyan);
                 }
                 else
                 {
@@ -1205,6 +1464,5 @@ namespace Server
                 }
             }
         }
-        #endregion
     }
 }

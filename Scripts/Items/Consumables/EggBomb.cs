@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - EggBomb.cs
-// **********
-#endregion
-
 #region References
 using Server.SkillHandlers;
 #endregion

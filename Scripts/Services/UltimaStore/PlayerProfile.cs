@@ -1,9 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using Server;
-using Server.Mobiles;
-using Server.Items;
 
 namespace Server.Engines.UOStore
 {
@@ -12,26 +7,33 @@ namespace Server.Engines.UOStore
         public const StoreCategory DefaultCategory = StoreCategory.Featured;
         public const SortBy DefaultSortBy = SortBy.Newest;
 
+        public Dictionary<StoreEntry, int> Cart { get; private set; }
+
         public Mobile Player { get; private set; }
+
         public StoreCategory Category { get; set; }
         public SortBy SortBy { get; set; }
 
-        public Dictionary<StoreEntry, int> Cart { get; private set; }
-
         public PlayerProfile(Mobile m)
         {
+            Cart = new Dictionary<StoreEntry, int>();
+
             Player = m;
 
             Category = DefaultCategory;
             SortBy = DefaultSortBy;
         }
 
+        public PlayerProfile(GenericReader reader)
+        {
+            Cart = new Dictionary<StoreEntry, int>();
+
+            Deserialize(reader);
+        }
+
         public void AddToCart(StoreEntry entry, int amount)
         {
-            if (Cart == null)
-                Cart = new Dictionary<StoreEntry, int>();
-
-            if (Cart.Count < UltimaStore.MaxCart || Cart.ContainsKey(entry))
+            if (Cart.Count < Configuration.CartCapacity)
             {
                 Cart[entry] = amount;
             }
@@ -39,34 +41,19 @@ namespace Server.Engines.UOStore
 
         public void RemoveFromCart(StoreEntry entry)
         {
-            if (Cart != null && Cart.ContainsKey(entry))
-            {
-                Cart.Remove(entry);
-
-                if (Cart.Count == 0)
-                    Cart = null;
-            }
+            Cart.Remove(entry);
         }
 
         public void SetCartAmount(StoreEntry entry, int amount)
         {
-            if (amount == 0)
-            {
-                RemoveFromCart(entry);
-            }
-            else
+            if (amount > 0)
             {
                 AddToCart(entry, amount);
             }
-        }
-
-        public PlayerProfile(GenericReader reader)
-        {
-            int version = reader.ReadInt();
-
-            Player = reader.ReadMobile();
-            Category = (StoreCategory)reader.ReadInt();
-            SortBy = (SortBy)reader.ReadInt();
+            else
+            {
+                RemoveFromCart(entry);
+            }
         }
 
         public void Serialize(GenericWriter writer)
@@ -74,8 +61,19 @@ namespace Server.Engines.UOStore
             writer.Write(0);
 
             writer.Write(Player);
+
             writer.Write((int)Category);
             writer.Write((int)SortBy);
+        }
+
+        public void Deserialize(GenericReader reader)
+        {
+            reader.ReadInt();
+
+            Player = reader.ReadMobile();
+
+            Category = (StoreCategory)reader.ReadInt();
+            SortBy = (SortBy)reader.ReadInt();
         }
     }
 }

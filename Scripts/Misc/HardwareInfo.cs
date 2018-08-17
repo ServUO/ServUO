@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - HardwareInfo.cs
-// **********
-#endregion
-
 #region References
 using System;
 

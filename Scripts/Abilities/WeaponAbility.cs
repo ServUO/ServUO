@@ -109,10 +109,7 @@ namespace Server.Items
         {
             int mana = BaseMana;
 
-            double skillTotal = GetSkill(from, SkillName.Swords) + GetSkill(from, SkillName.Macing) +
-                                GetSkill(from, SkillName.Fencing) + GetSkill(from, SkillName.Archery) + GetSkill(from, SkillName.Parry) +
-                                GetSkill(from, SkillName.Lumberjacking) + GetSkill(from, SkillName.Stealth) +
-                                GetSkill(from, SkillName.Poisoning) + GetSkill(from, SkillName.Bushido) + GetSkill(from, SkillName.Ninjitsu);
+            double skillTotal = GetSkillTotal(from);
 
             if (skillTotal >= 300.0)
                 mana -= 10;
@@ -120,6 +117,7 @@ namespace Server.Items
                 mana -= 5;
 
             double scalar = 1.0;
+
             if (!Server.Spells.Necromancy.MindRotSpell.GetMindRotScalar(from, ref scalar))
             {
                 scalar = 1.0;
@@ -212,6 +210,14 @@ namespace Server.Items
         public virtual bool CheckSkills(Mobile from)
         {
             return CheckWeaponSkill(from);
+        }
+
+        public virtual double GetSkillTotal(Mobile from)
+        {
+            return GetSkill(from, SkillName.Swords) + GetSkill(from, SkillName.Macing) +
+                   GetSkill(from, SkillName.Fencing) + GetSkill(from, SkillName.Archery) + GetSkill(from, SkillName.Parry) +
+                   GetSkill(from, SkillName.Lumberjacking) + GetSkill(from, SkillName.Stealth) + GetSkill(from, SkillName.Throwing) +
+                   GetSkill(from, SkillName.Poisoning) + GetSkill(from, SkillName.Bushido) + GetSkill(from, SkillName.Ninjitsu);
         }
 
         public virtual double GetSkill(Mobile from, SkillName skillName)

@@ -234,10 +234,17 @@ using Server.Engines.VoidPool;
 
             public override bool OnMoveOver(Mobile m)
             {
-                if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && m.CanBeHarmful(Owner, false))
+                if ((m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)) && m.CanBeHarmful(Owner, false))
                 {
-                    m.SendLocalizedMessage(1153114, m.Mana.ToString()); // Cora drains ~1_VAL~ points of your mana!
-                    m.Mana = 0;
+                    if (m is PlayerMobile && Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects((PlayerMobile)m, true))
+                    {
+                        m.SayTo(m, 1158288, 1154); // *You resist Cora's attack!*
+                    }
+                    else
+                    {
+                        m.SendLocalizedMessage(1153114, m.Mana.ToString()); // Cora drains ~1_VAL~ points of your mana!
+                        m.Mana = 0;
+                    }
                 }
 
                 return true;
@@ -290,6 +297,37 @@ using Server.Engines.VoidPool;
                             m.BankBox.DropItem(artifact);
 
                         m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+                    }
+                }
+            }
+        }
+
+        public override void OnKilledBy(Mobile mob)
+        {
+            if (Siege.SiegeShard && mob is PlayerMobile)
+            {
+                int chance = Server.Engines.Despise.DespiseBoss.ArtifactChance + (int)Math.Min(10, ((PlayerMobile)mob).Luck / 180);
+
+                if (chance >= Utility.Random(100))
+                {
+                    Type t = Server.Engines.Despise.DespiseBoss.Artifacts[Utility.Random(Server.Engines.Despise.DespiseBoss.Artifacts.Length)];
+
+                    if (t != null)
+                    {
+                        Item arty = Loot.Construct(t);
+
+                        if (arty != null)
+                        {
+                            Container pack = mob.Backpack;
+
+                            if (pack == null || !pack.TryDropItem(mob, arty, false))
+                            {
+                                mob.BankBox.DropItem(arty);
+                                mob.SendMessage("An artifact has been placed in your bankbox!");
+                            }
+                            else
+                                mob.SendLocalizedMessage(1153440); // An artifact has been placed in your backpack!
+                        }
                     }
                 }
             }

@@ -112,6 +112,8 @@ namespace Server.Mobiles
             }
         }
 
+        public override bool CanAutoStable { get { return (Backpack == null || Backpack.Items.Count == 0) && base.CanAutoStable; } }
+
         public Beetle(Serial serial)
             : base(serial)
         {
@@ -186,11 +188,21 @@ namespace Server.Mobiles
 
         #endregion
 
+        public override void OnAfterTame(Mobile tamer)
+        {
+            base.OnAfterTame(tamer);
+
+            if (PetTrainingHelper.Enabled)
+            {
+                SetInt(500);
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -198,6 +210,23 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version < 1 && PetTrainingHelper.Enabled && ControlSlots <= 3)
+            {
+                var profile = PetTrainingHelper.GetAbilityProfile(this);
+
+                if (profile == null || !profile.HasCustomized())
+                {
+                    MinTameSkill = 98.7;
+                    ControlSlotsMin = 1;
+                    ControlSlots = 1;
+                }
+
+                if ((ControlMaster != null || IsStabled) && Int < 500)
+                {
+                    SetInt(500);
+                }
+            }
         }
     }
 }

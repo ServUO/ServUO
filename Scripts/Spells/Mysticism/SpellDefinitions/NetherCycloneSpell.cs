@@ -26,7 +26,7 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new InternalTarget(this, true, TargetFlags.None);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void OnTarget(IPoint3D p)
@@ -137,13 +137,13 @@ namespace Server.Spells.Mysticism
         {
             public NetherCycloneSpell Owner { get; set; }
 
-            public InternalTarget(NetherCycloneSpell owner, TargetFlags flags)
-                : this(owner, false, flags)
+            public InternalTarget(NetherCycloneSpell owner)
+                : this(owner, false)
             {
             }
 
-            public InternalTarget(NetherCycloneSpell owner, bool allowland, TargetFlags flags)
-                : base(12, allowland, flags)
+            public InternalTarget(NetherCycloneSpell owner, bool allowland)
+                : base(12, allowland, TargetFlags.None)
             {
                 Owner = owner;
             }

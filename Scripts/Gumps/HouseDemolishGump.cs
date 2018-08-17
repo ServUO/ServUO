@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - HouseDemolishGump.cs
-// **********
-#endregion
-
 #region References
 using Server.Accounting;
 using Server.Guilds;

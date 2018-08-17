@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Geometry.cs
-// **********
-#endregion
-
 #region References
 using System;
 #endregion
@@ -413,7 +407,10 @@ namespace Server
 			string param4 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			return new Rectangle2D(
-				Convert.ToInt32(param1), Convert.ToInt32(param2), Convert.ToInt32(param3), Convert.ToInt32(param4));
+				Convert.ToInt32(param1),
+				Convert.ToInt32(param2),
+				Convert.ToInt32(param3),
+				Convert.ToInt32(param4));
 		}
 
 		[CommandProperty(AccessLevel.Counselor)]
@@ -512,6 +509,53 @@ namespace Server
 			m_End = new Point3D(x + width, y + height, z + depth);
 		}
 
+		public void Set(int x, int y, int z, int width, int height, int depth)
+		{
+			m_Start = new Point3D(x, y, z);
+			m_End = new Point3D(x + width, y + height, z + depth);
+		}
+
+		public static Rectangle3D Parse(string value)
+		{
+			int start = value.IndexOf('(');
+			int end = value.IndexOf(',', start + 1);
+
+			string param1 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param2 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param3 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param4 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param5 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(')', start + 1);
+
+			string param6 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			return new Rectangle3D(
+				Convert.ToInt32(param1),
+				Convert.ToInt32(param2),
+				Convert.ToInt32(param3),
+				Convert.ToInt32(param4),
+				Convert.ToInt32(param5),
+				Convert.ToInt32(param6));
+		}
+
 		[CommandProperty(AccessLevel.Counselor)]
 		public Point3D Start { get { return m_Start; } set { m_Start = value; } }
 
@@ -537,6 +581,11 @@ namespace Server
 		{
 			return (p.X >= m_Start.m_X) && (p.X < m_End.m_X) && (p.Y >= m_Start.m_Y) && (p.Y < m_End.m_Y) && (p.Z >= m_Start.m_Z) &&
 				   (p.Z < m_End.m_Z);
+		}
+
+		public override string ToString()
+		{
+			return String.Format("({0}, {1}, {2})+({3}, {4}, {5})", Start.X, Start.Y, Start.Z, Width, Height, Depth);
 		}
 
 		public override int GetHashCode()

@@ -21,7 +21,7 @@ namespace Server.Mobiles
             1, 0,
             0, -2
         };
-        private static Hashtable m_Table;
+
         private readonly DateTime m_NextDrop = DateTime.UtcNow;
 
         [Constructable]
@@ -70,6 +70,8 @@ namespace Server.Mobiles
             {
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
+
+            SetSpecialAbility(SpecialAbility.HowlOfCacophony);
         }
 
         public MonstrousInterredGrizzle(Serial serial)
@@ -90,13 +92,6 @@ namespace Server.Mobiles
             {
                 return 5;
             }
-        }
-        public static bool UnderCacophonicAttack(Mobile from)
-        {
-            if (m_Table == null)
-                m_Table = new Hashtable();
-			
-            return m_Table[from] != null;
         }
 
         public override void GenerateLoot()
@@ -161,51 +156,12 @@ namespace Server.Mobiles
             }
         }
 
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (Utility.RandomDouble() < 0.15)
-                CacophonicAttack(defender);
-        }
-
         public override void OnDamage(int amount, Mobile from, bool willKill)
-        { 
-            if (Utility.RandomDouble() < 0.15)
-                CacophonicAttack(from);
-				
+        {				
             if (Utility.RandomDouble() < 0.3)
                 DropOoze();
 			
             base.OnDamage(amount, from, willKill);
-        }
-
-        public override void OnThink()
-        {
-            base.OnThink();
-			
-            if (Combatant == null)
-                return;	
-				
-            if (Hits > 0.8 * HitsMax && Utility.RandomDouble() < 0.0025)
-                FireRing();
-        }
-
-        public override void FireRing()
-        {
-            for (int i = 0; i < m_Tiles.Length; i += 2) 
-            {
-                Point3D p = Location;
-				
-                p.X += m_Tiles[i];
-                p.Y += m_Tiles[i + 1];
-				
-                IPoint3D po = p as IPoint3D;
-				
-                SpellHelper.GetSurfaceTop(ref po);
-				
-                Effects.SendLocationEffect(po, Map, Utility.RandomBool() ? 0x3E31 : 0x3E27, 100);
-            }
         }
 
         public override int GetDeathSound()
@@ -247,35 +203,6 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
 
-        public virtual void CacophonicAttack(Mobile to)
-        {
-            if (m_Table == null)
-                m_Table = new Hashtable();
-		
-            if (to.Alive && to.Player && m_Table[to] == null)
-            {
-                to.SendSpeedControl(SpeedControlType.WalkSpeed);
-                to.SendLocalizedMessage(1072069); // A cacophonic sound lambastes you, suppressing your ability to move.
-                to.PlaySound(0x584);
-				
-                m_Table[to] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerStateCallback(EndCacophonic_Callback), to);
-
-                BuffInfo.AddBuff(to, new BuffInfo(BuffIcon.HowlOfCacophony, 1153793, 1153820, TimeSpan.FromSeconds(30), to, "60\t5\t5"));
-            }
-        }
-
-        public virtual void CacophonicEnd(Mobile from)
-        {
-            if (m_Table == null)
-                m_Table = new Hashtable();
-				
-            m_Table[from] = null;
-
-            BuffInfo.RemoveBuff(from, BuffIcon.HowlOfCacophony);
-
-            from.SendSpeedControl(SpeedControlType.Disable);
-        }
-
         public virtual void DropOoze()
         {
             int amount = Utility.RandomMinMax(1, 3);
@@ -312,12 +239,6 @@ namespace Server.Mobiles
                 else
                     ((PlayerMobile)Combatant).SendLocalizedMessage(1072072); // A poisonous gas seeps out of your enemy's skin!
             }
-        }
-
-        private void EndCacophonic_Callback(object state)
-        {
-            if (state is Mobile)
-                CacophonicEnd((Mobile)state);
         }
     }
 

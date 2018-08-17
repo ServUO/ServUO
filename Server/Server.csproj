@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NEWTIMERS, ServUO</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NEWTIMERS;ServUO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -35,8 +35,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
-    <DefineConstants>TRACE;NEWTIMERS, ServUO</DefineConstants>
+    <DefineConstants>TRACE;NEWTIMERS;ServUO</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>ServUO.exe.manifest</ApplicationManifest>
@@ -162,6 +163,7 @@
     <Compile Include=".\VirtueInfo.cs" />
     <Compile Include=".\World.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Gumps\ECHandleInput.cs" />
     <Compile Include="Gumps\Gump.cs" />
     <Compile Include="Gumps\GumpAlphaRegion.cs" />
     <Compile Include="Gumps\GumpBackground.cs" />
@@ -195,12 +197,8 @@
     <Content Include="servuo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BaseFamiliar.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 using System;
@@ -54,6 +48,7 @@ namespace Server.Mobiles
 		public override Poison PoisonImmune { get { return Poison.Lethal; } }
 		public override bool Commandable { get { return false; } }
 		public override bool PlayerRangeSensitive { get { return false; } }
+        public override bool CanDetectHidden { get { return false; } }
 
         public virtual bool RangeCheck()
         {

@@ -10,7 +10,7 @@ namespace Server.Engines.TombOfKings
         {
             for (int i = 0; i < m_Positions.Length; i++)
             {
-                new ChamberSpawner(m_Positions[i], Map.TerMur);
+                WeakEntityCollection.Add("sa", new ChamberSpawner(m_Positions[i], Map.TerMur));
             }
         }
 

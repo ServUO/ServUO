@@ -234,7 +234,7 @@ namespace Server.Misc
                 e.Accepted = false;
                 e.RejectReason = ALRReason.InUse;
 
-                Utility.PushColor(ConsoleColor.DarkRed);
+                Utility.PushColor(ConsoleColor.Red);
                 Console.WriteLine("Login: {0}: Past IP limit threshold", e.State);
                 Utility.PopColor();
 
@@ -262,7 +262,7 @@ namespace Server.Misc
                 }
                 else
                 {
-                    Utility.PushColor(ConsoleColor.DarkRed);
+                    Utility.PushColor(ConsoleColor.Red);
                     Console.WriteLine("Login: {0}: Invalid username '{1}'", e.State, un);
                     Utility.PopColor();
                     e.RejectReason = ALRReason.Invalid;
@@ -311,7 +311,7 @@ namespace Server.Misc
             {
                 e.Accepted = false;
 
-                Utility.PushColor(ConsoleColor.DarkRed);
+                Utility.PushColor(ConsoleColor.Red);
                 Console.WriteLine("Login: {0}: Past IP limit threshold", e.State);
                 Utility.PopColor();
 

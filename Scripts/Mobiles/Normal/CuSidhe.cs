@@ -122,6 +122,25 @@ namespace Server.Mobiles
             AddLoot(LootPack.AosFilthyRich, 5);
         }
 
+        public override void OnAfterTame(Mobile tamer)
+        {
+            if (PetTrainingHelper.Enabled)
+            {
+                RawStr = (int)Math.Max(1, RawStr * 0.5);
+                RawDex = (int)Math.Max(1, RawDex * 0.5);
+
+                HitsMaxSeed = RawStr;
+                Hits = RawStr;
+
+                StamMaxSeed = RawDex;
+                Stam = RawDex;
+            }
+            else
+            {
+                base.OnAfterTame(tamer);
+            }
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.Race != Race.Elf && from == ControlMaster && from.IsPlayer())
@@ -178,7 +197,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (version < 2 && Controlled && RawStr >= 1200)
+            if (version < 3 && Controlled && RawStr >= 1200 && ControlSlots == ControlSlotsMin)
             {
                 Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
             }

@@ -972,8 +972,8 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            m_AllowableTable[typeof(BaseGlovesOfMining)] = DefTailoring.CraftSystem;
-            m_AllowableTable[typeof(RingmailGlovesOfMining)] = DefTailoring.CraftSystem;
+            m_AllowableTable[typeof(LeatherGlovesOfMining)] = DefTailoring.CraftSystem;
+            m_AllowableTable[typeof(RingmailGlovesOfMining)] = DefBlacksmithy.CraftSystem;
             m_AllowableTable[typeof(StuddedGlovesOfMining)] = DefTailoring.CraftSystem;
             m_AllowableTable[typeof(JukaBow)] = DefBowFletching.CraftSystem;
             m_AllowableTable[typeof(TribalSpear)] = DefBlacksmithy.CraftSystem;
@@ -1908,7 +1908,12 @@ namespace Server.Items
 
                 ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, luckchance);
 
-                int addonbudget = TryApplyRandomDisadvantage(item);
+                int addonbudget = 0;
+
+                if (!artifact)
+                {
+                    addonbudget = TryApplyRandomDisadvantage(item);
+                }
 
                 if (addonbudget > 0)
                 {

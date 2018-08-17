@@ -374,7 +374,7 @@ namespace Server
             BaseCreature killed = e.Killed as BaseCreature;
             Mobile killer = e.KilledBy;
 
-            if (killed != null && killed.GivesMLMinorArtifact && CheckArtifactChance(killer, killed))
+            if (killed != null && killer != null && killer.Alive && killed.GivesMLMinorArtifact && CheckArtifactChance(killer, killed))
             {
                 MondainsLegacy.GiveArtifactTo(killer);
             }

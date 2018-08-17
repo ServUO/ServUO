@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - AnimalTaming.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -431,11 +425,6 @@ namespace Server.SkillHandlers
 								else
 								{
 									ScaleSkills(m_Creature, 0.90); // 90% of original skills
-								}
-
-								if (m_Creature.StatLossAfterTame)
-								{
-									ScaleStats(m_Creature, 0.50);
 								}
 							}
 

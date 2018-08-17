@@ -31,7 +31,7 @@ namespace Server.Items
                 return 1113339;
             }
         }// essence of feeling
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {

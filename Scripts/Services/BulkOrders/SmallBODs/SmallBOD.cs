@@ -74,7 +74,7 @@ namespace Server.Engines.BulkOrders
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public Type Type
+        public virtual Type Type
         {
             get
             {
@@ -297,6 +297,11 @@ namespace Server.Engines.BulkOrders
             }
         }
 
+        public virtual bool CheckType(Item item)
+        {
+            return CheckType(item.GetType());
+        }
+
         public virtual bool CheckType(Type itemType)
         {
             return m_Type != null && (itemType == m_Type || itemType.IsSubclassOf(m_Type));
@@ -313,7 +318,7 @@ namespace Server.Engines.BulkOrders
                 {
                     from.SendLocalizedMessage(1045166); // The maximum amount of requested items have already been combined to this deed.
                 }
-                else if (!CheckType(objectType))
+                else if (!CheckType((Item)o))
                 {
                     from.SendLocalizedMessage(1045169); // The item is not in the request.
                 }

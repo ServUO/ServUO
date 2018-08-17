@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - TileData.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.IO;
@@ -37,6 +31,10 @@ namespace Server
 		private byte m_Quantity;
 		private byte m_Value;
 		private byte m_Height;
+
+		public ItemData(ItemData d)
+			: this(d.Name, d.Flags, d.Weight, d.Quality, d.Quantity, d.Value, d.Height)
+		{ }
 
 		public ItemData(string name, TileFlag flags, int weight, int quality, int quantity, int value, int height)
 		{
@@ -128,7 +126,7 @@ namespace Server
 	}
 
 	[Flags]
-	public enum TileFlag : long
+	public enum TileFlag : ulong
 	{
 		None = 0x00000000,
 		Background = 0x00000001,
@@ -171,14 +169,12 @@ namespace Server
 		private static readonly ItemData[] m_ItemData;
 
 		public static LandData[] LandTable { get { return m_LandData; } }
-
 		public static ItemData[] ItemTable { get { return m_ItemData; } }
 
 		private static readonly int m_MaxLandValue;
 		private static readonly int m_MaxItemValue;
 
 		public static int MaxLandValue { get { return m_MaxLandValue; } }
-
 		public static int MaxItemValue { get { return m_MaxItemValue; } }
 
 		private static readonly byte[] m_StringBuffer = new byte[20];
@@ -187,11 +183,11 @@ namespace Server
 		{
 			bin.Read(m_StringBuffer, 0, 20);
 
-			int count;
+			int count = 0;
 
-			for (count = 0; count < 20 && m_StringBuffer[count] != 0; ++count)
+			while(count < 20 && m_StringBuffer[count] != 0)
 			{
-				;
+				++count;
 			}
 
 			return Encoding.ASCII.GetString(m_StringBuffer, 0, count);

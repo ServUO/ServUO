@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Revenant.cs
-// **********
-#endregion
-
 #region References
 using System;
 

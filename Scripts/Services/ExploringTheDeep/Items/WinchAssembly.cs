@@ -7,9 +7,12 @@ namespace Server.Items
 {
     public class WinchAssembly : Item
     {
+        public static readonly string EntityName = "winchassemply";
+
         public static void Initialize()
         {
             CommandSystem.Register("GenWinchAssembly", AccessLevel.Administrator, GenWinchAssembly_Command);
+            CommandSystem.Register("DelWinchAssembly", AccessLevel.Administrator, DelWinchAssembly_Command);
         }
 
         [Usage("GenWinchAssembly")]
@@ -18,40 +21,36 @@ namespace Server.Items
             GenWinchAssembly(e.Mobile);
         }
 
+        [Usage("GenWinchAssembly")]
+        private static void DelWinchAssembly_Command(CommandEventArgs e)
+        {
+            DeleteWinchAssembly(e.Mobile);
+        }
+
         public static void GenWinchAssembly(Mobile m)
         {
             DeleteWinchAssembly(m);            
 
             // Winch 
             WinchAssembly winch = new WinchAssembly();
+            WeakEntityCollection.Add(EntityName, winch);
+
             Hatch hatch = new Hatch();
+            WeakEntityCollection.Add(EntityName, hatch);
+
             WinchAssemblyLever lever = new WinchAssemblyLever(winch, hatch);
+            WeakEntityCollection.Add(EntityName, lever);
 
             lever.MoveToWorld(new Point3D(6310, 1705, 0), Map.Trammel);
             winch.MoveToWorld(new Point3D(6310, 1704, 0), Map.Trammel);
             hatch.MoveToWorld(new Point3D(6303, 1711, 10), Map.Trammel);
 
-            m.SendMessage("Generation completed!");
+            m.SendMessage("Winch Assembly Generation completed!");
         }
 
         private static void DeleteWinchAssembly(Mobile from)
         {
-            List<Item> list = new List<Item>();
-
-            foreach (Item item in World.Items.Values)
-            {
-                if (item is WinchAssembly || item is Hatch || item is WinchAssemblyLever)
-                list.Add(item);
-            }
-
-            foreach (Item item in list)
-                item.Delete();
-
-            if (list.Count > 0)
-                from.SendMessage("{0} items removed.", list.Count);
-
-            list.Clear();
-            list.TrimExcess();
+            WeakEntityCollection.Delete(EntityName);
         }
 
         public override int LabelNumber { get { return 1154433; } } // Winch Assembly

@@ -8,7 +8,8 @@ namespace Server.Items
         public DisintegratingThesisNotes()
             : base(0xE36)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public DisintegratingThesisNotes(Serial serial)
@@ -16,13 +17,15 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
+        public override int LabelNumber { get {return 1074440;} } // Disintegrating Thesis Notes
+        
+        public override DeathMoveResult OnInventoryDeath(Mobile parent)
         {
-            get
-            {
-                return 1074440;
-            }
-        }// Disintegrating Thesis Notes
+            if (!parent.Player && !parent.IsDeadBondedPet)
+               return DeathMoveResult.MoveToCorpse;
+
+            return base.OnInventoryDeath(parent);
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

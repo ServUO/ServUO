@@ -187,43 +187,7 @@ namespace Server.Gumps
         {
             User.CloseGump(this.GetType());
         }
-
-        public new void AddItemProperty(Item item)
-        {
-            if (item == null || item.Deleted)
-            {
-                return;
-            }
-
-            if (User.NetState != null)
-            {
-                ObjectPropertyList opl = item.PropertyList;
-                item.GetProperties(opl);
-
-                User.Send(opl);
-            }
-
-            AddItemProperty(item.Serial);
-        }
-
-        public void AddItemProperty(Mobile mob)
-        {
-            if (mob == null || mob.Deleted)
-            {
-                return;
-            }
-
-            if (User.NetState != null)
-            {
-                ObjectPropertyList opl = mob.PropertyList;
-                mob.GetProperties(opl);
-
-                User.Send(opl);
-            }
-
-            AddItemProperty(mob.Serial);
-        }
-
+        
         public static T GetGump<T>(PlayerMobile pm, Func<T, bool> predicate) where T : Gump
         {
             return EnumerateGumps<T>(pm).FirstOrDefault(x => predicate == null || predicate(x));
@@ -290,6 +254,20 @@ namespace Server.Gumps
 
                 ColUtility.Free(gumps);
             }
+        }
+
+        public new void AddItemProperty(Item item)
+        {
+            item.SendPropertiesTo(User);
+
+            base.AddItemProperty(item);
+        }
+
+        public void AddMobileProperty(Mobile mob)
+        {
+            mob.SendPropertiesTo(User);
+
+            base.AddItemProperty(mob.Serial.Value);
         }
 
         #region Formatting

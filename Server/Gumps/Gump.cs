@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Gump.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -24,7 +18,6 @@ namespace Server.Gumps
 		private static int m_NextSerial = 1;
 
 		private int m_Serial;
-		private int m_TypeID;
 		private int m_X, m_Y;
 
 		private bool m_Dragable = true;
@@ -48,7 +41,7 @@ namespace Server.Gumps
 			m_X = x;
 			m_Y = y;
 
-			m_TypeID = GetTypeID();
+			TypeID = GetTypeID();
 
 			m_Entries = new List<GumpEntry>();
 			m_Strings = new List<string>();
@@ -60,7 +53,7 @@ namespace Server.Gumps
 			//	m_Strings.Clear();
 		}
 
-		public int TypeID { get { return m_TypeID; } }
+		public int TypeID { get; set; }
 
 		public List<GumpEntry> Entries { get { return m_Entries; } }
 
@@ -348,7 +341,12 @@ namespace Server.Gumps
 			Add(new GumpItemProperty(serial));
 		}
 
-		public void Add(GumpEntry g)
+        public void AddECHandleInput()
+        {
+            Add(new ECHandleInput());
+        }
+
+        public void Add(GumpEntry g)
 		{
 			if (g.Parent != this)
 			{

@@ -6,12 +6,12 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public interface ITool : IUsesRemaining
+    public interface ITool : IEntity, IUsesRemaining
     {
         CraftSystem CraftSystem { get; }
+
         bool BreakOnDepletion { get; }
-        bool Deleted { get; }
-        void Delete();
+
         bool CheckAccessible(Mobile from, ref int num);
     }
 
@@ -146,7 +146,7 @@ namespace Server.Items
 
         public virtual bool CheckAccessible(Mobile m, ref int num)
         {
-            if (!IsChildOf(m) && Parent != m)
+            if (RootParent != m)
             {
                 num = 1044263;
                 return false;
@@ -162,6 +162,11 @@ namespace Server.Items
 
         public static bool CheckAccessible(Item tool, Mobile m, bool message)
         {
+            if (tool == null || tool.Deleted)
+            {
+                return false;
+            }
+
             var num = 0;
 
             bool res;
@@ -185,6 +190,11 @@ namespace Server.Items
 
         public static bool CheckTool(Item tool, Mobile m)
         {
+            if (tool == null || tool.Deleted)
+            {
+                return false;
+            }
+
             Item check = m.FindItemOnLayer(Layer.OneHanded);
 
             if (check is ITool && check != tool && !(check is AncientSmithyHammer))
@@ -290,7 +300,6 @@ namespace Server.Items
         }
 
         #region ICraftable Members
-
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             PlayerConstructed = true;
@@ -299,14 +308,6 @@ namespace Server.Items
 
             if (makersMark)
                 Crafter = from;
-
-            /*if (!craftItem.ForceNonExceptional)
-            {
-                if (typeRes == null)
-                    typeRes = craftItem.Resources.GetAt(0).ItemType;
-
-                Resource = CraftResources.GetFromType(typeRes);
-            }*/
 
             return quality;
         }

@@ -188,6 +188,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RadarCol.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SkillGroups.cs" />
     <Compile Include="Skills.cs" />
     <Compile Include="Sound.cs" />

@@ -9,15 +9,9 @@ namespace Server.Mobiles
     public class Navrey : BaseCreature
     {
         private NavreysController m_Spawner;
-        private bool m_UsedPillars;
-        private DateTime m_Delay;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool UsedPillars
-        {
-            get { return m_UsedPillars; }
-            set { m_UsedPillars = value; }
-        }
+        public bool UsedPillars { get; set; }
 
         private static readonly Type[] m_Artifact = new Type[]
         {
@@ -71,6 +65,8 @@ namespace Server.Mobiles
             {
                 PackItem(Loot.RandomScroll(0, Loot.MysticismScrollTypes.Length, SpellbookType.Mystic));
             }
+
+            SetSpecialAbility(SpecialAbility.Webbing);
         }
 
         public Navrey(Serial serial)
@@ -166,93 +162,6 @@ namespace Server.Mobiles
                         }
                     }
                 }
-            }
-        }
-
-        public override void OnThink()
-        {
-			if (DateTime.UtcNow > m_Delay)
-            {
-                m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 30));
-				if (Utility.RandomDouble() < 0.50)
-                DoSpecialAbility();
-			}
-        }
-
-        // override so Navrey will ignore players paralyzed in webs
-        public override bool CanSee(object o)
-        {
-            if (o is Mobile && ((Mobile)o).Paralyzed && Utility.RandomDouble() > 0.25)
-                return false;
-
-            return base.CanSee(o);
-        }
-
-        private static Dictionary<Mobile, NavreyParalyzingWeb> m_Table = new Dictionary<Mobile, NavreyParalyzingWeb>();
-        public static Dictionary<Mobile, NavreyParalyzingWeb> Table { get { return m_Table; } }
-
-        public void DoSpecialAbility()
-        {
-            // build target list
-            List<Mobile> mlist = new List<Mobile>();
-
-            IPooledEnumerable eable = this.GetMobilesInRange(12);
-            foreach (Mobile mob in eable)
-            {
-                if (mob == null || mob == this || !mob.Alive || mob.Hidden || !CanSee(mob)|| !CanBeHarmful(mob) || mob.AccessLevel > AccessLevel.Player)
-                    continue;
-
-                if (m_Table.ContainsKey(mob))
-                    continue;
-
-                if (mob.Player)
-                    mlist.Add(mob);
-
-                else if (mob is BaseCreature && (((BaseCreature)mob).Summoned || ((BaseCreature)mob).Controlled))
-                    mlist.Add(mob);
-            }
-            eable.Free();
-
-            // pick a random target and sling the web
-            if (mlist.Count > 0)
-            {
-                Mobile m = mlist[Utility.Random(mlist.Count)];
-
-                Direction = GetDirectionTo(m);
-                TimeSpan duration = TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10));
-
-                Item web = new NavreyParalyzingWeb(duration, m);
-
-                Effects.SendMovingParticles(this, m, web.ItemID, 12, 0, false, false, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-
-                Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(ThrowWeb_Callback), new object[] { web, m, duration });
-
-                Combatant = m;
-                m_Table[m] = web as NavreyParalyzingWeb;
-            }
-        }
-
-        public static void RemoveFromTable(Mobile from)
-        {
-            if (m_Table.ContainsKey(from))
-                m_Table.Remove(from);
-
-            BuffInfo.RemoveBuff(from, BuffIcon.Webbing);
-        }
-
-        public void ThrowWeb_Callback(object o)
-        {
-            object[] os = (object[])o;
-
-            Item web = os[0] as Item;
-            Mobile m = os[1] as Mobile;
-            TimeSpan ts = (TimeSpan)os[2];
-
-            if (m != null && web != null)
-            {
-                web.MoveToWorld(m.Location, this.Map);
-                m.Freeze(ts);
-                m.SendMessage("You've been caught in Navrey's Web!");
             }
         }
 

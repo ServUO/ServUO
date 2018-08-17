@@ -1,12 +1,7 @@
-#region Header
-// **********
-// ServUO - Corpse.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Server.ContextMenus;
 using Server.Engines.PartySystem;
@@ -71,6 +66,16 @@ namespace Server.Items
 		///     Has this corpse been self looted?
 		/// </summary>
 		SelfLooted = 0x00000080,
+
+		/// <summary>
+		/// Does this corpse flag looters as criminal?
+		/// </summary>
+		LootCriminal = 0x00000100,
+
+		/// <summary>
+		///     Was the owner a murderer when he died?
+		/// </summary>
+		Murderer = 0x00000200,
 	}
 
 	public class Corpse : Container, ICarvable
@@ -126,6 +131,8 @@ namespace Server.Items
 		}
 
 		private Dictionary<Item, InstancedItemInfo> m_InstancedItems;
+
+        public bool HasAssignedInstancedLoot { get; private set; }
 
 		private class InstancedItemInfo
 		{
@@ -183,7 +190,27 @@ namespace Server.Items
 			return true;
 		}
 
-		private void AssignInstancedLoot()
+        public override void AddItem(Item item)
+        {
+            base.AddItem(item);
+
+            if (InstancedCorpse && HasAssignedInstancedLoot)
+            {
+                AssignInstancedLoot(item);
+            }
+        }
+
+        private void AssignInstancedLoot()
+        {
+            AssignInstancedLoot(this.Items);
+        }
+
+        public void AssignInstancedLoot(Item item)
+        {
+            AssignInstancedLoot(new Item[] { item });
+        }
+
+        private void AssignInstancedLoot(IEnumerable<Item> items)
 		{
 			if (m_Aggressors.Count == 0 || Items.Count == 0)
 			{
@@ -198,10 +225,8 @@ namespace Server.Items
 			var m_Stackables = new List<Item>();
 			var m_Unstackables = new List<Item>();
 
-			for (int i = 0; i < Items.Count; i++)
+            foreach (var item in items.Where(i => !m_InstancedItems.ContainsKey(i)))
 			{
-				Item item = Items[i];
-
 				if (item.LootType != LootType.Cursed) //Don't have curesd items take up someone's item spot.. (?)
 				{
 					if (item.Stackable)
@@ -242,13 +267,19 @@ namespace Server.Items
 						Item splitItem = Mobile.LiftItemDupe(item, item.Amount - amountPerAttacker);
 							//LiftItemDupe automagically adds it as a child item to the corpse
 
-						m_InstancedItems.Add(splitItem, new InstancedItemInfo(splitItem, attackers[j]));
+                        if (!m_InstancedItems.ContainsKey(splitItem))
+                        {
+                            m_InstancedItems.Add(splitItem, new InstancedItemInfo(splitItem, attackers[j]));
+                        }
 						//What happens to the remaining portion?  TEMP FOR NOW UNTIL OSI VERIFICATION:  Treat as Single Item.
 					}
 
 					if (remainder == 0)
 					{
-						m_InstancedItems.Add(item, new InstancedItemInfo(item, attackers[attackers.Count - 1]));
+                        if (!m_InstancedItems.ContainsKey(item))
+                        {
+                            m_InstancedItems.Add(item, new InstancedItemInfo(item, attackers[attackers.Count - 1]));
+                        }
 						//Add in the original item (which has an equal amount as the others) to the instance for the last attacker, cause it wasn't added above.
 					}
 					else
@@ -268,7 +299,10 @@ namespace Server.Items
 				Mobile m = attackers[i % attackers.Count];
 				Item item = m_Unstackables[i];
 
-				m_InstancedItems.Add(item, new InstancedItemInfo(item, m));
+                if (!m_InstancedItems.ContainsKey(item))
+                {
+                    m_InstancedItems.Add(item, new InstancedItemInfo(item, m));
+                }
 			}
 		}
 
@@ -283,7 +317,10 @@ namespace Server.Items
 					m_InstancedItems = new Dictionary<Item, InstancedItemInfo>();
 				}
 
-				m_InstancedItems.Add(carved, new InstancedItemInfo(carved, carver));
+                if (!m_InstancedItems.ContainsKey(carved))
+                {
+                    m_InstancedItems.Add(carved, new InstancedItemInfo(carved, carver));
+                }
 			}
 		}
 
@@ -319,6 +356,9 @@ namespace Server.Items
 		public bool SelfLooted { get { return GetFlag(CorpseFlag.SelfLooted); } set { SetFlag(CorpseFlag.SelfLooted, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
+		public bool LootCriminal { get { return GetFlag(CorpseFlag.LootCriminal); } set { SetFlag(CorpseFlag.LootCriminal, value); } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public AccessLevel AccessLevel { get { return m_AccessLevel; } }
 
 		public List<Mobile> Aggressors { get { return m_Aggressors; } }
@@ -339,6 +379,9 @@ namespace Server.Items
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Criminal { get { return GetFlag(CorpseFlag.Criminal); } set { SetFlag(CorpseFlag.Criminal, value); } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool Murderer { get { return GetFlag(CorpseFlag.Murderer); } set { SetFlag(CorpseFlag.Murderer, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public Mobile Owner { get { return m_Owner; } }
@@ -500,6 +543,7 @@ namespace Server.Items
 				if (!owner.Player)
 				{
 					c.AssignInstancedLoot();
+                    c.HasAssignedInstancedLoot = true;
 				}
 				else if (Core.AOS)
 				{
@@ -539,15 +583,17 @@ namespace Server.Items
 		public Corpse(Mobile owner, HairInfo hair, FacialHairInfo facialhair, List<Item> equipItems)
 			: base(0x2006)
 		{
-			// To supress console warnings, stackable must be true
-			Stackable = true;
-			Amount = owner.Body; // protocol defines that for itemid 0x2006, amount=body
+			Movable = false;
+
+			Stackable = true; // To supress console warnings, stackable must be true
+			Amount = owner.Body; // Protocol defines that for itemid 0x2006, amount=body
 			Stackable = false;
 
-			Movable = false;
-			Hue = owner.Hue;
-			Direction = owner.Direction;
 			Name = owner.Name;
+			Hue = owner.Hue;
+
+			Direction = owner.Direction;
+			Light = (LightType)Direction;
 
 			m_Owner = owner;
 
@@ -558,13 +604,18 @@ namespace Server.Items
 			m_AccessLevel = owner.AccessLevel;
 			m_Guild = owner.Guild as Guild;
 			m_Kills = owner.Kills;
+
 			SetFlag(CorpseFlag.Criminal, owner.Criminal);
+			SetFlag(CorpseFlag.Murderer, owner.Murderer);
 
 			m_Hair = hair;
 			m_FacialHair = facialhair;
 
 			// This corpse does not turn to bones if: the owner is not a player
 			SetFlag(CorpseFlag.NoBones, !owner.Player);
+
+			// Flagging looters as criminal can happen by default
+			SetFlag(CorpseFlag.LootCriminal, true);
 
 			m_Looters = new List<Mobile>();
 			m_EquipItems = equipItems;
@@ -647,12 +698,12 @@ namespace Server.Items
 			: base(serial)
 		{ }
 
-		protected bool GetFlag(CorpseFlag flag)
+		public bool GetFlag(CorpseFlag flag)
 		{
 			return ((m_Flags & flag) != 0);
 		}
 
-		protected void SetFlag(CorpseFlag flag, bool on)
+		public void SetFlag(CorpseFlag flag, bool on)
 		{
 			m_Flags = (on ? m_Flags | flag : m_Flags & ~flag);
 		}
@@ -942,6 +993,9 @@ namespace Server.Items
 				return false;
 			}
 
+			if (!GetFlag(CorpseFlag.LootCriminal))
+				return false;
+
 			Party p = Party.Get(m_Owner);
 
 			if (p != null && p.Contains(from))
@@ -1001,10 +1055,10 @@ namespace Server.Items
 				m_Looters.Add(from);
 			}
 
-			if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
-			{
-				m_InstancedItems.Remove(item);
-			}
+			//if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
+			//{
+			//	m_InstancedItems.Remove(item);
+			//}
 		}
 
 		public override void OnItemLifted(Mobile from, Item item)
@@ -1026,10 +1080,10 @@ namespace Server.Items
 				m_Looters.Add(from);
 			}
 
-			if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
-			{
-				m_InstancedItems.Remove(item);
-			}
+			//if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
+			//{
+			//	m_InstancedItems.Remove(item);
+			//}
 		}
 
 		private class OpenCorpseEntry : ContextMenuEntry
@@ -1157,6 +1211,8 @@ namespace Server.Items
 
 				if (selfLoot)
 				{
+					SetFlag(CorpseFlag.SelfLooted, true);
+
 					var items = new List<Item>(Items);
 
 					bool gathered = false;
@@ -1459,10 +1515,8 @@ namespace Server.Items
         {
             base.Delete();
 
-            if (PlayerCorpses != null && PlayerCorpses.ContainsKey(this))
+            if (PlayerCorpses != null && PlayerCorpses.Remove(this))
             {
-                PlayerCorpses.Remove(this);
-
                 if (PlayerCorpses.Count == 0)
                     PlayerCorpses = null;
             }

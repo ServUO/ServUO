@@ -22,7 +22,7 @@ namespace Server.Engines.Quests
 
             foreach (SutekIngredientInfo def in m_Ingredients)
             {
-                new SutekIngredientItem(def);
+                WeakEntityCollection.Add("sa", new SutekIngredientItem(def));
             }
 
             XmlSpawner sp = new XmlSpawner("Sutek");
@@ -30,6 +30,7 @@ namespace Server.Engines.Quests
             sp.HomeRange = 5;
             sp.MoveToWorld(new Point3D(917, 594, -14), Map.TerMur);
             sp.Respawn();
+            WeakEntityCollection.Add("sa", sp);
 
             List<Item> toDelete = new List<Item>(World.Items.Values.Where(i => i is XmlSpawner && (i.Name == "PerfectTimingSpawner" || i.Name == "PerfectTimingSpawner2")));
 

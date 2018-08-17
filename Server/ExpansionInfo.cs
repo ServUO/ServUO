@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - ExpansionInfo.cs
-// **********
-#endregion
-
 #region References
 using System;
 #endregion

@@ -24,21 +24,21 @@ namespace Server.Items
 
             for (int i = 0; i < level * 20; i++)
             {
-                DropItemStack(Loot.RandomGem());
+                DropItemStacked(Loot.RandomGem());
             }
 
             for (int i = 0; i < (level * 5) + Utility.Random(5); i++)
             {
                 switch (Utility.Random(8))
                 {
-                    case 0: DropItemStack(new BlueDiamond()); break;
-                    case 1: DropItemStack(new FireRuby()); break;
-                    case 2: DropItemStack(new BrilliantAmber()); break;
-                    case 3: DropItemStack(new PerfectEmerald()); break;
-                    case 4: DropItemStack(new DarkSapphire()); break;
-                    case 5: DropItemStack(new Turquoise()); break;
-                    case 6: DropItemStack(new EcruCitrine()); break;
-                    case 7: DropItemStack(new WhitePearl()); break;
+                    case 0: DropItemStacked(new BlueDiamond()); break;
+                    case 1: DropItemStacked(new FireRuby()); break;
+                    case 2: DropItemStacked(new BrilliantAmber()); break;
+                    case 3: DropItemStacked(new PerfectEmerald()); break;
+                    case 4: DropItemStacked(new DarkSapphire()); break;
+                    case 5: DropItemStacked(new Turquoise()); break;
+                    case 6: DropItemStacked(new EcruCitrine()); break;
+                    case 7: DropItemStacked(new WhitePearl()); break;
                 }
             }
 

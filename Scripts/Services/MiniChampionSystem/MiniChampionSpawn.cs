@@ -222,14 +222,23 @@ namespace Server.Engines.MiniChamps
             bool changed = false;
             bool done = true;
 
-            Spawn.ForEach(x =>
+            foreach (var spawn in Spawn)
             {
-                changed |= x.Slice();
-                done &= x.Done;
-            });
+                if (spawn.Slice() && !changed)
+                {
+                    changed = true;
+                }
+
+                if (!spawn.Done && done)
+                {
+                    done = false;
+                }
+            }
 
             if (done)
+            {
                 AdvanceLevel();
+            }
 
             if (m_Active)
             {

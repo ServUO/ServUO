@@ -63,7 +63,7 @@ namespace Server.Items
             }
         }
 
-        int ICommodity.DescriptionNumber
+        TextDefinition ICommodity.Description
         {
             get
             {

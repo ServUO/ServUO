@@ -16,24 +16,25 @@ namespace Server.Items
         {
             get
             {
-                return 1071127;
+                return m_Replica ? 1071127 : 1025351;
             }
         }// hitching post (replica)
 
         private int m_UsesRemaining;
         private int m_Charges;
         private SecureLevel m_Level;
+        private bool m_Replica;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = value;
+                m_Level = value;
             }
         }
 
@@ -42,12 +43,16 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Charges;
+                return m_Charges;
             }
             set
             {
-                this.m_Charges = value;
-                this.InvalidateProperties();
+                m_Charges = value;
+
+                if (!m_Replica && m_Charges != -1)
+                    m_Charges = -1;
+
+                InvalidateProperties();
             }
         }
 
@@ -56,25 +61,43 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Replica
+        {
+            get { return m_Replica; }
+            set
+            {
+                m_Replica = value;
+                InvalidateProperties();
             }
         }
 
         [Constructable]
         public HitchingPost()
+            : this(true)
+        {
+        }
+
+        [Constructable]
+        public HitchingPost(bool replica)
             : base(0x14E7)
         {
-            this.Weight = 10;
+            Weight = 10;
+            Replica = replica;
 
-            this.Charges = 2;
-            this.UsesRemaining = 15;
+            Charges = replica ? 2 : -1;
+            UsesRemaining = replica ? 15 : 30;
 
-            this.m_Level = SecureLevel.CoOwners;
+            m_Level = SecureLevel.CoOwners;
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -100,9 +123,12 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            list.Add(1060584, this.m_UsesRemaining.ToString());
+            list.Add(1060584, m_UsesRemaining.ToString());
 
-            list.Add(1071215, this.m_Charges.ToString());
+            if (m_Replica)
+            {
+                list.Add(1071215, m_Charges.ToString());
+            }
         }
 
         private class StableEntry : ContextMenuEntry
@@ -113,8 +139,8 @@ namespace Server.Items
             public StableEntry(HitchingPost post, Mobile from)
                 : base(6126, 12)
             {
-                this.m_Post = post;
-                this.m_From = from;
+                m_Post = post;
+                m_From = from;
             }
         }
 
@@ -127,18 +153,18 @@ namespace Server.Items
             public ClaimListGump(HitchingPost post, Mobile from, List<BaseCreature> list)
                 : base(50, 50)
             {
-                this.m_Post = post;
-                this.m_From = from;
-                this.m_List = list;
+                m_Post = post;
+                m_From = from;
+                m_List = list;
 
                 from.CloseGump(typeof(ClaimListGump));
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 0, 325, 50 + (list.Count * 20), 9250);
-                this.AddAlphaRegion(5, 5, 315, 40 + (list.Count * 20));
+                AddBackground(0, 0, 325, 50 + (list.Count * 20), 9250);
+                AddAlphaRegion(5, 5, 315, 40 + (list.Count * 20));
 
-                this.AddHtml(15, 15, 275, 20, "<BASEFONT COLOR=#FFFFFF>Select a pet to retrieve from the stables:</BASEFONT>", false, false);
+                AddHtml(15, 15, 275, 20, "<BASEFONT COLOR=#FFFFFF>Select a pet to retrieve from the stables:</BASEFONT>", false, false);
 
                 for (int i = 0; i < list.Count; ++i)
                 {
@@ -147,8 +173,8 @@ namespace Server.Items
                     if (pet == null || pet.Deleted)
                         continue;
 
-                    this.AddButton(15, 39 + (i * 20), 10006, 10006, i + 1, GumpButtonType.Reply, 0);
-                    this.AddHtml(32, 35 + (i * 20), 275, 18, String.Format("<BASEFONT COLOR=#C0C0EE>{0}</BASEFONT>", pet.Name), false, false);
+                    AddButton(15, 39 + (i * 20), 10006, 10006, i + 1, GumpButtonType.Reply, 0);
+                    AddHtml(32, 35 + (i * 20), 275, 18, String.Format("<BASEFONT COLOR=#C0C0EE>{0}</BASEFONT>", pet.Name), false, false);
                 }
             }
 
@@ -156,10 +182,10 @@ namespace Server.Items
             {
                 int index = info.ButtonID - 1;
 
-                if (index >= 0 && index < this.m_List.Count)
+                if (index >= 0 && index < m_List.Count)
                 {
-                    this.m_Post.UsesRemaining -= 1;
-                    this.m_Post.EndClaimList(this.m_From, this.m_List[index]);
+                    m_Post.UsesRemaining -= 1;
+                    m_Post.EndClaimList(m_From, m_List[index]);
                 }
             }
         }
@@ -201,13 +227,13 @@ namespace Server.Items
             public StableTarget(HitchingPost post)
                 : base(12, false, TargetFlags.None)
             {
-                this.m_Post = post;
+                m_Post = post;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
                 if (targeted is BaseCreature)
-                    this.m_Post.EndStable(from, (BaseCreature)targeted);
+                    m_Post.EndStable(from, (BaseCreature)targeted);
                 else if (targeted == from)
                     from.SendLocalizedMessage(502672); // HA HA HA! Sorry, I am not an inn.
                 else
@@ -217,13 +243,21 @@ namespace Server.Items
 
         public void BeginClaimList(Mobile from)
         {
-            if (this.Deleted || !from.CheckAlive())
+            if (Deleted || !from.CheckAlive())
                 return;
 
-            if (this.UsesRemaining <= 0 && this.Charges >= 1)
-                from.SendLocalizedMessage(1071151); //Hitching rope is insufficient. You have to supply it.
-            else if (this.UsesRemaining <= 0 && this.Charges == 0)
-                from.SendLocalizedMessage(1071157); //This hitching post is damaged. You can't use it any longer.
+            if (UsesRemaining <= 0)
+            {
+                if (!m_Replica || Charges > 0)
+                {
+                    from.SendLocalizedMessage(1071151); //Hitching rope is insufficient. You have to supply it.
+
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1071157); //This hitching post is damaged. You can't use it any longer.
+                }
+            }
             else
             {
                 List<BaseCreature> list = new List<BaseCreature>();
@@ -252,7 +286,7 @@ namespace Server.Items
 
         public void EndClaimList(Mobile from, BaseCreature pet)
         {
-            if (pet == null || pet.Deleted || from.Map != this.Map || !from.InRange(this, 14) || !from.Stabled.Contains(pet) || !from.CheckAlive())
+            if (pet == null || pet.Deleted || from.Map != Map || !from.InRange(this, 14) || !from.Stabled.Contains(pet) || !from.CheckAlive())
                 return;
 
             if ((from.Followers + pet.ControlSlots) <= from.FollowersMax)
@@ -280,13 +314,21 @@ namespace Server.Items
 
         public void BeginStable(Mobile from)
         {
-            if (this.Deleted || !from.CheckAlive())
+            if (Deleted || !from.CheckAlive())
                 return;
 
-            if (this.UsesRemaining <= 0 && this.Charges >= 1)
-                from.SendLocalizedMessage(1071151); //Hitching rope is insufficient. You have to supply it.
-            else if (this.UsesRemaining <= 0 && this.Charges == 0)
-                from.SendLocalizedMessage(1071157); //This hitching post is damaged. You can't use it any longer.
+            if (UsesRemaining <= 0)
+            {
+                if (!m_Replica || Charges > 0)
+                {
+                    from.SendLocalizedMessage(1071151); //Hitching rope is insufficient. You have to supply it.
+
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1071157); //This hitching post is damaged. You can't use it any longer.
+                }
+            }
             else if (from.Stabled.Count >= GetMaxStabled(from))
             {
                 from.SendLocalizedMessage(1042565); // You have too many pets in the stables!
@@ -304,7 +346,7 @@ namespace Server.Items
 
         public void EndStable(Mobile from, BaseCreature pet)
         {
-            if (this.Deleted || !from.CheckAlive())
+            if (Deleted || !from.CheckAlive())
                 return;
 
             if (!pet.Controlled || pet.ControlMaster != from)
@@ -345,7 +387,7 @@ namespace Server.Items
             {
                 Container bank = from.FindBankNoCreate();
 
-                if (bank != null && bank.ConsumeTotal(typeof(Gold), 30))
+                if ((bank != null && bank.ConsumeTotal(typeof(Gold), 30)) || Banker.Withdraw(from, 30, true))
                 {
                     pet.ControlTarget = null;
                     pet.ControlOrder = OrderType.Stay;
@@ -361,7 +403,7 @@ namespace Server.Items
 
                     from.Stabled.Add(pet);
 
-                    this.UsesRemaining -= 1;
+                    UsesRemaining -= 1;
 
                     from.SendLocalizedMessage(502679); // Very well, thy pet is stabled. Thou mayst recover it by saying 'claim' to me. In one real world week, I shall sell it off if it is not claimed!
                 }
@@ -374,13 +416,21 @@ namespace Server.Items
 
         public void Claim(Mobile from)
         {
-            if (this.m_UsesRemaining <= 0 && this.m_Charges >= 1)
-                from.SendLocalizedMessage(1071151); //Hitching rope is insufficient. You have to supply it.
-            else if (this.m_UsesRemaining <= 0 && this.m_Charges == 0)
-                from.SendLocalizedMessage(1071157); //This hitching post is damaged. You can't use it any longer.
+            if (UsesRemaining <= 0)
+            {
+                if (!Replica || Charges > 0)
+                {
+                    from.SendLocalizedMessage(1071151); //Hitching rope is insufficient. You have to supply it.
+
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1071157); //This hitching post is damaged. You can't use it any longer.
+                }
+            }
             else
             {
-                if (this.Deleted || !from.CheckAlive())
+                if (Deleted || !from.CheckAlive())
                     return;
 
                 bool claimed = false;
@@ -431,7 +481,7 @@ namespace Server.Items
                 if (claimed)
                 {
                     from.SendLocalizedMessage(1042559); // Here you go... and good day to you!
-                    this.UsesRemaining -= 1;
+                    UsesRemaining -= 1;
                 }
                 else if (stabled == 0)
                     from.SendLocalizedMessage(502671); // But I have no animals stabled with me at the moment!
@@ -447,7 +497,7 @@ namespace Server.Items
 
         public bool CheckAccess(Mobile m)
         {
-            if (!this.IsLockedDown || m.AccessLevel >= AccessLevel.GameMaster)
+            if (!IsLockedDown || m.AccessLevel >= AccessLevel.GameMaster)
                 return true;
 
             BaseHouse house = BaseHouse.FindHouseAt(this);
@@ -455,7 +505,7 @@ namespace Server.Items
             if (house != null && house.IsAosRules && (house.Public ? house.IsBanned(m) : !house.HasAccess(m)))
                 return false;
 
-            return (house != null && house.HasSecureAccess(m, this.m_Level));
+            return (house != null && house.HasSecureAccess(m, m_Level));
         }
 
         public override bool HandlesOnSpeech
@@ -468,21 +518,21 @@ namespace Server.Items
 
         public override void OnSpeech(SpeechEventArgs e)
         {
-            if (this.CheckAccess(e.Mobile) && this.IsLockedDown)
+            if (CheckAccess(e.Mobile) && IsLockedDown)
             {
                 if (!e.Handled && e.HasKeyword(0x0008))
                 {
                     e.Handled = true;
-                    this.BeginStable(e.Mobile);
+                    BeginStable(e.Mobile);
                 }
                 else if (!e.Handled && e.HasKeyword(0x0009))
                 {
                     e.Handled = true;
 
                     if (!Insensitive.Equals(e.Speech, "claim"))
-                        this.BeginClaimList(e.Mobile);
+                        BeginClaimList(e.Mobile);
                     else
-                        this.Claim(e.Mobile);
+                        Claim(e.Mobile);
                 }
                 else
                 {
@@ -495,11 +545,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write((int)4); // version
 
-            writer.Write((int)this.m_Level);
-            writer.Write((int)this.m_UsesRemaining);
-            writer.Write((int)this.m_Charges);
+            writer.Write(m_Replica);
+
+            writer.Write((int)m_Level);
+            writer.Write((int)m_UsesRemaining);
+            writer.Write((int)m_Charges);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -508,24 +560,29 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 1)
-                this.Weight = 10;
+            if (Weight == 1)
+                Weight = 10;
 
             switch (version)
             {
+                case 4:
+                    {
+                        m_Replica = reader.ReadBool();
+                        goto case 3;
+                    }
                 case 3:
                     {
-                        this.m_Level = (SecureLevel)reader.ReadInt();
+                        m_Level = (SecureLevel)reader.ReadInt();
                         goto case 2;
                     }
                 case 2:
                     {
-                        this.m_UsesRemaining = reader.ReadInt();
+                        m_UsesRemaining = reader.ReadInt();
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_Charges = reader.ReadInt();
+                        m_Charges = reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
@@ -533,6 +590,9 @@ namespace Server.Items
                         break;
                     }
             }
+
+            if (version < 4)
+                m_Replica = true;
         }
     }
 }

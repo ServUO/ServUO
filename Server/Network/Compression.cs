@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Compression.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Runtime.InteropServices;

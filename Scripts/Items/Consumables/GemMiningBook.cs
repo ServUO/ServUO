@@ -5,11 +5,13 @@ namespace Server.Items
 {
     public class GemMiningBook : Item
     {
+        public override int LabelNumber { get { return 1112240; } } // Mining for Quality Gems
+
         [Constructable]
         public GemMiningBook()
             : base(0xFBE)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public GemMiningBook(Serial serial)
@@ -17,13 +19,36 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
+        public override void OnDoubleClick(Mobile from)
         {
-            get
+            PlayerMobile pm = from as PlayerMobile;
+
+            if (pm == null)
             {
-                return "Mining for Quality Gems";
+                return;
+            }
+
+            if (!IsChildOf(pm.Backpack))
+            {
+                pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+            else if (pm.Skills.Mining.Base < 100.0)
+            {
+                pm.SendLocalizedMessage(1080041); // Only a Grandmaster Miner can learn from this book.
+            }
+            else if (pm.GemMining)
+            {
+                pm.SendLocalizedMessage(1080064); // You have already learned this knowledge.
+            }
+            else
+            {
+                pm.GemMining = true;
+                pm.SendLocalizedMessage(1112238); // You have learned to mine for gems.  Target mountains when mining to find gems.
+
+                Delete();
             }
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -36,30 +61,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-        }
-
-        public override void OnDoubleClick(Mobile from)
-        {
-            PlayerMobile pm = from as PlayerMobile;
-
-            if (!this.IsChildOf(from.Backpack))
-            {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
-            }
-            else if (pm == null || from.Skills[SkillName.Mining].Base < 100.0)
-            {
-                from.SendMessage("Only a Grandmaster Miner can learn from this book.");
-            }
-            else if (pm.GemMining)
-            {
-                pm.SendMessage("You have already learned this knowledge.");
-            }
-            else
-            {
-                pm.GemMining = true;
-                pm.SendMessage("You have learned to mine for gems. Target mountains when mining to find gems.");
-                this.Delete();
-            }
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - Honesty.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,9 +19,9 @@ namespace Server.Services.Virtues
 {
 	public static class HonestyVirtue
 	{
-		public static bool Enabled = Config.Get("Honesty.Enabled", true);
-		public static int MaxGeneration = Config.Get("Honesty.MaxGeneration", 1000);
-		public static bool TrammelGeneration = !Siege.SiegeShard && Config.Get("Honesty.TrammelGeneration", true);
+		public static bool Enabled { get; set; }
+		public static int MaxGeneration { get; set; }
+		public static bool TrammelGeneration { get; set; }
 
 		private static readonly string[] _Regions =
 			{"Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew"};
@@ -40,6 +34,10 @@ namespace Server.Services.Virtues
 
 		static HonestyVirtue()
 		{
+			Enabled = Config.Get("Honesty.Enabled", true);
+			MaxGeneration = Config.Get("Honesty.MaxGeneration", 1000);
+			TrammelGeneration = !Siege.SiegeShard && Config.Get("Honesty.TrammelGeneration", true);
+
 			_Items = new List<Item>(MaxGeneration);
 		}
 
@@ -118,6 +116,7 @@ namespace Server.Services.Virtues
 		{
 			_Items.RemoveAll(ItemFlags.GetTaken);
 		}
+
 		/*
 		private static bool ValidateSpawnPoint(Map map, int x, int y, int z)
 		{
@@ -149,8 +148,8 @@ namespace Server.Services.Virtues
 			//no-go in towns, houses, dungeons and champspawns
 			if (reg != null)
 			{
-				if (reg.IsPartOf<TownRegion>() || reg.IsPartOf<DungeonRegion>() ||
-					reg.IsPartOf<ChampionSpawnRegion>() || reg.IsPartOf<HouseRegion>())
+				if (reg.IsPartOf<TownRegion>() || reg.IsPartOf<DungeonRegion>() || reg.IsPartOf<ChampionSpawnRegion>() ||
+					reg.IsPartOf<HouseRegion>())
 				{
 					return false;
 				}
@@ -170,7 +169,7 @@ namespace Server.Services.Virtues
 
 			return true;
 		}
-		
+
 		private static void GenerateHonestyItems()
 		{
 			CheckChests();
@@ -413,7 +412,7 @@ namespace Server.Services.Virtues
 
 			if (item == null || !item.HonestyItem)
 			{
-				this.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1151530, from.NetState); // This is not a lost item.
+				PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1151530, from.NetState); // This is not a lost item.
 				return false;
 			}
 
@@ -430,7 +429,7 @@ namespace Server.Services.Virtues
 				VirtueHelper.Award(from, VirtueName.Honesty, 30, ref gainedPath);
 			}
 
-			this.PrivateOverheadMessage(
+			PrivateOverheadMessage(
 				MessageType.Regular,
 				0x3B2,
 				1151523,

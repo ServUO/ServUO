@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - EventSink.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -13,6 +7,7 @@ using System.Reflection;
 
 using Server.Accounting;
 using Server.Commands;
+using Server.ContextMenus;
 using Server.Guilds;
 using Server.Items;
 using Server.Network;
@@ -20,6 +15,14 @@ using Server.Network;
 
 namespace Server
 {
+	public delegate void OnItemObtainedEventHandler(OnItemObtainedEventArgs e);
+
+	public delegate void CheckEquipItemEventHandler(CheckEquipItemEventArgs e);
+
+	public delegate void ContextMenuEventHandler(ContextMenuEventArgs e);
+
+	public delegate void WorldBroadcastEventHandler(WorldBroadcastEventArgs e);
+
 	public delegate void CharacterCreatedEventHandler(CharacterCreatedEventArgs e);
 
 	public delegate void OpenDoorMacroEventHandler(OpenDoorMacroEventArgs e);
@@ -47,6 +50,8 @@ namespace Server
 	public delegate void OpenSpellbookRequestEventHandler(OpenSpellbookRequestEventArgs e);
 
 	public delegate void CastSpellRequestEventHandler(CastSpellRequestEventArgs e);
+
+	public delegate void BandageTargetRequestEventHandler(BandageTargetRequestEventArgs e);
 
 	public delegate void AnimateRequestEventHandler(AnimateRequestEventArgs e);
 
@@ -128,7 +133,9 @@ namespace Server
 
 	public delegate void CraftSuccessEventHandler(CraftSuccessEventArgs e);
 
-	public delegate void ItemCreatedEventHandler(ItemCreatedEventArgs e);
+    public delegate void SkillGainEventHandler(SkillGainEventArgs e);
+
+    public delegate void ItemCreatedEventHandler(ItemCreatedEventArgs e);
 
 	public delegate void ItemDeletedEventHandler(ItemDeletedEventArgs e);
 
@@ -147,6 +154,67 @@ namespace Server
     public delegate void UnequipMacroEventHandler(UnequipMacroEventArgs e);
 
     public delegate void TargetByResourceMacroEventHandler(TargetByResourceMacroEventArgs e);
+
+	public class OnItemObtainedEventArgs : EventArgs
+	{
+		private readonly Mobile m_Mobile;
+		private readonly Item m_Item;
+
+		public OnItemObtainedEventArgs(Mobile from, Item item)
+		{
+			m_Mobile = from;
+			m_Item = item;
+		}
+
+		public Mobile Mobile { get { return m_Mobile; } }
+		public Item Item { get { return m_Item; } }
+	}
+
+	public class CheckEquipItemEventArgs : EventArgs
+	{
+		public Mobile Mobile { get; private set; }
+		public Item Item { get; private set; }
+		public bool Message { get; private set; }
+
+		public bool Block { get; set; }
+
+		public CheckEquipItemEventArgs(Mobile m, Item item, bool message)
+		{
+			Mobile = m;
+			Item = item;
+			Message = message;
+		}
+	}
+
+	public class ContextMenuEventArgs : EventArgs
+	{
+		public Mobile Mobile { get; private set; }
+		public IEntity Target { get; private set; }
+		public List<ContextMenuEntry> Entries { get; private set; }
+
+		public ContextMenuEventArgs(Mobile m, IEntity target, List<ContextMenuEntry> entries)
+		{
+			Mobile = m;
+			Target = target;
+			Entries = entries;
+		}
+	}
+
+	public class WorldBroadcastEventArgs : EventArgs
+	{
+		public int Hue { get; set; }
+		public bool Ascii { get; set; }
+		public AccessLevel Access { get; set; }
+		public string Text { get; set; }
+
+		public WorldBroadcastEventArgs(int hue, bool ascii, AccessLevel access, string text)
+		{
+			Hue = hue;
+			Ascii = ascii;
+			Access = access;
+			Text = text;
+		}
+	}
 
     public class ClientVersionReceivedArgs : EventArgs
 	{
@@ -447,6 +515,10 @@ namespace Server
 		public Mobile Killer { get; private set; }
 		public Container Corpse { get; private set; }
 
+		public List<Item> ForcedLoot { get; private set; }
+
+		public bool PreventDefault { get; set; }
+		public bool PreventDelete { get; set; }
 		public bool ClearCorpse { get; set; }
 
 		public CreatureDeathEventArgs(Mobile creature)
@@ -458,6 +530,21 @@ namespace Server
 			Creature = creature;
 			Killer = killer;
 			Corpse = corpse;
+
+			ForcedLoot = new List<Item>();
+		}
+
+		public void ClearLoot(bool free)
+		{
+			if (free)
+			{
+				ForcedLoot.Clear();
+				ForcedLoot.TrimExcess();
+			}
+			else
+			{
+				ForcedLoot = new List<Item>();
+			}
 		}
 	}
 
@@ -559,6 +646,24 @@ namespace Server
 			m_Mobile = m;
 			m_Spellbook = book;
 			m_SpellID = spellID;
+		}
+	}
+
+	public class BandageTargetRequestEventArgs : EventArgs
+	{
+		private readonly Mobile m_Mobile;
+		private readonly Item m_Bandage;
+		private readonly Mobile m_Target;
+
+		public Mobile Mobile { get { return m_Mobile; } }
+		public Item Bandage { get { return m_Bandage; } }
+		public Mobile Target { get { return m_Target; } }
+
+		public BandageTargetRequestEventArgs(Mobile m, Item bandage, Mobile target)
+		{
+			m_Mobile = m;
+			m_Bandage = bandage;
+			m_Target = target;
 		}
 	}
 
@@ -1106,7 +1211,23 @@ namespace Server
 		}
 	}
 
-	public class ItemCreatedEventArgs : EventArgs
+    public class SkillGainEventArgs : EventArgs
+    {
+        public int Gained { get; private set; }
+
+        public Mobile From { get; private set; }
+        public Skill Skill { get; private set; }
+
+
+        public SkillGainEventArgs(Mobile from, Skill skill, int toGain)
+        {
+            From = from;
+            Skill = skill;
+            Gained = toGain;
+        }
+    }
+
+    public class ItemCreatedEventArgs : EventArgs
 	{
 		public Item Item { get; set; }
 
@@ -1250,6 +1371,10 @@ namespace Server
 
     public static class EventSink
 	{
+		public static event OnItemObtainedEventHandler OnItemObtained;
+		public static event CheckEquipItemEventHandler CheckEquipItem;
+		public static event ContextMenuEventHandler ContextMenu;
+		public static event WorldBroadcastEventHandler WorldBroadcast;
 		public static event CharacterCreatedEventHandler CharacterCreated;
 		public static event OpenDoorMacroEventHandler OpenDoorMacroUsed;
 		public static event SpeechEventHandler Speech;
@@ -1264,6 +1389,7 @@ namespace Server
 		public static event StunRequestEventHandler StunRequest;
 		public static event OpenSpellbookRequestEventHandler OpenSpellbookRequest;
 		public static event CastSpellRequestEventHandler CastSpellRequest;
+		public static event BandageTargetRequestEventHandler BandageTargetRequest;
 		public static event AnimateRequestEventHandler AnimateRequest;
 		public static event LogoutEventHandler Logout;
 		public static event SocketConnectEventHandler SocketConnect;
@@ -1305,8 +1431,9 @@ namespace Server
 		public static event ResourceHarvestAttemptEventHandler ResourceHarvestAttempt;
 		public static event ResourceHarvestSuccessEventHandler ResourceHarvestSuccess;
 		public static event CraftSuccessEventHandler CraftSuccess;
+        public static event SkillGainEventHandler SkillGain;
 
-		public static event ItemCreatedEventHandler ItemCreated;
+        public static event ItemCreatedEventHandler ItemCreated;
 		public static event ItemDeletedEventHandler ItemDeleted;
 		public static event MobileCreatedEventHandler MobileCreated;
 		public static event MobileDeletedEventHandler MobileDeleted;
@@ -1317,6 +1444,38 @@ namespace Server
         public static event EquipMacroEventHandler EquipMacro;
         public static event UnequipMacroEventHandler UnequipMacro;
         public static event TargetByResourceMacroEventHandler TargetByResourceMacro;
+
+		public static void InvokeOnItemObtained(OnItemObtainedEventArgs e)
+		{
+			if (OnItemObtained != null)
+			{
+				OnItemObtained(e);
+			}
+		}
+
+		public static void InvokeCheckEquipItem(CheckEquipItemEventArgs e)
+		{
+			if (CheckEquipItem != null)
+			{
+				CheckEquipItem(e);
+			}
+		}
+
+		public static void InvokeContextMenu(ContextMenuEventArgs e)
+		{
+			if (ContextMenu != null)
+			{
+				ContextMenu(e);
+			}
+		}
+
+		public static void InvokeWorldBroadcast(WorldBroadcastEventArgs e)
+		{
+			if (WorldBroadcast != null)
+			{
+				WorldBroadcast(e);
+			}
+		}
 
         public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
 		{
@@ -1542,6 +1701,14 @@ namespace Server
 			}
 		}
 
+		public static void InvokeBandageTargetRequest(BandageTargetRequestEventArgs e)
+		{
+			if (BandageTargetRequest != null)
+			{
+				BandageTargetRequest(e);
+			}
+		}
+
 		public static void InvokeOpenSpellbookRequest(OpenSpellbookRequestEventArgs e)
 		{
 			if (OpenSpellbookRequest != null)
@@ -1750,13 +1917,21 @@ namespace Server
 			}
 		}
 
-		public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
+        public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
 		{
 			if (CraftSuccess != null)
 			{
 				CraftSuccess(e);
 			}
 		}
+
+        public static void InvokeSkillGain(SkillGainEventArgs e)
+        {
+            if(SkillGain != null)
+            {
+                SkillGain(e);
+            }
+        }
 
 		public static void InvokeItemCreated(ItemCreatedEventArgs e)
 		{
@@ -1840,6 +2015,10 @@ namespace Server
 
         public static void Reset()
 		{
+			OnItemObtained = null;
+			CheckEquipItem = null;
+			ContextMenu = null;
+			WorldBroadcast = null;
 			CharacterCreated = null;
 			OpenDoorMacroUsed = null;
 			Speech = null;
@@ -1854,6 +2033,7 @@ namespace Server
 			StunRequest = null;
 			OpenSpellbookRequest = null;
 			CastSpellRequest = null;
+			BandageTargetRequest = null;
 			AnimateRequest = null;
 			Logout = null;
 			SocketConnect = null;
@@ -1888,6 +2068,7 @@ namespace Server
 			ResourceHarvestAttempt = null;
 			ResourceHarvestSuccess = null;
 			CraftSuccess = null;
+			SkillGain = null;
 
 			ItemCreated = null;
 			ItemDeleted = null;

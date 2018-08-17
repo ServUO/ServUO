@@ -9,6 +9,7 @@ namespace Server.Gumps
     {
         private readonly HeritageToken m_Token;
 		private readonly Mobile m_User;
+
         public HeritageTokenGump(HeritageToken token, Mobile from)
             : base(60, 36)
         {

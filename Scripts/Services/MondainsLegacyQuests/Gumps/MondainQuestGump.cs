@@ -414,6 +414,17 @@ namespace Server.Engines.Quests
                             AddLabel(223, offset, 0x481, FormatSeconds(obj.Seconds)); // %est. time remaining%
                         }
                     }
+                    else if (objective.ObjectiveDescription != null)
+                    {
+                        if (objective.ObjectiveDescription is int)
+                        {
+                            AddHtmlLocalized(98, offset, 310, 300, (int)objective.ObjectiveDescription, 0x15F90, false, false);
+                        }
+                        else if (objective.ObjectiveDescription is string)
+                        {
+                            AddHtmlObject(98, offset, 310, 300, (string)objective.ObjectiveDescription, LightGreen, false, false);
+                        }
+                    }
                 }
             }
 

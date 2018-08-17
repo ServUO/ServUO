@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Server;
-using Server.Mobiles;
-using Server.Items;
 using Server.Engines.Points;
 
 namespace Server.Engines.UOStore
@@ -17,41 +12,76 @@ namespace Server.Engines.UOStore
         Custom
     }
 
+    public delegate int CustomCurrencyHandler(Mobile m, int consume);
+
     public static class Configuration
     {
-        public static string CurrencyName = "Sovereigns";                  // What do you want to call your currency?
-        public static string CurrencyInfoWebsite = "";                     // Website address for your currency information. Default is https://uo.com/ultima-store/
-        public static double PointMultiplier = 1.0;                      // Multiplier for store item cost. The EA costs act as a 'base cost' where you can increase to  your choosing. 10.0 is the same as BaseCost * 10
-        public static CurrencyType CurrencyType = CurrencyType.Sovereigns; // See enum CurrencyType. Gold - PointsSystem is autmoatically handled, where custom you will have to implement your self. See ReadMe.
-
-        public static PointsType PointsSystemCurrency = PointsType.None;    // If PointsSystem is chosen, this is the PointsSystem enabled for store use. See PointsSystem.cs for all of the systems you can use!
-
-        public static bool ShowCurrencyType = true;                         // This will show the currency type, uses 'CurrencyName' in the Ultima Store Gump.
+        public static bool Enabled { get; set; }
+        public static Expansion Expansion { get; set; }
+        public static string Website { get; set; }
 
         /// <summary>
-        /// If you're using a custom currency, this is where you will put your accessor to 'get' the amount of that currency a player has.
+        ///     A hook to allow handling of custom currencies.
+        ///     This implementation should be treated as such;
+        ///     If 'consume' is less than zero, return the currency total.
+        ///     Else deduct from the currency total, return the amount consumed.
         /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
-        public static double GetCustomCurrency(Mobile m)
+        public static CustomCurrencyHandler ResolveCurrency { get; set; }
+
+        public static CurrencyType CurrencyImpl { get; set; }
+        public static string CurrencyName { get; set; }
+        public static bool CurrencyDisplay { get; set; }
+        
+        public static PointsType PointsImpl { get; set; }
+
+        public static double CostMultiplier { get; set; }
+
+        public static int CartCapacity { get; set; }
+
+        static Configuration()
         {
-            // Comment out the next line, and put your points accessor here
+            Enabled = Config.Get("Store.Enabled", true);
+            Expansion = Config.GetEnum("Store.Expansion", Expansion.TOL);
+            Website = Config.Get("Store.Website", "https://uo.com/ultima-store/");
+
+            ResolveCurrency = Config.GetDelegate("Store.ResolveCurrency", (CustomCurrencyHandler)null);
+
+            CurrencyImpl = Config.GetEnum("Store.CurrencyImpl", CurrencyType.Sovereigns);
+            CurrencyName = Config.Get("Store.CurrencyName", "Sovereigns");
+            CurrencyDisplay = Config.Get("Store.CurrencyDisplay", true);
+
+            PointsImpl = Config.GetEnum("Store.PointsImpl", PointsType.None);
+
+            CostMultiplier = Config.Get("Store.CostMultiplier", 1.0);
+            CartCapacity = Config.Get("Store.CartCapacity", 10);
+        }
+        
+        public static int GetCustomCurrency(Mobile m)
+        {
+            if (ResolveCurrency != null)
+            {
+                return ResolveCurrency(m, -1);
+            }
+
+            m.SendMessage(1174, "Currency is not set up for this system. Contact a shard administrator.");
 
             Utility.WriteConsoleColor(ConsoleColor.Red, "[Ultima Store]: No custom currency method has been implemented.");
-            m.SendMessage(1174, "Custom Currency is not set up for this system. Contact a shard administrator.");
-
-            return 0.0;
+            
+            return 0;
         }
 
-        /// <summary>
-        /// If using a custom currency, this is where you will 'deduct' that currency when the item is bought. This is important, so you're not giving out freebies!
-        /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
-        public static void DeductCustomCurrecy(Mobile m)
+        public static int DeductCustomCurrecy(Mobile m, int amount)
         {
-            // Comment out the next line, and put in your accessor to remove currency for the purchase
+            if (ResolveCurrency != null)
+            {
+                return ResolveCurrency(m, amount);
+            }
+
+            m.SendMessage(1174, "Currency is not set up for this system. Contact a shard administrator.");
+
             Utility.WriteConsoleColor(ConsoleColor.Red, "[Ultima Store]: No custom currency deduction method has been implemented.");
+            
+            return 0;
         }
     }
 }

@@ -50,10 +50,6 @@ namespace Server.Mobiles
         }
 
         public override int DragonBlood { get { return 6; } }
-        public override bool HasBreath
-        {
-            get { return true; }
-        } // fire breath enabled
 
         public override int Meat
         {

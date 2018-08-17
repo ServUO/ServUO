@@ -87,6 +87,7 @@ namespace Server.Misc
             CheckBonusSkill(from, from.Stam, from.StamMax, SkillName.Focus);
 
             int points = (int)(from.Skills[SkillName.Focus].Value * 0.1);
+
             points += StamRegen(from);
 
             return TimeSpan.FromSeconds(1.0 / (0.1 * (2 + points)));

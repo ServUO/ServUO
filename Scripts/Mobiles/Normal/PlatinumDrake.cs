@@ -11,13 +11,8 @@ namespace Server.Mobiles
         Energy
     }
 
-    public interface IDrake
-    {
-        DrakeType DrakeType { get; }
-    }
-
     [CorpseName("a platinum drake corpse")]
-    public class PlatinumDrake : BaseCreature, IDrake
+    public class PlatinumDrake : BaseCreature
     {
         private DrakeType m_Type;
 
@@ -107,6 +102,26 @@ namespace Server.Mobiles
         public PlatinumDrake(Serial serial)
             : base(serial)
         {
+        }
+
+        public static TrainingDefinition _PoisonDrakeDefinition;
+
+        public override TrainingDefinition TrainingDefinition
+        {
+            get
+            {
+                if (m_Type == DrakeType.Poison)
+                {
+                    if (_PoisonDrakeDefinition == null)
+                    {
+                        _PoisonDrakeDefinition = new TrainingDefinition(GetType(), Class.None, MagicalAbility.Dragon2, PetTrainingHelper.SpecialAbilityNone, PetTrainingHelper.WepAbility2, PetTrainingHelper.AreaEffectArea2, 2, 5);
+                    }
+
+                    return _PoisonDrakeDefinition;
+                }
+
+                return base.TrainingDefinition;
+            }
         }
 
         public override bool ReacquireOnMovement { get { return !Controlled; } }

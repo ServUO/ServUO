@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Packets.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -756,12 +750,12 @@ namespace Server.Network
         MountSpeed,
         WalkSpeed,
         WalkSpeedFast,
-        NoMove
+        TeleportSpeed
     }
 
 	public sealed class SpeedControl : Packet
 	{
-        public static readonly Packet NoMove = SetStatic(new SpeedControl(SpeedControlType.NoMove));
+        public static readonly Packet TeleportSpeed = SetStatic(new SpeedControl(SpeedControlType.TeleportSpeed));
         public static readonly Packet WalkSpeedFast = SetStatic(new SpeedControl(SpeedControlType.WalkSpeedFast));
         public static readonly Packet WalkSpeed = SetStatic(new SpeedControl(SpeedControlType.WalkSpeed));
         public static readonly Packet MountSpeed = SetStatic(new SpeedControl(SpeedControlType.MountSpeed));
@@ -934,7 +928,7 @@ namespace Server.Network
 		public GlobalLightLevel(int level)
 			: base(0x4F, 2)
 		{
-			m_Stream.Write((sbyte)level);
+			m_Stream.Write((byte)level);
 		}
 	}
 
@@ -948,7 +942,7 @@ namespace Server.Network
 			: base(0x4E, 6)
 		{
 			m_Stream.Write(m.Serial);
-			m_Stream.Write((sbyte)level);
+			m_Stream.Write((byte)level);
 		}
 	}
 
@@ -958,7 +952,7 @@ namespace Server.Network
 			: base(0x4E, 6)
 		{
 			m_Stream.Write(m.Serial);
-			m_Stream.Write((sbyte)0);
+			m_Stream.Write((byte)0);
 		}
 	}
 
@@ -1207,7 +1201,7 @@ namespace Server.Network
 			int y = loc.m_Y;
 			int hue = item.Hue;
 			int flags = item.GetPacketFlags();
-			int direction = (int)item.Direction;
+			int light = (int)item.Light;
 
 			if (amount != 0)
 			{
@@ -1236,7 +1230,7 @@ namespace Server.Network
 
 			x &= 0x7FFF;
 
-			if (direction != 0)
+			if (light != 0)
 			{
 				x |= 0x8000;
 			}
@@ -1257,9 +1251,9 @@ namespace Server.Network
 
 			m_Stream.Write((short)y);
 
-			if (direction != 0)
+			if (light != 0)
 			{
-				m_Stream.Write((byte)direction);
+				m_Stream.Write((byte)light);
 			}
 
 			m_Stream.Write((sbyte)loc.m_Z);
@@ -2461,7 +2455,6 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((byte)0x00);
 			m_Stream.Write((byte)0x32);
 			m_Stream.Write((byte)0x00);
-			//m_Stream.Fill();
 		}
 	}
 
@@ -2957,7 +2950,7 @@ m_Stream.Write( (int) renderMode );
             PacketWriter.ReleaseInstance(m_Strings);
 		}
 
-		private const int GumpBufferSize = 0x5000;
+		private const int GumpBufferSize = 0x10000;
 		private static readonly BufferPool m_PackBuffers = new BufferPool("Gump", 4, GumpBufferSize);
 
 		private void WritePacked(PacketWriter src)
@@ -2982,7 +2975,7 @@ m_Stream.Write( (int) renderMode );
 
 			if (m_PackBuffer.Length < wantLength)
 			{
-				Console.WriteLine("Notice: DisplayGumpPacked creating new {0} byte buffer", wantLength);
+				//Console.WriteLine("Notice: DisplayGumpPacked creating new {0} byte buffer", wantLength);
 				m_PackBuffer = new byte[wantLength];
 			}
 
@@ -3311,9 +3304,7 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class SupportedFeatures : Packet
 	{
-		private static FeatureFlags m_AdditionalFlags;
-
-		public static FeatureFlags Value { get { return m_AdditionalFlags; } set { m_AdditionalFlags = value; } }
+		public static FeatureFlags Value { get; set; }
 
 		public static SupportedFeatures Instantiate(NetState ns)
 		{
@@ -3325,7 +3316,7 @@ m_Stream.Write( (int) renderMode );
 		{
 			FeatureFlags flags = ExpansionInfo.CoreExpansion.SupportedFeatures;
 
-			flags |= m_AdditionalFlags;
+			flags |= Value;
 
 			IAccount acct = ns.Account;
 
@@ -3710,6 +3701,7 @@ m_Stream.Write( (int) renderMode );
             }
 
             m_Stream.Write(beheld.Serial);
+
             m_Stream.WriteAsciiFixed(name, 30);
 
             if (beholder == beheld)
@@ -3777,6 +3769,7 @@ m_Stream.Write( (int) renderMode );
                 if (type >= 6)
                 {
                     int count = isEnhancedClient ? 28 : 14;
+
                     for (int i = 0; i <= count; ++i)
                     {
                         m_Stream.Write((short)beheld.GetAOSStatus(i));
@@ -3976,16 +3969,18 @@ m_Stream.Write( (int) renderMode );
 			var m_DupedLayers = m_DupedLayersTL.Value;
 
 			var eq = beheld.Items;
-			int count = eq.Count;
+			var count = eq.Count;
 
 			if (beheld.HairItemID > 0)
 			{
 				count++;
 			}
+
 			if (beheld.FacialHairItemID > 0)
 			{
 				count++;
 			}
+
             if (beheld.FaceItemID > 0)
             {
                 count++;
@@ -4785,7 +4780,7 @@ m_Stream.Write( (int) renderMode );
 			{
 				flags |= (CharacterListFlags.SeventhCharacterSlot | CharacterListFlags.SixthCharacterSlot);
 			}
-				// 7th Character Slot - TODO: Is SixthCharacterSlot Required?
+			// 7th Character Slot - TODO: Is SixthCharacterSlot Required?
 			else if (count == 6)
 			{
 				flags |= CharacterListFlags.SixthCharacterSlot; // 6th Character Slot
@@ -4800,7 +4795,11 @@ m_Stream.Write( (int) renderMode );
                 flags |= CharacterListFlags.KR; // Suppport Enhanced Client / KR flag 1 and 2 (0x200 + 0x400)
             }
 
-            m_Stream.Write((int)(flags | m_AdditionalFlags)); // Additional Flags
+			flags |= AdditionalFlags;
+
+			Console.WriteLine("{0}: {1} / {2} [{3}]", a.Username, a.Count, a.Limit, flags);
+
+            m_Stream.Write((int)flags);
 
 			m_Stream.Write((short)-1);
 
@@ -4838,9 +4837,7 @@ m_Stream.Write( (int) renderMode );
 
 		private static MD5CryptoServiceProvider m_MD5Provider;
 
-		private static CharacterListFlags m_AdditionalFlags;
-
-		public static CharacterListFlags AdditionalFlags { get { return m_AdditionalFlags; } set { m_AdditionalFlags = value; } }
+		public static CharacterListFlags AdditionalFlags { get; set; }
 	}
 
 	public sealed class CharacterListOld : Packet
@@ -4894,7 +4891,7 @@ m_Stream.Write( (int) renderMode );
 			{
 				flags |= (CharacterListFlags.SeventhCharacterSlot | CharacterListFlags.SixthCharacterSlot);
 			}
-				// 7th Character Slot - TODO: Is SixthCharacterSlot Required?
+			// 7th Character Slot - TODO: Is SixthCharacterSlot Required?
 			else if (count == 6)
 			{
 				flags |= CharacterListFlags.SixthCharacterSlot; // 6th Character Slot
@@ -5025,10 +5022,12 @@ m_Stream.Write( (int) renderMode );
 			{
 				name = "";
 			}
+
 			if (affix == null)
 			{
 				affix = "";
 			}
+
 			if (args == null)
 			{
 				args = "";
@@ -5151,9 +5150,7 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class PlayServerAck : Packet
 	{
-		internal static uint m_AuthID = 0;
-
-		public PlayServerAck(ServerInfo si)
+		public PlayServerAck(ServerInfo si, uint auth)
 			: base(0x8C, 11)
 		{
 			int addr = Utility.GetAddressValue(si.Address.Address);
@@ -5164,118 +5161,9 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((byte)(addr >> 24));
 
 			m_Stream.Write((short)si.Address.Port);
-			m_Stream.Write(m_AuthID);
+			m_Stream.Write(auth);
 		}
 	}
-
-    public sealed class KRVerifier : Packet
-    {
-        public static readonly Packet Instance = Packet.SetStatic(new KRVerifier());
-
-        public KRVerifier()
-            : base(0xE3, 77)
-        {
-            // First 2 - Size
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x4D);
-
-            // Next ones... I have no idea from now on
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x03);
-            m_Stream.Write((byte)0x02);
-            m_Stream.Write((byte)0x01);
-            m_Stream.Write((byte)0x03);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x13);
-            m_Stream.Write((byte)0x02);
-            m_Stream.Write((byte)0x11);
-
-            // Next 16
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0xFC);
-            m_Stream.Write((byte)0x2F);
-            m_Stream.Write((byte)0xE3);
-            m_Stream.Write((byte)0x81);
-            m_Stream.Write((byte)0x93);// old book packet
-            m_Stream.Write((byte)0xD4);// new ec book packet?? testing
-            m_Stream.Write((byte)0xCB);
-            m_Stream.Write((byte)0xAF);
-            m_Stream.Write((byte)0x98);
-            m_Stream.Write((byte)0xDD);
-            m_Stream.Write((byte)0x83);
-            m_Stream.Write((byte)0x13);
-            m_Stream.Write((byte)0xD2);
-            m_Stream.Write((byte)0x9E);
-            m_Stream.Write((byte)0xEA);
-            m_Stream.Write((byte)0xE4);
-
-            // Next 16
-            m_Stream.Write((byte)0x13);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x10);
-            m_Stream.Write((byte)0x78);
-            m_Stream.Write((byte)0x13);
-            m_Stream.Write((byte)0xB7);
-            m_Stream.Write((byte)0x7B);
-            m_Stream.Write((byte)0xCE);
-            m_Stream.Write((byte)0xA8);
-            m_Stream.Write((byte)0xD7);
-            m_Stream.Write((byte)0xBC);
-            m_Stream.Write((byte)0x52);
-            m_Stream.Write((byte)0xDE);
-            m_Stream.Write((byte)0x38);
-
-            // Next 16
-            m_Stream.Write((byte)0x30);
-            m_Stream.Write((byte)0xEA);
-            m_Stream.Write((byte)0xE9);
-            m_Stream.Write((byte)0x1E);
-            m_Stream.Write((byte)0xA3);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x20);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x10);
-            m_Stream.Write((byte)0x5A);
-            m_Stream.Write((byte)0xCE);
-            m_Stream.Write((byte)0x3E);
-
-            // Next 13
-            m_Stream.Write((byte)0xE3);
-            m_Stream.Write((byte)0x97);
-            m_Stream.Write((byte)0x92);
-            m_Stream.Write((byte)0xE4);
-            m_Stream.Write((byte)0x8A);
-            m_Stream.Write((byte)0xF1);
-            m_Stream.Write((byte)0x9A);
-            m_Stream.Write((byte)0xD3);
-            m_Stream.Write((byte)0x04);
-            m_Stream.Write((byte)0x41);
-            m_Stream.Write((byte)0x03);
-            m_Stream.Write((byte)0xCB);
-            m_Stream.Write((byte)0x53);
-            m_Stream.Write((byte)0x31);
-        }
-    }
-
-    public sealed class KRDropConfirm : Packet
-    {
-        public static readonly Packet Instance = Packet.SetStatic(new KRDropConfirm());
-
-        public KRDropConfirm()
-            : base(0x29, 1)
-        {
-        }
-    }
 
 	[Flags]
 	public enum PacketState
@@ -5291,8 +5179,10 @@ m_Stream.Write( (int) renderMode );
 	public abstract class Packet
 	{
 		protected PacketWriter m_Stream;
+
 		private readonly int m_PacketID;
 		private readonly int m_Length;
+
 		private PacketState m_State;
 
 		public int PacketID { get { return m_PacketID; } }
@@ -5532,6 +5422,7 @@ m_Stream.Write( (int) renderMode );
 			if (compress)
 			{
 				byte[] buffer;
+
 				lock (m_CompressorBuffers)
 					buffer = m_CompressorBuffers.AcquireBuffer();
 

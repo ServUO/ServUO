@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - HordeMinion.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -22,6 +16,7 @@ namespace Server.Mobiles
 	public class HordeMinionFamiliar : BaseFamiliar
 	{
 		public override bool DisplayWeight { get { return true; } }
+        public override bool CanAutoStable { get { return Backpack == null || Backpack.Items.Count == 0; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public override OrderType ControlOrder

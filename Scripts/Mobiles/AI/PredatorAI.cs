@@ -1,4 +1,4 @@
-using System;
+
 
 /*
 * PredatorAI, its an animal that can attack
@@ -7,90 +7,88 @@ using System;
 */
 namespace Server.Mobiles
 {
-    public class PredatorAI : BaseAI
-    {
-        public PredatorAI(BaseCreature m)
-            : base(m)
-        {
-        }
+	public class PredatorAI : BaseAI
+	{
+		public PredatorAI(BaseCreature m)
+			: base(m)
+		{ }
 
-        public override bool DoActionWander()
-        {
-            if (this.m_Mobile.Combatant != null)
-            {
-                this.m_Mobile.DebugSay("I am hurt or being attacked, I kill him");						
-                this.Action = ActionType.Combat;
-            }
-            else if (this.AcquireFocusMob(this.m_Mobile.RangePerception, this.m_Mobile.FightMode, true, false, true))
-            {
-                this.m_Mobile.DebugSay("There is something near, I go away");
-                this.Action = ActionType.Backoff;
-            }
-            else
-            {
-                base.DoActionWander();
-            }
+		public override bool DoActionWander()
+		{
+			if (m_Mobile.Combatant != null)
+			{
+				m_Mobile.DebugSay("I am hurt or being attacked, I kill him");
+				Action = ActionType.Combat;
+			}
+			else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, true, false, true))
+			{
+				m_Mobile.DebugSay("There is something near, I go away");
+				Action = ActionType.Backoff;
+			}
+			else
+			{
+				base.DoActionWander();
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        public override bool DoActionCombat()
-        {
-            Mobile combatant = this.m_Mobile.Combatant as Mobile;
+		public override bool DoActionCombat()
+		{
+			var combatant = m_Mobile.Combatant as Mobile;
 
-            if (combatant == null || combatant.Deleted || combatant.Map != this.m_Mobile.Map)
-            {
-                this.m_Mobile.DebugSay("My combatant is gone, so my guard is up");
-                this.Action = ActionType.Wander;
-                return true;
-            }
+			if (combatant == null || combatant.Deleted || combatant.Map != m_Mobile.Map)
+			{
+				m_Mobile.DebugSay("My combatant is gone, so my guard is up");
+				Action = ActionType.Wander;
+				return true;
+			}
 
-            if (this.WalkMobileRange(combatant, 1, true, this.m_Mobile.RangeFight, this.m_Mobile.RangeFight))
-            {
-                this.m_Mobile.Direction = this.m_Mobile.GetDirectionTo(combatant);
-            }
-            else
-            {
-                if (this.m_Mobile.GetDistanceToSqrt(combatant) > this.m_Mobile.RangePerception + 1)
-                {
-                    this.m_Mobile.DebugSay("I cannot find {0}", combatant.Name);
+			if (WalkMobileRange(combatant, 1, true, m_Mobile.RangeFight, m_Mobile.RangeFight))
+			{
+				if (!DirectionLocked)
+					m_Mobile.Direction = m_Mobile.GetDirectionTo(combatant);
+			}
+			else
+			{
+				if (m_Mobile.GetDistanceToSqrt(combatant) > m_Mobile.RangePerception + 1)
+				{
+					m_Mobile.DebugSay("I cannot find {0}", combatant.Name);
 
-                    this.Action = ActionType.Wander;
-                    return true;
-                }
-                else
-                {
-                    this.m_Mobile.DebugSay("I should be closer to {0}", combatant.Name);
-                }
-            }
+					Action = ActionType.Wander;
+					return true;
+				}
 
-            return true;
-        }
+				m_Mobile.DebugSay("I should be closer to {0}", combatant.Name);
+			}
 
-        public override bool DoActionBackoff()
-        {
-            if (this.m_Mobile.IsHurt() || this.m_Mobile.Combatant != null)
-            {
-                this.Action = ActionType.Combat;
-            }
-            else
-            {
-                if (this.AcquireFocusMob(this.m_Mobile.RangePerception * 2, FightMode.Closest, true, false, true))
-                {
-                    if (this.WalkMobileRange(this.m_Mobile.FocusMob, 1, false, this.m_Mobile.RangePerception, this.m_Mobile.RangePerception * 2))
-                    {
-                        this.m_Mobile.DebugSay("Well, here I am safe");
-                        this.Action = ActionType.Wander;
-                    }
-                }
-                else
-                {
-                    this.m_Mobile.DebugSay("I have lost my focus, lets relax");
-                    this.Action = ActionType.Wander;
-                }
-            }
+			return true;
+		}
 
-            return true;
-        }
-    }
+		public override bool DoActionBackoff()
+		{
+			if (m_Mobile.IsHurt() || m_Mobile.Combatant != null)
+			{
+				Action = ActionType.Combat;
+			}
+			else
+			{
+				if (AcquireFocusMob(m_Mobile.RangePerception * 2, FightMode.Closest, true, false, true))
+				{
+					if (WalkMobileRange(m_Mobile.FocusMob, 1, false, m_Mobile.RangePerception, m_Mobile.RangePerception * 2))
+					{
+						m_Mobile.DebugSay("Well, here I am safe");
+						Action = ActionType.Wander;
+					}
+				}
+				else
+				{
+					m_Mobile.DebugSay("I have lost my focus, lets relax");
+					Action = ActionType.Wander;
+				}
+			}
+
+			return true;
+		}
+	}
 }

@@ -14,7 +14,7 @@ namespace Server.Items
 			set { m_Resource = value; InvalidateProperties(); }
 		}
 
-		int ICommodity.DescriptionNumber { get { return CraftResources.IsStandard( m_Resource ) ? LabelNumber : 1075062 + ( (int)m_Resource - (int)CraftResource.RegularWood ); } }
+		TextDefinition ICommodity.Description { get { return CraftResources.IsStandard( m_Resource ) ? LabelNumber : 1075062 + ( (int)m_Resource - (int)CraftResource.RegularWood ); } }
 		bool ICommodity.IsDeedable { get { return true; } }
 		[Constructable]
 		public BaseLog() : this( 1 )

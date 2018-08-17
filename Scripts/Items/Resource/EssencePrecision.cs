@@ -31,7 +31,7 @@ namespace Server.Items
                 return 1113327;
             }
         }// essence of precision
-		int ICommodity.DescriptionNumber
+		TextDefinition ICommodity.Description
         {
             get
             {

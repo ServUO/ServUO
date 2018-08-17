@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - AnimalTrainer.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -105,42 +99,46 @@ namespace Server.Mobiles
         {
             if (PetTrainingHelper.Enabled && m is PlayerMobile && m.InRange(Location, 5))
             {
-                var player = m as PlayerMobile;
+                CheckQuest((PlayerMobile)m);
+            }
+        }
 
-                for (int i = 0; i < _Quests.Length; i++)
+        public bool CheckQuest(PlayerMobile player)
+        {
+            for (int i = 0; i < _Quests.Length; i++)
+            {
+                var quest = player.Quests.FirstOrDefault(q => q.GetType() == _Quests[i]);
+
+                if (quest != null)
                 {
-                    var quest = player.Quests.FirstOrDefault(q => q.GetType() == _Quests[i]);
-
-                    if (quest != null)
+                    if (quest.Completed)
                     {
-                        if (quest.Completed)
+                        if (quest.GetType() != typeof(TeachingSomethingNewQuest))
                         {
-                            if (quest.GetType() != typeof(TeachingSomethingNewQuest))
-                            {
-                                quest.GiveRewards();
-                            }
-                            else
-                            {
-                                player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
-                            }
+                            quest.GiveRewards();
                         }
-
                         else
                         {
-                            player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
-                            quest.InProgress();
+                            player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
                         }
 
-                        return;
+                        return true;
+                    }
+                    else
+                    {
+                        player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
+                        quest.InProgress();
                     }
                 }
-
-                BaseQuest questt = new TamingPetQuest();
-                questt.Owner = player;
-                questt.Quester = this;
-                player.CloseGump(typeof(MondainQuestGump));
-                player.SendGump(new MondainQuestGump(questt));
             }
+
+            BaseQuest questt = new TamingPetQuest();
+            questt.Owner = player;
+            questt.Quester = this;
+            player.CloseGump(typeof(MondainQuestGump));
+            player.SendGump(new MondainQuestGump(questt));
+
+            return true;
         }
 
 		public static int GetMaxStabled(Mobile from)

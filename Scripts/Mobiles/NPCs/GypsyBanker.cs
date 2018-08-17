@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - GypsyBanker.cs
-// **********
-#endregion
-
 #region References
 using Server.Items;
 #endregion

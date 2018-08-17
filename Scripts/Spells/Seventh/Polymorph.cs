@@ -212,7 +212,7 @@ namespace Server.Spells.Seventh
             }
         }
 
-        private static void EndPolymorph(Mobile m)
+        public static void EndPolymorph(Mobile m)
         {
             if (!m.CanBeginAction(typeof(PolymorphSpell)))
             {

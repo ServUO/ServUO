@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - ObjectDumper.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 using System.Collections;
 using System.Collections.Generic;

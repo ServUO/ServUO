@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class BaseHighseasFish : Item, ICarvable, ICommodity
     {
-        int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         public virtual Item GetCarved { get { return new RawFishSteak(); } }

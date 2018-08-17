@@ -1,210 +1,238 @@
+#region References
 using System;
-using Server;
-using Server.Mobiles;
-using Server.Gumps;
-using Server.Targeting;
-using Server.Regions;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Server
+using Server.Mobiles;
+using Server.Targeting;
+#endregion
+
+namespace Server.Services.Virtues
 {
-    public class SpiritualityVirtue
-    {
-        public static Dictionary<Mobile, SpiritualityContext> ActiveTable { get; set; }
+	public class SpiritualityVirtue
+	{
+		public static Dictionary<Mobile, SpiritualityContext> ActiveTable { get; set; }
 
-        public static void Initialize()
-        {
-            ActiveTable = new Dictionary<Mobile, SpiritualityContext>();
+		public static void Initialize()
+		{
+			ActiveTable = new Dictionary<Mobile, SpiritualityContext>();
 
-            VirtueGump.Register(111, new OnVirtueUsed(OnVirtueUsed));
-        }
+			VirtueGump.Register(111, OnVirtueUsed);
+		}
 
-        public static void OnVirtueUsed(Mobile from)
-        {
-            if (!from.Alive)
-                return;
+		public static void OnVirtueUsed(Mobile from)
+		{
+			if (!from.Alive)
+				return;
 
-            if (VirtueHelper.GetLevel(from, VirtueName.Spirituality) < VirtueLevel.Seeker)
-                from.SendLocalizedMessage(1155829); // You must be a Seeker of Spirituality to invoke this Virtue.
-            else
-            {
-                from.SendLocalizedMessage(1155827); // Target whom you wish to embrace with your Spirituality
-                from.BeginTarget(10, false, TargetFlags.None, (mobile, targeted) =>
-                {
-                    if (targeted is Mobile)
-                    {
-                        Mobile m = targeted as Mobile;
+			if (VirtueHelper.GetLevel(from, VirtueName.Spirituality) < VirtueLevel.Seeker)
+				from.SendLocalizedMessage(1155829); // You must be a Seeker of Spirituality to invoke this Virtue.
+			else
+			{
+				from.SendLocalizedMessage(1155827); // Target whom you wish to embrace with your Spirituality
 
-                        if (VirtueHelper.GetLevel(from, VirtueName.Spirituality) < VirtueLevel.Seeker)
-                        {
-                            from.SendLocalizedMessage(1155812); // You must be at least a Seeker of Humility to Invoke this ability.
-                        }
-                        else if (!m.Alive)
-                        {
-                            from.SendLocalizedMessage(1155828); // Thy target must be among the living.
-                        }
-                        else if (m is BaseCreature && !((BaseCreature)m).Controlled && !((BaseCreature)m).Summoned)
-                        {
-                            from.SendLocalizedMessage(1155837); // You can only embrace players and pets with Spirituality.
-                        }
-                        else if (IsEmbracee(m))
-                        {
-                            from.SendLocalizedMessage(1155836); // They are already embraced by Spirituality.
-                        }
-                        else if (m.MeleeDamageAbsorb > 0)
-                        {
-                            from.SendLocalizedMessage(1156039); // You may not use the Spirituality Virtue while the Attunement spell is active.
-                        }
-                        else if (m is BaseCreature || m is PlayerMobile)
-                        {
-                            SpiritualityContext context = new SpiritualityContext(from, m);
-                            ActiveTable[from] = context;
+				from.BeginTarget(
+					10,
+					false,
+					TargetFlags.None,
+					(mobile, targeted) =>
+					{
+						if (targeted is Mobile)
+						{
+							var m = (Mobile)targeted;
 
-                            m.SendLocalizedMessage(1155839); // Your spirit has been embraced! You feel more powerful!
-                            from.SendLocalizedMessage(1155835); // You have lost some Spirituality.
+							if (VirtueHelper.GetLevel(from, VirtueName.Spirituality) < VirtueLevel.Seeker)
+							{
+								from.SendLocalizedMessage(1155812); // You must be at least a Seeker of Humility to Invoke this ability.
+							}
+							else if (!m.Alive)
+							{
+								from.SendLocalizedMessage(1155828); // Thy target must be among the living.
+							}
+							else if (m is BaseCreature && !((BaseCreature)m).Controlled && !((BaseCreature)m).Summoned)
+							{
+								from.SendLocalizedMessage(1155837); // You can only embrace players and pets with Spirituality.
+							}
+							else if (IsEmbracee(m))
+							{
+								from.SendLocalizedMessage(1155836); // They are already embraced by Spirituality.
+							}
+							else if (m.MeleeDamageAbsorb > 0)
+							{
+								from.SendLocalizedMessage(
+									1156039); // You may not use the Spirituality Virtue while the Attunement spell is active.
+							}
+							else if (m is BaseCreature || m is PlayerMobile)
+							{
+								var context = new SpiritualityContext(from, m);
 
-                            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Spirituality, 1155824, 1155825, String.Format("{0}\t{1}", context.Reduction.ToString(), context.Pool.ToString()))); // ~1_VAL~% Reduction to Incoming Damage<br>~2_VAL~ Shield HP Remaining
+								ActiveTable[from] = context;
 
-                            VirtueHelper.Atrophy(from, VirtueName.Spirituality, 3200);
+								m.SendLocalizedMessage(1155839); // Your spirit has been embraced! You feel more powerful!
+								from.SendLocalizedMessage(1155835); // You have lost some Spirituality.
 
-                            Timer.DelayCall(TimeSpan.FromMinutes(20), () =>
-                            {
-                                if (ActiveTable != null && ActiveTable.ContainsKey(from))
-                                {
-                                    ActiveTable.Remove(from);
-                                    m.SendLocalizedMessage(1155840); // Your spirit is no longer embraced. You feel less powerful.
-                                    BuffInfo.RemoveBuff(m, BuffIcon.Spirituality);
-                                }
-                            });
-                        }
-                    }
-                    else
-                        from.SendLocalizedMessage(1155837); // You can only embrace players and pets with Spirituality.
-                });
-            }
-        }
+								BuffInfo.AddBuff(
+									m,
+									new BuffInfo(
+										BuffIcon.Spirituality,
+										1155824,
+										1155825,
+										String.Format(
+											"{0}\t{1}",
+											context.Reduction.ToString(),
+											context.Pool.ToString()))); // ~1_VAL~% Reduction to Incoming Damage<br>~2_VAL~ Shield HP Remaining
 
-        public static bool IsEmbracee(Mobile m)
-        {
-            if (ActiveTable == null)
-                return false;
+								VirtueHelper.Atrophy(from, VirtueName.Spirituality, 3200);
 
-            return GetContext(m) != null;
-        }
+								Timer.DelayCall(
+									TimeSpan.FromMinutes(20),
+									() =>
+									{
+										if (ActiveTable != null && ActiveTable.ContainsKey(from))
+										{
+											ActiveTable.Remove(from);
 
-        public static bool IsEmbracer(Mobile m)
-        {
-            if (ActiveTable == null)
-                return false;
+											m.SendLocalizedMessage(1155840); // Your spirit is no longer embraced. You feel less powerful.
 
-            return ActiveTable.ContainsKey(m);
-        }
+											BuffInfo.RemoveBuff(m, BuffIcon.Spirituality);
+										}
+									});
+							}
+						}
+						else
+							from.SendLocalizedMessage(1155837); // You can only embrace players and pets with Spirituality.
+					});
+			}
+		}
 
-        public static SpiritualityContext GetContext(Mobile m)
-        {
-            if (ActiveTable == null)
-                return null;
+		public static bool IsEmbracee(Mobile m)
+		{
+			if (ActiveTable == null)
+				return false;
 
-            foreach (SpiritualityContext context in ActiveTable.Values)
-            {
-                if (context.Mobile == m)
-                    return context;
-            }
+			return GetContext(m) != null;
+		}
 
-            return null;
-        }
+		public static bool IsEmbracer(Mobile m)
+		{
+			if (ActiveTable == null)
+				return false;
 
-        public static void GetDamageReduction(Mobile victim, ref int damage)
-        {
-            if (ActiveTable == null)
-                return;
+			return ActiveTable.ContainsKey(m);
+		}
 
-            SpiritualityContext context = GetContext(victim);
+		public static SpiritualityContext GetContext(Mobile m)
+		{
+			if (ActiveTable == null)
+				return null;
 
-            if (context != null)
-            {
-                double reduction = (double)context.Reduction / 100.0;
+			foreach (var context in ActiveTable.Values)
+			{
+				if (context.Mobile == m)
+					return context;
+			}
 
-                damage = (int)((double)damage - ((double)damage * reduction));
-                context.Pool -= damage;
+			return null;
+		}
 
-                victim.FixedEffect(0x373A, 10, 16);
+		public static void GetDamageReduction(Mobile victim, ref int damage)
+		{
+			if (ActiveTable == null)
+				return;
 
-                BuffInfo.RemoveBuff(victim, BuffIcon.Spirituality);
+			var context = GetContext(victim);
 
-                if (context.Pool <= 0)
-                {
-                    victim.SendLocalizedMessage(1155840); // Your spirit is no longer embraced. You feel less powerful.
+			if (context != null)
+			{
+				var reduction = context.Reduction / 100.0;
 
-                    if (ActiveTable.ContainsKey(victim) && ActiveTable[victim] == context)
-                    {
-                        ActiveTable.Remove(victim);
-                    }
-                }
-                else
-                    BuffInfo.AddBuff(victim, new BuffInfo(BuffIcon.Spirituality, 1155824, 1155825, String.Format("{0}\t{1}", context.Reduction.ToString(), context.Pool.ToString()))); // ~1_VAL~% Reduction to Incoming Damage<br>~2_VAL~ Shield HP Remaining
-            }
-        }
+				damage = (int)(damage - (damage * reduction));
+				context.Pool -= damage;
 
-        public static void OnHeal(Mobile mobile, int amount)
-        {
-            int points = Math.Min(50, amount);
-            bool gainedPath = false;
+				victim.FixedEffect(0x373A, 10, 16);
 
-            if (VirtueHelper.Award(mobile, VirtueName.Spirituality, points, ref gainedPath))
-            {
-                if (gainedPath)
-                    mobile.SendLocalizedMessage(1155833); // You have gained a path in Spirituality!
-                else
-                    mobile.SendLocalizedMessage(1155832); // You have gained in Spirituality.
-            }
-            else
-                mobile.SendLocalizedMessage(1155831); // You cannot gain more Spirituality.
-        }
+				BuffInfo.RemoveBuff(victim, BuffIcon.Spirituality);
 
-        public class SpiritualityContext
-        {
-            public Mobile Mobile { get; set; }
-            public Mobile Protector { get; set; }
-            public int Pool { get; set; }
-            public int Reduction { get; set; }
+				if (context.Pool <= 0)
+				{
+					victim.SendLocalizedMessage(1155840); // Your spirit is no longer embraced. You feel less powerful.
 
-            public SpiritualityContext(Mobile protector, Mobile m)
-            {
-                Protector = protector;
-                Mobile = m;
-                Pool = GetPool(protector);
-                Reduction = GetReduction(protector);
-            }
+					if (ActiveTable.ContainsKey(victim) && ActiveTable[victim] == context)
+					{
+						ActiveTable.Remove(victim);
+					}
+				}
+				else
+					BuffInfo.AddBuff(
+						victim,
+						new BuffInfo(
+							BuffIcon.Spirituality,
+							1155824,
+							1155825,
+							String.Format(
+								"{0}\t{1}",
+								context.Reduction,
+								context.Pool))); // ~1_VAL~% Reduction to Incoming Damage<br>~2_VAL~ Shield HP Remaining
+			}
+		}
 
-            private int GetPool(Mobile user)
-            {
-                if (VirtueHelper.IsKnight(user, VirtueName.Spirituality))
-                    return 200;
+		public static void OnHeal(Mobile mobile, int amount)
+		{
+			var points = Math.Min(50, amount);
+			var gainedPath = false;
 
-                if (VirtueHelper.IsFollower(user, VirtueName.Spirituality))
-                    return 100;
+			if (VirtueHelper.Award(mobile, VirtueName.Spirituality, points, ref gainedPath))
+			{
+				if (gainedPath)
+					mobile.SendLocalizedMessage(1155833); // You have gained a path in Spirituality!
+				else
+					mobile.SendLocalizedMessage(1155832); // You have gained in Spirituality.
+			}
+			else
+				mobile.SendLocalizedMessage(1155831); // You cannot gain more Spirituality.
+		}
 
-                if (VirtueHelper.IsSeeker(user, VirtueName.Spirituality))
-                    return 50;
+		public class SpiritualityContext
+		{
+			public Mobile Mobile { get; set; }
+			public Mobile Protector { get; set; }
+			public int Pool { get; set; }
+			public int Reduction { get; set; }
 
-                return 0;
-            }
+			public SpiritualityContext(Mobile protector, Mobile m)
+			{
+				Protector = protector;
+				Mobile = m;
+				Pool = GetPool(protector);
+				Reduction = GetReduction(protector);
+			}
 
-            public static int GetReduction(Mobile m)
-            {
-                if (VirtueHelper.IsKnight(m, VirtueName.Spirituality))
-                    return 20;
+			private static int GetPool(Mobile user)
+			{
+				if (VirtueHelper.IsKnight(user, VirtueName.Spirituality))
+					return 200;
 
-                if (VirtueHelper.IsFollower(m, VirtueName.Spirituality))
-                    return 10;
+				if (VirtueHelper.IsFollower(user, VirtueName.Spirituality))
+					return 100;
 
-                if (VirtueHelper.IsSeeker(m, VirtueName.Spirituality))
-                    return 5;
+				if (VirtueHelper.IsSeeker(user, VirtueName.Spirituality))
+					return 50;
 
-                return 0;
-            }
-        }
-    }
+				return 0;
+			}
+
+			public static int GetReduction(Mobile m)
+			{
+				if (VirtueHelper.IsKnight(m, VirtueName.Spirituality))
+					return 20;
+
+				if (VirtueHelper.IsFollower(m, VirtueName.Spirituality))
+					return 10;
+
+				if (VirtueHelper.IsSeeker(m, VirtueName.Spirituality))
+					return 5;
+
+				return 0;
+			}
+		}
+	}
 }

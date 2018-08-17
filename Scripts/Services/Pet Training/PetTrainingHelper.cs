@@ -124,13 +124,18 @@ namespace Server.Mobiles
             if (bc == null)
                 return null;
 
-            TrainingDefinition def = Definitions.FirstOrDefault(d => d.CreatureType == bc.GetType());
+            // First, see if the creature has its own
+            TrainingDefinition def = bc.TrainingDefinition;
 
-            if (bc is IDrake && ((IDrake)bc).DrakeType == DrakeType.Poison)
+            if (def != null)
             {
-                return new TrainingDefinition(bc.GetType(), def.Class, def.MagicalAbilities, def.SpecialAbilities, def.WeaponAbilities, AreaEffectArea2, 2, 5);
+                return def;
             }
-            else if (bc is VvVMount)
+
+            // Next, we see if there is a pre-defined def
+            def = Definitions.FirstOrDefault(d => d.CreatureType == bc.GetType());
+
+            if (bc is VvVMount)
             {
                 if (bc.Body == 0xDA)
                 {
@@ -142,9 +147,13 @@ namespace Server.Mobiles
                 }
             }
 
+            // Last, we give it a default that cannot be trained
             if (def == null && bc.Tamable)
             {
-                def = new TrainingDefinition(bc.GetType(), Class.None, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, bc.ControlSlotsMin, bc.ControlSlotsMax);
+                int slotsMin = bc.ControlSlotsMin == 0 ? bc.ControlSlots : bc.ControlSlotsMin;
+                int slotsMax = bc.ControlSlotsMax == 0 ? bc.ControlSlots : bc.ControlSlotsMax;
+
+                def = new TrainingDefinition(bc.GetType(), Class.Untrainable, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, slotsMin, slotsMax);
             }
 
             return def;
@@ -416,7 +425,11 @@ namespace Server.Mobiles
                 SpecialAbility.ViciousBite,
                 SpecialAbility.FlurryForce,
                 SpecialAbility.Rage,
-                SpecialAbility.Heal
+                SpecialAbility.Heal,
+                SpecialAbility.HowlOfCacophony,
+                SpecialAbility.Webbing,
+                SpecialAbility.Anemia,
+                SpecialAbility.BloodDisease,
             };
 
             SpecialAbilityNone = new SpecialAbility[] { };
@@ -709,11 +722,11 @@ namespace Server.Mobiles
                 new TrainingDefinition(typeof(Hind), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(Hiryu), Class.ClawedTailedMagicalAndTokuno, MagicalAbility.Hiryu, SpecialAbilityNone, WepAbility7, AreaEffectArea1, 3, 5),
                 new TrainingDefinition(typeof(Horse), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
-                new TrainingDefinition(typeof(Imp), Class.MagicalClawedTailedAndNecromantic, MagicalAbility.Variety2, SpecialAbilityImp, WepAbility2, AreaEffectArea2, 3, 4),
+                new TrainingDefinition(typeof(Imp), Class.MagicalClawedTailedAndNecromantic, MagicalAbility.Variety2, SpecialAbilityImp, WepAbility2, AreaEffectArea2, 2, 4),
                 new TrainingDefinition(typeof(IronBeetle), Class.Insectoid, MagicalAbility.StandardClawedOrTailed, SpecialAbilityMagicalInsectoid, WepAbility1, AreaEffectNone, 2, 5),
                 new TrainingDefinition(typeof(JackRabbit), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 2),
                 new TrainingDefinition(typeof(Kirin), Class.MagicalClawedAndTailed, MagicalAbility.Dragon2, SpecialAbilityClawedTailedAndMagical2, WepAbility2, AreaEffectArea1, 2, 5),
-                new TrainingDefinition(typeof(Lasher), Class.Magical, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 4),
+                new TrainingDefinition(typeof(Lasher), Class.Magical, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 2, 4),
                 new TrainingDefinition(typeof(LavaLizard), Class.ClawedTailedMagicalAndTokuno, MagicalAbility.LavaLizard, SpecialAbilityNone, WepAbility6, AreaEffectArea1, 1, 4),
                 new TrainingDefinition(typeof(LesserHiryu), Class.ClawedTailedMagicalAndTokuno, MagicalAbility.Tokuno1, SpecialAbilityNone, WepAbility7, AreaEffectArea1, 1, 5),
                 new TrainingDefinition(typeof(Lion), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityBitingClawedAndTailed, WepAbility1, AreaEffectArea3, 2, 5),
@@ -723,7 +736,7 @@ namespace Server.Mobiles
                 new TrainingDefinition(typeof(Mongbat), Class.Clawed, MagicalAbility.StandardClawedOrTailed, SpecialAbilityClawed, WepAbility1, AreaEffectNone, 1, 2),
                 new TrainingDefinition(typeof(MountainGoat), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(Najasaurus), Class.StickySkinAndTailed, MagicalAbility.Variety1, SpecialAbilityTailedAndStickySkin, WepAbility1, AreaEffectArea3, 2, 5),
-                new TrainingDefinition(typeof(Nightmare), Class.MagicalAndNecromantic, MagicalAbility.Variety2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 3, 5),
+                new TrainingDefinition(typeof(Nightmare), Class.MagicalAndNecromantic, MagicalAbility.Variety2, SpecialAbilityNone, WepAbility2, AreaEffectArea1, 2, 5),
                 new TrainingDefinition(typeof(OsseinRam), Class.None, MagicalAbility.Variety2, SpecialAbilityNone, WepAbilityNone, AreaEffectArea1, 2, 5),
                 new TrainingDefinition(typeof(PackHorse), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
                 new TrainingDefinition(typeof(PackLlama), Class.None, MagicalAbility.StandardClawedOrTailed, SpecialAbilityAnimalStandard, WepAbility1, AreaEffectNone, 1, 3),
@@ -777,7 +790,7 @@ namespace Server.Mobiles
                 new TrainingDefinition(typeof(WildTiger), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 5),
                 new TrainingDefinition(typeof(WildWhiteTiger), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 5),
                 new TrainingDefinition(typeof(WildBlackTiger), Class.ClawedAndTailed, MagicalAbility.Poisoning, SpecialAbilityNone, WepAbility3, AreaEffectNone, 2, 5),
-                new TrainingDefinition(typeof(Windrunner), Class.TailedAndNecromantic, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 1, 4),
+                new TrainingDefinition(typeof(Windrunner), Class.TailedAndNecromantic, MagicalAbility.None, SpecialAbilityNone, WepAbilityNone, AreaEffectNone, 2, 4),
                 new TrainingDefinition(typeof(WolfSpider), Class.None, MagicalAbility.Vartiety, SpecialAbilityBitingAnimal, WepAbility1, AreaEffectDisease, 1, 3),  
             };
             #endregion
@@ -935,6 +948,17 @@ namespace Server.Mobiles
         #endregion
 
         #region Training Helpers
+        public static bool CanControl(Mobile m, BaseCreature bc, TrainingProfile trainProfile)
+        {
+            double skill = m.Skills[SkillName.AnimalTaming].Base; // TODO: Base?
+
+            if (trainProfile.HasIncreasedControlSlot)
+            {
+                return skill >= bc.CalculateCurrentTameSkill(bc.ControlSlots);
+            }
+
+            return skill >= bc.CalculateCurrentTameSkill(bc.ControlSlots + 1);
+        }
 
         public static int GetTrainingCapTotal(PetStat stat)
         {
@@ -1342,7 +1366,7 @@ namespace Server.Mobiles
             {
                 var profile = GetAbilityProfile(bc);
 
-                if (profile != null && profile.TokunoTame)
+                if (profile != null/* && profile.TokunoTame*/)
                 {
                     bc.CheckSkill(skill, 0.0, bc.Skills[skill].Cap);
                 }
@@ -1436,6 +1460,10 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157418, 1157419 }, // Flurry Force
             new TextDefinition[] { 1150005, 0       }, // Rage
             new TextDefinition[] { 1151311, 0       }, // Heal
+            new TextDefinition[] { 1153793, 0       }, // Howl of Cacophony
+            new TextDefinition[] { 1153789, 0       }, // Webbing
+            new TextDefinition[] { 1153797, 0       }, // Anemia
+            new TextDefinition[] { 1153798, 0       }, // Blood Disease
         };
 
         public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }
@@ -1689,11 +1717,6 @@ namespace Server.Mobiles
                                 else
                                 {
                                     AnimalTaming.ScaleSkills(bc, 0.90);
-                                }
-
-                                if (bc.StatLossAfterTame)
-                                {
-                                    AnimalTaming.ScaleStats(bc, 0.50);
                                 }
 
                                 Timer.DelayCall(TimeSpan.FromSeconds(.25), () =>

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Spell.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -38,7 +32,10 @@ namespace Server.Spells
 		private long m_StartCastTime;
         private IDamageable m_InstantTarget;
 
+		public int ID { get { return SpellRegistry.GetRegistryNumber(this); } }
+
 		public SpellState State { get { return m_State; } set { m_State = value; } }
+
 		public Mobile Caster { get { return m_Caster; } }
 		public SpellInfo Info { get { return m_Info; } }
 		public string Name { get { return m_Info.Name; } }
@@ -46,6 +43,7 @@ namespace Server.Spells
 		public Type[] Reagents { get { return m_Info.Reagents; } }
 		public Item Scroll { get { return m_Scroll; } }
 		public long StartCastTime { get { return m_StartCastTime; } }
+
         public IDamageable InstantTarget { get { return m_InstantTarget; } set { m_InstantTarget = value; } }
 
         private static readonly TimeSpan NextSpellDelay = TimeSpan.FromSeconds(0.75);
@@ -510,30 +508,34 @@ namespace Server.Spells
 			Spellbook atkBook = Spellbook.FindEquippedSpellbook(m_Caster);
 
 			double scalar = 1.0;
-			if (atkBook != null)
-			{
-				SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(atkBook.Slayer);
-				SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkBook.Slayer2);
+            if (atkBook != null)
+            {
+                SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(atkBook.Slayer);
+                SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkBook.Slayer2);
 
-				if (atkSlayer != null && atkSlayer.Slays(defender) || atkSlayer2 != null && atkSlayer2.Slays(defender))
-				{
-					defender.FixedEffect(0x37B9, 10, 5); //TODO: Confirm this displays on OSIs
-					scalar = 2.0;
-				}
+                if (atkSlayer != null && atkSlayer.Slays(defender) || atkSlayer2 != null && atkSlayer2.Slays(defender))
+                {
+                    defender.FixedEffect(0x37B9, 10, 5);
 
-				TransformContext context = TransformationSpellHelper.GetContext(defender);
+                    bool isSuper = false;
 
-				if ((atkBook.Slayer == SlayerName.Silver || atkBook.Slayer2 == SlayerName.Silver) && context != null &&
-					context.Type != typeof(HorrificBeastSpell))
-				{
-					scalar += .25; // Every necromancer transformation other than horrific beast take an additional 25% damage
-				}
+                    if (atkSlayer != null && atkSlayer == atkSlayer.Group.Super)
+                        isSuper = true;
+                    else if (atkSlayer2 != null && atkSlayer2 == atkSlayer2.Group.Super)
+                        isSuper = true;
 
-				if (scalar != 1.0)
-				{
-					return scalar;
-				}
-			}
+                    scalar = isSuper ? 2.0 : 3.0;
+                }
+
+
+                TransformContext context = TransformationSpellHelper.GetContext(defender);
+
+                if ((atkBook.Slayer == SlayerName.Silver || atkBook.Slayer2 == SlayerName.Silver) && context != null && context.Type != typeof(HorrificBeastSpell))
+                    scalar += .25; // Every necromancer transformation other than horrific beast take an additional 25% damage
+
+                if (scalar != 1.0)
+                    return scalar;
+            }
 
 			ISlayer defISlayer = Spellbook.FindEquippedSpellbook(defender);
 
@@ -848,7 +850,7 @@ namespace Server.Spells
             }
             else
             {
-                m_Caster.LocalOverheadMessage(MessageType.Regular, 0x22, 502625); // Insufficient mana
+                m_Caster.LocalOverheadMessage(MessageType.Regular, 0x22, 502625, ScaleMana(GetMana()).ToString()); // Insufficient mana. You must have at least ~1_MANA_REQUIREMENT~ Mana to use this spell.
             }
 
 			return false;
@@ -1116,7 +1118,7 @@ namespace Server.Spells
 			}
 			else if (m_Caster.Mana < mana)
 			{
-				m_Caster.LocalOverheadMessage(MessageType.Regular, 0x22, 502625); // Insufficient mana for this spell.
+				m_Caster.LocalOverheadMessage(MessageType.Regular, 0x22, 502625, mana.ToString()); // Insufficient mana for this spell.
 			}
 			else if (Core.AOS && (m_Caster.Frozen || m_Caster.Paralyzed))
 			{

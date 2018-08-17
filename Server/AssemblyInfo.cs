@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - AssemblyInfo.cs
-// **********
-#endregion
-
 #region References
 using System.Reflection;
 using System.Resources;

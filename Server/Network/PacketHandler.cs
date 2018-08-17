@@ -1,14 +1,8 @@
-#region Header
-// **********
-// ServUO - PacketHandler.cs
-// **********
-#endregion
-
 namespace Server.Network
 {
 	public delegate void OnPacketReceive(NetState state, PacketReader pvSrc);
 
-	public delegate bool ThrottlePacketCallback(NetState state);
+	public delegate bool ThrottlePacketCallback(NetState state, out bool drop);
 
 	public class PacketHandler
 	{
