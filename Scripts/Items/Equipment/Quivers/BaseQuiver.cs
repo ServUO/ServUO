@@ -352,6 +352,7 @@ namespace Server.Items
             }
 
             Item ammo = Ammo;
+
             if(ammo != null && ammo.Amount > 0)
             {
                 if (IsArrowAmmo && item is Bolt)
@@ -369,14 +370,27 @@ namespace Server.Items
 
                 if (item.Amount + currentAmount <= m_Capacity)
                     return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+            }
 
+            return false;
+        }
+
+        public override bool CheckStack(Mobile from, Item item)
+        {
+            if (!CheckType(item))
+            {
                 return false;
             }
-            else if (checkItems)
-                return false;
 
-            if (ammo == null || ammo.Deleted)
-                return false;
+            Item ammo = Ammo;
+
+            if (ammo != null)
+            {
+                int currentAmount = Items.Sum(i => i.Amount);
+
+                if (item.Amount + currentAmount <= m_Capacity)
+                    return base.CheckStack(from, item);
+            }
 
             return false;
         }
