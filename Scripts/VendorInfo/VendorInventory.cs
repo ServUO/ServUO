@@ -15,44 +15,45 @@ namespace Server.Mobiles
         private string m_ShopName;
         private Mobile m_Owner;
         private int m_Gold;
+
         public VendorInventory(BaseHouse house, Mobile owner, string vendorName, string shopName)
         {
-            this.m_House = house;
-            this.m_Owner = owner;
-            this.m_VendorName = vendorName;
-            this.m_ShopName = shopName;
+            m_House = house;
+            m_Owner = owner;
+            m_VendorName = vendorName;
+            m_ShopName = shopName;
 
-            this.m_Items = new List<Item>();
+            m_Items = new List<Item>();
 
-            this.m_ExpireTime = DateTime.UtcNow + GracePeriod;
-            this.m_ExpireTimer = new ExpireTimer(this, GracePeriod);
-            this.m_ExpireTimer.Start();
+            m_ExpireTime = DateTime.UtcNow + GracePeriod;
+            m_ExpireTimer = new ExpireTimer(this, GracePeriod);
+            m_ExpireTimer.Start();
         }
 
         public VendorInventory(BaseHouse house, GenericReader reader)
         {
-            this.m_House = house;
+            m_House = house;
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Owner = reader.ReadMobile();
-            this.m_VendorName = reader.ReadString();
-            this.m_ShopName = reader.ReadString();
+            m_Owner = reader.ReadMobile();
+            m_VendorName = reader.ReadString();
+            m_ShopName = reader.ReadString();
 
-            this.m_Items = reader.ReadStrongItemList();
-            this.m_Gold = reader.ReadInt();
+            m_Items = reader.ReadStrongItemList();
+            m_Gold = reader.ReadInt();
 
-            this.m_ExpireTime = reader.ReadDeltaTime();
+            m_ExpireTime = reader.ReadDeltaTime();
 
-            if (this.m_Items.Count == 0 && this.m_Gold == 0)
+            if (m_Items.Count == 0 && m_Gold == 0)
             {
                 Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Delete));
             }
             else
             {
-                TimeSpan delay = this.m_ExpireTime - DateTime.UtcNow;
-                this.m_ExpireTimer = new ExpireTimer(this, delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
-                this.m_ExpireTimer.Start();
+                TimeSpan delay = m_ExpireTime - DateTime.UtcNow;
+                m_ExpireTimer = new ExpireTimer(this, delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
+                m_ExpireTimer.Start();
             }
         }
 
@@ -60,105 +61,105 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_House;
+                return m_House;
             }
             set
             {
-                this.m_House = value;
+                m_House = value;
             }
         }
         public string VendorName
         {
             get
             {
-                return this.m_VendorName;
+                return m_VendorName;
             }
             set
             {
-                this.m_VendorName = value;
+                m_VendorName = value;
             }
         }
         public string ShopName
         {
             get
             {
-                return this.m_ShopName;
+                return m_ShopName;
             }
             set
             {
-                this.m_ShopName = value;
+                m_ShopName = value;
             }
         }
         public Mobile Owner
         {
             get
             {
-                return this.m_Owner;
+                return m_Owner;
             }
             set
             {
-                this.m_Owner = value;
+                m_Owner = value;
             }
         }
         public List<Item> Items
         {
             get
             {
-                return this.m_Items;
+                return m_Items;
             }
         }
         public int Gold
         {
             get
             {
-                return this.m_Gold;
+                return m_Gold;
             }
             set
             {
-                this.m_Gold = value;
+                m_Gold = value;
             }
         }
         public DateTime ExpireTime
         {
             get
             {
-                return this.m_ExpireTime;
+                return m_ExpireTime;
             }
         }
         public void AddItem(Item item)
         {
             item.Internalize();
-            this.m_Items.Add(item);
+            m_Items.Add(item);
         }
 
         public void Delete()
         {
-            foreach (Item item in this.Items)
+            foreach (Item item in Items)
             {
                 item.Delete();
             }
 
-            this.Items.Clear();
-            this.Gold = 0;
+            Items.Clear();
+            Gold = 0;
 
-            if (this.House != null)
-                this.House.VendorInventories.Remove(this);
+            if (House != null)
+                House.VendorInventories.Remove(this);
 
-            this.m_ExpireTimer.Stop();
+            m_ExpireTimer.Stop();
         }
 
         public void Serialize(GenericWriter writer)
         {
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((Mobile)this.m_Owner);
-            writer.Write((string)this.m_VendorName);
-            writer.Write((string)this.m_ShopName);
+            writer.Write((Mobile)m_Owner);
+            writer.Write((string)m_VendorName);
+            writer.Write((string)m_ShopName);
 
-            writer.Write(this.m_Items, true);
-            writer.Write((int)this.m_Gold);
+            writer.Write(m_Items, true);
+            writer.Write((int)m_Gold);
 
-            writer.WriteDeltaTime(this.m_ExpireTime);
+            writer.WriteDeltaTime(m_ExpireTime);
         }
 
         private class ExpireTimer : Timer
@@ -167,36 +168,36 @@ namespace Server.Mobiles
             public ExpireTimer(VendorInventory inventory, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Inventory = inventory;
+                m_Inventory = inventory;
 
-                this.Priority = TimerPriority.OneMinute;
+                Priority = TimerPriority.OneMinute;
             }
 
             protected override void OnTick()
             {
-                BaseHouse house = this.m_Inventory.House;
+                BaseHouse house = m_Inventory.House;
 
                 if (house != null)
                 {
-                    if (this.m_Inventory.Gold > 0)
+                    if (m_Inventory.Gold > 0)
                     {
                         if (house.MovingCrate == null)
                             house.MovingCrate = new MovingCrate(house);
 
-                        Banker.Deposit(house.MovingCrate, this.m_Inventory.Gold);
+                        Banker.Deposit(house.MovingCrate, m_Inventory.Gold);
                     }
 
-                    foreach (Item item in this.m_Inventory.Items)
+                    foreach (Item item in m_Inventory.Items)
                     {
                         if (!item.Deleted)
                             house.DropToMovingCrate(item);
                     }
 
-                    this.m_Inventory.Gold = 0;
-                    this.m_Inventory.Items.Clear();
+                    m_Inventory.Gold = 0;
+                    m_Inventory.Items.Clear();
                 }
 
-                this.m_Inventory.Delete();
+                m_Inventory.Delete();
             }
         }
     }
