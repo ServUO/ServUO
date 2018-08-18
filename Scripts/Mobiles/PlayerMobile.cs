@@ -2406,7 +2406,7 @@ namespace Server.Mobiles
 				}
 				#endregion
 
-                if (!Core.SA && Alive)
+                if (Core.UOR && !Core.SA && Alive)
 				{
 					list.Add(new CallbackEntry(6210, ToggleChampionTitleDisplay));
 				}
