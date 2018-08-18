@@ -7783,7 +7783,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (PetTrainingHelper.Enabled && !Summoned && _Profile != null)
+            if (!Summoned && _Profile != null)
             {
                 SpecialAbility.CheckThinkTrigger(this);
                 AreaEffect.CheckThinkTrigger(this);
