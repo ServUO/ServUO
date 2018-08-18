@@ -4893,6 +4893,12 @@ namespace Server.Multis
                 else if (House.Release(Mobile, Item))
                 {
                     Mobile.Backpack.DropItem(Item);
+
+                    if (Item.IsLockedDown)
+                    {
+                        Item.IsLockedDown = false;
+                        Item.Movable = true;
+                    }
                 }
             }
             else

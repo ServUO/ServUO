@@ -83,7 +83,7 @@ namespace Server.Regions
 			}
 			else
 			{
-				m_Table[m] = Timer.DelayCall(TimeSpan.Zero, DamageInterval, Damage, m);
+                m_Table[m] = Timer.DelayCall(DamageInterval, DamageInterval, Damage, m);
 			}
         }
 

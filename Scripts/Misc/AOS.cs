@@ -336,12 +336,12 @@ namespace Server
             #endregion
 
             #region Pet Training
-            if (PetTrainingHelper.Enabled)
+            if (from is BaseCreature || m is BaseCreature)
             {
-                if (from is BaseCreature || m is BaseCreature)
-                {
-                    SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
+                SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
 
+                if (PetTrainingHelper.Enabled)
+                {
                     if (from is BaseCreature && m is BaseCreature)
                     {
                         var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
@@ -358,11 +358,11 @@ namespace Server
                             profile.CheckProgress((BaseCreature)from);
                         }
                     }
-                }
 
-                if (from is BaseCreature && ((BaseCreature)from).Controlled && m.Player)
-                {
-                    totalDamage /= 2;
+                    if (from is BaseCreature && ((BaseCreature)from).Controlled && m.Player)
+                    {
+                        totalDamage /= 2;
+                    }
                 }
             }
             #endregion
@@ -2458,7 +2458,9 @@ namespace Server
                 Spell spell = context.Spell as Spell;
                 spell.GetCastSkills(out minSkill, out maxSkill);
                 if (m.Skills[spell.CastSkill].Value < minSkill)
+                {
                     TransformationSpellHelper.RemoveContext(m, context, true);
+                }
             }
             if (acontext != null)
             {
