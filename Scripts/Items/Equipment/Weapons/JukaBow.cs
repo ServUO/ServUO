@@ -43,21 +43,32 @@ namespace Server.Items
                 return 80;
             }
         }
+
+        public override bool CanEquip(Mobile from)
+        {
+            if (IsModified)
+            {
+                return base.CanEquip(from);
+            }
+
+            return false;
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsModified
         {
             get
             {
-                return (this.Hue == 0x453);
+                return (Hue == 0x453);
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsModified)
+            if (IsModified)
             {
                 from.SendMessage("That has already been modified.");
             }
-            else if (!this.IsChildOf(from.Backpack))
+            else if (!IsChildOf(from.Backpack))
             {
                 from.SendMessage("This must be in your backpack to modify it.");
             }
@@ -80,11 +91,11 @@ namespace Server.Items
             {
                 from.SendMessage("Those are not gears."); // Apparently gears that aren't in your backpack aren't really gears at all. :-(
             }
-            else if (this.IsModified)
+            else if (IsModified)
             {
                 from.SendMessage("That has already been modified.");
             }
-            else if (!this.IsChildOf(from.Backpack))
+            else if (!IsChildOf(from.Backpack))
             {
                 from.SendMessage("This must be in your backpack to modify it.");
             }
@@ -96,8 +107,8 @@ namespace Server.Items
             {
                 g.Consume();
 
-                this.Hue = 0x453;
-                this.Slayer = (SlayerName)Utility.Random(2, 25);
+                Hue = 0x453;
+                Slayer = (SlayerName)Utility.Random(2, 25);
 
                 from.SendMessage("You modify it.");
             }
