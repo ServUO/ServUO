@@ -3250,7 +3250,7 @@ namespace Server.Items
 		#region Blood
 		public void AddBlood(Mobile defender, int damage)
 		{
-			if (damage <= 5 || defender == null || !defender.HasBlood || !CanDrawBlood(defender))
+			if (damage <= 5 || defender == null || defender.Map == null || !defender.HasBlood || !CanDrawBlood(defender))
 			{
 				return;
 			}

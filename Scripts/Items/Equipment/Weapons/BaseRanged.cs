@@ -118,7 +118,12 @@ namespace Server.Items
             if (AmmoType != null && attacker.Player && damageable is Mobile && !((Mobile)damageable).Player && (((Mobile)damageable).Body.IsAnimal || ((Mobile)damageable).Body.IsMonster) &&
 				0.4 >= Utility.RandomDouble())
 			{
-				((Mobile)damageable).AddToBackpack(Ammo);
+				var ammo = Ammo;
+
+				if (ammo != null)
+				{
+					((Mobile)damageable).AddToBackpack(ammo);
+				}
 			}
 
 			base.OnHit(attacker, damageable, damageBonus);
@@ -161,11 +166,16 @@ namespace Server.Items
 				}
 				else
 				{
-                    Point3D loc = damageable.Location;
+					Point3D loc = damageable.Location;
 
-					Ammo.MoveToWorld(
-                        new Point3D(loc.X + Utility.RandomMinMax(-1, 1), loc.Y + Utility.RandomMinMax(-1, 1), loc.Z),
-						damageable.Map);
+					var ammo = Ammo;
+
+					if (ammo != null)
+					{
+						ammo.MoveToWorld(
+							new Point3D(loc.X + Utility.RandomMinMax(-1, 1), loc.Y + Utility.RandomMinMax(-1, 1), loc.Z),
+							damageable.Map);
+					}
 				}
 			}
 

@@ -1063,10 +1063,22 @@ namespace Server.Mobiles
         public virtual bool FreezeOnCast { get { return ShowSpellMantra; } }
         public virtual bool CanFly { get { return false; } }
 
-        public virtual bool CanAutoStable { get { return ControlMaster is PlayerMobile && 
-                                                        !Allured && 
-                                                        !Summoned &&
-                                                        (!(this is IMount) || ((IMount)this).Rider == null); } }
+        public virtual bool CanAutoStable
+		{ 
+			get 
+			{
+				if(!(ControlMaster is PlayerMobile))
+					return false;
+
+				if(Allured || Summoned)
+					return false;
+
+				if(this is IMount && ((IMount)this).Rider != null)
+					return false;
+
+				return true;
+			}
+		}
 
         #region High Seas
         public virtual bool TaintedLifeAura { get { return false; } }
@@ -6708,22 +6720,79 @@ namespace Server.Mobiles
 
                 EventSink.InvokeCreatureDeath(e);
 
-                if (e.ClearCorpse)
+                if (!c.Deleted)
                 {
-                    var i = c.Items.Count;
+                    int i;
+
+                    if (e.ClearCorpse)
+                    {
+                        i = c.Items.Count;
+
+                        while (--i >= 0)
+                        {
+                            if (i >= c.Items.Count)
+                            {
+                                continue;
+                            }
+
+                            var o = c.Items[i];
+
+                            if (o != null && !o.Deleted)
+                            {
+                                o.Delete();
+                            }
+                        }
+                    }
+
+                    i = e.ForcedLoot.Count;
 
                     while (--i >= 0)
                     {
-                        if (i < c.Items.Count)
+                        if (i >= e.ForcedLoot.Count)
                         {
-                            c.Items[i].Delete();
+                            continue;
+                        }
+
+                        var o = e.ForcedLoot[i];
+
+                        if (o != null && !o.Deleted)
+                        {
+                            c.DropItem(o);
                         }
                     }
+
+                    e.ClearLoot(false);
+                }
+                else
+                {
+                    var i = e.ForcedLoot.Count;
+
+                    while (--i >= 0)
+                    {
+                        if (i >= e.ForcedLoot.Count)
+                        {
+                            continue;
+                        }
+
+                        var o = e.ForcedLoot[i];
+
+                        if (o != null && !o.Deleted)
+                        {
+                            o.Delete();
+                        }
+                    }
+
+                    e.ClearLoot(true);
                 }
 
                 base.OnDeath(c);
 
-                if (DeleteCorpseOnDeath)
+                if (e.PreventDefault)
+                {
+                    return;
+                }
+
+                if (DeleteCorpseOnDeath && !e.PreventDelete)
                 {
                     c.Delete();
                 }
@@ -7732,7 +7801,7 @@ namespace Server.Mobiles
         #region Detect Hidden
         private long _NextDetect;
 
-        public virtual bool CanDetectHidden { get { return Controlled && Skills[SkillName.DetectHidden].Value > 0; } }
+        public virtual bool CanDetectHidden { get { return Controlled && Skills.DetectHidden.Value > 0; } }
 
         public virtual int FindPlayerDelayBase { get { return (15000 / Int); } }
         public virtual int FindPlayerDelayMax { get { return 60; } }

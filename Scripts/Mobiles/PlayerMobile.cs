@@ -6773,7 +6773,10 @@ namespace Server.Mobiles
                     if (pet.Summoned && pet.Map != Map)
                     {
                         pet.PlaySound(pet.GetAngerSound());
-                        Timer.DelayCall(TimeSpan.Zero, pet.Delete);
+
+                        Timer.DelayCall(pet.Delete);
+
+						continue;
                     }
 
 					if (!pet.CanAutoStable)
