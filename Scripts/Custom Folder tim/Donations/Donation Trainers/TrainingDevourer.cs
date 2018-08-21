@@ -14,6 +14,7 @@ namespace Server.Mobiles
 			Name = "A Training Devourer";
 			Body = 303;
 			//BaseSoundID = 357;
+            CantWalk = true;
             Direction = Direction.South; 
 			SetStr( 46, 70 );
 			SetDex( 31, 50 );

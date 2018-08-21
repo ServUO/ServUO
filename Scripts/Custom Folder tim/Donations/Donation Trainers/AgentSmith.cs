@@ -40,7 +40,7 @@ namespace Server.Mobiles
 			SpeechHue=1109;
 			BaseSoundID = 0;
 			Team = 0;
-
+            CantWalk = true;
 			SetStr( 500, 550);
 			SetDex( 100,150);
 			SetInt( 50, 70);

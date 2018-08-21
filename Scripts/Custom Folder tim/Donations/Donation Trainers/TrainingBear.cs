@@ -14,6 +14,7 @@ namespace Server.Mobiles
 			Name = "A Training Bear";
 			Body = 213;
 			//BaseSoundID = 471;
+            CantWalk = true;
             Direction = Direction.South; 
 			SetStr( 46, 70 );
 			SetDex( 31, 50 );

@@ -14,7 +14,7 @@ namespace Server.Mobiles
 			Name = "A Training Vortex";
 			Body = 164;
 			//BaseSoundID = 0;
-
+            CantWalk = true;
 			SetStr( 46, 70 );
 			SetDex( 31, 50 );
 			SetInt( 26, 40 );

@@ -427,7 +427,7 @@ namespace Server.Multis
         private Type[] _NoItemCountTable = new Type[]
         {
             typeof(Engines.Plants.SeedBox),       typeof(GardenShedAddon),
-            typeof(GardenShedAddonSecond)
+            typeof(GardenShedBarrel)
         };
 
         // Not Included Storage
@@ -2228,7 +2228,7 @@ namespace Server.Multis
 
                     if (item is GardenShedAddon)
                     {
-                        GardenShedAddonSecond ad = ((GardenShedAddon)item).SecondContainer as GardenShedAddonSecond;
+                        GardenShedBarrel ad = ((GardenShedAddon)item).SecondContainer as GardenShedBarrel;
 
                         SecureInfo info2 = new SecureInfo((Container)ad, SecureLevel.Owner, m);
 

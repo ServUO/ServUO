@@ -14,7 +14,7 @@ namespace Server.Mobiles
 			Name = "A Training Hydra";
 			Body = 265;
 			//BaseSoundID = 362;
-
+            CantWalk = true;
 			SetStr( 46, 70 );
 			SetDex( 31, 50 );
 			SetInt( 26, 40 );
