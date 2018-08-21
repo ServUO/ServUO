@@ -18,7 +18,7 @@ namespace Server.Mobiles
                 Name = "A Training Human";
                 Body = 400;
                 //BaseSoundID = 471;
-
+                CantWalk = true;
                
                 SetStr(46, 70);
                 SetDex(31, 50);
