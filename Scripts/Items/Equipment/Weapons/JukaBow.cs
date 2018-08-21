@@ -51,6 +51,7 @@ namespace Server.Items
                 return base.CanEquip(from);
             }
 
+            from.SendMessage("You cannot equip this bow until a bowyer modifies it.");
             return false;
         }
 
