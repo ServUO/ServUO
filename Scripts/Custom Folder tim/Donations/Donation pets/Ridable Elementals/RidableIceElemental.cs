@@ -15,7 +15,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public RidableIceElemental(string name)
-            : base(name, 0xD, 0x3EA6, AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(name, 0xD, 0x3EA6, AIType.AI_Mage, FightMode.Good, 10, 1, 0.2, 0.4)
         {
             BaseSoundID = 655;
             Hue = 1152;
