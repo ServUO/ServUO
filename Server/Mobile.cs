@@ -1147,7 +1147,7 @@ namespace Server
 			name = Name ?? String.Empty;
 			suffix = String.Empty;
 			
-			if (AccessLevel > AccessLevel.Player)
+			if (ShowAccessTitle && m_Player && AccessLevel > AccessLevel.Player)
 			{
 				if (!String.IsNullOrWhiteSpace(prefix) && !prefix.StartsWith(" "))
 				{
@@ -1177,7 +1177,7 @@ namespace Server
 				suffix += Title;
 			}
 			
-			if (m_Guild != null && (m_DisplayGuildTitle || !m_Player))
+			if (m_DisplayGuildTitle && m_Player && m_Guild != null)
 			{
 				if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith("]") && !suffix.EndsWith(" "))
 				{
@@ -12581,7 +12581,8 @@ namespace Server
 		public static bool GuildClickMessage { get { return m_GuildClickMessage; } set { m_GuildClickMessage = value; } }
 		public static bool OldPropertyTitles { get { return m_OldPropertyTitles; } set { m_OldPropertyTitles = value; } }
 
-		public virtual bool ShowFameTitle { get { return true; } } //(m_Player || m_Body.IsHuman) && m_Fame >= 10000; }
+		public virtual bool ShowFameTitle { get { return true; } } 
+		public virtual bool ShowAccessTitle { get { return false; } }
 
 		/// <summary>
 		///     Overridable. Event invoked when the Mobile is single clicked.
