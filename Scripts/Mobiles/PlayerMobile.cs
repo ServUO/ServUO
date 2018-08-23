@@ -5686,19 +5686,14 @@ namespace Server.Mobiles
 			{
 				if (!String.IsNullOrWhiteSpace(m_OverheadTitle))
 				{
-					if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith(" "))
+					if (String.IsNullOrWhiteSpace(suffix))
 					{
-						suffix += " ";
+						suffix = m_OverheadTitle;
 					}
-
-					var loc = Utility.ToInt32(m_OverheadTitle.TrimStart('#'));
-
-					if (loc > 0)
+					else
 					{
-						suffix += "#";
+						suffix = String.Format("{0} {1}", m_OverheadTitle, suffix);
 					}
-
-					suffix += m_OverheadTitle;
 				}
 			}
 

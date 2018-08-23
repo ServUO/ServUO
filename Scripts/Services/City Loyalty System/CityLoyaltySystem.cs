@@ -852,7 +852,7 @@ namespace Server.Engines.CityLoyalty
 				return false;
 			}
 
-			var loc = Utility.ToInt32(pm.OverheadTitle);
+			var loc = Utility.ToInt32(pm.OverheadTitle.TrimStart('#'));
 
 			if (loc != 1154017)
 			{
@@ -865,14 +865,16 @@ namespace Server.Engines.CityLoyalty
 			{
 				CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-				if (entry != null && !String.IsNullOrEmpty(entry.CustomTitle))
+				if (entry != null && !String.IsNullOrWhiteSpace(entry.CustomTitle))
 				{
-					if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith(" "))
+					if (String.IsNullOrWhiteSpace(suffix))
 					{
-						suffix += " ";
+						suffix = String.Format("the {0} of {1}", entry.CustomTitle, city.Definition.Name);
 					}
-
-					suffix += String.Format("the {0} of {1}", entry.CustomTitle, city.Definition.Name);
+					else
+					{
+						suffix = String.Format("the {0} of {1} {2}", entry.CustomTitle, city.Definition.Name, suffix);
+					}
 
 					return true;
 				}
