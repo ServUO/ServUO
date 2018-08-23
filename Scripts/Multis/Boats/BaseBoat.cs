@@ -1895,7 +1895,7 @@ namespace Server.Multis
                     if (CanMoveOver(item))
                         continue;
 
-                    if (item != this && Contains(item) && item.Visible && item.Z >= Z && !(item is TillerMan || item is Hold || item is Plank || item is BaseAddon || item is RudderHandle))
+                    if (item != this && Contains(item) && item.Visible && item.Z >= Z && !(item is TillerMan || item is Hold || item is Plank || item is RudderHandle))
                         toMove.Add(o);
                 }
                 else if (o is Mobile && Contains((Mobile)o))
