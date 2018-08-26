@@ -592,8 +592,7 @@ namespace Server.Gumps
                             AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                             Refresh(false);
 
-                            User.OverheadTitle = null;
-                            User.DisplayGuildTitle = true;
+                            User.DisplayGuildAbbr = true;
                         });
                 }
             }
@@ -973,7 +972,7 @@ namespace Server.Gumps
                 case TitleType.PaperdollSuffix:
                     return User.PaperdollSkillTitle != null || User.CurrentChampTitle != null;
                 case TitleType.OverheadName:
-                    return User.OverheadTitle != null || User.DisplayGuildTitle;
+                    return User.OverheadTitle != null || User.DisplayGuildAbbr;
                 case TitleType.SubTitles:
                     return User.SubtitleSkillTitle != null || User.SelectedTitle > -1 || User.CurrentVeteranTitle > 0 || User.DisplayGuildTitle;
             }
@@ -991,7 +990,7 @@ namespace Server.Gumps
                     break;
                 case TitleType.OverheadName:
                     User.OverheadTitle = null;
-                    User.DisplayGuildTitle = false;
+                    User.DisplayGuildAbbr = false;
                     break;
                 case TitleType.SubTitles:
                     User.SubtitleSkillTitle = null;

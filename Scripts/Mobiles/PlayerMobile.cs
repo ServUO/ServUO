@@ -5648,6 +5648,23 @@ namespace Server.Mobiles
             set { m_CurrentVeteranTitle = value; InvalidateProperties(); }
         }
 
+		public override bool ShowAccessTitle
+		{
+			get
+			{
+				switch (AccessLevel)
+				{
+					case AccessLevel.VIP:
+					case AccessLevel.Counselor:
+					case AccessLevel.GameMaster:
+					case AccessLevel.Seer:
+						return true;
+				}
+
+				return false;
+			}
+		}
+
 		public override void AddNameProperties(ObjectPropertyList list)
 		{
 			base.AddNameProperties(list);
@@ -5669,19 +5686,14 @@ namespace Server.Mobiles
 			{
 				if (!String.IsNullOrWhiteSpace(m_OverheadTitle))
 				{
-					if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith(" "))
+					if (String.IsNullOrWhiteSpace(suffix))
 					{
-						suffix += " ";
+						suffix = m_OverheadTitle;
 					}
-
-					var loc = Utility.ToInt32(m_OverheadTitle.TrimStart('#'));
-
-					if (loc > 0)
+					else
 					{
-						suffix += "#";
+						suffix = String.Format("{0} {1}", m_OverheadTitle, suffix);
 					}
-
-					suffix += m_OverheadTitle;
 				}
 			}
 
