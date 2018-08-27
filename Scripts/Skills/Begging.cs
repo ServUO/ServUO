@@ -20,12 +20,11 @@ namespace Server.SkillHandlers
         {
             m.RevealingAction();
 
-            m.Target = new InternalTarget();
-            m.RevealingAction();
-
             m.SendLocalizedMessage(500397); // To whom do you wish to grovel?
 
-            return TimeSpan.FromHours(6.0);
+            Timer.DelayCall(() => m.Target = new InternalTarget());
+
+            return TimeSpan.FromHours(1.0);
         }
 
         private class InternalTarget : Target
