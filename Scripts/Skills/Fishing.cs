@@ -439,7 +439,7 @@ namespace Server.Engines.Harvest
                                     int[] list = new int[]
                                     {
                                         0x1E19, 0x1E1A, 0x1E1B, //Fish heads
-                                        0x1E2A, 0x1E2B,         //Ores
+                                        0x1E2A, 0x1E2B,         //Oars
                                         0x1E71, 0x1E7A,         //Unfinished drawers
                                         0x1E75,                 //Unfinished legs
                                     };
@@ -451,7 +451,7 @@ namespace Server.Engines.Harvest
                                     else if (ran < 0.25)
                                         preLoot = new ShipwreckedItem(list[Utility.RandomMinMax(3, 7)], dredge);
                                     else
-                                        preLoot = new Item(list[Utility.Random(3)]);
+                                        preLoot = new ShipwreckedItem(list[Utility.Random(3)], dredge);
                                     break;
                                 }
                             #endregion
