@@ -5,6 +5,8 @@ namespace Server.Engines.Quests
 {
     public class Neville : BaseEscort
     {
+        public override Type[] Quests { get { return new Type[] { typeof(EscortToDugan) }; } }
+
         [Constructable]
         public Neville()
             : base()
@@ -17,33 +19,9 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool InitialInnocent
+        public override void Advertise()
         {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] 
-                {
-                    typeof(EscortToDugan)
-                };
-            }
-        }
-        public override bool CanBeDamaged()
-        {
-            return false;
+            Say(1095004); // Please help me, where am I?
         }
 
         public override void InitBody()
@@ -56,34 +34,26 @@ namespace Server.Engines.Quests
             Hue = Race.RandomSkinHue();
             HairItemID = Race.RandomHair(false);
             HairHue = Race.RandomHairHue();
-
-            Frozen = true;
-            Direction = Direction.North;
         }
 
         public override void InitOutfit()
         {
             SetWearable(new Backpack());
-            SetWearable(new Shoes(1877));
-            SetWearable(new LongPants(443));
-            SetWearable(new FancyShirt(1425));
+            SetWearable(new Shoes(0x70A));
+            SetWearable(new LongPants(0x1BB));
+            SetWearable(new FancyShirt(0x588));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            Frozen = true;
-            Direction = Direction.North;
         }
     }
 }
