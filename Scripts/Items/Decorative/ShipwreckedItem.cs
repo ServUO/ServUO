@@ -18,7 +18,7 @@ namespace Server.Items
 
             int weight = this.ItemData.Weight;
 
-            if (weight >= 255)
+            if (weight >= 255 || weight <= 0)
                 weight = 1;
 
             this.Weight = weight;
