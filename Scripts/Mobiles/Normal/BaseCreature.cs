@@ -4449,12 +4449,14 @@ namespace Server.Mobiles
 
                 Owner.From.TargetLocked = true;
                 AnimalTaming.DisableMessage = true;
+                AnimalTaming.DeferredTarget = false;
 
-                if (Owner.From.UseSkill(SkillName.AnimalTaming))
+                if (Owner.From.UseSkill(SkillName.AnimalTaming) && Owner.From.Target != null)
                 {
                     Owner.From.Target.Invoke(Owner.From, m_Mobile);
                 }
 
+                AnimalTaming.DeferredTarget = true;
                 AnimalTaming.DisableMessage = false;
                 Owner.From.TargetLocked = false;
             }

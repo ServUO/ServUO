@@ -17,28 +17,36 @@ namespace Server.SkillHandlers
 	public class AnimalTaming
 	{
 		private static readonly Hashtable m_BeingTamed = new Hashtable();
-		private static bool m_DisableMessage;
-		public static bool DisableMessage { get { return m_DisableMessage; } set { m_DisableMessage = value; } }
+
+		public static bool DisableMessage { get; set; }
+		public static bool DeferredTarget { get; set; }
 
 		public static void Initialize()
 		{
 			SkillInfo.Table[(int)SkillName.AnimalTaming].Callback = OnUse;
 		}
-
+		
 		public static TimeSpan OnUse(Mobile m)
 		{
 			m.RevealingAction();
 
-			if (!m_DisableMessage)
+			if (!DisableMessage)
 			{
 				m.SendLocalizedMessage(502789); // Tame which animal?
 			}
 
-			Timer.DelayCall(() => m.Target = new InternalTarget());
+			if (DeferredTarget)
+			{
+				Timer.DelayCall(() => m.Target = new InternalTarget());
+			}
+			else
+			{
+				m.Target = new InternalTarget();
+			}
 
 			return TimeSpan.FromHours(1.0);
 		}
-
+		
 		public static bool CheckMastery(Mobile tamer, BaseCreature creature)
 		{
 			BaseCreature familiar = (BaseCreature)SummonFamiliarSpell.Table[tamer];
