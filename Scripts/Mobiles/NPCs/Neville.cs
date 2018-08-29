@@ -8,7 +8,8 @@ namespace Server.Engines.Quests
     {
         public static void Initialize()
         {
-            Spawn();
+            if (Core.SA)
+                Spawn();
         }
 
         public static Point3D HomeLocation { get { return new Point3D(1150, 964, -42); } }
@@ -90,7 +91,11 @@ namespace Server.Engines.Quests
             if (Instances != null && Instances.Contains(this))
                 Instances.Remove(this);
 
-            Spawn();
+            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(
+                delegate
+                {
+                    Spawn();
+                }));            
 
             base.OnDelete();
         }
