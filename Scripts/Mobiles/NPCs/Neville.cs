@@ -28,7 +28,6 @@ namespace Server.Engines.Quests
             "Protect me!",
             "a scoundrel is committing murder!",
             "Where are the guards! Help!",
-            "Ack!  My escort has come to haunt me!",
             "Make haste",
             "Tisawful! Death! Ah!"
         };
