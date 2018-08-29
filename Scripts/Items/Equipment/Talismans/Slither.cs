@@ -2,27 +2,27 @@ using System;
 
 namespace Server.Items
 {
-    public class Slither : BaseTalisman, ITokunoDyable
+    public class Slither : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Slither()
             : base(0x2F5B)
         {
-            this.Hue = 589;
+            Hue = 0x587;				
+            Blessed = RandomTalisman.GetRandomBlessed();				
 			
-            this.Name = ("Slither");
-				
-            this.Blessed = RandomTalisman.GetRandomBlessed();				
-			
-            this.Attributes.BonusHits = 10;
-            this.Attributes.RegenHits = 2;
-            this.Attributes.DefendChance = 10;
+            Attributes.BonusHits = 10;
+            Attributes.RegenHits = 2;
+            Attributes.DefendChance = 10;
         }
 
         public Slither(Serial serial)
             : base(serial)
         {
         }
+		
+		public override int LabelNumber { get{return 1114782;} }// Slither
 
         public override void Deserialize(GenericReader reader)
         {

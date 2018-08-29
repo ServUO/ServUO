@@ -8,7 +8,7 @@ namespace Server.Items
         public BaseEquipableLight(int itemID)
             : base(itemID)
         {
-            this.Layer = Layer.TwoHanded;
+            Layer = Layer.TwoHanded;
         }
 
         public BaseEquipableLight(Serial serial)
@@ -18,9 +18,9 @@ namespace Server.Items
 
         public override void Ignite()
         {
-            if (!(this.Parent is Mobile) && this.RootParent is Mobile)
+            if (!(Parent is Mobile) && RootParent is Mobile)
             {
-                Mobile holder = (Mobile)this.RootParent;
+                Mobile holder = (Mobile)RootParent;
 
                 if (holder.EquipItem(this))
                 {
@@ -44,8 +44,8 @@ namespace Server.Items
 
         public override void OnAdded(object parent)
         {
-            if (this.Burning && parent is Container)
-                this.Douse();
+            if (Burning && parent is Container)
+                Douse();
 
             base.OnAdded(parent);
         }
