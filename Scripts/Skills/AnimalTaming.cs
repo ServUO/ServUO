@@ -21,6 +21,12 @@ namespace Server.SkillHandlers
 		public static bool DisableMessage { get; set; }
 		public static bool DeferredTarget { get; set; }
 
+		static AnimalTaming()
+		{
+			DeferredTarget = true;
+			DisableMessage = false;
+		}
+
 		public static void Initialize()
 		{
 			SkillInfo.Table[(int)SkillName.AnimalTaming].Callback = OnUse;
