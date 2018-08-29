@@ -221,6 +221,18 @@ namespace Server.Engines.BulkOrders
             typeof(BaseTool), typeof(SmithyHammer), typeof(BaseJewel)
         };
 
+        public override bool CheckType(Type type)
+        {
+            bool check = base.CheckType(type);
+
+            if (!check)
+            {
+                check = CheckTinkerType(type, Type);
+            }
+
+            return check;
+        }
+
         public override bool CheckType(Item item)
         {
             if (_GemType != GemType.None && (!(item is BaseJewel) || ((BaseJewel)item).GemType != _GemType))
