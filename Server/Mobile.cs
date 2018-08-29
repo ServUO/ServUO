@@ -2264,6 +2264,7 @@ namespace Server
 
 		private long m_NextCombatTime;
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public long NextSkillTime { get { return m_NextSkillTime; } set { m_NextSkillTime = value; } }
 
 		public List<AggressorInfo> Aggressors { get { return m_Aggressors; } }
