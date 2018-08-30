@@ -1,0 +1,11 @@
+Version 1.3
+
+- RunUO 2.0 RC1 compatible
+
+Version 1.2.5
+
+- Refactored the Chessboard class to BChessboard. This will prevent the crash occuring when using the [Decorate command.
+- NPCs will be now ejected from the chessboard
+- Fixed crash occuring when staff would delete a pawn in the middle of its promotion
+- If the winner has no backpack they will not receive their winning certificate
+- You can no longer check mate your enemy and win the game, while being checked yourself.

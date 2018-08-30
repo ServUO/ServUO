@@ -1,0 +1,16 @@
+1 Brit_Psg_Brit 1510 1639 20
+2 Covetous 2502 920 0 
+3 Deceit 4114 432 5 
+4 Despise 1298 1078 0 
+5 Destard 1179 2636 0 
+6 Fire_Dungeon 5767 2905 13
+7 Hythloth 4724 3821 0 
+8 Ice_Dungeon_Ent 1997 79 7 
+9 Ice_Dungeon_LL 5209 2319 32
+10 Shame 516 1560 0 
+11 Terathan_Keep 5497 3218 1 
+12 Terathan_KeepE 5454 3136 -60
+13 Psg_Trinsic 1627 3321 0 
+14 Psg_City_Dead 5139 3663 31
+15 Psg_Delucia 5154 4060 37
+16 Wrong 2047 235 13 

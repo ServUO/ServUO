@@ -1,0 +1,45 @@
+// Created by Peoharen
+using System;
+using Server;
+using Server.Mobiles;
+
+namespace Server.Items
+{
+	public class ExportMobiles : Item
+	{
+		[Constructable]
+		public ExportMobiles() : base( 0x108A )
+		{
+			Name = "Export Mobiles";
+			Layer = Layer.Ring;
+		}
+
+		public override void GetProperties( ObjectPropertyList list )
+		{
+			list.Add( 1114057, "<BASEFONT COLOR='#5FAAE4'>" + this.Name ); // ~1_VAL~
+
+			if ( IsSecure )
+				AddSecureProperty( list );
+			else if ( IsLockedDown )
+				AddLockedDownProperty( list );
+
+			list.Add( 1042971, "[Saves Mobiles while using UOAR to Export]" ); // ~1_NOTHING~
+		}
+
+		public ExportMobiles( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+			int version = reader.ReadInt();
+		}
+	}
+}

@@ -1,0 +1,26 @@
+http://www.runuo.com/community/threads/knives-record-items.528629/
+
+Hello all,
+
+ I have been working on a Project only known as codename 'Blackrock' for quite some time and thought I would make this public, thanks for your time reading this and feel free to post any suggestions.
+
+ This is a custom command called 'Record Items' that simply records all non movable items in the current region, saving them to a text file located in your UO server directory called region.txt.
+
+ Special thanks to Knives aka Kmwill23
+
+ Installation:
+
+ Simply drop into a custom directory in your UO server.
+ Adds command [recorditems to your server
+
+ Sincerely,
+
+ Jay Keening 
+
+
+Type: FarmableLettuce ID: 3254 Location: (1147, 1788, 0)
+ Type: Static ID: 2324 Location: (1191, 1684, 0)
+ Type: FarmableCarrot ID: 3190 Location: (1113, 1612, 0)
+ Type: WildCotton ID: 3151 Location: (1141, 1783, 0)
+ Type: WildFlax ID: 6809 Location: (1124, 1783, 0)
+ Type: Wheat ID: 3160 Location: (1158, 1564, 0)

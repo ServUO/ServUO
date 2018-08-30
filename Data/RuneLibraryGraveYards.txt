@@ -1,0 +1,9 @@
+1 City_of_Dead 5263 3675 -2
+2 Britain 1384 1498 10
+3 Cove 2444 1123 5
+4 Jhelom 1295 3720 0
+5 Moonglow 4545 1339 8
+6 Nujelm 3537 1157 20
+7 Vesper 2787 867 0
+8 Yew 724 1139 0
+9 Yew_Crypts 972 768 0

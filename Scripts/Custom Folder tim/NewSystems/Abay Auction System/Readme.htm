@@ -1,0 +1,197 @@
+<html>
+<body>
+	<h3>Auction System, version 2.1 by Xanthos</h3>
+	<strong>Overview</strong>
+	<p>The auction system is intended to give players a way of safely trading items of high value. It provides an interface for creating auctions and bidding on items. The system automatically moves the item auctioned and the money exchanged through a convenient system of checks that makes sure that both the seller and the buyer are protected against any risks. The system comes with a convenient search engine for auctioned items based on text and type searches, as well as sorting based on a number of conditions.</p>
+	<p>The system also includes an integrated savings account for each player, that on funds in savings accounts as an incentive for players to move gold and tokens into savings thereby reduing item count. Funds in savings are used to pay for auction bids when funds in a player's bank account are exhausted, steamlining the buying process.</p>
+	<p>Modified copies of BankCheck.cs and Banker.cs provide integration of the savings account as well as the use of commas in creation of bank checks and withdrawl of funds to make working with large sums of funds quicker much less error prone.</p>
+	<p>This system requires an installation of AoS on the server machine to access localization tables, but is compatible with both AoS and not-AoS shards.</p>
+	<strong>Installation</strong>
+	<p>Installation is pretty straightforward: Unzip the the Auction and Utilities zip files into a Xanthos folder in your customs scripts folder and copy Ultima.dll into your RunUO folder. Open RunUO\Data\Assemblies.cfg and add the line:</p>
+		<p>Ultima.dll</p>
+	<strong>Note on modified distro files:</strong><p>If you plan to use the Savings account, remove the distribution files RunUO\Scripts\Mobiles\Townfolk\Banker.cs and RunUO\Scripts\Items\Misc\BankCheck.cs. Otherwise if you do not want the savings account feature or wish to use only unmodified disribution files, remove the Xanthos\Auction\Modified folder.</p>
+	<p>Once the system is installed and the server is running, use the [InitAuction command to create the auction control stone. This is a special item that can only be constructed using the command. This item is invisible, so it can be placed pretty much anywhere. Also it cannot be deleted by using the [Remove command (in such a case it will simply re-create itself). The stone holds all the information about the system, including all auctions, bids and items. It can only be deleted using the [AuctionAdmin command which will terminate unsuccesfully all auctions.</p>
+	<p>In order for players to access the system, spawn Auctioner mobiles in your world. They can access the system by using the 'Buy' context menu on the Auctioner or by saying the 'auction' keyword.</p>
+	<p>Important : This script requires access to a fully patched cliloc.enu file. To ensure this, install AoS on the server machine and patch it up. There is still a chance the script will not find the file because of wrong registry information. If you have trouble with the system (namely if nothing happens when you target an item that you wish to auction), specify the path to the cliloc.enu file manually. </p>
+	<strong>Configuration</strong>
+	<p>A number of parameters are available for configuration in the file AuctionConfig.xml. The settings in the AuctionConfig.xml will only take effect if the file is placed in your <strong>RunUO\Data</strong> directory.:</p>
+	<ul>
+		<li>MessageHue: defines the hue number used by all the messages in the system</li>
+		<li>m_ForbiddenTypes: defines a list of item types that cannot be sold through the auction system</li>
+		<li>DaysForConfirmation: in some cases after the auction has ended, either the buyer or seller must confirm their will to proceed with the auction. They will be notified through the messaging system and required to take a decision. If no decision is taken within a number of days, the auction ends unsuccesfully (item returned to seller, highest bid returned to bidder). This parameter specifies the number of days the system will wait before finalizing the auction.</li>
+		<li>MaxReserveMultiplier: this is a limiting factor on the value of the reserve which cannot be higher than the starting bid multiplied by this parameter. This should avoid player exploiting the reserve feature by adding very high reserves to all auctions and always have the chance to decide whether to sell in the end or not.</li>
+		<li>BlackHue : gumps have a weird behaviour when it comes to hues. Simply put they are not capable to display hue #1 aka pure black, therefore for items hued 1 a replacemente hue must be used. By default this is a black hue (#2000) in the OSI hues file. You might need to verify this value if your shard uses a custom hues.mul.</li>
+		<li>AllowPetsAuction : true by default, enables auctioning of pets.</li>
+		<li>AuctionAdminAccessLevel : the minimum AccessLevel required to access administration functions (Using the [AuctionAdmin command and the staff panel for each auction).</li>
+		<li>ClilocLocation : specify the full path for the cliloc.enu file if having trouble with it.</li>
+		<li>EnableLogging : true by default, will record all auction activity in \RunUO\Logs\Auction.</li>
+		<li>LateBidExtension: when a bid is placed within 5 minutes from the auction end, and a positive time span is assigned to this option, the duration of the auction will be extended by the amount specified. By default this is zero ( TimeSpan.FromMinutes( 0.0 ) ).</li>
+		<li>CostOfAuction: specifies how much the auction of an item costs (see the code for details on how to configure this parameter).</li>
+	</ul>
+	<p>Additional configuration is done using the Props of the control stone:</p>
+	<ul>
+		<li>MaxAuctionaPerAccount: specifies the maximum number of simultaneous auctions a single account can own.</li>
+		<li>MinAuctionDays: specifies the minimum number of days an auction must last.</li>
+		<li>MaxAuctionDays: specifies the maximum number of days an auction can last.</li></ul>
+	<strong>Commands</strong>
+	<ul>
+		<li>[Admin] InitAuction : this command is used to create the auction control stone (see: Installation). If a control stone already exists in the world, this command will teleport the user to the stone location.</li>
+		<li>[Admin] AuctionAdmin : this displays a panel giving control over the whole system (delete, perform auction verification, profiling...)</li>
+		<li>[GameMaster] Auction: brings up the main auction gump. Players have to access this through the Auctioner NPC.</li>
+		<li>[Player] MyAuction: brings up a limited auction gump. Players can only access auctions they're already participating in. They can't use this gump to create new auctions or to place bids on items they haven't bid on before.</li></ul>
+	<strong>Creating an auction</strong>
+	<p>In order to create an auction, a player must visit an Auctioner NPC. After selecting the object they wish to auction, the item will be removed from their backpack. The user will then have to specify the parameters of the auction:</p>
+	<ul>
+		<li>Starting bid: the minimum bid accepted for this auction</li>
+		<li>Duration: the running time for the auction in days</li>
+		<li>Reserve: a safety value considered when the auction ends. If the highest bid is higher than the reserve the item is automatically sold, otherwise the owner will be given the option to withdraw the auction and have the item returned. The reserve value is not known to the bidder, but only information whether it has been met or not.</li>
+		<li>Name: the system will try to guess an appropriate name for the auction. The user can of course change it to whatever they wish to.</li>
+		<li>Description: any additional information should be given here. The system will extract the properties of each item and automatically display them, so there is no need to write them in this field.</li>
+		<li>Web link: a web link can be provided optionally</li></ul>
+	<p>Once the auction is confirmed, it's put into the system and available for everyone to bid on. Also once created, the auction can no longer be canceled by the owner.</p>
+	<strong>Bidding on an auction</strong>
+	<p>If a player can bid on an auction, they will see the option in the lower left area of the auction gump. They must have the required money for the bid in their bank, which will be withdrawn as soon as the bid is placed. When a higher bid is placed, the previous highest bidder will receive the money back in the form of a auction gold check (which will display a gump that will allow the player to quickly return to the auction).</p>
+	<p>Restrictions on bidding:</p>
+	<ul>
+		<li>Characters belonging to the same account as the auction owner cannot place bids on the auction.</li>
+		<li>Staff cannot place bids unless they are wearing the Staff Cloak. Staff can create auctions with or without the Staff Cloak.</li></ul>
+	<p>Players can outbid themselves (for example to meet the reserve).</p>
+	<strong>Item checks and gold checks</strong>
+	<p>Items and gold are moved through the system using checks. A check, when double clicked, will show the player a gump which will specify the name of the auction (if the auction still exists in the system, a button will allow the player to view the auction page), and the reason of the check. A button will allow the player to claim the gold or item by placing it in their bank.</p>
+	<strong>Ambiguous situations and auction messages</strong>
+	<p>In two situations, when an auction ends, the system will not be able to take a decision about the outcome:</p>
+	<ul>
+		<li> to sell or not.</li>
+		<li>One or more items in the auction no longer exist. This can occur in case of item wipes or serialization errors. In this case the buyer will be able to decide whether to purchase or not.</li></ul>
+	<p>When an auction ends with an ambiguous situation a message will be dispatched to both the owner and the buyer (provided they're online). The system also handles little notice from the system requesting their input.</p>
+	<p>This situation can last at most at few days, as specified in the auction configuration.</p>
+	<strong>Administering the system</strong>
+	<p>The system takes little administration. The staff can only review bids, but cannot interfere in an auction itself (by either modifying its parameters or deleting it).</p>
+	<strong>The Staff Cloak</strong>
+	<p>Included with the system is a cloak that staff can put on to temporarily set their access level to "Player". This allows staff to use the auction system in the same way as a player would. With the Staff Cloak on, staff can auction items and bid on auctions without having to log in an alternate character.</p>
+	<strong>Setting up the Savings Accounts</strong>
+	<p>To add the savings accounts to existing user's bank boxes, issue the following gm command [InstallSavings. Optionally, a savings account gold box can placed somewhere in the world accessible to players, made non-movable and used by players to install a savings account into the player's bank box when double clicked by the player.</p>
+	<p>To have savings accounts added to new players bank boxes automatically, open CharacterCreation.cs and find:</p>
+		<span style="font-family: Courier; font-size: 10pt;">
+	    &#160; &#160; if ( young &amp;&amp; newChar.BankBox != null )<br />
+		&#160; &#160; {<br />
+		&#160; &#160; &#160; &#160; NewPlayerTicket ticket = new NewPlayerTicket();<br />
+		&#160; &#160; &#160; &#160; ticket.Owner = newChar;<br />
+		&#160; &#160; &#160; &#160; newChar.BankBox.DropItem( ticket );<br />
+		&#160; &#160; }</span>
+	
+		<p>Add the following on a new line after that block:</p>
+		<span style="font-family: Courier; font-size: 10pt;">&#160; &#160; if ( newChar.BankBox = null )<br />
+			&#160; &#160; &#160; &#160; newChar.BankBox.DropItem( new Arya.Savings.SavingsAccount()); </span>
+	<p>Another command is supplied to allow staff to change the balance of accounts en masse: [ScaleSavings [-g|-t] &lt;percent&gt;. Where -g targets gold balances, -t targets savings and both are scaled if neither is specified. Percent is a decimal value (e.g. 10 for 10%).</p>
+	<h4>Requirements</h4>
+	<p>Requires the Xanthos Utilities package.</p>
+	<strong>Acknowledgements</strong>
+	<p>The bulk of the system is based on the original Auction System by Arya. All credit for the wonderful and creative work on the original Auction System goes to Arya. My goal in maintenance of the system is to move the functionality forward to provide an integrated solution for commerce on RunUO shards. Credit must also be given to Phoo, who provided the inspiration for the first of such enhancements. A re-written Savings Account system has been implemented here with permission from Phoo.</p>
+	<h4>Caveats</h4>
+	<p>You may use or modify this system in any way you desire, however I ask that you leave the original headers in the source files if you re-write or redistribute the sources in any way.</p>
+	<p>- Xanthos</p>
+	<h3>Changes</h3>
+	<h4>Version 2.1</h4>
+	<ul>
+		<li>Fixed a null reference occurring when setting the parent item of an item being redeemded, from auction. Items added to the control stone, for keeping during auction, are now removed using RemoveItem rather than being removed from the control stones Items directly. The latter worked under RunUO 1.0 but does not under 2.0.</li>
+	</ul>
+	<h4>Version 2.0</h4>
+	<ul>
+		<li>Made the system compatible with RunUO 2.0 </li>
+		<li>Fixed an exploit - players can no longer use a PowerScroll while also placing it on auction </li>
+		<li>Savings Accounts no longer announce interest events if the system is not being used </li>
+		<li>Removed the interest timer - interest events are now keyed off of WorldSave </li>
+		<li>Removed unnecessary code in the system gumps. </li>
+	</ul>
+	<h4><strong>Version 1.15</strong></h4>
+	<p></p>
+	<ul>
+		<li>Moved enable/disable of Daat99 Tokens out of the SavingsAccount source into the xml config file. </li>
+		<li>Changed the SavingsAccount initial value, in the config file, of the interest paid to 4% rather than 40%. </li>
+		<li>Fixed the SavingsAccount name and properties displayed on mouse over. </li>
+		<li>Added a command: ScaleSavings, that scales the balance of all savings accounts by a percentage. Options -g and -t let staff scale only gold or tokens. The amount to be scaled is spedcified as an integer value. </li>
+	</ul>
+	<h4><strong>Version 1.14</strong></h4>
+	<ul>
+		<li>Aligned the code with changes in the IShrinkItem interface. </li>
+		<li>Now using the fully qualified name of Xanthos.Utilities.Misc.IsArtifact() to avoid an error one person was seeing </li>
+	</ul>
+	<h4>Version 1.13</h4>
+	<ul>
+		<li>Auction View Gump Cleanup </li>
+		<li>Fixed a graphics glitch that cuased some ugly broken borders </li>
+		<li>Streamlined the UI to look cleaner and better handle containers </li>
+		<li>Implemented a simple hue item to allow viewing of the item's hue if it has one.</li>
+	</ul>
+	<h4>Version 1.12</h4>
+	<ul>
+		<li>Fixed a null reference introduced in fixing the gold and item leak to the null map. The code has been simplified and the evil allocate-on-read property has been removed
+		</li>
+		<li>Added a command, InstallSavings, that places a savings account in each player's bank, if there is not one there already </li>
+		<li>Fixed a crasher on dclicking a savings account outside of a bank box </li>
+		<li>SavingsAccounts outside of a bank box, when dclicked, place a SavingsAccount in the users bank box. </li>
+	</ul>
+	<h4>Version 1.11</h4>
+	<ul>
+		<li>Banker now places commas in gold amounts when he/she speaks </li>
+		<li>Moved StaffCloak into the Arya namespace </li>
+		<li>Savings account now displays balance on mouse over </li>
+		<li>Fixed a compile error for those who do not use Daat99 Tokens </li>
+		<li>Reworded a couple of gump strings </li>
+		<li>Fixed a gold leak to the internal map occuring when a gold auction check was d-clicked and subsequently not redeemed </li>
+		<li>Auction gumps now display commas in gold amounts </li>
+		<li>ConfigParser no longer halts shard start-up when a bad value is found in the xml file. Instead it displays the error on the console, leaving the default value untouched
+		</li>
+		<li>Added a ConfigParser option to halt the shard on bad values in the xml config file. </li>
+	</ul>
+	<h4>Version 1.10</h4>
+	<ul>
+		<li>Re-fixed the dead pet exploit in a way that does not demand one have Xanthos shrink system. Any shrink system that implements the IShrinkItem interface will do. Xanthos shrink system implements the IShrinkItem interface. </li>
+	</ul>
+	<h4>Version 1.9</h4>
+	<ul>
+		<li>Fixed an exploit: will no longer accept invalid shrunken pets in auctions (provided Xanthos shrink system is used) </li>
+		<li>Pets bonded to the seller are unbonded when retrieved from the system by the auction winner </li>
+		<li>Added Staff Cloak to allow staff to quickly change to player access level to bid on auctions. Original author unknown </li>
+		<li>A Savings Account gold box is provided to be placed in users' bank boxes. Gold and Daat99Tokens can be recorded in the account - reducing item count </li>
+		<li>Bid funds will be taken from a player's Savings Account if there are insufficient funds in the player's bank box </li>
+		<li>Two modified standard distribution files are provided: Banker.cs and BankCheck.cs. With these modified files, commas can be used in creating checks and making withdrawls, and checks will display commas </li>
+		<li>A number of parameters are available for configuration in the file AuctionConfig.xml (place this file in your RunUO\Data directory). This allows configuration parameters to be modified without code changes. </li>
+	</ul>
+	<h4>Version 1.8</h4>
+	<ul>
+		<li>Fixed a crash occurring when the system delivered a check to a player whose backpack has been deleted </li>
+		<li>Fixed a crash with the control stone properties list when the system wasn't running</li>
+		<li>1.0 Compatibility fix (no more EmptyArrayList warning on the console when creating auctions/moving items into the system) </li>
+		<li>Added option to extend the duration of the auction if a bid is placed within 5 minutes from the end. (default: no late bid extension) </li>
+		<li>Added an option to charge for the auction service (either a fixed value, or a percentage cost. default: no charge) </li>
+		<li>For those running localized versions: 3 new entries in the string table (228-230).</li>
+	</ul>
+	<h4>Version 1.7</h4>
+	<ul>
+		<li>Fixed max number of auctions parameter to behave correctly </li>
+		<li>When a player retrieves an item that's a container, the item count and weight should be correctly updated </li>
+		<li>Fixed potential gump-related crash </li>
+		<li>Threaded operations lock the World.Items and World.Mobiles objects. This should address some cases where the system would cause a crash on world save </li>
+		<li>All gumps now register available buttons. This should fix the malicious crash that could be caused using a razor macro on the system gumps </li>
+		<li>Pets should no longer go wild when stored in the system (hopefully) </li>
+		<li>Fixed crash associated with text search (hopefully). </li>
+		<li>Added option the specify the location of the cliloc.enu file </li>
+		<li>Buy Now function implemented </li>
+		<li>Gold checks will now use the Banker.Desposit() method to deliver money (allowing any amount of money to be safely transferred </li>
+		<li>Fixed an issue with the auction props and the highest bid. Now this will display two new fields (HighestBidder and HighestBidValue) </li>
+		<li>Fixed overflow when setting a duration that's too long </li>
+		<li>Added a staff control panel for each auction. Access to this panel is configured through the AuctionAdminAccessLevel parameter </li>
+		<li>Added logging (enabled by default, disable in AuctionSystem.cs Configuration region). Will log all activity to RunUO\Logs\Auction </li>
+		<li>When the cliloc.enu can't be found, the system will output a message on the console.</li>
+	</ul>
+	<h4>Version 1.6</h4>
+	<ul>
+		<li>The system will now also trade creatures. The following restrictions apply on pet auctions: 1. You must own the pet. 2. No summoned, dead or animated pets allowed. 3. When claiming the pet, it will go to your stable and you will need a free stable slot </li>
+		<li>When the pet or item is deleted from the world due to a wipe, the auction is ended by default and the money returned to the highest bidder. - Removed the DeleteAuction command (see AuctionAdmin) </li>
+		<li>Added an administration gump accessible through the [AuctionAdmin command: The admin gump displays the number of running and pending auctions, and the next deadling (that is whenever the next automtic check will occur and verify all expried auctions). Functions: 1. Profiling: will print a file to \RunUO\AuctionProfile.txt with all the relevant information about the system. 2. Force Verify: will perform a verification and end all expired auctions. 3. Temporarily Shut Down: this will disable the auction system until the next reboot 4. Permanently Shut Down: deletes the system (formerly DeleteAuction command) </li>
+		<li>Mode admin functions. Staff can now delete on the fly a particular auction from its view gump (Delete button). Staff can also view various auction properties through the Props button in the view gump. </li>
+	</ul>
+</body>
+</html>

@@ -1,0 +1,10 @@
+BankChest.cs by Alari (alarihyena@gmail.com)
+
+This light-colored chest will open the
+character's bank box when double-clicked.
+
+BankChestAddon.cs by Alari (alarihyena@gmail.com)
+
+A gold-colored chest that opens the character's
+bank box when double-clicked. Addon and Deed.
+Suitable to be placed in player housing.

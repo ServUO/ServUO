@@ -464,13 +464,34 @@ namespace Server.Items
 
     public class Backpack : BaseContainer, IDyable
     {
+		private int _NewMaxWeight;
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+        public int NewMaxWeight
+        {
+            get
+            {
+				return _NewMaxWeight;
+            }
+            set
+            {
+				if( _NewMaxWeight == null || _NewMaxWeight <= 550 )
+					_NewMaxWeight = 550;
+					
+                _NewMaxWeight = value;
+				
+				InvalidateProperties();
+            }
+        }
+		
         [Constructable]
         public Backpack()
             : base(0xE75)
         {
             Layer = Layer.Backpack;
             Weight = 3.0;
-        }
+        	_NewMaxWeight = 550;
+		}
 
         public Backpack(Serial serial)
             : base(serial)
@@ -486,7 +507,7 @@ namespace Server.Items
                     Mobile m = ParentEntity as Mobile;
                     if (m != null && m.Player && m.Backpack == this)
                     {
-                        return 550;
+                        return _NewMaxWeight;
                     }
                     else
                     {
@@ -513,7 +534,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
+			
+			writer.Write( (int)_NewMaxWeight);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -521,6 +544,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+			
+			 _NewMaxWeight = reader.ReadInt(); // added to increase backpack
+
+			if ( _NewMaxWeight == null || _NewMaxWeight < 550 ) // added to increase backpack
+				 _NewMaxWeight = 550; // added to increase backpack
 
             if (version == 0 && ItemID == 0x9B2)
                 ItemID = 0xE75;
@@ -1214,6 +1242,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
+            writer.Write((int)1); // version
             writer.Write((int)2); // version
         }
 

@@ -1,0 +1,87 @@
+File: Scripts\Spells\Base\Spell.cs
+
+/*---------------------------------------------------- BaseStoreKey Casting -----------------------------------
+
+This block allows the spell system to check and withdraw reagents from any BaseStoreKey or MasterKey objects found within the
+caster's backpack.  
+
+Location: This block belongs in Spell.cs under Scripts\Spells\Base\. This block needs to be inserted in the ConsumeReagents method
+of class Spell, below all other tests but before the "return false" On an unmodified server, this should be inserted on line
+line 242 of Spell.cs
+
+Installation: drop this block in place, being mindful of the structure around it.
+*/
+
+[SEARCH FOR]
+		public virtual bool ConsumeReagents()
+		{
+			if (m_Scroll != null || !m_Caster.Player)
+			{
+				return true;
+			}
+
+			if (AosAttributes.GetValue(m_Caster, AosAttribute.LowerRegCost) > Utility.Random(100))
+			{
+				return true;
+			}
+
+			if (DuelContext.IsFreeConsume(m_Caster))
+			{
+				return true;
+			}
+
+			Container pack = m_Caster.Backpack;
+
+			if (pack == null)
+			{
+				return false;
+			}
+
+			if (pack.ConsumeTotal(m_Info.Reagents, m_Info.Amounts) == -1)
+			{
+				return true;
+			}
+
+			return false;
+		}
+		
+[REPLACE WITH]
+		public virtual bool ConsumeReagents()
+		{
+			if (m_Scroll != null || !m_Caster.Player)
+			{
+				return true;
+			}
+
+			if (AosAttributes.GetValue(m_Caster, AosAttribute.LowerRegCost) > Utility.Random(100))
+			{
+				return true;
+			}
+
+			if (DuelContext.IsFreeConsume(m_Caster))
+			{
+				return true;
+			}
+
+			Container pack = m_Caster.Backpack;
+
+			if (pack == null)
+			{
+				return false;
+			}
+
+			if (pack.ConsumeTotal(m_Info.Reagents, m_Info.Amounts) == -1)
+			{
+				return true;
+			}
+            // UNIVERSAL STORAGE KEYS START
+            //pass the task of finding/consuming reagents to a static method in BaseStoreKey.  This allows the system to scan
+            //all keys in your backpack for any reagents, and pick what it needs from each one.  Also, it will doublecheck the
+            //backpack in case not everythinhg was found in the keys, but the rest is lying loose in the backpack
+            if (BaseStoreKey.Consume(pack, m_Info.Reagents, m_Info.Amounts))
+            {
+                return true;
+            }
+            // UNIVERSAL STORAGE KEYS END
+            return false;
+		}
