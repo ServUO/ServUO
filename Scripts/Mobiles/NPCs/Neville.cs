@@ -56,10 +56,6 @@ namespace Server.Engines.Quests
             Say(1095004); // Please help me, where am I?
         }
 
-        public override bool CanBeDamaged() { return false; }
-        public override bool InitialInnocent { get { return true; } }
-        public override bool IsInvulnerable { get { return false; } }
-
         public override void OnThink()
         {
             if (DateTime.UtcNow >= m_TalkTime)

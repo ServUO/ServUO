@@ -42,10 +42,6 @@ namespace Server.Engines.Quests
             Say(1074222); // Could I trouble you for some assistance?
         }
 
-        public override bool CanBeDamaged() { return false; }
-        public override bool InitialInnocent { get { return true; } }
-        public override bool IsInvulnerable { get { return false; } }
-
         public override void InitBody()
         {
             Female = true;

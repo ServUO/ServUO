@@ -83,10 +83,6 @@ namespace Server.Engines.Quests
         {
             Say(1074202); // It’s you!   I’m saved, you are just in time.
         }
-
-        public override bool CanBeDamaged() { return false; }
-        public override bool InitialInnocent { get { return true; } }
-        public override bool IsInvulnerable { get { return false; } }
         
         public override void OnDelete()
         {
