@@ -214,7 +214,7 @@ namespace Server.Items
         public ExodusChest ExodusChest { get { return m_Chest; } }
 
         public ExodusChestRegion(ExodusChest chest)
-            : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X, chest.Location.Y, 5, 5) )
+            : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X - 2, chest.Location.Y - 2 , 5, 5) )
         {
             m_Chest = chest;
         }
