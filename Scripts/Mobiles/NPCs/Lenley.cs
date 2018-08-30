@@ -159,7 +159,10 @@ namespace Server.Engines.Quests
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateLenleyRegion));
+            if (Hidden)
+            {
+                Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateLenleyRegion));
+            }
         }
     }
 
