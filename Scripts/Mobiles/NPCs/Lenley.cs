@@ -97,10 +97,10 @@ namespace Server.Engines.Quests
 
         public override void RevealingAction()
         {
-            CantWalk = true;
-
             if (_Region != null)
                 _Region.Unregister();
+
+            CantWalk = false;
 
             base.RevealingAction();
         }
