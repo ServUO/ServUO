@@ -58,7 +58,7 @@ namespace Server.Engines.Quests
             : base()
         {
             Name = "Lenley";
-            Title = "the snitch";
+            Title = "the Snitch";
             Body = 0x2A;
             Hidden = true;
             CantWalk = true;
