@@ -7920,17 +7920,7 @@ namespace Server
 
 			if (newRegion != oldRegion)
 			{
-				if (oldRegion != null)
-				{
-					oldRegion.OnExit(this);
-				}
-				
 				m_Region = newRegion;
-
-				if (newRegion != null)
-				{
-					newRegion.OnEnter(this);
-				}
 
 				Region.OnRegionChange(this, oldRegion, newRegion);
 
