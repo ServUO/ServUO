@@ -1234,6 +1234,10 @@
         <rect x="6528" y="504" width="4" height="1" />
         <zrange min="-50" />
       </region>
+      <region type="TheLostCityEntry">
+				<rect x="6316" y="472" width="8" height="8" />
+        <rect x="6303" y="509" width="11" height="7" />
+			</region>
     </region>
     <region priority="50" name="Bravehorn's drinking pool">
       <rect x="1302" y="2331" width="38" height="22" />
