@@ -75,7 +75,7 @@ namespace Server.Spells.SkillMasteries
                 defender.SendLocalizedMessage(1155979); // You may not wield a weapon and use this ability.
                 Expire(defender);
             }
-            else if (defender.InRange(attacker.Location, 2) && !UnderEffects(attacker))
+            else if (defender.InRange(attacker.Location, 2) && !UnderEffects(defender))
             {
                 if (_Table == null)
                     _Table = new Dictionary<Mobile, FistsOfFuryContext>();
