@@ -115,6 +115,26 @@ namespace Server.Engines.ArenaSystem
                 GuardRegion.Unregister();
                 GuardRegion = null;
             }
+
+            if (Manager != null)
+            {
+                Manager.Delete();
+            }
+
+            if (Stone != null)
+            {
+                Stone.Delete();
+            }
+
+            if (Banner1 != null)
+            {
+                Banner1.Delete();
+            }
+
+            if (Banner2 != null)
+            {
+                Banner2.Delete();
+            }
         }
 
         private List<ArenaDuel> _Remove = new List<ArenaDuel>();

@@ -204,8 +204,6 @@ namespace Server.Engines.Quests
             return false;
         }
 
-        //public static void AddQuestItemDelay(PlayerMobile 
-
         public static void Delay(PlayerMobile player, Type type, TimeSpan delay)
         { 
             for (int i = 0; i < player.DoneQuests.Count; i ++)

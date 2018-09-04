@@ -1473,6 +1473,9 @@ namespace Server.Multis
                 {
                     Item item = e as Item;
 
+                    if (item is BaseAddon || item is AddonComponent)
+                        return false;
+
                     // Special item, we're good
                     if (CheckItem(itemID, item, p) || CanMoveOver(item) || item.Z < p.Z || ExemptOverheadComponent(p, itemID, item.X, item.Y, item.Z + item.ItemData.Height))
                         continue;
@@ -1500,11 +1503,29 @@ namespace Server.Multis
 
         public virtual bool CheckItem(int itemID, Item item, Point3D p)
         {
-            return Contains(item) || item is BaseMulti || item.ItemID > TileData.MaxItemValue || !item.Visible || item is Corpse || IsComponentItem((IEntity)item) || item is EffectItem;
+            return Contains(item) ||
+                item is BaseMulti ||
+                item.ItemID > TileData.MaxItemValue ||
+                !item.Visible ||
+                item is Corpse ||
+                IsComponentItem((IEntity)item) ||
+                item is EffectItem;
         }
 
         public virtual bool CanMoveOver(IEntity entity)
         {
+            if (entity is Corpse)
+            {
+                var corpse = (Corpse)entity;
+
+                if (corpse.Owner == null || corpse.Owner is BaseCreature)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
             return entity is Blood;
         }
 

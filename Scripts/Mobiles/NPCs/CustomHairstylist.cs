@@ -499,7 +499,8 @@ namespace Server.Mobiles
 			new ChangeHairstyleEntry(60713, 320 - 383, 85 - 125, 0x204A),
 			new ChangeHairstyleEntry(60702, 70 - 137, 140 - 190, 0x203D),
 			new ChangeHairstyleEntry(1836, 173 - 260, 128 - 190, 0x2049),
-			new ChangeHairstyleEntry(60901, 315 - 383, 150 - 190, 0x2048), new ChangeHairstyleEntry(0, 0, 0, 0)
+			new ChangeHairstyleEntry(1841, 60901, 315 - 383, 150 - 190, 0x2046, 0x2048),
+            new ChangeHairstyleEntry(0, 0, 0, 0)
 		};
 
 		public static readonly ChangeHairstyleEntry[] BeardEntries = new[]
@@ -655,8 +656,18 @@ namespace Server.Mobiles
 				{
 					AddRadio(40 + (xTable * offsetWidth), 70 + (yTable * offsetHeight), 208, 209, false, i);
 					AddBackground(87 + (xTable * offsetWidth), 50 + (yTable * offsetHeight), 50, 50, 2620);
+
+                    int x = entries[i].X;
+                    int y = entries[i].Y;
+
+                    if (gumpID == 1841)
+                    {
+                        x -= 17;
+                        y -= 17;
+                    }
+
 					AddImage(
-                        87 + (xTable * offsetWidth) + entries[i].X, 50 + (yTable * offsetHeight) + entries[i].Y, gumpID);
+                        87 + (xTable * offsetWidth) + x, 50 + (yTable * offsetHeight) + y, gumpID);
 				}
 				else if (!facialHair)
 				{
