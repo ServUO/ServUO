@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-
+using Server.Engines.Quests;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
@@ -284,6 +284,30 @@ namespace Server.Regions
 					
                 AOS.Damage(m, damage, 0, 0, 0, 100, 0);
             }
+        }
+    }
+
+    public class TheLostCityEntry : DamagingRegion
+    {
+        public override TimeSpan DamageInterval { get { return TimeSpan.FromMilliseconds(500); } }
+
+        public TheLostCityEntry(XmlElement xml, Map map, Region parent)
+            : base(xml, map, parent)
+        { }
+
+        protected override void OnDamage(Mobile m)
+        {
+            base.OnDamage(m);
+
+            if (m is Kodar)
+                return;
+
+            m.FixedParticles(0x36B0, 1, 14, 0x26BB, 0x3F, 0x7, EffectLayer.Waist);
+            m.PlaySound(0x229);
+
+            var damage = Utility.RandomMinMax(10, 20);                
+
+            AOS.Damage(m, damage, 0, 0, 0, 100, 0);
         }
     }
 }

@@ -1,17 +1,49 @@
 using System;
+using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Engines.Quests
 {
     public class Neville : BaseEscort
     {
+        public static void Initialize()
+        {
+            if (Core.SA)
+                Spawn();
+        }
+
+        public static Point3D HomeLocation { get { return new Point3D(1150, 964, -42); } }
+        public static int HomeRange { get { return 5; } }
+
         public override Type[] Quests { get { return new Type[] { typeof(EscortToDugan) }; } }
+
+        private DateTime m_TalkTime;
+
+        public static List<Neville> Instances { get; set; }
+
+        string[] NevilleSay = new string[]
+        {
+            "Save Us",
+            "Murder is being done!",
+            "Protect me!",
+            "a scoundrel is committing murder!",
+            "Where are the guards! Help!",
+            "Make haste",
+            "Tisawful! Death! Ah!"
+        };
 
         [Constructable]
         public Neville()
             : base()
         {
             Name = "Neville Brightwhistle";
+
+            SpeechHue = 0x3B2;
+
+            if (Instances == null)
+                Instances = new List<Neville>();
+
+            Instances.Add(this);
         }
 
         public Neville(Serial serial)
@@ -22,6 +54,56 @@ namespace Server.Engines.Quests
         public override void Advertise()
         {
             Say(1095004); // Please help me, where am I?
+        }
+
+        public override void OnThink()
+        {
+            if (DateTime.UtcNow >= m_TalkTime)
+            {
+                if (!Alive || Deleted || ControlMaster == null)
+                {
+                    return;
+                }
+
+                if (!ControlMaster.Hidden && ControlMaster.Aggressors.Count > 0)
+                {
+                    SayRandom(NevilleSay, this);
+
+                    m_TalkTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30));
+                }
+            }
+
+            base.OnThink();
+        }
+
+        private void SayRandom(string[] say, Mobile m)
+        {
+            m.Say(say[Utility.Random(say.Length)]);
+        }
+
+        public override void OnDelete()
+        {
+            if (Instances != null && Instances.Contains(this))
+                Instances.Remove(this);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(
+                delegate
+                {
+                    Spawn();
+                }));            
+
+            base.OnDelete();
+        }
+
+        public static void Spawn()
+        {
+            if (Instances != null && Instances.Count > 0)
+                return;
+
+            Neville creature = new Neville();
+            creature.Home = HomeLocation;
+            creature.RangeHome = HomeRange;
+            creature.MoveToWorld(HomeLocation, Map.TerMur);
         }
 
         public override void InitBody()
@@ -54,6 +136,11 @@ namespace Server.Engines.Quests
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Instances == null)
+                Instances = new List<Neville>();
+
+            Instances.Add(this);
         }
     }
 }

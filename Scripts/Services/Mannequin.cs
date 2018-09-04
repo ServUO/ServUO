@@ -321,15 +321,8 @@ namespace Server.Mobiles
                 {
                     if (house.Owner == from || house.IsCoOwner(from))
                     {
-                        if (house.Public)
-                        {
-                            from.SendLocalizedMessage(1151657); // Where do you wish to place this?
-                            from.Target = new PlaceTarget(this);
-                        }
-                        else
-                        {
-                            from.SendLocalizedMessage(1153304); // You cannot place this vendor, steward or barkeep. Make sure the house is public and has sufficient storage available.
-                        }
+                        from.SendLocalizedMessage(1151657); // Where do you wish to place this?
+                        from.Target = new PlaceTarget(this);                       
                     }
                     else
                     {
