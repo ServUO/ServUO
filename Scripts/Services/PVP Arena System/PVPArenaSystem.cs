@@ -26,6 +26,9 @@ namespace Server.Engines.ArenaSystem
         private TextDefinition m_Name = new TextDefinition("Arena Stats");
 
         public static List<PVPArena> Arenas { get; set; }
+        public static List<string> BlockedArenas { get; set; }
+
+        public static bool SystemInitialized { get; set; }
 
         public PVPArenaSystem()
         {
@@ -33,8 +36,6 @@ namespace Server.Engines.ArenaSystem
 
             if (Enabled)
             {
-                InitializeArenas();
-
                 CommandSystem.Register("ResetArenaStats", AccessLevel.Administrator, ResetStats_OnTarget);
             }
         }
@@ -102,6 +103,46 @@ namespace Server.Engines.ArenaSystem
             arena.Unregister();
         }
 
+        public void AddBlockedArena(PVPArena arena)
+        {
+            if (BlockedArenas == null)
+            {
+                BlockedArenas = new List<string>();
+            }
+
+            if (!IsBlocked(arena.Definition))
+            {
+                Utility.WriteConsoleColor(ConsoleColor.Green, "Adding blocked EA PVP Arena: {0}", arena.Definition.Name);
+                BlockedArenas.Add(arena.Definition.Name);
+                Unregister(arena);
+            }
+        }
+
+        public void RemoveBlockedArena(ArenaDefinition def)
+        {
+            if (BlockedArenas == null)
+            {
+                return;
+            }
+
+            BlockedArenas.Remove(def.Name);
+
+            if (Arenas == null || Arenas.Count == 0)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), () => Instance.OnTick());
+            }
+
+            var arena = new PVPArena(def);
+            Instance.Register(arena);
+            Utility.WriteConsoleColor(ConsoleColor.Green, "Removing blocked EA PVP Arena: {0}", arena.Definition.Name);
+            arena.ConfigureArena();
+        }
+
+        public bool IsBlocked(ArenaDefinition def)
+        {
+            return BlockedArenas != null && BlockedArenas.Contains(def.Name);
+        }
+
         public static bool IsEnemy(Mobile source, Mobile target)
         {
             var sourceRegion = Region.Find(source.Location, source.Map) as ArenaRegion;
@@ -132,13 +173,25 @@ namespace Server.Engines.ArenaSystem
         {
             base.Serialize(writer);
 
-            writer.Write(0);
+            writer.Write(2);
+
+            writer.Write(BlockedArenas == null ? 0 : BlockedArenas.Count);
+
+            if (BlockedArenas != null)
+            {
+                for (int i = 0; i < BlockedArenas.Count; i++)
+                {
+                    writer.Write(BlockedArenas[i]);
+                }
+            }
+
             writer.Write(Arenas == null ? 0 : Arenas.Count);
 
             if (Arenas != null)
             {
                 for (int i = 0; i < Arenas.Count; i++)
                 {
+                    writer.Write(Arenas[i].Definition.Name);
                     Arenas[i].Serialize(writer);
                 }
             }
@@ -147,14 +200,59 @@ namespace Server.Engines.ArenaSystem
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            SystemInitialized = true;
 
             int version = reader.ReadInt();
-            int count = reader.ReadInt();
 
-            for (int i = 0; i < count; i++)
+            if (version < 2)
             {
-                Arenas[i].Deserialize(reader);
+                InitializeArenas();
             }
+
+            switch (version)
+            {
+                case 2:
+                case 1:
+                    int c = reader.ReadInt();
+
+                    for (int i = 0; i < c; i++)
+                    {
+                        if (BlockedArenas == null)
+                            BlockedArenas = new List<string>();
+
+                        BlockedArenas.Add(reader.ReadString());
+                    }
+                    goto case 0;
+                case 0:
+                    int count = reader.ReadInt();
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (version >= 2)
+                        {
+                            var arena = new PVPArena(GetDefinition(reader.ReadString()));
+                            Register(arena);
+                            arena.Deserialize(reader);
+                        }
+                        else
+                        {
+                            Arenas[i].Deserialize(reader);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        private ArenaDefinition GetDefinition(string name)
+        {
+            var def = ArenaDefinition.Definitions.FirstOrDefault(d => d.Name == name);
+
+            if (def == null)
+            {
+                return ArenaDefinition.Definitions[0];
+            }
+
+            return def;
         }
 
         public static void SendMessage(Mobile from, string message, int hue = 0x1F)
@@ -227,12 +325,21 @@ namespace Server.Engines.ArenaSystem
         {
             if (Enabled)
             {
-                foreach (var arena in Arenas)
+                if (!SystemInitialized)
                 {
-                    arena.ConfigureArena();
+                    InitializeArenas();
+                    SystemInitialized = true;
                 }
 
-                Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), () => Instance.OnTick() );
+                if (Arenas != null)
+                {
+                    foreach (var arena in Arenas)
+                    {
+                        arena.ConfigureArena();
+                    }
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), () => Instance.OnTick());
+                }
             }
         }
 
