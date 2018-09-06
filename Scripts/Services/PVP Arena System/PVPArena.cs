@@ -121,7 +121,7 @@ namespace Server.Engines.ArenaSystem
                 Manager.Delete();
             }
 
-            if (Stone != null)
+            if (Stone != null && !Stone.Deleted)
             {
                 Stone.Delete();
             }
