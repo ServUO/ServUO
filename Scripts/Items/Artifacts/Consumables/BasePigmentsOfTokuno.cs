@@ -52,7 +52,6 @@ namespace Server.Items
 
         private static readonly Type[] m_DyableHeritageItems = new Type[]
         {
-            typeof(ChargerOfTheFallen),
             typeof(SamuraiHelm),
             typeof(HolySword),
             typeof(LeggingsOfEmbers),
