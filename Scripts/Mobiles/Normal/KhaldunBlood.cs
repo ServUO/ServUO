@@ -4,10 +4,10 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a Bloody corpse")]
-    public class Blood : BaseCreature
+    public class KhaldunBlood : BaseCreature
     {
         [Constructable]
-        public Blood()
+        public KhaldunBlood()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "Blood";
@@ -45,7 +45,7 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
-        public Blood(Serial serial)
+        public KhaldunBlood(Serial serial)
             : base(serial)
         {
         }

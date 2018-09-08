@@ -8,6 +8,112 @@ using System.Linq;
 
 namespace Server.Engines.ArenaSystem
 {
+    public class PVPArenaSystemSetupGump : BaseGump
+    {
+        public PVPArenaSystemSetupGump(PlayerMobile pm)
+            : base(pm, 150, 20)
+        {
+        }
+
+        public override void AddGumpLayout()
+        {
+            AddBackground(0, 0, 300, 295, 9200);
+
+            AddImageTiled(8, 8, 284, 27, 2624);
+            AddAlphaRegion(8, 8, 284, 27);
+
+            AddImageTiled(8, 41, 284, 51, 2624);
+            AddAlphaRegion(8, 41, 284, 51);
+
+            AddImageTiled(8, 98, 284, 164, 2624);
+            AddAlphaRegion(8, 98, 284, 164);
+
+            AddImageTiled(8, 268, 284, 20, 2624);
+            AddAlphaRegion(8, 268, 284, 20);
+
+            AddHtml(0, 12, 300, 20, ColorAndCenter("#FFFFFF", "Arena Setup"), false, false);
+            AddHtml(12, 47, 274, 40, Color("#FFFFFF", "Below are the available PVP Arena's."), false, false);
+
+            for(int i = 0; i < ArenaDefinition.Definitions.Length; i++)
+            {
+                var def = ArenaDefinition.Definitions[i];
+                bool exists = PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
+
+                AddHtml(45, 105 + (i * 25), 200, 20, Color("#FFFFFF", String.Format("{0} [{1}]", def.Name, exists ? "Enabled" : "Disabled")), false, false);
+                AddButton(10, 105 + (i * 25), !exists ? 4023 : 4017, !exists ? 4024 : 4018, i + 500, GumpButtonType.Reply, 0);
+            }
+
+            AddHtmlLocalized(42, 268, 150, 20, 1150300, 0xFFFF, false, false); // CANCEL
+            AddButton(8, 268, 4017, 4019, 0, GumpButtonType.Reply, 0);
+        }
+
+        public override void OnResponse(RelayInfo info)
+        {
+            if (info.ButtonID == 0)
+                return;
+
+            int id = info.ButtonID - 500;
+
+            if (id >= 0 && id < ArenaDefinition.Definitions.Length)
+            {
+                var def = ArenaDefinition.Definitions[id];
+                bool exists = PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
+
+                BaseGump.SendGump(new GenericConfirmCallbackGump<ArenaDefinition>(
+                    User,
+                    String.Format("{0} {1}", exists ? "Disable" : "Enable", def.Name),
+                    exists ? _DisableBody : _EnableBody,
+                    def,
+                    null,
+                    (m, d) =>
+                    {
+                        if (PVPArenaSystem.Instance != null)
+                        {
+                            if (PVPArenaSystem.Instance.IsBlocked(d))
+                            {
+                                PVPArenaSystem.Instance.RemoveBlockedArena(d);
+                            }
+                            else
+                            {
+                                var arena = PVPArenaSystem.Arenas.FirstOrDefault(a => a.Definition == d);
+
+                                if (arena != null)
+                                {
+                                    PVPArenaSystem.Instance.AddBlockedArena(arena);
+                                }
+                            }
+                        }
+
+                        SendGump(m as PlayerMobile);
+                    },
+                    (m, d) =>
+                    {
+                        SendGump(m as PlayerMobile);
+                    }));
+            }
+        }
+
+        private static void SendGump(PlayerMobile pm)
+        {
+            if (pm == null)
+                return;
+
+            var gump = BaseGump.GetGump<PVPArenaSystemSetupGump>(pm, null);
+
+            if (gump == null)
+            {
+                BaseGump.SendGump(new PVPArenaSystemSetupGump(pm));
+            }
+            else
+            {
+                gump.Refresh();
+            }
+        }
+
+        private string _DisableBody = "By disabling this arena, the arena stone, regions and any stats associated with the arena will be lost forever. Do you wish to proceed?";
+        private string _EnableBody = "By enabling this region, an arena stone and regions will be placed. Be sure to clear any custom content you have at or near the arena.";
+    }
+
     public class BaseArenaGump : BaseGump
     {
         public int LabelHue = 0x480;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 namespace Server.Engines.ArenaSystem
 {
+    [DeleteConfirm("Are you sure you want to delete this? Deleting this stone will remove this arena from the system.")]
     public class ArenaStone : Item
     {
         public override bool ForceShowProperties { get { return true; } }
@@ -117,6 +118,19 @@ namespace Server.Engines.ArenaSystem
 
             ColUtility.Free(_Items);
             _Items = null;
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+
+            Timer.DelayCall(() =>
+                {
+                    if (Arena != null && PVPArenaSystem.Instance != null)
+                    {
+                        PVPArenaSystem.Instance.AddBlockedArena(Arena);
+                    }
+                });
         }
 
         public ArenaStone(Serial serial)

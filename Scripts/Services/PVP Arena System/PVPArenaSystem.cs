@@ -37,6 +37,7 @@ namespace Server.Engines.ArenaSystem
             if (Enabled)
             {
                 CommandSystem.Register("ResetArenaStats", AccessLevel.Administrator, ResetStats_OnTarget);
+                CommandSystem.Register("ArenaSetup", AccessLevel.Administrator, ArenaSetup);
             }
         }
 
@@ -349,6 +350,18 @@ namespace Server.Engines.ArenaSystem
             Instance.Register(new PVPArena(ArenaDefinition.LostLandsFelucca));
             Instance.Register(new PVPArena(ArenaDefinition.HavenTrammel));
             Instance.Register(new PVPArena(ArenaDefinition.HavenFelucca));
+        }
+
+        [Usage("ArenaSetup")]
+        [Description("Gives gump for arena setup.")]
+        public static void ArenaSetup(CommandEventArgs e)
+        {
+            var pm = e.Mobile as PlayerMobile;
+
+            if(pm != null)
+            {
+                BaseGump.SendGump(new PVPArenaSystemSetupGump(pm));
+            }
         }
 
         [Usage("ResetArenaStats")]
