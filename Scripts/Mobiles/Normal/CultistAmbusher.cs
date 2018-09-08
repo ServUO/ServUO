@@ -6,41 +6,38 @@ using Server.Targeting;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a human corpse")]
+    [CorpseName("a cultist ambusher corpse")]
     public class CultistAmbusher : BaseCreature
 	{
 		[Constructable]
 		public CultistAmbusher()
-			: base(AIType.AI_Melee, FightMode.Closest, 10, 7, 0.2, 0.4)
+			: base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
 		{
 			Name = "Cultist Ambusher";
 			Body = 0x190;
             Hue = 2500;
 			BaseSoundID = 0x45A;
 
-            SetStr(115, 150);
+            SetStr(150, 200);
             SetDex(150);
             SetInt(25, 44);
-
-            SetHits(58, 72);
 
             SetDamage(8, 18);
 
             SetDamageType(ResistanceType.Physical, 100);
 
-			SetResistance(ResistanceType.Physical, 1, 10);
-			SetResistance(ResistanceType.Fire, 1, 10);
-			SetResistance(ResistanceType.Cold, 1, 10);
-			SetResistance(ResistanceType.Poison, 1, 10);
-			SetResistance(ResistanceType.Energy, 1, 10);
+			SetResistance(ResistanceType.Physical, 30, 50);
+			SetResistance(ResistanceType.Fire, 30, 50);
+			SetResistance(ResistanceType.Cold, 30, 50);
+			SetResistance(ResistanceType.Poison, 30, 50);
+			SetResistance(ResistanceType.Energy, 30, 50);
             
-            SetSkill(SkillName.Fencing, 77.6, 92.5);
-            SetSkill(SkillName.Healing, 60.3, 90.0);
-            SetSkill(SkillName.Macing, 77.6, 92.5);
-            SetSkill(SkillName.Anatomy, 77.6, 87.5);
-            SetSkill(SkillName.MagicResist, 77.6, 97.5);
-            SetSkill(SkillName.Swords, 77.6, 92.5);
-            SetSkill(SkillName.Tactics, 77.6, 87.5);
+            SetSkill(SkillName.Fencing, 100.0);
+            SetSkill(SkillName.Macing, 100.0);
+            SetSkill(SkillName.MagicResist, 100.0);
+            SetSkill(SkillName.Swords, 100.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Archery, 100.0);
 
             Fame = 5000;
 			Karma = -5000;
@@ -81,14 +78,25 @@ namespace Server.Mobiles
                     }
             }
 
-            switch (Utility.Random(5))
+            switch (Utility.Random(3))
             {
                 case 0: SetWearable(new Spear()); break;
-                case 1: SetWearable(new Yumi()); break;
-                case 2: SetWearable(new Crossbow()); break;
-                case 3: SetWearable(new RepeatingCrossbow()); break;
-                case 4: SetWearable(new WarMace()); break;
-                case 5: SetWearable(new HeavyCrossbow()); break;
+                case 1:
+                    {
+                        switch (Utility.Random(4))
+                        {
+                            case 0: SetWearable(new Yumi()); break;
+                            case 1: SetWearable(new Crossbow()); break;
+                            case 2: SetWearable(new RepeatingCrossbow()); break;
+                            case 3: SetWearable(new HeavyCrossbow()); break;
+                        }
+
+                        RangeFight = 3;
+                        AI = AIType.AI_Archer;
+
+                        break;
+                    }
+                case 2: SetWearable(new WarMace()); break;
             }            
         }
 
