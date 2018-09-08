@@ -31,9 +31,9 @@ namespace Server.Items
         {
             Visible = false;
             Locked = true;
-            LockLevel = 100;
-            RequiredSkill = 110;
-            MaxLockLevel = 130;
+            LockLevel = 90;
+            RequiredSkill = 90;
+            MaxLockLevel = 100;
             Weight = 0.0;
             Hue = 2700;
             Movable = false;
