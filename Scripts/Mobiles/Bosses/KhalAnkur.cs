@@ -46,7 +46,6 @@ namespace Server.Mobiles
 
             VirtualArmor = 80;
 
-            SetWeaponAbility(WeaponAbility.Disarm);
             SetMagicalAbility(MagicalAbility.WrestlingMastery);
         }
 
