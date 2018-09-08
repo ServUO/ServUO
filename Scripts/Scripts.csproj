@@ -1948,6 +1948,7 @@
     <Compile Include="Mobiles\Normal\FrostDrake.cs" />
     <Compile Include="Mobiles\Normal\Lasher.cs" />
     <Compile Include="Mobiles\Normal\GiantTurkey.cs" />
+    <Compile Include="Mobiles\Normal\CultistAmbusher.cs" />
     <Compile Include="Mobiles\Normal\SkelementalMage.cs" />
     <Compile Include="Mobiles\Normal\Viscera.cs" />
     <Compile Include="Mobiles\Normal\SkelementalKnight.cs" />
