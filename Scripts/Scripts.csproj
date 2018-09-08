@@ -1951,7 +1951,7 @@
     <Compile Include="Mobiles\Normal\SkelementalMage.cs" />
     <Compile Include="Mobiles\Normal\Viscera.cs" />
     <Compile Include="Mobiles\Normal\SkelementalKnight.cs" />
-    <Compile Include="Mobiles\Normal\Blood.cs" />
+    <Compile Include="Mobiles\Normal\KhaldunBlood.cs" />
     <Compile Include="Mobiles\Normal\Windrunner.cs" />
     <Compile Include="Mobiles\Normal\StygianDrake.cs" />
     <Compile Include="Mobiles\Normal\CrimsonDrake.cs" />
