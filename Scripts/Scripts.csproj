@@ -1843,6 +1843,7 @@
     <Compile Include="Mobiles\Bosses\Navery\Navrey.cs" />
     <Compile Include="Items\Functional\SpiderWebbing.cs" />
     <Compile Include="Mobiles\Bosses\Neira.cs" />
+    <Compile Include="Mobiles\Bosses\KhalAnkur.cs" />
     <Compile Include="Mobiles\Bosses\PrimevalLich.cs" />
     <Compile Include="Mobiles\Bosses\Rikktor.cs" />
     <Compile Include="Mobiles\Bosses\Semidar.cs" />
