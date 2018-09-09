@@ -318,7 +318,7 @@ namespace Server.Misc
 					}
 						break;
 					case "save":
-						World.Save();
+						AutoSave.Save(false);
 						break;
 					case "hear": //credit to Zippy for the HearAll script!
 					{

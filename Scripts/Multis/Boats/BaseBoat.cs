@@ -1588,6 +1588,14 @@ namespace Server.Multis
             return false;
         }
 
+        public static bool HasBoat(Mobile from)
+        {
+            if (from.AccessLevel > AccessLevel.Player)
+                return false;
+
+            return Boats.Any(boat => boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal && !(boat is RowBoat));
+        }
+
         public static bool IsValidLocation(Point3D p, Map map)
         {
             Rectangle2D[] wrap = GetWrapFor(map);
