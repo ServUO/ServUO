@@ -6,23 +6,35 @@ using Server.Targeting;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a cultist ambusher corpse")]
-    public class CultistAmbusher : BaseCreature
+    [CorpseName("a human corpse")]
+    public class KhalAnkurWarriors : BaseCreature
 	{
 		[Constructable]
-		public CultistAmbusher()
+		public KhalAnkurWarriors()
 			: base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
 		{
-			Name = "Cultist Ambusher";
-			Body = 0x190;
-            Hue = 2500;
+            if (Female = Utility.RandomBool())
+            {
+                Body = 0x191;
+                Name = NameList.RandomName("female");
+            }
+            else
+            {
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+            }
+
+            string[] titles = { "the Scout", "the Corporal", "the Lieutenant", "the Captain", "the General" };
+
+            Title = titles[Utility.Random(titles.Length)];
+            
 			BaseSoundID = 0x45A;
 
-            SetStr(150, 200);
+            SetStr(150, 250);
             SetDex(150);
             SetInt(25, 44);
 
-            SetDamage(8, 18);
+            SetDamage(10, 22);
 
             SetDamageType(ResistanceType.Physical, 100);
 
@@ -42,46 +54,49 @@ namespace Server.Mobiles
             Fame = 5000;
 			Karma = -5000;
 
-            switch (Utility.Random(3))
+            switch (Utility.Random(4))
             {
                 case 0:
                     {
-                        SetWearable(new RingmailChest(), 1510);
-                        SetWearable(new ChainLegs(), 1345);
-                        SetWearable(new Sandals(), 1345);
-                        SetWearable(new LeatherNinjaHood(), 1345);
-                        SetWearable(new LeatherGloves(), 1345);
-                        SetWearable(new LeatherArms(), 1345);
+                        Hue = 2697;
+                        SetWearable(new ChainChest(), Hue);                        
+                        SetWearable(new ChainCoif(), Hue);
+                        SetWearable(new Cloak(), Hue);
+
                         break;
                     }
                 case 1:
                     {
-                        SetWearable(new Robe(2306));
-                        SetWearable(new BearMask(2683));
+                        Hue = 2697;
+                        SetWearable(new PlateChest(), Hue);
+                        SetWearable(new PlateLegs(), Hue);
+                        SetWearable(new Cloak(), Hue);
                         break;
                     }
                 case 2:
                     {
-                        SetWearable(new Shirt(676));
-                        SetWearable(new RingmailLegs());
-                        SetWearable(new StuddedArms());
-                        SetWearable(new StuddedGloves());
+                        Hue = 2684;
+                        SetWearable(new PlateChest(), Hue);
+                        SetWearable(new PlateLegs(), Hue);
+                        SetWearable(new PlateArms(), Hue);
                         break;
                     }
                 case 3:
                     {
-                        SetWearable(new SkullCap(2406));
-                        SetWearable(new JinBaori(1001));
-                        SetWearable(new Shirt());
-                        SetWearable(new ShortPants(902));
+                        Hue = 2697;
+                        SetWearable(new ChainChest(), Hue);
+                        SetWearable(new ChainLegs(), Hue);
+                        SetWearable(new Boots(Hue));
                         break;
                     }
-            }
+            }            
 
-            switch (Utility.Random(3))
+            switch (Utility.Random(5))
             {
                 case 0: SetWearable(new Spear()); break;
-                case 1:
+                case 1: SetWearable(new QuarterStaff()); break;
+                case 2: SetWearable(new BlackStaff()); break;
+                case 3:
                     {
                         switch (Utility.Random(4))
                         {
@@ -96,14 +111,21 @@ namespace Server.Mobiles
 
                         break;
                     }
-                case 2: SetWearable(new WarMace()); break;
-            }            
+                case 4: SetWearable(new Tessen()); break;
+            }
+
+            int hairHue = Utility.RandomNondyedHue();
+
+            Utility.AssignRandomHair(this, hairHue);
+
+            if (Utility.Random(7) != 0)
+                Utility.AssignRandomFacialHair(this, hairHue);
         }
 
         public override bool AlwaysMurderer { get { return true; } }
         public override bool ShowFameTitle { get { return false; } }
 
-        public CultistAmbusher(Serial serial)
+        public KhalAnkurWarriors(Serial serial)
 			: base(serial)
 		{
         }
