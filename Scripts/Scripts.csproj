@@ -633,9 +633,12 @@
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
     <Compile Include="Items\Artifacts\Decorative\TOLDecorationArtifacts.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\FirstAidBelt.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfFeudalGrip.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\BritchesOfWarding.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\CuffsOfTheArchmage.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\MaskOfKhalAnkur.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\PendantOfKhalAnkur.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsBustier.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsGorget.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsHelm.cs" />
