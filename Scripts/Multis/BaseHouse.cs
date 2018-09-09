@@ -2405,14 +2405,14 @@ namespace Server.Multis
 
         public bool ReleaseSecure(Mobile m, Item item)
         {
-            if (m_Secures == null || !IsCoOwner(m) || item is StrongBox || !IsActive || !CanRelease(m, item))
+            if (m_Secures == null || item is StrongBox || !IsActive || !CanRelease(m, item))
                 return false;
 
             var info = GetSecureInfoFor(item);
 
             if (info != null)
             {
-                if ((IsOwner(m) || info.Owner == m) && HasSecureAccess(m, info.Level))
+                if ((IsOwner(m) || info.Owner == m) /*&& HasSecureAccess(m, info.Level)*/)
                 {
                     item.IsLockedDown = false;
                     item.IsSecure = false;

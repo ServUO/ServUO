@@ -82,7 +82,7 @@ namespace Server.Commands
             new CommandEntry("New Wrong",           "GenWrongRevamp",               null,       Category.RevampedDungeon, Expansion.SA,     125),
             new CommandEntry("Kotl City",           "GenerateTreasuresOfKotlCity",  null,       Category.System,          Expansion.TOL,    126),
             new CommandEntry("Fillable Containers", "CheckFillables",               null,       Category.Spawn,           Expansion.None,   127, 5),
-            new CommandEntry("Champ Spawns",        "GenChampSpawns",   "DelChampSpawns",       Category.Spawn,           Expansion.None,   128),
+            new CommandEntry("Champ Spawns",        "GenChampSpawns",   "DelChampSpawns",       Category.Spawn,           Expansion.UOR,    128),
 		});
 
         public static bool WorldCreating { get; set; }
@@ -313,7 +313,7 @@ namespace Server.Gumps
             if (!Server.Factions.Settings.Enabled)
                 items--;
 
-			AddBackground(0, 0, 240, 75 + items * 25, 5054);
+			AddBackground(0, 0, 280, 75 + items * 25, 5054);
 			switch (m_Type)
 			{
 				case CreateWorld.GumpType.Create:
@@ -380,13 +380,13 @@ namespace Server.Gumps
 
         public override void AddGumpLayout()
         {
-            AddBackground(0, 0, 600, 500, 5054);
+            AddBackground(0, 0, 640, 500, 5054);
 
             AddImageTiled(10, 10, 140, 28, 3004);
-            AddImageTiled(152, 10, 438, 28, 3004);
+            AddImageTiled(152, 10, 478, 28, 3004);
 
             AddImageTiled(10, 40, 140, 430, 3004);
-            AddImageTiled(152, 40, 438, 430, 3004);
+            AddImageTiled(152, 40, 478, 430, 3004);
 
             string label = GumpType == CreateWorld.GumpType.Create ? "CREATE WORLD GUMP" : "DELETE WORLD GUMP";
             switch (GumpType)
@@ -441,14 +441,15 @@ namespace Server.Gumps
                 }
                 else
                 {
-                    AddLabel(x + 21, y, created ? 200 : 338, String.Format("{0} {1}", entry.Name, "[Wrong Expansion]"));
+                    AddLabel(x + 21, y, created ? 200 : 33, String.Format("{0} {1}", entry.Name, "[Wrong Expansion]"));
+                    AddImage(x, y - 2, 210);
                 }
 
                 y += 20;
 
                 if (i == perpage)
                 {
-                    x = 380;
+                    x = 382;
                     y = 55;
                 }
             }
@@ -459,8 +460,8 @@ namespace Server.Gumps
             AddButton(154, 448, 4017, 4019, 2501, GumpButtonType.Reply, 0);
             AddHtml(187, 448, 150, 20, Color("#696969", "Uncheck All"), false, false);
 
-            AddButton(240, 473, 247, 249, 1, GumpButtonType.Reply, 0);
-            AddButton(303, 473, 241, 243, 0, GumpButtonType.Reply, 0);
+            AddButton(260, 473, 247, 249, 1, GumpButtonType.Reply, 0);
+            AddButton(323, 473, 241, 243, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(RelayInfo info)

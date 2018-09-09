@@ -1565,16 +1565,6 @@ namespace Server.Multis
             return null;
         }
 
-        public static bool HasGalleon(Mobile from)
-        {
-            foreach (BaseBoat boat in BaseBoat.Boats)
-            {
-                if (boat is BaseGalleon && boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal)
-                    return true;
-            }
-            return false;
-        }
-
         public static bool CheckForBoat(IPoint3D p, Mobile caster)
         {
             BaseBoat boat = BaseBoat.FindBoatAt(caster, caster.Map);

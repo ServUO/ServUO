@@ -113,10 +113,11 @@ namespace Server.Engines.NewMagincia
             }
         }
 
-        public void OnRespose(RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             switch (info.ButtonID)
             {
+                case 0: break;
                 case 1:
                     if (m_Message != null)
                     {
@@ -154,7 +155,6 @@ namespace Server.Engines.NewMagincia
                     break;
                 default:
                     int id = info.ButtonID - 1000;
-
                     if (id >= 0 && id < m_Messages.Count)
                     {
                         m_Message = m_Messages[id];

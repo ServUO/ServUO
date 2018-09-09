@@ -83,7 +83,7 @@ namespace Server.Misc
 
         protected override void OnTick()
         {
-            if (!m_SavesEnabled || AutoRestart.Restarting)
+            if (!m_SavesEnabled || AutoRestart.Restarting || Commands.CreateWorld.WorldCreating)
                 return;
 
             if (m_Warning == TimeSpan.Zero)

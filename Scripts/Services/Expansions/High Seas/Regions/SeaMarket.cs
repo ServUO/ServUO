@@ -61,7 +61,7 @@ namespace Server.Regions
         public static Rectangle2D[] Bounds { get { return m_Bounds; } }
         private static Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
-            new Rectangle2D(4472, 2250, 200, 200),
+            new Rectangle2D(4529, 2296, 45, 112),
         };
 
         public SeaMarketRegion(Map map)
@@ -76,7 +76,13 @@ namespace Server.Regions
             {
                 case TravelCheckType.RecallTo:
                 case TravelCheckType.GateTo:
-                case TravelCheckType.Mark: return false;
+                    {
+                        return BaseBoat.FindBoatAt(p, Map) != null;
+                    }
+                case TravelCheckType.Mark:
+                    {
+                        return false;
+                    }
             }
 
             return base.CheckTravel(traveller, p, type);

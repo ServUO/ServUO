@@ -72,7 +72,7 @@ namespace Server.Spells.Spellweaving
 
                 TimeSpan duration = TimeSpan.FromHours(Math.Max(1, (int)(Caster.Skills.Spellweaving.Value / 24)));
 
-                duration += TimeSpan.FromHours(Math.Min(5, Arcanists.Count));
+                duration += TimeSpan.FromHours(Math.Min(6, Arcanists.Count));
 
                 int strengthBonus = Math.Min(IsBonus(Caster.Location, Caster.Map) ? 6 : 5, Arcanists.Sum(m => GetStrength(m))); // Math.Min(Arcanists.Count, IsBonus(Caster.Location, Caster.Map) ? 6 : 5);	//The Sanctuary is a special, single location place
 
