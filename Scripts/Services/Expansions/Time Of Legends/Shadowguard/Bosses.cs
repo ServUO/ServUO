@@ -372,8 +372,8 @@ namespace Server.Engines.Shadowguard
         [Constructable]
 		public Anon() : base(AIType.AI_Mage)
 		{
-			Name = "anon";
-			Title = "the mage";
+			Name = "Anon";
+			Title = "the Mage";
 
             Body = 0x190;
             HairItemID = 0x203C;
@@ -620,7 +620,7 @@ namespace Server.Engines.Shadowguard
         public Juonar()
             : base(AIType.AI_NecroMage)
         {
-            Name = "juo'nar";
+            Name = "Juo'nar";
             Body = 78;
             BaseSoundID = 412;
             Hue = 2951;
@@ -721,9 +721,9 @@ namespace Server.Engines.Shadowguard
         [Constructable]
 		public Virtuebane() : base(AIType.AI_Mage)
 		{
-			Name = "virtuebane";
+			Name = "Virtuebane";
 		
-			Body = 1071; // Giant minotaur?
+			Body = 1071; 
             SpeechHue = 452;
 
 			SetStam(500, 650);
@@ -937,8 +937,8 @@ namespace Server.Engines.Shadowguard
 		[Constructable]
 		public Ozymandias() : base(AIType.AI_Melee)
 		{
-			Name = "ozymandias";
-			Title = "the lord of castle barataria";
+			Name = "Ozymandias";
+			Title = "the Lord of Castle Barataria";
 
             Hue = Race.RandomSkinHue();
             Body = 0x190;

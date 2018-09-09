@@ -7,7 +7,7 @@ namespace Server.Engines.ArenaSystem
     public class ArenaDefinition
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public TextDefinition Name { get; private set; }
+        public string Name { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D StoneLocation { get; private set; }
@@ -54,7 +54,7 @@ namespace Server.Engines.ArenaSystem
         public Map Map { get { return Map.Maps[MapIndex]; } }
 
         public ArenaDefinition(
-            TextDefinition name,
+            string name,
             int mapIndex,
             Point3D stoneLoc,
             Point3D manLoc,
@@ -93,6 +93,9 @@ namespace Server.Engines.ArenaSystem
         public static ArenaDefinition LostLandsFelucca { get; set; }
         public static ArenaDefinition HavenTrammel { get; set; }
         public static ArenaDefinition HavenFelucca { get; set; }
+
+        public static ArenaDefinition[] Definitions { get { return _Definitions; } }
+        private static ArenaDefinition[] _Definitions = new ArenaDefinition[4];
 
         static ArenaDefinition()
         {
@@ -176,7 +179,7 @@ namespace Server.Engines.ArenaSystem
                 new Rectangle2D(6099, 3718, 5, 7),
                 new Rectangle2D(6097, 3729, 2, 2));
 
-            HavenTrammel = new ArenaDefinition("New Haven", 1, 
+            HavenTrammel = new ArenaDefinition("New Haven (T)", 1, 
                 new Point3D(3793, 2770, 6), 
                 new Point3D(3790, 2783, 6),
                 new Point3D(3760, 2769, 12),
@@ -216,7 +219,7 @@ namespace Server.Engines.ArenaSystem
                 new Rectangle2D(3791, 2766, 4, 9),
                 new Rectangle2D(3790, 2781, 2, 5));
 
-            HavenFelucca = new ArenaDefinition("New Haven", 0,
+            HavenFelucca = new ArenaDefinition("New Haven (F)", 0,
                 new Point3D(3782, 2766, 5), 
                 new Point3D(3779, 2778, 5),
                 new Point3D(3749, 2765, 12),
@@ -255,6 +258,11 @@ namespace Server.Engines.ArenaSystem
                 },
                 new Rectangle2D(3780, 2763, 4, 9),
                 new Rectangle2D(3779, 2776, 2, 5));
+
+            _Definitions[0] = LostLandsTrammel;
+            _Definitions[1] = LostLandsFelucca;
+            _Definitions[2] = HavenTrammel;
+            _Definitions[3] = HavenFelucca;
         }
     }
 }

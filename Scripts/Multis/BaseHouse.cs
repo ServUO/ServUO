@@ -299,7 +299,7 @@ namespace Server.Multis
         {
             List<Mobile> list = new List<Mobile>(PlayerVendors);
 
-            foreach (PlayerVendor vendor in list)
+            foreach (var vendor in list.OfType<PlayerVendor>())
                 vendor.Destroy(true);
 
             list = new List<Mobile>(PlayerBarkeepers);
@@ -535,7 +535,7 @@ namespace Server.Multis
 
             if (!NewVendorSystem)
             {
-                foreach (PlayerVendor vendor in PlayerVendors)
+                foreach (var vendor in PlayerVendors)
                 {
                     if (vendor.Backpack != null)
                     {
@@ -632,7 +632,7 @@ namespace Server.Multis
         {
             get
             {
-                foreach (PlayerVendor vendor in PlayerVendors)
+                foreach (var vendor in PlayerVendors)
                 {
                     if (!(vendor is RentedVendor))
                         return true;
@@ -646,7 +646,7 @@ namespace Server.Multis
         {
             get
             {
-                foreach (PlayerVendor vendor in PlayerVendors)
+                foreach (var vendor in PlayerVendors)
                 {
                     if (vendor is RentedVendor)
                         return true;
@@ -692,7 +692,7 @@ namespace Server.Multis
         {
             List<Mobile> list = new List<Mobile>();
 
-            foreach (PlayerVendor vendor in PlayerVendors)
+            foreach (var vendor in PlayerVendors.OfType<PlayerVendor>())
             {
                 if (vendor.CanInteractWith(m, false))
                     list.Add(vendor);
@@ -703,7 +703,7 @@ namespace Server.Multis
 
         public bool AreThereAvailableVendorsFor(Mobile m)
         {
-            foreach (PlayerVendor vendor in PlayerVendors)
+            foreach (var vendor in PlayerVendors.OfType<PlayerVendor>())
             {
                 if (vendor.CanInteractWith(m, false))
                     return true;
@@ -832,7 +832,7 @@ namespace Server.Multis
 
             Addons.Clear();
 
-            foreach (PlayerVendor mobile in PlayerVendors)
+            foreach (var mobile in PlayerVendors.OfType<PlayerVendor>())
             {
                 mobile.Return();
                 mobile.Internalize();
@@ -882,7 +882,7 @@ namespace Server.Multis
                     list.Add(item, Owner);
             }
 
-            foreach (PlayerVendor mobile in PlayerVendors)
+            foreach (var mobile in PlayerVendors.OfType<PlayerVendor>())
             {
                 mobile.Return();
 
@@ -2405,14 +2405,14 @@ namespace Server.Multis
 
         public bool ReleaseSecure(Mobile m, Item item)
         {
-            if (m_Secures == null || !IsCoOwner(m) || item is StrongBox || !IsActive || !CanRelease(m, item))
+            if (m_Secures == null || item is StrongBox || !IsActive || !CanRelease(m, item))
                 return false;
 
             var info = GetSecureInfoFor(item);
 
             if (info != null)
             {
-                if ((IsOwner(m) || info.Owner == m) && HasSecureAccess(m, info.Level))
+                if ((IsOwner(m) || info.Owner == m) /*&& HasSecureAccess(m, info.Level)*/)
                 {
                     item.IsLockedDown = false;
                     item.IsSecure = false;

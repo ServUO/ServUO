@@ -17,29 +17,42 @@ namespace Server.SkillHandlers
 	public class AnimalTaming
 	{
 		private static readonly Hashtable m_BeingTamed = new Hashtable();
-		private static bool m_DisableMessage;
-		public static bool DisableMessage { get { return m_DisableMessage; } set { m_DisableMessage = value; } }
+
+		public static bool DisableMessage { get; set; }
+		public static bool DeferredTarget { get; set; }
+
+		static AnimalTaming()
+		{
+			DeferredTarget = true;
+			DisableMessage = false;
+		}
 
 		public static void Initialize()
 		{
 			SkillInfo.Table[(int)SkillName.AnimalTaming].Callback = OnUse;
 		}
-
+		
 		public static TimeSpan OnUse(Mobile m)
 		{
 			m.RevealingAction();
 
-			m.Target = new InternalTarget();
-			m.RevealingAction();
-
-			if (!m_DisableMessage)
+			if (!DisableMessage)
 			{
 				m.SendLocalizedMessage(502789); // Tame which animal?
 			}
 
-			return TimeSpan.FromHours(6.0);
-		}
+			if (DeferredTarget)
+			{
+				Timer.DelayCall(() => m.Target = new InternalTarget());
+			}
+			else
+			{
+				m.Target = new InternalTarget();
+			}
 
+			return TimeSpan.FromHours(1.0);
+		}
+		
 		public static bool CheckMastery(Mobile tamer, BaseCreature creature)
 		{
 			BaseCreature familiar = (BaseCreature)SummonFamiliarSpell.Table[tamer];
@@ -234,14 +247,14 @@ namespace Server.SkillHandlers
 							}
 							else
 							{
+								m_SetSkillTime = false;
+
 								m_BeingTamed[targeted] = from;
 
 								from.LocalOverheadMessage(MessageType.Emote, 0x59, 1010597); // You start to tame the creature.
 								from.NonlocalOverheadMessage(MessageType.Emote, 0x59, 1010598); // *begins taming a creature.*
 
 								new InternalTimer(from, creature, Utility.Random(3, 2)).Start();
-
-								m_SetSkillTime = false;
 							}
 						}
 						else

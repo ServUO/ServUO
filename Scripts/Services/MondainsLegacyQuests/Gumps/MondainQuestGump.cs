@@ -372,8 +372,16 @@ namespace Server.Engines.Quests
 
                         if (escort != null)
                         {
-                            AddHtmlLocalized(98, offset, 50, 16, 1072206, 0x15F90, false, false); // Escort to
-                            AddHtmlObject(153, offset, 200, 16, escort.Region.Name, White, false, false);
+                            AddHtmlLocalized(98, offset, 312, 16, 1072206, 0x15F90, false, false); // Escort to
+
+                            if (escort.Label == 0)
+                            {
+                                AddHtmlObject(173, offset, 200, 16, escort.Region.Name, White, false, false);
+                            }
+                            else
+                            {
+                                AddHtmlLocalized(173, offset, 200, 16, escort.Label, 0xFFFFFF, false, false);
+                            }
 
                             offset += 16;
 

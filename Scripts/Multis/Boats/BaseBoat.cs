@@ -1473,6 +1473,9 @@ namespace Server.Multis
                 {
                     Item item = e as Item;
 
+                    if (item is BaseAddon || item is AddonComponent)
+                        return false;
+
                     // Special item, we're good
                     if (CheckItem(itemID, item, p) || CanMoveOver(item) || item.Z < p.Z || ExemptOverheadComponent(p, itemID, item.X, item.Y, item.Z + item.ItemData.Height))
                         continue;
@@ -1500,11 +1503,29 @@ namespace Server.Multis
 
         public virtual bool CheckItem(int itemID, Item item, Point3D p)
         {
-            return Contains(item) || item is BaseMulti || item.ItemID > TileData.MaxItemValue || !item.Visible || item is Corpse || IsComponentItem((IEntity)item) || item is EffectItem;
+            return Contains(item) ||
+                item is BaseMulti ||
+                item.ItemID > TileData.MaxItemValue ||
+                !item.Visible ||
+                item is Corpse ||
+                IsComponentItem((IEntity)item) ||
+                item is EffectItem;
         }
 
         public virtual bool CanMoveOver(IEntity entity)
         {
+            if (entity is Corpse)
+            {
+                var corpse = (Corpse)entity;
+
+                if (corpse.Owner == null || corpse.Owner is BaseCreature)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
             return entity is Blood;
         }
 
@@ -1565,6 +1586,14 @@ namespace Server.Multis
                 return true;
 
             return false;
+        }
+
+        public static bool HasBoat(Mobile from)
+        {
+            if (from.AccessLevel > AccessLevel.Player)
+                return false;
+
+            return Boats.Any(boat => boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal && !(boat is RowBoat));
         }
 
         public static bool IsValidLocation(Point3D p, Map map)
@@ -1895,7 +1924,7 @@ namespace Server.Multis
                     if (CanMoveOver(item))
                         continue;
 
-                    if (item != this && Contains(item) && item.Visible && item.Z >= Z && !(item is TillerMan || item is Hold || item is Plank || item is BaseAddon || item is RudderHandle))
+                    if (item != this && Contains(item) && item.Visible && item.Z >= Z && !(item is TillerMan || item is Hold || item is Plank || item is RudderHandle))
                         toMove.Add(o);
                 }
                 else if (o is Mobile && Contains((Mobile)o))

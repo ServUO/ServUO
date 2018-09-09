@@ -27,9 +27,10 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(Mushrooms2), 0x0D12, 1023340, 0, 5000));
             Rewards.Add(new CollectionItem(typeof(Mushrooms3), 0x0D10, 1023340, 0, 5000));
             Rewards.Add(new CollectionItem(typeof(Mushrooms4), 0x0D13, 1023340, 0, 5000));
-
             Rewards.Add(new CollectionItem(typeof(NocturneEarrings), 0x1F07, 1151243, 0x3E5, 5000));
-            Rewards.Add(new CollectionItem(typeof(SherryTheMouseStatue), 0x20D0, 1080171, 0, 10000));
+			
+            Rewards.Add(new CollectionItem(typeof(SherryTheMouseStatue), 0x20D0, 1080171, 0, 10000));			
+			Rewards.Add(new CollectionItem(typeof(RefinementAmalgamator), 0x9966, 1154340, 0x480, 10000));		
             Rewards.Add(new CollectionItem(typeof(ChaosTileDeed), 0x14EF, 1080490, 0, 10000));
             Rewards.Add(new CollectionItem(typeof(HonestyVirtueTileDeed), 0x14EF, 1080488, 0, 10000));
             Rewards.Add(new CollectionItem(typeof(CompassionVirtueTileDeed), 0x14EF, 1080481, 0, 10000));

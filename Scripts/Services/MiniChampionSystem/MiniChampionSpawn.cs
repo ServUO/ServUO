@@ -21,7 +21,10 @@ namespace Server.Engines.MiniChamps
         [Description("MiniChampion Generator")]
         public static void GenStoneRuins_OnCommand(CommandEventArgs e)
         {
-            Controllers.ForEach(x => x.Delete());
+            foreach (var controller in Controllers)
+            {
+                controller.Delete();
+            }
 
             Map map = Map.TerMur;
 
@@ -200,8 +203,7 @@ namespace Server.Engines.MiniChamps
             m_Level = 0;
 
             ClearSpawn();
-            Despawns.ForEach(x => x.Delete());
-            Despawns.Clear();
+            Despawn();
 
             if (m_Timer != null)
                 m_Timer.Stop();
@@ -212,6 +214,16 @@ namespace Server.Engines.MiniChamps
                 m_RestartTimer.Stop();
 
             m_RestartTimer = null;
+        }
+
+        public void Despawn()
+        {
+            foreach (var toDespawn in Despawns)
+            {
+                toDespawn.Delete();
+            }
+
+            Despawns.Clear();
         }
 
         public void OnSlice()
@@ -242,7 +254,14 @@ namespace Server.Engines.MiniChamps
 
             if (m_Active)
             {
-                Spawn.ForEach(x => changed |= x.Respawn());
+                foreach (var spawn in Spawn)
+                {
+                    if (spawn.Respawn() && !changed)
+                    {
+                        changed = true;
+                    }
+                }
+                //Spawn.ForEach(x => changed |= x.Respawn());
             }
 
             if (done || changed)
@@ -253,10 +272,13 @@ namespace Server.Engines.MiniChamps
 
         public void ClearSpawn()
         {
-            Spawn.ForEach(x =>
+            foreach (var spawn in Spawn)
             {
-                x.Creatures.ForEach(y => Despawns.Add(y));
-            });
+                foreach (var creature in spawn.Creatures)
+                {
+                    Despawns.Add(creature);
+                }
+            }
 
             Spawn.Clear();
         }
@@ -274,7 +296,11 @@ namespace Server.Engines.MiniChamps
                     MinotaurShouts();
                 }
 
-                levelInfo.Types.ToList().ForEach(x => Spawn.Add(new MiniChampSpawnInfo(this, x)));
+                //levelInfo.Types.ToList().ForEach(x => Spawn.Add(new MiniChampSpawnInfo(this, x)));
+                foreach(var type in levelInfo.Types)
+                {
+                    Spawn.Add(new MiniChampSpawnInfo(this, type));
+                }
             }
             else // begin restart
             {

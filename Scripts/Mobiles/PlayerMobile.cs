@@ -87,15 +87,17 @@ namespace Server.Mobiles
         HasValiantStatReward = 0x20000000,
         RefuseTrades = 0x40000000,
         DisabledPvpWarning = 0x80000000,
-        CanBuyCarpets = 0x100000000,
-        VoidPool = 0x200000000,
+        //CanBuyCarpets = 0x100000000,
+        //VoidPool = 0x200000000,
     }
 
     [Flags]
     public enum ExtendedPlayerFlag
     {
         HideTownCrierGreetingGump   = 0x00000001,
-        ToggleStoneOnly             = 0x00000002
+        ToggleStoneOnly             = 0x00000002,
+        CanBuyCarpets               = 0x00000004,
+        VoidPool                    = 0x00000008,
     }
 
 	public enum NpcGuild
@@ -521,15 +523,15 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CanBuyCarpets
         {
-            get { return GetFlag(PlayerFlag.CanBuyCarpets); }
-            set { SetFlag(PlayerFlag.CanBuyCarpets, value); }
+            get { return GetFlag(ExtendedPlayerFlag.CanBuyCarpets); }
+            set { SetFlag(ExtendedPlayerFlag.CanBuyCarpets, value); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool VoidPool
         {
-            get { return GetFlag(PlayerFlag.VoidPool); }
-            set { SetFlag(PlayerFlag.VoidPool, value); }
+            get { return GetFlag(ExtendedPlayerFlag.VoidPool); }
+            set { SetFlag(ExtendedPlayerFlag.VoidPool, value); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1618,16 +1620,20 @@ namespace Server.Mobiles
 
 		private static void OnLogout(LogoutEventArgs e)
 		{
-			#region Scroll of Alacrity
-			if (((PlayerMobile)e.Mobile).AcceleratedStart > DateTime.UtcNow)
+            PlayerMobile pm = e.Mobile as PlayerMobile;
+
+            #region Scroll of Alacrity
+            if (pm.AcceleratedStart > DateTime.UtcNow)
 			{
-				((PlayerMobile)e.Mobile).AcceleratedStart = DateTime.UtcNow;
-				ScrollofAlacrity.AlacrityEnd(e.Mobile);
+				pm.AcceleratedStart = DateTime.UtcNow;
+				ScrollofAlacrity.AlacrityEnd(pm);
 			}
 			#endregion
 
-            BaseFamiliar.OnLogout(e.Mobile as PlayerMobile);
-		}
+            BaseFamiliar.OnLogout(pm);
+
+            BaseEscort.DeleteEscort(pm);
+        }
 
 		private static void EventSink_Connected(ConnectedEventArgs e)
 		{
@@ -1663,7 +1669,7 @@ namespace Server.Mobiles
 			SpecialMove.ClearAllMoves(from);
 		}
 
-		private static void EventSink_Disconnected(DisconnectedEventArgs e)
+        private static void EventSink_Disconnected(DisconnectedEventArgs e)
 		{
 			Mobile from = e.Mobile;
 			DesignContext context = DesignContext.Find(from);
@@ -2331,11 +2337,6 @@ namespace Server.Mobiles
 			    {
                     list.Add(new Engines.Points.LoyaltyRating(this));
 			    }
-
-                if (Backpack != null && CanSee(Backpack) && Alive)
-                {
-                    list.Add(new OpenBackpackEntry(this));
-                }
 
 				if (Alive && InsuranceEnabled)
 				{
@@ -3889,8 +3890,10 @@ namespace Server.Mobiles
 
 			MeerMage.StopEffect(this, false);
 
-			#region Stygian Abyss
-			if (Flying)
+            BaseEscort.DeleteEscort(this);
+
+            #region Stygian Abyss
+            if (Flying)
 			{
 				Flying = false;
 				BuffInfo.RemoveBuff(this, BuffIcon.Fly);
@@ -5653,6 +5656,23 @@ namespace Server.Mobiles
             set { m_CurrentVeteranTitle = value; InvalidateProperties(); }
         }
 
+		public override bool ShowAccessTitle
+		{
+			get
+			{
+				switch (AccessLevel)
+				{
+					case AccessLevel.VIP:
+					case AccessLevel.Counselor:
+					case AccessLevel.GameMaster:
+					case AccessLevel.Seer:
+						return true;
+				}
+
+				return false;
+			}
+		}
+
 		public override void AddNameProperties(ObjectPropertyList list)
 		{
 			base.AddNameProperties(list);
@@ -5674,19 +5694,14 @@ namespace Server.Mobiles
 			{
 				if (!String.IsNullOrWhiteSpace(m_OverheadTitle))
 				{
-					if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith(" "))
+					if (String.IsNullOrWhiteSpace(suffix))
 					{
-						suffix += " ";
+						suffix = m_OverheadTitle;
 					}
-
-					var loc = Utility.ToInt32(m_OverheadTitle.TrimStart('#'));
-
-					if (loc > 0)
+					else
 					{
-						suffix += "#";
+						suffix = String.Format("{0} {1}", m_OverheadTitle, suffix);
 					}
-
-					suffix += m_OverheadTitle;
 				}
 			}
 
@@ -5760,7 +5775,7 @@ namespace Server.Mobiles
 		{
 			if (Young)
 			{
-                if (SkillsTotal >= 4500 || (!Core.AOS && Skills[skill].Base >= 80.0))
+                if (SkillsTotal >= 4500 && (!Core.AOS && Skills[skill].Base >= 80.0))
                 {
                     Account acc = Account as Account;
 
@@ -5774,7 +5789,7 @@ namespace Server.Mobiles
 
             if (skill != SkillName.Alchemy && Skills.CurrentMastery == skill && Skills[skill].Value < MasteryInfo.MinSkillRequirement)
             {
-                SendLocalizedMessage(1156236, String.Format("{0}\t{1}", MasteryInfo.MinSkillRequirement.ToString(), Skills[skill].Info.Name)); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that mastery.
+                //SendLocalizedMessage(1156236, String.Format("{0}\t{1}", MasteryInfo.MinSkillRequirement.ToString(), Skills[skill].Info.Name)); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that mastery.
 
                 SkillName mastery = Skills.CurrentMastery;
                 Skills.CurrentMastery = SkillName.Alchemy;

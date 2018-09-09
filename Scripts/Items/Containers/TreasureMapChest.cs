@@ -749,7 +749,11 @@ namespace Server.Items
 
             if (!m_FirstOpenedByOwner && to == m_Owner)
             {
-                m_TreasureMap.OnChestOpened((PlayerMobile)to, this);
+                if (m_TreasureMap != null)
+                {
+                    m_TreasureMap.OnChestOpened((PlayerMobile)to, this);
+                }
+
                 m_FirstOpenedByOwner = true;
             }
         }

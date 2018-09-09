@@ -775,6 +775,7 @@ namespace Server
 		private bool m_CanSwim, m_CantWalk;
 		private int m_TithingPoints;
 		private bool m_DisplayGuildTitle;
+		private bool m_DisplayGuildAbbr;
 		private Mobile m_GuildFealty;
 		private DateTime[] m_StuckMenuUses;
 		private Timer m_ExpireCombatant;
@@ -1147,7 +1148,7 @@ namespace Server
 			name = Name ?? String.Empty;
 			suffix = String.Empty;
 			
-			if (AccessLevel > AccessLevel.Player)
+			if (ShowAccessTitle && m_Player && AccessLevel > AccessLevel.Player)
 			{
 				if (!String.IsNullOrWhiteSpace(prefix) && !prefix.StartsWith(" "))
 				{
@@ -1177,7 +1178,7 @@ namespace Server
 				suffix += Title;
 			}
 			
-			if (m_Guild != null && (m_DisplayGuildTitle || !m_Player))
+			if (m_DisplayGuildAbbr && m_Player && m_Guild != null)
 			{
 				if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith("]") && !suffix.EndsWith(" "))
 				{
@@ -2263,6 +2264,7 @@ namespace Server
 
 		private long m_NextCombatTime;
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public long NextSkillTime { get { return m_NextSkillTime; } set { m_NextSkillTime = value; } }
 
 		public List<AggressorInfo> Aggressors { get { return m_Aggressors; } }
@@ -5920,6 +5922,12 @@ namespace Server
 
 			switch (version)
 			{
+				case 37:
+				{
+					m_DisplayGuildAbbr = reader.ReadBool();
+
+					goto case 36;
+				}
 				case 36:
 				{
 					m_BloodHue = reader.ReadInt();
@@ -6170,6 +6178,11 @@ namespace Server
 					}
 				case 0:
 					{
+						if (version < 37)
+						{
+							m_DisplayGuildAbbr = true;
+						}
+
 						if (version < 34)
 						{
                             m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
@@ -6468,7 +6481,10 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(36); // version
+			writer.Write(37); // version
+
+			// 37
+			writer.Write(m_DisplayGuildAbbr);
 
 			// 36
 			writer.Write(m_BloodHue);
@@ -7904,17 +7920,7 @@ namespace Server
 
 			if (newRegion != oldRegion)
 			{
-				if (oldRegion != null)
-				{
-					oldRegion.OnExit(this);
-				}
-				
 				m_Region = newRegion;
-
-				if (newRegion != null)
-				{
-					newRegion.OnEnter(this);
-				}
 
 				Region.OnRegionChange(this, oldRegion, newRegion);
 
@@ -9376,6 +9382,17 @@ namespace Server
 
 		public virtual void OnGuildTitleChange(string oldTitle)
 		{ }
+
+		[CommandProperty(AccessLevel.Decorator)]
+		public bool DisplayGuildAbbr
+		{
+			get { return m_DisplayGuildAbbr; }
+			set
+			{
+				m_DisplayGuildAbbr = value;
+				InvalidateProperties();
+			}
+		}
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public bool DisplayGuildTitle
@@ -12581,7 +12598,8 @@ namespace Server
 		public static bool GuildClickMessage { get { return m_GuildClickMessage; } set { m_GuildClickMessage = value; } }
 		public static bool OldPropertyTitles { get { return m_OldPropertyTitles; } set { m_OldPropertyTitles = value; } }
 
-		public virtual bool ShowFameTitle { get { return true; } } //(m_Player || m_Body.IsHuman) && m_Fame >= 10000; }
+		public virtual bool ShowFameTitle { get { return true; } } 
+		public virtual bool ShowAccessTitle { get { return false; } }
 
 		/// <summary>
 		///     Overridable. Event invoked when the Mobile is single clicked.

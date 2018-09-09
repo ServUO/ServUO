@@ -1,15 +1,49 @@
 using System;
+using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Engines.Quests
 {
     public class Neville : BaseEscort
     {
+        public static void Initialize()
+        {
+            if (Core.SA)
+                Spawn();
+        }
+
+        public static Point3D HomeLocation { get { return new Point3D(1150, 964, -42); } }
+        public static int HomeRange { get { return 5; } }
+
+        public override Type[] Quests { get { return new Type[] { typeof(EscortToDugan) }; } }
+
+        private DateTime m_TalkTime;
+
+        public static List<Neville> Instances { get; set; }
+
+        string[] NevilleSay = new string[]
+        {
+            "Save Us",
+            "Murder is being done!",
+            "Protect me!",
+            "a scoundrel is committing murder!",
+            "Where are the guards! Help!",
+            "Make haste",
+            "Tisawful! Death! Ah!"
+        };
+
         [Constructable]
         public Neville()
             : base()
         {
             Name = "Neville Brightwhistle";
+
+            SpeechHue = 0x3B2;
+
+            if (Instances == null)
+                Instances = new List<Neville>();
+
+            Instances.Add(this);
         }
 
         public Neville(Serial serial)
@@ -17,33 +51,59 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool InitialInnocent
+        public override void Advertise()
         {
-            get
-            {
-                return true;
-            }
+            Say(1095004); // Please help me, where am I?
         }
-        public override bool IsInvulnerable
+
+        public override void OnThink()
         {
-            get
+            if (DateTime.UtcNow >= m_TalkTime)
             {
-                return true;
-            }
-        }
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] 
+                if (!Alive || Deleted || ControlMaster == null)
                 {
-                    typeof(EscortToDugan)
-                };
+                    return;
+                }
+
+                if (!ControlMaster.Hidden && ControlMaster.Aggressors.Count > 0)
+                {
+                    SayRandom(NevilleSay, this);
+
+                    m_TalkTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30));
+                }
             }
+
+            base.OnThink();
         }
-        public override bool CanBeDamaged()
+
+        private void SayRandom(string[] say, Mobile m)
         {
-            return false;
+            m.Say(say[Utility.Random(say.Length)]);
+        }
+
+        public override void OnDelete()
+        {
+            if (Instances != null && Instances.Contains(this))
+                Instances.Remove(this);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(
+                delegate
+                {
+                    Spawn();
+                }));            
+
+            base.OnDelete();
+        }
+
+        public static void Spawn()
+        {
+            if (Instances != null && Instances.Count > 0)
+                return;
+
+            Neville creature = new Neville();
+            creature.Home = HomeLocation;
+            creature.RangeHome = HomeRange;
+            creature.MoveToWorld(HomeLocation, Map.TerMur);
         }
 
         public override void InitBody()
@@ -56,34 +116,31 @@ namespace Server.Engines.Quests
             Hue = Race.RandomSkinHue();
             HairItemID = Race.RandomHair(false);
             HairHue = Race.RandomHairHue();
-
-            Frozen = true;
-            Direction = Direction.North;
         }
 
         public override void InitOutfit()
         {
             SetWearable(new Backpack());
-            SetWearable(new Shoes(1877));
-            SetWearable(new LongPants(443));
-            SetWearable(new FancyShirt(1425));
+            SetWearable(new Shoes(0x70A));
+            SetWearable(new LongPants(0x1BB));
+            SetWearable(new FancyShirt(0x588));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            Frozen = true;
-            Direction = Direction.North;
+            if (Instances == null)
+                Instances = new List<Neville>();
+
+            Instances.Add(this);
         }
     }
 }
