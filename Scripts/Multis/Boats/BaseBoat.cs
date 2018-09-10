@@ -166,7 +166,7 @@ namespace Server.Multis
             }
         }
 
-        public int Status
+        public virtual int Status
         {
             get
             {
@@ -178,7 +178,7 @@ namespace Server.Multis
 
                 TimeSpan decaySpan = m_DecayTime - DateTime.UtcNow;
 
-                if (decaySpan >= TimeSpan.FromDays(13.0))
+                if (decaySpan >= BoatDecayDelay)
                     return 1043010; // This structure is like new.
 
                 if (decaySpan >= TimeSpan.FromDays(10.0))
@@ -1540,6 +1540,10 @@ namespace Server.Multis
         }
 
         public virtual void OnPlacement(Mobile from)
+        {
+        }
+
+        public virtual void OnAfterPlacement(bool initial)
         {
         }
 

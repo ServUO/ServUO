@@ -162,7 +162,7 @@ namespace Server.Engines.Despise
                                 topdam.PlaySound(0x209);
                             }
 
-                            if (master != null && master.Backpack != null)
+                            if (master != null && master.Map != null && master.Map != Map.Internal && master.Backpack != null)
                             {
                                 var heart = new PutridHeart(Utility.RandomMinMax(dc.Power * 8, dc.Power * 10));
 

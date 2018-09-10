@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+
 using Server;
 using Server.Items;
 using Server.Engines.PartySystem;
@@ -57,6 +59,32 @@ namespace Server.Multis
             }
 
             m_Rudder.Handle = new RudderHandle(m_Rudder, d);
+        }
+
+        public override void OnAfterPlacement(bool initial)
+        {
+            if (Owner != null)
+            {
+                foreach (var rowBoat in BaseBoat.Boats.OfType<RowBoat>().Where(rb => rb.Owner == Owner && rb != this && rb.Map != Map.Internal))
+                {
+                    BaseDockedBoat boat = rowBoat.BoatItem;
+
+                    if (boat == null || boat.Deleted)
+                        boat = rowBoat.DockedBoat;
+
+                    if (boat == null)
+                    {
+                        rowBoat.Delete();
+                        return;
+                    }
+
+                    boat.BoatItem = rowBoat;
+                    Owner.AddToBackpack(boat);
+
+                    rowBoat.Refresh();
+                    rowBoat.Internalize();
+                }
+            }
         }
 
         public override TimeSpan GetMovementInterval(bool fast, bool drifting, out int clientSpeed)

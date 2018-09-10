@@ -240,6 +240,8 @@ namespace Server.Multis
                     boat.OnPlacement(from);
                     boat.Refresh();
 
+                    boat.OnAfterPlacement(false);
+
                     var addon = LighthouseAddon.GetLighthouse(from);
 
                     if (addon != null)
