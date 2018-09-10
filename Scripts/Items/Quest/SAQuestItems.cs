@@ -770,7 +770,7 @@ namespace Server.Items
 
         [Constructable]
         public TatteredAncientScroll(int amount)
-            : base(0x1437)
+            : base(0x1700)
         {
         }
 
