@@ -177,23 +177,25 @@ namespace Server.Multis
                     return 1043015; // This structure is in danger of collapsing.
 
                 TimeSpan decaySpan = m_DecayTime - DateTime.UtcNow;
+                int percentWorn = 1000 - (int)((decaySpan.Ticks * 1000) / BoatDecayDelay.Ticks);
 
-                if (decaySpan >= BoatDecayDelay)
-                    return 1043010; // This structure is like new.
+                if (percentWorn >= 923) // 92.3% worn
+                    return 1043015; // This structure is in danger of collapsing
 
-                if (decaySpan >= TimeSpan.FromDays(10.0))
-                    return 1043011; // This structure is slightly worn.
-
-                if (decaySpan >= TimeSpan.FromDays(7.0))
-                    return 1043012; // This structure is somewhat worn.
-
-                if (decaySpan >= TimeSpan.FromDays(4.0))
-                    return 1043013; // This structure is fairly worn.
-
-                if (decaySpan >= TimeSpan.FromDays(1.0))
+                if (percentWorn >= 711) // 71.1% worn
                     return 1043014; // This structure is greatly worn.
 
-                return 1043015; // This structure is in danger of collapsing.*/
+                if (percentWorn >= 500) // 50.0% worn
+                    return 1043013; // This structure is fairly worn.
+
+                if (percentWorn >= 289) // 28.9% worn
+                    return 1043012; // This structure is somewhat worn.
+
+                if (percentWorn >= 77) // 7.7% worn
+                    return 1043011; // This structure is slightly worn.
+
+                // else 
+                return 1043010; // This structure is like new.
             }
         }
 
