@@ -1,7 +1,7 @@
+using System;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
-using System;
 
 namespace Server.Items
 {
@@ -14,9 +14,11 @@ namespace Server.Items
         public SterlingSilverRing()
             : base()
         {
+            Hue = 2500;
+
             SkillBonuses.SetValues(1, SkillName.Meditation, 20);
             Attributes.RegenHits = 3;
-            Attributes.RegenMana = 4;
+            Attributes.RegenMana = 5;
             Attributes.WeaponDamage = 75;
         }
 
@@ -67,22 +69,22 @@ namespace Server.Items
                 AddHtmlLocalized(20, 22, 150, 16, 1155610, font, false, false); //Please Choose A Skill
 
                 AddButton(20, 50, 9702, 9703, 1, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(45, 50, 200, 16, 1044109, font, false, false); //Necromancy
+                AddHtmlLocalized(45, 50, 200, 16, 1044091, font, false, false); //Archery
 
                 AddButton(20, 75, 9702, 9703, 2, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(45, 75, 200, 16, 1044085, font, false, false); //Magery
+                AddHtmlLocalized(45, 75, 200, 16, 1044102, font, false, false); //Fencing
 
                 AddButton(20, 100, 9702, 9703, 3, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(45, 100, 200, 16, 1044112, font, false, false); //Bushido
+                AddHtmlLocalized(45, 100, 200, 16, 1044101, font, false, false); //Mace Fighting
 
                 AddButton(20, 125, 9702, 9703, 4, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(45, 125, 200, 16, 1044111, font, false, false); //Chivalry
+                AddHtmlLocalized(45, 125, 200, 16, 1044100, font, false, false); //Swordsmanship
 
                 AddButton(20, 150, 9702, 9703, 5, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(45, 150, 200, 16, 1044113, font, false, false); //Ninjitsu
+                AddHtmlLocalized(45, 150, 200, 16, 1044117, font, false, false); //Throwing
 
                 AddButton(20, 175, 9702, 9703, 6, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(45, 175, 200, 16, 1044115, font, false, false); //Mysticism
+                AddHtmlLocalized(45, 175, 200, 16, 1044103, font, false, false); //Wrestling
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
@@ -95,12 +97,12 @@ namespace Server.Items
                 switch (info.ButtonID)
                 {
                     default:
-                    case 1: skill = SkillName.Necromancy; break;
-                    case 2: skill = SkillName.Magery; break;
-                    case 3: skill = SkillName.Bushido; break;
-                    case 4: skill = SkillName.Chivalry; break;
-                    case 5: skill = SkillName.Ninjitsu; break;
-                    case 6: skill = SkillName.Mysticism; break;
+                    case 1: skill = SkillName.Archery; break;
+                    case 2: skill = SkillName.Fencing; break;
+                    case 3: skill = SkillName.Macing; break;
+                    case 4: skill = SkillName.Swords; break;
+                    case 5: skill = SkillName.Throwing; break;
+                    case 6: skill = SkillName.Wrestling; break;
                 }
 
                 m_Mobile.SendGump(new ConfirmCallbackGump((PlayerMobile)m_Mobile, m_Mobile.Skills[skill].Info.Name, 1155611, null, confirm: (pm, state) =>
@@ -118,14 +120,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
