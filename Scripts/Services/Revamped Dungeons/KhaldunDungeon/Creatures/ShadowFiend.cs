@@ -3,9 +3,11 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
+    [CorpseName("an incorporeal corpse")]
     public class ShadowFiend : BaseCreature
     {
         private UnhideTimer m_Timer;
+
         [Constructable]
         public ShadowFiend()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)

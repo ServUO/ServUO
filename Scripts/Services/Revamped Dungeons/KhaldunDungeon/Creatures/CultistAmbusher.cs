@@ -6,7 +6,7 @@ using Server.Targeting;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a cultist ambusher corpse")]
+    [CorpseName("an inhuman corpse")]
     public class CultistAmbusher : BaseCreature
 	{
 		[Constructable]
