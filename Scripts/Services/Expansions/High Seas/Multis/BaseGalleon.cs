@@ -135,7 +135,6 @@ namespace Server.Multis
         public List<Item> Cannons { get { return m_Cannons; } }
 
         public override bool IsClassicBoat { get { return false; } }
-        public override TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(21); } }
 
         public virtual int DamageValue
         {
