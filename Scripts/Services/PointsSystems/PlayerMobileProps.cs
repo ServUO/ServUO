@@ -127,6 +127,19 @@ namespace Server.Mobiles
                 PointsSystem.ViceVsVirtue.SetPoints(Player, value);
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Khaldun
+        {
+            get
+            {
+                return (int)PointsSystem.Khaldun.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.Khaldun.SetPoints(Player, value);
+            }
+        }
     }
 
     [PropertyObject]
