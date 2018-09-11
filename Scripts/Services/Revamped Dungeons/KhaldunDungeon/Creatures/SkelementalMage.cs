@@ -4,50 +4,48 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a skeletal corpse")]
-    public class SkelementalKnight : BaseCreature
+    public class SkelementalMage : BaseCreature
     {
-        public enum SkeletalType
+        [Constructable]
+        public SkelementalMage()
+            : this(Utility.RandomBool() ? SkelementalKnight.SkeletalType.Cold : SkelementalKnight.SkeletalType.Fire)
         {
-            Fire,
-            Cold,
-            Poison,
-            Energy
         }
 
         [Constructable]
-        public SkelementalKnight(SkeletalType type)
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        public SkelementalMage(SkelementalKnight.SkeletalType type)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "Skelemental Knight";
-            Body = 0x93;
+            Name = "Skelemental Mage";
+            Body = 0x32;
             BaseSoundID = 451;
 
             int fire = 100, cold = 100, poison = 100, energy = 100;
 
-            switch(type)
+            switch (type)
             {
-                case SkeletalType.Fire:
+                case SkelementalKnight.SkeletalType.Fire:
                     {
                         Hue = 2634;
                         SetDamageType(ResistanceType.Fire, 100);
                         cold = 5;
                         break;
                     }
-                case SkeletalType.Cold:
+                case SkelementalKnight.SkeletalType.Cold:
                     {
                         Hue = 2581;
                         SetDamageType(ResistanceType.Cold, 100);
                         fire = 5;
                         break;
                     }
-                case SkeletalType.Poison:
+                case SkelementalKnight.SkeletalType.Poison:
                     {
                         Hue = 2688;
                         SetDamageType(ResistanceType.Poison, 100);
                         energy = 5;
                         break;
                     }
-                case SkeletalType.Energy:
+                case SkelementalKnight.SkeletalType.Energy:
                     {
                         Hue = 2717;
                         SetDamageType(ResistanceType.Energy, 100);
@@ -57,10 +55,10 @@ namespace Server.Mobiles
             }
 
             SetStr(200, 250);
-            SetDex(70, 95);
-            SetInt(35, 60);
+            SetDex(70, 100);
+            SetInt(100, 130);
 
-            SetHits(110, 150);
+            SetHits(100, 150);
 
             SetDamage(8, 18);
 
@@ -73,61 +71,37 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, energy);
 
             SetSkill(SkillName.MagicResist, 60.0, 80.0);
-            SetSkill(SkillName.Tactics, 85.0, 100.0);
+            SetSkill(SkillName.Tactics, 75.0, 100.0);
             SetSkill(SkillName.Wrestling, 85.0, 100.0);
-            SetSkill(SkillName.DetectHidden, 40.0);
+            SetSkill(SkillName.DetectHidden, 50.0);
+            SetSkill(SkillName.Magery, 110.0, 120.0);
+            SetSkill(SkillName.Meditation, 150.0, 155.0);
+            SetSkill(SkillName.Focus, 0.0, 60.0);
 
             Fame = 3000;
             Karma = -3000;
 
-            VirtualArmor = 40;
-
-            switch ( Utility.Random(6) )
-            {
-                case 0:
-                    PackItem(new PlateArms());
-                    break;
-                case 1:
-                    PackItem(new PlateChest());
-                    break;
-                case 2:
-                    PackItem(new PlateGloves());
-                    break;
-                case 3:
-                    PackItem(new PlateGorget());
-                    break;
-                case 4:
-                    PackItem(new PlateLegs());
-                    break;
-                case 5:
-                    PackItem(new PlateHelm());
-                    break;
-            }
-
-            PackItem(new Scimitar());
-            PackItem(new WoodenShield());
+            VirtualArmor = 38;
+            PackReg(3);
+            PackNecroReg(3, 10);
+            PackItem(new Bone());
         }
 
-        public SkelementalKnight(Serial serial)
+        public SkelementalMage(Serial serial)
             : base(serial)
         {
         }
 
         public override bool BleedImmune { get { return true; } }
-
+        public override OppositionGroup OppositionGroup { get { return OppositionGroup.FeyAndUndead; } }
+        public override Poison PoisonImmune { get { return Poison.Regular; } }
         public override TribeType Tribe { get { return TribeType.Undead; } }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
-            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LowScrolls);
+            AddLoot(LootPack.Potions);
         }
 
         public override void Serialize(GenericWriter writer)

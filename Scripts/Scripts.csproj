@@ -1961,9 +1961,9 @@
     <Compile Include="Mobiles\Normal\Lasher.cs" />
     <Compile Include="Mobiles\Normal\GiantTurkey.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\CultistAmbusher.cs" />
-    <Compile Include="Mobiles\Normal\SkelementalMage.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\SkelementalMage.cs" />
     <Compile Include="Mobiles\Normal\Viscera.cs" />
-    <Compile Include="Mobiles\Normal\SkelementalKnight.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\SkelementalKnight.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\KhaldunBlood.cs" />
     <Compile Include="Mobiles\Normal\Windrunner.cs" />
     <Compile Include="Mobiles\Normal\StygianDrake.cs" />
