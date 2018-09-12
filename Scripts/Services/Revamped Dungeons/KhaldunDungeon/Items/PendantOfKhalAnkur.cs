@@ -41,6 +41,7 @@ namespace Server.Items
             Attributes.BonusMana = 15;
             Attributes.EnhancePotions = 35;
             Attributes.LowerManaCost = 10;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public override void OnDoubleClick(Mobile from)
