@@ -25,7 +25,6 @@ namespace Server.Items
             Hue = 0x491;
             Weight = 1.0;
             Stackable = true;
-            LootType = LootType.Cursed; 
         }
 
         public static void CheckCleanup(AfterWorldSaveEventArgs e)
