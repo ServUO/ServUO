@@ -45,7 +45,7 @@ namespace Server.Items
             //Caddellite Infused
             Attributes.BonusHits = 10;
             Attributes.BonusMana = 15;
-            Attributes.EnhancePotions = 50;
+            Attributes.EnhancePotions = 35;
             Attributes.LowerManaCost = 10;
         }
 
