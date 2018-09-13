@@ -3824,6 +3824,11 @@ namespace Server.Multis
 
             CheckUnregisteredAddons();
 
+            foreach (var m in GetMobiles().Where(m => m is Mannequin || m is Steward))
+            {
+                Mannequin.ForceRedeed(m);
+            }
+
             if (m_Region != null)
             {
                 m_Region.Unregister();

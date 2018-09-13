@@ -872,8 +872,14 @@ namespace Server.Multis
 
             foreach (Mobile mobile in GetMobiles())
             {
-                if (mobile != m)
+                if (mobile is Mannequin || mobile is Steward)
+                {
+                    Mannequin.ForceRedeed(mobile, this);
+                }
+                else if (mobile != m)
+                {
                     mobile.Location = BanLocation;
+                }
             }
 
             DesignContext.Add(m, this);
