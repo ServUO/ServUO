@@ -161,8 +161,6 @@ namespace Server.Engines.MiniChamps
                     Start();
                 else
                     Stop();
-
-                InvalidateProperties();
             }
         }
 
@@ -192,6 +190,7 @@ namespace Server.Engines.MiniChamps
             m_RestartTimer = null;
 
             AdvanceLevel();
+            InvalidateProperties();
         }
 
         public void Stop()
@@ -214,6 +213,7 @@ namespace Server.Engines.MiniChamps
                 m_RestartTimer.Stop();
 
             m_RestartTimer = null;
+            InvalidateProperties();
         }
 
         public void Despawn()
