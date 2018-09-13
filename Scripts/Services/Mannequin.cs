@@ -138,6 +138,40 @@ namespace Server.Mobiles
             }
         }
 
+        public static void ForceRedeed(Mobile mobile, BaseHouse house = null)
+        {
+            if (!(mobile is Mannequin) && !(mobile is Steward))
+            {
+                return;
+            }
+
+            if (house != null)
+            {
+                List<Item> toAdd = new List<Item>(mobile.Items.Where(i => IsEquipped(i)));
+
+                if (mobile.Backpack != null)
+                {
+                    toAdd.AddRange(mobile.Backpack.Items);
+                }
+
+                foreach (var item in toAdd)
+                {
+                    house.DropToMovingCrate(item);
+                }
+
+                if (mobile is Mannequin)
+                {
+                    house.DropToMovingCrate(new MannequinDeed());
+                }
+                else
+                {
+                    house.DropToMovingCrate(new StewardDeed());
+                }
+            }
+
+            mobile.Delete();
+        }
+
         private class CustomizeBodyEntry : ContextMenuEntry
         {
             private Mobile _From;
