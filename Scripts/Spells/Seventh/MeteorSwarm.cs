@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using Server.Targeting;
 using Server.Mobiles;
+using Server.Items;
 
 namespace Server.Spells.Seventh
 {
     public class MeteorSwarmSpell : MagerySpell
     {
         public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public Item Item { get; set; }
 
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Meteor Swarm", "Flam Kal Des Ylem",
@@ -18,9 +20,24 @@ namespace Server.Spells.Seventh
             Reagent.MandrakeRoot,
             Reagent.SulfurousAsh,
             Reagent.SpidersSilk);
+
+        public MeteorSwarmSpell(Mobile caster, Item scroll, Item item)
+            : base(caster, scroll, m_Info)
+        {
+            Item = item;
+        }
+
         public MeteorSwarmSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
+        }
+
+        public override int GetMana()
+        {
+            if (Item != null)
+                return 0;
+
+            return base.GetMana();
         }
 
         public override SpellCircle Circle
@@ -39,17 +56,30 @@ namespace Server.Spells.Seventh
         }
         public override void OnCast()
         {
-            Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this, Item);
         }
 
-        public void Target(IPoint3D p)
+        public void Target(IPoint3D p, Item item)
         {
             if (!Caster.CanSee(p))
             {
                 Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
+            else if (SpellHelper.CheckTown(p, Caster) && (item != null || CheckSequence()))
             {
+                if (item != null)
+                {
+                    if (item is MaskOfKhalAnkur)
+                    {
+                        ((MaskOfKhalAnkur)item).Charges--;
+                    }
+
+                    if (item is PendantOfKhalAnkur)
+                    {
+                        ((PendantOfKhalAnkur)item).Charges--;
+                    }
+                }
+
                 SpellHelper.Turn(Caster, p);
 
                 if (p is Item)
@@ -142,10 +172,13 @@ namespace Server.Spells.Seventh
         private class InternalTarget : Target
         {
             private readonly MeteorSwarmSpell m_Owner;
-            public InternalTarget(MeteorSwarmSpell owner)
+            private readonly Item m_Item;
+
+            public InternalTarget(MeteorSwarmSpell owner, Item item)
                 : base(Core.ML ? 10 : 12, true, TargetFlags.None)
             {
                 m_Owner = owner;
+                m_Item = item;
             }
 
             protected override void OnTarget(Mobile from, object o)
@@ -153,7 +186,7 @@ namespace Server.Spells.Seventh
                 IPoint3D p = o as IPoint3D;
 
                 if (p != null)
-                    m_Owner.Target(p);
+                    m_Owner.Target(p, m_Item);
             }
 
             protected override void OnTargetFinish(Mobile from)

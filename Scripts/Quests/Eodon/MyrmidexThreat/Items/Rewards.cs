@@ -135,10 +135,18 @@ namespace Server.Items
 		
 		public override void OnDoubleClick(Mobile from)
 		{
-			if((IsLockedDown || IsSecure) && from.InRange(GetWorldLocation(), 3))
+			if((IsLockedDown || IsSecure) && from.InRange(GetWorldLocation(), 2))
 			{
 				from.SendGump(new InternalGump(from as PlayerMobile, this));
 			}
+			else if (!from.InRange(GetWorldLocation(), 2))
+			{
+				from.SendLocalizedMessage(500295); // You are too far away to do that.
+				return;
+			}
+			
+			else
+				from.SendLocalizedMessage(502692); // This must be in a house and be locked down to work.
 		}
 		
 		private class InternalGump : Gump
@@ -194,9 +202,9 @@ namespace Server.Items
 			
 			private bool CheckTravel(Point3D p)
 			{
-				if ( !User.InRange( Moonstone.GetWorldLocation(), 1 ) || User.Map != Moonstone.Map )
+				if ( !User.InRange( Moonstone.GetWorldLocation(), 2 ) || User.Map != Moonstone.Map )
 				{
-					User.SendLocalizedMessage( 1019002 ); // You are too far away to use the gate.
+					User.SendLocalizedMessage( 500295 ); // You are too far away to do that.
 				}
 				else if ( User.Murderer )
 				{

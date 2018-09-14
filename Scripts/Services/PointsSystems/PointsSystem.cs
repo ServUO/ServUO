@@ -40,7 +40,9 @@ namespace Server.Engines.Points
         ViceVsVirtue,
 
         TreasuresOfKotlCity,
-        PVPArena
+        PVPArena,
+
+        Khaldun
     }
 
     public abstract class PointsSystem
@@ -349,6 +351,7 @@ namespace Server.Engines.Points
         public static ViceVsVirtueSystem ViceVsVirtue { get; set; }
         public static KotlCityData TreasuresOfKotlCity { get; set; }
         public static PVPArenaSystem ArenaSystem { get; set; }
+        public static KhaldunData Khaldun { get; set; }
 
         public static void Configure()
         {
@@ -369,6 +372,7 @@ namespace Server.Engines.Points
 
             CityLoyaltySystem.ConstructSystems();
             ArenaSystem = new PVPArenaSystem();
+            Khaldun = new KhaldunData();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)

@@ -262,6 +262,8 @@ namespace Server.Items
         {
         }
 
+        public override bool DisplaysContent { get { return false; } }
+
         public override void OnAfterDuped(Item newItem)
         {
             var quiver = newItem as BaseQuiver;

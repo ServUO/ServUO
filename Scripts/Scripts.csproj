@@ -633,9 +633,19 @@
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
     <Compile Include="Items\Artifacts\Decorative\TOLDecorationArtifacts.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Gumps.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\KhaldunResearcher.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\CultistsRitualTome.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\ProphetTitleDeed.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\SterlingSilverRing.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\ZealotOfKhalAnkurTitleDeed.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\SeekerOfTheFallenStarTitleDeed.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\FirstAidBelt.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfFeudalGrip.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\BritchesOfWarding.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\CuffsOfTheArchmage.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\MaskOfKhalAnkur.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\PendantOfKhalAnkur.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsBustier.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsGorget.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsHelm.cs" />
@@ -1843,6 +1853,7 @@
     <Compile Include="Mobiles\Bosses\Navery\Navrey.cs" />
     <Compile Include="Items\Functional\SpiderWebbing.cs" />
     <Compile Include="Mobiles\Bosses\Neira.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\KhalAnkur.cs" />
     <Compile Include="Mobiles\Bosses\PrimevalLich.cs" />
     <Compile Include="Mobiles\Bosses\Rikktor.cs" />
     <Compile Include="Mobiles\Bosses\Semidar.cs" />
@@ -1941,6 +1952,7 @@
     <Compile Include="Mobiles\Normal\BlackSolenWarrior.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenWorker.cs" />
     <Compile Include="Mobiles\Normal\BloodElemental.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\KhalAnkurWarriors.cs" />
     <Compile Include="Mobiles\Normal\Grubber.cs" />
     <Compile Include="Mobiles\Normal\Lifestealer.cs" />
     <Compile Include="Mobiles\Normal\DragonWolf.cs" />
@@ -1948,10 +1960,11 @@
     <Compile Include="Mobiles\Normal\FrostDrake.cs" />
     <Compile Include="Mobiles\Normal\Lasher.cs" />
     <Compile Include="Mobiles\Normal\GiantTurkey.cs" />
-    <Compile Include="Mobiles\Normal\SkelementalMage.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\CultistAmbusher.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\SkelementalMage.cs" />
     <Compile Include="Mobiles\Normal\Viscera.cs" />
-    <Compile Include="Mobiles\Normal\SkelementalKnight.cs" />
-    <Compile Include="Mobiles\Normal\KhaldunBlood.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\SkelementalKnight.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\KhaldunBlood.cs" />
     <Compile Include="Mobiles\Normal\Windrunner.cs" />
     <Compile Include="Mobiles\Normal\StygianDrake.cs" />
     <Compile Include="Mobiles\Normal\CrimsonDrake.cs" />
@@ -2293,7 +2306,7 @@
     <Compile Include="Mobiles\Normal\SewerRat.cs" />
     <Compile Include="Mobiles\Normal\Shade.cs" />
     <Compile Include="Mobiles\Normal\ShadowDweller.cs" />
-    <Compile Include="Mobiles\Normal\ShadowFiend.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Creatures\ShadowFiend.cs" />
     <Compile Include="Mobiles\Normal\ShadowIronElemental.cs" />
     <Compile Include="Mobiles\Named\ShadowKnight.cs" />
     <Compile Include="Mobiles\Normal\ShadowWisp.cs" />
@@ -9673,6 +9686,7 @@
     <Compile Include="Services\Plants\FertileDirtGump.cs" />
     <Compile Include="Services\Plants\Raised Garden Beds\RaisedGarden.cs" />
     <Compile Include="Services\Plants\Raised Garden Beds\RaisedGardenPlantItem.cs" />
+    <Compile Include="Services\PointsSystems\KhaldunData.cs" />
     <Compile Include="Services\PointsSystems\CleanUpBritanniaData.cs" />
     <Compile Include="Services\PointsSystems\BlackthornData.cs" />
     <Compile Include="Services\PointsSystems\CasinoData.cs" />
@@ -9886,6 +9900,7 @@
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\DespiseController.cs" />
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Region.cs" />
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Setup.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\KhaldunRewards.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Generate.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CorrosiveAsh.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CursedOilstone.cs" />
@@ -12592,6 +12607,7 @@
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2doc.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
