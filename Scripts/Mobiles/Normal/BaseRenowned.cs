@@ -27,6 +27,7 @@ namespace Server.Mobiles
 
         public abstract Type[] UniqueSAList { get; }
         public abstract Type[] SharedSAList { get; }
+
         public virtual bool NoGoodies
         {
             get
@@ -34,6 +35,7 @@ namespace Server.Mobiles
                 return false;
             }
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -62,7 +64,7 @@ namespace Server.Mobiles
                 if (master != null)
                     damager = master;
 
-                this.RegisterDamage(damager, de.DamageGiven);
+                RegisterDamage(damager, de.DamageGiven);
             }
         }
 
@@ -71,10 +73,10 @@ namespace Server.Mobiles
             if (from == null || !from.Player)
                 return;
 
-            if (this.m_DamageEntries.ContainsKey(from))
-                this.m_DamageEntries[from] += amount;
+            if (m_DamageEntries.ContainsKey(from))
+                m_DamageEntries[from] += amount;
             else
-                this.m_DamageEntries.Add(from, amount);
+                m_DamageEntries.Add(from, amount);
         }
 
         public void AwardArtifact(Item artifact)
@@ -86,9 +88,9 @@ namespace Server.Mobiles
 
             Dictionary<Mobile, int> validEntries = new Dictionary<Mobile, int>();
 
-            foreach (KeyValuePair<Mobile, int> kvp in this.m_DamageEntries)
+            foreach (KeyValuePair<Mobile, int> kvp in m_DamageEntries)
             {
-                if (this.IsEligible(kvp.Key, artifact))
+                if (IsEligible(kvp.Key, artifact))
                 {
                     validEntries.Add(kvp.Key, kvp.Value);
                     totalDamage += kvp.Value;
@@ -99,13 +101,13 @@ namespace Server.Mobiles
 
             totalDamage = 0;
 
-            foreach (KeyValuePair<Mobile, int> kvp in this.m_DamageEntries)
+            foreach (KeyValuePair<Mobile, int> kvp in m_DamageEntries)
             {
                 totalDamage += kvp.Value;
 
                 if (totalDamage > randomDamage)
                 {
-                    this.GiveArtifact(kvp.Key, artifact);
+                    GiveArtifact(kvp.Key, artifact);
                     break;
                 }
             }
@@ -128,16 +130,17 @@ namespace Server.Mobiles
 
         public bool IsEligible(Mobile m, Item Artifact)
         {
-            return m.Player && m.Alive && m.InRange(this.Location, 32) && m.Backpack != null && m.Backpack.CheckHold(m, Artifact, false);
+            return m.Player && m.Alive && m.InRange(Location, 32) && m.Backpack != null && m.Backpack.CheckHold(m, Artifact, false);
         }
 
         public Item GetArtifact()
         {
             double random = Utility.RandomDouble();
+
             if (0.05 >= random)
-                return this.CreateArtifact(this.UniqueSAList);
+                return CreateArtifact(UniqueSAList);
             else if (0.15 >= random)
-                return this.CreateArtifact(this.SharedSAList);
+                return CreateArtifact(SharedSAList);
 
             return null;
         }
@@ -158,53 +161,18 @@ namespace Server.Mobiles
         
         public override bool OnBeforeDeath()
         {
-            if (!this.NoKillAwards)
+            if (!NoKillAwards)
             {
-                if (this.NoGoodies)
+                if (NoGoodies)
                     return base.OnBeforeDeath();
 
-                Map map = this.Map;
+                m_DamageEntries = new Dictionary<Mobile, int>();
 
-                if (map != null)
-                {
-                    for (int x = -12; x <= 12; ++x)
-                    {
-                        for (int y = -12; y <= 12; ++y)
-                        {
-                            double dist = Math.Sqrt(x * x + y * y);
-
-                            
-                        }
-                    }
-                }
-
-                this.m_DamageEntries = new Dictionary<Mobile, int>();
-
-                this.RegisterDamageTo(this);
-                this.AwardArtifact(this.GetArtifact());
+                RegisterDamageTo(this);
+                AwardArtifact(GetArtifact());
             }
 
             return base.OnBeforeDeath();
-        }
-
-        public override void OnDeath(Container c)
-        {
-            if (this.Map == Map.Felucca || this.Map == Map.TerMur)
-            {
-                //TODO: Confirm SE change or AoS one too?
-                List<DamageStore> rights = GetLootingRights();
-                List<Mobile> toGive = new List<Mobile>();
-
-                for (int i = rights.Count - 1; i >= 0; --i)
-                {
-                    DamageStore ds = rights[i];
-
-                    if (ds.m_HasRight)
-                        toGive.Add(ds.m_Mobile);
-                }
-            }
-
-            base.OnDeath(c);
         }
     }
 }

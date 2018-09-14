@@ -31,23 +31,22 @@ namespace Server.Engines.MiniChamps
         public bool Slice()
         {
             bool killed = false;
+            var list = new List<Mobile>(Creatures);
 
-            for (int i = 0; i < Creatures.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                Mobile creature = Creatures[i];
+                Mobile creature = list[i];
 
                 if (creature == null || creature.Deleted)
                 {
-                    Creatures.RemoveAt(i);
-                    --i;
-                    ++Killed;
+                    Creatures.Remove(creature);
+                    Killed++;
 
                     killed = true;
                 }
                 else if (!creature.InRange(Owner.Location, Owner.SpawnRange + 10))
                 {
                     // bring to home
-
                     Map map = Owner.Map;
                     Point3D loc = map.GetSpawnPosition(Owner.Location, Owner.SpawnRange);
 
@@ -55,6 +54,7 @@ namespace Server.Engines.MiniChamps
                 }
             }
 
+            ColUtility.Free(list);
             return killed;
         }        
 
@@ -69,9 +69,9 @@ namespace Server.Engines.MiniChamps
                 Map map = Owner.Map;
                 Point3D loc = map.GetSpawnPosition(Owner.Location, Owner.SpawnRange);
 
-                if (bc is Meraktus)
+                if (Owner.BossSpawnPoint != Point3D.Zero)
                 {
-                    loc = Owner.GetBossSpawnPoint();
+                    loc = Owner.BossSpawnPoint;
                 }
 
                 bc.Home = Owner.Location;
@@ -123,7 +123,7 @@ namespace Server.Engines.MiniChamps
             writer.Write(Spawned);
             writer.Write(Required);
             writer.Write(MonsterType.FullName);
-            writer.Write(Creatures, true);
+            writer.Write(Creatures);
         }
 
         public MiniChampSpawnInfo(GenericReader reader)
@@ -138,20 +138,4 @@ namespace Server.Engines.MiniChamps
             Creatures = reader.ReadStrongMobileList();
         }
     }   
-
-    public class SliceTimer : Timer
-    {
-        private MiniChamp m_Controller;
-
-        public SliceTimer(MiniChamp controller)
-            : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(10.0))
-        {
-            m_Controller = controller;
-        }
-
-        protected override void OnTick()
-        {
-            m_Controller.OnSlice();
-        }
-    }
 }
