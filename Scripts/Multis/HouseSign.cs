@@ -202,6 +202,7 @@ namespace Server.Multis
                 }
             }
 
+            InvalidateProperties();
             ShowSign(from);
         }
 
