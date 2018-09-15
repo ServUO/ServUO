@@ -900,9 +900,21 @@ namespace Server.Mobiles
 
             from.TargetLocked = true;
 
+            if (e.SkillID == 35)
+            {
+                AnimalTaming.DisableMessage = true;
+                AnimalTaming.DeferredTarget = false;
+            }
+
             if (from.UseSkill(e.SkillID) && from.Target != null)
             {
                 from.Target.Invoke(from, target);
+            }
+
+            if (e.SkillID == 35)
+            {
+                AnimalTaming.DeferredTarget = true;
+                AnimalTaming.DisableMessage = false;
             }
 
             from.TargetLocked = false;
@@ -5795,6 +5807,13 @@ namespace Server.Mobiles
                 Skills.CurrentMastery = SkillName.Alchemy;
 
                 Server.Spells.SkillMasteries.MasteryInfo.OnMasteryChanged(this, mastery);
+            }
+
+            TransformContext context = TransformationSpellHelper.GetContext(this);
+
+            if (context != null)
+            {
+                TransformationSpellHelper.CheckCastSkill(this, context);
             }
 
 			InvalidateMyRunUO();

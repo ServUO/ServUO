@@ -51,6 +51,11 @@ namespace Server.Engines.Quests
         {
         }
 
+        public override bool CanBeDamaged()
+        {
+            return false;
+        }
+
         public override void Advertise()
         {
             Say(1095004); // Please help me, where am I?
