@@ -1,4 +1,6 @@
 using System;
+
+using Server.Items;
 using Server.Network;
 using System.Collections.Generic;
 
@@ -404,6 +406,23 @@ namespace Server.Mobiles
             base.OnDelete();
         }
 
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            var owner = GetMaster();
+
+            if (owner != null && m_Table.ContainsKey(owner))
+            {
+                var entry = m_Table[owner];
+
+                if (entry.m_Type >= BlockMountType.RidingSwipe && entry.m_Mount == this)
+                {
+                    ExpireMountPrevention(owner);
+                }
+            }
+        }
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
@@ -557,6 +576,11 @@ namespace Server.Mobiles
                     }
                     else
                     {
+                        if (mount != m_Mount)
+                        {
+                            return true;
+                        }
+
                         switch (m_Type)
                         {
                             default:

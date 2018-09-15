@@ -3,70 +3,94 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class BarreraakRing : GoldRing
-	{
-		public override bool IsArtifact { get { return true; } }        
-        private int m_BodyInit;
-
-        [CommandProperty( AccessLevel.Administrator )]
-        public int BodyInit
-		{ 
-            get 
-            { 
-                return m_BodyInit;
-            }
-            set 
-            { 
-                m_BodyInit = value;
-                InvalidateProperties();
-            }
-        }
-        
-        public override bool OnEquip( Mobile from )
-	{
-            BodyInit = from.BodyValue;
-            from.BodyValue = 334;
-
-	    return base.OnEquip( from );
-	}
-
-        public override void OnRemoved( object parent )
-        {
-            base.OnRemoved( parent );
-
-            if ( parent is Mobile && !Deleted)
-            {
-                Mobile m = (Mobile) parent;               
-                
-                m.BodyValue = BodyInit;
-            }
-        }        
-		public override int LabelNumber{ get{ return 1095049; } }  
-		        
+    [TypeAlias("Server.Items.BarreraakRing")]
+    public class BarreraaksRing : GoldRing
+    {
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1095049; } } // Barreraak’s Old Beat Up Ring
+		
         [Constructable]
-        public BarreraakRing() : base()
-        {          
-            LootType = LootType.Blessed;
-            Weight = 1;
-        } 
+		public BarreraaksRing() 
+		{
+			//TODO: Get Hue
+			LootType = LootType.Blessed;
+		}
 
-        public BarreraakRing( Serial serial ) : base( serial )
+        public override bool CanEquip(Mobile from)
+        {
+            if (!base.CanEquip(from))
+            {
+                return false;
+            }
+            else if (from.Mounted)
+            {
+                from.SendLocalizedMessage(1010097); // You cannot use this while mounted.
+                return false;
+            }
+            else if (from.Flying)
+            {
+                from.SendLocalizedMessage(1113414); // You can't use this while flying!
+                return false;
+            }
+            else if (from.IsBodyMod)
+            {
+                from.SendLocalizedMessage(1111896); // You may only change forms while in your original body.
+                return false;
+            }
+
+            return true;
+        }
+
+		public override void OnAdded( object parent )
+		{
+			base.OnAdded(parent);
+			
+			if(parent is Mobile)
+				((Mobile)parent).BodyMod = 334;
+		}
+		
+		public override void OnRemoved( object parent )
+		{
+			base.OnRemoved(parent);
+			
+			if(parent is Mobile)
+				((Mobile)parent).BodyMod = 0;
+		}
+
+        public BarreraaksRing(Serial serial)
+            : base(serial)
         {
         }
 
-        public override void Serialize( GenericWriter writer )
-        { 
-            base.Serialize( writer );
-			
-            writer.Write( (int) 0 );
-            writer.Write( (int) m_BodyInit );
-        } 
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-        public override void Deserialize(GenericReader reader) 
-        { 
-                base.Deserialize( reader );
-                int version = reader.ReadInt();                
-                m_BodyInit = reader.ReadInt();        
+            writer.Write((int)1);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            if (Parent is Mobile)
+            {
+                var m = (Mobile)Parent;
+
+                Timer.DelayCall(() =>
+                    {
+                        if (!m.Mounted && !m.Flying && !m.IsBodyMod)
+                        {
+                            m.BodyMod = 334;
+                        }
+                    });
+            }
+
+            if (version == 0)
+            {
+                reader.ReadInt();
+            }
         }
     }
 }

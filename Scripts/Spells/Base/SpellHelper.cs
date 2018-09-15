@@ -1614,6 +1614,23 @@ namespace Server.Spells
             return (context != null && context.Type == type);
         }
 
+        public static void CheckCastSkill(Mobile m, TransformContext context)
+        {
+            Spell spell = context.Spell as Spell;
+
+            if (spell != null)
+            {
+                double min, max;
+
+                spell.GetCastSkills(out min, out max);
+
+                if (m.Skills[spell.CastSkill].Value < min)
+                {
+                    RemoveContext(m, context, true);
+                }
+            }
+        }
+
         #endregion
 
         public static bool CheckCast(Mobile caster, Spell spell)

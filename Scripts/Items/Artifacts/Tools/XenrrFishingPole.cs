@@ -7,36 +7,6 @@ namespace Server.Items
     public class XenrrFishingPole : FishingPole
     {
         public override bool IsArtifact { get { return true; } }
-        private int m_BodyInit;
-        private int m_BodyHue;
-
-        [CommandProperty(AccessLevel.Administrator)]
-        public int BodyInit
-        {
-            get
-            {
-                return m_BodyInit;
-            }
-            set
-            {
-                m_BodyInit = value;
-                InvalidateProperties();
-            }
-        }
-
-        [CommandProperty(AccessLevel.Administrator)]
-        public int BodyHue
-        {
-            get
-            {
-                return m_BodyHue;
-            }
-            set
-            {
-                m_BodyHue = value;
-                InvalidateProperties();
-            }
-        }
 
         public override bool OnEquip(Mobile from)
         {
@@ -72,8 +42,7 @@ namespace Server.Items
                 Mobile from = parent as Mobile;
 
                 from.FixedParticles(0x3728, 1, 13, 5042, EffectLayer.Waist);
-                BodyInit = from.BodyMod;
-                BodyHue = from.HueMod;
+
                 from.BodyMod = 723;
                 from.HueMod = 0;
             }
@@ -87,8 +56,8 @@ namespace Server.Items
             {
                 Mobile m = (Mobile)parent;
 
-                m.BodyMod = BodyInit;
-                m.HueMod = BodyHue;
+                m.BodyMod = 0;
+                m.HueMod = -1;
                 m.FixedParticles(0x3728, 1, 13, 5042, EffectLayer.Waist);
             }
         }
@@ -97,10 +66,10 @@ namespace Server.Items
         [Constructable]
         public XenrrFishingPole()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
 
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.CastSpeed = -1;
+            Attributes.SpellChanneling = 1;
+            Attributes.CastSpeed = -1;
         }
 
         public XenrrFishingPole(Serial serial) : base(serial)
@@ -111,9 +80,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
-            writer.Write((int)m_BodyInit);
-            writer.Write((int)m_BodyHue);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -122,8 +89,25 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            m_BodyInit = reader.ReadInt();
-            m_BodyHue = reader.ReadInt();
+            if (version == 0)
+            {
+                reader.ReadInt();
+                reader.ReadInt();
+            }
+
+            if (Parent is Mobile)
+            {
+                var m = (Mobile)Parent;
+
+                Timer.DelayCall(() =>
+                {
+                    if (!m.Mounted && !m.Flying && !m.IsBodyMod)
+                    {
+                        m.BodyMod = 723;
+                        m.HueMod = 0;
+                    }
+                });
+            }
         }
     }
 }

@@ -68,6 +68,9 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
         {
+            if (defender == null)
+                return;
+
             BaseWeapon wep = defender.Weapon as BaseWeapon;
 
             if (wep == null || !(wep is Fists))
