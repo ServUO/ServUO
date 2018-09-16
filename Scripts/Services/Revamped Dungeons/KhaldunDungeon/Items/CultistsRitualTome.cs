@@ -11,6 +11,7 @@ namespace Server.Items
         public CultistsRitualTome()
             : base()
         {
+            Hue = 2745;
             LootType = LootType.Blessed;
 
             Slayer = SlayerGroup.RandomSuperSlayerTOL();
