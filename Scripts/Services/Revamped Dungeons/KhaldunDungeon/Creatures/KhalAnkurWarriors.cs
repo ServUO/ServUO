@@ -11,7 +11,7 @@ namespace Server.Mobiles
 	{
 		[Constructable]
 		public KhalAnkurWarriors()
-			: base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+			: base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
 		{
             if (Female = Utility.RandomBool())
             {
@@ -32,9 +32,11 @@ namespace Server.Mobiles
 
             SetStr(150, 250);
             SetDex(150);
-            SetInt(25, 44);
+            SetInt(100, 150);
 
-            SetDamage(10, 22);
+            SetDamage(20, 30);
+
+            SetHits(500, 1500);
 
             SetDamageType(ResistanceType.Physical, 100);
 
@@ -50,6 +52,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Swords, 100.0);
             SetSkill(SkillName.Tactics, 100.0);
             SetSkill(SkillName.Archery, 100.0);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.Meditation, 100.0);
 
             Fame = 5000;
 			Karma = -5000;
