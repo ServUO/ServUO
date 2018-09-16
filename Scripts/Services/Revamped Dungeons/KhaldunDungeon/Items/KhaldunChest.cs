@@ -126,9 +126,26 @@ namespace Server.Items
                 DropItem(item);
             }
 
-            if (0.25 > Utility.RandomDouble())
+            if (0.30 > Utility.RandomDouble())
             {
-                item = new SmokeBomb(Utility.Random(3, 6));
+                switch (Utility.Random(4))
+                {
+                    case 0:
+                        item = new Bandage(Utility.Random(10, 30)); break;
+                    case 1:
+                        item = new SmokeBomb(Utility.Random(3, 6)); break;
+                    case 2:
+                        item = new InvisibilityPotion(Utility.Random(1, 3)); break;
+                    case 3:
+                        item = new Lockpick(Utility.Random(1, 10)); break;
+                    case 4:
+                        item = new DreadHornMane(Utility.Random(1, 2)); break;
+                    case 5:
+                        item = new Corruption(Utility.Random(1, 2)); break;
+                    case 6:
+                        item = new Taint(Utility.Random(1, 2)); break;
+                }
+
                 DropItem(item);
             }
 
@@ -148,6 +165,8 @@ namespace Server.Items
                     case 2:
                         item = new LichPainting(); break;
                 }
+
+                DropItem(item);
             }
 
             if (0.1 > Utility.RandomDouble())
@@ -187,19 +206,17 @@ namespace Server.Items
 
     public class KhaldunChestRegion : BaseRegion
     {
-        private readonly KhaldunChest m_Chest;
-
-        public KhaldunChest KhaldunChest { get { return m_Chest; } }
+        public KhaldunChest KhaldunChest { get; set; }
 
         public KhaldunChestRegion(KhaldunChest chest)
             : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X - 2, chest.Location.Y - 2, 5, 5))
         {
-            m_Chest = chest;
+            KhaldunChest = chest;
         }
 
         public override void OnEnter(Mobile m)
         {
-            if (!m_Chest.Visible && m is PlayerMobile && m.Skills[SkillName.DetectHidden].Value >= 98.0)
+            if (!KhaldunChest.Visible && m is PlayerMobile && m.Skills[SkillName.DetectHidden].Value >= 98.0)
             {
                 m.SendLocalizedMessage(1153493); // Your keen senses detect something hidden in the area...
             }
