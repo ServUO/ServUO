@@ -1,130 +1,54 @@
-using Server.Mobiles;
-using Server.Regions;
 using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class KhaldunChest : DecorativeBox, IRevealableItem
+    public class KhaldunChest : LockableContainer, IRevealableItem
     {
-        public static void Initialize()
-        {
-            TileData.ItemTable[0x2DF3].Flags = TileFlag.None;
-        }
-
-        public override int DefaultGumpID { get { return 0x10C; } }
-
         private Timer m_Timer;
-        private KhaldunChestRegion m_Region;
 
-        public override bool IsDecoContainer { get { return false; } }
+        public override int DefaultGumpID { get { return 0x49; } }
 
         [Constructable]
         public KhaldunChest()
-            : base()
+            : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9))
         {
-            Visible = false;
+            Movable = false;
             Locked = true;
+            Visible = false;
+
+            Hue = 2745;
+            LiftOverride = true;
+            Weight = 0.0;
+
             LockLevel = 90;
             RequiredSkill = 90;
             MaxLockLevel = 100;
-            Weight = 0.0;
-            Hue = 2745;
-            Movable = false;
-
+            
             TrapType = TrapType.PoisonTrap;
             TrapPower = 100;
-            GenerateTreasure();
+            Timer.DelayCall(TimeSpan.FromSeconds(1), Fill);
         }
 
-        public KhaldunChest(Serial serial) : base(serial)
+        public virtual void Fill()
         {
-        }
+            Reset();
 
-        public bool CheckReveal(Mobile m)
-        {
-            if (!m.InRange(Location, 3))
-                return false;
+            List<Item> contains = new List<Item>(Items);
 
-            return m.Skills[SkillName.DetectHidden].Value >= 98.0;
-        }
-
-        public virtual void OnRevealed(Mobile m)
-        {
-            Visible = true;
-            StartDeleteTimer();
-        }
-
-        public virtual bool CheckPassiveDetect(Mobile m)
-        {
-            if (m.InRange(this.Location, 4))
+            foreach (var i in contains)
             {
-                int skill = (int)m.Skills[SkillName.DetectHidden].Value;
-
-                if (skill >= 80 && Utility.Random(300) < skill)
-                    return true;
+                i.Delete();
             }
 
-            return false;
-        }
+            ColUtility.Free(contains);
 
-        public void StartDeleteTimer()
-        {
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(5), new TimerCallback(Delete));
-            m_Timer.Start();
-        }
+            for (int i = 0; i < Utility.RandomMinMax(6, 12); i++)
+                DropItem(Loot.RandomGem());
 
-        public override void OnLocationChange(Point3D oldLoc)
-        {
-            if (Deleted)
-                return;
-
-            UpdateRegion();
-        }
-
-        public override void OnMapChange()
-        {
-            if (Deleted)
-                return;
-
-            UpdateRegion();
-        }
-
-        public void UpdateRegion()
-        {
-            if (m_Region != null)
-                m_Region.Unregister();
-
-            if (!Deleted && Map != Map.Internal)
-            {
-                m_Region = new KhaldunChestRegion(this);
-                m_Region.Register();
-            }
-        }
-
-        public override void OnAfterDelete()
-        {
-            if (m_Timer != null)
-                m_Timer.Stop();
-
-            m_Timer = null;
-
-            base.OnAfterDelete();
-
-            UpdateRegion();
-        }
-
-        protected virtual void GenerateTreasure()
-        {
-            DropItem(new Gold(1500, 3000));
+            DropItem(new Gold(Utility.RandomMinMax(800, 1100)));
 
             Item item = null;
-
-            for (int i = 0; i < Loot.GemTypes.Length; i++)
-            {
-                item = Activator.CreateInstance(Loot.GemTypes[i]) as Item;
-                item.Amount = Utility.Random(1, 6);
-                DropItem(item);
-            }
 
             if (0.30 > Utility.RandomDouble())
             {
@@ -186,10 +110,80 @@ namespace Server.Items
             }
         }
 
+        public void Reset()
+        {
+            EndTimer();
+
+            Visible = false;
+            Locked = true;
+
+            RequiredSkill = 90;
+            LockLevel = RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = RequiredSkill;
+
+            TrapType = TrapType.MagicTrap;
+            TrapPower = 100;
+        }
+
+        public virtual bool CheckReveal(Mobile m)
+        {
+            return m.CheckTargetSkill(SkillName.DetectHidden, this, 80.0, 100.0);
+        }
+
+        public virtual void OnRevealed(Mobile m)
+        {
+            Visible = true;
+        }
+
+        public virtual bool CheckPassiveDetect(Mobile m)
+        {
+            if (m.InRange(Location, 4))
+            {
+                int skill = (int)m.Skills[SkillName.DetectHidden].Value;
+
+                if (skill >= 80 && Utility.Random(300) < skill)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public override void LockPick(Mobile from)
+        {
+            TryDelayedLock();
+
+            base.LockPick(from);
+        }
+
+        public KhaldunChest(Serial serial) : base(serial)
+        {
+        }        
+
+        public void TryDelayedLock()
+        {
+            if (Locked || (m_Timer != null && m_Timer.Running))
+                return;
+
+            EndTimer();
+
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(10, 15)), Fill);
+        }
+
+        public void EndTimer()
+        {
+            if (m_Timer != null)
+            {
+                m_Timer.Stop();
+                m_Timer = null;
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0); // version
+
+            TryDelayedLock();
         }
 
         public override void Deserialize(GenericReader reader)
@@ -197,29 +191,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (!Locked)
-                Delete();
-
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateRegion));
-        }
-    }
-
-    public class KhaldunChestRegion : BaseRegion
-    {
-        public KhaldunChest KhaldunChest { get; set; }
-
-        public KhaldunChestRegion(KhaldunChest chest)
-            : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X - 2, chest.Location.Y - 2, 5, 5))
-        {
-            KhaldunChest = chest;
-        }
-
-        public override void OnEnter(Mobile m)
-        {
-            if (!KhaldunChest.Visible && m is PlayerMobile && m.Skills[SkillName.DetectHidden].Value >= 98.0)
-            {
-                m.SendLocalizedMessage(1153493); // Your keen senses detect something hidden in the area...
-            }
+            TryDelayedLock();
         }
     }
 }
