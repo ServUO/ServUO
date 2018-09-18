@@ -588,7 +588,7 @@ namespace Server.Items
                     continue;
 
                 else if (armor.MaterialType == ArmorMaterialType.Studded || armor.MaterialType == ArmorMaterialType.Bone ||
-                    armor is GargishStoneKilt || armor is GargishStoneLegs || armor is GargishStoneChest || armor is GargishStoneArms)
+                    armor is GargishStoneKilt || armor is GargishStoneLegs || armor is GargishStoneChest || armor is GargishStoneArms || armor is FemaleGargishStoneKilt || armor is FemaleGargishStoneLegs || armor is FemaleGargishStoneChest || armor is FemaleGargishStoneArms || armor is GargishStoneAmulet) 
                     toReduce += 3;
                 else if (armor.MaterialType >= ArmorMaterialType.Ringmail)
                     toReduce += 1;
