@@ -633,6 +633,7 @@
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
     <Compile Include="Items\Artifacts\Decorative\TOLDecorationArtifacts.cs" />
+    <Compile Include="Items\Consumables\PoppiesDust.cs" />
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Gumps.cs" />
