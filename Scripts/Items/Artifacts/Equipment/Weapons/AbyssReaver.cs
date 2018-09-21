@@ -5,11 +5,10 @@ namespace Server.Items
     public class AbyssReaver : Cyclone
 	{
 		public override bool IsArtifact { get { return true; } }
-    public override int LabelNumber { get { return 1112694; } } // Abyss Reaver
+        public override int LabelNumber { get { return 1112694; } } // Abyss Reaver
 
         [Constructable]
         public AbyssReaver()
-            : base(0x901)
         {
             SkillBonuses.SetValues(0, SkillName.Throwing, Utility.RandomMinMax(5, 10));
             Attributes.WeaponDamage = Utility.RandomMinMax(25, 35);
