@@ -17,7 +17,7 @@ namespace Server.Spells.SkillMasteries
 
         public override double RequiredSkill { get { return 90; } }
         public override double UpKeep { get { return 0; } } // get
-        public override int RequiredMana { get { return 30; } }
+        public override int RequiredMana { get { return 25; } }
         public override bool PartyEffects { get { return true; } }
 
         public override SkillName CastSkill { get { return SkillName.Archery; } }

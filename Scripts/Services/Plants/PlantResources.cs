@@ -20,40 +20,21 @@ namespace Server.Engines.Plants
             new PlantResourceInfo(PlantType.FlaxFlowers, PlantHue.Plain, typeof(Cotton)),
             new PlantResourceInfo(PlantType.CypressStraight, PlantHue.Plain, typeof(BarkFragment)),
             new PlantResourceInfo(PlantType.CypressTwisted, PlantHue.Plain, typeof(BarkFragment)),
-            new PlantResourceInfo(PlantType.Vanilla, PlantHue.Plain, typeof(Vanilla))
+            new PlantResourceInfo(PlantType.Vanilla, PlantHue.Plain, typeof(Vanilla)),
+            new PlantResourceInfo(PlantType.PoppyPatch, PlantHue.Plain, typeof(PoppiesDust))
         };
 
-        private readonly PlantType m_PlantType;
-        private readonly PlantHue m_PlantHue;
-        private readonly Type m_ResourceType;
         private PlantResourceInfo(PlantType plantType, PlantHue plantHue, Type resourceType)
         {
-            this.m_PlantType = plantType;
-            this.m_PlantHue = plantHue;
-            this.m_ResourceType = resourceType;
+            PlantType = plantType;
+            PlantHue = plantHue;
+            ResourceType = resourceType;
         }
 
-        public PlantType PlantType
-        {
-            get
-            {
-                return this.m_PlantType;
-            }
-        }
-        public PlantHue PlantHue
-        {
-            get
-            {
-                return this.m_PlantHue;
-            }
-        }
-        public Type ResourceType
-        {
-            get
-            {
-                return this.m_ResourceType;
-            }
-        }
+        public PlantType PlantType { get; set; }
+        public PlantHue PlantHue { get; set; }
+        public Type ResourceType { get; set; }
+
         public static PlantResourceInfo GetInfo(PlantType plantType, PlantHue plantHue)
         {
             foreach (PlantResourceInfo info in m_ResourceList)
@@ -67,7 +48,7 @@ namespace Server.Engines.Plants
 
         public Item CreateResource()
         {
-            return (Item)Activator.CreateInstance(this.m_ResourceType);
+            return (Item)Activator.CreateInstance(ResourceType);
         }
     }
 }
