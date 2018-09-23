@@ -18,7 +18,7 @@ namespace Server.Engines.CannedEvil
         private bool m_Active;
         private bool m_RandomizeType;
         private ChampionSpawnType m_Type;
-        private List<Mobile> m_Creatures;
+        public List<Mobile> m_Creatures;
         private List<Item> m_RedSkulls;
         private List<Item> m_WhiteSkulls;
         private ChampionPlatform m_Platform;
@@ -765,6 +765,12 @@ namespace Server.Engines.CannedEvil
 
             if (m_Champion != null)
             {
+                if (m_Champion is KhalAnkur)
+                {
+                    m_Champion.Blessed = true;
+                    ((KhalAnkur)m_Champion).Spawn = this;
+                }
+
                 Point3D p = new Point3D(X, Y, Z - 15);
 
                 m_Champion.MoveToWorld(p, Map);

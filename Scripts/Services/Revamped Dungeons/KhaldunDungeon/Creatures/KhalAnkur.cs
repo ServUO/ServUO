@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Server.Commands;
 using Server.Engines.CannedEvil;
 using Server.Items;
@@ -10,6 +11,9 @@ namespace Server.Mobiles
     [CorpseName("a Khal Ankur corpse")]
     public class KhalAnkur : BaseChampion
     {
+        public ChampionSpawn Spawn { get; set; }
+        private DateTime m_NextSpawn;
+        private DateTime m_NextSay;
         private DateTime m_NextAbilityTime;
 
         [Constructable]
@@ -60,7 +64,6 @@ namespace Server.Mobiles
         }
 
         public override bool Unprovokable { get { return true; } }
-        public override bool CanRummageCorpses { get { return true; } }
         public override bool BleedImmune { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override bool ShowFameTitle { get { return false; } }
@@ -108,6 +111,84 @@ namespace Server.Mobiles
             {
                 Hue = 2745;
                 new InternalTimer(this);
+            }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (Blessed)
+            {
+                from.SendLocalizedMessage(1071372); // It's covered with treasure guardian's magical power. To touch it, you need to beat them!
+            }
+
+            base.OnDoubleClick(from);
+        }
+
+        public override void OnThink()
+        {
+            base.OnThink();            
+
+            if (Spawn == null)
+                return;
+
+            if (!Utility.InRange(Location, Home, 150))
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(5), () => { Location = Home; });
+            }
+
+            int CaptainCount = Spawn.m_Creatures.OfType<KhalAnkurWarriors>().Where(x => ((KhalAnkurWarriors)x)._Type == KhalAnkurWarriors.WarriorType.General).Count();
+
+            if (CaptainCount <= 0)
+            {
+                Blessed = false;
+            }            
+
+            if (Blessed)
+            {
+                if (m_NextSay < DateTime.UtcNow)
+                {
+                    Say(1158752 + Utility.Random(5), 0x25);
+
+                    m_NextSay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 40));
+                }
+
+                if (m_NextSpawn < DateTime.UtcNow)
+                {
+                    BaseCreature bc = new KhalAnkurWarriors(KhalAnkurWarriors.WarriorType.General);
+
+                    if (Map == null || bc == null)
+                    {
+                        if (bc != null)
+                            bc.Delete();
+
+                        return;
+                    }
+
+                    int x, y, z = 0;
+
+                    Point3D p = Location;
+
+                    for (int i = 0; i < 25; i++)
+                    {
+                        x = Utility.RandomMinMax(p.X - 4, p.X + 4);
+                        y = Utility.RandomMinMax(p.Y - 4, p.Y + 4);
+                        z = Map.GetAverageZ(x, y);
+
+                        if (Map.CanSpawnMobile(x, y, z))
+                        {
+                            p = new Point3D(x, y, z);
+                            break;
+                        }
+                    }
+                    
+                    bc.MoveToWorld(p, Map);
+                    bc.FixedParticles(0x3709, 1, 30, 9963, 13, 3, EffectLayer.Head);
+                    bc.Home = p;
+                    bc.IsChampionSpawn = true;
+                    Spawn.m_Creatures.Add(bc);
+
+                    m_NextSpawn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
+                }
             }
         }
 
@@ -255,12 +336,16 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
             writer.Write((int)0); // version
+
+            writer.WriteItem<ChampionSpawn>(Spawn);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            Spawn = reader.ReadItem<ChampionSpawn>();
 
             Hue = 0;
         }

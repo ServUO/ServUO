@@ -1,18 +1,42 @@
-#region References
+using System;
 using Server.Items;
-using Server.Misc;
-using Server.Targeting;
-#endregion
+using System.Linq;
 
 namespace Server.Mobiles
 {
     [CorpseName("a human corpse")]
     public class KhalAnkurWarriors : BaseCreature
 	{
-		[Constructable]
-		public KhalAnkurWarriors()
-			: base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+        public static readonly WarriorType[] Types =
+            Enum.GetValues(typeof(WarriorType))
+                .Cast<WarriorType>()
+                .ToArray();
+
+        public static WarriorType RandomType { get { return Types[Utility.Random(Types.Length)]; } }
+
+        public enum WarriorType
+        {
+            Scout,
+            Corporal,
+            Lieutenant,
+            Captain,
+            General
+        }
+
+        public WarriorType _Type { get; set; }
+
+        [Constructable]
+        public KhalAnkurWarriors()
+            : this(RandomType)
+        {
+        }
+
+        [Constructable]
+		public KhalAnkurWarriors(WarriorType type)
+			: base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
 		{
+            _Type = type;
+
             if (Female = Utility.RandomBool())
             {
                 Body = 0x191;
@@ -24,9 +48,18 @@ namespace Server.Mobiles
                 Name = NameList.RandomName("male");
             }
 
-            string[] titles = { "the Scout", "the Corporal", "the Lieutenant", "the Captain", "the General" };
+            string _title = null;
 
-            Title = titles[Utility.Random(titles.Length)];
+            switch (_Type)
+            {
+                case WarriorType.Scout: _title = "the Scout"; break; 
+                case WarriorType.Corporal: _title = "the Corporal"; break; 
+                case WarriorType.Lieutenant: _title = "the Lieutenant"; break; 
+                case WarriorType.Captain: _title = "the Captain"; break; 
+                case WarriorType.General: _title = "the General"; break;               
+            }
+
+            Title = _title;
             
 			BaseSoundID = 0x45A;
 
@@ -36,24 +69,24 @@ namespace Server.Mobiles
 
             SetDamage(20, 30);
 
-            SetHits(500, 1500);
+            SetHits(750, 1500);
 
             SetDamageType(ResistanceType.Physical, 100);
 
-			SetResistance(ResistanceType.Physical, 30, 50);
-			SetResistance(ResistanceType.Fire, 30, 50);
-			SetResistance(ResistanceType.Cold, 30, 50);
-			SetResistance(ResistanceType.Poison, 30, 50);
-			SetResistance(ResistanceType.Energy, 30, 50);
+			SetResistance(ResistanceType.Physical, 20, 30);
+			SetResistance(ResistanceType.Fire, 20, 30);
+			SetResistance(ResistanceType.Cold, 20, 30);
+			SetResistance(ResistanceType.Poison, 20, 30);
+			SetResistance(ResistanceType.Energy, 20, 30);
             
-            SetSkill(SkillName.Fencing, 100.0);
-            SetSkill(SkillName.Macing, 100.0);
-            SetSkill(SkillName.MagicResist, 100.0);
-            SetSkill(SkillName.Swords, 100.0);
-            SetSkill(SkillName.Tactics, 100.0);
-            SetSkill(SkillName.Archery, 100.0);
-            SetSkill(SkillName.Magery, 100.0);
-            SetSkill(SkillName.Meditation, 100.0);
+            SetSkill(SkillName.Fencing, 105.0, 130.0);
+            SetSkill(SkillName.Macing, 1105.0, 130.0);
+            SetSkill(SkillName.MagicResist, 105.0, 130.0);
+            SetSkill(SkillName.Swords, 105.0, 130.0);
+            SetSkill(SkillName.Tactics, 105.0, 130.0);
+            SetSkill(SkillName.Archery, 105.0, 130.0);
+            SetSkill(SkillName.Magery, 105.0, 130.0);
+            SetSkill(SkillName.Meditation, 105.0, 130.0);
 
             Fame = 5000;
 			Karma = -5000;
@@ -93,29 +126,25 @@ namespace Server.Mobiles
                         SetWearable(new Boots(Hue));
                         break;
                     }
-            }            
+            }
 
-            switch (Utility.Random(5))
+            switch (Utility.Random(2))
             {
-                case 0: SetWearable(new Spear()); break;
-                case 1: SetWearable(new QuarterStaff()); break;
-                case 2: SetWearable(new BlackStaff()); break;
-                case 3:
+                case 0:
                     {
-                        switch (Utility.Random(4))
-                        {
-                            case 0: SetWearable(new Yumi()); break;
-                            case 1: SetWearable(new Crossbow()); break;
-                            case 2: SetWearable(new RepeatingCrossbow()); break;
-                            case 3: SetWearable(new HeavyCrossbow()); break;
-                        }
+                        SetWearable(Loot.Construct(new Type[] { typeof(Spear), typeof(QuarterStaff), typeof(BlackStaff), typeof(Tessen), typeof(Cleaver), typeof(Lajatang) }));
 
-                        RangeFight = 3;
+                        break;
+                    }
+                case 1:
+                    {
+                        SetWearable(Loot.Construct(new Type[] { typeof(Yumi), typeof(Crossbow), typeof(RepeatingCrossbow), typeof(HeavyCrossbow) }));
+
+                        RangeFight = 7;
                         AI = AIType.AI_Archer;
 
                         break;
                     }
-                case 4: SetWearable(new Tessen()); break;
             }
 
             int hairHue = Utility.RandomNondyedHue();
@@ -158,12 +187,16 @@ namespace Server.Mobiles
 		{
 			base.Serialize(writer);
 			writer.Write(0);
-		}
+
+            writer.Write((int)_Type);
+        }
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
-		}
+
+            _Type = (WarriorType)reader.ReadInt();
+        }
 	}
 }
