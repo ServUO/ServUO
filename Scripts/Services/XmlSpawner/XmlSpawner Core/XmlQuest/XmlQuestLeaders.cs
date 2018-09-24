@@ -665,18 +665,18 @@ namespace Server.Engines.XmlSpawner2
 						catch{}
 
 						xloc = 23;
-						AddLabel( xloc, y, 0, r.Quester.Name );
+						AddLabel( xloc, y, 0, r.Quester.Name ?? String.Empty );
 						xloc += 177;
-						AddLabel( xloc, y, 0, guildname );
+						AddLabel( xloc, y, 0, guildname ?? String.Empty );
 #if(FACTIONS)
 						xloc += 35;
-						AddLabelCropped( xloc, y, 60, 21, 0, factionname );
+						AddLabelCropped( xloc, y, 60, 21, 0, factionname ?? String.Empty );
 						xloc += 15;
 #endif
 						xloc += 50;
 						AddLabel( xloc, y, 0, a.Points.ToString() );
 						xloc += 50;
-						AddLabel( xloc, y, 0, quests );
+						AddLabel( xloc, y, 0, quests ?? String.Empty );
 						xloc += 50;
 						//AddLabel( xloc, y, 0, "" );
 						xloc += 70;
@@ -703,8 +703,7 @@ namespace Server.Engines.XmlSpawner2
 							deltalabel = String.Format("+{0}",a.DeltaRank);
 							deltahue = 68;
 						}
-						else
-							if(a.DeltaRank < 0)
+						else if(a.DeltaRank < 0)
 						{
 							deltahue = 33;
 						}
