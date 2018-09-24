@@ -210,7 +210,7 @@ namespace Server.Mobiles
                 if (m_Tick < 15)
                 {
                     Point3D p = FindLocation(m_Mobile.Map, m_Mobile.Location, 7);
-                    Effects.SendLocationEffect(p, m_Mobile.Map, 0x3789, 40, 1, 2062, 0x4);
+                    Effects.SendLocationEffect(p, m_Mobile.Map, 0x3789, 30, 1, 2062, 0x4);
 
                     m_Tick++;
                 }
@@ -271,13 +271,19 @@ namespace Server.Mobiles
                 Server.Misc.Geometry.Circle2D(loc, pmmap, 6, (pnt, map) =>
                 {
                     if (map.CanFit(pnt, 0) && InLOS(pnt) && Utility.RandomBool())
-                        Effects.SendLocationEffect(pnt, map, 0x3789, 40, 1, 2062, 0x4);
+                    {
+                        Effects.SendPacket(pnt, map, new ParticleEffect(EffectType.FixedXYZ, Serial, Serial.Zero, 0x3789, pnt, pnt, 1, 30, false, false, 0, 3, 0, 9502, 1, Serial, 153, 0));
+                        Effects.SendPacket(pnt, map, new ParticleEffect(EffectType.FixedXYZ, Serial, Serial.Zero, 0x9DAC, pnt, pnt, 1, 30, false, false, 0, 0, 0, 9502, 1, Serial, 153, 0));
+                    }
                 });
 
                 Server.Misc.Geometry.Circle2D(loc, pmmap, 7, (pnt, map) =>
                 {
                     if (map.CanFit(pnt, 0) && InLOS(pnt) && Utility.RandomBool())
-                        Effects.SendLocationEffect(pnt, map, 0x3789, 40, 1, 2062, 0x4);
+                    {
+                        Effects.SendPacket(pnt, map, new ParticleEffect(EffectType.FixedXYZ, Serial, Serial.Zero, 0x3789, pnt, pnt, 1, 30, false, false, 0, 3, 0, 9502, 1, Serial, 153, 0));
+                        Effects.SendPacket(pnt, map, new ParticleEffect(EffectType.FixedXYZ, Serial, Serial.Zero, 0x9DAC, pnt, pnt, 1, 30, false, false, 0, 0, 0, 9502, 1, Serial, 153, 0));
+                    }
                 });
             }
 
@@ -294,7 +300,7 @@ namespace Server.Mobiles
                     {
                         Point3D point = points[Utility.Random(points.Count)];
                         from.MoveToWorld(point, pmmap);
-                        Frozen = true;
+                        from.Frozen = true;
 
                         Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
                         {
