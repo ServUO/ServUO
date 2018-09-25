@@ -46,20 +46,7 @@ namespace Server.Mobiles
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-            }
-
-            string _title = null;
-
-            switch (_Type)
-            {
-                case WarriorType.Scout: _title = "the Scout"; break; 
-                case WarriorType.Corporal: _title = "the Corporal"; break; 
-                case WarriorType.Lieutenant: _title = "the Lieutenant"; break; 
-                case WarriorType.Captain: _title = "the Captain"; break; 
-                case WarriorType.General: _title = "the General"; break;               
-            }
-
-            Title = _title;
+            }            
             
 			BaseSoundID = 0x45A;
 
@@ -69,7 +56,20 @@ namespace Server.Mobiles
 
             SetDamage(20, 30);
 
-            SetHits(750, 1500);
+            SetHits(600, 800);
+
+            string _title = null;
+
+            switch (_Type)
+            {
+                case WarriorType.Scout: _title = "the Scout"; break;
+                case WarriorType.Corporal: _title = "the Corporal"; break;
+                case WarriorType.Lieutenant: _title = "the Lieutenant"; break;
+                case WarriorType.Captain: _title = "the Captain"; SetHits(1000, 1500); break;
+                case WarriorType.General: _title = "the General"; SetHits(1000, 1500); break;
+            }
+
+            Title = _title;            
 
             SetDamageType(ResistanceType.Physical, 100);
 
