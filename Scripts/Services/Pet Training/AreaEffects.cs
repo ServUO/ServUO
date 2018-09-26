@@ -236,6 +236,7 @@ namespace Server.Mobiles
         {
             AOS.Damage(defender, creature, Utility.RandomMinMax(20, 30), 0, 0, 0, 0, 100);
 
+            creature.DoHarmful(defender);
             defender.FixedParticles(0x374A, 10, 30, 5052, 1278, 0, EffectLayer.Waist);
             defender.PlaySound(0x51D);
         }
@@ -311,6 +312,7 @@ namespace Server.Mobiles
         {
             AOS.Damage(defender, creature, Utility.RandomMinMax(20, 30), 0, 0, 0, 100, 0);
 
+            creature.DoHarmful(defender);
             defender.FixedParticles(0x374A, 10, 30, 5052, 1272, 0, EffectLayer.Waist);
             defender.PlaySound(0x476);
         }
@@ -326,6 +328,7 @@ namespace Server.Mobiles
         {
             AOS.Damage(defender, creature, Utility.RandomMinMax(20, 30), 100, 0, 0, 0, 0);
 
+            creature.DoHarmful(defender);
             defender.FixedParticles(0x374A, 10, 30, 5052, 1836, 0, EffectLayer.Waist);
             defender.PlaySound(0x22C);
         }
@@ -373,6 +376,7 @@ namespace Server.Mobiles
                         }
                     }
 
+                    creature.DoHarmful(defender);
                     AOS.Damage(m, creature, Utility.RandomMinMax(30, 40), 0, 100, 0, 0, 0);
                     m.SendLocalizedMessage(1112366); // The flammable goo covering you bursts into flame!
                 }
@@ -412,6 +416,7 @@ namespace Server.Mobiles
 
             if (creature.AreaPoisonDamage > 0)
             {
+                creature.DoHarmful(m);
                 AOS.Damage(m, creature, creature.AreaPoisonDamage, 0, 0, 0, 100, 0);
             }
         }
