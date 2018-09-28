@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 using Server.ContextMenus;
 using Server.Engines.XmlSpawner2;
 using Server.Factions;
@@ -1629,29 +1629,48 @@ namespace Server.Mobiles
 
 			var aggressors = controlMaster.Aggressors;
 
-			if (aggressors.Count > 0)
-			{
-				for (var i = 0; i < aggressors.Count; ++i)
-				{
-					var info = aggressors[i];
-					var attacker = info.Attacker;
+            var aggressed = controlMaster.Aggressed;
 
-					if (attacker != null && !attacker.Deleted && attacker.GetDistanceToSqrt(m_Mobile) <= m_Mobile.RangePerception)
-					{
-						if (combatant == null || attacker.GetDistanceToSqrt(controlMaster) < combatant.GetDistanceToSqrt(controlMaster))
-						{
-							combatant = attacker;
-						}
-					}
-				}
+            Dictionary<Mobile, double> _Table = new Dictionary<Mobile, double>();
 
-				if (combatant != null)
-				{
-					m_Mobile.DebugSay("Crap, my master has been attacked! I will attack one of those bastards!");
-				}
-			}
+            if (aggressors.Count > 0)
+            {
+                for (var i = 0; i < aggressors.Count; ++i)
+                {
+                    var info = aggressors[i];
+                    var attacker = info.Attacker;
 
-			if (combatant != null && combatant != m_Mobile && combatant != m_Mobile.ControlMaster && !combatant.Deleted &&
+                    _Table[attacker] = attacker.GetDistanceToSqrt(controlMaster);
+                }
+            }
+
+            if (aggressed.Count > 0)
+            {
+                for (var i = 0; i < aggressed.Count; ++i)
+                {
+                    var info = aggressed[i];
+                    var defender = info.Defender;
+
+                    _Table[defender] = defender.GetDistanceToSqrt(controlMaster);
+                }
+            }
+
+            var m = _Table.Where(x => x.Value <= m_Mobile.RangePerception).OrderBy(r => r.Value).FirstOrDefault();
+
+            if (m.Key != null && !m.Key.Deleted)
+            {
+                if (combatant == null || m.Key.GetDistanceToSqrt(controlMaster) < combatant.GetDistanceToSqrt(controlMaster))
+                {
+                    combatant = m.Key;
+                }
+            }
+
+            if (combatant != null)
+            {
+                m_Mobile.DebugSay("Crap, my master has been attacked! I will attack one of those bastards!");
+            }           
+
+            if (combatant != null && combatant != m_Mobile && combatant != m_Mobile.ControlMaster && !combatant.Deleted &&
 				combatant.Alive && (!(combatant is Mobile) || !combatant.IsDeadBondedPet) &&
 				m_Mobile.CanBeHarmful(combatant, false) && combatant.Map == m_Mobile.Map)
 			{
