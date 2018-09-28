@@ -188,7 +188,12 @@ namespace Server.Gumps
 			Add(new GumpHtml(x, y, width, height, text, background, scrollbar));
 		}
 
-		public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
+        public void AddHtmlIntern(int x, int y, int width, int height, int textid, bool background, bool scrollbar)
+        {
+            Add(new GumpHtml(x, y, width, height, textid, background, scrollbar));
+        }
+
+        public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
 		{
 			Add(new GumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
 		}
