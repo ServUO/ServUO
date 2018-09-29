@@ -1649,7 +1649,7 @@ namespace Server.Mobiles
 
             if (m.Key != null && !m.Key.Deleted)
             {
-                if (combatant == null || m.Key.GetDistanceToSqrt(controlMaster) < combatant.GetDistanceToSqrt(controlMaster))
+                if (combatant == null || m.Value < combatant.GetDistanceToSqrt(controlMaster))
                 {
                     combatant = m.Key;
                 }
