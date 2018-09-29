@@ -1625,33 +1625,23 @@ namespace Server.Mobiles
 				return true;
 			}
 
-			var combatant = m_Mobile.Combatant as Mobile;
-
-			var aggressors = controlMaster.Aggressors;
-
-            var aggressed = controlMaster.Aggressed;
+			var combatant = m_Mobile.Combatant as Mobile;           
 
             Dictionary<Mobile, double> _Table = new Dictionary<Mobile, double>();
-
-            if (aggressors.Count > 0)
+           
+            foreach (var aggss in controlMaster.Aggressors)
             {
-                for (var i = 0; i < aggressors.Count; ++i)
+                if (GuardAttackControl(aggss.Attacker))
                 {
-                    var info = aggressors[i];
-                    var attacker = info.Attacker;
-
-                    _Table[attacker] = attacker.GetDistanceToSqrt(controlMaster);
+                    _Table[aggss.Attacker] = aggss.Attacker.GetDistanceToSqrt(controlMaster);
                 }
             }
 
-            if (aggressed.Count > 0)
+            foreach (var aggsd in controlMaster.Aggressed)
             {
-                for (var i = 0; i < aggressed.Count; ++i)
+                if (GuardAttackControl(aggsd.Defender))
                 {
-                    var info = aggressed[i];
-                    var defender = info.Defender;
-
-                    _Table[defender] = defender.GetDistanceToSqrt(controlMaster);
+                    _Table[aggsd.Defender] = aggsd.Defender.GetDistanceToSqrt(controlMaster);
                 }
             }
 
@@ -1670,9 +1660,7 @@ namespace Server.Mobiles
                 m_Mobile.DebugSay("Crap, my master has been attacked! I will attack one of those bastards!");
             }           
 
-            if (combatant != null && combatant != m_Mobile && combatant != m_Mobile.ControlMaster && !combatant.Deleted &&
-				combatant.Alive && (!(combatant is Mobile) || !combatant.IsDeadBondedPet) &&
-				m_Mobile.CanBeHarmful(combatant, false) && combatant.Map == m_Mobile.Map)
+            if (GuardAttackControl(combatant))
 			{
 				m_Mobile.DebugSay("Guarding from target...");
 
@@ -1702,6 +1690,13 @@ namespace Server.Mobiles
 
 			return true;
 		}
+
+        public bool GuardAttackControl(Mobile combatant)
+        {
+            return combatant != null && combatant != m_Mobile && combatant != m_Mobile.ControlMaster && !combatant.Deleted &&
+                combatant.Alive && (!(combatant is Mobile) || !combatant.IsDeadBondedPet) &&
+                m_Mobile.CanBeHarmful(combatant, false) && combatant.Map == m_Mobile.Map;
+        }
 
 		public virtual bool DoOrderAttack()
 		{
