@@ -140,6 +140,16 @@ namespace Server.Items
                     case HuntType.Walrus: return "Walrus";
                     case HuntType.Alligator: return "Alligator";
                     case HuntType.Eagle: return "Eagle";
+                    //Publish 91 added:
+					case HuntType.MyrmidexLarvae: return "Myrmidex Larvae";
+					case HuntType.Najasaurus: return "Najasaurus";
+					case HuntType.Anchisaur: return "Anchisaur";
+					case HuntType.Allosaurus: return "Allosaurus";
+					case HuntType.Dimetrosaur: return "Dimetrosaur";
+					case HuntType.Saurosaurus: return "Saurosaurus";
+					//Publish 95 added:
+					case HuntType.Tiger: return "Tiger";
+					case HuntType.MyrmidexDrone: return "Myrmidex Drone";
                 }
             }
 
@@ -157,6 +167,16 @@ namespace Server.Items
                     case (int)HuntType.Walrus: return "Walrus";
                     case (int)HuntType.Alligator: return "Alligator";
                     case (int)HuntType.Eagle: return "Eagle";
+                    //Publish 91 added:
+					case (int)HuntType.MyrmidexLarvae: return "Myrmidex Larvae";
+					case (int)HuntType.Najasaurus: return "Najasaurus";
+					case (int)HuntType.Anchisaur: return "Anchisaur";
+					case (int)HuntType.Allosaurus: return "Allosaurus";
+					case (int)HuntType.Dimetrosaur: return "Dimetrosaur";
+					case (int)HuntType.Saurosaurus: return "Saurosaurus";
+					//Publish 95 added:
+					case (int)HuntType.Tiger: return "Tiger";
+					case (int)HuntType.MyrmidexDrone: return "Myrmidex Drone";
                 }
             }
         }
