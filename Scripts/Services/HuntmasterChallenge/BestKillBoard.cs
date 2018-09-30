@@ -55,8 +55,8 @@ namespace Server.Items
 
                 m_Filter = filter;
 
-                if (m_Filter < -1) m_Filter = 8;
-                if (m_Filter > 8) m_Filter = -1;
+                if (m_Filter < -1) m_Filter = 20;
+                if (m_Filter > 20) m_Filter = -1;
 
                 List<HuntingKillEntry> useList = new List<HuntingKillEntry>();
 
