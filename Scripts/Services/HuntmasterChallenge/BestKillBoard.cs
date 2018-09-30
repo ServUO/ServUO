@@ -150,6 +150,10 @@ namespace Server.Items
 					//Publish 95 added:
 					case HuntType.Tiger: return "Tiger";
 					case HuntType.MyrmidexDrone: return "Myrmidex Drone";
+                    case HuntType.Triceratops: return "Triceratops";
+					case HuntType.Lion: return "Lion";
+					case HuntType.WhiteTiger: return "White Tiger";
+					case HuntType.BlackTiger: return "Black Tiger";
                 }
             }
 
@@ -177,6 +181,10 @@ namespace Server.Items
 					//Publish 95 added:
 					case (int)HuntType.Tiger: return "Tiger";
 					case (int)HuntType.MyrmidexDrone: return "Myrmidex Drone";
+                    case (int)HuntType.Triceratops: return "Triceratops";
+					case (int)HuntType.Lion: return "Lion";
+					case (int)HuntType.WhiteTiger: return "White Tiger";
+					case (int)HuntType.BlackTiger: return "Black Tiger";
                 }
             }
         }
