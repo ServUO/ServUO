@@ -159,7 +159,7 @@ namespace Server.Gumps
                 AddButton(130 + ((i / 8) * 160), 65 + ((i % 8) * 15), 2103, 2104, 10 + i, GumpButtonType.Reply, 0);
 
                 // Description label
-                AddLabelIntern(145 + ((i / 8) * 160), 60 + ((i % 8) * 15), hue, i + 2);
+                AddLabelCroppedIntern(145 + ((i / 8) * 160), 60 + ((i % 8) * 15), 115, 17, hue, i + 2);
             }
 
             if (entries.Count != 0)
@@ -185,7 +185,7 @@ namespace Server.Gumps
                         RunebookEntry e = (RunebookEntry)m_Book.Entries[index];
 
                         // Description label
-                        AddLabelIntern(145 + (half * 160), 60, GetMapHue(e.Map), index + 2);
+                        AddLabelCroppedIntern(145 + (half * 160), 60, 115, 17, GetMapHue(e.Map), index + 2);
 
                         // Location labels
                         int xLong = 0, yLat = 0;
