@@ -18,7 +18,7 @@ Just run `Compile.WIN - Debug.bat` and follow the prompts. This script will comp
 
 Run `Compile.WIN - Debug.bat` for development, attaching a debugger and/or extended output.
 
-Run `Compile.WIN - Release.bat` for production environement (-debug is still a supported parameter for script debugging).
+Run `Compile.WIN - Release.bat` for production environment (-debug is still a supported parameter for script debugging).
 
 After this you can run the server by executing `ServUO.exe`.
 
