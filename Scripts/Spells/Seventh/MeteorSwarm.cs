@@ -147,7 +147,7 @@ namespace Server.Spells.Seventh
                         {
                             Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                                 {
-                                    source.MovingParticles(target, 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
+                                    source.MovingParticles(target, item != null ? 0xA1ED : 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
                                 });
                         }
 
@@ -159,7 +159,7 @@ namespace Server.Spells.Seventh
                         Caster.DoHarmful(id);
                         SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0);
 
-                        Caster.MovingParticles(id, 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
+                        Caster.MovingParticles(id, item != null ? 0xA1ED : 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
                     }
                 }
 

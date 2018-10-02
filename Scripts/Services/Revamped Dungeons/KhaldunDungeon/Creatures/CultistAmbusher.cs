@@ -2,6 +2,7 @@
 using Server.Items;
 using Server.Misc;
 using Server.Targeting;
+using System;
 #endregion
 
 namespace Server.Mobiles
@@ -22,25 +23,29 @@ namespace Server.Mobiles
             SetDex(150);
             SetInt(25, 44);
 
+            SetHits(500, 1000);
+
             SetDamage(8, 18);
 
             SetDamageType(ResistanceType.Physical, 100);
 
-			SetResistance(ResistanceType.Physical, 30, 50);
-			SetResistance(ResistanceType.Fire, 30, 50);
-			SetResistance(ResistanceType.Cold, 30, 50);
-			SetResistance(ResistanceType.Poison, 30, 50);
-			SetResistance(ResistanceType.Energy, 30, 50);
+			SetResistance(ResistanceType.Physical, 10, 20);
+			SetResistance(ResistanceType.Fire, 10, 20);
+			SetResistance(ResistanceType.Cold, 10, 20);
+			SetResistance(ResistanceType.Poison, 10, 20);
+			SetResistance(ResistanceType.Energy, 10, 20);
             
-            SetSkill(SkillName.Fencing, 100.0);
-            SetSkill(SkillName.Macing, 100.0);
-            SetSkill(SkillName.MagicResist, 100.0);
-            SetSkill(SkillName.Swords, 100.0);
-            SetSkill(SkillName.Tactics, 100.0);
-            SetSkill(SkillName.Archery, 100.0);
+            SetSkill(SkillName.Fencing, 100.0, 120.0);
+            SetSkill(SkillName.Macing, 100.0, 120.0);
+            SetSkill(SkillName.MagicResist, 100.0, 120.0);
+            SetSkill(SkillName.Swords, 100.0, 120.0);
+            SetSkill(SkillName.Tactics, 100.0, 120.0);
+            SetSkill(SkillName.Archery, 100.0, 120.0);
+            SetSkill(SkillName.Parry, 100.0, 120.0);
+            SetSkill(SkillName.Tactics, 100.0, 120.0);
 
-            Fame = 5000;
-			Karma = -5000;
+            Fame = 8000;
+			Karma = -8000;
 
             switch (Utility.Random(3))
             {
@@ -78,26 +83,70 @@ namespace Server.Mobiles
                     }
             }
 
-            switch (Utility.Random(3))
+            switch (Utility.Random(2))
             {
-                case 0: SetWearable(new Spear()); break;
+                case 0:
+                    {
+                        SetWearable(Loot.Construct(new Type[] { typeof(Kryss), typeof(Spear), typeof(ShortSpear), typeof(Lance), typeof(Pike), typeof(WarMace), typeof(Mace), typeof(WarHammer), typeof(WarAxe) }));
+
+                        break;
+                    }
                 case 1:
                     {
-                        switch (Utility.Random(4))
-                        {
-                            case 0: SetWearable(new Yumi()); break;
-                            case 1: SetWearable(new Crossbow()); break;
-                            case 2: SetWearable(new RepeatingCrossbow()); break;
-                            case 3: SetWearable(new HeavyCrossbow()); break;
-                        }
-
-                        RangeFight = 3;
+                        SetWearable(Loot.Construct(new Type[] { typeof(Yumi), typeof(Crossbow), typeof(RepeatingCrossbow), typeof(HeavyCrossbow) }));
+                        
+                        RangeFight = 7;
                         AI = AIType.AI_Archer;
 
                         break;
                     }
-                case 2: SetWearable(new WarMace()); break;
             }            
+        }
+        
+        public override void OnGotMeleeAttack(Mobile attacker)
+        {
+            base.OnGotMeleeAttack(attacker);
+
+            if (AI == AIType.AI_Archer && 0.4 >= Utility.RandomDouble())
+            {
+                Point3D p = FindLocation(Map, Location, 10);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                Location = p;
+                Effects.SendLocationParticles(EffectItem.Create(p, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
+                                
+                PlaySound(0x1FE);
+            }
+        }
+
+        private Point3D FindLocation(Map map, Point3D center, int range)
+        {
+            int cx = center.X;
+            int cy = center.Y;
+
+            for (int i = 0; i < 20; ++i)
+            {
+                int x = cx + Utility.Random(range * 2) - range;
+                int y = cy + Utility.Random(range * 2) - range;
+
+                if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
+                    continue;
+
+                int z = map.GetAverageZ(x, y);
+
+                if (!map.CanFit(x, y, z, 6, false, false))
+                    continue;
+
+                int topZ = z;
+
+                foreach (Item item in map.GetItemsInRange(new Point3D(x, y, z), 0))
+                {
+                    topZ = Math.Max(topZ, item.Z + item.ItemData.CalcHeight);
+                }
+
+                return new Point3D(x, y, topZ);
+            }
+
+            return center;
         }
 
         public override bool AlwaysMurderer { get { return true; } }
