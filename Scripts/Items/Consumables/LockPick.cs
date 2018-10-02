@@ -67,14 +67,11 @@ namespace Server.Items
 
         protected virtual void BeginLockpick(Mobile from, ILockpickable item)
         {
-            from.Direction = from.GetDirectionTo(item);
-
             if (item.Locked)
             {
                 from.PlaySound(0x241);
 
                 Timer.DelayCall(TimeSpan.FromMilliseconds(200.0), EndLockpick, new object[] { item, from });
-                //new InternalTimer(from, item, m_Item).Start();
             }
             else
             {

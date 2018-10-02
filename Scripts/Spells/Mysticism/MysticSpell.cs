@@ -95,8 +95,10 @@ namespace Server.Spells.Mysticism
             if (n >= 1.0)
                 return true;
 
-            int maxSkill = (1 + (int)Circle) * 10;
-            maxSkill += (1 + ((int)Circle / 6)) * 25;
+            int circle = Math.Max(5, 1 + (int)Circle);
+
+            int maxSkill = circle * 10;
+            maxSkill += (circle / 6) * 25;
 
             if (target.Skills[SkillName.MagicResist].Value < maxSkill)
                 target.CheckSkill(SkillName.MagicResist, 0.0, target.Skills[SkillName.MagicResist].Cap);
@@ -108,7 +110,7 @@ namespace Server.Spells.Mysticism
         {
             double value = GetResistSkill(target);
             double firstPercent = value / 5.0;
-            double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
+            double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (Math.Max(5, 1 + (int)circle)) * 5.0);
 
             return (firstPercent > secondPercent ? firstPercent : secondPercent) / 2.0; // Seems should be about half of what stratics says.
         }
