@@ -1043,7 +1043,7 @@ namespace Server.Engines.Harvest
             Type newType = null;
 
             double skillBase = from.Skills[SkillName.Fishing].Base;
-            double skillValue = Math.Min(100.0, from.Skills[SkillName.Fishing].Value);
+            double skillValue = Math.Min(120.0, from.Skills[SkillName.Fishing].Value);
 
             //Same method as mutate entries
             for (int i = 0; i < m_LavaMutateTable.Length; ++i)
