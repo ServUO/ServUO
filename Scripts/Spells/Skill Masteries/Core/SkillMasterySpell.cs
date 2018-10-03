@@ -725,7 +725,7 @@ namespace Server.Spells.SkillMasteries
         /// <param name="damage"></param>
 		public static void OnDamage(Mobile victim, Mobile damager, DamageType type, ref int damage)
 		{
-			if(victim == null)
+			if(victim == null || damager == null)
 				return;
 
             CheckTable(victim);
@@ -764,6 +764,9 @@ namespace Server.Spells.SkillMasteries
         /// <param name="damage"></param>
         public static void OnHit(Mobile attacker, Mobile defender, ref int damage)
 		{
+            if (attacker == null || defender == null)
+                return;
+
 			foreach(SkillMasterySpell spell in EnumerateSpells(attacker))
 			{
 				spell.OnHit(defender, ref damage);
@@ -790,6 +793,9 @@ namespace Server.Spells.SkillMasteries
         /// <param name="defender"></param>
         public static void OnMiss(Mobile attacker, Mobile defender)
         {
+            if (attacker == null || defender == null)
+                return;
+
             foreach (SkillMasterySpell spell in EnumerateSpells(attacker))
             {
                 spell.OnMiss(defender);
@@ -808,6 +814,9 @@ namespace Server.Spells.SkillMasteries
         /// <param name="defender"></param>
         public static void OnParried(Mobile attacker, Mobile defender)
         {
+            if (attacker == null || defender == null)
+                return;
+
             foreach (SkillMasterySpell spell in EnumerateSpells(defender))
             {
                 spell.OnParried(attacker);

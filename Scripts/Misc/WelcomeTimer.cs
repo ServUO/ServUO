@@ -50,7 +50,7 @@ namespace Server.Misc
 		protected override void OnTick()
 		{
 			if (m_State < m_Lines.Length)
-				m_Mobile.SendMessage(0x35, m_Messages[m_State++]);
+                m_Mobile.SendMessage(0x35, m_Lines[m_State++]);
 
 			if (m_State == m_Lines.Length)
 				Stop();

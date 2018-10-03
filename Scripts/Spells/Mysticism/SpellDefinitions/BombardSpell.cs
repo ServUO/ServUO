@@ -68,7 +68,12 @@ namespace Server.Spells.Mysticism
                     {
                         if (!CheckResisted((Mobile)target))
                         {
-                            ((Mobile)target).Paralyze(TimeSpan.FromSeconds(3));
+                            int secs = (int)((GetDamageSkill(this.Caster) / 10) - (GetResistSkill((Mobile)target) / 10));
+
+                            if (secs < 0)
+                                secs = 0;
+
+                            ((Mobile)target).Paralyze(TimeSpan.FromSeconds(secs));
                         }
                     });
                 }

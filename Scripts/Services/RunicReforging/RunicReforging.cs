@@ -45,7 +45,8 @@ namespace Server.Items
         Aegis,
         Blackthorn,
         Minax,
-        Kotl
+        Kotl,
+        Khaldun
     }
 
     public enum ItemPower
@@ -1641,6 +1642,8 @@ namespace Server.Items
         {
             switch (suffix)
             {
+                case ReforgedSuffix.Khaldun:
+                    list.Add(1158672, name); break; // ~1_ITEM~ of the Cult
                 case ReforgedSuffix.Minax:
                     list.Add(1154507, name); break; // ~1_ITEM~ bearing the crest of Minax
                 case ReforgedSuffix.Blackthorn:
@@ -1871,7 +1874,7 @@ namespace Server.Items
                     if (!(item is BaseWeapon) && suffix == ReforgedSuffix.Vampire)
                         suffix = ReforgedSuffix.None;
 
-                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax && suffix != ReforgedSuffix.Kotl)
+                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax && suffix != ReforgedSuffix.Kotl && suffix != ReforgedSuffix.Khaldun)
                         prefix = ChooseRandomPrefix(item);
 
                     if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2700))
@@ -1879,6 +1882,9 @@ namespace Server.Items
 
                     if (suffix == ReforgedSuffix.Minax)
                         item.Hue = 1157;
+
+                    if (suffix == ReforgedSuffix.Khaldun)
+                        item.Hue = 2745;
 
                     if (!powerful)
                     {

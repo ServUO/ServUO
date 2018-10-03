@@ -142,6 +142,9 @@ namespace Server.Mobiles
                 }
             }
 
+            if (message)
+                from.SendLocalizedMessage(1155856, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold has been removed from your bank box.
+
             return true;
         }
 
@@ -199,6 +202,9 @@ namespace Server.Mobiles
                     return false;
                 }
             }
+
+            if (message)
+                from.SendLocalizedMessage(1042763, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold was deposited in your account.
 
             return true;
         }

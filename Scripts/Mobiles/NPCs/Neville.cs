@@ -8,7 +8,8 @@ namespace Server.Engines.Quests
     {
         public static void Initialize()
         {
-            Spawn();
+            if (Core.SA)
+                Spawn();
         }
 
         public static Point3D HomeLocation { get { return new Point3D(1150, 964, -42); } }
@@ -27,7 +28,6 @@ namespace Server.Engines.Quests
             "Protect me!",
             "a scoundrel is committing murder!",
             "Where are the guards! Help!",
-            "Ack!  My escort has come to haunt me!",
             "Make haste",
             "Tisawful! Death! Ah!"
         };
@@ -51,14 +51,15 @@ namespace Server.Engines.Quests
         {
         }
 
+        public override bool CanBeDamaged()
+        {
+            return false;
+        }
+
         public override void Advertise()
         {
             Say(1095004); // Please help me, where am I?
         }
-
-        public override bool CanBeDamaged() { return false; }
-        public override bool InitialInnocent { get { return true; } }
-        public override bool IsInvulnerable { get { return false; } }
 
         public override void OnThink()
         {
@@ -90,7 +91,11 @@ namespace Server.Engines.Quests
             if (Instances != null && Instances.Contains(this))
                 Instances.Remove(this);
 
-            Spawn();
+            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(
+                delegate
+                {
+                    Spawn();
+                }));            
 
             base.OnDelete();
         }

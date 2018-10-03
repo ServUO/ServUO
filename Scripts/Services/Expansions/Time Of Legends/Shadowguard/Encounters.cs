@@ -1282,9 +1282,12 @@ namespace Server.Engines.Shadowguard
             writer.Write(0);
 
             writer.Write(Dragon);
-            writer.Write(Drakes == null ? 0 : Drakes.Count);
 
+            writer.Write(Drakes == null ? 0 : Drakes.Count);
             if (Drakes != null) Drakes.ForEach(d => writer.Write(d));
+
+            writer.Write(Bells == null ? 0 : Bells.Count);
+            if (Bells != null) Bells.ForEach(b => writer.Write(b));
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1292,10 +1295,12 @@ namespace Server.Engines.Shadowguard
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Dragon = reader.ReadMobile() as ShadowguardGreaterDragon;
-            int count = reader.ReadInt();
-
             Drakes = new List<VileDrake>();
+            Bells = new List<Item>();
+
+            Dragon = reader.ReadMobile() as ShadowguardGreaterDragon;
+            
+            int count = reader.ReadInt();
 
             for (int i = 0; i < count; i++)
             {
@@ -1303,6 +1308,16 @@ namespace Server.Engines.Shadowguard
 
                 if (d != null)
                     Drakes.Add(d);
+            }
+
+            count = reader.ReadInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                FeedingBell b = reader.ReadItem() as FeedingBell;
+
+                if (b != null)
+                    Bells.Add(b);
             }
 
             if (Dragon == null || Dragon.Deleted)

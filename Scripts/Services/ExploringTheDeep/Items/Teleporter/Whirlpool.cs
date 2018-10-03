@@ -258,6 +258,10 @@ namespace Server.Items
                         {
                             spell.CompleteQuest();
                         }
+                        else if (((PlayerMobile)m).AddRewardTitle(1154505))
+                        {
+                            ((PlayerMobile)m).SendLocalizedMessage(1155605, "#1154505");  //Thou hath been bestowed the title ~1_TITLE~!
+                        }
                     });
             }
 

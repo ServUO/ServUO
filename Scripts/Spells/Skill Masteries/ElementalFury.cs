@@ -16,7 +16,7 @@ namespace Server.Spells.SkillMasteries
             );
 
         public override double RequiredSkill { get { return 90; } }
-        public override int RequiredMana { get { return 30; } } //get
+        public override int RequiredMana { get { return 20; } }
 
         public override SkillName CastSkill { get { return SkillName.Throwing; } }
         public override SkillName DamageSkill { get { return SkillName.Tactics; } }

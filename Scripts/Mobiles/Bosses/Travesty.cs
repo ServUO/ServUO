@@ -394,6 +394,12 @@ namespace Server.Mobiles
             SpawnNinjaGroup(new Point3D(80, 1949, 0));
             SpawnNinjaGroup(new Point3D(92, 1948, 0));
             SpawnNinjaGroup(new Point3D(92, 1962, 0));
+
+            if (Map != null && Map != Map.Internal && Region.IsPartOf("TheCitadel"))
+            {
+                var loc = _WarpLocs[Utility.Random(_WarpLocs.Length)];
+                MoveToWorld(loc, Map);
+            }
         }
 
         public static void SpawnNinjaGroup(Point3D _location)
@@ -409,6 +415,17 @@ namespace Server.Mobiles
         }
 
         #endregion
+
+        private Point3D[] _WarpLocs =
+        {
+            new Point3D(71, 1939, 0),
+            new Point3D(71, 1955, 0),
+            new Point3D(69, 1972, 0),
+            new Point3D(86, 1971, 0),
+            new Point3D(103, 1972, 0),
+            new Point3D(86, 1939, 0),
+            new Point3D(102, 1938, 0),
+        };
 
         private class ClonedItem : Item
         {

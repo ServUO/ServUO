@@ -407,6 +407,7 @@ namespace Server.Engines.Quests
                 Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(
                 delegate
                 {
+                    escort.Say(500901); // Ack!  My escort has come to haunt me!
                     owner.SendLocalizedMessage(1071194); // You have failed your escort quest…
                     owner.PlaySound(0x5B3);
                     escort.Delete();

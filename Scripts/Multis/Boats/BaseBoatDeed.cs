@@ -81,7 +81,7 @@ namespace Server.Multis
 			{
 				from.SendLocalizedMessage( 1010567, null, 0x25 ); // You may not place a boat from this location.
 			}
-            else if (IsGalleon() && BaseGalleon.HasGalleon(from) && from.AccessLevel == AccessLevel.Player)
+            else if (Core.HS && BaseBoat.HasBoat(from))
             {
                 from.SendLocalizedMessage(1116758); //You already have a ship deployed!
             }
@@ -95,11 +95,6 @@ namespace Server.Multis
                 from.SendGump(new BoatPlacementGump(this, from));
             }
 		}
-
-        public bool IsGalleon()
-        {
-            return this is BritannianShipDeed || this is GargishGalleonDeed || this is TokunoGalleonDeed || this is OrcishGalleonDeed;
-        }
 
 		public abstract BaseBoat Boat{ get; }
 
@@ -165,6 +160,7 @@ namespace Server.Multis
                     }
 
 					boat.MoveToWorld( p, map );
+                    boat.OnAfterPlacement(true);
 
                     var addon = LighthouseAddon.GetLighthouse(from);
 

@@ -228,12 +228,10 @@ namespace Server.Spells
             }
         }
 
-        private static readonly bool RestrictTravelCombat = true;
-
         //TODO: Check if aggressor leaves facet, if heat is removed
-        public static bool CheckCombat(Mobile m)
+        public static bool CheckCombat(Mobile m, bool restrict = true)
         {
-            if (!RestrictTravelCombat)
+            if (!restrict)
                 return false;
 
             TimeSpan delay = Server.Misc.AttackMessage.CombatHeatDelay;
@@ -246,7 +244,7 @@ namespace Server.Spells
                     return true;
             }
 
-            if (Core.AOS)
+            if (!Core.AOS)
             {
                 for (int i = 0; i < m.Aggressors.Count; ++i)
                 {
@@ -1614,6 +1612,23 @@ namespace Server.Spells
             TransformContext context = GetContext(m);
 
             return (context != null && context.Type == type);
+        }
+
+        public static void CheckCastSkill(Mobile m, TransformContext context)
+        {
+            Spell spell = context.Spell as Spell;
+
+            if (spell != null)
+            {
+                double min, max;
+
+                spell.GetCastSkills(out min, out max);
+
+                if (m.Skills[spell.CastSkill].Value < min)
+                {
+                    RemoveContext(m, context, true);
+                }
+            }
         }
 
         #endregion

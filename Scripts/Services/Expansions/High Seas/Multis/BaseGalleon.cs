@@ -135,7 +135,6 @@ namespace Server.Multis
         public List<Item> Cannons { get { return m_Cannons; } }
 
         public override bool IsClassicBoat { get { return false; } }
-        public override TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(21); } }
 
         public virtual int DamageValue
         {
@@ -1563,16 +1562,6 @@ namespace Server.Multis
             if (boat is BaseGalleon)
                 return boat as BaseGalleon;
             return null;
-        }
-
-        public static bool HasGalleon(Mobile from)
-        {
-            foreach (BaseBoat boat in BaseBoat.Boats)
-            {
-                if (boat is BaseGalleon && boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal)
-                    return true;
-            }
-            return false;
         }
 
         public static bool CheckForBoat(IPoint3D p, Mobile caster)

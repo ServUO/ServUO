@@ -6763,7 +6763,7 @@ namespace Server
 
 		public virtual bool CanPaperdollBeOpenedBy(Mobile from)
 		{
-			return (Body.IsHuman || Body.IsGhost || IsBodyMod);
+			return (Body.IsHuman || Body.IsGhost || IsBodyMod || from == this);
 		}
 
 		public virtual void GetChildContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)
@@ -7920,17 +7920,7 @@ namespace Server
 
 			if (newRegion != oldRegion)
 			{
-				if (oldRegion != null)
-				{
-					oldRegion.OnExit(this);
-				}
-				
 				m_Region = newRegion;
-
-				if (newRegion != null)
-				{
-					newRegion.OnEnter(this);
-				}
 
 				Region.OnRegionChange(this, oldRegion, newRegion);
 

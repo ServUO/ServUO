@@ -139,7 +139,7 @@ namespace Server.Engines.Harvest
 			new MutateEntry( 100.0,  80.0,  750.0,  true, typeof( MessageInABottle ) ),			
 			new MutateEntry( 80.0,  80.0,  4080.0,  true, typeof( BigFish ) ),
 			new MutateEntry( 0.0, 125.0, -2375.0, false, typeof( PrizedFish ), typeof( WondrousFish ), typeof( TrulyRareFish ), typeof( PeculiarFish ) ),
-			new MutateEntry( 0.0, 105.0,  -420.0, false, typeof( Boots ), typeof( Shoes ), typeof( Sandals ), typeof( ThighBoots ) ),
+			new MutateEntry( 0.0, 125.0,  -420.0, false, typeof( Boots ), typeof( Shoes ), typeof( Sandals ), typeof( ThighBoots ) ),
             new MutateEntry( 80.0,  80.0, 2500.0, false, typeof( MudPuppy ), typeof( RedHerring) ),
 			new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
 		};
@@ -1043,7 +1043,7 @@ namespace Server.Engines.Harvest
             Type newType = null;
 
             double skillBase = from.Skills[SkillName.Fishing].Base;
-            double skillValue = Math.Min(100.0, from.Skills[SkillName.Fishing].Value);
+            double skillValue = Math.Min(120.0, from.Skills[SkillName.Fishing].Value);
 
             //Same method as mutate entries
             for (int i = 0; i < m_LavaMutateTable.Length; ++i)
