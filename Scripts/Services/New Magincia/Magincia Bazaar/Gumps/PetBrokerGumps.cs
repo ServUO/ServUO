@@ -475,49 +475,68 @@ namespace Server.Engines.NewMagincia
 			m_Broker = broker;
 			m_Entries = broker.BrokerEntries;
 
-            AddHtmlLocalized(215, 10, 200, 18, 1150311, RedColor16, false, false); // Animal Broker
+            AddHtmlLocalized( 10, 10, 500, 18, 1114513, "#1150311", RedColor16, false, false );  // Animal Broker
 
             if (m_Broker.Plot.ShopName != null && m_Broker.Plot.ShopName.Length > 0)
-                AddHtml(173, 40, 173, 18, Color(FormatStallName(m_Broker.Plot.ShopName), BlueColor), false, false);
+                AddHtml(10, 37, 500, 18, Color(FormatStallName(m_Broker.Plot.ShopName), BlueColor), false, false);
             else
-                AddHtmlLocalized(180, 40, 200, 18, 1150314, BlueColor16, false, false); // This Shop Has No Name
+            {
+                AddHtmlLocalized(10, 37, 500, 18, 1114513, "#1150314", BlueColor16, false, false); // This Shop Has No Name
+            }
 
-            AddHtml(173, 65, 173, 18, Color(FormatBrokerName(String.Format("Proprietor: {0}", broker.Name)), BlueColor), false, false);
-			
-			AddHtmlLocalized(205, 100, 200, 18, 1150346, GreenColor16, false, false); // PETS FOR SALE
-			AddHtmlLocalized(10, 130, 500, 40, 1150352, GreenColor16, false, false); // LORE: See the animal's
-			
-			AddHtmlLocalized(5, 180, 45, 18, 1150351, OrangeColor16, false, false); // LORE
-			AddHtmlLocalized(50, 180, 45, 18, 1150353, OrangeColor16, false, false); // VIEW
-			AddHtmlLocalized(95, 180, 150, 18, 1150347, OrangeColor16, false, false); // NAME
-			AddHtmlLocalized(245, 180, 150, 18, 1150348, OrangeColor16, false, false); // TYPE
-			AddHtmlLocalized(425, 180, 80, 18, 1150349, OrangeColor16, false, false); // PRICE
-			AddHtmlLocalized(480, 180, 55, 18, 1150350, OrangeColor16, false, false); // BUY
-			
-			int y = 200;
-			for(int i = 0; i < m_Entries.Count; i++)
-			{
-				PetBrokerEntry entry = m_Entries[i];
-				
-				if(entry == null || entry.Pet == null)
-					continue;
-				
-				AddButton(5, y + (i * 20), 4011, 4013, 100 + i, GumpButtonType.Reply, 0);
-				AddButton(50, y + (i * 20), 4008, 4010, 200 + i, GumpButtonType.Reply, 0);
-				
-				AddHtml(95, y + (i * 20), 145, 18, Color(entry.Pet.Name, BlueColor), false, false);
-				AddHtml(245, y + (i * 20), 145, 18, Color(entry.TypeName, BlueColor), false, false);
-				AddHtml(425, y + (i * 20), 80, 18, AlignRight(Color(FormatAmt(entry.SalePrice), GreenColor)), false, false);
-				
-				AddButton(480, y + (i * 20), 4014, 4016, 300 + i, GumpButtonType.Reply, 0);
-			}
+            AddHtmlLocalized(10, 55, 240, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
+            AddHtml(260, 55, 250, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
+
+            if (m_Entries.Count != 0)
+            {
+                AddHtmlLocalized(10, 91, 500, 18, 1114513, "#1150346", GreenColor16, false, false); // PETS FOR SALE
+                AddHtmlLocalized(10, 118, 500, 72, 1114513, "#1150352", GreenColor16, false, false); // LORE: See the animal's
+
+                AddHtmlLocalized(10, 199, 52, 18, 1150351, OrangeColor16, false, false); // LORE
+                AddHtmlLocalized(68, 199, 52, 18, 1150353, OrangeColor16, false, false); // VIEW
+                AddHtmlLocalized(126, 199, 104, 18, 1150347, OrangeColor16, false, false); // NAME
+                AddHtmlLocalized(236, 199, 104, 18, 1150348, OrangeColor16, false, false); // TYPE
+                AddHtmlLocalized(346, 199, 104, 18, 1114514, "#1150349", OrangeColor16, false, false); // PRICE
+                AddHtmlLocalized(456, 199, 52, 18, 1150350, OrangeColor16, false, false); // BUY
+
+                int y = 219;
+                for (int i = 0; i < m_Entries.Count; i++)
+                {
+                    PetBrokerEntry entry = m_Entries[i];
+
+                    if (entry == null || entry.Pet == null)
+                    {
+                        continue;
+                    }
+
+                    AddButton(10, y + (i * 20), 4011, 4013, 100 + i, GumpButtonType.Reply, 0);
+                    AddButton(68, y + (i * 20), 4008, 4010, 200 + i, GumpButtonType.Reply, 0);
+
+                    AddHtml(126, y + (i * 20), 104, 14, Color(entry.Pet.Name, BlueColor), false, false);
+                    AddHtml(236, y + (i * 20), 104, 20, Color(entry.TypeName, BlueColor), false, false);
+                    AddHtml(346, y + (i * 20), 104, 20, Color(AlignRight(FormatAmt(entry.SalePrice)), GreenColor), false, false);
+
+                    AddButton(456, y + (i * 20), 4014, 4016, 300 + i, GumpButtonType.Reply, 0);
+                }
+            }
+            else
+            {
+                AddHtmlLocalized(10, 127, 500, 534, 1114513, "#1150336", OrangeColor16, false, false); // The animal broker has no pets in its inventory.
+
+                AddButton(10, 490, 0xFAE, 0xFAF, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(50, 490, 210, 20, 1149777, BlueColor16, false, false); // MAIN MENU
+            }
 		}
 		
 		public override void OnResponse(NetState state, RelayInfo info)
 		{
 			Mobile from = state.Mobile;
-			
-			if(info.ButtonID < 200) // LORE
+
+            if (info.ButtonID == 1) // Main Menu
+            {
+                from.SendGump(new PetInventoryGump(m_Broker, from));
+            }
+            else if (info.ButtonID < 200) // LORE
 			{
 				int id = info.ButtonID - 100;
 				

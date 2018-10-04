@@ -12,21 +12,19 @@ namespace Server.Misc
 {
 	internal static class ServerConsole
 	{
-		private static bool _HearConsole;
-		private static PageEntry[] _List;
+		private static readonly Func<string> _Listen = Console.ReadLine;
 
-		public static bool Paging { get; set; }
+		private static string _Command;
+
+		private static Timer _PollTimer;
+
+		private static bool _HearConsole;
 
 		public static void Initialize()
 		{
-			if(Console.Out == null || Console.In == null || Console.Error == null)
-			{
-				return;
-			}
-
 			EventSink.ServerStarted += () =>
 			{
-				ThreadPool.QueueUserWorkItem(ConsoleListen);
+				PollCommands();
 
 				if (_HearConsole)
 				{
@@ -45,7 +43,7 @@ namespace Server.Misc
 				{
 					if (args.Mobile.Region.Name.Length > 0)
 					{
-						Console.WriteLine("" + args.Mobile.Name + " (" + args.Mobile.Region.Name + "): " + args.Speech + "");
+						Console.WriteLine(args.Mobile.Name + " (" + args.Mobile.Region.Name + "): " + args.Speech);
 					}
 					else
 					{
@@ -57,240 +55,156 @@ namespace Server.Misc
 			};
 		}
 
-		public static void ConsoleListen(Object stateInfo)
+		private static void PollCommands()
 		{
-			if (Core.Crashed)
+			_PollTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMilliseconds(100), ProcessCommand);
+
+			_Listen.BeginInvoke(r => ProcessInput(_Listen.EndInvoke(r)), null);
+		}
+
+		private static void ProcessInput(string input)
+		{
+			if (!Core.Crashed && !Core.Closing)
+			{
+				Interlocked.Exchange(ref _Command, input);
+			}
+		}
+
+		private static void ProcessCommand()
+		{
+			if (Core.Crashed || Core.Closing || World.Loading || World.Saving)
 			{
 				return;
 			}
 
-			if (!Paging)
-			{
-				try
-				{
-					Next(Console.ReadLine());
-				}
-				catch
-				{ }
-			}
-		}
-
-		public static void PageResp(object obj)
-		{
-			if (Core.Crashed)
+			if (String.IsNullOrEmpty(_Command))
 			{
 				return;
 			}
 
-			Paging = true;
+			ProcessCommand(_Command);
 
-			var objects = (object[])obj;
-			var w = (int)objects[0];
-			var pag = (int)objects[1];
-			int paG;
+			Interlocked.Exchange(ref _Command, String.Empty);
 
-			if (w == 1)
-			{
-				up:
-				try
-				{
-					paG = Convert.ToInt32(Console.ReadLine());
-				}
-				catch
-				{
-					Console.WriteLine("Thats not a number,try again.");
-					goto up;
-				}
-
-				Console.WriteLine("Type your response");
-
-				ThreadPool.QueueUserWorkItem(PageResp, new object[] {2, paG});
-			}
-			else
-			{
-				var resp = Console.ReadLine();
-				var list = PageQueue.List;
-
-				_List = (PageEntry[])list.ToArray(typeof(PageEntry));
-
-				if (_List.Length > 0)
-				{
-					if (pag > _List.Length)
-					{
-						Console.WriteLine("Error: Not a valid page number");
-					}
-					else
-					{
-						for (var i = 0; i < _List.Length; ++i)
-						{
-							var e = _List[i];
-
-							if (i != pag)
-							{
-								continue;
-							}
-
-							e.Sender.SendGump(new MessageSentGump(e.Sender, "Admin", resp));
-							PageQueue.Remove(e);
-
-							Console.WriteLine("Message Sent...");
-						}
-					}
-				}
-				else
-				{
-					Console.WriteLine("There are no pages to display.");
-				}
-			}
-
-			Paging = false;
-
-			ThreadPool.QueueUserWorkItem(ConsoleListen);
+			_Listen.BeginInvoke(r => ProcessInput(_Listen.EndInvoke(r)), null);
 		}
 
-		public static void BroadcastMessage(AccessLevel ac, int hue, string message)
-		{
-			foreach (var m in NetState.Instances.Select(state => state.Mobile).Where(m => m != null && m.AccessLevel >= ac))
-			{
-				m.SendMessage(hue, message);
-			}
-		}
+		private static PageEntry[] _Pages;
 
-		public static void Next(string input)
+		private static void ProcessCommand(string input)
 		{
-			if (Core.Crashed)
+			input = input.Trim();
+
+			if (_Pages != null)
 			{
+				HandlePaging(input);
 				return;
 			}
 
-			input = input.ToLower();
-
-			if (input.StartsWith("bc"))
+			if (input.StartsWith("pages", StringComparison.OrdinalIgnoreCase))
 			{
-				var sub = input.Replace("bc", "");
+				HandlePaging(input.Substring(5).Trim());
+				return;
+			}
+
+			if (input.StartsWith("bc", StringComparison.OrdinalIgnoreCase))
+			{
+				var sub = input.Substring(2).Trim();
 
 				BroadcastMessage(AccessLevel.Player, 0x35, String.Format("[Admin] {0}", sub));
-				Console.WriteLine("Players will see: {0}", sub);
+
+				Console.WriteLine("[World]: {0}", sub);
+				return;
 			}
-			else if (input.StartsWith("sc"))
+
+			if (input.StartsWith("sc", StringComparison.OrdinalIgnoreCase))
 			{
-				var sub = input.Replace("staff", "");
+				var sub = input.Substring(2).Trim();
 
 				BroadcastMessage(AccessLevel.Counselor, 0x32, String.Format("[Admin] {0}", sub));
-				Console.WriteLine("Staff will see: {0}", sub);
+
+				Console.WriteLine("[Staff]: {0}", sub);
+				return;
 			}
-			else if (input.StartsWith("ban"))
+
+			if (input.StartsWith("ban", StringComparison.OrdinalIgnoreCase))
 			{
-				var sub = input.Replace("ban", "");
+				var sub = input.Substring(3).Trim();
+
 				var states = NetState.Instances;
 
 				if (states.Count == 0)
 				{
 					Console.WriteLine("There are no players online.");
+					return;
 				}
 
-				foreach (var t in states)
+				var ns = states.Find(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
+
+				if (ns != null)
 				{
-					var a = t.Account as Account;
+					Console.WriteLine("[Ban]: {0}: Mobile: '{1}' Account: '{2}'", ns, ns.Mobile.RawName, ns.Account.Username);
 
-					if (a == null)
-					{
-						continue;
-					}
-
-					var m = t.Mobile;
-
-					if (m == null)
-					{
-						continue;
-					}
-
-					sub = sub.ToLower();
-
-					if (m.Name.ToLower() != sub.Trim())
-					{
-						continue;
-					}
-
-					var m_ns = m.NetState;
-
-					Console.WriteLine("Mobile name: '{0}' Account name: '{1}'", m.Name, a.Username);
-
-					a.Banned = true;
-					m_ns.Dispose();
-
-					Console.WriteLine("Banning complete.");
+					ns.Dispose();
 				}
+
+				return;
 			}
-			else if (input.StartsWith("kick"))
+
+			if (input.StartsWith("kick", StringComparison.OrdinalIgnoreCase))
 			{
-				var sub = input.Replace("kick", "");
+				var sub = input.Substring(4).Trim();
+
 				var states = NetState.Instances;
 
 				if (states.Count == 0)
 				{
 					Console.WriteLine("There are no players online.");
+					return;
 				}
 
-				foreach (var t in states)
+				var ns = states.Find(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
+
+				if (ns != null)
 				{
-					var a = t.Account as Account;
+					Console.WriteLine("[Kick]: {0}: Mobile: '{1}' Account: '{2}'", ns, ns.Mobile.RawName, ns.Account.Username);
 
-					if (a == null)
-					{
-						continue;
-					}
-
-					var m = t.Mobile;
-
-					if (m == null)
-					{
-						continue;
-					}
-
-					sub = sub.ToLower();
-
-					if (m.Name.ToLower() != sub.Trim())
-					{
-						continue;
-					}
-
-					var m_ns = m.NetState;
-
-					Console.WriteLine("Mobile name: '{0}' Account name: '{1}'", m.Name, a.Username);
-
-					m_ns.Dispose();
-
-					Console.WriteLine("Kicking complete.");
+					ns.Dispose();
 				}
+
+				return;
 			}
-			else
+
+			switch (input.Trim())
 			{
-				switch (input.Trim())
-				{
-					case "shutdown":
+				case "crash":
+					{
+						Timer.DelayCall(() => { throw new Exception("Forced Crash"); });
+					}
+					break;
+				case "shutdown":
 					{
 						AutoSave.Save();
 						Core.Kill(false);
 					}
-						break;
-					case "shutdown nosave":
+					break;
+				case "shutdown nosave":
 					{
 						Core.Kill(false);
 					}
-						break;
-					case "restart":
+					break;
+				case "restart":
 					{
 						AutoSave.Save();
 						Core.Kill(true);
 					}
-						break;
-					case "restart nosave":
+					break;
+				case "restart nosave":
 					{
 						Core.Kill(true);
 					}
-						break;
-					case "online":
+					break;
+				case "online":
 					{
 						var states = NetState.Instances;
 
@@ -316,99 +230,297 @@ namespace Server.Misc
 							}
 						}
 					}
-						break;
-					case "save":
-						AutoSave.Save(false);
-						break;
-					case "hear": //credit to Zippy for the HearAll script!
+					break;
+				case "save":
+					AutoSave.Save();
+					break;
+				case "hear": // Credit to Zippy for the HearAll script!
 					{
 						_HearConsole = !_HearConsole;
 
-						Console.WriteLine(
-							_HearConsole ? "Now sending all speech to the console." : "No longer sending speech to the console.");
+						Console.WriteLine("{0} sending speech to the console.", _HearConsole ? "Now" : "No longer");
 					}
-						break;
-					case "pages":
+					break;
+				default:
+					DisplayHelp();
+					break;
+			}
+		}
+
+		private static void DisplayHelp()
+		{
+			Console.WriteLine(" ");
+			Console.WriteLine("Commands:");
+			Console.WriteLine("crash           - Forces an exception to be thrown.");
+			Console.WriteLine("save            - Performs a forced save.");
+			Console.WriteLine("shutdown        - Performs a forced save then shuts down the server.");
+			Console.WriteLine("shutdown nosave - Shuts down the server without saving.");
+			Console.WriteLine("restart         - Sends a message to players informing them that the server is");
+			Console.WriteLine("                  restarting, performs a forced save, then shuts down and");
+			Console.WriteLine("                  restarts the server.");
+			Console.WriteLine("restart nosave  - Restarts the server without saving.");
+			Console.WriteLine("online          - Shows a list of every person online:");
+			Console.WriteLine("                  Account, Char Name, IP.");
+			Console.WriteLine("bc <message>    - Type this command and your message after it.");
+			Console.WriteLine("                  It will then be sent to all players.");
+			Console.WriteLine("sc <message>    - Type this command and your message after it.");
+			Console.WriteLine("                  It will then be sent to all staff.");
+			Console.WriteLine("hear            - Copies all local speech to this console:");
+			Console.WriteLine("                  Char Name (Region name): Speech.");
+			Console.WriteLine("ban <name>      - Kicks and bans the users account.");
+			Console.WriteLine("kick <name>     - Kicks the user.");
+			Console.WriteLine("pages           - Enter page mode to handle help requests.");
+			Console.WriteLine("help|?          - Shows this list.");
+			Console.WriteLine(" ");
+		}
+
+		private static void DisplayPagingHelp()
+		{
+			Console.WriteLine(" ");
+			Console.WriteLine("Paging Commands:");
+			Console.WriteLine("view <id>              - View sender message.");
+			Console.WriteLine("remove <id>            - Remove without message.");
+			Console.WriteLine("handle <id> <message>  - Remove with message.");
+			Console.WriteLine("clear                  - Clears the page queue.");
+			Console.WriteLine("exit                   - Exit page mode.");
+			Console.WriteLine("help|?                 - Shows this list.");
+			Console.WriteLine(" ");
+		}
+
+		private static void HandlePaging(string sub)
+		{
+			if (sub.StartsWith("help", StringComparison.OrdinalIgnoreCase) ||
+				sub.StartsWith("?", StringComparison.OrdinalIgnoreCase))
+			{
+				DisplayPagingHelp();
+
+				HandlePaging(String.Empty);
+				return;
+			}
+
+			if (PageQueue.List.Count == 0)
+			{
+				Console.WriteLine("There are no pages in the queue.");
+
+				if (_Pages != null)
+				{
+					_Pages = null;
+
+					Console.WriteLine("[Pages]: Disabled page mode.");
+				}
+
+				return;
+			}
+
+			if (String.IsNullOrWhiteSpace(sub))
+			{
+				if (_Pages == null)
+				{
+					Console.WriteLine("[Pages]: Enabled page mode.");
+
+					DisplayPagingHelp();
+				}
+
+				_Pages = PageQueue.List.Cast<PageEntry>().ToArray();
+
+				const string format = "{0:D3}:\t{1}\t{2}";
+
+				for (var i = 0; i < _Pages.Length; i++)
+				{
+					Console.WriteLine(format, i + 1, _Pages[i].Type, _Pages[i].Sender);
+				}
+
+				return;
+			}
+
+			if (sub.StartsWith("exit", StringComparison.OrdinalIgnoreCase))
+			{
+				if (_Pages != null)
+				{
+					_Pages = null;
+
+					Console.WriteLine("[Pages]: Disabled page mode.");
+				}
+
+				return;
+			}
+
+			if (sub.StartsWith("clear", StringComparison.OrdinalIgnoreCase))
+			{
+				if (_Pages != null)
+				{
+					foreach (var page in _Pages)
 					{
-						Paging = true;
-
-						var list = PageQueue.List;
-						PageEntry e;
-
-						for (var i = 0; i < list.Count;)
-						{
-							e = (PageEntry)list[i];
-
-							if (e.Sender.Deleted || e.Sender.NetState == null)
-							{
-								e.AddResponse(e.Sender, "[Logout]");
-								PageQueue.Remove(e);
-							}
-							else
-							{
-								++i;
-							}
-						}
-
-						_List = (PageEntry[])list.ToArray(typeof(PageEntry));
-
-						if (_List.Length > 0)
-						{
-							for (var i = 0; i < _List.Length; ++i)
-							{
-								e = _List[i];
-
-								var type = PageQueue.GetPageTypeName(e.Type);
-
-								Console.WriteLine("--------------Page Number: " + i + " --------------------");
-								Console.WriteLine("Player   :" + e.Sender.Name);
-								Console.WriteLine("Catagory :" + type);
-								Console.WriteLine("Message  :" + e.Message);
-							}
-
-							Console.WriteLine("Type the number of the page to respond to.");
-
-							ThreadPool.QueueUserWorkItem(PageResp, new object[] {1, 2});
-						}
-						else
-						{
-							Console.WriteLine("No pages to display.");
-
-							Paging = false;
-						}
+						PageQueue.Remove(page);
 					}
-						break;
-					//case "help":
-					//case "list":
-					default:
+
+					Console.WriteLine("[Pages]: Queue cleared.");
+
+					Array.Clear(_Pages, 0, _Pages.Length);
+
+					_Pages = null;
+
+					Console.WriteLine("[Pages]: Disabled page mode.");
+				}
+
+				return;
+			}
+
+			if (sub.StartsWith("remove", StringComparison.OrdinalIgnoreCase))
+			{
+				string[] args;
+
+				var page = FindPage(sub, out args);
+
+				if (page == null)
+				{
+					Console.WriteLine("[Pages]: Invalid page entry.");
+				}
+				else
+				{
+					PageQueue.Remove(page);
+
+					Console.WriteLine("[Pages]: Removed from queue.");
+				}
+
+				HandlePaging(String.Empty);
+				return;
+			}
+
+			if (sub.StartsWith("handle", StringComparison.OrdinalIgnoreCase))
+			{
+				string[] args;
+
+				var page = FindPage(sub, out args);
+
+				if (page == null)
+				{
+					Console.WriteLine("[Pages]: Invalid page entry.");
+
+					HandlePaging(String.Empty);
+					return;
+				}
+
+				if (args.Length <= 0)
+				{
+					Console.WriteLine("[Pages]: Message required.");
+
+					HandlePaging(String.Empty);
+					return;
+				}
+
+				page.Sender.SendGump(new MessageSentGump(page.Sender, ServerList.ServerName, String.Join(" ", args)));
+
+				Console.WriteLine("[Pages]: Message sent.");
+
+				PageQueue.Remove(page);
+
+				Console.WriteLine("[Pages]: Removed from queue.");
+
+				HandlePaging(String.Empty);
+				return;
+			}
+
+			if (sub.StartsWith("view", StringComparison.OrdinalIgnoreCase))
+			{
+				string[] args;
+
+				var page = FindPage(sub, out args);
+
+				if (page == null)
+				{
+					Console.WriteLine("[Pages]: Invalid page entry.");
+
+					HandlePaging(String.Empty);
+					return;
+				}
+
+				var idx = Array.IndexOf(_Pages, page) + 1;
+
+				Console.WriteLine("[Pages]: {0:D3}:\t{1}\t{2}", idx, page.Type, page.Sender);
+
+				if (!String.IsNullOrWhiteSpace(page.Message))
+				{
+					Console.WriteLine("[Pages]: {0}", page.Message);
+				}
+				else
+				{
+					Console.WriteLine("[Pages]: No message supplied.");
+				}
+
+				HandlePaging(String.Empty);
+				return;
+			}
+
+			if (_Pages != null)
+			{
+				string[] args;
+
+				var page = FindPage(sub, out args);
+
+				if (page != null)
+				{
+					var idx = Array.IndexOf(_Pages, page) + 1;
+
+					Console.WriteLine("[Pages]: {0:D3}:\t{1}\t{2}", idx, page.Type, page.Sender);
+
+					if (!String.IsNullOrWhiteSpace(page.Message))
 					{
-						Console.WriteLine(" ");
-						Console.WriteLine("Commands:");
-						Console.WriteLine("save            - Performs a save.");
-						Console.WriteLine("shutdown        - Performs a save, then shuts down the server");
-						Console.WriteLine("shutdown nosave - Shuts down the server without saving");
-						Console.WriteLine("restart         - Performs a save, then restarts the server");
-						Console.WriteLine("restart nosave  - Restarts the server without saving");
-						Console.WriteLine("online          - Shows a list of every person online:");
-						Console.WriteLine("                      Account, Char Name, IP");
-						Console.WriteLine("bc <message>    - Sends a message to all players");
-						Console.WriteLine("sc <message>    - Sends a message to all staff");
-						Console.WriteLine("hear            - Forwards all local speech to this console:");
-						Console.WriteLine("                      Char Name (Region name): Speech");
-						Console.WriteLine("pages           - Manage help pages");
-						Console.WriteLine("ban <name>      - Kicks and bans the user");
-						Console.WriteLine("kick <name>     - Kicks the user");
-						Console.WriteLine("list or help    - Shows this list");
-						Console.WriteLine(" ");
+						Console.WriteLine("[Pages]: {0}", page.Message);
 					}
-						break;
+					else
+					{
+						Console.WriteLine("[Pages]: No message supplied.");
+					}
+
+					HandlePaging(String.Empty);
+					return;
+				}
+
+				Array.Clear(_Pages, 0, _Pages.Length);
+
+				_Pages = null;
+
+				Console.WriteLine("[Pages]: Disabled page mode.");
+			}
+		}
+
+		private static PageEntry FindPage(string sub, out string[] args)
+		{
+			args = sub.Split(' ');
+
+			if (args.Length > 1)
+			{
+				sub = args[1];
+
+				if (args.Length > 2)
+				{
+					args = args.Skip(2).ToArray();
+				}
+				else
+				{
+					args = args.Skip(1).ToArray();
 				}
 			}
 
-			if (!Paging)
+			int id;
+
+			if (Int32.TryParse(sub, out id) && --id >= 0 && id < _Pages.Length)
 			{
-				ThreadPool.QueueUserWorkItem(ConsoleListen);
+				var page = _Pages[id];
+
+				if (PageQueue.List.Contains(page))
+				{
+					return page;
+				}
 			}
+
+			return null;
+		}
+
+		public static void BroadcastMessage(AccessLevel ac, int hue, string message)
+		{
+			World.Broadcast(hue, false, ac, message);
 		}
 	}
 }
