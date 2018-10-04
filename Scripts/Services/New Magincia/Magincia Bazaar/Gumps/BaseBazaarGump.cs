@@ -10,7 +10,7 @@ namespace Server.Engines.NewMagincia
 	{
         public const int RedColor = 0xB22222;
         public const int BlueColor = 0x000080;
-        public const int OrangeColor = 0xB8860B;
+        public const int OrangeColor = 0x804000;
         public const int GreenColor = 0x008040;
         public const int YellowColor = 0xFFFF00;
         public const int GrayColor = 0x808080;
@@ -32,8 +32,8 @@ namespace Server.Engines.NewMagincia
 		{
             AddBackground(0, 0, width, height, 9300);
 			
-			AddButton(480, height - 30, 4020, 4022, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(370, height - 30, 100, 20, 1114514, "#1060675", 0x0, false, false); // CLOSE
+			AddButton(width - 40, height - 30, 4020, 4022, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(width - 150, height - 30, 100, 20, 1114514, "#1060675", 0x0, false, false); // CLOSE
 		}
 		
 		protected string Color(string str, int color)
