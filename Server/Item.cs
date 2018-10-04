@@ -4655,7 +4655,7 @@ namespace Server
         {
             var items = LookupItems();
 
-            if (items != null && items.Contains(item))
+            if (items != null && items.Remove(item))
             {
                 #region Enhanced Client Support
                 if (item.Parent is Container && (!item.Stackable || item.Amount <= 0))
@@ -4665,8 +4665,6 @@ namespace Server
                 #endregion
 
                 item.SendRemovePacket();
-
-                items.Remove(item);
 
                 if (!item.IsVirtualItem)
                 {

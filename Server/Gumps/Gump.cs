@@ -188,7 +188,12 @@ namespace Server.Gumps
 			Add(new GumpHtml(x, y, width, height, text, background, scrollbar));
 		}
 
-		public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
+        public void AddHtmlIntern(int x, int y, int width, int height, int textid, bool background, bool scrollbar)
+        {
+            Add(new GumpHtml(x, y, width, height, textid, background, scrollbar));
+        }
+
+        public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
 		{
 			Add(new GumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
 		}
@@ -306,7 +311,12 @@ namespace Server.Gumps
 			Add(new GumpLabelCropped(x, y, width, height, hue, text));
 		}
 
-		public void AddRadio(int x, int y, int inactiveID, int activeID, bool initialState, int switchID)
+        public void AddLabelCroppedIntern(int x, int y, int width, int height, int hue, int textid)
+        {
+            Add(new GumpLabelCropped(x, y, width, height, hue, textid));
+        }
+
+        public void AddRadio(int x, int y, int inactiveID, int activeID, bool initialState, int switchID)
 		{
 			Add(new GumpRadio(x, y, inactiveID, activeID, initialState, switchID));
 		}

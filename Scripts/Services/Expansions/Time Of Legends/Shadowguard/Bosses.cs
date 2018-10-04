@@ -76,7 +76,7 @@ namespace Server.Engines.Shadowguard
 
 		public override void OnGotMeleeAttack(Mobile m)
 		{
-            if (CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
+            if (m is PlayerMobile && CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
 				Summon();
 				
 			base.OnGotMeleeAttack(m);
@@ -84,7 +84,7 @@ namespace Server.Engines.Shadowguard
 		
 		public override void OnDamagedBySpell(Mobile m)
 		{
-            if (CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
+            if (m is PlayerMobile && CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
 				Summon();
 				
 			base.OnDamagedBySpell(m);
