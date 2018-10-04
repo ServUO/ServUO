@@ -2015,7 +2015,7 @@
       </spawning>
     </region>
     <region type="NoHousingRegion" priority="50" name="FireIsleCasino">
-      <rect x="4041" y="3364" width="60" height="64" />
+      <rect x="4038" y="3303" width="60" height="64" />
       <go x="4047" y="3371" z="0" />
     </region>
     <region priority="50" name="Shrine of Compassion">
