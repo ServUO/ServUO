@@ -121,7 +121,7 @@ namespace Server.Items
             }
         }
 
-        public override TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
+        /*public override TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
         {
             TimeSpan ts = base.OnSwing(attacker, damageable);
 
@@ -130,7 +130,7 @@ namespace Server.Items
                 ts = TimeSpan.FromMilliseconds(1000);
 
             return ts;
-        }
+        }*/
 
         public override bool OnFired(Mobile attacker, IDamageable damageable)
         {

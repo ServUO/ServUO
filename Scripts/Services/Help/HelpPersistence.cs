@@ -24,7 +24,12 @@ namespace Server.Engines.Help
 				_FilePath,
 				writer =>
 				{
-					writer.Write(0); // version
+					writer.Write(1); // version
+
+                    writer.Write(ResponseEntry.Entries.Count);
+
+                    foreach (var entry in ResponseEntry.Entries)
+                        entry.Serialize(writer);
 
 					writer.Write(PageQueue.List.Count);
 
@@ -49,12 +54,23 @@ namespace Server.Engines.Help
 				reader =>
 				{
 					var version = reader.ReadInt();
-					var count = reader.ReadInt();
 
 					switch (version)
 					{
+                        case 1:
+                            {
+                                var c = reader.ReadInt();
+
+                                for (var i = 0; i < c; ++i)
+                                {
+                                    new ResponseEntry(reader);
+                                }
+                            }
+                            goto case 0;
 						case 0:
 							{
+                                var count = reader.ReadInt();
+
 								for (var i = 0; i < count; ++i)
 								{
 									var sender = reader.ReadMobile();

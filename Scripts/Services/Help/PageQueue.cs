@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
+using System.Linq;
 
 using Server.Accounting;
 using Server.Commands;
@@ -194,6 +195,109 @@ namespace Server.Engines.Help
 			}
 		}
 	}
+
+    public class ResponseEntry
+    {
+        public static readonly TimeSpan ExpirationPeriod = TimeSpan.FromDays(7);
+
+        public static List<ResponseEntry> Entries { get; set; }
+
+        public static void Configure()
+        {
+            Entries = new List<ResponseEntry>();
+
+            EventSink.Login += new LoginEventHandler(Login);
+            EventSink.BeforeWorldSave += new BeforeWorldSaveEventHandler(BeforeSave);
+        }
+
+        public static void Login(LoginEventArgs args)
+        {
+            Mobile m = args.Mobile;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(2.0), () =>
+            {
+                List<ResponseEntry> entries = Entries.Where(e => e.Sender == m).ToList();
+
+                foreach (var entry in entries)
+                {
+                    entry.SendGump();
+                }
+
+                ColUtility.Free(entries);
+            });
+        }
+
+        public static void BeforeSave(BeforeWorldSaveEventArgs args)
+        {
+            var list = Entries.Where(e => e.Expired).ToList();
+
+            foreach (var entry in list)
+            {
+                Entries.Remove(entry);
+            }
+        }
+
+        public static void AddEntry(ResponseEntry entry)
+        {
+            if (!Entries.Contains(entry))
+            {
+                Entries.Add(entry);
+            }
+        }
+
+        public Mobile Sender { get; set; }
+        public Mobile Handler { get; set; }
+        public string Message { get; set; }
+
+        public DateTime Expires { get; set; }
+
+        public bool Expired { get { return Expires < DateTime.UtcNow; } }
+
+        public ResponseEntry(Mobile sender, Mobile handler, string message)
+        {
+            Sender = sender;
+            Handler = handler;
+            Message = message;
+
+            Expires = DateTime.UtcNow + ExpirationPeriod;
+
+            AddEntry(this);
+        }
+
+        public void SendGump()
+        {
+            if (Sender.NetState != null)
+            {
+                Sender.SendGump(new MessageSentGump(Sender, Handler != null ? Handler.Name : "Staff", Message));
+                Entries.Remove(this);
+            }
+        }
+
+        public ResponseEntry(GenericReader reader)
+        {
+            int version = reader.ReadInt();
+
+            Sender = reader.ReadMobile();
+            Handler = reader.ReadMobile();
+            Message = reader.ReadString();
+            Expires = reader.ReadDateTime();
+
+            if (Sender != null && !Expired)
+            {
+                AddEntry(this);
+            }
+        }
+
+        public void Serialize(GenericWriter writer)
+        {
+            writer.Write(0);
+
+            writer.Write(Sender);
+            writer.Write(Handler);
+            writer.Write(Message);
+            writer.Write(Expires);
+        }
+    }
 
 	public class PageQueue
 	{
