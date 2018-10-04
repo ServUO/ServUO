@@ -207,6 +207,7 @@ namespace Server.Engines.Help
             Entries = new List<ResponseEntry>();
 
             EventSink.Login += new LoginEventHandler(Login);
+            EventSink.BeforeWorldSave += new BeforeWorldSaveEventHandler(BeforeSave);
         }
 
         public static void Login(LoginEventArgs args)
@@ -226,6 +227,16 @@ namespace Server.Engines.Help
             });
         }
 
+        public static void BeforeSave(BeforeWorldSaveEventArgs args)
+        {
+            var list = Entries.Where(e => e.Expired).ToList();
+
+            foreach (var entry in list)
+            {
+                Entries.Remove(entry);
+            }
+        }
+
         public static void AddEntry(ResponseEntry entry)
         {
             if (!Entries.Contains(entry))
@@ -239,6 +250,8 @@ namespace Server.Engines.Help
         public string Message { get; set; }
 
         public DateTime Expires { get; set; }
+
+        public bool Expired { get { return Expires < DateTime.UtcNow; } }
 
         public ResponseEntry(Mobile sender, Mobile handler, string message)
         {
@@ -267,8 +280,9 @@ namespace Server.Engines.Help
             Sender = reader.ReadMobile();
             Handler = reader.ReadMobile();
             Message = reader.ReadString();
+            Expires = reader.ReadDateTime();
 
-            if (Sender != null)
+            if (Sender != null && !Expired)
             {
                 AddEntry(this);
             }
@@ -281,6 +295,7 @@ namespace Server.Engines.Help
             writer.Write(Sender);
             writer.Write(Handler);
             writer.Write(Message);
+            writer.Write(Expires);
         }
     }
 
