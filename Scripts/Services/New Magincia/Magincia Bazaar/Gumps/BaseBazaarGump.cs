@@ -32,8 +32,8 @@ namespace Server.Engines.NewMagincia
 		{
             AddBackground(0, 0, width, height, 9300);
 			
-			AddButton(480, 670, 4020, 4022, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(370, 670, 100, 20, 1114514, "#1060675", 0x0, false, false); // CLOSE
+			AddButton(480, height - 30, 4020, 4022, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(370, height - 30, 100, 20, 1114514, "#1060675", 0x0, false, false); // CLOSE
 		}
 		
 		protected string Color(string str, int color)

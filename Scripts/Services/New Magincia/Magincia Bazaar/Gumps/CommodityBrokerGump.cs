@@ -14,7 +14,8 @@ namespace Server.Engines.NewMagincia
 		private CommodityBroker m_Broker;
 		
 		public CommodityBrokerGump(CommodityBroker broker, Mobile from)
-		{
+            : base(660, 520)
+        {
 			m_Broker = broker;
 			
 			AddHtmlLocalized(205, 10, 200, 18, 1150636, RedColor16, false, false); // Commodity Broker
@@ -81,8 +82,7 @@ namespace Server.Engines.NewMagincia
 				default:
 				case 0: return;
 				case 1:
-					from.SendGump(new CommodityBrokerGump(m_Broker, from));
-					from.SendGump(new BazaarInformationGump(0, 1150637));
+					from.SendGump(new BazaarInformationGump(0, 1150637, new CommodityBrokerGump(m_Broker, from)));
 					return;
 				case 2: // Set Shop Name
 					TextRelay tr = info.TextEntries[0];
@@ -343,8 +343,7 @@ namespace Server.Engines.NewMagincia
 				return;
 			if(info.ButtonID == 1)
 			{
-				from.SendGump(new SetPricesAndLimitsGump(m_Broker, m_Index, m_Page));
-				from.SendGump(new BazaarInformationGump(0, 1150644));
+				from.SendGump(new BazaarInformationGump(0, 1150644, new SetPricesAndLimitsGump(m_Broker, m_Index, m_Page)));
 				return;
 			}
 			else if (info.ButtonID == 400) // back page
@@ -718,8 +717,7 @@ namespace Server.Engines.NewMagincia
 			{
 				case 0: return;
 				case 1: 
-					from.SendGump(new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page));
-					from.SendGump(new BazaarInformationGump(1150655, 1150654));
+					from.SendGump(new BazaarInformationGump(1150655, 1150654, new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page)));
 					return;
 				case 400:
 					from.SendGump(new CommodityInventoryGump(m_Broker, -1, m_Buy, m_Page - 1));

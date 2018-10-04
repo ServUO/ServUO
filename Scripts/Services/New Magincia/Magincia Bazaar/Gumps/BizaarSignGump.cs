@@ -4,7 +4,6 @@ using Server.Mobiles;
 using Server.Items;
 using Server.Gumps;
 using Server.Network;
-using Server.Prompts;
 using System.Collections.Generic;
 
 namespace Server.Engines.NewMagincia
@@ -13,51 +12,62 @@ namespace Server.Engines.NewMagincia
 	{
 		private MaginciaBazaarPlot m_Plot;
 		
-		public StallLeasingGump(Mobile from, MaginciaBazaarPlot plot) 
+		public StallLeasingGump(Mobile from, MaginciaBazaarPlot plot)
+            : base(520, 520)
 		{
 			m_Plot = plot;
-			
-			AddHtmlLocalized(195, 5, 150, 18, 1150385, RedColor16, false, false);     // New Magincia Bazaar
-			AddHtmlLocalized(217, 40, 150, 18, 1150386, RedColor16, false, false);    // Stall Leasing
-			
-			AddButton(225, 90, 4005, 4007, 1, GumpButtonType.Reply, 0);
-			AddHtmlLocalized(265, 90, 150, 18, 1150392, OrangeColor16, false, false); // INFORMATION
-			
-			AddHtmlLocalized(192, 135, 150, 18, 1150534, RedColor16, false, false); // This Stall:
-			AddHtmlLocalized(265, 135, 150, 18, 1150530, m_Plot.PlotDef.ID, BlueColor16, false, false); // Stall ~1_NAME 
-			
-			AddHtmlLocalized(158, 160, 150, 18, 1150536, RedColor16, false, false); // Current Tenant:
-			
-			if(m_Plot.Owner == null)
-				AddHtmlLocalized(265, 160, 150, 18, 1150542, BlueColor16, false, false); // Stall is Not Occupied
-			else if(from == m_Plot.Owner)
-				AddHtmlLocalized(265, 160, 200, 18, 1150539, BlueColor16, false, false); // You are leasing this stall
-			else
-				AddHtmlLocalized(265, 160, 150, 18, 1150541, m_Plot.Owner.Name, BlueColor16, false, false); // ~1_TOKEN~
-			
-			AddHtmlLocalized(184, 189, 150, 18, 1150332, RedColor16, false, false); // Shop Name:
-			
-			if(m_Plot.ShopName != null && m_Plot.ShopName.Length > 0)
-				AddHtmlLocalized(265, 185, 200, 18, 1150312, m_Plot.ShopName, BlueColor16, false, false); // "~1_NAME~"
-			else
-				AddHtmlLocalized(265, 185, 200, 18, 1150314, BlueColor16, false, false); // This Shop Has No Name
-				
-			AddHtmlLocalized(160, 210, 150, 18, 1150388, RedColor16, false, false); // Lease Duration:
-			AddHtmlLocalized(265, 210, 150, 18, 1150543, ((int)MaginciaBazaar.GetLongAuctionTime.TotalDays).ToString(), BlueColor16, false, false); // ~1_DAYS~ Days
 
-            AddButton(225, 250, 4005, 4007, 2, GumpButtonType.Reply, 0);
-			AddHtmlLocalized(265, 250, 200, 18, 1150555, OrangeColor16, false, false); // SEE TOP BIDS
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150385", RedColor16, false, false); // New Magincia Bazaar
+            AddHtmlLocalized(10, 48, 500, 18, 1114513, "#1150386", RedColor16, false, false); // Stall Leasing
+			
+			AddButton(225, 95, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(265, 95, 245, 22, 1150392, OrangeColor16, false, false); // INFORMATION
+
+            AddHtmlLocalized(10, 139, 245, 20, 1114514, "#1150534", RedColor16, false, false); // This Stall:
+            AddHtmlLocalized(265, 139, 245, 20, 1150541, m_Plot.PlotDef.ID, BlueColor16, false, false); // Stall ~1_NAME
+
+            AddHtmlLocalized(10, 159, 245, 20, 1114514, "#1150536", RedColor16, false, false); // Current Tenant:
+
+            if (m_Plot.Owner == null)
+            {
+                AddHtmlLocalized(265, 159, 245, 20, 1150542, BlueColor16, false, false); // Stall is Not Occupied
+            }
+            else if (from == m_Plot.Owner)
+            {
+                AddHtmlLocalized(265, 159, 245, 20, 1150539, BlueColor16, false, false); // You are leasing this stall
+            }
+            else
+            {
+                AddHtmlLocalized(265, 159, 245, 20, 1150541, m_Plot.Owner.Name, BlueColor16, false, false); // ~1_TOKEN~
+            }
+
+            AddHtmlLocalized(10, 179, 245, 20, 1114514, "#1062509", RedColor16, false, false); // Shop Name:
+
+            if (m_Plot.ShopName != null && m_Plot.ShopName.Length > 0)
+            {
+                AddHtmlLocalized(265, 179, 245, 20, 1150312, m_Plot.ShopName, BlueColor16, false, false); // "~1_NAME~"
+            }
+            else
+            {
+                AddHtmlLocalized(265, 179, 245, 20, 1150314, BlueColor16, false, false); // This Shop Has No Name
+            }
+
+            AddHtmlLocalized(10, 199, 245, 20, 1114514, "#1150388", RedColor16, false, false); // Lease Duration:
+            AddHtmlLocalized(265, 199, 245, 20, 1150543, ((int)MaginciaBazaar.GetLongAuctionTime.TotalDays).ToString(), BlueColor16, false, false); // ~1_DAYS~ Days
+
+            AddButton(225, 237, 4005, 4007, 2, GumpButtonType.Reply, 0);
+			AddHtmlLocalized(265, 237, 200, 18, 1150555, OrangeColor16, false, false); // SEE TOP BIDS
 			
 			bool isOwner = m_Plot.IsOwner(from);
 			
-            AddButton(225, 274, 4005, 4007, 3, GumpButtonType.Reply, 0);
-			AddHtmlLocalized(265, 274, 200, 18, 1150557, isOwner ? OrangeColor16 : GrayColor16, false, false); // MY STALL LEASE
+            AddButton(225, 261, 4005, 4007, 3, GumpButtonType.Reply, 0);
+			AddHtmlLocalized(265, 261, 200, 18, 1150557, isOwner ? GrayColor16 : OrangeColor16, false, false); // MY STALL LEASE
 
-            AddButton(225, 298, 4005, 4007, 4, GumpButtonType.Reply, 0);
-			AddHtmlLocalized(265, 298, 200, 18, 1150556, OrangeColor16, false, false); // MY STALL BID
+            AddButton(225, 285, 4005, 4007, 4, GumpButtonType.Reply, 0);
+			AddHtmlLocalized(265, 285, 200, 18, 1150556, OrangeColor16, false, false); // MY STALL BID
 			
-            AddButton(225, 322, 4005, 4007, 5, GumpButtonType.Reply, 0);
-			AddHtmlLocalized(265, 322, 200, 18, 1150540, isOwner ? OrangeColor16 : GrayColor16, false, false); // MY BID MATCHING
+            AddButton(225, 309, 4005, 4007, 5, GumpButtonType.Reply, 0);
+			AddHtmlLocalized(265, 309, 200, 18, 1150540, isOwner ? GrayColor16 : OrangeColor16, false, false); // MY BID MATCHING
 		}
 		
 		public override void OnResponse(NetState state, RelayInfo info)
@@ -68,9 +78,8 @@ namespace Server.Engines.NewMagincia
 			{
 				default:
 				case 0: break;
-				case 1: 
-					from.SendGump(new StallLeasingGump(from, m_Plot));
-					from.SendGump(new BazaarInformationGump(-1, 1150391));
+				case 1:
+					from.SendGump(new BazaarInformationGump(1150386, 1150391, new StallLeasingGump(from, m_Plot)));
 					break;
 				case 2: // SEE TOP BIDS
 					from.SendGump(new TopBidsGump(from, m_Plot));
@@ -99,7 +108,8 @@ namespace Server.Engines.NewMagincia
 		private MaginciaBazaarPlot m_Plot;
 		
 		public MyStallLeaseGump(Mobile from, MaginciaBazaarPlot plot)
-		{
+            : base(520, 520)
+        {
 			m_Plot = plot;
 
             AddHtmlLocalized(195, 5, 150, 18, 1150385, RedColor16, false, false);     // New Magincia Bazaar
@@ -176,7 +186,8 @@ namespace Server.Engines.NewMagincia
 		private MaginciaBazaarPlot m_Plot;
 		
 		public ConfirmAbandonLeaseGump(Mobile from, MaginciaBazaarPlot plot)
-		{
+            : base(520, 520)
+        {
 			m_Plot = plot;
 			
 			AddHtmlLocalized(195, 5, 150, 18, 1150385, RedColor16, false, false);     // New Magincia Bazaar
@@ -218,8 +229,9 @@ namespace Server.Engines.NewMagincia
 		private MaginciaBazaarPlot m_Plot;
 		private bool m_HasInventory;
 		
-		public ConfirmFireBrokerGump(Mobile from, MaginciaBazaarPlot plot) 
-		{
+		public ConfirmFireBrokerGump(Mobile from, MaginciaBazaarPlot plot)
+            : base(520, 520)
+        {
 			m_Plot = plot;
 			m_HasInventory = false;
 			
@@ -276,7 +288,8 @@ namespace Server.Engines.NewMagincia
 		private bool m_Commodity;
 		
 		public HireBrokerGump(Mobile from, MaginciaBazaarPlot plot, bool commodity)
-		{
+            : base(520, 520)
+        {
 			m_Plot = plot;
 			m_Commodity = commodity;
 
@@ -332,7 +345,8 @@ namespace Server.Engines.NewMagincia
 		private bool m_Commodity;
 		
 		public ConfirmAddMultiGump(Mobile from, MaginciaBazaarPlot plot, bool commodity)
-		{
+            : base(520, 520)
+        {
 			m_Plot = plot;
 			m_Commodity = commodity;
 
@@ -388,16 +402,17 @@ namespace Server.Engines.NewMagincia
 		private MaginciaBazaarPlot m_Plot;
 		
 		public StallBidGump(Mobile from, MaginciaBazaarPlot plot)
-		{
+            : base(520, 520)
+        {
 			m_Plot = plot;
 			
 			MaginciaBazaarPlot biddingPlot = MaginciaBazaar.GetBiddingPlot(from);
             int bidAmount = biddingPlot != null ? biddingPlot.GetBid(from) : MaginciaBazaar.GetNextAvailableBid(from);
 
-            AddHtmlLocalized(195, 5, 150, 18, 1150385, RedColor16, false, false);     // New Magincia Bazaar
-            AddHtmlLocalized(217, 40, 150, 18, 1150386, RedColor16, false, false);    // Stall Leasing
-			
-			AddHtmlLocalized(86, 135, 200, 18, 1150389, RedColor16, false, false); // You are bidding on:
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150385", RedColor16, false, false); // New Magincia Bazaar
+            AddHtmlLocalized(10, 48, 500, 18, 1114513, "#1150386", RedColor16, false, false); // Stall Leasing
+
+            AddHtmlLocalized(86, 135, 200, 18, 1150389, RedColor16, false, false); // You are bidding on:
 			
 			if(biddingPlot != null)
 				AddHtmlLocalized(215, 135, 100, 18, 1150541, biddingPlot.PlotDef.ID, BlueColor16, false, false); // ~1_TOKEN~
@@ -440,8 +455,7 @@ namespace Server.Engines.NewMagincia
 				default:
 				case 0: break;
 				case 1:
-					from.SendGump(new StallBidGump(from, m_Plot));
-					from.SendGump(new BazaarInformationGump(0, 1150567));
+					from.SendGump(new BazaarInformationGump(0, 1150567, new StallBidGump(from, m_Plot)));
 					break;
 				case 2: // BID ON THIS STALL
 					{
@@ -524,30 +538,37 @@ namespace Server.Engines.NewMagincia
 		private MaginciaBazaarPlot m_Plot;
 		
 		public TopBidsGump(Mobile from, MaginciaBazaarPlot plot)
-		{
+            : base(520, 520)
+        {
 			m_Plot = plot;
 
-            AddHtmlLocalized(195, 5, 150, 18, 1150385, RedColor16, false, false);     // New Magincia Bazaar
-            AddHtmlLocalized(217, 40, 150, 18, 1150386, RedColor16, false, false);    // Stall Leasing
-			
-			AddHtmlLocalized(173, 100, 173, 18, 1150562, plot.PlotDef.ID, RedColor16, false, false); // <DIV ALIGN=CENTER>Viewing top bids for stall <b>~1_STALLNAME~</b>
-			
-			if(m_Plot.Auction == null || m_Plot.Auction.Auctioners.Count == 0)
-				AddHtmlLocalized(60, 150, 300, 18, 1150563, BlueColor16, false, false); // There are currently no bids to lease this stall.
-			else
-			{
-				List<BidEntry> list = new List<BidEntry>(m_Plot.Auction.Auctioners.Values);
-				list.Sort();
-				int y = 150;
-				
-				for(int i = 0; i < list.Count; i++)
-				{
-					AddHtml(60, y + (i * 20), 200, 18, Color(FormatAmt(list[i].Amount), OrangeColor), false, false);
-					
-					if(i >= 10)
-						break;
-				}
-			}
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150385", RedColor16, false, false); // New Magincia Bazaar
+            AddHtmlLocalized(10, 48, 500, 18, 1114513, "#1150386", RedColor16, false, false); // Stall Leasing
+
+            AddHtmlLocalized(10, 95, 500, 18, 1150562, plot.PlotDef.ID, RedColor16, false, false); // <DIV ALIGN=CENTER>Viewing top bids for stall <b>~1_STALLNAME~</b>
+
+            AddHtmlLocalized(10, 133, 245, 18, 1150560, RedColor16, false, false); // BID AMOUNT
+            AddHtmlLocalized(265, 133, 245, 18, 1150561, RedColor16, false, false); // BID TYPE
+
+            if (m_Plot.Auction == null || m_Plot.Auction.Auctioners.Count == 0)
+            {
+                AddHtmlLocalized(10, 171, 500, 90, 1114513, "#1150563", RedColor16, false, false); // There are currently no bids to lease this stall.
+            }
+            else
+            {
+                List<BidEntry> list = new List<BidEntry>(m_Plot.Auction.Auctioners.Values);
+                list.Sort();
+                int y = 171;
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    AddHtml(10, y + (i * 18), 200, 18, Color(FormatAmt(list[i].Amount), BlueColor16), false, false);
+                    AddHtmlLocalized(265, y + (i * 18), 245, 18, 1150558 + (int)list[i].BidType, BlueColor16, false, false);
+
+                    if (i >= 10)
+                        break;
+                }
+            }
 
             AddButton(10, 490, 4014, 4016, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(50, 490, 200, 18, 1149777, BlueColor16, false, false); // MAIN MENU
@@ -568,13 +589,14 @@ namespace Server.Engines.NewMagincia
 		private MaginciaBazaarPlot m_Plot;
 		
 		public ConfirmBidGump(Mobile from, MaginciaBazaarPlot actualPlot, MaginciaBazaarPlot newPlot, int newBid, bool retract)
-		{
+            : base(520, 520)
+        {
 			m_Plot = actualPlot;
-			
-			AddHtmlLocalized(195, 5, 150, 18, 1150385, RedColor16, false, false);     // New Magincia Bazaar
-			AddHtmlLocalized(217, 40, 150, 18, 1150386, RedColor16, false, false);    // Stall Leasing
-			
-			MaginciaBazaarPlot oldPlot = MaginciaBazaar.GetBiddingPlot(from);
+
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150385", RedColor16, false, false); // New Magincia Bazaar
+            AddHtmlLocalized(10, 48, 500, 18, 1114513, "#1150386", RedColor16, false, false); // Stall Leasing
+
+            MaginciaBazaarPlot oldPlot = MaginciaBazaar.GetBiddingPlot(from);
 			
 			bool hasbidnextavailable = MaginciaBazaar.NextAvailable.ContainsKey(from);
 			bool hasbidspecific = oldPlot != null;
@@ -1056,15 +1078,16 @@ namespace Server.Engines.NewMagincia
 		private MaginciaBazaarPlot m_Plot;
 		
 		public MatchBidGump(Mobile from, MaginciaBazaarPlot plot)
-		{
+            : base(520, 520)
+        {
 			m_Plot = plot;
 			
 			int amount = MaginciaBazaar.GetBidMatching(from);
 
-            AddHtmlLocalized(195, 5, 150, 18, 1150385, RedColor16, false, false);     // New Magincia Bazaar
-            AddHtmlLocalized(217, 40, 150, 18, 1150386, RedColor16, false, false);    // Stall Leasing
-			
-			AddHtmlLocalized(12, 100, 150, 18, 1150387, RedColor16, false, false); // Your Stall:
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150385", RedColor16, false, false); // New Magincia Bazaar
+            AddHtmlLocalized(10, 48, 500, 18, 1114513, "#1150386", RedColor16, false, false); // Stall Leasing
+
+            AddHtmlLocalized(12, 100, 150, 18, 1150387, RedColor16, false, false); // Your Stall:
 			AddHtmlLocalized(12, 120, 150, 18, 1150393, RedColor16, false, false); // Bid Match Limit:
 
             if (m_Plot != null)
@@ -1097,8 +1120,7 @@ namespace Server.Engines.NewMagincia
 			{
 				case 0: break;
 				case 1: 
-					from.SendGump(new MatchBidGump(from, m_Plot));
-					from.SendGump(new BazaarInformationGump(1150399, 1150398));
+					from.SendGump(new BazaarInformationGump(1150399, 1150398, new MatchBidGump(from, m_Plot)));
 					break;
 				case 2:
 					{
@@ -1128,16 +1150,17 @@ namespace Server.Engines.NewMagincia
 		private MaginciaBazaarPlot m_Plot;
 				
 		public ConfirmMatchBidGump(Mobile from, int amount, MaginciaBazaarPlot plot)
-		{
+            : base(520, 520)
+        {
 			m_Plot = plot;
 			
 			if(amount < 0)
 				amount = 0;
 
-            AddHtmlLocalized(195, 5, 150, 18, 1150385, RedColor16, false, false);     // New Magincia Bazaar
-            AddHtmlLocalized(217, 40, 150, 18, 1150386, RedColor16, false, false);    // Stall Leasing
-			
-			int cliloc1;
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150385", RedColor16, false, false); // New Magincia Bazaar
+            AddHtmlLocalized(10, 48, 500, 18, 1114513, "#1150386", RedColor16, false, false); // Stall Leasing
+
+            int cliloc1;
 			string args1;
 			
 			int current = MaginciaBazaar.GetBidMatching(from);
@@ -1220,28 +1243,51 @@ namespace Server.Engines.NewMagincia
 	
 	public class BazaarInformationGump : BaseBazaarGump
 	{
-        public BazaarInformationGump(int title, int message) : this(title, message, -1)
+        private Gump _Gump;
+
+        public BazaarInformationGump(int title, int message) : this(title, message, -1, null)
+        {            
+        }
+
+        public BazaarInformationGump(int title, int message, Gump g) : this(title, message, -1, g)
         {
         }
 
-		public BazaarInformationGump(int title, int message, int hue)
-		{
-            int useHue = hue == -1 ? RedColor16 : hue;
-            AddHtmlLocalized(195, 10, 150, 18, 1150385, useHue, false, false); // New Magincia Bazaar
-			
-			if(title > 0)
-                AddHtmlLocalized(10, 50, 500, 40, title, useHue, false, false);
+        public BazaarInformationGump(int title, int message, int hue, Gump g)
+            : base(520, 520)
+        {
+            _Gump = g;
 
-            AddHtmlLocalized(10, 100, 500, 350, message, useHue, false, true); 
-		}
-	}
+            int useHue = hue == -1 ? RedColor16 : hue;
+
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150385", useHue, false, false); // New Magincia Bazaar
+
+            if (title > 0)
+                AddHtmlLocalized(10, 48, 500, 40, 1114513, String.Format("#{0}", title), useHue, false, false);
+
+            AddHtmlLocalized(10, 95, 500, 375, 1114513, String.Format("#{0}", message), useHue, true, true);
+
+            if (g != null)
+            {
+                AddButton(10, 490, 0xFAE, 0xFAF, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(50, 490, 210, 20, 1149777, BlueColor16, false, false); // MAIN MENU
+            }
+        }
+
+        public override void OnResponse(NetState state, RelayInfo info)
+        {
+            if (info.ButtonID == 1)
+                state.Mobile.SendGump(_Gump);
+        }
+    }
 	
 	public class ShopRecallRuneGump : BaseBazaarGump
 	{
 		private PlotSign m_Sign;
 		
 		public ShopRecallRuneGump(Mobile from, PlotSign sign)
-		{
+            : base(520, 520)
+        {
 			m_Sign = sign;
 
             AddHtmlLocalized(195, 5, 150, 18, 1150385, RedColor16, false, false);     // New Magincia Bazaar
