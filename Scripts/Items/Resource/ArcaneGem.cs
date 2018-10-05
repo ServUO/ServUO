@@ -4,7 +4,7 @@ using Server.Targeting;
 
 namespace Server.Items
 {
-    public class ArcaneGem : Item
+    public class ArcaneGem : Item, ICommodity
     {
         public const int DefaultArcaneHue = 2117;
         [Constructable]
@@ -19,6 +19,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override string DefaultName
         {

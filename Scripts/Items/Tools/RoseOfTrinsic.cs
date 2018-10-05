@@ -8,7 +8,7 @@ using Server.Network;
 namespace Server.Items
 {
     [FlipableAttribute(0x234C, 0x234D)]
-    public class RoseOfTrinsic : Item, ISecurable
+    public class RoseOfTrinsic : Item, ISecurable, ICommodity
     {
         private static readonly TimeSpan m_SpawnTime = TimeSpan.FromHours(4.0);
         private int m_Petals;
@@ -30,6 +30,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {
