@@ -427,7 +427,7 @@ namespace Server.Engines.VendorSearching
                     VendorItem item = Items[info.ButtonID - 100];
                     PlayerVendor vendor = item.Item.RootParentEntity as PlayerVendor;
 
-                    if(vendor != null)
+                    if(vendor != null && vendor.Map != null && vendor.Map != Map.Internal)
                     {
                         if (_GivenTo == null)
                             _GivenTo = new Dictionary<VendorItem, List<PlayerMobile>>();
