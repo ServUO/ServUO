@@ -53,6 +53,9 @@ namespace Server.Engines.Craft
         {
             if (item == null)
                 return EnhanceResult.BadItem;
+			
+			if (item is GargishNecklace || item is GargishEarrings)
+                return EnhanceResult.BadItem;
 
             if (!item.IsChildOf(from.Backpack))
                 return EnhanceResult.NotInBackpack;
