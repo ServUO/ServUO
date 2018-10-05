@@ -14,20 +14,25 @@ namespace Server.Engines.NewMagincia
         private CommodityBroker m_Broker;
 
         public CommodityBrokerGump(CommodityBroker broker, Mobile from)
-            : base(660, 520)
+            : base(520, 520)
         {
             m_Broker = broker;
 
-            AddHtmlLocalized(205, 10, 200, 18, 1150636, RedColor16, false, false); // Commodity Broker
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150636", RedColor16, false, false);  // Commodity Broker
 
             if (m_Broker.Plot.ShopName != null && m_Broker.Plot.ShopName.Length > 0)
-                AddHtml(173, 40, 173, 18, Color(FormatStallName(m_Broker.Plot.ShopName), BlueColor), false, false);
+            {
+                AddHtml(10, 37, 500, 18, Color(FormatStallName(m_Broker.Plot.ShopName), BlueColor), false, false);
+            }
             else
-                AddHtmlLocalized(180, 40, 200, 18, 1150314, BlueColor16, false, false); // This Shop Has No Name
+            {
+                AddHtmlLocalized(10, 37, 500, 18, 1114513, "#1150314", BlueColor16, false, false); // This Shop Has No Name
+            }
 
-            AddHtml(173, 65, 173, 18, Color(FormatBrokerName(String.Format("Proprieter: {0}", broker.Name)), BlueColor), false, false);
+            AddHtmlLocalized(10, 55, 260, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
+            AddHtml(280, 55, 260, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
 
-            AddHtmlLocalized(215, 100, 200, 18, 1150328, GreenColor16, false, false); // OWNER MENU
+            AddHtmlLocalized(10, 100, 500, 18, 1114513, "#1150328", GreenColor16, false, false); // OWNER MENU
 
             AddButton(150, 150, 4005, 4007, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(190, 150, 200, 18, 1150392, OrangeColor16, false, false); // INFORMATION
@@ -40,7 +45,7 @@ namespace Server.Engines.NewMagincia
             AddHtml(190, 200, 200, 18, FormatAmt(balance), false, false);
 
             AddHtmlLocalized(32, 230, 200, 18, 1150329, OrangeColor16, false, false); // Broker Sales Comission
-            AddHtmlLocalized(190, 230, 100, 18, 1150330, 0x000000, false, false); // 5%
+            AddHtmlLocalized(190, 230, 100, 18, 1150330, OrangeColor16, false, false); // 5%
 
             AddHtmlLocalized(109, 250, 200, 18, 1150331, OrangeColor16, false, false); // Weekly Fee:
             AddHtml(190, 250, 100, 18, FormatAmt(broker.GetWeeklyFee()), false, false);
@@ -227,18 +232,30 @@ namespace Server.Engines.NewMagincia
         private CommodityBroker m_Broker;
 
         public CommodityTargetGump(CommodityBroker broker)
+            : base(520, 520)
         {
             m_Broker = broker;
+
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150636", RedColor16, false, false);  // Commodity Broker
+
+            if (m_Broker.Plot.ShopName != null && m_Broker.Plot.ShopName.Length > 0)
+            {
+                AddHtml(10, 37, 500, 18, Color(FormatStallName(m_Broker.Plot.ShopName), BlueColor), false, false);
+            }
+            else
+            {
+                AddHtmlLocalized(10, 37, 500, 18, 1114513, "#1150314", BlueColor16, false, false); // This Shop Has No Name
+            }
+
+            AddHtmlLocalized(10, 55, 260, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
+            AddHtml(280, 55, 260, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
 
             /* Target commodity items or filled commodity deeds in your backpack to add them to the 
 			 * broker's inventory. These items will be retrievable, and the broker will not trade them 
 			 * until you establish prices.<br><br>When done, press the [ESC] key to cancel your targeting 
 			 * cursor, or click the MAIN MENU button below.*/
 
-            AddHtmlLocalized(10, 50, 500, 400, 1150209, OrangeColor16, false, false);
-
-            AddButton(10, 490, 4014, 4016, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(50, 490, 200, 18, 1149777, BlueColor16, false, false); // MAIN MENU
+            AddHtmlLocalized(10, 100, 500, 400, 1150209, OrangeColor16, false, false);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -262,19 +279,20 @@ namespace Server.Engines.NewMagincia
         public SetPricesAndLimitsGump(CommodityBroker broker) : this(broker, -1, 0) { }
 
         public SetPricesAndLimitsGump(CommodityBroker broker, int index, int page)
+            : base(520, 520)
         {
             m_Broker = broker;
             m_Index = index;
             m_Page = page;
 
-            AddHtmlLocalized(205, 10, 200, 18, 1150636, RedColor16, false, false); // Commodity Broker
+            AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150636", RedColor16, false, false);  // Commodity Broker
 
             AddButton(150, 40, 4005, 4007, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(190, 40, 200, 18, 1150392, OrangeColor16, false, false); // INFORMATION
 
-            AddHtmlLocalized(120, 65, 100, 18, 1150140, OrangeColor16, false, false); // ITEM
-            AddHtmlLocalized(160, 65, 100, 18, 1150204, OrangeColor16, false, false); // BUY AT
-            AddHtmlLocalized(220, 65, 100, 18, 1150645, OrangeColor16, false, false); // BUY LMT
+            AddHtmlLocalized(100, 65, 100, 18, 1150140, OrangeColor16, false, false); // ITEM
+            AddHtmlLocalized(170, 65, 100, 18, 1150204, OrangeColor16, false, false); // BUY AT
+            AddHtmlLocalized(230, 65, 100, 18, 1150645, OrangeColor16, false, false); // BUY LMT
             AddHtmlLocalized(315, 65, 100, 18, 1150205, OrangeColor16, false, false); // SELL AT
             AddHtmlLocalized(380, 65, 100, 18, 1150646, OrangeColor16, false, false); // SELL LMT
             AddHtmlLocalized(475, 65, 100, 18, 1150647, OrangeColor16, false, false); // EDIT
@@ -294,11 +312,11 @@ namespace Server.Engines.NewMagincia
                 int col16 = col == YellowColor ? YellowColor16 : OrangeColor16;
                 CommodityBrokerEntry entry = broker.CommodityEntries[i];
 
-                AddHtmlLocalized(1, y, 150, 18, 1114514, String.Format("#{0}", entry.Label), col16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
-                AddHtml(160, y, 45, 18, AlignRight(Color(FormatAmt(entry.BuyPricePer), col)), false, false);
-                AddHtml(220, y, 45, 18, AlignRight(Color(FormatAmt(entry.BuyLimit), col)), false, false);
-                AddHtml(315, y, 80, 18, Color(FormatAmt(entry.SellPricePer), col), false, false);
-                AddHtml(380, y, 80, 18, Color(FormatAmt(entry.SellLimit), col), false, false);
+                AddHtmlLocalized(1, y, 130, 18, 1114514, String.Format("#{0}", entry.Label), col16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
+                AddHtml(170, y, 45, 18, Color(AlignRight(FormatAmt(entry.BuyPricePer)), col), false, false);
+                AddHtml(230, y, 80, 18, Color(AlignRight(FormatAmt(entry.BuyLimit)), col), false, false);
+                AddHtml(315, y, 45, 18, Color(AlignRight(FormatAmt(entry.SellPricePer)), col), false, false);
+                AddHtml(380, y, 80, 18, Color(AlignRight(FormatAmt(entry.SellLimit)), col), false, false);
 
                 AddButton(475, y, 4014, 4016, 2 + i, GumpButtonType.Reply, 0);
 
@@ -331,8 +349,8 @@ namespace Server.Engines.NewMagincia
             AddButton(140, 450, 4005, 4007, 500, GumpButtonType.Reply, 0);
             AddHtmlLocalized(190, 450, 200, 18, 1150232, RedColor16, false, false); // SET PRICES
 
-            AddButton(10, 495, 4014, 4016, 501, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(50, 495, 100, 18, 1149777, BlueColor16, false, false); // MAIN MENU
+            AddButton(10, 490, 4014, 4016, 501, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 490, 100, 18, 1149777, BlueColor16, false, false); // MAIN MENU
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -437,21 +455,22 @@ namespace Server.Engines.NewMagincia
         }
 
         public ViewInventoryGump(CommodityBroker broker, int index, int page)
+            : base (660, 520)
         {
             m_Broker = broker;
             m_Index = index;
             m_Page = page;
 
-            AddHtmlLocalized(205, 10, 200, 18, 1150636, RedColor16, false, false); // Commodity Broker
-            AddHtmlLocalized(10, 30, 500, 60, 1150867, OrangeColor16, false, false); // Click the button next to the commodity...
+            AddHtmlLocalized(10, 10, 640, 18, 1114513, "#1150636", RedColor16, false, false);  // Commodity Broker
+            AddHtmlLocalized(10, 40, 640, 60, 1150641, OrangeColor16, false, false); // Click the button next to the commodity...
 
-            AddHtmlLocalized(150, 100, 150, 18, 1150140, OrangeColor16, false, false); // ITEM
-            AddHtmlLocalized(240, 100, 150, 18, 1150201, OrangeColor16, false, false); // IN STOCK
-            AddHtmlLocalized(320, 100, 150, 18, 1150639, OrangeColor16, false, false); // SELECT
-            AddHtmlLocalized(420, 100, 150, 18, 1150855, OrangeColor16, false, false); // DOWN
-            AddHtmlLocalized(480, 100, 150, 18, 1150856, OrangeColor16, false, false); // UP
+            AddHtmlLocalized(235, 125, 150, 18, 1150140, OrangeColor16, false, false); // ITEM
+            AddHtmlLocalized(360, 125, 150, 18, 1150201, OrangeColor16, false, false); // IN STOCK
+            AddHtmlLocalized(440, 125, 150, 18, 1150639, OrangeColor16, false, false); // SELECT
+            AddHtmlLocalized(540, 125, 150, 18, 1150855, OrangeColor16, false, false); // DOWN
+            AddHtmlLocalized(600, 125, 150, 18, 1150856, OrangeColor16, false, false); // UP
 
-            int y = 125;
+            int y = 150;
             int perPage = 10;
 
             if (index > -1)
@@ -466,18 +485,18 @@ namespace Server.Engines.NewMagincia
                 int col16 = col == YellowColor ? YellowColor16 : OrangeColor16;
                 CommodityBrokerEntry entry = broker.CommodityEntries[i];
 
-                AddHtmlLocalized(1, y, 180, 18, 1114514, String.Format("#{0}", entry.Label), col16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
-                AddHtml(240, y, 100, 18, AlignRight(Color(FormatAmt(entry.Stock), col)), false, false);
+                AddHtmlLocalized(1, y, 260, 18, 1114514, String.Format("#{0}", entry.Label), col16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
+                AddHtml(360, y, 55, 18, Color(AlignRight(FormatAmt(entry.Stock)), col), false, false);
 
-                AddButton(320, y, 4014, 4016, 1000 + i, GumpButtonType.Reply, 0); // SELECT
+                AddButton(440, y, 4014, 4016, 1000 + i, GumpButtonType.Reply, 0); // SELECT
 
                 if (i > 0)
-                    AddButton(480, y, 250, 251, 1500 + i, GumpButtonType.Reply, 0); // UP
+                    AddButton(600, y, 250, 251, 1500 + i, GumpButtonType.Reply, 0); // UP
 
                 if (i < broker.CommodityEntries.Count - 1)
-                    AddButton(420, y, 252, 253, 2000 + i, GumpButtonType.Reply, 0); // DOWN
+                    AddButton(540, y, 252, 253, 2000 + i, GumpButtonType.Reply, 0); // DOWN
 
-                y += 22;
+                y += 20;
                 count++;
             }
 
@@ -487,10 +506,10 @@ namespace Server.Engines.NewMagincia
             if (broker.CommodityEntries.Count - start > perPage) // forward
                 AddButton(390, 350, 4005, 4007, 401, GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(108, 415, 150, 18, 1150202, OrangeColor16, false, false); // WITHDRAW
-            AddBackground(190, 415, 285, 22, 9350);
-            AddTextEntry(191, 415, 284, 20, 0, 0, "");
-            AddButton(480, 415, 4014, 4016, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(160, 415, 150, 18, 1150202, OrangeColor16, false, false); // WITHDRAW
+            AddBackground(250, 415, 360, 22, 9350); 
+            AddTextEntry(251, 415, 358, 20, LabelHueBlue, 0, "");
+            AddButton(620, 415, 4014, 4016, 1, GumpButtonType.Reply, 0);
 
             if (index > -1)
             {
@@ -628,7 +647,7 @@ namespace Server.Engines.NewMagincia
 
             if (m_Broker.Plot.ShopName != null && m_Broker.Plot.ShopName.Length > 0)
             {
-                AddHtml(10, 37, 640, 18, Color(FormatStallName(FormatStallName(m_Broker.Plot.ShopName)), BlueColor), false, false);
+                AddHtml(10, 37, 640, 18, Color(FormatStallName(m_Broker.Plot.ShopName), BlueColor), false, false);
             }
             else
             {
@@ -735,7 +754,7 @@ namespace Server.Engines.NewMagincia
                             AddRadio(10, y, 0xFA5, 0xFA6, false, 2 + i);
 
                         if (entry.PlayerCanSell(0))
-                            AddRadio(590, 213, 0xFAE, 0xFAF, false, 102 + i);
+                            AddRadio(590, y, 0xFAE, 0xFAF, false, 102 + i);
 
                         y += 20;
                         count++;
@@ -755,7 +774,7 @@ namespace Server.Engines.NewMagincia
 
                     AddHtmlLocalized(10, 421, 210, 22, 1114514, "#1150662", BlueColor16, false, false); // QUANTITY
                     AddBackground(230, 421, 420, 22, 0x2486);
-                    AddTextEntry(232, 423, 416, 18, 0xCC, 0, "");
+                    AddTextEntry(232, 423, 416, 18, LabelHueBlue, 0, "");
 
                     AddButton(190, 445, 4005, 4007, 500, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(230, 445, 420, 22, 1077761, OrangeColor16, false, false); // TRADE
@@ -818,7 +837,7 @@ namespace Server.Engines.NewMagincia
                             if (!m_Broker.CommodityEntries.Contains(entry))
                             {
                                 from.SendGump(new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page, 1150244)); // Transaction no longer available
-                                break;
+                                return;
                             }
 
                             int amount = 0;
@@ -829,33 +848,53 @@ namespace Server.Engines.NewMagincia
                                 amount = Convert.ToInt32(relay.Text);
                             }
                             catch { }
-                            
+
                             if (amount > 0)
                             {
-                                if (Banker.GetBalance(from) < m_Broker.GetBuyCost(from, entry, amount))
+                                if (m_Buy && Banker.GetBalance(from) < m_Broker.GetBuyCost(from, entry, amount))
                                 {
                                     /* You do not have the funds needed to make this trade available in your bank box. Brokers are only able to transfer funds from your bank box.
                                     Please deposit the necessary funds into your bank box and try again.
                                     */
                                     from.SendGump(new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page, 1150252));
+                                    return;
+                                }
+                                else if (!m_Buy && !m_Broker.SellCommodityControl(from, entry, amount))
+                                {
+                                    /* You do not have the requested amount of that commodity (either in item or deed form) in your backpack to trade.
+                                     * Note that commodities cannot be traded from your bank box.
+                                    */
+                                    from.SendGump(new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page, 1150667));
+                                    return;
                                 }
                                 else if (m_Buy && entry.PlayerCanBuy(amount))
+                                {
                                     from.SendGump(new ConfirmBuyCommodityGump(m_Broker, amount, entry, true, new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page, 0)));
+                                    return;
+                                }
                                 else if (!m_Buy && entry.PlayerCanSell(amount))
+                                {
                                     from.SendGump(new ConfirmBuyCommodityGump(m_Broker, amount, entry, false, new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page, 0)));
+                                    return;
+                                }
                                 else
+                                {
                                     from.SendGump(new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page, 1150215)); // You have entered an invalid value, or a non-numeric value. Please try again.
-                                return;
+                                    return;
+                                }
                             }
                             else
                             {
                                 from.SendGump(new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page, 1150215)); // You have entered an invalid value, or a non-numeric value. Please try again.
+                                return;
                             }
                         }
                         else
+                        {
                             from.SendGump(new CommodityInventoryGump(m_Broker, m_Index, m_Buy, m_Page, 1150642)); // You did not select a commodity.
+                            return;
+                        }
                     }
-                    break;
             }
         }
     }
@@ -911,7 +950,7 @@ namespace Server.Engines.NewMagincia
 
             if (m_Broker.Plot.ShopName != null && m_Broker.Plot.ShopName.Length > 0)
             {
-                AddHtml(10, 37, 640, 18, Color(FormatStallName(FormatStallName(m_Broker.Plot.ShopName)), BlueColor), false, false);
+                AddHtml(10, 37, 640, 18, Color(FormatStallName(m_Broker.Plot.ShopName), BlueColor), false, false);
             }
             else
             {

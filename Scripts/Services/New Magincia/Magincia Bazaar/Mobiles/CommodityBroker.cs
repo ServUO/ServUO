@@ -193,9 +193,27 @@ namespace Server.Engines.NewMagincia
 				from.SendLocalizedMessage(1150252); // You do not have the funds needed to make this trade available in your bank box. Brokers are only able to transfer funds from your bank box. Please deposit the necessary funds into your bank box and try again.
 			}
 		}
-		
-		// Called when a player SELLs the commodity from teh broker...this is fucking confusing
-		public void TrySellCommodity(Mobile from, CommodityBrokerEntry entry, int amount)
+
+        public bool SellCommodityControl(Mobile from, CommodityBrokerEntry entry, int amount)
+        {
+            int totalCost = entry.BuyPricePer * amount;
+            Type type = entry.CommodityType;
+
+            if (from.Backpack != null)
+            {
+                int total = amount;
+                int typeAmount = from.Backpack.GetAmount(type);
+                int commodityAmount = GetCommodityType(from.Backpack, type);
+
+                if (typeAmount + commodityAmount >= total)
+                    return true;
+            }
+
+            return false;
+        }
+
+        // Called when a player SELLs the commodity from teh broker...this is fucking confusing
+        public void TrySellCommodity(Mobile from, CommodityBrokerEntry entry, int amount)
 		{
 			int totalCost = entry.BuyPricePer * amount;
 			Type type = entry.CommodityType;

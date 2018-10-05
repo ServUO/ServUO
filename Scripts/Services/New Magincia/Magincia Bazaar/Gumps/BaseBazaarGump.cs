@@ -24,7 +24,7 @@ namespace Server.Engines.NewMagincia
         public const int YellowColor16 = 0xFFE0;
         public const int GrayColor16 = 0xC618;
 
-        public const int LabelHueBlue = 0x4F1;
+        public const int LabelHueBlue = 0xCC;
 		
         public BaseBazaarGump() : this(520, 700)
         {
@@ -33,9 +33,12 @@ namespace Server.Engines.NewMagincia
 		public BaseBazaarGump(int width, int height) : base(100, 100)
 		{
             AddBackground(0, 0, width, height, 9300);
-			
-			AddButton(width - 40, height - 30, 4020, 4022, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(width - 150, height - 30, 100, 20, 1114514, "#1060675", 0x0, false, false); // CLOSE
+
+            if (!(this is CommodityTargetGump))
+            {
+                AddButton(width - 40, height - 30, 4020, 4022, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(width - 150, height - 30, 100, 20, 1114514, "#1060675", 0x0, false, false); // CLOSE
+            }
 		}
 		
 		protected string Color(string str, int color)
