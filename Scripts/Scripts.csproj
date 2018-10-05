@@ -12613,7 +12613,6 @@
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2doc.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

@@ -142,9 +142,7 @@ namespace Server.Items
 			else if (!from.InRange(GetWorldLocation(), 2))
 			{
 				from.SendLocalizedMessage(500295); // You are too far away to do that.
-				return;
 			}
-			
 			else
 				from.SendLocalizedMessage(502692); // This must be in a house and be locked down to work.
 		}

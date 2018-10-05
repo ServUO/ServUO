@@ -666,8 +666,7 @@ namespace Server.Mobiles
                         y -= 17;
                     }
 
-					AddImage(
-                        87 + (xTable * offsetWidth) + x, 50 + (yTable * offsetHeight) + y, gumpID);
+					AddImage(87 + (xTable * offsetWidth) + x, 50 + (yTable * offsetHeight) + y, gumpID);
 				}
 				else if (!facialHair)
 				{

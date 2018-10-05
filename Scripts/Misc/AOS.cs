@@ -2457,11 +2457,13 @@ namespace Server
             {
                 Spell spell = context.Spell as Spell;
                 spell.GetCastSkills(out minSkill, out maxSkill);
+
                 if (m.Skills[spell.CastSkill].Value < minSkill)
                 {
                     TransformationSpellHelper.RemoveContext(m, context, true);
                 }
             }
+
             if (acontext != null)
             {
                 if (acontext.Type == typeof(WildWhiteTiger) && m.Skills[SkillName.Ninjitsu].Value < 90)
