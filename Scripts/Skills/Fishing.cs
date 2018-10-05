@@ -158,9 +158,10 @@ namespace Server.Engines.Harvest
 
         private static MutateEntry[] m_LavaMutateTable = new MutateEntry[]
         {
-            new MutateEntry( 0.0,  80.0,  1500,   false, typeof(StoneFootwear)),
-            new MutateEntry( 80.0, 80.0,  3200, false, typeof(CrackedLavaRockEast), typeof(CrackedLavaRockSouth), typeof(BaseWeapon)),
-            new MutateEntry( 85.0, 80.0,  2500,   false, typeof(StonePaver)),
+            new MutateEntry( 0.0,  80.0, 333, false, typeof(StoneFootwear)),
+            new MutateEntry( 80.0, 80.0, 333, false, typeof(CrackedLavaRockEast), typeof(CrackedLavaRockSouth)),
+            new MutateEntry( 85.0, 80.0, 333, false, typeof(StonePaver)),
+            new MutateEntry( 80.0, 80.0, 4080, false, typeof(BaseWeapon))
         };
 
         public override bool SpecialHarvest(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc)

@@ -123,6 +123,16 @@ namespace Server.Items
 				return false;
 			}
 
+            if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(m))
+            {
+                if (message)
+                {
+                    m.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+                }
+
+                return false;
+            }
+
 			return true;
 		}
 

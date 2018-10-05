@@ -1091,11 +1091,17 @@ namespace Server.Engines.CityLoyalty
             var origin = GetCityInstance(entry.Origin);
             int gold = entry.CalculateGold();
 
-            origin.AddToTreasury(from, gold);
-            from.SendLocalizedMessage(1154761, String.Format("{0}\t{1}", gold.ToString("N0", CultureInfo.GetCultureInfo("en-US")), origin.Definition.Name)); // ~1_val~ gold has been deposited into the ~2_NAME~ City treasury for your efforts!
+            if (gold > 0)
+            {
+                origin.AddToTreasury(from, gold);
+                from.SendLocalizedMessage(1154761, String.Format("{0}\t{1}", gold.ToString("N0", CultureInfo.GetCultureInfo("en-US")), origin.Definition.Name)); // ~1_val~ gold has been deposited into the ~2_NAME~ City treasury for your efforts!
+            }
 
-            origin.AwardLove(from, 150);
-            dest.AwardLove(from, 150);
+            if (entry.Distance > 0)
+            {
+                origin.AwardLove(from, 150);
+                dest.AwardLove(from, 150);
+            }
 
             origin.CompletedTrades++;
 		}
@@ -1105,8 +1111,11 @@ namespace Server.Engines.CityLoyalty
             var dest = GetCityInstance(entry.Destination);
             var origin = GetCityInstance(entry.Origin);
 
-            origin.AwardHate(from, 25);
-            dest.AwardHate(from, 25);
+            if (entry.Distance > 0)
+            {
+                origin.AwardHate(from, 25);
+                dest.AwardHate(from, 25);
+            }
         }
 
         public static Moonglow Moonglow { get; set; }
