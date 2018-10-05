@@ -12,6 +12,7 @@ namespace Server.Engines.NewMagincia
         public const int BlueColor = 0x000080;
         public const int OrangeColor = 0x804000;
         public const int GreenColor = 0x008040;
+        public const int DarkGreenColor = 0x008000;
         public const int YellowColor = 0xFFFF00;
         public const int GrayColor = 0x808080;
 
@@ -19,6 +20,7 @@ namespace Server.Engines.NewMagincia
         public const int BlueColor16 = 0x10;
         public const int OrangeColor16 = 0x4100;
         public const int GreenColor16 = 0x208;
+        public const int DarkGreenColor16 = 0x200;
         public const int YellowColor16 = 0xFFE0;
         public const int GrayColor16 = 0xC618;
 
