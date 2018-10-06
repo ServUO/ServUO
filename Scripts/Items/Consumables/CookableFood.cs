@@ -4,7 +4,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public abstract class CookableFood : Item, IQuality
+    public abstract class CookableFood : Item, IQuality, ICommodity
     {
         private ItemQuality _Quality;
         private int m_CookingLevel;
@@ -37,6 +37,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void GetProperties(ObjectPropertyList list)
         {

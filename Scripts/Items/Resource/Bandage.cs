@@ -13,8 +13,8 @@ using Server.Services.Virtues;
 
 namespace Server.Items
 {
-	public class Bandage : Item, IDyable
-	{
+	public class Bandage : Item, IDyable, ICommodity
+    {
         public static void Initialize()
         {
             EventSink.BandageTargetRequest += BandageTargetRequest;
@@ -41,7 +41,10 @@ namespace Server.Items
 			: base(serial)
 		{ }
 
-		public virtual bool Dye(Mobile from, DyeTub sender)
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
+        public virtual bool Dye(Mobile from, DyeTub sender)
 		{
 			if (Deleted)
 			{
