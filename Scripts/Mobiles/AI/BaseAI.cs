@@ -1627,13 +1627,13 @@ namespace Server.Mobiles
 
 			var combatant = m_Mobile.Combatant as Mobile;           
 
-            Dictionary<Mobile, double> _Table = new Dictionary<Mobile, double>();
+            var table = new Dictionary<Mobile, double>();
            
             foreach (var aggss in controlMaster.Aggressors)
             {
                 if (GuardAttackControl(aggss.Attacker))
                 {
-                    _Table[aggss.Attacker] = aggss.Attacker.GetDistanceToSqrt(controlMaster);
+                    table[aggss.Attacker] = aggss.Attacker.GetDistanceToSqrt(controlMaster);
                 }
             }
 
@@ -1641,11 +1641,13 @@ namespace Server.Mobiles
             {
                 if (GuardAttackControl(aggsd.Defender))
                 {
-                    _Table[aggsd.Defender] = aggsd.Defender.GetDistanceToSqrt(controlMaster);
+                    table[aggsd.Defender] = aggsd.Defender.GetDistanceToSqrt(controlMaster);
                 }
             }
 
-            var m = _Table.Where(x => x.Value <= m_Mobile.RangePerception).OrderBy(r => r.Value).FirstOrDefault();
+            var m = table.Where(o => o.Value <= m_Mobile.RangePerception).OrderBy(o => o.Value).FirstOrDefault();
+
+			table.Clear();
 
             if (m.Key != null && !m.Key.Deleted)
             {

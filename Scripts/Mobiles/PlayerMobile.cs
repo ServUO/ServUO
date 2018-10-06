@@ -1659,6 +1659,9 @@ namespace Server.Mobiles
 		{
             PlayerMobile pm = e.Mobile as PlayerMobile;
 
+			if(pm == null)
+				return;
+
             #region Scroll of Alacrity
             if (pm.AcceleratedStart > DateTime.UtcNow)
 			{
@@ -5890,7 +5893,7 @@ namespace Server.Mobiles
 
         public long NextMovementTime { get { return m_NextMovementTime; } }
 
-		public virtual bool UsesFastwalkPrevention { get { return (IsPlayer())/* & !Flying*/; } }
+		public virtual bool UsesFastwalkPrevention { get { return IsPlayer(); } }
 
 		public override int ComputeMovementSpeed(Direction dir, bool checkTurning)
 		{

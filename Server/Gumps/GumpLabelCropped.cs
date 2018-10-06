@@ -111,7 +111,6 @@ namespace Server.Gumps
 			m_Height = height;
 			m_Hue = hue;
 			m_Text = text;
-
 		}
 
         public GumpLabelCropped(int x, int y, int width, int height, int hue, int textid)
@@ -122,7 +121,6 @@ namespace Server.Gumps
             m_Height = height;
             m_Hue = hue;
             m_TextID = textid;
-
         }
 
         public override string Compile()
@@ -140,7 +138,7 @@ namespace Server.Gumps
 			disp.AppendLayout( m_Width );
 			disp.AppendLayout( m_Height );
 			disp.AppendLayout( m_Hue );
-            disp.AppendLayout(m_Text == null ? m_TextID : Parent.Intern(m_Text));
+            disp.AppendLayout( m_Text == null ? m_TextID : Parent.Intern(m_Text) );
         }
 	}
 }

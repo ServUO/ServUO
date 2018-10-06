@@ -107,7 +107,7 @@ namespace Server.Mobiles
         {
             base.OnGotMeleeAttack(attacker);
 
-            if (AI == AIType.AI_Archer && 0.4 >= Utility.RandomDouble())
+            if (Map != null && AI == AIType.AI_Archer && 0.4 >= Utility.RandomDouble())
             {
                 Point3D p = FindLocation(Map, Location, 10);
                 Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);

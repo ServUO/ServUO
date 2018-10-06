@@ -59,10 +59,10 @@ namespace Server.Mobiles
             base.OnDeath( c );
 
             if ( Utility.RandomDouble() < 0.05 )
-            c.DropItem( new ParrotItem() );
+            	c.DropItem( new ParrotItem() );
 
             if ( Utility.RandomDouble() < 0.15 )
-            c.DropItem( new DisintegratingThesisNotes() );
+            	c.DropItem( new DisintegratingThesisNotes() );
         }
 
         public override int TreasureMapLevel

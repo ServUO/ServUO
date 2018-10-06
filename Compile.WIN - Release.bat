@@ -4,7 +4,9 @@
 @SET SDKPATH=%CURPATH%Ultima\
 @SET SRVPATH=%CURPATH%Server\
 
-@TITLE: ServUO - https://www.servuo.com
+@SET EXENAME=ServUO
+
+@TITLE: %EXENAME% - https://www.servuo.com
 
 ::##########
 
@@ -33,16 +35,16 @@
 ::##########
 
 @ECHO:
-@ECHO: Compile Server for Windows
+@ECHO: Compile %EXENAME% for Windows
 @ECHO:
 
 @PAUSE
 
-@DEL "%CURPATH%ServUO.exe"
+@DEL "%CURPATH%%EXENAME%.exe"
 
 @ECHO ON
 
-%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /r:"%CURPATH%Ultima.dll" /target:exe /out:"%CURPATH%ServUO.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /d:NEWTIMERS /d:NETFX_40 /nowarn:0618 /nologo /unsafe /optimize
+%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /r:"%CURPATH%Ultima.dll" /target:exe /out:"%CURPATH%%EXENAME%.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /d:NEWTIMERS /d:NETFX_40 /nowarn:0618 /nologo /unsafe /optimize
 
 @ECHO OFF
 
@@ -66,4 +68,4 @@
 
 @ECHO OFF
 
-%CURPATH%ServUO.exe
+%CURPATH%%EXENAME%.exe
