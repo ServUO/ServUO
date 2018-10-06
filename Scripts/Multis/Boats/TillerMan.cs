@@ -12,6 +12,8 @@ namespace Server.Items
 		private BaseBoat m_Boat;
         public BaseBoat Boat { get { return m_Boat; } }
 
+        private DateTime _NextBabble;
+
 		public TillerMan( BaseBoat boat ) : base( 0x3E4E )
 		{
 			m_Boat = boat;
@@ -120,6 +122,28 @@ namespace Server.Items
             }
         }
 
+        public void Babble()
+        {
+            PublicOverheadMessage(MessageType.Regular, 0x3B2, 1114137, RandomBabbleArgs());
+            // Ar! Did I ever tell thee about the time I was in ~1_CITY~ and I met ~2_GENDER~ ~3_STORY~ Anyway, 'tis a dull story.
+
+            _NextBabble = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(3, 10));
+        }
+
+        private string RandomBabbleArgs()
+        {
+            return String.Format("#{0}\t#{1}\t#{2}", Utility.Random(1114138, 13).ToString(),
+                                                     Utility.Random(1114151, 2).ToString(),
+                                                     Utility.RandomMinMax(1114153, 1114221).ToString());
+        }
+
+        public override void OnLocationChange(Point3D oldLocation)
+        {
+            if (_NextBabble < DateTime.UtcNow && 0.1 > Utility.RandomDouble())
+            {
+                Babble();
+            }
+        }
 
         private class RenameShipEntry : ContextMenuEntry
         {

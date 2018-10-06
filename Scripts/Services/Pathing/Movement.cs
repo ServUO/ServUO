@@ -110,7 +110,15 @@ namespace Server.Movement
                     }
 
                     if (ignoreSpellFields && (itemID == 0x82 || itemID == 0x3946 || itemID == 0x3956))
+                    {
                         continue;
+                    }
+
+                    // hidden containers, per EA
+                    if ((flags & TileFlag.Container) != 0 && !item.Visible)
+                    {
+                        continue;
+                    }
 
                     int checkZ = item.Z;
                     int checkTop = checkZ + itemData.CalcHeight;
