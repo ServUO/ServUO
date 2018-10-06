@@ -85,6 +85,32 @@ namespace Server.Engines.Blackthorn
                 tele = new Teleporter(new Point3D(6440, 2680, 20), map);
                 tele.MoveToWorld(new Point3D(1517, 1420, 12), map);
             }
+
+            foreach (var p in _BlockerList)
+            {
+                var blocker = new Blocker();
+                blocker.MoveToWorld(p, map);
+            }
         }
+
+        private static Point3D[] _BlockerList =
+        {
+            new Point3D(6435, 2425, -5),
+            new Point3D(6435, 2424, -5),
+            new Point3D(6435, 2423, -5),
+            new Point3D(6435, 2422, -5),
+            new Point3D(6435, 2421, -5),
+            new Point3D(6434, 2421, -5),
+            new Point3D(6433, 2421, -5),
+            new Point3D(6432, 2421, -5),
+            new Point3D(6442, 2425, -5),
+            new Point3D(6442, 2424, -5),
+            new Point3D(6442, 2423, -5),
+            new Point3D(6442, 2422, -5),
+            new Point3D(6442, 2421, -5),
+            new Point3D(6443, 2421, -5),
+            new Point3D(6444, 2421, -5),
+            new Point3D(6445, 2421, -5)
+        };
     }
 }
