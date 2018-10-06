@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public abstract class BaseReagent : Item, ICommodity
+    public abstract class BaseReagent : Item
     {
         public BaseReagent(int itemID)
             : this(itemID, 1)
@@ -20,9 +20,6 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
 
         public override double DefaultWeight
         {
