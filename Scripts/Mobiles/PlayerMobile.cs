@@ -162,20 +162,38 @@ namespace Server.Mobiles
 
             if (!Flying)
             {
-                if (this.Spell is Spell)
-                    ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
+                if (BeginAction(typeof(FlySpell)))
+                {
+                    if (this.Spell is Spell)
+                        ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
 
-                Spell spell = new FlySpell(this);
-                spell.Cast();
+                    Spell spell = new FlySpell(this);
+                    spell.Cast();
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(3), () => EndAction(typeof(FlySpell)));
+                }
+                else
+                {
+                    LocalOverheadMessage(MessageType.Regular, 0x3B2, 1075124); // You must wait before casting that spell again.
+                }
             }
             else if (IsValidLandLocation(Location, Map))
             {
-                if (this.Spell is Spell)
-                    ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
+                if (BeginAction(typeof(FlySpell)))
+                {
+                    if (this.Spell is Spell)
+                        ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
 
-                Animate(AnimationType.Land, 0);
-                Flying = false;
-                BuffInfo.RemoveBuff(this, BuffIcon.Fly);
+                    Animate(AnimationType.Land, 0);
+                    Flying = false;
+                    BuffInfo.RemoveBuff(this, BuffIcon.Fly);
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(3), () => EndAction(typeof(FlySpell)));
+                }
+                else
+                {
+                    LocalOverheadMessage(MessageType.Regular, 0x3B2, 1075124); // You must wait before casting that spell again.
+                }
             }
             else
                 LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113081); // You may not land here.
@@ -1011,25 +1029,32 @@ namespace Server.Mobiles
             }
 
             int max = base.GetMaxResistance(type);
+            int refineBonus = BaseArmor.GetRefinedResist(this, type);
 
-            #region SA
-            max += Spells.Mysticism.StoneFormSpell.GetMaxResistBonus(this);
-            #endregion
+            if (refineBonus > 0)
+            {
+                max += refineBonus;
+            }
+            else
+            {
+                max += Spells.Mysticism.StoneFormSpell.GetMaxResistBonus(this);
+            }
 
-            max += BaseArmor.GetRefinedResist(this, type);
+            if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
+            {
+                max += 5; //Intended to go after the 60 max from curse
+            }
 
             if (type != ResistanceType.Physical && 60 < max && Spells.Fourth.CurseSpell.UnderEffect(this))
             {
-                max = 60;
+                max -= 10;
+                //max = 60;
             }
 
             if ((type == ResistanceType.Fire || type == ResistanceType.Poison) && CorpseSkinSpell.IsUnderEffects(this))
             {
                 max = CorpseSkinSpell.GetResistMalus(this);
             }
-
-            if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
-                max += 5; //Intended to go after the 60 max from curse
 
             return max;
         }
