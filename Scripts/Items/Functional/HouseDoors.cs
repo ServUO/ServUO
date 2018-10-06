@@ -100,6 +100,7 @@ namespace Server.Items
     {
         private DoorFacing m_Facing;
         private SecureLevel m_Level;
+
         public BaseHouseDoor(DoorFacing facing, int closedID, int openedID, int openedSound, int closedSound, Point3D offset)
             : base(closedID, openedID, openedSound, closedSound, offset)
         {

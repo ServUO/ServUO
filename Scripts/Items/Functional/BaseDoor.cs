@@ -33,15 +33,15 @@ namespace Server.Items
         public BaseDoor(int closedID, int openedID, int openedSound, int closedSound, Point3D offset)
             : base(closedID)
         {
-            this.m_OpenedID = openedID;
-            this.m_ClosedID = closedID;
-            this.m_OpenedSound = openedSound;
-            this.m_ClosedSound = closedSound;
-            this.m_Offset = offset;
+            m_OpenedID = openedID;
+            m_ClosedID = closedID;
+            m_OpenedSound = openedSound;
+            m_ClosedSound = closedSound;
+            m_Offset = offset;
 
-            this.m_Timer = new InternalTimer(this);
+            m_Timer = new InternalTimer(this);
 
-            this.Movable = false;
+            Movable = false;
         }
 
         public BaseDoor(Serial serial)
@@ -54,11 +54,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Locked;
+                return m_Locked;
             }
             set
             {
-                this.m_Locked = value;
+                m_Locked = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -66,11 +66,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_KeyValue;
+                return m_KeyValue;
             }
             set
             {
-                this.m_KeyValue = value;
+                m_KeyValue = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -78,27 +78,27 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Open;
+                return m_Open;
             }
             set
             {
-                if (this.m_Open != value)
+                if (m_Open != value)
                 {
-                    this.m_Open = value;
+                    m_Open = value;
 
-                    this.ItemID = this.m_Open ? this.m_OpenedID : this.m_ClosedID;
+                    ItemID = m_Open ? m_OpenedID : m_ClosedID;
 
-                    if (this.m_Open)
-                        this.Location = new Point3D(this.X + this.m_Offset.X, this.Y + this.m_Offset.Y, this.Z + this.m_Offset.Z);
+                    if (m_Open)
+                        Location = new Point3D(X + m_Offset.X, Y + m_Offset.Y, Z + m_Offset.Z);
                     else
-                        this.Location = new Point3D(this.X - this.m_Offset.X, this.Y - this.m_Offset.Y, this.Z - this.m_Offset.Z);
+                        Location = new Point3D(X - m_Offset.X, Y - m_Offset.Y, Z - m_Offset.Z);
 
-                    Effects.PlaySound(this, this.Map, this.m_Open ? this.m_OpenedSound : this.m_ClosedSound);
+                    Effects.PlaySound(this, Map, m_Open ? m_OpenedSound : m_ClosedSound);
 
-                    if (this.m_Open)
-                        this.m_Timer.Start();
+                    if (m_Open)
+                        m_Timer.Start();
                     else
-                        this.m_Timer.Stop();
+                        m_Timer.Stop();
                 }
             }
         }
@@ -107,11 +107,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_OpenedID;
+                return m_OpenedID;
             }
             set
             {
-                this.m_OpenedID = value;
+                m_OpenedID = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -119,11 +119,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_ClosedID;
+                return m_ClosedID;
             }
             set
             {
-                this.m_ClosedID = value;
+                m_ClosedID = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -131,11 +131,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_OpenedSound;
+                return m_OpenedSound;
             }
             set
             {
-                this.m_OpenedSound = value;
+                m_OpenedSound = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -143,11 +143,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_ClosedSound;
+                return m_ClosedSound;
             }
             set
             {
-                this.m_ClosedSound = value;
+                m_ClosedSound = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -155,11 +155,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Offset;
+                return m_Offset;
             }
             set
             {
-                this.m_Offset = value;
+                m_Offset = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -167,14 +167,14 @@ namespace Server.Items
         {
             get
             {
-                if (this.m_Link != null && this.m_Link.Deleted)
-                    this.m_Link = null;
+                if (m_Link != null && m_Link.Deleted)
+                    m_Link = null;
 
-                return this.m_Link;
+                return m_Link;
             }
             set
             {
-                this.m_Link = value;
+                m_Link = value;
             }
         }
         public virtual bool UseChainedFunctionality
@@ -200,17 +200,17 @@ namespace Server.Items
 
         public bool CanClose()
         {
-            if (!this.m_Open)
+            if (!m_Open)
                 return true;
 
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
                 return false;
 
-            Point3D p = new Point3D(this.X - this.m_Offset.X, this.Y - this.m_Offset.Y, this.Z - this.m_Offset.Z);
+            Point3D p = new Point3D(X - m_Offset.X, Y - m_Offset.Y, Z - m_Offset.Z);
 
-            return this.CheckFit(map, p, 16);
+            return CheckFit(map, p, 16);
         }
 
         public List<BaseDoor> GetChain()
@@ -230,10 +230,10 @@ namespace Server.Items
 
         public bool IsFreeToClose()
         {
-            if (!this.UseChainedFunctionality)
-                return this.CanClose();
+            if (!UseChainedFunctionality)
+                return CanClose();
 
-            List<BaseDoor> list = this.GetChain();
+            List<BaseDoor> list = GetChain();
 
             bool freeToClose = true;
 
@@ -245,10 +245,10 @@ namespace Server.Items
 
         public virtual void OnTelekinesis(Mobile from)
         {
-            Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x376A, 9, 32, 5022);
-            Effects.PlaySound(this.Location, this.Map, 0x1F5);
+            Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x376A, 9, 32, 5022);
+            Effects.PlaySound(Location, Map, 0x1F5);
 
-            this.Use(from);
+            Use(from);
         }
 
         public virtual bool IsInside(Mobile from)
@@ -263,25 +263,25 @@ namespace Server.Items
 
         public virtual void Use(Mobile from)
         {
-            if (this.m_Locked && !this.m_Open && this.UseLocks())
+            if (m_Locked && !m_Open && UseLocks())
             {
                 if (from.AccessLevel >= AccessLevel.GameMaster)
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 502502); // That is locked, but you open it with your godly powers.
                     //from.Send( new MessageLocalized( Serial, ItemID, MessageType.Regular, 0x3B2, 3, 502502, "", "" ) ); // That is locked, but you open it with your godly powers.
                 }
-                else if (Key.ContainsKey(from.Backpack, this.KeyValue))
+                else if (Key.ContainsKey(from.Backpack, KeyValue))
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 501282); // You quickly unlock, open, and relock the door
                 }
-                else if (this.IsInside(from))
+                else if (IsInside(from))
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 501280); // That is locked, but is usable from the inside.
                 }
                 else
                 {
-                    if (this.Hue == 0x44E && this.Map == Map.Malas) // doom door into healer room in doom
-                        this.SendLocalizedMessageTo(from, 1060014); // Only the dead may pass.
+                    if (Hue == 0x44E && Map == Map.Malas) // doom door into healer room in doom
+                        SendLocalizedMessageTo(from, 1060014); // Only the dead may pass.
                     else
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 502503); // That is locked.
 
@@ -289,30 +289,30 @@ namespace Server.Items
                 }
             }
 
-            if (this.m_Open && !this.IsFreeToClose())
+            if (m_Open && !IsFreeToClose())
                 return;
 
-            if (this.m_Open)
-                this.OnClosed(from);
+            if (m_Open)
+                OnClosed(from);
             else
-                this.OnOpened(from);
+                OnOpened(from);
 
-            if (this.UseChainedFunctionality)
+            if (UseChainedFunctionality)
             {
-                bool open = !this.m_Open;
+                bool open = !m_Open;
 
-                List<BaseDoor> list = this.GetChain();
+                List<BaseDoor> list = GetChain();
 
                 for (int i = 0; i < list.Count; ++i)
                     list[i].Open = open;
             }
             else
             {
-                this.Open = !this.m_Open;
+                Open = !m_Open;
 
-                BaseDoor link = this.Link;
+                BaseDoor link = Link;
 
-                if (this.m_Open && link != null && !link.Open)
+                if (m_Open && link != null && !link.Open)
                     link.Open = true;
             }
         }
@@ -327,10 +327,10 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.IsPlayer() && (/*!from.InLOS( this ) || */!from.InRange(this.GetWorldLocation(), 2)))
+            if (from.IsPlayer() && (/*!from.InLOS( this ) || */!from.InRange(GetWorldLocation(), 2)))
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             else
-                this.Use(from);
+                Use(from);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -339,16 +339,16 @@ namespace Server.Items
 
             writer.Write((int)0); // version
 
-            writer.Write(this.m_KeyValue);
+            writer.Write(m_KeyValue);
 
-            writer.Write(this.m_Open);
-            writer.Write(this.m_Locked);
-            writer.Write(this.m_OpenedID);
-            writer.Write(this.m_ClosedID);
-            writer.Write(this.m_OpenedSound);
-            writer.Write(this.m_ClosedSound);
-            writer.Write(this.m_Offset);
-            writer.Write(this.m_Link);
+            writer.Write(m_Open);
+            writer.Write(m_Locked);
+            writer.Write(m_OpenedID);
+            writer.Write(m_ClosedID);
+            writer.Write(m_OpenedSound);
+            writer.Write(m_ClosedSound);
+            writer.Write(m_Offset);
+            writer.Write(m_Link);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -361,20 +361,20 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_KeyValue = reader.ReadUInt();
-                        this.m_Open = reader.ReadBool();
-                        this.m_Locked = reader.ReadBool();
-                        this.m_OpenedID = reader.ReadInt();
-                        this.m_ClosedID = reader.ReadInt();
-                        this.m_OpenedSound = reader.ReadInt();
-                        this.m_ClosedSound = reader.ReadInt();
-                        this.m_Offset = reader.ReadPoint3D();
-                        this.m_Link = reader.ReadItem() as BaseDoor;
+                        m_KeyValue = reader.ReadUInt();
+                        m_Open = reader.ReadBool();
+                        m_Locked = reader.ReadBool();
+                        m_OpenedID = reader.ReadInt();
+                        m_ClosedID = reader.ReadInt();
+                        m_OpenedSound = reader.ReadInt();
+                        m_ClosedSound = reader.ReadInt();
+                        m_Offset = reader.ReadPoint3D();
+                        m_Link = reader.ReadItem() as BaseDoor;
 
-                        this.m_Timer = new InternalTimer(this);
+                        m_Timer = new InternalTimer(this);
 
-                        if (this.m_Open)
-                            this.m_Timer.Start();
+                        if (m_Open)
+                            m_Timer.Start();
 
                         break;
                     }
@@ -590,14 +590,14 @@ namespace Server.Items
             public InternalTimer(BaseDoor door)
                 : base(TimeSpan.FromSeconds(20.0), TimeSpan.FromSeconds(10.0))
             {
-                this.Priority = TimerPriority.OneSecond;
-                this.m_Door = door;
+                Priority = TimerPriority.OneSecond;
+                m_Door = door;
             }
 
             protected override void OnTick()
             {
-                if (this.m_Door.Open && this.m_Door.IsFreeToClose())
-                    this.m_Door.Open = false;
+                if (m_Door.Open && m_Door.IsFreeToClose())
+                    m_Door.Open = false;
             }
         }
     }
