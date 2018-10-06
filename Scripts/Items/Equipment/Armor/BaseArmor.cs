@@ -814,7 +814,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource
+        public virtual CraftResource Resource
         {
             get
             {
@@ -1324,7 +1324,7 @@ namespace Server.Items
             InvalidateProperties();
         }
 
-        public int GetDurabilityBonus()
+        public virtual int GetDurabilityBonus()
         {
             int bonus = 0;
 

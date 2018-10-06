@@ -2093,23 +2093,12 @@ namespace Server.Multis
 
         public static bool IsDriving(Mobile from)
         {
-            foreach (BaseBoat boat in m_Instances)
-            {
-                if (boat.Pilot == from)
-                    return true;
-            }
-
-            return false;
+            return m_Instances.Any(b => b.Pilot == from);
         }
 
         public static BaseBoat GetPiloting(Mobile from)
         {
-            BaseBoat boat = FindBoatAt(from, from.Map);
-
-            if (boat != null && boat.Pilot == from)
-                return boat;
-
-            return null;
+            return m_Instances.FirstOrDefault(b => b.Pilot == from);
         }
 
         public virtual void OnMousePilotCommand(Mobile from, Direction d, int rawSpeed)
