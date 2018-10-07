@@ -292,6 +292,10 @@ namespace Server.Mobiles
             PackItem(new ExecutionersCap());
         }
 
+        public override void SpawnPackItems()
+        {
+        }
+
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
