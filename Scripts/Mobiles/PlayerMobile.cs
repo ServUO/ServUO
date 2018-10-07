@@ -5804,6 +5804,8 @@ namespace Server.Mobiles
 		public override void OnKarmaChange(int oldValue)
 		{
 			InvalidateMyRunUO();
+
+            EpiphanyHelper.OnKarmaChange(this);
 		}
 
 		public override void OnFameChange(int oldValue)

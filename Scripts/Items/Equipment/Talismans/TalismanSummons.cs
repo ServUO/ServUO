@@ -11,8 +11,20 @@ namespace Server.Mobiles
 {
 	public class BaseTalismanSummon : BaseCreature
 	{
+        private bool m_LastHidden;
+        private long m_NextMove;
+
+        private DateTime m_SeperationStart;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime SeperationStart
+        {
+            get { return m_SeperationStart; }
+            set { m_SeperationStart = value; }
+        }
+
 		public BaseTalismanSummon()
-			: base(AIType.AI_Melee, FightMode.None, 10, 1, 0.2, 0.4)
+			: base(AIType.AI_Melee, FightMode.None, 10, 1, 0.1, 0.2)
 		{
             SetHits(100);
             SetInt(100);
@@ -33,6 +45,132 @@ namespace Server.Mobiles
 				list.Add(new TalismanReleaseEntry(this));
 			}
 		}
+
+        public virtual bool RangeCheck()
+        {
+            Mobile master = ControlMaster;
+
+            if (Deleted || master == null || master.Deleted)
+                return false;
+
+            int dist = (int)master.GetDistanceToSqrt(Location);
+
+            if (master.Map != Map || dist > 15)
+            {
+                if (m_SeperationStart == DateTime.MinValue)
+                {
+                    m_SeperationStart = DateTime.UtcNow + TimeSpan.FromMinutes(10);
+                }
+                else if (m_SeperationStart < DateTime.UtcNow)
+                {
+                    Delete();
+                }
+
+                return false;
+            }
+
+            if (m_SeperationStart != DateTime.MinValue)
+            {
+                m_SeperationStart = DateTime.MinValue;
+            }
+
+            int range = (RangeHome / 2);
+
+            if (!InRange(ControlMaster.Location, RangeHome))
+            {
+                Point3D loc = Point3D.Zero;
+
+                if (Map == master.Map)
+                {
+                    int x = (X > master.X) ? (master.X + range) : (master.X - range);
+                    int y = (Y > master.Y) ? (master.Y + range) : (master.Y - range);
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        loc.X = x + Utility.RandomMinMax(-1, 1);
+                        loc.Y = y + Utility.RandomMinMax(-1, 1);
+
+                        loc.Z = Map.GetAverageZ(loc.X, loc.Y);
+
+                        if (Map.CanSpawnMobile(loc))
+                        {
+                            break;
+                        }
+
+                        loc = master.Location;
+                    }
+
+                    if (!Deleted)
+                    {
+                        SetLocation(loc, true);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public override void OnThink()
+        {
+            if (Deleted || Map == null)
+            {
+                return;
+            }
+
+            Mobile master = ControlMaster;
+
+            if (master == null || master.Deleted)
+            {
+                Delete();
+                return;
+            }
+
+            if (RangeCheck())
+            {
+                if (AIObject != null && AIObject.WalkMobileRange(master, 5, true, 1, 1))
+                {
+                    if (master.Combatant != null && master.InRange(master.Combatant, 1) && Core.TickCount > m_NextMove)
+                    {
+                        IDamageable combatant = master.Combatant;
+
+                        if (!InRange(combatant.Location, 1))
+                        {
+                            for (int x = combatant.X - 1; x <= combatant.X + 1; x++)
+                            {
+                                for (int y = combatant.Y - 1; y <= combatant.Y + 1; y++)
+                                {
+                                    if (x == combatant.X && y == combatant.Y)
+                                    {
+                                        continue;
+                                    }
+
+                                    Point2D p = new Point2D(x, y);
+
+                                    if (InRange(p, 1) && master.InRange(p, 1) && Map != null)
+                                    {
+                                        CurrentSpeed = .01;
+                                        AIObject.MoveTo(new Point3D(x, y, Map.GetAverageZ(x, y)), false, 0);
+                                        m_NextMove = Core.TickCount + 500;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            CurrentSpeed = .1;
+                        }
+                    }
+                    else if (master.Combatant == null)
+                    {
+                        CurrentSpeed = .1;
+                    }
+                }
+                else
+                {
+                    CurrentSpeed = .1;
+                }
+            }
+        }
 
 		public override void Serialize(GenericWriter writer)
 		{

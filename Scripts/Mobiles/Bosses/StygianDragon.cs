@@ -4,7 +4,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a stygian dragon corpse")]
-    public class StygianDragon : BaseSABosses
+    public class StygianDragon : BaseSABoss
     {
         private DateTime m_Delay;
 

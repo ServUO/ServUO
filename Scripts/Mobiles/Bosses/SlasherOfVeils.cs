@@ -6,7 +6,7 @@ using Server.Spells;
 namespace Server.Mobiles
 {
     [CorpseName("a slasher of veils corpse")]
-    public class SlasherOfVeils : BaseSABosses
+    public class SlasherOfVeils : BaseSABoss
     {
         private static readonly int[] m_North = new int[]
         {
