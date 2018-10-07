@@ -373,8 +373,15 @@ namespace Server.Mobiles
 
                     AddHtmlLocalized(47, 74, 160, 18, 1157505, 0xC8, false, false); // Pet Advancements
 
+                    int idx = 0;
+
                     for (int i = profile.Advancements.Count - 1; i >= 0; i--)
                     {
+                        if (++idx > 9)
+                        {
+                            break;
+                        }
+
                         var loc = PetTrainingHelper.GetLocalization(profile.Advancements[i]);
                         bool skill = profile.Advancements[i] is SkillName; // ? "#228B22" : "#FF4500";
 
