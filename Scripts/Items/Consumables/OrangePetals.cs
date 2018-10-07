@@ -4,7 +4,7 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public class OrangePetals : Item
+    public class OrangePetals : Item, ICommodity
     {
         private static readonly Hashtable m_Table = new Hashtable();
         [Constructable]
@@ -26,6 +26,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {

@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class SmallPieceofBlackrock : Item
+    public class SmallPieceofBlackrock : Item, ICommodity
     {
         [Constructable]
         public SmallPieceofBlackrock(): this(1)
@@ -21,6 +21,9 @@ namespace Server.Items
         public SmallPieceofBlackrock(Serial serial) : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber { get { return 1150016; } }
 

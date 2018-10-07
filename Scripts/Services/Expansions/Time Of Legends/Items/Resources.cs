@@ -3,7 +3,7 @@ using System;
 namespace Server.Items
 {
     [Flipable(0x9BCC, 0x9BCD)]
-    public class TigerPelt : Item
+    public class TigerPelt : Item, ICommodity
     {
         public override int LabelNumber { get { return 1123908; } }
 
@@ -28,7 +28,8 @@ namespace Server.Items
         {
         }
 
-
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -45,7 +46,7 @@ namespace Server.Items
         }
     }
 
-    public class WhiteTigerPelt : Item
+    public class WhiteTigerPelt : Item, ICommodity
     {
         public override int LabelNumber { get { return 1156201; } }
 
@@ -70,7 +71,8 @@ namespace Server.Items
         {
         }
 
-
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -87,7 +89,7 @@ namespace Server.Items
         }
     }
 
-    public class BlackTigerPelt : Item
+    public class BlackTigerPelt : Item, ICommodity
     {
         public override int LabelNumber { get { return 1156200; } }
 
@@ -112,7 +114,8 @@ namespace Server.Items
         {
         }
 
-
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -129,7 +132,7 @@ namespace Server.Items
         }
     }
 
-    public class DragonTurtleScute : Item
+    public class DragonTurtleScute : Item, ICommodity
     {
         public override int LabelNumber { get { return 1123910; } }
 
@@ -153,7 +156,8 @@ namespace Server.Items
         {
         }
 
-
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

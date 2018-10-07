@@ -3,7 +3,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class ClockworkAssembly : Item
+    public class ClockworkAssembly : Item, ICommodity
     {
         [Constructable]
         public ClockworkAssembly()
@@ -17,6 +17,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override string DefaultName
         {

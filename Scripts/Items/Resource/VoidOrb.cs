@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class VoidOrb : Item
+    public class VoidOrb : Item, ICommodity
     {
         [Constructable]
         public VoidOrb()
@@ -22,6 +22,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {

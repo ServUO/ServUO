@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Server;
 using Server.Targeting;
 using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class Matches : Item
+    public class Matches : Item, ICommodity
     {
         public override int LabelNumber { get { return 1116112; } }
 
@@ -120,6 +120,9 @@ namespace Server.Items
         }
 
         public Matches(Serial serial) : base(serial) { }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {
