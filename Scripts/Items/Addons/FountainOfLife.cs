@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class EnhancedBandage : Bandage
+    public class EnhancedBandage : Bandage, ICommodity
     {
         [Constructable]
         public EnhancedBandage()
@@ -21,6 +21,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public static int HealingBonus
         {

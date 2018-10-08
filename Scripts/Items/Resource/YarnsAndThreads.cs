@@ -3,7 +3,7 @@ using Server.Targeting;
 
 namespace Server.Items
 {
-    public abstract class BaseClothMaterial : Item, IDyable
+    public abstract class BaseClothMaterial : Item, IDyable, ICommodity
     {
         public BaseClothMaterial(int itemID)
             : this(itemID, 1)
@@ -22,6 +22,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

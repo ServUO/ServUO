@@ -5,7 +5,7 @@ using Server.Targeting;
 
 namespace Server.Items
 {
-    public class GreenThorns : Item
+    public class GreenThorns : Item, ICommodity
     {
         [Constructable]
         public GreenThorns()
@@ -27,6 +27,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {

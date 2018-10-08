@@ -3,7 +3,7 @@ using System;
 namespace Server.Items
 {
     [TypeAlias("Server.Items.VialVitirol")]
-    public class VialOfVitriol : Item
+    public class VialOfVitriol : Item, ICommodity
     {
         [Constructable]
         public VialOfVitriol()
@@ -23,6 +23,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {

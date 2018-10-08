@@ -600,7 +600,7 @@ namespace Server.Items
     }
 
     // resources
-    public class MyrmidexEggsac : Item
+    public class MyrmidexEggsac : Item, ICommodity
     {
         public override int LabelNumber { get { return 1156725; } } // Myrmidex Eggsac
 
@@ -620,6 +620,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -796,7 +799,7 @@ namespace Server.Items
         }
     }
 
-    public class RiverMoss : Item
+    public class RiverMoss : Item, ICommodity
     {
         // TODO: Harvested near Urali Village
         public override int LabelNumber { get { return 1156731; } } // River Moss
@@ -817,6 +820,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {
