@@ -1,38 +1,30 @@
 #region References
-using System.Collections.Generic;
-
 using Server.Items;
 #endregion
 
 namespace Server.Mobiles
 {
-	public class GypsyMaiden : BaseVendor
+	public class GypsyFortuneTeller : BaseHealer
 	{
-		private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-
 		[Constructable]
-		public GypsyMaiden()
-			: base("the gypsy maiden")
-		{ 
+		public GypsyFortuneTeller()
+		{
+			Title = "the fortune teller";
 			SetSkill(SkillName.Begging, 64.0, 100.0);
 		}
 
-		public GypsyMaiden(Serial serial)
+		public GypsyFortuneTeller(Serial serial)
 			: base(serial)
 		{ }
-
-		protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
-
-		public override bool GetGender()
-		{
-			return true; // always female
-		}
-
-		public override void InitSBInfo()
-		{
-			m_SBInfos.Add(new SBProvisioner());
-		}
-
+		
+		public override bool IsInvulnerable
+        {
+            get
+            {
+                return true;
+            }
+        }
+		
 		public override void InitOutfit()
 		{
 			base.InitOutfit();
@@ -50,12 +42,14 @@ namespace Server.Mobiles
 					break;
 			}
 
-			if (Utility.RandomBool())
+			Item item = FindItemOnLayer(Layer.Pants);
+
+			if (item != null)
 			{
-				AddItem(new HalfApron(Utility.RandomBrightHue()));
+				item.Hue = Utility.RandomBrightHue();
 			}
 
-			Item item = FindItemOnLayer(Layer.Pants);
+			item = FindItemOnLayer(Layer.Shoes);
 
 			if (item != null)
 			{
@@ -70,6 +64,27 @@ namespace Server.Mobiles
 			}
 
 			item = FindItemOnLayer(Layer.InnerLegs);
+
+			if (item != null)
+			{
+				item.Hue = Utility.RandomBrightHue();
+			}
+
+			item = FindItemOnLayer(Layer.OuterTorso);
+
+			if (item != null)
+			{
+				item.Hue = Utility.RandomBrightHue();
+			}
+
+			item = FindItemOnLayer(Layer.InnerTorso);
+
+			if (item != null)
+			{
+				item.Hue = Utility.RandomBrightHue();
+			}
+
+			item = FindItemOnLayer(Layer.Shirt);
 
 			if (item != null)
 			{
