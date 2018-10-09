@@ -5713,48 +5713,104 @@ namespace Server.Mobiles
 			}
 		}
 
-		public override void AddNameProperties(ObjectPropertyList list)
-		{
-			base.AddNameProperties(list);
-			
-			var a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
-			var t = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "XmlPointsTitle");
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            if (!Core.SA)
+            {
+                base.AddNameProperties(list);
 
-			if ((t == null || t.Data != "True") && a != null)
-			{
-				list.Add(1070722, "Kills {0:#,0} / Deaths {1:#,0} : Rank {2:#,0}", a.Kills, a.Deaths, a.Rank);
-			}
-		}
+                XmlPoints a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
 
-		protected override void AlterName(ref string prefix, ref string name, ref string suffix)
-		{
-			base.AlterName(ref prefix, ref name, ref suffix);
+                XmlData XmlPointsTitle = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "XmlPointsTitle");
 
-			if (!CityLoyaltySystem.ApplyCityTitle(this, ref prefix, ref name, ref suffix))
-			{
-				if (!String.IsNullOrWhiteSpace(m_OverheadTitle))
-				{
-					if (String.IsNullOrWhiteSpace(suffix))
-					{
-						suffix = m_OverheadTitle;
-					}
-					else
-					{
-						suffix = String.Format("{0} {1}", m_OverheadTitle, suffix);
-					}
-				}
-			}
+                if ((XmlPointsTitle != null && XmlPointsTitle.Data == "True") || a == null)
+                {
+                    return;
+                }
+                else if (IsPlayer())
+                {
+                    list.Add(1070722, "Kills {0} / Deaths {1} : Rank={2}", a.Kills, a.Deaths, a.Rank);
+                }
 
-			if (Map == Faction.Facet && ViceVsVirtueSystem.IsVvV(this, false, true))
-			{
-				if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith("]") && !suffix.EndsWith(" "))
-				{
-					suffix += " ";
-				}
-				
-				suffix += "[VvV]";
-			}
-		}
+                return;
+            }
+
+            string name = Name;
+
+            if (name == null)
+            {
+                name = String.Empty;
+            }
+
+            string prefix = "";
+
+            if (ShowFameTitle && Fame >= 10000)
+            {
+                prefix = Female ? "Lady" : "Lord";
+            }
+
+            string suffix = "";
+
+            if (PropertyTitle && Title != null && Title.Length > 0)
+            {
+                suffix = Title;
+            }
+
+            BaseGuild guild = Guild;
+            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && this.Map == Faction.Facet;
+
+            if (!vvv && m_OverheadTitle != null)
+            {
+                int loc = Utility.ToInt32(m_OverheadTitle);
+
+                if (loc > 0)
+                {
+                    if (Server.Engines.CityLoyalty.CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
+                        return;
+                }
+                else if (suffix.Length > 0)
+                    suffix = String.Format("{0} {1}", suffix, m_OverheadTitle);
+                else
+                    suffix = String.Format("{0}", m_OverheadTitle);
+            }
+            else if (vvv || (guild != null && DisplayGuildAbbr))
+            {
+                if (vvv)
+                {
+                    if (guild != null && DisplayGuildAbbr)
+                        suffix = String.Format("[{0}] [VvV]", Utility.FixHtml(guild.Abbreviation));
+                    else
+                        suffix = "[VvV]";
+                }
+                else if (suffix.Length > 0)
+                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
+                else
+                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+            }
+
+            suffix = ApplyNameSuffix(suffix);
+
+            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
+
+            if (guild != null && DisplayGuildTitle)
+            {
+                string title = GuildTitle;
+
+                if (title == null)
+                {
+                    title = "";
+                }
+                else
+                {
+                    title = title.Trim();
+                }
+
+                if (title.Length > 0)
+                {
+                    list.Add("{0}, {1}", Utility.FixHtml(title), Utility.FixHtml(guild.Name));
+                }
+            }
+        }
         #endregion
 
 		#region MyRunUO Invalidation
