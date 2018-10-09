@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class TribalBerry : Item
+    public class TribalBerry : Item, ICommodity
     {
         [Constructable]
         public TribalBerry()
@@ -24,6 +24,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {

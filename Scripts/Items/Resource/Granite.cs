@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public abstract class BaseGranite : Item
+    public abstract class BaseGranite : Item, ICommodity
     {
         private CraftResource m_Resource;
         public BaseGranite(CraftResource resource)
@@ -18,6 +18,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource

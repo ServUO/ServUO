@@ -4,8 +4,8 @@ using Server.SkillHandlers;
 
 namespace Server.Items
 {
-	public class SmokeBomb : Item
-	{
+	public class SmokeBomb : Item, ICommodity
+    {
 		[Constructable]
 		public SmokeBomb()
 			: base(0x2808)
@@ -18,7 +18,10 @@ namespace Server.Items
 			: base(serial)
 		{ }
 
-		public override void OnDoubleClick(Mobile from)
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
+        public override void OnDoubleClick(Mobile from)
 		{
 			if (!IsChildOf(from.Backpack))
 			{

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Server;
@@ -6,7 +6,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class BaseBalmOrLotion : BaseThieveConsumable
+    public class BaseBalmOrLotion : BaseThieveConsumable, ICommodity
     {
         public BaseBalmOrLotion(int itemId) : base(itemId) 
         {
@@ -38,6 +38,9 @@ namespace Server.Items
         {
           
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
 
         public override void Serialize(GenericWriter writer)

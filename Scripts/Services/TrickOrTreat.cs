@@ -263,6 +263,10 @@ namespace Server.Engines.Events
             new Point3D(802, 1204, 25), // Makoto-Jima
             new Point3D(270, 628, 15)// Homare-Jima
         };
+		private static readonly Point3D[] TerMur_Locations =
+        {
+            new Point3D(851, 3525, -38)// Royal City
+        };
         private readonly Mobile m_From;
         public NaughtyTwin(Mobile from)
             : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.2, 0.4)
@@ -339,6 +343,8 @@ namespace Server.Engines.Events
                     return Malas_Locations[Utility.Random(Malas_Locations.Length)];
                 case 4:
                     return Tokuno_Locations[Utility.Random(Tokuno_Locations.Length)];
+				case 5:
+                    return TerMur_Locations[Utility.Random(TerMur_Locations.Length)];
                 default:
                     return Felucca_Locations[Utility.Random(Felucca_Locations.Length)];
             }
