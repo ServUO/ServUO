@@ -592,6 +592,7 @@ namespace Server.Gumps
                             AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                             Refresh(false);
 
+                            User.OverheadTitle = null;
                             User.DisplayGuildAbbr = true;
                         });
                 }
@@ -770,6 +771,7 @@ namespace Server.Gumps
                         {
                             User.SubtitleSkillTitle = title;
 
+                            User.CurrentVeteranTitle = -1;
                             User.SelectRewardTitle(-1, true);
                             User.DisplayGuildTitle = false;
                         }
@@ -804,9 +806,8 @@ namespace Server.Gumps
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                         User.DisplayGuildTitle = true;
 
-                        if (User.SubtitleSkillTitle != null)
-                            User.SubtitleSkillTitle = null;
-
+                        User.SubtitleSkillTitle = null;
+                        User.CurrentVeteranTitle = -1;
                         User.SelectRewardTitle(-1, true);
 
                         Refresh(false);
@@ -887,9 +888,8 @@ namespace Server.Gumps
 
                         User.SelectRewardTitle(TitleSelected, true);
 
-                        if (User.SubtitleSkillTitle != null)
-                            User.SubtitleSkillTitle = null;
-
+                        User.SubtitleSkillTitle = null;
+                        User.CurrentVeteranTitle = -1;
                         User.DisplayGuildTitle = false;
                     });
                 }
@@ -934,6 +934,10 @@ namespace Server.Gumps
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                         title = vetTitles[TitleSelected];
                         User.CurrentVeteranTitle = title.Title;
+
+                        User.SelectRewardTitle(-1, true);
+                        User.SubtitleSkillTitle = null;
+                        User.DisplayGuildTitle = false;
 
                         Refresh(false);
                     });

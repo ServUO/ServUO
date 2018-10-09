@@ -845,42 +845,31 @@ namespace Server.Engines.CityLoyalty
             return Cities.FirstOrDefault(sys => sys.IsCitizen(from, staffIsCitizen));
 		}
 
-        public static bool ApplyCityTitle(PlayerMobile pm, ref string prefix, ref string name, ref string suffix)
+        public static bool ApplyCityTitle(PlayerMobile pm, ObjectPropertyList list, string prefix, int loc)
         {
-			if (String.IsNullOrWhiteSpace(pm.OverheadTitle))
-			{
-				return false;
-			}
+            if (loc == 1154017)
+            {
+                CityLoyaltySystem city = GetCitizenship(pm);
 
-			var loc = Utility.ToInt32(pm.OverheadTitle.TrimStart('#'));
+                if (city != null)
+                {
+                    CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-			if (loc != 1154017)
-			{
-				return false;
-			}
+                    if (entry != null && !String.IsNullOrEmpty(entry.CustomTitle))
+                    {
+                        prefix = String.Format("{0} {1} the {2}", prefix, pm.Name, entry.CustomTitle);
+                        list.Add(1154017, String.Format("{0}\t{1}", prefix, city.Definition.Name)); // ~1_TITLE~ of ~2_CITY~
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                list.Add(1151487, "{0} \t{1} the \t#{2}", prefix, pm.Name, loc); // ~1NT_PREFIX~~2NT_NAME~~3NT_SUFFIX~
+                return true;
+            }
 
-			CityLoyaltySystem city = GetCitizenship(pm);
-
-			if (city != null)
-			{
-				CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
-
-				if (entry != null && !String.IsNullOrWhiteSpace(entry.CustomTitle))
-				{
-					if (String.IsNullOrWhiteSpace(suffix))
-					{
-						suffix = String.Format("the {0} of {1}", entry.CustomTitle, city.Definition.Name);
-					}
-					else
-					{
-						suffix = String.Format("the {0} of {1} {2}", entry.CustomTitle, city.Definition.Name, suffix);
-					}
-
-					return true;
-				}
-			}
-
-			return false;
+            return false;
         }
 
         public static bool HasCustomTitle(PlayerMobile pm, out string str)
