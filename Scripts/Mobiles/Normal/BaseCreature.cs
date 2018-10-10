@@ -2495,6 +2495,9 @@ namespace Server.Mobiles
             int dragonblood = DragonBlood;
             int fur = Fur;
 
+            bool special = with is HarvestersBlade;
+
+
             if ((feathers == 0 && wool == 0 && meat == 0 && hides == 0 && scales == 0 && fur == 0) || Summoned || IsBonded || corpse.Animated)
             {
                 if (corpse.Animated)
@@ -2542,16 +2545,30 @@ namespace Server.Mobiles
                 {
                     Item feather = new Feather(feathers);
 
-                    corpse.AddCarvedItem(feather, from);
-                    from.SendLocalizedMessage(500479); // You pluck the bird. The feathers are now on the corpse.                   
+                    if (!Core.AOS || !special || !from.AddToBackpack(feather))
+                    {
+                        corpse.AddCarvedItem(feather, from);
+                        from.SendLocalizedMessage(500479); // You pluck the bird. The feathers are now on the corpse.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1114097); // You pluck the bird and place the feathers in your backpack.
+                    }
                 }
 
                 if (wool != 0)
                 {
                     Item w = new TaintedWool(wool);
-                    
-                    corpse.AddCarvedItem(w, from);
-                    from.SendLocalizedMessage(500483); // You shear it, and the wool is now on the corpse.                    
+
+                    if (!Core.AOS || !special || !from.AddToBackpack(w))
+                    {
+                        corpse.AddCarvedItem(w, from);
+                        from.SendLocalizedMessage(500483); // You shear it, and the wool is now on the corpse.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1114099); // You shear the creature and put the resources in your backpack.
+                    }
                 }
 
                 if (meat != 0)
@@ -2567,8 +2584,15 @@ namespace Server.Mobiles
                         case MeatType.Rotworm: m = new RawRotwormMeat(meat); break;
                     }
 
-                    corpse.AddCarvedItem(m, from);
-                    from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.                   
+                    if (!Core.AOS || !special || !from.AddToBackpack(m))
+                    {
+                        corpse.AddCarvedItem(m, from);
+                        from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1114101); // You carve some meat and put it in your backpack.
+                    }
                 }
 
                 if (hides != 0)
@@ -2584,7 +2608,7 @@ namespace Server.Mobiles
                         case HideType.Barbed: leather = new BarbedLeather(hides); break;
                     }
 
-                    if (!from.AddToBackpack(leather))
+                    if (!Core.AOS || !special || !from.AddToBackpack(leather))
                     {
                         corpse.AddCarvedItem(leather, from);
                         from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
@@ -2620,23 +2644,58 @@ namespace Server.Mobiles
                                 break;
                             }
                     }
-                   
-                    foreach (Item s in list)
+
+                    if (Core.AOS && special)
                     {
-                        corpse.AddCarvedItem(s, from);
+                        bool allPack = true;
+                        bool anyPack = false;
+
+                        foreach (Item s in list)
+                        {
+                            //corpse.AddCarvedItem(s, from);
+                            if (!from.PlaceInBackpack(s))
+                            {
+                                corpse.AddCarvedItem(s, from);
+                                allPack = false;
+                            }
+                            else if (!anyPack)
+                            {
+                                anyPack = true;
+                            }
+                        }
+
+                        if (anyPack)
+                            from.SendLocalizedMessage(1114098); // You cut away some scales and put them in your backpack.
+
+                        if (!allPack)
+                            from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
+                    }
+                    else
+                    {
+                        foreach (Item s in list)
+                        {
+                            corpse.AddCarvedItem(s, from);
+                        }
+
+                        from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
                     }
 
-                    from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
-                    
                     ColUtility.Free(list);
                 }
 
                 if (dragonblood != 0)
                 {
                     Item dblood = new DragonBlood(dragonblood);
-                    
-                    corpse.AddCarvedItem(dblood, from);
-                    from.SendLocalizedMessage(1094946); // Some blood is left on the corpse.                    
+
+                    if (!Core.AOS || !special || !from.AddToBackpack(dblood))
+                    {
+                        corpse.AddCarvedItem(dblood, from);
+                        from.SendLocalizedMessage(1094946); // Some blood is left on the corpse.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1114100); // You take some blood off the corpse and put it in your backpack.
+                    }
                 }
 
                 if (fur != 0)
