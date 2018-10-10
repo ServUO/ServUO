@@ -228,6 +228,7 @@ namespace Server.Engines.Points
             Entries[typeof(SpinedLeather)] = 0.50;
             Entries[typeof(HornedLeather)] = 1.0;
             Entries[typeof(BarbedLeather)] = 2.0;
+            Entries[typeof(Fur)] = 0.10;
 
 
             //BOD Rewards
