@@ -6809,16 +6809,16 @@ namespace Server
                     using (StreamWriter op = new StreamWriter("LayerConflict.log", true))
                     {
                         op.WriteLine("# {0}", DateTime.UtcNow);
-                        op.WriteLine("Offending Mobile: {0}[{1}]", GetType().ToString(), this);
-                        op.WriteLine("Offending Item: {0}", item.GetType().ToString());
-                        op.WriteLine("Equipped Item: {0}", equipped.GetType().ToString());
+                        op.WriteLine("Offending Mobile: {0} [{1}]", GetType().ToString(), this);
+                        op.WriteLine("Offending Item: {0} [{1}]", item, item.GetType().ToString());
+                        op.WriteLine("Equipped Item: {0} [{1}]", equipped, equipped.GetType().ToString());
                         op.WriteLine("Layer: {0}", item.Layer.ToString());
                         op.WriteLine();
                     }
 
-                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Mobile: {0}[{1}]", GetType().ToString(), this));
-                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Item: {0}", item.GetType().ToString()));
-                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Equipped Item: {0}", equipped.GetType().ToString()));
+                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Mobile: {0} [{1}]", GetType().ToString(), this));
+                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Item: {0} [{1}]", item, item.GetType().ToString()));
+                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Equipped Item: {0} [{1}]", equipped, equipped.GetType().ToString()));
                     Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Layer: {0}", item.Layer.ToString()));
                 }
                 catch
