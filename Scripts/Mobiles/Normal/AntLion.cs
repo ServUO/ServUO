@@ -236,6 +236,7 @@ namespace Server.Mobiles
         public override int GetAttackSound() { return 0x164; }
         public override int GetHurtSound() { return 0x187; }
         public override int GetDeathSound() { return 0x1BA; }
+        
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average, 2);
