@@ -17,7 +17,7 @@ namespace Server.Mobiles
             Body = 723;
             Hue = 1900;
 
-            BaseSoundID = 437;
+            BaseSoundID = 0x600;
 
             SetStr(550, 600);
             SetDex(70, 75);
@@ -114,13 +114,13 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override InhumanSpeech SpeechType
-        {
-            get
-            {
-                return InhumanSpeech.Orc;
-            }
-        }
+        
+		public override int GetAngerSound() { return 0x600; }
+        public override int GetIdleSound() { return 0x600; }
+        public override int GetAttackSound() { return 0x5FD; }
+        public override int GetHurtSound() { return 0x5FF; }
+        public override int GetDeathSound() { return 0x5FE; }
+		
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
