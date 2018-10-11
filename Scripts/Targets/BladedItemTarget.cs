@@ -4,6 +4,7 @@ using Server.Engines.Quests;
 using Server.Engines.Quests.Hag;
 using Server.Items;
 using Server.Mobiles;
+using Server.Network;
 using Server.Targeting;
 
 namespace Server.Targets
@@ -71,7 +72,12 @@ namespace Server.Targets
             }
             else
             {
-                if (targeted is StaticTarget)
+                if (targeted is Mobile)
+                {
+                    ((Mobile)targeted).PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500450, from.NetState); // You can only skin dead creatures.
+                    return;
+                }
+                else if (targeted is StaticTarget)
                 {
                     int itemID = ((StaticTarget)targeted).ItemID;
 
