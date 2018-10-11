@@ -2608,7 +2608,7 @@ namespace Server.Mobiles
                         case HideType.Barbed: leather = new BarbedLeather(hides); break;
                     }
 
-                    if (!Core.AOS || !special || !from.AddToBackpack(leather))
+                    if (!Core.AOS || !special || !from.AddToBackpack(leather) || !(with is ButchersWarCleaver))
                     {
                         corpse.AddCarvedItem(leather, from);
                         from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
