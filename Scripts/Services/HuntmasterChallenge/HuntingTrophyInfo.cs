@@ -27,7 +27,11 @@ namespace Server.Engines.HuntsmasterChallenge
         Triceratops,
         Lion,
         WhiteTiger,
-        BlackTiger
+        BlackTiger,
+        //Publish 102 added:
+        Raptor,
+		SeaSerpent,
+		Scorpion
     }
 
     public enum MeasuredBy
@@ -69,6 +73,10 @@ namespace Server.Engines.HuntsmasterChallenge
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Lion,            typeof(Lion),           0x9F2D, new TextDefinition(1124736), 400, 800, MeasuredBy.Weight, flippedids: true));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.WhiteTiger,      typeof(WildWhiteTiger), 0x9F2F, new TextDefinition(1156286), 400, 800, MeasuredBy.Weight, flippedids: true));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.BlackTiger,      typeof(WildBlackTiger), 0x9F31, new TextDefinition(1156286), 400, 800, MeasuredBy.Weight, flippedids: true));
+            //Publish 102 added: Please check code 
+			m_Infos.Add(new HuntingTrophyInfo(HuntType.Raptor,          typeof(Raptor),         0x2DA, new TextDefinition(1095923),  400, 800, MeasuredBy.Weight, flippedids: true));
+			m_Infos.Add(new HuntingTrophyInfo(HuntType.SeaSerpent,      typeof(SeaSerpent),     0x96, new TextDefinition(1018242),   400, 800, MeasuredBy.Weight, flippedids: true));
+			m_Infos.Add(new HuntingTrophyInfo(HuntType.Scorpion,        typeof(Scorpion),       0x30, new TextDefinition(1028420),   400, 800, MeasuredBy.Weight, flippedids: true));
         }
 
         private HuntType m_HuntType;

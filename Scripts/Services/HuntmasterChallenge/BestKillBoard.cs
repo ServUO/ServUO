@@ -55,8 +55,8 @@ namespace Server.Items
 
                 m_Filter = filter;
 
-                if (m_Filter < -1) m_Filter = 20;
-                if (m_Filter > 20) m_Filter = -1;
+                if (m_Filter < -1) m_Filter = 23;
+                if (m_Filter > 23) m_Filter = -1;
 
                 List<HuntingKillEntry> useList = new List<HuntingKillEntry>();
 
@@ -154,6 +154,10 @@ namespace Server.Items
 					case HuntType.Lion: return "Lion";
 					case HuntType.WhiteTiger: return "White Tiger";
 					case HuntType.BlackTiger: return "Black Tiger";
+                    //Publish 102 added:
+					case HuntType.Raptor: return "Raptor";
+					case HuntType.SeaSerpent: return "Sea Serpent";
+					case HuntType.Scorpion: return "Scorpion";
                 }
             }
 
@@ -185,6 +189,10 @@ namespace Server.Items
 					case (int)HuntType.Lion: return "Lion";
 					case (int)HuntType.WhiteTiger: return "White Tiger";
 					case (int)HuntType.BlackTiger: return "Black Tiger";
+                    //Publish 102 added:
+					case (int)HuntType.Raptor: return "Raptor";
+					case (int)HuntType.SeaSerpent: return "Sea Serpent";
+					case (int)HuntType.Scorpion: return "Scorpion";
                 }
             }
         }
