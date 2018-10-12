@@ -174,9 +174,9 @@ namespace Server.Items
         {
             if (info.ButtonID == 1 && Token.IsChildOf(User.Backpack))
             {
-                if (from.IsBodyMod || from.HueMod > 0 || !from.CanBeginAction(typeof(Server.Spells.Fifth.IncognitoSpell)))
+                if (User.IsBodyMod || User.HueMod > 0 || !User.CanBeginAction(typeof(Server.Spells.Fifth.IncognitoSpell)))
                 {
-                    from.SendLocalizedMessage(1073648); // You may only proceed while in your original state...
+                    User.SendLocalizedMessage(1073648); // You may only proceed while in your original state...
                 }
                 else
                 {
