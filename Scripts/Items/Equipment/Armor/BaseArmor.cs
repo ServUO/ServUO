@@ -499,20 +499,15 @@ namespace Server.Items
         {
             int value = 0;
 
-            foreach (Item item in from.Items)
+            foreach (var armor in from.Items.OfType<BaseArmor>())
             {
-                if (item is BaseArmor)
+                switch (attr)
                 {
-                    BaseArmor armor = item as BaseArmor;
-
-                    switch (attr)
-                    {
-                        case ResistanceType.Physical: value += armor.m_RefinedPhysical; break;
-                        case ResistanceType.Fire: value += armor.m_RefinedFire; break;
-                        case ResistanceType.Cold: value += armor.m_RefinedCold; break;
-                        case ResistanceType.Poison: value += armor.m_RefinedPoison; break;
-                        case ResistanceType.Energy: value += armor.m_RefinedEnergy; break;
-                    }
+                    case ResistanceType.Physical: value += armor.m_RefinedPhysical; break;
+                    case ResistanceType.Fire: value += armor.m_RefinedFire; break;
+                    case ResistanceType.Cold: value += armor.m_RefinedCold; break;
+                    case ResistanceType.Poison: value += armor.m_RefinedPoison; break;
+                    case ResistanceType.Energy: value += armor.m_RefinedEnergy; break;
                 }
             }
 
@@ -523,10 +518,9 @@ namespace Server.Items
         {
             int value = 0;
 
-            foreach (Item item in from.Items)
+            foreach (var armor in from.Items.OfType<BaseArmor>())
             {
-                if (item is BaseArmor)
-                    value += ((BaseArmor)item).RefinedDefenseChance;
+                value += armor.RefinedDefenseChance;
             }
 
             return value;

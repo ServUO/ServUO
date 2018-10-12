@@ -476,7 +476,7 @@ namespace Server.Mobiles
 		
 		public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
 		{
-            int d = defender.Hits / 2;
+            int d = Utility.RandomMinMax(30, 40);
 
             AOS.Damage(defender, creature, d, 60, 20, 0, 0, 20);
 

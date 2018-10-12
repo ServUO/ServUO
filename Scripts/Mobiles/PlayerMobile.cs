@@ -1031,7 +1031,7 @@ namespace Server.Mobiles
             int max = base.GetMaxResistance(type);
             int refineBonus = BaseArmor.GetRefinedResist(this, type);
 
-            if (refineBonus > 0)
+            if (refineBonus != 0)
             {
                 max += refineBonus;
             }
