@@ -76,14 +76,27 @@ namespace Server.Engines.Events
                     {
                         for (int i = 0; i < m_Items.Count; i++) /* dupe exploits start out like this ... */
                         {
-                            twin.AddItem(Mobile.LiftItemDupe(m_Items[i], 1));
-                        }
+                            Item item = null;
 
-                        foreach (Item item in twin.Items) /* ... and end like this */
-                        {
-                            if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount && item.Layer != Layer.Bank)
+                            try
                             {
-                                item.Movable = false;
+                                item = Activator.CreateInstance(m_Items[i].GetType()) as Item;
+                            }
+                            catch { continue; }
+
+                            if (item != null)
+                            {
+                                item.Hue = m_Items[i].Hue;
+                                item.Name = m_Items[i].Name;
+                                item.ItemID = m_Items[i].ItemID;
+                                item.LootType = m_Items[i].LootType;
+
+                                twin.AddItem(item);
+
+                                if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount && item.Layer != Layer.Bank)
+                                {
+                                    item.Movable = false;
+                                }
                             }
                         }
                     }

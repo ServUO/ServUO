@@ -124,24 +124,23 @@ namespace Server.Mobiles
             base.OnDoubleClick(from);
         }
 
+        public override void OnChampPopped(ChampionSpawn spawn)
+        {
+            Blessed = true;
+            Spawn = spawn;
+        }
+
         public override void OnThink()
         {
             base.OnThink();            
 
-            if (Spawn == null)
+            if (Spawn == null || Map == null)
                 return;
 
             if (!Utility.InRange(Location, Home, 150))
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(5), () => { Location = Home; });
             }
-
-            int CaptainCount = Spawn.m_Creatures.OfType<KhalAnkurWarriors>().Where(x => ((KhalAnkurWarriors)x)._Type == KhalAnkurWarriors.WarriorType.General).Count();
-
-            if (CaptainCount <= 0)
-            {
-                Blessed = false;
-            }            
 
             if (Blessed)
             {
@@ -155,14 +154,6 @@ namespace Server.Mobiles
                 if (m_NextSpawn < DateTime.UtcNow)
                 {
                     BaseCreature bc = new KhalAnkurWarriors(KhalAnkurWarriors.WarriorType.General);
-
-                    if (Map == null || bc == null)
-                    {
-                        if (bc != null)
-                            bc.Delete();
-
-                        return;
-                    }
 
                     int x, y, z = 0;
 
@@ -180,14 +171,19 @@ namespace Server.Mobiles
                             break;
                         }
                     }
-                    
+
                     bc.MoveToWorld(p, Map);
                     bc.FixedParticles(0x3709, 1, 30, 9963, 13, 3, EffectLayer.Head);
                     bc.Home = p;
                     bc.IsChampionSpawn = true;
-                    Spawn.m_Creatures.Add(bc);
+                    Spawn.Creatures.Add(bc);
 
                     m_NextSpawn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
+                }
+                else if (Spawn.Creatures.OfType<KhalAnkurWarriors>().Where(x => x._Type == KhalAnkurWarriors.WarriorType.General && !x.Deleted).Count() <= 0)
+                {
+                    Blessed = false;
+                    return;
                 }
             }
         }
