@@ -10,6 +10,7 @@ namespace Server.Mobiles
 		public GypsyBanker()
 		{
 			Title = "the gypsy banker";
+			SetSkill(SkillName.Begging, 64.0, 100.0);
 		}
 
 		public GypsyBanker(Serial serial)

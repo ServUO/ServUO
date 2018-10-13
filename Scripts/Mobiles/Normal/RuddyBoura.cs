@@ -70,21 +70,16 @@ namespace Server.Mobiles
             get { return HideType.Spined; }
         }
 
-        public override FoodType FavoriteFood
-        {
-            get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; }
-        }
+        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
 
-        public override int Wool
-        {
-            get { return (Body == 0x2CB ? 3 : 0); }
-        }
+        public override int Fur { get { return GatheredFur ? 0 : 30; } }
+        public override FurType FurType { get { return FurType.LightBrown; } }
 
         public bool Carve(Mobile from, Item item)
         {
             if (!GatheredFur)
             {
-                var fur = new BouraFur(30);
+                var fur = new Fur(FurType, Fur);
 
                 if (from.Backpack == null || !from.Backpack.TryDropItem(from, fur, false))
                 {
@@ -100,21 +95,11 @@ namespace Server.Mobiles
                 }
             }
             else
-                from.SendLocalizedMessage(1112354); // The boura glares at you and will not let you shear its fur.
+            {
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112354, from.NetState); // The boura glares at you and will not let you shear its fur.
+            }
 
             return false;
-        }
-
-        public override void OnCarve(Mobile from, Corpse corpse, Item with)
-        {
-            base.OnCarve(from, corpse, with);
-
-            if (!GatheredFur)
-            {
-                from.SendLocalizedMessage(1112765); // You shear it, and the fur is now on the corpse.
-                corpse.AddCarvedItem(new BouraFur(15), from);
-                GatheredFur = true;
-            }
         }
 
         public override int GetIdleSound()

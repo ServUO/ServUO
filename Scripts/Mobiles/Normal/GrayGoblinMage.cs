@@ -14,7 +14,7 @@ namespace Server.Mobiles
 
             Body = 723;
             Hue = 1900;
-            BaseSoundID = 0x45A;
+            BaseSoundID = 0x600;
 
             SetStr(227, 285);
             SetDex(70, 88);
@@ -92,28 +92,15 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int GetAngerSound() { return 0x600; }
+        public override int GetIdleSound() { return 0x600; }
+        public override int GetAttackSound() { return 0x5FD; }
+        public override int GetHurtSound() { return 0x5FF; }
+        public override int GetDeathSound() { return 0x5FE; }
 
+        public override bool CanRummageCorpses { get { return true; } }
+        public override int TreasureMapLevel { get { return 1; } }
+        public override int Meat { get { return 1; } }
         public override TribeType Tribe { get { return TribeType.GrayGoblin; } }
 
         public override void GenerateLoot()

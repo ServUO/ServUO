@@ -35,6 +35,11 @@ namespace Server.Mobiles
 
             VirtualArmor = 4;
 
+            DelayBeginTunnel();
+        }
+		
+		public virtual void SpawnPackItems()
+        {
             int carrots = Utility.RandomMinMax(5, 10);
             PackItem(new Carrot(carrots));
 
@@ -42,8 +47,6 @@ namespace Server.Mobiles
                 PackItem(new BrightlyColoredEggs());
 
             PackStatue();
-
-            DelayBeginTunnel();
         }
 
         public VorpalBunny(Serial serial)
@@ -51,27 +54,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
+        public override int Meat { get { return 1; } }
+        public override int Hides { get { return 1; } }
+        public override bool BardImmune { get { return !Core.AOS; } }
+		
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
@@ -111,20 +97,9 @@ namespace Server.Mobiles
             Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(Delete));
         }
 
-        public override int GetAttackSound()
-        {
-            return 0xC9;
-        }
-
-        public override int GetHurtSound()
-        {
-            return 0xCA;
-        }
-
-        public override int GetDeathSound()
-        {
-            return 0xCB;
-        }
+        public override int GetAttackSound() { return 0xC9; }
+        public override int GetHurtSound() { return 0xCA; }
+        public override int GetDeathSound() { return 0xCB; }
 
         public override void Serialize(GenericWriter writer)
         {
