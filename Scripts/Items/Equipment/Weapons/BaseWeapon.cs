@@ -4907,7 +4907,7 @@ namespace Server.Items
             {
                 if (WeaponAttributes.HitLeechHits > 0 || WeaponAttributes.HitLeechMana > 0)
                 {
-                    WeaponAttributes.ScaleLeech(this, Attributes.WeaponSpeed);
+                    WeaponAttributes.ScaleLeech(Attributes.WeaponSpeed);
                 }
             }
 

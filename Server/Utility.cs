@@ -1596,5 +1596,99 @@ namespace Server
 
             Free(l);
         }
+
+        public static void IterateReverse<T>(this T[] list, Action<T> action)
+        {
+            if (list == null || action == null)
+            {
+                return;
+            }
+
+            int i = list.Length;
+
+            while (--i >= 0)
+            {
+                if (i < list.Length)
+                {
+                    action(list[i]);
+                }
+            }
+        }
+
+        public static void IterateReverse<T>(this List<T> list, Action<T> action)
+        {
+            if (list == null || action == null)
+            {
+                return;
+            }
+
+            int i = list.Count;
+
+            while (--i >= 0)
+            {
+                if (i < list.Count)
+                {
+                    action(list[i]);
+                }
+            }
+        }
+
+        public static void IterateReverse<T>(this IEnumerable<T> list, Action<T> action)
+        {
+            if (list == null || action == null)
+            {
+                return;
+            }
+
+            if (list is T[])
+            {
+                IterateReverse((T[])list, action);
+                return;
+            }
+
+            if (list is List<T>)
+            {
+                IterateReverse((List<T>)list, action);
+                return;
+            }
+
+            var toList = list.ToList();
+
+            foreach (var o in toList)
+            {
+                action(o);
+            }
+
+            Free(toList);
+        }
+
+        public static void SafeDelete(List<IEntity> list)
+        {
+            SafeDelete(list, null);
+        }
+
+        /// <summary>
+        /// Safely deletes any entities based on predicate from a list that by deleting such entity would cause the collection to be modified.
+        /// ie item.Items or mobile.Items. Omitting the predicate will delete all items in the collection.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="predicate"></param>
+        public static void SafeDelete(List<IEntity> list, Func<IEntity, bool> predicate)
+        {
+            if (list == null)
+            {
+                return;
+            }
+
+            int i = list.Count;
+
+            while (--i >= 0)
+            {
+                if (i < list.Count && !list[i].Deleted && (predicate == null || predicate(list[i])))
+                {
+                    list[i].Delete();
+                }
+            }
+        }
     }
 }
