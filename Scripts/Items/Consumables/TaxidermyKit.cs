@@ -1,10 +1,12 @@
 using System;
+
 using Server;
 using Server.Multis;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Network;
 using Server.Items;
+using Server.Engines.HuntsmasterChallenge;
 
 namespace Server.Items
 {
@@ -170,19 +172,24 @@ namespace Server.Items
                     }
                     else if (from.Backpack != null && from.Backpack.ConsumeTotal(typeof(Board), 10))
                     {
-                        Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo info = Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo.Infos[lic.KillEntry.KillIndex];
+                        int index = lic.KillEntry.KillIndex;
 
-                        if (info != null)
+                        if (index >= 0 && index < Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo.Infos.Count)
                         {
-                            string name = lic.KillEntry.Owner != null ? lic.KillEntry.Owner.Name : from.Name;
+                            Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo info = Server.Engines.HuntsmasterChallenge.HuntingTrophyInfo.Infos[index];
 
-                            if(info.Complex)
-                                from.AddToBackpack(new HuntTrophyAddonDeed(name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species));
-                            else
-                                from.AddToBackpack(new HuntTrophyDeed(name, info.MeasuredBy, lic.KillEntry.Measurement, info.SouthID, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location, info.Species, info.FlippedIDs));
-                            
-                            lic.ProducedTrophy = true;
-                            m_Kit.Delete();
+                            if (info != null)
+                            {
+                                string name = lic.KillEntry.Owner != null ? lic.KillEntry.Owner.Name : from.Name;
+
+                                if (!info.RequiresWall || info.Complex)
+                                    from.AddToBackpack(new HuntTrophyAddonDeed(name, index, lic.KillEntry.Measurement, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location));
+                                else
+                                    from.AddToBackpack(new HuntTrophyDeed(name, index, lic.KillEntry.Measurement, lic.KillEntry.DateKilled.ToShortDateString(), lic.KillEntry.Location));
+
+                                lic.ProducedTrophy = true;
+                                m_Kit.Delete();
+                            }
                         }
                     }
                     else

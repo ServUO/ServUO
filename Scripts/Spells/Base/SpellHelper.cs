@@ -228,19 +228,18 @@ namespace Server.Spells
             }
         }
 
-        //TODO: Check if aggressor leaves facet, if heat is removed
         public static bool CheckCombat(Mobile m, bool restrict = true)
         {
             if (!restrict)
                 return false;
 
-            TimeSpan delay = Server.Misc.AttackMessage.CombatHeatDelay;
+            TimeSpan delay = Server.Misc.Aggression.CombatHeatDelay;
 
             for (int i = 0; i < m.Aggressed.Count; ++i)
             {
                 AggressorInfo info = m.Aggressed[i];
 
-                if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < delay)
+                if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < delay && info.Defender.Map == m.Map)
                     return true;
             }
 
@@ -250,7 +249,7 @@ namespace Server.Spells
                 {
                     AggressorInfo info = m.Aggressors[i];
 
-                    if (info.Attacker.Player && (DateTime.UtcNow - info.LastCombatTime) < delay)
+                    if (info.Attacker.Player && (DateTime.UtcNow - info.LastCombatTime) < delay && info.Defender.Map == m.Map)
                         return true;
                 }
             }
@@ -585,9 +584,14 @@ namespace Server.Spells
                     if (p != null && (p.Contains(c.ControlMaster) || p.Contains(c.SummonMaster)))
                         return false;
                 }
+                else if(to.Player || // monsters can hit players and pets of players
+                        (to is BaseCreature && (((BaseCreature)to).Controlled || ((BaseCreature)to).Summoned) && ((BaseCreature)to).GetMaster() is PlayerMobile))
+                {
+                    return true;
+                }
             }
 
-            // Non-enemy monsters will no longer flag area spells on each other
+            // Non-enemy monsters will not flag area spells on each other
             if (from is BaseCreature && to is BaseCreature)
             {
                 BaseCreature fromBC = (BaseCreature)from;

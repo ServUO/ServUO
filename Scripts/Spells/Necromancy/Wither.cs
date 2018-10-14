@@ -66,7 +66,7 @@ namespace Server.Spells.Necromancy
                     Effects.PlaySound(this.Caster.Location, map, 0x10B);
                     Effects.SendLocationParticles(EffectItem.Create(this.Caster.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
 
-                    foreach (var id in AcquireTargets())
+                    foreach (var id in AcquireIndirectTargets(Caster.Location, Core.ML ? 4 : 5))
                     {
                         Mobile m = id as Mobile;
 
@@ -122,53 +122,6 @@ namespace Server.Spells.Necromancy
             }
 
             this.FinishSequence();
-        }
-
-        public virtual IEnumerable<IDamageable> AcquireTargets()
-        {
-            var cbc = Caster as BaseCreature;
-            var isMonster = cbc != null && !cbc.Controlled && !cbc.Summoned;
-
-            var eable = Caster.GetObjectsInRange(Core.ML ? 4 : 5);
-
-            foreach (var id in eable.OfType<IDamageable>())
-            {
-                if (id == Caster)
-                {
-                    continue;
-                }
-
-                if (!Caster.InLOS(id) || !Caster.CanBeHarmful(id, false))
-                {
-                    continue;
-                }
-
-                if (id is Mobile && !isMonster && !SpellHelper.ValidIndirectTarget(Caster, (Mobile)id))
-                {
-                    continue;
-                }
-
-                if (isMonster)
-                {
-                    if (id is BaseCreature)
-                    {
-                        var bc = (BaseCreature)id;
-
-                        if (!bc.Controlled && !bc.Summoned && bc.Team == cbc.Team)
-                        {
-                            continue;
-                        }
-                    }
-                    else if (!(id is PlayerMobile))
-                    {
-                        continue;
-                    }
-                }
-
-                yield return id;
-            }
-
-            eable.Free();
         }
     }
 }

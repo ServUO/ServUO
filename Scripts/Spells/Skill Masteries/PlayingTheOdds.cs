@@ -95,26 +95,11 @@ namespace Server.Spells.SkillMasteries
 
                 AddToCooldown(TimeSpan.FromSeconds(90));
 
-                IPooledEnumerable eable = Caster.Map.GetMobilesInRange(Caster.Location, 5);
-                List<Mobile> targets = new List<Mobile>();
-
-                foreach (Mobile m in eable)
-                {
-                    if (Caster != m && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
-                    {
-                        if (!Caster.InLOS(m))
-                            continue;
-
-                        targets.Add(m);
-                    }
-                }
-                eable.Free();
-
-                foreach (Mobile mob in targets)
+                foreach (var mob in AcquireIndirectTargets(Caster.Location, 5).OfType<Mobile>())
                 {
                     if (HitLower.ApplyDefense(mob))
                     {
-                        if(wep is BaseRanged && !(wep is BaseThrown))
+                        if (wep is BaseRanged && !(wep is BaseThrown))
                             Caster.MovingEffect(mob, ((BaseRanged)wep).EffectID, 18, 1, false, false);
 
                         mob.PlaySound(0x28E);

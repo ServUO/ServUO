@@ -83,6 +83,8 @@ namespace Server.Spells.Bushido
             {
                 attacker.SendLocalizedMessage(1063123); // There are no valid targets to attack!
             }
+
+            ColUtility.Free(targets);
         }
 
         public override void OnUse(Mobile m)

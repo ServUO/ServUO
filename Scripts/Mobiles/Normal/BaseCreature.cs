@@ -4799,8 +4799,8 @@ namespace Server.Mobiles
 
                     if (aggressor is PlayerMobile || (aggressor is BaseCreature && !((BaseCreature)aggressor).IsMonster))
                     {
-                        BuffInfo.AddBuff(ControlMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, ControlMaster, true));
-                        BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, aggressor, true));
+                        BuffInfo.AddBuff(ControlMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, ControlMaster, true));
+                        BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, aggressor, true));
                     }
                 }
             }
