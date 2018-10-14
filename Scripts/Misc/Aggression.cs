@@ -19,8 +19,8 @@ namespace Server.Misc
         public static void Initialize()
         {
             EventSink.AggressiveAction += EventSink_AggressiveAction;
-            EventSink.PlayerDeath += EventSink_PlayerDeath;
-            EventSink.CreatureDeath += EventSink_CreatureDeath;
+            //EventSink.PlayerDeath += EventSink_PlayerDeath;
+            //EventSink.CreatureDeath += EventSink_CreatureDeath;
         }
 
         public static void EventSink_AggressiveAction(AggressiveActionEventArgs e)
