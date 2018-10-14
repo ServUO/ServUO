@@ -305,32 +305,44 @@ namespace Server.Engines.MyrmidexInvasion
 
         public void CheckWaves()
         {
-            var list = MyrmidexTeam.Values.ToList();
+            var list = MyrmidexTeam.Keys.ToList();
 
             for(int i = 0; i < list.Count; i++)
             {
-                var bcList = list[i];
+                var wave = list[i];
+                var bcList = MyrmidexTeam[wave];
+
+                if (bcList == null)
+                    continue;
 
                 if (bcList.All(bc => bc == null || bc.Deleted || !bc.Alive))
                 {
-                    ColUtility.Free(MyrmidexTeam[i]);
-                    MyrmidexTeam.Remove(i);
+                    ColUtility.Free(bcList);
+
+                    if(MyrmidexTeam.ContainsKey(wave))
+                        MyrmidexTeam.Remove(wave);
 
                     RegionMessage(i == 0 ? 1156604 : 1156605); // The Eodonians have secured new ground, the front line has moved up!
                 }
             }
 
             list.Clear();
-            list = TribeTeam.Values.ToList();
+            list = TribeTeam.Keys.ToList();
 
             for (int i = 0; i < list.Count; i++)
             {
-                var bcList = list[i];
+                var wave = list[i];
+                var bcList = TribeTeam[wave];
+
+                if (bcList == null)
+                    continue;
 
                 if (bcList.All(bc => bc == null || bc.Deleted || !bc.Alive))
                 {
-                    ColUtility.Free(TribeTeam[i]);
-                    TribeTeam.Remove(i);
+                    ColUtility.Free(bcList);
+
+                    if(TribeTeam.ContainsKey(wave))
+                        TribeTeam.Remove(wave);
 
                     RegionMessage(i == 0 ? 1156602 : 1156603); // The Myrmidex have secured new ground, the front line has moved up!
                 }
