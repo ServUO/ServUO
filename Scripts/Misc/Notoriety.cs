@@ -41,7 +41,7 @@ namespace Server.Misc
 		{
 			None,
 			Peaceful,
-			Waring
+			Warring
 		}
 
 		private static GuildStatus GetGuildStatus(Mobile m)
@@ -52,12 +52,12 @@ namespace Server.Misc
 			if (((Guild)m.Guild).Enemies.Count == 0 && m.Guild.Type == GuildType.Regular)
 				return GuildStatus.Peaceful;
 
-			return GuildStatus.Waring;
+			return GuildStatus.Warring;
 		}
 
 		private static bool CheckBeneficialStatus(GuildStatus from, GuildStatus target)
 		{
-			if (from == GuildStatus.Waring || target == GuildStatus.Waring)
+			if (from == GuildStatus.Warring || target == GuildStatus.Warring)
 				return false;
 
 			return true;
