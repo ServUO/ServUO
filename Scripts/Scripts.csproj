@@ -638,6 +638,7 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\VirtuousEpiphany.cs" />
     <Compile Include="Items\Consumables\PoppiesDust.cs" />
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
+    <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Gumps.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\CounterfeitPlatinum.cs" />
@@ -8507,9 +8508,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\AOS.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Misc\AttackMessage.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\AutoRestart.cs">

@@ -1267,6 +1267,36 @@ namespace Server.Spells
             return true;
         }
 
+        public virtual IEnumerable<IDamageable> AcquireIndirectTargets(IPoint3D pnt, int range)
+        {
+            if (Caster.Map == null || Caster.Map == Map.Internal)
+                yield break;
+
+            var eable = Caster.Map.GetObjectsInRange(new Point3D(pnt), range);
+
+            foreach (var id in eable.OfType<IDamageable>())
+            {
+                if (id == Caster)
+                {
+                    continue;
+                }
+
+                if (!Caster.InLOS(id) || !Caster.CanBeHarmful(id, false))
+                {
+                    continue;
+                }
+
+                if (id is Mobile && !SpellHelper.ValidIndirectTarget(Caster, (Mobile)id))
+                {
+                    continue;
+                }
+
+                yield return id;
+            }
+
+            eable.Free();
+        }
+
 		private class AnimTimer : Timer
 		{
 			private readonly Spell m_Spell;

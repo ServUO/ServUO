@@ -147,22 +147,12 @@ namespace Server.Spells.SkillMasteries
                 if (this.Deleted)
                     return;
 
-                IPooledEnumerable eable = GetMobilesInRange(1);
-                var affect = new List<Mobile>();
-
-                foreach(Mobile m in eable)
-                {
-                    if (!affect.Contains(m) && (m.Z + 16) > this.Z && (this.Z + 12) > m.Z && m != Caster && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
-                        affect.Add(m);
-                }
-
-                foreach (var m in affect)
+                foreach (var m in Owner.AcquireIndirectTargets(Location, 1).OfType<Mobile>().Where(m =>
+                    (m.Z + 16) > Z && 
+                    (Z + 12) > m.Z))
                 {
                     DoDamage(m);
                 }
-
-                ColUtility.Free(affect);
-                eable.Free();
             }
 
             public override void OnAfterDelete()

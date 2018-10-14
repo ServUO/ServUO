@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Mobiles;
 using Server.Network;
 
@@ -81,24 +83,10 @@ namespace Server.Spells.Spellweaving
                 int pvpDamage = damage * (100 + sdiBonus);
                 pvpDamage /= 100;
 
-                int range = 2 + FocusLevel;
                 TimeSpan duration = TimeSpan.FromSeconds(5 + FocusLevel);
 
-                List<Mobile> targets = new List<Mobile>();
-                IPooledEnumerable eable = Caster.GetMobilesInRange(range);
-
-                foreach (Mobile m in eable)
+                foreach (var m in AcquireIndirectTargets(Caster.Location, 2 + FocusLevel).OfType<Mobile>())
                 {
-                    if (Caster != m && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false) && Caster.InLOS(m))
-                        targets.Add(m);
-                }
-
-                eable.Free();
-
-                for (int i = 0; i < targets.Count; i++)
-                {
-                    Mobile m = targets[i];
-
                     Caster.DoHarmful(m);
 
                     Spell oldSpell = m.Spell as Spell;

@@ -76,7 +76,7 @@ namespace Server.Network
 
 					ns.Start();
 
-					if (ns.Running)
+                    if (ns.Running && Display(ns))
 					{
 						Utility.PushColor(ConsoleColor.Green);
 						Console.WriteLine("Client: {0}: Connected. [{1} Online]", ns, NetState.Instances.Count);
@@ -85,6 +85,28 @@ namespace Server.Network
 				}
 			}
 		}
+
+        public static bool Display(NetState ns)
+        {
+            if (ns == null)
+                return false;
+
+            string state = ns.ToString();
+
+            foreach (var str in _NoDisplay)
+            {
+                if (str == state)
+                    return false;
+            }
+
+            return true;
+        }
+
+        private static string[] _NoDisplay =
+        {
+            "192.99.10.155",
+            "192.99.69.21",
+        };
 
 		public void OnReceive(NetState ns)
 		{
