@@ -1269,32 +1269,7 @@ namespace Server.Spells
 
         public virtual IEnumerable<IDamageable> AcquireIndirectTargets(IPoint3D pnt, int range)
         {
-            if (Caster.Map == null || Caster.Map == Map.Internal)
-                yield break;
-
-            var eable = Caster.Map.GetObjectsInRange(new Point3D(pnt), range);
-
-            foreach (var id in eable.OfType<IDamageable>())
-            {
-                if (id == Caster)
-                {
-                    continue;
-                }
-
-                if (!Caster.InLOS(id) || !Caster.CanBeHarmful(id, false))
-                {
-                    continue;
-                }
-
-                if (id is Mobile && !SpellHelper.ValidIndirectTarget(Caster, (Mobile)id))
-                {
-                    continue;
-                }
-
-                yield return id;
-            }
-
-            eable.Free();
+            return SpellHelper.AcquireIndirectTargets(Caster, pnt, Caster.Map, range);
         }
 
 		private class AnimTimer : Timer

@@ -3138,7 +3138,7 @@ namespace Server.Items
 				return;
 			}
 
-            var list = AcquireIndirectTargets(from, 5);
+            var list = SpellHelper.AcquireIndirectTargets(from, from, from.Map, 5);
 
             if (list.Count() > 0)
             {
@@ -3155,29 +3155,6 @@ namespace Server.Items
             if (ProcessingMultipleHits)
                 BlockHitEffects = true;
 		}
-
-        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile from, int range)
-        {
-            if (from.Map == null || from.Map == Map.Internal)
-                yield break;
-
-            var eable = from.Map.GetMobilesInRange(from.Location, range);
-
-            foreach (var m in eable)
-            {
-                if (m == from ||
-                    (Core.ML && !from.InLOS(m)) || 
-                    !from.CanBeHarmful(m, false) || 
-                    !SpellHelper.ValidIndirectTarget(from, m))
-                {
-                    continue;
-                }
-
-                yield return m;
-            }
-
-            eable.Free();
-        }
 		#endregion
 
         public virtual CheckSlayerResult CheckSlayers(Mobile attacker, Mobile defender, SlayerName slayer)

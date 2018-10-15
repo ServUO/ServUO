@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Engines.PartySystem;
 using Server.Guilds;
 using Server.Items;
@@ -233,7 +235,8 @@ namespace Server.Spells
             if (!restrict)
                 return false;
 
-            TimeSpan delay = Server.Misc.Aggression.CombatHeatDelay;
+            return Aggression.CheckHasAggression(m, Core.AOS);
+            /*TimeSpan delay = Server.Misc.Aggression.CombatHeatDelay;
 
             for (int i = 0; i < m.Aggressed.Count; ++i)
             {
@@ -254,7 +257,7 @@ namespace Server.Spells
                 }
             }
 
-            return false;
+            return false;*/
         }
 
         public static bool AdjustField(ref Point3D p, Map map, int height, bool mobsBlock)
@@ -617,6 +620,38 @@ namespace Server.Spells
             int noto = Notoriety.Compute(from, to);
 
             return (noto != Notoriety.Innocent || from.Murderer);
+        }
+
+        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range)
+        {
+            if (map == null)
+            {
+                yield break;
+            }
+
+            IPooledEnumerable eable = map.GetObjectsInRange(new Point3D(p), range);
+
+            foreach (var id in eable.OfType<IDamageable>())
+            {
+                if (id == caster)
+                {
+                    continue;
+                }
+
+                if (!caster.InLOS(id) || !caster.CanBeHarmful(id, false))
+                {
+                    continue;
+                }
+
+                if (id is Mobile && !SpellHelper.ValidIndirectTarget(caster, (Mobile)id))
+                {
+                    continue;
+                }
+
+                yield return id;
+            }
+
+            eable.Free();
         }
 
         private static readonly int[] m_Offsets = new int[]
