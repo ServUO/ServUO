@@ -236,28 +236,6 @@ namespace Server.Spells
                 return false;
 
             return Aggression.CheckHasAggression(m, Core.AOS);
-            /*TimeSpan delay = Server.Misc.Aggression.CombatHeatDelay;
-
-            for (int i = 0; i < m.Aggressed.Count; ++i)
-            {
-                AggressorInfo info = m.Aggressed[i];
-
-                if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < delay && info.Defender.Map == m.Map)
-                    return true;
-            }
-
-            if (!Core.AOS)
-            {
-                for (int i = 0; i < m.Aggressors.Count; ++i)
-                {
-                    AggressorInfo info = m.Aggressors[i];
-
-                    if (info.Attacker.Player && (DateTime.UtcNow - info.LastCombatTime) < delay && info.Defender.Map == m.Map)
-                        return true;
-                }
-            }
-
-            return false;*/
         }
 
         public static bool AdjustField(ref Point3D p, Map map, int height, bool mobsBlock)
