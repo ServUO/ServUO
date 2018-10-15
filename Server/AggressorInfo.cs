@@ -210,5 +210,15 @@ namespace Server
 			m_LastCombatTime = DateTime.UtcNow;
 			m_Reported = false;
 		}
+
+        public void Reset()
+        {
+            if (m_Queued)
+            {
+                DumpAccess();
+            }
+
+            m_LastCombatTime = DateTime.MinValue;
+        }
 	}
 }

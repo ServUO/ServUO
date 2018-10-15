@@ -19,8 +19,8 @@ namespace Server.Misc
         public static void Initialize()
         {
             EventSink.AggressiveAction += EventSink_AggressiveAction;
-            //EventSink.PlayerDeath += EventSink_PlayerDeath;
-            //EventSink.CreatureDeath += EventSink_CreatureDeath;
+            EventSink.PlayerDeath += EventSink_PlayerDeath;
+            EventSink.CreatureDeath += EventSink_CreatureDeath;
         }
 
         public static void EventSink_AggressiveAction(AggressiveActionEventArgs e)
@@ -46,53 +46,48 @@ namespace Server.Misc
             var killed = e.Mobile;
              
             // Remove all those the one killed aggressed
-            foreach (var m in killed.Aggressed.Select(x => x.Defender))
+            foreach (var aggressed in killed.Aggressed)
             {
+                var m = aggressed.Defender;
+
                 AggressorInfo info = m.Aggressed.FirstOrDefault(i => i.Defender == killed);
 
                 if (info != null)
                 {
-                    m.Aggressed.Remove(info);
+                    ResetCombatTime(m, info);
                 }
 
                 info = m.Aggressors.FirstOrDefault(i => i.Attacker == killed);
 
                 if (info != null)
                 {
-                    m.Aggressors.Remove(info);
+                    ResetCombatTime(m, info);
                 }
 
-                if (!CheckAggressions(m))
-                {
-                    BuffInfo.RemoveBuff(m, BuffIcon.HeatOfBattleStatus);
-                }
+                ResetCombatTime(m, aggressed);
             }
 
             // Remove all those who the one killed was aggressed by
-            foreach (var m in killed.Aggressors.Select(x => x.Attacker))
+            foreach (var aggressor in killed.Aggressors)
             {
+                var m = aggressor.Attacker;
+
                 AggressorInfo info = m.Aggressed.FirstOrDefault(i => i.Defender == killed);
 
                 if (info != null)
                 {
-                    m.Aggressed.Remove(info);
+                    ResetCombatTime(m, info);
                 }
 
                 info = m.Aggressors.FirstOrDefault(i => i.Attacker == killed);
 
                 if (info != null)
                 {
-                    m.Aggressors.Remove(info);
+                    ResetCombatTime(m, info);
                 }
 
-                if (!CheckAggressions(m))
-                {
-                    BuffInfo.RemoveBuff(m, BuffIcon.HeatOfBattleStatus);
-                }
+                ResetCombatTime(m, aggressor);
             }
-
-            killed.Aggressors.Clear();
-            killed.Aggressed.Clear();
 
             BuffInfo.RemoveBuff(killed, BuffIcon.HeatOfBattleStatus);
         }
@@ -101,24 +96,23 @@ namespace Server.Misc
         {
             var killed = e.Creature;
 
-            // Remove all those the one killed aggressed
             foreach (var m in killed.Aggressed.Select(x => x.Defender))
             {
                 AggressorInfo info = m.Aggressed.FirstOrDefault(i => i.Defender == killed);
 
                 if (info != null)
                 {
-                    m.Aggressed.Remove(info);
+                    ResetCombatTime(m, info);
                 }
 
                 info = m.Aggressors.FirstOrDefault(i => i.Attacker == killed);
 
                 if (info != null)
                 {
-                    m.Aggressors.Remove(info);
+                    ResetCombatTime(m, info);
                 }
 
-                if (!CheckAggressions(m))
+                if (!CheckHasAggression(m))
                 {
                     BuffInfo.RemoveBuff(m, BuffIcon.HeatOfBattleStatus);
                 }
@@ -131,24 +125,29 @@ namespace Server.Misc
 
                 if (info != null)
                 {
-                    m.Aggressed.Remove(info);
+                    ResetCombatTime(m, info);
                 }
 
                 info = m.Aggressors.FirstOrDefault(i => i.Attacker == killed);
 
                 if (info != null)
                 {
-                    m.Aggressors.Remove(info);
-                }
-
-                if (!CheckAggressions(m))
-                {
-                    BuffInfo.RemoveBuff(m, BuffIcon.HeatOfBattleStatus);
+                    ResetCombatTime(m, info);
                 }
             }
+        }
 
-            killed.Aggressors.Clear();
-            killed.Aggressed.Clear();
+        private static void ResetCombatTime(Mobile m, AggressorInfo info)
+        {
+            Timer.DelayCall(() =>
+                {
+                    info.Reset();
+
+                    if (m is PlayerMobile && !CheckHasAggression(m))
+                    {
+                        BuffInfo.RemoveBuff(m, BuffIcon.HeatOfBattleStatus);
+                    }
+                });
         }
 
         public static bool CheckAggressions(Mobile m1, Mobile m2)
@@ -176,10 +175,42 @@ namespace Server.Misc
             return false;
         }
 
-        public static bool CheckAggressions(Mobile m)
+        public static bool CheckHasAggression(Mobile m, bool aggressedOnly = false)
         {
-            return m.Aggressed.Select(x => x.Defender).Any(mob => mob is PlayerMobile || (mob is BaseCreature && !((BaseCreature)mob).IsMonster)) ||
-                                 m.Aggressors.Select(x => x.Attacker).Any(mob => mob is PlayerMobile || (mob is BaseCreature && !((BaseCreature)mob).IsMonster));
+            var list = m.Aggressed;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+                var defender = info.Defender;
+
+                if ((defender is PlayerMobile || defender is BaseCreature && !((BaseCreature)defender).IsMonster) &&
+                    DateTime.UtcNow < (info.LastCombatTime + Delay))
+                {
+                    return true;
+                }
+            }
+
+            if (aggressedOnly)
+            {
+                return false;
+            }
+
+            list = m.Aggressors;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+                var attacker = info.Attacker;
+
+                if ((attacker is PlayerMobile || attacker is BaseCreature && !((BaseCreature)attacker).IsMonster) &&
+                    DateTime.UtcNow < (info.LastCombatTime + Delay))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
