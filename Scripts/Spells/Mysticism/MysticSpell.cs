@@ -18,7 +18,8 @@ namespace Server.Spells.Mysticism
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(0.5 + 0.25 * (int)Circle); } }
         public override double CastDelayFastScalar { get { return 1.0; } }
 
-        private const double ChanceOffset = 20.0, ChanceLength = 100.0 / 7.0;
+        public double ChanceOffset { get { return Caster is Server.Mobiles.PlayerMobile ? 20.0 : 30.0; } }
+        private const double ChanceLength = 100.0 / 7.0;
 
         public override void GetCastSkills(out double min, out double max)
         {
