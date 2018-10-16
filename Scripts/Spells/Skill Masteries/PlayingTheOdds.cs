@@ -119,10 +119,10 @@ namespace Server.Spells.SkillMasteries
         {
             if (PartyList != null)
             {
-                PartyList.ForEach(m =>
+                foreach(var m in PartyList)
                 {
-                    BuffInfo.RemoveBuff(m, BuffIcon.PlayingTheOdds);
-                });
+                    RemovePartyEffects(m);
+                }
             }
 
             BaseWeapon wep = GetWeapon();
@@ -130,8 +130,13 @@ namespace Server.Spells.SkillMasteries
             if (wep != null)
                 wep.InvalidateProperties();
 
-            BuffInfo.RemoveBuff(Caster, BuffIcon.PlayingTheOddsDebuff);
+            RemovePartyEffects(Caster);
             Caster.SendLocalizedMessage(1156092); // Your bow range has returned to normal.
+        }
+
+        public override void RemovePartyEffects(Mobile m)
+        {
+            BuffInfo.RemoveBuff(m, BuffIcon.PlayingTheOdds);
         }
 
         public static int HitChanceBonus(Mobile m)

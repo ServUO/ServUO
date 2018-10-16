@@ -72,13 +72,18 @@ namespace Server.Spells.SkillMasteries
             {
                 foreach (Mobile m in PartyList) //Original Party list
                 {
-                    BuffInfo.RemoveBuff(m, BuffIcon.Invigorate);
+                    RemovePartyEffects(m);
                 }
             }
 
-            BuffInfo.RemoveBuff(Caster, BuffIcon.Invigorate);
+            RemovePartyEffects(Caster);
         }
-		
+
+        public override void RemovePartyEffects(Mobile m)
+        {
+            BuffInfo.RemoveBuff(m, BuffIcon.Invigorate);
+        }
+
 		public override bool OnTick()
 		{
 			base.OnTick();

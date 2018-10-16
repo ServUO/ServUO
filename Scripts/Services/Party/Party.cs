@@ -324,6 +324,8 @@ namespace Server.Engines.PartySystem
                     Disband();
                 }
             }
+
+            Server.Spells.SkillMasteries.SkillMasterySpell.OnPartyRemoved(m, m_Members == null || m_Members.Count == 0);
         }
 
         public bool Contains(Mobile m)
