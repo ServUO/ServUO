@@ -4005,6 +4005,8 @@ namespace Server
 
 		public virtual void Kill()
 		{
+            m_LastKilled = DateTime.UtcNow;
+
 			if (!CanBeDamaged())
 			{
 				return;
@@ -4042,7 +4044,6 @@ namespace Server
 			{
 				m_Spell.OnCasterKilled();
 			}
-			//m_Spell.Disturb( DisturbType.Kill );
 
 			if (m_Target != null)
 			{
@@ -5530,10 +5531,13 @@ namespace Server
 		}
 
 		private Mobile m_LastKiller;
+        private DateTime m_LastKilled;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public Mobile LastKiller { get { return m_LastKiller; } set { m_LastKiller = value; } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime LastKilled { get { return m_LastKilled; } set { m_LastKilled = value; } }
 		/// <summary>
 		///     Overridable. Virtual event invoked when the Mobile is <see cref="Damage">damaged</see>. It is called before
 		///     <see
