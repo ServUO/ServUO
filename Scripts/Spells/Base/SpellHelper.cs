@@ -616,7 +616,7 @@ namespace Server.Spells
                     continue;
                 }
 
-                if (!caster.InLOS(id) || !caster.CanBeHarmful(id, false))
+                if (!id.Alive || !caster.InLOS(id) || !caster.CanBeHarmful(id, false))
                 {
                     continue;
                 }

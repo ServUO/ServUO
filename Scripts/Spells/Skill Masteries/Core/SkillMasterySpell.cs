@@ -308,8 +308,7 @@ namespace Server.Spells.SkillMasteries
                 foreach(Mobile m in PartyList)
                     m.Delta(MobileDelta.WeaponDamage);
 
-                PartyList.Clear();
-                PartyList.TrimExcess();
+                ColUtility.Free(PartyList);
             }
 
             OnExpire();
@@ -376,6 +375,15 @@ namespace Server.Spells.SkillMasteries
         /// <returns></returns>
         public IEnumerable<Mobile> GetParty()
         {
+            var list = EnumerateParty();
+
+            PartyList = list.ToList();
+            PartyList.ForEach(p => Console.WriteLine("Adding {0} to party list", p.Name));
+            return list;
+        }
+
+        private IEnumerable<Mobile> EnumerateParty()
+        {
             if (!PartyEffects)
                 yield break;
 
@@ -387,9 +395,6 @@ namespace Server.Spells.SkillMasteries
 
                 foreach (Mobile mob in eable)
                 {
-                    if (mob == Caster)
-                        yield return mob;
-
                     Mobile check = mob;
 
                     if (mob is BaseCreature && (((BaseCreature)mob).Summoned || ((BaseCreature)mob).Controlled))
@@ -397,12 +402,6 @@ namespace Server.Spells.SkillMasteries
 
                     if (check != null && p.Contains(check))
                     {
-                        if (PartyList == null)
-                            PartyList = new List<Mobile>();
-
-                        if (!PartyList.Contains(mob))
-                            PartyList.Add(mob);
-
                         yield return mob;
                     }
                 }
@@ -422,7 +421,42 @@ namespace Server.Spells.SkillMasteries
                 yield return Caster;
             }
         }
-		
+
+        public void RemoveFromParty(Mobile m)
+        {
+            if (PartyList != null && PartyList.Contains(m))
+            {
+                PartyList.Remove(m);
+
+                RemovePartyEffects(m);
+            }
+        }
+
+        public virtual void RemovePartyEffects(Mobile m)
+        {
+        }
+
+        public static void OnPartyRemoved(Mobile m, bool disband)
+        {
+            foreach (var spell in GetSpells(s => s.PartyEffects && s.PartyList != null && (s.Caster == m || s.PartyList.Contains(m))))
+            {
+                if (disband)
+                {
+                    spell.PartyList.IterateReverse(mob =>
+                        {
+                            if (mob != spell.Caster || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != mob))
+                            {
+                                spell.RemoveFromParty(mob);
+                            }
+                        });
+                }
+                else
+                {
+                    spell.RemoveFromParty(m);
+                }
+            }
+        }
+
 		private static Dictionary<Mobile, List<SkillMasterySpell>> m_Table = new Dictionary<Mobile, List<SkillMasterySpell>>();
 
         public static SkillMasterySpell GetHarmfulSpell(Mobile target, Type type)
@@ -459,11 +493,7 @@ namespace Server.Spells.SkillMasteries
 
             if (m_Table.ContainsKey(from))
             {
-                foreach (SkillMasterySpell spell in m_Table[from])
-                {
-                    if (spell != null && spell.GetType() == type)
-                        return spell;
-                }
+                return m_Table[from].FirstOrDefault(spell => spell != null && spell.GetType() == type);
             }
 
             return null;
@@ -529,11 +559,7 @@ namespace Server.Spells.SkillMasteries
 
             if (m_Table.ContainsKey(from))
             {
-                foreach (SkillMasterySpell spell in m_Table[from])
-                {
-                    if (spell != null && spell.GetType() == type)
-                        return true;
-                }
+                return m_Table[from].Any(spell => spell.GetType() == type);
             }
 
             return false;

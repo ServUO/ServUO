@@ -82,7 +82,7 @@ namespace Server.Items
                 }
             }
 
-            targets.Clear();
+            ColUtility.Free(targets);
         }
     }
 }

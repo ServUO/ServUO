@@ -80,29 +80,18 @@ namespace Server.Mobiles
             if (creature.Map == null || creature.Map == Map.Internal)
                 return;
 
-            IPooledEnumerable eable = creature.GetMobilesInRange(EffectRange);
-            List<Mobile> toAffect = new List<Mobile>();
+            var toAffect = FindValidTargets(creature, EffectRange);
+            var count = toAffect.Count();
 
-            foreach (Mobile m in eable)
-            {
-                if (ValidTarget(creature, m))
-                {
-                    toAffect.Add(m);
-                }
-            }
-            eable.Free();
-
-            foreach (var m in toAffect)
+            foreach (var m in FindValidTargets(creature, EffectRange))
             {
                 DoEffect(creature, m);
             }
 
-            if (toAffect.Count > 0)
+            if (count > 0)
             {
                 OnAfterEffects(creature, combatant);
             }
-
-            ColUtility.Free(toAffect);
         }
 
         public virtual void DoEffect(BaseCreature creature, Mobile defender)
@@ -111,6 +100,21 @@ namespace Server.Mobiles
 
         public virtual void OnAfterEffects(BaseCreature creature, Mobile defender)
         {
+        }
+
+        public static IEnumerable<Mobile> FindValidTargets(BaseCreature creature, int range)
+        {
+            IPooledEnumerable eable = creature.GetMobilesInRange(range);
+
+            foreach (Mobile m in eable.OfType<Mobile>())
+            {
+                if (ValidTarget(creature, m))
+                {
+                    yield return m;
+                }
+            }
+
+            eable.Free();
         }
 
         public static bool ValidTarget(Mobile from, Mobile to)
