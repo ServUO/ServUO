@@ -376,9 +376,7 @@ namespace Server.Spells.SkillMasteries
         public IEnumerable<Mobile> GetParty()
         {
             var list = EnumerateParty();
-
             PartyList = list.ToList();
-            PartyList.ForEach(p => Console.WriteLine("Adding {0} to party list", p.Name));
             return list;
         }
 
