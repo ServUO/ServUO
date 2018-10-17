@@ -224,7 +224,7 @@ namespace Server.Engines.Shadowguard
                 });
 		}
 
-        private bool _Completed;
+        public bool _Completed;
 		
 		public virtual void CompleteEncounter()
 		{

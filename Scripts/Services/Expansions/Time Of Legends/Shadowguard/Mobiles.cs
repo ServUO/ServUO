@@ -366,12 +366,15 @@ namespace Server.Engines.Shadowguard
 
         public override bool AlwaysMurderer { get { return true; } }
 
-        public override void OnDeath(Container c)
+        public override bool OnBeforeDeath()
         {
-            base.OnDeath(c);
+            if (!base.OnBeforeDeath())
+                return false;
 
             if (0.66 > Utility.RandomDouble() && Encounter != null)
-                c.DropItem(new Phylactery());
+                new Phylactery().MoveToWorld(Location, Map);
+
+            return true;
         }
 
         public override void GenerateLoot()
