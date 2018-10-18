@@ -47,7 +47,7 @@ namespace Server.Engines.Shadowguard
 		
 		public override void CheckEncounter()
 		{
-			if(_Completed || Bottles == null)
+			if(Completed || Bottles == null)
 				return;
 
             int liquorCount = Bottles.Where(b => b != null && !b.Deleted).Count();
