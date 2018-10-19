@@ -547,6 +547,12 @@ namespace Server.Spells
 
             if (Server.Engines.ArenaSystem.PVPArenaSystem.IsFriendly(from, to))
                 return false;
+			
+			if(from is BaseCreature && ((BaseCreature)from).GetMaster() != null)
+				from = ((BaseCreature)from).GetMaster();
+			
+			if(to is BaseCreature && ((BaseCreature)to).GetMaster() != null)
+				to = ((BaseCreature)to).GetMaster();
 
             Guild fromGuild = GetGuildFor(from);
             Guild toGuild = GetGuildFor(to);
@@ -571,6 +577,18 @@ namespace Server.Spells
                     if (p != null && (p.Contains(c.ControlMaster) || p.Contains(c.SummonMaster)))
                         return false;
                 }
+				else
+				{
+					// monsters can ne hit players and pets of players
+					if(from.Player)
+					{
+						return true;
+					}
+					else if(from is BaseCreature && (((BaseCreature)from).Controlled || ((BaseCreature)from).Summoned) && ((BaseCreature)from).GetMaster() is PlayerMobile))
+					{    
+						return true;
+					}
+				}
             }
 
             if (from is BaseCreature)
@@ -587,9 +605,21 @@ namespace Server.Spells
                     if (p != null && (p.Contains(c.ControlMaster) || p.Contains(c.SummonMaster)))
                         return false;
                 }
+                else 
+                {
+					// monsters can hit players and pets of players
+					if(to.Player)
+					{
+						return true						
+					}						
+                    else if(to is BaseCreature && (((BaseCreature)to).Controlled || ((BaseCreature)to).Summoned) && ((BaseCreature)to).GetMaster() is PlayerMobile))
+					{    
+						return true;
+					}
+                }
             }
 
-            // Non-enemy monsters will no longer flag area spells on each other
+            // Non-enemy monsters will not flag area spells on each other
             if (from is BaseCreature && to is BaseCreature)
             {
                 BaseCreature fromBC = (BaseCreature)from;
