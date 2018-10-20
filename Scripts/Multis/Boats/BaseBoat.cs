@@ -1475,8 +1475,8 @@ namespace Server.Multis
                 {
                     Item item = e as Item;
 
-                    if (item is BaseAddon || item is AddonComponent)
-                        return false;
+                    if ((item is BaseAddon || item is AddonComponent) && CheckAddon(item))
+                        continue;
 
                     // Special item, we're good
                     if (CheckItem(itemID, item, p) || CanMoveOver(item) || item.Z < p.Z || ExemptOverheadComponent(p, itemID, item.X, item.Y, item.Z + item.ItemData.Height))
@@ -1501,6 +1501,11 @@ namespace Server.Multis
 
             eable.Free();
             return true;
+        }
+
+        public virtual bool CheckAddon(Item item)
+        {
+            return false;
         }
 
         public virtual bool CheckItem(int itemID, Item item, Point3D p)

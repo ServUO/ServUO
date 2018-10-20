@@ -6975,7 +6975,7 @@ namespace Server.Mobiles
 
         public virtual void OnAfterTame(Mobile tamer)
         {
-            if (StatLossAfterTame)
+            if (StatLossAfterTame && Owners.Count == 0)
             {
                 AnimalTaming.ScaleStats(this, 0.5);
             }
@@ -8369,11 +8369,8 @@ namespace Server.Mobiles
                     if (m is BaseMount && ((BaseMount)m).Rider != null)
                     {
                         ((BaseCreature)m).OwnerAbandonTime = DateTime.MinValue;
-
-                        return;
                     }
-
-                    if (m is BaseCreature)
+                    else if (m is BaseCreature)
                     {
                         BaseCreature c = (BaseCreature)m;
 

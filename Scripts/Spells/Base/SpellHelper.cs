@@ -518,24 +518,44 @@ namespace Server.Spells
         public static bool ValidIndirectTarget(Mobile from, Mobile to)
         {
             if (from == to)
+            {
                 return true;
+            }
 
             if (to.Hidden && to.AccessLevel > from.AccessLevel)
+            {
                 return false;
+            }
 
             if (Server.Engines.ArenaSystem.PVPArenaSystem.IsFriendly(from, to))
+            {
                 return false;
+            }
+
+            if (from is BaseCreature && ((BaseCreature)from).GetMaster() != null)
+            {
+                from = ((BaseCreature)from).GetMaster();
+            }
+
+            if (to is BaseCreature && ((BaseCreature)to).GetMaster() != null)
+            {
+                to = ((BaseCreature)to).GetMaster();
+            }
 
             Guild fromGuild = GetGuildFor(from);
             Guild toGuild = GetGuildFor(to);
 
             if (fromGuild != null && toGuild != null && (fromGuild == toGuild || fromGuild.IsAlly(toGuild)))
+            {
                 return false;
+            }
 
             Party p = Party.Get(from);
 
             if (p != null && p.Contains(to))
+            {
                 return false;
+            }
 
             if (to is BaseCreature)
             {
@@ -544,10 +564,14 @@ namespace Server.Spells
                 if (c.Controlled || c.Summoned)
                 {
                     if (c.ControlMaster == from || c.SummonMaster == from)
+                    {
                         return false;
+                    }
 
                     if (p != null && (p.Contains(c.ControlMaster) || p.Contains(c.SummonMaster)))
+                    {
                         return false;
+                    }
                 }
             }
 
@@ -558,21 +582,31 @@ namespace Server.Spells
                 if (c.Controlled || c.Summoned)
                 {
                     if (c.ControlMaster == to || c.SummonMaster == to)
+                    {
                         return false;
+                    }
 
                     p = Party.Get(to);
 
                     if (p != null && (p.Contains(c.ControlMaster) || p.Contains(c.SummonMaster)))
+                    {
                         return false;
+                    }
                 }
-                else if(to.Player || // monsters can hit players and pets of players
-                        (to is BaseCreature && (((BaseCreature)to).Controlled || ((BaseCreature)to).Summoned) && ((BaseCreature)to).GetMaster() is PlayerMobile))
+                else
                 {
-                    return true;
+                    if (to.Player)
+                    {
+                        return true;
+                    }
+                    if (to is BaseCreature && (((BaseCreature)to).Controlled || ((BaseCreature)to).Summoned) && ((BaseCreature)to).GetMaster() is PlayerMobile)
+                    {
+                        return true;
+                    }
                 }
             }
 
-            // Non-enemy monsters will not flag area spells on each other
+            // Non-enemy monsters will no longer flag area spells on each other
             if (from is BaseCreature && to is BaseCreature)
             {
                 BaseCreature fromBC = (BaseCreature)from;
@@ -585,19 +619,23 @@ namespace Server.Spells
                     toBC = toBC.GetMaster() as BaseCreature;
 
                 if (toBC.IsEnemy(fromBC))   //Natural Enemies
+                {
                     return true;
+                }
 
-                // All involved are monsters- no damage. If falls through this statement, normal noto rules apply
+                //All involved are monsters- no damage. If falls through this statement, normal noto rules apply
                 if (!toBC.Controlled && !toBC.Summoned && !fromBC.Controlled && !fromBC.Summoned) //All involved are monsters- no damage
+                {
                     return false;
+                }
             }
 
             if (to is BaseCreature && !((BaseCreature)to).Controlled && ((BaseCreature)to).InitialInnocent)
+            {
                 return true;
+            }
 
-            int noto = Notoriety.Compute(from, to);
-
-            return (noto != Notoriety.Innocent || from.Murderer);
+            return (Notoriety.Compute(from, to) != Notoriety.Innocent || from.Murderer);
         }
 
         public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range)
