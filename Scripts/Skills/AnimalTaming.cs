@@ -423,23 +423,27 @@ namespace Server.SkillHandlers
 						if (CheckMastery(m_Tamer, m_Creature) || alreadyOwned ||
 							m_Tamer.CheckTargetSkill(SkillName.AnimalTaming, m_Creature, minSkill - 25.0, minSkill + 25.0))
 						{
-							if (m_Creature.Owners.Count == 0) // First tame
-							{
-								if (m_Creature is GreaterDragon)
-								{
-									ScaleSkills(m_Creature, 0.72, 0.90); // 72% of original skills trainable to 90%
-									m_Creature.Skills[SkillName.Magery].Base = m_Creature.Skills[SkillName.Magery].Cap;
-										// Greater dragons have a 90% cap reduction and 90% skill reduction on magery
-								}
-								else if (m_Paralyzed)
-								{
-									ScaleSkills(m_Creature, 0.86); // 86% of original skills if they were paralyzed during the taming
-								}
-								else
-								{
-									ScaleSkills(m_Creature, 0.90); // 90% of original skills
-								}
-							}
+                            if (m_Creature.Owners.Count == 0) // First tame
+                            {
+                                if (m_Creature is GreaterDragon)
+                                {
+                                    ScaleSkills(m_Creature, 0.72, 0.90); // 72% of original skills trainable to 90%
+                                    m_Creature.Skills[SkillName.Magery].Base = m_Creature.Skills[SkillName.Magery].Cap;
+                                    // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
+                                }
+                                else if (m_Paralyzed)
+                                {
+                                    ScaleSkills(m_Creature, 0.86); // 86% of original skills if they were paralyzed during the taming
+                                }
+                                else
+                                {
+                                    ScaleSkills(m_Creature, 0.90); // 90% of original skills
+                                }
+                            }
+                            else
+                            {
+                                ScaleSkills(m_Creature, 0.90); // 90% of original skills
+                            }
 
 							if (alreadyOwned)
 							{
@@ -449,13 +453,17 @@ namespace Server.SkillHandlers
 							{
 								m_Creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502799, m_Tamer.NetState);
 									// It seems to accept you as master.
-								m_Creature.Owners.Add(m_Tamer);
 							}
 
 							m_Creature.SetControlMaster(m_Tamer);
 							m_Creature.IsBonded = false;
 
                             m_Creature.OnAfterTame(m_Tamer);
+
+                            if (!m_Creature.Owners.Contains(m_Tamer))
+                            {
+                                m_Creature.Owners.Add(m_Tamer);
+                            }
 
                             PetTrainingHelper.GetAbilityProfile(m_Creature, true).OnTame();
 						}

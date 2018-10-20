@@ -1092,6 +1092,7 @@ namespace Server.Items
             }
 
 			XmlAttach.CheckOnEquip(this, from);
+            InDoubleStrike = false;
 
 			return true;
 		}

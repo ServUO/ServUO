@@ -161,20 +161,24 @@ namespace Server.Spells.SkillMasteries
                 NegativeAttributes.OnCombatAction(Caster);
             }
 
-            if ((Caster is PlayerMobile && Caster.NetState == null) || Expires < DateTime.UtcNow)
+            if ((Caster is PlayerMobile && Caster.NetState == null) || Expires < DateTime.UtcNow || !Caster.Alive || Caster.IsDeadBondedPet)
+            {
                 Expire();
+            }
             else if (Target != null && !Target.Alive)
+            {
                 Expire();
+            }
             else if (Target != null && !Caster.InRange(Target.Location, PartyRange))
             {
                 Expire();
 
-                if(OutOfRangeMessage > 0)
+                if (OutOfRangeMessage > 0)
                     Caster.SendLocalizedMessage(OutOfRangeMessage);
             }
             else if (Caster.Mana < upkeep)
             {
-                if(UpkeepCancelMessage > 0)
+                if (UpkeepCancelMessage > 0)
                     Caster.SendLocalizedMessage(UpkeepCancelMessage);
 
                 Expire();

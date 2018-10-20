@@ -86,9 +86,9 @@ namespace Server.Engines.NewMagincia
                 if (m_Message.Title != null)
                 {
                     if (m_Message.Title.Number != 0)
-                        AddHtmlLocalized(195, 13, 150, 16, m_Message.Title, GreenColor, false, false);
+                        AddHtmlLocalized(195, 13, 150, 16, m_Message.Title.Number, GreenColor, false, false);
                     else
-                        AddHtml(150, 13, 195, 16, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", GreenColor, m_Message.Title), false, false);
+                        AddHtml(150, 13, 195, 16, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", GreenColor, m_Message.Title.String), false, false);
                 }
 
                 if (m_Message.Body != null)
@@ -96,12 +96,12 @@ namespace Server.Engines.NewMagincia
                     if (m_Message.Body.Number != 0)
                     {
                         if (m_Message.Args == null)
-                            AddHtmlLocalized(10, 40, 404, 180, m_Message.Body, BlueColor, true, true);
+                            AddHtmlLocalized(10, 40, 404, 180, m_Message.Body.Number, BlueColor, true, true);
                         else
-                            AddHtmlLocalized(10, 40, 404, 180, m_Message.Body, m_Message.Args, BlueColor, true, true);
+                            AddHtmlLocalized(10, 40, 404, 180, m_Message.Body.Number, m_Message.Args, BlueColor, true, true);
                     }
                     else
-                        AddHtml(10, 40, 404, 180, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", BlueColor, m_Message.Body), true, true);
+                        AddHtml(10, 40, 404, 180, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", BlueColor, m_Message.Body.String), true, true);
                 }
 
                 TimeSpan ts = m_Message.Expires - DateTime.UtcNow;

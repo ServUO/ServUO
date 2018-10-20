@@ -346,6 +346,27 @@ namespace Server.Multis
             return false;
         }
 
+        public override bool CheckAddon(Item item)
+        {
+            if (m_Addons.Contains(item))
+            {
+                return true;
+            }
+
+            BaseAddon addon;
+
+            if (item is AddonComponent)
+            {
+                addon = ((AddonComponent)item).Addon;
+            }
+            else
+            {
+                addon = item as BaseAddon;
+            }
+
+            return addon != null && m_Addons.Contains(addon);
+        }
+
         public override bool CanMoveOver(IEntity entity)
         {
             if (entity.Z <= this.Z && entity is Item && !((Item)entity).ItemData.Impassable && ((Item)entity).ItemData.Height < ZSurface / 2)
