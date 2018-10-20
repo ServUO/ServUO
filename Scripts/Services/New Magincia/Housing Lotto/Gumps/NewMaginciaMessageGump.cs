@@ -61,11 +61,11 @@ namespace Server.Engines.NewMagincia
                     {
                         if (message.Body.Number > 0)
                         {
-                            AddHtmlLocalized(40, 35 + (i * 22), 260, 20, message.Body, C32216(LightBlueColor), false, false);
+                            AddHtmlLocalized(40, 35 + (i * 22), 260, 16, message.Body, C32216(LightBlueColor), false, false);
                         }
                         else
                         {
-                            AddHtml(40, 35 + (i * 22), 260, 20, Color("#87CEFA", message.Body.String), false, false);
+                            AddHtml(40, 35 + (i * 22), 260, 16, Color("#87CEFA", message.Body.String), false, false);
                         }
                     }
 
