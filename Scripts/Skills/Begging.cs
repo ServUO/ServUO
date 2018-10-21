@@ -190,7 +190,7 @@ namespace Server.SkillHandlers
                         else
                         {
                             double chance = Utility.RandomDouble();
-                            Item reward = new Gold(1);
+                            Item reward = null;
                             string rewardName = "";
                             if (chance >= .99)
                             {
@@ -296,6 +296,11 @@ namespace Server.SkillHandlers
                                     reward = new BegWaterPitcher();
                                     rewardName = "a Pitcher of water.";
                                 }
+                            }
+
+                            if (reward == null)
+                            {
+                                reward = new Gold(1);
                             }
 
                             m_Target.Say(1074854); // Here, take this...
