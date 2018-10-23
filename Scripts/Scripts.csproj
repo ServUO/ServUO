@@ -10866,57 +10866,6 @@
     <Compile Include="Services\Spawner\SpawnerType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\StaffRunebook\Gump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\Load.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\Main.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\NewRunePrompt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\NewRuneTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\Persistence.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\Rune.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\RuneAccount.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\RuneGate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\Save.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\StaffRunebook\Utilities.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Toolbar\Core\ToolbarCore.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Toolbar\Core\ToolbarInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Toolbar\Core\ToolbarModule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Toolbar\Gumps\GumpIDs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Toolbar\Gumps\Toolbar.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Toolbar\Gumps\ToolbarEdit.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Artifacts\Consumables\BasePigmentsOfTokuno.cs">
       <SubType>Code</SubType>
     </Compile>
