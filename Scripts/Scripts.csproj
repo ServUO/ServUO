@@ -10256,21 +10256,6 @@
     </Compile>
     <Compile Include="Services\LoyaltySystem\LoyaltyRating.cs" />
     <Compile Include="Services\LoyaltySystem\LoyaltyRatingGump.cs" />
-    <Compile Include="Services\MyRunUO\Config.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MyRunUO\DatabaseCommandQueue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MyRunUO\LayerComparer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MyRunUO\MyRunUO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MyRunUO\MyRunUOStatus.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Paragon.cs" />
     <Compile Include="Services\Party\AddPartyTarget.cs">
       <SubType>Code</SubType>
