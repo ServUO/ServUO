@@ -3782,12 +3782,6 @@ namespace Server.Mobiles
 
 			if (InsuranceEnabled && item.Insured)
 			{
-				if (XmlPoints.InsuranceIsFree(this, m_InsuranceAward))
-				{
-					item.PayedInsurance = true;
-					return true;
-				}
-
                 int insuredAmount = GetInsuranceCost(item);
 
 				if (AutoRenewInsurance)
@@ -3981,11 +3975,6 @@ namespace Server.Mobiles
 				{
 					Timer.DelayCall(TimeSpan.FromSeconds(2.5), SendYoungDeathNotice);
 				}
-			}
-
-			if (!XmlPoints.AreChallengers(this, killer))
-			{
-				Faction.HandleDeath(this, killer);
 			}
 
 			Guilds.Guild.HandleDeath(this, killer);
@@ -5690,26 +5679,6 @@ namespace Server.Mobiles
 
         public override void AddNameProperties(ObjectPropertyList list)
         {
-            if (!Core.SA)
-            {
-                base.AddNameProperties(list);
-
-                XmlPoints a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
-
-                XmlData XmlPointsTitle = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "XmlPointsTitle");
-
-                if ((XmlPointsTitle != null && XmlPointsTitle.Data == "True") || a == null)
-                {
-                    return;
-                }
-                else if (IsPlayer())
-                {
-                    list.Add(1070722, "Kills {0} / Deaths {1} : Rank={2}", a.Kills, a.Deaths, a.Rank);
-                }
-
-                return;
-            }
-
             string name = Name;
 
             if (name == null)

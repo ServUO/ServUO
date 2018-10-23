@@ -1943,8 +1943,6 @@ namespace Server.Mobiles
 
             chance -= (MaxLoyalty - m_Loyalty) * 10;
 
-            chance += (int)XmlMobFactions.GetScaledFaction(m, this, -250, 250, 0.001);
-
             return ((double)chance / 1000);
         }
 
@@ -2406,13 +2404,6 @@ namespace Server.Mobiles
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(10), ((PlayerMobile)@from).RecoverAmmo);
             }
-
-            #region XmlSpawner
-            if (!Summoned && willKill && from != null)
-            {
-                LevelItemManager.CheckItems(from, this);
-            }
-            #endregion
 
             base.OnDamage(amount, from, willKill);
         }

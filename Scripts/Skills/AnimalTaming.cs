@@ -418,8 +418,6 @@ namespace Server.SkillHandlers
 
 						minSkill += 24.9;
 
-						minSkill += XmlMobFactions.GetScaledFaction(m_Tamer, m_Creature, -25, 25, -0.001);
-
 						if (CheckMastery(m_Tamer, m_Creature) || alreadyOwned ||
 							m_Tamer.CheckTargetSkill(SkillName.AnimalTaming, m_Creature, minSkill - 25.0, minSkill + 25.0))
 						{

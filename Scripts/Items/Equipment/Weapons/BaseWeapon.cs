@@ -720,13 +720,6 @@ namespace Server.Items
 			{
 				list.Add(new UnBlessEntry(from, this));
 			}
-
-			XmlLevelItem levitem = XmlAttach.FindAttachment(this, typeof(XmlLevelItem)) as XmlLevelItem;
-
-			if (levitem != null)
-			{
-				list.Add(new LevelInfoEntry(from, this, AttributeCategory.Melee));
-			}
 		}
 
 		public override void OnAfterDuped(Item newItem)
@@ -5010,17 +5003,6 @@ namespace Server.Items
             {
                 m_UsesRemaining = 150;
             }
-			// Xml Spawner XmlSockets - SOF
-			// mod to randomly add sockets and socketability features to armor. These settings will yield
-			// 2% drop rate of socketed/socketable items
-			// 0.1% chance of 5 sockets
-			// 0.5% of 4 sockets
-			// 3% chance of 3 sockets
-			// 15% chance of 2 sockets
-			// 50% chance of 1 socket
-			// the remainder will be 0 socket (31.4% in this case)
-			if(XmlSpawner.SocketsEnabled)
-				XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
 		}
 
 		public BaseWeapon(Serial serial)
@@ -5300,18 +5282,6 @@ namespace Server.Items
             {
                 list.Add(1153213, OwnerName);
             }
-
-			XmlLevelItem levitem = XmlAttach.FindAttachment(this, typeof(XmlLevelItem)) as XmlLevelItem;
-
-			if (levitem != null)
-			{
-				list.Add(1060658, "Level\t{0}", levitem.Level);
-
-				if (LevelItems.DisplayExpProp)
-				{
-					list.Add(1060659, "Experience\t{0}", levitem.Experience);
-				}
-			}
 
             if (m_Crafter != null)
             {
