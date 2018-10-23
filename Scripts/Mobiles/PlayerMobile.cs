@@ -11,7 +11,6 @@ using Server.Engines.CannedEvil;
 using Server.Engines.CityLoyalty;
 using Server.Engines.Craft;
 using Server.Engines.Help;
-using Server.Engines.MyRunUO;
 using Server.Engines.PartySystem;
 using Server.Engines.Points;
 using Server.Engines.Quests;
@@ -503,17 +502,6 @@ namespace Server.Mobiles
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool UseOwnFilter { get { return GetFlag(PlayerFlag.UseOwnFilter); } set { SetFlag(PlayerFlag.UseOwnFilter, value); } }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool PublicMyRunUO
-		{
-			get { return GetFlag(PlayerFlag.PublicMyRunUO); }
-			set
-			{
-				SetFlag(PlayerFlag.PublicMyRunUO, value);
-				InvalidateMyRunUO();
-			}
-		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool AcceptGuildInvites { get { return GetFlag(PlayerFlag.AcceptGuildInvites); } set { SetFlag(PlayerFlag.AcceptGuildInvites, value); } }
@@ -1637,11 +1625,6 @@ namespace Server.Mobiles
 				ValidateEquipment();
 			}
 
-			if ((flag & (MobileDelta.Name | MobileDelta.Hue)) != 0)
-			{
-				InvalidateMyRunUO();
-			}
-
             InvalidateProperties();
 		}
 
@@ -1934,8 +1917,6 @@ namespace Server.Mobiles
 			{
 				CheckLightLevels(false);
 			}
-
-			InvalidateMyRunUO();
 		}
 
         private BaseWeapon m_LastWeapon;
@@ -1963,8 +1944,6 @@ namespace Server.Mobiles
 			{
 				CheckLightLevels(false);
 			}
-
-			InvalidateMyRunUO();
 		}
 
 		public override double ArmorRating
@@ -4210,8 +4189,6 @@ namespace Server.Mobiles
 			m_GuildRank = RankDefinition.Lowest;
 
 			m_ChampionTitles = new ChampionTitleInfo();
-
-			InvalidateMyRunUO();
 		}
 
 		public override bool MutateSpeech(List<Mobile> hears, ref string text, ref object context)
@@ -4387,8 +4364,6 @@ namespace Server.Mobiles
 
 			m_VisList = new List<Mobile>();
 			m_AntiMacroTable = new Hashtable();
-
-			InvalidateMyRunUO();
 		}
 
 		public List<Mobile> VisibilityList { get { return m_VisList; } }
@@ -5813,20 +5788,6 @@ namespace Server.Mobiles
         }
         #endregion
 
-		#region MyRunUO Invalidation
-		private bool m_ChangedMyRunUO;
-
-		public bool ChangedMyRunUO { get { return m_ChangedMyRunUO; } set { m_ChangedMyRunUO = value; } }
-
-		public void InvalidateMyRunUO()
-		{
-			if (!Deleted && !m_ChangedMyRunUO)
-			{
-				m_ChangedMyRunUO = true;
-				MyRunUO.QueueMobileUpdate(this);
-			}
-		}
-
 		public override void OnKillsChange(int oldValue)
 		{
 			if (Young && Kills > oldValue)
@@ -5838,35 +5799,11 @@ namespace Server.Mobiles
 					acc.RemoveYoungStatus(0);
 				}
 			}
-
-			InvalidateMyRunUO();
-		}
-
-		public override void OnGenderChanged(bool oldFemale)
-		{
-			InvalidateMyRunUO();
-		}
-
-		public override void OnGuildChange(BaseGuild oldGuild)
-		{
-			InvalidateMyRunUO();
-		}
-
-		public override void OnGuildTitleChange(string oldTitle)
-		{
-			InvalidateMyRunUO();
 		}
 
 		public override void OnKarmaChange(int oldValue)
 		{
-			InvalidateMyRunUO();
-
             EpiphanyHelper.OnKarmaChange(this);
-		}
-
-		public override void OnFameChange(int oldValue)
-		{
-			InvalidateMyRunUO();
 		}
 
 		public override void OnSkillChange(SkillName skill, double oldBase)
@@ -5901,8 +5838,6 @@ namespace Server.Mobiles
             {
                 TransformationSpellHelper.CheckCastSkill(this, context);
             }
-
-			InvalidateMyRunUO();
 		}
 
 		public override void OnAccessLevelChanged(AccessLevel oldLevel)
@@ -5915,13 +5850,6 @@ namespace Server.Mobiles
 			{
 				IgnoreMobiles = true;
 			}
-
-			InvalidateMyRunUO();
-		}
-
-		public override void OnRawStatChange(StatType stat, int oldValue)
-		{
-			InvalidateMyRunUO();
 		}
 
 		public override void OnDelete()
@@ -5936,10 +5864,7 @@ namespace Server.Mobiles
 			{
 				m_SentHonorContext.Cancel();
 			}
-
-			InvalidateMyRunUO();
 		}
-		#endregion
 
 		#region Fastwalk Prevention
 		private static bool FastwalkPrevention = true; // Is fastwalk prevention enabled?
