@@ -282,16 +282,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Deprecated\AlchemyStone.cs" />
-    <Compile Include="Deprecated\FiveOvercapStatScroll.cs" />
     <Compile Include="Deprecated\GamblingStone.cs" />
     <Compile Include="Deprecated\GMStone.cs" />
     <Compile Include="Deprecated\IngotStone.cs" />
     <Compile Include="Deprecated\RegStone.cs" />
     <Compile Include="Deprecated\ScribeStone.cs" />
     <Compile Include="Deprecated\SmithStone.cs" />
-    <Compile Include="Deprecated\SwarmOfFlies.cs" />
     <Compile Include="Deprecated\TailorStone.cs" />
-    <Compile Include="Deprecated\TenMurdererKillRemoverDeed.cs" />
     <Compile Include="Gumps\AddDoorGump.cs">
       <SubType>Code</SubType>
     </Compile>
