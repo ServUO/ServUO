@@ -17,7 +17,7 @@ namespace Server.Engines.Plants
             new PlantResourceInfo(PlantType.BarrelCactus, PlantHue.BrightGreen, typeof(GreenThorns)),
             new PlantResourceInfo(PlantType.CocoaTree, PlantHue.Plain, typeof(CocoaPulp)),
             new PlantResourceInfo(PlantType.SugarCanes, PlantHue.Plain, typeof(SackOfSugar)),
-            new PlantResourceInfo(PlantType.FlaxFlowers, PlantHue.Plain, typeof(FlaxBundle)),
+            new PlantResourceInfo(PlantType.FlaxFlowers, PlantHue.Plain, typeof(Flax)),
             new PlantResourceInfo(PlantType.CypressStraight, PlantHue.Plain, typeof(BarkFragment)),
             new PlantResourceInfo(PlantType.CypressTwisted, PlantHue.Plain, typeof(BarkFragment)),
             new PlantResourceInfo(PlantType.PoppyPatch, PlantHue.Plain, typeof(PoppyDust))
