@@ -11197,12 +11197,6 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlMobiles\TalkingBaseCreature.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlMobiles\TalkingBaseEscortable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlMobiles\TalkingBaseVendor.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlMobiles\XmlQuestNPC.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11315,18 +11309,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlUtils\XmlPartialCategorizedAddGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XMLSpawner Extras\XmlParagon\CustomParagon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XMLSpawner Extras\XmlParagon\MLParagon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XMLSpawner Extras\XmlParagon\WeakParagon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\XmlSpawner\XMLSpawner Extras\XmlParagon\XmlParagon.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\XmlSpawner\XMLSpawner Support\BaseArtifact.cs">
