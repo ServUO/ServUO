@@ -108,7 +108,7 @@ namespace Server.Engines.Plants
 			new PlantTypeInfo( 0x0CFB, -45, -30,	PlantType.CypressStraight,		false, false, false, false,		PlantCategory.Peculiar ),
 			new PlantTypeInfo( 0x0DB8, 0, -20,		PlantType.HedgeTall,			false, false, false, false,		PlantCategory.Peculiar ),
 			new PlantTypeInfo( 0x1AA1, 10, -25,		PlantType.HopsSouth,			false, false, false, false,		PlantCategory.Peculiar ),
-			new PlantTypeInfo( 0x246C, -25, -20,	PlantType.SugarCanes,			false, false, false, false,		PlantCategory.Peculiar,		1114898, 1114898, 1094702, 1094703, 1095221, 1113715 ),
+			new PlantTypeInfo( 0x246C, -25, -20,	PlantType.SugarCanes,			false, false, false, true,		PlantCategory.Peculiar,		1114898, 1114898, 1094702, 1094703, 1095221, 1113715 ),
 			new PlantTypeInfo( 0xC9E, -40, -30,		PlantType.CocoaTree,			false, false, false, true,		PlantCategory.Fragrant,		1080536, 1080536, 1080534, 1080531, 1080533, 1113716 ),
             new PlantTypeInfo( 0x4B8C, 5, 10,		PlantType.Vanilla,			    false, true, false, true,		PlantCategory.Peculiar )
 		};
