@@ -942,12 +942,18 @@ namespace Server.Mobiles
 			get{ return m_Paragon; }
 			set
 			{
-				if ( m_Paragon == value )
+				if (m_Paragon == value)
+				{
 					return;
-				else if ( value )
-					Paragon.Convert( this );
+				}
+				else if (value)
+				{
+					Paragon.Convert(this);
+				}
 				else
-					Paragon.UnConvert( this );
+				{
+					Paragon.UnConvert(this);
+				}
 
 				m_Paragon = value;
 
