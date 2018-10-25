@@ -68,6 +68,9 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
         {
+            if (defender == null)
+                return;
+
             BaseWeapon wep = defender.Weapon as BaseWeapon;
 
             if (wep == null || !(wep is Fists))
@@ -75,7 +78,7 @@ namespace Server.Spells.SkillMasteries
                 defender.SendLocalizedMessage(1155979); // You may not wield a weapon and use this ability.
                 Expire(defender);
             }
-            else if (defender.InRange(attacker.Location, 2))
+            else if (defender.InRange(attacker.Location, 2) && !UnderEffects(defender))
             {
                 if (_Table == null)
                     _Table = new Dictionary<Mobile, FistsOfFuryContext>();
@@ -103,7 +106,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (_Table == null || _Table.Count == 0 || !_Table.ContainsKey(attacker))
+            if (!UnderEffects(attacker))
                 return;
 
             if (_Table[attacker].Target == defender)
@@ -129,6 +132,11 @@ namespace Server.Spells.SkillMasteries
         public override void OnClearMove(Mobile from)
         {
             BuffInfo.RemoveBuff(from, BuffIcon.FistsOfFury);
+        }
+
+        private bool UnderEffects(Mobile from)
+        {
+            return _Table != null && _Table.ContainsKey(from);
         }
 
         public class FistsOfFuryContext

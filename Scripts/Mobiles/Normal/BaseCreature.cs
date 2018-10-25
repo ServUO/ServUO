@@ -120,8 +120,16 @@ namespace Server.Mobiles
         Regular,
         Spined,
         Horned,
-        Barbed,
-        Fur
+        Barbed
+    }
+
+    public enum FurType
+    {
+        None,
+        Green,
+        LightBrown,
+        Yellow,
+        Brown
     }
 
     public enum TribeType
@@ -1935,8 +1943,6 @@ namespace Server.Mobiles
 
             chance -= (MaxLoyalty - m_Loyalty) * 10;
 
-            chance += (int)XmlMobFactions.GetScaledFaction(m, this, -250, 250, 0.001);
-
             return ((double)chance / 1000);
         }
 
@@ -2399,13 +2405,6 @@ namespace Server.Mobiles
                 Timer.DelayCall(TimeSpan.FromSeconds(10), ((PlayerMobile)@from).RecoverAmmo);
             }
 
-            #region XmlSpawner
-            if (!Summoned && willKill && from != null)
-            {
-                LevelItemManager.CheckItems(from, this);
-            }
-            #endregion
-
             base.OnDamage(amount, from, willKill);
         }
 
@@ -2485,10 +2484,12 @@ namespace Server.Mobiles
             int hides = Hides;
             int scales = Scales;
             int dragonblood = DragonBlood;
+            int fur = Fur;
 
-            bool special = with is SkinningKnife || with is ButchersWarCleaver || with is HarvestersBlade;
+            bool special = with is HarvestersBlade;
 
-            if ((feathers == 0 && wool == 0 && meat == 0 && hides == 0 && scales == 0) || Summoned || IsBonded || corpse.Animated)
+
+            if ((feathers == 0 && wool == 0 && meat == 0 && hides == 0 && scales == 0 && fur == 0) || Summoned || IsBonded || corpse.Animated)
             {
                 if (corpse.Animated)
                 {
@@ -2511,6 +2512,7 @@ namespace Server.Mobiles
                     feathers *= 2;
                     wool *= 2;
                     hides *= 2;
+                    fur *= 2;
 
                     if (Core.ML)
                     {
@@ -2597,7 +2599,7 @@ namespace Server.Mobiles
                         case HideType.Barbed: leather = new BarbedLeather(hides); break;
                     }
 
-                    if (!Core.AOS || !special || !from.AddToBackpack(leather))
+                    if (!Core.AOS || !special || !from.AddToBackpack(leather) || !(with is ButchersWarCleaver))
                     {
                         corpse.AddCarvedItem(leather, from);
                         from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
@@ -2656,7 +2658,7 @@ namespace Server.Mobiles
                         if (anyPack)
                             from.SendLocalizedMessage(1114098); // You cut away some scales and put them in your backpack.
 
-                        if(!allPack)
+                        if (!allPack)
                             from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
                     }
                     else
@@ -2685,6 +2687,14 @@ namespace Server.Mobiles
                     {
                         from.SendLocalizedMessage(1114100); // You take some blood off the corpse and put it in your backpack.
                     }
+                }
+
+                if (fur != 0)
+                {
+                    Item _fur = new Fur(FurType, fur);
+
+                    corpse.AddCarvedItem(_fur, from);
+                    from.SendLocalizedMessage(1112765); // You shear it, and the fur is now on the corpse.
                 }
 
                 corpse.Carved = true;
@@ -3473,11 +3483,12 @@ namespace Server.Mobiles
 
         public virtual bool CheckFeed(Mobile from, Item dropped)
         {
-            if (!IsDeadPet && Controlled && (ControlMaster == from || IsPetFriend(from)) &&
+            if (!IsDeadPet && Controlled && (ControlMaster == from || IsPetFriend(from))) /*&&
                 (dropped is Food || dropped is Gold || dropped is CookableFood || dropped is Head || dropped is LeftArm ||
                  dropped is LeftLeg || dropped is Torso || dropped is RightArm || dropped is RightLeg || dropped is IronIngot ||
                  dropped is DullCopperIngot || dropped is ShadowIronIngot || dropped is CopperIngot || dropped is BronzeIngot ||
-                 dropped is GoldIngot || dropped is AgapiteIngot || dropped is VeriteIngot || dropped is ValoriteIngot))
+                 dropped is GoldIngot || dropped is AgapiteIngot || dropped is VeriteIngot || dropped is ValoriteIngot))*/
+                // Why do we need all this crap, when its checked in CheckFootPreference?
             {
                 Item f = dropped;
 
@@ -4145,6 +4156,7 @@ namespace Server.Mobiles
         public virtual int Wool { get { return 0; } }
 
         public virtual int Fur { get { return 0; } }
+        public virtual FurType FurType { get { return FurType.Green; } }
 
         public virtual MeatType MeatType { get { return MeatType.Ribs; } }
         public virtual int Meat { get { return 0; } }
@@ -4449,12 +4461,14 @@ namespace Server.Mobiles
 
                 Owner.From.TargetLocked = true;
                 AnimalTaming.DisableMessage = true;
+                AnimalTaming.DeferredTarget = false;
 
-                if (Owner.From.UseSkill(SkillName.AnimalTaming))
+                if (Owner.From.UseSkill(SkillName.AnimalTaming) && Owner.From.Target != null)
                 {
                     Owner.From.Target.Invoke(Owner.From, m_Mobile);
                 }
 
+                AnimalTaming.DeferredTarget = true;
                 AnimalTaming.DisableMessage = false;
                 Owner.From.TargetLocked = false;
             }
@@ -4776,8 +4790,8 @@ namespace Server.Mobiles
 
                     if (aggressor is PlayerMobile || (aggressor is BaseCreature && !((BaseCreature)aggressor).IsMonster))
                     {
-                        BuffInfo.AddBuff(ControlMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, ControlMaster, true));
-                        BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, aggressor, true));
+                        BuffInfo.AddBuff(ControlMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, ControlMaster, true));
+                        BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, aggressor, true));
                     }
                 }
             }
@@ -6952,7 +6966,7 @@ namespace Server.Mobiles
 
         public virtual void OnAfterTame(Mobile tamer)
         {
-            if (StatLossAfterTame)
+            if (StatLossAfterTame && Owners.Count == 0)
             {
                 AnimalTaming.ScaleStats(this, 0.5);
             }
@@ -7852,7 +7866,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (PetTrainingHelper.Enabled && !Summoned && _Profile != null)
+            if (!Summoned && _Profile != null)
             {
                 SpecialAbility.CheckThinkTrigger(this);
                 AreaEffect.CheckThinkTrigger(this);
@@ -8346,11 +8360,8 @@ namespace Server.Mobiles
                     if (m is BaseMount && ((BaseMount)m).Rider != null)
                     {
                         ((BaseCreature)m).OwnerAbandonTime = DateTime.MinValue;
-
-                        return;
                     }
-
-                    if (m is BaseCreature)
+                    else if (m is BaseCreature)
                     {
                         BaseCreature c = (BaseCreature)m;
 

@@ -6,7 +6,7 @@ using Server.Spells;
 namespace Server.Mobiles
 {
     [CorpseName("a slasher of veils corpse")]
-    public class SlasherOfVeils : BaseSABosses
+    public class SlasherOfVeils : BaseSABoss
     {
         private static readonly int[] m_North = new int[]
         {
@@ -82,7 +82,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(AxesOfFury), typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(PetrifiedSnake), typeof(PillarOfStrength), typeof(SwordOfShatteredHopes), typeof(SummonersKilt), typeof(BreastplateOfTheBerserker) };
+                return new Type[] { typeof(AxesOfFury), typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(PetrifiedSnake), typeof(PillarOfStrength), typeof(SwordOfShatteredHopes), typeof(SummonersKilt) };
             }
         }
 

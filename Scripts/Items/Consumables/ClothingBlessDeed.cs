@@ -60,12 +60,14 @@ namespace Server.Items
 
     public class ClothingBlessDeed : Item // Create the item class which is derived from the base item class
     {
+		public override int LabelNumber { get { return 1041008; } } // A clothing bless deed
+		
         [Constructable]
         public ClothingBlessDeed()
             : base(0x14F0)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public ClothingBlessDeed(Serial serial)
@@ -73,18 +75,11 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "a clothing bless deed";
-            }
-        }
         public override bool DisplayLootType
         {
             get
             {
-                return Core.ML;
+                return Core.AOS;
             }
         }
         public override void Serialize(GenericWriter writer)

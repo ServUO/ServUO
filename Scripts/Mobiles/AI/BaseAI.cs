@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 using Server.ContextMenus;
 using Server.Engines.XmlSpawner2;
 using Server.Factions;
@@ -1627,33 +1627,45 @@ namespace Server.Mobiles
 
 			var combatant = m_Mobile.Combatant as Mobile;
 
-			var aggressors = controlMaster.Aggressors;
+            if (combatant != null && !ValidGuardTarget(combatant))
+                combatant = null;
 
-			if (aggressors.Count > 0)
-			{
-				for (var i = 0; i < aggressors.Count; ++i)
-				{
-					var info = aggressors[i];
-					var attacker = info.Attacker;
+            Mobile closestMob = combatant;
+            var closestDist = combatant == null ? m_Mobile.RangePerception : combatant.GetDistanceToSqrt(controlMaster);
 
-					if (attacker != null && !attacker.Deleted && attacker.GetDistanceToSqrt(m_Mobile) <= m_Mobile.RangePerception)
-					{
-						if (combatant == null || attacker.GetDistanceToSqrt(controlMaster) < combatant.GetDistanceToSqrt(controlMaster))
-						{
-							combatant = attacker;
-						}
-					}
-				}
+            foreach (var aggressor in controlMaster.Aggressors.Select(x => x.Attacker).Where(m => ValidGuardTarget(m)))
+            {
+                var dist = aggressor.GetDistanceToSqrt(controlMaster);
 
-				if (combatant != null)
-				{
-					m_Mobile.DebugSay("Crap, my master has been attacked! I will attack one of those bastards!");
-				}
-			}
+                if (closestMob == null || dist < closestDist)
+                {
+                    closestMob = aggressor;
+                    closestDist = dist;
+                }
+            }
 
-			if (combatant != null && combatant != m_Mobile && combatant != m_Mobile.ControlMaster && !combatant.Deleted &&
-				combatant.Alive && (!(combatant is Mobile) || !combatant.IsDeadBondedPet) &&
-				m_Mobile.CanBeHarmful(combatant, false) && combatant.Map == m_Mobile.Map)
+            foreach (var aggressed in controlMaster.Aggressed.Select(x => x.Defender).Where(m => ValidGuardTarget(m)))
+            {
+                var dist = aggressed.GetDistanceToSqrt(controlMaster);
+
+                if (closestMob == null || dist < closestDist)
+                {
+                    closestMob = aggressed;
+                    closestDist = dist;
+                }
+            }
+
+            if (closestMob != null)
+            {
+                if (m_Mobile.Debug && closestMob != null && combatant != closestMob)
+                {
+                    m_Mobile.DebugSay("Crap, my master has been attacked! I will attack one of those bastards!");
+                }
+
+                combatant = closestMob;
+            }        
+
+            if (combatant != null)
 			{
 				m_Mobile.DebugSay("Guarding from target...");
 
@@ -1683,6 +1695,13 @@ namespace Server.Mobiles
 
 			return true;
 		}
+
+        public bool ValidGuardTarget(Mobile combatant)
+        {
+            return combatant != null && combatant != m_Mobile && combatant != m_Mobile.ControlMaster && !combatant.Deleted &&
+                combatant.Alive && (!(combatant is Mobile) || !combatant.IsDeadBondedPet) &&
+                m_Mobile.CanBeHarmful(combatant, false) && combatant.Map == m_Mobile.Map && combatant.GetDistanceToSqrt(m_Mobile) <= m_Mobile.RangePerception;
+        }
 
 		public virtual bool DoOrderAttack()
 		{

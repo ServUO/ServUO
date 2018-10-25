@@ -4,7 +4,9 @@
 @SET SDKPATH=%CURPATH%Ultima\
 @SET SRVPATH=%CURPATH%Server\
 
-@TITLE: ServUO - https://www.servuo.com
+@SET EXENAME=ServUO
+
+@TITLE: %EXENAME% - https://www.servuo.com
 
 ::##########
 
@@ -33,16 +35,16 @@
 ::##########
 
 @ECHO:
-@ECHO: Compile Server for Windows
+@ECHO: Compile %EXENAME% for Windows
 @ECHO:
 
 @PAUSE
 
-@DEL "%CURPATH%ServUO.exe"
+@DEL "%CURPATH%%EXENAME%.exe"
 
 @ECHO ON
 
-%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /r:"%CURPATH%Ultima.dll" /target:exe /out:"%CURPATH%ServUO.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /d:NEWTIMERS /d:NETFX_40 /d:DEBUG /nowarn:0618 /debug /nologo /unsafe
+%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /r:"%CURPATH%Ultima.dll" /target:exe /out:"%CURPATH%%EXENAME%.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /d:NEWTIMERS /d:NETFX_40 /d:DEBUG /nowarn:0618 /debug /nologo /unsafe
 
 @ECHO OFF
 
@@ -65,7 +67,7 @@ echo Incorrect input & goto Ask
 
 :yes
 @ECHO:
-@ECHO: Ready To Run! ServUO will be started in DEBUG Mode (-debug)
+@ECHO: Ready To Run! %EXENAME% will be started in DEBUG Mode (-debug)
 @ECHO:
 
 @PAUSE
@@ -74,7 +76,7 @@ echo Incorrect input & goto Ask
 
 @ECHO OFF
 
-%CURPATH%ServUO.exe -debug
+%CURPATH%%EXENAME%.exe -debug
 
 :no
 @ECHO:
@@ -87,5 +89,5 @@ echo Incorrect input & goto Ask
 
 @ECHO OFF
 
-%CURPATH%ServUO.exe
+%CURPATH%%EXENAME%.exe
 

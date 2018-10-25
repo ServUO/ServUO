@@ -25,6 +25,10 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
             }
+            else if (from.IsBodyMod || from.HueMod > 0 || !from.CanBeginAction(typeof(Server.Spells.Fifth.IncognitoSpell)))
+            {
+                from.SendLocalizedMessage(1073648); // You may only proceed while in your original state...
+            }
             else if (from is PlayerMobile)
             {
                 _HairID = 0;
@@ -43,22 +47,29 @@ namespace Server.Items
             if (!IsChildOf(from.Backpack))
                 return;
 
-            if (facialHair)
+            if (from.IsBodyMod || from.HueMod > 0 || !from.CanBeginAction(typeof(Server.Spells.Fifth.IncognitoSpell)))
             {
-                _BeardID = itemID;
+                from.SendLocalizedMessage(1073648); // You may only proceed while in your original state...
             }
             else
             {
-                _HairID = itemID;
-            }
+                if (facialHair)
+                {
+                    _BeardID = itemID;
+                }
+                else
+                {
+                    _HairID = itemID;
+                }
 
-            if (!from.Female || from.Race == Race.Elf || facialHair)
-            {
-                EndGenderChange(from);
-            }
-            else
-            {
-                from.SendGump(new ChangeHairstyleGump(!from.Female, from, null, 0, true, from.Race == Race.Gargoyle ? ChangeHairstyleEntry.BeardEntriesGargoyle : ChangeHairstyleEntry.BeardEntries, this));
+                if (!from.Female || from.Race == Race.Elf || facialHair)
+                {
+                    EndGenderChange(from);
+                }
+                else
+                {
+                    from.SendGump(new ChangeHairstyleGump(!from.Female, from, null, 0, true, from.Race == Race.Gargoyle ? ChangeHairstyleEntry.BeardEntriesGargoyle : ChangeHairstyleEntry.BeardEntries, this));
+                }
             }
         }
 
@@ -163,7 +174,14 @@ namespace Server.Items
         {
             if (info.ButtonID == 1 && Token.IsChildOf(User.Backpack))
             {
-                User.SendGump(new ChangeHairstyleGump(!User.Female, User, null, 0, false, GetHairstyleEntries(User), Token));
+                if (User.IsBodyMod || User.HueMod > 0 || !User.CanBeginAction(typeof(Server.Spells.Fifth.IncognitoSpell)))
+                {
+                    User.SendLocalizedMessage(1073648); // You may only proceed while in your original state...
+                }
+                else
+                {
+                    User.SendGump(new ChangeHairstyleGump(!User.Female, User, null, 0, false, GetHairstyleEntries(User), Token));
+                }
             }
         }
 

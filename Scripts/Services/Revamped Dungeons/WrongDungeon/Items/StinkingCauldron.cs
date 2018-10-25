@@ -27,8 +27,7 @@ namespace Server.Items
                 for (int i = 0; i < amount; ++i)
                 {
                     BaseCreature creature = new GooeyMaggots();
-
-                    creature.GetSpawnPosition(2);
+                    creature.MoveToWorld(Map.GetSpawnPosition(Location, 2), Map);
                     Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
                 }
             }

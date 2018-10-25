@@ -56,6 +56,9 @@ namespace Server.Engines.CityLoyalty
 
         public int CalculateGold()
         {
+            if (Distance == 0)
+                return 0;
+
             int gold = 0;
 
             Details.ForEach(d =>

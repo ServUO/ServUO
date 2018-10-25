@@ -333,6 +333,16 @@ namespace Server.Gumps
             return String.Format("<CENTER>{0}</CENTER>", str);
         }
 
+        protected string ColorAndAlignRight(int color, string str)
+        {
+            return String.Format("<DIV ALIGN=RIGHT><basefont color=#{0:X6}>{1}</DIV>", color, str);
+        }
+
+        protected string ColorAndAlignRight(string color, string str)
+        {
+            return String.Format("<DIV ALIGN=RIGHT><basefont color={0}>{1}</DIV>", color, str);
+        }
+
         public void AddHtmlLocalizedCentered(int x, int y, int length, int height, int localization, bool background, bool scrollbar)
         {
             AddHtmlLocalized(x, y, length, height, 1113302, String.Format("#{0}", localization), 0, background, scrollbar);

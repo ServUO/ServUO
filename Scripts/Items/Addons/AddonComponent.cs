@@ -309,10 +309,15 @@ namespace Server.Items
 					Addon = reader.ReadItem() as BaseAddon;
 					Offset = reader.ReadPoint3D();
 
-					if (Addon != null)
-						Addon.OnComponentLoaded(this);
-
-					ApplyLightTo(this);
+                    if (Addon != null)
+                    {
+                        Addon.OnComponentLoaded(this);
+                        ApplyLightTo(this);
+                    }
+                    else
+                    {
+                        Delete();
+                    }
 
 					break;
 				}

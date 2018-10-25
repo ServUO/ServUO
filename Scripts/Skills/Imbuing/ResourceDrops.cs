@@ -41,6 +41,19 @@ namespace Server.Items
             EventSink.CreatureDeath += OnCreatureDeath;
 
             m_IngredientTable = new List<IngredientDropEntry>();
+			//Gems
+			m_IngredientTable.Add(new IngredientDropEntry(typeof(ClayGolem), true, .05, typeof(FireRuby),
+				typeof(BlueDiamond), typeof(Turquoise)));
+				
+			m_IngredientTable.Add(new IngredientDropEntry(typeof(RakktaviRenowned), true, .5, typeof(WhitePearl),
+				typeof(BlueDiamond), typeof(Turquoise)));
+				
+			m_IngredientTable.Add(new IngredientDropEntry(typeof(TikitaviRenowned), true, .5, typeof(WhitePearl),
+				typeof(BlueDiamond), typeof(Turquoise)));
+				
+			m_IngredientTable.Add(new IngredientDropEntry(typeof(VitaviRenowned), true, .5, typeof(WhitePearl),
+				typeof(BlueDiamond), typeof(Turquoise)));
+						
             //Bottle of Ichor/Spider Carapace
             m_IngredientTable.Add(new IngredientDropEntry(typeof(TrapdoorSpider), true, .05, typeof(SpiderCarapace)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(WolfSpider), true, .15, typeof(BottleIchor)));

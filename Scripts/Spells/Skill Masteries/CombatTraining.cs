@@ -140,7 +140,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool OnTick()
         {
-            if (Target == null || Target.IsDeadBondedPet || Target.Map != Caster.Map)
+            if (Target == null || Target.IsDeadBondedPet /* || Target.Map != Caster.Map*/)
             {
                 Expire();
                 return false;

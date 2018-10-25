@@ -233,7 +233,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             if (winners != null)
             {
-                ColUtility.ForEach(winners.Where(pm => Players.ContainsKey(pm) && Players[pm] > MinCredit), pm =>
+                foreach(var pm in winners.Where(pm => Players.ContainsKey(pm) && Players[pm] > MinCredit))
                 {
                     AllianceEntry entry = MyrmidexInvasionSystem.GetEntry(pm);
 
@@ -242,7 +242,7 @@ namespace Server.Engines.MyrmidexInvasion
 
                     if (Players.ContainsKey(pm))
                         Players.Remove(pm);
-                });
+                }
             }
 
             ColUtility.Free(myrmidex);
@@ -267,7 +267,11 @@ namespace Server.Engines.MyrmidexInvasion
 
             if (list.ContainsKey(wave))
             {
-                ColUtility.ForEach(list[wave].Where(bc => bc.Alive), bc => bc.Delete());
+                foreach (var bc in list[wave].Where(bc => bc.Alive))
+                {
+                    bc.Delete();
+                }
+
                 ColUtility.Free(list[wave]);
                 list.Remove(wave);
             }
@@ -301,27 +305,50 @@ namespace Server.Engines.MyrmidexInvasion
 
         public void CheckWaves()
         {
-            ColUtility.For<int, List<BaseCreature>>(MyrmidexTeam, (i, key, value) =>
+            var list = MyrmidexTeam.Keys.ToList();
+
+            for(int i = 0; i < list.Count; i++)
             {
-                if (value.Where(bc => bc != null && !bc.Deleted && bc.Alive).Count() == 0)
+                var wave = list[i];
+                var bcList = MyrmidexTeam[wave];
+
+                if (bcList == null)
+                    continue;
+
+                if (bcList.All(bc => bc == null || bc.Deleted || !bc.Alive))
                 {
-                    ColUtility.Free(MyrmidexTeam[key]);
-                    MyrmidexTeam.Remove(key);
+                    ColUtility.Free(bcList);
+
+                    if(MyrmidexTeam.ContainsKey(wave))
+                        MyrmidexTeam.Remove(wave);
 
                     RegionMessage(i == 0 ? 1156604 : 1156605); // The Eodonians have secured new ground, the front line has moved up!
                 }
-            });
+            }
 
-            ColUtility.For<int, List<BaseCreature>>(TribeTeam, (i, key, value) =>
+            list.Clear();
+            list = TribeTeam.Keys.ToList();
+
+            for (int i = 0; i < list.Count; i++)
             {
-                if (value.Where(bc => bc != null && !bc.Deleted && bc.Alive).Count() == 0)
+                var wave = list[i];
+                var bcList = TribeTeam[wave];
+
+                if (bcList == null)
+                    continue;
+
+                if (bcList.All(bc => bc == null || bc.Deleted || !bc.Alive))
                 {
-                    ColUtility.Free(TribeTeam[key]);
-                    TribeTeam.Remove(key);
+                    ColUtility.Free(bcList);
+
+                    if(TribeTeam.ContainsKey(wave))
+                        TribeTeam.Remove(wave);
 
                     RegionMessage(i == 0 ? 1156602 : 1156603); // The Myrmidex have secured new ground, the front line has moved up!
                 }
-            });
+            }
+
+            ColUtility.Free(list);
         }
 
         public void SpawnWave(Allegiance allegiance)
@@ -453,7 +480,7 @@ namespace Server.Engines.MyrmidexInvasion
             if (BattleRegion == null)
                 return false;
 
-            return BattleRegion.GetEnumeratedMobiles().Where(m => m is PlayerMobile && (!ignorestaff || m.AccessLevel == AccessLevel.Player)).Count() > 0;
+            return BattleRegion.GetEnumeratedMobiles().Any(m => m is PlayerMobile && (!ignorestaff || m.AccessLevel == AccessLevel.Player));
         }
 
         public bool IsInMyrmidexObjective(Point3D p)
@@ -468,7 +495,10 @@ namespace Server.Engines.MyrmidexInvasion
 
         public void RegionMessage(int message)
         {
-            ColUtility.ForEach(BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>(), pm => pm.SendLocalizedMessage(message));
+            foreach(var pm in BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            {
+                pm.SendLocalizedMessage(message);
+            }
         }
 
         public bool IsSameLeg(IPoint2D p1, IPoint2D p2)
@@ -500,10 +530,10 @@ namespace Server.Engines.MyrmidexInvasion
 
             List<BaseCreature> bclist = new List<BaseCreature>();
 
-            ColUtility.ForEach(list, (key, value) =>
+            foreach (var kvp in list)
             {
-                bclist.AddRange(value.Where(bc => bc != null && !bc.Deleted && bc.Alive));
-            });
+                bclist.AddRange(kvp.Value.Where(bc => bc != null && !bc.Deleted && bc.Alive));
+            }
 
             return bclist;
         }
@@ -512,7 +542,7 @@ namespace Server.Engines.MyrmidexInvasion
         {
             List<DamageStore> rights = bc.GetLootingRights();
 
-            ColUtility.ForEach(rights.Where(ds => ds.m_Mobile is PlayerMobile && ds.m_HasRight && MyrmidexInvasionSystem.AreEnemies(ds.m_Mobile, bc)), ds =>
+            foreach(var ds in rights.Where(ds => ds.m_Mobile is PlayerMobile && ds.m_HasRight && MyrmidexInvasionSystem.AreEnemies(ds.m_Mobile, bc)))
             {
                 if (MyrmidexInvasionSystem.IsAlliedWith(bc, Allegiance.Myrmidex))
                 {
@@ -546,7 +576,7 @@ namespace Server.Engines.MyrmidexInvasion
                     else
                         Players[(PlayerMobile)ds.m_Mobile] += points;
                 }
-            });
+            }
         }
 
         private Type[][] _MyrmidexTypes =
@@ -568,18 +598,31 @@ namespace Server.Engines.MyrmidexInvasion
             int myrcount = 0;
             int trcount = 0;
 
-            ColUtility.ForEach<int, List<BaseCreature>>(MyrmidexTeam, (key, value) => myrcount += value.Count);
-            ColUtility.ForEach<int, List<BaseCreature>>(TribeTeam, (key, value) => trcount += value.Count);
-
-            ColUtility.ForEach<int, List<BaseCreature>>(MyrmidexTeam, (key, value) =>
+            foreach (var kvp in MyrmidexTeam)
             {
-                value.ForEach(bc => AssignNavpoints(bc, Allegiance.Myrmidex));
-            });
+                myrcount += kvp.Value.Count;
+            }
 
-            ColUtility.ForEach<int, List<BaseCreature>>(TribeTeam, (key, value) =>
+            foreach(var kvp in TribeTeam)
             {
-                value.ForEach(bc => AssignNavpoints(bc, Allegiance.Tribes));
-            });
+                trcount += kvp.Value.Count;
+            }
+
+            foreach (var kvp in MyrmidexTeam)
+            {
+                foreach (var bc in kvp.Value)
+                {
+                    AssignNavpoints(bc, Allegiance.Myrmidex);
+                }
+            }
+
+            foreach (var kvp in TribeTeam)
+            {
+                foreach (var bc in kvp.Value)
+                {
+                    AssignNavpoints(bc, Allegiance.Tribes);
+                }
+            }
         }
 
         public bool AssignNavpoints(BaseCreature bc, Allegiance allegiance)

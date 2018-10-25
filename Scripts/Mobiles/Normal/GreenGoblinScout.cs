@@ -8,14 +8,13 @@ namespace Server.Mobiles
 	[CorpseName("a goblin corpse")]
 	public class GreenGoblinScout : BaseCreature
 	{
-		//public override InhumanSpeech SpeechType { get { return InhumanSpeech.Orc; } }
 		[Constructable]
 		public GreenGoblinScout()
 			: base(AIType.AI_OrcScout, FightMode.Closest, 10, 7, 0.2, 0.4)
 		{
 			Name = "a green goblin scout";
 			Body = 723;
-			BaseSoundID = 0x45A;
+			BaseSoundID = 0x600;
 
 			SetStr(276, 309);
 			SetDex(65, 79);
@@ -48,11 +47,16 @@ namespace Server.Mobiles
 			: base(serial)
 		{ }
 
+		public override int GetAngerSound() { return 0x600; }
+        public override int GetIdleSound() { return 0x600; }
+        public override int GetAttackSound() { return 0x5FD; }
+        public override int GetHurtSound() { return 0x5FF; }
+        public override int GetDeathSound() { return 0x5FE; }
 
+        public override bool CanRummageCorpses { get { return true; } }
+        public override int TreasureMapLevel { get { return 1; } }
+        public override int Meat { get { return 1; } }
         public override TribeType Tribe { get { return TribeType.GreenGoblin; } }
-
-		public override bool CanRummageCorpses { get { return true; } }
-		public override int Meat { get { return 1; } }
 
 		public override void GenerateLoot()
 		{

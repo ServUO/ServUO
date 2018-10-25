@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Spells.Spellweaving
 {
@@ -75,7 +76,6 @@ namespace Server.Spells.Spellweaving
             {
                 Caster.PlaySound(0x5C6);
 
-                int range = 5 + FocusLevel;
                 int damage = 10 + FocusLevel;
 
                 double skill = Caster.Skills[SkillName.Spellweaving].Value;
@@ -87,22 +87,8 @@ namespace Server.Spells.Spellweaving
                 int fcMalus = FocusLevel + 1;
                 int ssiMalus = 2 * (FocusLevel + 1);
 
-                List<Mobile> targets = new List<Mobile>();
-
-                IPooledEnumerable eable = Caster.GetMobilesInRange(range);
-
-                foreach (Mobile m in eable)
+                foreach (var m in AcquireIndirectTargets(Caster.Location, 5 + FocusLevel).OfType<Mobile>())
                 {
-                    if (Caster != m && Caster.InLOS(m) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
-                        targets.Add(m);
-                }
-
-                eable.Free();
-
-                for (int i = 0; i < targets.Count; i++)
-                {
-                    Mobile m = targets[i];
-
                     Caster.DoHarmful(m);
 
                     SpellHelper.Damage(this, m, damage, 0, 0, 100, 0, 0);
@@ -115,7 +101,7 @@ namespace Server.Spells.Spellweaving
 
                         m.Delta(MobileDelta.WeaponDamage);
                     }
-                }
+                }    
             }
 
             FinishSequence();

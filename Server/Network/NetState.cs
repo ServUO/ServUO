@@ -1230,7 +1230,7 @@ namespace Server.Network
 					{
 						ns.WriteConsole("Disconnected. [{0} Online] [{1}]", m_Instances.Count, a);
 					}
-					else
+                    else if (MessagePump.Display(ns))
 					{
 						ns.WriteConsole("Disconnected. [{0} Online]", m_Instances.Count);
 					}

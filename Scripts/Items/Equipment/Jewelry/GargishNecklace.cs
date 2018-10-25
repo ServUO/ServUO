@@ -26,6 +26,17 @@ namespace Server.Items
             Layer = Layer.Neck;
         }
 
+        public override int GetDurabilityBonus()
+        {
+            int bonus = Quality == ItemQuality.Exceptional ? 20 : 0;
+
+            return bonus + ArmorAttributes.DurabilityBonus;
+        }
+
+        protected override void ApplyResourceResistances(CraftResource oldResource)
+        {
+        }
+
         public GargishNecklace(int itemID)
             : base(itemID)
         {

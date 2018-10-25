@@ -113,12 +113,15 @@ namespace Server.Spells.SkillMasteries
             //FinishSequence();
         }
 
-        private Type[] _CommandTypes =
+        public static Type[] CommandTypes { get { return _CommandTypes; } }
+        public static Type[] NoCommandTypes { get { return _NoCommandTypes; } }
+
+        private static Type[] _CommandTypes =
         {
             typeof(SkeletalDragon)
         };
 
-        private Type[] _NoCommandTypes =
+        private static Type[] _NoCommandTypes =
         {
 
             typeof(UnfrozenMummy),
@@ -132,7 +135,7 @@ namespace Server.Spells.SkillMasteries
             typeof(PestilentBandage),
         };
 
-        private bool ValidateTarget(BaseCreature bc)
+        public static bool ValidateTarget(BaseCreature bc)
         {
             if (bc is BaseRenowned || bc is BaseChampion || bc is Server.Engines.Shadowguard.ShadowguardBoss)
                 return false;

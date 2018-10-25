@@ -124,6 +124,16 @@ namespace Server.Items
 				return false;
 			}
 
+            if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(m))
+            {
+                if (message)
+                {
+                    m.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+                }
+
+                return false;
+            }
+
 			return true;
 		}
 
@@ -172,6 +182,12 @@ namespace Server.Items
 
             if (loc == Point3D.Zero || map == null || map == Map.Internal || (Siege.SiegeShard && map == Map.Trammel))
 			{
+				return;
+			}
+			
+			if (!Siege.SiegeShard && e.Mobile.Murderer && map != Map.Felucca)
+			{
+				e.Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
 				return;
 			}
 

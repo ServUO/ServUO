@@ -45,6 +45,11 @@ namespace Server.Engines.CannedEvil
 
         private Dictionary<Mobile, int> m_DamageEntries;
 
+        public List<Mobile> Creatures
+        {
+            get { return m_Creatures; }
+        }
+
 		[CommandProperty(AccessLevel.GameMaster)]
 		public string GroupName { get; set; }
 
@@ -769,6 +774,11 @@ namespace Server.Engines.CannedEvil
 
                 m_Champion.MoveToWorld(p, Map);
                 ((BaseCreature)m_Champion).Home = p;
+
+                if (m_Champion is BaseChampion)
+                {
+                    ((BaseChampion)m_Champion).OnChampPopped(this);
+                }
             }
         }
 

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Items;
 using Server.Mobiles;
 
@@ -60,50 +62,12 @@ namespace Server.Spells.Necromancy
 
                 if (map != null)
                 {
-                    List<IDamageable> targets = new List<IDamageable>();
-
-                    BaseCreature cbc = this.Caster as BaseCreature;
-                    bool isMonster = (cbc != null && !cbc.Controlled && !cbc.Summoned);
-
-                    IPooledEnumerable eable = this.Caster.GetObjectsInRange(Core.ML ? 4 : 5);
-
-                    foreach (object o in eable)
-                    {
-                        IDamageable id = o as IDamageable;
-
-                        if (id == null || id is Mobile && (Mobile)id == this.Caster)
-                            continue;
-
-                        if (this.Caster.InLOS(id) && (!(id is Mobile) || isMonster || SpellHelper.ValidIndirectTarget(this.Caster, (Mobile)id)) && this.Caster.CanBeHarmful(id, false))
-                        {
-                            if (isMonster)
-                            {
-                                if (id is BaseCreature)
-                                {
-                                    BaseCreature bc = (BaseCreature)id;
-
-                                    if (!bc.Controlled && !bc.Summoned && bc.Team == cbc.Team)
-                                        continue;
-                                }
-                                else if (!(id is PlayerMobile))
-                                {
-                                    continue;
-                                }
-                            }
-
-                            targets.Add(id);
-                        }
-                    }
-
-                    eable.Free();
-
                     Effects.PlaySound(this.Caster.Location, map, 0x1FB);
                     Effects.PlaySound(this.Caster.Location, map, 0x10B);
                     Effects.SendLocationParticles(EffectItem.Create(this.Caster.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
 
-                    for (int i = 0; i < targets.Count; ++i)
+                    foreach (var id in AcquireIndirectTargets(Caster.Location, Core.ML ? 4 : 5))
                     {
-                        IDamageable id = targets[i];
                         Mobile m = id as Mobile;
 
                         this.Caster.DoHarmful(id);

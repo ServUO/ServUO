@@ -229,6 +229,10 @@ namespace Server.Mobiles
             ColUtility.Free(toGive);
         }
 
+        public virtual void OnChampPopped(ChampionSpawn spawn)
+        {
+        }
+
         public override bool OnBeforeDeath()
         {
             if (CanGivePowerscrolls && !NoKillAwards)

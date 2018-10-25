@@ -8,7 +8,7 @@ using Server.Network;
 namespace Server.Mobiles
 {
     [CorpseName("a medusa corpse")]
-    public class Medusa : BaseSABosses, ICarvable
+    public class Medusa : BaseSABoss, ICarvable
     {
         private List<Mobile> m_TurnedToStone = new List<Mobile>();
         public List<Mobile> AffectedMobiles { get { return m_TurnedToStone; } }

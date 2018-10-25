@@ -20,12 +20,11 @@ namespace Server.SkillHandlers
         {
             m.RevealingAction();
 
-            m.Target = new InternalTarget();
-            m.RevealingAction();
-
             m.SendLocalizedMessage(500397); // To whom do you wish to grovel?
 
-            return TimeSpan.FromHours(6.0);
+            Timer.DelayCall(() => m.Target = new InternalTarget());
+
+            return TimeSpan.FromHours(1.0);
         }
 
         private class InternalTarget : Target
@@ -191,7 +190,7 @@ namespace Server.SkillHandlers
                         else
                         {
                             double chance = Utility.RandomDouble();
-                            Item reward = new Gold(1);
+                            Item reward = null;
                             string rewardName = "";
                             if (chance >= .99)
                             {
@@ -297,6 +296,11 @@ namespace Server.SkillHandlers
                                     reward = new BegWaterPitcher();
                                     rewardName = "a Pitcher of water.";
                                 }
+                            }
+
+                            if (reward == null)
+                            {
+                                reward = new Gold(1);
                             }
 
                             m_Target.Say(1074854); // Here, take this...

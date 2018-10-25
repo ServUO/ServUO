@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Spells;
 
 namespace Server.Items
@@ -54,50 +56,32 @@ namespace Server.Items
             attacker.FixedEffect(0x3728, 10, 15);
             attacker.PlaySound(0x2A1);
 
-            List<Mobile> list = new List<Mobile>();
-            IPooledEnumerable eable = attacker.GetMobilesInRange(1);
+            var list = SpellHelper.AcquireIndirectTargets(attacker, attacker, attacker.Map, 1)
+                .OfType<Mobile>()
+                .Where(m => attacker.InRange(m, weapon.MaxRange) && m != defender);
+            
+            var count = list.Count();
 
-            foreach (Mobile m in eable)
-            {
-                if (m != defender && m != attacker && SpellHelper.ValidIndirectTarget(attacker, m))
-                {
-                    if (m == null || m.Deleted || m.Map != attacker.Map || !m.Alive || !attacker.CanSee(m) || !attacker.CanBeHarmful(m))
-                        continue;
-
-                    if (!attacker.InRange(m, weapon.MaxRange))
-                        continue;
-
-                    if (attacker.InLOS(m))
-                        list.Add(m);
-                }
-            }
-
-            eable.Free();
-
-            if (list.Count > 0)
+            if (count > 0)
             {
                 double bushido = attacker.Skills.Bushido.Value;
-                double damageBonus = 1.0 + Math.Pow((list.Count * bushido) / 60, 2) / 100;
+                double damageBonus = 1.0 + Math.Pow((count * bushido) / 60, 2) / 100;
 
                 if (damageBonus > 2.0)
                     damageBonus = 2.0;
 					
                 attacker.RevealingAction();
 
-                for (int i = 0; i < list.Count; ++i)
+                foreach(var m in list)
                 {
-                    Mobile m = list[i];
-
                     attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
                     m.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!
 
                     weapon.OnHit(attacker, m, damageBonus);
                 }
-
-                weapon.ProcessingMultipleHits = false;
             }
 
-            ColUtility.Free(list);
+            weapon.ProcessingMultipleHits = false;
         }
     }
 }

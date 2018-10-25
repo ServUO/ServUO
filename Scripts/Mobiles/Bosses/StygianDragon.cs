@@ -4,7 +4,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a stygian dragon corpse")]
-    public class StygianDragon : BaseSABosses
+    public class StygianDragon : BaseSABoss
     {
         private DateTime m_Delay;
 
@@ -125,6 +125,9 @@ namespace Server.Mobiles
             base.OnDeath(c);
 
             c.DropItem(new StygianDragonHead());
+			
+			if ( Paragon.ChestChance > Utility.RandomDouble() )
+            	c.DropItem( new ParagonChest( Name, TreasureMapLevel ) );
         }
 
         public override void Serialize(GenericWriter writer)

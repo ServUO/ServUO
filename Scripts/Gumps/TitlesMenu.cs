@@ -1,13 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server;
 using Server.Mobiles;
 using Server.Misc;
-using System.Collections.Generic;
 using Server.Engines.CannedEvil;
-using System.Linq;
 using Server.Guilds;
 using Server.ContextMenus;
 using Server.Engines.CityLoyalty;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Gumps
 {
@@ -505,9 +507,9 @@ namespace Server.Gumps
                             continue;
 
                         AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", "the " + sk.Info.Title), false, false);
-                        AddCallbackButton(225, 70 + (index * 22), 4005, 4007, sk.Info.SkillID + 302, GumpButtonType.Reply, 0, b =>
+                        AddCallbackButton(225, 70 + (index * 22), 4005, 4007, sk.Info.SkillID + 45000, GumpButtonType.Reply, 0, b =>
                         {
-                            TitleSelected = b.ButtonID - 302;
+                            TitleSelected = b.ButtonID - 45000;
                             ShowingDescription = true;
                             Refresh();
                         });
@@ -515,12 +517,12 @@ namespace Server.Gumps
                         index++;
                         CheckPage(ref index, ref page);
 
-                        /*if ((SkillName)sk.Info.SkillID == User.Skills.CurrentMastery && User.Skills.CurrentMastery != SkillName.Alchemy)
+                        if ((SkillName)sk.Info.SkillID == User.Skills.CurrentMastery && User.Skills.CurrentMastery != SkillName.Alchemy)
                         {
                             AddHtml(260, 70 + (index * 22), 160, 16, Color("#FFFFFF", MasteryInfo.GetTitle(User)), false, false);
-                            AddCallbackButton(225, 70 + (index * 22), 4005, 4007, 350, GumpButtonType.Reply, 0, b =>
+                            AddCallbackButton(225, 70 + (index * 22), 4005, 4007, 999999, GumpButtonType.Reply, 0, b =>
                             {
-                                TitleSelected = 350;
+                                TitleSelected = 999999;
                                 ShowingDescription = true;
                                 Refresh();
                             });
@@ -528,7 +530,7 @@ namespace Server.Gumps
                             index++;
                         }
 
-                        CheckPage(ref index, ref page);*/
+                        CheckPage(ref index, ref page);
                     }
                 }
                 else
@@ -536,7 +538,7 @@ namespace Server.Gumps
                     string title;
                     int desc;
 
-                    /*if (TitleSelected == 350)
+                    if (TitleSelected == 999999)
                     {
                         title = MasteryInfo.GetTitle(User);
                         desc = MasteryInfo.GetDescription(User);
@@ -545,9 +547,7 @@ namespace Server.Gumps
                     {
                         title = "the " + User.Skills[(SkillName)TitleSelected].Info.Title;
                         desc = 1115056 + TitleSelected;
-                    }*/
-                    title = "the " + User.Skills[(SkillName)TitleSelected].Info.Title;
-                    desc = 1115056 + TitleSelected;
+                    }
 
                     AddHtmlLocalized(225, 70, 270, 140, desc, 0xFFFF, false, false);
                     AddHtmlLocalized(225, 220, 160, 16, 1115028, 0xFFFF, false, false); // Overhead Name
@@ -559,8 +559,8 @@ namespace Server.Gumps
                     AddCallbackButton(445, 275, 4005, 4007, 399, GumpButtonType.Reply, 0, b =>
                     {
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
-                        title = "the " + User.Skills[(SkillName)TitleSelected].Info.Title;
-                        User.OverheadTitle = title;
+
+                        User.OverheadTitle = TitleSelected == 999999 ? MasteryInfo.GetTitle(User) : "the " + User.Skills[(SkillName)TitleSelected].Info.Title; ;
 
                         Refresh(false);
                     });
@@ -593,7 +593,7 @@ namespace Server.Gumps
                             Refresh(false);
 
                             User.OverheadTitle = null;
-                            User.DisplayGuildTitle = true;
+                            User.DisplayGuildAbbr = true;
                         });
                 }
             }
@@ -771,6 +771,7 @@ namespace Server.Gumps
                         {
                             User.SubtitleSkillTitle = title;
 
+                            User.CurrentVeteranTitle = -1;
                             User.SelectRewardTitle(-1, true);
                             User.DisplayGuildTitle = false;
                         }
@@ -805,9 +806,8 @@ namespace Server.Gumps
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                         User.DisplayGuildTitle = true;
 
-                        if (User.SubtitleSkillTitle != null)
-                            User.SubtitleSkillTitle = null;
-
+                        User.SubtitleSkillTitle = null;
+                        User.CurrentVeteranTitle = -1;
                         User.SelectRewardTitle(-1, true);
 
                         Refresh(false);
@@ -888,9 +888,8 @@ namespace Server.Gumps
 
                         User.SelectRewardTitle(TitleSelected, true);
 
-                        if (User.SubtitleSkillTitle != null)
-                            User.SubtitleSkillTitle = null;
-
+                        User.SubtitleSkillTitle = null;
+                        User.CurrentVeteranTitle = -1;
                         User.DisplayGuildTitle = false;
                     });
                 }
@@ -936,6 +935,10 @@ namespace Server.Gumps
                         title = vetTitles[TitleSelected];
                         User.CurrentVeteranTitle = title.Title;
 
+                        User.SelectRewardTitle(-1, true);
+                        User.SubtitleSkillTitle = null;
+                        User.DisplayGuildTitle = false;
+
                         Refresh(false);
                     });
                 }
@@ -973,7 +976,7 @@ namespace Server.Gumps
                 case TitleType.PaperdollSuffix:
                     return User.PaperdollSkillTitle != null || User.CurrentChampTitle != null;
                 case TitleType.OverheadName:
-                    return User.OverheadTitle != null || User.DisplayGuildTitle;
+                    return User.OverheadTitle != null || User.DisplayGuildAbbr;
                 case TitleType.SubTitles:
                     return User.SubtitleSkillTitle != null || User.SelectedTitle > -1 || User.CurrentVeteranTitle > 0 || User.DisplayGuildTitle;
             }
@@ -991,7 +994,7 @@ namespace Server.Gumps
                     break;
                 case TitleType.OverheadName:
                     User.OverheadTitle = null;
-                    User.DisplayGuildTitle = false;
+                    User.DisplayGuildAbbr = false;
                     break;
                 case TitleType.SubTitles:
                     User.SubtitleSkillTitle = null;

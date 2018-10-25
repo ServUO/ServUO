@@ -17,7 +17,7 @@ namespace Server.Spells.SkillMasteries
 
         public override double RequiredSkill { get { return 90; } }
         public override double UpKeep { get { return 0; } } // get
-        public override int RequiredMana { get { return 30; } }
+        public override int RequiredMana { get { return 25; } }
         public override bool PartyEffects { get { return true; } }
 
         public override SkillName CastSkill { get { return SkillName.Archery; } }
@@ -95,26 +95,11 @@ namespace Server.Spells.SkillMasteries
 
                 AddToCooldown(TimeSpan.FromSeconds(90));
 
-                IPooledEnumerable eable = Caster.Map.GetMobilesInRange(Caster.Location, 5);
-                List<Mobile> targets = new List<Mobile>();
-
-                foreach (Mobile m in eable)
-                {
-                    if (Caster != m && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
-                    {
-                        if (!Caster.InLOS(m))
-                            continue;
-
-                        targets.Add(m);
-                    }
-                }
-                eable.Free();
-
-                foreach (Mobile mob in targets)
+                foreach (var mob in AcquireIndirectTargets(Caster.Location, 5).OfType<Mobile>())
                 {
                     if (HitLower.ApplyDefense(mob))
                     {
-                        if(wep is BaseRanged && !(wep is BaseThrown))
+                        if (wep is BaseRanged && !(wep is BaseThrown))
                             Caster.MovingEffect(mob, ((BaseRanged)wep).EffectID, 18, 1, false, false);
 
                         mob.PlaySound(0x28E);
@@ -134,10 +119,10 @@ namespace Server.Spells.SkillMasteries
         {
             if (PartyList != null)
             {
-                PartyList.ForEach(m =>
+                foreach(var m in PartyList)
                 {
-                    BuffInfo.RemoveBuff(m, BuffIcon.PlayingTheOdds);
-                });
+                    RemovePartyEffects(m);
+                }
             }
 
             BaseWeapon wep = GetWeapon();
@@ -145,8 +130,13 @@ namespace Server.Spells.SkillMasteries
             if (wep != null)
                 wep.InvalidateProperties();
 
-            BuffInfo.RemoveBuff(Caster, BuffIcon.PlayingTheOddsDebuff);
+            RemovePartyEffects(Caster);
             Caster.SendLocalizedMessage(1156092); // Your bow range has returned to normal.
+        }
+
+        public override void RemovePartyEffects(Mobile m)
+        {
+            BuffInfo.RemoveBuff(m, BuffIcon.PlayingTheOdds);
         }
 
         public static int HitChanceBonus(Mobile m)

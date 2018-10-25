@@ -287,6 +287,7 @@ namespace Server.Engines.UOStore
             Register<WindrunnerStatue>(1124685, 1157373, 0x9ED5, 0, 0, 1000, cat);
             Register<LasherStatue>(1157214, 1157305, 0x9E35, 0, 0, 1000, cat);
             Register<ChargerOfTheFallen>(1075187, 1156646, 0x2D9C, 0, 0, 1000, cat);
+            Register<EowmuStatue>(1158082, 1158433, 0xA0C0, 0, 0, 1000, cat);
 
             // misc
             cat = StoreCategory.Misc;

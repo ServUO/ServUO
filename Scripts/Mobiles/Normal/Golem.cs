@@ -70,22 +70,27 @@ namespace Server.Mobiles
 
             if (!summoned)
             {
-                PackItem(new IronIngot(Utility.RandomMinMax(13, 21)));
-
-                if (0.1 > Utility.RandomDouble())
-                    PackItem(new PowerCrystal());
-
-                if (0.15 > Utility.RandomDouble())
-                    PackItem(new ClockworkAssembly());
-
-                if (0.2 > Utility.RandomDouble())
-                    PackItem(new ArcaneGem());
-
-                if (0.25 > Utility.RandomDouble())
-                    PackItem(new Gears());
+                SpawnPackItems();
             }
 
             ControlSlots = 3;
+        }
+
+        public virtual void SpawnPackItems()
+        {
+            PackItem(new IronIngot(Utility.RandomMinMax(13, 21)));
+
+            if (0.1 > Utility.RandomDouble())
+                PackItem(new PowerCrystal());
+
+            if (0.15 > Utility.RandomDouble())
+                PackItem(new ClockworkAssembly());
+
+            if (0.2 > Utility.RandomDouble())
+                PackItem(new ArcaneGem());
+
+            if (0.25 > Utility.RandomDouble())
+                PackItem(new Gears());
         }
 
         public Golem(Serial serial)

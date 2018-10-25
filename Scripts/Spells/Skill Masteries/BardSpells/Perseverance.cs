@@ -67,11 +67,16 @@ namespace Server.Spells.SkillMasteries
             {
                 foreach (Mobile m in PartyList) //Original Party list
                 {
-                    BuffInfo.RemoveBuff(m, BuffIcon.Perseverance);
+                    RemovePartyEffects(m);
                 }
             }
 
-            BuffInfo.RemoveBuff(Caster, BuffIcon.Perseverance);
+            RemovePartyEffects(Caster);
+        }
+
+        public override void RemovePartyEffects(Mobile m)
+        {
+            BuffInfo.RemoveBuff(m, BuffIcon.Perseverance);
         }
 		
 		/// <summary>

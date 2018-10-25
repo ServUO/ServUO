@@ -17,29 +17,42 @@ namespace Server.SkillHandlers
 	public class AnimalTaming
 	{
 		private static readonly Hashtable m_BeingTamed = new Hashtable();
-		private static bool m_DisableMessage;
-		public static bool DisableMessage { get { return m_DisableMessage; } set { m_DisableMessage = value; } }
+
+		public static bool DisableMessage { get; set; }
+		public static bool DeferredTarget { get; set; }
+
+		static AnimalTaming()
+		{
+			DeferredTarget = true;
+			DisableMessage = false;
+		}
 
 		public static void Initialize()
 		{
 			SkillInfo.Table[(int)SkillName.AnimalTaming].Callback = OnUse;
 		}
-
+		
 		public static TimeSpan OnUse(Mobile m)
 		{
 			m.RevealingAction();
 
-			m.Target = new InternalTarget();
-			m.RevealingAction();
-
-			if (!m_DisableMessage)
+			if (!DisableMessage)
 			{
 				m.SendLocalizedMessage(502789); // Tame which animal?
 			}
 
-			return TimeSpan.FromHours(6.0);
-		}
+			if (DeferredTarget)
+			{
+				Timer.DelayCall(() => m.Target = new InternalTarget());
+			}
+			else
+			{
+				m.Target = new InternalTarget();
+			}
 
+			return TimeSpan.FromHours(1.0);
+		}
+		
 		public static bool CheckMastery(Mobile tamer, BaseCreature creature)
 		{
 			BaseCreature familiar = (BaseCreature)SummonFamiliarSpell.Table[tamer];
@@ -234,14 +247,14 @@ namespace Server.SkillHandlers
 							}
 							else
 							{
+								m_SetSkillTime = false;
+
 								m_BeingTamed[targeted] = from;
 
 								from.LocalOverheadMessage(MessageType.Emote, 0x59, 1010597); // You start to tame the creature.
 								from.NonlocalOverheadMessage(MessageType.Emote, 0x59, 1010598); // *begins taming a creature.*
 
 								new InternalTimer(from, creature, Utility.Random(3, 2)).Start();
-
-								m_SetSkillTime = false;
 							}
 						}
 						else
@@ -405,28 +418,30 @@ namespace Server.SkillHandlers
 
 						minSkill += 24.9;
 
-						minSkill += XmlMobFactions.GetScaledFaction(m_Tamer, m_Creature, -25, 25, -0.001);
-
 						if (CheckMastery(m_Tamer, m_Creature) || alreadyOwned ||
 							m_Tamer.CheckTargetSkill(SkillName.AnimalTaming, m_Creature, minSkill - 25.0, minSkill + 25.0))
 						{
-							if (m_Creature.Owners.Count == 0) // First tame
-							{
-								if (m_Creature is GreaterDragon)
-								{
-									ScaleSkills(m_Creature, 0.72, 0.90); // 72% of original skills trainable to 90%
-									m_Creature.Skills[SkillName.Magery].Base = m_Creature.Skills[SkillName.Magery].Cap;
-										// Greater dragons have a 90% cap reduction and 90% skill reduction on magery
-								}
-								else if (m_Paralyzed)
-								{
-									ScaleSkills(m_Creature, 0.86); // 86% of original skills if they were paralyzed during the taming
-								}
-								else
-								{
-									ScaleSkills(m_Creature, 0.90); // 90% of original skills
-								}
-							}
+                            if (m_Creature.Owners.Count == 0) // First tame
+                            {
+                                if (m_Creature is GreaterDragon)
+                                {
+                                    ScaleSkills(m_Creature, 0.72, 0.90); // 72% of original skills trainable to 90%
+                                    m_Creature.Skills[SkillName.Magery].Base = m_Creature.Skills[SkillName.Magery].Cap;
+                                    // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
+                                }
+                                else if (m_Paralyzed)
+                                {
+                                    ScaleSkills(m_Creature, 0.86); // 86% of original skills if they were paralyzed during the taming
+                                }
+                                else
+                                {
+                                    ScaleSkills(m_Creature, 0.90); // 90% of original skills
+                                }
+                            }
+                            else
+                            {
+                                ScaleSkills(m_Creature, 0.90); // 90% of original skills
+                            }
 
 							if (alreadyOwned)
 							{
@@ -436,13 +451,17 @@ namespace Server.SkillHandlers
 							{
 								m_Creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502799, m_Tamer.NetState);
 									// It seems to accept you as master.
-								m_Creature.Owners.Add(m_Tamer);
 							}
 
 							m_Creature.SetControlMaster(m_Tamer);
 							m_Creature.IsBonded = false;
 
                             m_Creature.OnAfterTame(m_Tamer);
+
+                            if (!m_Creature.Owners.Contains(m_Tamer))
+                            {
+                                m_Creature.Owners.Add(m_Tamer);
+                            }
 
                             PetTrainingHelper.GetAbilityProfile(m_Creature, true).OnTame();
 						}

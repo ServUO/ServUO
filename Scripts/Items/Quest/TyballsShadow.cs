@@ -101,6 +101,8 @@ namespace Server.Mobiles
 
                 if (toGive.Count > 0)
                     toGive[Utility.Random(toGive.Count)].AddToBackpack(new YellowKey1());
+
+                ColUtility.Free(toGive);
             }
             base.OnDeath(c);
         }

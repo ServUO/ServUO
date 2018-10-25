@@ -4,18 +4,24 @@ namespace Server.Items
 {
     public class Torch : BaseEquipableLight
     {
+        public override int LitItemID { get { return 0xA12; } }
+        public override int UnlitItemID { get { return 0xF6B; } }
+
+        public override int LitSound { get { return 0x54; } }
+        public override int UnlitSound { get { return 0x4BB; } }
+
         [Constructable]
         public Torch()
             : base(0xF6B)
         {
             if (Burnout)
-                this.Duration = TimeSpan.FromMinutes(30);
+                Duration = TimeSpan.FromMinutes(30);
             else
-                this.Duration = TimeSpan.Zero;
+                Duration = TimeSpan.Zero;
 
-            this.Burning = false;
-            this.Light = LightType.Circle300;
-            this.Weight = 1.0;
+            Burning = false;
+            Light = LightType.Circle300;
+            Weight = 1.0;
         }
 
         public Torch(Serial serial)
@@ -23,39 +29,11 @@ namespace Server.Items
         {
         }
 
-        public override int LitItemID
-        {
-            get
-            {
-                return 0xA12;
-            }
-        }
-        public override int UnlitItemID
-        {
-            get
-            {
-                return 0xF6B;
-            }
-        }
-        public override int LitSound
-        {
-            get
-            {
-                return 0x54;
-            }
-        }
-        public override int UnlitSound
-        {
-            get
-            {
-                return 0x4BB;
-            }
-        }
         public override void OnAdded(object parent)
         {
             base.OnAdded(parent);
 
-            if (parent is Mobile && this.Burning)
+            if (parent is Mobile && Burning)
             {
                 Mobiles.MeerMage.StopEffect((Mobile)parent, true);
                 SwarmContext.CheckRemove((Mobile)parent);
@@ -66,10 +44,10 @@ namespace Server.Items
         {
             base.Ignite();
 
-            if (this.Parent is Mobile && this.Burning)
+            if (Parent is Mobile && Burning)
             {
-                Mobiles.MeerMage.StopEffect((Mobile)this.Parent, true);
-                SwarmContext.CheckRemove((Mobile)this.Parent);
+                Mobiles.MeerMage.StopEffect((Mobile)Parent, true);
+                SwarmContext.CheckRemove((Mobile)Parent);
             }
         }
 
@@ -84,8 +62,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (this.Weight == 2.0)
-                this.Weight = 1.0;
+            if (Weight == 2.0)
+                Weight = 1.0;
         }
     }
 }

@@ -39,28 +39,7 @@ namespace Server.Spells.Mysticism
 
                 if (map != null)
                 {
-                    List<IDamageable> targets = new List<IDamageable>();
-
                     Rectangle2D effectArea = new Rectangle2D(p.X - 3, p.Y - 3, 6, 6);
-                    IPooledEnumerable eable = map.GetObjectsInBounds(effectArea);
-
-                    foreach (object o in eable)
-                    {
-                        IDamageable id = o as IDamageable;
-
-                        if (id == null || (id is Mobile && (Mobile)id == Caster))
-                            continue;
-
-                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(Caster, id as Mobile)) && Caster.CanBeHarmful(id, false))
-                        {
-                            if (Core.AOS && !Caster.InLOS(id))
-                                continue;
-
-                            targets.Add(id);
-                        }
-                    }
-                    eable.Free();
-
                     Effects.PlaySound(p, map, 0x64F);
 
                     for (int x = effectArea.X; x <= effectArea.X + effectArea.Width; x++)
@@ -84,10 +63,8 @@ namespace Server.Spells.Mysticism
                         }
                     }
 
-                    for (int i = 0; i < targets.Count; ++i)
+                    foreach(var d in AcquireIndirectTargets(p, 3))
                     {
-                        IDamageable d = targets[i];
-
                         Server.Effects.SendTargetParticles(d, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
 
                         double damage = (((Caster.Skills[CastSkill].Value + (Caster.Skills[DamageSkill].Value / 2)) * .66) + Utility.RandomMinMax(1, 6));
@@ -125,8 +102,6 @@ namespace Server.Spells.Mysticism
 
                         Effects.SendLocationParticles(EffectItem.Create(d.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
                     }
-
-                    ColUtility.Free(targets);
                 }
             }
 

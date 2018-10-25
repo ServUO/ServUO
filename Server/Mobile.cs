@@ -775,6 +775,7 @@ namespace Server
 		private bool m_CanSwim, m_CantWalk;
 		private int m_TithingPoints;
 		private bool m_DisplayGuildTitle;
+		private bool m_DisplayGuildAbbr;
 		private Mobile m_GuildFealty;
 		private DateTime[] m_StuckMenuUses;
 		private Timer m_ExpireCombatant;
@@ -1138,170 +1139,84 @@ namespace Server
 			return suffix;
 		}
 
-		protected virtual void AlterName(ref string prefix, ref string name, ref string suffix)
-		{ }
+        public virtual void AddNameProperties(ObjectPropertyList list)
+        {
+            string name = Name;
 
-		public virtual string GetName(out string prefix, out string name, out string suffix)
-		{
-			prefix = String.Empty;
-			name = Name ?? String.Empty;
-			suffix = String.Empty;
-			
-			if (AccessLevel > AccessLevel.Player)
-			{
-				if (!String.IsNullOrWhiteSpace(prefix) && !prefix.StartsWith(" "))
-				{
-					prefix = " " + prefix;
-				}
-
-				prefix = GetAccessLevelShortName(AccessLevel) + prefix;
-			}
-
-			if (ShowFameTitle && m_Fame >= 10000 && (m_Player || m_Body.IsHuman))
-			{
-				if (!String.IsNullOrWhiteSpace(prefix) && !prefix.EndsWith(" "))
-				{
-					prefix += " ";
-				}
-
-				prefix += Female ? "Lady" : "Lord";
-			}
-			
-			if (PropertyTitle && !String.IsNullOrWhiteSpace(Title))
-			{
-				if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith(" "))
-				{
-					suffix += " ";
-				}
-
-				suffix += Title;
-			}
-			
-			if (m_Guild != null && (m_DisplayGuildTitle || !m_Player))
-			{
-				if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith("]") && !suffix.EndsWith(" "))
-				{
-					suffix += " ";
-				}
-
-				suffix += String.Format("[{0}]", Utility.FixHtml(m_Guild.Abbreviation));
+            if (name == null)
+            {
+                name = String.Empty;
             }
 
-			suffix = ApplyNameSuffix(suffix);
+            string prefix = "";
 
-			prefix = prefix.Trim();
-			name = name.Trim();
-			suffix = suffix.Trim();
+            if (ShowFameTitle && (m_Player || m_Body.IsHuman) && m_Fame >= 10000)
+            {
+                prefix = m_Female ? "Lady" : "Lord";
+            }
 
-			AlterName(ref prefix, ref name, ref suffix);
+            string suffix = "";
 
-			if (String.IsNullOrWhiteSpace(name))
-			{
-				name = " ";
-			}
+            if (PropertyTitle && Title != null && Title.Length > 0)
+            {
+                suffix = Title;
+            }
 
-			var cli = suffix.IndexOf('#');
+            BaseGuild guild = m_Guild;
 
-			if (cli > 0 && Char.IsNumber(suffix, cli + 1))
-			{
-				if (!name.EndsWith(" ") && !suffix.StartsWith(" "))
-				{
-					name += " ";
-				}
+            if (guild != null && m_Player && m_DisplayGuildAbbr)
+            {
+                if (suffix.Length > 0)
+                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
+                else
+                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+            }
 
-				name += suffix.Substring(0, cli);
-				suffix = suffix.Substring(cli);
-			}
+            suffix = ApplyNameSuffix(suffix);
 
-			if (!String.IsNullOrWhiteSpace(prefix) && !name.StartsWith(" "))
-			{
-				name = String.Concat(" ", name);
-			}
+            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
 
-			if (!String.IsNullOrWhiteSpace(suffix) && !name.EndsWith(" "))
-			{
-				name = String.Concat(name, " ");
-			}
+            if (guild != null && (m_DisplayGuildTitle || (m_Player && guild.Type != GuildType.Regular)))
+            {
+                string type;
 
-			return String.Concat(prefix, name, suffix);
-		}
+                if (guild.Type >= 0 && (int)guild.Type < m_GuildTypes.Length)
+                {
+                    type = m_GuildTypes[(int)guild.Type];
+                }
+                else
+                {
+                    type = "";
+                }
 
-		public virtual void AddNameProperties(ObjectPropertyList list)
-		{
-			string prefix, name, suffix;
+                string title = GuildTitle;
 
-			GetName(out prefix, out name, out suffix);
+                if (title == null)
+                {
+                    title = "";
+                }
+                else
+                {
+                    title = title.Trim();
+                }
 
-			if (String.IsNullOrEmpty(prefix))
-			{
-				prefix = " ";
-			}
-
-			if (String.IsNullOrEmpty(name))
-			{
-				name = " ";
-			}
-
-			if (String.IsNullOrEmpty(suffix))
-			{
-				suffix = " ";
-			}
-
-			list.Add(1050045, "{0}\t{1}\t{2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
-
-			AddGuildProperties(list);
-		}
-
-		public virtual void AddGuildProperties(ObjectPropertyList list)
-		{
-			if (m_Guild == null)
-			{
-				return;
-			}
-
-			var text = String.Empty;
-
-			if (m_DisplayGuildTitle || !m_Player || m_Guild.Type != GuildType.Regular)
-			{
-				string type;
-
-				if (m_Guild.Type >= 0 && (int)m_Guild.Type < m_GuildTypes.Length)
-				{
-					type = m_GuildTypes[(int)m_Guild.Type];
-				}
-				else
-				{
-					type = "";
-				}
-
-				var title = Utility.FixHtml(GuildTitle ?? String.Empty);
-
-				if (NewGuildDisplay && title.Length > 0)
-				{
-					text = String.Format("{0}, {1}", title, Utility.FixHtml(m_Guild.Name));
-				}
-				else if (title.Length > 0)
-				{
-					text = String.Format("{0}, {1} Guild{2}", title, Utility.FixHtml(m_Guild.Name), type);
-				}
-				else
-				{
-					text = Utility.FixHtml(m_Guild.Name);
-				}
-			}
-
-			if (!String.IsNullOrWhiteSpace(text))
-			{
-				list.Add(text);
-			}
-		}
-
-		public virtual string FormatProperty(double value, string format = "#,0.##")
-		{
-			return value == 0 || String.IsNullOrWhiteSpace(format)
-				? value.ToString(CultureInfo.InvariantCulture)
-				: value.ToString(format);
-		}
+                if (NewGuildDisplay && title.Length > 0)
+                {
+                    list.Add("{0}, {1}", Utility.FixHtml(title), Utility.FixHtml(guild.Name));
+                }
+                else
+                {
+                    if (title.Length > 0)
+                    {
+                        list.Add("{0}, {1} Guild{2}", Utility.FixHtml(title), Utility.FixHtml(guild.Name), type);
+                    }
+                    else
+                    {
+                        list.Add(Utility.FixHtml(guild.Name));
+                    }
+                }
+            }
+        }
 
 		public virtual bool NewGuildDisplay { get { return false; } }
 
@@ -2263,6 +2178,7 @@ namespace Server
 
 		private long m_NextCombatTime;
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public long NextSkillTime { get { return m_NextSkillTime; } set { m_NextSkillTime = value; } }
 
 		public List<AggressorInfo> Aggressors { get { return m_Aggressors; } }
@@ -4089,6 +4005,8 @@ namespace Server
 
 		public virtual void Kill()
 		{
+            m_LastKilled = DateTime.UtcNow;
+
 			if (!CanBeDamaged())
 			{
 				return;
@@ -4126,7 +4044,6 @@ namespace Server
 			{
 				m_Spell.OnCasterKilled();
 			}
-			//m_Spell.Disturb( DisturbType.Kill );
 
 			if (m_Target != null)
 			{
@@ -5614,10 +5531,13 @@ namespace Server
 		}
 
 		private Mobile m_LastKiller;
+        private DateTime m_LastKilled;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public Mobile LastKiller { get { return m_LastKiller; } set { m_LastKiller = value; } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime LastKilled { get { return m_LastKilled; } set { m_LastKilled = value; } }
 		/// <summary>
 		///     Overridable. Virtual event invoked when the Mobile is <see cref="Damage">damaged</see>. It is called before
 		///     <see
@@ -5920,6 +5840,12 @@ namespace Server
 
 			switch (version)
 			{
+				case 37:
+				{
+					m_DisplayGuildAbbr = reader.ReadBool();
+
+					goto case 36;
+				}
 				case 36:
 				{
 					m_BloodHue = reader.ReadInt();
@@ -6170,6 +6096,11 @@ namespace Server
 					}
 				case 0:
 					{
+						if (version < 37)
+						{
+							m_DisplayGuildAbbr = true;
+						}
+
 						if (version < 34)
 						{
                             m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
@@ -6468,7 +6399,10 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(36); // version
+			writer.Write(37); // version
+
+			// 37
+			writer.Write(m_DisplayGuildAbbr);
 
 			// 36
 			writer.Write(m_BloodHue);
@@ -6747,7 +6681,7 @@ namespace Server
 
 		public virtual bool CanPaperdollBeOpenedBy(Mobile from)
 		{
-			return (Body.IsHuman || Body.IsGhost || IsBodyMod);
+			return (Body.IsHuman || Body.IsGhost || IsBodyMod || from == this);
 		}
 
 		public virtual void GetChildContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)
@@ -6879,14 +6813,16 @@ namespace Server
                     using (StreamWriter op = new StreamWriter("LayerConflict.log", true))
                     {
                         op.WriteLine("# {0}", DateTime.UtcNow);
-                        op.WriteLine("Offending Mobile: {0}[{1}]", GetType().ToString(), this);
-                        op.WriteLine("Offending Item: {0}", item.GetType().ToString());
+                        op.WriteLine("Offending Mobile: {0} [{1}]", GetType().ToString(), this);
+                        op.WriteLine("Offending Item: {0} [{1}]", item, item.GetType().ToString());
+                        op.WriteLine("Equipped Item: {0} [{1}]", equipped, equipped.GetType().ToString());
                         op.WriteLine("Layer: {0}", item.Layer.ToString());
                         op.WriteLine();
                     }
 
-                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Mobile: {0}[{1}]", GetType().ToString(), this));
-                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Item: {0}", item.GetType().ToString()));
+                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Mobile: {0} [{1}]", GetType().ToString(), this));
+                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Item: {0} [{1}]", item, item.GetType().ToString()));
+                    Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Equipped Item: {0} [{1}]", equipped, equipped.GetType().ToString()));
                     Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Layer: {0}", item.Layer.ToString()));
                 }
                 catch
@@ -7904,17 +7840,7 @@ namespace Server
 
 			if (newRegion != oldRegion)
 			{
-				if (oldRegion != null)
-				{
-					oldRegion.OnExit(this);
-				}
-				
 				m_Region = newRegion;
-
-				if (newRegion != null)
-				{
-					newRegion.OnEnter(this);
-				}
 
 				Region.OnRegionChange(this, oldRegion, newRegion);
 
@@ -9376,6 +9302,17 @@ namespace Server
 
 		public virtual void OnGuildTitleChange(string oldTitle)
 		{ }
+
+		[CommandProperty(AccessLevel.Decorator)]
+		public bool DisplayGuildAbbr
+		{
+			get { return m_DisplayGuildAbbr; }
+			set
+			{
+				m_DisplayGuildAbbr = value;
+				InvalidateProperties();
+			}
+		}
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public bool DisplayGuildTitle
@@ -12581,7 +12518,8 @@ namespace Server
 		public static bool GuildClickMessage { get { return m_GuildClickMessage; } set { m_GuildClickMessage = value; } }
 		public static bool OldPropertyTitles { get { return m_OldPropertyTitles; } set { m_OldPropertyTitles = value; } }
 
-		public virtual bool ShowFameTitle { get { return true; } } //(m_Player || m_Body.IsHuman) && m_Fame >= 10000; }
+		public virtual bool ShowFameTitle { get { return true; } } 
+		public virtual bool ShowAccessTitle { get { return false; } }
 
 		/// <summary>
 		///     Overridable. Event invoked when the Mobile is single clicked.

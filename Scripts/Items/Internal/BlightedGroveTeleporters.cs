@@ -46,7 +46,7 @@ namespace Server.Items
 			
             if (machete != null)
             {
-                if (Utility.RandomDouble() < 0.75 || machete.Insured || machete.LootType == LootType.Blessed)
+                if (0.6 > Utility.RandomDouble())
                 {
                     m.SendLocalizedMessage(1075008); // Your bone handled machete has grown dull but you still manage to force your way past the venomous branches.
                 }

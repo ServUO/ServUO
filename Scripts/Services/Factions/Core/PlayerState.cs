@@ -342,7 +342,6 @@ namespace Server.Factions
             {
                 PlayerMobile pm = (PlayerMobile)m_Mobile;
                 pm.InvalidateProperties();
-                pm.InvalidateMyRunUO();
             }
         }
 

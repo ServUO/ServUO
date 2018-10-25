@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Linq;
+
 using Server.Network;
 using Server.Spells;
 using Server.Targeting;
@@ -63,28 +65,11 @@ namespace Server.Items
             from.PlaySound(0x15F);
             Effects.SendPacket(from, from.Map, new HuedEffect(EffectType.Moving, from.Serial, Serial.Zero, 0x36D4, from.Location, loc, 5, 0, false, true, 0, 0));
 
-            ArrayList targets = new ArrayList();
-            bool playerVsPlayer = false;
+            var targets = SpellHelper.AcquireIndirectTargets(from, loc, from.Map, 2).OfType<Mobile>();
+            var count = targets.Count();
+            bool playerVsPlayer = targets.Any(t => t.Player);
 
-            IPooledEnumerable eable = from.Map.GetMobilesInRange(new Point3D(loc), 2);
-
-            foreach (Mobile m in eable)
-            {
-                if (from != m && SpellHelper.ValidIndirectTarget(from, m) && from.CanBeHarmful(m, false))
-                {
-                    if (Core.AOS && !from.InLOS(m))
-                        continue;
-
-                    targets.Add(m);
-
-                    if (m.Player)
-                        playerVsPlayer = true;
-                }
-            }
-
-            eable.Free();
-
-            if (targets.Count > 0)
+            if (count > 0)
             {
                 int prov = from.Skills[SkillName.Provocation].Fixed;
                 int disc = from.Skills[SkillName.Discordance].Fixed;
@@ -123,15 +108,13 @@ namespace Server.Items
 
                 double damage = Utility.RandomMinMax(minDamage, maxDamage);
 
-                if (Core.AOS && targets.Count > 1)
-                    damage = (damage * 2) / targets.Count;
+                if (Core.AOS && count > 1)
+                    damage = (damage * 2) / count;
                 else if (!Core.AOS)
-                    damage /= targets.Count;
+                    damage /= count;
 
-                for (int i = 0; i < targets.Count; ++i)
+                foreach(var m in targets)
                 {
-                    Mobile m = (Mobile)targets[i];
-
                     double toDeal = damage;
 
                     if (!Core.AOS && m.CheckSkill(SkillName.MagicResist, 0.0, 120.0))

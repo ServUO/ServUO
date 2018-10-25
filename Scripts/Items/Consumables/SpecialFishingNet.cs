@@ -41,12 +41,12 @@ namespace Server.Items
         public SpecialFishingNet()
             : base(0x0DCA)
         {
-            this.Weight = 15.0;
+            Weight = 15.0;
 
             if (0.01 > Utility.RandomDouble())
-                this.Hue = Utility.RandomList(m_Hues);
+                Hue = Utility.RandomList(m_Hues);
             else
-                this.Hue = 0x8A0;
+                Hue = 0x8A0;
         }
 
         public SpecialFishingNet(Serial serial)
@@ -66,11 +66,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_InUse;
+                return m_InUse;
             }
             set
             {
-                this.m_InUse = value;
+                m_InUse = value;
             }
         }
         public virtual bool RequireDeepWater
@@ -103,7 +103,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            this.AddNetProperties(list);
+            AddNetProperties(list);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -112,7 +112,7 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write(this.m_InUse);
+            writer.Write(m_InUse);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -125,25 +125,25 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_InUse = reader.ReadBool();
+                        m_InUse = reader.ReadBool();
 
-                        if (this.m_InUse)
-                            this.Delete();
+                        if (m_InUse)
+                            Delete();
 
                         break;
                     }
             }
 
-            this.Stackable = false;
+            Stackable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_InUse)
+            if (m_InUse)
             {
                 from.SendLocalizedMessage(1010483); // Someone is already using that net!
             }
-            else if (this.IsChildOf(from.Backpack))
+            else if (IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1010484); // Where do you wish to use the net?
                 from.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(OnTarget));
@@ -156,7 +156,7 @@ namespace Server.Items
 
         public void OnTarget(Mobile from, object obj)
         {
-            if (this.Deleted || this.m_InUse)
+            if (Deleted || m_InUse)
                 return;
 
             IPoint3D p3D = obj as IPoint3D;
@@ -179,19 +179,19 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(500979); // You cannot see that location.
             }
-            else if (this.RequireDeepWater ? FullValidation(map, x, y) : (ValidateDeepWater(map, x, y) || ValidateUndeepWater(map, obj, ref z)))
+            else if (RequireDeepWater ? FullValidation(map, x, y) : (ValidateDeepWater(map, x, y) || ValidateUndeepWater(map, obj, ref z)))
             {
                 Point3D p = new Point3D(x, y, z);
 
-                if (this.GetType() == typeof(SpecialFishingNet))
+                if (GetType() == typeof(SpecialFishingNet))
                 {
-                    for (int i = 1; i < this.Amount; ++i) // these were stackable before, doh
+                    for (int i = 1; i < Amount; ++i) // these were stackable before, doh
                         from.AddToBackpack(new SpecialFishingNet());
                 }
 
-                this.m_InUse = true;
-                this.Movable = false;
-                this.MoveToWorld(p, map);
+                m_InUse = true;
+                Movable = false;
+                MoveToWorld(p, map);
 
                 SpellHelper.Turn(from, p);
 
@@ -209,11 +209,11 @@ namespace Server.Items
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.25), 14, new TimerStateCallback(DoEffect), new object[] { p, 0, from });
 
-                from.SendLocalizedMessage(this.RequireDeepWater ? 1010487 : 1074492); // You plunge the net into the sea... / You plunge the net into the water...
+                from.SendLocalizedMessage(RequireDeepWater ? 1010487 : 1074492); // You plunge the net into the sea... / You plunge the net into the water...
             }
             else
             {
-                from.SendLocalizedMessage(this.RequireDeepWater ? 1010485 : 1074491); // You can only use this net in deep water! / You can only use this net in water!
+                from.SendLocalizedMessage(RequireDeepWater ? 1010485 : 1074491); // You can only use this net in deep water! / You can only use this net in water!
             }
         }
 
@@ -227,7 +227,7 @@ namespace Server.Items
         {
             int count = Utility.RandomMinMax(3, 6);
 
-            if (this.Hue != 0x8A0)
+            if (Hue != 0x8A0)
                 count += Utility.RandomMinMax(1, 2);
 
             return count;
@@ -269,7 +269,7 @@ namespace Server.Items
         {
             from.RevealingAction();
 
-            int count = this.GetSpawnCount();
+            int count = GetSpawnCount();
 
             for (int i = 0; map != null && i < count; ++i)
             {
@@ -292,12 +292,12 @@ namespace Server.Items
                         break;
                 }
 
-                this.Spawn(p, map, spawn);
+                Spawn(p, map, spawn);
 
                 spawn.Combatant = from;
             }
 
-            this.Delete();
+            Delete();
         }
 
         public static bool ValidateDeepWater(Map map, int x, int y)
@@ -337,7 +337,7 @@ namespace Server.Items
 
         private void DoEffect(object state)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
             object[] states = (object[])state;
@@ -350,12 +350,12 @@ namespace Server.Items
 
             if (index == 1)
             {
-                Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);
-                Effects.PlaySound(p, this.Map, 0x364);
+                Effects.SendLocationEffect(p, Map, 0x352D, 16, 4);
+                Effects.PlaySound(p, Map, 0x364);
             }
             else if (index <= 7 || index == 14)
             {
-                if (this.RequireDeepWater)
+                if (RequireDeepWater)
                 {
                     for (int i = 0; i < 3; ++i)
                     {
@@ -398,21 +398,21 @@ namespace Server.Items
                                 break;
                         }
 
-                        Effects.SendLocationEffect(new Point3D(p.X + x, p.Y + y, p.Z), this.Map, 0x352D, 16, 4);
+                        Effects.SendLocationEffect(new Point3D(p.X + x, p.Y + y, p.Z), Map, 0x352D, 16, 4);
                     }
                 }
                 else
                 {
-                    Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);
+                    Effects.SendLocationEffect(p, Map, 0x352D, 16, 4);
                 }
 
                 if (Utility.RandomBool())
-                    Effects.PlaySound(p, this.Map, 0x364);
+                    Effects.PlaySound(p, Map, 0x364);
 
                 if (index == 14)
-                    this.FinishEffect(p, this.Map, from);
+                    FinishEffect(p, Map, from);
                 else
-                    this.Z -= 1;
+                    Z -= 1;
             }
         }
     }
@@ -422,7 +422,7 @@ namespace Server.Items
         [Constructable]
         public FabledFishingNet()
         {
-            this.Hue = 0x481;
+            Hue = 0x481;
         }
 
         public FabledFishingNet(Serial serial)
@@ -450,8 +450,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight != 15.0)
-                this.Weight = 15.0;
+            if (Weight != 15.0)
+                Weight = 15.0;
         }
 
         protected override void AddNetProperties(ObjectPropertyList list)
@@ -465,7 +465,14 @@ namespace Server.Items
 
         protected override void FinishEffect(Point3D p, Map map, Mobile from)
         {
-            this.Spawn(p, map, new Leviathan(from));
+            BaseCreature toSpawn;
+
+            if (0.125 > Utility.RandomDouble())
+                toSpawn = new Osiredon(from);
+            else
+                toSpawn = new Leviathan(from);
+
+            Spawn(p, map, toSpawn);
 
             base.FinishEffect(p, map, from);
         }

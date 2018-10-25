@@ -319,10 +319,10 @@ namespace Server.Items
                 Boss = new Zipactriotl(true);
                 Boss.MoveToWorld(new Point3D(899, 2303, -20), Map.TerMur);
 
-                ColUtility.ForEach(Generators.Where(c => c.Generator != null), c =>
+                foreach (var c in Generators.Where(c => c.Generator != null))
                 {
                     c.Generator.CanSpawn = true;
-                });
+                }
 
                 MorphItems();
             }

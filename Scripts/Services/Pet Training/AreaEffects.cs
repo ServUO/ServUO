@@ -80,29 +80,18 @@ namespace Server.Mobiles
             if (creature.Map == null || creature.Map == Map.Internal)
                 return;
 
-            IPooledEnumerable eable = creature.GetMobilesInRange(EffectRange);
-            List<Mobile> toAffect = new List<Mobile>();
+            var toAffect = FindValidTargets(creature, EffectRange);
+            var count = toAffect.Count();
 
-            foreach (Mobile m in eable)
-            {
-                if (ValidTarget(creature, m))
-                {
-                    toAffect.Add(m);
-                }
-            }
-            eable.Free();
-
-            foreach (var m in toAffect)
+            foreach (var m in FindValidTargets(creature, EffectRange))
             {
                 DoEffect(creature, m);
             }
 
-            if (toAffect.Count > 0)
+            if (count > 0)
             {
                 OnAfterEffects(creature, combatant);
             }
-
-            ColUtility.Free(toAffect);
         }
 
         public virtual void DoEffect(BaseCreature creature, Mobile defender)
@@ -111,6 +100,21 @@ namespace Server.Mobiles
 
         public virtual void OnAfterEffects(BaseCreature creature, Mobile defender)
         {
+        }
+
+        public static IEnumerable<Mobile> FindValidTargets(BaseCreature creature, int range)
+        {
+            IPooledEnumerable eable = creature.GetMobilesInRange(range);
+
+            foreach (Mobile m in eable.OfType<Mobile>())
+            {
+                if (ValidTarget(creature, m))
+                {
+                    yield return m;
+                }
+            }
+
+            eable.Free();
         }
 
         public static bool ValidTarget(Mobile from, Mobile to)
@@ -236,6 +240,7 @@ namespace Server.Mobiles
         {
             AOS.Damage(defender, creature, Utility.RandomMinMax(20, 30), 0, 0, 0, 0, 100);
 
+            creature.DoHarmful(defender);
             defender.FixedParticles(0x374A, 10, 30, 5052, 1278, 0, EffectLayer.Waist);
             defender.PlaySound(0x51D);
         }
@@ -311,6 +316,7 @@ namespace Server.Mobiles
         {
             AOS.Damage(defender, creature, Utility.RandomMinMax(20, 30), 0, 0, 0, 100, 0);
 
+            creature.DoHarmful(defender);
             defender.FixedParticles(0x374A, 10, 30, 5052, 1272, 0, EffectLayer.Waist);
             defender.PlaySound(0x476);
         }
@@ -326,6 +332,7 @@ namespace Server.Mobiles
         {
             AOS.Damage(defender, creature, Utility.RandomMinMax(20, 30), 100, 0, 0, 0, 0);
 
+            creature.DoHarmful(defender);
             defender.FixedParticles(0x374A, 10, 30, 5052, 1836, 0, EffectLayer.Waist);
             defender.PlaySound(0x22C);
         }
@@ -373,6 +380,7 @@ namespace Server.Mobiles
                         }
                     }
 
+                    creature.DoHarmful(defender);
                     AOS.Damage(m, creature, Utility.RandomMinMax(30, 40), 0, 100, 0, 0, 0);
                     m.SendLocalizedMessage(1112366); // The flammable goo covering you bursts into flame!
                 }
@@ -412,6 +420,7 @@ namespace Server.Mobiles
 
             if (creature.AreaPoisonDamage > 0)
             {
+                creature.DoHarmful(m);
                 AOS.Damage(m, creature, creature.AreaPoisonDamage, 0, 0, 0, 100, 0);
             }
         }

@@ -139,7 +139,7 @@ namespace Server.Engines.Harvest
 			new MutateEntry( 100.0,  80.0,  750.0,  true, typeof( MessageInABottle ) ),			
 			new MutateEntry( 80.0,  80.0,  4080.0,  true, typeof( BigFish ) ),
 			new MutateEntry( 0.0, 125.0, -2375.0, false, typeof( PrizedFish ), typeof( WondrousFish ), typeof( TrulyRareFish ), typeof( PeculiarFish ) ),
-			new MutateEntry( 0.0, 105.0,  -420.0, false, typeof( Boots ), typeof( Shoes ), typeof( Sandals ), typeof( ThighBoots ) ),
+			new MutateEntry( 0.0, 125.0,  -420.0, false, typeof( Boots ), typeof( Shoes ), typeof( Sandals ), typeof( ThighBoots ) ),
             new MutateEntry( 80.0,  80.0, 2500.0, false, typeof( MudPuppy ), typeof( RedHerring) ),
 			new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
 		};
@@ -158,9 +158,10 @@ namespace Server.Engines.Harvest
 
         private static MutateEntry[] m_LavaMutateTable = new MutateEntry[]
         {
-            new MutateEntry( 0.0,  80.0,  1500,   false, typeof(StoneFootwear)),
-            new MutateEntry( 80.0, 80.0,  3200, false, typeof(CrackedLavaRockEast), typeof(CrackedLavaRockSouth), typeof(BaseWeapon)),
-            new MutateEntry( 85.0, 80.0,  2500,   false, typeof(StonePaver)),
+            new MutateEntry( 0.0,  80.0, 333, false, typeof(StoneFootwear)),
+            new MutateEntry( 80.0, 80.0, 333, false, typeof(CrackedLavaRockEast), typeof(CrackedLavaRockSouth)),
+            new MutateEntry( 85.0, 80.0, 333, false, typeof(StonePaver)),
+            new MutateEntry( 80.0, 80.0, 4080, false, typeof(BaseWeapon))
         };
 
         public override bool SpecialHarvest(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc)
@@ -439,7 +440,7 @@ namespace Server.Engines.Harvest
                                     int[] list = new int[]
                                     {
                                         0x1E19, 0x1E1A, 0x1E1B, //Fish heads
-                                        0x1E2A, 0x1E2B,         //Ores
+                                        0x1E2A, 0x1E2B,         //Oars
                                         0x1E71, 0x1E7A,         //Unfinished drawers
                                         0x1E75,                 //Unfinished legs
                                     };
@@ -451,7 +452,7 @@ namespace Server.Engines.Harvest
                                     else if (ran < 0.25)
                                         preLoot = new ShipwreckedItem(list[Utility.RandomMinMax(3, 7)], dredge);
                                     else
-                                        preLoot = new Item(list[Utility.Random(3)]);
+                                        preLoot = new ShipwreckedItem(list[Utility.Random(3)], dredge);
                                     break;
                                 }
                             #endregion
@@ -1043,7 +1044,7 @@ namespace Server.Engines.Harvest
             Type newType = null;
 
             double skillBase = from.Skills[SkillName.Fishing].Base;
-            double skillValue = Math.Min(100.0, from.Skills[SkillName.Fishing].Value);
+            double skillValue = Math.Min(120.0, from.Skills[SkillName.Fishing].Value);
 
             //Same method as mutate entries
             for (int i = 0; i < m_LavaMutateTable.Length; ++i)

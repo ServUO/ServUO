@@ -47,7 +47,7 @@ namespace Server.Engines.Shadowguard
 		
 		public override void CheckEncounter()
 		{
-			if(Wave >= 4 || Bottles == null)
+			if(Completed || Bottles == null)
 				return;
 
             int liquorCount = Bottles.Where(b => b != null && !b.Deleted).Count();
@@ -282,15 +282,16 @@ namespace Server.Engines.Shadowguard
 			if(treeCount <= 0)
 				CompleteEncounter();
 		}
-		
-		public void AddSpawn(BaseCreature bc)
-		{
-            if(Spawn != null)
-			    Spawn.Add(bc);
-		}
-		
-		public override void ClearItems()
-		{
+
+        public override void CompleteEncounter()
+        {
+            base.CompleteEncounter();
+
+            ClearSpawn();
+        }
+
+        private void ClearSpawn()
+        {
             if (Spawn != null)
             {
                 List<BaseCreature> list = new List<BaseCreature>(Spawn.Where(e => e != null && e.Alive));
@@ -303,6 +304,17 @@ namespace Server.Engines.Shadowguard
                 ColUtility.Free(Spawn);
                 Spawn = null;
             }
+        }
+
+        public void AddSpawn(BaseCreature bc)
+		{
+            if(Spawn != null)
+			    Spawn.Add(bc);
+		}
+		
+		public override void ClearItems()
+		{
+            ClearSpawn();
 
             if (Trees != null)
             {
@@ -741,8 +753,31 @@ namespace Server.Engines.Shadowguard
             SpawnDrain(rec1);
             SpawnDrain(rec2);
 		}
-		
-		public override void ClearItems()
+
+        public override void CompleteEncounter()
+        {
+            base.CompleteEncounter();
+
+            ClearSpawn();
+        }
+
+        private void ClearSpawn()
+        {
+            if (Elementals != null)
+            {
+                List<BaseCreature> list = new List<BaseCreature>(Elementals.Where(t => t != null && !t.Deleted));
+
+                foreach (var elemental in list)
+                    elemental.Delete();
+
+                ColUtility.Free(list);
+
+                ColUtility.Free(Elementals);
+                Elementals = null;
+            }
+        }
+
+        public override void ClearItems()
 		{
             if (ShadowguardCanals != null)
             {
@@ -757,18 +792,7 @@ namespace Server.Engines.Shadowguard
                 ShadowguardCanals = null;
             }
 
-            if (Elementals != null)
-            {
-                List<BaseCreature> list = new List<BaseCreature>(Elementals.Where(t => t != null && !t.Deleted));
-
-                foreach (var elemental in list)
-                    elemental.Delete();
-
-                ColUtility.Free(list);
-
-                ColUtility.Free(Elementals);
-                Elementals = null;
-            }
+            ClearSpawn();
 
             if (FlowCheckers != null)
             {
@@ -1282,9 +1306,12 @@ namespace Server.Engines.Shadowguard
             writer.Write(0);
 
             writer.Write(Dragon);
-            writer.Write(Drakes == null ? 0 : Drakes.Count);
 
+            writer.Write(Drakes == null ? 0 : Drakes.Count);
             if (Drakes != null) Drakes.ForEach(d => writer.Write(d));
+
+            writer.Write(Bells == null ? 0 : Bells.Count);
+            if (Bells != null) Bells.ForEach(b => writer.Write(b));
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1292,10 +1319,12 @@ namespace Server.Engines.Shadowguard
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Dragon = reader.ReadMobile() as ShadowguardGreaterDragon;
-            int count = reader.ReadInt();
-
             Drakes = new List<VileDrake>();
+            Bells = new List<Item>();
+
+            Dragon = reader.ReadMobile() as ShadowguardGreaterDragon;
+            
+            int count = reader.ReadInt();
 
             for (int i = 0; i < count; i++)
             {
@@ -1303,6 +1332,16 @@ namespace Server.Engines.Shadowguard
 
                 if (d != null)
                     Drakes.Add(d);
+            }
+
+            count = reader.ReadInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                FeedingBell b = reader.ReadItem() as FeedingBell;
+
+                if (b != null)
+                    Bells.Add(b);
             }
 
             if (Dragon == null || Dragon.Deleted)

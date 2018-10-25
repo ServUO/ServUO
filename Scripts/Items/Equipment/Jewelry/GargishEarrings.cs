@@ -26,6 +26,17 @@ namespace Server.Items
             Layer = Layer.Earrings;
         }
 
+        public override int GetDurabilityBonus()
+        {
+            int bonus = Quality == ItemQuality.Exceptional ? 20 : 0;
+
+            return bonus + ArmorAttributes.DurabilityBonus;
+        }
+
+        protected override void ApplyResourceResistances(CraftResource oldResource)
+        {
+        }
+
         public GargishEarrings(Serial serial)
             : base(serial)
         {

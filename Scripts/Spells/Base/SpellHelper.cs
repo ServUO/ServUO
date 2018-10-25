@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Engines.PartySystem;
 using Server.Guilds;
 using Server.Items;
@@ -228,36 +230,12 @@ namespace Server.Spells
             }
         }
 
-        private static readonly bool RestrictTravelCombat = true;
-
-        //TODO: Check if aggressor leaves facet, if heat is removed
-        public static bool CheckCombat(Mobile m)
+        public static bool CheckCombat(Mobile m, bool restrict = true)
         {
-            if (!RestrictTravelCombat)
+            if (!restrict)
                 return false;
 
-            TimeSpan delay = Server.Misc.AttackMessage.CombatHeatDelay;
-
-            for (int i = 0; i < m.Aggressed.Count; ++i)
-            {
-                AggressorInfo info = m.Aggressed[i];
-
-                if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < delay)
-                    return true;
-            }
-
-            if (Core.AOS)
-            {
-                for (int i = 0; i < m.Aggressors.Count; ++i)
-                {
-                    AggressorInfo info = m.Aggressors[i];
-
-                    if (info.Attacker.Player && (DateTime.UtcNow - info.LastCombatTime) < delay)
-                        return true;
-                }
-            }
-
-            return false;
+            return Aggression.CheckHasAggression(m, Core.AOS);
         }
 
         public static bool AdjustField(ref Point3D p, Map map, int height, bool mobsBlock)
@@ -540,30 +518,44 @@ namespace Server.Spells
         public static bool ValidIndirectTarget(Mobile from, Mobile to)
         {
             if (from == to)
+            {
                 return true;
+            }
 
             if (to.Hidden && to.AccessLevel > from.AccessLevel)
+            {
                 return false;
+            }
 
             if (Server.Engines.ArenaSystem.PVPArenaSystem.IsFriendly(from, to))
+            {
                 return false;
-			
-			if(from is BaseCreature && ((BaseCreature)from).GetMaster() != null)
-				from = ((BaseCreature)from).GetMaster();
-			
-			if(to is BaseCreature && ((BaseCreature)to).GetMaster() != null)
-				to = ((BaseCreature)to).GetMaster();
+            }
+
+            if (from is BaseCreature && ((BaseCreature)from).GetMaster() != null)
+            {
+                from = ((BaseCreature)from).GetMaster();
+            }
+
+            if (to is BaseCreature && ((BaseCreature)to).GetMaster() != null)
+            {
+                to = ((BaseCreature)to).GetMaster();
+            }
 
             Guild fromGuild = GetGuildFor(from);
             Guild toGuild = GetGuildFor(to);
 
             if (fromGuild != null && toGuild != null && (fromGuild == toGuild || fromGuild.IsAlly(toGuild)))
+            {
                 return false;
+            }
 
             Party p = Party.Get(from);
 
             if (p != null && p.Contains(to))
+            {
                 return false;
+            }
 
             if (to is BaseCreature)
             {
@@ -572,10 +564,14 @@ namespace Server.Spells
                 if (c.Controlled || c.Summoned)
                 {
                     if (c.ControlMaster == from || c.SummonMaster == from)
+                    {
                         return false;
+                    }
 
                     if (p != null && (p.Contains(c.ControlMaster) || p.Contains(c.SummonMaster)))
+                    {
                         return false;
+                    }
                 }
 				else
 				{
@@ -598,12 +594,27 @@ namespace Server.Spells
                 if (c.Controlled || c.Summoned)
                 {
                     if (c.ControlMaster == to || c.SummonMaster == to)
+                    {
                         return false;
+                    }
 
                     p = Party.Get(to);
 
                     if (p != null && (p.Contains(c.ControlMaster) || p.Contains(c.SummonMaster)))
+                    {
                         return false;
+                    }
+                }
+                else
+                {
+                    if (to.Player)
+                    {
+                        return true;
+                    }
+                    if (to is BaseCreature && (((BaseCreature)to).Controlled || ((BaseCreature)to).Summoned) && ((BaseCreature)to).GetMaster() is PlayerMobile)
+                    {
+                        return true;
+                    }
                 }
                 else 
                 {
@@ -632,19 +643,55 @@ namespace Server.Spells
                     toBC = toBC.GetMaster() as BaseCreature;
 
                 if (toBC.IsEnemy(fromBC))   //Natural Enemies
+                {
                     return true;
+                }
 
-                // All involved are monsters- no damage. If falls through this statement, normal noto rules apply
+                //All involved are monsters- no damage. If falls through this statement, normal noto rules apply
                 if (!toBC.Controlled && !toBC.Summoned && !fromBC.Controlled && !fromBC.Summoned) //All involved are monsters- no damage
+                {
                     return false;
+                }
             }
 
             if (to is BaseCreature && !((BaseCreature)to).Controlled && ((BaseCreature)to).InitialInnocent)
+            {
                 return true;
+            }
 
-            int noto = Notoriety.Compute(from, to);
+            return (Notoriety.Compute(from, to) != Notoriety.Innocent || from.Murderer);
+        }
 
-            return (noto != Notoriety.Innocent || from.Murderer);
+        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range)
+        {
+            if (map == null)
+            {
+                yield break;
+            }
+
+            IPooledEnumerable eable = map.GetObjectsInRange(new Point3D(p), range);
+
+            foreach (var id in eable.OfType<IDamageable>())
+            {
+                if (id == caster)
+                {
+                    continue;
+                }
+
+                if (!id.Alive || !caster.InLOS(id) || !caster.CanBeHarmful(id, false))
+                {
+                    continue;
+                }
+
+                if (id is Mobile && !SpellHelper.ValidIndirectTarget(caster, (Mobile)id))
+                {
+                    continue;
+                }
+
+                yield return id;
+            }
+
+            eable.Free();
         }
 
         private static readonly int[] m_Offsets = new int[]
@@ -1646,6 +1693,23 @@ namespace Server.Spells
             return (context != null && context.Type == type);
         }
 
+        public static void CheckCastSkill(Mobile m, TransformContext context)
+        {
+            Spell spell = context.Spell as Spell;
+
+            if (spell != null)
+            {
+                double min, max;
+
+                spell.GetCastSkills(out min, out max);
+
+                if (m.Skills[spell.CastSkill].Value < min)
+                {
+                    RemoveContext(m, context, true);
+                }
+            }
+        }
+
         #endregion
 
         public static bool CheckCast(Mobile caster, Spell spell)
@@ -1848,7 +1912,7 @@ namespace Server.Spells
 
         protected override void OnTick()
         {
-            if (m_Mobile.Deleted || !m_Mobile.Alive || m_Mobile.Body != m_Spell.Body || (m_Mobile.Hue != m_Spell.Hue && BestialSetHelper.IsBerserk(m_Mobile)))
+            if (m_Mobile.Deleted || !m_Mobile.Alive || m_Mobile.Body != m_Spell.Body || (m_Mobile.Hue != m_Spell.Hue && !BestialSetHelper.IsBerserk(m_Mobile)))
             {
                 TransformationSpellHelper.RemoveContext(m_Mobile, true);
                 Stop();

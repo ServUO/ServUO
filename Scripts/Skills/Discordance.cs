@@ -154,8 +154,6 @@ namespace Server.SkillHandlers
 
                         int masteryBonus = 0;
 
-						diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
-
 						if (music > 100.0)
 						{
 							diff -= (music - 100.0) * 0.5;

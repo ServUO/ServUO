@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class FaeryDust : Item
+    public class FaeryDust : Item, ICommodity
     {
 
         [Constructable]
@@ -25,6 +25,9 @@ namespace Server.Items
         public FaeryDust(Serial serial): base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber{get { return 1113358; } }// faery dust
 

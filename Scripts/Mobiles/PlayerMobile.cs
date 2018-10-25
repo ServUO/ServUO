@@ -11,7 +11,6 @@ using Server.Engines.CannedEvil;
 using Server.Engines.CityLoyalty;
 using Server.Engines.Craft;
 using Server.Engines.Help;
-using Server.Engines.MyRunUO;
 using Server.Engines.PartySystem;
 using Server.Engines.Points;
 using Server.Engines.Quests;
@@ -87,15 +86,17 @@ namespace Server.Mobiles
         HasValiantStatReward = 0x20000000,
         RefuseTrades = 0x40000000,
         DisabledPvpWarning = 0x80000000,
-        CanBuyCarpets = 0x100000000,
-        VoidPool = 0x200000000,
+        //CanBuyCarpets = 0x100000000,
+        //VoidPool = 0x200000000,
     }
 
     [Flags]
     public enum ExtendedPlayerFlag
     {
         HideTownCrierGreetingGump   = 0x00000001,
-        ToggleStoneOnly             = 0x00000002
+        ToggleStoneOnly             = 0x00000002,
+        CanBuyCarpets               = 0x00000004,
+        VoidPool                    = 0x00000008,
     }
 
 	public enum NpcGuild
@@ -160,20 +161,38 @@ namespace Server.Mobiles
 
             if (!Flying)
             {
-                if (this.Spell is Spell)
-                    ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
+                if (BeginAction(typeof(FlySpell)))
+                {
+                    if (this.Spell is Spell)
+                        ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
 
-                Spell spell = new FlySpell(this);
-                spell.Cast();
+                    Spell spell = new FlySpell(this);
+                    spell.Cast();
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(3), () => EndAction(typeof(FlySpell)));
+                }
+                else
+                {
+                    LocalOverheadMessage(MessageType.Regular, 0x3B2, 1075124); // You must wait before casting that spell again.
+                }
             }
             else if (IsValidLandLocation(Location, Map))
             {
-                if (this.Spell is Spell)
-                    ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
+                if (BeginAction(typeof(FlySpell)))
+                {
+                    if (this.Spell is Spell)
+                        ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
 
-                Animate(AnimationType.Land, 0);
-                Flying = false;
-                BuffInfo.RemoveBuff(this, BuffIcon.Fly);
+                    Animate(AnimationType.Land, 0);
+                    Flying = false;
+                    BuffInfo.RemoveBuff(this, BuffIcon.Fly);
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(3), () => EndAction(typeof(FlySpell)));
+                }
+                else
+                {
+                    LocalOverheadMessage(MessageType.Regular, 0x3B2, 1075124); // You must wait before casting that spell again.
+                }
             }
             else
                 LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113081); // You may not land here.
@@ -485,17 +504,6 @@ namespace Server.Mobiles
 		public bool UseOwnFilter { get { return GetFlag(PlayerFlag.UseOwnFilter); } set { SetFlag(PlayerFlag.UseOwnFilter, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public bool PublicMyRunUO
-		{
-			get { return GetFlag(PlayerFlag.PublicMyRunUO); }
-			set
-			{
-				SetFlag(PlayerFlag.PublicMyRunUO, value);
-				InvalidateMyRunUO();
-			}
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
 		public bool AcceptGuildInvites { get { return GetFlag(PlayerFlag.AcceptGuildInvites); } set { SetFlag(PlayerFlag.AcceptGuildInvites, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -521,15 +529,15 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CanBuyCarpets
         {
-            get { return GetFlag(PlayerFlag.CanBuyCarpets); }
-            set { SetFlag(PlayerFlag.CanBuyCarpets, value); }
+            get { return GetFlag(ExtendedPlayerFlag.CanBuyCarpets); }
+            set { SetFlag(ExtendedPlayerFlag.CanBuyCarpets, value); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool VoidPool
         {
-            get { return GetFlag(PlayerFlag.VoidPool); }
-            set { SetFlag(PlayerFlag.VoidPool, value); }
+            get { return GetFlag(ExtendedPlayerFlag.VoidPool); }
+            set { SetFlag(ExtendedPlayerFlag.VoidPool, value); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -898,9 +906,21 @@ namespace Server.Mobiles
 
             from.TargetLocked = true;
 
+            if (e.SkillID == 35)
+            {
+                AnimalTaming.DisableMessage = true;
+                AnimalTaming.DeferredTarget = false;
+            }
+
             if (from.UseSkill(e.SkillID) && from.Target != null)
             {
                 from.Target.Invoke(from, target);
+            }
+
+            if (e.SkillID == 35)
+            {
+                AnimalTaming.DeferredTarget = true;
+                AnimalTaming.DisableMessage = false;
             }
 
             from.TargetLocked = false;
@@ -997,25 +1017,32 @@ namespace Server.Mobiles
             }
 
             int max = base.GetMaxResistance(type);
+            int refineBonus = BaseArmor.GetRefinedResist(this, type);
 
-            #region SA
-            max += Spells.Mysticism.StoneFormSpell.GetMaxResistBonus(this);
-            #endregion
+            if (refineBonus != 0)
+            {
+                max += refineBonus;
+            }
+            else
+            {
+                max += Spells.Mysticism.StoneFormSpell.GetMaxResistBonus(this);
+            }
 
-            max += BaseArmor.GetRefinedResist(this, type);
+            if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
+            {
+                max += 5; //Intended to go after the 60 max from curse
+            }
 
             if (type != ResistanceType.Physical && 60 < max && Spells.Fourth.CurseSpell.UnderEffect(this))
             {
-                max = 60;
+                max -= 10;
+                //max = 60;
             }
 
             if ((type == ResistanceType.Fire || type == ResistanceType.Poison) && CorpseSkinSpell.IsUnderEffects(this))
             {
                 max = CorpseSkinSpell.GetResistMalus(this);
             }
-
-            if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
-                max += 5; //Intended to go after the 60 max from curse
 
             return max;
         }
@@ -1598,11 +1625,6 @@ namespace Server.Mobiles
 				ValidateEquipment();
 			}
 
-			if ((flag & (MobileDelta.Name | MobileDelta.Hue)) != 0)
-			{
-				InvalidateMyRunUO();
-			}
-
             InvalidateProperties();
 		}
 
@@ -1618,16 +1640,23 @@ namespace Server.Mobiles
 
 		private static void OnLogout(LogoutEventArgs e)
 		{
-			#region Scroll of Alacrity
-			if (((PlayerMobile)e.Mobile).AcceleratedStart > DateTime.UtcNow)
+            PlayerMobile pm = e.Mobile as PlayerMobile;
+
+			if(pm == null)
+				return;
+
+            #region Scroll of Alacrity
+            if (pm.AcceleratedStart > DateTime.UtcNow)
 			{
-				((PlayerMobile)e.Mobile).AcceleratedStart = DateTime.UtcNow;
-				ScrollofAlacrity.AlacrityEnd(e.Mobile);
+				pm.AcceleratedStart = DateTime.UtcNow;
+				ScrollofAlacrity.AlacrityEnd(pm);
 			}
 			#endregion
 
-            BaseFamiliar.OnLogout(e.Mobile as PlayerMobile);
-		}
+            BaseFamiliar.OnLogout(pm);
+
+            BaseEscort.DeleteEscort(pm);
+        }
 
 		private static void EventSink_Connected(ConnectedEventArgs e)
 		{
@@ -1663,7 +1692,7 @@ namespace Server.Mobiles
 			SpecialMove.ClearAllMoves(from);
 		}
 
-		private static void EventSink_Disconnected(DisconnectedEventArgs e)
+        private static void EventSink_Disconnected(DisconnectedEventArgs e)
 		{
 			Mobile from = e.Mobile;
 			DesignContext context = DesignContext.Find(from);
@@ -1786,8 +1815,8 @@ namespace Server.Mobiles
 
                     if (aggressiveMaster is PlayerMobile || (aggressiveMaster is BaseCreature && !((BaseCreature)aggressiveMaster).IsMonster))
                     {
-                        BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, this, true));
-                        BuffInfo.AddBuff(aggressiveMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, AttackMessage.CombatHeatDelay, aggressiveMaster, true));
+                        BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, this, true));
+                        BuffInfo.AddBuff(aggressiveMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, aggressiveMaster, true));
                     }
                 }
             }
@@ -1888,8 +1917,6 @@ namespace Server.Mobiles
 			{
 				CheckLightLevels(false);
 			}
-
-			InvalidateMyRunUO();
 		}
 
         private BaseWeapon m_LastWeapon;
@@ -1917,8 +1944,6 @@ namespace Server.Mobiles
 			{
 				CheckLightLevels(false);
 			}
-
-			InvalidateMyRunUO();
 		}
 
 		public override double ArmorRating
@@ -2332,11 +2357,6 @@ namespace Server.Mobiles
                     list.Add(new Engines.Points.LoyaltyRating(this));
 			    }
 
-                if (Backpack != null && CanSee(Backpack) && Alive)
-                {
-                    list.Add(new OpenBackpackEntry(this));
-                }
-
 				if (Alive && InsuranceEnabled)
 				{
 					list.Add(new CallbackEntry(6201, ToggleItemInsurance));
@@ -2406,7 +2426,7 @@ namespace Server.Mobiles
 				}
 				#endregion
 
-                if (!Core.SA && Alive)
+                if (Core.UOR && !Core.SA && Alive)
 				{
 					list.Add(new CallbackEntry(6210, ToggleChampionTitleDisplay));
 				}
@@ -3762,12 +3782,6 @@ namespace Server.Mobiles
 
 			if (InsuranceEnabled && item.Insured)
 			{
-				if (XmlPoints.InsuranceIsFree(this, m_InsuranceAward))
-				{
-					item.PayedInsurance = true;
-					return true;
-				}
-
                 int insuredAmount = GetInsuranceCost(item);
 
 				if (AutoRenewInsurance)
@@ -3889,8 +3903,10 @@ namespace Server.Mobiles
 
 			MeerMage.StopEffect(this, false);
 
-			#region Stygian Abyss
-			if (Flying)
+            BaseEscort.DeleteEscort(this);
+
+            #region Stygian Abyss
+            if (Flying)
 			{
 				Flying = false;
 				BuffInfo.RemoveBuff(this, BuffIcon.Fly);
@@ -3959,11 +3975,6 @@ namespace Server.Mobiles
 				{
 					Timer.DelayCall(TimeSpan.FromSeconds(2.5), SendYoungDeathNotice);
 				}
-			}
-
-			if (!XmlPoints.AreChallengers(this, killer))
-			{
-				Faction.HandleDeath(this, killer);
 			}
 
 			Guilds.Guild.HandleDeath(this, killer);
@@ -4167,8 +4178,6 @@ namespace Server.Mobiles
 			m_GuildRank = RankDefinition.Lowest;
 
 			m_ChampionTitles = new ChampionTitleInfo();
-
-			InvalidateMyRunUO();
 		}
 
 		public override bool MutateSpeech(List<Mobile> hears, ref string text, ref object context)
@@ -4344,8 +4353,6 @@ namespace Server.Mobiles
 
 			m_VisList = new List<Mobile>();
 			m_AntiMacroTable = new Hashtable();
-
-			InvalidateMyRunUO();
 		}
 
 		public List<Mobile> VisibilityList { get { return m_VisList; } }
@@ -5653,68 +5660,102 @@ namespace Server.Mobiles
             set { m_CurrentVeteranTitle = value; InvalidateProperties(); }
         }
 
-		public override void AddNameProperties(ObjectPropertyList list)
+		public override bool ShowAccessTitle
 		{
-			base.AddNameProperties(list);
-			
-			var a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
-			var t = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "XmlPointsTitle");
-
-			if ((t == null || t.Data != "True") && a != null)
+			get
 			{
-				list.Add(1070722, "Kills {0:#,0} / Deaths {1:#,0} : Rank {2:#,0}", a.Kills, a.Deaths, a.Rank);
+				switch (AccessLevel)
+				{
+					case AccessLevel.VIP:
+					case AccessLevel.Counselor:
+					case AccessLevel.GameMaster:
+					case AccessLevel.Seer:
+						return true;
+				}
+
+				return false;
 			}
 		}
 
-		protected override void AlterName(ref string prefix, ref string name, ref string suffix)
-		{
-			base.AlterName(ref prefix, ref name, ref suffix);
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            string name = Name;
 
-			if (!CityLoyaltySystem.ApplyCityTitle(this, ref prefix, ref name, ref suffix))
-			{
-				if (!String.IsNullOrWhiteSpace(m_OverheadTitle))
-				{
-					if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith(" "))
-					{
-						suffix += " ";
-					}
+            if (name == null)
+            {
+                name = String.Empty;
+            }
 
-					var loc = Utility.ToInt32(m_OverheadTitle.TrimStart('#'));
+            string prefix = "";
 
-					if (loc > 0)
-					{
-						suffix += "#";
-					}
+            if (ShowFameTitle && Fame >= 10000)
+            {
+                prefix = Female ? "Lady" : "Lord";
+            }
 
-					suffix += m_OverheadTitle;
-				}
-			}
+            string suffix = "";
 
-			if (Map == Faction.Facet && ViceVsVirtueSystem.IsVvV(this, false, true))
-			{
-				if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith("]") && !suffix.EndsWith(" "))
-				{
-					suffix += " ";
-				}
-				
-				suffix += "[VvV]";
-			}
-		}
+            if (PropertyTitle && Title != null && Title.Length > 0)
+            {
+                suffix = Title;
+            }
+
+            BaseGuild guild = Guild;
+            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && this.Map == Faction.Facet;
+
+            if (!vvv && m_OverheadTitle != null)
+            {
+                int loc = Utility.ToInt32(m_OverheadTitle);
+
+                if (loc > 0)
+                {
+                    if (Server.Engines.CityLoyalty.CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
+                        return;
+                }
+                else if (suffix.Length > 0)
+                    suffix = String.Format("{0} {1}", suffix, m_OverheadTitle);
+                else
+                    suffix = String.Format("{0}", m_OverheadTitle);
+            }
+            else if (vvv || (guild != null && DisplayGuildAbbr))
+            {
+                if (vvv)
+                {
+                    if (guild != null && DisplayGuildAbbr)
+                        suffix = String.Format("[{0}] [VvV]", Utility.FixHtml(guild.Abbreviation));
+                    else
+                        suffix = "[VvV]";
+                }
+                else if (suffix.Length > 0)
+                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
+                else
+                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+            }
+
+            suffix = ApplyNameSuffix(suffix);
+
+            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
+
+            if (guild != null && DisplayGuildTitle)
+            {
+                string title = GuildTitle;
+
+                if (title == null)
+                {
+                    title = "";
+                }
+                else
+                {
+                    title = title.Trim();
+                }
+
+                if (title.Length > 0)
+                {
+                    list.Add("{0}, {1}", Utility.FixHtml(title), Utility.FixHtml(guild.Name));
+                }
+            }
+        }
         #endregion
-
-		#region MyRunUO Invalidation
-		private bool m_ChangedMyRunUO;
-
-		public bool ChangedMyRunUO { get { return m_ChangedMyRunUO; } set { m_ChangedMyRunUO = value; } }
-
-		public void InvalidateMyRunUO()
-		{
-			if (!Deleted && !m_ChangedMyRunUO)
-			{
-				m_ChangedMyRunUO = true;
-				MyRunUO.QueueMobileUpdate(this);
-			}
-		}
 
 		public override void OnKillsChange(int oldValue)
 		{
@@ -5727,40 +5768,18 @@ namespace Server.Mobiles
 					acc.RemoveYoungStatus(0);
 				}
 			}
-
-			InvalidateMyRunUO();
-		}
-
-		public override void OnGenderChanged(bool oldFemale)
-		{
-			InvalidateMyRunUO();
-		}
-
-		public override void OnGuildChange(BaseGuild oldGuild)
-		{
-			InvalidateMyRunUO();
-		}
-
-		public override void OnGuildTitleChange(string oldTitle)
-		{
-			InvalidateMyRunUO();
 		}
 
 		public override void OnKarmaChange(int oldValue)
 		{
-			InvalidateMyRunUO();
-		}
-
-		public override void OnFameChange(int oldValue)
-		{
-			InvalidateMyRunUO();
+            EpiphanyHelper.OnKarmaChange(this);
 		}
 
 		public override void OnSkillChange(SkillName skill, double oldBase)
 		{
 			if (Young)
 			{
-                if (SkillsTotal >= 4500 || (!Core.AOS && Skills[skill].Base >= 80.0))
+                if (SkillsTotal >= 4500 && (!Core.AOS && Skills[skill].Base >= 80.0))
                 {
                     Account acc = Account as Account;
 
@@ -5774,7 +5793,7 @@ namespace Server.Mobiles
 
             if (skill != SkillName.Alchemy && Skills.CurrentMastery == skill && Skills[skill].Value < MasteryInfo.MinSkillRequirement)
             {
-                SendLocalizedMessage(1156236, String.Format("{0}\t{1}", MasteryInfo.MinSkillRequirement.ToString(), Skills[skill].Info.Name)); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that mastery.
+                //SendLocalizedMessage(1156236, String.Format("{0}\t{1}", MasteryInfo.MinSkillRequirement.ToString(), Skills[skill].Info.Name)); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that mastery.
 
                 SkillName mastery = Skills.CurrentMastery;
                 Skills.CurrentMastery = SkillName.Alchemy;
@@ -5782,7 +5801,12 @@ namespace Server.Mobiles
                 Server.Spells.SkillMasteries.MasteryInfo.OnMasteryChanged(this, mastery);
             }
 
-			InvalidateMyRunUO();
+            TransformContext context = TransformationSpellHelper.GetContext(this);
+
+            if (context != null)
+            {
+                TransformationSpellHelper.CheckCastSkill(this, context);
+            }
 		}
 
 		public override void OnAccessLevelChanged(AccessLevel oldLevel)
@@ -5795,13 +5819,6 @@ namespace Server.Mobiles
 			{
 				IgnoreMobiles = true;
 			}
-
-			InvalidateMyRunUO();
-		}
-
-		public override void OnRawStatChange(StatType stat, int oldValue)
-		{
-			InvalidateMyRunUO();
 		}
 
 		public override void OnDelete()
@@ -5816,10 +5833,7 @@ namespace Server.Mobiles
 			{
 				m_SentHonorContext.Cancel();
 			}
-
-			InvalidateMyRunUO();
 		}
-		#endregion
 
 		#region Fastwalk Prevention
 		private static bool FastwalkPrevention = true; // Is fastwalk prevention enabled?
@@ -5831,7 +5845,7 @@ namespace Server.Mobiles
 
         public long NextMovementTime { get { return m_NextMovementTime; } }
 
-		public virtual bool UsesFastwalkPrevention { get { return (IsPlayer()) & !Flying; } }
+		public virtual bool UsesFastwalkPrevention { get { return IsPlayer(); } }
 
 		public override int ComputeMovementSpeed(Direction dir, bool checkTurning)
 		{
@@ -5849,7 +5863,7 @@ namespace Server.Mobiles
 
 			bool running = ((dir & Direction.Running) != 0);
 
-			bool onHorse = (Mount != null);
+			bool onHorse = Mount != null || Flying;
 
 			AnimalFormContext animalContext = AnimalForm.GetContext(this);
 

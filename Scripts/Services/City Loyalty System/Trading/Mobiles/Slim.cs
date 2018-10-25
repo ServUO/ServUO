@@ -93,8 +93,11 @@ namespace Server.Engines.CityLoyalty
 					{
                         if (CityLoyaltySystem.CityTrading.TryTurnInToSlim(from, order, Slim))
                         {
-                            from.AddToBackpack(Slim.GiveAward());
-                            from.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
+                            if (order.Entry != null && order.Entry.Distance > 0)
+                            {
+                                from.AddToBackpack(Slim.GiveAward());
+                                from.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
+                            }
 
                             Titles.AwardKarma(from, -100, true);
                         }

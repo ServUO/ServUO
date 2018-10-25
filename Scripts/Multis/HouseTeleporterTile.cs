@@ -123,7 +123,6 @@ namespace Server.Multis
 
         public bool CheckTravel(Mobile from, Point3D dest, Map destMap)
         {
-
             if (Factions.Sigil.ExistsOn(from))
             {
                 from.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.

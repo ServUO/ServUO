@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
+
 using Server;
 using Server.Spells;
 using Server.Network;
 using Server.Mobiles;
 using Server.Items;
-using System.Collections.Generic;
 
 namespace Server.Spells.SkillMasteries
 {
@@ -41,7 +43,6 @@ namespace Server.Spells.SkillMasteries
 
         public override void SendCastEffect()
         {
-            //Caster.FixedParticles(0x3709, 10, 30, 5052, 0x498, 0, EffectLayer.LeftFoot);
             Caster.PrivateOverheadMessage(MessageType.Regular, 1150, 1155999, Caster.NetState); // You ready a volley of flaming arrows!
             Effects.SendTargetParticles(Caster, 0x3709, 10, 30, 2724, 0, 9907, EffectLayer.LeftFoot, 0);
             Caster.PlaySound(0x5CF);
@@ -62,45 +63,31 @@ namespace Server.Spells.SkillMasteries
 
                 if (p != null && SpellHelper.CheckTown(p, Caster) && CheckSequence())
                 {
-                    IPooledEnumerable eable = Caster.Map.GetMobilesInRange(new Point3D(p), 5);
-                    List<Mobile> targets = new List<Mobile>();
+                    IEnumerable<Mobile> targets = AcquireIndirectTargets(p, 5).OfType<Mobile>();
+                    int count = targets.Count();
 
-                    foreach (Mobile mob in eable)
-                    {
-                        if (Caster != mob && SpellHelper.ValidIndirectTarget(Caster, mob) && Caster.CanBeHarmful(mob, false))
-                        {
-                            if (!Caster.InLOS(mob))
-                                continue;
-
-                            targets.Add(mob);
-                        }
-                    }
-                    eable.Free();
-
-                    double damage;
-
-                    foreach (Mobile mob in targets)
+                    foreach (var mob in targets)
                     {
                         Caster.MovingEffect(mob, ((BaseRanged)weapon).EffectID, 18, 1, false, false);
 
                         if (weapon.CheckHit(Caster, mob))
                         {
-                            damage = GetNewAosDamage(40, 1, 5, mob);
+                            double damage = GetNewAosDamage(40, 1, 5, mob);
 
-                            if (targets.Count > 2)
-                                damage = damage / targets.Count;
+                            if (count > 2)
+                                damage = damage / count;
 
                             damage *= GetDamageScalar(mob);
                             Caster.DoHarmful(mob);
                             SpellHelper.Damage(this, mob, damage, 0, 100, 0, 0, 0);
 
                             Server.Timer.DelayCall(TimeSpan.FromMilliseconds(800), obj =>
-                                {
-                                    Mobile mobile = obj as Mobile;
+                            {
+                                Mobile mobile = obj as Mobile;
 
-                                    if(mobile != null)
-                                        mobile.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
-                                }, mob );
+                                if (mobile != null)
+                                    mobile.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
+                            }, mob);
 
                             mob.PlaySound(0x1DD);
                         }

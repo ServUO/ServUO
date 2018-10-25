@@ -342,12 +342,12 @@ namespace Server.Engines.Quests
 
             PlayerMobile pm = m as PlayerMobile;
 
-            if (pm.ToggleMiningStone && VolcanoMineBounds.Contains(m.Location))
-			{                
+            if ((pm.ToggleMiningStone || pm.ToggleStoneOnly) && VolcanoMineBounds.Contains(m.Location))
+			{
                 object locked = tool;
 
                 if (!m.BeginAction(locked))
-                    return false;                
+                    return false;
 
                 m.Animate(AnimationType.Attack, 3);
 

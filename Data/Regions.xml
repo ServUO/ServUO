@@ -238,6 +238,10 @@
         <rect x="6528" y="504" width="4" height="1" />
         <zrange min="-50" />
       </region>
+      <region type="TheLostCityEntry">
+		<rect x="6316" y="472" width="8" height="8" />
+        <rect x="6303" y="509" width="11" height="7" />
+	  </region>
     </region>
     <region priority="50" name="Huntsman's Forest">
       <rect x="1595" y="550" width="120" height="120" />
@@ -1230,6 +1234,10 @@
         <rect x="6528" y="504" width="4" height="1" />
         <zrange min="-50" />
       </region>
+      <region type="TheLostCityEntry">
+		<rect x="6316" y="472" width="8" height="8" />
+        <rect x="6303" y="509" width="11" height="7" />
+	  </region>
     </region>
     <region priority="50" name="Bravehorn's drinking pool">
       <rect x="1302" y="2331" width="38" height="22" />
@@ -2007,7 +2015,7 @@
       </spawning>
     </region>
     <region type="NoHousingRegion" priority="50" name="FireIsleCasino">
-      <rect x="4041" y="3364" width="60" height="64" />
+      <rect x="4038" y="3303" width="60" height="64" />
       <go x="4047" y="3371" z="0" />
     </region>
     <region priority="50" name="Shrine of Compassion">

@@ -499,20 +499,15 @@ namespace Server.Items
         {
             int value = 0;
 
-            foreach (Item item in from.Items)
+            foreach (var armor in from.Items.OfType<BaseArmor>())
             {
-                if (item is BaseArmor)
+                switch (attr)
                 {
-                    BaseArmor armor = item as BaseArmor;
-
-                    switch (attr)
-                    {
-                        case ResistanceType.Physical: value += armor.m_RefinedPhysical; break;
-                        case ResistanceType.Fire: value += armor.m_RefinedFire; break;
-                        case ResistanceType.Cold: value += armor.m_RefinedCold; break;
-                        case ResistanceType.Poison: value += armor.m_RefinedPoison; break;
-                        case ResistanceType.Energy: value += armor.m_RefinedEnergy; break;
-                    }
+                    case ResistanceType.Physical: value += armor.m_RefinedPhysical; break;
+                    case ResistanceType.Fire: value += armor.m_RefinedFire; break;
+                    case ResistanceType.Cold: value += armor.m_RefinedCold; break;
+                    case ResistanceType.Poison: value += armor.m_RefinedPoison; break;
+                    case ResistanceType.Energy: value += armor.m_RefinedEnergy; break;
                 }
             }
 
@@ -523,13 +518,21 @@ namespace Server.Items
         {
             int value = 0;
 
-            foreach (Item item in from.Items)
+            foreach (var armor in from.Items.OfType<BaseArmor>())
             {
-                if (item is BaseArmor)
-                    value += ((BaseArmor)item).RefinedDefenseChance;
+                value += armor.RefinedDefenseChance;
             }
 
             return value;
+        }
+
+        public static bool HasRefinedResist(Mobile from)
+        {
+            return from.Items.OfType<BaseArmor>().Any(armor => armor.m_RefinedPhysical > 0 ||
+                                                               armor.m_RefinedFire > 0 ||
+                                                               armor.m_RefinedCold > 0 ||
+                                                               armor.m_RefinedPoison > 0 ||
+                                                               armor.m_RefinedEnergy > 0);
         }
         
         public override void AddResistanceProperties(ObjectPropertyList list)
@@ -588,7 +591,7 @@ namespace Server.Items
                     continue;
 
                 else if (armor.MaterialType == ArmorMaterialType.Studded || armor.MaterialType == ArmorMaterialType.Bone ||
-                    armor is GargishStoneKilt || armor is GargishStoneLegs || armor is GargishStoneChest || armor is GargishStoneArms)
+                    armor is GargishStoneKilt || armor is GargishStoneLegs || armor is GargishStoneChest || armor is GargishStoneArms || armor is FemaleGargishStoneKilt || armor is FemaleGargishStoneLegs || armor is FemaleGargishStoneChest || armor is FemaleGargishStoneArms || armor is GargishStoneAmulet) 
                     toReduce += 3;
                 else if (armor.MaterialType >= ArmorMaterialType.Ringmail)
                     toReduce += 1;
@@ -814,7 +817,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource
+        public virtual CraftResource Resource
         {
             get
             {
@@ -1324,7 +1327,7 @@ namespace Server.Items
             InvalidateProperties();
         }
 
-        public int GetDurabilityBonus()
+        public virtual int GetDurabilityBonus()
         {
             int bonus = 0;
 
@@ -2313,17 +2316,6 @@ namespace Server.Items
             m_AosSkillBonuses = new AosSkillBonuses(this);
             m_NegativeAttributes = new NegativeAttributes(this);
             m_TalismanProtection = new TalismanAttribute();
-
-            // Mod to randomly add sockets and socketability features to armor. These settings will yield
-            // 2% drop rate of socketed/socketable items
-            // 0.1% chance of 5 sockets
-            // 0.5% of 4 sockets
-            // 3% chance of 3 sockets
-            // 15% chance of 2 sockets
-            // 50% chance of 1 socket
-            // the remainder will be 0 socket (31.4% in this case)
-            if(XmlSpawner.SocketsEnabled)
-				XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
         }
 
         public override bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)

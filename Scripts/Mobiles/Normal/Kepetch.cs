@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using Server.Network;
 
 namespace Server.Mobiles
 {
@@ -54,12 +55,14 @@ namespace Server.Mobiles
         public override HideType HideType { get { return HideType.Spined; } }
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; } }
         public override int DragonBlood { get { return 8; } }
+        public override int Fur { get { return GatheredFur ? 0 : 15; } }
+        public override FurType FurType { get { return FurType.Brown; } }
 
         public bool Carve(Mobile from, Item item)
         {
             if (!GatheredFur)
             {
-                var fur = new KepetchFur(30);
+                var fur = new Fur(FurType, Fur);
 
                 if (from.Backpack == null || !from.Backpack.TryDropItem(from, fur, false))
                 {
@@ -74,21 +77,11 @@ namespace Server.Mobiles
                 }
             }
             else
-                from.SendLocalizedMessage(1112358); // The Kepetch nimbly escapes your attempts to shear its mane.
+            {
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112358, from.NetState); // The Kepetch nimbly escapes your attempts to shear its mane.
+            }
 
             return false;
-        }
-
-        public override void OnCarve(Mobile from, Corpse corpse, Item with)
-        {
-            base.OnCarve(from, corpse, with);
-
-            if (!GatheredFur)
-            {
-                from.SendLocalizedMessage(1112765); // You shear it, and the fur is now on the corpse.
-                corpse.AddCarvedItem(new KepetchFur(15), from);
-                GatheredFur = true;
-            }
         }
 
         public override void GenerateLoot()

@@ -1357,7 +1357,7 @@ namespace Server.Items
 
         [Constructable]
         public TyballsFlaskStandArtifact()
-            : base(0x1EB6)
+            : base(0x1829)
         {
         }
 

@@ -134,9 +134,6 @@ namespace Server.SkillHandlers
                         if (masteryBonus > 0)
                             diff -= (diff * ((double)masteryBonus / 100));
 
-                        diff += (XmlMobFactions.GetScaledFaction(from, m_Creature, -25, 25, -0.001) +
-                            XmlMobFactions.GetScaledFaction(from, target, -25, 25, -0.001)) * 0.5;
-
                         if (music > 100.0)
                         {
                             diff -= (music - 100.0) * 0.5;

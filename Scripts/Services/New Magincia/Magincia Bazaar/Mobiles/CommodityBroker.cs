@@ -28,13 +28,8 @@ namespace Server.Engines.NewMagincia
 				}
 				else
 				{
-					if(m_CommodityEntries.Count > 0)
-					{
-						from.CloseGump(typeof(CommodityInventoryGump));
-						from.SendGump(new CommodityInventoryGump(this));
-					}
-					else
-						from.SendLocalizedMessage(1150638); // There are no commodities in this broker's inventory.
+					from.CloseGump(typeof(CommodityInventoryGump));
+					from.SendGump(new CommodityInventoryGump(this));
 				}
 			}
 			else
@@ -172,9 +167,17 @@ namespace Server.Engines.NewMagincia
 			if(Plot != null && from == Plot.Owner)
 				from.SendLocalizedMessage(1150221, String.Format("{0}\t#{1}\t{2}", amount.ToString(), entry.Label, Plot.ShopName != null ? Plot.ShopName : "a shop with no name")); // You have removed ~1_QUANTITY~ units of ~2_ITEMNAME~ from the inventory of "~3_SHOPNAME~"
 		}
-		
-		// Called when a player BUYS the commodity from teh broker...this is fucking confusing
-		public void TryBuyCommodity(Mobile from, CommodityBrokerEntry entry, int amount)
+
+        public int GetBuyCost(Mobile from, CommodityBrokerEntry entry, int amount)
+        {
+            int totalCost = entry.SellPricePer * amount;
+            int toDeduct = totalCost + (int)((double)totalCost * ((double)ComissionFee / 100.0));
+
+            return toDeduct;
+        }
+
+        // Called when a player BUYS the commodity from teh broker...this is fucking confusing
+        public void TryBuyCommodity(Mobile from, CommodityBrokerEntry entry, int amount)
 		{
 			int totalCost = entry.SellPricePer * amount;
 			int toDeduct = totalCost + (int)((double)totalCost * ((double)ComissionFee / 100.0));
@@ -190,9 +193,27 @@ namespace Server.Engines.NewMagincia
 				from.SendLocalizedMessage(1150252); // You do not have the funds needed to make this trade available in your bank box. Brokers are only able to transfer funds from your bank box. Please deposit the necessary funds into your bank box and try again.
 			}
 		}
-		
-		// Called when a player SELLs the commodity from teh broker...this is fucking confusing
-		public void TrySellCommodity(Mobile from, CommodityBrokerEntry entry, int amount)
+
+        public bool SellCommodityControl(Mobile from, CommodityBrokerEntry entry, int amount)
+        {
+            int totalCost = entry.BuyPricePer * amount;
+            Type type = entry.CommodityType;
+
+            if (from.Backpack != null)
+            {
+                int total = amount;
+                int typeAmount = from.Backpack.GetAmount(type);
+                int commodityAmount = GetCommodityType(from.Backpack, type);
+
+                if (typeAmount + commodityAmount >= total)
+                    return true;
+            }
+
+            return false;
+        }
+
+        // Called when a player SELLs the commodity from teh broker...this is fucking confusing
+        public void TrySellCommodity(Mobile from, CommodityBrokerEntry entry, int amount)
 		{
 			int totalCost = entry.BuyPricePer * amount;
 			Type type = entry.CommodityType;
@@ -317,7 +338,7 @@ namespace Server.Engines.NewMagincia
             return amt;
         }
 		
-		public int GetItemID(CommodityBrokerEntry entry)
+		public int GetLabelID(CommodityBrokerEntry entry)
 		{
 			/*Item[] items = BuyPack.FindItemsByType(typeof(CommodityDeed));
 			
@@ -341,7 +362,7 @@ namespace Server.Engines.NewMagincia
 				item.Delete();
 			}*/
 			
-			return entry != null ? entry.ItemID : 1;
+			return entry != null ? entry.Label : 1;
 		}
 		
 		public CommodityBroker(Serial serial) : base(serial)

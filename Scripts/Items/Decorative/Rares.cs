@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class Rope : Item
+    public class Rope : Item, ICommodity
     {
         [Constructable]
         public Rope()
@@ -24,6 +24,9 @@ namespace Server.Items
         {
         }
 
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -39,7 +42,7 @@ namespace Server.Items
         }
     }
 
-    public class IronWire : Item
+    public class IronWire : Item, ICommodity
     {
         [Constructable]
         public IronWire()
@@ -61,6 +64,9 @@ namespace Server.Items
         {
         }
 
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -79,7 +85,7 @@ namespace Server.Items
         }
     }
 
-    public class SilverWire : Item
+    public class SilverWire : Item, ICommodity
     {
         [Constructable]
         public SilverWire()
@@ -101,6 +107,9 @@ namespace Server.Items
         {
         }
 
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -119,7 +128,7 @@ namespace Server.Items
         }
     }
 
-    public class GoldWire : Item
+    public class GoldWire : Item, ICommodity
     {
         [Constructable]
         public GoldWire()
@@ -141,6 +150,9 @@ namespace Server.Items
         {
         }
 
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -159,7 +171,7 @@ namespace Server.Items
         }
     }
 
-    public class CopperWire : Item
+    public class CopperWire : Item, ICommodity
     {
         [Constructable]
         public CopperWire()
@@ -180,6 +192,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

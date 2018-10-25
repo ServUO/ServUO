@@ -138,6 +138,40 @@ namespace Server.Mobiles
             }
         }
 
+        public static void ForceRedeed(Mobile mobile, BaseHouse house = null)
+        {
+            if (!(mobile is Mannequin) && !(mobile is Steward))
+            {
+                return;
+            }
+
+            if (house != null)
+            {
+                List<Item> toAdd = new List<Item>(mobile.Items.Where(i => IsEquipped(i)));
+
+                if (mobile.Backpack != null)
+                {
+                    toAdd.AddRange(mobile.Backpack.Items);
+                }
+
+                foreach (var item in toAdd)
+                {
+                    house.DropToMovingCrate(item);
+                }
+
+                if (mobile is Mannequin)
+                {
+                    house.DropToMovingCrate(new MannequinDeed());
+                }
+                else
+                {
+                    house.DropToMovingCrate(new StewardDeed());
+                }
+            }
+
+            mobile.Delete();
+        }
+
         private class CustomizeBodyEntry : ContextMenuEntry
         {
             private Mobile _From;
@@ -321,15 +355,8 @@ namespace Server.Mobiles
                 {
                     if (house.Owner == from || house.IsCoOwner(from))
                     {
-                        if (house.Public)
-                        {
-                            from.SendLocalizedMessage(1151657); // Where do you wish to place this?
-                            from.Target = new PlaceTarget(this);
-                        }
-                        else
-                        {
-                            from.SendLocalizedMessage(1153304); // You cannot place this vendor, steward or barkeep. Make sure the house is public and has sufficient storage available.
-                        }
+                        from.SendLocalizedMessage(1151657); // Where do you wish to place this?
+                        from.Target = new PlaceTarget(this);                       
                     }
                     else
                     {

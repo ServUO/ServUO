@@ -370,6 +370,8 @@ namespace Server.Items
                             m.PlaySound(0x208);
                         }
                     }
+
+                    ColUtility.Free(mobiles);
                 }
             }
         }

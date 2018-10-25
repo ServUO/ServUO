@@ -166,7 +166,7 @@ namespace Server.Multis
             }
         }
 
-        public int Status
+        public virtual int Status
         {
             get
             {
@@ -177,23 +177,25 @@ namespace Server.Multis
                     return 1043015; // This structure is in danger of collapsing.
 
                 TimeSpan decaySpan = m_DecayTime - DateTime.UtcNow;
+                int percentWorn = 1000 - (int)((decaySpan.Ticks * 1000) / BoatDecayDelay.Ticks);
 
-                if (decaySpan >= TimeSpan.FromDays(13.0))
-                    return 1043010; // This structure is like new.
+                if (percentWorn >= 923) // 92.3% worn
+                    return 1043015; // This structure is in danger of collapsing
 
-                if (decaySpan >= TimeSpan.FromDays(10.0))
-                    return 1043011; // This structure is slightly worn.
-
-                if (decaySpan >= TimeSpan.FromDays(7.0))
-                    return 1043012; // This structure is somewhat worn.
-
-                if (decaySpan >= TimeSpan.FromDays(4.0))
-                    return 1043013; // This structure is fairly worn.
-
-                if (decaySpan >= TimeSpan.FromDays(1.0))
+                if (percentWorn >= 711) // 71.1% worn
                     return 1043014; // This structure is greatly worn.
 
-                return 1043015; // This structure is in danger of collapsing.*/
+                if (percentWorn >= 500) // 50.0% worn
+                    return 1043013; // This structure is fairly worn.
+
+                if (percentWorn >= 289) // 28.9% worn
+                    return 1043012; // This structure is somewhat worn.
+
+                if (percentWorn >= 77) // 7.7% worn
+                    return 1043011; // This structure is slightly worn.
+
+                // else 
+                return 1043010; // This structure is like new.
             }
         }
 
@@ -1473,6 +1475,9 @@ namespace Server.Multis
                 {
                     Item item = e as Item;
 
+                    if ((item is BaseAddon || item is AddonComponent) && CheckAddon(item))
+                        continue;
+
                     // Special item, we're good
                     if (CheckItem(itemID, item, p) || CanMoveOver(item) || item.Z < p.Z || ExemptOverheadComponent(p, itemID, item.X, item.Y, item.Z + item.ItemData.Height))
                         continue;
@@ -1498,13 +1503,36 @@ namespace Server.Multis
             return true;
         }
 
+        public virtual bool CheckAddon(Item item)
+        {
+            return false;
+        }
+
         public virtual bool CheckItem(int itemID, Item item, Point3D p)
         {
-            return Contains(item) || item is BaseMulti || item.ItemID > TileData.MaxItemValue || !item.Visible || item is Corpse || IsComponentItem((IEntity)item) || item is EffectItem;
+            return Contains(item) ||
+                item is BaseMulti ||
+                item.ItemID > TileData.MaxItemValue ||
+                !item.Visible ||
+                item is Corpse ||
+                IsComponentItem((IEntity)item) ||
+                item is EffectItem;
         }
 
         public virtual bool CanMoveOver(IEntity entity)
         {
+            if (entity is Corpse)
+            {
+                var corpse = (Corpse)entity;
+
+                if (corpse.Owner == null || corpse.Owner is BaseCreature)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
             return entity is Blood;
         }
 
@@ -1519,6 +1547,10 @@ namespace Server.Multis
         }
 
         public virtual void OnPlacement(Mobile from)
+        {
+        }
+
+        public virtual void OnAfterPlacement(bool initial)
         {
         }
 
@@ -1565,6 +1597,14 @@ namespace Server.Multis
                 return true;
 
             return false;
+        }
+
+        public static bool HasBoat(Mobile from)
+        {
+            if (from.AccessLevel > AccessLevel.Player)
+                return false;
+
+            return Boats.Any(boat => boat.Owner == from && !boat.Deleted && boat.Map != Map.Internal && !(boat is RowBoat));
         }
 
         public static bool IsValidLocation(Point3D p, Map map)
@@ -1895,7 +1935,7 @@ namespace Server.Multis
                     if (CanMoveOver(item))
                         continue;
 
-                    if (item != this && Contains(item) && item.Visible && item.Z >= Z && !(item is TillerMan || item is Hold || item is Plank || item is BaseAddon || item is RudderHandle))
+                    if (item != this && Contains(item) && item.Visible && item.Z >= Z && !(item is TillerMan || item is Hold || item is Plank || item is RudderHandle))
                         toMove.Add(o);
                 }
                 else if (o is Mobile && Contains((Mobile)o))
@@ -2058,23 +2098,12 @@ namespace Server.Multis
 
         public static bool IsDriving(Mobile from)
         {
-            foreach (BaseBoat boat in m_Instances)
-            {
-                if (boat.Pilot == from)
-                    return true;
-            }
-
-            return false;
+            return m_Instances.Any(b => b.Pilot == from);
         }
 
         public static BaseBoat GetPiloting(Mobile from)
         {
-            BaseBoat boat = FindBoatAt(from, from.Map);
-
-            if (boat != null && boat.Pilot == from)
-                return boat;
-
-            return null;
+            return m_Instances.FirstOrDefault(b => b.Pilot == from);
         }
 
         public virtual void OnMousePilotCommand(Mobile from, Direction d, int rawSpeed)

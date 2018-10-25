@@ -137,6 +137,8 @@ namespace Server.Engines.Plants
                 {
                     entry.Seed.Amount += seed.Amount;
                     seed.Delete();
+
+                    entry.Seed.InvalidateProperties();
                 }
                 else if (UniqueCount < MaxUnique)
                 {
@@ -144,6 +146,7 @@ namespace Server.Engines.Plants
                     DropItem(seed);
 
                     seed.Movable = false;
+                    seed.InvalidateProperties();
                 }
                 else
                 {

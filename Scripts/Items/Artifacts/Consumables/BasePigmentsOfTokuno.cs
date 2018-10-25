@@ -7,58 +7,7 @@ namespace Server.Items
     public abstract class BasePigmentsOfTokuno : Item, IUsesRemaining
     {
 		public override bool IsArtifact { get { return true; } }
-        private static readonly Type[] m_Glasses = new Type[]
-        {
-            typeof(MaritimeGlasses),
-            typeof(WizardsGlasses),
-            typeof(TradeGlasses),
-            typeof(LyricalGlasses),
-            typeof(NecromanticGlasses),
-            typeof(LightOfWayGlasses),
-            typeof(FoldedSteelGlasses),
-            typeof(PoisonedGlasses),
-            typeof(TreasureTrinketGlasses),
-            typeof(MaceAndShieldGlasses),
-            typeof(ArtsGlasses),
-            typeof(AnthropomorphistGlasses)
-        };
-
-        private static readonly Type[] m_Replicas = new Type[]
-        {
-            typeof(ANecromancerShroud),
-            typeof(BraveKnightOfTheBritannia),
-            typeof(CaptainJohnsHat),
-            typeof(DetectiveBoots),
-            typeof(DjinnisRing),
-            typeof(EmbroideredOakLeafCloak),
-            typeof(GauntletsOfAnger),
-            typeof(LieutenantOfTheBritannianRoyalGuard),
-            typeof(OblivionsNeedle),
-            typeof(RoyalGuardSurvivalKnife),
-            typeof(SamaritanRobe),
-            typeof(TheMostKnowledgePerson),
-            typeof(TheRobeOfBritanniaAri),
-            typeof(AcidProofRobe),
-            typeof(Calm),
-            typeof(CrownOfTalKeesh),
-            typeof(FangOfRactus),
-            typeof(GladiatorsCollar),
-            typeof(OrcChieftainHelm),
-            typeof(Pacify),
-            typeof(Quell),
-            typeof(ShroudOfDeceit),
-            typeof(Subdue)
-        };
-
-        private static readonly Type[] m_DyableHeritageItems = new Type[]
-        {
-            typeof(ChargerOfTheFallen),
-            typeof(SamuraiHelm),
-            typeof(HolySword),
-            typeof(LeggingsOfEmbers),
-            typeof(ShaminoCrossbow)
-        };
-
+        
         public override int LabelNumber
         {
             get
@@ -211,10 +160,7 @@ namespace Server.Items
                     IsInTypeList(t, StealableArtifactsSpawner.TypesOfEntires) ||
                     IsInTypeList(t, Paragon.Artifacts) ||
                     IsInTypeList(t, Leviathan.Artifacts) ||
-                    IsInTypeList(t, TreasureMapChest.Artifacts) ||
-                    IsInTypeList(t, m_Replicas) ||
-                    IsInTypeList(t, m_DyableHeritageItems) ||
-                    IsInTypeList(t, m_Glasses));
+                    IsInTypeList(t, TreasureMapChest.Artifacts));
         }
 
         private static bool IsInTypeList(Type t, Type[] list)

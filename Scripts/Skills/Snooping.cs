@@ -46,6 +46,9 @@ namespace Server.SkillHandlers
                 if (root != null && !root.Alive)
                     return;
 
+                if (root is BaseCreature && !(cont is StrongBackpack))
+                    return;
+
                 if (root != null && root.IsStaff() && from.IsPlayer())
                 {
                     from.SendLocalizedMessage(500209); // You can not peek into the container.

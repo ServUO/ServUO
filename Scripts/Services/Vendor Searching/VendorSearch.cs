@@ -26,7 +26,11 @@ namespace Server.Engines.VendorSearching
             List<VendorItem> list = new List<VendorItem>();
             bool excludefel = criteria.Details.FirstOrDefault(d => d.Attribute is Misc && (Misc)d.Attribute == Misc.ExcludeFel) != null;
 
-            foreach (PlayerVendor pv in PlayerVendor.PlayerVendors.Where(pv => pv.Backpack != null && pv.Backpack.Items.Count > 0 && (!excludefel || pv.Map != Map.Felucca)))
+            foreach (PlayerVendor pv in PlayerVendor.PlayerVendors.Where(pv => pv.Map != Map.Internal &&
+                                                                               pv.Map != null &&
+                                                                               pv.Backpack != null && 
+                                                                              pv.Backpack.Items.Count > 0 && 
+                                                                              (!excludefel || pv.Map != Map.Felucca)))
             {
                 List<Item> items = GetItems(pv);
 

@@ -845,40 +845,31 @@ namespace Server.Engines.CityLoyalty
             return Cities.FirstOrDefault(sys => sys.IsCitizen(from, staffIsCitizen));
 		}
 
-        public static bool ApplyCityTitle(PlayerMobile pm, ref string prefix, ref string name, ref string suffix)
+        public static bool ApplyCityTitle(PlayerMobile pm, ObjectPropertyList list, string prefix, int loc)
         {
-			if (String.IsNullOrWhiteSpace(pm.OverheadTitle))
-			{
-				return false;
-			}
+            if (loc == 1154017)
+            {
+                CityLoyaltySystem city = GetCitizenship(pm);
 
-			var loc = Utility.ToInt32(pm.OverheadTitle);
+                if (city != null)
+                {
+                    CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-			if (loc != 1154017)
-			{
-				return false;
-			}
+                    if (entry != null && !String.IsNullOrEmpty(entry.CustomTitle))
+                    {
+                        prefix = String.Format("{0} {1} the {2}", prefix, pm.Name, entry.CustomTitle);
+                        list.Add(1154017, String.Format("{0}\t{1}", prefix, city.Definition.Name)); // ~1_TITLE~ of ~2_CITY~
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                list.Add(1151487, "{0} \t{1} the \t#{2}", prefix, pm.Name, loc); // ~1NT_PREFIX~~2NT_NAME~~3NT_SUFFIX~
+                return true;
+            }
 
-			CityLoyaltySystem city = GetCitizenship(pm);
-
-			if (city != null)
-			{
-				CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
-
-				if (entry != null && !String.IsNullOrEmpty(entry.CustomTitle))
-				{
-					if (!String.IsNullOrWhiteSpace(suffix) && !suffix.EndsWith(" "))
-					{
-						suffix += " ";
-					}
-
-					suffix += String.Format("the {0} of {1}", entry.CustomTitle, city.Definition.Name);
-
-					return true;
-				}
-			}
-
-			return false;
+            return false;
         }
 
         public static bool HasCustomTitle(PlayerMobile pm, out string str)
@@ -1089,11 +1080,17 @@ namespace Server.Engines.CityLoyalty
             var origin = GetCityInstance(entry.Origin);
             int gold = entry.CalculateGold();
 
-            origin.AddToTreasury(from, gold);
-            from.SendLocalizedMessage(1154761, String.Format("{0}\t{1}", gold.ToString("N0", CultureInfo.GetCultureInfo("en-US")), origin.Definition.Name)); // ~1_val~ gold has been deposited into the ~2_NAME~ City treasury for your efforts!
+            if (gold > 0)
+            {
+                origin.AddToTreasury(from, gold);
+                from.SendLocalizedMessage(1154761, String.Format("{0}\t{1}", gold.ToString("N0", CultureInfo.GetCultureInfo("en-US")), origin.Definition.Name)); // ~1_val~ gold has been deposited into the ~2_NAME~ City treasury for your efforts!
+            }
 
-            origin.AwardLove(from, 150);
-            dest.AwardLove(from, 150);
+            if (entry.Distance > 0)
+            {
+                origin.AwardLove(from, 150);
+                dest.AwardLove(from, 150);
+            }
 
             origin.CompletedTrades++;
 		}
@@ -1103,8 +1100,11 @@ namespace Server.Engines.CityLoyalty
             var dest = GetCityInstance(entry.Destination);
             var origin = GetCityInstance(entry.Origin);
 
-            origin.AwardHate(from, 25);
-            dest.AwardHate(from, 25);
+            if (entry.Distance > 0)
+            {
+                origin.AwardHate(from, 25);
+                dest.AwardHate(from, 25);
+            }
         }
 
         public static Moonglow Moonglow { get; set; }

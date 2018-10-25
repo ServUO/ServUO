@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -76,6 +78,11 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
+            if (m is PlayerMobile && ((PlayerMobile)m).DesignContext != null)
+            {
+                return true;
+            }
+
             if (m_Target != null && !m_Target.Deleted)
             {
                 if (CheckAccess(m))

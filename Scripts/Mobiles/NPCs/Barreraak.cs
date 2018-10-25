@@ -22,7 +22,7 @@ namespace Server.Engines.Quests
 		{
             AddObjective(new ObtainObjective(typeof(RedHerring), "Red Herring", 1, 0x9cc));
 					
-			AddReward( new BaseReward( typeof( BarreraakRing ), 1095049 ) );
+			AddReward( new BaseReward( typeof( BarreraaksRing ), 1095049 ) );
 		}
 		
 		public override void Serialize( GenericWriter writer )

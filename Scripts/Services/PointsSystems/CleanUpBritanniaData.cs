@@ -228,6 +228,7 @@ namespace Server.Engines.Points
             Entries[typeof(SpinedLeather)] = 0.50;
             Entries[typeof(HornedLeather)] = 1.0;
             Entries[typeof(BarbedLeather)] = 2.0;
+            Entries[typeof(Fur)] = 0.10;
 
 
             //BOD Rewards
@@ -694,6 +695,22 @@ namespace Server.Engines.Points
             Entries[typeof(BalmOfSwiftness)] = 100.0;
             Entries[typeof(TaintedMushroom)] = 1000.0;
             Entries[typeof(GoldenSkull)] = 1000.0;
+            Entries[typeof(RedSoulstone)] = 15000.0;
+            Entries[typeof(BlueSoulstone)] = 15000.0;
+            Entries[typeof(SoulStone)] = 15000.0;
+            Entries[typeof(HornOfPlenty)] = 2500.0;
+            Entries[typeof(KepetchWax)] = 500.0;
+            Entries[typeof(SlithEye)] = 500.0;
+            Entries[typeof(SoulstoneFragment)] = 500.0;
+            Entries[typeof(WhiteClothDyeTub)] = 300.0;
+            Entries[typeof(Lodestone)] = 75.0;
+            Entries[typeof(FeyWings)] = 75.0;
+            Entries[typeof(StoutWhip)] = 3.0;
+            Entries[typeof(PlantClippings)] = 1.0;
+            Entries[typeof(BasketOfRolls)] = 5.0;
+            Entries[typeof(Yeast)] = 10.0;
+            Entries[typeof(ValentinesCard)] = 50.0;
+            Entries[typeof(MetallicClothDyeTub)] = 100.0;
 
             //Treasure Hunting
             Entries[typeof(Lockpick)] = 0.10;
