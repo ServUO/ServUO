@@ -573,6 +573,18 @@ namespace Server.Spells
                         return false;
                     }
                 }
+				else
+				{
+					// monsters can ne hit players and pets of players
+					if(from.Player)
+					{
+						return true;
+					}
+					else if(from is BaseCreature && (((BaseCreature)from).Controlled || ((BaseCreature)from).Summoned) && ((BaseCreature)from).GetMaster() is PlayerMobile))
+					{    
+						return true;
+					}
+				}
             }
 
             if (from is BaseCreature)
@@ -604,9 +616,21 @@ namespace Server.Spells
                         return true;
                     }
                 }
+                else 
+                {
+					// monsters can hit players and pets of players
+					if(to.Player)
+					{
+						return true						
+					}						
+                    else if(to is BaseCreature && (((BaseCreature)to).Controlled || ((BaseCreature)to).Summoned) && ((BaseCreature)to).GetMaster() is PlayerMobile))
+					{    
+						return true;
+					}
+                }
             }
 
-            // Non-enemy monsters will no longer flag area spells on each other
+            // Non-enemy monsters will not flag area spells on each other
             if (from is BaseCreature && to is BaseCreature)
             {
                 BaseCreature fromBC = (BaseCreature)from;

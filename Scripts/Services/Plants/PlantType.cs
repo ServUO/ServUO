@@ -108,7 +108,7 @@ namespace Server.Engines.Plants
 			new PlantTypeInfo( 0x0CFB, -45, -30,	PlantType.CypressStraight,		false, false, false, false,		PlantCategory.Peculiar ),
 			new PlantTypeInfo( 0x0DB8, 0, -20,		PlantType.HedgeTall,			false, false, false, false,		PlantCategory.Peculiar ),
 			new PlantTypeInfo( 0x1AA1, 10, -25,		PlantType.HopsSouth,			false, false, false, false,		PlantCategory.Peculiar ),
-			new PlantTypeInfo( 0x246C, -25, -20,	PlantType.SugarCanes,			false, false, false, false,		PlantCategory.Peculiar,		1114898, 1114898, 1094702, 1094703, 1095221, 1113715 ),
+			new PlantTypeInfo( 0x246C, -25, -20,	PlantType.SugarCanes,			false, false, false, true,		PlantCategory.Peculiar,		1114898, 1114898, 1094702, 1094703, 1095221, 1113715 ),
 			new PlantTypeInfo( 0xC9E, -40, -30,		PlantType.CocoaTree,			false, false, false, true,		PlantCategory.Fragrant,		1080536, 1080536, 1080534, 1080531, 1080533, 1113716 ),
             new PlantTypeInfo( 0x4B8C, 5, 10,		PlantType.Vanilla,			    false, true, false, true,		PlantCategory.Peculiar )
 		};
@@ -141,20 +141,21 @@ namespace Server.Engines.Plants
 				case 1: return PlantType.FlaxFlowers;
 				case 2: return PlantType.FoxgloveFlowers;
 				case 3: return PlantType.HopsEast;
-				case 4: return PlantType.CocoaTree;
-				default: return PlantType.OrfluerFlowers;
+				case 4: return PlantType.OrfluerFlowers;
+				default: return PlantType.CocoaTree;
 			}
 		}
 
 		public static PlantType RandomPeculiarGroupTwo()
 		{
-			switch ( Utility.Random( 5 ) )
+			switch ( Utility.Random( 6 ) )
 			{
-				case 0:	return PlantType.CypressTwisted;
-				case 1: return PlantType.HedgeShort;
-				case 2: return PlantType.JuniperBush;
-				case 3: return PlantType.CocoaTree;
-				default: return PlantType.SnowdropPatch;
+				case 0:	return PlantType.CypressStraight;
+				case 1: return PlantType.HedgeTall;
+				case 2: return PlantType.HopsSouth;
+				case 3: return PlantType.Vanilla;
+                case 4: return PlantType.SugarCane;
+				default: return PlantType.CocoaTree;
 			}
 		}
 
@@ -162,11 +163,11 @@ namespace Server.Engines.Plants
 		{
 			switch ( Utility.Random( 5 ) )
 			{
-				case 0:	return PlantType.Cattails;
-				case 1: return PlantType.PoppyPatch;
-				case 2: return PlantType.SpiderTree;
-				case 3: return PlantType.CocoaTree;
-				default: return PlantType.WaterLily;
+                case 0: return PlantType.CypressTwisted;
+				case 1:	return PlantType.HedgeShort;
+				case 2: return PlantType.JuniperBush;
+				case 3: return PlantType.SnowdropPatch;
+				case default: return PlantType.CocoaTree;
 			}
 		}
 
@@ -174,11 +175,11 @@ namespace Server.Engines.Plants
 		{
 			switch ( Utility.Random( 5 ) )
 			{
-				case 0:	return PlantType.CypressStraight;
-				case 1: return PlantType.HedgeTall;
-				case 2: return PlantType.HopsSouth;
-				case 3: return PlantType.CocoaTree;
-				default: return PlantType.SugarCanes;
+				case 0:	return PlantType.Cattails;
+				case 1: return PlantType.PoppyPatch;
+				case 2: return PlantType.SpiderTree;
+				case 3: return PlantType.WaterLilly;
+				default: return PlantType.CocoaTree;
 			}
 		}
 
