@@ -10,15 +10,13 @@ namespace Server.Items
         [Constructable]
         public Craven()
         {
-            this.Slayer2 = BaseRunicTool.GetRandomSlayer();
-            this.WeaponAttributes.HitLowerAttack = 40;
-            this.Attributes.WeaponSpeed = 26;
-            this.Attributes.WeaponDamage = 35;
-            this.Attributes.LowerManaCost = 8;
-
+            Slayer2 = BaseRunicTool.GetRandomSlayer();
+            WeaponAttributes.HitLowerAttack = 40;
+            Attributes.WeaponSpeed = 26;
+            Attributes.WeaponDamage = 35;
+            Attributes.LowerManaCost = 8;
             Attributes.BalancedWeapon = 1;
-
-            this.Hue = 1365;
+            Hue = 1365;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)

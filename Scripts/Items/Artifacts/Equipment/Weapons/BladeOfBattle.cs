@@ -5,11 +5,11 @@ namespace Server.Items
     public class BladeOfBattle : Shortblade
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113525; } } // Blade of Battle
+		
         [Constructable]
         public BladeOfBattle() 
         {
-            Name = ("Blade Of Battle");
-		
             Hue = 2045;		
             WeaponAttributes.HitLowerDefend = 40;
             WeaponAttributes.BattleLust = 1;

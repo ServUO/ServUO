@@ -10,12 +10,9 @@ namespace Server.Items
             : base()
         {
             Hue = 0x554;
-
             Slayer = SlayerName.DragonSlaying;
-
             Attributes.AttackChance = 10;
             Attributes.WeaponDamage = 60;
-
             WeaponAttributes.ResistFireBonus = 20;
         }
 
@@ -42,14 +39,14 @@ namespace Server.Items
         {
             get
             {
-                return 120;
+                return 225;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return 120;
+                return 225;
             }
         }
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)

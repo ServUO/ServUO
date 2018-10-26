@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public ChurchillsWarMace()
         {
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.AttackChance = 5;
-            this.Attributes.WeaponSpeed = 10;
-            this.Attributes.WeaponDamage = 25;
-            this.WeaponAttributes.LowerStatReq = 70;
+            LootType = LootType.Blessed;
+            Attributes.AttackChance = 5;
+            Attributes.WeaponSpeed = 10;
+            Attributes.WeaponDamage = 25;
+            WeaponAttributes.LowerStatReq = 70;
         }
 
         public ChurchillsWarMace(Serial serial)

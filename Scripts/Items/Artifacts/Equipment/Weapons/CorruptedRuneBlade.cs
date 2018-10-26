@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public CorruptedRuneBlade()
         {
-            this.WeaponAttributes.ResistPhysicalBonus = -5;
-            this.WeaponAttributes.ResistPoisonBonus = 12;
+            WeaponAttributes.ResistPhysicalBonus = -5;
+            WeaponAttributes.ResistPoisonBonus = 12;
         }
 
         public CorruptedRuneBlade(Serial serial)

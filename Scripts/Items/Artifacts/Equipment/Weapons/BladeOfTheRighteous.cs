@@ -8,13 +8,12 @@ namespace Server.Items
         [Constructable]
         public BladeOfTheRighteous()
         {
-            this.Hue = 0x47E;
-            //Slayer = SlayerName.DaemonDismissal;
-            this.Slayer = SlayerName.Exorcism;
-            this.WeaponAttributes.HitLeechHits = 87;
-            this.WeaponAttributes.UseBestSkill = 1;
-            this.Attributes.BonusHits = 10;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x47E;
+            Slayer = SlayerName.Exorcism;
+            WeaponAttributes.HitLeechHits = 87;
+            WeaponAttributes.UseBestSkill = 1;
+            Attributes.BonusHits = 10;
+            Attributes.WeaponDamage = 50;
         }
 
         public BladeOfTheRighteous(Serial serial)

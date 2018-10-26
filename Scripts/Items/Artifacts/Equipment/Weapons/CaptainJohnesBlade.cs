@@ -10,14 +10,14 @@ namespace Server.Items
         [Constructable]
         public CaptainJohnesBlade()
         {
-            this.Slayer2 = BaseRunicTool.GetRandomSlayer();
-            this.Attributes.AttackChance = 15;
-            this.Attributes.DefendChance = 15;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 60;
-            this.ExtendedWeaponAttributes.Bane = 1;
+            Slayer2 = BaseRunicTool.GetRandomSlayer();
+            Attributes.AttackChance = 15;
+            Attributes.DefendChance = 15;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 60;
+            ExtendedWeaponAttributes.Bane = 1;
 
-            this.Hue = 2124;
+            Hue = 2124;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
@@ -55,14 +55,14 @@ namespace Server.Items
         [Constructable]
         public GargishCaptainJohnesBlade()
         {
-            this.Slayer2 = BaseRunicTool.GetRandomSlayer();
-            this.Attributes.AttackChance = 15;
-            this.Attributes.DefendChance = 15;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 60;
-            this.ExtendedWeaponAttributes.Bane = 1;
+            Slayer2 = BaseRunicTool.GetRandomSlayer();
+            Attributes.AttackChance = 15;
+            Attributes.DefendChance = 15;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 60;
+            ExtendedWeaponAttributes.Bane = 1;
 
-            this.Hue = 2124;
+            Hue = 2124;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)

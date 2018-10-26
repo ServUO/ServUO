@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public ArcanistsWildStaff()
         {
-            this.Attributes.BonusMana = 3;
-            this.Attributes.WeaponDamage = 3;
+            Attributes.BonusMana = 3;
+            Attributes.WeaponDamage = 3;
         }
 
         public ArcanistsWildStaff(Serial serial)

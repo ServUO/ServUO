@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public BreathOfTheDead()
         {
-            this.Hue = 0x455;
-            this.WeaponAttributes.HitLeechHits = 100;
-            this.WeaponAttributes.HitHarm = 25;
-            this.Attributes.SpellDamage = 5;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x455;
+            WeaponAttributes.HitLeechHits = 100;
+            WeaponAttributes.HitHarm = 25;
+            Attributes.SpellDamage = 5;
+            Attributes.WeaponDamage = 50;
         }
 
         public BreathOfTheDead(Serial serial)

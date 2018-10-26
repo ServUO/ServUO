@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public HardenedWildStaff()
         {
-            this.Attributes.WeaponDamage = 5;
+            Attributes.WeaponDamage = 5;
         }
 
         public HardenedWildStaff(Serial serial)

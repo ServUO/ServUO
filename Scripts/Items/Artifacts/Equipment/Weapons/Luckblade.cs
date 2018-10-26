@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public Luckblade()
         {
-            this.Attributes.Luck = 20;
+            Attributes.Luck = 20;
         }
 
         public Luckblade(Serial serial)

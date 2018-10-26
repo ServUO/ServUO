@@ -5,20 +5,19 @@ namespace Server.Items
     public class LifeSyphon : BloodBlade
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113524; } } // Life Syphon
+		
         [Constructable]
         public LifeSyphon()
             : base()
-        {
-            this.Name = ("Life Syphon");
-		
-            this.Hue = 1172;
-			
-            this.WeaponAttributes.BloodDrinker = 1;	
-            this.WeaponAttributes.HitHarm = 30;			
-            this.WeaponAttributes.HitLeechHits = 100;	
-            this.Attributes.BonusHits = 10;
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 50;	
+        {		
+            Hue = 1172;		
+            WeaponAttributes.BloodDrinker = 1;	
+            WeaponAttributes.HitHarm = 30;			
+            WeaponAttributes.HitLeechHits = 100;	
+            Attributes.BonusHits = 10;
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 50;	
         }
 
         public LifeSyphon(Serial serial)
@@ -39,21 +38,7 @@ namespace Server.Items
             {
                 return 255;
             }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
+        }      
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

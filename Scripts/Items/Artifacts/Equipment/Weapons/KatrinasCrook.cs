@@ -12,7 +12,6 @@ namespace Server.Items
             WeaponAttributes.HitLeechStam = 40;
             WeaponAttributes.HitLeechMana = 55;
             WeaponAttributes.HitLeechHits = 55;
-
             Attributes.WeaponDamage = 60;
             Attributes.DefendChance = 15;
         }
@@ -40,14 +39,14 @@ namespace Server.Items
         {
             get
             {
-                return 120;
+                return 255;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return 120;
+                return 255;
             }
         }
         public override void Serialize(GenericWriter writer)

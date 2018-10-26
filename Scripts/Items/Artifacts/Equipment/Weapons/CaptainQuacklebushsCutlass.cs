@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public CaptainQuacklebushsCutlass()
         {
-            this.Hue = 0x66C;
-            this.Attributes.BonusDex = 5;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 50;
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x66C;
+            Attributes.BonusDex = 5;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 50;
+            WeaponAttributes.UseBestSkill = 1;
         }
 
         public CaptainQuacklebushsCutlass(Serial serial)

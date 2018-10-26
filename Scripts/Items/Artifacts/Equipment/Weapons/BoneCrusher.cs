@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public BoneCrusher()
         {
-            this.ItemID = 0x1406;
-            this.Hue = 0x60C;
-            this.WeaponAttributes.HitLowerDefend = 50;
-            this.Attributes.BonusStr = 10;
-            this.Attributes.WeaponDamage = 75;
+            ItemID = 0x1406;
+            Hue = 0x60C;
+            WeaponAttributes.HitLowerDefend = 50;
+            Attributes.BonusStr = 10;
+            Attributes.WeaponDamage = 75;
         }
 
         public BoneCrusher(Serial serial)
