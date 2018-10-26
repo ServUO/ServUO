@@ -8,15 +8,13 @@ namespace Server.Items
         [Constructable]
         public HolySword()
         {
-            this.Hue = 0x482;
-            this.LootType = LootType.Blessed;
-
-            this.Slayer = SlayerName.Silver;
-
-            this.Attributes.WeaponDamage = 40;
-            this.WeaponAttributes.SelfRepair = 10;
-            this.WeaponAttributes.LowerStatReq = 100;
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x482;
+            LootType = LootType.Blessed;
+            Slayer = SlayerName.Silver;
+            Attributes.WeaponDamage = 40;
+            WeaponAttributes.SelfRepair = 10;
+            WeaponAttributes.LowerStatReq = 100;
+            WeaponAttributes.UseBestSkill = 1;
         }
 
         public HolySword(Serial serial)

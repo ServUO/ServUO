@@ -7,8 +7,6 @@ namespace Server.Items
 {
     public class IntenseTealPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public IntenseTealPigment()
             : base(CompassionPigmentType.IntenseTeal)
@@ -37,8 +35,6 @@ namespace Server.Items
 
     public class TyrianPurplePigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public TyrianPurplePigment()
             : base(CompassionPigmentType.TyrianPurple)
@@ -67,8 +63,6 @@ namespace Server.Items
 
     public class MottledSunsetBluePigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public MottledSunsetBluePigment()
             : base(CompassionPigmentType.MottledSunsetBlue)
@@ -97,8 +91,6 @@ namespace Server.Items
 
     public class MossyGreenPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public MossyGreenPigment()
             : base(CompassionPigmentType.MossyGreen)
@@ -127,8 +119,6 @@ namespace Server.Items
 
     public class VibrantOcherPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public VibrantOcherPigment()
             : base(CompassionPigmentType.VibrantOcher)
@@ -157,8 +147,6 @@ namespace Server.Items
 
     public class OliveGreenPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public OliveGreenPigment()
             : base(CompassionPigmentType.OliveGreen)
@@ -187,8 +175,6 @@ namespace Server.Items
 
     public class PolishedBronzePigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public PolishedBronzePigment()
             : base(CompassionPigmentType.PolishedBronze)
@@ -217,8 +203,6 @@ namespace Server.Items
 
     public class GlossyBluePigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public GlossyBluePigment()
             : base(CompassionPigmentType.GlossyBlue)
@@ -247,8 +231,6 @@ namespace Server.Items
 
     public class BlackAndGreenPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public BlackAndGreenPigment()
             : base(CompassionPigmentType.BlackAndGreen)
@@ -277,8 +259,6 @@ namespace Server.Items
 
     public class DeepVioletPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public DeepVioletPigment()
             : base(CompassionPigmentType.DeepViolet)
@@ -307,8 +287,6 @@ namespace Server.Items
 
     public class AuraOfAmberPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public AuraOfAmberPigment()
             : base(CompassionPigmentType.AuraOfAmber)
@@ -337,8 +315,6 @@ namespace Server.Items
 
     public class MurkySeagreenPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public MurkySeagreenPigment()
             : base(CompassionPigmentType.MurkySeagreen)
@@ -367,8 +343,6 @@ namespace Server.Items
 
     public class ShadowyBluePigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public ShadowyBluePigment()
             : base(CompassionPigmentType.ShadowyBlue)
@@ -397,8 +371,6 @@ namespace Server.Items
 
     public class GleamingFuchsiaPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public GleamingFuchsiaPigment()
             : base(CompassionPigmentType.GleamingFuchsia)
@@ -427,8 +399,6 @@ namespace Server.Items
 
     public class GlossyFuchsiaPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public GlossyFuchsiaPigment()
             : base(CompassionPigmentType.GlossyFuchsia)
@@ -457,8 +427,6 @@ namespace Server.Items
 
     public class DeepBluePigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public DeepBluePigment()
             : base(CompassionPigmentType.DeepBlue)
@@ -487,8 +455,6 @@ namespace Server.Items
 
     public class VibranSeagreenPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public VibranSeagreenPigment()
             : base(CompassionPigmentType.VibranSeagreen)
@@ -517,8 +483,6 @@ namespace Server.Items
 
     public class MurkyAmberPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public MurkyAmberPigment()
             : base(CompassionPigmentType.MurkyAmber)
@@ -547,8 +511,6 @@ namespace Server.Items
 
     public class VibrantCrimsonPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public VibrantCrimsonPigment()
             : base(CompassionPigmentType.VibrantCrimson)
@@ -577,8 +539,6 @@ namespace Server.Items
 
     public class ReflectiveShadowPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public ReflectiveShadowPigment()
             : base(CompassionPigmentType.ReflectiveShadow)
@@ -607,8 +567,6 @@ namespace Server.Items
 
     public class StarBluePigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public StarBluePigment()
             : base(CompassionPigmentType.StarBlue)
@@ -637,8 +595,6 @@ namespace Server.Items
 
     public class MotherOfPearlPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public MotherOfPearlPigment()
             : base(CompassionPigmentType.MotherOfPearl)
@@ -667,8 +623,6 @@ namespace Server.Items
 
     public class LiquidSunshinePigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public LiquidSunshinePigment()
             : base(CompassionPigmentType.LiquidSunshine)
@@ -697,8 +651,6 @@ namespace Server.Items
 
     public class DarkVoidPigment : CompassionPigment
     {
-        public override bool IsArtifact { get { return true; } }
-
         [Constructable]
         public DarkVoidPigment()
             : base(CompassionPigmentType.DarkVoid)

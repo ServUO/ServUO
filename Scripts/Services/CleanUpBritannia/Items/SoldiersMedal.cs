@@ -3,8 +3,10 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class SoldiersMedal : BaseTalisman, ITokunoDyable
+    public class SoldiersMedal : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public SoldiersMedal()
             : base(0x2F5B)

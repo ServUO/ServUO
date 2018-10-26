@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public OblivionsNeedle()
         {
-            this.Attributes.BonusStam = 20;
-            this.Attributes.AttackChance = 20;
-            this.Attributes.DefendChance = -20;
-            this.Attributes.WeaponDamage = 40;
-
-            this.WeaponAttributes.HitLeechStam = 50;
+            Attributes.BonusStam = 20;
+            Attributes.AttackChance = 20;
+            Attributes.DefendChance = -20;
+            Attributes.WeaponDamage = 40;
+            WeaponAttributes.HitLeechStam = 50;
         }
 
         public OblivionsNeedle(Serial serial)

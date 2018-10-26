@@ -5,11 +5,11 @@ namespace Server.Items
     public class AbyssalBlade : StoneWarSword
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113520; } } // Abyssal Blade
+		
         [Constructable]
         public AbyssalBlade()
         {
-            Name = ("Abyssal Blade");
-
             Hue = 2404;
             WeaponAttributes.HitManaDrain = 50;
             WeaponAttributes.HitFatigue = 50;

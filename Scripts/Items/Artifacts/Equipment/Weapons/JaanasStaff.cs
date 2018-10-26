@@ -10,9 +10,7 @@ namespace Server.Items
             : base()
         {
             Hue = 0x58C;
-
             WeaponAttributes.MageWeapon = 10;
-
             Attributes.SpellChanneling = 1;
             Attributes.Luck = 220;
             Attributes.DefendChance = 15;
@@ -41,14 +39,14 @@ namespace Server.Items
         {
             get
             {
-                return 120;
+                return 225;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return 120;
+                return 225;
             }
         }
         public override void Serialize(GenericWriter writer)

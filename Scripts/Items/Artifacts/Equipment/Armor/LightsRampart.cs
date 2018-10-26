@@ -2,17 +2,17 @@ using System;
 
 namespace Server.Items
 {
-    public class LightsRampart : MetalShield, ITokunoDyable
+    public class LightsRampart : MetalShield
 	{
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LightsRampart()
         {
-            this.ItemID = 0x1B7B;
-            this.Hue = 1272;
+            ItemID = 0x1B7B;
+            Hue = 1272;
 			
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.DefendChance = 20;
+            Attributes.SpellChanneling = 1;
+            Attributes.DefendChance = 20;
         }
 
         public LightsRampart(Serial serial)

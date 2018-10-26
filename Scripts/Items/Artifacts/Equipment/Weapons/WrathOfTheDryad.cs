@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public WrathOfTheDryad()
         {
-            this.Hue = 0x29C;
-            this.WeaponAttributes.HitLeechMana = 50;
-            this.WeaponAttributes.HitLightning = 33;
-            this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponDamage = 40;
+            Hue = 0x29C;
+            WeaponAttributes.HitLeechMana = 50;
+            WeaponAttributes.HitLightning = 33;
+            Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 40;
         }
 
         public WrathOfTheDryad(Serial serial)

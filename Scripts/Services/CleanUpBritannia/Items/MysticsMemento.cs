@@ -3,8 +3,10 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class MysticsMemento : BaseTalisman, ITokunoDyable
+    public class MysticsMemento : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public MysticsMemento()
             : base(0x2F5B)

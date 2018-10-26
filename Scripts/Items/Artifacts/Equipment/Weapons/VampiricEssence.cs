@@ -5,18 +5,18 @@ namespace Server.Items
     public class VampiricEssence : Cutlass
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113873; } } // Vampiric Essence
+		
         [Constructable]
         public VampiricEssence()
         {
-            this.Name = ("Vampiric Essence");
-		
-            this.Hue = 39;
-            this.WeaponAttributes.HitLeechHits = 100;			
-            this.WeaponAttributes.HitHarm = 50;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 50;
-            this.AosElementDamages.Cold = 100;
-            this.WeaponAttributes.BloodDrinker = 1;
+            Hue = 39;
+            WeaponAttributes.HitLeechHits = 100;			
+            WeaponAttributes.HitHarm = 50;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 50;
+            AosElementDamages.Cold = 100;
+            WeaponAttributes.BloodDrinker = 1;
         }
 
         public VampiricEssence(Serial serial)
@@ -50,9 +50,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Attributes.AttackChance == 50)
-                this.Attributes.AttackChance = 10;
         }
     }
 }

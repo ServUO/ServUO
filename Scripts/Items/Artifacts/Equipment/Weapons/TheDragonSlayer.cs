@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public TheDragonSlayer()
         {
-            this.Hue = 0x530;
-            this.Slayer = SlayerName.DragonSlaying;
-            this.Attributes.Luck = 110;
-            this.Attributes.WeaponDamage = 50;
-            this.WeaponAttributes.ResistFireBonus = 20;
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x530;
+            Slayer = SlayerName.DragonSlaying;
+            Attributes.Luck = 110;
+            Attributes.WeaponDamage = 50;
+            WeaponAttributes.ResistFireBonus = 20;
+            WeaponAttributes.UseBestSkill = 1;
         }
 
         public TheDragonSlayer(Serial serial)
@@ -67,9 +67,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Slayer == SlayerName.None)
-                this.Slayer = SlayerName.DragonSlaying;
         }
     }
 }

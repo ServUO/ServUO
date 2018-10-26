@@ -5,19 +5,18 @@ namespace Server.Items
     public class GiantSteps : GargishStoneLegs
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113537; } } // Giant Steps
+	
         [Constructable]
         public GiantSteps()
             : base()
         {
-            this.Name = ("Giant Steps");
-		
-            this.Hue = 656;		
-		
-            this.Attributes.BonusStr = 5;
-            this.Attributes.BonusDex = 5;
-            this.Attributes.BonusHits = 5;
-            this.Attributes.RegenHits = 2;
-            this.Attributes.WeaponDamage = 10;
+            Hue = 656;				
+            Attributes.BonusStr = 5;
+            Attributes.BonusDex = 5;
+            Attributes.BonusHits = 5;
+            Attributes.RegenHits = 2;
+            Attributes.WeaponDamage = 10;
         }
 
         public GiantSteps(Serial serial)
@@ -74,31 +73,6 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
-            {
-                if (((Mobile)parent).Female)
-                    this.ItemID = 0x0289;
-                else
-                    this.ItemID = 0x028A;
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

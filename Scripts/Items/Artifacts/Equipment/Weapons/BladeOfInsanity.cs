@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public BladeOfInsanity()
         {
-            this.Hue = 0x76D;
-            this.WeaponAttributes.HitLeechStam = 100;
-            this.Attributes.RegenStam = 2;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x76D;
+            WeaponAttributes.HitLeechStam = 100;
+            Attributes.RegenStam = 2;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 50;
         }
 
         public BladeOfInsanity(Serial serial)
@@ -60,9 +60,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Hue == 0x44F)
-                this.Hue = 0x76D;
         }
     }
 }

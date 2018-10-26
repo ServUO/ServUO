@@ -4,7 +4,6 @@ namespace Server.Items
 {
     public class SwampTile : Item
     {
-		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SwampTile()
             : base(0x320D)

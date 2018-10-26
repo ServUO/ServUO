@@ -8,17 +8,13 @@ namespace Server.Items
         [Constructable]
         public TalonBite()
         {
-            this.ItemID = 0x2D34;
-            this.Hue = 0x47E;
-
-            this.SkillBonuses.SetValues(0, SkillName.Tactics, 10.0);
-
-            this.Attributes.BonusDex = 8;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 35;
-
-            this.WeaponAttributes.HitHarm = 33;
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x47E;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 10.0);
+            Attributes.BonusDex = 8;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 35;
+            WeaponAttributes.HitHarm = 33;
+            WeaponAttributes.UseBestSkill = 1;
         }
 
         public TalonBite(Serial serial)

@@ -8,13 +8,13 @@ namespace Server.Items
         [Constructable]
         public BlazeOfDeath()
         {
-            this.Hue = 0x501;
-            this.WeaponAttributes.HitFireArea = 50;
-            this.WeaponAttributes.HitFireball = 50;
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 35;
-            this.WeaponAttributes.ResistFireBonus = 10;
-            this.WeaponAttributes.LowerStatReq = 100;
+            Hue = 0x501;
+            WeaponAttributes.HitFireArea = 50;
+            WeaponAttributes.HitFireball = 50;
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 35;
+            WeaponAttributes.ResistFireBonus = 10;
+            WeaponAttributes.LowerStatReq = 100;
         }
 
         public BlazeOfDeath(Serial serial)

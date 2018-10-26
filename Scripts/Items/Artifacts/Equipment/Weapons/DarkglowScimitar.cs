@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public DarkglowScimitar()
         {
-            this.WeaponAttributes.HitDispel = 10;
+            WeaponAttributes.HitDispel = 10;
         }
 
         public DarkglowScimitar(Serial serial)

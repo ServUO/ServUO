@@ -5,7 +5,6 @@ namespace Server.Items
 {
     public class ImprisonedDog : BaseImprisonedMobile
     {
-		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ImprisonedDog()
             : base(0x1F1C)

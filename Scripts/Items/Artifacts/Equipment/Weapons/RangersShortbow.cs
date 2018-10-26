@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public RangersShortbow()
         {
-            this.Attributes.WeaponSpeed = 5;
+            Attributes.WeaponSpeed = 5;
         }
 
         public RangersShortbow(Serial serial)

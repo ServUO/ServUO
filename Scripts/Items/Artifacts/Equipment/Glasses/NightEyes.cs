@@ -2,20 +2,19 @@ using System;
 
 namespace Server.Items
 {
-    public class NightEyes : Glasses, ITokunoDyable
+    public class NightEyes : Glasses
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1114785; } } // Night Eyes
+		
         [Constructable]
         public NightEyes()
             : base()
-        {
-            this.Name = ("Night Eyes");
-		
-            this.Hue = 26;
-		
-            this.Attributes.NightSight = 1;
-            this.Attributes.DefendChance = 10;
-            this.Attributes.CastRecovery = 3;			
+        {	
+            Hue = 26;	
+            Attributes.NightSight = 1;
+            Attributes.DefendChance = 10;
+            Attributes.CastRecovery = 3;			
         }
 
         public NightEyes(Serial serial)

@@ -6,11 +6,11 @@ namespace Server.Items
     public class AxeOfAbandon : BattleAxe
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113863; } } // Axe of Abandon
+		
         [Constructable]
         public AxeOfAbandon() 
-        {
-            Name = ("Axe Of Abandon");
-		
+        {		
             Hue = 556;		
             WeaponAttributes.HitLowerDefend = 40;
             WeaponAttributes.BattleLust = 1;		

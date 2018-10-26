@@ -3,21 +3,20 @@ using System;
 namespace Server.Items
 {
     [Flipable(0x1F03, 0x1F04)]
-    public class ConjureresGarbHarbringer : BaseOuterTorso, ITokunoDyable
+    public class ConjureresGarbHarbringer : BaseOuterTorso
 	{
         public override bool CanBeWornByGargoyles { get { return true; } }
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber {get {return 1114052;} }// Conjurer's Garb
 
         [Constructable]
         public ConjureresGarbHarbringer()
             : base(0x1F03, 0x486)
         {
-			this.Hue = 0x4AA;
-			this.Name = "Conjurer's Garb";
-            this.Weight = 3.0;
-			this.Attributes.DefendChance = 5;
-			this.Attributes.RegenMana = 2;
-			// TODO: Supports arcane?
+			Hue = 0x4AA;
+            Weight = 3.0;
+			Attributes.DefendChance = 5;
+			Attributes.RegenMana = 2;
         }
 
         public ConjureresGarbHarbringer(Serial serial)

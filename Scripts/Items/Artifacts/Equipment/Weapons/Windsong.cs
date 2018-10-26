@@ -9,12 +9,10 @@ namespace Server.Items
         public Windsong()
             : base()
         {
-            this.Hue = 172;
-			
-            this.Attributes.WeaponDamage = 35;
-            this.WeaponAttributes.SelfRepair = 3;
-			
-            this.Velocity = 25;			
+            Hue = 172;			
+            Attributes.WeaponDamage = 35;
+            WeaponAttributes.SelfRepair = 3;			
+            Velocity = 25;			
         }
 
         public Windsong(Serial serial)
@@ -55,9 +53,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-
-            if (this.Hue == 0xF7)
-                this.Hue = 172;
         }
     }
 }

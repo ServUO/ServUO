@@ -7,7 +7,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefTinkering), typeof(GargishPrismaticLenses))]
-    public class PrismaticLenses : Glasses, ITokunoDyable
+    public class PrismaticLenses : Glasses
     {
         public override int LabelNumber { get { return 1152716; } } // Prismatic Lenses
         public override int InitMinHits { get { return 255; } }
@@ -18,6 +18,8 @@ namespace Server.Items
         public override int BaseColdResistance { get { return 7; } }
         public override int BasePoisonResistance { get { return 17; } }
         public override int BaseEnergyResistance { get { return 6; } }
+		
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public PrismaticLenses()
@@ -59,6 +61,8 @@ namespace Server.Items
         public override int BaseColdResistance { get { return 7; } }
         public override int BasePoisonResistance { get { return 17; } }
         public override int BaseEnergyResistance { get { return 6; } }
+		
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public GargishPrismaticLenses()

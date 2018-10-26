@@ -5,23 +5,22 @@ namespace Server.Items
     public class ResonantStaffofEnlightenment : QuarterStaff
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113757; } } // Resonant Staff of Enlightenment
+		
         [Constructable]
         public ResonantStaffofEnlightenment()
         {
-            this.Name = ("Resonant Staff of Enlightenment");
-		
-            this.Hue = 2401;
-
-            this.WeaponAttributes.HitMagicArrow = 40;
-            this.WeaponAttributes.MageWeapon = 20;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.DefendChance = 10;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = -40;
-            this.Attributes.LowerManaCost = 5;			
-            this.AbsorptionAttributes.ResonanceCold = 20;	
-            this.AosElementDamages.Cold = 100;		
-			this.Attributes.BonusInt = 5;
+            Hue = 2401;
+            WeaponAttributes.HitMagicArrow = 40;
+            WeaponAttributes.MageWeapon = 20;
+            Attributes.SpellChanneling = 1;
+            Attributes.DefendChance = 10;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = -40;
+            Attributes.LowerManaCost = 5;			
+            AbsorptionAttributes.ResonanceCold = 20;	
+            AosElementDamages.Cold = 100;		
+			Attributes.BonusInt = 5;
 				
         }
 

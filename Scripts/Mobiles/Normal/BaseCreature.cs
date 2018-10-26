@@ -938,28 +938,28 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsParagon
-        {
-            get { return m_Paragon; }
-            set
-            {
-                if (m_Paragon == value)
-                {
-                    return;
-                }
-                else if (value)
-                {
-                    XmlParagon.Convert(this);
-                }
-                else
-                {
-                    XmlParagon.UnConvert(this);
-                }
+		{
+			get{ return m_Paragon; }
+			set
+			{
+				if (m_Paragon == value)
+				{
+					return;
+				}
+				else if (value)
+				{
+					Paragon.Convert(this);
+				}
+				else
+				{
+					Paragon.UnConvert(this);
+				}
 
-                m_Paragon = value;
+				m_Paragon = value;
 
-                InvalidateProperties();
-            }
-        }
+				InvalidateProperties();
+			}
+		}
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsChampionSpawn
@@ -1269,7 +1269,7 @@ namespace Server.Mobiles
 
             if (IsParagon)
             {
-                damage = (int)(damage / XmlParagon.GetHitsBuff(this));
+                damage = (int)(damage / Paragon.HitsBuff);
             }
 
             if (damage > 200)
@@ -1818,24 +1818,16 @@ namespace Server.Mobiles
 
         public override string ApplyNameSuffix(string suffix)
         {
-            XmlData customtitle = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "ParagonTitle");
-
-            if (customtitle != null)
-            {
-                suffix = customtitle.Data;
-            }
-            else if (IsParagon && !GivesMLMinorArtifact)
+            if (IsParagon && !GivesMLMinorArtifact)
             {
                 if (suffix.Length == 0)
                 {
-                    suffix = XmlParagon.GetParagonLabel(this);
+                    suffix = "(Paragon)";
                 }
                 else
                 {
-                    suffix = String.Concat(suffix, " " + XmlParagon.GetParagonLabel(this));
+                    suffix = String.Concat( suffix, " (Paragon)" );
                 }
-
-                XmlAttach.AttachTo(this, new XmlData("ParagonTitle", suffix));
             }
 
             return base.ApplyNameSuffix(suffix);
@@ -2047,7 +2039,7 @@ namespace Server.Mobiles
 
         public override void OnBeforeSpawn(Point3D location, Map m)
         {
-            if (XmlParagon.CheckConvert(this, location, m))
+            if (Paragon.CheckConvert(this, location, m))
             {
                 IsParagon = true;
             }
@@ -6168,10 +6160,11 @@ namespace Server.Mobiles
             {
                 if (treasureLevel >= 0)
                 {
-                    if (m_Paragon && XmlParagon.GetChestChance(this) > Utility.RandomDouble())
-                    {
-                        XmlParagon.AddChest(this, treasureLevel);
-                    }
+					if (m_Paragon && Paragon.ChestChance > Utility.RandomDouble())
+					{
+						PackItem( new ParagonChest( this.Name, treasureLevel ) );
+					}
+				
                     else if (TreasureMapChance >= Utility.RandomDouble())
                     {
                         Map map = Map;
@@ -6510,9 +6503,9 @@ namespace Server.Mobiles
 
         public virtual void OnKilledBy(Mobile mob)
         {
-            if (m_Paragon && XmlParagon.CheckArtifactChance(mob, this))
+            if (m_Paragon && Paragon.CheckArtifactChance(mob, this))
             {
-                XmlParagon.GiveArtifactTo(mob, this);
+                Paragon.GiveArtifactTo(mob);
             }
 
             EventSink.InvokeOnKilledBy(new OnKilledByEventArgs(this, mob));

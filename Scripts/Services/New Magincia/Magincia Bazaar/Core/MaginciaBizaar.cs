@@ -429,16 +429,6 @@ namespace Server.Engines.NewMagincia
 		public static void RegisterPlot(PlotDef plotDef)
 		{
 			m_Plots.Add(new MaginciaBazaarPlot(plotDef));
-
-            IPooledEnumerable eable = plotDef.Map.GetItemsInRange(plotDef.Location, 5);
-
-            foreach (Item item in eable)
-            {
-                if (item is AddonComponent || item is PlayerVendorTile)
-                    item.Delete();
-            }
-
-            eable.Free();
 		}
 		
 		public static bool IsSameAccount(Mobile check, Mobile checkAgainst)

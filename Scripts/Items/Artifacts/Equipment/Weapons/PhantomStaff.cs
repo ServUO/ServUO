@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public PhantomStaff()
         {
-            this.Hue = 0x1;
-            this.Attributes.RegenHits = 2;
-            this.Attributes.NightSight = 1;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 60;
+            Hue = 0x1;
+            Attributes.RegenHits = 2;
+            Attributes.NightSight = 1;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 60;
         }
 
         public PhantomStaff(Serial serial)
