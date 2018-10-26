@@ -31,14 +31,11 @@ namespace Server.Items
         {
         }
 		
-        #region Mondain's Legacy
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
             phys = fire = cold = nrgy = chaos = direct = 0;
             pois = 100;
         }
-
-        #endregion
 
         public override void Serialize(GenericWriter writer)
         {

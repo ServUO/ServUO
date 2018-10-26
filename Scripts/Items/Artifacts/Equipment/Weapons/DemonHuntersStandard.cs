@@ -10,8 +10,6 @@ namespace Server.Items
         [Constructable]
         public DemonHuntersStandard()
         {
-            Name = ("Demon Hunter's Standard");
-		
             Hue = 1377;				
             Attributes.CastSpeed = 1;			
             Attributes.WeaponSpeed = 25;

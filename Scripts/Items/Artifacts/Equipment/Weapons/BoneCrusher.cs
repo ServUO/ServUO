@@ -8,7 +8,6 @@ namespace Server.Items
         [Constructable]
         public BoneCrusher()
         {
-            ItemID = 0x1406;
             Hue = 0x60C;
             WeaponAttributes.HitLowerDefend = 50;
             Attributes.BonusStr = 10;
@@ -60,12 +59,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Hue == 0x604)
-                this.Hue = 0x60C;
-
-            if (this.ItemID == 0x1407)
-                this.ItemID = 0x1406;
         }
     }
 }

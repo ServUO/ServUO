@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public TwinklingScimitar()
         {
-            this.Attributes.DefendChance = 6;
+            Attributes.DefendChance = 6;
         }
 
         public TwinklingScimitar(Serial serial)

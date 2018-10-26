@@ -60,12 +60,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Attributes.CastSpeed == 3)
-                this.Attributes.CastRecovery = 3;
-
-            if (this.Hue == 0x4B9)
-                this.Hue = 0x676;
         }
     }
 }

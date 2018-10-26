@@ -8,15 +8,12 @@ namespace Server.Items
         [Constructable]
         public OverseerSunderedBlade()
         {
-            this.ItemID = 0x2D27;
-            this.Hue = 0x485;
+            Attributes.RegenStam = 2;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponSpeed = 35;
+            Attributes.WeaponDamage = 45;
 
-            this.Attributes.RegenStam = 2;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponSpeed = 35;
-            this.Attributes.WeaponDamage = 45;
-
-            this.Hue = this.GetElementalDamageHue();
+            Hue = this.GetElementalDamageHue();
         }
 
         public OverseerSunderedBlade(Serial serial)

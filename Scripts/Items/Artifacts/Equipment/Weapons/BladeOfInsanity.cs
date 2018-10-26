@@ -60,9 +60,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Hue == 0x44F)
-                this.Hue = 0x76D;
         }
     }
 }

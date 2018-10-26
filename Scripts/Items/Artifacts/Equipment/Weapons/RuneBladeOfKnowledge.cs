@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public RuneBladeOfKnowledge()
         {
-            this.Attributes.SpellDamage = 5;
+            Attributes.SpellDamage = 5;
         }
 
         public RuneBladeOfKnowledge(Serial serial)

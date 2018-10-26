@@ -9,8 +9,7 @@ namespace Server.Items
 		
         [Constructable]
         public EternalGuardianStaff()
-        {
-            Name = ("Eternal Guardian Staff");		
+        {		
             Hue = 95;
             SkillBonuses.SetValues(0, SkillName.Mysticism, 15.0);		
             Attributes.SpellDamage = 10;

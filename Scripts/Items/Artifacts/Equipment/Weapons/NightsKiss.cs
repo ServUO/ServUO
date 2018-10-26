@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public NightsKiss()
         {
-            this.ItemID = 0xF51;
-            this.Hue = 0x455;
-            this.WeaponAttributes.HitLeechHits = 40;
-            this.Slayer = SlayerName.Repond;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 35;
+            Hue = 0x455;
+            WeaponAttributes.HitLeechHits = 40;
+            Slayer = SlayerName.Repond;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 35;
         }
 
         public NightsKiss(Serial serial)

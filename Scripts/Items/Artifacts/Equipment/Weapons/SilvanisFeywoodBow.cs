@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public SilvanisFeywoodBow()
         {
-            this.Hue = 0x1A;
-
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.AttackChance = 12;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 35;
+            Hue = 0x1A;
+            Attributes.SpellChanneling = 1;
+            Attributes.AttackChance = 12;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 35;
         }
 
         public SilvanisFeywoodBow(Serial serial)
