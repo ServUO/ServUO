@@ -8,13 +8,12 @@ namespace Server.Items
         [Constructable]
         public ShaminoCrossbow()
         {
-            this.Hue = 0x504;
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponDamage = 40;
-            this.WeaponAttributes.SelfRepair = 10;
-            this.WeaponAttributes.LowerStatReq = 100;
+            Hue = 0x504;
+            LootType = LootType.Blessed;
+            Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 40;
+            WeaponAttributes.SelfRepair = 10;
+            WeaponAttributes.LowerStatReq = 100;
         }
 
         public ShaminoCrossbow(Serial serial)

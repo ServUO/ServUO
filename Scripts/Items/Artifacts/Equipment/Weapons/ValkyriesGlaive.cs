@@ -5,24 +5,24 @@ namespace Server.Items
     public class ValkyriesGlaive : SoulGlaive
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113531; } } // Valkyrie's Glaive
+		
         [Constructable]
         public ValkyriesGlaive()
         {
-			this.Attributes.SpellChanneling = 1;
-			this.Slayer = SlayerName.Silver;
-			this.WeaponAttributes.HitFireball = 40;
-			this.Attributes.BonusStr = 5;
-			this.Attributes.WeaponSpeed = 20;
-			this.Attributes.WeaponDamage = 20;
-			this.Hue = 1651; //Hue not exact
-			this.Name = ("Valkyrie's Glaive");
+			Attributes.SpellChanneling = 1;
+			Slayer = SlayerName.Silver;
+			WeaponAttributes.HitFireball = 40;
+			Attributes.BonusStr = 5;
+			Attributes.WeaponSpeed = 20;
+			Attributes.WeaponDamage = 20;
+			Hue = 1651; //Hue not exact
         }
 
         public ValkyriesGlaive(Serial serial)
             : base(serial)
         {
         }
-
 		public override int ArtifactRarity
         {
             get
@@ -30,23 +30,6 @@ namespace Server.Items
                 return 5;
             }
         }
-
-		public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-
         public override int InitMinHits
         {
             get

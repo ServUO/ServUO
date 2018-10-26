@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class TheScholarsHalo : Bandana, ITokunoDyable
+    public class TheScholarsHalo : Bandana
 	{
         public override int LabelNumber { get { return 1157354; } } // the scholar's halo
         public override bool IsArtifact { get { return true; } }
@@ -10,11 +10,11 @@ namespace Server.Items
         [Constructable]
         public TheScholarsHalo()
         {
-            this.Attributes.BonusMana = 15;
-            this.Attributes.RegenMana = 2;
-            this.Attributes.SpellDamage = 15;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.LowerManaCost = 10;
+            Attributes.BonusMana = 15;
+            Attributes.RegenMana = 2;
+            Attributes.SpellDamage = 15;
+            Attributes.CastSpeed = 1;
+            Attributes.LowerManaCost = 10;
         }
 
         public TheScholarsHalo(Serial serial)

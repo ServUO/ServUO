@@ -5,27 +5,28 @@ namespace Server.Items
     public class StaffOfResonance : GlassStaff
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113527; } } // Staff of Resonance
+		
         [Constructable]
         public StaffOfResonance()
         {
 			switch (Utility.Random(5)) // Random resonance property
 			{
-			case 0 : this.AbsorptionAttributes.ResonanceFire = 20; break;
-			case 1 : this.AbsorptionAttributes.ResonanceCold = 20; break;
-			case 2 : this.AbsorptionAttributes.ResonancePoison = 20; break;
-			case 3 : this.AbsorptionAttributes.ResonanceEnergy = 20; break;
-			case 4 : this.AbsorptionAttributes.ResonanceKinetic = 20; break;			
+				case 0 : AbsorptionAttributes.ResonanceFire = 20; break;
+				case 1 : AbsorptionAttributes.ResonanceCold = 20; break;
+				case 2 : AbsorptionAttributes.ResonancePoison = 20; break;
+				case 3 : AbsorptionAttributes.ResonanceEnergy = 20; break;
+				case 4 : AbsorptionAttributes.ResonanceKinetic = 20; break;			
 			}
-			this.Attributes.SpellChanneling = 1;
-			this.WeaponAttributes.MageWeapon = 10;
-			this.WeaponAttributes.HitHarm = 50;
-			this.Attributes.DefendChance = 10;
-			this.Attributes.WeaponSpeed = 20;
-			this.Attributes.WeaponDamage = -40;
-			this.Attributes.LowerManaCost = 5;
-			this.AosElementDamages.Poison = 100;
-			this.Hue = 1451; //Hue not exact
-			this.Name = ("Staff of Resonance");
+			Attributes.SpellChanneling = 1;
+			WeaponAttributes.MageWeapon = 10;
+			WeaponAttributes.HitHarm = 50;
+			Attributes.DefendChance = 10;
+			Attributes.WeaponSpeed = 20;
+			Attributes.WeaponDamage = -40;
+			Attributes.LowerManaCost = 5;
+			AosElementDamages.Poison = 100;
+			Hue = 1451; //Hue not exact
         }
 
         public StaffOfResonance(Serial serial)
@@ -53,20 +54,6 @@ namespace Server.Items
             get
             {
                 return 255;
-            }
-        }
-		public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
             }
         }
         public override void Serialize(GenericWriter writer)

@@ -5,7 +5,8 @@ namespace Server.Items
     [Flipable(0x2FB9, 0x3173)]
     public class CloakOfLife : BaseOuterTorso
     {
-
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public CloakOfLife()
             : base(0x2FB9)

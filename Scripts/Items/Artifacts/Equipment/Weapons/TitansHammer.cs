@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public TitansHammer()
         {
-            this.Hue = 0x482;
-            this.WeaponAttributes.HitEnergyArea = 100;
-            this.Attributes.BonusStr = 15;
-            this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x482;
+            WeaponAttributes.HitEnergyArea = 100;
+            Attributes.BonusStr = 15;
+            Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 50;
         }
 
         public TitansHammer(Serial serial)

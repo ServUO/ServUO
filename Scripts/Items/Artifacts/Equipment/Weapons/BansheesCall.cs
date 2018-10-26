@@ -5,11 +5,11 @@ namespace Server.Items
     public class BansheesCall : Cyclone
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113529; } } // Banshee's Call
+		
         [Constructable]
         public BansheesCall() 
         {
-            Name = ("Banshee's Call");
-		
             Hue = 1266;		
             WeaponAttributes.HitHarm = 40;
             Attributes.BonusStr = 5;

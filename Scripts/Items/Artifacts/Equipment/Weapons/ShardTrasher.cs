@@ -8,13 +8,12 @@ namespace Server.Items
         [Constructable]
         public ShardThrasher()
         {
-            this.Hue = 0x4F2;
-
-            this.WeaponAttributes.HitPhysicalArea = 30;
-            this.Attributes.BonusStam = 8;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponSpeed = 35;
-            this.Attributes.WeaponDamage = 40;
+            Hue = 0x4F2;
+            WeaponAttributes.HitPhysicalArea = 30;
+            Attributes.BonusStam = 8;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponSpeed = 35;
+            Attributes.WeaponDamage = 40;
         }
 
         public ShardThrasher(Serial serial)

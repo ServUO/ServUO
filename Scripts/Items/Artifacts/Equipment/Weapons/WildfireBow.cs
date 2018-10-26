@@ -9,12 +9,10 @@ namespace Server.Items
         public WildfireBow()
             : base()
         {
-            this.Hue = 0x489;
-			
-            this.SkillBonuses.SetValues(0, SkillName.Archery, 10);
-            this.WeaponAttributes.ResistFireBonus = 25;
-			
-            this.Velocity = 15;			
+            Hue = 0x489;		
+            SkillBonuses.SetValues(0, SkillName.Archery, 10);
+            WeaponAttributes.ResistFireBonus = 25;			
+            Velocity = 15;			
         }
 
         public WildfireBow(Serial serial)

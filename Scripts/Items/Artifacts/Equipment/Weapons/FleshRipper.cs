@@ -8,15 +8,12 @@ namespace Server.Items
         [Constructable]
         public FleshRipper()
         {
-            this.Hue = 0x341;
-
-            this.SkillBonuses.SetValues(0, SkillName.Anatomy, 10.0);
-
-            this.Attributes.BonusStr = 5;
-            this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponSpeed = 40;
-
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x341;
+            SkillBonuses.SetValues(0, SkillName.Anatomy, 10.0);
+            Attributes.BonusStr = 5;
+            Attributes.AttackChance = 15;
+            Attributes.WeaponSpeed = 40;
+            WeaponAttributes.UseBestSkill = 1;
             // TODO: Mage Slayer
         }
 

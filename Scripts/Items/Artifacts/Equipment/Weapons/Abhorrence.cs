@@ -10,17 +10,14 @@ namespace Server.Items
         [Constructable]
         public Abhorrence()
         {
-            this.Attributes.SpellChanneling = 1;
-            this.WeaponAttributes.HitLightning = 35;
-            this.WeaponAttributes.HitLeechMana = 40;
-            this.WeaponAttributes.HitLowerDefend = 20;
-            this.Attributes.WeaponSpeed = 35;
-            this.Attributes.WeaponDamage = 50;
-            this.MaxRange = 8;
-
+            Attributes.SpellChanneling = 1;
+            WeaponAttributes.HitLightning = 35;
+            WeaponAttributes.HitLeechMana = 40;
+            WeaponAttributes.HitLowerDefend = 20;
+            Attributes.WeaponSpeed = 35;
+            Attributes.WeaponDamage = 50;
             ExtendedWeaponAttributes.Bane = 1;
-
-            this.Hue = 1910; // checked
+            Hue = 1910; // checked
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)

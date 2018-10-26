@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public StaffOfPower()
         {
-            this.Hue = Utility.RandomBool() ? 0x4F2 : 0x4EF;
-            this.WeaponAttributes.MageWeapon = 15;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.SpellDamage = 5;
-            this.Attributes.CastRecovery = 2;
-            this.Attributes.LowerManaCost = 5;
+            Hue = Utility.RandomBool() ? 0x4F2 : 0x4EF;
+            WeaponAttributes.MageWeapon = 15;
+            Attributes.SpellChanneling = 1;
+            Attributes.SpellDamage = 5;
+            Attributes.CastRecovery = 2;
+            Attributes.LowerManaCost = 5;
         }
 
         public StaffOfPower(Serial serial)

@@ -59,7 +59,8 @@ namespace Server.Items
                         case PotionEffect.Parasitic: return 1080069;
                         case PotionEffect.Darkglow: return 1080070;
                         case PotionEffect.Invisibility: return 1080071;
-                        case PotionEffect.Conflagration: return 1072658 + (int)m_Type - (int)PotionEffect.Conflagration;
+                        case PotionEffect.Conflagration: return 1072658;
+                        case PotionEffect.ConflagrationGreater: return 1072659;
                     }
                 }
 

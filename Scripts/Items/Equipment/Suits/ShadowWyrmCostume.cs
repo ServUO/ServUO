@@ -8,7 +8,8 @@ namespace Server.Items
 		[Constructable]
 		public ShadowWyrmCostume() : base( )
 		{
-            this.CostumeBody = 106;
+            CostumeBody = 106;
+            CostumeHue = 0;
 		}
 		
 		public override int LabelNumber

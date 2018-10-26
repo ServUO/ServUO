@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("a crimson dragon corpse")]
     public class CrimsonDragon : BasePeerless
     {
+        public override bool GiveMLSpecial { get { return false; } }
+
         private DateTime m_NextTerror;
         [Constructable]
         public CrimsonDragon()

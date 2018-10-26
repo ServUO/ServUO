@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public MagekillerLeafblade()
         {
-            this.WeaponAttributes.HitLeechMana = 16;
+            WeaponAttributes.HitLeechMana = 16;
         }
 
         public MagekillerLeafblade(Serial serial)

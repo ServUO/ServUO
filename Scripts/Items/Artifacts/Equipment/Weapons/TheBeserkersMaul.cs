@@ -8,9 +8,9 @@ namespace Server.Items
         [Constructable]
         public TheBeserkersMaul()
         {
-            this.Hue = 0x21;
-            this.Attributes.WeaponSpeed = 75;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x21;
+            Attributes.WeaponSpeed = 75;
+            Attributes.WeaponDamage = 50;
         }
 
         public TheBeserkersMaul(Serial serial)

@@ -5,9 +5,10 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class Hephaestus : HeaterShield, ITokunoDyable
+    public class Hephaestus : HeaterShield
     {
         public override int LabelNumber { get { return 1152909; } } // Hephaestus
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public Hephaestus() : this(true)
@@ -58,9 +59,10 @@ namespace Server.Items
         }
     }
 
-    public class GargishHephaestus : LargePlateShield, ITokunoDyable
+    public class GargishHephaestus : LargePlateShield
     {
         public override int LabelNumber { get { return 1152909; } } // Hephaestus
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public GargishHephaestus() : this(true)

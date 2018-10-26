@@ -118,21 +118,7 @@ namespace Server.Mobiles
 				c.DropItem( new DreadFlute() );
 				
 			if ( Utility.RandomDouble() < 0.05 )
-				c.DropItem( new DreadsRevenge() );
-				
-			if ( Utility.RandomDouble() < 0.025 )
-				c.DropItem( new CrimsonCincture() );
-				
-			if ( Utility.RandomDouble() < 0.05 )
-			{
-				switch ( Utility.Random( 4 ) )
-				{
-					case 0: c.DropItem( new LeafweaveLegs() ); break;
-					case 1: c.DropItem( new DeathChest() ); break;
-					case 2: c.DropItem( new AssassinLegs() ); break;
-					case 3: c.DropItem( new Feathernock() ); break;
-				}
-			}		
+				c.DropItem( new DreadsRevenge() );	
 		}
 		
 		public override int Hides{ get{ return 10; } }

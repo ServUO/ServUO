@@ -121,9 +121,6 @@ namespace Server.Mobiles
                     break;
             }
 
-            if (Utility.RandomDouble() < 0.10)
-                c.DropItem(new HumanFeyLeggings());
-
             if (Utility.RandomDouble() < 0.6)
                 c.DropItem(new ParrotItem());
 
@@ -137,25 +134,8 @@ namespace Server.Mobiles
                 c.DropItem(new MarkOfTravesty());
 
             if (Utility.RandomDouble() < 0.025)
-                c.DropItem(new CrimsonCincture());
-
-            if (Utility.RandomDouble() < 0.025)
             {
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        c.DropItem(new AssassinLegs());
-                        break;
-                    case 1:
-                        c.DropItem(new AssassinArms());
-                        break;
-                    case 2:
-                        c.DropItem(new AssassinGloves());
-                        break;
-                    case 3:
-                        c.DropItem(new MalekisHonor());
-                        break;
-                }
+                c.DropItem(new MalekisHonor());
             }
         }
 

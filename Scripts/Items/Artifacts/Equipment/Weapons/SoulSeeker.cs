@@ -8,13 +8,12 @@ namespace Server.Items
         [Constructable]
         public SoulSeeker()
         {
-            this.Hue = 0x38C;
-
-            this.WeaponAttributes.HitLeechStam = 40;
-            this.WeaponAttributes.HitLeechMana = 30;
-            this.WeaponAttributes.HitLeechHits = 30;
-            this.Attributes.WeaponSpeed = 60;
-            this.Slayer = SlayerName.Repond;
+            Hue = 0x38C;
+            WeaponAttributes.HitLeechStam = 40;
+            WeaponAttributes.HitLeechMana = 30;
+            WeaponAttributes.HitLeechHits = 30;
+            Attributes.WeaponSpeed = 60;
+            Slayer = SlayerName.Repond;
         }
 
         public SoulSeeker(Serial serial)

@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public Runesabre()
         {
-            this.SkillBonuses.SetValues(0, SkillName.MagicResist, 5.0);
-            this.WeaponAttributes.MageWeapon = -29;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 5.0);
+            WeaponAttributes.MageWeapon = -29;
         }
 
         public Runesabre(Serial serial)

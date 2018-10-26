@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public TrueWarCleaver()
         {
-            this.Attributes.WeaponDamage = 4;
-            this.Attributes.RegenHits = 2;
+            Attributes.WeaponDamage = 4;
+            Attributes.RegenHits = 2;
         }
 
         public TrueWarCleaver(Serial serial)

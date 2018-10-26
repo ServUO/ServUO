@@ -8,13 +8,12 @@ namespace Server.Items
         [Constructable]
         public LuminousRuneBlade()
         {
-            this.WeaponAttributes.HitLightning = 40;
-            this.WeaponAttributes.SelfRepair = 5;
-            this.Attributes.NightSight = 1;
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 55;
-
-            this.Hue = this.GetElementalDamageHue();
+            WeaponAttributes.HitLightning = 40;
+            WeaponAttributes.SelfRepair = 5;
+            Attributes.NightSight = 1;
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 55;
+            Hue = this.GetElementalDamageHue();
         }
 
         public LuminousRuneBlade(Serial serial)

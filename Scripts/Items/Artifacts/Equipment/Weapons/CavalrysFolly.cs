@@ -5,21 +5,19 @@ namespace Server.Items
     public class CavalrysFolly : BladedStaff
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1115446; } } // Cavalry's Folly
+		
         [Constructable]
         public CavalrysFolly()
             : base()
-        {
-            this.Name = ("Cavalry's Folly");
-		
-            this.Hue = 1165;
-		
-            this.Weight = 4.0;
-            this.Attributes.BonusHits = 2;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponDamage = 45;
-            this.Attributes.WeaponSpeed = 35;
-            this.WeaponAttributes.HitLowerDefend = 40;	
-            this.WeaponAttributes.HitFireball = 40;
+        {	
+            Hue = 1165;
+            Attributes.BonusHits = 2;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponDamage = 45;
+            Attributes.WeaponSpeed = 35;
+            WeaponAttributes.HitLowerDefend = 40;	
+            WeaponAttributes.HitFireball = 40;
         }
 
         public CavalrysFolly(Serial serial)

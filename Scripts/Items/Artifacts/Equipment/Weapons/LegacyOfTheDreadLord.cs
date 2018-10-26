@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public LegacyOfTheDreadLord()
         {
-            this.Hue = 0x676;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.CastRecovery = 3;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x676;
+            Attributes.SpellChanneling = 1;
+            Attributes.CastRecovery = 3;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 50;
         }
 
         public LegacyOfTheDreadLord(Serial serial)
@@ -60,12 +60,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Attributes.CastSpeed == 3)
-                this.Attributes.CastRecovery = 3;
-
-            if (this.Hue == 0x4B9)
-                this.Hue = 0x676;
         }
     }
 }

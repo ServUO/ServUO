@@ -5,20 +5,19 @@ namespace Server.Items
     public class ClawsOfTheBerserker : Tekagi
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113758; } } // Claws of the Berserker
+		
         [Constructable]
         public ClawsOfTheBerserker()
             : base()
         {
-            this.Name = ("Claws Of The Berserker");
-		
-            this.Hue = 1172;	
-		
-            this.WeaponAttributes.HitLightning = 45;	
-            this.WeaponAttributes.HitLowerDefend = 50;
-            this.WeaponAttributes.BattleLust = 1;
-            this.Attributes.CastSpeed = 1;	
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 60;
+            Hue = 1172;		
+            WeaponAttributes.HitLightning = 45;	
+            WeaponAttributes.HitLowerDefend = 50;
+            WeaponAttributes.BattleLust = 1;
+            Attributes.CastSpeed = 1;	
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 60;
         }
 
         public ClawsOfTheBerserker(Serial serial)

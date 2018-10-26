@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public TheDragonsTail()
         {
-            this.LootType = LootType.Blessed;
-
-            this.WeaponAttributes.HitLeechStam = 16;
-            this.Attributes.WeaponSpeed = 10;
-            this.Attributes.WeaponDamage = 25;
+            LootType = LootType.Blessed;
+            WeaponAttributes.HitLeechStam = 16;
+            Attributes.WeaponSpeed = 10;
+            Attributes.WeaponDamage = 25;
         }
 
         public TheDragonsTail(Serial serial)

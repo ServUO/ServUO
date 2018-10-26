@@ -5,11 +5,11 @@ namespace Server.Items
     public class AxesOfFury : DualShortAxes
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113517; } } // Axes Of Fury
+		
         [Constructable]
         public AxesOfFury() 
-        {
-            Name = ("Axes Of Fury");
-		
+        {	
             Hue = 33;			
             WeaponAttributes.HitFireball = 45;
             WeaponAttributes.HitLowerDefend = 40;			

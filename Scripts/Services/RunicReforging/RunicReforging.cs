@@ -99,6 +99,15 @@ namespace Server.Items
                 (item is BaseWeapon && !((BaseWeapon)item).DImodded) || 
                 (item is BaseArmor && ((BaseArmor)item).ArmorAttributes.MageArmor > 0 && BaseArmor.IsMageArmorType((BaseArmor)item)) ? 1 : 0;
 
+            if (item is BaseWeapon &&
+                ((BaseWeapon)item).AosElementDamages[AosElementAttribute.Fire] > 0 ||
+                ((BaseWeapon)item).AosElementDamages[AosElementAttribute.Cold] > 0 ||
+                ((BaseWeapon)item).AosElementDamages[AosElementAttribute.Poison] > 0 ||
+                ((BaseWeapon)item).AosElementDamages[AosElementAttribute.Energy] > 0)
+            {
+                mods++;
+            }
+
             if (mods > maxmods)
                 goodtogo = false;
             else if(m_AllowableTable.ContainsKey(item.GetType()) && m_AllowableTable[item.GetType()] != crsystem)
@@ -418,38 +427,40 @@ namespace Server.Items
             if (list == null || list.Count == 0)
                 return;
 
-            List<NamedInfoCol> copy = new List<NamedInfoCol>(list);
-            for (int c = 0; c < copy.Count; c++)
+            list.IterateReverse(col =>
             {
-                NamedInfoCol col = copy[c];
-
-                if (col == null) continue;
-
-                if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.BloodDrinker)
+                if (col != null && list.Contains(col))
                 {
-                    if (!(item is BaseWeapon) || (((BaseWeapon)item).PrimaryAbility != WeaponAbility.BleedAttack && ((BaseWeapon)item).SecondaryAbility != WeaponAbility.BleedAttack))
+                    if (col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.BloodDrinker)
+                    {
+                        if (!(item is BaseWeapon) || (((BaseWeapon)item).PrimaryAbility != WeaponAbility.BleedAttack && ((BaseWeapon)item).SecondaryAbility != WeaponAbility.BleedAttack))
+                            list.Remove(col);
+                    }
+                    else if (col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.SplinteringWeapon)
+                    {
+                        if (playermade || item is BaseRanged)
+                            list.Remove(col);
+                    }
+                    else if (col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
+                    {
+                        if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
+                            list.Remove(col);
+                    }
+                    else if (col.Attribute is AosArmorAttribute && (AosArmorAttribute)col.Attribute == AosArmorAttribute.ReactiveParalyze)
+                    {
+                        if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
+                            list.Remove(col);
+                    }
+                    else if (col.Attribute is AosAttribute && (AosAttribute)col.Attribute == AosAttribute.BalancedWeapon && (!(item is BaseWeapon) || item.Layer != Layer.TwoHanded))
+                    {
                         list.Remove(col);
-                }
-                else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.SplinteringWeapon)
-                {
-                    if (playermade || item is BaseRanged)
+                    }
+                    else if (col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.UseBestSkill && (!(item is BaseWeapon) || item is BaseRanged))
+                    {
                         list.Remove(col);
+                    }
                 }
-                else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
-                {
-                    if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
-                        list.Remove(col);
-                }
-                else if (list.Contains(col) && col.Attribute is AosArmorAttribute && (AosArmorAttribute)col.Attribute == AosArmorAttribute.ReactiveParalyze)
-                {
-                    if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
-                        list.Remove(col);
-                }
-                else if (list.Contains(col) && col.Attribute is AosAttribute && (AosAttribute)col.Attribute == AosAttribute.BalancedWeapon && (!(item is BaseWeapon) || item.Layer != Layer.TwoHanded))
-                {
-                    list.Remove(col);
-                }
-            }
+            });
         }
 
         private static void GetNamedModCount(int itemIndex, int prefixID, int suffixID, int maxmods, int precolcount, int suffixcolcount, ref int prefixCount, ref int suffixCount)
@@ -558,6 +569,14 @@ namespace Server.Items
                     int value = CalculateValue(attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
 
                     ((BaseRanged)item).Velocity = value;
+                    budget -= Imbuing.GetIntensityForAttribute(item, str, -1, value);
+                }
+                else if (str == "ElementalDamage" && item is BaseWeapon)
+                {
+                    int value = CalculateValue(attribute, min, max, percLow, percHigh, ref budget, luckchance, playerMade);
+
+                    BaseRunicTool.ApplyElementalDamage(((BaseWeapon)item), value, value);
+
                     budget -= Imbuing.GetIntensityForAttribute(item, str, -1, value);
                 }
 			}
@@ -1163,15 +1182,15 @@ namespace Server.Items
 				{
                     new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosWeaponAttribute.SelfRepair, SelfRepairTable),
-                        new NamedInfoCol(AosWeaponAttribute.DurabilityBonus, DurabilityTable),
-                        new NamedInfoCol(AosWeaponAttribute.HitLowerDefend, HitWeaponTable2),
-                        new NamedInfoCol(AosWeaponAttribute.LowerStatReq, LowerStatReqTable),
-                        new NamedInfoCol("Slayer", 1),
-                        new NamedInfoCol(AosWeaponAttribute.MageWeapon, MageWeaponTable),
-                        new NamedInfoCol(AosAttribute.SpellChanneling, 1),
-                        new NamedInfoCol(AosAttribute.BalancedWeapon, 1),
-                        new NamedInfoCol("WeaponVelocity", WeaponVelocityTable),
+                        new NamedInfoCol(AosWeaponAttribute.SelfRepair, SelfRepairTable), //
+                        new NamedInfoCol(AosWeaponAttribute.DurabilityBonus, DurabilityTable), //
+                        new NamedInfoCol(AosWeaponAttribute.LowerStatReq, LowerStatReqTable), //
+                        new NamedInfoCol("Slayer", 1), //
+                        new NamedInfoCol(AosWeaponAttribute.MageWeapon, MageWeaponTable), // 
+                        new NamedInfoCol(AosAttribute.SpellChanneling, 1), //
+                        new NamedInfoCol(AosAttribute.BalancedWeapon, 1), //
+                        new NamedInfoCol("WeaponVelocity", WeaponVelocityTable), // 
+                        new NamedInfoCol("ElementalDamage", ElementalDamageTable), //
                     },
                     new NamedInfoCol[] // armor
                     {
@@ -1367,6 +1386,23 @@ namespace Server.Items
                         //new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, ArmorCastingFocusTable),
                     },
 				};
+            m_PrefixSuffixInfo[250] = new NamedInfoCol[][] // Reforge Only
+                {
+                    new NamedInfoCol[] // Weapon
+                    {
+                        new NamedInfoCol(AosWeaponAttribute.HitLowerDefend, HitWeaponTable2),
+                        new NamedInfoCol(AosWeaponAttribute.UseBestSkill, 1),
+                    },
+                    new NamedInfoCol[] // armor
+                    {
+                    },
+                    new NamedInfoCol[]
+                    {
+                    },
+                    new NamedInfoCol[]
+                    {
+                    },
+                };
         }
 
         public class NamedInfoCol
@@ -2072,6 +2108,7 @@ namespace Server.Items
 
         private static int[] m_Standard = new int[] { 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12 };
         private static int[] m_Weapon = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+        private static int[] m_ReforgedWeapon = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 250 };
 
         public static ReforgedPrefix ChooseRandomPrefix(Item item)
         {
@@ -2350,7 +2387,23 @@ namespace Server.Items
 
         private static bool ApplyNewAttributes(Item item, int prefixID, int suffixID, int colIndex, int percLow, int percHigh, int resIndex, int preIndex, int luckchance, bool playermade, ref int budget)
         {
-            int randomCol = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+            int randomCol;
+
+            if (item is BaseWeapon)
+            {
+                if (playermade)
+                {
+                    randomCol = m_ReforgedWeapon[Utility.Random(m_ReforgedWeapon.Length)];
+                }
+                else
+                {
+                    randomCol = m_Weapon[Utility.Random(m_Weapon.Length)];
+                }
+            }
+            else
+            {
+                randomCol = m_Standard[Utility.Random(m_Standard.Length)];
+            }
 
             while (prefixID != 0 && randomCol == prefixID && suffixID != 0 && randomCol == suffixID)
                 randomCol = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
@@ -2364,6 +2417,7 @@ namespace Server.Items
             }
 
             CheckAttributes(item, collection, playermade);
+
             int random = Utility.Random(collection.Count);
 
             return ApplyPrefixSuffixAttribute(item, 
@@ -3019,6 +3073,16 @@ namespace Server.Items
         #endregion
 
         #region Weapon Tables
+        public static int[][] ElementalDamageTable = new int[][]
+        {
+            new int[] { 40, 60, 60, 70, 80, 90, 100 },
+            new int[] { 50, 60, 70, 80, 90, 100, 100 },
+            new int[] { 60, 70, 80, 90, 100, 100, 100 },
+            new int[] {  },
+            new int[] { 100, 100, 100, 100, 100, 100, 100 },
+            new int[] { 100, 100, 100, 100, 100, 100, 100 },
+        };
+
         // Hit magic, area, HLA
         public static int[][] HitWeaponTable1 = new int[][]
         {
