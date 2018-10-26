@@ -5,7 +5,6 @@ namespace Server.Items
 {
     public class FerretImprisonedInCrystal : BaseImprisonedMobile
     {
-		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public FerretImprisonedInCrystal()
             : base(0x1F19)

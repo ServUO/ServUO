@@ -5,7 +5,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefTailoring), typeof(WardensArmorOfAugmentation))]
-    public class RangersCloakOfAugmentation : Cloak, ITokunoDyable
+    public class RangersCloakOfAugmentation : Cloak
     {
         public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1115514; } } // Ranger's Cloak Of Augmentation
@@ -13,12 +13,11 @@ namespace Server.Items
         [Constructable]
         public RangersCloakOfAugmentation()
         {
-            this.Hue = 0x54A;
-
-            this.SAAbsorptionAttributes.EaterKinetic = 5;
-            this.Attributes.SpellDamage = 3;
-            this.Attributes.LowerManaCost = 1;
-            this.Attributes.WeaponSpeed = 5;
+            Hue = 0x54A;
+            SAAbsorptionAttributes.EaterKinetic = 5;
+            Attributes.SpellDamage = 3;
+            Attributes.LowerManaCost = 1;
+            Attributes.WeaponSpeed = 5;
         }
 
         public RangersCloakOfAugmentation(Serial serial)

@@ -2,9 +2,11 @@
 
 namespace Server.Items
 {
-    public class OssianGrimoire : NecromancerSpellbook, ITokunoDyable
+    public class OssianGrimoire : NecromancerSpellbook
 	{
+		public override int LabelNumber { get { return 1078148; } }// Ossian Grimoire
 		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public OssianGrimoire()
         {
@@ -20,14 +22,6 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1078148;
-            }
-        }// Ossian Grimoire
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

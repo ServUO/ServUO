@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class FaerieFire : ElvenCompositeLongbow, ITokunoDyable
+    public class FaerieFire : ElvenCompositeLongbow
 	{
 		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber
@@ -17,14 +17,12 @@ namespace Server.Items
         public FaerieFire()
             : base()
         {
-            this.Hue = 0x489;
-            this.Balanced = true;
-			
-            this.Attributes.BonusDex = 3;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 60;
-			
-            this.WeaponAttributes.HitFireball = 25;
+            Hue = 0x489;
+            Balanced = true;		
+            Attributes.BonusDex = 3;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 60;		
+            WeaponAttributes.HitFireball = 25;
         }
 
         public FaerieFire(Serial serial)

@@ -3,8 +3,10 @@ using Server.Mobiles;
 
 namespace Server.Items
 { 
-    public class WizardsCurio : BaseTalisman, ITokunoDyable
+    public class WizardsCurio : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public WizardsCurio()
             : base(0x2F58)

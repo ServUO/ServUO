@@ -25,8 +25,6 @@ namespace Server.Items
 
     public class NaturalHairDye : Item
     {
-        public override bool IsArtifact { get { return true; } }
-
         private HairDyeType m_Type;
         private TextDefinition m_Label;
 

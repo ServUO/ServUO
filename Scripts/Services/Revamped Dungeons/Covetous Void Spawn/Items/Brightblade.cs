@@ -8,6 +8,7 @@ namespace Server.Items
     public class Brightblade : Katana
     {
         public override int LabelNumber { get { return 1152732; } } // Brightblade
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public Brightblade()
@@ -47,6 +48,7 @@ namespace Server.Items
     public class GargishBrightblade : GargishKatana
     {
         public override int LabelNumber { get { return 1152732; } } // Brightblade
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public GargishBrightblade()

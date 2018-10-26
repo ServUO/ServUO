@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class BowOfTheInfiniteSwarm : CompositeBow, ITokunoDyable
+    public class BowOfTheInfiniteSwarm : CompositeBow
 	{
         public override int LabelNumber { get { return 1157347; } } // bow of the infinite swarm
         public override bool IsArtifact { get { return true; } }
@@ -52,7 +52,7 @@ namespace Server.Items
         }
     }
 
-    public class GlaiveOfTheInfiniteSwarm : SoulGlaive, ITokunoDyable
+    public class GlaiveOfTheInfiniteSwarm : SoulGlaive
     {
         public override int LabelNumber { get { return 1157366; } } // Glaive of the Infinite Swarm
         public override bool IsArtifact { get { return true; } }
