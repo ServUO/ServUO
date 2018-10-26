@@ -4,7 +4,6 @@ namespace Server.Items
 {
     public class DirtPatch : Item
     {
-		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DirtPatch()
             : base(0x0913)

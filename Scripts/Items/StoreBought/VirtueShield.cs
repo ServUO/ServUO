@@ -13,6 +13,8 @@ namespace Server.Items
 
         public override bool CanBeWornByGargoyles { get { return true; } }
         public override int LabelNumber { get { return 1109616; } } // Virtue Shield
+		
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public VirtueShield()

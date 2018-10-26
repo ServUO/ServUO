@@ -25,8 +25,6 @@ namespace Server.Items
 
     public class HaochisPigment : BasePigmentsOfTokuno
     {
-		public override bool IsArtifact { get { return true; } }
-
         private HaochisPigmentType m_Type;
 
         [Constructable]

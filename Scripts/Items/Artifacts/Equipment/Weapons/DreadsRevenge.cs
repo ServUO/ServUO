@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class DreadsRevenge : Kryss, ITokunoDyable
+    public class DreadsRevenge : Kryss
 	{
 		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber

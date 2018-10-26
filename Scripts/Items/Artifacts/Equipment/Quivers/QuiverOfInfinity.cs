@@ -2,20 +2,18 @@
 
 namespace Server.Items
 {
-    public class QuiverOfInfinity : BaseQuiver, ITokunoDyable
+    public class QuiverOfInfinity : BaseQuiver
 	{
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public QuiverOfInfinity()
             : base(0x2B02)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 8.0;
-
-            this.WeightReduction = 30;
-            this.LowerAmmoCost = 20;
-
-            this.Attributes.DefendChance = 5;
+            LootType = LootType.Blessed;
+            Weight = 8.0;
+            WeightReduction = 30;
+            LowerAmmoCost = 20;
+            Attributes.DefendChance = 5;
         }
 
         public QuiverOfInfinity(Serial serial)

@@ -5,9 +5,7 @@ using Server.Mobiles;
 namespace Server.Items
 {
     public abstract class BasePigmentsOfTokuno : Item, IUsesRemaining
-    {
-		public override bool IsArtifact { get { return true; } }
-        
+    {      
         public override int LabelNumber
         {
             get
@@ -137,39 +135,8 @@ namespace Server.Items
             if (!CraftResources.IsStandard(resource))
                 return true;
 
-            if (i is ITokunoDyable)
-                return true;
-
-            if (Server.Engines.Blackthorn.BlackthornRewards.IsTokunoDyable(t))
-                return true;
-
             if (i.IsArtifact)
                 return true;
-
-            return (
-                    IsInTypeList(t, TreasuresOfTokuno.LesserArtifactsTotal) ||
-                    IsInTypeList(t, TreasuresOfTokuno.GreaterArtifacts) ||
-                    #region Mondain's Legacy
-                    IsInTypeList(t, MondainsLegacy.PigmentList) ||
-                    #endregion
-                    #region TOL
-                    IsInTypeList(t, TimeOfLegends.PigmentList) ||
-                    #endregion
-                    IsInTypeList(t, DemonKnight.DoomArtifact) ||
-                    IsInTypeList(t, MondainsLegacy.Artifacts) ||
-                    IsInTypeList(t, StealableArtifactsSpawner.TypesOfEntires) ||
-                    IsInTypeList(t, Paragon.Artifacts) ||
-                    IsInTypeList(t, Leviathan.Artifacts) ||
-                    IsInTypeList(t, TreasureMapChest.Artifacts));
-        }
-
-        private static bool IsInTypeList(Type t, Type[] list)
-        {
-            for (int i = 0; i < list.Length; i++)
-            {
-                if (list[i] == t)
-                    return true;
-            }
 
             return false;
         }

@@ -5,6 +5,8 @@ namespace Server.Items
     [Flipable(0x2FB9, 0x3173)]
     public class CloakOfSilence : BaseOuterTorso
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public CloakOfSilence()
             : base(0x2FB9)

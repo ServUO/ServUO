@@ -2,20 +2,18 @@ using System;
 
 namespace Server.Items
 {
-    public class DupresShield : BaseShield, ITokunoDyable
+    public class DupresShield : BaseShield
 	{
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DupresShield()
             : base(0x2B01)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 6.0;
-
-            this.Attributes.BonusHits = 5;
-            this.Attributes.RegenHits = 1;
-
-            this.SkillBonuses.SetValues(0, SkillName.Parry, 5);
+            LootType = LootType.Blessed;
+            Weight = 6.0;
+            Attributes.BonusHits = 5;
+            Attributes.RegenHits = 1;
+            SkillBonuses.SetValues(0, SkillName.Parry, 5);
         }
 
         public DupresShield(Serial serial)

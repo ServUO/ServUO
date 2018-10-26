@@ -3,18 +3,14 @@ using Server.Gumps;
 
 namespace Server.Items
 {
-    public interface ITokunoDyable
-    {
-    }
-
     public class HeritageToken : Item
     {
         [Constructable]
         public HeritageToken()
             : base(0x367A)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 5.0;
+            LootType = LootType.Blessed;
+            Weight = 5.0;
         }
 
         public HeritageToken(Serial serial)

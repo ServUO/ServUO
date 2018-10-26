@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class MischiefMaker : MagicalShortbow, ITokunoDyable
+    public class MischiefMaker : MagicalShortbow
 	{
 		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber
@@ -18,10 +18,8 @@ namespace Server.Items
             : base()
         {
             Hue = 0x8AB;
-            Balanced = true;
-			
-            Slayer = SlayerName.Silver;
-			
+            Balanced = true;			
+            Slayer = SlayerName.Silver;			
             Attributes.WeaponSpeed = 35;
             Attributes.WeaponDamage = 45;
         }

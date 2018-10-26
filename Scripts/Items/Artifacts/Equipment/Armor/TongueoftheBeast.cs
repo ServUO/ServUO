@@ -2,18 +2,17 @@ using System;
 
 namespace Server.Items
 {
-    public class TongueoftheBeast : WoodenKiteShield//, ITokunoDyable
+    public class TongueoftheBeast : WoodenKiteShield
 	{
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TongueoftheBeast()
         {
-            this.ItemID = 0x1B78;
-            this.Hue = 0x556;
-
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.RegenMana = 3;
+            ItemID = 0x1B78;
+            Hue = 0x556;
+            Attributes.SpellChanneling = 1;
+            Attributes.RegenStam = 3;
+            Attributes.RegenMana = 3;
         }
 
         public TongueoftheBeast(Serial serial)

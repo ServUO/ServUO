@@ -4,7 +4,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefTailoring), typeof(GargishCrimsonCincture))]
-    public class CrimsonCincture : HalfApron, ITokunoDyable
+    public class CrimsonCincture : HalfApron
 	{
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
@@ -45,7 +45,7 @@ namespace Server.Items
         }
     }
 
-    public class GargishCrimsonCincture : GargoyleHalfApron, ITokunoDyable
+    public class GargishCrimsonCincture : GargoyleHalfApron
     {
         public override Race RequiredRace
         {
