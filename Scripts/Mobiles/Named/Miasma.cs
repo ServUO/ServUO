@@ -63,7 +63,7 @@ namespace Server.Mobiles
 
             if ( Utility.RandomDouble() < 0.025 )
             {
-                switch ( Utility.Random( 16 ) )
+                switch ( Utility.Random( 18 ) )
                 {
                     case 0: c.DropItem( new MyrmidonGloves() ); break;
                     case 1: c.DropItem( new MyrmidonGorget() ); break;
@@ -81,6 +81,8 @@ namespace Server.Mobiles
                     case 13: c.DropItem( new AssassinArms() ); break;
                     case 14: c.DropItem( new HunterGloves() ); break;
                     case 15: c.DropItem( new HunterLegs() ); break;
+                    case 16: c.DropItem(new GreymistLegs()); break;
+                    case 17: c.DropItem(new MyrmidonChest()); break;
                 }
             }
         }

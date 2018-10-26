@@ -21,8 +21,7 @@ namespace Server.Engines.Plants
             new PlantResourceInfo(PlantType.CypressStraight, PlantHue.Plain, typeof(BarkFragment)),
             new PlantResourceInfo(PlantType.CypressTwisted, PlantHue.Plain, typeof(BarkFragment)),
             new PlantResourceInfo(PlantType.Vanilla, PlantHue.Plain, typeof(Vanilla)),
-            new PlantResourceInfo(PlantType.PoppyPatch, PlantHue.Plain, typeof(PoppiesDust))
-            new PlantResourceInfo(PlantType.PoppyPatch, PlantHue.Plain, typeof(PoppyDust))
+            new PlantResourceInfo(PlantType.PoppyPatch, PlantHue.Plain, typeof(PoppiesDust)),
             new PlantResourceInfo(PlantType.Vanilla, PlantHue.Plain, typeof(Vanilla))
         };
 

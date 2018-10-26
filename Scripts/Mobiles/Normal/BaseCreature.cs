@@ -7636,6 +7636,8 @@ namespace Server.Mobiles
                     inst.SuccessSound = PlayInstrumentSound ? 0x58B : 0;
                     inst.FailureSound = PlayInstrumentSound ? 0x58C : 0;
                     inst.Movable = false;
+                    inst.Quality = ItemQuality.Exceptional;
+
                     PackItem(inst);
                 }
             }

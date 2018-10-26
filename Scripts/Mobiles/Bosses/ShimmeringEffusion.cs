@@ -87,36 +87,11 @@ namespace Server.Mobiles
                 }
             }
 
-            if (Utility.RandomDouble() < 0.10)
-                c.DropItem(new HumanFeyLeggings());
-			
             if (Utility.RandomDouble() < 0.05)
                 c.DropItem(new FerretImprisonedInCrystal());		
 						
             if (Utility.RandomDouble() < 0.025)
                 c.DropItem(new CrystallineRing());	
-					
-            if (Utility.RandomDouble() < 0.025)
-                c.DropItem(new CrimsonCincture());
-				
-            if (Utility.RandomDouble() < 0.05)
-            {
-                switch ( Utility.Random(4) )
-                {
-                    case 0:
-                        c.DropItem(new MalekisHonor());
-                        break;
-                    case 1:
-                        c.DropItem(new Feathernock());
-                        break;
-                    case 2:
-                        c.DropItem(new Swiftflight());
-                        break;
-                    case 3:
-                        c.DropItem(new HunterGloves());
-                        break;
-                }
-            }
         }
 			
         public override bool AutoDispel

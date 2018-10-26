@@ -154,7 +154,7 @@ namespace Server.Engines.Plants
 				case 1: return PlantType.HedgeTall;
 				case 2: return PlantType.HopsSouth;
 				case 3: return PlantType.Vanilla;
-                case 4: return PlantType.SugarCane;
+                case 4: return PlantType.SugarCanes;
 				default: return PlantType.CocoaTree;
 			}
 		}
@@ -167,7 +167,7 @@ namespace Server.Engines.Plants
 				case 1:	return PlantType.HedgeShort;
 				case 2: return PlantType.JuniperBush;
 				case 3: return PlantType.SnowdropPatch;
-				case default: return PlantType.CocoaTree;
+				default: return PlantType.CocoaTree;
 			}
 		}
 
@@ -178,8 +178,8 @@ namespace Server.Engines.Plants
 				case 0:	return PlantType.Cattails;
 				case 1: return PlantType.PoppyPatch;
 				case 2: return PlantType.SpiderTree;
-				case 3: return PlantType.WaterLilly;
-				default: return PlantType.CocoaTree;
+                case 3: return PlantType.WaterLily;
+                default: return PlantType.CocoaTree;
 			}
 		}
 

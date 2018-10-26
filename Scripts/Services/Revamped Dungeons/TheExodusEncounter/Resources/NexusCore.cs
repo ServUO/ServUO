@@ -5,16 +5,9 @@ namespace Server.Items
     public class NexusCore : Item
     {
         [Constructable]
-        public NexusCore() : this(1)
+        public NexusCore() : base(0x4B82)
         {
-        }
-
-        [Constructable]
-        public NexusCore(int amount) : base(0x4B82)
-        {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 1;
+            Stackable = false;
         }
 
         public NexusCore(Serial serial) : base(serial)
@@ -27,7 +20,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -35,6 +28,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+                Stackable = false;
         }
     }
 }

@@ -111,6 +111,20 @@ namespace Server.Items
             return true;
         }
 
+        public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
+        {
+            BaseHouse house = BaseHouse.FindHouseAt(this);
+
+            if (house != null)
+            {
+                var secure = house.GetSecureInfoFor(this);
+
+                return secure != null && house.HasSecureAccess(from, secure);
+            }
+
+            return base.CheckLift(from, item, ref reject);
+        }
+
         public override void SendFullItemsMessage(Mobile to, Item item) // That mailbox is completely full.
         {
             to.SendLocalizedMessage(1113940);  // That mailbox is completely full.
