@@ -10,8 +10,6 @@ namespace Server.Items
         [Constructable]
         public AbyssalBlade()
         {
-            Name = ("Abyssal Blade");
-
             Hue = 2404;
             WeaponAttributes.HitManaDrain = 50;
             WeaponAttributes.HitFatigue = 50;

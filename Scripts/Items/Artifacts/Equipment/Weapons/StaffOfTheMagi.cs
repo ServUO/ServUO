@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public StaffOfTheMagi()
         {
-            this.Hue = 0x481;
-            this.WeaponAttributes.MageWeapon = 30;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x481;
+            WeaponAttributes.MageWeapon = 30;
+            Attributes.SpellChanneling = 1;
+            Attributes.CastSpeed = 1;
+            Attributes.WeaponDamage = 50;
         }
 
         public StaffOfTheMagi(Serial serial)
@@ -66,12 +66,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.WeaponAttributes.MageWeapon == 0)
-                this.WeaponAttributes.MageWeapon = 30;
-
-            if (this.ItemID == 0xDF1)
-                this.ItemID = 0xDF0;
         }
     }
 }

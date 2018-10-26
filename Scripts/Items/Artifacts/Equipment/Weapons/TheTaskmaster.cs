@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public TheTaskmaster()
         {
-            this.Hue = 0x4F8;
-            this.WeaponAttributes.HitPoisonArea = 100;
-            this.Attributes.BonusDex = 5;
-            this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponDamage = 50;
+            Hue = 0x4F8;
+            WeaponAttributes.HitPoisonArea = 100;
+            Attributes.BonusDex = 5;
+            Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 50;
         }
 
         public TheTaskmaster(Serial serial)

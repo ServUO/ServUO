@@ -54,9 +54,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Attributes.AttackChance == 50)
-                this.Attributes.AttackChance = 10;
         }
     }
 }

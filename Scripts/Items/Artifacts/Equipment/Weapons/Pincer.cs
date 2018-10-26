@@ -10,15 +10,14 @@ namespace Server.Items
         [Constructable]
         public Pincer()
         {
-            this.Hue = 2500;
-
-            this.Attributes.BalancedWeapon = 1;
-            this.Slayer2 = BaseRunicTool.GetRandomSlayer();
-            this.SetSkillBonuses.SetValues(0, SkillName.Lumberjacking, 10);
-            this.WeaponAttributes.HitLeechHits = 87;
-            this.Attributes.RegenStam = 6;
-            this.Attributes.RegenMana = 6;
-            this.Attributes.WeaponDamage = 40;
+            Hue = 2500;
+            Attributes.BalancedWeapon = 1;
+            Slayer2 = BaseRunicTool.GetRandomSlayer();
+            SetSkillBonuses.SetValues(0, SkillName.Lumberjacking, 10);
+            WeaponAttributes.HitLeechHits = 87;
+            Attributes.RegenStam = 6;
+            Attributes.RegenMana = 6;
+            Attributes.WeaponDamage = 40;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
@@ -55,15 +54,14 @@ namespace Server.Items
         [Constructable]
         public GargishPincer()
         {
-            this.Hue = 2500;
-
-            this.Attributes.BalancedWeapon = 1;
-            this.Slayer2 = BaseRunicTool.GetRandomSlayer();
-            this.SetSkillBonuses.SetValues(0, SkillName.Lumberjacking, 10);
-            this.WeaponAttributes.HitLeechHits = 87;
-            this.Attributes.RegenStam = 6;
-            this.Attributes.RegenMana = 6;
-            this.Attributes.WeaponDamage = 40;
+            Hue = 2500;
+            Attributes.BalancedWeapon = 1;
+            Slayer2 = BaseRunicTool.GetRandomSlayer();
+            SetSkillBonuses.SetValues(0, SkillName.Lumberjacking, 10);
+            WeaponAttributes.HitLeechHits = 87;
+            Attributes.RegenStam = 6;
+            Attributes.RegenMana = 6;
+            Attributes.WeaponDamage = 40;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)

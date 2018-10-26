@@ -8,15 +8,13 @@ namespace Server.Items
         [Constructable]
         public Subdue()
         {
-            this.Hue = 0x2cb;
-
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 50;
-            this.Attributes.AttackChance = 10;
-
-            this.WeaponAttributes.HitLeechMana = 100;
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x2cb;
+            Attributes.SpellChanneling = 1;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 50;
+            Attributes.AttackChance = 10;
+            WeaponAttributes.HitLeechMana = 100;
+            WeaponAttributes.UseBestSkill = 1;
         }
 
         public Subdue(Serial serial)
