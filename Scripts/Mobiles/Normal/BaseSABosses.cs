@@ -7,6 +7,8 @@ namespace Server.Mobiles
     [TypeAlias("Server.Mobiles.BaseSABosses")]
     public abstract class BaseSABoss : BasePeerless
     {
+        public override bool GiveMLSpecial { get { return false; } }
+
         Dictionary<Mobile, int> m_DamageEntries;
         public BaseSABoss(AIType aiType, FightMode fightMode, int rangePerception, int rangeFight, double activeSpeed, double passiveSpeed)
             : base(aiType, fightMode, rangePerception, rangeFight, activeSpeed, passiveSpeed)

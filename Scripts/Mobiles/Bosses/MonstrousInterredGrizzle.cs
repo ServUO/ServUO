@@ -121,18 +121,12 @@ namespace Server.Mobiles
                     break;
             }
 
-            if (Utility.RandomDouble() < 0.10)
-                c.DropItem(new HumanFeyLeggings());
-			
             if (Utility.RandomDouble() < 0.6)				
                 c.DropItem(new ParrotItem());
 				
             if (Utility.RandomDouble() < 0.05)				
                 c.DropItem(new GrizzledMareStatuette());
-							
-            if (Utility.RandomDouble() < 0.025)
-                c.DropItem(new CrimsonCincture());
-				
+
             if (Utility.RandomDouble() < 0.05)
             {
                 switch ( Utility.Random(5) )
