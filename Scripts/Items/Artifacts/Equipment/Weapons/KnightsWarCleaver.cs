@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public KnightsWarCleaver()
         {
-            this.Attributes.RegenHits = 3;
+            Attributes.RegenHits = 3;
         }
 
         public KnightsWarCleaver(Serial serial)

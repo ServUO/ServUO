@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public DiseasedMachete()
         {
-            this.WeaponAttributes.HitPoisonArea = 25;
+            WeaponAttributes.HitPoisonArea = 25;
         }
 
         public DiseasedMachete(Serial serial)

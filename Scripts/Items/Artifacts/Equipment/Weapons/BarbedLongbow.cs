@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public BarbedLongbow()
         {
-            this.Attributes.ReflectPhysical = 12;
+            Attributes.ReflectPhysical = 12;
         }
 
         public BarbedLongbow(Serial serial)

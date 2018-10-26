@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Server.Regions
 {
-    public class SeaMarketRegion : GuardedRegion
+    public class SeaMarketRegion : BaseRegion
     {
         private static readonly TimeSpan KickDuration = TimeSpan.FromMinutes(20);
 

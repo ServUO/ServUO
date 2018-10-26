@@ -10,7 +10,7 @@ namespace Server.Items
         public FNPitchfork()
             : base(0xE87)
         {
-            this.Weight = 11.0;
+            Weight = 11.0;
         }
 
         public FNPitchfork(Serial serial)

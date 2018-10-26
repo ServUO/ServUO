@@ -8,13 +8,11 @@ namespace Server.Items
         [Constructable]
         public ColdBlood()
         {
-            this.Hue = 0x4F2;
-
-            this.Attributes.WeaponSpeed = 40;
-
-            this.Attributes.BonusHits = 6;
-            this.Attributes.BonusStam = 6;
-            this.Attributes.BonusMana = 6;
+            Hue = 0x4F2;
+            Attributes.WeaponSpeed = 40;
+            Attributes.BonusHits = 6;
+            Attributes.BonusStam = 6;
+            Attributes.BonusMana = 6;
         }
 
         public ColdBlood(Serial serial)

@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public IcySpellblade()
         {
-            this.WeaponAttributes.ResistColdBonus = 5;
+            WeaponAttributes.ResistColdBonus = 5;
         }
 
         public IcySpellblade(Serial serial)

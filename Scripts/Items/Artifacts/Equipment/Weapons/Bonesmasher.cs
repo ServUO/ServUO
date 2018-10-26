@@ -8,13 +8,10 @@ namespace Server.Items
         [Constructable]
         public Bonesmasher()
         {
-            this.ItemID = 0x2D30;
-            this.Hue = 0x482;
-
-            this.SkillBonuses.SetValues(0, SkillName.Macing, 10.0);
-
-            this.WeaponAttributes.HitLeechMana = 40;
-            this.WeaponAttributes.SelfRepair = 2;
+            Hue = 0x482;
+            SkillBonuses.SetValues(0, SkillName.Macing, 10.0);
+            WeaponAttributes.HitLeechMana = 40;
+            WeaponAttributes.SelfRepair = 2;
         }
 
         public Bonesmasher(Serial serial)

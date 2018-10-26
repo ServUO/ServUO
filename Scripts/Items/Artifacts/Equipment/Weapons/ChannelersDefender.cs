@@ -5,20 +5,22 @@ namespace Server.Items
     public class ChannelersDefender : GlassSword
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113518; } } // Channeler's Defender
+		
         [Constructable]
         public ChannelersDefender()
         {
             this.Name = ("Channeler's Defender");
 		
-            this.Hue = 95;	
-            this.Attributes.DefendChance = 10;				
-            this.Attributes.AttackChance = 5;	
-            this.Attributes.LowerManaCost = 5;
-            this.Attributes.WeaponSpeed = 20;					
-            this.Attributes.CastRecovery = 1;		
-            this.Attributes.SpellChanneling = 1;	
-            this.WeaponAttributes.HitLowerAttack = 60;
-            this.AosElementDamages.Energy = 100;		
+            Hue = 95;	
+            Attributes.DefendChance = 10;				
+            Attributes.AttackChance = 5;	
+            Attributes.LowerManaCost = 5;
+            Attributes.WeaponSpeed = 20;					
+            Attributes.CastRecovery = 1;		
+            Attributes.SpellChanneling = 1;	
+            WeaponAttributes.HitLowerAttack = 60;
+            AosElementDamages.Energy = 100;		
         }
 
         public ChannelersDefender(Serial serial)
@@ -38,20 +40,6 @@ namespace Server.Items
             get
             {
                 return 255;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
             }
         }
         public override void Serialize(GenericWriter writer)
