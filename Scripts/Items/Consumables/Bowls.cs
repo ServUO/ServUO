@@ -8,7 +8,7 @@ namespace Server.Items
         public EmptyWoodenBowl()
             : base(0x15F8)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public EmptyWoodenBowl(Serial serial)
@@ -37,7 +37,7 @@ namespace Server.Items
         public EmptyPewterBowl()
             : base(0x15FD)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public EmptyPewterBowl(Serial serial)
@@ -66,9 +66,9 @@ namespace Server.Items
         public WoodenBowlOfCarrots()
             : base(0x15F9)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public WoodenBowlOfCarrots(Serial serial)
@@ -106,9 +106,9 @@ namespace Server.Items
         public WoodenBowlOfCorn()
             : base(0x15FA)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public WoodenBowlOfCorn(Serial serial)
@@ -146,9 +146,9 @@ namespace Server.Items
         public WoodenBowlOfLettuce()
             : base(0x15FB)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public WoodenBowlOfLettuce(Serial serial)
@@ -186,9 +186,9 @@ namespace Server.Items
         public WoodenBowlOfPeas()
             : base(0x15FC)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public WoodenBowlOfPeas(Serial serial)
@@ -226,9 +226,9 @@ namespace Server.Items
         public PewterBowlOfCarrots()
             : base(0x15FE)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public PewterBowlOfCarrots(Serial serial)
@@ -266,9 +266,9 @@ namespace Server.Items
         public PewterBowlOfCorn()
             : base(0x15FF)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public PewterBowlOfCorn(Serial serial)
@@ -306,9 +306,9 @@ namespace Server.Items
         public PewterBowlOfLettuce()
             : base(0x1600)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public PewterBowlOfLettuce(Serial serial)
@@ -346,9 +346,9 @@ namespace Server.Items
         public PewterBowlOfPeas()
             : base(0x1601)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public PewterBowlOfPeas(Serial serial)
@@ -386,9 +386,9 @@ namespace Server.Items
         public PewterBowlOfPotatos()
             : base(0x1602)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public PewterBowlOfPotatos(Serial serial)
@@ -427,7 +427,7 @@ namespace Server.Items
         public EmptyWoodenTub()
             : base(0x1605)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public EmptyWoodenTub(Serial serial)
@@ -457,7 +457,7 @@ namespace Server.Items
         public EmptyPewterTub()
             : base(0x1603)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public EmptyPewterTub(Serial serial)
@@ -488,9 +488,9 @@ namespace Server.Items
         public BowlOfRotwormStew()
             : base(0x2DBA)
         {
-            this.Stackable = false;
-            this.Weight = 2.0;
-            this.FillFactor = 1;
+            Stackable = false;
+            Weight = 2.0;
+            FillFactor = 1;
         }
 
         public BowlOfRotwormStew(Serial serial)
@@ -519,9 +519,9 @@ namespace Server.Items
         public WoodenBowlOfStew()
             : base(0x1604)
         {
-            this.Stackable = false;
-            this.Weight = 2.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 2.0;
+            FillFactor = 2;
         }
 
         public WoodenBowlOfStew(Serial serial)
@@ -559,9 +559,9 @@ namespace Server.Items
         public WoodenBowlOfTomatoSoup()
             : base(0x1606)
         {
-            this.Stackable = false;
-            this.Weight = 2.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 2.0;
+            FillFactor = 2;
         }
 
         public WoodenBowlOfTomatoSoup(Serial serial)
@@ -576,6 +576,47 @@ namespace Server.Items
 
             from.AddToBackpack(new EmptyWoodenTub());
             return true;
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class BowlOfBlackrockStew : Food
+    {
+        public override int LabelNumber { get { return 1115752; } } // blackrock stew
+
+        [Constructable]
+        public BowlOfBlackrockStew()
+            : base(0x2DBA)
+        {
+            Stackable = false;
+            Weight = 2.0;
+            FillFactor = 1;
+
+            Hue = 1954;
+        }
+
+        public override bool Eat(Mobile from)
+        {
+            from.SendLocalizedMessage(1115751); // You don't want to eat this, it smells horrible.  It looks like food for some kind of demon.
+            return false;
+        }
+
+        public BowlOfBlackrockStew(Serial serial)
+            : base(serial)
+        {
         }
 
         public override void Serialize(GenericWriter writer)
