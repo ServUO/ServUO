@@ -73,6 +73,7 @@ namespace Server.Gumps
             int totalItems = 0;
             int givenToBackpack = 0;
             int givenToBankBox = 0;
+
             for (int i = inventory.Items.Count - 1; i >= 0; i--)
             {
                 Item item = inventory.Items[i];
