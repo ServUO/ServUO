@@ -8,11 +8,9 @@ namespace Server.Items
         [Constructable]
         public NecklaceofDiligence()
         {
-            this.Weight = 1.0;
-            this.Hue = 221;
-
-            this.Attributes.RegenMana = 1;
-            this.Attributes.BonusInt = 5;	
+            Hue = 221;
+            Attributes.RegenMana = 1;
+            Attributes.BonusInt = 5;	
         }
 
         public NecklaceofDiligence(Serial serial)
@@ -27,7 +25,6 @@ namespace Server.Items
                 return 1113137;
             }
         }
-        //public override int ArtifactRarity{ get{ return 11; } }
         public override int InitMinHits
         {
             get

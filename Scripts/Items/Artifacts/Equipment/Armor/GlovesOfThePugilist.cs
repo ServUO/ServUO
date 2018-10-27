@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public GlovesOfThePugilist()
         {
-            this.Hue = 0x6D1;
-            this.SkillBonuses.SetValues(0, SkillName.Wrestling, 10.0);
-            this.Attributes.BonusDex = 8;
-            this.Attributes.WeaponDamage = 15;
+            Hue = 0x6D1;
+            SkillBonuses.SetValues(0, SkillName.Wrestling, 10.0);
+            Attributes.BonusDex = 8;
+            Attributes.WeaponDamage = 15;
         }
 
         public GlovesOfThePugilist(Serial serial)

@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public PhilosophersHat()
         {
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.RegenMana = 1;
-            this.Attributes.LowerRegCost = 7;
+            LootType = LootType.Blessed;
+            Attributes.RegenMana = 1;
+            Attributes.LowerRegCost = 7;
         }
 
         public PhilosophersHat(Serial serial)

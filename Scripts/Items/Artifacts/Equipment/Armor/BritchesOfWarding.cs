@@ -12,17 +12,17 @@ namespace Server.Items
         {
             switch (Utility.Random(6))
             {
-                case 0: this.AbsorptionAttributes.EaterKinetic = 9; break;
-                case 1: this.AbsorptionAttributes.EaterFire = 9; break;
-                case 2: this.AbsorptionAttributes.EaterCold = 9; break;
-                case 3: this.AbsorptionAttributes.EaterPoison = 9; break;
-                case 4: this.AbsorptionAttributes.EaterEnergy = 9; break;
-                case 5: this.AbsorptionAttributes.EaterDamage = 9; break;
+                case 0: AbsorptionAttributes.EaterKinetic = 9; break;
+                case 1: AbsorptionAttributes.EaterFire = 9; break;
+                case 2: AbsorptionAttributes.EaterCold = 9; break;
+                case 3: AbsorptionAttributes.EaterPoison = 9; break;
+                case 4: AbsorptionAttributes.EaterEnergy = 9; break;
+                case 5: AbsorptionAttributes.EaterDamage = 9; break;
             }
 
-            this.Attributes.BonusStam = 12;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.LowerManaCost = 8;
+            Attributes.BonusStam = 12;
+            Attributes.AttackChance = 10;
+            Attributes.LowerManaCost = 8;
         }
 
         public BritchesOfWarding(Serial serial)
@@ -63,17 +63,17 @@ namespace Server.Items
         {
             switch (Utility.Random(6))
             {
-                case 0: this.AbsorptionAttributes.EaterKinetic = 9; break;
-                case 1: this.AbsorptionAttributes.EaterFire = 9; break;
-                case 2: this.AbsorptionAttributes.EaterCold = 9; break;
-                case 3: this.AbsorptionAttributes.EaterPoison = 9; break;
-                case 4: this.AbsorptionAttributes.EaterEnergy = 9; break;
-                case 5: this.AbsorptionAttributes.EaterDamage = 9; break;
+                case 0: AbsorptionAttributes.EaterKinetic = 9; break;
+                case 1: AbsorptionAttributes.EaterFire = 9; break;
+                case 2: AbsorptionAttributes.EaterCold = 9; break;
+                case 3: AbsorptionAttributes.EaterPoison = 9; break;
+                case 4: AbsorptionAttributes.EaterEnergy = 9; break;
+                case 5: AbsorptionAttributes.EaterDamage = 9; break;
             }
 
-            this.Attributes.BonusStam = 12;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.LowerManaCost = 8;
+            Attributes.BonusStam = 12;
+            Attributes.AttackChance = 10;
+            Attributes.LowerManaCost = 8;
         }
 
         public GargishBritchesOfWarding(Serial serial)

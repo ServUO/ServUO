@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public OrnateCrownOfTheHarrower()
         {
-            this.Hue = 0x4F6;
-            this.Attributes.RegenHits = 2;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.WeaponDamage = 25;
+            Hue = 0x4F6;
+            Attributes.RegenHits = 2;
+            Attributes.RegenStam = 3;
+            Attributes.WeaponDamage = 25;
         }
 
         public OrnateCrownOfTheHarrower(Serial serial)

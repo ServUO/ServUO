@@ -8,14 +8,12 @@ namespace Server.Items
         [Constructable]
         public CaptainJohnsHat()
         {
-            this.Hue = 0x455;
-
-            this.Attributes.BonusDex = 8;
-            this.Attributes.NightSight = 1;
-            this.Attributes.AttackChance = 15;
-
-            this.SkillBonuses.Skill_1_Name = SkillName.Swords;
-            this.SkillBonuses.Skill_1_Value = 20;
+            Hue = 0x455;
+            Attributes.BonusDex = 8;
+            Attributes.NightSight = 1;
+            Attributes.AttackChance = 15;
+            SkillBonuses.Skill_1_Name = SkillName.Swords;
+            SkillBonuses.Skill_1_Value = 20;
         }
 
         public CaptainJohnsHat(Serial serial)

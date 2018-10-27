@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public SongWovenMantle()
         {
-            this.Hue = 0x493;
+            Hue = 0x493;
+            SkillBonuses.SetValues(0, SkillName.Musicianship, 10.0);
 
-            this.SkillBonuses.SetValues(0, SkillName.Musicianship, 10.0);
-
-            this.Attributes.Luck = 100;
-            this.Attributes.DefendChance = 5;
+            Attributes.Luck = 100;
+            Attributes.DefendChance = 5;
         }
 
         public SongWovenMantle(Serial serial)

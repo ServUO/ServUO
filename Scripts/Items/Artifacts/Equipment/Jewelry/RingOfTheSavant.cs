@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public RingOfTheSavant()
         {
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.BonusInt = 3;
-            this.Attributes.CastRecovery = 1;
-            this.Attributes.CastSpeed = 1;
+            LootType = LootType.Blessed;
+            Attributes.BonusInt = 3;
+            Attributes.CastRecovery = 1;
+            Attributes.CastSpeed = 1;
         }
 
         public RingOfTheSavant(Serial serial)

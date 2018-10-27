@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public VoiceOfTheFallenKing()
         {
-            this.Hue = 0x76D;
-            this.Attributes.BonusStr = 8;
-            this.Attributes.RegenHits = 5;
-            this.Attributes.RegenStam = 3;
+            Hue = 0x76D;
+            Attributes.BonusStr = 8;
+            Attributes.RegenHits = 5;
+            Attributes.RegenStam = 3;
         }
 
         public VoiceOfTheFallenKing(Serial serial)

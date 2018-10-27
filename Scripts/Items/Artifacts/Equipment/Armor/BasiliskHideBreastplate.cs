@@ -11,15 +11,14 @@ namespace Server.Items
         public BasiliskHideBreastplate() 
         {
             Resource = CraftResource.None;
-            this.Hue = 1366;
-
-            this.AbsorptionAttributes.EaterDamage = 10;
-            this.Attributes.BonusDex = 5;
-            this.Attributes.RegenHits = 2;
-            this.Attributes.RegenStam = 2;
-            this.Attributes.RegenMana = 1;
-            this.Attributes.DefendChance = 5;
-            this.Attributes.LowerManaCost = 5;
+            Hue = 1366;
+            AbsorptionAttributes.EaterDamage = 10;
+            Attributes.BonusDex = 5;
+            Attributes.RegenHits = 2;
+            Attributes.RegenStam = 2;
+            Attributes.RegenMana = 1;
+            Attributes.DefendChance = 5;
+            Attributes.LowerManaCost = 5;
         }
 
         public BasiliskHideBreastplate(Serial serial)

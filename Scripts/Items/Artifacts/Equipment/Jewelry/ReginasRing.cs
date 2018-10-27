@@ -9,8 +9,7 @@ namespace Server.Items
         public ReginasRing()
             : base()
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            LootType = LootType.Blessed;
         }
 
         public ReginasRing(Serial serial)

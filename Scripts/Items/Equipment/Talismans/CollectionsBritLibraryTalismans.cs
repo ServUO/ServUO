@@ -5,6 +5,8 @@ namespace Server.Items
 { 
     public class TreatiseonAlchemyTalisman : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public TreatiseonAlchemyTalisman()
             : base(0x2F58)
@@ -53,6 +55,8 @@ namespace Server.Items
 
     public class PrimerOnArmsTalisman : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public PrimerOnArmsTalisman()
             : base(0x2F59)
@@ -103,6 +107,8 @@ namespace Server.Items
 
     public class MyBookTalisman : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public MyBookTalisman()
             : base(0x2F5A)
@@ -153,6 +159,8 @@ namespace Server.Items
 
     public class TalkingtoWispsTalisman : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public TalkingtoWispsTalisman()
             : base(0x2F5B)
@@ -202,6 +210,8 @@ namespace Server.Items
 
     public class GrammarOfOrchishTalisman : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public GrammarOfOrchishTalisman()
             : base(0x2F59)
@@ -252,6 +262,8 @@ namespace Server.Items
 
     public class BirdsofBritanniaTalisman : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public BirdsofBritanniaTalisman()
             : base(0x2F5A)
@@ -306,6 +318,8 @@ namespace Server.Items
 
     public class TheLifeOfTravelingMinstrelTalisman : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public TheLifeOfTravelingMinstrelTalisman()
             : base(0x2F5B)

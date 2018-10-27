@@ -8,9 +8,7 @@ namespace Server.Items
         [Constructable]
         public LightsRampart()
         {
-            ItemID = 0x1B7B;
-            Hue = 1272;
-			
+            Hue = 1272;			
             Attributes.SpellChanneling = 1;
             Attributes.DefendChance = 20;
         }

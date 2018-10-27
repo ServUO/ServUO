@@ -5,21 +5,19 @@ namespace Server.Items
     public class VoidInfusedKilt : GargishPlateKilt
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113868; } } // Void Infused Kilt
+		
         [Constructable]
         public VoidInfusedKilt()
             : base()
         {
-            this.Name = ("Void Infused Kilt");
-		
-            this.Hue = 2124;
-			
-            this.Attributes.AttackChance = 5;			
-            this.Attributes.BonusStr = 5;	
-            this.Attributes.BonusDex = 5;
-            this.Attributes.RegenMana = 1;
-            this.Attributes.RegenStam = 1;
-            this.AbsorptionAttributes.EaterDamage = 10;
-			this.StrRequirement = 80;
+            Hue = 2124;		
+            Attributes.AttackChance = 5;			
+            Attributes.BonusStr = 5;	
+            Attributes.BonusDex = 5;
+            Attributes.RegenMana = 1;
+            Attributes.RegenStam = 1;
+            AbsorptionAttributes.EaterDamage = 10;
         }
 
         public VoidInfusedKilt(Serial serial)
@@ -75,32 +73,7 @@ namespace Server.Items
             {
                 return 255;
             }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
-            {
-                if (((Mobile)parent).Female)
-                    this.ItemID = 0x030B;
-                else
-                    this.ItemID = 0x030C;
-            }
-        }
-
+        }      
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
