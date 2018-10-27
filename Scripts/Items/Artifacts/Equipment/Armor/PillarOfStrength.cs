@@ -11,9 +11,9 @@ namespace Server.Items
         public PillarOfStrength()
             : base()
         {
-            this.Attributes.BonusStr = 10;
-            this.Attributes.BonusHits = 10;
-            this.Attributes.WeaponDamage = 20;
+            Attributes.BonusStr = 10;
+            Attributes.BonusHits = 10;
+            Attributes.WeaponDamage = 20;
         }
 
         public PillarOfStrength(Serial serial)

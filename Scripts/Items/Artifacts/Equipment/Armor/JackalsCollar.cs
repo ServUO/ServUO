@@ -8,9 +8,9 @@ namespace Server.Items
         [Constructable]
         public JackalsCollar()
         {
-            this.Hue = 0x6D1;
-            this.Attributes.BonusDex = 15;
-            this.Attributes.RegenHits = 2;
+            Hue = 0x6D1;
+            Attributes.BonusDex = 15;
+            Attributes.RegenHits = 2;
         }
 
         public JackalsCollar(Serial serial)

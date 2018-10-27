@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public TunicOfGuarding()
         {
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.BonusHits = 2;
-            this.Attributes.ReflectPhysical = 5;
+            LootType = LootType.Blessed;
+            Attributes.BonusHits = 2;
+            Attributes.ReflectPhysical = 5;
         }
 
         public TunicOfGuarding(Serial serial)

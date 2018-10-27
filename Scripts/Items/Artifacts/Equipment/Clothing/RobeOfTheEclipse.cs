@@ -12,10 +12,8 @@ namespace Server.Items
         public RobeOfTheEclipse()
             : base(0x1F03, 0x486)
         {
-            this.Weight = 3.0;
-
-            this.Attributes.Luck = 95;
-            // TODO: Supports arcane?
+            Weight = 3.0;
+            Attributes.Luck = 95;
         }
 
         public RobeOfTheEclipse(Serial serial)

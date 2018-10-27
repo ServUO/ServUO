@@ -8,12 +8,10 @@ namespace Server.Items
         [Constructable]
         public GladiatorsCollar()
         {
-            this.Hue = 0x26d;
-
-            this.Attributes.BonusHits = 10;
-            this.Attributes.AttackChance = 10;
-
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x26d;
+            Attributes.BonusHits = 10;
+            Attributes.AttackChance = 10;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public GladiatorsCollar(Serial serial)

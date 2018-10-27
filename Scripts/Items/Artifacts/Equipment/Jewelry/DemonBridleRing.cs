@@ -5,20 +5,19 @@ namespace Server.Items
     public class DemonBridleRing : GoldRing
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113651; } } // Demon Bridle Ring
+		
         [Constructable]
         public DemonBridleRing()
         {
-            this.Name = ("Demon Bridle Ring");
-		
-            this.Hue = 39;	
-		
-            this.Attributes.CastRecovery = 2;
-            this.Attributes.CastSpeed = 1;	
-            this.Attributes.RegenHits = 1;
-            this.Attributes.RegenMana = 1;
-            this.Attributes.DefendChance = 10;
-            this.Attributes.LowerManaCost = 4;
-            this.Resistances.Fire = 5;
+            Hue = 39;		
+            Attributes.CastRecovery = 2;
+            Attributes.CastSpeed = 1;	
+            Attributes.RegenHits = 1;
+            Attributes.RegenMana = 1;
+            Attributes.DefendChance = 10;
+            Attributes.LowerManaCost = 4;
+            Resistances.Fire = 5;
         }
 
         public DemonBridleRing(Serial serial)
@@ -52,9 +51,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Hue == 0x4F4)
-                this.Hue = 0x4F7;
         }
     }
 }

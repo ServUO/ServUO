@@ -8,14 +8,11 @@ namespace Server.Items
         [Constructable]
         public ShroudOfDeceit()
         {
-            this.Hue = 0x38F;
-
-            this.Attributes.RegenHits = 3;
-
-            this.ArmorAttributes.MageArmor = 1;
-
-            this.SkillBonuses.Skill_1_Name = SkillName.MagicResist;
-            this.SkillBonuses.Skill_1_Value = 10;
+            Hue = 0x38F;
+            Attributes.RegenHits = 3;
+            ArmorAttributes.MageArmor = 1;
+            SkillBonuses.Skill_1_Name = SkillName.MagicResist;
+            SkillBonuses.Skill_1_Value = 10;
         }
 
         public ShroudOfDeceit(Serial serial)

@@ -8,9 +8,9 @@ namespace Server.Items
         [Constructable]
         public HolyKnightsBreastplate()
         {
-            this.Hue = 0x47E;
-            this.Attributes.BonusHits = 10;
-            this.Attributes.ReflectPhysical = 15;
+            Hue = 0x47E;
+            Attributes.BonusHits = 10;
+            Attributes.ReflectPhysical = 15;
         }
 
         public HolyKnightsBreastplate(Serial serial)

@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public HatOfTheMagi()
         {
-            this.Hue = 0x481;
-
-            this.Attributes.BonusInt = 8;
-            this.Attributes.RegenMana = 4;
-            this.Attributes.SpellDamage = 10;
+            Hue = 0x481;
+            Attributes.BonusInt = 8;
+            Attributes.RegenMana = 4;
+            Attributes.SpellDamage = 10;
         }
 
         public HatOfTheMagi(Serial serial)

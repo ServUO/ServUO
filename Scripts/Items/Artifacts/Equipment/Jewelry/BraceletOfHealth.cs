@@ -8,9 +8,9 @@ namespace Server.Items
         [Constructable]
         public BraceletOfHealth()
         {
-            this.Hue = 0x21;
-            this.Attributes.BonusHits = 5;
-            this.Attributes.RegenHits = 10;
+            Hue = 0x21;
+            Attributes.BonusHits = 5;
+            Attributes.RegenHits = 10;
         }
 
         public BraceletOfHealth(Serial serial)

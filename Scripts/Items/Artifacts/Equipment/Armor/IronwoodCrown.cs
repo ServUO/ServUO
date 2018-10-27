@@ -8,13 +8,11 @@ namespace Server.Items
         [Constructable]
         public IronwoodCrown()
         {
-            this.Hue = 0x1;
-
-            this.ArmorAttributes.SelfRepair = 3;
-
-            this.Attributes.BonusStr = 5;
-            this.Attributes.BonusDex = 5;
-            this.Attributes.BonusInt = 5;
+            Hue = 0x1;
+            ArmorAttributes.SelfRepair = 3;
+            Attributes.BonusStr = 5;
+            Attributes.BonusDex = 5;
+            Attributes.BonusInt = 5;
         }
 
         public IronwoodCrown(Serial serial)

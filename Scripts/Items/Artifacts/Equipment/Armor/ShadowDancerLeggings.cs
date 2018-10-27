@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public ShadowDancerLeggings()
         {
-            this.ItemID = 0x13D2;
-            this.Hue = 0x455;
-            this.SkillBonuses.SetValues(0, SkillName.Stealth, 20.0);
-            this.SkillBonuses.SetValues(1, SkillName.Stealing, 20.0);
+            Hue = 0x455;
+            SkillBonuses.SetValues(0, SkillName.Stealth, 20.0);
+            SkillBonuses.SetValues(1, SkillName.Stealing, 20.0);
         }
 
         public ShadowDancerLeggings(Serial serial)

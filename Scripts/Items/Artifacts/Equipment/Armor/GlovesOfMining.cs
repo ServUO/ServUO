@@ -11,7 +11,7 @@ namespace Server.Items
         public LeatherGlovesOfMining(int bonus)
             : base(bonus, 0x13C6)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
         public LeatherGlovesOfMining(Serial serial)
@@ -137,7 +137,7 @@ namespace Server.Items
         public StuddedGlovesOfMining(int bonus)
             : base(bonus, 0x13D5)
         {
-            this.Weight = 2;
+            Weight = 2;
         }
 
         public StuddedGlovesOfMining(Serial serial)
@@ -257,7 +257,7 @@ namespace Server.Items
         public RingmailGlovesOfMining(int bonus)
             : base(bonus, 0x13EB)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
         public RingmailGlovesOfMining(Serial serial)
@@ -396,7 +396,7 @@ namespace Server.Items
         public GargishKiltOfMining(int bonus)
             : base(bonus, 0x030C)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
         public GargishKiltOfMining(Serial serial)

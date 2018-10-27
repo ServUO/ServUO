@@ -5,21 +5,18 @@ namespace Server.Items
     public class MantleOfTheFallen : GargishClothChest
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113819; } }// Mantle of the Fallen
+		
         [Constructable]
         public MantleOfTheFallen() 
         {
-            this.Name = ("Mantle Of The Fallen");
-		
-            this.Hue = 1512;	
-			this.Weight = 6;
-		
-            this.Attributes.LowerRegCost = 25;
-            this.Attributes.BonusInt = 8;
-            this.Attributes.BonusMana = 8;
-            this.Attributes.RegenMana = 1;
-            this.SAAbsorptionAttributes.CastingFocus = 3;
-            this.Attributes.SpellDamage = 5;
-			this.StrRequirement = 25;
+            Hue = 1512;			
+            Attributes.LowerRegCost = 25;
+            Attributes.BonusInt = 8;
+            Attributes.BonusMana = 8;
+            Attributes.RegenMana = 1;
+            SAAbsorptionAttributes.CastingFocus = 3;
+            Attributes.SpellDamage = 5;
         }
 
         public MantleOfTheFallen(Serial serial)
@@ -75,21 +72,7 @@ namespace Server.Items
             {
                 return 255;
             }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        }      
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public GlovesOfSafeguarding()
         {
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.BonusStam = 3;
-            this.Attributes.RegenHits = 1;
+            LootType = LootType.Blessed;
+            Attributes.BonusStam = 3;
+            Attributes.RegenHits = 1;
         }
 
         public GlovesOfSafeguarding(Serial serial)

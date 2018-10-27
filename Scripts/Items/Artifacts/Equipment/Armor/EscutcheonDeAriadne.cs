@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public EscutcheonDeAriadne()
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x8A5;
-
-            this.ArmorAttributes.DurabilityBonus = 49;
-            this.Attributes.ReflectPhysical = 5;
-            this.Attributes.DefendChance = 5;
+            LootType = LootType.Blessed;
+            Hue = 0x8A5;
+            ArmorAttributes.DurabilityBonus = 49;
+            Attributes.ReflectPhysical = 5;
+            Attributes.DefendChance = 5;
         }
 
         public EscutcheonDeAriadne(Serial serial)

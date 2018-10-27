@@ -12,11 +12,11 @@ namespace Server.Items
         [Constructable]
         public CrownOfArcaneTemperament()
         {
-			this.Attributes.BonusMana = 8;
-			this.Attributes.RegenMana = 3;
-			this.Attributes.SpellDamage = 8;
-			this.Attributes.LowerManaCost = 6;
-			this.Hue = 149; //Hue not exact
+			Attributes.BonusMana = 8;
+			Attributes.RegenMana = 3;
+			Attributes.SpellDamage = 8;
+			Attributes.LowerManaCost = 6;
+			Hue = 149; //Hue not exact
 			AbsorptionAttributes.CastingFocus = 2;
         }
 

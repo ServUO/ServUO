@@ -5,32 +5,23 @@ namespace Server.Items
     public class Lavaliere : GoldNecklace
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1114843; } } // Lavaliere
+		
         [Constructable]
         public Lavaliere()
         {
-            this.Name = ("Lavaliere");
-		
-            this.Hue = 39;
-			
-            this.AbsorptionAttributes.EaterKinetic = 20;
-            this.Attributes.DefendChance = 10;
-            this.Resistances.Physical = 15;
-            this.Attributes.LowerManaCost = 10;
-            this.Attributes.LowerRegCost = 20;
+            Hue = 39;		
+            AbsorptionAttributes.EaterKinetic = 20;
+            Attributes.DefendChance = 10;
+            Resistances.Physical = 15;
+            Attributes.LowerManaCost = 10;
+            Attributes.LowerRegCost = 20;
         }
 
         public Lavaliere(Serial serial)
             : base(serial)
         {
-        }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072937;
-            }
-        }// Pendant of the Magi
+        }       
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

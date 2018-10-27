@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public RingOfTheVile()
         {
-            this.Hue = 0x4F7;
-            this.Attributes.BonusDex = 8;
-            this.Attributes.RegenStam = 6;
-            this.Attributes.AttackChance = 15;
-            this.Resistances.Poison = 20;
+            Hue = 0x4F7;
+            Attributes.BonusDex = 8;
+            Attributes.RegenStam = 6;
+            Attributes.AttackChance = 15;
+            Resistances.Poison = 20;
         }
 
         public RingOfTheVile(Serial serial)
@@ -46,9 +46,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Hue == 0x4F4)
-                this.Hue = 0x4F7;
         }
     }
 }

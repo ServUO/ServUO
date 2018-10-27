@@ -11,7 +11,6 @@ namespace Server.Items
 		public JadeArmband()
 		{
 			Hue = 2126;
-
             Attributes.AttackChance = 10;
             Attributes.DefendChance = 10;
             Attributes.WeaponSpeed = 5;

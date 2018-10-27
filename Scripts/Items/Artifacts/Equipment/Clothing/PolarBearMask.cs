@@ -8,12 +8,10 @@ namespace Server.Items
         [Constructable]
         public PolarBearMask()
         {
-            this.Hue = Utility.RandomBool() ? 0x481 : 0x47E;
-
-            this.ClothingAttributes.SelfRepair = 3;
-
-            this.Attributes.RegenHits = 2;
-            this.Attributes.NightSight = 1;
+            Hue = Utility.RandomBool() ? 0x481 : 0x47E;
+            ClothingAttributes.SelfRepair = 3;
+            Attributes.RegenHits = 2;
+            Attributes.NightSight = 1;
         }
 
         public PolarBearMask(Serial serial)

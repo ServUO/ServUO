@@ -49,12 +49,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
-
-            if (ItemID == 0x2B6E)
-            {
-                Weight = 2.0;
-                StrRequirement = 10;
-            }
         }
     }
 }

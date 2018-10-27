@@ -9,13 +9,11 @@ namespace Server.Items
         [Constructable]
         public WallofHungryMouths()
         {
-            this.Weight = 8.0;
-            this.Hue = 1034;
-
-            this.AbsorptionAttributes.EaterEnergy = 20;
-            this.AbsorptionAttributes.EaterPoison = 20;
-            this.AbsorptionAttributes.EaterCold = 20;
-            this.AbsorptionAttributes.EaterFire = 20;
+            Hue = 1034;
+            AbsorptionAttributes.EaterEnergy = 20;
+            AbsorptionAttributes.EaterPoison = 20;
+            AbsorptionAttributes.EaterCold = 20;
+            AbsorptionAttributes.EaterFire = 20;
         }
 
         public WallofHungryMouths(Serial serial)
@@ -77,20 +75,6 @@ namespace Server.Items
             get
             {
                 return 255;
-            }
-        }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 90;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 23;
             }
         }
         public override void Deserialize(GenericReader reader)
