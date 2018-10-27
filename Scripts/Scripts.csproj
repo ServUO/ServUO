@@ -634,6 +634,7 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\VillainousEpiphany.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\VirtuousEpiphany.cs" />
     <Compile Include="Items\Consumables\PoppiesDust.cs" />
+    <Compile Include="Items\Resource\Blackrock.cs" />
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
