@@ -100,10 +100,10 @@ namespace Server.Items
                 (item is BaseArmor && ((BaseArmor)item).ArmorAttributes.MageArmor > 0 && BaseArmor.IsMageArmorType((BaseArmor)item)) ? 1 : 0;
 
             if (item is BaseWeapon &&
-                ((BaseWeapon)item).AosElementDamages[AosElementAttribute.Fire] > 0 ||
+                (((BaseWeapon)item).AosElementDamages[AosElementAttribute.Fire] > 0 ||
                 ((BaseWeapon)item).AosElementDamages[AosElementAttribute.Cold] > 0 ||
                 ((BaseWeapon)item).AosElementDamages[AosElementAttribute.Poison] > 0 ||
-                ((BaseWeapon)item).AosElementDamages[AosElementAttribute.Energy] > 0)
+                ((BaseWeapon)item).AosElementDamages[AosElementAttribute.Energy] > 0))
             {
                 mods++;
             }
