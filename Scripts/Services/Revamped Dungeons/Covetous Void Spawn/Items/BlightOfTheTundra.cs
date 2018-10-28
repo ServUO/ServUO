@@ -1,10 +1,10 @@
 using Server;
 using System;
-using System.Collections.Generic;
-using Server.Mobiles;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishBlightOfTheTundra))]
     public class BlightOfTheTundra : CompositeBow
     {
         public override int LabelNumber { get { return 1152727; } } // Blight of the Tundra
