@@ -9,7 +9,7 @@ namespace Server.Items
         public QuiverOfFire()
             : base()
         {
-            this.Hue = 0x4E7;
+            Hue = 0x4E7;
         }
 
         public QuiverOfFire(Serial serial)

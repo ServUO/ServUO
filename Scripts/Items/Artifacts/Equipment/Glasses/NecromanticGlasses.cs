@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public NecromanticGlasses()
         {
-            this.Attributes.LowerManaCost = 15;
-            this.Attributes.LowerRegCost = 30;
-
-            this.Hue = 0x22D;
+            Attributes.LowerManaCost = 15;
+            Attributes.LowerRegCost = 30;
+            Hue = 0x22D;
         }
 
         public NecromanticGlasses(Serial serial)

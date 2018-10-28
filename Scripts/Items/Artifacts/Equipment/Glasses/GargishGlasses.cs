@@ -8,8 +8,6 @@ namespace Server.Items
 	{
         public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
 
-		public override bool IsArtifact { get { return true; } }
-
         public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
 
@@ -19,9 +17,9 @@ namespace Server.Items
         public GargishGlasses()
             : base(0x4644)
         {
-            this.Layer = Layer.Earrings;       
-            this.Weight = 2;
-            this.m_AosWeaponAttributes = new AosWeaponAttributes(this);
+            Layer = Layer.Earrings;       
+            Weight = 2;
+            m_AosWeaponAttributes = new AosWeaponAttributes(this);
         }
 
         public GargishGlasses(Serial serial)

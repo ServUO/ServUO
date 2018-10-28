@@ -10,12 +10,10 @@ namespace Server.Items
         [Constructable]
         public BrightsightLenses()
         {
-            this.Hue = 0x501;
-
-            this.Attributes.NightSight = 1;
-            this.Attributes.RegenMana = 3;
-
-            this.ArmorAttributes.SelfRepair = 3;
+            Hue = 0x501;
+            Attributes.NightSight = 1;
+            Attributes.RegenMana = 3;
+            ArmorAttributes.SelfRepair = 3;
         }
 
         public BrightsightLenses(Serial serial)
@@ -108,12 +106,10 @@ namespace Server.Items
         [Constructable]
         public GargishBrightsightLenses()
         {
-            this.Hue = 0x501;
-
-            this.Attributes.NightSight = 1;
-            this.Attributes.RegenMana = 3;
-
-            this.ArmorAttributes.SelfRepair = 3;
+            Hue = 0x501;
+            Attributes.NightSight = 1;
+            Attributes.RegenMana = 3;
+            ArmorAttributes.SelfRepair = 3;
         }
 
         public GargishBrightsightLenses(Serial serial)

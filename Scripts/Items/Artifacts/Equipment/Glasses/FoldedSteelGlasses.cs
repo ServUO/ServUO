@@ -11,11 +11,10 @@ namespace Server.Items
         [Constructable]
         public FoldedSteelGlasses()
         {
-            this.Attributes.BonusStr = 8;
-            this.Attributes.NightSight = 1;
-            this.Attributes.DefendChance = 15;
-
-            this.Hue = 0x47E;
+            Attributes.BonusStr = 8;
+            Attributes.NightSight = 1;
+            Attributes.DefendChance = 15;
+            Hue = 0x47E;
         }
 
         public FoldedSteelGlasses(Serial serial)
@@ -102,11 +101,10 @@ namespace Server.Items
         [Constructable]
         public GargishFoldedSteelGlasses()
         {
-            this.Attributes.BonusStr = 8;
-            this.Attributes.NightSight = 1;
-            this.Attributes.DefendChance = 15;
-
-            this.Hue = 0x47E;
+            Attributes.BonusStr = 8;
+            Attributes.NightSight = 1;
+            Attributes.DefendChance = 15;
+            Hue = 0x47E;
         }
 
         public GargishFoldedSteelGlasses(Serial serial)

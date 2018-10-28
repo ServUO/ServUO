@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public TradeGlasses()
         {
-            this.Attributes.BonusStr = 10;
-            this.Attributes.BonusInt = 10;
+            Attributes.BonusStr = 10;
+            Attributes.BonusInt = 10;
         }
 
         public TradeGlasses(Serial serial)
