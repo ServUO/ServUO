@@ -8,9 +8,9 @@ namespace Server.Items
         [Constructable]
         public GwennosHarp()
         {
-            this.Hue = 0x47E;
-            this.Slayer = SlayerName.Repond;
-            this.Slayer2 = SlayerName.ReptilianDeath;
+            Hue = 0x47E;
+            Slayer = SlayerName.Repond;
+            Slayer2 = SlayerName.ReptilianDeath;
         }
 
         public GwennosHarp(Serial serial)

@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public AnthropomorphistGlasses()
         {
-            this.Attributes.BonusHits = 5;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.ReflectPhysical = 20;
-
-            this.Hue = 0x80;
+            Attributes.BonusHits = 5;
+            Attributes.RegenMana = 3;
+            Attributes.ReflectPhysical = 20;
+            Hue = 0x80;
         }
 
         public AnthropomorphistGlasses(Serial serial)

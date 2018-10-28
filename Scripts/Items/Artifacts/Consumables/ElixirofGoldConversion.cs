@@ -4,13 +4,12 @@ namespace Server.Items
 {
     public class ElixirofGoldConversion : Item
     {
-		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ElixirofGoldConversion()
             : base(0x99B)
         {
-            this.Hue = 2213;
-            this.Movable = true;
+            Hue = 2213;
+            Movable = true;
         }
 
         public ElixirofGoldConversion(Serial serial)

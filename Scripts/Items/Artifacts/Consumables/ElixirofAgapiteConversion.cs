@@ -4,13 +4,12 @@ namespace Server.Items
 {
     public class ElixirofAgapiteConversion : Item
     {
-		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ElixirofAgapiteConversion()
             : base(0x99B)
         {
-            this.Hue = 2425;
-            this.Movable = true;
+            Hue = 2425;
+            Movable = true;
         }
 
         public ElixirofAgapiteConversion(Serial serial)

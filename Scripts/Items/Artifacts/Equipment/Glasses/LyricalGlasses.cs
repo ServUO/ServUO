@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public LyricalGlasses()
         {
-            this.WeaponAttributes.HitLowerDefend = 20;
-            this.Attributes.NightSight = 1;
-            this.Attributes.ReflectPhysical = 15;
-
-            this.Hue = 0x47F;
+            WeaponAttributes.HitLowerDefend = 20;
+            Attributes.NightSight = 1;
+            Attributes.ReflectPhysical = 15;
+            Hue = 0x47F;
         }
 
         public LyricalGlasses(Serial serial)

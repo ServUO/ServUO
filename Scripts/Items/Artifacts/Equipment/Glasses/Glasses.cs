@@ -8,8 +8,6 @@ namespace Server.Items
 	{
         public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
 
-		public override bool IsArtifact { get { return true; } }
-
         private AosWeaponAttributes m_AosWeaponAttributes;
 
         [Constructable]

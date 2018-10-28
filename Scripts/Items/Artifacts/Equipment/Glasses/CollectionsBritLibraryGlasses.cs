@@ -11,12 +11,10 @@ namespace Server.Items
         public MaceAndShieldGlasses()
             : base()
         {
-            this.Hue = 0x1DD;
-		
-            this.Attributes.BonusStr = 10;
-            this.Attributes.BonusDex = 5;
-			
-            this.WeaponAttributes.HitLowerDefend = 30;
+            Hue = 0x1DD;		
+            Attributes.BonusStr = 10;
+            Attributes.BonusDex = 5;		
+            WeaponAttributes.HitLowerDefend = 30;
         }
 
         public MaceAndShieldGlasses(Serial serial)
@@ -95,19 +93,16 @@ namespace Server.Items
         }
     }
 
-    #region Gargish Mace and Shield
     public class GargishMaceAndShieldGlasses : GargishGlasses
     {
         public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GargishMaceAndShieldGlasses()
         {
-            this.Hue = 0x1DD;
-
-            this.Attributes.BonusStr = 10;
-            this.Attributes.BonusDex = 5;
-
-            this.WeaponAttributes.HitLowerDefend = 30;
+            Hue = 0x1DD;
+            Attributes.BonusStr = 10;
+            Attributes.BonusDex = 5;
+            WeaponAttributes.HitLowerDefend = 30;
         }
 
         public GargishMaceAndShieldGlasses(Serial serial)
@@ -185,7 +180,6 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-    #endregion
 
     [Alterable(typeof(DefTinkering), typeof(GargishGlassesOfTheArts))]
     public class GlassesOfTheArts : Glasses
@@ -194,11 +188,10 @@ namespace Server.Items
         public GlassesOfTheArts()
             : base()
         {
-            this.Hue = 0x73;
-		
-            this.Attributes.BonusInt = 5;
-            this.Attributes.BonusStr = 5;
-            this.Attributes.BonusHits = 15;
+            Hue = 0x73;	
+            Attributes.BonusInt = 5;
+            Attributes.BonusStr = 5;
+            Attributes.BonusHits = 15;
         }
 
         public GlassesOfTheArts(Serial serial)
@@ -277,17 +270,15 @@ namespace Server.Items
         }
     }
 
-    #region Gargish Glasses of the Arts
     public class GargishGlassesOfTheArts : GargishGlasses
     {
         [Constructable]
         public GargishGlassesOfTheArts()
         {
-            this.Hue = 0x73;
-
-            this.Attributes.BonusInt = 5;
-            this.Attributes.BonusStr = 5;
-            this.Attributes.BonusHits = 15;
+            Hue = 0x73;
+            Attributes.BonusInt = 5;
+            Attributes.BonusStr = 5;
+            Attributes.BonusHits = 15;
         }
 
         public GargishGlassesOfTheArts(Serial serial)
@@ -365,7 +356,6 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-    #endregion
 
     [Alterable(typeof(DefTinkering), typeof(GargishTradesGlasses))]
     public class TradesGlasses : Glasses
@@ -373,8 +363,8 @@ namespace Server.Items
         [Constructable]
         public TradesGlasses()
         {
-            this.Attributes.BonusStr = 10;
-            this.Attributes.BonusInt = 10;
+            Attributes.BonusStr = 10;
+            Attributes.BonusInt = 10;
         }
 
         public TradesGlasses(Serial serial)
@@ -452,14 +442,13 @@ namespace Server.Items
         }
     }
 
-    #region Gargish Trades Glasses
     public class GargishTradesGlasses : GargishGlasses
     {
         [Constructable]
         public GargishTradesGlasses()
         {
-            this.Attributes.BonusStr = 10;
-            this.Attributes.BonusInt = 10;
+            Attributes.BonusStr = 10;
+            Attributes.BonusInt = 10;
         }
 
         public GargishTradesGlasses(Serial serial)
@@ -537,7 +526,6 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-    #endregion
 
     [Alterable(typeof(DefTinkering), typeof(GargishWizardsCrystalGlasses))]
     public class WizardsCrystalGlasses : Glasses
@@ -545,11 +533,10 @@ namespace Server.Items
         [Constructable]
         public WizardsCrystalGlasses()
         {
-            this.Hue = 0x2B0;
-		
-            this.Attributes.BonusMana = 10;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.SpellDamage = 15;
+            Hue = 0x2B0;	
+            Attributes.BonusMana = 10;
+            Attributes.RegenMana = 3;
+            Attributes.SpellDamage = 15;
         }
 
         public WizardsCrystalGlasses(Serial serial)
@@ -628,17 +615,15 @@ namespace Server.Items
         }
     }
 
-    #region Gargish Wizards Crystal Glasses
     public class GargishWizardsCrystalGlasses : GargishGlasses
     {
         [Constructable]
         public GargishWizardsCrystalGlasses()
         {
-            this.Hue = 0x2B0;
-
-            this.Attributes.BonusMana = 10;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.SpellDamage = 15;
+            Hue = 0x2B0;
+            Attributes.BonusMana = 10;
+            Attributes.RegenMana = 3;
+            Attributes.SpellDamage = 15;
         }
 
         public GargishWizardsCrystalGlasses(Serial serial)
@@ -716,7 +701,6 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-    #endregion
 
     [Alterable(typeof(DefTinkering), typeof(GargishTreasuresAndTrinketsGlasses))]
     public class TreasuresAndTrinketsGlasses : Glasses
@@ -724,11 +708,10 @@ namespace Server.Items
         [Constructable]
         public TreasuresAndTrinketsGlasses()
         {
-            this.Hue = 0x5A6; // TODO check
-		
-            this.Attributes.BonusInt = 10;
-            this.Attributes.BonusHits = 5;
-            this.Attributes.SpellDamage = 10;
+            Hue = 0x5A6; // TODO check		
+            Attributes.BonusInt = 10;
+            Attributes.BonusHits = 5;
+            Attributes.SpellDamage = 10;
         }
 
         public TreasuresAndTrinketsGlasses(Serial serial)
@@ -807,17 +790,15 @@ namespace Server.Items
         }
     }
 
-    #region gargish Treasures and Trinkets
     public class GargishTreasuresAndTrinketsGlasses : GargishGlasses
     {
         [Constructable]
         public GargishTreasuresAndTrinketsGlasses()
         {
-            this.Hue = 0x5A6; // TODO check
-
-            this.Attributes.BonusInt = 10;
-            this.Attributes.BonusHits = 5;
-            this.Attributes.SpellDamage = 10;
+            Hue = 0x5A6; // TODO check
+            Attributes.BonusInt = 10;
+            Attributes.BonusHits = 5;
+            Attributes.SpellDamage = 10;
         }
 
         public GargishTreasuresAndTrinketsGlasses(Serial serial)
@@ -895,5 +876,4 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
-    #endregion
 }
