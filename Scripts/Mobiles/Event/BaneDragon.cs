@@ -141,7 +141,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
             writer.Write(PowerLevel);
             writer.Write(PowerDecay);
         }
@@ -151,8 +151,15 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            PowerLevel = reader.ReadInt();
-            PowerDecay = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    PowerLevel = reader.ReadInt();
+                    PowerDecay = reader.ReadInt();
+                    break;
+                case 0: break;
+            }
         }
     }
 }
