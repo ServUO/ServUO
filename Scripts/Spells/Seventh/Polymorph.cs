@@ -50,7 +50,7 @@ namespace Server.Spells.Seventh
 
         public override bool CheckCast()
         {
-            if ( Caster.Flying )
+            if (Caster.Flying)
             {
             Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
             return false;
