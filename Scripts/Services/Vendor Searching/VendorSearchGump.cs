@@ -525,13 +525,21 @@ namespace Server.Engines.VendorSearching
                     {
                         User.SendLocalizedMessage(1154643); // That item is no longer for sale.
                     }
-                    else if (!VendorSearch.CanSearch(User))
+                    else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(User))
                     {
                         User.SendLocalizedMessage(1154680); //Before using vendor search, you must be in a justice region or a safe log-out location (such as an inn or a house which has you on its Owner, Co-owner, or Friends list). 
                     }
+                    else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(User))
+                    {
+                        User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                    }
+                    else if (VendorMap.SetLocation != Point3D.Zero && (!Utility.InRange(VendorMap.SetLocation, User.Location, 100) || VendorMap.SetMap != User.Map))
+                    {
+                        User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                    }
                     else
                     {
-                        new Server.Spells.Fourth.RecallSpell(User, null, VendorMap).Cast();
+                        new Server.Spells.Fourth.RecallSpell(User, VendorMap, VendorMap).Cast();
                     }
 
                     break;
