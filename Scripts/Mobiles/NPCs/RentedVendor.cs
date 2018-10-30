@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Misc;
 using Server.Multis;
 using Server.Prompts;
+using Server.Accounting;
 
 namespace Server.Mobiles
 {
@@ -233,7 +235,15 @@ namespace Server.Mobiles
                 if (House.MovingCrate == null)
                     House.MovingCrate = new MovingCrate(House);
 
-                Banker.Deposit(House.MovingCrate, RentalGold);
+                if (AccountGold.Enabled && Landlord != null)
+                {
+                    Banker.Deposit(Landlord, RentalGold, true);
+                }
+                else
+                {
+                    Banker.Deposit(House.MovingCrate, RentalGold);
+                }
+
                 RentalGold = 0;
             }
 

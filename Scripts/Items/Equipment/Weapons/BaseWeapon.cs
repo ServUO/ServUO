@@ -1294,33 +1294,6 @@ namespace Server.Items
 
 			int bonus = GetHitChanceBonus();
 
-			#region Stygian Abyss
-            int hciMod = 0;
-            int dciMod = 0;
-
-			if (atkWeapon is BaseThrown)
-			{
-                int min = ((BaseThrown)atkWeapon).MinThrowRange;
-                double dist = attacker.GetDistanceToSqrt(defender);
-
-                //Distance malas
-                if (attacker.InRange(defender, 1))	//Close Quarters
-                    bonus -= (12 - Math.Min(12, ((int)attacker.Skills[SkillName.Throwing].Value + attacker.RawDex) / 20));
-                else if (dist < min) 				//too close
-                    bonus -= 12;
-
-                //shield penalty
-                BaseShield shield = attacker.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
-
-                if (shield != null)
-                {
-                    double skill = Math.Max(1.0, attacker.Skills[SkillName.Parry].Value);
-
-                    hciMod = (int)Math.Min(50, 1200 / skill);
-                }
-			}
-			#endregion
-
 			if (Core.AOS)
 			{
                 if (atkValue <= -20.0)
@@ -1330,12 +1303,6 @@ namespace Server.Items
                     defValue = -19.9;
 
                 bonus += AosAttributes.GetValue(attacker, AosAttribute.AttackChance);
-
-                #region SA
-                // this value will not be shown on the status bar
-                if (hciMod > 0)
-                    bonus -= (int)(((double)bonus * ((double)hciMod / 100)));
-                #endregion
 
                 //SA Gargoyle cap is 50, else 45
                 bonus = Math.Min(attacker.Race == Race.Gargoyle ? 50 : 45, bonus);
@@ -1348,25 +1315,6 @@ namespace Server.Items
 
                 if (info != null && info.Defender == defender)
                     bonus -= info.DefenseChanceMalus;
-
-                #region SA
-                // Like HitChance, this value is not shown in the status window
-                if (defWeapon is BaseThrown)
-                {
-                    BaseShield shield = defender.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
-
-                    if (shield != null)
-                    {
-                        double skill = Math.Max(1.0, defender.Skills[SkillName.Parry].Value);
-
-                        dciMod = (int)Math.Min(50, 1200 / skill);
-                    }
-                }
-
-                if (dciMod > 0)
-                    bonus -= (int)(((double)bonus * ((double)dciMod / 100)));
-
-                #endregion
 
                 int max = 45 + BaseArmor.GetRefinedDefenseChance(defender);
 
@@ -1398,13 +1346,52 @@ namespace Server.Items
 
 			chance *= 1.0 + ((double)bonus / 100);
 
-			if (Core.AOS && chance < 0.02)
-			{
-				chance = 0.02;
-			}
+            if (Core.SA)
+            {
+                if (atkWeapon is BaseThrown)
+                {
+                    //Distance malas
+                    if (attacker.InRange(defender, 1))	//Close Quarters
+                    {
+                        chance -= (.12 - (double)Math.Min(12, (attacker.Skills[SkillName.Throwing].Value + (double)attacker.RawDex) / 20) / 10);
+                    }
+                    else if (attacker.GetDistanceToSqrt(defender) < ((BaseThrown)atkWeapon).MinThrowRange) 	//too close
+                    {
+                        chance -= .12;
+                    }
+
+                    //shield penalty
+                    BaseShield shield = attacker.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
+
+                    if (shield != null)
+                    {
+                        double malus = Math.Min(90, 1200 / Math.Max(1.0, attacker.Skills[SkillName.Parry].Value));
+
+                        chance = chance - (chance * (malus / 100));
+                    }
+                }
+
+                if (defWeapon is BaseThrown)
+                {
+                    BaseShield shield = defender.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
+
+                    if (shield != null)
+                    {
+                        double malus = Math.Min(90, 1200 / Math.Max(1.0, defender.Skills[SkillName.Parry].Value));
+
+                        chance = chance + (chance * (malus / 100));
+                    }
+                }
+            }
+
+            if (Core.AOS && chance < 0.02)
+            {
+                chance = 0.02;
+            }
 
             if (Core.AOS && m_AosWeaponAttributes.MageWeapon > 0 && attacker.Skills[SkillName.Magery].Value > atkSkill.Value)
                 return attacker.CheckSkill(SkillName.Magery, chance);
+
 
 			return attacker.CheckSkill(atkSkill.SkillName, chance);
 		}
