@@ -313,15 +313,15 @@ namespace Server.Multis
 
         public virtual void KillVendors()
         {
-            List<Mobile> list = new List<Mobile>(PlayerVendors);
+            PlayerVendors.OfType<PlayerVendor>().IterateReverse(vendor =>
+                {
+                    vendor.Destroy(true);
+                });
 
-            foreach (var vendor in list.OfType<PlayerVendor>())
-                vendor.Destroy(true);
-
-            list = new List<Mobile>(PlayerBarkeepers);
-
-            foreach (PlayerBarkeeper barkeeper in list)
-                barkeeper.Delete();
+            PlayerBarkeepers.IterateReverse(barkeeper =>
+                {
+                    barkeeper.Delete();
+                });
         }
 
         public virtual void Decay_Sandbox()
@@ -4027,10 +4027,10 @@ namespace Server.Multis
                 }
             }
 
-            List<VendorInventory> inventories = new List<VendorInventory>(VendorInventories);
-
-            foreach (VendorInventory inventory in inventories)
-                inventory.Delete();
+            VendorInventories.IterateReverse(inventory =>
+                {
+                    inventory.Delete();
+                });
 
             if (MovingCrate != null)
                 MovingCrate.Delete();
