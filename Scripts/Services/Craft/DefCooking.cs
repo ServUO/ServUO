@@ -337,7 +337,7 @@ namespace Server.Engines.Craft
             AddRecipe(index, (int)CookRecipes.RotWormStew);
 
             index = AddCraft(typeof(BowlOfBlackrockStew), 1044498, 1115752, 30.0, 70.0, typeof(BowlOfRotwormStew), 1031706, 1, 1044253);
-            AddRes(index, typeof(Blackrock), 1153836, 1, 1044253);
+            AddRes(index, typeof(SmallPieceofBlackrock), 1153836, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
             SetItemHue(index, 1954);

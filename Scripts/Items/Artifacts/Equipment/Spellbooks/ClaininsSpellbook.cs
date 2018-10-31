@@ -9,12 +9,11 @@ namespace Server.Items
         public ClaininsSpellbook()
             : base()
         {
-            this.Hue = 0x84D;
-			
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.Luck = 80;
-            this.Attributes.LowerRegCost = 15;
+            Hue = 0x84D;		
+            Attributes.SpellChanneling = 1;
+            Attributes.RegenMana = 3;
+            Attributes.Luck = 80;
+            Attributes.LowerRegCost = 15;
         }
 
         public ClaininsSpellbook(Serial serial)

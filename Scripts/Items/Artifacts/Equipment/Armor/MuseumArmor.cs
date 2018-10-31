@@ -9,10 +9,9 @@ namespace Server.Items
         public MinaxsArmor()
             : base()
         {
-            this.Hue = 0x453;
-		
-            this.Attributes.RegenMana = 2;
-            this.ArmorAttributes.MageArmor = 1;			
+            Hue = 0x453;	
+            Attributes.RegenMana = 2;
+            ArmorAttributes.MageArmor = 1;			
         }
 
         public MinaxsArmor(Serial serial)
@@ -98,11 +97,10 @@ namespace Server.Items
         public KeeoneansChainMail()
             : base()
         {
-            this.Hue = 0x84E;
-		
-            this.Attributes.RegenHits = 3;
-            this.Attributes.NightSight = 1;
-            this.ArmorAttributes.MageArmor = 1;			
+            Hue = 0x84E;	
+            Attributes.RegenHits = 3;
+            Attributes.NightSight = 1;
+            ArmorAttributes.MageArmor = 1;			
         }
 
         public KeeoneansChainMail(Serial serial)
@@ -188,13 +186,12 @@ namespace Server.Items
         public VesperOrderShield()
             : base()
         {
-            this.Hue = 0x835;
-		
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.Luck = 80;		
-            this.Attributes.CastSpeed = -1;		
-            this.Attributes.AttackChance = 15;		
-            this.Attributes.DefendChance = 15;		
+            Hue = 0x835;	
+            Attributes.SpellChanneling = 1;
+            Attributes.Luck = 80;		
+            Attributes.CastSpeed = -1;		
+            Attributes.AttackChance = 15;		
+            Attributes.DefendChance = 15;		
         }
 
         public VesperOrderShield(Serial serial)
@@ -252,13 +249,11 @@ namespace Server.Items
         public VesperChaosShield()
             : base()
         {
-            this.Hue = 0xFA;
-		
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.CastRecovery = 2;	
-            this.Attributes.CastSpeed = 1;		
-			
-            this.ArmorAttributes.SelfRepair = 1;
+            Hue = 0xFA;	
+            Attributes.SpellChanneling = 1;
+            Attributes.CastRecovery = 2;	
+            Attributes.CastSpeed = 1;				
+            ArmorAttributes.SelfRepair = 1;
         }
 
         public VesperChaosShield(Serial serial)

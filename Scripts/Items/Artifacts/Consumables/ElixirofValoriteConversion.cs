@@ -4,15 +4,14 @@ namespace Server.Items
 {
     public class ElixirofValoriteConversion : Item
     {
-		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113010; } } // Elixir of Valorite Conversion
+		
         [Constructable]
         public ElixirofValoriteConversion()
             : base(0x99B)
-        {
-            this.Name = "Elixir of Valorite Conversion";  
-
-            this.Hue = 2219;
-            this.Movable = true;
+        { 
+            Hue = 2219;
+            Movable = true;
         }
 
         public ElixirofValoriteConversion(Serial serial)

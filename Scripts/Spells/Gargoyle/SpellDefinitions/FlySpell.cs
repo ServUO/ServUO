@@ -69,9 +69,9 @@ namespace Server.Spells
             {
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
             }
-            else if (!Caster.CanBeginAction(typeof(Seventh.PolymorphSpell)))
+			else if (!Caster.CanBeginAction(typeof(Seventh.PolymorphSpell)))
             {
-                Caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
+                Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1112453); // You can't fly in your current form!
             }
             else if (Ninjitsu.AnimalForm.UnderTransformation(Caster) || Mysticism.StoneFormSpell.IsEffected(Caster) || (TransformationSpellHelper.UnderTransformation(Caster)
                 && !TransformationSpellHelper.UnderTransformation(Caster, typeof(Spells.Necromancy.VampiricEmbraceSpell))) || (Caster.IsBodyMod && !Caster.Body.IsHuman))

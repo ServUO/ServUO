@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public EssenceOfBattle()
         {
-            this.Hue = 0x550;
-            this.Attributes.BonusDex = 7;
-            this.Attributes.BonusStr = 7;
-            this.Attributes.WeaponDamage = 30;
+            Hue = 0x550;
+            Attributes.BonusDex = 7;
+            Attributes.BonusStr = 7;
+            Attributes.WeaponDamage = 30;
         }
 
         public EssenceOfBattle(Serial serial)

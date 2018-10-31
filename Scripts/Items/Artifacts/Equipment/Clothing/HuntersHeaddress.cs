@@ -8,13 +8,11 @@ namespace Server.Items
         [Constructable]
         public HuntersHeaddress()
         {
-            this.Hue = 0x594;
-
-            this.SkillBonuses.SetValues(0, SkillName.Archery, 20);
-
-            this.Attributes.BonusDex = 8;
-            this.Attributes.NightSight = 1;
-            this.Attributes.AttackChance = 15;
+            Hue = 0x594;
+            SkillBonuses.SetValues(0, SkillName.Archery, 20);
+            Attributes.BonusDex = 8;
+            Attributes.NightSight = 1;
+            Attributes.AttackChance = 15;
         }
 
         public HuntersHeaddress(Serial serial)

@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public HeartOfTheLion()
         {
-            this.Hue = 0x501;
-            this.Attributes.Luck = 95;
-            this.Attributes.DefendChance = 15;
-            this.ArmorAttributes.LowerStatReq = 100;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x501;
+            Attributes.Luck = 95;
+            Attributes.DefendChance = 15;
+            ArmorAttributes.LowerStatReq = 100;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public HeartOfTheLion(Serial serial)

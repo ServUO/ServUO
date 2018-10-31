@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public LightOfWayGlasses()
         {
-            this.Attributes.BonusStr = 7;
-            this.Attributes.BonusInt = 5;
-            this.Attributes.WeaponDamage = 30;
-
-            this.Hue = 0x256;
+            Attributes.BonusStr = 7;
+            Attributes.BonusInt = 5;
+            Attributes.WeaponDamage = 30;
+            Hue = 0x256;
         }
 
         public LightOfWayGlasses(Serial serial)

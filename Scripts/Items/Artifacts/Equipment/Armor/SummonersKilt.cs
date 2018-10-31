@@ -5,20 +5,18 @@ namespace Server.Items
     public class SummonersKilt : GargishClothKilt
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113540; } } // Summoner's Kilt
+		
         [Constructable]
         public SummonersKilt()
         {
-            this.Name = ("Summoner's Kilt");
-		
-            this.Hue = 1266;
-			
-            this.Attributes.BonusMana = 5;
-            this.Attributes.RegenMana = 2;
-            this.Attributes.SpellDamage = 5;
+            Hue = 1266;			
+            Attributes.BonusMana = 5;
+            Attributes.RegenMana = 2;
+            Attributes.SpellDamage = 5;
             SAAbsorptionAttributes.CastingFocus = 2;
-            this.Attributes.LowerManaCost = 8;
-            this.Attributes.LowerRegCost = 10;
-			this.StrRequirement = 20;
+            Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 10;
         }
 
         public SummonersKilt(Serial serial)

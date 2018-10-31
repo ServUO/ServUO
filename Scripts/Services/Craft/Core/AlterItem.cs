@@ -341,7 +341,7 @@ namespace Server.Engines.Craft
             {
                 BaseWeapon weapon = (BaseWeapon)item;
 
-                if (weapon.SetID != SetItem.None || !weapon.CanAlter)
+                if (weapon.SetID != SetItem.None || !weapon.CanAlter || weapon.NegativeAttributes.Antique != 0)
                     return false;
 
                 if ((weapon.RequiredRace != null && weapon.RequiredRace == Race.Gargoyle && !weapon.IsArtifact))
@@ -352,7 +352,7 @@ namespace Server.Engines.Craft
             {
                 BaseArmor armor = (BaseArmor)item;
 
-                if (armor.SetID != SetItem.None || !armor.CanAlter)
+                if (armor.SetID != SetItem.None || !armor.CanAlter || armor.NegativeAttributes.Antique != 0)
                     return false;
 
                 if ((armor.RequiredRace != null && armor.RequiredRace == Race.Gargoyle && !armor.IsArtifact))
@@ -366,7 +366,7 @@ namespace Server.Engines.Craft
             {
                 BaseClothing cloth = (BaseClothing)item;
 
-                if (cloth.SetID != SetItem.None || !cloth.CanAlter)
+                if (cloth.SetID != SetItem.None || !cloth.CanAlter || cloth.NegativeAttributes.Antique != 0)
                     return false;
 
                 if ((cloth.RequiredRace != null && cloth.RequiredRace == Race.Gargoyle && !cloth.IsArtifact))

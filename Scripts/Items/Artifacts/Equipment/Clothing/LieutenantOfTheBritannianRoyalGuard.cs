@@ -10,11 +10,10 @@ namespace Server.Items
         [Constructable]
         public LieutenantOfTheBritannianRoyalGuard()
         {
-            this.Hue = 0xe8;
-
-            this.Attributes.BonusInt = 5;
-            this.Attributes.RegenMana = 2;
-            this.Attributes.LowerRegCost = 10;
+            Hue = 0xe8;
+            Attributes.BonusInt = 5;
+            Attributes.RegenMana = 2;
+            Attributes.LowerRegCost = 10;
         }
 
         public LieutenantOfTheBritannianRoyalGuard(Serial serial)
@@ -68,30 +67,14 @@ namespace Server.Items
     public class GargishLieutenantOfTheBritannianRoyalGuard : GargishSash
     {
         public override bool IsArtifact { get { return true; } }
-
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-
+      
         [Constructable]
         public GargishLieutenantOfTheBritannianRoyalGuard()
         {
-            this.Hue = 0xe8;
-
-            this.Attributes.BonusInt = 5;
-            this.Attributes.RegenMana = 2;
-            this.Attributes.LowerRegCost = 10;
+            Hue = 0xe8;
+            Attributes.BonusInt = 5;
+            Attributes.RegenMana = 2;
+            Attributes.LowerRegCost = 10;
         }
 
         public GargishLieutenantOfTheBritannianRoyalGuard(Serial serial)

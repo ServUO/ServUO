@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public LeggingsOfEmbers()
         {
-            this.Hue = 0x2C;
-            this.LootType = LootType.Blessed;
-
-            this.ArmorAttributes.SelfRepair = 10;
-            this.ArmorAttributes.MageArmor = 1;
-            this.ArmorAttributes.LowerStatReq = 100;
+            Hue = 0x2C;
+            LootType = LootType.Blessed;
+            ArmorAttributes.SelfRepair = 10;
+            ArmorAttributes.MageArmor = 1;
+            ArmorAttributes.LowerStatReq = 100;
         }
 
         public LeggingsOfEmbers(Serial serial)

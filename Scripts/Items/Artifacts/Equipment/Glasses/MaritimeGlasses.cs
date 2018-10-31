@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public MaritimeGlasses()
         {
-            this.Attributes.Luck = 150;
-            this.Attributes.NightSight = 1;
-            this.Attributes.ReflectPhysical = 20;
-
-            this.Hue = 0x581;
+            Attributes.Luck = 150;
+            Attributes.NightSight = 1;
+            Attributes.ReflectPhysical = 20;
+            Hue = 0x581;
         }
 
         public MaritimeGlasses(Serial serial)

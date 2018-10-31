@@ -21,7 +21,6 @@ namespace Server.Items
         public WardedDemonboneBracers()
         {
             Hue = 0x2E2;
-
             AbsorptionAttributes.CastingFocus = 2;
             Attributes.RegenMana = 1;
             Attributes.LowerManaCost = 6;

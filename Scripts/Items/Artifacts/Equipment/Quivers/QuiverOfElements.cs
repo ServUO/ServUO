@@ -9,8 +9,8 @@ namespace Server.Items
         public QuiverOfElements()
             : base()
         {
-            this.Hue = 0xEB;
-            this.WeightReduction = 50;
+            Hue = 0xEB;
+            WeightReduction = 50;
         }
 
         public QuiverOfElements(Serial serial)

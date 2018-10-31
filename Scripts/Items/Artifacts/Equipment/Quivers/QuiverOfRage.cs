@@ -9,10 +9,9 @@ namespace Server.Items
         public QuiverOfRage()
             : base()
         {
-            this.Hue = 0x24C;
-
-            this.WeightReduction = 25;
-            this.DamageIncrease = 10;
+            Hue = 0x24C;
+            WeightReduction = 25;
+            DamageIncrease = 10;
         }
 
         public QuiverOfRage(Serial serial)

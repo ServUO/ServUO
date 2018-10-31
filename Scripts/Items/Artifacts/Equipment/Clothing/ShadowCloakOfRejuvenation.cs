@@ -13,12 +13,11 @@ namespace Server.Items
         [Constructable]
         public ShadowCloakOfRejuvenation()
         {
-            this.Hue = 1884;
-
-            this.Attributes.RegenMana = 1;
-            this.Attributes.RegenHits = 1;
-            this.Attributes.RegenStam = 1;
-            this.Attributes.LowerManaCost = 2;
+            Hue = 1884;
+            Attributes.RegenMana = 1;
+            Attributes.RegenHits = 1;
+            Attributes.RegenStam = 1;
+            Attributes.LowerManaCost = 2;
         }
 
         public ShadowCloakOfRejuvenation(Serial serial)
@@ -49,12 +48,11 @@ namespace Server.Items
         [Constructable]
         public GargishShadowCloakOfRejuvenation()
         {
-            this.Hue = 1884;
-
-            this.Attributes.RegenMana = 1;
-            this.Attributes.RegenHits = 1;
-            this.Attributes.RegenStam = 1;
-            this.Attributes.LowerManaCost = 2;
+            Hue = 1884;
+            Attributes.RegenMana = 1;
+            Attributes.RegenHits = 1;
+            Attributes.RegenStam = 1;
+            Attributes.LowerManaCost = 2;
         }
 
         public GargishShadowCloakOfRejuvenation(Serial serial)

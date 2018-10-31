@@ -8,13 +8,11 @@ namespace Server.Items
         [Constructable]
         public BurglarsBandana()
         {
-            this.Hue = Utility.RandomBool() ? 0x58C : 0x10;
-
-            this.SkillBonuses.SetValues(0, SkillName.Stealing, 10.0);
-            this.SkillBonuses.SetValues(1, SkillName.Stealth, 10.0);
-            this.SkillBonuses.SetValues(2, SkillName.Snooping, 10.0);
-
-            this.Attributes.BonusDex = 5;
+            Hue = Utility.RandomBool() ? 0x58C : 0x10;
+            SkillBonuses.SetValues(0, SkillName.Stealing, 10.0);
+            SkillBonuses.SetValues(1, SkillName.Stealth, 10.0);
+            SkillBonuses.SetValues(2, SkillName.Snooping, 10.0);
+            Attributes.BonusDex = 5;
         }
 
         public BurglarsBandana(Serial serial)

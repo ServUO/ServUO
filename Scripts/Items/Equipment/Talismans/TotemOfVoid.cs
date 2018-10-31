@@ -5,18 +5,18 @@ namespace Server.Items
 {
     public class TotemOfVoid : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public TotemOfVoid()
             : base(0x2F5B)
         {
-            this.Hue = 0x2D0;
-            this.MaxChargeTime = 1800;
-
-            this.Blessed = GetRandomBlessed();
-            this.Protection = GetRandomProtection(false);
-
-            this.Attributes.RegenHits = 2;
-            this.Attributes.LowerManaCost = 10;
+            Hue = 0x2D0;
+            MaxChargeTime = 1800;
+            Blessed = GetRandomBlessed();
+            Protection = GetRandomProtection(false);
+            Attributes.RegenHits = 2;
+            Attributes.LowerManaCost = 10;
         }
 
         public TotemOfVoid(Serial serial)

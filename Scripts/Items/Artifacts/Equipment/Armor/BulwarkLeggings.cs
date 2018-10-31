@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public BulwarkLeggings()
         {
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.RegenStam = 1;
-            this.Attributes.RegenMana = 1;
+            LootType = LootType.Blessed;
+            Attributes.RegenStam = 1;
+            Attributes.RegenMana = 1;
         }
 
         public BulwarkLeggings(Serial serial)

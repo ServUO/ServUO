@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public WalkersLeggings()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public WalkersLeggings(Serial serial)

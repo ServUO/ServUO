@@ -9,8 +9,8 @@ namespace Server.Items
         [Constructable]
         public DetectiveBoots()
         {
-            this.Hue = 0x455;
-            this.Level = Utility.RandomMinMax(0, 2);
+            Hue = 0x455;
+            Level = Utility.RandomMinMax(0, 2);
         }
 
         public DetectiveBoots(Serial serial)

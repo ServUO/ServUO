@@ -1,10 +1,10 @@
 using Server;
 using System;
-using System.Collections.Generic;
-using Server.Mobiles;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishHephaestus))]
     public class Hephaestus : HeaterShield
     {
         public override int LabelNumber { get { return 1152909; } } // Hephaestus

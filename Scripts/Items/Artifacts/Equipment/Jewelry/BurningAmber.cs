@@ -5,17 +5,16 @@ namespace Server.Items
     public class BurningAmber : GoldRing
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1114790; } } // Burning Amber
+		
         [Constructable]
         public BurningAmber()
         {
-            this.Name = ("Burning Amber");
-		
-            this.Hue = 1174;	
-		
-            this.Attributes.CastRecovery = 3;
-            this.Attributes.RegenMana = 2;
-            this.Attributes.BonusDex = 5;
-            this.Resistances.Fire = 20;
+            Hue = 1174;		
+            Attributes.CastRecovery = 3;
+            Attributes.RegenMana = 2;
+            Attributes.BonusDex = 5;
+            Resistances.Fire = 20;
         }
 
         public BurningAmber(Serial serial)
@@ -35,9 +34,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Hue == 0x4F4)
-                this.Hue = 0x4F7;
         }
     }
 }

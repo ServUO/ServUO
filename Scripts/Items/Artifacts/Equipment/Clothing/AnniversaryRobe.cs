@@ -6,6 +6,8 @@ namespace Server.Items
     public class AnniversaryRobe : BaseOuterTorso
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1153496; } } // 15th Anniversary Commemorative Robe
+		
         [Constructable]
         public AnniversaryRobe() : this(0x455)
         {
@@ -14,9 +16,8 @@ namespace Server.Items
         [Constructable]
         public AnniversaryRobe(int hue) : base(0x4B9D, hue)
         {
-            this.Name = "15th Anniversary Commemorative Robe";
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public AnniversaryRobe(Serial serial)

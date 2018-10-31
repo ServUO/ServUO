@@ -5,25 +5,24 @@ namespace Server.Items
     public class DragonJadeEarrings : GoldEarrings
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113720; } } // Dragon Jade Earrings
+		
         [Constructable]
         public DragonJadeEarrings()
             : base(0x4213)
 	
         {
-            this.Name = ("Dragon Jade Earrings");
-		
-            this.Hue = 2129;
-
-            this.Attributes.BonusDex = 5;
-            this.Attributes.BonusStr = 5;
-            this.Attributes.RegenHits = 2;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.LowerManaCost = 5;
-            this.Resistances.Physical = 9;
-            this.Resistances.Fire = 16;
-            this.Resistances.Cold = 5;
-            this.Resistances.Poison = 13;
-            this.Resistances.Energy = 3;
+            Hue = 2129;
+            Attributes.BonusDex = 5;
+            Attributes.BonusStr = 5;
+            Attributes.RegenHits = 2;
+            Attributes.RegenStam = 3;
+            Attributes.LowerManaCost = 5;
+            Resistances.Physical = 9;
+            Resistances.Fire = 16;
+            Resistances.Cold = 5;
+            Resistances.Poison = 13;
+            Resistances.Energy = 3;
 	        AbsorptionAttributes.EaterFire = 10;
         }
 

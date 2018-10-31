@@ -15,8 +15,8 @@ namespace Server.Items
         public HoodedShroudOfShadows(int hue)
             : base(0x2684, hue)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 3.0;
+            LootType = LootType.Blessed;
+            Weight = 3.0;
         }
 
         public HoodedShroudOfShadows(Serial serial)

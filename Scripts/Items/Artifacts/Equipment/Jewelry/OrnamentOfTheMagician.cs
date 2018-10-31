@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public OrnamentOfTheMagician()
         {
-            this.Hue = 0x554;
-            this.Attributes.CastRecovery = 3;
-            this.Attributes.CastSpeed = 2;
-            this.Attributes.LowerManaCost = 10;
-            this.Attributes.LowerRegCost = 20;
-            this.Resistances.Energy = 15;
+            Hue = 0x554;
+            Attributes.CastRecovery = 3;
+            Attributes.CastSpeed = 2;
+            Attributes.LowerManaCost = 10;
+            Attributes.LowerRegCost = 20;
+            Resistances.Energy = 15;
         }
 
         public OrnamentOfTheMagician(Serial serial)
@@ -47,9 +47,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Hue == 0x12B)
-                this.Hue = 0x554;
         }
     }
 }

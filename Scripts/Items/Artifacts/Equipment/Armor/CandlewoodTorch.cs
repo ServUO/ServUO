@@ -14,7 +14,6 @@ namespace Server.Items
         {
             LootType = LootType.Blessed;
             Weight = 1.0;
-
             Attributes.SpellChanneling = 1;
             Attributes.CastSpeed = -1;
         }

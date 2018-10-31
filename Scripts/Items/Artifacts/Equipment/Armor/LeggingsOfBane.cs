@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public LeggingsOfBane()
         {
-            this.Hue = 0x4F5;
-            this.ArmorAttributes.DurabilityBonus = 100;
-            this.HitPoints = this.MaxHitPoints = 255;	//Cause the Durability bonus and such and the min/max hits as well as all other hits being whole #'s...
-            this.Attributes.BonusStam = 8;
-            this.Attributes.AttackChance = 20;
+            Hue = 0x4F5;
+            ArmorAttributes.DurabilityBonus = 100;
+            Attributes.BonusStam = 8;
+            Attributes.AttackChance = 20;
         }
 
         public LeggingsOfBane(Serial serial)

@@ -382,16 +382,11 @@ namespace Server.Mobiles
             }
         }
 
-        public static void SpawnNinjaGroup(Point3D _location)
+        public void SpawnNinjaGroup(Point3D _location)
         {
-            BaseCreature ninja = new DragonsFlameMage();
-            ninja.MoveToWorld(_location, Map.Malas);
-
-            ninja = new SerpentsFangAssassin();
-            ninja.MoveToWorld(_location, Map.Malas);
-
-            ninja = new TigersClawThief();
-            ninja.MoveToWorld(_location, Map.Malas);
+            SpawnHelper(new DragonsFlameMage(), _location);
+            SpawnHelper(new SerpentsFangAssassin(), _location);
+            SpawnHelper(new TigersClawThief(), _location);
         }
 
         #endregion

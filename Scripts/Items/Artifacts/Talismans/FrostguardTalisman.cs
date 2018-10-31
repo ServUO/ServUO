@@ -14,7 +14,6 @@ namespace Server.Items
             : base(0x2F5B)
         {
             Hue = 0x556;
-
             Weight = 1.0;
             SAAbsorptionAttributes.EaterCold = 5;
             Attributes.RegenMana = 1;

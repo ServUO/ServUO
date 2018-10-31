@@ -17,7 +17,6 @@ namespace Server.Items
             Attributes.DefendChance = 10;
             Attributes.CastRecovery = 2;
 	        Hue = 0x671;
-	        Weight = 10.0;
         }
 
         public MysticsGuard(Serial serial)
@@ -72,20 +71,6 @@ namespace Server.Items
             get
             {
                 return 255;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
             }
         }
         public override void Deserialize(GenericReader reader)

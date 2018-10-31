@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public PoisonedGlasses()
         {
-            this.Attributes.BonusStam = 3;
-            this.Attributes.RegenStam = 4;
-
-            this.Hue = 0x113;
+            Attributes.BonusStam = 3;
+            Attributes.RegenStam = 4;
+            Hue = 0x113;
         }
 
         public PoisonedGlasses(Serial serial)

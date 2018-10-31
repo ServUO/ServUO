@@ -11,7 +11,6 @@ namespace Server.Items
         public OssianGrimoire()
         {
             LootType = LootType.Blessed;
-
             SkillBonuses.SetValues(0, SkillName.Necromancy, 10.0);
             Attributes.RegenMana = 1;
             Attributes.CastSpeed = 1;
