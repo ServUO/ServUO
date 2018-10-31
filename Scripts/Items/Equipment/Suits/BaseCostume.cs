@@ -7,7 +7,7 @@ using System.Collections;
 namespace Server.Items
 {
     [FlipableAttribute(0x19BC, 0x19BD)]
-    public partial class BaseCostume : BaseShield, IDyable
+    public partial class BaseCostume : BaseShield
     {
         public bool m_Transformed;
         private int m_Body = 0;
