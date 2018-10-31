@@ -2799,11 +2799,16 @@
       <rect x="624" y="3296" width="303" height="287" />
       <go x="750" y="3440" z="-20" />
       <music name="RoyalCity" />
-      <region name="Queen's Palace">
-        <rect x="717" y="3339" width="68" height="73" />
-        <go x="748" y="3357" z="55" />
-        <music name="QueenPalace" />
-      </region>
+		<region name="Queen's Palace">
+		  <rect x="717" y="3339" width="68" height="73" />
+		  <go x="748" y="3357" z="55" />
+		  <music name="QueenPalace" />
+		</region>
+		<region name="Royal City Inn">
+            <rect x="724" y="3463" width="37" height="20" />
+            <rect x="747" y="3480" width="13" height="13" />
+            <logoutDelay active="false" />
+          </region>
     </region>
     <region type="DungeonRegion" priority="50" name="Royal Park">
       <rect x="632" y="3233" width="176" height="35" />
