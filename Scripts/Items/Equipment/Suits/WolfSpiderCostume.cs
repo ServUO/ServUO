@@ -8,7 +8,7 @@ namespace Server.Items
 		[Constructable]
 		public WolfSpiderCostume() : base( )
 		{
-            this.CostumeBody = 376;
+            CostumeBody = 736;
 		}
 		
 		public override int LabelNumber
