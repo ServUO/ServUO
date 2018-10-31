@@ -187,18 +187,14 @@ namespace Server.Items
 		private int m_Slips;
         private int m_HealedPoisonOrBleed;
 		private Timer m_Timer;
+        private int m_HealingBonus;
 
 		public Mobile Healer { get { return m_Healer; } }
 		public Mobile Patient { get { return m_Patient; } }
 		public int Slips { get { return m_Slips; } set { m_Slips = value; } }
         public int HealedPoisonOrBleed { get { return m_HealedPoisonOrBleed; } set { m_HealedPoisonOrBleed = value; } }
 		public Timer Timer { get { return m_Timer; } }
-
-		#region Heritage Items
-		private readonly bool m_Enhanced;
-
-		public bool Enhanced { get { return m_Enhanced; } }
-		#endregion
+        public int HealingBonus { get { return m_HealingBonus; } }
 
 		public void Slip()
 		{
@@ -215,7 +211,8 @@ namespace Server.Items
 			m_Healer = healer;
 			m_Patient = patient;
 
-			m_Enhanced = enhanced;
+            if (enhanced)
+                m_HealingBonus += EnhancedBandage.HealingBonus;
 
 			m_Timer = new InternalTimer(this, delay);
 			m_Timer.Start();
@@ -489,19 +486,21 @@ namespace Server.Items
 
                 double healing = m_Healer.Skills[primarySkill].Value;
                 double anatomy = m_Healer.Skills[secondarySkill].Value;
-                double chance = ((healing + 10.0) / 100.0) - (m_Slips * 0.02);
 
-                #region Heritage Items
-                if( m_Enhanced )
-                    healing += EnhancedBandage.HealingBonus;
-                #endregion
+                FirstAidBelt belt = m_Healer.FindItemOnLayer(Layer.Waist) as FirstAidBelt;
 
-                #region Exodus Items
+                if (belt != null)
+                    m_HealingBonus += belt.HealingBonus;
+
                 Item item = m_Healer.FindItemOnLayer(Layer.TwoHanded);
 
                 if (item is Asclepius || item is GargishAsclepius)
-                    healing += 15;
-                #endregion
+                    m_HealingBonus += 15;
+
+                if (m_HealingBonus > 0)
+                    healing += m_HealingBonus;
+
+                double chance = ((healing + 10.0) / 100.0) - (m_Slips * 0.02);
 
                 if (chance > Utility.RandomDouble())
                 {

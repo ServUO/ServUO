@@ -4133,8 +4133,6 @@ namespace Server
 
 					DeathMoveResult res = GetInventoryMoveResultFor(item);
 
-                    pack.FreePosition(item.GridLocation);
-
                     if (res == DeathMoveResult.MoveToCorpse)
 					{
 						content.Add(item);
@@ -4583,9 +4581,6 @@ namespace Server
 						}
 						else
 						{
-                            if (item.Parent != null && item.Parent is Container)
-                                ((Container)item.Parent).FreePosition(item.GridLocation);
-
                             item.SetLastMoved();
 
 							if (item.Spawner != null)

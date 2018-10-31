@@ -275,7 +275,10 @@ namespace Server.Factions
                         {
                             case 0: // vote
                                 {
-                                    m_From.SendGump(new ElectionGump(m_From, m_Faction.Election));
+                                    if (m_Faction.Election != null)
+                                    {
+                                        m_From.SendGump(new ElectionGump(m_From, m_Faction.Election));
+                                    }
                                     break;
                                 }
                             case 1: // leave
