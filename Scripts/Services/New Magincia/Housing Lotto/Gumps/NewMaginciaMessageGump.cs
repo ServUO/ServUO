@@ -123,7 +123,7 @@ namespace Server.Engines.NewMagincia
 
                 TimeSpan ts = m_Message.Expires - DateTime.UtcNow;
 
-                AddHtmlLocalized(5, 230, 414, 16, 1150432, String.Format("{0}\t{1}\t{2}", ts.Days, ts.Hours, ts.Minutes), GreenColor, false, false); // This message will expire in ~1_DAYS~ days, ~2_HOURS~ hours, and ~3_MIN~ minutes.
+                AddHtmlLocalized(5, 230, 414, 16, 1150432, String.Format("@{0}@{1}@{2}", ts.Days, ts.Hours, ts.Minutes), GreenColor, false, false); // This message will expire in ~1_DAYS~ days, ~2_HOURS~ hours, and ~3_MIN~ minutes.
 
                 AddButton(5, 250, 4005, 4007, 1, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, 250, 150, 16, 1150433, EntryColor, false, false); // DELETE NOW
