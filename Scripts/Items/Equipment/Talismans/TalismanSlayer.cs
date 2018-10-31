@@ -85,8 +85,7 @@ namespace Server.Items
                     typeof(DesertOstard),   typeof(Eagle),
                     typeof(ForestOstard),   typeof(FrenziedOstard),
                     typeof(Phoenix),        typeof(Pyre),
-                    typeof(Swoop),          typeof(Saliva),
-                    typeof(Harpy),          typeof(StoneHarpy)
+                    typeof(Swoop),          typeof(Saliva)
                 };
 
             m_Table[TalismanSlayerName.Ice] = new Type[]
