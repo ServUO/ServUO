@@ -877,6 +877,10 @@ namespace Server
                     {
                         m_GridLocation = ((Container)Parent).GetNewPosition(0);
                     }
+                    else
+                    {
+                        m_GridLocation = value;
+                    }
                 }
                 else
                 {
