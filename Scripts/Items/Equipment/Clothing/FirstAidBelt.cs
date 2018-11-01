@@ -301,7 +301,8 @@ namespace Server.Items
                         }
 
                         m_HealingBonus = reader.ReadInt();
-                        goto case 0;
+                        m_WeightReduction = reader.ReadInt();
+                        break;
                     }
                 case 0:
                     {
