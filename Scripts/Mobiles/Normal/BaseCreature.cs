@@ -7363,7 +7363,7 @@ namespace Server.Mobiles
 
         public override void OnHeal(ref int amount, Mobile from)
         {
-            if (Core.SA && amount > 0 && from != this)
+            if (Core.SA && amount > 0 && from != null && from != this)
             {
                 foreach (var info in Aggressed)
                 {
