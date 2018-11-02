@@ -2205,7 +2205,7 @@ namespace Server.Mobiles
         {
             BestialSetHelper.OnHeal(this, from, ref amount);
 
-            if (Core.SA && amount > 0 && from != this)
+            if (Core.SA && amount > 0 && from != null && from != this)
             {
                 foreach (var info in Aggressed)
                 {
