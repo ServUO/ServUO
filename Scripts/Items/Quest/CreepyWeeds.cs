@@ -61,7 +61,8 @@ namespace Server.Items
                     case 5: case 10: case 15:
 						if (Utility.RandomDouble() < 0.20)
                         {
-                            new FNPitchfork().MoveToWorld(loc, map);
+                            from.AddToBackpack(new FNPitchfork());
+
                             from.SendMessage("You find Farmer Nash's pitchfork under one of the brambles of weeds. You pick up the pitchfork and put it in your backpack."); 
                         }
 						break;

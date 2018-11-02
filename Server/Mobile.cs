@@ -5785,12 +5785,12 @@ namespace Server
 				return 0;
 			}
 
-			OnHeal(ref amount, from);
-
 			if ((Hits + amount) > HitsMax)
 			{
 				amount = HitsMax - Hits;
 			}
+
+            OnHeal(ref amount, from);
 
 			Hits += amount;
 
