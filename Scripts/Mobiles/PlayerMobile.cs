@@ -2205,6 +2205,35 @@ namespace Server.Mobiles
         {
             BestialSetHelper.OnHeal(this, from, ref amount);
 
+            if (Core.SA && amount > 0 && from != this)
+            {
+                foreach (var info in Aggressed)
+                {
+                    if (info.Defender.InRange(Location, Core.GlobalMaxUpdateRange) && info.Defender.DamageEntries.Any(de => de.Damager == this))
+                    {
+                        info.Defender.RegisterDamage(amount, from);
+                    }
+
+                    if (info.Defender.Player && from.CanBeHarmful(info.Defender))
+                    {
+                        from.DoHarmful(info.Defender, true);
+                    }
+                }
+
+                foreach (var info in Aggressors)
+                {
+                    if (info.Attacker.InRange(Location, Core.GlobalMaxUpdateRange) && info.Attacker.DamageEntries.Any(de => de.Damager == this))
+                    {
+                        info.Attacker.RegisterDamage(amount, from);
+                    }
+
+                    if (info.Attacker.Player && from.CanBeHarmful(info.Attacker))
+                    {
+                        from.DoHarmful(info.Attacker, true);
+                    }
+                }
+            }
+
             base.OnHeal(ref amount, from);
         }
 
@@ -3533,6 +3562,11 @@ namespace Server.Mobiles
 
 		public override void OnDamage(int amount, Mobile from, bool willKill)
 		{
+            if (Core.SA)
+            {
+                from.RegisterDamage(amount, this);
+            }
+
 			int disruptThreshold;
 
 			if (!Core.AOS)

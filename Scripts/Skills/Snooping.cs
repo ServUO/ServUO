@@ -46,7 +46,7 @@ namespace Server.SkillHandlers
                 if (root != null && !root.Alive)
                     return;
 
-                if (root is BaseCreature && !(cont is StrongBackpack))
+                if (from.IsPlayer() && root is BaseCreature && !(cont is StrongBackpack))
                     return;
 
                 if (root != null && root.IsStaff() && from.IsPlayer())

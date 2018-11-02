@@ -2337,6 +2337,11 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
+            if (Core.SA)
+            {
+                from.RegisterDamage(amount, this);
+            }
+
             if (BardPacified && (HitsMax - Hits) * 0.001 > Utility.RandomDouble())
             {
                 Unpacify();
@@ -6462,21 +6467,28 @@ namespace Server.Mobiles
                 int topDamage = rights[0].m_Damage;
                 int minDamage;
 
-                if (hitsMax >= 3000)
+                if (Core.SA)
                 {
-                    minDamage = topDamage / 16;
-                }
-                else if (hitsMax >= 1000)
-                {
-                    minDamage = topDamage / 8;
-                }
-                else if (hitsMax >= 200)
-                {
-                    minDamage = topDamage / 4;
+                    minDamage = (int)((double)topDamage * 0.06);
                 }
                 else
                 {
-                    minDamage = topDamage / 2;
+                    if (hitsMax >= 3000)
+                    {
+                        minDamage = topDamage / 16;
+                    }
+                    else if (hitsMax >= 1000)
+                    {
+                        minDamage = topDamage / 8;
+                    }
+                    else if (hitsMax >= 200)
+                    {
+                        minDamage = topDamage / 4;
+                    }
+                    else
+                    {
+                        minDamage = topDamage / 2;
+                    }
                 }
 
                 for (int i = 0; i < rights.Count; ++i)
@@ -7310,7 +7322,7 @@ namespace Server.Mobiles
 
                     toHeal *= HealScalar;
 
-                    patient.Heal((int)toHeal);
+                    patient.Heal((int)toHeal, this);
 
                     CheckSkill(SkillName.Healing, 0.0, Skills[SkillName.Healing].Cap);
                     CheckSkill(SkillName.Anatomy, 0.0, Skills[SkillName.Anatomy].Cap);
@@ -7348,6 +7360,40 @@ namespace Server.Mobiles
             patient.PlaySound(HealSound);
         }
         #endregion
+
+        public override void OnHeal(ref int amount, Mobile from)
+        {
+            if (Core.SA && amount > 0 && from != this)
+            {
+                foreach (var info in Aggressed)
+                {
+                    if (info.Defender.InRange(Location, Core.GlobalMaxUpdateRange) && info.Defender.DamageEntries.Any(de => de.Damager == this))
+                    {
+                        info.Defender.RegisterDamage(amount, from);
+                    }
+
+                    if (info.Defender.Player && from.CanBeHarmful(info.Defender))
+                    {
+                        from.DoHarmful(info.Defender, true);
+                    }
+                }
+
+                foreach (var info in Aggressors)
+                {
+                    if (info.Attacker.InRange(Location, Core.GlobalMaxUpdateRange) && info.Attacker.DamageEntries.Any(de => de.Damager == this))
+                    {
+                        info.Attacker.RegisterDamage(amount, from);
+                    }
+
+                    if (info.Attacker.Player && from.CanBeHarmful(info.Attacker))
+                    {
+                        from.DoHarmful(info.Attacker, true);
+                    }
+                }
+            }
+
+            base.OnHeal(ref amount, from);
+        }
 
         #region Damaging Aura
         private long m_NextAura;
