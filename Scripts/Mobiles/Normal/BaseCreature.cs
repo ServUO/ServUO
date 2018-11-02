@@ -2337,7 +2337,7 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            if (Core.SA)
+            if (Core.SA && from != null)
             {
                 from.RegisterDamage(amount, this);
             }
