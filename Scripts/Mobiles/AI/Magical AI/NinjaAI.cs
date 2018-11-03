@@ -129,6 +129,8 @@ namespace Server.Mobiles
 					NinjaWeapon.Shoot(m_Mobile, c, toUse);
 			}
 
+            ColUtility.Free(list);
+
 			m_NextRanged = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 120));
 		}
 
