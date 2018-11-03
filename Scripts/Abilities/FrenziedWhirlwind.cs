@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server;
 using Server.Spells;
 using Server.Engines.PartySystem;
@@ -44,30 +46,9 @@ namespace Server.Items
             if (weapon == null)
                 return;
 
-            List<Mobile> targets = new List<Mobile>();
-            targets.Add(defender);
+            var targets = SpellHelper.AcquireIndirectTargets(attacker, attacker.Location, attacker.Map, 2).OfType<Mobile>();
 
-            IPooledEnumerable eable = attacker.GetMobilesInRange(2);
-
-            foreach (Mobile m in eable)
-            {
-                if (m != attacker && SpellHelper.ValidIndirectTarget(attacker, m))
-                {
-                    if (m == null || m.Deleted || m.Map != attacker.Map || !m.Alive || !attacker.CanSee(m) ||
-                        !attacker.CanBeHarmful(m) || !attacker.InLOS(m))
-                        continue;
-
-                    if(m is PlayerMobile)
-                    {
-                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1028852, TimeSpan.FromSeconds(2.0), m));
-                    }
-
-                    targets.Add(m);
-                }
-            }
-            eable.Free();
-
-            if (targets.Count > 0)
+            if (targets.Count() > 0)
             {
                 if (!CheckMana(attacker, true))
                     return;
@@ -82,14 +63,19 @@ namespace Server.Items
 
                 m_Registry[attacker] = new InternalTimer(attacker, targets);
 
+                foreach (var pm in targets.OfType<PlayerMobile>())
+                {
+                    BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1028852, TimeSpan.FromSeconds(2.0), pm));
+                }
+
                 if (defender is PlayerMobile && attacker is PlayerMobile)
                 {
                     defender.SendSpeedControl(SpeedControlType.WalkSpeed);
                     BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1152144, TimeSpan.FromSeconds(2.0), defender));
-                    Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(2), mob => mob.SendSpeedControl(SpeedControlType.Disable), defender);
+                    Timer.DelayCall(TimeSpan.FromSeconds(2), mob => mob.SendSpeedControl(SpeedControlType.Disable), defender);
                 }
 
-                if(attacker is BaseCreature)
+                if (attacker is BaseCreature)
                     PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Ninjitsu);
             }
         }
@@ -106,10 +92,10 @@ namespace Server.Items
         private class InternalTimer : Timer
         {
             private Mobile m_Attacker;
-            private List<Mobile> m_List;
+            private IEnumerable<Mobile> m_List;
             private long m_Start;
 
-            public InternalTimer(Mobile attacker, List<Mobile> list)
+            public InternalTimer(Mobile attacker, IEnumerable<Mobile> list)
                 : base(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(500))
             {
                 m_Attacker = attacker;
@@ -130,7 +116,6 @@ namespace Server.Items
 
                 if (!m_Attacker.Alive || m_Start + 2000 < Core.TickCount)
                 {
-                    ColUtility.Free(m_List);
                     Server.Items.FrenziedWhirlwind.RemoveFromRegistry(m_Attacker);
                 }
             }

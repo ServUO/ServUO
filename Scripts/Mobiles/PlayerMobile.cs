@@ -2203,12 +2203,19 @@ namespace Server.Mobiles
 
         public override void OnHeal(ref int amount, Mobile from)
         {
+            base.OnHeal(ref amount, from);
+
+            if (from == null)
+                return;
+
             BestialSetHelper.OnHeal(this, from, ref amount);
 
             if (Core.SA && amount > 0 && from != null && from != this)
             {
-                foreach (var info in Aggressed)
+                for (int i = Aggressed.Count - 1; i >= 0; i--)
                 {
+                    var info = Aggressed[i];
+
                     if (info.Defender.InRange(Location, Core.GlobalMaxUpdateRange) && info.Defender.DamageEntries.Any(de => de.Damager == this))
                     {
                         info.Defender.RegisterDamage(amount, from);
@@ -2220,8 +2227,10 @@ namespace Server.Mobiles
                     }
                 }
 
-                foreach (var info in Aggressors)
+                for (int i = Aggressors.Count - 1; i >= 0; i--)
                 {
+                    var info = Aggressed[i];
+
                     if (info.Attacker.InRange(Location, Core.GlobalMaxUpdateRange) && info.Attacker.DamageEntries.Any(de => de.Damager == this))
                     {
                         info.Attacker.RegisterDamage(amount, from);
@@ -2233,8 +2242,6 @@ namespace Server.Mobiles
                     }
                 }
             }
-
-            base.OnHeal(ref amount, from);
         }
 
 		public override bool AllowItemUse(Item item)
