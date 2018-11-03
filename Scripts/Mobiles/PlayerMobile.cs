@@ -2205,7 +2205,7 @@ namespace Server.Mobiles
         {
             BestialSetHelper.OnHeal(this, from, ref amount);
 
-            if (Core.SA && amount > 0 && from != this)
+            if (Core.SA && amount > 0 && from != null && from != this)
             {
                 foreach (var info in Aggressed)
                 {
@@ -3562,7 +3562,7 @@ namespace Server.Mobiles
 
 		public override void OnDamage(int amount, Mobile from, bool willKill)
 		{
-            if (Core.SA)
+            if (Core.SA && from != null)
             {
                 from.RegisterDamage(amount, this);
             }
