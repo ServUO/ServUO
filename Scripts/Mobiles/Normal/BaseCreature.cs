@@ -7387,7 +7387,7 @@ namespace Server.Mobiles
 
                 for (int i = Aggressors.Count - 1; i >= 0; i--)
                 {
-                    var info = Aggressed[i];
+                    var info = Aggressors[i];
 
                     if (info.Attacker.InRange(Location, Core.GlobalMaxUpdateRange) && info.Attacker.DamageEntries.Any(de => de.Damager == this))
                     {
