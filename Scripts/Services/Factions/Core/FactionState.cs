@@ -71,6 +71,11 @@ namespace Server.Factions
                     {
                         m_Faction = Faction.ReadReference(reader);
 
+                        if (m_Election.Faction == null)
+                        {
+                            m_Election.Faction = m_Faction;
+                        }
+
                         m_Commander = reader.ReadMobile();
 
                         if (version < 5)
