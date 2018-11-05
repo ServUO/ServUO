@@ -15,7 +15,10 @@ namespace Server.Engines.Craft
         WhiteChocolateNutcracker = 602,
 
         ThreeTieredCake = 603,
-        BlackrockStew = 604
+        BlackrockStew = 604,
+        Hamburger = 605,
+        HotDog = 606,
+        Sausage = 607
     }
     #endregion
 
@@ -342,6 +345,25 @@ namespace Server.Engines.Craft
             SetUseAllRes(index, true);
             SetItemHue(index, 1954);
             AddRecipe(index, (int)CookRecipes.BlackrockStew);
+
+            index = AddCraft(typeof(Hamburger), 1044498, 1125202, 40.0, 80.0, typeof(BreadLoaf), 1024155, 1, 1044253);
+            AddRes(index, typeof(RawRibs), 1044485, 1, 1044253);
+            AddRes(index, typeof(Lettuce), 1023184, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
+            AddRecipe(index, (int)CookRecipes.Hamburger);
+
+            index = AddCraft(typeof(HotDog), 1044498, 1125200, 40.0, 80.0, typeof(BreadLoaf), 1024155, 1, 1044253);
+            AddRes(index, typeof(Sausage), 1125198, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
+            AddRecipe(index, (int)CookRecipes.HotDog);
+
+            index = AddCraft(typeof(CookableSausage), 1044498, 1125198, 30.0, 70.0, typeof(Ham), 1022515, 1, 1044253);
+            AddRes(index, typeof(DriedHerbs), 1023137, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
+            AddRecipe(index, (int)CookRecipes.Sausage);
             /* End Barbecue */
 
             /* Begin Chocolatiering */

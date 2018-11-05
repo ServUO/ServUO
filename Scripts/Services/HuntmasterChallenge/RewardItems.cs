@@ -129,7 +129,7 @@ namespace Server.Items
         public int UsesRemaining
         {
             get { return m_UsesRemaining; }
-            set { m_UsesRemaining = value; if (m_UsesRemaining <= 0) Delete(); else InvalidateProperties(); }
+            set { m_UsesRemaining = value; InvalidateProperties(); }
         }
 
         public bool ShowUsesRemaining { get { return true; } set { } }
@@ -261,4 +261,48 @@ namespace Server.Items
             }
         }
     }
+
+    public class HarvestersAxe : TwoHandedAxe
+	{
+        public override int LabelNumber { get { return 1158774; } } // Harvester's Axe
+
+        private int _Charges;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Charges { get { return _Charges; } set { _Charges = value; InvalidateProperties(); } }
+
+		[Constructable]
+		public HarvestersAxe()
+		{
+            Charges = 1000;
+		}
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+            list.Add(1158775);  // * Magically Chops Logs into Boards *
+            list.Add(1060741, _Charges.ToString()); // charges: 
+        }
+
+        public HarvestersAxe(Serial serial)
+            : base(serial)
+        {
+        }
+		
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+			writer.Write(0);
+
+            writer.Write(_Charges);
+		}
+		
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+			int version = reader.ReadInt();
+
+            _Charges = reader.ReadInt();
+		}
+	}
 }
