@@ -639,6 +639,7 @@
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
+    <Compile Include="Services\HuntmasterChallenge\ResourceSatchels.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Gumps.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\CounterfeitPlatinum.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\KhaldunChest.cs" />

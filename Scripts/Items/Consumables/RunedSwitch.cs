@@ -77,6 +77,12 @@ namespace Server.Items
                     else
                         from.SendLocalizedMessage(1075099); // You cannot recharge that item until all of its current charges have been used.
                 }
+                else if (o is HarvestersAxe)
+                {
+                    ((HarvestersAxe)o).Charges = 1000;
+                    from.SendLocalizedMessage(1075100); // The item has been recharged.
+                    m_Item.Delete();
+                }
                 else
                     from.SendLocalizedMessage(1046439); // That is not a valid target.
             }
