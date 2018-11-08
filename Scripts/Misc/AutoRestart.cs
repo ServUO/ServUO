@@ -5,97 +5,118 @@ namespace Server.Misc
 {
     public class AutoRestart : Timer
     {
-        public static bool Enabled = false;// is the script enabled?
-        private static readonly TimeSpan RestartTime = TimeSpan.FromHours(2.0);// time of day at which to restart
         private static readonly TimeSpan RestartDelay = TimeSpan.Zero;// how long the server should remain active before restart (period of 'server wars')
         private static readonly TimeSpan WarningDelay = TimeSpan.FromMinutes(1.0);// at what interval should the shutdown message be displayed?
-        private static bool m_Restarting;
-        private static DateTime m_RestartTime;
-		private static bool m_Restart = true;
+        
+        public static DateTime RestartTime { get; private set; }
+        public static bool Restarting { get; private set; }
+        public static Timer Timer { get; private set; }
+        public static bool DoneWarning { get; private set; }
+
+        public static bool Enabled = Config.Get("AutoRestart.Enabled", false);
+        public static int Hour = Config.Get("AutoRestart.Hour", 12);
+        public static int Minutes = Config.Get("AutoRestart.Minute", 0);
+        public static int Frequency = Config.Get("AutoRestart.Frequency", 24);
+        
         public AutoRestart()
             : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
         {
-            this.Priority = TimerPriority.FiveSeconds;
-
-            m_RestartTime = DateTime.UtcNow.Date + RestartTime;
-
-            if (m_RestartTime < DateTime.UtcNow)
-                m_RestartTime += TimeSpan.FromDays(1.0);
         }
 
-        public static bool Restarting
-        {
-            get
-            {
-                return m_Restarting;
-            }
-        }
         public static void Initialize()
         {
 			CommandSystem.Register("Restart", AccessLevel.Administrator, new CommandEventHandler(Restart_OnCommand));
 			CommandSystem.Register("Shutdown", AccessLevel.Administrator, new CommandEventHandler(Shutdown_OnCommand));
-			new AutoRestart().Start();
+
+            if (Enabled)
+            {
+                var now = DateTime.Now;
+                var force = new DateTime(now.Year, now.Month, now.Day, Hour, Minutes, 0);
+
+                if (now > force)
+                {
+                    force += TimeSpan.FromHours(Frequency);
+                }
+
+                RestartTime = force;
+
+                Timer = new AutoRestart();
+                Timer.Start();
+
+                Utility.WriteConsoleColor(ConsoleColor.Magenta, "[Auto Restart] Configured for {0}:{1}:00, every {2} hours!", RestartTime.Hour, RestartTime.Minute, Frequency);
+                Utility.WriteConsoleColor(ConsoleColor.Magenta, "[Auto Restart] Next Shard Restart: {0}", RestartTime.ToString());
+            }
         }
 
         public static void Restart_OnCommand(CommandEventArgs e)
         {
-            if (m_Restarting)
+            if (Restarting)
             {
                 e.Mobile.SendMessage("The server is already restarting.");
             }
             else
             {
                 e.Mobile.SendMessage("You have initiated server restart.");
-                Enabled = true;
-				m_Restart = true;
-				m_RestartTime = DateTime.UtcNow;
+                Restarting = true;
+
+                Timer.Stop();
+                Timer = null;
+
+                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                    {
+                        AutoSave.Save();
+                        Core.Kill(true);
+                    });
             }
         }
 
 		public static void Shutdown_OnCommand(CommandEventArgs e)
 		{
-			if (m_Restarting)
+			if (Restarting)
 			{
-				e.Mobile.SendMessage("The server is already restarting.");
+				e.Mobile.SendMessage("The server is already shutting down.");
 			}
 			else
 			{
 				e.Mobile.SendMessage("You have initiated server shutdown.");
-				Enabled = true;
-				m_Restart = false;
-				m_RestartTime = DateTime.UtcNow;
+                Restarting = true;
+
+                Timer.Stop();
+                Timer = null;
+
+                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                {
+                    AutoSave.Save();
+                    Core.Kill(false);
+                });
 			}
 		}
 
 		protected override void OnTick()
         {
-            if (m_Restarting || !Enabled)
+            if (Restarting || !Enabled)
                 return;
 
-            if (DateTime.UtcNow < m_RestartTime)
-                return;
-
-            if (WarningDelay > TimeSpan.Zero)
+            if (WarningDelay > TimeSpan.Zero && !DoneWarning && RestartTime - WarningDelay < DateTime.Now)
             {
-                this.Warning_Callback();
-                Timer.DelayCall(WarningDelay, WarningDelay, new TimerCallback(Warning_Callback));
+                World.Broadcast(0x22, true, "The server will be going down in about {1} minute{2}.", WarningDelay.TotalMinutes.ToString(), WarningDelay.TotalMinutes == 1 ? "" : "s");
+
+                DoneWarning = true;
+                return;
             }
 
+            if (DateTime.Now < RestartTime)
+            {
+                return;
+            }
+
+            Restarting = true;
             AutoSave.Save();
 
-            m_Restarting = true;
+            if (RestartDelay > TimeSpan.Zero)
+                World.Broadcast(0x22, true, String.Format("The server will be going down in about {0} seconds!", RestartDelay.TotalSeconds.ToString()));
 
-            Timer.DelayCall(RestartDelay, new TimerCallback(Restart_Callback));
-        }
-
-        private void Warning_Callback()
-        {
-            World.Broadcast(0x22, true, "The server is going down shortly.");
-        }
-
-        private void Restart_Callback()
-        {
-            Core.Kill(m_Restart);
+            Timer.DelayCall(RestartDelay, () => Core.Kill(true));
         }
     }
 }
