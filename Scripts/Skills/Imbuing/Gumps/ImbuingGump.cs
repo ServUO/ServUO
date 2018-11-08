@@ -95,7 +95,7 @@ namespace Server.Gumps
                         if (Imbuing.CanImbueItem(from, it) && Imbuing.OnBeforeImbue(from, it, mod, modint))
                         {
                             Imbuing.ImbueItem(from, it, mod, modint);
-                            from.SendGump(new ImbuingGump(from));
+                            ImbuingGumpC.SendGumpDelayed(from);
                         }
                         break;
                     }
@@ -459,7 +459,7 @@ namespace Server.Gumps
 
                 if (!Imbuing.CanImbueItem(from, it) || !Imbuing.OnBeforeImbue(from, it, mod, modInt) || !Imbuing.CanImbueProperty(from, it, mod))
                 {
-                    from.SendGump(new ImbuingGump(from));
+                    ImbuingGumpC.SendGumpDelayed(from);
                     return;
                 }
 
