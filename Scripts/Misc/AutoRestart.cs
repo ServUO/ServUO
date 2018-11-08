@@ -99,7 +99,7 @@ namespace Server.Misc
 
             if (WarningDelay > TimeSpan.Zero && !DoneWarning && RestartTime - WarningDelay < DateTime.Now)
             {
-                World.Broadcast(0x22, true, "The server will be going down in about {1} minute{2}.", WarningDelay.TotalMinutes.ToString(), WarningDelay.TotalMinutes == 1 ? "" : "s");
+                World.Broadcast(0x22, true, "The server will be going down in about {0} minute{1}.", WarningDelay.TotalMinutes.ToString(), WarningDelay.TotalMinutes == 1 ? "" : "s");
 
                 DoneWarning = true;
                 return;
