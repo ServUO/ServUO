@@ -190,11 +190,12 @@ namespace Server.Items
                     }
                     else
                     {
-                        valid = (item is IDyable || item.IsArtifact ||
+                        valid = (item is IDyable ||
                                       item is BaseBook || item is BaseClothing ||
                                       item is BaseJewel || item is BaseStatuette ||
                                       item is BaseWeapon || item is Runebook ||
-                                      item is Spellbook);
+                                      item is BaseTalisman || item is Spellbook ||
+									  item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
 
                         if (!valid && item is BaseArmor)
                         {
