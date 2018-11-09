@@ -190,7 +190,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        valid = (item is IDyable ||
+                        valid = (item is IDyable || item.IsArtifact ||
                                       item is BaseBook || item is BaseClothing ||
                                       item is BaseJewel || item is BaseStatuette ||
                                       item is BaseWeapon || item is Runebook ||
