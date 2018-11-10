@@ -145,7 +145,7 @@ namespace Server.Items
                 Item item = targeted as Item;
                 if (null != item)
                 {
-                    bool valid = (item is IDyable ||
+                    bool valid = (item is IDyable || item is BaseTalisman ||
                                   item is BaseBook || item is BaseClothing ||
                                   item is BaseJewel || item is BaseStatuette ||
                                   item is BaseWeapon || item is Runebook ||

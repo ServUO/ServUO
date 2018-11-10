@@ -126,6 +126,20 @@ namespace Server.Items
                 return 15;
             }
         }
+		public override int InitMinHits
+        {
+            get
+            {
+                return 255;
+            }
+        }
+        public override int InitMaxHits
+        {
+            get
+            {
+                return 255;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
