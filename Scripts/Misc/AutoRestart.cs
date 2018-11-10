@@ -105,7 +105,7 @@ namespace Server.Misc
 
             if (WarningDelay > TimeSpan.Zero && !DoneWarning && RestartTime - WarningDelay < DateTime.Now)
             {
-                World.Broadcast(0x22, true, "The server will be going down in about {1} minute{2}.", WarningDelay.TotalMinutes.ToString(), WarningDelay.TotalMinutes == 1 ? "" : "s");
+                World.Broadcast(0x22, true, "The server will be going down in about {0} minute{1}.", WarningDelay.TotalMinutes.ToString(), WarningDelay.TotalMinutes == 1 ? "" : "s");
 
                 DoneWarning = true;
                 return;
@@ -116,8 +116,8 @@ namespace Server.Misc
                 return;
             }
 
-            Restarting = true;
             AutoSave.Save();
+            Restarting = true;
 
             if (RestartDelay > TimeSpan.Zero)
                 World.Broadcast(0x22, true, String.Format("The server will be going down in about {0} seconds!", RestartDelay.TotalSeconds.ToString()));
