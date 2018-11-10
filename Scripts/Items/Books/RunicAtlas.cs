@@ -131,8 +131,25 @@ namespace Server.Items
         public RunicAtlasGump(PlayerMobile pm, RunicAtlas atlas)
             : base(pm, 150, 200)
         {
+            TypeID = 0x1F2;
             Atlas = atlas;
             Page = 0;
+        }
+
+        public static int GetMapHue(Map map)
+        {
+            if (map == Map.Trammel)
+                return 0xA;
+            else if (map == Map.Felucca)
+                return 0x51;
+            else if (map == Map.Malas)
+                return 0x44E;
+            else if (map == Map.Tokuno)
+                return 0x482;
+            else if (map == Map.TerMur)
+                return 0x66D;
+
+            return 0;
         }
 
         public override void AddGumpLayout()
@@ -155,7 +172,7 @@ namespace Server.Items
                 if (i < Atlas.Entries.Count)
                 {
                     desc = RunebookGump.GetName(Atlas.Entries[i].Description);
-                    hue = Selected == i ? 0x90 : RunebookGump.GetMapHue(Atlas.Entries[i].Map);
+                    hue = Selected == i ? 0x90 : GetMapHue(Atlas.Entries[i].Map);
                 }
                 else
                 {
