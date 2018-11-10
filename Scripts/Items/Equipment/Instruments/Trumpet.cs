@@ -8,7 +8,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1098388; } } // trumpet
 
         public TrumpetComponent()
-            : base(0x4C3C, 0x670)
+            : base(0x4C3C, 0x66F)
         {
         }
 

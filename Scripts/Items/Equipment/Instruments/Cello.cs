@@ -8,7 +8,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1098390; } } // cello
 
         public CelloComponent()
-            : base(0x4C3E, 0x66E)
+            : base(0x4C3E, 0x66D)
         {
         }
 
