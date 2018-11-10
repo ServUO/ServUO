@@ -116,8 +116,8 @@ namespace Server.Misc
                 return;
             }
 
-            Restarting = true;
             AutoSave.Save();
+            Restarting = true;
 
             if (RestartDelay > TimeSpan.Zero)
                 World.Broadcast(0x22, true, String.Format("The server will be going down in about {0} seconds!", RestartDelay.TotalSeconds.ToString()));
