@@ -197,14 +197,17 @@ namespace Server.Engines.CannedEvil
                     spawn = new ChampionSpawn();
                     spawn.SpawnName = GetAttr(node, "name", "Unamed Spawner");
                     string value = GetAttr(node, "type", null);
+
                     if (value == null)
                         spawn.RandomizeType = true;
                     else
                         spawn.Type = (ChampionSpawnType)Enum.Parse(typeof(ChampionSpawnType), value);
+
                     value = GetAttr(node, "spawnMod", "1.0");
                     spawn.SpawnMod = XmlConvert.ToDouble(value);
                     value = GetAttr(node, "killsMod", "1.0");
                     spawn.KillsMod = XmlConvert.ToDouble(value);
+
                     foreach (XmlNode child in node.ChildNodes)
                     {
                         if (child.Name.Equals("location"))
@@ -220,8 +223,14 @@ namespace Server.Engines.CannedEvil
                             spawn.MoveToWorld(new Point3D(x, y, z), map);
                         }
                     }
+
                     spawn.GroupName = GetAttr(node, "group", null);
                     m_AllSpawns.Add(spawn);
+
+                    if (spawn.Type == ChampionSpawnType.Infuse)
+                    {
+                        PrimevalLichPuzzle.GenLichPuzzle(null);
+                    }
                 }
             }
 

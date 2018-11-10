@@ -59,8 +59,11 @@ namespace Server.Misc
                 e.Mobile.SendMessage("You have initiated server restart.");
                 Restarting = true;
 
-                Timer.Stop();
-                Timer = null;
+                if (Timer != null)
+                {
+                    Timer.Stop();
+                    Timer = null;
+                }
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                     {
@@ -81,8 +84,11 @@ namespace Server.Misc
 				e.Mobile.SendMessage("You have initiated server shutdown.");
                 Restarting = true;
 
-                Timer.Stop();
-                Timer = null;
+                if (Timer != null)
+                {
+                    Timer.Stop();
+                    Timer = null;
+                }
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
