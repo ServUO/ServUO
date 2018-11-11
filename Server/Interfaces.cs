@@ -137,4 +137,9 @@ namespace Server
         void FixedParticles(int itemID, int speed, int duration, int effect, EffectLayer layer);
         void BoltEffect(int hue);
     }
+
+    public interface IArtifact
+    {
+        int ArtifactRarity { get; }
+    }
 }

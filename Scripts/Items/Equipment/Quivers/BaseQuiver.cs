@@ -12,7 +12,7 @@ namespace Server.Items
     }
 
     [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor), true)]
-    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted, IRangeDamage
+    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted, IRangeDamage, IArtifact
     {
         private bool _VvVItem;
         private Mobile _Owner;
@@ -77,6 +77,8 @@ namespace Server.Items
                 return base.DisplayWeight;
             }
         }
+
+        public virtual int ArtifactRarity { get { return 0; } }
 
         private AosAttributes m_Attributes;
         private AosSkillBonuses m_AosSkillBonuses;
@@ -563,6 +565,12 @@ namespace Server.Items
             }
             else
                 list.Add(1075265, "{0}\t{1}", 0, Capacity); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows
+
+
+            if (ArtifactRarity > 0)
+            {
+                list.Add(1061078, ArtifactRarity.ToString()); // artifact rarity ~1_val~
+            }
 
             int prop;
 

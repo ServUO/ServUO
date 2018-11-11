@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public abstract class BaseArtifactLight : BaseLight
+    public abstract class BaseArtifactLight : BaseLight, IArtifact
     {
         public abstract int ArtifactRarity { get; }
         public virtual bool ShowArtifactRarity { get { return true; } }

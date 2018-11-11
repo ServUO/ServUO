@@ -335,30 +335,9 @@ namespace Server.Engines.VendorSearching
                     if (str == "SearingWeapon" && (!(item is BaseWeapon) || !((BaseWeapon)item).SearingWeapon))
                         return false;
 
-                    if (str == "ArtifactRarity")
+                    if (str == "ArtifactRarity" && (!(item is IArtifact) || ((IArtifact)item).ArtifactRarity < value))
                     {
-                        bool isarty = false;
-
-                        if (item is BaseWeapon && ((BaseWeapon)item).ArtifactRarity > value)
-                            isarty = true;
-
-                        else if (item is BaseArmor && ((BaseArmor)item).ArtifactRarity > value)
-                            isarty = true;
-
-                        else if (item is BaseClothing && ((BaseClothing)item).ArtifactRarity > value)
-                            isarty = true;
-
-                        else if (item is BaseJewel && ((BaseJewel)item).ArtifactRarity > value)
-                            isarty = true;
-
-                        else if (item is SimpleArtifact && ((SimpleArtifact)item).ArtifactRarity > value)
-                            isarty = true;
-
-                        else if (item is Artifact && ((Artifact)item).ArtifactRarity > value)
-                            isarty = true;
-
-                        if (!isarty)
-                            return false;
+                        return false;
                     }
                 }
 			}
