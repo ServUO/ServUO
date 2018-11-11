@@ -2065,7 +2065,7 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual bool IsArtifact
         {
-            get { return false; }
+            get { return this is IArtifact && ((IArtifact)this).ArtifactRarity > 0; }
         }
 
         private static TimeSpan m_DDT = TimeSpan.FromMinutes(Config.Get("General.DefaultItemDecayTime", 60));

@@ -39,6 +39,7 @@ namespace Server.Engines.VvV
 
         public static bool Enabled = Config.Get("VvV.Enabled", true);
         public static int StartSilver = Config.Get("VvV.StartSilver", 2000);
+        public static bool EnhancedRules = Config.Get("VvV.EnhancedRules", false);
 
         public static ViceVsVirtueSystem Instance { get; set; }
 
@@ -50,7 +51,8 @@ namespace Server.Engines.VvV
         public bool HasGenerated { get; set; }
 
         public Dictionary<Guild, VvVGuildStats> GuildStats { get; set; }
-        public static Dictionary<Mobile, DateTime> TempParticipants { get; set; }
+        //public static Dictionary<Mobile, DateTime> TempCombatants { get; set; }
+        public static List<TemporaryCombatant> TempCombatants { get; set; }
 
         public List<VvVCity> ExemptCities { get; set; }
 
@@ -469,98 +471,131 @@ namespace Server.Engines.VvV
             if (to is BaseCreature && ((BaseCreature)to).GetMaster() is PlayerMobile)
                 to = ((BaseCreature)to).GetMaster();
 
-            if (from == to || !IsVvVCombatant(to) || !IsVvVCombatant(from))
+            // one or the other is not a combatant
+            if (!IsVvVCombatant(to) || !IsVvVCombatant(from))
                 return false;
 
-            VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
-            VvVPlayerEntry toentry = Instance.GetPlayerEntry<VvVPlayerEntry>(to);
+            return !IsAllied(from, to);
+        }
 
-            Guild fromGuild = from.Guild as Guild;
-            Guild toGuild = to.Guild as Guild;
+        public static bool IsAllied(Mobile a, Mobile b)
+        {
+            var guildA = a.Guild as Guild;
+            var guildB = b.Guild as Guild;
 
-            if (fromGuild != null && toGuild != null && (fromGuild == toGuild || fromGuild.IsAlly(toGuild)))
+            if (guildA != null && guildB != null && (guildA == guildB || guildA.IsAlly(guildB)))
+            {
+                return true;
+            }
+
+            if (TempCombatants == null)
             {
                 return false;
             }
 
-            return true;
+            var tempA = TempCombatants.FirstOrDefault(c => c.From == a);
+            var tempB = TempCombatants.FirstOrDefault(c => c.From == b);
+
+            if (tempA != null && (tempA.Friendly == b || (tempA.FriendlyGuild != null && tempA.FriendlyGuild == guildB)))
+            {
+                return true;
+            }
+
+            if (tempB != null && (tempB.Friendly == a || (tempB.FriendlyGuild != null && tempB.FriendlyGuild == guildA)))
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public static void AddTempParticipant(Mobile m)
+        public static void AddTempParticipant(Mobile m, Mobile friendlyTo)
         {
-            if (TempParticipants == null)
-                TempParticipants = new Dictionary<Mobile, DateTime>();
+            if (TempCombatants == null)
+            {
+                TempCombatants = new List<TemporaryCombatant>();
+            }
 
-            TempParticipants[m] = DateTime.UtcNow + TimeSpan.FromMinutes(30);
+            var combatant = GetTempCombatant(m, friendlyTo);
+
+            if (combatant == null)
+            {
+                combatant = new TemporaryCombatant(m, friendlyTo);
+            }
+            else
+            {
+                combatant.Reset();
+            }
+
+            TempCombatants.Add(combatant);
             m.Delta(MobileDelta.Noto);
         }
 
         public static bool IsVvVCombatant(Mobile mobile)
         {
-            return IsVvV(mobile) || (TempParticipants != null && TempParticipants.ContainsKey(mobile));
+            return IsVvV(mobile) || (TempCombatants != null && TempCombatants.Any(c => c.From == mobile));
         }
 
         public static void CheckHarmful(Mobile attacker, Mobile defender)
         {
-            if (attacker == null || defender == null)
+            if (attacker == null || defender == null || IsAllied(attacker, defender))
                 return;
 
             if (!IsVvV(attacker) && IsVvV(defender) && !defender.Aggressed.Any(info => info.Defender == attacker))
             {
-                Guild attackerguild = attacker.Guild as Guild;
-                Guild defenderguild = defender.Guild as Guild;
-
-                if ((attackerguild == null && defenderguild == null) || attackerguild != defenderguild)
-                {
-                    AddTempParticipant(attacker);
-                }
+                AddTempParticipant(attacker, null);
             }
         }
 
         public static void CheckBeneficial(Mobile from, Mobile target)
         {
-            if (from == null || target == null)
+            if (from == null || target == null || (IsVvV(from) && IsAllied(from, target)))
                 return;
 
             if (!IsVvV(from) && IsVvV(target))
             {
-                AddTempParticipant(from);
-            }
-        }
-
-        public static void RemoveTempParticipant(Mobile m)
-        {
-            if (TempParticipants == null)
-                return;
-
-            if (TempParticipants.ContainsKey(m))
-            {
-                TempParticipants.Remove(m);
-                m.Delta(MobileDelta.Noto);
-            }
-        }
-
-        public static void CheckTempParticipants()
-        {
-            if (TempParticipants == null)
-                return;
-
-            List<Mobile> remove = new List<Mobile>();
-
-            foreach (var kvp in TempParticipants)
-            {
-                if (kvp.Value < DateTime.UtcNow)
+                if (target.Aggressors.Any(info => IsVvV(info.Attacker)) ||
+                    target.Aggressed.Any(info => IsVvV(info.Defender)))
                 {
-                    remove.Add(kvp.Key);
+                    AddTempParticipant(from, target);
                 }
             }
+        }
 
-            foreach (var m in remove)
+        public static void CheckTempCombatants()
+        {
+            if (TempCombatants == null)
+                return;
+
+            TempCombatants.IterateReverse(c =>
+                {
+                    if (c.Expired)
+                    {
+                        TempCombatants.Remove(c);
+                    }
+                });
+        }
+
+        public static TemporaryCombatant GetTempCombatant(Mobile from, Mobile to)
+        {
+            foreach (var combatant in TempCombatants.Where(c => c.From == from))
             {
-                RemoveTempParticipant(m);
+                if (combatant.Friendly == null && to == null)
+                    return combatant;
+
+                if (combatant.Friendly == to || (combatant.FriendlyGuild != null && combatant.FriendlyGuild == from.Guild as Guild))
+                    return combatant;
             }
 
-            ColUtility.Free(remove);
+            return null;
+        }
+
+        public static bool HasBattleAggression(Mobile m)
+        {
+            if (!EnhancedRules || Instance == null || Instance.Battle == null || !Instance.Battle.OnGoing)
+                return false;
+
+            return Instance.Battle.HasBattleAggression(m);
         }
 
         public static bool IsBattleRegion(Region r)
@@ -829,6 +864,42 @@ namespace Server.Engines.VvV
             DisarmedTraps = reader.ReadInt();
             StolenSigils = reader.ReadInt();
             ResignExpiration = reader.ReadDateTime();
+        }
+    }
+
+    public class TemporaryCombatant
+    {
+        public static TimeSpan TempCombatTime = TimeSpan.FromMinutes(30);
+
+        public Mobile From { get; private set; }
+        public Mobile Friendly { get; private set; }
+        public DateTime StartTime { get; private set; }
+
+        public Guild FriendlyGuild
+        {
+            get
+            {
+                if (Friendly == null)
+                {
+                    return null;
+                }
+
+                return Friendly.Guild as Guild;
+            }
+        }
+
+        public bool Expired { get { return StartTime + TempCombatTime < DateTime.UtcNow; } }
+
+        public TemporaryCombatant(Mobile from, Mobile friendlyTo)
+        {
+            From = from;
+            Friendly = friendlyTo;
+            StartTime = DateTime.UtcNow;
+        }
+
+        public void Reset()
+        {
+            StartTime = DateTime.UtcNow;
         }
     }
 }

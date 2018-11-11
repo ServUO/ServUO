@@ -323,13 +323,7 @@ namespace Server.Engines.Craft
             if (item is Glasses || item is ElvenGlasses)
                 return true;
 
-            if (item is BaseArmor && ((BaseArmor)item).ArtifactRarity > 0)
-                return true;
-
-            if (item is BaseWeapon && ((BaseWeapon)item).ArtifactRarity > 0)
-                return true;
-
-            if (item is BaseJewel && ((BaseJewel)item).ArtifactRarity > 0)
+            if (item is IArtifact && ((IArtifact)item).ArtifactRarity > 0)
                 return true;
 
             return (item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552) || (item.LabelNumber >= 1073111 && item.LabelNumber <= 1075040);

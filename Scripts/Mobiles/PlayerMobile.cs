@@ -1826,7 +1826,7 @@ namespace Server.Mobiles
         {
             base.DoHarmful(damageable, indirect);
 
-            if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet && damageable is Mobile)
+            if (ViceVsVirtueSystem.Enabled && (ViceVsVirtueSystem.EnhancedRules || Map == Faction.Facet) && damageable is Mobile)
             {
                 ViceVsVirtueSystem.CheckHarmful(this, (Mobile)damageable);
             }
@@ -1836,7 +1836,7 @@ namespace Server.Mobiles
         {
             base.DoBeneficial(target);
 
-            if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet && target != null)
+            if (ViceVsVirtueSystem.Enabled && (ViceVsVirtueSystem.EnhancedRules || Map == Faction.Facet) && target != null)
             {
                 ViceVsVirtueSystem.CheckBeneficial(this, target);
             }
@@ -2221,7 +2221,7 @@ namespace Server.Mobiles
                         info.Defender.RegisterDamage(amount, from);
                     }
 
-                    if (info.Defender.Player && from.CanBeHarmful(info.Defender))
+                    if (info.Defender.Player && from.CanBeHarmful(info.Defender, false))
                     {
                         from.DoHarmful(info.Defender, true);
                     }
@@ -2236,7 +2236,7 @@ namespace Server.Mobiles
                         info.Attacker.RegisterDamage(amount, from);
                     }
 
-                    if (info.Attacker.Player && from.CanBeHarmful(info.Attacker))
+                    if (info.Attacker.Player && from.CanBeHarmful(info.Attacker, false))
                     {
                         from.DoHarmful(info.Attacker, true);
                     }

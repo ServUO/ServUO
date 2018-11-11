@@ -30,7 +30,7 @@ namespace Server.Engines.VvV
             Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), () =>
                 {
                     User.CloseGump(typeof(BattleWarningGump));
-                    ViceVsVirtueSystem.AddTempParticipant(User);
+                    ViceVsVirtueSystem.AddTempParticipant(User, null);
                 });
         }
 
@@ -76,13 +76,13 @@ namespace Server.Engines.VvV
                 else
                 {
                     User.SendLocalizedMessage(1155584); // You are now open to attack!
-                    ViceVsVirtueSystem.AddTempParticipant(User);
+                    ViceVsVirtueSystem.AddTempParticipant(User, null);
                 }
             }
             else
             {
                 User.SendLocalizedMessage(1155584); // You are now open to attack!
-                ViceVsVirtueSystem.AddTempParticipant(User);
+                ViceVsVirtueSystem.AddTempParticipant(User, null);
             }
         }
     }

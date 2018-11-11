@@ -2826,17 +2826,10 @@ namespace Server.Items
 
         public static int GetArtifactRarity(Item item)
         {
-            if (item is BaseWeapon)
-                return ((BaseWeapon)item).ArtifactRarity;
-
-            if (item is BaseArmor)
-                return ((BaseArmor)item).ArtifactRarity;
-
-            if (item is BaseJewel)
-                return ((BaseJewel)item).ArtifactRarity;
-
-            if (item is BaseClothing)
-                return ((BaseClothing)item).ArtifactRarity;
+            if (item is IArtifact)
+            {
+                return ((IArtifact)item).ArtifactRarity;
+            }
 
             return 0;
         }

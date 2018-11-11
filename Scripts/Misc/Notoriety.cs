@@ -81,12 +81,9 @@ namespace Server.Misc
 				}
 			}
 
-			if (ViceVsVirtueSystem.Enabled)
+            if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(from, target))
 			{
-				if (ViceVsVirtueSystem.IsEnemy(from, target))
-				{
-					return false;
-				}
+                return false;
 			}
 			#endregion
 
@@ -174,6 +171,9 @@ namespace Server.Misc
 					return true; // Guild allies or enemies can be harmful
 			}
 
+            if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.EnhancedRules && ViceVsVirtueSystem.IsEnemy(from, damageable))
+                return true;
+
 			if (target is BaseCreature)
 			{
 				if (((BaseCreature)target).Controlled)
@@ -257,7 +257,7 @@ namespace Server.Misc
 						return Notoriety.Enemy;
 				}
 
-				if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, cretOwner) && source.Map == Faction.Facet)
+				if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, cretOwner) && (ViceVsVirtueSystem.EnhancedRules || source.Map == Faction.Facet))
 					return Notoriety.Enemy;
 
 				if (CheckHouseFlag(source, cretOwner, target.Location, target.Map))
@@ -451,7 +451,7 @@ namespace Server.Misc
 					return Notoriety.Enemy;
 			}
 
-			if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, damageable) && source.Map == Faction.Facet)
+			if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, target) && (ViceVsVirtueSystem.EnhancedRules || source.Map == Faction.Facet))
 				return Notoriety.Enemy;
 
 			if (Stealing.ClassicMode && target is PlayerMobile && ((PlayerMobile)target).PermaFlags.Contains(source))
