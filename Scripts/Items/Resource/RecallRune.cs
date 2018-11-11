@@ -247,6 +247,8 @@ namespace Server.Items
                     LabelTo(from, (House != null ? 1062452 : 1060805), String.Format(RuneFormat, desc)); // ~1_val~ (Felucca)[(House)]
                 else if (m_TargetMap == Map.Trammel)
                     LabelTo(from, (House != null ? 1062453 : 1060806), String.Format(RuneFormat, desc)); // ~1_val~ (Trammel)[(House)]
+                else if (m_TargetMap == Map.TerMur)
+                    LabelTo(from, (House != null ? 1113206 : 1113205), String.Format(RuneFormat, desc)); // ~1_val~ (Ter Mur)(House)
                 else
                     LabelTo(from, (House != null ? "{0} ({1})(House)" : "{0} ({1})"), String.Format(RuneFormat, desc), m_TargetMap);
             }
