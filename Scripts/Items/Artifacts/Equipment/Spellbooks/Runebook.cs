@@ -316,7 +316,7 @@ namespace Server.Items
                 rune.Description = e.Description;
                 rune.House = e.House;
                 rune.Marked = true;
-                rune.Hue = RunebookGump.GetMapHue(e.Map);
+                rune.Hue = RecallRune.CalculateHue(e.Map, e.House, true);
 
                 from.AddToBackpack(rune);
             }
