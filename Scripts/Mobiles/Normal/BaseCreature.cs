@@ -5663,7 +5663,7 @@ namespace Server.Mobiles
 
         public virtual void GenerateLoot(bool spawning)
         {
-            if (m_NoLootOnDeath)
+            if (m_NoLootOnDeath || m_Allured)
                 return;
 
             m_Spawning = spawning;
@@ -6507,7 +6507,19 @@ namespace Server.Mobiles
         private bool m_Allured;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Allured { get { return m_Allured; } set { m_Allured = value; } }
+        public bool Allured 
+        { 
+            get { return m_Allured; } 
+            set 
+            { 
+                m_Allured = value;
+
+                if (value && Backpack != null)
+                {
+                    ColUtility.SafeDelete(Backpack.Items);
+                }
+            }
+        }
 
         public virtual bool GivesMLMinorArtifact { get { return false; } }
         #endregion

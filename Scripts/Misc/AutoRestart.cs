@@ -5,8 +5,8 @@ namespace Server.Misc
 {
     public class AutoRestart : Timer
     {
-        private static readonly TimeSpan RestartDelay = TimeSpan.Zero;// how long the server should remain active before restart (period of 'server wars')
-        private static readonly TimeSpan WarningDelay = TimeSpan.FromMinutes(1.0);// at what interval should the shutdown message be displayed?
+        private static readonly TimeSpan RestartDelay = TimeSpan.FromSeconds(10);  // how long the server should remain active before restart (period of 'server wars')
+        private static readonly TimeSpan WarningDelay = TimeSpan.FromMinutes(1.0); // at what interval should the shutdown message be displayed?
         
         public static DateTime RestartTime { get; private set; }
         public static bool Restarting { get; private set; }
@@ -40,8 +40,7 @@ namespace Server.Misc
 
                 RestartTime = force;
 
-                Timer = new AutoRestart();
-                Timer.Start();
+                BeginTimer();
 
                 Utility.WriteConsoleColor(ConsoleColor.Magenta, "[Auto Restart] Configured for {0}:{1}:00, every {2} hours!", RestartTime.Hour, RestartTime.Minute, Frequency);
                 Utility.WriteConsoleColor(ConsoleColor.Magenta, "[Auto Restart] Next Shard Restart: {0}", RestartTime.ToString());
@@ -57,18 +56,15 @@ namespace Server.Misc
             else
             {
                 e.Mobile.SendMessage("You have initiated server restart.");
-                Restarting = true;
 
-                if (Timer != null)
-                {
-                    Timer.Stop();
-                    Timer = null;
-                }
+                StopTimer();
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                     {
                         AutoSave.Save();
-                        Core.Kill(true);
+
+                        Restarting = true;
+                        TimedShutdown(true);
                     });
             }
         }
@@ -82,21 +78,35 @@ namespace Server.Misc
 			else
 			{
 				e.Mobile.SendMessage("You have initiated server shutdown.");
-                Restarting = true;
 
-                if (Timer != null)
-                {
-                    Timer.Stop();
-                    Timer = null;
-                }
+                StopTimer();
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
                     AutoSave.Save();
-                    Core.Kill(false);
+                    Restarting = true;
+
+                    TimedShutdown(false);
                 });
 			}
 		}
+
+        private static void BeginTimer()
+        {
+            StopTimer();
+
+            Timer = new AutoRestart();
+            Timer.Start();
+        }
+
+        private static void StopTimer()
+        {
+            if (Timer != null)
+            {
+                Timer.Stop();
+                Timer = null;
+            }
+        }
 
 		protected override void OnTick()
         {
@@ -119,10 +129,17 @@ namespace Server.Misc
             AutoSave.Save();
             Restarting = true;
 
-            if (RestartDelay > TimeSpan.Zero)
-                World.Broadcast(0x22, true, String.Format("The server will be going down in about {0} seconds!", RestartDelay.TotalSeconds.ToString()));
+            TimedShutdown(true);
+        }
 
-            Timer.DelayCall(RestartDelay, () => Core.Kill(true));
+        private static void TimedShutdown(bool restart)
+        {
+            World.Broadcast(0x22, true, String.Format("The server will be going down in about {0} seconds!", RestartDelay.TotalSeconds.ToString()));
+            Timer.DelayCall(RestartDelay, rest =>
+                {
+                    Core.Kill(rest);
+                },
+                restart);
         }
     }
 }

@@ -1662,7 +1662,7 @@ namespace Server
             Free(toList);
         }
 
-        public static void SafeDelete(List<IEntity> list)
+        public static void SafeDelete<T>(List<T> list)
         {
             SafeDelete(list, null);
         }
@@ -1673,7 +1673,7 @@ namespace Server
         /// </summary>
         /// <param name="list"></param>
         /// <param name="predicate"></param>
-        public static void SafeDelete(List<IEntity> list, Func<IEntity, bool> predicate)
+        public static void SafeDelete<T>(List<T> list, Func<IEntity, bool> predicate)
         {
             if (list == null)
             {
@@ -1684,9 +1684,14 @@ namespace Server
 
             while (--i >= 0)
             {
-                if (i < list.Count && !list[i].Deleted && (predicate == null || predicate(list[i])))
+                if (i < list.Count)
                 {
-                    list[i].Delete();
+                    var entity = list[i] as IEntity;
+
+                    if (entity != null && !entity.Deleted && (predicate == null || predicate(entity)))
+                    {
+                        entity.Delete();
+                    }
                 }
             }
         }

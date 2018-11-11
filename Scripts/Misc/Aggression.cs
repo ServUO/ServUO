@@ -108,6 +108,11 @@ namespace Server.Misc
 
         public static bool CheckHasAggression(Mobile m, bool aggressedOnly = false)
         {
+            if (Server.Engines.VvV.ViceVsVirtueSystem.HasBattleAggression(m))
+            {
+                return true;
+            }
+
             var list = m.Aggressed;
 
             for (int i = 0; i < list.Count; ++i)
