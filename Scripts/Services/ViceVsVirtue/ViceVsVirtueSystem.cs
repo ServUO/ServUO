@@ -392,8 +392,21 @@ namespace Server.Engines.VvV
 
             if (pm != null && Instance != null)
             {
-                Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1), Instance.CheckResignation, pm);
-                Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(2), Instance.CheckBattleStatus, pm);
+                Timer.DelayCall(TimeSpan.FromSeconds(1), Instance.CheckResignation, pm);
+                Timer.DelayCall(TimeSpan.FromSeconds(2), Instance.CheckBattleStatus, pm);
+
+                if (EnhancedRules && AutoKicked != null && AutoKicked.Contains(pm))
+                {
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), player =>
+                        {
+                            player.SendGump(new BasicInfoGump(_EnhancedRulesNotice));
+
+                            AutoKicked.Remove(player);
+
+                            if (AutoKicked.Count == 0)
+                                AutoKicked = null;
+                        }, pm);
+                }
             }
         }
 
@@ -627,8 +640,16 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(3);
+            writer.Write(4);
 
+            writer.Write(AutoKicked == null ? 0 : AutoKicked.Count);
+            if (AutoKicked != null)
+            {
+                foreach (var pm in AutoKicked)
+                    writer.Write(pm);
+            }
+
+            writer.Write(EnhancedRules);
             writer.Write(Enabled);
 
             writer.Write(ExemptCities.Count);
@@ -658,10 +679,31 @@ namespace Server.Engines.VvV
 
             GuildStats = new Dictionary<Guild, VvVGuildStats>();
             ExemptCities = new List<VvVCity>();
+
             bool enabled = false;
+            bool enhanced = false;
 
             switch (version)
             {
+                case 4:
+                    int c = reader.ReadInt();
+                    for (int i = 0; i < c; i++)
+                    {
+                        var pm = reader.ReadMobile() as PlayerMobile;
+
+                        if (pm != null)
+                        {
+                            if (AutoKicked == null)
+                            {
+                                AutoKicked = new List<PlayerMobile>();
+                            }
+
+                            AutoKicked.Add(pm);
+                        }
+                    }
+
+                    enhanced = reader.ReadBool();
+                    goto case 3;
                 case 3:
                     enabled = reader.ReadBool();
                     goto case 2;
@@ -715,6 +757,11 @@ namespace Server.Engines.VvV
             else if (!Enabled && enabled)
             {
                 DeleteSilverTraders();
+            }
+
+            if (EnhancedRules && !enhanced)
+            {
+                OnEnhancedRulesEnabled();
             }
         }
 
@@ -777,6 +824,44 @@ namespace Server.Engines.VvV
 
             ColUtility.Free(list);
         }
+
+        public static List<PlayerMobile> AutoKicked { get; private set; }
+
+        private static void OnEnhancedRulesEnabled()
+        {
+            if (Instance == null || !Enabled)
+                return;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                {
+                    foreach (var pm in World.Mobiles.Values.OfType<PlayerMobile>().Where(pm => IsVvV(pm)))
+                    {
+                        VvVPlayerEntry entry = Instance.GetPlayerEntry<VvVPlayerEntry>(pm);
+
+                        if (entry != null)
+                        {
+                            //pm.PrivateOverheadMessage(MessageType.Regular, 1154, 1155561, pm.NetState); // You are no longer in Vice vs Virtue!
+
+                            entry.Active = false;
+                            entry.ResignExpiration = DateTime.MinValue;
+                            pm.ValidateEquipment();
+
+                            if (AutoKicked == null)
+                                AutoKicked = new List<PlayerMobile>();
+
+                            AutoKicked.Add(pm);
+                        }
+                    }
+                });
+        }
+
+        private static string _EnhancedRulesNotice = String.Format("Notice: The Vice Vs Virtue system has recently enabled enhanced rules. To avoid any issues and " +
+            "unexpected deaths due to the new game mechanics, all players have been removed from VvV. You can simply re-join through your guild menu. " +
+            "<br><br>New VvV Mechanics:<br><br>" +
+            "- VvV combatants are attackable on all facets.<br>" +
+            "- Uncontested VvV battles will reduce reduce reward silver by {0}%.<br>" +
+            "- VvV players in the battle region during a battle will be subject to combat heat travel restrictions.", VvVBattle.Penalty * 100);
+
     }
 
     public class VvVPlayerEntry : PointsEntry
