@@ -82,7 +82,6 @@ namespace Server.Mobiles
         public override bool AlwaysAttackable { get { return this.Region.IsPartOf<BattleRegion>(); } }
         public override bool ShowFameTitle { get { return false; } }
         public override bool ClickTitle { get { return false; } }
-        public override bool AutoRearms { get { return true; } }
 
         public override void GenerateLoot()
         {

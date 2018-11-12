@@ -80,6 +80,9 @@ namespace Server.Items
         /// <returns></returns>
         public static int GetBaseBudget(BaseCreature bc)
         {
+            if (bc is BaseRenowned)
+                return MaxBaseBudget;
+
             return bc.Fame / (20500 / MaxBaseBudget);
         }
 
@@ -92,7 +95,7 @@ namespace Server.Items
 
             if (fame > 0)
             {
-                int budget = Math.Min(MaxBaseBudget, bc.BaseLootBudget);
+                int budget = Math.Min(MaxBaseBudget, GetBaseBudget(bc));
 
                 BossEntry.CheckBoss(bc, ref budget);
 

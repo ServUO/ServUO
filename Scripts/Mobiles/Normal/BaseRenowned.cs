@@ -8,8 +8,6 @@ namespace Server.Mobiles
     {
         Dictionary<Mobile, int> m_DamageEntries;
 
-        public override int BaseLootBudget { get { return RandomItemGenerator.MaxBaseBudget; } }
-
         public BaseRenowned(AIType aiType)
             : this(aiType, FightMode.Closest)
         {
