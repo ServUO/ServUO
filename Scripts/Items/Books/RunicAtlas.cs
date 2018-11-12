@@ -156,7 +156,7 @@ namespace Server.Items
         {
             AddImage(0, 0, 39923);
 
-            AddHtmlLocalized(60, 9, 147, 22, 1011296, false, false); //charges: ~1_val~ / ~2_val~
+            AddHtmlLocalized(60, 9, 147, 22, 1011296, false, false); //Charges:
             AddHtml(110, 9, 97, 22, String.Format("{0} / {1}", Atlas.CurCharges, Atlas.MaxCharges), false, false);
 
             AddHtmlLocalized(264, 9, 144, 18, 1011299, false, false); // rename book 
