@@ -523,35 +523,17 @@ namespace Server.Engines.VvV
             return false;
         }
 
-        public static void AddTempParticipant(Mobile m, Mobile friendlyTo)
-        {
-            if (TempCombatants == null)
-            {
-                TempCombatants = new List<TemporaryCombatant>();
-            }
-
-            var combatant = GetTempCombatant(m, friendlyTo);
-
-            if (combatant == null)
-            {
-                combatant = new TemporaryCombatant(m, friendlyTo);
-            }
-            else
-            {
-                combatant.Reset();
-            }
-
-            TempCombatants.Add(combatant);
-            m.Delta(MobileDelta.Noto);
-        }
-
         public static bool IsVvVCombatant(Mobile mobile)
         {
+            CheckTempCombatants();
+
             return IsVvV(mobile) || (TempCombatants != null && TempCombatants.Any(c => c.From == mobile));
         }
 
         public static void CheckHarmful(Mobile attacker, Mobile defender)
         {
+            CheckTempCombatants();
+
             if (attacker == null || defender == null || IsAllied(attacker, defender))
                 return;
 
@@ -563,6 +545,8 @@ namespace Server.Engines.VvV
 
         public static void CheckBeneficial(Mobile from, Mobile target)
         {
+            CheckTempCombatants();
+
             if (from == null || target == null || (IsVvV(from) && IsAllied(from, target)))
                 return;
 
@@ -576,10 +560,32 @@ namespace Server.Engines.VvV
             }
         }
 
+        public static Timer TempCombatantTimer { get; private set; }
+
+        public static void AddTempCombatantTimer()
+        {
+            if (TempCombatantTimer == null)
+            {
+                TempCombatantTimer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), CheckTempCombatants);
+                TempCombatantTimer.Start();
+            }
+        }
+
+        public static void StopTempCombatantTimer()
+        {
+            if (TempCombatantTimer != null)
+            {
+                TempCombatantTimer.Stop();
+                TempCombatantTimer = null;
+            }
+        }
+
         public static void CheckTempCombatants()
         {
             if (TempCombatants == null)
-                return;
+            {
+                StopTempCombatantTimer();
+            }
 
             TempCombatants.IterateReverse(c =>
                 {
@@ -602,6 +608,58 @@ namespace Server.Engines.VvV
             }
 
             return null;
+        }
+
+        public static void AddTempParticipant(Mobile m, Mobile friendlyTo)
+        {
+            if (TempCombatants == null)
+            {
+                TempCombatants = new List<TemporaryCombatant>();
+                AddTempCombatantTimer();
+            }
+
+            var combatant = GetTempCombatant(m, friendlyTo);
+
+            if (combatant == null)
+            {
+                combatant = new TemporaryCombatant(m, friendlyTo);
+            }
+            else
+            {
+                combatant.Reset();
+            }
+
+            TempCombatants.Add(combatant);
+
+            m.Delta(MobileDelta.Noto);
+            m.ProcessDelta();
+        }
+
+        public static void OnMapChange(PlayerMobile pm)
+        {
+            if (TempCombatants == null || pm.Map == Map.Internal || pm.Map == null)
+                return;
+
+            TempCombatants.Where(t => t.From == pm).IterateReverse(temp =>
+                {
+                    RemoveTempCombatant(temp);
+                });
+        }
+
+        public static void RemoveTempCombatant(TemporaryCombatant tempCombatant)
+        {
+            if (TempCombatants == null)
+                return;
+
+            TempCombatants.Remove(tempCombatant);
+            tempCombatant.From.Delta(MobileDelta.Noto);
+            tempCombatant.From.ProcessDelta();
+
+            if (TempCombatants.Count == 0)
+            {
+                TempCombatants = null;
+                StopTempCombatantTimer();
+            }
         }
 
         public static bool HasBattleAggression(Mobile m)

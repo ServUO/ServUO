@@ -3512,6 +3512,8 @@ namespace Server.Mobiles
 
 		protected override void OnMapChange(Map oldMap)
 		{
+            ViceVsVirtueSystem.OnMapChange(this);
+
             if (NetState != null && NetState.IsEnhancedClient)
             {
                 Waypoints.OnMapChange(this, oldMap);
