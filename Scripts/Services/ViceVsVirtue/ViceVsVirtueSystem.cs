@@ -141,6 +141,7 @@ namespace Server.Engines.VvV
             pm.SendLocalizedMessage(1155564); // You have joined Vice vs Virtue!
             pm.SendLocalizedMessage(1063156, g.Name); // The guild information for ~1_val~ has been updated.
 
+            pm.Delta(MobileDelta.Noto);
             pm.ProcessDelta();
 
             CheckBattleStatus(pm);
@@ -954,7 +955,7 @@ namespace Server.Engines.VvV
 
     public class TemporaryCombatant
     {
-        public static TimeSpan TempCombatTime = TimeSpan.FromMinutes(30);
+        public static TimeSpan TempCombatTime = TimeSpan.FromMinutes(10);
 
         public Mobile From { get; private set; }
         public Mobile Friendly { get; private set; }
