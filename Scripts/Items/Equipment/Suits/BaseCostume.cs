@@ -41,7 +41,8 @@ namespace Server.Items
             Resource = CraftResource.None;
             Attributes.SpellChanneling = 1;
             Layer = Layer.FirstValid;
-            Weight = 3.0;
+            Weight = 4.0;
+            StrRequirement = 10;
         }
 
         public BaseCostume(Serial serial)
