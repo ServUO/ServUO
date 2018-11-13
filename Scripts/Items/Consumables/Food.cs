@@ -1685,4 +1685,93 @@ namespace Server.Items
             _Pieces = reader.ReadInt();
         }
     }
+
+    public class Hamburger : Food
+    {
+        [Constructable]
+        public Hamburger()
+            : base(0xA0DA)
+        {
+            FillFactor = 2;
+        }
+
+        public Hamburger(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    [Flipable(0xA0D8, 0xA0D9)]
+    public class HotDog : Food
+    {
+        [Constructable]
+        public HotDog()
+            : base(0xA0D8)
+        {
+            FillFactor = 2;
+        }
+
+        public HotDog(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    [Flipable(0xA0D6, 0xA0D7)]
+    public class CookableSausage : Food
+    {
+        [Constructable]
+        public CookableSausage()
+            : base(0xA0D6)
+        {
+            FillFactor = 2;
+        }
+
+        public CookableSausage(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }

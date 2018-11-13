@@ -36,7 +36,7 @@ namespace Server.Items
         Tinkering
     }
 
-    public class BaseTalisman : Item, IWearableDurability, IVvVItem, IOwnerRestricted, ITalismanProtection, ITalismanKiller, IFactionItem
+    public class BaseTalisman : Item, IWearableDurability, IVvVItem, IOwnerRestricted, ITalismanProtection, ITalismanKiller, IFactionItem, IArtifact
     {
         #region Factions
         private FactionItem m_FactionState;
@@ -119,6 +119,8 @@ namespace Server.Items
                 return false;
             }
         }// used to override default summoner/removal name
+
+        public virtual int ArtifactRarity { get { return 0; } }
 
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -785,6 +787,11 @@ namespace Server.Items
                     list.Add(1074884, m_ChargeTime.ToString()); // Charge time left: ~1_val~
                 else
                     list.Add(1074883); // Fully Charged
+            }
+
+            if (ArtifactRarity > 0)
+            {
+                list.Add(1061078, ArtifactRarity.ToString()); // artifact rarity ~1_val~
             }
 
             if (m_Killer != null && !m_Killer.IsEmpty && m_Killer.Amount > 0)

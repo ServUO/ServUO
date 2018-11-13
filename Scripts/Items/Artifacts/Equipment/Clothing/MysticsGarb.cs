@@ -12,8 +12,7 @@ namespace Server.Items
             : base()
         {
             ItemID = 0x4000;
-            Hue = 1420;
-			
+            Hue = 1420;		
             Attributes.BonusMana = 5;
             Attributes.LowerManaCost = 1;
         }

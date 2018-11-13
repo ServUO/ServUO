@@ -21,7 +21,6 @@ namespace Server.Items
         public KelpWovenLeggings()
         {
             Hue = 1155;
-
             AbsorptionAttributes.CastingFocus = 4;
             Attributes.BonusHits = 5;
             Attributes.BonusMana = 8;

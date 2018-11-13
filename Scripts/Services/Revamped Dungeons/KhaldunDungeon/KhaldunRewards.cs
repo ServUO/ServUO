@@ -14,7 +14,7 @@ namespace Server.Engines.Khaldun
         {
             Rewards = new List<CollectionItem>();
 
-            Rewards.Add(new CollectionItem(typeof(FirstAidBelt), 0xA1F6, 1158681, 0, 30));
+            Rewards.Add(new CollectionItem(typeof(KhaldunFirstAidBelt), 0xA1F6, 1158681, 0, 30));
             Rewards.Add(new CollectionItem(typeof(MaskOfKhalAnkur), 0xA1C7, 1158701, 0, 50));
             Rewards.Add(new CollectionItem(typeof(PendantOfKhalAnkur), 0xA1C9, 1158731, 0, 50));
             Rewards.Add(new CollectionItem(typeof(SeekerOfTheFallenStarTitleDeed), 5360, 1155604, 0, 20));

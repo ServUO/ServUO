@@ -2,38 +2,23 @@ using System;
 
 namespace Server.Items
 {
-    public class TongueoftheBeast : WoodenKiteShield//, ITokunoDyable
+    public class TongueoftheBeast : WoodenKiteShield
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1112405; } } // Tongue of the Beast [Replica]
+		
         [Constructable]
         public TongueoftheBeast()
         {
-            this.ItemID = 0x1B78;
-            this.Hue = 0x556;
-
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.RegenMana = 3;
+            Hue = 153;
+            Attributes.SpellChanneling = 1;
+            Attributes.RegenStam = 3;
+            Attributes.RegenMana = 3;
         }
 
         public TongueoftheBeast(Serial serial)
             : base(serial)
         {
-        }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112405;
-            }
-        }// Tongue of the Beast 
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 11;
-            }
         }
         public override int BasePhysicalResistance
         {
@@ -46,7 +31,7 @@ namespace Server.Items
         {
             get
             {
-                return 10;
+                return 5;
             }
         }
         public override int InitMinHits
@@ -63,6 +48,13 @@ namespace Server.Items
                 return 150;
             }
         }
+		public override bool CanFortify
+        {
+            get
+            {
+                return false;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -75,9 +67,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Attributes.NightSight == 0)
-                this.Attributes.NightSight = 1;
         }
     }
 }

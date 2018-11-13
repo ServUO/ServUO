@@ -14,14 +14,13 @@ namespace Server.Items
         [Constructable]
         public PetrifiedMatriarchsTongue()
         {
-            this.Hue = 2006; //TODO: get proper hue, this is a guess
-
-            this.Attributes.RegenMana = 2;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.CastRecovery = 2;
-            this.Attributes.LowerManaCost = 4;
-            this.Resistances.Poison = 5;
+            Hue = 2006; //TODO: get proper hue, this is a guess
+            Attributes.RegenMana = 2;
+            Attributes.AttackChance = 10;
+            Attributes.CastSpeed = 1;
+            Attributes.CastRecovery = 2;
+            Attributes.LowerManaCost = 4;
+            Resistances.Poison = 5;
         }
 
         public PetrifiedMatriarchsTongue(Serial serial)

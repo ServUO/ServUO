@@ -9,12 +9,11 @@ namespace Server.Items
         public RoyalZooLeatherLegs()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusMana = 3;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.ReflectPhysical = 10;
-            this.Attributes.LowerRegCost = 15;
+            Hue = 0x109;	
+            Attributes.BonusMana = 3;
+            Attributes.RegenStam = 3;
+            Attributes.ReflectPhysical = 10;
+            Attributes.LowerRegCost = 15;
         }
 
         public RoyalZooLeatherLegs(Serial serial)
@@ -100,12 +99,11 @@ namespace Server.Items
         public RoyalZooLeatherGloves()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusMana = 3;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.ReflectPhysical = 10;
-            this.Attributes.LowerRegCost = 15;
+            Hue = 0x109;		
+            Attributes.BonusMana = 3;
+            Attributes.RegenStam = 3;
+            Attributes.ReflectPhysical = 10;
+            Attributes.LowerRegCost = 15;
         }
 
         public RoyalZooLeatherGloves(Serial serial)
@@ -191,12 +189,11 @@ namespace Server.Items
         public RoyalZooLeatherGorget()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusMana = 3;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.ReflectPhysical = 10;
-            this.Attributes.LowerRegCost = 15;
+            Hue = 0x109;	
+            Attributes.BonusMana = 3;
+            Attributes.RegenStam = 3;
+            Attributes.ReflectPhysical = 10;
+            Attributes.LowerRegCost = 15;
         }
 
         public RoyalZooLeatherGorget(Serial serial)
@@ -282,12 +279,11 @@ namespace Server.Items
         public RoyalZooLeatherArms()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusMana = 3;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.ReflectPhysical = 10;
-            this.Attributes.LowerRegCost = 15;
+            Hue = 0x109;	
+            Attributes.BonusMana = 3;
+            Attributes.RegenStam = 3;
+            Attributes.ReflectPhysical = 10;
+            Attributes.LowerRegCost = 15;
         }
 
         public RoyalZooLeatherArms(Serial serial)
@@ -373,12 +369,11 @@ namespace Server.Items
         public RoyalZooLeatherChest()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusMana = 3;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.ReflectPhysical = 10;
-            this.Attributes.LowerRegCost = 15;
+            Hue = 0x109;	
+            Attributes.BonusMana = 3;
+            Attributes.RegenStam = 3;
+            Attributes.ReflectPhysical = 10;
+            Attributes.LowerRegCost = 15;
         }
 
         public RoyalZooLeatherChest(Serial serial)
@@ -464,12 +459,11 @@ namespace Server.Items
         public RoyalZooLeatherFemaleChest()
             : base()
         {
-            this.Hue = 0x109;
-		
-            this.Attributes.BonusMana = 3;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.ReflectPhysical = 10;
-            this.Attributes.LowerRegCost = 15;
+            Hue = 0x109;	
+            Attributes.BonusMana = 3;
+            Attributes.RegenStam = 3;
+            Attributes.ReflectPhysical = 10;
+            Attributes.LowerRegCost = 15;
         }
 
         public RoyalZooLeatherFemaleChest(Serial serial)

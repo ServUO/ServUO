@@ -4,18 +4,17 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefTailoring), typeof(GargishCrimsonCincture))]
-    public class CrimsonCincture : HalfApron, ITokunoDyable
+    public class CrimsonCincture : HalfApron
 	{
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public CrimsonCincture()
             : base()
         {
-            this.Hue = 0x485;
-			
-            this.Attributes.BonusDex = 5;
-            this.Attributes.BonusHits = 10;
-            this.Attributes.RegenHits = 2;
+            Hue = 0x485;		
+            Attributes.BonusDex = 5;
+            Attributes.BonusHits = 10;
+            Attributes.RegenHits = 2;
         }
 
         public CrimsonCincture(Serial serial)
@@ -45,34 +44,18 @@ namespace Server.Items
         }
     }
 
-    public class GargishCrimsonCincture : GargoyleHalfApron, ITokunoDyable
+    public class GargishCrimsonCincture : GargoyleHalfApron
     {
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public GargishCrimsonCincture()
             : base()
         {
-            this.Hue = 0x485;
-
-            this.Attributes.BonusDex = 5;
-            this.Attributes.BonusHits = 10;
-            this.Attributes.RegenHits = 2;
+            Hue = 0x485;
+            Attributes.BonusDex = 5;
+            Attributes.BonusHits = 10;
+            Attributes.RegenHits = 2;
         }
 
         public GargishCrimsonCincture(Serial serial)

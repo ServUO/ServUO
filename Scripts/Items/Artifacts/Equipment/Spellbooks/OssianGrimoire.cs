@@ -2,14 +2,15 @@
 
 namespace Server.Items
 {
-    public class OssianGrimoire : NecromancerSpellbook, ITokunoDyable
+    public class OssianGrimoire : NecromancerSpellbook
 	{
+		public override int LabelNumber { get { return 1078148; } }// Ossian Grimoire
 		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public OssianGrimoire()
         {
             LootType = LootType.Blessed;
-
             SkillBonuses.SetValues(0, SkillName.Necromancy, 10.0);
             Attributes.RegenMana = 1;
             Attributes.CastSpeed = 1;
@@ -20,14 +21,6 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1078148;
-            }
-        }// Ossian Grimoire
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

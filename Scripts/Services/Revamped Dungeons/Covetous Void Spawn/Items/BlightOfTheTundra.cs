@@ -1,13 +1,14 @@
 using Server;
 using System;
-using System.Collections.Generic;
-using Server.Mobiles;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class BlightOfTheTundra : CompositeBow, ITokunoDyable
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishBlightOfTheTundra))]
+    public class BlightOfTheTundra : CompositeBow
     {
         public override int LabelNumber { get { return 1152727; } } // Blight of the Tundra
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public BlightOfTheTundra() : this(true)
@@ -58,9 +59,10 @@ namespace Server.Items
         }
     }
 
-    public class GargishBlightOfTheTundra : SoulGlaive, ITokunoDyable
+    public class GargishBlightOfTheTundra : SoulGlaive
     {
         public override int LabelNumber { get { return 1152727; } } // Blight of the Tundra
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public GargishBlightOfTheTundra() : this(true)

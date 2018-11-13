@@ -52,14 +52,18 @@ namespace Server.Items
 
             if (0.30 > Utility.RandomDouble())
             {
-                switch (Utility.Random(4))
+                switch (Utility.Random(7))
                 {
                     case 0:
                         item = new Bandage(Utility.Random(10, 30)); break;
                     case 1:
-                        item = new SmokeBomb(Utility.Random(3, 6)); break;
+                        item = new SmokeBomb();
+                        item.Amount = Utility.Random(3, 6);
+                        break;
                     case 2:
-                        item = new InvisibilityPotion(Utility.Random(1, 3)); break;
+                        item = new InvisibilityPotion();
+                        item.Amount = Utility.Random(1, 3);
+                        break;
                     case 3:
                         item = new Lockpick(Utility.Random(1, 10)); break;
                     case 4:

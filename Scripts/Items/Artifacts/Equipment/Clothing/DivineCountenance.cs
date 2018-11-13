@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public DivineCountenance()
         {
-            this.Hue = 0x482;
-
-            this.Attributes.BonusInt = 8;
-            this.Attributes.RegenMana = 2;
-            this.Attributes.ReflectPhysical = 15;
-            this.Attributes.LowerManaCost = 8;
+            Hue = 0x482;
+            Attributes.BonusInt = 8;
+            Attributes.RegenMana = 2;
+            Attributes.ReflectPhysical = 15;
+            Attributes.LowerManaCost = 8;
         }
 
         public DivineCountenance(Serial serial)

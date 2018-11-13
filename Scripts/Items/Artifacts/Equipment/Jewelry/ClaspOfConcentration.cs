@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public ClaspOfConcentration()
         {
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.RegenStam = 2;
-            this.Attributes.RegenMana = 1;
-            this.Resistances.Fire = 5;
-            this.Resistances.Cold = 5;
+            LootType = LootType.Blessed;
+            Attributes.RegenStam = 2;
+            Attributes.RegenMana = 1;
+            Resistances.Fire = 5;
+            Resistances.Cold = 5;
         }
 
         public ClaspOfConcentration(Serial serial)

@@ -1,10 +1,12 @@
 using System;
 using Server;
+using Server.Engines.Craft;
 using Server.Mobiles;
 
 namespace Server.Items
 {
-	public class AnonsBoots : Boots
+    [Alterable(typeof(DefTailoring), typeof(AnonsBootsGargoyle))]
+    public class AnonsBoots : Boots
 	{
 		public override int LabelNumber { get { return 1156295; } } // Anon's Boots
 	
@@ -103,8 +105,8 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class BalakaisShamanStaff : WildStaff
+
+    public class BalakaisShamanStaff : WildStaff
 	{
 		public override int LabelNumber { get { return 1156125; } }
 	
@@ -219,8 +221,9 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class GrugorsShield : WoodenShield
+
+    [Alterable(typeof(DefBlacksmithy), typeof(GrugorsShieldGargoyle))]
+    public class GrugorsShield : WoodenShield
 	{
 		public override int LabelNumber { get { return 1156129; } }
 	
@@ -303,8 +306,9 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class HalawasHuntingBow : Yumi
+
+    [Alterable(typeof(DefBlacksmithy), typeof(HalawasHuntingBowGargoyle))]
+    public class HalawasHuntingBow : Yumi
 	{
 		public override int LabelNumber { get { return 1156127; } }
 
@@ -416,8 +420,9 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class JumusSacredHide : FurCape
+
+    [Alterable(typeof(DefTailoring), typeof(JumusSacredHideGargoyle))]
+    public class JumusSacredHide : FurCape
 	{
 		public override int LabelNumber { get { return 1156130; } }
 	
@@ -522,8 +527,9 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class LereisHuntingSpear : Spear
+
+    [Alterable(typeof(DefBlacksmithy), typeof(LereisHuntingSpearGargoyle))]
+    public class LereisHuntingSpear : Spear
 	{
 		public override int LabelNumber { get { return 1156128; } }
 
@@ -606,8 +612,9 @@ namespace Server.Items
                 this.WeaponAttributes.HitLeechMana = 50;
 		}
 	}
-	
-	public class MinaxsSandles : Sandals
+
+    [Alterable(typeof(DefTailoring), typeof(MinaxsSandlesGargoyle))]
+    public class MinaxsSandles : Sandals
 	{
 		public override int LabelNumber { get { return 1156297; } } // Minax's Sandles
 	
@@ -690,8 +697,9 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class OzymandiasObi : Obi
+
+    [Alterable(typeof(DefTailoring), typeof(OzymandiasObiGargoyle))]
+    public class OzymandiasObi : Obi
 	{
 		public override int LabelNumber { get { return 1156298; } }
 	
@@ -756,8 +764,9 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class ShantysWaders : ThighBoots
+
+    [Alterable(typeof(DefTailoring), typeof(ShantysWadersGargoyle))]
+    public class ShantysWaders : ThighBoots
 	{
 		public override int LabelNumber { get { return 1156296; } } // Sahnty's Waders
 	
@@ -848,8 +857,9 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class WamapsBoneEarrings : GoldEarrings
+
+    [Alterable(typeof(DefTinkering), typeof(WamapsBoneEarringsGargoyle))]
+    public class WamapsBoneEarrings : GoldEarrings
 	{
         public override int LabelNumber { get { return 1156132; } }
 		

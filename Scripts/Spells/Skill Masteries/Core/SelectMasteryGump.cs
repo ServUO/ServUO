@@ -9,36 +9,28 @@ using Server.Network;
 
 namespace Server.Gumps
 {
-    public class MasterySelectionGump : Gump
+    public class MasterySelectionGump : BaseGump
     {
-        public const int Red = 0x4800;
-        public const int Blue = 0x000F;
+        //public const int Red = 0x4800;
+        //public const int Blue = 0x000F;
+        public const int Red = 0x8e2525;
+        public const int Blue = 0x000066;
 
-        public PlayerMobile User { get; set; }
         public BookOfMasteries Book { get; private set; }
 
-        public MasterySelectionGump(PlayerMobile user, BookOfMasteries book) : base(75, 25)
+        public MasterySelectionGump(PlayerMobile user, BookOfMasteries book) 
+            : base(user, 75, 25)
         {
             Book = book;
-            User = user;
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
-            AddImage(0, 0, 8000);
-            AddImage(20, 37, 8001);
-            AddImage(20, 107, 8002);
-            AddImage(20, 177, 8001);
-            AddImage(20, 247, 8002);
-            AddImage(20, 317, 8001);
-            AddImage(20, 387, 8002);
-            AddImage(20, 457, 8003);
+            AddBackground(0, 0, 404, 550, 9380);
 
-            AddHtmlLocalized(125, 40, 345, 16, 1151948, false, false); // Switch Mastery
+            AddHtmlLocalized(0, 40, 404, 16, CenterLoc, "#1151948", 0, false, false); // Switch Mastery
 
-            int y = 60;
+            int y = 58;
             SkillName current = User.Skills.CurrentMastery;
 
             foreach (SkillName skName in MasteryInfo.Skills)
@@ -49,15 +41,15 @@ namespace Server.Gumps
                 {
                     AddButton(30, y, 4005, 4007, (int)skName + 1, GumpButtonType.Reply, 0);
 
-                    AddHtmlLocalized(75, y, 200, 16, MasteryInfo.GetLocalization(skName), skName == current ? Red : Blue, false, false);
-                    AddHtmlLocalized(250, y, 100, 16, 1156052, MasteryInfo.GetMasteryLevel(User, skName).ToString(), 0, false, false);
+                    AddHtmlLocalized(72, y, 200, 16, MasteryInfo.GetLocalization(skName), skName == current ? C32216(Red) : C32216(Blue), false, false);
+                    AddHtmlLocalized(265, y, 100, 16, 1156052, MasteryInfo.GetMasteryLevel(User, skName).ToString(), 0, false, false);
 
-                    y += 20;
+                    y += 24;
                 }
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 0)
                 return;

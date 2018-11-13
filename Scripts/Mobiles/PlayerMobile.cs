@@ -1826,7 +1826,7 @@ namespace Server.Mobiles
         {
             base.DoHarmful(damageable, indirect);
 
-            if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet && damageable is Mobile)
+            if (ViceVsVirtueSystem.Enabled && (ViceVsVirtueSystem.EnhancedRules || Map == Faction.Facet) && damageable is Mobile)
             {
                 ViceVsVirtueSystem.CheckHarmful(this, (Mobile)damageable);
             }
@@ -1836,7 +1836,7 @@ namespace Server.Mobiles
         {
             base.DoBeneficial(target);
 
-            if (ViceVsVirtueSystem.Enabled && Map == Faction.Facet && target != null)
+            if (ViceVsVirtueSystem.Enabled && (ViceVsVirtueSystem.EnhancedRules || Map == Faction.Facet) && target != null)
             {
                 ViceVsVirtueSystem.CheckBeneficial(this, target);
             }
@@ -2203,9 +2203,45 @@ namespace Server.Mobiles
 
         public override void OnHeal(ref int amount, Mobile from)
         {
+            base.OnHeal(ref amount, from);
+
+            if (from == null)
+                return;
+
             BestialSetHelper.OnHeal(this, from, ref amount);
 
-            base.OnHeal(ref amount, from);
+            if (Core.SA && amount > 0 && from != null && from != this)
+            {
+                for (int i = Aggressed.Count - 1; i >= 0; i--)
+                {
+                    var info = Aggressed[i];
+
+                    if (info.Defender.InRange(Location, Core.GlobalMaxUpdateRange) && info.Defender.DamageEntries.Any(de => de.Damager == this))
+                    {
+                        info.Defender.RegisterDamage(amount, from);
+                    }
+
+                    if (info.Defender.Player && from.CanBeHarmful(info.Defender, false))
+                    {
+                        from.DoHarmful(info.Defender, true);
+                    }
+                }
+
+                for (int i = Aggressors.Count - 1; i >= 0; i--)
+                {
+                    var info = Aggressors[i];
+
+                    if (info.Attacker.InRange(Location, Core.GlobalMaxUpdateRange) && info.Attacker.DamageEntries.Any(de => de.Damager == this))
+                    {
+                        info.Attacker.RegisterDamage(amount, from);
+                    }
+
+                    if (info.Attacker.Player && from.CanBeHarmful(info.Attacker, false))
+                    {
+                        from.DoHarmful(info.Attacker, true);
+                    }
+                }
+            }
         }
 
 		public override bool AllowItemUse(Item item)
@@ -3476,6 +3512,8 @@ namespace Server.Mobiles
 
 		protected override void OnMapChange(Map oldMap)
 		{
+            ViceVsVirtueSystem.OnMapChange(this);
+
             if (NetState != null && NetState.IsEnhancedClient)
             {
                 Waypoints.OnMapChange(this, oldMap);
@@ -3533,6 +3571,11 @@ namespace Server.Mobiles
 
 		public override void OnDamage(int amount, Mobile from, bool willKill)
 		{
+            if (Core.SA && from != null)
+            {
+                from.RegisterDamage(amount, this);
+            }
+
 			int disruptThreshold;
 
 			if (!Core.AOS)
@@ -5701,7 +5744,7 @@ namespace Server.Mobiles
             }
 
             BaseGuild guild = Guild;
-            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && this.Map == Faction.Facet;
+            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && (ViceVsVirtueSystem.EnhancedRules || this.Map == Faction.Facet);
 
             if (!vvv && m_OverheadTitle != null)
             {

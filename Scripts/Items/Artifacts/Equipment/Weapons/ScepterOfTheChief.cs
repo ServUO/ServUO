@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class ScepterOfTheChief : Scepter, ITokunoDyable
+    public class ScepterOfTheChief : Scepter
 	{
 		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber
@@ -17,16 +17,13 @@ namespace Server.Items
         public ScepterOfTheChief()
             : base()
         {
-            this.Hue = 0x481;
-			
-            this.Slayer = SlayerName.Exorcism;
-			
-            this.Attributes.RegenHits = 2;
-            this.Attributes.ReflectPhysical = 15;
-            this.Attributes.WeaponDamage = 45;
-			
-            this.WeaponAttributes.HitDispel = 100;
-            this.WeaponAttributes.HitLeechMana = 100;
+            Hue = 0x481;			
+            Slayer = SlayerName.Exorcism;		
+            Attributes.RegenHits = 2;
+            Attributes.ReflectPhysical = 15;
+            Attributes.WeaponDamage = 45;		
+            WeaponAttributes.HitDispel = 100;
+            WeaponAttributes.HitLeechMana = 100;
         }
 
         public ScepterOfTheChief(Serial serial)
@@ -34,14 +31,11 @@ namespace Server.Items
         {
         }
 		
-        #region Mondain's Legacy
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
             phys = fire = cold = nrgy = chaos = direct = 0;
             pois = 100;
         }
-
-        #endregion
 
         public override void Serialize(GenericWriter writer)
         {

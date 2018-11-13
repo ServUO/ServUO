@@ -141,7 +141,7 @@ namespace Server.Engines.NewMagincia
 					 *from your Match Bid of ~4_MATCHAMT~gp. Your Match Bid balance is now 
 					 *~5_NEWMATCH~gp. You may reclaim any additional match bid funds or adjust 
 					 *your match bid for next week at the bazaar.*/
-					MaginciaLottoSystem.SendMessageTo(m_Plot.Owner, new NewMaginciaMessage(null, new TextDefinition(1150427), String.Format("{0}\t{1}\t{2}\t{3}\t{4}", m_Plot.PlotDef.ID, m_Plot.PlotDef.Map.ToString(), highest.ToString("###,###,###"), matching.ToString("###,###,###"), newreserve.ToString("###,###,###"))));
+					MaginciaLottoSystem.SendMessageTo(m_Plot.Owner, new NewMaginciaMessage(null, new TextDefinition(1150427), String.Format("@{0}@{1}@{2}@{3}@{4}", m_Plot.PlotDef.ID, m_Plot.PlotDef.Map.ToString(), highest.ToString("N0"), matching.ToString("N0"), newreserve.ToString("N0"))));
 				}
 				else
 				{
@@ -151,13 +151,13 @@ namespace Server.Engines.NewMagincia
 					 *merchant, if any, has deposited your proceeds and remaining inventory at the 
 					 *Warehouse in New Magincia. You must retrieve these within one week or they 
 					 *will be destroyed.*/
-					MaginciaLottoSystem.SendMessageTo(m_Plot.Owner, new NewMaginciaMessage(null, new TextDefinition(1150528), String.Format("{0}\t{1}", m_Plot.PlotDef.ID, m_Plot.PlotDef.Map.ToString(), matching.ToString("###,###,###"))));
+					MaginciaLottoSystem.SendMessageTo(m_Plot.Owner, new NewMaginciaMessage(null, new TextDefinition(1150528), String.Format("@{0}@{1}@{2}", m_Plot.PlotDef.ID, m_Plot.PlotDef.Map.ToString(), matching.ToString("N0"))));
 				}
 			}
 			else if (m_Plot.Owner != null)
 			{
 				/*Your lease has expired on Stall ~1_STALLNAME~ at the ~2_FACET~ New Magincia Bazaar.*/
-				MaginciaLottoSystem.SendMessageTo(m_Plot.Owner, new NewMaginciaMessage(null, new TextDefinition(1150430), String.Format("{0}\t{1}", m_Plot.PlotDef.ID, m_Plot.PlotDef.Map.ToString())));
+				MaginciaLottoSystem.SendMessageTo(m_Plot.Owner, new NewMaginciaMessage(null, new TextDefinition(1150430), String.Format("@{0}@{1}", m_Plot.PlotDef.ID, m_Plot.PlotDef.Map.ToString())));
 			}
 			
 			if(winner == null)

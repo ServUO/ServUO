@@ -129,10 +129,19 @@ namespace Server.Items
         public int UsesRemaining
         {
             get { return m_UsesRemaining; }
-            set { m_UsesRemaining = value; if (m_UsesRemaining <= 0) Delete(); else InvalidateProperties(); }
+            set { m_UsesRemaining = value; InvalidateProperties(); }
         }
 
         public bool ShowUsesRemaining { get { return true; } set { } }
+
+        private DateTime _NextRecharge;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextRecharge
+        {
+            get { return _NextRecharge; }
+            set { _NextRecharge = value; }
+        }
 
         [Constructable]
         public HornOfPlenty() : base(18080)
@@ -140,6 +149,7 @@ namespace Server.Items
             UsesRemaining = 10;
         }
 
+        //TODO: add pub 84, 88 and 95 shit
         public override void OnDoubleClick(Mobile from)
         {
             if (m_UsesRemaining > 0)
@@ -210,6 +220,15 @@ namespace Server.Items
                 list.Add(1049116, m_UsesRemaining.ToString()); // [ Charges: ~1_CHARGES~ ]
         }
 
+        private void CheckRecharge()
+        {
+            if (DateTime.UtcNow.Month == 11 && UsesRemaining < 10 && _NextRecharge < DateTime.UtcNow)
+            {
+                UsesRemaining++;
+                _NextRecharge = DateTime.UtcNow + TimeSpan.FromDays(1);
+            }
+        }
+
         public HornOfPlenty(Serial serial)
             : base(serial)
         {
@@ -218,83 +237,72 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            writer.Write(_NextRecharge);
             writer.Write(m_UsesRemaining);
+
+            CheckRecharge();
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
-            m_UsesRemaining = reader.ReadInt();
+
+            switch (v)
+            {
+                case 1:
+                    _NextRecharge = reader.ReadDateTime();
+                    goto case 0;
+                case 0:
+                    m_UsesRemaining = reader.ReadInt();
+                    break;
+            }
         }
     }
 
-	/*public class HuntmastersChampionshipDeed : Item
+    public class HarvestersAxe : TwoHandedAxe
 	{
-		public override int LabelNumber { get { return 1155727; } } // Huntmaster's Champion
-	
-		private HuntingKillEntry m_Entry;
-	
+        public override int LabelNumber { get { return 1158774; } } // Harvester's Axe
+
+        private int _Charges;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Charges { get { return _Charges; } set { _Charges = value; InvalidateProperties(); } }
+
 		[Constructable]
-        public HuntmastersChampionshipDeed(HuntingKillEntry entry) : base(5360)
+		public HarvestersAxe()
 		{
-			m_Entry = entry;
+            Charges = 1000;
 		}
-		
-		public override void GetProperties(ObjectPropertyList list)
-		{
-			base.GetProperties(list);
-			
-			if(m_Entry.KillIndex >= 0 && m_Entry.KillIndex < HuntingTrophyInfo.Infos.Count)
-			{
-				HuntingTrophyInfo info = HuntingTrophyInfo.Infos[m_Entry.KillIndex];	
-				
-				if(info != null)
-				{
-					list.Add(1155708, m_Entry.Owner != null ? m_Entry.Owner.Name : "Unknown"); // Hunter: ~1_NAME~	
-					list.Add(1155709, m_Entry.DateKilled.ToShortDateString()); // Date of Kill: ~1_DATE~
-					
-					if(m_Entry.Location != null)
-						list.Add(1061114, m_Entry.Location); // Location: ~1_val~
-						
-                    list.Add(1155718, info.Species.ToString());
-						
-					if(info.MeasuredBy == MeasuredBy.Length)
-						list.Add(1155711, m_Entry.Measurement.ToString()); // Length: ~1_VAL~
-					else if (info.MeasuredBy == MeasuredBy.Wingspan)
-						list.Add(1155710, m_Entry.Measurement.ToString());	// Wingspan: ~1_VAL~
-					else
-						list.Add(1072789, m_Entry.Measurement.ToString()); // Weight: ~1_WEIGHT~
-				}
-			}
-		}
-	
-		public HuntmastersChampionshipDeed(Serial serial) : base(serial)
-		{
-		}
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+            list.Add(1158775);  // * Magically Chops Logs into Boards *
+            list.Add(1060741, _Charges.ToString()); // charges: 
+        }
+
+        public HarvestersAxe(Serial serial)
+            : base(serial)
+        {
+        }
 		
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
-			
-			if(m_Entry != null)
-			{
-				writer.Write((int)1);
-				m_Entry.Serialize(writer);
-			}
-			else
-				writer.Write((int)0);
-		}
+			writer.Write(0);
 
-        public override void Deserialize(GenericReader reader)
+            writer.Write(_Charges);
+		}
+		
+		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
-			int v = reader.ReadInt();
-			
-			if(reader.ReadInt() == 1)
-				m_Entry =  new HuntingKillEntry(reader);
+			int version = reader.ReadInt();
+
+            _Charges = reader.ReadInt();
 		}
-    }*/
+	}
 }

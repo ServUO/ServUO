@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public MidnightBracers()
         {
-            this.Hue = 0x455;
-            this.SkillBonuses.SetValues(0, SkillName.Necromancy, 20.0);
-            this.Attributes.SpellDamage = 10;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x455;
+            SkillBonuses.SetValues(0, SkillName.Necromancy, 20.0);
+            Attributes.SpellDamage = 10;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public MidnightBracers(Serial serial)

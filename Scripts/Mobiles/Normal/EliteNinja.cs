@@ -153,6 +153,8 @@ namespace Server.Mobiles
 
                 m_NextWeaponChange = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
             }
+
+            ColUtility.Free(weapons);
         }
 
         public override void OnThink()

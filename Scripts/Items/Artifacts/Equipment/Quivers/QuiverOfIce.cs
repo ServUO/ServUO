@@ -9,7 +9,7 @@ namespace Server.Items
         public QuiverOfIce()
             : base()
         {
-            this.Hue = 0x4ED;
+            Hue = 0x4ED;
         }
 
         public QuiverOfIce(Serial serial)

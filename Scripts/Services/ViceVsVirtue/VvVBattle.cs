@@ -1,17 +1,19 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server;
 using Server.Items;
 using Server.Mobiles;
 using Server.Gumps;
-using System.Collections.Generic;
 using Server.Network;
 using Server.Guilds;
-using System.Linq;
 using Server.Engines.Points;
 using Server.Engines.CityLoyalty;
 using Server.SkillHandlers;
 using Server.Multis;
 using Server.Regions;
+using Server.Misc;
 
 namespace Server.Engines.VvV
 {
@@ -48,6 +50,21 @@ namespace Server.Engines.VvV
         public static readonly int WinSilver = 100;
         public static readonly int DisarmSilver = 50;
 
+        // silver penalty in the event the battle is uncontested
+        public static readonly double Penalty = 0.5;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double SilverPenalty
+        {
+            get
+            {
+                if (!ViceVsVirtueSystem.EnhancedRules)
+                    return 1.0;
+
+                return UnContested ? Penalty : 1.0;
+            }
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public ViceVsVirtueSystem System { get; set; }
 
@@ -83,6 +100,9 @@ namespace Server.Engines.VvV
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool OnGoing { get; private set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool UnContested { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Region Region
@@ -126,6 +146,7 @@ namespace Server.Engines.VvV
         public List<BattleTeam> Teams { get; set; }
 
         public Dictionary<Mobile, DateTime> KillCooldown { get; set; }
+        public Dictionary<Mobile, DateTime> BattleAggression { get; set; }
         public List<string> Messages { get; set; }
 
         public List<VvVAltar> Altars { get; set; }
@@ -149,6 +170,8 @@ namespace Server.Engines.VvV
             get { return CooldownEnds > DateTime.UtcNow; }
         }
 
+        public DateTime NextCombatHeatCycle { get; private set; }
+
         public VvVBattle(ViceVsVirtueSystem sys)
         {
             System = sys;
@@ -157,7 +180,7 @@ namespace Server.Engines.VvV
         public void Begin()
         {
             OnGoing = true;
-
+            NextCombatHeatCycle = DateTime.UtcNow;
             VvVCity newCity = City;
             List<VvVCity> cities = new List<VvVCity>();
 
@@ -325,6 +348,10 @@ namespace Server.Engines.VvV
             if (Region == null)
                 return;
 
+            BattleTeam team = null;
+            UnContested = true;
+            bool checkAggression = ViceVsVirtueSystem.EnhancedRules && NextCombatHeatCycle < DateTime.UtcNow;
+
             foreach (PlayerMobile pm in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 bool vvv = ViceVsVirtueSystem.IsVvV(pm);
@@ -333,16 +360,86 @@ namespace Server.Engines.VvV
                 {
                     pm.SendGump(new BattleWarningGump(pm));
                     Warned.Add(pm);
-                    return;
                 }
                 else if (vvv && pm.Alive && !pm.Hidden && BaseBoat.FindBoatAt(pm.Location, pm.Map) == null && BaseHouse.FindHouseAt(pm) == null)
                 {
                     Guild g = pm.Guild as Guild;
 
-                    if (g != null && pm.Alive && !pm.Hidden)
-                        GetTeam(g);
+                    if (g != null)
+                    {
+                        var t = GetTeam(g);
+
+                        if (team == null)
+                        {
+                            team = t;
+                        }
+                        else if (t != team && UnContested)
+                        {
+                            UnContested = false;
+                        }
+                    }
+                }
+
+                if (checkAggression && (vvv || ViceVsVirtueSystem.IsVvVCombatant(pm)))
+                {
+                    AddAggression(pm);
                 }
             }
+
+            if (checkAggression)
+            {
+                CheckBattleAggression();
+
+                NextCombatHeatCycle = DateTime.UtcNow + TimeSpan.FromMinutes(1);
+            }
+        }
+
+        public void AddAggression(Mobile m)
+        {
+            if (m is PlayerMobile)
+            {
+                if (BattleAggression == null)
+                {
+                    BattleAggression = new Dictionary<Mobile, DateTime>();
+                }
+
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, m, true));
+                BattleAggression[m] = DateTime.UtcNow + TimeSpan.FromMinutes(2);
+            }
+        }
+
+        private void CheckBattleAggression()
+        {
+            if (BattleAggression == null)
+                return;
+
+            var list = new List<Mobile>(BattleAggression.Keys);
+
+            foreach (var m in list)
+            {
+                if (BattleAggression[m] < DateTime.UtcNow && !m.Region.IsPartOf(Region))
+                {
+                    BattleAggression.Remove(m);
+                }
+            }
+
+            ColUtility.Free(list);
+        }
+
+        public bool HasBattleAggression(Mobile m)
+        {
+            if (BattleAggression == null || !BattleAggression.ContainsKey(m))
+            {
+                return false;
+            }
+
+            if (BattleAggression[m] < DateTime.UtcNow)
+            {
+                BattleAggression.Remove(m);
+                return false;
+            }
+
+            return true;
         }
 
         public void EndBattle()
@@ -401,6 +498,11 @@ namespace Server.Engines.VvV
 
             System.SendVvVMessage(1154722); // A VvV battle has just concluded. The next battle will begin in less than five minutes!
 
+            if (BattleAggression != null)
+            {
+                BattleAggression.Clear();
+            }
+
             ColUtility.Free(Altars);
             ColUtility.Free(Teams);
             KillCooldown.Clear();
@@ -408,14 +510,6 @@ namespace Server.Engines.VvV
             ColUtility.Free(Traps);
             ColUtility.Free(Warned);
             ColUtility.Free(Turrets);
-
-            /*Altars = null;
-            Teams = null;
-            KillCooldown = null;
-            Messages = null;
-            Traps = null;
-            Warned = null;
-            Turrets = null;*/
 
             if (Region is GuardedRegion)
             {
@@ -446,7 +540,7 @@ namespace Server.Engines.VvV
             if (leader == null || leader.Guild == null)
                 return;
 
-            leader.Silver += WinSilver + (OppositionCount(leader.Guild) * 50);
+            leader.Silver += AwardSilver(WinSilver + (OppositionCount(leader.Guild) * 50));
 
             foreach (Mobile m in this.Region.GetEnumeratedMobiles())
             {
@@ -628,7 +722,7 @@ namespace Server.Engines.VvV
                             if (killerTeam != null)
                             {
                                 killerTeam.Score += (int)KillPoints;
-                                killerTeam.Silver += KillSilver + (OppositionCount(killer.Guild) * 50);
+                                killerTeam.Silver += AwardSilver(KillSilver + (OppositionCount(killer.Guild) * 50));
                             }
 
                             SendStatusMessage(String.Format("{0} has killed {1}!", killer.Player.Name, victim.Player.Name));
@@ -661,7 +755,7 @@ namespace Server.Engines.VvV
                     if (killerTeam != null)
                     {
                         killerTeam.Score += (int)TurnInPoints;
-                        killerTeam.Silver += TurnInSilver + (OppositionCount(killer.Guild) * 50);
+                        killerTeam.Silver += AwardSilver(TurnInSilver + (OppositionCount(killer.Guild) * 50));
                     }
 
                     if (killerStats != null && killerTeam != null)
@@ -694,13 +788,18 @@ namespace Server.Engines.VvV
 
                     if (killerTeam != null)
                     {
-                        killerTeam.Silver += DisarmSilver + (OppositionCount(killer.Guild) * 50);
+                        killerTeam.Silver += AwardSilver(DisarmSilver + (OppositionCount(killer.Guild) * 50));
                         killerTeam.Disarmed++;
                     }
                     break;
             }
 
             CheckScore();
+        }
+
+        public int AwardSilver(int amount)
+        {
+            return (int)((double)amount * SilverPenalty);
         }
 
         public void RemovePriests()
@@ -723,7 +822,7 @@ namespace Server.Engines.VvV
             BattleTeam team = GetTeam(g);
 
             team.Score += (int)AltarPoints;
-            team.Silver += AltarSilver + (OppositionCount(g) * 50);
+            team.Silver += AwardSilver(AltarSilver + (OppositionCount(g) * 50));
 
             SendStatusMessage(String.Format("{0} claimed the altar!", g != null ? g.Abbreviation : "somebody"));
 

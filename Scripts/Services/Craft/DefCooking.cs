@@ -14,7 +14,11 @@ namespace Server.Engines.Craft
         MilkChocolateNutcracker = 601,
         WhiteChocolateNutcracker = 602,
 
-        ThreeTieredCake = 603
+        ThreeTieredCake = 603,
+        BlackrockStew = 604,
+        Hamburger = 605,
+        HotDog = 606,
+        Sausage = 607
     }
     #endregion
 
@@ -113,20 +117,20 @@ namespace Server.Engines.Craft
             int index = -1;
 
             /* Begin Ingredients */
-            index = this.AddCraft(typeof(SackFlour), 1044495, 1024153, 0.0, 100.0, typeof(WheatSheaf), 1044489, 2, 1044490);
-            this.SetNeedMill(index, true);
+            index = AddCraft(typeof(SackFlour), 1044495, 1024153, 0.0, 100.0, typeof(WheatSheaf), 1044489, 2, 1044490);
+            SetNeedMill(index, true);
 
-            index = this.AddCraft(typeof(Dough), 1044495, 1024157, 0.0, 100.0, typeof(SackFlour), 1044468, 1, 1044253);
-            this.AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            index = AddCraft(typeof(Dough), 1044495, 1024157, 0.0, 100.0, typeof(SackFlour), 1044468, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
 
-            index = this.AddCraft(typeof(SweetDough), 1044495, 1041340, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.AddRes(index, typeof(JarHoney), 1044472, 1, 1044253);
+            index = AddCraft(typeof(SweetDough), 1044495, 1041340, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(JarHoney), 1044472, 1, 1044253);
 
-            index = this.AddCraft(typeof(CakeMix), 1044495, 1041002, 0.0, 100.0, typeof(SackFlour), 1044468, 1, 1044253);
-            this.AddRes(index, typeof(SweetDough), 1044475, 1, 1044253);
+            index = AddCraft(typeof(CakeMix), 1044495, 1041002, 0.0, 100.0, typeof(SackFlour), 1044468, 1, 1044253);
+            AddRes(index, typeof(SweetDough), 1044475, 1, 1044253);
 
-            index = this.AddCraft(typeof(CookieMix), 1044495, 1024159, 0.0, 100.0, typeof(JarHoney), 1044472, 1, 1044253);
-            this.AddRes(index, typeof(SweetDough), 1044475, 1, 1044253);
+            index = AddCraft(typeof(CookieMix), 1044495, 1024159, 0.0, 100.0, typeof(JarHoney), 1044472, 1, 1044253);
+            AddRes(index, typeof(SweetDough), 1044475, 1, 1044253);
 
             if (Core.ML)
             {
@@ -147,33 +151,33 @@ namespace Server.Engines.Craft
             /* End Ingredients */
 
             /* Begin Preparations */
-            index = this.AddCraft(typeof(UnbakedQuiche), 1044496, 1041339, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.AddRes(index, typeof(Eggs), 1044477, 1, 1044253);
+            index = AddCraft(typeof(UnbakedQuiche), 1044496, 1041339, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(Eggs), 1044477, 1, 1044253);
 
             // TODO: This must also support chicken and lamb legs
-            index = this.AddCraft(typeof(UnbakedMeatPie), 1044496, 1041338, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.AddRes(index, typeof(RawRibs), 1044482, 1, 1044253);
+            index = AddCraft(typeof(UnbakedMeatPie), 1044496, 1041338, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(RawRibs), 1044482, 1, 1044253);
 
-            index = this.AddCraft(typeof(UncookedSausagePizza), 1044496, 1041337, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.AddRes(index, typeof(Sausage), 1044483, 1, 1044253);
+            index = AddCraft(typeof(UncookedSausagePizza), 1044496, 1041337, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(Sausage), 1044483, 1, 1044253);
 
-            index = this.AddCraft(typeof(UncookedCheesePizza), 1044496, 1041341, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.AddRes(index, typeof(CheeseWheel), 1044486, 1, 1044253);
+            index = AddCraft(typeof(UncookedCheesePizza), 1044496, 1041341, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(CheeseWheel), 1044486, 1, 1044253);
 
-            index = this.AddCraft(typeof(UnbakedFruitPie), 1044496, 1041334, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.AddRes(index, typeof(Pear), 1044481, 1, 1044253);
+            index = AddCraft(typeof(UnbakedFruitPie), 1044496, 1041334, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(Pear), 1044481, 1, 1044253);
 
-            index = this.AddCraft(typeof(UnbakedPeachCobbler), 1044496, 1041335, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.AddRes(index, typeof(Peach), 1044480, 1, 1044253);
+            index = AddCraft(typeof(UnbakedPeachCobbler), 1044496, 1041335, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(Peach), 1044480, 1, 1044253);
 
-            index = this.AddCraft(typeof(UnbakedApplePie), 1044496, 1041336, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.AddRes(index, typeof(Apple), 1044479, 1, 1044253);
+            index = AddCraft(typeof(UnbakedApplePie), 1044496, 1041336, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(Apple), 1044479, 1, 1044253);
 
-            index = this.AddCraft(typeof(UnbakedPumpkinPie), 1044496, 1041342, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.AddRes(index, typeof(Pumpkin), 1044484, 1, 1044253);
+            index = AddCraft(typeof(UnbakedPumpkinPie), 1044496, 1041342, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(Pumpkin), 1044484, 1, 1044253);
 
-            index = this.AddCraft(typeof(WoodPulp), 1044496, 1113136, 60.0, 100.0, typeof(BarkFragment), 1032687, 1, 1044253);
-            this.AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            index = AddCraft(typeof(WoodPulp), 1044496, 1113136, 60.0, 100.0, typeof(BarkFragment), 1032687, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
 
             if (Core.SE)
             {
@@ -240,41 +244,41 @@ namespace Server.Engines.Craft
             /* End Preparations */
 
             /* Begin Baking */
-            index = this.AddCraft(typeof(BreadLoaf), 1044497, 1024156, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(BreadLoaf), 1044497, 1024156, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(Cookies), 1044497, 1025643, 0.0, 100.0, typeof(CookieMix), 1044474, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(Cookies), 1044497, 1025643, 0.0, 100.0, typeof(CookieMix), 1044474, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(Cake), 1044497, 1022537, 0.0, 100.0, typeof(CakeMix), 1044471, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(Cake), 1044497, 1022537, 0.0, 100.0, typeof(CakeMix), 1044471, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(Muffins), 1044497, 1022539, 0.0, 100.0, typeof(SweetDough), 1044475, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(Muffins), 1044497, 1022539, 0.0, 100.0, typeof(SweetDough), 1044475, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(Quiche), 1044497, 1041345, 0.0, 100.0, typeof(UnbakedQuiche), 1044518, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(Quiche), 1044497, 1041345, 0.0, 100.0, typeof(UnbakedQuiche), 1044518, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(MeatPie), 1044497, 1041347, 0.0, 100.0, typeof(UnbakedMeatPie), 1044519, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(MeatPie), 1044497, 1041347, 0.0, 100.0, typeof(UnbakedMeatPie), 1044519, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(SausagePizza), 1044497, 1044517, 0.0, 100.0, typeof(UncookedSausagePizza), 1044520, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(SausagePizza), 1044497, 1044517, 0.0, 100.0, typeof(UncookedSausagePizza), 1044520, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(CheesePizza), 1044497, 1044516, 0.0, 100.0, typeof(UncookedCheesePizza), 1044521, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(CheesePizza), 1044497, 1044516, 0.0, 100.0, typeof(UncookedCheesePizza), 1044521, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(FruitPie), 1044497, 1041346, 0.0, 100.0, typeof(UnbakedFruitPie), 1044522, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(FruitPie), 1044497, 1041346, 0.0, 100.0, typeof(UnbakedFruitPie), 1044522, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(PeachCobbler), 1044497, 1041344, 0.0, 100.0, typeof(UnbakedPeachCobbler), 1044523, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(PeachCobbler), 1044497, 1041344, 0.0, 100.0, typeof(UnbakedPeachCobbler), 1044523, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(ApplePie), 1044497, 1041343, 0.0, 100.0, typeof(UnbakedApplePie), 1044524, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(ApplePie), 1044497, 1041343, 0.0, 100.0, typeof(UnbakedApplePie), 1044524, 1, 1044253);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(PumpkinPie), 1044497, 1041348, 0.0, 100.0, typeof(UnbakedPumpkinPie), 1046461, 1, 1044253);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(PumpkinPie), 1044497, 1041348, 0.0, 100.0, typeof(UnbakedPumpkinPie), 1046461, 1, 1044253);
+            SetNeedOven(index, true);
 
             if (Core.SE)
             {
@@ -295,45 +299,71 @@ namespace Server.Engines.Craft
                 SetNeedOven(index, true);
             }
 
-            index = this.AddCraft(typeof(GingerBreadCookie), 1044497, 1031233, 35.0, 85.0, typeof(CookieMix), 1044474, 1, 1044253);
-            this.AddRes(index, typeof(FreshGinger), 1031235, 1, 1044253);
-            this.AddRecipe(index, (int)CookRecipes.GingerbreadCookie);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(GingerBreadCookie), 1044497, 1031233, 35.0, 85.0, typeof(CookieMix), 1044474, 1, 1044253);
+            AddRes(index, typeof(FreshGinger), 1031235, 1, 1044253);
+            AddRecipe(index, (int)CookRecipes.GingerbreadCookie);
+            SetNeedOven(index, true);
 
-            index = this.AddCraft(typeof(ThreeTieredCake), 1044497, 1154465, 60.0, 110.0, typeof(CakeMix), 1044471, 3, 1044253);
-            this.AddRecipe(index, (int)CookRecipes.ThreeTieredCake);
-            this.SetNeedOven(index, true);
+            index = AddCraft(typeof(ThreeTieredCake), 1044497, 1154465, 60.0, 110.0, typeof(CakeMix), 1044471, 3, 1044253);
+            AddRecipe(index, (int)CookRecipes.ThreeTieredCake);
+            SetNeedOven(index, true);
             /* End Baking */
 
             /* Begin Barbecue */
-            index = this.AddCraft(typeof(CookedBird), 1044498, 1022487, 0.0, 100.0, typeof(RawBird), 1044470, 1, 1044253);
-            this.SetNeedHeat(index, true);
-            this.SetUseAllRes(index, true);
+            index = AddCraft(typeof(CookedBird), 1044498, 1022487, 0.0, 100.0, typeof(RawBird), 1044470, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
 
-            index = this.AddCraft(typeof(ChickenLeg), 1044498, 1025640, 0.0, 100.0, typeof(RawChickenLeg), 1044473, 1, 1044253);
-            this.SetNeedHeat(index, true);
-            this.SetUseAllRes(index, true);
+            index = AddCraft(typeof(ChickenLeg), 1044498, 1025640, 0.0, 100.0, typeof(RawChickenLeg), 1044473, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
 
-            index = this.AddCraft(typeof(FishSteak), 1044498, 1022427, 0.0, 100.0, typeof(RawFishSteak), 1044476, 1, 1044253);
-            this.SetNeedHeat(index, true);
-            this.SetUseAllRes(index, true);
+            index = AddCraft(typeof(FishSteak), 1044498, 1022427, 0.0, 100.0, typeof(RawFishSteak), 1044476, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
 
-            index = this.AddCraft(typeof(FriedEggs), 1044498, 1022486, 0.0, 100.0, typeof(Eggs), 1044477, 1, 1044253);
-            this.SetNeedHeat(index, true);
-            this.SetUseAllRes(index, true);
+            index = AddCraft(typeof(FriedEggs), 1044498, 1022486, 0.0, 100.0, typeof(Eggs), 1044477, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
 
-            index = this.AddCraft(typeof(LambLeg), 1044498, 1025642, 0.0, 100.0, typeof(RawLambLeg), 1044478, 1, 1044253);
-            this.SetNeedHeat(index, true);
-            this.SetUseAllRes(index, true);
+            index = AddCraft(typeof(LambLeg), 1044498, 1025642, 0.0, 100.0, typeof(RawLambLeg), 1044478, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
 
-            index = this.AddCraft(typeof(Ribs), 1044498, 1022546, 0.0, 100.0, typeof(RawRibs), 1044485, 1, 1044253);
-            this.SetNeedHeat(index, true);
-            this.SetUseAllRes(index, true);
+            index = AddCraft(typeof(Ribs), 1044498, 1022546, 0.0, 100.0, typeof(RawRibs), 1044485, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
 
             index = AddCraft(typeof(BowlOfRotwormStew), 1044498, 1031706, 0.0, 100.0, typeof(RawRotwormMeat), 1031705, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
             AddRecipe(index, (int)CookRecipes.RotWormStew);
+
+            index = AddCraft(typeof(BowlOfBlackrockStew), 1044498, 1115752, 30.0, 70.0, typeof(BowlOfRotwormStew), 1031706, 1, 1044253);
+            AddRes(index, typeof(SmallPieceofBlackrock), 1153836, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
+            SetItemHue(index, 1954);
+            AddRecipe(index, (int)CookRecipes.BlackrockStew);
+
+            index = AddCraft(typeof(Hamburger), 1044498, 1125202, 40.0, 80.0, typeof(BreadLoaf), 1024155, 1, 1044253);
+            AddRes(index, typeof(RawRibs), 1044485, 1, 1044253);
+            AddRes(index, typeof(Lettuce), 1023184, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
+            AddRecipe(index, (int)CookRecipes.Hamburger);
+
+            index = AddCraft(typeof(HotDog), 1044498, 1125200, 40.0, 80.0, typeof(BreadLoaf), 1024155, 1, 1044253);
+            AddRes(index, typeof(Sausage), 1125198, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
+            AddRecipe(index, (int)CookRecipes.HotDog);
+
+            index = AddCraft(typeof(CookableSausage), 1044498, 1125198, 30.0, 70.0, typeof(Ham), 1022515, 1, 1044253);
+            AddRes(index, typeof(DriedHerbs), 1023137, 1, 1044253);
+            SetNeedHeat(index, true);
+            SetUseAllRes(index, true);
+            AddRecipe(index, (int)CookRecipes.Sausage);
             /* End Barbecue */
 
             /* Begin Chocolatiering */
@@ -341,10 +371,10 @@ namespace Server.Engines.Craft
             {
                 if (Core.TOL)
                 {
-                    index = this.AddCraft(typeof(SweetCocoaButter), 1080001, 1156401, 15.0, 100.0, typeof(SackOfSugar), 1079997, 1, 1044253);
-                    this.AddRes(index, typeof(CocoaButter), 1079998, 1, 1044253);
-                    this.SetItemHue(index, 0x457);
-                    this.SetNeedOven(index, true);
+                    index = AddCraft(typeof(SweetCocoaButter), 1080001, 1156401, 15.0, 100.0, typeof(SackOfSugar), 1079997, 1, 1044253);
+                    AddRes(index, typeof(CocoaButter), 1079998, 1, 1044253);
+                    SetItemHue(index, 0x457);
+                    SetNeedOven(index, true);
                 }
 
                 index = AddCraft(typeof(DarkChocolate), 1080001, 1079994, 15.0, 100.0, typeof(SackOfSugar), 1079997, 1, 1044253);

@@ -10,13 +10,12 @@ namespace Server.Items
         public SamuraiHelm()
             : base(0x236C)
         {
-            this.Weight = 5.0;
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.DefendChance = 15;
-            this.ArmorAttributes.SelfRepair = 10;
-            this.ArmorAttributes.LowerStatReq = 100;
-            this.ArmorAttributes.MageArmor = 1;
+            Weight = 5.0;
+            LootType = LootType.Blessed;
+            Attributes.DefendChance = 15;
+            ArmorAttributes.SelfRepair = 10;
+            ArmorAttributes.LowerStatReq = 100;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public SamuraiHelm(Serial serial)

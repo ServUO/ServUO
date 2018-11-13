@@ -1235,7 +1235,7 @@ namespace Server.Factions
 
                 if (bc.Map == Faction.Facet && victimFaction != null && killerState.Faction != victimFaction)
                 {
-                    int silver = killerState.Faction.AwardSilver(killer, bc.FactionSilverWorth);
+                    int silver = killerState.Faction.AwardSilver(killer, 30);
 
                     if (silver > 0)
                         killer.SendLocalizedMessage(1042748, silver.ToString("N0")); // Thou hast earned ~1_AMOUNT~ silver for vanquishing the vile creature.

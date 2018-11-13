@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public RighteousAnger()
         {
-            this.Hue = 0x284;
-
-            this.Attributes.AttackChance = 15;
-            this.Attributes.DefendChance = 5;
-            this.Attributes.WeaponSpeed = 35;
-            this.Attributes.WeaponDamage = 40;
+            Hue = 0x284;
+            Attributes.AttackChance = 15;
+            Attributes.DefendChance = 5;
+            Attributes.WeaponSpeed = 35;
+            Attributes.WeaponDamage = 40;
         }
 
         public RighteousAnger(Serial serial)

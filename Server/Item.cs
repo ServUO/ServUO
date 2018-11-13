@@ -873,19 +873,19 @@ namespace Server
             {
                 if (Parent is Container)
                 {
-                    if ( value > 0 && value <= 0x7C)
+                    if (value < 0 || value > 0x7C || !((Container)Parent).IsFreePosition(value))
+                    {
+                        m_GridLocation = ((Container)Parent).GetNewPosition(0);
+                    }
+                    else
                     {
                         m_GridLocation = value;
-                        ((Container)Parent).SetPosition(m_GridLocation, this);
-                        return;
-                    }
-                    else if (value == 0)
-                    {
-                        ((Container)Parent).FreePosition(m_GridLocation);
                     }
                 }
-
-                m_GridLocation = value;
+                else
+                {
+                    m_GridLocation = value;
+                }
             }
         }
 
@@ -2065,7 +2065,7 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual bool IsArtifact
         {
-            get { return false; }
+            get { return this is IArtifact && ((IArtifact)this).ArtifactRarity > 0; }
         }
 
         private static TimeSpan m_DDT = TimeSpan.FromMinutes(Config.Get("General.DefaultItemDecayTime", 60));
@@ -3694,11 +3694,6 @@ namespace Server
                 Timer.DelayCall(TimeSpan.Zero, FixHolding_Sandbox);
             }
 
-            if (m_Parent is Container)
-            {
-                ((Container)m_Parent).SetPosition(m_GridLocation, this);
-            }
-
             VerifyCompactInfo();
 
             UpdateLight();
@@ -4452,13 +4447,6 @@ namespace Server
             }
             else if (Parent is Item)
             {
-                #region Enhanced Client Support
-                if (Parent is Container)
-                {
-                    ((Container)Parent).FreePosition(GridLocation);
-                }
-                #endregion
-
                 ((Item)Parent).RemoveItem(this);
             }
 
@@ -4657,13 +4645,6 @@ namespace Server
 
             if (items != null && items.Remove(item))
             {
-                #region Enhanced Client Support
-                if (item.Parent is Container && (!item.Stackable || item.Amount <= 0))
-				{
-					((Container)item.Parent).FreePosition(item.GridLocation);
-				}
-                #endregion
-
                 item.SendRemovePacket();
 
                 if (!item.IsVirtualItem)

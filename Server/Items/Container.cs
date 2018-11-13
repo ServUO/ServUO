@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+
 using Server.ContextMenus;
 using Server.Network;
 #endregion
@@ -18,35 +20,24 @@ namespace Server.Items
     public class Container : Item
     {
         #region Enhanced Client Support
-
-        Dictionary<byte, Item> _Positions = new Dictionary<byte, Item>();
-
-        public virtual void SetPosition(byte pos, Item item)
+        public virtual void ValidateGridLocation(Item item)
         {
+			var pos = item.GridLocation;
+
             if (!IsFreePosition(pos))
             {
-                pos = GetNewPosition(pos);
-            }
-
-            if (item.GridLocation != pos)
-			{
-                item.GridLocation = pos;
-			}
-
-            _Positions[pos] = item;
-        }
-
-        public virtual void FreePosition(byte pos)
-        {
-            if (_Positions.ContainsKey(pos))
-            {
-                _Positions.Remove(pos);
+                item.GridLocation = GetNewPosition(pos);
             }
         }
 
         public virtual bool IsFreePosition(byte pos)
         {
-            return pos <= 0x7C && !_Positions.ContainsKey(pos);
+            if (pos < 0 || pos > 0x7C)
+            {
+                return false;
+            }
+
+			return Items.All(i => i.GridLocation != pos);
         }
 
         public virtual byte GetNewPosition(byte current)
@@ -54,15 +45,15 @@ namespace Server.Items
             int index = 0;
             byte next = (byte)(current + 1);
 
-            while (index < 0x7D)
+            while (++index < 0x7D)
             {
-                if (_Positions.ContainsKey(next))
+                if (!IsFreePosition(next))
                 {
                     if (next == 0x7C)
                     {
                         next = 0;
 
-                        if (!_Positions.ContainsKey(next))
+                        if (IsFreePosition(next))
                         {
                             return next;
                         }
@@ -73,13 +64,22 @@ namespace Server.Items
                     return next;
                 }
 
-                index++;
                 next++;
             }
 
             return 0;
         }
 
+        public virtual void ValidatePositions()
+        {
+            foreach (var item in Items)
+            {
+                if (IsFreePosition(item.GridLocation))
+                {
+                    item.GridLocation = GetNewPosition(item.GridLocation);
+                }
+            }
+        }
         #endregion
 
         private static ContainerSnoopHandler m_SnoopHandler;
@@ -1517,7 +1517,7 @@ namespace Server.Items
 
             writer.Write((byte)flags);
 
-            if (GetSaveFlag(flags, SaveFlag.GridPositions))
+            /*if (GetSaveFlag(flags, SaveFlag.GridPositions))
             {
                 writer.Write(_Positions.Count);
 
@@ -1526,7 +1526,7 @@ namespace Server.Items
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);
                 }
-            }
+            }*/
 
             if (GetSaveFlag(flags, SaveFlag.MaxItems))
             {
@@ -1771,7 +1771,7 @@ namespace Server.Items
 
         public override void AddItem(Item item)
         {
-            SetPosition(item.GridLocation, item);
+            ValidateGridLocation(item);
 
             base.AddItem(item);
         }
@@ -1912,6 +1912,8 @@ namespace Server.Items
             {
                 return;
             }
+
+            ValidatePositions();
 
             if (ns.HighSeas)
             {

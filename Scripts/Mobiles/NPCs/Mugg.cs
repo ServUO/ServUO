@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public MoreOrePleaseQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(IronOre), "iron ore", 5, 0x19B9));
-						
-            this.AddReward(new BaseReward(typeof(MinersSatchel), 1074282)); // Craftsman's Satchel
+            AddObjective(new ObtainObjective(typeof(IronOre), "iron ore", 5, 0x19B9));
+
+            AddReward(new BaseReward(typeof(MinersQuestSatchel), 1074282)); // Craftsman's Satchel
         }
 
         /* More Ore Please */
@@ -96,32 +96,32 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 			
-            this.Hue = 0x840A;
-            this.HairItemID = 0x2047;
-            this.HairHue = 0x0;
+            Hue = 0x840A;
+            HairItemID = 0x2047;
+            HairHue = 0x0;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
-            this.AddItem(new Pickaxe());
-            this.AddItem(new Boots(0x901));
-            this.AddItem(new ShortPants(0x3B2));
-            this.AddItem(new Shirt(0x22B));
-            this.AddItem(new SkullCap(0x177));
-            this.AddItem(new HalfApron(0x5F1));
+            AddItem(new Backpack());			
+            AddItem(new Pickaxe());
+            AddItem(new Boots(0x901));
+            AddItem(new ShortPants(0x3B2));
+            AddItem(new Shirt(0x22B));
+            AddItem(new SkullCap(0x177));
+            AddItem(new HalfApron(0x5F1));
 			
             Item item;
 			
             item = new PlateGloves();
             item.Hue = 0x21E;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -139,19 +139,20 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class MinersSatchel : Backpack
+    [TypeAlias("Server.Engines.Quests.MinersSatchel")]
+    public class MinersQuestSatchel : Backpack
     {
         [Constructable]
-        public MinersSatchel()
+        public MinersQuestSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 			
-            this.AddItem(new Pickaxe());
-            this.AddItem(new Pickaxe());
+            AddItem(new Pickaxe());
+            AddItem(new Pickaxe());
         }
 
-        public MinersSatchel(Serial serial)
+        public MinersQuestSatchel(Serial serial)
             : base(serial)
         {
         }

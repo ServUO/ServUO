@@ -111,11 +111,11 @@ namespace Server.Engines.BulkOrders
             AddImage(width - 15, 424, 10460);
 
             AddHtmlLocalized(canPrice ? 266 : 224, 32, 200, 32, 1062220, LabelColor, false, false); // Bulk Order Book
-            AddHtmlLocalized(63, 64, 200, 32, 1062213, LabelColor, false, false); // Type
-            AddHtmlLocalized(147, 64, 200, 32, 1062214, LabelColor, false, false); // Item
-            AddHtmlLocalized(246, 64, 200, 32, 1062215, LabelColor, false, false); // Quality
-            AddHtmlLocalized(336, 64, 200, 32, 1062216, LabelColor, false, false); // Material
-            AddHtmlLocalized(429, 64, 200, 32, 1062217, LabelColor, false, false); // Amount
+            AddHtmlLocalized(63, 64, 70, 32, 1062213, LabelColor, false, false); // Type
+            AddHtmlLocalized(147, 64, 70, 32, 1062214, LabelColor, false, false); // Item
+            AddHtmlLocalized(246, 64, 70, 32, 1062215, LabelColor, false, false); // Quality
+            AddHtmlLocalized(336, 64, 70, 32, 1062216, LabelColor, false, false); // Material
+            AddHtmlLocalized(429, 64, 70, 32, 1062217, LabelColor, false, false); // Amount
 
             AddButton(35, 32, 4005, 4007, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(70, 32, 200, 32, 1062476, LabelColor, false, false); // Set Filter

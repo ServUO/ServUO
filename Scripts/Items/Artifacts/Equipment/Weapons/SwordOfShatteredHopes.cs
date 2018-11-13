@@ -5,19 +5,18 @@ namespace Server.Items
     public class SwordOfShatteredHopes : GlassSword
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1112770; } } // Sword of Shattered Hopes
+		
         [Constructable]
         public SwordOfShatteredHopes()
             : base()
         {
-            this.Name = ("Sword Of Shattered Hopes");
-		
-            this.Hue = 91;	
-			
-            this.WeaponAttributes.HitDispel = 25;
-            this.WeaponAttributes.SplinteringWeapon = 20;
-            this.Attributes.WeaponSpeed = 30;	
-            this.Attributes.WeaponDamage = 50;			
-            this.WeaponAttributes.ResistFireBonus = 15;
+            Hue = 91;				
+            WeaponAttributes.HitDispel = 25;
+            WeaponAttributes.SplinteringWeapon = 20;
+            Attributes.WeaponSpeed = 30;	
+            Attributes.WeaponDamage = 50;			
+            WeaponAttributes.ResistFireBonus = 15;
         }
 
         public SwordOfShatteredHopes(Serial serial)
@@ -44,20 +43,6 @@ namespace Server.Items
             get
             {
                 return 255;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
             }
         }
         public override void Serialize(GenericWriter writer)

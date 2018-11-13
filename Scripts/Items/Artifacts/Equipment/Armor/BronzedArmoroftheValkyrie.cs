@@ -24,7 +24,7 @@ namespace Server.Items
         
         public override int LabelNumber { get{return 1149957;} }// Bronzed Armor of the Valkyrie
 
- public override int BasePhysicalResistance
+		public override int BasePhysicalResistance
         {
             get
             {

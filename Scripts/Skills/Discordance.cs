@@ -152,6 +152,9 @@ namespace Server.SkillHandlers
 						double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
 						double music = from.Skills[SkillName.Musicianship].Value;
 
+                        if (from is BaseCreature)
+                            music = 120.0;
+
                         int masteryBonus = 0;
 
 						if (music > 100.0)
@@ -169,7 +172,7 @@ namespace Server.SkillHandlers
                             diff -= (diff * ((double)masteryBonus / 100));
                         }
 
-						if (from.Player && !BaseInstrument.CheckMusicianship(from))
+						if (!BaseInstrument.CheckMusicianship(from))
 						{
 							from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 							m_Instrument.PlayInstrumentBadly(from);

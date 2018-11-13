@@ -10,10 +10,10 @@ namespace Server.Engines.Quests.Hag
         public HangoverCure()
             : base(0xE2B)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x2D;
+            Weight = 1.0;
+            Hue = 0x2D;
 
-            this.m_Uses = 20;
+            m_Uses = 20;
         }
 
         public HangoverCure(Serial serial)

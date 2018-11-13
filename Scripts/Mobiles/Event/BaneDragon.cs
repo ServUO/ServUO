@@ -1,9 +1,34 @@
 using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
     public class BaneDragon : BaseMount
     {
+        public static readonly int MaxPower = 10;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int PowerLevel { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int PowerDecay
+        {
+            get { return _PowerDecay; }
+            set
+            {
+                _PowerDecay = value;
+
+                if (_PowerDecay >= 10)
+                {
+                    _PowerDecay = 0;
+                    PowerLevel = Math.Max(1, PowerLevel - 1);
+                }
+            }
+        }
+
+        private DateTime _NextSpecial;
+        private int _PowerDecay;
+
         [Constructable]
         public BaneDragon()
             : base("Bane Dragon", 0x31A, 0x3EBD, AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4)
@@ -43,15 +68,69 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 3;
             MinTameSkill = 107.1;
+
+            PowerLevel = 10;
+            _NextSpecial = DateTime.UtcNow;
         }
 
         public override Poison HitPoison { get { return Poison.Lethal; } }
         public override bool AlwaysMurderer { get { return true; } }
+        public override FoodType FavoriteFood { get { return FoodType.BlackrockStew; } }
 
-        /*public override bool OnDragDrop(Mobile m, Item dropped)
+        public override bool CheckFeed(Mobile from, Item dropped)
         {
-            // todo: blackrock stew
-        }*/
+            if (dropped is BowlOfBlackrockStew)
+            {
+                if (PowerLevel >= MaxPower)
+                {
+                    from.SendLocalizedMessage(1115755); // The creature looks at you strangely and shakes its head no.
+                }
+                else
+                {
+                    PowerLevel++;
+
+                    if (PowerLevel >= MaxPower)
+                    {
+                        from.SendLocalizedMessage(1115753); // Your bane dragon is returned to maximum power by this stew.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1115754); // Your bane dragon seems a bit peckish today and is not at full power.
+                    }
+
+                    return base.CheckFeed(from, dropped);
+                }
+            }
+
+            return false;
+        }
+
+        public override void OnHarmfulSpell(Mobile from)
+        {
+            if (_NextSpecial < DateTime.UtcNow)
+            {
+                DoSpecial(from);
+
+                _NextSpecial = DateTime.UtcNow + TimeSpan.FromSeconds((double)Utility.RandomMinMax(15, 30) * (double)(11.0 - PowerLevel));
+            }
+        }
+
+        public void DoSpecial(Mobile from)
+        {
+            if (Controlled)
+            {
+                PowerDecay++;
+            }
+
+            MovingParticles(from, 0x36D4, 7, 0, false, true, 1163, 0, 9502, 4019, 0x160, 0);
+            PlaySound(0x15E);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1), m =>
+                {
+                    AOS.Damage(m, this, Utility.RandomMinMax(8 * PowerLevel, 10 * PowerLevel), 0, 50, 0, 50, 0);
+                    m.ApplyPoison(this, GetHitPoison());
+                }, from);
+        }
 
         public BaneDragon(Serial serial)
             : base(serial)
@@ -62,7 +141,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+            writer.Write(PowerLevel);
+            writer.Write(PowerDecay);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -70,6 +151,15 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    PowerLevel = reader.ReadInt();
+                    PowerDecay = reader.ReadInt();
+                    break;
+                case 0: break;
+            }
         }
     }
 }

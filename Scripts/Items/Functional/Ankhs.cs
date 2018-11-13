@@ -45,15 +45,15 @@ namespace Server.Items
             public ResurrectEntry(Mobile mobile, Item item)
                 : base(6195, ResurrectRange)
             {
-                this.m_Mobile = mobile;
-                this.m_Item = item;
+                m_Mobile = mobile;
+                m_Item = item;
 
-                this.Enabled = !this.m_Mobile.Alive;
+                Enabled = !m_Mobile.Alive;
             }
 
             public override void OnClick()
             {
-                Resurrect(this.m_Mobile, this.m_Item);
+                Resurrect(m_Mobile, m_Item);
             }
         }
 
@@ -63,17 +63,17 @@ namespace Server.Items
             public LockKarmaEntry(PlayerMobile mobile)
                 : base(mobile.KarmaLocked ? 6197 : 6196, LockRange)
             {
-                this.m_Mobile = mobile;
+                m_Mobile = mobile;
             }
 
             public override void OnClick()
             {
-                this.m_Mobile.KarmaLocked = !this.m_Mobile.KarmaLocked;
+                m_Mobile.KarmaLocked = !m_Mobile.KarmaLocked;
 
-                if (this.m_Mobile.KarmaLocked)
-                    this.m_Mobile.SendLocalizedMessage(1060192); // Your karma has been locked. Your karma can no longer be raised.
+                if (m_Mobile.KarmaLocked)
+                    m_Mobile.SendLocalizedMessage(1060192); // Your karma has been locked. Your karma can no longer be raised.
                 else
-                    this.m_Mobile.SendLocalizedMessage(1060191); // Your karma has been unlocked. Your karma can be raised again.
+                    m_Mobile.SendLocalizedMessage(1060191); // Your karma has been unlocked. Your karma can be raised again.
             }
         }
 
@@ -83,15 +83,15 @@ namespace Server.Items
             public TitheEntry(Mobile mobile)
                 : base(6198, TitheRange)
             {
-                this.m_Mobile = mobile;
+                m_Mobile = mobile;
 
-                this.Enabled = this.m_Mobile.Alive;
+                Enabled = m_Mobile.Alive;
             }
 
             public override void OnClick()
             {
-                if (this.m_Mobile.CheckAlive())
-                    this.m_Mobile.SendGump(new TithingGump(this.m_Mobile, 0));
+                if (m_Mobile.CheckAlive())
+                    m_Mobile.SendGump(new TithingGump(m_Mobile, 0));
             }
         }
     }
@@ -109,9 +109,9 @@ namespace Server.Items
         public AnkhWest(bool bloodied)
             : base(bloodied ? 0x1D98 : 0x3)
         {
-            this.Movable = false;
+            Movable = false;
 
-            this.m_Item = new InternalItem(bloodied, this);
+            m_Item = new InternalItem(bloodied, this);
         }
 
         public AnkhWest(Serial serial)
@@ -136,13 +136,13 @@ namespace Server.Items
             set
             {
                 base.Hue = value;
-                if (this.m_Item.Hue != value)
-                    this.m_Item.Hue = value;
+                if (m_Item.Hue != value)
+                    m_Item.Hue = value;
             }
         }
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.Parent == null && Utility.InRange(this.Location, m.Location, 1) && !Utility.InRange(this.Location, oldLocation, 1))
+            if (Parent == null && Utility.InRange(Location, m.Location, 1) && !Utility.InRange(Location, oldLocation, 1))
                 Ankhs.Resurrect(m, this);
         }
 
@@ -159,22 +159,22 @@ namespace Server.Items
 
         public override void OnLocationChange(Point3D oldLocation)
         {
-            if (this.m_Item != null)
-                this.m_Item.Location = new Point3D(this.X, this.Y + 1, this.Z);
+            if (m_Item != null)
+                m_Item.Location = new Point3D(X, Y + 1, Z);
         }
 
         public override void OnMapChange()
         {
-            if (this.m_Item != null)
-                this.m_Item.Map = this.Map;
+            if (m_Item != null)
+                m_Item.Map = Map;
         }
 
         public override void OnAfterDelete()
         {
             base.OnAfterDelete();
 
-            if (this.m_Item != null)
-                this.m_Item.Delete();
+            if (m_Item != null)
+                m_Item.Delete();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -183,7 +183,7 @@ namespace Server.Items
 
             writer.Write((int)0); // version
 
-            writer.Write(this.m_Item);
+            writer.Write(m_Item);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -192,7 +192,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_Item = reader.ReadItem() as InternalItem;
+            m_Item = reader.ReadItem() as InternalItem;
         }
 
         private class InternalItem : Item
@@ -201,9 +201,9 @@ namespace Server.Items
             public InternalItem(bool bloodied, AnkhWest item)
                 : base(bloodied ? 0x1D97 : 0x2)
             {
-                this.Movable = false;
+                Movable = false;
 
-                this.m_Item = item;
+                m_Item = item;
             }
 
             public InternalItem(Serial serial)
@@ -228,33 +228,33 @@ namespace Server.Items
                 set
                 {
                     base.Hue = value;
-                    if (this.m_Item.Hue != value)
-                        this.m_Item.Hue = value;
+                    if (m_Item.Hue != value)
+                        m_Item.Hue = value;
                 }
             }
             public override void OnLocationChange(Point3D oldLocation)
             {
-                if (this.m_Item != null)
-                    this.m_Item.Location = new Point3D(this.X, this.Y - 1, this.Z);
+                if (m_Item != null)
+                    m_Item.Location = new Point3D(X, Y - 1, Z);
             }
 
             public override void OnMapChange()
             {
-                if (this.m_Item != null)
-                    this.m_Item.Map = this.Map;
+                if (m_Item != null)
+                    m_Item.Map = Map;
             }
 
             public override void OnAfterDelete()
             {
                 base.OnAfterDelete();
 
-                if (this.m_Item != null)
-                    this.m_Item.Delete();
+                if (m_Item != null)
+                    m_Item.Delete();
             }
 
             public override void OnMovement(Mobile m, Point3D oldLocation)
             {
-                if (this.Parent == null && Utility.InRange(this.Location, m.Location, 1) && !Utility.InRange(this.Location, oldLocation, 1))
+                if (Parent == null && Utility.InRange(Location, m.Location, 1) && !Utility.InRange(Location, oldLocation, 1))
                     Ankhs.Resurrect(m, this);
             }
 
@@ -275,7 +275,7 @@ namespace Server.Items
 
                 writer.Write((int)0); // version
 
-                writer.Write(this.m_Item);
+                writer.Write(m_Item);
             }
 
             public override void Deserialize(GenericReader reader)
@@ -284,7 +284,7 @@ namespace Server.Items
 
                 int version = reader.ReadInt();
 
-                this.m_Item = reader.ReadItem() as AnkhWest;
+                m_Item = reader.ReadItem() as AnkhWest;
             }
         }
     }
@@ -303,9 +303,9 @@ namespace Server.Items
         public AnkhNorth(bool bloodied)
             : base(bloodied ? 0x1E5D : 0x4)
         {
-            this.Movable = false;
+            Movable = false;
 
-            this.m_Item = new InternalItem(bloodied, this);
+            m_Item = new InternalItem(bloodied, this);
         }
 
         public AnkhNorth(Serial serial)
@@ -330,13 +330,13 @@ namespace Server.Items
             set
             {
                 base.Hue = value;
-                if (this.m_Item.Hue != value)
-                    this.m_Item.Hue = value;
+                if (m_Item.Hue != value)
+                    m_Item.Hue = value;
             }
         }
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.Parent == null && Utility.InRange(this.Location, m.Location, 1) && !Utility.InRange(this.Location, oldLocation, 1))
+            if (Parent == null && Utility.InRange(Location, m.Location, 1) && !Utility.InRange(Location, oldLocation, 1))
                 Ankhs.Resurrect(m, this);
         }
 
@@ -353,22 +353,22 @@ namespace Server.Items
 
         public override void OnLocationChange(Point3D oldLocation)
         {
-            if (this.m_Item != null)
-                this.m_Item.Location = new Point3D(this.X + 1, this.Y, this.Z);
+            if (m_Item != null)
+                m_Item.Location = new Point3D(X + 1, Y, Z);
         }
 
         public override void OnMapChange()
         {
-            if (this.m_Item != null)
-                this.m_Item.Map = this.Map;
+            if (m_Item != null)
+                m_Item.Map = Map;
         }
 
         public override void OnAfterDelete()
         {
             base.OnAfterDelete();
 
-            if (this.m_Item != null)
-                this.m_Item.Delete();
+            if (m_Item != null)
+                m_Item.Delete();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -377,7 +377,7 @@ namespace Server.Items
 
             writer.Write((int)0); // version
 
-            writer.Write(this.m_Item);
+            writer.Write(m_Item);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -386,7 +386,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_Item = reader.ReadItem() as InternalItem;
+            m_Item = reader.ReadItem() as InternalItem;
         }
 
         [TypeAlias("Server.Items.AnkhEast+InternalItem")]
@@ -396,9 +396,9 @@ namespace Server.Items
             public InternalItem(bool bloodied, AnkhNorth item)
                 : base(bloodied ? 0x1E5C : 0x5)
             {
-                this.Movable = false;
+                Movable = false;
 
-                this.m_Item = item;
+                m_Item = item;
             }
 
             public InternalItem(Serial serial)
@@ -423,33 +423,33 @@ namespace Server.Items
                 set
                 {
                     base.Hue = value;
-                    if (this.m_Item.Hue != value)
-                        this.m_Item.Hue = value;
+                    if (m_Item.Hue != value)
+                        m_Item.Hue = value;
                 }
             }
             public override void OnLocationChange(Point3D oldLocation)
             {
-                if (this.m_Item != null)
-                    this.m_Item.Location = new Point3D(this.X - 1, this.Y, this.Z);
+                if (m_Item != null)
+                    m_Item.Location = new Point3D(X - 1, Y, Z);
             }
 
             public override void OnMapChange()
             {
-                if (this.m_Item != null)
-                    this.m_Item.Map = this.Map;
+                if (m_Item != null)
+                    m_Item.Map = Map;
             }
 
             public override void OnAfterDelete()
             {
                 base.OnAfterDelete();
 
-                if (this.m_Item != null)
-                    this.m_Item.Delete();
+                if (m_Item != null)
+                    m_Item.Delete();
             }
 
             public override void OnMovement(Mobile m, Point3D oldLocation)
             {
-                if (this.Parent == null && Utility.InRange(this.Location, m.Location, 1) && !Utility.InRange(this.Location, oldLocation, 1))
+                if (Parent == null && Utility.InRange(Location, m.Location, 1) && !Utility.InRange(Location, oldLocation, 1))
                     Ankhs.Resurrect(m, this);
             }
 
@@ -470,7 +470,7 @@ namespace Server.Items
 
                 writer.Write((int)0); // version
 
-                writer.Write(this.m_Item);
+                writer.Write(m_Item);
             }
 
             public override void Deserialize(GenericReader reader)
@@ -479,7 +479,57 @@ namespace Server.Items
 
                 int version = reader.ReadInt();
 
-                this.m_Item = reader.ReadItem() as AnkhNorth;
+                m_Item = reader.ReadItem() as AnkhNorth;
+            }
+        }
+
+        private class MemorialStone : Item
+        {
+            public override int LabelNumber { get { return 1071563; } } // Memorial Stone
+
+            [Constructable]
+            public MemorialStone()
+                : base(0x117F)
+            {
+                Movable = false;
+            }
+
+            public MemorialStone(Serial serial)
+                : base(serial)
+            {
+            }
+
+            public override bool HandlesOnMovement { get { return true; } }
+
+            public override void OnMovement(Mobile m, Point3D oldLocation)
+            {
+                if (Parent == null && Utility.InRange(Location, m.Location, 1) && !Utility.InRange(Location, oldLocation, 1))
+                    Ankhs.Resurrect(m, this);
+            }
+
+            public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+            {
+                base.GetContextMenuEntries(from, list);
+                Ankhs.GetContextMenuEntries(from, this, list);
+            }
+
+            public override void OnDoubleClickDead(Mobile m)
+            {
+                Ankhs.Resurrect(m, this);
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                base.Serialize(writer);
+
+                writer.Write((int)0); // version
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                base.Deserialize(reader);
+
+                int version = reader.ReadInt();
             }
         }
     }

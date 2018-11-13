@@ -4133,8 +4133,6 @@ namespace Server
 
 					DeathMoveResult res = GetInventoryMoveResultFor(item);
 
-                    pack.FreePosition(item.GridLocation);
-
                     if (res == DeathMoveResult.MoveToCorpse)
 					{
 						content.Add(item);
@@ -4583,10 +4581,8 @@ namespace Server
 						}
 						else
 						{
-                            if (item.Parent != null && item.Parent is Container)
-                                ((Container)item.Parent).FreePosition(item.GridLocation);
-
                             item.SetLastMoved();
+                            var itemGrid = item.GridLocation;
 
 							if (item.Spawner != null)
 							{
@@ -4658,6 +4654,12 @@ namespace Server
 							item.Internalize();
 
 							from.Holding = item;
+                            item.GridLocation = 0;
+
+                            if (oldStack != null)
+                            {
+                                oldStack.GridLocation = itemGrid;
+                            }
 
 							int liftSound = item.GetLiftSound(from);
 
@@ -4740,6 +4742,7 @@ namespace Server
 					oldItem.GetType().Name);
 				return null;
 			}
+
 			item.Visible = oldItem.Visible;
 			item.Movable = oldItem.Movable;
 			item.LootType = oldItem.LootType;
@@ -4756,7 +4759,7 @@ namespace Server
 
 			oldItem.Amount = amount;
 			oldItem.OnAfterDuped(item);
-            item.GridLocation = oldItem.GridLocation;
+           // item.GridLocation = oldItem.GridLocation;
 
 			if (oldItem.Parent is Mobile)
 			{
@@ -5782,12 +5785,12 @@ namespace Server
 				return 0;
 			}
 
-			OnHeal(ref amount, from);
-
 			if ((Hits + amount) > HitsMax)
 			{
 				amount = HitsMax - Hits;
 			}
+
+            OnHeal(ref amount, from);
 
 			Hits += amount;
 

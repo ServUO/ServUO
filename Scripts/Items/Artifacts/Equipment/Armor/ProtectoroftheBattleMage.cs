@@ -5,19 +5,18 @@ namespace Server.Items
     public class ProtectoroftheBattleMage : LeatherChest
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113761; } } // Protector of the Battle Mage
+		
         [Constructable]
         public ProtectoroftheBattleMage()
             : base()
         {
-            this.Name = ("Protector of the Battle Mage");
-		
-            this.Hue = 1159;
-			
-            this.Attributes.LowerManaCost = 8;	
-            this.Attributes.RegenMana = 2;
-            this.Attributes.LowerRegCost = 10;
-            this.Attributes.SpellDamage = 5;
-            this.AbsorptionAttributes.CastingFocus = 3;
+            Hue = 1159;		
+            Attributes.LowerManaCost = 8;	
+            Attributes.RegenMana = 2;
+            Attributes.LowerRegCost = 10;
+            Attributes.SpellDamage = 5;
+            AbsorptionAttributes.CastingFocus = 3;
         }
 
         public ProtectoroftheBattleMage(Serial serial)

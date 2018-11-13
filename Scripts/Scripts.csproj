@@ -634,12 +634,17 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\VillainousEpiphany.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\VirtuousEpiphany.cs" />
     <Compile Include="Items\Consumables\PoppiesDust.cs" />
+    <Compile Include="Items\Equipment\Clothing\FirstAidBelt.cs" />
+    <Compile Include="Items\Equipment\Suits\DragonWolfCostume.cs" />
+    <Compile Include="Items\Resource\Blackrock.cs" />
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
+    <Compile Include="Services\HuntmasterChallenge\ResourceSatchels.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Gumps.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\CounterfeitPlatinum.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\KhaldunChest.cs" />
+    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\KhaldunFirstAidBelt.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\KhaldunPainting.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\KhaldunResearcher.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\CultistsRitualTome.cs" />
@@ -647,7 +652,6 @@
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\SterlingSilverRing.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\ZealotOfKhalAnkurTitleDeed.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\SeekerOfTheFallenStarTitleDeed.cs" />
-    <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\FirstAidBelt.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfFeudalGrip.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\BritchesOfWarding.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\CuffsOfTheArchmage.cs" />
@@ -3412,87 +3416,6 @@
     <Compile Include="Services\HuntmasterChallenge\HuntTrophy.cs" />
     <Compile Include="Services\HuntmasterChallenge\KillEntry.cs" />
     <Compile Include="Services\HuntmasterChallenge\RewardItems.cs" />
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\Alchemist2BazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\ArmorBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\ArtistBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\CarpenterBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\CarpetedStairBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\CrystalBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\DistilleryBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\EvilBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\FishermanBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\GenericBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\JewelerBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\LeatherArmourBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\MarbleStairBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\MetalArmourBazzarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\PillowBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\Provisioner2BazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\ProvisionerBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\ScribeBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\SmithBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\StableBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\Tailor2BazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\TailorBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\WoodBenchBazaarAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\SBVendorMallManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Addons\VendorMallAddon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\VendorMallManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\MaginciaBazaar\VendorTile.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Addons\MediumStoneTableEastAddon.cs">
       <SubType>Code</SubType>
     </Compile>

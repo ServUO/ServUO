@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public ArcticDeathDealer()
         {
-            this.Hue = 0x480;
-            this.WeaponAttributes.HitHarm = 33;
-            this.WeaponAttributes.HitLowerAttack = 40;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 40;
-            this.WeaponAttributes.ResistColdBonus = 10;
+            Hue = 0x480;
+            WeaponAttributes.HitHarm = 33;
+            WeaponAttributes.HitLowerAttack = 40;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 40;
+            WeaponAttributes.ResistColdBonus = 10;
         }
 
         public ArcticDeathDealer(Serial serial)

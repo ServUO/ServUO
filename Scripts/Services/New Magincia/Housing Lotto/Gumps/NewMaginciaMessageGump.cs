@@ -61,7 +61,14 @@ namespace Server.Engines.NewMagincia
                     {
                         if (message.Body.Number > 0)
                         {
-                            AddHtmlLocalized(40, 35 + (i * 22), 260, 16, message.Body, C32216(LightBlueColor), false, false);
+                            if (message.Args == null)
+                            {
+                                AddHtmlLocalized(40, 35 + (i * 22), 260, 16, message.Body, C32216(LightBlueColor), false, false);
+                            }
+                            else
+                            {
+                                AddHtmlLocalized(40, 35 + (i * 22), 260, 16, message.Body, message.Args, C32216(LightBlueColor), false, false);
+                            }
                         }
                         else
                         {
@@ -86,9 +93,13 @@ namespace Server.Engines.NewMagincia
                 if (m_Message.Title != null)
                 {
                     if (m_Message.Title.Number != 0)
+                    {
                         AddHtmlLocalized(195, 13, 150, 16, m_Message.Title.Number, GreenColor, false, false);
+                    }
                     else
+                    {
                         AddHtml(150, 13, 195, 16, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", GreenColor, m_Message.Title.String), false, false);
+                    }
                 }
 
                 if (m_Message.Body != null)
@@ -96,17 +107,23 @@ namespace Server.Engines.NewMagincia
                     if (m_Message.Body.Number != 0)
                     {
                         if (m_Message.Args == null)
+                        {
                             AddHtmlLocalized(10, 40, 404, 180, m_Message.Body.Number, BlueColor, true, true);
+                        }
                         else
+                        {
                             AddHtmlLocalized(10, 40, 404, 180, m_Message.Body.Number, m_Message.Args, BlueColor, true, true);
+                        }
                     }
                     else
+                    {
                         AddHtml(10, 40, 404, 180, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", BlueColor, m_Message.Body.String), true, true);
+                    }
                 }
 
                 TimeSpan ts = m_Message.Expires - DateTime.UtcNow;
 
-                AddHtmlLocalized(5, 230, 414, 16, 1150432, String.Format("{0}\t{1}\t{2}", ts.Days, ts.Hours, ts.Minutes), GreenColor, false, false); // This message will expire in ~1_DAYS~ days, ~2_HOURS~ hours, and ~3_MIN~ minutes.
+                AddHtmlLocalized(5, 230, 414, 16, 1150432, String.Format("@{0}@{1}@{2}", ts.Days, ts.Hours, ts.Minutes), GreenColor, false, false); // This message will expire in ~1_DAYS~ days, ~2_HOURS~ hours, and ~3_MIN~ minutes.
 
                 AddButton(5, 250, 4005, 4007, 1, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, 250, 150, 16, 1150433, EntryColor, false, false); // DELETE NOW

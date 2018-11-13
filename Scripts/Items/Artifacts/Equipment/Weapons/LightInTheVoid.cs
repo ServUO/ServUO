@@ -5,19 +5,20 @@ namespace Server.Items
     public class LightInTheVoid : GargishTalwar
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113521; } } // Light in the Void
+		
         [Constructable]
         public LightInTheVoid()
         {
-			this.Slayer = SlayerName.Silver;
-			this.WeaponAttributes.HitLightning = 45;
-			this.WeaponAttributes.HitLowerDefend = 30;
-			this.Attributes.BonusStr = 8;
-			this.Attributes.AttackChance = 10;
-			this.Attributes.CastSpeed = 1;
-			this.Attributes.WeaponSpeed = 20;
-			this.Attributes.WeaponDamage = 35;
-			this.Hue = 1072; //Hue not exact
-			this.Name = ("Light in the Void");
+			Slayer = SlayerName.Silver;
+			WeaponAttributes.HitLightning = 45;
+			WeaponAttributes.HitLowerDefend = 30;
+			Attributes.BonusStr = 8;
+			Attributes.AttackChance = 10;
+			Attributes.CastSpeed = 1;
+			Attributes.WeaponSpeed = 20;
+			Attributes.WeaponDamage = 35;
+			Hue = 1072; //Hue not exact
         }
 
         public LightInTheVoid(Serial serial)

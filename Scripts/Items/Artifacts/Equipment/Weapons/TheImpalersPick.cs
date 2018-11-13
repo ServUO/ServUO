@@ -6,19 +6,18 @@ namespace Server.Items
     public class TheImpalersPick : HammerPick
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113822; } } // The Impaler's Pick
+		
         [Constructable]
         public TheImpalersPick()
         {
-            this.Name = ("The Impaler's Pick");
-		
-            this.Hue = 2101;	
-		
-            this.WeaponAttributes.HitManaDrain = 10;
-            this.Slayer = SlayerName.Repond;
-            this.WeaponAttributes.HitLightning = 40;
-            this.WeaponAttributes.HitLowerDefend = 40;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 45;	
+            Hue = 2101;		
+            WeaponAttributes.HitManaDrain = 10;
+            Slayer = SlayerName.Repond;
+            WeaponAttributes.HitLightning = 40;
+            WeaponAttributes.HitLowerDefend = 40;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 45;	
         }
 
         public TheImpalersPick(Serial serial)

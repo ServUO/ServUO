@@ -9,15 +9,12 @@ namespace Server.Items
         public BlackthornsKryss()
             : base()
         {
-            this.Hue = 0x5E5;
-
-            this.Slayer = SlayerGroup.RandomSuperSlayerAOS();
-			
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 50;
-			
-            this.WeaponAttributes.UseBestSkill = 1;
-            this.WeaponAttributes.HitLeechHits = 22;
+            Hue = 0x5E5;
+            Slayer = SlayerGroup.RandomSuperSlayerAOS();			
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 50;			
+            WeaponAttributes.UseBestSkill = 1;
+            WeaponAttributes.HitLeechHits = 22;
         }
 
         public BlackthornsKryss(Serial serial)
@@ -68,17 +65,14 @@ namespace Server.Items
         public SwordOfJustice()
             : base()
         {
-            this.Hue = 0x47E;
-
-            this.Slayer = SlayerGroup.RandomSuperSlayerAOS();
-			
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.CastSpeed = -1;
-            this.Attributes.WeaponDamage = 50;
-            this.Attributes.Luck = 100;
-			
-            this.WeaponAttributes.UseBestSkill = 1;
-            this.WeaponAttributes.HitLowerAttack = 60;
+            Hue = 0x47E;
+            Slayer = SlayerGroup.RandomSuperSlayerAOS();		
+            Attributes.SpellChanneling = 1;
+            Attributes.CastSpeed = -1;
+            Attributes.WeaponDamage = 50;
+            Attributes.Luck = 100;			
+            WeaponAttributes.UseBestSkill = 1;
+            WeaponAttributes.HitLowerAttack = 60;
         }
 
         public SwordOfJustice(Serial serial)
@@ -129,18 +123,15 @@ namespace Server.Items
         public GeoffreysAxe()
             : base()
         {
-            this.Hue = 0x21;
-
-            this.Slayer = SlayerGroup.RandomSuperSlayerAOS();
-			
-            this.Attributes.BonusStr = 10;
-            this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponDamage = 40;
-            this.Attributes.Luck = 150;
-			
-            this.WeaponAttributes.ResistFireBonus = 10;			
-            this.WeaponAttributes.UseBestSkill = 1;
-            this.WeaponAttributes.HitLowerAttack = 60;
+            Hue = 0x21;
+            Slayer = SlayerGroup.RandomSuperSlayerAOS();			
+            Attributes.BonusStr = 10;
+            Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 40;
+            Attributes.Luck = 150;		
+            WeaponAttributes.ResistFireBonus = 10;			
+            WeaponAttributes.UseBestSkill = 1;
+            WeaponAttributes.HitLowerAttack = 60;
         }
 
         public GeoffreysAxe(Serial serial)

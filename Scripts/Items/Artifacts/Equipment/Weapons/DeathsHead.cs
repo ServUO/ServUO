@@ -5,11 +5,11 @@ namespace Server.Items
     public class DeathsHead : DiscMace
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113526; } } // Death's Head
+		
         [Constructable]
         public DeathsHead() 
-        {
-            Name = ("Death's Head");
-		
+        {	
             Hue = 1154;	
             WeaponAttributes.HitFatigue = 10;
             WeaponAttributes.HitLightning = 45;	

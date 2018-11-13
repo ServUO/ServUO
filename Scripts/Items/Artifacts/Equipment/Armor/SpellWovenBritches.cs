@@ -8,13 +8,11 @@ namespace Server.Items
         [Constructable]
         public SpellWovenBritches()
         {
-            this.Hue = 0x487;
-
-            this.SkillBonuses.SetValues(0, SkillName.Meditation, 10.0);
-
-            this.Attributes.BonusInt = 8;
-            this.Attributes.SpellDamage = 10;
-            this.Attributes.LowerManaCost = 10;
+            Hue = 0x487;
+            SkillBonuses.SetValues(0, SkillName.Meditation, 10.0);
+            Attributes.BonusInt = 8;
+            Attributes.SpellDamage = 10;
+            Attributes.LowerManaCost = 10;
         }
 
         public SpellWovenBritches(Serial serial)

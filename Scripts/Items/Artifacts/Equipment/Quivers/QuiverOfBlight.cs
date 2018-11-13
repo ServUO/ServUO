@@ -9,7 +9,7 @@ namespace Server.Items
         public QuiverOfBlight()
             : base()
         {
-            this.Hue = 0x4F3;
+            Hue = 0x4F3;
         }
 
         public QuiverOfBlight(Serial serial)

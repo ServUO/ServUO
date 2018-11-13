@@ -135,18 +135,56 @@ namespace Server.Engines.Harvest
             #endregion
         }
 
+        public override Type MutateType(Type type, Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, HarvestResource resource)
+        {
+            var newType = type;
+
+            if (tool is HarvestersAxe && ((HarvestersAxe)tool).Charges > 0)
+            {
+                if (type == typeof(Log))
+                    newType = typeof(Board);
+                else if (type == typeof(OakLog))
+                    newType = typeof(OakBoard);
+                else if (type == typeof(AshLog))
+                    newType = typeof(AshBoard);
+                else if (type == typeof(YewLog))
+                    newType = typeof(YewBoard);
+                else if (type == typeof(HeartwoodLog))
+                    newType = typeof(HeartwoodBoard);
+                else if (type == typeof(BloodwoodLog))
+                    newType = typeof(BloodwoodBoard);
+                else if (type == typeof(FrostwoodLog))
+                    newType = typeof(FrostwoodBoard);
+
+                if (newType != type)
+                {
+                    ((HarvestersAxe)tool).Charges--;
+                }
+            }
+
+            return newType;
+        }
+
         public override void SendSuccessTo(Mobile from, Item item, HarvestResource resource)
         {
             if (item != null)
             {
-                foreach (var res in m_Definition.Resources.Where(r => r.Types != null))
+                if (item != null && item.GetType().IsSubclassOf(typeof(BaseWoodBoard)))
                 {
-                    foreach (var type in res.Types)
+                    from.SendLocalizedMessage(1158776); // The axe magically creates boards from your logs.
+                    return;
+                }
+                else
+                {
+                    foreach (var res in m_Definition.Resources.Where(r => r.Types != null))
                     {
-                        if (item.GetType() == type)
+                        foreach (var type in res.Types)
                         {
-                            res.SendSuccessTo(from);
-                            return;
+                            if (item.GetType() == type)
+                            {
+                                res.SendSuccessTo(from);
+                                return;
+                            }
                         }
                     }
                 }

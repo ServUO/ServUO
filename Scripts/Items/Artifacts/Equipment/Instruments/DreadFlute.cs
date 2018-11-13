@@ -10,9 +10,9 @@ namespace Server.Items
         public DreadFlute()
             : base(0x315C, 0x58B, 0x58C)// TODO check sounds
         {
-            this.Weight = 1.0;
-            this.ReplenishesCharges = true;
-            this.Hue = 0x4F2;
+            Weight = 1.0;
+            ReplenishesCharges = true;
+            Hue = 0x4F2;
         }
 
         public DreadFlute(Serial serial)

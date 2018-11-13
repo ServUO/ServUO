@@ -4,19 +4,19 @@ namespace Server.Items
 {
     public class BloodwoodSpirit : BaseTalisman
     {
+		public override bool IsArtifact { get { return true; } }
+		
         [Constructable]
         public BloodwoodSpirit()
             : base(0x2F5A)
         {
-            this.Hue = 0x27;
-            this.MaxChargeTime = 1200;
-
-            this.Removal = TalismanRemoval.Damage;
-            this.Blessed = GetRandomBlessed();
-            this.Protection = GetRandomProtection(false);
-
-            this.SkillBonuses.SetValues(0, SkillName.SpiritSpeak, 10.0);
-            this.SkillBonuses.SetValues(1, SkillName.Necromancy, 5.0);
+            Hue = 0x27;
+            MaxChargeTime = 1200;
+            Removal = TalismanRemoval.Damage;
+            Blessed = GetRandomBlessed();
+            Protection = GetRandomProtection(false);
+            SkillBonuses.SetValues(0, SkillName.SpiritSpeak, 10.0);
+            SkillBonuses.SetValues(1, SkillName.Necromancy, 5.0);
         }
 
         public BloodwoodSpirit(Serial serial)

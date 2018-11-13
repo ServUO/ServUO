@@ -77,7 +77,8 @@ namespace Server.Mobiles
         Fish = 0x0008,
         Eggs = 0x0010,
         Gold = 0x0020,
-        Metal = 0x0040
+        Metal = 0x0040,
+        BlackrockStew = 0x0080
     }
 
     [Flags]
@@ -369,9 +370,6 @@ namespace Server.Mobiles
         protected DateTime SummonEnd { get { return m_SummonEnd; } set { m_SummonEnd = value; } }
 
         public virtual Faction FactionAllegiance { get { return null; } }
-        public virtual int FactionSilverWorth { get { return 30; } }
-
-        public virtual int BaseLootBudget { get { return RandomItemGenerator.GetBaseBudget(this); } }
 
         public virtual int DefaultHitsRegen 
         {
@@ -843,8 +841,6 @@ namespace Server.Mobiles
         }
         #endregion
 
-        public virtual bool AutoRearms { get { return false; } }
-
         public virtual double WeaponAbilityChance { get { return 0.4; } }
 
         public virtual WeaponAbility GetWeaponAbility()
@@ -1025,8 +1021,6 @@ namespace Server.Mobiles
         }
 
         public bool IsAmbusher { get; set; }
-
-        public virtual bool HasManaOveride { get { return false; } }
 
         public virtual FoodType FavoriteFood { get { return FoodType.Meat; } }
         public virtual PackInstinct PackInstinct { get { return PackInstinct.None; } }
@@ -2336,6 +2330,11 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
+            if (Core.SA && from != null)
+            {
+                from.RegisterDamage(amount, this);
+            }
+
             if (BardPacified && (HitsMax - Hits) * 0.001 > Utility.RandomDouble())
             {
                 Unpacify();
@@ -3420,6 +3419,11 @@ namespace Server.Mobiles
             typeof(GoldIngot), typeof(AgapiteIngot), typeof(VeriteIngot), typeof(ValoriteIngot)
         };
 
+        private static readonly Type[] m_BlackrockStew =
+        {
+            typeof(BowlOfBlackrockStew)
+        };
+
         public virtual bool CheckFoodPreference(Item f)
         {
             if (CheckFoodPreference(f, FoodType.Eggs, m_Eggs))
@@ -3448,6 +3452,11 @@ namespace Server.Mobiles
             }
 
             if (CheckFoodPreference(f, FoodType.Metal, m_Metal))
+            {
+                return true;
+            }
+
+            if (CheckFoodPreference(f, FoodType.BlackrockStew, m_BlackrockStew))
             {
                 return true;
             }
@@ -3617,7 +3626,10 @@ namespace Server.Mobiles
             {
                 return true;
             }
-	        if (!from.InRange(Location, 2)) return base.OnDragDrop(from, dropped);
+
+	        if (!from.InRange(Location, 2))
+                return base.OnDragDrop(from, dropped);
+
 	        bool gainedPath = false;
 
 	        if (dropped.HonestyOwner == this)
@@ -5644,7 +5656,7 @@ namespace Server.Mobiles
 
         public virtual void GenerateLoot(bool spawning)
         {
-            if (m_NoLootOnDeath)
+            if (m_NoLootOnDeath || m_Allured)
                 return;
 
             m_Spawning = spawning;
@@ -6448,21 +6460,28 @@ namespace Server.Mobiles
                 int topDamage = rights[0].m_Damage;
                 int minDamage;
 
-                if (hitsMax >= 3000)
+                if (Core.SA)
                 {
-                    minDamage = topDamage / 16;
-                }
-                else if (hitsMax >= 1000)
-                {
-                    minDamage = topDamage / 8;
-                }
-                else if (hitsMax >= 200)
-                {
-                    minDamage = topDamage / 4;
+                    minDamage = (int)((double)topDamage * 0.06);
                 }
                 else
                 {
-                    minDamage = topDamage / 2;
+                    if (hitsMax >= 3000)
+                    {
+                        minDamage = topDamage / 16;
+                    }
+                    else if (hitsMax >= 1000)
+                    {
+                        minDamage = topDamage / 8;
+                    }
+                    else if (hitsMax >= 200)
+                    {
+                        minDamage = topDamage / 4;
+                    }
+                    else
+                    {
+                        minDamage = topDamage / 2;
+                    }
                 }
 
                 for (int i = 0; i < rights.Count; ++i)
@@ -6481,7 +6500,19 @@ namespace Server.Mobiles
         private bool m_Allured;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Allured { get { return m_Allured; } set { m_Allured = value; } }
+        public bool Allured 
+        { 
+            get { return m_Allured; } 
+            set 
+            { 
+                m_Allured = value;
+
+                if (value && Backpack != null)
+                {
+                    ColUtility.SafeDelete(Backpack.Items);
+                }
+            }
+        }
 
         public virtual bool GivesMLMinorArtifact { get { return false; } }
         #endregion
@@ -7296,7 +7327,7 @@ namespace Server.Mobiles
 
                     toHeal *= HealScalar;
 
-                    patient.Heal((int)toHeal);
+                    patient.Heal((int)toHeal, this);
 
                     CheckSkill(SkillName.Healing, 0.0, Skills[SkillName.Healing].Cap);
                     CheckSkill(SkillName.Anatomy, 0.0, Skills[SkillName.Anatomy].Cap);
@@ -7334,6 +7365,47 @@ namespace Server.Mobiles
             patient.PlaySound(HealSound);
         }
         #endregion
+
+        public override void OnHeal(ref int amount, Mobile from)
+        {
+            base.OnHeal(ref amount, from);
+
+            if (from == null)
+                return;
+
+            if (Core.SA && amount > 0 && from != null && from != this)
+            {
+                for (int i = Aggressed.Count - 1; i >= 0; i--)
+                {
+                    var info = Aggressed[i];
+
+                    if (info.Defender.InRange(Location, Core.GlobalMaxUpdateRange) && info.Defender.DamageEntries.Any(de => de.Damager == this))
+                    {
+                        info.Defender.RegisterDamage(amount, from);
+                    }
+
+                    if (info.Defender.Player && from.CanBeHarmful(info.Defender))
+                    {
+                        from.DoHarmful(info.Defender, true);
+                    }
+                }
+
+                for (int i = Aggressors.Count - 1; i >= 0; i--)
+                {
+                    var info = Aggressors[i];
+
+                    if (info.Attacker.InRange(Location, Core.GlobalMaxUpdateRange) && info.Attacker.DamageEntries.Any(de => de.Damager == this))
+                    {
+                        info.Attacker.RegisterDamage(amount, from);
+                    }
+
+                    if (info.Attacker.Player && from.CanBeHarmful(info.Attacker))
+                    {
+                        from.DoHarmful(info.Attacker, true);
+                    }
+                }
+            }
+        }
 
         #region Damaging Aura
         private long m_NextAura;
@@ -7629,6 +7701,8 @@ namespace Server.Mobiles
                     inst.SuccessSound = PlayInstrumentSound ? 0x58B : 0;
                     inst.FailureSound = PlayInstrumentSound ? 0x58C : 0;
                     inst.Movable = false;
+                    inst.Quality = ItemQuality.Exceptional;
+
                     PackItem(inst);
                 }
             }

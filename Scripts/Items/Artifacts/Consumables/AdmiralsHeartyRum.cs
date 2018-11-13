@@ -10,7 +10,7 @@ namespace Server.Items
         public AdmiralsHeartyRum()
             : base(BeverageType.Ale)
         {
-            this.Hue = 0x66C;
+            Hue = 0x66C;
         }
 
         public AdmiralsHeartyRum(Serial serial)
