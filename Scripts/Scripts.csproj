@@ -12000,39 +12000,6 @@
     <Compile Include="VendorInfo\VendorInventory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Server\Server.csproj">
-      <Project>{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}</Project>
-      <Name>Server</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ultima\Ultima.csproj">
-      <Project>{e08cfbe4-e013-44ee-8829-426d05bc083f}</Project>
-      <Name>Ultima</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\Abbott.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\Costello.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\Dracondar.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\drake.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\echo.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\foolsgold.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\getonparent.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\harmon.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\harold.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\jeweler.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\jeweler2.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\Katar quest.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\keypad.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\samantha.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\simple.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\testnpc.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\timeofday.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\travelagent.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Extras\XmlQuestNPC\winthrop.npc" />
-    <None Include="Services\XmlSpawner\XMLSpawner Support\Container.cs.2.4" />
-    <None Include="Services\XmlSpawner\XMLSpawner Support\Stealing.cs.2.4" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Services\New Magincia\ReadMe.txt" />
     <Content Include="Services\Revamped Dungeons\DespiseRevamped\Read Me.txt" />
     <Content Include="Services\Revamped Dungeons\Shame Revamped\Read Me.txt" />
@@ -12142,6 +12109,17 @@
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\XmlSockets\XmlSockets log.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2doc.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Server\Server.csproj">
+      <Project>{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}</Project>
+      <Name>Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultima\Ultima.csproj">
+      <Project>{e08cfbe4-e013-44ee-8829-426d05bc083f}</Project>
+      <Name>Ultima</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>

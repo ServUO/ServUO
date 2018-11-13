@@ -1085,6 +1085,7 @@ namespace Server.Items
             }
 
 			XmlAttach.CheckOnEquip(this, from);
+
             InDoubleStrike = false;
 
 			return true;
@@ -1391,7 +1392,6 @@ namespace Server.Items
 
             if (Core.AOS && m_AosWeaponAttributes.MageWeapon > 0 && attacker.Skills[SkillName.Magery].Value > atkSkill.Value)
                 return attacker.CheckSkill(SkillName.Magery, chance);
-
 
 			return attacker.CheckSkill(atkSkill.SkillName, chance);
 		}
@@ -3121,16 +3121,20 @@ namespace Server.Items
 
             var list = SpellHelper.AcquireIndirectTargets(from, from, from.Map, 5);
 
-            if (list.Count() > 0)
-            {
-                Effects.PlaySound(from.Location, map, sound);
+			var count = 0;
 
-                foreach(var m in list)
-                {
-                    from.DoHarmful(m, true);
-                    m.FixedEffect(0x3779, 1, 15, hue, 0);
-                    AOS.Damage(m, from, (int)(damageGiven / 2), phys, fire, cold, pois, nrgy, Server.DamageType.SpellAOE);
-                }
+            foreach(var m in list)
+            {
+				++count;
+
+                from.DoHarmful(m, true);
+                m.FixedEffect(0x3779, 1, 15, hue, 0);
+                AOS.Damage(m, from, (int)(damageGiven / 2), phys, fire, cold, pois, nrgy, Server.DamageType.SpellAOE);
+            }
+
+			if (count > 0)
+			{
+				Effects.PlaySound(from.Location, map, sound);
             }
 
             if (ProcessingMultipleHits)

@@ -1386,6 +1386,7 @@ namespace Server.Items
                         //new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, ArmorCastingFocusTable),
                     },
 				};
+
             m_PrefixSuffixInfo[250] = new NamedInfoCol[][] // Reforge Only
                 {
                     new NamedInfoCol[] // Weapon

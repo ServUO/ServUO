@@ -4582,6 +4582,7 @@ namespace Server
 						else
 						{
                             item.SetLastMoved();
+
                             var itemGrid = item.GridLocation;
 
 							if (item.Spawner != null)
@@ -4759,7 +4760,7 @@ namespace Server
 
 			oldItem.Amount = amount;
 			oldItem.OnAfterDuped(item);
-           // item.GridLocation = oldItem.GridLocation;
+            //item.GridLocation = oldItem.GridLocation;
 
 			if (oldItem.Parent is Mobile)
 			{
@@ -5541,6 +5542,7 @@ namespace Server
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime LastKilled { get { return m_LastKilled; } set { m_LastKilled = value; } }
+
 		/// <summary>
 		///     Overridable. Virtual event invoked when the Mobile is <see cref="Damage">damaged</see>. It is called before
 		///     <see

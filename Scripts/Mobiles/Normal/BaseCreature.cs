@@ -6176,7 +6176,6 @@ namespace Server.Mobiles
 					{
 						PackItem( new ParagonChest( this.Name, treasureLevel ) );
 					}
-				
                     else if (TreasureMapChance >= Utility.RandomDouble())
                     {
                         Map map = Map;
