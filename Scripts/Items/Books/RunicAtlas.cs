@@ -129,20 +129,38 @@ namespace Server.Items
         public int Page { get; set; }
 
         public RunicAtlasGump(PlayerMobile pm, RunicAtlas atlas)
-            : base(pm, 150, 200)
+            : base(pm, 100, 100)
         {
+            TypeID = 0x1F2;
             Atlas = atlas;
             Page = 0;
+        }
+
+        public static int GetMapHue(Map map)
+        {
+            if (map == Map.Trammel)
+                return 0xA;
+            else if (map == Map.Felucca)
+                return 0x51;
+            else if (map == Map.Malas)
+                return 0x44E;
+            else if (map == Map.Tokuno)
+                return 0x482;
+            else if (map == Map.TerMur)
+                return 0x66D;
+
+            return 0;
         }
 
         public override void AddGumpLayout()
         {
             AddImage(0, 0, 39923);
 
-            AddHtmlLocalized(60, 8, 180, 16, 1060728, String.Format("{0}\t{1}", Atlas.CurCharges, Atlas.MaxCharges), 1, false, false); //charges: ~1_val~ / ~2_val~
-            
-            AddHtmlLocalized(265, 8, 150, 16, 1011299, false, false); // rename book 
-            AddButton(250, 12, 2103, 2103, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(60, 9, 147, 22, 1011296, false, false); //Charges:
+            AddHtml(110, 9, 97, 22, String.Format("{0} / {1}", Atlas.CurCharges, Atlas.MaxCharges), false, false);
+
+            AddHtmlLocalized(264, 9, 144, 18, 1011299, false, false); // rename book 
+            AddButton(248, 14, 2103, 2103, 1, GumpButtonType.Reply, 0);
 
             int startIndex = Page * 16;
             int index = 0;
@@ -155,7 +173,7 @@ namespace Server.Items
                 if (i < Atlas.Entries.Count)
                 {
                     desc = RunebookGump.GetName(Atlas.Entries[i].Description);
-                    hue = Selected == i ? 0x90 : RunebookGump.GetMapHue(Atlas.Entries[i].Map);
+                    hue = Selected == i ? 0x90 : GetMapHue(Atlas.Entries[i].Map);
                 }
                 else
                 {
@@ -164,10 +182,11 @@ namespace Server.Items
                 }
 
                 // Select Button
-                AddButton(45 + ((index / 8) * 205), 64 + ((index % 8) * 20), 2103, 2104, i + 100, GumpButtonType.Reply, 0);
+                AddButton(46 + ((index / 8) * 205), 55 + ((index % 8) * 20), 2103, 2104, i + 100, GumpButtonType.Reply, 0);
 
                 // Description label
-                AddLabelCropped(60 + ((index / 8) * 205), 60 + ((index % 8) * 20), 115, 17, hue, desc);
+                AddLabelCropped(62 + ((index / 8) * 205), 50 + ((index % 8) * 20), 144, 18, hue, desc);
+                Console.WriteLine((62 + ((index / 8) * 205)) + " "+ (50 + ((index % 8) * 20)));
 
                 index++;
             }
@@ -183,27 +202,27 @@ namespace Server.Items
                     if(coords != "unknown")
                         AddHtml(40, 250, 155, 16, String.Format("<center>{0}</center>", coords), false, false);
 
-                    AddHtmlLocalized(70, 291, 150, 16, 1011300, false, false); // Set default
+                    AddHtmlLocalized(62, 290, 144, 18, 1011300, false, false); // Set default
 
                     if (Atlas.DefaultIndex != Selected)
-                        AddButton(45, 295, 2103, 2103, 2, GumpButtonType.Reply, 0);
+                        AddButton(46, 295, 2103, 2103, 2, GumpButtonType.Reply, 0);
 
-                    AddHtmlLocalized(70, 311, 150, 16, 1011298, false, false); // drop rune
-                    AddButton(45, 315, 2103, 2103, 3, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(62, 310, 144, 18, 1011298, false, false); // drop rune
+                    AddButton(46, 315, 2103, 2103, 3, GumpButtonType.Reply, 0);
 
                     AddHtml(25, 345, 180, 16, String.Format("<center>{0}</center>", entry.Description), false, false); 
 
-                    AddHtmlLocalized(280, 286, 100, 16, 1077595, false, false); // Recall (Spell)
-                    AddButton(265, 290, 2103, 2103, 4, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(280, 284, 128, 18, 1077595, false, false); // Recall (Spell)
+                    AddButton(264, 289, 2103, 2103, 4, GumpButtonType.Reply, 0);
 
-                    AddHtmlLocalized(280, 303, 100, 16, 1077594, false, false); // Recall (Charge)
-                    AddButton(265, 307, 2103, 2103, 5, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(280, 302, 128, 18, 1077594, false, false); // Recall (Charge)
+                    AddButton(264, 307, 2103, 2103, 5, GumpButtonType.Reply, 0);
 
-                    AddHtmlLocalized(280, 320, 100, 16, 1015214, false, false); // Gate Travel
-                    AddButton(265, 324, 2103, 2103, 6, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(280, 320, 128, 18, 1015214, false, false); // Gate Travel
+                    AddButton(264, 325, 2103, 2103, 6, GumpButtonType.Reply, 0);
 
-                    AddHtmlLocalized(280, 337, 100, 16, 1060502, false, false); // Sacred Journey
-                    AddButton(265, 341, 2103, 2103, 7, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(280, 338, 128, 18, 1060502, false, false); // Sacred Journey
+                    AddButton(264, 343, 2103, 2103, 7, GumpButtonType.Reply, 0);
                 }
             }
 

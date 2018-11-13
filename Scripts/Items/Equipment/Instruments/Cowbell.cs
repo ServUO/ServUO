@@ -8,7 +8,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1098418; } } // cowbell
 
         public CowBellComponent()
-            : base(0x4C5A, 0x66F)
+            : base(0x4C5A, 0x66E)
         {
         }
 

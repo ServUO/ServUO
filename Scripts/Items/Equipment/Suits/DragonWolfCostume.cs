@@ -1,39 +1,37 @@
 using System;
+using Server;
 
 namespace Server.Items
 {
-    public class CoagulatedLegs : PeerlessKey
+    public class DragonWolfCostume : BaseCostume
     {
         [Constructable]
-        public CoagulatedLegs()
-            : base(0x1CDF)
+        public DragonWolfCostume() : base()
         {
-            this.Weight = 1;
+            CostumeBody = 719;
         }
 
-        public CoagulatedLegs(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override int LabelNumber
+        public override string DefaultName
         {
             get
             {
-                return 1074327;
+                return "a dragon wolf costume";
             }
-        }// coagulated legs
+        }
+
+        public DragonWolfCostume(Serial serial) : base(serial)
+        {
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
-            writer.Write((int)0); // version
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }

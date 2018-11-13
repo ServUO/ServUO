@@ -223,6 +223,8 @@ namespace Server.Items
                     list.Add((House != null ? 1062452 : 1060805), RuneFormat, desc); // ~1_val~ (Felucca)[(House)]
                 else if (m_TargetMap == Map.Trammel)
                     list.Add((House != null ? 1062453 : 1060806), RuneFormat, desc); // ~1_val~ (Trammel)[(House)]
+                else if (m_TargetMap == Map.TerMur)
+                    list.Add((House != null ? 1113206 : 1113205), RuneFormat, desc); // ~1_val~ (Ter Mur)(House)
                 else
                     list.Add((House != null ? "{0} ({1})(House)" : "{0} ({1})"), String.Format(RuneFormat, desc), m_TargetMap);
             }
@@ -245,6 +247,8 @@ namespace Server.Items
                     LabelTo(from, (House != null ? 1062452 : 1060805), String.Format(RuneFormat, desc)); // ~1_val~ (Felucca)[(House)]
                 else if (m_TargetMap == Map.Trammel)
                     LabelTo(from, (House != null ? 1062453 : 1060806), String.Format(RuneFormat, desc)); // ~1_val~ (Trammel)[(House)]
+                else if (m_TargetMap == Map.TerMur)
+                    LabelTo(from, (House != null ? 1113206 : 1113205), String.Format(RuneFormat, desc)); // ~1_val~ (Ter Mur)(House)
                 else
                     LabelTo(from, (House != null ? "{0} ({1})(House)" : "{0} ({1})"), String.Format(RuneFormat, desc), m_TargetMap);
             }
@@ -283,18 +287,30 @@ namespace Server.Items
 
         private void CalculateHue()
         {
-            if (!m_Marked)
-                Hue = 0;
-            else if (m_TargetMap == Map.Trammel)
-                Hue = (House != null ? 0x47F : 50);
-            else if (m_TargetMap == Map.Felucca)
-                Hue = (House != null ? 0x66D : 0);
-            else if (m_TargetMap == Map.Ilshenar)
-                Hue = (House != null ? 0x55F : 1102);
-            else if (m_TargetMap == Map.Malas)
-                Hue = (House != null ? 0x55F : 1102);
-            else if (m_TargetMap == Map.Tokuno)
-                Hue = (House != null ? 0x47F : 1154);
+            Hue = CalculateHue(m_TargetMap, House, m_Marked);
+        }
+
+        public static int CalculateHue(Map map, BaseHouse house, bool mark)
+        {
+            int hue = 0;
+
+            if (mark)
+            { 
+                if (map == Map.Trammel)
+                    hue = (house != null ? 0x47F : 50);
+                else if (map == Map.Felucca)
+                    hue = (house != null ? 0x66D : 0);
+                else if (map == Map.Ilshenar)
+                    hue = (house != null ? 0x55F : 1102);
+                else if (map == Map.Malas)
+                    hue = (house != null ? 0x55F : 1102);
+                else if (map == Map.Tokuno)
+                    hue = (house != null ? 0x1F14 : 1154);
+                else if (map == Map.TerMur)
+                    hue = 1162;
+            }
+
+            return hue;
         }
 
         private class RenamePrompt : Prompt

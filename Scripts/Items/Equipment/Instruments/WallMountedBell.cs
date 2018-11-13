@@ -39,7 +39,7 @@ namespace Server.Items
         [Constructable]
         public WallMountedBellSouthAddon()
         {
-            AddComponent(new InstrumentedAddonComponent(0x4C5C, 0x66D), 0, 0, 10);
+            AddComponent(new InstrumentedAddonComponent(0x4C5C, 0x66C), 0, 0, 10);
         }
 
         public WallMountedBellSouthAddon(Serial serial)
@@ -97,7 +97,7 @@ namespace Server.Items
         [Constructable]
         public WallMountedBellEastAddon()
         {
-            AddComponent(new InstrumentedAddonComponent(0x4C5D, 0x66D), 0, 0, 10);
+            AddComponent(new InstrumentedAddonComponent(0x4C5D, 0x66C), 0, 0, 10);
         }
 
         public WallMountedBellEastAddon(Serial serial)
