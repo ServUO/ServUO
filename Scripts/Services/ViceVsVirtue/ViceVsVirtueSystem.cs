@@ -51,7 +51,6 @@ namespace Server.Engines.VvV
         public bool HasGenerated { get; set; }
 
         public Dictionary<Guild, VvVGuildStats> GuildStats { get; set; }
-        //public static Dictionary<Mobile, DateTime> TempCombatants { get; set; }
         public static List<TemporaryCombatant> TempCombatants { get; set; }
 
         public List<VvVCity> ExemptCities { get; set; }

@@ -186,7 +186,6 @@ namespace Server.Items
 
                 // Description label
                 AddLabelCropped(62 + ((index / 8) * 205), 50 + ((index % 8) * 20), 144, 18, hue, desc);
-                Console.WriteLine((62 + ((index / 8) * 205)) + " "+ (50 + ((index % 8) * 20)));
 
                 index++;
             }
