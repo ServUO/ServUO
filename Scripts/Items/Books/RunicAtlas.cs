@@ -32,7 +32,7 @@ namespace Server.Items
             {
                 if (CheckAccess(from) || from.AccessLevel >= AccessLevel.Counselor)
                 {
-                    if (DateTime.Now < NextUse)
+                    if (DateTime.UtcNow < NextUse)
                     {
                         from.SendLocalizedMessage(502406); // This book needs time to recharge.
                         return;
@@ -428,7 +428,7 @@ namespace Server.Items
                 Atlas.OnTravel();
 
                 if (new RecallSpell(User, Atlas, e, Atlas).Cast())
-                    Atlas.NextUse = DateTime.Now;
+                    Atlas.NextUse = DateTime.UtcNow;
 
                 Atlas.Openers.Remove(User);
             }
@@ -448,7 +448,7 @@ namespace Server.Items
                 Atlas.OnTravel();
 
                 if (new GateTravelSpell(User, null, e).Cast())
-                    Atlas.NextUse = DateTime.Now;
+                    Atlas.NextUse = DateTime.UtcNow;
             }
             else
             {
@@ -470,7 +470,7 @@ namespace Server.Items
 
                     Atlas.OnTravel();
                     new SacredJourneySpell(User, null, e, null).Cast();
-                    Atlas.NextUse = DateTime.Now;
+                    Atlas.NextUse = DateTime.UtcNow;
                 }
                 else
                 {
