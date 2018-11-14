@@ -634,12 +634,36 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\VillainousEpiphany.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\VirtuousEpiphany.cs" />
     <Compile Include="Items\Consumables\PoppiesDust.cs" />
+    <Compile Include="Items\Corpses\BonePile.cs" />
+    <Compile Include="Items\Corpses\Corpse.cs" />
+    <Compile Include="Items\Corpses\CorpseNameAttribute.cs" />
+    <Compile Include="Items\Corpses\DecayedCorpse.cs" />
+    <Compile Include="Items\Corpses\Head.cs" />
+    <Compile Include="Items\Corpses\LeftArm.cs" />
+    <Compile Include="Items\Corpses\LeftLeg.cs" />
+    <Compile Include="Items\Corpses\Packets.cs" />
+    <Compile Include="Items\Corpses\RibCage.cs" />
+    <Compile Include="Items\Corpses\RightArm.cs" />
+    <Compile Include="Items\Corpses\RightLeg.cs" />
+    <Compile Include="Items\Corpses\Torso.cs" />
     <Compile Include="Items\Equipment\Clothing\FirstAidBelt.cs" />
     <Compile Include="Items\Equipment\Suits\DragonWolfCostume.cs" />
     <Compile Include="Items\Resource\Blackrock.cs" />
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
+    <Compile Include="Services\Expansions\MondainsLegacy.cs" />
+    <Compile Include="Services\Harvest\Core\BonusHarvestResource.cs" />
+    <Compile Include="Services\Harvest\Core\HarvestBank.cs" />
+    <Compile Include="Services\Harvest\Core\HarvestDefinition.cs" />
+    <Compile Include="Services\Harvest\Core\HarvestResource.cs" />
+    <Compile Include="Services\Harvest\Core\HarvestSoundTimer.cs" />
+    <Compile Include="Services\Harvest\Core\HarvestTarget.cs" />
+    <Compile Include="Services\Harvest\Core\HarvestTimer.cs" />
+    <Compile Include="Services\Harvest\Core\HarvestVein.cs" />
+    <Compile Include="Services\Harvest\Fishing.cs" />
+    <Compile Include="Services\Harvest\Lumberjacking.cs" />
+    <Compile Include="Services\Harvest\Mining.cs" />
     <Compile Include="Services\HuntmasterChallenge\ResourceSatchels.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Gumps.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\CounterfeitPlatinum.cs" />
@@ -1206,18 +1230,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\CommunicationCrystals.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\Corpse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\CorpseNameAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\DecayedCorpse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\Packets.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Resource\CrushedGlass.cs">
@@ -4423,31 +4435,7 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtue\ValorGauntlets.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Decorative\Corpses\BonePile.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\Head.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Resource\LavaSerpenCrust.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\LeftArm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\LeftLeg.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\RibCage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\RightArm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\RightLeg.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\Corpses\Torso.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Resource\UndyingFlesh.cs">
@@ -8547,7 +8535,6 @@
     <Compile Include="Misc\MapDefinitions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\MondainsLegacy.cs" />
     <Compile Include="Misc\NameList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -8625,15 +8612,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\WelcomeTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Abilities\Abilities.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Abilities\AbilityTheSix.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Abilities\AuraCreature.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Abilities\BaseSummoned.cs">
@@ -9507,31 +9485,7 @@
     <Compile Include="Services\Factions\Mobiles\Vendors\FactionReagentVendor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\BonusHarvestResource.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Harvest\HarvestBank.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Harvest\HarvestDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Harvest\HarvestResource.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Harvest\HarvestSoundTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Harvest\HarvestSystem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Harvest\HarvestTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Harvest\HarvestTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Harvest\HarvestVein.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Malas\Sphynx\AncientWall.cs" />
@@ -10043,16 +9997,7 @@
     <Compile Include="Services\Virtue Artifacts\VirtueArtifactsSystem.cs" />
     <Compile Include="Services\Virtues\Spirituality.cs" />
     <Compile Include="Services\Mannequin.cs" />
-    <Compile Include="Skills\Fishing.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Skills\Imbuing\ResourceDrops.cs" />
-    <Compile Include="Skills\Lumberjacking.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Skills\Mining.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Help\HelpGump.cs">
       <SubType>Code</SubType>
     </Compile>

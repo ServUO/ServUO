@@ -374,7 +374,7 @@ namespace Server.Gumps
 
                         if (Imbuing.OnBeforeImbue(from, m_Item, m_Mod, m_Value, m_TotalProps, MaxProps, m_TotalItemWeight, m_MaxWeight))
                         {
-                            Imbuing.ImbueItem(from, m_Item, m_Mod, m_Value);
+                            Imbuing.TryImbueItem(from, m_Item, m_Mod, m_Value);
                             SendGumpDelayed(from);
                         }
 
