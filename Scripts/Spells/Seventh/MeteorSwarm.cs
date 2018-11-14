@@ -88,7 +88,7 @@ namespace Server.Spells.Seventh
                     p = ((Item)p).GetWorldLocation();
 
                 var targets = AcquireIndirectTargets(p, 2).ToList();
-                int count = targets.Count;
+                var count = Math.Max(1, targets.Count);
 
                 if (count > 0)
                 {
