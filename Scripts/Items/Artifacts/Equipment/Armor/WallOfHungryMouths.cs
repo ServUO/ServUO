@@ -2,12 +2,13 @@ using System;
 
 namespace Server.Items
 {
-    public class WallofHungryMouths : HeaterShield
+    [TypeAlias("Server.Items.WallofHungryMouths")]
+    public class WallOfHungryMouths : HeaterShield
     {
-	public override bool IsArtifact { get { return true; } }
-	
+        public override bool IsArtifact { get { return true; } }
+
         [Constructable]
-        public WallofHungryMouths()
+        public WallOfHungryMouths()
         {
             Hue = 1034;
             AbsorptionAttributes.EaterEnergy = 20;
@@ -16,7 +17,7 @@ namespace Server.Items
             AbsorptionAttributes.EaterFire = 20;
         }
 
-        public WallofHungryMouths(Serial serial)
+        public WallOfHungryMouths(Serial serial)
             : base(serial)
         {
         }

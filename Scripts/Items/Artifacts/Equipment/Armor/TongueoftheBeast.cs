@@ -2,13 +2,14 @@ using System;
 
 namespace Server.Items
 {
-    public class TongueoftheBeast : WoodenKiteShield
+    [TypeAlias("Server.Items.TongueoftheBeast")]
+    public class TongueOfTheBeast : WoodenKiteShield
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1112405; } } // Tongue of the Beast [Replica]
 		
         [Constructable]
-        public TongueoftheBeast()
+        public TongueOfTheBeast()
         {
             Hue = 153;
             Attributes.SpellChanneling = 1;
@@ -16,7 +17,7 @@ namespace Server.Items
             Attributes.RegenMana = 3;
         }
 
-        public TongueoftheBeast(Serial serial)
+        public TongueOfTheBeast(Serial serial)
             : base(serial)
         {
         }

@@ -550,7 +550,7 @@ namespace Server.Engines.Points
             Entries[typeof(VampiricEssence)] = 5000.0;
             Entries[typeof(Venom)] = 5000.0;
             Entries[typeof(VoidInfusedKilt)] = 5000.0;
-            Entries[typeof(WallofHungryMouths)] = 5000.0;
+            Entries[typeof(WallOfHungryMouths)] = 5000.0;
 
             //Tokuno Major Artifacts
             Entries[typeof(DarkenedSky)] = 2500.0;

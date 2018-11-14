@@ -94,7 +94,7 @@ namespace Server.Gumps
 
                         if (Imbuing.CanImbueItem(from, it) && Imbuing.OnBeforeImbue(from, it, mod, modint))
                         {
-                            Imbuing.ImbueItem(from, it, mod, modint);
+                            Imbuing.TryImbueItem(from, it, mod, modint);
                             ImbuingGumpC.SendGumpDelayed(from);
                         }
                         break;
