@@ -209,17 +209,35 @@ namespace Server.Items
 
             AddHtml(25, 348, 182, 18, String.Format("<center>{0}</center>", entry != null ? entry.Description : "Empty"), false, false);
 
-            AddHtmlLocalized(280, 284, 128, 18, 1077595, false, false); // Recall (Spell)
-            AddButton(264, 289, 2103, 2103, 4, GumpButtonType.Reply, 0);
+            int hy = 284;
+            int by = 289;
 
-            AddHtmlLocalized(280, 302, 128, 18, 1077594, false, false); // Recall (Charge)
-            AddButton(264, 307, 2103, 2103, 5, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(280, hy, 128, 18, 1077595, false, false); // Recall (Spell)
+            AddButton(264, by, 2103, 2103, 4, GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(280, 320, 128, 18, 1015214, false, false); // Gate Travel
-            AddButton(264, 325, 2103, 2103, 6, GumpButtonType.Reply, 0);
+            hy += 18;
+            by += 18;
 
-            AddHtmlLocalized(280, 338, 128, 18, 1060502, false, false); // Sacred Journey
-            AddButton(264, 343, 2103, 2103, 7, GumpButtonType.Reply, 0);
+            if (Atlas.CurCharges != 0)
+            {
+                AddHtmlLocalized(280, hy, 128, 18, 1077594, false, false); // Recall (Charge)
+                AddButton(264, by, 2103, 2103, 5, GumpButtonType.Reply, 0);
+
+                hy += 18;
+                by += 18;
+            }
+
+            if (User.Skills[SkillName.Magery].Value >= 66.0)
+            {
+                AddHtmlLocalized(280, hy, 128, 18, 1015214, false, false); // Gate Travel
+                AddButton(264, by, 2103, 2103, 6, GumpButtonType.Reply, 0);
+
+                hy += 18;
+                by += 18;
+            }
+
+            AddHtmlLocalized(280, hy, 128, 18, 1060502, false, false); // Sacred Journey
+            AddButton(264, by, 2103, 2103, 7, GumpButtonType.Reply, 0);
 
             if (Page < 2)
             {
