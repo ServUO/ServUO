@@ -112,10 +112,6 @@ namespace Server.Spells.Necromancy
                         damage *= (100 + sdiBonus);
                         damage /= 100;
 
-                        // TODO: cap?
-                        //if ( damage > 40 )
-                        //	damage = 40;
-
                         SpellHelper.Damage(this, id, damage, 0, 0, 100, 0, 0);
                     }
                 }

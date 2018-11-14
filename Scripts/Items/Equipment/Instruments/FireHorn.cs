@@ -65,8 +65,8 @@ namespace Server.Items
             from.PlaySound(0x15F);
             Effects.SendPacket(from, from.Map, new HuedEffect(EffectType.Moving, from.Serial, Serial.Zero, 0x36D4, from.Location, loc, 5, 0, false, true, 0, 0));
 
-            var targets = SpellHelper.AcquireIndirectTargets(from, loc, from.Map, 2).OfType<Mobile>();
-            var count = targets.Count();
+            var targets = SpellHelper.AcquireIndirectTargets(from, loc, from.Map, 2).OfType<Mobile>().ToList();
+            var count = targets.Count;
             bool playerVsPlayer = targets.Any(t => t.Player);
 
             if (count > 0)
@@ -129,6 +129,8 @@ namespace Server.Items
                     Effects.SendTargetEffect(m, 0x3709, 10, 30);
                 }
             }
+
+            ColUtility.Free(targets);
 
             double breakChance = Core.AOS ? 0.01 : 0.16;
             if (Utility.RandomDouble() < breakChance)

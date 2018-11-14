@@ -80,11 +80,11 @@ namespace Server.Mobiles
             if (creature.Map == null || creature.Map == Map.Internal)
                 return;
 
-            var toAffect = FindValidTargets(creature, EffectRange);
-            var count = toAffect.Count();
+            var count = 0;
 
             foreach (var m in FindValidTargets(creature, EffectRange))
             {
+                count++;
                 DoEffect(creature, m);
             }
 

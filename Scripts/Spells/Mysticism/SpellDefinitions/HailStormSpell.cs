@@ -72,8 +72,8 @@ namespace Server.Spells.Mysticism
                     }
                 }
 
-                var list = AcquireIndirectTargets(p, 2);
-                int count = list.Count();
+                var list = AcquireIndirectTargets(p, 2).ToList();
+                int count = list.Count;
 
                 foreach (var id in list)
                 {
@@ -90,6 +90,8 @@ namespace Server.Spells.Mysticism
 
                     Server.Effects.SendTargetParticles(id, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
                 }
+
+                ColUtility.Free(list);
             }
 
             FinishSequence();

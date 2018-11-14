@@ -2416,6 +2416,8 @@ namespace Server.Multis
 
                 state.Send(GetPacketContainer(GetEntitiesOnBoard()));
             }
+
+            eable.Free();
         }
 
         public sealed class MoveBoatHS : Packet

@@ -169,8 +169,8 @@ namespace Server.Spells.Spellweaving
                     return;
 					
                 m_LifeSpan -= 1;
-                IEnumerable<Mobile> targets = GetTargets();
-                int count = targets.Count();
+                var targets = GetTargets().ToList();
+                int count = targets.Count;
 
                 foreach (Mobile m in targets)
                 {
@@ -193,6 +193,8 @@ namespace Server.Spells.Spellweaving
                     AOS.Damage(m, m_Owner, damage, 0, 100, 0, 0, 0, 0, 0, DamageType.SpellAOE);
                     WildfireSpell.Table[m] = Core.TickCount + 1000;
                 }
+
+                ColUtility.Free(targets);
             }
 
             private IEnumerable<Mobile> GetTargets()

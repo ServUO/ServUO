@@ -63,8 +63,8 @@ namespace Server.Spells.SkillMasteries
 
                 if (p != null && SpellHelper.CheckTown(p, Caster) && CheckSequence())
                 {
-                    IEnumerable<Mobile> targets = AcquireIndirectTargets(p, 5).OfType<Mobile>();
-                    int count = targets.Count();
+                    var targets = AcquireIndirectTargets(p, 5).OfType<Mobile>().ToList();
+                    int count = targets.Count;
 
                     foreach (var mob in targets)
                     {
@@ -92,6 +92,8 @@ namespace Server.Spells.SkillMasteries
                             mob.PlaySound(0x1DD);
                         }
                     }
+
+                    ColUtility.Free(targets);
 
                     weapon.PlaySwingAnimation(Caster);
                     Caster.PlaySound(0x101);

@@ -58,9 +58,9 @@ namespace Server.Items
 
             var list = SpellHelper.AcquireIndirectTargets(attacker, attacker, attacker.Map, 1)
                 .OfType<Mobile>()
-                .Where(m => attacker.InRange(m, weapon.MaxRange) && m != defender);
-            
-            var count = list.Count();
+                .Where(m => attacker.InRange(m, weapon.MaxRange) && m != defender).ToList();
+
+            int count = list.Count;
 
             if (count > 0)
             {
@@ -80,6 +80,8 @@ namespace Server.Items
                     weapon.OnHit(attacker, m, damageBonus);
                 }
             }
+
+            ColUtility.Free(list);
 
             weapon.ProcessingMultipleHits = false;
         }
