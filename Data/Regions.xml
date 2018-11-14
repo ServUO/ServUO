@@ -2808,7 +2808,7 @@
             <rect x="724" y="3463" width="37" height="20" />
             <rect x="747" y="3480" width="13" height="13" />
             <logoutDelay active="false" />
-          </region>
+        </region>
     </region>
     <region type="DungeonRegion" priority="50" name="Royal Park">
       <rect x="632" y="3233" width="176" height="35" />

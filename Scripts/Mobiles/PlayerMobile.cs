@@ -4020,6 +4020,8 @@ namespace Server.Mobiles
 				}
 			}
 
+			Faction.HandleDeath(this, killer);
+
 			Guilds.Guild.HandleDeath(this, killer);
             
             if (m_BuffTable != null)

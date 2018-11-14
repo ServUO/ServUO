@@ -313,15 +313,9 @@ namespace Server.Multis
 
         public virtual void KillVendors()
         {
-            PlayerVendors.OfType<PlayerVendor>().IterateReverse(vendor =>
-                {
-                    vendor.Destroy(true);
-                });
+            PlayerVendors.OfType<PlayerVendor>().IterateReverse(o => o.Destroy(true));
 
-            PlayerBarkeepers.IterateReverse(barkeeper =>
-                {
-                    barkeeper.Delete();
-                });
+            PlayerBarkeepers.IterateReverse(o => o.Delete());
         }
 
         public virtual void Decay_Sandbox()
@@ -4027,10 +4021,7 @@ namespace Server.Multis
                 }
             }
 
-            VendorInventories.IterateReverse(inventory =>
-                {
-                    inventory.Delete();
-                });
+            VendorInventories.IterateReverse(o => o.Delete());
 
             if (MovingCrate != null)
                 MovingCrate.Delete();
