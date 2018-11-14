@@ -60,7 +60,7 @@ namespace Server.Spells.Seventh
                 var targets = AcquireIndirectTargets(p, 2).ToList();
                 var count = Math.Max(1, targets.Count);
 
-                foreach (var dam in AcquireIndirectTargets(p, 2))
+                foreach (var dam in targets)
                 {
                     var id = dam;
                     var m = id as Mobile;
