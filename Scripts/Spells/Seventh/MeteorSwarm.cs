@@ -87,8 +87,8 @@ namespace Server.Spells.Seventh
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
 
-                IEnumerable<IDamageable> targets = AcquireIndirectTargets(p, 2);
-                int count = targets.Count();
+                var targets = AcquireIndirectTargets(p, 2).ToList();
+                var count = Math.Max(1, targets.Count);
 
                 if (count > 0)
                 {
@@ -138,6 +138,8 @@ namespace Server.Spells.Seventh
 
                     Caster.MovingParticles(id, item != null ? 0xA1ED : 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
                 }
+
+                ColUtility.Free(targets);
             }
 
             FinishSequence();

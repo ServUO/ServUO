@@ -57,10 +57,10 @@ namespace Server.Spells.Seventh
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
 
-                IEnumerable<IDamageable> targets = AcquireIndirectTargets(p, 2);
-                int count = targets.Count();
+                var targets = AcquireIndirectTargets(p, 2).ToList();
+                var count = Math.Max(1, targets.Count);
 
-                foreach (var dam in AcquireIndirectTargets(p, 2))
+                foreach (var dam in targets)
                 {
                     var id = dam;
                     var m = id as Mobile;
@@ -96,6 +96,8 @@ namespace Server.Spells.Seventh
                     Caster.DoHarmful(id);
                     SpellHelper.Damage(this, id, damage, 0, 0, 0, 0, 100);
                 }
+
+                ColUtility.Free(targets);
             }
 
             FinishSequence();

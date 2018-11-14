@@ -46,9 +46,9 @@ namespace Server.Items
             if (weapon == null)
                 return;
 
-            var targets = SpellHelper.AcquireIndirectTargets(attacker, attacker.Location, attacker.Map, 2).OfType<Mobile>();
+            var targets = SpellHelper.AcquireIndirectTargets(attacker, attacker.Location, attacker.Map, 2).OfType<Mobile>().ToList();
 
-            if (targets.Count() > 0)
+            if (targets.Count > 0)
             {
                 if (!CheckMana(attacker, true))
                     return;
@@ -78,6 +78,8 @@ namespace Server.Items
                 if (attacker is BaseCreature)
                     PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Ninjitsu);
             }
+
+            ColUtility.Free(targets);
         }
 
         public static void RemoveFromRegistry(Mobile from)
