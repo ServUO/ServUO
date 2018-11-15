@@ -23,7 +23,8 @@ namespace Server.Regions
                 ViceVsVirtueSystem.IsVvVCombatant(m) &&
                 ViceVsVirtueSystem.Instance != null &&
                 ViceVsVirtueSystem.Instance.Battle != null && 
-                ViceVsVirtueSystem.Instance.Battle.OnGoing)
+                ViceVsVirtueSystem.Instance.Battle.OnGoing &&
+                ViceVsVirtueSystem.Instance.Battle.Region == this)
             {
                 ViceVsVirtueSystem.Instance.Battle.AddAggression(m);
             }
@@ -41,7 +42,7 @@ namespace Server.Regions
 
         private bool IsVvVBattleRegion()
         {
-            return CityInfo.Infos.Any(kvp => IsPartOf(kvp.Value.Name));
+            return CityInfo.Infos.Any(kvp => IsPartOf(kvp.Value.Name) && Map == Map.Felucca);
         }
     }
 }
