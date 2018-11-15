@@ -113,7 +113,7 @@ namespace Server.SkillHandlers
 
         public static bool OnBeforeImbue(Mobile from, Item item, int mod, int value)
         {
-            return OnBeforeImbue(from, item, mod, value, Imbuing.GetTotalMods(item, mod), ImbuingGumpC.MaxProps, Imbuing.GetTotalWeight(item, mod), Imbuing.GetMaxWeight(item));
+            return OnBeforeImbue(from, item, mod, value, Imbuing.GetTotalMods(item, mod), GetMaxProps(item), Imbuing.GetTotalWeight(item, mod), Imbuing.GetMaxWeight(item));
         }
 
         public static bool OnBeforeImbue(Mobile from, Item item, int mod, int value, int totalprops, int maxprops, int totalitemweight, int maxweight)
@@ -822,6 +822,11 @@ namespace Server.SkillHandlers
             return maxWeight;
         }
 
+        public static int GetMaxProps(Item item)
+        {
+            return 5;
+        }
+
         public static int GetGemAmount(Item item, int mod, int value)
         {
             ImbuingDefinition def = Imbuing.Table[mod];
@@ -1142,6 +1147,55 @@ namespace Server.SkillHandlers
                 if (h.Resistances.Energy > h.EnergyNonImbuing && mod != 55) { total++; }
             }
 
+            var type = item.GetType();
+
+            if (IsDerivedArmorOrClothing(type))
+            {
+                int[] resists = null;
+
+                if (ResistBuffer != null && ResistBuffer.ContainsKey(type))
+                {
+                    resists = ResistBuffer[type];
+                }
+                else
+                {
+                    var baseType = type.BaseType;
+
+                    if (IsDerivedArmorOrClothing(baseType))
+                    {
+                        var temp = Loot.Construct(baseType);
+
+                        if (temp != null)
+                        {
+                            resists = new int[5];
+
+                            resists[0] = GetBaseResistBonus(item, AosElementAttribute.Physical) - GetBaseResistBonus(temp, AosElementAttribute.Physical);
+                            resists[1] = GetBaseResistBonus(item, AosElementAttribute.Fire) - GetBaseResistBonus(temp, AosElementAttribute.Fire);
+                            resists[2] = GetBaseResistBonus(item, AosElementAttribute.Cold) - GetBaseResistBonus(temp, AosElementAttribute.Cold);
+                            resists[3] = GetBaseResistBonus(item, AosElementAttribute.Poison) - GetBaseResistBonus(temp, AosElementAttribute.Poison);
+                            resists[4] = GetBaseResistBonus(item, AosElementAttribute.Energy) - GetBaseResistBonus(temp, AosElementAttribute.Energy);
+
+                            if (ResistBuffer == null)
+                                ResistBuffer = new Dictionary<Type, int[]>();
+
+                            ResistBuffer[type] = resists;
+                            temp.Delete();
+                        }
+                    }
+                }
+
+                if (resists != null)
+                {
+                    for (int i = 0; i < resists.Length; i++)
+                    {
+                        if (mod != 51 + i && resists[i] > 0)
+                        {
+                            total++;
+                        }
+                    }
+                }
+            }
+
             return total;
         }
 
@@ -1289,11 +1343,11 @@ namespace Server.SkillHandlers
 
                 if (resists != null)
                 {
-                    foreach (var i in resists)
+                    for (int i = 0; i < resists.Length; i++)
                     {
-                        if (i > 0)
+                        if(mod != 51 + i && resists[i] > 0)
                         {
-                            weight += ((double)(100.0 / 15) * (double)i);
+                            weight += ((double)(100.0 / 15) * (double)resists[i]);
                         }
                     }
                 }
@@ -1919,6 +1973,49 @@ namespace Server.SkillHandlers
 
                     if (j.SkillBonuses.Skill_5_Name == sk)
                         return (int)j.SkillBonuses.Skill_5_Value;
+                }
+            }
+
+            var type = item.GetType();
+
+            if (mod >= 51 && mod <= 55 && IsDerivedArmorOrClothing(type))
+            {
+                int[] resists = null;
+
+                if (ResistBuffer != null && ResistBuffer.ContainsKey(type))
+                {
+                    resists = ResistBuffer[type];
+                }
+                else
+                {
+                    var baseType = type.BaseType;
+
+                    if (IsDerivedArmorOrClothing(baseType))
+                    {
+                        var temp = Loot.Construct(baseType);
+
+                        if (temp != null)
+                        {
+                            resists = new int[5];
+
+                            resists[0] = GetBaseResistBonus(item, AosElementAttribute.Physical) - GetBaseResistBonus(temp, AosElementAttribute.Physical);
+                            resists[1] = GetBaseResistBonus(item, AosElementAttribute.Fire) - GetBaseResistBonus(temp, AosElementAttribute.Fire);
+                            resists[2] = GetBaseResistBonus(item, AosElementAttribute.Cold) - GetBaseResistBonus(temp, AosElementAttribute.Cold);
+                            resists[3] = GetBaseResistBonus(item, AosElementAttribute.Poison) - GetBaseResistBonus(temp, AosElementAttribute.Poison);
+                            resists[4] = GetBaseResistBonus(item, AosElementAttribute.Energy) - GetBaseResistBonus(temp, AosElementAttribute.Energy);
+
+                            if (ResistBuffer == null)
+                                ResistBuffer = new Dictionary<Type, int[]>();
+
+                            ResistBuffer[type] = resists;
+                            temp.Delete();
+                        }
+                    }
+                }
+
+                if (resists != null && resists.Length == 5)
+                {
+                    return resists[51 - mod];
                 }
             }
 

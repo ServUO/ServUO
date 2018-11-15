@@ -16,8 +16,6 @@ namespace Server.Gumps
         private const int DarkYellow = 0x2E;
         private const int Red = 0x26;
 
-        public const int MaxProps = 5;
-
         private int m_Mod, m_Value;
         private Item m_Item;
         private int m_GemAmount = 0, m_PrimResAmount = 0, m_SpecResAmount = 0;
@@ -153,7 +151,7 @@ namespace Server.Gumps
             AddHtmlLocalized(350, 200, 150, 20, 1113650, LabelColor, false, false); // RESULTS
 
             AddHtmlLocalized(280, 220, 150, 20, 1113645, LabelColor, false, false); // Properties:
-            AddLabel(430, 220, GetColor(m_TotalProps + 1, 5), String.Format("{0}/5", m_TotalProps + 1));
+            AddLabel(430, 220, GetColor(m_TotalProps + 1, 5), String.Format("{0}/{1}", m_TotalProps + 1, Imbuing.GetMaxProps(item)));
 
             int projWeight = m_TotalItemWeight + m_PropWeight;
             AddHtmlLocalized(280, 240, 150, 20, 1113646, LabelColor, false, false); // Total Property Weight:
@@ -372,7 +370,7 @@ namespace Server.Gumps
                     {
                         context.Imbue_IWmax = m_MaxWeight;
 
-                        if (Imbuing.OnBeforeImbue(from, m_Item, m_Mod, m_Value, m_TotalProps, MaxProps, m_TotalItemWeight, m_MaxWeight))
+                        if (Imbuing.OnBeforeImbue(from, m_Item, m_Mod, m_Value, m_TotalProps, Imbuing.GetMaxProps(m_Item), m_TotalItemWeight, m_MaxWeight))
                         {
                             Imbuing.TryImbueItem(from, m_Item, m_Mod, m_Value);
                             SendGumpDelayed(from);
