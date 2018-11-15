@@ -82,9 +82,11 @@ namespace Server.Mobiles
 		public override void InitOutfit()
 		{
 			SetWearable(new FancyShirt());
-			SetWearable(new Doublet(), 105);
-			SetWearable(new LongPants(), 107);
-			SetWearable(new SilverNecklace());
+			SetWearable(new JinBaori(), 1366);
+			SetWearable(new LongPants(), 1336);
+			SetWearable(new GoldNecklace());
+			SetWearable(new GoldBracelet());
+			SetWearable(new GoldRing());
 			SetWearable(new Shoes());
 		}
 		
@@ -128,10 +130,12 @@ namespace Server.Mobiles
 		
 		public override void InitOutfit()
 		{
-			SetWearable(new StuddedChest());
-			SetWearable(new BodySash(), 128);
-			SetWearable(new LongPants());
-			SetWearable(new TricorneHat());	
+			SetWearable(new TricorneHat());
+			SetWearable(new Epaulette());
+			SetWearable(new BodySash());
+			SetWearable(new ElvenShirt());
+			SetWearable(new WoodlandBelt());
+			SetWearable(new TattsukeHakama());	
 			SetWearable(new Sandals());
 		}
 		
