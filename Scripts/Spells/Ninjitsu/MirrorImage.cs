@@ -174,7 +174,7 @@ namespace Server.Mobiles
 {
     public class Clone : BaseCreature
     {
-        private Mobile m_Caster;
+        private Mobile m_Caster;  
         public Clone(Mobile caster)
             : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.2, 0.4)
         {

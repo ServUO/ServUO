@@ -4437,11 +4437,15 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			if (Core.ML && target is BaseCreature && ((BaseCreature)target).Controlled &&
-				this == ((BaseCreature)target).ControlMaster)
+			if (Core.ML && target is BaseCreature && ((BaseCreature)target).Controlled && ((BaseCreature)target).ControlMaster == this)
 			{
 				return false;
 			}
+
+            if (target is BaseCreature && ((BaseCreature)target).Summoned && ((BaseCreature)target).SummonMaster == this)
+            {
+                return false;
+            }
 
 			return base.IsHarmfulCriminal(damageable);
 		}
