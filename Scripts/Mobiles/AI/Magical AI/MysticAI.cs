@@ -97,6 +97,16 @@ namespace Server.Mobiles
 			return null;
 		}
 
+        public override Spell GetCureSpell()
+        {
+            if (UsesMagery)
+            {
+                return base.GetCureSpell();
+            }
+
+            return null;
+        }
+
 		public override Spell GetRandomBuffSpell()
 		{
 			if (UsesMagery)
