@@ -535,6 +535,8 @@ namespace Server.Mobiles
             if (m_Rider == null)
                 return;
 
+            OnRiderDamaged(amount, from, willKill);
+
             Mobile attacker = from;
 
             if (attacker == null)
@@ -545,6 +547,10 @@ namespace Server.Mobiles
                 if (DoMountAbility(amount, from))
                     m_NextMountAbility = DateTime.UtcNow + MountAbilityDelay;
             }
+        }
+
+        public virtual void OnRiderDamaged(int amount, Mobile from, bool willKill)
+        {
         }
 
         public virtual bool DoMountAbility(int damage, Mobile attacker)
