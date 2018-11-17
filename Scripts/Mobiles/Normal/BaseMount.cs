@@ -530,12 +530,13 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual void OnRiderDamaged(int amount, Mobile from, bool willKill)
+        public virtual void OnRiderDamaged(Mobile from, ref int amount, bool willKill)
         {
             if (m_Rider == null)
                 return;
 
             Mobile attacker = from;
+
             if (attacker == null)
                 attacker = m_Rider.FindMostRecentDamager(true);
 
