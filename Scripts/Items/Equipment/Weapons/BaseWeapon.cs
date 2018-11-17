@@ -32,6 +32,85 @@ namespace Server.Items
 
     public abstract class BaseWeapon : Item, IWeapon, IFactionItem, IUsesRemaining, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted, IResource, IArtifact
 	{
+		#region Damage Helpers
+		public static BaseWeapon GetDamageOutput(Mobile wielder, out int min, out int max)
+		{
+			return GetDamageOutput(wielder, null, out min, out max);
+		}
+
+		public static BaseWeapon GetDamageOutput(Mobile wielder, BaseWeapon weapon, out int min, out int max)
+		{
+			int minRaw, maxRaw;
+
+			return GetDamageOutput(wielder, weapon, out minRaw, out maxRaw, out min, out max);
+		}
+
+		public static BaseWeapon GetDamageOutput(
+			Mobile wielder,
+			out int minRaw,
+			out int maxRaw,
+			out int minVal,
+			out int maxVal)
+		{
+			return GetDamageOutput(wielder, null, out minRaw, out maxRaw, out minVal, out maxVal);
+		}
+
+		public static BaseWeapon GetDamageOutput(
+			Mobile wielder,
+			BaseWeapon weapon,
+			out int minRaw,
+			out int maxRaw,
+			out int minVal,
+			out int maxVal)
+		{
+			minRaw = maxRaw = 0;
+			minVal = maxVal = 0;
+
+			if (wielder == null)
+			{
+				return null;
+			}
+
+			if (weapon == null)
+			{
+				weapon = wielder.Weapon as BaseWeapon ?? Fists;
+			}
+
+			if (weapon == null)
+			{
+				return null;
+			}
+
+			weapon.GetBaseDamageRange(wielder, out minVal, out maxVal);
+
+			if (wielder is BaseCreature)
+			{
+				if (((BaseCreature)wielder).DamageMin >= 0 || (weapon is Fists && !wielder.Body.IsHuman))
+				{
+					minRaw = minVal;
+					maxRaw = maxVal;
+					return weapon;
+				}
+			}
+
+			minRaw = weapon.MinDamage;
+			maxRaw = weapon.MaxDamage;
+
+			if (Core.AOS)
+			{
+				minVal = (int)weapon.ScaleDamageAOS(wielder, minVal, false);
+				maxVal = (int)weapon.ScaleDamageAOS(wielder, maxVal, false);
+			}
+			else
+			{
+				minVal = (int)weapon.ScaleDamageOld(wielder, minVal, false);
+				maxVal = (int)weapon.ScaleDamageOld(wielder, maxVal, false);
+			}
+
+			return weapon;
+		}
+		#endregion
+
 		private string m_EngravedText;
 
 		[CommandProperty(AccessLevel.GameMaster)]

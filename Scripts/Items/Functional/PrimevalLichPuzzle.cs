@@ -125,7 +125,7 @@ namespace Server.Engines.CannedEvil
             {
                 Delete();
                 //Probably not needed, OnAfterDelete sets it null anyway
-                if (mInstance != null && m_Instance.Deleted)
+                if (m_Instance != null && m_Instance.Deleted)
                     m_Instance = null;
                 return;
             }

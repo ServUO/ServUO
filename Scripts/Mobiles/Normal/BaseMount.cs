@@ -535,8 +535,6 @@ namespace Server.Mobiles
             if (m_Rider == null)
                 return;
 
-            OnRiderDamaged(amount, from, willKill);
-
             Mobile attacker = from;
 
             if (attacker == null)
@@ -549,8 +547,10 @@ namespace Server.Mobiles
             }
         }
 
+        [Obsolete("Call: OnRiderDamaged(Mobile from, ref int amount, bool willKill)")]
         public virtual void OnRiderDamaged(int amount, Mobile from, bool willKill)
         {
+            OnRiderDamaged(from, ref amount, willKill);
         }
 
         public virtual bool DoMountAbility(int damage, Mobile attacker)
