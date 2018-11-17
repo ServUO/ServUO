@@ -1688,7 +1688,7 @@ namespace Server
                 {
                     var entity = list[i] as IEntity;
 
-                    if (entity != null && !entity.Deleted && (predicate == null || predicate(entity)))
+                    if (entity != null && !entity.Deleted && (predicate == null || predicate((T)entity)))
                     {
                         entity.Delete();
                     }
