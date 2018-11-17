@@ -509,7 +509,7 @@ namespace Server.Mobiles
             ProcessDelta();
         }
 
-        public void OnRiderDamaged(int amount, Mobile from, bool willKill)
+        public void OnRiderDamaged(Mobile from, ref int amount, bool willKill)
         { }
 
         private class EtherealSpell : Spell

@@ -220,7 +220,7 @@ namespace Server.Multis
         #region IMount Members
         public Mobile Rider { get { return m_Pilot; } set { m_Pilot = value; } }
 
-        public void OnRiderDamaged(int amount, Mobile from, bool willKill)
+        public void OnRiderDamaged(Mobile from, ref int amount, bool willKill)
         {
         }
         #endregion

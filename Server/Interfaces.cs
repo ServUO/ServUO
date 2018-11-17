@@ -11,7 +11,7 @@ namespace Server.Mobiles
 	public interface IMount
 	{
 		Mobile Rider { get; set; }
-		void OnRiderDamaged(int amount, Mobile from, bool willKill);
+		void OnRiderDamaged(Mobile from, ref int amount, bool willKill);
 	}
 
 	public interface IMountItem

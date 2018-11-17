@@ -5615,7 +5615,7 @@ namespace Server
 
 				if (m != null && informMount)
 				{
-					m.OnRiderDamaged(amount, from, newHits < 0);
+					m.OnRiderDamaged(from, ref amount, newHits < 0);
 				}
 
 				if (newHits < 0)
