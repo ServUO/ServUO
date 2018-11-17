@@ -463,7 +463,7 @@ namespace Server.Gumps
                     return;
                 }
 
-                Imbuing.ImbueItem(from, it, mod, modInt);
+                Imbuing.TryImbueItem(from, it, mod, modInt);
                 ImbuingGumpC.SendGumpDelayed(from);
             }
 
