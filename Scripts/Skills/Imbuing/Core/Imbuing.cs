@@ -1918,14 +1918,20 @@ namespace Server.SkillHandlers
                 else if (attr is AosElementAttribute)
                 {
                     AosElementAttribute ele = (AosElementAttribute)attr;
+                    var value = 0;
 
                     switch (ele)
                     {
-                        case AosElementAttribute.Physical: return a.PhysicalBonus;
-                        case AosElementAttribute.Fire: return a.FireBonus;
-                        case AosElementAttribute.Cold: return a.ColdBonus;
-                        case AosElementAttribute.Poison: return a.PoisonBonus;
-                        case AosElementAttribute.Energy: return a.EnergyBonus;
+                        case AosElementAttribute.Physical: value = a.PhysicalBonus; break;
+                        case AosElementAttribute.Fire: value = a.FireBonus; break;
+                        case AosElementAttribute.Cold: value = a.ColdBonus; break;
+                        case AosElementAttribute.Poison: value = a.PoisonBonus; break;
+                        case AosElementAttribute.Energy: value = a.EnergyBonus; break;
+                    }
+
+                    if (value > 0)
+                    {
+                        return value;
                     }
                 }
             }
@@ -1937,7 +1943,14 @@ namespace Server.SkillHandlers
                     return c.Attributes[(AosAttribute)attr];
 
                 else if (attr is AosElementAttribute)
-                    return c.Resistances[(AosElementAttribute)attr];
+                {
+                    var value = c.Resistances[(AosElementAttribute)attr];
+
+                    if (value > 0)
+                    {
+                        return value;
+                    }
+                }
 
                 else if (attr is AosArmorAttribute)
                     return c.ClothingAttributes[(AosArmorAttribute)attr];
