@@ -232,6 +232,8 @@ namespace Server.Items
                     {
                         c.DropItem(item);
                     }
+
+                    ColUtility.Free(drops);
                 }
             }
         }

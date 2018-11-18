@@ -412,7 +412,6 @@ namespace Server.SkillHandlers
             {
                 BaseWeapon wep = i as BaseWeapon;
                 wep.TimesImbued++;
-                wep.WeaponAttributes.SelfRepair = 0;
 
                 if (prop is AosAttribute)
                 {
@@ -494,7 +493,6 @@ namespace Server.SkillHandlers
             {
                 BaseShield shield = i as BaseShield;
                 shield.TimesImbued++;
-                shield.ArmorAttributes.SelfRepair = 0;
 
                 if (prop is AosWeaponAttribute && (AosWeaponAttribute)prop == AosWeaponAttribute.DurabilityBonus)
                     prop = AosArmorAttribute.DurabilityBonus;
@@ -528,7 +526,6 @@ namespace Server.SkillHandlers
             {
                 BaseArmor arm = i as BaseArmor;
                 arm.TimesImbued++;
-                arm.ArmorAttributes.SelfRepair = 0;
 
                 if (prop is AosWeaponAttribute && (AosWeaponAttribute)prop == AosWeaponAttribute.DurabilityBonus)
                     prop = AosArmorAttribute.DurabilityBonus;
@@ -648,6 +645,22 @@ namespace Server.SkillHandlers
                         jewel.SkillBonuses.SetValues(3, skill, value);
                     else if (mod >= 174 && mod <= 180)
                         jewel.SkillBonuses.SetValues(4, skill, value);
+                }
+            }
+
+            var armorAttrs = RunicReforging.GetAosArmorAttributes(i);
+
+            if (armorAttrs != null)
+            {
+                armorAttrs.SelfRepair = 0;
+            }
+            else
+            {
+                var wepAttrs = RunicReforging.GetAosWeaponAttributes(i);
+
+                if (wepAttrs != null)
+                {
+                    wepAttrs.SelfRepair = 0;
                 }
             }
 
