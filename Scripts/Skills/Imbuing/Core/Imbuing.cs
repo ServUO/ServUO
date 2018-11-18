@@ -2041,7 +2041,7 @@ namespace Server.SkillHandlers
 
                 if (resists != null && resists.Length == 5)
                 {
-                    return resists[51 - mod];
+                    return resists[mod - 51];
                 }
             }
 
