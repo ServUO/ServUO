@@ -11,6 +11,7 @@ namespace Server.Mobiles
         private int m_BardingHP;
         private bool m_HasBarding;
         private CraftResource m_BardingResource;
+
         [Constructable]
         public SwampDragon()
             : this("a swamp dragon")
@@ -305,6 +306,37 @@ namespace Server.Mobiles
             if (m_HasBarding)
             {
                 list.Add(1115719, m_BardingHP.ToString()); // armor points: ~1_val~
+            }
+        }
+
+        public override void OnRiderDamaged(Mobile from, ref int amount, bool willKill)
+        {
+            base.OnRiderDamaged(from, ref amount, willKill);
+
+            if (Rider == null)
+                return;
+
+            if ((from == null || !from.Player) && Rider.Player && Rider.Mount == this)
+            {
+                if (HasBarding)
+                {
+                    int percent = (BardingExceptional ? 20 : 10);
+                    int absorbed = AOS.Scale(amount, percent);
+
+                    amount -= absorbed;
+
+                    // Mondain's Legacy mod
+                    if (!(this is ParoxysmusSwampDragon))
+                        BardingHP -= absorbed;
+
+                    if (BardingHP < 0)
+                    {
+                        HasBarding = false;
+                        BardingHP = 0;
+
+                        Rider.SendLocalizedMessage(1053031); // Your dragon's barding has been destroyed!
+                    }
+                }
             }
         }
 
