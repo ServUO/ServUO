@@ -121,13 +121,12 @@ namespace Server.Engines.CannedEvil
         public PrimevalLichPuzzle(Mobile m)
             : base(0x1BC3)
         {
-            if (null == m || null != m_Instance)
+            if(null == m || null != m_Instance)
             {
                 Delete();
-
-                if (m_Instance.Deleted)
+                //Probably not needed, OnAfterDelete sets it null anyway
+                if (m_Instance != null && m_Instance.Deleted)
                     m_Instance = null;
-
                 return;
             }
 
