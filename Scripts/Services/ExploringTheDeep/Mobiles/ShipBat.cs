@@ -31,7 +31,7 @@ namespace Server.Mobiles
 
             //SetSkill( SkillName.MagicResist, 70.1, 95.0 );
             SetSkill(SkillName.Tactics, 45.0, 55.0);
-            SetSkill(SkillName.Wrestling, 90.0, 1000.0);
+            SetSkill(SkillName.Wrestling, 90.0, 100.0);
 
             Fame = 1000;
             Karma = -1000;
