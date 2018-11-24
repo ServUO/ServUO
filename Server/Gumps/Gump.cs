@@ -336,10 +336,10 @@ namespace Server.Gumps
             Add(new GumpTextEntry(x, y, width, height, hue, entryID, initialTextID));
         }
 
-        public void AddTooltip(int number, string args)
+        /*public void AddTooltip(int number, string args)
         {
             Add(new GumpTooltip(number, args));
-        }
+        }*/
 
         public void AddItemProperty(Item item)
         {

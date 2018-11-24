@@ -411,6 +411,16 @@ namespace Server.Gumps
             AddTooltip(title, text, System.Drawing.Color.Empty, System.Drawing.Color.Empty);
         }
 
+        public void AddTooltip(int cliloc, string args)
+        {
+            AddTooltip(new int[] { cliloc }, new string[] { args ?? String.Empty });
+        }
+
+        public void AddTooltip(int cliloc, string format, params string[] args)
+        {
+            AddTooltip(cliloc, String.Format(format, args));
+        }
+
         public void AddTooltip(int[] clilocs)
         {
             AddTooltip(clilocs, new string[clilocs.Length]);
