@@ -30,7 +30,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (from is PlayerMobile)
+            if (CleanUpBritanniaData.Enabled && from is PlayerMobile)
             {
                 list.Add(new AppraiseforCleanup(from));
             }

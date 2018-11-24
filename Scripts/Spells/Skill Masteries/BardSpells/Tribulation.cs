@@ -34,8 +34,7 @@ namespace Server.Spells.SkillMasteries
 
         private int m_PropertyBonus;
         private double m_DamageChance;
-        private double m_DamageFactor;
-        private double m_SlayerBonus;
+        private int m_DamageFactor;
         private int m_Rounds;
 
 		public TribulationSpell( Mobile caster, Item scroll ) : base(caster, scroll, m_Info)
@@ -85,31 +84,13 @@ namespace Server.Spells.SkillMasteries
                 double cast = Caster.Skills[CastSkill].Value;
                 double dam = Caster.Skills[DamageSkill].Value;
 
-                m_Rounds = (int)(5 + ((cast - 90) * .3667) + (14 * (int)CollectiveBonus)); // 5 - 11 (14)
+                m_PropertyBonus = (int)((BaseSkillBonus * 2.75) + (CollectiveBonus * 1.667));               // 5 - 22 (32)
+                m_DamageChance = (int)((BaseSkillBonus * 7.5) + (CollectiveBonus * 3));                     // 15 - 60 (84)
+                m_DamageFactor = (int)((BaseSkillBonus * 4) + (CollectiveBonus * 3));                       // 8 - 32 (50)
+                m_Rounds = 5 + (int)((BaseSkillBonus * .75) + (CollectiveBonus / 2));                       // 5 - 11 (14)
 
-                m_PropertyBonus = (int)((5 + ((cast - 90) * .567)) + (14 * (int)CollectiveBonus));          // 5 - 22 (36)
-                m_DamageChance = Math.Max(15, ((dam / 10) * 5)) + (24 * (int)CollectiveBonus);              // 15 - 60 (84)
-                m_DamageFactor = Math.Max(8, ((cast / 10) * 2.667)) + (18 * (int)CollectiveBonus);          // 8 - 32 (50)
-                m_SlayerBonus = 1;
-
-                ISlayer slayer = Instrument as ISlayer;
-
-                if (slayer != null)
-                {
-                    SlayerEntry se1 = SlayerGroup.GetEntryByName(slayer.Slayer);
-                    SlayerEntry se2 = SlayerGroup.GetEntryByName(slayer.Slayer2);
-
-                    if ((se1 != null && se1.Slays(Target)) || (se2 != null && se2.Slays(Target)))
-                    {
-                        m_SlayerBonus = 1.5;
-                    }
-                }
-
-                if(m.Player)
-                {
-                    // ~1_HCI~% Hit Chance.<br>~2_SDI~% Spell Damage.<br>Damage taken has a ~3_EXP~% chance to cause additional burst of physical damage.<br>
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TribulationTarget, 1115740, 1115742, String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, (int)m_DamageChance)));
-                }
+                // ~1_HCI~% Hit Chance.<br>~2_SDI~% Spell Damage.<br>Damage taken has a ~3_EXP~% chance to cause additional burst of physical damage.<br>
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TribulationTarget, 1115740, 1115742, String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, (int)m_DamageChance)));
 
                 // Target: ~1_val~ <br> Damage Factor: ~2_val~% <br> Damage Chance: ~3_val~%
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.TribulationCaster, 1115740, 1151388, String.Format("{0}\t{1}\t{2}", m.Name, (int)m_DamageFactor, (int)m_DamageChance)));
@@ -125,9 +106,7 @@ namespace Server.Spells.SkillMasteries
             if(Target != null && Target.Alive && Target.Map != null)
                 Target.FixedEffect(0x376A, 1, 32);
 
-            m_Rounds--;
-
-            if (m_Rounds <= 0)
+            if (m_Rounds-- <= 0)
             {
                 Expire();
                 return false;
@@ -151,10 +130,9 @@ namespace Server.Spells.SkillMasteries
 			{
                 m_NextDamage = DateTime.UtcNow + TimeSpan.FromSeconds(1);
 
-				int damage = (int)((double)damageTaken * (m_DamageFactor / 100));
-
-                damage = (int)((double)damage * DamageModifier(victim));
-                damage = (int)((double)damage * m_SlayerBonus);
+                int damage = AOS.Scale(damageTaken, m_DamageFactor);
+                damage = (int)((double)damage * GetSlayerBonus()); // 1.5 slayer bonus
+                damage -= (int)((double)damage * DamageModifier(Target)); // resist modifier
 
                 AOS.Damage(victim, Caster, damage, 0, 0, 0, 0, 0, 0, 100);
                 victim.FixedParticles(0x374A, 10, 15, 5038, 1181, 0, EffectLayer.Head);
@@ -165,17 +143,6 @@ namespace Server.Spells.SkillMasteries
 		{
 			return m_PropertyBonus;
 		}
-
-        public override double CollectiveBonus
-        {
-            get
-            {
-                double bonus = Caster.Skills[SkillName.Musicianship].Base + Caster.Skills[SkillName.Discordance].Base +
-                    Caster.Skills[SkillName.Provocation].Base + Caster.Skills[SkillName.Peacemaking].Base;
-
-                return (bonus / 4) / 120;
-            }
-        }
 
 		private class InternalTarget : Target
 		{

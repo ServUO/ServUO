@@ -19,10 +19,17 @@ namespace Server.Engines.Points
 
         private TextDefinition m_Name = null;
 
+        public static bool Enabled { get; set; }
+
         public CleanUpBritanniaData()
         {
-            InitializeEntries();
-            PointsExchange = new Dictionary<string, double>();
+            Enabled = Core.ML;
+
+            if (Enabled)
+            {
+                InitializeEntries();
+                PointsExchange = new Dictionary<string, double>();
+            }
         }
 
         public static double GetPoints(Item item)

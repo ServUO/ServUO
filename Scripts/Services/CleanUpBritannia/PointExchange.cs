@@ -21,6 +21,12 @@ namespace Server.Engines.Points
 
         public override void OnDoubleClick(Mobile m)
         {
+            if (!CleanUpBritanniaData.Enabled)
+            {
+                base.OnDoubleClick(m);
+                return;
+            }
+
             if (m.InRange(Location, 3))
             {
                 if (m is PlayerMobile)

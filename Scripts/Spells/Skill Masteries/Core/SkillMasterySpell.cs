@@ -237,10 +237,6 @@ namespace Server.Spells.SkillMasteries
         public virtual void OnDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
         {
         }
-		
-		public virtual void DoDamage(Mobile victim, int damageTaken)
-		{
-		}
 
         public virtual void OnHit(Mobile defender, ref int damage)
 		{
@@ -327,7 +323,7 @@ namespace Server.Spells.SkillMasteries
             double dSkill = Caster.Skills[DamageSkill].Value;
             double vSkill = GetResistSkill(victim);
 				
-			double reduce = (dSkill - vSkill) / dSkill;
+			double reduce = 1.0 - ((dSkill - vSkill) / dSkill);
 				
 			if(reduce < 0) reduce = 0;	
 			if(reduce > 1) reduce = 1;
@@ -776,10 +772,15 @@ namespace Server.Spells.SkillMasteries
             if (move != null)
                 move.OnDamaged(damager, victim, type, ref damage);
 
-            PerseveranceSpell spell = SkillMasterySpell.GetSpellForParty(victim, typeof(PerseveranceSpell)) as PerseveranceSpell;
+            PerseveranceSpell preserve = SkillMasterySpell.GetSpellForParty(victim, typeof(PerseveranceSpell)) as PerseveranceSpell;
 
-            if (spell != null)
-                spell.AbsorbDamage(ref damage);
+            if (preserve != null)
+                preserve.AbsorbDamage(ref damage);
+
+            InspireSpell inspire = SkillMasterySpell.GetSpellForParty(damager, typeof(InspireSpell)) as InspireSpell;
+
+            if (inspire != null)
+                inspire.DoDamage(ref damage);
 
             CombatTrainingSpell.CheckDamage(damager, victim, type, ref damage);
 		}

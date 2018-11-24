@@ -48,15 +48,15 @@ namespace Server.Spells.SkillMasteries
 			}
 			else if ( CheckSequence() )
 			{
-                m_HPBonus = (int)((20 * BaseSkillBonus) + (CollectiveBonus * 6));
-                m_StatBonus = (int)((BaseSkillBonus * 8) + (CollectiveBonus * 6));
+                m_StatBonus = (int)(BaseSkillBonus + CollectiveBonus);
+                m_HPBonus = (int)((2.5 * BaseSkillBonus) + CollectiveBonus);
 
                 foreach (Mobile m in GetParty())
                 {
                     m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
                     m.SendLocalizedMessage(1115737); // You feel invigorated by the bard's spellsong.
 
-                    string args = String.Format("{0}\t{1}\t{2}\t{3}", m_StatBonus, m_StatBonus, m_StatBonus, m_StatBonus);
+                    string args = String.Format("{0}\t{1}\t{2}\t{3}", m_HPBonus, m_StatBonus, m_StatBonus, m_StatBonus);
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invigorate, 1115613, 1115730, args.ToString()));
                 }
 
