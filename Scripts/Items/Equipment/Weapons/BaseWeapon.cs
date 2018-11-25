@@ -1320,16 +1320,27 @@ namespace Server.Items
 					sk = Skill;
 				}
 			}
-			else
-			{
-				sk = Skill;
+            else if (m_ExtendedWeaponAttributes.MysticWeapon != 0 || Enhancement.GetValue(m, ExtendedWeaponAttribute.MysticWeapon) > 0)
+            {
+                if (m.Skills[SkillName.Mysticism].Value > m.Skills[Skill].Value)
+                {
+                    sk = SkillName.Mysticism;
+                }
+                else
+                {
+                    sk = Skill;
+                }
+            }
+            else
+            {
+                sk = Skill;
 
-				if (sk != SkillName.Wrestling && !m.Player && !m.Body.IsHuman &&
-					m.Skills[SkillName.Wrestling].Value > m.Skills[sk].Value)
-				{
-					sk = SkillName.Wrestling;
-				}
-			}
+                if (sk != SkillName.Wrestling && !m.Player && !m.Body.IsHuman &&
+                    m.Skills[SkillName.Wrestling].Value > m.Skills[sk].Value)
+                {
+                    sk = SkillName.Wrestling;
+                }
+            }
 
 			return sk;
 		}
