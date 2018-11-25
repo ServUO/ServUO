@@ -405,7 +405,7 @@ namespace Server.Spells.SkillMasteries
             }
             else
             {
-                PartyList.Add(Caster);
+                AddPartyMember(Caster);
             }
         }
 
