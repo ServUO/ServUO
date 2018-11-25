@@ -201,7 +201,13 @@ namespace Server.Gumps
 
         public virtual void Close()
         {
-            User.CloseGump(this.GetType());
+            if (User == null || User.NetState == null)
+                return;
+
+            OnServerClose(User.NetState);
+
+            User.Send(new CloseGump(TypeID, 0));
+            User.NetState.RemoveGump(this);
         }
         
         public static T GetGump<T>(PlayerMobile pm, Func<T, bool> predicate) where T : Gump
