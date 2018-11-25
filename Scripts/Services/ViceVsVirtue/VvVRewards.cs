@@ -106,7 +106,7 @@ namespace Server.Engines.VvV
             Rewards.Add(new CollectionItem(typeof(JusticeBanner), 39359, 1123383, 0, 10000)); // Justice Banner
             Rewards.Add(new CollectionItem(typeof(SacraficeBanner), 39361, 1123385, 0, 10000)); // Sacrafice Banner
             Rewards.Add(new CollectionItem(typeof(SpiritualityBanner), 39363, 1123387, 0, 10000)); // Spirituality Banner
-            Rewards.Add(new CollectionItem(typeof(ValorBanner), 1123389, 39365, 0, 10000)); // Valor Banner
+            Rewards.Add(new CollectionItem(typeof(ValorBanner), 39365, 1123389, 0, 10000)); // Valor Banner
 
             Rewards.Add(new CollectionItem(typeof(CovetousBanner), 39335, 1123359, 0, 10000)); // Covetous Banner
             Rewards.Add(new CollectionItem(typeof(DeceitBanner), 39337, 1123361, 0, 10000)); // Deceit Banner
