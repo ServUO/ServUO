@@ -16,7 +16,8 @@ namespace Server.Spells.SkillMasteries
 		public static readonly string StatModName = "Invigorate";
 	
 		private DateTime m_NextHeal;
-	
+        private List<Mobile> m_Mods = new List<Mobile>();
+
 		private static SpellInfo m_Info = new SpellInfo(
 				"Invigorate", "An Zu",
 				-1,
@@ -51,20 +52,41 @@ namespace Server.Spells.SkillMasteries
                 m_StatBonus = (int)(BaseSkillBonus + CollectiveBonus);
                 m_HPBonus = (int)((2.5 * BaseSkillBonus) + CollectiveBonus);
 
-                foreach (Mobile m in GetParty())
-                {
-                    m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
-                    m.SendLocalizedMessage(1115737); // You feel invigorated by the bard's spellsong.
-
-                    string args = String.Format("{0}\t{1}\t{2}\t{3}", m_HPBonus, m_StatBonus, m_StatBonus, m_StatBonus);
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invigorate, 1115613, 1115730, args.ToString()));
-                }
-
+                UpdateParty();
 				BeginTimer();
 			}
 			
 			FinishSequence();
 		}
+
+        public override void AddPartyEffects(Mobile m)
+        {
+            m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
+            m.SendLocalizedMessage(1115737); // You feel invigorated by the bard's spellsong.
+
+            string args = String.Format("{0}\t{1}\t{2}\t{3}", m_HPBonus, m_StatBonus, m_StatBonus, m_StatBonus);
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invigorate, 1115613, 1115730, args.ToString()));
+
+            m.AddStatMod(new StatMod(StatType.Str, StatModName + "str", m_StatBonus, TimeSpan.Zero));
+            m.AddStatMod(new StatMod(StatType.Dex, StatModName + "dex", m_StatBonus, TimeSpan.Zero));
+            m.AddStatMod(new StatMod(StatType.Int, StatModName + "int", m_StatBonus, TimeSpan.Zero));
+
+            m_Mods.Add(m);
+        }
+
+        public override void RemovePartyEffects(Mobile m)
+        {
+            BuffInfo.RemoveBuff(m, BuffIcon.Invigorate);
+
+            if (m_Mods.Contains(m))
+            {
+                m.RemoveStatMod(StatModName + "str");
+                m.RemoveStatMod(StatModName + "dex");
+                m.RemoveStatMod(StatModName + "int");
+
+                m_Mods.Remove(m);
+            }
+        }
 
         public override void EndEffects()
         {
@@ -79,11 +101,6 @@ namespace Server.Spells.SkillMasteries
             RemovePartyEffects(Caster);
         }
 
-        public override void RemovePartyEffects(Mobile m)
-        {
-            BuffInfo.RemoveBuff(m, BuffIcon.Invigorate);
-        }
-
 		public override bool OnTick()
 		{
 			base.OnTick();
@@ -91,60 +108,27 @@ namespace Server.Spells.SkillMasteries
 			if(m_NextHeal > DateTime.UtcNow)
                 return false;
 
-            foreach (Mobile m in GetParty())
+            PartyList.IterateReverse(m =>
             {
                 if (CheckPartyEffects(m, true))
                 {
-                    int healRange = (int)((BaseSkillBonus * 12) + (CollectiveBonus * 8));
+                    int healRange = (int)((BaseSkillBonus * 2) + CollectiveBonus ); // 4 - 16 (22)
 
                     if (m.Hits < m.HitsMax)
+                    {
                         m.Heal(Utility.RandomMinMax(healRange - 2, healRange + 2));
-
-                    m.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
-                    m.PlaySound(0x1F2);
-
-                    if (m.GetStatMod(StatModName + "str") == null) m.AddStatMod(new StatMod(StatType.Str, StatModName + "str", m_StatBonus, TimeSpan.Zero));
-                    if (m.GetStatMod(StatModName + "dex") == null) m.AddStatMod(new StatMod(StatType.Dex, StatModName + "dex", m_StatBonus, TimeSpan.Zero));
-                    if (m.GetStatMod(StatModName + "int") == null) m.AddStatMod(new StatMod(StatType.Int, StatModName + "int", m_StatBonus, TimeSpan.Zero));
+                        m.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
+                        m.PlaySound(0x1F2);
+                    }
                 }
                 else
                 {
-                    if(m.GetStatMod(StatModName + "str") != null) m.RemoveStatMod(StatModName + "str");
-                    if(m.GetStatMod(StatModName + "dex") != null) m.RemoveStatMod(StatModName + "dex");
-                    if(m.GetStatMod(StatModName + "int") != null) m.RemoveStatMod(StatModName + "int");
+                    RemovePartyMember(m);
                 }
-            }
+            });
 
             m_NextHeal = DateTime.UtcNow + TimeSpan.FromSeconds(4);
             return true;
-		}
-
-        private List<Mobile> m_Mods = new List<Mobile>();
-
-		public override void AddStatMods()
-		{
-			int offset = m_StatBonus;
-
-            foreach (Mobile m in GetParty().Where(mob => CheckPartyEffects(mob)))
-            {
-                m.AddStatMod(new StatMod(StatType.Str, StatModName + "str", offset, TimeSpan.Zero));
-                m.AddStatMod(new StatMod(StatType.Dex, StatModName + "dex", offset, TimeSpan.Zero));
-                m.AddStatMod(new StatMod(StatType.Int, StatModName + "int", offset, TimeSpan.Zero));
-
-                m_Mods.Add(m);
-            }
-		}
-		
-		public override void RemoveStatMods()
-		{
-            foreach (Mobile m in m_Mods)
-            {
-                m.RemoveStatMod(StatModName + "str");
-                m.RemoveStatMod(StatModName + "dex");
-                m.RemoveStatMod(StatModName + "int");
-            }
-
-            m_Mods.Clear();
 		}
 		
 		/// <summary>

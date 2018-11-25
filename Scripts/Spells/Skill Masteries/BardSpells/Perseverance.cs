@@ -46,20 +46,26 @@ namespace Server.Spells.SkillMasteries
                 m_PropertyBonus2 = (int)((BaseSkillBonus / 2) + (CollectiveBonus / 3));     // 1 - 4 (6)
                 m_DamageMod = (int)((BaseSkillBonus * 3) + CollectiveBonus);                // 2 - 24 (30)
 
-                foreach (Mobile m in GetParty())
-                {
-                    m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
-                    m.SendLocalizedMessage(1115739); // The bard's spellsong fills you with a feeling of invincibility.
-
-                    string args = String.Format("{0}\t-{1}\t{2}", m_PropertyBonus, m_DamageMod, m_PropertyBonus2);
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Perseverance, 1115615, 1115732, args.ToString()));
-                }
-
+                UpdateParty();
 				BeginTimer();
 			}
 			
 			FinishSequence();
 		}
+
+        public override void AddPartyEffects(Mobile m)
+        {
+            m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
+            m.SendLocalizedMessage(1115739); // The bard's spellsong fills you with a feeling of invincibility.
+
+            string args = String.Format("{0}\t-{1}\t{2}", m_PropertyBonus, m_DamageMod, m_PropertyBonus2);
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Perseverance, 1115615, 1115732, args.ToString()));
+        }
+
+        public override void RemovePartyEffects(Mobile m)
+        {
+            BuffInfo.RemoveBuff(m, BuffIcon.Perseverance);
+        }
 
         public override void EndEffects()
         {
@@ -72,11 +78,6 @@ namespace Server.Spells.SkillMasteries
             }
 
             RemovePartyEffects(Caster);
-        }
-
-        public override void RemovePartyEffects(Mobile m)
-        {
-            BuffInfo.RemoveBuff(m, BuffIcon.Perseverance);
         }
 		
 		/// <summary>

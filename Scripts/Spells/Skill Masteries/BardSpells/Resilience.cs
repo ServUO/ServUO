@@ -42,20 +42,26 @@ namespace Server.Spells.SkillMasteries
 			{
                 m_PropertyBonus = (int)((BaseSkillBonus * 2) + CollectiveBonus); // 2 - 16 (22)
 
-                foreach (Mobile m in GetParty())
-                {
-                    m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
-                    m.SendLocalizedMessage(1115738); // The bard's spellsong fills you with a feeling of resilience.
-
-                    string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_PropertyBonus);
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Resilience, 1115614, 1115731, args.ToString()));
-                }
-
+                UpdateParty();
 				BeginTimer();
 			}
 			
 			FinishSequence();
 		}
+
+        public override void AddPartyEffects(Mobile m)
+        {
+            m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
+            m.SendLocalizedMessage(1115738); // The bard's spellsong fills you with a feeling of resilience.
+
+            string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_PropertyBonus);
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Resilience, 1115614, 1115731, args.ToString()));
+        }
+
+        public override void RemovePartyEffects(Mobile m)
+        {
+            BuffInfo.RemoveBuff(m, BuffIcon.Resilience);
+        }
 
         public override void EndEffects()
         {
@@ -68,11 +74,6 @@ namespace Server.Spells.SkillMasteries
             }
 
             RemovePartyEffects(Caster);
-        }
-
-        public override void RemovePartyEffects(Mobile m)
-        {
-            BuffInfo.RemoveBuff(m, BuffIcon.Resilience);
         }
 
 		/// <summary>

@@ -149,6 +149,8 @@ namespace Server.Spells.SkillMasteries
 
 		public virtual bool OnTick()
 		{
+            UpdateParty();
+
             if (RevealOnTick)
             {
                 Caster.RevealingAction();
@@ -369,65 +371,112 @@ namespace Server.Spells.SkillMasteries
             return (int)MasteryInfo.GetMasteryLevel(Caster, CastSkill);
         }
 
-        /// <summary>
-        /// Gets dynamic enumeration of party members and pets withing party range
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<Mobile> GetParty()
+        public void UpdateParty()
         {
-            var list = EnumerateParty();
-            PartyList = list.ToList();
-            return list;
+            UpdateParty(false);
         }
 
-        private IEnumerable<Mobile> EnumerateParty()
+        public void UpdateParty(bool playersOnly)
         {
-            if (!PartyEffects)
-                yield break;
+            var p = Party.Get(Caster);
 
-            Party p = Party.Get(Caster);
+            if (PartyList == null)
+            {
+                PartyList = new List<Mobile>();
+            }
 
             if (p != null)
             {
-                IPooledEnumerable eable = Caster.Map.GetMobilesInRange(Caster.Location, PartyRange);
-
-                foreach (Mobile mob in eable)
+                foreach (var m in p.Members.Select(x => x.Mobile))
                 {
-                    Mobile check = mob;
-
-                    if (mob is BaseCreature && (((BaseCreature)mob).Summoned || ((BaseCreature)mob).Controlled))
-                        check = ((BaseCreature)mob).GetMaster();
-
-                    if (check != null && p.Contains(check))
+                    if (!PartyList.Contains(m) && (!playersOnly || m is PlayerMobile) && ValidPartyMember(m))
                     {
-                        yield return mob;
+                        AddPartyMember(m);
+                    }
+                    else if (PartyList.Contains(m) && !ValidPartyMember(m))
+                    {
+                        RemovePartyMember(m);
+                    }
+                    else
+                    {
+                        UpdatePets(m);
                     }
                 }
-
-                eable.Free();
             }
             else
             {
-                if (Caster is PlayerMobile)
-                {
-                    foreach (var m in ((PlayerMobile)Caster).AllFollowers.Where(x => Caster.InRange(x.Location, PartyRange)))
-                    {
-                        yield return m;
-                    }
-                }
-
-                yield return Caster;
+                PartyList.Add(Caster);
             }
         }
 
-        public void RemoveFromParty(Mobile m)
+        public virtual bool CheckPartyEffects(Mobile m, bool beneficial = false)
         {
-            if (PartyList != null && PartyList.Contains(m))
-            {
-                PartyList.Remove(m);
+            if (m == Caster)
+                return true;
 
-                RemovePartyEffects(m);
+            if (Caster.IsBeneficialCriminal(m))
+            {
+                int casterNoto = Notoriety.Compute(Caster, m);
+                int mNoto = Notoriety.Compute(m, Caster);
+
+                if (casterNoto == Notoriety.Enemy || casterNoto != mNoto)
+                {
+                    return false;
+                }
             }
+
+            if (beneficial)
+                Caster.DoBeneficial(m);
+
+            return true;
+        }
+
+        protected virtual bool ValidPartyMember(Mobile m)
+        {
+            return m.Alive && m.InRange(Caster, PartyRange) && m.Map == Caster.Map && CheckPartyEffects(m);
+        }
+
+        protected void AddPartyMember(Mobile m)
+        {
+            PartyList.Add(m);
+            AddPartyEffects(m);
+
+            if (m is PlayerMobile)
+            {
+                foreach (var pet in ((PlayerMobile)m).AllFollowers.Where(p => ValidPartyMember(p)))
+                {
+                    AddPartyMember(pet);
+                }
+            }
+        }
+
+        protected void RemovePartyMember(Mobile m)
+        {
+            PartyList.Remove(m);
+            RemovePartyEffects(m);
+
+            if (m is PlayerMobile)
+            {
+                foreach (var pet in ((PlayerMobile)m).AllFollowers)
+                {
+                    RemovePartyMember(pet);
+                }
+            }
+        }
+
+        private void UpdatePets(Mobile m)
+        {
+            if (m is PlayerMobile)
+            {
+                foreach (var pet in ((PlayerMobile)m).AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
+                {
+                    AddPartyMember(pet);
+                }
+            }
+        }
+
+        public virtual void AddPartyEffects(Mobile m)
+        {
         }
 
         public virtual void RemovePartyEffects(Mobile m)
@@ -444,13 +493,13 @@ namespace Server.Spells.SkillMasteries
                         {
                             if (mob != spell.Caster || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != mob))
                             {
-                                spell.RemoveFromParty(mob);
+                                spell.RemovePartyMember(mob);
                             }
                         });
                 }
                 else
                 {
-                    spell.RemoveFromParty(m);
+                    spell.RemovePartyMember(m);
                 }
             }
         }
@@ -605,28 +654,6 @@ namespace Server.Spells.SkillMasteries
             }
 
             return null;
-        }
-
-        public virtual bool CheckPartyEffects(Mobile m, bool beneficial = false)
-        {
-            if (m == Caster)
-                return true;
-
-            if (Caster.IsBeneficialCriminal(m))
-            {
-                int casterNoto = Notoriety.Compute(Caster, m);
-                int mNoto = Notoriety.Compute(m, Caster);
-
-                if (casterNoto == Notoriety.Enemy || casterNoto != mNoto)
-                {
-                    return false;
-                }
-            }
-
-            if (beneficial)
-                Caster.DoBeneficial(m);
-
-            return true;
         }
 
         private static object _Lock = new object();
