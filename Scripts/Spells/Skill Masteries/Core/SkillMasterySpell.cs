@@ -443,7 +443,7 @@ namespace Server.Spells.SkillMasteries
 
             if (m is PlayerMobile)
             {
-                foreach (var pet in ((PlayerMobile)m).AllFollowers.Where(p => ValidPartyMember(p)))
+                foreach (var pet in ((PlayerMobile)m).AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
                 {
                     AddPartyMember(pet);
                 }
@@ -457,7 +457,7 @@ namespace Server.Spells.SkillMasteries
 
             if (m is PlayerMobile)
             {
-                foreach (var pet in ((PlayerMobile)m).AllFollowers)
+                foreach (var pet in ((PlayerMobile)m).AllFollowers.Where(p => PartyList.Contains(p)))
                 {
                     RemovePartyMember(pet);
                 }
