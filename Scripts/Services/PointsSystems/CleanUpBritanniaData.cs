@@ -805,11 +805,15 @@ namespace Server.Engines.Points
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.Write(PointsExchange.Count);
-            foreach (var kvp in PointsExchange)
+            writer.Write(PointsExchange == null ? 0 : PointsExchange.Count);
+
+            if (PointsExchange != null)
             {
-                writer.Write(kvp.Key);
-                writer.Write(kvp.Value);
+                foreach (var kvp in PointsExchange)
+                {
+                    writer.Write(kvp.Key);
+                    writer.Write(kvp.Value);
+                }
             }
         }
 
