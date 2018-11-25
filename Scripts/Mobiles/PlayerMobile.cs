@@ -4335,7 +4335,7 @@ namespace Server.Mobiles
 			}
 
             //Skill Masteries
-            if (SkillMasterySpell.UnderPartyEffects(this, typeof(Spells.SkillMasteries.ResilienceSpell)) && 0.25 > Utility.RandomDouble())
+            if (Spells.SkillMasteries.ResilienceSpell.UnderEffects(this) && 0.25 > Utility.RandomDouble())
             {
                 return ApplyPoisonResult.Immune;
             }

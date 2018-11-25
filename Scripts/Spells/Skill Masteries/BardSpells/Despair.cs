@@ -25,9 +25,11 @@ namespace Server.Spells.SkillMasteries
 		public override int RequiredMana{ get { return 26; } }
 		public override bool PartyEffects { get { return false; } }
         public override SkillName CastSkill { get { return SkillName.Discordance; } }
+        public override double SlayerBonus { get { return 3.0; } }
 
         private int m_StatMod;
         private int m_Damage;
+        private int m_Rounds;
 
 		public DespairSpell( Mobile caster, Item scroll ) : base(caster, scroll, m_Info)
 		{
@@ -77,8 +79,11 @@ namespace Server.Spells.SkillMasteries
 
                 m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
 
-                m_StatMod = (int)((BaseSkillBonus * 25) + (CollectiveBonus * 7)) * -1;
-                m_Damage = GetDamage();
+                int rounds = 5 + (int)((double)BaseSkillBonus * .75);
+
+                m_StatMod = (int)((BaseSkillBonus * 2) + CollectiveBonus);
+                m_Damage = (int)((BaseSkillBonus * 4.5) + (CollectiveBonus * 2));
+                m_Rounds = 5 + (int)((BaseSkillBonus * .75) + (CollectiveBonus / 2));
 
                 string args = String.Format("{0}\t{1}", m_StatMod, m_Damage);
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.DespairTarget, 1115741, 1115743, args.ToString()));
@@ -110,44 +115,30 @@ namespace Server.Spells.SkillMasteries
 				Target.RemoveStatMod(ModName);
 		}
 
-        private int GetDamage()
-        {
-            int music = (int)Caster.Skills[DamageSkill].Value;
-            int disc = (int)Caster.Skills[CastSkill].Value;
-            int prov = (int)Caster.Skills[SkillName.Provocation].Value;
-            int peac = (int)Caster.Skills[SkillName.Peacemaking].Value;
-
-            int damage = 27;
-
-            if (music >= 100)
-                damage += 6 * ((music / 10) - 10);
-
-            if (disc >= 100)
-                damage += 3 * ((disc / 10) - 10);
-            if (prov >= 100)
-                damage += 3 * ((prov / 10) - 10);
-            if (peac >= 100)
-                damage += 3 * ((peac / 10) - 10);
-
-            return damage;
-        }
-
         public override bool OnTick()
         {
             bool tick = base.OnTick();
 
-            if (!Caster.Player || Target == null || !Caster.InRange(Target.Location, PartyRange))
+            if (Target == null || !Caster.InRange(Target.Location, PartyRange))
                 return false;
 
             int damage = m_Damage;
-            double modifier = DamageModifier(Target);
 
-            damage -= (int)((double)damage * modifier);
+            if (!Target.Player)
+                damage += AOS.Scale(damage, 50); // pvm = 1.5x
+
+            damage = (int)((double)damage * GetSlayerBonus()); // 3.0x slayer bonus
+            damage -= (int)((double)damage * DamageModifier(Target)); // resist modifier
 
             AOS.Damage(Target, Caster, damage, 100, 0, 0, 0, 0); // Now only does physical
 
             if (Target != null && Target.Alive && Target.Map != null)
                 Target.FixedEffect(0x376A, 1, 32);
+
+            if (m_Rounds-- == 0)
+            {
+                Expire();
+            }
 
             return tick;
         }

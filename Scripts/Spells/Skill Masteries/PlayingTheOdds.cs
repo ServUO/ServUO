@@ -66,9 +66,8 @@ namespace Server.Spells.SkillMasteries
             {
                 wep.PlaySwingAnimation(Caster);
 
-                TimeSpan duration = TimeSpan.FromMinutes(1);
-
                 double skill = (Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2;
+                TimeSpan duration = TimeSpan.FromMinutes(1);
 
                 _HCIBonus = (int)Math.Max(45, skill / 2.667);
                 _SSIBonus = (int)Math.Max(30, skill / 4);
@@ -77,16 +76,7 @@ namespace Server.Spells.SkillMasteries
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.PlayingTheOddsDebuff, 1155913, 1156091, duration, Caster));
                 //Your bow range has been reduced as you play the odds.
 
-                foreach (Mobile m in GetParty().Where(mob => mob is PlayerMobile))
-                {
-                    m.PlaySound(0x101);
-                    m.FixedEffect(0x13B2, 10, 20, 2728, 5);
-                    m.FixedEffect(0x37C4, 10, 20, 2728, 5);
-
-                    if(m != Caster)
-                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PlayingTheOdds, 1155913, 1155998, duration, m, args));
-                        //~1_NAME~ grants you the following:<br>+~2_VAl~% Hit Chance Increase.<br>+~3_VAL~% Swing Speed Increase.
-                }
+                UpdateParty(true);
 
                 Caster.SendLocalizedMessage(1156091); // Your bow range has been reduced as you play the odds.
 
@@ -113,6 +103,20 @@ namespace Server.Spells.SkillMasteries
             }
 
             FinishSequence();
+        }
+
+        public override void AddPartyEffects(Mobile m)
+        {
+            m.PlaySound(0x101);
+            m.FixedEffect(0x13B2, 10, 20, 2728, 5);
+            m.FixedEffect(0x37C4, 10, 20, 2728, 5);
+
+            if (m != Caster)
+            {
+                string args = String.Format("{0}\t{1}\t{2}", Caster.Name, _HCIBonus.ToString(), _SSIBonus.ToString());
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PlayingTheOdds, 1155913, 1155998, Expires - DateTime.UtcNow, m, args));
+                //~1_NAME~ grants you the following:<br>+~2_VAl~% Hit Chance Increase.<br>+~3_VAL~% Swing Speed Increase.
+            }
         }
 
         public override void EndEffects()

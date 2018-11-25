@@ -25,6 +25,7 @@ namespace Server.Spells.SkillMasteries
 
         private int m_PropertyBonus;
         private int m_DamageBonus;
+        private int m_DamageModifier;
 
 		public InspireSpell( Mobile caster, Item scroll ) : base(caster, scroll, m_Info)
 		{
@@ -41,23 +42,30 @@ namespace Server.Spells.SkillMasteries
 			}
 			else if ( CheckSequence() )
 			{
-                m_PropertyBonus = (int)((BaseSkillBonus * 12) + (CollectiveBonus * 3));
-                m_DamageBonus = (int)Math.Min(40, ((BaseSkillBonus * 30) + (CollectiveBonus * 10)));
+                m_PropertyBonus = (int)((BaseSkillBonus * 2) + CollectiveBonus);
+                m_DamageBonus = (int)((BaseSkillBonus * 5) + (CollectiveBonus * 3));
+                m_DamageModifier = (int)((BaseSkillBonus + 1) + CollectiveBonus);
 
-                foreach (Mobile m in GetParty())
-                {
-                    m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
-                    m.SendLocalizedMessage(1115736); // You feel inspired by the bard's spellsong.
-
-                    string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_DamageBonus);
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Inspire, 1115683, 1115729, args.ToString()));
-                }
-
+                UpdateParty();
 				BeginTimer();
 			}
 			
 			FinishSequence();
 		}
+
+        public override void AddPartyEffects(Mobile m)
+        {
+            m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
+            m.SendLocalizedMessage(1115736); // You feel inspired by the bard's spellsong.
+
+            string args = String.Format("{0}\t{1}\t{2}\t{3}", m_PropertyBonus, m_PropertyBonus, m_DamageBonus, m_DamageModifier);
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Inspire, 1115683, 1151951, args.ToString()));
+        }
+
+        public override void RemovePartyEffects(Mobile m)
+        {
+            BuffInfo.RemoveBuff(m, BuffIcon.Inspire);
+        }
 
         public override void EndEffects()
         {
@@ -70,11 +78,6 @@ namespace Server.Spells.SkillMasteries
             }
 
             RemovePartyEffects(Caster);
-        }
-
-        public override void RemovePartyEffects(Mobile m)
-        {
-            BuffInfo.RemoveBuff(m, BuffIcon.Inspire);
         }
 		
 		/// <summary>
@@ -94,5 +97,10 @@ namespace Server.Spells.SkillMasteries
 		{
 			return m_DamageBonus;
 		}
+
+        public void DoDamage(ref int damageTaken)
+        {
+            damageTaken += AOS.Scale(damageTaken, m_DamageModifier);
+        }
 	}
 }

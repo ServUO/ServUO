@@ -40,22 +40,28 @@ namespace Server.Spells.SkillMasteries
 			}
 			else if ( CheckSequence() )
 			{
-                m_PropertyBonus = (int)((BaseSkillBonus * 8) + (CollectiveBonus * 3));
+                m_PropertyBonus = (int)((BaseSkillBonus * 2) + CollectiveBonus); // 2 - 16 (22)
 
-                foreach (Mobile m in GetParty())
-                {
-                    m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
-                    m.SendLocalizedMessage(1115738); // The bard's spellsong fills you with a feeling of resilience.
-
-                    string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_PropertyBonus);
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Resilience, 1115614, 1115731, args.ToString()));
-                }
-
+                UpdateParty();
 				BeginTimer();
 			}
 			
 			FinishSequence();
 		}
+
+        public override void AddPartyEffects(Mobile m)
+        {
+            m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
+            m.SendLocalizedMessage(1115738); // The bard's spellsong fills you with a feeling of resilience.
+
+            string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_PropertyBonus);
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Resilience, 1115614, 1115731, args.ToString()));
+        }
+
+        public override void RemovePartyEffects(Mobile m)
+        {
+            BuffInfo.RemoveBuff(m, BuffIcon.Resilience);
+        }
 
         public override void EndEffects()
         {
@@ -68,11 +74,6 @@ namespace Server.Spells.SkillMasteries
             }
 
             RemovePartyEffects(Caster);
-        }
-
-        public override void RemovePartyEffects(Mobile m)
-        {
-            BuffInfo.RemoveBuff(m, BuffIcon.Resilience);
         }
 
 		/// <summary>
@@ -88,7 +89,11 @@ namespace Server.Spells.SkillMasteries
          * Poison Resist 25% flat rate in spell is active - TODO: Get OSI Rate??? 
          * Bleed, Mortal and Curse cuts time by 1/2
          * Reference PlayerMobile, BleedAttack, MortalStrike and CurseSpell
-         */ 
+         */
 
+        public static bool UnderEffects(Mobile m)
+        {
+            return SkillMasterySpell.UnderPartyEffects(m, typeof(ResilienceSpell));
+        }
 	}
 }
