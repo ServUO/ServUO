@@ -654,11 +654,6 @@ namespace Server.Spells
                     continue;
                 }
 
-                if (caster is BaseCreature && id is BaseCreature && ((BaseCreature)caster).Team != ((BaseCreature)id).Team)
-                {
-                    yield return id;
-                }
-
                 if (!id.Alive || !caster.InLOS(id) || !caster.CanBeHarmful(id, false))
                 {
                     continue;
