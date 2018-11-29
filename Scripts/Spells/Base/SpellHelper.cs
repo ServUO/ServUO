@@ -639,7 +639,7 @@ namespace Server.Spells
         }
 
         public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range)
-        {
+        {  
             if (map == null)
             {
                 yield break;
