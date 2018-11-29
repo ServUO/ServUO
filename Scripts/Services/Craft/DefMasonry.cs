@@ -162,8 +162,8 @@ namespace Server.Engines.Craft
             AddCraft(typeof(StatueNorth), 1044503, 1044506, 60.0, 110.0, typeof(Granite), 1044514, 3, 1044513);
             AddCraft(typeof(StatueEast), 1044503, 1044507, 60.0, 110.0, typeof(Granite), 1044514, 3, 1044513);
             AddCraft(typeof(StatuePegasusSouth), 1044503, 1044510, 70.0, 120.0, typeof(Granite), 1044514, 4, 1044513);
-            AddCraft(typeof(StatueGargoyleEast), 1044503, 1097637, 91.0, 110.5, typeof(Granite), 1044514, 20, 1044513);
-            AddCraft(typeof(StatueGryphonEast), 1044503, 1097619, 91.0, 110.5, typeof(Granite), 1044514, 15, 1044513);
+            AddCraft(typeof(StatueGargoyleEast), 1044503, 1097637, 54.5, 104.5, typeof(Granite), 1044514, 20, 1044513);
+            AddCraft(typeof(StatueGryphonEast), 1044503, 1097619, 54.5, 104.5, typeof(Granite), 1044514, 15, 1044513);
             
             // Misc Addons
             if (Core.ML)
