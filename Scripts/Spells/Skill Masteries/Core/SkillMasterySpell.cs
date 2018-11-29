@@ -1145,12 +1145,6 @@ namespace Server.Spells.SkillMasteries
                     if (spell != null)
                         value += spell.PropertyBonus();
                     break;
-                case AosAttribute.BonusHits:
-                    spell = SkillMasterySpell.GetSpellForParty(m, typeof(InvigorateSpell));
-
-                    if (spell != null)
-                        value += spell.StatBonus();
-                    break;
                 case AosAttribute.WeaponDamage:
                     spell = SkillMasterySpell.GetSpellForParty(m, typeof(InspireSpell));
 

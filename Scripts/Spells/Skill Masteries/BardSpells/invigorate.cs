@@ -139,5 +139,15 @@ namespace Server.Spells.SkillMasteries
 		{
             return m_HPBonus;
 		}
+
+        public static int GetHPBonus(Mobile m)
+        {
+            var spell = SkillMasterySpell.GetSpellForParty(m, typeof(InvigorateSpell));
+
+            if (spell != null)
+                return spell.StatBonus();
+
+            return 0;
+        }
 	}
 }

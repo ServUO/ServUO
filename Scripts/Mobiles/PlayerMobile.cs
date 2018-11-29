@@ -2001,8 +2001,11 @@ namespace Server.Mobiles
 					}
 
                     // Skill Masteries
-                    if(Core.TOL)
+                    if (Core.TOL)
+                    {
                         strOffs += ToughnessSpell.GetHPBonus(this);
+                        strOffs += InvigorateSpell.GetHPBonus(this);
+                    }
 				}
 				else
 				{
