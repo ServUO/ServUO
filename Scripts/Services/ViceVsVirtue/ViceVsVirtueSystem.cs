@@ -1102,6 +1102,8 @@ namespace Server.Engines.VvV
                 case 3:
                     TotalDeaths = reader.ReadInt();
                     TotalKills = reader.ReadInt();
+                    goto case 2;
+                case 2:
                     Score = reader.ReadInt();
                     Kills = reader.ReadInt();
                     Deaths = reader.ReadInt();
