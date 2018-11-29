@@ -139,7 +139,7 @@ namespace Server.Items
                     if (skill > 100.0)
                         skill = 100.0;
 
-                    double amount = (((4 + mining) * craftResource.Amount - 4) * 0.0068);
+                    double amount = (((4 + skill) * craftResource.Amount - 4) * 0.0068);
 
                     if (amount < 2)
                         ingot.Amount = 2;
