@@ -639,7 +639,7 @@ namespace Server.Spells
         }
 
         public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range)
-        {
+        {  
             if (map == null)
             {
                 yield break;
@@ -652,6 +652,11 @@ namespace Server.Spells
                 if (id == caster)
                 {
                     continue;
+                }
+
+                if (caster is BaseCreature && id is BaseCreature && ((BaseCreature)caster).Team != ((BaseCreature)id).Team)
+                {
+                    yield return id;
                 }
 
                 if (!id.Alive || !caster.InLOS(id) || !caster.CanBeHarmful(id, false))

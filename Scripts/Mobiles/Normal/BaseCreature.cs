@@ -1338,24 +1338,7 @@ namespace Server.Mobiles
 
         public virtual void DrainLife()
         {
-            List<Mobile> list = new List<Mobile>();
-
-            IPooledEnumerable eable = GetMobilesInRange(2);
-
-            foreach (Mobile m in eable)
-            {
-                if (m == this || !CanBeHarmful(m))
-                    continue;
-
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
-                    list.Add(m);
-                else if (m.Player)
-                    list.Add(m);
-            }
-
-            eable.Free();
-
-            foreach (Mobile m in list)
+            foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, this, Map, 2).OfType<Mobile>())
             {
                 DoHarmful(m);
 
@@ -1378,8 +1361,6 @@ namespace Server.Mobiles
                 Hits += toDrain;
                 m.Damage(toDrain, this);
             }
-
-            ColUtility.Free(list);
         }
         #endregion
 
@@ -7443,21 +7424,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            var list = new List<Mobile>();
-
-            IPooledEnumerable eable = GetMobilesInRange(AuraRange);
-
-            foreach (Mobile m in eable)
-            {
-                if (m != this && SpellHelper.ValidIndirectTarget(this, m) && CanBeHarmful(m, false) && (!Core.AOS || InLOS(m)))
-                {
-                    list.Add(m);
-                }
-            }
-
-            eable.Free();
-
-            foreach (Mobile m in list)
+            foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, this, Map, AuraRange).OfType<Mobile>())
             {
                 int damage = GetAuraDamage(m);
 
@@ -7477,8 +7444,6 @@ namespace Server.Mobiles
                 m.RevealingAction();
                 AuraEffect(m);
             }
-
-            ColUtility.Free(list);
         }
 
         public virtual void AuraEffect(Mobile m)
