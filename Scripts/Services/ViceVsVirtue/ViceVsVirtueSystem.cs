@@ -1,16 +1,19 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server;
 using Server.Items;
 using Server.Mobiles;
 using Server.Gumps;
-using System.Collections.Generic;
 using Server.Network;
 using Server.Guilds;
-using System.Linq;
 using Server.Engines.Points;
 using Server.Factions;
 using Server.Engines.CityLoyalty;
 using Server.Regions;
+using Server.Accounting;
+using Server.Engines.ArenaSystem;
 
 namespace Server.Engines.VvV
 {
@@ -94,23 +97,41 @@ namespace Server.Engines.VvV
                 {
                     Mobile dam = list[i].Damager;
 
+                    if (dam == victim || dam == null)
+                        continue;
+
                     if (dam is BaseCreature && ((BaseCreature)dam).GetMaster() is PlayerMobile)
                         dam = ((BaseCreature)dam).GetMaster();
 
                     bool isEnemy = IsEnemy(victim, dam);
 
-                    if (isEnemy && dam != null && Battle.IsInActiveBattle(dam, victim))
+                    if (isEnemy)
                     {
                         VvVPlayerEntry kentry = GetPlayerEntry<VvVPlayerEntry>(dam);
 
-                        if (kentry != null && !handled.Contains(dam))
+                        if (kentry != null && kentry.Active && !handled.Contains(dam))
                         {
-                            if (i == 0)
-                                Battle.Update(ventry, kentry, UpdateType.Kill);
-                            else
-                                Battle.Update(ventry, kentry, UpdateType.Assist);
+                            if (Battle.IsInActiveBattle(dam, victim))
+                            {
+                                if (i == 0)
+                                    Battle.Update(ventry, kentry, UpdateType.Kill);
+                                else
+                                    Battle.Update(ventry, kentry, UpdateType.Assist);
+                            }
 
                             handled.Add(dam);
+                            kentry.TotalKills++;
+
+                            if (EnhancedRules && kentry != null)
+                            {
+                                kentry.AwardSilver(victim);
+                            }
+                        }
+
+                        if (!handled.Contains(victim))
+                        {
+                            ventry.TotalDeaths++;
+                            handled.Add(victim);
                         }
                     }
 
@@ -920,11 +941,23 @@ namespace Server.Engines.VvV
             "- Uncontested VvV battles will reduce reduce reward silver by {0}%.<br>" +
             "- VvV players in the battle region during a battle will be subject to combat heat travel restrictions.", VvVBattle.Penalty * 100);
 
+        public static bool RestrictSilver(Mobile a, Mobile b)
+        {
+            Account accountA = a.Account as Account;
+            Account accountB = b.Account as Account;
+
+            return accountA != null && (accountA == accountB || PVPArenaSystem.IsSameIP(a, b));
+        }
     }
 
     public class VvVPlayerEntry : PointsEntry
     {
         private bool _Active;
+
+        public int TotalKills { get; set; }
+        public int TotalDeaths { get; set; }
+
+        public EnemyKilledEntry KilledEntry { get; set; }
 
         public int Score { get; set; }
         public int Kills { get; set; }
@@ -969,10 +1002,75 @@ namespace Server.Engines.VvV
             Points = ViceVsVirtueSystem.StartSilver;
         }
 
+        public void AwardSilver(Mobile victim)
+        {
+            if (!ViceVsVirtueSystem.RestrictSilver(Player, victim))
+            {
+                Player.SendMessage("You cannot earn silver from killing {0}!", victim.Name);
+                return;
+            }
+
+            var entry = KilledEntry;
+
+            if (entry == null)
+            {
+                KilledEntry = entry = new EnemyKilledEntry(victim);
+            }
+            else
+            {
+                if (entry.Expired)
+                {
+                    entry.TimesKilled = 1;
+                }
+                else
+                {
+                    entry.TimesKilled++;
+                }
+            }
+
+            if (entry.TimesKilled > EnemyKilledEntry.MaxKillsForSilver)
+            {
+                Player.SendMessage("You cannot earn any more silver from killing {0}.", victim.Name);
+            }
+
+            int silver = (int)((double)EnemyKilledEntry.KillSilver / (double)entry.TimesKilled);
+
+            if (silver > 0)
+            {
+                Player.SendLocalizedMessage(1042736, String.Format("{0:N0} silver\t{1}", silver, victim.Name)); 
+                // You have earned ~1_SILVER_AMOUNT~ pieces for vanquishing ~2_PLAYER_NAME~!
+
+                Points += silver;
+            }
+        }
+
+        public class EnemyKilledEntry
+        {
+            public static int KillSilver = 20;
+            public static int MaxKillsForSilver = 5;
+            public static TimeSpan ExpireTime = TimeSpan.FromHours(3);
+
+            public Mobile Killed { get; set; }
+            public int TimesKilled { get; set; }
+            public DateTime Expires { get; set; }
+
+            public bool Expired { get { return Expires < DateTime.UtcNow; } }
+
+            public EnemyKilledEntry(Mobile killed)
+            {
+                Killed = killed;
+                TimesKilled = 1;
+                Expires = DateTime.UtcNow + ExpireTime;
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(2);
+            writer.Write(3);
+
+            writer.Write(TotalDeaths);
+            writer.Write(TotalKills);
 
             writer.Write(Active);
 
@@ -999,14 +1097,21 @@ namespace Server.Engines.VvV
             if(version < 2)
                 reader.ReadGuild();
 
-            Score = reader.ReadInt();
-            Kills = reader.ReadInt();
-            Deaths = reader.ReadInt();
-            Assists = reader.ReadInt();
-            ReturnedSigils = reader.ReadInt();
-            DisarmedTraps = reader.ReadInt();
-            StolenSigils = reader.ReadInt();
-            ResignExpiration = reader.ReadDateTime();
+            switch (version)
+            {
+                case 3:
+                    TotalDeaths = reader.ReadInt();
+                    TotalKills = reader.ReadInt();
+                    Score = reader.ReadInt();
+                    Kills = reader.ReadInt();
+                    Deaths = reader.ReadInt();
+                    Assists = reader.ReadInt();
+                    ReturnedSigils = reader.ReadInt();
+                    DisarmedTraps = reader.ReadInt();
+                    StolenSigils = reader.ReadInt();
+                    ResignExpiration = reader.ReadDateTime();
+                    break;
+            }
         }
     }
 

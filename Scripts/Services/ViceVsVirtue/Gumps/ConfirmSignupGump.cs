@@ -20,12 +20,20 @@ namespace Server.Engines.VvV
             AddBackground(0, 0, 360, 300, 83);
 
             AddHtmlLocalized(0, 25, 360, 20, 1154645, "#1155565",0xFFFF, false, false); // Vice vs Virtue Signup
-            AddHtmlLocalized(10, 55, 340, 210, 1155566, 0xFFFF, false, false);
-            /*Greetings! You are about to join Vice vs Virtue! VvV is an exhilarating Player vs Player 
-             * experience that you can have fun with whether you have hours or only a few minutes to 
-             * jump into the action!  Be forewarned, once you join VvV you will be freely attackable 
-             * by other VvV participants in non-consensual PvP facets.<br><br>Will you answer the call
-             * and lead your guild to victory?*/
+
+            if (ViceVsVirtueSystem.EnhancedRules)
+            {
+                AddHtml(10, 55, 340, 165, _EnhancedRulesMessage, false, true);
+            }
+            else
+            {
+                AddHtmlLocalized(10, 55, 340, 210, 1155566, 0xFFFF, false, false);
+                /*Greetings! You are about to join Vice vs Virtue! VvV is an exhilarating Player vs Player 
+                 * experience that you can have fun with whether you have hours or only a few minutes to 
+                 * jump into the action!  Be forewarned, once you join VvV you will be freely attackable 
+                 * by other VvV participants in non-consensual PvP facets.<br><br>Will you answer the call
+                 * and lead your guild to victory?*/
+            }
 
             AddButton(115, 230, 0x2622, 0x2623, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(140, 230, 150, 20, 1155567, 0xFFFF, false, false); // Learn more about VvV!
@@ -36,6 +44,14 @@ namespace Server.Engines.VvV
             AddButton(325, 268, 0xFB1, 0xFB3, 0, GumpButtonType.Reply, 0);
             AddHtml(285, 268, 100, 20, "<basefont color=#FFFFFF>Cancel", false, false);
         }
+
+        private string _EnhancedRulesMessage =
+            "<basefont color=#FFFFFF>Greetings! You are about to join Vice vs Virtue! VvV is an exhilarating Player vs Player" +
+            " experience that you can have fun with whether you have hours or only a few minutes to" +
+            " jump into the action!  Be forewarned, once you join VvV you will be freely attackable" +
+            " by other VvV participants in <b>any</b> facet.<br><br>Will you answer the call" +
+            " and lead your guild to victory? Please note the slightly different enhanced rules that you may not be used to:<br><br>" +
+            "- VvV Combat on any facet<br>- Reduced silver during town battles when uncontested<br>- Combat travel restrictions when in VvV Combat Zone";
 
         public override void OnResponse(NetState state, RelayInfo info)
         {

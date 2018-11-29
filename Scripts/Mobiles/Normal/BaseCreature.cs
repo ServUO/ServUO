@@ -2194,9 +2194,11 @@ namespace Server.Mobiles
         {
             get
             {
+                int value = Str;
+
                 if (m_HitsMax > 0)
                 {
-                    int value = m_HitsMax + GetStatOffset(StatType.Str);
+                    value = m_HitsMax + GetStatOffset(StatType.Str);
 
                     if (value < 1)
                     {
@@ -2206,11 +2208,16 @@ namespace Server.Mobiles
                     {
                         value = 1000000;
                     }
-
-                    return value;
                 }
 
-                return Str;
+                // Skill Masteries
+                if (Core.TOL)
+                {
+                    value += ToughnessSpell.GetHPBonus(this);
+                    value += InvigorateSpell.GetHPBonus(this);
+                }
+
+                return value;
             }
         }
 

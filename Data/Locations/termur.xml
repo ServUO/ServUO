@@ -14,7 +14,7 @@
                 </parent>
 		<parent name="Dungeons">
 			<parent name="Tomb of Kings">
-				<child name="Enterance" x="997" y="3843" z="-41" />
+				<child name="Entrance" x="997" y="3843" z="-41" />
 				<child name="Gate to Stygian Abyss" x="38" y="29" z="0" />
 			</parent>
 			<parent name="Stygian Abyss">
@@ -39,7 +39,7 @@
 				<child name="Sutek the Mage" x="924" y="595" z="-14" />
 			</parent>
 			<parent name="Underworld">
-				<child name="Enterance" x="1128" y="1211" z="-2" />
+				<child name="Entrance" x="1128" y="1211" z="-2" />
 			</parent>
 		</parent>
 		<parent name="Sites">
