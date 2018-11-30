@@ -1088,15 +1088,7 @@ namespace Server.Engines.VvV
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            Active = reader.ReadBool();
-
-            if(version == 0)
-                reader.ReadBool();
-
-            if(version < 2)
-                reader.ReadGuild();
-
+            
             switch (version)
             {
                 case 3:
@@ -1104,6 +1096,7 @@ namespace Server.Engines.VvV
                     TotalKills = reader.ReadInt();
                     goto case 2;
                 case 2:
+                    Active = reader.ReadBool();
                     Score = reader.ReadInt();
                     Kills = reader.ReadInt();
                     Deaths = reader.ReadInt();
