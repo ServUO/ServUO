@@ -1097,6 +1097,13 @@ namespace Server.Engines.VvV
                     goto case 2;
                 case 2:
                     Active = reader.ReadBool();
+                    
+                    if(version == 0)
+                        reader.ReadBool();
+                        
+                    if(version < 2)
+                        reader.ReadGuild();
+                    
                     Score = reader.ReadInt();
                     Kills = reader.ReadInt();
                     Deaths = reader.ReadInt();
