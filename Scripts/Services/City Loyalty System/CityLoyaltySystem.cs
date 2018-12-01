@@ -791,7 +791,7 @@ namespace Server.Engines.CityLoyalty
                     }
                     else
                     {
-                        OnNewTradeDeal(TradeDeal.None);
+                        sys.OnNewTradeDeal(TradeDeal.None);
                     }
                 }
 
