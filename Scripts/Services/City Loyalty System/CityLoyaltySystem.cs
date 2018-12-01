@@ -492,16 +492,6 @@ namespace Server.Engines.CityLoyalty
 			}
 		}
 
-        public void PayTradeDealCost()
-        {
-            if (Treasury >= TradeDealCost)
-                Treasury -= TradeDealCost;
-            else
-            {
-                OnNewTradeDeal(TradeDeal.None);
-            }
-        }
-
         public void OnNewTradeDeal(TradeDeal newtradedeal)
         {
             if(ActiveTradeDeal == TradeDeal.None)
@@ -794,7 +784,15 @@ namespace Server.Engines.CityLoyalty
 
                 if (sys.NextTradeDealCheck != DateTime.MinValue && sys.NextTradeDealCheck < DateTime.UtcNow)
                 {
-                    sys.PayTradeDealCost();
+                    if (sys.Treasury >= TradeDealCost)
+                    {
+                        sys.Treasury -= TradeDealCost;
+                        sys.NextTradeDealCheck = DateTime.UtcNow + TimeSpan.FromDays(TradeDealCostPeriod);
+                    }
+                    else
+                    {
+                        OnNewTradeDeal(TradeDeal.None);
+                    }
                 }
 
                 foreach (CityLoyaltyEntry entry in sys.PlayerTable.OfType<CityLoyaltyEntry>())
