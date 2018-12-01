@@ -299,45 +299,36 @@ namespace Server.Engines.Points
         }
 
         public static void OnLoad()
-		{
-			Persistence.Deserialize(
-				FilePath,
-				reader =>
-				{
-					int version = reader.ReadInt();
+        {
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    int version = reader.ReadInt();
 
                     if (version < 2)
                         reader.ReadBool();
 
-                    List<PointsType> loaded = new List<PointsType>();
+                    PointsType loaded = PointsType.None;
 
-					int count = reader.ReadInt();
-					for(int i = 0; i < count; i++)
-					{
+                    int count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
                         try
                         {
                             PointsType type = (PointsType)reader.ReadInt();
+                            loaded = type;
                             PointsSystem s = GetSystemInstance(type);
 
                             s.Deserialize(reader);
-
-                            if (!loaded.Contains(type))
-                                loaded.Add(type);
                         }
                         catch (Exception e)
                         {
-                            foreach (var success in loaded)
-                                Console.WriteLine("[Points System] Successfully Loaded: {0}", success.ToString());
-
-                            loaded.Clear();
-
-                            throw new Exception(String.Format("[Points System]: {0}", e));
+                            throw new Exception(String.Format("Points System Failed Load: {0} Last Loaded...", loaded.ToString()));
                         }
-					}
-
-                    loaded.Clear();
-				});
-		}
+                    }
+                });
+        }
 
         public static List<PointsSystem> Systems { get; set; }
 
