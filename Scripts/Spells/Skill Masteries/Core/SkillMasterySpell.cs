@@ -403,7 +403,7 @@ namespace Server.Spells.SkillMasteries
                     }
                 }
             }
-            else
+            else if (!PartyList.Contains(Caster))
             {
                 AddPartyMember(Caster);
             }
