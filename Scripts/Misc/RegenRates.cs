@@ -104,7 +104,38 @@ namespace Server.Misc
             double rate;
             double armorPenalty = GetArmorOffset(from);
 
-            if (Core.AOS)
+            if (Core.ML)
+            {
+                double med = from.Skills[SkillName.Meditation].Value;
+                double focus = from.Skills[SkillName.Focus].Value;
+
+                double focusBonus = focus / 200;
+                double medBonus = 0;
+
+                if (armorPenalty == 0)
+                {
+                    medBonus = (0.0075 * med) + (0.0025 * from.Int);
+
+                    if (medBonus >= 100.0)
+                        medBonus *= 1.1;
+
+                    if (from.Meditating)
+                    {
+                        medBonus *= 2;
+                    }
+                }
+
+                double itemBase = ((((med / 2) + (focus / 4)) / 90) * .65) + 2.35;
+                double intensityBonus = Math.Sqrt(ManaRegen(from));
+
+                if (intensityBonus > 5.5)
+                    intensityBonus = 5.5;
+
+                double itemBonus = ((itemBase * intensityBonus) - (itemBase - 1)) / 10;
+
+                rate = 1.0 / (0.2 + focusBonus + medBonus + itemBonus);
+            }
+            else if (Core.AOS)
             {
                 double medPoints = from.Int + (from.Skills[SkillName.Meditation].Value * 3);
 
@@ -234,7 +265,7 @@ namespace Server.Misc
             if (from is PlayerMobile && from.Race == Race.Gargoyle)
                 points += 2;
 
-            if (Core.ML && from is PlayerMobile)
+            if (!Core.ML && from is PlayerMobile)
                 points = Math.Min(points, 18);
 
             foreach (RegenBonusHandler handler in ManaBonusHandlers)

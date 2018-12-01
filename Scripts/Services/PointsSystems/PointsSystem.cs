@@ -322,7 +322,7 @@ namespace Server.Engines.Points
 
                             s.Deserialize(reader);
                         }
-                        catch (Exception e)
+                        catch
                         {
                             throw new Exception(String.Format("Points System Failed Load: {0} Last Loaded...", loaded.ToString()));
                         }

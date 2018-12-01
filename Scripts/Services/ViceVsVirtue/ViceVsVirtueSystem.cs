@@ -416,16 +416,16 @@ namespace Server.Engines.VvV
                 Timer.DelayCall(TimeSpan.FromSeconds(1), Instance.CheckResignation, pm);
                 Timer.DelayCall(TimeSpan.FromSeconds(2), Instance.CheckBattleStatus, pm);
 
-                if (EnhancedRules && AutoKicked != null && AutoKicked.Contains(pm))
+                if (EnhancedRules && ShowNewRules != null && ShowNewRules.Contains(pm))
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(1), player =>
                         {
                             player.SendGump(new BasicInfoGump(_EnhancedRulesNotice));
 
-                            AutoKicked.Remove(player);
+                            ShowNewRules.Remove(player);
 
-                            if (AutoKicked.Count == 0)
-                                AutoKicked = null;
+                            if (ShowNewRules.Count == 0)
+                                ShowNewRules = null;
                         }, pm);
                 }
             }
@@ -721,10 +721,10 @@ namespace Server.Engines.VvV
             base.Serialize(writer);
             writer.Write(4);
 
-            writer.Write(AutoKicked == null ? 0 : AutoKicked.Count);
-            if (AutoKicked != null)
+            writer.Write(ShowNewRules == null ? 0 : ShowNewRules.Count);
+            if (ShowNewRules != null)
             {
-                foreach (var pm in AutoKicked)
+                foreach (var pm in ShowNewRules)
                     writer.Write(pm);
             }
 
@@ -772,12 +772,12 @@ namespace Server.Engines.VvV
 
                         if (pm != null)
                         {
-                            if (AutoKicked == null)
+                            if (ShowNewRules == null)
                             {
-                                AutoKicked = new List<PlayerMobile>();
+                                ShowNewRules = new List<PlayerMobile>();
                             }
 
-                            AutoKicked.Add(pm);
+                            ShowNewRules.Add(pm);
                         }
                     }
 
@@ -904,7 +904,7 @@ namespace Server.Engines.VvV
             ColUtility.Free(list);
         }
 
-        public static List<PlayerMobile> AutoKicked { get; private set; }
+        public static List<PlayerMobile> ShowNewRules { get; private set; }
 
         private static void OnEnhancedRulesEnabled()
         {
@@ -919,27 +919,21 @@ namespace Server.Engines.VvV
 
                         if (entry != null)
                         {
-                            //pm.PrivateOverheadMessage(MessageType.Regular, 1154, 1155561, pm.NetState); // You are no longer in Vice vs Virtue!
+                            if (ShowNewRules == null)
+                                ShowNewRules = new List<PlayerMobile>();
 
-                            entry.Active = false;
-                            entry.ResignExpiration = DateTime.MinValue;
-                            pm.ValidateEquipment();
-
-                            if (AutoKicked == null)
-                                AutoKicked = new List<PlayerMobile>();
-
-                            AutoKicked.Add(pm);
+                            ShowNewRules.Add(pm);
                         }
                     }
                 });
         }
 
         private static string _EnhancedRulesNotice = String.Format("Notice: The Vice Vs Virtue system has recently enabled enhanced rules. To avoid any issues and " +
-            "unexpected deaths due to the new game mechanics, all players have been removed from VvV. You can simply re-join through your guild menu. " +
-            "<br><br>New VvV Mechanics:<br><br>" +
-            "- VvV combatants are attackable on all facets.<br>" +
-            "- Uncontested VvV battles will reduce reduce reward silver by {0}%.<br>" +
-            "- VvV players in the battle region during a battle will be subject to combat heat travel restrictions.", VvVBattle.Penalty * 100);
+             "unexpected deaths due to the new game mechanics, it is important that you read this message. " +
+             "<br><br>New VvV Mechanics:<br><br>" +
+             "- VvV combatants are attackable on all facets.<br>" +
+             "- Uncontested VvV battles will reduce reduce reward silver by {0}%.<br>" +
+             "- VvV players in the battle region during a battle will be subject to combat heat travel restrictions.", VvVBattle.Penalty * 100);
 
         public static bool RestrictSilver(Mobile a, Mobile b)
         {
@@ -953,6 +947,8 @@ namespace Server.Engines.VvV
     public class VvVPlayerEntry : PointsEntry
     {
         private bool _Active;
+
+        public bool OneTimePointsRetention { get; set; }
 
         public int TotalKills { get; set; }
         public int TotalDeaths { get; set; }
@@ -985,7 +981,14 @@ namespace Server.Engines.VvV
             {
                 if (!_Active && value)
                 {
-                    Points = 0;
+                    if (OneTimePointsRetention)
+                    {
+                        OneTimePointsRetention = false;
+                    }
+                    else
+                    {
+                        Points = 0;
+                    }
                 }
 
                 _Active = value;
@@ -1067,7 +1070,9 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(3);
+            writer.Write(4);
+
+            writer.Write(OneTimePointsRetention);
 
             writer.Write(TotalDeaths);
             writer.Write(TotalKills);
@@ -1091,6 +1096,9 @@ namespace Server.Engines.VvV
             
             switch (version)
             {
+                case 4:
+                    OneTimePointsRetention = reader.ReadBool();
+                    goto case 3;
                 case 3:
                     TotalDeaths = reader.ReadInt();
                     TotalKills = reader.ReadInt();
@@ -1113,6 +1121,11 @@ namespace Server.Engines.VvV
                     StolenSigils = reader.ReadInt();
                     ResignExpiration = reader.ReadDateTime();
                     break;
+            }
+
+            if (version == 3)
+            {
+                OneTimePointsRetention = true;
             }
         }
     }
