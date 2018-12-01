@@ -88,32 +88,32 @@ namespace Server
 				
 			file.Refresh();
 
-			using (var fs = file.OpenRead())
-			{
-				var reader = new BinaryFileReader(new BinaryReader(fs));
+            using (var fs = file.OpenRead())
+            {
+                var reader = new BinaryFileReader(new BinaryReader(fs));
 
-				try
-				{
-					deserializer(reader);
-				}
-				catch (EndOfStreamException eos)
-				{
-					if (file.Length > 0)
-					{
-						Console.WriteLine("[Persistence]: {0}", eos);
-					}
-				}
-				catch (Exception e)
-				{
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine("[Persistence]: {0}", e);
-					Utility.PopColor();
-				}
-				finally
-				{
-					reader.Close();
-				}
-			}
+                try
+                {
+                    deserializer(reader);
+                }
+                catch (EndOfStreamException eos)
+                {
+                    if (file.Length > 0)
+                    {
+                        throw new Exception(String.Format("[Persistance]: {0}", eos));
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.WriteConsoleColor(ConsoleColor.Red, "[Persistance]: An error was encountered while loading a saved object");
+
+                    throw new Exception(String.Format("[Persistance]: {0}", e));
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
 		}
 	}
 }
