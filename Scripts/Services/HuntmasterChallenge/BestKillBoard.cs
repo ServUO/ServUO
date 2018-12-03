@@ -132,7 +132,7 @@ namespace Server.Items
                 {
                     default:
                     case HuntType.GrizzlyBear: return "Grizzly Bear";
-                    case HuntType.GrayWolf: return "Gray Wolf";
+                    case HuntType.GrayWolf: return "Grey Wolf";
                     case HuntType.Cougar: return "Cougar";
                     case HuntType.Turkey: return "Turkey";
                     case HuntType.Bull: return "Bull";
@@ -167,7 +167,7 @@ namespace Server.Items
                 {
                     default: return "No Filter";
                     case (int)HuntType.GrizzlyBear: return "Grizzly Bear";
-                    case (int)HuntType.GrayWolf: return "Gray Wolf";
+                    case (int)HuntType.GrayWolf: return "Grey Wolf";
                     case (int)HuntType.Cougar: return "Cougar";
                     case (int)HuntType.Turkey: return "Turkey";
                     case (int)HuntType.Bull: return "Bull";
