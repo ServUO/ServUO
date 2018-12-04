@@ -977,7 +977,6 @@ namespace Server.Items
             }
             else
             {
-                // Behold, the worst system ever!
                 int v = Utility.RandomMinMax(0, 10000);
 
                 v = (int)Math.Sqrt(v);
@@ -986,12 +985,7 @@ namespace Server.Items
                 if (LootPack.CheckLuck(m_LuckChance))
                     v += 10;
 
-                if (v < min)
-                    v = min;
-                else if (v > max)
-                    v = max;
-
-                percent = v;
+                percent = Math.Min(max, min + AOS.Scale((max - min), v));
             }
 
             int scaledBy = Math.Abs(high - low) + 1;
