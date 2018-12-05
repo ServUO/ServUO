@@ -773,7 +773,14 @@ namespace Server.Items
 
                 if (from.Skills[SkillName.Cartography].Value < minSkill)
                 {
-                    from.SendLocalizedMessage(503013); // The map is too difficult to attempt to decode.
+                    if (m_Level == 1)
+                    {
+                        from.CheckSkill(SkillName.Cartography, 0, minSkill);
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(503013); // The map is too difficult to attempt to decode.
+                    }
                 }
 
                 double maxSkill = minSkill + 60.0;
@@ -1061,17 +1068,18 @@ namespace Server.Items
             switch (m_Level)
             {
                 case 1:
-                    return -3.0;
+                    return Core.AOS ? 27.0 : -3.0;
                 case 2:
-                    return 41.0;
+                    return Core.AOS ? 71.0 : 41.0;
                 case 3:
-                    return 51.0;
+                    return Core.AOS ? 81.0 : 51.0;
                 case 4:
-                    return 61.0;
+                    return Core.AOS ? 91.0 : 61.0;
                 case 5:
-                    return 70.0;
                 case 6:
-                    return 70.0;
+                    return Core.AOS ? 100.0 : 70.0;
+                case 7:
+                    return 100.0;
 
                 default:
                     return 0.0;
