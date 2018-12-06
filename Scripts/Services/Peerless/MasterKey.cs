@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
+
 using Server;
 using Server.Mobiles;
 using Server.Gumps;
+using Server.Engines.PartySystem;
 
 namespace Server.Items
 {
@@ -39,8 +42,21 @@ namespace Server.Items
                 }
                 else
                 {
-                    from.CloseGump(typeof(ConfirmEntranceGump));
-                    from.SendGump(new ConfirmEntranceGump(m_Altar));
+                    var p = Party.Get(from);
+
+                    if (p != null)
+                    {
+                        foreach (var m in p.Members.Select(x => x.Mobile).Where(m => m.InRange(from.Location, 25)))
+                        {
+                            m.CloseGump(typeof(ConfirmEntranceGump));
+                            m.SendGump(new ConfirmEntranceGump(m_Altar));
+                        }
+                    }
+                    else
+                    {
+                        from.CloseGump(typeof(ConfirmEntranceGump));
+                        from.SendGump(new ConfirmEntranceGump(m_Altar));
+                    }
                 }
 			}
 		}	

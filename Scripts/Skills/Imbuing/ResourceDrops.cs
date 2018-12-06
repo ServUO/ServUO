@@ -41,19 +41,19 @@ namespace Server.Items
             EventSink.CreatureDeath += OnCreatureDeath;
 
             m_IngredientTable = new List<IngredientDropEntry>();
-			//Gems
-			m_IngredientTable.Add(new IngredientDropEntry(typeof(ClayGolem), true, .05, typeof(FireRuby),
-				typeof(BlueDiamond), typeof(Turquoise)));
-				
-			m_IngredientTable.Add(new IngredientDropEntry(typeof(RakktaviRenowned), true, .5, typeof(WhitePearl),
-				typeof(BlueDiamond), typeof(Turquoise)));
-				
-			m_IngredientTable.Add(new IngredientDropEntry(typeof(TikitaviRenowned), true, .5, typeof(WhitePearl),
-				typeof(BlueDiamond), typeof(Turquoise)));
-				
-			m_IngredientTable.Add(new IngredientDropEntry(typeof(VitaviRenowned), true, .5, typeof(WhitePearl),
-				typeof(BlueDiamond), typeof(Turquoise)));
-						
+
+            // Imbuing Gems
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(AncientLichRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(DevourerRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(FireElementalRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(GrayGoblinMageRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(GreenGoblinAlchemistRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(PixieRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(RakktaviRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(SkeletalDragonRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(TikitaviRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(VitaviRenowned), true, .5, ImbuingGems));
+
             //Bottle of Ichor/Spider Carapace
             m_IngredientTable.Add(new IngredientDropEntry(typeof(TrapdoorSpider), true, .05, typeof(SpiderCarapace)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(WolfSpider), true, .15, typeof(BottleIchor)));
@@ -237,5 +237,13 @@ namespace Server.Items
                 }
             }
         }
+
+        public static Type[] ImbuingGems = 
+        {
+            typeof(FireRuby), 
+            typeof(WhitePearl), 
+            typeof(BlueDiamond), 
+			typeof(Turquoise)
+        };
     }
 }

@@ -1809,14 +1809,14 @@ namespace Server.SkillHandlers
 			typeof(SpiderCarapace), 	typeof(DaemonClaw), 			typeof(VialOfVitriol),
 			typeof(GoblinBlood), 		typeof(LavaSerpentCrust), 		typeof(UndyingFlesh),
 			typeof(CrushedGlass), 		typeof(CrystallineBlackrock), 	typeof(PowderedIron),
-			typeof(ElvenFletching),    typeof(DelicateScales),
+			typeof(ElvenFletching),     typeof(DelicateScales),
 			
 			typeof(EssenceSingularity), typeof(EssenceBalance), 		typeof(EssencePassion),
 			typeof(EssenceDirection), 	typeof(EssencePrecision), 		typeof(EssenceControl),
 			typeof(EssenceDiligence), 	typeof(EssenceAchievement), 	typeof(EssenceFeeling), 
 			typeof(EssenceOrder),
 			
-			typeof(ParasiticPlant), 	typeof(LuminescentFungi), 		typeof(BrilliantAmber), 
+			typeof(ParasiticPlant), 	typeof(LuminescentFungi),
 			typeof(FireRuby), 			typeof(WhitePearl), 			typeof(BlueDiamond), 
 			typeof(Turquoise)
 		};
