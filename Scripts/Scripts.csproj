@@ -9878,6 +9878,7 @@
     <Compile Include="Services\Town Cryer\Gumps\BaseTownCryerGump.cs" />
     <Compile Include="Services\Town Cryer\Gumps\CreateCityEntryGump.cs" />
     <Compile Include="Services\Town Cryer\Gumps\CreateEMEntryGump.cs" />
+    <Compile Include="Services\Town Cryer\Gumps\CreateGreetingEntryGump.cs" />
     <Compile Include="Services\Town Cryer\Gumps\CreateGuildEntryGump.cs" />
     <Compile Include="Services\Town Cryer\Gumps\TownCryerCityGump.cs" />
     <Compile Include="Services\Town Cryer\Gumps\TownCryerCompleteQuestGump.cs" />
@@ -9896,6 +9897,7 @@
     <Compile Include="Services\Town Cryer\Quests\Rewards.cs" />
     <Compile Include="Services\Town Cryer\Quests\RightingWrongQuest.cs" />
     <Compile Include="Services\Town Cryer\Quests\WishesOfTheWispsQuest.cs" />
+    <Compile Include="Services\Town Cryer\TownCrierGreetingEntry.cs" />
     <Compile Include="Services\Town Cryer\TownCryerCityEntry.cs" />
     <Compile Include="Services\Town Cryer\TownCryerGuildEntry.cs" />
     <Compile Include="Services\Town Cryer\TownCryerModeratorEntry.cs" />
