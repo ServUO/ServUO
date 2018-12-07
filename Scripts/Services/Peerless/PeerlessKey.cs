@@ -7,12 +7,25 @@ namespace Server.Items
         private int m_Lifespan;
         private Timer m_Timer;
 
+        private Map m_Map;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Map _Map
+        {
+            get { return m_Map; }
+            set
+            {
+                m_Map = value;
+                InvalidateProperties();
+            }
+        }
+
         [Constructable]
         public PeerlessKey(int itemID)
             : base(itemID)
         {
             LootType = LootType.Blessed;
-		
+
             if (Lifespan > 0)
             {
                 m_Lifespan = Lifespan;
@@ -31,10 +44,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
         {
-            get
-            {
-                return m_Lifespan;
-            }
+            get { return m_Lifespan; }
             set
             {
                 m_Lifespan = value;
@@ -45,6 +55,20 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
+
+            if (_Map != null)
+            {
+                if (_Map == Map.Felucca)
+                    list.Add(1012001); // Felucca
+                else if (_Map == Map.Trammel)
+                    list.Add(1012000); // Trammel
+                else if (_Map == Map.Ilshenar)
+                    list.Add(1012002); // Ilshenar
+                else if (_Map == Map.Malas)
+                    list.Add(1060643); // Malas
+                else if (_Map == Map.Tokuno)
+                    list.Add(1063258); // Tokuno Islands
+            }
 
             if (Lifespan > 0)
             {
@@ -77,7 +101,7 @@ namespace Server.Items
         {
             if (m_Timer != null)
                 return;
-				
+
             m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
             m_Timer.Priority = TimerPriority.OneSecond;
         }
@@ -93,9 +117,9 @@ namespace Server.Items
         public virtual void Slice()
         {
             m_Lifespan -= 10;
-			
+
             InvalidateProperties();
-			
+
             if (m_Lifespan <= 0)
                 Decay();
         }
@@ -105,12 +129,12 @@ namespace Server.Items
             if (RootParent is Mobile)
             {
                 Mobile parent = (Mobile)RootParent;
-				
+
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
                 else
                     parent.SendLocalizedMessage(1072515, Name); // The ~1_name~ expired...
-					
+
                 Effects.SendLocationParticles(EffectItem.Create(parent.Location, parent.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
                 Effects.PlaySound(parent.Location, parent.Map, 0x201);
             }
@@ -119,7 +143,7 @@ namespace Server.Items
                 Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
                 Effects.PlaySound(Location, Map, 0x201);
             }
-			
+
             StopTimer();
             Delete();
         }
@@ -127,8 +151,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
-			
+            writer.Write((int)1); // version
+
+            writer.Write(m_Map);
             writer.Write((int)m_Lifespan);
         }
 
@@ -136,9 +161,23 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-			
-            m_Lifespan = reader.ReadInt();
-			
+
+            switch (version)
+            {
+                case 1:
+                    {
+                        m_Map = reader.ReadMap();
+
+                        goto case 0;
+                    }
+                case 0:
+                    {
+                        m_Lifespan = reader.ReadInt();
+
+                        break;
+                    }
+            }
+
             StartTimer();
         }
     }
