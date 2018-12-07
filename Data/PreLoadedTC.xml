@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<preloadedTC>
+	<message>
+		<title>Test Message</title>
+		<body><![CDATA[This is a test message, and the format you should use when using custom, pre-loaded Town Cryer Messages.]]></body>
+		<created>12/01/2018</created>
+		<expires>12/02/2018</expires>
+		<link>https://www.servuo.com/forum/</link>
+		<linktext>ServUO Forums</linktext>
+	</message>
+</preloadedTC>
+
+<!--detail>
+For these to be loaded, you must enable it by marking UsePreloadedMessages field in TownCryerSystem.cs to true. 
+
+expires must be blank, or after the current date time, or the message will not load.
+
+expires, link and linktext can all be left blank. Everything else must be filled in. For CDATA, any break
+point causes a breakpoint in the gump, which may not be desired. Simply keep it one line for best results.
+</detail-->
+

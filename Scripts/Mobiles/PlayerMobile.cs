@@ -86,14 +86,12 @@ namespace Server.Mobiles
         HasValiantStatReward = 0x20000000,
         RefuseTrades = 0x40000000,
         DisabledPvpWarning = 0x80000000,
-        //CanBuyCarpets = 0x100000000,
-        //VoidPool = 0x200000000,
     }
 
     [Flags]
     public enum ExtendedPlayerFlag
     {
-        HideTownCrierGreetingGump   = 0x00000001,
+        Unused                      = 0x00000001,
         ToggleStoneOnly             = 0x00000002,
         CanBuyCarpets               = 0x00000004,
         VoidPool                    = 0x00000008,
@@ -538,13 +536,6 @@ namespace Server.Mobiles
         {
             get { return GetFlag(ExtendedPlayerFlag.VoidPool); }
             set { SetFlag(ExtendedPlayerFlag.VoidPool, value); }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool HideTownCrierGreetingGump
-        {
-            get { return GetFlag(ExtendedPlayerFlag.HideTownCrierGreetingGump); }
-            set { SetFlag(ExtendedPlayerFlag.HideTownCrierGreetingGump, value); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]

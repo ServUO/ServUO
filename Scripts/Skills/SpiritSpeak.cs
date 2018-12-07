@@ -162,7 +162,7 @@ namespace Server.SkillHandlers
 
                 foreach (Item item in Caster.GetItemsInRange(3))
                 {
-                    if (item is Corpse && !((Corpse)item).Channeled)
+                    if (item is Corpse && !((Corpse)item).Channeled && !((Corpse)item).Animated)
                     {
                         toChannel = (Corpse)item;
                         break;
