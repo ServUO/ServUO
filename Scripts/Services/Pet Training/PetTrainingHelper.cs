@@ -875,7 +875,8 @@ namespace Server.Mobiles
                 new TrainingPointRequirement(SkillName.Bushido, 500, 1044112)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Ninjitsu, 1.0, 1, 1, loc[7][0], loc[7][1],
-                new TrainingPointRequirement(SkillName.Ninjitsu, 500, 1044113)));
+                new TrainingPointRequirement(SkillName.Ninjitsu, 500, 1044113),
+                new TrainingPointRequirement(SkillName.Hiding, 100, 1002088)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Discordance, 1.0, 1, 1, loc[8][0], loc[8][1],
                 new TrainingPointRequirement(SkillName.Discordance, 500, 1044075)));

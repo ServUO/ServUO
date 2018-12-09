@@ -30,6 +30,20 @@ namespace Server.Engines.Blackthorn
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool DoArea
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
+                if (value)
+                    DoAreaAttack();
+            }
+        }
+
         public List<Item> Rubble { get; set; }
 
         public override bool DeleteOnDestroy { get { return false; } }

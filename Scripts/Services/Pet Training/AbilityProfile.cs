@@ -256,6 +256,9 @@ namespace Server.Mobiles
                         double skill = Creature.Skills[(SkillName)req.Requirement].Base;
                         double toAdd = req.Cost == 100 ? 20 : 40;
 
+                        if ((SkillName)req.Requirement == SkillName.Hiding)
+                            toAdd = 100;
+
                         if (skill < toAdd)
                             Creature.Skills[(SkillName)req.Requirement].Base = toAdd;
                     }
