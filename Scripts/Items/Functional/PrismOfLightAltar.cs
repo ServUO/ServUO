@@ -77,16 +77,16 @@ namespace Server.Items
             switch (version)
             {
                 case 1:
-                    {                        
+                    {
                         Pedestals = reader.ReadStrongItemList();
                         goto case 0;
                     }
                 case 0:
                     {
-                        m_ID = reader.ReadInt();                        
+                        m_ID = reader.ReadInt();
                         break;
-                    }                
-            }                     
+                    }
+            }
         }
 
         public int GetID()
@@ -131,7 +131,7 @@ namespace Server.Items
             set
             {
                 m_Altar = value;
-                                
+
                 if (!m_Altar.Pedestals.Contains(this))
                     m_Altar.Pedestals.Add(this);
             }
@@ -156,7 +156,7 @@ namespace Server.Items
             }
         }
 
-        public PrismOfLightPillar(PrismOfLightAltar altar, int hue) 
+        public PrismOfLightPillar(PrismOfLightAltar altar, int hue)
             : base(0x207D)
         {
             OrgHue = hue;
@@ -165,7 +165,7 @@ namespace Server.Items
             m_Altar = altar;
 
             if (m_Altar != null)
-            { 
+            {
                 m_ID = m_Altar.GetID();
                 m_Altar.Pedestals.Add(this);
             }
@@ -180,7 +180,7 @@ namespace Server.Items
             if (m_Altar == null)
                 return false;
 
-            if (m_Altar.Activated)
+            if (m_Altar.Owner != null)
             {
                 from.SendLocalizedMessage(1075213); // The master of this realm has already been summoned and is engaged in combat.  Your opportunity will come after he has squashed the current batch of intruders!
                 return false;
@@ -205,7 +205,7 @@ namespace Server.Items
             writer.Write((int)m_OrgHue);
 
             writer.Write((int)m_ID);
-            writer.Write((Item)m_Altar);            
+            writer.Write((Item)m_Altar);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -221,12 +221,12 @@ namespace Server.Items
                         goto case 0;
                     }
                 case 0:
-                    {                        
+                    {
                         m_ID = reader.ReadInt();
-                        m_Altar = reader.ReadItem() as PrismOfLightAltar;                        
+                        m_Altar = reader.ReadItem() as PrismOfLightAltar;
 
                         break;
-                    }                
+                    }
             }
 
             if (version < 1)
