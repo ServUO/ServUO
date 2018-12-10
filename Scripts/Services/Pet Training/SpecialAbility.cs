@@ -418,25 +418,14 @@ namespace Server.Mobiles
             }
         }
 
-        public static SpecialAbility HowlOfCacophony
-        {
-            get
-            {
-                if (_Abilities[20] == null)
-                    _Abilities[20] = new HowlOfCacophony();
-
-                return _Abilities[20];
-            }
-        }
-
         public static SpecialAbility Webbing
         {
             get
             {
-                if (_Abilities[21] == null)
-                    _Abilities[21] = new Webbing();
+                if (_Abilities[20] == null)
+                    _Abilities[20] = new Webbing();
 
-                return _Abilities[21];
+                return _Abilities[20];
             }
         }
 
@@ -444,10 +433,10 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[22] == null)
-                    _Abilities[22] = new Anemia();
+                if (_Abilities[21] == null)
+                    _Abilities[21] = new Anemia();
 
-                return _Abilities[22];
+                return _Abilities[21];
             }
         }
 
@@ -455,15 +444,15 @@ namespace Server.Mobiles
         {
             get
             {
-                if (_Abilities[23] == null)
-                    _Abilities[23] = new BloodDisease();
+                if (_Abilities[22] == null)
+                    _Abilities[22] = new BloodDisease();
 
-                return _Abilities[23];
+                return _Abilities[22];
             }
         }
 
         public static SpecialAbility[] Abilities { get { return _Abilities; } }
-        private static SpecialAbility[] _Abilities = new SpecialAbility[24];
+        private static SpecialAbility[] _Abilities = new SpecialAbility[23];
     }
 	
 	public class AngryFire : SpecialAbility
@@ -675,66 +664,6 @@ namespace Server.Mobiles
             }
         }
 	}
-
-    public class HowlOfCacophony : SpecialAbility
-    {
-        private static Dictionary<Mobile, InternalTimer> _Table;
-        public override int ManaCost { get { return 25; } }
-        public override bool TriggerOnDoMeleeDamage { get { return true; } }
-
-        public HowlOfCacophony()
-        {
-        }
-
-        public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
-        {
-            if (_Table != null && _Table.ContainsKey(defender))
-            {
-                return;
-            }
-
-            if (_Table == null)
-                _Table = new Dictionary<Mobile, InternalTimer>();
-
-            _Table[defender] = new InternalTimer(defender);
-
-            defender.SendSpeedControl(SpeedControlType.WalkSpeed);
-            defender.SendLocalizedMessage(1072069); // // A cacophonic sound lambastes you, suppressing your ability to move.
-            defender.PlaySound(0x584);
-
-            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.HowlOfCacophony, 1153793, 1153820, TimeSpan.FromSeconds(30), defender, "60\t5\t5"));
-        }
-
-        public static bool IsUnderEffects(Mobile m)
-        {
-            return _Table != null && _Table.ContainsKey(m);
-        }
-
-        private class InternalTimer : Timer
-        {
-            public Mobile Defender { get; set; }
-
-            public InternalTimer(Mobile defender)
-                : base(TimeSpan.FromSeconds(30))
-            {
-                Defender = defender;
-                Start();
-            }
-
-            protected override void OnTick()
-            {
-                if (_Table != null && _Table.ContainsKey(Defender))
-                {
-                    _Table.Remove(Defender);
-
-                    BuffInfo.RemoveBuff(Defender, BuffIcon.HowlOfCacophony);
-                    Defender.SendSpeedControl(SpeedControlType.Disable);                    
-                }
-
-                Stop();
-            }
-        }
-    }
 
     public class GraspingClaw : SpecialAbility
 	{
