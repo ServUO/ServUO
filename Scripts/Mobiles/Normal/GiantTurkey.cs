@@ -39,7 +39,7 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
             SetWeaponAbility(WeaponAbility.BleedAttack);
             SetAreaEffect(AreaEffect.EssenceOfDisease);
-            SetSpecialAbility(SpecialAbility.HowlOfCacophony);
+            SetAreaEffect(AreaEffect.HowlOfCacophony);
             SetWeaponAbility(WeaponAbility.Dismount);
         }
 
