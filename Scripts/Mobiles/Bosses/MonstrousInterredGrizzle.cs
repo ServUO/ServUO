@@ -71,7 +71,7 @@ namespace Server.Mobiles
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            SetAreaEffect(AreaEffect.HowlOfCacophony);
+            SetSpecialAbility(SpecialAbility.HowlOfCacophony);
         }
 
         public MonstrousInterredGrizzle(Serial serial)

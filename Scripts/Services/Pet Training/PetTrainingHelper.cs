@@ -426,6 +426,7 @@ namespace Server.Mobiles
                 SpecialAbility.FlurryForce,
                 SpecialAbility.Rage,
                 SpecialAbility.Heal,
+                SpecialAbility.HowlOfCacophony,
                 SpecialAbility.Webbing,
                 SpecialAbility.Anemia,
                 SpecialAbility.BloodDisease,
@@ -616,8 +617,7 @@ namespace Server.Mobiles
                 AreaEffect.EssenceOfEarth,
                 AreaEffect.AuraOfNausea,
                 AreaEffect.EssenceOfDisease,
-                AreaEffect.PoisonBreath,
-                AreaEffect.HowlOfCacophony,
+                AreaEffect.PoisonBreath
             };
 
             AreaEffectNone = new AreaEffect[] { };
@@ -1460,7 +1460,8 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157420, 1157421 }, // Vicious Bite
             new TextDefinition[] { 1157418, 1157419 }, // Flurry Force
             new TextDefinition[] { 1150005, 0       }, // Rage
-            new TextDefinition[] { 1151311, 0       }, // Heal            
+            new TextDefinition[] { 1151311, 0       }, // Heal
+            new TextDefinition[] { 1153793, 0       }, // Howl of Cacophony
             new TextDefinition[] { 1153789, 0       }, // Webbing
             new TextDefinition[] { 1153797, 0       }, // Anemia
             new TextDefinition[] { 1153798, 0       }, // Blood Disease
@@ -1476,7 +1477,6 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157467, 1157468 }, // Aura of Nausea
             new TextDefinition[] { 1157469, 1157470 }, // Essence of Disease
             new TextDefinition[] { 1157475, 1157476 }, // Poison Breath
-            new TextDefinition[] { 1153793, 0       }, // Howl of Cacophony
         };
 
         public static TextDefinition[][] WeaponAbilityLocalizations { get { return _WeaponAbilityLocalizations; } }
