@@ -226,19 +226,8 @@ namespace Server.Mobiles
             }
         }
 
-        public static AreaEffect HowlOfCacophony
-        {
-            get
-            {
-                if (_Effects[7] == null)
-                    _Effects[7] = new HowlOfCacophony();
-
-                return _Effects[7];
-            }
-        }
-
         public static AreaEffect[] Effects { get { return _Effects; } }
-        private static AreaEffect[] _Effects = new AreaEffect[8];
+        private static AreaEffect[] _Effects = new AreaEffect[7];
     }
 
     public class AuraOfEnergy : AreaEffect
@@ -445,66 +434,6 @@ namespace Server.Mobiles
                 if ((profile != null && profile.HasAbility(MagicalAbility.Poisoning)) || 0.2 > Utility.RandomDouble())
                     creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);
             }
-        }
-    }
-
-    public class HowlOfCacophony : AreaEffect
-    {
-        public override int EffectRange { get { return 15; } }
-        public override int ManaCost { get { return 25; } }
-
-        public static Dictionary<Mobile, Timer> _Table;
-
-        public HowlOfCacophony()
-        {
-        }
-
-        public override void DoEffect(BaseCreature creature, Mobile defender)
-        {
-            if (_Table == null)
-            {
-                _Table = new Dictionary<Mobile, Timer>();
-            }
-
-            if (_Table.ContainsKey(defender))
-            {
-                Timer timer = _Table[defender];
-
-                if (timer != null)
-                    timer.Stop();
-
-                _Table[defender] = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(15), EndCacophony, defender);
-            }
-            else
-            {
-                _Table.Add(defender, Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(15), EndCacophony, defender));
-            }
-
-            defender.SendSpeedControl(SpeedControlType.WalkSpeed);
-            defender.SendLocalizedMessage(1072069); // // A cacophonic sound lambastes you, suppressing your ability to move.
-            defender.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
-            defender.PlaySound(0x584);
-
-            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.HowlOfCacophony, 1153793, 1153820, TimeSpan.FromSeconds(15), defender, "60\t5\t5"));
-        }
-
-        public static void EndCacophony(Mobile m)
-        {
-            if (_Table != null && _Table.ContainsKey(m))
-            {
-                _Table.Remove(m);
-
-                BuffInfo.RemoveBuff(m, BuffIcon.HowlOfCacophony);
-                m.SendSpeedControl(SpeedControlType.Disable);
-
-                if (_Table.Count == 0)
-                    _Table = null;
-            }
-        }
-
-        public static bool IsUnderEffects(Mobile m)
-        {
-            return _Table != null && _Table.ContainsKey(m);
         }
     }
 }
