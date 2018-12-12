@@ -48,9 +48,31 @@ namespace Server.Mobiles
             get { return base.Combatant; }
             set
             {
-                if (0.10 > Utility.RandomDouble() || Controlled || Summoned)
-                    base.Combatant = value;
+                base.Combatant = value;
+
+                if (!Controlled)
+                {
+                    if (0.05 > Utility.RandomDouble())
+                    {
+                        StopFlee();
+                    }
+                    else if (!CheckFlee())
+                    {
+                        BeginFlee(TimeSpan.FromSeconds(30));
+                    }
+                }
             }
+        }
+
+
+        public override bool CheckFlee()
+        {
+            if (Controlled)
+            {
+                return base.CheckFlee();
+            }
+
+            return DateTime.UtcNow < EndFleeTime;
         }
 
         public override void OnAfterTame(Mobile tamer)

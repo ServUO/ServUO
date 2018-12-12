@@ -504,7 +504,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(500637); // Your tinker skill was insufficient to make the item lockable.
             }
 
-            return 1;
+            return quality;
         }
 
         #endregion

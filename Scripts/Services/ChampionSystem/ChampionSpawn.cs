@@ -405,13 +405,14 @@ namespace Server.Engines.CannedEvil
                     Level = 2;
                 else if (Utility.RandomBool())
                     Level = 1;
-                else
-                    Level = 0;
 
                 StartLevel = Level;
 
-                if (Level > 0)
-                    AdvanceLevel();
+                if (Level > 0 && m_Altar != null)
+                {
+                    Effects.PlaySound(m_Altar.Location, m_Altar.Map, 0x29);
+                    Effects.SendLocationEffect(new Point3D(m_Altar.X + 1, m_Altar.Y + 1, m_Altar.Z), m_Altar.Map, 0x3728, 10);
+                }
             }
         }
 

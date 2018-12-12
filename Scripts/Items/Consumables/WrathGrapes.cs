@@ -3,8 +3,11 @@ using System;
 namespace Server.Items
 {
     [TypeAlias("Server.Items.WrathGrapes")]
-    public class GrapesOfWrath : BaseMagicalFood
+    public class GrapesOfWrath : BaseMagicalFood, ICommodity
     {
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
         [Constructable]
         public GrapesOfWrath()
             : base(0x2FD7)

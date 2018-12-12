@@ -40,4 +40,11 @@ namespace Server.Items
     {
         bool CanBeSeenBy(PlayerMobile m);
     }
+
+    public enum ItemQuality
+    {
+        Low,
+        Normal,
+        Exceptional,
+    }
 }

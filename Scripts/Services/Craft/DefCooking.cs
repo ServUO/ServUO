@@ -63,7 +63,8 @@ namespace Server.Engines.Craft
 
         public override double GetChanceAtMin(CraftItem item)
         {
-            if (item.ItemType.IsSubclassOf(typeof(BaseMagicalFood)))
+            if (item.ItemType == typeof(GrapesOfWrath) ||
+                item.ItemType == typeof(EnchantedApple))
             {
                 return .5;
             }
@@ -121,7 +122,7 @@ namespace Server.Engines.Craft
         {
             int index = -1;
 
-            /* Begin Ingredients */
+            #region Ingredients
             index = AddCraft(typeof(SackFlour), 1044495, 1024153, 0.0, 100.0, typeof(WheatSheaf), 1044489, 2, 1044490);
             SetNeedMill(index, true);
 
@@ -153,9 +154,9 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
             AddRes(index, typeof(SackFlour), 1044468, 1, 1044253);
             SetItemHue(index, 1281);
-            /* End Ingredients */
+            #endregion
 
-            /* Begin Preparations */
+            #region Preparations
             index = AddCraft(typeof(UnbakedQuiche), 1044496, 1041339, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
             AddRes(index, typeof(Eggs), 1044477, 1, 1044253);
 
@@ -181,12 +182,9 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(UnbakedPumpkinPie), 1044496, 1041342, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
             AddRes(index, typeof(Pumpkin), 1044484, 1, 1044253);
 
-            index = AddCraft(typeof(WoodPulp), 1044496, 1113136, 60.0, 100.0, typeof(BarkFragment), 1032687, 1, 1044253);
-            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
-
             if (Core.SE)
             {
-                index = AddCraft(typeof(GreenTea), 1044496, 1030315, 80.0, 130.0, typeof(GreenTeaBasket), 1030316, 1, 1044253);
+                index = AddCraft(typeof(GreenTea), 1044496, 1030316, 80.0, 130.0, typeof(GreenTeaBasket), 1030316, 1, 1044253);
                 AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
                 SetNeedOven(index, true);
 
@@ -246,9 +244,9 @@ namespace Server.Engines.Craft
                 SetNeedHeat(index, true);
             }
             #endregion
-            /* End Preparations */
+            #endregion
 
-            /* Begin Baking */
+            #region Baking
             index = AddCraft(typeof(BreadLoaf), 1044497, 1024156, 0.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
             SetNeedOven(index, true);
 
@@ -312,37 +310,44 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(ThreeTieredCake), 1044497, 1154465, 60.0, 110.0, typeof(CakeMix), 1044471, 3, 1044253);
             AddRecipe(index, (int)CookRecipes.ThreeTieredCake);
             SetNeedOven(index, true);
-            /* End Baking */
+            #endregion
 
-            /* Begin Barbecue */
+            #region Barbecue
             index = AddCraft(typeof(CookedBird), 1044498, 1022487, 0.0, 100.0, typeof(RawBird), 1044470, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(ChickenLeg), 1044498, 1025640, 0.0, 100.0, typeof(RawChickenLeg), 1044473, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(FishSteak), 1044498, 1022427, 0.0, 100.0, typeof(RawFishSteak), 1044476, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(FriedEggs), 1044498, 1022486, 0.0, 100.0, typeof(Eggs), 1044477, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(LambLeg), 1044498, 1025642, 0.0, 100.0, typeof(RawLambLeg), 1044478, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(Ribs), 1044498, 1022546, 0.0, 100.0, typeof(RawRibs), 1044485, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(BowlOfRotwormStew), 1044498, 1031706, 0.0, 100.0, typeof(RawRotwormMeat), 1031705, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
             AddRecipe(index, (int)CookRecipes.RotWormStew);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(BowlOfBlackrockStew), 1044498, 1115752, 30.0, 70.0, typeof(BowlOfRotwormStew), 1031706, 1, 1044253);
             AddRes(index, typeof(SmallPieceofBlackrock), 1153836, 1, 1044253);
@@ -350,6 +355,7 @@ namespace Server.Engines.Craft
             SetUseAllRes(index, true);
             SetItemHue(index, 1954);
             AddRecipe(index, (int)CookRecipes.BlackrockStew);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(Hamburger), 1044498, 1125202, 40.0, 80.0, typeof(BreadLoaf), 1024155, 1, 1044253);
             AddRes(index, typeof(RawRibs), 1044485, 1, 1044253);
@@ -369,9 +375,30 @@ namespace Server.Engines.Craft
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
             AddRecipe(index, (int)CookRecipes.Sausage);
-            /* End Barbecue */
+            #endregion
 
-            /* Begin Chocolatiering */
+            #region Enchanted
+            if (Core.ML)
+            {
+                index = AddCraft(typeof(FoodEngraver), 1073108, 1072951, 75.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+                AddRes(index, typeof(JarHoney), 1044472, 1, 1044253);
+
+                index = AddCraft(typeof(EnchantedApple), 1073108, 1072952, 60.0, 85.0, typeof(Apple), 1044479, 1, 1044253);
+                AddRes(index, typeof(GreaterHealPotion), 1073467, 1, 1044253);
+                ForceNonExceptional(index);
+
+                index = AddCraft(typeof(GrapesOfWrath), 1073108, 1072953, 95.0, 120.0, typeof(Grapes), 1073468, 1, 1044253);
+                AddRes(index, typeof(GreaterStrengthPotion), 1073466, 1, 1044253);
+                ForceNonExceptional(index);
+
+                index = AddCraft(typeof(FruitBowl), 1073108, 1072950, 55.0, 105.0, typeof(EmptyWoodenBowl), 1073472, 1, 1044253);
+                AddRes(index, typeof(Pear), 1044481, 3, 1044253);
+                AddRes(index, typeof(Apple), 1044479, 3, 1044253);
+                AddRes(index, typeof(Banana), 1073470, 3, 1044253);
+            }
+            #endregion
+
+            #region Chocolatiering
             if (Core.ML)
             {
                 if (Core.TOL)
@@ -424,27 +451,6 @@ namespace Server.Engines.Craft
                 }
                 #endregion
             }
-            /* End Chocolatiering */
-
-            #region Mondain's Legacy
-            /* Begin Enchanted */
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(FoodEngraver), 1073108, 1072951, 75.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-                AddRes(index, typeof(JarHoney), 1044472, 1, 1044253);
-
-                index = AddCraft(typeof(EnchantedApple), 1073108, 1072952, 60.0, 100, typeof(Apple), 1044479, 1, 1044253);
-                AddRes(index, typeof(GreaterHealPotion), 1073467, 1, 1044253);
-
-                index = AddCraft(typeof(GrapesOfWrath), 1073108, 1072953, 95.0, 135.0, typeof(Grapes), 1073468, 1, 1044253);
-                AddRes(index, typeof(GreaterStrengthPotion), 1073466, 1, 1044253);
-
-                index = AddCraft(typeof(FruitBowl), 1073108, 1072950, 55.0, 95.0, typeof(EmptyWoodenBowl), 1073472, 1, 1044253);
-                AddRes(index, typeof(Pear), 1044481, 3, 1044253);
-                AddRes(index, typeof(Apple), 1044479, 3, 1044253);
-                AddRes(index, typeof(Banana), 1073470, 3, 1044253);
-            }
-            /* End Enchanted */
             #endregion
 
             #region Fish Pies
@@ -545,6 +551,10 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
                 SetNeedOven(index, true);
             }
+            #endregion
+
+            #region Bevereages
+            // TODO: this
             #endregion
         }
     }
