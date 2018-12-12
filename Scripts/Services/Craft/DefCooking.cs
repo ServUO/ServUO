@@ -63,6 +63,11 @@ namespace Server.Engines.Craft
 
         public override double GetChanceAtMin(CraftItem item)
         {
+            if (item.ItemType.IsSubclassOf(typeof(BaseMagicalFood)))
+            {
+                return .5;
+            }
+
             return 0.0; // 0%
         }
 
@@ -428,13 +433,13 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(FoodEngraver), 1073108, 1072951, 75.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
                 AddRes(index, typeof(JarHoney), 1044472, 1, 1044253);
 
-                index = AddCraft(typeof(EnchantedApple), 1073108, 1072952, 60.0, 110.0, typeof(Apple), 1044479, 1, 1044253);
+                index = AddCraft(typeof(EnchantedApple), 1073108, 1072952, 60.0, 100, typeof(Apple), 1044479, 1, 1044253);
                 AddRes(index, typeof(GreaterHealPotion), 1073467, 1, 1044253);
 
-                index = AddCraft(typeof(WrathGrapes), 1073108, 1072953, 95.0, 145.0, typeof(Grapes), 1073468, 1, 1044253);
+                index = AddCraft(typeof(GrapesOfWrath), 1073108, 1072953, 95.0, 135.0, typeof(Grapes), 1073468, 1, 1044253);
                 AddRes(index, typeof(GreaterStrengthPotion), 1073466, 1, 1044253);
 
-                index = AddCraft(typeof(FruitBowl), 1073108, 1072950, 55.0, 105.0, typeof(EmptyWoodenBowl), 1073472, 1, 1044253);
+                index = AddCraft(typeof(FruitBowl), 1073108, 1072950, 55.0, 95.0, typeof(EmptyWoodenBowl), 1073472, 1, 1044253);
                 AddRes(index, typeof(Pear), 1044481, 3, 1044253);
                 AddRes(index, typeof(Apple), 1044479, 3, 1044253);
                 AddRes(index, typeof(Banana), 1073470, 3, 1044253);
