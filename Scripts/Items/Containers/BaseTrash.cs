@@ -72,6 +72,11 @@ namespace Server.Items
 
         public virtual bool AddCleanupItem(Mobile from, Item item)
         {
+            if (!CleanUpBritanniaData.Enabled)
+            {
+                return;
+            }
+
             double checkbagpoint;
             bool added = false;
 
