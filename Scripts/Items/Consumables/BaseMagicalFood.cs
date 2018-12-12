@@ -6,7 +6,7 @@ namespace Server.Items
     public enum MagicalFood
     {
         None = 0x0,
-        WrathGrapes = 0x1,
+        GrapesOfWrath = 0x1,
         EnchantedApple = 0x2,
     }
 

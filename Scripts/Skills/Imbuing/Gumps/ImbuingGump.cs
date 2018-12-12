@@ -247,7 +247,7 @@ namespace Server.Gumps
             {
                 from.EndAction(typeof(Imbuing));
 
-                if (!(o is Container))
+                if (!(o is Container) || (o is LockableContainer && ((LockableContainer)o).Locked))
                 {
                     from.SendLocalizedMessage(1080425); // You cannot magically unravel this item.
                     return;

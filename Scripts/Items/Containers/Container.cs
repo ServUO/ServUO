@@ -1268,8 +1268,6 @@ namespace Server.Items
     [FlipableAttribute(0x4026, 0x4025)]
     public class GargishChest : LockableContainer
     {
-        public override int DefaultGumpID { get { return 0x42; } }
-
         [Constructable]
         public GargishChest()
             : base(0x4026)

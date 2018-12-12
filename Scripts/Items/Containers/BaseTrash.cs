@@ -74,7 +74,7 @@ namespace Server.Items
         {
             if (!CleanUpBritanniaData.Enabled)
             {
-                return;
+                return false;
             }
 
             double checkbagpoint;

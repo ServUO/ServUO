@@ -11,18 +11,18 @@ namespace Server.Engines.Quests
         {
             if (0.30 > Utility.RandomDouble())
             {
-                this.AddObjective(new SlayObjective(typeof(GargoyleShade), "Gargoyle Shade", 10));
+                AddObjective(new SlayObjective(typeof(GargoyleShade), "Gargoyle Shade", 10));
             }
             else if (0.50 > Utility.RandomDouble())
             {
-                this.AddObjective(new SlayObjective(typeof(EffetePutridGargoyle), "Effete Putrid Gargoyle", 10));
+                AddObjective(new SlayObjective(typeof(EffetePutridGargoyle), "Effete Putrid Gargoyle", 10));
             }
             else
             {
-                this.AddObjective(new SlayObjective(typeof(EffeteUndeadGargoyle), "Effete Undead Gargoyle", 10));
+                AddObjective(new SlayObjective(typeof(EffeteUndeadGargoyle), "Effete Undead Gargoyle", 10));
             }
 
-            this.AddReward(new BaseReward(typeof(NecklaceofDiligence), 1113137));
+            AddReward(new BaseReward(typeof(NecklaceofDiligence), 1113137));
         }
 
         public override bool DoneOnce
@@ -32,7 +32,8 @@ namespace Server.Engines.Quests
                 return true;
             }
         }
-        /* TThe Arisen */
+
+        /* The Arisen */
         public override object Title
         {
             get
@@ -40,6 +41,7 @@ namespace Server.Engines.Quests
                 return 1112538;
             }
         }
+
         public override object Description
         {
             get
@@ -47,6 +49,7 @@ namespace Server.Engines.Quests
                 return 1112539;
             }
         }
+
         public override object Refuse
         {
             get
@@ -54,6 +57,7 @@ namespace Server.Engines.Quests
                 return 1112540;
             }
         }
+
         public override object Uncomplete
         {
             get
@@ -61,6 +65,7 @@ namespace Server.Engines.Quests
                 return 1112517;
             }
         }
+
         public override object Complete
         {
             get
@@ -68,10 +73,11 @@ namespace Server.Engines.Quests
                 return 1112543;
             }
         }
+
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1112542, null, 0x23); 						
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1112542, null, 0x23); 						
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -89,15 +95,16 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class Naxatillor : MondainQuester
+    [TypeAlias("Server.Engines.Quests.Naxatillor")]
+    public class Naxatilor : MondainQuester
     {
         [Constructable]
-        public Naxatillor()
+        public Naxatilor()
             : base("Naxatillor", "The Seer")
         {
         }
 
-        public Naxatillor(Serial serial)
+        public Naxatilor(Serial serial)
             : base(serial)
         {
         }
@@ -114,22 +121,22 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.CantWalk = true;
-            this.Body = 666;
-            this.HairItemID = 16987;
-            this.HairHue = 1801;
+            Female = false;
+            CantWalk = true;
+            Body = 666;
+            HairItemID = 16987;
+            HairHue = 1801;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
+            AddItem(new Backpack());
 
-            this.AddItem(new GargishClothChest(Utility.RandomNeutralHue()));
-            this.AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
-            this.AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
+            AddItem(new GargishClothChest(Utility.RandomNeutralHue()));
+            AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
+            AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
         }
 
         public override void Serialize(GenericWriter writer)
