@@ -80,10 +80,13 @@ namespace Server.Items
         protected FillableContent m_Content;
         protected DateTime m_NextRespawnTime;
         protected Timer m_RespawnTimer;
+
         public FillableContainer(int itemID)
             : base(itemID)
         {
             Movable = false;
+
+            MaxSpawnCount = Utility.RandomMinMax(3, 5);
         }
 
         public FillableContainer(Serial serial)
@@ -91,49 +94,39 @@ namespace Server.Items
         {
         }
 
-        public virtual int MinRespawnMinutes
-        {
-            get
-            {
-                return 60;
-            }
-        }
-        public virtual int MaxRespawnMinutes
-        {
-            get
-            {
-                return 90;
-            }
-        }
-        public virtual bool IsLockable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual bool IsTrapable
-        {
-            get
-            {
-                return IsLockable;
-            }
-        }
-        public virtual int SpawnThreshold
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public virtual int MinRespawnMinutes { get { return 5; } }
+        public virtual int MaxRespawnMinutes { get { return 30; } }
+        public virtual bool IsLockable { get { return true; } }
+        public virtual bool IsTrapable { get { return IsLockable; } }
+        public virtual int SpawnThreshold { get { return MaxSpawnCount - 1; } }
+
+        public virtual int AmountPerSpawn { get { return 1; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextRespawnTime
+        public int MaxSpawnCount { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TotalTraps { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextRespawnTime 
         {
-            get
+            get 
             {
-                return m_NextRespawnTime;
+                return m_NextRespawnTime; 
+            }
+            set
+            {
+                m_NextRespawnTime = value;
+
+                if (m_NextRespawnTime > DateTime.UtcNow)
+                {
+                    TimeSpan delay = m_NextRespawnTime - DateTime.UtcNow;
+                    m_RespawnTimer = Timer.DelayCall(delay, new TimerCallback(Respawn));
+                }
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public FillableContentType ContentType
         {
@@ -146,6 +139,7 @@ namespace Server.Items
                 Content = FillableContent.Lookup(value);
             }
         }
+
         public FillableContent Content
         {
             get
@@ -165,9 +159,10 @@ namespace Server.Items
                         Items[i].Delete();
                 }
 
-                Respawn();
+                Respawn(true);
             }
         }
+
         public override void OnMapChange()
         {
             base.OnMapChange();
@@ -243,6 +238,11 @@ namespace Server.Items
 
         public void Respawn()
         {
+            Respawn(false);
+        }
+
+        public void Respawn(bool all)
+        {
             if (m_RespawnTimer != null)
             {
                 m_RespawnTimer.Stop();
@@ -252,9 +252,9 @@ namespace Server.Items
             if (m_Content == null || Deleted)
                 return;
 
-            GenerateContent();
+            GenerateContent(all);
 
-            if (IsLockable)
+            if (IsLockable && !Locked)
             {
                 Locked = true;
 
@@ -267,13 +267,19 @@ namespace Server.Items
 
             if (IsTrapable && (m_Content.Level > 1 || 4 > Utility.Random(5)))
             {
-                if (m_Content.Level > Utility.Random(5))
-                    TrapType = TrapType.PoisonTrap;
-                else
-                    TrapType = TrapType.ExplosionTrap;
+                ResetTrap();
 
-                TrapPower = m_Content.Level * Utility.RandomMinMax(10, 30);
-                TrapLevel = m_Content.Level;
+                TotalTraps = 1;
+
+                if (0.25 > Utility.RandomDouble())
+                {
+                    TotalTraps++;
+
+                    if (0.25 > Utility.RandomDouble())
+                    {
+                        TotalTraps++;
+                    }
+                }
             }
             else
             {
@@ -290,12 +296,13 @@ namespace Server.Items
             return ContentType == FillableContentType.Clothier || ContentType == FillableContentType.Blacksmith || ContentType == FillableContentType.Carpenter;
         }
 
-        public virtual void GenerateContent()
+        public virtual void GenerateContent(bool all)
         {
             if (m_Content == null || Deleted)
                 return;
 
-            int toSpawn = GetSpawnCount();
+            int toSpawn = GetSpawnCount(all);
+
             bool canspawnRefinement = GetAmount(typeof(RefinementComponent)) == 0 && CanSpawnRefinement();
 
             for (int i = 0; i < toSpawn; ++i)
@@ -326,11 +333,37 @@ namespace Server.Items
             }
         }
 
+        public override bool ExecuteTrap(Mobile from)
+        {
+            bool execute = base.ExecuteTrap(from);
+
+            if (execute && --TotalTraps > 0)
+            {
+                ResetTrap();
+            }
+
+            return execute;
+        }
+
+        public void ResetTrap()
+        {
+            if (m_Content.Level > Utility.Random(5))
+                TrapType = TrapType.PoisonTrap;
+            else
+                TrapType = TrapType.ExplosionTrap;
+
+            TrapPower = m_Content.Level * Utility.RandomMinMax(10, 30);
+            TrapLevel = m_Content.Level;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(1); // version
+            writer.WriteEncodedInt(2); // version
+
+            writer.Write(TotalTraps);
+            writer.Write(MaxSpawnCount);
 
             writer.Write((int)ContentType);
 
@@ -351,8 +384,20 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            switch( version )
+            if (version == 1)
             {
+                MaxSpawnCount = Utility.RandomMinMax(3, 5);
+                TotalTraps = 1;
+            }
+
+            switch (version)
+            {
+                case 2:
+                    {
+                        TotalTraps = reader.ReadInt();
+                        MaxSpawnCount = reader.ReadInt();
+                        goto case 1;
+                    }
                 case 1:
                     {
                         m_Content = FillableContent.Lookup((FillableContentType)reader.ReadInt());
@@ -377,16 +422,14 @@ namespace Server.Items
             }
         }
 
-        protected virtual int GetSpawnCount()
+        protected virtual int GetSpawnCount(bool all)
         {
             int itemsCount = GetItemsCount();
 
-            if (itemsCount > SpawnThreshold)
+            if (itemsCount >= MaxSpawnCount)
                 return 0;
 
-            int maxSpawnCount = (1 + SpawnThreshold - itemsCount) * 2;
-
-            return Utility.RandomMinMax(0, maxSpawnCount);
+            return all ? (MaxSpawnCount - itemsCount) : AmountPerSpawn;
         }
     }
 
@@ -398,6 +441,8 @@ namespace Server.Items
             : base(0xA97)
         {
             Weight = 1.0;
+
+            MaxSpawnCount = 5;
         }
 
         public LibraryBookcase(Serial serial)
@@ -412,13 +457,7 @@ namespace Server.Items
                 return false;
             }
         }
-        public override int SpawnThreshold
-        {
-            get
-            {
-                return 5;
-            }
-        }
+
         public override void AcquireContent()
         {
             if (m_Content != null)
@@ -434,7 +473,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt((int)2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -445,11 +484,14 @@ namespace Server.Items
 
             if (version == 0 && m_Content == null)
                 Timer.DelayCall(TimeSpan.Zero, new TimerCallback(AcquireContent));
+
+            if(version == 1)
+                MaxSpawnCount = 5;
         }
 
-        protected override int GetSpawnCount()
+        protected override int GetSpawnCount(bool all)
         {
-            return (5 - GetItemsCount());
+            return (MaxSpawnCount - GetItemsCount());
         }
     }
 
