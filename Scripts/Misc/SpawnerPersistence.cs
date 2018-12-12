@@ -16,7 +16,7 @@ using Server.Multis;
  * This is used for modifying, removing, adding existing spawners, etc for existing shards,
  * used for modifying, removing, adding existing spawners, etc for existing shards.
  * As this is a collaborative effort for ServUO, it's important that any modifications to 
- * existing shards be handled for new shareds.  For example, if your swapping out some spawners,
+ * existing shards be handled for new shards.  For example, if your swapping out some spawners,
  * common practice will be to edit the spawner files for fresh-loaded servers. Please refer to
  * ServUO.com community with any questions or concerns.
  */

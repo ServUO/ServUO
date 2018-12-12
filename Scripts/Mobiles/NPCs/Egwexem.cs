@@ -5,13 +5,12 @@ namespace Server.Engines.Quests
 {
     public class RumorsAboundQuest : BaseQuest
     { 
-        /////
         public RumorsAboundQuest()
             : base()
-        { 
-            this.AddObjective(new DeliverObjective(typeof(EgwexemWrit), "Egwexem's Writ", 1, typeof(Naxatillor), "Naxatillor"));
+        {
+            AddObjective(new DeliverObjective(typeof(EgwexemWrit), "Egwexem's Writ", 1, typeof(Naxatilor), "Naxatilor"));
 
-            this.AddReward(new BaseReward(1112731)); 
+            AddReward(new BaseReward(1112731)); 
         }
 
         public override TimeSpan RestartDelay
@@ -21,6 +20,7 @@ namespace Server.Engines.Quests
                 return TimeSpan.FromHours(12);
             }
         }
+
         public override bool DoneOnce
         {
             get
@@ -28,6 +28,7 @@ namespace Server.Engines.Quests
                 return true;
             }
         }
+
         /* Rumors Abound */
         public override object Title
         {
@@ -57,7 +58,7 @@ namespace Server.Engines.Quests
                 return "You never spoke to Naxatillor yet! Go to him!";
             }
         }
-        /////
+
         public override object Complete
         {
             get
@@ -105,21 +106,21 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.CantWalk = true;
-            this.Body = 666;
-            this.HairItemID = 16987;
-            this.HairHue = 1801;
+            Female = false;
+            CantWalk = true;
+            Body = 666;
+            HairItemID = 16987;
+            HairHue = 1801;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new GargishClothChest());
-            this.AddItem(new GargishClothKilt());
-            this.AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
+            AddItem(new Backpack());
+            AddItem(new GargishClothChest());
+            AddItem(new GargishClothKilt());
+            AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
         }
 
         public override void Serialize(GenericWriter writer)

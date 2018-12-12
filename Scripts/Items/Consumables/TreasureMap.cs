@@ -783,9 +783,7 @@ namespace Server.Items
                     }
                 }
 
-                double maxSkill = minSkill + 60.0;
-
-                if (!from.CheckSkill(SkillName.Cartography, minSkill, maxSkill))
+                if (!from.CheckSkill(SkillName.Cartography, minSkill - 10, minSkill + 30))
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 503018); // You fail to make anything of the map.
                     return;

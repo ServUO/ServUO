@@ -169,7 +169,7 @@ namespace Server.Spells.Spellweaving
                     return;
 					
                 m_LifeSpan -= 1;
-                var targets = GetTargets().ToList();
+                var targets = GetTargets().Where(m => BaseHouse.FindHouseAt(m.Location, m.Map, 20) == null).ToList();
                 int count = targets.Count;
 
                 foreach (Mobile m in targets)
