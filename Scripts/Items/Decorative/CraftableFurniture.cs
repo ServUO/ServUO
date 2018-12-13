@@ -4,13 +4,6 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public enum ItemQuality
-    {
-        Low,
-        Normal,
-        Exceptional,
-    }
-
     public class CraftableFurniture : Item, IResource
     {
         public virtual bool ShowCrafterName

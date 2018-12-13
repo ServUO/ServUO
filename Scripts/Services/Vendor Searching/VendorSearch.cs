@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
 using Server;
 using Server.Items;
 using Server.Mobiles;
 using Server.SkillHandlers;
 using Server.ContextMenus;
-using System.Text;
 using Server.Commands;
 using Server.Targeting;
-using System.Text.RegularExpressions;
 using Server.Regions;
+using Server.Gumps;
 
 namespace Server.Engines.VendorSearching
 {
@@ -969,7 +971,7 @@ namespace Server.Engines.VendorSearching
         {
             if (VendorSearch.CanSearch(Player))
             {
-                Player.SendGump(new VendorSearchGump(Player));
+                BaseGump.SendGump(new VendorSearchGump(Player));
             }
         }
     }

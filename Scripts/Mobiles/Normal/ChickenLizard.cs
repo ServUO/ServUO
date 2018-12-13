@@ -43,8 +43,6 @@ namespace Server.Mobiles
 
             if (0.05 > Utility.RandomDouble())
                 PackItem(new ChickenLizardEgg());
-
-            m_NextEgg = DateTime.UtcNow + TimeSpan.FromDays(7);
         }
 
         public override int Meat { get { return 3; } }
@@ -61,9 +59,15 @@ namespace Server.Mobiles
             if (from.Map == null || from.Map == Map.Internal)
                 return false;
 
+            bool isBonded = IsBonded;
             bool fed = base.CheckFeed(from, dropped);
 
-            if (fed && DateTime.UtcNow >= m_NextEgg)
+            if (!isBonded && IsBonded)
+            {
+                m_NextEgg = DateTime.UtcNow + TimeSpan.FromDays(1);
+            }
+
+            if (IsBonded && fed && DateTime.UtcNow >= m_NextEgg)
             {
                 if (Utility.RandomBool())
                 {
@@ -97,9 +101,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version > 0)
+            switch(version)
             {
-                m_NextEgg = reader.ReadDateTime();
+                case 1:
+                    m_NextEgg = reader.ReadDateTime();
+                    break;
             }
         }
     }

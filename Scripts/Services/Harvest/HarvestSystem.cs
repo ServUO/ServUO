@@ -177,6 +177,10 @@ namespace Server.Engines.Harvest
                     {
                         int amount = def.ConsumedPerHarvest;
                         int feluccaAmount = def.ConsumedPerFeluccaHarvest;
+
+                        if (item is BaseGranite)
+                            feluccaAmount = 3;
+
                         //The whole harvest system is kludgy and I'm sure this is just adding to it.
                         if (item.Stackable)
                         {

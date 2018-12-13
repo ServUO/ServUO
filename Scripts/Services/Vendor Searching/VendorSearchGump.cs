@@ -11,31 +11,30 @@ using Server.SkillHandlers;
 
 namespace Server.Engines.VendorSearching
 {
-    public class VendorSearchGump : Gump
+    public class VendorSearchGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
         public SearchCriteria Criteria { get; set; }
         public int ChosenCategory { get; set; }
         public Map SetMap { get; set; }
+
+        public bool NoFind { get; private set; }
+        public bool NoCrit { get; private set; }
 
         public static int LabelColor = 0x00FFFF;
         public static int CriteriaColor = 0xF5DEB3;
         public static int TextColor = 1150;
 
-        public VendorSearchGump(PlayerMobile pm, int cat = -1) : base(10, 10)
+        public VendorSearchGump(PlayerMobile pm, int cat = -1) 
+            : base(pm, 10, 10)
         {
-            User = pm;
-
             Criteria = VendorSearch.GetContext(pm);
             ChosenCategory = cat;
 
             if (Criteria == null)
                 Criteria = VendorSearch.AddNewContext(pm);
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout(bool nofind = false, bool nocrit = false)
+        public override void AddGumpLayout()
         {
             AddBackground(0, 0, 780, 570, 30546);
             AddBackground(10, 45, 250, 22, 9350);
@@ -142,14 +141,21 @@ namespace Server.Engines.VendorSearching
             AddHtmlLocalized(50, 540, 150, 20, 3000091, C32216(LabelColor), false, false); // Cancel
             AddButton(10, 540, 30533, 30535, 0, GumpButtonType.Reply, 0);
 
-            if (nofind)
+            if (NoFind)
+            {
                 AddHtmlLocalized(125, 540, 400, 16, 1154587, C32216(0xFF0000), false, false); // No items matched your search.
-            else if (nocrit)
+            }
+            else if (NoCrit)
+            {
                 AddHtmlLocalized(125, 540, 400, 16, 1154586, C32216(0xFF0000), false, false); // Please select some criteria to search for.
+            }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
+            NoCrit = false;
+            NoFind = false;
+
             if (info.ButtonID != 0)
             {
                 if (!VendorSearch.CanSearch(User))
@@ -157,6 +163,7 @@ namespace Server.Engines.VendorSearching
                     User.SendLocalizedMessage(1154680); //Before using vendor search, you must be in a justice region or a safe log-out location (such as an inn or a house which has you on its Owner, Co-owner, or Friends list). 
                     return;
                 }
+
                 TextRelay searchname = info.GetTextEntry(0);
 
                 if (searchname != null && !String.IsNullOrEmpty(searchname.Text))
@@ -219,18 +226,22 @@ namespace Server.Engines.VendorSearching
 
                     if (Criteria.IsEmpty)
                     {
-                        Refresh(false, true);
+                        NoCrit = true;
+                        Refresh();
                     }
                     else
                     {
                         List<VendorItem> list = VendorSearch.DoSearch(User, Criteria);
 
                         if (list == null || list.Count == 0)
-                            Refresh(true);
+                        {
+                            NoFind = true;
+                            Refresh();
+                        }
                         else
                         {
                             Refresh();
-                            User.SendGump(new SearchResultsGump(User, list));
+                            BaseGump.SendGump(new SearchResultsGump(User, list));
                         }
                     }
                     break;
@@ -289,73 +300,24 @@ namespace Server.Engines.VendorSearching
 
             return String.Format("{0}%", value.ToString());
         }
-
-        public void Refresh(bool nofind = false, bool nocrit = false)
-        {
-            Entries.Clear();
-            Entries.TrimExcess();
-            AddGumpLayout(nofind, nocrit);
-            User.CloseGump(this.GetType());
-            User.SendGump(this, false);
-        }
-
-        public static int C16232(int c16)
-        {
-            c16 &= 0x7FFF;
-
-            int r = (((c16 >> 10) & 0x1F) << 3);
-            int g = (((c16 >> 05) & 0x1F) << 3);
-            int b = (((c16 >> 00) & 0x1F) << 3);
-
-            return (r << 16) | (g << 8) | (b << 0);
-        }
-
-        public static int C16216(int c16)
-        {
-            return c16 & 0x7FFF;
-        }
-
-        public static int C32216(int c32)
-        {
-            c32 &= 0xFFFFFF;
-
-            int r = (((c32 >> 16) & 0xFF) >> 3);
-            int g = (((c32 >> 08) & 0xFF) >> 3);
-            int b = (((c32 >> 00) & 0xFF) >> 3);
-
-            return (r << 10) | (g << 5) | (b << 0);
-        }
-
-        protected string Color(string color, string str)
-        {
-            return String.Format("<basefont color={0}>{1}", color, str);
-        }
-
-        protected string ColorAndCenter(string color, string str)
-        {
-            return String.Format("<basefont color={0}><center>{1}</center>", color, str);
-        }
     }
 
-    public class SearchResultsGump : Gump
+    public class SearchResultsGump : BaseGump
     {
         public int PerPage = 5;
-        public int TextColor { get { return VendorSearchGump.C32216(0xF5DEB3); } }
+        public int TextColor { get { return C32216(0xF5DEB3); } }
 
-        public PlayerMobile User { get; set; }
         public List<VendorItem> Items { get; set; }
         public int Index { get; set; }
 
-        public SearchResultsGump(PlayerMobile pm, List<VendorItem> items) : base(50, 50)
+        public SearchResultsGump(PlayerMobile pm, List<VendorItem> items) 
+            : base(pm, 50, 50)
         {
-            User = pm;
             Items = items;
             Index = 0;
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             AddBackground(0, 0, 500, 550, 30536);
 
@@ -384,14 +346,8 @@ namespace Server.Engines.VendorSearching
                 AddImage(50, y, 2328);
                 AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
 
-                ObjectPropertyList opl = new ObjectPropertyList(item.Item);
-                item.Item.GetProperties(opl);
-
-                if (User.NetState != null)
-                    User.NetState.Send(opl);
-
                 AddImage(50, y, 2328);
-                AddItemProperty(item.Item.Serial);
+                AddItemProperty(item.Item);
 
                 AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
 
@@ -418,7 +374,7 @@ namespace Server.Engines.VendorSearching
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             switch (info.ButtonID)
             {
@@ -462,15 +418,6 @@ namespace Server.Engines.VendorSearching
             }
         }
 
-        public void Refresh()
-        {
-            Entries.Clear();
-            Entries.TrimExcess();
-            AddGumpLayout();
-            User.CloseGump(this.GetType());
-            User.SendGump(this, false);
-        }
-
         public static void Initialize()
         {
             Timer t = Timer.DelayCall(TimeSpan.FromMinutes(30), TimeSpan.FromMinutes(30), () =>
@@ -488,19 +435,20 @@ namespace Server.Engines.VendorSearching
         public static Dictionary<VendorItem, List<PlayerMobile>> _GivenTo;
     }
 
-    public class ConfirmTeleportGump : Gump
+    public class ConfirmTeleportGump : BaseGump
     {
         public static int Cost = 1000;
 
         public VendorSearchMap VendorMap { get; set; }
-        public Mobile User { get; set; }
 
-        public ConfirmTeleportGump(VendorSearchMap map, Mobile pm)
-            : base(50, 50)
+        public ConfirmTeleportGump(VendorSearchMap map, PlayerMobile pm)
+            : base(pm, 50, 50)
         {
             VendorMap = map;
-            User = pm;
+        }
 
+        public override void AddGumpLayout()
+        {
             AddBackground(0, 0, 500, 300, 30546);
 
             if (VendorMap.Vendor != null && VendorMap.SetLocation != Point3D.Zero)
@@ -515,7 +463,7 @@ namespace Server.Engines.VendorSearching
             AddHtmlLocalized(300, 260, 120, 20, 1114514, "#1073996", 0xFFFF, false, false);
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             switch (info.ButtonID)
             {
