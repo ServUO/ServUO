@@ -192,7 +192,10 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                Clicker.SendGump(new ConfirmTeleportGump(VendorMap, Clicker));
+                if (Clicker is PlayerMobile)
+                {
+                    BaseGump.SendGump(new ConfirmTeleportGump(VendorMap, (PlayerMobile)Clicker));
+                }
             }
         }
 
