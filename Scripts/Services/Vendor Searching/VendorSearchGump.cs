@@ -346,14 +346,8 @@ namespace Server.Engines.VendorSearching
                 AddImage(50, y, 2328);
                 AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
 
-                ObjectPropertyList opl = new ObjectPropertyList(item.Item);
-                item.Item.GetProperties(opl);
-
-                if (User.NetState != null)
-                    User.NetState.Send(opl);
-
                 AddImage(50, y, 2328);
-                AddItemProperty(item.Item.Serial);
+                AddItemProperty(item.Item);
 
                 AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
 
