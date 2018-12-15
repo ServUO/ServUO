@@ -387,9 +387,6 @@ namespace Server.Engines.Shadowguard
             {
                 Queue.Remove(m);
 
-                if (Queue.Count == 0)
-                    Queue = null;
-
                 return false;
             }
 
@@ -432,20 +429,25 @@ namespace Server.Engines.Shadowguard
                 {
                     message = true;
 
-                    Timer.DelayCall(TimeSpan.FromMinutes(2), () =>
+                    Timer.DelayCall(TimeSpan.FromMinutes(2), mobile =>
                     {
-                        EncounterType type = Queue[m];
-                        ShadowguardInstance instance = GetAvailableInstance(type);
-
-                        if (instance != null && instance.TryBeginEncounter(m, true, type))
+                        if (Queue.ContainsKey(m))
                         {
-                            RemoveFromQueue(m);
+                            EncounterType type = Queue[m];
+                            ShadowguardInstance instance = GetAvailableInstance(type);
+
+                            if (instance != null && instance.TryBeginEncounter(m, true, type))
+                            {
+                                RemoveFromQueue(m);
+                            }
                         }
-                    });
+                    }, m);
                 }
 
                 break;
             }
+
+            ColUtility.Free(copy);
 
             if (message && Queue.Count > 0)
             {

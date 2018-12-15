@@ -627,9 +627,10 @@ namespace Server.Services.TownCryer
 
         public override void OnClick()
         {
-            if (Owner.From is PlayerMobile && Owner.From.AccessLevel > AccessLevel.Player)
+            if (Owner.From is PlayerMobile && Owner.From.AccessLevel >= AccessLevel.GameMaster)
             {
-                BaseGump.SendGump(new CreateGreetingEntryGump((PlayerMobile)Owner.From, Cryer));
+                //BaseGump.SendGump(new CreateGreetingEntryGump((PlayerMobile)Owner.From, Cryer));
+                BaseGump.SendGump(new TownCryerGreetingsGump((PlayerMobile)Owner.From, Cryer));
             }
         }
     }

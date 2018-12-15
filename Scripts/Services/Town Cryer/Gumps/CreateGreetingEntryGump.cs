@@ -18,6 +18,14 @@ namespace Server.Services.TownCryer
             if (Entry != null)
             {
                 Edit = true;
+
+                _Headline = Entry.Title.String;
+                _Body = Entry.Body1.String;
+                _Body2 = Entry.Body2;
+                _Body3 = Entry.Body3;
+
+                _Link = Entry.Link;
+                _LinkText = Entry.LinkText;
             }
         }
 
@@ -52,9 +60,12 @@ namespace Server.Services.TownCryer
             AddBackground(58, 500, 740, 40, 0x2486);
             AddTextEntry(59, 500, 739, 40, 0, 6, _LinkText);
 
-            AddBackground(155, 550, 20, 20, 0x2486);
-            AddHtmlLocalized(58, 550, 100, 20, 1158031, false, false); // Expiry (in days):
-            AddTextEntry(156, 550, 19, 20, 0, 7, _Expires);
+            if (!Edit)
+            {
+                AddBackground(155, 550, 20, 20, 0x2486);
+                AddHtmlLocalized(58, 550, 100, 20, 1158031, false, false); // Expiry (in days):
+                AddTextEntry(156, 550, 19, 20, 0, 7, _Expires);
+            }
 
             AddButton(40, 615, 0x601, 0x602, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(63, 615, 150, 20, 1077787, false, false); // Submit
@@ -134,25 +145,23 @@ namespace Server.Services.TownCryer
                 var link = _Link;
                 var linkText = _LinkText;
 
-                int expires = Utility.ToInt32(exp);
+                int expires = -1;
 
-                if (!String.IsNullOrEmpty(body))
+                if (!String.IsNullOrEmpty(exp))
                 {
-                    if (!String.IsNullOrEmpty(body2))
-                        body += body2;
-
-                    if (!String.IsNullOrEmpty(body3))
-                        body += body3;
+                    expires = Utility.ToInt32(exp);
                 }
 
                 if (Entry == null)
                 {
-                    Entry = new TownCryerGreetingEntry(headline, body, expires, link, linkText);
+                    Entry = new TownCryerGreetingEntry(headline, body, body2, body3, expires, link, linkText, true);
                 }
                 else
                 {
                     Entry.Title = headline;
-                    Entry.Body = body;
+                    Entry.Body1 = body;
+                    Entry.Body2 = body2;
+                    Entry.Body3 = body3;
                     Entry.Link = link;
                     Entry.LinkText = linkText;
 
@@ -162,7 +171,7 @@ namespace Server.Services.TownCryer
                     }
                 }
 
-                if(expires < 1 || expires > 30)
+                if(!Edit && (expires < 1 || expires > 30))
                 {
                     User.SendLocalizedMessage(1158033); // The expiry can be between 1 and 30 days. Please check your entry and try again.
                 }
@@ -175,9 +184,12 @@ namespace Server.Services.TownCryer
                     if (!Edit)
                     {
                         TownCryerSystem.AddEntry(Entry);
+                        User.SendLocalizedMessage(1158039); // Your entry has been submitted.
                     }
-
-                    User.SendLocalizedMessage(1158039); // Your entry has been submitted.
+                    else
+                    {
+                        User.SendMessage("Your edited entry has been submitted.");
+                    }
 
                     return;
                 }

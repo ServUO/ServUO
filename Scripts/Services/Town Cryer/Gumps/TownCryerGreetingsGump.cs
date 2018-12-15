@@ -48,13 +48,37 @@ namespace Server.Services.TownCryer
                 y += 40;
             }
 
-            if (Entry.Body.Number > 0)
+            // For now, we're only supporting a cliloc (hard coded greetings per EA) or string (Custom) entries. Not both.
+            // Html tags will needed to be added when creating the entry, this will not auto format it for you.
+            if (Entry.Body1.Number > 0)
             {
-                AddHtmlLocalized(78, y, 700, 400, Entry.Body.Number, false, false);
+                AddHtmlLocalized(78, y, 700, 400, Entry.Body1.Number, false, false);
             }
-            else
+            else if (!String.IsNullOrEmpty(Entry.Body1.String))
             {
-                AddHtml(78, y, 700, 400, Entry.Body.ToString(), false, false);
+                var str = Entry.Body1.String;
+
+                if (!String.IsNullOrEmpty(Entry.Body2))
+                {
+                    if (!str.EndsWith("<br>"))
+                    {
+                        str += " ";
+                    }
+
+                    str += Entry.Body2;
+                }
+
+                if (!String.IsNullOrEmpty(Entry.Body3))
+                {
+                    if (!str.EndsWith("<br>"))
+                    {
+                        str += " ";
+                    }
+
+                    str += Entry.Body3;
+                }
+
+                AddHtml(78, y, 700, 400, str, false, false);
             }
 
             if (Entry.Expires != DateTime.MinValue)
@@ -93,8 +117,17 @@ namespace Server.Services.TownCryer
 
             if (User.AccessLevel >= AccessLevel.Administrator)
             {
-                AddButton(40, 640, 0x603, 0x604, 7, GumpButtonType.Reply, 0);
-                AddHtml(68, 640, 300, 20, "Entry Props", false, false);
+                if (Entry.CanEdit)
+                {
+                    AddButton(40, 601, 0x603, 0x604, 7, GumpButtonType.Reply, 0);
+                    AddHtml(68, 601, 300, 20, "Edit Greeting", false, false);
+                }
+
+                AddButton(40, 623, 0x603, 0x604, 8, GumpButtonType.Reply, 0);
+                AddHtml(68, 623, 300, 20, "New Greeting", false, false);
+
+                AddButton(40, 645, 0x603, 0x604, 9, GumpButtonType.Reply, 0);
+                AddHtml(68, 645, 300, 20, "Entry Props", false, false);
             }
         }
 
@@ -125,6 +158,19 @@ namespace Server.Services.TownCryer
                     TownCryerSystem.AddExempt(User);
                     break;
                 case 7:
+                    if (Entry != null)
+                    {
+                        BaseGump.SendGump(new CreateGreetingEntryGump(User, Cryer, Entry));
+                    }
+                    else
+                    {
+                        Refresh();
+                    }
+                    break;
+                case 8:
+                    BaseGump.SendGump(new CreateGreetingEntryGump(User, Cryer));
+                    break;
+                case 9:
                     Refresh();
 
                     if (Entry != null)
