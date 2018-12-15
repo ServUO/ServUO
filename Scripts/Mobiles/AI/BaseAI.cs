@@ -1672,12 +1672,13 @@ namespace Server.Mobiles
 				m_Mobile.Combatant = combatant;
 				m_Mobile.FocusMob = combatant;
 				Action = ActionType.Combat;
+                m_Mobile.Direction = m_Mobile.GetDirectionTo(combatant);
 
-				/*
+                /*
                 * We need to call Think() here or spell casting monsters will not use
                 * spells when guarding because their target is never processed.
                 */
-				Think();
+                Think();
 			}
 			else
 			{
@@ -1771,7 +1772,11 @@ namespace Server.Mobiles
 			else
 			{
 				m_Mobile.DebugSay("Attacking target...");
-				Think();
+
+                if (m_Mobile.Combatant != null)
+                    m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
+
+                Think();
 			}
 
 			return true;

@@ -466,7 +466,10 @@ namespace Server.Engines.Shadowguard
 		
 		public override void CheckEncounter()
 		{
-			if(Armor != null && Armor.Where(a => a != null && !a.Deleted).Count() == 0)
+            if (Completed || Armor == null)
+                return;
+
+            if (Armor.Where(a => a != null && !a.Deleted).Count() == 0)
 				CompleteEncounter();
 		}
 		
@@ -484,8 +487,31 @@ namespace Server.Engines.Shadowguard
             if(DestroyedArmor != null)
 			    DestroyedArmor.Add(item);
 		}
-		
-		public override void ClearItems()
+
+        public override void CompleteEncounter()
+        {
+            base.CompleteEncounter();
+
+            ClearSpawn();
+        }
+
+        private void ClearSpawn()
+        {
+            if (Spawn != null)
+            {
+                List<BaseCreature> list = new List<BaseCreature>(Spawn.Where(s => s != null && !s.Deleted));
+
+                foreach (BaseCreature spawn in list)
+                    spawn.Delete();
+
+                ColUtility.Free(list);
+
+                ColUtility.Free(Spawn);
+                Spawn = null;
+            }
+        }
+
+        public override void ClearItems()
 		{
             if (Armor != null)
             {
@@ -511,19 +537,6 @@ namespace Server.Engines.Shadowguard
 
                 ColUtility.Free(DestroyedArmor);
                 DestroyedArmor = null;
-            }
-
-            if (Spawn != null)
-            {
-                List<BaseCreature> list = new List<BaseCreature>(Spawn.Where(s => s != null && !s.Deleted));
-
-                foreach (BaseCreature spawn in list)
-                    spawn.Delete();
-
-                ColUtility.Free(list);
-
-                ColUtility.Free(Spawn);
-                Spawn = null;
             }
 
             if (Items != null)

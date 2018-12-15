@@ -473,6 +473,10 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1049743, typeof(MonsterStatuette), MonsterStatuetteType.Reaper),
                     new RewardEntry(monsterStatues, 1049744, typeof(MonsterStatuette), MonsterStatuetteType.Mongbat),
                     new RewardEntry(monsterStatues, 1155745, typeof(MonsterStatuette), MonsterStatuetteType.PlatinumDragon),
+                    new RewardEntry(monsterStatues, 1157993, typeof(MonsterStatuette), MonsterStatuetteType.Pyros),
+                    new RewardEntry(monsterStatues, 1157994, typeof(MonsterStatuette), MonsterStatuetteType.Lithos),
+                    new RewardEntry(monsterStatues, 1157992, typeof(MonsterStatuette), MonsterStatuetteType.Hydros),
+                    new RewardEntry(monsterStatues, 1157991, typeof(MonsterStatuette), MonsterStatuetteType.Stratos),
 
                     new RewardEntry(etherealSteeds, 1049746, typeof(EtherealKirin)),
                     new RewardEntry(etherealSteeds, 1049745, typeof(EtherealUnicorn)),
