@@ -533,6 +533,29 @@ namespace Server.Items
 
             Fighters.Remove(fighter);
             fighter.SendLocalizedMessage(1072677); // You have been transported out of this room.
+
+            if (MasterKeys.Count == 0 && Fighters.Count == 0 && Owner != null)
+            {
+                StopTimers();
+
+                Owner = null;
+
+                if (Peerless != null)
+                {
+                    if (Peerless.Corpse != null && !Peerless.Corpse.Deleted)
+                        Peerless.Corpse.Delete();
+
+                    if (!Peerless.Deleted)
+                        Peerless.Delete();                    
+                }
+
+                CleanupHelpers();
+
+                // reset summoner, boss		
+                Peerless = null;
+
+                Deadline = DateTime.MinValue;
+            }
         }
 
         public virtual void OnPeerlessDeath()
