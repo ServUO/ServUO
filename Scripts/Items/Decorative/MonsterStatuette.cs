@@ -70,7 +70,11 @@ namespace Server.Items
         MyrmidexQueen,
         Virtuebane,
         GreyGoblin,
-        GreenGoblin
+        GreenGoblin,
+        Pyros,
+        Lithos,
+        Hydros,
+        Stratos
     }
 
     public class MonsterStatuetteInfo
@@ -141,7 +145,11 @@ namespace Server.Items
             /* Myrmidex Queen */    new MonsterStatuetteInfo(1157080, 0x9DB6, 959),
             /* Virtuebane */        new MonsterStatuetteInfo(1153592, 0x4C06, 357),
             /* Grey Goblin */       new MonsterStatuetteInfo(1125135, 0xA095, 0x45A),
-            /* Green Goblin */      new MonsterStatuetteInfo(1125133, 0xA097, 0x45A)
+            /* Green Goblin */      new MonsterStatuetteInfo(1125133, 0xA097, 0x45A),
+            /* Pyros */             new MonsterStatuetteInfo(1157993, 0x9F4D, new int[] { 0x112, 0x113, 0x114, 0x115, 0x116 }),
+            /* Lithos */            new MonsterStatuetteInfo(1157994, 0x9FA1, new int[] { 0x10D, 0x10E, 0x10F, 0x110, 0x111 }),
+            /* Hydros */            new MonsterStatuetteInfo(1157992, 0x9F49, new int[] { 0x117, 0x118, 0x1119, 0x11A, 0x11B }),
+            /* Stratos */           new MonsterStatuetteInfo(1157991, 0x9F4C, new int[] { 0x108, 0x109, 0x10A, 0x10B, 0x10C }),
         };
 
         private readonly int m_LabelNumber;
@@ -439,3 +447,5 @@ namespace Server.Items
         }
     }
 }
+ 
+ 

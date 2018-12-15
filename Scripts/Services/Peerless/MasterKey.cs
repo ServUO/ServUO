@@ -1,41 +1,41 @@
 using System;
 using System.Linq;
-
 using Server;
-using Server.Mobiles;
-using Server.Gumps;
 using Server.Engines.PartySystem;
+using Server.Gumps;
 
 namespace Server.Items
 {
-	public class MasterKey : PeerlessKey
-	{	
-		public override int LabelNumber{ get{ return 1074348; } } // master key
-	
-		private PeerlessAltar m_Altar;
-		
-		[CommandProperty( AccessLevel.GameMaster )]
-		public PeerlessAltar Altar
-		{
-			get{ return m_Altar; }
-			set{ m_Altar = value; }
-		}
-		
-		[Constructable]
-		public MasterKey( int itemID ) : base( itemID )
-		{
-			LootType = LootType.Blessed;
-		}
-	
-		public MasterKey( Serial serial ) : base( serial )
-		{
-		}		
-		
-		public override void OnDoubleClick( Mobile from )
-		{	
-			if ( CanOfferConfirmation( from ) && m_Altar != null)
-			{
-                if (m_Altar.IsAvailable && m_Altar.Peerless == null)
+    public class MasterKey : PeerlessKey
+    {
+        public override int LabelNumber { get { return 1074348; } } // master key
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public PeerlessAltar Altar { get; set; }
+
+        [Constructable]
+        public MasterKey(int itemID)
+            : base(itemID)
+        {
+            LootType = LootType.Blessed;
+        }
+
+        public MasterKey(Serial serial) : base(serial)
+        {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+            else
+            {
+                if (!CanOfferConfirmation(from) && Altar == null)
+                    return;
+
+                if (Altar.Peerless == null)
                 {
                     from.CloseGump(typeof(ConfirmPartyGump));
                     from.SendGump(new ConfirmPartyGump(this));
@@ -49,56 +49,55 @@ namespace Server.Items
                         foreach (var m in p.Members.Select(x => x.Mobile).Where(m => m.InRange(from.Location, 25)))
                         {
                             m.CloseGump(typeof(ConfirmEntranceGump));
-                            m.SendGump(new ConfirmEntranceGump(m_Altar));
+                            m.SendGump(new ConfirmEntranceGump(Altar, m));
                         }
                     }
                     else
                     {
                         from.CloseGump(typeof(ConfirmEntranceGump));
-                        from.SendGump(new ConfirmEntranceGump(m_Altar));
+                        from.SendGump(new ConfirmEntranceGump(Altar, from));
                     }
                 }
-			}
-		}	
-		
-		public override void OnAfterDelete()
-		{			
-			if ( m_Altar == null )
-				return;
-				
-			m_Altar.MasterKeys.Remove( this );
-			
-			if ( m_Altar.MasterKeys.Count == 0 && m_Altar.Fighters.Count == 0 )
-				m_Altar.FinishSequence();
-		}
-		
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
-			
-			writer.Write( (Item) m_Altar );
-		}
-		
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+            }
+        }
 
-			int version = reader.ReadInt();
-			
-			m_Altar = reader.ReadItem() as PeerlessAltar;
-		}
-		
-		public virtual bool CanOfferConfirmation( Mobile from )
-		{
-			if ( m_Altar != null && m_Altar.Fighters.Contains( from ) )
-			{
-				from.SendLocalizedMessage( 1063296 ); // You may not use that teleporter at this time.
-				return false;				
-			}
-				
-			return true;
-		}
-	}
+        public override void OnAfterDelete()
+        {
+            if (Altar == null)
+                return;
+
+            Altar.MasterKeys.Remove(this);
+
+            if (Altar.MasterKeys.Count == 0 && Altar.Fighters.Count == 0)
+                Altar.FinishSequence();
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+
+            writer.Write((Item)Altar);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            Altar = reader.ReadItem() as PeerlessAltar;
+        }
+
+        public virtual bool CanOfferConfirmation(Mobile from)
+        {
+            if (Altar != null && Altar.Fighters.Contains(from))
+            {
+                from.SendLocalizedMessage(1063296); // You may not use that teleporter at this time.
+                return false;
+            }
+
+            return true;
+        }
+    }
 }
