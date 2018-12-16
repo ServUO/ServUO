@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.IO;
 
 using Server;
 using Server.Items;
@@ -18,6 +19,7 @@ namespace Server.Engines.VendorSearching
 {
 	public class VendorSearch
 	{
+        public static string FilePath = Path.Combine("Saves/Misc", "VendorSearch.bin");
         public static Ultima.StringList StringList { get; private set; }
 
         public static List<VendorItem> DoSearch(Mobile m, SearchCriteria criteria)
@@ -452,6 +454,58 @@ namespace Server.Engines.VendorSearching
 
         public static Dictionary<string, Type> Keywords { get; set; }
 
+        public static void Configure()
+        {
+            EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
+        }
+
+        public static void OnSave(WorldSaveEventArgs e)
+        {
+            Persistence.Serialize(
+                FilePath,
+                writer =>
+                {
+                    writer.Write(0);
+
+                    writer.Write(Contexts == null ? 0 : Contexts.Where(kvp => !kvp.Value.IsEmpty).Count());
+
+                    if (Contexts != null)
+                    {
+                        foreach (var kvp in Contexts.Where(kvp => !kvp.Value.IsEmpty))
+                        {
+                            writer.Write(kvp.Key);
+                            kvp.Value.Serialize(writer);
+                        }
+                    }
+                });
+        }
+
+        public static void OnLoad()
+        {
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    int version = reader.ReadInt();
+                    int count = reader.ReadInt();
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
+                        var criteria = new SearchCriteria(reader);
+
+                        if (pm != null)
+                        {
+                            if (Contexts == null)
+                                Contexts = new Dictionary<PlayerMobile, SearchCriteria>();
+
+                            Contexts[pm] = criteria;
+                        }
+                    }
+                });
+        }
+
         public static void Initialize()
         {
             try
@@ -473,7 +527,11 @@ namespace Server.Engines.VendorSearching
                 });
 
             Categories = new List<SearchCategory>();
-            Contexts = new Dictionary<PlayerMobile, SearchCriteria>();
+
+            if (Contexts == null)
+            {
+                Contexts = new Dictionary<PlayerMobile, SearchCriteria>();
+            }
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
@@ -937,10 +995,62 @@ namespace Server.Engines.VendorSearching
         {
             get { return Details.Count == 0 && MinPrice == 0 && MaxPrice == 175000000 && String.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid; }
         }
+
+        public SearchCriteria(GenericReader reader)
+        {
+            reader.ReadInt();
+
+            Details = new List<SearchDetail>();
+
+            SearchType = (Layer)reader.ReadInt();
+            SearchName = reader.ReadString();
+            SortBy = (SortBy)reader.ReadInt();
+            MinPrice = reader.ReadLong();
+            MaxPrice = reader.ReadLong();
+
+            int count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                Details.Add(new SearchDetail(reader));
+            }
+        }
+
+        public void Serialize(GenericWriter writer)
+        {
+            writer.Write(0);
+
+            writer.Write((int)SearchType);
+            writer.Write(SearchName);
+            writer.Write((int)SortBy);
+            writer.Write(MinPrice);
+            writer.Write(MaxPrice);
+
+            writer.Write(Details.Count);
+
+            for (int i = 0; i < Details.Count; i++)
+            {
+                Details[i].Serialize(writer);
+            }
+        }
     }
 
     public class SearchDetail
     {
+        public enum AttributeID
+        {
+            None = 0,
+            AosAttribute,
+            AosArmorAttribute,
+            AosWeaponAttribute,
+            AosElementAttribute,
+            SkillName,
+            SAAbosorptionAttribute,
+            ExtendedWeaponAttribute,
+            NegativeAttribute,
+            SlayerName,
+            String
+        }
+
         public object Attribute { get; set; }
         public int Label { get; set; }
         public int Value { get; set; }
@@ -952,6 +1062,102 @@ namespace Server.Engines.VendorSearching
             Label = label;
             Value = value;
             Category = category;
+        }
+
+        public SearchDetail(GenericReader reader)
+        {
+            reader.ReadInt(); // version
+
+            ReadAttribute(reader);
+
+            Label = reader.ReadInt();
+            Value = reader.ReadInt();
+            Category = (Category)reader.ReadInt();
+        }
+
+        public void Serialize(GenericWriter writer)
+        {
+            writer.Write(0);
+
+            WriteAttribute(writer);
+
+            writer.Write(Label);
+            writer.Write(Value);
+            writer.Write((int)Category);
+        }
+
+        private void WriteAttribute(GenericWriter writer)
+        {
+            int attrID = GetAttributeID(Attribute);
+            writer.Write(attrID);
+
+            switch (attrID)
+            {
+                case 0: break;
+                case 1: writer.Write((int)(AosAttribute)Attribute); break;
+                case 2: writer.Write((int)(AosArmorAttribute)Attribute); break;
+                case 3: writer.Write((int)(AosWeaponAttribute)Attribute); break;
+                case 4: writer.Write((int)(AosElementAttribute)Attribute); break;
+                case 5: writer.Write((int)(SkillName)Attribute); break;
+                case 6: writer.Write((int)(SAAbsorptionAttribute)Attribute); break;
+                case 7: writer.Write((int)(ExtendedWeaponAttribute)Attribute); break;
+                case 8: writer.Write((int)(NegativeAttribute)Attribute); break;
+                case 9: writer.Write((int)(SlayerName)Attribute); break;
+                case 10: writer.Write((string)Attribute); break;
+            }
+        }
+
+        private void ReadAttribute(GenericReader reader)
+        {
+            switch (reader.ReadInt())
+            {
+                case 0: break;
+                case 1: Attribute = (AosAttribute)reader.ReadInt(); break;
+                case 2: Attribute = (AosArmorAttribute)reader.ReadInt(); break;
+                case 3: Attribute = (AosWeaponAttribute)reader.ReadInt(); break;
+                case 4: Attribute = (AosElementAttribute)reader.ReadInt(); break;
+                case 5: Attribute = (SkillName)reader.ReadInt(); break;
+                case 6: Attribute = (SAAbsorptionAttribute)reader.ReadInt(); break;
+                case 7: Attribute = (ExtendedWeaponAttribute)reader.ReadInt(); break;
+                case 8: Attribute = (NegativeAttribute)reader.ReadInt(); break;
+                case 9: Attribute = (SlayerName)reader.ReadInt(); break;
+                case 10: Attribute = reader.ReadString(); break;
+            }
+        }
+
+        public static int GetAttributeID(object o)
+        {
+            if (o is AosAttribute)
+                return (int)AttributeID.AosAttribute;
+
+            if (o is AosArmorAttribute)
+                return (int)AttributeID.AosArmorAttribute;
+
+            if (o is AosWeaponAttribute)
+                return (int)AttributeID.AosWeaponAttribute;
+
+            if (o is AosElementAttribute)
+                return (int)AttributeID.AosElementAttribute;
+
+            if (o is SkillName)
+                return (int)AttributeID.SkillName;
+
+            if (o is SAAbsorptionAttribute)
+                return (int)AttributeID.SAAbosorptionAttribute;
+
+            if (o is ExtendedWeaponAttribute)
+                return (int)AttributeID.ExtendedWeaponAttribute;
+
+            if (o is NegativeAttribute)
+                return (int)AttributeID.NegativeAttribute;
+
+            if (o is SlayerName)
+                return (int)AttributeID.SlayerName;
+
+            if (o is string)
+                return (int)AttributeID.String;
+
+            return (int)AttributeID.None;
         }
     }
 
