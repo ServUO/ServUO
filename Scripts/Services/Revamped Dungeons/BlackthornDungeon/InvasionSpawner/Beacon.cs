@@ -204,7 +204,7 @@ namespace Server.Engines.Blackthorn
                 eable.Free();
 
                 if (Controller != null)
-                    Controller.SpawnWave();
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), () => Controller.SpawnWave());
 
                 AddRubble(new Static(14732), new Point3D(this.X - 1, this.Y + 1, this.Z));
                 AddRubble(new Static(14742), new Point3D(this.X + 1, this.Y - 1, this.Z));
@@ -215,8 +215,7 @@ namespace Server.Engines.Blackthorn
 
                 this.ItemID = 39300;
             }
-
-            if (0.02 > Utility.RandomDouble())
+            else if (0.02 > Utility.RandomDouble())
             {
                 DoAreaAttack();
             }
@@ -262,6 +261,8 @@ namespace Server.Engines.Blackthorn
                     list.Add(m);
             }
 
+            eable.Free();
+
             list.ForEach(m =>
             {
                 m.BoltEffect(0);
@@ -271,8 +272,7 @@ namespace Server.Engines.Blackthorn
                     m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1154552, m.NetState); // *The beacon blasts a surge of energy at you!"
             });
 
-            list.Clear();
-            list.TrimExcess();
+            ColUtility.Free(list);
         }
 
         public InvasionBeacon(Serial serial)
