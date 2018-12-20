@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+
+using Server;
 using Server.Targeting;
 using Server.Spells.SkillMasteries;
 
@@ -107,10 +109,10 @@ namespace Server.Spells.Necromancy
 
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PainSpike, 1075667, t.Expires - DateTime.UtcNow, m, Convert.ToString((int)damage)));
 
-            Misc.WeightOverloading.DFA = Misc.DFAlgorithm.PainSpike;
+            m.DFA = DFAlgorithm.PainSpike;
             AOS.Damage(m, Caster, (int)damage, 0, 0, 0, 0, 0, 0, 100);
             AOS.DoLeech((int)damage, Caster, m);
-            Misc.WeightOverloading.DFA = Misc.DFAlgorithm.Standard;
+            m.DFA = DFAlgorithm.Standard;
 
             HarmfulSpell(m);
         }

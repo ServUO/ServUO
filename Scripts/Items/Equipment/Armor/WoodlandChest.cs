@@ -91,7 +91,7 @@ namespace Server.Items
         {
             get
             {
-                return ArmorMaterialType.Plate;
+                return ArmorMaterialType.Wood;
             }
         }
         public override Race RequiredRace

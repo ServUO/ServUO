@@ -141,7 +141,7 @@ namespace Server.Spells.Mysticism
             damage *= (100 + sdiBonus);
             damage /= 100;
 
-            SpellHelper.Damage(null, TimeSpan.Zero, from, caster, damage, 0, 0, 0, 0, 0, Server.Misc.DFAlgorithm.Standard, 100, 0);
+            SpellHelper.Damage(null, TimeSpan.Zero, from, caster, damage, 0, 0, 0, 0, 0, DFAlgorithm.Standard, 100, 0);
         }
 
         public static void RemoveFromList(Mobile from)

@@ -1782,7 +1782,7 @@ namespace Server.SkillHandlers
             m_Table[217] = new ImbuingDefinition(SAAbsorptionAttribute.ResonanceEnergy,     1154658, 140, null, null, null, 20, 1, 1152391);
             m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.ResonanceKinetic,    1154659, 140, null, null, null, 20, 1, 1152391);
 
-            m_Table[219] = new ImbuingDefinition(SAAbsorptionAttribute.CastingFocus,        1154659, 140, null, null, null, 20, 1, 1116535);
+            m_Table[219] = new ImbuingDefinition(SAAbsorptionAttribute.CastingFocus,        1116535, 140, null, null, null, 20, 1, 1116535);
 
             m_Table[220] = new ImbuingDefinition(AosArmorAttribute.ReactiveParalyze,        1154660, 140, null, null, null, 1, 1,  1152400);
             m_Table[221] = new ImbuingDefinition(AosArmorAttribute.SoulCharge,              1116536, 140, null, null, null, 20, 1, 1152391);

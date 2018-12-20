@@ -1438,15 +1438,22 @@ namespace Server.Spells
                 if (target is BaseCreature)
                     ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage);
 
-                WeightOverloading.DFA = dfa;
                 DamageType dtype = spell != null ? spell.SpellDamageType : DamageType.Spell;
+
+                if (target != null)
+                {
+                    target.DFA = dfa;
+                }
 
                 int damageGiven = AOS.Damage(damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, dtype);
 
                 if(target != null)
                     Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(target);
 
-                WeightOverloading.DFA = DFAlgorithm.Standard;
+                if (target != null && target.DFA != DFAlgorithm.Standard)
+                {
+                    target.DFA = DFAlgorithm.Standard;
+                }
 
                 NegativeAttributes.OnCombatAction(from);
 
@@ -1579,12 +1586,19 @@ namespace Server.Spells
                 if (m_Target is BaseCreature && m_From != null)
                     ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
 
-                WeightOverloading.DFA = m_DFA;
                 DamageType dtype = m_Spell != null ? m_Spell.SpellDamageType : DamageType.Spell;
+
+                if (target != null)
+                {
+                    target.DFA = m_DFA;
+                }
 
                 int damageGiven = AOS.Damage(m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy, m_Chaos, m_Direct, dtype);
 
-                WeightOverloading.DFA = DFAlgorithm.Standard;
+                if (target != null && target.DFA != DFAlgorithm.Standard)
+                {
+                    target.DFA = DFAlgorithm.Standard;
+                }
 
                 if (m_Target is BaseCreature && m_From != null)
                 {

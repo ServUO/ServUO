@@ -88,7 +88,7 @@ namespace Server.Items
 
     public class GargishStoneAmulet : GargishNecklace
     {
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Plate; } }
+        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Stone; } }
         public override int AosStrReq { get { return 40; } }
         public override int OldStrReq { get { return 20; } }
 
