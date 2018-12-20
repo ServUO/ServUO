@@ -653,8 +653,10 @@
     <Compile Include="Items\Corpses\Torso.cs" />
     <Compile Include="Items\Equipment\Clothing\FirstAidBelt.cs" />
     <Compile Include="Items\Equipment\Suits\DragonWolfCostume.cs" />
+    <Compile Include="Items\Equipment\Suits\SabertoothedTigerCostume.cs" />
     <Compile Include="Items\Resource\Blackrock.cs" />
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
+    <Compile Include="Items\StoreBought\MysticalPolymorphTotem.cs" />
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Services\Expansions\MondainsLegacy.cs" />
