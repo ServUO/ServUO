@@ -633,6 +633,11 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\EpiphanyHelper.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\VillainousEpiphany.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\VirtuousEpiphany.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeBook.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeBookGump.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeBuyGump.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeFilter.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeFilterGump.cs" />
     <Compile Include="Items\Consumables\PoppiesDust.cs" />
     <Compile Include="Items\Corpses\BonePile.cs" />
     <Compile Include="Items\Corpses\Corpse.cs" />
