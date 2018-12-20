@@ -583,21 +583,78 @@ namespace Server.Items
 
         public static int GetInherentLowerManaCost(Mobile from)
         {
+            if (!Core.SA)
+            {
+                return 0;
+            }
+
             int toReduce = 0;
 
             foreach (BaseArmor armor in from.Items.OfType<BaseArmor>())
             {
-                if (armor.ArmorAttributes.MageArmor > 0 || armor is WoodlandArms || armor is WoodlandChest || armor is WoodlandGloves || armor is WoodlandLegs || armor is WoodlandGorget || armor is BaseShield)
+                if (armor.ArmorAttributes.MageArmor > 0 || armor.MaterialType == ArmorMaterialType.Wood || armor is BaseShield)
                     continue;
 
-                else if (armor.MaterialType == ArmorMaterialType.Studded || armor.MaterialType == ArmorMaterialType.Bone ||
-                    armor is GargishStoneKilt || armor is GargishStoneLegs || armor is GargishStoneChest || armor is GargishStoneArms || armor is FemaleGargishStoneKilt || armor is FemaleGargishStoneLegs || armor is FemaleGargishStoneChest || armor is FemaleGargishStoneArms || armor is GargishStoneAmulet) 
-                    toReduce += 3;
-                else if (armor.MaterialType >= ArmorMaterialType.Ringmail)
-                    toReduce += 1;
+                switch (armor.MaterialType)
+                {
+                    case ArmorMaterialType.Studded:
+                    case ArmorMaterialType.Bone:
+                    case ArmorMaterialType.Stone:
+                        toReduce += 3;
+                        break;
+                    case ArmorMaterialType.Ringmail:
+                    case ArmorMaterialType.Chainmail:
+                    case ArmorMaterialType.Plate:
+                    case ArmorMaterialType.Dragon:
+                        toReduce += 1;
+                        break;
+                }
             }
 
             return Math.Min(15, toReduce);
+        }
+
+        public static double GetInherentStaminaLossReduction(Mobile from)
+        {
+            if (!Core.SA)
+            {
+                return 0.0;
+            }
+
+            double toReduce = 0.0;
+
+            var list = new List<double>();
+
+            foreach (var armor in from.Items.OfType<BaseArmor>())
+            {
+                switch (armor.MaterialType)
+                {
+                    case ArmorMaterialType.Cloth:
+                    case ArmorMaterialType.Leather:
+                        list.Insert(0, .1);
+                        break;
+                    case ArmorMaterialType.Wood:
+                    case ArmorMaterialType.Stone:
+                    case ArmorMaterialType.Studded:
+                    case ArmorMaterialType.Bone:
+                        list.Add(.5);
+                        break;
+                    case ArmorMaterialType.Ringmail:
+                    case ArmorMaterialType.Chainmail:
+                    case ArmorMaterialType.Plate:
+                    case ArmorMaterialType.Dragon:
+                        list.Insert(0, 1);
+                        break;
+                }
+            }
+
+            for (int i = 0; i < 5 && i < list.Count; i++)
+            {
+                toReduce += list[i];
+            }
+
+            ColUtility.Free(list);
+            return toReduce;
         }
         #endregion
 

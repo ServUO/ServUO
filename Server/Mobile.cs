@@ -485,6 +485,12 @@ namespace Server
         Pillage = 14,
         Spawn = 15
     }
+
+    public enum DFAlgorithm
+    {
+        Standard,
+        PainSpike
+    }
 	#endregion
 
 	[Serializable]
@@ -512,6 +518,8 @@ namespace Server
 	public delegate bool AllowBeneficialHandler(Mobile from, Mobile target);
 
 	public delegate bool AllowHarmfulHandler(Mobile from, IDamageable target);
+
+    public delegate void FatigueHandler(Mobile m, int damage, DFAlgorithm df);
 
 	public delegate Container CreateCorpseHandler(
 		Mobile from, HairInfo hair, FacialHairInfo facialhair, List<Item> initialContent, List<Item> equipedItems);
@@ -609,8 +617,9 @@ namespace Server
 
 		#region Handlers
 		public static AllowBeneficialHandler AllowBeneficialHandler { get; set; }
-
 		public static AllowHarmfulHandler AllowHarmfulHandler { get; set; }
+
+        public static FatigueHandler FatigueHandler { get; set; }
 
 		private static SkillCheckTargetHandler m_SkillCheckTargetHandler;
 		private static SkillCheckLocationHandler m_SkillCheckLocationHandler;
@@ -859,6 +868,8 @@ namespace Server
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CharacterOut { get; set; }
+
+        public DFAlgorithm DFA { get; set; } 
 
         protected virtual void OnRaceChange(Race oldRace)
 		{ }
@@ -5632,6 +5643,8 @@ namespace Server
 				else
 				{
 					Hits = newHits;
+
+                    FatigueHandler(this, amount, DFA);
 				}
 			}
 

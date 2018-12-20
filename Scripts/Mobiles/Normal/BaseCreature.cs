@@ -2358,8 +2358,6 @@ namespace Server.Mobiles
                 Confidence.StopRegenerating(this);
             }
 
-            WeightOverloading.FatigueOnDamage(this, amount);
-
             InhumanSpeech speechType = SpeechType;
 
             if (speechType != null && !willKill)

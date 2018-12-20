@@ -1290,6 +1290,7 @@ namespace Server.Items
             return Utility.RandomList(m_ItemIDs);
         }
 
+        public static Type[] Summons { get { return m_Summons; } }
         private static readonly Type[] m_Summons = new Type[]
         {
             typeof(SummonedAntLion),
@@ -1314,6 +1315,7 @@ namespace Server.Items
             typeof(Bandage),
         };
 
+        public static int[] SummonLabels { get { return m_SummonLabels; } }
         private static readonly int[] m_SummonLabels = new int[]
         {
             1075211, // Ant Lion
@@ -1367,6 +1369,7 @@ namespace Server.Items
             return TalismanRemoval.None;
         }
 
+        public static Type[] Killers { get { return m_Killers; } }
         private static readonly Type[] m_Killers = new Type[]
         {
             typeof(OrcBomber), typeof(OrcBrute), typeof(Sewerrat), typeof(Rat), typeof(GiantRat),
@@ -1385,6 +1388,7 @@ namespace Server.Items
             // TODO Meraktus, Tormented Minotaur, Minotaur
         };
 
+        public static int[] KillerLabels { get { return m_KillerLabels; } }
         private static readonly int[] m_KillerLabels = new int[]
         {
             1072413, 1072414, 1072418, 1072419, 1072420,
@@ -1432,6 +1436,7 @@ namespace Server.Items
             return new TalismanAttribute(m_Killers[num], m_KillerLabels[num], Utility.RandomMinMax(5, 60));
         }
 
+        public static SkillName[] SkillsOld { get { return m_SkillsOld; } }
         private static readonly SkillName[] m_SkillsOld = new SkillName[]
         {
             SkillName.Alchemy,
@@ -1445,6 +1450,7 @@ namespace Server.Items
             SkillName.Tinkering,
         };
 
+        public static TalismanSkill[] Skills { get { return m_Skills; } }
         private static readonly TalismanSkill[] m_Skills = new TalismanSkill[]
         {
             TalismanSkill.Alchemy,

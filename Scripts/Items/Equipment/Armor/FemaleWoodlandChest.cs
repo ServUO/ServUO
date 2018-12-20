@@ -99,7 +99,7 @@ namespace Server.Items
         {
             get
             {
-                return ArmorMaterialType.Plate;
+                return ArmorMaterialType.Wood;
             }
         }
         public override void Serialize(GenericWriter writer)

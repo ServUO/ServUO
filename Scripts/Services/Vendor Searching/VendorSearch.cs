@@ -1048,7 +1048,8 @@ namespace Server.Engines.VendorSearching
             ExtendedWeaponAttribute,
             NegativeAttribute,
             SlayerName,
-            String
+            String,
+            TalismanSlayerName
         }
 
         public object Attribute { get; set; }
@@ -1104,6 +1105,7 @@ namespace Server.Engines.VendorSearching
                 case 8: writer.Write((int)(NegativeAttribute)Attribute); break;
                 case 9: writer.Write((int)(SlayerName)Attribute); break;
                 case 10: writer.Write((string)Attribute); break;
+                case 11: writer.Write((int)(TalismanSlayerName)Attribute); break;
             }
         }
 
@@ -1122,6 +1124,7 @@ namespace Server.Engines.VendorSearching
                 case 8: Attribute = (NegativeAttribute)reader.ReadInt(); break;
                 case 9: Attribute = (SlayerName)reader.ReadInt(); break;
                 case 10: Attribute = reader.ReadString(); break;
+                case 11: Attribute = (TalismanSlayerName)reader.ReadInt(); break;
             }
         }
 
@@ -1153,6 +1156,9 @@ namespace Server.Engines.VendorSearching
 
             if (o is SlayerName)
                 return (int)AttributeID.SlayerName;
+
+            if (o is TalismanSlayerName)
+                return (int)AttributeID.TalismanSlayerName;
 
             if (o is string)
                 return (int)AttributeID.String;

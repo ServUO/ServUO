@@ -86,11 +86,18 @@ namespace Server.Misc
 
             CheckBonusSkill(from, from.Stam, from.StamMax, SkillName.Focus);
 
-            int points = (int)(from.Skills[SkillName.Focus].Value * 0.1);
+            int bonus = (int)(from.Skills[SkillName.Focus].Value * 0.1);
 
-            points += StamRegen(from);
+            bonus += StamRegen(from);
 
-            return TimeSpan.FromSeconds(1.0 / (0.1 * (2 + points)));
+            if (Core.SA)
+            {
+                return TimeSpan.FromSeconds(1.0 / (1.42 + (bonus / 100)));
+            }
+            else
+            {
+                return TimeSpan.FromSeconds(1.0 / (0.1 * (2 + bonus)));
+            }
         }
 
         private static TimeSpan Mobile_ManaRegenRate(Mobile from)

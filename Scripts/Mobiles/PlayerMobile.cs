@@ -3605,8 +3605,6 @@ namespace Server.Mobiles
 				Confidence.StopRegenerating(this);
 			}
 
-			WeightOverloading.FatigueOnDamage(this, amount);
-
 			if (m_ReceivedHonorContext != null)
 			{
 				m_ReceivedHonorContext.OnTargetDamaged(from, amount);

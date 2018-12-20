@@ -990,6 +990,8 @@ namespace Server.Items
 		private static Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
 		private static Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
 
+        public static Dictionary<int, NamedInfoCol[][]> PrefixSuffixInfo { get { return m_PrefixSuffixInfo; } }
+
         public static void Initialize()
         {
             m_AllowableTable[typeof(LeatherGlovesOfMining)] = DefTailoring.CraftSystem;
@@ -2876,11 +2878,17 @@ namespace Server.Items
             return 1;
         }
 
-        public static List<object> m_MeleeWeaponList;
-        public static List<object> m_RangedWeaponList;
-        public static List<object> m_ArmorList;
-        public static List<object> m_JewelList;
-        public static List<object> m_ShieldList;
+        public static List<object> MeleeWeaponList { get { return m_MeleeWeaponList; } }
+        public static List<object> RangedWeaponList { get { return m_RangedWeaponList; } }
+        public static List<object> ArmorList { get { return m_ArmorList; } }
+        public static List<object> JewelList { get { return m_JewelList; } }
+        public static List<object> ShieldList { get { return m_ShieldList; } }
+
+        private static List<object> m_MeleeWeaponList;
+        private static List<object> m_RangedWeaponList;
+        private static List<object> m_ArmorList;
+        private static List<object> m_JewelList;
+        private static List<object> m_ShieldList;
 
         private static object[] m_WeaponBasic = new object[]
 		{

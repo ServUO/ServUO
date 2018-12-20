@@ -1,61 +1,71 @@
 using System;
+using System.Collections.Generic;
+
 using Server.Mobiles;
+using Server.Items;
 
 namespace Server.Misc
 {
-    public enum DFAlgorithm
-    {
-        Standard,
-        PainSpike
-    }
-
     public class WeightOverloading
     {
         public const int OverloadAllowance = 4;// We can be four stones overweight without getting fatigued
-        private static DFAlgorithm m_DFA;
-        public static DFAlgorithm DFA
-        {
-            get
-            {
-                return m_DFA;
-            }
-            set
-            {
-                m_DFA = value;
-            }
-        }
+
         public static void Initialize()
         {
             EventSink.Movement += new MovementEventHandler(EventSink_Movement);
+            Mobile.FatigueHandler = FatigueOnDamage;
         }
 
-        public static void FatigueOnDamage(Mobile m, int damage)
+        public static void FatigueOnDamage(Mobile m, int damage, DFAlgorithm df)
         {
             double fatigue = 0.0;
 
-            switch ( m_DFA )
+            switch (m.DFA)
             {
                 case DFAlgorithm.Standard:
                     {
-                        fatigue = (damage * (100.0 / m.Hits) * ((double)m.Stam / 100)) - 5.0;
+                        if (Core.SA)
+                        {
+                            fatigue = damage + Utility.RandomMinMax(-3, 3);
+                        }
+                        else
+                        {
+                            fatigue = (damage * (100.0 / m.Hits) * ((double)m.Stam / 100)) - 5.0;
+                        }
                         break;
                     }
                 case DFAlgorithm.PainSpike:
                     {
-                        fatigue = (damage * ((100.0 / m.Hits) + ((50.0 + m.Stam) / 100) - 1.0)) - 5.0;
+                        if (Core.SA)
+                        {
+                            fatigue = (damage * 2) + Utility.RandomMinMax(-3, 3);
+                        }
+                        else
+                        {
+                            fatigue = (damage * ((100.0 / m.Hits) + ((50.0 + m.Stam) / 100) - 1.0)) - 5.0;
+                        }
                         break;
                     }
             }
 
-            if (fatigue > 0)
-                m.Stam -= (int)fatigue;
-        }
+            var reduction = BaseArmor.GetInherentStaminaLossReduction(m);
 
-        public static int GetMaxWeight(Mobile m)
-        {
-            //return ((( Core.ML && m.Race == Race.Human) ? 100 : 40 ) + (int)(3.5 * m.Str));
-            //Moved to core virtual method for use there
-            return m.MaxWeight;
+            if (reduction > 0)
+            {
+                fatigue = fatigue / reduction;
+            }
+
+            if (fatigue > 0)
+            {
+                if (m.Stam - fatigue <= 0)
+                {
+                    m.Stam = Utility.RandomMinMax(0, Math.Min(3, m.Stam));
+                }
+                else
+                {
+                    m.Stam -= (int)fatigue;
+                }
+            }
         }
 
         public static void EventSink_Movement(MovementEventArgs e)
@@ -72,7 +82,7 @@ namespace Server.Misc
                 return;
             }
 
-            int maxWeight = GetMaxWeight(from) + OverloadAllowance;
+            int maxWeight = from.MaxWeigh + OverloadAllowance;
             int overWeight = (Mobile.BodyWeight + from.TotalWeight) - maxWeight;
 
             if (overWeight > 0)
@@ -87,20 +97,23 @@ namespace Server.Misc
                 }
             }
 
-            if (((from.Stam * 100) / Math.Max(from.StamMax, 1)) < 10)
+            if (!Core.SA && ((from.Stam * 100) / Math.Max(from.StamMax, 1)) < 10)
+            {
                 --from.Stam;
+            }
 
             if (from.Stam == 0)
             {
-                from.SendLocalizedMessage(500110); // You are too fatigued to move.
+                from.SendLocalizedMessage(from.Mounted ? 500108 : 500110); // Your mount is too fatigued to move. : You are too fatigued to move.
                 e.Blocked = true;
                 return;
             }
 
-            if (from is PlayerMobile)
+            var pm = from as PlayerMobile;
+
+            if (pm != null)
             {
-                int amt = (from.Mounted ? 48 : 16);
-                PlayerMobile pm = (PlayerMobile)from;
+                int amt = Core.SA ? 10 : (from.Mounted ? 48 : 16);
 
                 if ((++pm.StepsTaken % amt) == 0)
                     --from.Stam;
@@ -127,7 +140,7 @@ namespace Server.Misc
             if (!m.Player || !m.Alive || m.IsStaff())
                 return false;
 
-            return ((Mobile.BodyWeight + m.TotalWeight) > (GetMaxWeight(m) + OverloadAllowance));
+            return ((Mobile.BodyWeight + m.TotalWeight) > (m.MaxWeigh + OverloadAllowance));
         }
     }
 }
