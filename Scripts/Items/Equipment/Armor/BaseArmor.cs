@@ -622,39 +622,39 @@ namespace Server.Items
             }
 
             double toReduce = 0.0;
+            int count = 0;
 
-            var list = new List<double>();
-
-            foreach (var armor in from.Items.OfType<BaseArmor>())
+            foreach (var armor in from.Items.OfType<BaseArmor>().OrderBy(arm => -GetArmorRatingReduction(arm)))
             {
-                switch (armor.MaterialType)
-                {
-                    case ArmorMaterialType.Cloth:
-                    case ArmorMaterialType.Leather:
-                        list.Insert(0, .1);
-                        break;
-                    case ArmorMaterialType.Wood:
-                    case ArmorMaterialType.Stone:
-                    case ArmorMaterialType.Studded:
-                    case ArmorMaterialType.Bone:
-                        list.Add(.5);
-                        break;
-                    case ArmorMaterialType.Ringmail:
-                    case ArmorMaterialType.Chainmail:
-                    case ArmorMaterialType.Plate:
-                    case ArmorMaterialType.Dragon:
-                        list.Insert(0, 1);
-                        break;
-                }
+                if (count == 5)
+                    break;
+
+                toReduce += GetArmorRatingReduction(armor);
+                count++;
             }
 
-            for (int i = 0; i < 5 && i < list.Count; i++)
-            {
-                toReduce += list[i];
-            }
-
-            ColUtility.Free(list);
             return toReduce;
+        }
+
+        public static double GetArmorRatingReduction(BaseArmor armor)
+        {
+            switch (armor.MaterialType)
+            {
+                default: return 0.0;
+                case ArmorMaterialType.Cloth:
+                case ArmorMaterialType.Leather:
+                    return .1;
+                case ArmorMaterialType.Wood:
+                case ArmorMaterialType.Stone:
+                case ArmorMaterialType.Studded:
+                case ArmorMaterialType.Bone:
+                    return .5;
+                case ArmorMaterialType.Ringmail:
+                case ArmorMaterialType.Chainmail:
+                case ArmorMaterialType.Plate:
+                case ArmorMaterialType.Dragon:
+                    return 1.0;
+            }
         }
         #endregion
 
