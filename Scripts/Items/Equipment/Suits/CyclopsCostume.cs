@@ -5,6 +5,8 @@ namespace Server.Items
 {
 	public class CyclopsCostume : BaseCostume
 	{
+        public override string CreatureName { get { return "a cyclopean warrior"; } }
+
         [Constructable]
         public CyclopsCostume() : base()
         {
