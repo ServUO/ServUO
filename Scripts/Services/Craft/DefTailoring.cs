@@ -40,7 +40,11 @@ namespace Server.Engines.Craft
         DragonTurtleHideBustier = 584,
 
         // doom
-        CuffsOfTheArchmage = 585
+        CuffsOfTheArchmage = 585,
+
+        KrampusMinionHat = 586,
+        KrampusMinionBoots = 587,
+        KrampusMinionTalons = 588,        
     }
 
     public class DefTailoring : CraftSystem
@@ -234,6 +238,10 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(ChefsToque), 1011375, 1109618, 6.2, 21.2, typeof(Cloth), 1044455, 11, 1044287);
                 AddRecipe(index, (int)TailorRecipe.ChefsToque);
             }
+
+            index = AddCraft(typeof(KrampusMinionHat), 1011375, 1125639, 100.0, 500.0, typeof(Cloth), 1044455, 8, 1044287);
+            AddRecipe(index, (int)TailorRecipe.KrampusMinionHat);
+
             #endregion
 
             #endregion
@@ -449,6 +457,14 @@ namespace Server.Engines.Craft
                 AddRecipe(index, (int)TailorRecipe.JesterShoes);
             }
             #endregion
+
+            index = AddCraft(typeof(KrampusMinionBoots), 1015288, 1125637, 100.0, 500.0, typeof(Leather), 1044462, 6, 1044463);
+            AddRes(index, typeof(Cloth), 1044455, 4, 1044287);
+            AddRecipe(index, (int)TailorRecipe.KrampusMinionBoots);
+
+            index = AddCraft(typeof(KrampusMinionTalons), 1015288, 1125644, 100.0, 500.0, typeof(Leather), 1044462, 6, 1044463);
+            AddRes(index, typeof(Cloth), 1044455, 4, 1044287);
+            AddRecipe(index, (int)TailorRecipe.KrampusMinionTalons);
 
             #endregion
 
