@@ -3,37 +3,40 @@ using Server;
 
 namespace Server.Items
 {
-    public class DragonWolfCostume : BaseCostume
+    public class SabertoothedTigerCostume : BaseCostume
     {
-        public override string CreatureName { get { return "a dragon wolf"; } }
+        public override string CreatureName { get { return "a saber-toothed tiger"; } }
 
         [Constructable]
-        public DragonWolfCostume() : base()
+        public SabertoothedTigerCostume() : base()
         {
-            CostumeBody = 719;
+            Name = "a saber-toothed tiger costume";
+            CostumeBody = 0x588;
         }
 
-        public override string DefaultName
+        public override int LabelNumber
         {
             get
             {
-                return "a dragon wolf costume";
+                return 0;
             }
         }
 
-        public DragonWolfCostume(Serial serial) : base(serial)
+        public SabertoothedTigerCostume(Serial serial) : base(serial)
         {
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }
