@@ -1,5 +1,4 @@
 using System;
-using Server.Gumps;
 using Server.Targeting;
 
 namespace Server.Items
@@ -12,13 +11,7 @@ namespace Server.Items
         private int m_Hue = -1;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Duration { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int CostumeLabel { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public string CostumeName { get; set; }
+        public int Duration { get; set; }        
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string CostumeCreatureName { get; set; }
@@ -56,13 +49,9 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (CostumeName != null)
+            if (CostumeCreatureName != null)
             {
-                list.Add(CostumeName);
-            }
-            else
-            {
-                list.Add(CostumeLabel);
+                list.Add(1158707, String.Format("{0}", CostumeCreatureName)); // a ~1_name~ costume
             }
         }
 
@@ -91,6 +80,18 @@ namespace Server.Items
                     }
                 }
             }
+        }
+
+        public override bool DropToWorld(Mobile from, Point3D p)
+        {
+            bool drop = base.DropToWorld(from, p);
+
+            if (Transformed)
+            {
+                DeMask(from);
+            }
+
+            return drop;
         }
 
         private Timer m_Timer;
@@ -143,6 +144,7 @@ namespace Server.Items
             from.HueMod = -1;
             Transformed = false;
             Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
+            from.PlaySound(250);
             BuffInfo.RemoveBuff(from, BuffIcon.MysticalPolymorphTotem);
         }
 
@@ -171,12 +173,6 @@ namespace Server.Items
                 {
                     BaseCostume costume = targeted as BaseCostume;
 
-                    if (costume.LabelNumber != 0)
-                        m_Totem.CostumeLabel = costume.LabelNumber;
-
-                    if (costume.Name != null)
-                        m_Totem.CostumeName = costume.Name;
-
                     m_Totem.CostumeCreatureName = costume.CreatureName;
                     m_Totem.CostumeBody = costume.CostumeBody;
 
@@ -192,8 +188,6 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write((int)0);
 
-            writer.Write((int)CostumeLabel);
-            writer.Write(CostumeName);
             writer.Write(CostumeCreatureName);
             writer.Write((int)CostumeBody);
             writer.Write((int)CostumeHue);
@@ -204,8 +198,6 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            CostumeLabel = reader.ReadInt();
-            CostumeName = reader.ReadString();
             CostumeCreatureName = reader.ReadString();
             CostumeBody = reader.ReadInt();
             CostumeHue = reader.ReadInt();

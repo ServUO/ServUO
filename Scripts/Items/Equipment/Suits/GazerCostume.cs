@@ -5,7 +5,7 @@ namespace Server.Items
 {
 	public class GazerCostume : BaseCostume
 	{
-        public override string CreatureName { get { return "a gazer"; } }
+        public override string CreatureName { get { return "gazer"; } }
 
         [Constructable]
 		public GazerCostume() : base( )

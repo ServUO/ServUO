@@ -5,7 +5,7 @@ namespace Server.Items
 {
 	public class DreamWraithCostume : BaseCostume
 	{
-        public override string CreatureName { get { return "a Dream Wraith"; } }
+        public override string CreatureName { get { return "dream wraith"; } }
 
         [Constructable]
 		public DreamWraithCostume() : base( )
