@@ -21,14 +21,6 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
         public SabertoothedTigerCostume(Serial serial) : base(serial)
         {
         }
