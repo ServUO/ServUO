@@ -9788,6 +9788,16 @@
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Region.cs" />
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Setup.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\KhaldunRewards.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\BarbedWhip.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionBoots.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\NiceTitleDeed.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\NaughtyTitleDeed.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\PunisherTitleDeed.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\SpikedWhip.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\BladedWhip.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionTalons.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionHat.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionEarrings.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Generate.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CorrosiveAsh.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CursedOilstone.cs" />

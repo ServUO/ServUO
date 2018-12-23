@@ -1,27 +1,25 @@
 using System;
-using Server;
 
 namespace Server.Items
 {
-    public class CentaurCostume : BaseCostume
+    public class KrampusMinionBoots : BaseShoes
     {
-        public override string CreatureName { get { return "centaur"; } }
+        public override int LabelNumber { get { return 1125637; } } // krampus minion boots
 
         [Constructable]
-        public CentaurCostume() : base()
+        public KrampusMinionBoots()
+            : this(0)
         {
-            this.CostumeBody = 101;
+            Weight = 2.0;
         }
-		
-		public override int LabelNumber
-        {
-            get
-            {
-                return 1114235;
-            }
-        }// centaur costume
 
-        public CentaurCostume(Serial serial)
+        [Constructable]
+        public KrampusMinionBoots(int hue)
+            : base(0xA28D, hue)
+        {
+        }
+
+        public KrampusMinionBoots(Serial serial)
             : base(serial)
         {
         }
@@ -29,14 +27,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write((int)0);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

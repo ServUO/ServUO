@@ -28,7 +28,9 @@ namespace Server.Engines.Craft
         WeatheredBronzeArcherSculpture = 459,
         WeatheredBronzeFairySculpture = 460,
         WeatheredBronzeGlobeSculpture = 461,
-        WeatheredBronzeManOnABench = 462
+        WeatheredBronzeManOnABench = 462,
+
+        KrampusMinionEarrings = 463
     }
 
     public class DefTinkering : CraftSystem
@@ -233,6 +235,9 @@ namespace Server.Engines.Craft
             AddJewelrySet(GemType.Tourmaline, typeof(Tourmaline));
             AddJewelrySet(GemType.Amber, typeof(Amber));
             AddJewelrySet(GemType.Diamond, typeof(Diamond));
+
+            index = AddCraft(typeof(KrampusMinionEarrings), 1044049, 1125645, 100.0, 500.0, typeof(IronIngot), 1044036, 3, 1044037);
+            AddRecipe(index, (int)TinkerRecipes.KrampusMinionEarrings);
             #endregion
 
             #region Wooden Items

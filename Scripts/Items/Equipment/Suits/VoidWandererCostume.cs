@@ -5,7 +5,7 @@ namespace Server.Items
 {
 	public class VoidWandererCostume : BaseCostume
 	{
-        public override string CreatureName { get { return "a wanderer of the void"; } }
+        public override string CreatureName { get { return "wanderer of the void"; } }
 
         [Constructable]
 		public VoidWandererCostume() : base( )

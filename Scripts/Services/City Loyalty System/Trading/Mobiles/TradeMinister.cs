@@ -258,7 +258,7 @@ namespace Server.Engines.CityLoyalty
             public PlayerMobile User { get; set; }
 
             public InternalTradeOrderGump(PlayerMobile user, TradeMinister minister)
-                : base(40, 40)
+                : base(100, 100)
 			{
 				Minister = minister;
                 User = user;
@@ -268,17 +268,30 @@ namespace Server.Engines.CityLoyalty
 			
 			public void AddGumpLayout()
 			{
-				AddBackground(0, 0, 450, 550, 9300);
+				AddBackground(0, 0, 370, 420, 9300);
 
-                AddHtmlLocalized(0, 30, 450, 20, 1154645, "#1114454", 0x4800, false, false); // An Offer For a trade Order
-				AddHtmlLocalized(10, 70, 430, 250, 1114455, 0x001F, false, false);
-				AddHtmlLocalized(10, 250, 430, 250, 1151721, 0x4800, false, false);
+                AddHtmlLocalized(10, 30, 350, 18, 1114513, "#1114454", 0x3442, false, false); // An Offer For a trade Order
 
-                AddButton(10, 518, 4005, 4007, 1, GumpButtonType.Reply, 0);
-				AddHtmlLocalized(50, 518, 60, 16, 1049011, 0x001F, false, false); // I Accept!
+                /*
+                 * Greetings! His majesty thanks you for furthering the economic interests of the City!
+                 * The Trade Association hath decreed that all goods shall be transported without the use of magic,
+                 * for fear that use of such magics will corrupt the quality of the goods held within.
+                 * Be forewarned! The life of a trader is sure to be met with peril as highwayman and pirates
+                 * alike seek to profit a bit of coin for the goods.  Good luck!
+                */
+                AddHtmlLocalized(10, 61, 350, 162, 1114455, 0x10, false, false);
+
+                /*
+                 * <i>Should you accept this trade order your ability to magically teleport to another location will be disabled.
+                 * You may cancel the trade order at any time by accessing the context menu on the trade crate by single left clicking</i>
+                */
+				AddHtmlLocalized(10, 225, 350, 90, 1151721, 0x3442, false, false);
+
+                AddButton(10, 390, 4005, 4007, 1, GumpButtonType.Reply, 0);
+				AddHtmlLocalized(50, 390, 100, 20, 1049011, 0x10, false, false); // I Accept!
 				
-				AddButton(410, 518, 4020, 4022, 0, GumpButtonType.Reply, 0);
-				AddHtmlLocalized(360, 518, 60, 16, 1152889, 0x4800, false, false); // Cancel
+				AddButton(330, 390, 4017, 4019, 0, GumpButtonType.Reply, 0);
+				AddHtmlLocalized(220, 390, 100, 20, 1114514, "#1006045", 0x4000, false, false); // Cancel
 			}
 
             public override void OnResponse(NetState state, RelayInfo info)

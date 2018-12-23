@@ -192,8 +192,7 @@ namespace Server.Mobiles
         {
             for (int i = 0; i < 3; i++)
             {
-                Mobile blobus = new BulbousPutrification();
-                blobus.MoveToWorld(GetSpawnPosition(4), Map);
+                SpawnHelper(new BulbousPutrification(), GetSpawnPosition(4));
             }
         }
     }
