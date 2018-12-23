@@ -1,16 +1,18 @@
 using System;
 using Server;
-using Server.Mobiles;
 using Server.ContextMenus;
-using Server.Engines.Points;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Gumps;
+using System.Linq;
+using Server.Network;
 
 namespace Server.Engines.CityLoyalty
 {
 	public class TradeOrderCrate : Container
 	{
+        public override int LabelNumber { get { return 1123594; } } // Gift Box
+        
         [CommandProperty(AccessLevel.GameMaster)]
 		public TradeEntry Entry { get; set; }
 		
@@ -43,20 +45,51 @@ namespace Server.Engines.CityLoyalty
         public override int DefaultMaxWeight { get { return 1000; } }
 
         public TradeOrderCrate(Mobile from, TradeEntry entry)
-            : base(Utility.Random(0xE3C, 4))
+            : base(Utility.Random(0x46A2, 4))
 		{
-			Owner = from;
+            Weight = 10.0;
+
+            Hue = Utility.Random(100);
+
+            Owner = from;
 			Entry = entry;
 
             Expires = DateTime.UtcNow + TimeSpan.FromHours(CityTradeSystem.CrateDuration);
 		}
-		
-		public override void GetProperties(ObjectPropertyList list)
+
+        public override int DefaultGumpID
+        {
+            get
+            {
+                switch(ItemID)
+                {
+                    default:
+                    case 0x46A2:
+                        return 0x11B;
+                    case 0x46A3:
+                        return 0x11C;
+                    case 0x46A4:
+                        return 0x11D;
+                    case 0x46A5:
+                    case 0x46A6:
+                        return 0x11E;
+                }
+            }
+        }
+
+        public override bool DisplaysContent { get { return false; } }
+
+        public override void GetProperties(ObjectPropertyList list)
 		{
 			base.GetProperties(list);
 
             list.Add(1151737, String.Format("#{0}", CityLoyaltySystem.CityLocalization(Entry.Destination))); // Destination City: ~1_city~
             list.Add(1076255); // NO-TRADE
+
+            int weight = Items.Sum(x => x.Amount);
+
+            list.Add(1072241, "{0}\t{1}\t{2}\t{3}", Items.Count, DefaultMaxItems, weight, DefaultMaxWeight); // Contents: ~1_COUNT~/~2_MAXCOUNT items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+
             list.Add(1072210, "75"); // Weight reduction: ~1_PERCENTAGE~%
 
             if (Entry.Details != null)
@@ -132,7 +165,7 @@ namespace Server.Engines.CityLoyalty
             {
                 int weight = base.GetTotal(type);
 
-                if(weight > 0)
+                if (weight > 0)
                     return (int)Math.Max(1, (base.GetTotal(type) * .25));
             }
 
@@ -192,20 +225,8 @@ namespace Server.Engines.CityLoyalty
 			
 			public override void OnClick()
 			{
-				//Cancel Trade Order
-				//Are you sure you wish to cancel this trade order?  All contents of the trade crate will be placed in your backpack.
-                Player.SendGump(new WarningGump(1151727, 30720, 1151728, 32512, 300, 200, (m, ok, obj) =>
-                {
-                    if (ok)
-                    {
-                        TradeOrderCrate crate = obj as TradeOrderCrate;
-
-                        if (crate != null && crate.IsChildOf(Player.Backpack))
-                        {
-                            CityTradeSystem.CancelTradeOrder(Player, crate);
-                        }
-                    }
-                }, Crate, true));
+                Player.CloseGump(typeof(CancelTradeOrderGump));
+                Player.SendGump(new CancelTradeOrderGump(Crate, Player));
 			}
 		}
 
@@ -268,4 +289,41 @@ namespace Server.Engines.CityLoyalty
             Entry = new TradeEntry(reader);
 		}
 	}
+
+    public class CancelTradeOrderGump : Gump
+    {
+        public TradeOrderCrate Crate { get; private set; }
+        public Mobile Player { get; private set; }
+
+        public CancelTradeOrderGump(TradeOrderCrate crate, Mobile player)
+            : base(100, 100)
+        {
+            Crate = crate;
+            Player = player;
+
+            AddPage(0);
+
+            AddBackground(0, 0, 291, 93, 0x13BE);
+            AddImageTiled(5, 5, 280, 60, 0xA40);
+
+            AddHtmlLocalized(9, 9, 272, 60, 1151728, 0x7FFF, false, false); // Are you sure you wish to cancel this trade order?  All contents of the trade crate will be placed in your backpack. 
+
+            AddButton(160, 67, 0xFB7, 0xFB8, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(195, 69, 120, 20, 1006044, 0x7FFF, false, false); // OKAY
+
+            AddButton(5, 67, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(40, 69, 100, 20, 1060051, 0x7FFF, false, false); // CANCEL
+        }
+
+        public override void OnResponse(NetState sender, RelayInfo info)
+        {
+            if (info.ButtonID == 1)
+            {
+                if (Crate != null && Crate.IsChildOf(Player.Backpack))
+                {
+                    CityTradeSystem.CancelTradeOrder(Player, Crate);
+                }
+            }
+        }
+    }
 }
