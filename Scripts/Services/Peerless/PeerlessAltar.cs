@@ -138,6 +138,7 @@ namespace Server.Items
                     else
                     {
                         from.SendLocalizedMessage(1072682); // This is not the proper key.
+                        return false;
                     }
                 }
                 else
