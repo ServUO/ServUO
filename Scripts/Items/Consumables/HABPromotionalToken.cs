@@ -242,14 +242,12 @@ namespace Server.Items
 
         private class InternalGump : Gump
         {
-            private readonly Mobile From;
             private readonly Item Token;
             private readonly ChangeHairstyleEntry[] _Entries;
 
             public InternalGump(Mobile from, Item token, ChangeHairstyleEntry[] entries)
                 : base(50, 50)
             {
-                From = from;
                 Token = token;
                 _Entries = entries;
 
@@ -333,6 +331,8 @@ namespace Server.Items
                             from.FacialHairItemID = entry.ItemID;
 
                         from.SendLocalizedMessage(1158661); // You have successfully changed your hairstyle.
+
+                        Token.Delete();
                     }
                 }
                 else
