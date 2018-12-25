@@ -639,6 +639,7 @@
     <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeFilter.cs" />
     <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeFilterGump.cs" />
     <Compile Include="Items\Consumables\PoppiesDust.cs" />
+    <Compile Include="Items\Consumables\PromotionalToken.cs" />
     <Compile Include="Items\Corpses\BonePile.cs" />
     <Compile Include="Items\Corpses\Corpse.cs" />
     <Compile Include="Items\Corpses\CorpseNameAttribute.cs" />
@@ -1480,7 +1481,7 @@
     <Compile Include="Items\Quest\ShimmeringCrystal.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\PromotionalToken.cs">
+    <Compile Include="Items\Consumables\HABPromotionalToken.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\PublicMoongate.cs">
