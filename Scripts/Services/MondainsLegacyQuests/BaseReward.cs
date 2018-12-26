@@ -154,8 +154,19 @@ namespace Server.Engines.Quests
 
 		public static Item TinkerRecipe()
 		{
-            return GetRecipe(new int[] { 400, 401, 402, 450, 451, 452, 453, 454 });
-		}
+            RecipeScroll recipes;
+
+            if (Core.TOL)
+            {
+                recipes = GetRecipe(new int[] { 400, 401, 402, 450, 451, 452, 453 });
+            }
+            else
+            {
+                recipes = GetRecipe(new int[] { 400, 401, 402, 450, 451, 452, 453, 454 });
+            }
+
+            return recipes;
+        }
 
 		public static Item CarpRecipe()
 		{
