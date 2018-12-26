@@ -16,7 +16,7 @@ namespace Server.Engines.Craft
         PendantOfTheMagi = 451,
         ResilientBracer = 452,
         ScrappersCompendium = 453,
-        HoveringWisp = 454,
+        HoveringWisp = 454, // Removed at OSI Publish 103
 
         KotlPowerCore = 455,
 
