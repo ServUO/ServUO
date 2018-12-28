@@ -251,7 +251,13 @@ namespace Server.Regions
 		protected override void OnDamage(Mobile m)
         {
 			base.OnDamage(m);
-			
+
+            if (ParoxysmusAltar.IsUnderEffects(m))
+            {
+                m.SendLocalizedMessage(1074604); // The slimy ointment continues to protect you from the corrosive river.
+                return;
+            }
+
             if (m.Location.X > 6484 && m.Location.Y > 500)
 			{
                 m.Kill();

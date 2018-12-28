@@ -1,14 +1,17 @@
+using Server.Network;
 using System;
 
 namespace Server.Items
 {
     public class ParoxysmusKey : MasterKey
     {
+        public override int LabelNumber { get { return 1074330; } } // slimy ointment
+
         public ParoxysmusKey()
             : base(0xEFB)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x497;
+            Weight = 1.0;
+            Hue = 0x497;
         }
 
         public ParoxysmusKey(Serial serial)
@@ -16,20 +19,21 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
+        public override void OnDoubleClick(Mobile from)
         {
-            get
+            if (!IsChildOf(from.Backpack))
             {
-                return 1074330;
+                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-        }// slimy ointment
-        public override int Lifespan
-        {
-            get
+            else
             {
-                return 600;
+                ParoxysmusAltar.AddProtection(from);
+                from.LocalOverheadMessage(MessageType.Regular, 0x47E, 1074603); ; // You rub the slimy ointment on your body, temporarily protecting yourself from the corrosive river.
             }
         }
+
+        public override int Lifespan { get { return 600; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

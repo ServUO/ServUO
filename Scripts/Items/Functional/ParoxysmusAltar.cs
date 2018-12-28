@@ -1,12 +1,15 @@
 using System;
+using System.Collections.Generic;
 using Server;
 using Server.Mobiles;
 
 namespace Server.Items
 {
 	public class ParoxysmusAltar : PeerlessAltar
-	{		
-		public override int KeyCount{ get{ return 3; } }
+    {
+        public static Dictionary<Mobile, Timer> ProtectionTable = new Dictionary<Mobile, Timer>();
+
+        public override int KeyCount{ get{ return 3; } }
 		public override MasterKey MasterKey{ get{ return new ParoxysmusKey(); } }
 		
 		public override Type[] Keys{ get{ return new Type[]
@@ -36,8 +39,36 @@ namespace Server.Items
         {
             new Rectangle2D(6501, 351, 35, 48),
         };
-	
-		public ParoxysmusAltar( Serial serial ) : base( serial )
+
+        public static void AddProtection(Mobile m)
+        {
+            if (ProtectionTable != null && !ProtectionTable.ContainsKey(m))
+            {
+                ProtectionTable[m] = Timer.DelayCall(TimeSpan.FromMinutes(5), () => Damage(m));
+            }
+        }
+
+        public static bool IsUnderEffects(Mobile m)
+        {
+            return ProtectionTable != null && ProtectionTable.ContainsKey(m);
+        }
+
+        public static void Damage(Mobile m)
+        {
+            Timer t;
+
+            if (ProtectionTable.TryGetValue(m, out t))
+            {
+                if (t != null)
+                {
+                    t.Stop();
+                }
+
+                ProtectionTable.Remove(m);
+            }
+        }
+
+        public ParoxysmusAltar( Serial serial ) : base( serial )
 		{
 		}	
 		
