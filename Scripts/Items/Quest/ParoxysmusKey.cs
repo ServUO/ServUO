@@ -1,5 +1,6 @@
-using Server.Network;
 using System;
+using Server.Engines.PartySystem;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -25,10 +26,11 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else
+            else if (Altar != null && (Altar.Owner == from || Party.Get(from) == Party.Get(Altar.Owner)))
             {
+                Altar.AddFighter(from);
                 ParoxysmusAltar.AddProtection(from);
-                from.LocalOverheadMessage(MessageType.Regular, 0x47E, 1074603); ; // You rub the slimy ointment on your body, temporarily protecting yourself from the corrosive river.
+                from.LocalOverheadMessage(MessageType.Regular, 58, 1074603); ; // You rub the slimy ointment on your body, temporarily protecting yourself from the corrosive river.
             }
         }
 

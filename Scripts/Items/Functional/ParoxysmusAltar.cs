@@ -5,30 +5,36 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-	public class ParoxysmusAltar : PeerlessAltar
+    public class ParoxysmusAltar : PeerlessAltar
     {
         public static Dictionary<Mobile, Timer> ProtectionTable = new Dictionary<Mobile, Timer>();
 
-        public override int KeyCount{ get{ return 3; } }
-		public override MasterKey MasterKey{ get{ return new ParoxysmusKey(); } }
-		
-		public override Type[] Keys{ get{ return new Type[]
-		{
-			typeof( CoagulatedLegs ), typeof( PartiallyDigestedTorso ), 
-			typeof( GelatanousSkull ), typeof( SpleenOfThePutrefier )
-		}; }}
-		
-		public override BasePeerless Boss{ get{ return new ChiefParoxysmus(); } }		
-			
-		[Constructable]
-		public ParoxysmusAltar() : base( 0x207A )
-		{			
-			Hue = 0x465;
-			
-			BossLocation = new Point3D( 6517, 357, 0 );
-			TeleportDest = new Point3D( 6519, 381, 0 );
-			ExitDest = new Point3D( 5623, 3038, 15 );			
-		}
+        public override int KeyCount { get { return 16; } }
+        public override MasterKey MasterKey { get { return new ParoxysmusKey(); } }
+
+        public override Type[] Keys
+        {
+            get
+            {
+                return new Type[]
+                {
+                    typeof( CoagulatedLegs ), typeof( PartiallyDigestedTorso ),
+                    typeof( GelatanousSkull ), typeof( SpleenOfThePutrefier )
+                };
+            }
+        }
+
+        public override BasePeerless Boss { get { return new ChiefParoxysmus(); } }
+
+        [Constructable]
+        public ParoxysmusAltar() : base(0x207A)
+        {
+            Hue = 0x465;
+
+            BossLocation = new Point3D(6517, 357, 0);
+            TeleportDest = new Point3D(6519, 381, 0);
+            ExitDest = new Point3D(5623, 3038, 15);
+        }
 
         public override Rectangle2D[] BossBounds
         {
@@ -68,22 +74,69 @@ namespace Server.Items
             }
         }
 
-        public ParoxysmusAltar( Serial serial ) : base( serial )
-		{
-		}	
-		
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public ParoxysmusAltar(Serial serial) : base(serial)
+        {
+        }
 
-			writer.Write( (int) 0 ); // version
-		}
-		
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			int version = reader.ReadInt();
-		}
-	}
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class ParoxysmusIronGate : Item
+    {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public PeerlessAltar Altar { get; set; }
+
+        [Constructable]
+        public ParoxysmusIronGate(PeerlessAltar altar)
+            : base(0x857)
+        {
+            Altar = altar;
+            Movable = false;
+        }
+
+        public ParoxysmusIronGate(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!from.Alive)
+                return;
+
+            if (Altar != null && from.InRange(Location, 2))
+            {
+                from.SendLocalizedMessage(1075070); // The rusty gate cracks open as you step through...
+                from.MoveToWorld(Altar.TeleportDest, Altar.Map);
+            }
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+
+            writer.Write((Item)Altar);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            Altar = reader.ReadItem() as PeerlessAltar;
+        }
+    }
 }

@@ -258,7 +258,12 @@ namespace Server.Regions
                 return;
             }
 
-            if (m.Location.X > 6484 && m.Location.Y > 500)
+            if (m.Region.IsPartOf("ParoxysmusBossEntry"))
+            {
+                m.Kill();
+                m.MoveToWorld(new Point3D(6537, 506, -50), m.Map);
+            }
+            else if (m.Location.X > 6484 && m.Location.Y > 500)
 			{
                 m.Kill();
 			}
