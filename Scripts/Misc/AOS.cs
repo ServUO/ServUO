@@ -344,8 +344,15 @@ namespace Server
             }
             #endregion
 
+            if (type <= DamageType.Ranged)
+            {
+                AttuneWeaponSpell.TryAbsorb(m, ref totalDamage);
+            }
+
             if (keepAlive && totalDamage > m.Hits)
+            {
                 totalDamage = m.Hits;
+            }
 
             if (from is BaseCreature && type <= DamageType.Ranged)
             {

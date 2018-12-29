@@ -13,9 +13,9 @@ namespace Server.Items
         public BaseClothMaterial(int itemID, int amount)
             : base(itemID)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public BaseClothMaterial(Serial serial)
@@ -42,17 +42,17 @@ namespace Server.Items
 
         public bool Dye(Mobile from, DyeTub sender)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return false;
 
-            this.Hue = sender.DyedHue;
+            Hue = sender.DyedHue;
 
             return true;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(500366); // Select a loom to use that on.
                 from.Target = new PickLoomTarget(this);
@@ -69,12 +69,12 @@ namespace Server.Items
             public PickLoomTarget(BaseClothMaterial material)
                 : base(3, false, TargetFlags.None)
             {
-                this.m_Material = material;
+                m_Material = material;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Material.Deleted)
+                if (m_Material.Deleted)
                     return;
 
                 ILoom loom = targeted as ILoom;
@@ -84,13 +84,14 @@ namespace Server.Items
 
                 if (loom != null)
                 {
-                    if (!this.m_Material.IsChildOf(from.Backpack))
+                    if (!m_Material.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                     }
                     else if (loom.Phase < 4)
                     {
-                        this.m_Material.Consume();
+                        m_Material.Consume();
+                        loom.Hue = m_Material.Hue;
 
                         if (targeted is Item)
                             ((Item)targeted).SendLocalizedMessageTo(from, 1010001 + loom.Phase++);
@@ -98,10 +99,11 @@ namespace Server.Items
                     else
                     {
                         Item create = new BoltOfCloth();
-                        create.Hue = this.m_Material.Hue;
+                        create.Hue = m_Material.Hue;
 
-                        this.m_Material.Consume();
+                        m_Material.Consume();
                         loom.Phase = 0;
+                        loom.Hue = 0;
                         from.SendLocalizedMessage(500368); // You create some cloth and put it in your backpack.
                         from.AddToBackpack(create);
                     }

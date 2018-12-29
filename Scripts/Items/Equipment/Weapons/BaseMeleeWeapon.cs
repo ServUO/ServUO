@@ -19,8 +19,6 @@ namespace Server.Items
         {
             damage = base.AbsorbDamage(attacker, defender, damage);
 
-            AttuneWeaponSpell.TryAbsorb(defender, ref damage);
-
             if (Core.AOS)
                 return damage;
 			
