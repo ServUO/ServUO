@@ -28,9 +28,15 @@ namespace Server.Items
             }
             else if (Altar != null && (Altar.Owner == from || Party.Get(from) == Party.Get(Altar.Owner)))
             {
+                if (Altar.Peerless == null)
+                {
+                    Altar.SpawnBoss();
+                }
+
                 Altar.AddFighter(from);
                 ParoxysmusAltar.AddProtection(from);
-                from.LocalOverheadMessage(MessageType.Regular, 58, 1074603); ; // You rub the slimy ointment on your body, temporarily protecting yourself from the corrosive river.
+                from.LocalOverheadMessage(MessageType.Regular, 58, 1074603); // You rub the slimy ointment on your body, temporarily protecting yourself from the corrosive river.
+                Delete();
             }
         }
 

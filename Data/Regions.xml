@@ -242,7 +242,7 @@
 		    <rect x="6316" y="472" width="8" height="8" />
         <rect x="6303" y="509" width="11" height="7" />
 	    </region>
-      <region name="ParoxysmusBossEntry">
+      <region name="ParoxysmusBossEntry" type="AcidRiver">
 				<rect x="6516" y="493" width="5" height="7" />
 			</region>
     </region>
@@ -1241,7 +1241,7 @@
 		    <rect x="6316" y="472" width="8" height="8" />
         <rect x="6303" y="509" width="11" height="7" />
 	    </region>
-      <region name="ParoxysmusBossEntry">
+      <region name="ParoxysmusBossEntry" type="AcidRiver">
 				<rect x="6516" y="493" width="5" height="7" />
 			</region>
     </region>
