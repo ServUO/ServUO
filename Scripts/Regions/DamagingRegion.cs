@@ -240,13 +240,13 @@ namespace Server.Regions
         }
     }
 
-    public class AcidRiver : DamagingRegion
-    { 
-		public override TimeSpan DamageInterval { get { return TimeSpan.FromSeconds(2); } }
+    public class ParoxysmusBossEntry : DamagingRegion
+    {
+        public override TimeSpan DamageInterval { get { return TimeSpan.FromSeconds(2); } }
 
-        public AcidRiver(XmlElement xml, Map map, Region parent)
+        public ParoxysmusBossEntry(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
-		{ }
+        { }
 
         public override void OnEnter(Mobile m)
         {
@@ -263,43 +263,58 @@ namespace Server.Regions
 
         protected override void OnDamage(Mobile m)
         {
-			base.OnDamage(m);
+            base.OnDamage(m);
 
-            if (m.Region.IsPartOf("ParoxysmusBossEntry") && !ParoxysmusAltar.IsUnderEffects(m))
+            if (!ParoxysmusAltar.IsUnderEffects(m))
             {
                 m.MoveToWorld(new Point3D(6537, 506, -50), m.Map);
-                m.Kill();                
-            }
-            else if (m.Location.X > 6484 && m.Location.Y > 500)
-			{
                 m.Kill();
-			}
+            }
+        }
+    }
+
+    public class AcidRiver : DamagingRegion
+    {
+        public override TimeSpan DamageInterval { get { return TimeSpan.FromSeconds(2); } }
+
+        public AcidRiver(XmlElement xml, Map map, Region parent)
+            : base(xml, map, parent)
+        { }
+
+        protected override void OnDamage(Mobile m)
+        {
+            base.OnDamage(m);
+
+            if (m.Location.X > 6484 && m.Location.Y > 500)
+            {
+                m.Kill();
+            }
             else
             {
                 m.FixedParticles(0x36B0, 1, 14, 0x26BB, 0x3F, 0x7, EffectLayer.Waist);
                 m.PlaySound(0x229);
-					
-				var damage = 0;
-					
-                damage += (int)Math.Pow(m.Location.X - 6200, 0.5);				
-                damage += (int)Math.Pow(m.Location.Y - 330, 0.5);	
-				
+
+                var damage = 0;
+
+                damage += (int)Math.Pow(m.Location.X - 6200, 0.5);
+                damage += (int)Math.Pow(m.Location.Y - 330, 0.5);
+
                 if (damage > 20)
-				{
-					// The acid river is much stronger here. You realize that allowing the acid to touch your flesh will surely kill you.
-					m.SendLocalizedMessage(1074567);
-				}
+                {
+                    // The acid river is much stronger here. You realize that allowing the acid to touch your flesh will surely kill you.
+                    m.SendLocalizedMessage(1074567);
+                }
                 else if (damage > 10)
-				{
-					// The acid river has gotten deeper. The concentration of acid is significantly stronger.
-					m.SendLocalizedMessage(1074566);
-				}
+                {
+                    // The acid river has gotten deeper. The concentration of acid is significantly stronger.
+                    m.SendLocalizedMessage(1074566);
+                }
                 else
-				{
-					// The acid river burns your skin.
-					m.SendLocalizedMessage(1074565);
-				}
-					
+                {
+                    // The acid river burns your skin.
+                    m.SendLocalizedMessage(1074565);
+                }
+
                 AOS.Damage(m, damage, 0, 0, 0, 100, 0);
             }
         }
