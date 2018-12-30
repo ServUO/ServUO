@@ -1661,20 +1661,25 @@ namespace Server.Items
             return NameTable[(int)suffix - 1][1];
         }
 
-        private static int[][] NameTable = new int[][]
+        public static int[][] NameTable { get { return _NameTable; } }
+        private static int[][] _NameTable = new int[][]
         {
-            new int[] { 1151682, 1151683 },
-            new int[] { 1151684, 1151685 },
-            new int[] { 1151686, 1151687 },
-            new int[] { 1151688, 1151689 },
-            new int[] { 1151690, 1151691 },
-            new int[] { 1151692, 1151693 },
-            new int[] { 1151694, 1151695 },
-            new int[] { 1151696, 1151697 },
-            new int[] { 1151698, 1151699 },
-            new int[] { 1151700, 1151701 },
-            new int[] { 1151702, 1151703 },
-            new int[] { 1151704, 1151705 },
+            new int[] { 1151682, 1151683 }, // Might
+            new int[] { 1151684, 1151685 }, // Mystic
+            new int[] { 1151686, 1151687 }, // Animated
+            new int[] { 1151688, 1151689 }, // Arcane
+            new int[] { 1151690, 1151691 }, // Exquisite
+            new int[] { 1151692, 1151693 }, // Vampiric
+            new int[] { 1151694, 1151695 }, // Invigorating
+            new int[] { 1151696, 1151697 }, // Fortified
+            new int[] { 1151698, 1151699 }, // Auspicious
+            new int[] { 1151700, 1151701 }, // Charmed
+            new int[] { 1151702, 1151703 }, // Vicious
+            new int[] { 1151704, 1151705 }, // Towering
+            new int[] {       0, 1154548 }, // Blackthorn
+            new int[] {       0, 1154507 }, // Minax
+            new int[] {       0, 1156900 }, // Kotl
+            new int[] {       0, 1158672 }, // Khaldun
         };
 
         public static void AddSuffixName(ObjectPropertyList list, ReforgedSuffix suffix, string name)

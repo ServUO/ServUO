@@ -1077,11 +1077,6 @@ namespace Server.Engines.VendorSearching
             Label = reader.ReadInt();
             Value = reader.ReadInt();
             Category = (Category)reader.ReadInt();
-
-            if (Attribute == null)
-            {
-                Utility.WriteConsoleColor(ConsoleColor.Red, "[Vendor Search]: Detail Attriute null; Cliloc {0}", Label);
-            }
         }
 
         public void Serialize(GenericWriter writer)

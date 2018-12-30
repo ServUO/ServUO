@@ -24,7 +24,7 @@ namespace Server.Misc
             {
                 case DFAlgorithm.Standard:
                     {
-                        if (Core.SA)
+                        if (Core.SA && m.Player)
                         {
                             fatigue = damage + Utility.RandomMinMax(-3, 3);
                         }
@@ -36,7 +36,7 @@ namespace Server.Misc
                     }
                 case DFAlgorithm.PainSpike:
                     {
-                        if (Core.SA)
+                        if (Core.SA && m.Player)
                         {
                             fatigue = (damage * 2) + Utility.RandomMinMax(-3, 3);
                         }
