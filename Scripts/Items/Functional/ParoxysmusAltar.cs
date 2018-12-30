@@ -99,6 +99,12 @@ namespace Server.Items
         public PeerlessAltar Altar { get; set; }
 
         [Constructable]
+        public ParoxysmusIronGate()
+            : this(null)
+        {
+        }
+
+        [Constructable]
         public ParoxysmusIronGate(PeerlessAltar altar)
             : base(0x857)
         {
