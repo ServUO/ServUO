@@ -30,10 +30,17 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            Gump g = new Gump(100, 100);
-            g.AddImage(0, 0, GumpID);
+            if (!m.InRange(GetWorldLocation(), 3))
+            {
+                m.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+            }
+            else
+            {
+                Gump g = new Gump(100, 100);
+                g.AddImage(0, 0, GumpID);
 
-            m.SendGump(g);
+                m.SendGump(g);
+            }            
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
