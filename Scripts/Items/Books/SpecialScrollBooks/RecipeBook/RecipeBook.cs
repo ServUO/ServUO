@@ -226,7 +226,7 @@ namespace Server.Items
             : base(0xA266)
         {
             Weight = 1.0;
-
+            LootType = LootType.Blessed;
             LoadDefinitions();
             Filter = new RecipeScrollFilter();
             Level = SecureLevel.CoOwners;            
@@ -337,7 +337,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
 
             writer.Write((int)Level);
             writer.Write(BookName);
@@ -364,6 +364,7 @@ namespace Server.Items
 
             switch (version)
             {
+                case 1:
                 case 0:
                     Level = (SecureLevel)reader.ReadInt();
                     BookName = reader.ReadString();
@@ -389,6 +390,9 @@ namespace Server.Items
 
                     break;
             }
+            
+            if(version == 0)
+                LootType = LootType.Blessed;
         }
 
         public override void GetProperties(ObjectPropertyList list)
