@@ -129,7 +129,6 @@ namespace Server.Items
         public RoastingPigOnASpitDeed()
             : base()
         {
-            LootType = LootType.Blessed;
         }
 
         public RoastingPigOnASpitDeed(Serial serial)
