@@ -479,6 +479,7 @@ namespace Server
             PeerlessAltar altar;
             PeerlessTeleporter tele;
             PrismOfLightPillar pillar;
+            ParoxysmusIronGate gate;
 
             // Bedlam - Malas
             altar = new BedlamAltar();
@@ -530,6 +531,9 @@ namespace Server
 				WeakEntityCollection.Add("ml", tele);
 				tele.PointDest = altar.ExitDest;
                 tele.MoveToWorld(new Point3D(6518, 365, 46), Map.Trammel);
+                gate = new ParoxysmusIronGate(altar);
+                WeakEntityCollection.Add("ml", gate);
+                gate.MoveToWorld(new Point3D(6518, 492, -50), Map.Trammel);
             }
 
             // Palace of Paroxysmus - Felucca
@@ -543,6 +547,9 @@ namespace Server
 				WeakEntityCollection.Add("ml", tele);
 				tele.PointDest = altar.ExitDest;
                 tele.MoveToWorld(new Point3D(6518, 365, 46), Map.Felucca);
+                gate = new ParoxysmusIronGate(altar);
+                WeakEntityCollection.Add("ml", gate);
+                gate.MoveToWorld(new Point3D(6518, 492, -50), Map.Felucca);
             }
 
             // Prism of Light - Trammel

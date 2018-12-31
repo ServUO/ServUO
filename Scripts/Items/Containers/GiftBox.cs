@@ -6,6 +6,8 @@ namespace Server.Items
     [Flipable(0x232A, 0x232B)]
     public class GiftBox : BaseContainer
     {
+        public override int LabelNumber { get { return 1156382; } } // Holiday Giftbox
+
         [Constructable]
         public GiftBox()
             : this(Utility.RandomDyedHue())

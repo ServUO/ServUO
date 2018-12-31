@@ -239,9 +239,12 @@
         <zrange min="-50" />
       </region>
       <region type="TheLostCityEntry">
-		<rect x="6316" y="472" width="8" height="8" />
+		    <rect x="6316" y="472" width="8" height="8" />
         <rect x="6303" y="509" width="11" height="7" />
-	  </region>
+	    </region>
+      <region type="ParoxysmusBossEntry">
+				<rect x="6516" y="493" width="5" height="7" />
+			</region>
     </region>
     <region priority="50" name="Huntsman's Forest">
       <rect x="1595" y="550" width="120" height="120" />
@@ -1235,9 +1238,12 @@
         <zrange min="-50" />
       </region>
       <region type="TheLostCityEntry">
-		<rect x="6316" y="472" width="8" height="8" />
+		    <rect x="6316" y="472" width="8" height="8" />
         <rect x="6303" y="509" width="11" height="7" />
-	  </region>
+	    </region>
+      <region type="ParoxysmusBossEntry">
+				<rect x="6516" y="493" width="5" height="7" />
+			</region>
     </region>
     <region priority="50" name="Bravehorn's drinking pool">
       <rect x="1302" y="2331" width="38" height="22" />

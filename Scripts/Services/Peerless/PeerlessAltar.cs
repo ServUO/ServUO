@@ -173,8 +173,7 @@ namespace Server.Items
                         }
                     }
 
-                    dropped.Delete();
-                    ClearContainer();
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), () => ClearContainer());
                     KeyValidation = null;
                 }
             }
@@ -218,7 +217,7 @@ namespace Server.Items
             if (m_KeyResetTimer != null)
                 m_KeyResetTimer.Stop();
 
-            m_KeyResetTimer = Timer.DelayCall(TimeSpan.FromMinutes(1), () =>
+            m_KeyResetTimer = Timer.DelayCall(TimeSpan.FromSeconds(30 * Keys.Count()), () =>
             {
                 from.SendLocalizedMessage(1072679); // Your realm offering has reset. You will need to start over.
 
@@ -339,7 +338,11 @@ namespace Server.Items
 
         public virtual void ClearContainer()
         {
-            Items.ForEach(x => x.Delete());
+            for (int i = Items.Count - 1; i >= 0; --i)
+            {
+                if (i < Items.Count)
+                    Items[i].Delete();
+            }
         }
 
         private int toConfirm;
@@ -395,9 +398,25 @@ namespace Server.Items
                 AddFighter(from);
                 BeginSequence(Summoner);
             }
-        }
+        }        
 
         public virtual void BeginSequence(Mobile from)
+        {
+            SpawnBoss();
+
+            // teleport fighters
+            Fighters.ForEach(x =>
+            {
+                int counter = 0;
+
+                if (x.InRange(from.Location, 15) && CanEnter(x))
+                {
+                    Timer.DelayCall(TimeSpan.FromSeconds(counter++), () => { Enter(x); });
+                }
+            });
+        }
+
+        public virtual void SpawnBoss()
         {
             if (Peerless == null)
             {
@@ -414,17 +433,6 @@ namespace Server.Items
 
                 StartSlayTimer();
             }
-
-            // teleport fighters
-            Fighters.ForEach(x =>
-            {
-                int counter = 0;
-
-                if (x.InRange(from.Location, 15) && CanEnter(x))
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(counter++), () => { Enter(x); });
-                }
-            });
         }
 
         public void Enter(Mobile fighter)
