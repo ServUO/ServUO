@@ -519,6 +519,7 @@
     <Compile Include="Gumps\ResurrectGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\AddonOptionGump.cs" />
     <Compile Include="Gumps\RunebookGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -559,6 +560,7 @@
     <Compile Include="Items\Addons\Craft Addons\BBQSmoker.cs" />
     <Compile Include="Items\Addons\Craft Addons\WritingDesk.cs" />
     <Compile Include="Items\Addons\KoiPond.cs" />
+    <Compile Include="Items\Addons\RoastingPigOnASpit.cs" />
     <Compile Include="Items\Addons\SheepStatue.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeFairySculpture.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeArcherSculpture.cs" />
@@ -654,7 +656,7 @@
     <Compile Include="Items\Corpses\RightArm.cs" />
     <Compile Include="Items\Corpses\RightLeg.cs" />
     <Compile Include="Items\Corpses\Torso.cs" />
-    <Compile Include="Items\Decorative\HappyHolidaysSign.cs" />
+    <Compile Include="Items\Decorative\HolidaysSign.cs" />
     <Compile Include="Items\Decorative\SquaredDoorMat.cs" />
     <Compile Include="Items\Decorative\Wreath.cs" />
     <Compile Include="Items\Equipment\Clothing\FirstAidBelt.cs" />

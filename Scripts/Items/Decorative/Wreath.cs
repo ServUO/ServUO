@@ -3,6 +3,7 @@ using Server.Multis;
 
 namespace Server.Items
 {
+    [FlipableAttribute(0xA12E, 0xA12F)]
     public class HolidayWreath : Item, IDyable
     {
         public override int LabelNumber { get { return 1029004; } } // wreath
