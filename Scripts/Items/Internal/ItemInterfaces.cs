@@ -47,4 +47,11 @@ namespace Server.Items
         Normal,
         Exceptional,
     }
+
+    public enum DirectionType
+    {
+        None = 0,
+        South = 1,
+        East = 2
+    }
 }

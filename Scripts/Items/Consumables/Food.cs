@@ -1774,4 +1774,67 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+    public class PulledPorkPlatter : Food
+    {
+        public override int LabelNumber { get { return 1123351; } } // Pulled Pork Platter
+
+        [Constructable]
+        public PulledPorkPlatter()
+            : base(1, 0x999F)
+        {
+            FillFactor = 5;
+            Stackable = false;
+            Hue = 1157;
+        }
+
+        public PulledPorkPlatter(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+        }
+    }
+
+    public class PulledPorkSandwich : Food
+    {
+        public override int LabelNumber { get { return 1123352; } } // Pulled Pork Sandwich
+
+        [Constructable]
+        public PulledPorkSandwich()
+            : base(1, 0x99A0)
+        {
+            FillFactor = 3;
+            Stackable = false;
+        }
+
+        public PulledPorkSandwich(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+        }
+    }
 }

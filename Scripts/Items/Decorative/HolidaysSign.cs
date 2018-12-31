@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public class HolidaysSign : Item
+    public class HolidaysSign : Item, IFlipable
     {
         public override int LabelNumber { get { return 1024759; } } // sign
 
@@ -18,6 +18,14 @@ namespace Server.Items
             : base(0xA130)
         {
             GumpID = 1673;
+        }
+
+        public void OnFlip()
+        {
+            if (ItemID == 0xA130 || ItemID == 0xA131)
+                ItemID = ItemID + 4;
+            else
+                ItemID = ItemID - 4;
         }
 
         public override void OnDoubleClick(Mobile m)
@@ -88,10 +96,12 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                if (Sign.ItemID == 0xA130)
-                    Sign.ItemID = 0xa131;
+                int ItemID = Sign.ItemID;
+
+                if (ItemID == 0xA130 || ItemID == 0xA134)
+                    Sign.ItemID = ItemID + 1;
                 else
-                    Sign.ItemID = 0xA130;
+                    Sign.ItemID = ItemID - 1;
             }
         }
 
