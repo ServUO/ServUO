@@ -137,7 +137,7 @@ namespace Server.Items
         }
     }
 
-    public class SquaredDoorMatDeed : BaseAddonDeed, IAddonOption
+    public class SquaredDoorMatDeed : BaseAddonDeed, IRewardOption
     {
         public override BaseAddon Addon { get { return new SquaredDoorMatAddon(m_SquaredDoorMatType); } }
 
@@ -181,7 +181,7 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        public void GetOptions(AddonOptionList list)
+        public void GetOptions(RewardOptionList list)
         {
             list.Add((int)DirectionType.South, 1151815);
             list.Add((int)DirectionType.East, 1151816);

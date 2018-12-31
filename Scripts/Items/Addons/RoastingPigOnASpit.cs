@@ -117,7 +117,7 @@ namespace Server.Items
         }
     }
 
-    public class RoastingPigOnASpitDeed : BaseAddonDeed, IAddonOption
+    public class RoastingPigOnASpitDeed : BaseAddonDeed, IRewardOption
     {
         public override int LabelNumber { get { return 1154557; } } // Deed for a Roasting Pig on a Spit
 
@@ -137,7 +137,7 @@ namespace Server.Items
         {
         }
 
-        public void GetOptions(AddonOptionList list)
+        public void GetOptions(RewardOptionList list)
         {
             list.Add((int)DirectionType.South, 1075386); // South
             list.Add((int)DirectionType.East, 1075387); // East

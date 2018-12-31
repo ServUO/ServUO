@@ -519,7 +519,6 @@
     <Compile Include="Gumps\ResurrectGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\AddonOptionGump.cs" />
     <Compile Include="Gumps\RunebookGump.cs">
       <SubType>Code</SubType>
     </Compile>
