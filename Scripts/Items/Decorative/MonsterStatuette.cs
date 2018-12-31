@@ -74,7 +74,8 @@ namespace Server.Items
         Pyros,
         Lithos,
         Hydros,
-        Stratos
+        Stratos,
+        Santa
     }
 
     public class MonsterStatuetteInfo
@@ -150,6 +151,7 @@ namespace Server.Items
             /* Lithos */            new MonsterStatuetteInfo(1157994, 0x9FA1, new int[] { 0x10D, 0x10E, 0x10F, 0x110, 0x111 }),
             /* Hydros */            new MonsterStatuetteInfo(1157992, 0x9F49, new int[] { 0x117, 0x118, 0x1119, 0x11A, 0x11B }),
             /* Stratos */           new MonsterStatuetteInfo(1157991, 0x9F4C, new int[] { 0x108, 0x109, 0x10A, 0x10B, 0x10C }),
+            /* Santa */             new MonsterStatuetteInfo(1097968, 0x4A9A, 0x66A),
         };
 
         private readonly int m_LabelNumber;

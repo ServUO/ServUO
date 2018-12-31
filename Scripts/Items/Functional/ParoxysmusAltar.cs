@@ -81,15 +81,58 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+            writer.Write((int)1); // version
 
-            writer.Write((int)0); // version
+            writer.Write(ProtectionTable.Count);
+
+            foreach (var kvp in ProtectionTable)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value.Next);
+            }
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    {
+                        int count = reader.ReadInt();
+
+                        for (int i = 0; i < count; ++i)
+                        {
+                            Mobile m = reader.ReadMobile();
+                            DateTime end = reader.ReadDateTime();
+
+                            ProtectionTable[m] = Timer.DelayCall(end - DateTime.UtcNow, () => Damage(m));
+                        }
+                        break;
+                    }
+                case 0:
+                    {
+                        break;
+                    }
+            }
+
+            if (version < 1)
+            {
+                IPooledEnumerable eable = Map.GetItemsInBounds(new Rectangle2D(6516, 492, 5, 1));
+
+                foreach (Item item in eable)
+                {
+                    if (item.Movable)
+                        item.Delete();
+                }
+
+                eable.Free();
+
+                Item gate = new ParoxysmusIronGate(this);
+                gate.MoveToWorld(new Point3D(6518, 492, -50), Map);
+            }
         }
     }
 

@@ -654,6 +654,7 @@
     <Compile Include="Items\Corpses\RightLeg.cs" />
     <Compile Include="Items\Corpses\Torso.cs" />
     <Compile Include="Items\Decorative\HappyHolidaysSign.cs" />
+    <Compile Include="Items\Decorative\SquaredDoorMat.cs" />
     <Compile Include="Items\Decorative\Wreath.cs" />
     <Compile Include="Items\Equipment\Clothing\FirstAidBelt.cs" />
     <Compile Include="Items\Equipment\Suits\DragonWolfCostume.cs" />
