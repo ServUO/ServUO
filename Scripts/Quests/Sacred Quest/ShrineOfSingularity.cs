@@ -3,6 +3,7 @@ using Server.Gumps;
 using Server.Mobiles;
 using Server.Engines.Quests;
 using System.Collections.Generic;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -33,7 +34,7 @@ namespace Server.Items
         {
             PlayerMobile pm = e.Mobile as PlayerMobile;
 
-            if (pm != null && !e.Handled && pm.InRange(Location, 2) && e.Speech.ToLower().Trim() == "unorus" && QuestHelper.CheckDoneOnce(pm, typeof(TheArisenQuest), null, false))
+            if (pm != null && !e.Handled && pm.InRange(Location, 2) && e.Speech.ToLower().Trim() == "unorus")
             {
                 e.Handled = true;
                 e.Mobile.PlaySound(0xF9);
@@ -41,7 +42,7 @@ namespace Server.Items
                 QuestOfSingularity quest = GetSingularityQuest(pm);
 
                 if (HasDelay(pm) && pm.AccessLevel == AccessLevel.Player)
-                    pm.SendLocalizedMessage(1112685); //You need more time to contemplate the Book of Circles before trying again.
+                    pm.PublicOverheadMessage(MessageType.Regular, 0x47E, 1112685); // You need more time to contemplate the Book of Circles before trying again.
                 else if (pm.AbyssEntry)
                     pm.SendLocalizedMessage(1112697);  //You enter a state of peaceful contemplation, focusing on the meaning of Singularity.
                 else if (quest == null)

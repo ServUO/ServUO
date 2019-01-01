@@ -65,174 +65,189 @@ namespace Server.Items
 
         public RecipeScrollFilter Filter { get; set; }
 
-        public void LoadDefinitions()
+        public static RecipeScrollDefinition[] Definitions = new RecipeScrollDefinition[]
         {
-            Recipes = new List<RecipeScrollDefinition>();
-
-            Recipes.Add(new RecipeScrollDefinition(1, 501, Expansion.ML, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(2, 502, Expansion.ML, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(3, 503, Expansion.ML, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(4, 504, Expansion.ML, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(5, 505, Expansion.ML, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(6, 599, Expansion.ML, RecipeSkillName.Cooking));
-            Recipes.Add(new RecipeScrollDefinition(7, 250, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(8, 251, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(9, 252, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(10, 253, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(11, 254, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(12, 350, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(13, 351, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(14, 354, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(15, 150, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(16, 352, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(17, 353, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(18, 151, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(19, 152, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(20, 551, Expansion.ML, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(21, 550, Expansion.ML, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(22, 552, Expansion.ML, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(23, 452, Expansion.ML, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(24, 450, Expansion.ML, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(25, 451, Expansion.ML, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(26, 453, Expansion.ML, RecipeSkillName.Inscription));
-            Recipes.Add(new RecipeScrollDefinition(27, 116, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(28, 106, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(29, 108, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(30, 109, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(31, 100, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(32, 102, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(33, 111, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(34, 118, Expansion.ML, RecipeSkillName.Masonry));
-            Recipes.Add(new RecipeScrollDefinition(35, 200, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(36, 201, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(37, 202, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(38, 203, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(39, 204, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(40, 205, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(41, 206, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(42, 207, Expansion.ML, RecipeSkillName.Fletching));
-            Recipes.Add(new RecipeScrollDefinition(43, 300, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(44, 301, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(45, 302, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(46, 303, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(47, 304, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(48, 305, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(49, 306, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(50, 307, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(51, 308, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(52, 309, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(53, 310, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(54, 311, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(55, 312, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(56, 313, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(57, 314, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(58, 315, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(59, 332, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(60, 333, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(61, 334, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(62, 335, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(63, 316, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(64, 317, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(65, 318, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(66, 319, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(67, 320, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(68, 321, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(69, 322, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(70, 323, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(71, 324, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(72, 325, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(73, 326, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(74, 327, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(75, 328, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(76, 329, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(77, 330, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(78, 331, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(79, 112, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(80, 113, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(81, 114, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(82, 115, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(83, 400, Expansion.ML, RecipeSkillName.Alchemy));
-            Recipes.Add(new RecipeScrollDefinition(84, 402, Expansion.ML, RecipeSkillName.Alchemy));
-            Recipes.Add(new RecipeScrollDefinition(85, 401, Expansion.ML, RecipeSkillName.Alchemy));
-            Recipes.Add(new RecipeScrollDefinition(86, 117, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(87, 107, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(88, 120, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(89, 110, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(90, 101, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(91, 103, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(92, 105, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(93, 119, Expansion.ML, RecipeSkillName.Masonry));
-            Recipes.Add(new RecipeScrollDefinition(94, 104, Expansion.ML, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(95, 336, Expansion.ML, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(96, 500, Expansion.ML, RecipeSkillName.Cooking));
-            Recipes.Add(new RecipeScrollDefinition(97, 604, Expansion.ML, RecipeSkillName.Cooking));
-            Recipes.Add(new RecipeScrollDefinition(98, 603, Expansion.ML, RecipeSkillName.Cooking));
-            Recipes.Add(new RecipeScrollDefinition(99, 702, Expansion.ML, RecipeSkillName.Masonry));
-            Recipes.Add(new RecipeScrollDefinition(100, 701, Expansion.ML, RecipeSkillName.Masonry));
-            Recipes.Add(new RecipeScrollDefinition(101, 560, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(102, 561, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(103, 562, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(104, 563, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(105, 564, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(106, 565, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(107, 566, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(108, 570, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(109, 575, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(110, 573, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(111, 574, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(112, 576, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(113, 577, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(114, 572, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(115, 571, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(116, 581, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(117, 584, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(118, 583, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(119, 582, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(120, 580, Expansion.TOL, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(121, 600, Expansion.ML, RecipeSkillName.Cooking));
-            Recipes.Add(new RecipeScrollDefinition(122, 601, Expansion.ML, RecipeSkillName.Cooking));
-            Recipes.Add(new RecipeScrollDefinition(123, 602, Expansion.ML, RecipeSkillName.Cooking));
-            Recipes.Add(new RecipeScrollDefinition(124, 800, Expansion.ML, RecipeSkillName.Inscription));
-            Recipes.Add(new RecipeScrollDefinition(125, 900, Expansion.TOL, RecipeSkillName.Alchemy));
-            Recipes.Add(new RecipeScrollDefinition(126, 901, Expansion.TOL, RecipeSkillName.Alchemy));
-            Recipes.Add(new RecipeScrollDefinition(127, 902, Expansion.TOL, RecipeSkillName.Alchemy));
-            Recipes.Add(new RecipeScrollDefinition(128, 903, Expansion.TOL, RecipeSkillName.Alchemy));
-            Recipes.Add(new RecipeScrollDefinition(129, 904, Expansion.TOL, RecipeSkillName.Alchemy));
-            Recipes.Add(new RecipeScrollDefinition(130, 905, Expansion.TOL, RecipeSkillName.Alchemy));
-            Recipes.Add(new RecipeScrollDefinition(131, 1000, Expansion.TOL, RecipeSkillName.Cartography));
-            Recipes.Add(new RecipeScrollDefinition(132, 455, Expansion.TOL, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(133, 461, Expansion.ML, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(134, 462, Expansion.ML, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(135, 460, Expansion.ML, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(136, 459, Expansion.ML, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(137, 170, Expansion.TOL, RecipeSkillName.Carpentry));
-            Recipes.Add(new RecipeScrollDefinition(138, 457, Expansion.TOL, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(139, 458, Expansion.TOL, RecipeSkillName.Tinkering));
-            Recipes.Add(new RecipeScrollDefinition(140, 355, Expansion.SA, RecipeSkillName.Blacksmith));
-
-            Recipes.Add(new RecipeScrollDefinition(141, 356, Expansion.SA, RecipeSkillName.Blacksmith));
-            Recipes.Add(new RecipeScrollDefinition(142, 585, Expansion.ML, RecipeSkillName.Tailoring));
-            Recipes.Add(new RecipeScrollDefinition(143, 456, Expansion.SA, RecipeSkillName.Tinkering));
-            //Recipes.Add(new RecipeScrollDefinition(144, 205, Expansion.SA, RecipeSkillName.Tinkering)); // Enchanted picnic basket
-            //Recipes.Add(new RecipeScrollDefinition(145, 205, Expansion.ML, RecipeSkillName.Tinkering)); // telescope
-            Recipes.Add(new RecipeScrollDefinition(146, 605, Expansion.ML, RecipeSkillName.Cooking));  
-            Recipes.Add(new RecipeScrollDefinition(147, 606, Expansion.ML, RecipeSkillName.Cooking));
-            Recipes.Add(new RecipeScrollDefinition(148, 607, Expansion.ML, RecipeSkillName.Cooking));
-            //Recipes.Add(new RecipeScrollDefinition(149, 205, Expansion.ML, RecipeSkillName.Tailoring)); // krampus minion hat
-            //Recipes.Add(new RecipeScrollDefinition(150, 205, Expansion.ML, RecipeSkillName.Tailoring)); // krampus minion boots
-            //Recipes.Add(new RecipeScrollDefinition(151, 205, Expansion.SA, RecipeSkillName.Tailoring)); // krampus minion talons
-            //Recipes.Add(new RecipeScrollDefinition(152, 205, Expansion.SA, RecipeSkillName.Tailoring)); // krampus minion earrings
-        }
+            new RecipeScrollDefinition(1, 501, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(2, 502, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(3, 503, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(4, 504, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(5, 505, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(6, 599, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(7, 250, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(8, 251, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(9, 252, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(10, 253, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(11, 254, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(12, 350, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(13, 351, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(14, 354, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(15, 150, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(16, 352, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(17, 353, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(18, 151, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(19, 152, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(20, 551, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(21, 550, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(22, 552, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(23, 452, Expansion.ML, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(24, 450, Expansion.ML, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(25, 451, Expansion.ML, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(26, 453, Expansion.ML, RecipeSkillName.Inscription),
+            new RecipeScrollDefinition(27, 116, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(28, 106, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(29, 108, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(30, 109, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(31, 100, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(32, 102, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(33, 111, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(34, 118, Expansion.ML, RecipeSkillName.Masonry),
+            new RecipeScrollDefinition(35, 200, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(36, 201, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(37, 202, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(38, 203, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(39, 204, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(40, 205, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(41, 206, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(42, 207, Expansion.ML, RecipeSkillName.Fletching),
+            new RecipeScrollDefinition(43, 300, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(44, 301, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(45, 302, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(46, 303, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(47, 304, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(48, 305, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(49, 306, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(50, 307, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(51, 308, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(52, 309, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(53, 310, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(54, 311, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(55, 312, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(56, 313, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(57, 314, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(58, 315, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(59, 332, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(60, 333, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(61, 334, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(62, 335, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(63, 316, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(64, 317, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(65, 318, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(66, 319, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(67, 320, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(68, 321, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(69, 322, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(70, 323, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(71, 324, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(72, 325, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(73, 326, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(74, 327, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(75, 328, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(76, 329, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(77, 330, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(78, 331, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(79, 112, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(80, 113, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(81, 114, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(82, 115, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(83, 400, Expansion.ML, RecipeSkillName.Alchemy),
+            new RecipeScrollDefinition(84, 402, Expansion.ML, RecipeSkillName.Alchemy),
+            new RecipeScrollDefinition(85, 401, Expansion.ML, RecipeSkillName.Alchemy),
+            new RecipeScrollDefinition(86, 117, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(87, 107, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(88, 120, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(89, 110, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(90, 101, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(91, 103, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(92, 105, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(93, 119, Expansion.ML, RecipeSkillName.Masonry),
+            new RecipeScrollDefinition(94, 104, Expansion.ML, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(95, 336, Expansion.ML, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(96, 500, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(97, 604, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(98, 603, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(99, 702, Expansion.ML, RecipeSkillName.Masonry),
+            new RecipeScrollDefinition(100, 701, Expansion.ML, RecipeSkillName.Masonry),
+            new RecipeScrollDefinition(101, 560, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(102, 561, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(103, 562, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(104, 563, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(105, 564, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(106, 565, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(107, 566, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(108, 570, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(109, 575, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(110, 573, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(111, 574, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(112, 576, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(113, 577, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(114, 572, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(115, 571, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(116, 581, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(117, 584, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(118, 583, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(119, 582, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(120, 580, Expansion.TOL, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(121, 600, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(122, 601, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(123, 602, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(124, 800, Expansion.ML, RecipeSkillName.Inscription),
+            new RecipeScrollDefinition(125, 900, Expansion.TOL, RecipeSkillName.Alchemy),
+            new RecipeScrollDefinition(126, 901, Expansion.TOL, RecipeSkillName.Alchemy),
+            new RecipeScrollDefinition(127, 902, Expansion.TOL, RecipeSkillName.Alchemy),
+            new RecipeScrollDefinition(128, 903, Expansion.TOL, RecipeSkillName.Alchemy),
+            new RecipeScrollDefinition(129, 904, Expansion.TOL, RecipeSkillName.Alchemy),
+            new RecipeScrollDefinition(130, 905, Expansion.TOL, RecipeSkillName.Alchemy),
+            new RecipeScrollDefinition(131, 1000, Expansion.TOL, RecipeSkillName.Cartography),
+            new RecipeScrollDefinition(132, 455, Expansion.TOL, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(133, 461, Expansion.ML, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(134, 462, Expansion.ML, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(135, 460, Expansion.ML, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(136, 459, Expansion.ML, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(137, 170, Expansion.TOL, RecipeSkillName.Carpentry),
+            new RecipeScrollDefinition(138, 457, Expansion.TOL, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(139, 458, Expansion.TOL, RecipeSkillName.Tinkering),
+            new RecipeScrollDefinition(140, 355, Expansion.SA, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(141, 356, Expansion.SA, RecipeSkillName.Blacksmith),
+            new RecipeScrollDefinition(142, 585, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(143, 456, Expansion.SA, RecipeSkillName.Tinkering),
+            //new RecipeScrollDefinition(144, 205, Expansion.SA, RecipeSkillName.Tinkering), // Enchanted picnic basket
+            //new RecipeScrollDefinition(145, 205, Expansion.ML, RecipeSkillName.Tinkering), // telescope
+            new RecipeScrollDefinition(146, 605, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(147, 606, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(148, 607, Expansion.ML, RecipeSkillName.Cooking),
+            new RecipeScrollDefinition(149, 586, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(150, 587, Expansion.ML, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(151, 588, Expansion.SA, RecipeSkillName.Tailoring),
+            new RecipeScrollDefinition(152, 463, Expansion.SA, RecipeSkillName.Tinkering)
+        };
 
         [Constructable]
         public RecipeBook()
             : base(0xA266)
         {
             Weight = 1.0;
-
+            LootType = LootType.Blessed;
             LoadDefinitions();
             Filter = new RecipeScrollFilter();
-            Level = SecureLevel.CoOwners;
+            Level = SecureLevel.CoOwners;            
+        }
+
+        public void LoadDefinitions()
+        {
+            Recipes = new List<RecipeScrollDefinition>();
+
+            Definitions.ToList().ForEach(x =>
+            {
+                Recipes.Add(x);
+            });            
+        }
+
+        public void ReLoadDefinitions()
+        {
+            Definitions.Where(n => !Recipes.Any(o => o.RecipeID == n.RecipeID)).ToList().ForEach(x =>
+            {
+                Recipes.Add(x);
+            });
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -282,21 +297,30 @@ namespace Server.Items
             {
                 RecipeScroll recipe = dropped as RecipeScroll;
 
-                Recipes.ForEach(x =>
+                if (Recipes.Any(x => x.RecipeID == recipe.RecipeID))
                 {
-                    if (x.RecipeID == recipe.RecipeID)
-                        x.Amount = x.Amount + 1;
-                });
 
-                InvalidateProperties();
+                    Recipes.ForEach(x =>
+                    {
+                        if (x.RecipeID == recipe.RecipeID)
+                            x.Amount = x.Amount + 1;
+                    });
 
-                from.SendLocalizedMessage(1158826); // Recipe added to the book.
+                    InvalidateProperties();
 
-                if (from is PlayerMobile)
-                    from.SendGump(new RecipeBookGump((PlayerMobile)from, this));
+                    from.SendLocalizedMessage(1158826); // Recipe added to the book.
 
-                dropped.Delete();
-                return true;
+                    if (from is PlayerMobile)
+                        from.SendGump(new RecipeBookGump((PlayerMobile)from, this));
+
+                    dropped.Delete();
+                    return true;
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1158825); // That is not a recipe.
+                    return false;
+                }
             }
             else
             {
@@ -313,7 +337,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
 
             writer.Write((int)Level);
             writer.Write(BookName);
@@ -340,6 +364,7 @@ namespace Server.Items
 
             switch (version)
             {
+                case 1:
                 case 0:
                     Level = (SecureLevel)reader.ReadInt();
                     BookName = reader.ReadString();
@@ -361,8 +386,13 @@ namespace Server.Items
                         Recipes.Add(new RecipeScrollDefinition(id, rid, ex, skill, amount, price));
                     }
 
+                    ReLoadDefinitions();
+
                     break;
             }
+            
+            if(version == 0)
+                LootType = LootType.Blessed;
         }
 
         public override void GetProperties(ObjectPropertyList list)

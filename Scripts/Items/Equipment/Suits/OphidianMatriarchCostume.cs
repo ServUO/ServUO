@@ -5,7 +5,7 @@ namespace Server.Items
 {
 	public class OphidianMatriarchCostume : BaseCostume
 	{
-        public override string CreatureName { get { return "an ophidian matriarch"; } }
+        public override string CreatureName { get { return "ophidian matriarch"; } }
 
         [Constructable]
 		public OphidianMatriarchCostume() : base( )

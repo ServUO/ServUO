@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Server.Engines.Craft;
 using Server.Gumps;
 using Server.Mobiles;
@@ -273,6 +274,8 @@ namespace Server.Items
             AddImageTiled(231, 64, 80, 352, 200);
             AddImageTiled(313, 64, 100, 352, 1416);
             AddImageTiled(415, 64, 76, 352, 200);
+
+            list = list.OrderBy(x => x.ID).ToList();
 
             for (int i = index; i < (index + count) && i >= 0 && i < list.Count; ++i)
             {

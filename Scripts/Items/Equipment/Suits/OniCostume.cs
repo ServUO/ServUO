@@ -5,7 +5,7 @@ namespace Server.Items
 {
 	public class OniCostume : BaseCostume
 	{
-        public override string CreatureName { get { return "an oni"; } }
+        public override string CreatureName { get { return "oni"; } }
 
         [Constructable]
 		public OniCostume() : base( )

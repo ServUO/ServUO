@@ -295,8 +295,10 @@ namespace Server.Engines.Craft
 
             if (Core.ML)
             {
-                index = AddCraft(typeof(HoveringWisp), 1116353, 1072881, 65.0, 115.0, typeof(CapturedEssence), 1032686, 4, 1044253);
-                AddRecipe(index, (int)TinkerRecipes.HoveringWisp);
+                index = AddCraft(typeof(HoveringWisp), 1116353, 1072881, 75.0, 125.0, typeof(CapturedEssence), 1032686, 4, 1044253);
+
+                if (!Core.TOL) // Removed at OSI Publish 103
+                    AddRecipe(index, (int)TinkerRecipes.HoveringWisp);
             }
 
             if (Core.SA)

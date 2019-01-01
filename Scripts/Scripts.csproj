@@ -555,11 +555,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\AdvancedTrainingDummy.cs" />
+    <Compile Include="Items\Addons\ClawFootTub.cs" />
+    <Compile Include="Items\Addons\GreenMarbleFireplace.cs" />
+    <Compile Include="Items\Addons\GoldMarbleFireplace.cs" />
     <Compile Include="Items\Addons\Craft Addons\AlchemyStation.cs" />
     <Compile Include="Items\Addons\Craft Addons\BBQSmoker.cs" />
     <Compile Include="Items\Addons\Craft Addons\WritingDesk.cs" />
     <Compile Include="Items\Addons\KoiPond.cs" />
+    <Compile Include="Items\Addons\BlueMarbleFireplace.cs" />
+    <Compile Include="Items\Addons\RoastingPigOnASpit.cs" />
     <Compile Include="Items\Addons\SheepStatue.cs" />
+    <Compile Include="Items\Addons\VendorMallAddon.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeFairySculpture.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeArcherSculpture.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeManOnABench.cs" />
@@ -628,6 +634,7 @@
     <Compile Include="Items\Artifacts\Decorative\AcademicBooks.cs" />
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
+    <Compile Include="Items\Artifacts\Decorative\SantaStatue.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
     <Compile Include="Items\Artifacts\Decorative\TOLDecorationArtifacts.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Epiphany\EpiphanyHelper.cs" />
@@ -638,7 +645,9 @@
     <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeBuyGump.cs" />
     <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeFilter.cs" />
     <Compile Include="Items\Books\SpecialScrollBooks\RecipeBook\RecipeFilterGump.cs" />
+    <Compile Include="Items\Consumables\2018HolidayGiftToken.cs" />
     <Compile Include="Items\Consumables\PoppiesDust.cs" />
+    <Compile Include="Items\Consumables\PromotionalToken.cs" />
     <Compile Include="Items\Corpses\BonePile.cs" />
     <Compile Include="Items\Corpses\Corpse.cs" />
     <Compile Include="Items\Corpses\CorpseNameAttribute.cs" />
@@ -651,6 +660,14 @@
     <Compile Include="Items\Corpses\RightArm.cs" />
     <Compile Include="Items\Corpses\RightLeg.cs" />
     <Compile Include="Items\Corpses\Torso.cs" />
+    <Compile Include="Items\Decorative\SpikedEggNog.cs" />
+    <Compile Include="Items\Decorative\JadeSkull.cs" />
+    <Compile Include="Items\Decorative\HolidaysSign.cs" />
+    <Compile Include="Items\Decorative\CrystalSkull.cs" />
+    <Compile Include="Items\Decorative\ObsidianSkull.cs" />
+    <Compile Include="Items\Decorative\StaghornFern.cs" />
+    <Compile Include="Items\Decorative\SquaredDoorMat.cs" />
+    <Compile Include="Items\Decorative\Wreath.cs" />
     <Compile Include="Items\Equipment\Clothing\FirstAidBelt.cs" />
     <Compile Include="Items\Equipment\Suits\DragonWolfCostume.cs" />
     <Compile Include="Items\Equipment\Suits\SabertoothedTigerCostume.cs" />
@@ -661,6 +678,7 @@
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Services\DailyRares.cs" />
     <Compile Include="Services\Expansions\MondainsLegacy.cs" />
+    <Compile Include="Services\GiftGiving\HolidayGiftBox2018.cs" />
     <Compile Include="Services\Harvest\Core\BonusHarvestResource.cs" />
     <Compile Include="Services\Harvest\Core\HarvestBank.cs" />
     <Compile Include="Services\Harvest\Core\HarvestDefinition.cs" />
@@ -1481,7 +1499,7 @@
     <Compile Include="Items\Quest\ShimmeringCrystal.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\PromotionalToken.cs">
+    <Compile Include="Items\Consumables\HABPromotionalToken.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\PublicMoongate.cs">
@@ -9789,6 +9807,16 @@
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Region.cs" />
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Setup.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\KhaldunRewards.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\BarbedWhip.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionBoots.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\NiceTitleDeed.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\NaughtyTitleDeed.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\PunisherTitleDeed.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\SpikedWhip.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\BladedWhip.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionTalons.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionHat.cs" />
+    <Compile Include="Services\Revamped Dungeons\KrampusEncounter\Items\KrampusMinionEarrings.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Generate.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CorrosiveAsh.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CursedOilstone.cs" />

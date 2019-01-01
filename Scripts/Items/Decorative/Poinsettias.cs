@@ -2,6 +2,42 @@ using System;
 
 namespace Server.Items
 {
+    public class Poinsettia : Item
+    {
+        [Constructable]
+        public Poinsettia()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public Poinsettia(int hue)
+            : base(0x2331)
+        {
+            Weight = 1.0;
+            Hue = hue;
+        }
+
+        public Poinsettia(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
     public class RedPoinsettia : Item
     {
         [Constructable]

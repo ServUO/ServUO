@@ -8,6 +8,12 @@ using Server.Engines.PartySystem;
 
 namespace Server.Items
 {
+    public class PeerlessKeyArray
+    {
+        public Type Key { get; set; }
+        public bool Active { get; set; }
+    }
+
     public abstract class PeerlessAltar : Container
     {
         public override bool IsPublicContainer { get { return true; } }
@@ -18,6 +24,8 @@ namespace Server.Items
 
         public abstract int KeyCount { get; }
         public abstract MasterKey MasterKey { get; }
+
+        private List<PeerlessKeyArray> KeyValidation;
 
         public abstract Type[] Keys { get; }
         public abstract BasePeerless Boss { get; }
@@ -102,54 +110,71 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (IsKey(dropped))
+            if (Owner != null && Owner != from)
             {
-                if (Owner != null)
-                {
-                    if (Peerless != null && Peerless.CheckAlive())
-                        from.SendLocalizedMessage(1075213); // The master of this realm has already been summoned and is engaged in combat.  Your opportunity will come after he has squashed the current batch of intruders!
-                    else
-                        from.SendLocalizedMessage(1072683, Owner.Name); // ~1_NAME~ has already activated the Prism, please wait...
+                if (Peerless != null && Peerless.CheckAlive())
+                    from.SendLocalizedMessage(1075213); // The master of this realm has already been summoned and is engaged in combat.  Your opportunity will come after he has squashed the current batch of intruders!
+                else
+                    from.SendLocalizedMessage(1072683, Owner.Name); // ~1_NAME~ has already activated the Prism, please wait...
 
-                    return false;
+                return false;
+            }
+
+            if (IsKey(dropped) && MasterKeys.Count() == 0)
+            {
+                if (KeyValidation == null)
+                {
+                    KeyValidation = new List<PeerlessKeyArray>();
+
+                    Keys.ToList().ForEach(x => KeyValidation.Add(new PeerlessKeyArray { Key = x, Active = false }));
                 }
 
-                for (int i = 0; i < Keys.Length; i++)
+                if (KeyValidation.Any(x => x.Active == true))
                 {
-                    if (i == 0)
+                    if (KeyValidation.Any(x => x.Key == dropped.GetType() && x.Active == false))
                     {
-                        Owner = from;
-                        KeyStartTimer(from);
-                        from.SendLocalizedMessage(1074575); // You have activated this object!
+                        KeyValidation.Find(s => s.Key == dropped.GetType()).Active = true;
                     }
-
-                    if (Keys.Length == (i + 1))
+                    else
                     {
-                        KeyStopTimer();
+                        from.SendLocalizedMessage(1072682); // This is not the proper key.
+                        return false;
+                    }
+                }
+                else
+                {
+                    Owner = from;
+                    KeyStartTimer(from);
+                    from.SendLocalizedMessage(1074575); // You have activated this object!
+                    KeyValidation.Find(s => s.Key == dropped.GetType()).Active = true;                    
+                }
 
-                        from.SendLocalizedMessage(1072678); // You have awakened the master of this realm. You need to hurry to defeat it in time!
+                if (KeyValidation.Where(x => x.Active == true).Count() == Keys.Count())
+                {
+                    KeyStopTimer();
 
-                        for (int k = 0; k < KeyCount; k++)
+                    from.SendLocalizedMessage(1072678); // You have awakened the master of this realm. You need to hurry to defeat it in time!
+
+                    for (int k = 0; k < KeyCount; k++)
+                    {
+                        from.SendLocalizedMessage(1072680); // You have been given the key to the boss.
+
+                        MasterKey key = MasterKey;
+
+                        if (key != null)
                         {
-                            from.SendLocalizedMessage(1072680); // You have been given the key to the boss.
+                            key.Altar = this;
+                            key._Map = Map;
 
-                            MasterKey key = MasterKey;
+                            if (!from.AddToBackpack(key))
+                                key.MoveToWorld(from.Location, from.Map);
 
-                            if (key != null)
-                            {
-                                key.Altar = this;
-                                key._Map = Map;
-
-                                if (!from.AddToBackpack(key))
-                                    key.MoveToWorld(from.Location, from.Map);
-
-                                MasterKeys.Add(key);
-                            }
+                            MasterKeys.Add(key);
                         }
-
-                        dropped.Delete();
-                        ClearContainer();
                     }
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), () => ClearContainer());
+                    KeyValidation = null;
                 }
             }
             else
@@ -192,7 +217,7 @@ namespace Server.Items
             if (m_KeyResetTimer != null)
                 m_KeyResetTimer.Stop();
 
-            m_KeyResetTimer = Timer.DelayCall(TimeSpan.FromMinutes(1), () =>
+            m_KeyResetTimer = Timer.DelayCall(TimeSpan.FromSeconds(30 * Keys.Count()), () =>
             {
                 from.SendLocalizedMessage(1072679); // Your realm offering has reset. You will need to start over.
 
@@ -200,6 +225,8 @@ namespace Server.Items
                 {
                     Owner = null;
                 }
+
+                KeyValidation = null;
 
                 ClearContainer();
             });
@@ -311,7 +338,11 @@ namespace Server.Items
 
         public virtual void ClearContainer()
         {
-            Items.ForEach(x => x.Delete());
+            for (int i = Items.Count - 1; i >= 0; --i)
+            {
+                if (i < Items.Count)
+                    Items[i].Delete();
+            }
         }
 
         private int toConfirm;
@@ -367,9 +398,25 @@ namespace Server.Items
                 AddFighter(from);
                 BeginSequence(Summoner);
             }
-        }
+        }        
 
         public virtual void BeginSequence(Mobile from)
+        {
+            SpawnBoss();
+
+            // teleport fighters
+            Fighters.ForEach(x =>
+            {
+                int counter = 0;
+
+                if (x.InRange(from.Location, 15) && CanEnter(x))
+                {
+                    Timer.DelayCall(TimeSpan.FromSeconds(counter++), () => { Enter(x); });
+                }
+            });
+        }
+
+        public virtual void SpawnBoss()
         {
             if (Peerless == null)
             {
@@ -386,17 +433,6 @@ namespace Server.Items
 
                 StartSlayTimer();
             }
-
-            // teleport fighters
-            Fighters.ForEach(x =>
-            {
-                int counter = 0;
-
-                if (x.InRange(from.Location, 15) && CanEnter(x))
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(counter++), () => { Enter(x); });
-                }
-            });
         }
 
         public void Enter(Mobile fighter)

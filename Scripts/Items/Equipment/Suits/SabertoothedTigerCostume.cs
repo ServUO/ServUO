@@ -5,20 +5,19 @@ namespace Server.Items
 {
     public class SabertoothedTigerCostume : BaseCostume
     {
-        public override string CreatureName { get { return "a saber-toothed tiger"; } }
+        public override string CreatureName { get { return "saber-toothed tiger"; } }
 
         [Constructable]
         public SabertoothedTigerCostume() : base()
         {
-            Name = "a saber-toothed tiger costume";
             CostumeBody = 0x588;
         }
 
-        public override int LabelNumber
+        public override string DefaultName
         {
             get
             {
-                return 0;
+                return "a saber-toothed tiger costume";
             }
         }
 
