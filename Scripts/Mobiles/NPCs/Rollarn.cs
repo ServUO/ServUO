@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public BrotherlyLoveQuest()
             : base()
         { 
-            this.AddObjective(new DeliverObjective(typeof(PersonalLetterAhie), "letter", 1, typeof(Ahie), "Ahie (The Heartwood)", 1800));
+            AddObjective(new DeliverObjective(typeof(PersonalLetterAhie), "letter", 1, typeof(Ahie), "Ahie (The Heartwood)", 1800));
 			
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         public override bool DoneOnce
@@ -106,30 +106,30 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Elf;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Elf;
 			
-            this.Hue = 0x84DE;
-            this.HairItemID = 0x2FC1;
-            this.HairHue = 0x320;
+            Hue = 0x84DE;
+            HairItemID = 0x2FC1;
+            HairHue = 0x320;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Shoes(0x1BB));
-            this.AddItem(new Circlet());
-            this.AddItem(new Cloak(0x296));
-            this.AddItem(new LeafChest());
-            this.AddItem(new LeafArms());
+            AddItem(new Shoes(0x1BB));
+            AddItem(new Circlet());
+            AddItem(new Cloak(0x296));
+            AddItem(new LeafChest());
+            AddItem(new LeafArms());
 			
             Item item;
 			
             item = new LeafLegs();
             item.Hue = 0x74E;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

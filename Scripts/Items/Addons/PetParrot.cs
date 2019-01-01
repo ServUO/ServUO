@@ -17,38 +17,39 @@ namespace Server.Mobiles
         public PetParrot(DateTime birth, string name, int hue)
             : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a pet parrot";
-            this.Title = "the parrot";			
-            this.Body = 0x11A;
-            this.BaseSoundID = 0xBF;
+            Name = "a pet parrot";
+            Title = "the parrot";			
+            Body = 0x11A;
+            BaseSoundID = 0xBF;
 			
-            this.SetStr(1, 5);
-            this.SetDex(25, 30);
-            this.SetInt(2);
+            SetStr(1, 5);
+            SetDex(25, 30);
+            SetInt(2);
 			
-            this.SetHits(1, this.Str);
-            this.SetStam(25, this.Dex);
-            this.SetMana(0);
+            SetHits(1, Str);
+            SetStam(25, Dex);
+            SetMana(0);
 
-            this.SetResistance(ResistanceType.Physical, 2);
+            SetResistance(ResistanceType.Physical, 2);
 
-            this.SetSkill(SkillName.MagicResist, 4);
-            this.SetSkill(SkillName.Tactics, 4);
-            this.SetSkill(SkillName.Wrestling, 4);
+            SetSkill(SkillName.MagicResist, 4);
+            SetSkill(SkillName.Tactics, 4);
+            SetSkill(SkillName.Wrestling, 4);
 
-            this.CantWalk = true;
-            this.Blessed = true;
+            CantWalk = true;
+            Frozen = true;
+            Blessed = true;
 			
             if (birth != DateTime.MinValue)
-                this.m_Birth = birth;
+                m_Birth = birth;
             else
-                this.m_Birth = DateTime.UtcNow;
+                m_Birth = DateTime.UtcNow;
 				
             if (name != null)
-                this.Name = name;
+                Name = name;
 				
             if (hue > 0)
-                this.Hue = hue;
+                Hue = hue;
         }
 
         public PetParrot(Serial serial)
@@ -68,11 +69,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Birth;
+                return m_Birth;
             }
             set
             {
-                this.m_Birth = value;
+                m_Birth = value;
             }
         }
         public override FoodType FavoriteFood
@@ -91,7 +92,7 @@ namespace Server.Mobiles
 
         public override void OnStatsQuery(Mobile from)
         {
-            if (from.Map == this.Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
+            if (from.Map == Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
             {
                 BaseHouse house = BaseHouse.FindHouseAt(this);
 
@@ -106,7 +107,7 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 			
-            int weeks = GetWeeks(this.m_Birth);
+            int weeks = GetWeeks(m_Birth);
 			
             if (weeks == 1)
                 list.Add(1072626); // 1 week old
@@ -133,8 +134,8 @@ namespace Server.Mobiles
 			
             if (Utility.RandomDouble() < 0.05)
             {
-                this.Say(e.Speech);
-                this.PlaySound(0xC0);
+                Say(e.Speech);
+                PlaySound(0xC0);
             }
         }
 
@@ -147,26 +148,27 @@ namespace Server.Mobiles
                 switch ( Utility.Random(6) )
                 {
                     case 0:
-                        this.Say(1072602, "#" + Utility.RandomMinMax(1012003, 1012010));
+                        Say(1072602, "#" + Utility.RandomMinMax(1012003, 1012010));
                         break; // I just flew in from ~1_CITYNAME~ and boy are my wings tired!
                     case 1:
-                        this.Say(1072603);
+                        Say(1072603);
                         break; // Wind in the sails!  Wind in the sails!
                     case 2:
-                        this.Say(1072604);
+                        Say(1072604);
                         break; // Arrrr, matey!
                     case 3:
-                        this.Say(1072605);
+                        Say(1072605);
                         break; // Loot and plunder!  Loot and plunder!
                     case 4:
-                        this.Say(1072606);
+                        Say(1072606);
                         break; // I want a cracker!
                     case 5:
-                        this.Say(1072607);
+                        Say(1072607);
                         break; // I'm just a house pet!
                 }
 				
-                this.PlaySound(Utility.RandomMinMax(0xBF, 0xC3));
+                PlaySound(Utility.RandomMinMax(0xBF, 0xC3));
+                Direction = Utility.GetDirection(this, from);
 				
                 return true;
             }
@@ -180,7 +182,7 @@ namespace Server.Mobiles
 
             writer.Write((int)0); // version
 			
-            writer.Write((DateTime)this.m_Birth);
+            writer.Write((DateTime)m_Birth);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -189,7 +191,9 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 			
-            this.m_Birth = reader.ReadDateTime();
+            m_Birth = reader.ReadDateTime();
+
+            Frozen = true;
         }
     }
 }

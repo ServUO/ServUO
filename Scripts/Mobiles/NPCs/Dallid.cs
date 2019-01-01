@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public TappingTheKegQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(BarrelTap), "barrel taps", 10, 0x1004));
+            AddObjective(new ObtainObjective(typeof(BarrelTap), "barrel taps", 10, 0x1004));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* Tapping the Keg */
@@ -75,9 +75,9 @@ namespace Server.Engines.Quests
         public BreezesSongQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(FancyWindChimes), "fancy wind chimes", 10, 0x2833));
+            AddObjective(new ObtainObjective(typeof(FancyWindChimes), "fancy wind chimes", 10, 0x2833));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* Breeze's Song */
@@ -141,9 +141,9 @@ namespace Server.Engines.Quests
         public WaitingToBeFilledQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Bottle), "empty bottles", 20, 0xF0E));
+            AddObjective(new ObtainObjective(typeof(Bottle), "empty bottles", 20, 0xF0E));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* Waiting to be Filled */
@@ -231,24 +231,24 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Elf;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Elf;
 			
-            this.Hue = 0x8376;
-            this.HairItemID = 0x2FCD;
-            this.HairHue = 0x100;
+            Hue = 0x8376;
+            HairItemID = 0x2FCD;
+            HairHue = 0x100;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Boots(0x901));
-            this.AddItem(new ShortPants(0x733));
-            this.AddItem(new Shirt(0x70E));
-            this.AddItem(new FullApron(0x1BE));
-            this.AddItem(new Cleaver());
+            AddItem(new Boots(0x901));
+            AddItem(new ShortPants(0x733));
+            AddItem(new Shirt(0x70E));
+            AddItem(new FullApron(0x1BE));
+            AddItem(new Cleaver());
         }
 
         public override void Serialize(GenericWriter writer)

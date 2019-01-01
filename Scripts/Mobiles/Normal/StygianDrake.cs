@@ -69,7 +69,7 @@ namespace Server.Mobiles
         public override FoodType FavoriteFood { get { return FoodType.Meat | FoodType.Fish; } }
         public override bool CanFly { get { return true; } }
         public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame { get { return true; } }
+        //public override bool StatLossAfterTame { get { return true; } }
 
         public override void GenerateLoot()
         {

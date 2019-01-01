@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public TheSongOfTheWindQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(FancyWindChimes), "fancy wind chimes", 10, 0x2833));
+            AddObjective(new ObtainObjective(typeof(FancyWindChimes), "fancy wind chimes", 10, 0x2833));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* The Song of the Wind */
@@ -75,9 +75,9 @@ namespace Server.Engines.Quests
         public BeerGogglesQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(BarrelTap), "barrel tap", 25, 0x1004));
+            AddObjective(new ObtainObjective(typeof(BarrelTap), "barrel tap", 25, 0x1004));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* Beer Goggles */
@@ -142,9 +142,9 @@ namespace Server.Engines.Quests
         public MessageInBottleQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Bottle), "empty bottles", 50, 0xF0E));
+            AddObjective(new ObtainObjective(typeof(Bottle), "empty bottles", 50, 0xF0E));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* Message in a Bottle */
@@ -209,8 +209,8 @@ namespace Server.Engines.Quests
         public Tholef()
             : base("Tholef", "the grape tender")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Tholef(Serial serial)
@@ -232,28 +232,28 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 			
-            this.Hue = 0x876C;
-            this.HairItemID = 0x2FC2;
-            this.HairHue = 0x15A;
+            Hue = 0x876C;
+            HairItemID = 0x2FC2;
+            HairHue = 0x15A;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x901));
-            this.AddItem(new ShortPants(0x28C));
-            this.AddItem(new Shirt(0x28C));
-            this.AddItem(new FullApron(0x72B));
+            AddItem(new Sandals(0x901));
+            AddItem(new ShortPants(0x28C));
+            AddItem(new Shirt(0x28C));
+            AddItem(new FullApron(0x72B));
 			
             Item item;
 			
             item = new LeafArms();
             item.Hue = 0x28C;					
-            this.AddItem(item); 
+            AddItem(item); 
         }
 
         public override void Serialize(GenericWriter writer)

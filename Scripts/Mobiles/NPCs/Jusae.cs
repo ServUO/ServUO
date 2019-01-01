@@ -9,8 +9,8 @@ namespace Server.Engines.Quests
         public Jusae()
             : base("Jusae", "the bowcrafter")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Jusae(Serial serial)
@@ -35,31 +35,31 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 			
-            this.Hue = 0x83E5;
-            this.HairItemID = 0x2FD0;
-            this.HairHue = 0x238;
+            Hue = 0x83E5;
+            HairItemID = 0x2FD0;
+            HairHue = 0x238;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x901));
-            this.AddItem(new ShortPants(0x651));
-            this.AddItem(new MagicalShortbow());
+            AddItem(new Sandals(0x901));
+            AddItem(new ShortPants(0x651));
+            AddItem(new MagicalShortbow());
 			
             Item item;
 			
             item = new HideChest();
             item.Hue = 0x27B;
-            this.AddItem(item);
+            AddItem(item);
 			
             item = new HidePauldrons();
             item.Hue = 0x27E;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

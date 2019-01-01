@@ -8,10 +8,10 @@ namespace Server.Engines.Quests
         public ScaleArmorQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(ThrashersTail), "thrasher's tail", 1));
-            this.AddObjective(new ObtainObjective(typeof(HydraScale), "hydra scales", 10));
+            AddObjective(new ObtainObjective(typeof(ThrashersTail), "thrasher's tail", 1));
+            AddObjective(new ObtainObjective(typeof(HydraScale), "hydra scales", 10));
 			
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Scale Armor */
@@ -84,8 +84,8 @@ namespace Server.Engines.Quests
         public Thallary()
             : base("Thallary", "the cloth weaver")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Thallary(Serial serial)
@@ -108,22 +108,22 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 			
-            this.Hue = 0x8389;
-            this.HairItemID = 0x2FCF;
-            this.HairHue = 0x33;
+            Hue = 0x8389;
+            HairItemID = 0x2FCF;
+            HairHue = 0x33;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x901));
-            this.AddItem(new LongPants(0x721));
-            this.AddItem(new Cloak(0x3B3));
-            this.AddItem(new FancyShirt(0x62));
+            AddItem(new Sandals(0x901));
+            AddItem(new LongPants(0x721));
+            AddItem(new Cloak(0x3B3));
+            AddItem(new FancyShirt(0x62));
         }
 
         public override void Serialize(GenericWriter writer)
