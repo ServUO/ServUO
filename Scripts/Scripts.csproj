@@ -659,6 +659,7 @@
     <Compile Include="Items\StoreBought\MysticalPolymorphTotem.cs" />
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
+    <Compile Include="Services\DailyRares.cs" />
     <Compile Include="Services\Expansions\MondainsLegacy.cs" />
     <Compile Include="Services\Harvest\Core\BonusHarvestResource.cs" />
     <Compile Include="Services\Harvest\Core\HarvestBank.cs" />
