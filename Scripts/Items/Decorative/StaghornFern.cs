@@ -14,6 +14,7 @@ namespace Server.Items
             : base(0x9965)
         {
             Movable = false;
+            Weight = 0;
         }
 
         public StaghornFernAddon(Serial serial)
