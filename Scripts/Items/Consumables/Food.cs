@@ -134,6 +134,14 @@ namespace Server.Items
                 list.Add(new ContextMenus.EatEntry(from, this));
         }
 
+        public virtual bool TryEat(Mobile from)
+        {
+            if (Deleted || !Movable || !from.CheckAlive() || !CheckItemUse(from))
+                return false;
+
+            return Eat(from);
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

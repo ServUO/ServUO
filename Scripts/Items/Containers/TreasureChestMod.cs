@@ -75,14 +75,14 @@ namespace Server.Items
 
 			DropItem( new Gold( 10, 40 ) );
 			DropItem( new Bolt( 5 ) );
-			switch ( Utility.Random( 6 )) 
+			switch ( Utility.Random( 5 )) 
 			{ 
 				case 0: DropItem( new Candelabra()  ); break; 
 				case 1: DropItem( new Candle() ); break; 
-				case 2: DropItem( new CandleLarge() ); break; 
-				case 3: DropItem( new CandleLong() ); break; 
-				case 4: DropItem( new CandleShort() ); break; 
-				case 5: DropItem( new CandleSkull() ); break; 
+				//case 2: DropItem( new CandleLarge() ); break; 
+				case 2: DropItem( new CandleLong() ); break; 
+				case 3: DropItem( new CandleShort() ); break; 
+				case 4: DropItem( new CandleSkull() ); break; 
 			}
 			switch ( Utility.Random( 2 )) 
 			{ 
