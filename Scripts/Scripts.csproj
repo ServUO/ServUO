@@ -660,7 +660,10 @@
     <Compile Include="Items\Corpses\RightArm.cs" />
     <Compile Include="Items\Corpses\RightLeg.cs" />
     <Compile Include="Items\Corpses\Torso.cs" />
+    <Compile Include="Items\Decorative\JadeSkull.cs" />
     <Compile Include="Items\Decorative\HolidaysSign.cs" />
+    <Compile Include="Items\Decorative\CrystalSkull.cs" />
+    <Compile Include="Items\Decorative\ObsidianSkull.cs" />
     <Compile Include="Items\Decorative\StaghornFern.cs" />
     <Compile Include="Items\Decorative\SquaredDoorMat.cs" />
     <Compile Include="Items\Decorative\Wreath.cs" />
