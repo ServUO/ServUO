@@ -9,8 +9,8 @@ namespace Server.Engines.Quests
         public Tillanil()
             : base("Tillanil", "the wine tender")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Tillanil(Serial serial)
@@ -32,21 +32,21 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 			
-            this.Hue = 0x8383;
-            this.HairItemID = 0x2FD0;
-            this.HairHue = 0x127;
+            Hue = 0x8383;
+            HairItemID = 0x2FD0;
+            HairHue = 0x127;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x1BB));
-            this.AddItem(new Tunic(0x712));
-            this.AddItem(new ShortPants(0x30));
+            AddItem(new Sandals(0x1BB));
+            AddItem(new Tunic(0x712));
+            AddItem(new ShortPants(0x30));
         }
 
         public override void Serialize(GenericWriter writer)

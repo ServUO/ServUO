@@ -101,17 +101,41 @@ namespace Server.Engines.Quests
 
 		public static Item FletcherRunic()
 		{
-			switch (Utility.Random(4))
-			{
-				case 0:
-					return new RunicFletcherTool(CraftResource.OakWood, 45);
-				case 1:
-					return new RunicFletcherTool(CraftResource.AshWood, 35);
-				case 2:
-					return new RunicFletcherTool(CraftResource.YewWood, 25);
-				case 3:
-					return new RunicFletcherTool(CraftResource.Heartwood, 15);
-			}
+            var ran = Utility.RandomDouble();
+
+            if (Core.HS)
+            {
+                if (ran <= 0.0001)
+                {
+                    return new RunicFletcherTool(CraftResource.Heartwood, 15);
+                }
+                else if (ran <= 0.0005)
+                {
+                    return new RunicFletcherTool(CraftResource.YewWood, 25);
+                }
+                else if (ran <= 0.0025)
+                {
+                    return new RunicFletcherTool(CraftResource.AshWood, 35);
+                }
+                else if (ran <= 0.005)
+                {
+                    return new RunicFletcherTool(CraftResource.OakWood, 45);
+                }
+            }
+            else if (ran <= 0.01)
+            {
+                switch (Utility.Random(4))
+                {
+                    case 0:
+                        return new RunicFletcherTool(CraftResource.OakWood, 45);
+                    case 1:
+                        return new RunicFletcherTool(CraftResource.AshWood, 35);
+                    case 2:
+                        return new RunicFletcherTool(CraftResource.YewWood, 25);
+                    case 3:
+                        return new RunicFletcherTool(CraftResource.Heartwood, 15);
+                }
+            }
 
 			return null;
 		}
@@ -126,7 +150,6 @@ namespace Server.Engines.Quests
 
 		public static Item TailorRecipe()
 		{
-			//return GetRecipe(Enum.GetValues(typeof(TailorRecipe)));
             return GetRecipe(new int[] { 501, 502, 503, 504, 505, 550, 551, 552 });
 		}
 
@@ -140,7 +163,6 @@ namespace Server.Engines.Quests
 
 		public static Item SmithRecipe()
 		{
-            //return GetRecipe(Enum.GetValues(typeof(SmithRecipes)));
             return GetRecipe(new int[] { 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 350, 351, 352, 353, 354 });
         }
 
@@ -156,19 +178,28 @@ namespace Server.Engines.Quests
 		{
             RecipeScroll recipes;
 
+            recipes = GetRecipe(new int[] { 450, 451, 452, 453 });
+
+            return recipes;
+        }
+
+        public static Item AlchemyRecipe()
+        {
+            RecipeScroll recipes;
+
             if (Core.TOL)
             {
-                recipes = GetRecipe(new int[] { 400, 401, 402, 450, 451, 452, 453 });
+                recipes = GetRecipe(new int[] { 400, 401, 402 });
             }
             else
             {
-                recipes = GetRecipe(new int[] { 400, 401, 402, 450, 451, 452, 453, 454 });
+                recipes = GetRecipe(new int[] { 400, 401, 402, 454 });
             }
 
             return recipes;
         }
 
-		public static Item CarpRecipe()
+        public static Item CarpentryRecipe()
 		{
             int[] array = new int[24];
 
@@ -184,22 +215,71 @@ namespace Server.Engines.Quests
             return GetRecipe(array);
 		}
 
-		public static Item CarpRunic()
+		public static Item CarpenterRunic()
 		{
-			switch (Utility.Random(4))
-			{
-				case 0:
-					return new RunicDovetailSaw(CraftResource.OakWood, 45);
-				case 1:
-					return new RunicDovetailSaw(CraftResource.AshWood, 35);
-				case 2:
-					return new RunicDovetailSaw(CraftResource.YewWood, 25);
-				case 3:
-					return new RunicDovetailSaw(CraftResource.Heartwood, 15);
-			}
+            var ran = Utility.RandomDouble();
+
+            if (Core.HS)
+            {
+                if (ran <= 0.0001)
+                {
+                    return new RunicDovetailSaw(CraftResource.Heartwood, 15);
+                }
+                else if (ran <= 0.0005)
+                {
+                    return new RunicDovetailSaw(CraftResource.YewWood, 25);
+                }
+                else if (ran <= 0.0025)
+                {
+                    return new RunicDovetailSaw(CraftResource.AshWood, 35);
+                }
+                else if (ran <= 0.005)
+                {
+                    return new RunicDovetailSaw(CraftResource.OakWood, 45);
+                }
+            }
+            else if (ran <= 0.01)
+            {
+                switch (Utility.Random(4))
+                {
+                    case 0:
+                        return new RunicDovetailSaw(CraftResource.OakWood, 45);
+                    case 1:
+                        return new RunicDovetailSaw(CraftResource.AshWood, 35);
+                    case 2:
+                        return new RunicDovetailSaw(CraftResource.YewWood, 25);
+                    case 3:
+                        return new RunicDovetailSaw(CraftResource.Heartwood, 15);
+                }
+            }
 
 			return null;
 		}
+
+        public static Item RandomFurniture()
+        {
+            if (0.005 >= Utility.RandomDouble())
+            {
+                return Loot.Construct(ElvishFurniture);
+            }
+
+            return null;
+        }
+
+        public static Type[] ElvishFurniture =
+        {
+            typeof(WarriorStatueSouthDeed),
+            typeof(WarriorStatueEastDeed),
+            typeof(SquirrelStatueSouthDeed),
+            typeof(SquirrelStatueEastDeed),
+            typeof(ElvenDresserSouthDeed),
+            typeof(ElvenDresserEastDeed),
+            typeof(TallElvenBedSouthDeed),
+            typeof(TallElvenBedEastDeed),
+            typeof(StoneAnvilSouthDeed),
+            typeof(StoneAnvilEastDeed),
+            typeof(OrnateElvenChestEastDeed)
+        };
 
 		public static Item CookRecipe()
 		{
@@ -230,27 +310,27 @@ namespace Server.Engines.Quests
 			{
 				return null;
 			}
-			
-			if (mid == -1) // only lesser recipes in list
+
+            var ran = Utility.RandomDouble();
+
+            if (mid == -1 && ran <= 0.33) // only lesser recipes in list
 			{
 				return new RecipeScroll(recipes[Utility.Random(list.Length)]);
 			}
-			
-			if (mid == 0) // only greater recipes in list
+            else if (mid == 0 && ran <= 0.01) // only greater recipes in list
 			{
-				if (Utility.RandomDouble() < 0.01)
-				{
-					return new RecipeScroll(recipes[Utility.Random(list.Length)]);
-				}
+			    return new RecipeScroll(recipes[Utility.Random(list.Length)]);
 			}
 			else
 			{
-				if (Utility.RandomDouble() < 0.01)
+                if (ran <= 0.01)
 				{
 					return new RecipeScroll(recipes[Utility.RandomMinMax(mid, list.Length - 1)]);
 				}
-
-				return new RecipeScroll(recipes[Utility.Random(mid)]);
+                else if (ran <= 0.33)
+                {
+                    return new RecipeScroll(recipes[Utility.Random(mid)]);
+                }
 			}
 
 			return null;

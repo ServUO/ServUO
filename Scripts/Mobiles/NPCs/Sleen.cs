@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public NecessitysMotherQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(TinkerTools), "tinker's tools", 10, 0x1EB8));
+            AddObjective(new ObtainObjective(typeof(TinkerTools), "tinker's tools", 10, 0x1EB8));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* Necessity's Mother */
@@ -75,9 +75,9 @@ namespace Server.Engines.Quests
         public TickTockQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Clock), "clock", 10, 0x104B));
+            AddObjective(new ObtainObjective(typeof(Clock), "clock", 10, 0x104B));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* Tick Tock */
@@ -142,9 +142,9 @@ namespace Server.Engines.Quests
         public ReptilianDentistQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(CoilsFang), "coil's fang", 1));
-			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddObjective(new ObtainObjective(typeof(CoilsFang), "coil's fang", 1));
+
+            AddReward(new BaseReward(typeof(AlchemistCraftsmanSatchel), 1074282));
         }
 
         /* Reptilian Dentist */
@@ -215,8 +215,8 @@ namespace Server.Engines.Quests
         public Sleen()
             : base("Sleen", "the trinket weaver")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Sleen(Serial serial)
@@ -242,24 +242,24 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 			
-            this.Hue = 0x83E6;
-            this.HairItemID = 0x2FC0;
-            this.HairHue = 0x386;
+            Hue = 0x83E6;
+            HairItemID = 0x2FC0;
+            HairHue = 0x386;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new FullApron(0x1BB));
-            this.AddItem(new ShortPants(0x71));
-            this.AddItem(new Cloak(0x73C));
-            this.AddItem(new ElvenShirt());
-            this.AddItem(new SmithHammer());
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new FullApron(0x1BB));
+            AddItem(new ShortPants(0x71));
+            AddItem(new Cloak(0x73C));
+            AddItem(new ElvenShirt());
+            AddItem(new SmithHammer());
         }
 
         public override void Serialize(GenericWriter writer)

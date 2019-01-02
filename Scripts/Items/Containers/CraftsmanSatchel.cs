@@ -8,7 +8,7 @@ namespace Server.Items
         public BaseCraftsmanSatchel()
             : base()
         {
-            this.Hue = Reward.SatchelHue();
+            Hue = Reward.SatchelHue();
 			
             int count = 1;
 			
@@ -19,21 +19,21 @@ namespace Server.Items
             bool jewlery = false;
             bool talisman = false;
 			
-            while (this.Items.Count < count)
+            while (Items.Count < count)
             { 
-                if (0.25 > Utility.RandomDouble() && !talisman)
+                if (0.33 > Utility.RandomDouble() && !talisman)
                 {
-                    this.DropItem(Loot.RandomTalisman());
+                    DropItem(Loot.RandomTalisman());
                     talisman = true;					
                 }
                 else if (0.4 > Utility.RandomDouble() && !equipment)
                 {
-                    this.DropItem(this.RandomItem());		
+                    DropItem(RandomItem());		
                     equipment = true;		
                 }
                 else if (0.88 > Utility.RandomDouble() && !jewlery)
                 {
-                    this.DropItem(Reward.Jewlery());
+                    DropItem(Reward.Jewlery());
                     jewlery = true;
                 }
             }
@@ -64,17 +64,70 @@ namespace Server.Items
         }
     }
 
+    public class AlchemistCraftsmanSatchel : BaseCraftsmanSatchel
+    {
+        [Constructable]
+        public AlchemistCraftsmanSatchel()
+            : base()
+        {
+            if (Items.Count < 2)
+            {
+                var recipe = Reward.AlchemyRecipe();
+
+                if (recipe != null)
+                {
+                    DropItem(recipe);
+                }
+            }
+        }
+
+        public AlchemistCraftsmanSatchel(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override Item RandomItem()
+        {
+            return Reward.RangedWeapon();
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
     public class FletcherCraftsmanSatchel : BaseCraftsmanSatchel
     {
         [Constructable]
         public FletcherCraftsmanSatchel()
             : base()
-        { 
-            if (this.Items.Count < 2 && 0.5 > Utility.RandomDouble())
-                this.DropItem(Reward.FletcherRecipe());
-				
-            if (0.01 > Utility.RandomDouble())
-                this.DropItem(Reward.FletcherRunic());
+        {
+            if (Items.Count < 2)
+            {
+                var recipe = Reward.FletcherRecipe();
+
+                if (recipe != null)
+                {
+                    DropItem(recipe);
+                }
+            }
+
+            var runic = Reward.FletcherRunic();
+
+            if (runic != null)
+            {
+                DropItem(runic);
+            }
         }
 
         public FletcherCraftsmanSatchel(Serial serial)
@@ -107,9 +160,16 @@ namespace Server.Items
         [Constructable]
         public TailorsCraftsmanSatchel()
             : base()
-        { 
-            if (this.Items.Count < 2 && 0.5 > Utility.RandomDouble())
-                this.DropItem(Reward.TailorRecipe());
+        {
+            if (Items.Count < 2)
+            {
+                var recipe = Reward.TailorRecipe();
+
+                if (recipe != null)
+                {
+                    DropItem(recipe);
+                }
+            }
         }
 
         public TailorsCraftsmanSatchel(Serial serial)
@@ -142,9 +202,16 @@ namespace Server.Items
         [Constructable]
         public SmithsCraftsmanSatchel()
             : base()
-        { 
-            if (this.Items.Count < 2 && 0.5 > Utility.RandomDouble())
-                this.DropItem(Reward.SmithRecipe());
+        {
+            if (Items.Count < 2)
+            {
+                var recipe = Reward.SmithRecipe();
+
+                if (recipe != null)
+                {
+                    DropItem(recipe);
+                }
+            }
         }
 
         public SmithsCraftsmanSatchel(Serial serial)
@@ -177,9 +244,16 @@ namespace Server.Items
         [Constructable]
         public TinkersCraftsmanSatchel()
             : base()
-        { 
-            if (this.Items.Count < 2 && 0.5 > Utility.RandomDouble())
-                this.DropItem(Reward.TinkerRecipe());
+        {
+            if (Items.Count < 2)
+            {
+                var recipe = Reward.TinkerRecipe();
+
+                if (recipe != null)
+                {
+                    DropItem(recipe);
+                }
+            }
         }
 
         public TinkersCraftsmanSatchel(Serial serial)
@@ -212,12 +286,30 @@ namespace Server.Items
         [Constructable]
         public CarpentersCraftsmanSatchel()
             : base()
-        { 
-            if (this.Items.Count < 2 && 0.5 > Utility.RandomDouble())
-                this.DropItem(Reward.CarpRecipe());				
-			
-            if (0.01 > Utility.RandomDouble())
-                this.DropItem(Reward.CarpRunic());
+        {
+            if (Items.Count < 2)
+            {
+                var recipe = Reward.CarpentryRecipe();
+
+                if (recipe != null)
+                {
+                    DropItem(recipe);
+                }
+            }
+
+            var runic = Reward.CarpenterRunic();
+
+            if (runic != null)
+            {
+                DropItem(runic);
+            }
+
+            var furniture = Reward.RandomFurniture();
+
+            if (furniture != null)
+            {
+                DropItem(furniture);
+            }
         }
 
         public CarpentersCraftsmanSatchel(Serial serial)

@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public InstrumentOfWarQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Broadsword), "broadswords", 12, 0xF5E));
+            AddObjective(new ObtainObjective(typeof(Broadsword), "broadswords", 12, 0xF5E));
 			
-            this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
         /* Instrument of War */
@@ -75,9 +75,9 @@ namespace Server.Engines.Quests
         public TheShieldQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(HeaterShield), "heater shields", 10, 0x1B76));
+            AddObjective(new ObtainObjective(typeof(HeaterShield), "heater shields", 10, 0x1B76));
 			
-            this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
         /* The Shield */
@@ -141,9 +141,9 @@ namespace Server.Engines.Quests
         public MusicToMyEarsQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(LapHarp), "lap harp", 10, 0xEB2));
+            AddObjective(new ObtainObjective(typeof(LapHarp), "lap harp", 10, 0xEB2));
 			
-            this.AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
         }
 
         /* Music to my Ears */
@@ -208,9 +208,9 @@ namespace Server.Engines.Quests
         public TheGlassEyeQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Spyglass), "spyglasses", 10, 0x14F5));
+            AddObjective(new ObtainObjective(typeof(Spyglass), "spyglasses", 10, 0x14F5));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* The Glass Eye */
@@ -274,9 +274,9 @@ namespace Server.Engines.Quests
         public LazyHumansQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(FootStool), "foot stools", 10, 0xB5E));
+            AddObjective(new ObtainObjective(typeof(FootStool), "foot stools", 10, 0xB5E));
 			
-            this.AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
         }
 
         /* Lazy Humans */
@@ -341,9 +341,9 @@ namespace Server.Engines.Quests
         public InventiveToolsQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(TinkerTools), "tinker's tools", 10, 0x1EB8));
+            AddObjective(new ObtainObjective(typeof(TinkerTools), "tinker's tools", 10, 0x1EB8));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* Inventive Tools */
@@ -440,25 +440,25 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Elf;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Elf;
 			
-            this.Hue = 0x8579;
-            this.HairItemID = 0x2FC0;
-            this.HairHue = 0x206;
+            Hue = 0x8579;
+            HairItemID = 0x2FC0;
+            HairHue = 0x206;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new ElvenPants(0x386));
-            this.AddItem(new ElvenShirt(0x71D));
-            this.AddItem(new SmithHammer());
-            this.AddItem(new RoyalCirclet());
-            this.AddItem(new FullApron(0x1BB));
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new ElvenPants(0x386));
+            AddItem(new ElvenShirt(0x71D));
+            AddItem(new SmithHammer());
+            AddItem(new RoyalCirclet());
+            AddItem(new FullApron(0x1BB));
         }
 
         public override void Serialize(GenericWriter writer)
