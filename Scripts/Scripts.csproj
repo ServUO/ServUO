@@ -665,12 +665,16 @@
     <Compile Include="Items\Decorative\HolidaysSign.cs" />
     <Compile Include="Items\Decorative\CrystalSkull.cs" />
     <Compile Include="Items\Decorative\ObsidianSkull.cs" />
+    <Compile Include="Items\Decorative\DoorMat.cs" />
     <Compile Include="Items\Decorative\StaghornFern.cs" />
     <Compile Include="Items\Decorative\SquaredDoorMat.cs" />
     <Compile Include="Items\Decorative\Wreath.cs" />
     <Compile Include="Items\Equipment\Clothing\FirstAidBelt.cs" />
     <Compile Include="Items\Equipment\Suits\DragonWolfCostume.cs" />
     <Compile Include="Items\Equipment\Suits\SabertoothedTigerCostume.cs" />
+    <Compile Include="Items\Functional\JewelryBox\JewelryBox.cs" />
+    <Compile Include="Items\Functional\JewelryBox\JewelryBoxGump.cs" />
+    <Compile Include="Items\Functional\JewelryBox\JewelryBoxFilter.cs" />
     <Compile Include="Items\Resource\Blackrock.cs" />
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
     <Compile Include="Items\StoreBought\MysticalPolymorphTotem.cs" />
