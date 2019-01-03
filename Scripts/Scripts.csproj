@@ -680,6 +680,7 @@
     <Compile Include="Items\Resource\Blackrock.cs" />
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
     <Compile Include="Items\StoreBought\MysticalPolymorphTotem.cs" />
+    <Compile Include="Items\Tools\WhiteLeatherDyeTub.cs" />
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Services\Expansions\MondainsLegacy.cs" />
