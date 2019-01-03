@@ -24,17 +24,6 @@ namespace Server.Items
 
         public Item Deed { get { return new StaghornFernDeed(); } }
         
-        public bool CouldFit(IPoint3D p, Map map)
-        {
-            if (!map.CanFit(p.X, p.Y, p.Z, ItemData.Height))
-                return false;
-
-            if (ItemID == 0x2375)
-                return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // North wall
-            else
-                return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // West wall
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
