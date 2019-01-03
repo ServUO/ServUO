@@ -661,6 +661,7 @@
     <Compile Include="Items\Corpses\RightLeg.cs" />
     <Compile Include="Items\Corpses\Torso.cs" />
     <Compile Include="Items\Decorative\CustomizableWallSign.cs" />
+    <Compile Include="Items\Decorative\SpikeHead.cs" />
     <Compile Include="Items\Decorative\SpikedEggNog.cs" />
     <Compile Include="Items\Decorative\JadeSkull.cs" />
     <Compile Include="Items\Decorative\HolidaysSign.cs" />
