@@ -7,31 +7,31 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public class SquaredDoorMatAddon : BaseAddon
+    public class CustomizableSquaredDoorMatAddon : BaseAddon
     {
         public string[] Lines { get; set; }
 
-        public override BaseAddonDeed Deed { get { return new SquaredDoorMatDeed(); } }
+        public override BaseAddonDeed Deed { get { return new CustomizableSquaredDoorMatDeed(); } }
 
         [Constructable]
-        public SquaredDoorMatAddon(DirectionType type)
+        public CustomizableSquaredDoorMatAddon(DirectionType type)
         {
             Lines = new string[3];
             
             switch (type)
             {
                 case DirectionType.South:
-                    AddComponent(new SquaredDoorMatComponent(0x4AB6), 0, 0, 0);
-                    AddComponent(new SquaredDoorMatComponent(0x4AB7), 1, 0, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB6), 0, 0, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB7), 1, 0, 0);
                     break;
                 case DirectionType.East:
-                    AddComponent(new SquaredDoorMatComponent(0x4AB4), 0, 0, 0);
-                    AddComponent(new SquaredDoorMatComponent(0x4AB5), 0, 1, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB4), 0, 0, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB5), 0, 1, 0);
                     break;
             }
         }
 
-        public SquaredDoorMatAddon(Serial serial)
+        public CustomizableSquaredDoorMatAddon(Serial serial)
             : base(serial)
         {
         }
@@ -59,11 +59,11 @@ namespace Server.Items
         }
     }
 
-    public class SquaredDoorMatComponent : LocalizedAddonComponent
+    public class CustomizableSquaredDoorMatComponent : LocalizedAddonComponent
     {
         public override bool ForceShowProperties { get { return true; } }
 
-        public SquaredDoorMatComponent(int id)
+        public CustomizableSquaredDoorMatComponent(int id)
             : base(id, 1097996) // door mat
         {
         }
@@ -72,7 +72,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            SquaredDoorMatAddon addon = Addon as SquaredDoorMatAddon;
+            CustomizableSquaredDoorMatAddon addon = Addon as CustomizableSquaredDoorMatAddon;
 
             if (addon != null)
             {
@@ -97,16 +97,16 @@ namespace Server.Items
 
             if (house != null && house.IsCoOwner(from))
             {
-                list.Add(new EditSign((SquaredDoorMatAddon)Addon, from));
+                list.Add(new EditSign((CustomizableSquaredDoorMatAddon)Addon, from));
             }
         }
 
         private class EditSign : ContextMenuEntry
         {
-            private readonly SquaredDoorMatAddon Addon;
+            private readonly CustomizableSquaredDoorMatAddon Addon;
             private readonly Mobile _From;
 
-            public EditSign(SquaredDoorMatAddon addon, Mobile from)
+            public EditSign(CustomizableSquaredDoorMatAddon addon, Mobile from)
                 : base(1151817) // Edit Sign
             {
                 Addon = addon;
@@ -119,7 +119,7 @@ namespace Server.Items
             }
         }
 
-        public SquaredDoorMatComponent(Serial serial)
+        public CustomizableSquaredDoorMatComponent(Serial serial)
             : base(serial)
         {
         }
@@ -138,9 +138,9 @@ namespace Server.Items
 
         private class AddMessageGump : Gump
         {
-            private readonly SquaredDoorMatAddon Addon;
+            private readonly CustomizableSquaredDoorMatAddon Addon;
 
-            public AddMessageGump(SquaredDoorMatAddon addon)
+            public AddMessageGump(CustomizableSquaredDoorMatAddon addon)
                 : base(100, 100)
             {
                 Addon = addon;
@@ -193,16 +193,16 @@ namespace Server.Items
         }
     }
 
-    public class SquaredDoorMatDeed : BaseAddonDeed, IRewardOption
+    public class CustomizableSquaredDoorMatDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new SquaredDoorMatAddon(m_SquaredDoorMatType); } }
+        public override BaseAddon Addon { get { return new CustomizableSquaredDoorMatAddon(m_CustomizableSquaredDoorMatType); } }
 
-        private DirectionType m_SquaredDoorMatType;
+        private DirectionType m_CustomizableSquaredDoorMatType;
 
         public override int LabelNumber { get { return 1151806; } } // squared door mat deed
 
         [Constructable]
-        public SquaredDoorMatDeed()
+        public CustomizableSquaredDoorMatDeed()
         {
             LootType = LootType.Blessed;
         }
@@ -220,7 +220,7 @@ namespace Server.Items
             }
         }
 
-        public SquaredDoorMatDeed(Serial serial)
+        public CustomizableSquaredDoorMatDeed(Serial serial)
             : base(serial)
         {
         }
@@ -245,7 +245,7 @@ namespace Server.Items
 
         public void OnOptionSelected(Mobile from, int choice)
         {
-            m_SquaredDoorMatType = (DirectionType)choice;
+            m_CustomizableSquaredDoorMatType = (DirectionType)choice;
 
             if (!Deleted)
                 base.OnDoubleClick(from);

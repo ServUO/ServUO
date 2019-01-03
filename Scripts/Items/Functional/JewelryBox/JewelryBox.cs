@@ -16,9 +16,9 @@ namespace Server.Items
 
         public JewelryBoxFilter Filter { get; set; }
 
-        public static readonly int MaxUnique = 500;
+        public override int DefaultMaxItems { get { return 500; } }
 
-        public override int DefaultMaxItems { get { return MaxUnique; } }
+        public bool IsFull { get { return DefaultMaxItems <= Items.Count; } }
 
         [Constructable]
         public JewelryBox()
@@ -31,6 +31,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+            if (from.AccessLevel >= AccessLevel.GameMaster)
+                base.OnDoubleClick(from);
+
             if (!from.InRange(GetWorldLocation(), 2))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
@@ -91,32 +94,30 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (CheckAccessible(from, this))
+            if (!IsLockedDown && !IsSecure)
             {
-                if (DefaultMaxItems > Items.Count)
-                {
-                    if (IsAccept(dropped))
-                    {
-                        Timer.DelayCall(TimeSpan.FromSeconds(1), () => from.SendGump(new JewelryBoxGump(from, this)));
-                        return base.OnDragDrop(from, dropped);
-                    }
-                    else
-                    {
-                        from.SendLocalizedMessage(1157724); // This is not a ring, bracelet, necklace, earring, or talisman.
-                        return false;
-                    }
-                }
-                else
-                {
-                    from.SendLocalizedMessage(1157723); // The jewelry box is full.
-                    return false;
-                }
-
+                from.SendLocalizedMessage(1157727); // The jewelry box must be secured before you can use it.
+                return false;
             }
-            else
+            else if (!CheckAccessible(from, this))
             {
                 PrivateOverheadMessage(MessageType.Regular, 946, 1010563, from.NetState); // This container is secure.
                 return false;
+            }
+            else if (!IsAccept(dropped))
+            {
+                from.SendLocalizedMessage(1157724); // This is not a ring, bracelet, necklace, earring, or talisman.
+                return false;
+            }
+            else if (IsFull)
+            {
+                from.SendLocalizedMessage(1157723); // The jewelry box is full.
+                return false;
+            }
+            else
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(1), () => from.SendGump(new JewelryBoxGump(from, this)));
+                return base.OnDragDrop(from, dropped);
             }
         }
 

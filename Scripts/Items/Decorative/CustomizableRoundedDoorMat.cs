@@ -8,12 +8,12 @@ using Server.Network;
 namespace Server.Items
 {
     [FlipableAttribute(0x4790, 0x4791)]
-    public class DoorMat : Item
+    public class CustomizableRoundedDoorMat : Item
     {
         public string[] Lines { get; set; }
 
         [Constructable]
-        public DoorMat()
+        public CustomizableRoundedDoorMat()
             : base(0x4790)
         {
             Lines = new string[3];
@@ -48,7 +48,7 @@ namespace Server.Items
             }
         }
 
-        public DoorMat(Serial serial)
+        public CustomizableRoundedDoorMat(Serial serial)
             : base(serial)
         {
         }
@@ -67,10 +67,10 @@ namespace Server.Items
 
         private class EditSign : ContextMenuEntry
         {
-            private readonly DoorMat Mat;
+            private readonly CustomizableRoundedDoorMat Mat;
             private readonly Mobile _From;
 
-            public EditSign(DoorMat mat, Mobile from)
+            public EditSign(CustomizableRoundedDoorMat mat, Mobile from)
                 : base(1151817) // Edit Sign
             {
                 Mat = mat;
@@ -114,9 +114,9 @@ namespace Server.Items
 
         private class AddMessageGump : Gump
         {
-            private readonly DoorMat Mat;
+            private readonly CustomizableRoundedDoorMat Mat;
 
-            public AddMessageGump(DoorMat mat)
+            public AddMessageGump(CustomizableRoundedDoorMat mat)
                 : base(100, 100)
             {
                 Mat = mat;

@@ -207,52 +207,65 @@ namespace Server.Items
 
             public void TryDrop(Mobile from, Item dropped)
             {
-                if (m_Box.CheckAccessible(from, m_Box))
+                if (!m_Box.CheckAccessible(from, m_Box))
                 {
-                    if (!dropped.IsChildOf(from.Backpack))
+                    from.SendLocalizedMessage(1061637); // You are not allowed to access this.
+                }
+                else if (!dropped.IsChildOf(from.Backpack))
+                {
+                    from.SendLocalizedMessage(1157726); // You must be carrying the item to add it to the jewelry box.
+                    return;
+                }
+                else if (m_Box.IsAccept(dropped))
+                {
+                    if (m_Box.IsFull)
                     {
-                        from.SendLocalizedMessage(1157726); // You must be carrying the item to add it to the jewelry box.
-                        return;
+                        from.SendLocalizedMessage(1157723); // The jewelry box is full.
                     }
-
-                    if (m_Box.IsAccept(dropped))
+                    else
                     {
                         m_Box.DropItem(dropped);
                         from.Target = new InternalTarget(from, m_Box, m_Page);
                     }
-                    else if (dropped is Container)
+                }
+                else if (dropped is Container)
+                {
+                    Container c = dropped as Container;
+
+                    int count = 0;
+
+                    for (int i = c.Items.Count - 1; i >= 0; --i)
                     {
-                        Container c = dropped as Container;
-
-                        int count = 0;
-
-                        for (int i = c.Items.Count - 1; i >= 0; --i)
+                        if (i < c.Items.Count && m_Box.IsAccept(c.Items[i]))
                         {
-                            if (i < c.Items.Count && m_Box.IsAccept(c.Items[i]))
+                            if (m_Box.IsFull)
+                            {
+                                from.SendLocalizedMessage(1157723); // The jewelry box is full.
+                                break;                                
+                            }
+                            else
                             {
                                 m_Box.DropItem(c.Items[i]);
                                 count++;
                             }
                         }
+                    }
 
-                        if (count > 0)
-                        {
-                            from.CloseGump(typeof(JewelryBoxGump));
-                            from.SendGump(new JewelryBoxGump(from, m_Box, m_Page));
-                        }
-                        else
-                        {
-                            from.SendLocalizedMessage(1157724); // This is not a ring, bracelet, necklace, earring, or talisman.
-                        }
+                    if (count > 0)
+                    {
+                        from.CloseGump(typeof(JewelryBoxGump));
+                        from.SendGump(new JewelryBoxGump(from, m_Box, m_Page));
                     }
                     else
                     {
                         from.SendLocalizedMessage(1157724); // This is not a ring, bracelet, necklace, earring, or talisman.
+                        from.SendGump(new JewelryBoxGump(from, m_Box, m_Page));
                     }
                 }
                 else
                 {
-                    from.SendLocalizedMessage(1010563); // // This container is secure.
+                    from.SendLocalizedMessage(1157724); // This is not a ring, bracelet, necklace, earring, or talisman.
+                    from.SendGump(new JewelryBoxGump(from, m_Box, m_Page));
                 }
             }
 
@@ -320,7 +333,7 @@ namespace Server.Items
                     {
                         m_From.Target = new InternalTarget(m_From, m_Box, m_Page);
                         m_From.SendLocalizedMessage(1157725); // Target rings, bracelets, necklaces, earrings, or talisman in your backpack. You may also target a sub-container to add contents to the the jewelry box. When done, press ESC.
-                       
+                        m_From.SendGump(new JewelryBoxGump(m_From, m_Box));
                         break;
                     }
                 case 11: // First page
