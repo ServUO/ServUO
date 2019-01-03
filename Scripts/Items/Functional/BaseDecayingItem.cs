@@ -18,6 +18,13 @@ namespace Server.Items
             set
             {
                 m_Lifespan = value;
+
+                if (m_Lifespan > 0)
+                {
+                    StopTimer();
+                    StartTimer();
+                }
+
                 InvalidateProperties();
             }
         }

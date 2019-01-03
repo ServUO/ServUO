@@ -6279,10 +6279,14 @@ namespace Server.Mobiles
 		}
 		#endregion
 
-		#region Speech log
+		#region Speech
 		private SpeechLog m_SpeechLog;
+        private bool m_TempSquelched;
 
 		public SpeechLog SpeechLog { get { return m_SpeechLog; } }
+
+        [CommandProperty(AccessLevel.Administrator)]
+        public bool TempSquelched { get { return m_TempSquelched; } set { m_TempSquelched = value; } }
 
 		public override void OnSpeech(SpeechEventArgs e)
 		{
@@ -6296,6 +6300,27 @@ namespace Server.Mobiles
 				m_SpeechLog.Add(e.Mobile, e.Speech);
 			}
 		}
+
+        public override void OnSaid(SpeechEventArgs e)
+        {
+            if (m_TempSquelched)
+            {
+                if (Core.ML)
+                {
+                    SendLocalizedMessage(500168); // You can not say anything, you have been muted.
+                }
+                else
+                {
+                    SendMessage("You can not say anything, you have been squelched."); //Cliloc ITSELF changed during ML.
+                }
+
+                e.Blocked = true;
+            }
+            else
+            {
+                base.OnSaid(e);
+            }
+        }
 		#endregion
 
 		#region Champion Titles
