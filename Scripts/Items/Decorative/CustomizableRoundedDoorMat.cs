@@ -7,8 +7,9 @@ using Server.Network;
 
 namespace Server.Items
 {
+    [Furniture]
     [FlipableAttribute(0x4790, 0x4791)]
-    public class CustomizableRoundedDoorMat : Item
+    public class CustomizableRoundedDoorMat : Item, IDyable
     {
         public string[] Lines { get; set; }
 
@@ -18,6 +19,16 @@ namespace Server.Items
         {
             Lines = new string[3];
             LootType = LootType.Blessed;
+        }
+
+        public bool Dye(Mobile from, DyeTub sender)
+        {
+            if (Deleted)
+                return false;
+
+            Hue = sender.DyedHue;
+
+            return true;
         }
 
         public override void OnDoubleClick(Mobile from)

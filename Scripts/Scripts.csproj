@@ -563,6 +563,7 @@
     <Compile Include="Items\Addons\Craft Addons\WritingDesk.cs" />
     <Compile Include="Items\Addons\KoiPond.cs" />
     <Compile Include="Items\Addons\BlueMarbleFireplace.cs" />
+    <Compile Include="Items\Addons\PicnicBlanket.cs" />
     <Compile Include="Items\Addons\RoastingPigOnASpit.cs" />
     <Compile Include="Items\Addons\SheepStatue.cs" />
     <Compile Include="Items\Addons\VendorMallAddon.cs" />
