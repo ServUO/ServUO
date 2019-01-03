@@ -7,31 +7,31 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public class SquaredDoorMatAddon : BaseAddon
+    public class CustomizableSquaredDoorMatAddon : BaseAddon
     {
         public string[] Lines { get; set; }
 
-        public override BaseAddonDeed Deed { get { return new SquaredDoorMatDeed(); } }
+        public override BaseAddonDeed Deed { get { return new CustomizableSquaredDoorMatDeed(); } }
 
         [Constructable]
-        public SquaredDoorMatAddon(DirectionType type)
+        public CustomizableSquaredDoorMatAddon(DirectionType type)
         {
             Lines = new string[3];
             
             switch (type)
             {
                 case DirectionType.South:
-                    AddComponent(new SquaredDoorMatComponent(0x4AB6), 0, 0, 0);
-                    AddComponent(new SquaredDoorMatComponent(0x4AB7), 1, 0, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB6), 0, 0, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB7), 1, 0, 0);
                     break;
                 case DirectionType.East:
-                    AddComponent(new SquaredDoorMatComponent(0x4AB4), 0, 0, 0);
-                    AddComponent(new SquaredDoorMatComponent(0x4AB5), 0, 1, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB4), 0, 0, 0);
+                    AddComponent(new CustomizableSquaredDoorMatComponent(0x4AB5), 0, 1, 0);
                     break;
             }
         }
 
-        public SquaredDoorMatAddon(Serial serial)
+        public CustomizableSquaredDoorMatAddon(Serial serial)
             : base(serial)
         {
         }
@@ -59,11 +59,11 @@ namespace Server.Items
         }
     }
 
-    public class SquaredDoorMatComponent : LocalizedAddonComponent
+    public class CustomizableSquaredDoorMatComponent : LocalizedAddonComponent
     {
         public override bool ForceShowProperties { get { return true; } }
 
-        public SquaredDoorMatComponent(int id)
+        public CustomizableSquaredDoorMatComponent(int id)
             : base(id, 1097996) // door mat
         {
         }
@@ -72,7 +72,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            SquaredDoorMatAddon addon = Addon as SquaredDoorMatAddon;
+            CustomizableSquaredDoorMatAddon addon = Addon as CustomizableSquaredDoorMatAddon;
 
             if (addon != null)
             {
@@ -97,16 +97,16 @@ namespace Server.Items
 
             if (house != null && house.IsCoOwner(from))
             {
-                list.Add(new EditSign((SquaredDoorMatAddon)Addon, from));
+                list.Add(new EditSign((CustomizableSquaredDoorMatAddon)Addon, from));
             }
         }
 
         private class EditSign : ContextMenuEntry
         {
-            private readonly SquaredDoorMatAddon Addon;
+            private readonly CustomizableSquaredDoorMatAddon Addon;
             private readonly Mobile _From;
 
-            public EditSign(SquaredDoorMatAddon addon, Mobile from)
+            public EditSign(CustomizableSquaredDoorMatAddon addon, Mobile from)
                 : base(1151817) // Edit Sign
             {
                 Addon = addon;
@@ -119,7 +119,7 @@ namespace Server.Items
             }
         }
 
-        public SquaredDoorMatComponent(Serial serial)
+        public CustomizableSquaredDoorMatComponent(Serial serial)
             : base(serial)
         {
         }
@@ -135,18 +135,74 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
         }
+
+        private class AddMessageGump : Gump
+        {
+            private readonly CustomizableSquaredDoorMatAddon Addon;
+
+            public AddMessageGump(CustomizableSquaredDoorMatAddon addon)
+                : base(100, 100)
+            {
+                Addon = addon;
+
+                string line1 = "";
+                string line2 = "";
+                string line3 = "";
+
+                if (Addon.Lines != null && Addon.Lines.Length > 0)
+                {
+                    line1 = Addon.Lines[0];
+                    line2 = Addon.Lines[1];
+                    line3 = Addon.Lines[2];
+                }
+
+                AddPage(0);
+
+                AddBackground(0, 0, 420, 320, 0x2454);
+                AddHtmlLocalized(10, 10, 400, 18, 1114513, "#1151680", 0x4000, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
+                AddHtmlLocalized(10, 37, 400, 90, 1151681, 0x14AA, false, false); // Enter up to three lines of personallized text.  you may enter up to 25 characters per line.
+                AddHtmlLocalized(10, 136, 400, 16, 1150296, 0x14AA, false, false); // Line 1:
+                AddBackground(10, 152, 400, 22, 0x2486);
+                AddTextEntry(12, 154, 396, 18, 0x9C2, 0, line1, 25);
+                AddHtmlLocalized(10, 178, 400, 16, 1150297, 0x14AA, false, false); // Line 2:
+                AddBackground(10, 194, 400, 22, 0x2486);
+                AddTextEntry(12, 196, 396, 18, 0x9C2, 1, line2, 25);
+                AddHtmlLocalized(10, 220, 400, 16, 1150298, 0x14AA, false, false); // Line 3:
+                AddBackground(10, 236, 400, 22, 0x2486);
+                AddTextEntry(12, 238, 396, 18, 0x9C2, 2, line3, 25);
+                AddButton(10, 290, 0xFAB, 0xFAC, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(50, 290, 100, 20, 1150299, 0x10, false, false); // ACCEPT
+                AddButton(380, 290, 0xFB4, 0xFB5, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(270, 290, 100, 20, 1114514, "#1150300 ", 0x10, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
+            }
+
+            public override void OnResponse(NetState sender, RelayInfo info)
+            {
+                if (info.ButtonID == 1)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        TextRelay text = info.GetTextEntry(i);
+                        string s = text.Text.Substring(0, 25);
+                        Addon.Lines[i] = s;
+                    }
+
+                    Addon.UpdateProperties();
+                }
+            }
+        }
     }
 
-    public class SquaredDoorMatDeed : BaseAddonDeed, IRewardOption
+    public class CustomizableSquaredDoorMatDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new SquaredDoorMatAddon(m_SquaredDoorMatType); } }
+        public override BaseAddon Addon { get { return new CustomizableSquaredDoorMatAddon(m_CustomizableSquaredDoorMatType); } }
 
-        private DirectionType m_SquaredDoorMatType;
+        private DirectionType m_CustomizableSquaredDoorMatType;
 
         public override int LabelNumber { get { return 1151806; } } // squared door mat deed
 
         [Constructable]
-        public SquaredDoorMatDeed()
+        public CustomizableSquaredDoorMatDeed()
         {
             LootType = LootType.Blessed;
         }
@@ -164,7 +220,7 @@ namespace Server.Items
             }
         }
 
-        public SquaredDoorMatDeed(Serial serial)
+        public CustomizableSquaredDoorMatDeed(Serial serial)
             : base(serial)
         {
         }
@@ -189,66 +245,10 @@ namespace Server.Items
 
         public void OnOptionSelected(Mobile from, int choice)
         {
-            m_SquaredDoorMatType = (DirectionType)choice;
+            m_CustomizableSquaredDoorMatType = (DirectionType)choice;
 
             if (!Deleted)
                 base.OnDoubleClick(from);
         }
-    }
-
-    public class AddMessageGump : Gump
-    {
-        private readonly SquaredDoorMatAddon Addon;
-
-        public AddMessageGump(SquaredDoorMatAddon addon)
-            : base(100, 100)
-        {
-            Addon = addon;
-
-            string line1 = "";
-            string line2 = "";
-            string line3 = "";
-
-            if (Addon.Lines != null && Addon.Lines.Length > 0)
-            {
-                line1 = Addon.Lines[0];
-                line2 = Addon.Lines[1];
-                line3 = Addon.Lines[2];
-            }
-
-            AddPage(0);
-
-            AddBackground(0, 0, 420, 320, 0x2454);
-            AddHtmlLocalized(10, 10, 400, 18, 1114513, "#1151680", 0x4000, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
-            AddHtmlLocalized(10, 37, 400, 90, 1151681, 0x14AA, false, false); // Enter up to three lines of personallized text.  you may enter up to 25 characters per line.
-            AddHtmlLocalized(10, 136, 400, 16, 1150296, 0x14AA, false, false); // Line 1:
-            AddBackground(10, 152, 400, 22, 0x2486);
-            AddTextEntry(12, 154, 396, 18, 0x9C2, 0, line1, 25);
-            AddHtmlLocalized(10, 178, 400, 16, 1150297, 0x14AA, false, false); // Line 2:
-            AddBackground(10, 194, 400, 22, 0x2486);
-            AddTextEntry(12, 196, 396, 18, 0x9C2, 1, line2, 25);
-            AddHtmlLocalized(10, 220, 400, 16, 1150298, 0x14AA, false, false); // Line 3:
-            AddBackground(10, 236, 400, 22, 0x2486);
-            AddTextEntry(12, 238, 396, 18, 0x9C2, 2, line3, 25);
-            AddButton(10, 290, 0xFAB, 0xFAC, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(50, 290, 100, 20, 1150299, 0x10, false, false); // ACCEPT
-            AddButton(380, 290, 0xFB4, 0xFB5, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(270, 290, 100, 20, 1114514, "#1150300 ", 0x10, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
-        }
-
-        public override void OnResponse(NetState sender, RelayInfo info)
-        {
-            if (info.ButtonID == 1)
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    TextRelay text = info.GetTextEntry(i);
-                    string s = text.Text.Substring(0, 25);
-                    Addon.Lines[i] = s;
-                }
-
-                Addon.UpdateProperties();
-            }
-        }
-    }
+    }    
 }
