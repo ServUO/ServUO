@@ -565,6 +565,7 @@
     <Compile Include="Items\Addons\BlueMarbleFireplace.cs" />
     <Compile Include="Items\Addons\RoastingPigOnASpit.cs" />
     <Compile Include="Items\Addons\SheepStatue.cs" />
+    <Compile Include="Items\Addons\Harpsichord.cs" />
     <Compile Include="Items\Addons\VendorMallAddon.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeFairySculpture.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeArcherSculpture.cs" />
