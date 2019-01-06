@@ -1,4 +1,4 @@
-﻿using Server.Engines.Points;
+using Server.Engines.Points;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,18 +8,18 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
+    public class CleanupArray
+    {
+        public Mobile mobiles { get; set; }
+        public Item items { get; set; }
+        public double points { get; set; }
+        public bool confirm { get; set; }
+        public Serial serials { get; set; }
+    }
+
     public class BaseTrash : Container
     {
-        internal List<CleanupArray> m_Cleanup;
-
-        public class CleanupArray
-        {
-            public Mobile mobiles { get; set; }
-            public Item items { get; set; }
-            public double points { get; set; }
-            public bool confirm { get; set; }
-            public Serial serials { get; set; }
-        }
+        internal List<CleanupArray> m_Cleanup;        
 
         public BaseTrash(int itemID)
             : base(itemID)
