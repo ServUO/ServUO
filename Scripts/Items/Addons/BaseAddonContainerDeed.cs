@@ -160,7 +160,10 @@ namespace Server.Items
                             house.Addons[ad.SecondContainer] = from;
                         }
 
-                        house.AddSecure(from, addon);
+                        if (addon.Security)
+                        {
+                            house.AddSecure(from, addon);
+                        }
                     }
                     else
                     {

@@ -561,11 +561,13 @@
     <Compile Include="Items\Addons\Craft Addons\AlchemyStation.cs" />
     <Compile Include="Items\Addons\Craft Addons\BBQSmoker.cs" />
     <Compile Include="Items\Addons\Craft Addons\WritingDesk.cs" />
+    <Compile Include="Items\Addons\EnormousVenusFlytrap.cs" />
     <Compile Include="Items\Addons\KoiPond.cs" />
     <Compile Include="Items\Addons\BlueMarbleFireplace.cs" />
     <Compile Include="Items\Addons\PicnicBlanket.cs" />
     <Compile Include="Items\Addons\RoastingPigOnASpit.cs" />
     <Compile Include="Items\Addons\SheepStatue.cs" />
+    <Compile Include="Items\Addons\Harpsichord.cs" />
     <Compile Include="Items\Addons\VendorMallAddon.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeFairySculpture.cs" />
     <Compile Include="Items\Addons\WeatheredBronzeArcherSculpture.cs" />
@@ -681,6 +683,7 @@
     <Compile Include="Items\Resource\Blackrock.cs" />
     <Compile Include="Items\Resource\PolishedMeteorite.cs" />
     <Compile Include="Items\StoreBought\MysticalPolymorphTotem.cs" />
+    <Compile Include="Items\Tools\WhiteLeatherDyeTub.cs" />
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Services\DailyRares.cs" />

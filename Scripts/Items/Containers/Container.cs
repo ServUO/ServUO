@@ -72,11 +72,16 @@ namespace Server.Items
             return base.CheckItemUse(from, item);
         }
 
+        public virtual bool Security { get { return true; } }
+
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
 
-            SetSecureLevelEntry.AddTo(from, this, list);
+            if (Security)
+            {
+                SetSecureLevelEntry.AddTo(from, this, list);
+            }
         }
 
         public override void GetChildContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)

@@ -1,58 +1,64 @@
-using Server.ContextMenus;
-using Server.Engines.Points;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Server.ContextMenus;
+using Server.Engines.Points;
 
 namespace Server.Items
 {
     [FlipableAddon(Direction.South, Direction.East)]
-    public class SacrificialAltarAddon : BaseAddonContainer
+    public class EnormousVenusFlytrapAddon : BaseAddonContainer
     {
-        public override int LabelNumber { get { return 1074818; } } // Sacrificial Altar
+        public override int LabelNumber { get { return 1154462; } } // Enormous Venus Flytrap
 
         public override bool Security { get { return false; } }
         public override int DefaultGumpID { get { return 0x9; } }
-        public override int DefaultDropSound { get { return 740; } }
 
         private Timer m_Timer;
         private List<CleanupArray> m_Cleanup;
 
-        public override BaseAddonContainerDeed Deed { get { return new SacrificialAltarDeed(); } }
+        public override BaseAddonContainerDeed Deed { get { return new EnormousVenusFlytrapAddonDeed(Hue); } }
 
         [Constructable]
-        public SacrificialAltarAddon()
-            : base(0x2A9B)
-        {
+        public EnormousVenusFlytrapAddon(int hue)
+            : base(0x9967)
+        {            
             Direction = Direction.South;
-            AddComponent(new LocalizedContainerComponent(0x2A9A, 1074818), 1, 0, 0);
+            Hue = hue;
             m_Cleanup = new List<CleanupArray>();
         }
 
-        public SacrificialAltarAddon(Serial serial)
+        public virtual void Flip(Mobile from, Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.East:
+                    ItemID = 0x9968;
+                    break;
+                case Direction.South:
+                    ItemID = 0x9967;
+                    break;
+            }
+        }
+
+        public EnormousVenusFlytrapAddon(Serial serial)
             : base(serial)
         {
-        }       
+        }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
             if (!base.OnDragDrop(from, dropped))
                 return false;
 
-            if (TotalItems >= 50)
-            {
-                SendLocalizedMessageTo(from, 501478); // The trash is full!  Emptying!
-                Empty();
-            }
-            else
-            {
-                SendLocalizedMessageTo(from, 1010442); // The item will be deleted in three minutes
+            AddCleanupItem(from, dropped);
 
-                if (m_Timer != null)
-                    m_Timer.Stop();
+            SendLocalizedMessageTo(from, 1154485); // The item will be digested in three minutes.
 
-                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), new TimerCallback(Empty));
-            }
+            if (m_Timer != null)
+                m_Timer.Stop();
+
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), new TimerCallback(Empty));
 
             return true;
         }
@@ -62,94 +68,25 @@ namespace Server.Items
             if (!base.OnDragDropInto(from, item, p))
                 return false;
 
-            if (TotalItems >= 50)
-            {
-                SendLocalizedMessageTo(from, 501478); // The trash is full!  Emptying!
-                Empty();
-            }
-            else
-            {
-                SendLocalizedMessageTo(from, 1010442); // The item will be deleted in three minutes
+            AddCleanupItem(from, item);
 
-                if (m_Timer != null)
-                    m_Timer.Stop();
+            SendLocalizedMessageTo(from, 1154485); // The item will be digested in three minutes.
 
-                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), new TimerCallback(Empty));
-            }
+            if (m_Timer != null)
+                m_Timer.Stop();
+
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), new TimerCallback(Empty));
 
             return true;
         }
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.WriteEncodedInt(0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
-
-            if (Items.Count > 0)
-                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), new TimerCallback(Empty));
-
-            m_Cleanup = new List<CleanupArray>();
-        }
-
-        public virtual void Flip(Mobile from, Direction direction)
-        {
-            switch ( direction )
-            {
-                case Direction.East:
-                    ItemID = 0x2A9C;
-                    AddComponent(new LocalizedContainerComponent(0x2A9D, 1074818), 0, -1, 0);
-                    break;
-                case Direction.South:
-                    ItemID = 0x2A9B;
-                    AddComponent(new LocalizedContainerComponent(0x2A9A, 1074818), 1, 0, 0);
-                    break;
-            }
-        }
-
-        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
-        {
-            base.GetContextMenuEntries(from, list);
-
-            if (CleanUpBritanniaData.Enabled)
-            {
-                list.Add(new AppraiseforCleanup(from));
-            }
-        }
-
-        private class AppraiseforCleanup : ContextMenuEntry
-        {
-            private readonly Mobile m_Mobile;
-
-            public AppraiseforCleanup(Mobile mobile)
-                : base(1151298, 12) // Appraise for Cleanup
-            {
-                m_Mobile = mobile;
-            }
-
-            public override void OnClick()
-            {
-                m_Mobile.Target = new AppraiseforCleanupTarget(m_Mobile);
-                m_Mobile.SendLocalizedMessage(1151299); // Target items to see how many Clean Up Britannia points you will receive for throwing them away. Continue targeting items until done, then press the ESC key to cancel the targeting cursor.
-            }
-        }
-
-        public virtual void Empty()
+        public void Empty()
         {
             List<Item> items = Items;
 
             if (items.Count > 0)
             {
-                Point3D location = Location;
-                location.Z += 10;
-
-                Effects.SendLocationEffect(location, Map, 0x3709, 10, 10, 0x356, 0);
-                Effects.PlaySound(location, Map, 0x32E);
+                PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8), "");
 
                 for (int i = items.Count - 1; i >= 0; --i)
                 {
@@ -240,36 +177,86 @@ namespace Server.Items
                 m_Cleanup.Where(r => r.items.Serial == item.Serial).ToList().ForEach(k => k.confirm = true);
             }
         }
-    }
 
-    public class SacrificialAltarDeed : BaseAddonContainerDeed
-    {
-        public override int LabelNumber { get { return 1074818; } } // Sacrificial Altar
-
-        [Constructable]
-        public SacrificialAltarDeed()
-            : base()
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            LootType = LootType.Blessed;
+            base.GetContextMenuEntries(from, list);
+
+            if (CleanUpBritanniaData.Enabled)
+            {
+                list.Add(new AppraiseforCleanup(from));
+            }
         }
 
-        public SacrificialAltarDeed(Serial serial)
-            : base(serial)
+        private class AppraiseforCleanup : ContextMenuEntry
         {
+            private readonly Mobile m_Mobile;
+
+            public AppraiseforCleanup(Mobile mobile)
+                : base(1151298, 12) // Appraise for Cleanup
+            {
+                m_Mobile = mobile;
+            }
+
+            public override void OnClick()
+            {
+                m_Mobile.Target = new AppraiseforCleanupTarget(m_Mobile);
+                m_Mobile.SendLocalizedMessage(1151299); // Target items to see how many Clean Up Britannia points you will receive for throwing them away. Continue targeting items until done, then press the ESC key to cancel the targeting cursor.
+            }
         }
 
-        public override BaseAddonContainer Addon { get { return new SacrificialAltarAddon(); } }
-        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt(0); // version
+            writer.Write(0); // Version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            int version = reader.ReadInt();
+
+            if (Items.Count > 0)
+                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), new TimerCallback(Empty));
+
+            m_Cleanup = new List<CleanupArray>();
+        }
+    }
+
+    public class EnormousVenusFlytrapAddonDeed : BaseAddonContainerDeed
+    {
+        public override int LabelNumber { get { return 1154462; } } // Enormous Venus Flytrap
+
+        public override BaseAddonContainer Addon { get { return new EnormousVenusFlytrapAddon(Hue); } }
+        
+        [Constructable]
+        public EnormousVenusFlytrapAddonDeed()
+            : this(Utility.RandomList(26, 33, 233, 1931, 2067))
+        {
+        }
+
+        [Constructable]
+        public EnormousVenusFlytrapAddonDeed(int hue)
+        {
+            Hue = hue;
+            LootType = LootType.Blessed;
+        }
+
+        public EnormousVenusFlytrapAddonDeed(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
         }
     }
 }
