@@ -80,7 +80,7 @@ namespace Server.Engines.UOStore
 
             pm.Frozen = true;
             pm.Hidden = true;
-            pm.Squelched = true;
+            pm.TempSquelched = true;
         }
 
         public override void OnDispose()
@@ -341,7 +341,7 @@ namespace Server.Engines.UOStore
             }
 
             pm.Frozen = false;
-            pm.Squelched = false;
+            pm.TempSquelched = false;
             pm.SendLocalizedMessage(501235, "", 0x35); // Help request aborted.
 
             if (pm.AccessLevel < AccessLevel.Counselor)
