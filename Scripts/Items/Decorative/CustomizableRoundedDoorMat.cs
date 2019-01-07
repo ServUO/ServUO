@@ -169,9 +169,8 @@ namespace Server.Items
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        TextRelay text = info.GetTextEntry(i);
-                        string s = text.Text.Substring(0, 25);
-                        Mat.Lines[i] = s;
+                        string text = info.GetTextEntry(i).Text;
+                        Mat.Lines[i] = text.Substring(0, Math.Min(text.Length, 25));
                     }
 
                     Mat.InvalidateProperties();
