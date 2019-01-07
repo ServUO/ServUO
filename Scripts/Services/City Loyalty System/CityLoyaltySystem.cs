@@ -98,6 +98,7 @@ namespace Server.Engines.CityLoyalty
         public static readonly int AnnouncementPeriod = Config.Get("CityLoyalty.AnnouncementPeriod", 48);
 
         public static readonly TimeSpan LoveAtrophyDuration = TimeSpan.FromHours(40);
+        public static Map SystemMap { get { return Siege.SiegeShard ? Map.Felucca : Map.Trammel; } }
 
         public override TextDefinition Name { get { return new TextDefinition(String.Format("{0}", this.City.ToString())); } }
         public override bool AutoAdd { get { return false; } }
@@ -1277,12 +1278,12 @@ namespace Server.Engines.CityLoyalty
                 Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
                     {
                         Board = new CityMessageBoard(City, 0xA0C5);
-                        Board.MoveToWorld(Definition.BoardLocation, Map.Trammel);
+                        Board.MoveToWorld(Definition.BoardLocation, SystemMap);
                         Console.WriteLine("City Message Board for {0} Converted!", City.ToString());
                         /*if (Board != null)
                         {
                             //Board.ItemID = 0xA0C5;
-                            //board.MoveToWorld(Definition.BoardLocation, Map.Trammel);
+                            //board.MoveToWorld(Definition.BoardLocation, SystemMap);
 
 
                             Console.WriteLine("City Message Board for {0} Converted!", City.ToString());

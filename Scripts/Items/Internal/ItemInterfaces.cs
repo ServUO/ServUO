@@ -41,6 +41,20 @@ namespace Server.Items
         bool CanBeSeenBy(PlayerMobile m);
     }
 
+    public interface IImbuableEquipement
+    {
+        int TimesImbued { get; set; }
+        bool IsImbued { get; set; }
+    }
+
+    public interface ICombatEquipment : IImbuableEquipement
+    {
+        ItemPower ItemPower { get; set; }
+        ReforgedPrefix ReforgedPrefix { get; set; }
+        ReforgedSuffix ReforgedSuffix { get; set; }
+        bool PlayerConstructed { get; set; }
+    }
+
     public enum ItemQuality
     {
         Low,

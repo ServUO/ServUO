@@ -2077,6 +2077,10 @@ namespace Server.SkillHandlers
                 {
                     max = GetPropRange((BaseWeapon)item, (AosWeaponAttribute)attr)[1];
                 }
+                else if (item is BaseWeapon && mod >= 3 && mod <= 5)
+                {
+                    max = 9;
+                }
                 else if (item is BaseJewel && attr is AosAttribute && (AosAttribute)attr == AosAttribute.WeaponDamage)
                 {
                     max = 25;
@@ -2346,14 +2350,10 @@ namespace Server.SkillHandlers
 
         public static int TimesImbued(Item item)
         {
-            if (item is BaseWeapon)
-                return ((BaseWeapon)item).TimesImbued;
-            if (item is BaseArmor)
-                return ((BaseArmor)item).TimesImbued;
-            if (item is BaseJewel)
-                return ((BaseJewel)item).TimesImbued;
-            if (item is BaseHat)
-                return ((BaseHat)item).TimesImbued;
+            if (item is IImbuableEquipement)
+            {
+                return ((IImbuableEquipement)item).TimesImbued;
+            }
 
             return 0;
         }

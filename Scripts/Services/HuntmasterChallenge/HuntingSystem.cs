@@ -23,10 +23,10 @@ namespace Server.Engines.HuntsmasterChallenge
         private Timer m_Timer;
 		
 		[CommandProperty(AccessLevel.GameMaster)]
-		public DateTime SeasonBegins { get { return m_SeasonBegins; } }
+        public DateTime SeasonBegins { get { return m_SeasonBegins; } set { m_SeasonBegins = value; } }
 		
 		[CommandProperty(AccessLevel.GameMaster)]
-		public DateTime SeasonEnds { get { return m_SeasonEnds; } }
+        public DateTime SeasonEnds { get { return m_SeasonEnds; } set { m_SeasonEnds = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int BonusIndex { get { return m_BonusIndex; } }
@@ -273,9 +273,11 @@ namespace Server.Engines.HuntsmasterChallenge
 			
 			m_Leaders.Clear();
 			
-			m_SeasonBegins = DateTime.Now;
-            DateTime ends = DateTime.Now + TimeSpan.FromDays(30);
+			var now = DateTime.Now;
+            var ends = DateTime.Now + TimeSpan.FromDays(30);
+
 			m_SeasonEnds = new DateTime(ends.Year, ends.Month, 1, 0, 0, 0);
+            m_SeasonBegins = new DateTime(now.Year, now.Month, 1, 0, 0, 0);
 
             HuntingDisplayTrophy.InvalidateDisplayTrophies();
 		}
