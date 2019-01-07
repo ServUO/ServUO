@@ -289,6 +289,7 @@
     <Compile Include="Deprecated\ScribeStone.cs" />
     <Compile Include="Deprecated\SmithStone.cs" />
     <Compile Include="Deprecated\TailorStone.cs" />
+    <Compile Include="Gumps\AddCustomizableMessageGump.cs" />
     <Compile Include="Gumps\AddDoorGump.cs">
       <SubType>Code</SubType>
     </Compile>

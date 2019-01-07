@@ -2347,14 +2347,10 @@ namespace Server.Items
         {
             ItemPower ip = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
 
-            if (item is BaseWeapon)
-                ((BaseWeapon)item).ItemPower = ip;
-            else if (item is BaseArmor)
-                ((BaseArmor)item).ItemPower = ip;
-            else if (item is BaseJewel)
-                ((BaseJewel)item).ItemPower = ip;
-            else if (item is BaseClothing)
-                ((BaseClothing)item).ItemPower = ip;
+            if (item is ICombatEquipment)
+            {
+                ((ICombatEquipment)item).ItemPower = ip;
+            }
 
             return ip;
         }

@@ -46,7 +46,7 @@ namespace Server.Engines.CityLoyalty
             {
                 if (_Region == null)
                 {
-                    _Region = Region.Regions.FirstOrDefault(r => r.Name == Name && r.Map == Map.Trammel);
+                    _Region = Region.Regions.FirstOrDefault(r => r.Name == Name && r.Map == CityLoyaltySystem.SystemMap);
 
                     if(_Region == null)
                         Console.WriteLine("WARNING: Region for {0} not found!", Name);

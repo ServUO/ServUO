@@ -1724,7 +1724,7 @@ namespace Server.Network
 
 		public static void LookReq(NetState state, PacketReader pvSrc)
 		{
-			if (state.Mobile != null && (state.Mobile.ViewOPL || state.Expansion < Expansion.AOS))
+			if (state.Mobile != null)
 			{
 				HandleSingleClick(state.Mobile, World.FindEntity(pvSrc.ReadInt32()));
 			}
@@ -2220,12 +2220,17 @@ namespace Server.Network
 		{
 			var target = World.FindEntity(pvSrc.ReadInt32());
 
-			if (target != null && ObjectPropertyList.Enabled && !state.Mobile.ViewOPL)
-			{
-				HandleSingleClick(state.Mobile, target);
-			}
-
-			ContextMenu.Display(state.Mobile, target);
+            if (target != null && ObjectPropertyList.Enabled)
+            {
+                if (!state.Mobile.ViewOPL)
+                {
+                    HandleSingleClick(state.Mobile, target);
+                }
+                else
+                {
+                    ContextMenu.Display(state.Mobile, target);
+                }
+            }
 		}
 
 		public static void CloseStatus(NetState state, PacketReader pvSrc)

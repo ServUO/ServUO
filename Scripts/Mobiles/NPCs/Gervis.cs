@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public BatteredBucklersQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Buckler), "buckler", 10, 0x1B73));
+            AddObjective(new ObtainObjective(typeof(Buckler), "buckler", 10, 0x1B73));
 						
-            this.AddReward(new BaseReward(typeof(SmithsSatchel), 1074282)); // Craftsman's Satchel
+            AddReward(new BaseReward(typeof(SmithsSatchel), 1074282)); // Craftsman's Satchel
         }
 
         /* Battered Bucklers */
@@ -78,7 +78,7 @@ namespace Server.Engines.Quests
         public Gervis()
             : base("Gervis", "the blacksmith trainer")
         { 
-            this.SetSkill(SkillName.Blacksmith, 65.0, 88.0);
+            SetSkill(SkillName.Blacksmith, 65.0, 88.0);
         }
 
         public Gervis(Serial serial)
@@ -98,31 +98,31 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 			
-            this.Hue = 0x83F5;
-            this.HairItemID = 0x203B;
-            this.HairHue = 0x5EC;
+            Hue = 0x83F5;
+            HairItemID = 0x203B;
+            HairHue = 0x5EC;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());			
-            this.AddItem(new SmithHammer());
-            this.AddItem(new Boots(0x3B2));
-            this.AddItem(new ShortPants(0x1BB));
-            this.AddItem(new Shirt(0x71F));
-            this.AddItem(new FullApron(0x3B2));
+            AddItem(new Backpack());			
+            AddItem(new SmithHammer());
+            AddItem(new Boots(0x3B2));
+            AddItem(new ShortPants(0x1BB));
+            AddItem(new Shirt(0x71F));
+            AddItem(new FullApron(0x3B2));
 			
             Item item;
 			
             item = new LeatherGloves();
             item.Hue = 0x3B2;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -146,10 +146,10 @@ namespace Server.Engines.Quests
         public SmithsSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 			
-            this.AddItem(new IronIngot(10));
-            this.AddItem(new SmithHammer());
+            DropItem(new IronIngot(10));
+            DropItem(new SmithHammer());
         }
 
         public SmithsSatchel(Serial serial)

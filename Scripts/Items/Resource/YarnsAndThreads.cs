@@ -91,7 +91,6 @@ namespace Server.Items
                     else if (loom.Phase < 4)
                     {
                         m_Material.Consume();
-                        loom.Hue = m_Material.Hue;
 
                         if (targeted is Item)
                             ((Item)targeted).SendLocalizedMessageTo(from, 1010001 + loom.Phase++);
@@ -103,7 +102,6 @@ namespace Server.Items
 
                         m_Material.Consume();
                         loom.Phase = 0;
-                        loom.Hue = 0;
                         from.SendLocalizedMessage(500368); // You create some cloth and put it in your backpack.
                         from.AddToBackpack(create);
                     }

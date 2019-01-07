@@ -138,6 +138,9 @@ namespace Server.Items
             if (i.IsArtifact)
                 return true;
 
+            if (i is BaseAddonDeed && ((BaseAddonDeed)i).UseCraftResource && !((BaseAddonDeed)i).IsReDeed && ((BaseAddonDeed)i).Resource != CraftResource.None)
+                return true;
+
             return false;
         }
 

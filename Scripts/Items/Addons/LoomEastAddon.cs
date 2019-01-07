@@ -5,7 +5,6 @@ namespace Server.Items
     public interface ILoom
     {
         int Phase { get; set; }
-        int Hue { get; set; }
     }
 
     public class LoomEastAddon : BaseAddon, ILoom

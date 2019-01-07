@@ -13,8 +13,7 @@ namespace Server.Items
 		NotInHouse,
 		DoorTooClose,
 		NoWall,
-		DoorsNotClosed,
-		BadHouse
+		DoorsNotClosed
 	}
 
 	public interface IAddon : IEntity, IChopable
@@ -79,9 +78,13 @@ namespace Server.Items
 			}
 		}
 
-		public virtual bool RetainDeedHue { get { return false; } }
-
-		public virtual bool RestrictToClassicHouses { get { return false; } }
+		public virtual bool RetainDeedHue
+        { 
+            get 
+            {
+                return Hue != 0 && CraftResources.GetHue(Resource) != Hue;
+            }
+        }
 
 		public virtual void OnChop(Mobile from)
 		{
@@ -127,6 +130,8 @@ namespace Server.Items
 					else
 						deed.Hue = 0;
 
+                    deed.IsReDeed = true;
+
 					from.AddToBackpack(deed);
 				}
 			}
@@ -141,10 +146,12 @@ namespace Server.Items
 		public virtual BaseAddonDeed GetDeed()
 		{
 			var deed = Deed;
+
 			if (deed != null)
 			{
 				deed.Resource = Resource;
 			}
+
 			return deed;
 		}
 
@@ -193,9 +200,6 @@ namespace Server.Items
 
 			if (house != null)
 			{
-				if (RestrictToClassicHouses && house is HouseFoundation)
-					return AddonFitResult.BadHouse;
-
 				var doors = house.Doors;
 
 				for (var i = 0; i < doors.Count; ++i)
