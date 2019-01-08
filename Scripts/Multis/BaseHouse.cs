@@ -490,7 +490,7 @@ namespace Server.Multis
         {
             typeof(BaseBoard),                      typeof(Aquarium),
             typeof(FishBowl),                       typeof(BaseSpecialScrollBook),
-            typeof(Server.Engines.Plants.SeedBox)
+            typeof(Server.Engines.Plants.SeedBox),  typeof(JewelryBox),
         };
 
         // Not Included Storage
