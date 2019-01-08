@@ -482,7 +482,8 @@ namespace Server.Multis
         private Type[] _NoItemCountTable = new Type[]
         {
             typeof(Server.Engines.Plants.SeedBox),  typeof(GardenShedAddon),
-            typeof(GardenShedBarrel),               typeof(BaseSpecialScrollBook),    
+            typeof(GardenShedBarrel),               typeof(BaseSpecialScrollBook),
+            typeof(JewelryBox)
         };
 
         private Type[] _NoDecayItems = new Type[]
@@ -534,9 +535,6 @@ namespace Server.Multis
 
                     if (CheckCounts(si.Item) && !m_LockDowns.ContainsKey(si.Item))
                     {
-                        if (si.Item is JewelryBox)
-                            continue;
-
                         fromSecures += si.Item.TotalItems;
                     }
                 }
