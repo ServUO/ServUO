@@ -15,12 +15,12 @@ namespace Server.Mobiles
             if (Female = Utility.RandomBool())
             {
                 Body = 606;
-                Name = NameList.RandomName("female");
+                Name = NameList.RandomName("Elf female");
             }
             else
             {
                 Body = 605;
-                Name = NameList.RandomName("male");
+                Name = NameList.RandomName("Elf male");
             }
 
             Title = "the brigand";
