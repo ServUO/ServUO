@@ -1329,4 +1329,41 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+    [FlipableAttribute(0xA0DB, 0xA0DC)]
+    public class EnchantedPicnicBasket : BaseContainer
+    {
+        public override int LabelNumber { get { return 1158333; } } // enchanted picnic basket
+
+        public override int DefaultGumpID { get { return 0x108; } }
+
+        [Constructable]
+        public EnchantedPicnicBasket()
+            : base(0xA0DB)
+        {
+            DropItem(new PicnicBlanketDeed());
+            DropItem(new Hamburger(3));
+            DropItem(new Sausage(3));
+            DropItem(new HotDog(3));
+        }
+
+        public EnchantedPicnicBasket(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }

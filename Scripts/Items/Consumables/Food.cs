@@ -1698,7 +1698,13 @@ namespace Server.Items
     {
         [Constructable]
         public Hamburger()
-            : base(0xA0DA)
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public Hamburger(int amount)
+            : base(amount, 0xA0DA)
         {
             FillFactor = 2;
         }
@@ -1728,7 +1734,13 @@ namespace Server.Items
     {
         [Constructable]
         public HotDog()
-            : base(0xA0D8)
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public HotDog(int amount)
+            : base(amount, 0xA0D8)
         {
             FillFactor = 2;
         }
