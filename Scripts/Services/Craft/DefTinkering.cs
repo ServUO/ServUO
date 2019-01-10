@@ -30,7 +30,8 @@ namespace Server.Engines.Craft
         WeatheredBronzeGlobeSculpture = 461,
         WeatheredBronzeManOnABench = 462,
 
-        KrampusMinionEarrings = 463
+        KrampusMinionEarrings = 463,
+        EnchantedPicnicBasket = 464
     }
 
     public class DefTinkering : CraftSystem
@@ -321,6 +322,12 @@ namespace Server.Engines.Craft
 
                 index = AddCraft(typeof(SmallRoundBasket), 1044042, 1112298, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 1, 1112251);
                 AddRes(index, typeof(Shaft), 1027125, 2, 1044351);
+                SetRequireResTarget(index);
+                SetRequiresBasketWeaving(index);
+
+                index = AddCraft(typeof(EnchantedPicnicBasket), 1044042, 1158333, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
+                AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
+                AddRecipe(index, (int)TinkerRecipes.EnchantedPicnicBasket);
                 SetRequireResTarget(index);
                 SetRequiresBasketWeaving(index);
             }

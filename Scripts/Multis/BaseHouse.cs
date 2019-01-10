@@ -482,14 +482,15 @@ namespace Server.Multis
         private Type[] _NoItemCountTable = new Type[]
         {
             typeof(Server.Engines.Plants.SeedBox),  typeof(GardenShedAddon),
-            typeof(GardenShedBarrel),               typeof(BaseSpecialScrollBook),    
+            typeof(GardenShedBarrel),               typeof(BaseSpecialScrollBook),
+            typeof(JewelryBox)
         };
 
         private Type[] _NoDecayItems = new Type[]
         {
             typeof(BaseBoard),                      typeof(Aquarium),
             typeof(FishBowl),                       typeof(BaseSpecialScrollBook),
-            typeof(Server.Engines.Plants.SeedBox)
+            typeof(Server.Engines.Plants.SeedBox),  typeof(JewelryBox),
         };
 
         // Not Included Storage
@@ -1942,7 +1943,7 @@ namespace Server.Multis
                 bool valid = m_House != null && Sextant.Format(m_House.Location, m_House.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth);
 
                 if (valid)
-                    location = String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                    location = String.Format("{0}Â° {1}'{2}, {3}Â° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
                 else
                     location = "unknown";
 

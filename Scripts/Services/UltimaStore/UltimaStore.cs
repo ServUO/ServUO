@@ -89,6 +89,9 @@ namespace Server.Engines.UOStore
 
             // Character
             cat = StoreCategory.Character;
+
+            Register<HABPromotionalToken>(new TextDefinition[] { 1158741, 1156615 }, 1158740, 0xA276, 0, 0, 600, cat);
+            Register<MysticalPolymorphTotem>(1158780, 1158781, 0xA276, 0, 0, 600, cat);
             //Register<DeluxeStarterPackToken>(1158368, 1158369, 0, 0x9CCB, 0, 2000, cat);
             Register<GreenGoblinStatuette>(1125133, 1158015, 0xA095, 0, 0, 600, cat);
             Register<GreyGoblinStatuette>(1125135, 1158015, 0xA097, 0, 0, 600, cat);
@@ -313,7 +316,6 @@ namespace Server.Engines.UOStore
 
             Register<ArmorEngravingToolToken>(1080547, 1156652, 0, 0x9C65, 0, 200, cat);
             Register<BagOfBulkOrderCovers>(1071116, 1156654, 0, 0x9CC6, 0, 200, cat, ConstructBOBCoverTwo);
-            Register<MysticalPolymorphTotem>(1158780, 1158781, 0xA276, 0, 0, 600, cat);
         }
 
         public static void Register<T>(TextDefinition name, int tooltip, int itemID, int gumpID, int hue, int cost, StoreCategory cat, Func<Mobile, StoreEntry, Item> constructor = null) where T : Item
