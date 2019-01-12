@@ -2,6 +2,8 @@ using Server;
 using System;
 using Server.Network;
 using Server.Engines.Plants;
+using Server.Gumps;
+using Server.Multis;
 
 namespace Server.Items
 {
@@ -78,13 +80,16 @@ namespace Server.Items
         }
     }
 
-    public class PottedCoffeePlant : Item
+    public class PottedCoffeePlant : Item, ISecurable
     {
         public static readonly TimeSpan CheckDelay = TimeSpan.FromHours(23.0);
 
         public override int LabelNumber { get { return 1123480; } } // Potted Coffee Plant
 
         private PlantStatus m_PlantStatus;
+        private Timer m_Timer;
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public PlantStatus PlantStatus
         {
             get { return m_PlantStatus; }
@@ -101,7 +106,12 @@ namespace Server.Items
                 m_PlantStatus = value;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextGrowth { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public SecureLevel Level { get; set; }
 
         [Constructable]
         public PottedCoffeePlant()
@@ -110,15 +120,61 @@ namespace Server.Items
             Weight = 5.0;
             PlantStatus = PlantStatus.Stage1;
             NextGrowth = DateTime.UtcNow + CheckDelay;
+            StartTimer();
+        }
+
+        public bool CheckAccessible(Mobile from, Item item)
+        {
+            if (from.AccessLevel >= AccessLevel.GameMaster)
+                return true; // Staff can access anything
+
+            BaseHouse house = BaseHouse.FindHouseAt(item);
+
+            if (house == null)
+                return false;
+
+            switch (Level)
+            {
+                case SecureLevel.Owner: return house.IsOwner(from);
+                case SecureLevel.CoOwners: return house.IsCoOwner(from);
+                case SecureLevel.Friends: return house.IsFriend(from);
+                case SecureLevel.Anyone: return true;
+                case SecureLevel.Guild: return house.IsGuildMember(from);
+            }
+
+            return false;
         }
 
         public void OnTick()
         {
-            if (NextGrowth < DateTime.UtcNow && PlantStatus < PlantStatus.Stage4)
+            if (PlantStatus < PlantStatus.Stage4)
             {
-                PlantStatus++;
-                NextGrowth = DateTime.UtcNow + CheckDelay;
+                if (NextGrowth < DateTime.UtcNow)
+                {
+                    PlantStatus++;
+                    NextGrowth = DateTime.UtcNow + CheckDelay;
+                }
             }
+            else
+            {
+                StopTimer();
+            }
+        }
+
+        public void StopTimer()
+        {
+            if (m_Timer != null)
+                m_Timer.Stop();
+
+            m_Timer = null;
+        }
+
+        public void StartTimer()
+        {
+            if (m_Timer != null)
+                return;
+
+            m_Timer = Timer.DelayCall(TimeSpan.FromHours(1.0), TimeSpan.FromHours(1.0), new TimerCallback(OnTick));
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -129,16 +185,20 @@ namespace Server.Items
                 return;
             }
 
-            if (PlantStatus == PlantStatus.Stage4)
+            if (CheckAccessible(from, this))
             {
-                LabelTo(from, 1155694); // *You carefully pick some pods from the plant*
-                PlantStatus--;
-                from.AddToBackpack(new CoffeePod());
-                NextGrowth = DateTime.UtcNow + CheckDelay;
-            }
-            else
-            {
-                from.SendLocalizedMessage(1155695); // The plant is not ready to be picked from.
+                if (PlantStatus == PlantStatus.Stage4)
+                {
+                    LabelTo(from, 1155694); // *You carefully pick some pods from the plant*
+                    PlantStatus--;
+                    from.AddToBackpack(new CoffeePod());
+                    NextGrowth = DateTime.UtcNow + CheckDelay;
+                    StartTimer();
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1155695); // The plant is not ready to be picked from.
+                }
             }
         }
 
@@ -153,6 +213,8 @@ namespace Server.Items
 
             writer.Write((int)0); // version
             writer.Write((int)PlantStatus);
+            writer.Write((int)Level);
+            writer.Write((DateTime)NextGrowth);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -161,6 +223,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
             PlantStatus = (PlantStatus)reader.ReadInt();
+            Level = (SecureLevel)reader.ReadInt();
+            NextGrowth = reader.ReadDateTime();
+
+            if (PlantStatus < PlantStatus.Stage4)
+                StartTimer();
         }
     }
 }
