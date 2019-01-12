@@ -83,6 +83,11 @@ namespace Server.Engines.VvV
 
         public static bool CheckMovement(PlayerMobile pm, Direction d)
         {
+            if (!ViceVsVirtueSystem.Enabled)
+            {
+                return true;
+            }
+
             int x = pm.X;
             int y = pm.Y;
 

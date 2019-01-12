@@ -18,15 +18,8 @@ namespace Server.Factions
             // Removes Items, ie monoliths, stones, etc
             WeakEntityCollection.Delete("factions");
 
-            List<Sigil> sigils = new List<Sigil>(Sigil.Sigils);
-
-            foreach (Sigil sig in sigils)
-            {
-                if (!sig.Deleted)
-                    sig.Delete();
-            }
-
-            List<Item> items = new List<Item>(World.Items.Values.Where(i => i is StrongholdRune || i is ShrineGem || i is EnchantedBandage || i is PowderOfPerseverance));
+            List<Item> items = new List<Item>(World.Items.Values.Where(i => i is StrongholdRune || 
+                i is ShrineGem || i is EnchantedBandage || i is PowderOfPerseverance || i is Sigil));
 
             foreach (var item in items)
             {
