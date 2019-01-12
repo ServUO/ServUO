@@ -4,6 +4,7 @@ using System.Globalization;
 
 using Server.Items;
 using Server.Mobiles;
+using Server.Spells.SkillMasteries;
 #endregion
 
 namespace Server.Spells.Spellweaving
@@ -34,11 +35,26 @@ namespace Server.Spells.Spellweaving
                     return (int)Math.Max(1, Math.Min(6, from.Skills[SkillName.Spellweaving].Value / 20));
                 }
 
-				return 0;
+				return Math.Max(GetMasteryFocusLevel(from), 0);
 			}
 
-			return focus.StrengthBonus;
+            return Math.Max(GetMasteryFocusLevel(from), focus.StrengthBonus);
 		}
+
+        public static int GetMasteryFocusLevel(Mobile from)
+        {
+            if (!Core.TOL)
+            {
+                return 0;
+            }
+
+            if (from.Skills.CurrentMastery == SkillName.Spellweaving)
+            {
+                return Math.Max(1, MasteryInfo.GetMasteryLevel(from, SkillName.Spellweaving));
+            }
+
+            return 0;
+        }
 
 		public static ArcaneFocus FindArcaneFocus(Mobile from)
 		{

@@ -830,8 +830,11 @@ namespace Server.Engines.VvV
 
             if (Enabled && !enabled)
             {
-                CreateSilverTraders();
-                Server.Factions.Generator.RemoveFactions();
+                Timer.DelayCall(() =>
+                    {
+                        Server.Factions.Generator.RemoveFactions();
+                        CreateSilverTraders();
+                    });
             }
             else if (!Enabled && enabled)
             {
