@@ -43,6 +43,7 @@ namespace Server.Items
             : base(0xA0E6)
         {
             Harvest = true;
+            Weight = 5.0;
         }
 
         public void StopTimer()
