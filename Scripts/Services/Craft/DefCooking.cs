@@ -554,7 +554,24 @@ namespace Server.Engines.Craft
             #endregion
 
             #region Bevereages
-            // TODO: this
+            index = AddCraft(typeof(CoffeeMug), 1155736, 1155737, 0.0, 28.58, typeof(CoffeeGrounds), 1155735, 1, 1155734);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            SetBeverageType(index, BeverageType.Water);
+            SetNeedMaker(index, true);
+            ForceNonExceptional(index);
+
+            index = AddCraft(typeof(BasketOfGreenTeaMug), 1155736, 1030315, 0.0, 28.58, typeof(GreenTeaBasket), 1155735, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            SetBeverageType(index, BeverageType.Water);
+            SetNeedMaker(index, true);
+            ForceNonExceptional(index);
+
+            index = AddCraft(typeof(HotCocoaMug), 1155736, 1155738, 0.0, 28.58, typeof(CocoaLiquor), 1080007, 1, 1080006);
+            AddRes(index, typeof(SackOfSugar), 1080003, 1, 1080002);
+            AddRes(index, typeof(BaseBeverage), 1080011, 1, 1080010);
+            SetBeverageType(index, BeverageType.Milk);
+            SetNeedMaker(index, true);
+            ForceNonExceptional(index);
             #endregion
         }
     }
