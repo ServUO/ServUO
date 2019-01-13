@@ -143,13 +143,21 @@ namespace Server.Items
                     return;
 
                 Item item = targeted as Item;
+
                 if (null != item)
                 {
+                    if (!item.IsChildOf(from.Backpack))
+                    {                        
+                        from.SendLocalizedMessage(1060640); // The item must be in your backpack to use it.
+                        return;
+                    }
+
                     bool valid = (item is IDyable || item is BaseTalisman ||
                                   item is BaseBook || item is BaseClothing ||
                                   item is BaseJewel || item is BaseStatuette ||
                                   item is BaseWeapon || item is Runebook ||
-                                  item is Spellbook || item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
+                                  item is Spellbook || item is DecorativePlant ||
+                                  item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
 
                     if (!valid && item is BaseArmor)
                     {
