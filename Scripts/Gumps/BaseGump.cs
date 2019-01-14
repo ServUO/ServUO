@@ -498,7 +498,7 @@ namespace Server.Gumps
 
             if (titleColor.IsEmpty || titleColor == System.Drawing.Color.Transparent)
             {
-                titleColor = System.Drawing.Color.Yellow;
+                titleColor = System.Drawing.Color.White;
             }
 
             if (textColor.IsEmpty || textColor == System.Drawing.Color.Transparent)
