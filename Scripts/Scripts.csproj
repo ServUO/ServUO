@@ -556,6 +556,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\AdvancedTrainingDummy.cs" />
+    <Compile Include="Items\Addons\CodexOfVirtue.cs" />
+    <Compile Include="Items\Addons\BuffetTable.cs" />
+    <Compile Include="Items\Addons\FormalDiningTable.cs" />
+    <Compile Include="Items\Decorative\UltimaBanner.cs" />
+    <Compile Include="Items\Decorative\EnchantedWheelbarrow.cs" />
+    <Compile Include="Items\Decorative\FlamingScarecrow.cs" />
+    <Compile Include="Items\Decorative\SilverSaplingReplica.cs" />
+    <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
     <Compile Include="Items\Addons\ClawFootTub.cs" />
     <Compile Include="Items\Addons\GreenMarbleFireplace.cs" />
     <Compile Include="Items\Addons\GoldMarbleFireplace.cs" />
@@ -664,6 +672,7 @@
     <Compile Include="Items\Corpses\RightArm.cs" />
     <Compile Include="Items\Corpses\RightLeg.cs" />
     <Compile Include="Items\Corpses\Torso.cs" />
+    <Compile Include="Items\Decorative\ValentinesDayTableSet.cs" />
     <Compile Include="Items\Decorative\CustomizableWallSign.cs" />
     <Compile Include="Items\Decorative\SpikeHead.cs" />
     <Compile Include="Items\Decorative\SpikedEggNog.cs" />
@@ -678,6 +687,7 @@
     <Compile Include="Items\Equipment\Clothing\FirstAidBelt.cs" />
     <Compile Include="Items\Equipment\Suits\DragonWolfCostume.cs" />
     <Compile Include="Items\Equipment\Suits\SabertoothedTigerCostume.cs" />
+    <Compile Include="Items\Functional\Grinder.cs" />
     <Compile Include="Items\Functional\JewelryBox\JewelryBox.cs" />
     <Compile Include="Items\Functional\JewelryBox\JewelryBoxGump.cs" />
     <Compile Include="Items\Functional\JewelryBox\JewelryBoxFilter.cs" />
@@ -702,6 +712,7 @@
     <Compile Include="Services\Harvest\Lumberjacking.cs" />
     <Compile Include="Services\Harvest\Mining.cs" />
     <Compile Include="Services\HuntmasterChallenge\ResourceSatchels.cs" />
+    <Compile Include="Services\Plants\PottedCoffeePlant.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Gumps.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\CounterfeitPlatinum.cs" />
     <Compile Include="Services\Revamped Dungeons\KhaldunDungeon\Items\KhaldunChest.cs" />

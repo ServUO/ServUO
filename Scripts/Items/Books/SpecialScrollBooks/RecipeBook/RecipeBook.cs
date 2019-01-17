@@ -210,7 +210,7 @@ namespace Server.Items
             new RecipeScrollDefinition(141, 356, Expansion.SA, RecipeSkillName.Blacksmith),
             new RecipeScrollDefinition(142, 585, Expansion.ML, RecipeSkillName.Tailoring),
             new RecipeScrollDefinition(143, 456, Expansion.SA, RecipeSkillName.Tinkering),
-            //new RecipeScrollDefinition(144, 205, Expansion.SA, RecipeSkillName.Tinkering), // Enchanted picnic basket
+            new RecipeScrollDefinition(144, 464, Expansion.SA, RecipeSkillName.Tinkering),
             //new RecipeScrollDefinition(145, 205, Expansion.ML, RecipeSkillName.Tinkering), // telescope
             new RecipeScrollDefinition(146, 605, Expansion.ML, RecipeSkillName.Cooking),
             new RecipeScrollDefinition(147, 606, Expansion.ML, RecipeSkillName.Cooking),
