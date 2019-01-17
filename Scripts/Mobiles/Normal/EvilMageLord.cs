@@ -64,7 +64,7 @@ namespace Server.Mobiles
 
         public override int GetHurtSound()
         {
-            return 0x435;
+            return 0x436;
         }
 
         public EvilMageLord(Serial serial)
