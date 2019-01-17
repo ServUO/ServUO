@@ -145,6 +145,7 @@ namespace Server.Engines.NewMagincia
                 pet.SetControlMaster(null);
                 pet.SummonMaster = null;
                 pet.IsStabled = true;
+                pet.IsBonded = false;
                 pet.Loyalty = BaseCreature.MaxLoyalty;
                 from.Stabled.Add(pet);
 

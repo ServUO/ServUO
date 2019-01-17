@@ -775,7 +775,7 @@ namespace Server.Engines.VendorSearching
 
             foreach (Item item in c.Items)
             {
-                if (item is Container)
+                if (item is Container && !IsSearchableContainer(item.GetType()))
                     GetItems((Container)item, list);
                 else
                     list.Add(item);
@@ -805,6 +805,20 @@ namespace Server.Engines.VendorSearching
 
             return r is GuardedRegion && !((GuardedRegion)r).Disabled;
         }
+
+        private static bool IsSearchableContainer(Type type)
+        {
+            return _SearchableContainers.Any(t => t == type || type.IsSubclassOf(t));
+        }
+
+        private static Type[] _SearchableContainers =
+        {
+            typeof(BaseQuiver),                     typeof(BaseResourceSatchel),
+            typeof(FishBowl),                       typeof(FirstAidBelt),
+            typeof(Server.Engines.Plants.SeedBox),  typeof(BaseSpecialScrollBook),
+            typeof(GardenShedBarrel),               
+            typeof(JewelryBox),
+        };
 	}
 
     public enum SortBy
