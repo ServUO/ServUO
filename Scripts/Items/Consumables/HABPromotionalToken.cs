@@ -4,12 +4,12 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public class HABPromotionalToken : Item
+    public class HABPromotionalToken : Item, IAccountRestricted
     {
         public override int LabelNumber { get { return 1070997; } } // A promotional token
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get; set; }
+        public string Account { get; set; }
 
         [Constructable]
         public HABPromotionalToken()
@@ -17,14 +17,14 @@ namespace Server.Items
         { }
 
         [Constructable]
-        public HABPromotionalToken(Mobile m)
+        public HABPromotionalToken(string account)
             : base(0x2AAA)
         {
             LootType = LootType.Blessed;
             Light = LightType.Circle300;
             Weight = 5.0;
 
-            Owner = m;
+            Account = account;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -40,11 +40,11 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
             }
-            else if (Owner == null)
+            else if (Account == null)
             {
                 from.SendLocalizedMessage(1158650); // You cannot redeem this promotional hairstyle change token right now.
             }
-            else if (from.Account != Owner.Account)
+            else if (from.Account.Username != Account)
             {
                 from.SendLocalizedMessage(1116257); // This token does not belong to this character.
             }
@@ -65,7 +65,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.Write(Owner);
+            writer.Write(Account);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -73,7 +73,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Owner = reader.ReadMobile();
+            Account = reader.ReadString();
         }
 
         public enum StyleType

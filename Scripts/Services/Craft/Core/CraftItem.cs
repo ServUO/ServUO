@@ -63,8 +63,9 @@ namespace Server.Engines.Craft
 		private bool m_NeedHeat;
 		private bool m_NeedOven;
 		private bool m_NeedMill;
+        private bool m_NeedMaker;
 
-		private bool m_UseSubRes2;
+        private bool m_UseSubRes2;
 
 		private bool m_ForceNonExceptional;
 
@@ -253,7 +254,8 @@ namespace Server.Engines.Craft
 		public bool ForceTypeRes { get; set; }
 		public bool NeedHeat { get { return m_NeedHeat; } set { m_NeedHeat = value; } }
 		public bool NeedOven { get { return m_NeedOven; } set { m_NeedOven = value; } }
-		public bool NeedMill { get { return m_NeedMill; } set { m_NeedMill = value; } }
+        public bool NeedMaker { get { return m_NeedMaker; } set { m_NeedMaker = value; } }
+        public bool NeedMill { get { return m_NeedMill; } set { m_NeedMill = value; } }
 		public Type ItemType { get { return m_Type; } }
 		public int ItemHue { get; set; }
 		public string GroupNameString { get { return m_GroupNameString; } }
@@ -364,7 +366,12 @@ namespace Server.Engines.Craft
 			0x2DDB, 0x2DDC //Elven stove
 		};
 
-		private static readonly int[] m_Mills = new[]
+        private static readonly int[] m_Makers = new[]
+        {
+            0x9A96, // steam powered beverage maker
+        };
+
+        private static readonly int[] m_Mills = new[]
 		{
 			0x1920, 0x1921, 0x1922, 0x1923, 0x1924, 0x1295, 0x1926, 0x1928, 0x192C, 0x192D, 0x192E, 0x129F, 0x1930, 0x1931,
 			0x1932, 0x1934
@@ -899,7 +906,13 @@ namespace Server.Engines.Craft
 				return false;
 			}
 
-			if (m_NeedMill && !Find(from, m_Mills))
+            if (m_NeedMaker && !Find(from, m_Makers))
+            {
+                message = 1155732; // You must be near a steam powered beverage maker to do that.
+                return false;
+            }
+
+            if (m_NeedMill && !Find(from, m_Mills))
 			{
 				message = 1044491; // You must be near a flour mill to do that.
 				return false;
