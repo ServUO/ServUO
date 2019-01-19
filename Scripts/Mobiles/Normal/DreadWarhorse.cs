@@ -28,7 +28,7 @@ namespace Server.Mobiles
 
             SetDamage(20, 26);
 
-            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Physical, 40);
             SetDamageType(ResistanceType.Poison, 20);
             SetDamageType(ResistanceType.Energy, 40);
 
@@ -114,7 +114,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -122,6 +122,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                SetDamageType(ResistanceType.Physical, 40);
+            }
         }
     }
 }
