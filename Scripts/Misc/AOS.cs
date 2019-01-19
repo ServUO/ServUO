@@ -381,6 +381,12 @@ namespace Server
 
             totalDamage = m.Damage(totalDamage, from, true, false);
 
+            if (Core.SA && type == DamageType.Melee && from is BaseCreature &&
+                (m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)))
+            {
+                from.RegisterDamage(totalDamage / 4, m);
+            }
+
             SpiritSpeak.CheckDisrupt(m);
 
             #region Stygian Abyss
