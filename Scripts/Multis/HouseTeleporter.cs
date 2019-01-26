@@ -12,6 +12,16 @@ namespace Server.Items
     {
         private Item m_Target;
         private SecureLevel m_Level;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public BaseHouse House
+        {
+            get
+            {
+                return BaseHouse.FindHouseAt(this);
+            }
+        }
+
         [Constructable]
         public HouseTeleporter(int itemID)
             : this(itemID, null)
