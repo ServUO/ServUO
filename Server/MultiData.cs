@@ -85,7 +85,7 @@ namespace Server
             }
             else
             {
-                return new MultiComponentList();
+                return MultiComponentList.Empty;
             }
         }
 
