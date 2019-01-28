@@ -12,15 +12,11 @@ namespace Server
 {
 	public static class MultiData
 	{
-		private static readonly MultiComponentList[] m_Components;
-        public static MultiComponentList[] Components { get { return m_Components; } }
+        public static Dictionary<int, MultiComponentList> Components { get { return m_Components; } }
+        private static readonly Dictionary<int, MultiComponentList> m_Components;
 
 		private static readonly BinaryReader m_IndexReader;
 		private static readonly BinaryReader m_StreamReader;
-
-
-        public static Dictionary<ushort, List<MultiTileEntry>> UOPList { get { return m_UOPList; } }
-        private static Dictionary<ushort, List<MultiTileEntry>> m_UOPList;
 
         public static bool UsingUOPFormat { get; private set; }
 
@@ -30,18 +26,13 @@ namespace Server
 
             multiID &= 0x3FFF; // The value of the actual multi is shifted by 0x4000, so this is left alone.
 
-            if (UsingUOPFormat)
-            {
-                mcl = UOPLoad(multiID);
-            }
-            else if (multiID >= 0 && multiID < m_Components.Length)
+            if (m_Components.ContainsKey(multiID))
             {
                 mcl = m_Components[multiID];
-
-                if (mcl == null)
-                {
-                    m_Components[multiID] = mcl = Load(multiID);
-                }
+            }
+            else if (!UsingUOPFormat)
+            {
+                m_Components[multiID] = mcl = Load(multiID);
             }
             else
             {
@@ -75,24 +66,8 @@ namespace Server
 			}
 		}
 
-        public static MultiComponentList UOPLoad(int multiID)
-        {
-            List<MultiTileEntry> list;
-
-            if (m_UOPList.TryGetValue((ushort)multiID, out list))
-            {
-                return new MultiComponentList(list);
-            }
-            else
-            {
-                return MultiComponentList.Empty;
-            }
-        }
-
         public static void UOPLoad(string path)
         {
-            m_UOPList = new Dictionary<ushort, List<MultiTileEntry>>();
-
             // Multi ID List Array Start
             var chunkIds = new Dictionary<ulong, int>();
             var chunkIds2 = new Dictionary<ulong, int>();
@@ -238,20 +213,24 @@ namespace Server
 
                                 tileList.Add(new MultiTileEntry(ItemId, x, y, z, flagg));
                             }
+
+                            reader.Close();
                         }
                     }
 
-                    m_UOPList[(ushort)chunkID] = tileList;
+                    m_Components[chunkID] = new MultiComponentList(tileList);
 
                     stream.Seek(positionpoint, SeekOrigin.Begin); // back to position
                 }
-                while (index < blockSize);
+                while (index < blockFileCount);
             }
             while (stream.Seek(nextBlock, SeekOrigin.Begin) != 0);
         }
 
         static MultiData()
         {
+            m_Components = new Dictionary<int, MultiComponentList>();
+
             string multicollectionPath = Core.FindDataFile("MultiCollection.uop");
 
             if (File.Exists(multicollectionPath))
@@ -272,8 +251,6 @@ namespace Server
                     var stream = new FileStream(mulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
                     m_StreamReader = new BinaryReader(stream);
 
-                    m_Components = new MultiComponentList[(int)(idx.Length / 12)];
-
                     string vdPath = Core.FindDataFile("verdata.mul");
 
                     if (File.Exists(vdPath))
@@ -293,7 +270,7 @@ namespace Server
                                 /*int extra = */
                                 bin.ReadInt32();
 
-                                if (file == 14 && index >= 0 && index < m_Components.Length && lookup >= 0 && length > 0)
+                                if (file == 14 && index >= 0 && lookup >= 0 && length > 0)
                                 {
                                     bin.BaseStream.Seek(lookup, SeekOrigin.Begin);
 
@@ -308,9 +285,7 @@ namespace Server
                     }
                     else
                     {
-                        Console.WriteLine("Warning: Multi data files not found");
-
-                        m_Components = new MultiComponentList[0];
+                        Console.WriteLine("Warning: Multi data files not found!");
                     }
                 }
             }

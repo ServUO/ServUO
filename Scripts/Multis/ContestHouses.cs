@@ -123,6 +123,21 @@ namespace Server.Multis
             door2.Link = door1;
         }
 
+        public void AddTeleporters(int id, Point3D offset1, Point3D offset2)
+        {
+            var tele1 = new HouseTeleporter(id);
+            var tele2 = new HouseTeleporter(id);
+
+            tele1.Target = tele2;
+            tele2.Target = tele1;
+
+            tele1.MoveToWorld(new Point3D(X + offset1.X, Y + offset1.Y, offset1.Z), Map);
+            tele2.MoveToWorld(new Point3D(X + offset2.X, Y + offset2.Y, offset2.Z), Map);
+
+            AddFixture(tele1);
+            AddFixture(tele2);
+        }
+
         public void AddFixture(Item item)
         {
             if (Fixtures == null)
@@ -216,27 +231,9 @@ namespace Server.Multis
 
             AddSouthDoors(false, 0, -2, 47);
 
-            var tele1 = new HouseTeleporter(0x1821);
-            var tele2 = new HouseTeleporter(0x1821);
-            var tele3 = new HouseTeleporter(0x1822);
-            var tele4 = new HouseTeleporter(0x1822);
-
-            tele1.Target = tele2;
-            tele2.Target = tele1;
-
-            tele4.Target = tele3;
-            tele3.Target = tele4;
-
-            tele1.MoveToWorld(new Point3D(X + -10, Y + -6, 67), Map);
-            tele2.MoveToWorld(new Point3D(X + 9, Y + 3, 47), Map);
-
-            tele3.MoveToWorld(new Point3D(X + 9, Y + 4, 27), Map);
-            tele4.MoveToWorld(new Point3D(X + 9, Y + 4, 7), Map);
-
-            AddFixture(tele1);
-            AddFixture(tele2);
-            AddFixture(tele3);
-            AddFixture(tele4);
+            AddTeleporters(0x181E, new Point3D(9, 4, 7), new Point3D(9, 3, 47));
+            AddTeleporters(0x181D, new Point3D(8, 4, 7), new Point3D(9, 4, 27));
+            AddTeleporters(0x181F, new Point3D(9, 3, 7), new Point3D(-10, -6, 67));
         }
 
         public TrinsicKeep(Serial serial)
@@ -317,6 +314,9 @@ namespace Server.Multis
 
             AddDoor(0x1FF9, -12, 14, 7);
             AddDoor(0x1FF5, 12, 14, 7);
+
+            AddDoor(0x854, 4, 14, 7);
+            AddDoor(0x858, -3, 14, 7);
 
             AddLinkedSouthDoors(0x2D65, 0x31A0, 0, 9, 27);
             AddLinkedSouthDoors(0x2D65, 0x31A0, -7, -1, 27);
@@ -504,6 +504,9 @@ namespace Server.Multis
 
             AddEastDoors(true, 5, 2, 47, false, true);
 
+            AddTeleporters(0x181E, new Point3D(4, 10, 7), new Point3D(9, 4, 27));
+            AddTeleporters(0x181F, new Point3D(4, 4, 47), new Point3D(9, 3, 27));
+
             SetSign(-11, 13, 7, false);
         }
 
@@ -542,15 +545,6 @@ namespace Server.Multis
             AddDoor(0x328, -9, 12, 7);
             AddDoor(0x328, 11, 12, 7);
             AddDoor(0x32C, -7, -3, 7);
-
-            var ladder1 = new Static(0x2FDF);
-            var ladder2 = new Static(0x2FDF);
-
-            ladder1.MoveToWorld(new Point3D(X + -3, Y + 11, Z + 7), Map);
-            ladder2.MoveToWorld(new Point3D(X + 4, Y + 11, Z + 7), Map);
-
-            AddFixture(ladder1);
-            AddFixture(ladder2);
 
             SetSign(-11, 13, 7, false);
         }
@@ -700,27 +694,8 @@ namespace Server.Multis
             AddLinkedEastDoors(0x6DD, 0x6DF, -2, -7, 7);
             AddLinkedEastDoors(0x6E1, 0x6E3, 3, -7, 7);
 
-            var tele1 = new HouseTeleporter(0x1822);
-            var tele2 = new HouseTeleporter(0x1822);
-
-            tele1.Target = tele2;
-            tele2.Target = tele1;
-
-            var tele3 = new HouseTeleporter(0x1821);
-            var tele4 = new HouseTeleporter(0x1821);
-
-            tele3.Target = tele4;
-            tele4.Target = tele3;
-
-            tele1.MoveToWorld(new Point3D(X + -1, Y + 9, 7), Map);
-            tele2.MoveToWorld(new Point3D(X + 4, Y + -9, 7), Map);
-            tele3.MoveToWorld(new Point3D(X + -2, Y + -9, 27), Map);
-            tele4.MoveToWorld(new Point3D(X + -10, Y, 67), Map);
-
-            AddFixture(tele1);
-            AddFixture(tele2);
-            AddFixture(tele3);
-            AddFixture(tele4);
+            AddTeleporters(0x1822, new Point3D(-1, 9, 7), new Point3D(4, -9, 7));
+            AddTeleporters(0x1821, new Point3D(-2, -9, 27), new Point3D(-10, 0, 67));
 
             SetSign(-11, 13, 7, false);
         }

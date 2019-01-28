@@ -1,10 +1,11 @@
 using System;
-using Server;
-using Server.Mobiles;
-using Server.Items;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+
+using Server;
+using Server.Mobiles;
+using Server.Items;
 
 namespace Server.Engines.BulkOrders
 {
@@ -168,38 +169,17 @@ namespace Server.Engines.BulkOrders
 
             if (context != null && context.Entries.ContainsKey(type))
             {
-                if (context.Entries[type].CachedDeeds == 0)
+                var entry = context.Entries[type];
+
+                if (entry != null)
                 {
-                    DateTime last = context.Entries[type].LastBulkOrder;
-                    int tocache = 0;
+                    entry.CheckNextBulkOrder();
 
-                    if (last + TimeSpan.FromHours(Delay) < DateTime.UtcNow)
+                    if (entry.CachedDeeds > 0)
                     {
-                        int minutes = (int)(DateTime.UtcNow - last).TotalMinutes;
-
-                        tocache = (int)(minutes /  ((double)Delay * 60));
+                        entry.CachedDeeds--;
+                        return true;
                     }
-
-                    if (tocache > 0)
-                    {
-                        context.Entries[type].CachedDeeds = Math.Min(MaxCachedDeeds, context.Entries[type].CachedDeeds + tocache);
-                    }
-                }
-
-                if (context.Entries[type].CachedDeeds > 0)
-                {
-                    if (context.Entries[type].CachedDeeds >= MaxCachedDeeds)
-                        context.Entries[type].LastBulkOrder = DateTime.UtcNow - TimeSpan.FromHours(Delay * MaxCachedDeeds);
-
-                    context.Entries[type].LastBulkOrder += TimeSpan.FromHours(Delay);
-                    context.Entries[type].CachedDeeds--;
-
-                    if (context.Entries[type].CachedDeeds == 0 && context.Entries[type].LastBulkOrder < DateTime.UtcNow - TimeSpan.FromHours(Delay))
-                    {
-                        context.Entries[type].LastBulkOrder = DateTime.UtcNow;
-                    }
-
-                    return true;
                 }
             }
 
@@ -652,12 +632,32 @@ namespace Server.Engines.BulkOrders
             return worth;
         }
 
+        public static void OnTick()
+        {
+            foreach (var kvp in Instance.BODPlayerData)
+            {
+                kvp.Value.CheckNextBulkOrder();
+            }
+        }
+
+        public static void OnLogin(LoginEventArgs e)
+        {
+        }
+
         public static string FilePath = Path.Combine("Saves/CraftContext", "BODs.bin");
 
         public static void Configure()
         {
             EventSink.WorldSave += OnSave;
             EventSink.WorldLoad += OnLoad;
+        }
+
+        public static void Initialize()
+        {
+            if (NewSystemEnabled)
+            {
+                Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), OnTick);
+            }
         }
 
         public static void OnSave(WorldSaveEventArgs e)
@@ -777,23 +777,49 @@ namespace Server.Engines.BulkOrders
             Entries[BODType.Alchemy] = new BODEntry();
             Entries[BODType.Inscription] = new BODEntry();
         }
+
+        public void CheckNextBulkOrder()
+        {
+            foreach (var kvp in Entries)
+            {
+                kvp.Value.CheckNextBulkOrder();
+            }
+        }
     }
 
+    [PropertyObject]
     public class BODEntry
     {
         private int _CachedDeeds;
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public int CachedDeeds
         {
             get { return _CachedDeeds; }
             set
             {
-                _CachedDeeds = Math.Min(BulkOrderSystem.MaxCachedDeeds, value);
+                int old = _CachedDeeds;
+
+                _CachedDeeds = Math.Max(0, Math.Min(BulkOrderSystem.MaxCachedDeeds, value));
+
+                if (_CachedDeeds < old)
+                {
+                    LastBulkOrder = DateTime.UtcNow;
+                }
+                else if (_CachedDeeds > old)
+                {
+                    LastBulkOrder = LastBulkOrder + TimeSpan.FromHours(BulkOrderSystem.Delay);
+                }
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public DateTime LastBulkOrder { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public double BankedPoints { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public int PendingRewardPoints { get; set; }
 
         // Legacy System
@@ -811,9 +837,30 @@ namespace Server.Engines.BulkOrders
             }
         }
 
+        public override string ToString()
+        {
+            return "...";
+        }
+
         public BODEntry()
         {
-            CachedDeeds = BulkOrderSystem.MaxCachedDeeds;
+            _CachedDeeds = BulkOrderSystem.MaxCachedDeeds;
+        }
+
+        public void CheckNextBulkOrder()
+        {
+            if (_CachedDeeds >= BulkOrderSystem.MaxCachedDeeds)
+            {
+                return;
+            }
+
+            for (int i = 0; i < BulkOrderSystem.MaxCachedDeeds; i++)
+            {
+                if (_CachedDeeds < BulkOrderSystem.MaxCachedDeeds && LastBulkOrder + TimeSpan.FromHours(BulkOrderSystem.Delay) < DateTime.UtcNow)
+                {
+                    CachedDeeds++;
+                }
+            }
         }
 
         public BODEntry(GenericReader reader)
@@ -822,10 +869,15 @@ namespace Server.Engines.BulkOrders
 
             if (reader.ReadInt() == 0)
             {
-                _CachedDeeds = reader.ReadInt();
-                LastBulkOrder = reader.ReadDateTime();
-                BankedPoints = reader.ReadDouble();
-                PendingRewardPoints = reader.ReadInt();
+                switch (version)
+                {
+                    case 0:
+                        _CachedDeeds = reader.ReadInt();
+                        LastBulkOrder = reader.ReadDateTime();
+                        BankedPoints = reader.ReadDouble();
+                        PendingRewardPoints = reader.ReadInt();
+                        break;
+                }
             }
             else
             {

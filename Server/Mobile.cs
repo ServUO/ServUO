@@ -10158,7 +10158,7 @@ namespace Server
 					// Check to see if we are attached to a client
 					if (ourState != null)
 					{
-						var eeable = map.GetObjectsInRange(newLocation);
+                        var eeable = map.GetObjectsInRange(newLocation, Core.GlobalRadarRange);
 
 						// We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
 						foreach (IEntity o in eeable)

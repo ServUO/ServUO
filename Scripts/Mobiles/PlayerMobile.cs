@@ -289,10 +289,6 @@ namespace Server.Mobiles
                 {
                     _BODProps = new BODProps(this);
                 }
-                else
-                {
-                    _BODProps.CheckChanges();
-                }
 
                 return _BODProps;
             }
