@@ -7403,7 +7403,7 @@ namespace Server
 
 			if (m_Map != null && ns != null)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalMaxUpdateRange);
+                var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange - 4);
 
 				foreach (IEntity o in eable)
 				{
@@ -7673,7 +7673,7 @@ namespace Server
 
 			if (m_Map != null && ns != null)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location);
+                var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange);
 
 				foreach (var o in eable)
 				{

@@ -68,48 +68,30 @@ namespace Server
 
         public static void UOPLoad(string path)
         {
-            // Multi ID List Array Start
-            var chunkIds = new Dictionary<ulong, int>();
-            var chunkIds2 = new Dictionary<ulong, int>();
-
-            int maxId;
-
-            string[] formats = UOPHash.GetHashFormat(0, out maxId);
-
-            for (int i = 0; i < maxId; ++i)
-            {
-                chunkIds[UOPHash.HashLittle2(String.Format(formats[0], i))] = i;
-            }
-            if (formats[1] != "")
-            {
-                for (int i = 0; i < maxId; ++i)
-                    chunkIds2[UOPHash.HashLittle2(String.Format(formats[1], i))] = i;
-            }
-            // Multi ID List Array End
-
             var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             BinaryReader streamReader = new BinaryReader(stream);
 
             // Head Information Start
-            int formatID = streamReader.ReadInt32();
-
-            if (formatID != 0x0050594D) // MYP
+            if (streamReader.ReadInt32() != 0x0050594D) // Not a UOP Files
                 return;
 
-            int m_Version = streamReader.ReadInt32();
-
-            if (m_Version > 5)
+            if (streamReader.ReadInt32() > 5) // Bad Version
                 return;
 
-            streamReader.ReadUInt32(); // format timestamp? 0xFD23EC43
-            long m_StartAddress = streamReader.ReadInt64();
+            // Multi ID List Array Start
+            var chunkIds = new Dictionary<ulong, int>();
+            var chunkIds2 = new Dictionary<ulong, int>();
 
-            int blockSize = streamReader.ReadInt32(); // files in each block
-            int totalSize = streamReader.ReadInt32(); // Total File Count
+            UOPHash.BuildChunkIDs(ref chunkIds, ref chunkIds2);
+            // Multi ID List Array End
 
-            // Head Information End
+            streamReader.ReadUInt32();                      // format timestamp? 0xFD23EC43
+            long startAddress = streamReader.ReadInt64();
 
-            stream.Seek(m_StartAddress, SeekOrigin.Begin);
+            int blockSize = streamReader.ReadInt32();       // files in each block
+            int totalSize = streamReader.ReadInt32();       // Total File Count
+
+            stream.Seek(startAddress, SeekOrigin.Begin);    // Head Information End
 
             long nextBlock;
 
@@ -124,13 +106,13 @@ namespace Server
                 {
                     long offset = streamReader.ReadInt64();
 
-                    int headerSize = streamReader.ReadInt32(); // header length
-                    int compressedSize = streamReader.ReadInt32(); // compressed size
-                    int decompressedSize = streamReader.ReadInt32(); // decompressed size
+                    int headerSize = streamReader.ReadInt32();          // header length
+                    int compressedSize = streamReader.ReadInt32();      // compressed size
+                    int decompressedSize = streamReader.ReadInt32();    // decompressed size
 
-                    ulong filehash = streamReader.ReadUInt64(); // filename hash (HashLittle2)
-                    uint datablockhash = streamReader.ReadUInt32(); // data hash (Adler32)
-                    short flag = streamReader.ReadInt16(); // compression method (0 = none, 1 = zlib)
+                    ulong filehash = streamReader.ReadUInt64();         // filename hash (HashLittle2)
+                    uint datablockhash = streamReader.ReadUInt32();     // data hash (Adler32)
+                    short flag = streamReader.ReadInt16();              // compression method (0 = none, 1 = zlib)
 
                     index++;
 
@@ -225,6 +207,9 @@ namespace Server
                 while (index < blockFileCount);
             }
             while (stream.Seek(nextBlock, SeekOrigin.Begin) != 0);
+
+            chunkIds.Clear();
+            chunkIds2.Clear();
         }
 
         static MultiData()
@@ -915,7 +900,24 @@ namespace Server
 
     public class UOPHash
     {
-        public static string[] GetHashFormat(int typeIndex, out int maxId)
+        public static void BuildChunkIDs(ref Dictionary<ulong, int> chunkIds, ref Dictionary<ulong, int> chunkIds2)
+        {
+            int maxId;
+
+            string[] formats = GetHashFormat(0, out maxId);
+
+            for (int i = 0; i < maxId; ++i)
+            {
+                chunkIds[HashLittle2(String.Format(formats[0], i))] = i;
+            }
+            if (formats[1] != "")
+            {
+                for (int i = 0; i < maxId; ++i)
+                    chunkIds2[HashLittle2(String.Format(formats[1], i))] = i;
+            }
+        }
+
+        private static string[] GetHashFormat(int typeIndex, out int maxId)
         {
             /*
 			 * MaxID is only used for constructing a lookup table.
@@ -926,7 +928,7 @@ namespace Server
             return new string[] { "build/multicollection/{0:000000}.bin", "" };
         }
 
-        public static ulong HashLittle2(string s)
+        private static ulong HashLittle2(string s)
         {
             int length = s.Length;
 
