@@ -10,11 +10,11 @@ namespace Server.Multis
         public SmallOldHouse(Mobile owner, int id)
             : base(id, owner, 425, 3)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoor(0, 3, 7, keyValue);
+            AddSouthDoor(0, 3, 7, keyValue);
 
-            this.SetSign(2, 4, 5);
+            SetSign(2, 4, 5);
         }
 
         public SmallOldHouse(Serial serial)
@@ -52,7 +52,7 @@ namespace Server.Multis
         }
         public override HouseDeed GetDeed() 
         {
-            switch ( this.ItemID )
+            switch ( ItemID )
             {
                 case 0x64:
                     return new StonePlasterHouseDeed();
@@ -89,14 +89,14 @@ namespace Server.Multis
         public GuildHouse(Mobile owner)
             : base(0x74, owner, 1100, 8)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoors(-1, 6, 7, keyValue);
+            AddSouthDoors(-1, 6, 7, keyValue);
 
-            this.SetSign(4, 8, 16);
+            SetSign(4, 8, 16);
 
-            this.AddSouthDoor(-3, -1, 7);
-            this.AddSouthDoor(3, -1, 7);
+            AddSouthDoor(-3, -1, 7);
+            AddSouthDoor(3, -1, 7);
         }
 
         public GuildHouse(Serial serial)
@@ -170,14 +170,14 @@ namespace Server.Multis
         public TwoStoryHouse(Mobile owner, int id)
             : base(id, owner, 1370, 10)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoors(-3, 6, 7, keyValue);
+            AddSouthDoors(-3, 6, 7, keyValue);
 
-            this.SetSign(2, 8, 16);
+            SetSign(2, 8, 16);
 
-            this.AddSouthDoor(-3, 0, 7);
-            this.AddSouthDoor(id == 0x76 ? -2 : -3, 0, 27);
+            AddSouthDoor(-3, 0, 7);
+            AddSouthDoor(id == 0x76 ? -2 : -3, 0, 27);
         }
 
         public TwoStoryHouse(Serial serial)
@@ -208,7 +208,7 @@ namespace Server.Multis
         }
         public override HouseDeed GetDeed() 
         { 
-            switch( this.ItemID )
+            switch( ItemID )
             {
                 case 0x76:
                     return new TwoStoryWoodPlasterHouseDeed();
@@ -237,15 +237,15 @@ namespace Server.Multis
         public Tower(Mobile owner)
             : base(0x7A, owner, 2119, 15)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoors(false, 0, 6, 6, keyValue);
+            AddSouthDoors(false, 0, 6, 6, keyValue);
 
-            this.SetSign(5, 8, 16);
+            SetSign(5, 8, 16);
 
-            this.AddSouthDoor(false, 3, -2, 6);
-            this.AddEastDoor(false, 1, 4, 26);
-            this.AddEastDoor(false, 1, 4, 46);
+            AddSouthDoor(false, 3, -2, 6);
+            AddEastDoor(false, 1, 4, 26);
+            AddEastDoor(false, 1, 4, 46);
         }
 
         public Tower(Serial serial)
@@ -312,11 +312,11 @@ namespace Server.Multis
         public Keep(Mobile owner)
             : base(0x7C, owner, 2625, 18)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoors(false, 0, 10, 6, keyValue);
+            AddSouthDoors(false, 0, 10, 6, keyValue);
 			
-            this.SetSign(5, 12, 16);
+            SetSign(5, 12, 16);
         }
 
         public Keep(Serial serial)
@@ -369,15 +369,15 @@ namespace Server.Multis
         public Castle(Mobile owner)
             : base(0x7E, owner, 4076, 28)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoors(false, 0, 15, 6, keyValue);
+            AddSouthDoors(false, 0, 15, 6, keyValue);
 
-            this.SetSign(5, 17, 16);
+            SetSign(5, 17, 16);
 
-            this.AddSouthDoors(false, 0, 11, 6, true);
-            this.AddSouthDoors(false, 0, 5, 6, false);
-            this.AddSouthDoors(false, -1, -11, 6, false);
+            AddSouthDoors(false, 0, 11, 6, true);
+            AddSouthDoors(false, 0, 5, 6, false);
+            AddSouthDoors(false, -1, -11, 6, false);
         }
 
         public Castle(Serial serial)
@@ -430,15 +430,15 @@ namespace Server.Multis
         public LargePatioHouse(Mobile owner)
             : base(0x8C, owner, 1100, 8)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoors(-4, 6, 7, keyValue);
+            AddSouthDoors(-4, 6, 7, keyValue);
 			
-            this.SetSign(1, 8, 16);
+            SetSign(1, 8, 16);
 
-            this.AddEastDoor(1, 4, 7);
-            this.AddEastDoor(1, -4, 7);
-            this.AddSouthDoor(4, -1, 7);
+            AddEastDoor(1, 4, 7);
+            AddEastDoor(1, -4, 7);
+            AddSouthDoor(4, -1, 7);
         }
 
         public LargePatioHouse(Serial serial)
@@ -505,11 +505,11 @@ namespace Server.Multis
         public LargeMarbleHouse(Mobile owner)
             : base(0x96, owner, 1370, 10)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoors(false, -4, 3, 4, keyValue);
+            AddSouthDoors(false, -4, 3, 4, keyValue);
 
-            this.SetSign(1, 8, 11);
+            SetSign(1, 8, 11);
         }
 
         public LargeMarbleHouse(Serial serial)
@@ -576,11 +576,11 @@ namespace Server.Multis
         public SmallTower(Mobile owner)
             : base(0x98, owner, 580, 4)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoor(false, 3, 3, 6, keyValue);
+            AddSouthDoor(false, 3, 3, 6, keyValue);
 
-            this.SetSign(1, 4, 5);
+            SetSign(1, 4, 5);
         }
 
         public SmallTower(Serial serial)
@@ -640,13 +640,13 @@ namespace Server.Multis
         public LogCabin(Mobile owner)
             : base(0x9A, owner, 1100, 8)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoor(1, 4, 8, keyValue);
+            AddSouthDoor(1, 4, 8, keyValue);
 			
-            this.SetSign(5, 8, 20);
+            SetSign(5, 8, 20);
 
-            this.AddSouthDoor(1, 0, 29);
+            AddSouthDoor(1, 0, 29);
         }
 
         public LogCabin(Serial serial)
@@ -706,11 +706,11 @@ namespace Server.Multis
         public SandStonePatio(Mobile owner)
             : base(0x9C, owner, 850, 6)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoor(-1, 3, 6, keyValue);
+            AddSouthDoor(-1, 3, 6, keyValue);
 			
-            this.SetSign(4, 6, 24);
+            SetSign(4, 6, 24);
         }
 
         public SandStonePatio(Serial serial)
@@ -777,14 +777,14 @@ namespace Server.Multis
         public TwoStoryVilla(Mobile owner)
             : base(0x9E, owner, 1100, 8)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            this.AddSouthDoors(3, 1, 5, keyValue);
+            AddSouthDoors(3, 1, 5, keyValue);
 			
-            this.SetSign(3, 8, 24);
+            SetSign(3, 8, 24);
 
-            this.AddEastDoor(1, 0, 25);
-            this.AddSouthDoor(-3, -1, 25);
+            AddEastDoor(1, 0, 25);
+            AddSouthDoor(-3, -1, 25);
         }
 
         public TwoStoryVilla(Serial serial)
@@ -845,21 +845,20 @@ namespace Server.Multis
         public SmallShop(Mobile owner, int id)
             : base(id, owner, 425, 3)
         {
-            uint keyValue = this.CreateKeys(owner);
+            uint keyValue = CreateKeys(owner);
 
-            BaseDoor door = this.MakeDoor(false, DoorFacing.EastCW);
+            BaseDoor door = MakeDoor(false, DoorFacing.EastCW);
 
-            door.Locked = true;
             door.KeyValue = keyValue;
 
             if (door is BaseHouseDoor)
                 ((BaseHouseDoor)door).Facing = DoorFacing.EastCCW;
 
-            this.AddDoor(door, -2, 0, id == 0xA2 ? 24 : 27);
+            AddDoor(door, -2, 0, id == 0xA2 ? 24 : 27);
 
             //AddSouthDoor( false, -2, 0, 27 - (id == 0xA2 ? 3 : 0), keyValue );
 			
-            this.SetSign(3, 4, 7 - (id == 0xA2 ? 2 : 0));
+            SetSign(3, 4, 7 - (id == 0xA2 ? 2 : 0));
         }
 
         public SmallShop(Serial serial)
@@ -871,7 +870,7 @@ namespace Server.Multis
         {
             get
             {
-                return (this.ItemID == 0x40A2 ? AreaArray1 : AreaArray2);
+                return (ItemID == 0x40A2 ? AreaArray1 : AreaArray2);
             }
         }
         public override Point3D BaseBanLocation
@@ -897,7 +896,7 @@ namespace Server.Multis
         }
         public override HouseDeed GetDeed() 
         { 
-            switch ( this.ItemID )
+            switch ( ItemID )
             {
                 case 0xA0:
                     return new StoneWorkshopDeed(); 

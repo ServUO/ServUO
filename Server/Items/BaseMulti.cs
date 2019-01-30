@@ -86,10 +86,19 @@ namespace Server.Items
 	
 		public override int GetUpdateRange(Mobile m)
 		{
-			// Multis should update at maximum range given their center tile must be in the update range.
-			// This will prevent castles, keeps and the minax fortress from suddenly appearaing out of nowhere.
-			// (Any return value higher than the global max will cause the multi to not load at all)
-			return Core.GlobalMaxUpdateRange;
+            int min = m.NetState != null ? m.NetState.UpdateRange : Core.GlobalUpdateRange;
+            int max = Core.GlobalRadarRange - 1;
+
+            int w = Components.Width;
+            int h = Components.Height - 1;
+            int v = min + ((w > h ? w : h) / 2);
+
+            if (v > max)
+                v = max;
+            else if (v < min)
+                v = min;
+
+            return v;
 		}
 
 		public virtual MultiComponentList Components { get { return MultiData.GetComponents(ItemID); } }

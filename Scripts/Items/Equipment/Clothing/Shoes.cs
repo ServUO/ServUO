@@ -422,6 +422,11 @@ namespace Server.Items
 
         public override bool Dye(Mobile from, DyeTub sender)
         {
+            if (Core.TOL)
+            {
+                return base.Dye(from, sender);
+            }
+
             return false;
         }
 
