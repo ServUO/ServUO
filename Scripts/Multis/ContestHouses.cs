@@ -360,12 +360,12 @@ namespace Server.Multis
             AddSouthDoors(false, 13, 1, 27);
 
             AddEastDoors(false, 7, -4, 47, false, true);
-            AddDoor(0x324, -13, 12, 47);
-            AddDoor(0x324, -13, 1, 47);
-            AddDoor(0x328, -13, -2, 47);
-            AddDoor(0x328, -13, -12, 47);
-            AddDoor(0x32E, -7, -13, 47);
-            AddDoor(0x32E, 4, -13, 47);
+            AddDoor(0x32A, -13, 12, 47);
+            AddDoor(0x32A, -13, 1, 47);
+            AddDoor(0x32A, -13, -2, 47);
+            AddDoor(0x32A, -13, -12, 47);
+            AddDoor(0x330, -7, -13, 47);
+            AddDoor(0x330, 4, -13, 47);
 
             SetSign(-15, 16, 7, false);
         }
@@ -496,16 +496,17 @@ namespace Server.Multis
         public RobinsNest(Mobile owner)
             : base(ContestHouseType.Keep, 0x1484, owner, 2113, 18)
         {
-            AddSouthDoors(-3, 11, 7);
-            AddSouthDoors(8, 5, 7);
-            AddEastDoors(true, 10, -3, 7, false, true);
+            AddLinkedSouthDoors(0x6E5, 0x6E7, -3, 11, 7);
+            AddLinkedSouthDoors(0x6E5, 0x6E7, 8, 5, 7);
+            AddLinkedEastDoors(0x6ED, 0x6EF, 10, -2, 7);
 
-            AddSouthDoors(-3, 5, 27);
+            AddLinkedSouthDoors(0x6E5, 0x6E7, -3, 5, 27);
 
-            AddEastDoors(true, 5, 2, 47, false, true);
+            AddLinkedEastDoors(0x6ED, 0x6EF, 5, 3, 47);
 
             AddTeleporters(0x181E, new Point3D(4, 10, 7), new Point3D(9, 4, 27));
             AddTeleporters(0x181F, new Point3D(4, 4, 47), new Point3D(9, 3, 27));
+            AddTeleporters(0x1822, new Point3D(4, 3, 47), new Point3D(11, -10, 67));
 
             SetSign(-11, 13, 7, false);
         }
@@ -518,13 +519,18 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);//version
+            writer.Write((int)1);//version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                AddTeleporters(0x1822, new Point3D(4, 3, 47), new Point3D(11, -10, 67));
+            }
         }
     }
 
@@ -659,6 +665,9 @@ namespace Server.Multis
             AddDoor(0x86C, 11, 6, 7);
             AddDoor(0x86C, 11, -6, 7);
 
+            AddTeleporters(0x1820, new Point3D(9, 5, 7), new Point3D(7, -7, 47));
+            AddTeleporters(0x181E, new Point3D(8, 5, 7), new Point3D(9, 5, 27));
+
             AddLinkedSouthDoors(0x9B3C, 0x9B3E, -10, 2, 27);
 
             AddDoor(0x9B42, 1, 3, 47);
@@ -674,13 +683,19 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);//version
+            writer.Write((int)1);//version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                AddTeleporters(0x1820, new Point3D(9, 5, 7), new Point3D(7, -7, 47));
+                AddTeleporters(0x181E, new Point3D(8, 5, 7), new Point3D(9, 5, 27));
+            }
         }
     }
 
