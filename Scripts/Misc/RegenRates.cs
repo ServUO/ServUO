@@ -119,6 +119,8 @@ namespace Server.Misc
                 double focusBonus = focus / 200;
                 double medBonus = 0;
 
+                CheckBonusSkill(from, from.Mana, from.ManaMax, SkillName.Focus);
+
                 if (armorPenalty == 0)
                 {
                     medBonus = (0.0075 * med) + (0.0025 * from.Int);
