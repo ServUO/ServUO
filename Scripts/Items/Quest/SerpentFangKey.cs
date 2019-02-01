@@ -6,10 +6,10 @@ namespace Server.Items
     {
         [Constructable]
         public SerpentFangKey()
-            : base(0x1012)
+            : base(0x2002)
         {
-            Weight = 1.0;
-            Hue = 0x9A; // TODO check
+            Weight = 2.0;
+            Hue = 53;
             LootType = LootType.Blessed;
         }
 
