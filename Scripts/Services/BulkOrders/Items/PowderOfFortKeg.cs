@@ -44,12 +44,11 @@ namespace Server.Items
 
                         powder.UsesRemaining -= add;
 
-                        _Charges = 250;
+                        Charges = 250;
                     }
                     else
                     {
-                        _Charges += powder.UsesRemaining;
-						InvalidateProperties();
+                        Charges += powder.UsesRemaining;
                         powder.Delete();
                     }
 
