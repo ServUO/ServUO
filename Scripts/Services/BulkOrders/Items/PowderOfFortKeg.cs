@@ -49,6 +49,7 @@ namespace Server.Items
                     else
                     {
                         _Charges += powder.UsesRemaining;
+						InvalidateProperties();
                         powder.Delete();
                     }
 
