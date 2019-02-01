@@ -3,6 +3,7 @@ using System.Collections;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Multis;
+using Server.Network;
 using Server.Regions;
 using Server.Targeting;
 
@@ -83,15 +84,17 @@ namespace Server.Items
 
             AddPage(0);
 
-            AddBackground(0, 0, 270, 160, 5054);
+            AddBackground(0, 0, 270, 170, 5054);
 
-            AddImageTiled(10, 10, 250, 145, 2624);
-            AddAlphaRegion(10, 10, 250, 145);
+            AddImageTiled(10, 10, 250, 150, 2624);
+            AddAlphaRegion(10, 10, 250, 150);
 
             AddHtmlLocalized(10, 10, 250, 20, 1060239, LabelColor, false, false); // <CENTER>HOUSE PLACEMENT TOOL</CENTER>
 
-            AddButton(10, 129, 4017, 4019, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(45, 129, 150, 20, 3000363, LabelColor, false, false); // Close
+            AddButton(10, 130, 4017, 4019, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 130, 150, 20, 3000363, LabelColor, false, false); // Close
+
+            AddPage(1);
 
             AddButton(10, 40, 4005, 4007, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(45, 40, 200, 20, 1060390, LabelColor, false, false); // Classic Houses
@@ -146,7 +149,7 @@ namespace Server.Items
     public class HousePlacementListGump : Gump
     {
         private const int LabelColor = 0x7FFF;
-        private const int LabelHue = 0x480;
+        private const int LabelHue = 0x481;
 
         private readonly Mobile m_From;
         private readonly HousePlacementEntry[] m_Entries;
@@ -167,7 +170,7 @@ namespace Server.Items
 
             AddPage(0);
 
-            AddBackground(0, 0, 520, 420, 5054);
+            AddBackground(0, 0, 530, 430, 5054);
 
             AddImageTiled(10, 10, 500, 20, 2624);
             AddAlphaRegion(10, 10, 500, 20);
@@ -185,17 +188,17 @@ namespace Server.Items
             AddImageTiled(10, 70, 500, 280, 2624);
             AddAlphaRegion(10, 70, 500, 280);
 
-            AddImageTiled(10, 360, 500, 20, 2624);
-            AddAlphaRegion(10, 360, 500, 20);
+            AddImageTiled(10, 370, 500, 20, 2624);
+            AddAlphaRegion(10, 370, 500, 20);
 
-            AddHtmlLocalized(10, 360, 250, 20, 1060645, LabelColor, false, false); // Bank Balance:
-            AddLabel(250, 360, LabelHue, Banker.GetBalance(from).ToString());
+            AddHtmlLocalized(10, 370, 250, 20, 1060645, LabelColor, false, false); // Bank Balance:
+            AddLabel(250, 370, LabelHue, Banker.GetBalance(from).ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
 
-            AddImageTiled(10, 390, 500, 20, 2624);
-            AddAlphaRegion(10, 390, 500, 20);
+            AddImageTiled(10, 400, 500, 20, 2624);
+            AddAlphaRegion(10, 400, 500, 20);
 
-            AddButton(10, 390, 4017, 4019, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(50, 390, 100, 20, 3000363, LabelColor, false, false); // Close
+            AddButton(10, 400, 4017, 4019, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 400, 100, 20, 3000363, LabelColor, false, false); // Close
 
             int page = 1;
             int index = -1;
@@ -234,16 +237,16 @@ namespace Server.Items
                 {
                     if (page > 1)
                     {
-                        AddButton(450, 390, 4005, 4007, 0, GumpButtonType.Page, page);
-                        AddHtmlLocalized(400, 390, 100, 20, 3000406, LabelColor, false, false); // Next
+                        AddButton(450, 400, 4005, 4007, 0, GumpButtonType.Page, page);
+                        AddHtmlLocalized(400, 400, 100, 20, 3000406, LabelColor, false, false); // Next
                     }
 
                     AddPage(page);
 
                     if (page > 1)
                     {
-                        AddButton(200, 390, 4014, 4016, 0, GumpButtonType.Page, page - 1);
-                        AddHtmlLocalized(250, 390, 100, 20, 3000405, LabelColor, false, false); // Previous
+                        AddButton(200, 400, 4014, 4016, 0, GumpButtonType.Page, page - 1);
+                        AddHtmlLocalized(250, 400, 100, 20, 3000405, LabelColor, false, false); // Previous
                     }
                 }
 
@@ -255,11 +258,11 @@ namespace Server.Items
                 AddHtmlLocalized(50, y, 225, 20, entry.Description, LabelColor, false, false);
                 AddLabel(275, y, LabelHue, entry.Storage.ToString());
                 AddLabel(350, y, LabelHue, entry.Lockdowns.ToString());
-                AddLabel(425, y, LabelHue, entry.Cost.ToString());
+                AddLabel(425, y, LabelHue, entry.Cost.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
             }
         }
 
-        public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
+        public override void OnResponse(NetState sender, RelayInfo info)
         {
             if (!m_From.CheckAlive() || m_From.Backpack == null || m_From.Backpack.FindItemByType(typeof(HousePlacementTool)) == null)
                 return;

@@ -190,7 +190,7 @@ namespace Server
 
                                 if (clilocsCount != 0)
                                 {
-                                    fs.Seek(fs.Position + (clilocsCount * 4), SeekOrigin.Begin); // back to position
+                                    fs.Seek(fs.Position + (clilocsCount * 4), SeekOrigin.Begin); // binary block bypass
                                 }
 
                                 tileList.Add(new MultiTileEntry(ItemId, x, y, z, flagg));
