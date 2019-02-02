@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class FlamingScarecrow : BaseLight
+    public class FlamingScarecrow : BaseLight, IFlipable
     {
         public override int LabelNumber { get { return 1027732; } } // scarecrow
 
@@ -14,8 +14,16 @@ namespace Server.Items
             Burning = false;
         }
 
-        public override int LitItemID { get { return 0x9F34; } }
-        public override int UnlitItemID { get { return 0x9F33; } }
+        public void OnFlip()
+        {
+            if (ItemID == 0x9F33 || ItemID == 0x9F34)
+                ItemID = ItemID + 6;
+            else
+                ItemID = ItemID - 6;
+        }
+
+        public override int LitItemID { get { return ItemID == 0x9F33 ? 0x9F34 : 0x9F3A; } }
+        public override int UnlitItemID { get { return ItemID == 0x9F34 ? 0x9F33 : 0x9F39; } }
 
         public FlamingScarecrow(Serial serial)
             : base(serial)

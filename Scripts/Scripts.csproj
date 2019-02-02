@@ -559,7 +559,7 @@
     <Compile Include="Items\Addons\CodexOfVirtue.cs" />
     <Compile Include="Items\Addons\BuffetTable.cs" />
     <Compile Include="Items\Addons\FormalDiningTable.cs" />
-    <Compile Include="Items\Artifacts\Decorative\CupidStatue.cs" />
+    <Compile Include="Items\Decorative\CupidStatue.cs" />
     <Compile Include="Items\Consumables\ValentineChocolate.cs" />
     <Compile Include="Items\Containers\HeartShapedBox.cs" />
     <Compile Include="Items\Decorative\UltimaBanner.cs" />

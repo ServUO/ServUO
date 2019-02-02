@@ -4,7 +4,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class ValentineBear : Item, ICustomizableMessageItem
+    public class ValentineBear : Item, ICustomizableMessageItem, IFlipable
     {
         private string m_OwnerName;
 
@@ -26,7 +26,7 @@ namespace Server.Items
 
         [Constructable]
         public ValentineBear(Mobile owner)
-            : base(Utility.Random(0x48E0, 4))
+            : base(Utility.RandomList(0x48E0, 0x48E2))
         {
             Weight = 1.0;
             LootType = LootType.Blessed;
@@ -34,6 +34,14 @@ namespace Server.Items
             Lines = new string[3];
             m_OwnerName = owner.Name;
             EditEnd = DateTime.MaxValue;
+        }
+
+        public void OnFlip()
+        {
+            if (ItemID == 0x48E0 || ItemID == 0x48E2)
+                ItemID = ItemID + 1;
+            else
+                ItemID = ItemID - 1;
         }
 
         public override void OnDoubleClick(Mobile from)
