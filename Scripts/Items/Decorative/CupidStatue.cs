@@ -2,13 +2,14 @@ using System;
 
 namespace Server.Items
 {
+    [Flipable(0x4F7C, 0x4F7D)]
     public class CupidStatue : Item
     {
         public override int LabelNumber { get { return 1099220; } } // cupid statue
 
         [Constructable]
         public CupidStatue()
-            : base(Utility.RandomList(20348, 20349))
+            : base(0x4F7C)
         {
             Weight = 1.0;
             LootType = LootType.Blessed;

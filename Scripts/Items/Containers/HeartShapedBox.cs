@@ -2,13 +2,14 @@ using System;
 
 namespace Server.Items
 {
+    [Flipable(0x49CC, 0x49D0)]
     public class HeartShapedBox : Container
     {
         public override int LabelNumber { get { return 1097762; } } // heart shaped box
 
         [Constructable]
         public HeartShapedBox()
-            : base(Utility.RandomList(0x49CC, 0x49D0))
+            : base(0x49CC)
         {
             Weight = 1.0;
             GumpID = 0x120;
