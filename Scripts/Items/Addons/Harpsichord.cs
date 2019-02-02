@@ -291,6 +291,12 @@ namespace Server.Items
             public override BaseAddon Addon { get { return new HarpsichordAddon((HarpsichordColor)Hue, _Direction, _List); } }
 
             [Constructable]
+            public HarpsichordAddonDeed()
+                : this((HarpsichordColor)Utility.RandomList(1168, 1177, 1195, 1910, 1922, 1933, 2498, 2584, 2541, 2609))
+            {
+            }
+
+            [Constructable]
             public HarpsichordAddonDeed(HarpsichordColor hue)
                 : this(hue, null)
             {
