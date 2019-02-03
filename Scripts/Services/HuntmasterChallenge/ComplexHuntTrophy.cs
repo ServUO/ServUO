@@ -289,25 +289,20 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            HuntTrophyAddon addon = Addon as HuntTrophyAddon;
+            list.Add(1155708, m_Owner != null ? m_Owner : "Unknown"); // Hunter: ~1_NAME~
+            list.Add(1155709, DateKilled); // Date of Kill: ~1_DATE~
 
-            if (addon != null)
-            {
-                list.Add(1155708, addon.Owner != null ? addon.Owner : "Unknown"); // Hunter: ~1_NAME~
-                list.Add(1155709, addon.DateKilled); // Date of Kill: ~1_DATE~
+            if (m_Location != null)
+                list.Add(1061114, m_Location); // Location: ~1_val~
 
-                if (m_Location != null)
-                    list.Add(1061114, addon.KillLocation); // Location: ~1_val~
+            list.Add(1155718, Species.ToString());
 
-                list.Add(1155718, addon.Species.ToString());
-
-                if (addon.MeasuredBy == MeasuredBy.Length)
-                    list.Add(1155711, addon.Measurement.ToString()); // Length: ~1_VAL~
-                else if (addon.MeasuredBy == MeasuredBy.Wingspan)
-                    list.Add(1155710, addon.Measurement.ToString());	// Wingspan: ~1_VAL~
-                else
-                    list.Add(1072225, addon.Measurement.ToString()); // Weight: ~1_WEIGHT~ stones
-            }
+            if (MeasuredBy == MeasuredBy.Length)
+                list.Add(1155711, MeasuredBy.ToString()); // Length: ~1_VAL~
+            else if (MeasuredBy == MeasuredBy.Wingspan)
+                list.Add(1155710, MeasuredBy.ToString());	// Wingspan: ~1_VAL~
+            else
+                list.Add(1072225, MeasuredBy.ToString()); // Weight: ~1_WEIGHT~ stones
         }
 
         public HuntTrophyAddonDeed(Serial serial)

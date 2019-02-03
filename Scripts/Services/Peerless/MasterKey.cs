@@ -35,6 +35,7 @@ namespace Server.Items
                 if (!CanOfferConfirmation(from) && Altar == null)
                     return;
 
+                //Altar.OnMasterKeyUse(from);
                 if (Altar.Peerless == null)
                 {
                     from.CloseGump(typeof(ConfirmPartyGump));
@@ -58,7 +59,6 @@ namespace Server.Items
                         from.SendGump(new ConfirmEntranceGump(Altar, from));
                     }
                 }
-
             }
         }
 
