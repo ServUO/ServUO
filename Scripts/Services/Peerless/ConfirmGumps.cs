@@ -56,6 +56,8 @@ namespace Server.Gumps
         public ConfirmEntranceGump(PeerlessAltar altar, Mobile from)
             : base(50, 50)
         {
+            from.CloseGump(typeof(ConfirmEntranceGump));
+
             _Altar = altar;
 
             Closable = true;
@@ -86,13 +88,10 @@ namespace Server.Gumps
             {
                 case 0:
                     {
-                        _Altar.AddFighter(from, false);
-
                         break;
                     }
                 case 1:
                     {
-                        _Altar.AddFighter(from, true);
                         _Altar.Enter(from);
 
                         break;

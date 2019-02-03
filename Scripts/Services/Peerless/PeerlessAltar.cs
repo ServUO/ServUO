@@ -67,7 +67,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner { get; set; }
 
-        public Mobile Summoner
+        /*public Mobile Summoner
         {
             get
             {
@@ -76,7 +76,7 @@ namespace Server.Items
 
                 return Fighters[0];
             }
-        }
+        }*/
 
         public PeerlessAltar(int itemID)
             : base(itemID)
@@ -154,6 +154,7 @@ namespace Server.Items
                     KeyStopTimer();
 
                     from.SendLocalizedMessage(1072678); // You have awakened the master of this realm. You need to hurry to defeat it in time!
+                    BeginSequence(from);
 
                     for (int k = 0; k < KeyCount; k++)
                     {
@@ -345,19 +346,6 @@ namespace Server.Items
             }
         }
 
-        private int toConfirm;
-
-        public virtual void AddFighter(Mobile fighter, bool confirmed)
-        {
-            if (confirmed)
-                AddFighter(fighter);
-
-            toConfirm -= 1;
-
-            if (toConfirm == 0)
-                BeginSequence(Summoner);
-        }
-
         public virtual void AddFighter(Mobile fighter)
         {
             if (!Fighters.Contains(fighter))
@@ -370,42 +358,26 @@ namespace Server.Items
 
             if (party != null)
             {
-                toConfirm = 0;
-
-                foreach (PartyMemberInfo info in party.Members)
+                foreach (var m in party.Members.Select(info => info.Mobile))
                 {
-                    Mobile m = info.Mobile;
-
                     if (m.InRange(from.Location, 25) && CanEnter(m))
                     {
-                        if (m == from)
-                            AddFighter(from);
-                        else
-                        {
-                            toConfirm += 1;
-
-                            m.CloseGump(typeof(ConfirmEntranceGump));
-                            m.SendGump(new ConfirmEntranceGump(this, from));
-                        }
+                        m.SendGump(new ConfirmEntranceGump(this, from));
                     }
                 }
-
-                if (toConfirm == 0)
-                    BeginSequence(Summoner);
             }
             else
             {
-                AddFighter(from);
-                BeginSequence(Summoner);
+                from.SendGump(new ConfirmEntranceGump(this, from));
             }
-        }        
+        }
 
         public virtual void BeginSequence(Mobile from)
         {
             SpawnBoss();
 
             // teleport fighters
-            Fighters.ForEach(x =>
+            /*Fighters.ForEach(x =>
             {
                 int counter = 0;
 
@@ -413,7 +385,7 @@ namespace Server.Items
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(counter++), () => { Enter(x); });
                 }
-            });
+            });*/
         }
 
         public virtual void SpawnBoss()
@@ -458,6 +430,8 @@ namespace Server.Items
                 fighter.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
                 fighter.PlaySound(0x1FE);
                 fighter.MoveToWorld(TeleportDest, Map);
+
+                AddFighter(fighter);
             }
         }
 
