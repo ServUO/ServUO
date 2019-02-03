@@ -53,7 +53,7 @@ namespace Server.Gumps
                 if(m_Options[i].Cliloc.Number > 0)
                     AddHtmlLocalized(44, 47 + i * 24, 213, 20, m_Options[i].Cliloc.Number, 0x7FFF, false, false);
                 else
-                    AddHtml(44, 47 + i * 24, 213, 20, String.Format("<basefont color=#FFFFFF>{0}", m_Options[i].Cliloc.String), false, false);
+                    AddHtml(44, 47 + i * 24, 213, 20, String.Format("<basefont color=#FFFFFF>{0}", m_Options[i].Text), false, false);
             }
         }
 
@@ -112,7 +112,7 @@ namespace Server.Gumps
                 if (m_Options[i].Cliloc.Number > 0)
                     AddHtmlLocalized(70, 70 + i * 20, 150, 20, m_Options[i].Cliloc.Number, 0x0, false, false);
                 else
-                    AddHtml(70, 70 + i * 20, 150, 20, String.Format("<basefont color=#000000>{0}", m_Options[i].Cliloc.String), false, false);
+                    AddHtml(70, 70 + i * 20, 150, 20, String.Format("<basefont color=#000000>{0}", m_Options[i].Text), false, false);
             }
         }
 
@@ -139,29 +139,16 @@ namespace Server.Gumps
 
     public class RewardOption
     {
-        private readonly int m_ID;
-        private readonly TextDefinition m_Cliloc;
-
-        public RewardOption(int id, TextDefinition cliloc)
+        public RewardOption(int id, TextDefinition cliloc, string text)
         {
-            m_ID = id;
-            m_Cliloc = cliloc;
+            ID = id;
+            Cliloc = cliloc;
+            Text = text;
         }
 
-        public int ID
-        {
-            get
-            {
-                return m_ID;
-            }
-        }
-        public TextDefinition Cliloc
-        {
-            get
-            {
-                return m_Cliloc;
-            }
-        }
+        public int ID { get; set; }
+        public TextDefinition Cliloc { get; set; }
+        public string Text { get; set; }
     }
 
     public class RewardOptionList : List<RewardOption>
@@ -173,7 +160,12 @@ namespace Server.Gumps
 
         public void Add(int id, TextDefinition cliloc)
         {
-            Add(new RewardOption(id, cliloc));
+            Add(new RewardOption(id, cliloc, null));
+        }
+
+        public void Add(int id, string text)
+        {
+            Add(new RewardOption(id, 0, text));
         }
     }
 }

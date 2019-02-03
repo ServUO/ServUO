@@ -4,6 +4,8 @@ namespace Server.Items
 {
     public class ValentinesTable : Item
     {
+        public override int LabelNumber { get { return 1098492; } } // table
+
         [Constructable]
         public ValentinesTable()
             : base(0xA004)
@@ -41,6 +43,8 @@ namespace Server.Items
     [Flipable(0xA05C, 0xA05D, 0xA05E, 0xA05F)]
     public class ValentinesChair : Item
     {
+        public override int LabelNumber { get { return 1098456; } } // chair
+
         [Constructable]
         public ValentinesChair()
             : base(0xA05C)

@@ -2,18 +2,16 @@ using System;
 
 namespace Server.Items
 {
-    public class SerpentFangKey : PeerlessKey
+    public class PhoenixLegs : RingmailLegs
     {
         [Constructable]
-        public SerpentFangKey()
-            : base(0x2002)
+        public PhoenixLegs()
         {
-            Weight = 2.0;
-            Hue = 53;
-            LootType = LootType.Blessed;
+            Hue = 0x8E;
+			LootType = LootType.Blessed;     
         }
 
-        public SerpentFangKey(Serial serial)
+        public PhoenixLegs(Serial serial)
             : base(serial)
         {
         }
@@ -22,20 +20,21 @@ namespace Server.Items
         {
             get
             {
-                return 1074341;
+                return 1041608;
             }
-        }// serpent fang key
+        }// ringmail leggings of the phoenix
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
-            writer.Write((int)0); // version
+
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }
