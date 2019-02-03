@@ -362,12 +362,15 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0); // Version
 
-            writer.Write(_List.Count);
+            writer.Write(_List != null ? _List.Count : 0);
 
-            _List.ForEach(x =>
+            if (_List != null)
             {
-                writer.Write((int)x);
-            });
+                _List.ForEach(x =>
+                {
+                    writer.Write((int)x);
+                });
+            }
         }
 
         public override void Deserialize(GenericReader reader)
@@ -377,7 +380,10 @@ namespace Server.Items
 
             int count = reader.ReadInt();
 
-            _List = new List<MusicName>();
+            if (count > 0)
+            {
+                _List = new List<MusicName>();
+            }
 
             for (int i = count; i > 0; i--)
             {
