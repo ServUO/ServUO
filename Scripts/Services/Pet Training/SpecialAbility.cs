@@ -1650,7 +1650,7 @@ namespace Server.Mobiles
                 defender.PlaySound(0x213);
                 Effects.SendTargetParticles(defender, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
 
-                ExpireTimer timer = new ExpireTimer(defender);
+                ExpireTimer timer = new ExpireTimer(defender, creature);
                 timer.Start();
 
                 // TODO: 2nd cliloc
@@ -1666,11 +1666,13 @@ namespace Server.Mobiles
 
             private int m_Count;
             private Mobile m_Victim;
+            private Mobile m_Attacker;
 
-            public ExpireTimer(Mobile m)
+            public ExpireTimer(Mobile victim, Mobile attacker)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
             {
-                m_Victim = m;
+                m_Victim = victim;
+                m_Attacker = attacker;
             }
 
             protected override void OnTick()
@@ -1688,7 +1690,7 @@ namespace Server.Mobiles
                 }
                 else if (m_Count > 0)
                 {
-                    AOS.Damage(m_Victim, Utility.RandomMinMax(10, 20), 0, 0, 0, 100, 0);
+                    AOS.Damage(m_Victim, m_Attacker, Utility.RandomMinMax(10, 20), 0, 0, 0, 100, 0);
                     m_Victim.Combatant = null;
                 }
 
