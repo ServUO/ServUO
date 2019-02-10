@@ -7403,7 +7403,7 @@ namespace Server
 
 			if (m_Map != null && ns != null)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalMaxUpdateRange);
+                var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange - 4);
 
 				foreach (IEntity o in eable)
 				{
@@ -7673,7 +7673,7 @@ namespace Server
 
 			if (m_Map != null && ns != null)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location);
+                var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange);
 
 				foreach (var o in eable)
 				{
@@ -10158,7 +10158,7 @@ namespace Server
 					// Check to see if we are attached to a client
 					if (ourState != null)
 					{
-						var eeable = map.GetObjectsInRange(newLocation);
+                        var eeable = map.GetObjectsInRange(newLocation, Core.GlobalRadarRange);
 
 						// We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
 						foreach (IEntity o in eeable)

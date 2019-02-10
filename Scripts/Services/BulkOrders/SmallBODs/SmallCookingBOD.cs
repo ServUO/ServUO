@@ -33,28 +33,28 @@ namespace Server.Engines.BulkOrders
 
                 SmallBulkEntry entry = entries[Utility.Random(entries.Length)];
 
-                this.Hue = 1169;
-                this.AmountMax = amountMax;
-                this.Type = entry.Type;
-                this.Number = entry.Number;
-                this.Graphic = entry.Graphic;
-                this.Material = material;
-                this.RequireExceptional = !nonexceptional && Utility.RandomBool();
-                this.GraphicHue = entry.Hue;
+                Hue = 1169;
+                AmountMax = amountMax;
+                Type = entry.Type;
+                Number = entry.Number;
+                Graphic = entry.Graphic;
+                Material = material;
+                RequireExceptional = !nonexceptional && Utility.RandomBool();
+                GraphicHue = entry.Hue;
             }
         }
 
         public SmallCookingBOD(int amountCur, int amountMax, Type type, int number, int graphic, bool reqExceptional, BulkMaterialType mat, int hue)
         {
-            this.Hue = 1169;
-            this.AmountMax = amountMax;
-            this.AmountCur = amountCur;
-            this.Type = type;
-            this.Number = number;
-            this.Graphic = graphic;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
-            this.GraphicHue = hue;
+            Hue = 1169;
+            AmountMax = amountMax;
+            AmountCur = amountCur;
+            Type = type;
+            Number = number;
+            Graphic = graphic;
+            RequireExceptional = reqExceptional;
+            Material = mat;
+            GraphicHue = hue;
         }
 
         public SmallCookingBOD(Serial serial)
@@ -64,12 +64,23 @@ namespace Server.Engines.BulkOrders
 
         private SmallCookingBOD(SmallBulkEntry entry, int amountMax)
         {
-            this.Hue = 1169;
-            this.AmountMax = amountMax;
-            this.Type = entry.Type;
-            this.Number = entry.Number;
-            this.Graphic = entry.Graphic;
-            this.GraphicHue = entry.Hue;
+            Hue = 1169;
+            AmountMax = amountMax;
+            Type = entry.Type;
+            Number = entry.Number;
+            Graphic = entry.Graphic;
+            GraphicHue = entry.Hue;
+        }
+
+        private SmallCookingBOD(SmallBulkEntry entry, int amountMax, bool reqExceptional)
+        {
+            Hue = 1169;
+            AmountMax = amountMax;
+            Type = entry.Type;
+            Number = entry.Number;
+            Graphic = entry.Graphic;
+            GraphicHue = entry.Hue;
+            RequireExceptional = reqExceptional;
         }
 
         public static SmallCookingBOD CreateRandomFor(Mobile m)
@@ -131,7 +142,7 @@ namespace Server.Engines.BulkOrders
                 if (validEntries.Count > 0)
                 {
                     SmallBulkEntry entry = validEntries[Utility.Random(validEntries.Count)];
-                    return new SmallCookingBOD(entry, amountMax);
+                    return new SmallCookingBOD(entry, amountMax, reqExceptional);
                 }
             }
 

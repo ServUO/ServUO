@@ -1,39 +1,46 @@
 #region References
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+
+using Server;
+using Server.Network;
 #endregion
 
 namespace Server
 {
 	public static class MultiData
 	{
-		private static readonly MultiComponentList[] m_Components;
+        public static Dictionary<int, MultiComponentList> Components { get { return m_Components; } }
+        private static readonly Dictionary<int, MultiComponentList> m_Components;
 
 		private static readonly BinaryReader m_IndexReader;
 		private static readonly BinaryReader m_StreamReader;
 
-		public static MultiComponentList GetComponents(int multiID)
-		{
-			MultiComponentList mcl;
+        public static bool UsingUOPFormat { get; private set; }
 
-			multiID &= 0x3FFF; // The value of the actual multi is shifted by 0x4000, so this is left alone.
+        public static MultiComponentList GetComponents(int multiID)
+        {
+            MultiComponentList mcl;
 
-			if (multiID >= 0 && multiID < m_Components.Length)
-			{
-				mcl = m_Components[multiID];
+            multiID &= 0x3FFF; // The value of the actual multi is shifted by 0x4000, so this is left alone.
 
-				if (mcl == null)
-				{
-					m_Components[multiID] = mcl = Load(multiID);
-				}
-			}
-			else
-			{
-				mcl = MultiComponentList.Empty;
-			}
+            if (m_Components.ContainsKey(multiID))
+            {
+                mcl = m_Components[multiID];
+            }
+            else if (!UsingUOPFormat)
+            {
+                m_Components[multiID] = mcl = Load(multiID);
+            }
+            else
+            {
+                mcl = MultiComponentList.Empty;
+            }
 
-			return mcl;
-		}
+            return mcl;
+        }
 
 		public static MultiComponentList Load(int multiID)
 		{
@@ -59,60 +66,215 @@ namespace Server
 			}
 		}
 
-		static MultiData()
-		{
-			string idxPath = Core.FindDataFile("multi.idx");
-			string mulPath = Core.FindDataFile("multi.mul");
+        public static void UOPLoad(string path)
+        {
+            var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            BinaryReader streamReader = new BinaryReader(stream);
 
-			if (File.Exists(idxPath) && File.Exists(mulPath))
-			{
-				var idx = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-				m_IndexReader = new BinaryReader(idx);
+            // Head Information Start
+            if (streamReader.ReadInt32() != 0x0050594D) // Not a UOP Files
+                return;
 
-				var stream = new FileStream(mulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-				m_StreamReader = new BinaryReader(stream);
+            if (streamReader.ReadInt32() > 5) // Bad Version
+                return;
 
-				m_Components = new MultiComponentList[(int)(idx.Length / 12)];
+            // Multi ID List Array Start
+            var chunkIds = new Dictionary<ulong, int>();
+            var chunkIds2 = new Dictionary<ulong, int>();
 
-				string vdPath = Core.FindDataFile("verdata.mul");
+            UOPHash.BuildChunkIDs(ref chunkIds, ref chunkIds2);
+            // Multi ID List Array End
 
-				if (File.Exists(vdPath))
-				{
-					using (FileStream fs = new FileStream(vdPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-					{
-						BinaryReader bin = new BinaryReader(fs);
+            streamReader.ReadUInt32();                      // format timestamp? 0xFD23EC43
+            long startAddress = streamReader.ReadInt64();
 
-						int count = bin.ReadInt32();
+            int blockSize = streamReader.ReadInt32();       // files in each block
+            int totalSize = streamReader.ReadInt32();       // Total File Count
 
-						for (int i = 0; i < count; ++i)
-						{
-							int file = bin.ReadInt32();
-							int index = bin.ReadInt32();
-							int lookup = bin.ReadInt32();
-							int length = bin.ReadInt32();
-							/*int extra = */bin.ReadInt32();
+            stream.Seek(startAddress, SeekOrigin.Begin);    // Head Information End
 
-							if (file == 14 && index >= 0 && index < m_Components.Length && lookup >= 0 && length > 0)
-							{
-								bin.BaseStream.Seek(lookup, SeekOrigin.Begin);
+            long nextBlock;
 
-								m_Components[index] = new MultiComponentList(bin, length / 12);
+            do
+            {
+                int blockFileCount = streamReader.ReadInt32();
+                nextBlock = streamReader.ReadInt64();
 
-								bin.BaseStream.Seek(24 + (i * 20), SeekOrigin.Begin);
-							}
-						}
+                int index = 0;
 
-						bin.Close();
-					}
-				}
-			}
-			else
-			{
-				Console.WriteLine("Warning: Multi data files not found");
+                do
+                {
+                    long offset = streamReader.ReadInt64();
 
-				m_Components = new MultiComponentList[0];
-			}
-		}
+                    int headerSize = streamReader.ReadInt32();          // header length
+                    int compressedSize = streamReader.ReadInt32();      // compressed size
+                    int decompressedSize = streamReader.ReadInt32();    // decompressed size
+
+                    ulong filehash = streamReader.ReadUInt64();         // filename hash (HashLittle2)
+                    uint datablockhash = streamReader.ReadUInt32();     // data hash (Adler32)
+                    short flag = streamReader.ReadInt16();              // compression method (0 = none, 1 = zlib)
+
+                    index++;
+
+                    if (offset == 0 || decompressedSize == 0 || filehash == 0x126D1E99DDEDEE0A) // Exclude housing.bin
+                        continue;
+
+                    // Multi ID Search Start
+                    int chunkID = -1;
+
+                    if (!chunkIds.TryGetValue(filehash, out chunkID))
+                    {
+                        int tmpChunkID = 0;
+
+                        if (chunkIds2.TryGetValue(filehash, out tmpChunkID))
+                        {
+                            chunkID = tmpChunkID;
+                        }
+                    }
+                    // Multi ID Search End                        
+
+                    long positionpoint = stream.Position;  // save current position
+
+                    // Decompress Data Start
+                    stream.Seek(offset + headerSize, SeekOrigin.Begin);
+
+                    byte[] sourceData = new byte[compressedSize];
+
+                    if (stream.Read(sourceData, 0, compressedSize) != compressedSize)
+                        continue;
+
+                    byte[] data;
+
+                    if (flag == 1)
+                    {
+                        byte[] destData = new byte[decompressedSize];
+                        /*ZLibError error = */Compression.Compressor.Decompress(destData, ref decompressedSize, sourceData, compressedSize);
+
+                        data = destData;
+                    }
+                    else
+                    {
+                        data = sourceData;
+                    }
+                    // End Decompress Data
+
+                    var tileList = new List<MultiTileEntry>();
+
+                    using (MemoryStream fs = new MemoryStream(data))
+                    {
+                        using (BinaryReader reader = new BinaryReader(fs))
+                        {
+                            uint a = reader.ReadUInt32();
+                            uint count = reader.ReadUInt32();
+
+                            for (uint i = 0; i < count; i++)
+                            {
+                                ushort ItemId = reader.ReadUInt16();
+                                short x = reader.ReadInt16();
+                                short y = reader.ReadInt16();
+                                short z = reader.ReadInt16();
+
+                                ushort flagint = reader.ReadUInt16();
+
+                                TileFlag flagg;
+
+                                switch (flagint)
+                                {
+                                    default:
+                                    case 0: { flagg = TileFlag.Background; break; }
+                                    case 1: { flagg = TileFlag.None; break; }
+                                    case 257: { flagg = TileFlag.Generic; break; }
+                                }
+
+                                uint clilocsCount = reader.ReadUInt32();
+
+                                if (clilocsCount != 0)
+                                {
+                                    fs.Seek(fs.Position + (clilocsCount * 4), SeekOrigin.Begin); // binary block bypass
+                                }
+
+                                tileList.Add(new MultiTileEntry(ItemId, x, y, z, flagg));
+                            }
+
+                            reader.Close();
+                        }
+                    }
+
+                    m_Components[chunkID] = new MultiComponentList(tileList);
+
+                    stream.Seek(positionpoint, SeekOrigin.Begin); // back to position
+                }
+                while (index < blockFileCount);
+            }
+            while (stream.Seek(nextBlock, SeekOrigin.Begin) != 0);
+
+            chunkIds.Clear();
+            chunkIds2.Clear();
+        }
+
+        static MultiData()
+        {
+            m_Components = new Dictionary<int, MultiComponentList>();
+
+            string multicollectionPath = Core.FindDataFile("MultiCollection.uop");
+
+            if (File.Exists(multicollectionPath))
+            {
+                UOPLoad(multicollectionPath);
+                UsingUOPFormat = true;
+            }
+            else
+            {
+                string idxPath = Core.FindDataFile("multi.idx");
+                string mulPath = Core.FindDataFile("multi.mul");
+
+                if (File.Exists(idxPath) && File.Exists(mulPath))
+                {
+                    var idx = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    m_IndexReader = new BinaryReader(idx);
+
+                    var stream = new FileStream(mulPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    m_StreamReader = new BinaryReader(stream);
+
+                    string vdPath = Core.FindDataFile("verdata.mul");
+
+                    if (File.Exists(vdPath))
+                    {
+                        using (FileStream fs = new FileStream(vdPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            BinaryReader bin = new BinaryReader(fs);
+
+                            int count = bin.ReadInt32();
+
+                            for (int i = 0; i < count; ++i)
+                            {
+                                int file = bin.ReadInt32();
+                                int index = bin.ReadInt32();
+                                int lookup = bin.ReadInt32();
+                                int length = bin.ReadInt32();
+                                /*int extra = */
+                                bin.ReadInt32();
+
+                                if (file == 14 && index >= 0 && lookup >= 0 && length > 0)
+                                {
+                                    bin.BaseStream.Seek(lookup, SeekOrigin.Begin);
+
+                                    m_Components[index] = new MultiComponentList(bin, length / 12);
+
+                                    bin.BaseStream.Seek(24 + (i * 20), SeekOrigin.Begin);
+                                }
+                            }
+
+                            bin.Close();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Warning: Multi data files not found!");
+                    }
+                }
+            }
+        }
 	}
 
 	public struct MultiTileEntry
@@ -651,10 +813,184 @@ namespace Server
 			}
 		}
 
+        public MultiComponentList(List<MultiTileEntry> list)
+        {
+            var allTiles = m_List = new MultiTileEntry[list.Count];
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                allTiles[i].m_ItemID = list[i].m_ItemID;
+                allTiles[i].m_OffsetX = list[i].m_OffsetX;
+                allTiles[i].m_OffsetY = list[i].m_OffsetY;
+                allTiles[i].m_OffsetZ = list[i].m_OffsetZ;
+
+                allTiles[i].m_Flags = list[i].m_Flags;
+
+                MultiTileEntry e = allTiles[i];
+
+                if (i == 0 || e.m_Flags != 0)
+                {
+                    if (e.m_OffsetX < m_Min.m_X)
+                    {
+                        m_Min.m_X = e.m_OffsetX;
+                    }
+
+                    if (e.m_OffsetY < m_Min.m_Y)
+                    {
+                        m_Min.m_Y = e.m_OffsetY;
+                    }
+
+                    if (e.m_OffsetX > m_Max.m_X)
+                    {
+                        m_Max.m_X = e.m_OffsetX;
+                    }
+
+                    if (e.m_OffsetY > m_Max.m_Y)
+                    {
+                        m_Max.m_Y = e.m_OffsetY;
+                    }
+                }
+            }
+
+            m_Center = new Point2D(-m_Min.m_X, -m_Min.m_Y);
+            m_Width = (m_Max.m_X - m_Min.m_X) + 1;
+            m_Height = (m_Max.m_Y - m_Min.m_Y) + 1;
+
+            var tiles = new TileList[m_Width][];
+            m_Tiles = new StaticTile[m_Width][][];
+
+            for (int x = 0; x < m_Width; ++x)
+            {
+                tiles[x] = new TileList[m_Height];
+                m_Tiles[x] = new StaticTile[m_Height][];
+
+                for (int y = 0; y < m_Height; ++y)
+                {
+                    tiles[x][y] = new TileList();
+                }
+            }
+
+            for (int i = 0; i < allTiles.Length; ++i)
+            {
+                if (i == 0 || allTiles[i].m_Flags != 0)
+                {
+                    int xOffset = allTiles[i].m_OffsetX + m_Center.m_X;
+                    int yOffset = allTiles[i].m_OffsetY + m_Center.m_Y;
+                    int itemID = ((allTiles[i].m_ItemID & TileData.MaxItemValue) | 0x10000);
+
+                    tiles[xOffset][yOffset].Add((ushort)itemID, (sbyte)allTiles[i].m_OffsetZ);
+                }
+            }
+
+            for (int x = 0; x < m_Width; ++x)
+            {
+                for (int y = 0; y < m_Height; ++y)
+                {
+                    m_Tiles[x][y] = tiles[x][y].ToArray();
+                }
+            }
+        }
+
 		private MultiComponentList()
 		{
 			m_Tiles = new StaticTile[0][][];
 			m_List = new MultiTileEntry[0];
 		}
 	}
+
+    public class UOPHash
+    {
+        public static void BuildChunkIDs(ref Dictionary<ulong, int> chunkIds, ref Dictionary<ulong, int> chunkIds2)
+        {
+            int maxId;
+
+            string[] formats = GetHashFormat(0, out maxId);
+
+            for (int i = 0; i < maxId; ++i)
+            {
+                chunkIds[HashLittle2(String.Format(formats[0], i))] = i;
+            }
+            if (formats[1] != "")
+            {
+                for (int i = 0; i < maxId; ++i)
+                    chunkIds2[HashLittle2(String.Format(formats[1], i))] = i;
+            }
+        }
+
+        private static string[] GetHashFormat(int typeIndex, out int maxId)
+        {
+            /*
+			 * MaxID is only used for constructing a lookup table.
+			 * Decrease to save some possibly unneeded computation.
+			 */
+            maxId = 0x10000;
+
+            return new string[] { "build/multicollection/{0:000000}.bin", "" };
+        }
+
+        private static ulong HashLittle2(string s)
+        {
+            int length = s.Length;
+
+            uint a, b, c;
+            a = b = c = 0xDEADBEEF + (uint)length;
+
+            int k = 0;
+
+            while (length > 12)
+            {
+                a += s[k];
+                a += ((uint)s[k + 1]) << 8;
+                a += ((uint)s[k + 2]) << 16;
+                a += ((uint)s[k + 3]) << 24;
+                b += s[k + 4];
+                b += ((uint)s[k + 5]) << 8;
+                b += ((uint)s[k + 6]) << 16;
+                b += ((uint)s[k + 7]) << 24;
+                c += s[k + 8];
+                c += ((uint)s[k + 9]) << 8;
+                c += ((uint)s[k + 10]) << 16;
+                c += ((uint)s[k + 11]) << 24;
+
+                a -= c; a ^= ((c << 4) | (c >> 28)); c += b;
+                b -= a; b ^= ((a << 6) | (a >> 26)); a += c;
+                c -= b; c ^= ((b << 8) | (b >> 24)); b += a;
+                a -= c; a ^= ((c << 16) | (c >> 16)); c += b;
+                b -= a; b ^= ((a << 19) | (a >> 13)); a += c;
+                c -= b; c ^= ((b << 4) | (b >> 28)); b += a;
+
+                length -= 12;
+                k += 12;
+            }
+
+            if (length != 0)
+            {
+                switch (length)
+                {
+                    case 12: c += ((uint)s[k + 11]) << 24; goto case 11;
+                    case 11: c += ((uint)s[k + 10]) << 16; goto case 10;
+                    case 10: c += ((uint)s[k + 9]) << 8; goto case 9;
+                    case 9: c += s[k + 8]; goto case 8;
+                    case 8: b += ((uint)s[k + 7]) << 24; goto case 7;
+                    case 7: b += ((uint)s[k + 6]) << 16; goto case 6;
+                    case 6: b += ((uint)s[k + 5]) << 8; goto case 5;
+                    case 5: b += s[k + 4]; goto case 4;
+                    case 4: a += ((uint)s[k + 3]) << 24; goto case 3;
+                    case 3: a += ((uint)s[k + 2]) << 16; goto case 2;
+                    case 2: a += ((uint)s[k + 1]) << 8; goto case 1;
+                    case 1: a += s[k]; break;
+                }
+
+                c ^= b; c -= ((b << 14) | (b >> 18));
+                a ^= c; a -= ((c << 11) | (c >> 21));
+                b ^= a; b -= ((a << 25) | (a >> 7));
+                c ^= b; c -= ((b << 16) | (b >> 16));
+                a ^= c; a -= ((c << 4) | (c >> 28));
+                b ^= a; b -= ((a << 14) | (a >> 18));
+                c ^= b; c -= ((b << 24) | (b >> 8));
+            }
+
+            return ((ulong)b << 32) | c;
+        }
+    }
 }

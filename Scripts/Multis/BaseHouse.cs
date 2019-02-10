@@ -1611,9 +1611,7 @@ namespace Server.Multis
         {
             BaseDoor door = MakeDoor(wood, DoorFacing.SouthCW);
 
-            door.Locked = true;
             door.KeyValue = k;
-
             AddDoor(door, x, y, z);
 
             return door;
@@ -1628,9 +1626,7 @@ namespace Server.Multis
         {
             BaseDoor door = MakeDoor(wood, DoorFacing.WestCW);
 
-            door.Locked = true;
             door.KeyValue = k;
-
             AddDoor(door, x, y, z);
 
             return door;
@@ -1646,9 +1642,6 @@ namespace Server.Multis
             BaseDoor westDoor = MakeDoor(wood, DoorFacing.WestCW);
             BaseDoor eastDoor = MakeDoor(wood, DoorFacing.EastCCW);
 
-            westDoor.Locked = true;
-            eastDoor.Locked = true;
-
             westDoor.KeyValue = k;
             eastDoor.KeyValue = k;
 
@@ -1659,6 +1652,290 @@ namespace Server.Multis
             AddDoor(eastDoor, x + 1, y, z);
 
             return new BaseDoor[2] { westDoor, eastDoor };
+        }
+
+        public BaseDoor[] AddEastDoors(int x, int y, int z, uint k)
+        {
+            return AddEastDoors(true, x, y, z, k, false);
+        }
+
+        public BaseDoor[] AddEastDoors(bool wood, int x, int y, int z, uint k)
+        {
+            return AddEastDoors(wood, x, y, z, k, false, false);
+        }
+
+        public BaseDoor[] AddEastDoors(bool wood, int x, int y, int z, uint k, bool invert)
+        {
+            return AddEastDoors(wood, x, y, z, k, invert, false);
+        }
+
+        public BaseDoor[] AddEastDoors(bool wood, int x, int y, int z)
+        {
+            return AddEastDoors(wood, x, y, z, 0, false, false);
+        }
+
+        public BaseDoor[] AddEastDoors(bool wood, int x, int y, int z, bool invert, bool altopen)
+        {
+            return AddEastDoors(wood, x, y, z, 0, invert, altopen);
+        }
+
+        public BaseDoor[] AddEastDoors(bool wood, int x, int y, int z, uint k, bool invert, bool altopen)
+        {
+            BaseDoor northDoor = MakeDoor(wood, invert ? DoorFacing.SouthCCW : altopen ? DoorFacing.NorthCCW : DoorFacing.NorthCW);
+            BaseDoor southDoor = MakeDoor(wood, invert ? DoorFacing.NorthCW : altopen ? DoorFacing.SouthCW : DoorFacing.SouthCCW);
+
+            northDoor.KeyValue = k;
+            southDoor.KeyValue = k;
+
+            northDoor.Link = southDoor;
+            southDoor.Link = northDoor;
+
+            AddDoor(northDoor, x, y, z);
+            AddDoor(southDoor, x, y + 1, z);
+
+            return new BaseDoor[2] { northDoor, southDoor };
+        }
+
+        protected void ConvertDoor(BaseDoor door, int closedID, bool invert)
+        {
+            door.ItemID = closedID;
+            door.ClosedID = closedID;
+            door.OpenedID = closedID + 1;
+        }
+
+        protected BaseDoor AddDoor(int itemID, int xOffset, int yOffset, int zOffset)
+        {
+            return AddDoor(null, itemID, xOffset, yOffset, zOffset);
+        }
+
+        protected BaseDoor AddDoor(Mobile from, int itemID, int xOffset, int yOffset, int zOffset)
+        {
+            BaseDoor door = null;
+
+            if (itemID >= 0x675 && itemID < 0x6F5)
+            {
+                int type = (itemID - 0x675) / 16;
+                DoorFacing facing = (DoorFacing)(((itemID - 0x675) / 2) % 8);
+
+                switch (type)
+                {
+                    case 0:
+                        door = new GenericHouseDoor(facing, 0x675, 0xEC, 0xF3);
+                        break;
+                    case 1:
+                        door = new GenericHouseDoor(facing, 0x685, 0xEC, 0xF3);
+                        break;
+                    case 2:
+                        door = new GenericHouseDoor(facing, 0x695, 0xEB, 0xF2);
+                        break;
+                    case 3:
+                        door = new GenericHouseDoor(facing, 0x6A5, 0xEA, 0xF1);
+                        break;
+                    case 4:
+                        door = new GenericHouseDoor(facing, 0x6B5, 0xEA, 0xF1);
+                        break;
+                    case 5:
+                        door = new GenericHouseDoor(facing, 0x6C5, 0xEC, 0xF3);
+                        break;
+                    case 6:
+                        door = new GenericHouseDoor(facing, 0x6D5, 0xEA, 0xF1);
+                        break;
+                    case 7:
+                        door = new GenericHouseDoor(facing, 0x6E5, 0xEA, 0xF1);
+                        break;
+                }
+            }
+            else if (itemID >= 0x314 && itemID < 0x364)
+            {
+                int type = (itemID - 0x314) / 16;
+                DoorFacing facing = (DoorFacing)(((itemID - 0x314) / 2) % 8);
+                door = new GenericHouseDoor(facing, 0x314 + (type * 16), 0xED, 0xF4);
+            }
+            else if (itemID >= 0x824 && itemID < 0x834)
+            {
+                DoorFacing facing = (DoorFacing)(((itemID - 0x824) / 2) % 8);
+                door = new GenericHouseDoor(facing, 0x824, 0xEC, 0xF3);
+            }
+            else if (itemID >= 0x839 && itemID < 0x849)
+            {
+                DoorFacing facing = (DoorFacing)(((itemID - 0x839) / 2) % 8);
+                door = new GenericHouseDoor(facing, 0x839, 0xEB, 0xF2);
+            }
+            else if (itemID >= 0x84C && itemID < 0x85C)
+            {
+                DoorFacing facing = (DoorFacing)(((itemID - 0x84C) / 2) % 8);
+                door = new GenericHouseDoor(facing, 0x84C, 0xEC, 0xF3);
+            }
+            else if (itemID >= 0x866 && itemID < 0x876)
+            {
+                DoorFacing facing = (DoorFacing)(((itemID - 0x866) / 2) % 8);
+                door = new GenericHouseDoor(facing, 0x866, 0xEB, 0xF2);
+            }
+            else if (itemID >= 0xE8 && itemID < 0xF8)
+            {
+                DoorFacing facing = (DoorFacing)(((itemID - 0xE8) / 2) % 8);
+                door = new GenericHouseDoor(facing, 0xE8, 0xED, 0xF4);
+            }
+            else if (itemID >= 0x1FED && itemID < 0x1FFD)
+            {
+                DoorFacing facing = (DoorFacing)(((itemID - 0x1FED) / 2) % 8);
+                door = new GenericHouseDoor(facing, 0x1FED, 0xEC, 0xF3);
+            }
+            else if (itemID >= 0x241F && itemID < 0x2421)
+            {
+                //DoorFacing facing = (DoorFacing)(((itemID - 0x241F) / 2) % 8);
+                door = new GenericHouseDoor(DoorFacing.NorthCCW, 0x2415, -1, -1);
+            }
+            else if (itemID >= 0x2423 && itemID < 0x2425)
+            {
+                //DoorFacing facing = (DoorFacing)(((itemID - 0x241F) / 2) % 8);
+                //This one and the above one are 'special' cases, ie: OSI had the ItemID pattern discombobulated for these
+                door = new GenericHouseDoor(DoorFacing.WestCW, 0x2423, -1, -1);
+            }
+            else if (itemID >= 0x2A05 && itemID < 0x2A1D)
+            {
+                DoorFacing facing = (DoorFacing)((((itemID - 0x2A05) / 2) % 4) + 8);
+
+                int sound = (itemID >= 0x2A0D && itemID < 0x2a15) ? 0x539 : -1;
+
+                door = new GenericHouseDoor(facing, 0x29F5 + (8 * ((itemID - 0x2A05) / 8)), sound, sound);
+            }
+            else if (itemID == 0x2D46)
+            {
+                door = new GenericHouseDoor(DoorFacing.NorthCW, 0x2D46, 0xEA, 0xF1, false);
+            }
+            else if (itemID == 0x2D48 || itemID == 0x2FE2)
+            {
+                door = new GenericHouseDoor(DoorFacing.SouthCCW, itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x2D63 && itemID < 0x2D70)
+            {
+                int mod = (itemID - 0x2D63) / 2 % 2;
+                DoorFacing facing = ((mod == 0) ? DoorFacing.SouthCCW : DoorFacing.WestCCW);
+
+                int type = (itemID - 0x2D63) / 4;
+
+                door = new GenericHouseDoor(facing, 0x2D63 + 4 * type + mod * 2, 0xEA, 0xF1, false);
+            }
+            else if (itemID == 0x2FE4 || itemID == 0x31AE)
+            {
+                door = new GenericHouseDoor(DoorFacing.WestCCW, itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x319C && itemID < 0x31AE)
+            {
+                //special case for 0x31aa <-> 0x31a8 (a9)
+                int mod = (itemID - 0x319C) / 2 % 2;
+
+                //bool specialCase = (itemID == 0x31AA || itemID == 0x31A8);
+
+                DoorFacing facing;
+
+                if (itemID == 0x31AA || itemID == 0x31A8)
+                    facing = ((mod == 0) ? DoorFacing.NorthCW : DoorFacing.EastCW);
+                else
+                    facing = ((mod == 0) ? DoorFacing.EastCW : DoorFacing.NorthCW);
+
+                int type = (itemID - 0x319C) / 4;
+
+                door = new GenericHouseDoor(facing, 0x319C + 4 * type + mod * 2, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x367B && itemID < 0x369B)
+            {
+                int type = (itemID - 0x367B) / 16;
+                DoorFacing facing = (DoorFacing)(((itemID - 0x367B) / 2) % 8);
+
+                switch (type)
+                {
+                    case 0:
+                        door = new GenericHouseDoor(facing, 0x367B, 0xED, 0xF4);
+                        break;	//crystal
+                    case 1:
+                        door = new GenericHouseDoor(facing, 0x368B, 0xEC, 0x3E7);
+                        break;	//shadow
+                }
+            }
+            else if (itemID >= 0x409B && itemID < 0x40A3)
+            {
+                door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x409B), itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x410C && itemID < 0x4114)
+            {
+                door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x410C), itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x41C2 && itemID < 0x41CA)
+            {
+                door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x41C2), itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x41CF && itemID < 0x41D7)
+            {
+                door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x41CF), itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x436E && itemID < 0x437E)
+            {
+                /* These ones had to be different...
+                * Offset		0	2	4	6	8	10	12	14
+                * DoorFacing	2	3	2	3	6	7	6	7
+                */
+                int offset = itemID - 0x436E;
+                DoorFacing facing = (DoorFacing)((offset / 2 + 2 * ((1 + offset / 4) % 2)) % 8);
+                door = new GenericHouseDoor(facing, itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x46DD && itemID < 0x46E5)
+            {
+                door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x46DD), itemID, 0xEB, 0xF2, false);
+            }
+            else if (itemID >= 0x4D22 && itemID < 0x4D2A)
+            {
+                door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x4D22), itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x50C8 && itemID < 0x50D0)
+            {
+                door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x50C8), itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x50D0 && itemID < 0x50D8)
+            {
+                door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x50D0), itemID, 0xEA, 0xF1, false);
+            }
+            else if (itemID >= 0x5142 && itemID < 0x514A)
+            {
+                door = new GenericHouseDoor(GetSADoorFacing(itemID - 0x5142), itemID, 0xF0, 0xEF, false);
+            }
+            else if (itemID >= 0x9AD7 && itemID <= 0x9AE6)
+            {
+                int type = (itemID - 0x9AD7) / 16;
+                DoorFacing facing = (DoorFacing)(((itemID - 0x9AD7) / 2) % 8);
+                door = new GenericHouseDoor(facing, 0x9AD7 + (type * 16), 0xED, 0xF4);
+            }
+            else if (itemID >= 0x9B3C && itemID <= 0x9B4B)
+            {
+                int type = (itemID - 0x9B3C) / 16;
+                DoorFacing facing = (DoorFacing)(((itemID - 0x9B3C) / 2) % 8);
+                door = new GenericHouseDoor(facing, 0x9B3C + (type * 16), 0xED, 0xF4);
+            }
+
+            if (door != null)
+            {
+                if (from != null)
+                {
+                    door.KeyValue = CreateKeys(from);
+                }
+
+                AddDoor(door, xOffset, yOffset, zOffset);
+            }
+            else
+            {
+                Console.WriteLine("Warning: Unsupported DoorID: {0}", itemID);
+            }
+
+            return door;
+        }
+
+        private static DoorFacing GetSADoorFacing(int offset)
+        {
+            /* Offset		0	2	4	6
+            * DoorFacing	2	3	6	7
+            */
+            return (DoorFacing)((offset / 2 + 2 * (1 + offset / 4)) % 8);
         }
 
         public uint CreateKeys(Mobile m)
@@ -1692,6 +1969,11 @@ namespace Server.Multis
             return AddSouthDoors(true, x, y, z, false);
         }
 
+        public BaseDoor[] AddSouthDoors(bool wood, int x, int y, int z)
+        {
+            return AddSouthDoors(wood, x, y, z, false);
+        }
+
         public BaseDoor[] AddSouthDoors(bool wood, int x, int y, int z, bool inv)
         {
             BaseDoor westDoor = MakeDoor(wood, inv ? DoorFacing.WestCCW : DoorFacing.WestCW);
@@ -1716,6 +1998,8 @@ namespace Server.Multis
 
         public void AddDoor(BaseDoor door, int xoff, int yoff, int zoff)
         {
+            door.Locked = true;
+
             door.MoveToWorld(new Point3D(xoff + X, yoff + Y, zoff + Z), Map);
             m_Doors.Add(door);
         }

@@ -1069,12 +1069,12 @@ namespace Server
             }
             catch
             {
-		if(Core.Debug)
-		{
-                	Utility.PushColor(ConsoleColor.Red);
-                	Console.WriteLine("Ultima Art: Unable to read client files.");
-                	Utility.PopColor();
-		}
+                if (Core.Debug)
+                {
+                    Utility.PushColor(ConsoleColor.Red);
+                    Console.WriteLine("Ultima Art: Unable to read client files.");
+                    Utility.PopColor();
+                }
             }
 
             return null;
@@ -1860,13 +1860,13 @@ namespace Server
 
                     if (oldLocation.m_X != 0)
                     {
-                        var eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalMaxUpdateRange);
+                        var eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalRadarRange - 4);
 
                         foreach (NetState state in eable)
                         {
                             Mobile m = state.Mobile;
 
-                            if (m.InUpdateRange(oldLocation))
+                            if (Utility.InRange(oldLocation, m.Location, GetUpdateRange(m)))
                             {
                                 state.Send(RemovePacket);
                             }
@@ -1902,13 +1902,13 @@ namespace Server
 
                 if (m_Map != null)
                 {
-                    var eable = m_Map.GetClientsInRange(m_Location, Core.GlobalMaxUpdateRange);
+                    var eable = m_Map.GetClientsInRange(m_Location, Core.GlobalRadarRange);
 
                     foreach (NetState state in eable)
                     {
                         Mobile m = state.Mobile;
 
-                        if (m.CanSee(this) && m.InUpdateRange(m_Location))
+                        if (m.CanSee(this) && Utility.InRange(m_Location, m.Location, GetUpdateRange(m)))
                         {
                             SendInfoTo(state);
                         }
@@ -5505,13 +5505,13 @@ namespace Server
             {
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalRadarRange - 4);
 
                 foreach (NetState state in eable)
                 {
                     Mobile m = state.Mobile;
 
-                    if (m.InUpdateRange(worldLoc))
+                    if (Utility.InRange(worldLoc, m.Location, GetUpdateRange(m)))
                     {
                         state.Send(RemovePacket);
                     }

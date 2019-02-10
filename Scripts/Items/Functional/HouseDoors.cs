@@ -191,7 +191,7 @@ namespace Server.Items
 
         public override void Use(Mobile from)
         {
-            if (!CheckAccess(from))
+            if (from.AccessLevel == AccessLevel.Player && !CheckAccess(from))
                 from.SendLocalizedMessage(1061637); // You are not allowed to access 
             else
                 base.Use(from);

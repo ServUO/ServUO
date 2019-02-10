@@ -2,40 +2,33 @@ using System;
 
 namespace Server.Items
 {
-    public class SerpentFangKey : PeerlessKey
+    [Flipable(0x4F7C, 0x4F7D)]
+    public class CupidStatue : Item
     {
+        public override int LabelNumber { get { return 1099220; } } // cupid statue
+
         [Constructable]
-        public SerpentFangKey()
-            : base(0x2002)
+        public CupidStatue()
+            : base(0x4F7C)
         {
-            Weight = 2.0;
-            Hue = 53;
+            Weight = 1.0;
             LootType = LootType.Blessed;
         }
 
-        public SerpentFangKey(Serial serial)
+        public CupidStatue(Serial serial)
             : base(serial)
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074341;
-            }
-        }// serpent fang key
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }

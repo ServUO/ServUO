@@ -417,6 +417,7 @@ namespace Server
         BarakoDraftOfMight,
         UraliTranceTonic,
         SakkhraProphylaxis,
+        CaddelliteInfused = 1186,
         MysticalPolymorphTotem = 1188
     }
 

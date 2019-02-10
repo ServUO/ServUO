@@ -90,7 +90,7 @@ namespace Server.Engines.UOStore
             // Character
             cat = StoreCategory.Character;
 
-            Register<HABPromotionalToken>(new TextDefinition[] { 1158741, 1156615 }, 1158740, 0xA276, 0, 0, 600, cat);
+            Register<HABPromotionalToken>(new TextDefinition[] { 1158741, 1156615 }, 1158740, 0x2AAA, 0, 0, 600, cat);
             Register<MysticalPolymorphTotem>(1158780, 1158781, 0xA276, 0, 0, 600, cat);
             //Register<DeluxeStarterPackToken>(1158368, 1158369, 0, 0x9CCB, 0, 2000, cat);
             Register<GreenGoblinStatuette>(1125133, 1158015, 0xA095, 0, 0, 600, cat);

@@ -559,10 +559,14 @@
     <Compile Include="Items\Addons\CodexOfVirtue.cs" />
     <Compile Include="Items\Addons\BuffetTable.cs" />
     <Compile Include="Items\Addons\FormalDiningTable.cs" />
+    <Compile Include="Items\Decorative\CupidStatue.cs" />
+    <Compile Include="Items\Consumables\ValentineChocolate.cs" />
+    <Compile Include="Items\Containers\HeartShapedBox.cs" />
     <Compile Include="Items\Decorative\UltimaBanner.cs" />
     <Compile Include="Items\Decorative\EnchantedWheelbarrow.cs" />
     <Compile Include="Items\Decorative\FlamingScarecrow.cs" />
     <Compile Include="Items\Decorative\SilverSaplingReplica.cs" />
+    <Compile Include="Items\Decorative\ValentineBear.cs" />
     <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
     <Compile Include="Items\Addons\ClawFootTub.cs" />
     <Compile Include="Items\Addons\GreenMarbleFireplace.cs" />
@@ -697,6 +701,7 @@
     <Compile Include="Items\Tools\WhiteLeatherDyeTub.cs" />
     <Compile Include="Misc\Aggression.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
+    <Compile Include="Multis\ContestHouses.cs" />
     <Compile Include="Services\DailyRares.cs" />
     <Compile Include="Services\Expansions\MondainsLegacy.cs" />
     <Compile Include="Services\GiftGiving\HolidayGiftBox2018.cs" />
@@ -1031,6 +1036,7 @@
     <Compile Include="Items\StoreBought\GenderChangeToken.cs" />
     <Compile Include="Items\StoreBought\GreenGoblinStatuette.cs" />
     <Compile Include="Items\StoreBought\GreyGoblinStatuette.cs" />
+    <Compile Include="Items\StoreBought\HABPromotionalToken.cs" />
     <Compile Include="Items\StoreBought\HaochisPigments.cs" />
     <Compile Include="Items\StoreBought\HildebrandtDragonRug.cs" />
     <Compile Include="Items\StoreBought\HoodedBritanniaRobe.cs" />
@@ -1519,9 +1525,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Quest\ShimmeringCrystal.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Consumables\HABPromotionalToken.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\PublicMoongate.cs">
@@ -4325,6 +4328,27 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Armor\WoodlandLegs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Phoenix\PhoenixArms.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Phoenix\PhoenixChest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Phoenix\PhoenixGloves.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Phoenix\PhoenixGorget.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Phoenix\PhoenixHelm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Phoenix\PhoenixLegs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Phoenix\PhoenixTicket.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Ranger\RangerArms.cs">

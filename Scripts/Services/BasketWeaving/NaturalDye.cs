@@ -144,30 +144,14 @@ namespace Server.Items
 
                 Item item = targeted as Item;
 
-                if (null != item)
+                if (item != null)
                 {
-                    if (!item.IsChildOf(from.Backpack))
-                    {                        
-                        from.SendLocalizedMessage(1060640); // The item must be in your backpack to use it.
-                        return;
-                    }
-
                     bool valid = (item is IDyable || item is BaseTalisman ||
-                                  item is BaseBook || item is BaseClothing ||
-                                  item is BaseJewel || item is BaseStatuette ||
-                                  item is BaseWeapon || item is Runebook ||
-                                  item is Spellbook || item is DecorativePlant ||
-                                  item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
-
-                    if (!valid && item is BaseArmor)
-                    {
-                        CraftResourceType restype = CraftResources.GetType(((BaseArmor)item).Resource);
-                        if ((CraftResourceType.Leather == restype || CraftResourceType.Metal == restype) &&
-                            ArmorMaterialType.Bone != ((BaseArmor)item).MaterialType)
-                        {
-                            valid = true;
-                        }
-                    }
+                        item is BaseBook || item is BaseClothing ||
+                        item is BaseJewel || item is BaseStatuette ||
+                        item is BaseWeapon || item is Runebook ||
+                        item is Spellbook || item is DecorativePlant ||
+                        item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
 
                     if (!valid && FurnitureAttribute.Check(item))
                     {
@@ -192,6 +176,21 @@ namespace Server.Items
                             }
                             else
                                 valid = true;
+                        }
+                    }
+                    else if (!item.IsChildOf(from.Backpack))
+                    {
+                        from.SendLocalizedMessage(1060640); // The item must be in your backpack to use it.
+                        return;
+                    }
+
+                    if (!valid && item is BaseArmor)
+                    {
+                        CraftResourceType restype = CraftResources.GetType(((BaseArmor)item).Resource);
+                        if ((CraftResourceType.Leather == restype || CraftResourceType.Metal == restype) &&
+                            ArmorMaterialType.Bone != ((BaseArmor)item).MaterialType)
+                        {
+                            valid = true;
                         }
                     }
 
