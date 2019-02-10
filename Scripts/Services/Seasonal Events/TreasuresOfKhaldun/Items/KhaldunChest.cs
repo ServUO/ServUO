@@ -9,6 +9,8 @@ namespace Server.Items
 
         public override int DefaultGumpID { get { return 0x49; } }
 
+        public bool CheckWhenHidden { get { return true; } }
+
         [Constructable]
         public KhaldunChest()
             : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9))

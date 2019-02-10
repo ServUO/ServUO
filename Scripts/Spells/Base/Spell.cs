@@ -513,6 +513,11 @@ namespace Server.Spells
                 SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(atkBook.Slayer);
                 SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkBook.Slayer2);
 
+                if (atkSlayer == null && atkSlayer2 == null)
+                {
+                    atkSlayer = SlayerGroup.GetEntryByName(SlayerSocket.GetSlayer(atkBook));
+                }
+
                 if (atkSlayer != null && atkSlayer.Slays(defender) || atkSlayer2 != null && atkSlayer2.Slays(defender))
                 {
                     defender.FixedEffect(0x37B9, 10, 5);

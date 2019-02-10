@@ -41,7 +41,7 @@ namespace Server.Gumps
             {
                 if (ai.Attacker.Player && ai.CanReportMurder && !ai.Reported)
                 {
-                    if (!Core.SE || !((PlayerMobile)m).RecentlyReported.Contains(ai.Attacker))
+                    if (!Core.SE || !((PlayerMobile)m).RecentlyReported.Contains(ai.Attacker) && !killers.Contains(ai.Attacker))
                     {
                         killers.Add(ai.Attacker);
                         ai.Reported = true;

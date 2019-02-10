@@ -14,6 +14,7 @@ namespace Server.Items
 		public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
 		
         public override int LabelNumber { get { return 1113296; } } // Armed Floor Trap
+        public bool CheckWhenHidden { get { return true; } }
 
 		[Constructable]
 		public GoblinFloorTrap() : this( null )

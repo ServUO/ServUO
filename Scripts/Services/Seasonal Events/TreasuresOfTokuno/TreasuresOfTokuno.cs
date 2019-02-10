@@ -145,16 +145,16 @@ namespace Server.Misc
             return (m.Map == Map.Tokuno);
         }
 
-        public static void HandleKill(Mobile victim, Mobile killer)
+        public static bool HandleKill(Mobile victim, Mobile killer)
         {
             PlayerMobile pm = killer as PlayerMobile;
             BaseCreature bc = victim as BaseCreature;
 
             if (DropEra == TreasuresOfTokunoEra.None || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18) || !pm.Alive)
-                return;
+                return false;
 
             if (bc.Controlled || bc.Owners.Count > 0 || bc.Fame <= 0)
-                return;
+                return false;
 
             //25000 for 1/100 chance, 10 hyrus
             //1500, 1/1000 chance, 20 lizard men for that chance.
@@ -183,6 +183,7 @@ namespace Server.Misc
                 }
                 catch
                 {
+                    return false;
                 }
 
                 if (i != null)
@@ -202,8 +203,12 @@ namespace Server.Misc
                     }
 					
                     pm.ToTTotalMonsterFame = 0;
+
+                    return true;
                 }
             }
+
+            return false;
         }
     }
 }

@@ -761,12 +761,12 @@ namespace Server
         private DateTime m_LastMovedTime;
         private Direction m_Direction;
         private LightType m_Light;
-        private bool m_HonestyItem;
-        private string m_HonestyRegion;
-        private Mobile m_HonestyOwner;
-        private Timer m_HonestyTimer;
-        private DateTime m_HonestyPickup;
-        private Boolean m_HonestyTimerTicking;
+        //private bool m_HonestyItem;
+        //private string m_HonestyRegion;
+        //private Mobile m_HonestyOwner;
+        //private Timer m_HonestyTimer;
+        //private DateTime m_HonestyPickup;
+        //private Boolean m_HonestyTimerTicking;
         #endregion
 
         private ItemDelta m_DeltaFlags;
@@ -1384,11 +1384,6 @@ namespace Server
                 AddLockedDownProperty(list);
             }
 
-            if (HonestyItem)
-            {
-                AddHonestyProperty(list);
-            }
-
             Mobile blessedFor = BlessedFor;
 
             if (blessedFor != null && !blessedFor.Deleted)
@@ -1410,8 +1405,6 @@ namespace Server
             {
                 AddQuestItemProperty(list);
             }
-
-            AppendChildNameProperties(list);
         }
 
         /// <summary>
@@ -1446,7 +1439,7 @@ namespace Server
             list.Add(1062203, "{0}", m.Name); // Blessed for ~1_NAME~
         }
 
-        public virtual void AddHonestyProperty(ObjectPropertyList list)
+        /*public virtual void AddHonestyProperty(ObjectPropertyList list)
         {
             if (HonestyItem)
             {
@@ -1458,6 +1451,21 @@ namespace Server
 
                 list.Add(1151520); // lost item (Return to gain Honesty)
             }
+        }*/
+
+        public virtual void AddItemSocketProperties(ObjectPropertyList list)
+        {
+            if (Sockets != null)
+            {
+                foreach (var socket in Sockets)
+                {
+                    socket.GetProperties(list);
+                }
+            }
+        }
+
+        public virtual void AddItemPowerProperties(ObjectPropertyList list)
+        {
         }
 
         /// <summary>
@@ -1475,10 +1483,16 @@ namespace Server
         {
             AddNameProperties(list);
 
+            AddItemSocketProperties(list);
+
             if (Spawner != null)
             {
                 Spawner.GetSpawnProperties(this, list);
             }
+
+            AddItemPowerProperties(list);
+
+            AppendChildNameProperties(list);
         }
 
         /// <summary>
@@ -1978,6 +1992,9 @@ namespace Server
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public bool HonestyItem { get; set; }
+
+        /*[CommandProperty(AccessLevel.GameMaster)]
         public bool HonestyItem
         {
             get
@@ -2034,7 +2051,7 @@ namespace Server
         {
             get { return m_HonestyRegion; }
             set { m_HonestyRegion = value; }
-        }
+        }*/
 
         /// <summary>
         ///     Has the item been deleted?
@@ -2087,7 +2104,7 @@ namespace Server
             get
             {
                 // TODO: Make item decay an option on the spawner
-                return DefaultDecaySetting && Movable && Visible && !m_HonestyItem/* && Spawner == null*/;
+                return DefaultDecaySetting && Movable && Visible && !HonestyItem/* && Spawner == null*/;
             }
         }
 
@@ -2653,7 +2670,18 @@ namespace Server
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write(13); // version
+            writer.Write(14); // version
+
+            // 14
+            writer.Write(Sockets != null ? Sockets.Count : 0);
+			
+			if(Sockets != null)
+			{
+				foreach(var socket in Sockets)
+				{
+					ItemSocket.Save(socket, writer);
+				}
+			}
 
 			// 13: Merge sync
             // 12: Light no longer backed by Direction
@@ -2661,12 +2689,7 @@ namespace Server
             // 11
             writer.Write(m_GridLocation);
 
-            // 10
-            writer.Write(m_HonestyPickup);
-            writer.Write(m_HonestyTimerTicking);
-            writer.Write(m_HonestyOwner);
-            writer.Write(m_HonestyRegion);
-            writer.Write(m_HonestyItem);
+            // 10: Honesty moved to ItemSockets
 
             // 9
             SaveFlag flags = SaveFlag.None;
@@ -3154,6 +3177,15 @@ namespace Server
 
             switch (version)
             {
+                case 14:
+                    var socketCount = reader.ReadInt();
+
+                    for(int i = 0; i < socketCount; i++)
+                    {
+                        ItemSocket.Load(this, reader);
+                    }
+
+                    goto case 11;
 				case 13:
                 case 12:
                 case 11:
@@ -3161,14 +3193,16 @@ namespace Server
                     goto case 10;
                 case 10:
                     {
-                        m_HonestyPickup = reader.ReadDateTime();
-                        m_HonestyTimerTicking = reader.ReadBool();
-                        m_HonestyOwner = reader.ReadMobile();
-                        m_HonestyRegion = reader.ReadString();
-                        m_HonestyItem = reader.ReadBool();
+                        // Honesty removed to ItemSockets
+                        if (version < 14)
+                        {
+                            reader.ReadDateTime();
+                            reader.ReadBool();
+                            reader.ReadMobile();
+                            reader.ReadString();
 
-                        if (m_HonestyTimerTicking)
-                            m_HonestyTimer = Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CheckHonestyExpiry);
+                            HonestyItem = reader.ReadBool();
+                        }
 
                         goto case 9;
                     }
@@ -4393,9 +4427,6 @@ namespace Server
                 Spawner.Remove(this);
                 Spawner = null;
             }
-
-            if (m_HonestyTimer != null)
-                m_HonestyTimer.Stop();
         }
 
         public virtual void OnParentDeleted(object parent)
@@ -4634,6 +4665,14 @@ namespace Server
             foreach (BaseModule module in World.GetModules(this))
             {
                 module.Delete();
+            }
+
+            if(Sockets != null)
+            {
+                foreach (var socket in Sockets)
+                {
+                    socket.Remove();
+                }
             }
 
             Timer.DelayCall(EventSink.InvokeItemDeleted, new ItemDeletedEventArgs(this));
@@ -6251,5 +6290,181 @@ namespace Server
 
         public virtual void OnSectorDeactivate()
         { }
+
+        #region Item Sockets
+        public List<ItemSocket> Sockets { get; set; }
+
+        public void AttachSocket(ItemSocket socket)
+		{
+			if(Sockets == null)
+			{
+				Sockets = new List<ItemSocket>();
+			}
+			
+			Sockets.Add(socket);
+			socket.Owner = this;
+			
+			InvalidateProperties();
+		}
+
+        public void RemoveItemSocket(ItemSocket socket)
+        {
+            if (Sockets == null)
+            {
+                return;
+            }
+
+            Sockets.Remove(socket);
+
+            if (Sockets.Count == 0)
+            {
+                Sockets = null;
+            }
+
+            InvalidateProperties();
+        }
+		
+		public T GetSocket<T>() where T : ItemSocket
+		{
+            if (Sockets == null)
+            {
+                return null;
+            }
+
+			return Sockets.FirstOrDefault(s => s.GetType() == typeof(T)) as T;
+		}
+		
+		public T GetSocket<T>(Func<T, bool> predicate) where T : ItemSocket
+		{
+            if (Sockets == null)
+            {
+                return null;
+            }
+
+			return Sockets.FirstOrDefault(s => s.GetType() == typeof(T) && (predicate == null || predicate(s as T))) as T;
+		}
+
+        public bool HasSocket<T>()
+		{
+            if (Sockets == null)
+            {
+                return false;
+            }
+
+            return Sockets.Any(s => s.GetType() == typeof(T));
+		}
+        #endregion
+    }
+
+    public class ItemSocket
+	{
+		[CommandProperty(AccessLevel.GameMaster)]
+		public Item Owner { get; set; }
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+		public DateTime Expires { get; set; }
+		
+		public virtual TimeSpan TickDuration { get { return TimeSpan.FromMinutes(1); } }
+		
+		public Timer Timer { get; set; }
+
+        public ItemSocket()
+            : this(TimeSpan.Zero)
+        {
+        }
+		
+		public ItemSocket(TimeSpan duration)
+		{
+			if(duration != TimeSpan.Zero)
+			{
+				Expires = DateTime.UtcNow + duration;
+				
+				BeginTimer();
+			}
+		}
+		
+		protected void BeginTimer()
+		{
+			EndTimer();
+			
+			Timer = Timer.DelayCall(TickDuration, TickDuration, OnTick);
+            Timer.Start();
+		}
+		
+		protected void EndTimer()
+		{
+			if(Timer != null)
+			{
+				Timer.Stop();
+				Timer = null;
+			}
+		}
+		
+		protected virtual void OnTick()
+		{
+			if(Expires < DateTime.UtcNow || Owner.Deleted)
+			{
+				Remove();
+			}
+		}
+		
+		public virtual void Remove()
+		{
+			EndTimer();
+			
+			Owner.RemoveItemSocket(this);
+			
+			OnRemoved();
+		}
+		
+		public virtual void OnRemoved()
+		{
+		}
+		
+		public virtual void GetProperties(ObjectPropertyList list)
+		{
+		}
+		
+		public virtual void Serialize(GenericWriter writer)
+		{
+			writer.Write(0);
+			
+			writer.Write(Expires);
+		}
+		
+		public virtual void Deserialize(Item owner, GenericReader reader)
+		{
+			reader.ReadInt(); // version
+			
+			Expires = reader.ReadDateTime();
+			
+			if(Expires != DateTime.MinValue)
+			{
+				if(Expires < DateTime.UtcNow)
+				{
+					return;
+				}
+				else
+				{
+					BeginTimer();
+				}
+			}
+			
+			owner.AttachSocket(this);
+		}
+		
+		public static void Save(ItemSocket socket, GenericWriter writer)
+		{
+			writer.Write(socket.GetType().Name);
+			socket.Serialize(writer);
+		}
+		
+		public static void Load(Item item, GenericReader reader)
+		{
+			var typeName = ScriptCompiler.FindTypeByName(reader.ReadString());
+            var socket = Activator.CreateInstance(typeName) as ItemSocket;
+
+            socket.Deserialize(item, reader);
+        }
     }
 }

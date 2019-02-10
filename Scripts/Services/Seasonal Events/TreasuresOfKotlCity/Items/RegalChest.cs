@@ -8,7 +8,9 @@ namespace Server.Engines.TreasuresOfKotlCity
     public class KotlRegalChest : LockableContainer, IRevealableItem
     {
         private Timer m_Timer;
-    
+
+        public bool CheckWhenHidden { get { return true; } }
+
         [Constructable]
         public KotlRegalChest()
             : base(0x4D0C)

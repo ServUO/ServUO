@@ -13,6 +13,8 @@ namespace Server.Items
 
         public override int DefaultGumpID { get { return 0x10C; } }
 
+        public bool CheckWhenHidden { get { return true; } }
+
         public static Type[] RituelItem { get { return m_RituelItem; } }
 
         private static Type[] m_RituelItem = new Type[]

@@ -184,6 +184,19 @@ namespace Server.Engines.Craft
             {
                 number = 1111849; // You cannot alter an item that is currently enchanted.
             }
+            else if (origItem.HasSocket<SlayerSocket>())
+            {
+                var socket = origItem.GetSocket<SlayerSocket>();
+
+                if (socket.Slayer == SlayerName.Silver)
+                {
+                    number = 1155681; // You cannot alter an item that has been treated with Tincture of Silver.
+                }
+                else
+                {
+                    number = 1111849; // You cannot alter an item that is currently enchanted.
+                }
+            }
             else
             {
                 Item newitem = Activator.CreateInstance(alterInfo.AlteredType) as Item;

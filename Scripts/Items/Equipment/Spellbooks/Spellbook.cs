@@ -822,9 +822,9 @@ namespace Server.Items
 			}
 		}
 
-		public override void GetProperties(ObjectPropertyList list)
-		{
-			base.GetProperties(list);
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
 
 			if (m_Quality == BookQuality.Exceptional)
 			{

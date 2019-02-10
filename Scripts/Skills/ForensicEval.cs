@@ -135,19 +135,20 @@ namespace Server.SkillHandlers
                     }
 
                     Item item = (Item)target;
+                    var honestySocket = item.GetSocket<HonestyItemSocket>();
 
-                    if (item.HonestyItem)
+                    if (honestySocket != null)
                     {
-                        if (item.HonestyOwner == null)
-                            Server.Services.Virtues.HonestyVirtue.AssignOwner(item);
+                        if (honestySocket.HonestyOwner == null)
+                            Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
 
                         if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
                         {
-                            string region = item.HonestyRegion == null ? "an unknown place" : item.HonestyRegion;
+                            string region = honestySocket.HonestyRegion == null ? "an unknown place" : honestySocket.HonestyRegion;
 
                             if (from.Skills.Forensics.Value >= 61.0)
                             {
-                                from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", item.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
+                                from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", honestySocket.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
                             }
                             else
                             {

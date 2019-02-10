@@ -1,39 +1,43 @@
 using System;
-using Server;
 using System.Collections.Generic;
+
+using Server;
 using Server.Items;
 using Server.Mobiles;
+using Server.Engines.SeasonalEvents;
 
 namespace Server.Engines.Points
 {
-    public class KhaldunData : PointsSystem
+    public class DoomData : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.Khaldun; } }
+        public override PointsType Loyalty { get { return PointsType.Doom; } }
         public override TextDefinition Name { get { return m_Name; } }
         public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
+        public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.TreasuresOfDoom); } }
+
         private TextDefinition m_Name = null;
 
-        public KhaldunData()
+        public DoomData()
         {
             DungeonPoints = new Dictionary<Mobile, int>();
         }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
-            from.SendLocalizedMessage(1158674, ((int)points).ToString()); // You have turned in ~1_COUNT~ artifacts of the Cult         
+            from.SendLocalizedMessage(1155590, ((int)points).ToString()); // You have turned in ~1_COUNT~ artifacts of Doom
         }
 
         public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
         {
-            if (victim.Controlled || victim.Summoned || !damager.Alive || damager.Deleted || !victim.IsChampionSpawn)
+            if (!InSeason || victim.Controlled || victim.Summoned || !damager.Alive || damager.Deleted || victim.IsChampionSpawn)
                 return;
 
             Region r = victim.Region;
 
-            if (damager is PlayerMobile && r.IsPartOf("Khaldun"))
+            if (damager is PlayerMobile && r.IsPartOf("Doom"))
             {
                 if (!DungeonPoints.ContainsKey(damager))
                     DungeonPoints[damager] = 0;
@@ -55,10 +59,10 @@ namespace Server.Engines.Points
 
                     if (i != null)
                     {
-                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(victim)), RunicReforging.GetLuckForKiller(victim), ReforgedPrefix.None, ReforgedSuffix.Khaldun);
+                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(victim)), RunicReforging.GetLuckForKiller(victim), ReforgedPrefix.None, ReforgedSuffix.Doom);
 
                         damager.PlaySound(0x5B4);
-                        damager.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+                        damager.SendLocalizedMessage(1155588); // You notice the crest of Doom on your fallen foe's equipment and decide it may be of some value...
 
                         if (!damager.PlaceInBackpack(i))
                         {
@@ -78,11 +82,14 @@ namespace Server.Engines.Points
         }
 
         public Dictionary<Mobile, int> DungeonPoints { get; set; }
+        public bool Enabled { get; set; }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write(0);
+
+            writer.Write(Enabled);
 
             writer.Write(DungeonPoints.Count);
             foreach (KeyValuePair<Mobile, int> kvp in DungeonPoints)
@@ -97,6 +104,8 @@ namespace Server.Engines.Points
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            Enabled = reader.ReadBool();
 
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)

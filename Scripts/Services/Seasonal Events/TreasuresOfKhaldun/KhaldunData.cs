@@ -1,54 +1,49 @@
 using System;
-using Server;
 using System.Collections.Generic;
+
+using Server;
 using Server.Items;
 using Server.Mobiles;
-using Server.Commands;
-using Server.Engines.TreasuresOfKotlCity;
+using Server.Engines.SeasonalEvents;
 
 namespace Server.Engines.Points
 {
-    public class KotlCityData : PointsSystem
+    public class KhaldunData : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.TreasuresOfKotlCity; } }
+        public override PointsType Loyalty { get { return PointsType.Khaldun; } }
         public override TextDefinition Name { get { return m_Name; } }
         public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
+        public static bool Enabled { get { return SeasonalEventSystem.IsActive(EventType.TreasuresOfKhaldun); } }
+
         private TextDefinition m_Name = null;
 
-        public bool Enabled { get; set; }
-
-        public KotlCityData()
+        public KhaldunData()
         {
             DungeonPoints = new Dictionary<Mobile, int>();
         }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
-            from.SendLocalizedMessage(1156902, ((int)points).ToString()); // You have turned in ~1_COUNT~ artifacts of the Kotl
+            from.SendLocalizedMessage(1158674, ((int)points).ToString()); // You have turned in ~1_COUNT~ artifacts of the Cult         
         }
 
         public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
         {
-            if (!Enabled || victim.Controlled || victim.Summoned || !damager.Alive)
+            if (!Enabled || victim.Controlled || victim.Summoned || !damager.Alive || damager.Deleted || !victim.IsChampionSpawn)
                 return;
-                
+
             Region r = victim.Region;
 
-            if (damager is PlayerMobile && r.IsPartOf("KotlCity"))
+            if (damager is PlayerMobile && r.IsPartOf("Khaldun"))
             {
                 if (!DungeonPoints.ContainsKey(damager))
                     DungeonPoints[damager] = 0;
 
                 int fame = victim.Fame / 2;
                 int luck = Math.Max(0, ((PlayerMobile)damager).RealLuck);
-
-                if (victim.Spawner is KotlBattleSimulator)
-                {
-                    fame *= 2;
-                }
 
                 DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(luck) / 100));
 
@@ -64,7 +59,7 @@ namespace Server.Engines.Points
 
                     if (i != null)
                     {
-                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(victim)), RunicReforging.GetLuckForKiller(victim), ReforgedPrefix.None, ReforgedSuffix.Kotl);
+                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(victim)), RunicReforging.GetLuckForKiller(victim), ReforgedPrefix.None, ReforgedSuffix.Khaldun);
 
                         damager.PlaySound(0x5B4);
                         damager.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
@@ -93,8 +88,6 @@ namespace Server.Engines.Points
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.Write(Enabled);
-
             writer.Write(DungeonPoints.Count);
             foreach (KeyValuePair<Mobile, int> kvp in DungeonPoints)
             {
@@ -109,8 +102,6 @@ namespace Server.Engines.Points
 
             int version = reader.ReadInt();
 
-            Enabled = reader.ReadBool();
-
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)
             {
@@ -119,56 +110,6 @@ namespace Server.Engines.Points
 
                 if (m != null && points > 0)
                     DungeonPoints[m] = points;
-            }
-        }
-
-        public static void Initialize()
-        {
-            if (Core.TOL)
-            {
-                CommandSystem.Register("EnableTKC", AccessLevel.Administrator, PointsSystem.TreasuresOfKotlCity.Enable);
-                CommandSystem.Register("DisableTKC", AccessLevel.Administrator, PointsSystem.TreasuresOfKotlCity.Disable);
-                CommandSystem.Register("ToggleTKC", AccessLevel.Administrator, PointsSystem.TreasuresOfKotlCity.Toggle);
-            }
-        }
-
-        public void Enable(CommandEventArgs e)
-        {
-            if (!Enabled)
-            {
-                Enabled = true;
-                e.Mobile.SendMessage("Treasures of Kotl City enabled!");
-            }
-            else
-            {
-                e.Mobile.SendMessage("Treasures of Kotl City is already enabled!");
-            }
-        }
-
-        public void Disable(CommandEventArgs e)
-        {
-            if (Enabled)
-            {
-                Enabled = false;
-                e.Mobile.SendMessage("Treasures of Kotl City disabled!");
-            }
-            else
-            {
-                e.Mobile.SendMessage("Treasures of Kotl City is already disabled!");
-            }
-        }
-
-        public void Toggle(CommandEventArgs e)
-        {
-            if (Enabled)
-            {
-                Enabled = false;
-                e.Mobile.SendMessage("Treasures of Kotl City disabled!");
-            }
-            else
-            {
-                Enabled = true;
-                e.Mobile.SendMessage("Treasures of Kotl City enabled!");
             }
         }
     }

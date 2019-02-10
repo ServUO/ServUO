@@ -17,7 +17,6 @@ namespace Server.Commands
             CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/TreasuresOfKotl.xml");
 
             Map map = Map.TerMur;
-            Server.Engines.Points.PointsSystem.TreasuresOfKotlCity.Enabled = true;
 
             var door = new KotlDoor();
             door.MoveToWorld(new Point3D(610, 2319, 0), map);

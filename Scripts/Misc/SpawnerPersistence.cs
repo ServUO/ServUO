@@ -34,6 +34,7 @@ namespace Server
             IceHoundRemoval = 0x00000004,
             PaladinAndKrakin= 0x00000008,
             TrinsicPaladins = 0x00000010,
+            HonestyItems    = 0x00000020,
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -159,6 +160,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.HonestyItems) == 0)
+                    {
+                        ConvertHonestyItems();
+                        VersionFlag |= SpawnerVersion.HonestyItems;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.TrinsicPaladins) == 0)
                     {
                         SpawnTrinsicPaladins();
@@ -229,6 +236,24 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Honesty Item Conversion
+        public static void ConvertHonestyItems()
+        {
+            int convert = 0;
+
+            foreach (var item in World.Items.Values.Where(i => i.HonestyItem))
+            {
+                if (!item.HasSocket<HonestyItemSocket>())
+                {
+                    item.AttachSocket(new HonestyItemSocket());
+                    convert++;
+                }
+            }
+
+            ToConsole(String.Format("Converted {0} honesty items and attached Honesty Item Socket!", convert));
+        }
+        #endregion
 
         #region Trinny Paladins
         public static void SpawnTrinsicPaladins()

@@ -16,6 +16,8 @@ namespace Server.Items
         bool CheckReveal(Mobile m);
         bool CheckPassiveDetect(Mobile m);
         void OnRevealed(Mobile m);
+
+        bool CheckWhenHidden { get; }
     }
 }
 
@@ -102,12 +104,12 @@ namespace Server.SkillHandlers
 
                     foreach (Item item in itemsInRange)
                     {
-                        if (item.Visible)
-                            continue;
-
                         IRevealableItem dItem = item as IRevealableItem;
 
-                        if (dItem != null && dItem.CheckReveal(src))
+                        if (dItem == null || (item.Visible && dItem.CheckWhenHidden))
+                            continue;
+
+                        if (dItem.CheckReveal(src))
                         {
                             dItem.OnRevealed(src);
 
