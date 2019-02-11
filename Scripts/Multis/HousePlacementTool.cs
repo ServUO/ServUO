@@ -211,7 +211,7 @@ namespace Server.Items
             {
                 if (m_Classic)
                 {
-                    if (i == 7)
+                    if (i == 8)
                     {
                         page = 2;
                         index = 0;
@@ -257,11 +257,13 @@ namespace Server.Items
                 HousePlacementEntry entry = entries[i];
 
                 int y = 70 + (index * 20);
+                int storage = (int)(entry.Storage * BaseHouse.GlobalBonusStorageScalar);
+                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalBonusStorageScalar);
 
                 AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, y, 225, 20, entry.Description, LabelColor, false, false);
-                AddLabel(275, y, LabelHue, entry.Storage.ToString());
-                AddLabel(350, y, LabelHue, entry.Lockdowns.ToString());
+                AddLabel(275, y, LabelHue, storage.ToString());
+                AddLabel(350, y, LabelHue, lockdowns.ToString());
                 AddLabel(425, y, LabelHue, entry.Cost.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
             }
         }
@@ -392,24 +394,24 @@ namespace Server.Items
             new HousePlacementEntry(typeof(Keep),               1011313,	2625,	1312,	3019,	1509,	52,	562500, 0, 11,	0,	0x007C),
             new HousePlacementEntry(typeof(Castle),             1011314,	4076,	2038,	4688,	2344,	78,	865000, 0, 16,	0,	0x007E),
 
-            new HousePlacementEntry(typeof(TrinsicKeep),        1158748,	4226,	2113,	4226,	2113,	78,	29643750, 0, 11,	0,	0x147E),
-            new HousePlacementEntry(typeof(GothicRoseCastle),   1158749,	6563,	3281,	6563,	3281,	78,	44808750, 0, 16,	0,	0x147F),
-            new HousePlacementEntry(typeof(ElsaCastle),         1158750,	6563,	3281,	6563,	3281,	78,	45450000, 0, 16,	0,	0x1480),
-            new HousePlacementEntry(typeof(Spires),             1158761,	6563,	3281,	6563,	3281,	78,	47025000, 0, 16,	0,	0x1481),
-            new HousePlacementEntry(typeof(CastleOfOceania),    1158760,	6563,	3281,	6563,	3281,	78,	48971250, 0, 16,	0,	0x1482),
-            new HousePlacementEntry(typeof(FeudalCastle),       1158762,	6563,	3281,	6563,	3281,	78,	27337500, 0, 16,	0,	0x1483),
-            new HousePlacementEntry(typeof(RobinsNest),         1158850,	4226,	2113,	4226,	2113,	78,	25301250, 0, 11,	0,	0x1484),
-            new HousePlacementEntry(typeof(TraditionalKeep),    1158851,	4226,	2113,	4226,	2113,	78,	26685000, 0, 11,	0,	0x1485),
-            new HousePlacementEntry(typeof(VillaCrowley),       1158852,	4226,	2113,	4226,	2113,	78,	21813750, 0, 11,	0,	0x1486),
-            new HousePlacementEntry(typeof(DarkthornKeep),      1158853,	4226,	2113,	4226,	2113,	78,	27990000, 0, 11,	0,	0x1487),
-            new HousePlacementEntry(typeof(SandalwoodKeep),     1158854,	4226,	2113,	4226,	2113,	78,	23456250, 0, 11,	0,	0x1488),
-            new HousePlacementEntry(typeof(CasaMoga),           1158855,	4226,	2113,	4226,	2113,	78,	26313750, 0, 11,	0,	0x1489),
+            new HousePlacementEntry(typeof(TrinsicKeep),        1158748,	2625,	1312,	3019,	1509,	52,	29643750, 0, 11,	0,	0x147E),
+            new HousePlacementEntry(typeof(GothicRoseCastle),   1158749,	4076,	2038,	4688,	2344,	78,	44808750, 0, 16,	0,	0x147F),
+            new HousePlacementEntry(typeof(ElsaCastle),         1158750,	4076,	2038,	4688,	2344,	78,	45450000, 0, 16,	0,	0x1480),
+            new HousePlacementEntry(typeof(Spires),             1158761,	4076,	2038,	4688,	2344,	78,	47025000, 0, 16,	0,	0x1481),
+            new HousePlacementEntry(typeof(CastleOfOceania),    1158760,	4076,	2038,	4688,	2344,	78,	48971250, 0, 16,	0,	0x1482),
+            new HousePlacementEntry(typeof(FeudalCastle),       1158762,	4076,	2038,	4688,	2344,	78,	27337500, 0, 16,	0,	0x1483),
+            new HousePlacementEntry(typeof(RobinsNest),         1158850,	2625,	1312,	3019,	1509,	52,	25301250, 0, 11,	0,	0x1484),
+            new HousePlacementEntry(typeof(TraditionalKeep),    1158851,	2625,	1312,	3019,	1509,	52,	26685000, 0, 11,	0,	0x1485),
+            new HousePlacementEntry(typeof(VillaCrowley),       1158852,	2625,	1312,	3019,	1509,	52,	21813750, 0, 11,	0,	0x1486),
+            new HousePlacementEntry(typeof(DarkthornKeep),      1158853,	2625,	1312,	3019,	1509,	52,	27990000, 0, 11,	0,	0x1487),
+            new HousePlacementEntry(typeof(SandalwoodKeep),     1158854,	2625,	1312,	3019,	1509,	52,	23456250, 0, 11,	0,	0x1488),
+            new HousePlacementEntry(typeof(CasaMoga),           1158855,	2625,	1312,	3019,	1509,	52,	26313750, 0, 11,	0,	0x1489),
         };
 
         private static readonly HousePlacementEntry[] m_CustomHouseContest = new HousePlacementEntry[]
         {
-            new HousePlacementEntry(typeof(HouseFoundation), 1158538,	4226,	2113,	4226,	2113,	78,	525000, 0,	10,	0,	0x147C), // 23x23 3-Story Customizable Keep
-            new HousePlacementEntry(typeof(HouseFoundation), 1158539,	6563,	3281,	6563,	3281,	78,	525000, 0,	10,	0,	0x147D),  // 32x32 3-Story Customizable Castle
+            new HousePlacementEntry(typeof(HouseFoundation), 1158538,	2625,	1312,	3019,	1509,	78,	525000, 0,	10,	0,	0x147C), // 23x23 3-Story Customizable Keep
+            new HousePlacementEntry(typeof(HouseFoundation), 1158539,	4076,	2038,	4688,	2344,	78,	525000, 0,	10,	0,	0x147D),  // 32x32 3-Story Customizable Castle
         };
 
         private static readonly HousePlacementEntry[] m_TwoStoryFoundations = new HousePlacementEntry[]
@@ -533,7 +535,6 @@ namespace Server.Items
         private readonly int m_Cost;
         private readonly int m_MultiID;
         private readonly Point3D m_Offset;
-        private readonly bool m_UseStorageBonus;
 
         public HousePlacementEntry(Type type, int description, int storage, int lockdowns, int newStorage, int newLockdowns, int vendors, int cost, int xOffset, int yOffset, int zOffset, int multiID)
         {
@@ -550,7 +551,6 @@ namespace Server.Items
             m_Offset = new Point3D(xOffset, yOffset, zOffset);
 
             m_MultiID = multiID;
-            m_UseStorageBonus = multiID < 0x147C;
         }
 
         static HousePlacementEntry()
@@ -655,13 +655,6 @@ namespace Server.Items
             get
             {
                 return m_MultiID;
-            }
-        }
-        public bool UseStorageBonus
-        {
-            get
-            {
-                return m_UseStorageBonus;
             }
         }
         public Point3D Offset
@@ -1079,11 +1072,13 @@ namespace Server.Items
                 HousePlacementEntry entry = m_Entries[i];
 
                 int y = 70 + (index * 20);
+                int storage = (int)(entry.Storage * BaseHouse.GlobalBonusStorageScalar);
+                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalBonusStorageScalar);
 
                 AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, y, 225, 20, entry.Description, LabelColor, false, false);
-                AddLabel(275, y, LabelHue, entry.Storage.ToString());
-                AddLabel(350, y, LabelHue, entry.Lockdowns.ToString());
+                AddLabel(275, y, LabelHue, storage.ToString());
+                AddLabel(350, y, LabelHue, lockdowns.ToString());
                 AddLabel(425, y, LabelHue, entry.Cost.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
             }
         }

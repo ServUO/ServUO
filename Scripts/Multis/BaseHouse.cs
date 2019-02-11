@@ -33,6 +33,14 @@ namespace Server.Multis
             }
         }// Is new player vendor system enabled?
 
+        public static double GlobalBonusStorageScalar
+        {
+            get
+            {
+                return (Core.ML ? Core.SA ? 1.4 : 1.2 : 1.0);
+            }
+        }
+
         public const int MaxCoOwners = 15;
         public static int MaxFriends
         {
@@ -392,7 +400,7 @@ namespace Server.Multis
         {
             get
             {
-                return (Core.ML ? Core.SA ? 1.4 : 1.2 : 1.0);
+                return GlobalBonusStorageScalar;
             }
         }
 
@@ -466,11 +474,6 @@ namespace Server.Multis
             if (hpe == null)
                 return 0;
 
-            if (!hpe.UseStorageBonus)
-            {
-                return hpe.Storage;
-            }
-
             return (int)(hpe.Storage * BonusStorageScalar);
         }
 
@@ -480,11 +483,6 @@ namespace Server.Multis
 
             if (hpe == null)
                 return 0;
-
-            if (!hpe.UseStorageBonus)
-            {
-                return hpe.Lockdowns;
-            }
 
             return (int)(hpe.Lockdowns * BonusStorageScalar);
         }
@@ -599,11 +597,6 @@ namespace Server.Multis
 
             if (hpe == null)
                 return 0;
-
-            if (!hpe.UseStorageBonus)
-            {
-                return hpe.Vendors;
-            }
 
             return (int)(hpe.Vendors * BonusStorageScalar);
         }
