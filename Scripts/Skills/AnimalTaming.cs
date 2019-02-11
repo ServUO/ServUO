@@ -43,14 +43,15 @@ namespace Server.SkillHandlers
 
 			if (DeferredTarget)
 			{
-				Timer.DelayCall(() => m.Target = new InternalTarget());
+				Timer.DelayCall(() => m.Target = new InternalTarget(m));
 			}
 			else
 			{
-				m.Target = new InternalTarget();
+				m.Target = new InternalTarget(m);
 			}
 
-			return TimeSpan.FromHours(1.0);
+            // We're not sure why this is getting hung up. Now, its 30 second timeout + 10 seconds (max) to tame
+			return TimeSpan.FromSeconds(40.0);
 		}
 		
 		public static bool CheckMastery(Mobile tamer, BaseCreature creature)
@@ -131,9 +132,11 @@ namespace Server.SkillHandlers
 		{
 			private bool m_SetSkillTime = true;
 
-			public InternalTarget()
+			public InternalTarget(Mobile m)
 				: base(Core.AOS ? 3 : 2, false, TargetFlags.None)
-			{ }
+			{
+                BeginTimeout(m, TimeSpan.FromSeconds(30.0));
+            }
 
 			protected override void OnTargetFinish(Mobile from)
 			{

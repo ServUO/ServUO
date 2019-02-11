@@ -20,9 +20,9 @@ namespace Server.Services.TownCryer
                 Edit = true;
 
                 _Headline = Entry.Title.String;
-                _Body = Entry.Body1.String;
-                _Body2 = Entry.Body2;
-                _Body3 = Entry.Body3;
+                _Body = Entry.Body1 != null ? Entry.Body1.String : String.Empty;
+                _Body2 = Entry.Body2 != null ? Entry.Body2 : String.Empty;
+                _Body3 = Entry.Body3 != null ? Entry.Body3 : String.Empty;
 
                 _Link = Entry.Link;
                 _LinkText = Entry.LinkText;

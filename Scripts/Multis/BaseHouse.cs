@@ -466,6 +466,11 @@ namespace Server.Multis
             if (hpe == null)
                 return 0;
 
+            if (!hpe.UseStorageBonus)
+            {
+                return hpe.Storage;
+            }
+
             return (int)(hpe.Storage * BonusStorageScalar);
         }
 
@@ -475,6 +480,11 @@ namespace Server.Multis
 
             if (hpe == null)
                 return 0;
+
+            if (!hpe.UseStorageBonus)
+            {
+                return hpe.Lockdowns;
+            }
 
             return (int)(hpe.Lockdowns * BonusStorageScalar);
         }
@@ -589,6 +599,11 @@ namespace Server.Multis
 
             if (hpe == null)
                 return 0;
+
+            if (!hpe.UseStorageBonus)
+            {
+                return hpe.Vendors;
+            }
 
             return (int)(hpe.Vendors * BonusStorageScalar);
         }
