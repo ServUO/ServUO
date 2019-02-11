@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
-using System.Collections.Generic;
 using Server.ContextMenus;
-using System.Linq;
+using Server.Network;
 
 namespace Server.Regions
 {
@@ -62,6 +64,16 @@ namespace Server.Regions
                 if (Core.AOS && m_House is HouseFoundation)
                 {
                     m_House.RefreshDecay();
+                }
+            }
+
+            NetState ns = m.NetState;
+
+            if (ns != null)
+            {
+                foreach (Item item in this.GetEnumeratedItems().Where(x => m.CanSee(x) && m.InRange(x.GetWorldLocation(), x.GetUpdateRange(m))))
+                {
+                    item.SendInfoTo(ns);
                 }
             }
         }
