@@ -24,8 +24,10 @@ namespace Server.Services.TownCryer
         {
             base.AddGumpLayout();
 
-            var list = TownCryerSystem.GreetingsEntries;
-            Entry = TownCryerSystem.GreetingsEntries[0];
+            var list = new List<TownCryerGreetingEntry>(TownCryerSystem.GreetingsEntries);
+            list.Sort();
+
+            Entry = list[0];
 
             if (Page >= 0 && Page < list.Count)
             {
@@ -129,6 +131,8 @@ namespace Server.Services.TownCryer
                 AddButton(40, 645, 0x603, 0x604, 9, GumpButtonType.Reply, 0);
                 AddHtml(68, 645, 300, 20, "Entry Props", false, false);
             }
+
+            ColUtility.Free(list);
         }
 
         public override void OnResponse(RelayInfo info)
