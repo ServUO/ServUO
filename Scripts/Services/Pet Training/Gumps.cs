@@ -1588,7 +1588,6 @@ namespace Server.Mobiles
                         }
                         else
                         {
-                            //int cost = PetTrainingHelper.GetTotalCost(TrainingPoint, Creature, Value, StartValue);
                             Value += (TrainingPoint.GetMax(Creature) / 10);
                         }
                     }
@@ -1679,13 +1678,8 @@ namespace Server.Mobiles
                     }
                     break;
                 case 9:
-                    int v = Value;
-
                     if (Value > StartValue)
                     {
-                        if (StartValue > 0)
-                            v -= StartValue;
-
                         PetTrainingHelper.GetPlanningProfile(Creature, true).AddToPlan(TrainingPoint.TrainPoint, Value, PetTrainingHelper.GetTotalCost(TrainingPoint, Creature, Value, StartValue));
 
                         User.SendLocalizedMessage(1157592); // Your selection has been added to your training plan.

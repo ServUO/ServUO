@@ -36,7 +36,7 @@ namespace Server.Items
             EditEnd = DateTime.MaxValue;
         }
 
-        public void OnFlip()
+        public void OnFlip(Mobile from)
         {
             if (ItemID == 0x48E0 || ItemID == 0x48E2)
                 ItemID = ItemID + 1;

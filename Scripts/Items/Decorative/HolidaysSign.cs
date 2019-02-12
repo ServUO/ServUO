@@ -20,7 +20,7 @@ namespace Server.Items
             GumpID = 1673;
         }
 
-        public void OnFlip()
+        public void OnFlip(Mobile from)
         {
             if (ItemID == 0xA130 || ItemID == 0xA131)
                 ItemID = ItemID + 4;

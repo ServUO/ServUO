@@ -67,15 +67,7 @@ namespace Server.Regions
                 }
             }
 
-            NetState ns = m.NetState;
-
-            if (ns != null)
-            {
-                foreach (Item item in this.GetEnumeratedItems().Where(x => m.CanSee(x) && m.InRange(x.GetWorldLocation(), x.GetUpdateRange(m))))
-                {
-                    item.SendInfoTo(ns);
-                }
-            }
+            m.SendEverything();
         }
 
         public override bool SendInaccessibleMessage(Item item, Mobile from)

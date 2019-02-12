@@ -22,7 +22,7 @@ namespace Server.Items
 
     public interface IFlipable
     {
-        void OnFlip();
+        void OnFlip(Mobile m);
     }
 
     public interface IQuality : ICraftable
