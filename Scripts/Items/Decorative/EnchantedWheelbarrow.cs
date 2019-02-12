@@ -99,7 +99,7 @@ namespace Server.Items
             return false;
         }
 
-        public void OnFlip()
+        public void OnFlip(Mobile from)
         {
             if (ItemID == 0xA0E6 || ItemID == 0xA0E8)
                 ItemID = ItemID + 1;

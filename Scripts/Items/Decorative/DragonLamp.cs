@@ -21,7 +21,7 @@ namespace Server.Items
             Weight = 1.0;
         }
 
-        public void OnFlip()
+        public void OnFlip(Mobile from)
         {
             if (ItemID == NorthID)
                 ItemID = WestID;

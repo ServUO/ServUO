@@ -110,6 +110,8 @@ namespace Server.Items
             }
         }
 
+        public override bool IsArtifact { get { return true; } }
+
         public CraftableHouseItem()
             : base(1)
         {
@@ -127,7 +129,7 @@ namespace Server.Items
             ItemID = IDs[(int)_Type][1];
         }
 
-        public void OnFlip()
+        public void OnFlip(Mobile from)
         {
             int[] list = IDs[(int)_Type];
 
@@ -470,114 +472,6 @@ namespace Server.Items
         {
         }
 
-        /*public override void OnDoubleClick(Mobile from)
-        {
-            if (IsChildOf(from.Backpack))
-            {
-                from.BeginTarget(10, true, Server.Targeting.TargetFlags.None, (m, targeted) =>
-                {
-                    if (IsChildOf(from.Backpack))
-                    {
-                        IPoint3D p = targeted as IPoint3D;
-                        Map map = from.Map;
-
-                        if (p == null || map == null || Deleted)
-                            return;
-
-                        Server.Spells.SpellHelper.GetSurfaceTop(ref p);
-
-                        BaseHouse house = null;
-                        Item door;
-
-                        if (this.Type < DoorType.LeftMetalDoor_S_In)
-                            door = new CraftableStoneHouseDoor(this.Type, CraftableMetalHouseDoor.GetDoorFacing(this.Type));
-                        else
-                            door = new CraftableMetalHouseDoor(this.Type, CraftableMetalHouseDoor.GetDoorFacing(this.Type));
-
-                        if (door is CraftableMetalHouseDoor)
-                            ((CraftableMetalHouseDoor)door).Resource = _Resource;
-                        else if (door is CraftableStoneHouseDoor)
-                            ((CraftableStoneHouseDoor)door).Resource = _Resource; 
-
-                        AddonFitResult res = CouldFit(door, p, map, from, ref house);
-
-                        switch (res)
-                        {
-                            case AddonFitResult.Valid:
-                                PlaceDoor(from, door, p, map, house);
-                                return;
-                            case AddonFitResult.Blocked:
-                                from.SendLocalizedMessage(500269); // You cannot build that there.
-                                break;
-                            case AddonFitResult.NotInHouse:
-                                from.SendLocalizedMessage(500274); // You can only place this in a house that you own!
-                                break;
-                            case AddonFitResult.DoorsNotClosed:
-                                from.SendMessage("You must close all house doors before placing this.");
-                                break;
-                            case AddonFitResult.DoorTooClose:
-                                from.SendLocalizedMessage(500271); // You cannot build near the door.
-                                break;
-                            case AddonFitResult.BadHouse:
-                                from.SendLocalizedMessage(500269); // You cannot build that there.
-                                break;
-                        }
-
-                        door.Delete();
-                    }
-                    else
-                        from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
-                });
-            }
-            else
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
-        }
-
-        public void PlaceDoor(Mobile from, Item door, IPoint3D p, Map map, BaseHouse house)
-        {
-            door.MoveToWorld(new Point3D(p), map);
-
-            if (house != null)
-                house.Addons[door] = from;
-
-            this.Delete();
-        }
-
-        public static AddonFitResult CouldFit(Item item, IPoint3D p, Map map, Mobile from, ref BaseHouse house)
-        {
-            Point3D p3D = new Point3D(p);
-
-            if (!map.CanFit(p3D.X, p3D.Y, p3D.Z, item.ItemData.Height, false, true, (item.Z == 0)))
-                return AddonFitResult.Blocked;
-            else if (!BaseAddon.CheckHouse(from, p3D, map, item.ItemData.Height, ref house))
-                return AddonFitResult.NotInHouse;
-            else if (house is HouseFoundation)
-                return AddonFitResult.BadHouse;
-
-            if (house != null)
-            {
-                var doors = house.Doors;
-
-                for (int i = 0; i < doors.Count; ++i)
-                {
-                    BaseDoor door = doors[i] as BaseDoor;
-
-                    if (door != null && door.Open)
-                        return AddonFitResult.DoorsNotClosed;
-
-                    Point3D doorLoc = door.GetWorldLocation();
-                    int doorHeight = door.ItemData.CalcHeight;
-
-                    int height = item.ItemData.CalcHeight;
-
-                    if (Utility.InRange(doorLoc, p3D, 1) && (p3D.Z == doorLoc.Z || ((p3D.Z + height) > doorLoc.Z && (doorLoc.Z + doorHeight) > p3D.Z)))
-                        return AddonFitResult.DoorTooClose;
-                }
-            }
-
-            return AddonFitResult.Valid;
-        }*/
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -659,7 +553,7 @@ namespace Server.Items
         RightMetalDoor_E_In
     }
 
-    public class CraftableMetalHouseDoor : MetalHouseDoor, ICraftable
+    public class CraftableMetalHouseDoor : MetalHouseDoor, ICraftable, IFlipable
     {
         public DoorType Type { get; set; }
 
@@ -732,6 +626,64 @@ namespace Server.Items
             }
 
             return quality;
+        }
+
+        public virtual void OnFlip(Mobile from)
+        {
+            if (Open)
+            {
+                from.SendMessage("The door must be closed before you can do that.");
+                return; // TODO: Message?
+            }
+
+            switch (Type)
+            {
+                default:
+                case DoorType.StoneDoor_S_In:
+                    Type = DoorType.StoneDoor_S_Out;
+                    break;
+                case DoorType.StoneDoor_S_Out:
+                    Type = DoorType.StoneDoor_S_In;
+                    break;
+                case DoorType.StoneDoor_E_In:
+                    Type = DoorType.StoneDoor_E_Out;
+                    break;
+                case DoorType.StoneDoor_E_Out:
+                    Type = DoorType.StoneDoor_E_In;
+                    break;
+                case DoorType.LeftMetalDoor_S_In:
+                    Type = DoorType.LeftMetalDoor_S_Out;
+                    break;
+                case DoorType.RightMetalDoor_S_In:
+                    Type = DoorType.RightMetalDoor_S_Out;
+                    break;
+                case DoorType.LeftMetalDoor_E_In:
+                    Type = DoorType.LeftMetalDoor_E_Out;
+                    break;
+                case DoorType.RightMetalDoor_E_In:
+                    Type = DoorType.RightMetalDoor_E_Out;
+                    break;
+                case DoorType.LeftMetalDoor_S_Out:
+                    Type = DoorType.RightMetalDoor_E_Out;
+                    break;
+                case DoorType.RightMetalDoor_S_Out:
+                    Type = DoorType.RightMetalDoor_S_In;
+                    break;
+                case DoorType.LeftMetalDoor_E_Out:
+                    Type = DoorType.LeftMetalDoor_E_In;
+                    break;
+                case DoorType.RightMetalDoor_E_Out:
+                    Type = DoorType.RightMetalDoor_E_In;
+                    break;
+            }
+
+            Facing = GetDoorFacing(Type);
+
+            ClosedID = 0x675 + (2 * (int)Facing);
+            OpenedID = 0x676 + (2 * (int)Facing);
+
+            Offset = GetOffset(Facing);
+            InvalidateProperties();
         }
 
         public static DoorFacing GetDoorFacing(DoorType type)
@@ -868,7 +820,7 @@ namespace Server.Items
         }
     }
 
-    public class CraftableStoneHouseDoor : BaseHouseDoor, ICraftable
+    public class CraftableStoneHouseDoor : BaseHouseDoor, ICraftable, IFlipable
     {
         public DoorType Type { get; set; }
 
@@ -1010,6 +962,64 @@ namespace Server.Items
                 return false;
 
             return base.OnDroppedOnto(from, target);
+        }
+
+        public virtual void OnFlip(Mobile from)
+        {
+            if (Open)
+            {
+                from.SendMessage("The door must be closed before you can do that.");
+                return; // TODO: Message?
+            }
+
+            switch (Type)
+            {
+                default:
+                case DoorType.StoneDoor_S_In:
+                    Type = DoorType.StoneDoor_S_Out;
+                    break;
+                case DoorType.StoneDoor_S_Out:
+                    Type = DoorType.StoneDoor_S_In;
+                    break;
+                case DoorType.StoneDoor_E_In:
+                    Type = DoorType.StoneDoor_E_Out;
+                    break;
+                case DoorType.StoneDoor_E_Out:
+                    Type = DoorType.StoneDoor_E_In;
+                    break;
+                case DoorType.LeftMetalDoor_S_In:
+                    Type = DoorType.LeftMetalDoor_S_Out;
+                    break;
+                case DoorType.RightMetalDoor_S_In:
+                    Type = DoorType.RightMetalDoor_S_Out;
+                    break;
+                case DoorType.LeftMetalDoor_E_In:
+                    Type = DoorType.LeftMetalDoor_E_Out;
+                    break;
+                case DoorType.RightMetalDoor_E_In:
+                    Type = DoorType.RightMetalDoor_E_Out;
+                    break;
+                case DoorType.LeftMetalDoor_S_Out:
+                    Type = DoorType.RightMetalDoor_E_Out;
+                    break;
+                case DoorType.RightMetalDoor_S_Out:
+                    Type = DoorType.RightMetalDoor_S_In;
+                    break;
+                case DoorType.LeftMetalDoor_E_Out:
+                    Type = DoorType.LeftMetalDoor_E_In;
+                    break;
+                case DoorType.RightMetalDoor_E_Out:
+                    Type = DoorType.RightMetalDoor_E_In;
+                    break;
+            }
+
+            Facing = CraftableMetalHouseDoor.GetDoorFacing(Type);
+
+            ClosedID = 0x324 + (2 * (int)Facing);
+            OpenedID = 0x325 + (2 * (int)Facing);
+
+            Offset = GetOffset(Facing);
+            InvalidateProperties();
         }
 
         public CraftableStoneHouseDoor(Serial serial)
