@@ -6,6 +6,7 @@ using Server.Gumps;
 using Server.ContextMenus;
 using System.Collections.Generic;
 using Server.Mobiles;
+using System.Linq;
 
 namespace Server.Engines.VeteranRewards
 {
@@ -127,7 +128,19 @@ namespace Server.Engines.VeteranRewards
                 {
                     if (CheckAccessible(from, this))
                     {
-                        if (DateTime.UtcNow > NextGolemTime)
+                        if ((from.Followers + 4) > from.FollowersMax)
+                        {
+                            from.SendLocalizedMessage(1049607); // You have too many followers to control that creature.
+                        }
+                        else if (((PlayerMobile)from).AllFollowers.Any(x => x is GadgetryTableGolem))
+                        {
+                            from.SendLocalizedMessage(1154576); // You cannot build another golem at this time because you are currently in control of one.
+                        }
+                        else if (from.Stabled.Any(x => x is GadgetryTableGolem))
+                        {
+                            from.SendLocalizedMessage(1154577); // You cannot build another golem at this time because you have one in the stables.
+                        }
+                        else if (DateTime.UtcNow > NextGolemTime)
                         {
                             Golem g = new GadgetryTableGolem(Scalar(from));
 
@@ -253,7 +266,7 @@ namespace Server.Engines.VeteranRewards
         {
             Name = "a golem";
             Body = 752;
-            Hue = 2101;
+            Hue = 1110;
 
             SetStr((int)(550 * scalar), (int)(575 * scalar));
             SetDex((int)(125 * scalar), (int)(150 * scalar));
@@ -270,6 +283,8 @@ namespace Server.Engines.VeteranRewards
             SetSkill(SkillName.MagicResist, 190.0);
             SetSkill(SkillName.Tactics, 100.0);
             SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.Parry, 100.0);
+            SetSkill(SkillName.DetectHidden, 48.4);
 
             SetDamage(13, 24);
 
