@@ -274,7 +274,7 @@ namespace Server.Items
 
             AddBackground(0, 0, 291, 113, 0x13BE);
             AddImageTiled(5, 5, 280, 80, 0xA40);
-            AddHtmlLocalized(9, 9, 272, 80, 1158874, String.Format("#{0}", type.Description), 0x7FFF, false, false); // Are you sure you wish to remove all the ~1_SKILL~ charges from the bench? This action will delete all existing charges and will not refund any deeds.
+            AddHtmlLocalized(9, 9, 272, 80, 1158874, String.Format("#{0}", type.Description.Number), 0x7FFF, false, false); // Are you sure you wish to remove all the ~1_SKILL~ charges from the bench? This action will delete all existing charges and will not refund any deeds.
 
             AddButton(5, 87, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(40, 89, 100, 20, 1060051, 0x7FFF, false, false); // CANCEL
@@ -321,42 +321,49 @@ namespace Server.Items
             AddHtmlLocalized(70, 57, 120, 20, 1114513, "#1158878", 0x7FE0, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
             AddHtmlLocalized(213, 57, 190, 20, 1158879, 0x7FE0, false, false); // Charges
 
+            AddItem(20, 80, 0x1EB8);
             AddTooltip(1044097);
             AddButton(70, 97, 0x15E1, 0x15E5, 2001, GumpButtonType.Reply, 0);
             AddLabel(113, 97, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Tinkering).SkillValue));
             AddLabel(218, 97, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Tinkering).Charges));
             AddButton(318, 97, 0x2716, 0x2716, 8601, GumpButtonType.Reply, 0);
 
+            AddItem(20, 125, 0x0FB4);
             AddTooltip(1044067);
             AddButton(70, 137, 0x15E1, 0x15E5, 2002, GumpButtonType.Reply, 0);
             AddLabel(113, 137, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Smithing).SkillValue));
             AddLabel(218, 137, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Smithing).Charges));
             AddButton(318, 137, 0x2716, 0x2716, 8602, GumpButtonType.Reply, 0);
 
+            AddItem(20, 170, 0x1034);
             AddTooltip(1044071);
             AddButton(70, 177, 0x15E1, 0x15E5, 2003, GumpButtonType.Reply, 0);
             AddLabel(113, 177, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Carpentry).SkillValue));
             AddLabel(218, 177, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Carpentry).Charges));
             AddButton(318, 177, 0x2716, 0x2716, 8603, GumpButtonType.Reply, 0);
 
+            AddItem(20, 215, 0x0F9D);
             AddTooltip(1044094);
             AddButton(70, 217, 0x15E1, 0x15E5, 2006, GumpButtonType.Reply, 0);
             AddLabel(113, 217, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Tailoring).SkillValue));
             AddLabel(218, 217, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Tailoring).Charges));
             AddButton(318, 217, 0x2716, 0x2716, 8606, GumpButtonType.Reply, 0);
 
+            AddItem(20, 260, 0x12B3);
             AddTooltip(1072392);
             AddButton(70, 257, 0x15E1, 0x15E5, 2010, GumpButtonType.Reply, 0);
             AddLabel(113, 257, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Masonry).SkillValue));
             AddLabel(218, 257, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Masonry).Charges));
             AddButton(318, 257, 0x2716, 0x2716, 8610, GumpButtonType.Reply, 0);
 
+            AddItem(20, 305, 0x182D);
             AddTooltip(1072393);
             AddButton(70, 297, 0x15E1, 0x15E5, 2011, GumpButtonType.Reply, 0);
             AddLabel(113, 297, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Glassblowing).SkillValue));
             AddLabel(218, 297, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Glassblowing).Charges));
             AddButton(318, 297, 0x2716, 0x2716, 8611, GumpButtonType.Reply, 0);
 
+            AddItem(20, 350, 0x1022);
             AddTooltip(1015156);
             AddButton(70, 337, 0x15E1, 0x15E5, 2009, GumpButtonType.Reply, 0);
             AddLabel(113, 337, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Fletching).SkillValue));
