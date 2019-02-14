@@ -5,6 +5,17 @@ using Server.Regions;
 
 namespace Server.Items
 {
+    public enum RepairSkillType
+    {
+        Smithing,
+        Tailoring,
+        Tinkering,
+        Carpentry,
+        Fletching,
+        Masonry,
+        Glassblowing
+    }
+
     public class RepairDeed : Item
     {
         private RepairSkillType m_Skill;
@@ -52,17 +63,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public enum RepairSkillType
-        {
-            Smithing,
-            Tailoring,
-            Tinkering,
-            Carpentry,
-            Fletching,
-            Masonry,
-            Glassblowing
-        }
+        
         public override bool DisplayLootType
         {
             get
@@ -224,12 +225,13 @@ namespace Server.Items
                 default:
                     return "a Newbie";		//On OSI, it shouldn't go below 50, but, this is for 'custom' support.
             }
-        }
+        }        
+    }
 
-        private class RepairSkillInfo
+    public class RepairSkillInfo
+    {
+        private static readonly RepairSkillInfo[] m_Table = new RepairSkillInfo[]
         {
-            private static readonly RepairSkillInfo[] m_Table = new RepairSkillInfo[]
-            {
                 new RepairSkillInfo(DefBlacksmithy.CraftSystem,     typeof(Blacksmith), 1047013, 1023015),
                 new RepairSkillInfo(DefTailoring.CraftSystem,       typeof(Tailor),     1061132, 1022981),
                 new RepairSkillInfo(DefTinkering.CraftSystem,       typeof(Tinker),     1061166, 1022983),
@@ -237,79 +239,78 @@ namespace Server.Items
                 new RepairSkillInfo(DefBowFletching.CraftSystem,    typeof(Bowyer),     1061134, 1023005),
                 new RepairSkillInfo(DefMasonry.CraftSystem,         typeof(Carpenter),  1061135, 1060774, 1044635),
                 new RepairSkillInfo(DefGlassblowing.CraftSystem,    typeof(Alchemist),  1111838, 1115634, 1044636),
-            };
+        };
 
-            private readonly CraftSystem m_System;
-            private readonly Type[] m_NearbyTypes;
-            private readonly TextDefinition m_NotNearbyMessage;
-            private readonly TextDefinition m_Name;
-            private readonly TextDefinition m_Description;
+        private readonly CraftSystem m_System;
+        private readonly Type[] m_NearbyTypes;
+        private readonly TextDefinition m_NotNearbyMessage;
+        private readonly TextDefinition m_Name;
+        private readonly TextDefinition m_Description;
 
-            public RepairSkillInfo(CraftSystem system, Type[] nearbyTypes, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = null)
-            {
-                m_System = system;
-                m_NearbyTypes = nearbyTypes;
-                m_NotNearbyMessage = notNearbyMessage;
-                m_Name = name;
-                m_Description = description;
-            }
+        public RepairSkillInfo(CraftSystem system, Type[] nearbyTypes, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = null)
+        {
+            m_System = system;
+            m_NearbyTypes = nearbyTypes;
+            m_NotNearbyMessage = notNearbyMessage;
+            m_Name = name;
+            m_Description = description;
+        }
 
-            public RepairSkillInfo(CraftSystem system, Type nearbyType, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = null)
-                : this(system, new Type[] { nearbyType }, notNearbyMessage, name, description)
-            {
-            }
+        public RepairSkillInfo(CraftSystem system, Type nearbyType, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = null)
+            : this(system, new Type[] { nearbyType }, notNearbyMessage, name, description)
+        {
+        }
 
-            public static RepairSkillInfo[] Table
+        public static RepairSkillInfo[] Table
+        {
+            get
             {
-                get
-                {
-                    return m_Table;
-                }
+                return m_Table;
             }
-            public TextDefinition NotNearbyMessage
+        }
+        public TextDefinition NotNearbyMessage
+        {
+            get
             {
-                get
-                {
-                    return m_NotNearbyMessage;
-                }
+                return m_NotNearbyMessage;
             }
-            public TextDefinition Name
+        }
+        public TextDefinition Name
+        {
+            get
             {
-                get
-                {
-                    return m_Name;
-                }
+                return m_Name;
             }
-            public TextDefinition Description
+        }
+        public TextDefinition Description
+        {
+            get
             {
-                get
-                {
-                    return m_Description;
-                }
+                return m_Description;
             }
-            public CraftSystem System
+        }
+        public CraftSystem System
+        {
+            get
             {
-                get
-                {
-                    return m_System;
-                }
+                return m_System;
             }
-            public Type[] NearbyTypes
+        }
+        public Type[] NearbyTypes
+        {
+            get
             {
-                get
-                {
-                    return m_NearbyTypes;
-                }
+                return m_NearbyTypes;
             }
-            public static RepairSkillInfo GetInfo(RepairSkillType type)
-            {
-                int v = (int)type;
+        }
+        public static RepairSkillInfo GetInfo(RepairSkillType type)
+        {
+            int v = (int)type;
 
-                if (v < 0 || v >= m_Table.Length)
-                    v = 0;
+            if (v < 0 || v >= m_Table.Length)
+                v = 0;
 
-                return m_Table[v];
-            }
+            return m_Table[v];
         }
     }
 }

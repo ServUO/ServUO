@@ -556,6 +556,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\AdvancedTrainingDummy.cs" />
+    <Compile Include="Items\Addons\TinkerBench.cs" />
+    <Compile Include="Items\Addons\RepairBench.cs" />
+    <Compile Include="Items\Addons\WaterWheel.cs" />
     <Compile Include="Items\Addons\CodexOfVirtue.cs" />
     <Compile Include="Items\Addons\BuffetTable.cs" />
     <Compile Include="Items\Addons\FormalDiningTable.cs" />

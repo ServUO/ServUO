@@ -3,7 +3,6 @@ using Server;
 using Server.Engines.Craft;
 using System.Collections.Generic;
 using Server.Multis;
-using Server.Mobiles;
 using System.Linq;
 
 namespace Server.Items
@@ -30,7 +29,7 @@ namespace Server.Items
                 {
                     base.Hue = value;
 
-                    if (!Deleted && this.ShareHue && Tools != null)
+                    if (!Deleted && ShareHue && Tools != null)
                     {
                         foreach (AddonToolComponent tool in Tools)
                             tool.Hue = value;
@@ -121,7 +120,7 @@ namespace Server.Items
         {
             base.OnMapChange();
 
-            Tools.ForEach(t => t.Map = this.Map);
+            Tools.ForEach(t => t.Map = Map);
         }
 
         public override void OnAfterDelete()
@@ -139,7 +138,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
 
             writer.Write((int)Level);
@@ -151,7 +149,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             Level = (SecureLevel)reader.ReadInt();
@@ -198,7 +195,7 @@ namespace Server.Items
 
                         if (comp.UsesRemaining >= comp.MaxUses)
                         {
-                            from.SendMessage("That is already at its maximum charges.");
+                            from.SendLocalizedMessage(1155740); // Adding this to the power tool would put it over the max number of charges the tool can hold.
                             return false;
                         }
                         else
@@ -211,7 +208,9 @@ namespace Server.Items
                             if (tool.UsesRemaining <= 0 && !tool.Deleted)
                                 tool.Delete();
 
-                            Effects.PlaySound(this.Location, this.Map, 0x42);
+                            from.SendLocalizedMessage(1155741); // Charges have been added to the power tool.
+
+                            Effects.PlaySound(Location, Map, 0x42);
 
                             return false;
                         }
@@ -229,16 +228,13 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write((int)0);
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
                 int version = reader.ReadInt();
-
             }
         }
     }

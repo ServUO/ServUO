@@ -294,6 +294,13 @@ namespace Server.Engines.VeteranRewards
             ControlSlots = 3;
         }
 
+        public override bool CanTransfer(Mobile m)
+        {
+            PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502036, m.NetState); // I cannot be transferred
+
+            return false;
+        }
+
         public GadgetryTableGolem(Serial serial)
             : base(serial)
         {

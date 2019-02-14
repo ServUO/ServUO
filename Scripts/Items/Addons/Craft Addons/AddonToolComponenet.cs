@@ -4,6 +4,7 @@ using Server.Engines.Craft;
 using Server.ContextMenus;
 using System.Collections.Generic;
 using Server.Multis;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -35,6 +36,12 @@ namespace Server.Items
         public int ActiveID { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public int InactiveMessage { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ActiveMessage { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool TurnedOn
         {
             get
@@ -46,9 +53,9 @@ namespace Server.Items
                 if (_TurnedOn != value)
                 {
                     if (value)
-                        this.ItemID = ActiveID;
+                        ItemID = ActiveID;
                     else
-                        this.ItemID = InactiveID;
+                        ItemID = InactiveID;
                 }
 
                 _TurnedOn = value;
@@ -56,6 +63,11 @@ namespace Server.Items
         }
 
         public AddonToolComponent(CraftSystem system, int inactiveid, int activeid, int cliloc, int uses, CraftAddon addon)
+            : this(system, inactiveid, activeid, 0, 0, cliloc, uses, addon)
+        {
+        }
+
+        public AddonToolComponent(CraftSystem system, int inactiveid, int activeid, int inactivemessage, int activemessage, int cliloc, int uses, CraftAddon addon)
             : base(0, inactiveid)
         {
             _CraftSystem = system;
@@ -65,6 +77,9 @@ namespace Server.Items
 
             InactiveID = inactiveid;
             ActiveID = activeid;
+
+            InactiveMessage = inactivemessage;
+            ActiveMessage = activemessage;
 
             UsesRemaining = uses;
         }
@@ -106,10 +121,16 @@ namespace Server.Items
                         if (_TurnedOn)
                         {
                             TurnedOn = false;
+
+                            if (InactiveMessage != 0)
+                                PrivateOverheadMessage(MessageType.Regular, 0x3B2, InactiveMessage, from.NetState);
                         }
                         else
                         {
                             TurnedOn = true;
+
+                            if (ActiveMessage != 0)
+                                PrivateOverheadMessage(MessageType.Regular, 0x3B2, ActiveMessage, from.NetState);
                         }
                     }, 8)); // Activate this item : Deactivate this item TODO: Correct???
 
@@ -125,7 +146,7 @@ namespace Server.Items
 
                 if (house == null || Addon == null || !house.HasSecureAccess(m, Addon.Level))
                 {
-                    num = 1061637; // You are not allowed to access this.
+                    num = 1061637; // You are not allowed to access 
                     return false;
                 }
             }
@@ -208,8 +229,10 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+            writer.Write((int)1);
 
-            writer.Write((int)0);
+            writer.Write(InactiveMessage);
+            writer.Write(ActiveMessage);
             writer.Write(Offset);
             writer.Write(Addon);
             writer.Write(_LabelNumber);
@@ -221,14 +244,27 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-            Offset = reader.ReadPoint3D();
-            Addon = reader.ReadItem() as CraftAddon;
-            _LabelNumber = reader.ReadInt();
-            ActiveID = reader.ReadInt();
-            InactiveID = reader.ReadInt();
-            TurnedOn = reader.ReadBool();
+
+            switch (version)
+            {
+                case 1:
+                    {
+                        InactiveMessage = reader.ReadInt();
+                        ActiveMessage = reader.ReadInt();
+                        goto case 0;
+                    }
+                case 0:
+                    {
+                        Offset = reader.ReadPoint3D();
+                        Addon = reader.ReadItem() as CraftAddon;
+                        _LabelNumber = reader.ReadInt();
+                        ActiveID = reader.ReadInt();
+                        InactiveID = reader.ReadInt();
+                        TurnedOn = reader.ReadBool();
+                        break;
+                    }
+            }            
 
             if (Addon != null)
                 Addon.OnCraftComponentLoaded(this);
