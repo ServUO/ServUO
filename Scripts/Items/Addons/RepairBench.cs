@@ -67,6 +67,9 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Using { get; set; }
+
         [Constructable]
         public RepairBenchAddon(DirectionType type, List<RepairBenchDefinition> tools)
         {
@@ -134,8 +137,19 @@ namespace Server.Items
                 {
                     if (CheckAccessible(from, this))
                     {
-                        from.CloseGump(typeof(RepairBenchGump));
-                        from.SendGump(new RepairBenchGump(this));
+                        if (from.HasGump(typeof(RepairBenchGump)))
+                            return;
+
+                        if (!Using)
+                        {
+                            Using = true;
+                            from.CloseGump(typeof(RepairBenchGump));
+                            from.SendGump(new RepairBenchGump(from, this));
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(500291); // Someone else is using that.
+                        }
                     }
                     else
                     {
@@ -280,6 +294,18 @@ namespace Server.Items
             writer.Write((int)0);
 
             writer.Write((bool)m_IsRewardItem);
+
+            writer.Write(Tools == null ? 0 : Tools.Count);
+
+            if (Tools != null)
+            {
+                Tools.ForEach(x =>
+                {
+                    writer.Write((int)x.Skill);
+                    writer.Write((int)x.SkillValue);
+                    writer.Write((int)x.Charges);
+                });
+            }
         }
 
         public override void Deserialize(GenericReader reader)
@@ -287,7 +313,23 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            m_IsRewardItem = reader.ReadBool();
+            m_IsRewardItem = reader.ReadBool();            
+
+            int toolcount = reader.ReadInt();
+
+            if (toolcount != 0)
+            {
+                Tools = new List<RepairBenchDefinition>();
+            }
+
+            for (int x = 0; x < toolcount; x++)
+            {
+                RepairSkillType skill = (RepairSkillType)reader.ReadInt();
+                int skillvalue = reader.ReadInt();
+                int charge = reader.ReadInt();
+
+                Tools.Add(new RepairBenchDefinition(RepairBenchAddon.GetInfo(skill).System, skill, RepairBenchAddon.GetInfo(skill).Cliloc, skillvalue, charge));
+            }
         }
     }
     
@@ -335,31 +377,44 @@ namespace Server.Items
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            int index = info.ButtonID;
+            if (m_Addon == null && !m_Addon.Deleted)
+                return;
+
+            Mobile m = sender.Mobile;
+            int index = info.ButtonID;          
 
             switch (index)
             {
-                case 0: { break; }
+                case 0: { m_Addon.Using = false; break; }
                 case 1:
                     {
                         var tool = m_Addon.Tools.Find(x => x.Skill == m_Skill);
 
                         tool.SkillValue = 0;
                         tool.Charges = 0;
+
+                        m.SendLocalizedMessage(1158873, String.Format("#{0}", tool.Cliloc)); // You clear all the ~1_SKILL~ charges from the bench.
+
+                        m.SendGump(new RepairBenchGump(m, m_Addon));
                         break;
                     }
-            }
+            }            
         }
     }
 
     public class RepairBenchGump : Gump
     {
         private RepairBenchAddon m_Addon;
+        private Timer m_Timer;
 
-        public RepairBenchGump(RepairBenchAddon addon)
+        public RepairBenchGump(Mobile from, RepairBenchAddon addon)
             : base(100, 100)
         {
             m_Addon = addon;
+
+            StopTimer(from);
+
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), new TimerStateCallback(CloseGump), from);
 
             AddPage(0);
 
@@ -373,55 +428,88 @@ namespace Server.Items
 
             AddItem(20, 80, 0x1EB8);
             AddTooltip(1044097);
-            AddButton(70, 97, 0x15E1, 0x15E5, 2001, GumpButtonType.Reply, 0);
-            AddLabel(113, 97, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Tinkering).SkillValue));
-            AddLabel(218, 97, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Tinkering).Charges));
-            AddButton(318, 97, 0x2716, 0x2716, 8601, GumpButtonType.Reply, 0);
+            AddButton(70, 97, 0x15E1, 0x15E5, 12, GumpButtonType.Reply, 0);
+            AddLabel(113, 97, 0x5F, String.Format("{0:F1}", GetSkillValue(RepairSkillType.Tinkering)));
+            AddLabel(218, 97, 0x5F, String.Format("{0}", GetCharges(RepairSkillType.Tinkering)));
+            AddButton(318, 97, 0x2716, 0x2716, 22, GumpButtonType.Reply, 0);
 
             AddItem(20, 125, 0x0FB4);
             AddTooltip(1044067);
-            AddButton(70, 137, 0x15E1, 0x15E5, 2002, GumpButtonType.Reply, 0);
-            AddLabel(113, 137, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Smithing).SkillValue));
-            AddLabel(218, 137, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Smithing).Charges));
-            AddButton(318, 137, 0x2716, 0x2716, 8602, GumpButtonType.Reply, 0);
+            AddButton(70, 137, 0x15E1, 0x15E5, 10, GumpButtonType.Reply, 0);
+            AddLabel(113, 137, 0x5F, String.Format("{0:F1}", GetSkillValue(RepairSkillType.Smithing)));
+            AddLabel(218, 137, 0x5F, String.Format("{0}", GetCharges(RepairSkillType.Smithing)));
+            AddButton(318, 137, 0x2716, 0x2716, 20, GumpButtonType.Reply, 0);
 
             AddItem(20, 170, 0x1034);
             AddTooltip(1044071);
-            AddButton(70, 177, 0x15E1, 0x15E5, 2003, GumpButtonType.Reply, 0);
-            AddLabel(113, 177, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Carpentry).SkillValue));
-            AddLabel(218, 177, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Carpentry).Charges));
-            AddButton(318, 177, 0x2716, 0x2716, 8603, GumpButtonType.Reply, 0);
+            AddButton(70, 177, 0x15E1, 0x15E5, 13, GumpButtonType.Reply, 0);
+            AddLabel(113, 177, 0x5F, String.Format("{0:F1}", GetSkillValue(RepairSkillType.Carpentry)));
+            AddLabel(218, 177, 0x5F, String.Format("{0}", GetCharges(RepairSkillType.Carpentry)));
+            AddButton(318, 177, 0x2716, 0x2716, 23, GumpButtonType.Reply, 0);
 
             AddItem(20, 215, 0x0F9D);
             AddTooltip(1044094);
-            AddButton(70, 217, 0x15E1, 0x15E5, 2006, GumpButtonType.Reply, 0);
-            AddLabel(113, 217, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Tailoring).SkillValue));
-            AddLabel(218, 217, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Tailoring).Charges));
-            AddButton(318, 217, 0x2716, 0x2716, 8606, GumpButtonType.Reply, 0);
+            AddButton(70, 217, 0x15E1, 0x15E5, 11, GumpButtonType.Reply, 0);
+            AddLabel(113, 217, 0x5F, String.Format("{0:F1}", GetSkillValue(RepairSkillType.Tailoring)));
+            AddLabel(218, 217, 0x5F, String.Format("{0}", GetCharges(RepairSkillType.Tailoring)));
+            AddButton(318, 217, 0x2716, 0x2716, 21, GumpButtonType.Reply, 0);
 
             AddItem(20, 260, 0x12B3);
             AddTooltip(1072392);
-            AddButton(70, 257, 0x15E1, 0x15E5, 2010, GumpButtonType.Reply, 0);
-            AddLabel(113, 257, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Masonry).SkillValue));
-            AddLabel(218, 257, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Masonry).Charges));
-            AddButton(318, 257, 0x2716, 0x2716, 8610, GumpButtonType.Reply, 0);
+            AddButton(70, 257, 0x15E1, 0x15E5, 15, GumpButtonType.Reply, 0);
+            AddLabel(113, 257, 0x5F, String.Format("{0:F1}", GetSkillValue(RepairSkillType.Masonry)));
+            AddLabel(218, 257, 0x5F, String.Format("{0}", GetCharges(RepairSkillType.Masonry)));
+            AddButton(318, 257, 0x2716, 0x2716, 25, GumpButtonType.Reply, 0);
 
             AddItem(20, 305, 0x182D);
             AddTooltip(1072393);
-            AddButton(70, 297, 0x15E1, 0x15E5, 2011, GumpButtonType.Reply, 0);
-            AddLabel(113, 297, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Glassblowing).SkillValue));
-            AddLabel(218, 297, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Glassblowing).Charges));
-            AddButton(318, 297, 0x2716, 0x2716, 8611, GumpButtonType.Reply, 0);
+            AddButton(70, 297, 0x15E1, 0x15E5, 16, GumpButtonType.Reply, 0);
+            AddLabel(113, 297, 0x5F, String.Format("{0:F1}", GetSkillValue(RepairSkillType.Glassblowing)));
+            AddLabel(218, 297, 0x5F, String.Format("{0}", GetCharges(RepairSkillType.Glassblowing)));
+            AddButton(318, 297, 0x2716, 0x2716, 26, GumpButtonType.Reply, 0);
 
             AddItem(20, 350, 0x1022);
             AddTooltip(1015156);
-            AddButton(70, 337, 0x15E1, 0x15E5, 2009, GumpButtonType.Reply, 0);
-            AddLabel(113, 337, 0x5F, String.Format("{0:F1}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Fletching).SkillValue));
-            AddLabel(218, 337, 0x5F, String.Format("{0}", m_Addon.Tools.Find(x => x.Skill == RepairSkillType.Fletching).Charges));
-            AddButton(318, 337, 0x2716, 0x2716, 8609, GumpButtonType.Reply, 0);
+            AddButton(70, 337, 0x15E1, 0x15E5, 14, GumpButtonType.Reply, 0);
+            AddLabel(113, 337, 0x5F, String.Format("{0:F1}", GetSkillValue(RepairSkillType.Fletching)));
+            AddLabel(218, 337, 0x5F, String.Format("{0}", GetCharges(RepairSkillType.Fletching)));
+            AddButton(318, 337, 0x2716, 0x2716, 24, GumpButtonType.Reply, 0);
 
-            AddButton(70, 407, 0x15E1, 0x15E5, 100, GumpButtonType.Reply, 0);
+            AddButton(70, 407, 0x15E1, 0x15E5, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(95, 407, 200, 30, 1153100, 0x7FFF, false, false); // Add Charges
+        }
+
+        public void CloseGump(object state)
+        {
+            Mobile from = state as Mobile;
+
+            StopTimer(from);
+
+            m_Addon.Using = false;
+
+            if (from != null && !from.Deleted)
+            {
+                from.CloseGump(typeof(RepairBenchGump));
+            }
+        }
+
+        public void StopTimer(Mobile from)
+        {
+            if (m_Timer != null)
+            {
+                m_Timer.Stop();
+                m_Timer = null;
+            }
+        }
+
+        private double GetSkillValue(RepairSkillType skill)
+        {
+            return m_Addon.Tools.Find(x => x.Skill == skill).SkillValue;
+        }
+
+        private int GetCharges(RepairSkillType skill)
+        {
+            return m_Addon.Tools.Find(x => x.Skill == skill).Charges;
         }
 
         private class InternalTarget : Target
@@ -447,12 +535,11 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1061637); // You are not allowed to access this.
                     }
-                    else if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.SkillValue != 0 && x.SkillValue != deed.SkillLevel))
+                    else if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.Charges != 0 && x.SkillValue != deed.SkillLevel))
                     {
                         from.SendLocalizedMessage(1158866); // The repair bench contains deeds that do not match the skill of the deed you are trying to add.
 
-                        from.CloseGump(typeof(RepairBenchGump));
-                        from.SendGump(new RepairBenchGump(m_Addon));
+                        from.SendGump(new RepairBenchGump(from, m_Addon));
                     }
                     else
                     {
@@ -461,8 +548,10 @@ namespace Server.Items
                         tool.SkillValue = deed.SkillLevel;
                         tool.Charges++;
 
+                        deed.Delete();
+
                         from.CloseGump(typeof(RepairBenchGump));
-                        from.SendGump(new RepairBenchGump(m_Addon));
+                        from.SendGump(new RepairBenchGump(from, m_Addon));
 
                         from.Target = new InternalTarget(from, m_Addon);
                     }
@@ -478,7 +567,7 @@ namespace Server.Items
                 if (m_Addon != null && !m_Addon.Deleted)
                 {
                     from.CloseGump(typeof(RepairBenchGump));
-                    from.SendGump(new RepairBenchGump(m_Addon));
+                    from.SendGump(new RepairBenchGump(from, m_Addon));
                 }
             }
         }
@@ -489,111 +578,38 @@ namespace Server.Items
 
             int index = info.ButtonID;
 
-            switch (index)
+            if (index == 0)
             {
-                case 0:
-                    {
-                        break;
-                    }
-                case 2001:
-                    {
-                        Repair.Do(from, RepairSkillInfo.GetInfo(RepairSkillType.Tinkering).System, m_Addon);
+                m_Addon.Using = false;
+            }
+            else if (index == 1)
+            {
+                StopTimer(from);
+                from.SendLocalizedMessage(1158871); // Which repair deed or container of repair deeds do you wish to add to the repair bench?
+                from.Target = new InternalTarget(from, m_Addon);
+            }
+            else if (index >= 10 && index < 20)
+            {
+                StopTimer(from);
+                int skillindex = index - 10;
+                Repair.Do(from, RepairSkillInfo.GetInfo((RepairSkillType)skillindex).System, m_Addon);
+            }
+            else
+            {                
+                BaseHouse house = BaseHouse.FindHouseAt(m_Addon);
 
-                        break;
-                    }
-                case 2002:
-                    {
-                        Repair.Do(from, RepairSkillInfo.GetInfo(RepairSkillType.Smithing).System, m_Addon);
-
-                        break;
-                    }
-                case 2003:
-                    {
-                        Repair.Do(from, RepairSkillInfo.GetInfo(RepairSkillType.Carpentry).System, m_Addon);
-
-                        break;
-                    }
-                case 2006:
-                    {
-                        Repair.Do(from, RepairSkillInfo.GetInfo(RepairSkillType.Tailoring).System, m_Addon);
-
-                        break;
-                    }
-                case 2010:
-                    {
-                        Repair.Do(from, RepairSkillInfo.GetInfo(RepairSkillType.Masonry).System, m_Addon);
-
-                        break;
-                    }
-                case 2011:
-                    {
-                        Repair.Do(from, RepairSkillInfo.GetInfo(RepairSkillType.Glassblowing).System, m_Addon);
-
-                        break;
-                    }
-                case 2009:
-                    {
-                        Repair.Do(from, RepairSkillInfo.GetInfo(RepairSkillType.Fletching).System, m_Addon);
-
-                        break;
-                    }
-                case 8601:
-                    {
-                        from.CloseGump(typeof(ConfirmRemoveGump));
-                        from.SendGump(new ConfirmRemoveGump(m_Addon, RepairSkillType.Tinkering));
-
-                        break;
-                    }
-                case 8602:
-                    {
-                        from.CloseGump(typeof(ConfirmRemoveGump));
-                        from.SendGump(new ConfirmRemoveGump(m_Addon, RepairSkillType.Smithing));
-
-                        break;
-                    }
-                case 8603:
-                    {
-                        from.CloseGump(typeof(ConfirmRemoveGump));
-                        from.SendGump(new ConfirmRemoveGump(m_Addon, RepairSkillType.Carpentry));
-
-                        break;
-                    }
-                case 8606:
-                    {
-                        from.CloseGump(typeof(ConfirmRemoveGump));
-                        from.SendGump(new ConfirmRemoveGump(m_Addon, RepairSkillType.Tailoring));
-
-                        break;
-                    }
-                case 8610:
-                    {
-                        from.CloseGump(typeof(ConfirmRemoveGump));
-                        from.SendGump(new ConfirmRemoveGump(m_Addon, RepairSkillType.Masonry));
-
-                        break;
-                    }
-                case 8611:
-                    {
-                        from.CloseGump(typeof(ConfirmRemoveGump));
-                        from.SendGump(new ConfirmRemoveGump(m_Addon, RepairSkillType.Glassblowing));
-
-                        break;
-                    }
-                case 8609:
-                    {
-                        from.CloseGump(typeof(ConfirmRemoveGump));
-                        from.SendGump(new ConfirmRemoveGump(m_Addon, RepairSkillType.Fletching));
-
-                        break;
-                    }
-                case 100:
-                    {                        
-                        from.SendLocalizedMessage(1158871); // Which repair deed or container of repair deeds do you wish to add to the repair bench?
-                        from.Target = new InternalTarget(from, m_Addon);
-
-                        break;
-                    }
-            }                    
+                if (house != null && house.IsOwner(from))
+                {
+                    StopTimer(from);
+                    int skillindex = index - 20;
+                    from.SendGump(new ConfirmRemoveGump(m_Addon, (RepairSkillType)skillindex));
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1005213); // You can't do that
+                    m_Addon.Using = false;
+                }
+            }      
         }
     }
 }

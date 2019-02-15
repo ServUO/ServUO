@@ -182,39 +182,57 @@ namespace Server.Items
                 BaseHouse house = BaseHouse.FindHouseAt(this);
                 CraftAddon addon = Addon as CraftAddon;
 
-                if (house != null && addon != null && house.HasSecureAccess(from, addon.Level) && dropped is ITool && !(dropped is BaseRunicTool))
+                if (house != null && addon != null && house.HasSecureAccess(from, addon.Level))
                 {
-                    var tool = dropped as ITool;
-
-                    if (addon != null && tool.CraftSystem == addon.CraftSystem)
+                    if (dropped is ITool && !(dropped is BaseRunicTool))
                     {
-                        AddonToolComponent comp = addon.Tools.FirstOrDefault(t => t != null);
+                        var tool = dropped as ITool;
 
-                        if (comp == null)
-                            return false;
-
-                        if (comp.UsesRemaining >= comp.MaxUses)
+                        if (tool.CraftSystem == addon.CraftSystem)
                         {
-                            from.SendLocalizedMessage(1155740); // Adding this to the power tool would put it over the max number of charges the tool can hold.
-                            return false;
+                            AddonToolComponent comp = addon.Tools.FirstOrDefault(t => t != null);
+
+                            if (comp == null)
+                                return false;
+
+                            if (comp.UsesRemaining >= comp.MaxUses)
+                            {
+                                from.SendLocalizedMessage(1155740); // Adding this to the power tool would put it over the max number of charges the tool can hold.
+                                return false;
+                            }
+                            else
+                            {
+                                int toadd = Math.Min(tool.UsesRemaining, comp.MaxUses - comp.UsesRemaining);
+
+                                comp.UsesRemaining += toadd;
+                                tool.UsesRemaining -= toadd;
+
+                                if (tool.UsesRemaining <= 0 && !tool.Deleted)
+                                    tool.Delete();
+
+                                from.SendLocalizedMessage(1155741); // Charges have been added to the power tool.
+
+                                Effects.PlaySound(Location, Map, 0x42);
+
+                                return false;
+                            }
                         }
                         else
                         {
-                            int toadd = Math.Min(tool.UsesRemaining, comp.MaxUses - comp.UsesRemaining);
-
-                            comp.UsesRemaining += toadd;
-                            tool.UsesRemaining -= toadd;
-
-                            if (tool.UsesRemaining <= 0 && !tool.Deleted)
-                                tool.Delete();
-
-                            from.SendLocalizedMessage(1155741); // Charges have been added to the power tool.
-
-                            Effects.PlaySound(Location, Map, 0x42);
-
+                            from.SendLocalizedMessage(1074836); // The container cannot hold that type of object.
                             return false;
                         }
                     }
+                    else
+                    {
+                        from.SendLocalizedMessage(1074836); // The container cannot hold that type of object.
+                        return false;
+                    }
+                }
+                else
+                {
+                    PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3E9, 1061637); // You are not allowed to access 
+                    return false;
                 }
 
                 return false;

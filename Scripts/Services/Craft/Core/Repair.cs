@@ -596,19 +596,31 @@ namespace Server.Engines.Craft
                 }
                 else
                 {
-                    from.SendLocalizedMessage(number);
-
-                    if (m_Addon != null)
+                    if (m_Addon != null && !m_Addon.Deleted)
                     {
                         var tool = m_Addon.Tools.Find(x => x.System == m_CraftSystem);
 
                         tool.Charges--;
+
+                        from.SendGump(new RepairBenchGump(from, m_Addon));
+
+                        from.SendLocalizedMessage(number);
                     }
                     else
                     {
+                        from.SendLocalizedMessage(number);
+
                         if (toDelete)
                             m_Deed.Delete();
                     }                   
+                }
+            }
+
+            protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
+            {
+                if (m_Addon != null && !m_Addon.Deleted)
+                {
+                    from.SendGump(new RepairBenchGump(from, m_Addon));
                 }
             }
 

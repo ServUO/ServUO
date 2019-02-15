@@ -3,7 +3,7 @@ using Server.Gumps;
 
 namespace Server.Items
 {
-    public class WaterWheelAddon : BaseAddon
+    public class WaterWheelAddon : BaseAddon, IWaterSource
     {
         [Constructable]
         public WaterWheelAddon(DirectionType type)
@@ -17,6 +17,12 @@ namespace Server.Items
                     AddComponent(new LocalizedAddonComponent(0xA0EE, 1125222), 0, 0, 0);
                     break;
             }
+        }
+
+        public int Quantity
+        {
+            get { return 500; }
+            set {}
         }
 
         public WaterWheelAddon(Serial serial)

@@ -126,28 +126,21 @@ namespace Server.Items
             list.Add(1061133, String.Format("{0}\t{1}", GetSkillTitle(m_SkillLevel).ToString(), RepairSkillInfo.GetInfo(m_Skill).Name)); // A repair service contract from ~1_SKILL_TITLE~ ~2_SKILL_NAME~.
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddWeightProperty(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
-            var type = RepairSkillInfo.GetInfo(m_Skill);
+            list.Add(1060636); // exceptional
 
-            if (type.Description != null)
-                TextDefinition.AddTo(list, type.Description);
+            base.AddWeightProperty(list);
         }
 
-        public override void OnSingleClick(Mobile from)
+        public override void GetProperties(ObjectPropertyList list)
         {
-            if (Deleted || !from.CanSee(this))
-                return;
-
-            LabelTo(from, 1061133, String.Format("{0}\t{1}", GetSkillTitle(m_SkillLevel).ToString(), RepairSkillInfo.GetInfo(m_Skill).Name)); // A repair service contract from ~1_SKILL_TITLE~ ~2_SKILL_NAME~.
-
-            if (m_Crafter != null)
-				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+            base.GetProperties(list);
+            
+            list.Add(1071345, String.Format("{0:F1}", m_SkillLevel)); // Skill: ~1_val~
         }
 
         public override void OnDoubleClick(Mobile from)

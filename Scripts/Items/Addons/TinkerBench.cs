@@ -16,11 +16,11 @@ namespace Server.Items
             switch (type)
             {
                 case DirectionType.South:
-                    AddCraftComponent(new AddonToolComponent(CraftSystem, 41491, 41498, 1157072, 1157073, 1125529, uses, this), 0, 0, 0);
+                    AddCraftComponent(new AddonToolComponent(CraftSystem, 0xA213, 0xA212, 1157072, 1157073, 1125529, uses, this), 0, 0, 0);
                     AddComponent(new ToolDropComponent(41489, 1015078), 0, 1, 0);
                     break;
                 case DirectionType.East:
-                    AddCraftComponent(new AddonToolComponent(CraftSystem, 41499, 41490, 1157072, 1157073, 1125529, uses, this), 0, 0, 0);
+                    AddCraftComponent(new AddonToolComponent(CraftSystem, 0xA21B, 0xA21A, 1157072, 1157073, 1125529, uses, this), 0, 0, 0);
                     AddComponent(new ToolDropComponent(41489, 1015078), 1, 0, 0);
                     break;
             }
