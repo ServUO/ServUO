@@ -75,15 +75,6 @@ namespace Server.Items
 
 			DropItem( new Gold( 10, 40 ) );
 			DropItem( new Bolt( 5 ) );
-			switch ( Utility.Random( 5 )) 
-			{ 
-				case 0: DropItem( new Candelabra()  ); break; 
-				case 1: DropItem( new Candle() ); break; 
-				//case 2: DropItem( new CandleLarge() ); break; 
-				case 2: DropItem( new CandleLong() ); break; 
-				case 3: DropItem( new CandleShort() ); break; 
-				case 4: DropItem( new CandleSkull() ); break; 
-			}
 			switch ( Utility.Random( 2 )) 
 			{ 
 				case 0: DropItem( new Shoes( Utility.Random( 1, 2 ) ) ); break; 
@@ -337,12 +328,6 @@ namespace Server.Items
 			
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
 				AddLoot( Loot.RandomJewelry() );
-			
-			//DropItem( new MagicCrystalBall() );
-
-			// Magic clothing (not implemented)
-			
-			// Magic jewelry (not implemented)
 		} 
 
 		public TreasureLevel4( Serial serial ) : base( serial ) 
