@@ -59,11 +59,16 @@ namespace Server.Items
             new RepairBenchDefinition(DefBowFletching.CraftSystem, RepairSkillType.Fletching, 1015156, 0, 0)
         };
 
+        public static RepairBenchDefinition GetInfo(RepairSkillType type)
+        {
+            return Definitions.ToList().Find(x => x.Skill == type);
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
 
         [Constructable]
-        public RepairBenchAddon(DirectionType type)
+        public RepairBenchAddon(DirectionType type, List<RepairBenchDefinition> tools)
         {
             switch (type)
             {
@@ -75,12 +80,19 @@ namespace Server.Items
                     break;
             }
 
-            Tools = new List<RepairBenchDefinition>();
-
-            Definitions.ToList().ForEach(x =>
+            if (tools == null)
             {
-                Tools.Add(x);
-            });
+                Tools = new List<RepairBenchDefinition>();
+
+                Definitions.ToList().ForEach(x =>
+                {
+                    Tools.Add(x);
+                });
+            }
+            else
+            {
+                Tools = tools;
+            }
         }
 
         public RepairBenchAddon(Serial serial)
@@ -110,7 +122,7 @@ namespace Server.Items
             return false;
         }
 
-        public override BaseAddonDeed Deed { get { return new RepairBenchDeed(); } }
+        public override BaseAddonDeed Deed { get { return new RepairBenchDeed(Tools); } }
 
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
@@ -145,12 +157,37 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0);
+
+            writer.Write(Tools == null ? 0 : Tools.Count);
+
+            if (Tools != null)
+            {
+                Tools.ForEach(x =>
+                {
+                    writer.Write((int)x.Skill);
+                    writer.Write((int)x.SkillValue);
+                    writer.Write((int)x.Charges);
+                });
+            }
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            Tools = new List<RepairBenchDefinition>();
+
+            int toolcount = reader.ReadInt();
+
+            for (int x = 0; x < toolcount; x++)
+            {
+                RepairSkillType skill = (RepairSkillType)reader.ReadInt();
+                int skillvalue = reader.ReadInt();
+                int charge = reader.ReadInt();
+
+                Tools.Add(new RepairBenchDefinition(GetInfo(skill).System, skill, GetInfo(skill).Cliloc, skillvalue, charge));
+            }
         }
     }
 
@@ -158,7 +195,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1158860; } } // Repair Bench
 
-        public override BaseAddon Addon { get { return new RepairBenchAddon(_Direction); } }
+        public override BaseAddon Addon { get { return new RepairBenchAddon(_Direction, Tools); } }
 
         private DirectionType _Direction;
 
@@ -175,10 +212,19 @@ namespace Server.Items
             }
         }
 
+        public List<RepairBenchDefinition> Tools;
+
         [Constructable]
         public RepairBenchDeed()
+            : this(null)
+        {
+        }
+
+        [Constructable]
+        public RepairBenchDeed(List<RepairBenchDefinition> tools)
             : base()
         {
+            Tools = tools;
             LootType = LootType.Blessed;
         }
 
@@ -193,6 +239,12 @@ namespace Server.Items
 
             if (m_IsRewardItem)
                 list.Add(1076221); // 5th Year Veteran Reward
+
+            if (Tools != null)
+            {
+                int[] value = Tools.Select(x => x.Charges).ToArray();
+                list.Add(1158899, String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", value[0], value[1], value[2], value[3], value[4], value[5], value[6])); // Tinkering: ~1_CHARGES~<br>Blacksmithing: ~2_CHARGES~<br>Carpentry: ~3_CHARGES~<br>Tailoring: ~4_CHARGES~<br>Fletching: ~5_CHARGES~<br>Masonry: ~6_CHARGES~<br>Glassblowing: ~7_CHARGES~
+            }
         }
 
         public void GetOptions(RewardOptionList list)
@@ -268,13 +320,11 @@ namespace Server.Items
             m_Addon = addon;
             m_Skill = skill;
 
-            var type = RepairSkillInfo.GetInfo(skill);
-
             AddPage(0);
 
             AddBackground(0, 0, 291, 113, 0x13BE);
             AddImageTiled(5, 5, 280, 80, 0xA40);
-            AddHtmlLocalized(9, 9, 272, 80, 1158874, String.Format("#{0}", type.Description.Number), 0x7FFF, false, false); // Are you sure you wish to remove all the ~1_SKILL~ charges from the bench? This action will delete all existing charges and will not refund any deeds.
+            AddHtmlLocalized(9, 9, 272, 80, 1158874, String.Format("#{0}", addon.Tools.Find(x => x.Skill == skill).Cliloc), 0x7FFF, false, false); // Are you sure you wish to remove all the ~1_SKILL~ charges from the bench? This action will delete all existing charges and will not refund any deeds.
 
             AddButton(5, 87, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(40, 89, 100, 20, 1060051, 0x7FFF, false, false); // CANCEL
