@@ -80,9 +80,13 @@ namespace Server.Engines.Craft
                 {
                     value = m_Addon.Tools.Find(x => x.System == m_CraftSystem).SkillValue;
                 }
+                else
+                {
+                    value = mob.Skills[skill].Value;
+                }
 
                 // 40% - (1% per hp lost) - (1% per 10 craft skill)
-                return (40 + (maxHits - curHits)) - (int)(((value != 0) ? value : mob.Skills[skill].Value) / 10);
+                return (40 + (maxHits - curHits)) - (int)(value / 10);
             }
 
             private bool CheckWeaken(Mobile mob, SkillName skill, int curHits, int maxHits)
