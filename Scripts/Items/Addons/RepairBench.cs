@@ -103,6 +103,11 @@ namespace Server.Items
         {
         }
 
+        public void AccessibleFailMessage(Mobile from)
+        {
+            Components.FirstOrDefault().PublicOverheadMessage(MessageType.Regular, 0x3E9, 1061637); // You are not allowed to access this.
+        }
+
         public bool CheckAccessible(Mobile from, Item item)
         {
             if (from.AccessLevel >= AccessLevel.GameMaster)
@@ -129,7 +134,7 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
-            if ((from.InRange(c.Location, 3)))
+            if ((from.InRange(c.Location, 2)))
             {
                 BaseHouse house = BaseHouse.FindHouseAt(from);
 
@@ -153,7 +158,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        from.SendLocalizedMessage(1061637); // You are not allowed to access this.
+                        AccessibleFailMessage(from);
                     }
                 }
                 else
@@ -515,32 +520,43 @@ namespace Server.Items
         private class InternalTarget : Target
         {
             private RepairBenchAddon m_Addon;
+            private RepairBenchGump m_Gump;
 
-            public InternalTarget(Mobile from, RepairBenchAddon addon)
+            public InternalTarget(Mobile from, RepairBenchGump g, RepairBenchAddon addon)
                 : base(-1, false, TargetFlags.None)
             {
                 m_Addon = addon;
+                m_Gump = g;
             }            
 
             protected override void OnTarget(Mobile from, object targeted)
             {
                 if (m_Addon == null && m_Addon.Deleted)
+                {
                     return;
+                }
+
+                if (!m_Addon.CheckAccessible(from, m_Addon))
+                {
+                    m_Addon.Using = false;
+                    m_Addon.AccessibleFailMessage(from);
+                    return;
+                }
 
                 if (targeted is RepairDeed)
                 {
                     RepairDeed deed = (RepairDeed)targeted;
-
-                    if (!m_Addon.CheckAccessible(from, m_Addon))
+                    
+                    if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.Charges >= 500))
                     {
-                        from.SendLocalizedMessage(1061637); // You are not allowed to access this.
+                        from.SendLocalizedMessage(1158778); // This would exceed the maximum charges allowed on this magic item.
+                        from.Target = new InternalTarget(from, m_Gump, m_Addon);
                     }
                     else if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.Charges != 0 && x.SkillValue != deed.SkillLevel))
                     {
                         from.SendLocalizedMessage(1158866); // The repair bench contains deeds that do not match the skill of the deed you are trying to add.
-
-                        from.SendGump(new RepairBenchGump(from, m_Addon));
-                    }
+                        from.Target = new InternalTarget(from, m_Gump, m_Addon);
+                    }                    
                     else
                     {
                         var tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
@@ -550,22 +566,50 @@ namespace Server.Items
 
                         deed.Delete();
 
-                        from.CloseGump(typeof(RepairBenchGump));
-                        from.SendGump(new RepairBenchGump(from, m_Addon));
+                        from.Target = new InternalTarget(from, m_Gump, m_Addon);
+                    }
+                }
+                else if (targeted is Container)
+                {
+                    Container c = targeted as Container;
 
-                        from.Target = new InternalTarget(from, m_Addon);
+                    for (int i = c.Items.Count - 1; i >= 0; --i)
+                    {
+                        if (i < c.Items.Count && c.Items[i] is RepairDeed)
+                        {
+                            RepairDeed deed = (RepairDeed)c.Items[i];
+
+                            if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.Charges >= 500))
+                            {
+                                from.SendLocalizedMessage(1158778); // This would exceed the maximum charges allowed on this magic item.
+                            }
+                            else if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.SkillValue == deed.SkillLevel))
+                            {                                
+                                var tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
+
+                                tool.SkillValue = deed.SkillLevel;
+                                tool.Charges++;
+
+                                deed.Delete();                                
+                            }
+                        }
                     }
                 }
                 else
                 {
                     from.SendLocalizedMessage(1158865); // That is not a valid repair contract or container.
                 }
+
+                m_Gump.StopTimer(from);
+                from.CloseGump(typeof(RepairBenchGump));
+                from.SendGump(new RepairBenchGump(from, m_Addon));
             }
 
             protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
             {
                 if (m_Addon != null && !m_Addon.Deleted)
                 {
+                    m_Gump.StopTimer(from);
                     from.CloseGump(typeof(RepairBenchGump));
                     from.SendGump(new RepairBenchGump(from, m_Addon));
                 }
@@ -586,7 +630,7 @@ namespace Server.Items
             {
                 StopTimer(from);
                 from.SendLocalizedMessage(1158871); // Which repair deed or container of repair deeds do you wish to add to the repair bench?
-                from.Target = new InternalTarget(from, m_Addon);
+                from.Target = new InternalTarget(from, this, m_Addon);
             }
             else if (index >= 10 && index < 20)
             {

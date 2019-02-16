@@ -195,7 +195,6 @@ namespace Server.Items
                         if (UsesRemaining >= MaxUses)
                         {
                             from.SendLocalizedMessage(1155740); // Adding this to the power tool would put it over the max number of charges the tool can hold.
-                            return false;
                         }
                         else
                         {
@@ -215,19 +214,16 @@ namespace Server.Items
                     else
                     {
                         from.SendLocalizedMessage(1074836); // The container cannot hold that type of object.
-                        return false;
                     }
                 }
                 else
                 {
                     from.SendLocalizedMessage(1074836); // The container cannot hold that type of object.
-                    return false;
                 }
             }
             else
             {
                 from.SendLocalizedMessage(1074836); // The container cannot hold that type of object.
-                return false;
             }
 
             return false;

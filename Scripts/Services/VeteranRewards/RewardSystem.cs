@@ -521,6 +521,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1049739, typeof(StoneAnkhDeed)),
                     new RewardEntry(houseAddOns,    1080384, typeof(BloodyPentagramDeed), Expansion.ML),
                     new RewardEntry(houseAddOns,    1154582, typeof(LighthouseAddonDeed), Expansion.HS),
+                    new RewardEntry(houseAddOns,    1158860, typeof(RepairBenchDeed), Expansion.EJ),
                 }),
                 new RewardList(RewardInterval, 6, new RewardEntry[]
                 {

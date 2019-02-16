@@ -571,6 +571,7 @@
     <Compile Include="Items\Decorative\FlamingScarecrow.cs" />
     <Compile Include="Items\Decorative\SilverSaplingReplica.cs" />
     <Compile Include="Items\Decorative\ValentineBear.cs" />
+    <Compile Include="Items\Functional\SerpentsJawbone.cs" />
     <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
     <Compile Include="Items\Addons\ClawFootTub.cs" />
     <Compile Include="Items\Addons\GreenMarbleFireplace.cs" />

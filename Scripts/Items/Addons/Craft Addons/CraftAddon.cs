@@ -4,6 +4,7 @@ using Server.Engines.Craft;
 using System.Collections.Generic;
 using Server.Multis;
 using System.Linq;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -100,9 +101,15 @@ namespace Server.Items
                 {
                     from.SendGump(new CraftGump(from, CraftSystem, tool, null));
                 }
+                else
+                {
+                    tool.PublicOverheadMessage(MessageType.Regular, 0x3E9, 1061637); // You are not allowed to access this.
+                }
             }
             else
-                from.SendLocalizedMessage(1076766); // That is too far away.
+            {
+                from.SendLocalizedMessage(500325); // I am too far away to do that.
+            }
         }
 
         public virtual void OnCraftComponentLoaded(AddonToolComponent tool)
