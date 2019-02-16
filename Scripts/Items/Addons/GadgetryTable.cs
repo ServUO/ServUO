@@ -158,7 +158,7 @@ namespace Server.Engines.VeteranRewards
                     }
                     else
                     {
-                        from.SendLocalizedMessage(1061637); // You are not allowed to access this.
+                        SendLocalizedMessageTo(from, 1061637); // You are not allowed to access this.
                     }
                 }
                 else
