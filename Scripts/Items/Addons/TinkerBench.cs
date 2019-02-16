@@ -1,14 +1,27 @@
 using System;
 using Server.Engines.Craft;
+using Server.Engines.VeteranRewards;
 using Server.Gumps;
 
 namespace Server.Items
 {
     public class TinkerBenchAddon : CraftAddon
     {
-        public override BaseAddonDeed Deed { get { return new TinkerBenchDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0); } }
         public override CraftSystem CraftSystem { get { return DefTinkering.CraftSystem; } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem { get; set; }
+
+        public override BaseAddonDeed Deed
+        {
+            get
+            {
+                TinkerBenchDeed deed = new TinkerBenchDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0);
+                deed.IsRewardItem = IsRewardItem;
+
+                return deed;
+            }
+        }
 
         [Constructable]
         public TinkerBenchAddon(DirectionType type, int uses)
@@ -35,20 +48,33 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write((int)0);
+
+            writer.Write((bool)IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            IsRewardItem = reader.ReadBool();
         }
     }
 
-    public class TinkerBenchDeed : CraftAddonDeed, IRewardOption
+    public class TinkerBenchDeed : CraftAddonDeed, IRewardItem, IRewardOption
     {
         public override int LabelNumber { get { return 1125529; } } // tinker bench
 
-        public override BaseAddon Addon { get { return new TinkerBenchAddon(_Direction, UsesRemaining); } }
+        public override BaseAddon Addon
+        {
+            get
+            {
+                TinkerBenchAddon addon = new TinkerBenchAddon(_Direction, UsesRemaining);
+                addon.IsRewardItem = m_IsRewardItem;
+
+                return addon;
+            }
+        }
 
         private DirectionType _Direction;
 

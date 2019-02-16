@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.VeteranRewards;
 using Server.Gumps;
 
 namespace Server.Items
@@ -29,27 +30,52 @@ namespace Server.Items
             : base(serial)
         {
         }
+        
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem { get; set; }
 
-        public override BaseAddonDeed Deed { get { return new WaterWheelDeed(); } }
+        public override BaseAddonDeed Deed
+        {
+            get
+            {
+                WaterWheelDeed deed = new WaterWheelDeed();
+                deed.IsRewardItem = IsRewardItem;
+
+                return deed;
+            }
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
+
+            writer.Write((bool)IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            IsRewardItem = reader.ReadBool();
         }
     }
 
-    public class WaterWheelDeed : BaseAddonDeed, IRewardOption
+    public class WaterWheelDeed : BaseAddonDeed, IRewardItem, IRewardOption
     {
         public override int LabelNumber { get { return 1158881; } } // Water Wheel
+        
+        public override BaseAddon Addon
+        {
+            get
+            {
+                WaterWheelAddon addon = new WaterWheelAddon(_Direction);
+                addon.IsRewardItem = m_IsRewardItem;
 
-        public override BaseAddon Addon { get { return new WaterWheelAddon(_Direction); } }
+                return addon;
+            }
+        }
 
         private DirectionType _Direction;
 

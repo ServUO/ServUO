@@ -46,7 +46,19 @@ namespace Server.Engines.VeteranRewards
 
     public class GadgetryTableAddon : BaseAddon, ISecurable
     {
-        public override BaseAddonDeed Deed { get { return new GadgetryTableAddonDeed(); } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem { get; set; }
+
+        public override BaseAddonDeed Deed
+        {
+            get
+            {
+                GadgetryTableAddonDeed deed = new GadgetryTableAddonDeed();
+                deed.IsRewardItem = IsRewardItem;
+
+                return deed;
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextGolemTime { get; set; }
@@ -182,21 +194,48 @@ namespace Server.Engines.VeteranRewards
         {
             base.Serialize(writer);
             writer.Write(0); // Version
+
+            writer.Write((bool)IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            IsRewardItem = reader.ReadBool();
         }
     }
 
-    public class GadgetryTableAddonDeed : BaseAddonDeed, IRewardOption
+    public class GadgetryTableAddonDeed : BaseAddonDeed, IRewardItem, IRewardOption
     {
-        public override BaseAddon Addon { get { return new GadgetryTableAddon(_Direction); } }
         public override int LabelNumber { get { return 1154583; } } // Deed for a Gadgetry Table
 
+        public override BaseAddon Addon
+        {
+            get
+            {
+                GadgetryTableAddon addon = new GadgetryTableAddon(_Direction);
+                addon.IsRewardItem = m_IsRewardItem;
+
+                return addon;
+            }
+        }
+
         private DirectionType _Direction;
+
+        private bool m_IsRewardItem;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem
+        {
+            get { return m_IsRewardItem; }
+            set
+            {
+                m_IsRewardItem = value;
+                InvalidateProperties();
+            }
+        }
 
         [Constructable]
         public GadgetryTableAddonDeed()
@@ -209,7 +248,8 @@ namespace Server.Engines.VeteranRewards
         {
             base.GetProperties(list);
 
-            list.Add(1076224); // 8th Year Veteran Reward		
+            if (m_IsRewardItem)
+                list.Add(1076224); // 8th Year Veteran Reward		
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -248,12 +288,16 @@ namespace Server.Engines.VeteranRewards
         {
             base.Serialize(writer);
             writer.Write(0); // Version
+
+            writer.Write((bool)m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            m_IsRewardItem = reader.ReadBool();
         }
     }
 
