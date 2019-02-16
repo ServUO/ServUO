@@ -238,7 +238,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3E9, 1061637); // You are not allowed to access 
+                    SendLocalizedMessageTo(from, 1061637); // You are not allowed to access this.
                     return false;
                 }
 

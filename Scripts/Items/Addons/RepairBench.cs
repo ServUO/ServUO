@@ -105,7 +105,7 @@ namespace Server.Items
 
         public void AccessibleFailMessage(Mobile from)
         {
-            Components.FirstOrDefault().PublicOverheadMessage(MessageType.Regular, 0x3E9, 1061637); // You are not allowed to access this.
+            Components.FirstOrDefault().SendLocalizedMessageTo(from, 1061637); // You are not allowed to access this.
         }
 
         public bool CheckAccessible(Mobile from, Item item)
