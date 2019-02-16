@@ -548,6 +548,7 @@ namespace Server.Engines.VeteranRewards
                 {
                     new RewardEntry(miscellaneous,  1076158, typeof(WeaponEngravingTool), Expansion.ML),
                     new RewardEntry(houseAddOns,   1153535, typeof(DaviesLockerAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,   1154583, typeof(GadgetryTableAddonDeed), Expansion.HS),
                 }),
                 new RewardList(RewardInterval, 9, new RewardEntry[]
                 {

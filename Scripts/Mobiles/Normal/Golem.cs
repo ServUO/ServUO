@@ -134,7 +134,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.05 > Utility.RandomDouble())
+            if (0.05 > Utility.RandomDouble() && !Controlled)
             {
                 if (!IsParagon)
                 {
