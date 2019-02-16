@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Server.ContextMenus;
 using Server.Engines.Craft;
+using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
@@ -63,6 +64,9 @@ namespace Server.Items
         {
             return Definitions.ToList().Find(x => x.Skill == type);
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
@@ -129,8 +133,17 @@ namespace Server.Items
 
             return false;
         }
+        
+        public override BaseAddonDeed Deed
+        {
+            get
+            {
+                RepairBenchDeed deed = new RepairBenchDeed(Tools);
+                deed.IsRewardItem = IsRewardItem;
 
-        public override BaseAddonDeed Deed { get { return new RepairBenchDeed(Tools); } }
+                return deed;
+            }
+        }
 
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
@@ -177,6 +190,8 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write((int)0);
 
+            writer.Write((bool)IsRewardItem);
+
             writer.Write(Tools == null ? 0 : Tools.Count);
 
             if (Tools != null)
@@ -195,6 +210,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
+            IsRewardItem = reader.ReadBool();
+
             Tools = new List<RepairBenchDefinition>();
 
             int toolcount = reader.ReadInt();
@@ -210,11 +227,20 @@ namespace Server.Items
         }
     }
 
-    public class RepairBenchDeed : BaseAddonDeed, IRewardOption
+    public class RepairBenchDeed : BaseAddonDeed, IRewardItem, IRewardOption
     {
         public override int LabelNumber { get { return 1158860; } } // Repair Bench
+        
+        public override BaseAddon Addon
+        {
+            get
+            {
+                RepairBenchAddon addon = new RepairBenchAddon(_Direction, Tools);
+                addon.IsRewardItem = m_IsRewardItem;
 
-        public override BaseAddon Addon { get { return new RepairBenchAddon(_Direction, Tools); } }
+                return addon;
+            }
+        }
 
         private DirectionType _Direction;
 
