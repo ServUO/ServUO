@@ -180,6 +180,7 @@ namespace Server.Engines.Craft
                     if (tool.Charges == 0)
                     {
                         from.SendLocalizedMessage(1019073);// This item is out of charges.
+                        m_Addon.Using = false;
                         return;
                     }
 
@@ -206,11 +207,20 @@ namespace Server.Engines.Craft
                     if (from.InRange(((Item)targeted).GetWorldLocation(), 2))
                     {
                         if (!CheckDeed(from))
+                        {
+                            if (m_Addon != null)
+                                m_Addon.Using = false;
+
                             return;
+                        }
 
                         if (!AllowsRepair(targeted, m_CraftSystem))
                         {
                             from.SendLocalizedMessage(500426); // You can't repair that.
+
+                            if (m_Addon != null)
+                                m_Addon.Using = false;
+
                             return;
                         }
 
