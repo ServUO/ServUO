@@ -151,6 +151,7 @@ namespace Server.Items
                 if (price < 0 || price > 250000000)
                 {
                     from.SendLocalizedMessage(1062390);
+                    m_Book.Using = false;
                 }
                 else
                 {
@@ -376,7 +377,7 @@ namespace Server.Items
 
             switch (index)
             {
-                case 0: { break; }
+                case 0: { m_Book.Using = false; break; }
                 case 1: 
                     {
                         m_From.SendGump(new RecipeScrollFilterGump(m_From, m_Book));
@@ -418,6 +419,7 @@ namespace Server.Items
                                 if (recipe.Amount == 0)
                                 {
                                     m_From.SendLocalizedMessage(1158821); // The recipe selected is not available.
+                                    m_Book.Using = false;
                                     break;
                                 }
 
@@ -439,6 +441,7 @@ namespace Server.Items
                                 }
                                 else
                                 {
+                                    m_Book.Using = false;
                                     item.Delete();
                                     m_From.SendLocalizedMessage(1158819); // There is not enough room in your backpack for the recipe.                                    
                                 }
@@ -452,22 +455,15 @@ namespace Server.Items
                                 m_From.SendLocalizedMessage(1062383); // Type in a price for the deed:
                             }
                             else if (m_Book.RootParent is PlayerVendor)
-                            {
-                                PlayerVendor pv = (PlayerVendor)m_Book.RootParent;
-
-                                VendorItem vi = pv.GetVendorItem(m_Book);
-
-                                int price = 0;
-
-                                if (vi != null && !vi.IsForSale)
+                            {                                
+                                if (recipe.Amount > 0)
                                 {
-                                    price = recipe.Price;
+                                    m_From.SendGump(new RecipeScrollBuyGump(m_From, m_Book, recipe, recipe.Price));
                                 }
-
-                                if (price == 0)
-                                    m_From.SendLocalizedMessage(1062382);
                                 else
-                                    m_From.SendGump(new RecipeScrollBuyGump(m_From, m_Book, recipe, price));
+                                {
+                                    m_Book.Using = false;
+                                }
                             }
                         }
 

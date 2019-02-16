@@ -58,6 +58,9 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Using { get; set; }
+
         public List<RecipeScrollDefinition> Recipes;
 
         public RecipeScrollFilter Filter { get; set; }
@@ -255,7 +258,18 @@ namespace Server.Items
             }
             else
             {
-                from.SendGump(new RecipeBookGump((PlayerMobile)from, this));
+                if (from.HasGump(typeof(RecipeBookGump)))
+                    return;
+
+                if (!Using)
+                {
+                    Using = true;
+                    from.SendGump(new RecipeBookGump((PlayerMobile)from, this));
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1062456); // The book is currently in use.
+                }
             }
         }
 		
