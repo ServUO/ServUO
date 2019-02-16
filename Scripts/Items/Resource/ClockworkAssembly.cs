@@ -5,12 +5,14 @@ namespace Server.Items
 {
     public class ClockworkAssembly : Item, ICommodity
     {
+        public override int LabelNumber { get { return 1073426; } } // Clockwork Assembly
+
         [Constructable]
         public ClockworkAssembly()
             : base(0x1EA8)
         {
-            this.Weight = 5.0;
-            this.Hue = 1102;
+            Weight = 5.0;
+            Hue = 1102;
         }
 
         public ClockworkAssembly(Serial serial)
@@ -21,93 +23,57 @@ namespace Server.Items
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "clockwork assembly";
-            }
-        }
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 return;
             }
 
-            double tinkerSkill = from.Skills[SkillName.Tinkering].Value;
-
-            if (tinkerSkill < 60.0)
+            if (from.Skills[SkillName.Tinkering].Value < 60.0)
             {
-                from.SendMessage("You must have at least 60.0 skill in tinkering to construct a golem.");
+                from.SendLocalizedMessage(1071943); // You must be a Journeyman or higher Tinker to construct a golem.
                 return;
             }
             else if ((from.Followers + 4) > from.FollowersMax)
             {
                 from.SendLocalizedMessage(1049607); // You have too many followers to control that creature.
                 return;
-            }
-
-            double scalar;
-
-            if (tinkerSkill >= 100.0)
-                scalar = 1.0;
-            else if (tinkerSkill >= 90.0)
-                scalar = 0.9;
-            else if (tinkerSkill >= 80.0)
-                scalar = 0.8;
-            else if (tinkerSkill >= 70.0)
-                scalar = 0.7;
-            else
-                scalar = 0.6;
+            }            
 
             Container pack = from.Backpack;
 
             if (pack == null)
                 return;
 
-            int res = pack.ConsumeTotal(
-                new Type[]
-                {
-                    typeof(PowerCrystal),
-                    typeof(IronIngot),
-                    typeof(BronzeIngot),
-                    typeof(Gears)
-                },
-                new int[]
-                {
-                    1,
-                    50,
-                    50,
-                    5
-                });
+            int res = pack.ConsumeTotal(new Type[] { typeof(PowerCrystal), typeof(IronIngot), typeof(BronzeIngot), typeof(Gears) }, new int[] { 1, 50, 50, 5 });
 
             switch ( res )
             {
                 case 0:
                     {
-                        from.SendMessage("You must have a power crystal to construct the golem.");
+                        from.SendLocalizedMessage(1071945); // You need a power crystal to construct a golem.
                         break;
                     }
                 case 1:
                     {
-                        from.SendMessage("You must have 50 iron ingots to construct the golem.");
+                        from.SendLocalizedMessage(1071948); // You need more iron ingots to construct a golem.
                         break;
                     }
                 case 2:
                     {
-                        from.SendMessage("You must have 50 bronze ingots to construct the golem.");
+                        from.SendLocalizedMessage(1071947); // You need more bronze ingots to construct a golem.
                         break;
                     }
                 case 3:
                     {
-                        from.SendMessage("You must have 5 gears to construct the golem.");
+                        from.SendLocalizedMessage(1071946); // You need more gears to construct a golem.
                         break;
                     }
                 default:
                     {
-                        Golem g = new Golem(true, scalar);
+                        Golem g = new Golem(true, Scalar(from));
 
                         if (g.SetControlMaster(from))
                         {
@@ -122,17 +88,35 @@ namespace Server.Items
             }
         }
 
+        public double Scalar(Mobile m)
+        {
+            double scalar;
+
+            double skill = m.Skills[SkillName.Tinkering].Value;
+
+            if (skill >= 100.0)
+                scalar = 1.0;
+            else if (skill >= 90.0)
+                scalar = 0.9;
+            else if (skill >= 80.0)
+                scalar = 0.8;
+            else if (skill >= 70.0)
+                scalar = 0.7;
+            else
+                scalar = 0.6;
+
+            return scalar;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

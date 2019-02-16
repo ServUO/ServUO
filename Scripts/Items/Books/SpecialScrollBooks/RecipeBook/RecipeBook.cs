@@ -33,11 +33,8 @@ namespace Server.Items
         public int Price { get; set; }
 
         public RecipeScrollDefinition(int id, int rid, Expansion exp, RecipeSkillName skill)
+            : this(id, rid, exp, skill, 0, 0)
         {
-            ID = id;
-            RecipeID = rid;
-            Expansion = exp;
-            Skill = skill;
         }
 
         public RecipeScrollDefinition(int id, int rid, Expansion exp, RecipeSkillName skill, int amount, int price)
@@ -60,6 +57,9 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Using { get; set; }
 
         public List<RecipeScrollDefinition> Recipes;
 
@@ -258,7 +258,18 @@ namespace Server.Items
             }
             else
             {
-                from.SendGump(new RecipeBookGump((PlayerMobile)from, this));
+                if (from.HasGump(typeof(RecipeBookGump)))
+                    return;
+
+                if (!Using)
+                {
+                    Using = true;
+                    from.SendGump(new RecipeBookGump((PlayerMobile)from, this));
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1062456); // The book is currently in use.
+                }
             }
         }
 		

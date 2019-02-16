@@ -16,62 +16,82 @@ namespace Server.Mobiles
             }
         }
 
+        public double Scalar(Mobile m)
+        {
+            double scalar;
+
+            double skill = m.Skills[SkillName.Tinkering].Value;
+
+            if (skill >= 100.0)
+                scalar = 1.0;
+            else if (skill >= 90.0)
+                scalar = 0.9;
+            else if (skill >= 80.0)
+                scalar = 0.8;
+            else if (skill >= 70.0)
+                scalar = 0.7;
+            else
+                scalar = 0.6;
+
+            return scalar;
+        }
+
         [Constructable]
         public Golem()
-            : this(false, 1.0)
+            : this(false, 1)
         {
         }
 
         [Constructable]
         public Golem(bool summoned, double scalar)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.8)
-        {
+        {               
             Name = "a golem";
             Body = 752;
-
-            if (summoned)
-                Hue = 2101;
 
             SetStr((int)(251 * scalar), (int)(350 * scalar));
             SetDex((int)(76 * scalar), (int)(100 * scalar));
             SetInt((int)(101 * scalar), (int)(150 * scalar));
 
-            SetHits((int)(151 * scalar), (int)(210 * scalar));
-
-            SetDamage((int)(13 * scalar), (int)(24 * scalar));
-
-            SetDamageType(ResistanceType.Physical, 100);
-
-            SetResistance(ResistanceType.Physical, (int)(35 * scalar), (int)(55 * scalar));
-
-            if (summoned)
-                SetResistance(ResistanceType.Fire, (int)(50 * scalar), (int)(60 * scalar));
-            else
-                SetResistance(ResistanceType.Fire, (int)(100 * scalar));
-
-            SetResistance(ResistanceType.Cold, (int)(10 * scalar), (int)(30 * scalar));
-            SetResistance(ResistanceType.Poison, (int)(10 * scalar), (int)(25 * scalar));
-            SetResistance(ResistanceType.Energy, (int)(30 * scalar), (int)(40 * scalar));
-
-            SetSkill(SkillName.MagicResist, (150.1 * scalar), (190.0 * scalar));
-            SetSkill(SkillName.Tactics, (60.1 * scalar), (100.0 * scalar));
-            SetSkill(SkillName.Wrestling, (60.1 * scalar), (100.0 * scalar));
-
             if (summoned)
             {
+                Hue = 2101;               
+
+                SetResistance(ResistanceType.Fire, 50, 65);
+                SetResistance(ResistanceType.Poison, 75, 85);
+
+                SetSkill(SkillName.MagicResist, (150.1 * scalar), (190.0 * scalar));
+                SetSkill(SkillName.Tactics, (60.1 * scalar), (100.0 * scalar));
+                SetSkill(SkillName.Wrestling, (60.1 * scalar), (100.0 * scalar));
+
                 Fame = 10;
                 Karma = 10;
             }
             else
             {
+                SetHits(151, 210);
+
+                SetResistance(ResistanceType.Fire, 100);
+                SetResistance(ResistanceType.Poison, 10, 25);
+
+                SetSkill(SkillName.MagicResist, 60.0, 100.0);
+                SetSkill(SkillName.Tactics, 60.0, 100.0);
+                SetSkill(SkillName.Wrestling, 150.0, 190.0);
+                SetSkill(SkillName.DetectHidden, 45.0, 50.0);
+
                 Fame = 3500;
                 Karma = -3500;
-            }
 
-            if (!summoned)
-            {
                 SpawnPackItems();
             }
+
+            SetDamage(13, 24);
+
+            SetDamageType(ResistanceType.Physical, 100);
+
+            SetResistance(ResistanceType.Physical, 40, 60);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Energy, 30, 45);
 
             ControlSlots = 3;
         }
@@ -98,84 +118,23 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool IsScaredOfScaryThings
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsScaryToPets
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsBondable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.None;
-            }
-        }
-        public override bool CanBeDistracted
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool DeleteOnRelease
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return !Controlled;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS || Controlled;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-
+        public override bool IsScaredOfScaryThings { get { return false; } }
+        public override bool IsScaryToPets { get { return true; } }
+        public override bool IsBondable { get { return false; } }
+        public override FoodType FavoriteFood { get { return FoodType.None; } }
+        public override bool CanBeDistracted { get { return false; } }
+        public override bool DeleteOnRelease { get { return true; } }
+        public override bool AutoDispel { get { return !Controlled; } }
+        public override bool BleedImmune { get { return true; } }
+        public override bool BardImmune { get { return !Core.AOS || Controlled; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override bool DoesColossalBlow { get { return true; } }
 
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
 
-            if (0.05 > Utility.RandomDouble())
+            if (0.05 > Utility.RandomDouble() && !Controlled)
             {
                 if (!IsParagon)
                 {
