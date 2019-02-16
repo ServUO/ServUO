@@ -33,11 +33,8 @@ namespace Server.Items
         public int Price { get; set; }
 
         public RecipeScrollDefinition(int id, int rid, Expansion exp, RecipeSkillName skill)
+            : this(id, rid, exp, skill, 0, 0)
         {
-            ID = id;
-            RecipeID = rid;
-            Expansion = exp;
-            Skill = skill;
         }
 
         public RecipeScrollDefinition(int id, int rid, Expansion exp, RecipeSkillName skill, int amount, int price)
