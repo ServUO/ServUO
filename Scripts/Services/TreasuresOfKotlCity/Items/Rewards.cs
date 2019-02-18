@@ -477,7 +477,7 @@ namespace Server.Items
             }
         }
 
-        public void OnFlip()
+        public void OnFlip(Mobile from)
         {
             // lets make sure we have the right ID before we begin
             int id = ItemID;

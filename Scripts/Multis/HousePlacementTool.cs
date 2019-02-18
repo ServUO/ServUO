@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Multis;
@@ -81,6 +83,7 @@ namespace Server.Items
 
             from.CloseGump(typeof(HousePlacementCategoryGump));
             from.CloseGump(typeof(HousePlacementListGump));
+            from.CloseGump(typeof(HouseSwapGump));
 
             AddPage(0);
 
@@ -167,6 +170,7 @@ namespace Server.Items
 
             from.CloseGump(typeof(HousePlacementCategoryGump));
             from.CloseGump(typeof(HousePlacementListGump));
+            from.CloseGump(typeof(HouseSwapGump));
 
             AddPage(0);
 
@@ -207,7 +211,7 @@ namespace Server.Items
             {
                 if (m_Classic)
                 {
-                    if (i == 7)
+                    if (i == 8)
                     {
                         page = 2;
                         index = 0;
@@ -253,18 +257,20 @@ namespace Server.Items
                 HousePlacementEntry entry = entries[i];
 
                 int y = 70 + (index * 20);
+                int storage = (int)(entry.Storage * BaseHouse.GlobalBonusStorageScalar);
+                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalBonusStorageScalar);
 
                 AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, y, 225, 20, entry.Description, LabelColor, false, false);
-                AddLabel(275, y, LabelHue, entry.Storage.ToString());
-                AddLabel(350, y, LabelHue, entry.Lockdowns.ToString());
+                AddLabel(275, y, LabelHue, storage.ToString());
+                AddLabel(350, y, LabelHue, lockdowns.ToString());
                 AddLabel(425, y, LabelHue, entry.Cost.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
             }
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            if (!m_From.CheckAlive() || m_From.Backpack == null || m_From.Backpack.FindItemByType(typeof(HousePlacementTool)) == null)
+            if (!m_From.CheckAlive() || m_From.Backpack == null || !m_Tool.IsChildOf(m_From.Backpack))
                 return;
 
             int index = info.ButtonID - 1;
@@ -331,7 +337,7 @@ namespace Server.Items
 
         protected override void OnTargetFinish(Mobile from)
         {
-            if (!from.CheckAlive() || from.Backpack == null || from.Backpack.FindItemByType(typeof(HousePlacementTool)) == null)
+            if (!from.CheckAlive() || from.Backpack == null || !m_Tool.IsChildOf(from.Backpack))
                 return;
 
             if (!m_Placed)
@@ -388,24 +394,24 @@ namespace Server.Items
             new HousePlacementEntry(typeof(Keep),               1011313,	2625,	1312,	3019,	1509,	52,	562500, 0, 11,	0,	0x007C),
             new HousePlacementEntry(typeof(Castle),             1011314,	4076,	2038,	4688,	2344,	78,	865000, 0, 16,	0,	0x007E),
 
-            new HousePlacementEntry(typeof(TrinsicKeep),        1158748,	4226,	2113,	4226,	2113,	78,	29643750, 0, 11,	0,	0x147E),
-            new HousePlacementEntry(typeof(GothicRoseCastle),   1158749,	6563,	3281,	6563,	3281,	78,	44808750, 0, 16,	0,	0x147F),
-            new HousePlacementEntry(typeof(ElsaCastle),         1158750,	6563,	3281,	6563,	3281,	78,	45450000, 0, 16,	0,	0x1480),
-            new HousePlacementEntry(typeof(Spires),             1158761,	6563,	3281,	6563,	3281,	78,	47025000, 0, 16,	0,	0x1481),
-            new HousePlacementEntry(typeof(CastleOfOceania),    1158760,	6563,	3281,	6563,	3281,	78,	48971250, 0, 16,	0,	0x1482),
-            new HousePlacementEntry(typeof(FeudalCastle),       1158762,	6563,	3281,	6563,	3281,	78,	27337500, 0, 16,	0,	0x1483),
-            new HousePlacementEntry(typeof(RobinsNest),         1158850,	4226,	2113,	4226,	2113,	78,	25301250, 0, 11,	0,	0x1484),
-            new HousePlacementEntry(typeof(TraditionalKeep),    1158851,	4226,	2113,	4226,	2113,	78,	26685000, 0, 11,	0,	0x1485),
-            new HousePlacementEntry(typeof(VillaCrowley),       1158852,	4226,	2113,	4226,	2113,	78,	21813750, 0, 11,	0,	0x1486),
-            new HousePlacementEntry(typeof(DarkthornKeep),      1158853,	4226,	2113,	4226,	2113,	78,	27990000, 0, 11,	0,	0x1487),
-            new HousePlacementEntry(typeof(SandalwoodKeep),     1158854,	4226,	2113,	4226,	2113,	78,	23456250, 0, 11,	0,	0x1488),
-            new HousePlacementEntry(typeof(CasaMoga),           1158855,	4226,	2113,	4226,	2113,	78,	26313750, 0, 11,	0,	0x1489),
+            new HousePlacementEntry(typeof(TrinsicKeep),        1158748,	2625,	1312,	3019,	1509,	52,	29643750, 0, 11,	0,	0x147E),
+            new HousePlacementEntry(typeof(GothicRoseCastle),   1158749,	4076,	2038,	4688,	2344,	78,	44808750, 0, 16,	0,	0x147F),
+            new HousePlacementEntry(typeof(ElsaCastle),         1158750,	4076,	2038,	4688,	2344,	78,	45450000, 0, 16,	0,	0x1480),
+            new HousePlacementEntry(typeof(Spires),             1158761,	4076,	2038,	4688,	2344,	78,	47025000, 0, 16,	0,	0x1481),
+            new HousePlacementEntry(typeof(CastleOfOceania),    1158760,	4076,	2038,	4688,	2344,	78,	48971250, 0, 16,	0,	0x1482),
+            new HousePlacementEntry(typeof(FeudalCastle),       1158762,	4076,	2038,	4688,	2344,	78,	27337500, 0, 16,	0,	0x1483),
+            new HousePlacementEntry(typeof(RobinsNest),         1158850,	2625,	1312,	3019,	1509,	52,	25301250, 0, 11,	0,	0x1484),
+            new HousePlacementEntry(typeof(TraditionalKeep),    1158851,	2625,	1312,	3019,	1509,	52,	26685000, 0, 11,	0,	0x1485),
+            new HousePlacementEntry(typeof(VillaCrowley),       1158852,	2625,	1312,	3019,	1509,	52,	21813750, 0, 11,	0,	0x1486),
+            new HousePlacementEntry(typeof(DarkthornKeep),      1158853,	2625,	1312,	3019,	1509,	52,	27990000, 0, 11,	0,	0x1487),
+            new HousePlacementEntry(typeof(SandalwoodKeep),     1158854,	2625,	1312,	3019,	1509,	52,	23456250, 0, 11,	0,	0x1488),
+            new HousePlacementEntry(typeof(CasaMoga),           1158855,	2625,	1312,	3019,	1509,	52,	26313750, 0, 11,	0,	0x1489),
         };
 
         private static readonly HousePlacementEntry[] m_CustomHouseContest = new HousePlacementEntry[]
         {
-            new HousePlacementEntry(typeof(HouseFoundation), 1158538,	4226,	2113,	4226,	2113,	78,	525000, 0,	10,	0,	0x147C), // 32x32 3-Story Customizable Keep
-            new HousePlacementEntry(typeof(HouseFoundation), 1158539,	6563,	3281,	6563,	3281,	78,	525000, 0,	10,	0,	0x147D)  // 32x32 3-Story Customizable Castle
+            new HousePlacementEntry(typeof(HouseFoundation), 1158538,	2625,	1312,	3019,	1509,	78,	525000, 0,	10,	0,	0x147C), // 23x23 3-Story Customizable Keep
+            new HousePlacementEntry(typeof(HouseFoundation), 1158539,	4076,	2038,	4688,	2344,	78,	525000, 0,	10,	0,	0x147D),  // 32x32 3-Story Customizable Castle
         };
 
         private static readonly HousePlacementEntry[] m_TwoStoryFoundations = new HousePlacementEntry[]
@@ -982,6 +988,207 @@ namespace Server.Items
                 {
                     ((Hashtable)obj)[e.m_MultiID] = e;
                 }
+            }
+        }
+    }
+
+    public class HouseSwapGump : BaseGump
+    {
+        private const int LabelColor = 0x7FFF;
+        private const int LabelHue = 0x481;
+
+        private readonly Mobile m_From;
+        private readonly HousePlacementEntry[] m_Entries;
+        private readonly BaseHouse m_House;
+
+        public HouseSwapGump(Mobile from, BaseHouse house, HousePlacementEntry[] entries)
+            : base((PlayerMobile)from, 50, 50)
+        {
+            m_From = from;
+            m_Entries = entries;
+            m_House = house;
+
+            from.CloseGump(typeof(HousePlacementCategoryGump));
+            from.CloseGump(typeof(HousePlacementListGump));
+            from.CloseGump(typeof(HouseSwapGump));
+        }
+
+        public override void AddGumpLayout()
+        {
+            AddPage(0);
+
+            AddBackground(0, 0, 530, 430, 5054);
+
+            AddImageTiled(10, 10, 500, 20, 2624);
+            AddAlphaRegion(10, 10, 500, 20);
+
+            AddHtmlLocalized(10, 10, 500, 20, 1158759, LabelColor, false, false); // <CENTER>SECURE HOUSE REPLACEMENT</CENTER>
+
+            AddImageTiled(10, 40, 500, 20, 2624);
+            AddAlphaRegion(10, 40, 500, 20);
+
+            AddHtmlLocalized(50, 40, 225, 20, 1060235, LabelColor, false, false); // House Description
+            AddHtmlLocalized(275, 40, 75, 20, 1060236, LabelColor, false, false); // Storage
+            AddHtmlLocalized(350, 40, 75, 20, 1060237, LabelColor, false, false); // Lockdowns
+            AddHtmlLocalized(425, 40, 75, 20, 1060034, LabelColor, false, false); // Cost
+
+            AddImageTiled(10, 70, 500, 280, 2624);
+            AddAlphaRegion(10, 70, 500, 280);
+
+            AddImageTiled(10, 370, 500, 20, 2624);
+            AddAlphaRegion(10, 370, 500, 20);
+
+            AddHtmlLocalized(10, 370, 250, 20, 1060645, LabelColor, false, false); // Bank Balance:
+            AddLabel(250, 370, LabelHue, Banker.GetBalance(m_From).ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
+
+            AddImageTiled(10, 400, 500, 20, 2624);
+            AddAlphaRegion(10, 400, 500, 20);
+
+            AddButton(10, 400, 4017, 4019, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 400, 100, 20, 3000363, LabelColor, false, false); // Close
+
+            for (int i = 0; i < m_Entries.Length; ++i)
+            {
+                int page = 1 + (i / 14);
+                int index = i % 14;
+
+                if (index == 0)
+                {
+                    if (page > 1)
+                    {
+                        AddButton(450, 400, 4005, 4007, 0, GumpButtonType.Page, page);
+                        AddHtmlLocalized(400, 400, 100, 20, 3000406, LabelColor, false, false); // Next
+                    }
+
+                    AddPage(page);
+
+                    if (page > 1)
+                    {
+                        AddButton(200, 400, 4014, 4016, 0, GumpButtonType.Page, page - 1);
+                        AddHtmlLocalized(250, 400, 100, 20, 3000405, LabelColor, false, false); // Previous
+                    }
+                }
+
+                HousePlacementEntry entry = m_Entries[i];
+
+                int y = 70 + (index * 20);
+                int storage = (int)(entry.Storage * BaseHouse.GlobalBonusStorageScalar);
+                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalBonusStorageScalar);
+
+                AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(50, y, 225, 20, entry.Description, LabelColor, false, false);
+                AddLabel(275, y, LabelHue, storage.ToString());
+                AddLabel(350, y, LabelHue, lockdowns.ToString());
+                AddLabel(425, y, LabelHue, entry.Cost.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
+            }
+        }
+
+        public override void OnResponse(RelayInfo info)
+        {
+            if (!m_From.CheckAlive() || m_From.Backpack == null || m_From.Backpack.FindItemByType(typeof(HousePlacementTool)) == null)
+                return;
+
+            int index = info.ButtonID - 1;
+
+            if (index >= 0 && index < m_Entries.Length)
+            {
+                var e = m_Entries[index];
+
+                if (e != null)
+                {
+                    if (e != null)
+                    {
+                        int cost = e.Cost - m_House.Price;
+
+                        if (cost > 0)
+                        {
+                            if (!Banker.Withdraw(m_From, cost, true))
+                            {
+                                m_From.SendLocalizedMessage(1061624); // You do not have enough funds in your bank to cover the difference between your old house and your new one.
+                                return;
+                            }
+                        }
+                        else if (cost < 0)
+                        {
+                            Banker.Deposit(m_From, -cost, true);
+                        }
+
+                        BaseHouse newHouse = e.ConstructHouse(m_From);
+
+                        if (newHouse != null)
+                        {
+                            newHouse.Price = e.Cost;
+
+                            m_House.MoveAllToCrate();
+
+                            newHouse.Friends = new List<Mobile>(m_House.Friends);
+                            newHouse.CoOwners = new List<Mobile>(m_House.CoOwners);
+                            newHouse.Bans = new List<Mobile>(m_House.Bans);
+                            newHouse.Access = new List<Mobile>(m_House.Access);
+                            newHouse.BuiltOn = m_House.BuiltOn;
+                            newHouse.LastTraded = m_House.LastTraded;
+                            newHouse.Public = m_House.Public;
+
+                            newHouse.VendorInventories.AddRange(m_House.VendorInventories);
+                            m_House.VendorInventories.Clear();
+
+                            foreach (VendorInventory inventory in newHouse.VendorInventories)
+                            {
+                                inventory.House = newHouse;
+                            }
+
+                            newHouse.InternalizedVendors.AddRange(m_House.InternalizedVendors);
+                            m_House.InternalizedVendors.Clear();
+
+                            foreach (Mobile mobile in newHouse.InternalizedVendors)
+                            {
+                                if (mobile is PlayerVendor)
+                                    ((PlayerVendor)mobile).House = newHouse;
+                                else if (mobile is PlayerBarkeeper)
+                                    ((PlayerBarkeeper)mobile).House = newHouse;
+                            }
+
+                            if (m_House.MovingCrate != null)
+                            {
+                                newHouse.MovingCrate = m_House.MovingCrate;
+                                newHouse.MovingCrate.House = newHouse;
+                                m_House.MovingCrate = null;
+                            }
+
+                            List<Item> items = m_House.GetItems();
+                            List<Mobile> mobiles = m_House.GetMobiles();
+
+                            newHouse.MoveToWorld(new Point3D(m_House.X + m_House.ConvertOffsetX, m_House.Y + m_House.ConvertOffsetY, m_House.Z + m_House.ConvertOffsetZ), m_House.Map);
+                            m_House.Delete();
+
+                            foreach (Item item in items)
+                            {
+                                item.Location = newHouse.BanLocation;
+                            }
+
+                            foreach (Mobile mobile in mobiles)
+                            {
+                                mobile.Location = newHouse.BanLocation;
+                            }
+
+                            /* You have successfully replaced your original house with a new house.
+                            * The value of the replaced house has been deposited into your bank box.
+                            * All of the items in your original house have been relocated to a Moving Crate in the new house.
+                            * Any deed-based house add-ons have been converted back into deeds.
+                            * Vendors and barkeeps in the house, if any, have been stored in the Moving Crate as well.
+                            * Use the <B>Get Vendor</B> context-sensitive menu option on your character to retrieve them.
+                            * These containers can be used to re-create the vendor in a new location.
+                            * Any barkeepers have been converted into deeds.
+                            */
+                            m_From.SendGump(new NoticeGump(1060637, 30720, 1060012, 32512, 420, 280, null, null));
+                            return;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Refresh();
             }
         }
     }

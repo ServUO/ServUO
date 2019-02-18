@@ -41,7 +41,7 @@ namespace Server.Items
             Weight = 5.0;
         }
 
-        public void OnFlip()
+        public void OnFlip(Mobile from)
         {
             if (ItemID == 0x4141 || ItemID == 0x4142)
                 ItemID = ItemID + 2;

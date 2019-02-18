@@ -14,7 +14,7 @@ namespace Server.Items
             Burning = false;
         }
 
-        public void OnFlip()
+        public void OnFlip(Mobile from)
         {
             if (ItemID == 0x9F33 || ItemID == 0x9F34)
                 ItemID = ItemID + 6;

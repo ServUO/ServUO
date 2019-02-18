@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
-using System.Collections.Generic;
 using Server.ContextMenus;
-using System.Linq;
+using Server.Network;
 
 namespace Server.Regions
 {
@@ -64,6 +66,8 @@ namespace Server.Regions
                     m_House.RefreshDecay();
                 }
             }
+
+            m.SendEverything();
         }
 
         public override bool SendInaccessibleMessage(Item item, Mobile from)

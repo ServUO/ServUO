@@ -43,9 +43,12 @@ namespace Server.Gumps
                 {
                     if (!Core.SE || !((PlayerMobile)m).RecentlyReported.Contains(ai.Attacker))
                     {
-                        killers.Add(ai.Attacker);
-                        ai.Reported = true;
-                        ai.CanReportMurder = false;
+                        if (!killers.Contains(ai.Attacker))
+                        {
+                            killers.Add(ai.Attacker);
+                            ai.Reported = true;
+                            ai.CanReportMurder = false;
+                        }
                     }
                 }
                 if (ai.Attacker.Player && (DateTime.UtcNow - ai.LastCombatTime) < TimeSpan.FromSeconds(30.0) && !toGive.Contains(ai.Attacker))

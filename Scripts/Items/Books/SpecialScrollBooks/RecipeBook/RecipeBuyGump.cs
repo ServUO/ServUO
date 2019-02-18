@@ -57,11 +57,13 @@ namespace Server.Items
 
                     if (price != m_Price)
                     {
-                        pv.SayTo(m_From, "The price has been been changed. If you like, you may offer to purchase the item again.");
+                        pv.SayTo(m_From, 1150158); // The price of the selected item has been changed from the value you confirmed. You must select and confirm the purchase again at the new price in order to buy it.
+                        m_Book.Using = false;
                     }
-                    else if (price == 0)
+                    else if (m_Recipe.Amount == 0 || price == 0)
                     {
-                        pv.SayTo(m_From, 1062382); // The deed selected is not available.
+                        pv.SayTo(m_From, 1158821); // The recipe selected is not available.
+                        m_Book.Using = false;
                     }
                     else
                     {
@@ -94,19 +96,23 @@ namespace Server.Items
                         {
                             pv.SayTo(m_From, 503205); // You cannot afford this item.
                             item.Delete();
+                            m_Book.Using = false;
                         }
                     }
                 }
                 else
                 {
+                    m_Book.Using = false;
+
                     if (pv == null)
-                        m_From.SendLocalizedMessage(1062382); // The deed selected is not available.
+                        m_From.SendLocalizedMessage(1158821); // The recipe selected is not available.
                     else
-                        pv.SayTo(m_From, 1062382); // The deed selected is not available.
+                        pv.SayTo(m_From, 1158821); // The recipe selected is not available.
                 }
             }
             else
             {
+                m_Book.Using = false;
                 m_From.SendLocalizedMessage(503207); // Cancelled purchase.
             }
         }

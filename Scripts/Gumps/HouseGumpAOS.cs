@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
@@ -227,19 +229,22 @@ namespace Server.Gumps
                 AddButtonLabeled(250, page != HouseGumpPageAOS.Vendors ? 410 : 390, 0, 1060675); // CLOSE
             }
 
-            AddImage(10, 10, 100);
-
-            if (m_House.Sign != null)
+            if (!Core.TOL)
             {
-                ArrayList lines = Wrap(m_House.Sign.GetName());
+                AddImage(10, 10, 100);
 
-                if (lines != null)
+                if (m_House.Sign != null)
                 {
-                    for (int i = 0, y = (114 - (lines.Count * 14)) / 2; i < lines.Count; ++i, y += 14)
-                    {
-                        string s = (string)lines[i];
+                    ArrayList lines = Wrap(m_House.Sign.GetName());
 
-                        AddLabel(10 + ((160 - (s.Length * 8)) / 2), y, 0, s);
+                    if (lines != null)
+                    {
+                        for (int i = 0, y = (114 - (lines.Count * 14)) / 2; i < lines.Count; ++i, y += 14)
+                        {
+                            string s = (string)lines[i];
+
+                            AddLabel(10 + ((160 - (s.Length * 8)) / 2), y, 0, s);
+                        }
                     }
                 }
             }
@@ -266,11 +271,11 @@ namespace Server.Gumps
                 AddButtonLabeled(10, 410, GetButtonID(0, 3), 1060677); // Revoke Access
             }
 
-            AddPageButton(150, 10, GetButtonID(1, 0), 1060668, HouseGumpPageAOS.Information);
-            AddPageButton(150, 30, GetButtonID(1, 1), 1060669, HouseGumpPageAOS.Security);
-            AddPageButton(150, 50, GetButtonID(1, 2), 1060670, HouseGumpPageAOS.Storage);
-            AddPageButton(150, 70, GetButtonID(1, 3), 1060671, HouseGumpPageAOS.Customize);
-            AddPageButton(150, 90, GetButtonID(1, 4), 1060672, HouseGumpPageAOS.Ownership);
+            AddPageButton(Core.TOL ? 10 : 150, 10, GetButtonID(1, 0), 1060668, HouseGumpPageAOS.Information);
+            AddPageButton(Core.TOL ? 10 : 150, 30, GetButtonID(1, 1), 1060669, HouseGumpPageAOS.Security);
+            AddPageButton(Core.TOL ? 10 : 150, 50, GetButtonID(1, 2), 1060670, HouseGumpPageAOS.Storage);
+            AddPageButton(Core.TOL ? 10 : 150, 70, GetButtonID(1, 3), 1060671, HouseGumpPageAOS.Customize);
+            AddPageButton(Core.TOL ? 10 : 150, 90, GetButtonID(1, 4), 1060672, HouseGumpPageAOS.Ownership);
 
             switch ( page )
             {
@@ -311,7 +316,7 @@ namespace Server.Gumps
                         AddLabel(250, 310, LabelHue, GetDateTime(house.LastTraded));
 
                         AddHtmlLocalized(20, 330, 200, 20, 1061793, SelectedColor, false, false); // House Value
-                        AddLabel(250, 330, LabelHue, house.Price.ToString());
+                        AddLabel(250, 330, LabelHue, house.Price.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
 
                         AddHtmlLocalized(20, 360, 300, 20, 1011241, SelectedColor, false, false); // Number of visits this building has had: 
                         AddLabel(350, 360, LabelHue, house.TotalVisits.ToString());
@@ -439,6 +444,7 @@ namespace Server.Gumps
                         bool isCustomizable = isOwner && (house is HouseFoundation);
 
                         AddButtonLabeled(10, 120, GetButtonID(5, 0), 1060759, isOwner && !isCustomizable && (house.ConvertEntry != null)); // Convert Into Customizable House
+                        AddButtonLabeled(10, 140, GetButtonID(5, 8), 1060004, isOwner && house is BaseContestHouse || house is Castle || house is Keep);
                         AddButtonLabeled(10, 160, GetButtonID(5, 1), 1060765, isOwner && isCustomizable); // Customize This House
                         AddButtonLabeled(10, 180, GetButtonID(5, 2), 1060760, isOwner && house.MovingCrate != null); // Relocate Moving Crate
                         AddButtonLabeled(10, 210, GetButtonID(5, 3), 1060761, isOwner && house.Public); // Change House Sign
@@ -823,6 +829,32 @@ namespace Server.Gumps
             }
 
             from.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Security, from, house));
+        }
+
+        public static void SwapHouse_Callback(Mobile from, bool okay, object state)
+        {
+            var house = state as BaseHouse;
+
+            if (okay && house != null)
+            {
+                from.MoveToWorld(house.BanLocation, house.Map);
+
+                HousePlacementEntry[] entries = null;
+
+                if ((house is BaseContestHouse && ((BaseContestHouse)house).HouseType == ContestHouseType.Keep) || house is Keep)
+                {
+                    entries = HousePlacementEntry.HousesEJ.Where(e => e.MultiID != house.ItemID && (e.MultiID == 0x007C || e.MultiID == 0x147E || e.MultiID >= 0x1484)).ToArray();
+                }
+                else if ((house is BaseContestHouse && ((BaseContestHouse)house).HouseType == ContestHouseType.Castle) || house is Castle)
+                {
+                    entries = HousePlacementEntry.HousesEJ.Where(e => e.MultiID != house.ItemID && (e.MultiID == 0x007E || (e.MultiID >= 0x147F && e.MultiID <= 0x1483))).ToArray();
+                }
+
+                if (entries != null)
+                {
+                    BaseGump.SendGump(new HouseSwapGump(from, house, entries));
+                }
+            }
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -1248,6 +1280,33 @@ namespace Server.Gumps
                                     {
                                         from.Prompt = new RenamePrompt(m_House);
                                         from.SendLocalizedMessage(501302); // What dost thou wish the sign to say?
+                                    }
+
+                                    break;
+                                }
+                            case 8: // Securely Replace This House
+                                {
+                                    if (isOwner && (m_House is BaseContestHouse || m_House is Keep || m_House is Castle))
+                                    {
+                                        if (m_House.HasRentedVendors)
+                                        {
+                                            // You cannot perform this action while you still have vendors rented out in this house.
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1062395, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
+                                        }
+                                        else if (m_House.HasAddonContainers)
+                                        {
+                                            /*The house cannot be swapped when certain special house add-ons including aquariums, raised garden beds, house_only items, goza mats, and special 
+                                             * temporary add-ons are present in the house. Please re-deed or remove the special add-ons before swapping the house.*/
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1158659, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
+                                        }
+                                        else
+                                        {
+                                            /*You are about to swap your house into another classic house. You will be refunded or charged the value of this house. All your possessions 
+                                             * in the house will be transported to a Moving Crate. Deed-based house add-ons will be converted back into deeds. Vendors and barkeeps will
+                                             * also be stored in the Moving Crate. Are you sure you wish to continue?
+                                            */
+                                            from.SendGump(new WarningGump(1060635, 30720, 1158658, 32512, 420, 280, new WarningGumpCallback(SwapHouse_Callback), m_House));
+                                        }
                                     }
 
                                     break;

@@ -3,8 +3,8 @@ using Server;
 using Server.Engines.Craft;
 using System.Collections.Generic;
 using Server.Multis;
-using Server.Mobiles;
 using System.Linq;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -30,7 +30,7 @@ namespace Server.Items
                 {
                     base.Hue = value;
 
-                    if (!Deleted && this.ShareHue && Tools != null)
+                    if (!Deleted && ShareHue && Tools != null)
                     {
                         foreach (AddonToolComponent tool in Tools)
                             tool.Hue = value;
@@ -101,9 +101,15 @@ namespace Server.Items
                 {
                     from.SendGump(new CraftGump(from, CraftSystem, tool, null));
                 }
+                else
+                {
+                    tool.PublicOverheadMessage(MessageType.Regular, 0x3E9, 1061637); // You are not allowed to access this.
+                }
             }
             else
-                from.SendLocalizedMessage(1076766); // That is too far away.
+            {
+                from.SendLocalizedMessage(500325); // I am too far away to do that.
+            }
         }
 
         public virtual void OnCraftComponentLoaded(AddonToolComponent tool)
@@ -121,7 +127,7 @@ namespace Server.Items
         {
             base.OnMapChange();
 
-            Tools.ForEach(t => t.Map = this.Map);
+            Tools.ForEach(t => t.Map = Map);
         }
 
         public override void OnAfterDelete()
@@ -139,7 +145,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
 
             writer.Write((int)Level);
@@ -151,7 +156,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             Level = (SecureLevel)reader.ReadInt();
@@ -185,37 +189,57 @@ namespace Server.Items
                 BaseHouse house = BaseHouse.FindHouseAt(this);
                 CraftAddon addon = Addon as CraftAddon;
 
-                if (house != null && addon != null && house.HasSecureAccess(from, addon.Level) && dropped is ITool && !(dropped is BaseRunicTool))
+                if (house != null && addon != null && house.HasSecureAccess(from, addon.Level))
                 {
-                    var tool = dropped as ITool;
-
-                    if (addon != null && tool.CraftSystem == addon.CraftSystem)
+                    if (dropped is ITool && !(dropped is BaseRunicTool))
                     {
-                        AddonToolComponent comp = addon.Tools.FirstOrDefault(t => t != null);
+                        var tool = dropped as ITool;
 
-                        if (comp == null)
-                            return false;
-
-                        if (comp.UsesRemaining >= comp.MaxUses)
+                        if (tool.CraftSystem == addon.CraftSystem)
                         {
-                            from.SendMessage("That is already at its maximum charges.");
-                            return false;
+                            AddonToolComponent comp = addon.Tools.FirstOrDefault(t => t != null);
+
+                            if (comp == null)
+                                return false;
+
+                            if (comp.UsesRemaining >= comp.MaxUses)
+                            {
+                                from.SendLocalizedMessage(1155740); // Adding this to the power tool would put it over the max number of charges the tool can hold.
+                                return false;
+                            }
+                            else
+                            {
+                                int toadd = Math.Min(tool.UsesRemaining, comp.MaxUses - comp.UsesRemaining);
+
+                                comp.UsesRemaining += toadd;
+                                tool.UsesRemaining -= toadd;
+
+                                if (tool.UsesRemaining <= 0 && !tool.Deleted)
+                                    tool.Delete();
+
+                                from.SendLocalizedMessage(1155741); // Charges have been added to the power tool.
+
+                                Effects.PlaySound(Location, Map, 0x42);
+
+                                return false;
+                            }
                         }
                         else
                         {
-                            int toadd = Math.Min(tool.UsesRemaining, comp.MaxUses - comp.UsesRemaining);
-
-                            comp.UsesRemaining += toadd;
-                            tool.UsesRemaining -= toadd;
-
-                            if (tool.UsesRemaining <= 0 && !tool.Deleted)
-                                tool.Delete();
-
-                            Effects.PlaySound(this.Location, this.Map, 0x42);
-
+                            from.SendLocalizedMessage(1074836); // The container cannot hold that type of object.
                             return false;
                         }
                     }
+                    else
+                    {
+                        from.SendLocalizedMessage(1074836); // The container cannot hold that type of object.
+                        return false;
+                    }
+                }
+                else
+                {
+                    SendLocalizedMessageTo(from, 1061637); // You are not allowed to access this.
+                    return false;
                 }
 
                 return false;
@@ -229,16 +253,13 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write((int)0);
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
                 int version = reader.ReadInt();
-
             }
         }
     }

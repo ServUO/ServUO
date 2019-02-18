@@ -1182,8 +1182,14 @@ namespace Server.Mobiles
 
             if (startValue > 0)
             {
+                if (tp.TrainPoint is SkillName && startValue > 0)
+                {
+                    startValue = (startValue - 100) * 10;
+                }
+
                 cost -= (int)((double)startValue * tp.Weight);
             }
+
             return cost;
         }
 
