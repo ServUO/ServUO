@@ -259,21 +259,25 @@ namespace Server.Engines.Craft
                 SetData(index, CraftableItemType.ShortRough);
                 SetDisplayID(index, 488);
 
-                index = AddCraft(typeof(CraftableHouseDoorDeed), 1155792, 1156078, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                index = AddCraft(typeof(CraftableStoneHouseDoor), 1155792, 1156078, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
                 SetData(index, DoorType.StoneDoor_S_In);
                 SetDisplayID(index, 804);
+                AddCreateItem(index, CraftableStoneHouseDoor.Create);
 
-                index = AddCraft(typeof(CraftableHouseDoorDeed), 1155792, 1156079, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                index = AddCraft(typeof(CraftableStoneHouseDoor), 1155792, 1156079, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
                 SetData(index, DoorType.StoneDoor_E_Out);
                 SetDisplayID(index, 805);
+                AddCreateItem(index, CraftableStoneHouseDoor.Create);
 
-                index = AddCraft(typeof(CraftableHouseDoorDeed), 1155792, 1156348, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                index = AddCraft(typeof(CraftableStoneHouseDoor), 1155792, 1156348, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
                 SetData(index, DoorType.StoneDoor_S_Out);
                 SetDisplayID(index, 804);
+                AddCreateItem(index, CraftableStoneHouseDoor.Create);
 
-                index = AddCraft(typeof(CraftableHouseDoorDeed), 1155792, 1156349, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                index = AddCraft(typeof(CraftableStoneHouseDoor), 1155792, 1156349, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
                 SetData(index, DoorType.StoneDoor_E_In);
                 SetDisplayID(index, 805);
+                AddCreateItem(index, CraftableStoneHouseDoor.Create);
             }
             
             // Stone Stairs
