@@ -160,14 +160,28 @@ namespace Server.SkillHandlers
             {
                 Corpse toChannel = null;
 
-                foreach (Item item in Caster.GetItemsInRange(3))
+                IPooledEnumerable eable = Caster.GetObjectsInRange(3);
+
+                foreach (object objs in eable)
                 {
-                    if (item is Corpse && !((Corpse)item).Channeled && !((Corpse)item).Animated)
+                    if (objs is Corpse && !((Corpse)objs).Channeled && !((Corpse)objs).Animated)
                     {
-                        toChannel = (Corpse)item;
+                        toChannel = (Corpse)objs;
                         break;
                     }
+                    else if (objs is Server.Engines.Khaldun.SageHumbolt)
+                    {
+                        if (((Server.Engines.Khaldun.SageHumbolt)objs).OnSpiritSpeak(Caster))
+                        {
+                            eable.Free();
+                            SpiritSpeak.Remove(Caster);
+                            Stop();
+                            return;
+                        }
+                    }
                 }
+
+                eable.Free();
 
                 int max, min, mana, number;
 

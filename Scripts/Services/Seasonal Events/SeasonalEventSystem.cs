@@ -9,6 +9,7 @@ using Server.Gumps;
 using Server.Misc;
 using Server.Commands;
 using Server.Engines.TreasuresOfDoom;
+using Server.Engines.Khaldun;
 
 namespace Server.Engines.SeasonalEvents
 {
@@ -243,6 +244,9 @@ namespace Server.Engines.SeasonalEvents
             {
                 case EventType.TreasuresOfDoom:
                     TreasuresOfDoomGeneration.CheckEnabled();
+                    break;
+                case EventType.TreasuresOfKhaldun:
+                    TreasuresOfKhaldunGeneration.CheckEnabled();
                     break;
             }
         }

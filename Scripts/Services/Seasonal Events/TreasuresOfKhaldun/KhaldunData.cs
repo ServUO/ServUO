@@ -16,7 +16,10 @@ namespace Server.Engines.Points
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        public static bool Enabled { get { return SeasonalEventSystem.IsActive(EventType.TreasuresOfKhaldun); } }
+        public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.TreasuresOfKhaldun); } }
+
+        public bool Enabled { get; set; }
+        public bool QuestContentGenerated { get; set; }
 
         private TextDefinition m_Name = null;
 
@@ -32,7 +35,7 @@ namespace Server.Engines.Points
 
         public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
         {
-            if (!Enabled || victim.Controlled || victim.Summoned || !damager.Alive || damager.Deleted || !victim.IsChampionSpawn)
+            if (!InSeason || victim.Controlled || victim.Summoned || !damager.Alive || damager.Deleted || !victim.IsChampionSpawn)
                 return;
 
             Region r = victim.Region;
@@ -86,7 +89,10 @@ namespace Server.Engines.Points
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(Enabled);
+            writer.Write(QuestContentGenerated);
 
             writer.Write(DungeonPoints.Count);
             foreach (KeyValuePair<Mobile, int> kvp in DungeonPoints)
@@ -102,14 +108,23 @@ namespace Server.Engines.Points
 
             int version = reader.ReadInt();
 
-            int count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
+            switch (version)
             {
-                Mobile m = reader.ReadMobile();
-                int points = reader.ReadInt();
+                case 1:
+                    Enabled = reader.ReadBool();
+                    QuestContentGenerated = reader.ReadBool();
+                    goto case 0;
+                case 0:
+                    int count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        Mobile m = reader.ReadMobile();
+                        int points = reader.ReadInt();
 
-                if (m != null && points > 0)
-                    DungeonPoints[m] = points;
+                        if (m != null && points > 0)
+                            DungeonPoints[m] = points;
+                    }
+                    break;
             }
         }
     }

@@ -13,6 +13,9 @@ namespace Server.Engines.Khaldun
         public override int TurnInLocalization { get { return 1157652; } } // Turn In Artifacts of The Cult	
         public override int ClaimLocalization { get { return 1155593; } } // Claim Rewards
 
+        public static KhaldunResearcher InstanceTram { get; set; }
+        public static KhaldunResearcher InstanceFel { get; set; }
+
         [Constructable]
         public KhaldunResearcher() : base("the Researcher")
         {
@@ -83,13 +86,7 @@ namespace Server.Engines.Khaldun
 
         public override bool IsRedeemableItem(Item item)
         {
-            if (item is BaseWeapon && ((BaseWeapon)item).ReforgedSuffix == ReforgedSuffix.Khaldun)
-                return true;
-            if (item is BaseArmor && ((BaseArmor)item).ReforgedSuffix == ReforgedSuffix.Khaldun)
-                return true;
-            if (item is BaseJewel && ((BaseJewel)item).ReforgedSuffix == ReforgedSuffix.Khaldun)
-                return true;
-            if (item is BaseClothing && ((BaseClothing)item).ReforgedSuffix == ReforgedSuffix.Khaldun)
+            if (item is ICombatEquipment && ((ICombatEquipment)item).ReforgedSuffix == ReforgedSuffix.Khaldun)
                 return true;
 
             return false;
@@ -97,7 +94,7 @@ namespace Server.Engines.Khaldun
 
         public override void SendRewardGump(Mobile m)
         {
-            if (m.Player && m.CheckAlive())
+            if (m.Player && m.CheckAlive() && m.Backpack.GetAmount(typeof(DetectiveCredentials)) > 0)
                 m.SendGump(new KhaldunRewardGump(this, m as PlayerMobile));
         }
 
@@ -116,6 +113,16 @@ namespace Server.Engines.Khaldun
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Map == Map.Trammel)
+            {
+                InstanceTram = this;
+            }
+
+            if (Map == Map.Felucca)
+            {
+                Instnace.Fel = this;
+            }
         }
     }
 }

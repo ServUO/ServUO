@@ -7,6 +7,11 @@ using Server.Targeting;
 
 namespace Server.SkillHandlers
 {
+    public interface IForensicTarget
+    {
+        void OnForensicEval(Mobile m);
+    }
+
     public class ForensicEvaluation
     {
         public static void Initialize()
@@ -36,14 +41,14 @@ namespace Server.SkillHandlers
                 double skill = from.Skills[SkillName.Forensics].Value;
                 double minSkill = 30.0;
 
-                if (skill < minSkill)
-                {
-                    from.SendLocalizedMessage(501003); //You notice nothing unusual.
-                    return;
-                }
-
                 if (target is Corpse)
                 {
+                    if (skill < minSkill)
+                    {
+                        from.SendLocalizedMessage(501003); //You notice nothing unusual.
+                        return;
+                    }
+
                     if (from.CheckTargetSkill(SkillName.Forensics, target, minSkill, 55.0))
                     {
                         Corpse c = (Corpse)target;
@@ -128,13 +133,18 @@ namespace Server.SkillHandlers
                 }
                 else if (Core.SA && target is Item)
                 {
-                    if (skill < 41.0)
+                    Item item = (Item)target;
+
+                    if (item is IForensicTarget)
+                    {
+                        ((IForensicTarget)item).OnForensicEval(from);
+                    }
+                    else  if (skill < 41.0)
                     {
                         from.SendLocalizedMessage(501001);//You cannot determain anything useful.
                         return;
                     }
 
-                    Item item = (Item)target;
                     var honestySocket = item.GetSocket<HonestyItemSocket>();
 
                     if (honestySocket != null)

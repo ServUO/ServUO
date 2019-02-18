@@ -37,7 +37,6 @@ namespace Server.Engines.VvV
         public List<VvVTrap> Links { get; set; }
 		
 		public override bool HandlesOnMovement { get { return true; } }
-
         public bool CheckWhenHidden { get { return true; } }
 
 		public virtual int MinDamage { get { return 0; } }

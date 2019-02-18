@@ -8,7 +8,6 @@ namespace Server.Items
         private Timer m_Timer;
 
         public override int DefaultGumpID { get { return 0x49; } }
-
         public bool CheckWhenHidden { get { return true; } }
 
         [Constructable]

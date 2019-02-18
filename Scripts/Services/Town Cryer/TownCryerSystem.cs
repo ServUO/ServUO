@@ -6,6 +6,7 @@ using Server.Guilds;
 using Server.Mobiles;
 using Server.Engines.Quests;
 using Server.Commands;
+using Server.Engines.Khaldun;
 
 using System;
 using System.IO;

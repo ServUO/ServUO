@@ -81,19 +81,29 @@ namespace Server.SkillHandlers
             protected override void OnTarget(Mobile from, object targeted)
             {
                 BaseBook book = targeted as BaseBook;
-                if (book == null)
-                    from.SendLocalizedMessage(1046296); // That is not a book
-                else if (Inscribe.IsEmpty(book))
-                    from.SendLocalizedMessage(501611); // Can't copy an empty book.
-                else if (Inscribe.GetUser(book) != null)
-                    from.SendLocalizedMessage(501621); // Someone else is inscribing that item.
+
+                if (book != null)
+                {
+                    if (Inscribe.IsEmpty(book))
+                        from.SendLocalizedMessage(501611); // Can't copy an empty book.
+                    else if (Inscribe.GetUser(book) != null)
+                        from.SendLocalizedMessage(501621); // Someone else is inscribing that item.
+                    else
+                    {
+                        Target target = new InternalTargetDst(book);
+                        from.Target = target;
+                        from.SendLocalizedMessage(501612); // Select a book to copy this to.
+                        target.BeginTimeout(from, TimeSpan.FromMinutes(1.0));
+                        Inscribe.SetUser(book, from);
+                    }
+                }
+                else if (targeted is Server.Engines.Khaldun.MysteriousBook)
+                {
+                    ((Server.Engines.Khaldun.MysteriousBook)targeted).OnInscribeTarget(from);
+                }
                 else
                 {
-                    Target target = new InternalTargetDst(book);
-                    from.Target = target;
-                    from.SendLocalizedMessage(501612); // Select a book to copy this to.
-                    target.BeginTimeout(from, TimeSpan.FromMinutes(1.0));
-                    Inscribe.SetUser(book, from);
+                    from.SendLocalizedMessage(1046296); // That is not a book
                 }
             }
 
