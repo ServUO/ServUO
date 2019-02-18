@@ -75,7 +75,10 @@ namespace Server.Items
         Lithos,
         Hydros,
         Stratos,
-        Santa
+        Santa,
+        Krampus,
+        KhalAnkur,
+        KrampusMinion
     }
 
     public class MonsterStatuetteInfo
@@ -152,6 +155,9 @@ namespace Server.Items
             /* Hydros */            new MonsterStatuetteInfo(1157992, 0x9F49, new int[] { 0x117, 0x118, 0x1119, 0x11A, 0x11B }),
             /* Stratos */           new MonsterStatuetteInfo(1157991, 0x9F4C, new int[] { 0x108, 0x109, 0x10A, 0x10B, 0x10C }),
             /* Santa */             new MonsterStatuetteInfo(1097968, 0x4A9A, new int[] { 1641 }),
+            /* Krampus */           new MonsterStatuetteInfo(1158875, 0xA270, new int[] { 0x586, 0x587, 0x588, 0x589, 0x58A }),
+            /* Khal Ankur */        new MonsterStatuetteInfo(1158877, 0xA1C6, new int[] { 0x301, 0x302, 0x303, 0x304, 0x305 }),
+            /* Krampus Minion */    new MonsterStatuetteInfo(1158876, 0xA271, new int[] { 0X1C8, 0X1C9, 0X1CA, 0X1CB, 0X1CC }),
         };
         
         public MonsterStatuetteInfo(int labelNumber, int itemID, int baseSoundID)

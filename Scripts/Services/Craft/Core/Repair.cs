@@ -29,11 +29,18 @@ namespace Server.Engines.Craft
             from.SendLocalizedMessage(1044276); // Target an item to repair.
         }
 
+        public static void Do(Mobile from, CraftSystem craftSystem, RepairBenchAddon addon)
+        {
+            from.Target = new InternalTarget(craftSystem, addon);
+            from.SendLocalizedMessage(500436); // Select item to repair.
+        }
+
         private class InternalTarget : Target
         {
             private readonly CraftSystem m_CraftSystem;
             private readonly ITool m_Tool;
             private readonly RepairDeed m_Deed;
+            private readonly RepairBenchAddon m_Addon;
 
             public InternalTarget(CraftSystem craftSystem, ITool tool)
                 : base(10, false, TargetFlags.None)
@@ -49,6 +56,13 @@ namespace Server.Engines.Craft
                 m_Deed = deed;
             }
 
+            public InternalTarget(CraftSystem craftSystem, RepairBenchAddon addon)
+                : base(2, false, TargetFlags.None)
+            {
+                m_CraftSystem = craftSystem;
+                m_Addon = addon;
+            }
+
             private static void EndMobileRepair(object state)
             {
                 ((Mobile)state).EndAction(typeof(IRepairableMobile));
@@ -56,8 +70,23 @@ namespace Server.Engines.Craft
 
             private int GetWeakenChance(Mobile mob, SkillName skill, int curHits, int maxHits)
             {
+                double value = 0;
+
+                if (m_Deed != null)
+                {
+                    value = m_Deed.SkillLevel;
+                }
+                else if (m_Addon != null)
+                {
+                    value = m_Addon.Tools.Find(x => x.System == m_CraftSystem).SkillValue;
+                }
+                else
+                {
+                    value = mob.Skills[skill].Value;
+                }
+
                 // 40% - (1% per hp lost) - (1% per 10 craft skill)
-                return (40 + (maxHits - curHits)) - (int)(((m_Deed != null) ? m_Deed.SkillLevel : mob.Skills[skill].Value) / 10);
+                return (40 + (maxHits - curHits)) - (int)(value / 10);
             }
 
             private bool CheckWeaken(Mobile mob, SkillName skill, int curHits, int maxHits)
@@ -77,6 +106,21 @@ namespace Server.Engines.Craft
                 if (m_Deed != null)
                 {
                     double value = m_Deed.SkillLevel;
+                    double minSkill = difficulty - 25.0;
+                    double maxSkill = difficulty + 25;
+
+                    if (value < minSkill)
+                        return false; // Too difficult
+                    else if (value >= maxSkill)
+                        return true; // No challenge
+
+                    double chance = (value - minSkill) / (maxSkill - minSkill);
+
+                    return (chance >= Utility.RandomDouble());
+                }
+                else if (m_Addon != null)
+                {
+                    double value = m_Addon.Tools.Find(x => x.System == m_CraftSystem).SkillValue;
                     double minSkill = difficulty - 25.0;
                     double maxSkill = difficulty + 25;
 
@@ -119,9 +163,33 @@ namespace Server.Engines.Craft
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                bool usingDeed = (m_Deed != null);
+                bool usingDeed = (m_Deed != null) || (m_Addon != null);
                 bool toDelete = false;
                 int number;
+
+                double value = 0;
+
+                if (m_Deed != null)
+                {
+                    value = m_Deed.SkillLevel;
+                }
+                else if (m_Addon != null)
+                {
+                    var tool = m_Addon.Tools.Find(x => x.System == m_CraftSystem);
+
+                    if (tool.Charges == 0)
+                    {
+                        from.SendLocalizedMessage(1019073);// This item is out of charges.
+                        m_Addon.Using = false;
+                        return;
+                    }
+
+                    value = tool.SkillValue;
+                }
+                else
+                {
+                    value = from.Skills[m_CraftSystem.MainSkill].Base;
+                }
 
                 if (m_CraftSystem is DefTinkering && targeted is IRepairableMobile)
                 {
@@ -139,11 +207,20 @@ namespace Server.Engines.Craft
                     if (from.InRange(((Item)targeted).GetWorldLocation(), 2))
                     {
                         if (!CheckDeed(from))
+                        {
+                            if (m_Addon != null)
+                                m_Addon.Using = false;
+
                             return;
+                        }
 
                         if (!AllowsRepair(targeted, m_CraftSystem))
                         {
                             from.SendLocalizedMessage(500426); // You can't repair that.
+
+                            if (m_Addon != null)
+                                m_Addon.Using = false;
+
                             return;
                         }
 
@@ -170,7 +247,7 @@ namespace Server.Engines.Craft
                             }
                             else if (skill != SkillName.Tailoring)
                             {
-                                double skillLevel = (usingDeed) ? m_Deed.SkillLevel : from.Skills[skill].Base;
+                                double skillLevel = value;
 
                                 if (skillLevel >= 90.0)
                                     toWeaken = 1;
@@ -239,7 +316,7 @@ namespace Server.Engines.Craft
                             }
                             else if (skill != SkillName.Tailoring)
                             {
-                                double skillLevel = (usingDeed) ? m_Deed.SkillLevel : from.Skills[skill].Base;
+                                double skillLevel = value;
 
                                 if (skillLevel >= 90.0)
                                     toWeaken = 1;
@@ -304,7 +381,7 @@ namespace Server.Engines.Craft
                             }
                             else if (skill != SkillName.Tailoring)
                             {
-                                double skillLevel = (usingDeed) ? m_Deed.SkillLevel : from.Skills[skill].Base;
+                                double skillLevel = value;
 
                                 if (skillLevel >= 90.0)
                                     toWeaken = 1;
@@ -369,7 +446,7 @@ namespace Server.Engines.Craft
                             }
                             else if (skill != SkillName.Tailoring)
                             {
-                                double skillLevel = (usingDeed) ? m_Deed.SkillLevel : from.Skills[skill].Base;
+                                double skillLevel = value;
 
                                 if (skillLevel >= 90.0)
                                     toWeaken = 1;
@@ -434,7 +511,7 @@ namespace Server.Engines.Craft
                             }
                             else if (skill != SkillName.Tailoring)
                             {
-                                double skillLevel = (usingDeed) ? m_Deed.SkillLevel : from.Skills[skill].Base;
+                                double skillLevel = value;
 
                                 if (skillLevel >= 90.0)
                                     toWeaken = 1;
@@ -487,20 +564,29 @@ namespace Server.Engines.Craft
                                 toDelete = true;
                             }
                         }
-                        else if (!usingDeed && targeted is BlankScroll)
+                        else if (targeted is BlankScroll)
                         {
-                            SkillName skill = m_CraftSystem.MainSkill;
-
-                            if (from.Skills[skill].Value >= 50.0)
+                            if (!usingDeed)
                             {
-                                ((BlankScroll)targeted).Consume(1);
-                                RepairDeed deed = new RepairDeed(RepairDeed.GetTypeFor(m_CraftSystem), from.Skills[skill].Value, from);
-                                from.AddToBackpack(deed);
+                                SkillName skill = m_CraftSystem.MainSkill;
 
-                                number = 500442; // You create the item and put it in your backpack.
+                                if (from.Skills[skill].Value >= 50.0)
+                                {
+                                    ((BlankScroll)targeted).Consume(1);
+                                    RepairDeed deed = new RepairDeed(RepairDeed.GetTypeFor(m_CraftSystem), from.Skills[skill].Value, from);
+                                    from.AddToBackpack(deed);
+
+                                    number = 500442; // You create the item and put it in your backpack.
+                                }
+                                else
+                                {
+                                    number = 1047005; // You must be at least apprentice level to create a repair service contract.
+                                }
                             }
                             else
-                                number = 1047005; // You must be at least apprentice level to create a repair service contract.
+                            {
+                                number = 1061136; // You cannot repair that item with this type of repair contract.
+                            }
                         }
                         else
                         {
@@ -524,10 +610,31 @@ namespace Server.Engines.Craft
                 }
                 else
                 {
-                    from.SendLocalizedMessage(number);
+                    if (m_Addon != null && !m_Addon.Deleted)
+                    {
+                        var tool = m_Addon.Tools.Find(x => x.System == m_CraftSystem);
 
-                    if (toDelete)
-                        m_Deed.Delete();
+                        tool.Charges--;
+
+                        from.SendGump(new RepairBenchGump(from, m_Addon));
+
+                        from.SendLocalizedMessage(number);
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(number);
+
+                        if (toDelete)
+                            m_Deed.Delete();
+                    }                   
+                }
+            }
+
+            protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
+            {
+                if (m_Addon != null && !m_Addon.Deleted)
+                {
+                    from.SendGump(new RepairBenchGump(from, m_Addon));
                 }
             }
 
@@ -553,7 +660,22 @@ namespace Server.Engines.Craft
                 }
                 else
                 {
-                    double skillValue = (usingDeed) ? m_Deed.SkillLevel : from.Skills[SkillName.Tinkering].Value;
+                    double value = 0;
+
+                    if (m_Deed != null)
+                    {
+                        value = m_Deed.SkillLevel;
+                    }
+                    else if (m_Addon != null)
+                    {
+                        value = m_Addon.Tools.Find(x => x.System == m_CraftSystem).SkillValue;
+                    }
+                    else
+                    {
+                        value = from.Skills[SkillName.Tinkering].Value;
+                    }
+
+                    double skillValue = value;
                     double required = m is KotlAutomaton ? 80.0 : 0.1;
 
                     if (skillValue < required)

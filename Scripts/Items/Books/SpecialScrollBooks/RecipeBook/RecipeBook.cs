@@ -6,6 +6,7 @@ using Server.Prompts;
 using Server.Mobiles;
 using Server.ContextMenus;
 using System.Linq;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -33,11 +34,8 @@ namespace Server.Items
         public int Price { get; set; }
 
         public RecipeScrollDefinition(int id, int rid, Expansion exp, RecipeSkillName skill)
+            : this(id, rid, exp, skill, 0, 0)
         {
-            ID = id;
-            RecipeID = rid;
-            Expansion = exp;
-            Skill = skill;
         }
 
         public RecipeScrollDefinition(int id, int rid, Expansion exp, RecipeSkillName skill, int amount, int price)
@@ -60,6 +58,9 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Using { get; set; }
 
         public List<RecipeScrollDefinition> Recipes;
 
@@ -250,6 +251,29 @@ namespace Server.Items
             });
         }
 
+        public bool CheckAccessible(Mobile from, Item item)
+        {
+            if (from.AccessLevel >= AccessLevel.GameMaster)
+                return true; // Staff can access anything
+
+            BaseHouse house = BaseHouse.FindHouseAt(item);
+
+            if (house == null)
+                return false;
+
+            switch (Level)
+            {
+                case SecureLevel.Owner: return house.IsOwner(from);
+                case SecureLevel.CoOwners: return house.IsCoOwner(from);
+                case SecureLevel.Friends: return house.IsFriend(from);
+                case SecureLevel.Anyone: return true;
+                case SecureLevel.Guild: return house.IsGuildMember(from);
+            }
+
+            return false;
+        }
+
+
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(GetWorldLocation(), 2))
@@ -258,7 +282,18 @@ namespace Server.Items
             }
             else
             {
-                from.SendGump(new RecipeBookGump((PlayerMobile)from, this));
+                if (from.HasGump(typeof(RecipeBookGump)))
+                    return;
+
+                if (!Using)
+                {
+                    Using = true;
+                    from.SendGump(new RecipeBookGump((PlayerMobile)from, this));
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1062456); // The book is currently in use.
+                }
             }
         }
 		
@@ -288,7 +323,7 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (!IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack) && !IsLockedDown)
             {
                 from.SendLocalizedMessage(1158823); // You must have the book in your backpack to add recipes to it.
                 return false;

@@ -316,7 +316,7 @@ namespace Server.Gumps
                         AddLabel(250, 310, LabelHue, GetDateTime(house.LastTraded));
 
                         AddHtmlLocalized(20, 330, 200, 20, 1061793, SelectedColor, false, false); // House Value
-                        AddLabel(250, 330, LabelHue, house.Price.ToString());
+                        AddLabel(250, 330, LabelHue, house.Price.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
 
                         AddHtmlLocalized(20, 360, 300, 20, 1011241, SelectedColor, false, false); // Number of visits this building has had: 
                         AddLabel(350, 360, LabelHue, house.TotalVisits.ToString());

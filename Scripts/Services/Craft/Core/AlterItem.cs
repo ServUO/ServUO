@@ -123,13 +123,13 @@ namespace Server.Engines.Craft
                         Item contract = null;
 
                         if (skill == SkillName.Blacksmith)
-                            contract = new AlterContract(RepairDeed.RepairSkillType.Smithing, from);
+                            contract = new AlterContract(RepairSkillType.Smithing, from);
                         else if (skill == SkillName.Carpentry)
-                            contract = new AlterContract(RepairDeed.RepairSkillType.Carpentry, from);
+                            contract = new AlterContract(RepairSkillType.Carpentry, from);
                         else if (skill == SkillName.Tailoring)
-                            contract = new AlterContract(RepairDeed.RepairSkillType.Tailoring, from);
+                            contract = new AlterContract(RepairSkillType.Tailoring, from);
                         else if (skill == SkillName.Tinkering)
-                            contract = new AlterContract(RepairDeed.RepairSkillType.Tinkering, from);
+                            contract = new AlterContract(RepairSkillType.Tinkering, from);
 
                         if (contract != null)
                         {
