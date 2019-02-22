@@ -316,6 +316,8 @@ namespace Server.Items
 
             armor.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
             armor.m_SetSkillBonuses = new AosSkillBonuses(newItem, m_SetSkillBonuses);
+
+            base.OnAfterDuped(newItem);
         }
 
         #region Personal Bless Deed

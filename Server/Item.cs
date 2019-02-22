@@ -1994,65 +1994,6 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HonestyItem { get; set; }
 
-        /*[CommandProperty(AccessLevel.GameMaster)]
-        public bool HonestyItem
-        {
-            get
-            {
-                return m_HonestyItem;
-            }
-            set
-            {
-                m_HonestyItem = value;
-                InvalidateProperties();
-            }
-        }
-
-        public void StartHonestyTimer()
-        {
-            m_HonestyTimerTicking = true;
-            m_HonestyTimer = Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CheckHonestyExpiry);
-        }
-
-        public void CheckHonestyExpiry()
-        {
-            InvalidateProperties();
-
-            if ((m_HonestyPickup + TimeSpan.FromHours(3)) < DateTime.UtcNow)
-            {
-                HonestyItem = false;
-                m_HonestyTimer.Stop();
-
-				var parent = RootParent as Mobile;
-
-                if (parent != null && parent.NetState != null)
-                {
-                    parent.SendLocalizedMessage(1151519); // You claim the item as your own.  Finders keepers, losers weepers!
-                }
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime HonestyPickup
-        {
-            get { return m_HonestyPickup; }
-            set { m_HonestyPickup = value; InvalidateProperties(); }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile HonestyOwner
-        {
-            get { return m_HonestyOwner; }
-            set { m_HonestyOwner = value; }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public string HonestyRegion
-        {
-            get { return m_HonestyRegion; }
-            set { m_HonestyRegion = value; }
-        }*/
-
         /// <summary>
         ///     Has the item been deleted?
         /// </summary>
@@ -2181,7 +2122,7 @@ namespace Server
             }
 
             if (item.Nontransferable || Nontransferable)
-        {
+            {
                 return false;
             }
 
@@ -2203,6 +2144,23 @@ namespace Server
             if (item.Amount + Amount > 60000)
             {
                 return false;
+            }
+
+            if ((Sockets == null && item.Sockets != null) || (Sockets != null && item.Sockets == null))
+            {
+                return false;
+            }
+            else  if (Sockets != null && item.Sockets != null)
+            {
+                if (Sockets.Any(s => !item.HasSocket(s.GetType())))
+                {
+                    return false;
+                }
+
+                if (item.Sockets.Any(s => !HasSocket(s.GetType())))
+                {
+                    return false;
+                }
             }
 
             return true;
@@ -4669,10 +4627,10 @@ namespace Server
 
             if(Sockets != null)
             {
-                foreach (var socket in Sockets)
+                Sockets.IterateReverse(socket =>
                 {
                     socket.Remove();
-                }
+                });
             }
 
             Timer.DelayCall(EventSink.InvokeItemDeleted, new ItemDeletedEventArgs(this));
@@ -4701,7 +4659,15 @@ namespace Server
         }
 
         public virtual void OnAfterDuped(Item newItem)
-        { }
+        {
+            if (Sockets != null)
+            {
+                for (int i = 0; i < Sockets.Count; i++)
+                {
+                    Sockets[i].OnOwnerDuped(newItem);
+                }
+            }
+        }
 
         public virtual bool OnDragLift(Mobile from)
         {
@@ -6292,7 +6258,7 @@ namespace Server
         { }
 
         #region Item Sockets
-        public List<ItemSocket> Sockets { get; set; }
+        public List<ItemSocket> Sockets { get; private set; }
 
         public void AttachSocket(ItemSocket socket)
 		{
@@ -6300,7 +6266,7 @@ namespace Server
 			{
 				Sockets = new List<ItemSocket>();
 			}
-			
+
 			Sockets.Add(socket);
 			socket.Owner = this;
 			
@@ -6344,6 +6310,16 @@ namespace Server
 			return Sockets.FirstOrDefault(s => s.GetType() == typeof(T) && (predicate == null || predicate(s as T))) as T;
 		}
 
+        public ItemSocket GetSocket(Type type)
+        {
+            if (Sockets == null)
+            {
+                return null;
+            }
+
+            return Sockets.FirstOrDefault(s => s.GetType() == type);
+        }
+
         public bool HasSocket<T>()
 		{
             if (Sockets == null)
@@ -6353,6 +6329,16 @@ namespace Server
 
             return Sockets.Any(s => s.GetType() == typeof(T));
 		}
+
+        public bool HasSocket(Type t)
+        {
+            if (Sockets == null)
+            {
+                return false;
+            }
+
+            return Sockets.Any(s => s.GetType() == t);
+        }
         #endregion
     }
 
@@ -6424,7 +6410,41 @@ namespace Server
 		public virtual void GetProperties(ObjectPropertyList list)
 		{
 		}
-		
+
+        public virtual void OnOwnerDuped(Item newItem)
+        {
+            ItemSocket newSocket = null;
+
+            try
+            {
+                newSocket = Activator.CreateInstance(GetType()) as ItemSocket;
+            }
+            catch
+            {
+                Console.WriteLine(
+                    "Warning: 0x{0:X}: Item socket must have a zero paramater constructor to be separated from a stack. '{1}'.",
+                    Owner.Serial.Value,
+                    GetType().Name);
+            }
+
+            if (newSocket != null)
+            {
+                newSocket.Expires = Expires;
+
+                if (newSocket.Expires != DateTime.MinValue)
+                {
+                    newSocket.BeginTimer();
+                }
+
+                newSocket.OnAfterDuped(this);
+                newItem.AttachSocket(newSocket);
+            }
+        }
+
+        public virtual void OnAfterDuped(ItemSocket oldSocket)
+        {
+        }
+
 		public virtual void Serialize(GenericWriter writer)
 		{
 			writer.Write(0);

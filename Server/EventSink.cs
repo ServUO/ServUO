@@ -1186,13 +1186,15 @@ namespace Server
 		public Mobile Harvester { get; private set; }
 		public Item Tool { get; private set; }
 		public Item Resource { get; private set; }
+        public Item BonusResource { get; private set; }
 		public object HarvestSystem { get; private set; }
 
-		public ResourceHarvestSuccessEventArgs(Mobile m, Item i, Item r, object o)
+		public ResourceHarvestSuccessEventArgs(Mobile m, Item i, Item r, Item b, object o)
 		{
 			Harvester = m;
 			Tool = i;
 			Resource = r;
+            BonusResource = b;
 			HarvestSystem = o;
 		}
 	}

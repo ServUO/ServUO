@@ -1016,6 +1016,8 @@ namespace Server.Items
             clothing.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
             clothing.m_SetSkillBonuses = new AosSkillBonuses(newItem, m_SetSkillBonuses);
             #endregion
+
+            base.OnAfterDuped(newItem);
         }
 
         public BaseClothing(Serial serial)

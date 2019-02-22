@@ -491,16 +491,18 @@ namespace Server.Engines.Khaldun
 
         public override void GiveRewards()
         {
-            var reward = new DetectiveCredentials();
+            Item reward = new DetectiveCredentials();
 
             if (Owner.Backpack == null || !Owner.Backpack.TryDropItem(Owner, reward, false))
             {
                 Owner.BankBox.DropItem(reward);
             }
 
-            if (Owner.AddRewardTitle(1158638))
+            reward = new GumshoeTitleDeed();
+
+            if (Owner.Backpack == null || !Owner.Backpack.TryDropItem(Owner, reward, false))
             {
-                Owner.SendLocalizedMessage(1155605, "#1158638");  //Thou hath been bestowed the title Gumshoe!
+                Owner.BankBox.DropItem(reward);
             }
 
             base.GiveRewards();

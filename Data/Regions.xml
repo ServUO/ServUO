@@ -997,6 +997,12 @@
     </region>
   </Facet>
   <Facet name="Trammel">
+    <region type="DungeonRegion" priority="50" name="Khaldun">
+      <rect x="5381" y="1284" width="247" height="225" />
+      <go x="5571" y="1302" z="0" />
+      <music name="Dungeon9" />
+      <entrance x="5882" y="3819" />
+    </region>
     <region type="NoTravelSpellsAllowed" priority="50" name="Underwater World">
       <rect x="6251" y="1613" width="222" height="200" />
     </region>

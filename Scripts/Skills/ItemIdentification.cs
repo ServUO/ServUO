@@ -67,6 +67,20 @@ namespace Server.Items
 
                 if (Core.AOS)
                 {
+                    if (item is Meteorite)
+                    {
+                        if (((Meteorite)item).Polished)
+                        {
+                            from.SendLocalizedMessage(1158697); // The brilliance of the meteorite shimmers in the light as you rotate it in your hands! Brightly hued veins of exotic minerals reflect against the polished surface. You think to yourself you have never seen anything so full of splendor!
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1158696); // The rock seems to be otherwordly. Judging by the pitting and charring, it appears to have crash landed here from the sky! The rock feels surprisingly dense given its size. Perhaps if you polished it with an oil cloth you may discover what is inside...
+                        }
+
+                        return;
+                    }
+
                     from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1041351, AffixType.Append, "  " + GetPriceFor(item).ToString(), "", from.NetState); // You guess the value of that item at:
 
                     if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)

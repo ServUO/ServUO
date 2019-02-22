@@ -220,15 +220,7 @@ namespace Server.Items
 			, {611, -75, -11, 1}// 653	
 		};
 
- 
-            
-		public override BaseAddonDeed Deed
-		{
-			get
-			{
-                return null;
-			}
-		}
+        public override BaseAddonDeed Deed { get { return null; } }
 
         [Constructable]
         public KhaldunDecorationAddon()
@@ -316,4 +308,45 @@ namespace Server.Items
             Instance = this;
 		}
 	}
+
+    public class KhaldunWorkshop : BaseAddon
+    {
+        private static int[,] m_AddOnSimpleComponents = new int[,] {
+			  {7864, 4, 0, 12} // 7	 8	9	
+			, {4179, 4, 1, 10}, {4130, -2, -3, 10}, {9932, -2, -2, 10}// 10	11	12	
+			, {7867, -2, 0, 12}, {7129, -2, 1, 10}, {4014, -1, 1, 4}// 13	14	15	
+			, {4015, 1, -3, 4}, {4017, 1, -2, 4}, {4017, 1, 0, 4}// 16	17	18	
+			, {2879, 4, 1, 4}, {2879, -2, -3, 4}, {2879, 4, 0, 4}// 19	20	21	
+			, {2879, 4, -1, 4}, {2879, 4, -2, 4}, {2879, 4, -3, 4}// 22	23	24	
+			, {2879, -2, 1, 4}, {2879, -2, 0, 4}, {2879, -2, -1, 4}// 25	26	27	
+			, {2879, -2, -2, 4}// 28	
+		};
+
+        public override BaseAddonDeed Deed { get { return null; } }
+
+        [Constructable]
+        public KhaldunWorkshop()
+        {
+            for (int i = 0; i < m_AddOnSimpleComponents.Length / 4; i++)
+                AddComponent(new AddonComponent(m_AddOnSimpleComponents[i, 0]), m_AddOnSimpleComponents[i, 1], m_AddOnSimpleComponents[i, 2], m_AddOnSimpleComponents[i, 3]);
+        }
+
+        public KhaldunWorkshop(Serial serial)
+            : base(serial)
+        {
+        }
+
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }

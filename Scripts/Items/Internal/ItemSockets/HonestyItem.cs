@@ -61,6 +61,23 @@ namespace Server.Items
             }
         }
 
+        public override void OnAfterDuped(ItemSocket oldSocket)
+        {
+            if (oldSocket is HonestyItemSocket)
+            {
+                var honesty = oldSocket as HonestyItemSocket;
+
+                HonestyRegion = honesty.HonestyRegion;
+                HonestyOwner = honesty.HonestyOwner;
+                HonestyPickup = honesty.HonestyPickup;
+                HonestyTimerTicking = honesty.HonestyTimerTicking;
+
+                if (HonestyTimerTicking)
+                {
+                    BeginTimer();
+                }
+            }
+        }
 
         public override void Serialize(GenericWriter writer)
         {

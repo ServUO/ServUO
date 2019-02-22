@@ -117,6 +117,8 @@ namespace Server.Items
             food.Poisoner = m_Poisoner;
             food.Poison = m_Poison;
             food.Quality = _Quality;
+
+            base.OnAfterDuped(newItem);
         }
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)

@@ -114,6 +114,16 @@ namespace Server.Mobiles
             PackItem(new WoodenShield());
         }
 
+        public override void OnBeforeDamage(Mobile from, ref int totalDamage, Server.DamageType type)
+        {
+            if (Region.IsPartOf("Khaldun") && IsChampionSpawn && !Caddellite.CheckDamage(from, type))
+            {
+                totalDamage = 0;
+            }
+
+            base.OnBeforeDamage(from, ref totalDamage, type);
+        }
+
         public SkelementalKnight(Serial serial)
             : base(serial)
         {

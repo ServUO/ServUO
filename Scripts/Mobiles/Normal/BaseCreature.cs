@@ -3913,6 +3913,11 @@ namespace Server.Mobiles
                     {
                         ns.Send(new PetWindow(pm, this));
                     }
+
+                    if (KhaldunTastyTreat.UnderInfluence(this))
+                    {
+                        Caddellite.UpdateBuff(m_ControlMaster);
+                    }
                 }
             }
             else if (m_SummonMaster != null)
@@ -3951,6 +3956,11 @@ namespace Server.Mobiles
                     if (ns != null && ns.IsEnhancedClient && Commandable)
                     {
                         ns.Send(new PetWindow((PlayerMobile)m_ControlMaster, this));
+                    }
+
+                    if (KhaldunTastyTreat.UnderInfluence(this))
+                    {
+                        Caddellite.UpdateBuff(m_ControlMaster);
                     }
                 }
             }

@@ -53,6 +53,16 @@ namespace Server.Mobiles
             m_Timer.Start();
         }
 
+        public override void OnBeforeDamage(Mobile from, ref int totalDamage, Server.DamageType type)
+        {
+            if (Region.IsPartOf("Khaldun") && IsChampionSpawn && !Caddellite.CheckDamage(from, type))
+            {
+                totalDamage = 0;
+            }
+
+            base.OnBeforeDamage(from, ref totalDamage, type);
+        }
+
         public ShadowFiend(Serial serial)
             : base(serial)
         {

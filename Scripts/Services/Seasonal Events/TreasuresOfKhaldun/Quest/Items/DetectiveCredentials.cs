@@ -2,14 +2,15 @@ using Server;
 
 namespace Server.Items
 {
-    public class DetectiveCredentials : Item
+    public class DetectiveCredentials : BaseNecklace
     {
         public override int LabelNumber { get { return 1158641; } } // RBG Detective Branch Official Credential
 
         [Constructable]
         public DetectiveCredentials()
-            : base(0x14F0)
+            : base(0x1088)
         {
+            Hue = 1176;
             LootType = LootType.Blessed;
         }
 

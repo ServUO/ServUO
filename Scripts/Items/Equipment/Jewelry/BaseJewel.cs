@@ -454,6 +454,8 @@ namespace Server.Items
             #endregion
 
             jewel.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
+
+            base.OnAfterDuped(newItem);
         }
 
         public virtual int ArtifactRarity

@@ -57,6 +57,14 @@ namespace Server.Items
             }
         }
 
+        public override void OnAfterDuped(ItemSocket oldSocket)
+        {
+            if (oldSocket is EnchantedHotItemSocket)
+            {
+                Container = ((EnchantedHotItemSocket)oldSocket).Container;
+            }
+        }
+
         public static void OnEnterRegion(OnEnterRegionEventArgs e)
         {
             Mobile m = e.From;

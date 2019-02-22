@@ -94,7 +94,7 @@ namespace Server.Engines.Khaldun
 
         public override void SendRewardGump(Mobile m)
         {
-            if (m.Player && m.CheckAlive() && m.Backpack.GetAmount(typeof(DetectiveCredentials)) > 0)
+            if (m.Player && m.CheckAlive())
                 m.SendGump(new KhaldunRewardGump(this, m as PlayerMobile));
         }
 
@@ -121,7 +121,7 @@ namespace Server.Engines.Khaldun
 
             if (Map == Map.Felucca)
             {
-                Instnace.Fel = this;
+                InstanceFel = this;
             }
         }
     }

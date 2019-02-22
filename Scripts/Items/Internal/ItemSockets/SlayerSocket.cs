@@ -46,6 +46,14 @@ namespace Server.Items
             return SlayerName.None;
         }
 
+        public override void OnAfterDuped(ItemSocket oldSocket)
+        {
+            if (oldSocket is SlayerSocket)
+            {
+                Slayer = ((SlayerSocket)oldSocket).Slayer;
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

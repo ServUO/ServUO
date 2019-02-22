@@ -48,7 +48,7 @@ namespace Server.Engines.Points
                 int fame = victim.Fame / 2;
                 int luck = Math.Max(0, ((PlayerMobile)damager).RealLuck);
 
-                DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(luck) / 100));
+                DungeonPoints[damager] += (int)((fame / 2) * (1 + Math.Sqrt(luck) / 100)) * PotionOfGloriousFortune.GetBonus(damager);
 
                 int x = DungeonPoints[damager];
                 const double A = 0.000863316841;
@@ -89,7 +89,10 @@ namespace Server.Engines.Points
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(2);
+
+            KhaldunTastyTreat.Save(writer);
+            PotionOfGloriousFortune.Save(writer);
 
             writer.Write(Enabled);
             writer.Write(QuestContentGenerated);
@@ -110,6 +113,10 @@ namespace Server.Engines.Points
 
             switch (version)
             {
+                case 2:
+                    KhaldunTastyTreat.Load(reader);
+                    PotionOfGloriousFortune.Load(reader);
+                    goto case 1;
                 case 1:
                     Enabled = reader.ReadBool();
                     QuestContentGenerated = reader.ReadBool();

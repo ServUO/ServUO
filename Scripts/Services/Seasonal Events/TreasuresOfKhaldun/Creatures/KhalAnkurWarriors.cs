@@ -155,6 +155,16 @@ namespace Server.Mobiles
                 Utility.AssignRandomFacialHair(this, hairHue);
         }
 
+        public override void OnBeforeDamage(Mobile from, ref int totalDamage, Server.DamageType type)
+        {
+            if (Region.IsPartOf("Khaldun") && IsChampionSpawn && !Caddellite.CheckDamage(from, type))
+            {
+                totalDamage = 0;
+            }
+
+            base.OnBeforeDamage(from, ref totalDamage, type);
+        }
+
         public override bool AlwaysMurderer { get { return true; } }
         public override bool ShowFameTitle { get { return false; } }
 
