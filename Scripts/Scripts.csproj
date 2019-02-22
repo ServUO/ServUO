@@ -302,6 +302,7 @@
     <Compile Include="Gumps\AdminGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\ApplySkillBonusGump.cs" />
     <Compile Include="Gumps\BanDurationGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -530,6 +531,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gumps\StormLevelGump.cs" />
+    <Compile Include="Gumps\StoryGump.cs" />
     <Compile Include="Gumps\TithingGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -572,6 +574,10 @@
     <Compile Include="Items\Decorative\SilverSaplingReplica.cs" />
     <Compile Include="Items\Decorative\ValentineBear.cs" />
     <Compile Include="Items\Functional\SerpentsJawbone.cs" />
+    <Compile Include="Items\Internal\ItemSockets\Caddellite.cs" />
+    <Compile Include="Items\Internal\ItemSockets\EnchantedHotItem.cs" />
+    <Compile Include="Items\Internal\ItemSockets\HonestyItem.cs" />
+    <Compile Include="Items\Internal\ItemSockets\SlayerSocket.cs" />
     <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
     <Compile Include="Items\Addons\ClawFootTub.cs" />
     <Compile Include="Items\Addons\GreenMarbleFireplace.cs" />
@@ -9939,9 +9945,12 @@
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\Items\TinctureOfSilver.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\Mobiles\Carey.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\Mobiles\Elizabeth.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfDoom\Mobiles\Owain.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfDoom\Region.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\RewardGump.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\Rewards.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfDoom\VaseSpawner.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\CaddelliteVendor.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\CultistAmbusher.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\KhalAnkur.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\KhalAnkurWarriors.cs" />
@@ -9949,21 +9958,43 @@
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\ShadowFiend.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\SkelementalKnight.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Creatures\SkelementalMage.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Generate.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Gumps.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\CaddelliteTools.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\CounterfeitPlatinum.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\CultistsRitualTome.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunCampAddon.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunChest.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunEntranceAddon.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunFirstAidBelt.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunPainting.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunTastyTreat.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\MaskOfKhalAnkur.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\Meteorite.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\PendantOfKhalAnkur.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\PotionOfGloriousFortune.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\ProphetTitleDeed.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\SeekerOfTheFallenStarTitleDeed.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\SterlingSilverRing.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\ZealotOfKhalAnkurTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\KhaldunCampRegion.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\KhaldunData.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\KhaldunResearcher.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\KhaldunRewards.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\GoingGumshoeQuest.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Items\BloodyFootprints.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Items\DamagedHeadstone.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Items\DecorationAddon.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Items\DetectiveCredentials.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Items\DustPile.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Items\GumshoeTitleDeed.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Items\MysteriousBook.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Items\RolledParchment.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Items\TrapDoor.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Mobiles\Cryptologist.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Mobiles\GraveDigger.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Mobiles\Jasper.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Quest\Mobiles\SageHumbolt.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKotlCity\Generate.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKotlCity\Items\EnergyTile.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKotlCity\Items\Journals.cs" />
