@@ -6,6 +6,7 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1123598; } } // Steam Powered Beverage Maker
 
+        [Constructable]
         public SteamPoweredBeverageMaker()
             : base(0x9A96)
         {

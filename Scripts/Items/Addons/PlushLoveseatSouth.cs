@@ -3,6 +3,7 @@ using Server;
 
 namespace Server.Items
 {
+    [Furniture]
     public class PlushLoveseatSouthAddon : BaseAddon
     {
         public override BaseAddonDeed Deed { get { return new PlushLoveseatSouthDeed(); } }

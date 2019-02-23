@@ -241,8 +241,6 @@ namespace Server.Items
                     SendLocalizedMessageTo(from, 1061637); // You are not allowed to access this.
                     return false;
                 }
-
-                return false;
             }
 
             public ToolDropComponent(Serial serial)

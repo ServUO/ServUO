@@ -52,7 +52,7 @@ namespace Server.Spells.Seventh
             }
             else if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
             {
-                SpellHelper.Turn(Caster, p, 100);
+                SpellHelper.Turn(Caster, p);
 
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();

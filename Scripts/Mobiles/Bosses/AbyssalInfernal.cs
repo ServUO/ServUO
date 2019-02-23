@@ -147,10 +147,15 @@ namespace Server.Mobiles
 		private Mobile GetRandomTarget(int range, bool playersOnly)
 		{
             List<Mobile> list = GetTargets(range, playersOnly);
-			
-			if(list != null && list.Count > 0)
-				return list[Utility.Random(list.Count)];
-			return null;
+            Mobile m = null;
+
+            if (list != null && list.Count > 0)
+            {
+                m = list[Utility.Random(list.Count)];
+                ColUtility.Free(list);
+            }
+
+			return m;
 		}
 		
 		private List<Mobile> GetTargets(int range, bool playersOnly)
@@ -187,7 +192,7 @@ namespace Server.Mobiles
 				
 				if(focus != null)
 				{
-					StygianDragon.CrimsonMeteor(this, focus.Location, 75, 100, true, false, true, 20, 20, 15);
+					StygianDragon.CrimsonMeteor(this, focus, 75, 100);
 				}
 			}
 		}

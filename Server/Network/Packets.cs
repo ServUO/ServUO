@@ -2145,8 +2145,8 @@ m_Stream.Write( (int) renderMode );
             m_Stream.Write((byte)0); // speed
             m_Stream.Write((byte)0); // duration
             m_Stream.Write((short)0); // unk
-            m_Stream.Write(false); // fixed direction
-            m_Stream.Write(false); // explode
+            m_Stream.Write(true); // fixed direction
+            m_Stream.Write(true); // explode
         }
     }
 
