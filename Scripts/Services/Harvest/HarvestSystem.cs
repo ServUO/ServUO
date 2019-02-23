@@ -769,7 +769,22 @@ namespace Server
 
         public static bool Check(Item item)
         {
-            return (item != null && item.GetType().IsDefined(typeof(FurnitureAttribute), false));
+            if (item == null)
+            {
+                return false;
+            }
+
+            if (item.GetType().IsDefined(typeof(FurnitureAttribute), false))
+            {
+                return true;
+            }
+
+            if (item is AddonComponent && ((AddonComponent)item).Addon != null && ((AddonComponent)item).Addon.GetType().IsDefined(typeof(FurnitureAttribute), false))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
