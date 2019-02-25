@@ -107,7 +107,7 @@ namespace Server.Mobiles
         {
             base.OnGaveMeleeAttack(defender);
 
-            if (Hue == 0 && Hits < HitsMax * 0.60 && DateTime.UtcNow > m_NextAbilityTime && 0.2 > Utility.RandomDouble())
+            if (Hue == 0 && Hits < HitsMax * 0.60 && DateTime.UtcNow > m_NextAbilityTime && 0.2 > Utility.RandomDouble() && Map != null)
             {
                 Hue = 2745;
                 new InternalTimer(this);
@@ -193,11 +193,15 @@ namespace Server.Mobiles
             private KhalAnkur m_Mobile;
             private int m_Tick;
 
+            private Map m_Map;
+
             public InternalTimer(KhalAnkur mob)
                 : base(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
             {
                 m_Tick = 1;
                 m_Mobile = mob;
+                m_Map = mob.Map;
+
                 Start();
             }
 
@@ -205,7 +209,7 @@ namespace Server.Mobiles
             {
                 if (m_Tick < 15)
                 {
-                    Point3D p = FindLocation(m_Mobile.Map, m_Mobile.Location, 7);
+                    Point3D p = FindLocation(m_Mobile.Location, 7);
                     Effects.SendLocationEffect(p, m_Mobile.Map, 0x3789, 30, 1, 2062, 0x4);
 
                     m_Tick++;
@@ -217,7 +221,7 @@ namespace Server.Mobiles
                 }
             }
 
-            private Point3D FindLocation(Map map, Point3D center, int range)
+            private Point3D FindLocation(Point3D center, int range)
             {
                 int cx = center.X;
                 int cy = center.Y;
@@ -230,14 +234,14 @@ namespace Server.Mobiles
                     if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
                         continue;
 
-                    int z = map.GetAverageZ(x, y);
+                    int z = m_Map.GetAverageZ(x, y);
 
-                    if (!map.CanFit(x, y, z, 6, false, false))
+                    if (!m_Map.CanFit(x, y, z, 6, false, false))
                         continue;
 
                     int topZ = z;
 
-                    foreach (Item item in map.GetItemsInRange(new Point3D(x, y, z), 0))
+                    foreach (Item item in m_Map.GetItemsInRange(new Point3D(x, y, z), 0))
                     {
                         topZ = Math.Max(topZ, item.Z + item.ItemData.CalcHeight);
                     }
@@ -253,6 +257,11 @@ namespace Server.Mobiles
         {
             Point3D loc = Location;
             Map pmmap = Map;
+
+            if (pmmap == null)
+            {
+                return;
+            }
 
             List<Point3D> points = new List<Point3D>();
 
