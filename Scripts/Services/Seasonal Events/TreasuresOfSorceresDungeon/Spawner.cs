@@ -296,7 +296,11 @@ namespace Server.Engines.SorcerersDungeon
             {
                 int y = 60;
 
-                AddLabel(
+                AddLabel(10, 40, 0, "Go");
+                AddLabel(40, 40, 0, "Boss");
+                AddLabel(240, 40, 0, "Current");
+                AddLabel(340, 40, 0, "Max");
+                AddLabel(440, 40, 0, "Killed");
 
                 for (int i = 0; i < spawner.Entries.Count; i++)
                 {
