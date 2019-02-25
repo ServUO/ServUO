@@ -1097,6 +1097,9 @@ namespace Server.Gumps
                 if (id >= 1155600 && id <= 1155603)
                     return 1155601; // This title is obtained from the Halloween Treasures of Doom Event.
 
+                if (id >= 1157649 && id <= 1157651)
+                    return 1157648; // This title is obtained from the Halloween Treasures of the Sorcerer's Dungeon Event.	
+
                 switch (id)
                 {
                     default: return "This reward title has no desciption.";

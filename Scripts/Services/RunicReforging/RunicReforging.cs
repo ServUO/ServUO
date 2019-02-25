@@ -47,7 +47,8 @@ namespace Server.Items
         Minax,
         Kotl,
         Khaldun, 
-        Doom
+        Doom,
+        EnchantedOrigin
     }
 
     public enum ItemPower
@@ -1682,6 +1683,7 @@ namespace Server.Items
             new int[] {       0, 1156900 }, // Kotl
             new int[] {       0, 1158672 }, // Khaldun
             new int[] {       0, 1155589 }, // Doom
+            new int[] {       0, 1157614 }, // Sorcerers Dungeon
         };
 
         public static void AddSuffixName(ObjectPropertyList list, ReforgedSuffix suffix, string name)

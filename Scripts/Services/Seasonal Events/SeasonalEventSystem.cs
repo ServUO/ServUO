@@ -10,6 +10,7 @@ using Server.Misc;
 using Server.Commands;
 using Server.Engines.TreasuresOfDoom;
 using Server.Engines.Khaldun;
+using Server.Engines.SorcerersDungeon;
 
 namespace Server.Engines.SeasonalEvents
 {
@@ -247,6 +248,9 @@ namespace Server.Engines.SeasonalEvents
                     break;
                 case EventType.TreasuresOfKhaldun:
                     TreasuresOfKhaldunGeneration.CheckEnabled();
+                    break;
+                case EventType.SorcerersDungeon:
+                    SorcerersDungeonGenerate.CheckEnabled();
                     break;
             }
         }
