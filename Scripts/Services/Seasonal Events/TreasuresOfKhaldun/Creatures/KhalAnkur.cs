@@ -103,16 +103,6 @@ namespace Server.Mobiles
             }
         }
 
-        public override void OnBeforeDamage(Mobile from, ref int totalDamage, Server.DamageType type)
-        {
-            if (Region.IsPartOf("Khaldun") && IsChampionSpawn && !Caddellite.CheckDamage(from, type))
-            {
-                totalDamage = 0;
-            }
-
-            base.OnBeforeDamage(from, ref totalDamage, type);
-        }
-
         public override void OnGaveMeleeAttack(Mobile defender)
         {
             base.OnGaveMeleeAttack(defender);
