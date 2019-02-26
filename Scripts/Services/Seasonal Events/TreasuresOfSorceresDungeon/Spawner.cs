@@ -14,17 +14,24 @@ namespace Server.Engines.SorcerersDungeon
     {
         public static void Initialize()
         {
+            CommandSystem.Register("TOSDSpawner", AccessLevel.Administrator, e =>
+                {
+                    if (e.Mobile is PlayerMobile)
+                    {
+                        if (Instance != null)
+                        {
+                            BaseGump.SendGump(new TOSDSpawnerGump((PlayerMobile)e.Mobile));
+                        }
+                        else
+                        {
+                            e.Mobile.SendMessage("This spawner is not set up at this time. Enabled Treasures of Sorcerer's Dungeon to enable the spawner.");
+                        }
+                    }
+                });
+
             if (Instance != null)
             {
                 Instance.BeginTimer();
-
-                CommandSystem.Register("TOSDSpawner", AccessLevel.Administrator, e =>
-                    {
-                        if (e.Mobile is PlayerMobile)
-                        {
-                            BaseGump.SendGump(new TOSDSpawnerGump(e.Mobile as PlayerMobile));
-                        }
-                    });
             }
         }
 
@@ -243,15 +250,15 @@ namespace Server.Engines.SorcerersDungeon
 
         public void BuildEntries()
         {
-            Entries.Add(new TOSDSpawnEntry(typeof(NightmareFairy), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(327, 26, 29, 32), 40, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(JackInTheBox), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(296, 10, 17, 26), 40, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(HeadlessElf), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(271, 4, 20, 33), 40, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(AbominableSnowman), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(227, 39, 21, 19), 40, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(TwistedHolidayTree), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(251, 68, 25, 32), 40, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(RabidReindeer), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(144, 5, 23, 19), 40, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(GarishGingerman), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(60, 53, 13, 34), 40, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(StockingSerpent), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(152, 48, 16, 23), 40, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(JackThePumpkinKing), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(291, 73, 37, 36), 40, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(NightmareFairy), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(327, 26, 29, 32), 80, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(JackInTheBox), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(296, 10, 17, 26), 80, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(HeadlessElf), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(271, 4, 20, 33), 80, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(AbominableSnowman), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(227, 39, 21, 19), 80, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(TwistedHolidayTree), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(251, 68, 25, 32), 80, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(RabidReindeer), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(144, 5, 23, 19), 80, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(GarishGingerman), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(60, 53, 13, 34), 80, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(StockingSerpent), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(152, 48, 16, 23), 80, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(JackThePumpkinKing), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(291, 73, 37, 36), 80, 15));
         }
 	}
 	
@@ -283,7 +290,7 @@ namespace Server.Engines.SorcerersDungeon
 
         public override void AddGumpLayout()
         {
-            AddBackground(0, 0, 500, 500, 9300);
+            AddBackground(0, 0, 500, 300, 9300);
             AddHtml(0, 10, 500, 20, Center("Treasures of Sorcerer's Dungeon Spawner"), false, false);
 
             var spawner = TOSDSpawner.Instance;
@@ -299,23 +306,58 @@ namespace Server.Engines.SorcerersDungeon
                 AddLabel(10, 40, 0, "Go");
                 AddLabel(40, 40, 0, "Boss");
                 AddLabel(240, 40, 0, "Current");
-                AddLabel(340, 40, 0, "Max");
-                AddLabel(440, 40, 0, "Killed");
+                AddLabel(320, 40, 0, "Max");
+                AddLabel(400, 40, 0, "Killed");
 
                 for (int i = 0; i < spawner.Entries.Count; i++)
                 {
                     var entry = spawner.Entries[i];
                     var hue = i == spawner.Index ? "green" : "red";
 
-                    AddButton(10, y, 1531, 1532, i + 100, GumpButtonType.Reply, 0);
+                    AddButton(7, y, 1531, 1532, i + 100, GumpButtonType.Reply, 0);
                     AddHtml(40, y, 200, 20, Color(hue, entry.Boss.Name), false, false);
+                    AddHtml(320, y, 80, 20, Color(hue, entry.MaxSpawn.ToString()), false, false);
 
                     if (hue == "green")
                     {
-                        AddHtml(240, y, 
+                        AddHtml(240, y, 80, 20, Color(hue, spawner.Spawn.Count.ToString()), false, false);
+                        AddHtml(400, y, 80, 20, Color(hue, spawner.KillCount.ToString()), false, false);
+                    }
+                    else
+                    {
+                        AddHtml(240, y, 80, 20, Color(hue, "0"), false, false);
+                        AddHtml(400, y, 80, 20, Color(hue, "0"), false, false);
                     }
 
                     y += 22;
+                }
+            }
+        }
+
+        public override void OnResponse(RelayInfo info)
+        {
+            if (info.ButtonID > 0)
+            {
+                int id = info.ButtonID - 100;
+                var spawner = TOSDSpawner.Instance;
+
+                if (spawner != null && id >= 0 && id < spawner.Entries.Count)
+                {
+                    var entry = spawner.Entries[id];
+
+                    do
+                    {
+                        var p = Map.Ilshenar.GetRandomSpawnPoint(entry.SpawnArea);
+
+                        if (Map.Ilshenar.CanSpawnMobile(p))
+                        {
+                            User.MoveToWorld(p, Map.Ilshenar);
+                            Refresh();
+
+                            break;
+                        }
+                    }
+                    while (true);
                 }
             }
         }

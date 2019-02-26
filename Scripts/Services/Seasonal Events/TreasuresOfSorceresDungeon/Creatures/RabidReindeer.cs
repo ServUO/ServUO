@@ -22,7 +22,7 @@ namespace Server.Engines.SorcerersDungeon
 
             SetHits(8000);
 
-            SetDamage(16, 21);
+            SetDamage(22, 29);
 
             SetDamageType(ResistanceType.Physical, 50);
             SetDamageType(ResistanceType.Cold, 50);
@@ -41,6 +41,8 @@ namespace Server.Engines.SorcerersDungeon
 
             Fame = 12000;
             Karma = -12000;
+
+            SetSpecialAbility(SpecialAbility.VenomousBite);
         }
 
         public override int Meat { get { return 6; } }

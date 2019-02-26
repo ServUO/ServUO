@@ -26,7 +26,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (DateTime.Now.Month == 10)
+            if (DateTime.Now.Month == 10 || from.AccessLevel > AccessLevel.Player)
             {
                 if (_NextUse < DateTime.UtcNow)
                 {

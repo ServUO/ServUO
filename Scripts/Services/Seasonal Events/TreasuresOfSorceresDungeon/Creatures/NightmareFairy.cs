@@ -23,7 +23,7 @@ namespace Server.Engines.SorcerersDungeon
 
             SetHits(8000);
 
-            SetDamage(11, 18);
+            SetDamage(21, 27);
 
             SetDamageType(ResistanceType.Physical, 50);
             SetDamageType(ResistanceType.Energy, 50);
@@ -43,6 +43,8 @@ namespace Server.Engines.SorcerersDungeon
 
             Fame = 12000;
             Karma = -12000;
+
+            SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
         public NightmareFairy(Serial serial)
@@ -50,6 +52,7 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
+        public override bool DrainsLife { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
 

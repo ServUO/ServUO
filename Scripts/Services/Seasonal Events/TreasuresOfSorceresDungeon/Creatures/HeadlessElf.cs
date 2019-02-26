@@ -25,7 +25,7 @@ namespace Server.Engines.SorcerersDungeon
 
             SetHits(8000);
 
-            SetDamage(16, 23);
+            SetDamage(21, 27);
 
             SetDamageType(ResistanceType.Physical, 60);
             SetDamageType(ResistanceType.Fire, 20);
@@ -52,7 +52,6 @@ namespace Server.Engines.SorcerersDungeon
             Fame = 12000;
             Karma = -12000;
 
-            SetWeaponAbility(WeaponAbility.DoubleShot);
             SetMagicalAbility(MagicalAbility.WrestlingMastery);
         }
 

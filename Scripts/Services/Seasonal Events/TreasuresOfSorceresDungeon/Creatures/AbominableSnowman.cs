@@ -1,6 +1,7 @@
 using System;
 
 using Server.Mobiles;
+using Server.Items;
 
 namespace Server.Engines.SorcerersDungeon
 {
@@ -23,7 +24,7 @@ namespace Server.Engines.SorcerersDungeon
 
             SetHits(8000);
 
-            SetDamage(16, 21);
+            SetDamage(21, 27);
 
             SetDamageType(ResistanceType.Physical, 50);
             SetDamageType(ResistanceType.Cold, 50);
@@ -42,6 +43,9 @@ namespace Server.Engines.SorcerersDungeon
 
             Fame = 12000;
             Karma = -12000;
+
+            SetWeaponAbility(WeaponAbility.ConcussionBlow);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public AbominableSnowman(Serial serial)
@@ -49,6 +53,7 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
+        public override bool CausesTrueFear { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
 

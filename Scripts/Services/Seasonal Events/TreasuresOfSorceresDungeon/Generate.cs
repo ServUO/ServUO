@@ -71,7 +71,7 @@ namespace Server.Engines.SorcerersDungeon
                 SorcerersDungeonResearcher.Instance.MoveToWorld(new Point3D(536, 456, -53), map);
             }
 
-            if (map.FindItem<Static>(new Point3D(549, 460, 6)) == null)
+            if (map.FindItem<Static>(new Point3D(546, 460, 6)) == null)
             {
                 Static st = new Static(0x9D2B);
                 st.MoveToWorld(new Point3D(546, 460, 6), map);
@@ -103,7 +103,7 @@ namespace Server.Engines.SorcerersDungeon
 
             if (map.FindItem<Static>(new Point3D(550, 463, -55)) == null)
             {
-                var st = new Static(0x9F34);
+                var st = new Static(0x9F24);
                 st.MoveToWorld(new Point3D(550, 463, -55), map);
             }
 

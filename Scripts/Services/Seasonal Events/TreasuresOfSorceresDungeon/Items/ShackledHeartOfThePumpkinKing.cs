@@ -19,7 +19,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (Timer != null)
+            if (Timer == null)
             {
                 m.SendLocalizedMessage(1157631); // Thou shall know the pain of a chained heart...
                 m.SendSound(Utility.RandomMinMax(0x423, 0x427));
@@ -44,6 +44,8 @@ namespace Server.Items
             {
                 Owner = m;
                 Heart = heart;
+
+                Start();
             }
 
             protected override void OnTick()

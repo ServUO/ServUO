@@ -23,7 +23,7 @@ namespace Server.Engines.SorcerersDungeon
 
             SetHits(8000);
 
-            SetDamage(11, 18);
+            SetDamage(21, 27);
 
             SetDamageType(ResistanceType.Physical, 50);
             SetDamageType(ResistanceType.Energy, 50);
@@ -43,6 +43,8 @@ namespace Server.Engines.SorcerersDungeon
 
             Fame = 12000;
             Karma = -12000;
+
+            SetAreaEffect(AreaEffect.ExplosiveGoo);
         }
 
         public TwistedHolidayTree(Serial serial)

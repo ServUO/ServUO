@@ -1,6 +1,7 @@
 using System;
 
 using Server.Mobiles;
+using Server.Items;
 
 namespace Server.Engines.SorcerersDungeon
 {
@@ -20,7 +21,7 @@ namespace Server.Engines.SorcerersDungeon
 
             SetHits(8000);
 
-            SetDamage(11, 18);
+            SetDamage(21, 27);
 
             SetDamageType(ResistanceType.Physical, 100);
 
@@ -45,6 +46,9 @@ namespace Server.Engines.SorcerersDungeon
 
             Fame = 12000;
             Karma = -12000;
+
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public JackInTheBox(Serial serial)
