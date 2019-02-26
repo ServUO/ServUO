@@ -399,9 +399,15 @@ namespace Server.Engines.NewMagincia
                 if (from.HasGump(typeof(NewMaginciaMessageGump)))
                     from.CloseGump(typeof(NewMaginciaMessageGump));
 
+                if (from.HasGump(typeof(NewMaginciaMessageListGump)))
+                    from.CloseGump(typeof(NewMaginciaMessageListGump));
+
+                if (from.HasGump(typeof(NewMaginciaMessageDetailGump)))
+                    from.CloseGump(typeof(NewMaginciaMessageDetailGump));
+
                 if (HasMessageInQueue(from))
                 {
-                    BaseGump.SendGump(new NewMaginciaMessageGump((PlayerMobile)from, message));
+                    from.SendGump(new NewMaginciaMessageGump(from));
                 }
             }
         }
@@ -450,7 +456,7 @@ namespace Server.Engines.NewMagincia
                 else if (from is PlayerMobile)
                 {
                     from.CloseGump(typeof(NewMaginciaMessageGump));
-                    BaseGump.SendGump(new NewMaginciaMessageGump((PlayerMobile)from));
+                    from.SendGump(new NewMaginciaMessageGump(from));
                 }
             }
 
