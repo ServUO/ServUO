@@ -26,22 +26,22 @@ namespace Server.Items
         public OilCloth()
             : base(0x175D)
         {
-            this.Hue = 2001;
+            Hue = 2001;
         }
 
         public bool Dye(Mobile from, DyeTub sender)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return false;
 
-            this.Hue = sender.DyedHue;
+            Hue = sender.DyedHue;
 
             return true;
         }
 
         public bool Scissor(Mobile from, Scissors scissors)
         {
-            if (this.Deleted || !from.CanSee(this))
+            if (Deleted || !from.CanSee(this))
                 return false;
 
             base.ScissorHelper(from, new Bandage(), 1);
@@ -51,7 +51,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(OnTarget));
                 from.SendLocalizedMessage(1005424); // Select the weapon or armor you wish to use the cloth on.
@@ -65,7 +65,7 @@ namespace Server.Items
         public void OnTarget(Mobile from, object obj)
         {
             // TODO: Need details on how oil cloths should get consumed here
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
@@ -107,7 +107,7 @@ namespace Server.Items
 
                     from.SendLocalizedMessage(1040006); // You wipe away all of your body paint.
 
-                    this.Consume();
+                    Consume();
                 }
                 else
                 {
@@ -127,8 +127,12 @@ namespace Server.Items
                     beverage.ReplaceWith(bomb);
 
                     from.SendLocalizedMessage(1060580); // You prepare a firebomb.
-                    this.Consume();
+                    Consume();
                 }
+            }
+            else if (obj is Meteorite && !((Meteorite)obj).Polished)
+            {
+                ((Meteorite)obj).TryPolish(from);
             }
             else if (obj is Firebomb)
             {

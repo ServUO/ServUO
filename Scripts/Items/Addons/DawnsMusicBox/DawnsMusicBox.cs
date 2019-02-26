@@ -197,6 +197,8 @@ namespace Server.Items
 
             box.m_Tracks = new List<MusicName>();
             box.m_Tracks.AddRange(this.m_Tracks);
+
+            base.OnAfterDuped(newItem);
         }
 
         public override void GetProperties(ObjectPropertyList list)

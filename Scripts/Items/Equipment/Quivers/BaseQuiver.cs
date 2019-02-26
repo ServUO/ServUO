@@ -296,6 +296,8 @@ namespace Server.Items
                 wing.AosElementDamages.Chaos = chaos;
                 wing.AosElementDamages.Direct = direct;
             }
+
+            base.OnAfterDuped(newItem);
         }
 
         public override void UpdateTotal(Item sender, TotalType type, int delta)

@@ -26,7 +26,15 @@ namespace Server.Items
 
         public bool Carve(Mobile from, Item item)
         {
-            base.ScissorHelper(from, new RawFishSteak(), 4);
+            var fish = new RawFishSteak();
+
+            if (HasSocket<Caddellite>())
+            {
+                fish.AttachSocket(new Caddellite());
+            }
+
+            base.ScissorHelper(from, fish, 4);
+
             return true;
         }
 

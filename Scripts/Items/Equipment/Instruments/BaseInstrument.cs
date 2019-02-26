@@ -422,6 +422,19 @@ namespace Server.Items
                 }
             }
 
+            if (m_Slayer == SlayerName.None && m_Slayer2 == SlayerName.None)
+            {
+                SlayerEntry entry = SlayerGroup.GetEntryByName(SlayerSocket.GetSlayer(this));
+
+                if (entry != null)
+                {
+                    if (entry.Slays(targ))
+                        val -= 10.0; // 20%
+                    else if (entry.Group.OppositionSuperSlays(targ))
+                        val += 10.0; // -20%
+                }
+            }
+
             return val;
         }
 

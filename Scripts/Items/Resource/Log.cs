@@ -87,15 +87,23 @@ namespace Server.Items
 
 		public virtual bool TryCreateBoards( Mobile from, double skill, Item item )
 		{
-			if ( Deleted || !from.CanSee( this ) ) 
-				return false;
-			if ( from.Skills.Carpentry.Value < skill &&
-				from.Skills.Lumberjacking.Value < skill )
-			{
-				item.Delete();
-				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
-				return false;
-			}
+            if (Deleted || !from.CanSee(this))
+            {
+                item.Delete();
+                return false;
+            }
+            if (from.Skills.Carpentry.Value < skill && from.Skills.Lumberjacking.Value < skill)
+            {
+                item.Delete();
+                from.SendLocalizedMessage(1072652); // You cannot work this strange and unusual wood.
+                return false;
+            }
+
+            if (HasSocket<Caddellite>())
+            {
+                item.AttachSocket(new Caddellite());
+            }
+
 			base.ScissorHelper( from, item, 1, false );
 			return true;
 		}
@@ -188,7 +196,7 @@ namespace Server.Items
 
         public override bool Axe(Mobile from, BaseAxe axe)
         {
-            if (!this.TryCreateBoards(from, 100, new HeartwoodBoard()))
+            if (!TryCreateBoards(from, 100, new HeartwoodBoard()))
                 return false;
 
             return true;
@@ -230,7 +238,7 @@ namespace Server.Items
 
         public override bool Axe(Mobile from, BaseAxe axe)
         {
-            if (!this.TryCreateBoards(from, 100, new BloodwoodBoard()))
+            if (!TryCreateBoards(from, 100, new BloodwoodBoard()))
                 return false;
 
             return true;
@@ -272,7 +280,7 @@ namespace Server.Items
 
         public override bool Axe(Mobile from, BaseAxe axe)
         {
-            if (!this.TryCreateBoards(from, 100, new FrostwoodBoard()))
+            if (!TryCreateBoards(from, 100, new FrostwoodBoard()))
                 return false;
 
             return true;
@@ -314,7 +322,7 @@ namespace Server.Items
 
         public override bool Axe(Mobile from, BaseAxe axe)
         {
-            if (!this.TryCreateBoards(from, 65, new OakBoard()))
+            if (!TryCreateBoards(from, 65, new OakBoard()))
                 return false;
 
             return true;
@@ -356,7 +364,7 @@ namespace Server.Items
 
         public override bool Axe(Mobile from, BaseAxe axe)
         {
-            if (!this.TryCreateBoards(from, 80, new AshBoard()))
+            if (!TryCreateBoards(from, 80, new AshBoard()))
                 return false;
 
             return true;
@@ -398,7 +406,7 @@ namespace Server.Items
 
         public override bool Axe(Mobile from, BaseAxe axe)
         {
-            if (!this.TryCreateBoards(from, 95, new YewBoard()))
+            if (!TryCreateBoards(from, 95, new YewBoard()))
                 return false;
 
             return true;

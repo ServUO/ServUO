@@ -175,8 +175,10 @@ namespace Server.Commands
                         done = true;
                     }
                 }
-                catch
+                catch(Exception e)
                 {
+                    Console.WriteLine(e.StackTrace);
+
                     m.SendMessage("Error!");
                     return;
                 }

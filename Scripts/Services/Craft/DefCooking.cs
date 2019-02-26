@@ -343,38 +343,51 @@ namespace Server.Engines.Craft
             SetUseAllRes(index, true);
             ForceNonExceptional(index);
 
-            index = AddCraft(typeof(BowlOfRotwormStew), 1044498, 1031706, 0.0, 100.0, typeof(RawRotwormMeat), 1031705, 1, 1044253);
-            SetNeedHeat(index, true);
-            SetUseAllRes(index, true);
-            AddRecipe(index, (int)CookRecipes.RotWormStew);
-            ForceNonExceptional(index);
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(BowlOfRotwormStew), 1044498, 1031706, 0.0, 100.0, typeof(RawRotwormMeat), 1031705, 1, 1044253);
+                SetNeedHeat(index, true);
+                SetUseAllRes(index, true);
+                AddRecipe(index, (int)CookRecipes.RotWormStew);
+                ForceNonExceptional(index);
 
-            index = AddCraft(typeof(BowlOfBlackrockStew), 1044498, 1115752, 30.0, 70.0, typeof(BowlOfRotwormStew), 1031706, 1, 1044253);
-            AddRes(index, typeof(SmallPieceofBlackrock), 1153836, 1, 1044253);
-            SetNeedHeat(index, true);
-            SetUseAllRes(index, true);
-            SetItemHue(index, 1954);
-            AddRecipe(index, (int)CookRecipes.BlackrockStew);
-            ForceNonExceptional(index);
+                index = AddCraft(typeof(BowlOfBlackrockStew), 1044498, 1115752, 30.0, 70.0, typeof(BowlOfRotwormStew), 1031706, 1, 1044253);
+                AddRes(index, typeof(SmallPieceofBlackrock), 1153836, 1, 1044253);
+                SetNeedHeat(index, true);
+                SetUseAllRes(index, true);
+                SetItemHue(index, 1954);
+                AddRecipe(index, (int)CookRecipes.BlackrockStew);
+                ForceNonExceptional(index);
+            }
 
-            index = AddCraft(typeof(Hamburger), 1044498, 1125202, 40.0, 80.0, typeof(BreadLoaf), 1024155, 1, 1044253);
-            AddRes(index, typeof(RawRibs), 1044485, 1, 1044253);
-            AddRes(index, typeof(Lettuce), 1023184, 1, 1044253);
-            SetNeedHeat(index, true);
-            SetUseAllRes(index, true);
-            AddRecipe(index, (int)CookRecipes.Hamburger);
+            if (Core.EJ)
+            {
+                index = AddCraft(typeof(KhaldunTastyTreat), 1044498, 1158680, 60.0, 100.0, typeof(RawFishSteak), 1044476, 40, 1044253);
+                SetUseAllRes(index, true);
+                SetNeedHeat(index, true);
+            }
 
-            index = AddCraft(typeof(HotDog), 1044498, 1125200, 40.0, 80.0, typeof(BreadLoaf), 1024155, 1, 1044253);
-            AddRes(index, typeof(Sausage), 1125198, 1, 1044253);
-            SetNeedHeat(index, true);
-            SetUseAllRes(index, true);
-            AddRecipe(index, (int)CookRecipes.HotDog);
+            if (Core.TOL)
+            {
+                index = AddCraft(typeof(Hamburger), 1044498, 1125202, 40.0, 80.0, typeof(BreadLoaf), 1024155, 1, 1044253);
+                AddRes(index, typeof(RawRibs), 1044485, 1, 1044253);
+                AddRes(index, typeof(Lettuce), 1023184, 1, 1044253);
+                SetNeedHeat(index, true);
+                SetUseAllRes(index, true);
+                AddRecipe(index, (int)CookRecipes.Hamburger);
 
-            index = AddCraft(typeof(CookableSausage), 1044498, 1125198, 30.0, 70.0, typeof(Ham), 1022515, 1, 1044253);
-            AddRes(index, typeof(DriedHerbs), 1023137, 1, 1044253);
-            SetNeedHeat(index, true);
-            SetUseAllRes(index, true);
-            AddRecipe(index, (int)CookRecipes.Sausage);
+                index = AddCraft(typeof(HotDog), 1044498, 1125200, 40.0, 80.0, typeof(BreadLoaf), 1024155, 1, 1044253);
+                AddRes(index, typeof(Sausage), 1125198, 1, 1044253);
+                SetNeedHeat(index, true);
+                SetUseAllRes(index, true);
+                AddRecipe(index, (int)CookRecipes.HotDog);
+
+                index = AddCraft(typeof(CookableSausage), 1044498, 1125198, 30.0, 70.0, typeof(Ham), 1022515, 1, 1044253);
+                AddRes(index, typeof(DriedHerbs), 1023137, 1, 1044253);
+                SetNeedHeat(index, true);
+                SetUseAllRes(index, true);
+                AddRecipe(index, (int)CookRecipes.Sausage);
+            }
             #endregion
 
             #region Enchanted
