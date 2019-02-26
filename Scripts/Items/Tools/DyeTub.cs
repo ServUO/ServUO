@@ -162,10 +162,10 @@ namespace Server.Items
                                 {
                                     BaseHouse house = BaseHouse.FindHouseAt(item);
 
-                                    if (house == null || (!house.IsLockedDown(item) && !house.IsSecure(item)))
-                                        from.SendLocalizedMessage(501022); // Furniture must be locked down to paint it.
-                                    else if (!house.IsCoOwner(from))
+                                    if (!house.IsCoOwner(from))
                                         from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                                    else if (house == null || (!house.IsLockedDown(item) && !house.IsSecure(item)) && (!(item is AddonComponent) || !house.Addons.ContainsKey(((AddonComponent)item).Addon)))
+                                        from.SendLocalizedMessage(501022); // Furniture must be locked down to paint it.
                                     else
                                         okay = true;
                                 }

@@ -668,7 +668,7 @@ namespace Server.Engines.VvV
 
         public BattleTeam GetTeam(Guild g)
         {
-            BattleTeam team = Teams.FirstOrDefault(t => t.Guild == g || t.Guild.IsAlly(g));
+            BattleTeam team = Teams.FirstOrDefault(t => t.Guild != null && (t.Guild == g || t.Guild.IsAlly(g)));
 
             if (team != null)
                 return team;
@@ -691,7 +691,7 @@ namespace Server.Engines.VvV
 
         public void Update(VvVPlayerEntry victim, VvVPlayerEntry killer, UpdateType type)
         {
-            if (killer == null || killer.Player == null)
+            if (killer == null || killer.Player == null || killer.Guild == null)
                 return;
 
             VvVPlayerBattleStats killerStats = GetPlayerStats(killer.Player);
@@ -816,7 +816,7 @@ namespace Server.Engines.VvV
 
         public void OccupyAltar(Guild g)
         {
-            if (!OnGoing)
+            if (!OnGoing || g == null)
                 return;
 
             BattleTeam team = GetTeam(g);

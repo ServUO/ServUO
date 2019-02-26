@@ -47,7 +47,7 @@ namespace Server.Spells.Fourth
             else if (CheckHSequence(m))
             {
                 Mobile source = Caster;
-                SpellHelper.Turn(Caster, m.Location, 100);
+                SpellHelper.Turn(Caster, m.Location);
 
                 SpellHelper.CheckReflect((int)Circle, ref source, ref m);
 
