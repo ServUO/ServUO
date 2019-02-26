@@ -44,7 +44,7 @@ namespace Server.Mobiles
             VirtualArmor = 36;
 
             if (Core.ML && Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
+                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
 
             Tamable = true;
             ControlSlots = 3;

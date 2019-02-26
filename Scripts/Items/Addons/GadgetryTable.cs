@@ -193,8 +193,10 @@ namespace Server.Engines.VeteranRewards
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // Version
+            writer.Write(1); // Version
 
+            writer.Write(NextGolemTime);
+            writer.Write((int)Level);
             writer.Write((bool)IsRewardItem);
         }
 
@@ -203,7 +205,21 @@ namespace Server.Engines.VeteranRewards
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            IsRewardItem = reader.ReadBool();
+            switch (version)
+            {
+                case 1:
+                    {
+                        NextGolemTime = reader.ReadDateTime();
+                        Level = (SecureLevel)reader.ReadInt();
+                        IsRewardItem = reader.ReadBool();
+                        break;
+                    }
+                case 0:
+                    {
+                        IsRewardItem = reader.ReadBool();
+                        break;
+                    }
+            }
         }
     }
 
@@ -312,7 +328,7 @@ namespace Server.Engines.VeteranRewards
             Body = 752;
             Hue = 1110;
 
-            SetStr((int)(550 * scalar), (int)(575 * scalar));
+            SetStr((int)(550 * scalar), (int)(600 * scalar));
             SetDex((int)(125 * scalar), (int)(150 * scalar));
             SetInt((int)(200 * scalar), (int)(225 * scalar));
 

@@ -368,7 +368,7 @@ namespace Server.Engines.Craft
 
         private static readonly int[] m_Makers = new[]
         {
-            0x9A96, // steam powered beverage maker
+            0x9A96, 0x9A96 // steam powered beverage maker
         };
 
         private static readonly int[] m_Mills = new[]

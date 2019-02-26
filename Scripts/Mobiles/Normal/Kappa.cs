@@ -57,7 +57,7 @@ namespace Server.Mobiles
             }
 
             if (Core.ML && Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
+                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
 
             SetSpecialAbility(SpecialAbility.LifeLeech);
         }

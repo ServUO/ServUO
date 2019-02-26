@@ -45,7 +45,7 @@ namespace Server.Mobiles
             this.VirtualArmor = 40;
 
             if (Core.ML && Utility.RandomDouble() < .33)
-                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
+                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
 
             this.AddItem(new LightSource());
         }
