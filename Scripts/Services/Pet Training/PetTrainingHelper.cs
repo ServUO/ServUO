@@ -1160,7 +1160,7 @@ namespace Server.Mobiles
                     else if (cap < 115)
                         value = 100;
                     else if (cap < 120)
-                        value = 115;
+                        value = 150;
                 }
             }
         }
@@ -1182,11 +1182,6 @@ namespace Server.Mobiles
 
             if (startValue > 0)
             {
-                if (tp.TrainPoint is SkillName && startValue > 0)
-                {
-                    startValue = (startValue - 100) * 10;
-                }
-
                 cost -= (int)((double)startValue * tp.Weight);
             }
 

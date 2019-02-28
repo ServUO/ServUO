@@ -193,6 +193,11 @@ namespace Server.Misc
                     rate = 7.0;
             }
 
+            if (double.IsNaN(rate))
+            {
+                return Mobile.DefaultManaRate;
+            }
+
             return TimeSpan.FromSeconds(rate);
         }
 
