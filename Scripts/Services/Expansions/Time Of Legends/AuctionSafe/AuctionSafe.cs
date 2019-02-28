@@ -76,7 +76,10 @@ namespace Server.Engines.Auction
             {
                 if (house.IsOwner(from))
                 {
-                    from.SendGump(new AuctionOwnerGump((PlayerMobile)from, this));
+                    if (!from.HasGump(typeof(AuctionBidGump)))
+                    {
+                        from.SendGump(new AuctionOwnerGump((PlayerMobile)from, this));
+                    }
                 }
                 else if (Auction != null)
                 {
@@ -85,13 +88,23 @@ namespace Server.Engines.Auction
                         if (Auction.InClaimPeriod)
                         {
                             if (Auction.HighestBid != null && from == Auction.HighestBid.Mobile)
+                            {
                                 Auction.ClaimPrize(from);
+                            }
                             else
-                                from.SendGump(new AuctionBidGump((PlayerMobile)from, this));
+                            {
+                                if (!from.HasGump(typeof(AuctionBidGump)))
+                                {
+                                    from.SendGump(new AuctionBidGump((PlayerMobile)from, this));
+                                }
+                            }
                         }
                         else
                         {
-                            from.SendGump(new AuctionBidGump((PlayerMobile)from, this));
+                            if (!from.HasGump(typeof(AuctionBidGump)))
+                            {
+                                from.SendGump(new AuctionBidGump((PlayerMobile)from, this));
+                            }
                         }
                     }
                     else
@@ -126,7 +139,16 @@ namespace Server.Engines.Auction
 
             if (Auction != null)
             {
-                Auction.Cancel();
+                if (Auction.AuctionItem != null)
+                {
+                    Auction.AuctionItem.Movable = true;
+
+                    if (Auction.Owner != null)
+                    {
+                        Auction.Owner.BankBox.DropItem(Auction.AuctionItem);
+                    }
+                }
+
                 Auction = null;
             }
         }

@@ -7,6 +7,7 @@ using Server.Accounting;
 using Server.Targeting;
 using System.Globalization;
 using Server.Network;
+using System.Linq;
 
 namespace Server.Engines.Auction
 {
@@ -160,12 +161,7 @@ namespace Server.Engines.Auction
                 }
                 else
                 {
-                    if (left.TotalDays >= 7)
-                    {
-                        cliloc = 1153092; // Lifespan: ~1_val~ weeks
-                        v = left.TotalDays / 7;
-                    }
-                    else if (left.TotalDays >= 1)
+                    if (left.TotalDays >= 1)
                     {
                         cliloc = 1153091; // Lifespan: ~1_val~ days
                         v = left.TotalDays;
@@ -220,16 +216,18 @@ namespace Server.Engines.Auction
 
             y += 24;
 
+            int[] startbid = GetPlatGold(Auction.StartBid);
+
             // Start Bid Plat/Gold
             AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156410", Yellow, false, false); // Item Starting Bid Plat:
             AddBackground(200, y, 175, 22, 9350);
-            AddTextEntry(202, y, 171, 18, 0, 2, Auction.CurrentPlatBid > 0 ? Auction.CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "", 9);
+            AddTextEntry(202, y, 171, 18, 0, 2, startbid[0] > 0 ? startbid[0].ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "", 9);
 
             y += 24;
 
             AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156411", Yellow, false, false); // Item Starting Bid Gold:
             AddBackground(200, y, 175, 22, 9350);
-            AddTextEntry(202, y, 171, 18, 0, 3, Auction.CurrentGoldBid > 0 ? Auction.CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "", 9);
+            AddTextEntry(202, y, 171, 18, 0, 3, startbid[1] > 0 ? startbid[1].ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "", 9);
 
             y += 24;
 
@@ -267,6 +265,24 @@ namespace Server.Engines.Auction
                 AddHtmlLocalized(200, y, 175, 22, 1156415, Yellow, false, false); // Stop Auction
                 AddButton(160, y, 4005, 4007, 23, GumpButtonType.Reply, 0);
             }
+        }
+
+        public int[] GetPlatGold(long amount)
+        {
+            int plat = 0;
+            int gold = 0;
+
+            if (amount >= Account.CurrencyThreshold)
+            {
+                plat = (int)(amount / Account.CurrencyThreshold);
+                gold = (int)(amount - (plat * Account.CurrencyThreshold));
+            }
+            else
+            {
+                gold = (int)amount;
+            }
+
+            return new int[] { plat, gold };
         }
 
         private class InternalTarget : Target
@@ -435,27 +451,27 @@ namespace Server.Engines.Auction
 
                         long platAmnt = Utility.ToInt64(plat1);
                         long goldAmnt = Utility.ToInt64(gold1);
-
-                        if (Auction.CheckModifyAuction(User))
+                        
+                        if (platAmnt >= 0 && goldAmnt >= 0)
                         {
-                            if (platAmnt >= 0 && goldAmnt >= 0)
-                            {
-                                _TempBid += platAmnt * Account.CurrencyThreshold;
-                                _TempBid += goldAmnt;
-                            }
-                            else
-                            {
-                                from.SendLocalizedMessage(1150315); // That text is unacceptable.
-                                _NoBid = true;
-                            }
+                            _TempBid += platAmnt * Account.CurrencyThreshold;
+                            _TempBid += goldAmnt;
                         }
                         else
                         {
+                            from.SendLocalizedMessage(1150315); // That text is unacceptable.
                             _NoBid = true;
                         }
 
                         if (!_NoBid)
-                            Auction.CurrentBid = _TempBid;
+                        {
+                            if (Auction.OnGoing && Auction.BidHistory == null)
+                            {
+                                Auction.CurrentBid = _TempBid;
+                            }
+
+                            Auction.StartBid = _TempBid;
+                        }                       
 
                         Refresh();
                         break;
@@ -477,18 +493,15 @@ namespace Server.Engines.Auction
 
                         long platAmnt2 = Utility.ToInt64(plat2);
                         long goldAmnt2 = Utility.ToInt64(gold2);
-
-                        if (Auction.CheckModifyAuction(User))
+                        
+                        if (platAmnt2 >= 0 && goldAmnt2 >= 0)
                         {
-                            if (platAmnt2 >= 0 && goldAmnt2 >= 0)
-                            {
-                                _TempBuyout += platAmnt2 * Account.CurrencyThreshold;
-                                _TempBuyout += goldAmnt2;
-                            }
-                            else
-                            {
-                                from.SendLocalizedMessage(1150315); // That text is unacceptable.
-                            }
+                            _TempBuyout += platAmnt2 * Account.CurrencyThreshold;
+                            _TempBuyout += goldAmnt2;
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1150315); // That text is unacceptable.
                         }
 
                         Auction.Buyout = _TempBuyout;
@@ -498,7 +511,7 @@ namespace Server.Engines.Auction
                     }
                 case 9:
                     {
-                        if (Auction.CurrentBid <= 0)
+                        if (Auction.StartBid <= 0)
                         {
                             User.SendLocalizedMessage(1156434); // You must set a starting bid.
                         }
@@ -514,7 +527,7 @@ namespace Server.Engines.Auction
                     {
                         if (Auction.OnGoing && Auction.HighestBid == null)
                         {
-                            Auction.Cancel();
+                            Auction.ClaimPrize(User);
                         }
 
                         break;
@@ -563,12 +576,7 @@ namespace Server.Engines.Auction
                 }
                 else
                 {
-                    if (left.TotalDays >= 7)
-                    {
-                        cliloc = 1153092; // Lifespan: ~1_val~ weeks
-                        v = left.TotalDays / 7;
-                    }
-                    else if (left.TotalDays >= 1)
+                    if (left.TotalDays >= 1)
                     {
                         cliloc = 1153091; // Lifespan: ~1_val~ days
                         v = left.TotalDays;
@@ -607,9 +615,9 @@ namespace Server.Engines.Auction
             AddTextEntry(202, 420, 171, 18, 0, 2, "");
 
             AddHtmlLocalized(200, 442, 175, 22, 1156407, Yellow, false, false); // Place Bid
-            AddButton(160, 442, 4005, 4007, 1, GumpButtonType.Reply, 0);            
-
-            if (Auction.Buyout > 0)
+            AddButton(160, 442, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            
+            if (Auction.Buyout > 0 && (Auction.HighestBid == null || Auction.HighestBid != null && Auction.HighestBid.Mobile != User))
             {
                 AddHtmlLocalized(15, 484, 175, 18, 1114514, "#1156413", Yellow, false, false); // Buy Now Plat Price:
                 AddHtml(200, 484, 175, 18, Color(HGray, Auction.BuyoutPlat.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);

@@ -116,12 +116,15 @@ namespace Server.Engines.Auction
             if (Safe == null || Safe.Deleted)
                 return;
 
+            if (!OnGoing)
+            {
+                BidHistory = null;
+            }
+
             StartTime = DateTime.Now;
             OnGoing = true;
 
-            Safe.Components[0].InvalidateProperties();
-
-            StartBid = CurrentBid;
+            CurrentBid = StartBid;
 
             Auctions.Add(this);
         }
@@ -160,24 +163,21 @@ namespace Server.Engines.Auction
 
 			BidEntry entry = GetBidEntry(m);
 			Account acct = m.Account as Account;
-			
-			if(bidTotal < entry.CurrentBid || entry == HighestBid)
+
+            long highestBid = HighestBid != null ? HighestBid.CurrentBid : CurrentBid;
+
+            if (acct == null || Banker.GetBalance(m) < bidTotal)
+            {
+                m.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
+                return false;
+            }
+            else if (bidTotal < entry.CurrentBid || entry == HighestBid)
 			{
                 m.SendLocalizedMessage(1156445); // You have been out bid.
                 return false;
 			}
 
-			long actualBid =  bidTotal - entry.CurrentBid;
-
-            if (acct == null || Banker.GetBalance(m) < bidTotal)
-			{
-				m.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
-				return false;
-			}
-			
-			long highestBid = HighestBid != null ? HighestBid.CurrentBid : CurrentBid;
-			
-			if (bidTotal <= highestBid)
+            if (bidTotal <= highestBid)
 			{				
 				m.SendLocalizedMessage(1156445); // You have been out bid.
 			}
@@ -323,13 +323,10 @@ namespace Server.Engines.Auction
                 MaginciaLottoSystem.SendMessageTo(Owner, message);
 
                 ClaimPeriod = DateTime.UtcNow + TimeSpan.FromDays(3);
-
-                if (Safe != null && Safe.Components.Count > 0)
-                    Safe.Components[0].InvalidateProperties();
             }
             else
             {
-                Cancel();
+                TrayAuction();
             }
 
             CloseGumps();
@@ -357,22 +354,22 @@ namespace Server.Engines.Auction
 
                     if (AuctionItem.LabelNumber != 0)
                     {
-                        m.SendLocalizedMessage(1152339, String.Format("#{0}", AuctionItem.LabelNumber)); // A reward of ~1_ITEM~ has been placed in your backpack.
+                        m.SendLocalizedMessage(1156322, String.Format("#{0}", AuctionItem.LabelNumber)); // A reward of ~1_ITEM~ has been placed in your bank.
                     }
                     else
                     {
-                        m.SendLocalizedMessage(1152339, AuctionItem.Name); // A reward of ~1_ITEM~ has been placed in your backpack.
+                        m.SendLocalizedMessage(1156322, AuctionItem.Name); // A reward of ~1_ITEM~ has been placed in your bank.
                     }
                 }
                 else
                 {
                     if (AuctionItem.LabelNumber != 0)
                     {
-                        m.SendLocalizedMessage(1156322, String.Format("#{0}", AuctionItem.LabelNumber)); // A reward of ~1_ITEM~ has been placed in your bank.
+                        m.SendLocalizedMessage(1152339, String.Format("#{0}", AuctionItem.LabelNumber)); // A reward of ~1_ITEM~ has been placed in your backpack.
                     }
                     else
                     {
-                        m.SendLocalizedMessage(1156322, AuctionItem.Name); // A reward of ~1_ITEM~ has been placed in your bank.
+                        m.SendLocalizedMessage(1152339, AuctionItem.Name); // A reward of ~1_ITEM~ has been placed in your backpack.
                     }
                 }
 
@@ -386,16 +383,24 @@ namespace Server.Engines.Auction
         {
             if (AuctionItem != null)
             {
-                if (Owner == null)
-                    AuctionItem.Delete();
-                else
-                {
-                    AuctionItem.Movable = true;
-                    Owner.BankBox.AddItem(AuctionItem);
-                }
-            }
+                TrayAuction();
+            }            
+        }
 
-            RemoveAuction();
+        public void TrayAuction()
+        {
+            OnGoing = false;
+
+            ClaimPeriod = DateTime.MinValue;
+            StartTime = DateTime.MinValue;
+
+            Bids = new List<BidEntry>();
+            HighestBid = null;
+            CurrentBid = 0;
+            StartBid = 0;
+            Buyout = 0;
+
+            Duration = DefaultDuration;
         }
 
         public void RemoveAuction()
@@ -404,56 +409,10 @@ namespace Server.Engines.Auction
             Safe.Auction = null;
             OnGoing = false;
 
-            if (AuctionItemOnDisplay() && Owner != null)
-            {
-                AuctionItem.Movable = true;
-                Owner.BankBox.DropItem(AuctionItem);
-            }
-
             AuctionItem = null;
             ClaimPeriod = DateTime.MinValue;
 
             Safe.Auction = new Auction(Owner, Safe);
-        }
-
-        public void Cancel()
-        {
-            if (Bids != null)
-            {
-                Bids.ForEach(bid =>
-                {
-                    string name = "Unknown Item";
-
-                    if (AuctionItem.Name != null)
-                        name = AuctionItem.Name;
-                    else
-                        name = String.Format("#{0}", AuctionItem.LabelNumber.ToString());
-
-                    var mes = new NewMaginciaMessage(null, new TextDefinition(1156454), String.Format("{0}\t{1}\t{2}",
-                                                                CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
-                                                                CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
-                                                                name));
-                    /*Your winning bid amount of ~1_BIDAMT~plat and ~2_BIDAMT~gp for ~3_ITEMNAME~ has been refunded to you due to house collapse.*/
-                    MaginciaLottoSystem.SendMessageTo(bid.Mobile, mes);
-
-                    Account a = bid.Mobile.Account as Account;
-
-                    if (a != null)
-                        a.DepositGold(bid.CurrentBid);
-                });
-
-                RemoveAuction();
-            }
-
-            if (AuctionItem != null)
-            {
-                AuctionItem.Movable = true;
-
-                if (Owner != null)
-                {
-                    Owner.BankBox.DropItem(AuctionItem);
-                }
-            }
         }
 
         public void Dispose()

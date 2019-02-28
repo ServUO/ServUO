@@ -129,7 +129,7 @@ namespace Server.Items
             return Vendor != null && Vendor.Alive && BaseHouse.FindHouseAt(Vendor) != null;
         }
 
-        public Point3D GetVendorLocation()
+        public Point3D GetVendorLocation(Mobile m)
         {
             if (CheckVendor())
             {
@@ -137,6 +137,7 @@ namespace Server.Items
 
                 if (h != null)
                 {
+                    m.SendLocalizedMessage(1070905); // Strong magics have redirected you to a safer location!
                     return h.BanLocation;
                 }
             }

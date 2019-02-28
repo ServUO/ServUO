@@ -20,11 +20,15 @@ namespace Server.Gumps
             if (m_Item == null || m_Item.Deleted)
                 return;
 
-            BaseMount m = null;
+            BaseCreature m = null;
 
             if (m_Item is IMountStatuette)
             {
                 m = Activator.CreateInstance(((IMountStatuette)m_Item).MountType) as BaseMount;
+            }
+            else if (m_Item is ICreatureStatuette)
+            {
+                m = Activator.CreateInstance(((ICreatureStatuette)m_Item).CreatureType) as BaseCreature;
             }
 
             if (m != null)
@@ -48,6 +52,11 @@ namespace Server.Gumps
 
 namespace Server.Mobiles
 {
+    public interface ICreatureStatuette
+    {
+        Type CreatureType { get; }
+    }
+
     public interface IMountStatuette
     {
         Type MountType { get; }
