@@ -21,8 +21,9 @@ namespace Server.Spells.Fourth
         private readonly RunebookEntry m_Entry;
         private readonly Runebook m_Book;
         private readonly VendorSearchMap m_SearchMap;
+        private readonly AuctionMap m_AuctionMap;
 
-        public bool NoSkillRequirement { get { return (Core.SE && (m_Book != null || m_SearchMap != null)) || TransformationSpellHelper.UnderTransformation(Caster, typeof(WraithFormSpell)); } }
+        public bool NoSkillRequirement { get { return (Core.SE && (m_Book != null || m_AuctionMap != null || m_SearchMap != null)) || TransformationSpellHelper.UnderTransformation(Caster, typeof(WraithFormSpell)); } }
 
         public RecallSpell(Mobile caster, Item scroll)
             : this(caster, scroll, null, null)
@@ -42,6 +43,12 @@ namespace Server.Spells.Fourth
             m_SearchMap = map;
         }
 
+        public RecallSpell(Mobile caster, Item scroll, AuctionMap map)
+            : base(caster, scroll, m_Info)
+        {
+            m_AuctionMap = map;
+        }
+
         public override SpellCircle Circle
         {
             get
@@ -59,8 +66,10 @@ namespace Server.Spells.Fourth
 
         public override void OnCast()
         {
-            if (m_Entry == null && m_SearchMap == null)
+            if (m_Entry == null && m_SearchMap == null && m_AuctionMap == null)
+            {
                 Caster.Target = new InternalTarget(this);
+            }
             else
             {
                 Point3D loc;
@@ -71,10 +80,24 @@ namespace Server.Spells.Fourth
                     loc = m_Entry.Location;
                     map = m_Entry.Map;
                 }
+                else if (m_SearchMap != null)
+                {
+                    loc = m_SearchMap.SetLocation != Point3D.Zero ? m_SearchMap.SetLocation : m_SearchMap.GetVendorLocation(Caster);
+                    map = m_SearchMap.SetMap != null ? m_SearchMap.SetMap : m_SearchMap.GetVendorMap();
+                }
                 else
                 {
-                    loc = m_SearchMap.SetLocation != Point3D.Zero ? m_SearchMap.SetLocation : m_SearchMap.GetVendorLocation();
-                    map = m_SearchMap.SetMap != null ? m_SearchMap.SetMap : m_SearchMap.GetVendorMap();
+
+                    loc = m_AuctionMap.SetLocation != Point3D.Zero ? m_AuctionMap.SetLocation : m_AuctionMap.SafeLocation;
+                    map = m_AuctionMap.SetMap != null ? m_AuctionMap.SetMap : m_AuctionMap.SafeMap;
+
+                    BaseHouse house = BaseHouse.FindHouseAt(loc, map, 16);
+
+                    if (house != null)
+                    {
+                        Caster.SendLocalizedMessage(1070905); // Strong magics have redirected you to a safer location!
+                        loc = house.BanLocation;
+                    }
                 }
 
                 Effect(loc, map, true, m_Entry != null && m_Entry.Galleon != null);
@@ -172,6 +195,9 @@ namespace Server.Spells.Fourth
 
                 if (m_SearchMap != null)
                     m_SearchMap.OnBeforeTravel(Caster);
+
+                if (m_AuctionMap != null)
+                    m_AuctionMap.OnBeforeTravel(Caster);
 
                 Caster.PlaySound(0x1FC);
                 Caster.MoveToWorld(loc, map);

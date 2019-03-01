@@ -562,7 +562,7 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (m_Addon == null && m_Addon.Deleted)
+                if (m_Addon == null || m_Addon.Deleted)
                 {
                     return;
                 }
