@@ -342,6 +342,48 @@ namespace Server.Engines.Auction
                 });
         }
 
+        public void HouseCollapse()
+        {
+            Item item = AuctionItem;
+
+            if (Bids != null)
+            {
+                Bids.ForEach(bid =>
+                {
+                    string name = "Unknown Item";
+
+                    if (item.Name != null)
+                        name = item.Name;
+                    else
+                        name = String.Format("#{0}", item.LabelNumber.ToString());
+
+                    var mes = new NewMaginciaMessage(null, new TextDefinition(1156454), String.Format("{0}\t{1}\t{2}",
+                                                                CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
+                                                                CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
+                                                                name));
+                    /*Your winning bid amount of ~1_BIDAMT~plat and ~2_BIDAMT~gp for ~3_ITEMNAME~ has been refunded to you due to house collapse.*/
+                    MaginciaLottoSystem.SendMessageTo(bid.Mobile, mes);
+
+                    Account a = bid.Mobile.Account as Account;
+
+                    if (a != null)
+                        a.DepositGold(bid.CurrentBid);
+                });
+
+                RemoveAuction();
+            }
+
+            if (item != null)
+            {
+                item.Movable = true;
+
+                if (Owner != null)
+                {
+                    Owner.BankBox.DropItem(item);
+                }
+            }
+        }
+
         public void ClaimPrize(Mobile m)
         {
             if (AuctionItem != null)
@@ -377,6 +419,7 @@ namespace Server.Engines.Auction
             }
 
             RemoveAuction();
+            Safe.Auction = new Auction(Owner, Safe);
         }
 
         public void EndClaimPeriod()
@@ -410,9 +453,7 @@ namespace Server.Engines.Auction
             OnGoing = false;
 
             AuctionItem = null;
-            ClaimPeriod = DateTime.MinValue;
-
-            Safe.Auction = new Auction(Owner, Safe);
+            ClaimPeriod = DateTime.MinValue;            
         }
 
         public void Dispose()

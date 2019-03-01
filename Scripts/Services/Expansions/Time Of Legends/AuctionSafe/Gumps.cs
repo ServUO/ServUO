@@ -25,7 +25,6 @@ namespace Server.Engines.Auction
         public AuctionSafe Safe { get; set; }
         public bool Owner { get; set; }
         public PlayerMobile User { get; set; }
-
         public Auction Auction { get; set; }
 
         public BaseAuctionGump(PlayerMobile p, AuctionSafe safe)
@@ -221,13 +220,13 @@ namespace Server.Engines.Auction
             // Start Bid Plat/Gold
             AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156410", Yellow, false, false); // Item Starting Bid Plat:
             AddBackground(200, y, 175, 22, 9350);
-            AddTextEntry(202, y, 171, 18, 0, 2, startbid[0] > 0 ? startbid[0].ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "", 9);
+            AddTextEntry(202, y, 171, 18, 0, 2, startbid[0] > 0 ? startbid[0].ToString() : "", 9);
 
             y += 24;
 
             AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156411", Yellow, false, false); // Item Starting Bid Gold:
             AddBackground(200, y, 175, 22, 9350);
-            AddTextEntry(202, y, 171, 18, 0, 3, startbid[1] > 0 ? startbid[1].ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "", 9);
+            AddTextEntry(202, y, 171, 18, 0, 3, startbid[1] > 0 ? startbid[1].ToString() : "", 9);
 
             y += 24;
 
@@ -239,13 +238,13 @@ namespace Server.Engines.Auction
             // Buy Now
             AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156413", Yellow, false, false); // Buy Now Plat Price:
             AddBackground(200, y, 175, 22, 9350);
-            AddTextEntry(202, y + 2, 171, 18, 0, 4, Auction.BuyoutPlat > 0 ? Auction.BuyoutPlat.ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "", 9);
+            AddTextEntry(202, y + 2, 171, 18, 0, 4, Auction.BuyoutPlat > 0 ? Auction.BuyoutPlat.ToString() : "", 9);
 
             y += 26;
 
             AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156412", Yellow, false, false); // Buy Now Gold Price:
             AddBackground(200, y, 175, 22, 9350);
-            AddTextEntry(202, y, 171, 18, 0, 5, Auction.BuyoutGold > 0 ? Auction.BuyoutGold.ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "", 9);
+            AddTextEntry(202, y, 171, 18, 0, 5, Auction.BuyoutGold > 0 ? Auction.BuyoutGold.ToString() : "", 9);
 
             y += 24;
 
@@ -390,7 +389,7 @@ namespace Server.Engines.Auction
                         if (relay != null)
                             str = relay.Text;
 
-                        if (str != null || Server.Guilds.BaseGuildGump.CheckProfanity(str, 140))
+                        if (str != null || Guilds.BaseGuildGump.CheckProfanity(str, 140))
                         {
                             Auction.Description = Utility.FixHtml(str.Trim());
                         }
@@ -608,11 +607,11 @@ namespace Server.Engines.Auction
 
             AddHtmlLocalized(15, 392, 175, 22, 1114514, "#1156406", Yellow, false, false); // Your Current Platinum Bid:
             AddBackground(200, 392, 175, 22, 9350);
-            AddTextEntry(202, 394, 171, 18, 0, 1, "");
+            AddTextEntry(202, 394, 171, 18, 0, 1, "", 9);
 
             AddHtmlLocalized(15, 418, 175, 22, 1114514, "#1156405", Yellow, false, false); // Your Current Gold Bid:
             AddBackground(200, 418, 175, 22, 9350);
-            AddTextEntry(202, 420, 171, 18, 0, 2, "");
+            AddTextEntry(202, 420, 171, 18, 0, 2, "", 9);
 
             AddHtmlLocalized(200, 442, 175, 22, 1156407, Yellow, false, false); // Place Bid
             AddButton(160, 442, 4005, 4007, 1, GumpButtonType.Reply, 0);

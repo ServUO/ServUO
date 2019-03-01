@@ -139,16 +139,7 @@ namespace Server.Engines.Auction
 
             if (Auction != null)
             {
-                if (Auction.AuctionItem != null)
-                {
-                    Auction.AuctionItem.Movable = true;
-
-                    if (Auction.Owner != null)
-                    {
-                        Auction.Owner.BankBox.DropItem(Auction.AuctionItem);
-                    }
-                }
-
+                Auction.HouseCollapse();
                 Auction = null;
             }
         }
