@@ -98,6 +98,13 @@ namespace Server.Gumps
 						return;
 					}
 
+                    else if (m_House.HasActiveAuction)
+                    {
+                        m_Mobile.SendLocalizedMessage(1156453); 
+                        // You cannot currently take this action because you have auction safes locked down in your home. You must remove them first.
+                        return;
+                    }
+
 					if (m_Mobile.AccessLevel >= AccessLevel.GameMaster)
 					{
 						m_Mobile.SendMessage("You do not get a refund for your house as you are not a player");
