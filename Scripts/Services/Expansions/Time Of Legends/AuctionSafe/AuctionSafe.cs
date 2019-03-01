@@ -276,7 +276,8 @@ namespace Server.Engines.Auction
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            IsRewardItem = reader.ReadBool();
+            if (version > 0)
+                IsRewardItem = reader.ReadBool();
 
             if (LootType != LootType.Blessed)
                 LootType = LootType.Blessed;
