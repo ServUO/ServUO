@@ -3,11 +3,11 @@ using Server.Gumps;
 
 namespace Server.Mobiles
 {
-    public class EowmuStatue : Item, IMountStatuette
+    public class EowmuStatue : Item, ICreatureStatuette
     {
         public override int LabelNumber { get { return 1158082; } } // Eowmu
 
-        public Type MountType { get { return typeof(Eowmu); } }
+        public Type CreatureType { get { return typeof(Eowmu); } }
 
         [Constructable]
         public EowmuStatue() 

@@ -4,6 +4,7 @@ using Server.Engines.VendorSearching;
 using Server.Mobiles;
 using Server.ContextMenus;
 using Server.Multis;
+using Server.Gumps;
 
 namespace Server.Items
 {
@@ -194,7 +195,7 @@ namespace Server.Items
             {
                 if (Clicker is PlayerMobile)
                 {
-                    Clicker.SendGump(new ConfirmTeleportGump(VendorMap));
+                    BaseGump.SendGump(new ConfirmTeleportGump(VendorMap, (PlayerMobile)Clicker));
                 }
             }
         }

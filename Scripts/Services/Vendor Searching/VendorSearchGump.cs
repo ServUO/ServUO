@@ -435,15 +435,18 @@ namespace Server.Engines.VendorSearching
         public static Dictionary<VendorItem, List<PlayerMobile>> _GivenTo;
     }
 
-    public class ConfirmTeleportGump : Gump
+    public class ConfirmTeleportGump : BaseGump
     {
         public VendorSearchMap VendorMap { get; set; }
 
-        public ConfirmTeleportGump(VendorSearchMap map)
-            : base(10, 10)
+        public ConfirmTeleportGump(VendorSearchMap map, PlayerMobile pm)
+            : base(pm, 10, 10)
         {
-            VendorMap = map;
+            VendorMap = map;            
+        }
 
+        public override void AddGumpLayout()
+        {
             AddPage(0);
 
             AddBackground(0, 0, 414, 214, 0x7752);
@@ -451,7 +454,7 @@ namespace Server.Engines.VendorSearching
             if (VendorMap.Vendor != null && VendorMap.SetLocation != Point3D.Zero)
                 AddHtmlLocalized(27, 47, 380, 80, 1154637, String.Format("{0}\t{1}", VendorMap.GetCoords(), VendorMap.Vendor.Map.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to return to ~1_loc~ (~2_facet~).  This map will be deleted after use.
             else
-                AddHtmlLocalized(27, 47, 380, 80, 1156475, String.Format("@{0}@{1}@{2}", map.TeleportCost.ToString(), VendorMap.Vendor.Name, VendorMap.DeleteDelayMinutes.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to pay ~1_cost~ gold to teleport to auction house ~2_name~. For this price you will also be able to teleport back to this location within the next ~3_minutes~ minutes.
+                AddHtmlLocalized(27, 47, 380, 80, 1156475, String.Format("@{0}@{1}@{2}", VendorMap.TeleportCost.ToString(), VendorMap.Vendor.Name, VendorMap.DeleteDelayMinutes.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to pay ~1_cost~ gold to teleport to auction house ~2_name~. For this price you will also be able to teleport back to this location within the next ~3_minutes~ minutes.
 
             AddButton(7, 167, 0x7747, 0x7747, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(47, 167, 100, 40, 1150300, 0x4E73, false, false); // CANCEL
@@ -460,38 +463,36 @@ namespace Server.Engines.VendorSearching
             AddHtmlLocalized(267, 167, 100, 40, 1114514, "#1150299", 0xFFFF, false, false); // // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 default: break;
                 case 1:
                     {
-                        if (Banker.GetBalance(from) < VendorMap.TeleportCost)
+                        if (Banker.GetBalance(User) < VendorMap.TeleportCost)
                         {
-                            from.SendLocalizedMessage(1154672); // You cannot afford to teleport to the vendor.
+                            User.SendLocalizedMessage(1154672); // You cannot afford to teleport to the vendor.
                         }
                         else if (!VendorMap.CheckVendor())
                         {
-                            from.SendLocalizedMessage(1154643); // That item is no longer for sale.
+                            User.SendLocalizedMessage(1154643); // That item is no longer for sale.
                         }
-                        else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(from))
+                        else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(User))
                         {
-                            from.SendLocalizedMessage(1154680); //Before using vendor search, you must be in a justice region or a safe log-out location (such as an inn or a house which has you on its Owner, Co-owner, or Friends list). 
+                            User.SendLocalizedMessage(1154680); //Before using vendor search, you must be in a justice region or a safe log-out location (such as an inn or a house which has you on its Owner, Co-owner, or Friends list). 
                         }
-                        else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(from))
+                        else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(User))
                         {
-                            from.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                            User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
                         }
-                        else if (VendorMap.SetLocation != Point3D.Zero && (!Utility.InRange(VendorMap.SetLocation, from.Location, 100) || VendorMap.SetMap != from.Map))
+                        else if (VendorMap.SetLocation != Point3D.Zero && (!Utility.InRange(VendorMap.SetLocation, User.Location, 100) || VendorMap.SetMap != User.Map))
                         {
-                            from.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                            User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
                         }
                         else
                         {
-                            new Server.Spells.Fourth.RecallSpell(from, VendorMap, VendorMap).Cast();
+                            new Server.Spells.Fourth.RecallSpell(User, VendorMap, VendorMap).Cast();
                         }
 
                         break;

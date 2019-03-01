@@ -223,7 +223,7 @@ namespace Server.Items
             {
                 if (Clicker is PlayerMobile)
                 {
-                    Clicker.SendGump(new ConfirmTeleportGump(VendorMap));
+                    BaseGump.SendGump(new ConfirmTeleportGump(VendorMap, (PlayerMobile)Clicker));
                 }
             }
         }
@@ -261,15 +261,18 @@ namespace Server.Items
             SetMap = reader.ReadMap();
         }
 
-        public class ConfirmTeleportGump : Gump
+        public class ConfirmTeleportGump : BaseGump
         {
             public AuctionMap AuctionMap { get; set; }
 
-            public ConfirmTeleportGump(AuctionMap map)
-                : base(10, 10)
+            public ConfirmTeleportGump(AuctionMap map, PlayerMobile pm)
+                : base(pm, 10, 10)
             {
-                AuctionMap = map;
+                AuctionMap = map;                
+            }
 
+            public override void AddGumpLayout()
+            {
                 AddPage(0);
 
                 AddBackground(0, 0, 414, 214, 0x7752);
@@ -283,30 +286,28 @@ namespace Server.Items
                 AddHtmlLocalized(267, 167, 100, 40, 1114514, "#1150299", 0xFFFF, false, false); // // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
             }
 
-            public override void OnResponse(NetState state, RelayInfo info)
+            public override void OnResponse(RelayInfo info)
             {
-                Mobile from = state.Mobile;
-
                 switch (info.ButtonID)
                 {
                     default: break;
                     case 1:
                         {
-                            if (Banker.GetBalance(from) < AuctionMap.TeleportCost)
+                            if (Banker.GetBalance(User) < AuctionMap.TeleportCost)
                             {
-                                from.SendLocalizedMessage(1154672); // You cannot afford to teleport to the vendor.
+                                User.SendLocalizedMessage(1154672); // You cannot afford to teleport to the vendor.
                             }
                             else if (!AuctionMap.CheckItem())
                             {
-                                from.SendLocalizedMessage(1154643); // That item is no longer for sale.
+                                User.SendLocalizedMessage(1154643); // That item is no longer for sale.
                             }
-                            else if (AuctionMap.SetLocation != Point3D.Zero && (!Utility.InRange(AuctionMap.SetLocation, from.Location, 100) || AuctionMap.SetMap != from.Map))
+                            else if (AuctionMap.SetLocation != Point3D.Zero && (!Utility.InRange(AuctionMap.SetLocation, User.Location, 100) || AuctionMap.SetMap != User.Map))
                             {
-                                from.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                                User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
                             }
                             else
                             {
-                                new Server.Spells.Fourth.RecallSpell(from, AuctionMap, AuctionMap).Cast();
+                                new Server.Spells.Fourth.RecallSpell(User, AuctionMap, AuctionMap).Cast();
                             }
 
                             break;

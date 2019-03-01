@@ -407,7 +407,7 @@ namespace Server.Engines.NewMagincia
 
                 if (HasMessageInQueue(from))
                 {
-                    from.SendGump(new NewMaginciaMessageGump(from));
+                    BaseGump.SendGump(new NewMaginciaMessageGump((PlayerMobile)from));
                 }
             }
         }
@@ -456,7 +456,7 @@ namespace Server.Engines.NewMagincia
                 else if (from is PlayerMobile)
                 {
                     from.CloseGump(typeof(NewMaginciaMessageGump));
-                    from.SendGump(new NewMaginciaMessageGump(from));
+                    BaseGump.SendGump(new NewMaginciaMessageGump((PlayerMobile)from));
                 }
             }
 

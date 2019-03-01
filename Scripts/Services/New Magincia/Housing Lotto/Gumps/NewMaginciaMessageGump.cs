@@ -1,23 +1,26 @@
 using System;
 using Server;
 using Server.Gumps;
+using Server.Mobiles;
 using System.Collections.Generic;
-using Server.Network;
 
 namespace Server.Engines.NewMagincia
 {
-    public class NewMaginciaMessageGump : Gump
+    public class NewMaginciaMessageGump : BaseGump
     {
         public List<NewMaginciaMessage> Messages;
 
         public readonly int LightBlueColor = 0x4AFD;
         public readonly int GreenColor = 0x4BB7;        
 
-        public NewMaginciaMessageGump(Mobile from)
-            : base(490, 30)
+        public NewMaginciaMessageGump(PlayerMobile from)
+            : base(from, 490, 30)
         {
-            Messages = MaginciaLottoSystem.GetMessages(from);
+            Messages = MaginciaLottoSystem.GetMessages(from);            
+        }
 
+        public override void AddGumpLayout()
+        {
             AddPage(0);
 
             AddBackground(0, 0, 164, 32, 0x24B8);
@@ -25,31 +28,29 @@ namespace Server.Engines.NewMagincia
             AddHtmlLocalized(37, 7, 120, 18, 1150425, String.Format("{0}", Messages.Count), GreenColor, false, false); // ~1_COUNT~ Messages
         }
 
-        public override void OnResponse(NetState sender, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            Mobile from = sender.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:
                     {
                         if (Messages.Count != 0)
                         {
-                            from.SendGump(new NewMaginciaMessageGump(from));
+                            SendGump(new NewMaginciaMessageGump(User));
                         }
 
                         break;
                     }
                 case 1:
                     {
-                        from.SendGump(new NewMaginciaMessageListGump(from));
+                        SendGump(new NewMaginciaMessageListGump(User));
                         break;
                     }
             }
         }
     }
 
-    public class NewMaginciaMessageListGump : Gump
+    public class NewMaginciaMessageListGump : BaseGump
     {
         public readonly int GreenColor = 0x4BB7;
         public readonly int LightBlueColor = 0x4AFD;
@@ -57,17 +58,20 @@ namespace Server.Engines.NewMagincia
         public bool Widescreen;
         public List<NewMaginciaMessage> Messages;
 
-        public NewMaginciaMessageListGump(Mobile from, bool widescreen = false)
-            : base(490, 30)
+        public NewMaginciaMessageListGump(PlayerMobile from, bool widescreen = false)
+            : base(from, 490, 30)
         {
             Widescreen = widescreen;
-            Messages = MaginciaLottoSystem.GetMessages(from);
+            Messages = MaginciaLottoSystem.GetMessages(from);            
+        }
 
+        public override void AddGumpLayout()
+        {
             if (Messages == null)
             {
                 return;
             }
-            
+
             AddPage(0);
 
             int width = (Widescreen ? 200 : 0);
@@ -86,13 +90,13 @@ namespace Server.Engines.NewMagincia
                 AddPage(page);
 
                 if (page > 1)
-                    AddButton(Widescreen ? 446 : 246, 7, 0x1458, 0x1458, 0, GumpButtonType.Page, page - 1);                
+                    AddButton(Widescreen ? 446 : 246, 7, 0x1458, 0x1458, 0, GumpButtonType.Page, page - 1);
 
                 var message = Messages[i];
 
                 if (message == null)
                     continue;
-                
+
                 if (message.Body.Number > 0)
                 {
                     if (message.Args == null)
@@ -108,7 +112,7 @@ namespace Server.Engines.NewMagincia
                 {
                     AddHtml(40, 34 + (y * 32), 260 + width, 16, Color("#94BDEF", message.Body.String), false, false);
                 }
-                
+
                 AddButton(7, 34 + (y * 32), 4029, 4031, i + 1000, GumpButtonType.Reply, 0);
 
                 y++;
@@ -120,29 +124,22 @@ namespace Server.Engines.NewMagincia
                     AddButton(Widescreen ? 468 : 268, 7, 0x1459, 0x1459, 0, GumpButtonType.Page, page + 1);
                     page++;
                     y = 0;
-                }                    
+                }
             }
         }
 
-        public string Color(string color, string str)
+        public override void OnResponse(RelayInfo info)
         {
-            return String.Format("<basefont color=#{0}>{1}", color, str);
-        }
-
-        public override void OnResponse(NetState sender, RelayInfo info)
-        {
-            Mobile from = sender.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:
                     {
-                        from.SendGump(new NewMaginciaMessageGump(from));
+                        SendGump(new NewMaginciaMessageGump(User));
                         break;
                     }
                 case 1:
                     {
-                        from.SendGump(new NewMaginciaMessageListGump(from, Widescreen ? false : true));
+                        SendGump(new NewMaginciaMessageListGump(User, Widescreen ? false : true));
                         break;
                     }
                 default:
@@ -151,7 +148,7 @@ namespace Server.Engines.NewMagincia
 
                         if (id >= 0 && id < Messages.Count)
                         {
-                            from.SendGump(new NewMaginciaMessageDetailGump(from, Messages, id));
+                            SendGump(new NewMaginciaMessageDetailGump(User, Messages, id));
                         }
 
                         break;
@@ -160,7 +157,7 @@ namespace Server.Engines.NewMagincia
         }
     }
 
-    public class NewMaginciaMessageDetailGump : Gump
+    public class NewMaginciaMessageDetailGump : BaseGump
     {
         public NewMaginciaMessage Message;
         public List<NewMaginciaMessage> Messages;
@@ -169,12 +166,17 @@ namespace Server.Engines.NewMagincia
         public readonly int BlueColor = 0x110;
         public readonly int EntryColor = 0x76F2;
 
-        public NewMaginciaMessageDetailGump(Mobile from, List<NewMaginciaMessage> messages, int messageid)
-            : base(490, 30)
+        public NewMaginciaMessageDetailGump(PlayerMobile from, List<NewMaginciaMessage> messages, int messageid)
+            : base(from, 490, 30)
         {
             Messages = messages;
             Message = messages[messageid];
 
+            
+        }
+
+        public override void AddGumpLayout()
+        {
             if (Message != null)
             {
                 AddPage(0);
@@ -183,7 +185,7 @@ namespace Server.Engines.NewMagincia
                 AddButton(7, 7, 0x1523, 0x1523, 0, GumpButtonType.Reply, 0);
                 AddButton(390, 7, 0x1519, 0x151A, 1, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(47, 7, 360, 18, 1150425, String.Format("{0}", Messages.Count), GreenColor, false, false); // ~1_COUNT~ Messages
-                
+
                 if (Message.Body != null)
                 {
                     if (Message.Body.Number != 0)
@@ -198,7 +200,7 @@ namespace Server.Engines.NewMagincia
                         }
                     }
                     else
-                    {                        
+                    {
                         AddHtml(7, 34, 404, 150, Color("#004284", Message.Body.String), true, true);
                     }
                 }
@@ -206,51 +208,44 @@ namespace Server.Engines.NewMagincia
                 TimeSpan ts = Message.Expires - DateTime.UtcNow;
 
                 AddHtmlLocalized(7, 194, 400, 18, 1150432, String.Format("@{0}@{1}@{2}", ts.Days, ts.Hours, ts.Minutes), GreenColor, false, false); // This message will expire in ~1_DAYS~ days, ~2_HOURS~ hours, and ~3_MIN~ minutes.
-                                
+
                 AddHtmlLocalized(47, 212, 360, 22, 1150433, EntryColor, false, false); // DELETE NOW
                 AddButton(7, 212, 4005, 4007, 2, GumpButtonType.Reply, 0);
             }
         }
 
-        public string Color(string color, string str)
+        public override void OnResponse(RelayInfo info)
         {
-            return String.Format("<basefont color=#{0}>{1}", color, str);
-        }
-
-        public override void OnResponse(NetState sender, RelayInfo info)
-        {
-            Mobile from = sender.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:
                     {
-                        from.SendGump(new NewMaginciaMessageGump(from));
+                        SendGump(new NewMaginciaMessageGump(User));
 
                         break;
                     }
                 case 1:
                     {
-                        from.SendGump(new NewMaginciaMessageListGump(from));
+                        SendGump(new NewMaginciaMessageListGump(User));
                     }
                     break;
                 case 2:
                     {
                         if (Message != null)
                         {
-                            List<NewMaginciaMessage> messages = MaginciaLottoSystem.MessageQueue[from];
+                            List<NewMaginciaMessage> messages = MaginciaLottoSystem.MessageQueue[User];
 
                             if (messages == null)
                             {
-                                MaginciaLottoSystem.MessageQueue.Remove(from);
+                                MaginciaLottoSystem.MessageQueue.Remove(User);
                             }
                             else
                             {
-                                MaginciaLottoSystem.RemoveMessageFromQueue(from, Message);
+                                MaginciaLottoSystem.RemoveMessageFromQueue(User, Message);
 
-                                if (MaginciaLottoSystem.HasMessageInQueue(from))
+                                if (MaginciaLottoSystem.HasMessageInQueue(User))
                                 {
-                                    from.SendGump(new NewMaginciaMessageListGump(from));
+                                    SendGump(new NewMaginciaMessageListGump(User));
                                 }
                             }
                         }
