@@ -146,7 +146,7 @@ namespace Server.Mobiles
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (!m.Frozen && DateTime.UtcNow >= this.m_NextResurrect && this.InRange(m, 4) && !this.InRange(oldLocation, 4) && this.InLOS(m))
+            if (!m.Frozen && DateTime.UtcNow >= this.m_NextResurrect && this.InRange(m, 2) && !this.InRange(oldLocation, 2) && this.InLOS(m))
             {
                 if (!m.Alive)
                 {
