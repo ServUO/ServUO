@@ -165,7 +165,13 @@ namespace Server.Commands.Generic
 
         public bool CheckObjectTypes(Mobile from, BaseCommand command, Extensions ext, out bool items, out bool mobiles)
         {
-            items = mobiles = false;
+            bool st, lt;
+            return CheckObjectTypes(from, command, ext, out items, out mobiles, out st, out lt) && !st && !lt;
+        }
+
+        public bool CheckObjectTypes(Mobile from, BaseCommand command, Extensions ext, out bool items, out bool mobiles, out bool statictiles, out bool landtiles)
+        {
+            items = mobiles = statictiles = landtiles = false;
 
             ObjectConditional cond = ObjectConditional.Empty;
 
@@ -181,6 +187,8 @@ namespace Server.Commands.Generic
 
             bool condIsItem = cond.IsItem;
             bool condIsMobile = cond.IsMobile;
+            bool condIsStatic = cond.IsStatic;
+            bool condIsLand = cond.IsLand;
 
             switch ( command.ObjectTypes )
             {
@@ -223,6 +231,46 @@ namespace Server.Commands.Generic
 
                         break;
                     }
+                case ObjectTypes.AllFixed:
+                {
+                    if (condIsStatic)
+                    {
+                        statictiles = true;
+                    }
+
+                    if (condIsLand)
+                    {
+                        landtiles = true;
+                    }
+
+                    break;
+                }
+                case ObjectTypes.Statics:
+                {
+                    if (condIsStatic)
+                    {
+                        statictiles = true;
+                    }
+                    else if (condIsLand)
+                    {
+                        from.SendMessage("You can't use this command on Land types");
+                        return false;
+                    }
+                    break;
+                }
+                case ObjectTypes.Lands:
+                {
+                    if (condIsLand)
+                    {
+                        landtiles = true;
+                    }
+                    else if (condIsStatic)
+                    {
+                        from.SendMessage("You can't use this command on Static types");
+                        return false;
+                    }
+                    break;
+                }
             }
 
             return true;

@@ -1518,6 +1518,37 @@ namespace Server
         {
             return !Regex.IsMatch(str, "[^a-z0-9]", RegexOptions.IgnoreCase);
         }
+
+        public static int IntRandomCoded(string s)
+        {
+            int ret = 0, min, max;
+            List<int> toexp = new List<int>();
+            string[] arr = s.TrimStart('^').Split('_');
+            for (int i = 0; i < arr.Length; i++)
+            {
+                string[] sarr = arr[i].Split(':');
+                if (sarr.Length > 1)
+                {
+                    if (int.TryParse(sarr[0], out min) && int.TryParse(sarr[1], out max))
+                    {
+                        toexp.Add(RandomMinMax(min, max));
+                    }
+                }
+                else
+                {
+                    if (int.TryParse(sarr[0], out min))
+                    {
+                        toexp.Add(min);
+                    }
+                }
+            }
+            if (toexp.Count > 0)
+            {
+                ret = toexp[Random(toexp.Count)];
+            }
+
+            return ret;
+        }
     }
 
     public static class ColUtility

@@ -7838,7 +7838,8 @@ namespace Server
 							ns.Send(new MobileUpdateOld(this));
 							ns.Send(new MobileAttributes(this));
 						}
-					}
+                        EventSink.InvokeMapChange(new MapChangeEventArgs(this));
+                    }
 
 					OnMapChange(oldMap);
 				}

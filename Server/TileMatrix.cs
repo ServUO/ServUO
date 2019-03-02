@@ -10,8 +10,8 @@ namespace Server
 {
 	public class TileMatrix
 	{
-		private readonly StaticTile[][][][][] m_StaticTiles;
-		private readonly LandTile[][][] m_LandTiles;
+		private StaticTile[][][][][] m_StaticTiles;
+		private LandTile[][][] m_LandTiles;
 
 		private readonly LandTile[] m_InvalidLandBlock;
 		private readonly StaticTile[][][] m_EmptyStaticBlock;
@@ -32,8 +32,8 @@ namespace Server
 		private readonly Map m_Owner;
 
 		private readonly TileMatrixPatch m_Patch;
-		private readonly int[][] m_StaticPatches;
-		private readonly int[][] m_LandPatches;
+		private int[][] m_StaticPatches;
+		private int[][] m_LandPatches;
 
 		/*public Map Owner
 		{
@@ -49,7 +49,7 @@ namespace Server
 
 		public int BlockHeight { get { return m_BlockHeight; } }
 
-		/*public int Width
+		public int Width
 		{
 			get
 			{
@@ -63,7 +63,7 @@ namespace Server
 			{
 				return m_Height;
 			}
-		}*/
+		}
 
 		public FileStream MapStream { get { return m_Map; } set { m_Map = value; } }
 
@@ -172,7 +172,23 @@ namespace Server
 			m_Patch = new TileMatrixPatch(this, mapID);
 		}
 
-		public StaticTile[][][] EmptyStaticBlock { get { return m_EmptyStaticBlock; } }
+        internal void SetNewMatrix(TileMatrix matrix, bool staticsonly)
+        {
+            if (matrix.m_FileIndex != m_FileIndex)
+            {
+                return;
+            }
+
+            if (!staticsonly)
+            {
+                m_LandTiles = (LandTile[][][])matrix.m_LandTiles.Clone();
+                m_LandPatches = (int[][])matrix.m_LandPatches.Clone();
+            }
+            m_StaticTiles = (StaticTile[][][][][])matrix.m_StaticTiles.Clone();
+            m_StaticPatches = (int[][])matrix.m_StaticPatches.Clone();
+        }
+
+        public StaticTile[][][] EmptyStaticBlock { get { return m_EmptyStaticBlock; } }
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void SetStaticBlock(int x, int y, StaticTile[][][] value)
@@ -580,7 +596,12 @@ namespace Server
 			m_ID = id;
 			m_Z = z;
 		}
-	}
+
+        public Server.Targeting.LandTarget ToLandTarget(Map m, int x, int y)
+        {
+            return new Server.Targeting.LandTarget(new Point3D(x, y, Z), m);
+        }
+    }
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct StaticTile
@@ -628,7 +649,13 @@ namespace Server
 			m_Z = z;
 		}
 
-		public void Set(ushort id, byte x, byte y, sbyte z, short hue)
+        public void SetHue(ushort id, short hue)
+        {
+            m_ID = id;
+            m_Hue = hue;
+        }
+
+        public void Set(ushort id, byte x, byte y, sbyte z, short hue)
 		{
 			m_ID = id;
 			m_X = x;
@@ -636,7 +663,12 @@ namespace Server
 			m_Z = z;
 			m_Hue = hue;
 		}
-	}
+
+        public Server.Targeting.StaticTarget ToStaticTarget(Server.Map map, int x, int y)
+        {
+            return new Server.Targeting.StaticTarget(map, new Point3D(x, y, Z), m_ID);
+        }
+    }
 
 	public class UOPIndex
 	{

@@ -9,7 +9,10 @@ namespace Server.Commands.Generic
         Both,
         Items,
         Mobiles,
-        All
+        All,
+        Statics,
+        Lands,
+        AllFixed
     }
 
     public abstract class BaseCommand

@@ -29,7 +29,9 @@ namespace Server
 
 	public delegate void SpeechEventHandler(SpeechEventArgs e);
 
-	public delegate void LoginEventHandler(LoginEventArgs e);
+    public delegate void MapChangeEventHandler(MapChangeEventArgs e);
+
+    public delegate void LoginEventHandler(LoginEventArgs e);
 
 	public delegate void ServerListEventHandler(ServerListEventArgs e);
 
@@ -999,7 +1001,18 @@ namespace Server
 		}
 	}
 
-	public class LoginEventArgs : EventArgs
+    public class MapChangeEventArgs : EventArgs
+    {
+        private readonly Mobile m_Mobile;
+        public Mobile Mob { get { return m_Mobile; } }
+
+        public MapChangeEventArgs(Mobile m)
+        {
+            m_Mobile = m;
+        }
+    }
+
+    public class LoginEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
 
@@ -1380,7 +1393,8 @@ namespace Server
 		public static event CharacterCreatedEventHandler CharacterCreated;
 		public static event OpenDoorMacroEventHandler OpenDoorMacroUsed;
 		public static event SpeechEventHandler Speech;
-		public static event LoginEventHandler Login;
+        public static event MapChangeEventHandler MapChange;
+        public static event LoginEventHandler Login;
 		public static event ServerListEventHandler ServerList;
 		public static event MovementEventHandler Movement;
 		public static event HungerChangedEventHandler HungerChanged;
@@ -1791,7 +1805,15 @@ namespace Server
 			}
 		}
 
-		public static void InvokeSpeech(SpeechEventArgs e)
+        public static void InvokeMapChange(MapChangeEventArgs e)
+        {
+            if (MapChange != null)
+            {
+                MapChange(e);
+            }
+        }
+
+        public static void InvokeSpeech(SpeechEventArgs e)
 		{
 			if (Speech != null)
 			{

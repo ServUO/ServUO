@@ -153,8 +153,11 @@ namespace Server
 		public static Selector<Item> ItemSelector { get; set; }
 		public static Selector<BaseMulti> MultiSelector { get; set; }
 		public static Selector<StaticTile[]> MultiTileSelector { get; set; }
+        public static Selector<StaticTarget> StaticTargetSelector { get; set; }
+        public static Selector<LandTarget> LandTargetSelector { get; set; }
+        public static Selector<IPoint3D> LandStaticTargetSelector { get; set; }
 
-		static PooledEnumeration()
+        static PooledEnumeration()
 		{
 			ClientSelector = SelectClients;
 			EntitySelector = SelectEntities;
@@ -162,7 +165,10 @@ namespace Server
 			ItemSelector = SelectItems;
 			MultiSelector = SelectMultis;
 			MultiTileSelector = SelectMultiTiles;
-		}
+            StaticTargetSelector = SelectStaticTargets;
+            LandTargetSelector = SelectLandTargets;
+            LandStaticTargetSelector = SelectLandStaticTargets;
+        }
 
 		public static IEnumerable<NetState> SelectClients(Sector s, Rectangle2D bounds)
 		{
@@ -241,7 +247,53 @@ namespace Server
 			}
 		}
 
-		public static Map.PooledEnumerable<NetState> GetClients(Map map, Rectangle2D bounds)
+        public static IEnumerable<StaticTarget> SelectStaticTargets(Sector s, Rectangle2D bounds)
+        {
+            Map m = s.Owner;
+            int x, y;
+            for (x = bounds.Start.X; x < bounds.End.X; x++)
+            {
+                for (y = bounds.Start.Y; y < bounds.End.Y; y++)
+                {
+                    foreach (StaticTile o in m.Tiles.GetStaticTiles(x, y, false))
+                    {
+                        yield return o.ToStaticTarget(m, x, y);
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<LandTarget> SelectLandTargets(Sector s, Rectangle2D bounds)
+        {
+            Map m = s.Owner;
+            int x, y;
+            for (x = bounds.Start.X; x < bounds.End.X; x++)
+            {
+                for (y = bounds.Start.Y; y < bounds.End.Y; y++)
+                {
+                    yield return m.Tiles.GetLandTile(x, y).ToLandTarget(m, x, y);
+                }
+            }
+        }
+
+        public static IEnumerable<IPoint3D> SelectLandStaticTargets(Sector s, Rectangle2D bounds)
+        {
+            Map m = s.Owner;
+            int x, y;
+            for (x = bounds.Start.X; x < bounds.End.X; x++)
+            {
+                for (y = bounds.Start.Y; y < bounds.End.Y; y++)
+                {
+                    foreach (StaticTile o in m.Tiles.GetStaticTiles(x, y, false))
+                    {
+                        yield return o.ToStaticTarget(m, x, y);
+                    }
+                    yield return m.Tiles.GetLandTile(x, y).ToLandTarget(m, x, y);
+                }
+            }
+        }
+
+        public static Map.PooledEnumerable<NetState> GetClients(Map map, Rectangle2D bounds)
 		{
 			return Map.PooledEnumerable<NetState>.Instantiate(map, bounds, ClientSelector ?? SelectClients);
 		}
@@ -271,7 +323,22 @@ namespace Server
 			return Map.PooledEnumerable<StaticTile[]>.Instantiate(map, bounds, MultiTileSelector ?? SelectMultiTiles);
 		}
 
-		public static IEnumerable<Sector> EnumerateSectors(Map map, Rectangle2D bounds)
+        public static Map.PooledEnumerable<StaticTarget> GetStaticTargets(Map map, Rectangle2D bounds)
+        {
+            return Map.PooledEnumerable<StaticTarget>.Instantiate(map, bounds, StaticTargetSelector ?? SelectStaticTargets);
+        }
+
+        public static Map.PooledEnumerable<LandTarget> GetLandTargets(Map map, Rectangle2D bounds)
+        {
+            return Map.PooledEnumerable<LandTarget>.Instantiate(map, bounds, LandTargetSelector ?? SelectLandTargets);
+        }
+
+        public static Map.PooledEnumerable<IPoint3D> GetLandStaticTargets(Map map, Rectangle2D bounds)
+        {
+            return Map.PooledEnumerable<IPoint3D>.Instantiate(map, bounds, LandStaticTargetSelector ?? SelectLandStaticTargets);
+        }
+
+        public static IEnumerable<Sector> EnumerateSectors(Map map, Rectangle2D bounds)
 		{
 			if (map == null || map == Map.Internal)
 			{
@@ -690,9 +757,24 @@ namespace Server
 		{
 			return PooledEnumeration.GetMultiTiles(this, new Rectangle2D(x, y, 1, 1));
 		}
+
+        public IPooledEnumerable<StaticTarget> GetStaticTargetsInBounds(Rectangle2D bounds)
+        {
+            return PooledEnumeration.GetStaticTargets(this, bounds);
+        }
+
+        public IPooledEnumerable<LandTarget> GetLandTargetsInBounds(Rectangle2D bounds)
+        {
+            return PooledEnumeration.GetLandTargets(this, bounds);
+        }
+
+        public IPooledEnumerable<IPoint3D> GetLandStaticTargetsInBounds(Rectangle2D bounds)
+        {
+            return PooledEnumeration.GetLandStaticTargets(this, bounds);
+        }
 #else
 
-		#region Get*InRange/Bounds
+        #region Get*InRange/Bounds
 		public IPooledEnumerable<IEntity> GetObjectsInRange(Point3D p)
 		{
 #if Map_UseMaxRange || Map_AllUpdates
@@ -816,7 +898,7 @@ namespace Server
 
 			return PooledEnumerable<Mobile>.Instantiate(MobileEnumerator.Instantiate(this, bounds));
 		}
-		#endregion
+        #endregion
 
 		public IPooledEnumerable<StaticTile[]> GetMultiTilesAt(int x, int y)
 		{
@@ -836,8 +918,8 @@ namespace Server
 		}
 #endif
 
-		#region CanFit
-		public bool CanFit(Point3D p, int height, bool checkBlocksFit)
+        #region CanFit
+        public bool CanFit(Point3D p, int height, bool checkBlocksFit)
 		{
 			return CanFit(p.m_X, p.m_Y, p.m_Z, height, checkBlocksFit, true, true);
 		}
@@ -1748,7 +1830,17 @@ namespace Server
 			}
 		}
 
-		public int MapID { get { return m_MapID; } }
+        public void ChangeMatrix(TileMatrix newmatrix, bool staticsonly)
+        {
+            int width = m_Width;
+            int height = m_Height;
+            if (newmatrix != null && newmatrix.Width == width && newmatrix.Height == height)
+            {
+                m_Tiles.SetNewMatrix(newmatrix, staticsonly);
+            }
+        }
+
+        public int MapID { get { return m_MapID; } }
 
 		public int MapIndex { get { return m_MapIndex; } }
 

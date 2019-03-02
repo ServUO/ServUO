@@ -638,7 +638,7 @@ namespace Server.Engines.Harvest
 
                             if (definition.Validate(id))
                             {
-                                toHarvest = new StaticTarget(new Point3D(x, y, tile.Z), tile.ID);
+                                toHarvest = new StaticTarget(m.Map, new Point3D(x, y, tile.Z), tile.ID);
                                 return true;
                             }
                         }

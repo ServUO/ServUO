@@ -42,21 +42,43 @@ namespace Server.Commands.Generic
 
                 Extensions ext = Extensions.Parse(from, ref args);
 
-                bool items, mobiles;
+                bool items, mobiles, statics, lands;
 
-                if (!this.CheckObjectTypes(from, command, ext, out items, out mobiles))
+                if (!CheckObjectTypes(from, command, ext, out items, out mobiles, out statics, out lands))
+                {
                     return;
+                }
 
                 IPooledEnumerable eable;
 
                 if (items && mobiles)
+                {
                     eable = map.GetObjectsInBounds(rect);
+                }
                 else if (items)
+                {
                     eable = map.GetItemsInBounds(rect);
+                }
                 else if (mobiles)
+                {
                     eable = map.GetMobilesInBounds(rect);
+                }
+                else if (statics && lands)
+                {
+                    eable = map.GetLandStaticTargetsInBounds(rect);
+                }
+                else if (statics)
+                {
+                    eable = map.GetStaticTargetsInBounds(rect);
+                }
+                else if (lands)
+                {
+                    eable = map.GetLandTargetsInBounds(rect);
+                }
                 else
+                {
                     return;
+                }
 
                 ArrayList objs = new ArrayList();
 

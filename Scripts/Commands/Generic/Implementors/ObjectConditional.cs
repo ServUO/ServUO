@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Targeting;
 
 namespace Server.Commands.Generic
 {
@@ -7,6 +8,8 @@ namespace Server.Commands.Generic
     {
         private static readonly Type typeofItem = typeof(Item);
         private static readonly Type typeofMobile = typeof(Mobile);
+        private static readonly Type typeofStatic = typeof(StaticTarget);
+        private static readonly Type typeofLand = typeof(LandTarget);
 
         private readonly Type m_ObjectType;
 
@@ -35,6 +38,22 @@ namespace Server.Commands.Generic
             get
             {
                 return (this.m_ObjectType == null || this.m_ObjectType == typeofMobile || this.m_ObjectType.IsSubclassOf(typeofMobile));
+            }
+        }
+
+        public bool IsStatic
+        {
+            get
+            {
+                return (m_ObjectType == null || m_ObjectType == typeofStatic || m_ObjectType.IsSubclassOf(typeofStatic));
+            }
+        }
+
+        public bool IsLand
+        {
+            get
+            {
+                return (m_ObjectType == null || m_ObjectType == typeofLand || m_ObjectType.IsSubclassOf(typeofLand));
             }
         }
 

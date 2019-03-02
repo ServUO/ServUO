@@ -1316,7 +1316,7 @@ namespace Server.Network
 									}
 									else
 									{
-										toTarget = new StaticTarget(new Point3D(x, y, z), graphic);
+										toTarget = new StaticTarget(map, new Point3D(x, y, z), graphic);
 									}
 								}
 							}
