@@ -176,31 +176,36 @@ namespace Server.Gumps
 
                 AddHtmlLocalized(235, 350, 100, 17, 1062300, LabelColor, false, false); // New Value:
 
-                if (m_Mod == 41)                                     // - Mage Weapon Value ( i.e [Mage Weapon -25] )
+                if (m_Mod == 41)                                                    // - Mage Weapon Value ( i.e [Mage Weapon -25] )
+                {
                     AddLabel(250, 370, IceHue, String.Format("-{0}", 30 - m_Value));
-                else if (maxInt <= 8 || m_Mod == 21 || m_Mod == 17)  // - Show Property Value as just Number ( i.e [Mana Regen 2] )
-                    AddLabel(256, 370, IceHue, String.Format("{0}", m_Value));
-                else                                                 // - Show Property Value as % ( i.e [Hit Fireball 25%] )
+                }
+                else if (maxInt <= 8 || m_Mod == 21 || m_Mod == 17)                 // - Show Property Value as just Number ( i.e [Mana Regen 2] )
+                {
+                    AddLabel(256, 370, IceHue, String.Format("{0}", m_Value));      // - Show Property Value as % ( i.e [Hit Fireball 25%] )
+                }
+                else
                 {
                     int val = m_Value;
 
-                    if (m_Mod >= 51 && m_Mod <= 55 && item is BaseArmor)
+                    if (m_Mod >= 51 && m_Mod <= 55)
                     {
-                        var armor = (BaseArmor)item;
+                        var resistances = Imbuing.GetBaseResists(item);
+
                         switch (m_Mod)
                         {
-                            case 51: val += armor.BasePhysicalResistance; break;
-                            case 52: val += armor.BaseFireResistance; break;
-                            case 53: val += armor.BaseColdResistance; break;
-                            case 54: val += armor.BasePoisonResistance; break;
-                            case 55: val += armor.BaseEnergyResistance; break;
+                            case 51: val += resistances[0]; break;
+                            case 52: val += resistances[1]; break;
+                            case 53: val += resistances[2]; break;
+                            case 54: val += resistances[3]; break;
+                            case 55: val += resistances[4]; break;
                         }
                     }
-                    
+
                     AddLabel(256, 370, IceHue, String.Format("{0}%", val));
                 }
 
-                // Buttons \\
+                // Buttons
                 AddButton(179, 372, 0x1464, 0x1464, 10053, GumpButtonType.Reply, 0);
                 AddButton(187, 372, 0x1466, 0x1466, 10053, GumpButtonType.Reply, 0);
 

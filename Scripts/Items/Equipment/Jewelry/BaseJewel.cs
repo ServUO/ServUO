@@ -315,6 +315,18 @@ namespace Server.Items
             get { return m_GorgonLenseType; }
             set { m_GorgonLenseType = value; InvalidateProperties(); }
         }
+
+        public virtual int[] BaseResists
+        {
+            get
+            {
+                return new int[] { 0, 0, 0, 0, 0 };
+            }
+        }
+
+        public virtual void OnAfterImbued(Mobile m, int mod, int value)
+        {
+        }
         #endregion
 
         #region Runic Reforging

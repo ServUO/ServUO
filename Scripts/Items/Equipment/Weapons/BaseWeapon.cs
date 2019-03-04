@@ -755,6 +755,18 @@ namespace Server.Items
             get { return m_DImodded; }
             set { m_DImodded = value; }
         }
+
+        public int[] BaseResists
+        {
+            get
+            {
+                return new int[] { 0, 0, 0, 0, 0 };
+            }
+        }
+
+        public virtual void OnAfterImbued(Mobile m, int mod, int value)
+        {
+        }
         #endregion
 
         #region High Seas

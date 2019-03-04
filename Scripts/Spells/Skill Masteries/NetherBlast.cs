@@ -69,6 +69,8 @@ namespace Server.Spells.SkillMasteries
             {
                 IPoint3D p = o as IPoint3D;
 
+                SpellHelper.Turn(Caster, p);
+
                 if (SpellHelper.CheckTown(Caster, Caster) && CheckSequence())
                 {
                     double skill = ((Caster.Skills[CastSkill].Value * 2) + Caster.Skills[DamageSkill].Value) / 3;
@@ -83,10 +85,11 @@ namespace Server.Spells.SkillMasteries
                             {
                                 int x = loc.X;
                                 int y = loc.Y;
+                                int z = loc.Z;
 
                                 Movement.Movement.Offset(d, ref x, ref y);
 
-                                loc = new Point3D(x, y, Caster.Map.GetAverageZ(x, y));
+                                loc = new Point3D(x, y, z);
 
                                 bool canFit = SpellHelper.AdjustField(ref loc, Caster.Map, 12, false);
 

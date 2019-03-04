@@ -206,11 +206,15 @@ namespace Server.SkillHandlers
 
         private static bool IsSpecialImbuable(Item item)
         {
-            foreach (Type type in _SpecialImbuable)
-                if (item.GetType() == type)
-                    return true;
+            return IsSpecialImbuable(item.GetType());
+        }
 
-            if (item is BaseGlovesOfMining)
+        private static bool IsSpecialImbuable(Type type)
+        {
+            if (_SpecialImbuable.Any(i => i.GetType() == type))
+                return true;
+
+            if (type.IsSubclassOf(typeof(BaseGlovesOfMining)) || typeof(IFishingAttire).IsAssignableFrom(type))
                 return true;
 
             return false;
@@ -218,7 +222,10 @@ namespace Server.SkillHandlers
 
          private static Type[] _SpecialImbuable =
         {
-            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings), typeof(OrcishKinMask), typeof(SavageMask), typeof(VirtuososArmbands), typeof(VirtuososCap), typeof(VirtuososCollar), typeof(VirtuososEarpieces), typeof(VirtuososKidGloves), typeof(VirtuososKilt), typeof(VirtuososNecklace), typeof(VirtuososTunic), typeof(BestialArms), typeof(BestialEarrings), typeof(BestialGloves), typeof(BestialGorget), typeof(BestialHelm), typeof(BestialKilt), typeof(BestialLegs), typeof(BestialNecklace),  typeof(FishermansHat), typeof(FishermansTrousers), typeof(FishermansVest), typeof(FishermansEelskinGloves), typeof(FishermansChestguard), typeof(FishermansKilt), typeof(FishermansArms), typeof (FishermansEarrings)
+            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings), typeof(OrcishKinMask), typeof(SavageMask), typeof(VirtuososArmbands), 
+            typeof(VirtuososCap), typeof(VirtuososCollar), typeof(VirtuososEarpieces), typeof(VirtuososKidGloves), typeof(VirtuososKilt), 
+            typeof(VirtuososNecklace), typeof(VirtuososTunic), typeof(BestialArms), typeof(BestialEarrings), typeof(BestialGloves), typeof(BestialGorget),
+            typeof(BestialHelm), typeof(BestialKilt), typeof(BestialLegs), typeof(BestialNecklace)
         };
 
         private static Type[] _NonCraftables =
@@ -662,6 +669,11 @@ namespace Server.SkillHandlers
                 {
                     wepAttrs.SelfRepair = 0;
                 }
+            }
+
+            if (i is IImbuableEquipement)
+            {
+                ((IImbuableEquipement)i).OnAfterImbued(from, mod, value);
             }
 
             i.InvalidateProperties();
@@ -1395,6 +1407,30 @@ namespace Server.SkillHandlers
             return (int)weight;
         }
 
+        public static int[] GetBaseResists(Item item)
+        {
+            int[] resists;
+
+            // Special items base resist don't count as a property or weight. Once that resist is imbued, 
+            // it then uses the base class resistance as the base resistance. EA is stupid.
+            if (item is IImbuableEquipement && IsSpecialImbuable(item))
+            {
+                resists = ((IImbuableEquipement)item).BaseResists;
+            }
+            else
+            {
+                resists = new int[5];
+
+                resists[0] = GetBaseResistBonus(item, AosElementAttribute.Physical);
+                resists[1] = GetBaseResistBonus(item, AosElementAttribute.Fire);
+                resists[2] = GetBaseResistBonus(item, AosElementAttribute.Cold);
+                resists[3] = GetBaseResistBonus(item, AosElementAttribute.Poison);
+                resists[4] = GetBaseResistBonus(item, AosElementAttribute.Energy);
+            }
+
+            return resists;
+        }
+
         private static int GetBaseResistBonus(Item item, AosElementAttribute resist)
         {
             switch (resist)
@@ -1454,8 +1490,19 @@ namespace Server.SkillHandlers
             return 0;
         }
 
+        /// <summary>
+        /// This is for special items such as artifacts, if you ever so chose to imbue them on your server. Without
+        /// massive edits, this should never come back as true.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private static bool IsDerivedArmorOrClothing(Type type)
         {
+            if (IsSpecialImbuable(type))
+            {
+                return false;
+            }
+
             return (type.IsSubclassOf(typeof(BaseClothing)) || type.IsSubclassOf(typeof(BaseArmor))) &&
                 type != typeof(BaseHat) &&
                 type != typeof(BaseShield) &&
