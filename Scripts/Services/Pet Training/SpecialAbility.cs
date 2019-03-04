@@ -1039,7 +1039,6 @@ namespace Server.Mobiles
 		{
             defender.SendLocalizedMessage(1070844); // The creature repels the attack back at you.
             defender.FixedEffect(0x37B9, 10, 5);
-            creature.Say("I AM REPELING");
             AOS.Damage(defender, creature, damage / 2, 0, 0, 0, 0, 0, 0, 100);
 
             damage = 0;
