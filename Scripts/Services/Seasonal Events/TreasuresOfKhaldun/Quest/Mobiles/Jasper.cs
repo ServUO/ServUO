@@ -70,7 +70,7 @@ namespace Server.Engines.Khaldun
                     quest.Objectives[0].CurProgress++;
                     quest.GiveRewards();
 
-                    BaseQuest newquest = QuestHelper.RandomQuest((PlayerMobile)m, Quests, this);
+                    BaseQuest newquest = QuestHelper.RandomQuest((PlayerMobile)m, new Type[] { typeof(GoingGumshoeQuest2) }, this);
 
                     if (newquest != null)
                         m.SendGump(new MondainQuestGump(newquest));
