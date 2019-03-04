@@ -4771,7 +4771,6 @@ namespace Server
 
 			oldItem.Amount = amount;
 			oldItem.OnAfterDuped(item);
-            //item.GridLocation = oldItem.GridLocation;
 
 			if (oldItem.Parent is Mobile)
 			{

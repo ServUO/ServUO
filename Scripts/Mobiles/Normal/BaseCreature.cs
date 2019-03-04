@@ -3613,10 +3613,16 @@ namespace Server.Mobiles
 
 	        bool gainedPath = false;
 
-	        if (dropped.HonestyOwner == this)
-		        VirtueHelper.Award(from, VirtueName.Honesty, 120, ref gainedPath);
-	        else
-		        return false;
+            var honestySocket = dropped.GetSocket<HonestyItemSocket>();
+
+            if (honestySocket != null && honestySocket.HonestyOwner == this)
+            {
+                VirtueHelper.Award(from, VirtueName.Honesty, 120, ref gainedPath);
+            }
+            else
+            {
+                return false;
+            }
 
 	        from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
 	        SayTo(from, 1074582); //Ah!  You found my property.  Thank you for your honesty in returning it to me.
@@ -3907,6 +3913,11 @@ namespace Server.Mobiles
                     {
                         ns.Send(new PetWindow(pm, this));
                     }
+
+                    if (KhaldunTastyTreat.UnderInfluence(this))
+                    {
+                        Caddellite.UpdateBuff(m_ControlMaster);
+                    }
                 }
             }
             else if (m_SummonMaster != null)
@@ -3945,6 +3956,11 @@ namespace Server.Mobiles
                     if (ns != null && ns.IsEnhancedClient && Commandable)
                     {
                         ns.Send(new PetWindow((PlayerMobile)m_ControlMaster, this));
+                    }
+
+                    if (KhaldunTastyTreat.UnderInfluence(this))
+                    {
+                        Caddellite.UpdateBuff(m_ControlMaster);
                     }
                 }
             }
@@ -6677,11 +6693,13 @@ namespace Server.Mobiles
                             }
                         }
 
+                        OnKilledBy(ds.m_Mobile);
+
+                        // TODO: Move this to XmlQuest.cs OnKilledBy Event Handler
                         if (HumilityVirtue.IsInHunt(ds.m_Mobile) && Karma < 0)
                             HumilityVirtue.RegisterKill(ds.m_Mobile, this, list.Count);
 
-                        OnKilledBy(ds.m_Mobile);
-
+                        // TODO: Move this to XmlQuest.cs OnKilledBy Event Handler
                         XmlQuest.RegisterKill(this, ds.m_Mobile);
 
                         if (!givenFactionKill)
@@ -6692,30 +6710,30 @@ namespace Server.Mobiles
 
                         Region region = ds.m_Mobile.Region;
 
-                        if (!givenToTKill &&
-                            (Map == Map.Tokuno || region.IsPartOf("Yomotsu Mines") || region.IsPartOf("Fan Dancer's Dojo")))
+                        if (!givenToTKill && TreasuresOfTokuno.HandleKill(this, ds.m_Mobile))
                         {
                             givenToTKill = true;
-                            TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
                         }
-                        if (!givenVASKill &&
-                            (Map == Map.Felucca || region.IsPartOf("Covetous") || region.IsPartOf("Deceit") || region.IsPartOf("Despise")
-                            || region.IsPartOf("Destard") || region.IsPartOf("Hythloth") || region.IsPartOf("Shame") || region.IsPartOf("Wrong")))
+
+                        if (!givenVASKill && VirtueArtifactsSystem.HandleKill(this, ds.m_Mobile))
                         {
                             givenVASKill = true;
-                            VirtueArtifactsSystem.HandleKill(this, ds.m_Mobile);
                         }
+
+                        // TODO: Move this to DemonKnight.cs OnKilledBy Event Handler
                         if (region.IsPartOf("Doom Gauntlet") || region.Name == "GauntletRegion")
                         {
                             DemonKnight.HandleKill(this, ds.m_Mobile);
                         }
 
+                        // TODO: Move this to PointsSystem.cs OnKilledBy Event Handler
                         Server.Engines.Points.PointsSystem.HandleKill(this, ds.m_Mobile, i);
 
                         PlayerMobile pm = ds.m_Mobile as PlayerMobile;
 
                         if (pm != null)
                         {
+                            // TODO: Move this to QuestHelper.cs OnKilledBy Event Handler
                             QuestHelper.CheckCreature(pm, this); // This line moved up...
 
                             QuestSystem qs = pm.Quest;

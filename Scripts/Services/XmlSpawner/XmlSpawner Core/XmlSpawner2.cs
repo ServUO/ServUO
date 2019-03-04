@@ -2041,6 +2041,8 @@ namespace Server.Mobiles
 		{
 			// automatically turn off duped spawners
 			((XmlSpawner)newItem).Running = false;
+
+            base.OnAfterDuped(newItem);
 		}
 
 		public override void OnMapChange()

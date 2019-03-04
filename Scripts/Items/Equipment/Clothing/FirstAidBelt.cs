@@ -62,6 +62,8 @@ namespace Server.Items
             {
                 belt.m_Attributes = new AosAttributes(newItem, m_Attributes);
             }
+
+            base.OnAfterDuped(newItem);
         }
 
         public FirstAidBelt(Serial serial)

@@ -20,6 +20,8 @@ namespace Server.Factions
         private DateTime m_TimeOfPlacement;
         private Timer m_Concealing;
 
+        public bool CheckWhenHidden { get { return true; } }
+
         public BaseFactionTrap(Faction f, Mobile m, int itemID)
             : base(itemID)
         {

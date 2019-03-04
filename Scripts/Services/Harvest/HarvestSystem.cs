@@ -203,8 +203,10 @@ namespace Server.Engines.Harvest
                             item.Amount += WoodsmansTalisman.CheckHarvest(from, type, this);
                         }
 
-                        bank.Consume(amount, from);
-						EventSink.InvokeResourceHarvestSuccess(new ResourceHarvestSuccessEventArgs(from, tool,item, this));
+                        if (from.AccessLevel == AccessLevel.Player)
+                        {
+                            bank.Consume(amount, from);
+                        }
 
                         if (Give(from, item, def.PlaceAtFeetIfFull))
                         {
@@ -217,12 +219,13 @@ namespace Server.Engines.Harvest
                         }
 
                         BonusHarvestResource bonus = def.GetBonusResource();
+                        Item bonusItem = null;
 
                         if (bonus != null && bonus.Type != null && skillBase >= bonus.ReqSkill)
                         {
 							if (bonus.RequiredMap == null || bonus.RequiredMap == from.Map)
 							{
-								Item bonusItem = Construct(bonus.Type, from, tool);
+							    bonusItem = Construct(bonus.Type, from, tool);
 
 								if (Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
 								{
@@ -234,6 +237,8 @@ namespace Server.Engines.Harvest
 								}
 							}
                         }
+
+                        EventSink.InvokeResourceHarvestSuccess(new ResourceHarvestSuccessEventArgs(from, tool, item, bonusItem, this));
                     }
 
                     #region High Seas

@@ -2307,7 +2307,6 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((ushort)item.Amount);
 			m_Stream.Write((short)item.X);
 			m_Stream.Write((short)item.Y);
-            m_Stream.Write((byte)item.GridLocation);
             m_Stream.Write(parentSerial);
 			m_Stream.Write((ushort)(item.QuestItem ? item.QuestItemHue : item.Hue));
 		}

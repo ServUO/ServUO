@@ -454,6 +454,8 @@ namespace Server.Items
             #endregion
 
             jewel.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
+
+            base.OnAfterDuped(newItem);
         }
 
         public virtual int ArtifactRarity
@@ -789,9 +791,9 @@ namespace Server.Items
                 list.Add(1154937); // VvV Item
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddNameProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
+            base.AddNameProperties(list);
 
             if (OwnerName != null)
             {
@@ -968,16 +970,15 @@ namespace Server.Items
             if (m_HitPoints >= 0 && m_MaxHitPoints > 0)
                 list.Add(1060639, "{0}\t{1}", m_HitPoints, m_MaxHitPoints); // durability ~1_val~ / ~2_val~
 
-            EnchantedHotItem.AddProperties(this, list);
-
             if (IsSetItem && !m_SetEquipped)
             {
                 list.Add(1072378); // <br>Only when full set is present:				
                 SetHelper.GetSetProperties(list, this);
             }
+        }
 
-            AddHonestyProperty(list);
-
+        public override void AddItemPowerProperties(ObjectPropertyList list)
+        {
             if (m_ItemPower != ItemPower.None)
             {
                 if (m_ItemPower <= ItemPower.LegendaryArtifact)
@@ -1001,7 +1002,7 @@ namespace Server.Items
         {
             bool drop = base.DropToWorld(from, p);
 
-            EnchantedHotItem.CheckDrop(from, this);
+            EnchantedHotItemSocket.CheckDrop(from, this);
 
             return drop;
         }
