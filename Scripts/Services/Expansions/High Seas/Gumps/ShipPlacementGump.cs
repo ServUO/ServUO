@@ -1,7 +1,5 @@
-﻿using System;
+using System;
 using Server;
-using Server.Mobiles;
-using Server.Items;
 using Server.Targeting;
 using Server.Network;
 using Server.Multis;
@@ -14,26 +12,30 @@ namespace Server.Gumps
         private Item m_Item;
         private Mobile m_From;
 
-        public BoatPlacementGump(Item item, Mobile from) : base(0, 0)
+        public BoatPlacementGump(Item item, Mobile from)
+            : base(0, 0)
         {
             m_From = from;
             m_Item = item;
 
-            AddBackground(0, 0, 220, 180, 9200);
-            AddBackground(10, 10, 200, 160, 3000);
-            AddBackground(20, 20, 180, 80, 3000);
+            AddPage(0);
 
-            AddButton(20, 105, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            AddButton(115, 105, 4005, 4007, 2, GumpButtonType.Reply, 0);
-            AddButton(20, 135, 4005, 4007, 3, GumpButtonType.Reply, 0);
-            AddButton(115, 135, 4005, 4007, 4, GumpButtonType.Reply, 0);
+            AddBackground(0, 0, 220, 170, 0x13BE);
+            AddBackground(10, 10, 200, 150, 0xBB8);
 
-            AddHtmlLocalized(30, 30, 170, 50, 1116329, false, false);
+            AddHtmlLocalized(20, 20, 180, 70, 1116329, true, false); // Select the ship direction for placement.
 
-            AddLabel(55, 105, 0, "WEST");
-            AddLabel(150, 105, 0, "NORTH");
-            AddLabel(55, 135, 0, "SOUTH");
-            AddLabel(150, 135, 0, "EAST");
+            AddHtmlLocalized(55, 100, 50, 25, 1116330, false, false); // WEST
+            AddButton(20, 100, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
+
+            AddHtmlLocalized(150, 100, 50, 25, 1116331, false, false); // NORTH
+            AddButton(115, 100, 0xFA5, 0xFA7, 2, GumpButtonType.Reply, 0);
+
+            AddHtmlLocalized(55, 125, 50, 25, 1116332, false, false); // SOUTH
+            AddButton(20, 125, 0xFA5, 0xFA7, 3, GumpButtonType.Reply, 0);
+
+            AddHtmlLocalized(150, 125, 50, 25, 1116333, false, false); // EAST
+            AddButton(115, 125, 0xFA5, 0xFA7, 4, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)

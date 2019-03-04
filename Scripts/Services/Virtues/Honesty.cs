@@ -76,17 +76,14 @@ namespace Server.Services.Virtues
 			}
 		}
 
-		private static void OnItemCreated(ItemCreatedEventArgs e)
-		{
-			if (e.Item.HonestyItem)
-			{
-				_Items.Add(e.Item);
-			}
-		}
+        public static bool IsHonestyItem(Item item)
+        {
+            return item.HasSocket<HonestyItemSocket>();
+        }
 
 		private static void OnItemDeleted(ItemDeletedEventArgs e)
 		{
-			if (e.Item.HonestyItem)
+            if (IsHonestyItem(e.Item))
 			{
 				_Items.Remove(e.Item);
 			}
@@ -275,7 +272,8 @@ namespace Server.Services.Virtues
 
 							RunicReforging.GenerateRandomItem(item, 0, 100, 1000);
 
-							item.HonestyItem = true;
+                            item.AttachSocket(new HonestyItemSocket());
+                            item.HonestyItem = true;
 
 							_Items.Add(item);
 
@@ -319,24 +317,27 @@ namespace Server.Services.Virtues
 			Utility.PopColor();
 		}
 
-		public static void AssignOwner(Item item)
+		public static void AssignOwner(HonestyItemSocket socket)
 		{
-			item.HonestyRegion = _Regions[Utility.Random(_Regions.Length)];
+            if (socket != null)
+            {
+                socket.HonestyRegion = _Regions[Utility.Random(_Regions.Length)];
 
-			if (!String.IsNullOrWhiteSpace(item.HonestyRegion) && BaseVendor.AllVendors.Count >= 10)
-			{
-				var attempts = BaseVendor.AllVendors.Count / 10;
+                if (!String.IsNullOrWhiteSpace(socket.HonestyRegion) && BaseVendor.AllVendors.Count >= 10)
+                {
+                    var attempts = BaseVendor.AllVendors.Count / 10;
 
-				BaseVendor m;
+                    BaseVendor m;
 
-				do
-				{
-					m = BaseVendor.AllVendors[Utility.Random(BaseVendor.AllVendors.Count)];
-				}
-				while ((m == null || m.Map != item.Map || !m.Region.IsPartOf(item.HonestyRegion)) && --attempts >= 0);
+                    do
+                    {
+                        m = BaseVendor.AllVendors[Utility.Random(BaseVendor.AllVendors.Count)];
+                    }
+                    while ((m == null || m.Map != socket.Owner.Map || !m.Region.IsPartOf(socket.HonestyRegion)) && --attempts >= 0);
 
-				item.HonestyOwner = m;
-			}
+                    socket.HonestyOwner = m;
+                }
+            }
 		}
 
 		private static void CheckChests()
@@ -419,8 +420,9 @@ namespace Server.Services.Virtues
 			var reg = Region.Find(Location, Map);
 
 			var gainedPath = false;
+            var honestySocket = item.GetSocket<HonestyItemSocket>();
 
-			if (item.HonestyRegion == reg.Name)
+            if (honestySocket != null && honestySocket.HonestyRegion == reg.Name)
 			{
 				VirtueHelper.Award(from, VirtueName.Honesty, 60, ref gainedPath);
 			}

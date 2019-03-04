@@ -62,6 +62,22 @@ namespace Server.Commands
             }
         }
 
+        public static void GenerateFromFile(string keyName, string path, params Map[] maps)
+        {
+            m_Key = keyName;
+
+            if (!File.Exists(path))
+                return;
+
+            ArrayList list = DecorationList.ReadAll(path);
+            int count = 0;
+
+            for (int j = 0; j < list.Count; ++j)
+                count += ((DecorationList)list[j]).Generate(maps);
+
+            Console.WriteLine("Generated decoration from {0} complete, including {1} items!", path, count);
+        }
+
         #region Mondain's Legacy
         public static Item FindByID(int id)
         {

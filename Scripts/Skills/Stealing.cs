@@ -16,12 +16,16 @@ using Server.Engines.VvV;
 
 namespace Server.SkillHandlers
 {
+    public delegate void ItemStolenEventHandler(ItemStolenEventArgs e);
+
 	public class Stealing
 	{
 		public static void Initialize()
 		{
 			SkillInfo.Table[33].Callback = OnUse;
 		}
+
+        public static event ItemStolenEventHandler ItemStolen;
 
 		public static readonly bool ClassicMode = false;
 		public static readonly bool SuspendOnMurder = false;
@@ -369,6 +373,8 @@ namespace Server.SkillHandlers
 							ItemFlags.SetStealable(stolen, false);
 							stolen.Movable = true;
 
+                            InvokeItemStoken(new ItemStolenEventArgs(stolen, m_Thief));
+
 							if (si != null)
 							{
 								toSteal.Movable = true;
@@ -519,6 +525,14 @@ namespace Server.SkillHandlers
 
 			return TimeSpan.FromSeconds(10.0);
 		}
+
+        public static void InvokeItemStoken(ItemStolenEventArgs e)
+        {
+            if (ItemStolen != null)
+            {
+                ItemStolen(e);
+            }
+        }
 	}
 
 	public class StolenItem
@@ -617,4 +631,16 @@ namespace Server.SkillHandlers
 			}
 		}
 	}
+
+    public class ItemStolenEventArgs : EventArgs
+    {
+        public Item Item { get; set; }
+        public Mobile Mobile { get; set; }
+
+        public ItemStolenEventArgs(Item item, Mobile thief)
+        {
+            Mobile = thief;
+            Item = item;
+        }
+    }
 }

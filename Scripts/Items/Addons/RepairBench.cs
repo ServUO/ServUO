@@ -188,7 +188,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            writer.Write((int)Level);
 
             writer.Write((bool)IsRewardItem);
 
@@ -209,6 +211,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version != 0)
+                Level = (SecureLevel)reader.ReadInt();
 
             IsRewardItem = reader.ReadBool();
 
@@ -557,7 +562,7 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (m_Addon == null && m_Addon.Deleted)
+                if (m_Addon == null || m_Addon.Deleted)
                 {
                     return;
                 }

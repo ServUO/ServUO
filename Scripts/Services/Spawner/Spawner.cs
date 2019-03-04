@@ -228,6 +228,8 @@ namespace Server.Mobiles
                 return;
 
             s.m_SpawnObjects = new List<SpawnObject>(m_SpawnObjects);
+
+            base.OnAfterDuped(newItem);
         }
 
         public override void OnDoubleClick(Mobile from)

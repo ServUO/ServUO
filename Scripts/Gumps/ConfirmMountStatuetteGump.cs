@@ -1,5 +1,6 @@
 using System;
 using Server.Mobiles;
+using Server.Network;
 
 namespace Server.Gumps
 {
@@ -20,11 +21,11 @@ namespace Server.Gumps
             if (m_Item == null || m_Item.Deleted)
                 return;
 
-            BaseMount m = null;
+            BaseCreature m = null;
 
-            if (m_Item is IMountStatuette)
+            if (m_Item is ICreatureStatuette)
             {
-                m = Activator.CreateInstance(((IMountStatuette)m_Item).MountType) as BaseMount;
+                m = Activator.CreateInstance(((ICreatureStatuette)m_Item).CreatureType) as BaseCreature;
             }
 
             if (m != null)
@@ -37,9 +38,16 @@ namespace Server.Gumps
                 else
                 {
                     m.SetControlMaster(from);
-                    m.IsBonded = true;
+                    
+                    m.IsBonded = true;                    
                     m.MoveToWorld(from.Location, from.Map);
                     m_Item.Delete();
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                    {
+                        m.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502799, from.NetState); // It seems to accept you as master.
+                        from.SendLocalizedMessage(1049666); // Your pet has bonded with you!
+                    });
                 }
             }
         }
@@ -48,8 +56,8 @@ namespace Server.Gumps
 
 namespace Server.Mobiles
 {
-    public interface IMountStatuette
+    public interface ICreatureStatuette
     {
-        Type MountType { get; }
+        Type CreatureType { get; }
     }
 }

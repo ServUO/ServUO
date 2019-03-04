@@ -67,6 +67,7 @@ namespace Server.SkillHandlers
                         targ.TrapPower = 0;
                         targ.TrapLevel = 0;
                         targ.TrapType = Server.Items.TrapType.None;
+                        targ.InvalidateProperties();
                         from.SendLocalizedMessage(502377); // You successfully render the trap harmless
                     }
                     else

@@ -7,6 +7,11 @@ using Server.Targeting;
 
 namespace Server.SkillHandlers
 {
+    public interface IForensicTarget
+    {
+        void OnForensicEval(Mobile m);
+    }
+
     public class ForensicEvaluation
     {
         public static void Initialize()
@@ -36,14 +41,14 @@ namespace Server.SkillHandlers
                 double skill = from.Skills[SkillName.Forensics].Value;
                 double minSkill = 30.0;
 
-                if (skill < minSkill)
-                {
-                    from.SendLocalizedMessage(501003); //You notice nothing unusual.
-                    return;
-                }
-
                 if (target is Corpse)
                 {
+                    if (skill < minSkill)
+                    {
+                        from.SendLocalizedMessage(501003); //You notice nothing unusual.
+                        return;
+                    }
+
                     if (from.CheckTargetSkill(SkillName.Forensics, target, minSkill, 55.0))
                     {
                         Corpse c = (Corpse)target;
@@ -128,26 +133,32 @@ namespace Server.SkillHandlers
                 }
                 else if (Core.SA && target is Item)
                 {
-                    if (skill < 41.0)
+                    Item item = (Item)target;
+
+                    if (item is IForensicTarget)
+                    {
+                        ((IForensicTarget)item).OnForensicEval(from);
+                    }
+                    else  if (skill < 41.0)
                     {
                         from.SendLocalizedMessage(501001);//You cannot determain anything useful.
                         return;
                     }
 
-                    Item item = (Item)target;
+                    var honestySocket = item.GetSocket<HonestyItemSocket>();
 
-                    if (item.HonestyItem)
+                    if (honestySocket != null)
                     {
-                        if (item.HonestyOwner == null)
-                            Server.Services.Virtues.HonestyVirtue.AssignOwner(item);
+                        if (honestySocket.HonestyOwner == null)
+                            Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
 
                         if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
                         {
-                            string region = item.HonestyRegion == null ? "an unknown place" : item.HonestyRegion;
+                            string region = honestySocket.HonestyRegion == null ? "an unknown place" : honestySocket.HonestyRegion;
 
                             if (from.Skills.Forensics.Value >= 61.0)
                             {
-                                from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", item.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
+                                from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", honestySocket.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
                             }
                             else
                             {

@@ -1365,8 +1365,6 @@ namespace Server.Mobiles
                 }
             }
 
-            Console.WriteLine("Adjust Value: {0}; Adjust StartValue: {0}", Value, StartValue);
-
             cost = PetTrainingHelper.GetTotalCost(TrainingPoint, Creature, Value, StartValue);
             int avail = profile.TrainingPoints - cost;
 

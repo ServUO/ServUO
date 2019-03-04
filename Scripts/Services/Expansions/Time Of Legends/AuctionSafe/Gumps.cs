@@ -2,34 +2,33 @@ using Server;
 using System;
 using Server.Mobiles;
 using Server.Items;
-using Server.Multis;
-using System.Collections.Generic;
 using Server.Gumps;
 using Server.Accounting;
 using Server.Targeting;
 using System.Globalization;
 using Server.Network;
+using System.Linq;
 
 namespace Server.Engines.Auction
 {
     public class BaseAuctionGump : Gump
     {
-        public const int Blue = 0x1E90FF;
-        public const int Yellow = 0xFFE0;
-        public const int White = 0xFFFF;
-        public const int Gray = 0x696969;
+        public const int Blue = 0x1FF;
+        public const int Yellow = 0x6B45;
+        public const int White = 0x7FFF;
+        public const int Gray = 0x4E73;
+        public const string HGray = "BFBFBF";
 
-        public const int Length = 450;
+        public const int Length = 400;
         public const int Height = 600;
 
         public AuctionSafe Safe { get; set; }
         public bool Owner { get; set; }
         public PlayerMobile User { get; set; }
-
         public Auction Auction { get; set; }
 
         public BaseAuctionGump(PlayerMobile p, AuctionSafe safe)
-            : base(50, 100)
+            : base(100, 100)
         {
             Safe = safe;
             Auction = safe.Auction;
@@ -44,13 +43,8 @@ namespace Server.Engines.Auction
             Entries.TrimExcess();
             AddGumpLayout();
 
-            User.CloseGump(this.GetType());
+            User.CloseGump(GetType());
             User.SendGump(this, false);
-        }
-
-        public int C32216(int value)
-        {
-            return Server.Engines.Quests.BaseQuestGump.C32216(value);
         }
 
         public string Color(string color, string str)
@@ -60,24 +54,26 @@ namespace Server.Engines.Auction
 
         public virtual void AddGumpLayout()
         {
+            AddPage(0);
+
             AddBackground(0, 0, Length, Height, 39925);
 
-            AddHtmlLocalized(0, 20, 400, 16, 1154645, "#1156371", White, false, false); // <center>~1_val~</center> : Auction Safe
-            AddHtmlLocalized(0, 50, 400, 16, 1154645, Owner ? "#1150328" : "#1156442", C32216(Blue), false, false); // OWNER MENU : BIDDER MENU
+            AddHtmlLocalized(15, 25, 360, 18, 1114513, "#1156371", White, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
+            AddHtmlLocalized(15, 52, 360, 18, 1114513, Owner ? "#1150328" : "#1156442", Blue, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
 
-            AddHtmlLocalized(80, 80, 150, 16, 3000098, Yellow, false, false); // Information
-            AddButton(40, 80, 4005, 4007, 100, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(80, 88, 110, 22, 3000098, Yellow, false, false); // Information
+            AddButton(40, 88, 4005, 4007, 100, GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(280, 80, 150, 16, 3010004, Yellow, false, false); // History
-            AddButton(240, 80, 4005, 4007, 101, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(265, 88, 110, 22, 3010004, Yellow, false, false); // History
+            AddButton(225, 88, 4005, 4007, 101, GumpButtonType.Reply, 0);
 
             Account acct = User.Account as Account;
 
-            AddHtmlLocalized(0, 110, (Length / 2) - 3, 16, 1114514, "#1156044", Yellow, false, false); // Total Gold:
-            AddLabel((Length / 2) + 3, 110, 1153, acct != null ? acct.TotalGold.ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "0");
+            AddHtmlLocalized(15, 117, 175, 18, 1114514, "#1156044", Yellow, false, false); // Total Gold:
+            AddHtml(200, 117, 175, 18, Color(HGray, acct != null ? acct.TotalGold.ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "0"), false, false);
 
-            AddHtmlLocalized(0, 130, (Length / 2) - 3, 16, 1114514, "#1156045", Yellow, false, false); // Total Platinum:
-            AddLabel((Length / 2) + 3, 130, 1153, acct != null ? acct.TotalPlat.ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "0");
+            AddHtmlLocalized(15, 137, 175, 18, 1114514, "#1156045", Yellow, false, false); // Total Platinum:
+            AddHtml(200, 137, 175, 18, Color(HGray, acct != null ? acct.TotalPlat.ToString("N0", CultureInfo.GetCultureInfo("en-US")) : "0"), false, false);
 
             if (Auction != null)
                 Auction.AddViewer(User);
@@ -88,8 +84,8 @@ namespace Server.Engines.Auction
             switch (info.ButtonID)
             {
                 case 0: break;
-                case 100: User.SendGump(new AuctionInfoGump(User)); break;
-                case 101: User.SendGump(new BidHistoryGump(User, Auction)); break;
+                case 100: Refresh(); User.SendGump(new AuctionInfoGump(User)); break;
+                case 101: Refresh(); User.SendGump(new BidHistoryGump(User, Auction)); break;
             }
 
             if (Auction != null)
@@ -120,136 +116,232 @@ namespace Server.Engines.Auction
             if (Auction == null)
             {
                 if (Safe.Auction != null)
-                    this.Auction = Safe.Auction;
+                    Auction = Safe.Auction;
                 else
-                    Safe.Auction = this.Auction = new Auction(User, Safe);
+                    Safe.Auction = Auction = new Auction(User, Safe);
             }
 
-            int y = 160;
+            int y = 166;
 
             // Add Auction Item
-            AddHtmlLocalized((Length / 2) + 3, y, 200, 16, 1156421, Yellow, false, false); // Select New Auction Item
-            AddButton((Length / 2) - 33, y, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(200, y, 175, 22, 1156421, Yellow, false, false); // Select New Auction Item
+            AddButton(160, y, 4005, 4007, 1, GumpButtonType.Reply, 0);
 
-            y += 25;
+            y += 24;
 
             // Description
-            AddHtmlLocalized(0, y, (Length / 2) - 3, 16, 1114514, "#1156400", Yellow, false, false); // Description:
-            AddButton(Length - 60, y, 4014, 4016, 2, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(15, y, 175, 110, 1114514, "#1156400", Yellow, false, false); // Description:
+            AddButton(345, y, 4014, 4016, 2, GumpButtonType.Reply, 0);
 
-            AddBackground((Length / 2) + 3, y, 150, 130, 9350);
-            AddTextEntry((Length / 2) + 5, y, 145, 129, 0, 1, Auction.Description);
-
-            y += 25;
+            AddBackground(200, y, 140, 110, 9350);
+            AddTextEntry(202, y + 2, 136, 106, 0, 1, Auction.Description, 140);
 
             // Display Item
             if (Auction.AuctionItem != null)
             {
                 Item i = Auction.AuctionItem;
-                AddImage((Length / 2) - 83, y, 2329);
-                Rectangle2D b = ItemBounds.Table[i.ItemID];
-                AddItem(((Length / 2) - (83 / 2)) - b.Width / 2 - b.X, (y + 60 / 2) - b.Height / 2 - b.Y, i.ItemID, i.Hue);
+                AddImageTiledButton(102, 212, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, i.ItemID, 0x0, 23, 5);
                 AddItemProperty(i.Serial);
             }
 
-            y = 320;
+            y += 112;
 
-            AddHtmlLocalized(0, y, (Length / 2) - 3, 16, 1114514, "#1156404", Yellow, false, false); // Time Remaining:
+            AddHtmlLocalized(15, y, 175, 18, 1114514, "#1156404", Yellow, false, false); // Time Remaining:
 
             if (Auction.HasBegun)
-            {
+            {                
                 TimeSpan left = Auction.EndTime - DateTime.Now;
                 int cliloc;
                 double v;
 
-                if (left.TotalDays >= 7)
+                if (left.TotalSeconds < 0 || Auction.InClaimPeriod)
                 {
-                    cliloc = 1153092; // Lifespan: ~1_val~ weeks
-                    v = left.TotalDays / 7;
-                }
-                else if (left.TotalDays >= 1)
-                {
-                    cliloc = 1153091; // Lifespan: ~1_val~ days
-                    v = left.TotalDays;
-                }
-                else if (left.TotalHours >= 1)
-                {
-                    cliloc = 1153090; // Lifespan: ~1_val~ hours
-                    v = left.TotalHours;
+                    AddHtmlLocalized(200, y, 175, 18, 1114513, "#1156438", Gray, false, false); // Auction Ended
                 }
                 else
                 {
-                    cliloc = 1153089; // Lifespan: ~1_val~ minutes
-                    v = left.TotalMinutes;
-                }
+                    if (left.TotalDays >= 1)
+                    {
+                        cliloc = 1153091; // Lifespan: ~1_val~ days
+                        v = left.TotalDays;
+                    }
+                    else if (left.TotalHours >= 1)
+                    {
+                        cliloc = 1153090; // Lifespan: ~1_val~ hours
+                        v = left.TotalHours;
+                    }
+                    else
+                    {
+                        cliloc = 1153089; // Lifespan: ~1_val~ minutes
+                        v = left.TotalMinutes;
+                    }
 
-                AddHtmlLocalized((Length / 2) + 3, y, 200, 16, cliloc, ((int)v).ToString(), C32216(Gray), false, false);
-            }
+                    AddHtmlLocalized(200, y, 175, 18, cliloc, ((int)v).ToString(), Gray, false, false);
+                }               
+            } 
             else
-                AddHtmlLocalized((Length / 2) + 3, y, 200, 16, 1153091, Auction.Duration.ToString(), C32216(Gray), false, false);
+            {
+                TimeSpan ts = TimeSpan.FromMinutes(Auction.Duration);
+
+                if (ts.TotalMinutes > 60)
+                {
+                    AddHtmlLocalized(200, y, 175, 18, 1153091, String.Format("{0}", ts.TotalDays), Gray, false, false); // Lifespan: ~1_val~ days
+                }
+                else
+                {
+                    AddHtmlLocalized(200, y, 175, 18, 1153089, String.Format("{0}", ts.TotalMinutes), Gray, false, false); // Lifespan: ~1_val~ minutes
+                }
+            }
 
             y += 20;
 
-            AddHtmlLocalized(Length / 2, y, (Length / 2) - 65, 16, 1114514, "#1156418", Yellow, false, false); // Three Days;
-            AddButton(Length - 60, y, 4014, 4016, 3, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(200, y, 140, 20, 1114514, "#1156455", Yellow, false, false); // One Hour
+            AddButton(345, y, 4014, 4016, 3, GumpButtonType.Reply, 0);
 
             y += 20;
 
-            AddHtmlLocalized(Length / 2, y, (Length / 2) - 65, 16, 1114514, "#1156419", Yellow, false, false); // Five Days;
-            AddButton(Length - 60, y, 4014, 4016, 4, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(200, y, 140, 20, 1114514, "#1156418", Yellow, false, false); // Three Days
+            AddButton(345, y, 4014, 4016, 4, GumpButtonType.Reply, 0);
 
             y += 20;
 
-            AddHtmlLocalized(Length / 2, y, (Length / 2) - 65, 16, 1114514, "#1156420", Yellow, false, false); // Seven Days;
-            AddButton(Length - 60, y, 4014, 4016, 5, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(Length / 2, y, 140, 20, 1114514, "#1156419", Yellow, false, false); // Five Days
+            AddButton(345, y, 4014, 4016, 5, GumpButtonType.Reply, 0);
 
-            y += 22;
+            y += 20;
+
+            AddHtmlLocalized(200, y, 140, 20, 1114514, "#1156420", Yellow, false, false); // Seven Days
+            AddButton(Length - 55, y, 4014, 4016, 6, GumpButtonType.Reply, 0);
+
+            y += 24;
+
+            int[] startbid = GetPlatGold(Auction.StartBid);
+
             // Start Bid Plat/Gold
-            AddHtmlLocalized(0, y, (Length / 2) - 3, 16, 1114514, "#1156410", Yellow, false, false); // Item Starting Bid Plat:
-            AddBackground((Length / 2) + 3, y, (Length / 2) - 68, 20, 9350);
-            AddTextEntry((Length / 2) + 5, y, (Length / 2) - 65, 20, 0, 2, Auction.CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
+            AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156410", Yellow, false, false); // Item Starting Bid Plat:
+            AddBackground(200, y, 175, 22, 9350);
+            AddTextEntry(202, y, 171, 18, 0, 2, startbid[0] > 0 ? startbid[0].ToString() : "", 9);
 
-            y += 25;
+            y += 24;
 
-            AddHtmlLocalized(0, y, (Length / 2) - 3, 16, 1114514, "#1156411", Yellow, false, false); // Item Starting Bid Gold:
-            AddBackground((Length / 2) + 3, y, (Length / 2) - 68, 20, 9350);
-            AddTextEntry((Length / 2) + 5, y, (Length / 2) - 63, 20, 0, 3, Auction.CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
+            AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156411", Yellow, false, false); // Item Starting Bid Gold:
+            AddBackground(200, y, 175, 22, 9350);
+            AddTextEntry(202, y, 171, 18, 0, 3, startbid[1] > 0 ? startbid[1].ToString() : "", 9);
 
-            y += 25;
+            y += 24;
 
-            AddHtmlLocalized((Length / 2) + 3, y, Length / 2, 16, 1156416, Yellow, false, false); // Set Starting Bids
-            AddButton((Length / 2) - 33, y, 4005, 4007, 6, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(200, y, 175, 22, 1156416, Yellow, false, false); // Set Starting Bids
+            AddButton(160, y, 4005, 4007, 7, GumpButtonType.Reply, 0);
 
-            y += 25;
+            y += 26;
 
             // Buy Now
-            AddHtmlLocalized(0, y, (Length / 2) - 3, 16, 1114514, "#1156413", Yellow, false, false); // Buy Now Plat Price:
-            AddBackground((Length / 2) + 3, y, (Length / 2) - 68, 20, 9350);
-            AddTextEntry((Length / 2) + 5, y, (Length / 2) - 63, 20, 0, 4, Auction.BuyoutPlat.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
+            AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156413", Yellow, false, false); // Buy Now Plat Price:
+            AddBackground(200, y, 175, 22, 9350);
+            AddTextEntry(202, y + 2, 171, 18, 0, 4, Auction.BuyoutPlat > 0 ? Auction.BuyoutPlat.ToString() : "", 9);
 
-            y += 25;
+            y += 26;
 
-            AddHtmlLocalized(0, y, (Length / 2) - 3, 16, 1114514, "#1156412", Yellow, false, false); // Buy Now Gold Price:
-            AddBackground((Length / 2) + 3, y, (Length / 2) - 68, 20, 9350);
-            AddTextEntry((Length / 2) + 5, y, (Length / 2) - 63, 20, 0, 5, Auction.BuyoutGold.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
+            AddHtmlLocalized(15, y, 175, 22, 1114514, "#1156412", Yellow, false, false); // Buy Now Gold Price:
+            AddBackground(200, y, 175, 22, 9350);
+            AddTextEntry(202, y, 171, 18, 0, 5, Auction.BuyoutGold > 0 ? Auction.BuyoutGold.ToString() : "", 9);
 
-            y += 25;
+            y += 24;
 
-            AddHtmlLocalized((Length / 2) + 3, y, Length / 2, 16, 1156417, Yellow, false, false); // Set Buy Now Price
-            AddButton((Length / 2) - 33, y, 4005, 4007, 7, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(200, y, 175, 22, 1156417, Yellow, false, false); // Set Buy Now Price
+            AddButton(160, y, 4005, 4007, 8, GumpButtonType.Reply, 0);
 
-            y += 25;
+            y += 24;
 
             if (Auction.AuctionItemOnDisplay() && !Auction.OnGoing)
             {
-                AddHtmlLocalized((Length / 2) + 3, y, 200, 16, 1156414, Yellow, false, false); // Start Auction
-                AddButton((Length / 2) - 33, y, 4005, 4007, 8, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(200, y, 175, 22, 1156414, Yellow, false, false); // Start Auction
+                AddButton(160, y, 4005, 4007, 9, GumpButtonType.Reply, 0);
             }
 
             if (Auction.OnGoing && Auction.HighestBid == null)
             {
-                AddHtmlLocalized((Length / 2) + 3, y, 200, 16, 1114057, "Cancel Auction", Yellow, false, false);
-                AddButton((Length / 2) - 33, y, 4005, 4007, 23, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(200, y, 175, 22, 1156415, Yellow, false, false); // Stop Auction
+                AddButton(160, y, 4005, 4007, 23, GumpButtonType.Reply, 0);
+            }
+        }
+
+        public int[] GetPlatGold(long amount)
+        {
+            int plat = 0;
+            int gold = 0;
+
+            if (amount >= Account.CurrencyThreshold)
+            {
+                plat = (int)(amount / Account.CurrencyThreshold);
+                gold = (int)(amount - (plat * Account.CurrencyThreshold));
+            }
+            else
+            {
+                gold = (int)amount;
+            }
+
+            return new int[] { plat, gold };
+        }
+
+        private class InternalTarget : Target
+        {
+            private Auction Auction;
+            private BaseAuctionGump Gump;
+
+            public InternalTarget(Auction auction, BaseAuctionGump g)
+                : base(-1, false, TargetFlags.None)
+            {
+                Auction = auction;
+                Gump = g;
+            }
+
+            private bool IsBadItem(Item item)
+            {
+                return item == null || item.Weight > 300 || (item is Container && !(item is BaseQuiver)) || item is Gold || item is BankCheck || !item.Movable || item.Items.Count > 0;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (Auction == null || Auction.Safe == null || Auction.Safe.Deleted)
+                {
+                    return;
+                }
+
+                if (targeted is Item)
+                {
+                    Item item = targeted as Item;
+
+                    if (!IsBadItem(item))
+                    {
+                        if (item.IsChildOf(from.Backpack))
+                        {
+                            Auction.AuctionItem = item;
+                            item.Movable = false;
+                            item.MoveToWorld(new Point3D(Gump.Safe.X, Gump.Safe.Y, Gump.Safe.Z + 7), Gump.Safe.Map);
+                            Gump.Refresh();
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                            from.Target = new InternalTarget(Auction, Gump);
+                        }
+                    }
+                    else
+                    {
+                        from.Target = new InternalTarget(Auction, Gump);
+                    }                    
+                }
+                else
+                {
+                    from.Target = new InternalTarget(Auction, Gump);
+                }
+            }
+
+            protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
+            {
+                Gump.Refresh();
+                from.SendLocalizedMessage(1149667); // Invalid target.
             }
         }
 
@@ -257,186 +349,189 @@ namespace Server.Engines.Auction
         {
             base.OnResponse(state, info);
 
+            Mobile from = state.Mobile;
+
             switch (info.ButtonID)
             {
                 case 1:
-                    if (Auction.CheckModifyAuction(User, true))
                     {
-                        User.BeginTarget(-1, false, TargetFlags.None, (from, targeted) =>
+                        if (Auction.CheckModifyAuction(User, true))
                         {
-                            Item item = targeted as Item;
-
-                            if (!IsBadItem(item))
+                            if (Auction.AuctionItem != null)
                             {
-                                if (item == Auction.AuctionItem)
+                                if (Auction.AuctionItem.LabelNumber != 0)
                                 {
-                                    User.SendMessage("You have removed the item from the auction.");
-                                    Auction.AuctionItem = null;
-                                    item.Movable = true;
-                                    User.AddToBackpack(item);
+                                    from.SendLocalizedMessage(1152339, String.Format("#{0}", Auction.AuctionItem.LabelNumber)); // A reward of ~1_ITEM~ has been placed in your backpack.
                                 }
-                                else if (item.IsChildOf(User.Backpack))
+                                else
                                 {
-                                    if (Auction.AuctionItem != null)
-                                    {
-                                        Auction.AuctionItem.Movable = true;
-                                        User.AddToBackpack(Auction.AuctionItem);
-                                        Auction.AuctionItem = null;
-
-                                        User.SendMessage("You swap out auction items.");
-                                    }
-                                    else
-                                        User.SendMessage("You have selected an auction item.");
-
-                                    Auction.AuctionItem = item;
-                                    item.Movable = false;
-                                    item.MoveToWorld(new Point3D(Safe.X, Safe.Y, Safe.Z + Safe.Components[0].ItemData.CalcHeight), Safe.Map);
+                                    from.SendLocalizedMessage(1152339, Auction.AuctionItem.Name); // A reward of ~1_ITEM~ has been placed in your backpack.
                                 }
+
+                                Auction.AuctionItem.Movable = true;
+                                from.AddToBackpack(Auction.AuctionItem);
+                                Auction.AuctionItem = null;
                             }
-                            else
-                                User.SendMessage("You cannot add that to your auction.");
+
+                            from.Target = new InternalTarget(Auction, this);                           
+                        }
+                        else
+                        {
                             Refresh();
-                        });
+                        }
+                        break;
                     }
-                    break;
                 case 2:
-                    TextRelay relay = info.GetTextEntry(1);
-                    string str = null;
-
-                    if (relay != null)
-                        str = relay.Text;
-
-                    if (str == null || str.Trim().Length > 150 || !Server.Guilds.BaseGuildGump.CheckProfanity(str))
                     {
-                        User.SendMessage(0x22, "Invalid description.");
+                        TextRelay relay = info.GetTextEntry(1);
+                        string str = null;
+
+                        if (relay != null)
+                            str = relay.Text;
+
+                        if (str != null || Guilds.BaseGuildGump.CheckProfanity(str, 140))
+                        {
+                            Auction.Description = Utility.FixHtml(str.Trim());
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1150315); // That text is unacceptable.
+                        }
+
+                        Refresh();
+                        break;
                     }
-                    else
-                    {
-                        Auction.Description = Utility.FixHtml(str.Trim());
-                    }
-                    Refresh();
-                    break;
                 case 3:
-                    if (Auction.CheckModifyAuction(User))
-                        Auction.Duration = 3;
-                    Refresh();
-                    break;
+                    {
+                        if (Auction.CheckModifyAuction(User))
+                            Auction.Duration = 60;
+
+                        Refresh();
+                        break;
+                    }
                 case 4:
-                    if (Auction.CheckModifyAuction(User))
-                        Auction.Duration = 5;
-                    Refresh();
-                    break;
+                    {
+                        if (Auction.CheckModifyAuction(User))
+                            Auction.Duration = 4320;
+
+                        Refresh();
+                        break;
+                    }
                 case 5:
-                    if (Auction.CheckModifyAuction(User))
-                        Auction.Duration = 7;
-                    Refresh();
-                    break;
+                    {
+                        if (Auction.CheckModifyAuction(User))
+                            Auction.Duration = 7200;
+
+                        Refresh();
+                        break;
+                    }
                 case 6:
-                    TextRelay relay1 = info.GetTextEntry(2);
-
-                    string plat1 = null;
-                    string gold1 =  null;
-
-                    if (relay1 != null)
-                        plat1 = relay1.Text;
-
-                    relay1 = info.GetTextEntry(3);
-
-                    if (relay1 != null)
-                        gold1 = relay1.Text;
-
-                    long platAmnt = Utility.ToInt64(plat1);
-                    long goldAmnt = Utility.ToInt64(gold1);
-
-                    if (Auction.CheckModifyAuction(User) && platAmnt >= 0 && goldAmnt >= 0)
                     {
-                        if (platAmnt > UInt32.MaxValue)
-                        {
-                            User.SendMessage("Who in Sosaria has that much gold? Try a lower amount.");
-                            break;
-                        }
+                        if (Auction.CheckModifyAuction(User))
+                            Auction.Duration = 10080;
 
-                        _TempBid += platAmnt * Account.CurrencyThreshold;
-
-                        if (goldAmnt > UInt32.MaxValue)
-                        {
-                            User.SendMessage("That bid is too high. Try converting some of your gold bid into a plat bid.");
-                            return;
-                        }
-
-                        _TempBid += goldAmnt;
+                        Refresh();
+                        break;
                     }
-                    else
-                        _NoBid = true;
-
-                    if (!_NoBid)
-                        Auction.CurrentBid = _TempBid;
-
-                    Refresh();
-                    break;
                 case 7:
-                    TextRelay relay2 = info.GetTextEntry(4);
-
-                    string plat2 = null;
-                    string gold2 = null;
-
-                    if (relay2 != null)
-                        plat2 = relay2.Text;
-
-                    relay2 = info.GetTextEntry(5);
-
-                    if (relay2 != null)
-                        gold2 = relay2.Text;
-
-                    long platAmnt2 = Utility.ToInt64(plat2);
-                    long goldAmnt2 = Utility.ToInt64(gold2);
-
-                    if (Auction.CheckModifyAuction(User) && platAmnt2 >= 0 && goldAmnt2 >= 0)
                     {
-                        if (platAmnt2 > UInt32.MaxValue)
+                        TextRelay relay1 = info.GetTextEntry(2);
+
+                        string plat1 = null;
+                        string gold1 = null;
+
+                        if (relay1 != null)
+                            plat1 = relay1.Text;
+
+                        relay1 = info.GetTextEntry(3);
+
+                        if (relay1 != null)
+                            gold1 = relay1.Text;
+
+                        long platAmnt = Utility.ToInt64(plat1);
+                        long goldAmnt = Utility.ToInt64(gold1);
+                        
+                        if (platAmnt >= 0 && goldAmnt >= 0)
                         {
-                            User.SendMessage("Who in Sosaria has that much gold? Try a lower amount.");
-                            return;
+                            _TempBid += platAmnt * Account.CurrencyThreshold;
+                            _TempBid += goldAmnt;
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1150315); // That text is unacceptable.
+                            _NoBid = true;
                         }
 
-                        _TempBuyout += platAmnt2 * Account.CurrencyThreshold;
-
-                        if (goldAmnt2 > UInt32.MaxValue)
+                        if (!_NoBid)
                         {
-                            User.SendMessage("That bid is too high. Try converting some of your gold bid into a plat bid.");
-                            return;
-                        }
+                            if (Auction.OnGoing && Auction.BidHistory == null)
+                            {
+                                Auction.CurrentBid = _TempBid;
+                            }
 
-                        _TempBuyout += goldAmnt2;
+                            Auction.StartBid = _TempBid;
+                        }                       
+
+                        Refresh();
+                        break;
                     }
-
-                    Auction.Buyout = _TempBuyout;
-
-                    Refresh();
-                    break;
                 case 8:
-                    if (Auction.CurrentBid <= 0)
-                        User.SendLocalizedMessage(1156434); // You must set a starting bid.
-                    else
                     {
-                        Auction.OnBegin();
-                    }
+                        TextRelay relay2 = info.GetTextEntry(4);
 
-                    Refresh();
-                    break;
+                        string plat2 = null;
+                        string gold2 = null;
+
+                        if (relay2 != null)
+                            plat2 = relay2.Text;
+
+                        relay2 = info.GetTextEntry(5);
+
+                        if (relay2 != null)
+                            gold2 = relay2.Text;
+
+                        long platAmnt2 = Utility.ToInt64(plat2);
+                        long goldAmnt2 = Utility.ToInt64(gold2);
+                        
+                        if (platAmnt2 >= 0 && goldAmnt2 >= 0)
+                        {
+                            _TempBuyout += platAmnt2 * Account.CurrencyThreshold;
+                            _TempBuyout += goldAmnt2;
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1150315); // That text is unacceptable.
+                        }
+
+                        Auction.Buyout = _TempBuyout;
+
+                        Refresh();
+                        break;
+                    }
+                case 9:
+                    {
+                        if (Auction.StartBid <= 0)
+                        {
+                            User.SendLocalizedMessage(1156434); // You must set a starting bid.
+                        }
+                        else
+                        {
+                            Auction.OnBegin();
+                        }
+
+                        Refresh();
+                        break;
+                    }
                 case 23:
-                    if (Auction.OnGoing && Auction.HighestBid == null)
                     {
-                        Auction.Cancel();
+                        if (Auction.OnGoing && Auction.HighestBid == null)
+                        {
+                            Auction.ClaimPrize(User);
+                        }
+
+                        break;
                     }
-                    break;
             }
-
-        }
-
-        private bool IsBadItem(Item item)
-        {
-            return item == null || item.Weight > 300 || (item is Container && !(item is BaseQuiver)) || item is Gold || item is BankCheck || !item.Movable || item.Items.Count > 0;
         }
     }
 
@@ -459,78 +554,78 @@ namespace Server.Engines.Auction
             if (Auction.AuctionItem != null)
             {
                 Item i = Auction.AuctionItem;
-                AddImage((Length / 2) + 3, 160, 2329);
-                Rectangle2D b = ItemBounds.Table[i.ItemID];
-                AddItem(((Length / 2) + (50 / 2)) + b.Width / 2 - b.X, (160 + 60 / 2) - b.Height / 2 - b.Y, i.ItemID, i.Hue);
+                AddImageTiledButton(200, 166, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, i.ItemID, 0x0, 23, 5);
                 AddItemProperty(i.Serial);
             }
 
-            // Description
-            AddHtmlLocalized(0, 230, (Length / 2) - 3, 16, 1114514, "#1156400", Yellow, false, false); // Description:
-            AddHtml((Length / 2) + 5, 230, 145, 130, Auction.Description, true, false);
+            AddHtmlLocalized(15, 238, 175, 90, 1114514, "#1156400", Yellow, false, false); // Description:
+            AddHtml(200, 238, 175, 90, Auction.Description, true, true);
 
-            // Time
-            AddHtmlLocalized(0, 370, (Length / 2) - 3, 16, 1114514, "#1156404", Yellow, false, false); // Time Remaining:
+            AddHtmlLocalized(15, 330, 175, 18, 1114514, "#1156404", Yellow, false, false); // Time Remaining:
 
-            TimeSpan left = Auction.EndTime - DateTime.Now;
-            int cliloc;
-            double v;
+            if (Auction.HasBegun)
+            {
+                TimeSpan left = Auction.EndTime - DateTime.Now;
+                int cliloc;
+                double v;
 
-            if (left.TotalDays >= 7)
-            {
-                cliloc = 1153092; // Lifespan: ~1_val~ weeks
-                v = left.TotalDays / 7;
-            }
-            else if (left.TotalDays >= 1)
-            {
-                cliloc = 1153091; // Lifespan: ~1_val~ days
-                v = left.TotalDays;
-            }
-            else if (left.TotalHours >= 1)
-            {
-                cliloc = 1153090; // Lifespan: ~1_val~ hours
-                v = left.TotalHours;
+                if (left.TotalSeconds < 0 || Auction.InClaimPeriod)
+                {
+                    AddHtmlLocalized(200, 330, 175, 18, 1114513, "#1156438", Gray, false, false); // Auction Ended
+                }
+                else
+                {
+                    if (left.TotalDays >= 1)
+                    {
+                        cliloc = 1153091; // Lifespan: ~1_val~ days
+                        v = left.TotalDays;
+                    }
+                    else if (left.TotalHours >= 1)
+                    {
+                        cliloc = 1153090; // Lifespan: ~1_val~ hours
+                        v = left.TotalHours;
+                    }
+                    else
+                    {
+                        cliloc = 1153089; // Lifespan: ~1_val~ minutes
+                        v = left.TotalMinutes;
+                    }
+
+                    AddHtmlLocalized(200, 330, 175, 18, cliloc, ((int)v).ToString(), Gray, false, false);
+                }
             }
             else
             {
-                cliloc = 1153089; // Lifespan: ~1_val~ minutes
-                v = left.TotalMinutes;
-            }
+                AddHtmlLocalized(200, 330, 175, 18, 1114513, "#1156440", Gray, false, false); // Auction Pending                
+            }         
 
-            BidEntry entry = Auction.GetBidEntry(User, false);
+            AddHtmlLocalized(15, 350, 175, 18, 1114514, "#1156436", Yellow, false, false); // Current Platinum Bid:
+            AddHtml(200, 350, 175, 18, Color(HGray, Auction.CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);
 
-            int platBid = entry == null ? 0 : entry.TotalPlatBid;
-            int goldBid = entry == null ? 0 : entry.TotalGoldBid;
+            AddHtmlLocalized(15, 370, 175, 18, 1114514, "#1156435", Yellow, false, false); // Current Gold Bid:
+            AddHtml(200, 370, 175, 18, Color(HGray, Auction.CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);
 
-            AddHtmlLocalized((Length / 2) + 3, 370, 200, 16, cliloc, ((int)v).ToString(), C32216(Gray), false, false);
+            AddHtmlLocalized(15, 392, 175, 22, 1114514, "#1156406", Yellow, false, false); // Your Current Platinum Bid:
+            AddBackground(200, 392, 175, 22, 9350);
+            AddTextEntry(202, 394, 171, 18, 0, 1, "", 9);
 
-            AddHtmlLocalized(0, 395, (Length / 2) - 3, 16, 1114514, "#1156436", Yellow, false, false); // Current Platinum Bid:
-            AddLabel((Length / 2) + 3, 395, 1149, Auction.CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
+            AddHtmlLocalized(15, 418, 175, 22, 1114514, "#1156405", Yellow, false, false); // Your Current Gold Bid:
+            AddBackground(200, 418, 175, 22, 9350);
+            AddTextEntry(202, 420, 171, 18, 0, 2, "", 9);
 
-            AddHtmlLocalized(0, 420, (Length / 2) - 3, 16, 1114514, "#1156435", Yellow, false, false); // Current Gold Bid:
-            AddLabel((Length / 2) + 3, 420, 1149, Auction.CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
-
-            AddHtmlLocalized(0, 445, (Length / 2) - 3, 16, 1114514, "#1156406", Yellow, false, false); // Your Current Platinum Bid:
-            AddBackground((Length / 2) + 3, 445, 200, 20, 9350);
-            AddTextEntry((Length / 2) + 5, 445, 198, 20, 0, 1, platBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
-
-            AddHtmlLocalized(0, 470, (Length / 2) - 3, 16, 1114514, "#1156405", Yellow, false, false); // Your Current Gold Bid:
-            AddBackground((Length / 2) + 3, 470, 200, 20, 9350);
-            AddTextEntry((Length / 2) + 5, 470, 198, 20, 0, 2, goldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
-
-            AddHtmlLocalized((Length / 2) + 3, 495, 200, 16, 1156407, Yellow, false, false); // Place Bid
-            AddButton((Length / 2) - 33, 495, 4005, 4007, 1, GumpButtonType.Reply, 0);
-
-            AddHtmlLocalized(0, 520, (Length / 2) - 3, 16, 1114514, "#1156413", Yellow, false, false); // Buy Now Plat Price:
-            AddLabel((Length / 2) + 3, 520, 1149, Auction.BuyoutPlat.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
-
-            AddHtmlLocalized(0, 545, (Length / 2) - 3, 16, 1114514, "#1156412", Yellow, false, false); // Buy Now Gold Price:
-            AddLabel((Length / 2) + 3, 545, 1149, Auction.BuyoutGold.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
-
-            if (Auction.Buyout > 0)
+            AddHtmlLocalized(200, 442, 175, 22, 1156407, Yellow, false, false); // Place Bid
+            AddButton(160, 442, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            
+            if (Auction.Buyout > 0 && (Auction.HighestBid == null || Auction.HighestBid != null && Auction.HighestBid.Mobile != User))
             {
-                AddHtmlLocalized((Length / 2) + 3, 570, 200, 16, 1156409, Yellow, false, false); // Buy Now
-                AddButton((Length / 2) - 33, 570, 4005, 4007, 2, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(15, 484, 175, 18, 1114514, "#1156413", Yellow, false, false); // Buy Now Plat Price:
+                AddHtml(200, 484, 175, 18, Color(HGray, Auction.BuyoutPlat.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);
+
+                AddHtmlLocalized(15, 502, 175, 18, 1114514, "#1156412", Yellow, false, false); // Buy Now Gold Price:
+                AddHtml(200, 502, 175, 18, Color(HGray, Auction.BuyoutGold.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);
+
+                AddHtmlLocalized(200, 520, 175, 22, 1156409, Yellow, false, false); // Buy Now
+                AddButton(160, 520, 4005, 4007, 2, GumpButtonType.Reply, 0);
             }
         }
 
@@ -541,39 +636,42 @@ namespace Server.Engines.Auction
             switch (info.ButtonID)
             {
                 case 1:
-                    TextRelay relay = info.GetTextEntry(1);
-                    string gold = null;
-                    string plat = null;
+                    {
+                        TextRelay relay = info.GetTextEntry(1);
+                        string gold = null;
+                        string plat = null;
 
-                    if (relay != null)
-                        plat = relay.Text;
+                        if (relay != null)
+                            plat = relay.Text;
 
-                    relay = info.GetTextEntry(2);
+                        relay = info.GetTextEntry(2);
 
-                    if (relay != null)
-                        gold = relay.Text;
+                        if (relay != null)
+                            gold = relay.Text;
 
-                    long val = Utility.ToInt64(plat);
+                        long val = Utility.ToInt64(plat);
 
-                    if (val < 0) val = 0;
+                        if (val < 0) val = 0;
 
-                    TempBid += val * Account.CurrencyThreshold;
+                        TempBid += val * Account.CurrencyThreshold;
 
-                    val = Utility.ToInt64(gold);
+                        val = Utility.ToInt64(gold);
 
-                    if (val < 0) val = 0;
+                        if (val < 0) val = 0;
 
-                    TempBid += val;
+                        TempBid += val;
 
-                    Auction.TryPlaceBid(User, TempBid);
-                    Refresh();
-                    Auction.ResendGumps(User);
-                    break;
+                        Auction.TryPlaceBid(User, TempBid);
+                        Refresh();
+                        Auction.ResendGumps(User);
+                        break;
+                    }
                 case 2:
-                    Auction.TryBuyout(User);
-                    Refresh();
-                    Auction.ResendGumps(User);
-                    break;
+                    {
+                        Auction.TryBuyout(User);
+                        User.SendGump(new AuctionBidGump(User, Safe));
+                        break;
+                    }
             }
         }
     }
@@ -581,10 +679,12 @@ namespace Server.Engines.Auction
     public class AuctionInfoGump : Gump
     {
         public AuctionInfoGump(PlayerMobile pm)
-            : base(50, 100)
+            : base(100, 200)
         {
-            AddBackground(0, 0, 700, 500, 39925);
-            AddHtmlLocalized(30, 30, 640, 440, 1156441, 0xFFFF, false, true);
+            AddPage(0);
+
+            AddBackground(0, 0, 600, 400, 0x9BF5);
+            AddHtmlLocalized(50, 10, 500, 18, 1114513, "#1156371", 0x7FFF, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
 
             /*<DIV ALIGN=CENTER>Auction Safe</DIV><DIV ALIGN=LEFT><BR>Auction Safe deeds can be obtained from the veteran reward system.<BR>An Auction
              * Safe can be placed within public houses. When placed in a home the owner will be able to set access security on which users are allowed 
@@ -603,36 +703,40 @@ namespace Server.Engines.Auction
              * winning bid. If you are out bid as the winning bid you will be notified by in game mail and your bid will be refunded to your account. 
              * On completion of the auction if you are the winning bid you will be notified that you have three days to claim your item. Upon claiming
              * your item if you have any change as a result of your maximum bid it will be refunded to you.</DIV>*/
+            AddHtmlLocalized(50, 37, 500, 313, 1156441, 0x4100, true, true);
         }
     }
 
     public class BidHistoryGump : Gump
     {
-        private readonly int Green = 0x228B22;
+        private readonly int Green = 0x208;
+        public const string HGray = "BFBFBF";
 
         public Auction Auction { get; set; }
 
         public BidHistoryGump(PlayerMobile pm, Auction auction)
-            : base(50, 100)
+            : base(100, 200)
         {
             Auction = auction;
 
-            AddBackground(0, 0, 700, 500, 39925);
-            AddHtmlLocalized(0, 20, 700, 16, 1154645, "#1156422", Server.Engines.Quests.BaseQuestGump.C32216(Green), false, false); // History
+            AddPage(0);
 
-            AddHtmlLocalized(30, 60, 120, 16, 3000075, Server.Engines.Quests.BaseQuestGump.C32216(Green), false, false); // Name
-            AddHtmlLocalized(150, 60, 150, 16, 1156423, Server.Engines.Quests.BaseQuestGump.C32216(Green), false, false); // Platinum Bid
-            AddHtmlLocalized(300, 60, 150, 16, 1156424, Server.Engines.Quests.BaseQuestGump.C32216(Green), false, false); // Gold Bid
-            AddHtmlLocalized(450, 60, 200, 16, 1156425, Server.Engines.Quests.BaseQuestGump.C32216(Green), false, false); // Bid Time
+            AddBackground(0, 0, 600, 400, 0x9BF5);
+            AddHtmlLocalized(50, 10, 500, 18, 1114513, "#1156422", Green, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
+
+            AddHtmlLocalized(50, 46, 58, 22, 1078924, Green, false, false); // Name:
+            AddHtmlLocalized(118, 46, 117, 22, 1156423, Green, false, false); // Platinum Bid:
+            AddHtmlLocalized(245, 46, 117, 22, 1156424, Green, false, false); // Gold Bid:
+            AddHtmlLocalized(372, 46, 176, 22, 1156425, Green, false, false); // Bid Time:
 
             if (Auction == null || Auction.BidHistory == null)
                 return;
 
-            int y = 80;
+            int y = 70;
 
             for (int i = Auction.BidHistory.Count - 1; i >= 0; i--)
             {
-                if (i < Auction.BidHistory.Count - 20)
+                if (i < Auction.BidHistory.Count - 13)
                     break;
 
                 HistoryEntry h = Auction.BidHistory[i];
@@ -641,12 +745,12 @@ namespace Server.Engines.Auction
                 long plat = bid >= Account.CurrencyThreshold ? bid / Account.CurrencyThreshold : 0;
                 long gold = bid >= Account.CurrencyThreshold ? bid - ((bid / Account.CurrencyThreshold) * Account.CurrencyThreshold) : bid;
 
-                AddLabel(30, y, 1149, String.Format("{0}*****", h.Mobile != null ? h.Mobile.Name.Trim()[0].ToString() : "?"));
-                AddLabel(150, y, 1149, plat.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
-                AddLabel(300, y, 1149, gold.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
-                AddLabel(450, y, 1149, String.Format("{0}-{1}-{2} {3}", h.BidTime.Year, h.BidTime.Month, h.BidTime.Day, h.BidTime.ToShortTimeString()));
+                AddHtml(50, y, 58, 22, Color(HGray, String.Format("{0}*****", h.Mobile != null ? h.Mobile.Name.Trim()[0].ToString() : "?")), false, false);
+                AddHtml(118, y, 117, 22, Color(HGray, plat.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);
+                AddHtml(245, y, 117, 22, Color(HGray, gold.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);
+                AddHtml(372, y, 176, 22, Color(HGray, String.Format("{0}-{1}-{2} {3}", h.BidTime.Year, h.BidTime.Month, h.BidTime.Day, h.BidTime.ToShortTimeString())), false, false);
 
-                y += 20;
+                y += 24;
             }
         }
 

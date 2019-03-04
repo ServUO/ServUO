@@ -437,30 +437,30 @@ namespace Server.Engines.VendorSearching
 
     public class ConfirmTeleportGump : BaseGump
     {
-        public static int Cost = 1000;
-
         public VendorSearchMap VendorMap { get; set; }
 
         public ConfirmTeleportGump(VendorSearchMap map, PlayerMobile pm)
-            : base(pm, 50, 50)
+            : base(pm, 10, 10)
         {
-            VendorMap = map;
+            VendorMap = map;            
         }
 
         public override void AddGumpLayout()
         {
-            AddBackground(0, 0, 500, 300, 30546);
+            AddPage(0);
+
+            AddBackground(0, 0, 414, 214, 0x7752);
 
             if (VendorMap.Vendor != null && VendorMap.SetLocation != Point3D.Zero)
-                AddHtmlLocalized(40, 50, 420, 200, 1154637, String.Format("{0}\t{1}", VendorMap.GetCoords(), VendorMap.Vendor.Map.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to return to ~1_loc~ (~2_facet~).  This map will be deleted after use.
+                AddHtmlLocalized(27, 47, 380, 80, 1154637, String.Format("{0}\t{1}", VendorMap.GetCoords(), VendorMap.Vendor.Map.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to return to ~1_loc~ (~2_facet~).  This map will be deleted after use.
             else
-                AddHtmlLocalized(40, 50, 420, 200, 1154635, String.Format("{0}\t{1}\t{2}", Cost.ToString(), VendorMap.Vendor.Name, VendorMap.TimeRemaining.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to pay ~1_cost~ gold to teleport to vendor ~2_name~.  For this price you will also be able to teleport back to this location within the next ~3_minutes~ minutes.
+                AddHtmlLocalized(27, 47, 380, 80, 1156475, String.Format("@{0}@{1}@{2}", VendorMap.TeleportCost.ToString(), VendorMap.Vendor.Name, VendorMap.DeleteDelayMinutes.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to pay ~1_cost~ gold to teleport to auction house ~2_name~. For this price you will also be able to teleport back to this location within the next ~3_minutes~ minutes.
 
-            AddButton(40, 260, 30535, 30535, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(90, 260, 150, 20, 1153439, 0xFFFF, false, false);
+            AddButton(7, 167, 0x7747, 0x7747, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(47, 167, 100, 40, 1150300, 0x4E73, false, false); // CANCEL
 
-            AddButton(433, 260, 30534, 30534, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(300, 260, 120, 20, 1114514, "#1073996", 0xFFFF, false, false);
+            AddButton(377, 167, 0x7746, 0x7746, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(267, 167, 100, 40, 1114514, "#1150299", 0xFFFF, false, false); // // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
         }
 
         public override void OnResponse(RelayInfo info)
@@ -469,28 +469,34 @@ namespace Server.Engines.VendorSearching
             {
                 default: break;
                 case 1:
-                    if (!VendorMap.CheckVendor())
                     {
-                        User.SendLocalizedMessage(1154643); // That item is no longer for sale.
-                    }
-                    else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(User))
-                    {
-                        User.SendLocalizedMessage(1154680); //Before using vendor search, you must be in a justice region or a safe log-out location (such as an inn or a house which has you on its Owner, Co-owner, or Friends list). 
-                    }
-                    else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(User))
-                    {
-                        User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
-                    }
-                    else if (VendorMap.SetLocation != Point3D.Zero && (!Utility.InRange(VendorMap.SetLocation, User.Location, 100) || VendorMap.SetMap != User.Map))
-                    {
-                        User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
-                    }
-                    else
-                    {
-                        new Server.Spells.Fourth.RecallSpell(User, VendorMap, VendorMap).Cast();
-                    }
+                        if (Banker.GetBalance(User) < VendorMap.TeleportCost)
+                        {
+                            User.SendLocalizedMessage(1154672); // You cannot afford to teleport to the vendor.
+                        }
+                        else if (!VendorMap.CheckVendor())
+                        {
+                            User.SendLocalizedMessage(1154643); // That item is no longer for sale.
+                        }
+                        else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(User))
+                        {
+                            User.SendLocalizedMessage(1154680); //Before using vendor search, you must be in a justice region or a safe log-out location (such as an inn or a house which has you on its Owner, Co-owner, or Friends list). 
+                        }
+                        else if (VendorMap.SetLocation == Point3D.Zero && !VendorSearch.CanSearch(User))
+                        {
+                            User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                        }
+                        else if (VendorMap.SetLocation != Point3D.Zero && (!Utility.InRange(VendorMap.SetLocation, User.Location, 100) || VendorMap.SetMap != User.Map))
+                        {
+                            User.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
+                        }
+                        else
+                        {
+                            new Server.Spells.Fourth.RecallSpell(User, VendorMap, VendorMap).Cast();
+                        }
 
-                    break;
+                        break;
+                    }
             }
         }
     }

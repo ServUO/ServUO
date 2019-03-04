@@ -438,6 +438,8 @@ namespace Server.Items
 
                 book.m_Entries.Add(new RunebookEntry(entry.Location, entry.Map, entry.Description, entry.House));
             }
+
+            base.OnAfterDuped(newItem);
         }
 
         public bool CheckAccess(Mobile m)

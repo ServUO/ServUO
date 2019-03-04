@@ -46,7 +46,9 @@ namespace Server.Items
         Blackthorn,
         Minax,
         Kotl,
-        Khaldun
+        Khaldun, 
+        Doom,
+        EnchantedOrigin
     }
 
     public enum ItemPower
@@ -1680,22 +1682,19 @@ namespace Server.Items
             new int[] {       0, 1154507 }, // Minax
             new int[] {       0, 1156900 }, // Kotl
             new int[] {       0, 1158672 }, // Khaldun
+            new int[] {       0, 1155589 }, // Doom
+            new int[] {       0, 1157614 }, // Sorcerers Dungeon
         };
 
         public static void AddSuffixName(ObjectPropertyList list, ReforgedSuffix suffix, string name)
         {
-            switch (suffix)
+            if (suffix >= ReforgedSuffix.Blackthorn)
             {
-                case ReforgedSuffix.Khaldun:
-                    list.Add(1158672, name); break; // ~1_ITEM~ of the Cult
-                case ReforgedSuffix.Minax:
-                    list.Add(1154507, name); break; // ~1_ITEM~ bearing the crest of Minax
-                case ReforgedSuffix.Blackthorn:
-                    list.Add(1154548, name); break;// ~1_TYPE~ bearing the crest of Blackthorn
-                case ReforgedSuffix.Kotl:
-                    list.Add(1156900, name); break;// ~1_ITEM~ of the Kotl
-                default:
-                    list.Add(1151758, String.Format("{0}\t#{1}", name, GetSuffixName(suffix))); break;// ~1_ITEM~ of ~2_SUFFIX~
+                list.Add(GetSuffixName(suffix), name);
+            }
+            else
+            {
+                list.Add(1151758, String.Format("{0}\t#{1}", name, GetSuffixName(suffix)));// ~1_ITEM~ of ~2_SUFFIX~
             }
         }
 
