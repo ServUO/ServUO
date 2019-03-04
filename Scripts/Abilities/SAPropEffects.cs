@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using System.Collections.Generic;
 using Server.Mobiles;
@@ -331,9 +331,9 @@ namespace Server.Items
             if (dam < 0)
                 return;
 
-            this.Mobile.Heal((int)dam);
-            this.Mobile.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
-            this.Mobile.PlaySound(0x1F2);
+            Mobile.Heal((int)dam, Mobile, false);
+            Mobile.SendLocalizedMessage(1113617); // Some of the damage you received has been converted to heal you.
+            Server.Effects.SendPacket(Mobile.Location, Mobile.Map, new ParticleEffect(EffectType.FixedFrom, Mobile.Serial, Serial.Zero, 0x375A, Mobile.Location, Mobile.Location, 1, 10, false, false, 33, 0, 2, 6889, 1, Mobile.Serial, 45, 0));
             m_Charges--;
         }
 
