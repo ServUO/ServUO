@@ -1179,7 +1179,7 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable),
                         new NamedInfoCol(AosAttribute.CastSpeed, 1),
                         new NamedInfoCol(AosAttribute.CastRecovery, 4),
-                        new NamedInfoCol(AosAttribute.SpellDamage, 15),
+                        new NamedInfoCol(AosAttribute.SpellDamage, 18),
                     },
 				};
 			m_PrefixSuffixInfo[5] = new NamedInfoCol[][]	// Exquisite
@@ -1362,7 +1362,7 @@ namespace Server.Items
                     new NamedInfoCol[]
                     {
                         new NamedInfoCol(AosAttribute.AttackChance, WeaponHCITable),
-                        new NamedInfoCol(AosAttribute.SpellDamage, 15),
+                        new NamedInfoCol(AosAttribute.SpellDamage, 18),
                     }, 
 				};
 			m_PrefixSuffixInfo[12] = new NamedInfoCol[][]	// Towering
