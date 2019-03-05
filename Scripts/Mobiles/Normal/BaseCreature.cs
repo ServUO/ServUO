@@ -1934,21 +1934,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if (!Summoned)
-                {
-                    return false;
-                }
-
-                Type type = GetType();
-
-                bool contains = false;
-
-                for (int i = 0; !contains && i < m_AnimateDeadTypes.Length; ++i)
-                {
-                    contains = (type == m_AnimateDeadTypes[i]);
-                }
-
-                return contains;
+                return Summoned && m_AnimateDeadTypes.Any(t => t == GetType());
             }
         }
 
@@ -7107,86 +7093,6 @@ namespace Server.Mobiles
         private long m_NextRummageTime;
 
         public virtual bool IsDispellable { get { return Summoned && !IsAnimatedDead; } }
-
-        #region Animate Dead
-        public virtual bool CanAnimateDead { get { return false; } }
-        public virtual double AnimateChance { get { return 0.05; } }
-        public virtual int AnimateScalar { get { return 50; } }
-        public virtual TimeSpan AnimateDelay { get { return TimeSpan.FromSeconds(10); } }
-        public virtual BaseCreature Animates { get { return null; } }
-
-        private DateTime m_NextAnimateDead = DateTime.UtcNow;
-
-        public virtual void AnimateDead()
-        {
-            Corpse best = null;
-
-            foreach (Item item in Map.GetItemsInRange(Location, 12))
-            {
-                Corpse c = null;
-
-                if (item is Corpse)
-                {
-                    c = (Corpse)item;
-                }
-                else
-                {
-                    continue;
-                }
-
-                if (c.ItemID != 0x2006 || c.Channeled || c.Owner.GetType() == typeof(PlayerMobile) || c.Owner.GetType() == null ||
-                    (c.Owner != null && c.Owner.Fame < 100) ||
-                    ((c.Owner != null) && (c.Owner is BaseCreature) &&
-                     (((BaseCreature)c.Owner).Summoned || ((BaseCreature)c.Owner).IsBonded)))
-                {
-                    continue;
-                }
-
-                best = c;
-                break;
-            }
-
-            if (best != null)
-            {
-                BaseCreature animated = Animates;
-
-                if (animated != null)
-                {
-                    animated.Tamable = false;
-                    animated.MoveToWorld(best.Location, Map);
-                    Scale(animated, AnimateScalar);
-                    Effects.PlaySound(best.Location, Map, 0x1FB);
-                    Effects.SendLocationParticles(
-                        EffectItem.Create(best.Location, Map, EffectItem.DefaultDuration), 0x3789, 1, 40, 0x3F, 3, 9907, 0);
-                }
-
-                best.ProcessDelta();
-                best.SendRemovePacket();
-                best.ItemID = Utility.Random(0xECA, 9); // bone graphic
-                best.Hue = 0;
-                best.ProcessDelta();
-            }
-
-            m_NextAnimateDead = DateTime.UtcNow + AnimateDelay;
-        }
-
-        public static void Scale(BaseCreature bc, int scalar)
-        {
-            int toScale;
-
-            toScale = bc.RawStr;
-            bc.RawStr = AOS.Scale(toScale, scalar);
-
-            toScale = bc.HitsMaxSeed;
-
-            if (toScale > 0)
-            {
-                bc.HitsMaxSeed = AOS.Scale(toScale, scalar);
-            }
-
-            bc.Hits = bc.Hits; // refresh hits
-        }
-        #endregion
 
         #region Healing
         public virtual double HealChance { get { return 0.0; } }

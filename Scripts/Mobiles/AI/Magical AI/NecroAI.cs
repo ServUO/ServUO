@@ -41,6 +41,16 @@ namespace Server.Mobiles
 			return null;
 		}
 
+        public override Spell GetRandomSummonSpell()
+        {
+            if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.Mana >= 23)
+            {
+                return new AnimateDeadSpell(m_Mobile, null);
+            }
+
+            return null;
+        }
+
 		public override Spell GetRandomCurseSpell()
 		{
 			var mana = m_Mobile.Mana;

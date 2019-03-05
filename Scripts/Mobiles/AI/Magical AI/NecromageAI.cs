@@ -112,7 +112,7 @@ namespace Server.Mobiles
 
 		public override Spell GetRandomSummonSpell()
 		{
-			if (!m_Mobile.Controlled && m_Mobile.Mana >= 23)
+			if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.Mana >= 23)
 			{
 				return new AnimateDeadSpell(m_Mobile, null);
 			}
