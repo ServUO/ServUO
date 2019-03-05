@@ -63,11 +63,8 @@ namespace Server.Engines.Khaldun
             {
                 GoingGumshoeQuest quest = QuestHelper.GetQuest<GoingGumshoeQuest>((PlayerMobile)m);
 
-                if (quest != null)
+                if (quest != null && quest.Completed)
                 {
-                    m.SendLocalizedMessage(quest.CompleteMessage);
-
-                    quest.Objectives[0].CurProgress++;
                     quest.GiveRewards();
 
                     BaseQuest newquest = QuestHelper.RandomQuest((PlayerMobile)m, new Type[] { typeof(GoingGumshoeQuest2) }, this);
@@ -140,17 +137,27 @@ namespace Server.Engines.Khaldun
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile && InRange(m.Location, 3) && !InRange(oldLocation, 3))
+            if (m is PlayerMobile && InLOS(m) && InRange(m.Location, 3) && !InRange(oldLocation, 3))
             {
-                var quest = QuestHelper.GetQuest<GoingGumshoeQuest4>((PlayerMobile)m);
+                var quest = QuestHelper.GetQuest<GoingGumshoeQuest>((PlayerMobile)m);
 
-                if (quest != null && quest.IsComplete)
+                if (quest != null)
                 {
                     quest.Objectives[0].CurProgress++;
+                    quest.OnCompleted();
+                }
+                else
+                {
+                    var quest2 = QuestHelper.GetQuest<GoingGumshoeQuest4>((PlayerMobile)m);
 
-                    m.SendGump(new InternalGump());
-                    m.PlaySound(quest.CompleteSound);
-                    quest.GiveRewards();
+                    if (quest2 != null && quest2.IsComplete)
+                    {
+                        quest2.Objectives[0].CurProgress++;
+
+                        m.SendGump(new InternalGump());
+                        m.PlaySound(quest.CompleteSound);
+                        quest2.GiveRewards();
+                    }
                 }
             }
         }
