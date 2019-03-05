@@ -85,10 +85,10 @@ namespace Server.Engines.NewMagincia
             int page = 1;
             int y = 0;
 
+            AddPage(page);
+
             for (int i = 0; i < Messages.Count; i++)
             {
-                AddPage(page);
-
                 if (page > 1)
                     AddButton(Widescreen ? 446 : 246, 7, 0x1458, 0x1458, 0, GumpButtonType.Page, page - 1);
 
@@ -124,6 +124,8 @@ namespace Server.Engines.NewMagincia
                     AddButton(Widescreen ? 468 : 268, 7, 0x1459, 0x1459, 0, GumpButtonType.Page, page + 1);
                     page++;
                     y = 0;
+
+                    AddPage(page);
                 }
             }
         }

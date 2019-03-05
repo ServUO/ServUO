@@ -974,8 +974,20 @@ namespace Server.Mobiles
                 defender.SendLocalizedMessage(1070842); // The creature's breath is burning you!
             }
 
-            creature.PlaySound(0x227);
-            defender.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
+            int layer = 0;
+
+            if (defender is BaseCreature)
+            {
+                layer = 163;
+            }
+            else
+            {
+                layer = 45;
+            }
+            
+            Effects.SendPacket(defender.Location, defender.Map, new ParticleEffect(EffectType.FixedFrom, defender.Serial, Serial.Zero, 0x3709, defender.Location, defender.Location, 1, 15, false, false, 2735, 0, 4, 9502, 1, defender.Serial, layer, 0));
+            Effects.SendPacket(defender.Location, defender.Map, new ParticleEffect(EffectType.FixedFrom, defender.Serial, Serial.Zero, 0x3709, defender.Location, defender.Location, 10, 30, false, false, 0, 0, 0, 52, 1, defender.Serial, layer, 0));
+            defender.PlaySound(520);
 
             timer = new InternalTimer(creature, defender);
             timer.Start();
@@ -1011,15 +1023,25 @@ namespace Server.Mobiles
             {
                 _Tick++;
 
-                if (_Tick > 3)
+                if (_Tick > 10 || !Defender.Alive)
                 {
                     EndFire(Defender);
                 }
                 else
                 {
-                    // TODO: Effects?
-                    AOS.Damage(Defender, Attacker, Utility.RandomMinMax(20, 30), 0, 100, 0, 0, 0);
-                    Defender.PlaySound(0x1DD);
+                    int layer = 0;
+
+                    if (Defender is BaseCreature)
+                    {
+                        layer = 163;
+                    }
+                    else
+                    {
+                        layer = 45;
+                    }
+
+                    Effects.SendPacket(Defender.Location, Defender.Map, new ParticleEffect(EffectType.FixedFrom, Defender.Serial, Serial.Zero, 0x3709, Defender.Location, Defender.Location, 1, 15, false, false, 2735, 0, 4, 9502, 1, Defender.Serial, layer, 0));
+                    AOS.Damage(Defender, Attacker, 10, 0, 100, 0, 0, 0);
                 }
             }
         }
@@ -1039,7 +1061,6 @@ namespace Server.Mobiles
 		{
             defender.SendLocalizedMessage(1070844); // The creature repels the attack back at you.
             defender.FixedEffect(0x37B9, 10, 5);
-            creature.Say("I AM REPELING");
             AOS.Damage(defender, creature, damage / 2, 0, 0, 0, 0, 0, 0, 100);
 
             damage = 0;
