@@ -5,6 +5,7 @@ using Server;
 using Server.Mobiles;
 using Server.Gumps;
 using Server.Network;
+using Server.Engines.Points;
 
 namespace Server.Items
 {
@@ -25,7 +26,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m.InRange(GetWorldLocation(), 2))
+            if (PointsSystem.TreasuresOfDoom.InSeason && m.InRange(GetWorldLocation(), 2))
             {
                 var gump = new Gump(150, 150);
 
@@ -35,7 +36,7 @@ namespace Server.Items
             }
         }
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement { get { return PointsSystem.TreasuresOfDoom.InSeason; } }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
