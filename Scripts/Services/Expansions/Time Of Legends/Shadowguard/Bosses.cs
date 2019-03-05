@@ -604,11 +604,6 @@ namespace Server.Engines.Shadowguard
 	{
 		public override Type[] SummonTypes { get { return _SummonTypes; } }
 		private Type[] _SummonTypes = new Type[] { typeof(SkeletalDragon), typeof(LichLord), typeof(WailingBanshee), typeof(FleshGolem) };
-		
-		public override bool CanAnimateDead{ get { return true; } }
-		public override double AnimateChance{ get{ return 0.15; } }
-		public override int AnimateScalar{ get{ return 150; } }
-		public override BaseCreature Animates{ get{ return new FleshGolem(); } }
 
         public override bool CanDiscord { get { return true; } }
         public override bool PlayInstrumentSound { get { return false; } }
@@ -708,10 +703,6 @@ namespace Server.Engines.Shadowguard
 		public override Type[] SummonTypes { get { return _SummonTypes; } }
 		private Type[] _SummonTypes = new Type[] { typeof(MinotaurCaptain), typeof(Daemon), typeof(Titan) };
 		
-		public override bool CanAnimateDead{ get { return true; } }
-		public override double AnimateChance{ get{ return 0.15; } }
-		public override int AnimateScalar{ get{ return 150; } }
-		public override BaseCreature Animates{ get{ return new FleshGolem(); } }
         public override bool BardImmune { get { return true; } }
 
 		private DateTime _NextNuke;
