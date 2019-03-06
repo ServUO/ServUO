@@ -104,7 +104,7 @@ namespace Server.Engines.Quests
         {
             AddObjective(new SlayObjective(typeof(LizardmanDefender), "lizardman defenders", 5));
             AddObjective(new SlayObjective(typeof(LizardmanSquatter), "lizardman squatters", 5));
-            AddObjective(new SlayObjective(typeof(CaveTroll), "cave trolls", 5));
+            AddObjective(new SlayObjective(typeof(CaveTrollWrong), "cave trolls", 5));
             AddObjective(new SlayObjective(typeof(HungryOgre), "hungry ogres", 5));
 
             AddReward(new BaseReward(1158167)); // A step closer to righting Wrong
