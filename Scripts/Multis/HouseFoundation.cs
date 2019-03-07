@@ -2372,7 +2372,7 @@ namespace Server.Multis
                 m_PlaneUsed = new bool[9];
 
                 for (int i = 0; i < m_PlaneBuffers.Length; ++i)
-                    m_PlaneBuffers[i] = new byte[0x1000];
+                    m_PlaneBuffers[i] = new byte[0x2000];
 
                 m_StairBuffers = new byte[6][];
 
