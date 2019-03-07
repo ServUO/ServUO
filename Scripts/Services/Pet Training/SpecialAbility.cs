@@ -857,11 +857,6 @@ namespace Server.Mobiles
             if (_Table != null && _Table.ContainsKey(m))
             {
                 _Table.Remove(m);
-
-                if (_Table.Count == 0)
-                {
-                    _Table = null;
-                }
             }
         }
 
