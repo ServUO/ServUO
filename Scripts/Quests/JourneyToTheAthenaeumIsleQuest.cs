@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server;
 using Server.Mobiles;
 using Server.Items;
-using System.Collections.Generic;
+using Server.Gumps;
 
 namespace Server.Engines.Quests
 {
@@ -68,6 +71,91 @@ namespace Server.Engines.Quests
 			//AddObjective( new InternalObjective() );
             AddReward(new BaseReward(typeof(ChronicleOfTheGargoyleQueen1), 1, "Chronicle of the Gargoyle Queen Vol. I"));
 		}
+
+        public override bool RenderObjective(MondainQuestGump gump, bool offer)
+        {
+            int offset = 163;
+            int page = 1;
+            var slay = Objectives.FirstOrDefault(o => o is SlayObjective) as SlayObjective;
+
+            if (offer)
+                gump.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
+            else
+                gump.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
+
+            gump.AddHtmlObject(160, 70, 200, 40, Title, BaseQuestGump.DarkGreen, false, false);
+
+            gump.AddPage(page);
+            gump.AddButton(130, 430, 0x2EEF, 0x2EF1, 0, GumpButtonType.Page, page - 1);
+
+            gump.AddHtmlLocalized(98, 147, 312, 16, 1072208, 0x2710, false, false); // All of the following	
+            gump.AddHtmlLocalized(98, offset, 30, 16, 1072204, 0x15F90, false, false); // Slay	
+            gump.AddLabel(133, offset, 0x481, "10   " + slay.Name); // %count% + %name%
+
+            offset += 16;
+
+            if (!offer)
+            {
+                gump.AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
+                gump.AddLabel(223, offset, 0x481, slay.CurProgress.ToString());  // %current progress%
+
+                offset += 16;
+            }
+
+            offset += 75;
+
+            for (int i = 1; i < Objectives.Count; i++)
+            {
+                gump.AddHtmlLocalized(98, offset, 305, 16, 1150933 + (i - 1), 0x15F90, false, false);
+
+                if (offset + 80 > 335)
+                {
+                    offset = 163;
+
+                    gump.AddButton(275, 430, 0x2EE9, 0x2EEB, 0, GumpButtonType.Page, page + 1);
+                    gump.AddPage(++page);
+                    gump.AddButton(130, 430, 0x2EEF, 0x2EF1, 0, GumpButtonType.Page, page - 1);
+
+                    if (i == Objectives.Count - 1)
+                    {
+                        RenderRewardPage(gump, offer);
+                        break;
+                    }
+                }
+                // render rewards page
+                else if (i == Objectives.Count - 1)
+                {
+                    gump.AddButton(275, 430, 0x2EE9, 0x2EEB, 0, GumpButtonType.Page, page + 1);
+                    gump.AddPage(++page);
+                    RenderRewardPage(gump, offer);
+                    gump.AddButton(130, 430, 0x2EEF, 0x2EF1, 0, GumpButtonType.Page, page - 1);
+                    break;
+                }
+                else
+                {
+                    offset += 80;
+                }
+            }
+
+            return true;
+        }
+
+        private void RenderRewardPage(MondainQuestGump gump, bool offer)
+        {
+            int offset = 163;
+
+            if (offer)
+                gump.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
+            else
+                gump.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log	
+
+            gump.AddHtmlLocalized(98, 140, 312, 16, 1072201, 0x2710, false, false); // Reward	
+
+            BaseReward reward = Rewards[0];
+
+            gump.AddImage(105, offset, 0x4B9);
+            gump.AddHtmlObject(133, offset, 280, 100, reward.Name, BaseQuestGump.LightGreen, false, false);
+        }
 
         private Type[] m_Types = new Type[]
 			{

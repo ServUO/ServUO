@@ -4,6 +4,21 @@ using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
+    public enum Buttons
+    {
+        Close,
+        CloseQuest,
+        RefuseQuest,
+        ResignQuest,
+        AcceptQuest,
+        AcceptReward,
+        PreviousPage,
+        NextPage,
+        Complete,
+        CompleteQuest,
+        RefuseReward
+    }
+
     public class MondainQuestGump : BaseQuestGump
     {
         private const int ButtonOffset = 11;
@@ -136,20 +151,6 @@ namespace Server.Engines.Quests
             Failed
         }
 
-        private enum Buttons
-        {
-            Close,
-            CloseQuest,
-            RefuseQuest,
-            ResignQuest,
-            AcceptQuest,
-            AcceptReward,
-            PreviousPage,
-            NextPage,
-            Complete,
-            CompleteQuest,
-            RefuseReward
-        }
         public virtual void SecMain()
         {
             if (m_From == null)
@@ -195,7 +196,27 @@ namespace Server.Engines.Quests
                     AddHtmlLocalized(98, 140, 312, 16, 1072202, 0x2710, false, false); // Description
 
                 AddHtmlObject(98, 156, 312, 180, m_Quest.Description, LightGreen, false, true);
+
+                if (m_Offer)
+                {
+                    AddButton(95, 455, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
+                    AddButton(313, 455, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
+                }
+                else
+                {
+                    AddButton(95, 455, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
+                    AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
+                }
+
+                if (m_Quest.ShowDescription)
+                    AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
             }
+        }
+
+        public virtual void SecObjectives()
+        {
+            if (m_Quest == null)
+                return;
 
             if (m_Offer)
             {
@@ -207,15 +228,6 @@ namespace Server.Engines.Quests
                 AddButton(95, 455, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
                 AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
             }
-			
-            if(m_Quest.ShowDescription)
-                AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
-        }
-
-        public virtual void SecObjectives()
-        {
-            if (m_Quest == null)
-                return;
 
             if (!m_Quest.RenderObjective(this, m_Offer))
             {
@@ -434,21 +446,10 @@ namespace Server.Engines.Quests
                         }
                     }
                 }
-            }
 
-            if (m_Offer)
-            {
-                AddButton(95, 455, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
-                AddButton(313, 455, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
+                AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+                AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
             }
-            else
-            {
-                AddButton(95, 455, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
-                AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
-            }
-
-            AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
-            AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
         }
 
         public virtual void SecRewards()

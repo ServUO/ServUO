@@ -128,6 +128,7 @@ namespace Server.Engines.Quests
         public virtual object FailedMsg { get { return null; } }
 
         public virtual bool ShowDescription { get { return true; } }
+        public virtual bool ShowRewards { get { return true; } }
         public virtual bool CanRefuseReward { get { return false; } }
 		
         private List<BaseObjective> m_Objectives;		
