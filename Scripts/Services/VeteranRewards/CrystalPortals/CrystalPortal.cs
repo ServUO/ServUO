@@ -194,7 +194,7 @@ namespace Server.Items
 
 			if (ValidateUse(e.Mobile, true))
 			{
-                if (SpellHelper.CheckTravel(map, loc, TravelCheckType.RecallTo))
+                if (SpellHelper.CheckTravel(e.Mobile, map, loc, TravelCheckType.RecallTo))
                 {
                     OnTeleport(e.Mobile, loc, map);
                 }
@@ -365,13 +365,13 @@ namespace Server.Items
                 case "fel papua mint":
                     {
                         loc = new Point3D(5675, 3144, 12);
-                        map = Map.Trammel;
+                        map = Map.Felucca;
                     }
                     break;
                 case "fel delucia mint":
                     {
                         loc = new Point3D(5274, 3991, 37);
-                        map = Map.Trammel;
+                        map = Map.Felucca;
                     }
                     break;
 				case "fel britain mint":
