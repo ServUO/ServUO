@@ -190,7 +190,7 @@ namespace Server.Items
 
                 if (Addon is RoseRugAddon)
                 {
-                    list.Add(1150103, ((RoseRugAddon)Addon).ResourceCount.ToString()); // Messages in Bottles: ~1_val~
+                    list.Add(1150102, ((RoseRugAddon)Addon).ResourceCount.ToString()); // Seeds: ~1_val~
                 }
             }
 
