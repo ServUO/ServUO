@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Server.Engines.CityLoyalty;
 using Server.Engines.VvV;
 using Server.Engines.ArenaSystem;
+using Server.Engines.SorcerersDungeon;
 
 namespace Server.Engines.Points
 {
@@ -42,7 +43,9 @@ namespace Server.Engines.Points
         TreasuresOfKotlCity,
         PVPArena,
 
-        Khaldun
+        Khaldun,
+        Doom,
+        SorcerersDungeon
     }
 
     public abstract class PointsSystem
@@ -343,6 +346,8 @@ namespace Server.Engines.Points
         public static KotlCityData TreasuresOfKotlCity { get; set; }
         public static PVPArenaSystem ArenaSystem { get; set; }
         public static KhaldunData Khaldun { get; set; }
+        public static DoomData TreasuresOfDoom { get; set; }
+        public static SorcerersDungeonData SorcerersDungeon { get; set; }
 
         public static void Configure()
         {
@@ -364,6 +369,8 @@ namespace Server.Engines.Points
             CityLoyaltySystem.ConstructSystems();
             ArenaSystem = new PVPArenaSystem();
             Khaldun = new KhaldunData();
+            TreasuresOfDoom = new DoomData();
+            SorcerersDungeon = new SorcerersDungeonData();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)

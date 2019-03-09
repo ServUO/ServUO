@@ -275,6 +275,26 @@ namespace Server.Items
             get { return m_EnergyNonImbuing; }
             set { m_EnergyNonImbuing = value; }
         }
+
+        public virtual int[] BaseResists
+        {
+            get
+            {
+                var list = new int[5];
+
+                list[0] = BasePhysicalResistance;
+                list[1] = BaseFireResistance;
+                list[2] = BaseColdResistance;
+                list[3] = BasePoisonResistance;
+                list[4] = BaseEnergyResistance;
+
+                return list;
+            }
+        }
+
+        public virtual void OnAfterImbued(Mobile m, int mod, int value)
+        {
+        }
         #endregion
 
         #region Runic Reforging
@@ -1016,6 +1036,8 @@ namespace Server.Items
             clothing.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
             clothing.m_SetSkillBonuses = new AosSkillBonuses(newItem, m_SetSkillBonuses);
             #endregion
+
+            base.OnAfterDuped(newItem);
         }
 
         public BaseClothing(Serial serial)
@@ -1175,9 +1197,9 @@ namespace Server.Items
                 list.Add(1154937); // VvV Item
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddNameProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
+            base.AddNameProperties(list);
 
             if (OwnerName != null)
             {
@@ -1380,8 +1402,6 @@ namespace Server.Items
             if (m_HitPoints >= 0 && m_MaxHitPoints > 0)
                 list.Add(1060639, "{0}\t{1}", m_HitPoints, m_MaxHitPoints); // durability ~1_val~ / ~2_val~
 
-            EnchantedHotItem.AddProperties(this, list);
-
             #region Mondain's Legacy Sets
             if (IsSetItem && !m_SetEquipped)
             {
@@ -1389,9 +1409,10 @@ namespace Server.Items
                 GetSetProperties(list);
             }
             #endregion
+        }
 
-            AddHonestyProperty(list);
-
+        public override void AddItemPowerProperties(ObjectPropertyList list)
+        {
             if (m_ItemPower != ItemPower.None)
             {
                 if (m_ItemPower <= ItemPower.LegendaryArtifact)
@@ -1431,7 +1452,7 @@ namespace Server.Items
         {
             bool drop = base.DropToWorld(from, p);
 
-            EnchantedHotItem.CheckDrop(from, this);
+            EnchantedHotItemSocket.CheckDrop(from, this);
 
             return drop;
         }

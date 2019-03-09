@@ -851,7 +851,7 @@ namespace Server.Engines.NewMagincia
 
                             if (amount > 0)
                             {
-                                if (m_Buy && Banker.GetBalance(from) < m_Broker.GetBuyCost(from, entry, amount))
+                                if (m_Buy && Banker.GetBalance(from) < entry.SellPricePer * amount)
                                 {
                                     /* You do not have the funds needed to make this trade available in your bank box. Brokers are only able to transfer funds from your bank box.
                                     Please deposit the necessary funds into your bank box and try again.

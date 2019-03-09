@@ -16,6 +16,8 @@ namespace Server.Items
         bool CheckReveal(Mobile m);
         bool CheckPassiveDetect(Mobile m);
         void OnRevealed(Mobile m);
+
+        bool CheckWhenHidden { get; }
     }
 }
 
@@ -58,7 +60,7 @@ namespace Server.SkillHandlers
                     p = src.Location;
 
                 double srcSkill = src.Skills[SkillName.DetectHidden].Value;
-                int range = (int)(srcSkill / 10.0);
+                int range = Math.Max(2, (int)(srcSkill / 10.0));
 
                 if (!src.CheckSkill(SkillName.DetectHidden, 0.0, 100.0))
                     range /= 2;
@@ -102,16 +104,23 @@ namespace Server.SkillHandlers
 
                     foreach (Item item in itemsInRange)
                     {
-                        if (item.Visible)
-                            continue;
-
-                        IRevealableItem dItem = item as IRevealableItem;
-
-                        if (dItem != null && dItem.CheckReveal(src))
+                        if (item is LibraryBookcase && Server.Engines.Khaldun.GoingGumshoeQuest3.CheckBookcase(src, item))
                         {
-                            dItem.OnRevealed(src);
-
                             foundAnyone = true;
+                        }
+                        else
+                        {
+                            IRevealableItem dItem = item as IRevealableItem;
+
+                            if (dItem == null || (item.Visible && dItem.CheckWhenHidden))
+                                continue;
+
+                            if (dItem.CheckReveal(src))
+                            {
+                                dItem.OnRevealed(src);
+
+                                foundAnyone = true;
+                            }
                         }
                     }
 

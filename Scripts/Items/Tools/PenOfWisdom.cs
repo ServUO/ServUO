@@ -51,14 +51,14 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         public override void OnDoubleClick(Mobile from)
         {
             base.OnDoubleClick(from);
 
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1115359); // Please select the source runebook. Recall runes and Mark scrolls at the base level of your backpack are consumed.
                 from.Target = new SourceTarget(this);
@@ -74,7 +74,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write((int)0); // version
 
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((int)m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -82,7 +82,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            this.m_UsesRemaining = reader.ReadInt();
+            m_UsesRemaining = reader.ReadInt();
         }
 
         public bool CheckAccess(Mobile m, Runebook book)
@@ -97,11 +97,11 @@ namespace Server.Items
 
         private class SourceTarget : Target
         {
-            private readonly PenOfWisdom m_Pen;
+            private readonly PenOfWisdom Pen;
 
             public SourceTarget(PenOfWisdom pen) : base(12, false, TargetFlags.None)
             {
-                m_Pen = pen;
+                Pen = pen;
             }
 
             protected override void OnTarget(Mobile from, object targ)
@@ -114,7 +114,7 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1115329); // Runebooks you wish to copy must be in your backpack.
                     }
-                    else if (!m_Pen.CheckAccess(from, book) && !book.Movable)
+                    else if (!Pen.CheckAccess(from, book) && !book.Movable)
                     {
                         from.SendLocalizedMessage(1115332); // Only the house owner and co-owners can copy the lockdowned runebook with the Pen.
                     }
@@ -129,7 +129,7 @@ namespace Server.Items
                     else
                     {
                         from.SendLocalizedMessage(1115363); // Please select the destination runebook.
-                        from.Target = new CopyTarget(m_Pen, book);
+                        from.Target = new CopyTarget(Pen, book);
                     }
                 }
                 else
@@ -141,13 +141,13 @@ namespace Server.Items
 
         private class CopyTarget : Target
         {
-            private readonly PenOfWisdom m_Pen;
-            private readonly Runebook m_SourceBook;
+            private readonly PenOfWisdom Pen;
+            private readonly Runebook SourceBook;
 
             public CopyTarget(PenOfWisdom pen, Runebook book) : base(12, false, TargetFlags.None)
             {
-                m_Pen = pen;
-                m_SourceBook = book;
+                Pen = pen;
+                SourceBook = book;
             }
 
             protected override void OnTarget(Mobile from, object targ)
@@ -160,7 +160,7 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
                     }
-                    else if (book == m_SourceBook)
+                    else if (book == SourceBook)
                     {
                         from.SendLocalizedMessage(1115360); // You can't select the same runebook!
                     }
@@ -171,7 +171,7 @@ namespace Server.Items
                     else
                     {
                         if (!from.HasGump(typeof(PenOfWisdomGump)))
-                            from.SendGump(new PenOfWisdomGump(from, m_Pen, m_SourceBook, book, null));
+                            from.SendGump(new PenOfWisdomGump(from, Pen, SourceBook, book, null));
                     }
                 }
                 else
@@ -184,57 +184,80 @@ namespace Server.Items
 
     public class PenOfWisdomGump : Gump
     {
-        private readonly List<RunebookEntry> m_Checked;
-        private readonly Runebook m_SourceBook;
-        private readonly Runebook m_CopyBook;
-        private readonly int m_RuneAmount;
-        private readonly int m_MarkScrollAmount;
-        private readonly int m_Blank;
-        private readonly PenOfWisdom m_Pen;
+        public readonly int EntryColor = 0xFFFFFF;
 
-        public PenOfWisdomGump(Mobile from, PenOfWisdom pen, Runebook sourcebook, Runebook copybook, List<RunebookEntry> list) : base(50, 50)
+        public readonly List<RunebookEntry> Checked;
+        public readonly Runebook SourceBook;
+        public readonly Runebook CopyBook;
+        public readonly int RuneAmount;
+        public readonly int MarkScrollAmount;
+        public readonly int Blank;
+        public readonly PenOfWisdom Pen;
+
+        public PenOfWisdomGump(Mobile from, PenOfWisdom pen, Runebook sourcebook, Runebook copybook, List<RunebookEntry> list)
+            : base(50, 50)
         {
             Container bp = from.Backpack;
 
-            m_Pen = pen;
-            m_SourceBook = sourcebook;
-            m_CopyBook = copybook;
-            m_MarkScrollAmount = bp.GetAmount(typeof(MarkScroll), true);
-            m_RuneAmount = bp.GetAmount(typeof(RecallRune), true);
-            m_Blank = copybook.MaxEntries - copybook.Entries.Count;
+            Pen = pen;
+            SourceBook = sourcebook;
+            CopyBook = copybook;
+            MarkScrollAmount = bp.GetAmount(typeof(MarkScroll), true);
+            RuneAmount = bp.GetAmount(typeof(RecallRune), true);
+            Blank = copybook.MaxEntries - copybook.Entries.Count;
 
             if (list == null)
             {
-                m_Checked = new List<RunebookEntry>();
+                Checked = new List<RunebookEntry>();
             }
             else
             {
-                m_Checked = list;
+                Checked = list;
             }
 
             Closable = false;
             Disposable = true;
             Dragable = true;
 
+            int entrycount = SourceBook.Entries.Count;
+
+            int y = entrycount <= 16 ? 0 : 25;
+
             AddPage(0);
-            AddBackground(4, 39, 391, 313, 9200);
+
+            AddBackground(4, 39, 391, 313 + y, 9200);
             AddImageTiled(8, 45, 380, 53, 2624);
-            AddHtmlLocalized(7, 50, 380, 53, 1115428, String.Format("{0}\t{1}\t{2}\t{3}", m_MarkScrollAmount.ToString(), m_RuneAmount.ToString(), m_Checked.Count, m_Blank.ToString()), 0xFFFFFF, false, false); // <CENTER>Pen of Wisdom<br>(Mark Scrolls: ~1_VAL~, Runes: ~2_VAL~ | Selected: ~3_VAL~, Blank: ~4_VAL~)</CENTER>
+
+            AddHtmlLocalized(7, 50, 380, 53, 1115428, String.Format("@{0}@{1}@{2}@{3}", MarkScrollAmount.ToString(), RuneAmount.ToString(), Checked.Count, Blank.ToString()), EntryColor, false, false); // <CENTER>Pen of Wisdom<br>(Mark Scrolls: ~1_VAL~, Runes: ~2_VAL~ | Selected: ~3_VAL~, Blank: ~4_VAL~)</CENTER>
 
             AddImageTiled(8, 101, 188, 220, 2624);
             AddImageTiled(199, 101, 188, 220, 2624);
-            AddButton(12, 325, 4017, 4018, 20, GumpButtonType.Reply, 0);
-            AddLabel(48, 325, 2100, @"Cancel");
-            AddButton(153, 325, 4011, 4012, 21, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(189, 325, 78, 22, 1115427, 0xFFFFFF, false, false); // Select All
-            AddButton(309, 325, 4023, 4024, 22, GumpButtonType.Reply, 0);
-            AddLabel(344, 325, 2100, @"Okay");
+
+            AddButton(12, 325 + y, 4017, 4018, 20, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(48, 326 + y, 78, 20, 1006045, EntryColor, false, false); // Cancel
+
+            AddButton(153, 325 + y, 4011, 4012, 21, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(189, 326 + y, 78, 20, 1115427, EntryColor, false, false); // Select All
+
+            AddButton(309, 325 + y, 4023, 4024, 22, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(344, 326 + y, 78, 20, 1156596, EntryColor, false, false); // Okay
 
             string description;
 
-            for (int i = 0; i < sourcebook.Entries.Count; i++)
+            int page = 1;
+            int yy = 0;
+
+            AddPage(page);
+
+            for (int i = 0; i < entrycount; i++)
             {
-                description = sourcebook.Entries[i].Description;
+                if (page > 1)
+                {
+                    AddButton(50, 325, 4014, 4015, 0, GumpButtonType.Page, page - 1);
+                    AddHtmlLocalized(85, 326, 150, 20, 1011067, EntryColor, false, false); // Previous page
+                }
+
+                description = SourceBook.Entries[i].Description;
 
                 if (description == null)
                 {
@@ -248,22 +271,35 @@ namespace Server.Items
                     }
                 }
 
-                if (i < 8)
+                if (yy < 8)
                 {
-                    AddButton(15, 110 + i * 25, m_Checked.Contains(sourcebook.Entries[i]) ? 211 : 210, m_Checked.Contains(sourcebook.Entries[i]) ? 210 : 211, i, GumpButtonType.Reply, 0);
-                    AddLabel(45, 110 + i * 25, RunebookGump.GetMapHue(sourcebook.Entries[i].Map), String.Format("{0}", description));
+                    AddButton(15, 110 + (yy * 25), Checked.Contains(SourceBook.Entries[i]) ? 211 : 210, Checked.Contains(SourceBook.Entries[i]) ? 210 : 211, i, GumpButtonType.Reply, 0);
+                    AddLabelCropped(45, 110 + (yy * 25), 115, 17, RunebookGump.GetMapHue(SourceBook.Entries[i].Map), String.Format("{0}", description));
                 }
                 else
                 {
-                    AddButton(205, 110 + ((i - 8) * 25), m_Checked.Contains(sourcebook.Entries[i]) ? 211 : 210, m_Checked.Contains(sourcebook.Entries[i]) ? 210 : 211, i, GumpButtonType.Reply, 0);
-                    AddLabel(235, 110 + ((i - 8) * 25), RunebookGump.GetMapHue(sourcebook.Entries[i].Map), String.Format("{0}", description));
+                    AddButton(205, 110 + ((yy - 8) * 25), Checked.Contains(SourceBook.Entries[i]) ? 211 : 210, Checked.Contains(SourceBook.Entries[i]) ? 210 : 211, i, GumpButtonType.Reply, 0);
+                    AddLabelCropped(235, 110 + ((yy - 8) * 25), 115, 17, RunebookGump.GetMapHue(SourceBook.Entries[i].Map), String.Format("{0}", description));
+                }
+
+                yy++;
+
+                bool pages = (i + 1) % 16 == 0;
+
+                if (pages && entrycount - 1 != i)
+                {
+                    AddButton(200, 325, 4005, 4006, 0, GumpButtonType.Page, page + 1);
+                    AddHtmlLocalized(235, 326, 150, 20, 1011066, EntryColor, false, false); // Next page
+                    page++;
+                    AddPage(page);
+                    yy = 0;
                 }
             }
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            if (this.m_Checked == null)
+            if (Checked == null)
                 return;
 
             Mobile from = sender.Mobile;
@@ -276,45 +312,45 @@ namespace Server.Items
                     }
                 case 21: // Select All
                     {
-                        m_Checked.Clear();
+                        Checked.Clear();
 
-                        for (int i = 0; i < m_SourceBook.Entries.Count; i++)
+                        for (int i = 0; i < SourceBook.Entries.Count; i++)
                         {
-                            m_Checked.Add(m_SourceBook.Entries[i]);
+                            Checked.Add(SourceBook.Entries[i]);
                         }
 
                         if (!from.HasGump(typeof(PenOfWisdomGump)))
-                            from.SendGump(new PenOfWisdomGump(from, m_Pen, m_SourceBook, m_CopyBook, m_Checked));
+                            from.SendGump(new PenOfWisdomGump(from, Pen, SourceBook, CopyBook, Checked));
 
                         break;
                     }
                 case 22: // OK
                     {
-                        if (m_MarkScrollAmount < m_Checked.Count || m_RuneAmount < m_Checked.Count)
+                        if (MarkScrollAmount < Checked.Count || RuneAmount < Checked.Count)
                         {
                             from.SendLocalizedMessage(1115364); // You don't have enough recall runes and Mark scrolls to do that.
                         }
-                        else if (m_Blank < m_Checked.Count)
+                        else if (Blank < Checked.Count)
                         {
                             from.SendLocalizedMessage(1115330); // The destination runebook doesn't have enough space.
                         }
-                        else if (!m_SourceBook.IsChildOf(from.Backpack) && m_SourceBook.Movable || !m_CopyBook.IsChildOf(from.Backpack))
+                        else if (!SourceBook.IsChildOf(from.Backpack) && SourceBook.Movable || !CopyBook.IsChildOf(from.Backpack))
                         {
                             from.SendLocalizedMessage(1115329); // Runebooks you wish to copy must be in your backpack.
                         }
                         else
                         {
-                            foreach (RunebookEntry entry in m_Checked)
+                            foreach (RunebookEntry entry in Checked)
                             {
-                                m_CopyBook.Entries.Add(entry);
+                                CopyBook.Entries.Add(entry);
                             }
 
                             Container bp = from.Backpack;
 
-                            bp.ConsumeTotal(typeof(MarkScroll), m_Checked.Count, true);
-                            bp.ConsumeTotal(typeof(RecallRune), m_Checked.Count, true);
-                            m_Pen.UsesRemaining -= 1;
-                            m_Pen.InvalidateProperties();
+                            bp.ConsumeTotal(typeof(MarkScroll), Checked.Count, true);
+                            bp.ConsumeTotal(typeof(RecallRune), Checked.Count, true);
+                            Pen.UsesRemaining -= 1;
+                            Pen.InvalidateProperties();
 
                             from.SendLocalizedMessage(1115331); // The Pen magically marks runes and binds them to the runebook.
                             from.SendLocalizedMessage(1115366); // The pen's magical power is consumed and it crumbles to dust.
@@ -326,17 +362,17 @@ namespace Server.Items
                     {
                         int index = info.ButtonID;
 
-                        if (m_Checked.Contains(m_SourceBook.Entries[index]))
+                        if (Checked.Contains(SourceBook.Entries[index]))
                         {
-                            m_Checked.Remove(m_SourceBook.Entries[index]);
+                            Checked.Remove(SourceBook.Entries[index]);
                         }
                         else
                         {
-                            m_Checked.Add(m_SourceBook.Entries[index]);
+                            Checked.Add(SourceBook.Entries[index]);
                         }
 
                         if (!from.HasGump(typeof(PenOfWisdomGump)))
-                            from.SendGump(new PenOfWisdomGump(from, m_Pen, m_SourceBook, m_CopyBook, m_Checked));
+                            from.SendGump(new PenOfWisdomGump(from, Pen, SourceBook, CopyBook, Checked));
 
                         break;
                     }

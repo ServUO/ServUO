@@ -369,7 +369,7 @@ namespace Server.Engines.Craft
 
         private static readonly int[] m_Makers = new[]
         {
-            0x9A96, // steam powered beverage maker
+            0x9A96, 0x9A96 // steam powered beverage maker
         };
 
         private static readonly int[] m_Mills = new[]
@@ -1058,6 +1058,7 @@ namespace Server.Engines.Craft
 				m_ResHue = 0;
 				m_ResAmount = 0;
 				m_System = craftSystem;
+                m_CaddelliteCraft = true;
 
 				if (IsQuantityType(types))
 				{
@@ -1185,6 +1186,7 @@ namespace Server.Engines.Craft
         private int m_ClothHue;
 		private int m_ResAmount;
 		private CraftSystem m_System;
+        private bool m_CaddelliteCraft;
 
 		#region Plant Pigments
 		private PlantHue m_PlantHue = PlantHue.None;
@@ -1219,6 +1221,11 @@ namespace Server.Engines.Craft
 				m_ResHue = item.Hue;
 				m_ResAmount = amount;
 			}
+
+            if (m_CaddelliteCraft && (!item.HasSocket<Caddellite>() || !Server.Engines.Points.PointsSystem.Khaldun.InSeason))
+            {
+                m_CaddelliteCraft = false;
+            }
 		}
 
 		private int CheckHueGrouping(Item a, Item b)
@@ -1701,6 +1708,7 @@ namespace Server.Engines.Craft
 						}
 
 						CraftResource thisResource = CraftResources.GetFromType(resourceType);
+                        Item oldItem = item;
 
 						switch (thisResource)
 						{
@@ -1726,6 +1734,11 @@ namespace Server.Engines.Craft
 								item = new Board();
 								break;
 						}
+
+                        if (item != oldItem)
+                        {
+                            oldItem.Delete();
+                        }
 					}
 					#endregion
 
@@ -1800,6 +1813,11 @@ namespace Server.Engines.Craft
                     m_PlantHue = PlantHue.None;
                     m_PlantPigmentHue = PlantPigmentHue.None;
 					#endregion
+
+                    if (m_CaddelliteCraft)
+                    {
+                        Caddellite.TryInfuse(from, item, craftSystem);
+                    }
 
                     if (tool is Item && ((Item)tool).Parent is Container)
                     {

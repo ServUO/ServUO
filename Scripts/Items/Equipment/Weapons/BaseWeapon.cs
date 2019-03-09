@@ -755,6 +755,18 @@ namespace Server.Items
             get { return m_DImodded; }
             set { m_DImodded = value; }
         }
+
+        public int[] BaseResists
+        {
+            get
+            {
+                return new int[] { 0, 0, 0, 0, 0 };
+            }
+        }
+
+        public virtual void OnAfterImbued(Mobile m, int mod, int value)
+        {
+        }
         #endregion
 
         #region High Seas
@@ -803,6 +815,8 @@ namespace Server.Items
 
 		public override void OnAfterDuped(Item newItem)
 		{
+            base.OnAfterDuped(newItem);
+
 			BaseWeapon weap = newItem as BaseWeapon;
 
 			if (weap == null)
@@ -1196,6 +1210,11 @@ namespace Server.Items
 				}
 				#endregion
 
+                if (HasSocket<Caddellite>())
+                {
+                    Caddellite.UpdateBuff(from);
+                }
+
 				from.CheckStatTimers();
 				from.Delta(MobileDelta.WeaponDamage);
 			}
@@ -1239,18 +1258,11 @@ namespace Server.Items
 				ImmolatingWeaponSpell.StopImmolating(this, (Mobile)parent);
                 Spells.Mysticism.EnchantSpell.OnWeaponRemoved(this, m);
 
-				m.CheckStatTimers();
-
-				m.Delta(MobileDelta.WeaponDamage);
-
-				XmlAttach.CheckOnRemoved(this, parent);
-
                 if (FocusWeilder != null)
                     FocusWeilder = null;
 
                 //Skill Masteries
                 SkillMasterySpell.OnWeaponRemoved(m, this);
-                //RemoveMysticMod();
 
 				#region Mondain's Legacy Sets
 				if (IsSetItem && m_SetEquipped)
@@ -1258,6 +1270,17 @@ namespace Server.Items
 					SetHelper.RemoveSetBonus(m, SetID, this);
 				}
 				#endregion
+
+                if (HasSocket<Caddellite>())
+                {
+                    Caddellite.UpdateBuff(m);
+                }
+
+                m.CheckStatTimers();
+
+                m.Delta(MobileDelta.WeaponDamage);
+
+                XmlAttach.CheckOnRemoved(this, parent);
 			}
 		}
 
@@ -2335,6 +2358,11 @@ namespace Server.Items
             CheckSlayerResult suit = CheckSlayers(attacker, defender, SetHelper.GetSetSlayer(attacker));
             CheckSlayerResult tal = CheckTalismanSlayer(attacker, defender);
 
+            if (cs1 == CheckSlayerResult.None && cs2 == CheckSlayerResult.None)
+            {
+                cs1 = CheckSlayers(attacker, defender, SlayerSocket.GetSlayer(this));
+            }
+
 			if (cs1 != CheckSlayerResult.None)
 			{
                 if (cs1 == CheckSlayerResult.SuperSlayer)
@@ -3268,6 +3296,11 @@ namespace Server.Items
                 SlayerEntry defSlayer = SlayerGroup.GetEntryByName(defISlayer.Slayer);
                 SlayerEntry defSlayer2 = SlayerGroup.GetEntryByName(defISlayer.Slayer2);
                 SlayerEntry defSetSlayer = SlayerGroup.GetEntryByName(SetHelper.GetSetSlayer(defender));
+
+                if (defISlayer is Item && defSlayer == null && defSlayer2 == null)
+                {
+                    defSlayer = SlayerGroup.GetEntryByName(SlayerSocket.GetSlayer((Item)defISlayer));
+                }
 
                 if (defSlayer != null && defSlayer.Group.OppositionSuperSlays(attacker) ||
                     defSlayer2 != null && defSlayer2.Group.OppositionSuperSlays(attacker) ||
@@ -5351,9 +5384,9 @@ namespace Server.Items
                 list.Add(1154937); // VvV Item
         }
 
-		public override void GetProperties(ObjectPropertyList list)
-		{
-			base.GetProperties(list);
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
 
             if (this is IUsesRemaining && ((IUsesRemaining)this).ShowUsesRemaining)
             {
@@ -5482,6 +5515,11 @@ namespace Server.Items
 				}
 			}
 			#endregion
+
+            if (HasSocket<Caddellite>())
+            {
+                list.Add(1158662); // Caddellite Infused
+            }
 
             double focusBonus = 1;
             int enchantBonus = 0;
@@ -6026,16 +6064,15 @@ namespace Server.Items
 				list.Add(1060639, "{0}\t{1}", m_Hits, m_MaxHits); // durability ~1_val~ / ~2_val~
 			}
 
-            EnchantedHotItem.AddProperties(this, list);
-
 			if (IsSetItem && !m_SetEquipped)
 			{
 				list.Add(1072378); // <br>Only when full set is present:
 				GetSetProperties(list);
 			}
+        }
 
-            AddHonestyProperty(list);
-
+        public override void AddItemPowerProperties(ObjectPropertyList list)
+        {
             if (m_ItemPower != ItemPower.None)
             {
                 if (m_ItemPower <= ItemPower.LegendaryArtifact)
@@ -6154,7 +6191,7 @@ namespace Server.Items
         {
             bool drop = base.DropToWorld(from, p);
 
-            EnchantedHotItem.CheckDrop(from, this);
+            EnchantedHotItemSocket.CheckDrop(from, this);
 
             return drop;
         }

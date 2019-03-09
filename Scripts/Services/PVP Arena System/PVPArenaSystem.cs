@@ -229,6 +229,9 @@ namespace Server.Engines.ArenaSystem
 
                     for (int i = 0; i < count; i++)
                     {
+                        if (Arenas == null)
+                            Arenas = new List<PVPArena>();
+
                         if (version >= 2)
                         {
                             var arena = new PVPArena(GetDefinition(reader.ReadString()));

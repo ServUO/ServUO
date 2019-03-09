@@ -1934,21 +1934,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if (!Summoned)
-                {
-                    return false;
-                }
-
-                Type type = GetType();
-
-                bool contains = false;
-
-                for (int i = 0; !contains && i < m_AnimateDeadTypes.Length; ++i)
-                {
-                    contains = (type == m_AnimateDeadTypes[i]);
-                }
-
-                return contains;
+                return Summoned && m_AnimateDeadTypes.Any(t => t == GetType());
             }
         }
 
@@ -3613,10 +3599,16 @@ namespace Server.Mobiles
 
 	        bool gainedPath = false;
 
-	        if (dropped.HonestyOwner == this)
-		        VirtueHelper.Award(from, VirtueName.Honesty, 120, ref gainedPath);
-	        else
-		        return false;
+            var honestySocket = dropped.GetSocket<HonestyItemSocket>();
+
+            if (honestySocket != null && honestySocket.HonestyOwner == this)
+            {
+                VirtueHelper.Award(from, VirtueName.Honesty, 120, ref gainedPath);
+            }
+            else
+            {
+                return false;
+            }
 
 	        from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
 	        SayTo(from, 1074582); //Ah!  You found my property.  Thank you for your honesty in returning it to me.
@@ -3907,6 +3899,11 @@ namespace Server.Mobiles
                     {
                         ns.Send(new PetWindow(pm, this));
                     }
+
+                    if (KhaldunTastyTreat.UnderInfluence(this))
+                    {
+                        Caddellite.UpdateBuff(m_ControlMaster);
+                    }
                 }
             }
             else if (m_SummonMaster != null)
@@ -3945,6 +3942,11 @@ namespace Server.Mobiles
                     if (ns != null && ns.IsEnhancedClient && Commandable)
                     {
                         ns.Send(new PetWindow((PlayerMobile)m_ControlMaster, this));
+                    }
+
+                    if (KhaldunTastyTreat.UnderInfluence(this))
+                    {
+                        Caddellite.UpdateBuff(m_ControlMaster);
                     }
                 }
             }
@@ -6677,11 +6679,13 @@ namespace Server.Mobiles
                             }
                         }
 
+                        OnKilledBy(ds.m_Mobile);
+
+                        // TODO: Move this to XmlQuest.cs OnKilledBy Event Handler
                         if (HumilityVirtue.IsInHunt(ds.m_Mobile) && Karma < 0)
                             HumilityVirtue.RegisterKill(ds.m_Mobile, this, list.Count);
 
-                        OnKilledBy(ds.m_Mobile);
-
+                        // TODO: Move this to XmlQuest.cs OnKilledBy Event Handler
                         XmlQuest.RegisterKill(this, ds.m_Mobile);
 
                         if (!givenFactionKill)
@@ -6692,30 +6696,30 @@ namespace Server.Mobiles
 
                         Region region = ds.m_Mobile.Region;
 
-                        if (!givenToTKill &&
-                            (Map == Map.Tokuno || region.IsPartOf("Yomotsu Mines") || region.IsPartOf("Fan Dancer's Dojo")))
+                        if (!givenToTKill && TreasuresOfTokuno.HandleKill(this, ds.m_Mobile))
                         {
                             givenToTKill = true;
-                            TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
                         }
-                        if (!givenVASKill &&
-                            (Map == Map.Felucca || region.IsPartOf("Covetous") || region.IsPartOf("Deceit") || region.IsPartOf("Despise")
-                            || region.IsPartOf("Destard") || region.IsPartOf("Hythloth") || region.IsPartOf("Shame") || region.IsPartOf("Wrong")))
+
+                        if (!givenVASKill && VirtueArtifactsSystem.HandleKill(this, ds.m_Mobile))
                         {
                             givenVASKill = true;
-                            VirtueArtifactsSystem.HandleKill(this, ds.m_Mobile);
                         }
+
+                        // TODO: Move this to DemonKnight.cs OnKilledBy Event Handler
                         if (region.IsPartOf("Doom Gauntlet") || region.Name == "GauntletRegion")
                         {
                             DemonKnight.HandleKill(this, ds.m_Mobile);
                         }
 
+                        // TODO: Move this to PointsSystem.cs OnKilledBy Event Handler
                         Server.Engines.Points.PointsSystem.HandleKill(this, ds.m_Mobile, i);
 
                         PlayerMobile pm = ds.m_Mobile as PlayerMobile;
 
                         if (pm != null)
                         {
+                            // TODO: Move this to QuestHelper.cs OnKilledBy Event Handler
                             QuestHelper.CheckCreature(pm, this); // This line moved up...
 
                             QuestSystem qs = pm.Quest;
@@ -7089,86 +7093,6 @@ namespace Server.Mobiles
         private long m_NextRummageTime;
 
         public virtual bool IsDispellable { get { return Summoned && !IsAnimatedDead; } }
-
-        #region Animate Dead
-        public virtual bool CanAnimateDead { get { return false; } }
-        public virtual double AnimateChance { get { return 0.05; } }
-        public virtual int AnimateScalar { get { return 50; } }
-        public virtual TimeSpan AnimateDelay { get { return TimeSpan.FromSeconds(10); } }
-        public virtual BaseCreature Animates { get { return null; } }
-
-        private DateTime m_NextAnimateDead = DateTime.UtcNow;
-
-        public virtual void AnimateDead()
-        {
-            Corpse best = null;
-
-            foreach (Item item in Map.GetItemsInRange(Location, 12))
-            {
-                Corpse c = null;
-
-                if (item is Corpse)
-                {
-                    c = (Corpse)item;
-                }
-                else
-                {
-                    continue;
-                }
-
-                if (c.ItemID != 0x2006 || c.Channeled || c.Owner.GetType() == typeof(PlayerMobile) || c.Owner.GetType() == null ||
-                    (c.Owner != null && c.Owner.Fame < 100) ||
-                    ((c.Owner != null) && (c.Owner is BaseCreature) &&
-                     (((BaseCreature)c.Owner).Summoned || ((BaseCreature)c.Owner).IsBonded)))
-                {
-                    continue;
-                }
-
-                best = c;
-                break;
-            }
-
-            if (best != null)
-            {
-                BaseCreature animated = Animates;
-
-                if (animated != null)
-                {
-                    animated.Tamable = false;
-                    animated.MoveToWorld(best.Location, Map);
-                    Scale(animated, AnimateScalar);
-                    Effects.PlaySound(best.Location, Map, 0x1FB);
-                    Effects.SendLocationParticles(
-                        EffectItem.Create(best.Location, Map, EffectItem.DefaultDuration), 0x3789, 1, 40, 0x3F, 3, 9907, 0);
-                }
-
-                best.ProcessDelta();
-                best.SendRemovePacket();
-                best.ItemID = Utility.Random(0xECA, 9); // bone graphic
-                best.Hue = 0;
-                best.ProcessDelta();
-            }
-
-            m_NextAnimateDead = DateTime.UtcNow + AnimateDelay;
-        }
-
-        public static void Scale(BaseCreature bc, int scalar)
-        {
-            int toScale;
-
-            toScale = bc.RawStr;
-            bc.RawStr = AOS.Scale(toScale, scalar);
-
-            toScale = bc.HitsMaxSeed;
-
-            if (toScale > 0)
-            {
-                bc.HitsMaxSeed = AOS.Scale(toScale, scalar);
-            }
-
-            bc.Hits = bc.Hits; // refresh hits
-        }
-        #endregion
 
         #region Healing
         public virtual double HealChance { get { return 0.0; } }

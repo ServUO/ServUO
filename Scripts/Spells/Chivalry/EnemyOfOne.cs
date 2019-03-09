@@ -196,6 +196,11 @@ namespace Server.Spells.Chivalry
 
 		public bool IsEnemy(Mobile m)
 		{
+            if (m is BaseCreature && ((BaseCreature)m).GetMaster() == Owner)
+            {
+                return false;
+            }
+
             if (m_PlayerOrPet != null)
             {
                 if (m_PlayerOrPet == m)

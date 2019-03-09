@@ -177,7 +177,7 @@ namespace Server.Items
 			Point3D loc = Point3D.Zero;
 			Map map = null;
 
-			ResolveDest(e.Speech.Trim(), ref loc, ref map);
+			ResolveDest(e.Mobile, e.Speech.Trim(), ref loc, ref map);
 
 			if (loc == Point3D.Zero || map == null || map == Map.Internal || (Siege.SiegeShard && map == Map.Trammel))
 			{
@@ -194,7 +194,14 @@ namespace Server.Items
 
 			if (ValidateUse(e.Mobile, true))
 			{
-				OnTeleport(e.Mobile, loc, map);
+                if (SpellHelper.CheckTravel(e.Mobile, map, loc, TravelCheckType.RecallTo))
+                {
+                    OnTeleport(e.Mobile, loc, map);
+                }
+                else
+                {
+                    e.Mobile.LocalOverheadMessage(MessageType.Regular, 0x4F1, 502360); // You cannot teleport into that area.
+                }
 			}
 		}
 
@@ -221,7 +228,7 @@ namespace Server.Items
             }
         }
 
-		public static void ResolveDest(string name, ref Point3D loc, ref Map map)
+		public static void ResolveDest(Mobile from, string name, ref Point3D loc, ref Map map)
 		{
 			if (String.IsNullOrWhiteSpace(name))
 			{
@@ -355,7 +362,18 @@ namespace Server.Items
                     break;
 
 				// fel banks
-
+                case "fel papua mint":
+                    {
+                        loc = new Point3D(5675, 3144, 12);
+                        map = Map.Felucca;
+                    }
+                    break;
+                case "fel delucia mint":
+                    {
+                        loc = new Point3D(5274, 3991, 37);
+                        map = Map.Felucca;
+                    }
+                    break;
 				case "fel britain mint":
 				{
 					loc = new Point3D(1434, 1699, 2);

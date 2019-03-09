@@ -36,7 +36,7 @@ namespace Server
         {
             get
             {
-                return this.m_ID;
+                return m_ID;
             }
         }
 
@@ -45,7 +45,7 @@ namespace Server
         {
             get
             {
-                return this.m_TitleCliloc;
+                return m_TitleCliloc;
             }
         }
 
@@ -54,7 +54,7 @@ namespace Server
         {
             get
             {
-                return this.m_SecondaryCliloc;
+                return m_SecondaryCliloc;
             }
         }
 
@@ -63,7 +63,7 @@ namespace Server
         {
             get
             {
-                return this.m_NoTimer;
+                return m_NoTimer;
             }
         }
 
@@ -72,7 +72,7 @@ namespace Server
         {
             get
             {
-                return this.m_TimeLength;
+                return m_TimeLength;
             }
         }
 
@@ -81,7 +81,7 @@ namespace Server
         {
             get
             {
-                return this.m_TimeStart;
+                return m_TimeStart;
             }
         }
 
@@ -90,7 +90,7 @@ namespace Server
         {
             get
             {
-                return this.m_Timer;
+                return m_Timer;
             }
         }
 
@@ -99,7 +99,7 @@ namespace Server
         {
             get
             {
-                return this.m_RetainThroughDeath;
+                return m_RetainThroughDeath;
             }
         }
 
@@ -108,7 +108,7 @@ namespace Server
         {
             get
             {
-                return this.m_Args;
+                return m_Args;
             }
         }
 
@@ -122,9 +122,9 @@ namespace Server
 
         public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc)
         {
-            this.m_ID = iconID;
-            this.m_TitleCliloc = titleCliloc;
-            this.m_SecondaryCliloc = secondaryCliloc;
+            m_ID = iconID;
+            m_TitleCliloc = titleCliloc;
+            m_SecondaryCliloc = secondaryCliloc;
         }
 
         public BuffInfo(BuffIcon iconID, int titleCliloc, TimeSpan length, Mobile m)
@@ -136,10 +136,10 @@ namespace Server
         public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc, TimeSpan length, Mobile m)
             : this(iconID, titleCliloc, secondaryCliloc)
         {
-            this.m_TimeLength = length;
-            this.m_TimeStart = DateTime.UtcNow;
+            m_TimeLength = length;
+            m_TimeStart = DateTime.UtcNow;
 
-            this.m_Timer = Timer.DelayCall(length, new TimerCallback(
+            m_Timer = Timer.DelayCall(length, new TimerCallback(
                 delegate
                 {
                     PlayerMobile pm = m as PlayerMobile;
@@ -165,7 +165,7 @@ namespace Server
         public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc, TextDefinition args)
             : this(iconID, titleCliloc, secondaryCliloc)
         {
-            this.m_Args = args;
+            m_Args = args;
         }
 
         public BuffInfo(BuffIcon iconID, int titleCliloc, bool retainThroughDeath)
@@ -176,7 +176,7 @@ namespace Server
         public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc, bool retainThroughDeath)
             : this(iconID, titleCliloc, secondaryCliloc)
         {
-            this.m_RetainThroughDeath = retainThroughDeath;
+            m_RetainThroughDeath = retainThroughDeath;
         }
 
         public BuffInfo(BuffIcon iconID, int titleCliloc, TextDefinition args, bool retainThroughDeath)
@@ -187,7 +187,7 @@ namespace Server
         public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc, TextDefinition args, bool retainThroughDeath)
             : this(iconID, titleCliloc, secondaryCliloc, args)
         {
-            this.m_RetainThroughDeath = retainThroughDeath;
+            m_RetainThroughDeath = retainThroughDeath;
         }
 
         public BuffInfo(BuffIcon iconID, int titleCliloc, TimeSpan length, Mobile m, TextDefinition args)
@@ -198,7 +198,7 @@ namespace Server
         public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc, TimeSpan length, Mobile m, TextDefinition args)
             : this(iconID, titleCliloc, secondaryCliloc, length, m)
         {
-            this.m_Args = args;
+            m_Args = args;
         }
 
         public BuffInfo(BuffIcon iconID, int titleCliloc, TimeSpan length, Mobile m, TextDefinition args, bool retainThroughDeath)
@@ -209,8 +209,8 @@ namespace Server
         public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc, TimeSpan length, Mobile m, TextDefinition args, bool retainThroughDeath)
             : this(iconID, titleCliloc, secondaryCliloc, length, m)
         {
-            this.m_Args = args;
-            this.m_RetainThroughDeath = retainThroughDeath;
+            m_Args = args;
+            m_RetainThroughDeath = retainThroughDeath;
         }
 
         #endregion
@@ -418,7 +418,8 @@ namespace Server
         UraliTranceTonic,
         SakkhraProphylaxis,
         CaddelliteInfused = 1186,
-        MysticalPolymorphTotem = 1188
+        PotionGloriousFortune,
+        MysticalPolymorphTotem
     }
 
     public sealed class AddBuffPacket : Packet
@@ -433,44 +434,44 @@ namespace Server
         {
             bool hasArgs = (args != null);
 
-            this.EnsureCapacity((hasArgs ? (48 + args.ToString().Length * 2) : 44));
-            this.m_Stream.Write((int)mob.Serial);
+            EnsureCapacity((hasArgs ? (48 + args.ToString().Length * 2) : 44));
+            m_Stream.Write((int)mob.Serial);
 
-            this.m_Stream.Write((short)iconID);	//ID
-            this.m_Stream.Write((short)0x1);	//Type 0 for removal. 1 for add 2 for Data
+            m_Stream.Write((short)iconID);	//ID
+            m_Stream.Write((short)0x1);	//Type 0 for removal. 1 for add 2 for Data
 
-            this.m_Stream.Fill(4);
+            m_Stream.Fill(4);
 
-            this.m_Stream.Write((short)iconID);	//ID
-            this.m_Stream.Write((short)0x01);	//Type 0 for removal. 1 for add 2 for Data
+            m_Stream.Write((short)iconID);	//ID
+            m_Stream.Write((short)0x01);	//Type 0 for removal. 1 for add 2 for Data
 
-            this.m_Stream.Fill(4);
+            m_Stream.Fill(4);
 
             if (length < TimeSpan.Zero)
                 length = TimeSpan.Zero;
 
-            this.m_Stream.Write((short)length.TotalSeconds);	//Time in seconds
+            m_Stream.Write((short)length.TotalSeconds);	//Time in seconds
 
-            this.m_Stream.Fill(3);
-            this.m_Stream.Write((int)titleCliloc);
-            this.m_Stream.Write((int)secondaryCliloc);
+            m_Stream.Fill(3);
+            m_Stream.Write((int)titleCliloc);
+            m_Stream.Write((int)secondaryCliloc);
 
             if (!hasArgs)
             {
                 //m_Stream.Fill( 2 );
-                this.m_Stream.Fill(10);
+                m_Stream.Fill(10);
             }
             else
             {
-                this.m_Stream.Fill(4);
-                this.m_Stream.Write((short)0x1);	//Unknown -> Possibly something saying 'hey, I have more data!'?
-                this.m_Stream.Fill(2);
+                m_Stream.Fill(4);
+                m_Stream.Write((short)0x1);	//Unknown -> Possibly something saying 'hey, I have more data!'?
+                m_Stream.Fill(2);
 
                 //m_Stream.WriteLittleUniNull( "\t#1018280" );
-                this.m_Stream.WriteLittleUniNull(String.Format("\t{0}", args.ToString()));
+                m_Stream.WriteLittleUniNull(String.Format("\t{0}", args.ToString()));
 
-                this.m_Stream.Write((short)0x1);	//Even more Unknown -> Possibly something saying 'hey, I have more data!'?
-                this.m_Stream.Fill(2);
+                m_Stream.Write((short)0x1);	//Even more Unknown -> Possibly something saying 'hey, I have more data!'?
+                m_Stream.Fill(2);
             }
         }
     }
@@ -485,13 +486,13 @@ namespace Server
         public RemoveBuffPacket(Mobile mob, BuffIcon iconID)
             : base(0xDF)
         {
-            this.EnsureCapacity(13);
-            this.m_Stream.Write((int)mob.Serial);
+            EnsureCapacity(13);
+            m_Stream.Write((int)mob.Serial);
 
-            this.m_Stream.Write((short)iconID);	//ID
-            this.m_Stream.Write((short)0x0);	//Type 0 for removal. 1 for add 2 for Data
+            m_Stream.Write((short)iconID);	//ID
+            m_Stream.Write((short)0x0);	//Type 0 for removal. 1 for add 2 for Data
 
-            this.m_Stream.Fill(4);
+            m_Stream.Fill(4);
         }
     }
 }

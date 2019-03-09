@@ -30,10 +30,10 @@ namespace Server.Mobiles
 		{
 		}
 
-        public static bool CheckCombatTrigger(Mobile attacker, Mobile defender, ref int damage, DamageType type)
+        public static void CheckCombatTrigger(Mobile attacker, Mobile defender, ref int damage, DamageType type)
         {
             if(defender == null)
-                return false;
+                return;
             
             if (attacker is BaseCreature && !((BaseCreature)attacker).Summoned)
             {
@@ -55,18 +55,16 @@ namespace Server.Mobiles
 
                     if (ability != null)
                     {
-                       return ability.Trigger(bc, defender, ref damage);
+                       ability.Trigger(bc, defender, ref damage);
                     }
                 }
-
-                return false;
             }
 
             if (defender is BaseCreature && !((BaseCreature)defender).Summoned)
             {
                 var bc = defender as BaseCreature;
                 var profile = PetTrainingHelper.GetAbilityProfile(bc);
-                
+
                 if (profile != null)
                 {
                     SpecialAbility ability = null;
@@ -82,13 +80,10 @@ namespace Server.Mobiles
 
                     if (ability != null)
                     {
-                        int d = 0;
-                        return ability.Trigger(bc, attacker, ref d);
+                        ability.Trigger(bc, attacker, ref damage);
                     }
                 }
             }
-
-            return false;
         }
 		
 		public static bool CheckThinkTrigger(BaseCreature bc)
@@ -1056,6 +1051,7 @@ namespace Server.Mobiles
 	{
         public override bool TriggerOnGotMeleeDamage { get { return true; } }
         public override bool TriggerOnGotSpellDamage { get { return true; } }
+        public override int ManaCost { get { return 30; } }
 
 		public Repel()
 		{
@@ -1065,8 +1061,7 @@ namespace Server.Mobiles
 		{
             defender.SendLocalizedMessage(1070844); // The creature repels the attack back at you.
             defender.FixedEffect(0x37B9, 10, 5);
-
-            AOS.Damage(defender, creature, damage, 0, 0, 0, 0, 0, 0, 100);
+            AOS.Damage(defender, creature, damage / 2, 0, 0, 0, 0, 0, 0, 100);
 
             damage = 0;
 		}

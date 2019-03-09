@@ -1156,7 +1156,14 @@ namespace Server.Items
                     src = (((AddonComponent)item).Addon as IWaterSource);
 
                 if (src == null || src.Quantity <= 0)
+                {
+                    if (item.ItemID >= 0xB41 && item.ItemID <= 0xB44)
+                    {
+                        Caddellite.CheckWaterSource(from, this, item);
+                    }
+
                     return;
+                }
 
                 if (from.Map != item.Map || !from.InRange(item.GetWorldLocation(), 2) || !from.InLOS(item))
                 {

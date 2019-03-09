@@ -180,6 +180,8 @@ namespace Server.Engines.Plants
 			newSeed.PlantType = m_PlantType;
 			newSeed.PlantHue = m_PlantHue;
 			newSeed.ShowType = m_ShowType;
+
+            base.OnAfterDuped(newItem);
 		}
 
 		private class InternalTarget : Target

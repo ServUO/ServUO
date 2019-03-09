@@ -1100,6 +1100,13 @@ namespace Server.Gumps
                                             break;
                                         }
 
+                                        else if (m_House.HasActiveAuction)
+                                        {
+                                            // You cannot currently take this action because you have auction safes locked down in your home. You must remove them first.
+                                            from.SendLocalizedMessage(1156453);
+                                            break;
+                                        }
+
                                         m_House.Public = false;
 
                                         m_House.ChangeLocks(from);
@@ -1219,6 +1226,11 @@ namespace Server.Gumps
                                             from.SendGump(new NoticeGump(1060637, 30720, 1074863, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
                                         }
                                         #endregion
+                                        else if (m_House.HasActiveAuction)
+                                        {
+                                            from.SendLocalizedMessage(1156453); // You cannot currently take this action because you have auction safes locked down in your home. You must remove them first.
+                                            return;
+                                        }
                                         else
                                         {
                                             foundation.BeginCustomize(from);
@@ -1347,6 +1359,10 @@ namespace Server.Gumps
                                         if (BaseHouse.NewVendorSystem && m_House.HasPersonalVendors)
                                         {
                                             from.SendLocalizedMessage(1062467); // You cannot trade this house while you still have personal vendors inside.
+                                        }
+                                        else if (m_House.HasActiveAuction)
+                                        {
+                                            from.SendLocalizedMessage(1156453); // You cannot currently take this action because you have auction safes locked down in your home. You must remove them first.
                                         }
                                         else if (m_House.DecayLevel == DecayLevel.DemolitionPending)
                                         {

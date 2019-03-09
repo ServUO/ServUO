@@ -115,7 +115,7 @@ namespace Server.Engines.NewMagincia
             }
 				
 			int cost = entry.SalePrice;
-			int toDeduct = cost + (int)((double)cost * ((double)ComissionFee / 100.0));
+			int toAdd = cost - (int)((double)cost * ((double)ComissionFee / 100.0));
 			BaseCreature pet = entry.Pet;
 
             if (!m_BrokerEntries.Contains(entry) || entry.Pet == null || entry.Pet.Deleted)
@@ -130,13 +130,13 @@ namespace Server.Engines.NewMagincia
             {
                 return 1150376; // You do not have any available stable slots. The Animal Broker can only transfer pets to your stables. Please make a stables slot available and try again.
             }
-            else if (!Banker.Withdraw(from, toDeduct, true))
+            else if (!Banker.Withdraw(from, cost, true))
             {
                 return 1150252; // You do not have the funds needed to make this trade available in your bank box. Brokers are only able to transfer funds from your bank box. Please deposit the necessary funds into your bank box and try again.
             }
             else
             {
-                BankBalance += cost;
+                BankBalance += toAdd;
                 pet.Blessed = false;
                 EndViewTimer(pet);
                 pet.ControlTarget = null;

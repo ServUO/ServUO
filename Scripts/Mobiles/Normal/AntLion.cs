@@ -49,7 +49,7 @@ namespace Server.Mobiles
             PackItem(new FertileDirt(Utility.RandomMinMax(1, 5)));
 
             if (Core.ML && Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
+                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
 
             Item orepile = null; /* no trust, no love :( */
 

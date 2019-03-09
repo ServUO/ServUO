@@ -2098,7 +2098,7 @@ namespace Server.Multis
 
             if (locked)
             {
-                if (i is VendorRentalContract)
+                if (i is VendorRentalContract && i.RootParent == null)
                 {
                     if (!VendorRentalContracts.Contains(i))
                         VendorRentalContracts.Add(i);

@@ -180,13 +180,13 @@ namespace Server.Engines.NewMagincia
         public void TryBuyCommodity(Mobile from, CommodityBrokerEntry entry, int amount)
 		{
 			int totalCost = entry.SellPricePer * amount;
-			int toDeduct = totalCost + (int)((double)totalCost * ((double)ComissionFee / 100.0));
-			
-			if(Banker.Withdraw(from, toDeduct, true))
+			int toAdd = totalCost + (int)((double)totalCost * ((double)ComissionFee / 100.0));
+
+            if (Banker.Withdraw(from, totalCost, true))
 			{
 				from.SendLocalizedMessage(1150643, String.Format("{0}\t#{1}", amount.ToString("###,###,###"), entry.Label)); // A commodity deed worth ~1_AMOUNT~ ~2_ITEM~ has been placed in your backpack.
 				WithdrawInventory(from, amount, entry);
-                BankBalance += totalCost;
+                BankBalance += toAdd;
 			}
 			else
 			{

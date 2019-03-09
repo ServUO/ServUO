@@ -140,6 +140,19 @@ namespace Server.Mobiles
                 PointsSystem.Khaldun.SetPoints(Player, value);
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Doom
+        {
+            get
+            {
+                return (int)PointsSystem.TreasuresOfDoom.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.TreasuresOfDoom.SetPoints(Player, value);
+            }
+        }
     }
 
     [PropertyObject]
