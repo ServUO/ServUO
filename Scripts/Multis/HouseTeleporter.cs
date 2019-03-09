@@ -159,7 +159,7 @@ namespace Server.Items
         {
         }
 
-        private class EffectTimer : Timer
+        public class EffectTimer : Timer
         {
             private readonly Point3D m_Location;
             private readonly Map m_Map;
