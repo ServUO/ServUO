@@ -356,14 +356,15 @@ namespace Server.Engines.Craft
 			0x19AA, 0x19BB, // Veteran Reward Brazier
 			0x197A, 0x19A9, // Large Forge 
 			0x0FB1, 0x0FB1, // Small Forge
-			0x2DD8, 0x2DD8 // Elven Forge
-		};
+			0x2DD8, 0x2DD8, // Elven Forge
+            0xA2A4, 0xA2A5, 0xA2A8, 0xA2A9 // Wood Stove
+        };
 
 		private static readonly int[] m_Ovens = new[]
 		{
 			0x461, 0x46F, // Sandstone oven
 			0x92B, 0x93F, // Stone oven
-			0x2DDB, 0x2DDC //Elven stove
+			0x2DDB, 0x2DDC, //Elven stove
 		};
 
         private static readonly int[] m_Makers = new[]

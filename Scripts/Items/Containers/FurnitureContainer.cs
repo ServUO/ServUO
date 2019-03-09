@@ -612,4 +612,124 @@ namespace Server.Items
                 DynamicFurniture.Close(this.m_Container);
         }
     }
+
+    [Furniture]
+    public class ChinaCabinet : FurnitureContainer, IFlipable
+    {
+        public override int LabelNumber { get { return 1158974; } } // China Cabinet
+        public override int DefaultGumpID { get { return 0x4F; } }
+
+        [Constructable]
+        public ChinaCabinet()
+            : base(0xA29F)
+        {
+            Hue = 448;
+        }
+
+        public void OnFlip(Mobile from)
+        {
+            switch (ItemID)
+            {
+                case 0xA29F:
+                    ItemID = 0xA2A1;
+                    break;
+                case 0xA2A1:
+                    ItemID = 0xA29F;
+                    break;
+                case 0xA2A0:
+                    ItemID = 0xA2A2;
+                    break;
+                case 0xA2A2:
+                    ItemID = 0xA2A0;
+                    break;
+            }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+
+            if (ItemID == 0xA29F || ItemID == 0xA2A1)
+                ItemID++;
+            else
+                ItemID--;
+        }
+
+        public ChinaCabinet(Serial serial)
+        : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    [Furniture]
+    public class PieSafe : FurnitureContainer, IFlipable
+    {
+        public override int LabelNumber { get { return 1158973; } } // Pie Safe
+        public override int DefaultGumpID { get { return 0x4F; } }
+
+        [Constructable]
+        public PieSafe()
+            : base(0xA29B)
+        {
+            Hue = 448;
+        }
+
+        public void OnFlip(Mobile from)
+        {
+            switch (ItemID)
+            {
+                case 0xA29B:
+                    ItemID = 0xA29D;
+                    break;
+                case 0xA29D:
+                    ItemID = 0xA29B;
+                    break;
+                case 0xA29C:
+                    ItemID = 0xA29E;
+                    break;
+                case 0xA29E:
+                    ItemID = 0xA29C;
+                    break;
+            }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+
+            if (ItemID == 0xA29B || ItemID == 0xA29D)
+                ItemID++;
+            else
+                ItemID--;
+        }
+
+        public PieSafe(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }
