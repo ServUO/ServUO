@@ -3,6 +3,8 @@ using Server.Gumps;
 using Server.Multis;
 using Server.Targeting;
 using Server.Mobiles;
+using Server.Network;
+using Server.Engines.VeteranRewards;
 
 namespace Server.Items
 {
@@ -11,9 +13,41 @@ namespace Server.Items
         string EngravedText { get; set; }
     }
 
-    public class BaseEngravingTool : Item, IUsesRemaining
-    { 
+    public class BaseEngravingTool : Item, IUsesRemaining, IRewardItem
+    {
         private int m_UsesRemaining;
+        private bool m_IsRewardItem;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int UsesRemaining
+        {
+            get { return m_UsesRemaining; }
+            set
+            {
+                m_UsesRemaining = value;
+                InvalidateProperties();
+            }
+        }
+
+        public virtual bool ShowUsesRemaining
+        {
+            get { return true; }
+            set { }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem
+        {
+            get
+            {
+                return m_IsRewardItem;
+            }
+            set
+            {
+                m_IsRewardItem = value;
+                InvalidateProperties();
+            }
+        }
 
         [Constructable]
         public BaseEngravingTool(int itemID)
@@ -38,40 +72,21 @@ namespace Server.Items
         {
         }
 
-        public virtual Type[] Engraves { get { return null; } }
-        public virtual int GumpTitle { get { return 1072359; } }
+        public virtual bool DeletedItem { get { return true; } }
+        public virtual int LowSkillMessage { get { return 0; } }
+        public virtual int VeteranRewardCliloc { get { return 0; } }
 
-        public virtual int SuccessMessage { get { return 1072361; } } // // You engraved the object.
+        public virtual Type[] Engraves { get { return null; } }
+        public virtual int GumpTitle { get { return 1072359; } } // <CENTER>Engraving Tool</CENTER>
+
+        public virtual int SuccessMessage { get { return 1072361; } } // You engraved the object.
         public virtual int TargetMessage { get { return 1072357; } } // Select an object to engrave.
         public virtual int RemoveMessage { get { return 1072362; } } // You remove the engraving from the object.
-        public virtual int OutOfChargesMessage { get { return 1042544; } } // This item is out of charges.
+        public virtual int ReChargesMessage { get { return 1076166; } } // You do not have a blue diamond needed to recharge the engraving tool.
+        public virtual int OutOfChargesMessage { get { return 1076163; } } // There are no charges left on this engraving tool.
         public virtual int NotAccessibleMessage { get { return 1072310; } } // The selected item is not accessible to engrave.
         public virtual int CannotEngraveMessage { get { return 1072309; } } // The selected item cannot be engraved by this engraving tool.
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int UsesRemaining
-        {
-            get
-            {
-                return m_UsesRemaining;
-            }
-            set
-            {
-                m_UsesRemaining = value;
-                InvalidateProperties();
-            }
-        }
-
-        public virtual bool ShowUsesRemaining
-        { 
-            get
-            {
-                return true;
-            }
-            set
-            {
-            }
-        }
+        public virtual int ObjectWasNotMessage { get { return 1072363; } } // The object was not engraved.        
 
         public virtual bool CheckType(IEntity entity)
         {
@@ -79,39 +94,132 @@ namespace Server.Items
                 return false;
 
             Type type = entity.GetType();
-				
-            for (int i = 0; i < Engraves.Length; i ++)
-            { 
+
+            for (int i = 0; i < Engraves.Length; i++)
+            {
                 if (type == Engraves[i] || type.IsSubclassOf(Engraves[i]))
                     return true;
             }
-			
+
             return false;
+        }
+
+        public static BaseEngravingTool Find(Mobile from)
+        {
+            if (from.Backpack != null)
+            {
+                BaseEngravingTool tool = from.Backpack.FindItemByType(typeof(BaseEngravingTool)) as BaseEngravingTool;
+
+                if (tool != null && !tool.DeletedItem && tool.UsesRemaining <= 0)
+                    return tool;
+                else
+                    return null;
+            }
+
+            return null;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
             base.OnDoubleClick(from);
-			
+
             if (!from.NetState.SupportsExpansion(Expansion.ML))
             {
                 from.SendLocalizedMessage(1072791); // You must upgrade to Mondain's Legacy in order to use that item.				
                 return;
             }
-			
+
             if (m_UsesRemaining > 0)
             {
                 from.SendLocalizedMessage(TargetMessage);
                 from.Target = new InternalTarget(this);
             }
             else
+            {
+                if (!DeletedItem)
+                {
+                    if (CheckSkill(from))
+                    {
+                        Item diamond = from.Backpack.FindItemByType(typeof(BlueDiamond));
+
+                        if (diamond != null)
+                        {
+                            from.SendGump(new ConfirmGump(this, null));
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(ReChargesMessage);
+                        }
+                    }
+                }
+
                 from.SendLocalizedMessage(OutOfChargesMessage);
+            }
+        }
+
+        public bool CheckSkill(Mobile from)
+        {
+            if (from.Skills[SkillName.Tinkering].Value < 75.0)
+            {
+                from.SendLocalizedMessage(LowSkillMessage);
+                return false;
+            }
+
+            return true;
+        }
+
+        public virtual void Recharge(Mobile from, Mobile guildmaster)
+        {
+            if (from.Backpack != null)
+            {
+                Item diamond = from.Backpack.FindItemByType(typeof(BlueDiamond));
+
+                if (guildmaster != null)
+                {
+                    if (m_UsesRemaining <= 0)
+                    {
+                        if (diamond != null && Banker.Withdraw(from, 100000))
+                        {
+                            diamond.Consume();
+                            UsesRemaining = 10;
+                            guildmaster.Say(1076165); // Your weapon engraver should be good as new!
+                        }
+                        else
+                            guildmaster.Say(1076167); // You need a 100,000 gold and a blue diamond to recharge the weapon engraver.
+                    }
+                    else
+                        guildmaster.Say(1076164); // I can only help with this if you are carrying an engraving tool that needs repair.
+                }
+                else
+                {
+                    if (CheckSkill(from))
+                    {
+                        if (diamond != null)
+                        {
+                            diamond.Consume();
+
+                            if (Utility.RandomDouble() < from.Skills[SkillName.Tinkering].Value / 100)
+                            {
+                                UsesRemaining = 10;
+                                from.SendLocalizedMessage(1076165); // Your engraver should be good as new!
+                            }
+                            else
+                                from.SendLocalizedMessage(1076175); // You cracked the diamond attempting to fix the engraver.
+                        }
+                        else
+                            from.SendLocalizedMessage(1076166); // You do not have a blue diamond needed to recharge the engraving tool.
+                    }
+                }
+            }
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
+            if (m_IsRewardItem)
+                list.Add(VeteranRewardCliloc);
+
             if (ShowUsesRemaining)
                 list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~			
         }
@@ -119,23 +227,51 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
-            writer.Write((int)1); // version
-			
+            writer.Write((int)2); // version
+
             writer.Write((int)m_UsesRemaining);
+            writer.Write((bool)m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
-			
-            m_UsesRemaining = reader.ReadInt();
 
-            if (version == 0)
-                LootType = LootType.Blessed;
+            switch (version)
+            {
+                case 2:
+                    {
+                        m_UsesRemaining = reader.ReadInt();
+                        m_IsRewardItem = reader.ReadBool();
+                        break;
+                    }
+                case 1:
+                    {
+                        m_UsesRemaining = reader.ReadInt();
+                        break;
+                    }
+                case 0:
+                    {
+                        if (this is WeaponEngravingTool)
+                        {
+                            InheritsItem = true;
+                            m_UsesRemaining = reader.ReadInt();
+                            m_IsRewardItem = reader.ReadBool();
+                        }
+                        else
+                        {
+                            LootType = LootType.Blessed;
+                        }
+                        break;
+                    }
+            }
         }
+
+        #region Old Item Serialization Vars
+        /* DO NOT USE! Only used in serialization of Weapon Engraving Tool that originally derived from Item */
+        public bool InheritsItem { get; protected set; }
+        #endregion
 
         private class InternalTarget : Target
         {
@@ -184,7 +320,7 @@ namespace Server.Items
                 {
                     Item item = entity as Item;
 
-                    if (BaseHouse.CheckAccessible(m, (Item)item))
+                    if (BaseHouse.CheckAccessible(m, item))
                         return true;
                     else if (item.Movable && !item.IsLockedDown && !item.IsSecure)
                         return true;
@@ -196,8 +332,50 @@ namespace Server.Items
                     if (bc.Controlled && bc.ControlMaster == m)
                         return true;
                 }
-					
-                return false;				
+
+                return false;
+            }
+        }
+
+        public class ConfirmGump : Gump
+        {
+            private readonly BaseEngravingTool Tool;
+            private readonly Mobile m_NPC;
+
+            public ConfirmGump(BaseEngravingTool tool, Mobile npc)
+                : base(200, 200)
+            {
+                Tool = tool;
+                m_NPC = npc;
+
+                AddPage(0);
+
+                AddBackground(0, 0, 291, 133, 0x13BE);
+                AddImageTiled(5, 5, 280, 100, 0xA40);
+
+                if (npc != null)
+                {
+                    AddHtmlLocalized(9, 9, 272, 100, 1076169, 0x7FFF, false, false); // It will cost you 100,000 gold and a blue diamond to recharge your weapon engraver with 10 charges.
+                    AddHtmlLocalized(195, 109, 120, 20, 1076172, 0x7FFF, false, false); // Recharge it
+                }
+                else
+                {
+                    AddHtmlLocalized(9, 9, 272, 100, 1076176, 0x7FFF, false, false); // You will need a blue diamond to repair the tip of the engraver.  A successful repair will give the engraver 10 charges.
+                    AddHtmlLocalized(195, 109, 120, 20, 1076177, 0x7FFF, false, false); // Replace the tip.
+                }
+
+                AddButton(160, 107, 0xFB7, 0xFB8, 1, GumpButtonType.Reply, 0);
+                AddButton(5, 107, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(40, 109, 100, 20, 1060051, 0x7FFF, false, false); // CANCEL
+            }
+
+            public override void OnResponse(NetState state, RelayInfo info)
+            {
+                if (Tool == null || Tool.Deleted)
+                    return;
+
+                if (info.ButtonID == 1)
+                    Tool.Recharge(state.Mobile, m_NPC);
             }
         }
 
@@ -211,68 +389,75 @@ namespace Server.Items
             {
                 m_Tool = tool;
                 m_Target = target;
-			
-                Closable = true;
-                Disposable = true;
-                Dragable = true;
-                Resizable = false;
-			
-                AddPage(0);
-				
+
                 AddBackground(50, 50, 400, 300, 0xA28);
+
+                AddPage(0);
+
                 AddHtmlLocalized(50, 70, 400, 20, m_Tool.GumpTitle, 0x0, false, false);
-                AddHtmlLocalized(75, 95, 350, 145, 1072360, 0x0, true, true);				
-				
-                AddButton(125, 300, 0x81A, 0x81B, (int)Buttons.Okay, GumpButtonType.Reply, 0);
-                AddButton(320, 300, 0x819, 0x818, (int)Buttons.Cancel, GumpButtonType.Reply, 0);
-				
+                AddHtmlLocalized(75, 95, 350, 145, 1072360, 0x0, true, true);
+
+                AddButton(125, 300, 0x81A, 0x81B, 1, GumpButtonType.Reply, 0);
+                AddButton(320, 300, 0x819, 0x818, 0, GumpButtonType.Reply, 0);
+
                 AddImageTiled(75, 245, 350, 40, 0xDB0);
                 AddImageTiled(76, 245, 350, 2, 0x23C5);
                 AddImageTiled(75, 245, 2, 40, 0x23C3);
                 AddImageTiled(75, 285, 350, 2, 0x23C5);
                 AddImageTiled(425, 245, 2, 42, 0x23C3);
-				
-                AddTextEntry(78, 245, 345, 40, 0x0, (int)Buttons.Text, "");
+
+                AddTextEntry(78, 246, 343, 37, 0x4FF, 15, "", 78);
             }
 
-            private enum Buttons
+            public override void OnResponse(NetState state, RelayInfo info)
             {
-                Cancel,
-                Okay,
-                Text
-            }
-
-            public override void OnResponse(Server.Network.NetState state, RelayInfo info)
-            { 
                 if (m_Tool == null || m_Tool.Deleted || m_Target == null || m_Target.Deleted)
                     return;
-			
-                if (info.ButtonID == (int)Buttons.Okay)
+
+                Mobile from = state.Mobile;
+
+                if (info.ButtonID == 1)
                 {
-                    TextRelay relay = info.GetTextEntry((int)Buttons.Text);
-					
+                    TextRelay relay = info.GetTextEntry(15);
+
+                    IEngravable item = (IEngravable)m_Target;
+
                     if (relay != null)
                     {
                         if (relay.Text == null || relay.Text.Equals(""))
                         {
-                            ((IEngravable)m_Target).EngravedText = null;
-                            state.Mobile.SendLocalizedMessage(m_Tool.RemoveMessage);
+                            if (item.EngravedText != null)
+                            {
+                                item.EngravedText = null;
+                                from.SendLocalizedMessage(m_Tool.RemoveMessage);
+                            }
+                            else
+                            {
+                                from.SendLocalizedMessage(m_Tool.ObjectWasNotMessage);
+                            }
                         }
                         else
                         {
+                            string text;
+
                             if (relay.Text.Length > 40)
-                                ((IEngravable)m_Target).EngravedText = relay.Text.Substring(0, 40);
+                                text = relay.Text.Substring(0, 40);
                             else
-                                ((IEngravable)m_Target).EngravedText = relay.Text;
+                                text = relay.Text;
 
-                            state.Mobile.SendLocalizedMessage(m_Tool.SuccessMessage);
+                            item.EngravedText = text;
 
-                            m_Tool.UsesRemaining -= 1;
+                            from.SendLocalizedMessage(m_Tool.SuccessMessage);
+
+                            m_Tool.UsesRemaining--;
 
                             if (m_Tool.UsesRemaining < 1)
                             {
-                                m_Tool.Delete();
-                                state.Mobile.SendLocalizedMessage(1044038); // You have worn out your tool!
+                                if (m_Tool.DeletedItem)
+                                {
+                                    m_Tool.Delete();
+                                    from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                                }
                             }
                         }
                     }
@@ -286,7 +471,7 @@ namespace Server.Items
         [Constructable]
         public LeatherContainerEngraver()
             : base(0xF9D, 1)
-        { 
+        {
         }
 
         public LeatherContainerEngraver(Serial serial)
@@ -314,24 +499,24 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }
 
     public class WoodenContainerEngraver : BaseEngravingTool
     {
+        public override int LabelNumber { get { return 1072153; } } // wooden container engraving tool
+
         [Constructable]
         public WoodenContainerEngraver()
             : base(0x1026, 1)
-        { 
+        {
         }
 
         public WoodenContainerEngraver(Serial serial)
@@ -339,13 +524,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072153;
-            }
-        }// wooden container engraving tool
         public override Type[] Engraves
         {
             get
@@ -367,24 +545,24 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }
 
     public class MetalContainerEngraver : BaseEngravingTool
     {
+        public override int LabelNumber { get { return 1072154; } } // metal container engraving tool
+
         [Constructable]
         public MetalContainerEngraver()
             : base(0x1EB8, 1)
-        { 
+        {
         }
 
         public MetalContainerEngraver(Serial serial)
@@ -392,13 +570,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072154;
-            }
-        }// metal container engraving tool
         public override Type[] Engraves
         {
             get
@@ -412,24 +583,24 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }
 
     public class FoodEngraver : BaseEngravingTool
     {
+        public override int LabelNumber { get { return 1072951; } } // food decoration tool
+
         [Constructable]
         public FoodEngraver()
             : base(0x1BD1, 1)
-        { 
+        {
         }
 
         public FoodEngraver(Serial serial)
@@ -437,13 +608,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072951;
-            }
-        }// food decoration tool
         public override Type[] Engraves
         {
             get
@@ -458,24 +622,24 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }
 
     public class SpellbookEngraver : BaseEngravingTool
     {
+        public override int LabelNumber { get { return 1072151; } } // spellbook engraving tool
+
         [Constructable]
         public SpellbookEngraver()
             : base(0xFBF, 1)
-        { 
+        {
         }
 
         public SpellbookEngraver(Serial serial)
@@ -483,13 +647,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072151;
-            }
-        }// spellbook engraving tool
         public override Type[] Engraves
         {
             get
@@ -503,20 +660,20 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
             int version = reader.ReadInt();
         }
     }
 
     public class StatuetteEngravingTool : BaseEngravingTool
     {
+        public override int LabelNumber { get { return 1080201; } } // Statuette Engraving Tool
+
         [Constructable]
         public StatuetteEngravingTool()
             : base(0x12B3, 10)
@@ -529,13 +686,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080201;
-            }
-        }// Statuette Engraving Tool
         public override Type[] Engraves
         {
             get
@@ -549,20 +699,20 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class ArmorEngravingTool : BaseEngravingTool
     {
+        public override int LabelNumber { get { return 1080547; } }// Armor Engraving Tool
+
         [Constructable]
         public ArmorEngravingTool()
             : base(0x32F8, 30)
@@ -575,7 +725,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1080547; } }// Armor Engraving Tool
         public override int GumpTitle { get { return 1071163; } } // <center>Armor Engraving Tool</center>
 
         public override Type[] Engraves { get { return new Type[] { typeof(BaseArmor) }; } }
@@ -583,14 +732,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

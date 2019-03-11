@@ -15,8 +15,21 @@ namespace Server.Items
         int MaxArcaneCharges { get; set; }
     }
 
-    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment
+    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment, IEngravable
     {
+        private string m_EngravedText;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string EngravedText
+        {
+            get { return m_EngravedText; }
+            set
+            {
+                m_EngravedText = value;
+                InvalidateProperties();
+            }
+        }
+
         #region Factions
         private FactionItem m_FactionState;
 
@@ -1195,6 +1208,11 @@ namespace Server.Items
 
             if (IsVvVItem)
                 list.Add(1154937); // VvV Item
+
+            if (!String.IsNullOrEmpty(m_EngravedText))
+            {
+                list.Add(1158847, Utility.FixHtml(m_EngravedText)); // Embroidered: ~1_MESSAGE~	
+            }
         }
 
         public override void AddNameProperties(ObjectPropertyList list)
@@ -1545,7 +1563,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(10); // version
+            writer.Write(11); // version
+
+            // Embroidery Tool version 11
+            writer.Write(m_EngravedText);
 
             // Version 10 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
 
@@ -1696,6 +1717,11 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 11:
+                    {
+                        m_EngravedText = reader.ReadString();
+                        goto case 9;
+                    }
                 case 10:
                 case 9:
                     {

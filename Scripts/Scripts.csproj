@@ -568,6 +568,7 @@
     <Compile Include="Items\Addons\FormalDiningTable.cs" />
     <Compile Include="Items\Addons\GadgetryTable.cs" />
     <Compile Include="Items\Consumables\DecorativeKitchenSet.cs" />
+    <Compile Include="Items\Consumables\EmbroideryTool.cs" />
     <Compile Include="Items\Decorative\Countertop.cs" />
     <Compile Include="Items\Decorative\ButcherBlock.cs" />
     <Compile Include="Items\Decorative\CupidStatue.cs" />
