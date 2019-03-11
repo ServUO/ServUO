@@ -4,7 +4,8 @@ using Server.Accounting;
 
 namespace Server.Items
 {
-    public class ScrollofTranscendence : SpecialScroll, IAccountRestricted
+    [TypeAlias("Server.Items.ScrollofTranscendence")]
+    public class ScrollOfTranscendence : SpecialScroll, IAccountRestricted
     {
         public override int LabelNumber
         {
@@ -32,30 +33,30 @@ namespace Server.Items
             }
         }
 
-        public static ScrollofTranscendence CreateRandom(int min, int max)
+        public static ScrollOfTranscendence CreateRandom(int min, int max)
         {
             SkillName skill = (SkillName)Utility.Random(SkillInfo.Table.Length);
 
-            return new ScrollofTranscendence(skill, Utility.RandomMinMax(min, max) * 0.1);
+            return new ScrollOfTranscendence(skill, Utility.RandomMinMax(min, max) * 0.1);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Account { get; set; }
 
-        public ScrollofTranscendence()
+        public ScrollOfTranscendence()
             : this(SkillName.Alchemy, 0.0)
         {
         }
 		
         [Constructable]
-        public ScrollofTranscendence(SkillName skill, double value)
+        public ScrollOfTranscendence(SkillName skill, double value)
             : base(skill, value)
         {
             ItemID = 0x14EF;
             Hue = 0x490;
         }
 
-        public ScrollofTranscendence(Serial serial)
+        public ScrollOfTranscendence(Serial serial)
             : base(serial)
         {
         }

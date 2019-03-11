@@ -50,7 +50,7 @@ namespace Server.Engines.VvV
             Rewards.Add(new CollectionItem(typeof(ManaSpike), 2308, 1155508, 0, 1000));            // Mana Spike
 
             Rewards.Add(new CollectionItem(typeof(ForgedRoyalPardon), 18098, 1155524, 0, 10000));        // Royal Forged Pardon
-            Rewards.Add(new CollectionItem(typeof(ScrollofTranscendence), 5360, 1094934, 0x490, 10000));   // Scroll of Transcendence
+            Rewards.Add(new CollectionItem(typeof(ScrollOfTranscendence), 5360, 1094934, 0x490, 10000));   // Scroll of Transcendence
 
             Rewards.Add(new CollectionItem(typeof(VvVRobe), 9859, 1155532, ViceVsVirtueSystem.VirtueHue, 5000)); // virtue robe
             Rewards.Add(new CollectionItem(typeof(VvVRobe), 9859, 1155533, ViceVsVirtueSystem.ViceHue, 5000)); // virtue robe

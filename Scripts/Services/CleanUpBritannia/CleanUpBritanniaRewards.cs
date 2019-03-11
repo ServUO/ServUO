@@ -77,7 +77,7 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(Bamboo), 0x246D, 1029324, 0, 15000));
 
             Rewards.Add(new CollectionItem(typeof(HorseBardingDeed), 0x14EF, 1080212, 0, 20000));
-            Rewards.Add(new CollectionItem(typeof(ScrollofAlacrity), 0x14EF, 1078604, 1195, 20000));
+            Rewards.Add(new CollectionItem(typeof(ScrollOfAlacrity), 0x14EF, 1078604, 1195, 20000));
 
             Rewards.Add(new CollectionItem(typeof(SnakeSkinBoots), 0x170B, 1151224, 0x7D9, 20000));
             Rewards.Add(new CollectionItem(typeof(BootsOfTheLavaLizard), 0x170B, 1151223, 0x674, 20000));

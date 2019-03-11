@@ -9,7 +9,7 @@ namespace Server.Items
     [Flipable(0x9981, 0x9982)]
     public class ScrollOfAlacrityBook : BaseSpecialScrollBook
     {
-        public override Type ScrollType { get { return typeof(ScrollofAlacrity); } }
+        public override Type ScrollType { get { return typeof(ScrollOfAlacrity); } }
         public override int LabelNumber { get { return 1154321; } } // Scrolls of Alacrity Book
         public override int BadDropMessage { get { return 1154323; } } // This book only holds Scrolls of Alacrity.
         public override int DropMessage { get { return 1154326; } }    // You add the scroll to your Scrolls of Alacrity book.

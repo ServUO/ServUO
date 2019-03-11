@@ -1636,7 +1636,7 @@ namespace Server.Mobiles
             if (pm.AcceleratedStart > DateTime.UtcNow)
 			{
 				pm.AcceleratedStart = DateTime.UtcNow;
-				ScrollofAlacrity.AlacrityEnd(pm);
+                ScrollOfAlacrity.AlacrityEnd(pm);
 			}
 			#endregion
 
@@ -2813,6 +2813,9 @@ namespace Server.Mobiles
 
         private bool DisplayInItemInsuranceGump(Item item)
         {
+            if (item.Parent is LockableContainer && ((LockableContainer)item.Parent).Locked)
+                return false;
+
             return ((item.Visible || AccessLevel >= AccessLevel.GameMaster) && (item.Insured || CanInsure(item)));
         }
 
@@ -3367,7 +3370,10 @@ namespace Server.Mobiles
 
 			if (msgNum == 1154111)
 			{
-				SendLocalizedMessage(msgNum, RawName);
+                if (to != null)
+                {
+                    SendLocalizedMessage(msgNum, to.Name);
+                }
 			}
 			else
 			{

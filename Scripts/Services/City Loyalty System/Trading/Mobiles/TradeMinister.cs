@@ -179,7 +179,7 @@ namespace Server.Engines.CityLoyalty
                 {
                     default:
                     case 1: return RandomResource(entry);
-                    case 2: return ScrollofTranscendence.CreateRandom(1, 10);
+                    case 2: return ScrollOfTranscendence.CreateRandom(1, 10);
                 }
             }
         }

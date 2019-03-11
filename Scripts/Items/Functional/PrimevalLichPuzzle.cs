@@ -498,7 +498,7 @@ namespace Server.Engines.CannedEvil
             switch ( Utility.Random(1) )
             {
                 case 0:
-                    item = ScrollofTranscendence.CreateRandom(10, 10);
+                    item = ScrollOfTranscendence.CreateRandom(10, 10);
                     break;
                 case 1:
                     // black bone container

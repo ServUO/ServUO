@@ -181,7 +181,7 @@ namespace Server.SkillHandlers
             eable.Free();
         }
 
-        private static bool CanDetect(Mobile src, Mobile target)
+        public static bool CanDetect(Mobile src, Mobile target)
         {
             if (src.Map == null || target.Map == null || !src.CanBeHarmful(target, false))
                 return false;

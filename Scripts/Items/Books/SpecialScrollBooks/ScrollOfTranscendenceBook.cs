@@ -9,7 +9,7 @@ namespace Server.Items
     [Flipable(0x577E, 0x577F)]
     public class ScrollOfTranscendenceBook : BaseSpecialScrollBook
     {
-        public override Type ScrollType { get { return typeof(ScrollofTranscendence); } }
+        public override Type ScrollType { get { return typeof(ScrollOfTranscendence); } }
         public override int LabelNumber { get { return 1151679; } } // Scrolls of Transcendence Book
         public override int BadDropMessage { get { return 1151677; } } // This book only holds Scrolls of Transcendence.
         public override int DropMessage { get { return 1151674; } }    // You add the scroll to your Scrolls of Transcendence book.

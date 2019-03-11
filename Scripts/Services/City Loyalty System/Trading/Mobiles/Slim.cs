@@ -138,7 +138,7 @@ namespace Server.Engines.CityLoyalty
                     RunicReforging.GenerateRandomItem(item, 0, min, max, this.Map);
                     return item;
                 case 2:
-                    return ScrollofTranscendence.CreateRandom(1, 10);
+                    return ScrollOfTranscendence.CreateRandom(1, 10);
             }
         }
 

@@ -7335,10 +7335,10 @@
     <Compile Include="Items\Consumables\PowerScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ScrollofAlacrity.cs">
+    <Compile Include="Items\Consumables\ScrollOfAlacrity.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ScrollofTranscendence.cs">
+    <Compile Include="Items\Consumables\ScrollOfTranscendence.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\SpecialScroll.cs">
