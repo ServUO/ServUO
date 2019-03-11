@@ -123,7 +123,7 @@ namespace Server.Mobiles
                 c.AddItem(new UntranslatedAncientTome());
 
             if (0.1 >= Utility.RandomDouble())
-                c.AddItem(ScrollofTranscendence.CreateRandom(30, 30));
+                c.AddItem(ScrollOfTranscendence.CreateRandom(30, 30));
 
             if (0.1 >= Utility.RandomDouble())
                 c.AddItem(new TatteredAncientScroll());

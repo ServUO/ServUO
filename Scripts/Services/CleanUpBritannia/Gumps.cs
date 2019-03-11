@@ -34,9 +34,9 @@ namespace Server.Engines.CleanUpBritannia
 
         public override void OnItemCreated(Item item)
         {
-            if (item is ScrollofAlacrity)
+            if (item is ScrollOfAlacrity)
             {
-                ((ScrollofAlacrity)item).Skill = (SkillName)Utility.Random(SkillInfo.Table.Length);
+                ((ScrollOfAlacrity)item).Skill = (SkillName)Utility.Random(SkillInfo.Table.Length);
             }
 
             item.InvalidateProperties();

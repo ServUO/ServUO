@@ -149,7 +149,7 @@ namespace Server.Items
                         else
                             this.m_Skill = SkillName.Alchemy;
 
-                        if (this is ScrollofAlacrity)
+                        if (this is ScrollOfAlacrity)
                             this.m_Value = 0.0;
                         else if (this is StatCapScroll)
                             this.m_Value = (double)reader.ReadInt();

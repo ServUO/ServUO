@@ -266,7 +266,7 @@ namespace Server.Items
 
     [Furniture]
     [Flipable(0x4023, 0x4024)]
-    public class TerMurStyleChair : Item
+    public class TerMurStyleChair : CraftableFurniture
     {
         public override int LabelNumber { get { return 1095291; } } // Ter-Mur style chair
 

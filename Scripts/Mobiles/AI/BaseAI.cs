@@ -146,6 +146,11 @@ namespace Server.Mobiles
 			{
 				if (!m_Mobile.Deleted && m_Mobile.Controlled && m_From.CheckAlive())
 				{
+                    if (m_From.Hidden)
+                    {
+                        m_From.RevealingAction();
+                    }
+
 					if (m_Mobile.IsDeadPet && (m_Order == OrderType.Guard || m_Order == OrderType.Attack ||
 											   m_Order == OrderType.Transfer || m_Order == OrderType.Drop))
 					{
@@ -1224,7 +1229,7 @@ namespace Server.Mobiles
 			switch (m_Mobile.ControlOrder)
 			{
 				case OrderType.None:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.Home = m_Mobile.Location;
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
@@ -1232,14 +1237,14 @@ namespace Server.Mobiles
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Come:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = FollowSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Drop:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = true;
@@ -1247,10 +1252,10 @@ namespace Server.Mobiles
 					break;
 				case OrderType.Friend:
 				case OrderType.Unfriend:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					break;
 				case OrderType.Guard:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = FollowSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = true;
@@ -1260,7 +1265,7 @@ namespace Server.Mobiles
 					m_Mobile.ControlMaster.SendLocalizedMessage(1049671, petname); //~1_PETNAME~ is now guarding you.
 					break;
 				case OrderType.Attack:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 
@@ -1268,28 +1273,28 @@ namespace Server.Mobiles
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Patrol:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Release:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Stay:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Stop:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.Home = m_Mobile.Location;
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
@@ -1297,7 +1302,7 @@ namespace Server.Mobiles
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Follow:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = FollowSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 
@@ -1305,7 +1310,7 @@ namespace Server.Mobiles
 					m_Mobile.Combatant = null;
 					break;
 				case OrderType.Transfer:
-					m_Mobile.ControlMaster.RevealingAction();
+					//m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 

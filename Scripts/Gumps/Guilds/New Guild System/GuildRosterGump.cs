@@ -122,30 +122,33 @@ namespace Server.Guilds
         public GuildRosterGump(PlayerMobile pm, Guild g, IComparer<PlayerMobile> currentComparer, bool ascending, string filter, int startNumber)
             : base(pm, g, Utility.SafeConvertList<Mobile, PlayerMobile>(g.Members), currentComparer, ascending, filter, startNumber, m_Fields)
         {
-            this.PopulateGump();
+            PopulateGump();
         }
 
         public override void PopulateGump()
         {
             base.PopulateGump();
 
-            this.AddHtmlLocalized(266, 43, 110, 26, 1062974, 0xF, false, false); // Guild Roster
+            AddHtmlLocalized(266, 43, 110, 26, 1062974, 0xF, false, false); // Guild Roster
         }
 
         public override void DrawEndingEntry(int itemNumber)
         {
-            this.AddBackground(225, 148 + itemNumber * 28, 150, 26, 0x2486);
-            this.AddButton(230, 153 + itemNumber * 28, 0x845, 0x846, 8, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(255, 151 + itemNumber * 28, 110, 26, 1062992, 0x0, false, false); // Invite Player
+            AddBackground(225, 148 + itemNumber * 28, 150, 26, 0x2486);
+            AddButton(230, 153 + itemNumber * 28, 0x845, 0x846, 8, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(255, 151 + itemNumber * 28, 110, 26, 1062992, 0x0, false, false); // Invite Player
         }
 
         protected override TextDefinition[] GetValuesFor(PlayerMobile pm, int aryLength)
         {
             TextDefinition[] defs = new TextDefinition[aryLength];
 
-            string name = String.Format("{0}{1}", pm.Name, (this.player.GuildFealty == pm && this.player.GuildFealty != this.guild.Leader) ? " *" : "");
+            string name = String.Format("{0} {1}{2}", 
+                pm.Name, 
+                Engines.VvV.ViceVsVirtueSystem.IsVvV(pm) ? "VvV" : "",
+                (player.GuildFealty == pm && player.GuildFealty != guild.Leader) ? " *" : "");
 
-            if (pm == this.player)
+            if (pm == player)
                 name = Color(name, 0x006600);
             else if (pm.NetState != null)
                 name = Color(name, 0x000066);
@@ -182,7 +185,7 @@ namespace Server.Guilds
 
             PlayerMobile pm = sender.Mobile as PlayerMobile;
 
-            if (pm == null || !IsMember(pm, this.guild))
+            if (pm == null || !IsMember(pm, guild))
                 return;
 
             if (info.ButtonID == 8)
@@ -190,7 +193,7 @@ namespace Server.Guilds
                 if (pm.GuildRank.GetFlag(RankFlags.CanInvitePlayer))
                 {
                     pm.SendLocalizedMessage(1063048); // Whom do you wish to invite into your guild?
-                    pm.BeginTarget(-1, false, Targeting.TargetFlags.None, new TargetStateCallback(InvitePlayer_Callback), this.guild);
+                    pm.BeginTarget(-1, false, Targeting.TargetFlags.None, new TargetStateCallback(InvitePlayer_Callback), guild);
                 }
                 else
                     pm.SendLocalizedMessage(503301); // You don't have permission to do that.
@@ -210,7 +213,7 @@ namespace Server.Guilds
             Faction guildFaction = (guildState == null ? null : guildState.Faction);
             Faction targetFaction = (targetState == null ? null : targetState.Faction);
 
-            if (pm == null || !IsMember(pm, this.guild) || !pm.GuildRank.GetFlag(RankFlags.CanInvitePlayer))
+            if (pm == null || !IsMember(pm, guild) || !pm.GuildRank.GetFlag(RankFlags.CanInvitePlayer))
             {
                 pm.SendLocalizedMessage(503301); // You don't have permission to do that.
             }
@@ -257,7 +260,7 @@ namespace Server.Guilds
             else
             {
                 pm.SendLocalizedMessage(1063053, targ.Name); // You invite ~1_val~ to join your guild.
-                targ.SendGump(new GuildInvitationRequest(targ, this.guild, pm));
+                targ.SendGump(new GuildInvitationRequest(targ, guild, pm));
             }
         }
     }
