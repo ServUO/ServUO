@@ -188,7 +188,7 @@ namespace Server.Multis
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            if (from.InRange(Location, 2) && IsLockedDown || IsChildOf(from.Backpack))
+            if (from.InRange(Location, 2) || IsChildOf(from.Backpack))
             {
                 if (UsesCharges)
                 {
@@ -212,7 +212,9 @@ namespace Server.Multis
                 Mobile = mobile;
                 Item = item;
 
-                Enabled = Item.IsLockedDown;
+                BaseHouse house = BaseHouse.FindHouseAt(item);
+
+                Enabled = Item.IsLockedDown && house != null && house.IsOwner(Mobile);
             }
 
             public override void OnClick()
@@ -298,7 +300,9 @@ namespace Server.Multis
                 Mobile = mobile;
                 Item = item;
 
-                Enabled = Item.IsLockedDown;
+                BaseHouse house = BaseHouse.FindHouseAt(item);
+
+                Enabled = Item.IsLockedDown && house != null && house.IsOwner(Mobile);
             }
 
             public override void OnClick()
@@ -306,7 +310,10 @@ namespace Server.Multis
                 if (Item == null || Item.Deleted)
                     return;
 
-                BaseGump.SendGump(new HouseTeleporterTypeGump((PlayerMobile)Mobile, Item));
+                if (!Mobile.HasGump(typeof(HouseTeleporterTypeGump)))
+                {
+                    BaseGump.SendGump(new HouseTeleporterTypeGump((PlayerMobile)Mobile, Item));
+                }
             }
         }
 
