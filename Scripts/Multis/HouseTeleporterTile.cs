@@ -193,9 +193,8 @@ namespace Server.Multis
                 if (UsesCharges)
                 {
                     list.Add(new RechargeEntry(from, this));
-                }
-
-                list.Add(new ChangeTypeEntry(from, this));
+                    list.Add(new ChangeTypeEntry(from, this));
+                }                
             }
 
             base.GetContextMenuEntries(from, list);
