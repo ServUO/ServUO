@@ -5,7 +5,8 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class ScrollofAlacrity : SpecialScroll
+    [TypeAlias("Server.Items.ScrollofAlacrity")]
+    public class ScrollOfAlacrity : SpecialScroll
     {
         public override int LabelNumber
         {
@@ -33,20 +34,20 @@ namespace Server.Items
             }
         }
 
-        public ScrollofAlacrity()
+        public ScrollOfAlacrity()
             : this(SkillName.Alchemy)
         {
         }
 		
         [Constructable]
-        public ScrollofAlacrity(SkillName skill)
+        public ScrollOfAlacrity(SkillName skill)
             : base(skill, 0.0)
         {
             ItemID = 0x14EF;
             Hue = 1195;
         }
 
-        public ScrollofAlacrity(Serial serial)
+        public ScrollOfAlacrity(Serial serial)
             : base(serial)
         {
         }
@@ -151,9 +152,9 @@ namespace Server.Items
             return true;
         }
 
-        public static ScrollofAlacrity CreateRandom()
+        public static ScrollOfAlacrity CreateRandom()
         {
-            return new ScrollofAlacrity((SkillName)SkillInfo.Table[Utility.Random(SkillInfo.Table.Length)].SkillID);
+            return new ScrollOfAlacrity((SkillName)SkillInfo.Table[Utility.Random(SkillInfo.Table.Length)].SkillID);
         }
 
         public override void Serialize(GenericWriter writer)

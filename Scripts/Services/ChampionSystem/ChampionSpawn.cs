@@ -488,14 +488,14 @@ namespace Server.Engines.CannedEvil
         }
 
         #region Scroll of Transcendence
-        private ScrollofTranscendence CreateRandomSoT(bool felucca)
+        private ScrollOfTranscendence CreateRandomSoT(bool felucca)
         {
             int level = Utility.RandomMinMax(1, 5);
 			
             if (felucca)
                 level += 5;
 
-            return ScrollofTranscendence.CreateRandom(level, level);
+            return ScrollOfTranscendence.CreateRandom(level, level);
         }
 
         #endregion
@@ -505,7 +505,7 @@ namespace Server.Engines.CannedEvil
             if (scroll == null || killer == null)	//sanity
                 return;
 
-            if (scroll is ScrollofTranscendence)
+            if (scroll is ScrollOfTranscendence)
                 killer.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
             else
                 killer.SendLocalizedMessage(1049524); // You have received a scroll of power!
@@ -648,7 +648,7 @@ namespace Server.Engines.CannedEvil
 
                                         if (Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
                                         {
-                                            ScrollofTranscendence SoTF = CreateRandomSoT(true);
+                                            ScrollOfTranscendence SoTF = CreateRandomSoT(true);
                                             GiveScrollTo(pm, (SpecialScroll)SoTF);
                                         }
                                         else
@@ -664,7 +664,7 @@ namespace Server.Engines.CannedEvil
                                     if (Utility.RandomDouble() < 0.0015)
                                     {
                                         killer.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
-                                        ScrollofTranscendence SoTT = CreateRandomSoT(false);
+                                        ScrollOfTranscendence SoTT = CreateRandomSoT(false);
                                         killer.AddToBackpack(SoTT);
                                     }
                                 }

@@ -812,6 +812,7 @@ namespace Server.Mobiles
 	public class Inferno : SpecialAbility
 	{
         public override bool TriggerOnDoMeleeDamage { get { return true; } }
+        public override int ManaCost { get { return 30; } }
 
         public static Dictionary<Mobile, ExpireTimer> _Table;
 
@@ -843,8 +844,10 @@ namespace Server.Mobiles
             Effects.SendLocationParticles(defender, 0x3709, 10, 30, 5052);
             Effects.PlaySound(defender.Location, defender.Map, 0x208);
 
-            timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(5.0));
+            timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(6.0));
             timer.Start();
+
+            AOS.Damage(defender, creature, Utility.RandomMinMax(46, 79), 0, 100, 0, 0, 0);
 
             _Table[defender] = timer;
 		}
@@ -868,6 +871,8 @@ namespace Server.Mobiles
                 m_Mobile = m;
                 m_Mod = mod;
                 Priority = TimerPriority.TwoFiftyMS;
+
+                m.AddResistanceMod(mod);
             }
 
             public void DoExpire()

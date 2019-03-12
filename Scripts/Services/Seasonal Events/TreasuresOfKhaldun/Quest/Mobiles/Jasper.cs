@@ -155,7 +155,7 @@ namespace Server.Engines.Khaldun
                         quest2.Objectives[0].CurProgress++;
 
                         m.SendGump(new InternalGump());
-                        m.PlaySound(quest.CompleteSound);
+                        m.PlaySound(quest2.CompleteSound);
                         quest2.GiveRewards();
                     }
                 }

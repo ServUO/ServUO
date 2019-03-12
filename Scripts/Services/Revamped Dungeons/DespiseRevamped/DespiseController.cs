@@ -500,15 +500,16 @@ namespace Server.Engines.Despise
 
         private Point3D GetRandomLoc(Rectangle2D rec)
         {
-            Point3D p = new Point3D(rec.X, rec.Y, this.Map.GetAverageZ(rec.X, rec.Y));
+            var map = Map.Trammel;
+            Point3D p = new Point3D(rec.X, rec.Y, map.GetAverageZ(rec.X, rec.Y));
 
             for (int i = 0; i < 50; i++)
             {
                 int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
                 int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
-                int z = Map.Trammel.GetAverageZ(x, y);
+                int z = map.GetAverageZ(x, y);
 
-                if (Map.Trammel.CanSpawnMobile(x, y, z))
+                if (map.CanSpawnMobile(x, y, z))
                 {
                     p = new Point3D(x, y, z);
                     break;

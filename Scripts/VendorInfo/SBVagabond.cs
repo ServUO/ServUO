@@ -42,13 +42,13 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Board), 3, 20, 0x1BD7, 0, true));
                 Add(new GenericBuyInfo(typeof(IronIngot), 6, 20, 0x1BF2, 0, true));
 
-                Add(new GenericBuyInfo(typeof(StarSapphire), 125, 20, 0xF21, 0, true));
+                Add(new GenericBuyInfo(typeof(StarSapphire), 125, 20, 0x0F0F, 0, true));
                 Add(new GenericBuyInfo(typeof(Emerald), 100, 20, 0xF10, 0, true));
-                Add(new GenericBuyInfo(typeof(Sapphire), 100, 20, 0xF19, 0, true));
+                Add(new GenericBuyInfo(typeof(Sapphire), 100, 20, 0xF11, 0, true));
                 Add(new GenericBuyInfo(typeof(Ruby), 75, 20, 0xF13, 0, true));
                 Add(new GenericBuyInfo(typeof(Citrine), 50, 20, 0xF15, 0, true));
                 Add(new GenericBuyInfo(typeof(Amethyst), 100, 20, 0xF16, 0, true));
-                Add(new GenericBuyInfo(typeof(Tourmaline), 75, 20, 0xF2D, 0, true));
+                Add(new GenericBuyInfo(typeof(Tourmaline), 75, 20, 0x0F18, 0, true));
                 Add(new GenericBuyInfo(typeof(Amber), 50, 20, 0xF25, 0, true));
                 Add(new GenericBuyInfo(typeof(Diamond), 200, 20, 0xF26, 0, true));
             }

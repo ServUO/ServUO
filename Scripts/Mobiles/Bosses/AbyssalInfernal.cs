@@ -13,7 +13,7 @@ namespace Server.Mobiles
         private static Dictionary<Mobile, Point3D> m_Table = new Dictionary<Mobile, Point3D>();
 
         private DateTime m_NextAbility;
-
+        
         [Constructable]
         public AbyssalInfernal()
             : base(AIType.AI_Mage)

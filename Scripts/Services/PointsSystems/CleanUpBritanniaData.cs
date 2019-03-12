@@ -101,7 +101,7 @@ namespace Server.Engines.Points
                     else if (ps.Value == 120)
                         points = 2500;
                 }
-                else if (item is ScrollofTranscendence)
+                else if (item is ScrollOfTranscendence)
                 {
                     SpecialScroll sot = (SpecialScroll)item;
 

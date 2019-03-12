@@ -58,6 +58,7 @@ namespace Server.Mobiles
         public override bool UseSmartAI { get { return true; } }
         public override bool ReacquireOnMovement { get { return true; } }
         public override bool AttacksFocus { get { return true; } }
+        public override bool CanFlee { get { return false; } }
 
         // Missing Tail Swipe Ability
 
