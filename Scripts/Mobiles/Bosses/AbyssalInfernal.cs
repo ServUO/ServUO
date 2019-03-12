@@ -9,8 +9,6 @@ namespace Server.Mobiles
     [CorpseName("an abyssal infernal corpse")]
     public class AbyssalInfernal : BaseChampion
     {
-        private DateTime m_NextAbility;
-		
         [Constructable]
         public AbyssalInfernal() : base(AIType.AI_Mage)
         {
