@@ -10,8 +10,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = "a phoenix";
-            Body = 5;
-            Hue = 0x674;
+            Body = 0x340;
             BaseSoundID = 0x8F;
 
             SetStr(504, 700);
@@ -20,7 +19,7 @@ namespace Server.Mobiles
 
             SetHits(340, 383);
 
-            SetDamage(25);
+            SetDamage(20, 25);
 
             SetDamageType(ResistanceType.Physical, 50);
             SetDamageType(ResistanceType.Fire, 50);
@@ -60,11 +59,6 @@ namespace Server.Mobiles
         public override bool CanFly { get { return true; } }
         public override bool HasAura { get { return !Controlled; } }
         public override int AuraRange { get { return 2; } }
-
-        public override void AuraEffect(Mobile m)
-        {
-            m.SendMessage("The radiating heat scorches your skin!");
-        }
 
         public override void GenerateLoot()
         {
