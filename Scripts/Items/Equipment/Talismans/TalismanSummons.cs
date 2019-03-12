@@ -11,7 +11,6 @@ namespace Server.Mobiles
 {
 	public class BaseTalismanSummon : BaseCreature
 	{
-        private bool m_LastHidden;
         private long m_NextMove;
 
         private DateTime m_SeperationStart;

@@ -7485,7 +7485,7 @@ namespace Server.Mobiles
 
         public virtual bool DoDiscord()
         {
-            Mobile target = GetBardTarget();
+            Mobile target = GetBardTarget(Controlled);
 
             if (target == null || !target.InLOS(this) || !InRange(target.Location, BaseInstrument.GetBardRange(this, SkillName.Discordance)) || CheckInstrument() == null)
                 return false;
