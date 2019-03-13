@@ -393,7 +393,7 @@ namespace Server.Items
 
         private void DropRune()
         {
-            if (Atlas.CheckAccess(User)&& Atlas.Movable != false || User.AccessLevel >= AccessLevel.GameMaster)
+            if (Atlas.CheckAccess(User) && Atlas.Movable != false || User.AccessLevel >= AccessLevel.GameMaster)
             {
                 Atlas.DropRune(User, Atlas.Entries[Selected], Selected);
                 Refresh();
