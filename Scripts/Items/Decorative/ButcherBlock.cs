@@ -1,23 +1,19 @@
 using System;
-using Server.Multis;
 
 namespace Server.Items
 {
-    public class GateTravelScroll : SpellScroll
+    public class ButcherBlock : Item
     {
-        [Constructable]
-        public GateTravelScroll()
-            : this(1)
-        {
-        }
+        public override int LabelNumber { get { return 1125659; } } // butcher block
 
         [Constructable]
-        public GateTravelScroll(int amount)
-            : base(51, 0x1F60, amount)
+        public ButcherBlock()
+            : base(0xA2A3)
         {
+            LootType = LootType.Blessed;
         }
 
-        public GateTravelScroll(Serial serial)
+        public ButcherBlock(Serial serial)
             : base(serial)
         {
         }
@@ -25,14 +21,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write((int)0); // version
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

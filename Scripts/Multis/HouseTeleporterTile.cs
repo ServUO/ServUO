@@ -3,16 +3,36 @@ using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells;
+using Server.Gumps;
+using System.Collections.Generic;
+using Server.ContextMenus;
+using Server.Targeting;
 
 namespace Server.Multis
 {
-	public class HouseTeleporterTile : HouseTeleporter
-	{
+    public class HouseTeleporterTile : HouseTeleporter, IFlipable
+    {
+        public static void Initialize()
+        {
+            TileData.ItemTable[0x574A].Flags = TileFlag.None;
+        }
+
         public static int MaxCharges = 1000;
 
 		private int _Charges;
 
-		[CommandProperty(AccessLevel.GameMaster)]
+        public override int ItemID
+        {
+            get { return base.ItemID; }
+            set
+            {
+                base.ItemID = value;
+
+                HueChange();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public HouseTeleporterTile Link
 		{
 			get
@@ -27,8 +47,10 @@ namespace Server.Multis
 				Target = value;
 			}
 		}
-		
-		[CommandProperty(AccessLevel.GameMaster)]
+
+        private bool IsMoveOver { get { return ItemID == 0x574A || ItemID == 0xA1CB || ItemID == 0xA1CC || ItemID == 0x40BB; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
 		public int Charges
 		{
 			get { return _Charges; }
@@ -36,21 +58,30 @@ namespace Server.Multis
             {
                 _Charges = value;
 
-                if (UsesCharges)
-                {
-                    if (_Charges == 0)
-                    {
-                        Hue = 1208;
-                    }
-                    else if (_Charges >= 1 && Hue != 1201)
-                    {
-                        Hue = 1201;
-                    }
-                }
+                HueChange();
 
                 InvalidateProperties();
             } 
 		}
+
+        public void HueChange()
+        {
+            if (UsesCharges && ItemID == 0x574A)
+            {
+                if (_Charges == 0)
+                {
+                    Hue = 340;
+                }
+                else if (_Charges >= 1 && Hue != 541)
+                {
+                    Hue = 541;
+                }
+            }
+            else
+            {
+                Hue = 0;
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool UsesCharges { get; set; }
@@ -58,11 +89,11 @@ namespace Server.Multis
         public override int LabelNumber { get { return Link == null ? 1114916 : 1113917; } } // house teleporter (unlinked) -or- House Teleporter
 
         public HouseTeleporterTile(bool vetReward)
-            : base(vetReward ? 0x40BB : 0x40B9, null)
+            : base(vetReward ? 0x40BB : 0x574A, null)
         {
             UsesCharges = !vetReward;
             Movable = true;
-            Weight = 2.0;
+            Weight = 1.0;
             LootType = LootType.Blessed;
 
             if (vetReward)
@@ -73,6 +104,215 @@ namespace Server.Multis
             {
                 UsesCharges = true;
                 Charges = MaxCharges;
+            }
+        }
+
+        public void OnFlip(Mobile from)
+        {
+            bool flip = false;
+
+            switch (ItemID)
+            {
+                case 0x108C:
+                    ItemID = 0x1093;
+                    flip = true;
+                    break;
+                case 0x1093:
+                    ItemID = 0x108C;
+                    flip = true;
+                    break;
+                case 0x108D:
+                    ItemID = 0x1094;
+                    flip = true;
+                    break;
+                case 0x1094:
+                    ItemID = 0x108D;
+                    flip = true;
+                    break;
+                case 0x108E:
+                    ItemID = 0x1095;
+                    flip = true;
+                    break;
+                case 0x1095:
+                    ItemID = 0x108E;
+                    flip = true;
+                    break;
+                case 0x1090:
+                case 0x108F:
+                    ItemID = 0x1091;
+                    flip = true;
+                    break;
+                case 0x1091:
+                    ItemID = 0x1090;
+                    flip = true;
+                    break;
+                case 0xA1CB:
+                    ItemID = 0xA1CC;
+                    flip = true;
+                    break;
+                case 0xA1CC:
+                    ItemID = 0xA1CB;
+                    flip = true;
+                    break;
+                case 0xA2BA:
+                    ItemID = 0xA2BC;
+                    flip = true;
+                    break;
+                case 0xA2BC:
+                    ItemID = 0xA2BA;
+                    flip = true;
+                    break;
+                case 0xA2BB:
+                    ItemID = 0xA2BD;
+                    flip = true;
+                    break;
+                case 0xA2BD:
+                    ItemID = 0xA2BB;
+                    flip = true;
+                    break;
+            }
+
+            if (!flip)
+                from.SendLocalizedMessage(1042273); // You cannot turn that.
+        }
+
+        public override bool OnMoveOver(Mobile m)
+        {
+            if (IsMoveOver)
+            {
+                base.OnMoveOver(m);
+            }
+
+            return true;
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            if (from.InRange(Location, 2) || IsChildOf(from.Backpack))
+            {
+                if (UsesCharges)
+                {
+                    list.Add(new RechargeEntry(from, this));
+                    list.Add(new ChangeTypeEntry(from, this));
+                }                
+            }
+
+            base.GetContextMenuEntries(from, list);
+        }
+
+        private class RechargeEntry : ContextMenuEntry
+        {
+            private readonly Mobile Mobile;
+            private readonly HouseTeleporterTile Item;
+
+            public RechargeEntry(Mobile mobile, HouseTeleporterTile item)
+                : base(1076197, 2)
+            {
+                Mobile = mobile;
+                Item = item;
+
+                BaseHouse house = BaseHouse.FindHouseAt(item);
+
+                Enabled = Item.IsLockedDown && house != null && house.IsOwner(Mobile);
+            }
+
+            public override void OnClick()
+            {
+                if (Item == null || Item.Deleted)
+                    return;
+
+                Mobile.SendLocalizedMessage(1158897); // Target the gate scrolls you wish to recharge this item with...
+                Mobile.Target = new InternalTarget(Item);
+            }
+        }
+
+        private class InternalTarget : Target
+        {
+            private readonly HouseTeleporterTile Item;
+
+            public InternalTarget(HouseTeleporterTile item)
+                : base(2, false, TargetFlags.None)
+            {
+                Item = item;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (from == null || Item == null || Item.Deleted)
+                {
+                    return;
+                }
+
+                if (targeted is Item)
+                {
+                    Item item = targeted as Item;
+
+                    if (!item.IsChildOf(from.Backpack))
+                    {
+                        from.SendLocalizedMessage(1054107); // This item must be in your backpack.
+                        return;
+                    }
+
+                    if (item is GateTravelScroll)
+                    {
+                        GateTravelScroll scroll = item as GateTravelScroll;
+
+                        if (Item.Charges >= MaxCharges)
+                        {
+                            from.SendLocalizedMessage(1115126); // The House Teleporter cannot be charged any further.
+                        }
+                        else
+                        {
+                            int left = MaxCharges - Item.Charges;
+                            int scrollsNeeded = Math.Max(1, left / 5);
+
+                            if (scroll.Amount <= scrollsNeeded)
+                            {
+                                Item.Charges = Math.Min(MaxCharges, Item.Charges + (scroll.Amount * 5));
+                                scroll.Delete();
+                            }
+                            else
+                            {
+                                scroll.Amount -= scrollsNeeded;
+                                Item.Charges = MaxCharges;
+                            }
+
+                            from.SendLocalizedMessage(1115127); // The Gate Travel scroll crumbles to dust as it strengthens the House Teleporter.
+                        }
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1158898); // Target gate scroll to recharge the teleporter.
+                    }
+                }
+            }
+        }
+
+        private class ChangeTypeEntry : ContextMenuEntry
+        {
+            private readonly Mobile Mobile;
+            private readonly Item Item;
+
+            public ChangeTypeEntry(Mobile mobile, Item item)
+                : base(1158896, 2)
+            {
+                Mobile = mobile;
+                Item = item;
+
+                BaseHouse house = BaseHouse.FindHouseAt(item);
+
+                Enabled = Item.IsLockedDown && house != null && house.IsOwner(Mobile);
+            }
+
+            public override void OnClick()
+            {
+                if (Item == null || Item.Deleted)
+                    return;
+
+                if (!Mobile.HasGump(typeof(HouseTeleporterTypeGump)))
+                {
+                    BaseGump.SendGump(new HouseTeleporterTypeGump((PlayerMobile)Mobile, Item));
+                }
             }
         }
 
@@ -96,10 +336,10 @@ namespace Server.Multis
 			BaseHouse house = BaseHouse.FindHouseAt(this);
             BaseHouse linkHouse = Link == null ? null : BaseHouse.FindHouseAt(Link);
 
-			if(house == null || Link == null || !IsLockedDown || !Link.IsLockedDown || linkHouse == null) // TODO: Messages for these?
-			{
-				return false;
-			}
+            if (house == null || Link == null || !IsLockedDown || !Link.IsLockedDown || linkHouse == null) // TODO: Messages for these?
+            {
+                return false;
+            }
 
             if (UsesCharges && _Charges == 0)
             {
@@ -213,11 +453,66 @@ namespace Server.Multis
 					}
 				});
 			}
+            else if (!IsMoveOver)
+            {
+                if (Target != null && !Target.Deleted && InRange(m, 1))
+                {
+                    if (CheckAccess(m))
+                    {
+                        if (!m.Hidden || m.IsPlayer())
+                            new EffectTimer(m.Location, m.Map, 2023, 0x1F0, TimeSpan.FromSeconds(0.4)).Start();
+
+                        new DelayTimer(this, m).Start();
+                    }
+                }
+            }
 			else
 			{
 				m.SendLocalizedMessage(1114917); // This must be in your backpack to link it.
 			}
 		}
+
+        private class DelayTimer : Timer
+        {
+            private readonly HouseTeleporter m_Teleporter;
+            private readonly Mobile m_Mobile;
+
+            public DelayTimer(HouseTeleporter tp, Mobile m)
+                : base(TimeSpan.FromSeconds(1.0))
+            {
+                m_Teleporter = tp;
+                m_Mobile = m;
+            }
+
+            protected override void OnTick()
+            {
+                Item target = m_Teleporter.Target;
+
+                if (target != null && !target.Deleted)
+                {
+                    Mobile m = m_Mobile;
+
+                    Point3D p = target.GetWorldTop();
+                    Map map = target.Map;
+
+                    Server.Mobiles.BaseCreature.TeleportPets(m, p, map);
+
+                    m.MoveToWorld(p, map);
+
+                    if (!m.Hidden || m.IsPlayer())
+                    {
+                        Effects.PlaySound(target.Location, target.Map, 0x1FE);
+
+                        Effects.SendLocationParticles(EffectItem.Create(m_Teleporter.Location, m_Teleporter.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023, 0);
+                        Effects.SendLocationParticles(EffectItem.Create(target.Location, target.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023, 0);
+
+                        new EffectTimer(target.Location, target.Map, 2023, -1, TimeSpan.FromSeconds(0.4)).Start();
+                    }
+
+                    m_Teleporter.OnAfterTeleport(m);
+                }
+            }
+        }
 
         public override void OnAfterTeleport(Mobile m)
         {
@@ -257,8 +552,70 @@ namespace Server.Multis
 			
 			_Charges = reader.ReadInt();
             UsesCharges = reader.ReadBool();
-		}
+
+            if (ItemID == 0x40B9)
+                ItemID = 0x574A;
+        }
 	}
+
+    public class HouseTeleporterTypeGump : BaseGump
+    {
+        public Item Teleporter { get; set; }
+
+        public HouseTeleporterTypeGump(PlayerMobile pm, Item item)
+            : base(pm, 100, 100)
+        {
+            Teleporter = item;
+        }
+
+        public override void AddGumpLayout()
+        {
+            AddPage(0);
+
+            AddBackground(0, 0, 310, 400, 0x6DB);
+
+            AddImage(54, 0, 0x6E4);
+            AddHtmlLocalized(10, 10, 290, 18, 1114513, "#1113917", 0x0, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
+            AddItem(35, 80, 0x574A);
+            AddButton(105, 80, 0x845, 0x846, 22346, GumpButtonType.Reply, 0);
+
+            AddItem(35, 140, 0x108C);
+            AddButton(105, 140, 0x845, 0x846, 4236, GumpButtonType.Reply, 0);
+
+            AddItem(35, 200, 0x108D);
+            AddButton(105, 200, 0x845, 0x846, 4237, GumpButtonType.Reply, 0);
+
+            AddItem(35, 260, 0x108E);
+            AddButton(105, 260, 0x845, 0x846, 4238, GumpButtonType.Reply, 0);
+
+            AddItem(35, 320, 0x108F);
+            AddButton(105, 320, 0x845, 0x846, 4239, GumpButtonType.Reply, 0);
+
+            AddItem(235, 80, 0x1090);
+            AddButton(195, 80, 0x845, 0x846, 4240, GumpButtonType.Reply, 0);
+
+            AddItem(235, 140, 0x9CDE);
+            AddButton(195, 140, 0x845, 0x846, 40158, GumpButtonType.Reply, 0);
+
+            AddItem(235, 200, 0xA1CB);
+            AddButton(195, 200, 0x845, 0x846, 41419, GumpButtonType.Reply, 0);
+
+            AddItem(235, 260, 0xA2BA);
+            AddButton(195, 260, 0x845, 0x846, 41658, GumpButtonType.Reply, 0);
+
+            AddItem(235, 320, 0xA2BB);
+            AddButton(195, 320, 0x845, 0x846, 41659, GumpButtonType.Reply, 0);
+        }
+
+        public override void OnResponse(RelayInfo info)
+        {
+            if (info.ButtonID != 0)
+            {
+                Teleporter.ItemID = info.ButtonID;
+                Refresh();
+            }
+        }
+    }
 
     public class HouseTeleporterTileBag : Bag
     {

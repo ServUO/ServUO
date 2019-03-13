@@ -1186,7 +1186,10 @@ namespace Server.Items
                     src.Quantity = 0;
                 }
 
-                from.SendLocalizedMessage(1010089); // You fill the container with water.
+                if (!(src is WaterContainerComponent))
+                {
+                    from.SendLocalizedMessage(1010089); // You fill the container with water.
+                }
             }
             else if (targ is Cow)
             {
@@ -1394,6 +1397,22 @@ namespace Server.Items
 
                     from.PlaySound(0x4E);
                 }
+            }
+            else if (targ is WaterContainerComponent)
+            {
+                WaterContainerComponent component = (WaterContainerComponent)targ;
+
+                if (component.IsFull)
+                {
+                    from.SendLocalizedMessage(500848); // Couldn't pour it there.  It was already full.
+                }
+                else
+                {
+                    component.Quantity += Quantity;
+                    Quantity = 0;
+                }
+
+                from.PlaySound(0x4E);
             }
             else if (from == targ)
             {

@@ -17,9 +17,7 @@ namespace Server.Items
     public class InteriorDecorator : Item
     {
         public override int LabelNumber { get { return 1041280; } } // an interior decorator
-
-        private DecorateCommand m_Command;
-
+        
         [Constructable]
         public InteriorDecorator()
             : base(0xFC1)
@@ -34,15 +32,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DecorateCommand Command
-        {
-            get { return m_Command; }
-            set
-            {
-                m_Command = value;
-                InvalidateProperties();
-            }
-        }
+        public DecorateCommand Command { get; set; }
 
         public static bool InHouse(Mobile from)
         {
@@ -59,14 +49,6 @@ namespace Server.Items
                 return true;
 
             return false;
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            if (m_Command != DecorateCommand.None)
-                list.Add(1018322 + (int)m_Command); // Turn/Up/Down
         }
 
         public override void Serialize(GenericWriter writer)
@@ -89,7 +71,7 @@ namespace Server.Items
             if (from.FindGump(typeof(InternalGump)) == null)
                 from.SendGump(new InternalGump(this));
 
-            if (m_Command != DecorateCommand.None)
+            if (Command != DecorateCommand.None)
                 from.Target = new InternalTarget(this);
         }
 
@@ -102,16 +84,20 @@ namespace Server.Items
             {
                 m_Decorator = decorator;
 
-                AddBackground(0, 0, 200, 200, 2600);
+                AddBackground(0, 0, 170, 200, 2600);
 
-                AddButton(50, 45, (decorator.Command == DecorateCommand.Turn ? 2154 : 2152), 2154, 1, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(90, 50, 70, 40, 1018323, false, false); // Turn
+                AddPage(0);
 
-                AddButton(50, 95, (decorator.Command == DecorateCommand.Up ? 2154 : 2152), 2154, 2, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(90, 100, 70, 40, 1018324, false, false); // Up
+                AddButton(40, 36, (decorator.Command == DecorateCommand.Turn ? 2154 : 2152), 2154, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 41, 100, 20, 1018323, false, false); // Turn
 
-                AddButton(50, 145, (decorator.Command == DecorateCommand.Down ? 2154 : 2152), 2154, 3, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(90, 150, 70, 40, 1018325, false, false); // Down
+                AddButton(40, 86, (decorator.Command == DecorateCommand.Up ? 2154 : 2152), 2154, 2, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 91, 100, 20, 1018324, false, false); // Up
+
+                AddButton(40, 136, (decorator.Command == DecorateCommand.Down ? 2154 : 2152), 2154, 3, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 141, 100, 20, 1018325, false, false); // Down
+
+                AddHtmlLocalized(0, 0, 0, 0, 2, false, false);
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
@@ -119,15 +105,20 @@ namespace Server.Items
                 DecorateCommand command = DecorateCommand.None;
                 Mobile m = sender.Mobile;
 
+                int cliloc = 0;
+
                 switch (info.ButtonID)
                 {
                     case 1:
+                        cliloc = 1073404; // Select an object to turn.
                         command = DecorateCommand.Turn;
                         break;
                     case 2:
+                        cliloc = 1073405; // Select an object to increase its height.
                         command = DecorateCommand.Up;
                         break;
                     case 3:
+                        cliloc = 1073406; // Select an object to lower its height.
                         command = DecorateCommand.Down;
                         break;
                 }
@@ -136,6 +127,10 @@ namespace Server.Items
                 {
                     m_Decorator.Command = command;
                     m.SendGump(new InternalGump(m_Decorator));
+
+                    if (cliloc != 0)
+                        m.SendLocalizedMessage(cliloc);
+
                     m.Target = new InternalTarget(m_Decorator);
                 }
                 else

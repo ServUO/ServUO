@@ -488,7 +488,8 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1049737, typeof(DecorativeShieldDeed)),
                     new RewardEntry(houseAddOns,    1049738, typeof(HangingSkeletonDeed)),
 
-                    new RewardEntry(miscellaneous,  1098160, typeof(Plants.SeedBox))
+                    new RewardEntry(miscellaneous,  1098160, typeof(Plants.SeedBox)),
+                    new RewardEntry(miscellaneous,  1158880, typeof(EmbroideryTool), Expansion.EJ),
                 }),
                 new RewardList(RewardInterval, 5, new RewardEntry[]
                 {

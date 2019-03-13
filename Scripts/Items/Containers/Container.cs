@@ -745,9 +745,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (Weight == 0.0)
-                Weight = 25.0;
         }
     }
 
@@ -897,9 +894,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (Weight == 4.0)
-                Weight = 2.0;
         }
     }
 
@@ -931,9 +925,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (Weight == 6.0)
-                Weight = 2.0;
         }
     }
 
@@ -965,9 +956,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (Weight == 8.0)
-                Weight = 1.0;
         }
     }
 
@@ -985,6 +973,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+		
+		public override double DefaultWeight { get { return 5; } } 
+		public override int LabelNumber { get { return 1022472; } } // metal box
 
         public override void Serialize(GenericWriter writer)
         {
@@ -998,9 +989,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 3)
-                Weight = -1;
         }
     }
 
@@ -1031,9 +1019,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 25)
-                Weight = -1;
         }
     }
 
@@ -1064,9 +1049,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 25)
-                Weight = -1;
         }
     }
 
@@ -1098,9 +1080,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (Weight == 15.0)
-                Weight = 2.0;
         }
     }
 
@@ -1131,9 +1110,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 15)
-                Weight = -1;
         }
     }
 
@@ -1164,9 +1140,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 15)
-                Weight = -1;
         }
     }
 
@@ -1197,9 +1170,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 15)
-                Weight = -1;
         }
     }
 
@@ -1267,9 +1237,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 15)
-                Weight = -1;
         }
     }
 
