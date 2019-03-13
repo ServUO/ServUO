@@ -332,7 +332,7 @@ namespace Server.Gumps
             }
             else if (buttonID == 1) // Rename book
             {
-                if (m_Book.CheckAccess(from))
+                if (m_Book.CheckAccess(from) && m_Book.Movable != false)
                 {
                     from.Prompt = new InternalPrompt(m_Book);
                 }
@@ -391,7 +391,7 @@ namespace Server.Gumps
                                 }
                             case 8: // Drop rune
                                 {
-                                    if (m_Book.CheckAccess(from))
+                                    if (m_Book.CheckAccess(from) && m_Book.Movable != false)
                                     {
                                         m_Book.DropRune(from, e, index);
 
