@@ -347,7 +347,21 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-		public double Cap { get { return (m_Cap / 10.0); } set { CapFixedPoint = (int)(value * 10.0); } }
+		public double Cap 
+        { 
+            get { return (m_Cap / 10.0); }
+            set
+            {
+                double old = m_Cap / 10;
+
+                CapFixedPoint = (int)(value * 10.0);
+
+                if (old != value && Owner.Owner != null)
+                {
+                    EventSink.InvokeSkillCapChange(new SkillCapChangeEventArgs(Owner.Owner, this, old, value));
+                }
+            }
+        }
 
 		private static bool m_UseStatMods;
 

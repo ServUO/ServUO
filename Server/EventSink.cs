@@ -135,6 +135,12 @@ namespace Server
 
     public delegate void SkillGainEventHandler(SkillGainEventArgs e);
 
+    public delegate void SkillCapChangeEventHandler(SkillCapChangeEventArgs e);
+
+    public delegate void StatCapChangeEventHandler(StatCapChangeEventArgs e);
+
+    public delegate void QuestCompleteEventHandler(QuestCompleteEventArgs e);
+
     public delegate void ItemCreatedEventHandler(ItemCreatedEventArgs e);
 
 	public delegate void ItemDeletedEventHandler(ItemDeletedEventArgs e);
@@ -1229,6 +1235,48 @@ namespace Server
         }
     }
 
+    public class SkillCapChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; private set; }
+        public Skill Skill { get; private set; }
+        public double OldCap { get; private set; }
+        public double NewCap { get; private set; }
+
+        public SkillCapChangeEventArgs(Mobile from, Skill skill, double oldCap, double newCap)
+        {
+            Mobile = from;
+            Skill = skill;
+            OldCap = oldCap;
+            NewCap = newCap;
+        }
+    }
+
+    public class StatCapChangeEventArgs : EventArgs
+    {
+        public Mobile Mobile { get; private set; }
+        public int OldCap { get; private set; }
+        public int NewCap { get; private set; }
+
+        public StatCapChangeEventArgs(Mobile from, int oldCap, int newCap)
+        {
+            Mobile = from;
+            OldCap = oldCap;
+            NewCap = newCap;
+        }
+    }
+
+    public class QuestCompleteEventArgs : EventArgs
+    {
+        public Type QuestType { get; private set; }
+        public Mobile Mobile { get; private set; }
+
+        public QuestCompleteEventArgs(Mobile from, Type type)
+        {
+            Mobile = from;
+            QuestType = type;
+        }
+    }
+
     public class ItemCreatedEventArgs : EventArgs
 	{
 		public Item Item { get; set; }
@@ -1434,6 +1482,9 @@ namespace Server
 		public static event ResourceHarvestSuccessEventHandler ResourceHarvestSuccess;
 		public static event CraftSuccessEventHandler CraftSuccess;
         public static event SkillGainEventHandler SkillGain;
+        public static event SkillCapChangeEventHandler SkillCapChange;
+        public static event StatCapChangeEventHandler StatCapChange;
+        public static event QuestCompleteEventHandler QuestComplete;
 
         public static event ItemCreatedEventHandler ItemCreated;
 		public static event ItemDeletedEventHandler ItemDeleted;
@@ -1932,6 +1983,30 @@ namespace Server
             if(SkillGain != null)
             {
                 SkillGain(e);
+            }
+        }
+
+        public static void InvokeSkillCapChange(SkillCapChangeEventArgs e)
+        {
+            if (SkillCapChange != null)
+            {
+                SkillCapChange(e);
+            }
+        }
+
+        public static void InvokeStatCapChange(StatCapChangeEventArgs e)
+        {
+            if (StatCapChange != null)
+            {
+                StatCapChange(e);
+            }
+        }
+
+        public static void InvokeQuestComplete(QuestCompleteEventArgs e)
+        {
+            if (QuestComplete != null)
+            {
+                QuestComplete(e);
             }
         }
 

@@ -22,7 +22,7 @@ namespace Server.Items
         public BaseConflagrationPotion(PotionEffect effect)
             : base(0xF06, effect)
         {
-            this.Hue = 0x489;
+            Hue = 0x489;
         }
 
         public BaseConflagrationPotion(Serial serial)
@@ -53,8 +53,8 @@ namespace Server.Items
 
             from.RevealingAction();
 
-            if (!this.m_Users.Contains(from))
-                this.m_Users.Add(from);
+            if (!m_Users.Contains(from))
+                m_Users.Add(from);
 
             from.Target = new ThrowTarget(this);
         }
@@ -79,20 +79,20 @@ namespace Server.Items
         {
             object[] states = (object[])state;
 
-            this.Explode((Mobile)states[0], (Point3D)states[1], (Map)states[2]);
+            Explode((Mobile)states[0], (Point3D)states[1], (Map)states[2]);
         }
 
         public virtual void Explode(Mobile from, Point3D loc, Map map)
         {
-            if (this.Deleted || map == null)
+            if (Deleted || map == null)
                 return;
 
-            this.Consume();
+            Consume();
 			
             // Check if any other players are using this potion
-            for (int i = 0; i < this.m_Users.Count; i ++)
+            for (int i = 0; i < m_Users.Count; i ++)
             {
-                ThrowTarget targ = this.m_Users[i].Target as ThrowTarget;
+                ThrowTarget targ = m_Users[i].Target as ThrowTarget;
 
                 if (targ != null && targ.Potion == this)
                     Target.Cancel(from);
@@ -106,9 +106,10 @@ namespace Server.Items
                 for (int j = -2; j <= 2; j ++)
                 {
                     Point3D p = new Point3D(loc.X + i, loc.Y + j, map.GetAverageZ(loc.X + i, loc.Y + j));
+                    SpellHelper.AdjustField(ref p, map, 16, true);
 
-                    if (map.CanFit(p, 12, true, false) && from.InLOS(p))
-                        new InternalItem(from, p, map, this.MinDamage, this.MaxDamage);
+                    if (map.CanFit(new Point3D(p), 12, true, false) && from.InLOS(p))
+                        new InternalItem(from, p, map, MinDamage, MaxDamage);
                 }
             }
         }
@@ -163,19 +164,19 @@ namespace Server.Items
             {
                 get
                 {
-                    return this.m_Potion;
+                    return m_Potion;
                 }
             }
 
             public ThrowTarget(BaseConflagrationPotion potion)
                 : base(12, true, TargetFlags.None)
             {
-                this.m_Potion = potion;
+                m_Potion = potion;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Potion.Deleted || this.m_Potion.Map == Map.Internal)
+                if (m_Potion.Deleted || m_Potion.Map == Map.Internal)
                     return;
 					
                 IPoint3D p = targeted as IPoint3D;
@@ -184,8 +185,10 @@ namespace Server.Items
                     return;
 
                 // Add delay
-                BaseConflagrationPotion.AddDelay(from);
-
+                if (from.AccessLevel == AccessLevel.Player)
+                {
+                    BaseConflagrationPotion.AddDelay(from);
+                }
                 SpellHelper.GetSurfaceTop(ref p);
 
                 from.RevealingAction();
@@ -197,8 +200,8 @@ namespace Server.Items
                 else
                     to = new Entity(Serial.Zero, new Point3D(p), from.Map);
 
-                Effects.SendMovingEffect(from, to, 0xF0D, 7, 0, false, false, this.m_Potion.Hue, 0);
-                Timer.DelayCall(TimeSpan.FromSeconds(1.5), new TimerStateCallback(this.m_Potion.Explode_Callback), new object[] { from, new Point3D(p), from.Map });
+                Effects.SendMovingEffect(from, to, 0xF0D, 7, 0, false, false, m_Potion.Hue, 0);
+                Timer.DelayCall(TimeSpan.FromSeconds(1.5), new TimerStateCallback(m_Potion.Explode_Callback), new object[] { from, new Point3D(p), from.Map });
             }
         }
 
@@ -214,7 +217,7 @@ namespace Server.Items
             {
                 get
                 {
-                    return this.m_From;
+                    return m_From;
                 }
             }
 
@@ -229,26 +232,26 @@ namespace Server.Items
             public InternalItem(Mobile from, Point3D loc, Map map, int min, int max)
                 : base(0x398C)
             {
-                this.Movable = false;
-                this.Light = LightType.Circle300;
+                Movable = false;
+                Light = LightType.Circle300;
 
-                this.MoveToWorld(loc, map);
+                MoveToWorld(loc, map);
 
-                this.m_From = from;
-                this.m_End = DateTime.UtcNow + TimeSpan.FromSeconds(10);
+                m_From = from;
+                m_End = DateTime.UtcNow + TimeSpan.FromSeconds(10);
 
-                this.SetDamage(min, max);
+                SetDamage(min, max);
 
-                this.m_Timer = new InternalTimer(this, this.m_End);
-                this.m_Timer.Start();
+                m_Timer = new InternalTimer(this, m_End);
+                m_Timer.Start();
             }
 
             public override void OnAfterDelete()
             {
                 base.OnAfterDelete();
 
-                if (this.m_Timer != null)
-                    this.m_Timer.Stop();
+                if (m_Timer != null)
+                    m_Timer.Stop();
             }
 
             public InternalItem(Serial serial)
@@ -258,7 +261,7 @@ namespace Server.Items
 
             public int GetDamage()
             {
-                return Utility.RandomMinMax(this.m_MinDamage, this.m_MaxDamage);
+                return Utility.RandomMinMax(m_MinDamage, m_MaxDamage);
             }
 
             private void SetDamage(int min, int max)
@@ -266,17 +269,17 @@ namespace Server.Items
                 /* 	new way to apply alchemy bonus according to Stratics' calculator.
                 this gives a mean to values 25, 50, 75 and 100. Stratics' calculator is outdated.
                 Those goals will give 2 to alchemy bonus. It's not really OSI-like but it's an approximation. */
-                this.m_MinDamage = min;
-                this.m_MaxDamage = max;
+                m_MinDamage = min;
+                m_MaxDamage = max;
 
-                if (this.m_From == null)
+                if (m_From == null)
                     return;
 
-                int alchemySkill = this.m_From.Skills.Alchemy.Fixed;
+                int alchemySkill = m_From.Skills.Alchemy.Fixed;
                 int alchemyBonus = alchemySkill / 125 + alchemySkill / 250 ;
 
-                this.m_MinDamage = Scale(this.m_From, this.m_MinDamage + alchemyBonus);
-                this.m_MaxDamage = Scale(this.m_From, this.m_MaxDamage + alchemyBonus);
+                m_MinDamage = Scale(m_From, m_MinDamage + alchemyBonus);
+                m_MaxDamage = Scale(m_From, m_MaxDamage + alchemyBonus);
             }
 
             public override void Serialize(GenericWriter writer)
@@ -285,10 +288,10 @@ namespace Server.Items
 
                 writer.Write((int)0); // version
 
-                writer.Write((Mobile)this.m_From);
-                writer.Write((DateTime)this.m_End);
-                writer.Write((int)this.m_MinDamage);
-                writer.Write((int)this.m_MaxDamage);
+                writer.Write((Mobile)m_From);
+                writer.Write((DateTime)m_End);
+                writer.Write((int)m_MinDamage);
+                writer.Write((int)m_MaxDamage);
             }
 
             public override void Deserialize(GenericReader reader)
@@ -297,22 +300,22 @@ namespace Server.Items
 
                 int version = reader.ReadInt();
 				
-                this.m_From = reader.ReadMobile();
-                this.m_End = reader.ReadDateTime();
-                this.m_MinDamage = reader.ReadInt();
-                this.m_MaxDamage = reader.ReadInt();
+                m_From = reader.ReadMobile();
+                m_End = reader.ReadDateTime();
+                m_MinDamage = reader.ReadInt();
+                m_MaxDamage = reader.ReadInt();
 
-                this.m_Timer = new InternalTimer(this, this.m_End);
-                this.m_Timer.Start();
+                m_Timer = new InternalTimer(this, m_End);
+                m_Timer.Start();
             }
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (this.Visible && this.m_From != null && (!Core.AOS || m != this.m_From) && SpellHelper.ValidIndirectTarget(this.m_From, m) && this.m_From.CanBeHarmful(m, false))
+                if (Visible && m_From != null && (!Core.AOS || m != m_From) && SpellHelper.ValidIndirectTarget(m_From, m) && m_From.CanBeHarmful(m, false))
                 {
-                    this.m_From.DoHarmful(m);
+                    m_From.DoHarmful(m);
 
-                    AOS.Damage(m, this.m_From, this.GetDamage(), 0, 100, 0, 0, 0);
+                    AOS.Damage(m, m_From, GetDamage(), 0, 100, 0, 0, 0);
                     m.PlaySound(0x208);
                 }
 
@@ -327,27 +330,27 @@ namespace Server.Items
                 public InternalTimer(InternalItem item, DateTime end)
                     : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0))
                 {
-                    this.m_Item = item;
-                    this.m_End = end;
+                    m_Item = item;
+                    m_End = end;
 
-                    this.Priority = TimerPriority.FiftyMS;
+                    Priority = TimerPriority.FiftyMS;
                 }
 
                 protected override void OnTick()
                 {
-                    if (this.m_Item.Deleted)
+                    if (m_Item.Deleted)
                         return;
 
-                    if (DateTime.UtcNow > this.m_End)
+                    if (DateTime.UtcNow > m_End)
                     {
-                        this.m_Item.Delete();
-                        this.Stop();
+                        m_Item.Delete();
+                        Stop();
                         return;
                     }
 
-                    Mobile from = this.m_Item.From;
+                    Mobile from = m_Item.From;
 
-                    if (this.m_Item.Map == null || from == null)
+                    if (m_Item.Map == null || from == null)
                         return;
 					
                     List<Mobile> mobiles = new List<Mobile>();
@@ -361,12 +364,12 @@ namespace Server.Items
                     {
                         Mobile m = mobiles[i];
 						
-                        if ((m.Z + 16) > this.m_Item.Z && (this.m_Item.Z + 12) > m.Z && (!Core.AOS || m != from) && SpellHelper.ValidIndirectTarget(from, m) && from.CanBeHarmful(m, false))
+                        if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && (!Core.AOS || m != from) && SpellHelper.ValidIndirectTarget(from, m) && from.CanBeHarmful(m, false))
                         {
                             if (from != null)
                                 from.DoHarmful(m);
 							
-                            AOS.Damage(m, from, this.m_Item.GetDamage(), 0, 100, 0, 0, 0);
+                            AOS.Damage(m, from, m_Item.GetDamage(), 0, 100, 0, 0, 0);
                             m.PlaySound(0x208);
                         }
                     }

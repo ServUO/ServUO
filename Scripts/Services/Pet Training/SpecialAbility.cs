@@ -837,9 +837,7 @@ namespace Server.Mobiles
                 
             defender.SendLocalizedMessage(1070833); // The creature fans you with fire, reducing your resistance to fire attacks.
 
-            int effect = -(defender.FireResistance / 4);
-
-            ResistanceMod mod = new ResistanceMod(ResistanceType.Fire, effect);
+            ResistanceMod mod = new ResistanceMod(ResistanceType.Fire, -25);
 
             Effects.SendLocationParticles(defender, 0x3709, 10, 30, 5052);
             Effects.PlaySound(defender.Location, defender.Map, 0x208);

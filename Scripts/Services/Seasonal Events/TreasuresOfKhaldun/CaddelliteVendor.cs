@@ -94,9 +94,9 @@ namespace Server.Engines.Khaldun
         {
             public InternalBuyInfo(BaseVendor owner)
             {
-                Add(new GenericBuyInfo(typeof(CaddellitePickaxe), 22, 20, 3718, 0));
-                Add(new GenericBuyInfo(typeof(CaddelliteHatchet), 3, 20, 3907, 0));
-                Add(new GenericBuyInfo(typeof(CaddelliteFishingPole), 3, 20, 3520, 0));
+                Add(new GenericBuyInfo(typeof(CaddellitePickaxe), 101267, 500, 3718, 0));
+                Add(new GenericBuyInfo(typeof(CaddelliteHatchet), 101266, 500, 3907, 0));
+                Add(new GenericBuyInfo(typeof(CaddelliteFishingPole), 101265, 500, 3520, 0));
             }
         }
         public class InternalSellInfo : GenericSellInfo

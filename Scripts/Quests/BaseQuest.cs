@@ -467,7 +467,7 @@ namespace Server.Engines.Quests
                     m_Owner.SendGump(new MondainQuestGump(quest));
             }
 
-            Server.Engines.Points.PointsSystem.HandleQuest(Owner, this);
+            EventSink.InvokeQuestComplete(new QuestCompleteEventArgs(Owner, GetType()));
         }
 
         public virtual void RefuseRewards()

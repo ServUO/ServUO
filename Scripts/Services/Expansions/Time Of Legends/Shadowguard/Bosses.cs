@@ -836,8 +836,9 @@ namespace Server.Engines.Shadowguard
 		private void DoDamage_Callback(object o)
 		{
             Mobile m = o as Mobile;
- 
-            if (m != null && this.Map != null)
+            Map map = Map;
+
+            if (m != null && map != null)
             {
                 DoHarmful(m);
                 AOS.Damage(m, this, Utility.RandomMinMax(100, 150), 50, 50, 0, 0, 0);
@@ -857,15 +858,15 @@ namespace Server.Engines.Shadowguard
 
                     Movement.Movement.Offset(d, ref x, ref y);
 
-                    if (!this.Map.CanSpawnMobile(x, y, this.Map.GetAverageZ(x, y)))
+                    if (!map.CanSpawnMobile(x, y, map.GetAverageZ(x, y)))
                     {
-                        m.MoveToWorld(new Point3D(lastx, lasty, this.Map.GetAverageZ(lastx, lasty)), this.Map);
+                        m.MoveToWorld(new Point3D(lastx, lasty, map.GetAverageZ(lastx, lasty)), this.Map);
                         break;
                     }
 
                     if (range >= 12 && (orx != x || ory != y))
                     {
-                        m.MoveToWorld(new Point3D(x, y, this.Map.GetAverageZ(x, y)), this.Map);
+                        m.MoveToWorld(new Point3D(x, y, map.GetAverageZ(x, y)), this.Map);
                     }
                 }
 
