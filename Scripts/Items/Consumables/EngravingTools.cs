@@ -415,6 +415,12 @@ namespace Server.Items
                     return;
 
                 Mobile from = state.Mobile;
+				
+				if (!m_Tool.IsChildOf(from.Backpack))
+				{
+				from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+					return;
+				}
 
                 if (info.ButtonID == 1)
                 {
