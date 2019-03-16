@@ -12779,7 +12779,14 @@ namespace Server
 			{
 				if (m_StatCap != value)
 				{
+                    int old = m_StatCap;
+
 					m_StatCap = value;
+
+                    if (old != m_StatCap)
+                    {
+                        EventSink.InvokeStatCapChange(new StatCapChangeEventArgs(this, old, m_StatCap));
+                    }
 
 					Delta(MobileDelta.StatCap);
 				}

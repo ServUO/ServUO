@@ -995,6 +995,10 @@
       <rect x="759" y="1635" width="12" height="12" />
       <go x="762" y="1645" z="0" />
     </region>
+	<region type="DungeonRegion" priority="50" name="Solen Hives">
+      <rect x="5640" y="1776" width="295" height="263" />
+      <go x="5774" y="1896" z="20" />
+    </region>
   </Facet>
   <Facet name="Trammel">
     <region type="DungeonRegion" priority="50" name="Khaldun">
@@ -2077,6 +2081,10 @@
     <region type="MondainRegion" priority="50" name="Sanctuary Entrance">
       <rect x="759" y="1635" width="12" height="12" />
       <go x="762" y="1645" z="0" />
+    </region>
+	<region type="DungeonRegion" priority="50" name="Solen Hives">
+      <rect x="5640" y="1776" width="295" height="263" />
+      <go x="5774" y="1896" z="20" />
     </region>
   </Facet>
   <Facet name="Ilshenar">

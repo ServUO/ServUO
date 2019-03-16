@@ -54,13 +54,11 @@ namespace Server.Engines.Points
 			}
 		}
 		
-		public override void ProcessQuest(Mobile from, BaseQuest quest)
+		public override void ProcessQuest(Mobile from, Type type)
 		{
-			if(from == null || quest == null)
+            if (from == null || type == null)
 				return;
-				
-			Type type = quest.GetType();
-				
+
 			if(Entries.ContainsKey(type))
 				AwardPoints(from, Entries[type].Item1, true);
 		}

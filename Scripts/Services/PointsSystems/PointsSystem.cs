@@ -80,7 +80,7 @@ namespace Server.Engines.Points
         {
         }
 
-        public virtual void ProcessQuest(Mobile from, Server.Engines.Quests.BaseQuest quest)
+        public virtual void ProcessQuest(Mobile from, Type quest)
         {
         }
 
@@ -353,6 +353,7 @@ namespace Server.Engines.Points
         {
             EventSink.WorldSave += OnSave;
             EventSink.WorldLoad += OnLoad;
+            EventSink.QuestComplete += CompleteQuest;
 
             Systems = new List<PointsSystem>();
 
@@ -378,9 +379,9 @@ namespace Server.Engines.Points
             Systems.ForEach(s => s.ProcessKill(victim, damager, index));
         }
 
-        public static void HandleQuest(Mobile from, Server.Engines.Quests.BaseQuest quest)
+        public static void CompleteQuest(QuestCompleteEventArgs e)
         {
-            Systems.ForEach(s => s.ProcessQuest(from, quest));
+            Systems.ForEach(s => s.ProcessQuest(e.Mobile, e.QuestType));
         }
         #endregion
     }

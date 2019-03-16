@@ -211,7 +211,7 @@ namespace Server.SkillHandlers
 
         private static bool IsSpecialImbuable(Type type)
         {
-            if (_SpecialImbuable.Any(i => i.GetType() == type))
+            if (_SpecialImbuable.Any(i => i == type))
                 return true;
 
             if (type.IsSubclassOf(typeof(BaseGlovesOfMining)) || typeof(IFishingAttire).IsAssignableFrom(type))

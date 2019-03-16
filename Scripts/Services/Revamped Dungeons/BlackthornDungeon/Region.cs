@@ -217,7 +217,7 @@ namespace Server.Engines.Blackthorn
             bc.MoveToWorld(p, this.Map);
 
             if(m != null)
-                m.SendLocalizedMessage(1153050, bc.Name); // Pets are not permitted in this location. Your pet named ~1_NAME~ has been sent to the stables.
+                m.SendLocalizedMessage(1153053, bc.Name); // Pets are not permitted in this area. Your pet named ~1_NAME~ could not be sent to the stables, so has been teleported outside the event area.
         }
 
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
