@@ -90,6 +90,9 @@ namespace Server.Engines.ArenaSystem
 
         public void DoArenaEffects()
         {
+            if (Arena == null)
+                return;
+
             _Items = new List<Item>();
 
             foreach (var rec in Arena.Definition.EffectAreas)
