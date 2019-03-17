@@ -128,12 +128,7 @@ namespace Server.Engines.NewMagincia
 
                                     if (bc != null)
                                     {
-                                        Console.WriteLine("1");
                                         m_Creatures.Add(bc);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("2");
                                     }
                                 }
                                 break;
