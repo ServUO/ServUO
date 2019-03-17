@@ -157,6 +157,37 @@ namespace Server.Items
             }
         }
 
+        private bool IsValid(IEntity entity, Mobile m)
+        {
+            if (entity is Item)
+            {
+                Item item = entity as Item;
+
+                BaseHouse house = BaseHouse.FindHouseAt(item);
+
+                if (m.InRange(item.GetWorldLocation(), 3))
+                {
+                    if (item.Movable && !item.IsLockedDown && !item.IsSecure && (item.RootParent == null || item.RootParent == m))
+                    {
+                        return true;
+                    }
+                    else if (house != null && house.IsFriend(m))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (entity is BaseCreature)
+            {
+                BaseCreature bc = entity as BaseCreature;
+
+                if (bc.Controlled && bc.ControlMaster == m)
+                    return true;
+            }
+
+            return false;
+        }
+
         public bool CheckSkill(Mobile from)
         {
             if (from.Skills[SkillName.Tinkering].Value < 75.0)
@@ -278,7 +309,7 @@ namespace Server.Items
             private readonly BaseEngravingTool m_Tool;
 
             public InternalTarget(BaseEngravingTool tool)
-                : base(2, true, TargetFlags.None)
+                : base(3, true, TargetFlags.None)
             {
                 m_Tool = tool;
             }
@@ -292,7 +323,7 @@ namespace Server.Items
                 {
                     IEntity entity = (IEntity)targeted;
 
-                    if (IsValid(entity, from))
+                    if (m_Tool.IsValid(entity, from))
                     {
                         if (entity is IEngravable && m_Tool.CheckType(entity))
                         {
@@ -312,29 +343,7 @@ namespace Server.Items
             protected override void OnTargetOutOfRange(Mobile from, object targeted)
             {
                 from.SendLocalizedMessage(m_Tool.NotAccessibleMessage);
-            }
-
-            private bool IsValid(IEntity entity, Mobile m)
-            {
-                if (entity is Item)
-                {
-                    Item item = entity as Item;
-
-                    if (BaseHouse.CheckAccessible(m, item))
-                        return true;
-                    else if (item.Movable && !item.IsLockedDown && !item.IsSecure)
-                        return true;
-                }
-                else if (entity is BaseCreature)
-                {
-                    BaseCreature bc = entity as BaseCreature;
-
-                    if (bc.Controlled && bc.ControlMaster == m)
-                        return true;
-                }
-
-                return false;
-            }
+            }            
         }
 
         public class ConfirmGump : Gump
@@ -418,45 +427,58 @@ namespace Server.Items
 
                 if (info.ButtonID == 1)
                 {
-                    TextRelay relay = info.GetTextEntry(15);
-
-                    IEngravable item = (IEngravable)m_Target;
-
-                    if (relay != null)
+                    if (!m_Tool.IsChildOf(from.Backpack))
                     {
-                        if (relay.Text == null || relay.Text.Equals(""))
+                        from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+                        return;
+                    }
+                    else if (!m_Tool.IsValid(m_Target, from))
+                    {
+                        from.SendLocalizedMessage(1072311); // The engraving failed.
+                        return;
+                    }
+                    else
+                    {
+                        TextRelay relay = info.GetTextEntry(15);
+
+                        IEngravable item = (IEngravable)m_Target;
+
+                        if (relay != null)
                         {
-                            if (item.EngravedText != null)
+                            if (relay.Text == null || relay.Text.Equals(""))
                             {
-                                item.EngravedText = null;
-                                from.SendLocalizedMessage(m_Tool.RemoveMessage);
-                            }
-                            else
-                            {
-                                from.SendLocalizedMessage(m_Tool.ObjectWasNotMessage);
-                            }
-                        }
-                        else
-                        {
-                            string text;
-
-                            if (relay.Text.Length > 40)
-                                text = relay.Text.Substring(0, 40);
-                            else
-                                text = relay.Text;
-
-                            item.EngravedText = text;
-
-                            from.SendLocalizedMessage(m_Tool.SuccessMessage);
-
-                            m_Tool.UsesRemaining--;
-
-                            if (m_Tool.UsesRemaining < 1)
-                            {
-                                if (m_Tool.DeletedItem)
+                                if (item.EngravedText != null)
                                 {
-                                    m_Tool.Delete();
-                                    from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                                    item.EngravedText = null;
+                                    from.SendLocalizedMessage(m_Tool.RemoveMessage);
+                                }
+                                else
+                                {
+                                    from.SendLocalizedMessage(m_Tool.ObjectWasNotMessage);
+                                }
+                            }
+                            else
+                            {
+                                string text;
+
+                                if (relay.Text.Length > 40)
+                                    text = relay.Text.Substring(0, 40);
+                                else
+                                    text = relay.Text;
+
+                                item.EngravedText = text;
+
+                                from.SendLocalizedMessage(m_Tool.SuccessMessage);
+
+                                m_Tool.UsesRemaining--;
+
+                                if (m_Tool.UsesRemaining < 1)
+                                {
+                                    if (m_Tool.DeletedItem)
+                                    {
+                                        m_Tool.Delete();
+                                        from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                                    }
                                 }
                             }
                         }

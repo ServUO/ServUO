@@ -130,7 +130,7 @@ namespace Server.Items
 
     public class WashBasinDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1158881; } } // Water Wheel
+        public override int LabelNumber { get { return 1158966; } } // Wash Basin
         
         public override BaseAddon Addon
         {

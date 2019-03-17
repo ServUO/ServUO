@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public PredatorHellCat()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a hell cat";
+            Name = "a predator hellcat";
             Body = 127;
             BaseSoundID = 0xBA;
 

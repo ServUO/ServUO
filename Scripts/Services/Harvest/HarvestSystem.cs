@@ -778,6 +778,11 @@ namespace Server
             {
                 return false;
             }
+			
+			if (item is CommodityDeedBox || item is ChinaCabinet || item is PieSafe || item is AcademicBookCase || item is JewelryBox || item is WoodenBookcase || item is Countertop)
+			{
+				return false;
+			}
 
             if (item.GetType().IsDefined(typeof(FurnitureAttribute), false))
             {
