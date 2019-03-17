@@ -50,7 +50,7 @@ namespace Server.Misc
 
             var reduction = BaseArmor.GetInherentStaminaLossReduction(m) + 1;
 
-            if (reduction > 0)
+            if (reduction > 1)
             {
                 fatigue = fatigue / reduction;
             }

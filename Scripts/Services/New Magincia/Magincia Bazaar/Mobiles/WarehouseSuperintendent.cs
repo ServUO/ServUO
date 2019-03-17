@@ -20,6 +20,7 @@ namespace Server.Engines.NewMagincia
 			Race = Race.Human;
             Blessed = true;
 			Title = "The Warehouse Superintendent";
+
 			if(Utility.RandomBool())
 			{
 				Female = true;
@@ -41,6 +42,8 @@ namespace Server.Engines.NewMagincia
 			
 			Utility.AssignRandomHair(this, Utility.RandomHairHue());
 			Utility.AssignRandomFacialHair(this, Utility.RandomHairHue());
+
+            Hue = Race.RandomSkinHue();
 		}
 		
 		/*public override void OnDoubleClick(Mobile from)
@@ -54,7 +57,7 @@ namespace Server.Engines.NewMagincia
 			}
 		}*/
 
-        public void TryTransferPets(Mobile from, StorageEntry entry)
+        public void TryTransfer(Mobile from, StorageEntry entry)
         {
             if (entry == null)
                 return;
@@ -64,7 +67,7 @@ namespace Server.Engines.NewMagincia
             if (fees < 0)
             {
                 int owed = fees * -1;
-                SayTo(from, String.Format("It looks like you owe {0}gp as back fees.  How much would you like to pay now?", owed.ToString("###,###,###")));
+                SayTo(from, String.Format("It looks like you owe {0}gp as back fees. How much would you like to pay now?", owed.ToString("###,###,###")));
                 from.Prompt = new BackfeePrompt(this, entry);
                 return;
             }
@@ -75,72 +78,60 @@ namespace Server.Engines.NewMagincia
                 return;
             }
 
-            List<BaseCreature> list = new List<BaseCreature>(entry.Creatures);
-
-            foreach (BaseCreature bc in list)
+            if (entry.Creatures.Count > 0)
             {
-                if (from.Stabled.Count < AnimalTrainer.GetMaxStabled(from))
-                {
-                    bc.Blessed = false;
-                    bc.ControlOrder = OrderType.Stay;
-                    bc.Internalize();
-                    bc.IsStabled = true;
-                    bc.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
-                    from.Stabled.Add(bc);
-                    bc.SetControlMaster(null);
-                    bc.SummonMaster = null;
+                List<BaseCreature> list = new List<BaseCreature>(entry.Creatures);
 
-                    entry.RemovePet(bc);
-                }
-                else
+                foreach (BaseCreature bc in list)
                 {
-                    from.SendGump(new BazaarInformationGump(1150681, 1150678)); // Some personal possessions that were equipped on the broker still remain in storage, because your backpack cannot hold them. Please free up space in your backpack and return to claim these items.
-                    return;
+                    if (from.Stabled.Count < AnimalTrainer.GetMaxStabled(from))
+                    {
+                        bc.Blessed = false;
+                        bc.ControlOrder = OrderType.Stay;
+                        bc.Internalize();
+                        bc.IsStabled = true;
+                        bc.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
+                        from.Stabled.Add(bc);
+                        bc.SetControlMaster(null);
+                        bc.SummonMaster = null;
+
+                        entry.RemovePet(bc);
+                    }
+                    else
+                    {
+                        from.SendGump(new BazaarInformationGump(1150681, 1150678)); // Some personal possessions that were equipped on the broker still remain in storage, because your backpack cannot hold them. Please free up space in your backpack and return to claim these items.
+                        return;
+                    }
                 }
+
+                ColUtility.Free(list);
             }
+
+            if (entry.CommodityTypes.Count > 0)
+            {
+                Dictionary<Type, int> copy = new Dictionary<Type, int>(entry.CommodityTypes);
+
+                foreach (KeyValuePair<Type, int> commodities in copy)
+                {
+                    Type type = commodities.Key;
+                    int amt = commodities.Value;
+
+                    if (!GiveItems(from, type, amt, entry))
+                    {
+                        from.SendGump(new BazaarInformationGump(1150681, 1150678)); // Some personal possessions that were equipped on the broker still remain in storage, because your backpack cannot hold them. Please free up space in your backpack and return to claim these items.
+                        return;
+                    }
+                }
+
+                copy.Clear();
+            }
+
+            entry.CommodityTypes.Clear();
+            ColUtility.Free(entry.Creatures);
 
             from.SendGump(new BazaarInformationGump(1150681, 1150677)); // There are no longer any items or funds in storage for your former bazaar stall. Thank you for your diligence in recovering your possessions.
             MaginciaBazaar.RemoveFromStorage(from);
         }
-		
-		public void TryTransferItems(Mobile from, StorageEntry entry)
-		{
-            if (entry == null)
-                return;
-
-            int fees = entry.Funds;
-
-			if(fees < 0)
-			{
-                int owed = fees * -1;
-				SayTo(from, String.Format("It looks like you owe {0}gp as back fees.  How much would you like to pay now?", owed.ToString("###,###,###")));
-				from.Prompt = new BackfeePrompt(this, entry);
-                return;
-			}
-
-            if (!TryPayFunds(from, entry))
-            {
-                from.SendGump(new BazaarInformationGump(1150681, 1150678)); // Some personal possessions that were equipped on the broker still remain in storage, because your backpack cannot hold them. Please free up space in your backpack and return to claim these items.
-                return;
-            }
-
-            Dictionary<Type, int> copy = new Dictionary<Type, int>(entry.CommodityTypes);
-
-            foreach (KeyValuePair<Type, int> commodities in copy)
-            {
-                Type type = commodities.Key;
-                int amt = commodities.Value;
-
-                if (!GiveItems(from, type, amt, entry))
-                {
-                    from.SendGump(new BazaarInformationGump(1150681, 1150678)); // Some personal possessions that were equipped on the broker still remain in storage, because your backpack cannot hold them. Please free up space in your backpack and return to claim these items.
-                    return;
-                }
-            }
-
-			from.SendGump(new BazaarInformationGump(1150681, 1150677)); // There are no longer any items or funds in storage for your former bazaar stall. Thank you for your diligence in recovering your possessions.
-		    MaginciaBazaar.RemoveFromStorage(from);
-		}
 
         private bool GiveItems(Mobile from, Type type, int amt, StorageEntry entry)
         {
@@ -183,7 +174,7 @@ namespace Server.Engines.NewMagincia
         {
             int amount = entry.Funds;
 
-            if (Banker.Deposit(from, amount, true))
+            if (Banker.Withdraw(from, amount, true))
             {
                 entry.Funds = 0;
                 return true;
@@ -191,40 +182,37 @@ namespace Server.Engines.NewMagincia
 
             return false;
         }
-		
-		public void TryPayBackfee(Mobile from, string text, StorageEntry entry)
-		{
-			int amount = 0;
+
+        public void TryPayBackfee(Mobile from, string text, StorageEntry entry)
+        {
+            int amount = Utility.ToInt32(text);
             int owed = entry.Funds * -1;
 
-			try
-			{
-				amount = Convert.ToInt32(text);
-				
-				if(amount > 0)
-				{
-					int toDeduct = Math.Min(owed, amount);
-					
-					if(Banker.Withdraw(from, toDeduct))
-					{
-						entry.Funds += toDeduct;
-                        int newAmount = entry.Funds;
-
-                        if (newAmount >= 0)
-							TryTransferPets(from, entry);
-						else
-							SayTo(from, String.Format("Thank you! You have a remaining balance of {0}gp as backfees!", newAmount * -1));
-					}
-					else
-						SayTo(from, "You don't have enough funds in your bankbox to support that amount.");
-				}
-				
-			}
-			catch 
+            if (amount > 0)
             {
-                from.SendMessage("Invalid amount.");
+                int toDeduct = Math.Min(owed, amount);
+
+                if (Banker.Withdraw(from, toDeduct))
+                {
+                    entry.Funds += toDeduct;
+                    int newAmount = entry.Funds;
+
+                    if (newAmount >= 0)
+                    {
+                        TryTransfer(from, entry);
+                    }
+                    else
+                    {
+                        SayTo(from, String.Format("Thank you! You have a remaining balance of {0}gp as backfees!", newAmount * -1));
+                    }
+                }
+                else
+                {
+                    SayTo(from, "You don't have enough funds in your bankbox to support that amount.");
+                }
             }
-		}
+
+        }
 		
 		private class BackfeePrompt : Prompt
 		{
@@ -285,20 +273,7 @@ namespace Server.Engines.NewMagincia
                 if (from == null || m_Entry == null)
                     return;
 
-                switch (m_Entry.StorageType)
-                {
-                    case StorageType.None: break;
-                    case StorageType.Commodity:
-                        {
-                            m_Mobile.TryTransferItems(from, m_Entry);
-                        }
-                        break;
-                    case StorageType.Pet:
-                        {
-                            m_Mobile.TryTransferPets(from, m_Entry);
-                        }
-                        break;
-                }
+                m_Mobile.TryTransfer(from, m_Entry);
 			}
 		}
 		
@@ -324,13 +299,18 @@ namespace Server.Engines.NewMagincia
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
+			writer.Write((int)1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+            if(version == 0)
+            {
+                Hue = Race.RandomSkinHue();
+            }
 		}
 	}
 }

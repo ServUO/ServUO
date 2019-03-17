@@ -5,7 +5,7 @@ using Server.Mobiles;
 
 namespace Server.Engines.NewMagincia
 {
-	public class BaseBazaarBroker : BaseCreature
+	public abstract class BaseBazaarBroker : BaseCreature
 	{
 		private MaginciaBazaarPlot m_Plot;
 		private int m_BankBalance;
@@ -133,12 +133,16 @@ namespace Server.Engines.NewMagincia
 		{
 			Delete();
 		}
+
+        public abstract bool HasValidEntry(Mobile m);
 		
 		public override void Delete()
 		{
 			if(m_Plot != null && MaginciaBazaar.Instance != null)
 				MaginciaBazaar.Instance.AddInventoryToWarehouse(m_Plot.Owner, this);
-		
+
+            m_Plot.Merchant = null;
+
 			base.Delete();
 		}
 		

@@ -184,39 +184,71 @@ namespace Server.Engines.NewMagincia
 			
 			foreach(KeyValuePair<Mobile, StorageEntry> kvp in m_WarehouseStorage)
 			{
-				Mobile m = kvp.Key;
+                Mobile m = kvp.Key;
                 StorageEntry entry = kvp.Value;
-                bool deleted = false;
 
                 if (entry.Expires < DateTime.UtcNow)
                 {
-                    switch (entry.StorageType)
+                    bool deleted = false;
+                    bool stabled = false;
+
+                    if (entry.CommodityTypes.Count > 0)
                     {
-                        case StorageType.None: break;
-                        case StorageType.Commodity: deleted = true; break;
-                        case StorageType.Pet:
-                            {
-                                foreach (BaseCreature bc in entry.Creatures)
-                                {
-                                    if (!deleted)
-                                        deleted = true;
-                                    bc.Delete();
-                                }
-                            }
-                            break;
+                        deleted = true;
                     }
-                }
 
-                if (deleted)
-                {
-                    toRemove.Add(m);
+                    foreach (BaseCreature bc in entry.Creatures)
+                    {
+                        if (m.Stabled.Count < AnimalTrainer.GetMaxStabled(m))
+                        {
+                            PetBroker.SendToStables(m, bc);
 
-                    /*Your broker inventory and/or funds in storage at the New Magincia Warehouse 
-                     *have been donated to charity, because these items remained unclaimed for a 
-                     *full week. These items may no longer be recovered, but the orphans will 
-                     *appreciate a nice hot meal.*/
+                            if (!stabled)
+                            {
+                                stabled = true;
+                            }
+                        }
+                        else
+                        {
+                            if (!deleted)
+                            {
+                                deleted = true;
+                            }
 
-                    MaginciaLottoSystem.SendMessageTo(m, new NewMaginciaMessage(new TextDefinition(1150676), new TextDefinition(1150673), null));
+                            bc.Delete();
+                        }
+                    }
+
+                    if (stabled)
+                    {
+                        string message;
+
+                        if (deleted)
+                        {
+                            message = "Your broker inventory and/or funds in storage at the New Magincia Warehouse " +
+                            "have been donated to charity, because these items remained unclaimed for a " +
+                            "full week. These items may no longer be recovered, but the orphans will " +
+                            "appreciate a nice hot meal. One or all of your pets have been placed in your stables.";
+                        }
+                        else
+                        {
+                            message = "Because your pets remained in storage for more than a full week, one or all of them have been placed in your stables. " +
+                                "If you had insufficient room in your stables, any further pets will be lost and returned to the wild.";
+                        }
+
+                        MaginciaLottoSystem.SendMessageTo(m, new NewMaginciaMessage(new TextDefinition(1150676), message, null));
+                    }
+                    else if (deleted)
+                    {
+                        toRemove.Add(m);
+
+                        /*Your broker inventory and/or funds in storage at the New Magincia Warehouse 
+                         *have been donated to charity, because these items remained unclaimed for a 
+                         *full week. These items may no longer be recovered, but the orphans will 
+                         *appreciate a nice hot meal.*/
+
+                        MaginciaLottoSystem.SendMessageTo(m, new NewMaginciaMessage(new TextDefinition(1150676), new TextDefinition(1150673), null));
+                    }
                 }
 			}
 
@@ -225,6 +257,8 @@ namespace Server.Engines.NewMagincia
                 if (m_WarehouseStorage.ContainsKey(m))
                     m_WarehouseStorage.Remove(m);
             }
+
+            ColUtility.Free(toRemove);
 		}
 
         public void AddPlotSigns()
@@ -455,20 +489,23 @@ namespace Server.Engines.NewMagincia
 
 		public void AddInventoryToWarehouse(Mobile owner, BaseBazaarBroker broker)
 		{
-            StorageEntry newEntry = null;
+            StorageEntry entry = GetStorageEntry(owner);
 
-            if (broker is CommodityBroker && ((CommodityBroker)broker).HasValidEntry())
+            if (entry == null)
             {
-                newEntry = new StorageEntry(((CommodityBroker)broker).CommodityEntries, broker.BankBalance);
+                if (broker.HasValidEntry(owner))
+                {
+                    entry = new StorageEntry(owner, broker);
+                }
             }
-            else if (broker is PetBroker && ((PetBroker)broker).HasValidEntry())
+            else if (broker.HasValidEntry(owner))
             {
-                newEntry = new StorageEntry(((PetBroker)broker).BrokerEntries, broker.BankBalance);
+                entry.AddInventory(owner, broker);
             }
 
-            if (newEntry != null)
+            if (entry != null)
             {
-                m_WarehouseStorage[owner] = newEntry;
+                m_WarehouseStorage[owner] = entry;
                 /*Your hired broker has transferred any remaining inventory and funds from 
                  *your stall at the New Magincia Bazaar into storage at the New Magincia 
                  *Warehouse. You must reclaim these items or they will be destroyed! To reclaim 
@@ -494,7 +531,9 @@ namespace Server.Engines.NewMagincia
         public static void RemoveFromStorage(Mobile from)
         {
             if (m_WarehouseStorage.ContainsKey(from))
+            {
                 m_WarehouseStorage.Remove(from);
+            }
         }
 
 		public static void AddToReserve(Mobile from, int amount)
