@@ -84,7 +84,7 @@ namespace Server.Engines.NewMagincia
 			}
 		}
 
-        public bool HasValidEntry()
+        public override bool HasValidEntry(Mobile m)
         {
             foreach (CommodityBrokerEntry entry in m_CommodityEntries)
             {
@@ -92,7 +92,7 @@ namespace Server.Engines.NewMagincia
                     return true;
             }
 
-            return BankBalance > 0;
+            return false;
         }
 		
 		public void AddInventory(Mobile from, Item item)
