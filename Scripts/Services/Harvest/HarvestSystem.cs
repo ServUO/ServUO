@@ -779,7 +779,7 @@ namespace Server
                 return false;
             }
 			
-			if (item is CommodityDeedBox || item is ChinaCabinet || item is PieSafe item is AcademicBookCase)
+			if (item is CommodityDeedBox || item is ChinaCabinet || item is PieSafe item || is AcademicBookCase)
 			{
 				return false;
 			}
