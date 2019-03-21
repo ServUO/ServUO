@@ -387,14 +387,13 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1006036, typeof(MonsterStatuette), MonsterStatuetteType.Skeleton),
                     new RewardEntry(monsterStatues, 1006037, typeof(MonsterStatuette), MonsterStatuetteType.Troll),
                     new RewardEntry(monsterStatues, 1155746, typeof(MonsterStatuette), MonsterStatuetteType.FleshRenderer),
+                    new RewardEntry(monsterStatues, 1156367, typeof(MonsterStatuette), Expansion.TOL, MonsterStatuetteType.DragonTurtle),
                     new RewardEntry(monsterStatues, 1158875, typeof(MonsterStatuette), Expansion.EJ, MonsterStatuetteType.Krampus),
 
                     new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
 
                     new RewardEntry(houseAddOns,    1062692, typeof(ContestMiniHouseDeed), Expansion.AOS, MiniHouseType.MalasMountainPass),
-                    new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
-                    
-                    new RewardEntry(houseAddOns,    1156371,  typeof(Auction.AuctionSafeDeed), Expansion.TOL),
+                    new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),                   
 
                     new RewardEntry(miscellaneous,  1076155, typeof(RedSoulstone),         Expansion.ML),
                     new RewardEntry(miscellaneous,  1080523, typeof(CommodityDeedBox),     Expansion.ML),
@@ -403,6 +402,7 @@ namespace Server.Engines.VeteranRewards
                
                     new RewardEntry(miscellaneous,    1123603,  typeof(CoralTheOwl), Expansion.ML),
                     new RewardEntry(miscellaneous,    1151769,  typeof(GreaterBraceletOfBinding), Expansion.ML),
+                    new RewardEntry(miscellaneous,    1156371,  typeof(Auction.AuctionSafeDeed), Expansion.TOL),
                 }),
                 new RewardList(RewardInterval, 2, new RewardEntry[]
                 {
