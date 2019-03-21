@@ -532,16 +532,16 @@ namespace Server.Misc
 			{
 				case Stat.Str:
 				{
-					if (atrophy)
-					{
-						if (CanLower(from, Stat.Dex) && (from.RawDex < from.RawInt || !CanLower(from, Stat.Int)))
-							--from.RawDex;
-						else if (CanLower(from, Stat.Int))
-							--from.RawInt;
-					}
-
 					if (CanRaise(from, Stat.Str))
 					{
+                        if (atrophy)
+                        {
+                            if (CanLower(from, Stat.Dex) && (from.RawDex < from.RawInt || !CanLower(from, Stat.Int)))
+                                --from.RawDex;
+                            else if (CanLower(from, Stat.Int))
+                                --from.RawInt;
+                        }
+
 						++from.RawStr;
 
 						if (Siege.SiegeShard && from is PlayerMobile)
@@ -554,16 +554,16 @@ namespace Server.Misc
 				}
 				case Stat.Dex:
 				{
-					if (atrophy)
-					{
-						if (CanLower(from, Stat.Str) && (from.RawStr < from.RawInt || !CanLower(from, Stat.Int)))
-							--from.RawStr;
-						else if (CanLower(from, Stat.Int))
-							--from.RawInt;
-					}
-
 					if (CanRaise(from, Stat.Dex))
 					{
+                        if (atrophy)
+                        {
+                            if (CanLower(from, Stat.Str) && (from.RawStr < from.RawInt || !CanLower(from, Stat.Int)))
+                                --from.RawStr;
+                            else if (CanLower(from, Stat.Int))
+                                --from.RawInt;
+                        }
+
 						++from.RawDex;
 
 						if (Siege.SiegeShard && from is PlayerMobile)
@@ -576,16 +576,16 @@ namespace Server.Misc
 				}
 				case Stat.Int:
 				{
-					if (atrophy)
-					{
-						if (CanLower(from, Stat.Str) && (from.RawStr < from.RawDex || !CanLower(from, Stat.Dex)))
-							--from.RawStr;
-						else if (CanLower(from, Stat.Dex))
-							--from.RawDex;
-					}
-
 					if (CanRaise(from, Stat.Int))
 					{
+                        if (atrophy)
+                        {
+                            if (CanLower(from, Stat.Str) && (from.RawStr < from.RawDex || !CanLower(from, Stat.Dex)))
+                                --from.RawStr;
+                            else if (CanLower(from, Stat.Dex))
+                                --from.RawDex;
+                        }
+
 						++from.RawInt;
 
 						if (Siege.SiegeShard && from is PlayerMobile)
