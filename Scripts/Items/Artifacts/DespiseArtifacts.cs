@@ -134,6 +134,7 @@ namespace Server.Items
 			SkillBonuses.SetValues( 0, SkillName.Archery, 5.0 );
 			Attributes.ReflectPhysical = 5;
 			Attributes.AttackChance = 5;
+            LowerAmmoCost = 30;
 			
 			switch(Utility.Random(5))
 			{
