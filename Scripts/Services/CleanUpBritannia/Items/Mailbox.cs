@@ -113,6 +113,11 @@ namespace Server.Items
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
         {
+            if (item == this)
+            {
+                return base.CheckLift(from, item, ref reject);
+            }
+
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
             if (house != null)

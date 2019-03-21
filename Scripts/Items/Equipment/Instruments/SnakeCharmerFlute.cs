@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using Server;
 using Server.Network;
 using Server.Mobiles;
 using Server.Targeting;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -131,37 +132,26 @@ namespace Server.Items
 
         private static bool IsSnake(BaseCreature bc)
         {
-            Type type = bc.GetType();
-
-            for (int i = 0; i < m_SnakeTypes.Length; i++)
-            {
-                if (type == m_SnakeTypes[i])
-                    return true;
-            }
-
-            return false;
+            return m_SnakeTypes.Any(t => t == bc.GetType());
         }
 
         private static Type[] m_SnakeTypes = new Type[]
-            {
-                typeof( LavaSnake ),    typeof( Snake ),
-                typeof( CoralSnake ),   typeof( GiantSerpent ),
-                typeof( SilverSerpent )
-            };
+        {
+            typeof(LavaSnake),    typeof(Snake),
+            typeof(CoralSnake),   typeof(GiantSerpent),
+            typeof(SilverSerpent)
+        };
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            /*int version = */
-            reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 }

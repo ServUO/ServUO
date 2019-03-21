@@ -273,6 +273,7 @@ namespace Server.Engines.NewMagincia
 				{
                     if(pet != null)
 					    pet.IsStabled = false;
+
 					from.Stabled.RemoveAt( i );
 					--i;
 					continue;
@@ -348,15 +349,7 @@ namespace Server.Engines.NewMagincia
                         BaseCreature bc = entry.Pet;
                         m_Broker.RemoveEntry(entry);
 
-                        PetBroker.EndViewTimer(bc);
-                        bc.ControlTarget = null;
-                        bc.ControlOrder = OrderType.Stay;
-                        bc.Internalize();
-                        bc.SetControlMaster(null);
-                        bc.SummonMaster = null;
-                        bc.IsStabled = true;
-                        bc.Loyalty = BaseCreature.MaxLoyalty;
-                        from.Stabled.Add(bc);
+                        PetBroker.SendToStables(from, bc);
 
                         from.SendLocalizedMessage(1150635, String.Format("{0}\t{1}", entry.TypeName, bc.Name)); // Your pet ~1_TYPE~ named ~2_NAME~ has been transferred to the stables.
                         from.SendGump(new PetBrokerGump(m_Broker, from));
@@ -639,7 +632,7 @@ namespace Server.Engines.NewMagincia
             AddHtmlLocalized(10, 118, 500, 72, 1114513, "#1150370", GreenColor16, false, false); // Please confirm your purchase order below, and click "ACCEPT" if you wish to purchase this animal.
 
             AddHtmlLocalized(10, 235, 245, 18, 1114514, "#1150372", OrangeColor16, false, false); // Animal Name:
-            AddHtmlLocalized(10, 245, 245, 18, 1114514, "#1150371", OrangeColor16, false, false); // Animal Type:            
+            AddHtmlLocalized(10, 255, 245, 18, 1114514, "#1150371", OrangeColor16, false, false); // Animal Type:            
             AddHtmlLocalized(10, 275, 245, 18, 1114514, "#1150373", OrangeColor16, false, false); // Sale Price:
 
             AddHtml(265, 235, 245, 18, Color(entry.Pet.Name, BlueColor), false, false);

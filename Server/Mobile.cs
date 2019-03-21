@@ -5641,9 +5641,9 @@ namespace Server
 				}
 				else
 				{
-					Hits = newHits;
-
                     FatigueHandler(this, amount, DFA);
+
+					Hits = newHits;
 				}
 			}
 
