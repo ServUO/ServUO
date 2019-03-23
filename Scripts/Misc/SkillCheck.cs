@@ -430,10 +430,21 @@ namespace Server.Misc
 			// Chance roll
 			double chance;
 
-			if (from is BaseCreature && ((BaseCreature)from).Controlled)
-				chance = _PetChanceToGainStats / 100.0;
-			else
-				chance = _PlayerChanceToGainStats / 100.0;
+            if (from is BaseCreature && ((BaseCreature)from).Controlled)
+            {
+                if (PetTrainingHelper.Enabled)
+                {
+                    chance = 0.0;
+                }
+                else
+                {
+                    chance = _PetChanceToGainStats / 100.0;
+                }
+            }
+            else
+            {
+                chance = _PlayerChanceToGainStats / 100.0;
+            }
 
 			if (Utility.RandomDouble() >= chance)
 			{
@@ -503,38 +514,65 @@ namespace Server.Misc
 			return false;
 		}
 
-		public static bool CanRaise(Mobile from, Stat stat)
+		public static bool CanRaise(Mobile from, Stat stat, bool atTotalCap)
 		{
-			if (!(from is BaseCreature && ((BaseCreature)from).Controlled))
-			{
-				if (from.RawStatTotal >= from.StatCap)
-					return false;
-			}
-
 			switch (stat)
 			{
 				case Stat.Str:
-					return (from.StrLock == StatLockType.Up && from.RawStr < from.StrCap);
+                    if (from.RawStr < from.StrCap)
+                    {
+                        if (atTotalCap && from is PlayerMobile)
+                        {
+                            return CanLower(from, Stat.Dex) || CanLower(from, Stat.Int); 
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
 				case Stat.Dex:
-					return (from.DexLock == StatLockType.Up && from.RawDex < from.DexCap);
+					if (from.RawDex < from.DexCap)
+                    {
+                        if (atTotalCap && from is PlayerMobile)
+                        {
+                            return CanLower(from, Stat.Str) || CanLower(from, Stat.Int);
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
 				case Stat.Int:
-					return (from.IntLock == StatLockType.Up && from.RawInt < from.IntCap);
+					if (from.RawInt < from.IntCap)
+                    {
+                        if (atTotalCap && from is PlayerMobile)
+                        {
+                            return CanLower(from, Stat.Str) || CanLower(from, Stat.Dex);
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
 			}
 
 			return false;
 		}
 
-		public static void IncreaseStat(Mobile from, Stat stat, bool atrophy)
+		public static void IncreaseStat(Mobile from, Stat stat)
 		{
-			atrophy = atrophy || (from.RawStatTotal >= from.StatCap);
+			bool atTotalCap = from.RawStatTotal >= from.StatCap;
 
 			switch (stat)
 			{
 				case Stat.Str:
 				{
-					if (CanRaise(from, Stat.Str))
+                    if (CanRaise(from, Stat.Str, atTotalCap))
 					{
-                        if (atrophy)
+                        if (atTotalCap)
                         {
                             if (CanLower(from, Stat.Dex) && (from.RawDex < from.RawInt || !CanLower(from, Stat.Int)))
                                 --from.RawDex;
@@ -554,9 +592,9 @@ namespace Server.Misc
 				}
 				case Stat.Dex:
 				{
-					if (CanRaise(from, Stat.Dex))
+                    if (CanRaise(from, Stat.Dex, atTotalCap))
 					{
-                        if (atrophy)
+                        if (atTotalCap)
                         {
                             if (CanLower(from, Stat.Str) && (from.RawStr < from.RawInt || !CanLower(from, Stat.Int)))
                                 --from.RawStr;
@@ -576,9 +614,9 @@ namespace Server.Misc
 				}
 				case Stat.Int:
 				{
-					if (CanRaise(from, Stat.Int))
+                    if (CanRaise(from, Stat.Int, atTotalCap))
 					{
-                        if (atrophy)
+                        if (atTotalCap)
                         {
                             if (CanLower(from, Stat.Str) && (from.RawStr < from.RawDex || !CanLower(from, Stat.Dex)))
                                 --from.RawStr;
@@ -604,9 +642,7 @@ namespace Server.Misc
 			if (!CheckStatTimer(from, stat))
 				return;
 
-			var atrophy = ((from.RawStatTotal / (double)from.StatCap) >= Utility.RandomDouble());
-
-			IncreaseStat(from, stat, atrophy);
+			IncreaseStat(from, stat);
 		}
 
 		public static bool CheckStatTimer(Mobile from, Stat stat)
