@@ -213,7 +213,11 @@ namespace Server.Mobiles
 
             protected override void OnTick()
             {
-                if (m_Tick < 15)
+                if (!m_Mobile.Alive || m_Mobile.Deleted || m_Mobile.Map == null)
+                {
+                    Stop();
+                }
+                else if (m_Tick < 15)
                 {
                     Point3D p = FindLocation(m_Mobile.Map, m_Mobile.Location, 7);
                     Effects.SendLocationEffect(p, m_Mobile.Map, 0x3789, 30, 1, 2062, 0x4);

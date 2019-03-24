@@ -102,7 +102,7 @@ namespace Server.Regions
 				return true;
 			}
 
-			return (from.Kills < 5);
+            return !from.Murderer;
 		}
 
 		public override bool OnBeginSpellCast(Mobile m, ISpell s)

@@ -184,8 +184,8 @@ namespace Server.Items
 			{
 				return;
 			}
-			
-			if (!Siege.SiegeShard && e.Mobile.Murderer && map != Map.Felucca)
+
+            if (SpellHelper.RestrictRedTravel && !Siege.SiegeShard && e.Mobile.Murderer && map != Map.Felucca)
 			{
 				e.Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
 				return;

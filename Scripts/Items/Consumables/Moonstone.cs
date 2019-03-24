@@ -1,6 +1,7 @@
 using System;
 using Server.Mobiles;
 using Server.Network;
+using Server.Spells;
 
 namespace Server.Items
 {
@@ -17,8 +18,8 @@ namespace Server.Items
         public Moonstone(MoonstoneType type)
             : base(0xF8B)
         {
-            this.Weight = 1.0;
-            this.m_Type = type;
+            Weight = 1.0;
+            m_Type = type;
         }
 
         public Moonstone(Serial serial)
@@ -31,27 +32,27 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
         public override int LabelNumber
         {
             get
             {
-                return 1041490 + (int)this.m_Type;
+                return 1041490 + (int)m_Type;
             }
         }
         public override void OnSingleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
-                this.Hue = Utility.RandomBirdHue();
-                this.ProcessDelta();
+                Hue = Utility.RandomBirdHue();
+                ProcessDelta();
                 from.SendLocalizedMessage(1005398); // The stone's substance shifts as you examine it.
             }
 
@@ -60,7 +61,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
@@ -76,7 +77,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
             }
-            else if (from.Map == this.GetTargetMap() || (from.Map != Map.Trammel && from.Map != Map.Felucca))
+            else if (from.Map == GetTargetMap() || (from.Map != Map.Trammel && from.Map != Map.Felucca))
             {
                 from.SendLocalizedMessage(1005401); // You cannot bury the stone here.
             }
@@ -84,7 +85,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
-            else if (from.Murderer)
+            else if (SpellHelper.RestrictRedTravel && from.Murderer)
             {
                 from.SendLocalizedMessage(1005402); // The magic of the stone cannot be evoked by someone with blood on their hands.
             }
@@ -92,28 +93,28 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1005403); // The magic of the stone cannot be evoked by the lawless.
             }
-            else if (!Region.Find(from.Location, from.Map).IsDefault || !Region.Find(from.Location, this.GetTargetMap()).IsDefault)
+            else if (!Region.Find(from.Location, from.Map).IsDefault || !Region.Find(from.Location, GetTargetMap()).IsDefault)
             {
                 from.SendLocalizedMessage(1005401); // You cannot bury the stone here.
             }
-            else if (!this.GetTargetMap().CanFit(from.Location, 16))
+            else if (!GetTargetMap().CanFit(from.Location, 16))
             {
                 from.SendLocalizedMessage(1005408); // Something is blocking the facet gate exit.
             }
             else
             {
-                this.Movable = false;
-                this.MoveToWorld(from.Location, from.Map);
+                Movable = false;
+                MoveToWorld(from.Location, from.Map);
 
                 from.Animate(32, 5, 1, true, false, 0);
 
-                new SettleTimer(this, from.Location, from.Map, this.GetTargetMap(), from).Start();
+                new SettleTimer(this, from.Location, from.Map, GetTargetMap(), from).Start();
             }
         }
 
         public Map GetTargetMap()
         {
-            return (this.m_Type == MoonstoneType.Felucca) ? Map.Felucca : Map.Trammel;
+            return (m_Type == MoonstoneType.Felucca) ? Map.Felucca : Map.Trammel;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -122,7 +123,7 @@ namespace Server.Items
 
             writer.Write((int)0); // version
 
-            writer.Write((int)this.m_Type);
+            writer.Write((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -135,7 +136,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Type = (MoonstoneType)reader.ReadInt();
+                        m_Type = (MoonstoneType)reader.ReadInt();
 
                         break;
                     }
@@ -153,54 +154,54 @@ namespace Server.Items
             public SettleTimer(Item stone, Point3D loc, Map map, Map targetMap, Mobile caster)
                 : base(TimeSpan.FromSeconds(2.5), TimeSpan.FromSeconds(1.0))
             {
-                this.m_Stone = stone;
+                m_Stone = stone;
 
-                this.m_Location = loc;
-                this.m_Map = map;
-                this.m_TargetMap = targetMap;
+                m_Location = loc;
+                m_Map = map;
+                m_TargetMap = targetMap;
 
-                this.m_Caster = caster;
+                m_Caster = caster;
             }
 
             protected override void OnTick()
             {
-                ++this.m_Count;
+                ++m_Count;
 
-                if (this.m_Count == 1)
+                if (m_Count == 1)
                 {
-                    this.m_Stone.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1005414); // The stone settles into the ground.
+                    m_Stone.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1005414); // The stone settles into the ground.
                 }
-                else if (this.m_Count >= 10)
+                else if (m_Count >= 10)
                 {
-                    this.m_Stone.Location = new Point3D(this.m_Stone.X, this.m_Stone.Y, this.m_Stone.Z - 1);
+                    m_Stone.Location = new Point3D(m_Stone.X, m_Stone.Y, m_Stone.Z - 1);
 
-                    if (this.m_Count == 16)
+                    if (m_Count == 16)
                     {
-                        if (!Region.Find(this.m_Location, this.m_Map).IsDefault || !Region.Find(this.m_Location, this.m_TargetMap).IsDefault)
+                        if (!Region.Find(m_Location, m_Map).IsDefault || !Region.Find(m_Location, m_TargetMap).IsDefault)
                         {
-                            this.m_Stone.Movable = true;
-                            this.m_Caster.AddToBackpack(this.m_Stone);
-                            this.Stop();
+                            m_Stone.Movable = true;
+                            m_Caster.AddToBackpack(m_Stone);
+                            Stop();
                             return;
                         }
-                        else if (!this.m_TargetMap.CanFit(this.m_Location, 16))
+                        else if (!m_TargetMap.CanFit(m_Location, 16))
                         {
-                            this.m_Stone.Movable = true;
-                            this.m_Caster.AddToBackpack(this.m_Stone);
-                            this.Stop();
+                            m_Stone.Movable = true;
+                            m_Caster.AddToBackpack(m_Stone);
+                            Stop();
                             return;
                         }
 
-                        int hue = this.m_Stone.Hue;
+                        int hue = m_Stone.Hue;
 
                         if (hue == 0)
                             hue = Utility.RandomBirdHue();
 
-                        new MoonstoneGate(this.m_Location, this.m_TargetMap, this.m_Map, this.m_Caster, hue);
-                        new MoonstoneGate(this.m_Location, this.m_Map, this.m_TargetMap, this.m_Caster, hue);
+                        new MoonstoneGate(m_Location, m_TargetMap, m_Map, m_Caster, hue);
+                        new MoonstoneGate(m_Location, m_Map, m_TargetMap, m_Caster, hue);
 
-                        this.m_Stone.Delete();
-                        this.Stop();
+                        m_Stone.Delete();
+                        Stop();
                     }
                 }
             }
