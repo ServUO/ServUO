@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
+using Server.Spells;
 
 namespace Server.Gumps
 {
@@ -156,7 +157,7 @@ namespace Server.Gumps
 
         public static void CheckMurderer(Mobile m)
         {
-            if (m.AccessLevel == AccessLevel.Player && m.Murderer && m.Map != null && m.Map.Rules != MapRules.FeluccaRules)
+            if (m.AccessLevel == AccessLevel.Player && m.Murderer && SpellHelper.RestrictRedTravel && m.Map != null && m.Map.Rules != MapRules.FeluccaRules)
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
