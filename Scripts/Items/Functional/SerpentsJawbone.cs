@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Server.Network;
 using Server.ContextMenus;
 using Server.Multis;
+using Server.Spells;
 
 namespace Server.Items
 {
@@ -137,7 +138,7 @@ namespace Server.Items
 				{
 					User.SendLocalizedMessage( 500295 ); // You are too far away to do that.
 				}
-				else if ( User.Murderer )
+                else if (SpellHelper.RestrictRedTravel && User.Murderer)
 				{
 					User.SendLocalizedMessage( 1019004 ); // You are not allowed to travel there.
 				}

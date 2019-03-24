@@ -137,6 +137,8 @@ namespace Server.Mobiles
 			public BulkOrderInfoEntry(Mobile from, BaseVendor vendor)
 				: base(6152, 3)
 			{
+                Enabled = vendor.CheckVendorAccess(from);
+
 				m_From = from;
 				m_Vendor = vendor;
 			}
@@ -232,6 +234,8 @@ namespace Server.Mobiles
             public BribeEntry(Mobile from, BaseVendor vendor)
                 : base(1152294, 2)
             {
+                Enabled = vendor.CheckVendorAccess(from);
+
                 m_From = from;
                 m_Vendor = vendor;
             }
@@ -263,6 +267,8 @@ namespace Server.Mobiles
             public ClaimRewardsEntry(Mobile from, BaseVendor vendor)
                 : base(1155593, 3)
 			{
+                Enabled = vendor.CheckVendorAccess(from);
+
 				m_From = from;
 				m_Vendor = vendor;
 			}
@@ -2650,6 +2656,8 @@ namespace Server.ContextMenus
         public UpgradeMageArmor(Mobile from, BaseVendor vendor)
             : base(1154114) // Convert Mage Armor
         {
+            Enabled = vendor.CheckVendorAccess(from);
+
             From = from;
             Vendor = vendor;
         }

@@ -2643,7 +2643,7 @@ namespace Server.Mobiles
             }
         }
 
-        public static int GetInsuranceCost(Item item)
+        public int GetInsuranceCost(Item item)
         {
             var imbueWeight = Imbuing.GetTotalWeight(item);
             int cost = 600; // this handles old items, set items, etc
@@ -2655,12 +2655,15 @@ namespace Server.Mobiles
             else if (Mobiles.GenericBuyInfo.BuyPrices.ContainsKey(item.GetType()))
                 cost = Math.Min(800, Math.Max(10, Mobiles.GenericBuyInfo.BuyPrices[item.GetType()]));
             else if (item.LootType == LootType.Newbied)
-                return 10;
+                cost = 10;
 
             var negAttrs = RunicReforging.GetNegativeAttributes(item);
 
             if (negAttrs != null && negAttrs.Prized > 0)
                 cost *= 2;
+
+            if (Region != null)
+                cost = (int)(cost * Region.InsuranceMultiplier);
 
             return cost;
         }
@@ -2881,7 +2884,7 @@ namespace Server.Mobiles
                 for (int i = 0; i < items.Length; ++i)
                 {
                     if (insure[i])
-                        cost += GetInsuranceCost(items[i]);
+                        cost += m_From.GetInsuranceCost(items[i]);
                 }
 
                 AddHtmlLocalized(15, 420, 300, 20, 1114310, 0x7FFF, false, false); // GOLD AVAILABLE:
@@ -2906,12 +2909,12 @@ namespace Server.Mobiles
                     if (insure[i])
                     {
                         AddButton(400, y, 9723, 9724, 100 + i, GumpButtonType.Reply, 0);
-                        AddLabel(250, y, 0x481, GetInsuranceCost(item).ToString());
+                        AddLabel(250, y, 0x481, m_From.GetInsuranceCost(item).ToString());
                     }
                     else
                     {
                         AddButton(400, y, 9720, 9722, 100 + i, GumpButtonType.Reply, 0);
-                        AddLabel(250, y, 0x66C, GetInsuranceCost(item).ToString());
+                        AddLabel(250, y, 0x66C, m_From.GetInsuranceCost(item).ToString());
                     }
                 }
 
@@ -3817,7 +3820,7 @@ namespace Server.Mobiles
 
 				if (AutoRenewInsurance)
 				{
-					int cost = (m_InsuranceAward == null ? insuredAmount : insuredAmount / 2);
+                    int cost = (m_InsuranceAward == null ? insuredAmount : insuredAmount / 2);
 
 					if (Banker.Withdraw(this, cost))
 					{

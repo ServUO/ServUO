@@ -8,6 +8,7 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
 using Server.Regions;
+using Server.Spells;
 #endregion
 
 namespace Server.Items
@@ -112,7 +113,7 @@ namespace Server.Items
 			{
 				m.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
 			}
-			else if ((m.Murderer && TargetMap != Map.Felucca && !Siege.SiegeShard) ||
+            else if ((SpellHelper.RestrictRedTravel && m.Murderer && TargetMap != Map.Felucca && !Siege.SiegeShard) ||
 					 (TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) ||
 					 (TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0) ||
 					 (TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0))

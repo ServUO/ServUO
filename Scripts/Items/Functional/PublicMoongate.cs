@@ -535,7 +535,7 @@ namespace Server.Items
 				{
 					checkLists = PMList.SigilLists;
 				}
-				else if (mobile.Murderer && !Siege.SiegeShard)
+                else if (SpellHelper.RestrictRedTravel && mobile.Murderer && !Siege.SiegeShard)
 				{
 					checkLists = PMList.RedLists;
 				}
@@ -670,7 +670,7 @@ namespace Server.Items
 				m_Mobile.SendLocalizedMessage(1019002); // You are too far away to use the gate.
 				return;
 			}
-			else if (m_Mobile.Player && m_Mobile.Murderer && list.Map != Map.Felucca && !Siege.SiegeShard)
+            else if (m_Mobile.Player && SpellHelper.RestrictRedTravel && m_Mobile.Murderer && list.Map != Map.Felucca && !Siege.SiegeShard)
 			{
 				m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
 				return;

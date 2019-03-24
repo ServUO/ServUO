@@ -150,7 +150,7 @@ namespace Server.Spells.Fourth
             {
                 Caster.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
-            else if (Caster.Murderer && map.Rules != MapRules.FeluccaRules)
+            else if (SpellHelper.RestrictRedTravel && Caster.Murderer && map.Rules != MapRules.FeluccaRules)
             {
                 Caster.SendLocalizedMessage(1019004); // You are not allowed to travel there.
             }
