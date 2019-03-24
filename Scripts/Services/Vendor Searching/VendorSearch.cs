@@ -49,7 +49,6 @@ namespace Server.Engines.VendorSearching
 
             switch (criteria.SortBy)
             {
-                case SortBy.None: break;
                 case SortBy.LowToHigh: list = list.OrderBy(vi => vi.Price).ToList(); break;
                 case SortBy.HighToLow: list = list.OrderBy(vi => -vi.Price).ToList(); break;
             }
@@ -823,7 +822,6 @@ namespace Server.Engines.VendorSearching
 
     public enum SortBy
     {
-        None,
         LowToHigh,
         HighToLow
     }
@@ -941,6 +939,8 @@ namespace Server.Engines.VendorSearching
         public long MinPrice { get; set; }
         public long MaxPrice { get; set; }
 
+        public bool EntryPrice { get; set; }
+
         public List<SearchDetail> Details { get; set; }
 
         public SearchCriteria()
@@ -960,9 +960,10 @@ namespace Server.Engines.VendorSearching
 
             MinPrice = 0;
             MaxPrice = 175000000;
-            SortBy = SortBy.None;
+            SortBy = SortBy.LowToHigh;
             SearchName = null;
             SearchType = Layer.Invalid;
+            EntryPrice = false;
         }
 
         public int GetValueForDetails(object o)
@@ -1012,9 +1013,12 @@ namespace Server.Engines.VendorSearching
 
         public SearchCriteria(GenericReader reader)
         {
-            reader.ReadInt();
+            int version = reader.ReadInt();
 
             Details = new List<SearchDetail>();
+
+            if (version != 0)
+                EntryPrice = reader.ReadBool();
 
             SearchType = (Layer)reader.ReadInt();
             SearchName = reader.ReadString();
@@ -1031,8 +1035,9 @@ namespace Server.Engines.VendorSearching
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
 
+            writer.Write((bool)EntryPrice);
             writer.Write((int)SearchType);
             writer.Write(SearchName);
             writer.Write((int)SortBy);
