@@ -313,8 +313,13 @@ namespace Server.Mobiles
 
 	    public static void HandleSpeech(Mobile vendor, SpeechEventArgs e)
 	    {
-			if (!e.Handled && e.Mobile.InRange(vendor, 12))
+            if (!e.Handled && e.Mobile.InRange(vendor, 12))
 			{
+                if (vendor is BaseVendor && !((BaseVendor)vendor).CheckVendorAccess(e.Mobile))
+                {
+                    return;
+                }
+
 				foreach (var keyword in e.Keywords)
 				{
 					switch (keyword)
@@ -488,7 +493,11 @@ namespace Server.Mobiles
         {
             if (from.Alive)
             {
-                list.Add(new OpenBankEntry(this));
+                var entry = new OpenBankEntry(this);
+
+                entry.Enabled = CheckVendorAccess(from);
+
+                list.Add(entry);
             }
 
             base.AddCustomContextEntries(from, list);
