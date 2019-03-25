@@ -1008,7 +1008,7 @@ namespace Server.Engines.VendorSearching
 
         public bool IsEmpty
         {
-            get { return Details.Count == 0 && MinPrice == 0 && MaxPrice == 175000000 && String.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid; }
+            get { return Details.Count == 0 && !EntryPrice && String.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid; }
         }
 
         public SearchCriteria(GenericReader reader)
