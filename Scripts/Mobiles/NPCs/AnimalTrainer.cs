@@ -476,6 +476,11 @@ namespace Server.Mobiles
 
 		public override void OnSpeech(SpeechEventArgs e)
 		{
+            if (!CheckVendorAccess(e.Mobile))
+            {
+                return;
+            }
+
 			if (!e.Handled && e.HasKeyword(0x0008)) // *stable*
 			{
 				e.Handled = true;
@@ -546,6 +551,8 @@ namespace Server.Mobiles
 			{
 				m_Trainer = trainer;
 				m_From = from;
+
+                Enabled = trainer.CheckVendorAccess(from);
 			}
 
 			public override void OnClick()
@@ -625,6 +632,8 @@ namespace Server.Mobiles
 			{
 				m_Trainer = trainer;
 				m_From = from;
+
+                Enabled = trainer.CheckVendorAccess(from);
 			}
 
 			public override void OnClick()
