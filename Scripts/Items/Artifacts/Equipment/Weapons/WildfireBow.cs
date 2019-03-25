@@ -61,7 +61,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            if (Hue != 1161)
+            if (Hue == 0x489)
                 Hue = 1161;
         }
     }
