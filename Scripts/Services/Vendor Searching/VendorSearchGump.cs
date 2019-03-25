@@ -318,13 +318,14 @@ namespace Server.Engines.VendorSearching
     public class SearchResultsGump : BaseGump
     {
         public int PerPage = 5;
-        public int TextColor { get { return C32216(0xF5DEB3); } }
+        public int LabelColor { get { return 0x4BBD; } }
+        public int TextColor { get { return 0x6B55; } }
 
         public List<VendorItem> Items { get; set; }
         public int Index { get; set; }
 
         public SearchResultsGump(PlayerMobile pm, List<VendorItem> items) 
-            : base(pm, 50, 50)
+            : base(pm, 30, 30)
         {
             Items = items;
             Index = 0;
@@ -334,11 +335,11 @@ namespace Server.Engines.VendorSearching
         {
             AddBackground(0, 0, 500, 550, 30536);
 
-            AddHtmlLocalized(0, 40, 500, 20, 1154645, "#1154509", TextColor, false, false); // Vendor Search Results
+            AddHtmlLocalized(50, 50, 400, 18, 1114513, "#1154509", LabelColor, false, false); // Vendor Search Results
 
-            AddHtmlLocalized(200, 70, 90, 20, 3000377, TextColor, false, false); // Price
-            AddHtmlLocalized(290, 70, 100, 20, 3005088, TextColor, false, false); // Facet
-            AddHtmlLocalized(360, 70, 100, 20, 1154642, TextColor, false, false); // Create Map
+            AddHtmlLocalized(162, 70, 102, 18, 1114513, "#1062218", LabelColor, false, false); // Price
+            AddHtmlLocalized(274, 70, 61, 18, 1114513, "#1154644", LabelColor, false, false); // Facet
+            AddHtmlLocalized(345, 70, 102, 18, 1114513, "#1154642", LabelColor, false, false); // Create Map
 
             if (Index < 0) Index = Items.Count - 1;
             if(Index >= Items.Count) Index = 0;
@@ -350,26 +351,21 @@ namespace Server.Engines.VendorSearching
             {
                 VendorItem item = Items[i];
                 Rectangle2D bounds = ItemBounds.Table[item.Item.ItemID];
-                int y = 100 + (index * 75);
+                int y = 101 + (index * 75);
                 Map map = item.Item.Map;
 
                 if (map == null && item.Item.RootParentEntity is Mobile)
                     map = ((Mobile)item.Item.RootParentEntity).Map;
 
-                AddImage(50, y, 2328);
-                AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
-
-                AddImage(50, y, 2328);
+                AddImageTiledButton(50, y, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, item.Item.ItemID, item.Item.Hue, 40 - bounds.Width / 2 - bounds.X, 30 - bounds.Height / 2 - bounds.Y);
                 AddItemProperty(item.Item);
 
-                AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
-
-                AddHtml(200, y + 5, 88, 20, String.Format("<basefont color=#F5DEB3>{0}", item.Price == -1 ? "0" : item.FormattedPrice), false, false);
-                
+                AddHtmlLocalized(162, y, 102, 72, 1154645, String.Format("{0}", item.Price == -1 ? "0" : item.FormattedPrice), TextColor, false, false); // <center>~1_val~</center>
+                                
                 if(map != null)
-                    AddHtml(290, y + 5, 70, 20, String.Format("<basefont color=#F5DEB3>{0}", map.ToString()), false, false);
+                    AddHtmlLocalized(274, y, 102, 72, 1060643, String.Format("{0}", map.ToString()), TextColor, false, false);
 
-                AddButton(370, y + 5, 30533, 30533, 100 + i, GumpButtonType.Reply, 0);
+                AddButton(386, y, 30533, 30533, 100 + i, GumpButtonType.Reply, 0);
 
                 index++;
             }
@@ -377,13 +373,13 @@ namespace Server.Engines.VendorSearching
             if (Index + PerPage < Items.Count)
             {
                 AddButton(430, 480, 30533, 30533, 2, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(345, 480, 100, 20, 1044045, VendorSearchGump.C32216(VendorSearchGump.LabelColor), false, false); // NEXT PAGE
+                AddHtmlLocalized(355, 480, 70, 20, 1114514, "#1044045", LabelColor, false, false); // NEXT PAGE
             }
 
             if (Index >= PerPage)
             {
                 AddButton(50, 480, 30533, 30533, 3, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(90, 480, 100, 20, 1044044, VendorSearchGump.C32216(VendorSearchGump.LabelColor), false, false); // PREV PAGE
+                AddHtmlLocalized(90, 480, 255, 20, 1044044, "#1044044", LabelColor, false, false); // PREV PAGE
             }
         }
 
