@@ -802,7 +802,7 @@ namespace Server.Engines.VendorSearching
             if (r.GetLogoutDelay(m) == TimeSpan.Zero)
                 return true;
 
-            return r is GuardedRegion && !((GuardedRegion)r).Disabled;
+            return r is GuardedRegion && !((GuardedRegion)r).Disabled || r is HouseRegion && ((HouseRegion)r).House.IsFriend(m);
         }
 
         private static bool IsSearchableContainer(Type type)
