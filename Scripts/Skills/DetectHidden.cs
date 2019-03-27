@@ -1,13 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Server.Factions;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
 using Server.Engines.VvV;
 using Server.Items;
-using System.Collections.Generic;
-using System.Linq;
 using Server.Spells;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -93,6 +95,7 @@ namespace Server.SkillHandlers
 
                                 trg.RevealingAction();
                                 trg.SendLocalizedMessage(500814); // You have been revealed!
+                                trg.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500814, trg.NetState);
                                 foundAnyone = true;
                             }
                         }
@@ -197,8 +200,8 @@ namespace Server.SkillHandlers
             if (src.Aggressed.Any(x => x.Defender == target) || src.Aggressors.Any(x => x.Attacker == target))
                 return true;
 
-            // Follow the same rules as indirect spells such as wither
-            return /*src.Map.Rules == MapRules.FeluccaRules ||*/Server.Spells.SpellHelper.ValidIndirectTarget(target, src);
+            // In Fel or Follow the same rules as indirect spells such as wither
+            return src.Map.Rules == MapRules.FeluccaRules || Server.Spells.SpellHelper.ValidIndirectTarget(target, src);
         }
     }
 }
