@@ -476,7 +476,7 @@ namespace Server.Mobiles
 
 		public override void OnSpeech(SpeechEventArgs e)
 		{
-            if (!CheckVendorAccess(e.Mobile))
+            if (e.Mobile.Map.Rules != MapRules.FeluccaRules && !CheckVendorAccess(e.Mobile))
             {
                 return;
             }
@@ -552,7 +552,7 @@ namespace Server.Mobiles
 				m_Trainer = trainer;
 				m_From = from;
 
-                Enabled = trainer.CheckVendorAccess(from);
+                Enabled = from.Map.Rules == MapRules.FeluccaRules || trainer.CheckVendorAccess(from);
 			}
 
 			public override void OnClick()
@@ -633,7 +633,7 @@ namespace Server.Mobiles
 				m_Trainer = trainer;
 				m_From = from;
 
-                Enabled = trainer.CheckVendorAccess(from);
+                Enabled = from.Map.Rules == MapRules.FeluccaRules || trainer.CheckVendorAccess(from);
 			}
 
 			public override void OnClick()

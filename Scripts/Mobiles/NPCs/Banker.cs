@@ -315,7 +315,7 @@ namespace Server.Mobiles
 	    {
             if (!e.Handled && e.Mobile.InRange(vendor, 12))
 			{
-                if (vendor is BaseVendor && !((BaseVendor)vendor).CheckVendorAccess(e.Mobile))
+                if (e.Mobile.Map.Rules != MapRules.FeluccaRules && vendor is BaseVendor && !((BaseVendor)vendor).CheckVendorAccess(e.Mobile))
                 {
                     return;
                 }
@@ -495,7 +495,7 @@ namespace Server.Mobiles
             {
                 var entry = new OpenBankEntry(this);
 
-                entry.Enabled = CheckVendorAccess(from);
+                entry.Enabled = from.Map.Rules == MapRules.FeluccaRules || CheckVendorAccess(from);
 
                 list.Add(entry);
             }

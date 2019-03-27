@@ -13,9 +13,9 @@ namespace Server.Items
         [Constructable]
         public ExodusSummoningRite() : base(0x2258)
         {
-            this.Weight = 1;
-            this.Hue = 1910;
-            this.LootType = LootType.Regular;
+            Weight = 1;
+            Hue = 1910;
+            LootType = LootType.Regular;
         }
 
         public override int Lifespan { get { return 604800; } }
