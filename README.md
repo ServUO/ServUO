@@ -49,4 +49,4 @@ GPL v2
 
 
    [ServUO]: <https://www.servuo.com>
-   [Quickstart]: <https://www.servuo.com/tutorials/getting-started-with-servuo.2/>
+   [Quickstart]: <https://www.servuo.com/wiki/startup/>
