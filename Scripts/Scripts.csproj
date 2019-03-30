@@ -788,8 +788,8 @@
     <Compile Include="Items\Books\BaseJournal.cs" />
     <Compile Include="Items\Books\SpecialScrollBooks\BaseSpecialScrollBook.cs" />
     <Compile Include="Items\Books\SpecialScrollBooks\PowerScrollBook.cs" />
-    <Compile Include="Items\Books\SpecialScrollBooks\ScrollOfAlacrityBook.cs" />
-    <Compile Include="Items\Books\SpecialScrollBooks\ScrollOfTranscendenceBook.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\ScrollofAlacrityBook.cs" />
+    <Compile Include="Items\Books\SpecialScrollBooks\ScrollofTranscendenceBook.cs" />
     <Compile Include="Items\Books\SpecialScrollBooks\SpecialScrollBookGump.cs" />
     <Compile Include="Items\Consumables\DeliciouslyTastyTreat.cs" />
     <Compile Include="Items\Consumables\IrresistiblyTastyTreat.cs" />
