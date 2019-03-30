@@ -78,7 +78,7 @@ namespace Server.Spells
             {
                 Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1112453); // You can't fly in your current form!
             }
-            else if (Server.Mobiles.BaseMount.CheckMountAllowed(Caster, true, true))
+            else if (Caster.Region.OnBeginSpellCast(Caster, this) && Server.Mobiles.BaseMount.CheckMountAllowed(Caster, true, true))
             {
                 Caster.Flying = true;
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Fly, 1112193, 1112567)); // Flying & You are flying.
