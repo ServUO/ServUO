@@ -10,7 +10,7 @@
     <AssemblyName>ServUO</AssemblyName>
     <ApplicationIcon>servuo.ico</ApplicationIcon>
     <StartupObject>Server.Core</StartupObject>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -212,6 +212,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="ServUO.exe.manifest" />
   </ItemGroup>
   <Import Project="..\VersionSpecificSymbols.Common.prop" />
