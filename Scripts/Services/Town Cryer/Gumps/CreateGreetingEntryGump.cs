@@ -19,7 +19,7 @@ namespace Server.Services.TownCryer
             {
                 Edit = true;
 
-                _Headline = Entry.Title.String;
+                _Headline = Entry.Title != null ? Entry.Title.String : String.Empty;
                 _Body = Entry.Body1 != null ? Entry.Body1.String : String.Empty;
                 _Body2 = Entry.Body2 != null ? Entry.Body2 : String.Empty;
                 _Body3 = Entry.Body3 != null ? Entry.Body3 : String.Empty;
