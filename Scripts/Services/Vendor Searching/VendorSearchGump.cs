@@ -18,11 +18,11 @@ namespace Server.Engines.VendorSearching
         public Map SetMap { get; set; }
 
         public bool NoFind { get; private set; }
-        public bool NoCrit { get; private set; }
+        public bool NoCrit { get; private set; }        
 
-        public static int LabelColor = 0x00FFFF;
-        public static int CriteriaColor = 0xF5DEB3;
-        public static int TextColor = 1150;
+        public static int LabelColor = 0x4BBD;
+        public static int CriteriaColor = 0x6B55;
+        public static int TextColor = 0x9C2;
 
         public VendorSearchGump(PlayerMobile pm, int cat = -1) 
             : base(pm, 10, 10)
@@ -37,20 +37,20 @@ namespace Server.Engines.VendorSearching
         public override void AddGumpLayout()
         {
             AddBackground(0, 0, 780, 570, 30546);
-            AddBackground(10, 45, 250, 22, 9350);
+            AddBackground(10, 50, 246, 22, 9350);
 
-            AddHtmlLocalized(10, 25, 150, 20, 1154510, C32216(LabelColor), false, false); // Item Name
-            AddHtmlLocalized(0, 5, 780, 20, 1154645, "#1154508", C32216(LabelColor), false, false); // Vendor Search Query
-            AddHtmlLocalized(520, 25, 150, 20, 1154546, C32216(LabelColor), false, false); // Selected Search Criteria
+            AddHtmlLocalized(10, 25, 150, 20, 1154510, LabelColor, false, false); // Item Name
+            AddHtmlLocalized(10, 10, 760, 18, 1114513, "#1154508", LabelColor, false, false); // Vendor Search Query
+            AddHtmlLocalized(522, 30, 246, 18, 1154546, LabelColor, false, false); // Selected Search Criteria
 
-            AddTextEntry(12, 45, 240, 25, TextColor, 0, Criteria.SearchName);
+            AddTextEntry(12, 52, 242, 18, TextColor, 0, Criteria.SearchName, 25);
 
             for (int i = 0; i < VendorSearch.Categories.Count; i++)
             {
                 if (i == 0)
-                    AddHtmlLocalized(50, 75 + (i * 22), 215, 20, VendorSearch.Categories[i].Label, String.Format("{0}\t{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), C32216(LabelColor), false, false);
+                    AddHtmlLocalized(50, 75 + (i * 22), 215, 20, VendorSearch.Categories[i].Label, String.Format("{0}\t{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), LabelColor, false, false);
                 else
-                    AddHtmlLocalized(50, 75 + (i * 22), 215, 20, VendorSearch.Categories[i].Label, C32216(LabelColor), false, false);
+                    AddHtmlLocalized(50, 75 + (i * 22), 215, 20, VendorSearch.Categories[i].Label, LabelColor, false, false);
 
                 AddButton(10, 75 + (i * 22), 30533, 30533, i + 100, GumpButtonType.Reply, 0);
             }
@@ -59,87 +59,95 @@ namespace Server.Engines.VendorSearching
             {
                 if (ChosenCategory == 0)
                 {
-                    AddHtmlLocalized(270, 25, 150, 20, 1154532, C32216(LabelColor), false, false); // Minimum Price
-                    AddBackground(270, 45, 250, 22, 9350);
-                    AddTextEntry(272, 45, 245, 20, TextColor, 1, Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
+                    AddHtmlLocalized(266, 30, 246, 18, 1154532, LabelColor, false, false); // Minimum Price
+                    AddBackground(266, 50, 246, 22, 9350);
+                    AddTextEntry(268, 52, 242, 18, TextColor, 1, Criteria.MinPrice.ToString(), 10);
 
-                    AddHtmlLocalized(270, 75, 150, 20, 1154533, C32216(LabelColor), false, false); // Maximum Price
-                    AddBackground(270, 95, 250, 22, 9350);
-                    AddTextEntry(272, 95, 245, 20, TextColor, 2, Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
+                    AddHtmlLocalized(266, 74, 246, 18, 1154533, LabelColor, false, false); // Maximum Price
+                    AddBackground(266, 94, 246, 22, 9350);
+                    AddTextEntry(268, 96, 242, 18, TextColor, 2, Criteria.MaxPrice.ToString(), 10);
 
-                    AddButton(270, 125, 4011, 4012, 1, GumpButtonType.Reply, 0);
+                    AddButton(266, 118, 4011, 4012, 1, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(306, 118, 100, 272, 1154534, LabelColor, false, false); // Add Search Criteria
                 }
                 else if (ChosenCategory == VendorSearch.Categories.Count - 1)
                 {
-                    AddHtmlLocalized(270, 25, 150, 20, VendorSearch.Categories[ChosenCategory].Label, C32216(LabelColor), false, false); // Sort Results
+                    AddHtmlLocalized(270, 25, 150, 20, VendorSearch.Categories[ChosenCategory].Label, LabelColor, false, false); // Sort Results
 
-                    AddHtmlLocalized(310, 45, 150, 20, 1154696, C32216(LabelColor), false, false); // Price: Low to High
+                    AddHtmlLocalized(310, 45, 150, 20, 1154696, LabelColor, false, false); // Price: Low to High
                     AddButton(270, 45, 30533, 30533, 2, GumpButtonType.Reply, 0);
 
-                    AddHtmlLocalized(310, 67, 150, 20, 1154697, C32216(LabelColor), false, false); // Price: High to Low
+                    AddHtmlLocalized(310, 67, 150, 20, 1154697, LabelColor, false, false); // Price: High to Low
                     AddButton(270, 67, 30533, 30533, 3, GumpButtonType.Reply, 0);
                 }
                 else if (ChosenCategory >= 0 && ChosenCategory < VendorSearch.Categories.Count)
                 {
-                    AddHtmlLocalized(270, 25, 150, 20, VendorSearch.Categories[ChosenCategory].Label, C32216(LabelColor), false, false);
+                    AddHtmlLocalized(266, 30, 150, 20, VendorSearch.Categories[ChosenCategory].Label, LabelColor, false, false);
 
                     for (int index = 0; index < VendorSearch.Categories[ChosenCategory].Objects.Count; index++)
                     {
                         Tuple<object, int> data = VendorSearch.Categories[ChosenCategory].Objects[index];
 
-                        AddHtmlLocalized(310, 45 + (index * 22), 215, 20, data.Item2, C32216(LabelColor), false, false);
-                        AddButton(270, 45 + (index * 22), 30533, 30533, 200 + index, GumpButtonType.Reply, 0);
+                        AddHtmlLocalized(306, 50 + (index * 22), 215, 20, data.Item2, LabelColor, false, false);
+                        AddButton(266, 50 + (index * 22), 30533, 30533, 200 + index, GumpButtonType.Reply, 0);
 
                         if (VendorSearch.HasValue(data.Item1, VendorSearch.Categories[ChosenCategory]))
                         {
                             int value = Criteria.GetValueForDetails(data.Item1);
 
-                            AddBackground(475, 45 + (index * 22), 40, 22, 9350);
-                            AddTextEntry(477, 45 + (index * 22), 38, 25, TextColor, 400 + index, value > 0 ? value.ToString() : "");
+                            AddBackground(482, 50 + (index * 22), 30, 20, 9350);
+                            AddTextEntry(484, 50 + (index * 22), 26, 16, TextColor, 400 + index, value > 0 ? value.ToString() : "", 3);
                         }
                     }
                 }
             }
 
-            int y = 45;
+            int y = 50;            
 
             if (!String.IsNullOrEmpty(Criteria.SearchName))
             {
-                AddButton(520, 45, 4017, 4019, 7, GumpButtonType.Reply, 0);
+                AddButton(522, y, 4017, 4019, 7, GumpButtonType.Reply, 0);
                 AddTooltip(1154694); // Remove Selected Search Criteria
 
-                AddHtmlLocalized(560, 45, 215, 20, 1154510, C32216(CriteriaColor), false, false);
+                AddHtmlLocalized(562, y, 215, 20, 1154510, CriteriaColor, false, false);
 
+                y += 22;
+            }
+
+            if (Criteria.EntryPrice)
+            {
+                AddButton(522, y, 4017, 4019, 8, GumpButtonType.Reply, 0);
+                AddTooltip(1154694); // Remove Selected Search Criteria
+
+                AddHtmlLocalized(562, y, 215, 20, 1154512, String.Format("{0}\t{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), CriteriaColor, false, false);
+                
                 y += 22;
             }
 
             for (int i = 0; i < Criteria.Details.Count; i++)
             {
-                AddButton(520, y + (i * 22), 4017, 4019, 300 + i, GumpButtonType.Reply, 0);
+                AddButton(522, y + (i * 22), 4017, 4019, 300 + i, GumpButtonType.Reply, 0);
                 AddTooltip(1154694); // Remove Selected Search Criteria
 
-                AddHtmlLocalized(560, y + (i * 22), 215, 20, Criteria.Details[i].Label, C32216(CriteriaColor), false, false);
+                AddHtmlLocalized(562, y + (i * 22), 215, 20, Criteria.Details[i].Label, CriteriaColor, false, false);
 
                 if (Criteria.Details[i].Value > 0)
                 {
                     AddHtml(720, y + (i * 22), 60, 20, String.Format("<basefont color=#F5DEB3>{0}", FormatValue(Criteria.Details[i].Attribute, Criteria.Details[i].Value)), false, false);
                 }
             }
+                        
+            AddButton(522, y + (Criteria.Details.Count * 22), 4017, 4019, 4, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(562, y + (Criteria.Details.Count * 22), 215, 20, Criteria.SortBy == SortBy.LowToHigh ? 1154696 : 1154697, CriteriaColor, false, false);
+            
+            AddHtmlLocalized(630, 520, 100, 20, 1114514, "#1154588", LabelColor, false, false); // Clear Search Criteria
+            AddButton(740, 520, 30533, 30533, 5, GumpButtonType.Reply, 0);
 
-            if (Criteria.SortBy != SortBy.None)
-            {
-                AddButton(520, 45 + (Criteria.Details.Count * 22), 4017, 4019, 4, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(560, 45 + (Criteria.Details.Count * 22), 215, 20, Criteria.SortBy == SortBy.LowToHigh ? 1154696 : 1154697, C32216(CriteriaColor), false, false);
-            }
-
-            AddHtmlLocalized(600, 518, 130, 20, 1114514, "#1154588", C32216(LabelColor), false, false); // Clear Search Criteria
-            AddButton(740, 518, 30533, 30533, 5, GumpButtonType.Reply, 0);
-
-            AddHtmlLocalized(600, 540, 130, 20, 1114514, "#1154641", C32216(LabelColor), false, false); // Search
+            AddHtmlLocalized(630, 540, 100, 20, 1114514, "#1154641", LabelColor, false, false); // Search
             AddButton(740, 540, 30534, 30534, 6, GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(50, 540, 150, 20, 3000091, C32216(LabelColor), false, false); // Cancel
-            AddButton(10, 540, 30533, 30535, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 540, 50, 20, 3000091, LabelColor, false, false); // Cancel
+            AddButton(10, 540, 0x7747, 0x7747, 0, GumpButtonType.Reply, 0);
 
             if (NoFind)
             {
@@ -203,6 +211,8 @@ namespace Server.Engines.VendorSearching
                             Criteria.MaxPrice = max;
                         }
                     }
+
+                    Criteria.EntryPrice = true;
                     Refresh();
                     break;
                 case 2: // Low to High
@@ -213,8 +223,7 @@ namespace Server.Engines.VendorSearching
                     Criteria.SortBy = SortBy.HighToLow;
                     Refresh();
                     break;
-                case 4: // Nothing, resend gump
-                    Criteria.SortBy = SortBy.None;
+                case 4: // Nothing, resend gump                    
                     Refresh();
                     break;
                 case 5: // Clear Criteria
@@ -247,6 +256,10 @@ namespace Server.Engines.VendorSearching
                     break;
                 case 7: // remove item name
                     Criteria.SearchName = null;
+                    Refresh();
+                    break;
+                case 8: // remove price entry
+                    Criteria.EntryPrice = false;
                     Refresh();
                     break;
                 default:
@@ -305,13 +318,14 @@ namespace Server.Engines.VendorSearching
     public class SearchResultsGump : BaseGump
     {
         public int PerPage = 5;
-        public int TextColor { get { return C32216(0xF5DEB3); } }
+        public int LabelColor { get { return 0x4BBD; } }
+        public int TextColor { get { return 0x6B55; } }
 
         public List<VendorItem> Items { get; set; }
         public int Index { get; set; }
 
         public SearchResultsGump(PlayerMobile pm, List<VendorItem> items) 
-            : base(pm, 50, 50)
+            : base(pm, 30, 30)
         {
             Items = items;
             Index = 0;
@@ -321,11 +335,11 @@ namespace Server.Engines.VendorSearching
         {
             AddBackground(0, 0, 500, 550, 30536);
 
-            AddHtmlLocalized(0, 40, 500, 20, 1154645, "#1154509", TextColor, false, false); // Vendor Search Results
+            AddHtmlLocalized(50, 50, 400, 18, 1114513, "#1154509", LabelColor, false, false); // Vendor Search Results
 
-            AddHtmlLocalized(200, 70, 90, 20, 3000377, TextColor, false, false); // Price
-            AddHtmlLocalized(290, 70, 100, 20, 3005088, TextColor, false, false); // Facet
-            AddHtmlLocalized(360, 70, 100, 20, 1154642, TextColor, false, false); // Create Map
+            AddHtmlLocalized(162, 70, 102, 18, 1114513, "#1062218", LabelColor, false, false); // Price
+            AddHtmlLocalized(274, 70, 61, 18, 1114513, "#1154644", LabelColor, false, false); // Facet
+            AddHtmlLocalized(345, 70, 102, 18, 1114513, "#1154642", LabelColor, false, false); // Create Map
 
             if (Index < 0) Index = Items.Count - 1;
             if(Index >= Items.Count) Index = 0;
@@ -337,26 +351,21 @@ namespace Server.Engines.VendorSearching
             {
                 VendorItem item = Items[i];
                 Rectangle2D bounds = ItemBounds.Table[item.Item.ItemID];
-                int y = 100 + (index * 75);
+                int y = 101 + (index * 75);
                 Map map = item.Item.Map;
 
                 if (map == null && item.Item.RootParentEntity is Mobile)
                     map = ((Mobile)item.Item.RootParentEntity).Map;
 
-                AddImage(50, y, 2328);
-                AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
-
-                AddImage(50, y, 2328);
+                AddImageTiledButton(50, y, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, item.Item.ItemID, item.Item.Hue, 40 - bounds.Width / 2 - bounds.X, 30 - bounds.Height / 2 - bounds.Y);
                 AddItemProperty(item.Item);
 
-                AddItem(90 - bounds.Width / 2 - bounds.X, (30 - bounds.Height / 2 - bounds.Y) + y, item.Item.ItemID, item.Item.Hue);
-
-                AddHtml(200, y + 5, 88, 20, String.Format("<basefont color=#F5DEB3>{0}", item.Price == -1 ? "0" : item.FormattedPrice), false, false);
-                
+                AddHtmlLocalized(162, y, 102, 72, 1154645, String.Format("{0}", item.Price == -1 ? "0" : item.FormattedPrice), TextColor, false, false); // <center>~1_val~</center>
+                                
                 if(map != null)
-                    AddHtml(290, y + 5, 70, 20, String.Format("<basefont color=#F5DEB3>{0}", map.ToString()), false, false);
+                    AddHtmlLocalized(274, y, 102, 72, 1060643, String.Format("{0}", map.ToString()), TextColor, false, false);
 
-                AddButton(370, y + 5, 30533, 30533, 100 + i, GumpButtonType.Reply, 0);
+                AddButton(386, y, 30533, 30533, 100 + i, GumpButtonType.Reply, 0);
 
                 index++;
             }
@@ -364,13 +373,13 @@ namespace Server.Engines.VendorSearching
             if (Index + PerPage < Items.Count)
             {
                 AddButton(430, 480, 30533, 30533, 2, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(345, 480, 100, 20, 1044045, VendorSearchGump.C32216(VendorSearchGump.LabelColor), false, false); // NEXT PAGE
+                AddHtmlLocalized(355, 480, 70, 20, 1114514, "#1044045", LabelColor, false, false); // NEXT PAGE
             }
 
             if (Index >= PerPage)
             {
                 AddButton(50, 480, 30533, 30533, 3, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(90, 480, 100, 20, 1044044, VendorSearchGump.C32216(VendorSearchGump.LabelColor), false, false); // PREV PAGE
+                AddHtmlLocalized(90, 480, 255, 20, 1044044, "#1044044", LabelColor, false, false); // PREV PAGE
             }
         }
 

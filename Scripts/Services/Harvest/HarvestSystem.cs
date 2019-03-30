@@ -5,6 +5,7 @@ using Server.Targeting;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Hag;
 using Server.Mobiles;
+using System.Linq;
 
 namespace Server.Engines.Harvest
 {
@@ -770,7 +771,18 @@ namespace Server
     {
         public FurnitureAttribute()
         {
+        }        
+
+        private static bool IsNotChoppables(Item item)
+        {
+            return _NotChoppables.Any(t => t == item.GetType());
         }
+
+        private static Type[] _NotChoppables = new Type[]
+        {
+            typeof(CommodityDeedBox), typeof(ChinaCabinet), typeof(PieSafe), typeof(AcademicBookCase), typeof(JewelryBox),
+            typeof(WoodenBookcase), typeof(Countertop), typeof(Mailbox)
+        };
 
         public static bool Check(Item item)
         {
@@ -779,7 +791,7 @@ namespace Server
                 return false;
             }
 			
-			if (item is CommodityDeedBox || item is ChinaCabinet || item is PieSafe || item is AcademicBookCase || item is JewelryBox || item is WoodenBookcase || item is Countertop)
+			if (IsNotChoppables(item))
 			{
 				return false;
 			}

@@ -320,9 +320,13 @@ namespace Server.Gumps
                     types.Add(typeof(SamuraiHelm));
                     cliloc = 1062923;
                     break;
-                    // 8th anniversary
-                    /*case 0x6B: types.Add( typeof( SpiritualityHelm ) ); cliloc = 1075188; break;
-                    case 0x6C: types.Add( typeof( ValorGauntlets ) ); cliloc = 1075192; break;*/
+                case 0x6B: 
+					types.Add( typeof( SpiritualityHelm ) ); 
+					cliloc = 1075188; 
+					break;
+                case 0x6C: types.Add( typeof( ValorGauntlets ) );
+					cliloc = 1075192;
+					break;
                 case 0x6D:
                     types.Add(typeof(DupresShield));
                     cliloc = 1075196;

@@ -38,7 +38,6 @@ namespace Server.Mobiles
             {
                 Add(new GenericBuyInfo(typeof(ScribesPen), 8, 20, 0xFBF, 0));
                 Add(new GenericBuyInfo(typeof(BlankScroll), 5, 999, 0x0E34, 0));
-                Add(new GenericBuyInfo(typeof(PenAndInk), 8, 20, 0xFC0, 0));
                 Add(new GenericBuyInfo(typeof(BrownBook), 15, 10, 0xFEF, 0));
                 Add(new GenericBuyInfo(typeof(TanBook), 15, 10, 0xFF0, 0));
                 Add(new GenericBuyInfo(typeof(BlueBook), 15, 10, 0xFF2, 0));
@@ -56,7 +55,6 @@ namespace Server.Mobiles
             public InternalSellInfo()
             {
                 Add(typeof(ScribesPen), 4);
-                Add(typeof(PenAndInk), 4);
                 Add(typeof(BrownBook), 7);
                 Add(typeof(TanBook), 7);
                 Add(typeof(BlueBook), 7);
