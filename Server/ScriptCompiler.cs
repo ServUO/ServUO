@@ -210,9 +210,13 @@ namespace Server
 
 			DeleteFiles("Scripts.CS*.dll");
 
-			using (var provider = new CSharpCodeProvider())
-			{
-				var path = GetUnusedPath("Scripts.CS");
+#if !MONO
+            using (CodeDomProvider provider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider())
+#else
+            using (CSharpCodeProvider provider = new CSharpCodeProvider())
+#endif
+            {
+                var path = GetUnusedPath("Scripts.CS");
 
 				var parms = new CompilerParameters(GetReferenceAssemblies(), path, debug);
 

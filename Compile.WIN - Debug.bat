@@ -1,5 +1,5 @@
 @SET CURPATH=%~dp0
-@SET CSCPATH=%windir%\Microsoft.NET\Framework\v4.0.30319\
+@SET CSCPATH=%CURPATH%bin\roslyn\
 
 @SET SDKPATH=%CURPATH%Ultima\
 @SET SRVPATH=%CURPATH%Server\
@@ -20,7 +20,7 @@
 
 @ECHO ON
 
-%CSCPATH%csc.exe /target:library /out:"%CURPATH%Ultima.dll" /recurse:"%SDKPATH%*.cs" /d:ServUO /d:NEWTIMERS /d:DEBUG /nowarn:0618 /debug /nologo /unsafe
+%CSCPATH%csc.exe /r:"%CURPATH%Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" /target:library /out:"%CURPATH%Ultima.dll" /recurse:"%SDKPATH%*.cs" /d:ServUO /d:NEWTIMERS /d:DEBUG /nowarn:0618 /debug /nologo /unsafe
 
 @ECHO OFF
 
@@ -44,7 +44,7 @@
 
 @ECHO ON
 
-%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /r:"%CURPATH%Ultima.dll" /target:exe /out:"%CURPATH%%EXENAME%.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /d:NEWTIMERS /d:NETFX_40 /d:DEBUG /nowarn:0618 /debug /nologo /unsafe
+%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /r:"%CURPATH%Ultima.dll" /r:"%CURPATH%Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" /target:exe /out:"%CURPATH%%EXENAME%.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /d:NEWTIMERS /d:NETFX_472 /d:DEBUG /nowarn:0618 /debug /nologo /unsafe
 
 @ECHO OFF
 
