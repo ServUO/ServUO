@@ -1928,6 +1928,15 @@ namespace Server.Items
 
                     if (suffix == ReforgedSuffix.Khaldun)
                         item.Hue = 2745;
+                    
+                    if (suffix == ReforgedSuffix.Kotl)
+                        item.Hue = 2591;
+					
+					if (suffix == ReforgedSuffix.EnchantedOrigin)
+                        item.Hue = 1171;
+					
+					if (suffix == ReforgedSuffix.Doom)
+                        item.Hue = 2301;
 
                     if (!powerful)
                     {
