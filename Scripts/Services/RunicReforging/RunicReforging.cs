@@ -1917,7 +1917,7 @@ namespace Server.Items
                     if (!(item is BaseWeapon) && suffix == ReforgedSuffix.Vampire)
                         suffix = ReforgedSuffix.None;
 
-                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax && suffix != ReforgedSuffix.Kotl && suffix != ReforgedSuffix.Khaldun && suffix != ReforgedSuffix.Doom && suffix != ReforgedSuffix.EnchantedOrigin)
+                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix < ReforgedSuffix.Minax)
                         prefix = ChooseRandomPrefix(item);
 
                     if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2700))
