@@ -1917,7 +1917,7 @@ namespace Server.Items
                     if (!(item is BaseWeapon) && suffix == ReforgedSuffix.Vampire)
                         suffix = ReforgedSuffix.None;
 
-                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax && suffix != ReforgedSuffix.Kotl && suffix != ReforgedSuffix.Khaldun)
+                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix < ReforgedSuffix.Minax)
                         prefix = ChooseRandomPrefix(item);
 
                     if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2700))
@@ -1928,6 +1928,15 @@ namespace Server.Items
 
                     if (suffix == ReforgedSuffix.Khaldun)
                         item.Hue = 2745;
+                    
+                    if (suffix == ReforgedSuffix.Kotl)
+                        item.Hue = 2591;
+					
+					if (suffix == ReforgedSuffix.EnchantedOrigin)
+                        item.Hue = 1171;
+					
+					if (suffix == ReforgedSuffix.Doom)
+                        item.Hue = 2301;
 
                     if (!powerful)
                     {
