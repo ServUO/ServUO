@@ -29,6 +29,8 @@ namespace Server.Items
 
         public virtual bool UseCraftResource { get { return true; } }
 
+        public virtual bool ExcludeDeedHue { get { return false; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {
@@ -183,8 +185,11 @@ namespace Server.Items
                     {
                         addon.Resource = m_Deed.Resource;
 
-                        if (addon.RetainDeedHue || (m_Deed.Hue != 0 && CraftResources.GetHue(m_Deed.Resource) != m_Deed.Hue))
-                            addon.Hue = m_Deed.Hue;
+                        if (!m_Deed.ExcludeDeedHue)
+                        {
+                            if (addon.RetainDeedHue || (m_Deed.Hue != 0 && CraftResources.GetHue(m_Deed.Resource) != m_Deed.Hue))
+                                addon.Hue = m_Deed.Hue;
+                        }
 
                         addon.MoveToWorld(new Point3D(p), map);
 
