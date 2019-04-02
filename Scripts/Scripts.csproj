@@ -558,16 +558,26 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\AdvancedTrainingDummy.cs" />
+    <Compile Include="Items\Addons\Crystal Furniture Set\CrystalAltar.cs" />
+    <Compile Include="Items\Addons\Crystal Furniture Set\CrystalBrazier.cs" />
+    <Compile Include="Items\Addons\Crystal Furniture Set\CrystalTable.cs" />
+    <Compile Include="Items\Addons\Crystal Furniture Set\CrystalBullStatue.cs" />
+    <Compile Include="Items\Addons\Crystal Furniture Set\CrystalBeggarStatue.cs" />
+    <Compile Include="Items\Addons\Crystal Furniture Set\CrystalSupplicantStatue.cs" />
+    <Compile Include="Items\Addons\Crystal Furniture Set\CrystalThrone.cs" />
+    <Compile Include="Items\Addons\Crystal Furniture Set\CrystalRunnerStatue.cs" />
+    <Compile Include="Items\Consumables\AnniversaryPromotionalToken.cs" />
+    <Compile Include="Items\Containers\BoxOfCrystalItems.cs" />
     <Compile Include="Items\Containers\BoxOfShadowItems.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\ShadowAltar.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\ShadowPillar.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\SpikeColumn.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\ShadowFirePit.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\GlobeOfSosaria.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\FireDemonStatue.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\SpikePost.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\ObsidianRock.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\ShadowBanner.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\ShadowAltar.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\ShadowPillar.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\SpikeColumn.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\ShadowFirePit.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\GlobeOfSosaria.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\FireDemonStatue.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\SpikePost.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\ObsidianRock.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\ShadowBanner.cs" />
     <Compile Include="Items\Addons\WashBasin.cs" />
     <Compile Include="Items\Addons\WoodStove.cs" />
     <Compile Include="Items\Addons\TinkerBench.cs" />
@@ -584,7 +594,7 @@
     <Compile Include="Items\Decorative\CupidStatue.cs" />
     <Compile Include="Items\Consumables\ValentineChocolate.cs" />
     <Compile Include="Items\Containers\HeartShapedBox.cs" />
-    <Compile Include="Items\Addons\Shadow Furniture\ObsidianPillar.cs" />
+    <Compile Include="Items\Addons\Shadow Furniture Set\ObsidianPillar.cs" />
     <Compile Include="Items\Decorative\UltimaBanner.cs" />
     <Compile Include="Items\Decorative\EnchantedWheelbarrow.cs" />
     <Compile Include="Items\Decorative\FlamingScarecrow.cs" />
@@ -12138,6 +12148,7 @@
       <Name>Ultima</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
