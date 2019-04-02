@@ -7922,6 +7922,9 @@ namespace Server.Mobiles
 
         public virtual bool Rummage()
         {
+            if (Map == null)
+                return false;
+
             Corpse toRummage = null;
 
             IPooledEnumerable eable = Map.GetItemsInRange(Location, 2);
