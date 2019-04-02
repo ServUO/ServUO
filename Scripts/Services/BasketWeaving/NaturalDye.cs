@@ -152,6 +152,12 @@ namespace Server.Items
                         item is BaseWeapon || item is Runebook ||
                         item is Spellbook || item is DecorativePlant ||
                         item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
+					
+					if (item is HoodedShroudOfShadows || item is MonkRobe)
+					{
+						from.SendLocalizedMessage(1042083); // You cannot dye that.
+						return;
+					}
 
                     if (!valid && FurnitureAttribute.Check(item))
                     {

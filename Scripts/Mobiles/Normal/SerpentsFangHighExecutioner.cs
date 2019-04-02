@@ -10,21 +10,21 @@ namespace Server.Mobiles
         public SerpentsFangHighExecutioner()
             : base()
         {
-            this.Name = "Black Order High Executioner";
-            this.Title = "of the Serpent's Fang Sect";
-            this.SetStr(545, 560);
-            this.SetDex(160, 175);
-            this.SetInt(160, 175);
+            Name = "Black Order High Executioner";
+            Title = "of the Serpent's Fang Sect";
+            SetStr(545, 560);
+            SetDex(160, 175);
+            SetInt(160, 175);
 
-            this.SetHits(800);
-            this.SetStam(190, 205);
+            SetHits(800);
+            SetStam(190, 205);
 
-            this.SetDamage(15, 20);
+            SetDamage(15, 20);
 
-            this.Fame = 25000;
-            this.Karma = -25000;
+            Fame = 25000;
+            Karma = -25000;
 
-            this.VirtualArmor = 60;
+            VirtualArmor = 60;
         }
 
         public SerpentsFangHighExecutioner(Serial serial)
@@ -32,23 +32,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AlwaysMurderer { get { return true; } }
+        public override bool ShowFameTitle { get { return false; } }
+		
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosFilthyRich, 6);
+            AddLoot(LootPack.AosFilthyRich, 6);
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
@@ -69,15 +58,13 @@ namespace Server.Mobiles
 
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);
-			
+            base.Serialize(writer);			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);
-			
+            base.Deserialize(reader);			
             int version = reader.ReadInt();
         }
     }
