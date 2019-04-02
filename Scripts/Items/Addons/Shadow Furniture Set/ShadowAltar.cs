@@ -19,8 +19,6 @@ namespace Server.Items
                     AddComponent(new LocalizedAddonComponent(0x369D, 1076682), 0, 0, 0);
                     break;
             }
-
-            Hue = 0;
         }
 
         public ShadowAltarAddon(Serial serial)
