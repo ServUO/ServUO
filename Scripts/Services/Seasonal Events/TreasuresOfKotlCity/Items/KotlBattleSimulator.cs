@@ -148,12 +148,17 @@ namespace Server.Engines.TreasuresOfKotlCity
         {
             EndTimer();
 
-            if (WheelsOfTime.RockBarrier == null || WheelsOfTime.RockBarrier.Deleted)
+            if (WheelsOfTime.Instance != null && (WheelsOfTime.Instance.RockBarrier == null || WheelsOfTime.Instance.RockBarrier.Deleted))
             {
-                WheelsOfTime.RockBarrier = new KotlWallAddon();
+                WheelsOfTime.Instance.RockBarrier = new KotlWallAddon();
             }
 
-            WheelsOfTime.RockBarrier.MoveToWorld(WheelsOfTime.RockBarrierLocation, Map.TerMur);
+            WheelsOfTime.Instance.RockBarrier.MoveToWorld(WheelsOfTime.RockBarrierLocation, Map.TerMur);
+
+            if (WheelsOfTime.Instance != null)
+            {
+                WheelsOfTime.Instance.TimeWarpEnds = DateTime.UtcNow + TimeSpan.FromSeconds(10);
+            }
 
             PowerCoreDockingStation.Stations.ForEach(station =>
             {

@@ -9,10 +9,15 @@ namespace Server.Engines.TreasuresOfKotlCity
     {
         public static TimeSpan TimeWarpDuration = TimeSpan.FromHours(2); // Duration in which you have to activate spawn to do the spawn
 
-        public static BaseAddon RockBarrier { get; set; }
         public static Point3D RockBarrierLocation = new Point3D(584, 2399, 0);
+        public static WheelsOfTime Instance { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public BaseAddon RockBarrier { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public DateTime TimeWarpEnds { get; set; }
+
         public Timer Timer { get; set; }
 
         public override int LabelNumber { get { return 1157032; } } // Wheels of Time
@@ -22,6 +27,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         {
             Hue = 2655;
             Movable = false;
+            Instance = this;
 
             RockBarrier = new KotlWallAddon();
             RockBarrier.MoveToWorld(RockBarrierLocation, Map.TerMur);
@@ -69,13 +75,14 @@ namespace Server.Engines.TreasuresOfKotlCity
                     Timer = null;
                 }
 
-                TimeWarpEnds = DateTime.MinValue;
                 Cleanup();
             }
         }
 
         private void Cleanup()
         {
+            TimeWarpEnds = DateTime.MinValue;
+
             if (KotlBattleSimulator.Instance != null && KotlBattleSimulator.Instance.Active)
             {
                 KotlBattleSimulator.Instance.EndSimulation();
@@ -106,6 +113,8 @@ namespace Server.Engines.TreasuresOfKotlCity
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
+            Instance = this;
+
             RockBarrier = reader.ReadItem() as BaseAddon;
             TimeWarpEnds = reader.ReadDateTime();
 
@@ -124,6 +133,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             if (RockBarrier == null)
             {
                 RockBarrier = new KotlWallAddon();
+                RockBarrier.MoveToWorld(RockBarrierLocation, Map.TerMur);
             }
         }
     }
