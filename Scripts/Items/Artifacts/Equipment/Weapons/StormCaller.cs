@@ -10,9 +10,7 @@ namespace Server.Items
         [Constructable]
         public StormCaller()
             : base()
-        {
-            this.Name = ("Storm Caller");
-		
+        {	
             Hue = 456;
             WeaponAttributes.BattleLust = 1;
             Attributes.BonusStr = 5;

@@ -9,7 +9,6 @@ namespace Server.Items
         public BladeDance()
         {
             Hue = 0x66C;
-
             Attributes.BonusMana = 8;
             Attributes.SpellChanneling = 1;
             Attributes.WeaponDamage = 30;
@@ -46,14 +45,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }
