@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -26,7 +26,7 @@ namespace Server.Engines.Astronomy
         public static readonly double MaxDEC = 90; // zero based 0 - 90, 0.2 per increment
 
         // testing only. THis needs to be deleted prior to going live.
-        public static TimeCoordinate ForceTimeCoordinate { get { return TimeCoordinate.FiveToEight; } }
+        // public static TimeCoordinate ForceTimeCoordinate { get { return TimeCoordinate.FiveToEight; } }
 
         public static int LoadedConstellations { get; set; }
         public static List<ConstellationInfo> Constellations { get; set; }
@@ -157,8 +157,7 @@ namespace Server.Engines.Astronomy
 
         public static TimeCoordinate GetTimeCoordinate(IEntity e)
         {
-            return ForceTimeCoordinate;
-            /*int minutes, hours, totalMinutes;
+            int minutes, hours, totalMinutes;
 
             Clock.GetTime(e.Map, e.X, e.Y, out hours, out minutes, out totalMinutes);
 
@@ -182,7 +181,7 @@ namespace Server.Engines.Astronomy
                 return TimeCoordinate.Midnight;
             }
 
-            return TimeCoordinate.Day;*/
+            return TimeCoordinate.Day;
         }
 
         public static int RandomSkyImage(Mobile m)
