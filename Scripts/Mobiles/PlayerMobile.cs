@@ -2023,7 +2023,12 @@ namespace Server.Mobiles
 			{
 				if (Core.ML && IsPlayer())
 				{
-					return Math.Min(base.Str, StrMaxCap);
+                    var str = base.Str;
+
+                    if (CityLoyaltySystem.HasTradeDeal(this, TradeDeal.MiningCooperative))
+                        str += 3;
+
+                    return Math.Min(base.Str, StrMaxCap);
 				}
 
 				return base.Str;
@@ -2053,7 +2058,12 @@ namespace Server.Mobiles
 			{
 				if (Core.ML && IsPlayer())
 				{
-					return Math.Min(base.Dex, DexMaxCap);
+                    var dex = base.Dex;
+
+                    if (CityLoyaltySystem.HasTradeDeal(this, TradeDeal.OrderOfEngineers))
+                        dex += 3;
+
+                    return Math.Min(dex, DexMaxCap);
 				}
 
 				return base.Dex;

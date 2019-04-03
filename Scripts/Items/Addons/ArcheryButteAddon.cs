@@ -16,7 +16,6 @@ namespace Server.Items
         private DateTime m_LastUse;
         private Hashtable m_Entries;
 
-        [Constructable]
         public ArcheryButte()
             : this(0x100A)
         {

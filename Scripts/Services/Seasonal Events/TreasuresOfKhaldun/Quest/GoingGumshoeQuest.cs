@@ -294,7 +294,7 @@ namespace Server.Engines.Khaldun
                 return (LibraryBookcase)bookcase;
             }
 
-            Console.WriteLine("Error: GoingGumshoeQuest3 has no bookcases. setup LibraryBookcase per EA.");
+            Console.WriteLine("Error: GoingGumshoeQuest3 has no bookcases. setup LibraryBookcase per EA via [CreateWorld command.");
             return null;
         }
 

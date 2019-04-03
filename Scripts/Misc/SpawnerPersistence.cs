@@ -35,7 +35,8 @@ namespace Server
             PaladinAndKrakin= 0x00000008,
             TrinsicPaladins = 0x00000010,
             HonestyItems    = 0x00000020,
-            TramKhaldun     = 0x00000040
+            TramKhaldun     = 0x00000040,
+            FixAddonDeco    = 0x00000080
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -161,6 +162,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.FixAddonDeco) == 0)
+                    {
+                        FixAddonDeco();
+                        VersionFlag |= SpawnerVersion.FixAddonDeco;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.TramKhaldun) == 0)
                     {
                         GenerateTramKhaldun();
@@ -243,6 +250,20 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Addon Decoraction Fix
+        public static void FixAddonDeco()
+        {
+            var t = typeof(AddonComponent);
+
+            Decorate.GenerateRestricted("deco", "Data/Decoration/Britannia", t, true, Map.Trammel, Map.Felucca);
+            Decorate.GenerateRestricted("deco", "Data/Decoration/Trammel", t, true, Map.Trammel);
+            Decorate.GenerateRestricted("deco", "Data/Decoration/Felucca", t, true, Map.Felucca);
+            Decorate.GenerateRestricted("deco", "Data/Decoration/Ilshenar", t, true, Map.Ilshenar);
+            Decorate.GenerateRestricted("deco", "Data/Decoration/Malas", t, true, Map.Malas);
+            Decorate.GenerateRestricted("deco", "Data/Decoration/Tokuno", t, true, Map.Tokuno);
+        }
+        #endregion
 
         #region Tram Khaldun Generation
         public static void GenerateTramKhaldun()

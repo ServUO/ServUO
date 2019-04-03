@@ -4,23 +4,23 @@ using Server;
 namespace Server.Items
 {
     [Flipable(0x9C14, 0x9C15)]
-	public class AnniversaryCard : Item
+	public class Anniversary21Card : Item
 	{
 		[CommandProperty(AccessLevel.GameMaster)]
 		public string Args { get; set; }
 		
-		private string[] _Staff = new string[] { Server.Misc.ServerList.ServerName }; // TODO: Get More
+		private string[] _Staff = new string[] { Server.Misc.ServerList.ServerName };
 
         [Constructable]
-        public AnniversaryCard()
+        public Anniversary21Card()
             : this(null)
         {
         }
 
 		[Constructable]
-		public AnniversaryCard(Mobile m) : base(0x9C14)
+		public Anniversary21Card(Mobile m) : base(0x9C14)
 		{
-            Hue = 124;
+            Hue = 85;
 
 			Args = String.Format("{0}\t{1}", _Staff[Utility.Random(_Staff.Length)], m != null ? m.Name : "you");
 		}
@@ -29,10 +29,10 @@ namespace Server.Items
 		{
 			list.Add(1156145, Args); // A Personally Written Anniversary Card from ~1_name~ to ~2_name~
 
-            list.Add(1062613, "#1156146");
+            list.Add(1062613, "#1158486");
 		}
 
-        public AnniversaryCard(Serial serial)
+        public Anniversary21Card(Serial serial)
             : base(serial)
 		{
 		}

@@ -31,7 +31,9 @@ namespace Server.Engines.Craft
         WeatheredBronzeManOnABench = 462,
 
         KrampusMinionEarrings = 463,
-        EnchantedPicnicBasket = 464
+        EnchantedPicnicBasket = 464,
+
+        Telescope = 465
     }
 
     public class DefTinkering : CraftSystem
@@ -662,6 +664,11 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(StasisChamberPowerCore), 1156623, 1, 1157000);
                 AddRes(index, typeof(InoperativeAutomatonHead), 1157002, 1, 1157001);
                 AddRecipe(index, (int)TinkerRecipes.KotlAutomatonHead);
+
+                index = AddCraft(typeof(PersonalTelescope), 1044051, 1125284, 100.0, 130.0, typeof(IronIngot), 1044036, 25, 1044037);
+                AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
+                AddRes(index, typeof(SextantParts), 1044175, 1, 1044253);
+                AddRecipe(index, (int)TinkerRecipes.Telescope);
             }
             #endregion
 

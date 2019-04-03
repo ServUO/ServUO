@@ -751,7 +751,7 @@ namespace Server.Mobiles
             }
             else if (MinTameSkill < 108) // Currently, with increased control slots, taming skill does not seem to pass 108.0
             {
-                if (MinTameSkill < 0)
+                if (MinTameSkill <= 0)
                 {
                     current = Math.Ceiling(Math.Min(108.0, Math.Max(0, CurrentTameSkill) + (Math.Abs(minSkill) * .7)));
                 }
