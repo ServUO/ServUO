@@ -173,13 +173,13 @@ namespace Server.Items
         public override double WeaponAbilityChance { get { return 0.33; } }
 
         public override bool IsScaredOfScaryThings { get {  return false;  } }
-        public override bool IsScaryToPets { get { return true; } }
+        public override bool IsScaryToPets { get { return !Controlled; } }
         public override FoodType FavoriteFood { get { return FoodType.None; } }
         public override bool CanBeDistracted { get { return false; } }
         public override bool DeleteOnRelease { get { return true; } }
         public override bool AutoDispel { get { return !Controlled; } }
         public override bool BleedImmune { get { return true; } }
-        public override bool BardImmune { get { return !Core.AOS || Controlled; } }
+        public override bool BardImmune { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
 
         public override bool CanTransfer(Mobile m)

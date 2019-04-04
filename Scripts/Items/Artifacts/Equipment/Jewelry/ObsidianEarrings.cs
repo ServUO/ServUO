@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class ObsidianEarrings : GoldEarrings
+    public class ObsidianEarrings : GoldEarrings // Should be Gargish Earrings 
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1113820; } } // Obsidian Earrings
@@ -20,7 +20,7 @@ namespace Server.Items
             Resistances.Cold = 10;
             Resistances.Poison = 3;
             Resistances.Energy = 13;
-            //AbsorptionAttribute.CastingFocus = 4; TODO: how this shit works?
+            AbsorptionAttributes.CastingFocus = 4;
         }
 
         public ObsidianEarrings(Serial serial)

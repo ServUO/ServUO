@@ -10,7 +10,6 @@ namespace Server.Items
         [Constructable]
         public Venom()
         {
-            this.Name = ("Venom");	
             Hue = 1371;
             Attributes.CastRecovery = 1;
             Attributes.CastSpeed = 2;
@@ -26,14 +25,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

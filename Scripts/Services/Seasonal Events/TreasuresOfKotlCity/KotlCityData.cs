@@ -49,7 +49,7 @@ namespace Server.Engines.Points
 
                 if (victim.Spawner is KotlBattleSimulator)
                 {
-                    fame *= 2;
+                    fame *= 4;
                 }
 
                 DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(luck) / 100));
