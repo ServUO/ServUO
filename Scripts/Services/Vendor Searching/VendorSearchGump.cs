@@ -48,7 +48,7 @@ namespace Server.Engines.VendorSearching
             for (int i = 0; i < VendorSearch.Categories.Count; i++)
             {
                 if (i == 0)
-                    AddHtmlLocalized(50, 75 + (i * 22), 215, 20, VendorSearch.Categories[i].Label, String.Format("{0}\t{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), LabelColor, false, false);
+                    AddHtmlLocalized(50, 75 + (i * 22), 215, 20, VendorSearch.Categories[i].Label, String.Format("@{0}@{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), LabelColor, false, false);
                 else
                     AddHtmlLocalized(50, 75 + (i * 22), 215, 20, VendorSearch.Categories[i].Label, LabelColor, false, false);
 
@@ -119,7 +119,7 @@ namespace Server.Engines.VendorSearching
                 AddButton(522, y, 4017, 4019, 8, GumpButtonType.Reply, 0);
                 AddTooltip(1154694); // Remove Selected Search Criteria
 
-                AddHtmlLocalized(562, y, 215, 20, 1154512, String.Format("{0}\t{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), CriteriaColor, false, false);
+                AddHtmlLocalized(562, y, 215, 20, 1154512, String.Format("@{0}@{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), CriteriaColor, false, false);
                 
                 y += 22;
             }
@@ -461,7 +461,7 @@ namespace Server.Engines.VendorSearching
             AddBackground(0, 0, 414, 214, 0x7752);
 
             if (VendorMap.Vendor != null && VendorMap.SetLocation != Point3D.Zero)
-                AddHtmlLocalized(27, 47, 380, 80, 1154637, String.Format("{0}\t{1}", VendorMap.GetCoords(), VendorMap.Vendor.Map.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to return to ~1_loc~ (~2_facet~).  This map will be deleted after use.
+                AddHtmlLocalized(27, 47, 380, 80, 1154637, String.Format("@{0}@{1}", VendorMap.GetCoords(), VendorMap.Vendor.Map.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to return to ~1_loc~ (~2_facet~).  This map will be deleted after use.
             else
                 AddHtmlLocalized(27, 47, 380, 80, 1156475, String.Format("@{0}@{1}@{2}", VendorMap.TeleportCost.ToString(), VendorMap.Vendor.Name, VendorMap.DeleteDelayMinutes.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to pay ~1_cost~ gold to teleport to auction house ~2_name~. For this price you will also be able to teleport back to this location within the next ~3_minutes~ minutes.
 
