@@ -212,7 +212,7 @@ namespace Server.Items
             new RecipeScrollDefinition(142, 585, Expansion.ML, RecipeSkillName.Tailoring),
             new RecipeScrollDefinition(143, 456, Expansion.SA, RecipeSkillName.Tinkering),
             new RecipeScrollDefinition(144, 464, Expansion.SA, RecipeSkillName.Tinkering),
-            //new RecipeScrollDefinition(145, 205, Expansion.ML, RecipeSkillName.Tinkering), // telescope
+            new RecipeScrollDefinition(145, 465, Expansion.ML, RecipeSkillName.Tinkering),
             new RecipeScrollDefinition(146, 605, Expansion.ML, RecipeSkillName.Cooking),
             new RecipeScrollDefinition(147, 606, Expansion.ML, RecipeSkillName.Cooking),
             new RecipeScrollDefinition(148, 607, Expansion.ML, RecipeSkillName.Cooking),
