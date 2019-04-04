@@ -26,7 +26,7 @@ namespace Server.Engines.Astronomy
         public static readonly double MaxDEC = 90; // zero based 0 - 90, 0.2 per increment
 
         // testing only. THis needs to be deleted prior to going live.
-        // public static TimeCoordinate ForceTimeCoordinate { get { return TimeCoordinate.FiveToEight; } }
+        //public static TimeCoordinate ForceTimeCoordinate { get { return PersonalTelescope.ForceTimeCoordinate; } }
 
         public static int LoadedConstellations { get; set; }
         public static List<ConstellationInfo> Constellations { get; set; }

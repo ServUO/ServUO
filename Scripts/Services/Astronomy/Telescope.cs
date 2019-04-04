@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +13,11 @@ namespace Server.Items
     [Flipable(0xA12C, 0xA12D)]
     public class PersonalTelescope : Item, ISecurable
     {
+        private double _DEC;
+
+        //[CommandProperty(AccessLevel.GameMaster)]
+        //public static TimeCoordinate ForceTimeCoordinate { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
 
@@ -20,7 +25,16 @@ namespace Server.Items
         public int RA { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double DEC { get; set; }
+        public double DEC
+        {
+            get { return _DEC; }
+            set
+            {
+                _DEC = value;
+
+                _DEC = (double)decimal.Round((decimal)_DEC, 2);
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeCoordinate TimeCoordinate { get { return AstronomySystem.GetTimeCoordinate(this); } }
@@ -275,9 +289,6 @@ namespace Server.Items
                     User.SendSound(0x4A);
                     break;
                 case 70000: // View Coord
-                    //int ra = (RATens * 10) + RAOnes;
-                    //double dec = (DECTens * 10) + DECOnes + DECTenths;
-
                     if (Tele.RA > AstronomySystem.MaxRA || Tele.DEC > (double)AstronomySystem.MaxDEC)
                     {
                         User.SendLocalizedMessage(1158488); // You have entered invalid coordinates.
@@ -324,10 +335,6 @@ namespace Server.Items
                     return;
             }
 
-            //Console.WriteLine("[OnResponse] RA: {0}-{1}; DEC: {2}-{3}.{4}", RATens, RAOnes, DECTens, DECOnes, DECTenths);
-            //Tele.RA = (RATens * 10) + RAOnes;
-            //Tele.DEC = (DECTens * 10) + DECOnes + DECTenths;
-            //Console.WriteLine("[Tele] RA: {0}; DEC: {1}", Tele.RA, Tele.DEC);
             if (info.ButtonID != 0)
             {
                 Refresh();
