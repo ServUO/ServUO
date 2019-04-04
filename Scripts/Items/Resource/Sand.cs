@@ -17,7 +17,11 @@ namespace Server.Items
         public Sand(int amount)
             : base(0x11EA)
         {
-            this.Stackable = Core.ML;
+            if (Core.ML)
+            {
+                Stackable = true;
+                Amount = amount;
+            }
         }
 
         public Sand(Serial serial)

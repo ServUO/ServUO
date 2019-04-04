@@ -881,20 +881,6 @@ namespace Server
                 //Virtue Artifacts
                 value += AnkhPendant.GetManaRegenModifier(m);
             }
-            else if (attribute == AosAttribute.BonusDex)
-            {
-                #region City Loyalty
-                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.OrderOfEngineers))
-                    value += 3;
-                #endregion
-            }
-            else if (attribute == AosAttribute.BonusStr)
-            {
-                #region City Loyalty
-                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.MiningCooperative))
-                    value += 3;
-                #endregion
-            }
             #endregion
 
             return value;

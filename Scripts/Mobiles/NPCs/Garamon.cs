@@ -15,9 +15,8 @@ namespace Server.Mobiles
 
             Name = "Garamon";
             HairItemID = 0x2044;
+            FacialHairItemID = 0x204B;
             HairHue = 0x44E;
-            FacialHairItemID = 0x44E;
-            FacialHairHue = 1153;
             Body = 0x190;
             Hue = 33821;
             CantWalk = true;
@@ -44,7 +43,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -52,24 +51,9 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version == 0)
+            if (version == 1)
             {
-                HairItemID = 0x2044;
-                HairHue = 0x44E;
-                FacialHairItemID = 0x44E;
-                FacialHairHue = 1153;
-                Body = 0x190;
-                Hue = 33821;
-                CantWalk = true;
-                Direction = Direction.South;
-
-                Item item = FindItemOnLayer(Layer.OuterTorso);
-                if (item != null)
-                    item.Hue = 946;
-
-                item = FindItemOnLayer(Layer.Shoes);
-                if (item != null)
-                    item.Hue = 1810;
+                FacialHairItemID = 0x204B;
             }
         }
 

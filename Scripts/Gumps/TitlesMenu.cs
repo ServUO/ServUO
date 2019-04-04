@@ -1130,6 +1130,7 @@ namespace Server.Gumps
                     case 1158278: return 1158279; // This title is obtained by completing the "A Forced Sacrifice" quest.
                     case 1158303: return 1158324; // This title is obtained by completing the "Whispering with Wisps" quest.
                     case 1154505: return 1154506; // This is a reward title given for completing the Exploring the Deep Quest.
+                    case 1158523: return 1158537; // This title is obtained by discovering a constellation using the telescope.
                 }
             }
 

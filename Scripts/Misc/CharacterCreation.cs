@@ -226,7 +226,7 @@ namespace Server.Misc
 
 			AddBackpack(newChar);
 
-			SetStats(newChar, state, args.Str, args.Dex, args.Int);
+            SetStats(newChar, state, args.Profession, args.Str, args.Dex, args.Int);
 			SetSkills(newChar, args.Skills, args.Profession);
 
 			var race = newChar.Race;
@@ -386,6 +386,70 @@ namespace Server.Misc
 			return (total == 100 || total == 120);
 		}
 
+        private static void SetStats(Mobile m, NetState state, int prof, int str, int dex, int intel)
+        {
+            switch (prof)
+            {
+                case 1: // Warrior
+                    {
+                        str = 45;
+                        dex = 35;
+                        intel = 10;
+                        break;
+                    }
+                case 2: // Magician
+                    {
+                        str = 25;
+                        dex = 20;
+                        intel = 45;
+                        break;
+                    }
+                case 3: // Blacksmith
+                    {
+                        str = 60;
+                        dex = 15;
+                        intel = 15;
+                        break;
+                    }
+                case 4: // Necromancer
+                    {
+                        str = 25;
+                        dex = 20;
+                        intel = 45;
+                        break;
+                    }
+                case 5: // Paladin
+                    {
+                        str = 45;
+                        dex = 20;
+                        intel = 25;
+                        break;
+                    }
+                case 6: //Samurai
+                    {
+                        str = 40;
+                        dex = 30;
+                        intel = 20;
+                        break;
+                    }
+                case 7: //Ninja
+                    {
+                        str = 40;
+                        dex = 30;
+                        intel = 20;
+                        break;
+                    }
+                default:
+                    {
+                        SetStats(m, state, str, dex, intel);
+
+                        return;
+                    }
+            }
+
+            m.InitStats(str, dex, intel);
+        }
+
 		private static void SetSkills(Mobile m, SkillNameValue[] skills, int prof)
 		{
 			switch (prof)
@@ -394,8 +458,8 @@ namespace Server.Misc
 				{
 					skills = new[]
 					{
-						new SkillNameValue(SkillName.Anatomy, 30), new SkillNameValue(SkillName.Healing, 45),
-						new SkillNameValue(SkillName.Swords, 35), new SkillNameValue(SkillName.Tactics, 50)
+						new SkillNameValue(SkillName.Anatomy, 30), new SkillNameValue(SkillName.Healing, 30),
+						new SkillNameValue(SkillName.Swords, 30), new SkillNameValue(SkillName.Tactics, 30)
 					};
 
 					break;
@@ -405,7 +469,7 @@ namespace Server.Misc
 					skills = new[]
 					{
 						new SkillNameValue(SkillName.EvalInt, 30), new SkillNameValue(SkillName.Wrestling, 30),
-						new SkillNameValue(SkillName.Magery, 50), new SkillNameValue(SkillName.Meditation, 50)
+						new SkillNameValue(SkillName.Magery, 30), new SkillNameValue(SkillName.Meditation, 30)
 					};
 
 					break;
@@ -415,7 +479,7 @@ namespace Server.Misc
 					skills = new[]
 					{
 						new SkillNameValue(SkillName.Mining, 30), new SkillNameValue(SkillName.ArmsLore, 30),
-						new SkillNameValue(SkillName.Blacksmith, 50), new SkillNameValue(SkillName.Tinkering, 50)
+						new SkillNameValue(SkillName.Blacksmith, 30), new SkillNameValue(SkillName.Tinkering, 30)
 					};
 
 					break;
@@ -424,9 +488,9 @@ namespace Server.Misc
 				{
 					skills = new[]
 					{
-						new SkillNameValue(SkillName.Necromancy, 50), new SkillNameValue(SkillName.Focus, 30),
+						new SkillNameValue(SkillName.Necromancy, 30),
 						new SkillNameValue(SkillName.SpiritSpeak, 30), new SkillNameValue(SkillName.Swords, 30),
-						new SkillNameValue(SkillName.Tactics, 20)
+						new SkillNameValue(SkillName.Meditation, 20)
 					};
 
 					break;
@@ -435,7 +499,7 @@ namespace Server.Misc
 				{
 					skills = new[]
 					{
-						new SkillNameValue(SkillName.Chivalry, 51), new SkillNameValue(SkillName.Swords, 49),
+						new SkillNameValue(SkillName.Chivalry, 30), new SkillNameValue(SkillName.Swords, 30),
 						new SkillNameValue(SkillName.Focus, 30), new SkillNameValue(SkillName.Tactics, 30)
 					};
 
@@ -445,7 +509,7 @@ namespace Server.Misc
 				{
 					skills = new[]
 					{
-						new SkillNameValue(SkillName.Bushido, 50), new SkillNameValue(SkillName.Swords, 50),
+						new SkillNameValue(SkillName.Bushido, 30), new SkillNameValue(SkillName.Swords, 30),
 						new SkillNameValue(SkillName.Anatomy, 30), new SkillNameValue(SkillName.Healing, 30)
 					};
 					break;
@@ -454,7 +518,7 @@ namespace Server.Misc
 				{
 					skills = new[]
 					{
-						new SkillNameValue(SkillName.Ninjitsu, 50), new SkillNameValue(SkillName.Hiding, 50),
+						new SkillNameValue(SkillName.Ninjitsu, 30), new SkillNameValue(SkillName.Hiding, 30),
 						new SkillNameValue(SkillName.Fencing, 30), new SkillNameValue(SkillName.Stealth, 30)
 					};
 					break;

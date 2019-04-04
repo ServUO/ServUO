@@ -176,11 +176,14 @@ namespace Server.Engines.Quests
 
 		public static Item TinkerRecipe()
 		{
-            RecipeScroll recipes;
+            RecipeScroll recipe = null;
 
-            recipes = GetRecipe(new int[] { 450, 451, 452, 453 });
+            if (0.01 > Utility.RandomDouble())
+            {
+                recipe = new RecipeScroll(Utility.RandomList(450, 451, 452, 453));
+            }
 
-            return recipes;
+            return recipe;
         }
 
         public static Item AlchemyRecipe()
