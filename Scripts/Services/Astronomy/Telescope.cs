@@ -47,16 +47,22 @@ namespace Server.Items
         public PersonalTelescope()
             : base(0xA12C)
         {
-            Level = SecureLevel.Friends;
+            Level = SecureLevel.Owner;
         }
 
         public override void OnDoubleClick(Mobile m)
         {
+            if (!IsLockedDown)
+            {
+                m.SendLocalizedMessage(1114298); // This must be locked down in order to use it.
+                return;
+            }
+
             if (m.InRange(Location, 2))
             {
                 var house = BaseHouse.FindHouseAt(this);
 
-                if (m is PlayerMobile && house != null && house.HasSecureAccess(m, Level) && (IsLockedDown || IsSecure))
+                if (house != null && house.HasSecureAccess(m, Level))
                 {
                     if (DateTime.UtcNow - LastUse > TimeSpan.FromMinutes(10))
                     {
@@ -68,10 +74,6 @@ namespace Server.Items
                     {
                         BaseGump.SendGump(new TelescopeGump((PlayerMobile)m, this));
                     }
-                }
-                else
-                {
-                    // TODO: Message?
                 }
             }
             else
