@@ -92,7 +92,7 @@ namespace Server.Engines.Astronomy
                         Page = Math.Min(Page + 1, Math.Max(0, Pages - 1));
                         break;
                     case 4:
-                        Page = Pages - 1;
+                        Page = Math.Max(0, Pages - 1);
                         break;
                 }
 
