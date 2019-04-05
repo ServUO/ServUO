@@ -31,8 +31,8 @@ namespace Server.Items
 
         public void GetOptions(RewardOptionList list)
         {
-            list.Add(0, 1158479); // Brass Orrery
-            list.Add(1, 1158480); // Brass Telescope
+            list.Add(1, 1158479); // Brass Orrery
+            list.Add(2, 1158480); // Brass Telescope
         }
 
 
@@ -46,11 +46,11 @@ namespace Server.Items
                 default:
                     bag.Delete();
                     break;
-                case 0:
+                case 1:
                     bag.DropItem(new BrassOrrery());
                     from.AddToBackpack(bag); Delete();
                     break;
-                case 1:
+                case 2:
                     bag.DropItem(new PersonalTelescope());
                     from.AddToBackpack(bag);
                     Delete(); break;
