@@ -34,7 +34,7 @@ namespace Server.Spells.First
                 BuffInfo.RemoveBuff(m, BuffIcon.Weaken);
 
                 if(removeMod)
-                    m.RemoveStatMod("[Magic] Dex Curse");
+                    m.RemoveStatMod("[Magic] Str Curse");
 
                 m_Table.Remove(m);
             }
@@ -66,37 +66,49 @@ namespace Server.Spells.First
             else if (CheckHSequence(m))
             {
                 SpellHelper.Turn(Caster, m);
-
                 SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
-                int oldOffset = SpellHelper.GetCurseOffset(m, StatType.Str);
-				SpellHelper.AddStatCurse(Caster, m, StatType.Str, false);
-                int newOffset = SpellHelper.GetCurseOffset(m, StatType.Str);
-
-				if (m.Spell != null)
-                    m.Spell.OnCasterHurt();
-
-                m.Paralyzed = false;
-
-                m.FixedParticles(0x3779, 10, 15, 5009, EffectLayer.Waist);
-                m.PlaySound(0x1E6);
-
-                HarmfulSpell(m);
-
-                if (newOffset < oldOffset)
+                if (Mysticism.StoneFormSpell.CheckImmunity(m))
                 {
-                    int percentage = (int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
-                    TimeSpan length = SpellHelper.GetDuration(Caster, m);
+                    Caster.SendLocalizedMessage(1080192); // Your target resists your ability reduction magic.
+                    return;
+                }
 
-                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Weaken, 1075837, length, m, percentage.ToString()));
+                int oldOffset = SpellHelper.GetCurseOffset(m, StatType.Str);
+                int newOffset = SpellHelper.GetOffset(Caster, m, StatType.Str, true, false);
 
-                    if (m_Table.ContainsKey(m))
-                        m_Table[m].Stop();
+                if (-newOffset > oldOffset || newOffset == 0)
+                {
+                    DoHurtFizzle();
+                }
+                else
+                {
+                    if (m.Spell != null)
+                        m.Spell.OnCasterHurt();
 
-                    m_Table[m] = Timer.DelayCall(length, () =>
+                    m.Paralyzed = false;
+
+                    m.FixedParticles(0x3779, 10, 15, 5002, EffectLayer.Head);
+                    m.PlaySound(0x1DF);
+
+                    HarmfulSpell(m);
+
+                    if (-newOffset < oldOffset)
                     {
-                        RemoveEffects(m);
-                    });
+                        SpellHelper.AddStatCurse(this.Caster, m, StatType.Str, false, newOffset);
+
+                        int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
+                        TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Weaken, 1075837, length, m, percentage.ToString()));
+
+                        if (m_Table.ContainsKey(m))
+                            m_Table[m].Stop();
+
+                        m_Table[m] = Timer.DelayCall(length, () =>
+                        {
+                            RemoveEffects(m);
+                        });
+                    }
                 }
             }
 

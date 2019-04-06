@@ -19,8 +19,6 @@ namespace Server.Engines.VvV
 
         public VvVWoodlandArms()
         {
-            IsVvVItem = true;
-
             Attributes.BonusDex = 4;
             Attributes.BonusHits = 5;
             Attributes.BonusStam = 10;
@@ -35,13 +33,17 @@ namespace Server.Engines.VvV
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
 		}
 	}
 
@@ -58,8 +60,6 @@ namespace Server.Engines.VvV
 
         public VvVDragonArms()
         {
-            IsVvVItem = true;
-
             Attributes.BonusDex = 4;
             Attributes.BonusHits = 5;
             Attributes.BonusStam = 10;
@@ -74,13 +74,16 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
     }
 
@@ -97,8 +100,6 @@ namespace Server.Engines.VvV
 
         public VvVGargishPlateArms()
         {
-            IsVvVItem = true;
-
             Attributes.BonusDex = 4;
             Attributes.BonusHits = 5;
             Attributes.BonusStam = 10;
@@ -113,13 +114,16 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
     }
 
@@ -136,8 +140,6 @@ namespace Server.Engines.VvV
 
         public VvVPlateArms()
         {
-            IsVvVItem = true;
-
             Resource = CraftResource.None;
 
             Attributes.BonusDex = 4;
@@ -154,13 +156,16 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
     }
 }

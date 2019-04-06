@@ -8,9 +8,10 @@ namespace Server.Items
         public MrPlainsCookies()
             : base(0x160C)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 4;
-            this.Hue = 0xF4;
+            Weight = 1.0;
+            FillFactor = 4;
+            Hue = 0xF4;
+            Stackable = false;
         }
 
         public MrPlainsCookies(Serial serial)
@@ -29,7 +30,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -37,6 +38,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+                Stackable = false;
         }
     }
 }

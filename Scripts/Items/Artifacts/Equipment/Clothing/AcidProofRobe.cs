@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public AcidProofRobe()
         {
-            this.Hue = 0x455;
-            this.LootType = LootType.Blessed;
+            Hue = 0x455;
+            LootType = LootType.Blessed;
         }
 
         public AcidProofRobe(Serial serial)

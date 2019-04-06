@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public ShadowIronElemental()
-            : this(2)
+            : this(25)
         {
         }
 
@@ -109,12 +109,18 @@ namespace Server.Mobiles
 
         public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
         {
-            scalar = 0.0; // Immune to magic
+            if (caster is BaseCreature && ((BaseCreature)caster).GetMaster() is PlayerMobile)
+            {
+                scalar = 0.0; // Immune to magic
+            }
         }
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
         {
-            damage = 0;
+            if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
+            {
+                damage = 0;
+            }
         }
 
         public override void Serialize(GenericWriter writer)

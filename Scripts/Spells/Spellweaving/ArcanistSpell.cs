@@ -1,15 +1,10 @@
-#region Header
-// **********
-// ServUO - ArcanistSpell.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Globalization;
 
 using Server.Items;
 using Server.Mobiles;
+using Server.Spells.SkillMasteries;
 #endregion
 
 namespace Server.Spells.Spellweaving
@@ -35,11 +30,31 @@ namespace Server.Spells.Spellweaving
 
 			if (focus == null || focus.Deleted)
 			{
-				return 0;
+                if (Core.TOL && from is BaseCreature && from.Skills[SkillName.Spellweaving].Value > 0)
+                {
+                    return (int)Math.Max(1, Math.Min(6, from.Skills[SkillName.Spellweaving].Value / 20));
+                }
+
+				return Math.Max(GetMasteryFocusLevel(from), 0);
 			}
 
-			return focus.StrengthBonus;
+            return Math.Max(GetMasteryFocusLevel(from), focus.StrengthBonus);
 		}
+
+        public static int GetMasteryFocusLevel(Mobile from)
+        {
+            if (!Core.TOL)
+            {
+                return 0;
+            }
+
+            if (from.Skills.CurrentMastery == SkillName.Spellweaving)
+            {
+                return Math.Max(1, MasteryInfo.GetMasteryLevel(from, SkillName.Spellweaving));
+            }
+
+            return 0;
+        }
 
 		public static ArcaneFocus FindArcaneFocus(Mobile from)
 		{
@@ -157,7 +172,8 @@ namespace Server.Spells.Spellweaving
 
 		public override void SendCastEffect()
 		{
-			Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
+            if(Caster.Player)
+			    Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
 		}
 
 		public virtual bool CheckResisted(Mobile m)

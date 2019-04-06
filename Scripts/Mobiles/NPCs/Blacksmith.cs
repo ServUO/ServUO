@@ -11,7 +11,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SBInfos;
+                return m_SBInfos;
             }
         }
 
@@ -27,13 +27,13 @@ namespace Server.Mobiles
         public Blacksmith()
             : base("the blacksmith")
         {
-            this.SetSkill(SkillName.ArmsLore, 36.0, 68.0);
-            this.SetSkill(SkillName.Blacksmith, 65.0, 88.0);
-            this.SetSkill(SkillName.Fencing, 60.0, 83.0);
-            this.SetSkill(SkillName.Macing, 61.0, 93.0);
-            this.SetSkill(SkillName.Swords, 60.0, 83.0);
-            this.SetSkill(SkillName.Tactics, 60.0, 83.0);
-            this.SetSkill(SkillName.Parry, 61.0, 93.0);
+            SetSkill(SkillName.ArmsLore, 36.0, 68.0);
+            SetSkill(SkillName.Blacksmith, 65.0, 88.0);
+            SetSkill(SkillName.Fencing, 60.0, 83.0);
+            SetSkill(SkillName.Macing, 61.0, 93.0);
+            SetSkill(SkillName.Swords, 60.0, 83.0);
+            SetSkill(SkillName.Tactics, 60.0, 83.0);
+            SetSkill(SkillName.Parry, 61.0, 93.0);
         }
 
         public override void InitSBInfo()
@@ -53,20 +53,20 @@ namespace Server.Mobiles
             m_SBInfos.Add( new SBSpearForkWeapon() );
             m_SBInfos.Add( new SBSwordWeapon() );*/
 
-            if (!this.IsStygianVendor)
+            if (!IsStygianVendor)
             {
-                this.m_SBInfos.Add(new SBBlacksmith());
-                if (this.IsTokunoVendor)
+                m_SBInfos.Add(new SBBlacksmith());
+                if (IsTokunoVendor)
                 {
-                    this.m_SBInfos.Add(new SBSEArmor());
-                    this.m_SBInfos.Add(new SBSEWeapons());
+                    m_SBInfos.Add(new SBSEArmor());
+                    m_SBInfos.Add(new SBSEWeapons());
                 }
             }
             else
             {
-                this.m_SBInfos.Add(new SBSABlacksmith());
-                this.m_SBInfos.Add(new SBSAArmor());
-                this.m_SBInfos.Add(new SBSAWeapons());
+                m_SBInfos.Add(new SBSABlacksmith());
+                m_SBInfos.Add(new SBSAArmor());
+                m_SBInfos.Add(new SBSAWeapons());
             }
         }
 
@@ -80,21 +80,21 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            base.InitOutfit();
-
             Item item = (Utility.RandomBool() ? null : new Server.Items.RingmailChest());
 
-            if (item != null && !this.EquipItem(item))
+            if (item != null && !EquipItem(item))
             {
                 item.Delete();
                 item = null;
             }
 
             if (item == null)
-                this.AddItem(new Server.Items.FullApron());
+                AddItem(new Server.Items.FullApron());
 
-            this.AddItem(new Server.Items.Bascinet());
-            this.AddItem(new Server.Items.SmithHammer());
+            AddItem(new Server.Items.Bascinet());
+            AddItem(new Server.Items.SmithHammer());
+
+            base.InitOutfit();
         }
 
         #region Bulk Orders

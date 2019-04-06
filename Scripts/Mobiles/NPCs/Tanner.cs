@@ -37,6 +37,17 @@ namespace Server.Mobiles
             }
         }
 
+        public override bool ValidateBought(Mobile buyer, Item item)
+        {
+            if (item is Server.Items.TaxidermyKit && buyer.Skills[SkillName.Carpentry].Value < 90.1)
+            {
+                this.SayTo(buyer, 1042603, 0x3B2); // You would not understand how to use the kit.
+                return false;
+            }
+
+            return true;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

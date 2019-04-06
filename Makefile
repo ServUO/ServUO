@@ -1,42 +1,41 @@
 MCS=mcs
+EXENAME=ServUO
 CURPATH=`pwd`
 SRVPATH=${CURPATH}/Server
 SDKPATH=${CURPATH}/Ultima
 REFS=System.Drawing.dll
 NOWARNS=0618,0219,0414,1635
 
-# Detect whether we are on 64 bit environment or not
-LBITS := $(shell getconf LONG_BIT)
-ifeq ($(LBITS),64)
-  MONO=mono64
-else
-  MONO=mono
-endif
-
 PHONY : default build clean run
 
 default: run
 
-run: build
-	${CURPATH}/ServUO.sh
+debug: 
+	${MCS} -target:library -out:${CURPATH}/Ultima.dll -r:${REFS} -nowarn:${NOWARNS} -d:DEBUG -d:MONO -d:ServUO -d:NEWTIMERS -nologo -debug -unsafe -recurse:${SDKPATH}/*.cs
+	${MCS} -win32icon:${SRVPATH}/servuo.ico -r:${CURPATH}/Ultima.dll,${REFS} -nowarn:${NOWARNS} -target:exe -out:${CURPATH}/${EXENAME}.exe -d:DEBUG -d:MONO -d:ServUO -d:NEWTIMERS -nologo -debug -unsafe -recurse:${SRVPATH}/*.cs
+	sed -i.bak -e 's/<!--//g; s/-->//g' ${EXENAME}.exe.config
 
-build: ServUO.sh
+run: build
+	${CURPATH}/${EXENAME}.sh
+
+build: ${EXENAME}.sh
 
 clean:
-	rm -f ServUO.sh
-	rm -f ServUO.MONO.exe
-	rm -f ServUO.MONO.pdb
+	rm -f ${EXENAME}.sh
+	rm -f ${EXENAME}.exe
+	rm -f ${EXENAME}.exe.mdb
 	rm -f Ultima.dll
-	rm -f Ultima.pdb
+	rm -f Ultima.dll.mdb
 	rm -f *.bin
 
 Ultima.dll: Ultima/*.cs
-	${MCS} -target:library -out:${CURPATH}/Ultima.dll -r:${REFS} -d:ServUO -d:NEWTIMERS -nowarn:${NOWARNS} -debug -nologo -optimize -unsafe -recurse:${SDKPATH}/*.cs
+	${MCS} -target:library -out:${CURPATH}/Ultima.dll -r:${REFS} -nowarn:${NOWARNS} -d:MONO -d:ServUO -d:NEWTIMERS -nologo -optimize -unsafe -recurse:${SDKPATH}/*.cs
 
-ServUO.MONO.exe: Ultima.dll Server/*.cs
-	${MCS} -win32icon:${SRVPATH}/servuo.ico -r:${CURPATH}/Ultima.dll,${REFS} -nowarn:${NOWARNS} -target:exe -out:${CURPATH}/ServUO.MONO.exe -d:ServUO -d:NEWTIMERS -d:MONO -debug -nologo -optimize -unsafe -recurse:${SRVPATH}/*.cs
+ServUO.exe: Ultima.dll Server/*.cs
+	${MCS} -win32icon:${SRVPATH}/servuo.ico -r:${CURPATH}/Ultima.dll,${REFS} -nowarn:${NOWARNS} -target:exe -out:${CURPATH}/${EXENAME}.exe -d:MONO -d:ServUO -d:NEWTIMERS -nologo -optimize -unsafe -recurse:${SRVPATH}/*.cs
 
-ServUO.sh: ServUO.MONO.exe
-	echo "#!/bin/sh" > ${CURPATH}/ServUO.sh
-	echo "${MONO} ${CURPATH}/ServUO.MONO.exe" >> ${CURPATH}/ServUO.sh
-	chmod a+x ${CURPATH}/ServUO.sh
+${EXENAME}.sh: ${EXENAME}.exe
+	echo "#!/bin/sh" > ${CURPATH}/${EXENAME}.sh
+	echo "mono ${CURPATH}/${EXENAME}.exe" >> ${CURPATH}/${EXENAME}.sh
+	chmod a+x ${CURPATH}/${EXENAME}.sh
+	sed -i.bak -e 's/<!--//g; s/-->//g' ${EXENAME}.exe.config

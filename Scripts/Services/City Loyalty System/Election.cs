@@ -293,7 +293,7 @@ namespace Server.Engines.CityLoyalty
                 }
             }
 
-            if (City.Governor == null && AutoPickGovernor != DateTime.MinValue && DateTime.UtcNow > AutoPickGovernor)
+            if (City.Governor == null && AutoPickGovernor != DateTime.MinValue && DateTime.Now > AutoPickGovernor)
             {
                 if (City.GovernorElect != null)
                 {
@@ -321,7 +321,7 @@ namespace Server.Engines.CityLoyalty
             {
                 Candidates.ForEach(entry =>
                     {
-                        if (entry.TimeOfNomination + TimeSpan.FromHours(NominationDeadline) < DateTime.UtcNow && entry.Endorsements.Count == 0)
+                        if (entry.TimeOfNomination + TimeSpan.FromHours(NominationDeadline) < DateTime.Now && entry.Endorsements.Count == 0)
                             Candidates.Remove(entry);
                     });
             }
@@ -485,13 +485,13 @@ namespace Server.Engines.CityLoyalty
                 Candidates.Sort();
                 City.GovernorElect = Candidates[0].Player;
 
-                AutoPickGovernor = DateTime.UtcNow + TimeSpan.FromDays(7);
+                AutoPickGovernor = DateTime.Now + TimeSpan.FromDays(7);
             }
 
             if (City.GovernorElect == null)
             {
                 City.PendingGovernor = true;
-                AutoPickGovernor = DateTime.UtcNow + TimeSpan.FromDays(Utility.RandomMinMax(2, 4));
+                AutoPickGovernor = DateTime.Now + TimeSpan.FromDays(Utility.RandomMinMax(2, 4));
 
                 if (City.Stone != null)
                     City.Stone.InvalidateProperties();
@@ -516,7 +516,7 @@ namespace Server.Engines.CityLoyalty
             if (entry != null)
                 Candidates.Remove(entry);
 
-            AutoPickGovernor = DateTime.UtcNow + TimeSpan.FromDays(Utility.RandomMinMax(2, 4));
+            AutoPickGovernor = DateTime.Now + TimeSpan.FromDays(Utility.RandomMinMax(2, 4));
         }
 
         public void Serialize(GenericWriter writer)
@@ -580,7 +580,7 @@ namespace Server.Engines.CityLoyalty
         public BallotEntry(PlayerMobile pm, int love, int hate)
         {
             Player = pm;
-            TimeOfNomination = DateTime.UtcNow;
+            TimeOfNomination = DateTime.Now;
 
             Love = love;
             Hate = hate;

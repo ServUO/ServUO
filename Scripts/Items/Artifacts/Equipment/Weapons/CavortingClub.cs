@@ -8,14 +8,14 @@ namespace Server.Items
         [Constructable]
         public CavortingClub()
         {
-            this.Hue = 0x593;
-            this.WeaponAttributes.SelfRepair = 3;
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 35;
-            this.WeaponAttributes.ResistFireBonus = 8;
-            this.WeaponAttributes.ResistColdBonus = 8;
-            this.WeaponAttributes.ResistPoisonBonus = 8;
-            this.WeaponAttributes.ResistEnergyBonus = 8;
+            Hue = 0x593;
+            WeaponAttributes.SelfRepair = 3;
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 35;
+            WeaponAttributes.ResistFireBonus = 8;
+            WeaponAttributes.ResistColdBonus = 8;
+            WeaponAttributes.ResistPoisonBonus = 8;
+            WeaponAttributes.ResistEnergyBonus = 8;
         }
 
         public CavortingClub(Serial serial)

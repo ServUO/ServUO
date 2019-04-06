@@ -17,16 +17,16 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Resource;
+                return m_Resource;
             }
             set
             {
                 if (this.m_Resource != value)
                 {
-                    this.m_Resource = value;
-                    this.Hue = CraftResources.GetHue(this.m_Resource);
+                    m_Resource = value;
+                    Hue = CraftResources.GetHue(this.m_Resource);
 					
-                    this.InvalidateProperties();
+                    InvalidateProperties();
                 }
             }
         }
@@ -34,10 +34,10 @@ namespace Server.Items
         public BaseAddonContainerDeed()
             : base(0x14F0)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
 
             if (!Core.AOS)
-                this.LootType = LootType.Newbied;
+                LootType = LootType.Newbied;
         }
 
         public BaseAddonContainerDeed(Serial serial)
@@ -52,7 +52,7 @@ namespace Server.Items
             writer.Write(1); // version
 
             // version 1
-            writer.Write((int)this.m_Resource);
+            writer.Write((int)m_Resource);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -64,14 +64,14 @@ namespace Server.Items
             switch ( version )
             {
                 case 1:
-                    this.m_Resource = (CraftResource)reader.ReadInt();
+                    m_Resource = (CraftResource)reader.ReadInt();
                     break;
             }
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
                 from.Target = new InternalTarget(this);
             else
                 from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
@@ -86,19 +86,19 @@ namespace Server.Items
         }
 
         #region ICraftable
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Type resourceType = typeRes;
 
             if (resourceType == null)
                 resourceType = craftItem.Resources.GetAt(0).ItemType;
 
-            this.Resource = CraftResources.GetFromType(resourceType);
+            Resource = CraftResources.GetFromType(resourceType);
 
             CraftContext context = craftSystem.GetContext(from);
 
             if (context != null && context.DoNotColor)
-                this.Hue = 0;
+                Hue = 0;
 
             return quality;
         }
@@ -112,9 +112,9 @@ namespace Server.Items
             public InternalTarget(BaseAddonContainerDeed deed)
                 : base(-1, true, TargetFlags.None)
             {
-                this.m_Deed = deed;
+                m_Deed = deed;
 
-                this.CheckLOS = false;
+                CheckLOS = false;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -148,12 +148,22 @@ namespace Server.Items
                         from.SendLocalizedMessage(500271); // You cannot build near the door.
                     else if (res == AddonFitResult.NoWall)
                         from.SendLocalizedMessage(500268); // This object needs to be mounted on something.
-					
+
                     if (res == AddonFitResult.Valid)
                     {
                         this.m_Deed.Delete();
-                        house.Addons[addon] = from;
-                        house.AddSecure(from, addon);
+                        house.Addons[addon] = from;                        
+
+                        if (addon is GardenShedAddon)
+                        {
+                            GardenShedAddon ad = addon as GardenShedAddon;
+                            house.Addons[ad.SecondContainer] = from;
+                        }
+
+                        if (addon.Security)
+                        {
+                            house.AddSecure(from, addon);
+                        }
                     }
                     else
                     {

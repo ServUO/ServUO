@@ -8,15 +8,13 @@ namespace Server.Items
         [Constructable]
         public Quell()
         {
-            this.Hue = 0x225;
-
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 50;
-            this.Attributes.AttackChance = 10;
-
-            this.WeaponAttributes.HitLeechMana = 100;
-            this.WeaponAttributes.UseBestSkill = 1;
+            Hue = 0x225;
+            Attributes.SpellChanneling = 1;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 50;
+            Attributes.AttackChance = 10;
+            WeaponAttributes.HitLeechMana = 100;
+            WeaponAttributes.UseBestSkill = 1;
         }
 
         public Quell(Serial serial)

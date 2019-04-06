@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - TargetFlags.cs
-// **********
-#endregion
-
 namespace Server.Targeting
 {
 	public enum TargetFlags : byte

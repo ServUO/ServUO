@@ -13,44 +13,46 @@ namespace Server.Mobiles
         public FanDancer()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a fan dancer";
-            this.Body = 247;
-            this.BaseSoundID = 0x372;
+            Name = "a fan dancer";
+            Body = 247;
+            BaseSoundID = 0x372;
 
-            this.SetStr(301, 375);
-            this.SetDex(201, 255);
-            this.SetInt(21, 25);
+            SetStr(301, 375);
+            SetDex(201, 255);
+            SetInt(21, 25);
 
-            this.SetHits(351, 430);
+            SetHits(351, 430);
 
-            this.SetDamage(12, 17);
+            SetDamage(12, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 70);
-            this.SetDamageType(ResistanceType.Fire, 10);
-            this.SetDamageType(ResistanceType.Cold, 10);
-            this.SetDamageType(ResistanceType.Poison, 10);
+            SetDamageType(ResistanceType.Physical, 70);
+            SetDamageType(ResistanceType.Fire, 10);
+            SetDamageType(ResistanceType.Cold, 10);
+            SetDamageType(ResistanceType.Poison, 10);
 
-            this.SetResistance(ResistanceType.Physical, 40, 60);
-            this.SetResistance(ResistanceType.Fire, 50, 70);
-            this.SetResistance(ResistanceType.Cold, 50, 70);
-            this.SetResistance(ResistanceType.Poison, 50, 70);
-            this.SetResistance(ResistanceType.Energy, 40, 60);
+            SetResistance(ResistanceType.Physical, 40, 60);
+            SetResistance(ResistanceType.Fire, 50, 70);
+            SetResistance(ResistanceType.Cold, 50, 70);
+            SetResistance(ResistanceType.Poison, 50, 70);
+            SetResistance(ResistanceType.Energy, 40, 60);
 
-            this.SetSkill(SkillName.MagicResist, 100.1, 110.0);
-            this.SetSkill(SkillName.Tactics, 85.1, 95.0);
-            this.SetSkill(SkillName.Wrestling, 85.1, 95.0);
-            this.SetSkill(SkillName.Anatomy, 85.1, 95.0);
+            SetSkill(SkillName.MagicResist, 100.1, 110.0);
+            SetSkill(SkillName.Tactics, 85.1, 95.0);
+            SetSkill(SkillName.Wrestling, 85.1, 95.0);
+            SetSkill(SkillName.Anatomy, 85.1, 95.0);
 
-            this.Fame = 9000;
-            this.Karma = -9000;
+            Fame = 9000;
+            Karma = -9000;
 			
             if (Utility.RandomDouble() < .33)
-                this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 				
-            this.AddItem(new Tessen());
+            AddItem(new Tessen());
 			
             if (0.02 >= Utility.RandomDouble())
-                this.PackItem(new OrigamiPaper());
+                PackItem(new OrigamiPaper());
+
+            SetSpecialAbility(SpecialAbility.Repel);
         }
 
         public FanDancer(Serial serial)
@@ -67,9 +69,9 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Gems, 2);
         }
 
         /* TODO: Repel Magic
@@ -87,7 +89,7 @@ namespace Server.Mobiles
                 * Effect: - To: "0x57D4F5B" - ItemId: "0x27A3" - ItemIdName: "Tessen" - FromLocation: "(992 299, 24)" - ToLocation: "(992 308, 22)" - Speed: "10" - Duration: "0" - FixedDirection: "False" - Explode: "False" - Hue: "0x0" - Render: "0x0"
                 * Damage: 50-65
                 */
-                Effects.SendPacket(attacker, attacker.Map, new HuedEffect(EffectType.Moving, Serial.Zero, Serial.Zero, 0x27A3, this.Location, attacker.Location, 10, 0, false, false, 0, 0));
+                Effects.SendPacket(attacker, attacker.Map, new HuedEffect(EffectType.Moving, Serial.Zero, Serial.Zero, 0x27A3, Location, attacker.Location, 10, 0, false, false, 0, 0));
                 AOS.Damage(attacker, this, Utility.RandomMinMax(50, 65), 100, 0, 0, 0, 0);
             }
         }
@@ -102,7 +104,7 @@ namespace Server.Mobiles
                 * Effect: - To: "0x57D4F5B" - ItemId: "0x27A3" - ItemIdName: "Tessen" - FromLocation: "(992 299, 24)" - ToLocation: "(992 308, 22)" - Speed: "10" - Duration: "0" - FixedDirection: "False" - Explode: "False" - Hue: "0x0" - Render: "0x0"
                 * Damage: 50-65
                 */
-                Effects.SendPacket(attacker, attacker.Map, new HuedEffect(EffectType.Moving, Serial.Zero, Serial.Zero, 0x27A3, this.Location, attacker.Location, 10, 0, false, false, 0, 0));
+                Effects.SendPacket(attacker, attacker.Map, new HuedEffect(EffectType.Moving, Serial.Zero, Serial.Zero, 0x27A3, Location, attacker.Location, 10, 0, false, false, 0, 0));
                 AOS.Damage(attacker, this, Utility.RandomMinMax(50, 65), 100, 0, 0, 0, 0);
             }
         }
@@ -111,7 +113,7 @@ namespace Server.Mobiles
         {
             base.OnGaveMeleeAttack(defender);
 
-            if (!this.IsFanned(defender) && 0.05 > Utility.RandomDouble())
+            if (!IsFanned(defender) && 0.05 > Utility.RandomDouble())
             {
                 /* Fanning Fire
                 * Graphic: Type: "3" From: "0x57D4F5B" To: "0x0" ItemId: "0x3709" ItemIdName: "fire column" FromLocation: "(994 325, 16)" ToLocation: "(994 325, 16)" Speed: "10" Duration: "30" FixedDirection: "True" Explode: "False" Hue: "0x0" RenderMode: "0x0" Effect: "0x34" ExplodeEffect: "0x1" ExplodeSound: "0x0" Serial: "0x57D4F5B" Layer: "5" Unknown: "0x0"
@@ -171,17 +173,17 @@ namespace Server.Mobiles
             public ExpireTimer(Mobile m, ResistanceMod mod, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Mobile = m;
-                this.m_Mod = mod;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Mobile = m;
+                m_Mod = mod;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                this.m_Mobile.SendLocalizedMessage(1070834); // Your resistance to fire attacks has returned.
-                this.m_Mobile.RemoveResistanceMod(this.m_Mod);
-                this.Stop();
-                m_Table.Remove(this.m_Mobile);
+                m_Mobile.SendLocalizedMessage(1070834); // Your resistance to fire attacks has returned.
+                m_Mobile.RemoveResistanceMod(m_Mod);
+                Stop();
+                m_Table.Remove(m_Mobile);
             }
         }
     }

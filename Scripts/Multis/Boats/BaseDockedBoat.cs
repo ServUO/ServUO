@@ -16,6 +16,7 @@ namespace Server.Multis
 		private string m_ShipName;
         private Direction m_Direction;
         private BaseBoat m_BoatItem;
+
         #region High Seas
         private SecurityEntry m_SecurityEntry;
         private PilotEntry m_PilotEntry;
@@ -57,6 +58,8 @@ namespace Server.Multis
 
             m_Direction = Direction.North;
             m_BoatItem = boat;
+
+            Hue = boat.Hue;
 		}
 
         public override void OnAfterDelete()
@@ -158,7 +161,7 @@ namespace Server.Multis
 			{
 				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
 			}
-            else if (IsGalleon() && BaseGalleon.HasGalleon(from) && from.AccessLevel == AccessLevel.Player)
+            else if (Core.HS && BaseBoat.HasBoat(from))
             {
                 from.SendLocalizedMessage(1116758); //You already have a ship deployed!
             }
@@ -168,11 +171,6 @@ namespace Server.Multis
                 from.SendGump(new BoatPlacementGump(this, from));
 			}
 		}
-
-        public bool IsGalleon()
-        {
-            return this is DockedBritannianShip || this is DockedGargishGalleon || this is DockedTokunoGalleon || this is DockedOrcishGalleon;
-        }
 
 		public abstract BaseBoat Boat{ get; }
 
@@ -241,6 +239,8 @@ namespace Server.Multis
 					boat.MoveToWorld( p, map );
                     boat.OnPlacement(from);
                     boat.Refresh();
+
+                    boat.OnAfterPlacement(false);
 
                     var addon = LighthouseAddon.GetLighthouse(from);
 

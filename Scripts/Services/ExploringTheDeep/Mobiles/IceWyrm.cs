@@ -1,6 +1,5 @@
 using System;
 using Server.Items;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Server.Engines.Quests;
@@ -10,32 +9,34 @@ namespace Server.Mobiles
     [CorpseName("an ice wyrm corpse")]
     public class IceWyrm : WhiteWyrm
     {
-        private static readonly ArrayList m_Instances = new ArrayList();
-        public static ArrayList Instances { get { return m_Instances; } }
+        public static List<IceWyrm> Instances { get; set; }
         
         [Constructable]
         public IceWyrm()
             : base()
         {
-            m_Instances.Add(this);
-
-            this.Name = "Ice Wyrm";
-            this.Hue = 2729;
-            this.Body = 180;
+            Name = "Ice Wyrm";
+            Hue = 2729;
+            Body = 180;
 			
-			this.SetResistance(ResistanceType.Cold, 100);
+			SetResistance(ResistanceType.Cold, 100);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
 
             Tamable = false;
+
+            if (Instances == null)
+                Instances = new List<IceWyrm>();
+
+            Instances.Add(this);
         }
 
         public static IceWyrm Spawn(Point3D platLoc, Map platMap)
         {
-            if (m_Instances.Count > 0)
+            if (Instances != null && Instances.Count > 0)
                 return null;
-            
+
             IceWyrm creature = new IceWyrm();
             creature.Home = platLoc;
             creature.RangeHome = 4;
@@ -58,7 +59,7 @@ namespace Server.Mobiles
                 if (Mare.Map != Map.Internal)
                 {
                     Mare.Delete();
-                    this.Stop();
+                    Stop();
                 }
             }
         }
@@ -87,6 +88,9 @@ namespace Server.Mobiles
                 }                
             }
 
+            if (Instances != null && Instances.Contains(this))
+                Instances.Remove(this);
+
             base.OnDeath(c);
         }
 
@@ -101,14 +105,14 @@ namespace Server.Mobiles
 
         public override void OnAfterDelete()
         {
-            m_Instances.Remove(this);
+            Instances.Remove(this);
 
             base.OnAfterDelete();
         }
 
-        public IceWyrm(Serial serial) : base(serial)
+        public IceWyrm(Serial serial)
+            : base(serial)
         {
-            m_Instances.Add(this);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -122,11 +126,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
-            SelfDeleteTimer.Start();
+            Instances = new List<IceWyrm>();
+            Instances.Add(this);
 
-            if (Tamable)
-                Tamable = false;
+            Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
+            SelfDeleteTimer.Start();     
         }
     }
 }

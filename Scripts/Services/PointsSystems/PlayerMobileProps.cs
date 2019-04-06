@@ -127,6 +127,32 @@ namespace Server.Mobiles
                 PointsSystem.ViceVsVirtue.SetPoints(Player, value);
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Khaldun
+        {
+            get
+            {
+                return (int)PointsSystem.Khaldun.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.Khaldun.SetPoints(Player, value);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Doom
+        {
+            get
+            {
+                return (int)PointsSystem.TreasuresOfDoom.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.TreasuresOfDoom.SetPoints(Player, value);
+            }
+        }
     }
 
     [PropertyObject]
@@ -219,68 +245,29 @@ namespace Server.Mobiles
             }
         }
 
-        public void CheckChanges()
-        {
-            var context = BulkOrderSystem.GetContext(Player, false);
-
-            if (context != null)
-            {
-                foreach (var kvp in context.Entries)
-                {
-                    switch (kvp.Key)
-                    {
-                        case BODType.Smith:
-                            if(Smithy == null)
-                                Smithy = new BODData(kvp.Key, kvp.Value);  break;
-                        case BODType.Tailor: 
-                            if(Tailor == null)
-                                Tailor = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Alchemy: 
-                            if(Alchemy == null)
-                                Alchemy = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Inscription: 
-                            if(Inscription == null)
-                                Inscription = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Tinkering: 
-                            if(Tinkering == null)
-                                Tinkering = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Cooking: 
-                            if(Cooking == null)
-                                Cooking = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Fletching: 
-                            if(Fletching == null)
-                                Fletching = new BODData(kvp.Key, kvp.Value); break;
-                        case BODType.Carpentry: 
-                            if(Carpentry == null)
-                                Carpentry = new BODData(kvp.Key, kvp.Value); break;
-                    }
-                }
-            }
-        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public BODData Tailor { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Tailor { get; set; }
+        public BODData Smithy { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Smithy { get; set; }
+        public BODData Alchemy { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Alchemy { get; set; }
+        public BODData Carpentry { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Carpentry { get; set; }
+        public BODData Cooking { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Cooking { get; set; }
+        public BODData Fletching { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Fletching { get; set; }
+        public BODData Inscription { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Inscription { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public BODData Tinkering { get; set; }
+        public BODData Tinkering { get; private set; }
     }
 
     [PropertyObject]
@@ -292,28 +279,27 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BODType Type { get; set; }
+        public BODEntry Entry { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int CachedDeeds { get; set; }
+        public BODType Type { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime LastBulkOrder { get; set; }
+        public int CachedDeeds { get { return Entry == null ? 0 : Entry.CachedDeeds; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double BankedPoints { get; set; }
+        public DateTime LastBulkOrder { get { return Entry == null ? DateTime.MinValue : Entry.LastBulkOrder; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PendingRewardPoints { get; set; }
+        public double BankedPoints { get { return Entry == null ? 0 : Entry.BankedPoints; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int PendingRewardPoints { get { return Entry == null ? 0 : Entry.PendingRewardPoints; } }
 
         public BODData(BODType type, BODEntry entry)
         {
             Type = type;
-
-            CachedDeeds = entry == null ? 0 : entry.CachedDeeds;
-            LastBulkOrder = entry == null ? DateTime.MinValue : entry.LastBulkOrder;
-            BankedPoints = entry == null ? 0 : entry.BankedPoints;
-            PendingRewardPoints = entry == null ? 0 : entry.PendingRewardPoints;
+            Entry = entry;
         }
     }
 }

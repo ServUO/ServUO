@@ -25,7 +25,9 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Focus { get; set; }
 
-        public int SpawnCount { get { return Utility.RandomMinMax(8, 12); } }
+        public int SpawnCount { get { return Utility.RandomMinMax(6, 9); } }
+
+        public int HasSpawned { get; set; }
 
         public MyrmidexHill(EodonTribeRegion zone, Mobile focus)
             : base(8754)
@@ -40,7 +42,8 @@ namespace Server.Items
         public override bool HandlesOnMovement { get { return NextSpawn < DateTime.UtcNow; } }
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m.InRange(this.Location, 7) && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
+            if (m.InRange(this.Location, 7) && m.AccessLevel == AccessLevel.Player &&
+                (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
             {
                 Focus = m;
                 DoSpawn();
@@ -56,8 +59,9 @@ namespace Server.Items
 
             ColUtility.ForEach(Spawn.Where(bc => bc == null || !bc.Alive || bc.Deleted), bc => Spawn.Remove(bc));
 
-            if (map != null && map != Map.Internal && !this.Deleted)
+            if (map != null && map != Map.Internal && !this.Deleted && Spawn.Count == 0 && HasSpawned < 3)
             {
+                HasSpawned++;
                 NextSpawn = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(2, 5));
 
                 int time = 333;
@@ -130,7 +134,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(HasSpawned);
 
             writer.Write(Spawn == null ? 0 : Spawn.Count);
 
@@ -147,19 +153,27 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            int count = reader.ReadInt();
-
-            if (count > 0)
+            switch (version)
             {
-                Spawn = new List<BaseCreature>();
+                case 1:
+                    HasSpawned = reader.ReadInt();
+                    goto case 0;
+                case 0:
+                    int count = reader.ReadInt();
+                    if (count > 0)
+                    {
+                        Spawn = new List<BaseCreature>();
 
-                for (int i = 0; i < count; i++)
-                {
-                    BaseCreature bc = reader.ReadMobile() as BaseCreature;
+                        for (int i = 0; i < count; i++)
+                        {
+                            BaseCreature bc = reader.ReadMobile() as BaseCreature;
 
-                    if (bc != null)
-                        Spawn.Add(bc);
-                }
+                            if (bc != null)
+                                Spawn.Add(bc);
+                        }
+                    }
+
+                    break;
             }
 
             if (Spawn == null || Spawn.Count == 0)

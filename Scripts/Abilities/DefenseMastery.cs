@@ -20,6 +20,12 @@ namespace Server.Items
                 return 20;
             }
         }
+
+        public override SkillName GetSecondarySkill(Mobile from)
+        {
+            return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
+        }
+
         public static bool GetMalus(Mobile targ, ref int damageMalus)
         {
             DefenseMasteryInfo info = m_Table[targ] as DefenseMasteryInfo;
@@ -31,20 +37,9 @@ namespace Server.Items
             return true;
         }
 
-        public override bool CheckSkills(Mobile from)
-        {
-            if (this.GetSkill(from, SkillName.Ninjitsu) < 50.0 && this.GetSkill(from, SkillName.Bushido) < 50.0)
-            {
-                from.SendLocalizedMessage(1063347, "50"); // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
-                return false;
-            }
-
-            return base.CheckSkills(from);
-        }
-
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
+            if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
             ClearCurrentAbility(attacker);
@@ -96,9 +91,9 @@ namespace Server.Items
             public Timer m_Timer;
             public DefenseMasteryInfo(Mobile from, int damageMalus, ResistanceMod mod)
             {
-                this.m_From = from;
-                this.m_DamageMalus = damageMalus;
-                this.m_Mod = mod;
+                m_From = from;
+                m_DamageMalus = damageMalus;
+                m_Mod = mod;
             }
         }
     }

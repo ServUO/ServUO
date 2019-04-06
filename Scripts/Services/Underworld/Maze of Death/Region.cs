@@ -240,14 +240,19 @@ namespace Server.Regions
 			if(m.Backpack == null)
 				return;
 
-            m.SendLocalizedMessage(1113580); // You are filled with a sense of dread and impending doom!
-			
-			if(m.Backpack.FindItemByType(typeof(GoldenCompass)) != null)
-			{
-				m.CloseGump(typeof(CompassDirectionGump));
-				m.SendGump(new CompassDirectionGump(m));
-			}
-			
+            if (m.NetState != null)
+            {
+                m.Paralyze(TimeSpan.FromSeconds(2));
+                m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 33, 1113580, m.NetState); // You are filled with a sense of dread and impending doom!
+                m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1113581, m.NetState); // I might need something to help me navigate through this.
+
+                if (m.Backpack.FindItemByType(typeof(GoldenCompass)) != null)
+                {
+                    m.CloseGump(typeof(CompassDirectionGump));
+                    m.SendGump(new CompassDirectionGump(m));
+                }
+            }
+
 			base.OnEnter(m);
 		}
 		

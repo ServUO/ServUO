@@ -53,7 +53,8 @@ namespace Server.Factions
                             new Point3D(957, 709, 20),
                             new Point3D(957, 705, 20),
                             new Point3D(957, 701, 20)
-                        }),
+                        },
+                        new Point3D(948, 713, 0)),
                     new RankDefinition[]
                     {
                         new RankDefinition(10, 991, 8, new TextDefinition(1060799, "Purveyor of Darkness")),

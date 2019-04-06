@@ -85,8 +85,7 @@ namespace Server.Items
                     typeof(DesertOstard),   typeof(Eagle),
                     typeof(ForestOstard),   typeof(FrenziedOstard),
                     typeof(Phoenix),        typeof(Pyre),
-                    typeof(Swoop),          typeof(Saliva),
-                    typeof(Harpy),          typeof(StoneHarpy)
+                    typeof(Swoop),          typeof(Saliva)
                 };
 
             m_Table[TalismanSlayerName.Ice] = new Type[]
@@ -129,7 +128,8 @@ namespace Server.Items
                     typeof(GreyWolf),       typeof(TsukiWolf),
                     typeof(Dog),            typeof(HellHound),
                     typeof(IceHound),       typeof(WhiteWolf),
-                    typeof(BakeKitsune),    typeof(ClanSSW)
+                    typeof(BakeKitsune),    typeof(ClanSSW),
+                    typeof(CuSidhe)
                 };
 
             m_Table[TalismanSlayerName.Goblin] = new Type[]

@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public HelmOfInsight()
         {
-            this.Hue = 0x554;
-            this.Attributes.BonusInt = 8;
-            this.Attributes.BonusMana = 15;
-            this.Attributes.RegenMana = 2;
-            this.Attributes.LowerManaCost = 8;
+            Hue = 0x554;
+            Attributes.BonusInt = 8;
+            Attributes.BonusMana = 15;
+            Attributes.RegenMana = 2;
+            Attributes.LowerManaCost = 8;
         }
 
         public HelmOfInsight(Serial serial)

@@ -11,7 +11,8 @@ namespace Server.Items
         public WarCleaver()
             : base(0x2D2F)
         {
-            this.Weight = 10.0;
+            Weight = 10.0;
+            Layer = Layer.TwoHanded;
         }
 
         public WarCleaver(Serial serial)
@@ -149,7 +150,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -157,6 +158,16 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            if (version == 0)
+            {
+                if (Parent is Mobile)
+                {
+                    ((Mobile)Parent).AddToBackpack(this);
+                }
+
+                Layer = Layer.TwoHanded;
+            }
         }
     }
 }

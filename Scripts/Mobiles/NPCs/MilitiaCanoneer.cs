@@ -11,7 +11,7 @@ namespace Server.Engines.Quests.Haven
         public MilitiaCanoneer()
             : base("the Militia Cannoneer")
         {
-            this.m_Active = true;
+            m_Active = true;
         }
 
         public MilitiaCanoneer(Serial serial)
@@ -24,37 +24,37 @@ namespace Server.Engines.Quests.Haven
         {
             get
             {
-                return this.m_Active;
+                return m_Active;
             }
             set
             {
-                this.m_Active = value;
+                m_Active = value;
             }
         }
         public override void InitBody()
         {
-            this.InitStats(100, 125, 25);
+            InitStats(100, 125, 25);
 
-            this.Hue = Utility.RandomSkinHue();
+            Hue = Utility.RandomSkinHue();
 
-            this.Female = false;
-            this.Body = 0x190;
-            this.Name = NameList.RandomName("male");
+            Female = false;
+            Body = 0x190;
+            Name = NameList.RandomName("male");
         }
 
         public override void InitOutfit()
         {
             Utility.AssignRandomHair(this);
-            Utility.AssignRandomFacialHair(this, this.HairHue);
+            Utility.AssignRandomFacialHair(this, HairHue);
 
-            this.AddItem(new PlateChest());
-            this.AddItem(new PlateArms());
-            this.AddItem(new PlateGloves());
-            this.AddItem(new PlateLegs());
+            AddItem(new PlateChest());
+            AddItem(new PlateArms());
+            AddItem(new PlateGloves());
+            AddItem(new PlateLegs());
 
             Torch torch = new Torch();
             torch.Movable = false;
-            this.AddItem(torch);
+            AddItem(torch);
             torch.Ignite();
         }
 
@@ -78,7 +78,7 @@ namespace Server.Engines.Quests.Haven
 
                 Mobile master = bc.GetMaster();
                 if (master != null)
-                    return this.IsEnemy(master);
+                    return IsEnemy(master);
             }
 
             return m.Karma < 0;
@@ -86,10 +86,10 @@ namespace Server.Engines.Quests.Haven
 
         public bool WillFire(Cannon cannon, Mobile target)
         {
-            if (this.m_Active && this.IsEnemy(target))
+            if (m_Active && IsEnemy(target))
             {
-                this.Direction = this.GetDirectionTo(target);
-                this.Say(Utility.RandomList(500651, 1049098, 1049320, 1043149));
+                Direction = GetDirectionTo(target);
+                Say(Utility.RandomList(500651, 1049098, 1049320, 1043149));
                 return true;
             }
 
@@ -102,7 +102,7 @@ namespace Server.Engines.Quests.Haven
 
             writer.Write((int)0); // version
 
-            writer.Write((bool)this.m_Active);
+            writer.Write((bool)m_Active);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -111,7 +111,7 @@ namespace Server.Engines.Quests.Haven
 
             int version = reader.ReadInt();
 
-            this.m_Active = reader.ReadBool();
+            m_Active = reader.ReadBool();
         }
     }
 }

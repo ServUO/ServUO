@@ -15,16 +15,14 @@ namespace Server.Items
         public BlanketOfDarkness()
             : base(0xA57)
         {
-            this.Hue = 2076;
-            this.Weight = 10.0;
+            Hue = 2076;
+            Weight = 10.0;
         }
 
         public BlanketOfDarkness(Serial serial)
             : base(serial)
         {
         }
-
-        public virtual int ArtifactRarity { get { return 8; } }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -58,6 +56,12 @@ namespace Server.Items
                         from.SendGump(new LogoutGump(entry, this));
                 }
             }
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+            list.Add(1061078, "8"); // artifact rarity ~1_val~
         }
 
         public override void Serialize(GenericWriter writer)

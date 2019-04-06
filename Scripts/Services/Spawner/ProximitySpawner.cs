@@ -29,9 +29,9 @@ namespace Server.Mobiles
         public ProximitySpawner(int amount, int minDelay, int maxDelay, int team, int homeRange, string spawnName, int triggerRange, string spawnMessage, bool instantFlag)
             : base(amount, minDelay, maxDelay, team, homeRange, spawnName)
         {
-            this.m_TriggerRange = triggerRange;
-            this.m_SpawnMessage = TextDefinition.Parse(spawnMessage);
-            this.m_InstantFlag = instantFlag;
+            m_TriggerRange = triggerRange;
+            m_SpawnMessage = TextDefinition.Parse(spawnMessage);
+            m_InstantFlag = instantFlag;
         }
 
         public ProximitySpawner(int amount, TimeSpan minDelay, TimeSpan maxDelay, int team, int homeRange, List<string> spawnNames)
@@ -42,9 +42,9 @@ namespace Server.Mobiles
         public ProximitySpawner(int amount, TimeSpan minDelay, TimeSpan maxDelay, int team, int homeRange, List<string> spawnNames, int triggerRange, TextDefinition spawnMessage, bool instantFlag)
             : base(amount, minDelay, maxDelay, team, homeRange, spawnNames)
         {
-            this.m_TriggerRange = triggerRange;
-            this.m_SpawnMessage = spawnMessage;
-            this.m_InstantFlag = instantFlag;
+            m_TriggerRange = triggerRange;
+            m_SpawnMessage = spawnMessage;
+            m_InstantFlag = instantFlag;
         }
 
         public ProximitySpawner(Serial serial)
@@ -57,11 +57,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_TriggerRange;
+                return m_TriggerRange;
             }
             set
             {
-                this.m_TriggerRange = value;
+                m_TriggerRange = value;
             }
         }
         [CommandProperty(AccessLevel.Spawner)]
@@ -69,11 +69,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SpawnMessage;
+                return m_SpawnMessage;
             }
             set
             {
-                this.m_SpawnMessage = value;
+                m_SpawnMessage = value;
             }
         }
         [CommandProperty(AccessLevel.Spawner)]
@@ -81,11 +81,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_InstantFlag;
+                return m_InstantFlag;
             }
             set
             {
-                this.m_InstantFlag = value;
+                m_InstantFlag = value;
             }
         }
         public override string DefaultName
@@ -104,25 +104,25 @@ namespace Server.Mobiles
         }
         public override void DoTimer(TimeSpan delay)
         {
-            if (!this.Running)
+            if (!Running)
                 return;
 
-            this.End = DateTime.UtcNow + delay;
+            End = DateTime.UtcNow + delay;
         }
 
         public override void Respawn()
         {
-            this.RemoveSpawned();
+            RemoveSpawned();
 
-            this.End = DateTime.UtcNow;
+            End = DateTime.UtcNow;
         }
 
         public override void Spawn()
         {
-            for (int i = 0; i < this.SpawnNamesCount; ++i)
+            for (int i = 0; i < SpawnObjectCount; ++i)
             {
-                for (int j = 0; j < this.Count; ++j)
-                    this.Spawn(i);
+                for (int j = 0; j < MaxCount; ++j)
+                    Spawn(SpawnObjects[i]);
             }
         }
 
@@ -150,19 +150,19 @@ namespace Server.Mobiles
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (!this.Running)
+            if (!Running)
                 return;
 
-            if (this.IsEmpty && this.End <= DateTime.UtcNow && m.InRange(this.GetWorldLocation(), this.m_TriggerRange) && m.Location != oldLocation && this.ValidTrigger(m))
+            if (IsEmpty && End <= DateTime.UtcNow && m.InRange(GetWorldLocation(), m_TriggerRange) && m.Location != oldLocation && ValidTrigger(m))
             {
-                TextDefinition.SendMessageTo(m, this.m_SpawnMessage);
+                TextDefinition.SendMessageTo(m, m_SpawnMessage);
 
-                this.DoTimer();
-                this.Spawn();
+                DoTimer();
+                Spawn();
 
-                if (this.m_InstantFlag)
+                if (m_InstantFlag)
                 {
-                    foreach (ISpawnable spawned in this.Spawned)
+                    foreach (ISpawnable spawned in GetSpawn())
                     {
                         if (spawned is Mobile)
                             ((Mobile)spawned).Combatant = m;
@@ -177,9 +177,9 @@ namespace Server.Mobiles
 
             writer.Write((int)0); // version
 
-            writer.Write(this.m_TriggerRange);
-            TextDefinition.Serialize(writer, this.m_SpawnMessage);
-            writer.Write(this.m_InstantFlag);
+            writer.Write(m_TriggerRange);
+            TextDefinition.Serialize(writer, m_SpawnMessage);
+            writer.Write(m_InstantFlag);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -188,9 +188,9 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            this.m_TriggerRange = reader.ReadInt();
-            this.m_SpawnMessage = TextDefinition.Deserialize(reader);
-            this.m_InstantFlag = reader.ReadBool();
+            m_TriggerRange = reader.ReadInt();
+            m_SpawnMessage = TextDefinition.Deserialize(reader);
+            m_InstantFlag = reader.ReadBool();
         }
     }
 }

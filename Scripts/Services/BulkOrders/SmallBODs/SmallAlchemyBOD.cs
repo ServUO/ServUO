@@ -69,7 +69,7 @@ namespace Server.Engines.BulkOrders
         {
             SmallBulkEntry[] entries;
 
-            double theirSkill = m.Skills[SkillName.Alchemy].Base;
+            double theirSkill = BulkOrderSystem.GetBODSkill(m, SkillName.Alchemy);
 
             entries = SmallBulkEntry.AlchemySmalls;
 

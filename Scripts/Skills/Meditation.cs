@@ -78,6 +78,9 @@ namespace Server.SkillHandlers
                 double skillVal = m.Skills[SkillName.Meditation].Value;
                 double chance = (50.0 + ((skillVal - (m.ManaMax - m.Mana)) * 2)) / 100;
 
+                // must bypass normal checks so passive skill checks aren't triggered
+                CrystalBallOfKnowledge.TellSkillDifficultyActive(m, SkillName.Meditation, chance);
+
                 if (chance > Utility.RandomDouble())
                 {
                     m.CheckSkill(SkillName.Meditation, 0.0, 100.0);
@@ -88,6 +91,8 @@ namespace Server.SkillHandlers
 
                     if (m.Player || m.Body.IsHuman)
                         m.PlaySound(0xF9);
+
+                    m.ResetStatTimers();
                 }
                 else 
                 {

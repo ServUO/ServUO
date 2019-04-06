@@ -26,6 +26,17 @@ namespace Server.Items
             Layer = Layer.Neck;
         }
 
+        public override int GetDurabilityBonus()
+        {
+            int bonus = Quality == ItemQuality.Exceptional ? 20 : 0;
+
+            return bonus + ArmorAttributes.DurabilityBonus;
+        }
+
+        protected override void ApplyResourceResistances(CraftResource oldResource)
+        {
+        }
+
         public GargishNecklace(int itemID)
             : base(itemID)
         {
@@ -77,7 +88,7 @@ namespace Server.Items
 
     public class GargishStoneAmulet : GargishNecklace
     {
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Plate; } }
+        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Stone; } }
         public override int AosStrReq { get { return 40; } }
         public override int OldStrReq { get { return 20; } }
 

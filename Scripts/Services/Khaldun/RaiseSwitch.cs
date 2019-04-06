@@ -198,7 +198,9 @@ namespace Server.Items
         public void Refresh()
         {
             bool found = false;
-            foreach (Mobile mob in this.GetMobilesInRange(this.CurrentRange))
+            IPooledEnumerable eable = GetMobilesInRange(CurrentRange);
+
+            foreach (Mobile mob in eable)
             {
                 if (mob.Hidden && mob.IsStaff())
                     continue;
@@ -206,7 +208,7 @@ namespace Server.Items
                 found = true;
                 break;
             }
-
+            eable.Free();
             this.Visible = found;
         }
 

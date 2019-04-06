@@ -245,13 +245,17 @@ namespace Server.Items
                 EndTimer();
             else
             {
-                ColUtility.ForEach(Contexts, (key, value) =>
+                var dictionary = new Dictionary<Mobile, List<EodonPotionContext>>(Contexts);
+
+                foreach (var kvp in dictionary)
                 {
-                    if (value != null)
+                    foreach (var context in kvp.Value)
                     {
-                        value.ForEach(c => c.OnTick(key));
+                        context.OnTick(kvp.Key);
                     }
-                });
+                }
+
+                dictionary.Clear();
             }
         }
 
@@ -294,6 +298,7 @@ namespace Server.Items
         public BarrabHemolymphConcentrate(int amount)
             : base(3846, PotionEffect.Barrab)
         {
+			Hue = 1272;
             Stackable = true;
             Amount = amount;
         }
@@ -363,6 +368,7 @@ namespace Server.Items
         public JukariBurnPoiltice(int amount)
             : base(3846, PotionEffect.Jukari)
         {
+			Hue = 2727;
             Stackable = true;
             Amount = amount;
         }
@@ -416,6 +422,7 @@ namespace Server.Items
         public KurakAmbushersEssence(int amount)
             : base(3846, PotionEffect.Kurak)
         {
+			Hue = 1260;
             Stackable = true;
             Amount = amount;
         }
@@ -447,6 +454,7 @@ namespace Server.Items
         public BarakoDraftOfMight(int amount)
             : base(3846, PotionEffect.Barako)
         {
+			Hue = 1072;
             Stackable = true;
             Amount = amount;
         }
@@ -493,6 +501,7 @@ namespace Server.Items
         public UraliTranceTonic(int amount)
             : base(3846, PotionEffect.Urali)
         {
+			Hue = 1098;
             Stackable = true;
             Amount = amount;
         }
@@ -552,6 +561,7 @@ namespace Server.Items
         public SakkhraProphylaxisPotion(int amount)
             : base(3846, PotionEffect.Sakkhra)
         {
+			Hue = 2531;
             Stackable = true;
             Amount = amount;
         }
@@ -590,7 +600,7 @@ namespace Server.Items
     }
 
     // resources
-    public class MyrmidexEggsac : Item
+    public class MyrmidexEggsac : Item, ICommodity
     {
         public override int LabelNumber { get { return 1156725; } } // Myrmidex Eggsac
 
@@ -599,9 +609,9 @@ namespace Server.Items
 
         [Constructable]
         public MyrmidexEggsac(int amount)
-            : base(3174)
+            : base(10248)
         {
-            Hue = 2676;
+            Hue = 1272;
             Stackable = true;
             Amount = amount;
         }
@@ -610,6 +620,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -624,7 +637,7 @@ namespace Server.Items
         }
     }
 
-    public class LavaBerry : Food
+    public class LavaBerry : Item
     {
         // TODO: Harvested near Jukari Village
         public override int LabelNumber { get { return 1156727; } } // Lava Berry
@@ -634,10 +647,12 @@ namespace Server.Items
 
         [Constructable]
         public LavaBerry(int amount)
-            : base(amount, 22326)
+            : base(22326)
         {
+			Hue = 1955;
             Stackable = true;
-            FillFactor = 1;
+			Weight = 1.0;
+			Amount = amount;
         }
 
         public LavaBerry(Serial serial)
@@ -665,23 +680,25 @@ namespace Server.Items
 
         [Constructable]
         public LavaBerryBush()
-            : base(3210) // TODO: CorrectID?
+            : base(Utility.RandomBool() ? 0xDC4 : 0xDC5)
         {
+			Hue = 2075;
             Movable = false;
+			Weight = 0.0;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 3))
+            if (from.InRange(this.Location, 2))
             {
-                var berry = new LavaBerry(Utility.RandomMinMax(1, 5));
+                var berry = new LavaBerry(1);
                 from.AddToBackpack(berry);
                 from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156736, "#1156727", from.NetState);
 
                 Delete();
             }
             else
-                from.SendLocalizedMessage(500295); // You are too far away to do that.
+                from.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
 
         public LavaBerryBush(Serial serial)
@@ -711,8 +728,9 @@ namespace Server.Items
 
         [Constructable]
         public PerfectBanana(int amount)
-            : base(Utility.Random(5919, 4))
+            : base(5922)
         {
+			Hue = 1119;
             Stackable = true;
             Amount = amount;
         }
@@ -734,8 +752,54 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+	
+	public class RiverMossDecorate : Item
+    {
+        // TODO: Harvested near Urali Village
+        public override int LabelNumber { get { return 1156731; } } // River Moss
 
-    public class RiverMoss : Item
+        [Constructable]
+        public RiverMossDecorate()
+            : base(3378)
+        {
+			Hue = 1272;
+            Movable = false;
+			Weight = 0.0;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (from.InRange(this.Location, 2))
+            {
+                var rm = new RiverMoss(1);
+                from.AddToBackpack(rm);
+                from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156736, "#1156731", from.NetState);
+
+                Delete();
+            }
+            else
+                from.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+        }
+
+        public RiverMossDecorate(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class RiverMoss : Item, ICommodity
     {
         // TODO: Harvested near Urali Village
         public override int LabelNumber { get { return 1156731; } } // River Moss
@@ -745,8 +809,9 @@ namespace Server.Items
 
         [Constructable]
         public RiverMoss(int amount)
-            : base(3963)
+            : base(22333)
         {
+			Hue = 1272;
             Stackable = true;
             Amount = amount;
         }
@@ -755,6 +820,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

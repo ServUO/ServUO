@@ -7,45 +7,47 @@ namespace Server.Mobiles
     {
         [Constructable]
         public DreamWraith()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a Dream Wraith";
-            this.Body = 740;
+            Name = "a Dream Wraith";
+            Body = 740;
             //Hue = 0;
-            this.BaseSoundID = 0x482;
+            BaseSoundID = 0x482;
 
-            this.SetStr(200, 300);
-            this.SetDex(100, 200);
-            this.SetInt(600, 700);
+            SetStr(200, 300);
+            SetDex(100, 200);
+            SetInt(600, 700);
 
-            this.SetHits(550, 650);
+            SetHits(550, 650);
 
-            this.SetDamage(18, 25);
+            SetDamage(18, 25);
 
-            this.SetDamageType(ResistanceType.Physical, 10);
-            this.SetDamageType(ResistanceType.Cold, 45);
-            this.SetDamageType(ResistanceType.Energy, 45);
+            SetDamageType(ResistanceType.Physical, 10);
+            SetDamageType(ResistanceType.Cold, 45);
+            SetDamageType(ResistanceType.Energy, 45);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 40, 50);
-            this.SetResistance(ResistanceType.Cold, 30, 50);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 20, 30);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 40, 50);
+            SetResistance(ResistanceType.Cold, 30, 50);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.Anatomy, 0.0, 10.0);
-            this.SetSkill(SkillName.EvalInt, 100.0, 120.0);
-            this.SetSkill(SkillName.Magery, 100.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 100.0, 110.0);
-            this.SetSkill(SkillName.MagicResist, 120.0, 150.0);
-            this.SetSkill(SkillName.Tactics, 70.0, 80.0);
-            this.SetSkill(SkillName.Wrestling, 90.0, 100.0);
+            SetSkill(SkillName.Necromancy, 100.0, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 100.0, 120.0);
+            SetSkill(SkillName.Anatomy, 0.0, 10.0);
+            SetSkill(SkillName.EvalInt, 100.0, 120.0);
+            SetSkill(SkillName.Magery, 100.0, 120.0);
+            SetSkill(SkillName.Meditation, 100.0, 110.0);
+            SetSkill(SkillName.MagicResist, 120.0, 150.0);
+            SetSkill(SkillName.Tactics, 70.0, 80.0);
+            SetSkill(SkillName.Wrestling, 90.0, 100.0);
 
-            this.Fame = 4000;
-            this.Karma = -4000;
+            Fame = 4000;
+            Karma = -4000;
 
-            this.VirtualArmor = 28;
+            VirtualArmor = 28;
 
-            this.PackReg(10);
+            PackReg(10);
         }
 
         public DreamWraith(Serial serial)
@@ -76,7 +78,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Rich);
         }
 
         public override int GetIdleSound()

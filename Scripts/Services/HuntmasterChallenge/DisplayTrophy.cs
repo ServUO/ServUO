@@ -10,7 +10,18 @@ namespace Server.Items
     {
         private HuntType m_HuntType;
 
-        public override int LabelNumber { get { return 1084024 + ItemID; } }
+        public override int LabelNumber
+        {
+            get
+            {
+                HuntingTrophyInfo info = HuntingTrophyInfo.GetInfo(m_HuntType);
+
+                if (info != null && info.Species.Number > 0)
+                    return info.Species.Number;
+
+                return 1084024 + ItemID;
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public HuntType HuntType

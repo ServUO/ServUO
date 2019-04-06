@@ -10,37 +10,41 @@ namespace Server.Mobiles
         public PredatorHellCat()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a hell cat";
-            this.Body = 127;
-            this.BaseSoundID = 0xBA;
+            Name = "a predator hellcat";
+            Body = 127;
+            BaseSoundID = 0xBA;
 
-            this.SetStr(161, 185);
-            this.SetDex(96, 115);
-            this.SetInt(76, 100);
+            SetStr(161, 185);
+            SetDex(96, 115);
+            SetInt(76, 100);
 
-            this.SetHits(97, 131);
+            SetHits(97, 131);
 
-            this.SetDamage(5, 17);
+            SetDamage(5, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Fire, 25);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Fire, 25);
 
-            this.SetResistance(ResistanceType.Physical, 25, 35);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 5, 15);
+            SetResistance(ResistanceType.Physical, 25, 35);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Energy, 5, 15);
 
-            this.SetSkill(SkillName.MagicResist, 75.1, 90.0);
-            this.SetSkill(SkillName.Tactics, 50.1, 65.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 65.0);
+            SetSkill(SkillName.MagicResist, 75.1, 90.0);
+            SetSkill(SkillName.Tactics, 50.1, 65.0);
+            SetSkill(SkillName.Wrestling, 50.1, 65.0);
+            SetSkill(SkillName.Necromancy, 20.0);
+            SetSkill(SkillName.SpiritSpeak, 20.0);
+            SetSkill(SkillName.Wrestling, 50.1, 65.0);
+            SetSkill(SkillName.DetectHidden, 41.2);
 
-            this.Fame = 2500;
-            this.Karma = -2500;
+            Fame = 2500;
+            Karma = -2500;
 
-            this.VirtualArmor = 30;
+            VirtualArmor = 30;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 89.1;
+            Tamable = true;
+            ControlSlots = 2;
+            MinTameSkill = 90.0;
         }
 
         public PredatorHellCat(Serial serial)
@@ -85,7 +89,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Average);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -234,9 +234,9 @@ namespace Server.Mobiles
                     });
  
                 AOS.Damage(target, this, Utility.RandomMinMax(80, 100), 100, 0, 0, 0, 0);
-                target.Send(SpeedControl.WalkSpeed);
+                target.SendSpeedControl(SpeedControlType.WalkSpeed);
 
-                Timer.DelayCall(TimeSpan.FromSeconds(5), () => target.Send(SpeedControl.Disable));
+                Timer.DelayCall(TimeSpan.FromSeconds(5), () => target.SendSpeedControl(SpeedControlType.Disable));
             }
 
             ColUtility.Free(random);
@@ -470,6 +470,9 @@ namespace Server.Mobiles
 
             Fame = 35000;
             Karma = -35000;
+
+            SetWeaponAbility(WeaponAbility.Disarm);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public override bool TeleportsTo { get { return true; } }
@@ -497,11 +500,6 @@ namespace Server.Mobiles
 
             ColUtility.Free(list);
             return mob;
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return 0.5 > Utility.RandomDouble() ? WeaponAbility.Disarm : WeaponAbility.ParalyzingBlow;
         }
 
         public override void OnThink()
@@ -544,7 +542,7 @@ namespace Server.Mobiles
             int dist = 4;
             Point3D p = Point3D.Zero;
 
-            IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, dist);
+            IPooledEnumerable eable = map.GetMobilesInRange(Location, dist);
 
             foreach (Mobile m in eable)
             {
@@ -585,7 +583,7 @@ namespace Server.Mobiles
 
             Timer.DelayCall(TimeSpan.FromMilliseconds(Utility.RandomMinMax(300, 350) * (_Offsets.Length / 2)), () =>
                 {
-                    eable = this.Map.GetMobilesInRange(this.Location, dist);
+                    eable = map.GetMobilesInRange(this.Location, dist);
 
                     foreach (Mobile m in eable)
                     {
@@ -608,16 +606,16 @@ namespace Server.Mobiles
                                 Movement.Movement.Offset(d, ref x, ref y);
                                 int z = map.GetAverageZ(x, y);
 
-                                if (!this.Map.CanFit(new Point3D(x, y, z), 16, false, false))
+                                if (!map.CanFit(new Point3D(x, y, z), 16, false, false))
                                 {
-                                    m.MoveToWorld(new Point3D(lastx, lasty, this.Map.GetAverageZ(lastx, lasty)), this.Map);
+                                    m.MoveToWorld(new Point3D(lastx, lasty, map.GetAverageZ(lastx, lasty)), map);
                                     AOS.Damage(m, this, Utility.RandomMinMax(100, 150), 0, 0, 0, 0, 100);
                                     break;
                                 }
 
                                 if (range >= 15 && (orx != x || ory != y))
                                 {
-                                    m.MoveToWorld(new Point3D(x, y, z), this.Map);
+                                    m.MoveToWorld(new Point3D(x, y, z), map);
                                     AOS.Damage(m, this, Utility.RandomMinMax(100, 150), 0, 0, 0, 0, 100);
                                 }
                             }

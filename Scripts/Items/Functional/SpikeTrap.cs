@@ -153,12 +153,14 @@ namespace Server.Items
 
             Effects.SendLocationEffect(this.Location, this.Map, GetBaseID(this.Type) + 1, 18, 3, this.GetEffectHue(), 0);
             Effects.PlaySound(this.Location, this.Map, 0x22C);
+            IPooledEnumerable eable = GetMobilesInRange(0);
 
-            foreach (Mobile mob in this.GetMobilesInRange(0))
+            foreach (Mobile mob in eable)
             {
                 if (mob.Alive && !mob.IsDeadBondedPet)
                     Spells.SpellHelper.Damage(TimeSpan.FromTicks(1), mob, mob, Utility.RandomMinMax(1, 6) * 6);
             }
+            eable.Free();
 
             Timer.DelayCall(TimeSpan.FromSeconds(1.0), new TimerCallback(OnSpikeExtended));
 

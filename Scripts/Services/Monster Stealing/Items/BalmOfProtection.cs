@@ -1,23 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Server.Mobiles;
-using Server.Items;
 using Server;
-namespace drNO.ThieveItems
+
+namespace Server.Items
 {
-    class BalmOfProtection : BaseBalmOrLotion
+    [TypeAlias("drNO.ThieveItems.BalmOfProtection")]
+    public class BalmOfProtection : BaseBalmOrLotion
     {
-
-        //public override int LabelNumber
-        //{
-        //    get
-        //    {
-        //        return 1094940;
-        //    }
-        //}
-
-
         public static double HandleDamage(PlayerMobile pm, double damage)
         {
 
@@ -32,35 +21,22 @@ namespace drNO.ThieveItems
             {
                 return damage; 
             }
-
         }
-        protected override void OnUse(PlayerMobile by)
-        {
 
-            base.OnUse(by);
-        }
+        public override int LabelNumber { get { return 1094943; } } // Balm of Protection
 
         [Constructable]
         public BalmOfProtection()
             : base(0x1C18)
         {
             m_EffectType = ThieveConsumableEffect.BalmOfProtectionEffect;
-            Name = "Balm of Protection";
             Hue = 0x499; 
         }
 
-        public override void OnDoubleClick(Mobile from)
-        {
-            OnUse((PlayerMobile)from);
-        }
-
-
-
         protected override void ApplyEffect(PlayerMobile pm)
         {
-
             base.ApplyEffect(pm);
-            pm.SendLocalizedMessage(1095143); //
+            pm.SendLocalizedMessage(1095143); // You apply the ointment and suddenly feel less vulnerable!
         }
 
         public BalmOfProtection(Serial serial)

@@ -29,8 +29,9 @@ namespace Server.Gumps
 		private int m_Width, m_Height;
 		private int m_Hue;
 		private string m_Text;
+        private int m_TextID;
 
-		public int X
+        public int X
 		{
 			get
 			{
@@ -112,9 +113,19 @@ namespace Server.Gumps
 			m_Text = text;
 		}
 
-		public override string Compile()
+        public GumpLabelCropped(int x, int y, int width, int height, int hue, int textid)
+        {
+            m_X = x;
+            m_Y = y;
+            m_Width = width;
+            m_Height = height;
+            m_Hue = hue;
+            m_TextID = textid;
+        }
+
+        public override string Compile()
 		{
-			return String.Format( "{{ croppedtext {0} {1} {2} {3} {4} {5} }}", m_X, m_Y, m_Width, m_Height, m_Hue, Parent.Intern( m_Text ) );
+			return String.Format( "{{ croppedtext {0} {1} {2} {3} {4} {5} }}", m_X, m_Y, m_Width, m_Height, m_Hue, m_Text == null ? m_TextID : Parent.Intern(m_Text));
 		}
 
 		private static byte[] m_LayoutName = Gump.StringToBuffer( "croppedtext" );
@@ -127,7 +138,7 @@ namespace Server.Gumps
 			disp.AppendLayout( m_Width );
 			disp.AppendLayout( m_Height );
 			disp.AppendLayout( m_Hue );
-			disp.AppendLayout( Parent.Intern( m_Text ) );
-		}
+            disp.AppendLayout( m_Text == null ? m_TextID : Parent.Intern(m_Text) );
+        }
 	}
 }

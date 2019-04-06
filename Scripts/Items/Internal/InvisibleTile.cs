@@ -49,4 +49,41 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+    public class RevealTile : Item
+    {
+        [Constructable]
+        public RevealTile()
+            : base(0x2e46)
+        {
+            Movable = false;
+        }
+
+        public override int GetUpdateRange(Mobile m)
+        {
+            if (m.Player)
+                return 1;
+
+            return base.GetUpdateRange(m);
+        }
+
+        public RevealTile(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)1);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }

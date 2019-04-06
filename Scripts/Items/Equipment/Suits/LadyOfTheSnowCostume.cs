@@ -5,12 +5,21 @@ namespace Server.Items
 {
 	public class LadyOfTheSnowCostume : BaseCostume
 	{
-		[Constructable]
+        public override string CreatureName { get { return "lady of the snow"; } }
+
+        [Constructable]
 		public LadyOfTheSnowCostume() : base( )
 		{
-            Name = "a lady of the snow halloween costume";
             this.CostumeBody = 252;
 		}
+		
+		public override int LabelNumber
+        {
+            get
+            {
+                return 1114241;
+            }
+        }// Lady of the Snow costume
 
 		public LadyOfTheSnowCostume( Serial serial ) : base( serial )
 		{

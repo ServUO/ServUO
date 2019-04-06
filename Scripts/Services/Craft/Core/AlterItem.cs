@@ -45,7 +45,7 @@ namespace Server.Engines.Craft
 
     public class AlterItem
     {
-        public static void BeginTarget(Mobile from, CraftSystem system, BaseTool tool)
+        public static void BeginTarget(Mobile from, CraftSystem system, ITool tool)
         {
             from.Target = new AlterItemTarget(system, tool);
             from.SendLocalizedMessage(1094730); //Target the item to altar
@@ -61,7 +61,7 @@ namespace Server.Engines.Craft
     public class AlterItemTarget : Target
     {
         private readonly CraftSystem m_System;
-        private readonly BaseTool m_Tool;
+        private readonly ITool m_Tool;
         private Item m_Contract;
 
         public AlterItemTarget(CraftSystem system, Item contract)
@@ -71,7 +71,7 @@ namespace Server.Engines.Craft
             m_Contract = contract;
         }
 
-        public AlterItemTarget(CraftSystem system, BaseTool tool)
+        public AlterItemTarget(CraftSystem system, ITool tool)
             : base(1, false, TargetFlags.None)
         {
             this.m_System = system;
@@ -123,13 +123,13 @@ namespace Server.Engines.Craft
                         Item contract = null;
 
                         if (skill == SkillName.Blacksmith)
-                            contract = new AlterContract(RepairDeed.RepairSkillType.Smithing, from);
+                            contract = new AlterContract(RepairSkillType.Smithing, from);
                         else if (skill == SkillName.Carpentry)
-                            contract = new AlterContract(RepairDeed.RepairSkillType.Carpentry, from);
+                            contract = new AlterContract(RepairSkillType.Carpentry, from);
                         else if (skill == SkillName.Tailoring)
-                            contract = new AlterContract(RepairDeed.RepairSkillType.Tailoring, from);
+                            contract = new AlterContract(RepairSkillType.Tailoring, from);
                         else if (skill == SkillName.Tinkering)
-                            contract = new AlterContract(RepairDeed.RepairSkillType.Tinkering, from);
+                            contract = new AlterContract(RepairSkillType.Tinkering, from);
 
                         if (contract != null)
                         {
@@ -172,13 +172,9 @@ namespace Server.Engines.Craft
                     number = 1094793;
                 }
             }
-            else if (!Server.SkillHandlers.Imbuing.CheckSoulForge(from, 2, false))
+            else if (!Server.SkillHandlers.Imbuing.CheckSoulForge(from, 2, false, false))
             {
                 number = 1111867; // You must be near a soulforge to alter an item.
-            }
-            else if (!Server.SkillHandlers.Imbuing.CheckQueen(from))
-            {
-                number = 1113736; // You must rise to the rank of noble in the eyes of the Gargoyle Queen before her majesty will allow you to use this soulforge.
             }
             else if (m_Contract == null && value < 100.0)
             {
@@ -187,6 +183,19 @@ namespace Server.Engines.Craft
             else if (origItem is BaseWeapon && ((BaseWeapon)origItem).EnchantedWeilder != null)
             {
                 number = 1111849; // You cannot alter an item that is currently enchanted.
+            }
+            else if (origItem.HasSocket<SlayerSocket>())
+            {
+                var socket = origItem.GetSocket<SlayerSocket>();
+
+                if (socket.Slayer == SlayerName.Silver)
+                {
+                    number = 1155681; // You cannot alter an item that has been treated with Tincture of Silver.
+                }
+                else
+                {
+                    number = 1111849; // You cannot alter an item that is currently enchanted.
+                }
             }
             else
             {
@@ -268,10 +277,10 @@ namespace Server.Engines.Craft
                 }
                 else if (origItem is BaseQuiver && newitem is BaseArmor)
                 {
-                    //BaseQuiver oldquiver = (BaseQuiver)origItem;
-                    BaseArmor newarmor = (BaseArmor)newitem;
+                    /*BaseQuiver oldquiver = (BaseQuiver)origItem;
+                    BaseArmor newarmor = (BaseArmor)newitem;*/
 
-                    newarmor.Altered = true;
+                    ((BaseArmor)newitem).Altered = true;
                 }
                 else
                 {
@@ -282,16 +291,16 @@ namespace Server.Engines.Craft
                 {
                     newitem.Name = origItem.Name;
                 }
-                else if (Server.Engines.VendorSearhing.VendorSearch.StringList != null)
+                else if (Server.Engines.VendorSearching.VendorSearch.StringList != null)
                 {
                     if (origItem.LabelNumber > 0 && RetainsName(origItem))
-                        newitem.Name = Server.Engines.VendorSearhing.VendorSearch.StringList.GetString(origItem.LabelNumber);
+                        newitem.Name = Server.Engines.VendorSearching.VendorSearch.StringList.GetString(origItem.LabelNumber);
                 }
 
                 newitem.Hue = origItem.Hue;
                 newitem.LootType = origItem.LootType;
+                newitem.Insured = origItem.Insured;
 
-                origItem.Delete();
                 origItem.OnAfterDuped(newitem);
                 newitem.Parent = null;
 
@@ -311,6 +320,8 @@ namespace Server.Engines.Craft
                 if (m_Contract != null)
                     m_Contract.Delete();
 
+                origItem.Delete();
+
                 number = 1094727; // You have altered the item.
             }
 
@@ -325,16 +336,10 @@ namespace Server.Engines.Craft
             if (item is Glasses || item is ElvenGlasses)
                 return true;
 
-            if (item is BaseArmor && ((BaseArmor)item).ArtifactRarity > 0)
+            if (item is IArtifact && ((IArtifact)item).ArtifactRarity > 0)
                 return true;
 
-            if (item is BaseWeapon && ((BaseWeapon)item).ArtifactRarity > 0)
-                return true;
-
-            if (item is BaseJewel && ((BaseJewel)item).ArtifactRarity > 0)
-                return true;
-
-            return item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552;
+            return (item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552) || (item.LabelNumber >= 1073111 && item.LabelNumber <= 1075040);
         }
 
         private static bool IsAlterable(Item item)
@@ -343,7 +348,7 @@ namespace Server.Engines.Craft
             {
                 BaseWeapon weapon = (BaseWeapon)item;
 
-                if (weapon.SetID != SetItem.None || !weapon.CanAlter)
+                if (weapon.SetID != SetItem.None || !weapon.CanAlter || weapon.NegativeAttributes.Antique != 0)
                     return false;
 
                 if ((weapon.RequiredRace != null && weapon.RequiredRace == Race.Gargoyle && !weapon.IsArtifact))
@@ -354,7 +359,7 @@ namespace Server.Engines.Craft
             {
                 BaseArmor armor = (BaseArmor)item;
 
-                if (armor.SetID != SetItem.None || !armor.CanAlter)
+                if (armor.SetID != SetItem.None || !armor.CanAlter || armor.NegativeAttributes.Antique != 0)
                     return false;
 
                 if ((armor.RequiredRace != null && armor.RequiredRace == Race.Gargoyle && !armor.IsArtifact))
@@ -368,7 +373,7 @@ namespace Server.Engines.Craft
             {
                 BaseClothing cloth = (BaseClothing)item;
 
-                if (cloth.SetID != SetItem.None || !cloth.CanAlter)
+                if (cloth.SetID != SetItem.None || !cloth.CanAlter || cloth.NegativeAttributes.Antique != 0)
                     return false;
 
                 if ((cloth.RequiredRace != null && cloth.RequiredRace == Race.Gargoyle && !cloth.IsArtifact))

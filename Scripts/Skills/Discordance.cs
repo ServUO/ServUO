@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Discordance.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -20,6 +14,11 @@ namespace Server.SkillHandlers
 	public class Discordance
 	{
 		private static readonly Hashtable m_Table = new Hashtable();
+
+        public static bool UnderEffects(Mobile m)
+        {
+            return m != null && m_Table.Contains(m);
+        }
 
 		public static void Initialize()
 		{
@@ -71,9 +70,18 @@ namespace Server.SkillHandlers
 			else
 			{
 				int range = (int)targ.GetDistanceToSqrt(from);
-				int maxRange = BaseInstrument.GetBardRange(from, SkillName.Discordance);
-
-				if (from.Map != targ.Map || range > maxRange)
+                int maxRange = BaseInstrument.GetBardRange(from, SkillName.Discordance);
+                Map targetMap = targ.Map;
+                
+                if(targ is BaseMount && ((BaseMount)targ).Rider != null)
+                {
+                    Mobile rider = ((BaseMount)targ).Rider;
+                
+                    range = (int)rider.GetDistanceToSqrt(from);
+                    targetMap = rider.Map;
+                }
+                
+				if (from.Map != targetMap || range > maxRange)
 				{
 					ends = true;
 				}
@@ -139,13 +147,15 @@ namespace Server.SkillHandlers
 					{
 						from.SendLocalizedMessage(1049537); // Your target is already in discord.
 					}
-					else if (!targ.Player || (from is BaseCreature) && ((BaseCreature)from).CanDiscord)
+					else if (!targ.Player || (from is BaseCreature && ((BaseCreature)from).CanDiscord))
 					{
 						double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
 						double music = from.Skills[SkillName.Musicianship].Value;
-                        int masteryBonus = 0;
 
-						diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
+                        if (from is BaseCreature)
+                            music = 120.0;
+
+                        int masteryBonus = 0;
 
 						if (music > 100.0)
 						{
@@ -240,16 +250,21 @@ namespace Server.SkillHandlers
                             #endregion
 
 							m_Table[targ] = info;
-						}
+
+                            from.NextSkillTime = Core.TickCount + (8000 - ((masteryBonus / 5) * 1000));
+                        }
 						else
 						{
+                            if (from is BaseCreature && PetTrainingHelper.Enabled)
+                                from.CheckSkill(SkillName.Discordance, 0, from.Skills[SkillName.Discordance].Cap);
+
 							from.SendLocalizedMessage(1049540); // You fail to disrupt your target
 							m_Instrument.PlayInstrumentBadly(from);
 							m_Instrument.ConsumeUse(from);
-						}
 
-						from.NextSkillTime = Core.TickCount + 12000;
-					}
+                            from.NextSkillTime = Core.TickCount + 5000;
+                        }                        
+                    }
 					else
 					{
 						m_Instrument.PlayInstrumentBadly(from);

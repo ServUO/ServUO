@@ -1,9 +1,3 @@
-#region Header
-// **********
-// UltimaSDK - AssemblyInfo.cs
-// **********
-#endregion
-
 #region References
 using System.Reflection;
 using System.Resources;

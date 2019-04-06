@@ -2,6 +2,7 @@ using System;
 
 namespace Server.Items
 {
+    [TypeAlias("Server.Items.AdmiralHeartyRum")]
     public class AdmiralsHeartyRum : BeverageBottle
     {
 		public override bool IsArtifact { get { return true; } }
@@ -9,7 +10,7 @@ namespace Server.Items
         public AdmiralsHeartyRum()
             : base(BeverageType.Ale)
         {
-            this.Hue = 0x66C;
+            Hue = 0x66C;
         }
 
         public AdmiralsHeartyRum(Serial serial)

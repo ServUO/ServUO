@@ -10,42 +10,40 @@ namespace Server.Mobiles
         public DarknightCreeper()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("darknight creeper");
-            this.Body = 313;
-            this.BaseSoundID = 0xE0;
+            Name = NameList.RandomName("darknight creeper");
+            Body = 313;
+            BaseSoundID = 0xE0;
 
-            this.SetStr(301, 330);
-            this.SetDex(101, 110);
-            this.SetInt(301, 330);
+            SetStr(301, 330);
+            SetDex(101, 110);
+            SetInt(301, 330);
 
-            this.SetHits(4000);
+            SetHits(4000);
 
-            this.SetDamage(22, 26);
+            SetDamage(22, 26);
 
-            this.SetDamageType(ResistanceType.Physical, 85);
-            this.SetDamageType(ResistanceType.Poison, 15);
+            SetDamageType(ResistanceType.Physical, 85);
+            SetDamageType(ResistanceType.Poison, 15);
 
-            this.SetResistance(ResistanceType.Physical, 60);
-            this.SetResistance(ResistanceType.Fire, 60);
-            this.SetResistance(ResistanceType.Cold, 100);
-            this.SetResistance(ResistanceType.Poison, 90);
-            this.SetResistance(ResistanceType.Energy, 75);
+            SetResistance(ResistanceType.Physical, 60);
+            SetResistance(ResistanceType.Fire, 60);
+            SetResistance(ResistanceType.Cold, 100);
+            SetResistance(ResistanceType.Poison, 90);
+            SetResistance(ResistanceType.Energy, 75);
 
-            this.SetSkill(SkillName.DetectHidden, 80.0);
-            this.SetSkill(SkillName.EvalInt, 118.1, 120.0);
-            this.SetSkill(SkillName.Magery, 112.6, 120.0);
-            this.SetSkill(SkillName.Meditation, 150.0);
-            this.SetSkill(SkillName.Poisoning, 120.0);
-            this.SetSkill(SkillName.MagicResist, 90.1, 90.9);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 90.9);
-            this.SetSkill(SkillName.Necromancy, 120.1, 130.0);
-            this.SetSkill(SkillName.SpiritSpeak, 120.1, 130.0);
+            SetSkill(SkillName.Wrestling, 90.1, 90.9);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.MagicResist, 90.1, 90.9);
+            SetSkill(SkillName.Poisoning, 120.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.Magery, 112.6, 120.0);
+            SetSkill(SkillName.EvalInt, 118.1, 120.0);
+            SetSkill(SkillName.Meditation, 150.0);
 
-            this.Fame = 22000;
-            this.Karma = -22000;
+            Fame = 22000;
+            Karma = -22000;
 
-            this.VirtualArmor = 34;
+            VirtualArmor = 34;
         }
 
         public DarknightCreeper(Serial serial)
@@ -111,7 +109,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.UltraRich, 2);
         }
 
        
@@ -127,8 +125,8 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (this.BaseSoundID == 471)
-                this.BaseSoundID = 0xE0;
+            if (BaseSoundID == 471)
+                BaseSoundID = 0xE0;
         }
     }
 }

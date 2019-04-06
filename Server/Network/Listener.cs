@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Listener.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -19,15 +13,12 @@ namespace Server.Network
 	public class Listener : IDisposable
 	{
 		private Socket m_Listener;
+        private PingListener _PingListener;
 
-		private readonly Queue<Socket> m_Accepted;
+        private readonly Queue<Socket> m_Accepted;
 		private readonly object m_AcceptedSyncRoot;
 
-#if NewAsyncSockets
-		private SocketAsyncEventArgs m_EventArgs;
-        #else
 		private readonly AsyncCallback m_OnAccept;
-#endif
 
 		private static readonly Socket[] m_EmptySockets = new Socket[0];
 
@@ -46,13 +37,9 @@ namespace Server.Network
 			}
 
 			DisplayListener();
+            _PingListener = new PingListener(ipep);
 
-#if NewAsyncSockets
-			m_EventArgs = new SocketAsyncEventArgs();
-			m_EventArgs.Completed += new EventHandler<SocketAsyncEventArgs>( Accept_Completion );
-			Accept_Start();
-            #else
-			m_OnAccept = OnAccept;
+            m_OnAccept = OnAccept;
 			try
 			{
 				IAsyncResult res = m_Listener.BeginAccept(m_OnAccept, m_Listener);
@@ -63,7 +50,6 @@ namespace Server.Network
 			}
 			catch (ObjectDisposedException)
 			{ }
-#endif
 		}
 
 		private Socket Bind(IPEndPoint ipep)
@@ -73,9 +59,10 @@ namespace Server.Network
 			try
 			{
 				s.LingerState.Enabled = false;
-#if !MONO
+				
+				// Default is 'false' starting Windows Vista and Server 2008. Source: https://msdn.microsoft.com/en-us/library/system.net.sockets.socket.exclusiveaddressuse(v=vs.110).aspx?f=255&MSPPError=-2147217396
 				s.ExclusiveAddressUse = false;
-#endif
+
 				s.Bind(ipep);
 				s.Listen(8);
 
@@ -161,47 +148,7 @@ namespace Server.Network
 			Console.WriteLine(@"----------------------------------------------------------------------");
 			Utility.PopColor();
 		}
-
-#if NewAsyncSockets
-		private void Accept_Start()
-		{
-			bool result = false;
-
-			do {
-				try {
-					result = !m_Listener.AcceptAsync( m_EventArgs );
-				} catch ( SocketException ex ) {
-					NetState.TraceException( ex );
-					break;
-				} catch ( ObjectDisposedException ) {
-					break;
-				}
-
-				if ( result )
-					Accept_Process( m_EventArgs );
-			} while ( result );
-		}
-
-		private void Accept_Completion( object sender, SocketAsyncEventArgs e )
-		{
-			Accept_Process( e );
-
-			Accept_Start();
-		}
-
-		private void Accept_Process( SocketAsyncEventArgs e )
-		{
-			if ( e.SocketError == SocketError.Success && VerifySocket( e.AcceptSocket ) ) {
-				Enqueue( e.AcceptSocket );
-			} else {
-				Release( e.AcceptSocket );
-			}
-
-			e.AcceptSocket = null;
-		}
-
-        #else
-
+		
 		private void OnAccept(IAsyncResult asyncResult)
 		{
 			Socket listener = (Socket)asyncResult.AsyncState;
@@ -244,7 +191,6 @@ namespace Server.Network
 			catch (ObjectDisposedException)
 			{ }
 		}
-#endif
 
 		private bool VerifySocket(Socket socket)
 		{
@@ -321,6 +267,14 @@ namespace Server.Network
 			{
 				socket.Close();
 			}
-		}
+
+            if (_PingListener == null)
+            {
+                return;
+            }
+
+            _PingListener.Dispose();
+            _PingListener = null;
+        }
 	}
 }

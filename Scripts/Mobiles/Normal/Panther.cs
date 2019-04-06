@@ -9,39 +9,39 @@ namespace Server.Mobiles
         public Panther()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a panther";
-            this.Body = 0xD6;
-            this.Hue = 0x901;
-            this.BaseSoundID = 0x462;
+            Name = "a panther";
+            Body = 0xD6;
+            Hue = 0x901;
+            BaseSoundID = 0x462;
 
-            this.SetStr(61, 85);
-            this.SetDex(86, 105);
-            this.SetInt(26, 50);
+            SetStr(61, 85);
+            SetDex(86, 105);
+            SetInt(26, 50);
 
-            this.SetHits(37, 51);
-            this.SetMana(0);
+            SetHits(37, 51);
+            SetMana(0);
 
-            this.SetDamage(4, 12);
+            SetDamage(4, 12);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 20, 25);
-            this.SetResistance(ResistanceType.Fire, 5, 10);
-            this.SetResistance(ResistanceType.Cold, 10, 15);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Physical, 20, 25);
+            SetResistance(ResistanceType.Fire, 5, 10);
+            SetResistance(ResistanceType.Cold, 10, 15);
+            SetResistance(ResistanceType.Poison, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 15.1, 30.0);
-            this.SetSkill(SkillName.Tactics, 50.1, 65.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 65.0);
+            SetSkill(SkillName.MagicResist, 15.1, 30.0);
+            SetSkill(SkillName.Tactics, 50.1, 65.0);
+            SetSkill(SkillName.Wrestling, 50.1, 65.0);
 
-            this.Fame = 450;
-            this.Karma = 0;
+            Fame = 450;
+            Karma = 0;
 
-            this.VirtualArmor = 16;
+            VirtualArmor = 16;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 53.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 53.1;
         }
 
         public Panther(Serial serial)

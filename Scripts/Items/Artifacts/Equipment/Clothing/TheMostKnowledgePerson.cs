@@ -12,10 +12,8 @@ namespace Server.Items
         public TheMostKnowledgePerson()
             : base(0x2684)
         {
-            this.Hue = 0x117;
-            this.StrRequirement = 0;
-
-            this.Attributes.BonusHits = 3 + Utility.RandomMinMax(0, 2);
+            Hue = 0x117;
+            Attributes.BonusHits = 3 + Utility.RandomMinMax(0, 2);
         }
 
         public TheMostKnowledgePerson(Serial serial)
@@ -50,14 +48,7 @@ namespace Server.Items
             {
                 return false;
             }
-        }
-        public override bool CanBeBlessed
-        {
-            get
-            {
-                return false;
-            }
-        }
+        }       
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

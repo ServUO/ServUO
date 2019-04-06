@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -24,6 +25,11 @@ namespace Server.Items
         public override int BaseMana { get { return 20; } }
 
         public override int AccuracyBonus { get { return -15; } }
+
+        public override SkillName GetSecondarySkill(Mobile from)
+        {
+            return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
+        }
 
         public static bool IsBlocking(Mobile m)
         {
@@ -104,17 +110,6 @@ namespace Server.Items
             }
         }
 
-        public override bool CheckSkills(Mobile from)
-        {
-            if (this.GetSkill(from, SkillName.Ninjitsu) < 50.0 && this.GetSkill(from, SkillName.Bushido) < 50.0)
-            {
-                from.SendLocalizedMessage(1063347, "50"); // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
-                return false;
-            }
-
-            return base.CheckSkills(from);
-        }
-
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
             if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
@@ -129,17 +124,22 @@ namespace Server.Items
 
             int parry = (int)attacker.Skills[SkillName.Parry].Value;
 
-            int dcibonus = (int)(10.0 * ((Math.Max(attacker.Skills[SkillName.Bushido].Value, attacker.Skills[SkillName.Ninjitsu].Value) - 50.0) / 70.0 + 5));
+            bool creature = attacker is BaseCreature;
+            double skill = creature ? attacker.Skills[SkillName.Bushido].Value :
+                                      Math.Max(attacker.Skills[SkillName.Bushido].Value, attacker.Skills[SkillName.Ninjitsu].Value);
+
+            int dcibonus = (int)(10.0 * ((skill - 50.0) / 70.0 + 5));
             int spellblock = parry <= 70 ? 70 : parry <= 100 ? 40 : 20;
             int meleeblock = parry <= 70 ? 80 : parry <= 100 ? 65 : 55;
 
             BeginBlock(attacker, dcibonus, spellblock, meleeblock);
+
+            if(creature)
+                PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Bushido);
         }
 
         private class BlockInfo
         {
-            public readonly Mobile m_Target;
-
             public readonly int _DCIBonus;
             public readonly int _SpellReduction;
             public readonly int _MeleeReduction;

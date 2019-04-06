@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server;
 using Server.Spells;
 using Server.Engines.PartySystem;
 using Server.Network;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -16,15 +19,9 @@ namespace Server.Items
         {
         }
 
-        public override bool CheckSkills(Mobile from)
+        public override SkillName GetSecondarySkill(Mobile from)
         {
-            if (GetSkill(from, SkillName.Ninjitsu) < 50.0 && GetSkill(from, SkillName.Bushido) < 50.0)
-            {
-                from.SendLocalizedMessage(1063347, "50"); // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
-                return false;
-            }
-
-            return base.CheckSkills(from);
+            return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
         }
 
         public override int BaseMana { get { return 30; } }
@@ -49,24 +46,7 @@ namespace Server.Items
             if (weapon == null)
                 return;
 
-            List<Mobile> targets = new List<Mobile>();
-
-            IPooledEnumerable eable = attacker.GetMobilesInRange(2);
-            foreach (Mobile m in eable)
-            {
-                if (m != attacker && SpellHelper.ValidIndirectTarget(attacker, m))
-                {
-                    if (m == null || m.Deleted || m.Map != attacker.Map || !m.Alive || !attacker.CanSee(m) || !attacker.CanBeHarmful(m))
-                        continue;
-
-                    if (!attacker.InRange(m, weapon.MaxRange))
-                        continue;
-
-                    if (attacker.InLOS(m))
-                        targets.Add(m);
-                }
-            }
-            eable.Free();
+            var targets = SpellHelper.AcquireIndirectTargets(attacker, attacker.Location, attacker.Map, 2).OfType<Mobile>().ToList();
 
             if (targets.Count > 0)
             {
@@ -76,68 +56,90 @@ namespace Server.Items
                 attacker.FixedEffect(0x3728, 10, 15);
                 attacker.PlaySound(0x2A1);
 
-                for (int i = 0; i < targets.Count; ++i)
+                if (m_Registry.ContainsKey(attacker))
                 {
-                    Mobile m = targets[i];
-                    attacker.DoHarmful(m, true);
-
-                    if (m_Registry.ContainsKey(m) && m_Registry[m] != null)
-                        m_Registry[m].Stop();
-
-                    Timer t = new InternalTimer(attacker, m);
-                    t.Start();
-                    m_Registry[m] = t;
-
-                    m.Send(SpeedControl.WalkSpeed);
+                    RemoveFromRegistry(attacker);
                 }
+
+                m_Registry[attacker] = new InternalTimer(attacker, targets);
+
+                foreach (var pm in targets.OfType<PlayerMobile>())
+                {
+                    BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1028852, TimeSpan.FromSeconds(2.0), pm));
+                }
+
+                if (defender is PlayerMobile && attacker is PlayerMobile)
+                {
+                    defender.SendSpeedControl(SpeedControlType.WalkSpeed);
+                    BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1152144, TimeSpan.FromSeconds(2.0), defender));
+                    Timer.DelayCall(TimeSpan.FromSeconds(2), mob => mob.SendSpeedControl(SpeedControlType.Disable), defender);
+                }
+
+                if (attacker is BaseCreature)
+                    PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Ninjitsu);
             }
+
+            ColUtility.Free(targets);
         }
 
         public static void RemoveFromRegistry(Mobile from)
         {
             if (m_Registry.ContainsKey(from))
+            {
+                m_Registry[from].Stop();
                 m_Registry.Remove(from);
-
-            Timer.DelayCall(TimeSpan.FromSeconds(2), () => from.Send(SpeedControl.Disable));
+            }
         }
 
         private class InternalTimer : Timer
         {
             private Mobile m_Attacker;
-            private Mobile m_Defender;
+            private IEnumerable<Mobile> m_List;
+            private long m_Start;
 
-            public InternalTimer(Mobile attacker, Mobile defender)
-                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+            public InternalTimer(Mobile attacker, IEnumerable<Mobile> list)
+                : base(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(500))
             {
                 m_Attacker = attacker;
-                m_Defender = defender;
+                m_List = list;
 
-                DoHit();
+                m_Start = Core.TickCount;
+
                 Priority = TimerPriority.TwentyFiveMS;
+                DoHit();
+
+                Start();
             }
 
             protected override void OnTick()
             {
-                if (m_Defender.Alive && m_Attacker.Alive)
+                if (m_Attacker.Alive)
                     DoHit();
 
-                Server.Items.FrenziedWhirlwind.RemoveFromRegistry(m_Defender);
-                Stop();
+                if (!m_Attacker.Alive || m_Start + 2000 < Core.TickCount)
+                {
+                    Server.Items.FrenziedWhirlwind.RemoveFromRegistry(m_Attacker);
+                }
             }
 
             private void DoHit()
             {
-                if (m_Attacker.InRange(m_Defender.Location, 2))
+                foreach (Mobile m in m_List)
                 {
-                    m_Attacker.FixedEffect(0x3728, 10, 15);
-                    m_Attacker.PlaySound(0x2A1);
+                    if (m_Attacker.InRange(m.Location, 2) && m.Alive && m.Map == m_Attacker.Map)
+                    {
+                        m_Attacker.FixedEffect(0x3728, 10, 15);
+                        m_Attacker.PlaySound(0x2A1);
 
-                    int amount = (int)(10.0 * ((Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value) - 50.0) / 70.0 + 5));
+                        int skill = m_Attacker is BaseCreature ? (int)m_Attacker.Skills[SkillName.Ninjitsu].Value :
+                                                              (int)Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value);
 
-                    AOS.Damage(m_Defender, m_Attacker, amount, 100, 0, 0, 0, 0);
+                        int amount = Utility.RandomMinMax((int)(skill / 50) * 5, (int)(skill / 50) * 20) + 2;
+                        AOS.Damage(m, m_Attacker, amount, 100, 0, 0, 0, 0);
 
-                    m_Attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
-                    m_Defender.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!
+                        //m_Attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
+                        //m_Defender.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!
+                    }
                 }
             }
         }

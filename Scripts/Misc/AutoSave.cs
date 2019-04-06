@@ -64,7 +64,7 @@ namespace Server.Misc
 
         public static void Save(bool permitBackgroundWrite)
         {
-            if (AutoRestart.Restarting)
+            if (AutoRestart.Restarting || Commands.CreateWorld.WorldCreating)
                 return;
 
             World.WaitForWriteCompletion();
@@ -83,7 +83,7 @@ namespace Server.Misc
 
         protected override void OnTick()
         {
-            if (!m_SavesEnabled || AutoRestart.Restarting)
+            if (!m_SavesEnabled || AutoRestart.Restarting || Commands.CreateWorld.WorldCreating)
                 return;
 
             if (m_Warning == TimeSpan.Zero)

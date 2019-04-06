@@ -221,7 +221,7 @@ namespace Server.Items
         public JesterHatOfChuckles(int hue)
             : base(hue)
         {
-            this.Attributes.Luck = 150;
+            Attributes.Luck = 150;
         }
 
         public JesterHatOfChuckles(Serial serial)
@@ -315,7 +315,7 @@ namespace Server.Items
         public NystulsWizardsHat(int hue)
             : base(hue)
         {
-            this.Attributes.LowerManaCost = 15;
+            Attributes.LowerManaCost = 15;
         }
 
         public NystulsWizardsHat(Serial serial)
@@ -441,11 +441,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsShipwreckedItem;
+                return m_IsShipwreckedItem;
             }
             set
             {
-                this.m_IsShipwreckedItem = value;
+                m_IsShipwreckedItem = value;
             }
         }
 
@@ -468,9 +468,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
 
-            writer.Write(this.m_IsShipwreckedItem);
+            writer.Write(m_IsShipwreckedItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -481,11 +481,17 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 2: goto case 1;
                 case 1:
                     {
-                        this.m_IsShipwreckedItem = reader.ReadBool();
+                        m_IsShipwreckedItem = reader.ReadBool();
                         break;
                     }
+            }
+
+            if (version == 1)
+            {
+                Weight = -1;
             }
         }
 
@@ -493,7 +499,7 @@ namespace Server.Items
         {
             base.AddEquipInfoAttributes(from, attrs);
 
-            if (this.m_IsShipwreckedItem)
+            if (m_IsShipwreckedItem)
                 attrs.Add(new EquipInfoAttribute(1041645));	// recovered from a shipwreck
         }
 
@@ -501,16 +507,18 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            if (this.m_IsShipwreckedItem)
+            if (m_IsShipwreckedItem)
                 list.Add(1041645); // recovered from a shipwreck
         }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
-            if (this.Quality == ItemQuality.Exceptional)
-                this.DistributeBonuses((tool is BaseRunicTool ? 6 : (Core.SE ? 15 : 14)));	//BLAME OSI. (We can't confirm it's an OSI bug yet.)
+            if (Quality == ItemQuality.Exceptional)
+            {
+                DistributeBonuses(from, (tool is BaseRunicTool ? 6 : (Core.SE ? 15 : 14)));
+            }
 
             return base.OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, craftItem, resHue);
         }
@@ -580,7 +588,6 @@ namespace Server.Items
         public Kasa(int hue)
             : base(0x2798, hue)
         {
-            this.Weight = 3.0;
         }
 
         public Kasa(Serial serial)
@@ -667,7 +674,6 @@ namespace Server.Items
         public ClothNinjaHood(int hue)
             : base(0x278F, hue)
         {
-            this.Weight = 2.0;
         }
 
         public ClothNinjaHood(Serial serial)
@@ -754,7 +760,7 @@ namespace Server.Items
         public FlowerGarland(int hue)
             : base(0x2306, hue)
         {
-            this.Weight = 1.0;
+            
         }
 
         public FlowerGarland(Serial serial)
@@ -840,7 +846,7 @@ namespace Server.Items
         public FloppyHat(int hue)
             : base(0x1713, hue)
         {
-            this.Weight = 1.0;
+            
         }
 
         public FloppyHat(Serial serial)
@@ -926,7 +932,7 @@ namespace Server.Items
         public WideBrimHat(int hue)
             : base(0x1714, hue)
         {
-            this.Weight = 1.0;
+            
         }
 
         public WideBrimHat(Serial serial)
@@ -1012,7 +1018,7 @@ namespace Server.Items
         public Cap(int hue)
             : base(0x1715, hue)
         {
-            this.Weight = 1.0;
+            
         }
 
         public Cap(Serial serial)
@@ -1098,7 +1104,7 @@ namespace Server.Items
         public SkullCap(int hue)
             : base(0x1544, hue)
         {
-            this.Weight = 1.0;
+            
         }
 
         public SkullCap(Serial serial)
@@ -1184,7 +1190,7 @@ namespace Server.Items
         public Bandana(int hue)
             : base(0x1540, hue)
         {
-            this.Weight = 1.0;
+            
         }
 
         public Bandana(Serial serial)
@@ -1272,7 +1278,6 @@ namespace Server.Items
         public BearMask(int hue)
             : base(0x1545, hue)
         {
-            this.Weight = 5.0;
         }
 
         public override bool Dye(Mobile from, DyeTub sender)
@@ -1366,7 +1371,6 @@ namespace Server.Items
         public DeerMask(int hue)
             : base(0x1547, hue)
         {
-            this.Weight = 4.0;
         }
 
         public override bool Dye(Mobile from, DyeTub sender)
@@ -1460,7 +1464,6 @@ namespace Server.Items
         public HornedTribalMask(int hue)
             : base(0x1549, hue)
         {
-            this.Weight = 2.0;
         }
 
         public override bool Dye(Mobile from, DyeTub sender)
@@ -1554,7 +1557,7 @@ namespace Server.Items
         public TribalMask(int hue)
             : base(0x154B, hue)
         {
-            this.Weight = 2.0;
+            
         }
 
         public override bool Dye(Mobile from, DyeTub sender)
@@ -1646,7 +1649,7 @@ namespace Server.Items
         public TallStrawHat(int hue)
             : base(0x1716, hue)
         {
-            this.Weight = 1.0;
+            
         }
 
         public TallStrawHat(Serial serial)
@@ -1732,7 +1735,7 @@ namespace Server.Items
         public StrawHat(int hue)
             : base(0x1717, hue)
         {
-            this.Weight = 1.0;
+            
         }
 
         public StrawHat(Serial serial)
@@ -1832,7 +1835,6 @@ namespace Server.Items
         public OrcishKinMask(int hue)
             : base(0x141B, hue)
         {
-            this.Weight = 2.0;
         }
 
         public override bool CanEquip(Mobile m)
@@ -1875,8 +1877,103 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            /*if (this.Hue != 0x8A4)
-                this.Hue = 0x8A4;*/
+            /*if (Hue != 0x8A4)
+                Hue = 0x8A4;*/
+        }
+    }
+
+    public class OrcMask : BaseHat, IRepairable
+    {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 1;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 1;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 7;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 7;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 8;
+            }
+        }
+
+        public override int InitMinHits
+        {
+            get
+            {
+                return 20;
+            }
+        }
+        public override int InitMaxHits
+        {
+            get
+            {
+                return 30;
+            }
+        }
+
+        public override bool Dye(Mobile from, DyeTub sender)
+        {
+            from.SendLocalizedMessage(sender.FailMessage);
+            return false;
+        }
+
+        public override int LabelNumber
+        {
+            get
+            {
+                return 1025147; // orc mask
+            }
+        }
+
+        [Constructable]
+        public OrcMask()
+            : base(0x141B)
+        {
+        }
+
+        public OrcMask(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
         }
     }
 
@@ -1959,7 +2056,6 @@ namespace Server.Items
         public SavageMask(int hue)
             : base(0x154B, hue)
         {
-            this.Weight = 2.0;
         }
 
         public SavageMask(Serial serial)
@@ -1980,8 +2076,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            /*if (this.Hue != 0 && (this.Hue < 2101 || this.Hue > 2130))
-                this.Hue = GetRandomHue();*/
+            /*if (Hue != 0 && (Hue < 2101 || Hue > 2130))
+                Hue = GetRandomHue();*/
         }
     }
 
@@ -2048,7 +2144,6 @@ namespace Server.Items
         public WizardsHat(int hue)
             : base(0x1718, hue)
         {
-            this.Weight = 1.0;
         }
 
         public WizardsHat(Serial serial)
@@ -2164,7 +2259,6 @@ namespace Server.Items
         public MagicWizardsHat(int hue)
             : base(0x1718, hue)
         {
-            this.Weight = 1.0;
         }
 
         public MagicWizardsHat(Serial serial)
@@ -2250,7 +2344,6 @@ namespace Server.Items
         public Bonnet(int hue)
             : base(0x1719, hue)
         {
-            this.Weight = 1.0;
         }
 
         public Bonnet(Serial serial)
@@ -2336,7 +2429,6 @@ namespace Server.Items
         public FeatheredHat(int hue)
             : base(0x171A, hue)
         {
-            this.Weight = 1.0;
         }
 
         public FeatheredHat(Serial serial)
@@ -2422,7 +2514,6 @@ namespace Server.Items
         public TricorneHat(int hue)
             : base(0x171B, hue)
         {
-            this.Weight = 1.0;
         }
 
         public TricorneHat(Serial serial)
@@ -2508,7 +2599,6 @@ namespace Server.Items
         public JesterHat(int hue)
             : base(0x171C, hue)
         {
-            this.Weight = 1.0;
         }
 
         public JesterHat(Serial serial)

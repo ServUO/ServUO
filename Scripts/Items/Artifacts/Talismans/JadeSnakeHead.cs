@@ -13,11 +13,11 @@ namespace Server.Items
         public JadeSnakeHead()
             : base(0x2F59)
         {
-            this.Hue = 0x48A;
-            this.Weight = 1.0;
-            this.SAAbsorptionAttributes.EaterPoison = 5;
-            this.Attributes.RegenStam = 2;
-            this.Attributes.LowerManaCost = 5;
+            Hue = 0x48A;
+            Weight = 1.0;
+            SAAbsorptionAttributes.EaterPoison = 5;
+            Attributes.RegenStam = 2;
+            Attributes.LowerManaCost = 5;
         }
 
         public JadeSnakeHead(Serial serial)

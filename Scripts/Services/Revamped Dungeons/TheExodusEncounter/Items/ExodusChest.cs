@@ -13,6 +13,8 @@ namespace Server.Items
 
         public override int DefaultGumpID { get { return 0x10C; } }
 
+        public bool CheckWhenHidden { get { return true; } }
+
         public static Type[] RituelItem { get { return m_RituelItem; } }
 
         private static Type[] m_RituelItem = new Type[]
@@ -31,9 +33,9 @@ namespace Server.Items
         {
             Visible = false;
             Locked = true;
-            LockLevel = 100;
-            RequiredSkill = 110;
-            MaxLockLevel = 130;
+            LockLevel = 90;
+            RequiredSkill = 90;
+            MaxLockLevel = 100;
             Weight = 0.0;
             Hue = 2700;
             Movable = false;
@@ -214,7 +216,7 @@ namespace Server.Items
         public ExodusChest ExodusChest { get { return m_Chest; } }
 
         public ExodusChestRegion(ExodusChest chest)
-            : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X, chest.Location.Y, 5, 5) )
+            : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X - 2, chest.Location.Y - 2 , 5, 5) )
         {
             m_Chest = chest;
         }

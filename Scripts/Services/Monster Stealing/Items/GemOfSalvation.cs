@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Server.Gumps; 
 using Server.Mobiles;
 using Server.Network;
 using Server.Items;
-using Server; 
-namespace drNO.ThieveItems
+using Server;
+
+namespace Server.Items
 {
-    class GemOfSalvation :Item
+    [TypeAlias("drNO.ThieveItems.GemOfSalvation")]
+    public class GemOfSalvation : Item
     {
-        private static readonly TimeSpan Cooldown = TimeSpan.FromHours(6); 
+        public override int LabelNumber { get { return 1094939; } } // Gem of Salvation
+
+        private static readonly TimeSpan Cooldown = TimeSpan.FromHours(6);
 
         [Constructable]
-        public GemOfSalvation():base(0x1F13)
+        public GemOfSalvation()
+            : base(0x1F13)
         {
-            Hue  = 0xba; 
+            Hue = 0xba;
             LootType = LootType.Blessed;
-            Name = "Gem of Salvation"; 
         }
 
-        public static Dictionary<PlayerMobile,DateTime> SalvationUsage = new Dictionary<PlayerMobile,DateTime>();
-        
+        public static Dictionary<PlayerMobile, DateTime> SalvationUsage = new Dictionary<PlayerMobile, DateTime>();
+
         public static void Initialize()
         {
-
             EventSink.PlayerDeath += new PlayerDeathEventHandler(OnDeath);
         }
 
@@ -34,15 +36,13 @@ namespace drNO.ThieveItems
 
             if (pm != null)
             {
-
-                HandleDeath(pm); 
+                HandleDeath(pm);
             }
         }
 
-
         public static void DoCleanup()
         {
-            List<PlayerMobile> toRemove = new List<PlayerMobile>(); 
+            List<PlayerMobile> toRemove = new List<PlayerMobile>();
 
             foreach (PlayerMobile pm in SalvationUsage.Keys)
             {
@@ -50,18 +50,17 @@ namespace drNO.ThieveItems
                 {
                     if (SalvationUsage[pm] < DateTime.Now + Cooldown)
                     {
-                        toRemove.Add(pm); 
+                        toRemove.Add(pm);
                     }
                 }
             }
 
             foreach (PlayerMobile pm in toRemove)
             {
-                SalvationUsage.Remove(pm); 
+                SalvationUsage.Remove(pm);
             }
 
-            toRemove.Clear(); 
-           
+            toRemove.Clear();
         }
 
         private static bool CheckUse(PlayerMobile pm)
@@ -83,7 +82,7 @@ namespace drNO.ThieveItems
         {
             if (!CheckUse(pm))
             {
-                return; 
+                return;
             }
 
             if (pm.Backpack != null)
@@ -97,9 +96,9 @@ namespace drNO.ThieveItems
                         t1.Start();
 
                         Timer t2 = new GemOfSalvationGumpCloseTimer(pm);
-                        t2.Start(); 
+                        t2.Start();
 
-                        break; 
+                        break;
                     }
                 }
             }
@@ -107,32 +106,30 @@ namespace drNO.ThieveItems
         }
         public GemOfSalvation(Serial serial)
             : base(serial)
-		{
-		}
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 ); // version
-		}
+            writer.Write((int)0); // version
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
-		}
+            int version = reader.ReadInt();
+        }
 
 
 
 
     }
 
-    class GemOfSalvationGump : Gump
+    public class GemOfSalvationGump : Gump
     {
-        
-
         public GemOfSalvationGump()
             : base(0, 0)
         {
@@ -151,12 +148,12 @@ namespace drNO.ThieveItems
             this.AddLabel(110, 150, 337, @"No, I'dont want to be ressurected");
         }
 
-        enum Buttons
+        public enum Buttons
         {
             btnYes = 1,
             btnNO = 2,
         }
-        
+
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
@@ -184,7 +181,7 @@ namespace drNO.ThieveItems
                                 }
                                 mob.Resurrect();
                                 itm.Consume();
-                                break; 
+                                break;
 
                             }
                         }
@@ -194,11 +191,12 @@ namespace drNO.ThieveItems
             }
             else
             {
-                mob.SendMessage("Canceled"); 
+                mob.SendMessage("Canceled");
             }
         }
 
     }
+
     class GemOfSalvationGumpCloseTimer : Timer
     {
         Mobile m_Owner;

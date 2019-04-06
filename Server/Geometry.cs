@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Geometry.cs
-// **********
-#endregion
-
 #region References
 using System;
 #endregion
@@ -72,7 +66,8 @@ namespace Server
 			{
 				return CompareTo((Point2D)other);
 			}
-			else if (other == null)
+			
+			if (other == null)
 			{
 				return -1;
 			}
@@ -82,7 +77,7 @@ namespace Server
 
 		public override bool Equals(object o)
 		{
-			if (o == null || !(o is IPoint2D))
+			if (!(o is IPoint2D))
 			{
 				return false;
 			}
@@ -94,7 +89,15 @@ namespace Server
 
 		public override int GetHashCode()
 		{
-			return m_X ^ m_Y;
+			unchecked
+			{
+				var hash = 1 + Math.Abs(X) + Math.Abs(Y);
+
+				hash = (hash * 397) ^ X;
+				hash = (hash * 397) ^ Y;
+
+				return hash;
+			}
 		}
 
 		public static bool operator ==(Point2D l, Point2D r)
@@ -248,7 +251,7 @@ namespace Server
 
 		public override bool Equals(object o)
 		{
-			if (o == null || !(o is IPoint3D))
+			if (!(o is IPoint3D))
 			{
 				return false;
 			}
@@ -260,7 +263,16 @@ namespace Server
 
 		public override int GetHashCode()
 		{
-			return m_X ^ m_Y ^ m_Z;
+			unchecked
+			{
+				var hash = 1 + Math.Abs(X) + Math.Abs(Y) + Math.Abs(Z);
+
+				hash = (hash * 397) ^ X;
+				hash = (hash * 397) ^ Y;
+				hash = (hash * 397) ^ Z;
+
+				return hash;
+			}
 		}
 
 		public static Point3D Parse(string value)
@@ -336,7 +348,8 @@ namespace Server
 			{
 				return CompareTo((Point3D)other);
 			}
-			else if (other == null)
+			
+			if (other == null)
 			{
 				return -1;
 			}
@@ -394,7 +407,10 @@ namespace Server
 			string param4 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			return new Rectangle2D(
-				Convert.ToInt32(param1), Convert.ToInt32(param2), Convert.ToInt32(param3), Convert.ToInt32(param4));
+				Convert.ToInt32(param1),
+				Convert.ToInt32(param2),
+				Convert.ToInt32(param3),
+				Convert.ToInt32(param4));
 		}
 
 		[CommandProperty(AccessLevel.Counselor)]
@@ -459,6 +475,19 @@ namespace Server
 		{
 			return String.Format("({0}, {1})+({2}, {3})", X, Y, Width, Height);
 		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hash = 1 + Math.Abs(Start.X + Start.Y) + Math.Abs(End.X + End.Y);
+
+				hash = (hash * 397) ^ Start.GetHashCode();
+				hash = (hash * 397) ^ End.GetHashCode();
+
+				return hash;
+			}
+		}
 	}
 
 	[NoSort]
@@ -478,6 +507,53 @@ namespace Server
 		{
 			m_Start = new Point3D(x, y, z);
 			m_End = new Point3D(x + width, y + height, z + depth);
+		}
+
+		public void Set(int x, int y, int z, int width, int height, int depth)
+		{
+			m_Start = new Point3D(x, y, z);
+			m_End = new Point3D(x + width, y + height, z + depth);
+		}
+
+		public static Rectangle3D Parse(string value)
+		{
+			int start = value.IndexOf('(');
+			int end = value.IndexOf(',', start + 1);
+
+			string param1 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param2 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param3 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param4 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param5 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(')', start + 1);
+
+			string param6 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			return new Rectangle3D(
+				Convert.ToInt32(param1),
+				Convert.ToInt32(param2),
+				Convert.ToInt32(param3),
+				Convert.ToInt32(param4),
+				Convert.ToInt32(param5),
+				Convert.ToInt32(param6));
 		}
 
 		[CommandProperty(AccessLevel.Counselor)]
@@ -505,6 +581,24 @@ namespace Server
 		{
 			return (p.X >= m_Start.m_X) && (p.X < m_End.m_X) && (p.Y >= m_Start.m_Y) && (p.Y < m_End.m_Y) && (p.Z >= m_Start.m_Z) &&
 				   (p.Z < m_End.m_Z);
+		}
+
+		public override string ToString()
+		{
+			return String.Format("({0}, {1}, {2})+({3}, {4}, {5})", Start.X, Start.Y, Start.Z, Width, Height, Depth);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hash = 1 + Math.Abs(Start.X + Start.Y + Start.Z) + Math.Abs(End.X + End.Y + End.Z);
+
+				hash = (hash * 397) ^ Start.GetHashCode();
+				hash = (hash * 397) ^ End.GetHashCode();
+
+				return hash;
+			}
 		}
 	}
 }

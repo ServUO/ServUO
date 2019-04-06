@@ -404,6 +404,8 @@ namespace Server.Engines.Quests
 
         public virtual void Complete()
         {
+            EventSink.InvokeQuestComplete(new QuestCompleteEventArgs(From, GetType()));
+
             this.ClearQuest(true);
         }
 

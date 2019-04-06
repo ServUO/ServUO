@@ -19,9 +19,9 @@ namespace Server.Items
         public NaturalDye(PlantPigmentHue hue)
             : base(0x182B)
         {
-            this.Weight = 1.0;
-            this.PigmentHue = hue;
-            this.m_UsesRemaining = 5;
+            Weight = 1.0;
+            PigmentHue = hue;
+            m_UsesRemaining = 5;
         }
 
         public NaturalDye(Serial serial)
@@ -34,16 +34,16 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Hue;
+                return m_Hue;
             }
             set
             {
-                this.m_Hue = value;
+                m_Hue = value;
                 // set any invalid pigment hue to Plain
-                if (this.m_Hue != PlantPigmentHueInfo.GetInfo(this.m_Hue).PlantPigmentHue)
-                    this.m_Hue = PlantPigmentHue.Plain;
-                this.Hue = PlantPigmentHueInfo.GetInfo(this.m_Hue).Hue;
-                this.InvalidateProperties();
+                if (m_Hue != PlantPigmentHueInfo.GetInfo(m_Hue).PlantPigmentHue)
+                    m_Hue = PlantPigmentHue.Plain;
+                Hue = PlantPigmentHueInfo.GetInfo(m_Hue).Hue;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -51,12 +51,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
         public override int LabelNumber
@@ -84,15 +84,15 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            PlantPigmentHueInfo hueInfo = PlantPigmentHueInfo.GetInfo(this.m_Hue);
+            PlantPigmentHueInfo hueInfo = PlantPigmentHueInfo.GetInfo(m_Hue);
             
-            if (this.Amount > 1)
-                list.Add(PlantPigmentHueInfo.IsBright(m_Hue) ? 1113277 : 1113276, "{0}\t{1}", this.Amount, "#" + hueInfo.Name);  // ~1_COLOR~ Softened Reeds
+            if (Amount > 1)
+                list.Add(PlantPigmentHueInfo.IsBright(m_Hue) ? 1113277 : 1113276, "{0}\t{1}", Amount, "#" + hueInfo.Name);  // ~1_COLOR~ Softened Reeds
             else
                 list.Add(hueInfo.IsBright() ? 1112138 : 1112137, "#" + hueInfo.Name);  // ~1_COLOR~ natural dye
         }
@@ -103,8 +103,8 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write((int)this.m_Hue);
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((int)m_Hue);
+            writer.Write((int)m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -116,8 +116,8 @@ namespace Server.Items
             switch ( version )
             {
                 case 1:
-                    this.m_Hue = (PlantPigmentHue)reader.ReadInt();
-                    this.m_UsesRemaining = reader.ReadInt();
+                    m_Hue = (PlantPigmentHue)reader.ReadInt();
+                    m_UsesRemaining = reader.ReadInt();
                     break;
             }
         }
@@ -134,36 +134,34 @@ namespace Server.Items
             public InternalTarget(NaturalDye item)
                 : base(1, false, TargetFlags.None)
             {
-                this.m_Item = item;
+                m_Item = item;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Item.Deleted)
+                if (m_Item.Deleted)
                     return;
 
                 Item item = targeted as Item;
-                if (null != item)
-                {
-                    bool valid = (item is IDyable ||
-                                  item is BaseBook || item is BaseClothing ||
-                                  item is BaseJewel || item is BaseStatuette ||
-                                  item is BaseWeapon || item is Runebook ||
-                                  item is Spellbook);
 
-                    if (!valid && item is BaseArmor)
-                    {
-                        CraftResourceType restype = CraftResources.GetType(((BaseArmor)item).Resource);
-                        if ((CraftResourceType.Leather == restype || CraftResourceType.Metal == restype) &&
-                            ArmorMaterialType.Bone != ((BaseArmor)item).MaterialType)
-                        {
-                            valid = true;
-                        }
-                    }
+                if (item != null)
+                {
+                    bool valid = (item is IDyable || item is BaseTalisman ||
+                        item is BaseBook || item is BaseClothing ||
+                        item is BaseJewel || item is BaseStatuette ||
+                        item is BaseWeapon || item is Runebook ||
+                        item is Spellbook || item is DecorativePlant ||
+                        item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
+					
+					if (item is HoodedShroudOfShadows || item is MonkRobe)
+					{
+						from.SendLocalizedMessage(1042083); // You cannot dye that.
+						return;
+					}
 
                     if (!valid && FurnitureAttribute.Check(item))
                     {
-                        if (!from.InRange(this.m_Item.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
+                        if (!from.InRange(m_Item.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                         {
                             from.SendLocalizedMessage(500446); // That is too far away.
                             return;
@@ -186,18 +184,33 @@ namespace Server.Items
                                 valid = true;
                         }
                     }
+                    else if (!item.IsChildOf(from.Backpack))
+                    {
+                        from.SendLocalizedMessage(1060640); // The item must be in your backpack to use it.
+                        return;
+                    }
+
+                    if (!valid && item is BaseArmor)
+                    {
+                        CraftResourceType restype = CraftResources.GetType(((BaseArmor)item).Resource);
+                        if ((CraftResourceType.Leather == restype || CraftResourceType.Metal == restype) &&
+                            ArmorMaterialType.Bone != ((BaseArmor)item).MaterialType)
+                        {
+                            valid = true;
+                        }
+                    }
 
                     // need to add any bags, chests, boxes, crates not IDyable but dyable by natural dyes
 
                     if (valid)
                     {
-                        item.Hue = PlantPigmentHueInfo.GetInfo(this.m_Item.PigmentHue).Hue;
+                        item.Hue = PlantPigmentHueInfo.GetInfo(m_Item.PigmentHue).Hue;
                         from.PlaySound(0x23E);
 
-                        if (--this.m_Item.UsesRemaining > 0)
-                            this.m_Item.InvalidateProperties();
+                        if (--m_Item.UsesRemaining > 0)
+                            m_Item.InvalidateProperties();
                         else
-                            this.m_Item.Delete();
+                            m_Item.Delete();
 
                         return;
                     }

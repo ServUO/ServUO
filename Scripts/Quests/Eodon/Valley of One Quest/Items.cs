@@ -647,31 +647,40 @@ namespace Server.Items
 	
 	public class PetTigerCubStatuette : MonsterStatuette
 	{
+        public bool HasUsed { get; set; }
+
 		[Constructable]
 		public PetTigerCubStatuette() : base(MonsterStatuetteType.TigerCub)
 		{
 			IsRewardItem = false;
 		}
-		
-		public override void OnDoubleClick(Mobile from)
-		{
-			if(IsLockedDown && from.Followers != from.FollowersMax)
-			{
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (HasUsed)
+            {
+                base.OnDoubleClick(from);
+            }
+            else if (IsLockedDown && from.Followers != from.FollowersMax)
+            {
                 BaseCreature cub = new TigerCub();
-				Point3D p = from.Location;
-				
-				int x = p.X;
-				int y = p.Y;
-				
-				Server.Movement.Movement.Offset(from.Direction, ref x, ref y);
-				int z = from.Map.GetAverageZ(x, y);
+                Point3D p = from.Location;
+
+                int x = p.X;
+                int y = p.Y;
+
+                Server.Movement.Movement.Offset(from.Direction, ref x, ref y);
+                int z = from.Map.GetAverageZ(x, y);
 
                 if (from.Map.CanSpawnMobile(x, y, z))
                     p = new Point3D(x, y, z);
-				
-				cub.MoveToWorld(p, from.Map);
-				cub.SetControlMaster(from);
-			}
+
+                cub.MoveToWorld(p, from.Map);
+                cub.SetControlMaster(from);
+                cub.IsBonded = true;
+
+                HasUsed = true;
+            }
 		}
 
         public PetTigerCubStatuette(Serial serial)
@@ -682,13 +691,24 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
+
+            writer.Write(HasUsed);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int v = reader.ReadInt();
+
+            switch(v)
+            {
+                case 1:
+                    HasUsed = reader.ReadBool();
+                    break;
+                case 0:
+                    break;
+            }
 		}
 	}
 	

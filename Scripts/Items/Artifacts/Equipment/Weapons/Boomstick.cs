@@ -9,12 +9,11 @@ namespace Server.Items
         public Boomstick()
             : base()
         {
-            this.Hue = 0x25;
-			
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.LowerRegCost = 20;
+            Hue = 0x25;		
+            Attributes.SpellChanneling = 1;
+            Attributes.RegenMana = 3;
+            Attributes.CastSpeed = 1;
+            Attributes.LowerRegCost = 20;
         }
 
         public Boomstick(Serial serial)

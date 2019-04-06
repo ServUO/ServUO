@@ -35,6 +35,12 @@ namespace Server.Spells.SkillMasteries
             if ((move == null || move.GetType() != this.GetType()) && !CheckCooldown(from))
                 return false;
 
+            if (from.Player && from.Skills.CurrentMastery != MoveSkill)
+            {
+                from.SendLocalizedMessage(1115664); // You are not on the correct path for using this mastery ability.
+                return false;
+            }
+
             return base.Validate(from);
         }
 
@@ -62,6 +68,9 @@ namespace Server.Spells.SkillMasteries
 
         public bool CheckWeapon(Mobile from)
         {
+            if (!from.Player)
+                return true;
+
             BaseWeapon wep = from.Weapon as BaseWeapon;
 
             return wep != null && wep.DefSkill == MoveSkill;
@@ -94,7 +103,7 @@ namespace Server.Spells.SkillMasteries
         {
         }
 
-        public virtual void OnDamaged(Mobile attacker, Mobile defender, int damage)
+        public virtual void OnDamaged(Mobile attacker, Mobile defender, DamageType type, ref int damage)
         {
         }
     }

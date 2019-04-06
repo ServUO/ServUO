@@ -60,14 +60,12 @@ namespace Server.Items
 
         public void DockBoat(BaseBoat boat, BaseHouse house)
         {
-            List<ISpawnable> list = boat.GetMovingEntities();
-
-            foreach (ISpawnable o in list)
+            foreach (var entity in boat.GetEntitiesOnBoard())
             {
-                if (!(o is Item) || o == this || boat.IsComponentItem(o) || o is EffectItem || o == boat.TillerMan)
+                if (!(entity is Item) || entity == this || boat.IsComponentItem(entity) || entity is EffectItem || entity == boat.TillerMan)
                     continue;
 
-                Item item = o as Item;
+                Item item = entity as Item;
 
                 if (!item.Deleted && boat.Contains(item))
                 {
@@ -144,9 +142,6 @@ namespace Server.Items
 
             boat.Refresh();
             boat.Internalize();
-
-            list.Clear();
-            list.TrimExcess();
         }
 
         public static void Configure()

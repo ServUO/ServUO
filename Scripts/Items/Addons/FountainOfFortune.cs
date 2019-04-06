@@ -80,7 +80,7 @@ namespace Server.Items
 					case 0: item = new SolesOfProvidence(); break;
 					case 1: item = new GemologistsSatchel(); break;
 					case 2: item = new RelicFragment(5); break;
-					case 3: item = new EnchantEssence(5); break;
+					case 3: item = new EnchantedEssence(5); break;
 				}
 				
 				if(from.Backpack == null || !from.Backpack.TryDropItem(from, item, false))

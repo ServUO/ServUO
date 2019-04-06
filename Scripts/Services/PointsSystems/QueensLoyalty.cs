@@ -54,13 +54,11 @@ namespace Server.Engines.Points
 			}
 		}
 		
-		public override void ProcessQuest(Mobile from, BaseQuest quest)
+		public override void ProcessQuest(Mobile from, Type type)
 		{
-			if(from == null || quest == null)
+            if (from == null || type == null)
 				return;
-				
-			Type type = quest.GetType();
-				
+
 			if(Entries.ContainsKey(type))
 				AwardPoints(from, Entries[type].Item1, true);
 		}
@@ -174,5 +172,24 @@ namespace Server.Engines.Points
 			Entries[typeof(AWorthyPropositionQuest)]			= new Tuple<double, double>(50, 5.0);
 			Entries[typeof(UnusualGoods)]     					= new Tuple<double, double>(75, 7.5);
 		}
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            if (Version >= 2)
+            {
+                int version = reader.ReadInt();
+
+                // all deserialize code in here
+            }
+        }
 	}
 }

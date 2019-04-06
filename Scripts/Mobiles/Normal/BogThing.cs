@@ -120,12 +120,14 @@ namespace Server.Mobiles
         public void EatBoglings()
         {
             ArrayList toEat = new ArrayList();
-  
-            foreach (Mobile m in this.GetMobilesInRange(2))
+            IPooledEnumerable eable = GetMobilesInRange(2);
+
+            foreach (Mobile m in eable)
             {
                 if (m is Bogling)
                     toEat.Add(m);
             }
+            eable.Free();
 
             if (toEat.Count > 0)
             {

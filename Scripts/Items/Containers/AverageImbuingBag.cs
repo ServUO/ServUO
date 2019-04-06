@@ -11,10 +11,10 @@ namespace Server.Items
             switch (Utility.Random(2))
             {
                 case 0:
-                    this.AddItem(new SpiderCarapace());
+                    DropItem(new SpiderCarapace());
                     break;
                 case 1:
-                    this.AddItem(new SilverSnakeSkin());
+                    DropItem(new SilverSnakeSkin());
                     break;
             }
         }

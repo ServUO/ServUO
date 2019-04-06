@@ -319,7 +319,7 @@ namespace Ultima
 								}
 							}
 							stream.Close();
-							return new Bitmap(width, height, bytesPerStride, PixelFormat.Format16bppArgb1555, (IntPtr)pPixelDataStart);
+							return new Bitmap(width, height, bytesPerStride, Settings.PixelFormat, (IntPtr)pPixelDataStart);
 						}
 					}
 				}
@@ -388,9 +388,9 @@ namespace Ultima
 			{
 				return null;
 			}
-			var bmp = new Bitmap(width, height, PixelFormat.Format16bppArgb1555);
+			var bmp = new Bitmap(width, height, Settings.PixelFormat);
 			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+				new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
 
 			if (m_StreamBuffer == null || m_StreamBuffer.Length < length)
 			{
@@ -472,7 +472,7 @@ namespace Ultima
 						else
 						{
 							BitmapData bd = bmp.LockBits(
-								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
 							var line = (ushort*)bd.Scan0;
 							int delta = bd.Stride >> 1;
 

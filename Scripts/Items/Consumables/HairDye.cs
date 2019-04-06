@@ -6,11 +6,13 @@ namespace Server.Items
 {
     public class HairDye : Item
     {
+        public override int LabelNumber { get { return 1041060; } } // Hair Dye
+
         [Constructable]
         public HairDye()
             : base(0xEFF)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public HairDye(Serial serial)
@@ -18,30 +20,21 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041060;
-            }
-        }// Hair Dye
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 1))
+            if (from.InRange(GetWorldLocation(), 1))
             {
                 from.CloseGump(typeof(HairDyeGump));
                 from.SendGump(new HairDyeGump(this));
@@ -74,47 +67,47 @@ namespace Server.Items
         public HairDyeGump(HairDye dye)
             : base(50, 50)
         {
-            this.m_HairDye = dye;
+            m_HairDye = dye;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(100, 10, 350, 355, 2600);
-            this.AddBackground(120, 54, 110, 270, 5100);
+            AddBackground(100, 10, 350, 355, 2600);
+            AddBackground(120, 54, 110, 270, 5100);
 
-            this.AddHtmlLocalized(70, 25, 400, 35, 1011013, false, false); // <center>Hair Color Selection Menu</center>
+            AddHtmlLocalized(70, 25, 400, 35, 1011013, false, false); // <center>Hair Color Selection Menu</center>
 
-            this.AddButton(149, 328, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(185, 329, 250, 35, 1011014, false, false); // Dye my hair this color!
+            AddButton(149, 328, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(185, 329, 250, 35, 1011014, false, false); // Dye my hair this color!
 
             for (int i = 0; i < m_Entries.Length; ++i)
             {
-                this.AddLabel(130, 59 + (i * 22), m_Entries[i].HueStart - 1, m_Entries[i].Name);
-                this.AddButton(207, 60 + (i * 22), 5224, 5224, 0, GumpButtonType.Page, i + 1);
+                AddLabel(130, 59 + (i * 22), m_Entries[i].HueStart - 1, m_Entries[i].Name);
+                AddButton(207, 60 + (i * 22), 5224, 5224, 0, GumpButtonType.Page, i + 1);
             }
 
             for (int i = 0; i < m_Entries.Length; ++i)
             {
                 HairDyeEntry e = m_Entries[i];
 
-                this.AddPage(i + 1);
+                AddPage(i + 1);
 
                 for (int j = 0; j < e.HueCount; ++j)
                 {
-                    this.AddLabel(278 + ((j / 16) * 80), 52 + ((j % 16) * 17), e.HueStart + j - 1, "*****");
-                    this.AddRadio(260 + ((j / 16) * 80), 52 + ((j % 16) * 17), 210, 211, false, (i * 100) + j);
+                    AddLabel(278 + ((j / 16) * 80), 52 + ((j % 16) * 17), e.HueStart + j - 1, "*****");
+                    AddRadio(260 + ((j / 16) * 80), 52 + ((j % 16) * 17), 210, 211, false, (i * 100) + j);
                 }
             }
         }
 
         public override void OnResponse(NetState from, RelayInfo info)
         {
-            if (this.m_HairDye.Deleted)
+            if (m_HairDye.Deleted)
                 return;
 
             Mobile m = from.Mobile;
             int[] switches = info.Switches;
 
-            if (!this.m_HairDye.IsChildOf(m.Backpack)) 
+            if (!m_HairDye.IsChildOf(m.Backpack)) 
             {
                 m.SendLocalizedMessage(1042010); //You must have the objectin your backpack to use it.
                 return;
@@ -144,7 +137,7 @@ namespace Server.Items
                             m.FacialHairHue = hue;
 
                             m.SendLocalizedMessage(501199);  // You dye your hair
-                            this.m_HairDye.Delete();
+                            m_HairDye.Delete();
                             m.PlaySound(0x4E);
                         }
                     }
@@ -163,30 +156,30 @@ namespace Server.Items
             private readonly int m_HueCount;
             public HairDyeEntry(string name, int hueStart, int hueCount)
             {
-                this.m_Name = name;
-                this.m_HueStart = hueStart;
-                this.m_HueCount = hueCount;
+                m_Name = name;
+                m_HueStart = hueStart;
+                m_HueCount = hueCount;
             }
 
             public string Name
             {
                 get
                 {
-                    return this.m_Name;
+                    return m_Name;
                 }
             }
             public int HueStart
             {
                 get
                 {
-                    return this.m_HueStart;
+                    return m_HueStart;
                 }
             }
             public int HueCount
             {
                 get
                 {
-                    return this.m_HueCount;
+                    return m_HueCount;
                 }
             }
         }

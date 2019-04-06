@@ -247,7 +247,7 @@ namespace Server.Items
                         {
                             if (text != null)
                             {
-                                text.Trim();
+                                text = text.Trim();
                                 text = Utility.FixHtml(text);
 
                                 if (text.Length > 15 || !Server.Guilds.BaseGuildGump.CheckProfanity(text))

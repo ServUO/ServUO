@@ -9,35 +9,35 @@ namespace Server.Mobiles
         public Chicken()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a chicken";
-            this.Body = 0xD0;
-            this.BaseSoundID = 0x6E;
+            Name = "a chicken";
+            Body = 0xD0;
+            BaseSoundID = 0x6E;
 
-            this.SetStr(5);
-            this.SetDex(15);
-            this.SetInt(5);
+            SetStr(5);
+            SetDex(15);
+            SetInt(5);
 
-            this.SetHits(3);
-            this.SetMana(0);
+            SetHits(3);
+            SetMana(0);
 
-            this.SetDamage(1);
+            SetDamage(1);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 1, 5);
+            SetResistance(ResistanceType.Physical, 1, 5);
 
-            this.SetSkill(SkillName.MagicResist, 4.0);
-            this.SetSkill(SkillName.Tactics, 5.0);
-            this.SetSkill(SkillName.Wrestling, 5.0);
+            SetSkill(SkillName.MagicResist, 4.0);
+            SetSkill(SkillName.Tactics, 5.0);
+            SetSkill(SkillName.Wrestling, 5.0);
 
-            this.Fame = 150;
-            this.Karma = 0;
+            Fame = 150;
+            Karma = 0;
 
-            this.VirtualArmor = 2;
+            VirtualArmor = 2;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = -0.9;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = -0.9;
         }
 
         public Chicken(Serial serial)

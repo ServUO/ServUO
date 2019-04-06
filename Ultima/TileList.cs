@@ -89,14 +89,9 @@ namespace Ultima
 			m_Tiles.Add(new MTile(id, z));
 		}
 
-		public void Add(ushort id, sbyte z, sbyte flag)
+        public void Add(ushort id, sbyte z, TileFlag flag)
 		{
 			m_Tiles.Add(new MTile(id, z, flag));
-		}
-
-		public void Add(ushort id, sbyte z, sbyte flag, int unk1)
-		{
-			m_Tiles.Add(new MTile(id, z, flag, unk1));
 		}
 
 		public MTile[] ToArray()
@@ -125,19 +120,11 @@ namespace Ultima
 			}
 		}
 
-		public void Set(int i, ushort id, sbyte z, sbyte flag)
+        public void Set(int i, ushort id, sbyte z, TileFlag flag)
 		{
 			if (i < Count)
 			{
 				m_Tiles[i].Set(id, z, flag);
-			}
-		}
-
-		public void Set(int i, ushort id, sbyte z, sbyte flag, int unk1)
-		{
-			if (i < Count)
-			{
-				m_Tiles[i].Set(id, z, flag, unk1);
 			}
 		}
 

@@ -54,6 +54,8 @@ namespace Server.Items
 
     public class GozaMatEastDeed : BaseAddonDeed
     {
+        public override bool UseCraftResource { get { return false; } }
+
         [Constructable]
         public GozaMatEastDeed()
         {
@@ -145,6 +147,8 @@ namespace Server.Items
 
     public class GozaMatSouthDeed : BaseAddonDeed
     {
+        public override bool UseCraftResource { get { return false; } }
+
         [Constructable]
         public GozaMatSouthDeed()
         {
@@ -242,6 +246,8 @@ namespace Server.Items
 
     public class SquareGozaMatEastDeed : BaseAddonDeed
     {
+        public override bool UseCraftResource { get { return false; } }
+
         [Constructable]
         public SquareGozaMatEastDeed()
         {
@@ -332,6 +338,8 @@ namespace Server.Items
 
     public class SquareGozaMatSouthDeed : BaseAddonDeed
     {
+        public override bool UseCraftResource { get { return false; } }
+
         [Constructable]
         public SquareGozaMatSouthDeed()
         {
@@ -423,6 +431,8 @@ namespace Server.Items
 
     public class BrocadeGozaMatEastDeed : BaseAddonDeed
     {
+        public override bool UseCraftResource { get { return false; } }
+
         [Constructable]
         public BrocadeGozaMatEastDeed()
         {
@@ -514,6 +524,8 @@ namespace Server.Items
 
     public class BrocadeGozaMatSouthDeed : BaseAddonDeed
     {
+        public override bool UseCraftResource { get { return false; } }
+
         [Constructable]
         public BrocadeGozaMatSouthDeed()
         {
@@ -604,6 +616,8 @@ namespace Server.Items
 
     public class BrocadeSquareGozaMatEastDeed : BaseAddonDeed
     {
+        public override bool UseCraftResource { get { return false; } }
+
         [Constructable]
         public BrocadeSquareGozaMatEastDeed()
         {
@@ -694,6 +708,8 @@ namespace Server.Items
 
     public class BrocadeSquareGozaMatSouthDeed : BaseAddonDeed
     {
+        public override bool UseCraftResource { get { return false; } }
+
         [Constructable]
         public BrocadeSquareGozaMatSouthDeed()
         {

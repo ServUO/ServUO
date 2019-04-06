@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public MacheteOfDefense()
         {
-            this.Attributes.DefendChance = 5;
+            Attributes.DefendChance = 5;
         }
 
         public MacheteOfDefense(Serial serial)

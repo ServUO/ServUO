@@ -9,7 +9,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public VitaviRenowned()
-            : base(AIType.AI_Mage)
+            : base(AIType.AI_Mystic)
         {
             this.Name = "Vitavi";
             this.Title = "[Renowned]";
@@ -42,8 +42,7 @@ namespace Server.Mobiles
             this.Karma = -7500;
 
             this.VirtualArmor = 44;
-
-            this.PackItem(new EssenceBalance());
+            
             this.PackReg(6);
 
             if (0.02 > Utility.RandomDouble())

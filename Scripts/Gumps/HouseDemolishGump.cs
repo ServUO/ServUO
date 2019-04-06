@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - HouseDemolishGump.cs
-// **********
-#endregion
-
 #region References
 using Server.Accounting;
 using Server.Guilds;
@@ -103,6 +97,13 @@ namespace Server.Gumps
 						// You cannot do that that while you still have unclaimed contract vendor inventory in your house.
 						return;
 					}
+
+                    else if (m_House.HasActiveAuction)
+                    {
+                        m_Mobile.SendLocalizedMessage(1156453); 
+                        // You cannot currently take this action because you have auction safes locked down in your home. You must remove them first.
+                        return;
+                    }
 
 					if (m_Mobile.AccessLevel >= AccessLevel.GameMaster)
 					{

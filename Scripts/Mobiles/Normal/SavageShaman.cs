@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - SavageShaman.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -145,14 +139,16 @@ namespace Server.Mobiles
 			}
 
 			ArrayList list = new ArrayList();
+            IPooledEnumerable eable = GetMobilesInRange(8);
 
-			foreach (Mobile m in GetMobilesInRange(8))
+			foreach (Mobile m in eable)
 			{
 				if (m != this && m is SavageShaman)
 				{
 					list.Add(m);
 				}
 			}
+            eable.Free();
 
 			Animate(111, 5, 1, true, false, 0); // Do a little dance...
 
@@ -187,11 +183,13 @@ namespace Server.Mobiles
 			}
 
 			ArrayList list = new ArrayList();
+            IPooledEnumerable eable = GetMobilesInRange(8);
 
-			foreach (Mobile m in GetMobilesInRange(8))
+			foreach (Mobile m in eable)
 			{
 				list.Add(m);
 			}
+            eable.Free();
 
 			if (list.Count > 0)
 			{

@@ -5,8 +5,6 @@ namespace Server.Mobiles
     [CorpseName("a vampire bat corpse")]
     public class VampireBatFamiliar : BaseFamiliar
     {
-        public override bool AttacksMastersTarget { get { return true; } }
-
         public VampireBatFamiliar()
         {
             this.Name = "a vampire bat";

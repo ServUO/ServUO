@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public Aegis()
         {
-            this.Hue = 0x47E;
-            this.ArmorAttributes.SelfRepair = 5;
-            this.Attributes.ReflectPhysical = 15;
-            this.Attributes.DefendChance = 15;
-            this.Attributes.LowerManaCost = 8;
+            Hue = 0x47E;
+            ArmorAttributes.SelfRepair = 5;
+            Attributes.ReflectPhysical = 15;
+            Attributes.DefendChance = 15;
+            Attributes.LowerManaCost = 8;
         }
 
         public Aegis(Serial serial)

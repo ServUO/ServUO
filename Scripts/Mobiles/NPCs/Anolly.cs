@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public StopHarpingOnMeQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(LapHarp), "lap harp", 20, 0xEB2));
+            AddObjective(new ObtainObjective(typeof(LapHarp), "lap harp", 20, 0xEB2));
 			
-            this.AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
         }
 
         /* Stop Harping on Me */
@@ -75,9 +75,9 @@ namespace Server.Engines.Quests
         public TheFarEyeQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Spyglass), "spyglasses", 20, 0x14F5));
+            AddObjective(new ObtainObjective(typeof(Spyglass), "spyglasses", 20, 0x14F5));
 			
-            this.AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TinkersCraftsmanSatchel), 1074282));
         }
 
         /* The Far Eye */
@@ -142,8 +142,8 @@ namespace Server.Engines.Quests
         public Anolly()
             : base("Anolly", "the bark weaver")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Anolly(Serial serial)
@@ -165,22 +165,22 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 			
-            this.Hue = 0x8835;
-            this.HairItemID = 0x2FC0;
-            this.HairHue = 0x325;
+            Hue = 0x8835;
+            HairItemID = 0x2FC0;
+            HairHue = 0x325;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x901));
-            this.AddItem(new FullApron(0x1BB));
-            this.AddItem(new ShortPants(0x3B2));
-            this.AddItem(new SmithHammer());
+            AddItem(new Sandals(0x901));
+            AddItem(new FullApron(0x1BB));
+            AddItem(new ShortPants(0x3B2));
+            AddItem(new SmithHammer());
         }
 
         public override void Serialize(GenericWriter writer)

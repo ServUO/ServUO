@@ -15,7 +15,6 @@ namespace Server.Spells.SkillMasteries
 
         public override SkillName MoveSkill { get { return SkillName.Swords; } }
         public override TextDefinition AbilityMessage { get { return new TextDefinition(1156007); } } // *You ready an onslaught!*
-        public override TimeSpan CooldownPeriod { get { return TimeSpan.FromSeconds(5); } }
 
         public OnslaughtSpell()
         {
@@ -29,12 +28,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            bool validate = base.Validate(from);
-
-            if (!validate)
-                return false;
-
-            return CheckMana(from, true);
+            return base.Validate(from);
         }
 
         public override void OnUse(Mobile from)
@@ -42,12 +36,13 @@ namespace Server.Spells.SkillMasteries
             from.PlaySound(0x1EC);
 
             from.FixedEffect(0x3779, 10, 20, 1372, 0);
-
-            AddToCooldown(from);
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
+            if (!Validate(attacker) || !CheckMana(attacker, true))
+                return;
+
             BaseWeapon weapon = attacker.Weapon as BaseWeapon;
 
             if (weapon != null && !HasOnslaught(attacker, defender))

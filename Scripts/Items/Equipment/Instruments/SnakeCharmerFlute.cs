@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using Server;
 using Server.Network;
 using Server.Mobiles;
 using Server.Targeting;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -99,13 +100,7 @@ namespace Server.Items
                     {
                         Point2D p = new Point2D((IPoint2D)targ);
 
-                        if (!from.CheckSkill(SkillName.Musicianship, 0.0, 120.0))
-                        {
-                            from.SendLocalizedMessage(502472); // You don't seem to be able to persuade that to move.
-
-                            m_Flute.PlayInstrumentBadly(from);
-                        }
-                        else if (!m_Snake.InRange(p, 10))
+                        if (!m_Snake.InRange(p, 10))
                         {
                             from.SendLocalizedMessage(500643); // Target is too far away.
                         }
@@ -116,6 +111,7 @@ namespace Server.Items
                             from.SendLocalizedMessage(502479); // The animal walks where it was instructed to.
 
                             from.BeginAction(typeof(SnakeCharmerFlute));
+
                             Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(
                                 delegate { from.EndAction(typeof(SnakeCharmerFlute)); }));
 
@@ -136,37 +132,26 @@ namespace Server.Items
 
         private static bool IsSnake(BaseCreature bc)
         {
-            Type type = bc.GetType();
-
-            for (int i = 0; i < m_SnakeTypes.Length; i++)
-            {
-                if (type == m_SnakeTypes[i])
-                    return true;
-            }
-
-            return false;
+            return m_SnakeTypes.Any(t => t == bc.GetType());
         }
 
         private static Type[] m_SnakeTypes = new Type[]
-            {
-                typeof( LavaSnake ),    typeof( Snake ),
-                typeof( CoralSnake ),   typeof( GiantSerpent ),
-                typeof( SilverSerpent )
-            };
+        {
+            typeof(LavaSnake),    typeof(Snake),
+            typeof(CoralSnake),   typeof(GiantSerpent),
+            typeof(SilverSerpent)
+        };
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            /*int version = */
-            reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 }

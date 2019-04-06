@@ -17,7 +17,7 @@ namespace Server.Engines
         {
             DeleteOldWrong(e.Mobile);
 
-            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/WrongRevamped.xml");
+            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad RevampedSpawns/WrongRevamped.xml");
 
             Decorate.Generate("wrong", "Data/Decoration/Wrong", Map.Trammel, Map.Felucca);
 
@@ -26,6 +26,9 @@ namespace Server.Engines
 
             spawner = new BedrollSpawner();
             spawner.MoveToWorld(new Point3D(5823, 601, 0), Map.Trammel);
+
+            EnchantedHotItem.SpawnChests(Map.Trammel);
+            EnchantedHotItem.SpawnChests(Map.Felucca);
 
             Teleporter teleporter = new Teleporter(new Point3D(5690, 569, 25), Map.Felucca);
             teleporter.MoveToWorld(new Point3D(5827, 590, 1), Map.Felucca);

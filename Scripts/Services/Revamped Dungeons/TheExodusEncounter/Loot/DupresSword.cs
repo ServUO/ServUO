@@ -7,18 +7,16 @@ namespace Server.Items
     public class DupresSword : VikingSword
     {
         public override bool IsArtifact { get { return true; } }
-        public override WeaponAbility PrimaryAbility{ get{ return WeaponAbility.CrushingBlow; } }
-        public override WeaponAbility SecondaryAbility{ get{ return WeaponAbility.ParalyzingBlow; } }
 
         [Constructable]
         public DupresSword()
         {
-            this.Hue = 0xA91;
-            this.Attributes.BonusStr = 10;
-            this.Attributes.AttackChance = 25;
-            this.Attributes.WeaponSpeed = 35;
-            this.Attributes.WeaponDamage = 100;
-            this.WeaponAttributes.HitManaDrain = 50;
+            Hue = 0xA91;
+            Attributes.BonusStr = 10;
+            Attributes.AttackChance = 25;
+            Attributes.WeaponSpeed = 35;
+            Attributes.WeaponDamage = 100;
+            WeaponAttributes.HitManaDrain = 50;
         }
         
         public DupresSword(Serial serial) : base(serial)
@@ -27,12 +25,8 @@ namespace Server.Items
 
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
-        public override int AosMinDamage { get { return 15; } }
-        public override int AosMaxDamage { get { return 17; } }
 
-        public override int LabelNumber { get { return 1153551; } }
-
-        public override bool CanFortify { get { return false; } }        
+        public override int LabelNumber { get { return 1153551; } }       
 
         public override void Serialize( GenericWriter writer )
         {

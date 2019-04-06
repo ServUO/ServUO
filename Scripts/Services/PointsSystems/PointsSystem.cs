@@ -7,6 +7,8 @@ using System.Linq;
 using System.Collections.Generic;
 using Server.Engines.CityLoyalty;
 using Server.Engines.VvV;
+using Server.Engines.ArenaSystem;
+using Server.Engines.SorcerersDungeon;
 
 namespace Server.Engines.Points
 {
@@ -38,7 +40,12 @@ namespace Server.Engines.Points
         CleanUpBritannia,
         ViceVsVirtue,
 
-        TreasuresOfKotlCity
+        TreasuresOfKotlCity,
+        PVPArena,
+
+        Khaldun,
+        Doom,
+        SorcerersDungeon
     }
 
     public abstract class PointsSystem
@@ -73,7 +80,7 @@ namespace Server.Engines.Points
         {
         }
 
-        public virtual void ProcessQuest(Mobile from, Server.Engines.Quests.BaseQuest quest)
+        public virtual void ProcessQuest(Mobile from, Type quest)
         {
         }
 
@@ -220,10 +227,12 @@ namespace Server.Engines.Points
         {
             return new PointsEntry(pm);
         }
+        
+        public int Version { get; set; }
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write((int)1);
+            writer.Write((int)2);
 
             writer.Write(PlayerTable.Count);
 
@@ -236,31 +245,35 @@ namespace Server.Engines.Points
 
         public virtual void Deserialize(GenericReader reader)
         {
-            int version = reader.ReadInt();
+            Version = reader.ReadInt();
 
-            switch (version)
+            switch (Version)
             {
-                case 0:
+                case 2: // added serialize/deserialize in all base classes. Poor implementation on my part, should have had from the get-go
                 case 1:
-                    int count = reader.ReadInt();
-                    for (int i = 0; i < count; i++)
-                    {
-                        PlayerMobile player = reader.ReadMobile() as PlayerMobile;
-                        PointsEntry entry = GetSystemEntry(player);
-                        
-                        if (version > 0)
-                            entry.Deserialize(reader);
-                        else
-                            entry.Points = reader.ReadDouble();
+                case 0:
+					{
+	                    int count = reader.ReadInt();
 
-                        if (player != null)
-                        {
-                            if (!PlayerTable.Contains(entry))
-                            {
-                                PlayerTable.Add(entry);
-                            }
-                        }
-                    }
+	                    for (int i = 0; i < count; i++)
+	                    {
+	                        PlayerMobile player = reader.ReadMobile() as PlayerMobile;
+	                        PointsEntry entry = GetSystemEntry(player);
+	
+	                        if (Version > 0)
+	                            entry.Deserialize(reader);
+	                        else
+	                            entry.Points = reader.ReadDouble();
+	
+	                        if (player != null)
+	                        {
+	                            if (!PlayerTable.Contains(entry))
+	                            {
+	                                PlayerTable.Add(entry);
+	                            }
+	                        }
+	                    }
+					}
                     break;
             }
         }
@@ -289,26 +302,36 @@ namespace Server.Engines.Points
         }
 
         public static void OnLoad()
-		{
-			Persistence.Deserialize(
-				FilePath,
-				reader =>
-				{
-					int version = reader.ReadInt();
+        {
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    int version = reader.ReadInt();
 
                     if (version < 2)
                         reader.ReadBool();
 
-					int count = reader.ReadInt();
-					for(int i = 0; i < count; i++)
-					{
-						PointsType type = (PointsType)reader.ReadInt();
-						PointsSystem s = GetSystemInstance(type);
+                    PointsType loaded = PointsType.None;
 
-					    s.Deserialize(reader);
-					}	
-				});
-		}
+                    int count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        try
+                        {
+                            PointsType type = (PointsType)reader.ReadInt();
+                            loaded = type;
+                            PointsSystem s = GetSystemInstance(type);
+
+                            s.Deserialize(reader);
+                        }
+                        catch
+                        {
+                            throw new Exception(String.Format("Points System Failed Load: {0} Last Loaded...", loaded.ToString()));
+                        }
+                    }
+                });
+        }
 
         public static List<PointsSystem> Systems { get; set; }
 
@@ -321,11 +344,16 @@ namespace Server.Engines.Points
         public static CleanUpBritanniaData CleanUpBritannia { get; set; }
         public static ViceVsVirtueSystem ViceVsVirtue { get; set; }
         public static KotlCityData TreasuresOfKotlCity { get; set; }
+        public static PVPArenaSystem ArenaSystem { get; set; }
+        public static KhaldunData Khaldun { get; set; }
+        public static DoomData TreasuresOfDoom { get; set; }
+        public static SorcerersDungeonData SorcerersDungeon { get; set; }
 
         public static void Configure()
         {
             EventSink.WorldSave += OnSave;
             EventSink.WorldLoad += OnLoad;
+            EventSink.QuestComplete += CompleteQuest;
 
             Systems = new List<PointsSystem>();
 
@@ -340,6 +368,10 @@ namespace Server.Engines.Points
             TreasuresOfKotlCity = new KotlCityData();
 
             CityLoyaltySystem.ConstructSystems();
+            ArenaSystem = new PVPArenaSystem();
+            Khaldun = new KhaldunData();
+            TreasuresOfDoom = new DoomData();
+            SorcerersDungeon = new SorcerersDungeonData();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)
@@ -347,9 +379,9 @@ namespace Server.Engines.Points
             Systems.ForEach(s => s.ProcessKill(victim, damager, index));
         }
 
-        public static void HandleQuest(Mobile from, Server.Engines.Quests.BaseQuest quest)
+        public static void CompleteQuest(QuestCompleteEventArgs e)
         {
-            Systems.ForEach(s => s.ProcessQuest(from, quest));
+            Systems.ForEach(s => s.ProcessQuest(e.Mobile, e.QuestType));
         }
         #endregion
     }

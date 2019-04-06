@@ -12,45 +12,48 @@ namespace Server.Mobiles
         public Paralithode()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Paralithode";
-            this.Body = 729;
-            this.Hue = 1922;
+            Name = "Paralithode";
+            Body = 729;
+            Hue = 1922;
 
-            this.SetStr(642, 729);
-            this.SetDex(87, 103);
-            this.SetInt(25, 30);
+            SetStr(642, 729);
+            SetDex(87, 103);
+            SetInt(25, 30);
 
-            this.SetHits(1866, 1908);
-            this.SetMana(315, 343);
+            SetHits(1800, 2000);
+            SetMana(315, 343);
 
-            this.SetDamage(20, 24);
+            SetDamage(20, 24);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 65, 74);
-            this.SetResistance(ResistanceType.Fire, 51, 60);
-            this.SetResistance(ResistanceType.Cold, 60, 70);
-            this.SetResistance(ResistanceType.Poison, 50, 58);
-            this.SetResistance(ResistanceType.Energy, 51, 57);
+            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 60, 70);
+            SetResistance(ResistanceType.Poison, 50, 60);
+            SetResistance(ResistanceType.Energy, 50, 60);
 
-            this.SetSkill(SkillName.MagicResist, 68.7, 75.0);
-            this.SetSkill(SkillName.Anatomy, 98.0, 100.6);
-            this.SetSkill(SkillName.Tactics, 95.8, 100.9);
-            this.SetSkill(SkillName.Wrestling, 100.2, 109.0);
+            SetSkill(SkillName.MagicResist, 68.7, 75.0);
+            SetSkill(SkillName.Anatomy, 98.0, 100.6);
+            SetSkill(SkillName.Tactics, 95.8, 100.9);
+            SetSkill(SkillName.Wrestling, 100.2, 109.0);
+            SetSkill(SkillName.Parry, 100.0, 110.0);
+            SetSkill(SkillName.Ninjitsu, 100.2, 109.0);
+            SetSkill(SkillName.DetectHidden, 50.0);
 
-            this.Fame = 2500;
-            this.Karma = -2500;
+            Fame = 2500;
+            Karma = -2500;
 
-            this.Tamable = true;
-            this.ControlSlots = 2;
-            this.MinTameSkill = 47.1;            
+            Tamable = true;
+            ControlSlots = 4;
+            MinTameSkill = 47.1;            
 
-            if (!this.Controlled)
-            {
-                this.PackItem(new FertileDirt(2));
-                this.m_Timer = new HideTimer(this);
-                this.m_Timer.Start();
-            }
+            PackItem(new FertileDirt(2));
+            m_Timer = new HideTimer(this);
+            m_Timer.Start();
+
+            SetWeaponAbility(WeaponAbility.DualWield);
+            SetWeaponAbility(WeaponAbility.ForceOfNature);
         }
 
         public Paralithode(Serial serial)
@@ -60,21 +63,23 @@ namespace Server.Mobiles
         
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
 
             base.OnAfterDelete();
         }
 
         public override void OnAfterTame(Mobile tamer)
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.CantWalk = false;
-            this.Hidden = false;
+            CantWalk = false;
+            Hidden = false;
+
+            base.OnAfterTame(tamer);
         }
 
         private class HideTimer : Timer
@@ -84,8 +89,8 @@ namespace Server.Mobiles
             public HideTimer(Paralithode owner)
                 : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
             {
-                this.m_Creature = owner;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Creature = owner;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
@@ -100,17 +105,21 @@ namespace Server.Mobiles
                         return;
                     }
 
-                    foreach (Mobile m in this.m_Creature.GetMobilesInRange(5))
+                    IPooledEnumerable eable = m_Creature.GetMobilesInRange(5);
+
+                    foreach (Mobile m in eable)
                     {
-                        if (m == this.m_Creature || (m is Paralithode) || !this.m_Creature.CanBeHarmful(m))
+                        if (m == m_Creature || (m is Paralithode) || !m_Creature.CanBeHarmful(m))
                             continue;
 
                         m_Creature.CantWalk = false;
                     }
+
+                    eable.Free();
                 }
                 else
                 {
-                    this.Stop();
+                    Stop();
                     m_Creature.CantWalk = false;
                     m_Creature.Hidden = false;
                 }
@@ -122,59 +131,20 @@ namespace Server.Mobiles
             if (Deleted)
                 return;
 
-            this.Hidden = true;
-            this.CantWalk = true;
+            Hidden = true;
+            CantWalk = true;
         }
-        
-        public override bool IsScaredOfScaryThings
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsBondable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat | FoodType.FruitsAndVegies;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool DeleteOnRelease
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS || this.Controlled;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+
+        public override bool IsScaredOfScaryThings { get { return false; } }
+        public override bool IsBondable { get { return false; } }
+        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
+        public override bool BleedImmune { get { return true; } }
+        public override bool DeleteOnRelease { get { return true; } }
+        public override bool BardImmune { get { return !Core.AOS || Controlled; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Gems, 2);
@@ -187,7 +157,7 @@ namespace Server.Mobiles
 
         public override int GetIdleSound()
         {
-            if (!this.Controlled)
+            if (!Controlled)
                 return 542;
 
             return base.GetIdleSound();
@@ -195,7 +165,7 @@ namespace Server.Mobiles
 
         public override int GetDeathSound()
         {
-            if (!this.Controlled)
+            if (!Controlled)
                 return 545;
 
             return base.GetDeathSound();
@@ -208,7 +178,7 @@ namespace Server.Mobiles
 
         public override int GetHurtSound()
         {
-            if (this.Controlled)
+            if (Controlled)
                 return 320;
 
             return base.GetHurtSound();
@@ -228,10 +198,10 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (!this.Controlled)
+            if (!Controlled)
             {
-                this.m_Timer = new HideTimer(this);
-                this.m_Timer.Start();
+                m_Timer = new HideTimer(this);
+                m_Timer.Start();
             }
         }
     }

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Properties.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Reflection;
@@ -14,6 +8,7 @@ using Server.Commands;
 using Server.Commands.Generic;
 using Server.Gumps;
 using Server.Targeting;
+using Server.Mobiles;
 
 using CPA = Server.CommandPropertyAttribute;
 #endregion
@@ -39,7 +34,7 @@ namespace Server.Commands
 		private static readonly Type _TypeOfIDynamicEnum = typeof(IDynamicEnum);
 		private static readonly Type _TypeOfText = typeof(TextDefinition);
 		private static readonly Type _TypeOfTimeSpan = typeof(TimeSpan);
-		private static readonly Type _TypeOfParsable = typeof(ParsableAttribute);
+        private static readonly Type _TypeOfParsable = typeof(ParsableAttribute);
 
 		private static readonly Type[] _ParseTypes = new[] {typeof(string)};
 		private static readonly object[] _ParseParams = new object[1];
@@ -437,8 +432,13 @@ namespace Server.Commands
 				{
 					CommandLogging.LogChangeProperty(m, logObject, givenName, toSet == null ? "(-null-)" : toSet.ToString());
 				}
+				
+                if (obj is PlayerMobile && prop.PropertyType == typeof(Map) && toSet == null)
+                {
+                    return "Invalid -null- value, propery not set.";
+                }
 
-				object oldValue = prop.GetValue(obj, null);
+                object oldValue = prop.GetValue(obj, null);
 				prop.SetValue(obj, toSet, null);
 
 				EventSink.InvokeOnPropertyChanged(new OnPropertyChangedEventArgs(m, obj, prop, oldValue, toSet));
@@ -460,6 +460,11 @@ namespace Server.Commands
 				{
 					return "You do not have access to that level.";
 				}
+
+                if (obj is PlayerMobile && prop.PropertyType == typeof(Map) && toSet == null)
+                {
+                    return "Invalid -null- value, propery not set.";
+                }
 
 				object oldValue = prop.GetValue(obj, null);
 				prop.SetValue(obj, toSet, null);

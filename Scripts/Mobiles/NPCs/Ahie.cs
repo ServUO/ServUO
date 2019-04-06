@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public TheKingOfClothingQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Kilt), "kilts", 10, 0x1537));
+            AddObjective(new ObtainObjective(typeof(Kilt), "kilts", 10, 0x1537));
 			
-            this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
         /* The King of Clothing */
@@ -75,9 +75,9 @@ namespace Server.Engines.Quests
         public ThePuffyShirtQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(FancyShirt), "fancy shirts", 10, 0x1EFD));
+            AddObjective(new ObtainObjective(typeof(FancyShirt), "fancy shirts", 10, 0x1EFD));
 			
-            this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
         /* The Puffy Shirt */
@@ -143,9 +143,9 @@ namespace Server.Engines.Quests
         public FromTheGaultierCollectionQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(StuddedBustierArms), "studded bustiers", 10, 0x1C0C));
+            AddObjective(new ObtainObjective(typeof(StuddedBustierArms), "studded bustiers", 10, 0x1C0C));
 			
-            this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
         /* From the Gaultier Collection */
@@ -211,9 +211,9 @@ namespace Server.Engines.Quests
         public HuteCoutureQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(FlowerGarland), "flower garlands", 10, 0x2306));
+            AddObjective(new ObtainObjective(typeof(FlowerGarland), "flower garlands", 10, 0x2306));
 			
-            this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
         /* H'ute Couture */
@@ -279,8 +279,8 @@ namespace Server.Engines.Quests
         public Ahie()
             : base("Ahie", "the cloth weaver")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Ahie(Serial serial)
@@ -303,23 +303,23 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 			
-            this.Hue = 0x853F;
-            this.HairItemID = 0x2FCD;
-            this.HairHue = 0x90;
+            Hue = 0x853F;
+            HairItemID = 0x2FCD;
+            HairHue = 0x90;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ThighBoots(0x901));
-            this.AddItem(new FancyShirt(0x72B));
-            this.AddItem(new Cloak(0x1C));
-            this.AddItem(new Skirt(0x62));
-            this.AddItem(new Circlet());
+            AddItem(new ThighBoots(0x901));
+            AddItem(new FancyShirt(0x72B));
+            AddItem(new Cloak(0x1C));
+            AddItem(new Skirt(0x62));
+            AddItem(new Circlet());
         }
 
         public override void Serialize(GenericWriter writer)

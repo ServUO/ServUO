@@ -482,7 +482,7 @@ namespace Server.Items
             {
                 Container bank = from.FindBankNoCreate();
 
-                if (this.m_TicketPrice == 0 || (from.Backpack != null && from.Backpack.ConsumeTotal(typeof(Gold), this.m_TicketPrice)) || (bank != null && bank.ConsumeTotal(typeof(Gold), this.m_TicketPrice)))
+                if (this.m_TicketPrice == 0 || (from.Backpack != null && from.Backpack.ConsumeTotal(typeof(Gold), this.m_TicketPrice)) || Mobiles.Banker.Withdraw(from, m_TicketPrice, true))
                 {
                     this.m_Entries.Add(new RaffleEntry(from));
 

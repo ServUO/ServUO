@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Effects.cs
-// **********
-#endregion
-
 #region References
 using Server.Network;
 #endregion
@@ -38,6 +32,11 @@ namespace Server
 		{
 			return (m_ParticleSupportType == ParticleSupportType.Full ||
 					(m_ParticleSupportType == ParticleSupportType.Detect && (state.IsUOTDClient || state.IsEnhancedClient)));
+		}
+
+		public static void PlayExplodeSound(IPoint3D p, Map map)
+		{
+			PlaySound(p, map, Utility.RandomList(283, 284, 285, 286, 519, 773, 774, 775, 776, 777, 1231));
 		}
 
 		public static void PlaySound(IPoint3D p, Map map, int soundID)
@@ -81,6 +80,18 @@ namespace Server
 			SendBoltEffect(e, sound, 0);
 		}
 
+        public static void SendBoltEffect(IEntity e, bool sound, int hue, bool delay)
+        {
+            if (delay)
+            {
+                Timer.DelayCall(() => SendBoltEffect(e, sound, hue));
+            }
+            else
+            {
+                SendBoltEffect(e, sound, hue);
+            }
+        }
+
 		public static void SendBoltEffect(IEntity e, bool sound, int hue)
 		{
 			Map map = e.Map;
@@ -92,7 +103,7 @@ namespace Server
 
 			e.ProcessDelta();
 
-			Packet preEffect = null, boltEffect = null, playSound = null;
+            Packet preEffect = null, postEffect = null, boltEffect = null, playSound = null;
 
 			var eable = map.GetClientsInRange(e.Location);
 
@@ -100,7 +111,9 @@ namespace Server
 			{
 				if (state.Mobile.CanSee(e))
 				{
-					if (SendParticlesTo(state))
+                    bool sendParticles = SendParticlesTo(state);
+
+                    if (sendParticles)
 					{
 						if (preEffect == null)
 						{
@@ -112,10 +125,27 @@ namespace Server
 
 					if (boltEffect == null)
 					{
-						boltEffect = Packet.Acquire(new BoltEffect(e, hue));
+                        if (Core.SA && hue == 0)
+                        {
+                            boltEffect = Packet.Acquire(new BoltEffectNew(e));
+                        }
+                        else
+                        {
+                            boltEffect = Packet.Acquire(new BoltEffect(e, hue));
+                        }
 					}
 
 					state.Send(boltEffect);
+
+                    if (sendParticles)
+                    {
+                        if (postEffect == null)
+                        {
+                            postEffect = Packet.Acquire(new GraphicalEffect(EffectType.FixedFrom, e.Serial, Serial.Zero, 0, e.Location, e.Location, 0, 0, false, 0));
+                        }
+
+                        state.Send(postEffect);
+                    }
 
 					if (sound)
 					{
@@ -130,6 +160,7 @@ namespace Server
 			}
 
 			Packet.Release(preEffect);
+            Packet.Release(postEffect);
 			Packet.Release(boltEffect);
 			Packet.Release(playSound);
 

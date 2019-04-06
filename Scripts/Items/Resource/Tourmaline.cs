@@ -12,7 +12,7 @@ namespace Server.Items
 
         [Constructable]
         public Tourmaline(int amount)
-            : base(0xF2D)
+            : base(0x0F18)
         {
             this.Stackable = true;
             this.Amount = amount;
@@ -34,7 +34,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -42,6 +42,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+                ItemID = 0x0F18;
         }
     }
 }

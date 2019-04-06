@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Miner()
             : base("the miner")
         {
-            this.SetSkill(SkillName.Mining, 65.0, 88.0);
+            SetSkill(SkillName.Mining, 65.0, 88.0);
         }
 
         public Miner(Serial serial)
@@ -22,22 +22,22 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SBInfos;
+                return m_SBInfos;
             }
         }
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBMiner());
+            m_SBInfos.Add(new SBMiner());
         }
 
         public override void InitOutfit()
         {
-            base.InitOutfit();
+            AddItem(new Server.Items.FancyShirt(0x3E4));
+            AddItem(new Server.Items.LongPants(0x192));
+            AddItem(new Server.Items.Pickaxe());
+            AddItem(new Server.Items.ThighBoots(0x283));
 
-            this.AddItem(new Server.Items.FancyShirt(0x3E4));
-            this.AddItem(new Server.Items.LongPants(0x192));
-            this.AddItem(new Server.Items.Pickaxe());
-            this.AddItem(new Server.Items.ThighBoots(0x283));
+            base.InitOutfit();
         }
 
         public override void Serialize(GenericWriter writer)

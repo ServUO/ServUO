@@ -11,71 +11,58 @@ namespace Server.Mobiles
 
         [Constructable]
         public Kepetch()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a kepetch";
-            this.Body = 726;
+            Name = "a kepetch";
+            Body = 726;
 
-            this.SetStr(337, 354);
-            this.SetDex(184, 194);
-            this.SetInt(32, 37);
+            SetStr(337, 380);
+            SetDex(184, 194);
+            SetInt(30, 50);
 
-            this.SetHits(308, 366);
+            SetHits(300, 400);
 
-            this.SetDamage(7, 17);
+            SetDamage(7, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 40, 45);
-            this.SetResistance(ResistanceType.Cold, 45, 55);
-            this.SetResistance(ResistanceType.Poison, 55, 65);
-            this.SetResistance(ResistanceType.Energy, 65, 75);
+            SetResistance(ResistanceType.Physical, 55, 75);
+            SetResistance(ResistanceType.Fire, 40, 60);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 50, 70);
+            SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetSkill(SkillName.Anatomy, 119.7, 124.1);
-            this.SetSkill(SkillName.MagicResist, 89.9, 97.4);
-            this.SetSkill(SkillName.Tactics, 117.4, 123.5);
-            this.SetSkill(SkillName.Wrestling, 107.7, 113.9);
+            SetSkill(SkillName.Anatomy, 119.7, 124.1);
+            SetSkill(SkillName.MagicResist, 89.9, 97.4);
+            SetSkill(SkillName.Tactics, 117.4, 123.5);
+            SetSkill(SkillName.Wrestling, 107.7, 113.9);
+            SetSkill(SkillName.DetectHidden, 25.0);
+            SetSkill(SkillName.Parry, 60.0, 70.0);
+
+            Fame = 6000;
+            Karma = -6000;
+
+            SetSpecialAbility(SpecialAbility.ViciousBite);
         }
 
         public Kepetch(Serial serial)
             : base(serial)
         {
         }
-        public override int Meat
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
-            }
-        }
 
-        public void Carve(Mobile from, Item item)
+        public override int Meat { get { return 5; } }
+        public override int Hides { get { return 14; } }
+        public override HideType HideType { get { return HideType.Spined; } }
+        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; } }
+        public override int DragonBlood { get { return 8; } }
+        public override int Fur { get { return GatheredFur ? 0 : 15; } }
+        public override FurType FurType { get { return FurType.Brown; } }
+
+        public bool Carve(Mobile from, Item item)
         {
             if (!GatheredFur)
             {
-                var fur = new KepetchFur(30);
+                var fur = new Fur(FurType, Fur);
 
                 if (from.Backpack == null || !from.Backpack.TryDropItem(from, fur, false))
                 {
@@ -86,27 +73,20 @@ namespace Server.Mobiles
                 {
                     from.SendLocalizedMessage(1112360); // You place the gathered kepetch fur into your backpack.
                     GatheredFur = true;
+                    return true;
                 }
             }
             else
-                from.SendLocalizedMessage(1112358); // The Kepetch nimbly escapes your attempts to shear its mane.
-        }
-
-        public override void OnCarve(Mobile from, Corpse corpse, Item with)
-        {
-            base.OnCarve(from, corpse, with);
-
-            if (!GatheredFur)
             {
-                from.SendLocalizedMessage(1112765); // You shear it, and the fur is now on the corpse.
-                corpse.AddCarvedItem(new KepetchFur(15), from);
-                GatheredFur = true;
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112358, from.NetState); // The Kepetch nimbly escapes your attempts to shear its mane.
             }
+
+            return false;
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.Average, 2);
         }
 
         public override int GetIdleSound()
@@ -132,8 +112,8 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(2);
+
             writer.Write(GatheredFur);
         }
 

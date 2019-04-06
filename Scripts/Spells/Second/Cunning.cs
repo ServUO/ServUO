@@ -23,17 +23,7 @@ namespace Server.Spells.Second
                 return SpellCircle.Second;
             }
         }
-        public override bool CheckCast()
-        {
-            if (Engines.ConPVP.DuelContext.CheckSuddenDeath(this.Caster))
-            {
-                this.Caster.SendMessage(0x22, "You cannot cast this spell when in sudden death.");
-                return false;
-            }
-
-            return base.CheckCast();
-        }
-
+        
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);
@@ -47,15 +37,25 @@ namespace Server.Spells.Second
             }
             else if (this.CheckBSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                int oldInt = SpellHelper.GetBuffOffset(m, StatType.Int);
+                int newInt = SpellHelper.GetOffset(Caster, m, StatType.Int, false, true);
 
-				SpellHelper.AddStatBonus(this.Caster, m, false, StatType.Int);
-				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
-				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Cunning, 1075843, length, m, percentage.ToString()));
+                if (newInt < oldInt || newInt == 0)
+                {
+                    DoHurtFizzle();
+                }
+                else
+                {
+                    SpellHelper.Turn(this.Caster, m);
 
-				m.FixedParticles(0x375A, 10, 15, 5011, EffectLayer.Head);
-                m.PlaySound(0x1EB);
+                    SpellHelper.AddStatBonus(this.Caster, m, false, StatType.Int);
+                    int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
+                    TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Cunning, 1075843, length, m, percentage.ToString()));
+
+                    m.FixedParticles(0x375A, 10, 15, 5011, EffectLayer.Head);
+                    m.PlaySound(0x1EB);
+                }
             }
 
             this.FinishSequence();

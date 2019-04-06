@@ -1,7 +1,6 @@
 using Server;
 using System;
 using Server.Items;
-using System.Collections.Generic;
 using Server.Engines.VoidPool;
 
  namespace Server.Mobiles
@@ -16,7 +15,7 @@ using Server.Engines.VoidPool;
         public CoraTheSorceress() : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.1)
         {
             Body = 0x191;
-            Name = "cora";
+            Name = "Cora";
             Title = "the sorceress";
 
             HairItemID = 0x2045;
@@ -49,21 +48,37 @@ using Server.Engines.VoidPool;
             Fame = 32000;
             Karma = -32000;
 
-            AddAndEquip(new WildStaff(), 2963);
-            AddAndEquip(new ThighBoots(), 1150);
-            AddAndEquip(new LongPants(), 2724);
-            AddAndEquip(new LeatherGloves(), 2724);
-            AddAndEquip(new LeatherBustierArms(), 2527);
+            AddAndEquip(new WildStaff(), 1971);
+            AddAndEquip(new ThighBoots(), 1910);
+            AddAndEquip(new ChainLegs(), 1936);
+            AddAndEquip(new LeatherGloves(), 1910);
+            AddAndEquip(new LeatherBustierArms(), 1947);
         }
 
         public override int BreathChaosDamage { get { return 100; } }
         public override bool HasBreath { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
+        public override bool ClickTitle { get { return false; } }
+        public override bool ShowFameTitle { get { return false; } }
+
+        public override bool HasAura { get { return true; } }
+        public override int AuraRange { get { return 3; } }
+        public override int AuraBaseDamage { get { return 0; } }
+        public override int AuraFireDamage { get { return 0; } }
+
+        public override void AuraEffect(Mobile m)
+        {
+            int mana = Utility.Random(1, m.Mana);
+            m.Mana -= mana;
+            m.SendLocalizedMessage(1153114, mana.ToString()); // Cora drains ~1_VAL~ points of your mana!
+        }
 
         public override bool TeleportsTo { get { return true; } }
         public override TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)); } }
         public override double TeleportProb { get { return 1.0; } }
         public override bool TeleportsPets { get { return true; } }
+
+        public override int GetDeathSound() { return 0x316; }
 
         public override void GenerateLoot()
         {
@@ -82,15 +97,14 @@ using Server.Engines.VoidPool;
         {
             base.OnThink();
 
-            if (Combatant == null)
-                return;
-
             if (NextManaDrain < DateTime.UtcNow)
                 DoManaDrain();
         }
 
         public void DoManaDrain()
         {
+            Animate(AnimationType.Spell, 1);
+
             DoEffects(Direction.North);
             DoEffects(Direction.West);
             DoEffects(Direction.South);
@@ -231,10 +245,17 @@ using Server.Engines.VoidPool;
 
             public override bool OnMoveOver(Mobile m)
             {
-                if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && m.CanBeHarmful(Owner, false))
+                if ((m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)) && m.CanBeHarmful(Owner, false))
                 {
-                    m.SendLocalizedMessage(1153114, m.Mana.ToString()); // Cora drains ~1_VAL~ points of your mana!
-                    m.Mana = 0;
+                    if (m is PlayerMobile && Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects((PlayerMobile)m, true))
+                    {
+                        m.SayTo(m, 1158288, 1154); // *You resist Cora's attack!*
+                    }
+                    else
+                    {
+                        m.FixedParticles(0x3779, 10, 25, 5002, EffectLayer.Head);
+                        m.Mana = 0;
+                    }
                 }
 
                 return true;
@@ -287,6 +308,37 @@ using Server.Engines.VoidPool;
                             m.BankBox.DropItem(artifact);
 
                         m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+                    }
+                }
+            }
+        }
+
+        public override void OnKilledBy(Mobile mob)
+        {
+            if (Siege.SiegeShard && mob is PlayerMobile)
+            {
+                int chance = Server.Engines.Despise.DespiseBoss.ArtifactChance + (int)Math.Min(10, ((PlayerMobile)mob).Luck / 180);
+
+                if (chance >= Utility.Random(100))
+                {
+                    Type t = Server.Engines.Despise.DespiseBoss.Artifacts[Utility.Random(Server.Engines.Despise.DespiseBoss.Artifacts.Length)];
+
+                    if (t != null)
+                    {
+                        Item arty = Loot.Construct(t);
+
+                        if (arty != null)
+                        {
+                            Container pack = mob.Backpack;
+
+                            if (pack == null || !pack.TryDropItem(mob, arty, false))
+                            {
+                                mob.BankBox.DropItem(arty);
+                                mob.SendMessage("An artifact has been placed in your bankbox!");
+                            }
+                            else
+                                mob.SendLocalizedMessage(1153440); // An artifact has been placed in your backpack!
+                        }
                     }
                 }
             }

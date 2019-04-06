@@ -6,6 +6,7 @@ using Server;
 using Server.Mobiles;
 using Server.Spells;
 using Server.Network;
+using Server.Spells.Spellweaving;
 
 namespace Server.Spells.Mysticism
 {
@@ -79,7 +80,7 @@ namespace Server.Spells.Mysticism
                 Caster.SendLocalizedMessage(501775); // This spell is already in effect.
                 return false;
             }
-            else if (Weapon.Immolating || Weapon.ConsecratedContext != null)
+            else if (ImmolatingWeaponSpell.IsImmolating(Caster, Weapon) || Weapon.ConsecratedContext != null)
             {
                 Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
                 return false;
@@ -110,7 +111,7 @@ namespace Server.Spells.Mysticism
             {
                 Caster.SendLocalizedMessage(501775); // This spell is already in effect.
             }
-            else if (Weapon.Immolating || Weapon.ConsecratedContext != null)
+            else if (ImmolatingWeaponSpell.IsImmolating(Caster, Weapon) || Weapon.ConsecratedContext != null)
             {
                 Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
             }
@@ -130,23 +131,37 @@ namespace Server.Spells.Mysticism
                 int prim = (int)Caster.Skills[CastSkill].Value;
                 int sec = (int)Caster.Skills[DamageSkill].Value;
 
-                int value = (50 * (prim + sec)) / 240;
+                int value = (60 * (prim + sec)) / 240;
                 double duration = ((double)(prim + sec) / 2.0) + 30.0;
+                int malus = 0;
 
                 if (Table == null)
                     Table = new Dictionary<Mobile, EnchantmentTimer>();
 
                 Enhancement.SetValue(Caster, this.Attribute, value, ModName);
 
-                if (prim >= 80 && sec >= 80)
+                if (prim >= 80 && sec >= 80 && Weapon.Attributes.SpellChanneling == 0)
                 {
                     Enhancement.SetValue(Caster, AosAttribute.SpellChanneling, 1, ModName);
                     Enhancement.SetValue(Caster, AosAttribute.CastSpeed, -1, ModName);
+                    malus = 1;
                 }
 
-                Table[Caster] = new EnchantmentTimer(Caster, Weapon, this.Attribute, value, duration);
+                Table[Caster] = new EnchantmentTimer(Caster, Weapon, this.Attribute, value, malus, duration);
 
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Enchant, 1080126, 1080129, TimeSpan.FromSeconds(duration), Caster, value));
+                int loc;
+
+                switch (this.Attribute)
+                {
+                    default:
+                    case AosWeaponAttribute.HitLightning: loc = 1060423; break;
+                    case AosWeaponAttribute.HitFireball: loc = 1060420; break;
+                    case AosWeaponAttribute.HitHarm: loc = 1060421; break;
+                    case AosWeaponAttribute.HitMagicArrow: loc = 1060426; break;
+                    case AosWeaponAttribute.HitDispel: loc = 1060417; break;
+                }
+
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Enchant, 1080126, loc, TimeSpan.FromSeconds(duration), Caster, value.ToString()));
 
                 Weapon.EnchantedWeilder = Caster;
                 Weapon.InvalidateProperties();
@@ -184,11 +199,7 @@ namespace Server.Spells.Mysticism
         public static bool CastingMalus(Mobile from, BaseWeapon weapon)
         {
             if (Table.ContainsKey(from))
-            {
-                SkillName damageSkill = from.Skills[SkillName.Imbuing].Value > from.Skills[SkillName.Focus].Value ? SkillName.Imbuing : SkillName.Focus;
-
-                return from.Skills[SkillName.Mysticism].Value >= 80 && from.Skills[damageSkill].Value >= 80;
-            }
+                return Table[from].CastingMalus > 0;
 
             return false;
         }
@@ -224,13 +235,15 @@ namespace Server.Spells.Mysticism
         public BaseWeapon Weapon { get; set; }
         public AosWeaponAttribute WeaponAttribute { get; set; }
         public int AttributeValue { get; set; }
+        public int CastingMalus { get; set; }
 
-        public EnchantmentTimer(Mobile owner, BaseWeapon wep, AosWeaponAttribute attribute, int value, double duration) : base(TimeSpan.FromSeconds(duration))
+        public EnchantmentTimer(Mobile owner, BaseWeapon wep, AosWeaponAttribute attribute, int value, int malus, double duration) : base(TimeSpan.FromSeconds(duration))
         {
             Owner = owner;
             Weapon = wep;
             WeaponAttribute = attribute;
             AttributeValue = value;
+            CastingMalus = malus;
 
             this.Start();
         }

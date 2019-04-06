@@ -8,12 +8,11 @@ namespace Server.Items
         [Constructable]
         public ArcaneShield()
         {
-            this.ItemID = 0x1B78;
-            this.Hue = 0x556;
-            this.Attributes.NightSight = 1;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.DefendChance = 15;
-            this.Attributes.CastSpeed = 1;
+            Hue = 0x556;
+            Attributes.NightSight = 1;
+            Attributes.SpellChanneling = 1;
+            Attributes.DefendChance = 15;
+            Attributes.CastSpeed = 1;
         }
 
         public ArcaneShield(Serial serial)
@@ -61,9 +60,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Attributes.NightSight == 0)
-                this.Attributes.NightSight = 1;
         }
     }
 }

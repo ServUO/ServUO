@@ -73,6 +73,12 @@ namespace Server.SkillHandlers
             {
                 m.SendLocalizedMessage(502725); // You must hide first
             }
+            else if (m.Flying)
+            {
+                m.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
+                m.RevealingAction();
+                BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
+            }
             else if (m.Skills[SkillName.Hiding].Base < HidingRequirement)
             {
                 m.SendLocalizedMessage(502726); // You are not hidden well enough.  Become better at hiding.

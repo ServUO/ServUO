@@ -11,22 +11,22 @@ namespace Server.Items
             switch (Utility.Random(2))
             {
                 case 0:
-                    this.AddItem(new UndyingFlesh());
+                    DropItem(new UndyingFlesh());
                     break;
                 case 1:
-                    this.AddItem(new DaemonClaw());
+                    DropItem(new DaemonClaw());
                     break;
               /*  case 2:
-                    this.AddItem(new SpiderCarapace());
+                    DropItem(new SpiderCarapace());
                     break;
                 case 3:
-                    this.AddItem(new VialOfVitriol());
+                    DropItem(new VialOfVitriol());
                     break;
                 case 4:
-                    this.AddItem(new LavaSerpenCrust());
+                    DropItem(new LavaSerpenCrust());
                     break;
                 case 5:
-                    this.AddItem(new GoblinBlood());
+                    DropItem(new GoblinBlood());
                     break;*/
             }
         }

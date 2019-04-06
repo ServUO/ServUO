@@ -284,7 +284,19 @@ namespace Server.Engines.Doom
         {
             if (Gary == null || Gary.Deleted)
             {
-                GaryTheDungeonMaster gary = this.GetEnumeratedMobiles().OfType<GaryTheDungeonMaster>().FirstOrDefault(m => m is GaryTheDungeonMaster && !m.Deleted);
+                GaryTheDungeonMaster gary = null;
+                IPooledEnumerable eable = Map.GetMobilesInBounds(_Bounds[0]);
+
+                foreach (Mobile m in eable)
+                {
+                    if (m is GaryTheDungeonMaster)
+                    {
+                        gary = (GaryTheDungeonMaster)m;
+                        break;
+                    }
+                }
+
+                eable.Free();
 
                 if (gary != null)
                 {
@@ -722,13 +734,16 @@ namespace Server.Engines.Doom
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+                Delete();
         }
     }
 

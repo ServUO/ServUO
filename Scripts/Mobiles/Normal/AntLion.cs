@@ -6,45 +6,50 @@ namespace Server.Mobiles
     [CorpseName("an ant lion corpse")]
     public class AntLion : BaseCreature
     {
+        private DateTime _NextTunnel;
+        private Map _StartTunnelMap;
+        private Point3D _StartTunnelLoc;
+        private bool _Tunneling;
+
         [Constructable]
         public AntLion()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an ant lion";
-            this.Body = 787;
-            this.BaseSoundID = 1006;
+            Name = "an ant lion";
+            Body = 787;
+            BaseSoundID = 1006;
 
-            this.SetStr(296, 320);
-            this.SetDex(81, 105);
-            this.SetInt(36, 60);
+            SetStr(296, 320);
+            SetDex(81, 105);
+            SetInt(36, 60);
 
-            this.SetHits(151, 162);
+            SetHits(151, 162);
 
-            this.SetDamage(7, 21);
+            SetDamage(7, 21);
 
-            this.SetDamageType(ResistanceType.Physical, 70);
-            this.SetDamageType(ResistanceType.Poison, 30);
+            SetDamageType(ResistanceType.Physical, 70);
+            SetDamageType(ResistanceType.Poison, 30);
 
-            this.SetResistance(ResistanceType.Physical, 45, 60);
-            this.SetResistance(ResistanceType.Fire, 25, 35);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 30, 35);
+            SetResistance(ResistanceType.Physical, 45, 60);
+            SetResistance(ResistanceType.Fire, 25, 35);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 30, 35);
 
-            this.SetSkill(SkillName.MagicResist, 70.0);
-            this.SetSkill(SkillName.Tactics, 90.0);
-            this.SetSkill(SkillName.Wrestling, 90.0);
+            SetSkill(SkillName.MagicResist, 70.0);
+            SetSkill(SkillName.Tactics, 90.0);
+            SetSkill(SkillName.Wrestling, 90.0);
 
-            this.Fame = 4500;
-            this.Karma = -4500;
+            Fame = 4500;
+            Karma = -4500;
 
-            this.VirtualArmor = 45;
+            VirtualArmor = 45;
 
-            this.PackItem(new Bone(3));
-            this.PackItem(new FertileDirt(Utility.RandomMinMax(1, 5)));
+            PackItem(new Bone(3));
+            PackItem(new FertileDirt(Utility.RandomMinMax(1, 5)));
 
             if (Core.ML && Utility.RandomDouble() < .33)
-                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
+                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
 
             Item orepile = null; /* no trust, no love :( */
 
@@ -63,10 +68,12 @@ namespace Server.Mobiles
                     orepile = new BronzeOre();
                     break;
             }
+
             orepile.Amount = Utility.RandomMinMax(1, 10);
             orepile.ItemID = 0x19B9;
-            this.PackItem(orepile);
-            // TODO: skeleton
+            PackItem(orepile);
+
+            PackBones();
 			
 			if ( 0.07 >= Utility.RandomDouble() )
 			{
@@ -77,41 +84,162 @@ namespace Server.Mobiles
 					case 2: PackItem( new UnknownRogueSkeleton() ); break;
 				}
 			}					
-        }		
+        }
+
+        public override bool HasBreath { get { return true; } }
+        public override int BreathPoisonDamage { get { return 100; } }
+        public override int BreathFireDamage { get { return 0; } }
+        public override int BreathEffectHue { get { return 0x3F; } }
+        public override int BreathEffectSound { get { return 0; } }
+        public override int BreathAngerSound { get { return 0; } }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+
+            if (!(Combatant is Mobile))
+                return;
+            
+            Mobile combatant = Combatant as Mobile;
+
+            if (_NextTunnel < DateTime.UtcNow && combatant.InRange(Location, 10))
+            {
+                _NextTunnel = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 40));
+                DoTunnel(combatant);
+            }
+        }
+
+        private void DoTunnel(Mobile combatant)
+        {
+            PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3B3, false, "* The ant lion begins tunneling into the ground *");
+            Effects.SendTargetParticles(this, 0x36B0, 20, 10, 1734, 0, 5044, EffectLayer.Head, 0);
+
+            Frozen = true;
+            _Tunneling = true;
+            _StartTunnelLoc = Location;
+            _StartTunnelMap = Map;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
+                {
+                    if (_Tunneling)
+                    {
+                        Hidden = true;
+                        Blessed = true;
+
+                        Item item = new InternalItem(3892);
+                        item.MoveToWorld(Location, Map);
+
+                        item = new InternalItem(4967);
+                        item.MoveToWorld(Location, Map);
+
+                        Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
+                            {
+                                Hidden = false;
+                                Blessed = false;
+
+                                if (!combatant.Alive || !combatant.InRange(_StartTunnelLoc, 20) || combatant.Map != _StartTunnelMap)
+                                {
+                                    MoveToWorld(_StartTunnelLoc, _StartTunnelMap);
+                                }
+                                else
+                                {
+                                    MoveToWorld(combatant.Location, combatant.Map);
+                                    AOS.Damage(combatant, this, 25, 70, 0, 0, 30, 0);
+
+                                    Item item2 = new InternalItem(3892);
+                                    item2.MoveToWorld(Location, Map);
+
+                                    item2 = new InternalItem(4967);
+                                    item2.MoveToWorld(Location, Map);
+                                }
+
+                                _StartTunnelLoc = Point3D.Zero;
+                                _StartTunnelMap = null;
+                                _Tunneling = false;
+                                Frozen = false;
+                            });
+                    }
+                });
+        }
+
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        {
+            if (_Tunneling && !Hidden && 0.25 > Utility.RandomDouble())
+            {
+                PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3B3, false, "* You interrupt the ant lion's digging! *");
+
+                Frozen = false;
+                Hidden = false;
+                Blessed = false;
+                _Tunneling = false;
+                _StartTunnelLoc = Point3D.Zero;
+                _StartTunnelMap = null;
+            }
+
+            return base.Damage(amount, from, informMount, checkDisrupt);
+        }
 
         public AntLion(Serial serial)
             : base(serial)
         {
         }
-
-        public override int GetAngerSound()
+		
+		public override void OnGotMeleeAttack(Mobile attacker)
         {
-            return 0x5A;
+            if (attacker.Weapon is BaseRanged)
+                BeginAcidBreath();
+
+            base.OnGotMeleeAttack(attacker);
         }
 
-        public override int GetIdleSound()
+        public override void OnDamagedBySpell(Mobile attacker)
         {
-            return 0x5A;
+            base.OnDamagedBySpell(attacker);
+
+            BeginAcidBreath();
         }
 
-        public override int GetAttackSound()
+        #region Acid Breath
+        private DateTime m_NextAcidBreath;
+
+        public void BeginAcidBreath()
         {
-            return 0x164;
+            PlayerMobile m = Combatant as PlayerMobile;
+            // Mobile m = Combatant;
+
+            if (m == null || m.Deleted || !m.Alive || !Alive || m_NextAcidBreath > DateTime.Now || !CanBeHarmful(m))
+                return;
+
+            PlaySound(0x118);
+            MovingEffect(m, 0x36D4, 1, 0, false, false, 0x3F, 0);
+
+            TimeSpan delay = TimeSpan.FromSeconds(GetDistanceToSqrt(m) / 5.0);
+            Timer.DelayCall<Mobile>(delay, new TimerStateCallback<Mobile>(EndAcidBreath), m);
+
+            m_NextAcidBreath = DateTime.Now + TimeSpan.FromSeconds(5);
         }
 
-        public override int GetHurtSound()
+        public void EndAcidBreath(Mobile m)
         {
-            return 0x187;
-        }
+            if (m == null || m.Deleted || !m.Alive || !Alive)
+                return;
 
-        public override int GetDeathSound()
-        {
-            return 0x1BA;
-        }
+            if (0.2 >= Utility.RandomDouble())
+                m.ApplyPoison(this, Poison.Greater);
 
+            AOS.Damage(m, Utility.RandomMinMax(100, 120), 0, 0, 0, 100, 0);
+        }
+        #endregion
+
+        public override int GetAngerSound() { return 0x5A; }
+        public override int GetIdleSound() { return 0x5A; }
+        public override int GetAttackSound() { return 0x164; }
+        public override int GetHurtSound() { return 0x187; }
+        public override int GetDeathSound() { return 0x1BA; }
+        
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.Average, 2);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -124,6 +252,40 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            Hidden = false;
+            Blessed = false;
+        }
+
+        private class InternalItem : Item
+        {
+            public override int LabelNumber { get { return 1027025; } }
+
+            public InternalItem(int id)
+                : base(id)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(10), Delete);
+                Hue = 1;
+            }
+
+            public InternalItem(Serial serial)
+                : base(serial)
+            {
+            }
+
+            public override void Serialize(GenericWriter writer)
+            {
+                base.Serialize(writer);
+                writer.Write((int)0);
+            }
+
+            public override void Deserialize(GenericReader reader)
+            {
+                base.Deserialize(reader);
+                int version = reader.ReadInt();
+
+                Delete();
+            }
         }
     }
 }

@@ -7,6 +7,8 @@ using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
 using Server.Spells.Second;
 using Server.Targeting;
+using Server.Engines.Craft;
+using Server.Factions;
 
 namespace Server.Items
 {
@@ -19,8 +21,36 @@ namespace Server.Items
         Wildfire = 2843
     }
 
-    public class BaseTalisman : Item, IWearableDurability, IVvVItem, IOwnerRestricted, ITalismanProtection, ITalismanKiller
+    public enum TalismanSkill
     {
+        Alchemy,
+        Blacksmithy,
+        Fletching,
+        Carpentry,
+        Cartography,
+        Cooking,
+        Glassblowing,
+        Inscription,
+        Masonry,
+        Tailoring,
+        Tinkering
+    }
+
+    public class BaseTalisman : Item, IWearableDurability, IVvVItem, IOwnerRestricted, ITalismanProtection, ITalismanKiller, IFactionItem, IArtifact
+    {
+        #region Factions
+        private FactionItem m_FactionState;
+
+        public FactionItem FactionItemState
+        {
+            get { return m_FactionState; }
+            set
+            {
+                m_FactionState = value;
+            }
+        }
+        #endregion
+
         private bool _VvVItem;
         private Mobile _Owner;
         private string _OwnerName;
@@ -90,10 +120,11 @@ namespace Server.Items
             }
         }// used to override default summoner/removal name
 
+        public virtual int ArtifactRarity { get { return 0; } }
+
         private int m_MaxHitPoints;
         private int m_HitPoints;
 
-        //private readonly int m_KarmaLoss;
         private int m_MaxCharges;
         private int m_Charges;
         private int m_MaxChargeTime;
@@ -246,7 +277,7 @@ namespace Server.Items
         }
 
         public virtual bool CanRepair { get { return true; } }
-        public virtual bool CanFortify { get { return NegativeAttributes.Antique < 3; } }
+        public virtual bool CanFortify { get { return NegativeAttributes.Antique < 4; } }
 
         #region Slayer
         private TalismanSlayerName m_Slayer;
@@ -334,12 +365,12 @@ namespace Server.Items
         #endregion
 
         #region Craft bonuses
-        private SkillName m_Skill;
+        private TalismanSkill m_Skill;
         private int m_SuccessBonus;
         private int m_ExceptionalBonus;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SkillName Skill
+        public TalismanSkill Skill
         {
             get
             {
@@ -350,6 +381,12 @@ namespace Server.Items
                 m_Skill = value;
                 InvalidateProperties();
             }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public SkillName CraftSkill
+        {
+            get { return GetMainSkill(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -515,6 +552,8 @@ namespace Server.Items
             talisman.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
             talisman.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, m_SAAbsorptionAttributes);
             talisman.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
+
+            base.OnAfterDuped(newItem);
         }
 
         public override bool CanEquip(Mobile from)
@@ -729,6 +768,10 @@ namespace Server.Items
                 list.Add(1153213, OwnerName);
             }
 
+            #region Factions
+            FactionEquipment.AddFactionProperties(this, list);
+            #endregion
+
             if(Attributes.Brittle > 0)
                 list.Add(1116209); // Brittle
 
@@ -748,6 +791,11 @@ namespace Server.Items
                     list.Add(1074883); // Fully Charged
             }
 
+            if (ArtifactRarity > 0)
+            {
+                list.Add(1061078, ArtifactRarity.ToString()); // artifact rarity ~1_val~
+            }
+
             if (m_Killer != null && !m_Killer.IsEmpty && m_Killer.Amount > 0)
                 list.Add(1072388, "{0}\t{1}", m_Killer.Name != null ? m_Killer.Name.ToString() : "Unknown", m_Killer.Amount); // ~1_NAME~ Killer: +~2_val~%
 
@@ -755,10 +803,10 @@ namespace Server.Items
                 list.Add(1072387, "{0}\t{1}", m_Protection.Name != null ? m_Protection.Name.ToString() : "Unknown", m_Protection.Amount); // ~1_NAME~ Protection: +~2_val~%
 
             if (m_ExceptionalBonus != 0)
-                list.Add(1072395, "#{0}\t{1}", AosSkillBonuses.GetLabel(m_Skill), m_ExceptionalBonus); // ~1_NAME~ Exceptional Bonus: ~2_val~%
+                list.Add(1072395, "#{0}\t{1}", GetSkillLabel(), m_ExceptionalBonus); // ~1_NAME~ Exceptional Bonus: ~2_val~%
 
             if (m_SuccessBonus != 0)
-                list.Add(1072394, "#{0}\t{1}", AosSkillBonuses.GetLabel(m_Skill), m_SuccessBonus); // ~1_NAME~ Bonus: ~2_val~%
+                list.Add(1072394, "#{0}\t{1}", GetSkillLabel(), m_SuccessBonus); // ~1_NAME~ Bonus: ~2_val~%
 
             if (m_NegativeAttributes != null)
                 m_NegativeAttributes.GetProperties(list, this);
@@ -951,7 +999,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write((int)4); // version
 
             writer.Write(m_Creature);
 
@@ -1041,6 +1089,7 @@ namespace Server.Items
 
             switch (version)
             {
+                case 4: // version 4 converts SkillName to CraftSystem (thanks glassblowing and stone crafting!)
                 case 3:
                     {
                         m_Creature = reader.ReadMobile();
@@ -1099,7 +1148,16 @@ namespace Server.Items
                             m_AosAttributes.IncreasedKarmaLoss = reader.ReadEncodedInt();
 
                         if (GetSaveFlag(flags, SaveFlag.Skill))
-                            m_Skill = (SkillName)reader.ReadEncodedInt();
+                        {
+                            if (version <= 3)
+                            {
+                                m_Skill = GetTalismanSkill((SkillName)reader.ReadEncodedInt());
+                            }
+                            else
+                            {
+                                m_Skill = (TalismanSkill)reader.ReadEncodedInt();
+                            }
+                        }
 
                         if (GetSaveFlag(flags, SaveFlag.SuccessBonus))
                             m_SuccessBonus = reader.ReadEncodedInt();
@@ -1234,6 +1292,7 @@ namespace Server.Items
             return Utility.RandomList(m_ItemIDs);
         }
 
+        public static Type[] Summons { get { return m_Summons; } }
         private static readonly Type[] m_Summons = new Type[]
         {
             typeof(SummonedAntLion),
@@ -1258,6 +1317,7 @@ namespace Server.Items
             typeof(Bandage),
         };
 
+        public static int[] SummonLabels { get { return m_SummonLabels; } }
         private static readonly int[] m_SummonLabels = new int[]
         {
             1075211, // Ant Lion
@@ -1311,6 +1371,7 @@ namespace Server.Items
             return TalismanRemoval.None;
         }
 
+        public static Type[] Killers { get { return m_Killers; } }
         private static readonly Type[] m_Killers = new Type[]
         {
             typeof(OrcBomber), typeof(OrcBrute), typeof(Sewerrat), typeof(Rat), typeof(GiantRat),
@@ -1329,6 +1390,7 @@ namespace Server.Items
             // TODO Meraktus, Tormented Minotaur, Minotaur
         };
 
+        public static int[] KillerLabels { get { return m_KillerLabels; } }
         private static readonly int[] m_KillerLabels = new int[]
         {
             1072413, 1072414, 1072418, 1072419, 1072420,
@@ -1376,7 +1438,8 @@ namespace Server.Items
             return new TalismanAttribute(m_Killers[num], m_KillerLabels[num], Utility.RandomMinMax(5, 60));
         }
 
-        private static readonly SkillName[] m_Skills = new SkillName[]
+        public static SkillName[] SkillsOld { get { return m_SkillsOld; } }
+        private static readonly SkillName[] m_SkillsOld = new SkillName[]
         {
             SkillName.Alchemy,
             SkillName.Blacksmith,
@@ -1389,7 +1452,23 @@ namespace Server.Items
             SkillName.Tinkering,
         };
 
-        public static SkillName GetRandomSkill()
+        public static TalismanSkill[] Skills { get { return m_Skills; } }
+        private static readonly TalismanSkill[] m_Skills = new TalismanSkill[]
+        {
+            TalismanSkill.Alchemy,
+            TalismanSkill.Blacksmithy,
+            TalismanSkill.Fletching,
+            TalismanSkill.Carpentry,
+            TalismanSkill.Cartography,
+            TalismanSkill.Cooking,
+            TalismanSkill.Glassblowing,
+            TalismanSkill.Inscription,
+            TalismanSkill.Masonry,
+            TalismanSkill.Tailoring,
+            TalismanSkill.Tinkering,
+        };
+
+        public static TalismanSkill GetRandomSkill()
         {
             return m_Skills[Utility.Random(m_Skills.Length)];
         }
@@ -1442,6 +1521,66 @@ namespace Server.Items
             return 0;
         }
 
+        #endregion
+
+        #region Crafting Bonuses
+        /// <summary>
+        /// This should only be called for version 4 conversion from SkillName to CraftSystem
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <returns></returns>
+        public TalismanSkill GetTalismanSkill(SkillName skill)
+        {
+            switch (skill)
+            {
+                default:
+                case SkillName.Alchemy: return TalismanSkill.Alchemy;
+                case SkillName.Blacksmith: return TalismanSkill.Blacksmithy;
+                case SkillName.Carpentry: return TalismanSkill.Carpentry;
+                case SkillName.Cartography: return TalismanSkill.Cartography;
+                case SkillName.Cooking: return TalismanSkill.Cooking;
+                case SkillName.Fletching: return TalismanSkill.Fletching;
+                case SkillName.Inscribe: return TalismanSkill.Inscription;
+                case SkillName.Tailoring: return TalismanSkill.Tailoring;
+                case SkillName.Tinkering: return TalismanSkill.Tinkering;
+            }
+        }
+
+        public SkillName GetMainSkill()
+        {
+            switch (m_Skill)
+            {
+                default:
+                case TalismanSkill.Alchemy: return SkillName.Alchemy;
+                case TalismanSkill.Blacksmithy: return SkillName.Blacksmith;
+                case TalismanSkill.Fletching: return SkillName.Fletching;
+                case TalismanSkill.Carpentry: return SkillName.Carpentry;
+                case TalismanSkill.Cartography: return SkillName.Cartography;
+                case TalismanSkill.Cooking: return SkillName.Cooking;
+                case TalismanSkill.Glassblowing: return SkillName.Alchemy;
+                case TalismanSkill.Inscription: return SkillName.Inscribe;
+                case TalismanSkill.Masonry: return SkillName.Carpentry;
+                case TalismanSkill.Tailoring: return SkillName.Tailoring;
+                case TalismanSkill.Tinkering: return SkillName.Tinkering;
+            }
+        }
+
+        public int GetSkillLabel()
+        {
+            switch (m_Skill)
+            {
+                case TalismanSkill.Glassblowing: return 1072393;
+                case TalismanSkill.Masonry: return 1072392;
+                default: return AosSkillBonuses.GetLabel(GetMainSkill());
+            }
+        }
+
+        public bool CheckSkill(CraftSystem system)
+        {
+            int idx = (int)m_Skill;
+
+            return idx >= 0 && idx < CraftContext.Systems.Length && CraftContext.Systems[idx] == system;
+        }
         #endregion
 
         private class TalismanTarget : Target

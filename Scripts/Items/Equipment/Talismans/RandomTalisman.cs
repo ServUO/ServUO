@@ -8,36 +8,36 @@ namespace Server.Items
         public RandomTalisman()
             : base(GetRandomItemID())
         {
-            this.Summoner = BaseTalisman.GetRandomSummoner();
+            Summoner = BaseTalisman.GetRandomSummoner();
 
-            if (this.Summoner.IsEmpty)
+            if (Summoner.IsEmpty)
             {
-                this.Removal = BaseTalisman.GetRandomRemoval();
+                Removal = BaseTalisman.GetRandomRemoval();
 
-                if (this.Removal != TalismanRemoval.None)
+                if (Removal != TalismanRemoval.None)
                 {
-                    this.MaxCharges = BaseTalisman.GetRandomCharges();
-                    this.MaxChargeTime = 1200;
+                    MaxCharges = BaseTalisman.GetRandomCharges();
+                    MaxChargeTime = 1200;
                 }
             }
             else
             {
-                this.MaxCharges = Utility.RandomMinMax(10, 50);
+                MaxCharges = Utility.RandomMinMax(10, 50);
 
-                if (this.Summoner.IsItem)
-                    this.MaxChargeTime = 60;
+                if (Summoner.IsItem)
+                    MaxChargeTime = 60;
                 else
-                    this.MaxChargeTime = 1800;
+                    MaxChargeTime = 1800;
             }
 
-            this.Blessed = BaseTalisman.GetRandomBlessed();
-            this.Slayer = BaseTalisman.GetRandomSlayer();
-            this.Protection = BaseTalisman.GetRandomProtection();
-            this.Killer = BaseTalisman.GetRandomKiller();
-            this.Skill = BaseTalisman.GetRandomSkill();
-            this.ExceptionalBonus = BaseTalisman.GetRandomExceptional();
-            this.SuccessBonus = BaseTalisman.GetRandomSuccessful();
-            this.Charges = this.MaxCharges;
+            Blessed = BaseTalisman.GetRandomBlessed();
+            Slayer = BaseTalisman.GetRandomSlayer();
+            Protection = BaseTalisman.GetRandomProtection();
+            Killer = BaseTalisman.GetRandomKiller();
+            Skill = BaseTalisman.GetRandomSkill();
+            ExceptionalBonus = BaseTalisman.GetRandomExceptional();
+            SuccessBonus = BaseTalisman.GetRandomSuccessful();
+            Charges = MaxCharges;
         }
 
         public RandomTalisman(Serial serial)

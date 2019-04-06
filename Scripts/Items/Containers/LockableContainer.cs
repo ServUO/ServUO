@@ -427,7 +427,7 @@ namespace Server.Items
                 list.Add(1060636); // Exceptional
             }
 
-            if (m_Resource > CraftResource.Iron)
+            if (m_Resource > CraftResource.Iron && !CraftResources.IsStandard(m_Resource))
             {
                 list.Add(1114057, "#{0}", CraftResources.GetLocalizationNumber(m_Resource)); // ~1_val~
             }
@@ -453,7 +453,7 @@ namespace Server.Items
 
         #region ICraftable Members
 
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
 
@@ -504,7 +504,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(500637); // Your tinker skill was insufficient to make the item lockable.
             }
 
-            return 1;
+            return quality;
         }
 
         #endregion

@@ -1,15 +1,11 @@
-#region Header
-// **********
-// ServUO - Region.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 
+using Server.Items;
 using Server.Network;
 using Server.Targeting;
 #endregion
@@ -124,6 +120,7 @@ namespace Server
 		TheVesperMist
 	}
 
+	[PropertyObject]
 	public class Region : IComparable
 	{
 		private static readonly List<Region> m_Regions = new List<Region>();
@@ -197,22 +194,49 @@ namespace Server
 
 		private Point3D m_GoLocation;
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public string Name { get { return m_Name; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public Map Map { get { return m_Map; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public Region Parent { get { return m_Parent; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public List<Region> Children { get { return m_Children; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public Rectangle3D[] Area { get { return m_Area; } }
+
 		public Sector[] Sectors { get { return m_Sectors; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Dynamic { get { return m_Dynamic; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public int Priority { get { return m_Priority; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public int ChildLevel { get { return m_ChildLevel; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Registered { get { return m_Registered; } }
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public Point3D GoLocation { get { return m_GoLocation; } set { m_GoLocation = value; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public MusicName Music { get; set; }
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public bool IsDefault { get { return m_Map.DefaultRegion == this; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public virtual MusicName DefaultMusic { get { return m_Parent != null ? m_Parent.Music : MusicName.Invalid; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual double InsuranceMultiplier { get { return 1.0; } }
 
 		public Region(string name, Map map, int priority, params Rectangle2D[] area)
 			: this(name, map, priority, ConvertTo3D(area))
@@ -466,97 +490,192 @@ namespace Server
 			return false;
 		}
 
+		#region Entity Enumeration
 		public List<Mobile> GetPlayers()
 		{
-			var list = new List<Mobile>();
+			return GetPlayers(null);
+		}
 
-			if (m_Sectors != null)
+		public List<Mobile> GetPlayers(Func<Mobile, bool> predicate)
+		{
+			return GetEnumeratedPlayers(predicate).ToList();
+		}
+
+		public IEnumerable<Mobile> GetEnumeratedPlayers()
+		{
+			return GetEnumeratedPlayers(null);
+		}
+
+		public IEnumerable<Mobile> GetEnumeratedPlayers(Func<Mobile, bool> predicate)
+		{
+			if (Sectors != null)
 			{
-				for (int i = 0; i < m_Sectors.Length; i++)
+				foreach (Sector s in Sectors)
 				{
-					Sector sector = m_Sectors[i];
-
-					foreach (Mobile player in sector.Players)
+					foreach (var o in GetDistinctEnumeration(s.Players, predicate))
 					{
-						if (player.Region.IsPartOf(this))
-						{
-							list.Add(player);
-						}
+						yield return o;
 					}
 				}
 			}
-
-			return list;
 		}
 
 		public int GetPlayerCount()
 		{
-			int count = 0;
+			return GetPlayerCount(null);
+		}
 
-			if (m_Sectors != null)
-			{
-				for (int i = 0; i < m_Sectors.Length; i++)
-				{
-					Sector sector = m_Sectors[i];
-
-					foreach (Mobile player in sector.Players)
-					{
-						if (player.Region.IsPartOf(this))
-						{
-							count++;
-						}
-					}
-				}
-			}
-
-			return count;
+		public int GetPlayerCount(Func<Mobile, bool> predicate)
+		{
+			return GetEnumeratedPlayers(predicate).Count();
 		}
 
 		public List<Mobile> GetMobiles()
 		{
-			var list = new List<Mobile>();
+			return GetMobiles(null);
+		}
 
-			if (m_Sectors != null)
+		public List<Mobile> GetMobiles(Func<Mobile, bool> predicate)
+		{
+			return GetEnumeratedMobiles(predicate).ToList();
+		}
+
+		public IEnumerable<Mobile> GetEnumeratedMobiles()
+		{
+			return GetEnumeratedMobiles(null);
+		}
+
+		public IEnumerable<Mobile> GetEnumeratedMobiles(Func<Mobile, bool> predicate)
+		{
+			if (Sectors != null)
 			{
-				for (int i = 0; i < m_Sectors.Length; i++)
+				foreach (Sector s in Sectors)
 				{
-					Sector sector = m_Sectors[i];
-
-					foreach (Mobile mobile in sector.Mobiles)
+					foreach (var o in GetDistinctEnumeration(s.Mobiles, predicate))
 					{
-						if (mobile.Region.IsPartOf(this))
-						{
-							list.Add(mobile);
-						}
+						yield return o;
 					}
 				}
 			}
-
-			return list;
 		}
 
 		public int GetMobileCount()
 		{
-			int count = 0;
+			return GetMobileCount(null);
+		}
 
-			if (m_Sectors != null)
+		public int GetMobileCount(Func<Mobile, bool> predicate)
+		{
+			return GetEnumeratedMobiles(predicate).Count();
+		}
+
+		public List<Item> GetItems()
+		{
+			return GetItems(null);
+		}
+
+		public List<Item> GetItems(Func<Item, bool> predicate)
+		{
+			return GetEnumeratedItems(predicate).ToList();
+		}
+
+		public IEnumerable<Item> GetEnumeratedItems()
+		{
+			return GetEnumeratedItems(null);
+		}
+
+		public IEnumerable<Item> GetEnumeratedItems(Func<Item, bool> predicate)
+		{
+			if (Sectors != null)
 			{
-				for (int i = 0; i < m_Sectors.Length; i++)
+				foreach (Sector s in Sectors)
 				{
-					Sector sector = m_Sectors[i];
-
-					foreach (Mobile mobile in sector.Mobiles)
+					foreach (var o in GetDistinctEnumeration(s.Items, predicate))
 					{
-						if (mobile.Region.IsPartOf(this))
-						{
-							count++;
-						}
+						yield return o;
 					}
 				}
 			}
-
-			return count;
 		}
+
+		public int GetItemCount()
+		{
+			return GetItemCount(null);
+		}
+
+		public int GetItemCount(Func<Item, bool> predicate)
+		{
+			return GetEnumeratedItems(predicate).Count();
+		}
+
+		public List<BaseMulti> GetMultis()
+		{
+			return GetMultis(null);
+		}
+
+		public List<BaseMulti> GetMultis(Func<BaseMulti, bool> predicate)
+		{
+			return GetEnumeratedMultis(predicate).ToList();
+		}
+
+		public IEnumerable<BaseMulti> GetEnumeratedMultis()
+		{
+			return GetEnumeratedMultis(null);
+		}
+
+		public IEnumerable<BaseMulti> GetEnumeratedMultis(Func<BaseMulti, bool> predicate)
+		{
+			if (Sectors != null)
+			{
+				foreach (Sector s in Sectors)
+				{
+					foreach (var o in GetDistinctEnumeration(s.Multis, predicate))
+					{
+						yield return o;
+					}
+				}
+			}
+		}
+
+		public int GetMultiCount()
+		{
+			return GetMultiCount(null);
+		}
+
+		public int GetMultiCount(Func<BaseMulti, bool> predicate)
+		{
+			return GetEnumeratedMultis(predicate).Count();
+		}
+
+		private IEnumerable<T> GetDistinctEnumeration<T>(List<T> list, Func<T, bool> predicate)
+			where T : IEntity
+		{
+			return GetEnumeration(list, predicate).Distinct();
+		}
+
+		private IEnumerable<T> GetEnumeration<T>(List<T> list, Func<T, bool> predicate)
+			where T : IEntity
+		{
+			T e;
+
+			var i = list.Count;
+
+			while (--i >= 0)
+			{
+				if (i >= list.Count)
+				{
+					continue;
+				}
+
+				e = list[i];
+
+				if (e != null && e.Map == Map && Contains(e.Location) && (predicate == null || predicate(e)))
+				{
+					yield return e;
+				}
+			}
+		}
+		#endregion
 
 		int IComparable.CompareTo(object obj)
 		{
@@ -896,22 +1015,22 @@ namespace Server
 				m_Parent.OnDeath(m);
 			}
 		}
-
-		public virtual bool OnDamage(Mobile m, ref int Damage)
+		
+		public virtual bool OnDamage(Mobile m, ref int damage)
 		{
 			if (m_Parent != null)
 			{
-				return m_Parent.OnDamage(m, ref Damage);
+				return m_Parent.OnDamage(m, ref damage);
 			}
 
 			return true;
 		}
-
-		public virtual bool OnHeal(Mobile m, ref int Heal)
+		
+		public virtual bool OnHeal(Mobile m, ref int heal)
 		{
 			if (m_Parent != null)
 			{
-				return m_Parent.OnHeal(m, ref Heal);
+				return m_Parent.OnHeal(m, ref heal);
 			}
 
 			return true;
@@ -1018,16 +1137,19 @@ namespace Server
 				int oldRChild = (oldR != null ? oldR.ChildLevel : -1);
 				int newRChild = (newR != null ? newR.ChildLevel : -1);
 
-				if (oldRChild >= newRChild)
+				if (oldRChild >= newRChild && oldR != null)
 				{
 					oldR.OnExit(m);
+
 					oldR = oldR.Parent;
 				}
 
-				if (newRChild >= oldRChild)
+				if (newRChild >= oldRChild && newR != null)
 				{
 					newR.OnEnter(m);
-					EventSink.InvokeOnEnterRegion(new OnEnterRegionEventArgs(m, newR));
+
+					EventSink.InvokeOnEnterRegion(new OnEnterRegionEventArgs(m, oldRegion, newR));
+
 					newR = newR.Parent;
 				}
 			}

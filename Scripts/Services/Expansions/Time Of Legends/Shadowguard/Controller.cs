@@ -387,9 +387,6 @@ namespace Server.Engines.Shadowguard
             {
                 Queue.Remove(m);
 
-                if (Queue.Count == 0)
-                    Queue = null;
-
                 return false;
             }
 
@@ -432,20 +429,25 @@ namespace Server.Engines.Shadowguard
                 {
                     message = true;
 
-                    Timer.DelayCall(TimeSpan.FromMinutes(2), () =>
+                    Timer.DelayCall(TimeSpan.FromMinutes(2), mobile =>
                     {
-                        EncounterType type = Queue[m];
-                        ShadowguardInstance instance = GetAvailableInstance(type);
-
-                        if (instance != null && instance.TryBeginEncounter(m, true, type))
+                        if (Queue.ContainsKey(m))
                         {
-                            RemoveFromQueue(m);
+                            EncounterType type = Queue[m];
+                            ShadowguardInstance instance = GetAvailableInstance(type);
+
+                            if (instance != null && instance.TryBeginEncounter(m, true, type))
+                            {
+                                RemoveFromQueue(m);
+                            }
                         }
-                    });
+                    }, m);
                 }
 
                 break;
             }
+
+            ColUtility.Free(copy);
 
             if (message && Queue.Count > 0)
             {
@@ -654,14 +656,20 @@ namespace Server.Engines.Shadowguard
 
                 if (encounter == null)
                 {
-                    ShadowguardEncounter.MovePlayer(m, Instance.KickLocation, true);
+                    StormLevelGump menu = new StormLevelGump(m);
+                    menu.BeginClose();
+                    m.SendGump(menu);
                 }
                 else if (m != encounter.PartyLeader)
                 {
                     Party p = Party.Get(encounter.PartyLeader);
 
                     if (p == null || !p.Contains(m))
-                        ShadowguardEncounter.MovePlayer(m, Instance.KickLocation, true);
+                    {
+                        StormLevelGump menu = new StormLevelGump(m);
+                        menu.BeginClose();
+                        m.SendGump(menu);
+                    }
                 }
             }
         }
@@ -694,16 +702,16 @@ namespace Server.Engines.Shadowguard
             ankh.MoveToWorld(new Point3D(503, 2191, 25), Map.TerMur);    
 
             Item item = new Static(19343);
-            item.MoveToWorld(new Point3D(64, 2336, 30), Map.TerMur);
+            item.MoveToWorld(new Point3D(64, 2336, 29), Map.TerMur);
 
             item = new Static(19343);
-            item.MoveToWorld(new Point3D(160, 2336, 30), Map.TerMur);
+            item.MoveToWorld(new Point3D(160, 2336, 29), Map.TerMur);
 
             item = new Static(19343);
-            item.MoveToWorld(new Point3D(64, 2432, 30), Map.TerMur);
+            item.MoveToWorld(new Point3D(64, 2432, 29), Map.TerMur);
 
             item = new Static(19343);
-            item.MoveToWorld(new Point3D(160, 2432, 30), Map.TerMur);
+            item.MoveToWorld(new Point3D(160, 2432, 29), Map.TerMur);
 
             from.SendMessage("Shadowguard has been setup!");
             Console.WriteLine("Shadowguard setup!");

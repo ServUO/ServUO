@@ -38,7 +38,22 @@ namespace Server.Items
 
         public static void Initialize()
         {
+            EventSink.CreatureDeath += OnCreatureDeath;
+
             m_IngredientTable = new List<IngredientDropEntry>();
+
+            // Imbuing Gems
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(AncientLichRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(DevourerRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(FireElementalRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(GrayGoblinMageRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(GreenGoblinAlchemistRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(PixieRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(RakktaviRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(SkeletalDragonRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(TikitaviRenowned), true, .5, ImbuingGems));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(VitaviRenowned), true, .5, ImbuingGems));
+
             //Bottle of Ichor/Spider Carapace
             m_IngredientTable.Add(new IngredientDropEntry(typeof(TrapdoorSpider), true, .05, typeof(SpiderCarapace)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(WolfSpider), true, .15, typeof(BottleIchor)));
@@ -64,7 +79,10 @@ namespace Server.Items
             m_IngredientTable.Add(new IngredientDropEntry(typeof(HighPlainsBoura), true, 1.0, typeof(BouraPelt)));
 
             //Silver snake skin
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(SilverSerpent), true, "TerMur", .05, typeof(SilverSnakeSkin)));
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(SilverSerpent), true, "TerMur", .10, typeof(SilverSnakeSkin)));
+
+            //Harpsichord Roll
+            m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), true, "TerMur", .05, typeof(HarpsichordRoll)));
 
             //Void Orb/Vial of Vitriol
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseVoidCreature), true, .05, typeof(VoidOrb)));
@@ -110,7 +128,6 @@ namespace Server.Items
             m_IngredientTable.Add(new IngredientDropEntry(typeof(AgapiteElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BronzeElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(CopperElemental), true, .25, typeof(CrystallineBlackrock)));
-            m_IngredientTable.Add(new IngredientDropEntry(typeof(DullCopperElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(GoldenElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(ShadowIronElemental), true, .25, typeof(CrystallineBlackrock)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(ValoriteElemental), true, .25, typeof(CrystallineBlackrock)));
@@ -120,7 +137,7 @@ namespace Server.Items
 
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Cavern of the Discarded", .05, typeof(DelicateScales),
                 typeof(ArcanicRuneStone), typeof(PowderedIron), typeof(EssenceBalance), typeof(CrushedGlass), typeof(CrystallineBlackrock),
-                typeof(ElvenFletching), typeof(CrystalShards), typeof(Lodestone), typeof(AbyssalCloth), typeof(SeedRenewal)));
+                typeof(ElvenFletching), typeof(CrystalShards), typeof(Lodestone), typeof(AbyssalCloth), typeof(SeedOfRenewal)));
 
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Passage of Tears", .05, typeof(EssenceSingularity)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Fairy Dragon Lair", .05, typeof(EssenceDiligence)));
@@ -132,6 +149,22 @@ namespace Server.Items
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Lands of the Lich", .05, typeof(EssenceDirection)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Secret Garden", .05, typeof(EssenceFeeling)));
             m_IngredientTable.Add(new IngredientDropEntry(typeof(BaseCreature), false, "Skeletal Dragon", .05, typeof(EssencePersistence)));
+        }
+
+        public static void OnCreatureDeath(CreatureDeathEventArgs e)
+        {
+            BaseCreature bc = e.Creature as BaseCreature;
+            Container c = e.Corpse;
+
+            if (bc != null && c != null && !c.Deleted && !bc.Controlled && !bc.Summoned)
+            {
+                CheckDrop(bc, c);
+            }
+
+            if (e.Killer is BaseVoidCreature)
+            {
+                ((BaseVoidCreature)e.Killer).Mutate(VoidEvolution.Killing);
+            }
         }
 
         public static void CheckDrop(BaseCreature bc, Container c)
@@ -202,8 +235,18 @@ namespace Server.Items
                     {
                         c.DropItem(item);
                     }
+
+                    ColUtility.Free(drops);
                 }
             }
         }
+
+        public static Type[] ImbuingGems = 
+        {
+            typeof(FireRuby), 
+            typeof(WhitePearl), 
+            typeof(BlueDiamond), 
+			typeof(Turquoise)
+        };
     }
 }

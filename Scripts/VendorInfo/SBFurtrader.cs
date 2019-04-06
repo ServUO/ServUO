@@ -16,22 +16,22 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
         public class InternalBuyInfo : List<GenericBuyInfo> 
         { 
             public InternalBuyInfo() 
-            { 
-                this.Add(new GenericBuyInfo(typeof(Hides), 3, 40, 0x1079, 0)); 
+            {
+                Add(new GenericBuyInfo(typeof(Hides), 3, 40, 0x1079, 0, true)); 
             }
         }
 
@@ -39,7 +39,7 @@ namespace Server.Mobiles
         { 
             public InternalSellInfo() 
             { 
-                this.Add(typeof(Hides), 2); 
+                Add(typeof(Hides), 2); 
             }
         }
     }

@@ -6,7 +6,16 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public abstract class BaseTool : Item, IUsesRemaining, IResource
+    public interface ITool : IEntity, IUsesRemaining
+    {
+        CraftSystem CraftSystem { get; }
+
+        bool BreakOnDepletion { get; }
+
+        bool CheckAccessible(Mobile from, ref int num);
+    }
+
+    public abstract class BaseTool : Item, ITool, IResource
     {
         private Mobile m_Crafter;
         private ItemQuality m_Quality;
@@ -137,7 +146,7 @@ namespace Server.Items
 
         public virtual bool CheckAccessible(Mobile m, ref int num)
         {
-            if (!IsChildOf(m) && Parent != m)
+            if (RootParent != m)
             {
                 num = 1044263;
                 return false;
@@ -153,13 +162,18 @@ namespace Server.Items
 
         public static bool CheckAccessible(Item tool, Mobile m, bool message)
         {
+            if (tool == null || tool.Deleted)
+            {
+                return false;
+            }
+
             var num = 0;
 
             bool res;
 
-            if (tool is BaseTool)
+            if (tool is ITool)
             {
-                res = ((BaseTool)tool).CheckAccessible(m, ref num);
+                res = ((ITool)tool).CheckAccessible(m, ref num);
             }
             else
             {
@@ -176,14 +190,19 @@ namespace Server.Items
 
         public static bool CheckTool(Item tool, Mobile m)
         {
+            if (tool == null || tool.Deleted)
+            {
+                return false;
+            }
+
             Item check = m.FindItemOnLayer(Layer.OneHanded);
 
-            if (check is BaseTool && check != tool && !(check is AncientSmithyHammer))
+            if (check is ITool && check != tool && !(check is AncientSmithyHammer))
                 return false;
 
             check = m.FindItemOnLayer(Layer.TwoHanded);
 
-            if (check is BaseTool && check != tool && !(check is AncientSmithyHammer))
+            if (check is ITool && check != tool && !(check is AncientSmithyHammer))
                 return false;
 
             return true;
@@ -216,8 +235,6 @@ namespace Server.Items
                     }
                     else
                     {
-                        CraftContext context = system.GetContext(from);
-
                         from.SendGump(new CraftGump(from, system, this, null));
                     }
                 }
@@ -281,8 +298,7 @@ namespace Server.Items
         }
 
         #region ICraftable Members
-
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             PlayerConstructed = true;
 
@@ -291,51 +307,8 @@ namespace Server.Items
             if (makersMark)
                 Crafter = from;
 
-            if (!craftItem.ForceNonExceptional)
-            {
-                if (typeRes == null)
-                    typeRes = craftItem.Resources.GetAt(0).ItemType;
-
-                Resource = CraftResources.GetFromType(typeRes);
-            }
-
             return quality;
         }
         #endregion
-
-        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
-        {
-            base.GetContextMenuEntries(from, list);
-
-            if (Core.TOL)
-                list.Add(new ToggleRepairContextMenuEntry(from, this));
-        }
-
-        public class ToggleRepairContextMenuEntry : ContextMenuEntry
-        {
-            private Mobile _From;
-            private BaseTool _Tool;
-
-            public ToggleRepairContextMenuEntry(Mobile from, BaseTool tool)
-                : base(1157040) // Toggle Repair Mode
-            {
-                _From = from;
-                _Tool = tool;
-            }
-
-            public override void OnClick()
-            {
-                if (_Tool.RepairMode)
-                {
-                    _From.SendLocalizedMessage(1157042); // This tool is fully functional. 
-                    _Tool.RepairMode = false;
-                }
-                else
-                {
-                    _From.SendLocalizedMessage(1157041); // This tool will only repair items in this mode.
-                    _Tool.RepairMode = true;
-                }
-            }
-        }
     }
 }

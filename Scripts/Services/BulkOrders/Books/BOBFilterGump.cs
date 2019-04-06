@@ -6,7 +6,31 @@ namespace Server.Engines.BulkOrders
 {
     public class BOBFilterGump : Gump
     {
-        private static readonly int[,] m_MaterialFilters = new int[,]
+        private static int[,] m_MaterialFilters = new int[,]
+			{
+				{ 1044067,  1 }, // Blacksmithy
+				{ 1062226,  3 }, // Iron
+				{ 1018332,  4 }, // Dull Copper
+				{ 1018333,  5 }, // Shadow Iron
+				{ 1018334,  6 }, // Copper
+				{ 1018335,  7 }, // Bronze
+
+				{       0,  0 }, // --Blank--
+				{ 1018336,  8 }, // Golden
+				{ 1018337,  9 }, // Agapite
+				{ 1018338, 10 }, // Verite
+				{ 1018339, 11 }, // Valorite
+				{       0,  0 }, // --Blank--
+
+				{ 1044094,  2 }, // Tailoring
+				{ 1044286, 12 }, // Cloth
+				{ 1062235, 13 }, // Leather
+				{ 1062236, 14 }, // Spined
+				{ 1062237, 15 }, // Horned
+				{ 1062238, 16 }  // Barbed
+			};
+
+        private static readonly int[,] m_MaterialFiltersNew = new int[,]
         {
             { 1044067, 1 }, // Blacksmithy
             { 1062226, 9 }, // Iron
@@ -123,6 +147,14 @@ namespace Server.Engines.BulkOrders
             m_AmountFilters
         };
 
+        private static readonly int[][,] m_FiltersNew = new int[][,]
+        {
+            m_TypeFilters,
+            m_QualityFilters,
+            m_MaterialFiltersNew,
+            m_AmountFilters
+        };
+
         private static readonly int[] m_XOffsets_Type = new int[] { 0, 75, 170 };
         private static readonly int[] m_XOffsets_Quality = new int[] { 0, 75, 170 };
         private static readonly int[] m_XOffsets_Amount = new int[] { 0, 75, 180, 275 };
@@ -166,7 +198,7 @@ namespace Server.Engines.BulkOrders
             AddFilterList(320, 96, m_XOffsets_Quality, 40, m_QualityFilters, m_XWidths_Small, f.Quality, 1);
 
             AddHtmlLocalized(26, 130, 120, 32, 1062232, LabelColor, false, false); // Material Type
-            AddFilterList(25, 162, m_XOffsets_Material, 35, m_MaterialFilters, m_XWidths_Large, f.Material, 2);
+            AddFilterList(25, 162, m_XOffsets_Material, 35, BulkOrderSystem.NewSystemEnabled ? m_MaterialFiltersNew : m_MaterialFilters, m_XWidths_Large, f.Material, 2);
 
             AddHtmlLocalized(26, 608, 120, 32, 1062217, LabelColor, false, false); // Amount
             AddFilterList(25, 640, m_XOffsets_Amount, 40, m_AmountFilters, m_XWidths_Small, f.Quantity, 3);
@@ -226,9 +258,11 @@ namespace Server.Engines.BulkOrders
                         int type = index % 4;
                         index /= 4;
 
-                        if (type >= 0 && type < m_Filters.Length)
+                        int[][,] filter = BulkOrderSystem.NewSystemEnabled ? m_FiltersNew : m_Filters;
+
+                        if (type >= 0 && type < filter.Length)
                         {
-                            int[,] filters = m_Filters[type];
+                            int[,] filters = filter[type];
 
                             if (index >= 0 && index < filters.GetLength(0))
                             {

@@ -52,7 +52,7 @@ namespace Server.Gumps
                     if (m.InRange(item.Location, 2))
                     {
                         Item deed = this.m_Addon.Deed;
-						
+     
                         if (deed != null)
                         {
                             m.AddToBackpack(deed);           	

@@ -12,9 +12,9 @@ namespace Server.Mobiles
         public Yellienir()
             : base("the bark weaver")
         { 
-            this.Name = "Yellienir";
+            Name = "Yellienir";
 			
-            this.m_Spoken = DateTime.UtcNow;
+            m_Spoken = DateTime.UtcNow;
         }
 
         public Yellienir(Serial serial)
@@ -40,7 +40,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SBInfos;
+                return m_SBInfos;
             }
         }
         public override void InitSBInfo()
@@ -49,24 +49,24 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Elf;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Elf;
 			
-            this.Hue = 0x851D;
-            this.HairItemID = 0x2FCE;
-            this.HairHue = 0x35;			
+            Hue = 0x851D;
+            HairItemID = 0x2FCE;
+            HairHue = 0x35;			
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots());
-            this.AddItem(new Cloak(0x3B2));
-            this.AddItem(new FemaleLeafChest());
-            this.AddItem(new LeafArms());
-            this.AddItem(new LeafTonlet());
+            AddItem(new ElvenBoots());
+            AddItem(new Cloak(0x3B2));
+            AddItem(new FemaleLeafChest());
+            AddItem(new LeafArms());
+            AddItem(new LeafTonlet());
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
@@ -77,14 +77,14 @@ namespace Server.Mobiles
 					
                 int range = 5;
 				
-                if (range >= 0 && this.InRange(m, range) && !this.InRange(oldLocation, range) && DateTime.UtcNow >= this.m_Spoken + TimeSpan.FromMinutes(1))
+                if (range >= 0 && InRange(m, range) && !InRange(oldLocation, range) && DateTime.UtcNow >= m_Spoken + TimeSpan.FromMinutes(1))
                 {
                     /* Human.  Do you crave the chance to denounce your humanity and prove your elven ancestry.  
                     Do you yearn to accept the responsibilities of a caretaker of our beloved Sosaria and so 
                     redeem yourself.  Then human, seek out Darius the Wise in Moonglow. */
-                    this.Say(1072801);
+                    Say(1072801);
 					
-                    this.m_Spoken = DateTime.UtcNow;
+                    m_Spoken = DateTime.UtcNow;
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace Server.Mobiles
 	
             int version = reader.ReadInt();
 			
-            this.m_Spoken = DateTime.UtcNow;
+            m_Spoken = DateTime.UtcNow;
         }
     }
 }

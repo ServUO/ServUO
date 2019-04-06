@@ -6,19 +6,18 @@ namespace Server.Items
     public class JadeWarAxe : WarAxe
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1115445; } } // Jade War Axe
+		
         [Constructable]
         public JadeWarAxe()
-        {
-            this.Name = ("Jade War Axe");
-		
-            this.Hue = 1162;
-			
-            this.AbsorptionAttributes.EaterFire = 10;
-            this.Slayer = SlayerName.ReptilianDeath;
-            this.WeaponAttributes.HitFireball = 30;	
-            this.WeaponAttributes.HitLowerDefend = 60;		
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 50;
+        {	
+            Hue = 1162;			
+            AbsorptionAttributes.EaterFire = 10;
+            Slayer = SlayerName.ReptilianDeath;
+            WeaponAttributes.HitFireball = 30;	
+            WeaponAttributes.HitLowerDefend = 60;		
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 50;
         }
 
         public JadeWarAxe(Serial serial)
@@ -40,24 +39,15 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override HarvestSystem HarvestSystem
-        {
-            get
-            {
-                return null;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

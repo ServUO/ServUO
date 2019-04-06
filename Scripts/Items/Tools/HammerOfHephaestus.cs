@@ -1,23 +1,48 @@
 using System;
 using Server.Engines.Craft;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
     public class HammerOfHephaestus : AncientSmithyHammer
     {
+        private static List<HammerOfHephaestus> _Instances = new List<HammerOfHephaestus>();
+
+        public static void Initialize()
+        {
+            Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), new TimerCallback(Tick_Callback));
+        }
+
+        private static void Tick_Callback()
+        {
+            foreach (var hammer in _Instances.Where(h => h != null && !h.Deleted && h.UsesRemaining < 20))
+            {
+                hammer.UsesRemaining++;
+                hammer.InvalidateProperties();
+            }
+        }
+
         [Constructable]
         public HammerOfHephaestus()
             : base(10, 20)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x0;
+            LootType = LootType.Blessed;
+            Hue = 0x0;
 
-            Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), new TimerCallback(Tick_Callback));
+            _Instances.Add(this);
         }
 
         public HammerOfHephaestus(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+
+            _Instances.Remove(this);
         }
 
         public override int LabelNumber
@@ -27,13 +52,14 @@ namespace Server.Items
                 return 1077740;
             }
         }// Hammer of Hephaestus
+
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack) || this.Parent == from)
+            if (IsChildOf(from.Backpack) || Parent == from)
             {
-                if (this.UsesRemaining > 0)
+                if (UsesRemaining > 0)
                 {
-                    CraftSystem system = this.CraftSystem;
+                    CraftSystem system = CraftSystem;
 	
                     int num = system.CanCraft(from, this, null);
 	
@@ -59,7 +85,7 @@ namespace Server.Items
 
         public override bool CanEquip(Mobile from)
         {
-            if (this.UsesRemaining > 0)
+            if (UsesRemaining > 0)
                 return base.CanEquip(from);
 
             from.SendLocalizedMessage(1072306); // You must wait a moment for it to recharge.
@@ -70,7 +96,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -79,18 +105,10 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            if (this.Hue == 0x482)
-                this.Hue = 0x0;
-				
-            Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), new TimerCallback(Tick_Callback));
-        }
+            if (version == 0 && Hue == 0x482)
+                Hue = 0x0;
 
-        private void Tick_Callback()
-        { 
-            if (this.UsesRemaining < 20)
-                this.UsesRemaining += 1;
-				
-            this.InvalidateProperties();
+            _Instances.Add(this);
         }
     }
 }

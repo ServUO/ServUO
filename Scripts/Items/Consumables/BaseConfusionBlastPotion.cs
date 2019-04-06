@@ -105,8 +105,9 @@ namespace Server.Items
             Geometry.Circle2D(loc, map, this.Radius, new DoEffect_Callback(BlastEffect), 270, 90);
 
             Timer.DelayCall(TimeSpan.FromSeconds(0.3), new TimerStateCallback(CircleEffect2), new object[] { loc, map });
+            IPooledEnumerable eable = map.GetMobilesInRange(loc, Radius);
 
-            foreach (Mobile mobile in map.GetMobilesInRange(loc, this.Radius))
+            foreach (Mobile mobile in eable)
             {
                 if (mobile is BaseCreature)
                 {
@@ -118,6 +119,7 @@ namespace Server.Items
                     mon.Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(5.0)); // TODO check
                 }
             }
+            eable.Free();
         }
 
         #region Effects

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - GuardAI.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -268,7 +262,7 @@ namespace Server.Factions
 			if (buff != null)
 				offset += buff.Offset;
 			if (curse != null)
-				offset += buff.Offset;
+				offset += curse.Offset;
 
 			return offset;
 		}
@@ -401,7 +395,9 @@ namespace Server.Factions
 						actPrio = inactPrio = m_Mobile.GetDistanceToSqrt(comb);
 					}
 
-					foreach (Mobile m in m_Mobile.GetMobilesInRange(12))
+                    IPooledEnumerable eable = m_Mobile.GetMobilesInRange(12);
+
+					foreach (Mobile m in eable)
 					{
 						if (m != m_Mobile && CanDispel(m))
 						{
@@ -420,6 +416,8 @@ namespace Server.Factions
 							}
 						}
 					}
+
+                    eable.Free();
 
 					return active != null ? active : inactive;
 				}

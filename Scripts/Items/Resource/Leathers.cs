@@ -51,7 +51,7 @@ namespace Server.Items
                 return 1047022;
             }
         }
-        int ICommodity.DescriptionNumber
+        TextDefinition ICommodity.Description
         {
             get
             {

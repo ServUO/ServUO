@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public GauntletsOfNobility()
         {
-            this.Hue = 0x4FE;
-            this.Attributes.BonusStr = 8;
-            this.Attributes.Luck = 100;
-            this.Attributes.WeaponDamage = 20;
+            Hue = 0x4FE;
+            Attributes.BonusStr = 8;
+            Attributes.Luck = 100;
+            Attributes.WeaponDamage = 20;
         }
 
         public GauntletsOfNobility(Serial serial)

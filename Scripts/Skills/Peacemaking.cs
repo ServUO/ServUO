@@ -1,13 +1,5 @@
-#region Header
-// **********
-// ServUO - Peacemaking.cs
-// **********
-#endregion
-
 #region References
 using System;
-
-using Server.Engines.ConPVP;
 using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.Mobiles;
@@ -41,6 +33,11 @@ namespace Server.SkillHandlers
 			from.NextSkillTime = Core.TickCount + 21600000;
 		}
 
+        public static bool UnderEffects(Mobile m)
+        {
+            return m is BaseCreature && ((BaseCreature)m).BardPacified;
+        }
+
 		public class InternalTarget : Target
 		{
 			private readonly BaseInstrument m_Instrument;
@@ -68,14 +65,6 @@ namespace Server.SkillHandlers
 				{
 					from.SendLocalizedMessage(1049528); // You cannot calm that!
 				}
-				else if (from.Region.IsPartOf<SafeZone>())
-				{
-					from.SendMessage("You may not peacemake in this area.");
-				}
-				else if (((Mobile)targeted).Region.IsPartOf<SafeZone>())
-				{
-					from.SendMessage("You may not peacemake there.");
-				}
 				else if (!m_Instrument.IsChildOf(from.Backpack))
 				{
 					from.SendLocalizedMessage(1062488); // The instrument you are trying to play is no longer in your backpack!
@@ -92,7 +81,7 @@ namespace Server.SkillHandlers
 					if (targeted == from)
 					{
 						// Standard mode : reset combatants for everyone in the area
-						if (!BaseInstrument.CheckMusicianship(from))
+                        if (from.Player && !BaseInstrument.CheckMusicianship(from))
 						{
 							from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 							m_Instrument.PlayInstrumentBadly(from);
@@ -121,8 +110,9 @@ namespace Server.SkillHandlers
 								int range = BaseInstrument.GetBardRange(from, SkillName.Peacemaking);
 
 								bool calmed = false;
+                                IPooledEnumerable eable = from.GetMobilesInRange(range);
 
-								foreach (Mobile m in from.GetMobilesInRange(range))
+								foreach (Mobile m in eable)
 								{
 									if ((m is BaseCreature && ((BaseCreature)m).Uncalmable) ||
 										(m is BaseCreature && ((BaseCreature)m).AreaPeaceImmune) || m == from || !from.CanBeHarmful(m, false))
@@ -141,6 +131,7 @@ namespace Server.SkillHandlers
 										((BaseCreature)m).Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(1.0));
 									}
 								}
+                                eable.Free();
 
 								if (!calmed)
 								{
@@ -173,7 +164,7 @@ namespace Server.SkillHandlers
 							from.SendLocalizedMessage(1049527); // That creature is already being calmed.
 							m_SetSkillTime = true;
 						}
-						else if (!BaseInstrument.CheckMusicianship(from))
+                        else if (from.Player && !BaseInstrument.CheckMusicianship(from))
 						{
 							from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 							from.NextSkillTime = Core.TickCount + 5000;
@@ -184,8 +175,6 @@ namespace Server.SkillHandlers
 						{
 							double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
 							double music = from.Skills[SkillName.Musicianship].Value;
-
-							diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
 
 							if (music > 100.0)
 							{

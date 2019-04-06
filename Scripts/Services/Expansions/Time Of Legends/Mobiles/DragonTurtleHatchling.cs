@@ -43,7 +43,11 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 5;
             MinTameSkill = 104.7;
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
+
+        public override bool HasBreath { get { return true; } }
 
         public override void GenerateLoot()
         {
@@ -87,7 +91,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -95,6 +99,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if(version == 0)
+            {
+                SetWeaponAbility(WeaponAbility.BleedAttack);
+            }
         }
     }
 }

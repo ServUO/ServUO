@@ -1,4 +1,5 @@
 using System;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -31,7 +32,7 @@ namespace Server.Items
 
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {
-            if (defender.Paralyzed)
+            if (!Core.ML && defender.Frozen)
             {
                 attacker.SendLocalizedMessage(1061923); // The target is already frozen.
                 return false;
@@ -47,35 +48,52 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            if (Server.Items.ParalyzingBlow.IsImmune(defender))	//After mana consumption intentional
-            {
-                attacker.SendLocalizedMessage(1070804); // Your target resists paralysis.
-                defender.SendLocalizedMessage(1070813); // You resist paralysis.
-                return;
-            }
-
-            attacker.SendLocalizedMessage(1063356); // You cripple your target with a nerve strike!
-            defender.SendLocalizedMessage(1063357); // Your attacker dealt a crippling nerve strike!
-
-            attacker.PlaySound(0x204);
-            defender.FixedEffect(0x376A, 9, 32);
-            defender.FixedParticles(0x37C4, 1, 8, 0x13AF, 0, 0, EffectLayer.Waist);
+            bool immune = Server.Items.ParalyzingBlow.IsImmune(defender);
+            bool doEffects = false;
 
             if (Core.ML)
             {
                 AOS.Damage(defender, attacker, (int)(15.0 * (attacker.Skills[SkillName.Bushido].Value - 50.0) / 70.0 + Utility.Random(10)), true, 100, 0, 0, 0, 0);	//0-25
-                if (((150.0 / 7.0 + (4.0 * attacker.Skills[SkillName.Bushido].Value) / 7.0) / 100.0) > Utility.RandomDouble())
+
+                if (!immune && ((150.0 / 7.0 + (4.0 * attacker.Skills[SkillName.Bushido].Value) / 7.0) / 100.0) > Utility.RandomDouble())
                 {
                     defender.Paralyze(TimeSpan.FromSeconds(2.0));
-                    Server.Items.ParalyzingBlow.BeginImmunity(defender, Server.Items.ParalyzingBlow.FreezeDelayDuration);				
+                    doEffects = true;
                 }
+
+                if(attacker is BaseCreature)
+                    PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Bushido);
             }
             else
             {
                 AOS.Damage(defender, attacker, (int)(15.0 * (attacker.Skills[SkillName.Bushido].Value - 50.0) / 70.0 + 10), true, 100, 0, 0, 0, 0); //10-25
-                defender.Freeze(TimeSpan.FromSeconds(2.0));
-                Server.Items.ParalyzingBlow.BeginImmunity(defender, Server.Items.ParalyzingBlow.FreezeDelayDuration);				
+
+                if(!immune)
+                {
+                    defender.Freeze(TimeSpan.FromSeconds(2.0));
+                    doEffects = true;
+                }
             }
+
+            if (!immune)
+            {
+                attacker.SendLocalizedMessage(1063356); // You cripple your target with a nerve strike!
+                defender.SendLocalizedMessage(1063357); // Your attacker dealt a crippling nerve strike!
+            }
+            else
+            {
+                attacker.SendLocalizedMessage(1070804); // Your target resists paralysis.
+                defender.SendLocalizedMessage(1070813); // You resist paralysis.
+            }
+
+            if (doEffects)
+            {
+                attacker.PlaySound(0x204);
+                defender.FixedEffect(0x376A, 9, 32);
+                defender.FixedParticles(0x37C4, 1, 8, 0x13AF, 0, 0, EffectLayer.Waist);
+            }
+
+            Server.Items.ParalyzingBlow.BeginImmunity(defender, Server.Items.ParalyzingBlow.FreezeDelayDuration);
         }
     }
 }

@@ -8,8 +8,8 @@ namespace Server.Items
         public ParrotWafer()
             : base(0x2FD6)
         {
-            this.Hue = 0x38;
-            this.Stackable = true;
+            Hue = 0x38;
+            Stackable = true;
         }
 
         public ParrotWafer(Serial serial)

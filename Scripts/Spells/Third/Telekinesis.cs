@@ -86,9 +86,9 @@ namespace Server.Spells.Third
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is ITelekinesisable)
+                if (o is ITelekinesisable && (!(o is Container) || !Siege.SiegeShard))
                     this.m_Owner.Target((ITelekinesisable)o);
-                else if (o is Container)
+                else if (o is Container && !Siege.SiegeShard)
                     this.m_Owner.Target((Container)o);
                 else
                     from.SendLocalizedMessage(501857); // This spell won't work on that!

@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public abstract class BaseDecorationArtifact : Item
+    public abstract class BaseDecorationArtifact : Item, IArtifact
     {
 		public override bool IsArtifact { get { return true; } }
         public virtual bool ShowArtifactRarity { get { return true; } }

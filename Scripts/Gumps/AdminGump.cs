@@ -274,7 +274,6 @@ namespace Server.Gumps
                         this.AddLabel(20, 350, LabelHue, "Operating System: ");
                         string os = Environment.OSVersion.ToString();
 
-                        os = os.Replace("Microsoft", "MSFT");
                         os = os.Replace("Service Pack", "SP");
 
                         this.AddLabel(150, 350, LabelHue, os);

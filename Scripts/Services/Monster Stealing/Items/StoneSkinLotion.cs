@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using Server.Mobiles; 
-using System.Text;
 using Server; 
 
-namespace drNO.ThieveItems
+namespace Server.Items
 {
-    class StoneSkinLotion : BaseBalmOrLotion
-
+    [TypeAlias("drNO.ThieveItems.StoneSkinLotion")]
+    public class StoneSkinLotion : BaseBalmOrLotion
     {
         protected override void ApplyEffect(PlayerMobile pm)
         {
@@ -19,25 +17,19 @@ namespace drNO.ThieveItems
             base.ApplyEffect(pm);
         }
 
+        public override int LabelNumber { get { return 1094944; } } // Stone Skin Lotion
+
         [Constructable] 
         public StoneSkinLotion()
             : base(0xEFD)
         {
-            Name = "Stone Skin Lotion";
             m_EffectType = ThieveConsumableEffect.StoneSkinLotionEffect; 
         }
-
-        public override void OnDoubleClick(Mobile from)
-        {
-            OnUse((PlayerMobile)from);
-        }
-
 
         public StoneSkinLotion(Serial serial)
             : base(serial)
         {
         }
-
 
         public override void Serialize(GenericWriter writer)
         {
@@ -52,6 +44,5 @@ namespace drNO.ThieveItems
 
             int version = reader.ReadInt();
         }
-
     }
 }

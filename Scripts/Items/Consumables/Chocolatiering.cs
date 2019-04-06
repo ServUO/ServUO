@@ -1,18 +1,19 @@
-#region Header
-// **********
-// ServUO - Chocolatiering.cs
-// **********
-#endregion
-
 using System;
 using Server.Engines.Craft;
 
 namespace Server.Items
 {
-	public class CocoaLiquor : Item
+	public class CocoaLiquor : Item, IQuality
 	{
 		public override int LabelNumber { get { return 1080007; } } // Cocoa liquor
 		public override double DefaultWeight { get { return 1.0; } }
+
+        public virtual bool PlayerConstructed { get { return true; } }
+
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
 		[Constructable]
 		public CocoaLiquor()
@@ -20,6 +21,23 @@ namespace Server.Items
 		{
 			Hue = 1130;
 		}
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
+        }
 
 		public CocoaLiquor(Serial serial)
 			: base(serial)
@@ -29,14 +47,23 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(0); // version
+			writer.Write(1); // version
+
+            writer.Write((int)_Quality);
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 
-			reader.ReadInt();
+			int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    _Quality = (ItemQuality)reader.ReadInt();
+                    break;
+            }
 		}
 	}
 
@@ -107,7 +134,7 @@ namespace Server.Items
             }
         }
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
 
@@ -166,7 +193,7 @@ namespace Server.Items
             }
         }
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
 

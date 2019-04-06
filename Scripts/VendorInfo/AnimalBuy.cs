@@ -13,14 +13,14 @@ namespace Server.Mobiles
         public AnimalBuyInfo(int controlSlots, string name, Type type, int price, int amount, int itemID, int hue)
             : base(name, type, price, amount, itemID, hue)
         {
-            this.m_ControlSlots = controlSlots;
+            m_ControlSlots = controlSlots;
         }
 
         public override int ControlSlots
         {
             get
             {
-                return this.m_ControlSlots;
+                return m_ControlSlots;
             }
         }
     }

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - MiscSAResources.cs
-// **********
-#endregion
-
 #region References
 using Server.Engines.Plants;
 using Server.Engines.Craft;
@@ -64,6 +58,19 @@ namespace Server.Items
                 cliloc = info.IsBright() ? 1112288 : 1112289;
                 list.Add(cliloc, String.Format("#{0}", info.Name));
             }
+        }
+
+        public override bool WillStack(Mobile from, Item dropped)
+        {
+            return dropped is IPlantHue && ((IPlantHue)dropped).PlantHue == m_PlantHue && base.WillStack(from, dropped);
+        }
+
+        public override void OnAfterDuped(Item newItem)
+        {
+            if (newItem is IPlantHue)
+                ((IPlantHue)newItem).PlantHue = this.PlantHue;
+
+            base.OnAfterDuped(newItem);
         }
 
         public DryReeds(Serial serial)
@@ -151,6 +158,19 @@ namespace Server.Items
             }
         }
 
+        public override bool WillStack(Mobile from, Item dropped)
+        {
+            return dropped is IPlantHue && ((IPlantHue)dropped).PlantHue == m_PlantHue && base.WillStack(from, dropped);
+        }
+
+        public override void OnAfterDuped(Item newItem)
+        {
+            if (newItem is IPlantHue)
+                ((IPlantHue)newItem).PlantHue = this.PlantHue;
+
+            base.OnAfterDuped(newItem);
+        }
+
         public SoftenedReeds(Serial serial)
             : base(serial)
         {
@@ -171,6 +191,37 @@ namespace Server.Items
 
             if(v > 1)
                 m_PlantHue = (PlantHue)reader.ReadInt();
+        }
+    }
+
+    public class CrystalGranules : Item
+    {
+        public override int LabelNumber { get { return 1112329; } } // crystal granules
+
+        [Constructable]
+        public CrystalGranules()
+            : base(16392)
+        {
+            Hue = 2625;
+        }
+
+        public CrystalGranules(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
         }
     }
 }

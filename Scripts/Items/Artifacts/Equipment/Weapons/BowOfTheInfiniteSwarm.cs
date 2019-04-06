@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class BowOfTheInfiniteSwarm : CompositeBow, ITokunoDyable
+    public class BowOfTheInfiniteSwarm : CompositeBow
 	{
         public override int LabelNumber { get { return 1157347; } } // bow of the infinite swarm
         public override bool IsArtifact { get { return true; } }
@@ -11,13 +11,12 @@ namespace Server.Items
         public BowOfTheInfiniteSwarm()
         {
             ExtendedWeaponAttributes.HitSwarm = 20;
-
-            this.WeaponAttributes.HitLeechMana = 50;
-            this.WeaponAttributes.HitLeechStam = 50;
-            this.Attributes.BonusStam = 8;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 50;
+            WeaponAttributes.HitLeechMana = 50;
+            WeaponAttributes.HitLeechStam = 50;
+            Attributes.BonusStam = 8;
+            Attributes.RegenStam = 3;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 50;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
@@ -52,7 +51,7 @@ namespace Server.Items
         }
     }
 
-    public class GlaiveOfTheInfiniteSwarm : SoulGlaive, ITokunoDyable
+    public class GlaiveOfTheInfiniteSwarm : SoulGlaive
     {
         public override int LabelNumber { get { return 1157366; } } // Glaive of the Infinite Swarm
         public override bool IsArtifact { get { return true; } }

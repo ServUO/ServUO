@@ -57,6 +57,9 @@ namespace Server.Items
 
         protected override void OnTarget(Mobile from, object target)
         {
+            if (m_Potion == null || m_Potion.Deleted || !m_Potion.IsChildOf(from.Backpack))
+                    return;
+                    
             if (target is BaseCreature)
             {
                 BaseCreature t = (BaseCreature)target;
@@ -68,6 +71,14 @@ namespace Server.Items
                 else if (t.ControlMaster != from)
                 {
                     from.SendLocalizedMessage(1114368); // This is not your pet!
+                }
+                else if (t.Allured || t.Summoned)
+                {
+                    from.SendLocalizedMessage(1152924); // That is not a valid pet.
+                }
+			    else if (target is BaseTalismanSummon)
+                {
+                    from.SendLocalizedMessage(1152924); // That is not a valid pet.
                 }
                 else
                 {

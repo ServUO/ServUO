@@ -8,27 +8,27 @@ namespace Server.Items
         public BaseRewardBag()
             : base()
         {
-            this.Hue = Reward.RewardBagHue();
+            Hue = Reward.RewardBagHue();
 			
-            while (this.Items.Count < this.ItemAmount)
+            while (Items.Count < ItemAmount)
             { 
                 if (0.05 > Utility.RandomDouble()) // check
-                    this.DropItem(Loot.RandomTalisman());
+                    DropItem(Loot.RandomTalisman());
                 else 
                 {
                     switch ( Utility.Random(4) )
                     {
                         case 0:
-                            this.DropItem(Reward.Armor());
+                            DropItem(Reward.Armor());
                             break;	
                         case 1:
-                            this.DropItem(Reward.RangedWeapon());
+                            DropItem(Reward.RangedWeapon());
                             break;
                         case 2:
-                            this.DropItem(Reward.Weapon());
+                            DropItem(Reward.Weapon());
                             break;
                         case 3:
-                            this.DropItem(Reward.Jewlery());
+                            DropItem(Reward.Jewlery());
                             break;
                     }
                 }

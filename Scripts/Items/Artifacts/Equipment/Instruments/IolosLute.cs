@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public IolosLute()
         {
-            this.Hue = 0x47E;
-            this.Slayer = SlayerName.Silver;
-            //Slayer2 = SlayerName.DaemonDismissal;
-            this.Slayer2 = SlayerName.Exorcism;
+            Hue = 0x47E;
+            Slayer = SlayerName.Silver;
+            Slayer2 = SlayerName.Exorcism;
         }
 
         public IolosLute(Serial serial)

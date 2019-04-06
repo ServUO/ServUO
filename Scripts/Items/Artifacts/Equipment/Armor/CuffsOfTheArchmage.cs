@@ -10,11 +10,11 @@ namespace Server.Items
         [Constructable]
         public CuffsOfTheArchmage()
         {
-            this.SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
-            this.Attributes.BonusMana = 5;
-            this.Attributes.RegenMana = 4;
-            this.Attributes.SpellDamage = 20;
-            this.ArmorAttributes.MageArmor = 1;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
+            Attributes.BonusMana = 5;
+            Attributes.RegenMana = 4;
+            Attributes.SpellDamage = 20;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public CuffsOfTheArchmage(Serial serial)
@@ -53,11 +53,11 @@ namespace Server.Items
         [Constructable]
         public GargishCuffsOfTheArchmage()
         {
-            this.SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
-            this.Attributes.BonusMana = 5;
-            this.Attributes.RegenMana = 4;
-            this.Attributes.SpellDamage = 20;
-            this.ArmorAttributes.MageArmor = 1;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
+            Attributes.BonusMana = 5;
+            Attributes.RegenMana = 4;
+            Attributes.SpellDamage = 20;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public GargishCuffsOfTheArchmage(Serial serial)

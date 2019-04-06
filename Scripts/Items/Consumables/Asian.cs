@@ -8,7 +8,7 @@ namespace Server.Items
         public Wasabi()
             : base(0x24E8)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Wasabi(Serial serial)
@@ -37,9 +37,9 @@ namespace Server.Items
         public WasabiClumps()
             : base(0x24EB)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 1.0;
+            FillFactor = 2;
         }
 
         public WasabiClumps(Serial serial)
@@ -68,7 +68,7 @@ namespace Server.Items
         public EmptyBentoBox()
             : base(0x2834)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public EmptyBentoBox(Serial serial)
@@ -97,9 +97,9 @@ namespace Server.Items
         public BentoBox()
             : base(0x2836)
         {
-            this.Stackable = false;
-            this.Weight = 5.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 5.0;
+            FillFactor = 2;
         }
 
         public BentoBox(Serial serial)
@@ -137,9 +137,9 @@ namespace Server.Items
         public SushiRolls()
             : base(0x283E)
         {
-            this.Stackable = false;
-            this.Weight = 3.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 3.0;
+            FillFactor = 2;
         }
 
         public SushiRolls(Serial serial)
@@ -168,9 +168,9 @@ namespace Server.Items
         public SushiPlatter()
             : base(0x2840)
         {
-            this.Stackable = Core.ML;
-            this.Weight = 3.0;
-            this.FillFactor = 2;
+            Stackable = Core.ML;
+            Weight = 3.0;
+            FillFactor = 2;
         }
 
         public SushiPlatter(Serial serial)
@@ -199,7 +199,8 @@ namespace Server.Items
         public GreenTeaBasket()
             : base(0x284B)
         {
-            this.Weight = 10.0;
+            Weight = 1.0;
+			Stackable = true;
         }
 
         public GreenTeaBasket(Serial serial)
@@ -228,9 +229,9 @@ namespace Server.Items
         public GreenTea()
             : base(0x284C)
         {
-            this.Stackable = false;
-            this.Weight = 4.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 4.0;
+            FillFactor = 2;
         }
 
         public GreenTea(Serial serial)
@@ -259,9 +260,9 @@ namespace Server.Items
         public MisoSoup()
             : base(0x284D)
         {
-            this.Stackable = false;
-            this.Weight = 4.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 4.0;
+            FillFactor = 2;
         }
 
         public MisoSoup(Serial serial)
@@ -290,9 +291,9 @@ namespace Server.Items
         public WhiteMisoSoup()
             : base(0x284E)
         {
-            this.Stackable = false;
-            this.Weight = 4.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 4.0;
+            FillFactor = 2;
         }
 
         public WhiteMisoSoup(Serial serial)
@@ -321,9 +322,9 @@ namespace Server.Items
         public RedMisoSoup()
             : base(0x284F)
         {
-            this.Stackable = false;
-            this.Weight = 4.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 4.0;
+            FillFactor = 2;
         }
 
         public RedMisoSoup(Serial serial)
@@ -352,9 +353,9 @@ namespace Server.Items
         public AwaseMisoSoup()
             : base(0x2850)
         {
-            this.Stackable = false;
-            this.Weight = 4.0;
-            this.FillFactor = 2;
+            Stackable = false;
+            Weight = 4.0;
+            FillFactor = 2;
         }
 
         public AwaseMisoSoup(Serial serial)

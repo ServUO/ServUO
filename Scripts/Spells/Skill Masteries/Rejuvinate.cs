@@ -41,7 +41,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            if (Caster is PlayerMobile && Caster.TithingPoints < RequiredTithing)
+            if (Caster is PlayerMobile && (Caster.Player && Caster.TithingPoints < RequiredTithing))
             {
                 Caster.SendLocalizedMessage(1060173, RequiredTithing.ToString()); // You must have at least ~1_TITHE_REQUIREMENT~ Tithing Points to use this ability,
                 return false;
@@ -197,7 +197,7 @@ namespace Server.Spells.SkillMasteries
         {
             int requiredTithing = this.RequiredTithing;
 
-            if (Caster is PlayerMobile && Caster.TithingPoints < requiredTithing)
+            if (Caster is PlayerMobile && (Caster.Player && Caster.TithingPoints < requiredTithing))
             {
                 Caster.SendLocalizedMessage(1060173, RequiredTithing.ToString()); // You must have at least ~1_TITHE_REQUIREMENT~ Tithing Points to use this ability,
                 return false;

@@ -28,10 +28,10 @@ namespace Server.Mobiles
                 this.Body = 666;
                 this.HairItemID = 16987;
                 this.HairHue = 1801;
-                this.AddItem(new MaleGargishPlateChest());
-                this.AddItem(new MaleGargishPlateKilt());
-                this.AddItem(new MaleGargishPlateLegs());
-                this.AddItem(new MaleGargishPlateArms());
+                this.AddItem(new GargishPlateChest());
+                this.AddItem(new GargishPlateKilt());
+                this.AddItem(new GargishPlateLegs());
+                this.AddItem(new GargishPlateArms());
                 this.AddItem(new PlateTalons());
            
                 this.AddItem(new GlassSword());

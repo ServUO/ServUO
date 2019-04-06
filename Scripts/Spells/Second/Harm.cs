@@ -53,14 +53,13 @@ namespace Server.Spells.Second
                 SpellHelper.Turn(this.Caster, m);
                 Mobile source = this.Caster;
 
-                if(mob != null)
-                    SpellHelper.CheckReflect((int)this.Circle, ref source, ref mob);
+                SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
 
                 double damage = 0;
 				
                 if (Core.AOS)
                 {
-                    damage = this.GetNewAosDamage(17, 1, 5, m);
+                    damage = GetNewAosDamage(17, 1, 5, m);
                 }
                 else if (mob != null)
                 {
@@ -102,7 +101,7 @@ namespace Server.Spells.Second
 
                 if (damage > 0)
                 {
-                    SpellHelper.Damage(this, mob != null ? mob : m, damage, 0, 0, 100, 0, 0);
+                    SpellHelper.Damage(this, m, damage, 0, 0, 100, 0, 0);
                 }
             }
 

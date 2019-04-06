@@ -8,13 +8,11 @@ namespace Server.Items
         [Constructable]
         public TheNightReaper()
         {
-            this.ItemID = 0x26CD;
-            this.Hue = 0x41C;
-
-            this.Slayer = SlayerName.Exorcism;
-            this.Attributes.NightSight = 1;
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 55;
+            Hue = 0x41C;
+            Slayer = SlayerName.Exorcism;
+            Attributes.NightSight = 1;
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 55;
         }
 
         public TheNightReaper(Serial serial)

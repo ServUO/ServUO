@@ -383,7 +383,16 @@ namespace Server.Engines.Quests.Haven
                         if (obj != null && !obj.Completed)
                         {
                             Container cont = GetNewContainer();
-                            cont.DropItem(new BankCheck(2000));
+
+                            if (!Core.TOL)
+                            {
+                                cont.DropItem(new BankCheck(2000));
+                            }
+                            else
+                            {
+                                Banker.Deposit(from, 2000, true);
+                            }
+
                             cont.DropItem(new EnchantedSextant());
 
                             if (!player.PlaceInBackpack(cont))

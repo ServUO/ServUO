@@ -18,6 +18,7 @@ namespace Server.Items
             set
             {
                 m_Lifespan = value;
+
                 InvalidateProperties();
             }
         }

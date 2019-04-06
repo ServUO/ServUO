@@ -38,12 +38,9 @@ namespace Server.Items
 
         public override void Drink(Mobile from)
         {
-            this.DoPoison(from);
-
-            BasePotion.PlayDrinkEffect(from);
-
-            if (!Engines.ConPVP.DuelContext.IsFreeConsume(from))
-                this.Consume();
+            DoPoison(from);
+            PlayDrinkEffect(from);
+            Consume();
         }
     }
 }

@@ -4,125 +4,41 @@ using Server.Targeting;
 
 namespace Server.Items
 {
-    public class ProspectorsTool : BaseBashing, IUsesRemaining
+    public class ProspectorsTool : BaseBashing
     {
-        private int m_UsesRemaining;
+        public override int LabelNumber { get { return 1049065; } } // prospector's tool
+
         [Constructable]
         public ProspectorsTool()
             : base(0xFB4)
         {
-            this.Weight = 9.0;
-            this.UsesRemaining = 50;
+            Weight = 10.0;
+            UsesRemaining = 50;
+            ShowUsesRemaining = true;
         }
 
         public ProspectorsTool(Serial serial)
             : base(serial)
         {
-        }
+        }        
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int UsesRemaining
-        {
-            get
-            {
-                return this.m_UsesRemaining;
-            }
-            set
-            {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
-            }
-        }
-        public bool ShowUsesRemaining
-        {
-            get
-            {
-                return true;
-            }
-            set
-            {
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049065;
-            }
-        }// prospector's tool
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.CrushingBlow;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.ShadowStrike;
-            }
-        }
-        public override int AosStrengthReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int AosMinDamage
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override int AosMaxDamage
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 33;
-            }
-        }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 33;
-            }
-        }
+        public override WeaponAbility PrimaryAbility { get { return WeaponAbility.CrushingBlow; } }
+        public override WeaponAbility SecondaryAbility { get { return WeaponAbility.ShadowStrike; } }
+        public override int AosStrengthReq { get { return 40; } }
+        public override int AosMinDamage { get { return 13; } }
+        public override int AosMaxDamage { get { return 15; } }
+        public override int AosSpeed { get { return 33; } }
+        public override float MlSpeed { get { return 3.25f; } }
+        public override int OldStrengthReq { get { return 10; } }
+        public override int OldMinDamage { get { return 6; } }
+        public override int OldMaxDamage { get { return 8; } }
+        public override int OldSpeed { get { return 33; } }
+        public override int InitMinHits { get { return 31; } }
+        public override int InitMaxHits { get { return 60; } }
+
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack) || this.Parent == from)
+            if (IsChildOf(from.Backpack) || Parent == from)
                 from.Target = new InternalTarget(this);
             else
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
@@ -130,7 +46,7 @@ namespace Server.Items
 
         public void Prospect(Mobile from, object toProspect)
         {
-            if (!this.IsChildOf(from.Backpack) && this.Parent != from)
+            if (!IsChildOf(from.Backpack) && Parent != from)
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 return;
@@ -192,12 +108,12 @@ namespace Server.Items
                 bank.Vein = def.Veins[veinIndex + 1];
                 from.SendLocalizedMessage(1049050 + veinIndex);
 
-                --this.UsesRemaining;
+                --UsesRemaining;
 
-                if (this.UsesRemaining <= 0)
+                if (UsesRemaining <= 0)
                 {
                     from.SendLocalizedMessage(1049062); // You have used up your prospector's tool.
-                    this.Delete();
+                    Delete();
                 }
             }
         }
@@ -205,27 +121,21 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write((int)1); // version
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((int)2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch ( version )
             {
+                case 2:
+                    break;
                 case 1:
                     {
-                        this.m_UsesRemaining = reader.ReadInt();
-                        break;
-                    }
-                case 0:
-                    {
-                        this.m_UsesRemaining = 50;
+                        UsesRemaining = reader.ReadInt();
                         break;
                     }
             }
@@ -237,12 +147,12 @@ namespace Server.Items
             public InternalTarget(ProspectorsTool tool)
                 : base(2, true, TargetFlags.None)
             {
-                this.m_Tool = tool;
+                m_Tool = tool;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                this.m_Tool.Prospect(from, targeted);
+                m_Tool.Prospect(from, targeted);
             }
         }
     }

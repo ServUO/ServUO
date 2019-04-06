@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public SapphireMace()
         {
-            this.WeaponAttributes.ResistEnergyBonus = 5;
+            WeaponAttributes.ResistEnergyBonus = 5;
         }
 
         public SapphireMace(Serial serial)

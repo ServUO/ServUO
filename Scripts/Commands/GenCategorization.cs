@@ -101,7 +101,6 @@ namespace Server.Commands
                 if (obj is Item)
                 {
                     Item item = (Item)obj;
-
                     int itemID = item.ItemID;
 
                     if (item is BaseAddon && ((BaseAddon)item).Components.Count == 1)

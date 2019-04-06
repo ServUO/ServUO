@@ -5,6 +5,8 @@ namespace Server.Spells.Eighth
 {
     public class EarthquakeSpell : MagerySpell
     {
+        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Earthquake", "In Vas Por",
             233,
@@ -14,6 +16,7 @@ namespace Server.Spells.Eighth
             Reagent.Ginseng,
             Reagent.MandrakeRoot,
             Reagent.SulfurousAsh);
+
         public EarthquakeSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -35,40 +38,10 @@ namespace Server.Spells.Eighth
         }
         public override void OnCast()
         {
-            if (SpellHelper.CheckTown(this.Caster, this.Caster) && this.CheckSequence())
+            if (SpellHelper.CheckTown(Caster, Caster) && CheckSequence())
             {
-                List<IDamageable> targets = new List<IDamageable>();
-
-                Map map = this.Caster.Map;
-
-                if (map != null)
+                foreach (var id in AcquireIndirectTargets(Caster.Location, 1 + (int)(Caster.Skills[SkillName.Magery].Value / 15.0)))
                 {
-                    IPooledEnumerable eable = this.Caster.GetObjectsInRange(1 + (int)(this.Caster.Skills[SkillName.Magery].Value / 15.0));
-
-                    foreach (object o in eable)
-                    {
-                        IDamageable id = o as IDamageable;
-
-                        if (id == null || id is Mobile && (Mobile)id == this.Caster)
-                            continue;
-
-                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(this.Caster, id as Mobile)) && this.Caster.CanBeHarmful(id, false))
-                        {
-                            if (Core.AOS && !this.Caster.InLOS(id))
-                                continue;
-
-                            targets.Add(id);
-                        }
-                    }
-
-                    eable.Free();
-                }
-
-                this.Caster.PlaySound(0x220);
-
-                for (int i = 0; i < targets.Count; ++i)
-                {
-                    IDamageable id = targets[i];
                     Mobile m = id as Mobile;
 
                     int damage;
@@ -91,15 +64,12 @@ namespace Server.Spells.Eighth
                             damage = 75;
                     }
 
-                    this.Caster.DoHarmful(id);
-                    SpellHelper.Damage(TimeSpan.Zero, id, this.Caster, damage, 100, 0, 0, 0, 0);
+                    Caster.DoHarmful(id);
+                    SpellHelper.Damage(this, id, damage, 100, 0, 0, 0, 0);
                 }
-
-                targets.Clear();
-                targets.TrimExcess();
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
     }
 }

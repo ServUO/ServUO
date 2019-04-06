@@ -9,9 +9,8 @@ namespace Server.Items
         public HallowedSpellbook()
             : base(0x3FFFFFFFF)
         {
-            this.LootType = LootType.Blessed;
-
-            this.Slayer = SlayerName.Silver;
+            LootType = LootType.Blessed;
+            Slayer = SlayerName.Silver;
         }
 
         public HallowedSpellbook(Serial serial)

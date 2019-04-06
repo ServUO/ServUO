@@ -182,7 +182,7 @@ namespace Server.Items
             /* LakeofFire */ 			"Lake of Fire",
             /* Lakeshire */ 			"Lakeshire",
             /* PassofKarnaugh */ 		"Pass of Karnaugh",
-            /* TheEtherealFortress */ 	"The Etheral Fortress",
+            /* TheEtherealFortress */ 	"The Ethereal Fortress",
             /* TwinOaksTavern */ 		"Twin Oaks Tavern",
             /* ChaosShrine */ 			"Chaos Shrine",
             /* ShrineofHumility */ 		"Shrine of Humility",

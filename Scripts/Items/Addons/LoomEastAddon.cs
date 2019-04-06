@@ -10,11 +10,12 @@ namespace Server.Items
     public class LoomEastAddon : BaseAddon, ILoom
     {
         private int m_Phase;
+
         [Constructable]
         public LoomEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x1060), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x105F), 0, 1, 0);
+            AddComponent(new AddonComponent(0x1060), 0, 0, 0);
+            AddComponent(new AddonComponent(0x105F), 0, 1, 0);
         }
 
         public LoomEastAddon(Serial serial)
@@ -33,11 +34,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Phase;
+                return m_Phase;
             }
             set
             {
-                this.m_Phase = value;
+                m_Phase = value;
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -46,7 +47,7 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write((int)this.m_Phase);
+            writer.Write((int)m_Phase);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -59,7 +60,7 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_Phase = reader.ReadInt();
+                        m_Phase = reader.ReadInt();
                         break;
                     }
             }

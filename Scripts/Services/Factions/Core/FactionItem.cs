@@ -13,10 +13,13 @@ namespace Server.Factions
         private readonly Item m_Item;
         private readonly Faction m_Faction;
         private DateTime m_Expiration;
-        public FactionItem(Item item, Faction faction)
+        private int m_MinRank;
+
+        public FactionItem(Item item, Faction faction, int level)
         {
-            this.m_Item = item;
-            this.m_Faction = faction;
+            m_Item = item;
+            m_Faction = faction;
+            m_MinRank = level;
         }
 
         public FactionItem(GenericReader reader, Faction faction)
@@ -25,46 +28,58 @@ namespace Server.Factions
 
             switch ( version )
             {
+                case 1:
+                    {
+                        m_MinRank = reader.ReadInt();
+                        goto case 0;
+                    }
                 case 0:
                     {
-                        this.m_Item = reader.ReadItem();
-                        this.m_Expiration = reader.ReadDateTime();
+                        m_Item = reader.ReadItem();
+                        m_Expiration = reader.ReadDateTime();
                         break;
                     }
             }
 
-            this.m_Faction = faction;
+            m_Faction = faction;
         }
 
         public Item Item
         {
             get
             {
-                return this.m_Item;
+                return m_Item;
             }
         }
         public Faction Faction
         {
             get
             {
-                return this.m_Faction;
+                return m_Faction;
             }
         }
         public DateTime Expiration
         {
             get
             {
-                return this.m_Expiration;
+                return m_Expiration;
+            }
+        }
+        public int MinRank
+        {
+            get
+            {
+                return m_MinRank;
             }
         }
         public bool HasExpired
         {
             get
             {
-                if (this.m_Item == null || this.m_Item.Deleted)
+                if (m_Item == null || m_Item.Deleted)
                     return true;
 
-                return (this.m_Expiration != DateTime.MinValue && DateTime.UtcNow >= this.m_Expiration);
+                return (m_Expiration != DateTime.MinValue && DateTime.UtcNow >= m_Expiration);
             }
         }
         public static int GetMaxWearables(Mobile mob)
@@ -98,7 +113,7 @@ namespace Server.Factions
             return null;
         }
 
-        public static Item Imbue(Item item, Faction faction, bool expire, int hue)
+        public static Item Imbue(Item item, Faction faction, bool expire, int hue, int MinRank = 0)
         {
             if (!(item is IFactionItem))
                 return item;
@@ -107,54 +122,58 @@ namespace Server.Factions
 
             if (state == null)
             {
-                state = new FactionItem(item, faction);
+                state = new FactionItem(item, faction, MinRank);
                 state.Attach();
             }
 
             if (expire)
                 state.StartExpiration();
 
-            item.Hue = hue;
+            if (hue >= 0)
+                item.Hue = hue;
+
             return item;
         }
 
         public void StartExpiration()
         {
-            this.m_Expiration = DateTime.UtcNow + ExpirationPeriod;
+            m_Expiration = DateTime.UtcNow + ExpirationPeriod;
         }
 
         public void CheckAttach()
         {
-            if (!this.HasExpired)
-                this.Attach();
+            if (!HasExpired)
+                Attach();
             else
-                this.Detach();
+                Detach();
         }
 
         public void Attach()
         {
-            if (this.m_Item is IFactionItem)
-                ((IFactionItem)this.m_Item).FactionItemState = this;
+            if (m_Item is IFactionItem)
+                ((IFactionItem)m_Item).FactionItemState = this;
 
-            if (this.m_Faction != null)
-                this.m_Faction.State.FactionItems.Add(this);
+            if (m_Faction != null)
+                m_Faction.State.FactionItems.Add(this);
         }
 
         public void Detach()
         {
-            if (this.m_Item is IFactionItem)
-                ((IFactionItem)this.m_Item).FactionItemState = null;
+            if (m_Item is IFactionItem)
+                ((IFactionItem)m_Item).FactionItemState = null;
 
-            if (this.m_Faction != null && this.m_Faction.State.FactionItems.Contains(this))
-                this.m_Faction.State.FactionItems.Remove(this);
+            if (m_Faction != null && m_Faction.State.FactionItems.Contains(this))
+                m_Faction.State.FactionItems.Remove(this);
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0);
+            writer.WriteEncodedInt((int)1);
 
-            writer.Write((Item)this.m_Item);
-            writer.Write((DateTime)this.m_Expiration);
+            writer.Write(m_MinRank);
+
+            writer.Write((Item)m_Item);
+            writer.Write((DateTime)m_Expiration);
         }
     }
 }

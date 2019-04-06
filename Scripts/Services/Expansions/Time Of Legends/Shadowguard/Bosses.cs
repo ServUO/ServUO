@@ -13,6 +13,8 @@ namespace Server.Engines.Shadowguard
         public const int MaxSummons = 3;
 
 		public List<BaseCreature> SummonedHelpers { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool IsLastBoss { get; set; }
 
 		public DateTime _NextSummon;
@@ -22,18 +24,17 @@ namespace Server.Engines.Shadowguard
 
         public virtual bool CanSummon { get { return Hits <= HitsMax - (HitsMax / 4); } }
 
-		private Type[] _ArtifactTypes = new Type[]
-		{
-			typeof(AnonsBoots),					typeof(AnonsBootsGargoyle),			typeof(AnonsSpellbook),			typeof(BalakaisShamanStaff),
-			typeof(BalakaisShamanStaffGargoyle),typeof(EnchantressCameo),			typeof(GrugorsShield),			typeof(GrugorsShieldGargoyle),
-			typeof(HalawasHuntingBow),			typeof(HalawasHuntingBowGargoyle),	typeof(HawkwindsRobe),			typeof(JumusSacredHide),
-			typeof(JumusSacredHideGargoyle), 	typeof(JuonarsGrimoire), 			typeof(LereisHuntingSpear), 	typeof(LereisHuntingSpearGargoyle), 
-			typeof(MinaxsSandles), 				typeof(MinaxsSandlesGargoyle), 		typeof(MocapotilsObsidianSword),typeof(OzymandiasObi),
-			typeof(OzymandiasObiGargoyle), 		typeof(ShantysWaders), 				typeof(ShantysWadersGargoyle), 	typeof(TotemOfTheTribe),
-			typeof(WamapsBoneEarrings), 		typeof(WamapsBoneEarringsGargoyle), typeof(UnstableTimeRift)
-		};
-		
-		public ShadowguardBoss(AIType ai) : base(ai, FightMode.Closest, 10, 1, .15, .3)
+        private Type[] _ArtifactTypes = new Type[]
+        {
+            typeof(AnonsBoots),                 typeof(AnonsSpellbook),         typeof(BalakaisShamanStaff),
+            typeof(EnchantressCameo),           typeof(GrugorsShield),          typeof(WamapsBoneEarrings),
+            typeof(HalawasHuntingBow),          typeof(HawkwindsRobe),          typeof(JumusSacredHide),
+            typeof(JuonarsGrimoire),            typeof(LereisHuntingSpear),     typeof(UnstableTimeRift),
+            typeof(MinaxsSandles),              typeof(MocapotlsObsidianSword), typeof(OzymandiasObi),
+            typeof(ShantysWaders),              typeof(TotemOfTheTribe),        typeof(BalakaisShamanStaffGargoyle)
+        };
+
+        public ShadowguardBoss(AIType ai) : base(ai, FightMode.Closest, 10, 1, .15, .3)
 		{
 			_NextSummon = DateTime.UtcNow;
 			
@@ -56,11 +57,7 @@ namespace Server.Engines.Shadowguard
         {
             if (IsLastBoss)
             {
-                this.AddLoot(LootPack.SuperBoss, 6);
-            }
-            else
-            {
-                this.AddLoot(LootPack.SuperBoss, 3);
+                this.AddLoot(LootPack.SuperBoss, 7);
             }
         }
 		
@@ -78,7 +75,7 @@ namespace Server.Engines.Shadowguard
 
 		public override void OnGotMeleeAttack(Mobile m)
 		{
-            if (CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
+            if (m is PlayerMobile && CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
 				Summon();
 				
 			base.OnGotMeleeAttack(m);
@@ -86,7 +83,7 @@ namespace Server.Engines.Shadowguard
 		
 		public override void OnDamagedBySpell(Mobile m)
 		{
-            if (CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
+            if (m is PlayerMobile && CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
 				Summon();
 				
 			base.OnDamagedBySpell(m);
@@ -100,7 +97,9 @@ namespace Server.Engines.Shadowguard
 
                 foreach (DamageStore ds in rights.Where(s => s.m_HasRight))
                 {
-                    int chance = 1000 + (ds.m_Mobile.Luck / 15);
+                    int luck = ds.m_Mobile is PlayerMobile ? ((PlayerMobile)ds.m_Mobile).RealLuck : ds.m_Mobile.Luck;
+
+                    int chance = 1000 + (luck / 15);
 
                     if (chance > Utility.Random(5000))
                     {
@@ -119,13 +118,21 @@ namespace Server.Engines.Shadowguard
                         }
                     }
                 }
-
-                DoGoldSpray();
             }
 			base.OnDeath(c);
 		}
 
-        private void DoGoldSpray()
+        public override bool OnBeforeDeath()
+        {
+            if (IsLastBoss)
+            {
+                DoGoldSpray(Map);
+            }
+
+            return base.OnBeforeDeath();
+        }
+
+        private void DoGoldSpray(Map map)
         {
             if (this.Map != null)
             {
@@ -136,7 +143,7 @@ namespace Server.Engines.Shadowguard
                         double dist = Math.Sqrt(x * x + y * y);
 
                         if (dist <= 12)
-                            new GoodiesTimer(this.Map, X + x, Y + y).Start();
+                            new GoodiesTimer(map, X + x, Y + y).Start();
                     }
                 }
             }
@@ -171,7 +178,7 @@ namespace Server.Engines.Shadowguard
                 if (!canFit)
                     return;
 
-                Gold g = new Gold(500, 1000); // [WarLocke] Changed to vary by champion. Originally 500, 1000.
+                Gold g = new Gold(500, 1000);
                 g.MoveToWorld(new Point3D(m_X, m_Y, z), m_Map);
 
                 if (0.5 >= Utility.RandomDouble())
@@ -364,8 +371,8 @@ namespace Server.Engines.Shadowguard
         [Constructable]
 		public Anon() : base(AIType.AI_Mage)
 		{
-			Name = "anon";
-			Title = "the mage";
+			Name = "Anon";
+			Title = "the Mage";
 
             Body = 0x190;
             HairItemID = 0x203C;
@@ -597,11 +604,6 @@ namespace Server.Engines.Shadowguard
 	{
 		public override Type[] SummonTypes { get { return _SummonTypes; } }
 		private Type[] _SummonTypes = new Type[] { typeof(SkeletalDragon), typeof(LichLord), typeof(WailingBanshee), typeof(FleshGolem) };
-		
-		public override bool CanAnimateDead{ get { return true; } }
-		public override double AnimateChance{ get{ return 0.15; } }
-		public override int AnimateScalar{ get{ return 150; } }
-		public override BaseCreature Animates{ get{ return new FleshGolem(); } }
 
         public override bool CanDiscord { get { return true; } }
         public override bool PlayInstrumentSound { get { return false; } }
@@ -612,7 +614,7 @@ namespace Server.Engines.Shadowguard
         public Juonar()
             : base(AIType.AI_NecroMage)
         {
-            Name = "juo'nar";
+            Name = "Juo'nar";
             Body = 78;
             BaseSoundID = 412;
             Hue = 2951;
@@ -701,10 +703,6 @@ namespace Server.Engines.Shadowguard
 		public override Type[] SummonTypes { get { return _SummonTypes; } }
 		private Type[] _SummonTypes = new Type[] { typeof(MinotaurCaptain), typeof(Daemon), typeof(Titan) };
 		
-		public override bool CanAnimateDead{ get { return true; } }
-		public override double AnimateChance{ get{ return 0.15; } }
-		public override int AnimateScalar{ get{ return 150; } }
-		public override BaseCreature Animates{ get{ return new FleshGolem(); } }
         public override bool BardImmune { get { return true; } }
 
 		private DateTime _NextNuke;
@@ -713,9 +711,9 @@ namespace Server.Engines.Shadowguard
         [Constructable]
 		public Virtuebane() : base(AIType.AI_Mage)
 		{
-			Name = "virtuebane";
+			Name = "Virtuebane";
 		
-			Body = 1071; // Giant minotaur?
+			Body = 1071; 
             SpeechHue = 452;
 
 			SetStam(500, 650);
@@ -838,8 +836,9 @@ namespace Server.Engines.Shadowguard
 		private void DoDamage_Callback(object o)
 		{
             Mobile m = o as Mobile;
- 
-            if (m != null && this.Map != null)
+            Map map = Map;
+
+            if (m != null && map != null)
             {
                 DoHarmful(m);
                 AOS.Damage(m, this, Utility.RandomMinMax(100, 150), 50, 50, 0, 0, 0);
@@ -859,15 +858,15 @@ namespace Server.Engines.Shadowguard
 
                     Movement.Movement.Offset(d, ref x, ref y);
 
-                    if (!this.Map.CanSpawnMobile(x, y, this.Map.GetAverageZ(x, y)))
+                    if (!map.CanSpawnMobile(x, y, map.GetAverageZ(x, y)))
                     {
-                        m.MoveToWorld(new Point3D(lastx, lasty, this.Map.GetAverageZ(lastx, lasty)), this.Map);
+                        m.MoveToWorld(new Point3D(lastx, lasty, map.GetAverageZ(lastx, lasty)), this.Map);
                         break;
                     }
 
                     if (range >= 12 && (orx != x || ory != y))
                     {
-                        m.MoveToWorld(new Point3D(x, y, this.Map.GetAverageZ(x, y)), this.Map);
+                        m.MoveToWorld(new Point3D(x, y, map.GetAverageZ(x, y)), this.Map);
                     }
                 }
 
@@ -925,16 +924,12 @@ namespace Server.Engines.Shadowguard
 		private Type[] _SummonTypes = new Type[] { typeof(LesserHiryu), typeof(EliteNinja), typeof(TsukiWolf) };
 		
 		public override double WeaponAbilityChance{ get{ return 0.4; } }
-		public override WeaponAbility GetWeaponAbility()
-		{
-			return WeaponAbility.Dismount;
-		}
 		
 		[Constructable]
 		public Ozymandias() : base(AIType.AI_Melee)
 		{
-			Name = "ozymandias";
-			Title = "the lord of castle barataria";
+			Name = "Ozymandias";
+			Title = "the Lord of Castle Barataria";
 
             Hue = Race.RandomSkinHue();
             Body = 0x190;
@@ -973,6 +968,8 @@ namespace Server.Engines.Shadowguard
 
             var hiryu = new LesserHiryu();
             hiryu.Rider = this;
+
+            SetWeaponAbility(WeaponAbility.Dismount);
 		}
 
         private DateTime _NextWeaponSwitch;

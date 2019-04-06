@@ -2,17 +2,18 @@ using System;
 
 namespace Server.Items
 {
-    public class DecoBridle : Item
+    [TypeAlias("Server.Items.DecoBridle")]
+    public class DecoBridleSouth : Item
     {
         [Constructable]
-        public DecoBridle()
+        public DecoBridleSouth()
             : base(0x1374)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
-        public DecoBridle(Serial serial)
+        public DecoBridleSouth(Serial serial)
             : base(serial)
         {
         }
@@ -20,14 +21,41 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 
+    [TypeAlias("Server.Items.DecoBridle2")]
+    public class DecoBridleEast : Item
+    {
+        [Constructable]
+        public DecoBridleEast()
+            : base(0x1375)
+        {
+            Movable = true;
+            Stackable = false;
+        }
+
+        public DecoBridleEast(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }

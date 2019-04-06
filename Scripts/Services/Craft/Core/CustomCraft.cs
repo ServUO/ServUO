@@ -9,9 +9,9 @@ namespace Server.Engines.Craft
         private readonly CraftItem m_CraftItem;
         private readonly CraftSystem m_CraftSystem;
         private readonly Type m_TypeRes;
-        private readonly BaseTool m_Tool;
+        private readonly ITool m_Tool;
         private readonly int m_Quality;
-        public CustomCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool, int quality)
+        public CustomCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, ITool tool, int quality)
         {
             this.m_From = from;
             this.m_CraftItem = craftItem;
@@ -49,7 +49,7 @@ namespace Server.Engines.Craft
                 return this.m_TypeRes;
             }
         }
-        public BaseTool Tool
+        public ITool Tool
         {
             get
             {

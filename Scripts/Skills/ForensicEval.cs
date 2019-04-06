@@ -7,6 +7,11 @@ using Server.Targeting;
 
 namespace Server.SkillHandlers
 {
+    public interface IForensicTarget
+    {
+        void OnForensicEval(Mobile m);
+    }
+
     public class ForensicEvaluation
     {
         public static void Initialize()
@@ -33,28 +38,23 @@ namespace Server.SkillHandlers
 
             protected override void OnTarget(Mobile from, object target)
             {
-                if (target is Mobile)
+                double skill = from.Skills[SkillName.Forensics].Value;
+                double minSkill = 30.0;
+
+                if (target is Corpse)
                 {
-                    if (from.CheckTargetSkill(SkillName.Forensics, target, 40.0, 100.0))
+                    if (skill < minSkill)
                     {
-                        if (target is PlayerMobile && ((PlayerMobile)target).NpcGuild == NpcGuild.ThievesGuild)
-                            from.SendLocalizedMessage(501004);//That individual is a thief!
-                        else
-                            from.SendLocalizedMessage(501003);//You notice nothing unusual.
+                        from.SendLocalizedMessage(501003); //You notice nothing unusual.
+                        return;
                     }
-                    else
-                    {
-                        from.SendLocalizedMessage(501001);//You cannot determain anything useful.
-                    }
-                }
-                else if (target is Corpse)
-                {
-                    if (from.CheckTargetSkill(SkillName.Forensics, target, 0.0, 100.0))
+
+                    if (from.CheckTargetSkill(SkillName.Forensics, target, minSkill, 55.0))
                     {
                         Corpse c = (Corpse)target;
 
                         if (c.m_Forensicist != null)
-                            from.SendLocalizedMessage(1042750, c.m_Forensicist) ; // The forensicist  ~1_NAME~ has already discovered that:
+                            from.SendLocalizedMessage(1042750, c.m_Forensicist); // The forensicist  ~1_NAME~ has already discovered that:
                         else
                             c.m_Forensicist = from.Name;
 
@@ -64,10 +64,12 @@ namespace Server.SkillHandlers
                         if (c.Looters.Count > 0)
                         {
                             StringBuilder sb = new StringBuilder();
+
                             for (int i = 0; i < c.Looters.Count; i++)
                             {
                                 if (i > 0)
                                     sb.Append(", ");
+
                                 sb.Append(((Mobile)c.Looters[i]).Name);
                             }
 
@@ -83,34 +85,86 @@ namespace Server.SkillHandlers
                         from.SendLocalizedMessage(501001);//You cannot determain anything useful.
                     }
                 }
+                else if (target is Mobile)
+                {
+                    if (skill < 36.0)
+                    {
+                        from.SendLocalizedMessage(501003);//You notice nothing unusual.
+                    }
+                    else if (from.CheckTargetSkill(SkillName.Forensics, target, 36.0, 100.0))
+                    {
+                        if (target is PlayerMobile && ((PlayerMobile)target).NpcGuild == NpcGuild.ThievesGuild)
+                        {
+                            from.SendLocalizedMessage(501004);//That individual is a thief!
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(501003);//You notice nothing unusual.
+                        }
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(501001);//You cannot determain anything useful.
+                    }
+                }
                 else if (target is ILockpickable)
                 {
-                    ILockpickable p = (ILockpickable)target;
-                    if (p.Picker != null)
-                        from.SendLocalizedMessage(1042749, p.Picker.Name);//This lock was opened by ~1_PICKER_NAME~
+                    if (skill < 41.0)
+                    {
+                        from.SendLocalizedMessage(501003); //You notice nothing unusual.
+                    }
+                    else if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
+                    {
+                        ILockpickable p = (ILockpickable)target;
+
+                        if (p.Picker != null)
+                        {
+                            from.SendLocalizedMessage(1042749, p.Picker.Name);//This lock was opened by ~1_PICKER_NAME~
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(501003);//You notice nothing unusual.
+                        }
+                    }
                     else
-                        from.SendLocalizedMessage(501003);//You notice nothing unusual.
+                    {
+                        from.SendLocalizedMessage(501001);//You cannot determain anything useful.
+                    }
                 }
-                else if (target is Item)
+                else if (Core.SA && target is Item)
                 {
                     Item item = (Item)target;
 
-                    if (item.HonestyItem)
+                    if (item is IForensicTarget)
                     {
-                        if (item.HonestyOwner == null)
-                            Server.Services.Virtues.Honesty.AssignOwner(item);
+                        ((IForensicTarget)item).OnForensicEval(from);
+                    }
+                    else  if (skill < 41.0)
+                    {
+                        from.SendLocalizedMessage(501001);//You cannot determain anything useful.
+                        return;
+                    }
 
-                        string region = item.HonestyRegion == null ? "an unknown place" : item.HonestyRegion;
+                    var honestySocket = item.GetSocket<HonestyItemSocket>();
 
-                        if (from.Skills.Forensics.Value >= 65)
+                    if (honestySocket != null)
+                    {
+                        if (honestySocket.HonestyOwner == null)
+                            Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
+
+                        if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
                         {
-                            from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", item.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
-                        }
-                        else if (from.Skills.Forensics.Value >= 40)
-                        {
-                            from.SendLocalizedMessage(1151522, region); // You find seeds from a familiar plant stuck to the item which suggests that this item is from ~1_val~.
-                        }
+                            string region = honestySocket.HonestyRegion == null ? "an unknown place" : honestySocket.HonestyRegion;
 
+                            if (from.Skills.Forensics.Value >= 61.0)
+                            {
+                                from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", honestySocket.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
+                            }
+                            else
+                            {
+                                from.SendLocalizedMessage(1151522, region); // You find seeds from a familiar plant stuck to the item which suggests that this item is from ~1_val~.
+                            }
+                        }
                     }
                 }
             }

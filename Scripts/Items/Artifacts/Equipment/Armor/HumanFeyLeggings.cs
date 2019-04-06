@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public HumanFeyLeggings()
         {
-            this.Attributes.BonusHits = 6;
-            this.Attributes.DefendChance = 20;
-
-            this.ArmorAttributes.MageArmor = 1;
+            Attributes.BonusHits = 6;
+            Attributes.DefendChance = 20;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public HumanFeyLeggings(Serial serial)

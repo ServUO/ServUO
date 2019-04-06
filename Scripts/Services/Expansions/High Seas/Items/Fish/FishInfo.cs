@@ -1,6 +1,8 @@
 ﻿using System;
-using Server;
 using System.Collections.Generic;
+using System.Linq;
+
+using Server;
 using Server.Multis;
 using Server.Regions;
 using Server.Mobiles;
@@ -145,27 +147,17 @@ namespace Server.Items
 
         public static bool IsRareFish(Type type)
         {
-            foreach (FishInfo info in m_FishInfos)
-                if (info.Type == type)
-                    return true;
-            return false;
+            return m_FishInfos.Any(info => info.Type == type);
         }
 
         public static FishInfo GetInfo(Type type)
         {
-            foreach (FishInfo info in m_FishInfos)
-                if (info.Type == type) 
-                    return info;
-            return null;
+            return m_FishInfos.FirstOrDefault(info => info.Type == type);
         }
 
         public static FishInfo GetInfo(int hue)
         {
-            foreach (FishInfo info in m_FishInfos) 
-                if (info.Hue == hue)
-                    return info;
-
-            return null;
+            return m_FishInfos.FirstOrDefault(info => info.Hue == hue);
         }
 
         public static int GetIndexFromType(Type type)
@@ -326,9 +318,11 @@ namespace Server.Items
                 }
             }
 
+            ColUtility.Free(infos);
+
             if (!rareOnly && item == null && from is PlayerMobile)
             {
-                double chance = ((double)skill + 20.0) / 100.0;
+                double chance = skill / 121.5;
 
                 bool dungeon = IsDungeon(pnt, map, reg);
                 bool shore = IsShore(pnt, map, reg);
@@ -343,8 +337,10 @@ namespace Server.Items
                     else if(shore && skill >= 50.0)
                         item = BaseHighseasFish.ShoreFish[Utility.Random(BaseHighseasFish.ShoreFish.Length)];
                 }
-                else if (!fishing && chance >= Utility.RandomDouble() && skill >= 50.0)
+                else if (skill >= 50.0 && !fishing && chance >= Utility.RandomDouble())
+                {
                     item = BaseHighseasFish.LobstersAndCrabs[Utility.Random(BaseHighseasFish.LobstersAndCrabs.Length)];
+                }
             }
 
             return item;

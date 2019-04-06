@@ -8,13 +8,11 @@ namespace Server.Items
         [Constructable]
         public ResilientBracer()
         {
-            this.Hue = 0x488;
-
-            this.SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
-
-            this.Attributes.BonusHits = 5;
-            this.Attributes.RegenHits = 2;
-            this.Attributes.DefendChance = 10;
+            Hue = 0x488;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
+            Attributes.BonusHits = 5;
+            Attributes.RegenHits = 2;
+            Attributes.DefendChance = 10;
         }
 
         public ResilientBracer(Serial serial)

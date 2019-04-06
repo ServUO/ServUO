@@ -1,8 +1,6 @@
-﻿using Server;
+using Server;
 using System;
 using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Items;
 
 namespace Server.Multis
 {
@@ -109,8 +107,8 @@ namespace Server.Multis
 
 		public BoatTrackingArrow(Mobile from, BaseBoat boat, int range) : base(from, boat)
 		{
-
-			m_From = from;
+            m_Boat = boat;
+            m_From = from;
 			m_Timer = new BoatTrackingTimer(from, boat, range, this);
 			m_Timer.Start();
 

@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public GoneNativeQuest()
             : base()
         { 
-            this.AddObjective(new SlayObjective(typeof(MasterTheophilus), "master theophilus", 1));
+            AddObjective(new SlayObjective(typeof(MasterTheophilus), "master theophilus", 1));
 			
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Gone Native */
@@ -82,17 +82,19 @@ namespace Server.Engines.Quests
 
     public class Gnosos : MondainQuester
     {
+        public override bool ConvertsMageArmor { get { return true; } }
+
         [Constructable]
         public Gnosos()
             : base("Master Gnosos", "the necromancer")
         { 
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
-            this.SetSkill(SkillName.EvalInt, 65.0, 88.0);
-            this.SetSkill(SkillName.Inscribe, 60.0, 83.0);
-            this.SetSkill(SkillName.Necromancy, 64.0, 100.0);
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.MagicResist, 65.0, 88.0);
-            this.SetSkill(SkillName.SpiritSpeak, 36.0, 68.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.EvalInt, 65.0, 88.0);
+            SetSkill(SkillName.Inscribe, 60.0, 83.0);
+            SetSkill(SkillName.Necromancy, 64.0, 100.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.MagicResist, 65.0, 88.0);
+            SetSkill(SkillName.SpiritSpeak, 36.0, 68.0);
         }
 
         public Gnosos(Serial serial)
@@ -114,21 +116,21 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 			
-            this.Hue = 0x83E8;
-            this.HairItemID = 0x203B;
-            this.FacialHairItemID = 0x2040;
+            Hue = 0x83E8;
+            HairItemID = 0x203B;
+            FacialHairItemID = 0x2040;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x485));
-            this.AddItem(new Robe(0x497));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x485));
+            AddItem(new Robe(0x497));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -76,6 +76,11 @@ namespace Server.Items
 			base.Deserialize(reader);
 			int v = reader.ReadInt();
 			m_Span = reader.ReadInt();
+
+            if(m_Span > 0)
+            {
+                StartTimer();
+            }
 		}
 	}
 }

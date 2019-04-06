@@ -215,7 +215,7 @@ namespace Server.Spells.Necromancy
                     type = c.Owner.GetType();
                 }
 
-                if (c.ItemID != 0x2006 || c.Animated || type == typeof(PlayerMobile) || type == null || (c.Owner != null && c.Owner.Fame < 100) || ((c.Owner != null) && (c.Owner is BaseCreature) && (((BaseCreature)c.Owner).Summoned || ((BaseCreature)c.Owner).IsBonded)))
+                if (c.ItemID != 0x2006 || c.Animated || c.Channeled || type == typeof(PlayerMobile) || type == null || (c.Owner != null && c.Owner.Fame < 100) || ((c.Owner != null) && (c.Owner is BaseCreature) && (((BaseCreature)c.Owner).Summoned || ((BaseCreature)c.Owner).IsBonded)))
                 {
                     this.Caster.SendLocalizedMessage(1061085); // There's not enough life force there to animate.
                 }
@@ -303,7 +303,7 @@ namespace Server.Spells.Necromancy
             Mobile mob = (Mobile)state;
 
             if (mob.Hits > 0)
-                --mob.Hits;
+                mob.Hits -= 2;
             else
                 mob.Kill();
         }
@@ -415,11 +415,11 @@ namespace Server.Spells.Necromancy
             Register(caster, summoned);
 
             #region Mondain's Legacy
-            if (creature != null)
+            /*if (creature != null)
             {
                 if (creature.AIObject is NecroMageAI)
                     ((NecroMageAI)creature.AIObject).Animated = summoned;
-            }
+            }*/
             #endregion
         }
 

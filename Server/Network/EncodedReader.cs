@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - EncodedReader.cs
-// **********
-#endregion
-
 namespace Server.Network
 {
 	public class EncodedReader

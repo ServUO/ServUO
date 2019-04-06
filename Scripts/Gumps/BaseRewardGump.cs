@@ -18,15 +18,7 @@ namespace Server.Gumps
         public double Points { get; protected set; }
         public List<CollectionItem> Collection { get; protected set; }
 
-        public virtual int YDist 
-        { 
-            get 
-            {
-                return 10;
-            }
-        }
-
-        public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = 0.0)
+        public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = -1.0)
             : base(50, 50)
 		{
             user.CloseGump(typeof(BaseRewardGump));
@@ -55,10 +47,10 @@ namespace Server.Gumps
 			Index = 0;
             Page = 1;
 
-            if (points > 0)
-                Points = points;
-            else
+            if (points == -1)
                 Points = GetPoints(user);
+            else
+                Points = points;
 
 			AddHtmlLocalized(70, 35, 270, 20, Title, 0x1, false, false);
             AddHtmlLocalized(50, 65, 150, 20, 1072843, 0x1, false, false); // Your Reward Points:
@@ -70,6 +62,11 @@ namespace Server.Gumps
                 DisplayRewardPage();
 		}
 
+        public virtual int GetYOffset(int id)
+        {
+            return 10;
+        }
+
         protected virtual void AddPoints()
         {
             AddLabel(230, 65, 0x64, String.Format(((int)Points).ToString()));
@@ -78,20 +75,6 @@ namespace Server.Gumps
 		public void DisplayRewardPage()
 		{
             AddPage(Page);
-
-            if (Page > 1)
-            {
-                AddButton(150, 335, 0x15E3, 0x15E7, 0, GumpButtonType.Page, Page - 1);
-                AddHtmlLocalized(170, 335, 60, 20, 1074880, 0x1, false, false); // Previous			
-            }
-
-            Page++;
-
-            if (!LastPage())
-            {
-                AddButton(300, 335, 0x15E1, 0x15E5, 0, GumpButtonType.Page, Page);
-                AddHtmlLocalized(240, 335, 60, 20, 1072854, 0x1, false, false); // <div align=right>Next</div>
-            }
 			
 			int offset = 110;
             int next = 0;
@@ -128,8 +111,8 @@ namespace Server.Gumps
                     AddTooltip(item.Tooltip);
 
                 AddLabel(65 + max, offset + (int)(height / 2) - 10, Points >= item.Points ? 0x64 : 0x21, item.Points.ToString());
-				
-                offset += YDist + height;
+
+                offset += GetYOffset(item.ItemID) + height;
                 Index++;
 
                 if (Index < Collection.Count)
@@ -137,6 +120,20 @@ namespace Server.Gumps
                 else
                     next = 0;
 			}
+
+            if (Page > 1)
+            {
+                AddButton(150, 335, 0x15E3, 0x15E7, 0, GumpButtonType.Page, Page - 1);
+                AddHtmlLocalized(170, 335, 60, 20, 1074880, 0x1, false, false); // Previous			
+            }
+
+            Page++;
+
+            if (Index < Collection.Count)
+            {
+                AddButton(300, 335, 0x15E1, 0x15E5, 0, GumpButtonType.Page, Page);
+                AddHtmlLocalized(240, 335, 60, 20, 1072854, 0x1, false, false); // <div align=right>Next</div>
+            }
 		}
 		
 		public override void OnResponse(Server.Network.NetState state, RelayInfo info)
@@ -158,6 +155,9 @@ namespace Server.Gumps
 		}
 
         public abstract double GetPoints(Mobile m);
+        public virtual void RemovePoints(double points)
+        {
+        }
 
         public virtual void OnConfirmed(CollectionItem citem, int index)
         {
@@ -172,10 +172,17 @@ namespace Server.Gumps
                 }
                 else
                 {
+                    OnItemCreated(item);
+
                     User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
-                    User.PlaySound(0x5A7);
+                    RemovePoints(citem.Points);
+                    User.PlaySound(0x5A8);
                 }
             }
+        }
+
+        public virtual void OnItemCreated(Item item)
+        {
         }
 
         public virtual int GetItemHue(Item i, CollectionItem item)
@@ -202,27 +209,6 @@ namespace Server.Gumps
             }
 
             return max;
-        }
-
-        public virtual bool LastPage()
-        {
-            if (Index + 1 >= Collection.Count)
-                return true;
-
-            int offset = 110;
-
-            for (int i = Index; i < Collection.Count; i++)
-            {
-                CollectionItem item = Collection[i];
-
-                int next = Math.Max(item.Height, 20);
-                offset += 5 + Math.Max(item.Height, 20);
-
-                if (offset + next >= 300)
-                    return false;
-            }
-
-            return true;
         }
 	}
 	

@@ -5,12 +5,13 @@ using System.Linq;
 using System.Collections.Generic;
 using Server.Engines.Despise;
 using Server.Engines.Shadowguard;
+using Server.Mobiles;
 
-namespace Server.Mobiles
+namespace Server.Items
 {
     public class RandomItemGenerator
     {
-        public static bool Enabled { get; private set; }
+        public static bool Enabled { get { return Core.HS; } }
         public static int FeluccaLuckBonus { get; private set; }
         public static int FeluccaBudgetBonus { get; private set; }
 
@@ -23,7 +24,6 @@ namespace Server.Mobiles
 
         public static void Configure()
         {
-            Enabled = Config.Get("Loot.Enabled", true);
             FeluccaLuckBonus = Config.Get("Loot.FeluccaLuckBonus", 1000);
             FeluccaBudgetBonus = Config.Get("Loot.FeluccaBudgetBonus", 100);
 
@@ -54,6 +54,25 @@ namespace Server.Mobiles
         }
 
         /// <summary>
+        /// This is called in BaseRunicTool to ensure all items use the new system, as long as its not palyermade.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="luckChance">adjusted luck chance</param>
+        /// <param name="attributeCount"></param>
+        /// <param name="minIntensity"></param>
+        /// <param name="maxIntensity"></param>
+        public static void GenerateRandomItem(Item item, int luckChance, int attributeCount, int minIntensity, int maxIntensity)
+        {
+            int min = (attributeCount * 2) * minIntensity;
+            min = min + (int)((double)min * ((double)Utility.RandomMinMax(1, 4) / 10));
+
+            int max = (attributeCount * 2) * maxIntensity;
+            max = max + (int)((double)max * ((double)Utility.RandomMinMax(1, 4) / 10));
+
+            RunicReforging.GenerateRandomItem(item, luckChance, min, max);
+        }
+
+        /// <summary>
         /// 24000 is the normalized fame for MaxBaseBudget, ie Balron.  
         /// Called in BaseCreature.cs virtual BaseLootBudget Property
         /// </summary>
@@ -61,6 +80,9 @@ namespace Server.Mobiles
         /// <returns></returns>
         public static int GetBaseBudget(BaseCreature bc)
         {
+            if (bc is BaseRenowned)
+                return MaxBaseBudget;
+
             return bc.Fame / (20500 / MaxBaseBudget);
         }
 
@@ -73,7 +95,7 @@ namespace Server.Mobiles
 
             if (fame > 0)
             {
-                int budget = Math.Min(MaxBaseBudget, bc.BaseLootBudget);
+                int budget = Math.Min(MaxBaseBudget, GetBaseBudget(bc));
 
                 BossEntry.CheckBoss(bc, ref budget);
 

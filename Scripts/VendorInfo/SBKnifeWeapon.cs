@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,10 +31,10 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(ButcherKnife), 14, 20, 0x13F6, 0));
-                this.Add(new GenericBuyInfo(typeof(Dagger), 21, 20, 0xF52, 0));
-                this.Add(new GenericBuyInfo(typeof(Cleaver), 15, 20, 0xEC3, 0));
-                this.Add(new GenericBuyInfo(typeof(SkinningKnife), 14, 20, 0xEC4, 0));
+                Add(new GenericBuyInfo(typeof(ButcherKnife), 14, 20, 0x13F6, 0));
+                Add(new GenericBuyInfo(typeof(Dagger), 21, 20, 0xF52, 0));
+                Add(new GenericBuyInfo(typeof(Cleaver), 15, 20, 0xEC3, 0));
+                Add(new GenericBuyInfo(typeof(SkinningKnife), 14, 20, 0xEC4, 0));
             }
         }
 
@@ -42,10 +42,10 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(ButcherKnife), 7);
-                this.Add(typeof(Cleaver), 7);
-                this.Add(typeof(Dagger), 10);
-                this.Add(typeof(SkinningKnife), 7);
+                Add(typeof(ButcherKnife), 7);
+                Add(typeof(Cleaver), 7);
+                Add(typeof(Dagger), 10);
+                Add(typeof(SkinningKnife), 7);
             }
         }
     }

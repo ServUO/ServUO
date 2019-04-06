@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - Utilities.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 using System.IO;
 

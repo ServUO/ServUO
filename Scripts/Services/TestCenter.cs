@@ -11,14 +11,11 @@ namespace Server.Misc
 {
     public class TestCenter
     {
-        private static readonly bool m_Enabled = Config.Get("TestCenter.Enabled", false);
+        public static bool Enabled { get; set; }
 
-        public static bool Enabled
+        static TestCenter()
         {
-            get
-            {
-                return m_Enabled;
-            }
+            Enabled = Config.Get("TestCenter.Enabled", false);
         }
 
         public static void Initialize()

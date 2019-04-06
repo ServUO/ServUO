@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - LandTarget.cs
-// **********
-#endregion
-
 namespace Server.Targeting
 {
 	public class LandTarget : IPoint3D

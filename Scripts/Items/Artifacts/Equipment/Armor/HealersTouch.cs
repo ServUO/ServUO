@@ -8,10 +8,9 @@ namespace Server.Items
         [Constructable]
         public HealersTouch()
         {
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.BonusStam = 3;
-            this.Attributes.ReflectPhysical = 5;
+            LootType = LootType.Blessed;
+            Attributes.BonusStam = 3;
+            Attributes.ReflectPhysical = 5;
         }
 
         public HealersTouch(Serial serial)

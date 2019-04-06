@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,11 +31,11 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new AnimalBuyInfo(1, typeof(Cat), 138, 20, 201, 0));
-                this.Add(new AnimalBuyInfo(1, typeof(Dog), 181, 20, 217, 0));
-                this.Add(new AnimalBuyInfo(1, typeof(PackLlama), 491, 20, 292, 0));
-                this.Add(new AnimalBuyInfo(1, typeof(PackHorse), 606, 20, 291, 0));
-                this.Add(new GenericBuyInfo(typeof(Bandage), 5, 20, 0xE21, 0));
+                Add(new AnimalBuyInfo(1, typeof(Cat), 138, 20, 201, 0));
+                Add(new AnimalBuyInfo(1, typeof(Dog), 181, 20, 217, 0));
+                Add(new AnimalBuyInfo(1, typeof(PackLlama), 491, 20, 292, 0));
+                Add(new AnimalBuyInfo(1, typeof(PackHorse), 606, 20, 291, 0));
+                Add(new GenericBuyInfo(typeof(Bandage), 5, 20, 0xE21, 0, true));
             }
         }
 

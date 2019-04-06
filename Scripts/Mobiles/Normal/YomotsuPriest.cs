@@ -10,67 +10,69 @@ namespace Server.Mobiles
         public YomotsuPriest()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a yomotsu priest";
-            this.Body = 253;
-            this.BaseSoundID = 0x452;
+            Name = "a yomotsu priest";
+            Body = 253;
+            BaseSoundID = 0x452;
 
-            this.SetStr(486, 530);
-            this.SetDex(101, 115);
-            this.SetInt(601, 670);
+            SetStr(486, 530);
+            SetDex(101, 115);
+            SetInt(601, 670);
 
-            this.SetHits(486, 530);
+            SetHits(486, 530);
 
-            this.SetDamage(8, 10);
+            SetDamage(8, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 65, 85);
-            this.SetResistance(ResistanceType.Fire, 30, 50);
-            this.SetResistance(ResistanceType.Cold, 45, 65);
-            this.SetResistance(ResistanceType.Poison, 35, 55);
-            this.SetResistance(ResistanceType.Energy, 25, 50);
+            SetResistance(ResistanceType.Physical, 65, 85);
+            SetResistance(ResistanceType.Fire, 30, 50);
+            SetResistance(ResistanceType.Cold, 45, 65);
+            SetResistance(ResistanceType.Poison, 35, 55);
+            SetResistance(ResistanceType.Energy, 25, 50);
 
-            this.SetSkill(SkillName.EvalInt, 92.6, 107.5);
-            this.SetSkill(SkillName.Magery, 105.1, 115.0);
-            this.SetSkill(SkillName.Meditation, 100.1, 110.0);
-            this.SetSkill(SkillName.MagicResist, 112.6, 122.5);
-            this.SetSkill(SkillName.Tactics, 55.1, 105.0);
-            this.SetSkill(SkillName.Wrestling, 47.6, 57.5);
+            SetSkill(SkillName.EvalInt, 92.6, 107.5);
+            SetSkill(SkillName.Magery, 105.1, 115.0);
+            SetSkill(SkillName.Meditation, 100.1, 110.0);
+            SetSkill(SkillName.MagicResist, 112.6, 122.5);
+            SetSkill(SkillName.Tactics, 55.1, 105.0);
+            SetSkill(SkillName.Wrestling, 47.6, 57.5);
 
-            this.Fame = 9000;
-            this.Karma = -9000;
+            Fame = 9000;
+            Karma = -9000;
 
-            this.PackItem(new GreenGourd());
-            this.PackItem(new ExecutionersAxe());
+            PackItem(new GreenGourd());
+            PackItem(new ExecutionersAxe());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    this.PackItem(new LongPants());
+                    PackItem(new LongPants());
                     break;
                 case 1:
-                    this.PackItem(new ShortPants());
+                    PackItem(new ShortPants());
                     break;
             }
 
             switch ( Utility.Random(6) )
             {
                 case 0:
-                    this.PackItem(new Shoes());
+                    PackItem(new Shoes());
                     break;
                 case 1:
-                    this.PackItem(new Sandals());
+                    PackItem(new Sandals());
                     break;
                 case 2:
-                    this.PackItem(new Boots());
+                    PackItem(new Boots());
                     break;
                 case 3:
-                    this.PackItem(new ThighBoots());
+                    PackItem(new ThighBoots());
                     break;
             }
 
             if (Utility.RandomDouble() < .25)
-                this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+
+            SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
         public YomotsuPriest(Serial serial)
@@ -99,16 +101,12 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.DoubleStrike;
-        }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Gems, 4);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Gems, 4);
         }
 
         // TODO: Body Transformation

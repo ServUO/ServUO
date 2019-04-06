@@ -68,6 +68,11 @@ namespace Server.Items
                 list.Add(1076218); // 2nd Year Veteran Reward
         }
 
+        void IChopable.OnChop(Mobile user)
+        {
+            OnDoubleClick(user);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.InRange(this.Location, 2))
@@ -251,7 +256,7 @@ namespace Server.Items
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Banner == null | this.m_Banner.Deleted)
+                if (this.m_Banner == null || this.m_Banner.Deleted)
                     return;		
 				
                 Mobile m = sender.Mobile;	

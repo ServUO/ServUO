@@ -49,6 +49,10 @@ namespace Server.Mobiles
             this.VirtualArmor = 64;
 
             this.PackItem(new DaemonBone(30));
+
+            SetWeaponAbility(WeaponAbility.DoubleStrike);
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public override void OnDeath(Container c)
@@ -99,19 +103,6 @@ namespace Server.Mobiles
             get
             {
                 return Poison.Lethal;
-            }
-        }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            switch ( Utility.Random(3) )
-            {
-                default:
-                case 0:
-                    return WeaponAbility.DoubleStrike;
-                case 1:
-                    return WeaponAbility.WhirlwindAttack;
-                case 2:
-                    return WeaponAbility.CrushingBlow;
             }
         }
 

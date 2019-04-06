@@ -9,12 +9,17 @@ namespace Server.Mobiles
     [CorpseName("a tiger corpse")]
     public class WildTiger : BaseMount
     {
+        public override double HealChance { get { return .167; } }
         public virtual Item GetPelt { get { return new TigerPelt(4); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual bool CanRide { get; set; }
 
         [Constructable]
         public WildTiger()
             : this("a wild tiger")
         {
+            CanRide = false;
         }
 
         [Constructable]
@@ -54,6 +59,25 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 95.1;
+
+            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetSpecialAbility(SpecialAbility.GraspingClaw);
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (CanRide)
+                base.OnDoubleClick(from);
+
+            else if (from.AccessLevel >= AccessLevel.GameMaster && !Body.IsHuman)
+            {
+                Container pack = Backpack;
+
+                if (pack != null)
+                {
+                    pack.DisplayTo(from);
+                }
+            }
         }
 
         public override int GetIdleSound() { return 0x673; }
@@ -62,11 +86,6 @@ namespace Server.Mobiles
         public override int GetDeathSound() { return 0x671; }
 
         public override double WeaponAbilityChance { get { return 0.5; } }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.BleedAttack;
-        }
 
         public override int Meat { get { return 2; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
@@ -97,7 +116,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)2); // version
+
+            writer.Write(CanRide);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -105,6 +126,24 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 2:
+                case 1:
+                    CanRide = reader.ReadBool();
+                    break;
+                case 0:
+                    break;
+            }
+
+            if (version == 0 && Rider != null)
+                Rider = null;
+
+            if (version == 1)
+            {
+                SetWeaponAbility(WeaponAbility.BleedAttack);
+            }
         }
     }
 

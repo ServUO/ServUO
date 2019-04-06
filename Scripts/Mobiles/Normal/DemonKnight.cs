@@ -9,6 +9,7 @@ namespace Server.Mobiles
     public class DemonKnight : BaseCreature
     {
         private DateTime m_NextArea;
+        private bool m_InHere;
 
         public static Type[] DoomArtifact { get { return m_DoomArtifact; } }
         private static Type[] m_DoomArtifact = new Type[]
@@ -52,55 +53,55 @@ namespace Server.Mobiles
             }
         };
 
-        private static bool m_InHere;
-
         [Constructable]
         public DemonKnight()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("demon knight");
-            this.Title = "the Dark Father";
-            this.Body = 318;
-            this.BaseSoundID = 0x165;
+            Name = NameList.RandomName("demon knight");
+            Title = "the Dark Father";
+            Body = 318;
+            BaseSoundID = 0x165;
 
-            this.SetStr(500);
-            this.SetDex(100);
-            this.SetInt(1000);
+            SetStr(500);
+            SetDex(100);
+            SetInt(1000);
 
-            this.SetHits(30000);
-            this.SetMana(5000);
+            SetHits(30000);
+            SetMana(5000);
 
-            this.SetDamage(17, 21);
+            SetDamage(17, 21);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Fire, 20);
-            this.SetDamageType(ResistanceType.Cold, 20);
-            this.SetDamageType(ResistanceType.Poison, 20);
-            this.SetDamageType(ResistanceType.Energy, 20);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Cold, 20);
+            SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 30);
-            this.SetResistance(ResistanceType.Fire, 30);
-            this.SetResistance(ResistanceType.Cold, 30);
-            this.SetResistance(ResistanceType.Poison, 30);
-            this.SetResistance(ResistanceType.Energy, 30);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 70, 80);
+            SetResistance(ResistanceType.Poison, 70, 80);
+            SetResistance(ResistanceType.Energy, 70, 80);
 
-            this.SetSkill(SkillName.Necromancy, 120, 120.0);
-            this.SetSkill(SkillName.SpiritSpeak, 120.0, 120.0);
+            SetSkill(SkillName.Wrestling, 120.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.MagicResist, 150.0);
+            SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.EvalInt, 100.0);
+            SetSkill(SkillName.Meditation, 120.0);
+            SetSkill(SkillName.Necromancy, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 120.0);
 
-            this.SetSkill(SkillName.DetectHidden, 80.0);
-            this.SetSkill(SkillName.EvalInt, 100.0);
-            this.SetSkill(SkillName.Magery, 100.0);
-            this.SetSkill(SkillName.Meditation, 120.0);
-            this.SetSkill(SkillName.MagicResist, 150.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 120.0);
+            Fame = 28000;
+            Karma = -28000;
 
-            this.Fame = 28000;
-            this.Karma = -28000;
-
-            this.VirtualArmor = 64;
+            VirtualArmor = 64;
 
             m_NextArea = DateTime.UtcNow;
+
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
 
         public DemonKnight(Serial serial)
@@ -171,17 +172,19 @@ namespace Server.Mobiles
 
             if (!Core.AOS)
                 return;
-            //CHeck if players are in the region with the bosses
-            if ( pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm))
+
+            if ( pm == null || bc == null || bc.NoKillAwards || !pm.Alive/*|| !CheckLocation(bc) || !CheckLocation(pm)*/)
                 return;
+
             //Make sure its a boss we killed!!
             bool boss = bc is Impaler || bc is DemonKnight || bc is DarknightCreeper || bc is FleshRenderer  || bc is ShadowKnight || bc is AbysmalHorror;
             if (!boss)
                 return;
              
             double gpoints = pm.GauntletPoints;
+            int luck = Math.Max(0, pm.RealLuck);
 
-            pm.GauntletPoints += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100))/2;
+            pm.GauntletPoints += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)) / 2);
 
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
@@ -189,7 +192,7 @@ namespace Server.Mobiles
             double chance = A * Math.Pow(10, B * gpoints);
             double roll = Utility.RandomDouble();
 
-            if (chance > roll )
+            if (chance > roll)
             {
                 Item i = null;
 
@@ -200,7 +203,7 @@ namespace Server.Mobiles
                     if (ran >= m_RewardTable.Length)
                     {
                         i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
-                        RunicReforging.GenerateRandomArtifactItem(i, killer.Luck, Utility.RandomMinMax(1000, 1200));
+                        RunicReforging.GenerateRandomArtifactItem(i, luck, Utility.RandomMinMax(800, 1200));
                         NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(i);
 
                         if (attrs != null)
@@ -287,20 +290,6 @@ namespace Server.Mobiles
 
             return null;
         }
-      
-        public override WeaponAbility GetWeaponAbility()
-        {
-            switch ( Utility.Random(3) )
-            {
-                default:
-                case 0:
-                    return WeaponAbility.DoubleStrike;
-                case 1:
-                    return WeaponAbility.WhirlwindAttack;
-                case 2:
-                    return WeaponAbility.CrushingBlow;
-            }
-        }
 
         public override void OnThink()
         {
@@ -312,7 +301,7 @@ namespace Server.Mobiles
         {
             System.Collections.Generic.List<Mobile> toTele = new System.Collections.Generic.List<Mobile>();
 
-            IPooledEnumerable eable = this.GetMobilesInRange(12);
+            IPooledEnumerable eable = GetMobilesInRange(12);
             foreach (Mobile mob in eable)
             {
                 if (mob is BaseCreature)
@@ -323,7 +312,7 @@ namespace Server.Mobiles
                         continue;
                 }
 
-                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false) && mob.AccessLevel == AccessLevel.Player)
+                if (mob != this && mob.Alive && mob.Player && CanBeHarmful(mob, false) && mob.AccessLevel == AccessLevel.Player)
                     toTele.Add(mob);
             }
             eable.Free();
@@ -347,8 +336,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.SuperBoss, 2);
-            this.AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(6, 60));
+            AddLoot(LootPack.SuperBoss, 2);
+            AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(6, 60));
         }
         
         public override void OnDamage(int amount, Mobile from, bool willKill)
@@ -358,8 +347,8 @@ namespace Server.Mobiles
                 m_InHere = true;
                 AOS.Damage(from, this, Utility.RandomMinMax(8, 20), 100, 0, 0, 0, 0);
 
-                this.MovingEffect(from, 0xECA, 10, 0, false, false, 0, 0);
-                this.PlaySound(0x491);
+                MovingEffect(from, 0xECA, 10, 0, false, false, 0, 0);
+                PlaySound(0x491);
 
                 if (0.05 > Utility.RandomDouble())
                     Timer.DelayCall(TimeSpan.FromSeconds(1.0), new TimerStateCallback(CreateBones_Callback), from);

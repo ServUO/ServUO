@@ -8,11 +8,10 @@ namespace Server.Items
         [Constructable]
         public GauntletsOfAnger()
         {
-            this.Hue = 0x29b;
-
-            this.Attributes.BonusHits = 8;
-            this.Attributes.RegenHits = 2;
-            this.Attributes.DefendChance = 10;
+            Hue = 0x29b;
+            Attributes.BonusHits = 8;
+            Attributes.RegenHits = 2;
+            Attributes.DefendChance = 10;
         }
 
         public GauntletsOfAnger(Serial serial)

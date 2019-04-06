@@ -370,21 +370,6 @@ namespace Server.Items
     [FlipableAttribute(0x45A4, 0x45A5)]
     public class GargishClothWingArmor : BaseClothing
     {
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         [Constructable]
         public GargishClothWingArmor()
             : this(0)
@@ -395,8 +380,12 @@ namespace Server.Items
         public GargishClothWingArmor(int hue)
             : base(0x45A4, Layer.Cloak, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
+
+        public override int AosStrReq { get { return 10; } }
+        public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }        
 
         public GargishClothWingArmor(Serial serial)
             : base(serial)
@@ -444,7 +433,7 @@ namespace Server.Items
         public GargishFancyRobe(int hue)
             : base(0x4002, Layer.OuterTorso, hue)
         {
-            this.Weight = 1.0;
+            this.Weight = 3.0;
         }
 
         public GargishFancyRobe(Serial serial)
@@ -495,7 +484,7 @@ namespace Server.Items
         public GargishRobe(int hue)
             : base(0x4000, Layer.OuterTorso, hue)
         {
-            this.Weight = 1.0;
+            this.Weight = 3.0;
         }
 
         public GargishRobe(Serial serial)

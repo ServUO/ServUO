@@ -164,7 +164,9 @@ namespace Server.Mobiles
             if (fame > 32000)
                 fame = 32000;
 
-            double chance = 1 / (Math.Max(10, 100 * (0.83 - Math.Round(Math.Log(Math.Round(fame / 6000, 3) + 0.001, 10), 3))) * (100 - Math.Sqrt(m.Luck)) / 100.0);
+            int luck = m is PlayerMobile ? ((PlayerMobile)m).RealLuck : m.Luck;
+
+            double chance = 1 / (Math.Max(10, 100 * (0.83 - Math.Round(Math.Log(Math.Round(fame / 6000, 3) + 0.001, 10), 3))) * (100 - Math.Sqrt(luck)) / 100.0);
 
             return chance > Utility.RandomDouble();
         }

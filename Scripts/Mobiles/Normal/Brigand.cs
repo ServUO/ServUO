@@ -3,71 +3,72 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
+    [TypeAlias("Server.Mobiles.HumanBrigand")]
     public class Brigand : BaseCreature
     {
         [Constructable]
         public Brigand()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Title = "the brigand";
-            this.Hue = Utility.RandomSkinHue();
+            SpeechHue = Utility.RandomDyedHue();
+            Title = "the brigand";
+            Hue = Utility.RandomSkinHue();
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
-                this.AddItem(new Skirt(Utility.RandomNeutralHue()));
+                Body = 0x191;
+                Name = NameList.RandomName("female");
+                AddItem(new Skirt(Utility.RandomNeutralHue()));
             }
             else
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
-                this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+                AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
 
-            this.SetStr(86, 100);
-            this.SetDex(81, 95);
-            this.SetInt(61, 75);
+            SetStr(86, 100);
+            SetDex(81, 95);
+            SetInt(61, 75);
 
-            this.SetDamage(10, 23);
+            SetDamage(10, 23);
 
-            this.SetSkill(SkillName.Fencing, 66.0, 97.5);
-            this.SetSkill(SkillName.Macing, 65.0, 87.5);
-            this.SetSkill(SkillName.MagicResist, 25.0, 47.5);
-            this.SetSkill(SkillName.Swords, 65.0, 87.5);
-            this.SetSkill(SkillName.Tactics, 65.0, 87.5);
-            this.SetSkill(SkillName.Wrestling, 15.0, 37.5);
+            SetSkill(SkillName.Fencing, 66.0, 97.5);
+            SetSkill(SkillName.Macing, 65.0, 87.5);
+            SetSkill(SkillName.MagicResist, 25.0, 47.5);
+            SetSkill(SkillName.Swords, 65.0, 87.5);
+            SetSkill(SkillName.Tactics, 65.0, 87.5);
+            SetSkill(SkillName.Wrestling, 15.0, 37.5);
 
-            this.Fame = 1000;
-            this.Karma = -1000;
+            Fame = 1000;
+            Karma = -1000;
 
-            this.AddItem(new Boots(Utility.RandomNeutralHue()));
-            this.AddItem(new FancyShirt());
-            this.AddItem(new Bandana());
+            AddItem(new Boots(Utility.RandomNeutralHue()));
+            AddItem(new FancyShirt());
+            AddItem(new Bandana());
 
             switch ( Utility.Random(7))
             {
                 case 0:
-                    this.AddItem(new Longsword());
+                    AddItem(new Longsword());
                     break;
                 case 1:
-                    this.AddItem(new Cutlass());
+                    AddItem(new Cutlass());
                     break;
                 case 2:
-                    this.AddItem(new Broadsword());
+                    AddItem(new Broadsword());
                     break;
                 case 3:
-                    this.AddItem(new Axe());
+                    AddItem(new Axe());
                     break;
                 case 4:
-                    this.AddItem(new Club());
+                    AddItem(new Club());
                     break;
                 case 5:
-                    this.AddItem(new Dagger());
+                    AddItem(new Dagger());
                     break;
                 case 6:
-                    this.AddItem(new Spear());
+                    AddItem(new Spear());
                     break;
             }
 
@@ -93,9 +94,26 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
+        public override bool ShowFameTitle
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.75)
+                c.DropItem(new SeveredHumanEars());
+        }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Average);
         }
 
         public override void Serialize(GenericWriter writer)

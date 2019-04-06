@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - OpenBackpackEntry.cs
-// **********
-#endregion
-
 namespace Server.ContextMenus
 {
 	public class OpenBackpackEntry : ContextMenuEntry

@@ -66,12 +66,12 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.05)
+            if (!Controlled && Utility.RandomDouble() < 0.05)
             {
                 c.DropItem(new SlithEye());
             }
 
-            if (Utility.RandomDouble() < 0.25)
+            if (!Controlled && Utility.RandomDouble() < 0.25)
             {
                 switch (Utility.Random(2))
                 {

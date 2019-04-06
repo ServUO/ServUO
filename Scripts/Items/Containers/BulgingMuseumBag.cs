@@ -1,5 +1,7 @@
 using System;
 
+using Server.SkillHandlers;
+
 namespace Server.Items 
 {
     public class BulgingMuseumBag : BaseRewardBag
@@ -7,57 +9,50 @@ namespace Server.Items
         [Constructable]
         public BulgingMuseumBag()
         {
-            this.AddItem(new Gold(10000));
+            DropItem(new Gold(10000));
 
-            switch (Utility.Random(9))
+            for (int i = 0; i < 6; i++)
             {
-                case 0:
-                    this.AddItem(new Amber(10));
-                    break;
-                case 1:
-                    this.AddItem(new Amethyst(10));
-                    break;
-                case 2:
-                    this.AddItem(new Citrine(10));
-                    break;
-                case 3:
-                    this.AddItem(new Ruby(10));
-                    break;
-                case 4:
-                    this.AddItem(new Emerald(10));
-                    break;
-                case 5:
-                    this.AddItem(new Diamond(10));
-                    break;
-                case 6:
-                    this.AddItem(new Sapphire(10));
-                    break;
-                case 7:
-                    this.AddItem(new StarSapphire(10));
-                    break;
-                case 8:
-                    this.AddItem(new Tourmaline(10));
-                    break;
+                switch (Utility.Random(9))
+                {
+                    case 0:
+                        DropItem(new Amber());
+                        break;
+                    case 1:
+                        DropItem(new Amethyst());
+                        break;
+                    case 2:
+                        DropItem(new Citrine());
+                        break;
+                    case 3:
+                        DropItem(new Ruby());
+                        break;
+                    case 4:
+                        DropItem(new Emerald());
+                        break;
+                    case 5:
+                        DropItem(new Diamond());
+                        break;
+                    case 6:
+                        DropItem(new Sapphire());
+                        break;
+                    case 7:
+                        DropItem(new StarSapphire());
+                        break;
+                    case 8:
+                        DropItem(new Tourmaline());
+                        break;
+                }
             }
 
-            switch (Utility.Random(5))
+            for (int i = 0; i < 4; i++)
             {
-                case 0:
-                    this.AddItem(new ElvenFletching(20));
-                    break;
-                case 1:
-                    this.AddItem(new RelicFragment(20));
-                    break;
-                case 2:
-                    this.AddItem(new DelicateScales(20));
-                    break;
-                case 3:
-                    this.AddItem(new ChagaMushroom(20));
-                    break;
-                case 4:
-                    this.AddItem(new FeyWings(20));
-                    break;
+                var type = Imbuing.IngredTypes[Utility.Random(Imbuing.IngredTypes.Length)];
+
+                DropItem(Loot.Construct(type));
             }
+
+            // TODO: Book http://www.uoguide.com/Ter_Mur_Quest_Reward_Books
         }
 
         public BulgingMuseumBag(Serial serial)

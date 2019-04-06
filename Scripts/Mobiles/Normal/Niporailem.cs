@@ -7,9 +7,17 @@ using System.Collections.Generic;
 namespace Server.Mobiles
 {
     [CorpseName("the corpse of niporailem")]
-    public class Niporailem : BaseSABosses
+    public class Niporailem : BaseSABoss
     {
-        public override Type[] UniqueSAList { get { return new Type[] { }; } }
+        public override Type[] UniqueSAList { get { return new Type[] { typeof(HelmOfVillainousEpiphany), typeof(GorgetOfVillainousEpiphany), typeof(BreastplateOfVillainousEpiphany),
+                                                                        typeof(ArmsOfVillainousEpiphany), typeof(GauntletsOfVillainousEpiphany), typeof(LegsOfVillainousEpiphany),
+                                                                        typeof(KiltOfVillainousEpiphany), typeof(EarringsOfVillainousEpiphany), typeof(GargishBreastplateOfVillainousEpiphany),
+                                                                        typeof(GargishArmsOfVillainousEpiphany), typeof(NecklaceOfVillainousEpiphany), typeof(GargishLegsOfVillainousEpiphany),
+                                                                        typeof(HelmOfVirtuousEpiphany), typeof(GorgetOfVirtuousEpiphany), typeof(BreastplateOfVirtuousEpiphany),
+                                                                        typeof(ArmsOfVirtuousEpiphany), typeof(GauntletsOfVirtuousEpiphany), typeof(LegsOfVirtuousEpiphany),
+                                                                        typeof(KiltOfVirtuousEpiphany), typeof(EarringsOfVirtuousEpiphany), typeof(GargishBreastplateOfVirtuousEpiphany),
+                                                                        typeof(GargishArmsOfVirtuousEpiphany), typeof(NecklaceOfVirtuousEpiphany), typeof(GargishLegsOfVirtuousEpiphany)}; } }
+        
         public override Type[] SharedSAList { get { return new Type[] { typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(GiantSteps), typeof(SwordOfShatteredHopes) }; } }
 
         [Constructable]
@@ -21,16 +29,17 @@ namespace Server.Mobiles
 
             Body = 722;
 
-            SetStr(1000, 1200);
+            SetStr(1000);
             SetDex(1200);
             SetInt(1200);
 
-            SetHits(2654, 3988);
+            SetHits(10000, 10500);
 
             SetDamage(15, 27);
 
-            SetDamageType(ResistanceType.Physical, 40);
-            SetDamageType(ResistanceType.Cold, 60);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Cold, 40);
+            SetDamageType(ResistanceType.Energy, 40);
 
             SetResistance(ResistanceType.Physical, 34, 46);
             SetResistance(ResistanceType.Fire, 0);
@@ -38,15 +47,17 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Poison, 100);
             SetResistance(ResistanceType.Energy, 31, 49);
 
+            SetSkill(SkillName.Wrestling, 68.8, 85.0);
+            SetSkill(SkillName.Tactics, 56.1, 90.0);
             SetSkill(SkillName.MagicResist, 87.7, 93.5);
-            SetSkill(SkillName.Tactics, 56.1, 65.0);
-            SetSkill(SkillName.Wrestling, 68.8, 76.2);
-            SetSkill(SkillName.EvalInt, 120.0);
-            SetSkill(SkillName.Magery, 120.0);
-            SetSkill(SkillName.Meditation, 120.0);
+
+            SetSkill(SkillName.EvalInt, 90.0, 100.0);
+            SetSkill(SkillName.Meditation, 20.0, 30.0);
             SetSkill(SkillName.Necromancy, 120.0);
             SetSkill(SkillName.SpiritSpeak, 120.0);
+            SetSkill(SkillName.Focus, 30.0, 40.0);
 
+            // TO-DO add Detect Hidden 40 - 50
             PackNecroReg(12, 24); /// Stratics didn't specify
 
             Fame = 15000;
@@ -66,7 +77,6 @@ namespace Server.Mobiles
         public override int GetAngerSound() { return 1606; }
         public override int GetHurtSound() { return 1608; }
         public override int GetDeathSound() { return 1607; }
-        public override bool GivesSAArtifact { get { return true; } }
 
         public Niporailem(Serial serial)
             : base(serial)
@@ -129,27 +139,34 @@ namespace Server.Mobiles
             spawned.MoveToWorld(loc, map);
             spawned.Combatant = m;
 
-            foreach (Mobile anim in this.GetMobilesInRange(20))
+            IPooledEnumerable eable = GetMobilesInRange(20);
+
+            foreach (Mobile anim in eable)
             {
                 if (anim is SpectralArmour && (anim is BaseCreature))
                 {
                     ((BaseCreature)anim).SummonMaster = this;
                 }
             }
+
+            eable.Free();
         }
 
         public void DeleteSpectralArmour(Mobile target)
         {
             ArrayList list = new ArrayList();
 
+            IPooledEnumerable eable = GetMobilesInRange(30);
 
-            foreach (Mobile m in this.GetMobilesInRange(30))
+            foreach (Mobile m in eable)
             {
 
                 if (m is SpectralArmour)
                     list.Add(m);
 
             }
+
+            eable.Free();
 
             foreach (Mobile m in list)
             {

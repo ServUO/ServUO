@@ -3,6 +3,8 @@ using System;
 using Server.Mobiles;
 using Server.Items;
 using System.Collections.Generic;
+using System.Linq;
+using Server.Commands;
 
 namespace Server.Engines.Despise
 {
@@ -12,6 +14,9 @@ namespace Server.Engines.Despise
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
             EventSink.OnEnterRegion += new OnEnterRegionEventHandler(OnEnterRegion);
+
+            if (m_Instance != null)
+                CommandSystem.Register("CheckSpawnersVersion3", AccessLevel.Administrator, m_Instance.CheckSpawnersVersion3);
         }
 
         private static DespiseController m_Instance;
@@ -23,6 +28,7 @@ namespace Server.Engines.Despise
         private DespiseBoss m_Boss;
         private DateTime m_DeadLine;
         private Alignment m_SequenceAlignment;
+        private bool m_PlayersInSequence;
 
         private Timer m_Timer;
         private Timer m_SequenceTimer;
@@ -37,7 +43,7 @@ namespace Server.Engines.Despise
         public Region EvilRegion { get { return m_EvilRegion; } }
         public Region LowerRegion { get { return m_LowerRegion; } }
         public Region StartRegion { get { return m_StartRegion; } }
-
+        
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Enabled
         {
@@ -63,6 +69,7 @@ namespace Server.Engines.Despise
         public DateTime NextBossEncounter
         {
             get { return m_NextBossEncounter; }
+            set { m_NextBossEncounter = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -91,7 +98,7 @@ namespace Server.Engines.Despise
 
         private List<Mobile> m_ToTransport = new List<Mobile>();
 
-        private readonly TimeSpan EncounterCheckDuration = TimeSpan.FromMinutes(10);
+        private readonly TimeSpan EncounterCheckDuration = TimeSpan.FromMinutes(5);
         private readonly TimeSpan DeadLineDuration = TimeSpan.FromMinutes(90);
 
         public bool IsInSequence { get { return m_SequenceTimer != null || m_CleanupTimer != null; } }
@@ -130,7 +137,6 @@ namespace Server.Engines.Despise
             EndTimer();
 
             m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(OnTick));
-            m_Timer.Priority = TimerPriority.OneSecond;
 
             m_LowerRegion = new DespiseRegion("Despise Lower", m_LowerLevelBounds, true);
             m_EvilRegion = new DespiseRegion("Despise Evil", m_EvilBounds);
@@ -164,32 +170,6 @@ namespace Server.Engines.Despise
             m_StartRegion = null;
         }
 
-        /*private void BuildSpawners()
-        {
-            if(m_Spawners == null)
-                m_Spawners = new List<XmlSpawner>();
-            else
-                m_Spawners.Clear();
-
-            foreach (Sector sector in m_LowerRegion.Sectors)
-            {
-                if (sector == null || sector.Items == null)
-                    continue;
-
-                List<Item> list = new List<Item>(sector.Items);
-
-                foreach (Item item in list)
-                {
-                    if(item is XmlSpawner && item.Name != null && item.Name.ToLower().IndexOf("despiserevamp") >= 0)
-                    {
-                        m_Spawners.Add((XmlSpawner)item);
-                    }
-                }
-            }
-
-            Console.WriteLine("Loaded {0} spawners for despise lower level", m_Spawners.Count);
-        }*/
-
         private void OnTick()
         {
             if (m_NextBossEncounter == DateTime.MinValue || m_NextBossEncounter > DateTime.UtcNow)
@@ -197,17 +177,18 @@ namespace Server.Engines.Despise
 
             int good = GetArmyPower(Alignment.Good);
             int evil = GetArmyPower(Alignment.Evil);
-            Alignment strongest;
+            Alignment strongest = Alignment.Neutral;
 
             if (good == 0 && evil == 0)
             {
                 m_NextBossEncounter = DateTime.UtcNow + EncounterCheckDuration;
-                return;
             }
-
-            if (good > evil) strongest = Alignment.Good;
-            else if (good < evil) strongest = Alignment.Evil;
-            else strongest = 0.5 > Utility.RandomDouble() ? Alignment.Good : Alignment.Evil;
+            else
+            {
+                if (good > evil) strongest = Alignment.Good;
+                else if (good < evil) strongest = Alignment.Evil;
+                else strongest = 0.5 > Utility.RandomDouble() ? Alignment.Good : Alignment.Evil;
+            }
 
             List<Mobile> players = new List<Mobile>();
             players.AddRange(m_GoodRegion.GetPlayers());
@@ -242,11 +223,15 @@ namespace Server.Engines.Despise
                 }
             }
 
-            m_SequenceAlignment = strongest;
+            if (strongest != Alignment.Neutral)
+            {
+                ColUtility.Free(players);
+                m_SequenceAlignment = strongest;
 
-            Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(BeginSequence));
-            m_NextBossEncounter = DateTime.MinValue;
-            m_Sequencing = true;
+                Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(BeginSequence));
+                m_NextBossEncounter = DateTime.MinValue;
+                m_Sequencing = true;
+            }
         }
 
         public int GetArmyPower(Alignment alignment)
@@ -270,29 +255,48 @@ namespace Server.Engines.Despise
         private List<XmlSpawner> m_GoodSpawners;
         private List<XmlSpawner> m_EvilSpawners;
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int GoodSpawnerCount { get { return m_GoodSpawners == null ? 0 : m_GoodSpawners.Count; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int EvilSpawnerCount { get { return m_EvilSpawners == null ? 0 : m_EvilSpawners.Count; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ResetSpawns
+        {
+            get { return true; }
+            set
+            {
+                if (value)
+                {
+                    if(m_GoodSpawners != null) m_GoodSpawners.Clear();
+                    if(m_EvilSpawners != null) m_EvilSpawners.Clear();
+
+                    CreateSpawners();
+                }
+            }
+        }
+
         private void CreateSpawners()
         {
-            Console.Write("Locating Despise Revamp Spawners...");
+            //Console.Write("Locating Despise Revamp Spawners...");
 
             m_GoodSpawners = new List<XmlSpawner>();
             m_EvilSpawners = new List<XmlSpawner>();
 
-            foreach (Sector sector in m_LowerRegion.Sectors)
+            foreach (Item item in m_LowerRegion.GetEnumeratedItems())
             {
-                foreach (Item item in sector.Items)
+                if (item is XmlSpawner && item.Name != null && item.Name.ToLower().IndexOf("despiserevamped") >= 0)
                 {
-                    if (item is XmlSpawner && item.Name != null && item.Name.ToLower().IndexOf("despiserevamped") >= 0)
-                    {
-                        if (item.Name.ToLower().IndexOf("despiserevamped good") >= 0)
-                            m_GoodSpawners.Add((XmlSpawner)item);
-                        if (item.Name.ToLower().IndexOf("despiserevamped evil") >= 0)
-                            m_EvilSpawners.Add((XmlSpawner)item); 
-                    }
+                    if (item.Name.ToLower().IndexOf("despiserevamped good") >= 0)
+                        m_GoodSpawners.Add((XmlSpawner)item);
+                    if (item.Name.ToLower().IndexOf("despiserevamped evil") >= 0)
+                        m_EvilSpawners.Add((XmlSpawner)item);
                 }
             }
             
-            Console.Write("Done.");
-            Console.WriteLine("Located {0} Evil spawners, and {1} Good Spawners", m_EvilSpawners.Count, m_GoodSpawners.Count);
+            //Console.Write("Done.");
+            //Console.WriteLine("Located {0} Evil spawners, and {1} Good Spawners", m_EvilSpawners.Count, m_GoodSpawners.Count);
         }
 
         private void ResetSpawners(bool reset)
@@ -321,19 +325,9 @@ namespace Server.Engines.Despise
 
                 foreach (XmlSpawner spawner in useList)
                     spawner.DoRespawn = true;
+
+                ColUtility.Free(useList);
             }
-            /*string lookfor = "good";
-
-            if(m_SequenceAlignment == Alignment.Good)
-                lookfor = "evil";
-
-            foreach (XmlSpawner spawner in m_Spawners)
-            {
-                if (reset && spawner.Running)
-                    spawner.DoReset = true;
-                else if (spawner.Name != null && spawner.Name.ToLower().IndexOf(lookfor) >= 0)
-                    spawner.DoRespawn = true;
-            }*/
         }
         #endregion
 
@@ -359,7 +353,6 @@ namespace Server.Engines.Despise
 
             m_Boss.MoveToWorld(BossLocation, Map.Trammel);
             m_DeadLine = DateTime.UtcNow + DeadLineDuration;
-            //m_NextBossEncounter = DateTime.MinValue;
 
             BeginSequenceTimer();
             KickFromBossRegion(false);
@@ -377,6 +370,7 @@ namespace Server.Engines.Despise
                 m_Boss.Delete();
 
             m_Boss = null;
+            m_PlayersInSequence = false;
             EndCleanupTimer();
             KickFromBossRegion(false);
             m_SequenceAlignment = Alignment.Neutral;
@@ -384,7 +378,7 @@ namespace Server.Engines.Despise
             m_DeadLine = DateTime.MinValue;
             m_ToTransport.Clear();
 
-            ResetSpawners(true);
+            Timer.DelayCall(TimeSpan.FromSeconds(10), () => ResetSpawners(true));
 
             m_NextBossEncounter = DateTime.UtcNow + EncounterCheckDuration;
         }
@@ -396,12 +390,11 @@ namespace Server.Engines.Despise
                 EndSequenceTimer();
                 SendRegionMessage(m_LowerRegion, 1153348); // You were unable to defeat the enemy overlord in the time allotted. He has activated a Doom Spell!
 
-                /*foreach (Mobile m in m_LowerRegion.GetMobiles())
-                {
-                    if (m is DespiseCreature && ((DespiseCreature)m).Orb != null && ((DespiseCreature)m).Controlled && m.Alive)
-                        m.Kill();
-                }*/
-
+                Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(EndSequence));
+            }
+            else if (m_PlayersInSequence && !HasPlayers(m_LowerRegion))
+            {
+                EndSequenceTimer();
                 Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(EndSequence));
             }
         }
@@ -418,7 +411,7 @@ namespace Server.Engines.Despise
         {
             if (region != null)
             {
-                foreach (Mobile m in region.GetPlayers())
+                foreach (Mobile m in region.GetEnumeratedMobiles().Where(m => m is PlayerMobile))
                     m.SendLocalizedMessage(cliloc);
             }
         }
@@ -454,6 +447,8 @@ namespace Server.Engines.Despise
 
                 m.SendLocalizedMessage(1153346); // You are summoned back to your stronghold.
             }
+
+            ColUtility.Free(mobiles);
         }
 
         private void TransportPlayers()
@@ -493,20 +488,28 @@ namespace Server.Engines.Despise
                         }
                     }
                 }
+
+                m_PlayersInSequence = true;
             }
+        }
+
+        public bool HasPlayers(Region r)
+        {
+            return r != null && r.GetPlayerCount() > 0;
         }
 
         private Point3D GetRandomLoc(Rectangle2D rec)
         {
-            Point3D p = new Point3D(rec.X, rec.Y, this.Map.GetAverageZ(rec.X, rec.Y));
+            var map = Map.Trammel;
+            Point3D p = new Point3D(rec.X, rec.Y, map.GetAverageZ(rec.X, rec.Y));
 
             for (int i = 0; i < 50; i++)
             {
                 int x = Utility.RandomMinMax(rec.X, rec.X + rec.Width);
                 int y = Utility.RandomMinMax(rec.Y, rec.Y + rec.Height);
-                int z = Map.Trammel.GetAverageZ(x, y);
+                int z = map.GetAverageZ(x, y);
 
-                if (Map.Trammel.CanSpawnMobile(x, y, z))
+                if (map.CanSpawnMobile(x, y, z))
                 {
                     p = new Point3D(x, y, z);
                     break;
@@ -599,11 +602,9 @@ namespace Server.Engines.Despise
             {
                 Timer.DelayCall(() =>
                     {
-                        if (orb.Pet != null && !orb.Pet.Deleted)
-                            orb.Pet.Delete();
-
+                        e.From.SendLocalizedMessage(1153233); // The Wisp Orb vanishes to whence it came...
                         orb.Delete();
-                    });;
+                    });
             }
         }
 
@@ -661,21 +662,13 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write((int)5);
 
             writer.Write(m_Enabled);
             writer.Write(m_NextBossEncounter);
             writer.Write(m_Boss);
             writer.Write(m_DeadLine);
             writer.Write((int)m_SequenceAlignment);
-
-            writer.Write(m_GoodSpawners.Count);
-            foreach (XmlSpawner spawner in m_GoodSpawners)
-                writer.Write(spawner);
-
-            writer.Write(m_EvilSpawners.Count);
-            foreach (XmlSpawner spawner in m_EvilSpawners)
-                writer.Write(spawner);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -693,26 +686,30 @@ namespace Server.Engines.Despise
 			m_DeadLine = reader.ReadDateTime();
 			m_SequenceAlignment = (Alignment)reader.ReadInt();
 
-            int count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
+            if(version < 4)
+                Timer.DelayCall(TimeSpan.FromSeconds(30), CheckSpawnersVersion3);
+
+            if (version < 5)
             {
-                XmlSpawner spawner = reader.ReadItem() as XmlSpawner;
-                if (spawner != null)
-                    m_GoodSpawners.Add(spawner);
+                int count = reader.ReadInt();
+                for (int i = 0; i < count; i++)
+                {
+                    reader.ReadItem();
+                }
+
+                count = reader.ReadInt();
+                for (int i = 0; i < count; i++)
+                {
+                    reader.ReadItem();
+                }
             }
 
-            count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
-            {
-                XmlSpawner spawner = reader.ReadItem() as XmlSpawner;
-                if (spawner != null)
-                    m_EvilSpawners.Add(spawner);
-            }
+            Timer.DelayCall(CreateSpawners);
 
             //Conversion to new Point System
             if (version == 0)
             {
-                count = reader.ReadInt();
+                int count = reader.ReadInt();
                 for (int i = 0; i < count; i++)
                 {
                     Mobile m = reader.ReadMobile();
@@ -720,13 +717,12 @@ namespace Server.Engines.Despise
 
                     if (m != null && points > 0)
                         Server.Engines.Points.PointsSystem.DespiseCrystals.ConvertFromOldSystem((PlayerMobile)m, points);
-                        //m_PointsTable[m] = points;
                 }
             }
 
-			if(!m_Enabled)
-				return;
-				
+            if (!m_Enabled)
+                return;
+
 			BeginTimer();
 			
 			if(m_DeadLine > DateTime.UtcNow)
@@ -743,13 +739,58 @@ namespace Server.Engines.Despise
 				return;
 			}
 			
-			EndSequence();
-
-            if (m_GoodSpawners.Count == 0 && m_EvilSpawners.Count == 0)
-                CreateSpawners();
+			Timer.DelayCall(EndSequence);
 
             if (version < 2)
                 Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveAnkh);
 		}
+
+        public void CheckSpawnersVersion3(CommandEventArgs e)
+        {
+            CheckSpawnersVersion3();
+        }
+
+        public void CheckSpawnersVersion3()
+        {
+            foreach (var spawner in World.Items.Values.OfType<XmlSpawner>().Where(s => s.Name != null && s.Name.ToLower().IndexOf("despiserevamped") >= 0))
+            {
+                foreach (var obj in spawner.SpawnObjects)
+                {
+                    if (obj.TypeName != null)
+                    {
+                        if (obj.TypeName.ToLower().IndexOf("berlingblades") >= 0)
+                        {
+                            string name = obj.TypeName;
+
+                            obj.TypeName = name.Replace("BerlingBlades", "BirlingBlades");
+                        }
+                        else if (obj.TypeName.ToLower().IndexOf("sagittari") >= 0)
+                        {
+                            string name = obj.TypeName;
+
+                            obj.TypeName = name.Replace("Sagittari", "Sagittarri");
+                        }
+                    }
+
+                    if (Region.Find(spawner.Location, spawner.Map) == m_GoodRegion ||
+                        Region.Find(spawner.Location, spawner.Map) == m_EvilRegion)
+                    {
+                        if(obj.TypeName.IndexOf(@",{RND,1,5}") < 0)
+                            obj.TypeName = obj.TypeName + @",{RND,1,5}";
+                    }
+                }
+            }
+
+            foreach (var r in new Region[] { m_GoodRegion, m_EvilRegion, m_LowerRegion, m_StartRegion })
+            {
+                foreach (var item in r.GetEnumeratedItems().Where(i => i is Moongate || i is GateTeleporter))
+                {
+                    item.Delete();
+                    WeakEntityCollection.Remove("despise", item);
+                }
+            }
+
+            DespiseRevampedSetup.SetupTeleporters();
+        }
     }
 }

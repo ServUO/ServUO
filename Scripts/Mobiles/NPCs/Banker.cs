@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Banker.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -51,7 +45,7 @@ namespace Server.Mobiles
                 }
             }
 
-            Container bank = m.FindBankNoCreate();
+			Container bank = m.Player ? m.BankBox : m.FindBankNoCreate();
 
             if (bank != null)
             {
@@ -81,7 +75,7 @@ namespace Server.Mobiles
                 }
             }
 
-            Container bank = m.FindBankNoCreate();
+			Container bank = m.Player ? m.BankBox : m.FindBankNoCreate();
 
             if (bank != null)
             {
@@ -148,6 +142,9 @@ namespace Server.Mobiles
                 }
             }
 
+            if (message)
+                from.SendLocalizedMessage(1155856, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold has been removed from your bank box.
+
             return true;
         }
 
@@ -162,7 +159,7 @@ namespace Server.Mobiles
                 return true;
             }
 
-            var box = from.FindBankNoCreate();
+			var box = from.Player ? from.BankBox : from.FindBankNoCreate();
 
             if (box == null)
             {
@@ -206,18 +203,24 @@ namespace Server.Mobiles
                 }
             }
 
+            if (message)
+                from.SendLocalizedMessage(1042763, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold was deposited in your account.
+
             return true;
         }
 
-        public static int DepositUpTo(Mobile from, int amount)
+        public static int DepositUpTo(Mobile from, int amount, bool message = false)
         {
             // If for whatever reason the TOL checks fail, we should still try old methods for depositing currency.
 			if (AccountGold.Enabled && from.Account != null && from.Account.DepositGold(amount))
             {
+                if (message)
+                    from.SendLocalizedMessage(1042763, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold was deposited in your account.
+
                 return amount;
             }
 
-            var box = from.FindBankNoCreate();
+			var box = from.Player ? from.BankBox : from.FindBankNoCreate();
 
             if (box == null)
             {
@@ -310,8 +313,13 @@ namespace Server.Mobiles
 
 	    public static void HandleSpeech(Mobile vendor, SpeechEventArgs e)
 	    {
-			if (!e.Handled && e.Mobile.InRange(vendor, 12))
+            if (!e.Handled && e.Mobile.InRange(vendor, 12))
 			{
+                if (e.Mobile.Map.Rules != MapRules.FeluccaRules && vendor is BaseVendor && !((BaseVendor)vendor).CheckVendorAccess(e.Mobile))
+                {
+                    return;
+                }
+
 				foreach (var keyword in e.Keywords)
 				{
 					switch (keyword)
@@ -353,7 +361,7 @@ namespace Server.Mobiles
 									}
 									else if (amount > 0)
 									{
-										var box = e.Mobile.FindBankNoCreate();
+										var box = e.Mobile.Player ? e.Mobile.BankBox : e.Mobile.FindBankNoCreate();
 
 										if (box == null || !Withdraw(e.Mobile, amount))
 										{
@@ -382,12 +390,13 @@ namespace Server.Mobiles
 									break;
 								}
 
-								if (AccountGold.Enabled && e.Mobile.Account != null)
+								if (AccountGold.Enabled && e.Mobile.Account is Account)
 								{
-									vendor.Say(
-										"Thy current bank balance is {0:#,0} platinum and {1:#,0} gold.",
-										e.Mobile.Account.TotalPlat,
-										e.Mobile.Account.TotalGold);
+                                    vendor.Say(1155855, String.Format("{0:#,0}\t{1:#,0}",
+                                        e.Mobile.Account.TotalPlat,
+                                        e.Mobile.Account.TotalGold), 0x3BC);
+
+                                    vendor.Say(1155848, String.Format("{0:#,0}", ((Account)e.Mobile.Account).GetSecureAccountAmount(e.Mobile)), 0x3BC);
 								}
 								else
 								{
@@ -484,7 +493,11 @@ namespace Server.Mobiles
         {
             if (from.Alive)
             {
-                list.Add(new OpenBankEntry(from, this));
+                var entry = new OpenBankEntry(this);
+
+                entry.Enabled = from.Map.Rules == MapRules.FeluccaRules || CheckVendorAccess(from);
+
+                list.Add(entry);
             }
 
             base.AddCustomContextEntries(from, list);

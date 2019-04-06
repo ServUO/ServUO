@@ -64,7 +64,7 @@ namespace Server.Spells.Chivalry
         {
             BaseWeapon weapon = this.Caster.Weapon as BaseWeapon;
 
-            if (weapon == null || weapon is Fists)
+            if (Caster.Player && (weapon == null || weapon is Fists))
             {
                 this.Caster.SendLocalizedMessage(501078); // You must be holding a weapon.
             }

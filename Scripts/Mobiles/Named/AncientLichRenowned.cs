@@ -45,8 +45,6 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 60;
 
-            this.PackItem(new EssenceDirection());
-
             this.PackNecroReg(30, 275);
         }
 

@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Server.Network;
-using Server.Items;
-using Server.Targeting;
-using Server.Mobiles;
 
 namespace Server.Spells.Mysticism
 {
@@ -45,14 +40,15 @@ namespace Server.Spells.Mysticism
         public override bool CheckCast()
         {
             bool doCast = base.CheckCast();
+
 			if (doCast && Caster.Flying)
 			{
 				Caster.SendLocalizedMessage(1112567); // You are flying.
 				doCast = false;
 			}
 
-            if(doCast)
-                m_ResisMod = (int)(Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 24;
+            if (doCast)
+                m_ResisMod = GetResBonus(Caster);
 
             return doCast;
         }
@@ -65,13 +61,15 @@ namespace Server.Spells.Mysticism
             Timer.DelayCall(new TimerCallback(MobileDelta_Callback));
 			m_Effected.Add(m);
 
-            string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", "-10", "-2", m_ResisMod.ToString(), m_ResisMod.ToString(), "-10");
+            string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", "-10", "-2", GetResBonus(m).ToString(), GetMaxResistance(m).ToString(), GetDamBonus(m).ToString());
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.StoneForm, 1080145, 1080146, args));
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PoisonImmunity, 1153785, 1153814));
 		}
 
         public void MobileDelta_Callback()
         {
-            Caster.Delta( MobileDelta.WeaponDamage );
+            Caster.Delta(MobileDelta.WeaponDamage);
+            Caster.UpdateResistances();
         }
 
 		public override void RemoveEffect( Mobile m )
@@ -79,21 +77,91 @@ namespace Server.Spells.Mysticism
 			m.Delta( MobileDelta.WeaponDamage );
 			m_Effected.Remove(m);
             BuffInfo.RemoveBuff(m, BuffIcon.StoneForm);
+            BuffInfo.RemoveBuff(m, BuffIcon.PoisonImmunity);
 		}
 
-        public static int GetMaxResistMod(PlayerMobile pm)
+        public static int GetMaxResistBonus(Mobile m)
         {
-            if (TransformationSpellHelper.UnderTransformation(pm, typeof(StoneFormSpell)))
+            if (TransformationSpellHelper.UnderTransformation(m, typeof(StoneFormSpell)))
             {
-                int prim = (int)pm.Skills[SkillName.Mysticism].Value;
-                int sec = (int)pm.Skills[SkillName.Imbuing].Value;
-
-                if (pm.Skills[SkillName.Focus].Value > sec)
-                    sec = (int)pm.Skills[SkillName.Focus].Value;
-
-                return Math.Max(2, (prim + sec) / 48);
+                return GetMaxResistance(m);
             }
+
             return 0;
+        }
+
+        public static int GetResistanceBonus(Mobile m)
+        {
+            if (TransformationSpellHelper.UnderTransformation(m, typeof(StoneFormSpell)))
+            {
+                return GetResBonus(m);
+            }
+
+            return 0;
+        }
+
+        public static int GetDamageBonus(Mobile m)
+        {
+            if (TransformationSpellHelper.UnderTransformation(m, typeof(StoneFormSpell)))
+            {
+                return GetDamBonus(m);
+            }
+
+            return 0;
+        }
+
+        public static double StatOffsetReduction(Mobile caster, Mobile m)
+        {
+            if (TransformationSpellHelper.UnderTransformation(m, typeof(StoneFormSpell)))
+            {
+                int prim = (int)m.Skills[SkillName.Mysticism].Value;
+                int sec = (int)m.Skills[SkillName.Imbuing].Value;
+
+                if (m.Skills[SkillName.Focus].Value > sec)
+                    sec = (int)m.Skills[SkillName.Focus].Value;
+
+                caster.SendLocalizedMessage(1080192); // Your target resists your ability reduction magic.
+
+                return (double)(prim + sec) / 480;
+            }
+
+            return 1.0;
+        }
+
+        private static int GetResBonus(Mobile m)
+        {
+            int prim = (int)m.Skills[SkillName.Mysticism].Value;
+            int sec = (int)m.Skills[SkillName.Imbuing].Value;
+
+            if (m.Skills[SkillName.Focus].Value > sec)
+                sec = (int)m.Skills[SkillName.Focus].Value;
+
+            return Math.Max(2, (prim + sec) / 24);
+        }
+
+        private static int GetMaxResistance(Mobile m)
+        {
+            if (Server.Items.BaseArmor.HasRefinedResist(m))
+                return 0;
+
+            int prim = (int)m.Skills[SkillName.Mysticism].Value;
+            int sec = (int)m.Skills[SkillName.Imbuing].Value;
+
+            if (m.Skills[SkillName.Focus].Value > sec)
+                sec = (int)m.Skills[SkillName.Focus].Value;
+
+            return Math.Max(2, (prim + sec) / 48);
+        }
+
+        private static int GetDamBonus(Mobile m)
+        {
+            int prim = (int)m.Skills[SkillName.Mysticism].Value;
+            int sec = (int)m.Skills[SkillName.Imbuing].Value;
+
+            if (m.Skills[SkillName.Focus].Value > sec)
+                sec = (int)m.Skills[SkillName.Focus].Value;
+
+            return Math.Max(0, (prim + sec) / 12);
         }
 
         public static bool CheckImmunity(Mobile from)
@@ -102,10 +170,11 @@ namespace Server.Spells.Mysticism
             {
                 int prim = (int)from.Skills[SkillName.Mysticism].Value;
                 int sec = (int)from.Skills[SkillName.Imbuing].Value;
+
                 if (from.Skills[SkillName.Focus].Value > sec)
                     sec = (int)from.Skills[SkillName.Focus].Value;
 
-                int immunity = ((prim + sec) / 240) * 100;
+                int immunity = (int)(((double)(prim + sec) / 480) * 100);
 
                 if (Server.Spells.Necromancy.EvilOmenSpell.TryEndEffect(from))
                     immunity -= 30;

@@ -1,19 +1,20 @@
-﻿using Server;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+using Server;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Server.Engines.CannedEvil;
+using Server.Engines.SeasonalEvents;
 
 namespace Server.Misc
 {
     public class VirtueArtifactsSystem
     {
-        private static bool m_Enabled = (Core.Expansion >= Expansion.ML);
-        public static bool Enabled { get { return m_Enabled; } }
+        public static bool Enabled { get { return SeasonalEventSystem.IsActive(EventType.VirtueArtifacts); } }
 
         private static Type[] m_VirtueArtifacts = new Type[]
             {
@@ -39,20 +40,21 @@ namespace Server.Misc
                 r.IsPartOf("Hythloth") || r.IsPartOf("Shame") || r.IsPartOf("Wrong"));
         }
 
-        public static void HandleKill(Mobile victim, Mobile killer)
+        public static bool HandleKill(Mobile victim, Mobile killer)
         {
             PlayerMobile pm = killer as PlayerMobile;
             BaseCreature bc = victim as BaseCreature;
 
-            if (!Enabled || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18))
-                return;
+            if (!Enabled || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18) || !killer.Alive)
+                return false;
 
             if (bc.Controlled || bc.Owners.Count > 0 || bc.Fame <= 0)
-                return;
+                return false;
             
             double vapoints = pm.VASTotalMonsterFame;
+            int luck = Math.Max(0, pm.RealLuck);
 
-            pm.VASTotalMonsterFame += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100));
+            pm.VASTotalMonsterFame += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)));
 
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
@@ -70,7 +72,9 @@ namespace Server.Misc
                     i = Activator.CreateInstance(m_VirtueArtifacts[Utility.Random(m_VirtueArtifacts.Length)]) as Item;
                 }
                 catch
-                { }
+                {
+                    return false;
+                }
 
                 if (i != null)
                 {
@@ -88,9 +92,13 @@ namespace Server.Misc
                         }
                     }
 
-                    pm.VASTotalMonsterFame = 0;                   
+                    pm.VASTotalMonsterFame = 0;
+
+                    return true;
                 }
             }
+
+            return false;
         }
     }
 }

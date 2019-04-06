@@ -81,7 +81,7 @@ namespace Server.Multis
 			{
 				from.SendLocalizedMessage( 1010567, null, 0x25 ); // You may not place a boat from this location.
 			}
-            else if (IsGalleon() && BaseGalleon.HasGalleon(from) && from.AccessLevel == AccessLevel.Player)
+            else if (Core.HS && BaseBoat.HasBoat(from))
             {
                 from.SendLocalizedMessage(1116758); //You already have a ship deployed!
             }
@@ -93,14 +93,8 @@ namespace Server.Multis
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 502482); // Where do you wish to place the ship?
 
                 from.SendGump(new BoatPlacementGump(this, from));
-                //from.Target = new InternalTarget( this );
             }
 		}
-
-        public bool IsGalleon()
-        {
-            return this is BritannianShipDeed || this is GargishGalleonDeed || this is TokunoGalleonDeed || this is OrcishGalleonDeed;
-        }
 
 		public abstract BaseBoat Boat{ get; }
 
@@ -149,7 +143,10 @@ namespace Server.Multis
                     boat.ItemID = itemID;
 
                     if (boat is BaseGalleon)
+                    {
                         ((BaseGalleon)boat).SecurityEntry = new SecurityEntry((BaseGalleon)boat);
+                        ((BaseGalleon)boat).BaseBoatHue = RandomBasePaintHue();
+                    }
 
                     if (boat.IsClassicBoat)
                     {
@@ -163,6 +160,7 @@ namespace Server.Multis
                     }
 
 					boat.MoveToWorld( p, map );
+                    boat.OnAfterPlacement(true);
 
                     var addon = LighthouseAddon.GetLighthouse(from);
 
@@ -182,36 +180,14 @@ namespace Server.Multis
 			}
 		}
 
-		/*private class InternalTarget : MultiTarget
-		{
-			private BaseBoatDeed m_Deed;
+        private int RandomBasePaintHue()
+        {
+            if (0.6 > Utility.RandomDouble())
+            {
+                return Utility.RandomMinMax(1701, 1754);
+            }
 
-			public InternalTarget( BaseBoatDeed deed ) : base( deed.MultiID, deed.Offset )
-			{
-				m_Deed = deed;
-			}
-
-			protected override void OnTarget( Mobile from, object o )
-			{
-				IPoint3D ip = o as IPoint3D;
-
-				if ( ip != null )
-				{
-					if ( ip is Item )
-						ip = ((Item)ip).GetWorldTop();
-
-					Point3D p = new Point3D( ip );
-
-					Region region = Region.Find( p, from.Map );
-
-					if ( region.IsPartOf( typeof( DungeonRegion ) ) )
-						from.SendLocalizedMessage( 502488 ); // You can not place a ship inside a dungeon.
-					else if ( region.IsPartOf( typeof( HouseRegion ) ) || region.IsPartOf( typeof( ChampionSpawnRegion ) ) )
-						from.SendLocalizedMessage( 1042549 ); // A boat may not be placed in this area.
-					else
-						m_Deed.OnPlacement( from, p );
-				}
-			}
-		}*/
+            return Utility.RandomMinMax(1801, 1908);
+        }
 	}
 }

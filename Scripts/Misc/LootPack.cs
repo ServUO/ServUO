@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - LootPack.cs
-// **********
-#endregion
-
 #region References
 using System;
 
@@ -786,7 +780,7 @@ namespace Server
 
 					BaseInstrument instr = (BaseInstrument)item;
 
-					instr.Quality = InstrumentQuality.Regular;
+					instr.Quality = ItemQuality.Normal;
 					instr.Slayer = slayer;
 				}
 

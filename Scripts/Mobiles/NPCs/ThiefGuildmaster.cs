@@ -36,7 +36,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return TimeSpan.FromDays(7.0);
+                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(7.0);
+            }
+        }
+        public override TimeSpan JoinGameAge
+        {
+            get
+            {
+                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(2.0);
             }
         }
         public override void InitOutfit()
@@ -51,7 +58,7 @@ namespace Server.Mobiles
 
         public override bool CheckCustomReqs(PlayerMobile pm)
         {
-            if (pm.Young)
+            if (pm.Young && !Siege.SiegeShard)
             {
                 this.SayTo(pm, 502089); // You cannot be a member of the Thieves' Guild while you are Young.
                 return false;
@@ -61,7 +68,7 @@ namespace Server.Mobiles
                 this.SayTo(pm, 501050); // This guild is for cunning thieves, not oafish cutthroats.
                 return false;
             }
-            else if (pm.Skills[SkillName.Stealing].Base < 60.0)
+            else if (pm.Skills[SkillName.Stealing].Base < 60.0 && !Siege.SiegeShard)
             {
                 this.SayTo(pm, 501051); // You must be at least a journeyman pickpocket to join this elite organization.
                 return false;

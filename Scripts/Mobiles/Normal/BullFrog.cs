@@ -10,36 +10,36 @@ namespace Server.Mobiles
         public BullFrog()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a bull frog";
-            this.Body = 81;
-            this.Hue = Utility.RandomList(0x5AC, 0x5A3, 0x59A, 0x591, 0x588, 0x57F);
-            this.BaseSoundID = 0x266;
+            Name = "a bull frog";
+            Body = 81;
+            Hue = Utility.RandomList(0x5AC, 0x5A3, 0x59A, 0x591, 0x588, 0x57F);
+            BaseSoundID = 0x266;
 
-            this.SetStr(46, 70);
-            this.SetDex(6, 25);
-            this.SetInt(11, 20);
+            SetStr(46, 70);
+            SetDex(6, 25);
+            SetInt(11, 20);
 
-            this.SetHits(28, 42);
-            this.SetMana(0);
+            SetHits(28, 42);
+            SetMana(0);
 
-            this.SetDamage(1, 2);
+            SetDamage(1, 2);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 5, 10);
+            SetResistance(ResistanceType.Physical, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 25.1, 40.0);
-            this.SetSkill(SkillName.Tactics, 40.1, 60.0);
-            this.SetSkill(SkillName.Wrestling, 40.1, 60.0);
+            SetSkill(SkillName.MagicResist, 25.1, 40.0);
+            SetSkill(SkillName.Tactics, 40.1, 60.0);
+            SetSkill(SkillName.Wrestling, 40.1, 60.0);
 
-            this.Fame = 350;
-            this.Karma = 0;
+            Fame = 350;
+            Karma = 0;
 
-            this.VirtualArmor = 6;
+            VirtualArmor = 6;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 23.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 23.1;
         }
 
         public BullFrog(Serial serial)
@@ -70,7 +70,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Poor);
+            AddLoot(LootPack.Poor);
         }
 
         public override void Serialize(GenericWriter writer)

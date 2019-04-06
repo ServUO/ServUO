@@ -9,8 +9,8 @@ namespace Server.Items
         public AmeliasToolbox()
             : base(500)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 1895; // TODO check
+            LootType = LootType.Blessed;
+            Hue = 1895; // TODO check
         }
 
         public AmeliasToolbox(Serial serial)

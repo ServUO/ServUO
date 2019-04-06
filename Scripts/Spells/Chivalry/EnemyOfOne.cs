@@ -89,7 +89,7 @@ namespace Server.Spells.Chivalry
             return m_Table[m];
         }
 
-        private static bool UnderEffect(Mobile m)
+        public static bool UnderEffect(Mobile m)
         {
             return m_Table.ContainsKey(m);
         }
@@ -196,6 +196,11 @@ namespace Server.Spells.Chivalry
 
 		public bool IsEnemy(Mobile m)
 		{
+            if (m is BaseCreature && ((BaseCreature)m).GetMaster() == Owner)
+            {
+                return false;
+            }
+
             if (m_PlayerOrPet != null)
             {
                 if (m_PlayerOrPet == m)
@@ -229,11 +234,11 @@ namespace Server.Spells.Chivalry
 		{
             if (m_TypeName == null)
             {
-                BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075902, m_Expire - DateTime.UtcNow, m_Owner, string.Format("{0}\t{1}", m_DamageScalar, "100")));
+                BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075902, m_Expire - DateTime.UtcNow, m_Owner, string.Format("{0}\t{1}", m_DamageScalar, "100"), true));
             }
             else
             {
-                BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075654, m_Expire - DateTime.UtcNow, m_Owner, string.Format("{0}\t{1}\t{2}\t{3}", m_DamageScalar, TypeName, ".", "100")));
+                BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075654, m_Expire - DateTime.UtcNow, m_Owner, string.Format("{0}\t{1}\t{2}\t{3}", m_DamageScalar, TypeName, ".", "100"), true));
             }
 		}
 
@@ -289,7 +294,9 @@ namespace Server.Spells.Chivalry
 
 		private void DeltaEnemies()
 		{
-			foreach (var m in m_Owner.GetMobilesInRange(18))
+            IPooledEnumerable eable = m_Owner.GetMobilesInRange(18);
+
+			foreach (Mobile m in eable)
 			{
                 if (m_PlayerOrPet != null)
                 {
@@ -303,6 +310,8 @@ namespace Server.Spells.Chivalry
                     m.Delta(MobileDelta.Noto);
                 }
 			}
+
+            eable.Free();
 		}
 	}
 }

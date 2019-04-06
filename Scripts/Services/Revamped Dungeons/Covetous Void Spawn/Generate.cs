@@ -75,6 +75,7 @@ namespace Server.Engines.VoidPool
                 }
 
                 XmlSpawner spawner = new XmlSpawner("corathesorceress");
+                WeakEntityCollection.Add("newcovetous", spawner);
                 spawner.MoveToWorld(new Point3D(5457, 1808, 0), Map.Trammel);
                 spawner.SpawnRange = 5;
                 spawner.MinDelay = TimeSpan.FromHours(1);
@@ -82,6 +83,7 @@ namespace Server.Engines.VoidPool
                 spawner.DoRespawn = true;
 
                 spawner = new XmlSpawner("corathesorceress");
+                WeakEntityCollection.Add("newcovetous", spawner);
                 spawner.MoveToWorld(new Point3D(5457, 1808, 0), Map.Felucca);
                 spawner.SpawnRange = 5;
                 spawner.MinDelay = TimeSpan.FromHours(1);
@@ -89,11 +91,13 @@ namespace Server.Engines.VoidPool
                 spawner.DoRespawn = true;
 
                 spawner = new XmlSpawner("velathesorceress");
+                WeakEntityCollection.Add("newcovetous", spawner);
                 spawner.MoveToWorld(new Point3D(2254, 1207, 0), Map.Trammel);
                 spawner.SpawnRange = 0;
                 spawner.DoRespawn = true;
 
                 spawner = new XmlSpawner("velathesorceress");
+                WeakEntityCollection.Add("newcovetous", spawner);
                 spawner.MoveToWorld(new Point3D(2254, 1207, 0), Map.Felucca);
                 spawner.SpawnRange = 0;
                 spawner.DoRespawn = true;
@@ -359,6 +363,9 @@ namespace Server.Engines.VoidPool
 
         public static void ConvertRegionSpawners(Region r)
         {
+            if (r == null)
+                return;
+
             List<XmlSpawner> list = new List<XmlSpawner>();
 
             foreach (Sector s in r.Sectors)
@@ -390,8 +397,7 @@ namespace Server.Engines.VoidPool
 
             list.ForEach(spawner => spawner.DoRespawn = true);
 
-            list.Clear();
-            list.TrimExcess();
+            ColUtility.Free(list);
         }
 	}
 }

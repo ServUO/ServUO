@@ -112,7 +112,7 @@ namespace Ultima
 
 									var bmp = new Bitmap(width, height);
 									BitmapData bd = bmp.LockBits(
-										new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+										new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, Settings.PixelFormat);
 									var line = (ushort*)bd.Scan0;
 									int delta = bd.Stride >> 1;
 
@@ -159,7 +159,7 @@ namespace Ultima
 							bin.Write(Fonts[i].Unk[k]);
 							Bitmap bmp = Fonts[i].Characters[k];
 							BitmapData bd = bmp.LockBits(
-								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
+								new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
 							var line = (ushort*)bd.Scan0;
 							int delta = bd.Stride >> 1;
 							for (int y = 0; y < bmp.Height; ++y, line += delta)

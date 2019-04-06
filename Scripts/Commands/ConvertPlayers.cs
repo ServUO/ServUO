@@ -10,9 +10,10 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("ConvertPlayers", AccessLevel.Administrator, new CommandEventHandler(Convert_OnCommand));
+            //CommandSystem.Register("ConvertPlayers", AccessLevel.Administrator, new CommandEventHandler(Convert_OnCommand));
         }
 
+        [Obsolete("Convert_OnCommand no longer supported.", true)]
         public static void Convert_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendMessage("Converting all players to PlayerMobile.  You will be disconnected.  Please Restart the server after the world has finished saving.");

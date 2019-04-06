@@ -45,9 +45,32 @@ namespace Server.Items
         public override bool CanOfferConfirmation(Mobile from)
         {
             if (from.Region != null && from.Region.IsPartOf("Blighted Grove"))
+            {
                 return base.CanOfferConfirmation(from);
-				
+            }
+
+            if (Altar == null)
+            {
+                return false;
+            }
+
+            Map map = Altar.Map;
+
+            foreach (var rect in _EntryLocs)
+            {
+                if (rect.Contains(from.Location))
+                {
+                    return base.CanOfferConfirmation(from);
+                }
+            }
+
             return false;
         }
+
+        private Rectangle2D[] _EntryLocs =
+        {
+            new Rectangle2D(574, 1630, 20, 15),
+            new Rectangle2D(579, 1645, 12, 4)
+        };
     }
 }

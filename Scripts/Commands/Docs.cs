@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Docs.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -475,7 +469,10 @@ namespace Server.Commands
 			DocumentKeywords();
 			DocumentBodies();
 
-			DocumentBulkOrders();
+            if (!BulkOrderSystem.NewSystemEnabled)
+            {
+                DocumentBulkOrders();
+            }
 
 			m_Types = new Dictionary<Type, TypeInfo>();
 			m_Namespaces = new Dictionary<string, List<TypeInfo>>();

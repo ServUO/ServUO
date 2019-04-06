@@ -65,9 +65,9 @@ namespace Server.Items
             this.Donations.Add(new CollectionItem(typeof(BankCheck), 0x14F0, 1075013, 0x34, 0.06666));				
             this.Donations.Add(new CollectionItem(typeof(BrownBook), 0xFEF, 1074906, 0x0, 3));
             this.Donations.Add(new CollectionItem(typeof(TanBook), 0xFF0, 1074906, 0x0, 3));						
-            this.Donations.Add(new CollectionItem(typeof(ShepherdsCrook), 0xE81, 1015110, 0x0, 7));													
-            this.Donations.Add(new CollectionItem(typeof(RedScales), 0x26B4, 1060883, 0x66D, 20));	
-            this.Donations.Add(new CollectionItem(typeof(YellowScales), 0x26B4, 1060883, 0x8A8, 20));				
+            this.Donations.Add(new CollectionItem(typeof(ShepherdsCrook), 0xE81, 1015110, 0x0, 7));
+            this.Donations.Add(new CollectionItem(typeof(RedScales), 0x26B4, 1053137, 0x0, 20));	
+            //this.Donations.Add(new CollectionItem(typeof(YellowScales), 0x26B4, 1060883, 0x8A8, 20));				
 			
             int[] hues = new int[] { 0x1E0, 0x190, 0x151 };			
             this.Rewards.Add(new CollectionHuedItem(typeof(LibraryFriendBodySash), 0x1541, 1073346, 0x190, 100000.0, hues));

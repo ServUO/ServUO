@@ -29,16 +29,19 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
-            this.Body = 334;
-            this.Female = false;
+            InitStats(100, 100, 25);
+            Body = 723;
+            Female = false;
+
+            Frozen = true;
+            Direction = Direction.Down;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -46,6 +49,14 @@ namespace Server.Engines.Quests
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                Body = 723;
+            }
+
+            Frozen = true;
+            Direction = Direction.Down;
         }
     }
 }

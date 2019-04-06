@@ -23,17 +23,7 @@ namespace Server.Spells.Second
                 return SpellCircle.Second;
             }
         }
-        public override bool CheckCast()
-        {
-            if (Engines.ConPVP.DuelContext.CheckSuddenDeath(this.Caster))
-            {
-                this.Caster.SendMessage(0x22, "You cannot cast this spell when in sudden death.");
-                return false;
-            }
-
-            return base.CheckCast();
-        }
-
+        
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

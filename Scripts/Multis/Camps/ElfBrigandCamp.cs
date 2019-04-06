@@ -3,7 +3,7 @@ using Server.Mobiles;
 
 namespace Server.Multis
 {
-    public class ElfBrigandCamp : HumanBrigandCamp
+    public class ElfBrigandCamp : BrigandCamp
     { 
         [Constructable]
         public ElfBrigandCamp()
@@ -16,7 +16,7 @@ namespace Server.Multis
         {
         }
 
-        public override Mobile Camper
+        public override Mobile Brigands
         {
             get
             {

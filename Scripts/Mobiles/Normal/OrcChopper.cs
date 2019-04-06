@@ -17,8 +17,8 @@ namespace Server.Mobiles
             Hue = 0x96D;
 
             SetStr(147, 245);
-            SetDex(101, 135);
-            SetInt(86, 110);
+            SetDex(91, 115);
+            SetInt(61, 85);
 
             SetHits(97, 139);
 
@@ -33,8 +33,8 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, 25, 30);
 
             SetSkill(SkillName.MagicResist, 60.1, 85.0);
-            SetSkill(SkillName.Swords, 75.1, 90.0);
-            SetSkill(SkillName.Tactics, 60.1, 85.0);
+            SetSkill(SkillName.Tactics, 75.1, 90.0);
+            SetSkill(SkillName.Wrestling, 60.1, 85.0);
 
             Fame = 4500;
             Karma = -4500;
@@ -76,6 +76,9 @@ namespace Server.Mobiles
 
             if (0.5 > Utility.RandomDouble())
                 PackItem(new Yeast());
+
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public OrcChopper(Serial serial)
@@ -114,29 +117,12 @@ namespace Server.Mobiles
                 return OppositionGroup.SavagesAndOrcs;
             }
         }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            switch (Utility.Random(2))
-            {
-                default:
-                case 1:
-                    return WeaponAbility.WhirlwindAttack;
-                case 2:
-                    return WeaponAbility.CrushingBlow;
-            }
-        }
 
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
 
             c.DropItem(new DoubleAxe());
-
-            if (Core.ML)
-            {
-                if (Utility.RandomDouble() < 0.05)
-                    c.DropItem(new StoutWhip());
-            }
 
             if (Utility.RandomDouble() < 0.1)
                 c.DropItem(new EvilOrcHelm());

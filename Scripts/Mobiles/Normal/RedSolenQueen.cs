@@ -9,8 +9,6 @@ namespace Server.Mobiles
     public class RedSolenQueen : BaseCreature, IRedSolen
     {
         private bool m_BurstSac;
-
-        private DateTime recoverDelay;
         private static bool m_Laid;
 
         [Constructable]
@@ -255,7 +253,7 @@ namespace Server.Mobiles
             m_Timer.Start();
         }
 
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             Effects.PlaySound(GetWorldLocation(), Map, 0x027);
             Effects.SendLocationEffect(GetWorldLocation(), Map, 0x3728, 10, 10, 0, 0);
@@ -263,6 +261,8 @@ namespace Server.Mobiles
             from.SendMessage("You destroy the egg sac.");
             Delete();
             m_Timer.Stop();
+
+            return true;
         }
 
         public RSQEggSac(Serial serial)

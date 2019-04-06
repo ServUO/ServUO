@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public EnchantedTitanLegBone()
         {
-            this.Hue = 0x8A5;
-            this.WeaponAttributes.HitLowerDefend = 40;
-            this.WeaponAttributes.HitLightning = 40;
-            this.Attributes.AttackChance = 10;
-            this.Attributes.WeaponDamage = 20;
-            this.WeaponAttributes.ResistPhysicalBonus = 10;
+            Hue = 0x8A5;
+            WeaponAttributes.HitLowerDefend = 40;
+            WeaponAttributes.HitLightning = 40;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponDamage = 20;
+            WeaponAttributes.ResistPhysicalBonus = 10;
         }
 
         public EnchantedTitanLegBone(Serial serial)

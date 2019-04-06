@@ -226,10 +226,18 @@ namespace Server.Engines.Quests.Necro
             {
                 HordeMinionFamiliar hmf = Spells.Necromancy.SummonFamiliarSpell.Table[this.System.From] as HordeMinionFamiliar;
 
-                if (hmf != null && hmf.InRange(this.System.From, 5) && hmf.TargetLocation == null)
+                if (hmf != null && hmf.InRange(this.System.From, 5) && !hmf.QuestOverride)
                 {
                     this.System.From.SendLocalizedMessage(1060113); // You instinctively will your familiar to fetch the scroll for you.
-                    hmf.TargetLocation = new Point2D(1076, 450);
+                    //hmf.TargetLocation = new Point2D(1076, 450);
+
+                    if (hmf.AIObject != null)
+                    {
+                        hmf.CurrentSpeed = .2;
+                        hmf.QuestOverride = true;
+                        hmf.AIObject.MoveTo(new Point3D(1076, 450, -89), false, 0);
+                    }
+                    
                 }
             }
         }

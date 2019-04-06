@@ -8,11 +8,11 @@ namespace Server.Items
         [Constructable]
         public VioletCourage()
         {
-            this.Hue = Utility.RandomBool() ? 0x486 : 0x490;
-            this.Attributes.Luck = 95;
-            this.Attributes.DefendChance = 15;
-            this.ArmorAttributes.LowerStatReq = 100;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = Utility.RandomBool() ? 0x486 : 0x490;
+            Attributes.Luck = 95;
+            Attributes.DefendChance = 15;
+            ArmorAttributes.LowerStatReq = 100;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public VioletCourage(Serial serial)

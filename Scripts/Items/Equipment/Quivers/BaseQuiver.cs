@@ -6,8 +6,13 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
+    public interface IRangeDamage
+    {
+        void AlterRangedDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct);
+    }
+
     [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor), true)]
-    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted
+    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted, IRangeDamage, IArtifact
     {
         private bool _VvVItem;
         private Mobile _Owner;
@@ -72,6 +77,8 @@ namespace Server.Items
                 return base.DisplayWeight;
             }
         }
+
+        public virtual int ArtifactRarity { get { return 0; } }
 
         private AosAttributes m_Attributes;
         private AosSkillBonuses m_AosSkillBonuses;
@@ -257,16 +264,40 @@ namespace Server.Items
         {
         }
 
+        public override bool DisplaysContent { get { return false; } }
+
         public override void OnAfterDuped(Item newItem)
         {
-            BaseQuiver quiver = newItem as BaseQuiver;
+            var quiver = newItem as BaseQuiver;
 
-            if (quiver == null)
-                return;
+            if (quiver != null)
+            {
+                quiver.m_Attributes = new AosAttributes(newItem, m_Attributes);
+                quiver.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
+                quiver.m_Resistances = new AosElementAttributes(newItem, m_Resistances);
+                quiver.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
+                quiver.m_SetSkillBonuses = new AosSkillBonuses(newItem, m_SetSkillBonuses);
+            }
 
-            quiver.m_Attributes = new AosAttributes(newItem, m_Attributes);
-            quiver.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
-            quiver.m_Resistances = new AosElementAttributes(newItem, m_Resistances);
+            var wing = newItem as GargishLeatherWingArmor;
+
+            if (wing != null)
+            {
+                int phys, fire, cold, pois, nrgy, chaos, direct;
+                phys = fire = cold = pois = nrgy = chaos = direct = 0;
+
+                AlterRangedDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
+
+                wing.AosElementDamages.Physical = phys;
+                wing.AosElementDamages.Fire = fire;
+                wing.AosElementDamages.Cold = cold;
+                wing.AosElementDamages.Poison = pois;
+                wing.AosElementDamages.Energy = nrgy;
+                wing.AosElementDamages.Chaos = chaos;
+                wing.AosElementDamages.Direct = direct;
+            }
+
+            base.OnAfterDuped(newItem);
         }
 
         public override void UpdateTotal(Item sender, TotalType type, int delta)
@@ -315,6 +346,9 @@ namespace Server.Items
 
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
         {
+            if (!Movable)
+                return false;
+
             if (!CheckType(item))
             {
                 if (message)
@@ -324,26 +358,45 @@ namespace Server.Items
             }
 
             Item ammo = Ammo;
+
             if(ammo != null && ammo.Amount > 0)
             {
                 if (IsArrowAmmo && item is Bolt)
                     return false;
+
                 if (!IsArrowAmmo && item is Arrow)
                     return false;
             }
 
-            if (Items.Count < DefaultMaxItems)
+            if (!checkItems || Items.Count < DefaultMaxItems)
             {
-                if (item.Amount <= m_Capacity)
-                    return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+                int currentAmount = 0;
 
+                Items.ForEach(i => currentAmount += i.Amount);
+
+                if (item.Amount + currentAmount <= m_Capacity)
+                    return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+            }
+
+            return false;
+        }
+
+        public override bool CheckStack(Mobile from, Item item)
+        {
+            if (!CheckType(item))
+            {
                 return false;
             }
-            else if (checkItems)
-                return false;
 
-            if (ammo == null || ammo.Deleted)
-                return false;
+            Item ammo = Ammo;
+
+            if (ammo != null)
+            {
+                int currentAmount = Items.Sum(i => i.Amount);
+
+                if (item.Amount + currentAmount <= m_Capacity)
+                    return base.CheckStack(from, item);
+            }
 
             return false;
         }
@@ -515,6 +568,12 @@ namespace Server.Items
             else
                 list.Add(1075265, "{0}\t{1}", 0, Capacity); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows
 
+
+            if (ArtifactRarity > 0)
+            {
+                list.Add(1061078, ArtifactRarity.ToString()); // artifact rarity ~1_val~
+            }
+
             int prop;
 
             if ((prop = m_DamageIncrease) != 0)
@@ -523,7 +582,7 @@ namespace Server.Items
             int phys, fire, cold, pois, nrgy, chaos, direct;
             phys = fire = cold = pois = nrgy = chaos = direct = 0;
 
-            AlterBowDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
+            AlterRangedDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
 
             if (phys != 0)
                 list.Add(1060403, phys.ToString()); // physical damage ~1_val~%
@@ -700,11 +759,16 @@ namespace Server.Items
             Capacity = 0x00000040,
 
             #region Mondain's Legacy Sets
-            SetAttributes = 0x00000100,
-            SetHue = 0x00000200,
-            LastEquipped = 0x00000400,
-            SetEquipped = 0x00000800,
+            SetAttributes =      0x00000100,
+            SetHue =             0x00000200,
+            LastEquipped =       0x00000400,
+            SetEquipped =        0x00000800,
             SetSkillAttributes = 0x00002000,
+            SetPhysical =      0x00004000,
+            SetFire =          0x00008000,
+            SetCold =          0x00010000,
+            SetPoison =        0x00020000,
+            SetEnergy =        0x00040000,
             #endregion
 
             DamageIncrease = 0x00000080
@@ -752,6 +816,11 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.SetHue, m_SetHue != 0);
             SetSaveFlag(ref flags, SaveFlag.LastEquipped, m_LastEquipped);
             SetSaveFlag(ref flags, SaveFlag.SetEquipped, m_SetEquipped);
+            SetSaveFlag(ref flags, SaveFlag.SetPhysical, m_SetPhysicalBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetFire, m_SetFireBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetCold, m_SetColdBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetPoison, m_SetPoisonBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetEnergy, m_SetEnergyBonus != 0);
             #endregion
 
             writer.WriteEncodedInt((int)flags);
@@ -778,6 +847,21 @@ namespace Server.Items
                 writer.Write((int)m_Capacity);
 
             #region Mondain's Legacy Sets
+            if (GetSaveFlag(flags, SaveFlag.SetPhysical))
+                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetFire))
+                writer.WriteEncodedInt((int)m_SetFireBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetCold))
+                writer.WriteEncodedInt((int)m_SetColdBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetPoison))
+                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetEnergy))
+                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+
             if (GetSaveFlag(flags, SaveFlag.SetAttributes))
                 m_SetAttributes.Serialize(writer);
 
@@ -858,6 +942,21 @@ namespace Server.Items
                             m_Capacity = reader.ReadInt();
 
                         #region Mondain's Legacy Sets
+                        if (GetSaveFlag(flags, SaveFlag.SetPhysical))
+                            m_SetPhysicalBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetFire))
+                            m_SetFireBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetCold))
+                            m_SetColdBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetPoison))
+                            m_SetPoisonBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetEnergy))
+                            m_SetEnergyBonus = reader.ReadEncodedInt();
+
                         if (GetSaveFlag(flags, SaveFlag.SetAttributes))
                             m_SetAttributes = new AosAttributes(this, reader);
                         else
@@ -887,6 +986,11 @@ namespace Server.Items
         {
         }
 
+        public virtual void AlterRangedDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct)
+        {
+            AlterBowDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
+        }
+
         public void InvalidateWeight()
         {
             if (RootParent is Mobile)
@@ -898,7 +1002,7 @@ namespace Server.Items
         }
 		
         #region ICraftable
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
 
@@ -981,6 +1085,78 @@ namespace Server.Items
             set
             {
                 m_LastEquipped = value;
+            }
+        }
+
+        private int m_SetPhysicalBonus, m_SetFireBonus, m_SetColdBonus, m_SetPoisonBonus, m_SetEnergyBonus;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPhysicalBonus
+        {
+            get
+            {
+                return m_SetPhysicalBonus;
+            }
+            set
+            {
+                m_SetPhysicalBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetFireBonus
+        {
+            get
+            {
+                return m_SetFireBonus;
+            }
+            set
+            {
+                m_SetFireBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetColdBonus
+        {
+            get
+            {
+                return m_SetColdBonus;
+            }
+            set
+            {
+                m_SetColdBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPoisonBonus
+        {
+            get
+            {
+                return m_SetPoisonBonus;
+            }
+            set
+            {
+                m_SetPoisonBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetEnergyBonus
+        {
+            get
+            {
+                return m_SetEnergyBonus;
+            }
+            set
+            {
+                m_SetEnergyBonus = value;
+                InvalidateProperties();
             }
         }
 

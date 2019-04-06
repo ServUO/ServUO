@@ -15,7 +15,6 @@ namespace Server.Items
         public RunedDriftwoodBow()
         {
             Hue = 2955;
-
             WeaponAttributes.HitLightning = 40;
             WeaponAttributes.HitLowerDefend = 40;
             Attributes.WeaponSpeed = 30;

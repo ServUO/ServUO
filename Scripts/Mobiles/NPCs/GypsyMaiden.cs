@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - GypsyMaiden.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 
@@ -19,7 +13,9 @@ namespace Server.Mobiles
 		[Constructable]
 		public GypsyMaiden()
 			: base("the gypsy maiden")
-		{ }
+		{ 
+			SetSkill(SkillName.Begging, 64.0, 100.0);
+		}
 
 		public GypsyMaiden(Serial serial)
 			: base(serial)

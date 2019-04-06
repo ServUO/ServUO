@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public InquisitorsResolution()
         {
-            this.Hue = 0x4F2;
-            this.Attributes.CastRecovery = 3;
-            this.Attributes.LowerManaCost = 8;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x4F2;
+            Attributes.CastRecovery = 3;
+            Attributes.LowerManaCost = 8;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public InquisitorsResolution(Serial serial)

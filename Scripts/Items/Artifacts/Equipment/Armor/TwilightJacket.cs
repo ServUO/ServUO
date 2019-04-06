@@ -8,9 +8,8 @@ namespace Server.Items
         [Constructable]
         public TwilightJacket()
         {
-            this.LootType = LootType.Blessed;
-
-            this.Attributes.ReflectPhysical = 5;
+            LootType = LootType.Blessed;
+            Attributes.ReflectPhysical = 5;
         }
 
         public TwilightJacket(Serial serial)

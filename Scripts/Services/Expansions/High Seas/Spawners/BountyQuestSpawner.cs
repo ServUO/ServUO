@@ -179,8 +179,8 @@ namespace Server.Engines.Quests
             Movable = false;
             m_SpawnTime = TimeSpan.FromMinutes(15);
 
-            m_MaxTram = 2;
-            m_MaxFel = 2;
+            m_MaxTram = 1;
+            m_MaxFel = 1;
             m_MaxTokuno = 1;
 
             Active = true;
@@ -451,17 +451,6 @@ namespace Server.Engines.Quests
                 {
                     Item item = RunicReforging.GenerateRandomItem(galleon);
 
-                    /*if (item is BaseWeapon)
-                        BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
-                    else if (item is BaseArmor)
-                        BaseRunicTool.ApplyAttributesTo((BaseArmor)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
-                    else if (item is BaseHat)
-                        BaseRunicTool.ApplyAttributesTo((BaseHat)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
-                    else if (item is BaseJewel)
-                        BaseRunicTool.ApplyAttributesTo((BaseJewel)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
-                    else
-                        item.Delete();*/
-
                     if (item != null)
                         hold.DropItem(item);
                 }
@@ -702,7 +691,7 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
 
             writer.Write(m_MaxFel);
             writer.Write(m_MaxTram);
@@ -761,6 +750,15 @@ namespace Server.Engines.Quests
 
                 if (mob != null && !mob.Deleted)
                     m_Bounties.Add(mob, amt);
+            }
+
+            if (version == 0)
+            {
+                m_MaxTram = 1;
+                m_MaxFel = 1;
+                m_MaxTokuno = 1;
+
+                RemoveSpawns();
             }
 
             m_Instance = this;

@@ -55,7 +55,7 @@ namespace Server.Engines.NewMagincia
             base.OnAfterDelete();
         }
 
-        public override int GetMaxUpdateRange()
+        /*public override int GetMaxUpdateRange()
         {
             return 18;
         }
@@ -63,7 +63,7 @@ namespace Server.Engines.NewMagincia
         public override int GetUpdateRange(Mobile m)
         {
             return 18;
-        }
+        }*/
 
         public BaseBazaarMulti(Serial serial) : base(serial)
         {

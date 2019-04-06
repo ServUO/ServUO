@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public AssassinsShortbow()
         {
-            this.Attributes.AttackChance = 3;
-            this.Attributes.WeaponDamage = 4;
+            Attributes.AttackChance = 3;
+            Attributes.WeaponDamage = 4;
         }
 
         public AssassinsShortbow(Serial serial)

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Poison.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Globalization;
@@ -11,6 +5,7 @@ using System.Globalization;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
+using Server.Services.Virtues;
 using Server.Spells;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
@@ -63,6 +58,13 @@ namespace Server
 
 			return newPoison ?? oldPoison;
 		}
+
+        public static Poison DecreaseLevel(Poison oldPoison)
+        {
+            Poison newPoison = (oldPoison == null ? null : GetPoison(oldPoison.Level - 1));
+
+            return (newPoison == null ? oldPoison : newPoison);
+        }
 
 		// Info
 		private readonly string m_Name;
@@ -164,7 +166,11 @@ namespace Server
 				m_From = m;
 				m_Mobile = m;
 				m_Poison = p;
-			}
+
+                int damage = 1 + (int)(m.Hits * p.m_Scalar);
+
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Poison, 1017383, 1075633, TimeSpan.FromSeconds((int)((p.m_Count + 1) * p.m_Interval.TotalSeconds)), m, String.Format("{0}\t{1}", damage, (int)p.m_Interval.TotalSeconds)));
+            }
 
             protected override void OnTick()
             {
@@ -224,7 +230,16 @@ namespace Server
                 }
 
                 if (m_From != null)
-                    m_From.DoHarmful(m_Mobile, true);
+                {
+                    if (m_From is BaseCreature && ((BaseCreature)m_From).RecentSetControl && ((BaseCreature)m_From).GetMaster() == m_Mobile)
+                    {
+                        m_From = null;
+                    }
+                    else
+                    {
+                        m_From.DoHarmful(m_Mobile, true);
+                    }
+                }
 
                 IHonorTarget honorTarget = m_Mobile as IHonorTarget;
                 if (honorTarget != null && honorTarget.ReceivedHonorContext != null)

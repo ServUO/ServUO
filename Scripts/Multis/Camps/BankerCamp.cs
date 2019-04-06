@@ -10,6 +10,7 @@ namespace Server.Multis
         public BankerCamp()
             : base(0x1F6)
         {
+            Visible = true;
         }
 
         public BankerCamp(Serial serial)
@@ -29,8 +30,10 @@ namespace Server.Multis
 
             this.AddItem(new Sign(SignType.Bank, SignFacing.West), -5, 5, -4);
 
-            this.AddMobile(new Banker(), 4, -4, 3, 7);
-            this.AddMobile(new Banker(), 5, 4, -2, 0);
+            this.AddMobile(new Banker(), -4, 3, 7);
+            this.AddMobile(new Banker(), 4, -2, 0);
+
+            SetDecayTime();
         }
 
         public override void Serialize(GenericWriter writer)

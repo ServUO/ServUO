@@ -11,64 +11,64 @@ namespace Server.Engines.Plants
         public MainPlantGump(PlantItem plant)
             : base(20, 20)
         {
-            this.m_Plant = plant;
+            m_Plant = plant;
 
-            this.DrawBackground();
+            DrawBackground();
 
-            this.DrawPlant();
+            DrawPlant();
 
-            this.AddButton(71, 67, 0xD4, 0xD4, 1, GumpButtonType.Reply, 0); // Reproduction menu
-            this.AddItem(59, 68, 0xD08);
+            AddButton(71, 67, 0xD4, 0xD4, 1, GumpButtonType.Reply, 0); // Reproduction menu
+            AddItem(59, 68, 0xD08);
 
             PlantSystem system = plant.PlantSystem;
 
-            this.AddButton(71, 91, 0xD4, 0xD4, 2, GumpButtonType.Reply, 0); // Infestation
-            this.AddItem(8, 96, 0x372);
-            this.AddPlus(95, 92, system.Infestation);
+            AddButton(71, 91, 0xD4, 0xD4, 2, GumpButtonType.Reply, 0); // Infestation
+            AddItem(8, 96, 0x372);
+            AddPlus(95, 92, system.Infestation);
 
-            this.AddButton(71, 115, 0xD4, 0xD4, 3, GumpButtonType.Reply, 0); // Fungus
-            this.AddItem(58, 115, 0xD16);
-            this.AddPlus(95, 116, system.Fungus);
+            AddButton(71, 115, 0xD4, 0xD4, 3, GumpButtonType.Reply, 0); // Fungus
+            AddItem(58, 115, 0xD16);
+            AddPlus(95, 116, system.Fungus);
 
-            this.AddButton(71, 139, 0xD4, 0xD4, 4, GumpButtonType.Reply, 0); // Poison
-            this.AddItem(59, 143, 0x1AE4);
-            this.AddPlus(95, 140, system.Poison);
+            AddButton(71, 139, 0xD4, 0xD4, 4, GumpButtonType.Reply, 0); // Poison
+            AddItem(59, 143, 0x1AE4);
+            AddPlus(95, 140, system.Poison);
 
-            this.AddButton(71, 163, 0xD4, 0xD4, 5, GumpButtonType.Reply, 0); // Disease
-            this.AddItem(55, 167, 0x1727);
-            this.AddPlus(95, 164, system.Disease);
+            AddButton(71, 163, 0xD4, 0xD4, 5, GumpButtonType.Reply, 0); // Disease
+            AddItem(55, 167, 0x1727);
+            AddPlus(95, 164, system.Disease);
 
-            this.AddButton(209, 67, 0xD2, 0xD2, 6, GumpButtonType.Reply, 0); // Water
-            this.AddItem(193, 67, 0x1F9D);
-            this.AddPlusMinus(196, 67, system.Water);
+            AddButton(209, 67, 0xD2, 0xD2, 6, GumpButtonType.Reply, 0); // Water
+            AddItem(193, 67, 0x1F9D);
+            AddPlusMinus(196, 67, system.Water);
 
-            this.AddButton(209, 91, 0xD4, 0xD4, 7, GumpButtonType.Reply, 0); // Poison potion
-            this.AddItem(201, 91, 0xF0A);
-            this.AddLevel(196, 91, system.PoisonPotion);
+            AddButton(209, 91, 0xD4, 0xD4, 7, GumpButtonType.Reply, 0); // Poison potion
+            AddItem(201, 91, 0xF0A);
+            AddLevel(196, 91, system.PoisonPotion);
 
-            this.AddButton(209, 115, 0xD4, 0xD4, 8, GumpButtonType.Reply, 0); // Cure potion
-            this.AddItem(201, 115, 0xF07);
-            this.AddLevel(196, 115, system.CurePotion);
+            AddButton(209, 115, 0xD4, 0xD4, 8, GumpButtonType.Reply, 0); // Cure potion
+            AddItem(201, 115, 0xF07);
+            AddLevel(196, 115, system.CurePotion);
 
-            this.AddButton(209, 139, 0xD4, 0xD4, 9, GumpButtonType.Reply, 0); // Heal potion
-            this.AddItem(201, 139, 0xF0C);
-            this.AddLevel(196, 139, system.HealPotion);
+            AddButton(209, 139, 0xD4, 0xD4, 9, GumpButtonType.Reply, 0); // Heal potion
+            AddItem(201, 139, 0xF0C);
+            AddLevel(196, 139, system.HealPotion);
 
-            this.AddButton(209, 163, 0xD4, 0xD4, 10, GumpButtonType.Reply, 0); // Strength potion
-            this.AddItem(201, 163, 0xF09);
-            this.AddLevel(196, 163, system.StrengthPotion);
+            AddButton(209, 163, 0xD4, 0xD4, 10, GumpButtonType.Reply, 0); // Strength potion
+            AddItem(201, 163, 0xF09);
+            AddLevel(196, 163, system.StrengthPotion);
 
-            this.AddImage(48, 47, 0xD2);
-            this.AddLevel(54, 47, (int)this.m_Plant.PlantStatus);
+            AddImage(48, 47, 0xD2);
+            AddLevel(54, 47, (int)m_Plant.PlantStatus);
 
-            this.AddImage(232, 47, 0xD2);
-            this.AddGrowthIndicator(239, 47);
+            AddImage(232, 47, 0xD2);
+            AddGrowthIndicator(239, 47);
 
-            this.AddButton(48, 183, 0xD2, 0xD2, 11, GumpButtonType.Reply, 0); // Help
-            this.AddLabel(54, 183, 0x835, "?");
+            AddButton(48, 183, 0xD2, 0xD2, 11, GumpButtonType.Reply, 0); // Help
+            AddLabel(54, 183, 0x835, "?");
 
-            this.AddButton(232, 183, 0xD4, 0xD4, 12, GumpButtonType.Reply, 0); // Empty the bowl
-            this.AddItem(219, 180, 0x15FD);
+            AddButton(232, 183, 0xD4, 0xD4, 12, GumpButtonType.Reply, 0); // Empty the bowl
+            AddItem(219, 180, 0x15FD);
         }
 
         public static Item GetPotion(Mobile from, PotionEffect[] effects)
@@ -103,18 +103,18 @@ namespace Server.Engines.Plants
         {
             Mobile from = sender.Mobile;
 
-            if (info.ButtonID == 0 || this.m_Plant.Deleted || this.m_Plant.PlantStatus >= PlantStatus.DecorativePlant)
+            if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.DecorativePlant)
                 return;
 			
-            if (((info.ButtonID >= 6 && info.ButtonID <= 10) || info.ButtonID == 12) && !from.InRange(this.m_Plant.GetWorldLocation(), 3))
+            if (((info.ButtonID >= 6 && info.ButtonID <= 10) || info.ButtonID == 12) && !from.InRange(m_Plant.GetWorldLocation(), 3))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3E9, 500446); // That is too far away.
                 return;
             }
 
-            if (!this.m_Plant.IsUsableBy(from))
+            if (!m_Plant.IsUsableBy(from))
             {
-                this.m_Plant.LabelTo(from, 1061856); // You must have the item in your backpack or locked down in order to use it.
+                m_Plant.LabelTo(from, 1061856); // You must have the item in your backpack or locked down in order to use it.
                 return;
             }
 
@@ -122,15 +122,15 @@ namespace Server.Engines.Plants
             {
                 case 1: // Reproduction menu
                     {
-                        if (this.m_Plant.PlantStatus > PlantStatus.BowlOfDirt)
+                        if (m_Plant.PlantStatus > PlantStatus.BowlOfDirt)
                         {
-                            from.SendGump(new ReproductionGump(this.m_Plant));
+                            from.SendGump(new ReproductionGump(m_Plant));
                         }
                         else
                         {
                             from.SendLocalizedMessage(1061885); // You need to plant a seed in the bowl first.
 
-                            from.SendGump(new MainPlantGump(this.m_Plant));
+                            from.SendGump(new MainPlantGump(m_Plant));
                         }
 
                         break;
@@ -139,7 +139,7 @@ namespace Server.Engines.Plants
                     {
                         from.Send(new DisplayHelpTopic(54, true)); // INFESTATION LEVEL
 
-                        from.SendGump(new MainPlantGump(this.m_Plant));
+                        from.SendGump(new MainPlantGump(m_Plant));
 
                         break;
                     }
@@ -147,7 +147,7 @@ namespace Server.Engines.Plants
                     {
                         from.Send(new DisplayHelpTopic(56, true)); // FUNGUS LEVEL
 
-                        from.SendGump(new MainPlantGump(this.m_Plant));
+                        from.SendGump(new MainPlantGump(m_Plant));
 
                         break;
                     }
@@ -155,7 +155,7 @@ namespace Server.Engines.Plants
                     {
                         from.Send(new DisplayHelpTopic(58, true)); // POISON LEVEL
 
-                        from.SendGump(new MainPlantGump(this.m_Plant));
+                        from.SendGump(new MainPlantGump(m_Plant));
 
                         break;
                     }
@@ -163,7 +163,7 @@ namespace Server.Engines.Plants
                     {
                         from.Send(new DisplayHelpTopic(60, true)); // DISEASE LEVEL
 
-                        from.SendGump(new MainPlantGump(this.m_Plant));
+                        from.SendGump(new MainPlantGump(m_Plant));
 
                         break;
                     }
@@ -182,7 +182,7 @@ namespace Server.Engines.Plants
                                 if (!beverage.IsEmpty && beverage.Pourable && beverage.Content == BeverageType.Water)
                                 {
                                     foundUsableWater = true;
-                                    this.m_Plant.Pour(from, beverage);
+                                    m_Plant.Pour(from, beverage);
                                     break;
                                 }
                             }
@@ -190,35 +190,35 @@ namespace Server.Engines.Plants
 					
                         if (!foundUsableWater)
                         {
-                            from.Target = new PlantPourTarget(this.m_Plant);
-                            from.SendLocalizedMessage(1060808, "#" + this.m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
+                            from.Target = new PlantPourTarget(m_Plant);
+                            from.SendLocalizedMessage(1060808, "#" + m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
                         }
 
-                        from.SendGump(new MainPlantGump(this.m_Plant));
+                        from.SendGump(new MainPlantGump(m_Plant));
 
                         break;
                     }
                 case 7: // Poison potion
                     {
-                        this.AddPotion(from, PotionEffect.PoisonGreater, PotionEffect.PoisonDeadly);
+                        AddPotion(from, PotionEffect.PoisonGreater, PotionEffect.PoisonDeadly);
 
                         break;
                     }
                 case 8: // Cure potion
                     {
-                        this.AddPotion(from, PotionEffect.CureGreater);
+                        AddPotion(from, PotionEffect.CureGreater);
 
                         break;
                     }
                 case 9: // Heal potion
                     {
-                        this.AddPotion(from, PotionEffect.HealGreater);
+                        AddPotion(from, PotionEffect.HealGreater);
 
                         break;
                     }
                 case 10: // Strength potion
                     {
-                        this.AddPotion(from, PotionEffect.StrengthGreater);
+                        AddPotion(from, PotionEffect.StrengthGreater);
 
                         break;
                     }
@@ -226,13 +226,13 @@ namespace Server.Engines.Plants
                     {
                         from.Send(new DisplayHelpTopic(48, true)); // PLANT GROWING
 
-                        from.SendGump(new MainPlantGump(this.m_Plant));
+                        from.SendGump(new MainPlantGump(m_Plant));
 
                         break;
                     }
                 case 12: // Empty the bowl
                     {
-                        from.SendGump(new EmptyTheBowlGump(this.m_Plant));
+                        from.SendGump(new EmptyTheBowlGump(m_Plant));
 
                         break;
                     }
@@ -241,107 +241,107 @@ namespace Server.Engines.Plants
 
         private void DrawBackground()
         {
-            this.AddBackground(50, 50, 200, 150, 0xE10);
+            AddBackground(50, 50, 200, 150, 0xE10);
 
-            this.AddItem(45, 45, 0xCEF);
-            this.AddItem(45, 118, 0xCF0);
+            AddItem(45, 45, 0xCEF);
+            AddItem(45, 118, 0xCF0);
 
-            this.AddItem(211, 45, 0xCEB);
-            this.AddItem(211, 118, 0xCEC);
+            AddItem(211, 45, 0xCEB);
+            AddItem(211, 118, 0xCEC);
         }
 
         private void DrawPlant()
         {
-            PlantStatus status = this.m_Plant.PlantStatus;
+            PlantStatus status = m_Plant.PlantStatus;
 
             if (status < PlantStatus.FullGrownPlant)
             {
-                this.AddImage(110, 85, 0x589);
+                AddImage(110, 85, 0x589);
 
-                this.AddItem(122, 94, 0x914);
-                this.AddItem(135, 94, 0x914);
-                this.AddItem(120, 112, 0x914);
-                this.AddItem(135, 112, 0x914);
+                AddItem(122, 94, 0x914);
+                AddItem(135, 94, 0x914);
+                AddItem(120, 112, 0x914);
+                AddItem(135, 112, 0x914);
 
                 if (status >= PlantStatus.Stage2)
                 {
-                    this.AddItem(127, 112, 0xC62);
+                    AddItem(127, 112, 0xC62);
                 }
                 if (status == PlantStatus.Stage3 || status == PlantStatus.Stage4)
                 {
-                    this.AddItem(129, 85, 0xC7E);
+                    AddItem(129, 85, 0xC7E);
                 }
                 if (status >= PlantStatus.Stage4)
                 {
-                    this.AddItem(121, 117, 0xC62);
-                    this.AddItem(133, 117, 0xC62);
+                    AddItem(121, 117, 0xC62);
+                    AddItem(133, 117, 0xC62);
                 }
                 if (status >= PlantStatus.Stage5)
                 {
-                    this.AddItem(110, 100, 0xC62);
-                    this.AddItem(140, 100, 0xC62);
-                    this.AddItem(110, 130, 0xC62);
-                    this.AddItem(140, 130, 0xC62);
+                    AddItem(110, 100, 0xC62);
+                    AddItem(140, 100, 0xC62);
+                    AddItem(110, 130, 0xC62);
+                    AddItem(140, 130, 0xC62);
                 }
                 if (status >= PlantStatus.Stage6)
                 {
-                    this.AddItem(105, 115, 0xC62);
-                    this.AddItem(145, 115, 0xC62);
-                    this.AddItem(125, 90, 0xC62);
-                    this.AddItem(125, 135, 0xC62);
+                    AddItem(105, 115, 0xC62);
+                    AddItem(145, 115, 0xC62);
+                    AddItem(125, 90, 0xC62);
+                    AddItem(125, 135, 0xC62);
                 }
             }
             else
             {
-                PlantTypeInfo typeInfo = PlantTypeInfo.GetInfo(this.m_Plant.PlantType);
-                PlantHueInfo hueInfo = PlantHueInfo.GetInfo(this.m_Plant.PlantHue);
+                PlantTypeInfo typeInfo = PlantTypeInfo.GetInfo(m_Plant.PlantType);
+                PlantHueInfo hueInfo = PlantHueInfo.GetInfo(m_Plant.PlantHue);
 
                 // The large images for these trees trigger a client crash, so use a smaller, generic tree.
-                if (this.m_Plant.PlantType == PlantType.CypressTwisted || this.m_Plant.PlantType == PlantType.CypressStraight)
-                    this.AddItem(130 + typeInfo.OffsetX, 96 + typeInfo.OffsetY, 0x0CCA, hueInfo.Hue);
+                if (m_Plant.PlantType == PlantType.CypressTwisted || m_Plant.PlantType == PlantType.CypressStraight)
+                    AddItem(130 + typeInfo.OffsetX, 96 + typeInfo.OffsetY, 0x0CCA, hueInfo.Hue);
                 else
-                    this.AddItem(130 + typeInfo.OffsetX, 96 + typeInfo.OffsetY, typeInfo.ItemID, hueInfo.Hue);
+                    AddItem(130 + typeInfo.OffsetX, 96 + typeInfo.OffsetY, typeInfo.ItemID, hueInfo.Hue);
             }
 
             if (status != PlantStatus.BowlOfDirt)
             {
-                int message = this.m_Plant.PlantSystem.GetLocalizedHealth();
+                int message = m_Plant.PlantSystem.GetLocalizedHealth();
 
-                switch ( this.m_Plant.PlantSystem.Health )
+                switch ( m_Plant.PlantSystem.Health )
                 {
                     case PlantHealth.Dying:
                         {
-                            this.AddItem(92, 167, 0x1B9D);
-                            this.AddItem(161, 167, 0x1B9D);
+                            AddItem(92, 167, 0x1B9D);
+                            AddItem(161, 167, 0x1B9D);
 
-                            this.AddHtmlLocalized(136, 167, 42, 20, message, 0x00FC00, false, false);
+                            AddHtmlLocalized(136, 167, 42, 20, message, 0x00FC00, false, false);
 
                             break;
                         }
                     case PlantHealth.Wilted:
                         {
-                            this.AddItem(91, 164, 0x18E6);
-                            this.AddItem(161, 164, 0x18E6);
+                            AddItem(91, 164, 0x18E6);
+                            AddItem(161, 164, 0x18E6);
 
-                            this.AddHtmlLocalized(132, 167, 42, 20, message, 0x00C207, false, false);
+                            AddHtmlLocalized(132, 167, 42, 20, message, 0x00C207, false, false);
 
                             break;
                         }
                     case PlantHealth.Healthy:
                         {
-                            this.AddItem(96, 168, 0xC61);
-                            this.AddItem(162, 168, 0xC61);
+                            AddItem(96, 168, 0xC61);
+                            AddItem(162, 168, 0xC61);
 
-                            this.AddHtmlLocalized(129, 167, 42, 20, message, 0x008200, false, false);
+                            AddHtmlLocalized(129, 167, 42, 20, message, 0x008200, false, false);
 
                             break;
                         }
                     case PlantHealth.Vibrant:
                         {
-                            this.AddItem(93, 162, 0x1A99);
-                            this.AddItem(162, 162, 0x1A99);
+                            AddItem(93, 162, 0x1A99);
+                            AddItem(162, 162, 0x1A99);
 
-                            this.AddHtmlLocalized(129, 167, 42, 20, message, 0x0083E0, false, false);
+                            AddHtmlLocalized(129, 167, 42, 20, message, 0x0083E0, false, false);
 
                             break;
                         }
@@ -354,10 +354,10 @@ namespace Server.Engines.Plants
             switch ( value )
             {
                 case 1:
-                    this.AddLabel(x, y, 0x35, "+");
+                    AddLabel(x, y, 0x35, "+");
                     break;
                 case 2:
-                    this.AddLabel(x, y, 0x21, "+");
+                    AddLabel(x, y, 0x21, "+");
                     break;
             }
         }
@@ -367,46 +367,46 @@ namespace Server.Engines.Plants
             switch ( value )
             {
                 case 0:
-                    this.AddLabel(x, y, 0x21, "-");
+                    AddLabel(x, y, 0x21, "-");
                     break;
                 case 1:
-                    this.AddLabel(x, y, 0x35, "-");
+                    AddLabel(x, y, 0x35, "-");
                     break;
                 case 3:
-                    this.AddLabel(x, y, 0x35, "+");
+                    AddLabel(x, y, 0x35, "+");
                     break;
                 case 4:
-                    this.AddLabel(x, y, 0x21, "+");
+                    AddLabel(x, y, 0x21, "+");
                     break;
             }
         }
 
         private void AddLevel(int x, int y, int value)
         {
-            this.AddLabel(x, y, 0x835, value.ToString());
+            AddLabel(x, y, 0x835, value.ToString());
         }
 
         private void AddGrowthIndicator(int x, int y)
         {
-            if (!this.m_Plant.IsGrowable)
+            if (!m_Plant.IsGrowable)
                 return;
 
-            switch ( this.m_Plant.PlantSystem.GrowthIndicator )
+            switch ( m_Plant.PlantSystem.GrowthIndicator )
             {
                 case PlantGrowthIndicator.InvalidLocation :
-                    this.AddLabel(x, y, 0x21, "!");
+                    AddLabel(x, y, 0x21, "!");
                     break;
                 case PlantGrowthIndicator.NotHealthy :
-                    this.AddLabel(x, y, 0x21, "-");
+                    AddLabel(x, y, 0x21, "-");
                     break;
                 case PlantGrowthIndicator.Delay :
-                    this.AddLabel(x, y, 0x35, "-");
+                    AddLabel(x, y, 0x35, "-");
                     break;
                 case PlantGrowthIndicator.Grown :
-                    this.AddLabel(x, y, 0x3, "+");
+                    AddLabel(x, y, 0x3, "+");
                     break;
                 case PlantGrowthIndicator.DoubleGrown :
-                    this.AddLabel(x, y, 0x3F, "+");
+                    AddLabel(x, y, 0x3F, "+");
                     break;
             }
         }
@@ -417,27 +417,27 @@ namespace Server.Engines.Plants
 
             if (item != null)
             {
-                this.m_Plant.Pour(from, item);
+                m_Plant.Pour(from, item);
             }
             else
             {
                 int message;
-                if (this.m_Plant.ApplyPotion(effects[0], true, out message))
+                if (m_Plant.ApplyPotion(effects[0], true, out message))
                 {
                     from.SendLocalizedMessage(1061884); // You don't have any strong potions of that type in your pack.
 
-                    from.Target = new PlantPourTarget(this.m_Plant);
-                    from.SendLocalizedMessage(1060808, "#" + this.m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
+                    from.Target = new PlantPourTarget(m_Plant);
+                    from.SendLocalizedMessage(1060808, "#" + m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
 
                     return;
                 }
                 else
                 {
-                    this.m_Plant.LabelTo(from, message);
+                    m_Plant.LabelTo(from, message);
                 }
             }
 
-            from.SendGump(new MainPlantGump(this.m_Plant));
+            from.SendGump(new MainPlantGump(m_Plant));
         }
     }
 }

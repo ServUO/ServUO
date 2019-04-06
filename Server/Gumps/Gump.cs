@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Gump.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections.Generic;
@@ -24,7 +18,6 @@ namespace Server.Gumps
 		private static int m_NextSerial = 1;
 
 		private int m_Serial;
-		private int m_TypeID;
 		private int m_X, m_Y;
 
 		private bool m_Dragable = true;
@@ -48,7 +41,7 @@ namespace Server.Gumps
 			m_X = x;
 			m_Y = y;
 
-			m_TypeID = GetTypeID();
+			TypeID = GetTypeID();
 
 			m_Entries = new List<GumpEntry>();
 			m_Strings = new List<string>();
@@ -60,7 +53,7 @@ namespace Server.Gumps
 			//	m_Strings.Clear();
 		}
 
-		public int TypeID { get { return m_TypeID; } }
+		public int TypeID { get; set; }
 
 		public List<GumpEntry> Entries { get { return m_Entries; } }
 
@@ -170,11 +163,6 @@ namespace Server.Gumps
 			Add(new GumpBackground(x, y, width, height, gumpID));
 		}
 
-        public void AddKRButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param)
-        {
-            Add(new KRGumpButton(x, y, normalID, pressedID, buttonID, type, param));
-        }
-
         public void AddButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param)
 		{
 			Add(new GumpButton(x, y, normalID, pressedID, buttonID, type, param));
@@ -200,7 +188,12 @@ namespace Server.Gumps
 			Add(new GumpHtml(x, y, width, height, text, background, scrollbar));
 		}
 
-		public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
+        public void AddHtmlIntern(int x, int y, int width, int height, int textid, bool background, bool scrollbar)
+        {
+            Add(new GumpHtml(x, y, width, height, textid, background, scrollbar));
+        }
+
+        public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
 		{
 			Add(new GumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
 		}
@@ -231,26 +224,6 @@ namespace Server.Gumps
 		{
 			Add(new GumpHtmlLocalized(x, y, width, height, number, args, color, background, scrollbar));
 		}
-
-        public void AddKRHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
-        {
-            Add(new KRGumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
-        }
-
-        public void AddKRHtmlLocalized(int x, int y, int width, int height, int number, int color, bool background, bool scrollbar)
-        {
-            Add(new KRGumpHtmlLocalized(x, y, width, height, number, color, background, scrollbar));
-        }
-
-        public void AddKRLabel(int x, int y, int width, int height, int number, bool background, bool scrollbar)
-        {
-            Add(new KRGumpLabel(x, y, width, height, number, background, scrollbar));
-        }
-
-        public void AddKRImage(int x, int y, int gumpID)
-        {
-            Add(new KRGumpImage(x, y, gumpID));
-        }
 
         public void AddImage(int x, int y, int gumpID)
 		{
@@ -338,7 +311,12 @@ namespace Server.Gumps
 			Add(new GumpLabelCropped(x, y, width, height, hue, text));
 		}
 
-		public void AddRadio(int x, int y, int inactiveID, int activeID, bool initialState, int switchID)
+        public void AddLabelCroppedIntern(int x, int y, int width, int height, int hue, int textid)
+        {
+            Add(new GumpLabelCropped(x, y, width, height, hue, textid));
+        }
+
+        public void AddRadio(int x, int y, int inactiveID, int activeID, bool initialState, int switchID)
 		{
 			Add(new GumpRadio(x, y, inactiveID, activeID, initialState, switchID));
 		}
@@ -358,10 +336,10 @@ namespace Server.Gumps
             Add(new GumpTextEntry(x, y, width, height, hue, entryID, initialTextID));
         }
 
-        public void AddTooltip(int number, string args)
+        /*public void AddTooltip(int number, string args)
         {
             Add(new GumpTooltip(number, args));
-        }
+        }*/
 
         public void AddItemProperty(Item item)
         {
@@ -373,7 +351,12 @@ namespace Server.Gumps
 			Add(new GumpItemProperty(serial));
 		}
 
-		public void Add(GumpEntry g)
+        public void AddECHandleInput()
+        {
+            Add(new ECHandleInput());
+        }
+
+        public void Add(GumpEntry g)
 		{
 			if (g.Parent != this)
 			{

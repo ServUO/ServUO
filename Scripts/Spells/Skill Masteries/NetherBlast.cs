@@ -69,6 +69,8 @@ namespace Server.Spells.SkillMasteries
             {
                 IPoint3D p = o as IPoint3D;
 
+                SpellHelper.Turn(Caster, p);
+
                 if (SpellHelper.CheckTown(Caster, Caster) && CheckSequence())
                 {
                     double skill = ((Caster.Skills[CastSkill].Value * 2) + Caster.Skills[DamageSkill].Value) / 3;
@@ -83,16 +85,17 @@ namespace Server.Spells.SkillMasteries
                             {
                                 int x = loc.X;
                                 int y = loc.Y;
+                                int z = loc.Z;
 
                                 Movement.Movement.Offset(d, ref x, ref y);
 
-                                loc = new Point3D(x, y, Caster.Map.GetAverageZ(x, y));
+                                loc = new Point3D(x, y, z);
 
                                 bool canFit = SpellHelper.AdjustField(ref loc, Caster.Map, 12, false);
 
                                 if (canFit)
                                 {
-                                    Item item = new InternalItem(Caster, 0x37CC, loc, Caster.Map, duration);
+                                    Item item = new InternalItem(Caster, this, 0x37CC, loc, Caster.Map, duration);
                                     item.ProcessDelta();
                                     Effects.SendLocationParticles(EffectItem.Create(loc, Caster.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5048);
                                 }
@@ -112,14 +115,16 @@ namespace Server.Spells.SkillMasteries
             public Mobile Caster { get; set; }
             public Timer Timer { get; set; }
             public DateTime Expires { get; set; }
+            public NetherBlastSpell Owner { get; set; }
 
-            public InternalItem(Mobile caster, int itemID, Point3D loc, Map map, TimeSpan duration)
+            public InternalItem(Mobile caster, NetherBlastSpell owner, int itemID, Point3D loc, Map map, TimeSpan duration)
                 : base(itemID)
             {
                 Visible = false;
                 Movable = false;
                 Light = LightType.Circle300;
 
+                Owner = owner;
                 Expires = DateTime.UtcNow + duration;
                 MoveToWorld(loc, map);
 
@@ -145,15 +150,12 @@ namespace Server.Spells.SkillMasteries
                 if (this.Deleted)
                     return;
 
-                IPooledEnumerable eable = GetMobilesInRange(0);
-
-                foreach(Mobile m in eable)
+                foreach (var m in Owner.AcquireIndirectTargets(Location, 1).OfType<Mobile>().Where(m =>
+                    (m.Z + 16) > Z && 
+                    (Z + 12) > m.Z))
                 {
-                    if ((m.Z + 16) > this.Z && (this.Z + 12) > m.Z && m != Caster && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
-                        OnMoveOver(m);
+                    DoDamage(m);
                 }
-
-                eable.Free();
             }
 
             public override void OnAfterDelete()
@@ -188,7 +190,7 @@ namespace Server.Spells.SkillMasteries
                 Delete();
             }
 
-            public override bool OnMoveOver(Mobile m)
+            public bool DoDamage(Mobile m)
             {
                 if (Visible && Caster != null && (!Core.AOS || m != Caster) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
                 {
@@ -201,8 +203,24 @@ namespace Server.Spells.SkillMasteries
                     skill /= m.Player ? 3.5 : 2;
 
                     int damage = (int)skill + Utility.RandomMinMax(-3, 3);
+                    damage *= (int)Owner.GetDamageScalar(m);
 
-                    AOS.Damage(m, Caster, damage, 0, 0, 0, 0, 0, 100, 0);
+                    int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, Owner.CastSkill, Caster.Player && m.Player);
+
+                    damage *= (100 + sdiBonus);
+                    damage /= 100;
+
+                    AOS.Damage(m, Caster, damage, 0, 0, 0, 0, 0, 100, 0, DamageType.SpellAOE);
+
+                    m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+
+                    int manaRip = Math.Max(m.Mana, damage / 4);
+
+                    if (manaRip > 0)
+                    {
+                        m.Mana -= manaRip;
+                        Caster.Mana += manaRip;
+                    }
                 }
 
                 return true;

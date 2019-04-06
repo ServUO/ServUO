@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - BaseCore.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using Server;
 using Server.Gumps;
 #endregion

@@ -9,7 +9,7 @@ namespace Server.Items
         public InfusedAlchemistsGem()
             : base(0x1EA7)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public InfusedAlchemistsGem(Serial serial)

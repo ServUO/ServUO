@@ -33,10 +33,24 @@ namespace Server.Items
             bool canMove = false;
 
             if (m_Boat != null)
+            {
+                if (m_Boat.Owner == from && m_Boat.Status > 1043010)
+                {
+                    from.SendLocalizedMessage(1043294); // Your ship's age and contents have been refreshed.
+                }
+
                 m_Boat.Refresh();
+            }
 
             if (boat != null && m_Boat != boat)
+            {
+                if (boat.Owner == from && boat.Status > 1043010)
+                {
+                    from.SendLocalizedMessage(1043294); // Your ship's age and contents have been refreshed.
+                }
+
                 boat.Refresh();
+            }
 
             if (!from.InRange(this.Location, range))
                 from.SendLocalizedMessage(500295); //You are too far away to do that.
@@ -80,6 +94,8 @@ namespace Server.Items
             {
                 BaseCreature.TeleportPets(from, this.Location, this.Map);
                 from.MoveToWorld(this.Location, this.Map);
+
+                m_Boat.SendContainerPacket();
             }
         }
 

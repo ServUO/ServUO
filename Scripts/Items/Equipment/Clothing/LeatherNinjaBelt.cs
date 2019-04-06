@@ -16,8 +16,8 @@ namespace Server.Items
             : base(0x2790)
 
         {
-            this.Weight = 1.0;
-            this.Layer = Layer.Waist;
+            Weight = 1.0;
+            Layer = Layer.Waist;
         }
 
         public LeatherNinjaBelt(Serial serial)
@@ -100,12 +100,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -113,12 +113,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Poison;
+                return m_Poison;
             }
             set
             {
-                this.m_Poison = value;
-                this.InvalidateProperties();
+                m_Poison = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -126,12 +126,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_PoisonCharges;
+                return m_PoisonCharges;
             }
             set
             {
-                this.m_PoisonCharges = value;
-                this.InvalidateProperties();
+                m_PoisonCharges = value;
+                InvalidateProperties();
             }
         }
         public bool ShowUsesRemaining
@@ -148,7 +148,14 @@ namespace Server.Items
         {
             if (from.Body.IsHuman)
             {
-                from.Animate(from.Mounted ? 26 : 9, 7, 1, true, false, 0);
+                if (Core.SA)
+                {
+                    from.Animate(AnimationType.Attack, 4);
+                }
+                else
+                {
+                    from.Animate(from.Mounted ? 26 : 9, 7, 1, true, false, 0);
+                }                
             }
 
             from.PlaySound(0x23A);
@@ -159,11 +166,10 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (ReforgedSuffix != ReforgedSuffix.Blackthorn)
-                list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
 
-            if (this.m_Poison != null && this.m_PoisonCharges > 0)
-                list.Add(1062412 + this.m_Poison.Level, this.m_PoisonCharges.ToString());
+            if (m_Poison != null && m_PoisonCharges > 0)
+                list.Add(1062412 + m_Poison.Level, m_PoisonCharges.ToString());
         }
 
         public override bool OnEquip(Mobile from)
@@ -185,7 +191,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (this.IsChildOf(from))
+            if (IsChildOf(from))
             {
                 list.Add(new NinjaWeapon.LoadEntry(this, 6222));
                 list.Add(new NinjaWeapon.UnloadEntry(this, 6223));
@@ -198,10 +204,10 @@ namespace Server.Items
 
             writer.Write((int)0);
 
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((int)m_UsesRemaining);
 
-            Poison.Serialize(this.m_Poison, writer);
-            writer.Write((int)this.m_PoisonCharges);
+            Poison.Serialize(m_Poison, writer);
+            writer.Write((int)m_PoisonCharges);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -214,10 +220,10 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_UsesRemaining = reader.ReadInt();
+                        m_UsesRemaining = reader.ReadInt();
 
-                        this.m_Poison = Poison.Deserialize(reader);
-                        this.m_PoisonCharges = reader.ReadInt();
+                        m_Poison = Poison.Deserialize(reader);
+                        m_PoisonCharges = reader.ReadInt();
 
                         break;
                     }

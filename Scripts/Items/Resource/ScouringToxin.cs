@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class ScouringToxin : Item, IUsesRemaining
+    public class ScouringToxin : Item, IUsesRemaining, ICommodity
     {
         public override int LabelNumber { get { return 1112292; } } // scouring toxin
 
@@ -23,7 +23,7 @@ namespace Server.Items
 
         [Constructable]
         public ScouringToxin(int amount)
-            : base(3625)
+            : base(0x1848)
         {
             m_UsesRemaining = amount;
         }
@@ -147,11 +147,14 @@ namespace Server.Items
         {
         }
 
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
             writer.Write(m_UsesRemaining);
         }
 
@@ -161,8 +164,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if(version > 0)
+            if (version > 0)
                 m_UsesRemaining = reader.ReadInt();
+
+            if (version == 1)
+                ItemID = 0x1848;
         }
     }
 }

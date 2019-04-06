@@ -40,9 +40,9 @@ namespace Server.Engines.Quests
 
         public ShearingKnowledgeQuest() : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(BritannianWool), "Britannian Wool", 10, 0xDF8));
+            AddObjective(new ObtainObjective(typeof(BritannianWool), "Britannian Wool", 10, 0xDF8));
 
-            this.AddReward(new BaseReward(1113256)); /*A step closer to having access to Laifem's inventory of decorative carpets. */
+            AddReward(new BaseReward(1113256)); /*A step closer to having access to Laifem's inventory of decorative carpets. */
         }
 
         public override void Serialize(GenericWriter writer)
@@ -85,9 +85,9 @@ namespace Server.Engines.Quests
 
         public WeavingFriendshipsQuest() : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(LetterOfIntroduction), "Letter of Introduction", 1, typeof(Dermott), "Dermott (Vesper)"));
+            AddObjective(new DeliverObjective(typeof(LetterOfIntroduction), "Letter of Introduction", 1, typeof(Dermott), "Dermott (Vesper)"));
 
-            this.AddReward(new BaseReward(1113256)); // A step closer to having access to Laifem's inventory of decorative carpets.
+            AddReward(new BaseReward(1113256)); // A step closer to having access to Laifem's inventory of decorative carpets.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -135,9 +135,9 @@ namespace Server.Engines.Quests
         public NewSpinQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(MasteringWeaving), "Mastering the Art of Weaving", 1, typeof(Laifem), "Laifem (Royal City)"));
+            AddObjective(new DeliverObjective(typeof(MasteringWeaving), "Mastering the Art of Weaving", 1, typeof(Laifem), "Laifem (Royal City)"));
 
-            this.AddReward(new BaseReward(1113250)); // Access to Laifem's inventory of decorative carpets.
+            AddReward(new BaseReward(1113250)); // Access to Laifem's inventory of decorative carpets.
         }
 
         public override void GiveRewards()
@@ -169,7 +169,7 @@ namespace Server.Engines.Quests
 
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBCarpets());
+            m_SBInfos.Add(new SBCarpets());
         }
 
         [Constructable]
@@ -201,13 +201,15 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.CantWalk = true;
-            this.Body = 667;
-            this.HairItemID = 16987;
-            this.HairHue = 1801;
+            Female = true;
+            CantWalk = true;
+
+            Race = Race.Gargoyle;
+            HairItemID = Race.RandomHair(true);
+            Hue = Race.RandomSkinHue();
+            HairHue = Race.RandomHairHue();
         }
 
         public override void InitOutfit()
@@ -241,11 +243,11 @@ namespace Server.Engines.Quests
         [Constructable]
         public Dermott() : base("Dermott", "the Weaver")
         {
-            this.SetSkill(SkillName.Magery, 60.0, 90.0);
-            this.SetSkill(SkillName.EvalInt, 60.0, 90.0);
-            this.SetSkill(SkillName.MagicResist, 60.0, 90.0);
-            this.SetSkill(SkillName.Wrestling, 60.0, 90.0);
-            this.SetSkill(SkillName.Meditation, 60.0, 90.0);
+            SetSkill(SkillName.Magery, 60.0, 90.0);
+            SetSkill(SkillName.EvalInt, 60.0, 90.0);
+            SetSkill(SkillName.MagicResist, 60.0, 90.0);
+            SetSkill(SkillName.Wrestling, 60.0, 90.0);
+            SetSkill(SkillName.Meditation, 60.0, 90.0);
         }
 
         public Dermott(Serial serial)
@@ -255,16 +257,16 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x83FC;
-            this.HairItemID = 0x2049; // Pig Tails
-            this.HairHue = 0x459;
-            this.FacialHairItemID = 0x2041; // Mustache
-            this.FacialHairHue = 0x459;
+            Hue = 0x83FC;
+            HairItemID = 0x2049; // Pig Tails
+            HairHue = 0x459;
+            FacialHairItemID = 0x2041; // Mustache
+            FacialHairHue = 0x459;
         }
 
         public override void InitOutfit()

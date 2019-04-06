@@ -7,14 +7,19 @@ using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
-    public class GBBigglesby : MondainQuester
+    public class GBBigglesby : BaseVendor
     {
-        public override Type[] Quests { get { return new Type[] { typeof(ProfessionalBountyQuest) }; } }
+        public override bool IsActiveVendor { get { return false; } }
+        protected override List<SBInfo> SBInfos { get { return new List<SBInfo>(); } }
+
+        public override void InitSBInfo()
+        {
+        }
 
         [Constructable]
         public GBBigglesby()
+            : base("the proprietor")
         {
-            Title = "the proprietor";
             Name = "G.B. Bigglesby";
         }
 
@@ -45,92 +50,24 @@ namespace Server.Mobiles
         private int m_LastSay;
         private DateTime m_NextSay;
 
-        public override void OnTalk(PlayerMobile pm)
+        public override void OnDoubleClick(Mobile m)
         {
-            if (!HasQuest(pm))
+            if (m_NextSay < DateTime.UtcNow)
             {
-                BaseBoat boat = FishQuestHelper.GetBoat(pm);
-
-                if (boat != null && boat is BaseGalleon)
+                if (m_LastSay == 0)
                 {
-                    if (((BaseGalleon)boat).Scuttled)
-                    {
-                        pm.SendLocalizedMessage(1116752); //Your ship is a mess!  Fix it first and then we can talk about catching pirates.
-                    }
-                    else
-                    {
-                        ProfessionalBountyQuest q = new ProfessionalBountyQuest((BaseGalleon)boat);
-                        q.Owner = pm;
-                        q.Quester = this;
+                    Say(1152651);  //I'm G.B. Bigglesby, proprietor of the G.B. Bigglesby Free Trade Floating Emporium.
 
-                        pm.CloseGump(typeof(MondainQuestGump));
-                        pm.SendGump(new MondainQuestGump(q));
-                    }
+                    m_LastSay = 1;
                 }
-                else if (boat != null && !(boat is BaseGalleon))
+                else
                 {
-                    SayTo(pm, 1116751); //The ship you are captaining could not take on a pirate ship.  Bring a warship if you want this quest.
+                    Say(1152652);  //This sea market be me life's work and 'tis me pride and joy..
+                    m_LastSay = 0;
                 }
-                else if(m_NextSay < DateTime.UtcNow)
-                {
-                    if (m_LastSay == 0)
-                    {
-                        if (this.Map != Map.Tokuno)
-                            Say(1152651);  //I'm G.B. Bigglesby, proprietor of the G.B. Bigglesby Free Trade Floating Emporium.
-                        else
-                            Say("I am {0}, proprietor of {0} Free Trade Coroporation of Tokuno.", Name);
-                        m_LastSay = 1;
-                    }
-                    else
-                    {
-                        Say(1152652);  //This sea market be me life's work and 'tis me pride and joy..
-                        m_LastSay = 0;
-                    }
 
-                    m_NextSay = DateTime.UtcNow + TimeSpan.FromSeconds(5);
-                }
+                m_NextSay = DateTime.UtcNow + TimeSpan.FromSeconds(5);
             }
-        }
-
-        public override void Advertise()
-        {
-        }
-
-        public bool HasQuest(PlayerMobile pm)
-        {
-            if (pm.Quests == null)
-                return false;
-
-            for (int i = 0; i < pm.Quests.Count; i++)
-            {
-                BaseQuest quest = pm.Quests[i];
-
-                if (quest is ProfessionalBountyQuest)
-                {
-                    if (this == quest.Quester)
-                    {
-                        for (int j = 0; j < quest.Objectives.Count; j++)
-                        {
-                            if (quest.Objectives[j].Update(pm))
-                                quest.Objectives[j].Complete();
-                        }
-                    }
-
-                    if (quest.Completed)
-                    {
-                        quest.OnCompleted();
-                        pm.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
-                    }
-                    else
-                    {
-                        pm.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
-                        quest.InProgress();
-                    }
-
-                    return true;
-                }
-            }
-            return false;
         }
 
         public GBBigglesby(Serial serial) : base(serial) { }

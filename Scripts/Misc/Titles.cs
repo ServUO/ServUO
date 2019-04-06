@@ -275,6 +275,8 @@ namespace Server.Misc
             {
                 if (beheld is PlayerMobile && ((PlayerMobile)beheld).PaperdollSkillTitle != null)
                     title.Append(", ").Append(((PlayerMobile)beheld).PaperdollSkillTitle);
+                else if (beheld is BaseVendor) 
+					title.AppendFormat(" {0}", customTitle);
             }
             else if (customTitle != null && (customTitle = customTitle.Trim()).Length > 0)
             {
@@ -313,13 +315,18 @@ namespace Server.Misc
 
         public static string GetSkillTitle(Mobile mob, Skill skill)
         {
-            string skillLevel = GetSkillLevel(skill);
-            string skillTitle = skill.Info.Title;
+            if (skill != null && skill.BaseFixedPoint >= 300)
+            {
+                string skillLevel = GetSkillLevel(skill);
+                string skillTitle = skill.Info.Title;
 
-            if (mob.Female && skillTitle.EndsWith("man"))
-                skillTitle = skillTitle.Substring(0, skillTitle.Length - 3) + "woman";
+                if (mob.Female && skillTitle.EndsWith("man"))
+                    skillTitle = skillTitle.Substring(0, skillTitle.Length - 3) + "woman";
 
-            return String.Concat(skillLevel, " ", skillTitle);
+                return String.Concat(skillLevel, " ", skillTitle);
+            }
+
+            return null;
         }
 
         private static Skill GetHighestSkill(Mobile m)
@@ -378,7 +385,9 @@ namespace Server.Misc
 
         private static int GetTableIndex(Skill skill)
         {
-            int fp = Math.Min(skill.BaseFixedPoint, 1200);
+            int fp = skill == null ? 300 : skill.BaseFixedPoint;
+
+            fp = Math.Min(fp, 1200);
 
             return (fp - 300) / 100;
         }

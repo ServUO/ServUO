@@ -10,45 +10,47 @@ namespace Server.Mobiles
         public GreaterPoisonElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Greater Poison Elemental";
-            this.Body = 162;
-            this.BaseSoundID = 263;
+            Name = "Greater Poison Elemental";
+            Body = 162;
+            BaseSoundID = 263;
 
-            this.SetStr(700, 771);
-            this.SetDex(195, 203);
-            this.SetInt(650, 691);
+            Hue = 667;
 
-            this.SetHits(650, 702);
-            this.SetStam(300, 322);
-            this.SetMana(500, 530);
+            SetStr(700, 771);
+            SetDex(195, 203);
+            SetInt(650, 691);
 
-            this.SetDamage(12, 18);
+            SetHits(650, 702);
+            SetStam(300, 322);
+            SetMana(500, 530);
 
-            this.SetDamageType(ResistanceType.Physical, 10);
-            this.SetDamageType(ResistanceType.Poison, 90);
+            SetDamage(12, 18);
 
-            this.SetResistance(ResistanceType.Physical, 60, 70);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetDamageType(ResistanceType.Physical, 10);
+            SetDamageType(ResistanceType.Poison, 90);
 
-            this.SetSkill(SkillName.EvalInt, 80.1, 110.0);
-            this.SetSkill(SkillName.Magery, 80.1, 97.0);
-            this.SetSkill(SkillName.Meditation, 80.2, 105.8);
-            this.SetSkill(SkillName.Poisoning, 100.1, 114.9);
-            this.SetSkill(SkillName.MagicResist, 85.2, 93.2);
-            this.SetSkill(SkillName.Tactics, 80.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 75.0, 88.3);
-            this.SetSkill(SkillName.DetectHidden, 71.5);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.Fame = 12500;
-            this.Karma = -12500;
+            SetSkill(SkillName.EvalInt, 80.1, 110.0);
+            SetSkill(SkillName.Magery, 80.1, 97.0);
+            SetSkill(SkillName.Meditation, 80.2, 105.8);
+            SetSkill(SkillName.Poisoning, 100.1, 114.9);
+            SetSkill(SkillName.MagicResist, 85.2, 93.2);
+            SetSkill(SkillName.Tactics, 80.1, 100.0);
+            SetSkill(SkillName.Wrestling, 75.0, 88.3);
+            SetSkill(SkillName.DetectHidden, 71.5);
 
-            this.VirtualArmor = 70;
+            Fame = 12500;
+            Karma = -12500;
 
-            this.PackItem(new Nightshade(4));
-            this.PackItem(new LesserPoisonPotion());
+            VirtualArmor = 70;
+
+            PackItem(new Nightshade(4));
+            PackItem(new LesserPoisonPotion());
         }
 
         public GreaterPoisonElemental(Serial serial)
@@ -93,9 +95,9 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.MedScrolls);
         }
 
         public override void OnDeath(Container c)

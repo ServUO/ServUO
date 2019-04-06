@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Regions;
@@ -27,6 +28,11 @@ namespace Server.Engines.Quests
 
         public static BaseQuest RandomQuest(PlayerMobile from, Type[] quests, object quester)
         {
+            return RandomQuest(from, quests, quester, quests != null && quests.Length == 1);
+        }
+
+        public static BaseQuest RandomQuest(PlayerMobile from, Type[] quests, object quester, bool message)
+        {
             if (quests == null || (quests != null && quests.Length == 0))
                 return null;
 				
@@ -38,12 +44,23 @@ namespace Server.Engines.Quests
                 if (quest != null)
                 {
                     quest.Owner = from;
-                    quest.Quester = quester;					
-				
-                    if (CanOffer(from, quest, quests.Length == 1))
+                    quest.Quester = quester;
+
+                    if (CanOffer(from, quest, message))
+                    {
                         return quest;
-                    else if (quest.StartingMobile != null && !quest.DoneOnce && quests.Length == 1)
-                        quest.StartingMobile.OnOfferFailed();
+                    }
+                    else if (quester is Mobile && message)
+                    {
+                        if (quester is MondainQuester)
+                        {
+                            ((MondainQuester)quester).OnOfferFailed();
+                        }
+                        else if (quester is Mobile)
+                        {
+                            ((Mobile)quester).Say(1080107); // I'm sorry, I have nothing for you at this time.
+                        }
+                    }
                 }
 				
                 if (quests.Length == 1)
@@ -79,8 +96,8 @@ namespace Server.Engines.Quests
                     for (int k = pQuest.Objectives.Count - 1; k >= 0; k --)
                     {
                         BaseObjective obj = pQuest.Objectives[k];
-						
-                        if (type == obj.Type())
+
+                        if (type == obj.Type() && (quest.ChainID == QuestChain.None || quest.ChainID == pQuest.ChainID))
                             return false;					
                     }
                 }
@@ -122,6 +139,71 @@ namespace Server.Engines.Quests
             return true;
         }
 
+        public static bool CheckDoneOnce(PlayerMobile player, BaseQuest quest, Mobile quester, bool message)
+        {
+            return quest.DoneOnce && CheckDoneOnce(player, quest.GetType(), quester, message);
+        }
+
+        public static bool CheckDoneOnce(PlayerMobile player, Type questType, Mobile quester, bool message)
+        {
+            if (player.DoneQuests.Any(x => x.QuestType == questType))
+            {
+                if (message && quester != null)
+                {
+                    quester.SayTo(player, 1075454, 0x3B2); // I can not offer you the quest again.
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool TryReceiveQuestItem(PlayerMobile player, Type type, TimeSpan delay)
+        {
+            if (type.IsSubclassOf(typeof(Item)))
+            {
+                var info = player.DoneQuests.FirstOrDefault(x => x.QuestType == type);
+
+                if (info != null)
+                {
+                    DateTime endTime = info.RestartTime;
+
+                    if (DateTime.UtcNow < endTime)
+                    {
+                        TimeSpan ts = endTime - DateTime.UtcNow;
+
+                        if (ts.Days > 0)
+                        {
+                            player.SendLocalizedMessage(1158377, String.Format("{0}\t{1}", ts.Days.ToString(), "day[s]"));
+                        }
+                        else if (ts.Hours > 0)
+                        {
+                            player.SendLocalizedMessage(1158377, String.Format("{0}\t{1}", ts.Hours.ToString(), "hour[s]"));
+                        }
+                        else
+                        {
+                            player.SendLocalizedMessage(1158377, String.Format("{0}\t{1}", ts.Minutes.ToString(), "minute[s]"));
+                        }
+
+                        return false;
+                    }
+                    else
+                    {
+                        info.Reset(delay);
+                    }
+                }
+                else
+                {
+                    player.DoneQuests.Add(new QuestRestartInfo(type, delay));
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
         public static void Delay(PlayerMobile player, Type type, TimeSpan delay)
         { 
             for (int i = 0; i < player.DoneQuests.Count; i ++)
@@ -151,8 +233,10 @@ namespace Server.Engines.Quests
 					
                     if (quests[i].IsAssignableFrom(quest.GetType()))
                     {
-                        if (quest.Completed)		
+                        if (quest.Completed)
+                        {
                             player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
+                        }
                         else
                         {
                             player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
@@ -166,16 +250,16 @@ namespace Server.Engines.Quests
             return false;
         }
 
-        public static bool InProgress(PlayerMobile player, MondainQuester quester)
+        public static bool InProgress(PlayerMobile player, Mobile quester)
         { 
             for (int i = 0; i < player.Quests.Count; i ++)
             {
                 BaseQuest quest = player.Quests[i];
 				
-                if (quest.Quester == null)
+                if (quest.Quester == null && quest.QuesterType == null)
                     continue;
-					
-                if (quest.Quester.GetType() == quester.GetType())
+
+                if (quest.QuesterType == quester.GetType())
                 {
                     if (quest.Completed)		
                     {
@@ -373,7 +457,7 @@ namespace Server.Engines.Quests
         {
             if (from.Backpack == null || itemType == null || amount <= 0)
                 return;
-								
+
             Item[] items = from.Backpack.FindItemsByType(itemType);
 			
             int deleted = 0;
@@ -419,7 +503,7 @@ namespace Server.Engines.Quests
         }
 
         public static void DeleteItems(BaseQuest quest)
-        { 
+        {
             for (int i = 0; i < quest.Objectives.Count; i ++)
             { 
                 BaseObjective objective = quest.Objectives[i];				
@@ -433,7 +517,7 @@ namespace Server.Engines.Quests
         {
             if (quest == null)
                 return false;
-				
+
             for (int i = 0; i < quest.Objectives.Count; i ++)
             {
                 if (quest.Objectives[i] is ObtainObjective)
@@ -745,6 +829,11 @@ namespace Server.Engines.Quests
             }
 			
             return null;
+        }
+
+        public static T GetQuest<T>(PlayerMobile pm) where T : BaseQuest
+        {
+            return pm.Quests.FirstOrDefault(quest => quest.GetType() == typeof(T)) as T;
         }
     }
 

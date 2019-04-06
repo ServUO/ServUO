@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Spells.Necromancy
@@ -11,7 +11,9 @@ namespace Server.Spells.Necromancy
             203,
             9031,
             Reagent.PigIron);
-        private static readonly Hashtable m_Table = new Hashtable();
+
+        private static readonly Dictionary<Mobile, ExpireTimer> m_Table = new Dictionary<Mobile, ExpireTimer>();
+
         public CurseWeaponSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -40,13 +42,13 @@ namespace Server.Spells.Necromancy
         }
         public override void OnCast()
         {
-            BaseWeapon weapon = this.Caster.Weapon as BaseWeapon;
+            BaseWeapon weapon = Caster.Weapon as BaseWeapon;
 
-            if (weapon == null || weapon is Fists)
+            if (Caster.Player && (weapon == null || weapon is Fists))
             {
-                this.Caster.SendLocalizedMessage(501078); // You must be holding a weapon.
+                Caster.SendLocalizedMessage(501078); // You must be holding a weapon.
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
                 /* Temporarily imbues a weapon with a life draining effect.
                 * Half the damage that the weapon inflicts is added to the necromancer's health.
@@ -57,61 +59,76 @@ namespace Server.Spells.Necromancy
                 * 
                 * TODO: What happens if you curse a weapon then give it to someone else? Should they get the drain effect?
                 */
-                this.Caster.PlaySound(0x387);
-                this.Caster.FixedParticles(0x3779, 1, 15, 9905, 32, 2, EffectLayer.Head);
-                this.Caster.FixedParticles(0x37B9, 1, 14, 9502, 32, 5, (EffectLayer)255);
-                new SoundEffectTimer(this.Caster).Start();
+                Caster.PlaySound(0x387);
+                Caster.FixedParticles(0x3779, 1, 15, 9905, 32, 2, EffectLayer.Head);
+                Caster.FixedParticles(0x37B9, 1, 14, 9502, 32, 5, (EffectLayer)255);
+                new SoundEffectTimer(Caster).Start();
 
-                TimeSpan duration = TimeSpan.FromSeconds((this.Caster.Skills[SkillName.SpiritSpeak].Value / 3.4) + 1.0);
+                TimeSpan duration = TimeSpan.FromSeconds((Caster.Skills[SkillName.SpiritSpeak].Value / 3.4) + 1.0);
 
-                Timer t = (Timer)m_Table[weapon];
+                ExpireTimer t = null;
+
+                if (m_Table.ContainsKey(Caster))
+                {
+                    t = m_Table[Caster];
+                }
 
                 if (t != null)
                     t.Stop();
 
-                weapon.Cursed = true;
-
-                m_Table[weapon] = t = new ExpireTimer(weapon, duration);
+                m_Table[Caster] = t = new ExpireTimer(weapon, Caster, duration);
 
                 t.Start();
 
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.CurseWeapon, 1060512, 1153780, duration, Caster));
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
-        private class ExpireTimer : Timer
+        public static bool IsCursed(Mobile attacker, BaseWeapon wep)
         {
-            private readonly BaseWeapon m_Weapon;
-            public ExpireTimer(BaseWeapon weapon, TimeSpan delay)
+            return m_Table.ContainsKey(attacker) && m_Table[attacker].Weapon == wep;
+        }
+
+        public class ExpireTimer : Timer
+        {
+            public BaseWeapon Weapon { get; private set; }
+            public Mobile Owner { get; private set; }
+
+            public ExpireTimer(BaseWeapon weapon, Mobile owner, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Weapon = weapon;
-                this.Priority = TimerPriority.OneSecond;
+                Weapon = weapon;
+                Owner = owner;
+                Priority = TimerPriority.OneSecond;
             }
 
             protected override void OnTick()
             {
-                this.m_Weapon.Cursed = false;
-                Effects.PlaySound(this.m_Weapon.GetWorldLocation(), this.m_Weapon.Map, 0xFA);
-                m_Table.Remove(this);
+                Effects.PlaySound(Weapon.GetWorldLocation(), Weapon.Map, 0xFA);
+
+                if (m_Table.ContainsKey(Owner))
+                {
+                    m_Table.Remove(Owner);
+                }
             }
         }
 
         private class SoundEffectTimer : Timer
         {
             private readonly Mobile m_Mobile;
+
             public SoundEffectTimer(Mobile m)
                 : base(TimeSpan.FromSeconds(0.75))
             {
-                this.m_Mobile = m;
-                this.Priority = TimerPriority.FiftyMS;
+                m_Mobile = m;
+                Priority = TimerPriority.FiftyMS;
             }
 
             protected override void OnTick()
             {
-                this.m_Mobile.PlaySound(0xFA);
+                m_Mobile.PlaySound(0xFA);
             }
         }
     }

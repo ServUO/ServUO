@@ -54,17 +54,7 @@ namespace Server.Spells.Chivalry
                 return 1060726;
             }
         }// Extermo Vomica
-        public override bool CheckCast()
-        {
-            if (Engines.ConPVP.DuelContext.CheckSuddenDeath(this.Caster))
-            {
-                this.Caster.SendMessage(0x22, "You cannot cast this spell when in sudden death.");
-                return false;
-            }
-
-            return base.CheckCast();
-        }
-
+        
         public override bool CheckDisturb(DisturbType type, bool firstCircle, bool resistable)
         {
             return true;

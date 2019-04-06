@@ -6,6 +6,7 @@ namespace Server.Items
     public class SnakeSkinBoots : Boots
     {
         public override int LabelNumber { get { return 1080122; } } // Snake Skin Boots
+		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public SnakeSkinBoots()

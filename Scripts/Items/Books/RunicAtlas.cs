@@ -14,17 +14,17 @@ namespace Server.Items
 {
     [FlipableAttribute(39958, 39959)]
     public class RunicAtlas : Runebook
-	{
+    {
         public override int MaxEntries { get { return 48; } }
         public override int LabelNumber { get { return 1156443; } } // a runic atlas
 
         public int Selected { get; set; }
 
-		[Constructable]
-		public RunicAtlas() : base(100, 39958)
-		{
+        [Constructable]
+        public RunicAtlas() : base(100, 39958)
+        {
             Selected = -1;
-		}
+        }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -37,7 +37,7 @@ namespace Server.Items
                         from.SendLocalizedMessage(502406); // This book needs time to recharge.
                         return;
                     }
-                    
+
                     BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, this));
                     Openers.Add(from);
                 }
@@ -57,13 +57,16 @@ namespace Server.Items
 
                 RunicAtlasGump g = from.FindGump(typeof(RunicAtlasGump)) as RunicAtlasGump;
 
-                if (g != null)
+                if (g != null && g.Atlas == this)
                 {
                     g.Page = newPage;
                     g.Refresh();
                 }
                 else
                 {
+                    if (g != null)
+                        from.CloseGump(typeof(RunicAtlasGump));
+
                     g = new RunicAtlasGump((PlayerMobile)from, this);
                     g.Page = newPage;
                     from.SendGump(g);
@@ -73,7 +76,7 @@ namespace Server.Items
             return d;
         }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, Server.Engines.Craft.CraftSystem craftSystem, Type typeRes, BaseTool tool, Server.Engines.Craft.CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, Server.Engines.Craft.CraftSystem craftSystem, Type typeRes, ITool tool, Server.Engines.Craft.CraftItem craftItem, int resHue)
         {
             if (makersMark)
                 Crafter = from;
@@ -85,61 +88,79 @@ namespace Server.Items
             return quality;
         }
 
-		public RunicAtlas( Serial serial ) : base( serial )
-		{
-		}
+        public RunicAtlas(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int)0 ); // version
+            writer.Write((int)0); // version
             writer.Write(Selected);
-		}
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
+            int version = reader.ReadInt();
             Selected = reader.ReadInt();
 
             if (MaxCharges != 100)
                 MaxCharges = 100;
-		}
-	}
+        }
+    }
 
     public class RunicAtlasGump : BaseGump
-	{
-		public static string ToCoordinates(Point3D location, Map map)
-		{
-			int xLong = 0, yLat = 0, xMins = 0, yMins = 0;
-			bool xEast = false, ySouth = false;
+    {
+        public static string ToCoordinates(Point3D location, Map map)
+        {
+            int xLong = 0, yLat = 0, xMins = 0, yMins = 0;
+            bool xEast = false, ySouth = false;
 
-			bool valid = Sextant.Format(location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth);
+            bool valid = Sextant.Format(location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth);
 
-			return valid ? String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W") : "unknown";
-		}
+            return valid ? String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W") : "Nowhere";
+        }
 
         public RunicAtlas Atlas { get; set; }
         public int Selected { get { return Atlas == null ? -1 : Atlas.Selected; } }
         public int Page { get; set; }
 
         public RunicAtlasGump(PlayerMobile pm, RunicAtlas atlas)
-            : base(pm, 150, 200)
+            : base(pm, 100, 100)
         {
+            TypeID = 0x1F2;
             Atlas = atlas;
             Page = 0;
+        }
+
+        public static int GetMapHue(Map map)
+        {
+            if (map == Map.Trammel)
+                return 0xA;
+            else if (map == Map.Felucca)
+                return 0x51;
+            else if (map == Map.Malas)
+                return 0x44E;
+            else if (map == Map.Tokuno)
+                return 0x482;
+            else if (map == Map.TerMur)
+                return 0x66D;
+
+            return 0;
         }
 
         public override void AddGumpLayout()
         {
             AddImage(0, 0, 39923);
 
-            AddHtmlLocalized(60, 8, 180, 16, 1060728, String.Format("{0}\t{1}", Atlas.CurCharges, Atlas.MaxCharges), 1, false, false); //charges: ~1_val~ / ~2_val~
-            
-            AddHtmlLocalized(265, 8, 150, 16, 1011299, false, false); // rename book 
-            AddButton(250, 12, 2103, 2103, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(60, 9, 147, 22, 1011296, false, false); //Charges:
+            AddHtml(110, 9, 97, 22, String.Format("{0} / {1}", Atlas.CurCharges, Atlas.MaxCharges), false, false);
+
+            AddHtmlLocalized(264, 9, 144, 18, 1011299, false, false); // rename book 
+            AddButton(248, 14, 2103, 2103, 1, GumpButtonType.Reply, 0);
 
             int startIndex = Page * 16;
             int index = 0;
@@ -147,12 +168,12 @@ namespace Server.Items
             for (int i = startIndex; i < startIndex + 16; i++)
             {
                 string desc;
-				        int hue;
+                int hue;
 
                 if (i < Atlas.Entries.Count)
                 {
                     desc = RunebookGump.GetName(Atlas.Entries[i].Description);
-                    hue = Selected == i ? 0x90 : RunebookGump.GetMapHue(Atlas.Entries[i].Map);
+                    hue = Selected == i ? 0x14B : GetMapHue(Atlas.Entries[i].Map);
                 }
                 else
                 {
@@ -161,48 +182,62 @@ namespace Server.Items
                 }
 
                 // Select Button
-                AddButton(45 + ((index / 8) * 205), 64 + ((index % 8) * 20), 2103, 2104, i + 100, GumpButtonType.Reply, 0);
+                AddButton(46 + ((index / 8) * 205), 55 + ((index % 8) * 20), 2103, 2104, i + 100, GumpButtonType.Reply, 0);
 
                 // Description label
-                AddLabelCropped(60 + ((index / 8) * 205), 60 + ((index % 8) * 20), 115, 17, hue, desc);
+                AddLabelCropped(62 + ((index / 8) * 205), 50 + ((index % 8) * 20), 144, 18, hue, desc);
 
                 index++;
             }
 
+            RunebookEntry entry = null;
+
             if (Selected >= 0 && Selected < Atlas.Entries.Count)
             {
-                RunebookEntry entry = Atlas.Entries[Selected];
-
-                if (entry != null)
-                {
-                    string coords = ToCoordinates(entry.Location, entry.Map);
-
-                    if(coords != "unknown")
-                        AddHtml(40, 250, 155, 16, String.Format("<center>{0}</center>", coords), false, false);
-
-                    AddHtmlLocalized(70, 291, 150, 16, 1011300, false, false); // Set default
-
-                    if (Atlas.DefaultIndex != Selected)
-                        AddButton(45, 295, 2103, 2103, 2, GumpButtonType.Reply, 0);
-
-                    AddHtmlLocalized(70, 311, 150, 16, 1011298, false, false); // drop rune
-                    AddButton(45, 315, 2103, 2103, 3, GumpButtonType.Reply, 0);
-
-                    AddHtml(25, 345, 180, 16, String.Format("<center>{0}</center>", entry.Description), false, false); 
-
-                    AddHtmlLocalized(280, 286, 100, 16, 1077595, false, false); // Recall (Spell)
-                    AddButton(265, 290, 2103, 2103, 4, GumpButtonType.Reply, 0);
-
-                    AddHtmlLocalized(280, 303, 100, 16, 1077594, false, false); // Recall (Charge)
-                    AddButton(265, 307, 2103, 2103, 5, GumpButtonType.Reply, 0);
-
-                    AddHtmlLocalized(280, 320, 100, 16, 1015214, false, false); // Gate Travel
-                    AddButton(265, 324, 2103, 2103, 6, GumpButtonType.Reply, 0);
-
-                    AddHtmlLocalized(280, 337, 100, 16, 1060502, false, false); // Sacred Journey
-                    AddButton(265, 341, 2103, 2103, 7, GumpButtonType.Reply, 0);
-                }
+                entry = Atlas.Entries[Selected];
             }
+            
+            string coords = entry != null ? ToCoordinates(entry.Location, entry.Map) : "Nowhere";
+
+            AddHtml(25, 254, 182, 18, String.Format("<center>{0}</center>", coords), false, false);
+
+            AddHtmlLocalized(62, 290, 144, 18, 1011300, false, false); // Set default                        
+            AddButton(46, 295, 2103, 2103, 2, GumpButtonType.Reply, 0);
+
+            AddHtmlLocalized(62, 310, 144, 18, 1011298, false, false); // Drop rune
+            AddButton(46, 315, 2103, 2103, 3, GumpButtonType.Reply, 0);
+
+            AddHtml(25, 348, 182, 18, String.Format("<center>{0}</center>", entry != null ? entry.Description : "Empty"), false, false);
+
+            int hy = 284;
+            int by = 289;
+
+            AddHtmlLocalized(280, hy, 128, 18, 1077595, false, false); // Recall (Spell)
+            AddButton(264, by, 2103, 2103, 4, GumpButtonType.Reply, 0);
+
+            hy += 18;
+            by += 18;
+
+            if (Atlas.CurCharges != 0)
+            {
+                AddHtmlLocalized(280, hy, 128, 18, 1077594, false, false); // Recall (Charge)
+                AddButton(264, by, 2103, 2103, 5, GumpButtonType.Reply, 0);
+
+                hy += 18;
+                by += 18;
+            }
+
+            if (User.Skills[SkillName.Magery].Value >= 66.0)
+            {
+                AddHtmlLocalized(280, hy, 128, 18, 1015214, false, false); // Gate Travel
+                AddButton(264, by, 2103, 2103, 6, GumpButtonType.Reply, 0);
+
+                hy += 18;
+                by += 18;
+            }
+
+            AddHtmlLocalized(280, hy, 128, 18, 1060502, false, false); // Sacred Journey
+            AddButton(264, by, 2103, 2103, 7, GumpButtonType.Reply, 0);
 
             if (Page < 2)
             {
@@ -223,15 +258,94 @@ namespace Server.Items
             }
             else
             {
+                RunebookEntry entry = null;
+
+                if (Selected >= 0 && Selected < Atlas.Entries.Count)
+                {
+                    entry = Atlas.Entries[Selected];
+                }
+
                 switch (info.ButtonID)
                 {
+                    case 0: Atlas.Openers.Remove(User); break;
                     case 1: RenameBook(); break;
-                    case 2: SetDefault(); break;
-                    case 3: DropRune(); break;
-                    case 4: RecallSpell(); break;
-                    case 5: RecallCharge(); break;
-                    case 6: GateTravel(); break;
-                    case 7: SacredJourney(); break;
+                    case 2:
+                        {
+                            if (entry != null)
+                            {
+                                SetDefault();
+                            }
+                            else
+                            {
+                                Atlas.Openers.Remove(User);
+                            }
+                            break;
+                        }                        
+                    case 3:
+                        {
+                            if (entry != null)
+                            {
+                                DropRune(); break;
+                            }
+                            else
+                            {
+                                User.SendLocalizedMessage(502422); // There is no rune to be dropped.
+                                Atlas.Openers.Remove(User);
+                            }
+                            break;
+                        }
+                    case 4:
+                        {
+                            if (entry != null)
+                            {
+                                RecallSpell();
+                            }
+                            else
+                            {
+                                User.SendLocalizedMessage(502423); // This place in the book is empty.
+                                Atlas.Openers.Remove(User);
+                            }
+                            break;
+                        }
+                    case 5:
+                        {
+                            if (entry != null)
+                            {
+                                RecallCharge();
+                            }
+                            else
+                            {
+                                User.SendLocalizedMessage(502423); // This place in the book is empty.
+                                Atlas.Openers.Remove(User);
+                            }
+                            break;
+                        }
+                    case 6:
+                        {
+                            if (entry != null)
+                            {
+                                GateTravel();
+                            }
+                            else
+                            {
+                                User.SendLocalizedMessage(502423); // This place in the book is empty.
+                                Atlas.Openers.Remove(User);
+                            }
+                            break;
+                        }
+                    case 7:
+                        {
+                            if (entry != null)
+                            {
+                                SacredJourney();
+                            }
+                            else
+                            {
+                                User.SendLocalizedMessage(502423); // This place in the book is empty.
+                                Atlas.Openers.Remove(User);
+                            }
+                            break;
+                        }
                     case 1150:
                         Page++;
                         Refresh();
@@ -246,9 +360,8 @@ namespace Server.Items
 
         public void RenameBook()
         {
-            if (Atlas.Movable || User.AccessLevel >= AccessLevel.GameMaster)
+            if (Atlas.CheckAccess(User) && Atlas.Movable != false || User.AccessLevel >= AccessLevel.GameMaster)
             {
-                User.SendLocalizedMessage(502414); // Please enter a title for the runebook:
                 User.Prompt = new InternalPrompt(Atlas);
             }
             else
@@ -265,10 +378,11 @@ namespace Server.Items
 
         private void SetDefault()
         {
-            if (Atlas.Movable || User.AccessLevel >= AccessLevel.GameMaster)
+            if (Atlas.CheckAccess(User) || User.AccessLevel >= AccessLevel.GameMaster)
             {
                 Atlas.DefaultIndex = Selected;
                 Refresh();
+                User.SendLocalizedMessage(502417, "", 0x35); // New default location set.
             }
             else
             {
@@ -279,7 +393,7 @@ namespace Server.Items
 
         private void DropRune()
         {
-            if (Atlas.Movable || User.AccessLevel >= AccessLevel.GameMaster)
+            if (Atlas.CheckAccess(User) && Atlas.Movable != false || User.AccessLevel >= AccessLevel.GameMaster)
             {
                 Atlas.DropRune(User, Atlas.Entries[Selected], Selected);
                 Refresh();
@@ -293,17 +407,21 @@ namespace Server.Items
 
         private void RecallSpell()
         {
-            RunebookEntry e = Atlas.Entries[Selected];
+            RunebookEntry e = Atlas.Entries[Selected];            
 
             if (RunebookGump.HasSpell(User, 31))
             {
                 string coords = ToCoordinates(e.Location, e.Map);
 
-                if(coords != "unknown")
+                if (coords != "Nowhere")
                     User.SendMessage(ToCoordinates(e.Location, e.Map));
 
                 Atlas.OnTravel();
                 new RecallSpell(User, null, e, null).Cast();
+            }
+            else
+            {
+                User.SendLocalizedMessage(500015); // You do not have that spell!
             }
 
             Atlas.Openers.Remove(User);
@@ -322,7 +440,7 @@ namespace Server.Items
             {
                 string coords = ToCoordinates(e.Location, e.Map);
 
-                if(coords != "unkown")
+                if (coords != "Nowhere")
                     User.SendMessage(ToCoordinates(e.Location, e.Map));
 
                 Atlas.OnTravel();
@@ -342,7 +460,7 @@ namespace Server.Items
             {
                 string coords = ToCoordinates(e.Location, e.Map);
 
-                if(coords != "unknown")
+                if (coords != "Nowhere")
                     User.SendMessage(ToCoordinates(e.Location, e.Map));
 
                 Atlas.OnTravel();
@@ -383,6 +501,7 @@ namespace Server.Items
 
         private class InternalPrompt : Prompt
         {
+            public override int MessageCliloc { get { return 502414; } } // Please enter a title for the runebook:
             public RunicAtlas Atlas { get; private set; }
 
             public InternalPrompt(RunicAtlas atlas)
@@ -395,11 +514,11 @@ namespace Server.Items
                 if (Atlas.Deleted || !from.InRange(Atlas.GetWorldLocation(), 3) || !(from is PlayerMobile))
                     return;
 
-                if (Atlas.Movable || from.AccessLevel >= AccessLevel.GameMaster)
+                if (Atlas.CheckAccess(from) || from.AccessLevel >= AccessLevel.GameMaster)
                 {
                     Atlas.Description = Utility.FixHtml(text.Trim());
                     from.SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
-                    from.SendMessage("The book's title has been changed.");
+                    from.SendLocalizedMessage(1041531); // You have changed the title of the rune book.
                 }
                 else
                 {

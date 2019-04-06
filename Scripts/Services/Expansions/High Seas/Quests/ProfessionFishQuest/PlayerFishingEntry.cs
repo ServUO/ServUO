@@ -88,30 +88,12 @@ namespace Server.Engines.Quests
             if (m_Player == null || m_Player.NetState == null)
                 return;
 
-            if (m_Reputation * Utility.RandomDouble() >= RewardAmount && !m_HasRecievedBritGal)
-            {
-                BritannianShipDeed deed = new BritannianShipDeed();
-                Container pack = m_Player.Backpack;
-
-                if (pack == null || !pack.TryDropItem(m_Player, deed, false))
-                {
-                    m_Player.BankBox.DropItem(deed);
-                    m_Player.SendMessage("Your reputation with the fish mongers precedes you. A special reward has been placed in your bank box.");
-                }
-                else
-                    m_Player.SendMessage("Your reputation with the fish mongers precedes you. A special reward has been placed in your pack.");
-
-                m_HasRecievedBritGal = true;
-            }
+            if (points <= 100)
+                m_Player.SendMessage("You have gained a fair amount of reputation with the Fish Mongers.");
+            else if (points <= 150)
+                m_Player.SendMessage("You have gained a good amount of reputation with the Fish Mongers.");
             else
-            {
-                if (points <= 100)
-                    m_Player.SendMessage("You have gained a fair amount of reputation with the Fish Mongers.");
-                else if (points <= 150)
-                    m_Player.SendMessage("You have gained a good amount of reputation with the Fish Mongers.");
-                else
-                    m_Player.SendMessage("You have gained a large amount of reputation with the Fish Mongers.");
-            }
+                m_Player.SendMessage("You have gained a large amount of reputation with the Fish Mongers.");
         }
 
         public int CalculateLines()

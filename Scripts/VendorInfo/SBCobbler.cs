@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,10 +31,10 @@ namespace Server.Mobiles
         { 
             public InternalBuyInfo() 
             { 
-                this.Add(new GenericBuyInfo(typeof(ThighBoots), 15, 20, 0x1711, Utility.RandomNeutralHue())); 
-                this.Add(new GenericBuyInfo(typeof(Shoes), 8, 20, 0x170f, Utility.RandomNeutralHue())); 
-                this.Add(new GenericBuyInfo(typeof(Boots), 10, 20, 0x170b, Utility.RandomNeutralHue()));
-                this.Add(new GenericBuyInfo(typeof(Sandals), 5, 20, 0x170d, Utility.RandomNeutralHue())); 
+                Add(new GenericBuyInfo(typeof(ThighBoots), 15, 20, 0x1711, Utility.RandomNeutralHue())); 
+                Add(new GenericBuyInfo(typeof(Shoes), 8, 20, 0x170f, Utility.RandomNeutralHue())); 
+                Add(new GenericBuyInfo(typeof(Boots), 10, 20, 0x170b, Utility.RandomNeutralHue()));
+                Add(new GenericBuyInfo(typeof(Sandals), 5, 20, 0x170d, Utility.RandomNeutralHue())); 
             }
         }
 
@@ -42,10 +42,10 @@ namespace Server.Mobiles
         { 
             public InternalSellInfo() 
             { 
-                this.Add(typeof(Shoes), 4); 
-                this.Add(typeof(Boots), 5); 
-                this.Add(typeof(ThighBoots), 7); 
-                this.Add(typeof(Sandals), 2); 
+                Add(typeof(Shoes), 4); 
+                Add(typeof(Boots), 5); 
+                Add(typeof(ThighBoots), 7); 
+                Add(typeof(Sandals), 2); 
             }
         }
     }

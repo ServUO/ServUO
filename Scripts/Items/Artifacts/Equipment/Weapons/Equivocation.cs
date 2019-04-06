@@ -10,17 +10,15 @@ namespace Server.Items
         [Constructable]
         public Equivocation()
         {
-            this.Attributes.BalancedWeapon = 1;
-
-            this.Slayer2 = BaseRunicTool.GetRandomSlayer();
-            this.Attributes.AttackChance = 10;
-            this.Attributes.RegenHits = 6;
-            this.Attributes.Brittle = 1;
-            this.Attributes.WeaponSpeed = 35;
-            this.Attributes.WeaponDamage = 50;
-            this.WeaponAttributes.HitCurse = 15;
-
-            this.Hue = 1365;
+            Attributes.BalancedWeapon = 1;
+            Slayer2 = BaseRunicTool.GetRandomSlayer();
+            Attributes.AttackChance = 10;
+            Attributes.RegenHits = 6;
+            Attributes.Brittle = 1;
+            Attributes.WeaponSpeed = 35;
+            Attributes.WeaponDamage = 50;
+            WeaponAttributes.HitCurse = 15;
+            Hue = 1365;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
@@ -29,8 +27,8 @@ namespace Server.Items
             cold = nrgy = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 150; } }
-        public override int InitMaxHits { get { return 150; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public Equivocation(Serial serial)
             : base(serial)
@@ -58,17 +56,15 @@ namespace Server.Items
         [Constructable]
         public GargishEquivocation()
         {
-            this.Attributes.BalancedWeapon = 1;
-
-            this.Slayer2 = BaseRunicTool.GetRandomSlayer();
-            this.Attributes.AttackChance = 10;
-            this.Attributes.RegenHits = 6;
-            this.Attributes.Brittle = 1;
-            this.Attributes.WeaponSpeed = 35;
-            this.Attributes.WeaponDamage = 50;
-            this.WeaponAttributes.HitCurse = 15;
-
-            this.Hue = 1365;
+            Attributes.BalancedWeapon = 1;
+            Slayer2 = BaseRunicTool.GetRandomSlayer();
+            Attributes.AttackChance = 10;
+            Attributes.RegenHits = 6;
+            Attributes.Brittle = 1;
+            Attributes.WeaponSpeed = 35;
+            Attributes.WeaponDamage = 50;
+            WeaponAttributes.HitCurse = 15;
+            Hue = 1365;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
@@ -77,8 +73,8 @@ namespace Server.Items
             cold = nrgy = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 150; } }
-        public override int InitMaxHits { get { return 150; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public GargishEquivocation(Serial serial)
             : base(serial)

@@ -31,10 +31,10 @@ namespace Server.Spells.Mysticism
 
         public override void OnCast()
         {
-            Caster.Target = new MysticSpellTarget(this, TargetFlags.Beneficial);
+            Caster.Target = new InternalTarget(this);
         }
 
-        public override void OnTarget(object o)
+        public void OnTarget(object o)
         {
             var targeted = o as Mobile;
 
@@ -50,7 +50,7 @@ namespace Server.Spells.Mysticism
 
                 Caster.PlaySound(0x64C);
 
-                var targets = new List<Mobile> {targeted};
+                var targets = new List<Mobile> { targeted };
                 targets.AddRange(FindAdditionalTargets(targeted).Take(3)); // This effect can hit up to 3 additional players beyond the primary target.
 
                 double primarySkill = Caster.Skills[CastSkill].Value;
@@ -98,10 +98,8 @@ namespace Server.Spells.Mysticism
                     if (toHealMod > 0 && curseLevel > 0)
                     {
                         // Each Curse reduces healing by 3 points + 1% per curse level.
-                        int toHealMod1 = toHealMod - (curseLevel * 3);
-                        int toHealMod2 = toHealMod - (int)(toHealMod * (curseLevel / 100.0));
-
-                        toHealMod -= toHealMod1 + toHealMod2;
+                        toHealMod = toHealMod - (curseLevel * 3);
+                        toHealMod = toHealMod - (int)((double)toHealMod * ((double)curseLevel / 100.0));
                     }
 
                     if (toHealMod > 0)
@@ -128,7 +126,9 @@ namespace Server.Spells.Mysticism
             if (casterParty == null)
                 yield break;
 
-            foreach (var m in Caster.Map.GetMobilesInRange(new Point3D(targeted), 2))
+            IPooledEnumerable eable = Caster.Map.GetMobilesInRange(new Point3D(targeted), 2);
+
+            foreach (Mobile m in eable)
             {
                 if (m == null || m == targeted)
                     continue;
@@ -137,9 +137,11 @@ namespace Server.Spells.Mysticism
                 if (Caster.CanBeBeneficial(m, false) && casterParty.Contains(m))
                     yield return m;
             }
+
+            eable.Free();
         }
 
-        private static int RemoveCurses(Mobile m)
+        public static int RemoveCurses(Mobile m)
         {
             int curseLevel = 0;
 
@@ -217,6 +219,41 @@ namespace Server.Spells.Mysticism
             BuffInfo.RemoveBuff(m, BuffIcon.EvilOmen);
 
             return curseLevel;
+        }
+
+        public class InternalTarget : Target
+        {
+            public CleansingWindsSpell Owner { get; set; }
+
+            public InternalTarget(CleansingWindsSpell owner)
+                : this(owner, false)
+            {
+            }
+
+            public InternalTarget(CleansingWindsSpell owner, bool allowland)
+                : base(12, allowland, TargetFlags.Beneficial)
+            {
+                Owner = owner;
+            }
+
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o == null)
+                    return;
+
+                if (!from.CanSee(o))
+                    from.SendLocalizedMessage(500237); // Target can not be seen.
+                else
+                {
+                    SpellHelper.Turn(from, o);
+                    Owner.OnTarget(o);
+                }
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                Owner.FinishSequence();
+            }
         }
     }
 }

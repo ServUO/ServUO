@@ -140,7 +140,8 @@ namespace Server.Engines.VvV
 
         public void Complete(Guild g)
         {
-            Timer.DelayCall<Guild>(TimeSpan.FromSeconds(5), Battle.OccupyAltar, g);
+            Timer.DelayCall(TimeSpan.FromSeconds(5), DoOccupy, new object[] { Battle, g });
+
             Timer.DelayCall(TimeSpan.FromSeconds(2), DoFireworks);
             IsActive = false;
 
@@ -160,6 +161,16 @@ namespace Server.Engines.VvV
                     Torches.ForEach(t => t.Delete());
                     Torches.Clear();
                 });
+        }
+
+        public static void DoOccupy(object obj)
+        {
+            object[] objs = obj as object[];
+            VvVBattle battle = objs[0] as VvVBattle;
+            Guild g = objs[1] as Guild;
+
+            if (battle != null && g != null)
+                battle.OccupyAltar(g);
         }
 
         public void DoFireworks()
@@ -288,6 +299,18 @@ namespace Server.Engines.VvV
 
             protected override void OnTick()
             {
+                if (_Tick < 0)
+                {
+                    _Tick = 0;
+                }
+
+                if (_Tick >= _Locs.Length)
+                {
+                    Altar.Complete(Occupier);
+                    Stop();
+                    return;
+                }
+
                 Point3D p = _Locs[_Tick];
 
                 Effects.SendLocationEffect(new Point3D(Altar.X + p.X, Altar.Y + p.Y, Altar.Z + p.Z), Altar.Map, 0x3709, 30, 10);

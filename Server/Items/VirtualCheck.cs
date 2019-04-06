@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - VirtualCheck.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Drawing;
@@ -271,8 +265,8 @@ namespace Server
 				AddImage(360, 8, 113);
 
 				var title = String.Format(
-					"<BASEFONT COLOR=#{0:X}><CENTER>BANK OF {1}</CENTER>",
-					Color.DarkSlateGray.ToArgb(),
+					"<BASEFONT COLOR=#{0:X6}><CENTER>BANK OF {1}</CENTER>",
+					Color.DarkSlateGray.ToArgb() & 0x00FFFFFF,
 					User.RawName.ToUpper());
 
 				AddHtml(40, 15, 320, 20, title, false, false);

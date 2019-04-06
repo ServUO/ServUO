@@ -9,14 +9,11 @@ namespace Server.Items
         public JaanasStaff()
             : base()
         {
-            this.Hue = 0x58C;
-
-            this.WeaponAttributes.MageWeapon = 10;
-
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.Luck = 220;
-            this.Attributes.DefendChance = 15;
-            this.BlockRepair = true;
+            Hue = 0x58C;
+            WeaponAttributes.MageWeapon = 10;
+            Attributes.SpellChanneling = 1;
+            Attributes.Luck = 220;
+            Attributes.DefendChance = 15;
         }
 
         public JaanasStaff(Serial serial)
@@ -42,21 +39,21 @@ namespace Server.Items
         {
             get
             {
-                return 120;
+                return 225;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return 120;
+                return 225;
             }
         }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -64,6 +61,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                NegativeAttributes.NoRepair = 0;
+            }
         }
     }
 }

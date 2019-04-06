@@ -50,12 +50,10 @@ namespace Server.Items
 
         public override void Drink(Mobile from)
         {
-            if (this.DoStrength(from))
+            if (DoStrength(from))
             {
-                BasePotion.PlayDrinkEffect(from);
-
-                if (!Engines.ConPVP.DuelContext.IsFreeConsume(from))
-                    this.Consume();
+                PlayDrinkEffect(from);
+                Consume();
             }
         }
     }

@@ -143,8 +143,12 @@ namespace Server.Items
 
                 if (obj != null)
                 {
-                    if (obj.Update(dropped) && base.OnStackAttempt(from, stack, dropped))
+                    if (obj.CheckLift(dropped) && base.OnStackAttempt(from, stack, dropped))
+                    {
+                        obj.Update(dropped);
+                        InvalidateProperties();
                         return true;
+                    }
                 }
             }
 
@@ -158,8 +162,12 @@ namespace Server.Items
             {
                 FishQuestObjective obj = m_Quest.GetObjective();
 
-                if (obj != null && obj.Update(dropped))
-                    return base.OnDragDrop(from, dropped);
+                if (obj != null && obj.CheckLift(dropped) && base.OnDragDrop(from, dropped))
+                {
+                    obj.Update(dropped);
+                    InvalidateProperties();
+                    return true;
+                }
             }
 
             from.SendLocalizedMessage(1072355, null, 0x23); // That item does not match any of your quest criteria
@@ -168,12 +176,17 @@ namespace Server.Items
 
         public override bool OnDragDropInto(Mobile from, Item dropped, Point3D p)
         {
+            Console.WriteLine("1");
             if (dropped is BaseHighseasFish && m_Quest != null)
             {
                 FishQuestObjective obj = m_Quest.GetObjective();
 
-                if (obj != null && obj.Update(dropped))
-                    return base.OnDragDropInto(from, dropped, p);
+                if (obj != null && obj.CheckLift(dropped) && base.OnDragDropInto(from, dropped, p))
+                {
+                    obj.Update(dropped);
+                    InvalidateProperties();
+                    return true;
+                }
             }
 
             from.SendLocalizedMessage(1072355, null, 0x23); // That item does not match any of your quest criteria

@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public LethalDartsQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Bolt), "crossbow bolts", 10, 0x1BFB));
+            AddObjective(new ObtainObjective(typeof(Bolt), "crossbow bolts", 10, 0x1BFB));
 			
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         public override TimeSpan RestartDelay
@@ -83,9 +83,9 @@ namespace Server.Engines.Quests
         public SimpleBowQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Bow), "bows", 10, 0x13B2));
+            AddObjective(new ObtainObjective(typeof(Bow), "bows", 10, 0x13B2));
 			
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         /* A Simple Bow */
@@ -149,9 +149,9 @@ namespace Server.Engines.Quests
         public IngeniousArcheryPartOneQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(Crossbow), "crossbows", 10, 0xF50));
+            AddObjective(new ObtainObjective(typeof(Crossbow), "crossbows", 10, 0xF50));
 			
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         /* Ingenious Archery, Part I */
@@ -215,9 +215,9 @@ namespace Server.Engines.Quests
         public IngeniousArcheryPartTwoQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(HeavyCrossbow), "heavy crossbows", 8, 0x13FD));
+            AddObjective(new ObtainObjective(typeof(HeavyCrossbow), "heavy crossbows", 8, 0x13FD));
 			
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         /* Ingenious Archery, Part II */
@@ -282,9 +282,9 @@ namespace Server.Engines.Quests
         public IngeniousArcheryPartThreeQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(RepeatingCrossbow), "repeating crossbows", 10, 0x26C3));
+            AddObjective(new ObtainObjective(typeof(RepeatingCrossbow), "repeating crossbows", 10, 0x26C3));
 			
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         /* Ingenious Archery, Part III */
@@ -350,8 +350,8 @@ namespace Server.Engines.Quests
         public Cillitha()
             : base("Cillitha", "the bowcrafter")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Cillitha(Serial serial)
@@ -376,21 +376,21 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 			
-            this.Hue = 0x83E6;
-            this.HairItemID = 0x2FC2;
-            this.HairHue = 0x8E;
+            Hue = 0x83E6;
+            HairItemID = 0x2FC2;
+            HairHue = 0x8E;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new ElvenShirt(0x714));
-            this.AddItem(new LeafLegs());
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new ElvenShirt(0x714));
+            AddItem(new LeafLegs());
         }
 
         public override void Serialize(GenericWriter writer)

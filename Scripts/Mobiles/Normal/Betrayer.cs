@@ -7,7 +7,6 @@ namespace Server.Mobiles
     [CorpseName("a betrayer corpse")]
     public class Betrayer : BaseCreature
     {
-        private bool m_Stunning;
         private DateTime m_NextAbilityTime;
         [Constructable]
         public Betrayer()
@@ -94,6 +93,9 @@ namespace Server.Mobiles
                 return 5;
             }
         }
+
+        public override bool DoesColossalBlow { get { return true; } }
+
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
@@ -134,30 +136,6 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Gems, 1);
         }
 
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (!this.m_Stunning && 0.3 > Utility.RandomDouble())
-            {
-                this.m_Stunning = true;
-
-                defender.Animate(21, 6, 1, true, false, 0);
-                this.PlaySound(0xEE);
-                defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, false, "You have been stunned by a colossal blow!");
-
-                BaseWeapon weapon = this.Weapon as BaseWeapon;
-                if (weapon != null)
-                    weapon.OnHit(this, defender);
-
-                if (defender.Alive)
-                {
-                    defender.Frozen = true;
-                    Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(Recover_Callback), defender);
-                }
-            }
-        }
-
         public override void OnActionCombat()
         {
             Mobile combatant = this.Combatant as Mobile;
@@ -172,13 +150,17 @@ namespace Server.Mobiles
                 this.FixedParticles(0x376A, 9, 32, 0x2539, EffectLayer.LeftHand);
                 this.PlaySound(0x1DE);
 
-                foreach (Mobile m in this.GetMobilesInRange(2))
+                IPooledEnumerable eable = GetMobilesInRange(2);
+
+                foreach (Mobile m in eable)
                 {
                     if (m != this && this.IsEnemy(m))
                     {
                         m.ApplyPoison(this, Poison.Deadly);
                     }
                 }
+
+                eable.Free();
             }
         }
 
@@ -194,20 +176,6 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-        }
-
-        private void Recover_Callback(object state)
-        {
-            Mobile defender = state as Mobile;
-
-            if (defender != null)
-            {
-                defender.Frozen = false;
-                defender.Combatant = null;
-                defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, false, "You recover your senses.");
-            }
-
-            this.m_Stunning = false;
         }
     }
 }

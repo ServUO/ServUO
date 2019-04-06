@@ -1,44 +1,41 @@
 using System;
 using Server;
-using Server.Items;
-using Server.Mobiles;
-using Server.Spells;
 using Server.Targeting;
 using System.Collections.Generic;
 using Server.Network;
 
 namespace Server.Spells.Mysticism
 {
-	public class SleepSpell : MysticSpell
-	{
+    public class SleepSpell : MysticSpell
+    {
         public override SpellCircle Circle { get { return SpellCircle.Third; } }
 
-		private static SpellInfo m_Info = new SpellInfo(
-				"Sleep", "In Zu",
-				230,
-				9022,
-				Reagent.Nightshade,
-				Reagent.SpidersSilk,
-				Reagent.BlackPearl
-			);
+        private static SpellInfo m_Info = new SpellInfo(
+                "Sleep", "In Zu",
+                230,
+                9022,
+                Reagent.Nightshade,
+                Reagent.SpidersSilk,
+                Reagent.BlackPearl
+            );
 
-		public SleepSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
-		{
-		}
+        public SleepSpell(Mobile caster, Item scroll) : base(caster, scroll, m_Info)
+        {
+        }
 
-		public override void OnCast()
-		{
-			Caster.Target = new MysticSpellTarget( this, TargetFlags.Harmful );
-		}
+        public override void OnCast()
+        {
+            Caster.Target = new InternalTarget(this);
+        }
 
-		public override void OnTarget( Object o )
-		{
-			Mobile target = o as Mobile;
+        public void OnTarget(object o)
+        {
+            Mobile target = o as Mobile;
 
-			if ( target == null )
-			{
-				return;
-			}
+            if (target == null)
+            {
+                return;
+            }
             else if (target.Paralyzed)
             {
                 Caster.SendLocalizedMessage(1080134); //Your target is already immobilized and cannot be slept.
@@ -49,8 +46,10 @@ namespace Server.Spells.Mysticism
             }
             else if (CheckHSequence(target))
             {
+                SpellHelper.CheckReflect((int)Circle, Caster, ref target);
+
                 double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 2;
-                duration -= target.Skills[SkillName.MagicResist].Value / 10;
+                duration -= GetResistSkill(target) / 10;
 
                 if (duration <= 0 || StoneFormSpell.CheckImmunity(target))
                 {
@@ -61,8 +60,8 @@ namespace Server.Spells.Mysticism
                     DoSleep(Caster, target, TimeSpan.FromSeconds(duration));
             }
 
-			FinishSequence();
-		}
+            FinishSequence();
+        }
 
         private static Dictionary<Mobile, SleepTimer> m_Table = new Dictionary<Mobile, SleepTimer>();
         private static List<Mobile> m_ImmunityList = new List<Mobile>();
@@ -70,18 +69,14 @@ namespace Server.Spells.Mysticism
         public static void DoSleep(Mobile caster, Mobile target, TimeSpan duration)
         {
             target.Combatant = null;
-            target.Send(SpeedControl.WalkSpeed);
-
-            caster.PlaySound(0x657);
-            target.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
-            target.FixedParticles(0x376A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+            target.SendSpeedControl(SpeedControlType.WalkSpeed);
 
             if (m_Table.ContainsKey(target))
                 m_Table[target].Stop();
 
             m_Table[target] = new SleepTimer(target, duration);
-	    
-	        BuffInfo.AddBuff(target, new BuffInfo(BuffIcon.Sleep, 1080139, 1080140, duration, target));
+
+            BuffInfo.AddBuff(target, new BuffInfo(BuffIcon.Sleep, 1080139, 1080140, duration, target));
 
             target.Delta(MobileDelta.WeaponDamage);
         }
@@ -108,7 +103,7 @@ namespace Server.Spells.Mysticism
             private DateTime m_EndTime;
 
             public SleepTimer(Mobile target, TimeSpan duration)
-                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+                : base(TimeSpan.Zero, TimeSpan.FromSeconds(0.5))
             {
                 m_EndTime = DateTime.UtcNow + duration;
                 m_Target = target;
@@ -124,7 +119,7 @@ namespace Server.Spells.Mysticism
                 }
                 else
                 {
-                    m_Target.FixedParticles(0x376A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+                    Effects.SendTargetParticles(m_Target, 0x3779, 1, 32, 0x13BA, EffectLayer.Head);
                 }
             }
         }
@@ -133,7 +128,7 @@ namespace Server.Spells.Mysticism
         {
             if (m_Table.ContainsKey(target))
             {
-                target.Send(SpeedControl.Disable);
+                target.SendSpeedControl(SpeedControlType.Disable);
 
                 m_Table[target].Stop();
                 m_Table.Remove(target);
@@ -156,5 +151,40 @@ namespace Server.Spells.Mysticism
             if (m_ImmunityList.Contains(m))
                 m_ImmunityList.Remove(m);
         }
-	}
+
+        public class InternalTarget : Target
+        {
+            public SleepSpell Owner { get; set; }
+
+            public InternalTarget(SleepSpell owner)
+                : this(owner, false)
+            {
+            }
+
+            public InternalTarget(SleepSpell owner, bool allowland)
+                : base(12, allowland, TargetFlags.Harmful)
+            {
+                Owner = owner;
+            }
+
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o == null)
+                    return;
+
+                if (!from.CanSee(o))
+                    from.SendLocalizedMessage(500237); // Target can not be seen.
+                else
+                {
+                    SpellHelper.Turn(from, o);
+                    Owner.OnTarget(o);
+                }
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                Owner.FinishSequence();
+            }
+        }
+    }
 }

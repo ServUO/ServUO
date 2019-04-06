@@ -30,8 +30,9 @@ namespace Server.Items
                 return;
 
             List<Mobile> targets = new List<Mobile>();
+            IPooledEnumerable eable = attacker.GetMobilesInRange(weapon.MaxRange);
 
-            foreach (Mobile m in attacker.GetMobilesInRange(weapon.MaxRange))
+            foreach (Mobile m in eable)
             {
                 if (m == defender)
                     continue;
@@ -41,6 +42,8 @@ namespace Server.Items
 
                 targets.Add(m);
             }
+
+            eable.Free();
 
             if (targets.Count > 0)
                 this.m_Target = targets[Utility.Random(targets.Count)];

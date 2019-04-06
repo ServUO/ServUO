@@ -9,8 +9,8 @@ namespace Server.Items
             : base()
         {
             this.Weight = 1.0;
-			
-            BaseRunicTool.ApplyAttributesTo(this, Utility.RandomMinMax(2, 3), 0, 100);
+
+            BaseRunicTool.ApplyAttributesTo(this, true, 0, Utility.RandomMinMax(2, 3), 0, 100);
 			
             if (Utility.RandomBool())
                 this.Attributes.EnhancePotions = 50;	

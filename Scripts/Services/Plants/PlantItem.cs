@@ -233,7 +233,11 @@ namespace Server.Engines.Plants
 		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
 		{
 			base.GetContextMenuEntries( from, list );
-			SetSecureLevelEntry.AddTo( from, this, list );
+
+            if (m_PlantStatus != PlantStatus.DecorativePlant)
+            {
+                SetSecureLevelEntry.AddTo(from, this, list);
+            }
 		}
 
 		public int GetLocalizedPlantStatus()
@@ -459,6 +463,8 @@ namespace Server.Engines.Plants
 
 				from.PlaySound( 0x4E );
 				LabelTo( from, 1061858 ); // You soften the dirt with water.
+
+                m_PlantSystem.NextGrowth = DateTime.UtcNow + PlantSystem.CheckDelay;
 			}
 			else if ( item is BasePotion )
 			{
@@ -470,6 +476,8 @@ namespace Server.Engines.Plants
 					potion.Consume();
 					from.PlaySound( 0x240 );
 					from.AddToBackpack( new Bottle() );
+
+                    m_PlantSystem.NextGrowth = DateTime.UtcNow + PlantSystem.CheckDelay;
 				}
 				LabelTo( from, message );
 			}
@@ -488,6 +496,8 @@ namespace Server.Engines.Plants
 				{
 					keg.Held--;
 					from.PlaySound( 0x240 );
+
+                    m_PlantSystem.NextGrowth = DateTime.UtcNow + PlantSystem.CheckDelay;
 				}
 				LabelTo( from, message );
 			}

@@ -30,23 +30,23 @@ namespace Server.Spells.Sixth
         }
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IPoint3D p)
         {
-            if (!this.Caster.CanSee(p))
+            if (!Caster.CanSee(p))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (SpellHelper.CheckTown(p, this.Caster) && this.CheckSequence())
+            else if (SpellHelper.CheckTown(p, Caster) && SpellHelper.CheckWater(new Point3D(p), Caster.Map) && CheckSequence())
             {
-                SpellHelper.Turn(this.Caster, p);
+                SpellHelper.Turn(Caster, p);
 
                 SpellHelper.GetSurfaceTop(ref p);
 
-                int dx = this.Caster.Location.X - p.X;
-                int dy = this.Caster.Location.Y - p.Y;
+                int dx = Caster.Location.X - p.X;
+                int dy = Caster.Location.Y - p.Y;
                 int rx = (dx - dy) * 44;
                 int ry = (dx + dy) * 44;
 
@@ -61,28 +61,35 @@ namespace Server.Spells.Sixth
                 else
                     eastToWest = false;
 
-                Effects.PlaySound(p, this.Caster.Map, 0x20B);
-
+                Effects.PlaySound(p, Caster.Map, 0x20B);
                 int itemID = eastToWest ? 0x3967 : 0x3979;
 
-                TimeSpan duration = TimeSpan.FromSeconds(3.0 + (this.Caster.Skills[SkillName.Magery].Value / 3.0));
+                Point3D pnt = new Point3D(p);
+                TimeSpan duration = TimeSpan.FromSeconds(3.0 + (Caster.Skills[SkillName.Magery].Value / 3.0));
 
-                for (int i = -2; i <= 2; ++i)
+                if (SpellHelper.CheckField(pnt, Caster.Map))
+                    new InternalItem(itemID, pnt, Caster, Caster.Map, duration);
+
+                for (int i = 1; i <= 2; ++i)
                 {
-                    Point3D loc = new Point3D(eastToWest ? p.X + i : p.X, eastToWest ? p.Y : p.Y + i, p.Z);
-                    bool canFit = SpellHelper.AdjustField(ref loc, this.Caster.Map, 12, false);
+                    Timer.DelayCall<int>(TimeSpan.FromMilliseconds(i * 300), index =>
+                    {
+                        Point3D point = new Point3D(eastToWest ? pnt.X + index : pnt.X, eastToWest ? pnt.Y : pnt.Y + index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
-                    if (!canFit)
-                        continue;
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
 
-                    Item item = new InternalItem(this.Caster, itemID, loc, this.Caster.Map, duration);
-                    item.ProcessDelta();
+                        point = new Point3D(eastToWest ? pnt.X + -index : pnt.X, eastToWest ? pnt.Y : pnt.Y + -index, pnt.Z);
+                        SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
-                    Effects.SendLocationParticles(EffectItem.Create(loc, this.Caster.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5048);
+                        if (SpellHelper.CheckField(point, Caster.Map))
+                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
+                    }, i);
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         [DispellableField]
@@ -94,29 +101,24 @@ namespace Server.Spells.Sixth
 
             public Mobile Caster { get { return m_Caster; } }
 
-            public InternalItem(Mobile caster, int itemID, Point3D loc, Map map, TimeSpan duration)
+            public InternalItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration)
                 : base(itemID)
             {
-                this.Visible = false;
-                this.Movable = false;
-                this.Light = LightType.Circle300;
+                Movable = false;
+                Light = LightType.Circle300;
 
-                this.MoveToWorld(loc, map);
+                MoveToWorld(loc, map);
+                Effects.SendLocationParticles(EffectItem.Create(loc, map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5048);
 
-                if (caster.InLOS(this))
-                    this.Visible = true;
-                else
-                    this.Delete();
-
-                if (this.Deleted)
+                if (Deleted)
                     return;
 
-                this.m_Caster = caster;
+                m_Caster = caster;
 
-                this.m_Timer = new InternalTimer(this, duration);
-                this.m_Timer.Start();
+                m_Timer = new InternalTimer(this, duration);
+                m_Timer.Start();
 
-                this.m_End = DateTime.UtcNow + duration;
+                m_End = DateTime.UtcNow + duration;
             }
 
             public InternalItem(Serial serial)
@@ -135,8 +137,8 @@ namespace Server.Spells.Sixth
             {
                 base.OnAfterDelete();
 
-                if (this.m_Timer != null)
-                    this.m_Timer.Stop();
+                if (m_Timer != null)
+                    m_Timer.Stop();
             }
 
             public override void Serialize(GenericWriter writer)
@@ -145,8 +147,8 @@ namespace Server.Spells.Sixth
 
                 writer.Write((int)0); // version
 
-                writer.Write(this.m_Caster);
-                writer.WriteDeltaTime(this.m_End);
+                writer.Write(m_Caster);
+                writer.WriteDeltaTime(m_End);
             }
 
             public override void Deserialize(GenericReader reader)
@@ -159,11 +161,11 @@ namespace Server.Spells.Sixth
                 {
                     case 0:
                         {
-                            this.m_Caster = reader.ReadMobile();
-                            this.m_End = reader.ReadDeltaTime();
+                            m_Caster = reader.ReadMobile();
+                            m_End = reader.ReadDeltaTime();
 
-                            this.m_Timer = new InternalTimer(this, this.m_End - DateTime.UtcNow);
-                            this.m_Timer.Start();
+                            m_Timer = new InternalTimer(this, m_End - DateTime.UtcNow);
+                            m_Timer.Start();
 
                             break;
                         }
@@ -172,18 +174,18 @@ namespace Server.Spells.Sixth
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (this.Visible && this.m_Caster != null && (!Core.AOS || m != this.m_Caster) && SpellHelper.ValidIndirectTarget(this.m_Caster, m) && this.m_Caster.CanBeHarmful(m, false))
+                if (Visible && m_Caster != null && (!Core.AOS || m != m_Caster) && SpellHelper.ValidIndirectTarget(m_Caster, m) && m_Caster.CanBeHarmful(m, false))
                 {
                     if (SpellHelper.CanRevealCaster(m))
-                        this.m_Caster.RevealingAction();
+                        m_Caster.RevealingAction();
 
-                    this.m_Caster.DoHarmful(m);
+                    m_Caster.DoHarmful(m);
 
                     double duration;
 
                     if (Core.AOS)
                     {
-                        duration = 2.0 + ((int)(this.m_Caster.Skills[SkillName.EvalInt].Value / 10) - (int)(m.Skills[SkillName.MagicResist].Value / 10));
+                        duration = 2.0 + ((int)(m_Caster.Skills[SkillName.EvalInt].Value / 10) - (int)(m.Skills[SkillName.MagicResist].Value / 10));
 
                         if (!m.Player)
                             duration *= 3.0;
@@ -193,7 +195,7 @@ namespace Server.Spells.Sixth
                     }
                     else
                     {
-                        duration = 7.0 + (this.m_Caster.Skills[SkillName.Magery].Value * 0.2);
+                        duration = 7.0 + (m_Caster.Skills[SkillName.Magery].Value * 0.2);
                     }
 
                     m.Paralyze(TimeSpan.FromSeconds(duration));
@@ -202,7 +204,7 @@ namespace Server.Spells.Sixth
                     m.FixedEffect(0x376A, 10, 16);
 					
                     if (m is BaseCreature)
-                        ((BaseCreature)m).OnHarmfulSpell(this.m_Caster);
+                        ((BaseCreature)m).OnHarmfulSpell(m_Caster);
                 }
 
                 return true;
@@ -214,13 +216,13 @@ namespace Server.Spells.Sixth
                 public InternalTimer(Item item, TimeSpan duration)
                     : base(duration)
                 {
-                    this.Priority = TimerPriority.OneSecond;
-                    this.m_Item = item;
+                    Priority = TimerPriority.OneSecond;
+                    m_Item = item;
                 }
 
                 protected override void OnTick()
                 {
-                    this.m_Item.Delete();
+                    m_Item.Delete();
                 }
             }
         }
@@ -229,20 +231,20 @@ namespace Server.Spells.Sixth
         {
             private readonly ParalyzeFieldSpell m_Owner;
             public InternalTarget(ParalyzeFieldSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(Core.TOL ? 15 : Core.ML ? 10 : 12, true, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is IPoint3D)
-                    this.m_Owner.Target((IPoint3D)o);
+                    m_Owner.Target((IPoint3D)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

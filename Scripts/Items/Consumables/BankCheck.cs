@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - BankCheck.cs
-// **********
-#endregion
-
 #region References
 using System;
 
@@ -204,6 +198,7 @@ namespace Server.Items
 		{
 			from.Send(
 				new MessageLocalizedAffix(
+                    from.NetState,
 					Serial,
 					ItemID,
 					MessageType.Label,

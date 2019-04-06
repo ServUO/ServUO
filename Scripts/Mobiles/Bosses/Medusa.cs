@@ -8,7 +8,7 @@ using Server.Network;
 namespace Server.Mobiles
 {
     [CorpseName("a medusa corpse")]
-    public class Medusa : BaseSABosses, ICarvable
+    public class Medusa : BaseSABoss, ICarvable
     {
         private List<Mobile> m_TurnedToStone = new List<Mobile>();
         public List<Mobile> AffectedMobiles { get { return m_TurnedToStone; } }
@@ -65,6 +65,9 @@ namespace Server.Mobiles
             AddItem(Bow);
 
             m_Scales = Utility.RandomMinMax(1, 2) + 7;
+
+            SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetSpecialAbility(SpecialAbility.VenomousBite);
         }
 
         public Medusa(Serial serial)
@@ -277,7 +280,7 @@ namespace Server.Mobiles
             return 0;
         }
 
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             if (m_Scales > 0)
             {
@@ -306,10 +309,13 @@ namespace Server.Mobiles
                     new Blood(0x122D).MoveToWorld(Location, Map);
 
                     m_NextCarve = DateTime.UtcNow + TimeSpan.FromMinutes(1.0);
+                    return true;
                 }
             }
             else
                 from.SendLocalizedMessage(1112674); // There's nothing left to harvest from this creature.
+
+            return false;
         }
 
         public override void OnThink()
@@ -537,11 +543,6 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.025)
                 c.DropItem(new MedusaStatue());
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.MortalStrike;
         }
 
         public override void OnAfterDelete()

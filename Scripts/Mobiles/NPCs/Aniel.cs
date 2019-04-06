@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public CircleOfLifeQuest()
             : base()
         { 
-            this.AddObjective(new SlayObjective(typeof(BogThing), "bog things", 8));
+            AddObjective(new SlayObjective(typeof(BogThing), "bog things", 8));
 			
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Circle of Life */
@@ -68,9 +68,9 @@ namespace Server.Engines.Quests
         public DustToDustQuest()
             : base()
         { 
-            this.AddObjective(new SlayObjective(typeof(EarthElemental), "earth elementals", 12));
+            AddObjective(new SlayObjective(typeof(EarthElemental), "earth elementals", 12));
 			
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Dust to Dust */
@@ -128,9 +128,9 @@ namespace Server.Engines.Quests
         public ArchSupportQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(FootStool), "foot stools", 10, 0xB5E));
+            AddObjective(new ObtainObjective(typeof(FootStool), "foot stools", 10, 0xB5E));
 			
-            this.AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(CarpentersCraftsmanSatchel), 1074282));
         }
 
         /* Arch Support */
@@ -196,8 +196,8 @@ namespace Server.Engines.Quests
         public Aniel()
             : base("Aniel", "the aborist")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Aniel(Serial serial)
@@ -220,22 +220,22 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 			
-            this.Hue = 0x8384;
-            this.HairItemID = 0x2FC2;
-            this.HairHue = 0x36;
+            Hue = 0x8384;
+            HairItemID = 0x2FC2;
+            HairHue = 0x36;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new HalfApron(0x759));
-            this.AddItem(new ElvenPants(0x901));
-            this.AddItem(new LeafChest());
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new HalfApron(0x759));
+            AddItem(new ElvenPants(0x901));
+            AddItem(new LeafChest());
         }
 
         public override void Serialize(GenericWriter writer)

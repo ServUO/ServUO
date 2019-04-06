@@ -29,8 +29,10 @@ namespace Server.Multis
 
             this.AddItem(new Sign(SignType.Healer, SignFacing.West), -5, 5, -4);
 
-            this.AddMobile(new Healer(), 4, -4, 3, 7);
-            this.AddMobile(new Healer(), 5, 4, -2, 0);
+            this.AddMobile(new Healer(), -4, 3, 7);
+            this.AddMobile(new Healer(), 4, -2, 0);
+
+            SetDecayTime();
         }
 
         public override void Serialize(GenericWriter writer)

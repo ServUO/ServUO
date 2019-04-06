@@ -75,7 +75,6 @@ namespace Server.Regions
         }
     }
 
-
     public class NoTravelSpellsAllowed : BaseRegion
     {
         public NoTravelSpellsAllowed(XmlElement xml, Map map, Region parent)
@@ -88,17 +87,9 @@ namespace Server.Regions
             return false;
         }
 
-        public override bool OnBeginSpellCast(Mobile from, ISpell s)
+        public override bool CheckTravel(Mobile m, Point3D newLocation, Server.Spells.TravelCheckType travelType)
         {
-            if ((s is TeleportSpell || s is GateTravelSpell || s is RecallSpell || s is MarkSpell || s is SacredJourneySpell) && from.IsPlayer())
-            {
-                from.SendLocalizedMessage(500015); // You do not have that spell!
-                return false;
-            }
-            else
-            {
-                return base.OnBeginSpellCast(from, s);
-            }
+            return false;
         }
     }
 
@@ -135,9 +126,14 @@ namespace Server.Regions
                             return false;
                         }
                     }
-                    else if (equipment < 4 || pm.ExploringTheDeepQuest != ExploringTheDeepQuestChain.CollectTheComponentComplete)
+                    else if (pm.ExploringTheDeepQuest != ExploringTheDeepQuestChain.CollectTheComponentComplete)
                     {
                         m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                        return false;
+                    }
+                    else if (equipment < 4)
+                    {
+                        m.SendLocalizedMessage(1154413); // You couldn't hope to survive proceeding without the proper equipment...
                         return false;
                     }
                 }
@@ -166,19 +162,6 @@ namespace Server.Regions
         public override bool CheckTravel(Mobile m, Point3D newLocation, Server.Spells.TravelCheckType travelType)
         {
             return false;
-        }
-
-        public override bool OnBeginSpellCast(Mobile from, ISpell s)
-        {
-            if ((s is GateTravelSpell || s is RecallSpell || s is MarkSpell || s is SacredJourneySpell) && from.IsPlayer())
-            {
-                from.SendLocalizedMessage(500015); // You do not have that spell!
-                return false;
-            }
-            else
-            {
-                return base.OnBeginSpellCast(from, s);
-            }
         }
     }
 }

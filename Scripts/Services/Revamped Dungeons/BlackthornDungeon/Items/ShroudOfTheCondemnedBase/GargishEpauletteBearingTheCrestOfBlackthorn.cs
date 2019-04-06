@@ -19,12 +19,9 @@ namespace Server.Items
             Attributes.BonusHits = 3;
             Attributes.BonusInt = 5;
             Hue = 2075;
-
-            Layer = Layer.OuterTorso;
+			
+			Layer = Layer.OuterTorso;
         }
-
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
 
         public GargishEpauletteBearingTheCrestOfBlackthorn1(Serial serial)
             : base(serial)
@@ -34,22 +31,28 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (Layer != Layer.OuterTorso)
+			
+			if (version == 0)
             {
-                if (Parent is Mobile)
-                {
-                    ((Mobile)Parent).AddToBackpack(this);
-                }
+                MaxHitPoints = 0;
+                HitPoints = 0;
 
-                Layer = Layer.OuterTorso;
+                if (Layer != Layer.OuterTorso)
+                {
+                    if (Parent is Mobile)
+                    {
+                        ((Mobile)Parent).AddToBackpack(this);
+                    }
+
+                    Layer = Layer.OuterTorso;
+                }
             }
         }
     }

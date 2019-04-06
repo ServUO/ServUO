@@ -334,9 +334,10 @@ namespace Server.Engines.BulkOrders
                 RewardCollection.Add(new BODCollectionItem(0x2F5B, 1152675, CraftResources.GetHue(CraftResource.Agapite), 475, SmeltersTalisman, (int)CraftResource.Agapite));
                 RewardCollection.Add(new BODCollectionItem(0x9E7E, 1157216, 0, 500, RockHammer));
                 RewardCollection.Add(new BODCollectionItem(0x13E3, 1157092, CraftResources.GetHue(CraftResource.DullCopper), 500, RunicHammer, 1));
-                RewardCollection.Add(new BODCollectionItem(0x2F5B, 1152676, CraftResources.GetHue(CraftResource.Verite), 475, SmeltersTalisman, (int)CraftResource.Verite));
+                RewardCollection.Add(new BODCollectionItem(0x2F5B, 1152676, CraftResources.GetHue(CraftResource.Verite), 525, SmeltersTalisman, (int)CraftResource.Verite));
                 RewardCollection.Add(new BODCollectionItem(0x13E3, 1157093, CraftResources.GetHue(CraftResource.ShadowIron), 550, RunicHammer, 2));
                 RewardCollection.Add(new BODCollectionItem(0x9E2A, 1157218, 0, 550, CraftsmanTalisman, 25));
+                RewardCollection.Add(new BODCollectionItem(0x2F5B, 1152677, CraftResources.GetHue(CraftResource.Valorite), 575, SmeltersTalisman, (int)CraftResource.Valorite));
                 RewardCollection.Add(new BODCollectionItem(0x14EC, 1152665, CraftResources.GetHue(CraftResource.Gold), 600, HarvestMap, (int)CraftResource.Gold));
                 RewardCollection.Add(new BODCollectionItem(0xFAF, 1157100, 0, 625, ColoredAnvil));
                 RewardCollection.Add(new BODCollectionItem(0x14F0, 1157105, 0x481, 625, PowerScroll, 5));
@@ -478,7 +479,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E2A);
+            return new MasterCraftsmanTalisman(type, 0x9E2A, TalismanSkill.Blacksmithy);
         }
         #endregion
 
@@ -745,7 +746,7 @@ namespace Server.Engines.BulkOrders
             new int[] { 0x48D, 0x490, 0x48E, 0x491 },
             new int[] { 0x48F, 0x494, 0x484, 0x497 },
             new int[] { 0x489, 0x47F, 0x482, 0x47E },
-            new int[] { 0xAAC, 0xAB4, 0xAAF, 0xAB5 },
+            new int[] { 0xAAC, 0xAB4, 0xAAF, 0xAB5, 0xAAB },
         };
 
         private static Item CreateCloth(int type)
@@ -843,7 +844,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CreateCraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E25);
+            return new MasterCraftsmanTalisman(type, 0x9E25, TalismanSkill.Tailoring);
         }
 
         #endregion
@@ -1017,7 +1018,7 @@ namespace Server.Engines.BulkOrders
         {
             RewardCollection = new List<CollectionItem>();
 
-            RewardCollection.Add(new BODCollectionItem(0xE9B, 1157219, 0, 10, TinkerTools));
+            RewardCollection.Add(new BODCollectionItem(0x1EBC, 1157219, 0, 10, TinkerTools));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157186, 0, 25, RewardTitle, 5));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157187, 0, 50, RewardTitle, 6));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157190, 0, 210, RewardTitle, 9));
@@ -1026,7 +1027,7 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x2831, 1157287, 0, 310, Recipe, 1));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157189, 0, 225, RewardTitle, 8));
             RewardCollection.Add(new BODCollectionItem(0x2831, 1157289, 0, 350, Recipe, 2));
-            RewardCollection.Add(new BODCollectionItem(0x9E2B, 1157264, 0, 400, CraftsmanTalisman, 10)); // todo: Get id
+            RewardCollection.Add(new BODCollectionItem(0x9E2B, 1157264, 0, 400, CraftsmanTalisman, 10));
             RewardCollection.Add(new BODCollectionItem(0x2F5B, 1152674, CraftResources.GetHue(CraftResource.Gold), 450, SmeltersTalisman, (int)CraftResource.Gold));
             RewardCollection.Add(new BODCollectionItem(0x14EC, 1152665, CraftResources.GetHue(CraftResource.Gold), 500, HarvestMap, (int)CraftResource.Gold));
             RewardCollection.Add(new BODCollectionItem(0x9E2B, 1157218, 0, 550, CraftsmanTalisman, 25)); // todo: Get id
@@ -1070,7 +1071,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E2B);
+            return new MasterCraftsmanTalisman(type, 0x9E2B, TalismanSkill.Tinkering);
         }
         #endregion
 
@@ -1225,7 +1226,7 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x12B3, 1157298, CraftResources.GetHue(CraftResource.Agapite), 1000, RunicMalletAndChisel, 6));
             RewardCollection.Add(new BODCollectionItem(0x14EC, 1152672, CraftResources.GetHue(CraftResource.Frostwood), 1050, HarvestMap, (int)CraftResource.Frostwood));
             RewardCollection.Add(new BODCollectionItem(0x12B3, 1157299, CraftResources.GetHue(CraftResource.Verite), 1100, RunicMalletAndChisel, 7));
-            RewardCollection.Add(new BODCollectionItem(0x14EC, 1157226, CraftResources.GetHue(CraftResource.Heartwood), 1150, RunicDovetailSaw, 3));
+            RewardCollection.Add(new BODCollectionItem(0x1029, 1157226, CraftResources.GetHue(CraftResource.Heartwood), 1150, RunicDovetailSaw, 3));
             RewardCollection.Add(new BODCollectionItem(0x12B3, 1157300, CraftResources.GetHue(CraftResource.Valorite), 1150, RunicMalletAndChisel, 8));
         }
 
@@ -1252,7 +1253,7 @@ namespace Server.Engines.BulkOrders
             switch (type)
             {
                 default:
-                case 0: return new RunicDovetailSaw(CraftResource.OakWood, 50);
+                case 0: return new RunicDovetailSaw(CraftResource.OakWood, 45);
                 case 1: return new RunicDovetailSaw(CraftResource.AshWood, 35);
                 case 2: return new RunicDovetailSaw(CraftResource.YewWood, 25);
                 case 3: return new RunicDovetailSaw(CraftResource.Heartwood, 15);
@@ -1261,7 +1262,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E2C);
+            return new MasterCraftsmanTalisman(type, 0x9E2C, TalismanSkill.Carpentry);
         }
         #endregion
 
@@ -1421,7 +1422,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E28);
+            return new MasterCraftsmanTalisman(type, 0x9E28, TalismanSkill.Inscription);
         }
 
         private static Item ImprovementTalisman(int type)
@@ -1544,7 +1545,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E27);
+            return new MasterCraftsmanTalisman(type, 0x9E27, TalismanSkill.Cooking);
         }
 
         private static Item CreateItem(int type)
@@ -1589,7 +1590,7 @@ namespace Server.Engines.BulkOrders
             new RewardType(250, typeof(UnbakedFruitPie), typeof(UnbakedPeachCobbler), typeof(UnbakedApplePie), typeof(UnbakedPumpkinPie)),
             new RewardType(300, typeof(CookedBird), typeof(FishSteak), typeof(FriedEggs), typeof(LambLeg), typeof(Ribs)),
             new RewardType(350, typeof(Cookies), typeof(Cake), typeof(Muffins), typeof(ThreeTieredCake)),
-            new RewardType(400, typeof(EnchantedApple), typeof(TribalPaint), typeof(WrathGrapes), typeof(EggBomb)),
+            new RewardType(400, typeof(EnchantedApple), typeof(TribalPaint), typeof(GrapesOfWrath), typeof(EggBomb)),
             new RewardType(450, typeof(MisoSoup), typeof(WhiteMisoSoup), typeof(RedMisoSoup), typeof(AwaseMisoSoup)),
             new RewardType(500, typeof(WasabiClumps), typeof(SushiRolls), typeof(SushiPlatter), typeof(GreenTea)),
         };
@@ -1682,7 +1683,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E29);
+            return new MasterCraftsmanTalisman(type, 0x9E29, TalismanSkill.Fletching);
         }
 
         private static Item CreateRunicFletcherTools(int type)
@@ -1690,7 +1691,7 @@ namespace Server.Engines.BulkOrders
             switch (type)
             {
                 default:
-                case 0: return new RunicFletcherTool(CraftResource.OakWood, 50);
+                case 0: return new RunicFletcherTool(CraftResource.OakWood, 45);
                 case 1: return new RunicFletcherTool(CraftResource.AshWood, 35);
                 case 2: return new RunicFletcherTool(CraftResource.YewWood, 25);
                 case 3: return new RunicFletcherTool(CraftResource.Heartwood, 15);
@@ -1813,7 +1814,7 @@ namespace Server.Engines.BulkOrders
         {
             RewardCollection = new List<CollectionItem>();
 
-            RewardCollection.Add(new BODCollectionItem(0xE9B, 1157201, 0, 10, MortarAndPestle));
+            RewardCollection.Add(new BODCollectionItem(0xE9B, 1157219, 0, 10, MortarAndPestle));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157183, 0, 25, RewardTitle, 20));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157202, 0, 50, RewardTitle, 21));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157203, 0, 210, RewardTitle, 22));
@@ -1860,7 +1861,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E26);
+            return new MasterCraftsmanTalisman(type, 0x9E26, TalismanSkill.Alchemy);
         }
         #endregion
 

@@ -14,7 +14,7 @@ namespace Server.Engines.Points
 		public override PointsType Loyalty { get { return PointsType.VoidPool; } }
 		public override TextDefinition Name { get { return m_Name; } }
 		public override bool AutoAdd { get { return true; } }
-		public override double MaxPoints { get { return int.MaxValue; } }
+        public override double MaxPoints { get { return double.MaxValue; } }
 
         private TextDefinition m_Name = new TextDefinition(1152733);
 		
@@ -32,24 +32,45 @@ namespace Server.Engines.Points
 		{
 			return new TextDefinition(1152531); // The Void Pool
 		}
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            if (Version >= 2)
+            {
+                int version = reader.ReadInt();
+
+                // all deserialize code in here
+            }
+        }
 	}
 
     public class VoidPoolInfo : ContextMenuEntry
     {
         private Mobile m_From;
+        private VoidPoolController m_Controller;
 
-        public VoidPoolInfo(Mobile from)
+        public VoidPoolInfo(Mobile from, VoidPoolController controller)
             : base(1152531, -1) // The Void Pool
         {
             m_From = from;
+            m_Controller = controller;
         }
 
         public override void OnClick()
         {
-            Region r = Region.Find(m_From.Location, m_From.Map);
-
-            if (m_From is PlayerMobile && r is VoidPoolRegion && ((VoidPoolRegion)r).Controller != null)
-                m_From.SendGump(new VoidPoolGump(((VoidPoolRegion)r).Controller, m_From as PlayerMobile));
+            if (m_From is PlayerMobile && m_Controller != null)
+            {
+                m_From.SendGump(new VoidPoolGump(m_Controller, m_From as PlayerMobile));
+            }
         }
     }
 }

@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,9 +31,9 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(IronIngot), 9, 16, 0x1BF2, 0));
-                this.Add(new GenericBuyInfo(typeof(Tongs), 13, 14, 0xFBB, 0));
-                this.Add(new GenericBuyInfo(typeof(GemMiningBook), 10625, 20, 0xFBE, 0));
+                Add(new GenericBuyInfo(typeof(IronIngot), 9, 16, 0x1BF2, 0));
+                Add(new GenericBuyInfo(typeof(Tongs), 13, 14, 0xFBB, 0));
+                Add(new GenericBuyInfo(typeof(GemMiningBook), 10625, 20, 0xFBE, 0));
 
             }
         }
@@ -42,8 +42,8 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(IronIngot), 4);
-                this.Add(typeof(Tongs), 7);
+                Add(typeof(IronIngot), 4);
+                Add(typeof(Tongs), 7);
             }
         }
     }

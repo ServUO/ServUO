@@ -1,7 +1,5 @@
 using Server;
 using System;
-using Server.Mobiles;
-using Server.Items;
 using System.Collections.Generic;
 using Server.Accounting;
 
@@ -18,7 +16,6 @@ namespace Server.Engines.NewMagincia
         private bool m_Complete;
         private Mobile m_Winner;
         private Map m_Map;
-        private Point3D m_StoneLoc;
         private DateTime m_Expires;
 
         [CommandProperty(AccessLevel.GameMaster)]

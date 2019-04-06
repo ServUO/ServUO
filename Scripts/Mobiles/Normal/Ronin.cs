@@ -12,7 +12,7 @@ namespace Server.Mobiles
         private DateTime m_NextWeaponChange;
 
 		[Constructable]
-		public Ronin() : base( AIType.AI_Samurai, FightMode.Closest, 10, 1, 0.2, 0.4 )
+		public Ronin() : base( AIType.AI_Samurai, FightMode.Closest, 10, 1, 0.3, 0.6 )
 		{
 			SpeechHue = Utility.RandomDyedHue();
 			Hue = Utility.RandomSkinHue();
@@ -71,9 +71,7 @@ namespace Server.Mobiles
 				case 1: AddItem( new LeatherSuneate() ); break;
 				case 2: AddItem( new PlateSuneate() ); break;
 			}
-			
 
-			
 			if( Utility.RandomDouble() > .2 )
 				AddItem( new NoDachi() );
 			else
@@ -83,6 +81,8 @@ namespace Server.Mobiles
 			PackItem( new Longsword() );
 
 			Utility.AssignRandomHair( this );
+
+            SetWeaponAbility(WeaponAbility.RidingSwipe);
 		}
 		
 		public override void OnDeath( Container c )
@@ -111,11 +111,6 @@ namespace Server.Mobiles
 
                 return base.WeaponAbilityChance;
             } 
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.RidingSwipe;
         }
 
         private void ChangeWeapon()

@@ -5,18 +5,17 @@ namespace Server.Items
     public class DraconisWrath : Katana
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1114789; } } // Draconi's Wrath
+		
         [Constructable]
         public DraconisWrath() 
-        {
-            this.Name = ("Draconi's Wrath");
-		
-            this.Hue = 1177;
-		
-            this.AbsorptionAttributes.EaterFire = 20;
-            this.WeaponAttributes.HitFireball = 60;	
-            this.Attributes.AttackChance = 15;
-            this.Attributes.WeaponDamage = 50;
-            this.WeaponAttributes.UseBestSkill = 1;	
+        {	
+            Hue = 1177;	
+            AbsorptionAttributes.EaterFire = 20;
+            WeaponAttributes.HitFireball = 60;	
+            Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 50;
+            WeaponAttributes.UseBestSkill = 1;	
         }
 
         public DraconisWrath(Serial serial)

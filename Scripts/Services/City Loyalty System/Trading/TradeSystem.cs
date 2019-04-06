@@ -1,3 +1,4 @@
+
 using System;
 using Server;
 using Server.Mobiles;
@@ -106,9 +107,17 @@ namespace Server.Engines.CityLoyalty
                     string name = null;
 
                     Type t = GetRandomTrade(origin, destination, ref worth, ref name);
-                    int amount = Utility.RandomList(5, 10, 15, 20);
 
-                    entry.Details.Add(new TradeEntry.TradeDetails(t, worth, amount, name));
+                    if (t != null)
+                    {
+                        int amount = Utility.RandomList(5, 10, 15, 20);
+                        entry.Details.Add(new TradeEntry.TradeDetails(t, worth, amount, name));
+                    }
+                    else
+                    {
+                        minister.SayTo(from, "There are no trades available at this time.");
+                        return false;
+                    }
                 }
 
 				if(from.Backpack == null || !from.Backpack.TryDropItem(from, crate, false))
@@ -192,15 +201,15 @@ namespace Server.Engines.CityLoyalty
         {
             switch (entry.Completed)
             {
-                case 1: entry.Player.AddCollectionTitle((int)TradeTitle.Trader); break;
-                case 25: entry.Player.AddCollectionTitle((int)TradeTitle.Exporter); break;
-                case 50: entry.Player.AddCollectionTitle((int)TradeTitle.Broker); break;
-                case 100: entry.Player.AddCollectionTitle((int)TradeTitle.Tycoon); break;
-                case 150: entry.Player.AddCollectionTitle((int)TradeTitle.Magnate); break;
+                case 1: entry.Player.AddRewardTitle((int)TradeTitle.Trader); break;
+                case 25: entry.Player.AddRewardTitle((int)TradeTitle.Exporter); break;
+                case 50: entry.Player.AddRewardTitle((int)TradeTitle.Broker); break;
+                case 100: entry.Player.AddRewardTitle((int)TradeTitle.Tycoon); break;
+                case 150: entry.Player.AddRewardTitle((int)TradeTitle.Magnate); break;
             }
 
             if(entry.CompletedSlim == 50)
-                entry.Player.AddCollectionTitle((int)TradeTitle.Smuggler);
+                entry.Player.AddRewardTitle((int)TradeTitle.Smuggler);
         }
 
         public override void OnPlayerAdded(PlayerMobile m)
@@ -293,8 +302,10 @@ namespace Server.Engines.CityLoyalty
         public static Type GetRandomTrade(City originCity, City dest, ref int worth, ref string name)
         {
             Region region = CityLoyaltySystem.GetCityInstance(originCity).Definition.Region;
-
             List<BaseVendor> list = new List<BaseVendor>(region.GetEnumeratedMobiles().OfType<BaseVendor>().Where(bv => bv.GetBuyInfo() != null && bv.GetBuyInfo().Length > 0));
+
+            if (list.Count == 0)
+                return null;
 
             do
             {
@@ -303,7 +314,7 @@ namespace Server.Engines.CityLoyalty
 
                 GenericBuyInfo info = buyInfo[Utility.Random(buyInfo.Length)] as GenericBuyInfo;
 
-                if (!(info is BeverageBuyInfo) && !(info is AnimalBuyInfo) && info != null && info.Type != null && info.Args == null)
+                if (!(info is BeverageBuyInfo) && !(info is AnimalBuyInfo) && info != null && info.Type != null && info.Args == null && info.Price < 5000)
                 {
                     list.Clear();
                     list.TrimExcess();
@@ -436,14 +447,17 @@ namespace Server.Engines.CityLoyalty
 
                     Point3D p = m.Location;
 
-                    for (int j = 0; j < 25; j++)
+                    if (m.Map != null)
                     {
-                        Point3D check = zone.GetRandomSpawnPoint(m.Map);
-
-                        if (CanFit(check.X, check.Y, check.Z, m.Map, bc))
+                        for (int j = 0; j < 25; j++)
                         {
-                            p = check;
-                            break;
+                            Point3D check = m.Map.GetRandomSpawnPoint(zone);
+
+                            if (CanFit(check.X, check.Y, check.Z, m.Map, bc))
+                            {
+                                p = check;
+                                break;
+                            }
                         }
                     }
 
@@ -455,6 +469,15 @@ namespace Server.Engines.CityLoyalty
                     bc.RawStr += (int)(bc.RawStr * difficulty);
                     bc.RawInt += (int)(bc.RawInt * difficulty);
                     bc.RawDex += (int)(bc.RawDex * difficulty);
+                    
+                    if (bc.HitsMaxSeed == -1)
+                        bc.HitsMaxSeed = bc.RawStr;
+
+                    if (bc.StamMaxSeed == -1)
+                        bc.StamMaxSeed = bc.RawDex;
+
+                    if (bc.ManaMaxSeed == -1)
+                        bc.ManaMaxSeed = bc.RawInt;
 
                     bc.HitsMaxSeed += (int)(bc.HitsMaxSeed * difficulty);
                     bc.StamMaxSeed += (int)(bc.StamMaxSeed * difficulty);
@@ -479,10 +502,10 @@ namespace Server.Engines.CityLoyalty
 
                     bc.MoveToWorld(p, m.Map);
                     Timer.DelayCall(() => bc.Combatant = m);
-
-                    m.SendLocalizedMessage(1049330, "", 0x22); // You have been ambushed! Fight for your honor!!!
                 }
             }
+
+            m.SendLocalizedMessage(1049330, "", 0x22); // You have been ambushed! Fight for your honor!!!
         }
 
         public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
@@ -655,7 +678,7 @@ namespace Server.Engines.CityLoyalty
 			public override void Serialize(GenericWriter writer)
 			{
 				base.Serialize(writer);
-				writer.Write(0);
+				writer.Write(1);
 				
 				writer.Write(Canceled);
 				writer.Write(DistanceTraveled);
@@ -701,6 +724,15 @@ namespace Server.Engines.CityLoyalty
                             Ambushers[bc] = dt;
                         }
                     }
+                }
+
+                if (version == 0)
+                {
+                    Timer.DelayCall(() =>
+                        {
+                            if (Player.RemoveRewardTitle(2303807, true))
+                                Player.AddRewardTitle(1151739);
+                        });
                 }
 			}
 		}

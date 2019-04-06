@@ -10,42 +10,44 @@ namespace Server.Mobiles
         public RedDeath()
             : base("Red Death")
         {
-            this.Hue = 0x21;
-            this.BaseSoundID = 0x1C3;
+            Hue = 0x21;
+            BaseSoundID = 0x1C3;
 
-            this.AI = AIType.AI_Melee;
-            this.FightMode = FightMode.Closest;
+            AI = AIType.AI_Melee;
+            FightMode = FightMode.Closest;
 
-            this.SetStr(319, 324);
-            this.SetDex(241, 244);
-            this.SetInt(242, 255);
+            SetStr(319, 324);
+            SetDex(241, 244);
+            SetInt(242, 255);
 
-            this.SetHits(1540, 1605);
+            SetHits(1540, 1605);
 
-            this.SetDamage(25, 29);
+            SetDamage(25, 29);
 
-            this.SetDamageType(ResistanceType.Physical, 25);
-            this.SetDamageType(ResistanceType.Fire, 75);
-            this.SetDamageType(ResistanceType.Cold, 0);
+            SetDamageType(ResistanceType.Physical, 25);
+            SetDamageType(ResistanceType.Fire, 75);
+            SetDamageType(ResistanceType.Cold, 0);
 
-            this.SetResistance(ResistanceType.Physical, 60, 70);
-            this.SetResistance(ResistanceType.Fire, 90);
-            this.SetResistance(ResistanceType.Cold, 0);
-            this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 0);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 90);
+            SetResistance(ResistanceType.Cold, 0);
+            SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Energy, 0);
 
-            this.SetSkill(SkillName.Wrestling, 121.4, 143.7);
-            this.SetSkill(SkillName.Tactics, 120.9, 142.2);
-            this.SetSkill(SkillName.MagicResist, 120.1, 142.3);
-            this.SetSkill(SkillName.Anatomy, 120.2, 144.0);
+            SetSkill(SkillName.Wrestling, 121.4, 143.7);
+            SetSkill(SkillName.Tactics, 120.9, 142.2);
+            SetSkill(SkillName.MagicResist, 120.1, 142.3);
+            SetSkill(SkillName.Anatomy, 120.2, 144.0);
 
-            this.Fame = 28000;
-            this.Karma = -28000;
+            Fame = 28000;
+            Karma = -28000;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
+
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
 
         public RedDeath(Serial serial)
@@ -90,14 +92,9 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 3);
-            this.AddLoot(LootPack.MedScrolls, 2);
-            this.AddLoot(LootPack.HighScrolls, 2);
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.WhirlwindAttack;
+            AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.HighScrolls, 2);
         }
 
         public override void OnDeath(Container c)

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Engines.Harvest;
+using Server.Network;
+using Server.Gumps;
 
 namespace Server.Engines.Quests
 {
@@ -62,6 +64,9 @@ namespace Server.Engines.Quests
                 g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
             else
                 g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
+
+            g.AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+            g.AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
 
             g.AddHtmlObject(160, 70, 330, 16, Title, BaseQuestGump.DarkGreen, false, false);
             g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
@@ -183,6 +188,9 @@ namespace Server.Engines.Quests
             else
                 g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
 
+            g.AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+            g.AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
+
             g.AddHtmlObject(160, 70, 330, 16, Title, BaseQuestGump.DarkGreen, false, false);
             g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
             g.AddHtmlLocalized(98, 156, 312, 16, 1072208, 0x2710, false, false); // All of the following	
@@ -235,6 +243,9 @@ namespace Server.Engines.Quests
                 g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
             else
                 g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
+
+            g.AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+            g.AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
 
             g.AddHtmlObject(160, 70, 330, 16, Title, BaseQuestGump.DarkGreen, false, false);
             g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
@@ -331,45 +342,35 @@ namespace Server.Engines.Quests
             AddObjective(new InternalObjective());
 			AddReward( new BaseReward( typeof(FiresOfKukuzz), 1, 1156553  ) ); // Trust of the Jukari Tribe
 		}
-
-        public override bool RenderObjective(MondainQuestGump g, bool offer)
-        {
-            if (offer)
-                g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
-            else
-                g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
-
-            g.AddHtmlObject(160, 70, 330, 16, Title, BaseQuestGump.DarkGreen, false, false);
-            g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
-            g.AddHtmlLocalized(98, 156, 312, 16, 1072208, 0x2710, false, false); // All of the following	
-            g.AddHtmlLocalized(98, 172, 300, 16, 1156538, 0xFFFF, false, false); // Recover 5 lava rocks from the Caldera of the Great Volcano
-
-            return true;
-        }
 		
 		public static Rectangle2D VolcanoMineBounds = new Rectangle2D(879, 1568, 95, 95);
 		
 		public static bool OnHarvest(Mobile m, Item tool)
 		{
-            if (m is PlayerMobile && VolcanoMineBounds.Contains(m.Location))
+            if (!(m is PlayerMobile) || m.Map != Map.TerMur)
+                return false;
+
+            PlayerMobile pm = m as PlayerMobile;
+
+            if ((pm.ToggleMiningStone || pm.ToggleStoneOnly) && VolcanoMineBounds.Contains(m.Location))
 			{
                 object locked = tool;
 
                 if (!m.BeginAction(locked))
                     return false;
 
-                m.Animate(Utility.RandomList(Mining.System.OreAndStone.EffectActions), 5, 1, true, false, 0);
+                m.Animate(AnimationType.Attack, 3);
+
                 Timer.DelayCall(Mining.System.OreAndStone.EffectSoundDelay, () =>
-                    {
-                        m.PlaySound(Utility.RandomList(Mining.System.OreAndStone.EffectSounds));
-                    });
+                {
+                    m.PlaySound(Utility.RandomList(Mining.System.OreAndStone.EffectSounds));
+                });
 
                 Timer.DelayCall(Mining.System.OreAndStone.EffectDelay, () =>
                     {
-                        TheGreatVolcanoQuest quest = QuestHelper.GetQuest((PlayerMobile)m, typeof(TheGreatVolcanoQuest)) as TheGreatVolcanoQuest;
-                        Map map = m.Map;
+                        TheGreatVolcanoQuest quest = QuestHelper.GetQuest(pm, typeof(TheGreatVolcanoQuest)) as TheGreatVolcanoQuest;
 
-                        if (map != null && map != Map.Internal && quest != null && !quest.Completed && 0.05 > Utility.RandomDouble())
+                        if (quest != null && !quest.Completed && 0.05 > Utility.RandomDouble())
                         {
                             if (m.CheckSkill(SkillName.Mining, 90, 100))
                             {
@@ -384,34 +385,36 @@ namespace Server.Engines.Quests
                                     {
                                         int x = Utility.RandomMinMax(p.X - 1, p.X + 1);
                                         int y = Utility.RandomMinMax(p.Y - 1, p.Y + 1);
-                                        int z = map.GetAverageZ(x, y);
+                                        int z = Map.TerMur.GetAverageZ(x, y);
 
-                                        if (map.CanSpawnMobile(x, y, z))
+                                        if (Map.TerMur.CanSpawnMobile(x, y, z))
                                         {
                                             p = new Point3D(x, y, z);
                                             break;
                                         }
                                     }
 
-                                    spawn.MoveToWorld(p, map);
+									spawn.OnBeforeSpawn(p, Map.TerMur);
+                                    spawn.MoveToWorld(p, Map.TerMur);
+									spawn.OnAfterSpawn();
+
                                     spawn.Combatant = m;
 
                                     m.SendLocalizedMessage(1156508);  // Uh oh...that doesn't look like a lava rock!
                                 }
                                 else if (0.55 > chance)
                                 {
-                                    //m.AddToBackpack(new LavaStone());
                                     m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156507, m.NetState); // *You uncover a lava rock and carefully store it for later!*
                                     quest.Update(m);
                                 }
                                 else
-                                    m.SendLocalizedMessage(1156509);  // You loosen some dirt but fail to find anything.
+                                    m.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1156509); // You loosen some dirt but fail to find anything.
                             }
                             else
-                                m.SendLocalizedMessage(1156509);  // You loosen some dirt but fail to find anything.
+                                m.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1156509); // You loosen some dirt but fail to find anything.
                         }
                         else
-                            m.SendLocalizedMessage(1156509);  // You loosen some dirt but fail to find anything.
+                            m.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1156509); // You loosen some dirt but fail to find anything.
 
                         if (tool is IUsesRemaining)
                         {
@@ -455,6 +458,11 @@ namespace Server.Engines.Quests
 
         private class InternalObjective : BaseObjective
         {
+            public override object ObjectiveDescription
+            {
+                get { return 1156538; } // Recover 5 lava rocks from the Caldera of the Great Volcano
+            }
+
             public InternalObjective()
                 : base(5)
             {
@@ -525,6 +533,9 @@ namespace Server.Engines.Quests
                 g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
             else
                 g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
+
+            g.AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+            g.AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
 
             g.AddHtmlObject(160, 70, 330, 16, Title, BaseQuestGump.DarkGreen, false, false);
             g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
@@ -631,6 +642,9 @@ namespace Server.Engines.Quests
                 g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
             else
                 g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
+
+            g.AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+            g.AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
 
             g.AddHtmlObject(160, 70, 330, 16, Title, BaseQuestGump.DarkGreen, false, false);
             g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:

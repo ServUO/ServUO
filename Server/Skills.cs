@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Skills.cs
-// **********
-#endregion
-
 #region References
 using System;
 using System.Collections;
@@ -159,6 +153,11 @@ namespace Server
                             {
                                 VolumeLearned = reader.ReadInt();
                             }
+
+                            if ((version & 0x10) != 0)
+                            {
+                                NextGGSGain = reader.ReadDateTime();
+                            }
 						}
 
 						break;
@@ -193,7 +192,7 @@ namespace Server
 
 		public void Serialize(GenericWriter writer)
 		{
-			if (m_Base == 0 && m_Cap == 1000 && m_Lock == SkillLock.Up)
+            if (m_Base == 0 && m_Cap == 1000 && m_Lock == SkillLock.Up && VolumeLearned == 0 && NextGGSGain == DateTime.MinValue)
 			{
 				writer.Write((byte)0xFF); // default
 			}
@@ -221,6 +220,11 @@ namespace Server
                     flags |= 0x8;
                 }
 
+                if (NextGGSGain != DateTime.MinValue)
+                {
+                    flags |= 0x10;
+                }
+
 				writer.Write((byte)flags); // version
 
 				if (m_Base != 0)
@@ -242,6 +246,11 @@ namespace Server
                 {
                     writer.Write((int)VolumeLearned);
                 }
+
+                if (NextGGSGain != DateTime.MinValue)
+                {
+                    writer.Write(NextGGSGain);
+                }
 			}
 		}
 
@@ -261,6 +270,13 @@ namespace Server
 
         [CommandProperty(AccessLevel.Counselor)]
         public int VolumeLearned
+        {
+            get;
+            set;
+        }
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public DateTime NextGGSGain
         {
             get;
             set;
@@ -331,7 +347,21 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-		public double Cap { get { return (m_Cap / 10.0); } set { CapFixedPoint = (int)(value * 10.0); } }
+		public double Cap 
+        { 
+            get { return (m_Cap / 10.0); }
+            set
+            {
+                double old = m_Cap / 10;
+
+                CapFixedPoint = (int)(value * 10.0);
+
+                if (old != value && Owner.Owner != null)
+                {
+                    EventSink.InvokeSkillCapChange(new SkillCapChangeEventArgs(Owner.Owner, this, old, value));
+                }
+            }
+        }
 
 		private static bool m_UseStatMods;
 
@@ -431,6 +461,8 @@ namespace Server
 					}
 				}
 
+				m_Owner.Owner.MutateSkill((SkillName)m_Info.SkillID, ref value);
+
 				return value;
 			}
 		}
@@ -504,7 +536,8 @@ namespace Server
 			double gainFactor,
 			StatCode primary,
             StatCode secondary, 
-            bool mastery = false)
+            bool mastery = false,
+            bool usewhilecasting = false)
 		{
 			Name = name;
 			Title = title;
@@ -520,6 +553,7 @@ namespace Server
 			Primary = primary;
 			Secondary = secondary;
             IsMastery = mastery;
+            UseWhileCasting = usewhilecasting;
 
 			StatTotal = strScale + dexScale + intScale;
 		}
@@ -552,6 +586,10 @@ namespace Server
 		public double GainFactor { get; set; }
 
         public bool IsMastery { get; set; }
+
+        public bool UseWhileCasting { get; set; }
+
+        public int Localization { get { return 1044060 + SkillID; } }
 
         private static SkillInfo[] m_Table = new SkillInfo[58]
 		{
@@ -587,7 +625,7 @@ namespace Server
 			new SkillInfo(29, "Musicianship", 0.0, 0.0, 0.0, "Bard", null, 0.0, 0.8, 0.2, 1.0, StatCode.Dex, StatCode.Int),
 			new SkillInfo(30, "Poisoning", 0.0, 4.0, 16.0, "Assassin", null, 0.0, 0.4, 1.6, 1.0, StatCode.Int, StatCode.Dex, true ),
 			new SkillInfo(31, "Archery", 2.5, 7.5, 0.0, "Archer", null, 0.25, 0.75, 0.0, 1.0, StatCode.Dex, StatCode.Str, true ),
-			new SkillInfo(32, "Spirit Speak", 0.0, 0.0, 0.0, "Medium", null, 0.0, 0.0, 1.0, 1.0, StatCode.Int, StatCode.Str),
+			new SkillInfo(32, "Spirit Speak", 0.0, 0.0, 0.0, "Medium", null, 0.0, 0.0, 1.0, 1.0, StatCode.Int, StatCode.Str, false, true),
 			new SkillInfo(33, "Stealing", 0.0, 10.0, 0.0, "Pickpocket", null, 0.0, 1.0, 0.0, 1.0, StatCode.Dex, StatCode.Int),
 			new SkillInfo(34, "Tailoring", 3.75, 16.25, 5.0, "Tailor", null, 0.38, 1.63, 0.5, 1.0, StatCode.Dex, StatCode.Int),
 			new SkillInfo(35, "Animal Taming", 14.0, 2.0, 4.0, "Tamer", null, 1.4, 0.2, 0.4, 1.0, StatCode.Str, StatCode.Int, true ),
@@ -871,7 +909,7 @@ namespace Server
 
 				if (info.Callback != null)
 				{
-					if (Core.TickCount - from.NextSkillTime >= 0 && from.Spell == null)
+					if (Core.TickCount - from.NextSkillTime >= 0 && (info.UseWhileCasting || from.Spell == null))
 					{
 						from.DisruptiveAction();
 
@@ -1052,6 +1090,9 @@ namespace Server
 			if (ns != null)
 			{
 				ns.Send(new SkillChange(skill));
+
+				m_Owner.Delta(MobileDelta.Skills);
+				m_Owner.ProcessDelta();
 			}
 		}
 

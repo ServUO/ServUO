@@ -8,13 +8,12 @@ namespace Server.Items
         [Constructable]
         public BlightGrippedLongbow()
         {
-            this.Hue = 0x8A4;
-
-            this.WeaponAttributes.HitPoisonArea = 20;
-            this.Attributes.RegenStam = 3;
-            this.Attributes.NightSight = 1;
-            this.Attributes.WeaponSpeed = 20;
-            this.Attributes.WeaponDamage = 35;
+            Hue = 0x8A4;
+            WeaponAttributes.HitPoisonArea = 20;
+            Attributes.RegenStam = 3;
+            Attributes.NightSight = 1;
+            Attributes.WeaponSpeed = 20;
+            Attributes.WeaponDamage = 35;
         }
 
         public BlightGrippedLongbow(Serial serial)

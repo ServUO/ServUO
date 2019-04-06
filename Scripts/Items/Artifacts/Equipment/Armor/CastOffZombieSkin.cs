@@ -7,24 +7,21 @@ namespace Server.Items
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public CastOffZombieSkin() 
-        {
-            this.Name = ("Cast-Off Zombie Skin");
-		
-            this.Hue = 1893;	
-			this.Weight = 4;
-		
-            this.SkillBonuses.SetValues(0, SkillName.Necromancy, 5.0);	
-            this.SkillBonuses.SetValues(1, SkillName.SpiritSpeak, 5.0);	
-            this.Attributes.LowerManaCost = 5;
-            this.Attributes.LowerRegCost = 8;
-            this.Attributes.IncreasedKarmaLoss = 5;
-			this.StrRequirement = 25;
+        {	
+            Hue = 1893;		
+            SkillBonuses.SetValues(0, SkillName.Necromancy, 5.0);	
+            SkillBonuses.SetValues(1, SkillName.SpiritSpeak, 5.0);	
+            Attributes.LowerManaCost = 5;
+            Attributes.LowerRegCost = 8;
+            Attributes.IncreasedKarmaLoss = 5;
         }
 
         public CastOffZombieSkin(Serial serial)
             : base(serial)
         {
         }
+        
+        public override int LabelNumber { get{return 1113538;} }// Cast-off Zombie Skin
 
         public override int BasePhysicalResistance
         {
@@ -75,31 +72,6 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
-            {
-                if (((Mobile)parent).Female)
-                    this.ItemID = 0x0301;
-                else
-                    this.ItemID = 0x0302;
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

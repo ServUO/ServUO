@@ -161,9 +161,9 @@ namespace Server.Items
                                 from.PlaySound(0x249);
 							}
 						}
-						else if (targeted is ScrollofTranscendence)
+						else if (targeted is ScrollOfTranscendence)
 						{
-							ScrollofTranscendence sot = (ScrollofTranscendence)targeted;
+							ScrollOfTranscendence sot = (ScrollOfTranscendence)targeted;
 							
 							m_Skill = sot.Skill;
 							m_BinderType = BinderType.SOT;
@@ -247,9 +247,9 @@ namespace Server.Items
 					}
 				case BinderType.SOT:
 					{
-						if(targeted is ScrollofTranscendence)
+						if(targeted is ScrollOfTranscendence)
 						{
-							ScrollofTranscendence sot = (ScrollofTranscendence)targeted;
+							ScrollOfTranscendence sot = (ScrollOfTranscendence)targeted;
 							
 							if(sot.Skill == m_Skill)
 							{
@@ -257,7 +257,7 @@ namespace Server.Items
 								
 								if(newValue == m_Needed)
 								{
-									GiveItem(from, new ScrollofTranscendence(m_Skill, m_Needed));
+									GiveItem(from, new ScrollOfTranscendence(m_Skill, m_Needed));
 									from.SendLocalizedMessage(1113145); //You've completed your binding and received an upgraded version of your scroll!
 									Delete();
 								}
@@ -313,13 +313,13 @@ namespace Server.Items
 		{
 			private double m_Value;
 			private int m_Needed;
-			private ScrollofTranscendence m_Scroll;
+			private ScrollOfTranscendence m_Scroll;
 			private ScrollBinderDeed m_Binder;
 			
 			//public override int TitleNumber{ get{ return 1075083; } }
             public override int LabelNumber { get { return 1113147; } }
 			
-			public BinderWarningGump(double value, ScrollBinderDeed binder, ScrollofTranscendence scroll, int needed)
+			public BinderWarningGump(double value, ScrollBinderDeed binder, ScrollOfTranscendence scroll, int needed)
 			{
 				m_Value = value;
 				m_Needed = needed;
@@ -331,7 +331,7 @@ namespace Server.Items
 			{		
 				if(m_Scroll != null && m_Binder != null)
 				{
-					m_Binder.GiveItem(from, new ScrollofTranscendence(m_Scroll.Skill, m_Needed));
+					m_Binder.GiveItem(from, new ScrollOfTranscendence(m_Scroll.Skill, m_Needed));
 					m_Scroll.Delete();
 					m_Binder.Delete();
                     from.PlaySound(0x249);
@@ -375,7 +375,7 @@ namespace Server.Items
                     writer.Write((int)1);
                 if (check is StatCapScroll)
                     writer.Write((int)2);
-                if (check is ScrollofTranscendence)
+                if (check is ScrollOfTranscendence)
                     writer.Write((int)3);
             }
             else
@@ -442,7 +442,7 @@ namespace Server.Items
                                     }
                                 case 3:
                                     {
-                                        check = new ScrollofTranscendence(m_skillname, m_skillvalue);
+                                        check = new ScrollOfTranscendence(m_skillname, m_skillvalue);
                                         break;
                                     }
                             }

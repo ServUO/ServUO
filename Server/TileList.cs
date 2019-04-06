@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - TileList.cs
-// **********
-#endregion
-
 namespace Server
 {
 	public class TileList

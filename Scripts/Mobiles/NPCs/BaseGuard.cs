@@ -7,12 +7,14 @@ namespace Server.Mobiles
     {
         public BaseGuard(Mobile target)
         {
+            GuardImmune = true;
+
             if (target != null)
             {
-                this.Location = target.Location;
-                this.Map = target.Map;
+                Location = target.Location;
+                Map = target.Map;
 
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
             }
         }
 
@@ -22,6 +24,17 @@ namespace Server.Mobiles
         }
 
         public abstract Mobile Focus { get; set; }
+
+        public override bool CanBeHarmful(IDamageable target, bool message, bool ignoreOurBlessedness)
+        {
+            if (target is Mobile && ((Mobile)target).GuardImmune)
+            {
+                return false;
+            }
+
+            return base.CanBeHarmful(target, message, ignoreOurBlessedness);
+        }
+
         public static void Spawn(Mobile caller, Mobile target)
         {
             Spawn(caller, target, 1, false);
@@ -29,10 +42,12 @@ namespace Server.Mobiles
 
         public static void Spawn(Mobile caller, Mobile target, int amount, bool onlyAdditional)
         {
-            if (target == null || target.Deleted)
+            if (target == null || target.Deleted || target.GuardImmune)
                 return;
 
-            foreach (Mobile m in target.GetMobilesInRange(15))
+            IPooledEnumerable eable = target.GetMobilesInRange(15);
+
+            foreach (Mobile m in eable)
             {
                 if (m is BaseGuard)
                 {
@@ -51,17 +66,19 @@ namespace Server.Mobiles
                 }
             }
 
+            eable.Free();
+
             while (amount-- > 0)
                 caller.Region.MakeGuard(target);
         }
 
         public override bool OnBeforeDeath()
         {
-            Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+            Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
 
-            this.PlaySound(0x1FE);
+            PlaySound(0x1FE);
 
-            this.Delete();
+            Delete();
 
             return false;
         }

@@ -8,9 +8,9 @@ namespace Server.Items
         [Constructable]
         public DjinnisRing()
         {
-            this.Attributes.BonusInt = 5;
-            this.Attributes.SpellDamage = 10;
-            this.Attributes.CastSpeed = 2;
+            Attributes.BonusInt = 5;
+            Attributes.SpellDamage = 10;
+            Attributes.CastSpeed = 2;
         }
 
         public DjinnisRing(Serial serial)

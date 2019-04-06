@@ -3,6 +3,7 @@ using Server;
 using System.Collections.Generic;
 using Server.Mobiles;
 using Server.Items;
+using Server.Factions;
 using Server.Engines.VvV;
 
 namespace Server.Items
@@ -21,7 +22,6 @@ namespace Server.Items
         [Constructable]
         public MorphEarrings()
         {
-            IsVvVItem = true;
         }
 
         public override void OnRemoved(object parent)
@@ -83,13 +83,16 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+            if (version == 0 && ViceVsVirtueSystem.Enabled)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
 		}
 	}
 }

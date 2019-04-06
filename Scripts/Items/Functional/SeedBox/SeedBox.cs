@@ -14,8 +14,8 @@ namespace Server.Engines.Plants
     [FlipableAttribute(19288, 19290)]
     public class SeedBox : Container, IRewardItem, ISecurable
     {
-        public static readonly int MaxSeeds = 500;
-        public static readonly int MaxUnique = 200;
+        public static readonly int MaxSeeds = 5000;
+        public static readonly int MaxUnique = 300;
 
         public override int DefaultMaxItems { get { return MaxUnique; } }
         public override bool DisplaysContent { get { return false; } }
@@ -48,15 +48,21 @@ namespace Server.Engines.Plants
             get { return Entries == null ? 0 : Entries.Where(e => e != null && e.Seed != null && e.Seed.Amount > 0).Count(); }
         }
 
+        public override double DefaultWeight { get { return 10.0; } }
+
         [Constructable]
         public SeedBox() : base(19288)
         {
             Entries = new List<SeedEntry>();
 
             LootType = LootType.Blessed;
-            Weight = 10.0;
 
             Level = SecureLevel.Owner;
+        }
+
+        public override int GetTotal(TotalType type)
+        {
+            return 0;
         }
 
         public override void OnDoubleClick(Mobile m)
@@ -131,11 +137,16 @@ namespace Server.Engines.Plants
                 {
                     entry.Seed.Amount += seed.Amount;
                     seed.Delete();
+
+                    entry.Seed.InvalidateProperties();
                 }
                 else if (UniqueCount < MaxUnique)
                 {
                     entry = new SeedEntry(seed);
                     DropItem(seed);
+
+                    seed.Movable = false;
+                    seed.InvalidateProperties();
                 }
                 else
                 {
@@ -247,6 +258,8 @@ namespace Server.Engines.Plants
                 entry.Seed.Amount -= amount;
             }
 
+            seed.Movable = true;
+
             if (from.Backpack == null || !from.Backpack.TryDropItem(from, seed, false))
             {
                 seed.MoveToWorld(from.Location, from.Map);
@@ -319,7 +332,7 @@ namespace Server.Engines.Plants
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
 
             writer.Write(IsRewardItem);
             writer.Write((int)Level);
@@ -368,6 +381,13 @@ namespace Server.Engines.Plants
                         break;
                 }
             }
+
+            Timer.DelayCall(
+                () =>
+                {
+                    foreach (var item in Items.Where(i => i.Movable))
+                        item.Movable = false;
+                });
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckEntries);
         }

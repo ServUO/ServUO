@@ -63,7 +63,7 @@ namespace Server.Items
             }
         }
 
-        int ICommodity.DescriptionNumber
+        TextDefinition ICommodity.Description
         {
             get
             {
@@ -212,16 +212,20 @@ namespace Server.Items
         public static void PlayDrinkEffect(Mobile m)
         {
             m.RevealingAction();
-
             m.PlaySound(0x2D6);
-
-            #region Dueling
-            if (!Engines.ConPVP.DuelContext.IsFreeConsume(m))
-                m.AddToBackpack(new Bottle());
-            #endregion
+            m.AddToBackpack(new Bottle());
 
             if (m.Body.IsHuman && !m.Mounted)
-                m.Animate(34, 5, 1, true, false, 0);
+            {
+                if (Core.SA)
+                {
+                    m.Animate(AnimationType.Eat, 0);
+                }
+                else
+                {
+                    m.Animate(34, 5, 1, true, false, 0);
+                }
+            }
         }
 
         public static int EnhancePotions(Mobile m)
@@ -263,17 +267,14 @@ namespace Server.Items
             return AOS.Scale(v, 100 + EnhancePotions(m));
         }
 
-        public override bool StackWith(Mobile from, Item dropped, bool playSound)
+        public override bool WillStack(Mobile from, Item dropped)
         {
-            if (dropped is BasePotion && ((BasePotion)dropped).m_PotionEffect == this.m_PotionEffect)
-                return base.StackWith(from, dropped, playSound);
-
-            return false;
+            return dropped is BasePotion && ((BasePotion)dropped).m_PotionEffect == this.m_PotionEffect && base.WillStack(from, dropped);
         }
 
         #region ICraftable Members
 
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             if (craftSystem is DefAlchemy)
             {

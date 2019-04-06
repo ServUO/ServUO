@@ -12,7 +12,7 @@ namespace Server.Mobiles
         }
 
         [Constructable]
-        public Palomino(string name) : base(name, 1408, 0x3ECD, AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        public Palomino(string name) : base(name, 1408, 0x3ECD, AIType.AI_Animal, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             BaseSoundID = 0xA8;
 
@@ -38,7 +38,7 @@ namespace Server.Mobiles
 
             Tamable = true;
             ControlSlots = 1;
-            MinTameSkill = 30.0;
+            MinTameSkill = 29.1;
         }
 
         public override int Meat { get { return 3; } }

@@ -1,5 +1,6 @@
 using System;
 using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -41,7 +42,7 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!defender.Mounted)
+            if (!defender.Mounted && !defender.Flying && (!Core.ML || !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender)))
             {
                 attacker.SendLocalizedMessage(1060848); // This attack only works on mounted targets
                 ClearCurrentAbility(attacker);
@@ -53,23 +54,35 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
+            int amount = 10 + (int)(10.0 * (attacker.Skills[SkillName.Bushido].Value - 50.0) / 70.0 + 5);
+
             if (!attacker.Mounted)
             {
-                Mobile mount = defender.Mount as Mobile;
-                BaseMount.Dismount(defender);
+                BlockMountType type = BlockMountType.RidingSwipe;
+                IMount mount = defender.Mount;
 
-                if (mount != null)	//Ethy mounts don't take damage
+                if (Core.SA)
                 {
-                    int amount = 10 + (int)(10.0 * (attacker.Skills[SkillName.Bushido].Value - 50.0) / 70.0 + 5);
-										
-                    AOS.Damage(mount, null, amount, 100, 0, 0, 0, 0);	//The mount just takes damage, there's no flagging as if it was attacking the mount directly
-                    //TODO: Mount prevention until mount healed
+                    if (defender.Flying)
+                    {
+                        type = BlockMountType.RidingSwipeFlying;
+                    }
+                    else if (mount is EtherealMount)
+                    {
+                        type = BlockMountType.RidingSwipeEthereal;
+                    }
                 }
+
+                Server.Items.Dismount.DoDismount(attacker, defender, mount, 10, type);
+
+                if(mount is Mobile)
+                    AOS.Damage((Mobile)mount, attacker, amount, 100, 0, 0, 0, 0);
+
+                defender.PlaySound(0x140);
+                defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);
             }
             else
             {
-                int amount = 10 + (int)(10.0 * (attacker.Skills[SkillName.Bushido].Value - 50.0) / 70.0 + 5);
-				
                 AOS.Damage(defender, attacker, amount, 100, 0, 0, 0, 0);
 
                 if (Server.Items.ParalyzingBlow.IsImmune(defender))	//Does it still do damage?

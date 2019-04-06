@@ -5,16 +5,15 @@ namespace Server.Items
     public class WildfireBow : ElvenCompositeLongbow
 	{
 		public override bool IsArtifact { get { return true; } }
+
         [Constructable]
         public WildfireBow()
             : base()
         {
-            this.Hue = 0x489;
-			
-            this.SkillBonuses.SetValues(0, SkillName.Archery, 10);
-            this.WeaponAttributes.ResistFireBonus = 25;
-			
-            this.Velocity = 15;			
+            Hue = 1161;		
+            SkillBonuses.SetValues(0, SkillName.Archery, 10);
+            WeaponAttributes.ResistFireBonus = 25;			
+            Velocity = 15;			
         }
 
         public WildfireBow(Serial serial)
@@ -61,6 +60,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            if (Hue == 0x489)
+                Hue = 1161;
         }
     }
 }

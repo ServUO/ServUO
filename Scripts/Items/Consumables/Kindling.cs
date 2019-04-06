@@ -17,9 +17,9 @@ namespace Server.Items
         public Kindling(int amount)
             : base(0xDE1)
         {
-            this.Stackable = true;
-            this.Weight = 5.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public Kindling(Serial serial)
@@ -31,7 +31,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -39,20 +39,23 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+                Weight = 1.0;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.VerifyMove(from))
+            if (!VerifyMove(from))
                 return;
 
-            if (!from.InRange(this.GetWorldLocation(), 2))
+            if (!from.InRange(GetWorldLocation(), 2))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 return;
             }
 
-            Point3D fireLocation = this.GetFireLocation(from);
+            Point3D fireLocation = GetFireLocation(from);
 
             if (fireLocation == Point3D.Zero)
             {
@@ -64,9 +67,9 @@ namespace Server.Items
             }
             else
             {
-                this.Consume();
+                Consume();
 
-                if (!this.Deleted && this.Parent == null)
+                if (!Deleted && Parent == null)
                     from.PlaceInBackpack(this);
 
                 new Campfire().MoveToWorld(fireLocation, from.Map);
@@ -78,15 +81,15 @@ namespace Server.Items
             if (from.Region.IsPartOf<DungeonRegion>())
                 return Point3D.Zero;
 
-            if (this.Parent == null)
-                return this.Location;
+            if (Parent == null)
+                return Location;
 
             ArrayList list = new ArrayList(4);
 
-            this.AddOffsetLocation(from, 0, -1, list);
-            this.AddOffsetLocation(from, -1, 0, list);
-            this.AddOffsetLocation(from, 0, 1, list);
-            this.AddOffsetLocation(from, 1, 0, list);
+            AddOffsetLocation(from, 0, -1, list);
+            AddOffsetLocation(from, -1, 0, list);
+            AddOffsetLocation(from, 0, 1, list);
+            AddOffsetLocation(from, 1, 0, list);
 
             if (list.Count == 0)
                 return Point3D.Zero;

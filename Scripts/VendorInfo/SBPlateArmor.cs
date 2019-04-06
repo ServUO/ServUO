@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,11 +31,11 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(PlateGorget), 104, 20, 0x1413, 0));
-                this.Add(new GenericBuyInfo(typeof(PlateChest), 243, 20, 0x1415, 0));
-                this.Add(new GenericBuyInfo(typeof(PlateLegs), 218, 20, 0x1411, 0));
-                this.Add(new GenericBuyInfo(typeof(PlateArms), 188, 20, 0x1410, 0));
-                this.Add(new GenericBuyInfo(typeof(PlateGloves), 155, 20, 0x1414, 0));
+                Add(new GenericBuyInfo(typeof(PlateGorget), 104, 20, 0x1413, 0));
+                Add(new GenericBuyInfo(typeof(PlateChest), 243, 20, 0x1415, 0));
+                Add(new GenericBuyInfo(typeof(PlateLegs), 218, 20, 0x1411, 0));
+                Add(new GenericBuyInfo(typeof(PlateArms), 188, 20, 0x1410, 0));
+                Add(new GenericBuyInfo(typeof(PlateGloves), 155, 20, 0x1414, 0));
             }
         }
 
@@ -43,13 +43,13 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(PlateArms), 94);
-                this.Add(typeof(PlateChest), 121);
-                this.Add(typeof(PlateGloves), 72);
-                this.Add(typeof(PlateGorget), 52);
-                this.Add(typeof(PlateLegs), 109);
+                Add(typeof(PlateArms), 94);
+                Add(typeof(PlateChest), 121);
+                Add(typeof(PlateGloves), 72);
+                Add(typeof(PlateGorget), 52);
+                Add(typeof(PlateLegs), 109);
 
-                this.Add(typeof(FemalePlateChest), 113);
+                Add(typeof(FemalePlateChest), 113);
             }
         }
     }

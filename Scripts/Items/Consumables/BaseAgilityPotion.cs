@@ -52,10 +52,8 @@ namespace Server.Items
         {
             if (this.DoAgility(from))
             {
-                BasePotion.PlayDrinkEffect(from);
-
-                if (!Engines.ConPVP.DuelContext.IsFreeConsume(from))
-                    this.Consume();
+                PlayDrinkEffect(from);
+                Consume();
             }
         }
     }

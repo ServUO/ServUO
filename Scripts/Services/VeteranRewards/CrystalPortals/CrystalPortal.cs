@@ -1,5 +1,7 @@
 #region References
 using System;
+using System.Collections.Generic;
+
 using Server.Factions;
 using Server.Gumps;
 using Server.Misc;
@@ -7,29 +9,31 @@ using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
 using Server.Multis;
+using Server.ContextMenus;
 #endregion
 
 namespace Server.Items
 {
 	public class CrystalPortal : Item, ISecurable
 	{
+        public override int LabelNumber { get { return 1113945; } } // Crystal Portal
+
 		private SecureLevel m_Level;
 		
 		[CommandProperty(AccessLevel.GameMaster)]
 		public SecureLevel Level 
 		{
-			get { return this.m_Level; }
-			set { this.m_Level = value; }
+			get { return m_Level; }
+			set { m_Level = value; }
 		}
 		
 		public override bool HandlesOnSpeech { get { return true; } }
 
 		[Constructable]
 		public CrystalPortal()
+            : base(0x468B)
 		{
-			Name = "Crystal Portal";
-			ItemID = 18059;
-			//Weight = 20;
+			Weight = 5.0;
 			Movable = true;
 			LootType = LootType.Blessed;
 		}
@@ -38,9 +42,18 @@ namespace Server.Items
 			: base(serial)
 		{ }
 
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            SetSecureLevelEntry.AddTo(from, this, list);
+        }
+
 		public virtual bool ValidateUse(Mobile m, bool message)
 		{
-			if (Movable)
+            BaseHouse house = BaseHouse.FindHouseAt(this);
+
+			if (house == null || !IsLockedDown)
 			{
 				if (message)
 				{
@@ -49,6 +62,16 @@ namespace Server.Items
 
 				return false;
 			}
+
+            if (!house.HasSecureAccess(m, m_Level))
+            {
+                if (message)
+                {
+                    m.SendLocalizedMessage(503301, "", 0x22); // You don't have permission to do that.
+                }
+
+                return false;
+            }
 
 			if (Sigil.ExistsOn(m))
 			{
@@ -100,6 +123,16 @@ namespace Server.Items
 				return false;
 			}
 
+            if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(m))
+            {
+                if (message)
+                {
+                    m.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+                }
+
+                return false;
+            }
+
 			return true;
 		}
 
@@ -115,13 +148,6 @@ namespace Server.Items
 			{
 				m.SendGump(new CrystalPortalGump(m));
 			}
-		}
-
-		public override void GetProperties(ObjectPropertyList list)
-		{
-			base.GetProperties(list);
-
-			list.Add(Movable ? "This must be locked down in a house to use!" : "Double-click to open help menu");
 		}
 
 		public virtual void OnTeleport(Mobile m, Point3D loc, Map map)
@@ -151,10 +177,16 @@ namespace Server.Items
 			Point3D loc = Point3D.Zero;
 			Map map = null;
 
-			ResolveDest(e.Speech.Trim(), ref loc, ref map);
+			ResolveDest(e.Mobile, e.Speech.Trim(), ref loc, ref map);
 
-			if (loc == Point3D.Zero || map == null || map == Map.Internal)
+			if (loc == Point3D.Zero || map == null || map == Map.Internal || (Siege.SiegeShard && map == Map.Trammel))
 			{
+				return;
+			}
+
+            if (SpellHelper.RestrictRedTravel && !Siege.SiegeShard && e.Mobile.Murderer && map != Map.Felucca)
+			{
+				e.Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
 				return;
 			}
 
@@ -162,7 +194,14 @@ namespace Server.Items
 
 			if (ValidateUse(e.Mobile, true))
 			{
-				OnTeleport(e.Mobile, loc, map);
+                if (SpellHelper.CheckTravel(e.Mobile, map, loc, TravelCheckType.RecallTo))
+                {
+                    OnTeleport(e.Mobile, loc, map);
+                }
+                else
+                {
+                    e.Mobile.LocalOverheadMessage(MessageType.Regular, 0x4F1, 502360); // You cannot teleport into that area.
+                }
 			}
 		}
 
@@ -170,21 +209,26 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(0); // version
-			
-			writer.WriteEncodedInt((int)this.m_Level);
+			writer.Write(1); // version			
+			writer.WriteEncodedInt((int)m_Level);
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
+            int version = reader.ReadInt();
 
-			reader.ReadInt();
-			
-			this.m_Level = (SecureLevel)reader.ReadEncodedInt();
-		}
+            m_Level = (SecureLevel)reader.ReadEncodedInt();
 
-		public static void ResolveDest(string name, ref Point3D loc, ref Map map)
+            if (version < 1)
+            {
+                ItemID = 0x468B;
+                Hue = 0;
+                Weight = 5.0;
+            }
+        }
+
+		public static void ResolveDest(Mobile from, string name, ref Point3D loc, ref Map map)
 		{
 			if (String.IsNullOrWhiteSpace(name))
 			{
@@ -310,8 +354,26 @@ namespace Server.Items
 				}
 					break;
 
-				// fel banks
+                case "yew mint":
+                    {
+                        loc = new Point3D(643, 858, 0);
+                        map = Map.Trammel;
+                    }
+                    break;
 
+				// fel banks
+                case "fel papua mint":
+                    {
+                        loc = new Point3D(5675, 3144, 12);
+                        map = Map.Felucca;
+                    }
+                    break;
+                case "fel delucia mint":
+                    {
+                        loc = new Point3D(5274, 3991, 37);
+                        map = Map.Felucca;
+                    }
+                    break;
 				case "fel britain mint":
 				{
 					loc = new Point3D(1434, 1699, 2);
@@ -399,6 +461,13 @@ namespace Server.Items
 				}
 					break;
 
+                case "fel yew mint":
+                    {
+                        loc = new Point3D(643, 858, 0);
+                        map = Map.Felucca;
+                    }
+                    break;
+
 				// tram moongates
 
 				case "britain moongate":
@@ -415,7 +484,7 @@ namespace Server.Items
 					break;
 				case "jhelom moongate":
 				{
-					loc = new Point3D(1330, 3780, 0);
+					loc = new Point3D(1495, 3773, 0);
 					map = Map.Trammel;
 				}
 					break;
@@ -573,7 +642,7 @@ namespace Server.Items
 					break;
 				case "fel jhelom moongate":
 				{
-					loc = new Point3D(1330, 3780, 0);
+					loc = new Point3D(1495, 3773, 0);
 					map = Map.Felucca;
 				}
 					break;

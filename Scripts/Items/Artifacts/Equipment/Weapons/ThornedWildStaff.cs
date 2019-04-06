@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public ThornedWildStaff()
         {
-            this.Attributes.ReflectPhysical = 12;
+            Attributes.ReflectPhysical = 12;
         }
 
         public ThornedWildStaff(Serial serial)

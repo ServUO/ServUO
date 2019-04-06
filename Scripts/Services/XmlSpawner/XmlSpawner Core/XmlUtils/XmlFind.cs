@@ -20,6 +20,7 @@ using System.Text;
 using Server.Accounting;
 using System.Threading;
 using Server.Engines.XmlSpawner2;
+using System.Linq;
 
 /*
 ** XmlFind
@@ -387,9 +388,12 @@ namespace Server.Mobiles
 
 				if (m.Map != Map.Internal || m.Account != null ||
 					(m is IMount && ((IMount)m).Rider != null) ||
-					(m is BaseCreature && ((BaseCreature)m).IsStabled))
+                    (m is GalleonPilot) || m is PetParrot ||
+                    (GenericBuyInfo.IsDisplayCache(m)) ||
+                    (m is EffectMobile) ||
+					(m is BaseCreature && ((BaseCreature)m).IsStabled) ||
+                    (m is PlayerVendor && BaseHouse.AllHouses.Any(x => x.InternalizedVendors.Contains(m))))
 					return true;
-
 			}
 			else
 				if (o is Item)
@@ -397,12 +401,15 @@ namespace Server.Mobiles
 					Item i = (Item)o;
 
 					// note, in order to test for a vendors display container that contains valid internal map items 
-					// we need to see if we have a DisplayCache type container.  Unfortunately, DisplayCache
-					// is a private class declared in GenericBuyInfo and so cannot be tested for here. 
-					// To get around that we just check the declaring type.
 					if (i.Map != Map.Internal || i.Parent != null || i is Fists || i is MountItem || i is EffectItem || i.HeldBy != null ||
-						i is MovingCrate || i is SpawnPersistence || (i.GetType().DeclaringType == typeof(GenericBuyInfo)))
+                        i is MovingCrate || i is SpawnPersistence || GenericBuyInfo.IsDisplayCache(i) || i.GetType().DeclaringType == typeof(GenericBuyInfo))
 						return true;
+
+                    // boat stuffs
+                    if (i is Static && i.Name != null && (i.Name.ToLower() == "weapon pad" || i.Name.ToLower() == "deck"))
+                        return true;
+                    if (i is GalleonHold || i is MooringLine || i is HoldItem || i is BaseDockedBoat || i is Rudder || i is RudderHandle || i is ShipWheel || i is BaseBoat || i is Plank || i is TillerMan || i is Hold || i is BaseCannon)
+                        return true;
 
                     // Ignores shadowguard addons that are internalized while not in use
                     if (i is AddonComponent)
@@ -419,6 +426,9 @@ namespace Server.Mobiles
 
                     if (i is BoatMountItem || i is Server.Factions.FactionPersistence || i is Server.Misc.TreasuresOfTokunoPersistence || i is StealableArtifactsSpawner)
                         return true;
+
+                    if (i is ArisenController)
+                        return true; 
 				}
 
 			return false;
@@ -640,8 +650,10 @@ namespace Server.Mobiles
 								else if (i is Spawner)
 								{
 									// search the entries of the spawner
-									foreach (string so in ((Spawner)i).SpawnNames)
+									foreach (var obj in ((Spawner)i).SpawnObjects)
 									{
+                                        string so = obj.SpawnName;
+
 										if (criteria.Dosearchspawntype)
 										{
 											// search by entry type
@@ -1331,11 +1343,11 @@ namespace Server.Mobiles
 					// add the Props button for each entry
 					AddButton(175, 22 * (i % MaxEntriesPerPage) + 30, 0xFAB, 0xFAD, 3000 + i, GumpButtonType.Reply, 0);
 
-					string namestr = null;
-					string typestr = null;
-					string locstr = null;
-					string mapstr = null;
-					string ownstr = null;
+					string namestr = string.Empty;
+                    string typestr = string.Empty;
+                    string locstr = string.Empty;
+                    string mapstr = string.Empty;
+                    string ownstr = string.Empty;
 					int texthue = 0;
 
 					if (o is Item)
@@ -1493,7 +1505,7 @@ namespace Server.Mobiles
 					if (i == Selected) texthue = 68;
 
 					// display the name
-					AddLabelCropped(248, 22 * (i % MaxEntriesPerPage) + 31, 110, 21, texthue, namestr);
+					AddLabelCropped(248, 22 * (i % MaxEntriesPerPage) + 31, 110, 21, texthue, namestr ?? string.Empty);
 
 					// display the attachment button if it has attachments
 					if (XmlAttach.HasAttachments(o))

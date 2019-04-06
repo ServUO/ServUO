@@ -83,12 +83,14 @@ namespace Server.Mobiles
                 return;
 
             ArrayList list = new ArrayList();
+            IPooledEnumerable eable = GetMobilesInRange(5);
 
-            foreach (Mobile m in this.GetMobilesInRange(5))
+            foreach (Mobile m in eable)
             {
                 if (m.Player && m.Alive && !m.IsDeadBondedPet && m.Karma <= 0 && m.IsPlayer())
                     list.Add(m);
             }
+            eable.Free();
 
             for (int i = 0; i < list.Count; ++i)
             {

@@ -4,13 +4,44 @@ namespace Server.Items
 {
     public class BigFish : Item, ICarvable
     {
+        #region Old Item Serialization Vars used for RedHerring and MudPuppy
+        /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */
+        private bool m_InheritsItem;
+
+        protected bool InheritsItem
+        {
+            get
+            {
+                return this.m_InheritsItem;
+            }
+        }
+        #endregion
+
         private Mobile m_Fisher;
+        private DateTime m_DateCaught;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Fisher { get { return m_Fisher; } set { m_Fisher = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime DateCaught { get { return m_DateCaught; } set { m_DateCaught = value; InvalidateProperties(); } }
+
         [Constructable]
         public BigFish()
             : base(0x09CC)
         {
-            this.Weight = Utility.RandomMinMax(3, 200);	//TODO: Find correct formula.  max on OSI currently 200, OSI dev says it's not 200 as max, and ~ 1/1,000,000 chance to get highest
-            this.Hue = Utility.RandomBool() ? 0x847 : 0x58C;
+            Weight = Math.Max(20, GetWeight());
+
+            Hue = Utility.RandomBool() ? 0x847 : 0x58C;
+        }
+
+        private int GetWeight()
+        {
+            int v = Utility.RandomMinMax(0, 10000);
+            v = (int)Math.Sqrt(v);
+            v = 100 - v;
+
+            return (int)(225.0 * ((double)v / 100));
         }
 
         public BigFish(Serial serial)
@@ -18,41 +49,27 @@ namespace Server.Items
         {
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Fisher
+        public override int LabelNumber { get { return 1041112; } }// a big fish
+
+        public bool Carve(Mobile from, Item item)
         {
-            get
-            {
-                return this.m_Fisher;
-            }
-            set
-            {
-                this.m_Fisher = value;
-                this.InvalidateProperties();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041112;
-            }
-        }// a big fish
-        public void Carve(Mobile from, Item item)
-        {
-            base.ScissorHelper(from, new RawFishSteak(), Math.Max(16, (int)this.Weight) / 4, false);
+            base.ScissorHelper(from, new RawFishSteak(), Math.Max(16, (int)Weight) / 4, false);
+            return true;
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.Weight >= 20)
+            if (Weight >= 20)
             {
-                if (this.m_Fisher != null)
-                    list.Add(1070857, this.m_Fisher.Name); // Caught by ~1_fisherman~
+                if (m_Fisher != null)
+                    list.Add(1070857, m_Fisher.Name); // Caught by ~1_fisherman~
 
-                list.Add(1070858, ((int)this.Weight).ToString()); // ~1_weight~ stones
+                if (m_DateCaught != DateTime.MinValue)
+                    list.Add(1049644, m_DateCaught.ToShortDateString()); // [~1_stuff~]
+
+                list.Add(1070858, ((int)Weight).ToString()); // ~1_weight~ stones
             }
         }
 
@@ -60,9 +77,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)3); // version
 
-            writer.Write((Mobile)this.m_Fisher);
+            writer.Write(m_DateCaught);
+            writer.Write((Mobile)m_Fisher);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -71,16 +89,25 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
+            if (version < 3)
+                m_InheritsItem = true;
+
             switch ( version )
             {
+                case 3: // RedHerring/MudPuppy Conversion
+                case 2:
+                    {
+                        m_DateCaught = reader.ReadDateTime();
+                        goto case 1;
+                    }
                 case 1:
                     {
-                        this.m_Fisher = reader.ReadMobile();
+                        m_Fisher = reader.ReadMobile();
                         break;
                     }
                 case 0:
                     {
-                        this.Weight = Utility.RandomMinMax(3, 200);
+                        Weight = Utility.RandomMinMax(3, 200);
                         break;
                     }
             }

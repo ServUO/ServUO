@@ -97,7 +97,7 @@ namespace Server.Mobiles
 
         public virtual void SayPriceTo(Mobile m)
         {
-            m.Send(new MessageLocalizedAffix(this.Serial, this.Body, MessageType.Regular, this.SpeechHue, 3, 1008052, this.Name, AffixType.Append, this.JoinCost.ToString(), ""));
+            m.Send(new MessageLocalizedAffix(m.NetState, this.Serial, this.Body, MessageType.Regular, this.SpeechHue, 3, 1008052, this.Name, AffixType.Append, this.JoinCost.ToString(), ""));
         }
 
         public virtual bool WasNamed(string speech)

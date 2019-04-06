@@ -65,7 +65,7 @@ namespace Server.Spells.Eighth
                 else
                     duration = TimeSpan.FromSeconds(Utility.Random(80, 40));
 
-                BaseCreature.Summon(new EnergyVortex(), false, this.Caster, new Point3D(p), 0x212, duration);
+                BaseCreature.Summon(new EnergyVortex(true), false, this.Caster, new Point3D(p), 0x212, duration);
             }
 
             this.FinishSequence();

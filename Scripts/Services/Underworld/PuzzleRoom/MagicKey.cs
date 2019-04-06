@@ -49,39 +49,42 @@ namespace Server.Items
 		
 		public override void Decay()
 		{
-			Mobile m = (Mobile)RootParent;
-			
-			if(m != null && m.Map != Map.Internal)
-			{
-				if(m_PuzzleRoom.Contains(m.Location))
-				{
-                    int x = Utility.RandomMinMax(1096, 1098);
-                    int y = Utility.RandomMinMax(1175, 1177);
-                    int z = Map.GetAverageZ(x, y);
+            if (RootParent is Mobile)
+            {
+                Mobile m = (Mobile)RootParent;
 
-                    Point3D loc = m.Location;
-                    Point3D p = new Point3D(x, y, z);
-                    BaseCreature.TeleportPets(m, p, Map.TerMur);
-                    m.MoveToWorld(p, Map.TerMur);
+                if (m != null && m.Map != Map.Internal)
+                {
+                    if (m_PuzzleRoom.Contains(m.Location))
+                    {
+                        int x = Utility.RandomMinMax(1096, 1098);
+                        int y = Utility.RandomMinMax(1175, 1177);
+                        int z = Map.GetAverageZ(x, y);
 
-                    Effects.SendLocationParticles(EffectItem.Create(loc, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
-                    Effects.SendLocationParticles(EffectItem.Create(p, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
-				}
-				
-				Container pack = m.Backpack;
-				
-				if(pack != null)
-				{
-					List<Item> list = new List<Item>(pack.Items);
-					
-					foreach(Item item in list)
-					{
-						if (item is CopperPuzzleKey || item is GoldPuzzleKey || item is MazePuzzleItem || item is MastermindPuzzleItem)
-							item.Delete();
-					}
-				}
-			}
-			
+                        Point3D loc = m.Location;
+                        Point3D p = new Point3D(x, y, z);
+                        BaseCreature.TeleportPets(m, p, Map.TerMur);
+                        m.MoveToWorld(p, Map.TerMur);
+
+                        Effects.SendLocationParticles(EffectItem.Create(loc, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                        Effects.SendLocationParticles(EffectItem.Create(p, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
+                    }
+
+                    Container pack = m.Backpack;
+
+                    if (pack != null)
+                    {
+                        List<Item> list = new List<Item>(pack.Items);
+
+                        foreach (Item item in list)
+                        {
+                            if (item is CopperPuzzleKey || item is GoldPuzzleKey || item is MazePuzzleItem || item is MastermindPuzzleItem)
+                                item.Delete();
+                        }
+                    }
+                }
+            }
+
 			base.Decay();
 		}
 		

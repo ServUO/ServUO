@@ -76,14 +76,27 @@ namespace Server.Engines.Events
                     {
                         for (int i = 0; i < m_Items.Count; i++) /* dupe exploits start out like this ... */
                         {
-                            twin.AddItem(Mobile.LiftItemDupe(m_Items[i], 1));
-                        }
+                            Item item = null;
 
-                        foreach (Item item in twin.Items) /* ... and end like this */
-                        {
-                            if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount && item.Layer != Layer.Bank)
+                            try
                             {
-                                item.Movable = false;
+                                item = Activator.CreateInstance(m_Items[i].GetType()) as Item;
+                            }
+                            catch { continue; }
+
+                            if (item != null)
+                            {
+                                item.Hue = m_Items[i].Hue;
+                                item.Name = m_Items[i].Name;
+                                item.ItemID = m_Items[i].ItemID;
+                                item.LootType = m_Items[i].LootType;
+
+                                twin.AddItem(item);
+
+                                if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount && item.Layer != Layer.Bank)
+                                {
+                                    item.Movable = false;
+                                }
                             }
                         }
                     }
@@ -263,6 +276,10 @@ namespace Server.Engines.Events
             new Point3D(802, 1204, 25), // Makoto-Jima
             new Point3D(270, 628, 15)// Homare-Jima
         };
+		private static readonly Point3D[] TerMur_Locations =
+        {
+            new Point3D(851, 3525, -38)// Royal City
+        };
         private readonly Mobile m_From;
         public NaughtyTwin(Mobile from)
             : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.2, 0.4)
@@ -339,6 +356,8 @@ namespace Server.Engines.Events
                     return Malas_Locations[Utility.Random(Malas_Locations.Length)];
                 case 4:
                     return Tokuno_Locations[Utility.Random(Tokuno_Locations.Length)];
+				case 5:
+                    return TerMur_Locations[Utility.Random(TerMur_Locations.Length)];
                 default:
                     return Felucca_Locations[Utility.Random(Felucca_Locations.Length)];
             }

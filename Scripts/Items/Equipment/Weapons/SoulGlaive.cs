@@ -8,8 +8,8 @@ namespace Server.Items
         public SoulGlaive()
             : base(0x090A)
         {
-            this.Weight = 6.0;
-            this.Layer = Layer.OneHanded;
+           Weight = 8.0;
+           Layer = Layer.OneHanded;
         }
 
         public SoulGlaive(Serial serial)
@@ -17,13 +17,8 @@ namespace Server.Items
         {
         }
 
-        public override int MinThrowRange
-        {
-            get
-            {
-                return 6;
-            }
-        }// MaxRange 10
+        public override int MinThrowRange { get { return 8; } }
+
         public override WeaponAbility PrimaryAbility
         {
             get
@@ -112,7 +107,7 @@ namespace Server.Items
         {
             get
             {
-                return 60;
+                return 65;
             }
         }
         

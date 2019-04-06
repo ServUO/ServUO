@@ -51,7 +51,8 @@ namespace Server.Spells.Necromancy
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.HorrificBeast, 1060514, 1153763, "20\t25"));
 
             m.Delta(MobileDelta.WeaponDamage);
-            m.CheckStatTimers();
+
+            m.ResetStatTimers();
         }
 
         public override void RemoveEffect(Mobile m)

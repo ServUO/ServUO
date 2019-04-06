@@ -3,7 +3,7 @@ using System;
 
 namespace Server.Items
 {
-	public class CompassionsEye : GoldRing, ITokunoDyable
+	public class CompassionsEye : GoldRing
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1153288; } } // Compassion's Eye
@@ -38,7 +38,7 @@ namespace Server.Items
 		}
 	}
 	
-	public class UnicornManeWovenSandals : Sandals, ITokunoDyable
+	public class UnicornManeWovenSandals : Sandals
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1153289; } } // Unicorn Mane Woven Sandals 
@@ -78,7 +78,7 @@ namespace Server.Items
 		}
 	}
 	
-	public class UnicornManeWovenTalons : LeatherTalons, ITokunoDyable
+	public class UnicornManeWovenTalons : LeatherTalons
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1153314; } } // Unicorn Mane Woven Talons
@@ -118,7 +118,7 @@ namespace Server.Items
 		}
 	}
 
-	public class DespicableQuiver : BaseQuiver, ITokunoDyable
+	public class DespicableQuiver : BaseQuiver
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1153290; } } // Despicable Quiver
@@ -134,6 +134,7 @@ namespace Server.Items
 			SkillBonuses.SetValues( 0, SkillName.Archery, 5.0 );
 			Attributes.ReflectPhysical = 5;
 			Attributes.AttackChance = 5;
+            LowerAmmoCost = 30;
 			
 			switch(Utility.Random(5))
 			{
@@ -162,7 +163,7 @@ namespace Server.Items
 		}
 	}
 	
-	public class UnforgivenVeil : GargishLeatherWingArmor, ITokunoDyable
+	public class UnforgivenVeil : GargishLeatherWingArmor
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1153291; } } // Unforgiven Veil 
@@ -207,7 +208,7 @@ namespace Server.Items
 		}
 	}
 	
-	public class HailstormHuman : WarFork, ITokunoDyable
+	public class HailstormHuman : WarFork
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1153292; } } // Hailstorm
@@ -246,7 +247,7 @@ namespace Server.Items
 		}
 	}
 	
-	public class HailstormGargoyle : GargishWarFork, ITokunoDyable
+	public class HailstormGargoyle : GargishWarFork
 	{
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1153292; } } // Hailstorm

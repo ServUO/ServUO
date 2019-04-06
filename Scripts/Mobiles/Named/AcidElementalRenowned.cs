@@ -44,8 +44,6 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 70;
 
-            this.PackItem(new EssenceSingularity());
-
             this.PackItem(new Nightshade(4));
             this.PackItem(new LesserPoisonPotion());
         }
@@ -59,18 +57,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(BreastplateOfTheBerserker),
-                typeof(SkeletonCostume), typeof(GazerCostume), typeof(BloodwormCostume),
-                typeof(ShadowWyrmCostume), typeof(DreamWraithCostume), typeof(CentaurCostume),
-                typeof(CyclopsCostume), typeof(DrakeCostume), typeof(EtherealWarriorCostume),
-                typeof(ExodusMinionCostume), typeof(FireElementalCostume), typeof(GiantPixieCostume),
-                typeof(GiantToadCostume), typeof(GoreFiendCostume), typeof(LadyOfTheSnowCostume),
-                typeof(MaddeningHorrorCostume), typeof(MinotaurCostume), typeof(MongbatCostume),
-                typeof(OniCostume), typeof(OphidianMatriarchCostume), typeof(OphidianWarriorCostume),
-                typeof(PixieCostume), typeof(SatyrCostume), typeof(SkitteringHopperCostume),
-                typeof(SolenWarriorCostume), typeof(TerathanWarriorCostume), typeof(TitanCostume),
-                typeof(VoidWandererCostume), typeof(WispCostume), typeof(WolfSpiderCostume),
-                typeof(ZombieCostume)};
+                return new Type[] { typeof(BreastplateOfTheBerserker),  typeof(TerathanWarriorCostume)};
             }
         }
         public override Type[] SharedSAList

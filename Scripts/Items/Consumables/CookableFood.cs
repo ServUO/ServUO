@@ -4,7 +4,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public abstract class CookableFood : Item, IQuality
+    public abstract class CookableFood : Item, IQuality, ICommodity
     {
         private ItemQuality _Quality;
         private int m_CookingLevel;
@@ -38,6 +38,9 @@ namespace Server.Items
         {
         }
 
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -48,7 +51,7 @@ namespace Server.Items
             }
         }
 
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;
 
@@ -981,7 +984,7 @@ namespace Server.Items
         }
     }
 
-    public class RawFishSteak : CookableFood
+    public class RawFishSteak : CookableFood, ICommodity
     {
         public override double DefaultWeight
         {
@@ -1010,9 +1013,54 @@ namespace Server.Items
         {
         }
 
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
+
         public override Food Cook()
         {
             return new FishSteak();
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class RawRotwormMeat : CookableFood
+    {
+        [Constructable]
+        public RawRotwormMeat()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public RawRotwormMeat(int amount)
+            : base(0x2DB9, 10)
+        {
+            Stackable = true;
+            Weight = 0.1;
+            Amount = amount;
+        }
+
+        public RawRotwormMeat(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override Food Cook()
+        {
+            return null;
         }
 
         public override void Serialize(GenericWriter writer)

@@ -1,12 +1,16 @@
 using System;
 using Server;
+using Server.Engines.Craft;
 using Server.Mobiles;
 
 namespace Server.Items
 {
-	public class AnonsBoots : Boots
+    [Alterable(typeof(DefTailoring), typeof(AnonsBootsGargoyle))]
+    public class AnonsBoots : Boots
 	{
 		public override int LabelNumber { get { return 1156295; } } // Anon's Boots
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -40,6 +44,8 @@ namespace Server.Items
 	public class AnonsBootsGargoyle : LeatherTalons
 	{
 		public override int LabelNumber { get { return 1156295; } } // Anon's Boots
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -73,6 +79,8 @@ namespace Server.Items
 	public class AnonsSpellbook : Spellbook
 	{
 		public override int LabelNumber { get { return 1156344; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		[Constructable]
 		public AnonsSpellbook() 
@@ -103,10 +111,12 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class BalakaisShamanStaff : WildStaff
+
+    public class BalakaisShamanStaff : WildStaff
 	{
 		public override int LabelNumber { get { return 1156125; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -140,6 +150,8 @@ namespace Server.Items
 	public class BalakaisShamanStaffGargoyle : BaseWand
 	{
 		public override int LabelNumber { get { return 1156125; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -173,22 +185,11 @@ namespace Server.Items
 	public class EnchantressCameo : BaseTalisman
 	{
 		public override int LabelNumber { get { return 1156301; } }
+		
+		public override bool IsArtifact { get { return true; } }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int InitMinHits{ get{ return 255; } }
+        public override int InitMaxHits{ get{ return 255; } }
 
 		[Constructable]
 		public EnchantressCameo() : base(0x2F5B)
@@ -200,7 +201,7 @@ namespace Server.Items
 			Attributes.WeaponSpeed = 5;
 			Attributes.WeaponDamage = 20;
 
-            Slayer = (TalismanSlayerName)Utility.RandomList(11, 13, 14, 15, 16, 17, 18);
+            Slayer = (TalismanSlayerName)Utility.RandomList(11, 13, 14, 15, 16, 17);
 		}
 		
 		public EnchantressCameo(Serial serial) : base(serial)
@@ -219,10 +220,13 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class GrugorsShield : WoodenShield
+
+    [Alterable(typeof(DefBlacksmithy), typeof(GrugorsShieldGargoyle))]
+    public class GrugorsShield : WoodenShield
 	{
 		public override int LabelNumber { get { return 1156129; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -265,6 +269,8 @@ namespace Server.Items
 	public class GrugorsShieldGargoyle : GargishWoodenShield
 	{
 		public override int LabelNumber { get { return 1156129; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -303,8 +309,9 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class HalawasHuntingBow : Yumi
+
+    [Alterable(typeof(DefBlacksmithy), typeof(HalawasHuntingBowGargoyle))]
+    public class HalawasHuntingBow : Yumi
 	{
 		public override int LabelNumber { get { return 1156127; } }
 
@@ -381,10 +388,14 @@ namespace Server.Items
                 this.WeaponAttributes.HitLeechMana = 50;
 		}
 	}
-	
-	public class HawkwindsRobe : BaseOuterTorso
+
+    public class HawkwindsRobe : BaseOuterTorso, Server.Engines.Craft.IRepairable
 	{
-		public override int LabelNumber { get { return 1156299; } } 
+        public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTailoring.CraftSystem; } }
+
+		public override int LabelNumber { get { return 1156299; } }
+
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -414,10 +425,13 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class JumusSacredHide : FurCape
+
+    [Alterable(typeof(DefTailoring), typeof(JumusSacredHideGargoyle))]
+    public class JumusSacredHide : FurCape
 	{
 		public override int LabelNumber { get { return 1156130; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -429,6 +443,7 @@ namespace Server.Items
 			Attributes.CastRecovery = 1;
 			Attributes.WeaponDamage = 20;
 
+            SAAbsorptionAttributes.EaterPoison = 15;
             Resistances.Fire = 5;
 		}
 		
@@ -452,9 +467,13 @@ namespace Server.Items
 	public class JumusSacredHideGargoyle : GargishLeatherWingArmor
 	{
 		public override int LabelNumber { get { return 1156130; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
+        
+        public override int FireResistance { get { return 5; } }
 	
 		[Constructable]
 		public JumusSacredHideGargoyle () 
@@ -462,8 +481,8 @@ namespace Server.Items
 			Attributes.SpellDamage = 5;
 			Attributes.CastRecovery = 1;
 			Attributes.WeaponDamage = 20;
-			
-			FireBonus = 5;
+
+            AbsorptionAttributes.EaterPoison = 15;
 		}
 		
 		public JumusSacredHideGargoyle (Serial serial) : base(serial)
@@ -486,6 +505,8 @@ namespace Server.Items
 	public class JuonarsGrimoire : NecromancerSpellbook
 	{
 		public override int LabelNumber { get { return 1156300; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		[Constructable]
 		public JuonarsGrimoire() 
@@ -493,7 +514,7 @@ namespace Server.Items
             Hue = 2500;
 
 			SkillBonuses.SetValues( 0, SkillName.Necromancy, 15.0 );
-			Slayer = SlayerGroup.Groups[Utility.Random(SlayerGroup.Groups.Length)].Super.Name;
+            Slayer = SlayerGroup.RandomSuperSlayerTOL();
 			
 			Attributes.BonusInt = 8;
 			Attributes.SpellDamage = 15;
@@ -517,8 +538,9 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class LereisHuntingSpear : Spear
+
+    [Alterable(typeof(DefBlacksmithy), typeof(LereisHuntingSpearGargoyle))]
+    public class LereisHuntingSpear : Spear
 	{
 		public override int LabelNumber { get { return 1156128; } }
 
@@ -601,10 +623,13 @@ namespace Server.Items
                 this.WeaponAttributes.HitLeechMana = 50;
 		}
 	}
-	
-	public class MinaxsSandles : Sandals
+
+    [Alterable(typeof(DefTailoring), typeof(MinaxsSandlesGargoyle))]
+    public class MinaxsSandles : Sandals
 	{
 		public override int LabelNumber { get { return 1156297; } } // Minax's Sandles
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -647,6 +672,8 @@ namespace Server.Items
 	public class MinaxsSandlesGargoyle : LeatherTalons
 	{
 		public override int LabelNumber { get { return 1156297; } } // Minax's Sandles
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -685,47 +712,13 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class MocapotilsObsidianSword : StoneWarSword
-	{
-        public override int LabelNumber { get { return 1156131; } }
-	
-		public override int InitMinHits{ get{ return 255; } }
-        public override int InitMaxHits{ get{ return 255; } }
-		
-		[Constructable]
-		public MocapotilsObsidianSword() 
-		{
-            Hue = 1910;
 
-            WeaponAttributes.HitHarm = 50;
-            WeaponAttributes.HitPhysicalArea = 50;
-            WeaponAttributes.HitLeechStam = 100;
-            WeaponAttributes.SplinteringWeapon = 20;
-            Attributes.WeaponSpeed = 40;
-            Attributes.WeaponDamage = 75;
-		}
-		
-		public MocapotilsObsidianSword(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
-	
-	public class OzymandiasObi : Obi
+    [Alterable(typeof(DefTailoring), typeof(OzymandiasObiGargoyle))]
+    public class OzymandiasObi : Obi
 	{
 		public override int LabelNumber { get { return 1156298; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -759,6 +752,8 @@ namespace Server.Items
     public class OzymandiasObiGargoyle : GargoyleHalfApron
 	{
 		public override int LabelNumber { get { return 1156298; } }
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -788,10 +783,13 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class ShantysWaders : ThighBoots
+
+    [Alterable(typeof(DefTailoring), typeof(ShantysWadersGargoyle))]
+    public class ShantysWaders : ThighBoots
 	{
-		public override int LabelNumber { get { return 1156296; } } // Sahnty's Waders
+		public override int LabelNumber { get { return 1156296; } } // Shanty's Waders
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -822,7 +820,9 @@ namespace Server.Items
 	
 	public class ShantysWadersGargoyle : LeatherTalons
 	{
-		public override int LabelNumber { get { return 1156296; } } // Sahnty's Waders
+		public override int LabelNumber { get { return 1156296; } } // Shanty's Waders
+		
+		public override bool IsArtifact { get { return true; } }
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -855,6 +855,8 @@ namespace Server.Items
 	{
         public override int LabelNumber { get { return 1156294; } }
 		
+		public override bool IsArtifact { get { return true; } }
+		
 		[Constructable]
 		public TotemOfTheTribe() : base(0x2F5A)
 		{
@@ -880,10 +882,13 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
-	public class WamapsBoneEarrings : GoldEarrings
+
+    [Alterable(typeof(DefTinkering), typeof(WamapsBoneEarringsGargoyle))]
+    public class WamapsBoneEarrings : GoldEarrings
 	{
         public override int LabelNumber { get { return 1156132; } }
+		
+		public override bool IsArtifact { get { return true; } }
 		
 		[Constructable]
 		public WamapsBoneEarrings()
@@ -932,6 +937,8 @@ namespace Server.Items
 	public class WamapsBoneEarringsGargoyle : GargishEarrings
 	{
         public override int LabelNumber { get { return 1156132; } }
+		
+		public override bool IsArtifact { get { return true; } }
 		
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
@@ -997,6 +1004,47 @@ namespace Server.Items
         }
 
         public UnstableTimeRift(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    [TypeAlias("Server.Items.MocapotilsObsidianSword")]
+    public class MocapotlsObsidianSword : PaladinSword
+    {
+        public override int LabelNumber { get { return 1156131; } } // Moctapotl's Obsidian Sword
+		
+		public override bool IsArtifact { get { return true; } }
+
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+
+        [Constructable]
+        public MocapotlsObsidianSword()
+        {
+            WeaponAttributes.HitHarm = 50;
+            WeaponAttributes.HitPhysicalArea = 50;
+            WeaponAttributes.HitLeechStam = 100;
+            WeaponAttributes.SplinteringWeapon = 20;
+            Attributes.WeaponSpeed = 40;
+            Attributes.WeaponDamage = 75;
+
+            Hue = 1932;
+        }
+
+        public MocapotlsObsidianSword(Serial serial)
             : base(serial)
         {
         }

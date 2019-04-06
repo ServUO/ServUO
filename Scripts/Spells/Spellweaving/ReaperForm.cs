@@ -97,8 +97,8 @@ namespace Server.Spells.Spellweaving
         {
             TransformContext context = TransformationSpellHelper.GetContext(e.Mobile);
 
-            if (context != null && context.Type == typeof(ReaperFormSpell))
-                e.Mobile.Send(SpeedControl.WalkSpeed);
+            if (context != null && context.Type == typeof(ReaperFormSpell) && !Core.SA)
+                e.Mobile.SendSpeedControl(SpeedControlType.WalkSpeed);
         }
 
         public override void DoEffect(Mobile m)
@@ -107,12 +107,15 @@ namespace Server.Spells.Spellweaving
 
             BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ReaperForm, 1071034, 1153781, "10\t10\t5\t5\t5\t5\t25"));
 
-            m.Send(SpeedControl.WalkSpeed);
+            if (!Core.SA)
+            {
+                m.SendSpeedControl(SpeedControlType.WalkSpeed);
+            }
         }
 
         public override void RemoveEffect(Mobile m)
         {
-            m.Send(SpeedControl.Disable);
+            m.SendSpeedControl(SpeedControlType.Disable);
             BuffInfo.RemoveBuff(m, BuffIcon.ReaperForm);
         }
     }

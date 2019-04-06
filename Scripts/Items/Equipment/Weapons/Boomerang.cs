@@ -8,8 +8,8 @@ namespace Server.Items
         public Boomerang()
             : base(0x8FF)
         {
-            this.Weight = 6.0;
-            this.Layer = Layer.OneHanded;
+            Weight = 4.0;
+            Layer = Layer.OneHanded;
         }
 
         public Boomerang(Serial serial)
@@ -17,13 +17,8 @@ namespace Server.Items
         {
         }
 
-        public override int MinThrowRange
-        {
-            get
-            {
-                return 2;
-            }
-        }// MaxRange 6
+        public override int MinThrowRange { get { return 4; } }
+
         public override WeaponAbility PrimaryAbility
         {
             get

@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Provocation.cs
-// **********
-#endregion
-
 #region References
 using System;
 
@@ -140,9 +134,6 @@ namespace Server.SkillHandlers
                         if (masteryBonus > 0)
                             diff -= (diff * ((double)masteryBonus / 100));
 
-                        diff += (XmlMobFactions.GetScaledFaction(from, m_Creature, -25, 25, -0.001) +
-                            XmlMobFactions.GetScaledFaction(from, target, -25, 25, -0.001)) * 0.5;
-
                         if (music > 100.0)
                         {
                             diff -= (music - 100.0) * 0.5;
@@ -150,7 +141,7 @@ namespace Server.SkillHandlers
 
                         if (questTargets || (from.CanBeHarmful(m_Creature, true) && from.CanBeHarmful(target, true)))
                         {
-                            if (!BaseInstrument.CheckMusicianship(from))
+                            if (from.Player && !BaseInstrument.CheckMusicianship(from))
                             {
                                 from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
                                 from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.

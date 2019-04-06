@@ -42,11 +42,16 @@ namespace Server.Items
         {
             PlayerMobile pm = from as PlayerMobile;
 
-            if (!this.IsChildOf(from.Backpack))
+            if (pm == null)
             {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                return;
             }
-            else if (pm == null || from.Skills[SkillName.Tinkering].Base < 100.0)
+
+            if (!IsChildOf(pm.Backpack))
+            {
+                pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+            else if (pm.Skills[SkillName.Tinkering].Base < 100.0)
             {
                 pm.SendMessage("Only a Grandmaster Tinkerer can learn from this book.");
             }
@@ -58,7 +63,8 @@ namespace Server.Items
             {
                 pm.BasketWeaving = true;
                 pm.SendMessage("You have learned to make baskets. You will need gardeners to make reeds out of plants for you to make these items.");
-                this.Delete();
+                
+                Delete();
             }
         }
     }

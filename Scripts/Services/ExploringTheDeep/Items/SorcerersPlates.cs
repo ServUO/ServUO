@@ -9,35 +9,35 @@ namespace Server.Items
 {
     public class SorcerersPlateController : Item
     {
+        public static readonly string EntityName = "sorcerersplate";
+
         public static void Initialize()
         {
             CommandSystem.Register("GenSorcerersPlate", AccessLevel.Developer, new CommandEventHandler(GenSorcerersPlate_Command));
+            CommandSystem.Register("DelSorcerersPlate", AccessLevel.Developer, new CommandEventHandler(DelSorcerersPlate_Command));
         }
 
         [Usage("GenSorcerersPlate")]
         private static void GenSorcerersPlate_Command(CommandEventArgs e)
         {
-            if (Check())
-            {
-                e.Mobile.SendMessage("Sorcerers Plate is already present.");
-            }
-            else
-            {
-                e.Mobile.SendMessage("Creating Sorcerers Plate...");
+            DeletePlates();
+            e.Mobile.SendMessage("Creating Sorcerers Plate...");
 
-                SorcerersPlateController controller = new SorcerersPlateController();
+            SorcerersPlateController controller = new SorcerersPlateController();
+            WeakEntityCollection.Add(EntityName, controller);
 
-                e.Mobile.SendMessage("Generation completed!");
-            }
+            e.Mobile.SendMessage("Sorcerers Plate Generation Completed!");
         }
 
-        private static bool Check()
+        [Usage("DelSorcerersPlate")]
+        private static void DelSorcerersPlate_Command(CommandEventArgs e)
         {
-            foreach (Item item in World.Items.Values)
-                if (item is SorcerersPlateController && !item.Deleted)
-                    return true;
+            DeletePlates();
+        }
 
-            return false;
+        private static void DeletePlates()
+        {
+            WeakEntityCollection.Delete(EntityName);
         }
 
         private SorcerersPlate m_PerfectBlackPearl, m_BurstingBrimstone, m_BrightDaemonBlood, m_MightyMandrake, m_BurlyBone;

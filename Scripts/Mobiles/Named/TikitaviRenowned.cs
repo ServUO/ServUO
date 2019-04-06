@@ -42,8 +42,6 @@ namespace Server.Mobiles
             this.Karma = -1500;
 
             this.VirtualArmor = 28;
-
-            this.PackItem(new EssenceBalance());
         }
 
         public TikitaviRenowned(Serial serial)

@@ -5,8 +5,7 @@ using Server.Mobiles;
 using Server.Items;
 using System.Linq;
 using Server.Engines.Points;
-using Server.Regions;
-using System.Text.RegularExpressions;
+using Server.Engines.Quests;
 
 namespace Server.Engines.VoidPool
 {
@@ -25,7 +24,6 @@ namespace Server.Engines.VoidPool
 		public static VoidPoolController InstanceFel { get; set; }
 
         private readonly int RestartSpan = 15;
-		private readonly int StartMessage = 5;
 		private readonly int PoolStartHits = 15;
 		private readonly int StartPointVariance = 8;
 		
@@ -56,6 +54,12 @@ namespace Server.Engines.VoidPool
                         Region.Unregister();
                         Region = null;
                     }
+
+                    if (Level3Spawner != null)
+                    {
+                        Level3Spawner.Deactivate();
+                        Level3Spawner = null;
+                    }
 				}
 				else
 				{
@@ -75,6 +79,11 @@ namespace Server.Engines.VoidPool
                         if(Region != null)
 						    Region.SendRegionMessage(1152526, RestartSpan.ToString()); // The battle for the Void Pool will begin in ~1_VALUE~ minutes.
 					}
+
+                    if (Level3Spawner == null)
+                    {
+                        Level3Spawner = new Level3Spawner(this);
+                    }
 				}
 				
 				_Active = value; 
@@ -91,7 +100,7 @@ namespace Server.Engines.VoidPool
             {
                 if (Wave < 2)
                     return 0;
-                //TODO: Make this like EA?
+
                 return Math.Max(1, Wave / 5); 
             } 
         }
@@ -126,6 +135,9 @@ namespace Server.Engines.VoidPool
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int RespawnMax { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Level3Spawner Level3Spawner { get; set; }
 
         public VoidPoolController(Map map)
             : base(3803)
@@ -164,6 +176,8 @@ namespace Server.Engines.VoidPool
 
             ClearSpawners();
 			Active = true;
+
+            ResetLevel3Spawners();
 		}
 
         public override void OnDoubleClick(Mobile from)
@@ -375,7 +389,7 @@ namespace Server.Engines.VoidPool
 		{
 			Region.SendRegionMessage(1152530); // Cora's forces have destroyed the Void Pool walls. The battle is lost!
 	
-            VoidPoolStats.OnInvasionEnd(CurrentScore, Wave);
+            VoidPoolStats.OnInvasionEnd(this /*CurrentScore, Wave*/);
 			
 			NextStart = DateTime.UtcNow + TimeSpan.FromMinutes(RestartSpan);
 			
@@ -390,10 +404,19 @@ namespace Server.Engines.VoidPool
             {
                 m.SendLocalizedMessage(1152650, String.Format("{0}\t{1}\t{2}\t{3}", GetTotalWaves(m), Wave.ToString(), Wave.ToString(), CurrentScore[m])); 
 				// During the battle, you helped fight back ~1_COUNT~ out of ~2_TOTAL~ waves of enemy forces. Your final wave was ~3_MAX~. Your total score for the battle was ~4_SCORE~ points.
+
+                if (m is PlayerMobile)
+                {
+                    var quest = QuestHelper.GetQuest<AForcedSacraficeQuest>((PlayerMobile)m);
+
+                    if (quest != null)
+                    {
+                        quest.CompleteQuest();
+                    }
+                }
             }
 
-            list.Clear();
-            list.TrimExcess();
+            ColUtility.Free(list);
             ClearSpawn(true);
 		}
 		
@@ -459,9 +482,42 @@ namespace Server.Engines.VoidPool
             if (Region == null)
                 return;
 
-            foreach (Item item in Region.GetEnumeratedItems().Where(i => i is XmlSpawner))
+            foreach (Item item in Region.GetEnumeratedItems().Where(i => i is ISpawner))
             {
-                ((XmlSpawner)item).DoReset = true;
+                if (item is XmlSpawner)
+                {
+                    ((XmlSpawner)item).DoReset = true;
+                }
+                else if (item is Spawner)
+                {
+                    ((Spawner)item).RemoveSpawned();
+                    ((Spawner)item).Running = false;
+                }
+            }
+        }
+
+        public void ResetLevel3Spawners()
+        {
+            ResetLevel3Spawners(Map.Trammel);
+            ResetLevel3Spawners(Map.Felucca);
+        }
+
+        public void ResetLevel3Spawners(Map map)
+        {
+            Server.Region r = Server.Region.Find(new Point3D(5574, 1859, 0), map);
+
+            foreach (Item item in r.GetEnumeratedItems().Where(i => i is ISpawner 
+                && i.X >= 5501 && i.X <= 5627 && i.Y >= 1799 && i.Y <= 1927))
+            {
+                if (item is XmlSpawner)
+                {
+                    ((XmlSpawner)item).DoReset = true;
+                }
+                else if (item is Spawner)
+                {
+                    ((Spawner)item).RemoveSpawned();
+                    ((Spawner)item).Running = false;
+                }
             }
         }
 
@@ -512,7 +568,7 @@ namespace Server.Engines.VoidPool
 			return (int)score[m];
 		}
 		
-		private Type[][] SpawnTable = new Type[][]
+		public static Type[][] SpawnTable = new Type[][]
 		{
 			new Type[] { typeof(DaemonMongbat), 		typeof(GargoyleAssassin), 	typeof(CovetousDoppleganger), 	typeof(LesserOni),       typeof(CovetousFireDaemon) },
 			new Type[] { typeof(LizardmanWitchdoctor), 	typeof(OrcFootSoldier), 	typeof(RatmanAssassin),         typeof(OgreBoneCrusher), typeof(TitanRockHunter) },
@@ -544,6 +600,12 @@ namespace Server.Engines.VoidPool
             foreach (var wp in WaypointsB.Where(w => w != null && !w.Deleted))
                 wp.Delete();
 
+            if (Level3Spawner != null)
+            {
+                Level3Spawner.Deactivate();
+                Level3Spawner = null;
+            }
+
             base.Delete();
 		}
 
@@ -554,7 +616,17 @@ namespace Server.Engines.VoidPool
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
+			writer.Write((int)2);
+
+            if (Level3Spawner != null)
+            {
+                writer.Write(0);
+                Level3Spawner.Serialize(writer);
+            }
+            else
+            {
+                writer.Write(1);
+            }
 
             writer.Write(RespawnMin);
             writer.Write(RespawnMax);
@@ -572,31 +644,54 @@ namespace Server.Engines.VoidPool
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            RespawnMin = reader.ReadInt();
-            RespawnMax = reader.ReadInt();
-
-            WaypointsA = new List<WayPoint>();
-            WaypointsB = new List<WayPoint>();
-
-            Active = reader.ReadBool();
-
-            int counta = reader.ReadInt();
-            int countb = reader.ReadInt();
-
-            for (int i = 0; i < counta; i++)
+            switch (version)
             {
-                WayPoint wp = reader.ReadItem() as WayPoint;
+                case 2:
+                case 1:
+                    if (version == 1 || reader.ReadInt() == 0)
+                    {
+                        Level3Spawner = new Level3Spawner(reader, this);
+                    }
+                    goto case 0;
+                case 0:
+                    if (version == 0)
+                    {
+                        Level3Spawner = new Level3Spawner(this);
 
-                if (wp != null)
-                    WaypointsA.Add(wp);
-            }
+                        Timer.DelayCall(() =>
+                            {
+                                ResetLevel3Spawners();
+                            });
+                    }
 
-            for (int i = 0; i < countb; i++)
-            {
-                WayPoint wp = reader.ReadItem() as WayPoint;
+                    RespawnMin = reader.ReadInt();
+                    RespawnMax = reader.ReadInt();
 
-                if (wp != null)
-                    WaypointsB.Add(wp);
+                    WaypointsA = new List<WayPoint>();
+                    WaypointsB = new List<WayPoint>();
+
+                    Active = reader.ReadBool();
+
+                    int counta = reader.ReadInt();
+                    int countb = reader.ReadInt();
+
+                    for (int i = 0; i < counta; i++)
+                    {
+                        WayPoint wp = reader.ReadItem() as WayPoint;
+
+                        if (wp != null)
+                            WaypointsA.Add(wp);
+                    }
+
+                    for (int i = 0; i < countb; i++)
+                    {
+                        WayPoint wp = reader.ReadItem() as WayPoint;
+
+                        if (wp != null)
+                            WaypointsB.Add(wp);
+                    }
+
+                    break;
             }
 
             if (Map == Map.Felucca)
@@ -604,7 +699,7 @@ namespace Server.Engines.VoidPool
             else
                 InstanceTram = this;
 
-            Timer.DelayCall(TimeSpan.FromSeconds(10), ClearSpawn);
+            Timer.DelayCall(TimeSpan.FromSeconds(10), () => { ClearSpawn(); ClearSpawners(); } );
         }
 	}
 }

@@ -11,13 +11,11 @@ namespace Server.Items
         [Constructable]
         public GargishBracersofAlchemicalDevastation()
         {
-            this.ItemID = 0x0301;
-            this.Weight = 2.0;
-            this.Attributes.RegenMana = 4;
-            this.Attributes.CastRecovery = 3;
-            this.ArmorAttributes.MageArmor = 1;
-            this.m_AosWeaponAttributes = new AosWeaponAttributes(this);
-            this.m_AosWeaponAttributes.HitFireball = 15;
+            Attributes.RegenMana = 4;
+            Attributes.CastRecovery = 3;
+            ArmorAttributes.MageArmor = 1;
+            m_AosWeaponAttributes = new AosWeaponAttributes(this);
+            m_AosWeaponAttributes.HitFireball = 15;
         }
 
         public GargishBracersofAlchemicalDevastation(Serial serial) : base(serial)

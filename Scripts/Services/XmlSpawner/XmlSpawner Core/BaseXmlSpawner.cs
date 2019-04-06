@@ -289,7 +289,8 @@ namespace Server.Mobiles
 			TAKEN,
 			GIVEN,
 			ITEM,
-			MULTIADDON
+			MULTIADDON,
+            RANDOMITEM
 		}
 
 		private enum valueKeyword
@@ -634,6 +635,7 @@ namespace Server.Mobiles
 			AddItemKeyword("GIVEN");
 			AddItemKeyword("ITEM");
 			AddItemKeyword("MULTIADDON");
+            AddItemKeyword("RANDOMITEM");
 		}
 
 		#endregion
@@ -7454,7 +7456,7 @@ namespace Server.Mobiles
 		public static string ParseObjectType(string str)
 		{
 			string[] arglist = ParseSlashArgs(str, 2);
-			if (arglist.Length > 0)
+			if (arglist != null && arglist.Length > 0)
 			{
 				// parse out any arguments of the form typename,arg,arg,..
 				string[] typeargs = ParseCommaArgs(arglist[0], 2);
@@ -8909,11 +8911,13 @@ namespace Server.Mobiles
 										}
 										else if(invoker!=null && invoker is IEntity)
 										{
-											foreach(Mobile m in map.GetMobilesInRange(((IEntity)invoker).Location, range))
+                                            IPooledEnumerable eable = map.GetMobilesInRange(((IEntity)invoker).Location, range);
+											foreach(Mobile m in eable)
 											{
 												if(objecttype.IsAssignableFrom(m.GetType()) && CheckNameMatch(objectname, m.Name))
 													mobs.Add(m);
 											}
+                                            eable.Free();
 										}
 										for(int x = mobs.Count - 1; x>=0; --x)
 										{
@@ -10857,7 +10861,7 @@ namespace Server.Mobiles
 					string baseitemtype = typeName;
 
 					// itemtypestr will have the form keyword[,x[,y]]
-					string[] itemkeywordargs = ParseString(itemtypestr, 3, ",");
+					string[] itemkeywordargs = ParseString(itemtypestr, 6, ",");
 					
 					itemKeyword kw = itemKeywordHash[typeName];
 
@@ -11244,12 +11248,101 @@ namespace Server.Mobiles
 								}
 								break;
 							}
-						default:
-							{
-								status_str = "unrecognized keyword";
-								// should never get here
-								break;
-							}
+                        case itemKeyword.RANDOMITEM:
+                            {
+                                // syntax is RANDOMITEM,[basebudget,][prefix,][suffix,][rawluck,][artifact]
+                                int basebudget = 0;
+                                ReforgedPrefix prefix = ReforgedPrefix.None;
+                                ReforgedSuffix suffix = ReforgedSuffix.None;
+                                int killersluck = 0;
+                                bool converterror = false;
+
+                                if (itemkeywordargs.Length > 1)
+                                {
+                                    try { basebudget = int.Parse(itemkeywordargs[1]); }
+                                    catch { status_str = "Invalid RANDOMITEM args : " + itemtypestr; converterror = true; }
+                                }
+                                else
+                                    basebudget = Utility.RandomMinMax(100, 700);
+
+                                if (converterror) return false;
+
+                                if (itemkeywordargs.Length > 2)
+                                {
+                                    try
+                                    {
+                                        prefix = (ReforgedPrefix)Enum.Parse(typeof(ReforgedPrefix), itemkeywordargs[2], true);
+                                    }
+                                    catch { status_str = "Invalid RANDOMITEM args : " + itemtypestr; converterror = true; }
+                                }
+
+                                if (converterror) return false;
+
+                                if (itemkeywordargs.Length > 3)
+                                {
+                                    try
+                                    {
+                                        suffix = (ReforgedSuffix)Enum.Parse(typeof(ReforgedSuffix), itemkeywordargs[3], true);
+                                    }
+                                    catch { status_str = "Invalid RANDOMITEM args : " + itemtypestr; converterror = true; }
+                                }
+
+                                if (converterror) return false;
+
+                                int rawluck = triggermob != null ? triggermob is PlayerMobile ? ((PlayerMobile)triggermob).RealLuck : triggermob.Luck : 0;
+                                bool artifact = false;
+
+                                if (rawluck == 0 && itemkeywordargs.Length > 4)
+                                {
+                                    try { rawluck = int.Parse(itemkeywordargs[4]); }
+                                    catch { status_str = "Invalid RANDOMITEM args : " + itemtypestr; converterror = true; }
+                                }
+
+                                if (rawluck > 0)
+                                {
+                                    killersluck = LootPack.GetLuckChance(rawluck);
+                                }
+
+                                if (itemkeywordargs.Length > 5)
+                                {
+                                    string arty = itemkeywordargs[5];
+
+                                    if (arty != null && arty.ToLower() == "true")
+                                    {
+                                        artifact = true;
+                                    }
+                                }
+
+                                if (basebudget < 100) basebudget = 100;
+
+                                Item root = spawner;
+                                if (spawner != null && spawner.RootParent is Item)
+                                    root = spawner.RootParent as Item;
+
+                                Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(root), LootPackEntry.IsMondain(root), LootPackEntry.IsStygian(root));
+
+                                if (item != null)
+                                {
+                                    if (artifact)
+                                    {
+                                        RunicReforging.GenerateRandomArtifactItem(item, rawluck, basebudget, prefix, suffix);
+                                    }
+                                    else
+                                    {
+                                        RunicReforging.GenerateRandomItem(item, triggermob, basebudget, killersluck, prefix, suffix);
+                                    }
+
+                                    AddSpawnItem(spawner, TheSpawn, item, location, map, triggermob, requiresurface, spawnpositioning, substitutedtypeName, out status_str);
+                                }
+
+                                break;
+                            }
+                        default:
+                            {
+                                status_str = "unrecognized keyword";
+                                // should never get here
+                                break;
+                            }
 					}
 
 					return true;

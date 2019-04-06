@@ -1,6 +1,3 @@
-//----------------------------------------------------------------------------------//
-// Created by Vano. Email: vano2006uo@mail.ru      //
-//---------------------------------------------------------------------------------//
 using System;
 
 namespace Server.Items
@@ -18,6 +15,12 @@ namespace Server.Items
                 return 25;
             }
         }
+
+        public override SkillName GetSecondarySkill(Mobile from)
+        {
+            return SkillName.Poisoning;
+        }
+
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
             if (!this.Validate(attacker) || !this.CheckMana(attacker, true))

@@ -72,7 +72,6 @@ namespace Server.Engines.Quests.Haven
         }
 
         public override bool ClickTitle{ get{ return false; } }
-        public override bool IsMilitiaFighter{ get{ return true; } }
         public override bool IsEnemy(Mobile m)
         {
             if (m.Player || m is BaseVendor)

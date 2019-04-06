@@ -39,6 +39,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 35.0);
             SetSkill(SkillName.Tactics, 100.0);
             SetSkill(SkillName.Wrestling, 100.0);
+
+            SetSpecialAbility(SpecialAbility.Anemia);
         }
 
         public BloodWorm(Serial serial)
@@ -78,97 +80,6 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 1501;
-        }
-
-        private static Dictionary<Mobile, AnemiaTimer> m_AnemiaTable = new Dictionary<Mobile, AnemiaTimer>();
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            TryInfect(attacker);
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.10 > Utility.RandomDouble())
-            {
-                if (m_AnemiaTable.ContainsKey(defender))
-                {
-                    PublicOverheadMessage(MessageType.Regular, 0x3B2, 1111668); // * The creature is repulsed by your diseased blood. *
-                }
-                else
-                {
-                    PublicOverheadMessage(MessageType.Regular, 0x3B2, 1111698); // *The creature drains some of your blood to replenish its health.*
-
-                    Hits = Math.Min(HitsMax, Hits + Utility.RandomMinMax(50, 70));
-                }
-            }
-
-            TryInfect(defender);
-        }
-
-        private void TryInfect(Mobile attacker)
-        {
-            if (!m_AnemiaTable.ContainsKey(attacker) && this.InRange(attacker, 1) && 0.25 > Utility.RandomDouble() && !FountainOfFortune.UnderProtection(attacker))
-            {
-                // The creature's attack weakens you. You have become anemic.
-                attacker.SendLocalizedMessage(1111669, "", 0x25);
-
-                attacker.PlaySound(0x213);
-                Effects.SendTargetParticles(attacker, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
-
-                AnemiaTimer timer = new AnemiaTimer(attacker);
-                timer.Start();
-
-                int str = attacker.RawStr / 3;
-                int dex = attacker.RawDex / 3;
-                int Int = attacker.RawInt / 3;
-
-                attacker.AddStatMod(new StatMod(StatType.Str, "BloodWorm_Str", str, TimeSpan.FromSeconds(60)));
-                attacker.AddStatMod(new StatMod(StatType.Dex, "BloodWorm_Dex", dex, TimeSpan.FromSeconds(60)));
-                attacker.AddStatMod(new StatMod(StatType.Int, "BloodWorm_Int", Int, TimeSpan.FromSeconds(60)));
-
-                // -~1_STR~ strength.<br>-~2_INT~ intelligence.<br>-~3_DEX~ dexterity.<br> Drains all stamina.
-                BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.BloodwormAnemia, 1153797, 1153824, String.Format("{0}\t{1}\t{2}", str, dex, Int)));
-
-                m_AnemiaTable.Add(attacker, timer);
-            }
-        }
-
-        private class AnemiaTimer : Timer
-        {
-            private DateTime _Expires;
-            private Mobile m_Victim;
-
-            public AnemiaTimer(Mobile m)
-                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
-            {
-                m_Victim = m;
-
-                _Expires = DateTime.UtcNow + TimeSpan.FromMinutes(1);
-            }
-
-            protected override void OnTick()
-            {
-                if (_Expires < DateTime.UtcNow || m_Victim.Deleted || !m_Victim.Alive || m_Victim.IsDeadBondedPet)
-                {
-                    // You no longer feel sick.
-                    m_Victim.SendLocalizedMessage(1111673);
-
-                    m_AnemiaTable.Remove(m_Victim);
-
-                    BuffInfo.RemoveBuff(m_Victim, BuffIcon.BloodwormAnemia);
-
-                    Stop();
-                }
-                else
-                {
-                    m_Victim.Stam -= m_Victim.Stam < 2 ? 0 : Utility.RandomMinMax(2, 5);
-                }
-            }
         }
 
         public override void OnAfterMove(Point3D oldLocation)

@@ -11,9 +11,9 @@ using System.Linq;
 
 namespace Server.Regions
 {
-    public class SeaMarketRegion : GuardedRegion
+    public class SeaMarketRegion : BaseRegion
     {
-        private static readonly TimeSpan KickDuration = TimeSpan.FromMinutes(30);
+        private static readonly TimeSpan KickDuration = TimeSpan.FromMinutes(20);
 
         private static SeaMarketRegion m_Region1;
         private static SeaMarketRegion m_Region2;
@@ -61,7 +61,7 @@ namespace Server.Regions
         public static Rectangle2D[] Bounds { get { return m_Bounds; } }
         private static Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
-            new Rectangle2D(4472, 2250, 200, 200),
+            new Rectangle2D(4529, 2296, 45, 112),
         };
 
         public SeaMarketRegion(Map map)
@@ -76,7 +76,13 @@ namespace Server.Regions
             {
                 case TravelCheckType.RecallTo:
                 case TravelCheckType.GateTo:
-                case TravelCheckType.Mark: return false;
+                    {
+                        return BaseBoat.FindBoatAt(p, Map) != null;
+                    }
+                case TravelCheckType.Mark:
+                    {
+                        return false;
+                    }
             }
 
             return base.CheckTravel(traveller, p, type);
@@ -99,123 +105,68 @@ namespace Server.Regions
                     bounties.Add(mob);
             }
 
-            if (bounties.Count == 0)
-                return;
-
-            Mobile bounty = bounties[Utility.Random(bounties.Count)];
-
-            if (bounty != null)
+            if (bounties.Count > 0)
             {
-                PirateCaptain capt = (PirateCaptain)bounty;
+                Mobile bounty = bounties[Utility.Random(bounties.Count)];
 
-                int xLong = 0, yLat = 0;
-                int xMins = 0, yMins = 0;
-                bool xEast = false, ySouth = false;
-                Point3D loc = capt.Location;
-                Map map = capt.Map;
+                if (bounty != null)
+                {
+                    PirateCaptain capt = (PirateCaptain)bounty;
 
-                string locArgs;
-                //string nameArgs;
-                string combine;
+                    int xLong = 0, yLat = 0;
+                    int xMins = 0, yMins = 0;
+                    bool xEast = false, ySouth = false;
+                    Point3D loc = capt.Location;
+                    Map map = capt.Map;
 
-                if (Sextant.Format(loc, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
-                    locArgs = String.Format("{0}°{1}'{2},{3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
-                else
-                    locArgs = "?????";
+                    string locArgs;
+                    //string nameArgs;
+                    string combine;
 
-                //if (capt.PirateName > -1)
-                //    nameArgs = String.Format("#{0} #{1} #{2}", capt.Adjective, capt.Noun, capt.PirateName);
-                //else
-                //    nameArgs = String.Format("#{0} #{1} {2}", capt.Adjective, capt.Noun, capt.Name);
+                    if (Sextant.Format(loc, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+                        locArgs = String.Format("{0}°{1}'{2},{3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                    else
+                        locArgs = "?????";
 
-                combine = String.Format("{0}\t{1}", capt.PirateName > -1 ? String.Format("#{0}", capt.PirateName) : capt.Name, locArgs);
+                    combine = String.Format("{0}\t{1}", capt.PirateName > -1 ? String.Format("#{0}", capt.PirateName) : capt.Name, locArgs);
 
-                int cliloc = Utility.RandomMinMax(1149856, 1149865);
-                npc.SayTo(from, cliloc, combine);
+                    int cliloc = Utility.RandomMinMax(1149856, 1149865);
+                    npc.SayTo(from, cliloc, combine);
 
-                m_PirateBlabTable[from] = DateTime.UtcNow + BlabDuration;
+                    m_PirateBlabTable[from] = DateTime.UtcNow + BlabDuration;
+                }
             }
+
+            ColUtility.Free(bounties);
         }
 
         public static void CheckBlab_Callback()
         {
-            List<Mobile> regPlayers1 = null;
-            List<Mobile> regPlayers2 = null;
-            List<Mobile> regPlayers3 = null;
+            CheckBabble(m_Region1);
+            CheckBabble(m_Region2);
+            CheckBabble(TokunoDocksRegion.Instance);
+        }
 
-            if (m_Region1 != null)
-                regPlayers1 = m_Region1.GetPlayers();
+        public static void CheckBabble(Region r)
+        {
+            if (r == null)
+                return;
 
-            if (m_Region2 != null)
-                regPlayers2 = m_Region2.GetPlayers();
-
-            if (TokunoDocksRegion.Instance != null)
-                regPlayers2 = TokunoDocksRegion.Instance.GetPlayers();
-            //TODO: Quest Check
-            if (regPlayers1 != null)
+            foreach (var player in r.GetEnumeratedMobiles().Where(p => p is PlayerMobile && 
+                                                                       p.Alive /*&&
+                                                                       QuestHelper.GetQuest((PlayerMobile)p, typeof(ProfessionalBountyQuest)) != null*/))
             {
-                for (int i = 0; i < regPlayers1.Count; i++)
-                {
-                    Mobile player = regPlayers1[i];
+                    IPooledEnumerable eable = player.GetMobilesInRange(4);
 
-                    if (player != null && player.Alive && player is PlayerMobile && QuestHelper.GetQuest((PlayerMobile)player, typeof(ProfessionalBountyQuest)) != null)
+                    foreach (Mobile mob in eable)
                     {
-                        IPooledEnumerable eable = player.GetMobilesInRange(4);
-                        foreach (Mobile mob in eable)
+                        if (mob is BaseVendor || mob is MondainQuester || mob is GalleonPilot)
                         {
-                            if (mob is BaseVendor || mob is MondainQuester || mob is GalleonPilot)
-                            {
-                                TryPirateBlab(player, mob);
-                                break;
-                            }
+                            TryPirateBlab(player, mob);
+                            break;
                         }
-                        eable.Free();
                     }
-                }
-            }
-
-            if (regPlayers2 != null)
-            {
-                for (int i = 0; i < regPlayers2.Count; i++)
-                {
-                    Mobile player = regPlayers2[i];
-
-                    if (player != null && player.Alive && player is PlayerMobile && QuestHelper.GetQuest((PlayerMobile)player, typeof(ProfessionalBountyQuest)) != null)
-                    {
-                        IPooledEnumerable eable = player.GetMobilesInRange(4);
-                        foreach (Mobile mob in eable)
-                        {
-                            if (mob is BaseVendor || mob is MondainQuester)
-                            {
-                                TryPirateBlab(player, mob);
-                                break;
-                            }
-                        }
-                        eable.Free();
-                    }
-                }
-            }
-
-            if (regPlayers3 != null)
-            {
-                for (int i = 0; i < regPlayers3.Count; i++)
-                {
-                    Mobile player = regPlayers3[i];
-
-                    if (player != null && player.Alive && player is PlayerMobile && QuestHelper.GetQuest((PlayerMobile)player, typeof(ProfessionalBountyQuest)) != null)
-                    {
-                        IPooledEnumerable eable = player.GetMobilesInRange(4);
-                        foreach (Mobile mob in eable)
-                        {
-                            if (mob is BaseVendor || mob is MondainQuester)
-                            {
-                                TryPirateBlab(player, mob);
-                                break;
-                            }
-                        }
-                        eable.Free();
-                    }
-                }
+                    eable.Free();
             }
         }
         #endregion
@@ -274,7 +225,7 @@ namespace Server.Regions
                     {
                         TimeSpan ts = moveBy - DateTime.UtcNow;
 
-                        if ((int)ts.TotalMinutes < 6)
+                        if ((int)ts.TotalMinutes <= 10)
                         {
                             int rem = Math.Max(1, (int)ts.TotalMinutes);
                             boat.Owner.SendLocalizedMessage(1149787 + (rem - 1));
@@ -292,11 +243,8 @@ namespace Server.Regions
             foreach (BaseBoat b in toRemove)
                 m_BoatTable.Remove(b);
 
-            toRemove.Clear();
-            toRemove.TrimExcess();
-
-            boats.Clear();
-            boats.TrimExcess();
+            ColUtility.Free(toRemove);
+            ColUtility.Free(boats);
         }
 
         public void AddToTable(BaseBoat boat)

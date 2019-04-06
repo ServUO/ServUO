@@ -4,7 +4,7 @@ using Server.Engines.Harvest;
 namespace Server.Items
 {
     [FlipableAttribute(0xE86, 0xE85)]
-    public class Pickaxe : BaseAxe, IUsesRemaining
+    public class Pickaxe : BaseAxe, IUsesRemaining, IHarvestTool
     {
         [Constructable]
         public Pickaxe()

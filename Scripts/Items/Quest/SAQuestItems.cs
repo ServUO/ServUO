@@ -10,9 +10,9 @@ namespace Server.Items
         public AcidSac()
             : base(0x0C67)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Hue = 648;
+            Stackable = true;
+            Weight = 1.0;
+            Hue = 648;
         }
 
         public AcidSac(Serial serial)
@@ -60,14 +60,14 @@ namespace Server.Items
             public InternalTarget(Item item)
                 : base(2, false, TargetFlags.None)
             {
-                this.m_Item = item;
+                m_Item = item;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
                 PlayerMobile pm = from as PlayerMobile;
 
-                if (this.m_Item.Deleted)
+                if (m_Item.Deleted)
                     return;
 
                 if (targeted is AddonComponent)
@@ -83,36 +83,36 @@ namespace Server.Items
 
                         if (addoncomponent.Addon is StoneWallAndVineAddon)
                         {
-                            this.wall = new SecretStoneWallNS();
-                            this.wallandvine = new StoneWallAndVineAddon();
+                            wall = new SecretStoneWallNS();
+                            wallandvine = new StoneWallAndVineAddon();
                         }
                         else if (addoncomponent.Addon is DungeonWallAndVineAddon)
                         {
-                            this.wall = new SecretDungeonWallNS();
-                            this.wallandvine = new DungeonWallAndVineAddon();
+                            wall = new SecretDungeonWallNS();
+                            wallandvine = new DungeonWallAndVineAddon();
                         }
 
-                        this.wall.MoveToWorld(new Point3D(Xs, addoncomponent.Y, addoncomponent.Z), addoncomponent.Map);
+                        wall.MoveToWorld(new Point3D(Xs, addoncomponent.Y, addoncomponent.Z), addoncomponent.Map);
 
                         addoncomponent.Delete();
 
-                        this.m_Item.Consume();
+                        m_Item.Consume();
 
-                        this.wall.PublicOverheadMessage(0, 1358, 1111662); // The acid quickly burns through the writhing wallvines, revealing the strange wall.
+                        wall.PublicOverheadMessage(0, 1358, 1111662); // The acid quickly burns through the writhing wallvines, revealing the strange wall.
 
                         Timer.DelayCall(TimeSpan.FromSeconds(15.0), delegate()
                         {
-                            this.wallandvine.MoveToWorld(this.wall.Location, this.wall.Map);
+                            wallandvine.MoveToWorld(wall.Location, wall.Map);
 
-                            this.wall.Delete();
-                            this.wallandvine.PublicOverheadMessage(0, 1358, 1111663); // The vines recover from the acid and, spreading like tentacles, reclaim their grip over the wall.
+                            wall.Delete();
+                            wallandvine.PublicOverheadMessage(0, 1358, 1111663); // The vines recover from the acid and, spreading like tentacles, reclaim their grip over the wall.
                         });
                     }
                 }
                 else
                 {
                     from.SendLocalizedMessage(1111657); // The acid swiftly burn through it.
-                    this.m_Item.Consume();
+                    m_Item.Consume();
                     return; // Exit the method, because addoncomponent is null
                 }
             }
@@ -125,7 +125,7 @@ namespace Server.Items
         public AncientPotteryFragments()
 			: base(0x2243)
         {
-			this.Hue = 2108;
+			Hue = 2108;
         }
 
         public AncientPotteryFragments(Serial serial)
@@ -155,7 +155,7 @@ namespace Server.Items
         }
     }
 
-    public class BouraPelt : Item
+    public class BouraPelt : Item, ICommodity
     {
         [Constructable]
         public BouraPelt()
@@ -167,14 +167,17 @@ namespace Server.Items
         public BouraPelt(int amount)
             : base(0x5742)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public BouraPelt(Serial serial)
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {
@@ -210,8 +213,8 @@ namespace Server.Items
         public ClawSlasherVeils(int amount)
             : base(0x2DB8)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public ClawSlasherVeils(Serial serial)
@@ -253,8 +256,8 @@ namespace Server.Items
         public CongealedSlugAcid(int amount)
             : base(0x5742)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public CongealedSlugAcid(Serial serial)
@@ -284,23 +287,24 @@ namespace Server.Items
         }
     }
 
-    public class EnchantEssence : Item
+    [TypeAlias("Server.Items.EnchantEssence")]
+    public class EnchantedEssence : Item, ICommodity
     {
         [Constructable]
-        public EnchantEssence()
+        public EnchantedEssence()
             : this(1)
         {
         }
 
         [Constructable]
-        public EnchantEssence(int amount)
+        public EnchantedEssence(int amount)
             : base(0x2DB2)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
-        public EnchantEssence(Serial serial)
+        public EnchantedEssence(Serial serial)
             : base(serial)
         {
         }
@@ -312,6 +316,20 @@ namespace Server.Items
                 return 1031698;
             }
         }// Enchaned Essence
+		TextDefinition ICommodity.Description
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -337,10 +355,12 @@ namespace Server.Items
 
         [Constructable]
         public FairyDragonWing(int amount)
-            : base(0x5726)
+            : base(0x1084)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Hue = 1111;
+
+            Stackable = true;
+            Amount = amount;
         }
 
         public FairyDragonWing(Serial serial)
@@ -380,10 +400,12 @@ namespace Server.Items
 
         [Constructable]
         public LeatherWolfSkin(int amount)
-            : base(0x3189)
+            : base(0xDF8)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
+
+            Hue = 248;
         }
 
         public LeatherWolfSkin(Serial serial)
@@ -402,7 +424,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -410,10 +432,16 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                ItemID = 0xDF8;
+                Hue = 248;
+            }
         }
     }
 
-    public class LuckyCoin : Item
+    public class LuckyCoin : Item, ICommodity
     {
         [Constructable]
         public LuckyCoin()
@@ -425,8 +453,8 @@ namespace Server.Items
         public LuckyCoin(int amount)
             : base(0xF87)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
 
             Hue = 1174;
         }
@@ -435,6 +463,9 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {
@@ -492,7 +523,7 @@ namespace Server.Items
         }
     }
 
-    public class MagicalResidue : Item
+    public class MagicalResidue : Item, ICommodity
     {
         [Constructable]
         public MagicalResidue()
@@ -504,8 +535,8 @@ namespace Server.Items
         public MagicalResidue(int amount)
             : base(0x2DB1)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public MagicalResidue(Serial serial)
@@ -520,6 +551,20 @@ namespace Server.Items
                 return 1031697;
             }
         }// Magical Residue
+		TextDefinition ICommodity.Description
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -547,8 +592,8 @@ namespace Server.Items
         public PileInspectedIngots(int amount)
             : base(0x1BEA)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public PileInspectedIngots(Serial serial)
@@ -574,7 +619,7 @@ namespace Server.Items
         }
     }
 
-    public class RelicFragment : Item
+    public class RelicFragment : Item, ICommodity
     {
         [Constructable]
         public RelicFragment()
@@ -586,8 +631,8 @@ namespace Server.Items
         public RelicFragment(int amount)
             : base(0x2DB3)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public RelicFragment(Serial serial)
@@ -602,6 +647,20 @@ namespace Server.Items
                 return 1031699;
             }
         }// Relic Fragment
+		TextDefinition ICommodity.Description
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -629,9 +688,9 @@ namespace Server.Items
 		public SearedFireAntGoo(int amount)
             : base(0x122E)
 		{
-			this.Stackable = true;
-			this.Amount = amount;
-            this.Hue = 1359;
+			Stackable = true;
+			Amount = amount;
+            Hue = 1359;
 		}
 
         public SearedFireAntGoo(Serial serial)
@@ -676,8 +735,8 @@ namespace Server.Items
         public StygianDragonHead(int amount)
             : base(0x2DB4)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public StygianDragonHead(Serial serial)
@@ -717,7 +776,7 @@ namespace Server.Items
 
         [Constructable]
         public TatteredAncientScroll(int amount)
-            : base(0x1437)
+            : base(0x1700)
         {
         }
 
@@ -757,7 +816,7 @@ namespace Server.Items
         }
     }
 
-    public class UndamagedIronBeetleScale : Item
+    public class UndamagedIronBeetleScale : Item, ICommodity
     {
         [Constructable]
         public UndamagedIronBeetleScale()
@@ -769,14 +828,17 @@ namespace Server.Items
         public UndamagedIronBeetleScale(int amount)
             : base(0x26B3)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public UndamagedIronBeetleScale(Serial serial)
             : base(serial)
         {
         }
+
+        TextDefinition ICommodity.Description { get { return LabelNumber; } }
+        bool ICommodity.IsDeedable { get { return true; } }
 
         public override int LabelNumber
         {
@@ -815,8 +877,8 @@ namespace Server.Items
         public UndeadGargHorn(int amount)
             : base(0x315C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public UndeadGargHorn(Serial serial)
@@ -861,8 +923,8 @@ namespace Server.Items
         public UndeadGargMedallion(int amount)
             : base(0x1088)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
 
             Hue = 2207;
             LootType = LootType.Blessed;
@@ -911,8 +973,8 @@ namespace Server.Items
         public UntranslatedAncientTome(int amount)
             : base(0x0FF2)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
 
             Hue = 2405;
         }
@@ -984,6 +1046,250 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+        }
+    }
+
+    public class BarrelOfBarley : Item
+    {
+        public override int LabelNumber { get { return 1094999; } } // Barrel of Barley
+
+        [Constructable]
+        public BarrelOfBarley()
+            : base(4014)
+        {
+            Weight = 25;
+        }
+
+        public BarrelOfBarley(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class FlintsLogbook : Item
+    {
+        public override int LabelNumber { get { return 1095000; } } // Flint's Logbook
+
+        [Constructable]
+        public FlintsLogbook()
+            : base(7185)
+        {
+        }
+
+        public FlintsLogbook(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class BottleOfFlintsPungnentBrew : BaseBeverage
+    {
+        public override int LabelNumber
+        {
+            get
+            {
+                return IsEmpty ? 1113607 : 1094967; // a bottle of Flint's Pungent Brew
+            }
+        }
+
+        [Constructable]
+        public BottleOfFlintsPungnentBrew()
+            : base(BeverageType.Ale)
+        {
+        }
+
+        public override int ComputeItemID()
+        {
+            return 0x99F;
+        }
+
+        public override int MaxQuantity { get { return 5; } }
+
+        public BottleOfFlintsPungnentBrew(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    [Flipable(6870, 6871)]
+    public class KegOfFlintsPungnentBrew : Item
+    {
+        public override int LabelNumber { get { return 1113608; } } // a keg of Flint's Pungent Brew
+
+        [Constructable]
+        public KegOfFlintsPungnentBrew()
+            : base(6870)
+        {
+            Weight = 25;
+        }
+
+        public KegOfFlintsPungnentBrew(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class FloorTrapComponent : Item
+    {
+        public override int LabelNumber { get { return 1095001; } } // Floor Trap Components
+
+        [Constructable]
+        public FloorTrapComponent()
+            : base(Utility.RandomMinMax(3117, 3120))
+        {
+        }
+
+        public FloorTrapComponent(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class DuganMissingQuestCorpse : QuestHintItem
+    {
+        public override Type QuestType { get { return typeof(Server.Engines.Quests.Missing); } }
+
+        [Constructable]
+        public DuganMissingQuestCorpse()
+            : base(1094954) // You observe the remains of four humans here.  As you observe the tragic scene, you are reminded that you promised to bring evidence to Elder Dugan of their fate.
+        {
+        }
+
+        public DuganMissingQuestCorpse(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
+    public class FlintLostBarrelHint : QuestHintItem
+    {
+        public override Type QuestType { get { return typeof(Server.Engines.Quests.ThievesBeAfootQuest); } }
+        public override Type QuestItemType { get { return typeof(BarrelOfBarley); } }
+        public override int DefaultRange { get { return 5; } }
+
+        [Constructable]
+        public FlintLostBarrelHint()
+            : base(1094963) // The smug smell of Barley fills this chamber.
+        {
+        }
+
+        public FlintLostBarrelHint(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
+    public class FlintLostLogbookHint : QuestHintItem
+    {
+        public override Type QuestType { get { return typeof(Server.Engines.Quests.BibliophileQuest); } }
+        public override Type QuestItemType { get { return typeof(FlintsLogbook); } }
+        public override int DefaultRange { get { return 5; } }
+
+        [Constructable]
+        public FlintLostLogbookHint()
+            : base(1094974) // This appears to be Flint's logbook.  It is not clear why the goblins were using it in a ritual.  Perhaps they were summoning a nefarious intention?
+        {
+        }
+
+        public FlintLostLogbookHint(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
         }
     }
 }

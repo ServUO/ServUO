@@ -8,12 +8,12 @@ namespace Server.Items
         [Constructable]
         public NoxRangersHeavyCrossbow()
         {
-            this.Hue = 0x58C;
-            this.WeaponAttributes.HitLeechStam = 40;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 20;
-            this.WeaponAttributes.ResistPoisonBonus = 10;
+            Hue = 0x58C;
+            WeaponAttributes.HitLeechStam = 40;
+            Attributes.SpellChanneling = 1;
+            Attributes.WeaponSpeed = 30;
+            Attributes.WeaponDamage = 20;
+            WeaponAttributes.ResistPoisonBonus = 10;
         }
 
         public NoxRangersHeavyCrossbow(Serial serial)

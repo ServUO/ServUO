@@ -95,15 +95,11 @@ namespace Server.Items
             }
             else if (from.Poisoned)
             {
-                this.DoCure(from);
-
-                BasePotion.PlayDrinkEffect(from);
-
+                DoCure(from);
+                PlayDrinkEffect(from);
                 from.FixedParticles(0x373A, 10, 15, 5012, EffectLayer.Waist);
                 from.PlaySound(0x1E0);
-
-                if (!Engines.ConPVP.DuelContext.IsFreeConsume(from))
-                    this.Consume();
+                Consume();
             }
             else
             {

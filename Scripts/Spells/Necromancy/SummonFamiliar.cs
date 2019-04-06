@@ -210,12 +210,7 @@ namespace Server.Spells.Necromancy
 
                 BaseCreature check = (BaseCreature)SummonFamiliarSpell.Table[this.m_From];
 
-                #region Dueling
-                if (this.m_From is PlayerMobile && ((PlayerMobile)this.m_From).DuelContext != null && !((PlayerMobile)this.m_From).DuelContext.AllowSpellCast(this.m_From, this.m_Spell))
-                {
-                }
-                #endregion
-                else if (check != null && !check.Deleted)
+                if (check != null && !check.Deleted)
                 {
                     this.m_From.SendLocalizedMessage(1061605); // You already have a familiar.
                 }

@@ -1,15 +1,49 @@
 using System;
+using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Engines.Quests
 {
     public class Neville : BaseEscort
     {
+        public static void Initialize()
+        {
+            if (Core.SA)
+                Spawn();
+        }
+
+        public static Point3D HomeLocation { get { return new Point3D(1150, 964, -42); } }
+        public static int HomeRange { get { return 5; } }
+
+        public override Type[] Quests { get { return new Type[] { typeof(EscortToDugan) }; } }
+
+        private DateTime m_TalkTime;
+
+        public static List<Neville> Instances { get; set; }
+
+        string[] NevilleSay = new string[]
+        {
+            "Save Us",
+            "Murder is being done!",
+            "Protect me!",
+            "a scoundrel is committing murder!",
+            "Where are the guards! Help!",
+            "Make haste",
+            "Tisawful! Death! Ah!"
+        };
+
         [Constructable]
         public Neville()
             : base()
         {
-            this.Name = "Neville Brightwhistle";
+            Name = "Neville Brightwhistle";
+
+            SpeechHue = 0x3B2;
+
+            if (Instances == null)
+                Instances = new List<Neville>();
+
+            Instances.Add(this);
         }
 
         public Neville(Serial serial)
@@ -17,68 +51,101 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] 
-                {
-                    typeof(EscortToDugan)
-                };
-            }
-        }
         public override bool CanBeDamaged()
         {
             return false;
         }
 
+        public override void Advertise()
+        {
+            Say(1095004); // Please help me, where am I?
+        }
+
+        public override void OnThink()
+        {
+            if (DateTime.UtcNow >= m_TalkTime)
+            {
+                if (!Alive || Deleted || ControlMaster == null)
+                {
+                    return;
+                }
+
+                if (!ControlMaster.Hidden && ControlMaster.Aggressors.Count > 0)
+                {
+                    SayRandom(NevilleSay, this);
+
+                    m_TalkTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30));
+                }
+            }
+
+            base.OnThink();
+        }
+
+        private void SayRandom(string[] say, Mobile m)
+        {
+            m.Say(say[Utility.Random(say.Length)]);
+        }
+
+        public override void OnDelete()
+        {
+            if (Instances != null && Instances.Contains(this))
+                Instances.Remove(this);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(
+                delegate
+                {
+                    Spawn();
+                }));            
+
+            base.OnDelete();
+        }
+
+        public static void Spawn()
+        {
+            if (Instances != null && Instances.Count > 0)
+                return;
+
+            Neville creature = new Neville();
+            creature.Home = HomeLocation;
+            creature.RangeHome = HomeRange;
+            creature.MoveToWorld(HomeLocation, Map.TerMur);
+        }
+
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x8412;
-            this.HairItemID = 0x2047;
-            this.HairHue = 0x465;
+            Hue = Race.RandomSkinHue();
+            HairItemID = Race.RandomHair(false);
+            HairHue = Race.RandomHairHue();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x1BB));
-            this.AddItem(new LongPants(0x901));
-            this.AddItem(new Tunic(0x70A));
-            this.AddItem(new Cloak(0x675));
+            SetWearable(new Backpack());
+            SetWearable(new Shoes(0x70A));
+            SetWearable(new LongPants(0x1BB));
+            SetWearable(new FancyShirt(0x588));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
+
+            if (Instances == null)
+                Instances = new List<Neville>();
+
+            Instances.Add(this);
         }
     }
 }

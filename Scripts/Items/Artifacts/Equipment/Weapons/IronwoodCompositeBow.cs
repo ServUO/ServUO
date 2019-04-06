@@ -5,21 +5,20 @@ namespace Server.Items
     public class IronwoodCompositeBow : CompositeBow
 	{
 		public override bool IsArtifact { get { return true; } }
+		public override int LabelNumber { get { return 1113759; } } // Ironwood Composite Bow
+		
         [Constructable]
         public IronwoodCompositeBow()
             : base()
         {
-            this.Name = ("Ironwood Composite Bow");
-		
-            this.Hue = 1410;
-			
-            this.Slayer = SlayerName.Fey;
-            this.WeaponAttributes.HitFireball = 40;
-            this.WeaponAttributes.HitLowerDefend = 30;	
-            this.Attributes.BonusDex = 5;
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 45;
-            this.Velocity = 30;
+            Hue = 1410;			
+            Slayer = SlayerName.Fey;
+            WeaponAttributes.HitFireball = 40;
+            WeaponAttributes.HitLowerDefend = 30;	
+            Attributes.BonusDex = 5;
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 45;
+            Velocity = 30;
         }
 
         public IronwoodCompositeBow(Serial serial)

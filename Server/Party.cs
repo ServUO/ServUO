@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Party.cs
-// **********
-#endregion
-
 namespace Server
 {
 	public abstract class PartyCommands

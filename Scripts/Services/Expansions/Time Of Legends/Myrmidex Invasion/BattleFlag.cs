@@ -58,7 +58,7 @@ namespace Server.Engines.MyrmidexInvasion
         public static void DisplayWaveInfo(BattleSpawner spawner, Mobile m)
         {
             int delay = 0;
-            ColUtility.ForEach(spawner.MyrmidexTeam, kvp =>
+            foreach (var kvp in spawner.MyrmidexTeam)
             {
                 if (kvp.Value.Count > 0)
                 {
@@ -72,10 +72,10 @@ namespace Server.Engines.MyrmidexInvasion
                 }
 
                 delay++;
-            });
+            }
 
             delay = 0;
-            ColUtility.ForEach(spawner.TribeTeam, kvp =>
+            foreach (var kvp in spawner.TribeTeam)
             {
                 if (kvp.Value.Count > 0)
                 {
@@ -89,7 +89,7 @@ namespace Server.Engines.MyrmidexInvasion
                 }
 
                 delay++;
-            });
+            }
         }
 
         public override bool HandlesOnMovement { get { return BattleSpawner != null && NextSpawn < DateTime.UtcNow; } }
@@ -99,23 +99,31 @@ namespace Server.Engines.MyrmidexInvasion
             if (m is BaseCreature && NextSpawn < DateTime.UtcNow)
             {
                 BaseCreature bc = (BaseCreature)m;
-                Point3D check = this.Allegiance == Allegiance.Myrmidex ? new Point3D(914, 1807, 0) : this.Location;
+                Point3D check = Allegiance == Allegiance.Myrmidex ? new Point3D(914, 1807, 0) : Location;
 
-                if (bc is BritannianInfantry && this.Allegiance == Allegiance.Tribes && bc.InRange(check, 5))
+                if (this.Allegiance == Allegiance.Myrmidex && bc.InRange(check, 8))
                 {
-                    Spawn(true, typeof(BritannianInfantry));
+                    if (bc is BritannianInfantry || (bc is BaseEodonTribesman && ((BaseEodonTribesman)bc).TribeType != EodonTribe.Barrab))
+                    {
+                        Spawn(false, typeof(MyrmidexDrone), typeof(MyrmidexWarrior), typeof(TribeWarrior));
+                    }
                 }
-                else if ((bc is MyrmidexDrone || bc is MyrmidexWarrior || bc is BaseEodonTribesman) && this.Allegiance == Allegiance.Myrmidex && bc.InRange(check, 5))
+                else if (this.Allegiance == Allegiance.Tribes && bc.InRange(check, 8))
                 {
-                    Spawn(false, typeof(MyrmidexDrone), typeof(MyrmidexWarrior), typeof(TribeWarrior), typeof(TribeShaman));
+                    if (bc is MyrmidexDrone || bc is MyrmidexWarrior || (bc is BaseEodonTribesman && ((BaseEodonTribesman)bc).TribeType == EodonTribe.Barrab))
+                    {
+                        Spawn(true, typeof(BritannianInfantry));
+                    }
                 }
             }
         }
 
-
         private void Spawn(bool tribe, params Type[] types)
         {
-            NextSpawn = DateTime.UtcNow + TimeSpan.FromMinutes(25);
+            if (Map == null)
+                return;
+
+            NextSpawn = DateTime.UtcNow + TimeSpan.FromMinutes(10);
 
             for (int i = 0; i < 5; i++)
             {
@@ -132,9 +140,11 @@ namespace Server.Engines.MyrmidexInvasion
                     Rectangle2D rec = new Rectangle2D(this.X, this.Y, 3, 3);
                     Point3D p = this.Location;
 
+                    bc.NoLootOnDeath = true;
+
                     do
                     {
-                        p = rec.GetRandomSpawnPoint(this.Map);
+                        p = this.Map.GetRandomSpawnPoint(rec);
                     }
                     while (p == this.Location || !this.Map.CanSpawnMobile(p));
 
@@ -142,11 +152,11 @@ namespace Server.Engines.MyrmidexInvasion
 
                     if (tribe)
                     {
-                        bc.Home = new Point3D(913, 1792, 0);
+                        bc.Home = new Point3D(914, 1872, 0);
                     }
                     else
                     {
-                        bc.Home = new Point3D(914, 1872, 0);
+                        bc.Home = new Point3D(913, 1792, 0);
                     }
 
                     bc.RangeHome = 15;

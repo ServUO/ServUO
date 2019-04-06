@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
 using Server;
 using Server.Network;
 using Server.Mobiles;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Server.Gumps
 {
@@ -16,6 +19,8 @@ namespace Server.Gumps
 
         public PlayerMobile User { get; private set; }
         public bool Open { get; set; }
+
+        public virtual bool CloseOnMapChange { get { return false; } }
 
         public Gump Parent 
         {
@@ -84,6 +89,25 @@ namespace Server.Gumps
 
             Children = null;
             Parent = null;
+
+            foreach (var kvp in _TextTooltips)
+            {
+                kvp.Value.Free();
+            }
+
+            foreach (var kvp in _ClilocTooltips)
+            {
+                kvp.Value.Free();
+            }
+
+            _ClilocTooltips.Clear();
+            _TextTooltips.Clear();
+
+            OnDispose();
+        }
+
+        public virtual void OnDispose()
+        {
         }
 
         public abstract void AddGumpLayout();
@@ -177,43 +201,102 @@ namespace Server.Gumps
 
         public virtual void Close()
         {
-            User.CloseGump(this.GetType());
+            if (User == null || User.NetState == null)
+                return;
+
+            OnServerClose(User.NetState);
+
+            User.Send(new CloseGump(TypeID, 0));
+            User.NetState.RemoveGump(this);
+        }
+        
+        public static T GetGump<T>(PlayerMobile pm, Func<T, bool> predicate) where T : Gump
+        {
+            return EnumerateGumps<T>(pm).FirstOrDefault(x => predicate == null || predicate(x));
+        }
+
+        public static IEnumerable<T> EnumerateGumps<T>(PlayerMobile pm, Func<T, bool> predicate = null) where T : Gump
+        {
+            var ns = pm.NetState;
+
+            if (ns == null)
+                yield break;
+
+            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => g.GetType() == typeof(T) && 
+                (predicate == null || predicate(g as T))))
+            {
+                yield return gump as T;
+            }
+        }
+
+        public static List<T> GetGumps<T>(PlayerMobile pm) where T : Gump
+        {
+            var ns = pm.NetState;
+            List<T> list = new List<T>();
+
+            if (ns == null)
+                return list;
+
+            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => g.GetType() == typeof(T)))
+            {
+                list.Add(gump as T);
+            }
+
+            return list;
+        }
+
+        public static List<BaseGump> GetGumps(PlayerMobile pm, bool checkOpen = false)
+        {
+            var ns = pm.NetState;
+            List<BaseGump> list = new List<BaseGump>();
+
+            if (ns == null)
+                return list;
+
+            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => (!checkOpen || g.Open)))
+            {
+                list.Add(gump);
+            }
+
+            return list;
+        }
+
+        public static void CheckCloseGumps(PlayerMobile pm, bool checkOpen = false)
+        {
+            var ns = pm.NetState;
+
+            if (ns != null)
+            {
+                var gumps = GetGumps(pm, checkOpen);
+
+                foreach (BaseGump gump in gumps.Where(g => g.CloseOnMapChange))
+                {
+                    pm.CloseGump(gump.GetType());
+                }
+
+                ColUtility.Free(gumps);
+            }
         }
 
         public new void AddItemProperty(Item item)
         {
-            if (item == null || item.Deleted)
-            {
-                return;
-            }
+            item.SendPropertiesTo(User);
 
-            if (User.NetState != null)
-            {
-                ObjectPropertyList opl = item.PropertyList;
-                item.GetProperties(opl);
-
-                User.Send(opl);
-            }
-
-            AddItemProperty(item.Serial);
+            base.AddItemProperty(item);
         }
 
-        public void AddItemProperty(Mobile mob)
+        public void AddMobileProperty(Mobile mob)
         {
-            if (mob == null || mob.Deleted)
-            {
-                return;
-            }
+            mob.SendPropertiesTo(User);
 
-            if (User.NetState != null)
-            {
-                ObjectPropertyList opl = mob.PropertyList;
-                mob.GetProperties(opl);
+            base.AddItemProperty(mob.Serial.Value);
+        }
 
-                User.Send(opl);
-            }
+        public void AddProperties(Spoof spoof)
+        {
+            User.Send(spoof.PropertyList);
 
-            AddItemProperty(mob.Serial);
+            base.AddItemProperty(spoof.Serial.Value);
         }
 
         #region Formatting
@@ -251,7 +334,7 @@ namespace Server.Gumps
 
         protected string ColorAndCenter(string color, string str)
         {
-            return String.Format("<basefont color={0}><center>{1}</center>", color, str);
+            return String.Format("<center><basefont color={0}>{1}</center>", color, str);
         }
 
         protected string ColorAndSize(string color, int size, string str)
@@ -279,6 +362,21 @@ namespace Server.Gumps
             return String.Format("<CENTER>{0}</CENTER>", str);
         }
 
+        protected string ColorAndAlignRight(int color, string str)
+        {
+            return String.Format("<DIV ALIGN=RIGHT><basefont color=#{0:X6}>{1}</DIV>", color, str);
+        }
+
+        protected string ColorAndAlignRight(string color, string str)
+        {
+            return String.Format("<DIV ALIGN=RIGHT><basefont color={0}>{1}</DIV>", color, str);
+        }
+
+        protected string AlignRight(string str)
+        {
+            return String.Format("<DIV ALIGN=RIGHT>{0}</DIV>", str);
+        }
+
         public void AddHtmlLocalizedCentered(int x, int y, int length, int height, int localization, bool background, bool scrollbar)
         {
             AddHtmlLocalized(x, y, length, height, 1113302, String.Format("#{0}", localization), 0, background, scrollbar);
@@ -297,6 +395,290 @@ namespace Server.Gumps
         public void AddHtmlLocalizedAlignRight(int x, int y, int length, int height, int localization, int hue, bool background, bool scrollbar)
         {
             AddHtmlLocalized(x, y, length, height, 1114514, String.Format("#{0}", localization), hue, background, scrollbar);
+        }
+        #endregion
+
+        #region Tooltips
+        private Dictionary<string, Spoof> _TextTooltips = new Dictionary<string, Spoof>();
+        private Dictionary<Dictionary<int, string>, Spoof> _ClilocTooltips = new Dictionary<Dictionary<int, string>, Spoof>();
+
+        public void AddTooltip(string text)
+        {
+            AddTooltip(text, System.Drawing.Color.Empty);
+        }
+
+        public void AddTooltip(string text, System.Drawing.Color color)
+        {
+            AddTooltip(String.Empty, text, System.Drawing.Color.Empty, color);
+        }
+
+        public void AddTooltip(string title, string text)
+        {
+            AddTooltip(title, text, System.Drawing.Color.Empty, System.Drawing.Color.Empty);
+        }
+
+        public void AddTooltip(int cliloc, string args)
+        {
+            AddTooltip(new int[] { cliloc }, new string[] { args ?? String.Empty });
+        }
+
+        public void AddTooltip(int cliloc, string format, params string[] args)
+        {
+            AddTooltip(cliloc, String.Format(format, args));
+        }
+
+        public void AddTooltip(int[] clilocs)
+        {
+            AddTooltip(clilocs, new string[clilocs.Length]);
+        }
+
+        public void AddTooltip(string[] args)
+        {
+            var clilocs = new int[Math.Min(Spoof.EmptyClilocs.Length, args.Length)];
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (i >= Spoof.EmptyClilocs.Length)
+                    break;
+
+                clilocs[i] = Spoof.EmptyClilocs[i];
+            }
+
+            AddTooltip(clilocs, args);
+        }
+
+        public void AddTooltip(int[] clilocs, string[] args)
+        {
+            var dictionary = new Dictionary<int, string>();
+            int emptyIndex = 0;
+
+            for(int i = 0; i < clilocs.Length; i++)
+            {
+                var str = String.Empty;
+
+                if (i < args.Length)
+                {
+                    str = args[i] ?? String.Empty;
+                }
+
+                var cliloc = clilocs[i];
+
+                if (cliloc <= 0)
+                {
+                    if (emptyIndex <= Spoof.EmptyClilocs.Length)
+                    {
+                        cliloc = Spoof.EmptyClilocs[emptyIndex];
+                        emptyIndex++;
+                    }
+                }
+
+                if (cliloc > 0)
+                {
+                    dictionary[cliloc] = str;
+                }
+            }
+
+            Spoof spoof;
+
+            if (!_ClilocTooltips.TryGetValue(dictionary, out spoof) || spoof == null || spoof.Deleted)
+            {
+                spoof = Spoof.Acquire();
+            }
+
+            spoof.ClilocTable = dictionary;
+
+            _ClilocTooltips[dictionary] = spoof;
+            AddProperties(spoof);
+        }
+
+        public void AddTooltip(string title, string text, System.Drawing.Color titleColor, System.Drawing.Color textColor)
+        {
+            title = title ?? String.Empty;
+            text = text ?? String.Empty;
+
+            if (titleColor.IsEmpty || titleColor == System.Drawing.Color.Transparent)
+            {
+                titleColor = System.Drawing.Color.White;
+            }
+
+            if (textColor.IsEmpty || textColor == System.Drawing.Color.Transparent)
+            {
+                textColor = System.Drawing.Color.White;
+            }
+
+            Spoof spoof;
+
+            if (!_TextTooltips.TryGetValue(text, out spoof) || spoof == null || spoof.Deleted)
+            {
+                spoof = Spoof.Acquire();
+            }
+
+            if (!String.IsNullOrWhiteSpace(title))
+            {
+                spoof.Text = String.Concat(String.Format("<basefont color=#{0:X}>{1}", titleColor.ToArgb(), title), 
+                            '\n',
+                            String.Format("<basefont color=#{0:X}>{1}", textColor.ToArgb(), text));
+            }
+            else
+            {
+                spoof.Text = String.Format("<basefont color=#{0:X}>{1}", textColor.ToArgb(), text); //  text.WrapUOHtmlColor(textColor, false);
+            }
+
+            _TextTooltips[text] = spoof;
+            AddProperties(spoof);
+        }
+
+        public sealed class Spoof : Entity
+        {
+            private static readonly char[] _Split = { '\n' };
+            private static int _UID = -1;
+
+            private static int NewUID
+            {
+                get
+                {
+                    if (_UID == Int32.MinValue)
+                    {
+                        _UID = -1;
+                    }
+
+                    return --_UID;
+                }
+            }
+
+            public static int[] EmptyClilocs =
+            {
+                1042971, 1070722, // ~1_NOTHING~
+			    1114057, 1114778, 1114779, // ~1_val~
+			    1150541, // ~1_TOKEN~
+			    1153153, // ~1_year~
+            };
+
+            private static readonly List<Spoof> _SpoofPool = new List<Spoof>();
+
+            public static Spoof Acquire()
+            {
+                if (_SpoofPool.Count == 0)
+                {
+                    return new Spoof();
+                }
+                else
+                {
+                    var spoof = _SpoofPool[0];
+                    _SpoofPool.Remove(spoof);
+
+                    return spoof;
+                }
+            }
+
+            public void Free()
+            {
+                Packet.Release(ref _PropertyList);
+
+                _Text = String.Empty;
+                _ClilocTable = null;
+
+                _SpoofPool.Add(this);
+            }
+
+            public int UID { get { return Serial.Value; } private set { } }
+
+            private ObjectPropertyList _PropertyList;
+
+            public ObjectPropertyList PropertyList
+            {
+                get
+                {
+                    if (_PropertyList == null)
+                    {
+                        _PropertyList = new ObjectPropertyList(this);
+
+                        if (!String.IsNullOrEmpty(Text))
+                        {
+                            var text = StripHtmlBreaks(Text, true);
+
+                            if (text.IndexOf('\n') >= 0)
+                            {
+                                var lines = text.Split(_Split);
+
+                                foreach (var str in lines)
+                                {
+                                    _PropertyList.Add(str);
+                                }
+                            }
+                            else
+                            {
+                                _PropertyList.Add(text);
+                            }
+                        }
+                        else if (_ClilocTable != null)
+                        {
+                            foreach (var kvp in _ClilocTable)
+                            {
+                                var cliloc = kvp.Key;
+                                var args = kvp.Value;
+
+                                if (cliloc <= 0 && !String.IsNullOrEmpty(args))
+                                {
+                                    _PropertyList.Add(args);
+                                }
+                                else if (String.IsNullOrEmpty(args))
+                                {
+                                    _PropertyList.Add(cliloc);
+                                }
+                                else
+                                {
+                                    _PropertyList.Add(cliloc, args);
+                                }
+                            }
+                        }
+
+                        _PropertyList.Terminate();
+                        _PropertyList.SetStatic();
+                    }
+
+                    return _PropertyList;
+                }
+            }
+
+            private string _Text = String.Empty;
+            public string Text
+            {
+                get { return _Text ?? String.Empty; }
+                set
+                {
+                    if (_Text != value)
+                    {
+                        _Text = value;
+
+                        Packet.Release(ref _PropertyList);
+                    }
+                }
+            }
+
+            private Dictionary<int, string> _ClilocTable;
+            public Dictionary<int, string> ClilocTable 
+            {
+                get { return _ClilocTable; }
+                set 
+                {
+                    if (_ClilocTable != value)
+                    {
+                        _ClilocTable = value;
+
+                        Packet.Release(ref _PropertyList);
+                    }
+                }
+            }
+
+            public Spoof()
+                : base(NewUID, Point3D.Zero, Map.Internal)
+            { }
+        }
+
+        public static string StripHtmlBreaks(string str, bool preserve)
+        {
+            return Regex.Replace(str, @"<br[^>]?>", preserve ? "\n" : " ", RegexOptions.IgnoreCase);
         }
         #endregion
     }

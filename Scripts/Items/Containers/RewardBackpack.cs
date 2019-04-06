@@ -92,7 +92,7 @@ namespace Server.Items
         public DustyExplorersBackpack()
             : base()
         {
-            this.AddItem(new EnchantEssence(10));
+            this.AddItem(new EnchantedEssence(10));
             this.AddItem(new Amber());
             this.AddItem(new Citrine());
             this.AddItem(new Amethyst());

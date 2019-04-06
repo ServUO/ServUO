@@ -9,40 +9,42 @@ namespace Server.Mobiles
         [Constructable]
         public Silk()
         {
-            this.Name = "Silk";
-            this.Hue = 0x47E;
+            Name = "Silk";
+            Hue = 0x47E;
 
-            this.SetStr(80, 131);
-            this.SetDex(126, 156);
-            this.SetInt(63, 102);
+            SetStr(80, 131);
+            SetDex(126, 156);
+            SetInt(63, 102);
 
-            this.SetHits(279, 378);
-            this.SetStam(126, 156);
-            this.SetMana(63, 102);
+            SetHits(279, 378);
+            SetStam(126, 156);
+            SetMana(63, 102);
 
-            this.SetDamage(15, 22);
+            SetDamage(15, 22);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 30, 39);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 70, 76);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 30, 39);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 70, 76);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.Wrestling, 114.1, 123.7);
-            this.SetSkill(SkillName.Tactics, 102.6, 118.3);
-            this.SetSkill(SkillName.MagicResist, 78.6, 94.8);
-            this.SetSkill(SkillName.Anatomy, 81.3, 105.7);
-            this.SetSkill(SkillName.Poisoning, 106.0, 119.2);
+            SetSkill(SkillName.Wrestling, 114.1, 123.7);
+            SetSkill(SkillName.Tactics, 102.6, 118.3);
+            SetSkill(SkillName.MagicResist, 78.6, 94.8);
+            SetSkill(SkillName.Anatomy, 81.3, 105.7);
+            SetSkill(SkillName.Poisoning, 106.0, 119.2);
 
-            this.Fame = 18900;
-            this.Karma = -18900;
+            Fame = 18900;
+            Karma = -18900;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
+
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public Silk(Serial serial)
@@ -59,12 +61,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
-        }
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.ParalyzingBlow;
+            AddLoot(LootPack.UltraRich, 2);
         }
 
         public override void Serialize(GenericWriter writer)

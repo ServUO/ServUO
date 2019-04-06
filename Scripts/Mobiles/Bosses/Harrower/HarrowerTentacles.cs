@@ -207,7 +207,9 @@ namespace Server.Mobiles
                     return;
                 }
 
-                foreach (Mobile m in this.m_Owner.GetMobilesInRange(9))
+                IPooledEnumerable eable = m_Owner.GetMobilesInRange(9);
+
+                foreach (Mobile m in eable)
                 {
                     if (m == this.m_Owner || m == this.m_Owner.Harrower || !this.m_Owner.CanBeHarmful(m))
                         continue;
@@ -225,6 +227,8 @@ namespace Server.Mobiles
                     }
                 }
 
+                eable.Free();
+
                 foreach (Mobile m in m_ToDrain)
                 {
                     this.m_Owner.DoHarmful(m);
@@ -238,7 +242,7 @@ namespace Server.Mobiles
                     if (m is PlayerMobile)
                     {
                         PlayerMobile pm = m as PlayerMobile;
-                        drain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, drain);
+                        drain = (int)LifeShieldLotion.HandleLifeDrain(pm, drain);
                     }
                     //end 
 

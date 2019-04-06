@@ -36,7 +36,7 @@ namespace Server.Engines.Craft
         private PlantHue m_RequiredPlantHue;
 
         #region Hue State Vars
-        private bool m_CheckedHues;
+        /*private bool m_CheckedHues;
         private List<int> m_Hues;
         private Item m_CompareHueTo;
 
@@ -44,97 +44,97 @@ namespace Server.Engines.Craft
         {
             get
             {
-                return this.m_CheckedHues;
+                return m_CheckedHues;
             }
             set
             {
-                this.m_CheckedHues = value;
+                m_CheckedHues = value;
             }
         }
         public List<int> Hues
         {
             get
             {
-                return this.m_Hues;
+                return m_Hues;
             }
             set
             {
-                this.m_Hues = value;
+                m_Hues = value;
             }
         }
         public Item CompareHueTo
         {
             get
             {
-                return this.m_CompareHueTo;
+                return m_CompareHueTo;
             }
             set
             {
-                this.m_CompareHueTo = value;
+                m_CompareHueTo = value;
             }
-        }
+        }*/
         #endregion
 
         public List<CraftItem> Items
         {
             get
             {
-                return this.m_Items;
+                return m_Items;
             }
         }
         public int LastResourceIndex
         {
             get
             {
-                return this.m_LastResourceIndex;
+                return m_LastResourceIndex;
             }
             set
             {
-                this.m_LastResourceIndex = value;
+                m_LastResourceIndex = value;
             }
         }
         public int LastResourceIndex2
         {
             get
             {
-                return this.m_LastResourceIndex2;
+                return m_LastResourceIndex2;
             }
             set
             {
-                this.m_LastResourceIndex2 = value;
+                m_LastResourceIndex2 = value;
             }
         }
         public int LastGroupIndex
         {
             get
             {
-                return this.m_LastGroupIndex;
+                return m_LastGroupIndex;
             }
             set
             {
-                this.m_LastGroupIndex = value;
+                m_LastGroupIndex = value;
             }
         }
         public bool DoNotColor
         {
             get
             {
-                return this.m_DoNotColor;
+                return m_DoNotColor;
             }
             set
             {
-                this.m_DoNotColor = value;
+                m_DoNotColor = value;
             }
         }
         public CraftMarkOption MarkOption
         {
             get
             {
-                return this.m_MarkOption;
+                return m_MarkOption;
             }
             set
             {
-                this.m_MarkOption = value;
+                m_MarkOption = value;
             }
         }
         #region SA
@@ -142,11 +142,11 @@ namespace Server.Engines.Craft
         {
             get
             {
-                return this.m_QuestOption;
+                return m_QuestOption;
             }
             set
             {
-                this.m_QuestOption = value;
+                m_QuestOption = value;
             }
         }
 
@@ -176,15 +176,12 @@ namespace Server.Engines.Craft
             Owner = owner;
             System = system;
 
-            this.m_Items = new List<CraftItem>();
-            this.m_LastResourceIndex = -1;
-            this.m_LastResourceIndex2 = -1;
-            this.m_LastGroupIndex = -1;
+            m_Items = new List<CraftItem>();
+            m_LastResourceIndex = -1;
+            m_LastResourceIndex2 = -1;
+            m_LastGroupIndex = -1;
 
-            this.m_CheckedHues = false;
-            this.m_Hues = new List<int>();
-            this.m_CompareHueTo = null;
-            this.m_QuestOption = CraftQuestOption.NonQuestItem;
+            m_QuestOption = CraftQuestOption.NonQuestItem;
             m_RequiredPlantHue = PlantHue.None;
             RequiredPigmentHue = PlantPigmentHue.None;
 
@@ -195,8 +192,8 @@ namespace Server.Engines.Craft
         {
             get
             {
-                if (this.m_Items.Count > 0)
-                    return this.m_Items[0];
+                if (m_Items.Count > 0)
+                    return m_Items[0];
 
                 return null;
             }
@@ -204,19 +201,12 @@ namespace Server.Engines.Craft
 
         public void OnMade(CraftItem item)
         {
-            this.m_Items.Remove(item);
+            m_Items.Remove(item);
 
-            if (this.m_Items.Count == 10)
-                this.m_Items.RemoveAt(9);
+            if (m_Items.Count == 10)
+                m_Items.RemoveAt(9);
 
-            this.m_Items.Insert(0, item);
-        }
-		
-        public void ResetHueStateVars()
-        {
-            this.m_CheckedHues = false;
-            this.m_Hues = new List<int>();
-            this.m_CompareHueTo = null;
+            m_Items.Insert(0, item);
         }
 
         public virtual void Serialize(GenericWriter writer)

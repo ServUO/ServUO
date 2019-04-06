@@ -12,7 +12,7 @@ namespace Server.Items
         public BootsOfBallast()
             : base()
         {
-            this.Hue = 2072;
+            this.Hue = 2969;
             this.LootType = LootType.Blessed;
             this.StrRequirement = 10;
         }

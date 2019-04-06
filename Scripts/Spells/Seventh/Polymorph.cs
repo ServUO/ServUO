@@ -50,12 +50,12 @@ namespace Server.Spells.Seventh
 
         public override bool CheckCast()
         {
-            /*if ( Caster.Mounted )
+            if (Caster.Flying)
             {
-            Caster.SendLocalizedMessage( 1042561 ); //Please dismount first.
+            Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
             return false;
             }
-            else */
+            else 
             if (Factions.Sigil.ExistsOn(this.Caster))
             {
                 this.Caster.SendLocalizedMessage(1010521); // You cannot polymorph while you have a Town Sigil
@@ -101,11 +101,11 @@ namespace Server.Spells.Seventh
 
         public override void OnCast()
         {
-            /*if ( Caster.Mounted )
+            if (Caster.Flying)
             {
-            Caster.SendLocalizedMessage( 1042561 ); //Please dismount first.
-            } 
-            else */
+            Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
+            }
+            else 
             if (Factions.Sigil.ExistsOn(this.Caster))
             {
                 this.Caster.SendLocalizedMessage(1010521); // You cannot polymorph while you have a Town Sigil
@@ -212,7 +212,7 @@ namespace Server.Spells.Seventh
             }
         }
 
-        private static void EndPolymorph(Mobile m)
+        public static void EndPolymorph(Mobile m)
         {
             if (!m.CanBeginAction(typeof(PolymorphSpell)))
             {

@@ -17,9 +17,6 @@ namespace Server.Mobiles
 
         public override ChampionSkullType SkullType { get { return ChampionSkullType.None; } }
 
-        private DateTime _NextScatter;
-        private DateTime _NextAttack;
-
         [Constructable]
 		public DragonTurtle() : base(AIType.AI_Mage)
 		{
@@ -50,12 +47,9 @@ namespace Server.Mobiles
 			
 			Fame = 11000;
 			Karma = -11000;
-		}
 
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.Dismount;
-        }
+            SetWeaponAbility(WeaponAbility.Dismount);
+		}
 
 		public override void GenerateLoot()
         {
@@ -180,7 +174,7 @@ namespace Server.Mobiles
                             if (d == Direction.Up)
                                 d = Direction.North;
                             else
-                                d = d++;
+                                d += 1;
 
                             Movement.Movement.Offset(d, ref x, ref y);
                         }

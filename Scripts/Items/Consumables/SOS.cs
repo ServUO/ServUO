@@ -10,7 +10,7 @@ namespace Server.Items
         {
             get
             {
-                if (this.IsAncient)
+                if (IsAncient)
                     return 1063450; // an ancient SOS
 
                 return 1041081; // a waterstained SOS
@@ -27,7 +27,7 @@ namespace Server.Items
         {
             get
             {
-                return (this.m_Level >= 4);
+                return (m_Level >= 4);
             }
         }
 
@@ -36,13 +36,13 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = Math.Max(1, Math.Min(value, 4));
-                this.UpdateHue();
-                this.InvalidateProperties();
+                m_Level = Math.Max(1, Math.Min(value, 4));
+                UpdateHue();
+                InvalidateProperties();
             }
         }
 
@@ -51,11 +51,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TargetMap;
+                return m_TargetMap;
             }
             set
             {
-                this.m_TargetMap = value;
+                m_TargetMap = value;
             }
         }
 
@@ -64,11 +64,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TargetLocation;
+                return m_TargetLocation;
             }
             set
             {
-                this.m_TargetLocation = value;
+                m_TargetLocation = value;
             }
         }
 
@@ -77,20 +77,20 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MessageIndex;
+                return m_MessageIndex;
             }
             set
             {
-                this.m_MessageIndex = value;
+                m_MessageIndex = value;
             }
         }
 
         public void UpdateHue()
         {
-            if (this.IsAncient)
-                this.Hue = 0x481;
+            if (IsAncient)
+                Hue = 0x481;
             else
-                this.Hue = 0;
+                Hue = 0;
         }
 
         [Constructable]
@@ -109,14 +109,14 @@ namespace Server.Items
         public SOS(Map map, int level)
             : base(0x14EE)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
 
-            this.m_Level = level;
-            this.m_MessageIndex = Utility.Random(MessageEntry.Entries.Length);
-            this.m_TargetMap = map;
-            this.m_TargetLocation = FindLocation(this.m_TargetMap);
+            m_Level = level;
+            m_MessageIndex = Utility.Random(MessageEntry.Entries.Length);
+            m_TargetMap = map;
+            m_TargetLocation = FindLocation(m_TargetMap);
 
-            this.UpdateHue();
+            UpdateHue();
         }
 
         public SOS(Serial serial)
@@ -130,11 +130,11 @@ namespace Server.Items
 
             writer.Write((int)4); // version
 
-            writer.Write(this.m_Level);
+            writer.Write(m_Level);
 
-            writer.Write(this.m_TargetMap);
-            writer.Write(this.m_TargetLocation);
-            writer.Write(this.m_MessageIndex);
+            writer.Write(m_TargetMap);
+            writer.Write(m_TargetLocation);
+            writer.Write(m_MessageIndex);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -149,54 +149,54 @@ namespace Server.Items
                 case 3:
                 case 2:
                     {
-                        this.m_Level = reader.ReadInt();
+                        m_Level = reader.ReadInt();
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_TargetMap = reader.ReadMap();
-                        this.m_TargetLocation = reader.ReadPoint3D();
-                        this.m_MessageIndex = reader.ReadInt();
+                        m_TargetMap = reader.ReadMap();
+                        m_TargetLocation = reader.ReadPoint3D();
+                        m_MessageIndex = reader.ReadInt();
 
                         break;
                     }
                 case 0:
                     {
-                        this.m_TargetMap = this.Map;
+                        m_TargetMap = Map;
 
-                        if (this.m_TargetMap == null || this.m_TargetMap == Map.Internal)
-                            this.m_TargetMap = Map.Trammel;
+                        if (m_TargetMap == null || m_TargetMap == Map.Internal)
+                            m_TargetMap = Map.Trammel;
 
-                        this.m_TargetLocation = FindLocation(this.m_TargetMap);
-                        this.m_MessageIndex = Utility.Random(MessageEntry.Entries.Length);
+                        m_TargetLocation = FindLocation(m_TargetMap);
+                        m_MessageIndex = Utility.Random(MessageEntry.Entries.Length);
 
                         break;
                     }
             }
 
             if (version < 2)
-                this.m_Level = MessageInABottle.GetRandomLevel();
+                m_Level = MessageInABottle.GetRandomLevel();
 
             if (version < 3)
-                this.UpdateHue();
+                UpdateHue();
 
-            if (version < 4 && this.m_TargetMap == Map.Tokuno)
-                this.m_TargetMap = Map.Trammel;
+            if (version < 4 && m_TargetMap == Map.Tokuno)
+                m_TargetMap = Map.Trammel;
         }
 		
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 MessageEntry entry;
 
-                if (this.m_MessageIndex >= 0 && this.m_MessageIndex < MessageEntry.Entries.Length)
-                    entry = MessageEntry.Entries[this.m_MessageIndex];
+                if (m_MessageIndex >= 0 && m_MessageIndex < MessageEntry.Entries.Length)
+                    entry = MessageEntry.Entries[m_MessageIndex];
                 else
-                    entry = MessageEntry.Entries[this.m_MessageIndex = Utility.Random(MessageEntry.Entries.Length)];
+                    entry = MessageEntry.Entries[m_MessageIndex = Utility.Random(MessageEntry.Entries.Length)];
 
-                //from.CloseGump( typeof( MessageGump ) );
-                from.SendGump(new MessageGump(entry, this.m_TargetMap, this.m_TargetLocation));
+                from.CloseGump(typeof(MessageGump));
+                from.SendGump(new MessageGump(entry, m_TargetMap, m_TargetLocation));
             }
             else
             {
@@ -313,24 +313,33 @@ namespace Server.Items
                 string fmt;
 
                 if (Sextant.Format(loc, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
-                    fmt = String.Format("{0}°{1}'{2},{3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                    fmt = String.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
                 else
                     fmt = "?????";
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 40, 350, 300, 2520);
+                if (Core.ML)
+                {
+                    AddBackground(0, 0, 250, 350, 9390);
 
-                this.AddHtmlLocalized(30, 80, 285, 160, 1018326, true, true); /* This is a message hastily scribbled by a passenger aboard a sinking ship.
-                * While it is probably too late to save the passengers and crew,
-                * perhaps some treasure went down with the ship!
-                * The message gives the ship's last known sextant co-ordinates.
-                */
+                    AddHtmlLocalized(30, 50, 190, 420, entry.Message, fmt, 0, false, false);
+                }
+                else
+                {
+                    AddBackground(0, 40, 350, 300, 2520);
 
-                this.AddHtml(35, 240, 230, 20, fmt, false, false);
+                    AddHtmlLocalized(30, 80, 285, 160, 1018326, true, true); /* This is a message hastily scribbled by a passenger aboard a sinking ship.
+                                                                              * While it is probably too late to save the passengers and crew,
+                                                                              * perhaps some treasure went down with the ship!
+                                                                              * The message gives the ship's last known sextant co-ordinates.
+                                                                              */
 
-                this.AddButton(35, 265, 4005, 4007, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(70, 265, 100, 20, 1011036, false, false); // OKAY
+                    AddHtmlLocalized(35, 240, 230, 20, entry.Message, fmt, 0, false, false);
+
+                    AddButton(35, 265, 4005, 4007, 0, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(70, 265, 100, 20, 1011036, false, false); // OKAY
+                }
             }
         }
         #endif
@@ -338,54 +347,54 @@ namespace Server.Items
         private class MessageEntry
         {
             private readonly int m_Width;
-
             private readonly int m_Height;
-
-            private readonly string m_Message;
+            private readonly int m_Message;
 
             public int Width
             {
                 get
                 {
-                    return this.m_Width;
+                    return m_Width;
                 }
             }
             public int Height
             {
                 get
                 {
-                    return this.m_Height;
+                    return m_Height;
                 }
             }
-            public string Message
+            public int Message
             {
                 get
                 {
-                    return this.m_Message;
+                    return m_Message;
                 }
             }
 
-            public MessageEntry(int width, int height, string message)
+            public MessageEntry(int width, int height, int message)
             {
-                this.m_Width = width;
-                this.m_Height = height;
-                this.m_Message = message;
+                m_Width = width;
+                m_Height = height;
+                m_Message = message;
             }
 
             private static readonly MessageEntry[] m_Entries = new MessageEntry[]
             {
-                new MessageEntry(280, 180, "...Ar! {0} and a fair wind! No chance... storms, though--ar! Is that a sea serp...<br><br>uh oh."),
-                new MessageEntry(280, 215, "...been inside this whale for three days now. I've run out of food I can pick out of his teeth. I took a sextant reading through the blowhole: {0}. I'll never see my treasure again..."),
-                new MessageEntry(280, 285, "...grand adventure! Captain Quacklebush had me swab down the decks daily...<br>  ...pirates came, I was in the rigging practicing with my sextant. {0} if I am not mistaken...<br>  ....scuttled the ship, and our precious cargo went with her and the screaming pirates, down to the bottom of the sea..."),
-                new MessageEntry(280, 180, "Help! Ship going dow...n heavy storms...precious cargo...st reach dest...current coordinates {0}...ve any survivors... ease!"),
-                new MessageEntry(280, 215, "...know that the wreck is near {0} but have not found it. Could the message passed down in my family for generations be wrong? No... I swear on the soul of my grandfather, I will find..."),
-                new MessageEntry(280, 195, "...never expected an iceberg...silly woman on bow crushed instantly...send help to {0}...ey'll never forget the tragedy of the sinking of the Miniscule..."),
-                new MessageEntry(280, 265, "...nobody knew I was a girl. They just assumed I was another sailor...then we met the undine. {0}. It was demanded sacrifice...I was youngset, they figured...<br>  ...grabbed the captain's treasure, screamed, 'It'll go down with me!'<br>  ...they took me up on it."),
-                new MessageEntry(280, 230, "...so I threw the treasure overboard, before the curse could get me too. But I was too late. Now I am doomed to wander these seas, a ghost forever. Join me: seek ye at {0} if thou wishest my company..."),
-                new MessageEntry(280, 285, "...then the ship exploded. A dragon swooped by. The slime swallowed Bertie whole--he screamed, it was amazing. The sky glowed orange. A sextant reading put us at {0}. Norma was chattering about sailing over the edge of the world. I looked at my hands and saw through them..."),
-                new MessageEntry(280, 285, "...trapped on a deserted island, with a magic fountain supplying wood, fresh water springs, gorgeous scenery, and my lovely young wife. I know the ship with all our life's earnings sank at {0} but I don't know what our coordinates are... someone has GOT to rescue me before Sunday's finals game or I'll go mad..."),
-                new MessageEntry(280, 160, "WANTED: divers exp...d in shipwre...overy. Must have own vess...pply at {0}<br>...good benefits, flexible hours..."),
-                new MessageEntry(280, 250, "...was a cad and a boor, no matter what momma s...rew him overboard! Oh, Anna, 'twas so exciting!<br>  Unfort...y he grabbe...est, and all his riches went with him!<br>  ...sked the captain, and he says we're at {0}<br>...so maybe...")
+                new MessageEntry(280, 180, 1153540),
+                new MessageEntry(280, 215, 1153546),
+                new MessageEntry(280, 285, 1153547),
+                new MessageEntry(280, 180, 1153537),
+                new MessageEntry(280, 215, 1153539),
+                new MessageEntry(280, 195, 1153543),
+                new MessageEntry(280, 265, 1153548),
+                new MessageEntry(280, 230, 1153544),
+                new MessageEntry(280, 285, 1153545),
+                new MessageEntry(280, 285, 1153549),
+                new MessageEntry(280, 160, 1153541),
+                new MessageEntry(280, 250, 1153538),
+                new MessageEntry(280, 250, 1153542),
+                new MessageEntry(280, 250, 1153550),
             };
 
             public static MessageEntry[] Entries

@@ -8,14 +8,11 @@ namespace Server.Items
         [Constructable]
         public RaedsGlory()
         {
-            this.ItemID = 0x2D23;
-            this.Hue = 0x1E6;
-
-            this.Attributes.BonusMana = 8;
-            this.Attributes.SpellChanneling = 1;
-            this.Attributes.WeaponSpeed = 20;
-
-            this.WeaponAttributes.HitLeechHits = 40;
+            Hue = 0x1E6;
+            Attributes.BonusMana = 8;
+            Attributes.SpellChanneling = 1;
+            Attributes.WeaponSpeed = 20;
+            WeaponAttributes.HitLeechHits = 40;
         }
 
         public RaedsGlory(Serial serial)

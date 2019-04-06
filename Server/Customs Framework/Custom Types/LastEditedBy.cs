@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - LastEditedBy.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 
 using CustomsFramework;

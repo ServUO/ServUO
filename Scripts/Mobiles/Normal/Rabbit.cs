@@ -9,37 +9,37 @@ namespace Server.Mobiles
         public Rabbit()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a rabbit";
-            this.Body = 205;
+            Name = "a rabbit";
+            Body = 205;
 
             if (0.5 >= Utility.RandomDouble())
-                this.Hue = Utility.RandomAnimalHue();
+                Hue = Utility.RandomAnimalHue();
 
-            this.SetStr(6, 10);
-            this.SetDex(26, 38);
-            this.SetInt(6, 14);
+            SetStr(6, 10);
+            SetDex(26, 38);
+            SetInt(6, 14);
 
-            this.SetHits(4, 6);
-            this.SetMana(0);
+            SetHits(4, 6);
+            SetMana(0);
 
-            this.SetDamage(1);
+            SetDamage(1);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 5, 10);
+            SetResistance(ResistanceType.Physical, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 5.0);
-            this.SetSkill(SkillName.Tactics, 5.0);
-            this.SetSkill(SkillName.Wrestling, 5.0);
+            SetSkill(SkillName.MagicResist, 5.0);
+            SetSkill(SkillName.Tactics, 5.0);
+            SetSkill(SkillName.Wrestling, 5.0);
 
-            this.Fame = 150;
-            this.Karma = 0;
+            Fame = 150;
+            Karma = 0;
 
-            this.VirtualArmor = 6;
+            VirtualArmor = 6;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = -18.9;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = -18.9;
         }
 
         public Rabbit(Serial serial)

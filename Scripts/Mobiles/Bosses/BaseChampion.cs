@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server.Engines.CannedEvil;
 using Server.Items;
+using Server.Services.Virtues;
 
 namespace Server.Mobiles
 {
@@ -203,24 +204,33 @@ namespace Server.Mobiles
                 GivePowerScrollTo(m, ps, this);
             }
 
-            // Randomize - Primers
-            for (int i = 0; i < toGive.Count; ++i)
+            if (Core.TOL)
             {
-                int rand = Utility.Random(toGive.Count);
-                Mobile hold = toGive[i];
-                toGive[i] = toGive[rand];
-                toGive[rand] = hold;
+                // Randomize - Primers
+                for (int i = 0; i < toGive.Count; ++i)
+                {
+                    int rand = Utility.Random(toGive.Count);
+                    Mobile hold = toGive[i];
+                    toGive[i] = toGive[rand];
+                    toGive[rand] = hold;
+                }
+
+                for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
+                {
+                    Mobile m = toGive[i % toGive.Count];
+
+                    SkillMasteryPrimer p = CreateRandomPrimer();
+                    m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+
+                    GivePowerScrollTo(m, p, this);
+                }
             }
 
-            for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
-            {
-                Mobile m = toGive[i % toGive.Count];
+            ColUtility.Free(toGive);
+        }
 
-                SkillMasteryPrimer p = CreateRandomPrimer();
-                m.SendLocalizedMessage(1156209); // You have received a mastery primer!
-
-                GivePowerScrollTo(m, p, this);
-            }
+        public virtual void OnChampPopped(ChampionSpawn spawn)
+        {
         }
 
         public override bool OnBeforeDeath()

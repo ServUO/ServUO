@@ -122,7 +122,7 @@ namespace Server.Engines.VvV
                             }
                         }
 
-                        ViceVsVirtueSystem.Instance.AddVvVItem(i);
+                        ViceVsVirtueSystem.Instance.AddVvVItem(i, true);
 
                         Backpack.DropItem(i);
                     }
@@ -136,7 +136,6 @@ namespace Server.Engines.VvV
             new Type[] { typeof(MaceAndShieldGlasses), typeof(GargishMaceAndShieldGlasses) },
             new Type[] { typeof(WizardsCrystalGlasses), typeof(GargishWizardsCrystalGlasses) },
             new Type[] { typeof(FoldedSteelGlasses), typeof(GargishFoldedSteelGlasses) },
-            new Type[] { typeof(WizardsCrystalGlasses), typeof(GargishWizardsCrystalGlasses) },
         };
 
         public override bool OnDragDrop(Mobile from, Item dropped)
@@ -166,6 +165,25 @@ namespace Server.Engines.VvV
                                             ((GargishCrimsonCincture)item).Attributes.BonusDex = 10;
                                         }
 
+                                        if (item is GargishMaceAndShieldGlasses)
+                                        {
+                                            ((GargishMaceAndShieldGlasses)item).Attributes.WeaponDamage = 10;
+                                        }
+
+                                        if (item is GargishFoldedSteelGlasses)
+                                        {
+                                            ((GargishFoldedSteelGlasses)item).Attributes.DefendChance = 25;
+                                        }
+
+                                        if (item is GargishWizardsCrystalGlasses)
+                                        {
+                                            ((GargishWizardsCrystalGlasses)item).PhysicalBonus = 5;                                            
+                                            ((GargishWizardsCrystalGlasses)item).FireBonus = 5;                                            
+                                            ((GargishWizardsCrystalGlasses)item).ColdBonus = 5;                                            
+                                            ((GargishWizardsCrystalGlasses)item).PoisonBonus = 5;                                            
+                                            ((GargishWizardsCrystalGlasses)item).EnergyBonus = 5;
+                                        }
+
                                         from.AddToBackpack(item);
                                         dropped.Delete();
 
@@ -193,13 +211,21 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                Timer.DelayCall(() =>
+                    {
+                        ColUtility.SafeDelete<Item>(Backpack.Items, null);
+                    });
+            }
 
             Timer.DelayCall(TimeSpan.FromSeconds(5), StockInventory);
         }

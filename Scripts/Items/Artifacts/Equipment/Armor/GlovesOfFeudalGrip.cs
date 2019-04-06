@@ -12,11 +12,11 @@ namespace Server.Items
         {
             Resource = CraftResource.None;
 
-            this.Attributes.BonusStr = 8;
-            this.Attributes.BonusStam = 8;
-            this.Attributes.RegenHits = 3;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.WeaponDamage = 30;
+            Attributes.BonusStr = 8;
+            Attributes.BonusStam = 8;
+            Attributes.RegenHits = 3;
+            Attributes.RegenMana = 3;
+            Attributes.WeaponDamage = 30;
         }
 
         public GlovesOfFeudalGrip(Serial serial)
@@ -31,6 +31,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 15; } }        
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
+        public override CraftResource DefaultResource { get { return CraftResource.None; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -62,11 +63,11 @@ namespace Server.Items
         {
             Resource = CraftResource.None;
 
-            this.Attributes.BonusStr = 8;
-            this.Attributes.BonusStam = 8;
-            this.Attributes.RegenHits = 3;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.WeaponDamage = 30;
+            Attributes.BonusStr = 8;
+            Attributes.BonusStam = 8;
+            Attributes.RegenHits = 3;
+            Attributes.RegenMana = 3;
+            Attributes.WeaponDamage = 30;
         }
 
         public GargishKiltOfFeudalVise(Serial serial)
@@ -81,6 +82,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 15; } }
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
+        public override CraftResource DefaultResource { get { return CraftResource.None; } }
 
         public override void Serialize(GenericWriter writer)
         {

@@ -9,8 +9,8 @@ namespace Server.Engines.Quests
         public Waelian()
             : base("Waelian", "the trinket weaver")
         { 
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Waelian(Serial serial)
@@ -35,28 +35,28 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 			
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 			
-            this.Hue = 0x8835;
-            this.HairItemID = 0x2FBF;
-            this.HairHue = 0x2C2;
+            Hue = 0x8835;
+            HairItemID = 0x2FBF;
+            HairHue = 0x2C2;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x901));
-            this.AddItem(new GemmedCirclet());
-            this.AddItem(new LongPants(0x340));
-            this.AddItem(new SmithHammer());
+            AddItem(new Sandals(0x901));
+            AddItem(new GemmedCirclet());
+            AddItem(new LongPants(0x340));
+            AddItem(new SmithHammer());
 			
             Item item;
 			
             item = new LeafChest();
             item.Hue = 0x344;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

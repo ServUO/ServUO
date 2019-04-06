@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - GypsyAnimalTrainer.cs
-// **********
-#endregion
-
 namespace Server.Mobiles
 {
 	public class GypsyAnimalTrainer : AnimalTrainer
@@ -11,6 +5,8 @@ namespace Server.Mobiles
 		[Constructable]
 		public GypsyAnimalTrainer()
 		{
+			SetSkill(SkillName.Begging, 64.0, 100.0);
+			
 			if (Utility.RandomBool())
 			{
 				Title = "the gypsy animal trainer";

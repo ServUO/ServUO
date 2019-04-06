@@ -8,12 +8,10 @@ namespace Server.Items
         [Constructable]
         public StitchersMittens()
         {
-            this.Hue = 0x481;
-
-            this.SkillBonuses.SetValues(0, SkillName.Healing, 10.0);
-
-            this.Attributes.BonusDex = 5;
-            this.Attributes.LowerRegCost = 30;
+            Hue = 0x481;
+            SkillBonuses.SetValues(0, SkillName.Healing, 10.0);
+            Attributes.BonusDex = 5;
+            Attributes.LowerRegCost = 30;
         }
 
         public StitchersMittens(Serial serial)

@@ -7,36 +7,36 @@ namespace Server.Items
         [Constructable]
         public MeagerMuseumBag()
         {
-            this.AddItem(new Gold(3000));
+            DropItem(new Gold(3000));
 
             switch (Utility.Random(9))
             {
                 case 0:
-                    this.AddItem(new Amber(5));
+                    DropItem(new Amber(5));
                     break;
                 case 1:
-                    this.AddItem(new Amethyst(5));
+                    DropItem(new Amethyst(5));
                     break;
                 case 2:
-                    this.AddItem(new Citrine(5));
+                    DropItem(new Citrine(5));
                     break;
                 case 3:
-                    this.AddItem(new Ruby(5));
+                    DropItem(new Ruby(5));
                     break;
                 case 4:
-                    this.AddItem(new Emerald(5));
+                    DropItem(new Emerald(5));
                     break;
                 case 5:
-                    this.AddItem(new Diamond(5));
+                    DropItem(new Diamond(5));
                     break;
                 case 6:
-                    this.AddItem(new Sapphire(5));
+                    DropItem(new Sapphire(5));
                     break;
                 case 7:
-                    this.AddItem(new StarSapphire(5));
+                    DropItem(new StarSapphire(5));
                     break;
                 case 8:
-                    this.AddItem(new Tourmaline(5));
+                    DropItem(new Tourmaline(5));
                     break;
             }
         }

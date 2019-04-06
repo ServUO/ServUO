@@ -206,7 +206,7 @@ namespace Server.Items
 
             public override void AddNameProperty(ObjectPropertyList list)
             {
-                if (Addon != null)
+                if (Addon != null && Addon.Resource != CraftResource.None)
                     list.Add(1152600, String.Format("#{0}", CraftResources.GetLocalizationNumber(Addon.Resource).ToString())); // ~1_RES~ Cauldron of Transmutation
                 else
                     base.AddNameProperty(list);
@@ -216,7 +216,7 @@ namespace Server.Items
             {
                 base.GetProperties(list);
 
-                if (Addon == null || !(Addon is CauldronOfTransmutation))
+                if (Addon == null || !(Addon is CauldronOfTransmutation) || Addon.Resource == CraftResource.None)
                     return;
 
                 int left = 0;

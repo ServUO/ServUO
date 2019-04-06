@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public DaemonMongbat()
-            : base(AIType.AI_Melee)
+            : base(AIType.AI_Necro)
         {
             Name = "a dameon mongbat";
             Body = 39;
@@ -50,7 +50,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage)
         {
             Name = "a gargoyle assassin";
-            Body = 0x2F1;
+            Body = 0x4;
             BaseSoundID = 0x174;
         }
 
@@ -59,7 +59,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, level, voidSpawn)
         {
             Name = "a gargoyle assassin";
-            Body = 0x2F1;
+            Body = 0x4;
             BaseSoundID = 0x174;
         }
 
@@ -129,6 +129,8 @@ namespace Server.Mobiles
         {
             Name = "a lesser oni";
             Body = 241;
+
+            SetSpecialAbility(SpecialAbility.AngryFire);
         }
 
         [Constructable]

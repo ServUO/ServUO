@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using Server.Items;
-using System.Collections;
 using System.Collections.Generic;
 using Server.Engines.Quests;
 using System.Linq;
@@ -10,58 +9,60 @@ namespace Server.Mobiles
     [CorpseName("an obsidian wyvern corpse")]
     public class ObsidianWyvern : BaseCreature
     {
-        private static readonly ArrayList m_Instances = new ArrayList();
-        public static ArrayList Instances { get { return m_Instances; } }
+        public static List<ObsidianWyvern> Instances { get; set; }
 
         [Constructable]
         public ObsidianWyvern()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            m_Instances.Add(this);
+            Name = "Obsidian Wyvern";
+            Body = 0x2E;
+            Hue = 1910;
+            BaseSoundID = 362;
 
-            this.Name = "Obsidian Wyvern";
-            this.Body = 0x2E;
-            this.Hue = 1910;
-            this.BaseSoundID = 362;
+            SetStr(1377, 1450);
+            SetDex(125, 180);
+            SetInt(780, 900);
 
-            this.SetStr(1377, 1450);
-            this.SetDex(125, 180);
-            this.SetInt(780, 900);
+            SetHits(1225, 1400);
 
-            this.SetHits(1225, 1400);
+            SetDamage(29, 35);
 
-            this.SetDamage(29, 35);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Fire, 25);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Fire, 25);
+            SetResistance(ResistanceType.Physical, 67);
+            SetResistance(ResistanceType.Fire, 80, 90);
+            SetResistance(ResistanceType.Cold, 70, 80);
+            SetResistance(ResistanceType.Poison, 60, 70);
+            SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetResistance(ResistanceType.Physical, 67);
-            this.SetResistance(ResistanceType.Fire, 80, 90);
-            this.SetResistance(ResistanceType.Cold, 70, 80);
-            this.SetResistance(ResistanceType.Poison, 60, 70);
-            this.SetResistance(ResistanceType.Energy, 60, 70);
+            SetSkill(SkillName.Magery, 108.7, 115.0);
+            SetSkill(SkillName.Meditation, 60.0, 87.6);
+            SetSkill(SkillName.EvalInt, 110.0, 115.0);
+            SetSkill(SkillName.Wrestling, 110.0, 115.0);
+            SetSkill(SkillName.Tactics, 119.6, 125.0);
+            SetSkill(SkillName.MagicResist, 115.0, 130.8);
+			SetSkill(SkillName.Parry, 75.0, 85.0);
+			SetSkill(SkillName.DetectHidden, 100.0);            
 
-            this.SetSkill(SkillName.Magery, 108.7, 115.0);
-            this.SetSkill(SkillName.Meditation, 60.0, 87.6);
-            this.SetSkill(SkillName.EvalInt, 110.0, 115.0);
-            this.SetSkill(SkillName.Wrestling, 110.0, 115.0);
-            this.SetSkill(SkillName.Tactics, 119.6, 125.0);
-            this.SetSkill(SkillName.MagicResist, 115.0, 130.8);
-			this.SetSkill(SkillName.Parry, 75.0, 85.0);
-			this.SetSkill(SkillName.DetectHidden, 100.0);
+            Fame = 24000;
+            Karma = -24000;
+            
+            VirtualArmor = 70;
+
+            if (Instances == null)
+                Instances = new List<ObsidianWyvern>();
+
+            Instances.Add(this);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
-
-            this.Fame = 24000;
-            this.Karma = -24000;
-            
-            this.VirtualArmor = 70;
         }
 
         public static ObsidianWyvern Spawn(Point3D platLoc, Map platMap)
         {
-            if (m_Instances.Count > 0)
+            if (Instances != null && Instances.Count > 0)
                 return null;
 
             ObsidianWyvern creature = new ObsidianWyvern();
@@ -86,9 +87,16 @@ namespace Server.Mobiles
                 if (Mare.Map != Map.Internal)
                 {
                     Mare.Delete();
-                    this.Stop();
+                    Stop();
                 }
             }
+        }
+
+        public override void OnAfterDelete()
+        {
+            Instances.Remove(this);
+
+            base.OnAfterDelete();
         }
 
         public override void OnDeath(Container c)
@@ -115,6 +123,9 @@ namespace Server.Mobiles
                 }
             }
 
+            if (Instances != null && Instances.Contains(this))
+                Instances.Remove(this);
+
             base.OnDeath(c);
         }
 
@@ -128,8 +139,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 3);
-            this.AddLoot(LootPack.Gems, 5);
+            AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.Gems, 5);
         }
 
         public override int GetIdleSound() { return 0x2D3; }
@@ -151,6 +162,9 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            Instances = new List<ObsidianWyvern>();
+            Instances.Add(this);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();

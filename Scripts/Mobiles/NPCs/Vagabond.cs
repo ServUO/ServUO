@@ -1,9 +1,3 @@
-#region Header
-// **********
-// ServUO - Vagabond.cs
-// **********
-#endregion
-
 #region References
 using System.Collections.Generic;
 
@@ -20,6 +14,7 @@ namespace Server.Mobiles
 		public Vagabond()
 			: base("the vagabond")
 		{
+			SetSkill(SkillName.Begging, 64.0, 100.0);
 			SetSkill(SkillName.ItemID, 60.0, 83.0);
 		}
 

@@ -9,23 +9,9 @@ namespace Server.Engines.Quests
         public IntoTheVoidQuest()
             : base()
         {
-            switch (Utility.Random(4))
-            {
-                case 0:
-                    this.AddObjective(new SlayObjective(typeof(Anzuanord),"Anzuanord" , 10));
-                    break;
-                case 1:
-                    this.AddObjective(new SlayObjective(typeof(Vasanord), "Vasanord", 10));
-                    break;
-                case 2:
-                    this.AddObjective(new SlayObjective(typeof(UsagralemBallem), "Usagralem Ballem ", 10));
-                    break;
-                case 3:
-                    this.AddObjective(new SlayObjective(typeof(Anlorzen), "Anlorzen", 10));
-                    break;
-            }
+            AddObjective(new SlayObjective(typeof(BaseVoidCreature), "Void Daemons", 10));
 
-            this.AddReward(new BaseReward(typeof(AbyssReaver), 1112694));/////Abyss Reaver
+            AddReward(new BaseReward(typeof(AbyssReaver), 1112694)); // Abyss Reaver
         }
 
         public override bool DoneOnce
@@ -91,12 +77,20 @@ namespace Server.Engines.Quests
         public Agralem()
             : base("Agralem", "the Bladeweaver")
         {
-            this.SetSkill(SkillName.Throwing, 80.0, 100.0);
+            SetSkill(SkillName.Anatomy, 65.0, 90.0);
+            SetSkill(SkillName.MagicResist, 65.0, 90.0);
+            SetSkill(SkillName.Tactics, 65.0, 90.0);
+            SetSkill(SkillName.Throwing, 65.0, 90.0);
         }
 
         public Agralem(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void Advertise()
+        {
+            Say(1112688); // Daemons from the void! They must be vanquished!
         }
 
         public override Type[] Quests
@@ -111,36 +105,33 @@ namespace Server.Engines.Quests
         }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
-			
-            this.Female = false;
-            this.CantWalk = true;
+            InitStats(100, 100, 25);
+            
+            CantWalk = true;
+            Race = Race.Gargoyle;
 
-            this.Body = 666;
-            this.HairItemID = 16987;
-            this.HairHue = 1801;
+            Hue = 34536;
+            HairItemID = 0x425D;
+            HairHue = 0x31D;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-
-            this.AddItem(new GargishClothChest(Utility.RandomNeutralHue()));
-            this.AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
-            this.AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
+            AddItem(new Cyclone());
+            AddItem(new GargishLeatherKilt(2305));
+            AddItem(new GargishLeatherChest(2305));
+            AddItem(new GargishLeatherArms(2305));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

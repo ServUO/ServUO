@@ -13,8 +13,9 @@ namespace Server.Items
                 "Diligence."),
             new BookPageInfo(
                 "From Control springs",
-                "Diligence.",
-                "From Passion springs feeling.",
+                "Direction.",
+                "From Passion springs",
+                "Feeling.",
                 "From Diligence springs",
                 "Persistence."),
             new BookPageInfo(

@@ -21,53 +21,53 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 15, 1, 0.2, 0.6)
         {
             // A Dummy Macer
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             // Skills and Stats
-            this.InitStats(125, 125, 90);
-            this.Skills[SkillName.Macing].Base = 120;
-            this.Skills[SkillName.Anatomy].Base = 120;
-            this.Skills[SkillName.Healing].Base = 120;
-            this.Skills[SkillName.Tactics].Base = 120;
+            InitStats(125, 125, 90);
+            Skills[SkillName.Macing].Base = 120;
+            Skills[SkillName.Anatomy].Base = 120;
+            Skills[SkillName.Healing].Base = 120;
+            Skills[SkillName.Tactics].Base = 120;
 
             // Name
-            this.Name = "Macer";
+            Name = "Macer";
 
             // Equip
             WarHammer war = new WarHammer();
             war.Movable = true;
             war.Crafter = this;
             war.Quality = ItemQuality.Normal;
-            this.AddItem(war);
+            AddItem(war);
 
             Boots bts = new Boots();
             bts.Hue = iHue;
-            this.AddItem(bts);
+            AddItem(bts);
 
             ChainChest cht = new ChainChest();
             cht.Movable = false;
             cht.LootType = LootType.Newbied;
             cht.Crafter = this;
             cht.Quality = ItemQuality.Normal;
-            this.AddItem(cht);
+            AddItem(cht);
 
             ChainLegs chl = new ChainLegs();
             chl.Movable = false;
             chl.LootType = LootType.Newbied;
             chl.Crafter = this;
             chl.Quality = ItemQuality.Normal;
-            this.AddItem(chl);
+            AddItem(chl);
 
             PlateArms pla = new PlateArms();
             pla.Movable = false;
             pla.LootType = LootType.Newbied;
             pla.Crafter = this;
             pla.Quality = ItemQuality.Normal;
-            this.AddItem(pla);
+            AddItem(pla);
 
             Bandage band = new Bandage(50);
-            this.AddToBackpack(band);
+            AddToBackpack(band);
         }
 
         public DummyMace(Serial serial)
@@ -97,54 +97,54 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 15, 1, 0.2, 0.6)
         {
             // A Dummy Fencer
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             // Skills and Stats
-            this.InitStats(125, 125, 90);
-            this.Skills[SkillName.Fencing].Base = 120;
-            this.Skills[SkillName.Anatomy].Base = 120;
-            this.Skills[SkillName.Healing].Base = 120;
-            this.Skills[SkillName.Tactics].Base = 120;
+            InitStats(125, 125, 90);
+            Skills[SkillName.Fencing].Base = 120;
+            Skills[SkillName.Anatomy].Base = 120;
+            Skills[SkillName.Healing].Base = 120;
+            Skills[SkillName.Tactics].Base = 120;
 
             // Name
-            this.Name = "Fencer";
+            Name = "Fencer";
 
             // Equip
             Spear ssp = new Spear();
             ssp.Movable = true;
             ssp.Crafter = this;
             ssp.Quality = ItemQuality.Normal;
-            this.AddItem(ssp);
+            AddItem(ssp);
 
             Boots snd = new Boots();
             snd.Hue = iHue;
             snd.LootType = LootType.Newbied;
-            this.AddItem(snd);
+            AddItem(snd);
 
             ChainChest cht = new ChainChest();
             cht.Movable = false;
             cht.LootType = LootType.Newbied;
             cht.Crafter = this;
             cht.Quality = ItemQuality.Normal;
-            this.AddItem(cht);
+            AddItem(cht);
 
             ChainLegs chl = new ChainLegs();
             chl.Movable = false;
             chl.LootType = LootType.Newbied;
             chl.Crafter = this;
             chl.Quality = ItemQuality.Normal;
-            this.AddItem(chl);
+            AddItem(chl);
 
             PlateArms pla = new PlateArms();
             pla.Movable = false;
             pla.LootType = LootType.Newbied;
             pla.Crafter = this;
             pla.Quality = ItemQuality.Normal;
-            this.AddItem(pla);
+            AddItem(pla);
 
             Bandage band = new Bandage(50);
-            this.AddToBackpack(band);
+            AddToBackpack(band);
         }
 
         public DummyFence(Serial serial)
@@ -174,54 +174,54 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 15, 1, 0.2, 0.6)
         {
             // A Dummy Swordsman
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             // Skills and Stats
-            this.InitStats(125, 125, 90);
-            this.Skills[SkillName.Swords].Base = 120;
-            this.Skills[SkillName.Anatomy].Base = 120;
-            this.Skills[SkillName.Healing].Base = 120;
-            this.Skills[SkillName.Tactics].Base = 120;
-            this.Skills[SkillName.Parry].Base = 120;
+            InitStats(125, 125, 90);
+            Skills[SkillName.Swords].Base = 120;
+            Skills[SkillName.Anatomy].Base = 120;
+            Skills[SkillName.Healing].Base = 120;
+            Skills[SkillName.Tactics].Base = 120;
+            Skills[SkillName.Parry].Base = 120;
 
             // Name
-            this.Name = "Swordsman";
+            Name = "Swordsman";
 
             // Equip
             Katana kat = new Katana();
             kat.Crafter = this;
             kat.Movable = true;
             kat.Quality = ItemQuality.Normal;
-            this.AddItem(kat);
+            AddItem(kat);
 
             Boots bts = new Boots();
             bts.Hue = iHue;
-            this.AddItem(bts);
+            AddItem(bts);
 
             ChainChest cht = new ChainChest();
             cht.Movable = false;
             cht.LootType = LootType.Newbied;
             cht.Crafter = this;
             cht.Quality = ItemQuality.Normal;
-            this.AddItem(cht);
+            AddItem(cht);
 
             ChainLegs chl = new ChainLegs();
             chl.Movable = false;
             chl.LootType = LootType.Newbied;
             chl.Crafter = this;
             chl.Quality = ItemQuality.Normal;
-            this.AddItem(chl);
+            AddItem(chl);
 
             PlateArms pla = new PlateArms();
             pla.Movable = false;
             pla.LootType = LootType.Newbied;
             pla.Crafter = this;
             pla.Quality = ItemQuality.Normal;
-            this.AddItem(pla);
+            AddItem(pla);
 
             Bandage band = new Bandage(50);
-            this.AddToBackpack(band);
+            AddToBackpack(band);
         }
 
         public DummySword(Serial serial)
@@ -251,47 +251,47 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 15, 1, 0.2, 0.6)
         {
             // A Dummy Nox or Pure Mage
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             // Skills and Stats
-            this.InitStats(90, 90, 125);
-            this.Skills[SkillName.Magery].Base = 120;
-            this.Skills[SkillName.EvalInt].Base = 120;
-            this.Skills[SkillName.Inscribe].Base = 100;
-            this.Skills[SkillName.Wrestling].Base = 120;
-            this.Skills[SkillName.Meditation].Base = 120;
-            this.Skills[SkillName.Poisoning].Base = 100;
+            InitStats(90, 90, 125);
+            Skills[SkillName.Magery].Base = 120;
+            Skills[SkillName.EvalInt].Base = 120;
+            Skills[SkillName.Inscribe].Base = 100;
+            Skills[SkillName.Wrestling].Base = 120;
+            Skills[SkillName.Meditation].Base = 120;
+            Skills[SkillName.Poisoning].Base = 100;
 
             // Name
-            this.Name = "Nox Mage";
+            Name = "Nox Mage";
 
             // Equip
             Spellbook book = new Spellbook();
             book.Movable = false;
             book.LootType = LootType.Newbied;
             book.Content = 0xFFFFFFFFFFFFFFFF;
-            this.AddItem(book);
+            AddItem(book);
 
             Kilt kilt = new Kilt();
             kilt.Hue = jHue;
-            this.AddItem(kilt);
+            AddItem(kilt);
 
             Sandals snd = new Sandals();
             snd.Hue = iHue;
             snd.LootType = LootType.Newbied;
-            this.AddItem(snd);
+            AddItem(snd);
 
             SkullCap skc = new SkullCap();
             skc.Hue = iHue;
-            this.AddItem(skc);
+            AddItem(skc);
 
             // Spells
-            this.AddSpellAttack(typeof(Spells.First.MagicArrowSpell));
-            this.AddSpellAttack(typeof(Spells.First.WeakenSpell));
-            this.AddSpellAttack(typeof(Spells.Third.FireballSpell));
-            this.AddSpellDefense(typeof(Spells.Third.WallOfStoneSpell));
-            this.AddSpellDefense(typeof(Spells.First.HealSpell));
+            AddSpellAttack(typeof(Spells.First.MagicArrowSpell));
+            AddSpellAttack(typeof(Spells.First.WeakenSpell));
+            AddSpellAttack(typeof(Spells.Third.FireballSpell));
+            AddSpellDefense(typeof(Spells.Third.WallOfStoneSpell));
+            AddSpellDefense(typeof(Spells.First.HealSpell));
         }
 
         public DummyNox(Serial serial)
@@ -321,70 +321,70 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 15, 1, 0.2, 0.6)
         {
             // A Dummy Stun Mage
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             // Skills and Stats
-            this.InitStats(90, 90, 125);
-            this.Skills[SkillName.Magery].Base = 100;
-            this.Skills[SkillName.EvalInt].Base = 120;
-            this.Skills[SkillName.Anatomy].Base = 80;
-            this.Skills[SkillName.Wrestling].Base = 80;
-            this.Skills[SkillName.Meditation].Base = 100;
-            this.Skills[SkillName.Poisoning].Base = 100;
+            InitStats(90, 90, 125);
+            Skills[SkillName.Magery].Base = 100;
+            Skills[SkillName.EvalInt].Base = 120;
+            Skills[SkillName.Anatomy].Base = 80;
+            Skills[SkillName.Wrestling].Base = 80;
+            Skills[SkillName.Meditation].Base = 100;
+            Skills[SkillName.Poisoning].Base = 100;
 
             // Name
-            this.Name = "Stun Mage";
+            Name = "Stun Mage";
 
             // Equip
             Spellbook book = new Spellbook();
             book.Movable = false;
             book.LootType = LootType.Newbied;
             book.Content = 0xFFFFFFFFFFFFFFFF;
-            this.AddItem(book);
+            AddItem(book);
 
             LeatherArms lea = new LeatherArms();
             lea.Movable = false;
             lea.LootType = LootType.Newbied;
             lea.Crafter = this;
             lea.Quality = ItemQuality.Normal;
-            this.AddItem(lea);
+            AddItem(lea);
 
             LeatherChest lec = new LeatherChest();
             lec.Movable = false;
             lec.LootType = LootType.Newbied;
             lec.Crafter = this;
             lec.Quality = ItemQuality.Normal;
-            this.AddItem(lec);
+            AddItem(lec);
 
             LeatherGorget leg = new LeatherGorget();
             leg.Movable = false;
             leg.LootType = LootType.Newbied;
             leg.Crafter = this;
             leg.Quality = ItemQuality.Normal;
-            this.AddItem(leg);
+            AddItem(leg);
 
             LeatherLegs lel = new LeatherLegs();
             lel.Movable = false;
             lel.LootType = LootType.Newbied;
             lel.Crafter = this;
             lel.Quality = ItemQuality.Normal;
-            this.AddItem(lel);
+            AddItem(lel);
 
             Boots bts = new Boots();
             bts.Hue = iHue;
-            this.AddItem(bts);
+            AddItem(bts);
 
             Cap cap = new Cap();
             cap.Hue = iHue;
-            this.AddItem(cap);
+            AddItem(cap);
 
             // Spells
-            this.AddSpellAttack(typeof(Spells.First.MagicArrowSpell));
-            this.AddSpellAttack(typeof(Spells.First.WeakenSpell));
-            this.AddSpellAttack(typeof(Spells.Third.FireballSpell));
-            this.AddSpellDefense(typeof(Spells.Third.WallOfStoneSpell));
-            this.AddSpellDefense(typeof(Spells.First.HealSpell));
+            AddSpellAttack(typeof(Spells.First.MagicArrowSpell));
+            AddSpellAttack(typeof(Spells.First.WeakenSpell));
+            AddSpellAttack(typeof(Spells.Third.FireballSpell));
+            AddSpellDefense(typeof(Spells.Third.WallOfStoneSpell));
+            AddSpellDefense(typeof(Spells.First.HealSpell));
         }
 
         public DummyStun(Serial serial)
@@ -414,76 +414,76 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 15, 1, 0.2, 0.6)
         {
             // A Dummy Super Mage
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             // Skills and Stats
-            this.InitStats(125, 125, 125);
-            this.Skills[SkillName.Magery].Base = 120;
-            this.Skills[SkillName.EvalInt].Base = 120;
-            this.Skills[SkillName.Anatomy].Base = 120;
-            this.Skills[SkillName.Wrestling].Base = 120;
-            this.Skills[SkillName.Meditation].Base = 120;
-            this.Skills[SkillName.Poisoning].Base = 100;
-            this.Skills[SkillName.Inscribe].Base = 100;
+            InitStats(125, 125, 125);
+            Skills[SkillName.Magery].Base = 120;
+            Skills[SkillName.EvalInt].Base = 120;
+            Skills[SkillName.Anatomy].Base = 120;
+            Skills[SkillName.Wrestling].Base = 120;
+            Skills[SkillName.Meditation].Base = 120;
+            Skills[SkillName.Poisoning].Base = 100;
+            Skills[SkillName.Inscribe].Base = 100;
 
             // Name
-            this.Name = "Super Mage";
+            Name = "Super Mage";
 
             // Equip
             Spellbook book = new Spellbook();
             book.Movable = false;
             book.LootType = LootType.Newbied;
             book.Content = 0xFFFFFFFFFFFFFFFF;
-            this.AddItem(book);
+            AddItem(book);
 
             LeatherArms lea = new LeatherArms();
             lea.Movable = false;
             lea.LootType = LootType.Newbied;
             lea.Crafter = this;
             lea.Quality = ItemQuality.Normal;
-            this.AddItem(lea);
+            AddItem(lea);
 
             LeatherChest lec = new LeatherChest();
             lec.Movable = false;
             lec.LootType = LootType.Newbied;
             lec.Crafter = this;
             lec.Quality = ItemQuality.Normal;
-            this.AddItem(lec);
+            AddItem(lec);
 
             LeatherGorget leg = new LeatherGorget();
             leg.Movable = false;
             leg.LootType = LootType.Newbied;
             leg.Crafter = this;
             leg.Quality = ItemQuality.Normal;
-            this.AddItem(leg);
+            AddItem(leg);
 
             LeatherLegs lel = new LeatherLegs();
             lel.Movable = false;
             lel.LootType = LootType.Newbied;
             lel.Crafter = this;
             lel.Quality = ItemQuality.Normal;
-            this.AddItem(lel);
+            AddItem(lel);
 
             Sandals snd = new Sandals();
             snd.Hue = iHue;
             snd.LootType = LootType.Newbied;
-            this.AddItem(snd);
+            AddItem(snd);
 
             JesterHat jhat = new JesterHat();
             jhat.Hue = iHue;
-            this.AddItem(jhat);
+            AddItem(jhat);
 
             Doublet dblt = new Doublet();
             dblt.Hue = iHue;
-            this.AddItem(dblt);
+            AddItem(dblt);
 
             // Spells
-            this.AddSpellAttack(typeof(Spells.First.MagicArrowSpell));
-            this.AddSpellAttack(typeof(Spells.First.WeakenSpell));
-            this.AddSpellAttack(typeof(Spells.Third.FireballSpell));
-            this.AddSpellDefense(typeof(Spells.Third.WallOfStoneSpell));
-            this.AddSpellDefense(typeof(Spells.First.HealSpell));
+            AddSpellAttack(typeof(Spells.First.MagicArrowSpell));
+            AddSpellAttack(typeof(Spells.First.WeakenSpell));
+            AddSpellAttack(typeof(Spells.Third.FireballSpell));
+            AddSpellDefense(typeof(Spells.Third.WallOfStoneSpell));
+            AddSpellDefense(typeof(Spells.First.HealSpell));
         }
 
         public DummySuper(Serial serial)
@@ -513,68 +513,68 @@ namespace Server.Mobiles
             : base(AIType.AI_Healer, FightMode.Closest, 15, 1, 0.2, 0.6)
         {
             // A Dummy Healer Mage
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             // Skills and Stats
-            this.InitStats(125, 125, 125);
-            this.Skills[SkillName.Magery].Base = 120;
-            this.Skills[SkillName.EvalInt].Base = 120;
-            this.Skills[SkillName.Anatomy].Base = 120;
-            this.Skills[SkillName.Wrestling].Base = 120;
-            this.Skills[SkillName.Meditation].Base = 120;
-            this.Skills[SkillName.Healing].Base = 100;
+            InitStats(125, 125, 125);
+            Skills[SkillName.Magery].Base = 120;
+            Skills[SkillName.EvalInt].Base = 120;
+            Skills[SkillName.Anatomy].Base = 120;
+            Skills[SkillName.Wrestling].Base = 120;
+            Skills[SkillName.Meditation].Base = 120;
+            Skills[SkillName.Healing].Base = 100;
 
             // Name
-            this.Name = "Healer";
+            Name = "Healer";
 
             // Equip
             Spellbook book = new Spellbook();
             book.Movable = false;
             book.LootType = LootType.Newbied;
             book.Content = 0xFFFFFFFFFFFFFFFF;
-            this.AddItem(book);
+            AddItem(book);
 
             LeatherArms lea = new LeatherArms();
             lea.Movable = false;
             lea.LootType = LootType.Newbied;
             lea.Crafter = this;
             lea.Quality = ItemQuality.Normal;
-            this.AddItem(lea);
+            AddItem(lea);
 
             LeatherChest lec = new LeatherChest();
             lec.Movable = false;
             lec.LootType = LootType.Newbied;
             lec.Crafter = this;
             lec.Quality = ItemQuality.Normal;
-            this.AddItem(lec);
+            AddItem(lec);
 
             LeatherGorget leg = new LeatherGorget();
             leg.Movable = false;
             leg.LootType = LootType.Newbied;
             leg.Crafter = this;
             leg.Quality = ItemQuality.Normal;
-            this.AddItem(leg);
+            AddItem(leg);
 
             LeatherLegs lel = new LeatherLegs();
             lel.Movable = false;
             lel.LootType = LootType.Newbied;
             lel.Crafter = this;
             lel.Quality = ItemQuality.Normal;
-            this.AddItem(lel);
+            AddItem(lel);
 
             Sandals snd = new Sandals();
             snd.Hue = iHue;
             snd.LootType = LootType.Newbied;
-            this.AddItem(snd);
+            AddItem(snd);
 
             Cap cap = new Cap();
             cap.Hue = iHue;
-            this.AddItem(cap);
+            AddItem(cap);
 
             Robe robe = new Robe();
             robe.Hue = iHue;
-            this.AddItem(robe);
+            AddItem(robe);
         }
 
         public DummyHealer(Serial serial)
@@ -604,27 +604,27 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 15, 1, 0.2, 0.6)
         {
             // A Dummy Hybrid Assassin
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             // Skills and Stats
-            this.InitStats(105, 105, 105);
-            this.Skills[SkillName.Magery].Base = 120;
-            this.Skills[SkillName.EvalInt].Base = 120;
-            this.Skills[SkillName.Swords].Base = 120;
-            this.Skills[SkillName.Tactics].Base = 120;
-            this.Skills[SkillName.Meditation].Base = 120;
-            this.Skills[SkillName.Poisoning].Base = 100;
+            InitStats(105, 105, 105);
+            Skills[SkillName.Magery].Base = 120;
+            Skills[SkillName.EvalInt].Base = 120;
+            Skills[SkillName.Swords].Base = 120;
+            Skills[SkillName.Tactics].Base = 120;
+            Skills[SkillName.Meditation].Base = 120;
+            Skills[SkillName.Poisoning].Base = 100;
 
             // Name
-            this.Name = "Hybrid Assassin";
+            Name = "Hybrid Assassin";
 
             // Equip
             Spellbook book = new Spellbook();
             book.Movable = false;
             book.LootType = LootType.Newbied;
             book.Content = 0xFFFFFFFFFFFFFFFF;
-            this.AddToBackpack(book);
+            AddToBackpack(book);
 
             Katana kat = new Katana();
             kat.Movable = false;
@@ -633,67 +633,67 @@ namespace Server.Mobiles
             kat.Poison = Poison.Deadly;
             kat.PoisonCharges = 12;
             kat.Quality = ItemQuality.Normal;
-            this.AddToBackpack(kat);
+            AddToBackpack(kat);
 
             LeatherArms lea = new LeatherArms();
             lea.Movable = false;
             lea.LootType = LootType.Newbied;
             lea.Crafter = this;
             lea.Quality = ItemQuality.Normal;
-            this.AddItem(lea);
+            AddItem(lea);
 
             LeatherChest lec = new LeatherChest();
             lec.Movable = false;
             lec.LootType = LootType.Newbied;
             lec.Crafter = this;
             lec.Quality = ItemQuality.Normal;
-            this.AddItem(lec);
+            AddItem(lec);
 
             LeatherGorget leg = new LeatherGorget();
             leg.Movable = false;
             leg.LootType = LootType.Newbied;
             leg.Crafter = this;
             leg.Quality = ItemQuality.Normal;
-            this.AddItem(leg);
+            AddItem(leg);
 
             LeatherLegs lel = new LeatherLegs();
             lel.Movable = false;
             lel.LootType = LootType.Newbied;
             lel.Crafter = this;
             lel.Quality = ItemQuality.Normal;
-            this.AddItem(lel);
+            AddItem(lel);
 
             Sandals snd = new Sandals();
             snd.Hue = iHue;
             snd.LootType = LootType.Newbied;
-            this.AddItem(snd);
+            AddItem(snd);
 
             Cap cap = new Cap();
             cap.Hue = iHue;
-            this.AddItem(cap);
+            AddItem(cap);
 
             Robe robe = new Robe();
             robe.Hue = iHue;
-            this.AddItem(robe);
+            AddItem(robe);
 
             DeadlyPoisonPotion pota = new DeadlyPoisonPotion();
             pota.LootType = LootType.Newbied;
-            this.AddToBackpack(pota);
+            AddToBackpack(pota);
 
             DeadlyPoisonPotion potb = new DeadlyPoisonPotion();
             potb.LootType = LootType.Newbied;
-            this.AddToBackpack(potb);
+            AddToBackpack(potb);
 
             DeadlyPoisonPotion potc = new DeadlyPoisonPotion();
             potc.LootType = LootType.Newbied;
-            this.AddToBackpack(potc);
+            AddToBackpack(potc);
 
             DeadlyPoisonPotion potd = new DeadlyPoisonPotion();
             potd.LootType = LootType.Newbied;
-            this.AddToBackpack(potd);
+            AddToBackpack(potd);
 
             Bandage band = new Bandage(50);
-            this.AddToBackpack(band);
+            AddToBackpack(band);
         }
 
         public DummyAssassin(Serial serial)
@@ -724,71 +724,71 @@ namespace Server.Mobiles
             : base(AIType.AI_Thief, FightMode.Closest, 15, 1, 0.2, 0.6)
         {
             // A Dummy Hybrid Thief
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             // Skills and Stats
-            this.InitStats(105, 105, 105);
-            this.Skills[SkillName.Healing].Base = 120;
-            this.Skills[SkillName.Anatomy].Base = 120;
-            this.Skills[SkillName.Stealing].Base = 120;
-            this.Skills[SkillName.ArmsLore].Base = 100;
-            this.Skills[SkillName.Meditation].Base = 120;
-            this.Skills[SkillName.Wrestling].Base = 120;
+            InitStats(105, 105, 105);
+            Skills[SkillName.Healing].Base = 120;
+            Skills[SkillName.Anatomy].Base = 120;
+            Skills[SkillName.Stealing].Base = 120;
+            Skills[SkillName.ArmsLore].Base = 100;
+            Skills[SkillName.Meditation].Base = 120;
+            Skills[SkillName.Wrestling].Base = 120;
 
             // Name
-            this.Name = "Hybrid Thief";
+            Name = "Hybrid Thief";
 
             // Equip
             Spellbook book = new Spellbook();
             book.Movable = false;
             book.LootType = LootType.Newbied;
             book.Content = 0xFFFFFFFFFFFFFFFF;
-            this.AddItem(book);
+            AddItem(book);
 
             LeatherArms lea = new LeatherArms();
             lea.Movable = false;
             lea.LootType = LootType.Newbied;
             lea.Crafter = this;
             lea.Quality = ItemQuality.Normal;
-            this.AddItem(lea);
+            AddItem(lea);
 
             LeatherChest lec = new LeatherChest();
             lec.Movable = false;
             lec.LootType = LootType.Newbied;
             lec.Crafter = this;
             lec.Quality = ItemQuality.Normal;
-            this.AddItem(lec);
+            AddItem(lec);
 
             LeatherGorget leg = new LeatherGorget();
             leg.Movable = false;
             leg.LootType = LootType.Newbied;
             leg.Crafter = this;
             leg.Quality = ItemQuality.Normal;
-            this.AddItem(leg);
+            AddItem(leg);
 
             LeatherLegs lel = new LeatherLegs();
             lel.Movable = false;
             lel.LootType = LootType.Newbied;
             lel.Crafter = this;
             lel.Quality = ItemQuality.Normal;
-            this.AddItem(lel);
+            AddItem(lel);
 
             Sandals snd = new Sandals();
             snd.Hue = iHue;
             snd.LootType = LootType.Newbied;
-            this.AddItem(snd);
+            AddItem(snd);
 
             Cap cap = new Cap();
             cap.Hue = iHue;
-            this.AddItem(cap);
+            AddItem(cap);
 
             Robe robe = new Robe();
             robe.Hue = iHue;
-            this.AddItem(robe);
+            AddItem(robe);
 
             Bandage band = new Bandage(50);
-            this.AddToBackpack(band);
+            AddToBackpack(band);
         }
 
         public DummyThief(Serial serial)

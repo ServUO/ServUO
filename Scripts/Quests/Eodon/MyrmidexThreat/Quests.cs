@@ -5,6 +5,7 @@ using Server.Items;
 using System.Linq;
 using Server.Engines.ResortAndCasino;
 using Server.Engines.MyrmidexInvasion;
+using Server.Gumps;
 
 namespace Server.Engines.Quests
 {
@@ -150,18 +151,25 @@ namespace Server.Engines.Quests
 		
 		public HiddenTreasuresQuest()
 		{
-            AddObjective(new ObtainObjective(typeof(DarkSapphire), "Dark Sapphire", 1));
-            AddObjective(new ObtainObjective(typeof(Turquoise), "Turquoise", 1));
 			AddObjective(new ObtainObjective(typeof(PerfectEmerald), "Perfect Emerald", 1));
-            AddObjective(new ObtainObjective(typeof(EcruCitrine), "Ecru Citrine", 1));
 			AddObjective(new ObtainObjective(typeof(WhitePearl), "White Pearl", 1));
-            AddObjective(new ObtainObjective(typeof(FireRuby), "Fire Ruby", 1));
 			AddObjective(new ObtainObjective(typeof(BrilliantAmber), "Brilliant Amber", 1));
 			
 			AddReward(new BaseReward(typeof(HiddenTreasuresTreasureMap), "A Special Treasure Map"));
 		}
-		
-		public override void Serialize(GenericWriter writer)
+
+        public override bool CanOffer()
+        {
+            if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Myrmidex))
+            {
+                Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
+                return false;
+            }
+
+            return true;
+        }
+
+        public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
 			writer.Write(0);
@@ -203,8 +211,19 @@ namespace Server.Engines.Quests
 			
 			AddReward(new BaseReward(typeof(SaltySeaMIB), "A Special Message in a Bottle"));
 		}
-		
-		public override void Serialize(GenericWriter writer)
+
+        public override bool CanOffer()
+        {
+            if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Myrmidex))
+            {
+                Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
+                return false;
+            }
+
+            return true;
+        }
+
+        public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
 			writer.Write(0);
@@ -247,8 +266,19 @@ namespace Server.Engines.Quests
 			
 			AddReward(new BaseReward(typeof(StasisChamberStator), "Stasis Chamber Stator"));
 		}
-		
-		public override void Serialize(GenericWriter writer)
+
+        public override bool CanOffer()
+        {
+            if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Myrmidex))
+            {
+                Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
+                return false;
+            }
+
+            return true;
+        }
+
+        public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
 			writer.Write(0);
@@ -412,8 +442,19 @@ namespace Server.Engines.Quests
 			
 			AddReward(new BaseReward(typeof(MyrmidexPopulationReport), "Myrmidex Population Report"));
 		}
-		
-		public override void Serialize(GenericWriter writer)
+
+        public override bool CanOffer()
+        {
+            if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Tribes))
+            {
+                Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
+                return false;
+            }
+
+            return true;
+        }
+
+        public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
 			writer.Write(0);
@@ -458,12 +499,26 @@ namespace Server.Engines.Quests
 			AddReward(new BaseReward(typeof(BottleOfConcentratedInsecticide), "A Bottle Of Concentrated Insecticide"));
 		}
 
+        public override bool CanOffer()
+        {
+            if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Tribes))
+            {
+                Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
+                return false;
+            }
+
+            return true;
+        }
+
         public override bool RenderObjective(MondainQuestGump g, bool offer)
         {
             if (offer)
                 g.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
             else
                 g.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
+
+            g.AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+            g.AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
 
             g.AddHtmlObject(160, 70, 330, 16, Title, BaseQuestGump.DarkGreen, false, false);
             g.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
@@ -590,8 +645,19 @@ namespace Server.Engines.Quests
 			
 			AddReward(new BaseReward(typeof(BottledMyrmidexPheromone), "Bottled Myrmidex Pheromone"));
 		}
-		
-		public override void Serialize(GenericWriter writer)
+
+        public override bool CanOffer()
+        {
+            if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Tribes))
+            {
+                Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
+                return false;
+            }
+
+            return true;
+        }
+
+        public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
 			writer.Write(0);

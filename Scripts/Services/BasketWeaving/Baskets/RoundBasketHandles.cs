@@ -4,22 +4,13 @@ using Server.Items;
 
 public class RoundBasketHandles : BaseContainer
 {
+    public override int LabelNumber { get { return 1112293; } } // round basket
+
     [Constructable]
     public RoundBasketHandles()
-        : this(1)
-    {
-        this.Weight = 1.0; 
-    }
-
-    [Constructable]
-    public RoundBasketHandles(int amount)
         : base(0x9AC)
     {
-        this.Weight = 1.0;
-
-        this.Name = "Round basket w/Handles";  			
-        this.Stackable = true;
-        this.Amount = amount; 
+        Weight = 1.0; 
     }
 
     public RoundBasketHandles(Serial serial)
@@ -27,14 +18,6 @@ public class RoundBasketHandles : BaseContainer
     {
     }
 
-    //public override int LabelNumber { get { return 1112293; } } // Basket
-    public bool RetainsColorFrom
-    {
-        get
-        {
-            return true;
-        }
-    }
     public override void Serialize(GenericWriter writer)
     {
         base.Serialize(writer);

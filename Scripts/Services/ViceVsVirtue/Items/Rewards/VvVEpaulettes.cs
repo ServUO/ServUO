@@ -13,8 +13,6 @@ namespace Server.Engines.VvV
 
         public VvVEpaulette()
         {
-            IsVvVItem = true;
-
             Attributes.AttackChance = 5;
         }
 
@@ -26,13 +24,17 @@ namespace Server.Engines.VvV
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
 		}
 	}
 
@@ -43,8 +45,6 @@ namespace Server.Engines.VvV
 
         public VvVGargishEpaulette()
         {
-            IsVvVItem = true;
-
             Attributes.AttackChance = 5;
         }
 
@@ -56,13 +56,17 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+
+            if (version == 0)
+                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
         }
     }
 }

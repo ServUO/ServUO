@@ -33,17 +33,6 @@ namespace Server.Factions
 
             if (m.IsStaff() || this.Contains(oldLocation))
                 return true;
-			
-            if (m is PlayerMobile)
-            {
-                PlayerMobile pm = (PlayerMobile)m;
-
-                if (pm.DuelContext != null)
-                {
-                    m.SendMessage("You may not enter this area while participating in a duel or a tournament.");
-                    return false;
-                }
-            }
 
             return (Faction.Find(m, true, true) != null);
         }

@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,37 +31,37 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(LeatherGorget), 31, 20, 0x13C7, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherCap), 10, 20, 0x1DB9, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherArms), 37, 20, 0x13CD, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherChest), 47, 20, 0x13CC, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherLegs), 36, 20, 0x13CB, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherGloves), 31, 20, 0x13C6, 0));
+                Add(new GenericBuyInfo(typeof(LeatherGorget), 31, 20, 0x13C7, 0));
+                Add(new GenericBuyInfo(typeof(LeatherCap), 10, 20, 0x1DB9, 0));
+                Add(new GenericBuyInfo(typeof(LeatherArms), 37, 20, 0x13CD, 0));
+                Add(new GenericBuyInfo(typeof(LeatherChest), 47, 20, 0x13CC, 0));
+                Add(new GenericBuyInfo(typeof(LeatherLegs), 36, 20, 0x13CB, 0));
+                Add(new GenericBuyInfo(typeof(LeatherGloves), 31, 20, 0x13C6, 0));
 
-                this.Add(new GenericBuyInfo(typeof(StuddedGorget), 50, 20, 0x13D6, 0));
-                this.Add(new GenericBuyInfo(typeof(StuddedArms), 57, 20, 0x13DC, 0));
-                this.Add(new GenericBuyInfo(typeof(StuddedChest), 75, 20, 0x13DB, 0));
-                this.Add(new GenericBuyInfo(typeof(StuddedLegs), 67, 20, 0x13DA, 0));
-                this.Add(new GenericBuyInfo(typeof(StuddedGloves), 45, 20, 0x13D5, 0));
+                Add(new GenericBuyInfo(typeof(StuddedGorget), 50, 20, 0x13D6, 0));
+                Add(new GenericBuyInfo(typeof(StuddedArms), 57, 20, 0x13DC, 0));
+                Add(new GenericBuyInfo(typeof(StuddedChest), 75, 20, 0x13DB, 0));
+                Add(new GenericBuyInfo(typeof(StuddedLegs), 67, 20, 0x13DA, 0));
+                Add(new GenericBuyInfo(typeof(StuddedGloves), 45, 20, 0x13D5, 0));
 
-                this.Add(new GenericBuyInfo(typeof(FemaleStuddedChest), 62, 20, 0x1C02, 0));
-                this.Add(new GenericBuyInfo(typeof(FemalePlateChest), 207, 20, 0x1C04, 0));
-                this.Add(new GenericBuyInfo(typeof(FemaleLeatherChest), 36, 20, 0x1C06, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherShorts), 28, 20, 0x1C00, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherSkirt), 25, 20, 0x1C08, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherBustierArms), 25, 20, 0x1C0A, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherBustierArms), 30, 20, 0x1C0B, 0));
-                this.Add(new GenericBuyInfo(typeof(StuddedBustierArms), 50, 20, 0x1C0C, 0));
-                this.Add(new GenericBuyInfo(typeof(StuddedBustierArms), 47, 20, 0x1C0D, 0));
+                Add(new GenericBuyInfo(typeof(FemaleStuddedChest), 62, 20, 0x1C02, 0));
+                Add(new GenericBuyInfo(typeof(FemalePlateChest), 207, 20, 0x1C04, 0));
+                Add(new GenericBuyInfo(typeof(FemaleLeatherChest), 36, 20, 0x1C06, 0));
+                Add(new GenericBuyInfo(typeof(LeatherShorts), 28, 20, 0x1C00, 0));
+                Add(new GenericBuyInfo(typeof(LeatherSkirt), 25, 20, 0x1C08, 0));
+                Add(new GenericBuyInfo(typeof(LeatherBustierArms), 25, 20, 0x1C0A, 0));
+                Add(new GenericBuyInfo(typeof(LeatherBustierArms), 30, 20, 0x1C0B, 0));
+                Add(new GenericBuyInfo(typeof(StuddedBustierArms), 50, 20, 0x1C0C, 0));
+                Add(new GenericBuyInfo(typeof(StuddedBustierArms), 47, 20, 0x1C0D, 0));
 
-                this.Add(new GenericBuyInfo(typeof(Bag), 6, 20, 0xE76, 0));
-                this.Add(new GenericBuyInfo(typeof(Pouch), 6, 20, 0xE79, 0));
-                this.Add(new GenericBuyInfo(typeof(Backpack), 15, 20, 0x9B2, 0));
-                this.Add(new GenericBuyInfo(typeof(Leather), 6, 20, 0x1081, 0));
+                Add(new GenericBuyInfo(typeof(Bag), 6, 20, 0xE76, 0));
+                Add(new GenericBuyInfo(typeof(Pouch), 6, 20, 0xE79, 0));
+                Add(new GenericBuyInfo(typeof(Backpack), 15, 20, 0x9B2, 0));
+                Add(new GenericBuyInfo(typeof(Leather), 6, 20, 0x1081, 0, true));
 
-                this.Add(new GenericBuyInfo(typeof(SkinningKnife), 15, 20, 0xEC4, 0));
+                Add(new GenericBuyInfo(typeof(SkinningKnife), 15, 20, 0xEC4, 0));
 
-                this.Add(new GenericBuyInfo("1041279", typeof(TaxidermyKit), 100000, 20, 0x1EBA, 0));
+                Add(new GenericBuyInfo("1041279", typeof(TaxidermyKit), 100000, 20, 0x1EBA, 0));
             }
         }
 
@@ -69,34 +69,34 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(Bag), 3);
-                this.Add(typeof(Pouch), 3);
-                this.Add(typeof(Backpack), 7);
+                Add(typeof(Bag), 3);
+                Add(typeof(Pouch), 3);
+                Add(typeof(Backpack), 7);
 
-                this.Add(typeof(Leather), 5);
+                Add(typeof(Leather), 5);
 
-                this.Add(typeof(SkinningKnife), 7);
+                Add(typeof(SkinningKnife), 7);
 				
-                this.Add(typeof(LeatherArms), 18);
-                this.Add(typeof(LeatherChest), 23);
-                this.Add(typeof(LeatherGloves), 15);
-                this.Add(typeof(LeatherGorget), 15);
-                this.Add(typeof(LeatherLegs), 18);
-                this.Add(typeof(LeatherCap), 5);
+                Add(typeof(LeatherArms), 18);
+                Add(typeof(LeatherChest), 23);
+                Add(typeof(LeatherGloves), 15);
+                Add(typeof(LeatherGorget), 15);
+                Add(typeof(LeatherLegs), 18);
+                Add(typeof(LeatherCap), 5);
 
-                this.Add(typeof(StuddedArms), 43);
-                this.Add(typeof(StuddedChest), 37);
-                this.Add(typeof(StuddedGloves), 39);
-                this.Add(typeof(StuddedGorget), 22);
-                this.Add(typeof(StuddedLegs), 33);
+                Add(typeof(StuddedArms), 43);
+                Add(typeof(StuddedChest), 37);
+                Add(typeof(StuddedGloves), 39);
+                Add(typeof(StuddedGorget), 22);
+                Add(typeof(StuddedLegs), 33);
 
-                this.Add(typeof(FemaleStuddedChest), 31);
-                this.Add(typeof(StuddedBustierArms), 23);
-                this.Add(typeof(FemalePlateChest), 103);
-                this.Add(typeof(FemaleLeatherChest), 18);
-                this.Add(typeof(LeatherBustierArms), 12);
-                this.Add(typeof(LeatherShorts), 14);
-                this.Add(typeof(LeatherSkirt), 12);
+                Add(typeof(FemaleStuddedChest), 31);
+                Add(typeof(StuddedBustierArms), 23);
+                Add(typeof(FemalePlateChest), 103);
+                Add(typeof(FemaleLeatherChest), 18);
+                Add(typeof(LeatherBustierArms), 12);
+                Add(typeof(LeatherShorts), 14);
+                Add(typeof(LeatherSkirt), 12);
             }
         }
     }

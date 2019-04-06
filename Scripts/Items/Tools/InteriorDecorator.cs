@@ -11,18 +11,20 @@ namespace Server.Items
         None,
         Turn,
         Up,
-        Down
+        Down,
+        GetHue
     }
 
     public class InteriorDecorator : Item
     {
-        private DecorateCommand m_Command;
+        public override int LabelNumber { get { return 1041280; } } // an interior decorator
+
         [Constructable]
         public InteriorDecorator()
             : base(0xFC1)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public InteriorDecorator(Serial serial)
@@ -31,25 +33,8 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DecorateCommand Command
-        {
-            get
-            {
-                return this.m_Command;
-            }
-            set
-            {
-                this.m_Command = value;
-                this.InvalidateProperties();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041280;
-            }
-        }// an interior decorator
+        public DecorateCommand Command { get; set; }
+
         public static bool InHouse(Mobile from)
         {
             BaseHouse house = BaseHouse.FindHouseAt(from);
@@ -59,9 +44,6 @@ namespace Server.Items
 
         public static bool CheckUse(InteriorDecorator tool, Mobile from)
         {
-            /*if ( tool.Deleted || !tool.IsChildOf( from.Backpack ) )
-            from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
-            else*/
             if (!InHouse(from))
                 from.SendLocalizedMessage(502092); // You must be in your house to do this.
             else
@@ -70,111 +52,150 @@ namespace Server.Items
             return false;
         }
 
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            if (this.m_Command != DecorateCommand.None)
-                list.Add(1018322 + (int)this.m_Command); // Turn/Up/Down
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!CheckUse(this, from))
-                return;
-			
-            if (from.FindGump(typeof(InteriorDecorator.InternalGump)) == null)
-                from.SendGump(new InternalGump(this));
+            if (!InHouse(from))
+                Command = DecorateCommand.GetHue;
 
-            if (this.m_Command != DecorateCommand.None)
+            if (from.FindGump(typeof(InternalGump)) == null)
+                from.SendGump(new InternalGump(from, this));
+
+            if (Command != DecorateCommand.None)
                 from.Target = new InternalTarget(this);
         }
 
         private class InternalGump : Gump
         {
             private readonly InteriorDecorator m_Decorator;
-            public InternalGump(InteriorDecorator decorator)
+
+            public InternalGump(Mobile from, InteriorDecorator decorator)
                 : base(150, 50)
             {
-                this.m_Decorator = decorator;
+                m_Decorator = decorator;
 
-                this.AddBackground(0, 0, 200, 200, 2600);
+                AddBackground(0, 0, 170, 260, 2600);
 
-                this.AddButton(50, 45, (decorator.Command == DecorateCommand.Turn ? 2154 : 2152), 2154, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(90, 50, 70, 40, 1018323, false, false); // Turn
+                AddPage(0);
 
-                this.AddButton(50, 95, (decorator.Command == DecorateCommand.Up ? 2154 : 2152), 2154, 2, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(90, 100, 70, 40, 1018324, false, false); // Up
+                if (!InHouse(from))
+                {
+                    AddButton(40, 36, (decorator.Command == DecorateCommand.GetHue ? 2154 : 2152), 2154, 4, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(80, 41, 100, 20, 1158863, false, false); // Get Hue   
+                }
+                else
+                {
+                    AddButton(40, 36, (decorator.Command == DecorateCommand.Turn ? 2154 : 2152), 2154, 1, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(80, 41, 100, 20, 1018323, false, false); // Turn
 
-                this.AddButton(50, 145, (decorator.Command == DecorateCommand.Down ? 2154 : 2152), 2154, 3, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(90, 150, 70, 40, 1018325, false, false); // Down
+                    AddButton(40, 86, (decorator.Command == DecorateCommand.Up ? 2154 : 2152), 2154, 2, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(80, 91, 100, 20, 1018324, false, false); // Up
+
+                    AddButton(40, 136, (decorator.Command == DecorateCommand.Down ? 2154 : 2152), 2154, 3, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(80, 141, 100, 20, 1018325, false, false); // Down
+
+                    AddButton(40, 186, (decorator.Command == DecorateCommand.GetHue ? 2154 : 2152), 2154, 4, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(80, 191, 100, 20, 1158863, false, false); // Get Hue                    
+                }
+
+                AddHtmlLocalized(0, 0, 0, 0, 4, false, false);
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
                 DecorateCommand command = DecorateCommand.None;
+                Mobile m = sender.Mobile;
 
-                switch ( info.ButtonID )
+                int cliloc = 0;
+
+                switch (info.ButtonID)
                 {
                     case 1:
+                        cliloc = 1073404; // Select an object to turn.
                         command = DecorateCommand.Turn;
                         break;
                     case 2:
+                        cliloc = 1073405; // Select an object to increase its height.
                         command = DecorateCommand.Up;
                         break;
                     case 3:
+                        cliloc = 1073406; // Select an object to lower its height.
                         command = DecorateCommand.Down;
+                        break;
+                    case 4:
+                        cliloc = 1158864; // Select an object to get the hue.
+                        command = DecorateCommand.GetHue;
                         break;
                 }
 
                 if (command != DecorateCommand.None)
                 {
-                    this.m_Decorator.Command = command;
-                    sender.Mobile.SendGump(new InternalGump(this.m_Decorator));
-                    sender.Mobile.Target = new InternalTarget(this.m_Decorator);
+                    m_Decorator.Command = command;
+                    m.SendGump(new InternalGump(m, m_Decorator));
+
+                    if (cliloc != 0)
+                        m.SendLocalizedMessage(cliloc);
+
+                    m.Target = new InternalTarget(m_Decorator);
                 }
                 else
-                    Target.Cancel(sender.Mobile);
+                {
+                    Target.Cancel(m);
+                }
             }
         }
 
         private class InternalTarget : Target
         {
             private readonly InteriorDecorator m_Decorator;
+
             public InternalTarget(InteriorDecorator decorator)
                 : base(-1, false, TargetFlags.None)
             {
-                this.CheckLOS = false;
+                CheckLOS = false;
 
-                this.m_Decorator = decorator;
+                m_Decorator = decorator;
             }
 
             protected override void OnTargetNotAccessible(Mobile from, object targeted)
             {
-                this.OnTarget(from, targeted);
+                OnTarget(from, targeted);
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Item && InteriorDecorator.CheckUse(this.m_Decorator, from))
+                if (m_Decorator.Command == DecorateCommand.GetHue)
+                {
+                    int hue = 0;
+
+                    if (targeted is Item)
+                        hue = ((Item)targeted).Hue;
+                    else if (targeted is Mobile)
+                        hue = ((Mobile)targeted).Hue;
+                    else
+                    {
+                        from.Target = new InternalTarget(m_Decorator);
+                        return;
+                    }
+
+                    from.SendLocalizedMessage(1158862, String.Format("{0}", hue)); // That object is hue ~1_HUE~
+                }
+                else if (targeted is Item && CheckUse(m_Decorator, from))
                 {
                     BaseHouse house = BaseHouse.FindHouseAt(from);
                     Item item = (Item)targeted;
-					
+
                     bool isDecorableComponent = false;
 
                     if (item is AddonComponent || item is AddonContainerComponent || item is BaseAddonContainer)
@@ -204,7 +225,10 @@ namespace Server.Items
                         if (count == 1 && Core.SE)
                             isDecorableComponent = true;
 
-                        if (this.m_Decorator.Command == DecorateCommand.Turn)
+                        if (item is EnormousVenusFlytrapAddon)
+                            isDecorableComponent = true;
+
+                        if (m_Decorator.Command == DecorateCommand.Turn)
                         {
                             FlipableAddonAttribute[] attributes = (FlipableAddonAttribute[])addon.GetType().GetCustomAttributes(typeof(FlipableAddonAttribute), false);
 
@@ -215,7 +239,7 @@ namespace Server.Items
 
                     if (house == null || !house.IsCoOwner(from))
                     {
-                        from.SendLocalizedMessage(502092); // You must be in your house to do this.
+                        from.SendLocalizedMessage(502092); // You must be in your house to do 
                     }
                     else if (item.Parent != null || !house.IsInside(item))
                     {
@@ -223,9 +247,11 @@ namespace Server.Items
                     }
                     else if (!house.IsLockedDown(item) && !house.IsSecure(item) && !isDecorableComponent)
                     {
-                        if (item is AddonComponent && this.m_Decorator.Command == DecorateCommand.Up)
+                        if (item is AddonComponent && m_Decorator.Command == DecorateCommand.Turn)
+                            from.SendLocalizedMessage(1042273); // You cannot turn that.
+                        else if (item is AddonComponent && m_Decorator.Command == DecorateCommand.Up)
                             from.SendLocalizedMessage(1042274); // You cannot raise it up any higher.
-                        else if (item is AddonComponent && this.m_Decorator.Command == DecorateCommand.Down)
+                        else if (item is AddonComponent && m_Decorator.Command == DecorateCommand.Down)
                             from.SendLocalizedMessage(1042275); // You cannot lower it down any further.
                         else
                             from.SendLocalizedMessage(1042271); // That is not locked down.
@@ -240,7 +266,7 @@ namespace Server.Items
                     }*/
                     else
                     {
-                        switch ( this.m_Decorator.Command )
+                        switch (m_Decorator.Command)
                         {
                             case DecorateCommand.Up:
                                 Up(item, from);
@@ -254,8 +280,8 @@ namespace Server.Items
                         }
                     }
                 }
-				
-                from.Target = new InternalTarget(this.m_Decorator);
+
+                from.Target = new InternalTarget(m_Decorator);
             }
 
             protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
@@ -268,7 +294,7 @@ namespace Server.Items
             {
                 if (item is IFlipable)
                 {
-                    ((IFlipable)item).OnFlip();
+                    ((IFlipable)item).OnFlip(from);
                     return;
                 }
 

@@ -1,3 +1,4 @@
+
 using System;
 using Server.Items;
 
@@ -9,63 +10,57 @@ namespace Server.Mobiles
         [Constructable]
         public Gnaw()
         {
+            Name = "Gnaw";
+            Hue = 0x130;
 
-            this.Name = "Gnaw";
-            this.Hue = 0x130;
+            SetStr(142, 169);
+            SetDex(102, 145);
+            SetInt(44, 69);
 
-            this.SetStr(151, 172);
-            this.SetDex(124, 145);
-            this.SetInt(60, 86);
+            SetHits(786, 837);
+            SetStam(102, 145);
+            SetMana(44, 69);
 
-            this.SetHits(817, 857);
-            this.SetStam(124, 145);
-            this.SetMana(52, 86);
+            SetDamage(16, 22);
 
-            this.SetDamage(16, 22);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 23, 40);
 
-            this.SetResistance(ResistanceType.Physical, 64, 69);
-            this.SetResistance(ResistanceType.Fire, 53, 56);
-            this.SetResistance(ResistanceType.Cold, 22, 27);
-            this.SetResistance(ResistanceType.Poison, 27, 30);
-            this.SetResistance(ResistanceType.Energy, 21, 34);
+            SetSkill(SkillName.Wrestling, 96.3, 119.7);
+            SetSkill(SkillName.Tactics, 89.5, 107.7);
+            SetSkill(SkillName.MagicResist, 93.6, 112.8);
 
-            this.SetSkill(SkillName.Wrestling, 106.4, 116.5);
-            this.SetSkill(SkillName.Tactics, 84.1, 103.2);
-            this.SetSkill(SkillName.MagicResist, 96.8, 110.7);
-
-            this.Fame = 17500;
-            this.Karma = -17500;
+            Fame = 17500;
+            Karma = -17500;
 
             Tamable = false;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
-        }
-		public override bool CanBeParagon { get { return false; } }
-        public override void OnDeath( Container c )
-        {
-            base.OnDeath( c );
 
-            if ( Utility.RandomDouble() < 0.3 )
-                c.DropItem( new GnawsFang() );
+            SetSpecialAbility(SpecialAbility.Rage);
         }
-        
+        public override bool CanBeParagon { get { return false; } }
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.3)
+                c.DropItem(new GnawsFang());
+        }
+
         public Gnaw(Serial serial)
             : base(serial)
         {
         }
 
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override int Hides
         {
             get
@@ -82,7 +77,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.FilthyRich, 2);
         }
 
         public override void Serialize(GenericWriter writer)

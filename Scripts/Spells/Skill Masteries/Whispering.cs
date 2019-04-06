@@ -19,7 +19,7 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
  
-        public override int RequiredMana { get { return 30; } } // get
+        public override int RequiredMana { get { return 40; } }
 		
         public override SkillName CastSkill { get { return SkillName.AnimalTaming; } }
 		public override SkillName DamageSkill { get { return SkillName.AnimalLore; } }

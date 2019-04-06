@@ -54,6 +54,19 @@ namespace Server.Items
                 list.Add(info.IsBright() ? 1112121 : 1112122, String.Format("#{0}", info.Name)); //bright ~1_COLOR~ plant clippings
         }
 
+        public override bool WillStack(Mobile from, Item dropped)
+        {
+            return dropped is IPlantHue && ((IPlantHue)dropped).PlantHue == m_PlantHue && base.WillStack(from, dropped);
+        }
+
+        public override void OnAfterDuped(Item newItem)
+        {
+            if (newItem is IPlantHue)
+                ((IPlantHue)newItem).PlantHue = this.PlantHue;
+
+            base.OnAfterDuped(newItem);
+        }
+
         public PlantClippings(Serial serial)
             : base(serial)
         {

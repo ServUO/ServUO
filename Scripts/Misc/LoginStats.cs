@@ -3,6 +3,7 @@ using Server.Network;
 using Server.Engines.Quests;
 using Server.Mobiles;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Misc
 {
@@ -28,33 +29,6 @@ namespace Server.Misc
                 userCount, userCount == 1 ? "" : "s",
                 itemCount, itemCount == 1 ? "" : "s",
                 mobileCount, mobileCount == 1 ? "" : "s");
-
-            List<MondainQuester> listQuester = new List<MondainQuester>();
-            List<BaseHealer> listHealers = new List<BaseHealer>();
-
-            foreach (Mobile m_mobile in World.Mobiles.Values)
-            {
-                MondainQuester mQuester = m_mobile as MondainQuester;
-                if (mQuester != null)
-                    listQuester.Add(mQuester);
-
-                BaseHealer mHealer = m_mobile as BaseHealer;
-                if (mHealer != null)
-                    listHealers.Add(mHealer);
-            }
-
-            foreach (MondainQuester quester in listQuester)
-            {
-                if (args.Mobile.NetState != null)
-                {
-                    string name = string.Empty;
-                    if (quester.Name != null)
-                        name += quester.Name;
-                    if (quester.Title != null)
-                        name += " " + quester.Title;
-                    args.Mobile.NetState.Send(new DisplayWaypoint(quester.Serial, quester.X, quester.Y, quester.Z, quester.Map.MapID, WaypointType.QuestGiver, name));
-                }
-            }
 
             if (m.IsStaff())
             {

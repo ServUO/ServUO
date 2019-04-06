@@ -50,12 +50,12 @@ namespace Server.Engines.Doom
         public GauntletSpawner(string typeName)
             : base(0x36FE)
         {
-            this.Visible = false;
-            this.Movable = false;
+            Visible = false;
+            Movable = false;
 
-            this.m_TypeName = typeName;
-            this.m_Creatures = new List<Mobile>();
-            this.m_Traps = new List<BaseTrap>();
+            m_TypeName = typeName;
+            m_Creatures = new List<Mobile>();
+            m_Traps = new List<BaseTrap>();
         }
 
         public GauntletSpawner(Serial serial)
@@ -68,11 +68,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_TypeName;
+                return m_TypeName;
             }
             set
             {
-                this.m_TypeName = value;
+                m_TypeName = value;
             }
         }
 
@@ -81,11 +81,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_Door;
+                return m_Door;
             }
             set
             {
-                this.m_Door = value;
+                m_Door = value;
             }
         }
 
@@ -94,11 +94,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_Addon;
+                return m_Addon;
             }
             set
             {
-                this.m_Addon = value;
+                m_Addon = value;
             }
         }
 
@@ -107,11 +107,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_Sequence;
+                return m_Sequence;
             }
             set
             {
-                this.m_Sequence = value;
+                m_Sequence = value;
             }
         }
 
@@ -120,12 +120,12 @@ namespace Server.Engines.Doom
         {
             get
             {
-                if (this.m_Creatures.Count == 0)
+                if (m_Creatures.Count == 0)
                     return false;
 
-                for (int i = 0; i < this.m_Creatures.Count; ++i)
+                for (int i = 0; i < m_Creatures.Count; ++i)
                 {
-                    Mobile mob = this.m_Creatures[i];
+                    Mobile mob = m_Creatures[i];
 
                     if (!mob.Deleted)
                         return false;
@@ -140,11 +140,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_RegionBounds;
+                return m_RegionBounds;
             }
             set
             {
-                this.m_RegionBounds = value;
+                m_RegionBounds = value;
             }
         }
 
@@ -153,19 +153,19 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_State;
+                return m_State;
             }
             set
             {
-                if (this.m_State == value)
+                if (m_State == value)
                     return;
 
-                this.m_State = value;
+                m_State = value;
 
                 int hue = 0;
-                bool lockDoors = (this.m_State == GauntletSpawnerState.InProgress);
+                bool lockDoors = (m_State == GauntletSpawnerState.InProgress);
 
-                switch ( this.m_State )
+                switch ( m_State )
                 {
                     case GauntletSpawnerState.InSequence:
                         hue = InSequenceItemHue;
@@ -178,50 +178,50 @@ namespace Server.Engines.Doom
                         break;
                 }
 
-                if (this.m_Door != null)
+                if (m_Door != null)
                 {
-                    this.m_Door.Hue = hue;
-                    this.m_Door.Locked = lockDoors;
+                    m_Door.Hue = hue;
+                    m_Door.Locked = lockDoors;
 
                     if (lockDoors)
                     {
-                        this.m_Door.KeyValue = Key.RandomValue();
-                        this.m_Door.Open = false;
+                        m_Door.KeyValue = Key.RandomValue();
+                        m_Door.Open = false;
                     }
 
-                    if (this.m_Door.Link != null)
+                    if (m_Door.Link != null)
                     {
-                        this.m_Door.Link.Hue = hue;
-                        this.m_Door.Link.Locked = lockDoors;
+                        m_Door.Link.Hue = hue;
+                        m_Door.Link.Locked = lockDoors;
 
                         if (lockDoors)
                         {
-                            this.m_Door.Link.KeyValue = Key.RandomValue();
-                            this.m_Door.Open = false;
+                            m_Door.Link.KeyValue = Key.RandomValue();
+                            m_Door.Open = false;
                         }
                     }
                 }
 
-                if (this.m_Addon != null)
-                    this.m_Addon.Hue = hue;
+                if (m_Addon != null)
+                    m_Addon.Hue = hue;
 
-                if (this.m_State == GauntletSpawnerState.InProgress)
+                if (m_State == GauntletSpawnerState.InProgress)
                 {
-                    this.CreateRegion();
-                    this.FullSpawn();
+                    CreateRegion();
+                    FullSpawn();
 
-                    this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(Slice));
+                    m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(Slice));
                 }
                 else
                 {
-                    this.ClearCreatures();
-                    this.ClearTraps();
-                    this.DestroyRegion();
+                    ClearCreatures();
+                    ClearTraps();
+                    DestroyRegion();
 
-                    if (this.m_Timer != null)
-                        this.m_Timer.Stop();
+                    if (m_Timer != null)
+                        m_Timer.Stop();
 
-                    this.m_Timer = null;
+                    m_Timer = null;
                 }
             }
         }
@@ -230,11 +230,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_Creatures;
+                return m_Creatures;
             }
             set
             {
-                this.m_Creatures = value;
+                m_Creatures = value;
             }
         }
 
@@ -242,11 +242,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_Traps;
+                return m_Traps;
             }
             set
             {
-                this.m_Traps = value;
+                m_Traps = value;
             }
         }
 
@@ -254,11 +254,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_Region;
+                return m_Region;
             }
             set
             {
-                this.m_Region = value;
+                m_Region = value;
             }
         }
 
@@ -657,43 +657,43 @@ namespace Server.Engines.Doom
 
         public virtual void CreateRegion()
         {
-            if (this.m_Region != null)
+            if (m_Region != null)
                 return;
 
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null || map == Map.Internal)
                 return;
 
-            this.m_Region = new GauntletRegion(this, map);
+            m_Region = new GauntletRegion(this, map);
         }
 
         public virtual void DestroyRegion()
         {
-            if (this.m_Region != null)
-                this.m_Region.Unregister();
+            if (m_Region != null)
+                m_Region.Unregister();
 
-            this.m_Region = null;
+            m_Region = null;
         }
 
         public virtual int ComputeTrapCount()
         {
-            int area = this.m_RegionBounds.Width * this.m_RegionBounds.Height;
+            int area = m_RegionBounds.Width * m_RegionBounds.Height;
 
             return area / 100;
         }
 
         public virtual void ClearTraps()
         {
-            for (int i = 0; i < this.m_Traps.Count; ++i)
-                this.m_Traps[i].Delete();
+            for (int i = 0; i < m_Traps.Count; ++i)
+                m_Traps[i].Delete();
 
-            this.m_Traps.Clear();
+            m_Traps.Clear();
         }
 
         public virtual void SpawnTrap()
         {
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
                 return;
@@ -722,9 +722,9 @@ namespace Server.Engines.Doom
             // try 10 times to find a valid location
             for (int i = 0; i < 10; ++i)
             {
-                int x = Utility.Random(this.m_RegionBounds.X, this.m_RegionBounds.Width);
-                int y = Utility.Random(this.m_RegionBounds.Y, this.m_RegionBounds.Height);
-                int z = this.Z;
+                int x = Utility.Random(m_RegionBounds.X, m_RegionBounds.Width);
+                int y = Utility.Random(m_RegionBounds.Y, m_RegionBounds.Height);
+                int z = Z;
 
                 if (!map.CanFit(x, y, z, 16, false, false))
                     z = map.GetAverageZ(x, y);
@@ -733,7 +733,7 @@ namespace Server.Engines.Doom
                     continue;
 
                 trap.MoveToWorld(new Point3D(x, y, z), map);
-                this.m_Traps.Add(trap);
+                m_Traps.Add(trap);
 
                 return;
             }
@@ -745,20 +745,20 @@ namespace Server.Engines.Doom
         {
             int playerCount = 0;
 
-            Map map = this.Map;
+            Map map = Map;
 
             if (map != null)
             {
-                Point3D loc = this.GetWorldLocation();
+                Point3D loc = GetWorldLocation();
 
                 Region reg = Region.Find(loc, map).GetRegion("Doom Gauntlet");
 
                 if (reg != null)
-                    playerCount = reg.GetPlayerCount();
+                    playerCount = reg.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player).Count();
             }
 
-            if (playerCount == 0 && this.m_Region != null)
-                playerCount = this.m_Region.GetPlayerCount();
+            if (playerCount == 0 && m_Region != null)
+                playerCount = m_Region.GetEnumeratedMobiles().Where(m => m.AccessLevel == AccessLevel.Player).Count();
 
             int count = (playerCount + PlayersPerSpawn - 1) / PlayersPerSpawn;
 
@@ -770,37 +770,37 @@ namespace Server.Engines.Doom
 
         public virtual void ClearCreatures()
         {
-            for (int i = 0; i < this.m_Creatures.Count; ++i)
-                this.m_Creatures[i].Delete();
+            for (int i = 0; i < m_Creatures.Count; ++i)
+                m_Creatures[i].Delete();
 
-            this.m_Creatures.Clear();
+            m_Creatures.Clear();
         }
 
         public virtual void FullSpawn()
         {
-            this.ClearCreatures();
+            ClearCreatures();
 
-            int count = this.ComputeSpawnCount();
-
-            for (int i = 0; i < count; ++i)
-                this.Spawn();
-
-            this.ClearTraps();
-
-            count = this.ComputeTrapCount();
+            int count = ComputeSpawnCount();
 
             for (int i = 0; i < count; ++i)
-                this.SpawnTrap();
+                Spawn();
+
+            ClearTraps();
+
+            count = ComputeTrapCount();
+
+            for (int i = 0; i < count; ++i)
+                SpawnTrap();
         }
 
         public virtual void Spawn()
         {
             try
             {
-                if (this.m_TypeName == null)
+                if (m_TypeName == null)
                     return;
 
-                Type type = ScriptCompiler.FindTypeByName(this.m_TypeName, true);
+                Type type = ScriptCompiler.FindTypeByName(m_TypeName, true);
 
                 if (type == null)
                     return;
@@ -818,9 +818,9 @@ namespace Server.Engines.Doom
                 {
                     Mobile mob = (Mobile)obj;
 
-                    mob.MoveToWorld(this.GetWorldLocation(), this.Map);
+                    mob.MoveToWorld(GetWorldLocation(), Map);
 
-                    this.m_Creatures.Add(mob);
+                    m_Creatures.Add(mob);
                 }
             }
             catch
@@ -830,49 +830,49 @@ namespace Server.Engines.Doom
 
         public virtual void RecurseReset()
         {
-            if (this.m_State != GauntletSpawnerState.InSequence)
+            if (m_State != GauntletSpawnerState.InSequence)
             {
-                this.State = GauntletSpawnerState.InSequence;
+                State = GauntletSpawnerState.InSequence;
 
-                if (this.m_Sequence != null && !this.m_Sequence.Deleted)
-                    this.m_Sequence.RecurseReset();
+                if (m_Sequence != null && !m_Sequence.Deleted)
+                    m_Sequence.RecurseReset();
             }
         }
 
         public virtual void Slice()
         {
-            if (this.m_State != GauntletSpawnerState.InProgress)
+            if (m_State != GauntletSpawnerState.InProgress)
                 return;
 
-            int count = this.ComputeSpawnCount();
+            int count = ComputeSpawnCount();
 
-            for (int i = this.m_Creatures.Count; i < count; ++i)
-                this.Spawn();
+            for (int i = m_Creatures.Count; i < count; ++i)
+                Spawn();
 
-            if (this.HasCompleted)
+            if (HasCompleted)
             {
-                this.State = GauntletSpawnerState.Completed;
+                State = GauntletSpawnerState.Completed;
 
-                if (this.m_Sequence != null && !this.m_Sequence.Deleted)
+                if (m_Sequence != null && !m_Sequence.Deleted)
                 {
-                    if (this.m_Sequence.State == GauntletSpawnerState.Completed)
-                        this.RecurseReset();
+                    if (m_Sequence.State == GauntletSpawnerState.Completed)
+                        RecurseReset();
 
-                    this.m_Sequence.State = GauntletSpawnerState.InProgress;
+                    m_Sequence.State = GauntletSpawnerState.InProgress;
                 }
             }
         }
 
         public override void Delete()
         {
-            this.ClearCreatures();
-            this.ClearTraps();
-            this.DestroyRegion();
+            ClearCreatures();
+            ClearTraps();
+            DestroyRegion();
 
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
 
             base.Delete();
         }
@@ -883,18 +883,18 @@ namespace Server.Engines.Doom
 
             writer.Write((int)1); // version
 
-            writer.Write(this.m_RegionBounds);
+            writer.Write(m_RegionBounds);
 
-            writer.WriteItemList<BaseTrap>(this.m_Traps, false);
+            writer.WriteItemList<BaseTrap>(m_Traps, false);
 
-            writer.Write(this.m_Creatures, false);
+            writer.Write(m_Creatures, false);
 
-            writer.Write(this.m_TypeName);
-            writer.WriteItem<BaseDoor>(this.m_Door);
-            writer.WriteItem<BaseAddon>(this.m_Addon);
-            writer.WriteItem<GauntletSpawner>(this.m_Sequence);
+            writer.Write(m_TypeName);
+            writer.WriteItem<BaseDoor>(m_Door);
+            writer.WriteItem<BaseAddon>(m_Addon);
+            writer.WriteItem<GauntletSpawner>(m_Sequence);
 
-            writer.Write((int)this.m_State);
+            writer.Write((int)m_State);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -907,8 +907,8 @@ namespace Server.Engines.Doom
             {
                 case 1:
                     {
-                        this.m_RegionBounds = reader.ReadRect2D();
-                        this.m_Traps = reader.ReadStrongItemList<BaseTrap>();
+                        m_RegionBounds = reader.ReadRect2D();
+                        m_Traps = reader.ReadStrongItemList<BaseTrap>();
 
                         goto case 0;
                     }
@@ -916,18 +916,18 @@ namespace Server.Engines.Doom
                     {
                         if (version < 1)
                         {
-                            this.m_Traps = new List<BaseTrap>();
-                            this.m_RegionBounds = new Rectangle2D(this.X - 40, this.Y - 40, 80, 80);
+                            m_Traps = new List<BaseTrap>();
+                            m_RegionBounds = new Rectangle2D(X - 40, Y - 40, 80, 80);
                         }
 
-                        this.m_Creatures = reader.ReadStrongMobileList();
+                        m_Creatures = reader.ReadStrongMobileList();
 
-                        this.m_TypeName = reader.ReadString();
-                        this.m_Door = reader.ReadItem<BaseDoor>(); 
-                        this.m_Addon = reader.ReadItem<BaseAddon>(); 
-                        this.m_Sequence = reader.ReadItem<GauntletSpawner>();
+                        m_TypeName = reader.ReadString();
+                        m_Door = reader.ReadItem<BaseDoor>(); 
+                        m_Addon = reader.ReadItem<BaseAddon>(); 
+                        m_Sequence = reader.ReadItem<GauntletSpawner>();
 
-                        this.State = (GauntletSpawnerState)reader.ReadInt();
+                        State = (GauntletSpawnerState)reader.ReadInt();
 
                         break;
                     }
@@ -941,11 +941,11 @@ namespace Server.Engines.Doom
         public GauntletRegion(GauntletSpawner spawner, Map map)
             : base(null, map, Region.Find(spawner.Location, spawner.Map), spawner.RegionBounds)
         {
-            this.m_Spawner = spawner;
+            m_Spawner = spawner;
 
-            this.GoLocation = spawner.Location;
+            GoLocation = spawner.Location;
 
-            this.Register();
+            Register();
         }
 
         public override void AlterLightLevel(Mobile m, ref int global, ref int personal)

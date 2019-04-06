@@ -3,10 +3,9 @@ using System;
 
 namespace Server.Items
 {
-    public class TortureRackComponent : AddonComponent
+    public class TortureRackComponent : AddonComponent, IArtifact
     {
         public override int LabelNumber { get { return 1152307; } } // Torture Rack	
-        public override bool IsArtifact { get { return true; } }
         public virtual bool ShowArtifactRarity { get { return true; } }
 
         public TortureRackComponent(int itemID)

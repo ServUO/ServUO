@@ -6,20 +6,9 @@ public class PicnicBasket2 : BaseContainer
 {
     [Constructable]
     public PicnicBasket2()
-        : this(1)
+        : base(0xE7A)
     {
         this.Weight = 1.0; 
-    }
-
-    [Constructable]
-    public PicnicBasket2(int amount)
-        : base(0x9AC)
-    {
-        this.Weight = 1.0;
-
-        //Hue = 0;  			
-        this.Stackable = true;
-        this.Amount = amount; 
     }
 
     public PicnicBasket2(Serial serial)
@@ -27,20 +16,6 @@ public class PicnicBasket2 : BaseContainer
     {
     }
 
-    public override int LabelNumber
-    {
-        get
-        {
-            return 1112356;
-        }
-    }// Basket
-    public bool RetainsColorFrom
-    {
-        get
-        {
-            return true;
-        }
-    }
     public override void Serialize(GenericWriter writer)
     {
         base.Serialize(writer);

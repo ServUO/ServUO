@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,11 +31,11 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(Bokuto), 21, 20, 0x27A8, 0));
-                this.Add(new GenericBuyInfo(typeof(Tetsubo), 43, 20, 0x27A6, 0));
-                this.Add(new GenericBuyInfo(typeof(Fukiya), 20, 20, 0x27AA, 0));
-                this.Add(new GenericBuyInfo(typeof(BambooFlute), 21, 20, 0x2805, 0));
-                this.Add(new GenericBuyInfo(typeof(BambooFlute), 21, 20, 0x2805, 0));
+                Add(new GenericBuyInfo(typeof(Bokuto), 21, 20, 0x27A8, 0));
+                Add(new GenericBuyInfo(typeof(Tetsubo), 43, 20, 0x27A6, 0));
+                Add(new GenericBuyInfo(typeof(Fukiya), 20, 20, 0x27AA, 0));
+                Add(new GenericBuyInfo(typeof(BambooFlute), 21, 20, 0x2805, 0));
+                Add(new GenericBuyInfo(typeof(BambooFlute), 21, 20, 0x2805, 0));
             }
         }
 
@@ -43,10 +43,10 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(Tetsubo), 21);
-                this.Add(typeof(Fukiya), 10);
-                this.Add(typeof(BambooFlute), 10);
-                this.Add(typeof(Bokuto), 10);
+                Add(typeof(Tetsubo), 21);
+                Add(typeof(Fukiya), 10);
+                Add(typeof(BambooFlute), 10);
+                Add(typeof(Bokuto), 10);
             }
         }
     }

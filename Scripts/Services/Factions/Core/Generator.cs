@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Commands;
+using System.Linq;
 
 namespace Server.Factions
 {
@@ -17,13 +18,15 @@ namespace Server.Factions
             // Removes Items, ie monoliths, stones, etc
             WeakEntityCollection.Delete("factions");
 
-            List<Sigil> sigils = new List<Sigil>(Sigil.Sigils);
+            List<Item> items = new List<Item>(World.Items.Values.Where(i => i is StrongholdRune || 
+                i is ShrineGem || i is EnchantedBandage || i is PowderOfPerseverance || i is Sigil));
 
-            foreach (Sigil sig in sigils)
+            foreach (var item in items)
             {
-                if (!sig.Deleted)
-                    sig.Delete();
+                item.Delete();
             }
+
+            ColUtility.Free(items);
         }
 
 		public static void DeleteFactions_OnCommand(CommandEventArgs e)
@@ -33,17 +36,26 @@ namespace Server.Factions
 
         public static void GenerateFactions_OnCommand(CommandEventArgs e)
         {
-            new FactionPersistence();
+            if (Settings.Enabled)
+            {
+                new FactionPersistence();
 
-            List<Faction> factions = Faction.Factions;
+                List<Faction> factions = Faction.Factions;
 
-            foreach (Faction faction in factions)
-                Generate(faction);
+                foreach (Faction faction in factions)
+                    Generate(faction);
 
-            List<Town> towns = Town.Towns;
+                List<Town> towns = Town.Towns;
 
-            foreach (Town town in towns)
-                Generate(town);
+                foreach (Town town in towns)
+                    Generate(town);
+
+                e.Mobile.SendMessage("Factions generated!");
+            }
+            else
+            {
+                e.Mobile.SendMessage("You must enable factions first by disabling VvV before you can generate.");
+            }
         }
 
         public static void Generate(Town town)
@@ -101,6 +113,13 @@ namespace Server.Factions
 					WeakEntityCollection.Add("factions", mono);
 					mono.MoveToWorld(monolith, facet);
 				}
+            }
+
+            if (Core.ML && !CheckExistance(stronghold.FactionStone, facet, typeof(FactionCollectionBox)))
+            {
+                FactionCollectionBox box = new FactionCollectionBox(faction);
+                WeakEntityCollection.Add("factions", box);
+                box.MoveToWorld(stronghold.CollectionBox, facet);
             }
         }
 

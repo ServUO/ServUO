@@ -1,5 +1,3 @@
-// https://raw.githubusercontent.com/xrunuo/xrunuo/fb47846ac232194065eba29479439d56cfc47a0f/Scripts/Distro/Mobiles/Vendors/NPC/Veterinarian.cs
-// Thanks to xrunuo. Modified for ServUO
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,14 +33,16 @@ namespace Server.Mobiles
 		public static BaseCreature[] GetDeadPets(Mobile from)
 		{
 			List<BaseCreature> pets = new List<BaseCreature>();
+            IPooledEnumerable eable = from.GetMobilesInRange(12);
 
-			foreach (Mobile m in from.GetMobilesInRange(12))
+			foreach (Mobile m in eable)
 			{
 				BaseCreature bc = m as BaseCreature;
 
 				if (bc != null && bc.IsDeadBondedPet && bc.ControlMaster == from && from.InLOS(bc))
 					pets.Add(bc);
 			}
+            eable.Free();
 
             if (from.Backpack != null)
             {

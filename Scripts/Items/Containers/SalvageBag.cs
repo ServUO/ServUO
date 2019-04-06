@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Network;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -27,9 +28,9 @@ namespace Server.Items
         [Constructable]
         public SalvageBag(int hue)
         {
-            this.Weight = 2.0;
-            this.Hue = hue;
-            this.m_Failure = false;
+            Weight = 2.0;
+            Hue = hue;
+            m_Failure = false;
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -38,16 +39,16 @@ namespace Server.Items
 
             if (from.Alive)
             {
-                list.Add(new SalvageIngotsEntry(this, this.IsChildOf(from.Backpack) && this.Resmeltables()));
-                list.Add(new SalvageClothEntry(this, this.IsChildOf(from.Backpack) && this.Scissorables()));
-                list.Add(new SalvageAllEntry(this, this.IsChildOf(from.Backpack) && this.Resmeltables() && this.Scissorables()));
+                list.Add(new SalvageIngotsEntry(this, IsChildOf(from.Backpack) && Resmeltables()));
+                list.Add(new SalvageClothEntry(this, IsChildOf(from.Backpack) && Scissorables()));
+                list.Add(new SalvageAllEntry(this, IsChildOf(from.Backpack) && Resmeltables() && Scissorables()));
             }
         }
 		
         #region Checks
         private bool Resmeltables() //Where context menu checks for metal items and dragon barding deeds
         {
-            foreach (Item i in this.Items)
+            foreach (Item i in Items)
             {
                 if (i != null && !i.Deleted)
                 {
@@ -70,25 +71,7 @@ namespace Server.Items
 		
         private bool Scissorables() //Where context menu checks for Leather items and cloth items
         {
-            foreach (Item i in this.Items)
-            {
-                if (i != null && !i.Deleted)
-                {
-                    if (i is IScissorable)
-                    {
-                        if (i is BaseClothing)
-                            return true;
-                        if (i is BaseArmor)
-                        {
-                            if (CraftResources.GetType(((BaseArmor)i).Resource) == CraftResourceType.Leather)
-                                return true;
-                        }
-                        if ((i is Cloth) || (i is BoltOfCloth) || (i is Hides) || (i is BonePile))
-                            return true;
-                    }
-                }
-            }
-            return false;
+            return Items.Any(i => (i != null) && (!i.Deleted) && (i is IScissorable) && (i is Item));
         }
 
         #endregion	
@@ -149,12 +132,15 @@ namespace Server.Items
                 Type resourceType = info.ResourceTypes[0];
                 Item ingot = (Item)Activator.CreateInstance(resourceType);
 
+                double skill = Math.Max(from.Skills[SkillName.Mining].Value, from.Skills[SkillName.Blacksmith].Value);
+
                 if (item is DragonBardingDeed || (item is BaseArmor && ((BaseArmor)item).PlayerConstructed) || (item is BaseWeapon && ((BaseWeapon)item).PlayerConstructed) || (item is BaseClothing && ((BaseClothing)item).PlayerConstructed))
                 {
-                    double mining = from.Skills[SkillName.Mining].Value;
-                    if (mining > 100.0)
-                        mining = 100.0;
-                    double amount = (((4 + mining) * craftResource.Amount - 4) * 0.0068);
+                    if (skill > 100.0)
+                        skill = 100.0;
+
+                    double amount = (((4 + skill) * craftResource.Amount - 4) * 0.0068);
+
                     if (amount < 2)
                         ingot.Amount = 2;
                     else
@@ -164,10 +150,10 @@ namespace Server.Items
                 {
                     ingot.Amount = 2;
                 }
-				
-                if (difficulty > from.Skills[SkillName.Mining].Value)
+
+                if (difficulty > skill)
                 {
-                    this.m_Failure = true; 
+                    m_Failure = true; 
                     ingot.Delete();
                 }
                 else
@@ -193,14 +179,7 @@ namespace Server.Items
         #region Salvaging
         private void SalvageIngots(Mobile from)
         {
-            Item[] tools = from.Backpack.FindItemsByType(typeof(BaseTool));
-
-            bool ToolFound = false;
-            foreach (Item tool in tools)
-            {
-                if (tool is BaseTool && ((BaseTool)tool).CraftSystem == DefBlacksmithy.CraftSystem)
-                    ToolFound = true;
-            }
+            bool ToolFound = from.Backpack.Items.Any(i => i is ITool && ((ITool)i).CraftSystem == DefBlacksmithy.CraftSystem);
 
             if (!ToolFound)
             {
@@ -230,31 +209,31 @@ namespace Server.Items
 				
                 if (item is BaseArmor)
                 {
-                    if (this.Resmelt(from, item, ((BaseArmor)item).Resource))
+                    if (Resmelt(from, item, ((BaseArmor)item).Resource))
                         salvaged++;
                     else
                         notSalvaged++;
                 }
                 else if (item is BaseWeapon)
                 {
-                    if (this.Resmelt(from, item, ((BaseWeapon)item).Resource))
+                    if (Resmelt(from, item, ((BaseWeapon)item).Resource))
                         salvaged++;
                     else
                         notSalvaged++;
                 }
                 else if (item is DragonBardingDeed)
                 {
-                    if (this.Resmelt(from, item, ((DragonBardingDeed)item).Resource))
+                    if (Resmelt(from, item, ((DragonBardingDeed)item).Resource))
                         salvaged++;
 
                     else
                         notSalvaged++;
                 }
             }
-            if (this.m_Failure)
+            if (m_Failure)
             {
                 from.SendLocalizedMessage(1079975); // You failed to smelt some metal for lack of skill.
-                this.m_Failure = false;
+                m_Failure = false;
             }
             else
                 from.SendLocalizedMessage(1079973, String.Format("{0}\t{1}", salvaged, salvaged + notSalvaged)); // Salvaged: ~1_COUNT~/~2_NUM~ blacksmithed items
@@ -307,9 +286,9 @@ namespace Server.Items
 
         private void SalvageAll(Mobile from)
         {
-            this.SalvageIngots(from);
+            SalvageIngots(from);
 
-            this.SalvageCloth(from);
+            SalvageCloth(from);
         }
 
         #endregion
@@ -322,21 +301,21 @@ namespace Server.Items
             public SalvageAllEntry(SalvageBag bag, bool enabled)
                 : base(6276)
             {
-                this.m_Bag = bag;
+                m_Bag = bag;
 
                 if (!enabled)
-                    this.Flags |= CMEFlags.Disabled;
+                    Flags |= CMEFlags.Disabled;
             }
 
             public override void OnClick()
             {
-                if (this.m_Bag.Deleted)
+                if (m_Bag.Deleted)
                     return;
 
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
                 if (from.CheckAlive())
-                    this.m_Bag.SalvageAll(from);
+                    m_Bag.SalvageAll(from);
             }
         }
 
@@ -347,21 +326,21 @@ namespace Server.Items
             public SalvageIngotsEntry(SalvageBag bag, bool enabled)
                 : base(6277)
             {
-                this.m_Bag = bag;
+                m_Bag = bag;
 
                 if (!enabled)
-                    this.Flags |= CMEFlags.Disabled;
+                    Flags |= CMEFlags.Disabled;
             }
 
             public override void OnClick()
             {
-                if (this.m_Bag.Deleted)
+                if (m_Bag.Deleted)
                     return;
 
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
                 if (from.CheckAlive())
-                    this.m_Bag.SalvageIngots(from);
+                    m_Bag.SalvageIngots(from);
             }
         }
 
@@ -372,21 +351,21 @@ namespace Server.Items
             public SalvageClothEntry(SalvageBag bag, bool enabled)
                 : base(6278)
             {
-                this.m_Bag = bag;
+                m_Bag = bag;
 
                 if (!enabled)
-                    this.Flags |= CMEFlags.Disabled;
+                    Flags |= CMEFlags.Disabled;
             }
 
             public override void OnClick()
             {
-                if (this.m_Bag.Deleted)
+                if (m_Bag.Deleted)
                     return;
 
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
                 if (from.CheckAlive())
-                    this.m_Bag.SalvageCloth(from);
+                    m_Bag.SalvageCloth(from);
             }
         }
         #endregion
