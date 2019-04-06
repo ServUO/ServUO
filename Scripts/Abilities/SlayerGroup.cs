@@ -323,7 +323,8 @@ namespace Server.Items
                         typeof(UsagralemBallem), typeof(EffetePutridGargoyle),
                         typeof(EffeteUndeadGargoyle), typeof(PitFiend),
                         typeof(ArchDaemon), typeof(AbyssalAbomination),
-                        typeof(Virtuebane), typeof(LesserOni)
+                        typeof(Virtuebane), typeof(LesserOni),
+                        typeof(LifeStealer)
                     );
 
                 abyss.Entries = new SlayerEntry[]
@@ -359,7 +360,7 @@ namespace Server.Items
                         typeof(Impaler), typeof(Ravager),
                         typeof(StoneGargoyle), typeof(ArcaneDaemon),
                         typeof(EnslavedGargoyle), typeof(GargoyleDestroyer),
-                        typeof(GargoyleEnforcer), typeof(Moloch)
+                        typeof(GargoyleEnforcer), typeof(Moloch),
                     );
 
                 abyss.Entries = new SlayerEntry[]

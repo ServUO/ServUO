@@ -741,6 +741,9 @@
     <Compile Include="Mobiles\Normal\Triton.cs" />
     <Compile Include="Mobiles\Normal\Eowmu.cs" />
     <Compile Include="Multis\ContestHouses.cs" />
+    <Compile Include="Quests\The Ritual\Items.cs" />
+    <Compile Include="Quests\The Ritual\Mobiles.cs" />
+    <Compile Include="Quests\The Ritual\Quests.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\Anniversary21Card.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\Anniversary21GiftToken.cs" />
     <Compile Include="Services\Astronomy\21st Anniversary Gifts\AnniversaryBag21st.cs" />
