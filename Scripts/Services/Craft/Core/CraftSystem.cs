@@ -402,7 +402,6 @@ namespace Server.Engines.Craft
             craftItem.RequiredThemePack = pack;
         }
 
-        #region SA
         public void SetRequiresBasketWeaving(int index)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
@@ -420,9 +419,7 @@ namespace Server.Engines.Craft
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.RequiresMechanicalLife = true;
         }
-        #endregion
 
-        #region TOL
         public void SetData(int index, object data)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
@@ -434,7 +431,12 @@ namespace Server.Engines.Craft
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.DisplayID = id;
         }
-        #endregion
+
+        public void SetForceSuccess(int index, int success)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.ForceSuccessChance = success;
+        }
 
         public void AddRes(int index, Type type, TextDefinition name, int amount)
         {

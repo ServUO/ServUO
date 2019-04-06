@@ -83,7 +83,9 @@ namespace Server.Engines.Craft
                     return 1044156; // You create an exceptional quality item and affix your maker's mark.
                 else if (quality == 2)
                     return 1044155; // You create an exceptional quality item.
-                else 
+                else if (item.ItemType == typeof(StarChart))
+                    return 1158494; // Which telescope do you wish to create the star chart from?
+                else
                     return 1044154; // You create the item.
             }
         }
@@ -112,6 +114,7 @@ namespace Server.Engines.Craft
             AddRecipe(index, (int)CartographyRecipes.EodonianWallMap);
 
             index = AddCraft(typeof(StarChart), 1044448, 1158493, 0.0, 60.0, typeof(BlankMap), 1044449, 1, 1044450);
+            SetForceSuccess(index, 75);
         }
 
         public int ConsumeTatteredWallMapRes(Mobile from, ConsumeType type)
