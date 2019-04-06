@@ -7,16 +7,21 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Gumps;
 using Server.Engines.Astronomy;
+using Server.ContextMenus;
 
 namespace Server.Items
 {
     [Flipable(0xA12C, 0xA12D)]
     public class PersonalTelescope : Item, ISecurable
     {
+        private string _DisplayName;
         private double _DEC;
 
         //[CommandProperty(AccessLevel.GameMaster)]
         //public static TimeCoordinate ForceTimeCoordinate { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string DisplayName { get { return _DisplayName; } set { _DisplayName = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
@@ -48,6 +53,8 @@ namespace Server.Items
             : base(0xA12C)
         {
             Level = SecureLevel.Owner;
+
+            _DisplayName = _Names[Utility.Random(_Names.Length)];
         }
 
         public override void OnDoubleClick(Mobile m)
@@ -82,6 +89,23 @@ namespace Server.Items
             }
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (!String.IsNullOrEmpty(_DisplayName))
+            {
+                list.Add(1158477, _DisplayName); // <BASEFONT COLOR=#FFD24D>From the personal study of ~1_NAME~<BASEFONT COLOR=#FFFFFF>
+            }
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            SetSecureLevelEntry.AddTo(from, this, list);
+        }
+
         public PersonalTelescope(Serial serial)
             : base(serial)
         {
@@ -90,7 +114,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(_DisplayName);
 
             writer.Write((int)Level);
             writer.Write(RA);
@@ -100,12 +126,34 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            reader.ReadInt();
+            int version = reader.ReadInt();
 
-            Level = (SecureLevel)reader.ReadInt();
-            RA = reader.ReadInt();
-            DEC = reader.ReadDouble();
+            switch (version)
+            {
+                case 1:
+                    _DisplayName = reader.ReadString();
+                    goto case 0;
+                case 0:
+                    Level = (SecureLevel)reader.ReadInt();
+                    RA = reader.ReadInt();
+                    DEC = reader.ReadDouble();
+                    break;
+            }
+
+            if (version == 0)
+            {
+                _DisplayName = _Names[Utility.Random(_Names.Length)];
+            }
         }
+
+        private static string[] _Names =
+        {
+            "Adranath", "Aeluva the Arcanist", "Aesthyron", "Anon", "Balaki", "Clanin", "Dexter", "Doctor Spector", "Dryus Doost",
+            "Gilform", "Grizelda the Hag", "Hawkwind", "Heigel of Moonglow", "Intanya", "Juo'Nar", "King Blackthorn", "Koole the Arcanist",
+            "Kronos", "Kyrnia", "Lathiari", "Leoric Gathenwale", "Lysander Gathenwale", "Malabelle", "Mariah", "Melissa", "Minax",
+            "Mondain", "Mordra", "Mythran", "Neira the Necromancer", "Nystul", "Queen Zhah", "Relvinian", "Selsius the Astronomer",
+            "Sutek", "Uzeraan", "Wexton the Apprentice"
+        };
     }
 
     public class TelescopeGump : BaseGump

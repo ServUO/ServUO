@@ -74,13 +74,10 @@ namespace Server.Engines.Craft
 		public Expansion RequiredExpansion { get; set; }
         public ThemePack RequiredThemePack { get; set; }
 
-        #region SA
         public bool RequiresBasketWeaving { get; set; }
         public bool RequiresResTarget { get; set; }
         public bool RequiresMechanicalLife { get; set; }
-        #endregion
 
-        #region TOL
         private object m_Data;
         private int m_DisplayID;
 
@@ -95,7 +92,8 @@ namespace Server.Engines.Craft
             get { return m_DisplayID; }
             set { m_DisplayID = value; }
         }
-        #endregion
+
+        public int ForceSuccessChance { get; set; } = -1;
 
         public Func<Mobile, ConsumeType, int> ConsumeResCallback { get; set; }
 
@@ -1327,6 +1325,11 @@ namespace Server.Engines.Craft
 		public double GetSuccessChance(
 			Mobile from, Type typeRes, CraftSystem craftSystem, bool gainSkills, ref bool allRequiredSkills)
 		{
+            if (ForceSuccessChance > -1)
+            {
+                return ((double)ForceSuccessChance / 100.0);
+            }
+
 			double minMainSkill = 0.0;
 			double maxMainSkill = 0.0;
 			double valMainSkill = 0.0;
