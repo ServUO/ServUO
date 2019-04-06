@@ -35,7 +35,8 @@ namespace Server.Engines.Quests
 		FlintTheQuartermaster = 25,
 		AnimalTraining = 26,
         PaladinsOfTrinsic = 27,
-        RightingWrong = 28
+        RightingWrong = 28,
+        Ritual = 29
 	}
 
 	public class BaseChain
