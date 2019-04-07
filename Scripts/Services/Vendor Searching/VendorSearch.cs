@@ -225,21 +225,21 @@ namespace Server.Engines.VendorSearching
                     {
                         BaseArmor armor = item as BaseArmor;
 
-                        switch ((AosElementAttribute)o)
+                        switch ((ResistanceType)o)
                         {
-                            case AosElementAttribute.Physical:
+                            case ResistanceType.Physical:
                                 if (armor.PhysicalResistance < value) return false;
                                 break;
-                            case AosElementAttribute.Fire:
+                            case ResistanceType.Fire:
                                 if (armor.FireResistance < value) return false;
                                 break;
-                            case AosElementAttribute.Cold:
+                            case ResistanceType.Cold:
                                 if (armor.ColdResistance < value) return false;
                                 break;
-                            case AosElementAttribute.Poison:
+                            case ResistanceType.Poison:
                                 if (armor.PoisonResistance < value) return false;
                                 break;
-                            case AosElementAttribute.Energy:
+                            case ResistanceType.Energy:
                                 if (armor.EnergyResistance < value) return false;
                                 break;
                         }
@@ -535,103 +535,29 @@ namespace Server.Engines.VendorSearching
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
                     SearchCategory price = new SearchCategory(Category.PriceRange);
-                    SearchCategory equipment = new SearchCategory(Category.Equipment);
-                    SearchCategory misc = new SearchCategory(Category.Misc);
-                    SearchCategory combat = new SearchCategory(Category.Combat);
-                    SearchCategory casting = new SearchCategory(Category.Casting);
-                    SearchCategory damagetype = new SearchCategory(Category.DamageType);
-                    SearchCategory hitspell = new SearchCategory(Category.HitSpell);
-                    SearchCategory hitarea = new SearchCategory(Category.HitArea);
-                    SearchCategory resists = new SearchCategory(Category.Resists);
-                    SearchCategory stats = new SearchCategory(Category.Stats);
-                    SearchCategory slayer1 = new SearchCategory(Category.Slayer1);
-                    SearchCategory slayer2 = new SearchCategory(Category.Slayer2);
-                    SearchCategory slayer3 = new SearchCategory(Category.Slayer3);
-                    SearchCategory requiredskill = new SearchCategory(Category.RequiredSkill);
-                    SearchCategory skill1 = new SearchCategory(Category.Skill1);
-                    SearchCategory skill2 = new SearchCategory(Category.Skill2);
-                    SearchCategory skill3 = new SearchCategory(Category.Skill3);
-                    SearchCategory skill4 = new SearchCategory(Category.Skill4);
-                    SearchCategory skill5 = new SearchCategory(Category.Skill5);
-                    SearchCategory skill6 = new SearchCategory(Category.Skill6);
-                    SearchCategory sort = new SearchCategory(Category.Sort);
-
-                    object[] enums = new object[15];
-                    int[] labels = new int[15];
-                    int index = 0;
-
-                    foreach (int i in Enum.GetValues(typeof(Misc)))
-                    {
-                        enums[index] = (Misc)i;
-                        labels[index] = i;
-                        index++;
-                    }
-
-                    misc.Register(enums, labels);
-                    misc.Register(new object[] { AosAttribute.EnhancePotions, AosArmorAttribute.LowerStatReq, AosAttribute.Luck, AosAttribute.ReflectPhysical, AosArmorAttribute.SelfRepair });
-                    misc.Register(new object[] { "ArtifactRarity" }, new int[] { 1154693 });
-
-                    equipment.Register(new object[] { Layer.Shoes, Layer.Pants, Layer.Shirt, Layer.Helm, Layer.Gloves, Layer.Ring, Layer.Talisman, Layer.Neck, Layer.Waist, Layer.InnerTorso,
-                                                          Layer.Bracelet, Layer.MiddleTorso, Layer.Earrings, Layer.Arms, Layer.Cloak, Layer.OuterTorso, Layer.OuterLegs },
-                                       new int[] { 1154602, 1154603, 1154604, 1154605, 1154606, 1154607, 1154608, 1154609, 1154611, 1154612, 1154613, 1154616, 1154617, 1154618, 1154619, 1154621, 1154622 });
-
-                    combat.Register(new object[] { AosAttribute.WeaponDamage, AosAttribute.DefendChance, AosAttribute.AttackChance, AosAttribute.WeaponSpeed, AosArmorAttribute.SoulCharge, 
-                                                       AosWeaponAttribute.UseBestSkill, AosWeaponAttribute.ReactiveParalyze, /*TODO: Assassin Honed*/"SearingWeapon", AosWeaponAttribute.BloodDrinker, AosWeaponAttribute.BattleLust, 
-                                                       AosAttribute.BalancedWeapon, SAAbsorptionAttribute.CastingFocus, SAAbsorptionAttribute.EaterFire, SAAbsorptionAttribute.EaterCold,
-                                                       SAAbsorptionAttribute.EaterPoison, SAAbsorptionAttribute.EaterEnergy, SAAbsorptionAttribute.EaterDamage });
-
-                    casting.Register(new object[] { SAAbsorptionAttribute.ResonanceFire, SAAbsorptionAttribute.ResonanceCold, SAAbsorptionAttribute.ResonancePoison, SAAbsorptionAttribute.ResonanceEnergy,
-                                                        SAAbsorptionAttribute.ResonanceKinetic, AosAttribute.SpellDamage, SAAbsorptionAttribute.CastingFocus, AosAttribute.CastRecovery, AosAttribute.CastSpeed,
-                                                        AosAttribute.LowerManaCost, AosAttribute.LowerRegCost, AosWeaponAttribute.MageWeapon, AosArmorAttribute.MageArmor, AosAttribute.SpellChanneling });
-
-                    damagetype.Register(new object[] { AosElementAttribute.Physical, AosElementAttribute.Fire, AosElementAttribute.Cold, AosElementAttribute.Poison, AosElementAttribute.Energy },
-                                        new int[] { 1151800, 1151801, 1151802, 1151803, 1151804 });
-
-                    hitspell.Register(new object[] { AosWeaponAttribute.HitDispel, AosWeaponAttribute.HitFireball, AosWeaponAttribute.HitHarm, AosWeaponAttribute.HitCurse, AosWeaponAttribute.HitLeechHits,
-                                                         AosWeaponAttribute.HitLightning, "WeaponVelocity", AosWeaponAttribute.HitLowerAttack, AosWeaponAttribute.HitLowerDefend, AosWeaponAttribute.HitMagicArrow,
-                                                         AosWeaponAttribute.HitLeechMana, AosWeaponAttribute.HitLeechStam, AosWeaponAttribute.HitFatigue, AosWeaponAttribute.HitManaDrain, AosWeaponAttribute.SplinteringWeapon /*TODO: Bane*/});
-
-                    hitarea.Register(new object[] { AosWeaponAttribute.HitColdArea, AosWeaponAttribute.HitEnergyArea, AosWeaponAttribute.HitFireArea, AosWeaponAttribute.HitPhysicalArea, AosWeaponAttribute.HitPoisonArea });
-
-                    resists.Register(new object[] { AosElementAttribute.Physical, AosElementAttribute.Fire, AosElementAttribute.Cold, AosElementAttribute.Poison, AosElementAttribute.Energy });
-
-                    stats.Register(new object[] { AosAttribute.BonusStr, AosAttribute.BonusDex, AosAttribute.BonusInt, AosAttribute.BonusHits, AosAttribute.BonusStam, AosAttribute.BonusMana, AosAttribute.RegenHits, AosAttribute.RegenStam, AosAttribute.RegenMana });
-
-                    slayer1.Register(new object[] { SlayerName.ReptilianDeath, SlayerName.DragonSlaying, SlayerName.LizardmanSlaughter, SlayerName.Ophidian, SlayerName.SnakesBane, SlayerName.ArachnidDoom, SlayerName.ScorpionsBane, SlayerName.SpidersDeath, SlayerName.Terathan });
-
-                    slayer2.Register(new object[] { SlayerName.Repond, TalismanSlayerName.Bear, TalismanSlayerName.Beetle, TalismanSlayerName.Bird, TalismanSlayerName.Bovine, TalismanSlayerName.Flame, TalismanSlayerName.Goblin, TalismanSlayerName.Ice, 
-                                                        TalismanSlayerName.Mage, SlayerName.OgreTrashing, SlayerName.OrcSlaying, SlayerName.TrollSlaughter, TalismanSlayerName.Vermin, TalismanSlayerName.Undead });
-                    slayer3.Register(new object[] { SlayerName.Exorcism, SlayerName.GargoylesFoe, SlayerName.Fey, SlayerName.ElementalBan, SlayerName.Vacuum, SlayerName.BloodDrinking, SlayerName.EarthShatter, SlayerName.FlameDousing, SlayerName.ElementalHealth, SlayerName.SummerWind, SlayerName.WaterDissipation });
-
-                    requiredskill.Register(new object[] { SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Archery, SkillName.Throwing });
-
-                    skill1.Register(new object[] { SkillName.Swords, SkillName.Fencing, SkillName.Macing, SkillName.Magery, SkillName.Musicianship });
-                    skill2.Register(new object[] { SkillName.Wrestling, SkillName.Tactics, SkillName.AnimalTaming, SkillName.Provocation, SkillName.SpiritSpeak });
-                    skill3.Register(new object[] { SkillName.Stealth, SkillName.Parry, SkillName.Meditation, SkillName.AnimalLore, SkillName.Discordance, SkillName.Focus });
-                    skill4.Register(new object[] { SkillName.Stealing, SkillName.Anatomy, SkillName.EvalInt, SkillName.Veterinary, SkillName.Necromancy, SkillName.Bushido, SkillName.Mysticism });
-                    skill5.Register(new object[] { SkillName.Healing, SkillName.MagicResist, SkillName.Peacemaking, SkillName.Archery, SkillName.Chivalry, SkillName.Ninjitsu, SkillName.Throwing });
-                    skill6.Register(new object[] { SkillName.Lumberjacking, SkillName.Snooping, SkillName.Mining });
-
                     Categories.Add(price);
-                    Categories.Add(misc);
-                    Categories.Add(equipment);
-                    Categories.Add(combat);
-                    Categories.Add(casting);
-                    Categories.Add(damagetype);
-                    Categories.Add(hitspell);
-                    Categories.Add(hitarea);
-                    Categories.Add(resists);
-                    Categories.Add(stats);
-                    Categories.Add(slayer1);
-                    Categories.Add(slayer2);
-                    Categories.Add(slayer3);
-                    Categories.Add(requiredskill);
-                    Categories.Add(skill1);
-                    Categories.Add(skill2);
-                    Categories.Add(skill3);
-                    Categories.Add(skill4);
-                    Categories.Add(skill5);
-                    Categories.Add(skill6);
+
+                    SearchCriteriaCategory.AllCategories.ToList().ForEach(x =>
+                    {
+                        SearchCategory cat = new SearchCategory(x.Category);
+
+                        x.Criteria.ToList().ForEach(y =>
+                        {
+                            if (y.PropCliloc != 0)
+                            {
+                                cat.Register(y.Object, y.Cliloc, y.PropCliloc);
+                            }
+                            else
+                            {
+                                cat.Register(y.Object, y.Cliloc);
+                            }
+
+                        });
+
+                        Categories.Add(cat);
+                    });
+
+                    SearchCategory sort = new SearchCategory(Category.Sort);
                     Categories.Add(sort);
                 });
 
@@ -828,46 +754,47 @@ namespace Server.Engines.VendorSearching
 
     public enum Category
     {
-        PriceRange = 1154512,
-        Misc = 1154647,
-        Equipment = 1154531,
-        Combat = 1154541,
-        Casting = 1154538,
-        DamageType = 1154535,
-        HitSpell = 1154536,
-        HitArea = 1154537,
-        Resists = 1154539,
-        Stats = 1154540,
-        Slayer1 = 1154683,
-        Slayer2 = 1154684,
-        Slayer3 = 1154685,
-        RequiredSkill = 1154543,
-        Skill1 = 1114255,
-        Skill2 = 1114256,
-        Skill3 = 1114257,
-        Skill4 = 1114258,
-        Skill5 = 1114259,
-        Skill6 = 1114260,
-        Sort = 1154695,
+        PriceRange,
+        Misc,
+        Equipment,
+        Combat,
+        Casting,
+        DamageType,
+        HitSpell,
+        HitArea,
+        Resists,
+        Stats,
+        Slayer1,
+        Slayer2,
+        Slayer3,
+        RequiredSkill,
+        Skill1,
+        Skill2,
+        Skill3,
+        Skill4,
+        Skill5,
+        Skill6,
+        Sort,
     }
 
     public enum Misc
     {
-        ExcludeFel = 1154646,
-        GargoyleOnly = 1154648,
-        NotGargoyleOnly = 1154704,
-        ElvesOnly = 1154650,
-        NotElvesOnly = 1154703,
-        FactionItem = 1154661,
-        PromotionalToken = 1154682,
-        Cursed = 1116639,
-        NotCursed = 1154701,
-        CannotRepair = 1151826,
-        NotCannotBeRepaired = 1154705,
-        Brittle = 1116209,
-        NotBrittle = 1154702,
-        Antique = 1152714,
-        NotAntique = 1156479
+        ExcludeFel,
+        GargoyleOnly,
+        NotGargoyleOnly,
+        ElvesOnly,
+        NotElvesOnly,
+        FactionItem,
+        PromotionalToken,
+        NightSight,
+        Cursed,
+        NotCursed,
+        CannotRepair,
+        NotCannotBeRepaired,
+        Brittle,
+        NotBrittle,
+        Antique,
+        NotAntique
     }
 
     public enum SpecialSearch
@@ -884,49 +811,28 @@ namespace Server.Engines.VendorSearching
         public Category Category { get; private set; }
         public int Label { get { return (int)Category; } }
 
-        public List<Tuple<object, int>> Objects { get; private set; }
+        public List<Tuple<object, int, int>> Objects { get; private set; }
 
         public SearchCategory(Category category)
         {
             Category = category;
 
-            Objects = new List<Tuple<object, int>>();
-        }
-
-        public void Register(object o)
-        {
-            if (Objects.FirstOrDefault(t => t.Item1 == o) == null)
-                Objects.Add(new Tuple<object, int>(o, Imbuing.GetAttributeName(o)));
-        }
-
-        public void Register(object[] o)
-        {
-            foreach (object obj in o)
-            {
-                if (Objects.FirstOrDefault(t => t.Item1 == o) == null)
-                    Objects.Add(new Tuple<object, int>(obj, Imbuing.GetAttributeName(obj)));
-            }
+            Objects = new List<Tuple<object, int, int>>();
         }
 
         public void Register(object o, int label)
         {
             if (Objects.FirstOrDefault(t => t.Item1 == o) == null)
             {
-                Objects.Add(new Tuple<object, int>(o, label));
+                Objects.Add(new Tuple<object, int, int>(o, label, 0));
             }
         }
 
-        public void Register(object[] o, int[] labels)
+        public void Register(object o, int label, int pcliloc)
         {
-            if (o.Length != labels.Length)
+            if (Objects.FirstOrDefault(t => t.Item1 == o) == null)
             {
-                Console.WriteLine("ERROR: {0} has bad registration entry", this.Category.ToString());
-            }
-
-            for (int i = 0; i < o.Length; i++)
-            {
-                if (Objects.FirstOrDefault(t => t.Item1 == o[i]) == null)
-                    Objects.Add(new Tuple<object, int>(o[i], labels[i]));
+                Objects.Add(new Tuple<object, int, int>(o, label, pcliloc));
             }
         }
     }
@@ -973,7 +879,7 @@ namespace Server.Engines.VendorSearching
             return detail != null ? detail.Value : 0;
         }
 
-        public void TryAddDetails(object o, int name, int value, Category cat)
+        public void TryAddDetails(object o, int name, int propname, int value, Category cat)
         {
             SearchDetail d = Details.FirstOrDefault(det => det.Attribute == o);
 
@@ -986,12 +892,12 @@ namespace Server.Engines.VendorSearching
                     Details.Remove(layer);
                 }
 
-                Details.Add(new SearchDetail(o, name, value, cat));
+                Details.Add(new SearchDetail(o, name, propname, value, cat));
                 SearchType = (Layer)o;
             }
             else if (d == null)
             {
-                d = new SearchDetail(o, name, value, cat);
+                d = new SearchDetail(o, name, propname, value, cat);
 
                 Details.Add(d);
             }
@@ -1062,6 +968,7 @@ namespace Server.Engines.VendorSearching
             AosArmorAttribute,
             AosWeaponAttribute,
             AosElementAttribute,
+            ResistanceType,
             SkillName,
             SAAbosorptionAttribute,
             ExtendedWeaponAttribute,
@@ -1076,13 +983,15 @@ namespace Server.Engines.VendorSearching
 
         public object Attribute { get; set; }
         public int Label { get; set; }
+        public int PropLabel { get; set; }
         public int Value { get; set; }
         public Category Category { get; set; }
 
-        public SearchDetail(object o, int label, int value, Category category)
+        public SearchDetail(object o, int label, int proplabel, int value, Category category)
         {
             Attribute = o;
             Label = label;
+            PropLabel = proplabel;
             Value = value;
             Category = category;
         }
@@ -1131,6 +1040,7 @@ namespace Server.Engines.VendorSearching
                 case 12: writer.Write((int)(TalismanSkill)Attribute); break;
                 case 13: writer.Write((int)(TalismanRemoval)Attribute); break;
                 case 14: writer.Write((int)Attribute); break;
+                case 15: writer.Write((int)(ResistanceType)Attribute); break;
             }
         }
 
@@ -1153,6 +1063,7 @@ namespace Server.Engines.VendorSearching
                 case 12: Attribute = (TalismanSkill)reader.ReadInt(); break;
                 case 13: Attribute = (TalismanRemoval)reader.ReadInt(); break;
                 case 14: Attribute = reader.ReadInt(); break;
+                case 15: Attribute = (TalismanRemoval)reader.ReadInt(); break;
             }
         }
 
@@ -1169,6 +1080,9 @@ namespace Server.Engines.VendorSearching
 
             if (o is AosElementAttribute)
                 return (int)AttributeID.AosElementAttribute;
+
+            if (o is ResistanceType)
+                return (int)AttributeID.ResistanceType;
 
             if (o is SkillName)
                 return (int)AttributeID.SkillName;
@@ -1202,6 +1116,7 @@ namespace Server.Engines.VendorSearching
 
             return (int)AttributeID.None;
         }
+
     }
 
     public class SearchVendors : ContextMenuEntry
