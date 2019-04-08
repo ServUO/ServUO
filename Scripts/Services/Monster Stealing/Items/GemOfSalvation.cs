@@ -46,12 +46,9 @@ namespace Server.Items
 
             foreach (PlayerMobile pm in SalvationUsage.Keys)
             {
-                if (SalvationUsage[pm] != null)
+                if (SalvationUsage[pm] < DateTime.Now + Cooldown)
                 {
-                    if (SalvationUsage[pm] < DateTime.Now + Cooldown)
-                    {
-                        toRemove.Add(pm);
-                    }
+                    toRemove.Add(pm);
                 }
             }
 
