@@ -128,8 +128,14 @@ namespace Server.Movement
 			ItemData itemData;
 			TileFlag flags;
 
-			#region Tiles
-			foreach (var tile in tiles)
+			bool commit;
+            int commitZ;
+
+            #region Tiles
+			commit = true;
+			commitZ = newZ;
+
+            foreach (var tile in tiles)
 			{
 				itemData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
@@ -228,15 +234,24 @@ namespace Server.Movement
 
 				if (!IsOk(tile, ourZ, testTop))
 				{
-					continue;
+                    commit = false;
+					break;
 				}
 
-				newZ = ourZ;
+				commitZ = ourZ;
+			}
+
+			if (commit)
+			{
+				newZ = commitZ;
 				moveIsOk = true;
 			}
-			#endregion
+            #endregion
 
-			#region Items
+            #region Items
+            commit = true;
+			commitZ = newZ;
+
 			foreach (var item in items)
 			{
 				itemData = item.ItemData;
@@ -314,11 +329,17 @@ namespace Server.Movement
 
 				if (!IsOk(m, item, ourZ, testTop, ignoreDoors, ignoreSpellFields))
 				{
-					continue;
+                    commit = false;
+					break;
 				}
 
-				newZ = ourZ;
-				moveIsOk = true;
+                commitZ = ourZ;
+			}
+
+			if (commit)
+			{
+                newZ = commitZ;
+                moveIsOk = true;
 			}
 			#endregion
 

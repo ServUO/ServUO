@@ -187,7 +187,13 @@ namespace Server.Movement
             bool ignoreDoors = (m_AlwaysIgnoreDoors || m == null || !m.Alive || m.Body.BodyID == 0x3DB || m.IsDeadBondedPet);
             bool ignoreSpellFields = m is PlayerMobile && map != Map.Felucca;
 
+            bool commit;
+            int commitZ;
+
             #region Tiles
+            commit = true;
+            commitZ = newZ;
+
             for (int i = 0; i < tiles.Length; ++i)
             {
                 StaticTile tile = tiles[i];
@@ -260,16 +266,27 @@ namespace Server.Movement
                             continue;
 
                         if (this.IsOk(tile, ourZ, testTop))
+                            commitZ = ourZ;
+                        else
                         {
-                            newZ = ourZ;
-                            moveIsOk = true;
+                            commit = false;
+                            break;
                         }
                     }
                 }
             }
+
+            if (commit)
+            {
+                newZ = commitZ;
+                moveIsOk = true;
+            }
             #endregion
 
             #region Items
+            commit = true;
+            commitZ = newZ;
+
             for (int i = 0; i < items.Count; ++i)
             {
                 Item item = items[i];
@@ -321,12 +338,20 @@ namespace Server.Movement
                             continue;
 
                         if (this.IsOk(m, item, ourZ, testTop, ignoreDoors, ignoreSpellFields))
+                            commitZ = ourZ;
+                        else
                         {
-                            newZ = ourZ;
-                            moveIsOk = true;
+                            commit = false;
+                            break;
                         }
                     }
                 }
+            }
+
+            if (commit)
+            {
+                newZ = commitZ;
+                moveIsOk = true;
             }
             #endregion
 
