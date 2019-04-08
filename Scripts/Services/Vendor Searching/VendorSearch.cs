@@ -100,16 +100,16 @@ namespace Server.Engines.VendorSearching
                 if (value == 0)
                     value = 1;
 
-				if(o is AosAttribute)
-				{
-					AosAttributes attrs = RunicReforging.GetAosAttributes(item);
+                if (o is AosAttribute)
+                {
+                    AosAttributes attrs = RunicReforging.GetAosAttributes(item);
 
-					if(attrs == null || attrs[(AosAttribute)o] < value)
-						return false;
-				}
-				else if (o is AosWeaponAttribute)
-				{
-					AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(item);
+                    if (attrs == null || attrs[(AosAttribute)o] < value)
+                        return false;
+                }
+                else if (o is AosWeaponAttribute)
+                {
+                    AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(item);
 
                     if ((AosWeaponAttribute)o == AosWeaponAttribute.MageWeapon)
                     {
@@ -118,26 +118,26 @@ namespace Server.Engines.VendorSearching
                     }
                     else if (attrs == null || attrs[(AosWeaponAttribute)o] < value)
                         return false;
-				}
-				else if (o is SAAbsorptionAttribute)
-				{
-					SAAbsorptionAttributes attrs = RunicReforging.GetSAAbsorptionAttributes(item);
+                }
+                else if (o is SAAbsorptionAttribute)
+                {
+                    SAAbsorptionAttributes attrs = RunicReforging.GetSAAbsorptionAttributes(item);
 
                     if (attrs == null || attrs[(SAAbsorptionAttribute)o] < value)
                         return false;
-				}
-				else if(o is AosArmorAttribute)
-				{
-					AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(item);
+                }
+                else if (o is AosArmorAttribute)
+                {
+                    AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(item);
 
                     if (attrs == null || attrs[(AosArmorAttribute)o] < value)
                         return false;
-				}
-				else if(o is SkillName)
-				{
-					if(detail.Category != Category.RequiredSkill)
-					{
-						AosSkillBonuses skillbonuses = RunicReforging.GetAosSkillBonuses(item);
+                }
+                else if (o is SkillName)
+                {
+                    if (detail.Category != Category.RequiredSkill)
+                    {
+                        AosSkillBonuses skillbonuses = RunicReforging.GetAosSkillBonuses(item);
 
                         if (skillbonuses != null)
                         {
@@ -167,12 +167,12 @@ namespace Server.Engines.VendorSearching
                         {
                             return false;
                         }
-					}
-					else if(!(item is BaseWeapon) || ((BaseWeapon)item).DefSkill != (SkillName)o)
-					{
-						return false;
-					}
-				}
+                    }
+                    else if (!(item is BaseWeapon) || ((BaseWeapon)item).DefSkill != (SkillName)o)
+                    {
+                        return false;
+                    }
+                }
                 else if (!CheckSlayer(item, o))
                 {
                     return false;
@@ -225,21 +225,21 @@ namespace Server.Engines.VendorSearching
                     {
                         BaseArmor armor = item as BaseArmor;
 
-                        switch ((ResistanceType)o)
+                        switch ((AosElementAttribute)o)
                         {
-                            case ResistanceType.Physical:
+                            case AosElementAttribute.Physical:
                                 if (armor.PhysicalResistance < value) return false;
                                 break;
-                            case ResistanceType.Fire:
+                            case AosElementAttribute.Fire:
                                 if (armor.FireResistance < value) return false;
                                 break;
-                            case ResistanceType.Cold:
+                            case AosElementAttribute.Cold:
                                 if (armor.ColdResistance < value) return false;
                                 break;
-                            case ResistanceType.Poison:
+                            case AosElementAttribute.Poison:
                                 if (armor.PoisonResistance < value) return false;
                                 break;
-                            case ResistanceType.Energy:
+                            case AosElementAttribute.Energy:
                                 if (armor.EnergyResistance < value) return false;
                                 break;
                         }
@@ -332,9 +332,6 @@ namespace Server.Engines.VendorSearching
                     if (str == "WeaponVelocity" && (!(item is BaseRanged) || ((BaseRanged)item).Velocity < value))
                         return false;
 
-                    /*if (str == "BalancedWeapon" && (!(item is BaseRanged) || !((BaseRanged)item).Balanced))
-                        return false;*/
-
                     if (str == "SearingWeapon" && (!(item is BaseWeapon) || !((BaseWeapon)item).SearingWeapon))
                         return false;
 
@@ -391,19 +388,19 @@ namespace Server.Engines.VendorSearching
         {
             if (item is BaseArmor)
             {
-                return /*((BaseArmor)item).CanBeWornByGargoyles ||*/ ((BaseArmor)item).RequiredRace == Race.Gargoyle;
+                return ((BaseArmor)item).RequiredRace == Race.Gargoyle;
             }
             else if (item is BaseWeapon)
             {
-                return /*((BaseWeapon)item).CanBeWornByGargoyles ||*/ ((BaseWeapon)item).RequiredRace == Race.Gargoyle;
+                return ((BaseWeapon)item).RequiredRace == Race.Gargoyle;
             }
             else if (item is BaseClothing)
             {
-                return /*((BaseClothing)item).CanBeWornByGargoyles ||*/ ((BaseClothing)item).RequiredRace == Race.Gargoyle;
+                return ((BaseClothing)item).RequiredRace == Race.Gargoyle;
             }
             else if (item is BaseJewel)
             {
-                return /*((BaseJewel)item).CanBeWornByGargoyles ||*/ ((BaseJewel)item).RequiredRace == Race.Gargoyle;
+                return ((BaseJewel)item).RequiredRace == Race.Gargoyle;
             }
 
             return false;
@@ -786,7 +783,6 @@ namespace Server.Engines.VendorSearching
         NotElvesOnly,
         FactionItem,
         PromotionalToken,
-        NightSight,
         Cursed,
         NotCursed,
         CannotRepair,
@@ -968,7 +964,6 @@ namespace Server.Engines.VendorSearching
             AosArmorAttribute,
             AosWeaponAttribute,
             AosElementAttribute,
-            ResistanceType,
             SkillName,
             SAAbosorptionAttribute,
             ExtendedWeaponAttribute,
@@ -1003,6 +998,7 @@ namespace Server.Engines.VendorSearching
             ReadAttribute(reader);
 
             Label = reader.ReadInt();
+            PropLabel = reader.ReadInt();
             Value = reader.ReadInt();
             Category = (Category)reader.ReadInt();
         }
@@ -1014,6 +1010,7 @@ namespace Server.Engines.VendorSearching
             WriteAttribute(writer);
 
             writer.Write(Label);
+            writer.Write(PropLabel);
             writer.Write(Value);
             writer.Write((int)Category);
         }
@@ -1040,7 +1037,6 @@ namespace Server.Engines.VendorSearching
                 case 12: writer.Write((int)(TalismanSkill)Attribute); break;
                 case 13: writer.Write((int)(TalismanRemoval)Attribute); break;
                 case 14: writer.Write((int)Attribute); break;
-                case 15: writer.Write((int)(ResistanceType)Attribute); break;
             }
         }
 
@@ -1063,7 +1059,6 @@ namespace Server.Engines.VendorSearching
                 case 12: Attribute = (TalismanSkill)reader.ReadInt(); break;
                 case 13: Attribute = (TalismanRemoval)reader.ReadInt(); break;
                 case 14: Attribute = reader.ReadInt(); break;
-                case 15: Attribute = (TalismanRemoval)reader.ReadInt(); break;
             }
         }
 
@@ -1080,10 +1075,7 @@ namespace Server.Engines.VendorSearching
 
             if (o is AosElementAttribute)
                 return (int)AttributeID.AosElementAttribute;
-
-            if (o is ResistanceType)
-                return (int)AttributeID.ResistanceType;
-
+            
             if (o is SkillName)
                 return (int)AttributeID.SkillName;
 

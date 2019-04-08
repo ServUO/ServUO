@@ -88,7 +88,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(Misc.NotElvesOnly, 1154703),
                 new SearchCriterionEntry(Misc.FactionItem, 1154661),
                 new SearchCriterionEntry(Misc.PromotionalToken, 1154682),
-                new SearchCriterionEntry(Misc.NightSight, 1075643),
+                new SearchCriterionEntry(AosAttribute.NightSight, 1075643),
                 new SearchCriterionEntry(Misc.Cursed, 1116639),
                 new SearchCriterionEntry(Misc.NotCursed, 1154701),
                 new SearchCriterionEntry(Misc.CannotRepair, 1151826),
@@ -111,7 +111,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosElementAttribute.Poison, 1151803, 1060406),
                 new SearchCriterionEntry(AosElementAttribute.Energy, 1151804, 1060407),
             }),
-            new SearchCriteriaCategory(Category.HitSpell, 10, 1154535, new SearchCriterionEntry[] { // Hit Spell
+            new SearchCriteriaCategory(Category.HitSpell, 10, 1154536, new SearchCriterionEntry[] { // Hit Spell
 				new SearchCriterionEntry(AosWeaponAttribute.HitDispel, 1079702, 1060417),
                 new SearchCriterionEntry(AosWeaponAttribute.HitFireball, 1079703, 1060420),
                 new SearchCriterionEntry(AosWeaponAttribute.HitHarm, 1079704, 1060421),
@@ -137,11 +137,11 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosWeaponAttribute.HitPoisonArea, 1079697, 1060429),
             }),
             new SearchCriteriaCategory(Category.Resists, 12, 1154539, new SearchCriterionEntry[] { // Resists
-				new SearchCriterionEntry(ResistanceType.Cold, 1079761, 1060445),
-                new SearchCriterionEntry(ResistanceType.Energy, 1079762, 1060446),
-                new SearchCriterionEntry(ResistanceType.Fire, 1079763, 1060447),
-                new SearchCriterionEntry(ResistanceType.Physical, 1079764, 1060448),
-                new SearchCriterionEntry(ResistanceType.Poison, 1079765, 1060449),
+				new SearchCriterionEntry(AosElementAttribute.Cold, 1079761, 1060445),
+                new SearchCriterionEntry(AosElementAttribute.Energy, 1079762, 1060446),
+                new SearchCriterionEntry(AosElementAttribute.Fire, 1079763, 1060447),
+                new SearchCriterionEntry(AosElementAttribute.Physical, 1079764, 1060448),
+                new SearchCriterionEntry(AosElementAttribute.Poison, 1079765, 1060449),
             }),
             new SearchCriteriaCategory(Category.Stats, 13, 1154540, new SearchCriterionEntry[] { // Stats
 				new SearchCriterionEntry(AosAttribute.BonusStr, 1079767, 1060485),

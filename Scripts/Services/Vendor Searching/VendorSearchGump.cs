@@ -8,6 +8,7 @@ using System.Globalization;
 using Server.Network;
 using Server.Gumps;
 using Server.SkillHandlers;
+using System.Threading.Tasks;
 
 namespace Server.Engines.VendorSearching
 {
@@ -23,6 +24,7 @@ namespace Server.Engines.VendorSearching
         public static int LabelColor = 0x4BBD;
         public static int CriteriaColor = 0x6B55;
         public static int TextColor = 0x9C2;
+        public static int AlertColor = 0x7C00;
 
         public VendorSearchGump(PlayerMobile pm, int cat = -1)
             : base(pm, 10, 10)
@@ -94,34 +96,41 @@ namespace Server.Engines.VendorSearching
             AddBackground(10, 50, 246, 22, 9350);
             AddTextEntry(12, 52, 242, 18, TextColor, 1, Criteria.SearchName, 25);
 
-            int criterionIdx = 0;
+            yOffset = 0;
 
-            SearchCriteriaCategory.AllCategories.ToList().OrderByDescending(x => x.PageID == 2).ThenByDescending(x => x.PageID == 6).ToList().ForEach(x =>
+            SearchCriteriaCategory.AllCategories.OrderByDescending(x => x.PageID == 2).ThenByDescending(x => x.PageID == 6).ToList().ForEach(x =>
             {
-                AddButton(10, 74 + (criterionIdx * 22), 30533, 30533, 0, GumpButtonType.Page, x.PageID);
+                AddButton(10, 74 + (yOffset * 22), 30533, 30533, 0, GumpButtonType.Page, x.PageID);
 
                 if (x.Category == Category.PriceRange)
-                    AddHtmlLocalized(50, 75 + (criterionIdx * 22), 215, 20, x.Cliloc, String.Format("@{0}@{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), LabelColor, false, false);
+                    AddHtmlLocalized(50, 75 + (yOffset * 22), 215, 20, x.Cliloc, String.Format("@{0}@{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), LabelColor, false, false);
                 else
-                    AddHtmlLocalized(50, 75 + (criterionIdx * 22), 215, 20, x.Cliloc, LabelColor, false, false);
+                    AddHtmlLocalized(50, 75 + (yOffset * 22), 215, 20, x.Cliloc, LabelColor, false, false);
 
-                criterionIdx++;
+                yOffset++;
             });
 
             AddButton(10, 540, 0x7747, 0x7747, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(50, 540, 50, 20, 3000091, LabelColor, false, false); // Cancel
 
+            int alert = 0;
+
             if (NoFind)
             {
-                AddHtmlLocalized(110, 540, 660, 20, 1154587, 0x7C00, false, false); // No items matched your search.
+                alert = 1154587; // No items matched your search.
             }
             else if (NoCrit)
             {
-                AddHtmlLocalized(110, 540, 660, 20, 1154586, 0x7C00, false, false); // Please select some criteria to search for.
+                alert = 1154586; // Please select some criteria to search for.
             }
             else if (MaxCrit)
             {
-                AddHtmlLocalized(110, 540, 660, 20, 1154681, 0x7C00, false, false); // You may not add any more search criteria items.
+                alert = 1154681; // You may not add any more search criteria items.
+            }
+
+            if (alert != 0)
+            {
+                AddHtmlLocalized(110, 540, 660, 20, alert, AlertColor, false, false);
             }
 
             AddButton(740, 540, 30534, 30534, 1, GumpButtonType.Reply, 0);
@@ -130,7 +139,7 @@ namespace Server.Engines.VendorSearching
             AddButton(740, 520, 30533, 30533, 2, GumpButtonType.Reply, 0);
             AddHtmlLocalized(630, 520, 100, 20, 1114514, "#1154588", LabelColor, false, false); // Clear Search Criteria
             
-            criterionIdx = 50;
+            int buttonIdx = 50;
 
             SearchCriteriaCategory.AllCategories.ToList().ForEach(x =>
             {
@@ -163,23 +172,23 @@ namespace Server.Engines.VendorSearching
                 {
                     AddHtmlLocalized(266, 30, 246, 18, x.Cliloc, LabelColor, false, false);
 
-                    int oidx = 0;
+                    yOffset = 0;
 
                     x.Criteria.ToList().ForEach(y =>
                     {
-                        AddHtmlLocalized(306, 50 + (oidx * 22), 215, 20, y.Cliloc, LabelColor, false, false);
-                        AddButton(266, 50 + (oidx * 22), 30533, 30533, criterionIdx, GumpButtonType.Reply, 0);
+                        AddHtmlLocalized(306, 50 + (yOffset * 22), 215, 20, y.Cliloc, LabelColor, false, false);
+                        AddButton(266, 50 + (yOffset * 22), 30533, 30533, buttonIdx, GumpButtonType.Reply, 0);
 
                         if (y.PropCliloc != 0)
                         {
                             int value = Criteria.GetValueForDetails(y.Object);
 
-                            AddBackground(482, 50 + (oidx * 22), 30, 20, 9350);
-                            AddTextEntry(484, 50 + (oidx * 22), 26, 16, TextColor, criterionIdx - 40, value > 0 ? value.ToString() : "", 3);
+                            AddBackground(482, 50 + (yOffset * 22), 30, 20, 9350);
+                            AddTextEntry(484, 50 + (yOffset * 22), 26, 16, TextColor, buttonIdx - 40, value > 0 ? value.ToString() : "", 3);
                         }
 
-                        oidx++;
-                        criterionIdx++;
+                        yOffset++;
+                        buttonIdx++;
                     });
                 }
             });       
@@ -215,6 +224,7 @@ namespace Server.Engines.VendorSearching
                 case 0: break;
                 case 1: // Search
                     {
+                        Console.WriteLine("asd");
                         User.CloseGump(typeof(SearchResultsGump));
 
                         if (Criteria.IsEmpty)
@@ -224,18 +234,29 @@ namespace Server.Engines.VendorSearching
                         }
                         else
                         {
-                            List<VendorItem> list = VendorSearch.DoSearch(User, Criteria);
+                            var resultsTask = FindVendorItemsAsync(User, Criteria);
 
-                            if (list == null || list.Count == 0)
+                            var pollingTimer = new TaskPollingTimer<List<VendorItem>>(resultsTask, (results) =>
                             {
-                                NoFind = true;
-                                Refresh();
-                            }
-                            else
-                            {
-                                Refresh();
-                                BaseGump.SendGump(new SearchResultsGump(User, list));
-                            }
+                                User.CloseGump(typeof(VendorSearchGump));
+                                User.CloseGump(typeof(SearchWaitGump));
+                                User.CloseGump(typeof(SearchResultsGump));
+
+                                if (results.Any())
+                                {
+                                    BaseGump.SendGump(new SearchResultsGump(User, results));
+                                }
+                                else
+                                {
+                                    NoFind = true;
+                                    Refresh();
+                                }
+                            });
+
+                            resultsTask.Start();
+                            pollingTimer.Start();
+
+                            BaseGump.SendGump(new SearchWaitGump(User, pollingTimer));
                         }
                         break;
                     }
@@ -312,8 +333,8 @@ namespace Server.Engines.VendorSearching
                             Refresh();
                         }
 
-                        var a = SearchCriteriaCategory.AllCategories.ToList().SelectMany(x => x.Criteria, (x, c) => new { x.Category, c.Object, c.Cliloc, c.PropCliloc }).ToList()[info.ButtonID - 50];
-                        object o = a.Object;
+                        var criteria = SearchCriteriaCategory.AllCategories.SelectMany(x => x.Criteria, (x, c) => new { x.Category, c.Object, c.Cliloc, c.PropCliloc }).ToList()[info.ButtonID - 50];
+                        object o = criteria.Object;
                         int value = 0;
 
                         TextRelay valuetext = info.GetTextEntry(info.ButtonID - 40);
@@ -321,10 +342,65 @@ namespace Server.Engines.VendorSearching
                         if (valuetext != null)
                             value = Math.Max(o is AosAttribute && (AosAttribute)o == AosAttribute.CastSpeed ? -1 : 0, Utility.ToInt32(valuetext.Text));
 
-                        Criteria.TryAddDetails(o, a.Cliloc, a.PropCliloc, value, a.Category);
+                        Criteria.TryAddDetails(o, criteria.Cliloc, criteria.PropCliloc, value, criteria.Category);
                         Refresh();
                     }
                     break;
+            }
+        }
+
+        public Task<List<VendorItem>> FindVendorItemsAsync(Mobile m, SearchCriteria criteria)
+        {
+            return new Task<List<VendorItem>>(() =>
+            {
+                return VendorSearch.DoSearch(m, criteria);
+            });
+        }
+    }    
+
+    public class SearchWaitGump : BaseGump
+    {
+        private Timer m_PollingTimer;
+
+        public SearchWaitGump(PlayerMobile pm, Timer waitTimer)
+            : base(pm, 10, 10)
+        {
+            m_PollingTimer = waitTimer;
+        }
+
+        public override void AddGumpLayout()
+        {
+            AddPage(0);
+
+            AddBackground(0, 0, 414, 214, 0x7752);
+            
+            AddHtmlLocalized(27, 47, 380, 80, 1114513, "#1154678", 0x4E73, false, false); // <DIV ALIGN=CENTER>Please wait for your search to complete.</DIV>
+        }
+
+        public override void OnResponse(RelayInfo info)
+        {
+            m_PollingTimer.Stop();
+        }
+    }
+
+    public class TaskPollingTimer<T> : Timer
+    {
+        private Task<T> m_Task;
+        private Action<T> m_Callback;
+
+        public TaskPollingTimer(Task<T> task, Action<T> callback)
+            : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
+        {
+            m_Task = task;
+            m_Callback = callback;
+        }
+
+        protected override void OnTick()
+        {
+            if (m_Task.IsCompleted)
+            {
+                m_Callback(m_Task.Result);
+                Stop();
             }
         }
     }
