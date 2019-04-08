@@ -226,7 +226,7 @@ namespace Server.Movement
 					continue;
 				}
 
-				if (!IsOk(m, ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
+				if (!IsOk(tile, ourZ, testTop))
 				{
 					continue;
 				}
@@ -312,7 +312,7 @@ namespace Server.Movement
 					continue;
 				}
 
-				if (!IsOk(m, ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
+				if (!IsOk(m, item, ourZ, testTop, ignoreDoors, ignoreSpellFields))
 				{
 					continue;
 				}
