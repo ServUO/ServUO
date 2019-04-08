@@ -704,20 +704,6 @@ namespace Server.Engines.VendorSearching
             }
         }
 
-        public static bool HasValue(object o, SearchCategory category)
-        {
-            if (o is AosAttribute && (AosAttribute)o == AosAttribute.CastSpeed)
-                return true;
-
-            if (category.Category == Category.RequiredSkill)
-                return false;
-
-            if (o is string && (string)o == "ArtifactRarity")
-                return true;
-
-            return Imbuing.GetMaxValue(o) > 1;
-        }
-
         public static bool CanSearch(Mobile m)
         {
             Region r = m.Region;

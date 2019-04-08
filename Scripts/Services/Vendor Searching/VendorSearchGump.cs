@@ -17,19 +17,18 @@ namespace Server.Engines.VendorSearching
         public SearchCriteria Criteria { get; set; }
         public Map SetMap { get; set; }
 
-        public bool NoFind { get; private set; }
-        public bool NoCrit { get; private set; }
-        public bool MaxCrit { get; private set; }
+        public int Feedback { get; private set; }
 
         public static int LabelColor = 0x4BBD;
         public static int CriteriaColor = 0x6B55;
         public static int TextColor = 0x9C2;
         public static int AlertColor = 0x7C00;
 
-        public VendorSearchGump(PlayerMobile pm, int cat = -1)
+        public VendorSearchGump(PlayerMobile pm, int feedback = -1)
             : base(pm, 10, 10)
         {
             TypeID = 0xF3EC8;
+            Feedback = feedback;
             Criteria = VendorSearch.GetContext(pm);
 
             if (Criteria == null)
@@ -49,17 +48,17 @@ namespace Server.Engines.VendorSearching
 
             if (!String.IsNullOrEmpty(Criteria.SearchName))
             {
-                AddHtmlLocalized(562, 50 + (yOffset * 22), 246, 18, 1154510, CriteriaColor, false, false);
                 AddButton(522, 50 + (yOffset * 22), 4017, 4019, 7, GumpButtonType.Reply, 0);
                 AddTooltip(1154694); // Remove Selected Search Criteria
+                AddHtmlLocalized(562, 50 + (yOffset * 22), 246, 18, 1154510, CriteriaColor, false, false);
                 yOffset++;
             }
 
             if (Criteria.EntryPrice)
             {
-                AddHtmlLocalized(562, 50 + (yOffset * 22), 215, 20, 1154512, String.Format("@{0}@{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), CriteriaColor, false, false);
                 AddButton(522, 50 + (yOffset * 22), 4017, 4019, 8, GumpButtonType.Reply, 0);
                 AddTooltip(1154694); // Remove Selected Search Criteria
+                AddHtmlLocalized(562, 50 + (yOffset * 22), 215, 20, 1154512, String.Format("@{0}@{1}", Criteria.MinPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Criteria.MaxPrice.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), CriteriaColor, false, false);
                 yOffset++;
             }            
 
@@ -111,26 +110,11 @@ namespace Server.Engines.VendorSearching
             });
 
             AddButton(10, 540, 0x7747, 0x7747, 0, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(50, 540, 50, 20, 3000091, LabelColor, false, false); // Cancel
-
-            int alert = 0;
-
-            if (NoFind)
+            AddHtmlLocalized(50, 540, 50, 20, 1150300, LabelColor, false, false); // Cancel
+                        
+            if (Feedback != -1)
             {
-                alert = 1154587; // No items matched your search.
-            }
-            else if (NoCrit)
-            {
-                alert = 1154586; // Please select some criteria to search for.
-            }
-            else if (MaxCrit)
-            {
-                alert = 1154681; // You may not add any more search criteria items.
-            }
-
-            if (alert != 0)
-            {
-                AddHtmlLocalized(110, 540, 660, 20, alert, AlertColor, false, false);
+                AddHtmlLocalized(110, 540, 660, 20, Feedback, AlertColor, false, false);
             }
 
             AddButton(740, 540, 30534, 30534, 1, GumpButtonType.Reply, 0);
@@ -195,11 +179,7 @@ namespace Server.Engines.VendorSearching
         }
 
         public override void OnResponse(RelayInfo info)
-        {
-            NoCrit = false;
-            NoFind = false;
-            MaxCrit = false;
-            
+        {            
             if (info.ButtonID != 0)
             {
                 if (!VendorSearch.CanSearch(User))
@@ -224,13 +204,11 @@ namespace Server.Engines.VendorSearching
                 case 0: break;
                 case 1: // Search
                     {
-                        Console.WriteLine("asd");
                         User.CloseGump(typeof(SearchResultsGump));
 
                         if (Criteria.IsEmpty)
                         {
-                            NoCrit = true;
-                            Refresh();
+                            BaseGump.SendGump(new VendorSearchGump(User, 1154586)); // Please select some criteria to search for.
                         }
                         else
                         {
@@ -238,18 +216,16 @@ namespace Server.Engines.VendorSearching
 
                             var pollingTimer = new TaskPollingTimer<List<VendorItem>>(resultsTask, (results) =>
                             {
-                                User.CloseGump(typeof(VendorSearchGump));
                                 User.CloseGump(typeof(SearchWaitGump));
-                                User.CloseGump(typeof(SearchResultsGump));
 
-                                if (results.Any())
+                                if (results == null || results.Count == 0)
                                 {
-                                    BaseGump.SendGump(new SearchResultsGump(User, results));
+                                    BaseGump.SendGump(new VendorSearchGump(User, 1154587)); // No items matched your search.                                     
                                 }
                                 else
                                 {
-                                    NoFind = true;
-                                    Refresh();
+                                    Refresh(true);
+                                    BaseGump.SendGump(new SearchResultsGump(User, results));                                    
                                 }
                             });
 
@@ -263,27 +239,27 @@ namespace Server.Engines.VendorSearching
                 case 2: // Clear Criteria
                     {
                         Criteria.Reset();
-                        Refresh();
+                        Refresh(true);
                         break;
                     }
                 case 4: // Nothing, resend gump                    
-                    Refresh();
+                    Refresh(true);
                     break;                             
                 case 7: // remove item name
                     Criteria.SearchName = null;
-                    Refresh();
+                    Refresh(true);
                     break;
                 case 8: // remove price entry
                     Criteria.EntryPrice = false;
-                    Refresh();
+                    Refresh(true);
                     break;
                 case 236: // Low to High
                     Criteria.SortBy = SortBy.LowToHigh;
-                    Refresh();
+                    Refresh(true);
                     break;
                 case 237: // High to Low
                     Criteria.SortBy = SortBy.HighToLow;
-                    Refresh();
+                    Refresh(true);
                     break;
                 case 1154512: // Set Min/Max price
                     TextRelay tr1 = info.GetTextEntry(7);
@@ -312,7 +288,7 @@ namespace Server.Engines.VendorSearching
                     }
 
                     Criteria.EntryPrice = true;
-                    Refresh();
+                    Refresh(true);
                     break;
                 default:
                     if (info.ButtonID > 1000)
@@ -323,14 +299,13 @@ namespace Server.Engines.VendorSearching
                             Criteria.SearchType = Layer.Invalid;
 
                         Criteria.Details.Remove(toRemove);
-                        Refresh();
+                        Refresh(true);
                     }
                     else
                     {
                         if (Criteria.Details.Count >= 20)
                         {
-                            MaxCrit = true;
-                            Refresh();
+                            BaseGump.SendGump(new VendorSearchGump(User, 1154681)); // You may not add any more search criteria items.
                         }
 
                         var criteria = SearchCriteriaCategory.AllCategories.SelectMany(x => x.Criteria, (x, c) => new { x.Category, c.Object, c.Cliloc, c.PropCliloc }).ToList()[info.ButtonID - 50];
@@ -343,7 +318,7 @@ namespace Server.Engines.VendorSearching
                             value = Math.Max(o is AosAttribute && (AosAttribute)o == AosAttribute.CastSpeed ? -1 : 0, Utility.ToInt32(valuetext.Text));
 
                         Criteria.TryAddDetails(o, criteria.Cliloc, criteria.PropCliloc, value, criteria.Category);
-                        Refresh();
+                        Refresh(true);
                     }
                     break;
             }

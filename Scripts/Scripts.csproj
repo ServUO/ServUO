@@ -600,6 +600,7 @@
     <Compile Include="Items\Decorative\FlamingScarecrow.cs" />
     <Compile Include="Items\Decorative\SilverSaplingReplica.cs" />
     <Compile Include="Items\Decorative\ValentineBear.cs" />
+    <Compile Include="Items\Resource\FocusingGemOfVirtueBane.cs" />
     <Compile Include="Items\Functional\SerpentsJawbone.cs" />
     <Compile Include="Items\Internal\ItemSockets\Caddellite.cs" />
     <Compile Include="Items\Internal\ItemSockets\EnchantedHotItem.cs" />
@@ -10130,7 +10131,7 @@
     <Compile Include="Services\UltimaStore\UltimaStoreGump.cs" />
     <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysController.cs" />
     <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysPillar.cs" />
-    <Compile Include="Services\Vendor Searching\SearchCriteria.cs" />
+    <Compile Include="Services\Vendor Searching\VendorSearchCriteria.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearch.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchGump.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchMap.cs" />

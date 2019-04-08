@@ -5437,7 +5437,12 @@ namespace Server.Items
 					GetSetProperties(list);
 				}
 			}
-			#endregion
+            #endregion
+
+            if (m_ExtendedWeaponAttributes.Focus > 0)
+            {
+                list.Add(1150018); // Focus
+            }
 
             if (m_NegativeAttributes.Brittle == 0 && m_AosAttributes.Brittle != 0)
             {

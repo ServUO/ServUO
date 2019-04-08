@@ -2090,6 +2090,19 @@ namespace Server
                 this[ExtendedWeaponAttribute.AssassinHoned] = value;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Focus
+        {
+            get
+            {
+                return this[ExtendedWeaponAttribute.Focus];
+            }
+            set
+            {
+                this[ExtendedWeaponAttribute.Focus] = value;
+            }
+        }
     }
 
     [Flags]
