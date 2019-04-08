@@ -4,7 +4,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("an acid slug corpse")]
-    public class AcidSlug : BaseCreature
+    public class AcidSlug : BaseCreature, IAcidCreature
     {
         [Constructable]
         public AcidSlug()
