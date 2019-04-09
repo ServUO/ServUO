@@ -50,6 +50,7 @@ namespace Server.Items
                 {
                     BaseWeapon weapon = (BaseWeapon)obj;
 
+                    weapon.Hue = 2500;
                     weapon.ExtendedWeaponAttributes.Focus = 1;
                     weapon.NegativeAttributes.Brittle = 1;
                 }
