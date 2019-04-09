@@ -950,6 +950,8 @@ namespace Server.Spells
                 m.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
                 return false;
             }
+
+            return true;
         }
 
         public static bool IsWindLoc(Point3D loc)

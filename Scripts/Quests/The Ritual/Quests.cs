@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 
 using Server;
 using Server.Mobiles;
 using Server.Items;
+using Server.Regions;
 
-namespace Server.Engines.Quests
+namespace Server.Engines.Quests.RitualQuest
 {
     public class ScalesOfADreamSerpentQuest : BaseQuest
     {
@@ -47,6 +49,7 @@ namespace Server.Engines.Quests
         public ScalesOfADreamSerpentQuest()
         {
             AddObjective(new ObtainObjective(typeof(DreamSerpentScale), "Dream Serpent Scales", 1, 0x1F13, 0, 1976)); // TODO: Get ID
+            AddReward(new BaseReward(1151384)); // The gratitude of the Gargoyle Queen and the next quest in the chain.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -55,7 +58,7 @@ namespace Server.Engines.Quests
             writer.Write(0);
         }
 
-        public override void Deserialize(GenaricReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version
@@ -93,7 +96,8 @@ namespace Server.Engines.Quests
 
         public TearsOfASoulbinderQuest()
         {
-            AddObjective(new ObtainObjective(typeof(SoulbinderTear), "Soulbinders Tears", 1, 0x1234)); // TODO: Get ID
+            AddObjective(new ObtainObjective(typeof(SoulbinderTear), "Soulbinders Tears", 1, 0xE2A, 0, 2076));
+            AddReward(new BaseReward(1151384)); // The gratitude of the Gargoyle Queen and the next quest in the chain.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -102,7 +106,7 @@ namespace Server.Engines.Quests
             writer.Write(0);
         }
 
-        public override void Deserialize(GenaricReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version
@@ -142,12 +146,14 @@ namespace Server.Engines.Quests
         /*Once again, you astound me with your perserverance and triumph! I cannot thank you enough. You are truly proving
 		yourself a loyal friend.<br><br>Now, only two components remain.*/
 
+        public int PuzzlesComplete { get; set; }
+        public bool ReceivedLotus { get; set; }
+
         public PristineCrystalLotusQuest()
         {
-            AddObjective(new ObtainObjective(typeof(PristineCrystalLotus), "Pristine Crystal Lotus", 1, 0x1234)); // TODO: Get ID
+            AddObjective(new ObtainObjective(typeof(PristineCrystalLotus), "Pristine Crystal Lotus", 1, 0x283B, 0, 1152));
 
-            //TODO: Both these items
-            AddReward(new BaseReward(typeof(ChronicleOfTheGargoyleQueenVol2), 1151164)); // Chronicle of the Gargoyle Queen Vol. II
+            AddReward(new BaseReward(typeof(ChronicleOfTheGargoyleQueen2), 1151164)); // Chronicle of the Gargoyle Queen Vol. II
             AddReward(new BaseReward(typeof(TerMurSnowglobe), 1151172)); // Ter Mur Snowglobe
         }
 
@@ -155,12 +161,18 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
             writer.Write(0);
+
+            writer.Write(PuzzlesComplete);
+            writer.Write(ReceivedLotus);
         }
 
-        public override void Deserialize(GenaricReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version
+
+            PuzzlesComplete = reader.ReadInt();
+            ReceivedLotus = reader.ReadBool();
         }
     }
 
@@ -190,13 +202,6 @@ namespace Server.Engines.Quests
         public CatchMeIfYouCanQuest()
         {
             AddObjective(new InternalObjective());
-
-            AddReward(new BaseReward(typeof(DreamSerpentScale), 1151167)); // Dream Serpents Scale
-        }
-
-        public CatchMeIfYouCanQuest()
-        {
-            AddObjective(new InternalObjective());
             AddReward(new BaseReward(typeof(DreamSerpentScale), 1151167)); // Dream Serpents Scale
         }
 
@@ -219,11 +224,11 @@ namespace Server.Engines.Quests
             }
         }
 
-        public class InternalObject : BaseObjective
+        public class InternalObjective : BaseObjective
         {
             public override object ObjectiveDescription { get { return 1151213; } } // Hit the Dream Serpent 6 times before the time is up.
 
-            public InternalObject()
+            public InternalObjective()
                 : base(6)
             {
             }
@@ -236,6 +241,8 @@ namespace Server.Engines.Quests
                 {
                     // No Gump, no message, nothing.
                 }
+
+                return true;
             }
 
             public override void Serialize(GenericWriter writer)
@@ -244,7 +251,7 @@ namespace Server.Engines.Quests
                 writer.Write(0);
             }
 
-            public override void Deserialize(GenaricReader reader)
+            public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
                 reader.ReadInt(); // version
@@ -253,7 +260,10 @@ namespace Server.Engines.Quests
 
         public class BexilRegion : BaseRegion
         {
-            public override bool AllowHousing { get { return false; } }
+            public override bool AllowHousing(Mobile from, Point3D p)
+            {
+                return false;
+            }
 
             public static void Initialize()
             {
@@ -276,7 +286,9 @@ namespace Server.Engines.Quests
 
                 for (int x = 390; x < 408; x++)
                 {
-                    if (map.FindItem<Blocker>(new Point3D(x, 3360, map.GetAverageZ(x, 3360))) == null)
+                    int z = map.GetAverageZ(x, 3360);
+
+                    if (map.FindItem<Blocker>(new Point3D(x, 3360, z)) == null)
                     {
                         var blocker = new Blocker();
                         blocker.MoveToWorld(new Point3D(x, 3360, z), map);
@@ -304,7 +316,7 @@ namespace Server.Engines.Quests
             writer.Write(Charm);
         }
 
-        public override void Deserialize(GenaricReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version
@@ -346,7 +358,7 @@ namespace Server.Engines.Quests
 
         public FilthyLifeStealersQuest()
         {
-            AddObjective(new SlayObjective(typeof(LifeStealer), "Life Stealers", 10));
+            AddObjective(new SlayObjective(typeof(Lifestealer), "Life Stealers", 10));
 
             AddReward(new BaseReward(typeof(SoulbinderTear), 1151170)); // Souldbinder's Tears
         }
@@ -357,7 +369,7 @@ namespace Server.Engines.Quests
             writer.Write(0);
         }
 
-        public override void Deserialize(GenaricReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version

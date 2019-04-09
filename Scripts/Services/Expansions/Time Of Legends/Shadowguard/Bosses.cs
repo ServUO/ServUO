@@ -17,7 +17,7 @@ namespace Server.Engines.Shadowguard
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsLastBoss { get; set; }
 
-		public DateTime _NextSummon;
+		private DateTime _NextSummon;
 		
 		public virtual Type[] SummonTypes { get { return null; } }
 		public virtual Type[] ArtifactDrops { get { return _ArtifactTypes; } }
@@ -213,13 +213,14 @@ namespace Server.Engines.Shadowguard
 		public virtual void Summon()
 		{
             int max = MaxSummons;
+            var map = Map;
 
             ShadowguardEncounter inst = ShadowguardController.GetEncounter(this.Location, this.Map);
 
             if(inst != null)
                 max += inst.PartySize() * 2;
 
-			if(this.Map == null || this.SummonTypes == null || this.SummonTypes.Length == 0 || TotalSummons() > max)
+			if(map == null || this.SummonTypes == null || this.SummonTypes.Length == 0 || TotalSummons() > max)
 				return;
 				
 			int count = Utility.RandomList(1, 2, 2, 2, 3, 3, 4, 5);
@@ -235,9 +236,9 @@ namespace Server.Engines.Shadowguard
 				{
 					int x = Utility.RandomMinMax(p.X - 3, p.X + 3);
 					int y = Utility.RandomMinMax(p.Y - 3, p.Y + 3);
-					int z = this.Map.GetAverageZ(x, y);
+					int z = map.GetAverageZ(x, y);
 					
-					if(this.Map.CanSpawnMobile(x, y, z))
+					if(map.CanSpawnMobile(x, y, z))
 					{
 						p = new Point3D(x, y, z);
 						break;
@@ -248,7 +249,7 @@ namespace Server.Engines.Shadowguard
 				
 				if(spawn != null)
 				{
-					spawn.MoveToWorld(p, this.Map);
+					spawn.MoveToWorld(p, map);
 					spawn.Team = this.Team;
 					spawn.SummonMaster = this;
 					

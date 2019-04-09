@@ -5,7 +5,7 @@ using Server;
 using Server.Mobiles;
 using Server.Items;
 
-namespace Server.Engines.Quests
+namespace Server.Engines.Quests.RitualQuest
 {
     public class Prugyilonus : MondainQuester
     {
@@ -20,7 +20,7 @@ namespace Server.Engines.Quests
             }
         }
 
-        public override Type[] Quests { get { return new Type[] { ScalesOfADreamSerpentQuest }; } }
+        public override Type[] Quests { get { return new Type[] { typeof(ScalesOfADreamSerpentQuest) }; } }
 
         public Prugyilonus()
             : base("Prugyilonus", "the Advisor to the Queen")
@@ -54,18 +54,25 @@ namespace Server.Engines.Quests
             writer.Write(0);
         }
 
-        public override void Deserialize(GenaricReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version
 
-            Instance = this;
+            if (Core.SA)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Delete();
+            }
         }
     }
 
     public class Bexil : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { CatchMeIfYouCanQuest }; } }
+        public override Type[] Quests { get { return new Type[] { typeof(CatchMeIfYouCanQuest) }; } }
 
         public static Bexil Instance { get; set; }
 
@@ -74,9 +81,7 @@ namespace Server.Engines.Quests
             if(Core.SA && Instance == null)
             {
                 Instance = new Bexil();
-                Instnace.MoveToWorld(new Point3D(662, 3819, -43), Map.TerMur);
-                Instance.Home = new Point3D(662, 3819, -43);
-                Insance.RangeHome = 2;
+                Instance.MoveToWorld(new Point3D(662, 3819, -43), Map.TerMur);
             }
         }
 
@@ -103,6 +108,8 @@ namespace Server.Engines.Quests
             InitStats(100, 100, 25);
             Body = 0xCE;
             Hue = 2069;
+
+            CantWalk = true;
         }
 
         public Bexil(Serial serial) : base(serial)
@@ -115,24 +122,31 @@ namespace Server.Engines.Quests
             writer.Write(0);
         }
 
-        public override void Deserialize(GenaricReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version
 
-            Instance = this;
+            if (Core.SA)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Delete();
+            }
         }
     }
 
     public class BexilPunchingBag : BaseCreature
     {
-        public virtual bool InitialInnocent { get { return true; } }
+        public override bool InitialInnocent { get { return true; } }
 
         private Dictionary<Mobile, int> _Table = new Dictionary<Mobile, int>();
         private DateTime _NextTeleport;
 
         public BexilPunchingBag()
-            : base("the Dream Serpent")
+            : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.4, 0.8)
         {
             Name = "Bexil";
             Title = "the Dream Serpent";
@@ -141,9 +155,15 @@ namespace Server.Engines.Quests
             Hue = 1976;
             BaseSoundID = 0x5A;
 
-            CantWalk = true;
-
             SetHits(1000000);
+        }
+
+        private IDamageable _Combatant;
+
+        public override IDamageable Combatant
+        {
+            get { return _Combatant; }
+            set { _Combatant = value; }
         }
 
         public override void OnThink()
@@ -155,17 +175,19 @@ namespace Server.Engines.Quests
                 var map = Map;
                 var c = (Mobile)Combatant;
 
-                var rec = new Rectangle2D(X - RangePerception, Y - RangePerception, X + RangePerception, Y + RangePerception);
-                Point3D = Point3D.Zero;
+                Point3D p;
 
                 do
                 {
-                    p = map.GetRandomSpawnPoint(rec);
+                    int x = X + Utility.RandomMinMax(-10, 10);
+                    int y = Y + Utility.RandomMinMax(-10, 10);
+
+                    p = new Point3D(x, y, map.GetAverageZ(x, y));
                 }
-                while (p == Point3D.Zero || !map.CanSpawnMobile(p.X, p.Y, z));
+                while (!map.CanSpawnMobile(p.X, p.Y, map.GetAverageZ(p.X, p.Y)) || !Region.Find(p, map).IsPartOf<CatchMeIfYouCanQuest.BexilRegion>());
 
                 Effects.SendLocationParticles(EffectItem.Create(Location, map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
-                MoveToWorld(new Point3D(px, py, Map.TerMur.GetAverageZ(px, py)));
+                MoveToWorld(p, map);
                 Effects.SendLocationParticles(EffectItem.Create(Location, map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
 
                 _NextTeleport = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(1, 3));
@@ -180,11 +202,11 @@ namespace Server.Engines.Quests
 
                 if (quest != null)
                 {
-                    quest.Update(this);
+                    quest.Objectives[0].Update(this);
 
                     if (quest.Completed)
                     {
-                        DreamSerpentCharm.CompleteQuest(m);
+                        DreamSerpentCharm.CompleteQuest(from);
                     }
                 }
             }
@@ -192,12 +214,12 @@ namespace Server.Engines.Quests
             return 0;
         }
 
-        public override bool OnAfterDeath()
+        public override void Delete()
         {
             var bex = new BexilPunchingBag();
             bex.MoveToWorld(new Point3D(403, 3391, 38), Map.TerMur);
 
-            return base.OnAfterDeath();
+            base.Delete();
         }
 
         public BexilPunchingBag(Serial serial) : base(serial)
@@ -210,40 +232,30 @@ namespace Server.Engines.Quests
             writer.Write(0);
         }
 
-        public override void Deserialize(GenaricReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version
 
-            Delete();
+            if (!Core.SA)
+            {
+                Delete();
+            }
         }
     }
 
     public class Grubbix : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { FilthyLifeStealersQuest }; } }
+        public override Type[] Quests { get { return new Type[] { typeof(FilthyLifeStealersQuest) }; } }
 
-        public static Bexil Instance { get; set; }
+        public static Grubbix Instance { get; set; }
 
         public static void Initialize()
         {
             if (Core.SA && Instance == null)
             {
                 Instance = new Grubbix();
-                Instnace.MoveToWorld(new Point3D(1106, 3138, -43), Map.TerMur);
-            }
-        }
-
-        public override void OnDoubleClick(Mobile m)
-        {
-            if (m.Backpack.GetAmount(typeof(DreamSerpentScale)) == 0)
-            {
-                base.OnDoubleClick(m);
-            }
-            else
-            {
-                SayTo(m, 1151355, 0x3B2); // You may not obtain more than one of this item.
-                SayTo(m, 1080107, 0x3B2); // I'm sorry, I have nothing for you at this time.
+                Instance.MoveToWorld(new Point3D(1106, 3138, -43), Map.TerMur);
             }
         }
 
@@ -261,7 +273,7 @@ namespace Server.Engines.Quests
             Hue = 2076;
         }
 
-        public Bexil(Serial serial) : base(serial)
+        public Grubbix(Serial serial) : base(serial)
         {
         }
 
@@ -271,14 +283,19 @@ namespace Server.Engines.Quests
             writer.Write(0);
         }
 
-        public override void Deserialize(GenaricReader reader)
+        public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt(); // version
 
-            Instance = this;
+            if (Core.SA)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Delete();
+            }
         }
     }
-
-
 }

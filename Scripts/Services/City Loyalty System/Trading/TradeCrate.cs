@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
+
 using Server;
 using Server.ContextMenus;
-using System.Collections.Generic;
 using Server.Items;
 using Server.Gumps;
 using System.Linq;
 using Server.Network;
+using Server.Engines.SeasonalEvents;
 
 namespace Server.Engines.CityLoyalty
 {
@@ -45,7 +47,7 @@ namespace Server.Engines.CityLoyalty
         public override int DefaultMaxWeight { get { return 1000; } }
 
         public TradeOrderCrate(Mobile from, TradeEntry entry)
-            : base(Utility.Random(0x46A2, 4))
+            : base(GetID())
 		{
             Weight = 10.0;
 
@@ -56,6 +58,16 @@ namespace Server.Engines.CityLoyalty
 
             Expires = DateTime.UtcNow + TimeSpan.FromHours(CityTradeSystem.CrateDuration);
 		}
+
+        private int GetID()
+        {
+            if (KrampusEncounter.Enabled)
+            {
+                return Utility.Random(0x46A2, 6);
+            }
+
+            Utility.Random(0x46A2, 4);
+        }
 
         public override int DefaultGumpID
         {
