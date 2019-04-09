@@ -78,7 +78,7 @@ namespace Server.Engines.CityLoyalty
         MaritimeGuild = 1154050,
         MerchantsAssociation = 1154051,
         MiningCooperative = 1154052,
-        LeageOfRangers = 1154053,
+        LeagueOfRangers = 1154053,
         GuildOfAssassins = 1154054,
         WarriorsGuild = 1154055,
     }
@@ -578,6 +578,8 @@ namespace Server.Engines.CityLoyalty
                     entry.UtilizingTradeDeal = true;
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.CityTradeDeal, 1154168, 1154169, new TextDefinition((int)ActiveTradeDeal), true));
 
+                    ActivateTradeDeal(m, ActiveTradeDeal);
+
                     m.Delta(MobileDelta.WeaponDamage);
 
                     m.SendLocalizedMessage(1154075); // You gain the benefit of your City's Trade Deal!
@@ -708,7 +710,10 @@ namespace Server.Engines.CityLoyalty
                     CityLoyaltyEntry entry = sys.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
                     if (entry != null && entry.UtilizingTradeDeal)
+                    {
                         BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.CityTradeDeal, 1154168, 1154169, new TextDefinition((int)sys.ActiveTradeDeal), true));
+                        ActivateTradeDeal(pm, sys.ActiveTradeDeal);
+                    }
                 }
 
                 int message;
@@ -727,6 +732,23 @@ namespace Server.Engines.CityLoyalty
                     pm.SendLocalizedMessage(message);
                 });
             }
+        }
+
+        public static void ActivateTradeDeal(Mobile m, TradeDeal deal)
+        {
+            switch (deal)
+            {
+                case TradeDeal.OrderOfEngineers: m.AddStatMod(new StatMod(StatType.Dex, String.Format("TradeDeal_{0}", StatType.Dex), 3, TimeSpan.Zero)); break;
+                case TradeDeal.MiningCooperative: m.AddStatMod(new StatMod(StatType.Str, String.Format("TradeDeal_{0}", StatType.Str), 3, TimeSpan.Zero)); break;
+                case TradeDeal.LeagueOfRangers: m.AddStatMod(new StatMod(StatType.Int, String.Format("TradeDeal_{0}", StatType.Int), 3, TimeSpan.Zero)); break;
+            }
+        }
+
+        public static void RemoveTradeDeal(Mobile m)
+        {
+            m.RemoveStatMod(String.Format("TradeDeal_{0}", StatType.Dex));
+            m.RemoveStatMod(String.Format("TradeDeal_{0}", StatType.Str));
+            m.RemoveStatMod(String.Format("TradeDeal_{0}", StatType.Int));
         }
 
         public static void OnBODTurnIn(Mobile from, int gold)

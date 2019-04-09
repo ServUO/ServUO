@@ -249,6 +249,11 @@ namespace Server.Items
 
         public override void OnResponse(RelayInfo info)
         {
+            if (!User.InRange(Tele.Location, 2) || User.Map != Tele.Map)
+            {
+                return;
+            }
+
             Tele.LastUse = DateTime.UtcNow;
 
             switch (info.ButtonID)
