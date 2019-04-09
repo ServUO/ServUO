@@ -709,7 +709,7 @@ namespace Server.Engines.CityLoyalty
             TradeDeal.MaritimeGuild,
             TradeDeal.MerchantsAssociation,
             TradeDeal.MiningCooperative,
-            TradeDeal.LeageOfRangers,
+            TradeDeal.LeagueOfRangers,
             TradeDeal.GuildOfAssassins,
             TradeDeal.WarriorsGuild,
         };

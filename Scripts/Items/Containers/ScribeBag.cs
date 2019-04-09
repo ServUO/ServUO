@@ -6,17 +6,11 @@ namespace Server.Items
     {
         [Constructable]
         public ScribeBag()
-            : this(1)
         {
-            this.Movable = true;
-            this.Hue = 0x105;
-        }
+            Hue = 0x105;
 
-        [Constructable]
-        public ScribeBag(int amount)
-        {
-            this.DropItem(new BagOfReagents(5000));
-            this.DropItem(new BlankScroll(500));
+            DropItem(new BagOfReagents(5000));
+            DropItem(new BlankScroll(500));
         }
 
         public ScribeBag(Serial serial)
