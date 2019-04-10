@@ -14,6 +14,7 @@ namespace Server.Gumps
         Healer = 2,
         Generic = 3,
         SilverSapling = 102034,
+        GemOfSalvation = 84106,
     }
 
     public class ResurrectGump : Gump
