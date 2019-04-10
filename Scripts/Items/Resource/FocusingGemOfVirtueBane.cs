@@ -7,7 +7,8 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1150004; } } // Focusing Gem of Virtue Bane
 
-        private static readonly TimeSpan Cooldown = TimeSpan.FromHours(6);
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime Cooldown { get; private set; }
 
         [Constructable]
         public FocusingGemOfVirtueBane()
@@ -18,13 +19,26 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+            bool messagecheck = true;
+
+            if (Cooldown < DateTime.Now)
+            {
+                from.SendLocalizedMessage(1149987); // Using this on your weapon will make it a rage focused weapon and turn it brittle.
+                Cooldown = DateTime.Now + TimeSpan.FromMinutes(10);
+                messagecheck = false;
+            }
+
             if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                return;
             }
             else
             {
-                from.BeginTarget(2, false, TargetFlags.None, new TargetCallback(OnTarget));
+                if (messagecheck)
+                {
+                    from.BeginTarget(2, false, TargetFlags.None, new TargetCallback(OnTarget));
+                }
             }
         }
 
@@ -47,12 +61,20 @@ namespace Server.Items
                 }
 
                 if (item is BaseWeapon)
-                {
+                {                    
                     BaseWeapon weapon = (BaseWeapon)obj;
 
-                    weapon.Hue = 2500;
-                    weapon.ExtendedWeaponAttributes.Focus = 1;
-                    weapon.NegativeAttributes.Brittle = 1;
+                    if (weapon.ExtendedWeaponAttributes.Focus == 0)
+                    {
+                        weapon.Hue = 2500;
+                        weapon.ExtendedWeaponAttributes.Focus = 1;
+                        weapon.NegativeAttributes.Brittle = 1;
+                        Delete();
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1149989); // That property already exists on that item.
+                    }
                 }
                 else
                 {

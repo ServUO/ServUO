@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.IO;
 
 using Server;
 using Server.Items;
 using Server.Mobiles;
-using Server.SkillHandlers;
 using Server.ContextMenus;
 using Server.Commands;
 using Server.Targeting;
@@ -58,7 +56,7 @@ namespace Server.Engines.VendorSearching
 		
 		public static bool CheckMatch(VendorItem vitem, SearchCriteria searchCriteria)
 		{
-			if(vitem == null)
+			if (vitem == null)
 				return false;
 			
 			Item item = vitem.Item;
@@ -979,24 +977,29 @@ namespace Server.Engines.VendorSearching
 
         public SearchDetail(GenericReader reader)
         {
-            reader.ReadInt(); // version
+            int version = reader.ReadInt(); // version
 
-            ReadAttribute(reader);
+            if (version > 0)
+            {
+                PropLabel = reader.ReadInt();
 
-            Label = reader.ReadInt();
-            PropLabel = reader.ReadInt();
-            Value = reader.ReadInt();
-            Category = (Category)reader.ReadInt();
+                ReadAttribute(reader);
+
+                Label = reader.ReadInt();
+                Value = reader.ReadInt();
+                Category = (Category)reader.ReadInt();
+            }            
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(PropLabel);
 
             WriteAttribute(writer);
-
-            writer.Write(Label);
-            writer.Write(PropLabel);
+            
+            writer.Write(Label);            
             writer.Write(Value);
             writer.Write((int)Category);
         }
