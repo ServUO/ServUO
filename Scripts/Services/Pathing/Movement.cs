@@ -69,63 +69,77 @@ namespace Server.Movement
 
         private MovementImpl()
         {
-        }
+		}
+
+		private bool IsOk(StaticTile tile, int ourZ, int ourTop)
+		{
+			ItemData itemData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+
+			if ((itemData.Flags & ImpassableSurface) != 0) // Impassable || Surface
+			{
+				int checkZ = tile.Z;
+				int checkTop = checkZ + itemData.CalcHeight;
+
+				if (checkTop > ourZ && ourTop > checkZ)
+					return false;
+			}
+
+			return true;
+		}
+
+        private bool IsOk(Mobile m, Item item, int ourZ, int ourTop, bool ignoreDoors, bool ignoreSpellFields)
+        {
+            int itemID = item.ItemID & TileData.MaxItemValue;
+			ItemData itemData = TileData.ItemTable[itemID];
+			TileFlag flags = itemData.Flags;
+
+			if ((flags & ImpassableSurface) != 0) // Impassable || Surface
+			{
+				if (ignoreDoors && ((flags & TileFlag.Door) != 0 || itemID == 0x692 || itemID == 0x846 || itemID == 0x873 || (itemID >= 0x6F5 && itemID <= 0x6F6)))
+				{
+					if (item is BaseHouseDoor && m != null && !((BaseHouseDoor)item).CheckAccess(m))
+					{
+						return false;
+					}
+					else
+					{
+						return true;
+					}
+				}
+
+				if (ignoreSpellFields && (itemID == 0x82 || itemID == 0x3946 || itemID == 0x3956))
+				{
+					return true;
+				}
+
+				// hidden containers, per EA
+				if ((flags & TileFlag.Container) != 0 && !item.Visible)
+				{
+					return true;
+				}
+
+				int checkZ = item.Z;
+				int checkTop = checkZ + itemData.CalcHeight;
+
+				if (checkTop > ourZ && ourTop > checkZ)
+					return false;
+			}
+
+			return true;
+		}
 
         private bool IsOk(Mobile m, bool ignoreDoors, bool ignoreSpellFields, int ourZ, int ourTop, StaticTile[] tiles, List<Item> items)
         {
             for (int i = 0; i < tiles.Length; ++i)
             {
-                StaticTile check = tiles[i];
-                ItemData itemData = TileData.ItemTable[check.ID & TileData.MaxItemValue];
-
-                if ((itemData.Flags & ImpassableSurface) != 0) // Impassable || Surface
-                {
-                    int checkZ = check.Z;
-                    int checkTop = checkZ + itemData.CalcHeight;
-
-                    if (checkTop > ourZ && ourTop > checkZ)
-                        return false;
-                }
+				if (!IsOk(tiles[i], ourZ, ourTop))
+					return false;
             }
 
             for (int i = 0; i < items.Count; ++i)
             {
-                Item item = items[i];
-                int itemID = item.ItemID & TileData.MaxItemValue;
-                ItemData itemData = TileData.ItemTable[itemID];
-                TileFlag flags = itemData.Flags;
-
-                if ((flags & ImpassableSurface) != 0) // Impassable || Surface
-                {
-                    if (ignoreDoors && ((flags & TileFlag.Door) != 0 || itemID == 0x692 || itemID == 0x846 || itemID == 0x873 || (itemID >= 0x6F5 && itemID <= 0x6F6)))
-                    {
-                        if (item is BaseHouseDoor && m != null && !((BaseHouseDoor)item).CheckAccess(m))
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (ignoreSpellFields && (itemID == 0x82 || itemID == 0x3946 || itemID == 0x3956))
-                    {
-                        continue;
-                    }
-
-                    // hidden containers, per EA
-                    if ((flags & TileFlag.Container) != 0 && !item.Visible)
-                    {
-                        continue;
-                    }
-
-                    int checkZ = item.Z;
-                    int checkTop = checkZ + itemData.CalcHeight;
-
-                    if (checkTop > ourZ && ourTop > checkZ)
-                        return false;
-                }
+				if (!IsOk(m, items[i], ourZ, ourTop, ignoreDoors, ignoreSpellFields))
+					return false;
             }
 
             return true;
@@ -173,7 +187,13 @@ namespace Server.Movement
             bool ignoreDoors = (m_AlwaysIgnoreDoors || m == null || !m.Alive || m.Body.BodyID == 0x3DB || m.IsDeadBondedPet);
             bool ignoreSpellFields = m is PlayerMobile && map != Map.Felucca;
 
+            bool commit;
+            int commitZ;
+
             #region Tiles
+            commit = true;
+            commitZ = newZ;
+
             for (int i = 0; i < tiles.Length; ++i)
             {
                 StaticTile tile = tiles[i];
@@ -245,17 +265,28 @@ namespace Server.Movement
                         if (considerLand && landCheck < landCenter && landCenter > ourZ && testTop > landZ)
                             continue;
 
-                        if (this.IsOk(m, ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
+                        if (this.IsOk(tile, ourZ, testTop))
+                            commitZ = ourZ;
+                        else
                         {
-                            newZ = ourZ;
-                            moveIsOk = true;
+                            commit = false;
+                            break;
                         }
                     }
                 }
             }
+
+            if (commit)
+            {
+                newZ = commitZ;
+                moveIsOk = true;
+            }
             #endregion
 
             #region Items
+            commit = true;
+            commitZ = newZ;
+
             for (int i = 0; i < items.Count; ++i)
             {
                 Item item = items[i];
@@ -306,13 +337,21 @@ namespace Server.Movement
                         if (considerLand && landCheck < landCenter && landCenter > ourZ && testTop > landZ)
                             continue;
 
-                        if (this.IsOk(m, ignoreDoors, ignoreSpellFields, ourZ, testTop, tiles, items))
+                        if (this.IsOk(m, item, ourZ, testTop, ignoreDoors, ignoreSpellFields))
+                            commitZ = ourZ;
+                        else
                         {
-                            newZ = ourZ;
-                            moveIsOk = true;
+                            commit = false;
+                            break;
                         }
                     }
                 }
+            }
+
+            if (commit)
+            {
+                newZ = commitZ;
+                moveIsOk = true;
             }
             #endregion
 
@@ -341,20 +380,7 @@ namespace Server.Movement
                     moveIsOk = true;
                 }
             }
-
-            #region Mobiles
-            if (moveIsOk)
-            {
-                for (int i = 0; moveIsOk && i < mobiles.Count; ++i)
-                {
-                    Mobile mob = mobiles[i];
-
-                    if (mob != m && (mob.Z + 15) > newZ && (newZ + 15) > mob.Z && !this.CanMoveOver(m, mob))
-                        moveIsOk = false;
-                }
-            }
-            #endregion
-
+            
             return moveIsOk;
         }
 

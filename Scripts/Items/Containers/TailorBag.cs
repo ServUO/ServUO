@@ -6,23 +6,17 @@ namespace Server.Items
     {
         [Constructable]
         public TailorBag()
-            : this(1)
         {
-            this.Movable = true;
-            this.Hue = 0x315;
-        }
+            Hue = 0x315;
 
-        [Constructable]
-        public TailorBag(int amount)
-        {
-            this.DropItem(new SewingKit(5));
-            this.DropItem(new Scissors());
-            this.DropItem(new Hides(500));
-            this.DropItem(new BoltOfCloth(20));
-            this.DropItem(new DyeTub());
-            this.DropItem(new DyeTub());
-            this.DropItem(new BlackDyeTub());
-            this.DropItem(new Dyes());
+            DropItem(new SewingKit(5));
+            DropItem(new Scissors());
+            DropItem(new Hides(500));
+            DropItem(new BoltOfCloth(20));
+            DropItem(new DyeTub());
+            DropItem(new DyeTub());
+            DropItem(new BlackDyeTub());
+            DropItem(new Dyes());
         }
 
         public TailorBag(Serial serial)

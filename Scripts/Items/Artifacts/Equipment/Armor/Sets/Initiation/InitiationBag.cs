@@ -13,16 +13,11 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public InitiationSuitBag() : this( 1 )
+		public InitiationSuitBag()
 		{
-			Movable = true;
-			Hue = 0x30;
-		}
+            Hue = 0x30;
 
-		[Constructable]
-		public InitiationSuitBag( int amount )
-		{
-			DropItem( new InitiationArms() );
+            DropItem( new InitiationArms() );
 			DropItem( new InitiationCap() );
 			DropItem( new InitiationChest() );
 			DropItem( new InitiationGloves() );
