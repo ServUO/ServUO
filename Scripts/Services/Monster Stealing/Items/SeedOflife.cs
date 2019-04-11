@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Server;
 using Server.Mobiles;
@@ -31,7 +31,6 @@ namespace Server.Items
         {
             DoCleanup();
             ManaDraught.DoCleanup();
-            GemOfSalvation.DoCleanup();
         }
 
         public static void DoCleanup()
