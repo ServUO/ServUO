@@ -3758,14 +3758,6 @@ namespace Server.Mobiles
             if (Criminal)
                 BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
 
-            if (Backpack != null)
-            {
-                GemOfSalvation gem = Backpack.FindItemByType<GemOfSalvation>();
-
-                if (gem != null)
-                    Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback<PlayerMobile>(gem.Use), this);
-            }
-
             DropHolding();
 
             if (Core.AOS && Backpack != null && !Backpack.Deleted)

@@ -132,7 +132,9 @@ namespace Server.Engines.VeteranRewards
 
             TimeSpan totalTime = (DateTime.UtcNow - acct.Created);
 
-            return totalTime >= TimeSpan.FromDays(180.0);
+            Double level = (totalTime.TotalDays / RewardInterval.TotalDays);
+
+            return level >= 0.5;
         }
 
         public static bool ConsumeRewardPoint(Mobile mob)
