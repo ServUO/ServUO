@@ -19,6 +19,7 @@ namespace Server.Items
         {
             LootType = LootType.Blessed;
             Stackable = true;
+            Amount = amount;
         }
 
         public override void OnDoubleClick(Mobile m)

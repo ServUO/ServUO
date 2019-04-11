@@ -3143,7 +3143,7 @@ namespace Server
                         ItemSocket.Load(this, reader);
                     }
 
-                    goto case 11;
+                    goto case 13;
 				case 13:
                 case 12:
                 case 11:

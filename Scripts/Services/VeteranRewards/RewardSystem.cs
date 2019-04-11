@@ -130,11 +130,6 @@ namespace Server.Engines.VeteranRewards
             if (acct == null)
                 return false;
 
-            return HasHalfLevel(acct);
-        }
-
-        public static bool HasHalfLevel(Account acct)
-        {
             TimeSpan totalTime = (DateTime.UtcNow - acct.Created);
 
             Double level = (totalTime.TotalDays / RewardInterval.TotalDays);

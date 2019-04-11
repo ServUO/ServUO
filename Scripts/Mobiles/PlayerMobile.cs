@@ -645,8 +645,11 @@ namespace Server.Mobiles
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime AnkhNextUse { get { return m_AnkhNextUse; } set { m_AnkhNextUse = value; } }
 
-		#region Mondain's Legacy
-		[CommandProperty(AccessLevel.GameMaster)]
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextGemOfSalvationUse { get; set; }
+
+        #region Mondain's Legacy
+        [CommandProperty(AccessLevel.GameMaster)]
 		public bool Bedlam { get { return GetFlag(PlayerFlag.Bedlam); } set { SetFlag(PlayerFlag.Bedlam, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -1210,7 +1213,7 @@ namespace Server.Mobiles
         {
             int resistance = base.GetResistance(type) + SphynxFortune.GetResistanceBonus(this, type);
 
-            if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(this, Server.Engines.CityLoyalty.TradeDeal.SocietyOfClothiers))
+            if (CityLoyaltySystem.HasTradeDeal(this, TradeDeal.SocietyOfClothiers))
             {
                 resistance++;
                  return Math.Min(resistance, GetMaxResistance(type));
@@ -2025,9 +2028,6 @@ namespace Server.Mobiles
 				{
                     var str = base.Str;
 
-                    if (CityLoyaltySystem.HasTradeDeal(this, TradeDeal.MiningCooperative))
-                        str += 3;
-
                     return Math.Min(base.Str, StrMaxCap);
 				}
 
@@ -2059,9 +2059,6 @@ namespace Server.Mobiles
 				if (Core.ML && IsPlayer())
 				{
                     var dex = base.Dex;
-
-                    if (CityLoyaltySystem.HasTradeDeal(this, TradeDeal.OrderOfEngineers))
-                        dex += 3;
 
                     return Math.Min(dex, DexMaxCap);
 				}
@@ -4515,6 +4512,9 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 38:
+                    NextGemOfSalvationUse = reader.ReadDateTime();
+                    goto case 37;
                 case 37:
                     m_ExtendedFlags = (ExtendedPlayerFlag)reader.ReadInt();
 				    goto case 36;
@@ -4959,7 +4959,9 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(37); // version
+			writer.Write(38); // version
+
+            writer.Write((DateTime)NextGemOfSalvationUse);
 
             writer.Write((int)m_ExtendedFlags);
 
@@ -5290,7 +5292,7 @@ namespace Server.Mobiles
 					{
                         string cust = null;
 
-                        if ((int)m_RewardTitles[m_SelectedTitle] == 1154017 && Server.Engines.CityLoyalty.CityLoyaltySystem.HasCustomTitle(this, out cust))
+                        if ((int)m_RewardTitles[m_SelectedTitle] == 1154017 && CityLoyaltySystem.HasCustomTitle(this, out cust))
                         {
                             list.Add(1154017, cust); // ~1_TITLE~ of ~2_CITY~
                         }
@@ -5759,7 +5761,7 @@ namespace Server.Mobiles
 
                 if (loc > 0)
                 {
-                    if (Server.Engines.CityLoyalty.CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
+                    if (CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
                         return;
                 }
                 else if (suffix.Length > 0)

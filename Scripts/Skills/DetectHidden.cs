@@ -196,12 +196,16 @@ namespace Server.SkillHandlers
             if (target.Blessed || (target is BaseCreature && ((BaseCreature)target).IsInvulnerable))
                 return false;
 
+            // pet owner, guild/alliance, party
+            if (!Server.Spells.SpellHelper.ValidIndirectTarget(target, src))
+                return false;
+
             // Checked aggressed/aggressors
             if (src.Aggressed.Any(x => x.Defender == target) || src.Aggressors.Any(x => x.Attacker == target))
                 return true;
 
             // In Fel or Follow the same rules as indirect spells such as wither
-            return src.Map.Rules == MapRules.FeluccaRules || Server.Spells.SpellHelper.ValidIndirectTarget(target, src);
+            return src.Map.Rules == MapRules.FeluccaRules;
         }
     }
 }

@@ -1215,7 +1215,12 @@ namespace Server.Items
                     Caddellite.UpdateBuff(from);
                 }
 
-				from.CheckStatTimers();
+                if (ExtendedWeaponAttributes.Focus > 0)
+                {
+                    Focus.UpdateBuff(from);
+                }
+
+                from.CheckStatTimers();
 				from.Delta(MobileDelta.WeaponDamage);
 			}
 		}
@@ -1274,6 +1279,11 @@ namespace Server.Items
                 if (HasSocket<Caddellite>())
                 {
                     Caddellite.UpdateBuff(m);
+                }
+
+                if (ExtendedWeaponAttributes.Focus > 0)
+                {
+                    Focus.UpdateBuff(m);
                 }
 
                 m.CheckStatTimers();
@@ -2508,7 +2518,13 @@ namespace Server.Items
                 }
             }
 
-			percentageBonus = Math.Min(percentageBonus, 300);
+            if (m_ExtendedWeaponAttributes.Focus > 0)
+            {
+                percentageBonus += Focus.GetBonus(attacker, defender);
+                Focus.OnHit(attacker, defender);
+            }
+
+            percentageBonus = Math.Min(percentageBonus, 300);
 
             // bonus is seprate from weapon damage, ie not capped
             percentageBonus += Spells.Mysticism.StoneFormSpell.GetMaxResistBonus(attacker);
@@ -5437,7 +5453,12 @@ namespace Server.Items
 					GetSetProperties(list);
 				}
 			}
-			#endregion
+            #endregion
+
+            if (m_ExtendedWeaponAttributes.Focus > 0)
+            {
+                list.Add(1150018); // Focus
+            }
 
             if (m_NegativeAttributes.Brittle == 0 && m_AosAttributes.Brittle != 0)
             {

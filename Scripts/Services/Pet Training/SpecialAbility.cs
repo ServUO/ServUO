@@ -1602,9 +1602,9 @@ namespace Server.Mobiles
                 int dex = attacker.RawDex / 3;
                 int Int = attacker.RawInt / 3;
 
-                attacker.AddStatMod(new StatMod(StatType.Str, "BloodWorm_Str", str, TimeSpan.FromSeconds(60)));
-                attacker.AddStatMod(new StatMod(StatType.Dex, "BloodWorm_Dex", dex, TimeSpan.FromSeconds(60)));
-                attacker.AddStatMod(new StatMod(StatType.Int, "BloodWorm_Int", Int, TimeSpan.FromSeconds(60)));
+                attacker.AddStatMod(new StatMod(StatType.Str, "BloodWorm_Str", -str, TimeSpan.FromSeconds(60)));
+                attacker.AddStatMod(new StatMod(StatType.Dex, "BloodWorm_Dex", -dex, TimeSpan.FromSeconds(60)));
+                attacker.AddStatMod(new StatMod(StatType.Int, "BloodWorm_Int", -Int, TimeSpan.FromSeconds(60)));
 
                 // -~1_STR~ strength.<br>-~2_INT~ intelligence.<br>-~3_DEX~ dexterity.<br> Drains all stamina.
                 BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.BloodwormAnemia, 1153797, 1153824, String.Format("{0}\t{1}\t{2}", str, dex, Int)));

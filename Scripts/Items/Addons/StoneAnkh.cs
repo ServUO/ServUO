@@ -11,7 +11,7 @@ namespace Server.Items
         public StoneAnkhComponent(int itemID)
             : base(itemID)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public StoneAnkhComponent(Serial serial)
@@ -30,7 +30,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 			
-            if (this.Addon is StoneAnkh && ((StoneAnkh)this.Addon).IsRewardItem)
+            if (Addon is StoneAnkh && ((StoneAnkh)Addon).IsRewardItem)
                 list.Add(1076221); // 5th Year Veteran Reward
         }
 
@@ -64,13 +64,13 @@ namespace Server.Items
         { 
             if (east)
             {
-                this.AddComponent(new StoneAnkhComponent(0x2), 0, 0, 0);
-                this.AddComponent(new StoneAnkhComponent(0x3), 0, -1, 0);
+                AddComponent(new StoneAnkhComponent(0x2), 0, 0, 0);
+                AddComponent(new StoneAnkhComponent(0x3), 0, -1, 0);
             }
             else
             {
-                this.AddComponent(new StoneAnkhComponent(0x5), 0, 0, 0);
-                this.AddComponent(new StoneAnkhComponent(0x4), -1, 0, 0);
+                AddComponent(new StoneAnkhComponent(0x5), 0, 0, 0);
+                AddComponent(new StoneAnkhComponent(0x4), -1, 0, 0);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Server.Items
             get
             { 
                 StoneAnkhDeed deed = new StoneAnkhDeed();
-                deed.IsRewardItem = this.m_IsRewardItem;
+                deed.IsRewardItem = m_IsRewardItem;
 
                 return deed; 
             }
@@ -94,12 +94,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
         public override void OnChop(Mobile from)
@@ -112,17 +112,18 @@ namespace Server.Items
         {
             base.GetProperties(list);
 			
-            if (Core.ML && this.m_IsRewardItem)
+            if (Core.ML && m_IsRewardItem)
                 list.Add(1076221); // 5th Year Veteran Reward
         }
 
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
-            if (from.InRange(this.Location, 2))
+            if (from.InRange(Location, 2))
             {
-                BaseHouse house = BaseHouse.FindHouseAt(this);  
+                BaseHouse house = BaseHouse.FindHouseAt(this);
+                BaseAddon addon = c.Addon;
 			
-                if (house != null && house.IsOwner(from))
+                if (house != null && (house.IsOwner(from) || (addon != null && house.Addons.ContainsKey(addon) && house.Addons[addon] == from)))
                 {
                     from.CloseGump(typeof(RewardDemolitionGump));
                     from.SendGump(new RewardDemolitionGump(this, 1049783)); // Do you wish to re-deed this decoration?
@@ -140,7 +141,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 			
-            writer.Write((bool)this.m_IsRewardItem);
+            writer.Write((bool)m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -149,7 +150,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 			
-            this.m_IsRewardItem = reader.ReadBool();
+            m_IsRewardItem = reader.ReadBool();
         }
     }
 
@@ -161,7 +162,7 @@ namespace Server.Items
         public StoneAnkhDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public StoneAnkhDeed(Serial serial)
@@ -181,30 +182,30 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
         public override BaseAddon Addon
         { 
             get
             { 
-                StoneAnkh addon = new StoneAnkh(this.m_East);
-                addon.IsRewardItem = this.m_IsRewardItem;
+                StoneAnkh addon = new StoneAnkh(m_East);
+                addon.IsRewardItem = m_IsRewardItem;
 
                 return addon; 
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
+            if (m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
 			
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(InternalGump));
                 from.SendGump(new InternalGump(this));
@@ -217,7 +218,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 			
-            if (this.m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1076221); // 5th Year Veteran Reward
         }
 
@@ -227,7 +228,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_IsRewardItem);
+            writer.Write((bool)m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -236,7 +237,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 			
-            this.m_IsRewardItem = reader.ReadBool();
+            m_IsRewardItem = reader.ReadBool();
         }
 
         private void SendTarget(Mobile m)
@@ -250,24 +251,24 @@ namespace Server.Items
             public InternalGump(StoneAnkhDeed deed)
                 : base(150, 50)
             {
-                this.m_Deed = deed;				
+                m_Deed = deed;				
 				
-                this.Closable = true;
-                this.Disposable = true;
-                this.Dragable = true;
-                this.Resizable = false;
+                Closable = true;
+                Disposable = true;
+                Dragable = true;
+                Resizable = false;
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 0, 300, 150, 0xA28);
+                AddBackground(0, 0, 300, 150, 0xA28);
 
-                this.AddItem(90, 30, 0x4);
-                this.AddItem(112, 30, 0x5);
-                this.AddButton(50, 35, 0x867, 0x869, (int)Buttons.South, GumpButtonType.Reply, 0); // South
+                AddItem(90, 30, 0x4);
+                AddItem(112, 30, 0x5);
+                AddButton(50, 35, 0x867, 0x869, (int)Buttons.South, GumpButtonType.Reply, 0); // South
 
-                this.AddItem(170, 30, 0x2);
-                this.AddItem(192, 30, 0x3);
-                this.AddButton(145, 35, 0x867, 0x869, (int)Buttons.East, GumpButtonType.Reply, 0); // East
+                AddItem(170, 30, 0x2);
+                AddItem(192, 30, 0x3);
+                AddButton(145, 35, 0x867, 0x869, (int)Buttons.East, GumpButtonType.Reply, 0); // East
             }
 
             private enum Buttons
@@ -278,13 +279,13 @@ namespace Server.Items
             }
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Deed == null || this.m_Deed.Deleted)
+                if (m_Deed == null || m_Deed.Deleted)
                     return;
 					
                 if (info.ButtonID != (int)Buttons.Cancel)
                 {
-                    this.m_Deed.m_East = (info.ButtonID == (int)Buttons.East);
-                    this.m_Deed.SendTarget(sender.Mobile);
+                    m_Deed.m_East = (info.ButtonID == (int)Buttons.East);
+                    m_Deed.SendTarget(sender.Mobile);
                 }
             }
         }
