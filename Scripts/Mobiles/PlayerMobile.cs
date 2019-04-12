@@ -645,8 +645,11 @@ namespace Server.Mobiles
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime AnkhNextUse { get { return m_AnkhNextUse; } set { m_AnkhNextUse = value; } }
 
-		#region Mondain's Legacy
-		[CommandProperty(AccessLevel.GameMaster)]
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextGemOfSalvationUse { get; set; }
+
+        #region Mondain's Legacy
+        [CommandProperty(AccessLevel.GameMaster)]
 		public bool Bedlam { get { return GetFlag(PlayerFlag.Bedlam); } set { SetFlag(PlayerFlag.Bedlam, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -4509,6 +4512,9 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 38:
+                    NextGemOfSalvationUse = reader.ReadDateTime();
+                    goto case 37;
                 case 37:
                     m_ExtendedFlags = (ExtendedPlayerFlag)reader.ReadInt();
 				    goto case 36;
@@ -4953,7 +4959,9 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(37); // version
+			writer.Write(38); // version
+
+            writer.Write((DateTime)NextGemOfSalvationUse);
 
             writer.Write((int)m_ExtendedFlags);
 

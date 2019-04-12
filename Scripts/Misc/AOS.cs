@@ -1947,7 +1947,8 @@ namespace Server
         HitSparks       = 0x00000004,
         Bane            = 0x00000008,
         MysticWeapon    = 0x00000010,
-        AssassinHoned   = 0x00000020
+        AssassinHoned   = 0x00000020,
+        Focus            = 0x00000040,
     }
 
     public sealed class ExtendedWeaponAttributes : BaseAttributes
@@ -2087,6 +2088,19 @@ namespace Server
             set
             {
                 this[ExtendedWeaponAttribute.AssassinHoned] = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Focus
+        {
+            get
+            {
+                return this[ExtendedWeaponAttribute.Focus];
+            }
+            set
+            {
+                this[ExtendedWeaponAttribute.Focus] = value;
             }
         }
     }
