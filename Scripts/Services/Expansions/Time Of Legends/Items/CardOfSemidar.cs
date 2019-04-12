@@ -15,7 +15,8 @@ namespace Server.Items
             Shamino,
             Juonar,
             ProfessorRafkin,
-            Minax
+            Minax,
+            Krampus
         }
 
         public override int LabelNumber
@@ -49,7 +50,15 @@ namespace Server.Items
             if (from.InRange(this.GetWorldLocation(), 3))
             {
                 Gump g = new Gump(100, 100);
-                g.AddImage(0, 0, 39904 + (int)_Type);
+
+                if (_Type == CardType.Krampus)
+                {
+                    g.AddImage(0, 0, 39914);
+                }
+                else
+                {
+                    g.AddImage(0, 0, 39904 + (int)_Type);
+                }
 
                 from.SendGump(g);
             }

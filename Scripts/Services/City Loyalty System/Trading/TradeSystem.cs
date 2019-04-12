@@ -37,7 +37,7 @@ namespace Server.Engines.CityLoyalty
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        public bool KrampusEncounter { get { return KrampusEncounter.Enabled && KrampusEncounter.Encounter != null; } }
+        public static bool KrampusEncounterActive { get { return KrampusEncounter.Enabled && KrampusEncounter.Encounter != null; } }
 
 
         public static Dictionary<Mobile, TradeOrderCrate> ActiveTrades { get; private set; }
@@ -89,9 +89,9 @@ namespace Server.Engines.CityLoyalty
             {
                 minister.SayTo(from, 1151722); // It appears you are already delivering a trade order. Deliver your current order before requesting another.
             }
-            else if (KrampusEncounter && KrampusEncounter.Encounter.Krampus != null)
+            else if (KrampusEncounterActive && KrampusEncounter.Encounter.Krampus != null)
             {
-                minister.SayTo(from, 1158790, String.Format("{0}\t{1}", WorldLocation.GetLocationString(from.Location. from.Map), Sextant.GetCoords(from)), 1150); // Take notice! The vile Krampus has been spotted near ~2_where~ at ~1_coords~!  New Trade Orders are suspended until Krampus has been defeated!
+                minister.SayTo(from, 1158790, String.Format("{0}\t{1}", WorldLocationInfo.GetLocationString(from), Sextant.GetCoords(from)), 1150); // Take notice! The vile Krampus has been spotted near ~2_where~ at ~1_coords~!  New Trade Orders are suspended until Krampus has been defeated!
             }
             else
             {
@@ -418,7 +418,7 @@ namespace Server.Engines.CityLoyalty
 
             Type[] types = GetCreatureType(m, boat != null);
 
-            if (type == null)
+            if (types == null)
             {
                 return;
             }
@@ -431,7 +431,7 @@ namespace Server.Engines.CityLoyalty
 
                 if (bc != null)
                 {
-                    if (KrampusEncounter)
+                    if (KrampusEncounterActive)
                     {
                         bc.Name = "An Icy Creature";
                     }
@@ -531,9 +531,9 @@ namespace Server.Engines.CityLoyalty
             m.SendLocalizedMessage(1049330, "", 0x22); // You have been ambushed! Fight for your honor!!!
         }
 
-        public Type[] GetCreatureType(Mobile m, bool wet)
+        public static Type[] GetCreatureType(Mobile m, bool wet)
         {
-            if (KrampusEncounter)
+            if (KrampusEncounterActive)
             {
                 return KrampusEncounter.Encounter.GetCreatureTypes(m, wet);
             }

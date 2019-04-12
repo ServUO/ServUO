@@ -4,17 +4,21 @@ using System.Linq;
 
 using Server;
 using Server.Items;
+using Server.Engines.SeasonalEvents;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a skeletal corpse")]
+    [CorpseName("the corpse of krampus")]
     public class Krampus : BaseCreature
     {
         public override bool TeleportsTo { get { return true; } }
 
         public List<BaseCreature> SummonedHelpers { get; set; }
         private DateTime _NextSummon;
+        private DateTime _NextArea;
         public const int MaxSummons = 12;
+
+        private DateTime _LastActivity;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D SpawnLocation { get; set; }
@@ -43,23 +47,23 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Poison, 70, 80);
             SetResistance(ResistanceType.Energy, 70, 80);
 
-            SetSkill(SkillName.MagicResist, 60.0, 80.0);
+            SetSkill(SkillName.MagicResist, 150);
             SetSkill(SkillName.Tactics, 110, 120);
             SetSkill(SkillName.Wrestling, 120.0, 125.0);
             SetSkill(SkillName.DetectHidden, 60.0, 70.0);
-            SetSkill(SkillName.ResistSpells, 150);
+            SetSkill(SkillName.Parry, 60, 70);
 
-            Fame = 3000;
-            Karma = -3000;
+            Fame = 30000;
+            Karma = -30000;
 
             switch (Utility.Random(3))
             {
                 case 0:
-                    SetMagicAbility(MagicalAbility.Piercing); break;
+                    SetMagicalAbility(MagicalAbility.Piercing); break;
                 case 1:
-                    SetMagicAbility(MagicalAbility.Bashing); break;
+                    SetMagicalAbility(MagicalAbility.Bashing); break;
                 case 2:
-                    SetMagicAbility(MagicalAbility.Slashing); break;
+                    SetMagicalAbility(MagicalAbility.Slashing); break;
             }
 
             _NextSummon = DateTime.UtcNow;
@@ -88,7 +92,7 @@ namespace Server.Mobiles
                 if (!com.Alive)
                     return;
 
-                int count = Utility.RandomList(1, 2, 2, 2, 3, 3, 4, 5);
+                int count = Utility.RandomMinMax(3, 5);
 
                 for (int i = 0; i < count; i++)
                 {
@@ -115,19 +119,15 @@ namespace Server.Mobiles
                         spawn.Team = this.Team;
                         spawn.SummonMaster = this;
 
-                        Timer.DelayCall(TimeSpan.FromMilliseconds(250), minion =>
+                        if (spawn.Combatant != null)
                         {
-                            if (minion.Combatant != null)
-                            {
-                                if (!(minion.Combatant is PlayerMobile) || !((PlayerMobile)minion.Combatant).HonorActive)
-                                    minion.Combatant = com;
-                            }
-                            else
-                            {
-                                minion.Combatant = com;
-                            }
-
-                        }, spawn);
+                            if (!(spawn.Combatant is PlayerMobile) || !((PlayerMobile)spawn.Combatant).HonorActive)
+                                spawn.Combatant = com;
+                        }
+                        else
+                        {
+                            spawn.Combatant = com;
+                        }
 
                         AddHelper(spawn);
                     }
@@ -157,9 +157,9 @@ namespace Server.Mobiles
         {
             base.OnGaveMeleeAttack(defender);
 
-            if (defender is _LastTeleported)
+            if (defender == _LastTeleported)
             {
-                BoneBreakerContext.OnHit(this, defender);
+                BoneBreakerContext.CheckHit(this, defender);
             }
 
             _LastTeleported = null;
@@ -199,6 +199,18 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
+            if (Combatant == null)
+            {
+                if (_LastActivity + TimeSpan.FromHours(2) < DateTime.UtcNow)
+                {
+                    Delete();
+                }
+
+                return;
+            }
+
+            _LastActivity = DateTime.UtcNow;
+
             if (_NextSummon < DateTime.UtcNow && 0.25 > Utility.RandomDouble())
             {
                 var target = GetTeleportTarget();
@@ -214,11 +226,64 @@ namespace Server.Mobiles
             {
 
             }
+
+            if (Map != null && SpawnLocation != Point3D.Zero && !Utility.InRange(Location, SpawnLocation, 25))
+            {
+                MoveToWorld(SpawnLocation, Map);
+            }
+        }
+
+        public override void OnDeath(Container c)
+        {
+            if (KrampusEncounter.Encounter != null && KrampusEncounter.Encounter.Krampus == this)
+            {
+                var rights = GetLootingRights();
+
+                foreach (var ds in rights.Where(s => s.m_Mobile is PlayerMobile && s.m_HasRight))
+                {
+                    var m = ds.m_Mobile as PlayerMobile;
+                    int ordersComplete = 0;
+
+                    if (KrampusEncounter.Encounter.CompleteTable.ContainsKey(m))
+                    {
+                        ordersComplete = KrampusEncounter.Encounter.CompleteTable[m];
+                    }
+
+                    if (ordersComplete >= 3 || Utility.RandomMinMax(0, 8) <= ordersComplete)
+                    {
+                        Item item;
+
+                        switch (Utility.Random(8))
+                        {
+                            case 0: item = new KrampusCoinPurse(m); break;
+                            case 1: item = new CardOfSemidar(Utility.RandomMinMax(0, 6)); break;
+                            case 2: item = new NiceTitleDeed(); break;
+                            case 3: item = new NaughtyTitleDeed(); break;
+                            case 4: item = new PunisherTitleDeed(); break;
+                            case 5: item = new RecipeScroll(586); break; // minion hat
+                            case 6: item = new RecipeScroll(587); break; // minion boots
+                            case 7: item = new KrampusCoinPurse(463); break; // minion talons
+                            case 8: item = new KrampusCoinPurse(588); break; // minion earrings
+                            case 9: item = new KrampusPunishinList(m.Name); break;
+                            case 10: item = new SpikedWhip(); break;
+                            case 11: item = new BarbedWhip(); break;
+                            case 12: item = new BladedWhip(); break;
+                        }
+                    }
+                }
+            }
+
+            base.OnDeath(c);
         }
 
         public override void Delete()
         {
             base.Delete();
+
+            if (SpawnLocation != Point3D.Zero && KrampusEncounter.Encounter != null)
+            {
+                KrampusEncounter.Encounter.OnKrampusKilled();
+            }
 
             if (SummonedHelpers != null)
             {

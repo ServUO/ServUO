@@ -22,7 +22,7 @@ namespace Server.Engines.SeasonalEvents
         SorcerersDungeon,
         TreasuresOfDoom,
         TreasuresOfKhaldun,
-        Krampus
+        KrampusEncounter
     }
 
     public enum EventStatus
@@ -254,7 +254,7 @@ namespace Server.Engines.SeasonalEvents
                 case EventType.SorcerersDungeon:
                     SorcerersDungeonGenerate.CheckEnabled();
                     break;
-                case EventType.Krampus:
+                case EventType.KrampusEncounter:
                     KrampusEncounter.CheckEnabled();
                     break;
             }

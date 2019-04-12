@@ -3,115 +3,54 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a skeletal corpse")]
-    public class SkelementalMage : BaseCreature
+    [CorpseName("a minion corpse")]
+    public class KrampusMinion : BaseCreature
     {
         [Constructable]
-        public SkelementalMage()
-            : this(Utility.RandomBool() ? SkelementalKnight.SkeletalType.Cold : SkelementalKnight.SkeletalType.Fire)
+        public KrampusMinion()
+           : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-        }
+            Name = "Minion";
+            Body = 1485;
+            BaseSoundID = 422;
 
-        [Constructable]
-        public SkelementalMage(SkelementalKnight.SkeletalType type)
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
-        {
-            Name = "Skelemental Mage";
-            Body = 0x32;
-            BaseSoundID = 451;
+            SetStr(125);
+            SetDex(125);
+            SetInt(250);
 
-            int fire = 100, cold = 100, poison = 100, energy = 100;
+            SetHits(1400);
 
-            switch (type)
-            {
-                case SkelementalKnight.SkeletalType.Fire:
-                    {
-                        Hue = 2634;
-                        SetDamageType(ResistanceType.Fire, 100);
-                        cold = 5;
-                        break;
-                    }
-                case SkelementalKnight.SkeletalType.Cold:
-                    {
-                        Hue = 2581;
-                        SetDamageType(ResistanceType.Cold, 100);
-                        fire = 5;
-                        break;
-                    }
-                case SkelementalKnight.SkeletalType.Poison:
-                    {
-                        Hue = 2688;
-                        SetDamageType(ResistanceType.Poison, 100);
-                        energy = 5;
-                        break;
-                    }
-                case SkelementalKnight.SkeletalType.Energy:
-                    {
-                        Hue = 2717;
-                        SetDamageType(ResistanceType.Energy, 100);
-                        poison = 5;
-                        break;
-                    }
-            }
+            SetDamage(15, 21);
 
-            SetStr(200, 250);
-            SetDex(70, 100);
-            SetInt(100, 130);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Cold, 50);
 
-            SetHits(100, 150);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 40, 50);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            SetDamage(8, 18);
-
-            SetDamageType(ResistanceType.Physical, 0);
-
-            SetResistance(ResistanceType.Physical, 95);
-            SetResistance(ResistanceType.Fire, fire);
-            SetResistance(ResistanceType.Cold, cold);
-            SetResistance(ResistanceType.Poison, poison);
-            SetResistance(ResistanceType.Energy, energy);
-
-            SetSkill(SkillName.MagicResist, 60.0, 80.0);
-            SetSkill(SkillName.Tactics, 75.0, 100.0);
-            SetSkill(SkillName.Wrestling, 85.0, 100.0);
-            SetSkill(SkillName.DetectHidden, 50.0);
-            SetSkill(SkillName.Magery, 110.0, 120.0);
-            SetSkill(SkillName.Meditation, 150.0, 155.0);
-            SetSkill(SkillName.Focus, 0.0, 60.0);
+            SetSkill(SkillName.Tactics, 110, 120);
+            SetSkill(SkillName.Wrestling, 100, 110);
+            SetSkill(SkillName.DetectHidden, 60.0, 70.0);
+            SetSkill(SkillName.MagicResist, 120);
+            SetSkill(SkillName.Parry, 60, 70);
 
             Fame = 3000;
             Karma = -3000;
-
-            VirtualArmor = 38;
-            PackReg(3);
-            PackNecroReg(3, 10);
-            PackItem(new Bone());
         }
 
-        public SkelementalMage(Serial serial)
+        public KrampusMinion(Serial serial)
             : base(serial)
         {
         }
-
-        public override bool BleedImmune { get { return true; } }
-        public override OppositionGroup OppositionGroup { get { return OppositionGroup.FeyAndUndead; } }
-        public override Poison PoisonImmune { get { return Poison.Regular; } }
-        public override TribeType Tribe { get { return TribeType.Undead; } }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.LowScrolls);
             AddLoot(LootPack.Potions);
-        }
-
-        public override void OnBeforeDamage(Mobile from, ref int totalDamage, Server.DamageType type)
-        {
-            if (Region.IsPartOf("Khaldun") && IsChampionSpawn && !Caddellite.CheckDamage(from, type))
-            {
-                totalDamage = 0;
-            }
-
-            base.OnBeforeDamage(from, ref totalDamage, type);
         }
 
         public override void Serialize(GenericWriter writer)

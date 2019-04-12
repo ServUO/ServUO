@@ -59,14 +59,14 @@ namespace Server.Engines.CityLoyalty
             Expires = DateTime.UtcNow + TimeSpan.FromHours(CityTradeSystem.CrateDuration);
 		}
 
-        private int GetID()
+        private static int GetID()
         {
             if (KrampusEncounter.Enabled)
             {
                 return Utility.Random(0x46A2, 6);
             }
 
-            Utility.Random(0x46A2, 4);
+            return Utility.Random(0x46A2, 4);
         }
 
         public override int DefaultGumpID
